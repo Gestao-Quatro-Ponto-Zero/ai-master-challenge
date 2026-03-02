@@ -1,0 +1,16 @@
+name: ai-master-challenge
+id: ari:cloud:compass:752ee8d2-042d-435c-8bee-e942d7afcef2:component/b2177de5-7d3b-4376-b095-4513b1fb4710/b3c7c7ea-44b6-46cd-9410-5965c47138c2
+description: AI Master Challenge — O teste para quem vai transformar áreas inteiras usando IA. Hiring challenge do G4.
+configVersion: 1
+typeId: SERVICE
+fields:
+  tier: 4
+links:
+  - name: null
+    type: REPOSITORY
+    url: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge
+relationships:
+  DEPENDS_ON: []
+labels:
+  - source:github
+customFields: null
