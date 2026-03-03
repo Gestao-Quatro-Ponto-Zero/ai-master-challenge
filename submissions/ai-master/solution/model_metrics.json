@@ -1,0 +1,52 @@
+{
+  "model": "RandomForest",
+  "cv_auc_mean": 1.0,
+  "cv_auc_std": 0.0,
+  "n_features": 40,
+  "n_samples": 500,
+  "churn_rate": 0.418,
+  "active_at_risk_count": 0,
+  "active_at_risk_mrr": 0.0,
+  "top_features": [
+    {
+      "feature": "total_sessions",
+      "importance": 0.15689831122239636
+    },
+    {
+      "feature": "avg_usage",
+      "importance": 0.1397740096357351
+    },
+    {
+      "feature": "total_usage",
+      "importance": 0.11921906104906226
+    },
+    {
+      "feature": "avg_response_hrs",
+      "importance": 0.1170885002024016
+    },
+    {
+      "feature": "error_rate",
+      "importance": 0.11491779068342425
+    },
+    {
+      "feature": "avg_resolution_hrs",
+      "importance": 0.08276320580190288
+    },
+    {
+      "feature": "workflow_builder_usage",
+      "importance": 0.05450696481351507
+    },
+    {
+      "feature": "report_generator_usage",
+      "importance": 0.04651931924579733
+    },
+    {
+      "feature": "ai_chat_usage",
+      "importance": 0.028373158920859346
+    },
+    {
+      "feature": "total_tickets",
+      "importance": 0.020444545235325913
+    }
+  ]
+}
