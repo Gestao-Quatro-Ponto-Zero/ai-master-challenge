@@ -493,31 +493,47 @@ html_parts.append("""
         </div>
 
         <div class="action-item">
-            <h4>2. REDESIGN Support Triage for At-Risk Accounts (Impact: ~$59K MRR saved)</h4>
-            <p>Churned customers waited 3x longer for first response. Implement an
-            account-health-based routing system: accounts with declining usage + rising
-            tickets get priority support within 2 hours, not 28.</p>
+            <h4>2. IMPLEMENT Health Score + Proactive Support Triage (Impact: ~$59K MRR saved)</h4>
+            <p>Build a health score (0-100) per account: Login frequency (30%) + Feature usage (25%) +
+            Support sentiment (15%) + Billing health (15%) + Engagement (15%). Route accounts scoring
+            &lt;40 to dedicated CS. Trigger proactive interventions when usage drops &gt;50% for 2 weeks.
+            MRR-based routing: accounts &gt;$2K/mo require CS call before cancel completes.</p>
         </div>
 
         <div class="action-item">
-            <h4>3. FIX Satisfaction Measurement (Impact: data quality)</h4>
-            <p>Current CSAT is biased — 46% of churned customers don't respond.
-            Switch to proactive NPS at key moments (after ticket resolution, monthly check-in).
-            Separate reporting by account health tier.</p>
+            <h4>3. BUILD Cancel Flow with Dynamic Save Offers (Impact: 25-35% save rate)</h4>
+            <p>Currently there's no cancel flow — cancellation is instant. Build: Exit Survey &rarr;
+            Dynamic Offer &rarr; Confirmation. Map offers to reasons: "Too Expensive" &rarr; 25% discount for
+            3 months; "Not Using Enough" &rarr; pause subscription; "Product Issues" &rarr; priority support +
+            credit. Offer subscription pause (60-80% of pausers return). Max 2-3 screens, mobile-friendly.</p>
         </div>
 
         <div class="action-item">
-            <h4>4. RESTRUCTURE Paid Ads Acquisition (Impact: ~$216K MRR at risk)</h4>
+            <h4>4. FIX Satisfaction Measurement (Impact: data quality)</h4>
+            <p>Current CSAT has survivor bias — 46% of churned customers don't respond.
+            Switch to proactive NPS at key moments. Segment by health score tier.
+            Target: &gt;70% response rate across all segments.</p>
+        </div>
+
+        <div class="action-item">
+            <h4>5. RESTRUCTURE Paid Ads Acquisition (Impact: ~$216K MRR at risk)</h4>
             <p>Paid Ads has 65% churn rate — the worst channel by far. Either improve
-            qualification criteria, add mandatory onboarding, or redirect budget
-            to Referral (22% churn) and Direct Sales (28% churn).</p>
+            qualification criteria (ICP scoring), add mandatory onboarding for Paid Ads leads,
+            or redirect budget to Referral (22% churn) and Direct Sales (28% churn).</p>
         </div>
 
         <div class="action-item">
-            <h4>5. REVAMP Trial-to-Paid Conversion (Impact: 47 accounts at risk)</h4>
-            <p>71% of trial accounts churn vs 37% non-trial. The trial experience
-            doesn't demonstrate enough value. Add guided onboarding, success milestones,
-            and proactive CS outreach during trial period.</p>
+            <h4>6. REVAMP Trial-to-Paid Conversion (Impact: 47 accounts at risk)</h4>
+            <p>71% of trial accounts churn vs 37% non-trial. Add guided onboarding with
+            milestones, proactive CS on day 3 and 10, and identify the activation metric
+            (what retained users do in first 7 days that churners don't).</p>
+        </div>
+
+        <div class="action-item">
+            <h4>7. SET UP Dunning for Involuntary Churn (Impact: recover 50-60% of failed payments)</h4>
+            <p>Involuntary churn (failed payments) is 30-50% of all churn and the easiest to fix.
+            Pre-dunning: card expiry alerts 30/15/7 days before. Smart retries: 4 attempts over 7 days.
+            Dunning emails: friendly &rarr; reminder &rarr; urgency &rarr; final warning. Target: 50-60% recovery rate.</p>
         </div>
     </div>
 """)

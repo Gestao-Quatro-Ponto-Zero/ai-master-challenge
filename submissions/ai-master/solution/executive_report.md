@@ -108,7 +108,7 @@ Nem todos os canais trazem clientes que ficam:
 
 ---
 
-## O Que Fazer: 5 Ações Priorizadas
+## O Que Fazer: 7 Ações Priorizadas
 
 ### 1. CORRIGIR Workflow Builder e Report Generator
 **Impacto estimado: ~$134K MRR preservado**
@@ -117,33 +117,131 @@ Nem todos os canais trazem clientes que ficam:
 - Comunicar aos clientes afetados que os problemas estão sendo resolvidos
 - **Prazo**: 2-4 semanas | **Esforço**: Alto | **ROI**: Muito alto
 
-### 2. REDESENHAR Triagem de Suporte por Risco
+### 2. IMPLEMENTAR Health Score + Triagem Proativa de Suporte
 **Impacto estimado: ~$59K MRR preservado**
-- Criar sistema de prioridade baseado em health score (uso declinante + tickets crescentes = prioridade)
+
+Criar um health score (0-100) por conta, baseado em sinais ponderados:
+
+```
+Health Score = (
+  Login frequency score    × 0.30 +
+  Feature usage score      × 0.25 +
+  Support sentiment        × 0.15 +
+  Billing health           × 0.15 +
+  Engagement score         × 0.15
+)
+```
+
+| Score | Status | Ação |
+|-------|--------|------|
+| 80-100 | Saudável | Oportunidades de upsell |
+| 60-79 | Atenção | Check-in proativo |
+| 40-59 | Em risco | Campanha de intervenção |
+| 0-39 | Crítico | Outreach pessoal (CS dedicado) |
+
+**Triggers de intervenção proativa (antes do cliente pensar em cancelar):**
+
+| Trigger | Intervenção |
+|---------|-------------|
+| Uso cai >50% por 2 semanas | Email: "Vimos que não está usando [feature]. Podemos ajudar?" |
+| Sem login por 14 dias | Re-engagement com novidades do produto |
+| NPS detractor (0-6) | Follow-up pessoal em 24h |
+| Ticket sem resolver >48h | Escalação automática + status proativo |
+| Renovação anual em 30 dias | Email de recapitulação de valor + confirmação |
+
+**Roteamento baseado em MRR:**
+
+| MRR da conta | Cancel Flow |
+|-------------|-------------|
+| <$100/mês | Flow automatizado com offers |
+| $100-$500/mês | Automatizado + flag para CS acompanhar |
+| $500-$2.000/mês | Rotear para CS antes de completar cancelamento |
+| $2.000+/mês | Bloquear self-serve cancel, exigir call com CS |
+
 - Meta: first response <2hrs para contas em risco (vs 28hrs atual)
-- Adicionar alerta automático quando conta acumula >3 tickets em 30 dias
 - **Prazo**: 1-2 semanas | **Esforço**: Médio | **ROI**: Alto
 
-### 3. CORRIGIR Medição de Satisfação
+### 3. CONSTRUIR Cancel Flow com Save Offers Dinâmicas
+**Impacto estimado: 25-35% save rate (benchmark da indústria)**
+
+Hoje a RavenStack não tem cancel flow — o cancelamento é instantâneo. Implementar:
+
+```
+Botão Cancel → Exit Survey (1 pergunta) → Save Offer dinâmica → Confirmação → Post-cancel
+```
+
+**Mapeamento offer-por-razão (baseado nos nossos dados de churn):**
+
+| Razão de Cancel | Offer Primária | Offer Fallback |
+|----------------|----------------|----------------|
+| Too Expensive (74 eventos) | Desconto 25% por 3 meses | Downgrade para plano inferior |
+| Not Using Enough (75 eventos) | Pausa de 1-3 meses | Sessão de onboarding gratuita |
+| Product Issues (100 eventos) | Escalação imediata para suporte + crédito | Roadmap de correções com timeline |
+| Switched Competitor (56 eventos) | Comparativo competitivo + price match | Sessão de feedback |
+| Poor Support (59 eventos) | Escalação para CS senior + crédito | Priority support por 90 dias |
+| Missing Features (37 eventos) | Preview do roadmap + timeline | Workaround guide |
+
+**Regras do cancel flow:**
+- Máximo 2-3 telas (survey + offer + confirmação)
+- "Continuar cancelando" sempre visível (sem dark patterns)
+- Uma offer primária + uma fallback, não um menu
+- Mostrar valor em dólares, não percentual ("Economize $XX/mês")
+
+**Opção de pausa (60-80% dos pausers voltam):**
+- Duração: 1-3 meses máximo
+- Auto-reativação com email 7 dias antes
+- Dados preservados durante pausa
+
+- **Prazo**: 2-3 semanas | **Esforço**: Médio | **ROI**: Muito alto
+
+### 4. CORRIGIR Medição de Satisfação
 **Impacto: Data quality (fundação para decisões futuras)**
-- Trocar CSAT reativo por NPS proativo em momentos-chave
-- Segmentar relatórios por tier de saúde da conta
-- Implementar "exit interview" obrigatória para accounts em downgrade
+- Trocar CSAT reativo por NPS proativo em momentos-chave (pós-resolução de ticket, check-in mensal)
+- Segmentar relatórios por tier de saúde da conta (não mais uma média só)
+- Implementar exit survey obrigatória no cancel flow (item 3 já cobre isso)
+- **Métrica de sucesso**: response rate >70% em todos os segmentos (vs 54% nos churners hoje)
 - **Prazo**: 1 semana | **Esforço**: Baixo | **ROI**: Médio
 
-### 4. REESTRUTURAR Aquisição via Paid Ads
+### 5. REESTRUTURAR Aquisição via Paid Ads
 **Impacto estimado: ~$216K MRR protegido**
-- Opção A: Melhorar critérios de qualificação (ICP scoring)
-- Opção B: Adicionar onboarding obrigatório para leads de Paid Ads
-- Opção C: Redirecionar budget para Referral (22% churn) e Direct Sales (28%)
+- Opção A: Melhorar critérios de qualificação (ICP scoring — Technology e Finance ficam, Retail precisa de vetting)
+- Opção B: Adicionar onboarding obrigatório para leads de Paid Ads (guided setup nos primeiros 7 dias)
+- Opção C: Redirecionar budget para Referral (22% churn) e Direct Sales (28% churn)
 - **Prazo**: 2-4 semanas | **Esforço**: Médio | **ROI**: Alto
 
-### 5. REFORMAR Experiência de Trial
+### 6. REFORMAR Experiência de Trial
 **Impacto: 47 contas trial ativas em risco**
 - Guided onboarding com milestones (ex: "configure 3 features nos primeiros 7 dias")
 - CS proativo: contato humano no dia 3 e dia 10 do trial
 - Métricas de trial-to-paid por canal/indústria para identificar melhor timing
+- **Ativação metric**: identificar o que retidos fazem nos primeiros 7 dias que churners não fazem (ex: adotar >5 features)
 - **Prazo**: 2-3 semanas | **Esforço**: Médio | **ROI**: Médio
+
+### 7. CONFIGURAR Dunning para Churn Involuntário
+**Impacto estimado: recuperar 50-60% de pagamentos falhos**
+
+Churn involuntário (pagamentos falhados) tipicamente representa 30-50% de todo churn e é o mais fácil de resolver:
+
+**Pre-dunning (prevenir falhas):**
+- Alertas de cartão expirando: 30, 15 e 7 dias antes
+- Solicitar método de pagamento backup
+- Habilitar card updater (Visa/Mastercard auto-update)
+
+**Smart retry schedule:**
+| Retry | Timing | Email |
+|-------|--------|-------|
+| 1 | 24h após falha | "Seu pagamento não foi processado — atualize seu cartão" |
+| 2 | 3 dias | "Lembrete: atualize seu método de pagamento" |
+| 3 | 5 dias | "Sua conta será pausada em 3 dias" |
+| 4 | 7 dias | "Última chance para manter sua conta ativa" |
+
+**Benchmark de recuperação:**
+| Métrica | Ruim | Médio | Bom |
+|---------|------|-------|-----|
+| Soft decline recovery | <40% | 50-60% | 70%+ |
+| Overall recovery | <30% | 40-50% | 60%+ |
+
+- **Prazo**: 1-2 semanas | **Esforço**: Baixo (se usar Stripe Smart Retries) | **ROI**: Alto
 
 ---
 
@@ -177,11 +275,35 @@ Construímos um modelo de machine learning (Gradient Boosting) que identifica as
 
 ## Próximos Passos
 
-1. **Semana 1**: Implementar health score e priorização de suporte
-2. **Semanas 1-2**: Iniciar sprint de correção de Workflow Builder/Report Generator
-3. **Semana 2**: Corrigir sistema de medição de satisfação
-4. **Semanas 2-4**: Reestruturar estratégia de Paid Ads
-5. **Mês 2**: Avaliar impacto das ações nos leading indicators (uso, erros, tickets)
+### Semana 1: Fundação
+1. Implementar health score (0-100) e sistema de alertas proativos
+2. Configurar dunning: smart retries + 4 emails de recuperação
+3. Corrigir medição de satisfação (NPS proativo)
+
+### Semanas 1-2: Correções Críticas
+4. Sprint de correção de Workflow Builder e Report Generator (error rate 44% → <5%)
+5. Implementar cancel flow: exit survey → save offer dinâmica → confirmação
+
+### Semanas 2-4: Otimização
+6. Roteamento de suporte baseado em MRR e health score
+7. Reestruturar estratégia de aquisição (Paid Ads)
+8. Reformar experiência de trial com guided onboarding
+
+### Mês 2: Mensuração
+9. Avaliar impacto nos leading indicators (uso, erros, tickets, save rate)
+10. A/B test de save offers (desconto vs pausa vs downgrade)
+11. Análise de coorte: churn por canal, plano e tenure
+
+### Métricas de Sucesso
+
+| Métrica | Hoje | Meta (90 dias) |
+|---------|------|----------------|
+| Churn rate mensal | ~42% | <15% |
+| Cancel flow save rate | 0% (não existe) | 25-35% |
+| First response (contas em risco) | 28h | <2h |
+| Dunning recovery rate | N/A | 50-60% |
+| Feature error rate (WB/RG) | 44% | <5% |
+| Satisfaction response rate (churners) | 54% | >70% |
 
 ---
 
