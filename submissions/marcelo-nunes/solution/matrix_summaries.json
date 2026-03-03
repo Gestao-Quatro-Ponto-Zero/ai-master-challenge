@@ -1,0 +1,243 @@
+{
+  "rfd_by_seg": {
+    "At Risk": {
+      "Flag sem Evento": 4,
+      "Nunca Churnou": 38,
+      "Perdido Permanente": 17,
+      "Porta Giratoria": 73
+    },
+    "Cooling": {
+      "Flag sem Evento": 9,
+      "Nunca Churnou": 32,
+      "Perdido Permanente": 23,
+      "Porta Giratoria": 68
+    },
+    "Healthy": {
+      "Flag sem Evento": 11,
+      "Nunca Churnou": 26,
+      "Perdido Permanente": 20,
+      "Porta Giratoria": 81
+    },
+    "Champion": {
+      "Flag sem Evento": 11,
+      "Nunca Churnou": 17,
+      "Perdido Permanente": 15,
+      "Porta Giratoria": 55
+    }
+  },
+  "health_by_seg": {
+    "count": {
+      "Flag sem Evento": 35.0,
+      "Nunca Churnou": 113.0,
+      "Perdido Permanente": 75.0,
+      "Porta Giratoria": 277.0
+    },
+    "mean": {
+      "Flag sem Evento": 67.1,
+      "Nunca Churnou": 61.9,
+      "Perdido Permanente": 64.7,
+      "Porta Giratoria": 63.6
+    },
+    "std": {
+      "Flag sem Evento": 6.6,
+      "Nunca Churnou": 8.6,
+      "Perdido Permanente": 8.0,
+      "Porta Giratoria": 9.0
+    },
+    "min": {
+      "Flag sem Evento": 54.7,
+      "Nunca Churnou": 37.5,
+      "Perdido Permanente": 43.1,
+      "Porta Giratoria": 26.2
+    },
+    "25%": {
+      "Flag sem Evento": 62.4,
+      "Nunca Churnou": 57.3,
+      "Perdido Permanente": 59.7,
+      "Porta Giratoria": 58.4
+    },
+    "50%": {
+      "Flag sem Evento": 66.3,
+      "Nunca Churnou": 63.1,
+      "Perdido Permanente": 65.4,
+      "Porta Giratoria": 64.8
+    },
+    "75%": {
+      "Flag sem Evento": 70.9,
+      "Nunca Churnou": 68.0,
+      "Perdido Permanente": 69.2,
+      "Porta Giratoria": 70.2
+    },
+    "max": {
+      "Flag sem Evento": 82.1,
+      "Nunca Churnou": 80.1,
+      "Perdido Permanente": 83.6,
+      "Porta Giratoria": 86.6
+    }
+  },
+  "health_zones": {
+    "Critical": {
+      "Flag sem Evento": 0,
+      "Nunca Churnou": 0,
+      "Perdido Permanente": 0,
+      "Porta Giratoria": 1
+    },
+    "Warning": {
+      "Flag sem Evento": 0,
+      "Nunca Churnou": 13,
+      "Perdido Permanente": 3,
+      "Porta Giratoria": 18
+    },
+    "Good": {
+      "Flag sem Evento": 25,
+      "Nunca Churnou": 83,
+      "Perdido Permanente": 55,
+      "Porta Giratoria": 186
+    },
+    "Excellent": {
+      "Flag sem Evento": 10,
+      "Nunca Churnou": 17,
+      "Perdido Permanente": 17,
+      "Porta Giratoria": 72
+    }
+  },
+  "value_risk": [
+    {
+      "value_tier": "Low Value",
+      "risk_tier": "High Risk",
+      "count": 3,
+      "total_mrr": 199,
+      "perm_lost": 0
+    },
+    {
+      "value_tier": "Low Value",
+      "risk_tier": "Medium Risk",
+      "count": 93,
+      "total_mrr": 14454,
+      "perm_lost": 14
+    },
+    {
+      "value_tier": "Low Value",
+      "risk_tier": "Low Risk",
+      "count": 71,
+      "total_mrr": 11665,
+      "perm_lost": 13
+    },
+    {
+      "value_tier": "Mid Value",
+      "risk_tier": "High Risk",
+      "count": 2,
+      "total_mrr": 1197,
+      "perm_lost": 0
+    },
+    {
+      "value_tier": "Mid Value",
+      "risk_tier": "Medium Risk",
+      "count": 81,
+      "total_mrr": 91793,
+      "perm_lost": 11
+    },
+    {
+      "value_tier": "Mid Value",
+      "risk_tier": "Low Risk",
+      "count": 83,
+      "total_mrr": 89442,
+      "perm_lost": 11
+    },
+    {
+      "value_tier": "High Value",
+      "risk_tier": "High Risk",
+      "count": 1,
+      "total_mrr": 2786,
+      "perm_lost": 0
+    },
+    {
+      "value_tier": "High Value",
+      "risk_tier": "Medium Risk",
+      "count": 79,
+      "total_mrr": 466062,
+      "perm_lost": 8
+    },
+    {
+      "value_tier": "High Value",
+      "risk_tier": "Low Risk",
+      "count": 87,
+      "total_mrr": 540957,
+      "perm_lost": 18
+    }
+  ],
+  "engagement": [
+    {
+      "freq_tier": "Low Freq",
+      "breadth_tier": "Narrow",
+      "count": 147,
+      "perm_lost": 22,
+      "revolving": 79,
+      "avg_health": 54.3
+    },
+    {
+      "freq_tier": "Low Freq",
+      "breadth_tier": "Medium",
+      "count": 19,
+      "perm_lost": 4,
+      "revolving": 14,
+      "avg_health": 63.1
+    },
+    {
+      "freq_tier": "Low Freq",
+      "breadth_tier": "Broad",
+      "count": 1,
+      "perm_lost": 1,
+      "revolving": 0,
+      "avg_health": 57.1
+    },
+    {
+      "freq_tier": "Mid Freq",
+      "breadth_tier": "Narrow",
+      "count": 19,
+      "perm_lost": 2,
+      "revolving": 7,
+      "avg_health": 61.0
+    },
+    {
+      "freq_tier": "Mid Freq",
+      "breadth_tier": "Medium",
+      "count": 114,
+      "perm_lost": 17,
+      "revolving": 62,
+      "avg_health": 64.1
+    },
+    {
+      "freq_tier": "Mid Freq",
+      "breadth_tier": "Broad",
+      "count": 33,
+      "perm_lost": 6,
+      "revolving": 19,
+      "avg_health": 66.6
+    },
+    {
+      "freq_tier": "High Freq",
+      "breadth_tier": "Narrow",
+      "count": 1,
+      "perm_lost": 0,
+      "revolving": 1,
+      "avg_health": 67.4
+    },
+    {
+      "freq_tier": "High Freq",
+      "breadth_tier": "Medium",
+      "count": 33,
+      "perm_lost": 2,
+      "revolving": 17,
+      "avg_health": 68.1
+    },
+    {
+      "freq_tier": "High Freq",
+      "breadth_tier": "Broad",
+      "count": 133,
+      "perm_lost": 21,
+      "revolving": 78,
+      "avg_health": 72.2
+    }
+  ]
+}
