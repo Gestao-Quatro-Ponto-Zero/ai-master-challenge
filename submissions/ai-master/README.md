@@ -46,10 +46,12 @@ Analisando 5 datasets da RavenStack (500 contas, 4.627 assinaturas, 17.887 regis
 | # | Ação | Impacto Estimado | Prazo | Esforço |
 |---|------|-----------------|-------|---------|
 | 1 | Corrigir Workflow Builder & Report Generator | ~$134K MRR | 2-4 sem | Alto |
-| 2 | Triagem de suporte por health score | ~$59K MRR | 1-2 sem | Médio |
-| 3 | Corrigir medição de satisfação | Data quality | 1 sem | Baixo |
-| 4 | Reestruturar Paid Ads | ~$216K MRR | 2-4 sem | Médio |
-| 5 | Reformar experiência de Trial | 47 contas | 2-3 sem | Médio |
+| 2 | Implementar Health Score + Triagem Proativa | ~$59K MRR | 1-2 sem | Médio |
+| 3 | Construir Cancel Flow com Save Offers | 25-35% save rate | 2-3 sem | Médio |
+| 4 | Corrigir medição de satisfação | Data quality | 1 sem | Baixo |
+| 5 | Reestruturar Paid Ads | ~$216K MRR | 2-4 sem | Médio |
+| 6 | Reformar experiência de Trial | 47 contas | 2-3 sem | Médio |
+| 7 | Configurar Dunning | 50-60% recovery | 1-2 sem | Baixo |
 
 ### Limitações
 
@@ -98,10 +100,11 @@ Analisando 5 datasets da RavenStack (500 contas, 4.627 assinaturas, 17.887 regis
 ## Evidências
 
 - [x] Git history mostrando evolução do código
-- [x] Scripts Python completos e reproduzíveis (01_eda.py → 04_dashboard.py)
-- [x] Dashboard HTML interativo
-- [x] Relatório executivo em Markdown
+- [x] Scripts Python completos e reproduzíveis (01_eda.py → 05_dashboard_ceo.py)
+- [x] Dashboard HTML interativo com abas navegáveis (dashboard_ceo.html)
+- [x] Relatório executivo completo em PT-BR (relatorio_ceo.md)
 - [x] Feature importance e risk scores exportados como CSV/JSON
+- [x] Modelo preditivo com feature importance validando as hipóteses
 
 ---
 
@@ -114,9 +117,12 @@ submissions/ai-master/
 │   ├── 01_eda.py                    # Análise exploratória
 │   ├── 02_cross_analysis.py         # Cruzamento de tabelas
 │   ├── 03_churn_model.py            # Modelo preditivo
-│   ├── 04_dashboard.py              # Gerador do dashboard
-│   ├── churn_dashboard.html         # Dashboard interativo
-│   ├── executive_report.md          # Relatório para o CEO
+│   ├── 04_dashboard.py              # Gerador do dashboard (v1)
+│   ├── 05_dashboard_ceo.py          # Dashboard executivo em PT-BR (v2)
+│   ├── churn_dashboard.html         # Dashboard interativo (v1)
+│   ├── dashboard_ceo.html           # Dashboard executivo PT-BR com abas (v2)
+│   ├── executive_report.md          # Relatório para o CEO (EN)
+│   ├── relatorio_ceo.md             # Relatório completo para o CEO (PT-BR)
 │   ├── account_risk_scores.csv      # Risk scores por conta
 │   ├── feature_importance.csv       # Importância das features
 │   └── model_metrics.json           # Métricas do modelo
