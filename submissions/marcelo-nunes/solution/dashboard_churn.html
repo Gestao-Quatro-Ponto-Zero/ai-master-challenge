@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RavenStack - Churn Diagnostic Dashboard v2</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e0e0e0; }
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 30px 40px; border-bottom: 2px solid #e94560; }
+.header h1 { font-size: 28px; color: #fff; }
+.header p { color: #a0a0a0; margin-top: 5px; font-size: 14px; }
+.nav { background: #1a1a2e; padding: 10px 40px; display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
+.nav button { background: #252535; border: 1px solid #444; color: #ccc; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.nav button:hover, .nav button.active { background: #e94560; color: #fff; border-color: #e94560; }
+.container { max-width: 1600px; margin: 0 auto; padding: 20px 40px; }
+.section { display: none; }
+.section.active { display: block; }
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 20px 0; }
+.kpi { background: #1a1a2e; border-radius: 10px; padding: 20px; border-left: 4px solid #e94560; }
+.kpi .value { font-size: 28px; font-weight: 700; color: #fff; }
+.kpi .label { font-size: 13px; color: #888; margin-top: 4px; }
+.kpi .sub { font-size: 12px; color: #e94560; margin-top: 2px; }
+.kpi.green { border-left-color: #00d2a0; } .kpi.green .sub { color: #00d2a0; }
+.kpi.blue { border-left-color: #4da6ff; } .kpi.blue .sub { color: #4da6ff; }
+.kpi.yellow { border-left-color: #ffd700; } .kpi.yellow .sub { color: #ffd700; }
+.kpi.purple { border-left-color: #b366ff; } .kpi.purple .sub { color: #b366ff; }
+.kpi.orange { border-left-color: #ff8c42; } .kpi.orange .sub { color: #ff8c42; }
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 20px; margin: 20px 0; }
+.chart-box { background: #1a1a2e; border-radius: 10px; padding: 20px; }
+.chart-box h3 { font-size: 15px; color: #ccc; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+.chart-full { grid-column: 1 / -1; }
+.insight { background: #1a1a2e; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 4px solid #ffd700; }
+.insight h3 { color: #ffd700; margin-bottom: 10px; }
+.insight ul { padding-left: 20px; } .insight li { margin: 6px 0; color: #ccc; line-height: 1.6; }
+.insight li strong { color: #fff; }
+.insight.red { border-left-color: #e94560; } .insight.red h3 { color: #e94560; }
+.insight.green { border-left-color: #00d2a0; } .insight.green h3 { color: #00d2a0; }
+table { width: 100%; border-collapse: collapse; } th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #2a2a3e; font-size: 13px; }
+th { background: #252535; color: #aaa; font-weight: 600; text-transform: uppercase; font-size: 11px; }
+tr:hover td { background: #252535; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.tag-red { background: #e9456033; color: #e94560; }
+.tag-green { background: #00d2a033; color: #00d2a0; }
+.tag-blue { background: #4da6ff33; color: #4da6ff; }
+.tag-yellow { background: #ffd70033; color: #ffd700; }
+.tag-orange { background: #ff8c4233; color: #ff8c42; }
+.compare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+.compare-card { background: #1a1a2e; border-radius: 10px; padding: 18px; }
+.compare-card h3 { font-size: 14px; margin-bottom: 12px; }
+.compare-card.seg-never { border-top: 3px solid #00d2a0; } .compare-card.seg-never h3 { color: #00d2a0; }
+.compare-card.seg-revolv { border-top: 3px solid #ffd700; } .compare-card.seg-revolv h3 { color: #ffd700; }
+.compare-card.seg-lost { border-top: 3px solid #e94560; } .compare-card.seg-lost h3 { color: #e94560; }
+.stat-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #2a2a3e; }
+.stat-row .stat-label { color: #888; font-size: 13px; }
+.stat-row .stat-value { color: #fff; font-weight: 600; font-size: 13px; }
+.feedback-item { background: #252535; padding: 10px 14px; border-radius: 6px; margin: 6px 0; font-style: italic; color: #ccc; }
+.feedback-count { float: right; color: #888; font-style: normal; font-size: 12px; }
+.section-title { font-size: 22px; color: #fff; margin: 20px 0 10px; padding-bottom: 8px; border-bottom: 1px solid #333; }
+.legend-row { display: flex; gap: 20px; margin: 10px 0; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #ccc; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>RavenStack — Churn Diagnostic Dashboard v2</h1>
+    <p>Visao Unificada | 5 datasets, 500 accounts, 600 churn events, 352 contas afetadas | Gerado em 03/03/2026 06:59</p>
+</div>
+
+<div class="nav">
+    <button class="active" onclick="showSection('overview')">Visao Unificada</button>
+    <button onclick="showSection('ceo')" style="border-color:#ffd700;color:#ffd700">Pergunta do CEO</button>
+    <button onclick="showSection('segments')">Segmentacao</button>
+    <button onclick="showSection('revenue')">Revenue Impact</button>
+    <button onclick="showSection('usage')">Feature Usage</button>
+    <button onclick="showSection('support')">Suporte & Satisfacao</button>
+    <button onclick="showSection('timeline')">Timeline & Cohorts</button>
+    <button onclick="showSection('multichurn')">Multi-Churn</button>
+    <button onclick="showSection('matrices')" style="border-color:#b366ff;color:#b366ff">Matrizes & Health Score</button>
+    <button onclick="showSection('strategy')" style="border-color:#ff6b9d;color:#ff6b9d">Estrategia & ROI</button>
+    <button onclick="showSection('diagnostic')" style="border-color:#00d2a0;color:#00d2a0">Diagnostico Final</button>
+    <button onclick="showSection('feedback')">Feedback</button>
+    <button onclick="showSection('tables')">5 Tabelas Completas</button>
+</div>
+
+<div class="container">
+
+<!-- ═══════════════ OVERVIEW ═══════════════ -->
+<div id="overview" class="section active">
+    <h2 class="section-title">Visao Unificada — Classificacao Real das Contas</h2>
+
+    <div class="insight red">
+        <h3>Correcao Critica: O churn NAO e 22%</h3>
+        <ul>
+            <li><strong>600 eventos de churn para 352 contas unicas</strong> — muitas contas churnaram multiplas vezes</li>
+            <li><strong>churn_flag = estado ATUAL</strong> (ativo/inativo), NAO historico. 277 contas churnaram mas VOLTARAM e estao ativas</li>
+            <li><strong>Churn permanente real: 75 contas (15.0%)</strong> — essas sairam e NAO voltaram</li>
+            <li><strong>Porta giratoria: 277 contas (55.4%)</strong> — cancelam, voltam, cancelam de novo. Problema diferente de churn terminal</li>
+        </ul>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi green">
+            <div class="value">113</div>
+            <div class="label">Nunca Churnaram</div>
+            <div class="sub">23% — base saudavel</div>
+        </div>
+        <div class="kpi yellow">
+            <div class="value">277</div>
+            <div class="label">Porta Giratoria</div>
+            <div class="sub">55% — churnaram mas voltaram</div>
+        </div>
+        <div class="kpi">
+            <div class="value">75</div>
+            <div class="label">Perdidos Permanente</div>
+            <div class="sub">15% — churn REAL</div>
+        </div>
+        <div class="kpi orange">
+            <div class="value">35</div>
+            <div class="label">Flag sem Evento</div>
+            <div class="sub">Dados incompletos</div>
+        </div>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi green">
+            <div class="value">$10,159,608</div>
+            <div class="label">MRR Ativo Total</div>
+            <div class="sub">Media $2,664/conta</div>
+        </div>
+        <div class="kpi">
+            <div class="value">$181,862</div>
+            <div class="label">MRR Perdido (Permanente)</div>
+            <div class="sub">$2,182,344/ano</div>
+        </div>
+        <div class="kpi blue">
+            <div class="value">$630,675</div>
+            <div class="label">MRR Recuperado (Porta Giratoria)</div>
+            <div class="sub">Clientes que voltaram</div>
+        </div>
+        <div class="kpi yellow">
+            <div class="value">175</div>
+            <div class="label">Contas Multi-Churn (2+)</div>
+            <div class="sub">175 reincidentes</div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Composicao das 500 Contas</h3>
+            <div id="chart_segments_pie"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Motivos de Churn: Perdidos vs Porta Giratoria</h3>
+            <div id="chart_reasons_compare"></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box chart-full">
+            <h3>Distribuicao de Eventos por Conta</h3>
+            <div id="chart_events_dist"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ CEO QUESTION ═══════════════ -->
+<div id="ceo" class="section">
+    <h2 class="section-title">Resposta ao CEO: "Produto diz que uso cresceu. Algo nao bate."</h2>
+
+    <div class="insight red">
+        <h3>Veredicto: O uso da plataforma NAO cresceu</h3>
+        <ul>
+            <li><strong>Uso total FLAT</strong>: ~10.000-11.000 unidades/mes ao longo de 24 meses. Sem tendencia de crescimento</li>
+            <li><strong>Uso por conta FLAT</strong>: media de ~24-26 por conta/mes. Nenhuma variacao significativa</li>
+            <li><strong>Contas ativas FLAT</strong>: ~410-440 contas usando a plataforma/mes, apesar de ~20 novas contas/mes</li>
+            <li><strong>Novas contas compensam churns</strong>: a base nao cresce porque o churn come os novos signups</li>
+            <li><strong>O time de Produto pode estar olhando metricas cumulativas</strong> (total de signups, total de features lancadas) em vez de uso real</li>
+        </ul>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box chart-full">
+            <h3>Uso Total por Mes (o que o time de Produto provavelmente mostra)</h3>
+            <div id="chart_ceo_total"></div>
+        </div>
+        <div class="chart-box chart-full">
+            <h3>Uso MEDIO por Conta por Mes (a metrica que importa)</h3>
+            <div id="chart_ceo_per_acct"></div>
+        </div>
+        <div class="chart-box chart-full">
+            <h3>Uso Total por Segmento (quem esta usando?)</h3>
+            <div id="chart_ceo_by_seg"></div>
+        </div>
+        <div class="chart-box chart-full">
+            <h3>Contas Ativas vs Novas Contas por Mes</h3>
+            <div id="chart_ceo_accounts"></div>
+        </div>
+    </div>
+
+    <div class="insight green">
+        <h3>O que dizer ao CEO</h3>
+        <ul>
+            <li><strong>"O uso total nao cresceu."</strong> Estavel em ~10.500/mes nos ultimos 24 meses</li>
+            <li><strong>"O uso por conta tambem nao."</strong> Media de ~25 por conta — igual em jan/2023 e dez/2024</li>
+            <li><strong>"A base de usuarios nao esta crescendo."</strong> ~20 signups/mes sao anulados pelo churn</li>
+            <li><strong>"CS diz satisfacao ok"</strong> — verdade, mas o instrumento de satisfacao so mede 3-5 (nunca 1-2). E inutil como alerta</li>
+            <li><strong>Conclusao</strong>: O problema nao e de uso, e de RETENCAO. 55% das contas ja cancelaram pelo menos 1x (porta giratoria)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ═══════════════ SEGMENTS ═══════════════ -->
+<div id="segments" class="section">
+    <h2 class="section-title">Segmentacao — Onde esta o Churn?</h2>
+
+    <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#00d2a0"></div>Nunca Churnou</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffd700"></div>Porta Giratoria</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e94560"></div>Perdido Permanente</div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Por Industria</h3>
+            <div id="chart_ind_stack"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Por Plano</h3>
+            <div id="chart_plan_stack"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Por Canal de Aquisicao</h3>
+            <div id="chart_ref_stack"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Por Pais</h3>
+            <div id="chart_country_stack"></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Heatmap: Churn Permanente % (Plano x Industria)</h3>
+            <div id="chart_heatmap_perm"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Heatmap: Ja Churnou (qualquer) % (Plano x Industria)</h3>
+            <div id="chart_heatmap_ever"></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box chart-full">
+            <h3>Tabela Detalhada por Industria</h3>
+            <table>
+                <tr><th>Industria</th><th>Total</th><th>Nunca</th><th>Porta Giratoria</th><th>Perdido</th><th>Churn Perm %</th><th>Ja Churnou %</th></tr>
+                <tr><td>Cybersecurity</td><td>100</td><td>23</td><td>61</td><td>11</td><td><strong>11.0%</strong></td><td>72.0%</td></tr><tr><td>DevTools</td><td>113</td><td>23</td><td>55</td><td>28</td><td><strong>24.8%</strong></td><td>73.5%</td></tr><tr><td>EdTech</td><td>79</td><td>19</td><td>47</td><td>10</td><td><strong>12.7%</strong></td><td>72.2%</td></tr><tr><td>FinTech</td><td>112</td><td>24</td><td>63</td><td>13</td><td><strong>11.6%</strong></td><td>67.9%</td></tr><tr><td>HealthTech</td><td>96</td><td>24</td><td>51</td><td>13</td><td><strong>13.5%</strong></td><td>66.7%</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ REVENUE ═══════════════ -->
+<div id="revenue" class="section">
+    <h2 class="section-title">Impacto em Receita</h2>
+    <div class="kpi-row">
+        <div class="kpi">
+            <div class="value">$181,862/mes</div>
+            <div class="label">MRR Perdido Permanente</div>
+            <div class="sub">$2,182,344/ano</div>
+        </div>
+        <div class="kpi blue">
+            <div class="value">$630,675/mes</div>
+            <div class="label">MRR Recuperado</div>
+            <div class="sub">Porta giratoria ativas agora</div>
+        </div>
+        <div class="kpi yellow">
+            <div class="value">$8,652</div>
+            <div class="label">Total Refunds</div>
+            <div class="sub">Media $14/evento</div>
+        </div>
+    </div>
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>MRR Perdido por Plano</h3>
+            <div id="chart_rev_plan"></div>
+        </div>
+        <div class="chart-box">
+            <h3>MRR Perdido por Industria</h3>
+            <div id="chart_rev_industry"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Distribuicao MRR: Perdidos vs Ativos</h3>
+            <div id="chart_mrr_dist"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Refund Total por Motivo</h3>
+            <div id="chart_refund"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ USAGE ═══════════════ -->
+<div id="usage" class="section">
+    <h2 class="section-title">Feature Usage — 3 Segmentos Comparados</h2>
+
+    <div class="compare-grid">
+        <div class="compare-card seg-never">
+            <h3>Nunca Churnou (113)</h3>
+            <div class="stat-row"><span class="stat-label">Features unicas/conta</span><span class="stat-value">26.6</span></div>
+            <div class="stat-row"><span class="stat-label">Eventos/conta</span><span class="stat-value">47.4</span></div>
+            <div class="stat-row"><span class="stat-label">Uso medio (count)</span><span class="stat-value">10.03</span></div>
+            <div class="stat-row"><span class="stat-label">Duracao media (seg)</span><span class="stat-value">3,031</span></div>
+            <div class="stat-row"><span class="stat-label">Erros medios</span><span class="stat-value">0.586</span></div>
+            <div class="stat-row"><span class="stat-label">% beta features</span><span class="stat-value">10.1%</span></div>
+        </div>
+        <div class="compare-card seg-revolv">
+            <h3>Porta Giratoria (277)</h3>
+            <div class="stat-row"><span class="stat-label">Features unicas/conta</span><span class="stat-value">27.7</span></div>
+            <div class="stat-row"><span class="stat-label">Eventos/conta</span><span class="stat-value">50.2</span></div>
+            <div class="stat-row"><span class="stat-label">Uso medio (count)</span><span class="stat-value">10.01</span></div>
+            <div class="stat-row"><span class="stat-label">Duracao media (seg)</span><span class="stat-value">3,046</span></div>
+            <div class="stat-row"><span class="stat-label">Erros medios</span><span class="stat-value">0.566</span></div>
+            <div class="stat-row"><span class="stat-label">% beta features</span><span class="stat-value">10.0%</span></div>
+        </div>
+        <div class="compare-card seg-lost">
+            <h3>Perdido Permanente (75)</h3>
+            <div class="stat-row"><span class="stat-label">Features unicas/conta</span><span class="stat-value">27.8</span></div>
+            <div class="stat-row"><span class="stat-label">Eventos/conta</span><span class="stat-value">50.3</span></div>
+            <div class="stat-row"><span class="stat-label">Uso medio (count)</span><span class="stat-value">10.03</span></div>
+            <div class="stat-row"><span class="stat-label">Duracao media (seg)</span><span class="stat-value">3,042</span></div>
+            <div class="stat-row"><span class="stat-label">Erros medios</span><span class="stat-value">0.563</span></div>
+            <div class="stat-row"><span class="stat-label">% beta features</span><span class="stat-value">9.9%</span></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Top Features: Nunca Churnou</h3>
+            <div id="chart_feat_never"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Top Features: Perdido Permanente</h3>
+            <div id="chart_feat_lost"></div>
+        </div>
+        <div class="chart-box chart-full">
+            <h3>Features com Mais Erros (Perdidos Permanentes)</h3>
+            <div id="chart_errors_lost"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ SUPPORT ═══════════════ -->
+<div id="support" class="section">
+    <h2 class="section-title">Suporte & Satisfacao</h2>
+
+    <div class="insight">
+        <h3>Conclusao sobre Satisfacao</h3>
+        <ul>
+            <li><strong>Scores so existem em 3, 4 e 5</strong> — nenhum score 1 ou 2 em 2000 tickets. O instrumento NAO captura insatisfacao real</li>
+            <li><strong>Medias identicas</strong> entre churned/retained, por prioridade, por escalacao, por tempo de resolucao</li>
+            <li><strong>41% sem resposta</strong> — silenciosos podem ser os mais insatisfeitos (viés de nao-resposta)</li>
+            <li><strong>Validacao do CEO</strong>: "CS diz satisfacao ok" e VERDADE nos dados — mas o score e inutil como indicador de risco</li>
+        </ul>
+    </div>
+
+    <div class="compare-grid">
+        <div class="compare-card seg-never">
+            <h3>Nunca Churnou</h3>
+            <div class="stat-row"><span class="stat-label">Tickets/conta</span><span class="stat-value">4.1</span></div>
+            <div class="stat-row"><span class="stat-label">Tempo resolucao (h)</span><span class="stat-value">36.1</span></div>
+            <div class="stat-row"><span class="stat-label">1a resposta (min)</span><span class="stat-value">90</span></div>
+            <div class="stat-row"><span class="stat-label">Satisfacao media</span><span class="stat-value">3.94</span></div>
+            <div class="stat-row"><span class="stat-label">% sem score</span><span class="stat-value">40%</span></div>
+            <div class="stat-row"><span class="stat-label">Taxa escalacao</span><span class="stat-value">4.2%</span></div>
+        </div>
+        <div class="compare-card seg-revolv">
+            <h3>Porta Giratoria</h3>
+            <div class="stat-row"><span class="stat-label">Tickets/conta</span><span class="stat-value">4.1</span></div>
+            <div class="stat-row"><span class="stat-label">Tempo resolucao (h)</span><span class="stat-value">35.9</span></div>
+            <div class="stat-row"><span class="stat-label">1a resposta (min)</span><span class="stat-value">89</span></div>
+            <div class="stat-row"><span class="stat-label">Satisfacao media</span><span class="stat-value">3.99</span></div>
+            <div class="stat-row"><span class="stat-label">% sem score</span><span class="stat-value">42%</span></div>
+            <div class="stat-row"><span class="stat-label">Taxa escalacao</span><span class="stat-value">4.7%</span></div>
+        </div>
+        <div class="compare-card seg-lost">
+            <h3>Perdido Permanente</h3>
+            <div class="stat-row"><span class="stat-label">Tickets/conta</span><span class="stat-value">3.8</span></div>
+            <div class="stat-row"><span class="stat-label">Tempo resolucao (h)</span><span class="stat-value">35.3</span></div>
+            <div class="stat-row"><span class="stat-label">1a resposta (min)</span><span class="stat-value">86</span></div>
+            <div class="stat-row"><span class="stat-label">Satisfacao media</span><span class="stat-value">3.95</span></div>
+            <div class="stat-row"><span class="stat-label">% sem score</span><span class="stat-value">39%</span></div>
+            <div class="stat-row"><span class="stat-label">Taxa escalacao</span><span class="stat-value">6.8%</span></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Distribuicao de Scores de Satisfacao (TODOS)</h3>
+            <div id="chart_sat_dist"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Problema: So scores 3-5, nenhum 1-2</h3>
+            <div style="padding: 40px; text-align: center;">
+                <div style="font-size: 60px; margin-bottom: 20px;">&#9888;</div>
+                <p style="font-size: 16px; color: #ffd700; margin-bottom: 10px;">Instrumento de Satisfacao Quebrado</p>
+                <table style="margin: 0 auto; text-align: left;">
+                    <tr><th>Score</th><th>Tickets</th><th>%</th></tr>
+                    <tr><td>Score 3</td><td>396</td><td>34%</td></tr><tr><td>Score 4</td><td>405</td><td>34%</td></tr><tr><td>Score 5</td><td>374</td><td>32%</td></tr>
+                    <tr style="border-top: 2px solid #ffd700"><td><strong>Null (sem resposta)</strong></td><td><strong>825</strong></td><td><strong>41%</strong></td></tr>
+                </table>
+                <p style="color: #888; margin-top: 15px; font-size: 13px;">Sem scores 1 ou 2, o indicador nao diferencia clientes satisfeitos de insatisfeitos.<br>Recomendacao: redesenhar pesquisa de satisfacao ou usar NPS.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ TIMELINE ═══════════════ -->
+<div id="timeline" class="section">
+    <h2 class="section-title">Timeline & Cohort Analysis</h2>
+    <div class="chart-grid">
+        <div class="chart-box chart-full">
+            <h3>Eventos de Churn por Mes — Permanente vs Porta Giratoria</h3>
+            <div id="chart_timeline"></div>
+        </div>
+        <div class="chart-box chart-full">
+            <h3>Cohort de Signup: Taxa de Churn por Mes de Cadastro</h3>
+            <div id="chart_cohort"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Dias entre Signup e Primeiro Churn</h3>
+            <div id="chart_days_churn"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Estatisticas: Tempo ate Churn</h3>
+            <table>
+                <tr><th>Metrica</th><th>Dias</th></tr>
+                <tr><td>Media</td><td>172.3</td></tr>
+                <tr><td>Mediana</td><td>115.5</td></tr>
+                <tr><td>Minimo</td><td>0.0</td></tr>
+                <tr><td>Maximo</td><td>642.0</td></tr>
+                <tr><td>Desvio Padrao</td><td>157.7</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ MULTI-CHURN ═══════════════ -->
+<div id="multichurn" class="section">
+    <h2 class="section-title">Multi-Churn — O Fenomeno da Porta Giratoria</h2>
+
+    <div class="kpi-row">
+        <div class="kpi yellow">
+            <div class="value">175</div>
+            <div class="label">Contas com 2+ Churns</div>
+            <div class="sub">35% de todas as contas</div>
+        </div>
+        <div class="kpi blue">
+            <div class="value">102 dias</div>
+            <div class="label">Gap Medio entre Churns</div>
+            <div class="sub">Mediana: 58 dias</div>
+        </div>
+        <div class="kpi orange">
+            <div class="value">204</div>
+            <div class="label">Mudaram de Motivo</div>
+            <div class="sub">entre churns consecutivos</div>
+        </div>
+        <div class="kpi purple">
+            <div class="value">44</div>
+            <div class="label">Mesmo Motivo Repetido</div>
+            <div class="sub">problema nao resolvido</div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Distribuicao: Quantos Churns por Conta</h3>
+            <div id="chart_multi_dist"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Upgrade antes de Churn: Permanente vs Revolving</h3>
+            <div id="chart_upgrade_seg"></div>
+        </div>
+    </div>
+
+    <div class="insight">
+        <h3>Analise Multi-Churn</h3>
+        <ul>
+            <li><strong>175 contas churnaram 2+ vezes</strong> — gap medio de 102 dias entre saida e proxima saida</li>
+            <li><strong>204 vezes mudaram de motivo</strong> entre churns consecutivos vs 44 vezes repetiram — sugere que o motivo declarado e pouco confiavel</li>
+            <li><strong>61 marcados como reativacao</strong> mas 175 contas tem multiplos churns — flag is_reactivation subreporta o fenomeno</li>
+            <li><strong>Padrao</strong>: cliente cancela, volta, descobre que o problema persiste, cancela de novo com motivo diferente</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ═══════════════ MATRICES ═══════════════ -->
+<div id="matrices" class="section">
+    <h2 class="section-title">Matrizes de Analise & Customer Health Score</h2>
+
+    <div class="insight red">
+        <h3>Descoberta Critica: Health Score NAO diferencia os segmentos</h3>
+        <ul>
+            <li><strong>Nunca Churnou: 61.9</strong> media</li>
+            <li><strong>Porta Giratoria: 63.6</strong> media</li>
+            <li><strong>Perdido Permanente: 64.7</strong> media ← MAIOR que os saudaveis!</li>
+            <li>Metricas tradicionais de Customer Success (uso, features, erros, tickets) <strong>NAO predizem churn</strong> neste cenario</li>
+            <li>O churn e <strong>ESTRUTURAL</strong> (modelo de negocio / porta giratoria), nao comportamental</li>
+        </ul>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Health Score por Segmento (0-100)</h3>
+            <div id="chart_health_box"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Zonas de Saude por Segmento</h3>
+            <div id="chart_health_zones"></div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Matriz Valor x Risco — Contas por Celula</h3>
+            <div id="chart_vr_counts"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Matriz Valor x Risco — Perdidos Permanentes por Celula</h3>
+            <div id="chart_vr_lost"></div>
+        </div>
+    </div>
+
+    <div class="insight">
+        <h3>Leitura da Matriz Valor x Risco</h3>
+        <ul>
+            <li><strong>High Value + Low Risk: 18 perdidos</strong> — a empresa perde seus MELHORES clientes sem saber. Health score dizia "tudo bem"</li>
+            <li><strong>Low Value + Med Risk: 14 perdidos</strong> — esperado, mas menor impacto financeiro</li>
+            <li><strong>O score de risco NAO funciona como preditor</strong> — perdas distribuidas quase uniformemente, independente do risco calculado</li>
+        </ul>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box chart-full">
+            <h3>Scatter: Health Score vs MRR (cada ponto = 1 conta)</h3>
+            <div id="chart_health_scatter"></div>
+        </div>
+    </div>
+
+    <div class="chart-box" style="margin: 20px 0;">
+        <h3>Componentes do Health Score</h3>
+        <table>
+            <tr><th>Componente</th><th>Peso</th><th>O que mede</th><th>Resultado</th></tr>
+            <tr><td>Uso Total</td><td>25%</td><td>Volume de interacoes</td><td><span class="tag tag-yellow">Nao diferencia</span></td></tr>
+            <tr><td>Features Unicas</td><td>20%</td><td>Amplitude de adocao</td><td><span class="tag tag-yellow">Nao diferencia</span></td></tr>
+            <tr><td>Recencia</td><td>25%</td><td>Ultima vez que usou</td><td><span class="tag tag-yellow">Nao diferencia</span></td></tr>
+            <tr><td>Erros</td><td>15%</td><td>Problemas tecnicos</td><td><span class="tag tag-yellow">Nao diferencia</span></td></tr>
+            <tr><td>Tickets</td><td>15%</td><td>Carga de suporte</td><td><span class="tag tag-yellow">Nao diferencia</span></td></tr>
+            <tr><td colspan="3"><strong>Conclusao</strong></td><td><span class="tag tag-red">Health Score INUTIL como preditor de churn</span></td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- ═══════════════ STRATEGY & ROI ═══════════════ -->
+<div id="strategy" class="section">
+    <h2 class="section-title">Estrategia & ROI — Analise Ponderada por Receita</h2>
+
+    <div class="insight red">
+        <h3>Descoberta: Enterprise = 73% do MRR Perdido</h3>
+        <ul>
+            <li><strong>25 contas Enterprise perdidas = $122,385/mes</strong> ($1,468,620/ano) — 73% de TODO o MRR perdido</li>
+            <li><strong>MRR medio Enterprise perdido: $4,895/mo</strong> vs Basic $459/mo — cada Enterprise perdido vale 10x um Basic</li>
+            <li><strong>Top 10 contas perdidas = $87,361/mes</strong> — apenas 10 contas representam 52% do MRR perdido</li>
+        </ul>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi">
+            <div class="value">$167,000/mes</div>
+            <div class="label">MRR Perdido Total</div>
+            <div class="sub">$2,004,000/ano</div>
+        </div>
+        <div class="kpi" style="border-left-color:#ff6b9d">
+            <div class="value">$122,385/mes</div>
+            <div class="label">MRR Perdido Enterprise</div>
+            <div class="sub">73% do total perdido</div>
+        </div>
+        <div class="kpi blue">
+            <div class="value">$12,863/mes</div>
+            <div class="label">MRR Perdido Basic (28)</div>
+            <div class="sub">Media $459/conta</div>
+        </div>
+        <div class="kpi yellow">
+            <div class="value">$31,752/mes</div>
+            <div class="label">MRR Perdido Pro (22)</div>
+            <div class="sub">Media $1,443/conta</div>
+        </div>
+    </div>
+
+    <div class="chart-box" style="margin:20px 0; overflow-x:auto;">
+        <h3>Top 10 Contas Perdidas por MRR (cada uma dessas merece um telefonema do CEO)</h3>
+        <table>
+            <tr><th>#</th><th>Conta</th><th>Industria</th><th>Plano</th><th>MRR</th><th>ARR Equivalente</th></tr>
+            <tr><td>1</td><td>Company_4</td><td>HealthTech</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$21,691</strong></td><td>$260,292</td></tr><tr><td>2</td><td>Company_240</td><td>FinTech</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$10,945</strong></td><td>$131,340</td></tr><tr><td>3</td><td>Company_84</td><td>DevTools</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$9,154</strong></td><td>$109,848</td></tr><tr><td>4</td><td>Company_171</td><td>Cybersecurity</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$7,960</strong></td><td>$95,520</td></tr><tr><td>5</td><td>Company_68</td><td>FinTech</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$7,164</strong></td><td>$85,968</td></tr><tr><td>6</td><td>Company_115</td><td>FinTech</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$6,766</strong></td><td>$81,192</td></tr><tr><td>7</td><td>Company_497</td><td>DevTools</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$6,567</strong></td><td>$78,804</td></tr><tr><td>8</td><td>Company_125</td><td>DevTools</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$5,970</strong></td><td>$71,640</td></tr><tr><td>9</td><td>Company_195</td><td>EdTech</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$5,572</strong></td><td>$66,864</td></tr><tr><td>10</td><td>Company_400</td><td>FinTech</td><td><span class='tag tag-red'>Enterprise</span></td><td><strong>$5,572</strong></td><td>$66,864</td></tr>
+        </table>
+    </div>
+
+    <h3 style="color:#ff6b9d;margin:30px 0 15px;">Significancia Estatistica — O que e real vs ruido</h3>
+
+    <div class="insight">
+        <h3>Por que isso importa</h3>
+        <ul>
+            <li><strong>Nem toda variacao e significativa.</strong> Alemanha tem 24% de churn vs 15% global, mas com n=25, o intervalo de confianca vai de 11.5% a 43.4%. Pode ser acaso.</li>
+            <li><strong>DevTools e o UNICO segmento estatisticamente significativo</strong> (p=0.004). Os 24.8% de churn NAO sao acaso — e um problema real do produto para esse vertical.</li>
+            <li><strong>Canal "events" e marginalmente significativo</strong> (p=0.059). Vale investigar, mas com cautela.</li>
+            <li><strong>Correlacao ≠ Causalidade:</strong> DevTools churna mais — mas e pelo produto? pelo mercado? pela concorrencia? Significancia estatistica so diz que o padrao e REAL, nao a causa.</li>
+        </ul>
+    </div>
+
+    <div class="chart-box" style="margin:20px 0; overflow-x:auto;">
+        <h3>Teste de Significancia: Churn por Segmentacao vs Media Global (15.0%)</h3>
+        <table>
+            <tr><th>Tipo</th><th>Segmento</th><th>n</th><th>Perdidos</th><th>Taxa</th><th>IC 95%</th><th>p-valor</th><th>Significancia</th></tr>
+            <tr><td>Industria</td><td>Cybersecurity</td><td>100</td><td>11</td><td><strong>11.0%</strong></td><td>[6.3% - 18.6%]</td><td>0.2626</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Industria</td><td>DevTools</td><td>113</td><td>28</td><td><strong>24.8%</strong></td><td>[17.7% - 33.5%]</td><td>0.0036</td><td><span class='tag tag-red'>p<0.01</span></td></tr><tr><td>Industria</td><td>EdTech</td><td>79</td><td>10</td><td><strong>12.7%</strong></td><td>[7.0% - 21.8%]</td><td>0.56</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Industria</td><td>FinTech</td><td>112</td><td>13</td><td><strong>11.6%</strong></td><td>[6.9% - 18.9%]</td><td>0.3146</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Industria</td><td>HealthTech</td><td>96</td><td>13</td><td><strong>13.5%</strong></td><td>[8.1% - 21.8%]</td><td>0.689</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Pais</td><td>AU</td><td>32</td><td>4</td><td><strong>12.5%</strong></td><td>[5.0% - 28.1%]</td><td>N/A</td><td><span class='tag tag-orange'>n insuf.</span></td></tr><tr><td>Pais</td><td>CA</td><td>23</td><td>3</td><td><strong>13.0%</strong></td><td>[4.5% - 32.1%]</td><td>N/A</td><td><span class='tag tag-orange'>n insuf.</span></td></tr><tr><td>Pais</td><td>DE</td><td>25</td><td>6</td><td><strong>24.0%</strong></td><td>[11.5% - 43.4%]</td><td>N/A</td><td><span class='tag tag-orange'>n insuf.</span></td></tr><tr><td>Pais</td><td>FR</td><td>22</td><td>5</td><td><strong>22.7%</strong></td><td>[10.1% - 43.4%]</td><td>N/A</td><td><span class='tag tag-orange'>n insuf.</span></td></tr><tr><td>Pais</td><td>IN</td><td>49</td><td>5</td><td><strong>10.2%</strong></td><td>[4.4% - 21.8%]</td><td>0.3471</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Pais</td><td>UK</td><td>58</td><td>8</td><td><strong>13.8%</strong></td><td>[7.2% - 24.9%]</td><td>0.7969</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Pais</td><td>US</td><td>291</td><td>44</td><td><strong>15.1%</strong></td><td>[11.5% - 19.7%]</td><td>0.9542</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Canal</td><td>ads</td><td>98</td><td>15</td><td><strong>15.3%</strong></td><td>[9.5% - 23.7%]</td><td>0.9324</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Canal</td><td>event</td><td>96</td><td>21</td><td><strong>21.9%</strong></td><td>[14.8% - 31.1%]</td><td>0.0592</td><td><span class='tag tag-yellow'>p<0.10</span></td></tr><tr><td>Canal</td><td>organic</td><td>114</td><td>15</td><td><strong>13.2%</strong></td><td>[8.1% - 20.6%]</td><td>0.5818</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Canal</td><td>other</td><td>103</td><td>15</td><td><strong>14.6%</strong></td><td>[9.0% - 22.6%]</td><td>0.9012</td><td><span class='tag tag-green'>n.s.</span></td></tr><tr><td>Canal</td><td>partner</td><td>89</td><td>9</td><td><strong>10.1%</strong></td><td>[5.4% - 18.1%]</td><td>0.1966</td><td><span class='tag tag-green'>n.s.</span></td></tr>
+        </table>
+    </div>
+
+    <h3 style="color:#ff6b9d;margin:30px 0 15px;">Billing: Mensal vs Anual</h3>
+
+    <div class="insight">
+        <h3>Descoberta Contra-Intuitiva: Mensal perde MENOS contas mas MAIS receita</h3>
+        <ul>
+            <li><strong>Mensal: 28 perdidos (12.7%)</strong>, MRR perdido: $94,030 (17.0% do MRR mensal)</li>
+            <li><strong>Anual: 47 perdidos (16.8%)</strong>, MRR perdido: $72,970 (11.0% do MRR anual)</li>
+            <li><strong>MRR medio perdido mensal: $3,358</strong> vs anual: $1,553 — mensal perde contas de MAIOR valor</li>
+            <li><strong>Implicacao:</strong> Desconto para plano anual beneficia mais a retencao de receita do que de contas. Contas grandes no mensal sao as mais vulneraveis.</li>
+        </ul>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>MRR Perdido: Mensal vs Anual</h3>
+            <div id="chart_billing_mrr"></div>
+        </div>
+        <div class="chart-box">
+            <h3>Contas por Faixa de Seats (e % perdido)</h3>
+            <div id="chart_seats_analysis"></div>
+        </div>
+    </div>
+
+    <h3 style="color:#ff6b9d;margin:30px 0 15px;">5 Estrategias com ROI Estimado</h3>
+
+    <div class="chart-grid">
+        <div class="chart-box chart-full">
+            <h3>Simulacao de Impacto</h3>
+            <div id="chart_strategy_impact"></div>
+        </div>
+    </div>
+
+    <div class="insight green">
+        <h3>1. Enterprise Save Program (ROI: 7x)</h3>
+        <ul>
+            <li><strong>Problema:</strong> 25 contas Enterprise = $122,385/mes = 73% de todo MRR perdido</li>
+            <li><strong>Acao:</strong> 1 CSM dedicado (~$8.000/mes) com QBR trimestral, onboarding personalizado, executive sponsor</li>
+            <li><strong>Se salvar 5 de 25 (20%):</strong> recupera $56,914/mes = $682,968/ano</li>
+            <li><strong>ROI:</strong> 7x o custo do CSM. Payback em &lt;1 mes</li>
+        </ul>
+    </div>
+
+    <div class="insight green">
+        <h3>2. Desconto Anual para Contas Mensais de Alto Valor</h3>
+        <ul>
+            <li><strong>Problema:</strong> Mensal perde $94,030/mes — contas de alto valor sem lock-in</li>
+            <li><strong>Acao:</strong> Oferecer 15% de desconto para migrar mensal → anual para contas com MRR > $2.000</li>
+            <li><strong>Mecanismo:</strong> Pagamento anual = 12 meses de compromisso = cliente nao pode sair impulsivamente</li>
+            <li><strong>Estimativa conservadora (40% conversao, 30% retencao incremental):</strong></li>
+            <li>Custo desconto: ~$5.600/mes | Retencao: ~$11.300/mes | <strong>Net: ~$67.700/ano</strong></li>
+        </ul>
+    </div>
+
+    <div class="insight green">
+        <h3>3. DevTools Product-Market Fit (unico segmento significativo p=0.004)</h3>
+        <ul>
+            <li><strong>Problema:</strong> DevTools tem 24.8% de churn vs 15% global — CONFIRMADO estatisticamente</li>
+            <li><strong>MRR em risco:</strong> $167,000/mes total, DevTools proporcional ~$57.800/mes</li>
+            <li><strong>Acao:</strong> Auditoria de product-market fit: entrevistar 10 DevTools perdidos, analise competitiva, feature gap analysis</li>
+            <li><strong>Se reduzir churn de 24.8% para baseline 15%:</strong> ~$23.000/mes salvos = $274.000/ano</li>
+        </ul>
+    </div>
+
+    <div class="insight green">
+        <h3>4. Interromper Porta Giratoria (277 contas reincidentes)</h3>
+        <ul>
+            <li><strong>Problema:</strong> 55% das contas ja cancelaram pelo menos 1x. Custo escondido de re-onboarding e re-aquisicao</li>
+            <li><strong>Acao:</strong> Programa "90-Day Success": milestone de valor aos 30, 60 e 90 dias pos-reativacao</li>
+            <li><strong>MRR em risco:</strong> $665,190/mes</li>
+            <li><strong>Se 20% menos re-churns:</strong> ~$80.900/mes protegido de volatilidade</li>
+        </ul>
+    </div>
+
+    <div class="insight green">
+        <h3>5. Qualificar Canal Events (marginal p=0.059)</h3>
+        <ul>
+            <li><strong>Problema:</strong> Signups via eventos tem 21.9% de churn — sugere expectativa desalinhada</li>
+            <li><strong>Acao:</strong> Alterar pitch em eventos (demo real vs slide deck), criar nurture track especifico, trial estendido</li>
+            <li><strong>Custo:</strong> Baixo (mudanca de processo, nao de produto)</li>
+            <li><strong>Impacto esperado:</strong> Reduzir aquicisao de contas com baixo fit, aumentar LTV das que ficam</li>
+        </ul>
+    </div>
+
+    <div class="insight" style="border-left-color:#b366ff;">
+        <h3 style="color:#b366ff;">Impacto Combinado (conservador)</h3>
+        <ul>
+            <li><strong>Perda atual:</strong> $167,000/mes ($2,004,000/ano)</li>
+            <li><strong>Enterprise Save:</strong> +$56,914/mes recuperado</li>
+            <li><strong>Desconto Anual:</strong> +$5.600/mes net</li>
+            <li><strong>DevTools Fix:</strong> +$22.800/mes (se reduzir a baseline)</li>
+            <li><strong>Total potencial:</strong> ~$85,314/mes = ~$1,023,768/ano</li>
+            <li><strong>Isso representa 51% da perda anual atual</strong></li>
+        </ul>
+    </div>
+</div>
+
+<!-- ═══════════════ DIAGNOSTIC ═══════════════ -->
+<div id="diagnostic" class="section">
+    <h2 class="section-title">Diagnostico Final — Respostas ao CEO</h2>
+
+    <div class="insight" style="border-left-color: #fff;">
+        <h3 style="color: #fff;">Contexto: O que o CEO disse</h3>
+        <ul>
+            <li>"Estamos perdendo clientes e nao sei por que"</li>
+            <li>"Numeros mostram que churn subiu"</li>
+            <li>"CS diz que satisfacao esta ok"</li>
+            <li>"Produto diz que uso da plataforma cresceu"</li>
+            <li>"Algo nao bate"</li>
+        </ul>
+    </div>
+
+    <h3 style="color:#e94560;margin:30px 0 15px;">1. O que esta causando o churn?</h3>
+    <div class="insight red">
+        <h3>Causa Raiz: Problema Estrutural — "Porta Giratoria"</h3>
+        <ul>
+            <li><strong>55% das contas (277/500)</strong> ja cancelaram pelo menos uma vez e voltaram</li>
+            <li><strong>175 contas</strong> cancelaram 2+ vezes — ciclo de cancelar/voltar/cancelar</li>
+            <li><strong>Motivos declarados sao RUIDO</strong>: distribuicao quase uniforme (features, support, budget, competitor, pricing, unknown ~100 cada) e 63% mudam de motivo entre churns consecutivos</li>
+            <li><strong>Metricas comportamentais NAO diferenciam</strong>: uso, features, erros, tickets, satisfacao — tudo igual entre quem fica e quem sai</li>
+            <li><strong>O problema nao e que clientes usam pouco</strong> — High Freq + Broad Usage tem 21 perdidos. Contas com alto health score tambem churnam</li>
+            <li><strong>Hipotese principal</strong>: Gap entre proposta de valor e entrega. Clientes entram, usam bastante, nao veem ROI suficiente, saem. Voltam quando precisam de novo. Saem de novo.</li>
+        </ul>
+    </div>
+
+    <h3 style="color:#ffd700;margin:30px 0 15px;">2. Quais segmentos estao em risco?</h3>
+    <div class="insight">
+        <h3>Segmentos Criticos — priorizados por impacto financeiro E significancia estatistica</h3>
+        <ul>
+            <li><strong>DevTools (24.8%, p=0.004)</strong>: UNICO segmento com churn estatisticamente acima da media. 113 contas, MRR perdido significativo. <span class="tag tag-red">Confirmado</span></li>
+            <li><strong>Enterprise (25 contas = $122,385/mes = 73% do MRR perdido)</strong>: Maior impacto financeiro. Cada conta Enterprise perdida = ~$4,895/mes</li>
+            <li><strong>Canal "events" (21.9%, p=0.059)</strong>: Marginalmente significativo — vale investigar com cautela. <span class="tag tag-yellow">Marginal</span></li>
+            <li><strong>Contas mensais de alto valor</strong>: MRR medio perdido mensal ($3,358) e 2x o anual ($1,553). Sem lock-in.</li>
+            <li><strong>Alemanha, Franca, Canada</strong>: Taxas altas (22-24%), porem <span class="tag tag-orange">n insuficiente</span> (n=22-25) — NAO e possivel concluir. Monitorar com base maior.</li>
+            <li><strong>High Value + "Low Risk"</strong>: 18 contas perdidas neste quadrante. Health score diz "saudavel" e churn acontece — alerta falso negativo</li>
+            <li><strong>Porta Giratoria (277 contas, $665,190/mes MRR)</strong>: 55% da base com historico de cancelamento. Risco permanente de re-churn</li>
+        </ul>
+    </div>
+
+    <h3 style="color:#00d2a0;margin:30px 0 15px;">3. O que a empresa deveria fazer?</h3>
+    <div class="insight green">
+        <h3>Recomendacoes com ROI Estimado (ver aba "Estrategia & ROI" para detalhes)</h3>
+        <ul>
+            <li><strong>IMEDIATO — Enterprise Save Program (ROI 7x)</strong>: 1 CSM dedicado ($8k/mes) para as 25 contas Enterprise. Se salvar 5 = $56,914/mes recuperado. Payback em &lt;1 mes</li>
+            <li><strong>IMEDIATO — Redesenhar satisfacao</strong>: Scores 3-5 only = instrumento quebrado. Implementar NPS (0-10). Custo: baixo. Impacto: visibilidade real de risco</li>
+            <li><strong>CURTO PRAZO — Desconto anual para contas mensais &gt;$2k</strong>: 15% desconto para lock-in 12 meses. Net ~$67.700/ano. Reduz saida impulsiva das contas de maior valor</li>
+            <li><strong>CURTO PRAZO — Auditoria DevTools (p=0.004)</strong>: Entrevistar 10 contas DevTools perdidas, analise competitiva, feature gaps. Se reduzir churn a baseline = ~$274k/ano</li>
+            <li><strong>MEDIO PRAZO — Programa "90-Day Success"</strong>: Para as 277 contas porta giratoria. Milestones de valor aos 30/60/90 dias pos-reativacao. Reduzir re-churn em 20% = $80.900/mes protegido</li>
+            <li><strong>MEDIO PRAZO — Qualificar canal Events</strong>: 21.9% churn (marginal p=0.059). Demo real em eventos vs slide deck. Nurture track diferenciado. Trial estendido para leads de eventos</li>
+        </ul>
+    </div>
+
+    <div class="insight" style="border-left-color: #b366ff;">
+        <h3 style="color: #b366ff;">Metricas que NAO funcionam (e a empresa precisa saber)</h3>
+        <ul>
+            <li><strong>Satisfaction Score</strong>: So mede 3-5, 41% null. Inutil como alerta ← CS esta CEGO</li>
+            <li><strong>Platform Usage</strong>: Flat ha 24 meses, igual entre churned e retained ← Produto esta se enganando</li>
+            <li><strong>Health Score tradicional</strong>: Identico entre segmentos (61-65). Nao prediz churn ← Dashboard de CS esta errado</li>
+            <li><strong>Reason codes declarados</strong>: Distribuicao uniforme, 63% mudam entre churns. Ruido ← Nao confiar em exit surveys</li>
+        </ul>
+    </div>
+
+    <div class="insight green">
+        <h3>O que FUNCIONA como sinal</h3>
+        <ul>
+            <li><strong>Numero de churns anteriores</strong>: O melhor preditor de churn futuro e ter churnado antes. 175 contas com 2+ churns sao risco permanente</li>
+            <li><strong>Segmento DevTools + Enterprise</strong>: Combinacao especifica de alto risco + alto valor. Precisa de atencao dedicada</li>
+            <li><strong>Canal de aquisicao "event"</strong>: Sinal de desalinhamento expectativa vs realidade</li>
+            <li><strong>Silencio</strong>: 41% nao respondem satisfacao, 47% nao deixam feedback no churn. Os silenciosos podem ser os mais em risco</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ═══════════════ FEEDBACK ═══════════════ -->
+<div id="feedback" class="section">
+    <h2 class="section-title">Feedback dos Clientes</h2>
+    <div class="kpi-row">
+        <div class="kpi blue">
+            <div class="value">452</div>
+            <div class="label">Com Feedback</div>
+            <div class="sub">75% dos eventos</div>
+        </div>
+        <div class="kpi">
+            <div class="value">148</div>
+            <div class="label">Sem Feedback (silenciosos)</div>
+            <div class="sub">25% — risco alto</div>
+        </div>
+    </div>
+
+    <div class="chart-grid">
+        <div class="chart-box">
+            <h3>Todos os Feedbacks (Top 15)</h3>
+            <div class="feedback-item">"too expensive" <span class="feedback-count">161x</span></div><div class="feedback-item">"missing features" <span class="feedback-count">155x</span></div><div class="feedback-item">"switched to competitor" <span class="feedback-count">136x</span></div>
+        </div>
+        <div class="chart-box">
+            <h3>Feedbacks dos Perdidos Permanentes</h3>
+            <div class="feedback-item">"switched to competitor" <span class="feedback-count">39x</span></div><div class="feedback-item">"too expensive" <span class="feedback-count">36x</span></div><div class="feedback-item">"missing features" <span class="feedback-count">26x</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════ RAW TABLES ═══════════════ -->
+<div id="tables" class="section">
+    <h2 class="section-title">5 Tabelas — Amostras de 50 registros cada</h2>
+
+    <p style="color:#888;margin:10px 0;">Todas as 5 tabelas do dataset, com 50 registros mais recentes. Total: 500 accounts, 5000 subscriptions, 25000 usage events, 2000 tickets, 600 churn events.</p>
+
+    <div class="chart-box" style="margin: 20px 0; overflow-x: auto; max-height: 500px; overflow-y: auto;">
+        <h3>1. ACCOUNTS (500 registros) — com classificacao unificada</h3>
+        <table>
+            <tr><th>ID</th><th>Name</th><th>Industry</th><th>Country</th><th>Signup</th><th>Referral</th><th>Plan</th><th>Seats</th><th>Trial</th><th># Churns</th><th>Segmento</th></tr>
+            <tr><td>A-0a62f5</td><td>Company_381</td><td>FinTech</td><td>UK</td><td>2024-09-11</td><td>partner</td><td>Pro</td><td>16</td><td></td><td>5</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-180abf</td><td>Company_122</td><td>DevTools</td><td>US</td><td>2023-08-14</td><td>event</td><td>Pro</td><td>64</td><td></td><td>5</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-0baac2</td><td>Company_264</td><td>FinTech</td><td>DE</td><td>2024-05-30</td><td>organic</td><td>Enterprise</td><td>14</td><td></td><td>4</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-0cc442</td><td>Company_198</td><td>EdTech</td><td>US</td><td>2024-07-18</td><td>organic</td><td>Basic</td><td>45</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-68f37c</td><td>Company_202</td><td>HealthTech</td><td>US</td><td>2023-07-15</td><td>ads</td><td>Basic</td><td>4</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-fd7ad3</td><td>Company_100</td><td>Cybersecurity</td><td>US</td><td>2024-11-01</td><td>event</td><td>Enterprise</td><td>1</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-425e76</td><td>Company_110</td><td>DevTools</td><td>UK</td><td>2023-05-17</td><td>other</td><td>Enterprise</td><td>8</td><td></td><td>4</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-533452</td><td>Company_279</td><td>DevTools</td><td>AU</td><td>2024-11-12</td><td>organic</td><td>Pro</td><td>9</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-ee42db</td><td>Company_77</td><td>EdTech</td><td>DE</td><td>2023-04-25</td><td>ads</td><td>Enterprise</td><td>13</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-ae052e</td><td>Company_132</td><td>FinTech</td><td>CA</td><td>2023-09-11</td><td>other</td><td>Basic</td><td>39</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-37f969</td><td>Company_150</td><td>HealthTech</td><td>IN</td><td>2023-10-14</td><td>partner</td><td>Enterprise</td><td>30</td><td></td><td>4</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-9208f0</td><td>Company_79</td><td>EdTech</td><td>US</td><td>2023-05-11</td><td>organic</td><td>Pro</td><td>1</td><td></td><td>4</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-c58f49</td><td>Company_480</td><td>EdTech</td><td>US</td><td>2024-07-31</td><td>other</td><td>Enterprise</td><td>70</td><td>Y</td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-32fb14</td><td>Company_25</td><td>DevTools</td><td>US</td><td>2023-03-07</td><td>event</td><td>Enterprise</td><td>26</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-d77f4c</td><td>Company_470</td><td>DevTools</td><td>US</td><td>2023-09-25</td><td>partner</td><td>Pro</td><td>4</td><td>Y</td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-3f9cc0</td><td>Company_359</td><td>HealthTech</td><td>US</td><td>2024-06-03</td><td>event</td><td>Basic</td><td>22</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-b179bf</td><td>Company_348</td><td>Cybersecurity</td><td>IN</td><td>2024-10-27</td><td>ads</td><td>Basic</td><td>43</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-ccc747</td><td>Company_339</td><td>HealthTech</td><td>FR</td><td>2024-01-12</td><td>event</td><td>Pro</td><td>16</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-96bbc6</td><td>Company_342</td><td>Cybersecurity</td><td>US</td><td>2024-05-07</td><td>organic</td><td>Enterprise</td><td>39</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-f25509</td><td>Company_92</td><td>EdTech</td><td>US</td><td>2024-03-22</td><td>other</td><td>Enterprise</td><td>32</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-2ebb4b</td><td>Company_334</td><td>HealthTech</td><td>US</td><td>2023-05-15</td><td>ads</td><td>Basic</td><td>41</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-e888d1</td><td>Company_102</td><td>Cybersecurity</td><td>US</td><td>2023-03-28</td><td>other</td><td>Pro</td><td>14</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-e83938</td><td>Company_111</td><td>DevTools</td><td>UK</td><td>2023-11-21</td><td>other</td><td>Pro</td><td>2</td><td>Y</td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-029f69</td><td>Company_129</td><td>Cybersecurity</td><td>CA</td><td>2024-03-07</td><td>event</td><td>Basic</td><td>3</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-5a184f</td><td>Company_124</td><td>DevTools</td><td>DE</td><td>2023-06-19</td><td>other</td><td>Enterprise</td><td>1</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-5a3eb9</td><td>Company_283</td><td>DevTools</td><td>CA</td><td>2023-08-20</td><td>other</td><td>Enterprise</td><td>18</td><td>Y</td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-54ecc2</td><td>Company_289</td><td>Cybersecurity</td><td>US</td><td>2023-06-11</td><td>partner</td><td>Enterprise</td><td>4</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-e7a1e2</td><td>Company_295</td><td>Cybersecurity</td><td>US</td><td>2024-06-23</td><td>event</td><td>Enterprise</td><td>3</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-b7724f</td><td>Company_320</td><td>HealthTech</td><td>UK</td><td>2023-03-28</td><td>organic</td><td>Basic</td><td>1</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-6da850</td><td>Company_293</td><td>FinTech</td><td>IN</td><td>2023-10-07</td><td>organic</td><td>Pro</td><td>5</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-e51ec7</td><td>Company_113</td><td>FinTech</td><td>CA</td><td>2023-09-23</td><td>partner</td><td>Enterprise</td><td>2</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-6965e1</td><td>Company_379</td><td>DevTools</td><td>US</td><td>2024-11-25</td><td>organic</td><td>Basic</td><td>13</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-526d93</td><td>Company_66</td><td>HealthTech</td><td>FR</td><td>2024-04-14</td><td>organic</td><td>Basic</td><td>43</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-104f1a</td><td>Company_89</td><td>Cybersecurity</td><td>US</td><td>2024-08-17</td><td>other</td><td>Pro</td><td>24</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-7988d1</td><td>Company_90</td><td>Cybersecurity</td><td>US</td><td>2023-12-20</td><td>other</td><td>Basic</td><td>33</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-87aa7b</td><td>Company_433</td><td>HealthTech</td><td>US</td><td>2024-05-16</td><td>organic</td><td>Pro</td><td>24</td><td>Y</td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-3b5cd1</td><td>Company_49</td><td>FinTech</td><td>US</td><td>2023-09-12</td><td>event</td><td>Basic</td><td>13</td><td>Y</td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-b2225d</td><td>Company_50</td><td>FinTech</td><td>US</td><td>2024-03-08</td><td>ads</td><td>Basic</td><td>47</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-751c58</td><td>Company_393</td><td>FinTech</td><td>UK</td><td>2024-07-18</td><td>organic</td><td>Basic</td><td>15</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-1e1b80</td><td>Company_416</td><td>FinTech</td><td>CA</td><td>2023-09-12</td><td>other</td><td>Enterprise</td><td>50</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-e19ff6</td><td>Company_411</td><td>Cybersecurity</td><td>UK</td><td>2023-07-28</td><td>partner</td><td>Enterprise</td><td>1</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-e351e1</td><td>Company_62</td><td>EdTech</td><td>US</td><td>2024-09-26</td><td>other</td><td>Enterprise</td><td>33</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-32728c</td><td>Company_54</td><td>DevTools</td><td>US</td><td>2023-01-03</td><td>event</td><td>Pro</td><td>20</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-5790f4</td><td>Company_446</td><td>FinTech</td><td>UK</td><td>2024-12-22</td><td>event</td><td>Pro</td><td>1</td><td>Y</td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-cc102e</td><td>Company_443</td><td>HealthTech</td><td>US</td><td>2024-04-15</td><td>partner</td><td>Enterprise</td><td>13</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-bcf664</td><td>Company_248</td><td>DevTools</td><td>US</td><td>2023-05-19</td><td>other</td><td>Pro</td><td>5</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-ef84cf</td><td>Company_274</td><td>EdTech</td><td>US</td><td>2024-03-01</td><td>partner</td><td>Enterprise</td><td>8</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-712426</td><td>Company_155</td><td>HealthTech</td><td>US</td><td>2024-11-10</td><td>other</td><td>Enterprise</td><td>9</td><td></td><td>3</td><td><span class='tag tag-yellow'>Porta Giratoria</span></td></tr><tr><td>A-117171</td><td>Company_135</td><td>HealthTech</td><td>FR</td><td>2024-09-12</td><td>organic</td><td>Basic</td><td>45</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr><tr><td>A-c222ab</td><td>Company_206</td><td>Cybersecurity</td><td>US</td><td>2024-05-10</td><td>other</td><td>Pro</td><td>32</td><td></td><td>3</td><td><span class='tag tag-red'>Perdido Permanente</span></td></tr>
+        </table>
+    </div>
+
+    <div class="chart-box" style="margin: 20px 0; overflow-x: auto; max-height: 500px; overflow-y: auto;">
+        <h3>2. SUBSCRIPTIONS (5000 registros)</h3>
+        <table>
+            <tr><th>Sub ID</th><th>Account</th><th>Start</th><th>End</th><th>Plan</th><th>Seats</th><th>MRR</th><th>ARR</th><th>Trial</th><th>Up</th><th>Down</th><th>Churn</th><th>Billing</th><th>AutoRenew</th></tr>
+            <tr><td>S-47b86b</td><td>A-524364</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>11</td><td>$539</td><td>$6,468</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-684751</td><td>A-86cdb4</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>17</td><td>$323</td><td>$3,876</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-dee62f</td><td>A-524364</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>12</td><td>$228</td><td>$2,736</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-697d16</td><td>A-3932db</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>19</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-246942</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>45</td><td>$8,955</td><td>$107,460</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-7e145e</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>52</td><td>$10,348</td><td>$124,176</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-b35b20</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>3</td><td>$147</td><td>$1,764</td><td></td><td>Y</td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-fcd231</td><td>A-712426</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>63</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-79d1e0</td><td>A-ce550d</td><td>2024-12-31</td><td>2024-12-31</td><td>Enterprise</td><td>109</td><td>$21,691</td><td>$260,292</td><td></td><td></td><td></td><td><span class=tag tag-red>Y</span></td><td>monthly</td><td>Y</td></tr><tr><td>S-5c4dd7</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>21</td><td>$1,029</td><td>$12,348</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-a33656</td><td>A-524364</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>12</td><td>$228</td><td>$2,736</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-615a8a</td><td>A-bf7919</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>11</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>annual</td><td></td></tr><tr><td>S-1eb467</td><td>A-94f8c9</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>13</td><td>$2,587</td><td>$31,044</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-58b22d</td><td>A-6f50ae</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>19</td><td>$3,781</td><td>$45,372</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-5e0619</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>6</td><td>$294</td><td>$3,528</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-a72188</td><td>A-ced9aa</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>3</td><td>$147</td><td>$1,764</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-5685bf</td><td>A-524364</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>108</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-6b534f</td><td>A-08e34e</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>14</td><td>$2,786</td><td>$33,432</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-b81c97</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>18</td><td>$882</td><td>$10,584</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-6f47c5</td><td>A-0b0d6d</td><td>2024-12-31</td><td>2024-12-31</td><td>Enterprise</td><td>13</td><td>$2,587</td><td>$31,044</td><td></td><td></td><td></td><td><span class=tag tag-red>Y</span></td><td>annual</td><td>Y</td></tr><tr><td>S-e11cde</td><td>A-0f6450</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>28</td><td>$5,572</td><td>$66,864</td><td></td><td></td><td></td><td></td><td>monthly</td><td></td></tr><tr><td>S-1c54b6</td><td>A-0f6450</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>28</td><td>$5,572</td><td>$66,864</td><td></td><td></td><td></td><td></td><td>monthly</td><td></td></tr><tr><td>S-1a3627</td><td>A-86fc1d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>26</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-7480e6</td><td>A-524364</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>43</td><td>$8,557</td><td>$102,684</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-9c9700</td><td>A-0f6450</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>28</td><td>$532</td><td>$6,384</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-9eda4d</td><td>A-524364</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>3</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-f9b4d8</td><td>A-6843f2</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>21</td><td>$1,029</td><td>$12,348</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-9d7c19</td><td>A-82d8a6</td><td>2024-12-31</td><td>2024-12-31</td><td>Pro</td><td>5</td><td>$245</td><td>$2,940</td><td></td><td></td><td></td><td><span class=tag tag-red>Y</span></td><td>annual</td><td>Y</td></tr><tr><td>S-42aaf0</td><td>A-6da850</td><td>2024-12-31</td><td>2024-12-31</td><td>Basic</td><td>6</td><td>$114</td><td>$1,368</td><td></td><td></td><td></td><td><span class=tag tag-red>Y</span></td><td>annual</td><td>Y</td></tr><tr><td>S-4f0027</td><td>A-ff79f2</td><td>2024-12-31</td><td>2024-12-31</td><td>Enterprise</td><td>19</td><td>$3,781</td><td>$45,372</td><td></td><td></td><td></td><td><span class=tag tag-red>Y</span></td><td>annual</td><td>Y</td></tr><tr><td>S-0c63de</td><td>A-592832</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>18</td><td>$882</td><td>$10,584</td><td></td><td></td><td></td><td></td><td>annual</td><td></td></tr><tr><td>S-3eb56d</td><td>A-463db0</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>15</td><td>$735</td><td>$8,820</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-aa5012</td><td>A-6f8ad2</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>41</td><td>$779</td><td>$9,348</td><td></td><td></td><td></td><td></td><td>annual</td><td></td></tr><tr><td>S-3236ee</td><td>A-0b0d6d</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>13</td><td>$247</td><td>$2,964</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-635c1e</td><td>A-b2af2e</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>54</td><td>$1,026</td><td>$12,312</td><td></td><td></td><td>Y</td><td></td><td>annual</td><td></td></tr><tr><td>S-fb9972</td><td>A-0158bb</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>45</td><td>$2,205</td><td>$26,460</td><td></td><td>Y</td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-676254</td><td>A-854864</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>20</td><td>$980</td><td>$11,760</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-c77c84</td><td>A-0be015</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>19</td><td>$0</td><td>$0</td><td>Y</td><td></td><td></td><td></td><td>monthly</td><td></td></tr><tr><td>S-8707e7</td><td>A-17939a</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>14</td><td>$266</td><td>$3,192</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-21c164</td><td>A-029f69</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>34</td><td>$646</td><td>$7,752</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-e9257d</td><td>A-5b1bcd</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>73</td><td>$3,577</td><td>$42,924</td><td></td><td>Y</td><td></td><td></td><td>annual</td><td></td></tr><tr><td>S-47048b</td><td>A-0f7d77</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>7</td><td>$133</td><td>$1,596</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-09761d</td><td>A-6843f2</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>23</td><td>$1,127</td><td>$13,524</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-e98d6b</td><td>A-309e54</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>15</td><td>$285</td><td>$3,420</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-2c3d7d</td><td>A-c62e55</td><td>2024-12-31</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>14</td><td>$686</td><td>$8,232</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-51d8db</td><td>A-cc1d8d</td><td>2024-12-30</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>6</td><td>$1,194</td><td>$14,328</td><td></td><td></td><td></td><td></td><td>annual</td><td>Y</td></tr><tr><td>S-2a6e4a</td><td>A-17939a</td><td>2024-12-30</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>31</td><td>$1,519</td><td>$18,228</td><td></td><td></td><td></td><td></td><td>annual</td><td></td></tr><tr><td>S-cdd281</td><td>A-39ddf4</td><td>2024-12-30</td><td><span class=tag tag-green>Ativa</span></td><td>Enterprise</td><td>40</td><td>$7,960</td><td>$95,520</td><td></td><td></td><td></td><td></td><td>monthly</td><td>Y</td></tr><tr><td>S-7ff88c</td><td>A-b7ef83</td><td>2024-12-30</td><td><span class=tag tag-green>Ativa</span></td><td>Pro</td><td>12</td><td>$588</td><td>$7,056</td><td></td><td></td><td></td><td></td><td>monthly</td><td></td></tr><tr><td>S-e2d4e9</td><td>A-18793f</td><td>2024-12-30</td><td><span class=tag tag-green>Ativa</span></td><td>Basic</td><td>148</td><td>$0</td><td>$0</td><td>Y</td><td>Y</td><td></td><td></td><td>monthly</td><td>Y</td></tr>
+        </table>
+    </div>
+
+    <div class="chart-box" style="margin: 20px 0; overflow-x: auto; max-height: 500px; overflow-y: auto;">
+        <h3>3. FEATURE USAGE (25000 registros)</h3>
+        <table>
+            <tr><th>Usage ID</th><th>Sub ID</th><th>Date</th><th>Feature</th><th>Count</th><th>Duration (s)</th><th>Errors</th><th>Beta</th></tr>
+            <tr><td>U-1b2ae0</td><td>S-0e1d53</td><td>2024-12-31</td><td>feature_23</td><td>12</td><td>1,572</td><td>0</td><td></td></tr><tr><td>U-734ffe</td><td>S-632bba</td><td>2024-12-31</td><td>feature_3</td><td>10</td><td>4,360</td><td>2</td><td></td></tr><tr><td>U-5efa71</td><td>S-ab63e3</td><td>2024-12-31</td><td>feature_37</td><td>10</td><td>2,380</td><td>0</td><td></td></tr><tr><td>U-55fadc</td><td>S-e36786</td><td>2024-12-31</td><td>feature_17</td><td>10</td><td>4,060</td><td>0</td><td></td></tr><tr><td>U-96204f</td><td>S-b11225</td><td>2024-12-31</td><td>feature_34</td><td>7</td><td>1,512</td><td>0</td><td></td></tr><tr><td>U-32a63f</td><td>S-62fb8e</td><td>2024-12-31</td><td>feature_30</td><td>17</td><td>340</td><td>0</td><td></td></tr><tr><td>U-3422b1</td><td>S-c64e87</td><td>2024-12-31</td><td>feature_39</td><td>12</td><td>5,100</td><td>1</td><td></td></tr><tr><td>U-ea0b67</td><td>S-8a37c8</td><td>2024-12-31</td><td>feature_24</td><td>11</td><td>4,356</td><td>2</td><td></td></tr><tr><td>U-56af2c</td><td>S-d9659f</td><td>2024-12-31</td><td>feature_40</td><td>10</td><td>1,940</td><td>0</td><td></td></tr><tr><td>U-98fa12</td><td>S-6eeae1</td><td>2024-12-31</td><td>feature_12</td><td>5</td><td>1,165</td><td>0</td><td></td></tr><tr><td>U-9074f6</td><td>S-0c91c4</td><td>2024-12-31</td><td>feature_27</td><td>11</td><td>2,915</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-dd098e</td><td>S-276555</td><td>2024-12-31</td><td>feature_21</td><td>5</td><td>250</td><td>1</td><td></td></tr><tr><td>U-c073c4</td><td>S-2877e6</td><td>2024-12-31</td><td>feature_5</td><td>11</td><td>3,740</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-40e4d0</td><td>S-b49c0a</td><td>2024-12-31</td><td>feature_16</td><td>8</td><td>1,440</td><td>2</td><td></td></tr><tr><td>U-7fbbaf</td><td>S-c3bf1d</td><td>2024-12-31</td><td>feature_11</td><td>10</td><td>3,780</td><td>0</td><td></td></tr><tr><td>U-acc3cd</td><td>S-19950d</td><td>2024-12-31</td><td>feature_21</td><td>8</td><td>4,720</td><td>2</td><td></td></tr><tr><td>U-2bb4a8</td><td>S-8ed77f</td><td>2024-12-31</td><td>feature_35</td><td>7</td><td>1,155</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-29a8fc</td><td>S-8eae4e</td><td>2024-12-31</td><td>feature_19</td><td>12</td><td>6,240</td><td>1</td><td></td></tr><tr><td>U-6f0dee</td><td>S-73fc8f</td><td>2024-12-31</td><td>feature_4</td><td>5</td><td>1,150</td><td>4</td><td></td></tr><tr><td>U-84dd0b</td><td>S-0fc73c</td><td>2024-12-31</td><td>feature_5</td><td>10</td><td>3,160</td><td>1</td><td></td></tr><tr><td>U-e930e8</td><td>S-0027d3</td><td>2024-12-31</td><td>feature_23</td><td>4</td><td>1,680</td><td>0</td><td></td></tr><tr><td>U-970d6a</td><td>S-4f9730</td><td>2024-12-31</td><td>feature_23</td><td>7</td><td>105</td><td>0</td><td></td></tr><tr><td>U-41173b</td><td>S-cd3a01</td><td>2024-12-31</td><td>feature_32</td><td>12</td><td>6,120</td><td>0</td><td></td></tr><tr><td>U-eb37e8</td><td>S-2aec7e</td><td>2024-12-31</td><td>feature_28</td><td>6</td><td>510</td><td>0</td><td></td></tr><tr><td>U-62a6d5</td><td>S-e6c900</td><td>2024-12-31</td><td>feature_15</td><td>7</td><td>4,165</td><td>1</td><td></td></tr><tr><td>U-2e0f25</td><td>S-3bdedd</td><td>2024-12-31</td><td>feature_26</td><td>14</td><td>546</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-4ff107</td><td>S-07ff57</td><td>2024-12-31</td><td>feature_35</td><td>9</td><td>2,961</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-85aa07</td><td>S-c08805</td><td>2024-12-31</td><td>feature_7</td><td>8</td><td>880</td><td>0</td><td></td></tr><tr><td>U-539a94</td><td>S-b250cc</td><td>2024-12-31</td><td>feature_33</td><td>11</td><td>4,389</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-d2b1b0</td><td>S-ca0c98</td><td>2024-12-31</td><td>feature_27</td><td>11</td><td>3,311</td><td>0</td><td></td></tr><tr><td>U-5daac9</td><td>S-b72911</td><td>2024-12-31</td><td>feature_27</td><td>12</td><td>6,936</td><td>0</td><td></td></tr><tr><td>U-aac105</td><td>S-b51d34</td><td>2024-12-30</td><td>feature_29</td><td>6</td><td>2,562</td><td>0</td><td></td></tr><tr><td>U-5240b1</td><td>S-101401</td><td>2024-12-30</td><td>feature_23</td><td>13</td><td>6,318</td><td>2</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-b8cd2d</td><td>S-812d97</td><td>2024-12-30</td><td>feature_34</td><td>12</td><td>2,532</td><td>0</td><td></td></tr><tr><td>U-5846b2</td><td>S-09c11e</td><td>2024-12-30</td><td>feature_9</td><td>10</td><td>1,980</td><td>0</td><td></td></tr><tr><td>U-8755c1</td><td>S-0ff481</td><td>2024-12-30</td><td>feature_9</td><td>7</td><td>980</td><td>2</td><td></td></tr><tr><td>U-e2330a</td><td>S-47048b</td><td>2024-12-30</td><td>feature_4</td><td>13</td><td>4,056</td><td>0</td><td></td></tr><tr><td>U-92b9bf</td><td>S-b73fdf</td><td>2024-12-30</td><td>feature_15</td><td>9</td><td>3,960</td><td>2</td><td></td></tr><tr><td>U-04e0ed</td><td>S-8b1b5a</td><td>2024-12-30</td><td>feature_21</td><td>14</td><td>6,524</td><td>0</td><td></td></tr><tr><td>U-91168a</td><td>S-3a694d</td><td>2024-12-30</td><td>feature_22</td><td>7</td><td>1,022</td><td>0</td><td></td></tr><tr><td>U-fc37ad</td><td>S-f9cb96</td><td>2024-12-30</td><td>feature_4</td><td>6</td><td>3,174</td><td>4</td><td></td></tr><tr><td>U-08de3e</td><td>S-374511</td><td>2024-12-30</td><td>feature_6</td><td>8</td><td>2,016</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-00861e</td><td>S-d3efa2</td><td>2024-12-30</td><td>feature_28</td><td>8</td><td>4,464</td><td>0</td><td></td></tr><tr><td>U-ba26ae</td><td>S-43c80c</td><td>2024-12-30</td><td>feature_9</td><td>7</td><td>2,674</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-f59fde</td><td>S-651c01</td><td>2024-12-30</td><td>feature_22</td><td>10</td><td>2,530</td><td>0</td><td></td></tr><tr><td>U-6bf9e9</td><td>S-8eb6df</td><td>2024-12-30</td><td>feature_37</td><td>10</td><td>3,480</td><td>0</td><td></td></tr><tr><td>U-78dad4</td><td>S-0c47cb</td><td>2024-12-30</td><td>feature_23</td><td>9</td><td>756</td><td>0</td><td><span class=tag tag-blue>Beta</span></td></tr><tr><td>U-21fb51</td><td>S-6d6ab6</td><td>2024-12-30</td><td>feature_17</td><td>12</td><td>5,052</td><td>0</td><td></td></tr><tr><td>U-608a28</td><td>S-0206eb</td><td>2024-12-30</td><td>feature_38</td><td>7</td><td>308</td><td>0</td><td></td></tr><tr><td>U-505044</td><td>S-61d573</td><td>2024-12-30</td><td>feature_6</td><td>10</td><td>1,300</td><td>0</td><td></td></tr>
+        </table>
+    </div>
+
+    <div class="chart-box" style="margin: 20px 0; overflow-x: auto; max-height: 500px; overflow-y: auto;">
+        <h3>4. SUPPORT TICKETS (2000 registros)</h3>
+        <table>
+            <tr><th>Ticket ID</th><th>Account</th><th>Submitted</th><th>Closed</th><th>Resolution (h)</th><th>Priority</th><th>1st Response (min)</th><th>Satisfaction</th><th>Escalated</th></tr>
+            <tr><td>T-5f94dd</td><td>A-d82ef9</td><td>2024-12-31 00:00</td><td>2024-12-31 13:00</td><td>13.0</td><td>high</td><td>149</td><td>4.0</td><td></td></tr><tr><td>T-96ccc2</td><td>A-186a44</td><td>2024-12-30 00:00</td><td>2024-12-31 00:00</td><td>24.0</td><td>high</td><td>146</td><td>4.0</td><td></td></tr><tr><td>T-488392</td><td>A-bd4513</td><td>2024-12-30 00:00</td><td>2024-12-30 10:00</td><td>10.0</td><td>high</td><td>12</td><td>5.0</td><td></td></tr><tr><td>T-df9759</td><td>A-b7724f</td><td>2024-12-30 00:00</td><td>2024-12-30 15:00</td><td>15.0</td><td>medium</td><td>86</td><td>3.0</td><td></td></tr><tr><td>T-30b4eb</td><td>A-104f1a</td><td>2024-12-30 00:00</td><td>2024-12-30 12:00</td><td>12.0</td><td>medium</td><td>37</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-4cf1f9</td><td>A-d792a6</td><td>2024-12-29 00:00</td><td>2024-12-29 14:00</td><td>14.0</td><td>urgent</td><td>125</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-0766ec</td><td>A-e351e1</td><td>2024-12-29 00:00</td><td>2024-12-29 05:00</td><td>5.0</td><td>low</td><td>100</td><td>3.0</td><td></td></tr><tr><td>T-4cc9eb</td><td>A-bc87bc</td><td>2024-12-29 00:00</td><td>2024-12-31 19:00</td><td>67.0</td><td>low</td><td>46</td><td>5.0</td><td></td></tr><tr><td>T-e834e7</td><td>A-310452</td><td>2024-12-29 00:00</td><td>2024-12-30 00:00</td><td>24.0</td><td>medium</td><td>46</td><td>4.0</td><td></td></tr><tr><td>T-12a740</td><td>A-87aa7b</td><td>2024-12-29 00:00</td><td>2024-12-29 22:00</td><td>22.0</td><td>urgent</td><td>147</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-381eff</td><td>A-9f9299</td><td>2024-12-28 00:00</td><td>2024-12-29 11:00</td><td>35.0</td><td>low</td><td>139</td><td>5.0</td><td></td></tr><tr><td>T-a3288b</td><td>A-098560</td><td>2024-12-28 00:00</td><td>2024-12-30 07:00</td><td>55.0</td><td>low</td><td>26</td><td>3.0</td><td></td></tr><tr><td>T-62b1dd</td><td>A-a45270</td><td>2024-12-27 00:00</td><td>2024-12-29 19:00</td><td>67.0</td><td>medium</td><td>112</td><td>4.0</td><td></td></tr><tr><td>T-902d96</td><td>A-76fa4d</td><td>2024-12-27 00:00</td><td>2024-12-29 11:00</td><td>59.0</td><td>high</td><td>147</td><td>4.0</td><td></td></tr><tr><td>T-ed09ab</td><td>A-94d3da</td><td>2024-12-27 00:00</td><td>2024-12-28 01:00</td><td>25.0</td><td>high</td><td>130</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-c786ff</td><td>A-c222ab</td><td>2024-12-26 00:00</td><td>2024-12-27 15:00</td><td>39.0</td><td>urgent</td><td>152</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-2be50d</td><td>A-3a5ad8</td><td>2024-12-26 00:00</td><td>2024-12-26 14:00</td><td>14.0</td><td>urgent</td><td>16</td><td>5.0</td><td></td></tr><tr><td>T-91b90d</td><td>A-e08cd3</td><td>2024-12-26 00:00</td><td>2024-12-26 17:00</td><td>17.0</td><td>high</td><td>109</td><td>4.0</td><td></td></tr><tr><td>T-c16096</td><td>A-e08cd3</td><td>2024-12-26 00:00</td><td>2024-12-28 09:00</td><td>57.0</td><td>urgent</td><td>148</td><td>4.0</td><td></td></tr><tr><td>T-5f6c15</td><td>A-e43bf7</td><td>2024-12-25 00:00</td><td>2024-12-25 05:00</td><td>5.0</td><td>medium</td><td>26</td><td>3.0</td><td></td></tr><tr><td>T-38714f</td><td>A-fe79a5</td><td>2024-12-25 00:00</td><td>2024-12-25 07:00</td><td>7.0</td><td>high</td><td>63</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-9b3f6c</td><td>A-ba6516</td><td>2024-12-25 00:00</td><td>2024-12-25 15:00</td><td>15.0</td><td>medium</td><td>44</td><td>4.0</td><td></td></tr><tr><td>T-97f5bb</td><td>A-31ab9a</td><td>2024-12-25 00:00</td><td>2024-12-25 21:00</td><td>21.0</td><td>medium</td><td>6</td><td>3.0</td><td></td></tr><tr><td>T-383e2b</td><td>A-86fc1d</td><td>2024-12-24 00:00</td><td>2024-12-24 17:00</td><td>17.0</td><td>urgent</td><td>140</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-c79d58</td><td>A-463db0</td><td>2024-12-24 00:00</td><td>2024-12-26 01:00</td><td>49.0</td><td>medium</td><td>32</td><td>4.0</td><td></td></tr><tr><td>T-7c6ab3</td><td>A-65a46c</td><td>2024-12-23 00:00</td><td>2024-12-25 09:00</td><td>57.0</td><td>urgent</td><td>96</td><td>5.0</td><td></td></tr><tr><td>T-c42d1d</td><td>A-fd9422</td><td>2024-12-22 00:00</td><td>2024-12-24 04:00</td><td>52.0</td><td>urgent</td><td>79</td><td>4.0</td><td></td></tr><tr><td>T-73a01a</td><td>A-2789e3</td><td>2024-12-22 00:00</td><td>2024-12-23 09:00</td><td>33.0</td><td>medium</td><td>140</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-46f3a5</td><td>A-7c4956</td><td>2024-12-22 00:00</td><td>2024-12-22 11:00</td><td>11.0</td><td>low</td><td>64</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-e18407</td><td>A-3b5cd1</td><td>2024-12-21 00:00</td><td>2024-12-23 12:00</td><td>60.0</td><td>urgent</td><td>92</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-ca831e</td><td>A-9b9fe9</td><td>2024-12-21 00:00</td><td>2024-12-21 08:00</td><td>8.0</td><td>high</td><td>127</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-3345a4</td><td>A-6da850</td><td>2024-12-21 00:00</td><td>2024-12-23 09:00</td><td>57.0</td><td>low</td><td>112</td><td>4.0</td><td></td></tr><tr><td>T-743f15</td><td>A-d49cc5</td><td>2024-12-21 00:00</td><td>2024-12-23 16:00</td><td>64.0</td><td>urgent</td><td>2</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-922d49</td><td>A-7f6b86</td><td>2024-12-20 00:00</td><td>2024-12-21 07:00</td><td>31.0</td><td>urgent</td><td>114</td><td>4.0</td><td></td></tr><tr><td>T-55400f</td><td>A-84ebe4</td><td>2024-12-20 00:00</td><td>2024-12-20 05:00</td><td>5.0</td><td>medium</td><td>133</td><td>4.0</td><td></td></tr><tr><td>T-2795e4</td><td>A-09316c</td><td>2024-12-20 00:00</td><td>2024-12-22 21:00</td><td>69.0</td><td>low</td><td>81</td><td>3.0</td><td></td></tr><tr><td>T-3a3a53</td><td>A-139c3b</td><td>2024-12-18 00:00</td><td>2024-12-19 02:00</td><td>26.0</td><td>medium</td><td>89</td><td>5.0</td><td></td></tr><tr><td>T-d9600d</td><td>A-98a59a</td><td>2024-12-18 00:00</td><td>2024-12-19 03:00</td><td>27.0</td><td>urgent</td><td>106</td><td>4.0</td><td></td></tr><tr><td>T-59dfb0</td><td>A-82861f</td><td>2024-12-18 00:00</td><td>2024-12-20 11:00</td><td>59.0</td><td>medium</td><td>24</td><td>3.0</td><td></td></tr><tr><td>T-ad6a24</td><td>A-7e0a10</td><td>2024-12-18 00:00</td><td>2024-12-19 22:00</td><td>46.0</td><td>urgent</td><td>43</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-7da6d5</td><td>A-781cc0</td><td>2024-12-17 00:00</td><td>2024-12-19 16:00</td><td>64.0</td><td>high</td><td>162</td><td>3.0</td><td></td></tr><tr><td>T-008e20</td><td>A-b78bf8</td><td>2024-12-17 00:00</td><td>2024-12-19 01:00</td><td>49.0</td><td>urgent</td><td>94</td><td>3.0</td><td></td></tr><tr><td>T-dfad13</td><td>A-5b1bcd</td><td>2024-12-17 00:00</td><td>2024-12-17 05:00</td><td>5.0</td><td>urgent</td><td>143</td><td>5.0</td><td></td></tr><tr><td>T-5c9e4d</td><td>A-c7e58b</td><td>2024-12-16 00:00</td><td>2024-12-18 07:00</td><td>55.0</td><td>urgent</td><td>104</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-69f219</td><td>A-9289f6</td><td>2024-12-16 00:00</td><td>2024-12-18 16:00</td><td>64.0</td><td>high</td><td>26</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-3c9151</td><td>A-59f724</td><td>2024-12-15 00:00</td><td>2024-12-16 05:00</td><td>29.0</td><td>urgent</td><td>146</td><td>4.0</td><td></td></tr><tr><td>T-16818f</td><td>A-139c3b</td><td>2024-12-15 00:00</td><td>2024-12-16 18:00</td><td>42.0</td><td>medium</td><td>131</td><td>4.0</td><td></td></tr><tr><td>T-399dc3</td><td>A-462d45</td><td>2024-12-15 00:00</td><td>2024-12-16 05:00</td><td>29.0</td><td>medium</td><td>127</td><td><span style=color:#888>null</span></td><td></td></tr><tr><td>T-ca7d9e</td><td>A-20736a</td><td>2024-12-14 00:00</td><td>2024-12-15 16:00</td><td>40.0</td><td>high</td><td>145</td><td>3.0</td><td></td></tr><tr><td>T-1173d2</td><td>A-7641d3</td><td>2024-12-14 00:00</td><td>2024-12-15 20:00</td><td>44.0</td><td>high</td><td>88</td><td>3.0</td><td></td></tr>
+        </table>
+    </div>
+
+    <div class="chart-box" style="margin: 20px 0; overflow-x: auto; max-height: 500px; overflow-y: auto;">
+        <h3>5. CHURN EVENTS (600 registros)</h3>
+        <table>
+            <tr><th>Event ID</th><th>Account</th><th>Date</th><th>Reason</th><th>Refund $</th><th>Upgrade?</th><th>Downgrade?</th><th>Reactivation?</th><th>Feedback</th></tr>
+            <tr><td>C-e20d30</td><td>A-fd7ad3</td><td>2024-12-31</td><td>unknown</td><td>$0.00</td><td>Y</td><td></td><td></td><td></td></tr><tr><td>C-484fba</td><td>A-0a282f</td><td>2024-12-31</td><td>support</td><td>$62.66</td><td></td><td>Y</td><td></td><td>too expensive</td></tr><tr><td>C-e8f3f5</td><td>A-5790f4</td><td>2024-12-31</td><td>competitor</td><td>$0.00</td><td>Y</td><td></td><td></td><td>too expensive</td></tr><tr><td>C-5328d6</td><td>A-0b0d6d</td><td>2024-12-31</td><td>competitor</td><td>$0.00</td><td></td><td></td><td></td><td></td></tr><tr><td>C-bfcee5</td><td>A-8e47ca</td><td>2024-12-31</td><td>support</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-8d2855</td><td>A-8bde0c</td><td>2024-12-30</td><td>pricing</td><td>$0.00</td><td></td><td></td><td></td><td></td></tr><tr><td>C-ef2329</td><td>A-0f6450</td><td>2024-12-30</td><td>competitor</td><td>$0.00</td><td></td><td>Y</td><td></td><td></td></tr><tr><td>C-ddade1</td><td>A-463db0</td><td>2024-12-30</td><td>features</td><td>$0.00</td><td></td><td></td><td>Y</td><td></td></tr><tr><td>C-e4261a</td><td>A-417d2f</td><td>2024-12-30</td><td>budget</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-92f889</td><td>A-956988</td><td>2024-12-30</td><td>unknown</td><td>$0.00</td><td></td><td>Y</td><td>Y</td><td>too expensive</td></tr><tr><td>C-23df1e</td><td>A-18793f</td><td>2024-12-30</td><td>support</td><td>$25.41</td><td>Y</td><td></td><td></td><td></td></tr><tr><td>C-3b7c60</td><td>A-0f6450</td><td>2024-12-29</td><td>competitor</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-486194</td><td>A-2ebb4b</td><td>2024-12-29</td><td>features</td><td>$0.00</td><td>Y</td><td></td><td>Y</td><td>missing features</td></tr><tr><td>C-5f43c3</td><td>A-db5e9e</td><td>2024-12-29</td><td>pricing</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-0d470e</td><td>A-7a0d69</td><td>2024-12-29</td><td>budget</td><td>$0.00</td><td>Y</td><td></td><td></td><td></td></tr><tr><td>C-d7de9d</td><td>A-8b0451</td><td>2024-12-29</td><td>budget</td><td>$0.00</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-2de339</td><td>A-e83938</td><td>2024-12-29</td><td>budget</td><td>$13.50</td><td></td><td></td><td></td><td></td></tr><tr><td>C-97ab4b</td><td>A-82d8a6</td><td>2024-12-29</td><td>features</td><td>$0.00</td><td></td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-2cec7e</td><td>A-ce550d</td><td>2024-12-28</td><td>budget</td><td>$0.00</td><td>Y</td><td></td><td></td><td>too expensive</td></tr><tr><td>C-a666a4</td><td>A-4bfa33</td><td>2024-12-28</td><td>unknown</td><td>$7.26</td><td>Y</td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-fba952</td><td>A-118d55</td><td>2024-12-27</td><td>pricing</td><td>$0.00</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-9fe257</td><td>A-157070</td><td>2024-12-27</td><td>features</td><td>$0.00</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-b3d895</td><td>A-0a62f5</td><td>2024-12-27</td><td>support</td><td>$43.60</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-aa3075</td><td>A-7dacce</td><td>2024-12-27</td><td>budget</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-8fcdf5</td><td>A-310452</td><td>2024-12-27</td><td>budget</td><td>$0.00</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-450414</td><td>A-87aa7b</td><td>2024-12-26</td><td>budget</td><td>$0.00</td><td>Y</td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-9c89ca</td><td>A-3a7284</td><td>2024-12-26</td><td>unknown</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-92da55</td><td>A-d26ab4</td><td>2024-12-26</td><td>pricing</td><td>$86.02</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-1eead2</td><td>A-5790f4</td><td>2024-12-26</td><td>support</td><td>$51.18</td><td>Y</td><td></td><td></td><td>too expensive</td></tr><tr><td>C-775d4e</td><td>A-0651a4</td><td>2024-12-25</td><td>support</td><td>$0.00</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-1cea52</td><td>A-310452</td><td>2024-12-25</td><td>budget</td><td>$0.00</td><td>Y</td><td></td><td></td><td></td></tr><tr><td>C-83b55f</td><td>A-5790f4</td><td>2024-12-25</td><td>features</td><td>$392.92</td><td></td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-248550</td><td>A-2922b6</td><td>2024-12-25</td><td>competitor</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-a860c5</td><td>A-5f7781</td><td>2024-12-25</td><td>pricing</td><td>$0.00</td><td></td><td></td><td></td><td></td></tr><tr><td>C-7aa94d</td><td>A-038089</td><td>2024-12-25</td><td>features</td><td>$19.34</td><td></td><td></td><td></td><td>too expensive</td></tr><tr><td>C-193426</td><td>A-7988d1</td><td>2024-12-24</td><td>unknown</td><td>$0.00</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-bd5b55</td><td>A-b07b56</td><td>2024-12-24</td><td>budget</td><td>$0.00</td><td></td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-26865a</td><td>A-854864</td><td>2024-12-24</td><td>support</td><td>$8.47</td><td>Y</td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-366a49</td><td>A-0baac2</td><td>2024-12-24</td><td>unknown</td><td>$68.65</td><td></td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-2c410a</td><td>A-712426</td><td>2024-12-23</td><td>features</td><td>$0.00</td><td>Y</td><td></td><td>Y</td><td>missing features</td></tr><tr><td>C-2cccb0</td><td>A-692f18</td><td>2024-12-23</td><td>support</td><td>$0.00</td><td>Y</td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-70de89</td><td>A-039727</td><td>2024-12-22</td><td>pricing</td><td>$46.49</td><td></td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-08d3b3</td><td>A-3f9cc0</td><td>2024-12-21</td><td>budget</td><td>$0.00</td><td></td><td></td><td>Y</td><td>switched to competitor</td></tr><tr><td>C-28085c</td><td>A-4bfa33</td><td>2024-12-21</td><td>budget</td><td>$92.50</td><td></td><td></td><td></td><td></td></tr><tr><td>C-d716da</td><td>A-96bbc6</td><td>2024-12-21</td><td>budget</td><td>$125.60</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-326d32</td><td>A-34d880</td><td>2024-12-20</td><td>unknown</td><td>$10.40</td><td></td><td></td><td></td><td>missing features</td></tr><tr><td>C-5f450a</td><td>A-c1e51e</td><td>2024-12-20</td><td>support</td><td>$0.00</td><td></td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-95a18e</td><td>A-241e75</td><td>2024-12-19</td><td>features</td><td>$0.00</td><td>Y</td><td></td><td></td><td>switched to competitor</td></tr><tr><td>C-151fb1</td><td>A-fd7ad3</td><td>2024-12-19</td><td>support</td><td>$0.00</td><td>Y</td><td></td><td>Y</td><td>missing features</td></tr><tr><td>C-54993f</td><td>A-c43359</td><td>2024-12-19</td><td>support</td><td>$8.92</td><td></td><td></td><td></td><td>missing features</td></tr>
+        </table>
+    </div>
+</div>
+
+</div><!-- container -->
+
+<script>
+const cfg = {responsive: true, displayModeBar: false};
+const C = {red:'#e94560',green:'#00d2a0',blue:'#4da6ff',yellow:'#ffd700',purple:'#b366ff',orange:'#ff8c42',pink:'#ff6b9d'};
+const L = {
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    font:{color:'#ccc',size:12}, margin:{l:50,r:20,t:30,b:50},
+    xaxis:{gridcolor:'#2a2a3e',zerolinecolor:'#333'},
+    yaxis:{gridcolor:'#2a2a3e',zerolinecolor:'#333'}
+};
+
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.dispatchEvent(new Event('resize'));
+}
+
+// ── OVERVIEW ──
+Plotly.newPlot('chart_segments_pie', [{
+    labels: ['Nunca Churnou','Porta Giratoria','Perdido Permanente','Flag sem Evento'],
+    values: [113,277,75,35],
+    type:'pie', hole:0.5,
+    marker:{colors:[C.green,C.yellow,C.red,C.orange]},
+    textinfo:'label+value+percent',
+    texttemplate:'%{label}<br>%{value} (%{percent})'
+}], {...L, showlegend:false}, cfg);
+
+// Reasons compare
+let all_reasons = ["budget", "competitor", "features", "pricing", "support", "unknown"];
+Plotly.newPlot('chart_reasons_compare', [
+    {x:all_reasons, y:all_reasons.map(r => ({"budget": 27, "features": 27, "support": 27, "pricing": 23, "competitor": 18, "unknown": 13})[r]||0), type:'bar', name:'Perdido Permanente', marker:{color:C.red}},
+    {x:all_reasons, y:all_reasons.map(r => ({"features": 87, "unknown": 82, "budget": 77, "support": 77, "competitor": 74, "pricing": 68})[r]||0), type:'bar', name:'Porta Giratoria', marker:{color:C.yellow}}
+], {...L, barmode:'group'}, cfg);
+
+// Events distribution
+let md = {"0": 148, "1": 177, "2": 116, "3": 47, "4": 10, "5": 2};
+Plotly.newPlot('chart_events_dist', [{
+    x: Object.keys(md), y: Object.values(md), type:'bar',
+    marker:{color: Object.keys(md).map(k => k==='0'?C.green:k==='1'?C.blue:k==='2'?C.yellow:C.red)},
+    text: Object.values(md), textposition:'outside'
+}], {...L, xaxis:{...L.xaxis,title:'Num. Eventos de Churn'}, yaxis:{...L.yaxis,title:'Contas'}}, cfg);
+
+// ── SEGMENTS ──
+function stackedBar(divId, data, xCol) {
+    let cats = data.map(d => d[xCol]);
+    Plotly.newPlot(divId, [
+        {x:cats, y:data.map(d=>d.never), type:'bar', name:'Nunca', marker:{color:C.green}},
+        {x:cats, y:data.map(d=>d.revolving), type:'bar', name:'Porta Giratoria', marker:{color:C.yellow}},
+        {x:cats, y:data.map(d=>d.lost), type:'bar', name:'Perdido', marker:{color:C.red}}
+    ], {...L, barmode:'stack'}, cfg);
+}
+
+stackedBar('chart_ind_stack', [{"industry": "Cybersecurity", "total": 100, "never": 23, "revolving": 61, "lost": 11, "churn_rate": 11.0, "ever_churned_rate": 72.0}, {"industry": "DevTools", "total": 113, "never": 23, "revolving": 55, "lost": 28, "churn_rate": 24.8, "ever_churned_rate": 73.5}, {"industry": "EdTech", "total": 79, "never": 19, "revolving": 47, "lost": 10, "churn_rate": 12.7, "ever_churned_rate": 72.2}, {"industry": "FinTech", "total": 112, "never": 24, "revolving": 63, "lost": 13, "churn_rate": 11.6, "ever_churned_rate": 67.9}, {"industry": "HealthTech", "total": 96, "never": 24, "revolving": 51, "lost": 13, "churn_rate": 13.5, "ever_churned_rate": 66.7}], 'industry');
+stackedBar('chart_plan_stack', [{"plan_tier": "Basic", "total": 168, "never": 40, "revolving": 91, "lost": 24, "churn_rate": 14.3, "ever_churned_rate": 68.5}, {"plan_tier": "Enterprise", "total": 154, "never": 37, "revolving": 83, "lost": 25, "churn_rate": 16.2, "ever_churned_rate": 70.1}, {"plan_tier": "Pro", "total": 178, "never": 36, "revolving": 103, "lost": 26, "churn_rate": 14.6, "ever_churned_rate": 72.5}], 'plan_tier');
+stackedBar('chart_ref_stack', [{"referral_source": "ads", "total": 98, "never": 31, "revolving": 44, "lost": 15, "churn_rate": 15.3, "ever_churned_rate": 60.2}, {"referral_source": "event", "total": 96, "never": 20, "revolving": 47, "lost": 21, "churn_rate": 21.9, "ever_churned_rate": 70.8}, {"referral_source": "organic", "total": 114, "never": 24, "revolving": 70, "lost": 15, "churn_rate": 13.2, "ever_churned_rate": 74.6}, {"referral_source": "other", "total": 103, "never": 20, "revolving": 58, "lost": 15, "churn_rate": 14.6, "ever_churned_rate": 70.9}, {"referral_source": "partner", "total": 89, "never": 18, "revolving": 58, "lost": 9, "churn_rate": 10.1, "ever_churned_rate": 75.3}], 'referral_source');
+stackedBar('chart_country_stack', [{"country": "US", "total": 291, "never": 61, "revolving": 162, "lost": 44, "churn_rate": 15.1, "ever_churned_rate": 70.8}, {"country": "UK", "total": 58, "never": 10, "revolving": 37, "lost": 8, "churn_rate": 13.8, "ever_churned_rate": 77.6}, {"country": "IN", "total": 49, "never": 11, "revolving": 28, "lost": 5, "churn_rate": 10.2, "ever_churned_rate": 67.3}, {"country": "AU", "total": 32, "never": 10, "revolving": 18, "lost": 4, "churn_rate": 12.5, "ever_churned_rate": 68.8}, {"country": "DE", "total": 25, "never": 9, "revolving": 8, "lost": 6, "churn_rate": 24.0, "ever_churned_rate": 56.0}, {"country": "CA", "total": 23, "never": 6, "revolving": 13, "lost": 3, "churn_rate": 13.0, "ever_churned_rate": 69.6}, {"country": "FR", "total": 22, "never": 6, "revolving": 11, "lost": 5, "churn_rate": 22.7, "ever_churned_rate": 72.7}], 'country');
+
+// Heatmaps
+Plotly.newPlot('chart_heatmap_perm', [{
+    z:[[9.7, 19.4, 17.9, 8.8, 15.4], [10.5, 23.8, 14.8, 12.2, 10.0], [12.9, 31.4, 4.2, 13.5, 14.8]], x:["Cybersecurity", "DevTools", "EdTech", "FinTech", "HealthTech"], y:["Basic", "Pro", "Enterprise"],
+    type:'heatmap', colorscale:[[0,'#1a1a2e'],[0.5,'#e94560'],[1,'#ff2020']],
+    text:[[9.7, 19.4, 17.9, 8.8, 15.4], [10.5, 23.8, 14.8, 12.2, 10.0], [12.9, 31.4, 4.2, 13.5, 14.8]], texttemplate:'%{text:.1f}%', showscale:true,
+    colorbar:{title:'%',ticksuffix:'%'}
+}], {...L, yaxis:{...L.yaxis,autorange:'reversed'}}, cfg);
+
+Plotly.newPlot('chart_heatmap_ever', [{
+    z:[[80.6, 66.7, 64.3, 55.9, 74.4], [63.2, 81.0, 70.4, 75.6, 70.0], [74.2, 71.4, 83.3, 70.3, 51.9]], x:["Cybersecurity", "DevTools", "EdTech", "FinTech", "HealthTech"], y:["Basic", "Pro", "Enterprise"],
+    type:'heatmap', colorscale:[[0,'#1a1a2e'],[0.5,'#ffd700'],[1,'#ff8c42']],
+    text:[[80.6, 66.7, 64.3, 55.9, 74.4], [63.2, 81.0, 70.4, 75.6, 70.0], [74.2, 71.4, 83.3, 70.3, 51.9]], texttemplate:'%{text:.1f}%', showscale:true,
+    colorbar:{title:'%',ticksuffix:'%'}
+}], {...L, yaxis:{...L.yaxis,autorange:'reversed'}}, cfg);
+
+// ── REVENUE ──
+Plotly.newPlot('chart_rev_plan', [{
+    labels:["Basic", "Enterprise", "Pro"], values:[595398, 506057, 507319],
+    type:'pie', hole:0.5, marker:{colors:[C.blue,C.yellow,C.red]},
+    textinfo:'label+value+percent', texttemplate:'%{label}<br>${value:,.0f}<br>(%{percent})'
+}], {...L, showlegend:false}, cfg);
+
+Plotly.newPlot('chart_rev_industry', [{
+    labels:["Cybersecurity", "DevTools", "EdTech", "FinTech", "HealthTech"], values:[331550, 521710, 200714, 313160, 241640],
+    type:'pie', hole:0.5, marker:{colors:[C.red,C.blue,C.green,C.yellow,C.purple]},
+    textinfo:'label+value+percent', texttemplate:'%{label}<br>${value:,.0f}<br>(%{percent})'
+}], {...L, showlegend:false}, cfg);
+
+Plotly.newPlot('chart_mrr_dist', [
+    {x:[95, 2842, 5771, 5771, 570, 323, 532, 2205, 796, 3136, 1176, 4802, 588, 0, 0, 13731, 17114, 0, 551, 152, 0, 0, 703, 490, 114, 17313, 5572, 5373, 4776, 551, 342, 2786, 6169, 1393, 285, 5174, 931, 0, 3980, 2786, 2587, 380, 2587, 2985, 855, 1045, 4179, 285, 0, 0, 7960, 441, 2587, 10149, 475, 893, 0, 1568, 1194, 784, 1715, 0, 0, 5174, 1791, 760, 1813, 1045, 1393, 5373, 589, 38, 1127, 627, 570], type:'histogram', name:'Perdido Permanente', marker:{color:'rgba(233,69,96,0.6)'}, nbinsx:25},
+    {x:[1372, 392, 665, 3980, 209, 209, 2156, 2891, 494, 6766, 95, 4975, 931, 784, 1078, 6368, 3184, 665, 798, 57, 2842, 1330, 13333, 5771, 98, 3184, 1813, 7164, 6169, 456, 855, 570, 539, 323, 532, 539, 1176, 266, 1957, 8955, 285, 6368, 171, 190, 646, 1421, 6965, 2989, 5771, 969, 3136, 9353, 7252, 3980, 1617, 6567, 3184, 196, 304, 1176, 2450, 4802, 245, 1995, 646, 588, 12736, 539, 2450, 392, 392, 2254, 5373, 171, 722, 209, 969, 38, 7164, 209, 551, 13731, 1393, 12139, 5771, 2009, 833, 931, 11741, 17114, 171, 2744, 2786, 980, 342, 551, 2189, 6766, 323, 686, 152, 3781, 1791, 1791, 9751, 5970, 779, 1393, 441, 2786, 1960, 441, 6169, 4577, 247, 3582, 133, 304, 703, 1421, 5970, 4508, 3184, 1372, 4776, 196, 703, 882, 14925, 490, 392, 114, 882, 323, 4116, 1225, 456, 3184, 539, 703, 4776, 17313, 3582, 456, 475, 2646, 294, 228, 7164, 5373, 4776, 380, 1194, 551, 4378, 4577, 1372, 1176, 196, 361, 95, 8955, 1393, 539, 784, 855, 532, 1791, 931, 294, 1323, 76, 784, 441, 437, 7987, 12537, 294, 342, 684, 2786, 4263, 399, 2107, 418, 14527, 1029, 1767, 931, 1372, 3184, 1078, 6027, 5771, 441, 6169, 855, 3582, 2189, 1748, 1121, 10348, 490, 399, 247, 1393, 2587, 2587, 285, 4378, 5174, 171, 1666, 114, 4776, 833, 931, 152, 9552, 532, 2261, 1078, 882, 735, 855, 2189, 3980, 190, 2205, 361, 2786, 3381, 1194, 2388, 3582, 10746, 437, 1617, 2587, 380, 171, 152, 1372, 3781, 3381, 6766, 637, 2587, 2985, 874, 2009, 3582, 855, 1666, 17711, 1045, 190, 2009, 2254, 13532, 95, 4179, 3980, 266, 1764, 646, 323, 5572, 2499, 2597, 1127, 3184, 361, 4214, 380, 8159, 588, 588, 931, 285, 16517, 343, 1127, 3582, 7363, 8159, 475, 796, 49, 6567, 5373, 833, 855, 8159, 3383, 1127, 722, 3184, 1911, 1078, 2786, 7960, 209, 2744, 589, 6567, 1393, 995, 1393, 2597, 539, 441, 2587, 722, 532, 266, 2401, 3184, 2189, 3383, 1421, 597, 171, 342, 1862, 2388, 665, 4577, 2587, 513, 2597, 4179, 6368, 722, 836, 5572, 2388, 1911, 570, 13930, 10149, 475, 1274, 8557, 380, 893, 995, 95, 9154, 7960, 15920, 1421, 19, 627, 1176, 398, 3383, 285, 513, 798, 2009, 399, 4165, 437, 8955, 399, 665, 247, 2254, 1045, 323, 950, 7363, 5174, 597, 247, 8955, 247, 8159, 133, 1568, 2388, 437, 588, 1862, 133, 3582, 1330, 1194, 1176, 4606, 304, 6468, 6027, 4975, 1617, 1225, 1960, 646, 2587, 995, 5572, 2646, 323, 1990, 784, 5174, 4577, 1715, 551, 1592, 147, 6567, 2156, 784, 2891, 418, 950, 342, 5733, 2388, 285, 1194, 1592, 76, 5174, 1791, 1127, 3781, 285, 2499, 2587, 735, 4179, 398, 2388, 456, 13333, 2985, 1960, 760, 342, 627, 2786, 6169, 4179, 8159, 8756, 833, 1990, 2985, 11542, 1813, 1045, 49, 1617, 2793, 1393, 1026, 1519, 646, 5373, 4975, 589, 95, 588, 8358, 456, 152, 722, 38, 1127, 1421, 1791, 6368, 38, 686, 95, 171, 1990, 6169, 9751, 6965, 784, 5970, 3582, 1330, 3185, 2388, 5771, 627, 551, 11542, 2786, 1421, 4577, 399, 4577, 980, 570], type:'histogram', name:'Ativos', marker:{color:'rgba(0,210,160,0.4)'}, nbinsx:25}
+], {...L, barmode:'overlay', xaxis:{...L.xaxis,title:'MRR ($)'}}, cfg);
+
+Plotly.newPlot('chart_refund', [{
+    x:["budget", "competitor", "features", "pricing", "support", "unknown"], y:[1247.54, 1203.53, 1905.9, 1333.25, 1219.64, 1742.39],
+    type:'bar', marker:{color:[C.red,C.orange,C.yellow,C.blue,C.purple,C.green]},
+    text:["$1,248", "$1,204", "$1,906", "$1,333", "$1,220", "$1,742"], textposition:'outside'
+}], {...L, yaxis:{...L.yaxis,title:'Total Refunds ($)'}}, cfg);
+
+// ── USAGE ──
+function hbar(divId, data, color) {
+    Plotly.newPlot(divId, [{
+        y:Object.keys(data), x:Object.values(data), type:'bar', orientation:'h', marker:{color:color}
+    }], {...L, margin:{...L.margin,l:100}, yaxis:{...L.yaxis,autorange:'reversed'}}, cfg);
+}
+hbar('chart_feat_never', {"feature_29": 1577, "feature_36": 1563, "feature_11": 1562, "feature_20": 1539, "feature_33": 1481, "feature_2": 1477, "feature_34": 1464, "feature_27": 1460, "feature_30": 1448, "feature_23": 1432}, C.green);
+hbar('chart_feat_lost', {"feature_34": 1266, "feature_4": 1175, "feature_11": 1148, "feature_15": 1123, "feature_26": 1117, "feature_37": 1090, "feature_1": 1087, "feature_38": 1073, "feature_20": 1051, "feature_10": 1045}, C.red);
+
+Plotly.newPlot('chart_errors_lost', [{
+    y:["feature_26", "feature_35", "feature_4", "feature_40", "feature_10", "feature_11", "feature_19", "feature_32", "feature_34", "feature_2"], x:[85, 73, 71, 65, 64, 63, 62, 62, 62, 61],
+    type:'bar', orientation:'h', marker:{color:C.orange}, name:'Total Erros'
+}], {...L, margin:{...L.margin,l:100}, yaxis:{...L.yaxis,autorange:'reversed'}}, cfg);
+
+// ── SUPPORT ──
+Plotly.newPlot('chart_sat_dist', [{
+    x:["3", "4", "5"], y:[396, 405, 374],
+    type:'bar', marker:{color:[C.red,C.yellow,C.green]},
+    text:[396, 405, 374], textposition:'outside'
+}], {...L, xaxis:{...L.xaxis,title:'Score'}, yaxis:{...L.yaxis,title:'Tickets'}}, cfg);
+
+// ── TIMELINE ──
+let months = ["2023-01", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"];
+let perm_vals = months.map(m => ({"2023-01": 1, "2023-03": 2, "2023-05": 2, "2023-07": 2, "2023-08": 2, "2023-09": 1, "2023-11": 6, "2023-12": 2, "2024-01": 3, "2024-02": 2, "2024-03": 3, "2024-04": 8, "2024-05": 8, "2024-06": 11, "2024-07": 9, "2024-08": 10, "2024-09": 13, "2024-10": 22, "2024-11": 10, "2024-12": 18})[m]||0);
+let revolv_vals = months.map(m => ({"2023-03": 3, "2023-04": 3, "2023-05": 1, "2023-06": 5, "2023-07": 4, "2023-08": 5, "2023-09": 5, "2023-10": 10, "2023-11": 5, "2023-12": 14, "2024-01": 17, "2024-02": 8, "2024-03": 21, "2024-04": 17, "2024-05": 19, "2024-06": 29, "2024-07": 26, "2024-08": 32, "2024-09": 40, "2024-10": 44, "2024-11": 58, "2024-12": 99})[m]||0);
+Plotly.newPlot('chart_timeline', [
+    {x:months, y:perm_vals, type:'bar', name:'Perdido Permanente', marker:{color:C.red}},
+    {x:months, y:revolv_vals, type:'bar', name:'Porta Giratoria', marker:{color:C.yellow}}
+], {...L, barmode:'stack', xaxis:{...L.xaxis,title:'Mes'}}, cfg);
+
+Plotly.newPlot('chart_cohort', [
+    {x:["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"], y:[17.6, 33.3, 15.0, 13.3, 11.5, 15.4, 14.3, 12.5, 17.4, 25.0, 20.0, 15.0, 12.5, 15.4, 11.1, 13.6, 18.2, 14.3, 7.7, 9.5, 32.0, 9.7, 6.2, 5.9],
+      type:'bar', name:'Churn Permanente %', marker:{color:C.red}},
+    {x:["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"], y:[70.6, 66.7, 80.0, 60.0, 50.0, 69.2, 71.4, 68.8, 82.6, 85.0, 76.0, 80.0, 75.0, 61.5, 70.4, 77.3, 68.2, 71.4, 61.5, 57.1, 84.0, 61.3, 75.0, 64.7],
+      type:'scatter', mode:'lines+markers', name:'Ja Churnou %', line:{color:C.yellow,width:2}},
+    {x:["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"], y:[17, 18, 20, 15, 26, 13, 14, 16, 23, 20, 25, 20, 16, 13, 27, 22, 22, 21, 26, 21, 25, 31, 32, 17],
+      type:'scatter', mode:'lines+markers', name:'Contas no Cohort', yaxis:'y2', line:{color:C.blue,width:2,dash:'dot'}}
+], {...L,
+    yaxis:{...L.yaxis,title:'%'},
+    yaxis2:{overlaying:'y',side:'right',title:'Contas',gridcolor:'transparent'}
+}, cfg);
+
+Plotly.newPlot('chart_days_churn', [{
+    x:["0-30d", "31-60d", "61-90d", "91-180d", "181-365d", "365d+"], y:[112, 79, 63, 111, 142, 90],
+    type:'bar', marker:{color:C.purple},
+    text:[112, 79, 63, 111, 142, 90], textposition:'outside'
+}], {...L}, cfg);
+
+// ── MULTI-CHURN ──
+Plotly.newPlot('chart_multi_dist', [{
+    x:['1 churn','2 churns','3 churns','4 churns','5 churns'],
+    y:[177,116,47,10,2],
+    type:'bar', marker:{color:[C.blue,C.yellow,C.orange,C.red,C.red]},
+    text:[177,116,47,10,2],
+    textposition:'outside'
+}], {...L}, cfg);
+
+Plotly.newPlot('chart_upgrade_seg', [{
+    x:['Perdido Permanente','Porta Giratoria'],
+    y:[26,97],
+    type:'bar', marker:{color:[C.red,C.yellow]},
+    text:['26 (19% dos eventos)','97 (21% dos eventos)'],
+    textposition:'outside'
+}], {...L, yaxis:{...L.yaxis,title:'Eventos com Upgrade Recente'}}, cfg);
+
+// ── MATRIX CHARTS ──
+let segs3 = ['Nunca Churnou','Porta Giratoria','Perdido Permanente'];
+let healthLists = {"Nunca Churnou": [59.8, 65.7, 73.4, 66.4, 43.4, 71.7, 57.3, 53.9, 69.6, 58.3, 78.2, 70.2, 71.5, 63.0, 64.3, 56.7, 66.1, 68.1, 64.4, 55.9, 60.1, 60.1, 61.4, 59.9, 60.3, 62.5, 57.0, 65.5, 66.1, 63.2, 68.1, 40.6, 45.7, 66.3, 68.8, 68.0, 63.7, 71.9, 47.8, 51.4, 64.2, 67.4, 63.5, 51.1, 62.3, 51.9, 49.1, 56.9, 62.8, 67.9, 57.7, 55.5, 57.2, 67.0, 63.1, 67.5, 61.2, 73.5, 69.2, 67.8, 63.6, 54.8, 71.4, 54.7, 48.1, 62.8, 69.9, 68.6, 60.1, 68.5, 59.5, 65.3, 58.6, 64.7, 43.2, 62.3, 59.2, 76.4, 53.7, 70.3, 67.7, 66.2, 75.1, 76.2, 70.1, 37.5, 70.5, 68.6, 48.9, 61.9, 51.8, 48.9, 58.0, 66.0, 61.8, 57.4, 64.3, 67.1, 52.3, 45.0, 75.0, 80.1, 58.4, 62.3, 42.3, 59.9, 70.1, 60.4, 69.7, 43.4, 65.5, 68.8, 66.1], "Porta Giratoria": [64.1, 74.9, 63.0, 59.6, 61.5, 72.1, 70.9, 67.2, 61.0, 69.6, 67.4, 63.9, 61.9, 46.3, 67.1, 71.0, 70.7, 36.2, 71.4, 52.5, 71.1, 72.2, 71.2, 65.4, 69.6, 71.0, 63.6, 64.4, 65.8, 65.2, 60.5, 64.8, 66.7, 67.1, 62.3, 53.2, 65.2, 67.6, 62.2, 71.6, 66.8, 68.9, 67.4, 71.1, 74.1, 67.2, 67.8, 84.6, 66.1, 79.0, 59.6, 62.2, 67.4, 67.4, 52.1, 72.3, 55.7, 65.0, 63.2, 80.1, 53.3, 57.1, 62.0, 65.7, 53.1, 80.2, 56.7, 73.8, 59.4, 67.1, 72.8, 68.2, 73.1, 68.8, 57.8, 59.6, 60.4, 70.5, 66.8, 70.5, 70.1, 75.2, 70.5, 65.7, 60.9, 61.7, 69.6, 63.3, 64.4, 44.5, 50.1, 46.2, 59.5, 52.8, 61.8, 71.9, 52.7, 71.0, 63.9, 64.8, 58.3, 71.1, 58.4, 74.4, 53.9, 64.9, 74.7, 71.9, 66.9, 59.8, 68.9, 74.1, 69.2, 55.2, 56.1, 86.6, 59.8, 70.2, 53.1, 53.5, 46.2, 70.0, 75.4, 56.2, 66.1, 52.0, 78.1, 68.3, 64.8, 53.5, 47.1, 68.2, 62.0, 60.5, 67.9, 60.0, 71.6, 68.0, 68.5, 67.4, 57.6, 65.4, 62.0, 59.4, 62.9, 61.8, 72.3, 65.8, 57.7, 73.0, 54.4, 71.5, 71.7, 62.1, 66.5, 46.7, 78.0, 44.6, 57.4, 65.3, 26.2, 75.0, 63.2, 66.9, 66.7, 62.1, 82.3, 39.0, 60.0, 60.9, 63.3, 50.1, 72.8, 64.3, 70.1, 60.9, 48.8, 72.4, 62.3, 64.7, 52.1, 45.9, 67.3, 68.7, 57.2, 71.2, 57.7, 57.0, 68.6, 51.5, 36.2, 59.9, 56.7, 66.0, 64.5, 50.8, 76.7, 64.0, 62.5, 51.6, 56.0, 66.2, 67.7, 73.3, 58.7, 70.2, 65.5, 54.4, 62.9, 57.2, 61.2, 71.6, 67.1, 57.5, 74.4, 72.2, 76.1, 68.6, 74.8, 68.1, 44.4, 62.1, 53.8, 63.8, 67.9, 66.6, 63.7, 53.5, 55.8, 58.4, 71.0, 55.8, 75.5, 60.2, 74.2, 38.7, 59.2, 61.1, 55.0, 64.9, 74.1, 72.7, 60.1, 67.7, 67.0, 56.6, 71.9, 63.3, 64.1, 42.0, 58.6, 44.6, 72.5, 48.3, 42.9, 71.8, 68.6, 76.4, 62.2, 71.5, 60.0, 56.4, 59.2, 53.0, 56.1, 66.6, 70.7, 77.2, 64.5, 77.1, 69.4, 77.2, 50.5, 51.9, 61.4, 65.0, 75.3], "Perdido Permanente": [65.4, 64.9, 83.6, 67.1, 65.3, 65.2, 75.1, 68.1, 64.2, 65.8, 61.2, 58.8, 66.1, 59.9, 74.3, 63.5, 55.9, 67.3, 59.9, 66.3, 75.2, 67.7, 78.5, 47.9, 60.3, 59.4, 54.8, 44.8, 65.2, 72.2, 77.6, 54.1, 69.0, 66.3, 63.2, 75.6, 63.7, 58.0, 60.4, 61.1, 66.3, 78.2, 56.4, 43.1, 58.2, 57.1, 59.5, 70.4, 61.9, 53.7, 68.6, 68.8, 56.8, 67.0, 71.5, 68.8, 56.4, 71.9, 69.2, 71.0, 75.5, 69.9, 52.5, 53.3, 68.6, 69.2, 68.8, 73.0, 65.1, 62.3, 66.4, 52.1, 72.5, 76.4, 62.7]};
+let healthData = segs3.map((seg,i) => ({
+    y:healthLists[seg], type:'box', name:seg, marker:{color:[C.green,C.yellow,C.red][i]}
+}));
+Plotly.newPlot('chart_health_box', healthData, {...L, showlegend:false}, cfg);
+
+let hzData = {"Critical": {"Nunca Churnou": 0, "Porta Giratoria": 1, "Perdido Permanente": 0}, "Warning": {"Nunca Churnou": 13, "Porta Giratoria": 18, "Perdido Permanente": 3}, "Good": {"Nunca Churnou": 83, "Porta Giratoria": 186, "Perdido Permanente": 55}, "Excellent": {"Nunca Churnou": 17, "Porta Giratoria": 72, "Perdido Permanente": 17}};
+let zones = ['Critical','Warning','Good','Excellent'];
+let zoneColors = [C.red, C.orange, C.yellow, C.green];
+let hzTraces = zones.map((z,i) => ({
+    x: segs3, y: segs3.map(s => hzData[z][s]||0),
+    type:'bar', name:z, marker:{color:zoneColors[i]}
+}));
+Plotly.newPlot('chart_health_zones', hzTraces, {...L, barmode:'stack'}, cfg);
+
+Plotly.newPlot('chart_vr_counts', [{
+    z: [[3, 93, 71], [2, 81, 83], [1, 79, 87]], x: ["High Risk", "Med Risk", "Low Risk"], y: ["Low", "Mid", "High"],
+    type:'heatmap', colorscale:[[0,'#1a1a2e'],[1,'#4da6ff']],
+    text: [[3, 93, 71], [2, 81, 83], [1, 79, 87]], texttemplate:'%{text}', showscale:true,
+    colorbar:{title:'Contas'}
+}], {...L, yaxis:{...L.yaxis,autorange:'reversed'}}, cfg);
+
+Plotly.newPlot('chart_vr_lost', [{
+    z: [[0, 14, 13], [0, 11, 11], [0, 8, 18]], x: ["High Risk", "Med Risk", "Low Risk"], y: ["Low", "Mid", "High"],
+    type:'heatmap', colorscale:[[0,'#1a1a2e'],[0.5,'#e94560'],[1,'#ff2020']],
+    text: [[0, 14, 13], [0, 11, 11], [0, 8, 18]], texttemplate:'%{text} perdidos', showscale:true,
+    colorbar:{title:'Perdidos'}
+}], {...L, yaxis:{...L.yaxis,autorange:'reversed'}}, cfg);
+
+let scatterData = {"Nunca Churnou": [{"health_score": 59.8, "mrr_amount": 5174, "account_id": "A-a0ca4e", "total_events": 39}, {"health_score": 65.7, "mrr_amount": 1121, "account_id": "A-d40bf7", "total_events": 55}, {"health_score": 73.4, "mrr_amount": 0, "account_id": "A-6c093d", "total_events": 64}, {"health_score": 66.4, "mrr_amount": 1421, "account_id": "A-ce66f8", "total_events": 46}, {"health_score": 43.4, "mrr_amount": 152, "account_id": "A-c42f1f", "total_events": 35}, {"health_score": 71.7, "mrr_amount": 931, "account_id": "A-00cac8", "total_events": 58}, {"health_score": 57.3, "mrr_amount": 3184, "account_id": "A-45ce7a", "total_events": 39}, {"health_score": 53.9, "mrr_amount": 95, "account_id": "A-f446b6", "total_events": 39}, {"health_score": 69.6, "mrr_amount": 2009, "account_id": "A-1b7577", "total_events": 62}, {"health_score": 58.3, "mrr_amount": 0, "account_id": "A-9077b0", "total_events": 46}, {"health_score": 78.2, "mrr_amount": 779, "account_id": "A-6f8ad2", "total_events": 88}, {"health_score": 70.2, "mrr_amount": 11741, "account_id": "A-9badbd", "total_events": 70}, {"health_score": 71.5, "mrr_amount": 7363, "account_id": "A-9174e0", "total_events": 69}, {"health_score": 63.0, "mrr_amount": 0, "account_id": "A-a1bbb6", "total_events": 37}, {"health_score": 64.3, "mrr_amount": 1519, "account_id": "A-432483", "total_events": 45}, {"health_score": 56.7, "mrr_amount": 1791, "account_id": "A-fe79a5", "total_events": 33}, {"health_score": 66.1, "mrr_amount": 0, "account_id": "A-66224b", "total_events": 61}, {"health_score": 68.1, "mrr_amount": 8159, "account_id": "A-91e948", "total_events": 40}, {"health_score": 64.4, "mrr_amount": 0, "account_id": "A-3a5ad8", "total_events": 52}, {"health_score": 55.9, "mrr_amount": 1715, "account_id": "A-65a46c", "total_events": 38}, {"health_score": 60.1, "mrr_amount": 0, "account_id": "A-fabe19", "total_events": 33}, {"health_score": 60.1, "mrr_amount": 995, "account_id": "A-adc1f3", "total_events": 36}, {"health_score": 61.4, "mrr_amount": 380, "account_id": "A-186a44", "total_events": 61}, {"health_score": 59.9, "mrr_amount": 209, "account_id": "A-22f2df", "total_events": 42}, {"health_score": 60.3, "mrr_amount": 1862, "account_id": "A-ad296b", "total_events": 31}, {"health_score": 62.5, "mrr_amount": 3582, "account_id": "A-0aaf6e", "total_events": 57}, {"health_score": 57.0, "mrr_amount": 171, "account_id": "A-92a333", "total_events": 36}, {"health_score": 65.5, "mrr_amount": 3383, "account_id": "A-7d514c", "total_events": 48}, {"health_score": 66.1, "mrr_amount": 3184, "account_id": "A-e2cd1b", "total_events": 49}, {"health_score": 63.2, "mrr_amount": 1470, "account_id": "A-52dd88", "total_events": 50}, {"health_score": 68.1, "mrr_amount": 18507, "account_id": "A-5c046d", "total_events": 46}, {"health_score": 40.6, "mrr_amount": 0, "account_id": "A-fb186e", "total_events": 20}, {"health_score": 45.7, "mrr_amount": 0, "account_id": "A-671f31", "total_events": 17}, {"health_score": 66.3, "mrr_amount": 2985, "account_id": "A-7da956", "total_events": 51}, {"health_score": 68.8, "mrr_amount": 0, "account_id": "A-019782", "total_events": 55}, {"health_score": 68.0, "mrr_amount": 398, "account_id": "A-544d0a", "total_events": 47}, {"health_score": 63.7, "mrr_amount": 784, "account_id": "A-f97b9a", "total_events": 56}, {"health_score": 71.9, "mrr_amount": 361, "account_id": "A-2f6a32", "total_events": 66}, {"health_score": 47.8, "mrr_amount": 0, "account_id": "A-856b1e", "total_events": 23}, {"health_score": 51.4, "mrr_amount": 266, "account_id": "A-17939a", "total_events": 47}, {"health_score": 64.2, "mrr_amount": 836, "account_id": "A-d27f50", "total_events": 50}, {"health_score": 67.4, "mrr_amount": 1791, "account_id": "A-e36807", "total_events": 49}, {"health_score": 63.5, "mrr_amount": 722, "account_id": "A-e60f9d", "total_events": 62}, {"health_score": 51.1, "mrr_amount": 1078, "account_id": "A-5b051a", "total_events": 16}, {"health_score": 62.3, "mrr_amount": 1862, "account_id": "A-779e4e", "total_events": 44}, {"health_score": 51.9, "mrr_amount": 3980, "account_id": "A-1986ca", "total_events": 37}, {"health_score": 49.1, "mrr_amount": 0, "account_id": "A-508199", "total_events": 24}, {"health_score": 56.9, "mrr_amount": 4776, "account_id": "A-410e86", "total_events": 30}, {"health_score": 62.8, "mrr_amount": 7164, "account_id": "A-de58ca", "total_events": 49}, {"health_score": 67.9, "mrr_amount": 133, "account_id": "A-3c1a3f", "total_events": 51}, {"health_score": 57.7, "mrr_amount": 3920, "account_id": "A-b48f73", "total_events": 44}, {"health_score": 55.5, "mrr_amount": 2940, "account_id": "A-9bfc9f", "total_events": 37}, {"health_score": 57.2, "mrr_amount": 245, "account_id": "A-de24d5", "total_events": 53}, {"health_score": 67.0, "mrr_amount": 4508, "account_id": "A-40906c", "total_events": 63}, {"health_score": 63.1, "mrr_amount": 882, "account_id": "A-328bd0", "total_events": 61}, {"health_score": 67.5, "mrr_amount": 0, "account_id": "A-b3fe05", "total_events": 43}, {"health_score": 61.2, "mrr_amount": 323, "account_id": "A-86cdb4", "total_events": 49}, {"health_score": 73.5, "mrr_amount": 7363, "account_id": "A-bd4708", "total_events": 64}, {"health_score": 69.2, "mrr_amount": 1225, "account_id": "A-92a3af", "total_events": 67}, {"health_score": 67.8, "mrr_amount": 4776, "account_id": "A-474ad4", "total_events": 64}, {"health_score": 63.6, "mrr_amount": 2842, "account_id": "A-fd9422", "total_events": 44}, {"health_score": 54.8, "mrr_amount": 0, "account_id": "A-560d27", "total_events": 59}, {"health_score": 71.4, "mrr_amount": 0, "account_id": "A-2789e3", "total_events": 65}, {"health_score": 54.7, "mrr_amount": 12736, "account_id": "A-1f7acb", "total_events": 53}, {"health_score": 48.1, "mrr_amount": 2842, "account_id": "A-e98302", "total_events": 30}, {"health_score": 62.8, "mrr_amount": 1791, "account_id": "A-625d0b", "total_events": 54}, {"health_score": 69.9, "mrr_amount": 418, "account_id": "A-4e631b", "total_events": 49}, {"health_score": 68.6, "mrr_amount": 931, "account_id": "A-443f6f", "total_events": 56}, {"health_score": 60.1, "mrr_amount": 147, "account_id": "A-ced9aa", "total_events": 55}, {"health_score": 68.5, "mrr_amount": 9950, "account_id": "A-883b7d", "total_events": 66}, {"health_score": 59.5, "mrr_amount": 686, "account_id": "A-c62e55", "total_events": 32}, {"health_score": 65.3, "mrr_amount": 8159, "account_id": "A-e4144b", "total_events": 43}, {"health_score": 58.6, "mrr_amount": 490, "account_id": "A-96215d", "total_events": 32}, {"health_score": 64.7, "mrr_amount": 398, "account_id": "A-2b9d3e", "total_events": 45}, {"health_score": 43.2, "mrr_amount": 2189, "account_id": "A-9a532a", "total_events": 18}, {"health_score": 62.3, "mrr_amount": 1127, "account_id": "A-6843f2", "total_events": 46}, {"health_score": 59.2, "mrr_amount": 665, "account_id": "A-bc4d48", "total_events": 32}, {"health_score": 76.4, "mrr_amount": 0, "account_id": "A-e6afc1", "total_events": 71}, {"health_score": 53.7, "mrr_amount": 6368, "account_id": "A-94c3cd", "total_events": 31}, {"health_score": 70.3, "mrr_amount": 1372, "account_id": "A-bb2f49", "total_events": 60}, {"health_score": 67.7, "mrr_amount": 4263, "account_id": "A-5a215a", "total_events": 80}, {"health_score": 66.2, "mrr_amount": 0, "account_id": "A-f9cc74", "total_events": 50}, {"health_score": 75.1, "mrr_amount": 882, "account_id": "A-d4ac0e", "total_events": 80}, {"health_score": 76.2, "mrr_amount": 20895, "account_id": "A-1f0636", "total_events": 68}, {"health_score": 70.1, "mrr_amount": 513, "account_id": "A-54d94a", "total_events": 59}, {"health_score": 37.5, "mrr_amount": 0, "account_id": "A-524364", "total_events": 26}, {"health_score": 70.5, "mrr_amount": 1862, "account_id": "A-756192", "total_events": 64}, {"health_score": 68.6, "mrr_amount": 3980, "account_id": "A-49b828", "total_events": 65}, {"health_score": 48.9, "mrr_amount": 0, "account_id": "A-940b8b", "total_events": 35}, {"health_score": 61.9, "mrr_amount": 23283, "account_id": "A-d4e0d4", "total_events": 49}, {"health_score": 51.8, "mrr_amount": 0, "account_id": "A-c7e58b", "total_events": 34}, {"health_score": 48.9, "mrr_amount": 418, "account_id": "A-bbe56f", "total_events": 22}, {"health_score": 58.0, "mrr_amount": 0, "account_id": "A-7c5768", "total_events": 46}, {"health_score": 66.0, "mrr_amount": 13731, "account_id": "A-7920cc", "total_events": 62}, {"health_score": 61.8, "mrr_amount": 2109, "account_id": "A-fdfc91", "total_events": 56}, {"health_score": 57.4, "mrr_amount": 1225, "account_id": "A-cb6cc6", "total_events": 35}, {"health_score": 64.3, "mrr_amount": 1194, "account_id": "A-d62e02", "total_events": 34}, {"health_score": 67.1, "mrr_amount": 342, "account_id": "A-59f724", "total_events": 68}, {"health_score": 52.3, "mrr_amount": 5373, "account_id": "A-297a2d", "total_events": 25}, {"health_score": 45.0, "mrr_amount": 7960, "account_id": "A-cbbe12", "total_events": 22}, {"health_score": 75.0, "mrr_amount": 323, "account_id": "A-427b69", "total_events": 70}, {"health_score": 80.1, "mrr_amount": 392, "account_id": "A-054577", "total_events": 85}, {"health_score": 58.4, "mrr_amount": 152, "account_id": "A-bc87bc", "total_events": 36}, {"health_score": 62.3, "mrr_amount": 2205, "account_id": "A-0158bb", "total_events": 36}, {"health_score": 42.3, "mrr_amount": 551, "account_id": "A-f19b24", "total_events": 12}, {"health_score": 59.9, "mrr_amount": 380, "account_id": "A-42b791", "total_events": 32}, {"health_score": 70.1, "mrr_amount": 6965, "account_id": "A-068fc6", "total_events": 59}, {"health_score": 60.4, "mrr_amount": 3383, "account_id": "A-a2485e", "total_events": 28}, {"health_score": 69.7, "mrr_amount": 0, "account_id": "A-cc98bc", "total_events": 53}, {"health_score": 43.4, "mrr_amount": 950, "account_id": "A-700ade", "total_events": 29}, {"health_score": 65.5, "mrr_amount": 2646, "account_id": "A-4a4c2d", "total_events": 59}, {"health_score": 68.8, "mrr_amount": 931, "account_id": "A-970c97", "total_events": 44}, {"health_score": 66.1, "mrr_amount": 4179, "account_id": "A-55f257", "total_events": 53}], "Porta Giratoria": [{"health_score": 64.1, "mrr_amount": 836, "account_id": "A-2e4581", "total_events": 55}, {"health_score": 74.9, "mrr_amount": 98, "account_id": "A-0a282f", "total_events": 83}, {"health_score": 63.0, "mrr_amount": 1176, "account_id": "A-1f0ac7", "total_events": 41}, {"health_score": 59.6, "mrr_amount": 0, "account_id": "A-1b9609", "total_events": 47}, {"health_score": 61.5, "mrr_amount": 1568, "account_id": "A-e5d6ab", "total_events": 41}, {"health_score": 72.1, "mrr_amount": 1470, "account_id": "A-462d45", "total_events": 69}, {"health_score": 70.9, "mrr_amount": 6368, "account_id": "A-956988", "total_events": 70}, {"health_score": 67.2, "mrr_amount": 532, "account_id": "A-ac14bb", "total_events": 54}, {"health_score": 61.0, "mrr_amount": 735, "account_id": "A-463db0", "total_events": 37}, {"health_score": 69.6, "mrr_amount": 4378, "account_id": "A-832ec2", "total_events": 49}, {"health_score": 67.4, "mrr_amount": 0, "account_id": "A-684255", "total_events": 66}, {"health_score": 63.9, "mrr_amount": 0, "account_id": "A-9f2731", "total_events": 32}, {"health_score": 61.9, "mrr_amount": 494, "account_id": "A-eb7fac", "total_events": 53}, {"health_score": 46.3, "mrr_amount": 3980, "account_id": "A-b20d99", "total_events": 33}, {"health_score": 67.1, "mrr_amount": 1666, "account_id": "A-396e5f", "total_events": 55}, {"health_score": 71.0, "mrr_amount": 285, "account_id": "A-8145a0", "total_events": 64}, {"health_score": 70.7, "mrr_amount": 1813, "account_id": "A-bad8c1", "total_events": 37}, {"health_score": 36.2, "mrr_amount": 0, "account_id": "A-44dc83", "total_events": 24}, {"health_score": 71.4, "mrr_amount": 0, "account_id": "A-a45270", "total_events": 71}, {"health_score": 52.5, "mrr_amount": 980, "account_id": "A-854864", "total_events": 24}, {"health_score": 71.1, "mrr_amount": 2842, "account_id": "A-05f0e5", "total_events": 67}, {"health_score": 72.2, "mrr_amount": 1715, "account_id": "A-2bc93d", "total_events": 67}, {"health_score": 71.2, "mrr_amount": 570, "account_id": "A-f3ff05", "total_events": 66}, {"health_score": 65.4, "mrr_amount": 6766, "account_id": "A-2d4502", "total_events": 47}, {"health_score": 69.6, "mrr_amount": 686, "account_id": "A-6a4e2d", "total_events": 59}, {"health_score": 71.0, "mrr_amount": 627, "account_id": "A-eb7c38", "total_events": 70}, {"health_score": 63.6, "mrr_amount": 10746, "account_id": "A-c37601", "total_events": 48}, {"health_score": 64.4, "mrr_amount": 6368, "account_id": "A-3b5cd1", "total_events": 52}, {"health_score": 65.8, "mrr_amount": 2587, "account_id": "A-94f8c9", "total_events": 77}, {"health_score": 65.2, "mrr_amount": 1078, "account_id": "A-02fac6", "total_events": 53}, {"health_score": 60.5, "mrr_amount": 494, "account_id": "A-c1dfe1", "total_events": 39}, {"health_score": 64.8, "mrr_amount": 0, "account_id": "A-1b707d", "total_events": 38}, {"health_score": 66.7, "mrr_amount": 0, "account_id": "A-4d1e75", "total_events": 51}, {"health_score": 67.1, "mrr_amount": 784, "account_id": "A-378b99", "total_events": 58}, {"health_score": 62.3, "mrr_amount": 779, "account_id": "A-94d3da", "total_events": 48}, {"health_score": 53.2, "mrr_amount": 627, "account_id": "A-e351e1", "total_events": 29}, {"health_score": 65.2, "mrr_amount": 13930, "account_id": "A-7e0a10", "total_events": 50}, {"health_score": 67.6, "mrr_amount": 5771, "account_id": "A-118d55", "total_events": 60}, {"health_score": 62.2, "mrr_amount": 8557, "account_id": "A-526d93", "total_events": 56}, {"health_score": 71.6, "mrr_amount": 361, "account_id": "A-f92792", "total_events": 53}, {"health_score": 66.8, "mrr_amount": 980, "account_id": "A-2922b6", "total_events": 37}, {"health_score": 68.9, "mrr_amount": 9950, "account_id": "A-9b9fe9", "total_events": 58}, {"health_score": 67.4, "mrr_amount": 343, "account_id": "A-a8b49c", "total_events": 54}, {"health_score": 71.1, "mrr_amount": 5174, "account_id": "A-c45b23", "total_events": 59}, {"health_score": 74.1, "mrr_amount": 2156, "account_id": "A-02cd81", "total_events": 72}, {"health_score": 67.2, "mrr_amount": 570, "account_id": "A-ee42db", "total_events": 54}, {"health_score": 67.8, "mrr_amount": 2744, "account_id": "A-98a59a", "total_events": 44}, {"health_score": 84.6, "mrr_amount": 7562, "account_id": "A-726cfa", "total_events": 98}, {"health_score": 66.1, "mrr_amount": 722, "account_id": "A-c43359", "total_events": 47}, {"health_score": 79.0, "mrr_amount": 722, "account_id": "A-157070", "total_events": 71}, {"health_score": 59.6, "mrr_amount": 3184, "account_id": "A-40a557", "total_events": 39}, {"health_score": 62.2, "mrr_amount": 646, "account_id": "A-104f1a", "total_events": 44}, {"health_score": 67.4, "mrr_amount": 0, "account_id": "A-7988d1", "total_events": 46}, {"health_score": 67.4, "mrr_amount": 2352, "account_id": "A-faa28c", "total_events": 59}, {"health_score": 52.1, "mrr_amount": 1083, "account_id": "A-f25509", "total_events": 23}, {"health_score": 72.3, "mrr_amount": 1519, "account_id": "A-3a7284", "total_events": 60}, {"health_score": 55.7, "mrr_amount": 551, "account_id": "A-fd7ad3", "total_events": 56}, {"health_score": 65.0, "mrr_amount": 833, "account_id": "A-e888d1", "total_events": 52}, {"health_score": 63.2, "mrr_amount": 1225, "account_id": "A-9289f6", "total_events": 68}, {"health_score": 80.1, "mrr_amount": 4975, "account_id": "A-039727", "total_events": 74}, {"health_score": 53.3, "mrr_amount": 1159, "account_id": "A-2e3bad", "total_events": 45}, {"health_score": 57.1, "mrr_amount": 3582, "account_id": "A-484819", "total_events": 33}, {"health_score": 62.0, "mrr_amount": 1990, "account_id": "A-e51ec7", "total_events": 40}, {"health_score": 65.7, "mrr_amount": 171, "account_id": "A-65aeb5", "total_events": 55}, {"health_score": 53.1, "mrr_amount": 1862, "account_id": "A-bece89", "total_events": 19}, {"health_score": 80.2, "mrr_amount": 646, "account_id": "A-029f69", "total_events": 84}, {"health_score": 56.7, "mrr_amount": 0, "account_id": "A-ae052e", "total_events": 29}, {"health_score": 73.8, "mrr_amount": 1372, "account_id": "A-9f9299", "total_events": 85}, {"health_score": 59.4, "mrr_amount": 4975, "account_id": "A-96e141", "total_events": 36}, {"health_score": 67.1, "mrr_amount": 2303, "account_id": "A-313be3", "total_events": 57}, {"health_score": 72.8, "mrr_amount": 0, "account_id": "A-bbc346", "total_events": 62}, {"health_score": 68.2, "mrr_amount": 343, "account_id": "A-c16101", "total_events": 55}, {"health_score": 73.1, "mrr_amount": 2388, "account_id": "A-df10db", "total_events": 64}, {"health_score": 68.8, "mrr_amount": 456, "account_id": "A-4f18f0", "total_events": 57}, {"health_score": 57.8, "mrr_amount": 0, "account_id": "A-8ae05d", "total_events": 20}, {"health_score": 59.6, "mrr_amount": 1617, "account_id": "A-b78bf8", "total_events": 42}, {"health_score": 60.4, "mrr_amount": 5970, "account_id": "A-37f969", "total_events": 32}, {"health_score": 70.5, "mrr_amount": 2352, "account_id": "A-10b8f2", "total_events": 56}, {"health_score": 66.8, "mrr_amount": 5373, "account_id": "A-ba6516", "total_events": 60}, {"health_score": 70.5, "mrr_amount": 0, "account_id": "A-712426", "total_events": 70}, {"health_score": 70.1, "mrr_amount": 13930, "account_id": "A-afa505", "total_events": 51}, {"health_score": 75.2, "mrr_amount": 3577, "account_id": "A-5b1bcd", "total_events": 86}, {"health_score": 70.5, "mrr_amount": 735, "account_id": "A-71615e", "total_events": 62}, {"health_score": 65.7, "mrr_amount": 6169, "account_id": "A-794a0b", "total_events": 38}, {"health_score": 60.9, "mrr_amount": 6766, "account_id": "A-86902e", "total_events": 63}, {"health_score": 61.7, "mrr_amount": 931, "account_id": "A-0532a9", "total_events": 54}, {"health_score": 69.6, "mrr_amount": 441, "account_id": "A-f45426", "total_events": 61}, {"health_score": 63.3, "mrr_amount": 779, "account_id": "A-c1e51e", "total_events": 50}, {"health_score": 64.4, "mrr_amount": 1330, "account_id": "A-fa3095", "total_events": 59}, {"health_score": 44.5, "mrr_amount": 5572, "account_id": "A-ad64c6", "total_events": 20}, {"health_score": 50.1, "mrr_amount": 247, "account_id": "A-39b19f", "total_events": 55}, {"health_score": 46.2, "mrr_amount": 32437, "account_id": "A-56962b", "total_events": 29}, {"health_score": 59.5, "mrr_amount": 12139, "account_id": "A-158f4e", "total_events": 49}, {"health_score": 52.8, "mrr_amount": 294, "account_id": "A-296d7c", "total_events": 33}, {"health_score": 61.8, "mrr_amount": 551, "account_id": "A-1619f8", "total_events": 42}, {"health_score": 71.9, "mrr_amount": 0, "account_id": "A-a1b80b", "total_events": 72}, {"health_score": 52.7, "mrr_amount": 1372, "account_id": "A-702032", "total_events": 26}, {"health_score": 71.0, "mrr_amount": 1568, "account_id": "A-22d9d2", "total_events": 75}, {"health_score": 63.9, "mrr_amount": 342, "account_id": "A-b9eed8", "total_events": 61}, {"health_score": 64.8, "mrr_amount": 266, "account_id": "A-dfbd31", "total_events": 54}, {"health_score": 58.3, "mrr_amount": 4975, "account_id": "A-8e47ca", "total_events": 46}, {"health_score": 71.1, "mrr_amount": 171, "account_id": "A-4437e4", "total_events": 83}, {"health_score": 58.4, "mrr_amount": 1421, "account_id": "A-53f4e3", "total_events": 44}, {"health_score": 74.4, "mrr_amount": 8955, "account_id": "A-0cc442", "total_events": 77}, {"health_score": 53.9, "mrr_amount": 133, "account_id": "A-354f12", "total_events": 15}, {"health_score": 64.9, "mrr_amount": 796, "account_id": "A-68f37c", "total_events": 65}, {"health_score": 74.7, "mrr_amount": 5970, "account_id": "A-aa9511", "total_events": 65}, {"health_score": 71.9, "mrr_amount": 1083, "account_id": "A-af0cd2", "total_events": 70}, {"health_score": 66.9, "mrr_amount": 950, "account_id": "A-bd4513", "total_events": 51}, {"health_score": 59.8, "mrr_amount": 995, "account_id": "A-34d880", "total_events": 47}, {"health_score": 68.9, "mrr_amount": 0, "account_id": "A-f03140", "total_events": 57}, {"health_score": 74.1, "mrr_amount": 0, "account_id": "A-fa2041", "total_events": 61}, {"health_score": 69.2, "mrr_amount": 3781, "account_id": "A-05d3b3", "total_events": 64}, {"health_score": 55.2, "mrr_amount": 8756, "account_id": "A-e43bf7", "total_events": 40}, {"health_score": 56.1, "mrr_amount": 285, "account_id": "A-e1462e", "total_events": 35}, {"health_score": 86.6, "mrr_amount": 1715, "account_id": "A-cab532", "total_events": 101}, {"health_score": 59.8, "mrr_amount": 3582, "account_id": "A-9123ac", "total_events": 37}, {"health_score": 70.2, "mrr_amount": 247, "account_id": "A-6e08f3", "total_events": 50}, {"health_score": 53.1, "mrr_amount": 1127, "account_id": "A-7c6b6b", "total_events": 35}, {"health_score": 53.5, "mrr_amount": 3381, "account_id": "A-76fa4d", "total_events": 36}, {"health_score": 46.2, "mrr_amount": 1026, "account_id": "A-b2af2e", "total_events": 18}, {"health_score": 70.0, "mrr_amount": 266, "account_id": "A-fda07f", "total_events": 65}, {"health_score": 75.4, "mrr_amount": 995, "account_id": "A-81edc3", "total_events": 74}, {"health_score": 56.2, "mrr_amount": 3283, "account_id": "A-09540c", "total_events": 28}, {"health_score": 66.1, "mrr_amount": 5373, "account_id": "A-2446e3", "total_events": 48}, {"health_score": 52.0, "mrr_amount": 95, "account_id": "A-241e75", "total_events": 28}, {"health_score": 78.1, "mrr_amount": 0, "account_id": "A-922109", "total_events": 79}, {"health_score": 68.3, "mrr_amount": 399, "account_id": "A-ff3c73", "total_events": 40}, {"health_score": 64.8, "mrr_amount": 8159, "account_id": "A-8b0451", "total_events": 60}, {"health_score": 53.5, "mrr_amount": 0, "account_id": "A-331424", "total_events": 20}, {"health_score": 47.1, "mrr_amount": 3383, "account_id": "A-51ec1b", "total_events": 28}, {"health_score": 68.2, "mrr_amount": 2303, "account_id": "A-bcf664", "total_events": 56}, {"health_score": 62.0, "mrr_amount": 2985, "account_id": "A-90a8c8", "total_events": 41}, {"health_score": 60.5, "mrr_amount": 0, "account_id": "A-4bfa33", "total_events": 36}, {"health_score": 67.9, "mrr_amount": 361, "account_id": "A-dbc825", "total_events": 72}, {"health_score": 60.0, "mrr_amount": 4606, "account_id": "A-c70870", "total_events": 34}, {"health_score": 71.6, "mrr_amount": 12935, "account_id": "A-0651a4", "total_events": 69}, {"health_score": 68.0, "mrr_amount": 8358, "account_id": "A-993085", "total_events": 70}, {"health_score": 68.5, "mrr_amount": 2548, "account_id": "A-151c9a", "total_events": 34}, {"health_score": 67.4, "mrr_amount": 1372, "account_id": "A-4ef964", "total_events": 49}, {"health_score": 57.6, "mrr_amount": 3283, "account_id": "A-bb1486", "total_events": 42}, {"health_score": 65.4, "mrr_amount": 1029, "account_id": "A-0b0d6d", "total_events": 62}, {"health_score": 62.0, "mrr_amount": 9950, "account_id": "A-20736a", "total_events": 42}, {"health_score": 59.4, "mrr_amount": 152, "account_id": "A-ef84cf", "total_events": 28}, {"health_score": 62.9, "mrr_amount": 950, "account_id": "A-d49cc5", "total_events": 41}, {"health_score": 61.8, "mrr_amount": 1274, "account_id": "A-67be94", "total_events": 42}, {"health_score": 72.3, "mrr_amount": 437, "account_id": "A-c37cab", "total_events": 70}, {"health_score": 65.8, "mrr_amount": 988, "account_id": "A-533452", "total_events": 63}, {"health_score": 57.7, "mrr_amount": 38, "account_id": "A-f51f16", "total_events": 37}, {"health_score": 73.0, "mrr_amount": 882, "account_id": "A-5a3eb9", "total_events": 69}, {"health_score": 54.4, "mrr_amount": 304, "account_id": "A-5f2961", "total_events": 36}, {"health_score": 71.5, "mrr_amount": 1617, "account_id": "A-417d2f", "total_events": 71}, {"health_score": 71.7, "mrr_amount": 2388, "account_id": "A-8bde0c", "total_events": 80}, {"health_score": 62.1, "mrr_amount": 5572, "account_id": "A-54ecc2", "total_events": 56}, {"health_score": 66.5, "mrr_amount": 114, "account_id": "A-6da850", "total_events": 70}, {"health_score": 46.7, "mrr_amount": 0, "account_id": "A-342303", "total_events": 15}, {"health_score": 78.0, "mrr_amount": 8756, "account_id": "A-e7a1e2", "total_events": 68}, {"health_score": 44.6, "mrr_amount": 1791, "account_id": "A-f1f639", "total_events": 14}, {"health_score": 57.4, "mrr_amount": 2744, "account_id": "A-a865bd", "total_events": 24}, {"health_score": 65.3, "mrr_amount": 833, "account_id": "A-2edab2", "total_events": 47}, {"health_score": 26.2, "mrr_amount": 646, "account_id": "A-149a69", "total_events": 18}, {"health_score": 75.0, "mrr_amount": 247, "account_id": "A-a6d261", "total_events": 63}, {"health_score": 63.2, "mrr_amount": 5771, "account_id": "A-202b67", "total_events": 46}, {"health_score": 66.9, "mrr_amount": 5572, "account_id": "A-00bed1", "total_events": 51}, {"health_score": 66.7, "mrr_amount": 247, "account_id": "A-ffc04f", "total_events": 86}, {"health_score": 62.1, "mrr_amount": 1911, "account_id": "A-65c341", "total_events": 38}, {"health_score": 82.3, "mrr_amount": 608, "account_id": "A-dcc2f0", "total_events": 76}, {"health_score": 39.0, "mrr_amount": 2786, "account_id": "A-3d957b", "total_events": 15}, {"health_score": 60.0, "mrr_amount": 399, "account_id": "A-dcc3f1", "total_events": 48}, {"health_score": 60.9, "mrr_amount": 399, "account_id": "A-e40f45", "total_events": 45}, {"health_score": 63.3, "mrr_amount": 551, "account_id": "A-b7724f", "total_events": 38}, {"health_score": 50.1, "mrr_amount": 441, "account_id": "A-310452", "total_events": 25}, {"health_score": 72.8, "mrr_amount": 475, "account_id": "A-eb1312", "total_events": 65}, {"health_score": 64.3, "mrr_amount": 588, "account_id": "A-df1e44", "total_events": 42}, {"health_score": 70.1, "mrr_amount": 323, "account_id": "A-a8d89d", "total_events": 54}, {"health_score": 60.9, "mrr_amount": 0, "account_id": "A-86fc1d", "total_events": 37}, {"health_score": 48.8, "mrr_amount": 539, "account_id": "A-78f02b", "total_events": 20}, {"health_score": 72.4, "mrr_amount": 608, "account_id": "A-acb7f7", "total_events": 62}, {"health_score": 62.3, "mrr_amount": 9751, "account_id": "A-3793ee", "total_events": 38}, {"health_score": 64.7, "mrr_amount": 2009, "account_id": "A-2ebb4b", "total_events": 50}, {"health_score": 52.1, "mrr_amount": 190, "account_id": "A-c9bb3e", "total_events": 46}, {"health_score": 45.9, "mrr_amount": 437, "account_id": "A-bb3bd4", "total_events": 30}, {"health_score": 67.3, "mrr_amount": 13930, "account_id": "A-09316c", "total_events": 54}, {"health_score": 68.7, "mrr_amount": 741, "account_id": "A-96bbc6", "total_events": 49}, {"health_score": 57.2, "mrr_amount": 2156, "account_id": "A-cdf020", "total_events": 40}, {"health_score": 71.2, "mrr_amount": 1519, "account_id": "A-e3bd71", "total_events": 61}, {"health_score": 57.7, "mrr_amount": 0, "account_id": "A-b179bf", "total_events": 39}, {"health_score": 57.0, "mrr_amount": 8159, "account_id": "A-82861f", "total_events": 50}, {"health_score": 68.6, "mrr_amount": 551, "account_id": "A-a33200", "total_events": 55}, {"health_score": 51.5, "mrr_amount": 4577, "account_id": "A-034368", "total_events": 28}, {"health_score": 36.2, "mrr_amount": 551, "account_id": "A-b54c01", "total_events": 23}, {"health_score": 59.9, "mrr_amount": 5970, "account_id": "A-3f9cc0", "total_events": 42}, {"health_score": 56.7, "mrr_amount": 2058, "account_id": "A-ed510f", "total_events": 49}, {"health_score": 66.0, "mrr_amount": 931, "account_id": "A-5c9849", "total_events": 46}, {"health_score": 64.5, "mrr_amount": 342, "account_id": "A-a7bd4b", "total_events": 55}, {"health_score": 50.8, "mrr_amount": 1311, "account_id": "A-7cfe77", "total_events": 19}, {"health_score": 76.7, "mrr_amount": 1617, "account_id": "A-cb5333", "total_events": 82}, {"health_score": 64.0, "mrr_amount": 285, "account_id": "A-309e54", "total_events": 52}, {"health_score": 62.5, "mrr_amount": 833, "account_id": "A-6e7827", "total_events": 41}, {"health_score": 51.6, "mrr_amount": 2646, "account_id": "A-50bb9f", "total_events": 24}, {"health_score": 56.0, "mrr_amount": 0, "account_id": "A-5fe118", "total_events": 21}, {"health_score": 66.2, "mrr_amount": 1406, "account_id": "A-5247b3", "total_events": 60}, {"health_score": 67.7, "mrr_amount": 0, "account_id": "A-f44180", "total_events": 52}, {"health_score": 73.3, "mrr_amount": 665, "account_id": "A-c16cf7", "total_events": 58}, {"health_score": 58.7, "mrr_amount": 4378, "account_id": "A-d42431", "total_events": 47}, {"health_score": 70.2, "mrr_amount": 247, "account_id": "A-6965e1", "total_events": 59}, {"health_score": 65.5, "mrr_amount": 0, "account_id": "A-0354fe", "total_events": 45}, {"health_score": 54.4, "mrr_amount": 475, "account_id": "A-0a62f5", "total_events": 25}, {"health_score": 62.9, "mrr_amount": 8955, "account_id": "A-f5641b", "total_events": 39}, {"health_score": 57.2, "mrr_amount": 7960, "account_id": "A-b44e3e", "total_events": 38}, {"health_score": 61.2, "mrr_amount": 4577, "account_id": "A-3b37d9", "total_events": 43}, {"health_score": 71.6, "mrr_amount": 779, "account_id": "A-7f29a7", "total_events": 62}, {"health_score": 67.1, "mrr_amount": 0, "account_id": "A-089363", "total_events": 61}, {"health_score": 57.5, "mrr_amount": 11940, "account_id": "A-855a48", "total_events": 44}, {"health_score": 74.4, "mrr_amount": 931, "account_id": "A-c7ffc2", "total_events": 62}, {"health_score": 72.2, "mrr_amount": 1349, "account_id": "A-751c58", "total_events": 53}, {"health_score": 76.1, "mrr_amount": 798, "account_id": "A-075038", "total_events": 70}, {"health_score": 68.6, "mrr_amount": 1127, "account_id": "A-9affe6", "total_events": 47}, {"health_score": 74.8, "mrr_amount": 4378, "account_id": "A-80eeb6", "total_events": 76}, {"health_score": 68.1, "mrr_amount": 494, "account_id": "A-016043", "total_events": 47}, {"health_score": 44.4, "mrr_amount": 0, "account_id": "A-751bd4", "total_events": 10}, {"health_score": 62.1, "mrr_amount": 0, "account_id": "A-4e0e85", "total_events": 31}, {"health_score": 53.8, "mrr_amount": 2156, "account_id": "A-ad3abd", "total_events": 29}, {"health_score": 63.8, "mrr_amount": 1274, "account_id": "A-e19ff6", "total_events": 45}, {"health_score": 67.9, "mrr_amount": 0, "account_id": "A-5a92e7", "total_events": 85}, {"health_score": 66.6, "mrr_amount": 950, "account_id": "A-1e1b80", "total_events": 68}, {"health_score": 63.7, "mrr_amount": 437, "account_id": "A-f6b2fb", "total_events": 55}, {"health_score": 53.5, "mrr_amount": 0, "account_id": "A-39868b", "total_events": 28}, {"health_score": 55.8, "mrr_amount": 1764, "account_id": "A-3cc791", "total_events": 46}, {"health_score": 58.4, "mrr_amount": 0, "account_id": "A-337bc1", "total_events": 43}, {"health_score": 71.0, "mrr_amount": 1617, "account_id": "A-58b9ff", "total_events": 65}, {"health_score": 55.8, "mrr_amount": 0, "account_id": "A-bf7919", "total_events": 26}, {"health_score": 75.5, "mrr_amount": 1990, "account_id": "A-cd458b", "total_events": 84}, {"health_score": 60.2, "mrr_amount": 4577, "account_id": "A-c16b88", "total_events": 48}, {"health_score": 74.2, "mrr_amount": 2499, "account_id": "A-87aa7b", "total_events": 72}, {"health_score": 38.7, "mrr_amount": 199, "account_id": "A-1e6fc3", "total_events": 26}, {"health_score": 59.2, "mrr_amount": 7960, "account_id": "A-39ddf4", "total_events": 46}, {"health_score": 61.1, "mrr_amount": 8955, "account_id": "A-716841", "total_events": 34}, {"health_score": 55.0, "mrr_amount": 735, "account_id": "A-558c72", "total_events": 30}, {"health_score": 64.9, "mrr_amount": 1194, "account_id": "A-cc1d8d", "total_events": 63}, {"health_score": 74.1, "mrr_amount": 4776, "account_id": "A-7f4db3", "total_events": 90}, {"health_score": 72.7, "mrr_amount": 588, "account_id": "A-db5e9e", "total_events": 57}, {"health_score": 60.1, "mrr_amount": 247, "account_id": "A-cc102e", "total_events": 43}, {"health_score": 67.7, "mrr_amount": 245, "account_id": "A-82d8a6", "total_events": 70}, {"health_score": 67.0, "mrr_amount": 10746, "account_id": "A-dec005", "total_events": 51}, {"health_score": 56.6, "mrr_amount": 627, "account_id": "A-5790f4", "total_events": 35}, {"health_score": 71.9, "mrr_amount": 1176, "account_id": "A-7c83a1", "total_events": 62}, {"health_score": 63.3, "mrr_amount": 0, "account_id": "A-4a267b", "total_events": 50}, {"health_score": 64.1, "mrr_amount": 874, "account_id": "A-bcbe98", "total_events": 65}, {"health_score": 42.0, "mrr_amount": 0, "account_id": "A-0be015", "total_events": 28}, {"health_score": 58.6, "mrr_amount": 133, "account_id": "A-0f7d77", "total_events": 30}, {"health_score": 44.6, "mrr_amount": 245, "account_id": "A-e7beab", "total_events": 36}, {"health_score": 72.5, "mrr_amount": 686, "account_id": "A-a09355", "total_events": 78}, {"health_score": 48.3, "mrr_amount": 2786, "account_id": "A-31ab9a", "total_events": 34}, {"health_score": 42.9, "mrr_amount": 1225, "account_id": "A-bb1eaa", "total_events": 17}, {"health_score": 71.8, "mrr_amount": 196, "account_id": "A-d77f4c", "total_events": 62}, {"health_score": 68.6, "mrr_amount": 0, "account_id": "A-ccabf0", "total_events": 50}, {"health_score": 76.4, "mrr_amount": 588, "account_id": "A-b7ef83", "total_events": 72}, {"health_score": 62.2, "mrr_amount": 1273, "account_id": "A-e08cd3", "total_events": 43}, {"health_score": 71.5, "mrr_amount": 3980, "account_id": "A-19b2c8", "total_events": 63}, {"health_score": 60.0, "mrr_amount": 0, "account_id": "A-6dee43", "total_events": 48}, {"health_score": 56.4, "mrr_amount": 0, "account_id": "A-5ed98d", "total_events": 32}, {"health_score": 59.2, "mrr_amount": 13930, "account_id": "A-c58f49", "total_events": 38}, {"health_score": 53.0, "mrr_amount": 0, "account_id": "A-cc8c8f", "total_events": 28}, {"health_score": 56.1, "mrr_amount": 1078, "account_id": "A-5f7781", "total_events": 18}, {"health_score": 66.6, "mrr_amount": 4165, "account_id": "A-ac85cd", "total_events": 63}, {"health_score": 70.7, "mrr_amount": 12935, "account_id": "A-d792a6", "total_events": 68}, {"health_score": 77.2, "mrr_amount": 4179, "account_id": "A-ac9111", "total_events": 83}, {"health_score": 64.5, "mrr_amount": 0, "account_id": "A-18793f", "total_events": 48}, {"health_score": 77.1, "mrr_amount": 0, "account_id": "A-9f0b68", "total_events": 70}, {"health_score": 69.4, "mrr_amount": 3184, "account_id": "A-d3c88e", "total_events": 64}, {"health_score": 77.2, "mrr_amount": 209, "account_id": "A-ccb686", "total_events": 70}, {"health_score": 50.5, "mrr_amount": 6368, "account_id": "A-118f1c", "total_events": 38}, {"health_score": 51.9, "mrr_amount": 2985, "account_id": "A-b9f5b1", "total_events": 30}, {"health_score": 61.4, "mrr_amount": 380, "account_id": "A-8ae3fc", "total_events": 39}, {"health_score": 65.0, "mrr_amount": 882, "account_id": "A-712533", "total_events": 55}, {"health_score": 75.3, "mrr_amount": 228, "account_id": "A-781cc0", "total_events": 87}], "Perdido Permanente": [{"health_score": 65.4, "mrr_amount": 21691, "account_id": "A-ce550d", "total_events": 58}, {"health_score": 64.9, "mrr_amount": 0, "account_id": "A-7dacce", "total_events": 48}, {"health_score": 83.6, "mrr_amount": 882, "account_id": "A-592832", "total_events": 101}, {"health_score": 67.1, "mrr_amount": 3383, "account_id": "A-4e44e8", "total_events": 69}, {"health_score": 65.3, "mrr_amount": 1634, "account_id": "A-30b4ca", "total_events": 42}, {"health_score": 65.2, "mrr_amount": 5174, "account_id": "A-32fb14", "total_events": 47}, {"health_score": 75.1, "mrr_amount": 2786, "account_id": "A-08e34e", "total_events": 63}, {"health_score": 68.1, "mrr_amount": 893, "account_id": "A-b2225d", "total_events": 73}, {"health_score": 64.2, "mrr_amount": 798, "account_id": "A-32728c", "total_events": 41}, {"health_score": 65.8, "mrr_amount": 171, "account_id": "A-9ee962", "total_events": 39}, {"health_score": 61.2, "mrr_amount": 7164, "account_id": "A-84ebe4", "total_events": 42}, {"health_score": 58.8, "mrr_amount": 0, "account_id": "A-9208f0", "total_events": 53}, {"health_score": 66.1, "mrr_amount": 9154, "account_id": "A-271f46", "total_events": 38}, {"health_score": 59.9, "mrr_amount": 0, "account_id": "A-69fad4", "total_events": 39}, {"health_score": 74.3, "mrr_amount": 665, "account_id": "A-f19409", "total_events": 62}, {"health_score": 63.5, "mrr_amount": 1791, "account_id": "A-425e76", "total_events": 48}, {"health_score": 55.9, "mrr_amount": 1026, "account_id": "A-e83938", "total_events": 31}, {"health_score": 67.3, "mrr_amount": 6766, "account_id": "A-e61e98", "total_events": 56}, {"health_score": 59.9, "mrr_amount": 490, "account_id": "A-42e5e1", "total_events": 41}, {"health_score": 66.3, "mrr_amount": 3136, "account_id": "A-180abf", "total_events": 48}, {"health_score": 75.2, "mrr_amount": 735, "account_id": "A-f17767", "total_events": 69}, {"health_score": 67.7, "mrr_amount": 684, "account_id": "A-5a184f", "total_events": 57}, {"health_score": 78.5, "mrr_amount": 5970, "account_id": "A-7df7a7", "total_events": 91}, {"health_score": 47.9, "mrr_amount": 2205, "account_id": "A-117171", "total_events": 21}, {"health_score": 60.3, "mrr_amount": 456, "account_id": "A-4c6f11", "total_events": 24}, {"health_score": 59.4, "mrr_amount": 0, "account_id": "A-eafc6e", "total_events": 32}, {"health_score": 54.8, "mrr_amount": 1274, "account_id": "A-439b2f", "total_events": 20}, {"health_score": 44.8, "mrr_amount": 95, "account_id": "A-038089", "total_events": 20}, {"health_score": 65.2, "mrr_amount": 7960, "account_id": "A-9779ad", "total_events": 43}, {"health_score": 72.2, "mrr_amount": 3184, "account_id": "A-7a0d69", "total_events": 61}, {"health_score": 77.6, "mrr_amount": 5572, "account_id": "A-692f18", "total_events": 87}, {"health_score": 54.1, "mrr_amount": 171, "account_id": "A-13466a", "total_events": 22}, {"health_score": 69.0, "mrr_amount": 1029, "account_id": "A-c608c8", "total_events": 43}, {"health_score": 66.3, "mrr_amount": 380, "account_id": "A-3be56b", "total_events": 55}, {"health_score": 63.2, "mrr_amount": 1568, "account_id": "A-c222ab", "total_events": 45}, {"health_score": 75.6, "mrr_amount": 133, "account_id": "A-249769", "total_events": 68}, {"health_score": 63.7, "mrr_amount": 589, "account_id": "A-eb2fdc", "total_events": 54}, {"health_score": 58.0, "mrr_amount": 1791, "account_id": "A-d922bf", "total_events": 41}, {"health_score": 60.4, "mrr_amount": 285, "account_id": "A-8ed5dd", "total_events": 55}, {"health_score": 61.1, "mrr_amount": 532, "account_id": "A-4ae22a", "total_events": 35}, {"health_score": 66.3, "mrr_amount": 0, "account_id": "A-ab438f", "total_events": 36}, {"health_score": 78.2, "mrr_amount": 10945, "account_id": "A-e693b6", "total_events": 61}, {"health_score": 56.4, "mrr_amount": 0, "account_id": "A-3ce5b8", "total_events": 50}, {"health_score": 43.1, "mrr_amount": 2786, "account_id": "A-0baac2", "total_events": 21}, {"health_score": 58.2, "mrr_amount": 0, "account_id": "A-b07346", "total_events": 33}, {"health_score": 57.1, "mrr_amount": 1577, "account_id": "A-902ef7", "total_events": 40}, {"health_score": 59.5, "mrr_amount": 399, "account_id": "A-fce879", "total_events": 27}, {"health_score": 70.4, "mrr_amount": 0, "account_id": "A-b07b56", "total_events": 64}, {"health_score": 61.9, "mrr_amount": 855, "account_id": "A-7f6b86", "total_events": 41}, {"health_score": 53.7, "mrr_amount": 1274, "account_id": "A-6a7c9d", "total_events": 19}, {"health_score": 68.6, "mrr_amount": 833, "account_id": "A-712f1c", "total_events": 68}, {"health_score": 68.8, "mrr_amount": 4263, "account_id": "A-4814a3", "total_events": 60}, {"health_score": 56.8, "mrr_amount": 304, "account_id": "A-ccc747", "total_events": 30}, {"health_score": 67.0, "mrr_amount": 245, "account_id": "A-b30291", "total_events": 48}, {"health_score": 71.5, "mrr_amount": 796, "account_id": "A-098560", "total_events": 55}, {"health_score": 68.8, "mrr_amount": 494, "account_id": "A-d82ef9", "total_events": 68}, {"health_score": 56.4, "mrr_amount": 190, "account_id": "A-1f559b", "total_events": 40}, {"health_score": 71.9, "mrr_amount": 147, "account_id": "A-ffdfd5", "total_events": 52}, {"health_score": 69.2, "mrr_amount": 2303, "account_id": "A-0dbdc6", "total_events": 52}, {"health_score": 71.0, "mrr_amount": 2989, "account_id": "A-72799b", "total_events": 56}, {"health_score": 75.5, "mrr_amount": 2695, "account_id": "A-812c5b", "total_events": 88}, {"health_score": 69.9, "mrr_amount": 3381, "account_id": "A-2d1036", "total_events": 69}, {"health_score": 52.5, "mrr_amount": 5572, "account_id": "A-0f6450", "total_events": 54}, {"health_score": 53.3, "mrr_amount": 3781, "account_id": "A-1e50e0", "total_events": 20}, {"health_score": 68.6, "mrr_amount": 0, "account_id": "A-659280", "total_events": 60}, {"health_score": 69.2, "mrr_amount": 0, "account_id": "A-d535f6", "total_events": 47}, {"health_score": 68.8, "mrr_amount": 0, "account_id": "A-1d5444", "total_events": 59}, {"health_score": 73.0, "mrr_amount": 343, "account_id": "A-0f3e88", "total_events": 59}, {"health_score": 65.1, "mrr_amount": 190, "account_id": "A-7641d3", "total_events": 50}, {"health_score": 62.3, "mrr_amount": 3184, "account_id": "A-34ea2f", "total_events": 57}, {"health_score": 66.4, "mrr_amount": 342, "account_id": "A-4c56c9", "total_events": 64}, {"health_score": 52.1, "mrr_amount": 2587, "account_id": "A-798a3f", "total_events": 37}, {"health_score": 72.5, "mrr_amount": 3781, "account_id": "A-6f50ae", "total_events": 83}, {"health_score": 76.4, "mrr_amount": 1960, "account_id": "A-e1b9cd", "total_events": 80}, {"health_score": 62.7, "mrr_amount": 6567, "account_id": "A-d26ab4", "total_events": 46}]};
+let scatterTraces = segs3.map((seg,i) => {
+    let pts = scatterData[seg];
+    return {
+        x: pts.map(p=>p.health_score), y: pts.map(p=>p.mrr_amount),
+        text: pts.map(p=>p.account_id+' (events:'+p.total_events+')'),
+        mode:'markers', type:'scatter', name:seg,
+        marker:{color:[C.green,C.yellow,C.red][i], size:6, opacity:0.6}
+    };
+});
+Plotly.newPlot('chart_health_scatter', scatterTraces, {...L,
+    xaxis:{...L.xaxis,title:'Health Score'},
+    yaxis:{...L.yaxis,title:'MRR ($)'}
+}, cfg);
+
+// ── STRATEGY CHARTS ──
+Plotly.newPlot('chart_billing_mrr', [
+    {x:['Mensal','Anual'], y:[94030,72970],
+      type:'bar', name:'MRR Perdido', marker:{color:[C.red,C.orange]},
+      text:['$94,030 (17.0% do MRR)','$72,970 (11.0% do MRR)'],
+      textposition:'outside'},
+    {x:['Mensal','Anual'], y:[28,47],
+      type:'bar', name:'Contas Perdidas', marker:{color:['rgba(233,69,96,0.3)','rgba(255,140,66,0.3)']},
+      yaxis:'y2',
+      text:['28 contas (12.7%)','47 contas (16.8%)'],
+      textposition:'outside'}
+], {...L, yaxis:{...L.yaxis,title:'MRR Perdido ($)'}, yaxis2:{overlaying:'y',side:'right',title:'Contas',gridcolor:'transparent'}}, cfg);
+
+Plotly.newPlot('chart_seats_analysis', [
+    {x:["1-5", "6-15", "16-50", "51+"],
+      y:[21610.0, 27648.0, 90111.0, 27631.0],
+      type:'bar', name:'MRR Perdido', marker:{color:C.red},
+      text:["$21,610 (12.9%)", "$27,648 (16.6%)", "$90,111 (54.0%)", "$27,631 (16.5%)"],
+      textposition:'outside'},
+    {x:["1-5", "6-15", "16-50", "51+"],
+      y:[126, 134, 203, 37],
+      type:'scatter', mode:'lines+markers', name:'Total Contas', yaxis:'y2',
+      line:{color:C.blue,width:2}}
+], {...L, yaxis:{...L.yaxis,title:'MRR Perdido ($)'}, yaxis2:{overlaying:'y',side:'right',title:'Contas',gridcolor:'transparent'}}, cfg);
+
+Plotly.newPlot('chart_strategy_impact', [
+    {x:['Enterprise Save\n(CSM dedicado)','Desconto Anual\n(15% lock-in)','DevTools Fix\n(PMF audit)','Porta Giratoria\n(90-Day Success)','Events Channel\n(qualificacao)'],
+      y:[682968,67700,274000,1596456.0,0],
+      type:'bar', name:'Receita Recuperada/Protegida (ano)', marker:{color:[C.green,'#00d2a0','#4da6ff',C.yellow,C.orange]},
+      text:['$682,968','$67,700','$274,000','$1,596,456','Qualitativo'],
+      textposition:'outside'}
+], {...L, yaxis:{...L.yaxis,title:'Impacto Anual ($)'}, margin:{l:60,r:20,t:30,b:100}}, cfg);
+
+// ── CEO QUESTION CHARTS ──
+let ceoMonths = ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12", "2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"];
+
+// Total usage (what Product shows)
+Plotly.newPlot('chart_ceo_total', [
+    {x:ceoMonths, y:[10877, 9492, 11031, 10369, 10757, 10002, 11083, 10335, 9737, 10968, 9475, 10435, 10621, 10247, 10725, 10131, 10552, 10106, 10601, 10559, 10195, 11450, 10039, 10738],
+      type:'scatter', mode:'lines+markers', name:'Uso Total',
+      line:{color:C.blue,width:3}, marker:{size:6}},
+    {x:ceoMonths, y:[1069, 970, 1103, 1032, 1077, 1013, 1075, 1040, 969, 1095, 944, 1043, 1060, 1016, 1069, 1020, 1040, 1013, 1068, 1060, 1020, 1137, 991, 1076],
+      type:'bar', name:'Eventos', marker:{color:'rgba(77,166,255,0.2)'}, yaxis:'y2'}
+], {...L,
+    yaxis:{...L.yaxis,title:'Uso Total (sum)'},
+    yaxis2:{overlaying:'y',side:'right',title:'Eventos',gridcolor:'transparent'},
+    shapes:[{type:'line',x0:ceoMonths[0],x1:ceoMonths[ceoMonths.length-1],
+              y0:10439,y1:10439,
+              line:{color:C.red,width:2,dash:'dash'}},],
+    annotations:[{x:ceoMonths[ceoMonths.length-1],y:10439,
+                   text:'Media: 10,439',showarrow:false,
+                   font:{color:C.red,size:12},xanchor:'right',yshift:15}]
+}, cfg);
+
+// Per-account average (the real metric)
+Plotly.newPlot('chart_ceo_per_acct', [
+    {x:ceoMonths, y:[24.7, 23.0, 25.6, 24.0, 24.6, 23.8, 26.7, 24.3, 23.8, 25.7, 23.0, 24.2, 24.9, 24.3, 24.9, 23.7, 24.7, 24.3, 24.6, 25.0, 24.6, 26.3, 24.5, 25.1],
+      type:'scatter', mode:'lines+markers', name:'Uso Medio/Conta',
+      line:{color:C.green,width:3}, marker:{size:6}},
+    {x:ceoMonths, y:[440, 412, 431, 432, 438, 420, 415, 426, 409, 426, 412, 431, 426, 422, 430, 428, 427, 416, 431, 422, 415, 435, 410, 428],
+      type:'bar', name:'Contas Ativas', marker:{color:'rgba(0,210,160,0.15)'}, yaxis:'y2'}
+], {...L,
+    yaxis:{...L.yaxis,title:'Uso Medio por Conta'},
+    yaxis2:{overlaying:'y',side:'right',title:'Contas Ativas',gridcolor:'transparent'},
+    shapes:[{type:'line',x0:ceoMonths[0],x1:ceoMonths[ceoMonths.length-1],
+              y0:24.6,y1:24.6,
+              line:{color:C.red,width:2,dash:'dash'}}],
+    annotations:[{x:ceoMonths[ceoMonths.length-1],y:24.6,
+                   text:'Media: 24.6',showarrow:false,
+                   font:{color:C.red,size:12},xanchor:'right',yshift:15}]
+}, cfg);
+
+// Usage by segment
+Plotly.newPlot('chart_ceo_by_seg', [
+    {x:ceoMonths, y:[2326, 1965, 2327, 2147, 2184, 2201, 2626, 2386, 2021, 2291, 2112, 2415, 2449, 1960, 2454, 2125, 2426, 2170, 2325, 2110, 1994, 2437, 2134, 2175],
+      type:'scatter', mode:'lines', name:'Nunca Churnou', line:{color:C.green,width:2}, stackgroup:'one'},
+    {x:ceoMonths, y:[6420, 5304, 6187, 5752, 6163, 5393, 5711, 5654, 5366, 6070, 5276, 5909, 5599, 6105, 5953, 5634, 5612, 5604, 5918, 5983, 5749, 6482, 5555, 5942],
+      type:'scatter', mode:'lines', name:'Porta Giratoria', line:{color:C.yellow,width:2}, stackgroup:'one'},
+    {x:ceoMonths, y:[1354, 1409, 1673, 1499, 1533, 1642, 1798, 1578, 1560, 1779, 1440, 1314, 1819, 1242, 1626, 1705, 1654, 1718, 1702, 1599, 1652, 1521, 1513, 1538],
+      type:'scatter', mode:'lines', name:'Perdido Permanente', line:{color:C.red,width:2}, stackgroup:'one'}
+], {...L, yaxis:{...L.yaxis,title:'Uso Total'}}, cfg);
+
+// Active accounts vs new signups
+Plotly.newPlot('chart_ceo_accounts', [
+    {x:ceoMonths, y:[440, 412, 431, 432, 438, 420, 415, 426, 409, 426, 412, 431, 426, 422, 430, 428, 427, 416, 431, 422, 415, 435, 410, 428],
+      type:'scatter', mode:'lines+markers', name:'Contas Ativas/Mes',
+      line:{color:C.blue,width:3}},
+    {x:ceoMonths, y:[17, 18, 20, 15, 26, 13, 14, 16, 23, 20, 25, 20, 16, 13, 27, 22, 22, 21, 26, 21, 25, 31, 32, 17],
+      type:'bar', name:'Novos Signups', marker:{color:'rgba(0,210,160,0.4)'}}
+], {...L,
+    yaxis:{...L.yaxis,title:'Contas'},
+    annotations:[{x:ceoMonths[Math.floor(ceoMonths.length/2)],y:450,
+                   text:'~20 signups/mes, mas base ativa nao cresce (churn anula)',
+                   showarrow:false,font:{color:C.yellow,size:13}}]
+}, cfg);
+
+</script>
+</body>
+</html>
