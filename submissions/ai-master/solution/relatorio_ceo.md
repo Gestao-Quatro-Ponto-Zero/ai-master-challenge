@@ -208,6 +208,74 @@ Uma conta tem risco máximo quando combina:
 
 **Os risk scores individuais por conta estão disponíveis no arquivo `account_risk_scores.csv` para que o CS possa agir conta a conta.**
 
+### Mapa de Calor — Top 50 Contas de Maior Risco
+
+O mapa abaixo cruza **25 contas ativas em maior risco** ($36.9K MRR) com **25 contas já perdidas de maior valor** ($114.2K MRR) como padrão de referência. Seis fatores de risco são apresentados — quanto mais alto o valor, mais urgente a intervenção.
+
+> **Como ler:** Contas marcadas "CHURNED" já saíram e mostram o padrão. Contas marcadas "**ATIVA**" são as que o CS deve priorizar **agora**. Foco em: taxa de erros alta, tempo de resposta alto, e uso total baixo.
+
+| # | Empresa | Indústria | Plano | Status | MRR | Prob. Churn | Erros | Resp. Suporte | Uso Total |
+|:-:|---------|-----------|-------|:------:|----:|:----------:|:-----:|:-------------:|----------:|
+| 1 | Company_0351 | Healthcare | Custom | CHURNED | $5,065 | 100% | 14% | 54h | 151 |
+| 2 | Company_0031 | Education | Custom | CHURNED | $6,230 | 100% | 20% | 25h | 244 |
+| 3 | Company_0015 | Education | Professional | CHURNED | $3,093 | 100% | 18% | 35h | 110 |
+| 4 | Company_0460 | Healthcare | Custom | CHURNED | $4,552 | 100% | 23% | 29h | 184 |
+| 5 | Company_0216 | Retail | Enterprise | CHURNED | $4,528 | 100% | 20% | 54h | 242 |
+| 6 | Company_0181 | Technology | Starter | CHURNED | $4,817 | 100% | 13% | 34h | 208 |
+| 7 | Company_0157 | Retail | Enterprise | CHURNED | $3,606 | 100% | 21% | 50h | 271 |
+| 8 | Company_0462 | Media | Enterprise | CHURNED | $3,941 | 100% | 18% | 29h | 195 |
+| 9 | Company_0345 | Non-Profit | Professional | CHURNED | $3,993 | 100% | 14% | 16h | 128 |
+| 10 | Company_0497 | Non-Profit | Professional | CHURNED | $4,021 | 100% | 21% | 40h | 222 |
+| 11 | Company_0114 | Legal | Enterprise | CHURNED | $6,018 | 100% | 12% | 23h | 207 |
+| 12 | Company_0490 | Real Estate | Professional | CHURNED | $5,547 | 100% | 26% | 33h | 88 |
+| 13 | Company_0317 | Real Estate | Professional | CHURNED | $3,549 | 100% | 22% | 25h | 272 |
+| 14 | Company_0262 | Legal | Custom | CHURNED | $5,659 | 100% | 27% | 15h | 166 |
+| 15 | Company_0103 | Retail | Custom | CHURNED | $5,368 | 100% | 22% | 45h | 65 |
+| 16 | Company_0119 | Manufacturing | Enterprise | CHURNED | $4,451 | 100% | 9% | 14h | 56 |
+| 17 | Company_0386 | Education | Professional | CHURNED | $4,387 | 100% | 16% | 16h | 273 |
+| 18 | Company_0231 | Technology | Enterprise | CHURNED | $4,820 | 99% | 27% | 53h | 266 |
+| 19 | Company_0184 | Finance | Enterprise | CHURNED | $4,127 | 99% | 19% | 20h | 303 |
+| 20 | Company_0321 | Technology | Enterprise | CHURNED | $4,065 | 98% | 22% | 25h | 329 |
+| 21 | Company_0400 | Healthcare | Professional | CHURNED | $3,072 | 98% | 15% | 13h | 154 |
+| 22 | Company_0160 | Retail | Professional | CHURNED | $4,682 | 97% | 24% | 26h | 430 |
+| 23 | Company_0131 | Technology | Custom | CHURNED | $5,954 | 96% | 29% | 46h | 446 |
+| 24 | Company_0389 | Retail | Custom | CHURNED | $5,189 | 96% | 0% | 29h | 0 |
+| 25 | Company_0282 | Healthcare | Enterprise | CHURNED | $3,482 | 94% | 18% | 21h | 281 |
+| 26 | Company_0088 | Finance | Starter | **ATIVA** | $46 | 22% | 6% | 12h | 31 |
+| 27 | Company_0149 | Technology | Starter | **ATIVA** | $64 | 22% | 0% | 19h | 0 |
+| 28 | Company_0405 | Real Estate | Professional | **ATIVA** | $267 | 18% | 0% | 3h | 0 |
+| 29 | Company_0329 | Technology | Starter | **ATIVA** | $137 | 16% | 7% | 3h | 41 |
+| 30 | Company_0277 | Technology | Enterprise | **ATIVA** | $1,698 | 16% | 0% | 6h | 0 |
+| 31 | Company_0083 | Media | Professional | **ATIVA** | $168 | 16% | 0% | 11h | 0 |
+| 32 | Company_0313 | Real Estate | Starter | **ATIVA** | $52 | 16% | 0% | 9h | 0 |
+| 33 | Company_0009 | Healthcare | Enterprise | **ATIVA** | $469 | 11% | 7% | 8h | 283 |
+| 34 | Company_0152 | Retail | Enterprise | **ATIVA** | $4,595 | 11% | 0% | 6h | 0 |
+| 35 | Company_0030 | Manufacturing | Professional | **ATIVA** | $459 | 11% | 8% | 10h | 373 |
+| 36 | Company_0323 | Healthcare | Custom | **ATIVA** | $4,662 | 10% | 4% | 19h | 229 |
+| 37 | Company_0365 | Real Estate | Enterprise | **ATIVA** | $2,900 | 10% | 4% | 31h | 304 |
+| 38 | Company_0212 | Finance | Professional | **ATIVA** | $976 | 8% | 6% | 25h | 593 |
+| 39 | Company_0366 | Technology | Starter | **ATIVA** | $53 | 8% | 3% | 13h | 380 |
+| 40 | Company_0459 | Healthcare | Enterprise | **ATIVA** | $4,883 | 8% | 5% | 4h | 133 |
+| 41 | Company_0360 | Education | Starter | **ATIVA** | $82 | 8% | 4% | 9h | 342 |
+| 42 | Company_0048 | Finance | Enterprise | **ATIVA** | $3,278 | 8% | 7% | 15h | 645 |
+| 43 | Company_0196 | Media | Starter | **ATIVA** | $62 | 8% | 0% | 8h | 0 |
+| 44 | Company_0383 | Manufacturing | Starter | **ATIVA** | $80 | 6% | 5% | 11h | 523 |
+| 45 | Company_0473 | Healthcare | Custom | **ATIVA** | $2,762 | 5% | 10% | 9h | 1,336 |
+| 46 | Company_0220 | Non-Profit | Starter | **ATIVA** | $76 | 5% | 5% | 10h | 339 |
+| 47 | Company_0243 | Technology | Custom | **ATIVA** | $6,558 | 5% | 0% | 8h | 0 |
+| 48 | Company_0145 | Technology | Starter | **ATIVA** | $216 | 5% | 4% | 9h | 539 |
+| 49 | Company_0293 | Finance | Enterprise | **ATIVA** | $2,121 | 4% | 4% | 5h | 665 |
+| 50 | Company_0484 | Finance | Professional | **ATIVA** | $276 | 4% | 9% | 11h | 4,100 |
+
+**Contas ativas prioritárias para o CS (por MRR):**
+- **Company_0243** — Technology, Custom, $6,558/mês (5% risco, uso zero — possível problema de ativação)
+- **Company_0459** — Healthcare, Enterprise, $4,883/mês (8% risco, uso baixo)
+- **Company_0152** — Retail, Enterprise, $4,595/mês (11% risco, uso zero — red flag)
+- **Company_0323** — Healthcare, Custom, $4,662/mês (10% risco, tempo de resposta de suporte alto: 19h)
+- **Company_0048** — Finance, Enterprise, $3,278/mês (8% risco, taxa de erros elevada: 7%)
+
+> O dashboard interativo (`dashboard_ceo.html`) contém o mapa de calor visual com todos os fatores normalizados, permitindo identificar padrões rapidamente.
+
 ---
 
 ## 6. O Que Fazer — 7 Ações Priorizadas

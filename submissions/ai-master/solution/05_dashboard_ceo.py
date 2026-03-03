@@ -600,6 +600,95 @@ fig_actions.update_layout(
 )
 
 # ============================================================
+# GRÁFICO 14: Mapa de Calor — Top 50 Contas em Risco
+# ============================================================
+# 25 contas ativas com maior probabilidade de churn
+# + 25 contas já churned de maior valor (para mostrar o padrão)
+if has_risk:
+    rs = risk_scores.copy()
+else:
+    rs = pd.DataFrame()
+
+if len(rs) > 0:
+    active_risk = rs[rs['churned'] == 0].sort_values('churn_probability', ascending=False).head(25)
+    churned_hv = rs[rs['churned'] == 1].sort_values('avg_mrr', ascending=False).head(25)
+    top50 = pd.concat([active_risk, churned_hv]).copy()
+    top50 = top50.sort_values('churn_probability', ascending=False).reset_index(drop=True)
+
+    # Label: Company (Industry) — Plan
+    top50['label'] = top50.apply(
+        lambda r: f"{'[CHURNED] ' if r['churned'] else ''}{r['company_name']} ({r['industry']}) — {r['plan']}", axis=1
+    )
+
+    # Normalize each risk factor to 0-1 scale (higher = worse risk)
+    def norm_higher_worse(s):
+        mn, mx = s.min(), s.max()
+        return (s - mn) / (mx - mn) if mx > mn else s * 0
+
+    def norm_lower_worse(s):
+        mn, mx = s.min(), s.max()
+        return 1 - ((s - mn) / (mx - mn)) if mx > mn else s * 0
+
+    heatmap_data = pd.DataFrame({
+        'Prob. Churn': norm_higher_worse(top50['churn_probability']),
+        'Taxa Erros': norm_higher_worse(top50['error_rate']),
+        'Tempo Resposta': norm_higher_worse(top50['avg_response_hrs']),
+        'Escalacoes': norm_higher_worse(top50['escalation_rate']),
+        'Qtd Tickets': norm_higher_worse(top50['total_tickets']),
+        'Uso (inv.)': norm_lower_worse(top50['total_usage']),
+    })
+
+    # Annotation text: actual values
+    annot_text = []
+    for _, row in top50.iterrows():
+        annot_text.append([
+            f"{row['churn_probability']:.0%}",
+            f"{row['error_rate']:.0%}",
+            f"{row['avg_response_hrs']:.0f}h",
+            f"{row['escalation_rate']:.0%}",
+            f"{int(row['total_tickets'])}",
+            f"{int(row['total_usage'])}",
+        ])
+
+    fig_heatmap = go.Figure(go.Heatmap(
+        z=heatmap_data.values,
+        x=heatmap_data.columns.tolist(),
+        y=top50['label'].tolist(),
+        text=annot_text,
+        texttemplate="%{text}",
+        textfont=dict(size=10, color='white'),
+        colorscale=[[0, '#1e293b'], [0.25, '#1e40af'], [0.5, '#d97706'], [0.75, '#dc2626'], [1, '#991b1b']],
+        showscale=True,
+        colorbar=dict(
+            title=dict(text="Risco", font=dict(color=C['text_muted'], size=12)),
+            tickfont=dict(color=C['text_muted']),
+            tickvals=[0, 0.5, 1],
+            ticktext=['Baixo', 'Medio', 'Alto'],
+        ),
+        hovertemplate='<b>%{y}</b><br>%{x}: %{text}<extra></extra>',
+    ))
+
+    fig_heatmap.update_layout(
+        height=max(600, len(top50) * 22 + 80),
+        title=dict(text="Mapa de Calor: 50 Contas de Maior Risco", font=dict(size=16)),
+        yaxis=dict(autorange='reversed', tickfont=dict(size=10)),
+        xaxis=dict(side='top', tickfont=dict(size=12)),
+        **{k: v for k, v in PLOTLY_LAYOUT.items() if k not in ('xaxis', 'yaxis')},
+    )
+    fig_heatmap.update_xaxes(gridcolor='rgba(148,163,184,0.1)')
+    fig_heatmap.update_yaxes(gridcolor='rgba(148,163,184,0.05)')
+
+    # Summary stats for the heatmap section
+    hm_active_mrr = active_risk['avg_mrr'].sum()
+    hm_churned_mrr = churned_hv['avg_mrr'].sum()
+    hm_total_mrr = hm_active_mrr + hm_churned_mrr
+else:
+    fig_heatmap = None
+    hm_active_mrr = 0
+    hm_churned_mrr = 0
+    hm_total_mrr = 0
+
+# ============================================================
 # MONTAR DASHBOARD HTML
 # ============================================================
 print("Gerando dashboard HTML...")
@@ -902,6 +991,7 @@ html = f"""<!DOCTYPE html>
         <button class="nav-btn" onclick="showTab('paradox')">O Paradoxo</button>
         <button class="nav-btn" onclick="showTab('causes')">Causas Raiz</button>
         <button class="nav-btn" onclick="showTab('segments')">Segmentos</button>
+        <button class="nav-btn" onclick="showTab('heatmap')">Mapa de Risco</button>
         <button class="nav-btn" onclick="showTab('revenue')">Impacto Financeiro</button>
         <button class="nav-btn" onclick="showTab('model')">Modelo Preditivo</button>
         <button class="nav-btn" onclick="showTab('actions')">Acoes</button>
@@ -1098,6 +1188,59 @@ html = f"""<!DOCTYPE html>
                 <tr><td>Trial</td><td style="color:{C['danger']}">Sim (71%)</td><td style="color:{C['success']}">Nao (37%)</td></tr>
                 <tr><td>Billing</td><td style="color:{C['warning']}">Mensal (47%)</td><td style="color:{C['success']}">Anual (38%)</td></tr>
             </table>
+        </div>
+    </div>
+
+    <!-- TAB: MAPA DE RISCO -->
+    <div id="tab-heatmap" class="tab-content">
+
+        <h2 class="section-header">Mapa de Calor — 50 Contas de Maior Risco</h2>
+
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-value" style="color:{C['warning']}">25</div>
+                <div class="kpi-label">Contas Ativas em Risco</div>
+                <div class="kpi-delta" style="color:{C['warning']}">${{hm_active_mrr:,.0f}} MRR</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" style="color:{C['danger']}">25</div>
+                <div class="kpi-label">Contas Ja Perdidas (alto valor)</div>
+                <div class="kpi-delta" style="color:{C['danger']}">${{hm_churned_mrr:,.0f}} MRR</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" style="color:{C['accent']}">${{hm_total_mrr:,.0f}}</div>
+                <div class="kpi-label">MRR Total (50 contas)</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" style="color:{C['purple']}">6</div>
+                <div class="kpi-label">Fatores de Risco Analisados</div>
+            </div>
+        </div>
+
+        <div class="insight warning">
+            <strong>Como ler este mapa:</strong> Cada linha e uma conta. As colunas sao fatores de risco
+            normalizados de 0 (baixo risco, azul escuro) a 1 (alto risco, vermelho). Contas com prefixo
+            [CHURNED] ja sairam — estao ali para mostrar o padrao. As demais sao contas ativas que o CS
+            deveria priorizar <strong>agora</strong>.
+        </div>
+
+        <div class="card">
+            <div class="card-title">Mapa de Calor de Risco</div>
+            <div class="card-subtitle">25 contas ativas em maior risco + 25 contas churned de maior valor (padrao de referencia)</div>
+            {{'<div style="overflow-x:auto;">' + fig_html(fig_heatmap) + '</div>' if fig_heatmap else '<p style="color:' + C['text_muted'] + '">Dados de risk score nao disponiveis.</p>'}}
+        </div>
+
+        <div class="grid-2">
+            <div class="insight info">
+                <strong>Para o CS:</strong> As contas ativas (sem [CHURNED]) com colunas vermelhas em
+                "Taxa Erros", "Tempo Resposta" e "Uso (inv.)" precisam de intervencao imediata.
+                Quanto mais vermelho, mais urgente.
+            </div>
+            <div class="insight">
+                <strong>Para Produto:</strong> As contas [CHURNED] com "Taxa Erros" vermelho confirmam:
+                erros de feature sao o padrao dominante antes do churn. Corrigir WB/RG impacta
+                diretamente essas contas.
+            </div>
         </div>
     </div>
 
