@@ -149,7 +149,7 @@ Esses dois tipos concentram os piores CSATs e envolvem decisão financeira e opo
 
 1. **Leitura do challenge antes de abrir qualquer dado** — entender o que o Diretor de Operações quer de verdade: não análise genérica, mas três coisas específicas com evidências
 2. **Hipóteses escritas antes da exploração** — três hipóteses registradas antes de abrir o CSV, para evitar viés de confirmação
-3. **Primeira análise no Jupyter Notebook** (`docs/metricas_operacionais.html`) — análise exploratória inicial do Dataset 1: inspeção de nulos, distribuição de status, top 5 tipos e assuntos de tickets não resolvidos, cálculo de `Resolution Duration Hours`, drill-down por Cancellation, Technical issue e Refund request com top 10 produtos e assuntos por tipo
+3. **Primeira análise no Jupyter Notebook** (`docs/metricas_operacionais.ipynb`) — análise exploratória inicial do Dataset 1: inspeção de nulos, distribuição de status, top 5 tipos e assuntos de tickets não resolvidos, cálculo de `Resolution Duration Hours`, drill-down por Cancellation, Technical issue e Refund request com top 10 produtos e assuntos por tipo
 4. **Inspeção de qualidade dos dados** — identificar que os textos são sintéticos, que FRT/TTR são timestamps absolutos (não durações), e que 67,3% dos tickets não têm resolução registrada
 5. **Análise exploratória iterativa com Claude** — cada achado validado com o Claude pedindo "o que esse número pode estar escondendo?"
 5. **Treinamento do classificador no Dataset 2** — TF-IDF + LR com cross-validation, aplicado ao Dataset 1, com documentação do domain shift
@@ -198,7 +198,7 @@ A IA, se perguntada genericamente, diria "automatize tudo que tiver padrão repe
 - [x] `solution/customer_support_tickets_labeled.csv` — Dataset 1 com colunas `Predicted_Topic` e `Prediction_Confidence` adicionadas
 - [x] `solution/conclusoes_diagnostico.md` — diagnóstico operacional completo com todos os números
 - [x] `solution/support_triage_v3.jsx` — código-fonte do protótipo Support Triage AI v3
-- [x] `docs/metricas_operacionais.html` — notebook Jupyter com análise exploratória do Dataset 1
+- [x] `docs/metricas_operacionais.ipynb` — notebook Jupyter com análise exploratória do Dataset 1
 
 ---
 
