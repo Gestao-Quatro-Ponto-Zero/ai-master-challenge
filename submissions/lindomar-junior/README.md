@@ -152,12 +152,12 @@ Esses dois tipos concentram os piores CSATs e envolvem decisão financeira e opo
 3. **Primeira análise no Jupyter Notebook** (`docs/metricas_operacionais.ipynb`) — análise exploratória inicial do Dataset 1: inspeção de nulos, distribuição de status, top 5 tipos e assuntos de tickets não resolvidos, cálculo de `Resolution Duration Hours`, drill-down por Cancellation, Technical issue e Refund request com top 10 produtos e assuntos por tipo
 4. **Inspeção de qualidade dos dados** — identificar que os textos são sintéticos, que FRT/TTR são timestamps absolutos (não durações), e que 67,3% dos tickets não têm resolução registrada
 5. **Análise exploratória iterativa com Claude** — cada achado validado com o Claude pedindo "o que esse número pode estar escondendo?"
-5. **Treinamento do classificador no Dataset 2** — TF-IDF + LR com cross-validation, aplicado ao Dataset 1, com documentação do domain shift
-6. **Cruzamentos analíticos** — prioridade vs. tempo de resolução (inversão High > Critical), correlação CSAT vs. tempo (resultado: zero), piores combos canal × tipo × prioridade
-7. **Proposta de automação** — definição dos critérios com base nos dados, não em intuição
-8. **Protótipo em 3 iterações** — v1 dark theme 2 colunas → v2 light theme + Supervisor escalation → v3 coluna única + respostas refinadas
-9. **Refinamento do system prompt** — 4 ciclos com casos de teste reais do dataset para calibrar roteamento e tom das respostas
-10. **Process log e submissão** — documentação do processo com ênfase nas decisões e divergências
+6. **Treinamento do classificador no Dataset 2** — TF-IDF + LR com cross-validation, aplicado ao Dataset 1, com documentação do domain shift
+7. **Cruzamentos analíticos** — prioridade vs. tempo de resolução (inversão High > Critical), correlação CSAT vs. tempo (resultado: zero), piores combos canal × tipo × prioridade
+8. **Proposta de automação** — definição dos critérios com base nos dados, não em intuição
+9. **Protótipo em 3 iterações** — v1 dark theme 2 colunas → v2 light theme + Supervisor escalation → v3 coluna única + respostas refinadas
+10. **Refinamento do system prompt** — 4 ciclos com casos de teste reais do dataset para calibrar roteamento e tom das respostas
+11. **Process log e submissão** — documentação do processo com ênfase nas decisões e divergências
 
 ### Onde a IA errou e como corrigi
 
@@ -198,7 +198,9 @@ A IA, se perguntada genericamente, diria "automatize tudo que tiver padrão repe
 - [x] `solution/customer_support_tickets_labeled.csv` — Dataset 1 com colunas `Predicted_Topic` e `Prediction_Confidence` adicionadas
 - [x] `solution/conclusoes_diagnostico.md` — diagnóstico operacional completo com todos os números
 - [x] `solution/support_triage_v3.jsx` — código-fonte do protótipo Support Triage AI v3
-- [x] `docs/metricas_operacionais.ipynb` — notebook Jupyter com análise exploratória do Dataset 1
+- [x] `solution/classifier_and_analysis.py` — script completo: treino do classificador, aplicação ao Dataset 1, correlações, piores combos e estimativa de ROI
+- [x] `solution/README_setup.md` — instruções de setup e execução do protótipo
+- [x] `docs/metricas_operacionais.ipynb` — notebook Jupyter com análise exploratória completa (EDA + data quality + correlações + ROI)
 
 ---
 
