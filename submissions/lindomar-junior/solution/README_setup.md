@@ -26,4 +26,4 @@ Para rodar localmente, configure um proxy ou use a API via backend.
 
 ## Modelo usado
 
-`claude-sonnet-4-20250514` — max_tokens: 1024
+`claude-sonnet-4-20250514` (`claude-sonnet-4`) — max_tokens: 1024
