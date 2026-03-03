@@ -107,8 +107,8 @@ O score final é **Expected Value**: a probabilidade ponderada pelo valor logar�
 
 | Ferramenta | Para que usou |
 |------------|---------------|
-| **Gemini 2.5 Pro (Antigravity IDE)** | Par de programação principal — análise, código, testes, debug |
-| **Gemini (chat separado)** | Revisão crítica do plano como "CTO do G4" |
+| **Claude Opus 4.6 (Thinking) (Antigravity IDE)** | Par de programação principal — análise, código, testes, debug |
+| **Gemini 3.1 PRO (chat separado)** | Revisão crítica do plano como "CTO do G4" |
 | **Python + Pandas** | Exploração de dados (script via IA) |
 | **Kaggle CLI** | Download do dataset |
 
