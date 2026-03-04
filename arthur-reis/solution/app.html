@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline de Suporte IA — G4 Tech</title>
+  <style>
+    :root {
+      --verde:#27AE60; --amarelo:#F5A623; --vermelho:#E84040;
+      --dark:#1A1A2E; --bg:#F0F2F5; --card:#fff;
+    }
+    *,*::before,*::after{box-sizing:border-box;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:var(--bg);color:var(--dark);margin:0;padding:0 0 80px;}
+    header{background:var(--dark);color:#fff;padding:28px 48px 20px;}
+    header h1{margin:0 0 5px;font-size:21px;font-weight:700;}
+    header p{margin:0;opacity:.65;font-size:13px;}
+    .container{max-width:900px;margin:0 auto;padding:0 24px;}
+    .card{background:var(--card);border-radius:12px;padding:28px 32px;
+      margin:20px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+    h3{font-size:15px;font-weight:700;margin:0 0 16px;color:var(--dark);}
+    /* step indicator */
+    .phase-badge{display:inline-block;background:#EEF2FF;color:#3949AB;
+      font-size:11px;font-weight:700;letter-spacing:.6px;padding:3px 10px;
+      border-radius:10px;margin-bottom:12px;}
+    /* examples */
+    .examples{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+    .ex-btn{background:#F8F9FA;border:1px solid #E0E0E0;border-radius:6px;
+      padding:7px 13px;font-size:12px;cursor:pointer;transition:all .15s;}
+    .ex-btn:hover{background:#E8EAF6;border-color:#9FA8DA;}
+    /* textarea */
+    textarea{width:100%;border:1px solid #DDD;border-radius:8px;padding:12px 14px;
+      font-size:14px;font-family:inherit;resize:vertical;min-height:80px;
+      outline:none;transition:border-color .2s;}
+    textarea:focus{border-color:#5C6BC0;}
+    /* primary btn */
+    .btn{padding:11px 28px;border-radius:8px;border:none;cursor:pointer;
+      font-size:14px;font-weight:600;transition:all .2s;}
+    .btn-primary{background:var(--dark);color:#fff;}
+    .btn-primary:hover{opacity:.85;}
+    .btn-ghost{background:#F0F2F5;color:#555;border:1px solid #DDD;}
+    .btn-ghost:hover{background:#E4E6E8;}
+    .btn:disabled{opacity:.35;cursor:not-allowed;}
+    /* routing box */
+    .routing-box{background:#F8F9FA;border-radius:10px;padding:20px 24px;margin-bottom:20px;}
+    .route-row{display:flex;align-items:center;gap:12px;padding:9px 0;
+      border-bottom:1px solid #EDEDED;font-size:14px;}
+    .route-row:last-child{border-bottom:none;}
+    .route-lbl{color:#888;font-weight:600;min-width:110px;font-size:13px;}
+    .sector-badge{display:inline-block;padding:3px 12px;border-radius:12px;
+      font-size:12px;font-weight:700;color:#fff;}
+    .block-note{background:#FFEBEE;border-left:4px solid var(--vermelho);
+      border-radius:6px;padding:10px 14px;font-size:13px;color:#C62828;margin-top:10px;}
+    /* path buttons */
+    .path-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
+    .path-btn{flex:1;min-width:160px;padding:16px 18px;border-radius:10px;
+      border:2px solid transparent;cursor:pointer;font-size:14px;font-weight:700;
+      text-align:center;transition:all .2s;background:#F8F9FA;}
+    .path-btn.sim   {background:#E8F5E9;color:var(--verde);}
+    .path-btn.talvez{background:#FFF8E1;color:#C07000;}
+    .path-btn.nao   {background:#FFEBEE;color:var(--vermelho);}
+    .path-btn:hover.sim   {border-color:var(--verde);}
+    .path-btn:hover.talvez{border-color:var(--amarelo);}
+    .path-btn:hover.nao   {border-color:var(--vermelho);}
+    .path-btn-sub{font-size:11px;font-weight:400;opacity:.75;margin-top:3px;}
+    .path-btn:disabled{opacity:.35;cursor:not-allowed;}
+    /* path header */
+    .path-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+    .path-badge{padding:6px 16px;border-radius:20px;font-size:15px;font-weight:700;}
+    .path-badge.sim   {background:#E8F5E9;color:var(--verde);}
+    .path-badge.talvez{background:#FFF8E1;color:#C07000;}
+    .path-badge.nao   {background:#FFEBEE;color:var(--vermelho);}
+    /* pipeline steps */
+    .steps-wrap{display:flex;flex-direction:column;gap:10px;}
+    .step{display:flex;gap:14px;padding:14px 18px;border-radius:8px;
+      background:#F8F9FA;border-left:5px solid #DDD;
+      opacity:.2;transition:opacity .35s,border-left-color .3s;}
+    .step.on{opacity:1;}
+    .step.c-verde  {border-left-color:var(--verde);}
+    .step.c-amarelo{border-left-color:var(--amarelo);}
+    .step.c-vermelho{border-left-color:var(--vermelho);}
+    .step.c-cinza  {border-left-color:#BDC3C7;}
+    .step-ico{font-size:20px;min-width:26px;margin-top:2px;}
+    .step-lbl{font-size:11px;color:#999;font-weight:700;letter-spacing:.5px;}
+    .step-val{font-size:15px;font-weight:700;margin:3px 0;}
+    .step-det{font-size:13px;color:#555;line-height:1.5;}
+    /* output boxes */
+    .out-section{margin-top:24px;}
+    .out-lbl{font-size:11px;font-weight:700;letter-spacing:.8px;margin-bottom:10px;}
+    .out-lbl.sim   {color:var(--verde);}
+    .out-lbl.talvez{color:#C07000;}
+    .out-lbl.nao   {color:var(--vermelho);}
+    .out-box{border:1px solid #E0E0E0;border-radius:10px;padding:20px 24px;
+      font-size:14px;line-height:1.8;}
+    .out-box.sim   {border-left:4px solid var(--verde);}
+    .out-box.talvez{border-left:4px solid var(--amarelo);}
+    .q-row{padding:9px 0;border-bottom:1px solid #F0F0F0;font-size:14px;line-height:1.6;}
+    .q-row:last-child{border-bottom:none;}
+    .q-n{font-weight:700;color:#C07000;margin-right:6px;}
+    /* simulated client response */
+    .client-msg{background:#E3F2FD;border-radius:8px;padding:14px 18px;
+      font-size:14px;line-height:1.7;margin:12px 0;border-left:4px solid #1565C0;}
+    .client-msg strong{color:#0D47A1;}
+    /* branch buttons */
+    .branch-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+    .branch-btn{flex:1;min-width:160px;padding:13px 18px;border-radius:8px;
+      border:2px solid transparent;cursor:pointer;font-size:13px;font-weight:700;
+      text-align:center;transition:all .2s;}
+    .branch-btn.sim   {background:#E8F5E9;color:var(--verde);}
+    .branch-btn.sim:hover{border-color:var(--verde);}
+    .branch-btn.nao   {background:#FFEBEE;color:var(--vermelho);}
+    .branch-btn.nao:hover{border-color:var(--vermelho);}
+    /* agent card */
+    .agent-card{background:#1A1A2E;color:#fff;border-radius:10px;padding:22px 26px;}
+    .agent-top{display:flex;justify-content:space-between;align-items:center;
+      padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+    .agent-title{font-size:15px;font-weight:700;}
+    .agent-ts{font-size:12px;opacity:.5;}
+    .agent-flag{background:var(--vermelho);color:#fff;padding:3px 12px;
+      border-radius:12px;font-size:12px;font-weight:700;}
+    .agent-row{display:flex;gap:10px;margin:7px 0;font-size:13px;}
+    .a-lbl{color:rgba(255,255,255,.45);min-width:90px;}
+    .a-val{color:#fff;font-weight:500;}
+    .agent-inst{background:rgba(232,64,64,.15);border-left:3px solid var(--vermelho);
+      border-radius:4px;padding:10px 14px;margin:14px 0;
+      font-size:13px;line-height:1.6;color:#FFCDD2;}
+    .agent-ctx{background:rgba(255,255,255,.06);border-radius:6px;
+      padding:12px 16px;font-size:13px;line-height:1.7;color:rgba(255,255,255,.8);}
+    .agent-actions{margin-top:14px;padding-top:12px;
+      border-top:1px solid rgba(255,255,255,.08);display:flex;gap:8px;flex-wrap:wrap;}
+    .a-btn{padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;
+      cursor:pointer;border:none;}
+    .a-btn.p{background:#fff;color:var(--dark);}
+    .a-btn.s{background:rgba(255,255,255,.1);color:#fff;}
+    /* human response */
+    .human-reply{background:#F3E5F5;border-left:4px solid #7B1FA2;
+      border-radius:8px;padding:14px 18px;font-size:14px;line-height:1.7;margin-top:12px;}
+    /* cycle */
+    .cycle-wrap{padding-top:20px;border-top:2px dashed #E8E8E8;margin-top:24px;}
+    .cycle-title{font-size:11px;font-weight:700;color:#999;letter-spacing:.6px;margin-bottom:14px;}
+    .cycle-flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+    .c-node{background:#F8F9FA;border-radius:7px;padding:8px 10px;
+      font-size:11px;text-align:center;min-width:80px;}
+    .c-node span{display:block;font-size:17px;margin-bottom:2px;}
+    .c-arrow{color:#CCC;font-size:15px;padding:0 2px;}
+    .cycle-note{background:#E8F5FF;border-radius:8px;padding:14px 18px;
+      font-size:13px;line-height:1.7;margin-top:14px;}
+    /* internal action task */
+    .dual-output{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;}
+    .dual-col-lbl{font-size:11px;font-weight:700;letter-spacing:.7px;margin-bottom:8px;}
+    .dual-col-lbl.client{color:var(--verde);}
+    .dual-col-lbl.ops{color:#E65100;}
+    .action-task{background:#FFF8E1;border:1px solid #FFD54F;
+      border-left:4px solid #FF8F00;border-radius:10px;padding:18px 20px;}
+    .action-task-header{display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(255,143,0,.25);flex-wrap:wrap;gap:6px;}
+    .action-task-title{font-size:13px;font-weight:700;color:#E65100;}
+    .action-status{background:#FF8F00;color:#fff;padding:3px 12px;
+      border-radius:12px;font-size:11px;font-weight:700;}
+    .action-row{display:flex;gap:8px;margin:5px 0;font-size:12px;line-height:1.5;}
+    .act-lbl{color:#A0522D;font-weight:600;min-width:96px;flex-shrink:0;}
+    .act-val{color:#3E2723;font-weight:500;}
+    .action-note{margin-top:10px;padding:9px 12px;background:rgba(255,143,0,.12);
+      border-radius:6px;font-size:12px;color:#BF360C;line-height:1.6;}
+    @media(max-width:700px){.dual-output{grid-template-columns:1fr;}}
+    /* nav */
+    .nav{display:flex;gap:10px;margin-top:24px;align-items:center;flex-wrap:wrap;}
+    .progress{font-size:12px;color:#AAA;margin-left:auto;}
+    /* hidden */
+    .hidden{display:none;}
+    @media(max-width:600px){
+      header{padding:22px 18px;}
+      .card{padding:18px;}
+      .path-btns,.branch-btns{flex-direction:column;}
+      .agent-top{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>🤖 Pipeline de Suporte IA — G4 Tech</h1>
+    <p>Challenge 002 · Entregável 3 · Abra um ticket e explore os 3 caminhos possíveis do pipeline</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── FASE 1: TICKET ── -->
+  <div class="card" id="card-ticket">
+    <div class="phase-badge">PASSO 1 DE 3 — ABRIR TICKET</div>
+    <h3>Escreva um ticket ou escolha um exemplo</h3>
+    <div class="examples" id="examples-wrap"></div>
+    <textarea id="ticket-input" placeholder="Digite o texto do ticket aqui... (em português ou inglês)"></textarea>
+    <div class="nav">
+      <button class="btn btn-primary" onclick="analisar()">Analisar ticket ▶</button>
+    </div>
+  </div>
+
+  <!-- ── FASE 2: ROTEAMENTO ── -->
+  <div class="card hidden" id="card-routing">
+    <div class="phase-badge">PASSO 2 DE 3 — ROTEAMENTO AUTOMÁTICO</div>
+    <h3>Resultado do roteamento</h3>
+    <p style="color:#555;font-size:13px;margin:-8px 0 16px;">
+      O roteamento de Nível 1 e Nível 2 acontece sempre — independente da decisão SIM/TALVEZ/NÃO.<br>
+      Determina <strong>para qual setor e time o ticket pertence</strong> antes de qualquer outra análise.
+    </p>
+    <div class="routing-box" id="routing-display"></div>
+    <h3 style="margin-top:4px;">Escolha um caminho para explorar</h3>
+    <p style="color:#555;font-size:13px;margin:-8px 0 14px;">
+      Na plataforma real, o sistema decide automaticamente com base na confiança da classificação.<br>
+      Aqui você pode explorar qualquer um dos 3 caminhos para ver o fluxo completo.
+    </p>
+    <div class="path-btns">
+      <div class="path-btn sim" id="btn-sim" onclick="escolherCaminho('sim')">
+        ✅ SIM<br>
+        <span class="path-btn-sub">Alta confiança → resposta automática ao cliente</span>
+      </div>
+      <div class="path-btn talvez" onclick="escolherCaminho('talvez')">
+        🟡 TALVEZ<br>
+        <span class="path-btn-sub">Confiança moderada → triagem adicional</span>
+      </div>
+      <div class="path-btn nao" onclick="escolherCaminho('nao')">
+        🔴 NÃO<br>
+        <span class="path-btn-sub">Bloqueio ou baixa confiança → agente humano</span>
+      </div>
+    </div>
+    <div class="nav" style="margin-top:16px;">
+      <button class="btn btn-ghost" onclick="resetTudo()">← Novo ticket</button>
+    </div>
+  </div>
+
+  <!-- ── FASE 3: CAMINHO ── -->
+  <div class="card hidden" id="card-path">
+    <div class="phase-badge">PASSO 3 DE 3 — EXPLORAR CAMINHO</div>
+    <div class="path-header">
+      <span class="path-badge" id="path-badge-lbl"></span>
+      <span style="font-size:13px;color:#888;" id="path-sector-lbl"></span>
+    </div>
+    <div class="steps-wrap" id="steps-container"></div>
+    <div id="output-container"></div>
+    <div id="branch-container"></div>
+    <div id="cycle-container"></div>
+    <div class="nav">
+      <button class="btn btn-ghost" onclick="voltarRoteamento()">← Escolher outro caminho</button>
+      <button class="btn btn-primary" id="btn-avancar" onclick="avancar()">Avançar ▶</button>
+      <span class="progress" id="progress-lbl"></span>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ────────────────────────────────────────────────────────────────
+// DADOS
+// ────────────────────────────────────────────────────────────────
+
+const EXEMPLOS = [
+  { label:'💳 Cobrança duplicada',  text:'Meu cartão foi cobrado duas vezes este mês. Preciso de um estorno.' },
+  { label:'📦 Dúvida de produto',   text:'Como configuro as notificações no aplicativo? Não estou recebendo alertas.' },
+  { label:'🖥️ Problema técnico',    text:'Meu computador não liga. A tela fica preta e não aparece nada.' },
+  { label:'🔐 Acesso bloqueado',    text:'Não consigo fazer login desde ontem. Aparece usuário ou senha incorretos.' },
+  { label:'💰 Pedir reembolso',     text:'Paguei por um produto que nunca chegou. Já faz 3 semanas. Quero meu dinheiro de volta.' },
+  { label:'❌ Cancelamento',        text:'Quero cancelar minha assinatura. Não estou usando mais o serviço.' },
+];
+
+const SETORES = {
+  'Billing inquiry':      { nome:'Equipe de Faturamento',  cor:'#1565C0', agente:'Mariana F.', sla:'4h' },
+  'Refund request':       { nome:'Equipe de Reembolsos',   cor:'#7B1FA2', agente:'Roberto A.', sla:'8h' },
+  'Technical issue':      { nome:'Equipe Técnica',          cor:'#E67E22', agente:'Carlos M.',  sla:'4h' },
+  'Product inquiry':      { nome:'Equipe de Produto',       cor:'#27AE60', agente:'Juliana S.', sla:'8h' },
+  'Cancellation request': { nome:'Equipe de Retenção',     cor:'#E84040', agente:'André L.',   sla:'2h' },
+};
+
+const KW1 = {
+  'Cancellation request': ['cancelar','cancelamento','encerrar','desativar','cancel','unsubscribe','não quero mais'],
+  'Billing inquiry':      ['cobrado','cobrança','fatura','cartão','mensalidade','pagamento','assinatura','valor','preço','boleto','duplicado','duas vezes','charged','billing','invoice','payment'],
+  'Refund request':       ['reembolso','estorno','devolução','devolver','não chegou','nunca chegou','não recebi','dinheiro de volta','refund','money back'],
+  'Technical issue':      ['não funciona','não liga','não abre','erro','travando','trava','lento','falha','preta','login','senha','acesso','sistema','bloqueado','not working','error','crash'],
+  'Product inquiry':      ['como','configurar','funcionalidade','notificação','integração','tutorial','how to','configure','feature','setup'],
+};
+
+const KW2 = {
+  'Hardware':       ['não liga','tela','preta','monitor','teclado','bateria','cabo','hardware','botão'],
+  'Access & Login': ['login','senha','acesso','bloqueado','autenticação','credencial'],
+  'Software & App': ['aplicativo','app','travando','erro','falha','não abre','atualização','software'],
+  'Network':        ['internet','rede','wifi','conexão','lento','instável'],
+  'Storage & Data': ['arquivo','backup','disco','memória','armazenamento'],
+};
+
+const BLOCK_KW = {
+  cancelamento: ['cancelar','cancelamento','cancel','unsubscribe'],
+  crítico:      ['urgente','emergência','critical','emergency','urgente'],
+};
+
+// Respostas SIM por tipo
+const RESP_SIM = {
+  'Billing inquiry': `Olá! Identificamos que sua dúvida é sobre uma cobrança 😊<br><br>Nossa equipe já está verificando o caso. Em até <b>2 horas úteis</b> você receberá um retorno com o detalhamento.<br><br>Caso a cobrança duplicada seja confirmada, o estorno será processado em <b>3 a 5 dias úteis</b> na fatura do seu cartão.<br><br>Precisando de mais alguma coisa, estamos aqui!`,
+  'Refund request':  `Olá! Recebemos sua solicitação de reembolso.<br><br>Nossa equipe iniciará a análise imediatamente. Prazo de retorno: <b>1 dia útil</b>.<br><br>Se aprovado, o valor será estornado em <b>3 a 5 dias úteis</b> conforme o método de pagamento.<br><br>Acompanhe pelo nosso portal ou aguarde nosso contato.`,
+  'Product inquiry': `Olá! Que bom que entrou em contato 😊<br><br>Para configurar as notificações:<br>1. Acesse <b>Configurações → Notificações</b><br>2. Ative as categorias desejadas<br>3. Verifique se o app tem permissão no seu dispositivo<br><br>Se o problema persistir, nos informe modelo e versão do sistema. Estamos à disposição!`,
+  'Technical issue': `Olá! Recebemos seu chamado técnico.<br><br>Nossa equipe foi notificada e entrará em contato em até <b>4 horas úteis</b> com diagnóstico e próximos passos.<br><br>Enquanto isso: registre quando o problema começou e anote qualquer mensagem de erro que apareça. Essas informações agilizarão a resolução.`,
+  'Cancellation request': `⚠️ <b>Caminho SIM não disponível para Cancellation request.</b><br><br>Cancelamentos são sempre encaminhados para a Equipe de Retenção com julgamento humano — nunca são automatizados. Veja o caminho 🔴 NÃO para este tipo de ticket.`,
+};
+
+// Perguntas TALVEZ por tipo
+const PERGS = {
+  'Billing inquiry':      ['Qual o valor cobrado e a data da transação identificada como incorreta?','A cobrança aparece duplicada ou com valor diferente do esperado?','Você tem o número do pedido ou protocolo relacionado?'],
+  'Refund request':       ['Qual o número do pedido e a data da compra?','O produto foi entregue com defeito ou não foi entregue?','Já realizou algum contato anterior sobre este caso? Se sim, tem número de protocolo?'],
+  'Technical issue':      ['O problema ocorre sempre ou em situações específicas? (ex: após login, ao abrir módulo X)','Qual modelo do equipamento e versão do sistema operacional?','O problema começou após alguma atualização ou mudança recente?'],
+  'Product inquiry':      ['Qual dispositivo e sistema operacional você está usando?','Qual versão do aplicativo está instalada? (Configurações → Sobre)','O problema ocorre sempre ou em situações específicas?'],
+  'Cancellation request': ['Qual o motivo do cancelamento? (Preço / Não usa mais / Insatisfação / Outro)','Você estaria interessado em uma pausa no serviço em vez do cancelamento?','Há algo que pudéssemos melhorar para que você continuasse conosco?'],
+};
+
+// Resposta simulada do cliente no TALVEZ
+const RESP_CLIENTE = {
+  'Billing inquiry':      '"A cobrança aparece duas vezes na minha fatura do dia 10. O valor é R$ 89,90 cada. Meu número de pedido é #48231."',
+  'Refund request':       '"O pedido é #58847, fiz a compra no dia 3 deste mês. O produto nunca foi entregue, o rastreio não atualiza há 15 dias."',
+  'Technical issue':      '"O problema acontece sempre que abro o módulo de relatórios. Uso Windows 11 versão 23H2. O erro começou depois da atualização de ontem."',
+  'Product inquiry':      '"Uso iPhone 14, iOS 17.3, versão do app 4.2.1. O problema acontece sempre que entro em Configurações — as notificações aparecem mas não salvam."',
+  'Cancellation request': '"O motivo é o preço. Estou pagando R$ 149/mês e achei uma opção mais em conta."',
+};
+
+// Resposta humana (no caminho NÃO)
+const RESP_HUMANA = {
+  'Billing inquiry':      'Olá! Aqui é a Mariana da Equipe de Faturamento. Analisei sua conta e identifiquei a cobrança duplicada. Já solicitei o estorno de R$ 89,90 — você verá o crédito em até 5 dias úteis na sua fatura. Desculpe pelo transtorno! Posso ajudar com mais alguma coisa?',
+  'Refund request':       'Olá! Aqui é o Roberto da Equipe de Reembolsos. Localizei seu pedido #58847 e confirmei que houve falha na entrega. Aprovei o reembolso integral. O valor retornará em até 5 dias úteis. Vou também abrir uma investigação com a transportadora. Desculpe o inconveniente!',
+  'Technical issue':      'Olá! Aqui é o Carlos da Equipe Técnica. Analisei seu caso — o problema no módulo de relatórios foi causado por um bug na versão atualizada. Já publiquei um patch de correção: acesse Configurações → Atualizações e instale a versão 4.2.2. Se persistir, me avise diretamente!',
+  'Product inquiry':      'Olá! Aqui é a Juliana da Equipe de Produto. Identifiquei o problema: na versão 4.2.1 para iOS há um bug nas notificações que será corrigido na próxima semana. Como solução imediata: desinstale e reinstale o app — as configurações serão mantidas. Desculpe o inconveniente!',
+  'Cancellation request': 'Olá! Aqui é o André da Equipe de Retenção. Entendo sua preocupação com o valor. Para clientes como você que usam a plataforma há mais de 6 meses, posso oferecer um desconto de 30% por 3 meses — ficaria em R$ 104,30/mês. Gostaria de manter sua assinatura com esse benefício?',
+};
+
+// Instrução do agente para o dashboard (NÃO)
+const INST_AGENTE = {
+  'Billing inquiry':      'Verificar duplicidade na fatura. Autorizar estorno se confirmado. Registrar ocorrência no sistema.',
+  'Refund request':       'Verificar rastreamento do pedido. Acionar transportadora se necessário. Aprovar reembolso dentro do prazo de política.',
+  'Technical issue':      'Diagnosticar o problema com base nas informações de contexto. Seguir protocolo técnico da sub-área identificada.',
+  'Product inquiry':      'Verificar versão do app e sistema. Consultar base de conhecimento por problemas conhecidos nessa versão.',
+  'Cancellation request': 'RETENÇÃO: ouvir o motivo sem interromper. Oferecer pausa (30 dias) ou desconto (20–30%) conforme perfil. Escalar se necessário.',
+};
+
+// Tipos cuja resposta SIM promete uma ação com prazo → geram tarefa interna para execução humana
+// Princípio: a IA responde ao cliente E simultaneamente cria uma tarefa para o operador executar o que foi prometido.
+// Regra geral: qualquer resposta que contenha prazo de resolução ou compromisso de contato → tarefa interna obrigatória.
+const ACTION_REQUIRED_TYPES = new Set(['Billing inquiry', 'Refund request', 'Technical issue']);
+
+// Tarefas internas geradas automaticamente — alinhadas com o que foi prometido ao cliente
+const TAREFA_INTERNA = {
+  'Billing inquiry': {
+    acao: 'Verificar cobrança duplicada no sistema de pagamentos. Se confirmada, processar estorno conforme procedimento FIN-001.',
+    prazo_verificacao: '2 horas úteis',
+    prazo_execucao: '3 a 5 dias úteis',
+    sistema: 'Portal Financeiro → Transações → Solicitar Estorno',
+    operador: 'Mariana F.',
+    equipe: 'Equipe de Faturamento',
+    protocolo: 'FIN-001',
+  },
+  'Refund request': {
+    acao: 'Localizar pedido no sistema e confirmar falha de entrega. Acionar transportadora se necessário. Processar reembolso integral.',
+    prazo_verificacao: '1 dia útil',
+    prazo_execucao: '3 a 5 dias úteis',
+    sistema: 'Portal Logística → Pedidos → Reembolso / Estorno',
+    operador: 'Roberto A.',
+    equipe: 'Equipe de Reembolsos',
+    protocolo: 'FIN-002',
+  },
+  'Technical issue': {
+    acao: 'Contactar o cliente com diagnóstico e próximos passos. Seguir protocolo da sub-área identificada pelo roteamento N2.',
+    prazo_verificacao: '4 horas úteis',
+    prazo_execucao: 'Conforme diagnóstico e complexidade da sub-área',
+    sistema: 'Sistema de Tickets Técnicos → Fila do Especialista → Atribuir',
+    operador: 'Carlos M.',
+    equipe: 'Equipe Técnica',
+    protocolo: 'TEC-001',
+  },
+};
+
+// ────────────────────────────────────────────────────────────────
+// ESTADO
+// ────────────────────────────────────────────────────────────────
+let routing   = null;  // { type, sector, subArea, blocked, blockReason }
+let caminho   = null;  // 'sim' | 'talvez' | 'nao'
+let step      = 0;
+let talvezBranch = null; // 'sim' | 'nao'
+let stepsData = [];
+
+// ────────────────────────────────────────────────────────────────
+// INIT
+// ────────────────────────────────────────────────────────────────
+(function init() {
+  const wrap = document.getElementById('examples-wrap');
+  EXEMPLOS.forEach(e => {
+    const b = document.createElement('button');
+    b.className = 'ex-btn';
+    b.textContent = e.label;
+    b.onclick = () => { document.getElementById('ticket-input').value = e.text; };
+    wrap.appendChild(b);
+  });
+})();
+
+// ────────────────────────────────────────────────────────────────
+// ROTEAMENTO
+// ────────────────────────────────────────────────────────────────
+function route(text) {
+  const t = text.toLowerCase();
+  const scores = {};
+  for (const [tipo, kws] of Object.entries(KW1)) {
+    scores[tipo] = kws.filter(k => t.includes(k)).length;
+  }
+  const tipo = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+
+  // sub-área se técnico
+  let subArea = null;
+  if (tipo === 'Technical issue') {
+    const s2 = {};
+    for (const [sub, kws] of Object.entries(KW2)) s2[sub] = kws.filter(k => t.includes(k)).length;
+    subArea = Object.entries(s2).sort((a,b) => b[1]-a[1])[0][0];
+    if (Object.values(s2).every(v => v === 0)) subArea = 'Software & App';
+  }
+
+  // bloqueio
+  let blocked = false, blockReason = '';
+  for (const [reason, kws] of Object.entries(BLOCK_KW)) {
+    if (kws.some(k => t.includes(k))) { blocked = true; blockReason = reason; break; }
+  }
+
+  return { type: tipo, sector: SETORES[tipo], subArea, blocked, blockReason };
+}
+
+function analisar() {
+  const txt = document.getElementById('ticket-input').value.trim();
+  if (!txt) { alert('Escreva ou selecione um ticket primeiro.'); return; }
+  routing = route(txt);
+
+  // Renderizar roteamento
+  const sec = routing.sector;
+  let html = `
+    <div class="route-row">
+      <span class="route-lbl">🏷️ Tipo detectado</span>
+      <span style="font-weight:700;">${routing.type}</span>
+    </div>
+    <div class="route-row">
+      <span class="route-lbl">👥 Setor</span>
+      <span class="sector-badge" style="background:${sec.cor};">${sec.nome}</span>
+    </div>
+    <div class="route-row">
+      <span class="route-lbl">🔧 Sub-área (N2)</span>
+      <span style="font-weight:600;">${routing.subArea ? routing.subArea : '— (só para Technical issue)'}</span>
+    </div>
+    <div class="route-row">
+      <span class="route-lbl">👤 Agente de ref.</span>
+      <span>${sec.agente} · SLA ${sec.sla}</span>
+    </div>`;
+
+  if (routing.blocked) {
+    html += `<div class="block-note">⚠️ <b>Regra fixa ativada:</b> palavra-chave "${routing.blockReason}" detectada → ticket irá diretamente para a fila humana (NÃO), independente de qualquer análise de confiança.</div>`;
+  }
+  document.getElementById('routing-display').innerHTML = html;
+
+  // Desabilitar SIM para cancelamento bloqueado (avisar)
+  document.getElementById('btn-sim').style.opacity = routing.blocked ? '0.5' : '1';
+
+  show('card-routing');
+  hide('card-ticket');
+  hide('card-path');
+}
+
+// ────────────────────────────────────────────────────────────────
+// CAMINHOS
+// ────────────────────────────────────────────────────────────────
+function escolherCaminho(c) {
+  caminho = c; step = 0; talvezBranch = null;
+  stepsData = buildSteps(c);
+  document.getElementById('path-badge-lbl').textContent =
+    c === 'sim' ? '✅ SIM — Resposta Automática' :
+    c === 'talvez' ? '🟡 TALVEZ — Triagem Adicional' :
+    '🔴 NÃO — Agente Humano';
+  document.getElementById('path-badge-lbl').className = 'path-badge ' + c;
+  document.getElementById('path-sector-lbl').textContent =
+    `Setor: ${routing.sector.nome}` + (routing.subArea ? ` → ${routing.subArea}` : '');
+
+  document.getElementById('steps-container').innerHTML = '';
+  document.getElementById('output-container').innerHTML = '';
+  document.getElementById('branch-container').innerHTML = '';
+  document.getElementById('cycle-container').innerHTML = '';
+  show('card-path');
+  renderStep();
+}
+
+function buildSteps(c) {
+  const tipo = routing.type;
+  const sec  = routing.sector;
+  if (c === 'sim') {
+    const isFinancial = ACTION_REQUIRED_TYPES.has(tipo);
+    return [
+      { ico:'🏷️', lbl:'Roteamento confirmado', val:`${tipo} → ${sec.nome}${routing.subArea?' → '+routing.subArea:''}`, det:'L1 e L2 já determinaram o setor correto antes desta etapa.', cor:'verde' },
+      { ico:'🔍', lbl:'Verificando base de conhecimento', val:'Buscando tickets similares resolvidos (RAG)...', det:'Vetores semânticos comparados com o histórico. Correspondência encontrada.', cor:'verde' },
+      { ico:'📊', lbl:'Confiança da classificação', val:'Alta — ≥ 70%', det:'Sinal semântico suficiente. Decisão: resposta automática via IA.', cor:'verde' },
+      { ico:'✍️', lbl:'Gerando resposta', val:'Claude API processa + contexto do RAG aplicado', det:'Resposta personalizada gerada em < 2s com base no histórico de resoluções similares.', cor:'verde' },
+      isFinancial
+        ? { ico:'📤', lbl:'Resposta enviada + tarefa interna criada', val:'2 outputs simultâneos gerados pelo sistema', det:`Cliente recebe a resposta automática. Simultaneamente, uma tarefa de execução é criada e atribuída a ${sec.agente} (${sec.nome}) — garantindo que o que foi prometido ao cliente seja de fato executado dentro do prazo.`, cor:'verde' }
+        : { ico:'📤', lbl:'Resposta enviada ao cliente', val:'Ticket fechado automaticamente', det:'Cliente recebe a resposta. Ticket marcado como resolvido. CSAT será solicitado em 24h.', cor:'verde' },
+    ];
+  }
+  if (c === 'talvez') return [
+    { ico:'🏷️', lbl:'Roteamento confirmado', val:`${tipo} → ${sec.nome}${routing.subArea?' → '+routing.subArea:''}`, det:'L1 e L2 já determinaram o setor correto antes desta etapa.', cor:'amarelo' },
+    { ico:'🔍', lbl:'Verificando base de conhecimento', val:'Buscando tickets similares resolvidos...', det:'Correspondência parcial encontrada — contexto insuficiente para resposta segura.', cor:'amarelo' },
+    { ico:'📊', lbl:'Confiança da classificação', val:'Moderada — entre 45% e 69%', det:'Não é suficiente para resposta automática. Mais contexto necessário antes de decidir.', cor:'amarelo' },
+    { ico:'❓', lbl:'Gerando perguntas de triagem', val:'3 perguntas enviadas ao cliente', det:'Perguntas específicas para este tipo de ticket. Aguardando resposta do cliente.', cor:'amarelo' },
+  ];
+  // nao
+  return [
+    { ico:'🏷️', lbl:'Roteamento confirmado', val:`${tipo} → ${sec.nome}${routing.subArea?' → '+routing.subArea:''}`, det:'L1 e L2 já determinaram o setor correto. Ticket será entregue ao agente deste setor.', cor:'vermelho' },
+    { ico: routing.blocked?'🚨':'📊', lbl: routing.blocked?'Regra fixa ativada':'Confiança da classificação', val: routing.blocked?`Bloqueio: "${routing.blockReason}" detectado`:'Baixa — abaixo de 45%', det: routing.blocked?'Tipo de ticket que exige julgamento humano. Nenhum modelo de IA responde automaticamente.':'Classificação sem segurança suficiente para resposta automática → escala para humano.', cor:'vermelho' },
+    { ico:'📋', lbl:'Gerando resumo estruturado', val:'Dashboard do agente preparado', det:`Resumo com: tipo, sub-área, SLA de ${sec.sla}, histórico do cliente, instrução e contexto da conversa.`, cor:'vermelho' },
+    { ico:'🔔', lbl:'Agente notificado', val:`${sec.agente} (${sec.nome}) recebeu o ticket na fila`, det:`O agente já sabe o tipo, sub-área e tem o contexto pronto — não precisa reler o ticket do zero.`, cor:'vermelho' },
+  ];
+}
+
+// ────────────────────────────────────────────────────────────────
+// AVANÇAR (step by step)
+// ────────────────────────────────────────────────────────────────
+function avancar() {
+  step++;
+  renderStep();
+}
+
+function renderStep() {
+  const tipo = routing.type;
+  const sec  = routing.sector;
+
+  // Revelar step do pipeline
+  const cont = document.getElementById('steps-container');
+  if (step <= stepsData.length) {
+    cont.innerHTML = stepsData.slice(0, step).map(s => `
+      <div class="step on c-${s.cor}">
+        <div class="step-ico">${s.ico}</div>
+        <div>
+          <div class="step-lbl">${s.lbl}</div>
+          <div class="step-val">${s.val}</div>
+          <div class="step-det">${s.det}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Limpar outputs quando regredimos
+  const outC = document.getElementById('output-container');
+  const brC  = document.getElementById('branch-container');
+  const cycC = document.getElementById('cycle-container');
+
+  // ── SIM ──
+  if (caminho === 'sim') {
+    const TOTAL = stepsData.length + 2; // pipeline + output + cycle
+    if (step === stepsData.length + 1) {
+      if (ACTION_REQUIRED_TYPES.has(tipo)) {
+        const tarefa = TAREFA_INTERNA[tipo];
+        outC.innerHTML = `
+          <div class="out-section">
+            <div class="out-lbl sim">✅ 2 OUTPUTS SIMULTÂNEOS — RESPOSTA AO CLIENTE + TAREFA INTERNA DE EXECUÇÃO</div>
+            <div class="dual-output">
+              <div>
+                <div class="dual-col-lbl client">📤 RESPOSTA AO CLIENTE</div>
+                <div class="out-box sim">${RESP_SIM[tipo]}</div>
+              </div>
+              <div>
+                <div class="dual-col-lbl ops">🔧 TAREFA INTERNA — AÇÃO PROMETIDA AO CLIENTE</div>
+                ${actionTaskHtml(tipo, tarefa)}
+              </div>
+            </div>
+          </div>`;
+      } else {
+        outC.innerHTML = `
+          <div class="out-section">
+            <div class="out-lbl sim">✅ RESPOSTA AUTOMÁTICA → ENVIADA AO CLIENTE</div>
+            <div class="out-box sim">${RESP_SIM[tipo] || RESP_SIM['Product inquiry']}</div>
+          </div>`;
+      }
+    }
+    if (step >= stepsData.length + 2) {
+      cycC.innerHTML = cicloHtml('sim', tipo, sec);
+    }
+    setNav(step, TOTAL);
+    return;
+  }
+
+  // ── TALVEZ ──
+  if (caminho === 'talvez') {
+    if (step === stepsData.length + 1) {
+      // Mostrar perguntas
+      const pergs = PERGS[tipo] || PERGS['Technical issue'];
+      outC.innerHTML = `
+        <div class="out-section">
+          <div class="out-lbl talvez">🟡 PERGUNTAS DE TRIAGEM → ENVIADAS AO CLIENTE</div>
+          <div class="out-box talvez">
+            ${pergs.map((p,i) => `<div class="q-row"><span class="q-n">${i+1}.</span>${p}</div>`).join('')}
+          </div>
+        </div>`;
+    }
+    if (step === stepsData.length + 2) {
+      // Resposta simulada do cliente
+      brC.innerHTML = `
+        <div style="margin-top:20px;">
+          <div style="font-size:12px;color:#888;font-weight:700;letter-spacing:.6px;margin-bottom:8px;">SIMULAÇÃO — RESPOSTA DO CLIENTE</div>
+          <div class="client-msg">
+            <strong>Cliente respondeu:</strong><br>
+            ${RESP_CLIENTE[tipo] || ''}
+          </div>
+          <div style="margin-top:14px;background:#F8F9FA;border-radius:8px;padding:14px 18px;font-size:13px;line-height:1.7;">
+            🔁 <b>Sistema reclassifica</b> com o novo contexto...<br>
+            Confiança após triagem: <b style="color:var(--verde);">82%</b> — agora acima do threshold de 70%.<br>
+            Como o tester quer seguir?
+          </div>
+          <div class="branch-btns" style="margin-top:14px;">
+            <button class="branch-btn sim" onclick="talvezResolve('sim')">✅ Confiança atingida → SIM<br><small style="font-weight:400;">Resposta automática enviada</small></button>
+            <button class="branch-btn nao" onclick="talvezResolve('nao')">🔴 Ainda complexo → NÃO<br><small style="font-weight:400;">Escala para agente humano</small></button>
+          </div>
+        </div>`;
+    }
+    if (step === stepsData.length + 3) {
+      if (talvezBranch === 'sim') {
+        cycC.innerHTML = `
+          <div class="out-section">
+            <div class="out-lbl sim">✅ RECLASSIFICADO → SIM — RESPOSTA AUTOMÁTICA ENVIADA</div>
+            <div class="out-box sim">${RESP_SIM[tipo] || RESP_SIM['Product inquiry']}</div>
+          </div>` + cicloHtml('sim', tipo, sec);
+      } else {
+        cycC.innerHTML = agentCardHtml(tipo, sec) + cicloHtml('nao', tipo, sec);
+      }
+    }
+    const TOTAL = talvezBranch ? stepsData.length + 3 : stepsData.length + 2;
+    setNav(step, TOTAL);
+    return;
+  }
+
+  // ── NÃO ──
+  if (caminho === 'nao') {
+    const TOTAL = stepsData.length + 3;
+    if (step === stepsData.length + 1) {
+      outC.innerHTML = agentCardHtml(tipo, sec);
+    }
+    if (step === stepsData.length + 2) {
+      brC.innerHTML = `
+        <div style="margin-top:20px;">
+          <div style="font-size:12px;color:#888;font-weight:700;letter-spacing:.6px;margin-bottom:8px;">AGENTE RESPONDE AO CLIENTE</div>
+          <div class="human-reply">
+            <strong>👤 ${sec.agente} (${sec.nome}):</strong><br>
+            ${RESP_HUMANA[tipo] || ''}
+          </div>
+        </div>`;
+    }
+    if (step >= stepsData.length + 3) {
+      cycC.innerHTML = cicloHtml('nao', tipo, sec);
+    }
+    setNav(step, TOTAL);
+    return;
+  }
+}
+
+function talvezResolve(choice) {
+  talvezBranch = choice;
+  step = stepsData.length + 3;
+  // limpar branch buttons
+  document.getElementById('branch-container').innerHTML =
+    document.getElementById('branch-container').innerHTML.replace('class="branch-btns"','class="branch-btns hidden"');
+  renderStep();
+}
+
+// ────────────────────────────────────────────────────────────────
+// HELPERS DE HTML
+// ────────────────────────────────────────────────────────────────
+function agentCardHtml(tipo, sec) {
+  return `
+  <div class="out-section">
+    <div class="out-lbl nao">🔴 DASHBOARD DO AGENTE — FILA INTERNA (${sec.nome})</div>
+    <div class="agent-card">
+      <div class="agent-top">
+        <div>
+          <div class="agent-title">🔔 Novo ticket na fila — ação necessária</div>
+          <div class="agent-ts">Recebido agora · SLA: ${sec.sla} · Canal: Chat</div>
+        </div>
+        <span class="agent-flag">${tipo === 'Cancellation request' ? '🔴 RISCO DE CHURN' : '🟡 REVISÃO NECESSÁRIA'}</span>
+      </div>
+      <div class="agent-row"><span class="a-lbl">Tipo</span><span class="a-val">${tipo}</span></div>
+      <div class="agent-row"><span class="a-lbl">Setor</span><span class="a-val">${sec.nome}</span></div>
+      ${routing.subArea ? `<div class="agent-row"><span class="a-lbl">Sub-área</span><span class="a-val">${routing.subArea}</span></div>` : ''}
+      <div class="agent-row"><span class="a-lbl">SLA</span><span class="a-val">⏱ ${sec.sla} a partir de agora</span></div>
+      <div class="agent-row"><span class="a-lbl">Agente</span><span class="a-val">${sec.agente}</span></div>
+      <div class="agent-inst">📋 <b>Instrução:</b> ${INST_AGENTE[tipo] || ''}</div>
+      <div class="agent-ctx">
+        <b>Mensagem do cliente:</b> "${document.getElementById('ticket-input').value.trim()}"<br><br>
+        <b>Contexto IA:</b> Ticket classificado como ${tipo}${routing.subArea ? ', sub-área '+routing.subArea : ''}. ${routing.blocked ? 'Bloqueio por regra fixa.' : 'Confiança insuficiente para resposta automática.'} Histórico do cliente disponível na aba ao lado.
+      </div>
+      <div class="agent-actions">
+        <button class="a-btn p">📞 Iniciar atendimento</button>
+        <button class="a-btn s">📋 Ver histórico</button>
+        <button class="a-btn s">📖 Protocolo do setor</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function actionTaskHtml(tipo, t) {
+  return `
+  <div class="action-task">
+    <div class="action-task-header">
+      <div class="action-task-title">⚙️ Tarefa de Execução Pendente</div>
+      <span class="action-status">⏳ PENDENTE</span>
+    </div>
+    <div class="action-row"><span class="act-lbl">Operador</span><span class="act-val">${t.operador} · ${t.equipe}</span></div>
+    <div class="action-row"><span class="act-lbl">Ação</span><span class="act-val">${t.acao}</span></div>
+    <div class="action-row"><span class="act-lbl">Sistema</span><span class="act-val">${t.sistema}</span></div>
+    <div class="action-row"><span class="act-lbl">Prazo análise</span><span class="act-val">⏱ ${t.prazo_verificacao}</span></div>
+    <div class="action-row"><span class="act-lbl">Prazo execução</span><span class="act-val">⏱ ${t.prazo_execucao}</span></div>
+    <div class="action-row"><span class="act-lbl">Protocolo</span><span class="act-val">${t.protocolo} · Gerado automaticamente</span></div>
+    <div class="action-note">
+      ℹ️ Criada automaticamente junto com a resposta ao cliente. O operador deve executar a ação dentro do prazo prometido — caso contrário, o ticket reabre automaticamente.
+    </div>
+  </div>`;
+}
+
+function cicloHtml(tipo, ticketType, sec) {
+  const isSim = tipo === 'sim';
+  const isFinancial = ACTION_REQUIRED_TYPES.has(ticketType);
+  const nodes = isSim
+    ? (isFinancial
+        ? [['📤','Resposta enviada'],['🔧','Operador executa'],['✅','Ação confirmada'],['⭐','CSAT em 24h'],['📚','Base atualizada']]
+        : [['📤','Resposta enviada'],['⏰','CSAT em 24h'],['⭐','Cliente avalia'],['📚','Base atualizada'],['🔄','Modelo melhora']])
+    : [['👤','Agente resolve'],['✅','Ticket fechado'],['⭐','CSAT coletado'],['📚','Base atualizada'],['🔄','Modelo melhora']];
+
+  return `
+  <div class="cycle-wrap">
+    <div class="cycle-title">CICLO COMPLETO — DO TICKET AO FECHAMENTO</div>
+    <div class="cycle-flow">
+      ${nodes.map((n,i) => `<div class="c-node"><span>${n[0]}</span>${n[1]}</div>${i<nodes.length-1?'<span class="c-arrow">→</span>':''}`).join('')}
+    </div>
+    <div class="cycle-note">
+      ${isSim && isFinancial
+        ? `<b>Loop fechado:</b> a resposta ao cliente foi enviada com uma promessa de ação e prazo. A tarefa interna garante que o operador responsável execute o que foi prometido — a IA responde, o humano entrega. Se a tarefa não for concluída no prazo, o ticket reabre automaticamente e o SLA é penalizado.<br>CSAT solicitado em 24h. Se ≥ 4★, o par (resposta + execução) entra na base de conhecimento como template validado.`
+        : isSim
+        ? `<b>Melhoria contínua:</b> se o cliente avalia ≥ 4★, esta resposta é marcada como positiva e indexada na base de conhecimento. O próximo ticket similar terá este template disponível via RAG.<br>Se a avaliação for ≤ 2★, o ticket é flagged para revisão humana — o threshold de confiança desta categoria é revisado.`
+        : `<b>Melhoria contínua:</b> o par (ticket + resolução do agente) é adicionado ao pool de retreinamento. Se o CSAT for ≥ 4★, a resposta do agente entra na base de conhecimento como template.<br>No caso de Cancellation, a abordagem de retenção bem-sucedida vira referência para o próximo agente com o mesmo tipo de caso.`
+      }
+    </div>
+  </div>`;
+}
+
+function setNav(currentStep, total) {
+  const btn = document.getElementById('btn-avancar');
+  btn.disabled = currentStep >= total;
+  btn.textContent = currentStep >= total ? '✓ Ciclo completo' : 'Avançar ▶';
+  document.getElementById('progress-lbl').textContent =
+    currentStep > 0 ? `Etapa ${Math.min(currentStep, total)} de ${total}` : '';
+}
+
+// ────────────────────────────────────────────────────────────────
+// NAVEGAÇÃO
+// ────────────────────────────────────────────────────────────────
+function voltarRoteamento() {
+  show('card-routing'); hide('card-path');
+  caminho = null; step = 0; talvezBranch = null;
+}
+
+function resetTudo() {
+  show('card-ticket'); hide('card-routing'); hide('card-path');
+  routing = null; caminho = null; step = 0; talvezBranch = null;
+  document.getElementById('ticket-input').value = '';
+}
+
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+</script>
+</body>
+</html>
