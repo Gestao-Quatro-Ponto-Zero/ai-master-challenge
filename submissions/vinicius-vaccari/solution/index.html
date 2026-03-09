@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Lead Scorer — Ferramenta de priorização inteligente de pipeline de vendas para equipes comerciais.">
+  <title>Lead Scorer | Priorização de Pipeline</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+
+  <!-- Carregamento -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Carregando dados do pipeline…</div>
+  </div>
+
+  <div class="app-container">
+
+    <!-- Cabeçalho -->
+    <header class="app-header">
+      <div class="app-title-group">
+        <div class="app-logo">LS</div>
+        <div>
+          <h1 class="app-title">Lead Scorer</h1>
+          <p class="app-subtitle">Priorização de pipeline · Scoring inteligente</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn" id="btnThemeToggle" title="Alternar tema claro/escuro">
+          ☀️
+        </button>
+        <button class="btn" id="btnExport" title="Exportar deals filtrados para CSV">
+          📥 Exportar CSV
+        </button>
+      </div>
+    </header>
+
+    <!-- Indicadores -->
+    <section class="kpi-bar" id="kpiBar">
+      <div class="kpi-card">
+        <div class="kpi-label">Deals Ativos</div>
+        <div class="kpi-value" id="kpiDeals">—</div>
+        <div class="kpi-sub" id="kpiDealsDetail"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Valor do Pipeline</div>
+        <div class="kpi-value" id="kpiValue">—</div>
+        <div class="kpi-sub">Valor esperado total de fechamento</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Score Médio</div>
+        <div class="kpi-value" id="kpiAvgScore">—</div>
+        <div class="kpi-sub">No pipeline ativo</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Vendedores</div>
+        <div class="kpi-value" id="kpiAgents">—</div>
+        <div class="kpi-sub" id="kpiAgentsDetail"></div>
+      </div>
+    </section>
+
+    <!-- Painéis de Destaque: Top 5 + Em Risco -->
+    <section class="spotlight-grid">
+      <div class="spotlight-panel" id="topDealsPanel">
+        <div class="panel-title"><span class="icon">🎯</span> Top 5 — Agir Agora</div>
+        <div id="topDealsList"></div>
+      </div>
+      <div class="spotlight-panel" id="atRiskPanel">
+        <div class="panel-title"><span class="icon">⚠️</span> Deals em Risco</div>
+        <div id="atRiskList"></div>
+      </div>
+    </section>
+
+    <!-- Distribuição por Prioridade -->
+    <section class="bucket-distribution">
+      <div class="panel-title">Distribuição do Pipeline por Prioridade</div>
+      <div class="bucket-bars" id="bucketBars"></div>
+    </section>
+
+    <!-- Controles: Busca + Filtros -->
+    <section class="controls-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="Buscar por conta, vendedor, produto ou ID…">
+      <select class="filter-select" id="filterRegion">
+        <option value="">Todas as Regiões</option>
+      </select>
+      <select class="filter-select" id="filterManager">
+        <option value="">Todos os Managers</option>
+      </select>
+      <select class="filter-select" id="filterAgent">
+        <option value="">Todos os Vendedores</option>
+      </select>
+      <select class="filter-select" id="filterStage">
+        <option value="">Todos os Estágios</option>
+        <option value="Engaging">Engaging</option>
+        <option value="Prospecting">Prospecting</option>
+      </select>
+      <select class="filter-select" id="filterBucket">
+        <option value="">Todas as Prioridades</option>
+        <option value="Foco Imediato">Foco Imediato</option>
+        <option value="Alta Prioridade">Alta Prioridade</option>
+        <option value="Trabalhar Esta Semana">Trabalhar Esta Semana</option>
+        <option value="Monitorar">Monitorar</option>
+        <option value="Baixa Prioridade">Baixa Prioridade</option>
+      </select>
+      <button class="btn" id="btnClearFilters">✕ Limpar</button>
+    </section>
+
+    <!-- Tabela de Deals -->
+    <div class="table-wrapper">
+      <table class="deals-table" id="dealsTable">
+        <thead>
+          <tr>
+            <th data-sort="score" class="sorted">Score <span class="sort-arrow">▼</span></th>
+            <th data-sort="bucket">Prioridade <span class="sort-arrow">▼</span></th>
+            <th data-sort="account">Conta <span class="sort-arrow">▼</span></th>
+            <th data-sort="product">Produto <span class="sort-arrow">▼</span></th>
+            <th data-sort="stage">Estágio <span class="sort-arrow">▼</span></th>
+            <th data-sort="agent">Vendedor <span class="sort-arrow">▼</span></th>
+            <th data-sort="expectedValue">Valor Esp. <span class="sort-arrow">▼</span></th>
+            <th data-sort="age">Idade (dias) <span class="sort-arrow">▼</span></th>
+            <th>Insight</th>
+          </tr>
+        </thead>
+        <tbody id="dealsBody"></tbody>
+      </table>
+      <div class="table-footer" id="tableFooter"></div>
+    </div>
+
+    <!-- Estado Vazio -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-text">Nenhum deal encontrado com os filtros atuais.</div>
+      <button class="btn btn-primary" id="btnClearEmpty">Limpar Filtros</button>
+    </div>
+
+  </div>
+
+  <!-- Modal de Detalhes do Deal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content" id="modalContent">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-header">
+        <div class="deal-id" id="modalDealId"></div>
+        <div class="deal-title" id="modalDealTitle"></div>
+      </div>
+      <div class="modal-overview" id="modalOverview"></div>
+      <div class="modal-score-hero" id="modalScoreHero"></div>
+      <div class="modal-section-title">Detalhamento do Score</div>
+      <div class="factor-list" id="modalFactors"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
