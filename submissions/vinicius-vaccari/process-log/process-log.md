@@ -1,21 +1,21 @@
 # Process Log — Challenge 003: Lead Scorer
 
 **Autor:** Vinicius Vaccari
-**Ferramenta principal:** Claude Code (claude-sonnet-4-6) via CLI
+**Ferramentas:** ChatGPT o4 thinking · Gemini 3.1 Pro (High) · Claude Code (claude-sonnet-4-6)
 **Duração estimada:** 4–5 horas
 
 ---
 
 ## Ferramentas utilizadas
 
-| Ferramenta | Propósito |
-|---|---|
-| ChatGPT (GPT-4o) | Análise inicial do desafio proposto; criação do design system da aplicação |
-| Claude Code (claude-sonnet-4-6) | Análise do scoring, identificação de bugs, correções no app.js, auditoria dos dados, geração de documentação |
-| Gemini 2.5 Pro (High) | Validação cruzada e second opinion sobre o scoring |
-| Python (via Claude Code) | Análise exploratória dos CSVs — distribuições, win rates, aging, validação de campos |
-| PapaParse (CDN) | Parsing de CSV no browser |
-| HTML + CSS + JS | Stack da solução (sem framework) |
+| Ferramenta | Modelo | Propósito |
+|---|---|---|
+| ChatGPT | o4 thinking | Análise inicial do desafio; planejamento da solução; criação do design system da aplicação |
+| Gemini | 3.1 Pro (High) | Leitura do repositório do challenge; plano de implementação; design system da UI |
+| Claude Code | claude-sonnet-4-6 | Análise crítica do scoring, identificação de bugs, correções no app.js, auditoria dos dados com Python, geração de documentação |
+| Python (via Claude Code) | — | Análise exploratória dos CSVs — distribuições, win rates, aging, validação de campos |
+| PapaParse (CDN) | 5.4.1 | Parsing de CSV no browser |
+| HTML + CSS + JS | — | Stack da solução (sem framework) |
 
 ---
 
@@ -179,9 +179,9 @@ Cross-check completo entre código e dados:
 
 ### Screenshots das sessões de desenvolvimento
 
-Screenshots das conversas com Claude Code e Gemini 2.5 Pro (High) estão na pasta [`process-log/screenshots/`](./screenshots/):
+Screenshots das conversas com Claude Code e Gemini 3.1 Pro (High) estão na pasta [`process-log/screenshots/`](./screenshots/):
 
-**Gemini 2.5 Pro:**
+**Gemini 3.1 Pro (High):**
 - [x] Leitura do repositório e análise inicial (`screenshots/01-gemini-repo.jpeg`)
 - [x] Revisão do plano com mudanças propostas (`screenshots/02-gemini-plano_mudança.jpeg`)
 - [x] Criação do design system da aplicação (`screenshots/03-gemini-design_system.jpeg`)
@@ -191,4 +191,9 @@ Screenshots das conversas com Claude Code e Gemini 2.5 Pro (High) estão na past
 - [x] Identificação dos problemas no lead scoring (`screenshots/02-claude-problemas_lead.jpeg`)
 - [x] Auditoria completa do lead scoring (`screenshots/03-claude-auditoria_lead_scoring.jpeg`)
 - [x] Verificação se a lógica fazia sentido após correções (`screenshots/04-claude-se_a_logica_fazia_sentido.jpeg`)
+
+### Vídeo da aplicação rodando
+
+- [x] Screen recording da aplicação funcional — navegação pelo dashboard, filtros, modal de deal, export
+  - [Vídeo no YouTube](https://www.youtube.com/watch?v=uKWrbkqsDhw)
  

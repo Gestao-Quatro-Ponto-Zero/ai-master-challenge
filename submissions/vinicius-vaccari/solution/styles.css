@@ -345,8 +345,8 @@ body::before {
 .bucket-bars {
   display: flex;
   gap: var(--space-md);
-  align-items: end;
-  height: 80px;
+  align-items: flex-end;
+  min-height: 110px;
 }
 
 .bucket-item {
