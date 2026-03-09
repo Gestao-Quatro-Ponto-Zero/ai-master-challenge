@@ -1,7 +1,7 @@
 # Process Log — Challenge 003: Lead Scorer
 
 **Autor:** Vinicius Vaccari
-**Ferramentas:** ChatGPT o4 thinking · Gemini 3.1 Pro (High) · Claude Code (claude-sonnet-4-6)
+**Ferramentas:** ChatGPT 5.4 thinking · Gemini 3.1 Pro (High) · Claude Code (claude-sonnet-4-6)
 **Duração estimada:** 4–5 horas
 
 ---
@@ -10,7 +10,7 @@
 
 | Ferramenta | Modelo | Propósito |
 |---|---|---|
-| ChatGPT | o4 thinking | Análise inicial do desafio; planejamento da solução; criação do design system da aplicação |
+| ChatGPT | 5.4 thinking | Análise inicial do desafio; planejamento da solução; criação do design system da aplicação |
 | Gemini | 3.1 Pro (High) | Leitura do repositório do challenge; plano de implementação; design system da UI |
 | Claude Code | claude-sonnet-4-6 | Análise crítica do scoring, identificação de bugs, correções no app.js, auditoria dos dados com Python, geração de documentação |
 | Python (via Claude Code) | — | Análise exploratória dos CSVs — distribuições, win rates, aging, validação de campos |
