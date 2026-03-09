@@ -59,3 +59,51 @@ Iniciar o processo de análise do desafio e definir a estratégia de solução p
 </details>
 
 ---
+
+<details>
+<summary><strong>🎯 02. Escolha do Desafio e Planejamento Inicial</strong> | 09 Mar 2026 | 18:02</summary>
+
+### Objetivo da Etapa
+
+Selecionar o desafio a ser desenvolvido (Challenge 002 — Redesign de Suporte) e criar um checklist estruturado de informações necessárias para guiar todo o processo de construção do projeto.
+
+### Ferramenta/IA Usada
+
+- **ChatGPT** (Planejamento e estruturação)
+- **GitHub Copilot** (Documentação)
+- **Git** (Versionamento)
+
+### Prompt ou Instrução Dada
+
+> "Vou escolher o Challenge 002 — Redesign de Suporte. Nessa próxima etapa eu criei um checklist de informações para criar o processo de construção do projeto."
+
+**Link completo da conversa:**  
+🔗 [ChatGPT - Planejamento Challenge 002](https://chatgpt.com/share/e/69af3bef-f91c-8009-8cae-d8b748904466)
+
+### Saída Obtida
+
+- Definição clara do desafio a ser trabalhado: **Process-002-Support (Redesign de Suporte)**
+- Criação de checklist estruturado com todas as informações necessárias para o desenvolvimento
+- Mapeamento inicial das etapas do projeto
+- Estratégia de abordagem documentada na conversa com ChatGPT
+
+### O que Aproveitei
+
+- Abordagem estruturada com checklist para não perder informações importantes
+- Uso de IA para brainstorming e planejamento inicial
+- Documentação externa (ChatGPT) vinculada ao processo log para rastreabilidade completa
+- Definição clara de escopo antes de iniciar o desenvolvimento
+
+### O que Descartei
+
+- Começar a codificar sem planejamento prévio
+- Escolher múltiplos desafios simultaneamente
+- Planejamento apenas mental sem documentação
+
+### Próxima Decisão
+
+Analisar os dados do desafio e começar a estruturação da solução técnica, definindo arquitetura e tecnologias a serem utilizadas.
+
+</details>
+
+---
