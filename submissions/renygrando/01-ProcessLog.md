@@ -207,3 +207,190 @@ Realizar análise exploratória de dados (EDA) focada nas colunas críticas iden
 </details>
 
 ---
+
+<details>
+<summary><strong>🔧 04. Auditoria de Qualidade de Dados - Sanitização e Diagnóstico</strong> | 09 Mar 2026 | 20:01</summary>
+
+### Objetivo da Etapa
+
+Realizar auditoria estrutural completa do dataset `customer_support_tickets` para identificar problemas de qualidade de dados (valores ausentes, duplicações, inconsistências) que possam comprometer as análises. Testar diferentes ferramentas e abordagens para sanitização e análise em escala.
+
+### Ferramenta/IA Usada
+
+- **ChatGPT** (Análise estrutural com Python - ESCOLHIDA)
+- **ChatGPT Agent Mode** (Tentativa inicial - descartado por lentidão)
+- **Google Gemini** (Tentativa - descartado por limitação de context length)
+- **Airtable** (Tentativa - descartado por perda massiva de dados: 8 linhas de 30.000)
+- **GitHub Copilot** (Documentação)
+
+### Prompt ou Instrução Dada
+
+**Contexto do problema:**
+> "Estou sanitizando as tabelas enviadas pois há dados inconsistentes, estou pedindo para o ChatGPT estruturar e analisar utilizando Python."
+
+**Solicitação principal:**
+> "Pedi para fazer uma análise geral da tabela customer_support_tickets"
+
+**Análise solicitada:**
+> Auditoria estrutural verificando cinco dimensões críticas de qualidade de dados:
+> - Ausência de valores
+> - Duplicação
+> - Consistência de formato
+> - Valores fora de faixa
+> - Padrões suspeitos
+
+**Link completo da conversa:**  
+🔗 [ChatGPT - Auditoria de Qualidade de Dados](https://chatgpt.com/share/e/69af50d3-1e98-8009-b050-88a7892fa829)
+
+### Saída Obtida
+
+#### Tabela de Diagnóstico Completo
+
+| Coluna | Valores nulos | % nulos | Valores únicos | Duplicações | Possíveis problemas |
+|--------|---------------|---------|----------------|-------------|---------------------|
+| Ticket ID | 0 | 0% | 1000 | 0 | nenhum problema evidente |
+| Customer Name | 0 | 0% | 1000 | 0 | nenhum problema evidente |
+| Customer Email | 0 | 0% | 1000 | 0 | nenhum problema evidente |
+| Customer Age | 0 | 0% | 53 | 947 | nenhum problema evidente |
+| Customer Gender | 0 | 0% | 3 | 997 | nenhum problema evidente |
+| Product Purchased | 0 | 0% | 5 | 995 | nenhum problema evidente |
+| Date of Purchase | 0 | 0% | 367 | 633 | nenhum problema evidente |
+| Ticket Type | 0 | 0% | 4 | 996 | nenhum problema evidente |
+| Ticket Subject | 0 | 0% | 1000 | 0 | nenhum problema evidente |
+| Ticket Description | 0 | 0% | 1000 | 0 | nenhum problema evidente |
+| Ticket Status | 0 | 0% | 3 | 997 | nenhum problema evidente |
+| **Resolution** | **505** | **50.5%** | 495 | 505 | **valores ausentes** |
+| Ticket Priority | 0 | 0% | 3 | 997 | nenhum problema evidente |
+| Ticket Channel | 0 | 0% | 4 | 996 | nenhum problema evidente |
+| **First Response Time** | **205** | **20.5%** | 794 | 206 | **valores ausentes** |
+| **Time to Resolution** | **205** | **20.5%** | 794 | 206 | **valores ausentes** |
+| **Customer Satisfaction Rating** | **205** | **20.5%** | 5 | 205 | **valores ausentes** |
+
+#### Principais Problemas Identificados
+
+**1️⃣ Ausência sistemática de dados em colunas de resultado**
+
+**Resolution — 50,5% nulos**
+- **Cenários possíveis:**
+  - Tickets ainda não resolvidos (esperado)
+  - Falha de registro da solução (crítico)
+- **Impacto:**
+  - Perda de base de conhecimento
+  - Impossibilidade de treinar sistemas de automação
+  - Falta de material para FAQs e chatbots
+- **Campo crítico para:** análise de causas, construção de base de conhecimento, automação de respostas
+
+**First Response Time — 20,5% nulos**
+- **Possíveis causas:**
+  - Ticket resolvido automaticamente
+  - Sistema não registrou a primeira resposta
+  - Dados vieram de canais diferentes (ex: telefone)
+- **Impacto:**
+  - Compromete análises de tempo médio de resposta
+  - Falha de rastreamento de SLA
+  - Impossibilita avaliação de qualidade do atendimento
+
+**Time to Resolution — 20,5% nulos**
+- **Causa provável:** Tickets ainda em aberto
+- **Inconsistência crítica a verificar:**
+  ```
+  Se: Ticket Status = "Resolved"
+  E: Time to Resolution = null
+  Então: INCONSISTÊNCIA GRAVE
+  ```
+
+**Customer Satisfaction Rating — 20,5% nulos**
+- **Causas comuns:**
+  - Cliente não respondeu à pesquisa
+  - Ticket ainda não finalizado
+- **Risco:** **Viés de avaliação** — clientes insatisfeitos respondem mais frequentemente, distorcendo métricas
+
+**2️⃣ Distribuições altamente repetidas (NORMAL)**
+
+Colunas com alta duplicação são esperadas em sistemas operacionais:
+
+| Coluna | Motivo |
+|--------|--------|
+| Customer Gender | Poucas categorias possíveis |
+| Product Purchased | Catálogo limitado |
+| Ticket Type | Classificação operacional |
+| Ticket Priority | Níveis de urgência |
+| Ticket Channel | Poucos canais de entrada |
+
+✅ **Não é problema estrutural**
+
+**3️⃣ Verificações de faixa de valores**
+
+**Não foram encontrados:**
+- ❌ Idades negativas
+- ❌ Idades acima de 100
+- ❌ Avaliações fora da escala 1–5
+- ❌ Tempos negativos
+
+✅ **Sem valores absurdos evidentes**
+
+**4️⃣ Integridade dos identificadores**
+
+**Ticket ID:**
+- ✅ Nenhum valor nulo
+- ✅ Nenhum duplicado
+- ✅ **Boa integridade de chave primária**
+
+**5️⃣ Campos textuais sem anomalias estruturais**
+
+**Campos:** Ticket Subject, Ticket Description, Resolution
+- ✅ Sem duplicações excessivas
+- ✅ Sem campos vazios inesperados (exceto Resolution)
+- ✅ **Positivo para análises de NLP e automação**
+
+#### Problemas que Comprometem Análises
+
+**🚨 Crítico 1: Métricas de SLA incompletas**
+- **Campos afetados:** First Response Time, Time to Resolution
+- **Consequência:** Impossível medir desempenho real do suporte e produtividade
+
+**🚨 Crítico 2: Conhecimento operacional incompleto**
+- **Campo afetado:** Resolution
+- **Consequência:** Perda de base de conhecimento, aprendizado organizacional e material para automação
+
+**🚨 Crítico 3: Viés em análise de satisfação**
+- **Campo afetado:** Customer Satisfaction Rating
+- **Consequência:** Clientes moderadamente satisfeitos não respondem pesquisas, inflando/distorcendo indicadores
+
+#### Diagnóstico Geral
+
+**Qualidade estrutural:** ✅ BOA  
+**Qualidade analítica:** ⚠️ MODERADA
+
+**Conclusão:**
+> O dataset está bem estruturado, porém algumas métricas de resultado estão incompletas.
+> 
+> **Em termos práticos:**
+> - Análise operacional → **possível**
+> - Análise de experiência do cliente → **exige tratamento de nulos**
+
+### O que Aproveitei
+
+- **Tabela de diagnóstico completa** coluna por coluna com percentuais de nulos
+- Identificação de **3 problemas críticos** que podem comprometer análises
+- Entendimento sobre **quando duplicações são normais** vs. quando são problemas
+- Verificação de **integridade de chave primária** (Ticket ID)
+- Insights sobre **viés de satisfação** quando há dados faltantes
+- Confirmação de que **campos textuais estão íntegros** para NLP
+- Metodologia de auditoria estrutural replicável para outros datasets
+
+### O que Descartei
+
+- **ChatGPT Agent Mode:** Demora excessiva para análises em escala
+- **Google Gemini:** Limitação de context length impediu análise completa
+- **Airtable:** Perda massiva de dados (8 linhas retornadas de 30.000 originais) - inviável para datasets grandes
+- Análise sem verificação de integridade referencial (Status vs. Time to Resolution)
+- Assumir que campos nulos são sempre problemas (alguns são esperados)
+
+### Próxima Decisão
+
+Definir estratégia de tratamento de dados ausentes (imputação vs. exclusão) e verificar inconsistências críticas (tickets "Resolved" sem Time to Resolution). Preparar dataset limpo para análise exploratória (EDA) focada em padrões textuais e métricas operacionais.
+
+</details>
+
+---
