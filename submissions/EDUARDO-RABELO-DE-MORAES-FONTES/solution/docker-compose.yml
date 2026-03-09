@@ -1,0 +1,30 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: g4sales-api
+    command: >
+      sh -c "python g4sales/db/db_init.py &&
+      uvicorn g4sales.api:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: g4sales-frontend
+    command: >
+      sh -c "python g4sales/db/db_init.py &&
+      streamlit run frontend/app.py --server.headless true --server.address 0.0.0.0 --server.port 8501"
+    ports:
+      - "8501:8501"
+    environment:
+      API_BASE_URL: http://api:8000
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - api
