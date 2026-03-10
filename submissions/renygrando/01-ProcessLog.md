@@ -661,8 +661,10 @@ Consolidar os três relatórios PDF gerados na etapa anterior (gargalos operacio
 #### 📊 Material de Apresentação Executiva
 
 **Infográfico Visual:**
-- Infográfico síntese criado para comunicação executiva do projeto
-- Visualização dos principais insights e estratégia de automação
+- **Arquivo:** `infografico.png`
+- **Objetivo:** Infográfico síntese criado para comunicação executiva do projeto
+- **Conteúdo:** Visualização dos principais insights e estratégia de automação
+- **Local:** `/assets/infografico.png`
 
 **Apresentação de Slides:**
 - **Arquivo:** `Unlocking_IT_Support_Efficiency.pdf`
