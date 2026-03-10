@@ -29,18 +29,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .catch(() => setIsLoading(false));
   }, []);
 
-  const login = async (email: string, password: string) => {
-    const res = await apiRequest("POST", "/api/auth/login", { email, password });
+  const login = async (email: string, password: string): Promise<AuthUser> => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Erro ao fazer login");
     setUser(data);
+    return data;
   };
 
-  const register = async (name: string, email: string, password: string, role = "user") => {
-    const res = await apiRequest("POST", "/api/auth/register", { name, email, password, role });
+  const register = async (name: string, email: string, password: string, role = "user"): Promise<AuthUser> => {
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ name, email, password, role }),
+    });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Erro ao cadastrar");
     setUser(data);
+    return data;
   };
 
   const logout = async () => {

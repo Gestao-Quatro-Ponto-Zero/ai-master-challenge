@@ -21,8 +21,8 @@ export default function Register() {
     setError("");
     setLoading(true);
     try {
-      await register(name, email, password);
-      setLocation("/meus-chamados");
+      const user = await register(name, email, password);
+      setLocation(user.role === "admin" ? "/admin" : "/meus-chamados");
     } catch (err: any) {
       setError(err.message || "Erro ao cadastrar");
     } finally {

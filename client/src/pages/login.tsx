@@ -20,8 +20,8 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await login(email, password);
-      setLocation("/");
+      const user = await login(email, password);
+      setLocation(user.role === "admin" ? "/admin" : "/meus-chamados");
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login");
     } finally {
