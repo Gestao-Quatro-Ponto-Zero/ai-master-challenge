@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { apiRequest } from "@/lib/queryClient";
 
 export type AuthUser = {
   id: number;
@@ -11,8 +10,8 @@ export type AuthUser = {
 type AuthContextType = {
   user: AuthUser | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string, role?: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<AuthUser>;
+  register: (name: string, email: string, password: string, role?: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
 };
 
@@ -56,8 +55,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    await apiRequest("POST", "/api/auth/logout", {});
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setUser(null);
+    window.location.href = "/entrar";
   };
 
   return (

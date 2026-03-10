@@ -4,11 +4,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShieldCheck } from "lucide-react";
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { useAuth } from "@/context/auth";
 
 export default function Login() {
-  const [, setLocation] = useLocation();
   const { login } = useAuth();
   const [email, setEmail] = useState("admin@hermes.io");
   const [password, setPassword] = useState("hermes123");
@@ -20,11 +19,10 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      const user = await login(email, password);
-      setLocation(user.role === "admin" ? "/admin" : "/meus-chamados");
+      const userData = await login(email, password);
+      window.location.href = userData.role === "admin" ? "/admin" : "/meus-chamados";
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login");
-    } finally {
       setLoading(false);
     }
   };
