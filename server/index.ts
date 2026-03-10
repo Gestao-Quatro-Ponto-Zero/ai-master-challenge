@@ -23,6 +23,8 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+app.set("trust proxy", 1);
+
 app.use(session({
   secret: process.env.SESSION_SECRET || "hermes-secret-key",
   resave: false,
@@ -30,7 +32,8 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 }));
 
