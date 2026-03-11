@@ -1,0 +1,74 @@
+/* Lead Scorer — Custom Styles */
+
+/* Score Gauge (CSS-only circular progress) */
+.score-gauge {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--score-color) calc(var(--score) * 3.6deg),
+        #e2e8f0 calc(var(--score) * 3.6deg)
+    );
+    display: grid;
+    place-items: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.score-gauge::after {
+    content: attr(data-score);
+    width: 64px;
+    height: 64px;
+    background: white;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--score-color);
+}
+
+/* Tabular numbers for alignment */
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Alpine.js cloak */
+[x-cloak] {
+    display: none !important;
+}
+
+/* Smooth transitions — scoped to interactive elements only */
+a, button, select, input, .score-gauge {
+    transition-property: background-color, border-color, color;
+    transition-duration: 150ms;
+    transition-timing-function: ease-in-out;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Table hover effect */
+tbody tr {
+    transition: background-color 150ms ease;
+}
+
+/* Deal detail panel shadow */
+.fixed .relative {
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+}

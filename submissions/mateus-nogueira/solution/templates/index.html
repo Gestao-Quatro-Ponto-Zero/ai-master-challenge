@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Scorer | G4 Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 font-sans text-slate-700 min-h-screen" x-data="app()" x-init="init()">
+
+    <!-- Nav -->
+    <nav class="bg-slate-800 text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-sm">LS</div>
+                    <span class="font-semibold text-lg tracking-tight">Lead Scorer</span>
+                </div>
+                <div class="flex gap-1">
+                    <button @click="view = 'pipeline'" :class="view === 'pipeline' ? 'bg-slate-700' : 'hover:bg-slate-700/50'" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Pipeline</button>
+                    <button @click="view = 'monday'" :class="view === 'monday' ? 'bg-slate-700' : 'hover:bg-slate-700/50'" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Kanban</button>
+                    <button @click="view = 'dashboard'" :class="view === 'dashboard' ? 'bg-slate-700' : 'hover:bg-slate-700/50'" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Dashboard</button>
+                    <button @click="view = 'agents'" :class="view === 'agents' ? 'bg-slate-700' : 'hover:bg-slate-700/50'" class="px-3 py-1.5 rounded-md text-sm font-medium transition-colors">Equipe</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ═══ PIPELINE VIEW ═══ -->
+        <div x-show="view === 'pipeline'" x-cloak>
+            <!-- Filters -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-4">
+                <div class="flex flex-wrap gap-3 items-end">
+                    <div class="flex-1 min-w-[150px]">
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Buscar conta</label>
+                        <input type="text" x-model="filters.search" @input.debounce.300ms="loadPipeline()"
+                            placeholder="Nome da conta ou ID..."
+                            class="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Etapa</label>
+                        <select x-model="filters.stage" @change="loadPipeline()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                            <option value="">Todas</option>
+                            <option value="Prospecting">Prospectar</option>
+                            <option value="Engaging">Engajar</option>
+                            <option value="Nutrir">Nutrir</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Alerta</label>
+                        <select x-model="filters.alert_type" @change="loadPipeline()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                            <option value="">Todos</option>
+                            <template x-for="at in (filterOptions.alert_types || [])">
+                                <option :value="at" x-text="translateAlertType(at)"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Regiao</label>
+                        <select x-model="filters.region" @change="loadPipeline()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                            <option value="">Todas</option>
+                            <template x-for="r in filterOptions.regions">
+                                <option :value="r" x-text="translateRegion(r)"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Gerente</label>
+                        <select x-model="filters.manager" @change="loadPipeline()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                            <option value="">Todos</option>
+                            <template x-for="m in filterOptions.managers">
+                                <option :value="m" x-text="m"></option>
+                            </template>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">Vendedor</label>
+                        <select x-model="filters.agent" @change="loadPipeline()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                            <option value="">Todos</option>
+                            <template x-for="a in filterOptions.agents">
+                                <option :value="a" x-text="a"></option>
+                            </template>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary bar -->
+            <div class="flex items-center justify-between mb-3 px-1">
+                <p class="text-sm text-slate-500">
+                    <span x-text="pipelineData.total"></span> oportunidades encontradas
+                </p>
+                <div class="flex gap-2 text-xs items-center">
+                    <span class="text-slate-400">Ordenar por:</span>
+                    <button @click="sortPipeline('score')" :class="filters.sort === 'score' ? 'text-blue-600 font-semibold' : 'text-slate-500'" class="hover:text-blue-600 flex items-center gap-0.5">
+                        Score
+                        <span x-show="filters.sort === 'score'" x-text="filters.order === 'desc' ? '↓' : '↑'"></span>
+                    </button>
+                    <button @click="sortPipeline('days_in_pipeline')" :class="filters.sort === 'days_in_pipeline' ? 'text-blue-600 font-semibold' : 'text-slate-500'" class="hover:text-blue-600 flex items-center gap-0.5">
+                        Dias
+                        <span x-show="filters.sort === 'days_in_pipeline'" x-text="filters.order === 'desc' ? '↓' : '↑'"></span>
+                    </button>
+                    <button @click="sortPipeline('estimated_value')" :class="filters.sort === 'estimated_value' ? 'text-blue-600 font-semibold' : 'text-slate-500'" class="hover:text-blue-600 flex items-center gap-0.5">
+                        Valor
+                        <span x-show="filters.sort === 'estimated_value'" x-text="filters.order === 'desc' ? '↓' : '↑'"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pipeline Table -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Score</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Alerta</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Vendedor</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Produto</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Conta</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Etapa</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Dias</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Valor Est.</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Ação Sugerida</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <template x-for="deal in pipelineData.deals" :key="deal.opportunity_id">
+                                <tr class="hover:bg-slate-50/50 transition-colors cursor-pointer" @click="openDeal(deal.opportunity_id)">
+                                    <td class="px-4 py-3">
+                                        <div class="flex flex-col items-start gap-0.5">
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold"
+                                                  :class="scoreClasses(deal.score)">
+                                                <span x-text="scoreLabelIcon(deal.score_label)"></span>
+                                                <span x-text="deal.score_label"></span>
+                                            </span>
+                                            <span class="text-[10px] text-slate-400 tabular-nums pl-1" x-text="deal.score + ' pts'"></span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div x-show="deal.alert_label">
+                                            <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full"
+                                                  :class="alertClasses(deal.alert_color)">
+                                                <span x-text="alertIcon(deal.alert_icon)"></span>
+                                                <span x-text="deal.alert_label"></span>
+                                            </span>
+                                            <p x-show="deal.alert_reason" class="text-[10px] text-slate-400 mt-0.5 max-w-[180px] truncate" x-text="deal.alert_reason" :title="deal.alert_reason"></p>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 font-medium text-slate-800" x-text="deal.sales_agent"></td>
+                                    <td class="px-4 py-3" x-text="deal.product"></td>
+                                    <td class="px-4 py-3" :class="deal.account ? '' : 'text-slate-400 italic'" x-text="deal.account || 'Sem conta'"></td>
+                                    <td class="px-4 py-3">
+                                        <span class="text-xs px-2 py-0.5 rounded-full"
+                                              :class="deal.display_stage === 'Engaging' ? 'bg-blue-50 text-blue-700' : deal.display_stage === 'Nutrir' ? 'bg-orange-50 text-orange-700' : 'bg-purple-50 text-purple-700'"
+                                              x-text="translateStage(deal.display_stage)"></span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right tabular-nums" x-text="deal.days_in_pipeline + 'd'"></td>
+                                    <td class="px-4 py-3 text-right tabular-nums font-medium" x-text="formatCurrency(deal.estimated_value)"></td>
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg border"
+                                              :class="actionClasses(deal.action_color)"
+                                              :title="deal.action_detail">
+                                            <span x-text="actionIcon(deal.action_icon)"></span>
+                                            <span x-text="deal.action_text"></span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <div x-show="pipelineData.deals.length === 0" class="p-8 text-center text-slate-400">
+                    Nenhuma oportunidade encontrada com esses filtros.
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ DEAL DETAIL PANEL ═══ -->
+        <div x-show="showDealPanel" x-cloak
+             class="fixed inset-0 z-50 flex justify-end"
+             @keydown.escape.window="showDealPanel = false">
+            <div class="absolute inset-0 bg-black/30" @click="showDealPanel = false"></div>
+            <div class="relative w-full max-w-lg bg-white shadow-2xl overflow-y-auto"
+                 x-show="showDealPanel"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="translate-x-full">
+
+                <template x-if="selectedDeal">
+                    <div class="p-6">
+                        <!-- Header -->
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <p class="text-xs text-slate-400 font-mono mb-1" x-text="selectedDeal.opportunity_id"></p>
+                                <h2 class="text-xl font-bold text-slate-800" x-text="selectedDeal.sales_agent"></h2>
+                                <p class="text-sm text-slate-500" x-text="selectedDeal.product + (selectedDeal.account ? ' — ' + selectedDeal.account : '')"></p>
+                            </div>
+                            <button @click="showDealPanel = false" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
+                        </div>
+
+                        <!-- Score Gauge -->
+                        <div class="flex items-center gap-6 mb-6 p-4 rounded-xl" :class="scoreBgClass(selectedDeal.score)">
+                            <div class="score-gauge" :style="'--score: ' + selectedDeal.score + '; --score-color: ' + scoreHex(selectedDeal.score)" :data-score="selectedDeal.score"></div>
+                            <div>
+                                <p class="text-2xl font-bold" :class="scoreTextClass(selectedDeal.score)" x-text="selectedDeal.score_label"></p>
+                                <p class="text-sm text-slate-600">Pontuação geral da oportunidade</p>
+                            </div>
+                        </div>
+
+                        <!-- Alert Banner -->
+                        <template x-if="selectedDeal.alert">
+                            <div class="mb-6 p-4 rounded-xl border" :class="alertBannerClasses(selectedDeal.alert.color)">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-lg" x-text="alertIcon(selectedDeal.alert.icon)"></span>
+                                    <span class="font-semibold" x-text="selectedDeal.alert.label"></span>
+                                </div>
+                                <p class="text-sm mb-3" x-text="selectedDeal.alert.reason"></p>
+                                <div class="space-y-1">
+                                    <p class="text-xs font-semibold text-slate-600 uppercase tracking-wide">Ações recomendadas:</p>
+                                    <template x-for="action in selectedDeal.alert.actions">
+                                        <p class="text-sm flex items-start gap-2">
+                                            <span class="text-slate-400 mt-0.5">&#8250;</span>
+                                            <span x-text="action"></span>
+                                        </p>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
+                        <!-- Score Components -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-3">Detalhamento da Pontuação</h3>
+                            <div class="space-y-4">
+                                <template x-for="comp in selectedDeal.components" :key="comp.name">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-sm font-medium text-slate-700" x-text="comp.name"></span>
+                                            <span class="text-sm font-bold tabular-nums" x-text="comp.score + '/' + comp.max"></span>
+                                        </div>
+                                        <div class="w-full bg-slate-100 rounded-full h-2.5">
+                                            <div class="h-2.5 rounded-full transition-all duration-500"
+                                                 :class="compBarColor(comp.score, comp.max)"
+                                                 :style="'width: ' + (comp.score / comp.max * 100) + '%'"></div>
+                                        </div>
+                                        <p class="text-xs text-slate-500 mt-1" x-text="comp.detail"></p>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Deal Info -->
+                        <div class="border-t border-slate-200 pt-4">
+                            <h3 class="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-3">Informações da Oportunidade</h3>
+                            <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                                <dt class="text-slate-500">Etapa</dt>
+                                <dd class="font-medium" x-text="translateStage(selectedDeal.deal_stage)"></dd>
+                                <dt class="text-slate-500">Data de Engajamento</dt>
+                                <dd class="font-medium" x-text="selectedDeal.engage_date || '—'"></dd>
+                                <dt class="text-slate-500">Dias no Pipeline</dt>
+                                <dd class="font-medium" x-text="selectedDeal.days_in_pipeline + ' dias'"></dd>
+                                <dt class="text-slate-500">Valor Estimado</dt>
+                                <dd class="font-medium" x-text="formatCurrency(selectedDeal.estimated_value)"></dd>
+                                <dt class="text-slate-500">Preço de Tabela</dt>
+                                <dd class="font-medium" x-text="formatCurrency(selectedDeal.sales_price)"></dd>
+                                <template x-if="selectedDeal.sector">
+                                    <dt class="text-slate-500">Setor</dt>
+                                </template>
+                                <template x-if="selectedDeal.sector">
+                                    <dd class="font-medium capitalize" x-text="selectedDeal.sector"></dd>
+                                </template>
+                                <template x-if="selectedDeal.revenue">
+                                    <dt class="text-slate-500">Receita da Conta</dt>
+                                </template>
+                                <template x-if="selectedDeal.revenue">
+                                    <dd class="font-medium" x-text="'$' + selectedDeal.revenue + 'M'"></dd>
+                                </template>
+                                <dt class="text-slate-500">Gerente</dt>
+                                <dd class="font-medium" x-text="selectedDeal.manager || '—'"></dd>
+                                <dt class="text-slate-500">Regiao</dt>
+                                <dd class="font-medium" x-text="translateRegion(selectedDeal.regional_office)"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- ═══ MONDAY MORNING VIEW ═══ -->
+        <div x-show="view === 'monday'" x-cloak>
+            <div class="flex flex-wrap gap-3 items-end mb-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Regiao</label>
+                    <select x-model="mondayFilters.region" @change="loadMonday()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todas</option>
+                        <template x-for="r in filterOptions.regions"><option :value="r" x-text="translateRegion(r)"></option></template>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Gerente</label>
+                    <select x-model="mondayFilters.manager" @change="loadMonday()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todos</option>
+                        <template x-for="m in filterOptions.managers"><option :value="m" x-text="m"></option></template>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Vendedor</label>
+                    <select x-model="mondayFilters.agent" @change="loadMonday()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todos</option>
+                        <template x-for="a in filterOptions.agents"><option :value="a" x-text="a"></option></template>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div x-show="mondayData.summary" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 mb-4">
+                <p class="text-lg font-semibold text-slate-800">
+                    Bom dia! Você tem <span class="text-green-600" x-text="mondayData.summary?.total_fechar || 0"></span> oportunidades prontas para fechar,
+                    valendo <span class="text-green-600" x-text="formatCurrency(mondayData.summary?.valor_fechar || 0)"></span>.
+                </p>
+            </div>
+
+            <!-- Kanban Columns -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Fechar Agora -->
+                <div class="bg-white rounded-xl shadow-sm border-2 border-green-200 overflow-hidden"
+                     @dragover="onDragOver($event)" @dragenter="onDragEnter($event)" @dragleave="onDragLeave($event)" @drop="onDrop($event, 'fechar_agora')">
+                    <div class="bg-green-50 px-4 py-3 border-b border-green-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-green-800">Fechar Agora</h3>
+                            <span class="text-xs font-semibold text-green-600 bg-green-100 px-2 py-0.5 rounded-full" x-text="mondayData.fechar_agora?.length || 0"></span>
+                        </div>
+                        <p class="text-xs text-green-600 mt-1" x-text="formatCurrency(mondayData.summary?.valor_fechar || 0)"></p>
+                    </div>
+                    <div class="p-2 space-y-2 max-h-[60vh] overflow-y-auto">
+                        <template x-for="deal in mondayData.fechar_agora || []" :key="deal.opportunity_id">
+                            <div class="p-3 rounded-lg border border-slate-200 hover:border-green-300 hover:shadow-sm cursor-grab transition-all"
+                                 draggable="true" @dragstart="onDragStart($event, deal, 'fechar_agora')" @dragend="onDragEnd($event)" @click="openDeal(deal.opportunity_id)">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full" :class="scoreClasses(deal.score)">
+                                        <span x-text="scoreLabelIcon(deal.score_label)"></span>
+                                        <span x-text="deal.score_label"></span>
+                                        <span class="opacity-60 text-[10px]" x-text="'(' + deal.score + ')'"></span>
+                                    </span>
+                                    <span x-show="deal.alert_label" class="text-xs" x-text="alertIcon(deal.alert_icon)"></span>
+                                </div>
+                                <p class="text-sm font-medium text-slate-800" x-text="deal.sales_agent"></p>
+                                <p class="text-xs text-slate-500" x-text="deal.product + (deal.account ? ' — ' + deal.account : '')"></p>
+                                <div class="flex items-center justify-between mt-2 text-xs text-slate-400">
+                                    <span x-text="deal.days_in_pipeline + 'd'"></span>
+                                    <span class="font-medium text-slate-600" x-text="formatCurrency(deal.estimated_value)"></span>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="!mondayData.fechar_agora?.length" class="p-4 text-center text-sm text-slate-400">Nenhuma oportunidade nesta categoria</div>
+                    </div>
+                </div>
+
+                <!-- Nutrir -->
+                <div class="bg-white rounded-xl shadow-sm border-2 border-yellow-200 overflow-hidden"
+                     @dragover="onDragOver($event)" @dragenter="onDragEnter($event)" @dragleave="onDragLeave($event)" @drop="onDrop($event, 'nutrir')">
+                    <div class="bg-yellow-50 px-4 py-3 border-b border-yellow-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-yellow-800">Nutrir</h3>
+                            <span class="text-xs font-semibold text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full" x-text="mondayData.nutrir?.length || 0"></span>
+                        </div>
+                        <p class="text-xs text-yellow-600 mt-1" x-text="formatCurrency(mondayData.summary?.valor_nutrir || 0)"></p>
+                    </div>
+                    <div class="p-2 space-y-2 max-h-[60vh] overflow-y-auto">
+                        <template x-for="deal in mondayData.nutrir || []" :key="deal.opportunity_id">
+                            <div class="p-3 rounded-lg border border-slate-200 hover:border-yellow-300 hover:shadow-sm cursor-grab transition-all"
+                                 draggable="true" @dragstart="onDragStart($event, deal, 'nutrir')" @dragend="onDragEnd($event)" @click="openDeal(deal.opportunity_id)">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full" :class="scoreClasses(deal.score)">
+                                        <span x-text="scoreLabelIcon(deal.score_label)"></span>
+                                        <span x-text="deal.score_label"></span>
+                                        <span class="opacity-60 text-[10px]" x-text="'(' + deal.score + ')'"></span>
+                                    </span>
+                                    <span x-show="deal.alert_label" class="text-xs" x-text="alertIcon(deal.alert_icon)"></span>
+                                </div>
+                                <p class="text-sm font-medium text-slate-800" x-text="deal.sales_agent"></p>
+                                <p class="text-xs text-slate-500" x-text="deal.product + (deal.account ? ' — ' + deal.account : '')"></p>
+                                <div class="flex items-center justify-between mt-2 text-xs text-slate-400">
+                                    <span x-text="deal.days_in_pipeline + 'd'"></span>
+                                    <span class="font-medium text-slate-600" x-text="formatCurrency(deal.estimated_value)"></span>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="!mondayData.nutrir?.length" class="p-4 text-center text-sm text-slate-400">Nenhuma oportunidade nesta categoria</div>
+                    </div>
+                </div>
+
+                <!-- Repensar -->
+                <div class="bg-white rounded-xl shadow-sm border-2 border-red-200 overflow-hidden"
+                     @dragover="onDragOver($event)" @dragenter="onDragEnter($event)" @dragleave="onDragLeave($event)" @drop="onDrop($event, 'repensar')">
+                    <div class="bg-red-50 px-4 py-3 border-b border-red-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-red-800">Repensar</h3>
+                            <span class="text-xs font-semibold text-red-600 bg-red-100 px-2 py-0.5 rounded-full" x-text="mondayData.repensar?.length || 0"></span>
+                        </div>
+                        <p class="text-xs text-red-600 mt-1" x-text="formatCurrency(mondayData.summary?.valor_repensar || 0)"></p>
+                    </div>
+                    <div class="p-2 space-y-2 max-h-[60vh] overflow-y-auto">
+                        <template x-for="deal in mondayData.repensar || []" :key="deal.opportunity_id">
+                            <div class="p-3 rounded-lg border border-slate-200 hover:border-red-300 hover:shadow-sm cursor-grab transition-all"
+                                 draggable="true" @dragstart="onDragStart($event, deal, 'repensar')" @dragend="onDragEnd($event)" @click="openDeal(deal.opportunity_id)">
+                                <div class="flex items-center justify-between mb-1">
+                                    <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full" :class="scoreClasses(deal.score)">
+                                        <span x-text="scoreLabelIcon(deal.score_label)"></span>
+                                        <span x-text="deal.score_label"></span>
+                                        <span class="opacity-60 text-[10px]" x-text="'(' + deal.score + ')'"></span>
+                                    </span>
+                                    <span x-show="deal.alert_label" class="text-xs" x-text="alertIcon(deal.alert_icon)"></span>
+                                </div>
+                                <p class="text-sm font-medium text-slate-800" x-text="deal.sales_agent"></p>
+                                <p class="text-xs text-slate-500" x-text="deal.product + (deal.account ? ' — ' + deal.account : '')"></p>
+                                <div class="flex items-center justify-between mt-2 text-xs text-slate-400">
+                                    <span x-text="deal.days_in_pipeline + 'd'"></span>
+                                    <span class="font-medium text-slate-600" x-text="formatCurrency(deal.estimated_value)"></span>
+                                </div>
+                            </div>
+                        </template>
+                        <div x-show="!mondayData.repensar?.length" class="p-4 text-center text-sm text-slate-400">Nenhuma oportunidade nesta categoria</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ DASHBOARD VIEW ═══ -->
+        <div x-show="view === 'dashboard'" x-cloak>
+            <!-- Loading placeholder -->
+            <div x-show="!dashboardReady" class="flex items-center justify-center py-20">
+                <p class="text-slate-400 text-sm">Carregando dashboard...</p>
+            </div>
+
+            <!-- Dashboard content — only visible when data is ready -->
+            <div x-show="dashboardReady">
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-3 items-end mb-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Regiao</label>
+                    <select x-model="dashboardFilters.region" @change="loadDashboard()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todas</option>
+                        <template x-for="r in filterOptions.regions"><option :value="r" x-text="translateRegion(r)"></option></template>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Gerente</label>
+                    <select x-model="dashboardFilters.manager" @change="loadDashboard()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todos</option>
+                        <template x-for="m in filterOptions.managers"><option :value="m" x-text="m"></option></template>
+                    </select>
+                </div>
+            </div>
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Pipeline Ativo</p>
+                    <p class="text-2xl font-bold text-slate-800 mt-1" x-text="formatCurrency(dashboardData.total_pipeline_value || 0)"></p>
+                    <p class="text-xs text-slate-400 mt-1"><span x-text="dashboardData.total_active || 0"></span> oportunidades</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Pontuação Média</p>
+                    <p class="text-2xl font-bold text-slate-800 mt-1" x-text="dashboardData.avg_score || 0"></p>
+                    <p class="text-xs text-slate-400 mt-1">das oportunidades ativas</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Taxa de Conversão</p>
+                    <p class="text-2xl font-bold text-slate-800 mt-1"><span x-text="dashboardData.overall_winrate || 0"></span>%</p>
+                    <p class="text-xs text-slate-400 mt-1">histórico geral</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">Alertas</p>
+                    <div class="flex flex-wrap gap-1 mt-2">
+                        <template x-for="(count, type) in dashboardData.alert_counts || {}">
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-600" x-text="translateAlertType(type) + ': ' + count"></span>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4" style="height: 280px;">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-3">Distribuição de Pontuações</h3>
+                    <div style="height: 220px; position: relative;">
+                        <canvas id="scoreDistChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4" style="height: 280px;">
+                    <h3 class="text-sm font-semibold text-slate-700 mb-3">Taxa de Conversão por Produto</h3>
+                    <div style="height: 220px; position: relative;">
+                        <canvas id="productWrChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            </div><!-- /dashboardReady -->
+        </div>
+
+        <!-- ═══ AGENTS VIEW ═══ -->
+        <div x-show="view === 'agents'" x-cloak>
+
+            <!-- Teams Heatmap: Manager × Region -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-6">
+                <h3 class="text-sm font-semibold text-slate-800 uppercase tracking-wide mb-4">Performance por Equipe × Região</h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full border-separate" style="border-spacing: 6px;">
+                        <!-- Header -->
+                        <thead>
+                            <tr>
+                                <th class="w-36"></th>
+                                <template x-for="reg in teamsGrid.regions" :key="'h-' + reg">
+                                    <th class="text-center text-xs font-semibold text-slate-500 uppercase pb-1" x-text="translateRegion(reg)"></th>
+                                </template>
+                                <th class="text-center text-xs font-bold text-slate-700 uppercase pb-1">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Manager rows -->
+                            <template x-for="row in teamsGrid.rows" :key="'gr-' + row.manager">
+                                <tr>
+                                    <td class="text-xs font-semibold text-slate-700 pr-2 py-1 whitespace-nowrap" x-text="row.manager"></td>
+                                    <template x-for="reg in teamsGrid.regions" :key="'c-' + row.manager + reg">
+                                        <td class="p-0">
+                                            <template x-if="row.cells[reg] && row.cells[reg].deals_active > 0">
+                                                <div class="heatmap-cell group relative rounded-lg text-center cursor-default py-4 px-2"
+                                                     :class="heatmapClasses(row.cells[reg].avg_score)">
+                                                    <!-- Score grande -->
+                                                    <div class="text-2xl font-black leading-none" x-text="row.cells[reg].avg_score"></div>
+                                                    <div class="text-[10px] font-semibold mt-1 opacity-80" x-text="scoreLabelText(row.cells[reg].avg_score)"></div>
+                                                    <!-- Tooltip no hover -->
+                                                    <div class="absolute z-10 hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg">
+                                                        <div class="font-semibold" x-text="row.cells[reg].deals_active + ' deals ativos'"></div>
+                                                        <div x-text="'Pipeline: ' + formatCurrency(row.cells[reg].pipeline_value)"></div>
+                                                        <div x-text="'Score médio: ' + row.cells[reg].avg_score"></div>
+                                                        <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template x-if="!row.cells[reg] || row.cells[reg].deals_active === 0">
+                                                <div class="rounded-lg bg-slate-50 text-slate-300 text-center py-4 text-sm">—</div>
+                                            </template>
+                                        </td>
+                                    </template>
+                                    <!-- Total -->
+                                    <td class="p-0">
+                                        <div class="rounded-lg bg-slate-800 text-white text-center py-4 px-2 group relative cursor-default">
+                                            <div class="text-2xl font-black leading-none" x-text="row.cells['Total'].avg_score"></div>
+                                            <div class="text-[10px] font-semibold mt-1 opacity-60" x-text="scoreLabelText(row.cells['Total'].avg_score)"></div>
+                                            <div class="absolute z-10 hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg">
+                                                <div class="font-semibold" x-text="row.cells['Total'].deals_active + ' deals ativos'"></div>
+                                                <div x-text="'Pipeline: ' + formatCurrency(row.cells['Total'].pipeline_value)"></div>
+                                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                            <!-- Totals row -->
+                            <tr class="border-t-2">
+                                <td class="text-xs font-bold text-slate-600 uppercase pr-2 pt-2">Total</td>
+                                <template x-for="reg in teamsGrid.regions" :key="'t-' + reg">
+                                    <td class="p-0 pt-2">
+                                        <template x-if="teamsGrid.totals[reg]">
+                                            <div class="rounded-lg bg-slate-100 text-center py-3 px-2 group relative cursor-default">
+                                                <div class="text-xl font-black text-slate-700 leading-none" x-text="teamsGrid.totals[reg].avg_score"></div>
+                                                <div class="text-[10px] font-semibold text-slate-500 mt-1" x-text="teamsGrid.totals[reg].deals_active + ' deals'"></div>
+                                                <div class="absolute z-10 hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg">
+                                                    <div x-text="'Pipeline: ' + formatCurrency(teamsGrid.totals[reg].pipeline_value)"></div>
+                                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </td>
+                                </template>
+                                <td class="p-0 pt-2">
+                                    <template x-if="teamsGrid.totals['Total']">
+                                        <div class="rounded-lg bg-slate-900 text-white text-center py-3 px-2 group relative cursor-default">
+                                            <div class="text-xl font-black leading-none" x-text="teamsGrid.totals['Total'].avg_score"></div>
+                                            <div class="text-[10px] font-semibold opacity-60 mt-1" x-text="teamsGrid.totals['Total'].deals_active + ' deals'"></div>
+                                            <div class="absolute z-10 hidden group-hover:block bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-lg border border-slate-600">
+                                                <div x-text="'Pipeline: ' + formatCurrency(teamsGrid.totals['Total'].pipeline_value)"></div>
+                                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Legend -->
+                <div class="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-slate-100">
+                    <span class="text-[10px] text-slate-400 uppercase tracking-wide">Score:</span>
+                    <div class="flex items-center gap-1">
+                        <div class="w-4 h-4 rounded bg-red-400"></div>
+                        <span class="text-[10px] text-slate-500">&lt;35</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-4 h-4 rounded bg-orange-400"></div>
+                        <span class="text-[10px] text-slate-500">35-44</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-4 h-4 rounded bg-amber-400"></div>
+                        <span class="text-[10px] text-slate-500">45-54</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-4 h-4 rounded bg-emerald-400"></div>
+                        <span class="text-[10px] text-slate-500">55-64</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <div class="w-4 h-4 rounded bg-emerald-500"></div>
+                        <span class="text-[10px] text-slate-500">65+</span>
+                    </div>
+                    <span class="text-[10px] text-slate-400 ml-2">Passe o mouse para detalhes</span>
+                </div>
+            </div>
+
+            <!-- Individual Agents Table -->
+            <div class="flex flex-wrap gap-3 items-end mb-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Regiao</label>
+                    <select x-model="agentsFilters.region" @change="loadAgents()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todas</option>
+                        <template x-for="r in filterOptions.regions"><option :value="r" x-text="translateRegion(r)"></option></template>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Gerente</label>
+                    <select x-model="agentsFilters.manager" @change="loadAgents()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white">
+                        <option value="">Todos</option>
+                        <template x-for="m in filterOptions.managers"><option :value="m" x-text="m"></option></template>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Vendedor</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Gerente</th>
+                                <th class="px-4 py-3 text-left font-semibold text-slate-600">Regiao</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Conversão</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Oport. Ativas</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Pontuação Média</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Ticket Médio</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Quentes</th>
+                                <th class="px-4 py-3 text-right font-semibold text-slate-600">Em Risco</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <template x-for="agent in agentsData" :key="agent.name">
+                                <tr class="hover:bg-slate-50/50">
+                                    <td class="px-4 py-3 font-medium text-slate-800" x-text="agent.name"></td>
+                                    <td class="px-4 py-3" x-text="agent.manager"></td>
+                                    <td class="px-4 py-3" x-text="translateRegion(agent.region)"></td>
+                                    <td class="px-4 py-3 text-right">
+                                        <span class="font-bold tabular-nums" :class="agent.win_rate >= 65 ? 'text-green-600' : agent.win_rate >= 60 ? 'text-yellow-600' : 'text-red-600'" x-text="agent.win_rate + '%'"></span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right tabular-nums" x-text="agent.active_deals"></td>
+                                    <td class="px-4 py-3 text-right">
+                                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full" :class="scoreClasses(agent.avg_score)">
+                                            <span x-text="scoreLabelIcon(scoreLabelText(agent.avg_score))"></span>
+                                            <span x-text="agent.avg_score"></span>
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right tabular-nums" x-text="formatCurrency(agent.avg_deal_value)"></td>
+                                    <td class="px-4 py-3 text-right">
+                                        <span x-show="agent.hot_deals > 0" class="text-green-600 font-bold" x-text="agent.hot_deals"></span>
+                                        <span x-show="agent.hot_deals === 0" class="text-slate-300">0</span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right">
+                                        <span x-show="agent.at_risk_deals > 0" class="text-red-600 font-bold" x-text="agent.at_risk_deals"></span>
+                                        <span x-show="agent.at_risk_deals === 0" class="text-slate-300">0</span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/static/js/app.js?v=6"></script>
+</body>
+</html>
