@@ -1,0 +1,12 @@
+{
+  "cv_auc": 0.6022,
+  "train_auc": 0.5979,
+  "n_features": 3,
+  "selected_features": [
+    "days_since_engage",
+    "pipeline_velocity",
+    "agent_win_rate"
+  ],
+  "n_train": 6711,
+  "n_score": 501
+}
