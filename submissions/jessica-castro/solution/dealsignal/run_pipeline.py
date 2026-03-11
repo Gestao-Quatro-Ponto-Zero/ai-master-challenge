@@ -152,6 +152,10 @@ def main(force_enrich: bool = False, force_train: bool = False) -> None:
         "manager", "office", "deal_stage", "engage_date", "close_date",
         "effective_value", "win_probability", "deal_rating",
         "expected_revenue", "top_contributing_factors",
+        # Feature columns used by the UI for engine scores and signals
+        "agent_win_rate", "product_win_rate",
+        "days_since_engage", "pipeline_velocity",
+        "digital_maturity_index",
     ]
     available_cols = [c for c in output_cols if c in scored.columns]
     results = scored[available_cols].sort_values("expected_revenue", ascending=False)
