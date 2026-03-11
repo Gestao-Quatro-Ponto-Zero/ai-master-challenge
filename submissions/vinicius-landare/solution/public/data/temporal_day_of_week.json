@@ -1,0 +1,37 @@
+[
+  {
+    "day_of_week":"Monday",
+    "posts":7483,
+    "avg_engagement_rate":19.9036
+  },
+  {
+    "day_of_week":"Tuesday",
+    "posts":7510,
+    "avg_engagement_rate":19.903
+  },
+  {
+    "day_of_week":"Wednesday",
+    "posts":7343,
+    "avg_engagement_rate":19.8993
+  },
+  {
+    "day_of_week":"Thursday",
+    "posts":7537,
+    "avg_engagement_rate":19.9068
+  },
+  {
+    "day_of_week":"Friday",
+    "posts":7495,
+    "avg_engagement_rate":19.9139
+  },
+  {
+    "day_of_week":"Saturday",
+    "posts":7375,
+    "avg_engagement_rate":19.9022
+  },
+  {
+    "day_of_week":"Sunday",
+    "posts":7471,
+    "avg_engagement_rate":19.9092
+  }
+]

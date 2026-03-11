@@ -1,0 +1,22 @@
+[
+  {
+    "cluster":0,
+    "views":-0.33,
+    "likes":1.66,
+    "shares":1.8,
+    "comments_count":1.64,
+    "engagement_rate":2.01,
+    "follower_count":-0.33,
+    "content_length":0.71
+  },
+  {
+    "cluster":1,
+    "views":0.31,
+    "likes":-1.56,
+    "shares":-1.7,
+    "comments_count":-1.55,
+    "engagement_rate":-1.89,
+    "follower_count":0.31,
+    "content_length":-0.67
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "disclosure_location":"caption",
+    "posts":8944,
+    "avg_engagement_rate":19.8982
+  },
+  {
+    "disclosure_location":"hashtags",
+    "posts":6124,
+    "avg_engagement_rate":19.9114
+  },
+  {
+    "disclosure_location":"video",
+    "posts":7246,
+    "avg_engagement_rate":19.9076
+  }
+]

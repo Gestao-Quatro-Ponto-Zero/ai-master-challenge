@@ -1,0 +1,27 @@
+[
+  {
+    "language":"Spanish",
+    "posts":5227,
+    "avg_engagement_rate":19.912
+  },
+  {
+    "language":"Japanese",
+    "posts":5177,
+    "avg_engagement_rate":19.9116
+  },
+  {
+    "language":"Hindi",
+    "posts":5272,
+    "avg_engagement_rate":19.9081
+  },
+  {
+    "language":"Chinese",
+    "posts":10428,
+    "avg_engagement_rate":19.9079
+  },
+  {
+    "language":"English",
+    "posts":26110,
+    "avg_engagement_rate":19.9014
+  }
+]

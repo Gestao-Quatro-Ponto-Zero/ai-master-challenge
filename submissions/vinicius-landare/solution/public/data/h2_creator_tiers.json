@@ -1,0 +1,67 @@
+[
+  {
+    "creator_tier":"Nano (< 10K)",
+    "posts":454,
+    "creators":436,
+    "avg_followers":5483.5022,
+    "avg_engagement_rate":19.898,
+    "avg_engagement_rate_followers":51.6929,
+    "avg_likes":1508.1322,
+    "avg_shares":299.3855,
+    "avg_comments":200.0837,
+    "avg_views":10090.5705,
+    "median_engagement_rate":19.8765
+  },
+  {
+    "creator_tier":"Micro (10K-50K)",
+    "posts":2110,
+    "creators":1758,
+    "avg_followers":29880.8777,
+    "avg_engagement_rate":19.9098,
+    "avg_engagement_rate_followers":8.1337,
+    "avg_likes":1510.9919,
+    "avg_shares":299.6976,
+    "avg_comments":200.2441,
+    "avg_views":10101.3,
+    "median_engagement_rate":19.9009
+  },
+  {
+    "creator_tier":"Mid (50K-100K)",
+    "posts":2596,
+    "creators":2091,
+    "avg_followers":75185.468,
+    "avg_engagement_rate":19.9123,
+    "avg_engagement_rate_followers":2.7772,
+    "avg_likes":1510.6525,
+    "avg_shares":299.9572,
+    "avg_comments":199.9884,
+    "avg_views":10098.2804,
+    "median_engagement_rate":19.91
+  },
+  {
+    "creator_tier":"Macro (100K-500K)",
+    "posts":21025,
+    "creators":4982,
+    "avg_followers":300178.8746,
+    "avg_engagement_rate":19.9064,
+    "avg_engagement_rate_followers":0.8075,
+    "avg_likes":1510.3316,
+    "avg_shares":299.949,
+    "avg_comments":200.0016,
+    "avg_views":10099.6823,
+    "median_engagement_rate":19.904
+  },
+  {
+    "creator_tier":"Mega (500K+)",
+    "posts":26029,
+    "creators":4994,
+    "avg_followers":750278.1348999999,
+    "avg_engagement_rate":19.9038,
+    "avg_engagement_rate_followers":0.2785,
+    "avg_likes":1510.1698,
+    "avg_shares":300.1177,
+    "avg_comments":200.0096,
+    "avg_views":10101.0556,
+    "median_engagement_rate":19.8936
+  }
+]

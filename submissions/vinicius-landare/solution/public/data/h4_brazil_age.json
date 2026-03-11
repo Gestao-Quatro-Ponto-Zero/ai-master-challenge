@@ -1,0 +1,27 @@
+[
+  {
+    "audience_age_distribution":"19-25",
+    "posts":2253,
+    "avg_engagement_rate":19.9242
+  },
+  {
+    "audience_age_distribution":"13-18",
+    "posts":1052,
+    "avg_engagement_rate":19.9196
+  },
+  {
+    "audience_age_distribution":"36-50",
+    "posts":936,
+    "avg_engagement_rate":19.9137
+  },
+  {
+    "audience_age_distribution":"26-35",
+    "posts":1904,
+    "avg_engagement_rate":19.8959
+  },
+  {
+    "audience_age_distribution":"50+",
+    "posts":360,
+    "avg_engagement_rate":19.8914
+  }
+]

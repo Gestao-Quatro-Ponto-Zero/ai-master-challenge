@@ -1,0 +1,110 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  image     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  accounts      SocialAccount[]
+  dashboards    Dashboard[]
+
+  @@map("users")
+}
+
+model SocialAccount {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  platform     Platform
+  platformId   String   @map("platform_id")
+  username     String
+  accessToken  String?  @map("access_token")
+  refreshToken String?  @map("refresh_token")
+  tokenExpiry  DateTime? @map("token_expiry")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts Post[]
+
+  @@unique([platform, platformId])
+  @@map("social_accounts")
+}
+
+model Post {
+  id              String   @id @default(cuid())
+  socialAccountId String   @map("social_account_id")
+  platformPostId  String   @map("platform_post_id")
+  type            PostType @default(IMAGE)
+  caption         String?
+  mediaUrl        String?  @map("media_url")
+  permalink       String?
+  publishedAt     DateTime @map("published_at")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  socialAccount SocialAccount @relation(fields: [socialAccountId], references: [id], onDelete: Cascade)
+  metrics       PostMetric[]
+
+  @@unique([socialAccountId, platformPostId])
+  @@map("posts")
+}
+
+model PostMetric {
+  id             String   @id @default(cuid())
+  postId         String   @map("post_id")
+  collectedAt    DateTime @default(now()) @map("collected_at")
+  likes          Int      @default(0)
+  comments       Int      @default(0)
+  shares         Int      @default(0)
+  saves          Int      @default(0)
+  impressions    Int      @default(0)
+  reach          Int      @default(0)
+  engagementRate Float    @default(0) @map("engagement_rate")
+  views          Int      @default(0)
+  clicks         Int      @default(0)
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("post_metrics")
+}
+
+model Dashboard {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  name      String
+  config    Json     @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("dashboards")
+}
+
+enum Platform {
+  INSTAGRAM
+  FACEBOOK
+  TIKTOK
+  TWITTER
+  YOUTUBE
+  LINKEDIN
+}
+
+enum PostType {
+  IMAGE
+  VIDEO
+  CAROUSEL
+  REEL
+  STORY
+  TEXT
+}

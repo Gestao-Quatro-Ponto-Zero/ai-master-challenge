@@ -1,0 +1,22 @@
+[
+  {
+    "is_sponsored":false,
+    "posts":29900,
+    "avg_engagement_rate":19.9059,
+    "avg_likes":1510.2607,
+    "avg_shares":300.0742,
+    "avg_comments":199.9997,
+    "avg_views":10100.1601,
+    "median_engagement_rate":19.8977
+  },
+  {
+    "is_sponsored":true,
+    "posts":22314,
+    "avg_engagement_rate":19.9048,
+    "avg_likes":1510.2929,
+    "avg_shares":299.9437,
+    "avg_comments":200.0366,
+    "avg_views":10100.4484,
+    "median_engagement_rate":19.9014
+  }
+]
