@@ -1,0 +1,27 @@
+[
+  {
+    "platform":"Instagram",
+    "posts":1288,
+    "avg_engagement_rate":19.9342
+  },
+  {
+    "platform":"RedNote",
+    "posts":1295,
+    "avg_engagement_rate":19.9218
+  },
+  {
+    "platform":"TikTok",
+    "posts":1293,
+    "avg_engagement_rate":19.909
+  },
+  {
+    "platform":"Bilibili",
+    "posts":1294,
+    "avg_engagement_rate":19.9054
+  },
+  {
+    "platform":"YouTube",
+    "posts":1335,
+    "avg_engagement_rate":19.8895
+  }
+]

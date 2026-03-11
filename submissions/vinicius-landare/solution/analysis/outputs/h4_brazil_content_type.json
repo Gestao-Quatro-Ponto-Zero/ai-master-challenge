@@ -1,0 +1,22 @@
+[
+  {
+    "content_type":"mixed",
+    "posts":636,
+    "avg_engagement_rate":19.9517
+  },
+  {
+    "content_type":"text",
+    "posts":660,
+    "avg_engagement_rate":19.9227
+  },
+  {
+    "content_type":"image",
+    "posts":1290,
+    "avg_engagement_rate":19.9077
+  },
+  {
+    "content_type":"video",
+    "posts":3919,
+    "avg_engagement_rate":19.9049
+  }
+]

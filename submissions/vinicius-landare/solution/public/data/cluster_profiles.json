@@ -1,0 +1,146 @@
+[
+  {
+    "cluster_id": 0,
+    "size": 25358,
+    "pct_total": 48.57,
+    "metrics": {
+      "avg_engagement_rate": 20.3047,
+      "avg_views": 10066.99,
+      "avg_likes": 1535.3,
+      "avg_shares": 305.4,
+      "avg_comments": 203.3,
+      "avg_followers": 498231.3,
+      "avg_content_length": 231.17,
+      "pct_sponsored": 43.25
+    },
+    "top_platform": "Bilibili",
+    "top_content_type": "video",
+    "top_category": "beauty",
+    "top_age_group": "19-25",
+    "top_gender": "male",
+    "top_location": "China",
+    "top_creator_tier": "Mega",
+    "distributions": {
+      "platform": {
+        "Bilibili": 0.2067,
+        "RedNote": 0.2024,
+        "YouTube": 0.2008,
+        "TikTok": 0.197,
+        "Instagram": 0.1931
+      },
+      "content_type": {
+        "video": 0.5947,
+        "image": 0.1984,
+        "text": 0.1045,
+        "mixed": 0.1025
+      },
+      "category": {
+        "beauty": 0.404,
+        "lifestyle": 0.3989,
+        "tech": 0.1971
+      },
+      "age": {
+        "19-25": 0.3514,
+        "26-35": 0.3009,
+        "13-18": 0.149,
+        "36-50": 0.1483,
+        "50+": 0.0504
+      },
+      "gender": {
+        "male": 0.4022,
+        "female": 0.3945,
+        "non-binary": 0.102,
+        "unknown": 0.1013
+      },
+      "location": {
+        "China": 0.1281,
+        "UK": 0.1269,
+        "Brazil": 0.1259,
+        "Japan": 0.1249,
+        "USA": 0.1248,
+        "Germany": 0.1242,
+        "Russia": 0.124,
+        "India": 0.1212
+      },
+      "creator_tier": {
+        "Mega": 0.4938,
+        "Macro": 0.4061,
+        "Mid": 0.051,
+        "Micro": 0.0407,
+        "Nano": 0.0084
+      }
+    }
+  },
+  {
+    "cluster_id": 1,
+    "size": 26856,
+    "pct_total": 51.43,
+    "metrics": {
+      "avg_engagement_rate": 19.5285,
+      "avg_views": 10131.72,
+      "avg_likes": 1486.65,
+      "avg_shares": 294.93,
+      "avg_comments": 196.92,
+      "avg_followers": 501445.52,
+      "avg_content_length": 228.0,
+      "pct_sponsored": 42.25
+    },
+    "top_platform": "Instagram",
+    "top_content_type": "video",
+    "top_category": "beauty",
+    "top_age_group": "19-25",
+    "top_gender": "male",
+    "top_location": "India",
+    "top_creator_tier": "Mega",
+    "distributions": {
+      "platform": {
+        "Instagram": 0.2058,
+        "YouTube": 0.2011,
+        "Bilibili": 0.1995,
+        "TikTok": 0.1974,
+        "RedNote": 0.1962
+      },
+      "content_type": {
+        "video": 0.6114,
+        "image": 0.1963,
+        "mixed": 0.0973,
+        "text": 0.0949
+      },
+      "category": {
+        "beauty": 0.4013,
+        "lifestyle": 0.3964,
+        "tech": 0.2023
+      },
+      "age": {
+        "19-25": 0.3487,
+        "26-35": 0.3005,
+        "13-18": 0.1517,
+        "36-50": 0.148,
+        "50+": 0.0511
+      },
+      "gender": {
+        "male": 0.4017,
+        "female": 0.3999,
+        "unknown": 0.0993,
+        "non-binary": 0.0992
+      },
+      "location": {
+        "India": 0.127,
+        "China": 0.1266,
+        "Japan": 0.1261,
+        "UK": 0.1248,
+        "Germany": 0.1246,
+        "USA": 0.1241,
+        "Russia": 0.1234,
+        "Brazil": 0.1234
+      },
+      "creator_tier": {
+        "Mega": 0.503,
+        "Macro": 0.3994,
+        "Mid": 0.0486,
+        "Micro": 0.0401,
+        "Nano": 0.009
+      }
+    }
+  }
+]

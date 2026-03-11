@@ -1,0 +1,202 @@
+[
+  {
+    "creator_tier":"Nano (< 10K)",
+    "platform":"Bilibili",
+    "organic":19.7734,
+    "sponsored":19.945,
+    "diff":0.1716,
+    "pct_diff":0.8678
+  },
+  {
+    "creator_tier":"Nano (< 10K)",
+    "platform":"YouTube",
+    "organic":19.8049,
+    "sponsored":19.9186,
+    "diff":0.1137,
+    "pct_diff":0.5741
+  },
+  {
+    "creator_tier":"Micro (10K-50K)",
+    "platform":"Instagram",
+    "organic":19.8687,
+    "sponsored":19.9485,
+    "diff":0.0798,
+    "pct_diff":0.4016
+  },
+  {
+    "creator_tier":"Mid (50K-100K)",
+    "platform":"YouTube",
+    "organic":19.8763,
+    "sponsored":19.9545,
+    "diff":0.0782,
+    "pct_diff":0.3934
+  },
+  {
+    "creator_tier":"Nano (< 10K)",
+    "platform":"Instagram",
+    "organic":19.8874,
+    "sponsored":19.956,
+    "diff":0.0686,
+    "pct_diff":0.3449
+  },
+  {
+    "creator_tier":"Mid (50K-100K)",
+    "platform":"Instagram",
+    "organic":19.8636,
+    "sponsored":19.9001,
+    "diff":0.0365,
+    "pct_diff":0.1838
+  },
+  {
+    "creator_tier":"Micro (10K-50K)",
+    "platform":"Bilibili",
+    "organic":19.9355,
+    "sponsored":19.9716,
+    "diff":0.0361,
+    "pct_diff":0.1811
+  },
+  {
+    "creator_tier":"Micro (10K-50K)",
+    "platform":"YouTube",
+    "organic":19.8731,
+    "sponsored":19.9003,
+    "diff":0.0272,
+    "pct_diff":0.1369
+  },
+  {
+    "creator_tier":"Macro (100K-500K)",
+    "platform":"RedNote",
+    "organic":19.9085,
+    "sponsored":19.9291,
+    "diff":0.0206,
+    "pct_diff":0.1035
+  },
+  {
+    "creator_tier":"Macro (100K-500K)",
+    "platform":"Bilibili",
+    "organic":19.895,
+    "sponsored":19.9131,
+    "diff":0.0181,
+    "pct_diff":0.091
+  },
+  {
+    "creator_tier":"Macro (100K-500K)",
+    "platform":"TikTok",
+    "organic":19.8904,
+    "sponsored":19.9044,
+    "diff":0.014,
+    "pct_diff":0.0704
+  },
+  {
+    "creator_tier":"Mega (500K+)",
+    "platform":"RedNote",
+    "organic":19.8975,
+    "sponsored":19.9074,
+    "diff":0.0099,
+    "pct_diff":0.0498
+  },
+  {
+    "creator_tier":"Mega (500K+)",
+    "platform":"Instagram",
+    "organic":19.8924,
+    "sponsored":19.9007,
+    "diff":0.0083,
+    "pct_diff":0.0417
+  },
+  {
+    "creator_tier":"Macro (100K-500K)",
+    "platform":"Instagram",
+    "organic":19.9038,
+    "sponsored":19.9082,
+    "diff":0.0044,
+    "pct_diff":0.0221
+  },
+  {
+    "creator_tier":"Mid (50K-100K)",
+    "platform":"TikTok",
+    "organic":19.9341,
+    "sponsored":19.9356,
+    "diff":0.0015,
+    "pct_diff":0.0075
+  },
+  {
+    "creator_tier":"Mega (500K+)",
+    "platform":"YouTube",
+    "organic":19.8995,
+    "sponsored":19.9009,
+    "diff":0.0014,
+    "pct_diff":0.007
+  },
+  {
+    "creator_tier":"Micro (10K-50K)",
+    "platform":"RedNote",
+    "organic":19.9047,
+    "sponsored":19.9054,
+    "diff":0.0007,
+    "pct_diff":0.0035
+  },
+  {
+    "creator_tier":"Mega (500K+)",
+    "platform":"Bilibili",
+    "organic":19.9195,
+    "sponsored":19.8991,
+    "diff":-0.0204,
+    "pct_diff":-0.1024
+  },
+  {
+    "creator_tier":"Macro (100K-500K)",
+    "platform":"YouTube",
+    "organic":19.9246,
+    "sponsored":19.8911,
+    "diff":-0.0335,
+    "pct_diff":-0.1681
+  },
+  {
+    "creator_tier":"Mega (500K+)",
+    "platform":"TikTok",
+    "organic":19.9254,
+    "sponsored":19.8917,
+    "diff":-0.0337,
+    "pct_diff":-0.1691
+  },
+  {
+    "creator_tier":"Nano (< 10K)",
+    "platform":"TikTok",
+    "organic":19.9421,
+    "sponsored":19.9014,
+    "diff":-0.0407,
+    "pct_diff":-0.2041
+  },
+  {
+    "creator_tier":"Mid (50K-100K)",
+    "platform":"RedNote",
+    "organic":19.9501,
+    "sponsored":19.8983,
+    "diff":-0.0518,
+    "pct_diff":-0.2596
+  },
+  {
+    "creator_tier":"Nano (< 10K)",
+    "platform":"RedNote",
+    "organic":19.9709,
+    "sponsored":19.8965,
+    "diff":-0.0744,
+    "pct_diff":-0.3725
+  },
+  {
+    "creator_tier":"Micro (10K-50K)",
+    "platform":"TikTok",
+    "organic":19.9485,
+    "sponsored":19.8567,
+    "diff":-0.0918,
+    "pct_diff":-0.4602
+  },
+  {
+    "creator_tier":"Mid (50K-100K)",
+    "platform":"Bilibili",
+    "organic":19.9492,
+    "sponsored":19.8539,
+    "diff":-0.0953,
+    "pct_diff":-0.4777
+  }
+]
