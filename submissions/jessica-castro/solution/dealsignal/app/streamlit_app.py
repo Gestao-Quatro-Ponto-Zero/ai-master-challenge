@@ -13,6 +13,13 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from utils.report import (
+    generate_csv,
+    generate_pdf,
+    make_csv_filename,
+    make_pdf_filename,
+)
+
 # Resolve project root
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
@@ -155,7 +162,41 @@ def main():
     # Recompute cascading options and validate current selections
     valid = _validate_and_apply_cascade(df)
 
-    # ── Sidebar filters ───────────────────────────────────────────────────────
+    # ── Apply active selections to the data ───────────────────────────────────
+    # Done BEFORE rendering the sidebar so download buttons can reference
+    # the already-filtered data without a second Streamlit pass.
+    selected_office = st.session_state["sel_office"]
+    selected_manager = st.session_state["sel_manager"]
+    selected_agent = st.session_state["sel_agent"]
+    ratings = st.session_state.get("sel_ratings", RATING_ORDER)
+
+    filtered = df.copy()
+    if selected_office != ALL:
+        filtered = filtered[filtered["office"] == selected_office]
+    if selected_manager != ALL:
+        filtered = filtered[filtered["manager"] == selected_manager]
+    if selected_agent != ALL:
+        filtered = filtered[filtered["sales_agent"] == selected_agent]
+    if ratings:
+        filtered = filtered[filtered["deal_rating"].isin(ratings)]
+
+    filtered = filtered.sort_values("expected_revenue", ascending=False)
+
+    # KPIs (needed by PDF report and metrics section)
+    auc = metadata.get("cv_auc", None)
+    kpis = {
+        "Total Exp. Revenue": f"${filtered['expected_revenue'].sum():,.0f}",
+        "Top 10 Exp. Revenue": f"${filtered.head(10)['expected_revenue'].sum():,.0f}",
+        "Open Deals": str(len(filtered)),
+        "Model AUC": f"{auc:.3f}" if auc else "—",
+    }
+    active_filters = {
+        "Office": selected_office,
+        "Manager": selected_manager,
+        "Agent": selected_agent,
+    }
+
+    # ── Sidebar ───────────────────────────────────────────────────────────────
     with st.sidebar:
         st.header("Filters")
 
@@ -177,7 +218,7 @@ def main():
             key="sel_agent",
         )
 
-        ratings = st.multiselect(
+        st.multiselect(
             "Rating",
             options=RATING_ORDER,
             default=RATING_ORDER,
@@ -186,6 +227,25 @@ def main():
 
         st.button("Clear Filters", on_click=_reset_filters, use_container_width=True)
 
+        # ── Download section ──────────────────────────────────────────────────
+        st.divider()
+        st.markdown("**Download Report**")
+        dl_col1, dl_col2 = st.columns(2)
+        dl_col1.download_button(
+            label="CSV",
+            data=generate_csv(filtered),
+            file_name=make_csv_filename(active_filters),
+            mime="text/csv",
+            use_container_width=True,
+        )
+        dl_col2.download_button(
+            label="PDF",
+            data=generate_pdf(filtered, kpis, active_filters, metadata),
+            file_name=make_pdf_filename(active_filters),
+            mime="application/pdf",
+            use_container_width=True,
+        )
+
         st.divider()
         st.caption("DealSignal v1.0")
         if metadata:
@@ -193,35 +253,12 @@ def main():
             st.caption(f"Features: {metadata.get('n_features', '—')}")
             st.caption(f"Trained on: {metadata.get('n_train', '—')} deals")
 
-    # Apply active selections to the data
-    selected_office = st.session_state["sel_office"]
-    selected_manager = st.session_state["sel_manager"]
-    selected_agent = st.session_state["sel_agent"]
-
-    filtered = df.copy()
-    if selected_office != ALL:
-        filtered = filtered[filtered["office"] == selected_office]
-    if selected_manager != ALL:
-        filtered = filtered[filtered["manager"] == selected_manager]
-    if selected_agent != ALL:
-        filtered = filtered[filtered["sales_agent"] == selected_agent]
-    if ratings:
-        filtered = filtered[filtered["deal_rating"].isin(ratings)]
-
-    filtered = filtered.sort_values("expected_revenue", ascending=False)
-
     # ── KPI cards ─────────────────────────────────────────────────────────────
     col1, col2, col3, col4 = st.columns(4)
-
-    total_er = filtered["expected_revenue"].sum()
-    top10_er = filtered.head(10)["expected_revenue"].sum()
-    n_deals = len(filtered)
-    auc = metadata.get("cv_auc", None)
-
-    col1.metric("Total Pipeline (Expected Revenue)", f"${total_er:,.0f}")
-    col2.metric("Top 10 Expected Revenue", f"${top10_er:,.0f}")
-    col3.metric("Open Deals", str(n_deals))
-    col4.metric("Model AUC", f"{auc:.3f}" if auc else "—")
+    col1.metric("Total Pipeline (Expected Revenue)", kpis["Total Exp. Revenue"])
+    col2.metric("Top 10 Expected Revenue", kpis["Top 10 Exp. Revenue"])
+    col3.metric("Open Deals", kpis["Open Deals"])
+    col4.metric("Model AUC", kpis["Model AUC"])
 
     st.divider()
 
