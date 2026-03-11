@@ -71,9 +71,67 @@ def load_metadata() -> dict:
         return json.load(f)
 
 
+ALL = "All"
+
+FILTER_KEYS = ["sel_office", "sel_manager", "sel_agent"]
+
+
 def color_rating(val: str) -> str:
     color = RATING_COLORS.get(val, "#888888")
     return f"background-color: {color}; color: white; font-weight: bold; border-radius: 4px; padding: 2px 6px;"
+
+
+def _valid_options(df: pd.DataFrame, col: str, filters: dict) -> list:
+    """
+    Return sorted unique values of `col` after applying all filters
+    EXCEPT the filter for `col` itself (so the widget shows valid peers).
+    """
+    mask = pd.Series(True, index=df.index)
+    for filter_col, value in filters.items():
+        if filter_col != col and value != ALL:
+            mask &= df[filter_col] == value
+    return sorted(df.loc[mask, col].dropna().unique().tolist())
+
+
+def _init_filters():
+    for key in FILTER_KEYS:
+        if key not in st.session_state:
+            st.session_state[key] = ALL
+
+
+def _reset_filters():
+    for key in FILTER_KEYS:
+        st.session_state[key] = ALL
+    if "sel_ratings" in st.session_state:
+        st.session_state["sel_ratings"] = RATING_ORDER
+
+
+def _validate_and_apply_cascade(df: pd.DataFrame):
+    """
+    Recompute valid options for each filter based on the other two active
+    selections. If the current value is no longer valid, reset it to ALL.
+    This function must be called before rendering the widgets.
+    """
+    current = {
+        "office": st.session_state.get("sel_office", ALL),
+        "manager": st.session_state.get("sel_manager", ALL),
+        "sales_agent": st.session_state.get("sel_agent", ALL),
+    }
+
+    valid = {
+        col: _valid_options(df, col, current)
+        for col in current
+    }
+
+    # Reset any selection that is no longer present in valid options
+    if current["office"] != ALL and current["office"] not in valid["office"]:
+        st.session_state["sel_office"] = ALL
+    if current["manager"] != ALL and current["manager"] not in valid["manager"]:
+        st.session_state["sel_manager"] = ALL
+    if current["sales_agent"] != ALL and current["sales_agent"] not in valid["sales_agent"]:
+        st.session_state["sel_agent"] = ALL
+
+    return valid
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
@@ -91,24 +149,42 @@ def main():
         )
         return
 
+    # Initialize session_state on first load
+    _init_filters()
+
+    # Recompute cascading options and validate current selections
+    valid = _validate_and_apply_cascade(df)
+
     # ── Sidebar filters ───────────────────────────────────────────────────────
     with st.sidebar:
         st.header("Filters")
 
-        agents = ["All"] + sorted(df["sales_agent"].dropna().unique().tolist())
-        selected_agent = st.selectbox("Sales Agent", agents)
-
-        managers = ["All"] + sorted(df["manager"].dropna().unique().tolist())
-        selected_manager = st.selectbox("Manager", managers)
-
-        offices = ["All"] + sorted(df["office"].dropna().unique().tolist())
-        selected_office = st.selectbox("Regional Office", offices)
+        # Each selectbox uses key= to bind directly to session_state.
+        # Options are restricted to values compatible with the other active filters.
+        st.selectbox(
+            "Regional Office",
+            options=[ALL] + valid["office"],
+            key="sel_office",
+        )
+        st.selectbox(
+            "Manager",
+            options=[ALL] + valid["manager"],
+            key="sel_manager",
+        )
+        st.selectbox(
+            "Sales Agent",
+            options=[ALL] + valid["sales_agent"],
+            key="sel_agent",
+        )
 
         ratings = st.multiselect(
             "Rating",
             options=RATING_ORDER,
             default=RATING_ORDER,
+            key="sel_ratings",
         )
+
+        st.button("Clear Filters", on_click=_reset_filters, use_container_width=True)
 
         st.divider()
         st.caption("DealSignal v1.0")
@@ -117,14 +193,18 @@ def main():
             st.caption(f"Features: {metadata.get('n_features', '—')}")
             st.caption(f"Trained on: {metadata.get('n_train', '—')} deals")
 
-    # Apply filters
+    # Apply active selections to the data
+    selected_office = st.session_state["sel_office"]
+    selected_manager = st.session_state["sel_manager"]
+    selected_agent = st.session_state["sel_agent"]
+
     filtered = df.copy()
-    if selected_agent != "All":
-        filtered = filtered[filtered["sales_agent"] == selected_agent]
-    if selected_manager != "All":
-        filtered = filtered[filtered["manager"] == selected_manager]
-    if selected_office != "All":
+    if selected_office != ALL:
         filtered = filtered[filtered["office"] == selected_office]
+    if selected_manager != ALL:
+        filtered = filtered[filtered["manager"] == selected_manager]
+    if selected_agent != ALL:
+        filtered = filtered[filtered["sales_agent"] == selected_agent]
     if ratings:
         filtered = filtered[filtered["deal_rating"].isin(ratings)]
 
