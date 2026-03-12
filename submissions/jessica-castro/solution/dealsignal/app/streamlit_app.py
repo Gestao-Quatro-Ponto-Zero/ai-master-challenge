@@ -48,6 +48,16 @@ RATING_COLORS = {
 
 RATING_ORDER = ["AAA", "AA", "A", "BBB", "BB", "B", "CCC"]
 
+RATING_RANGES = {
+    "AAA": "> 90%",
+    "AA":  "80 – 90%",
+    "A":   "70 – 80%",
+    "BBB": "60 – 70%",
+    "BB":  "50 – 60%",
+    "B":   "40 – 50%",
+    "CCC": "< 40%",
+}
+
 # Emoji mapeado para cada rating (usado na tabela)
 # Cores próximas às do RATING_COLORS: verde / laranja / vermelho
 RATING_EMOJI = {
@@ -179,7 +189,9 @@ def build_display_dataframe(scored_df: pd.DataFrame) -> pd.DataFrame:
     ).values
     out["Conta"]   = scored_df["account"].values
     out["Produto"] = scored_df["product"].values
-    out["Vendedor"] = scored_df["sales_agent"].values
+    out["Vendedor"]   = scored_df["sales_agent"].values
+    out["Estágio"]    = scored_df["deal_stage"].values
+    out["Engajamento"] = pd.to_datetime(scored_df["engage_date"], errors="coerce").dt.strftime("%d/%m/%Y")
     # Coluna float para ProgressColumn (nativa do Streamlit)
     out["_win_prob"] = (scored_df["win_probability"].values * 100).round(1)
     out["Rec. Esperada"] = scored_df["expected_revenue"].apply(format_currency).values
@@ -451,6 +463,20 @@ def main():
             st.caption(f"Variáveis: {metadata.get('n_features', '—')}")
             st.caption(f"Treinado com: {metadata.get('n_train', '—')} deals")
 
+        st.divider()
+        st.markdown("**Escala de Rating**")
+        rows = "".join(
+            f"<tr>"
+            f"<td style='padding:3px 6px;'>{_rating_badge(r)}</td>"
+            f"<td style='padding:3px 6px; font-size:12px; color:#555;'>{RATING_RANGES[r]}</td>"
+            f"</tr>"
+            for r in RATING_ORDER
+        )
+        st.markdown(
+            f"<table style='border-collapse:collapse; width:100%;'>{rows}</table>",
+            unsafe_allow_html=True,
+        )
+
     # ── KPIs ──────────────────────────────────────────────────────────────────
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Pipeline Total",  kpis["Pipeline Total"])
@@ -560,6 +586,8 @@ def main():
                 "Conta":         st.column_config.TextColumn("Conta",         width="medium"),
                 "Produto":       st.column_config.TextColumn("Produto",       width="medium"),
                 "Vendedor":      st.column_config.TextColumn("Vendedor",      width="medium"),
+                "Estágio":       st.column_config.TextColumn("Estágio",       width="medium"),
+                "Engajamento":   st.column_config.TextColumn("Engajamento",   width="small"),
                 "Rec. Esperada": st.column_config.TextColumn("Rec. Esperada", width="small"),
             },
             use_container_width=True,
