@@ -1,23 +1,19 @@
 <script lang="ts">
-	import { Database, LayoutDashboard, Settings, MessageSquare, Plus } from 'lucide-svelte';
-	import { onMount } from 'svelte';
-	import { api, type DataSource } from '$lib/services/api';
+	import { LayoutDashboard, Settings, MessageSquare, Bell, FileText, Sparkles, Database } from 'lucide-svelte';
 
-	let sources = $state<DataSource[]>([]);
-	let loading = $state(true);
+	const isManager = true;
+	const activeRoute = 'home';
+	const regions = ['Central', 'East', 'West'];
+	let selectedRegion = $state('Central');
+	const managers = ['Amanda Rocha', 'Bianca Lima', 'Diego Souza'];
+	let selectedManager = $state('Amanda Rocha');
+	const sellers = ['Camila Torres', 'Felipe Costa', 'Rafael Dias'];
+	let selectedSeller = $state('Camila Torres');
 
-	onMount(async () => {
-		try {
-			sources = await api.datasources.list();
-		} catch (err) {
-			console.error("Erro ao carregar fontes:", err);
-		} finally {
-			loading = false;
-		}
-	});
+
 </script>
 
-<aside class="w-64 border-r border-sidebar-border bg-sidebar text-sidebar-foreground h-screen flex flex-col">
+<aside class="w-72 border-r border-sidebar-border bg-sidebar text-sidebar-foreground h-screen flex flex-col">
 	<div class="h-16 flex items-center px-6 border-b border-sidebar-border">
 		<img src="/logo-full.svg" alt="G4 Compass" class="h-7 w-auto" />
 	</div>
@@ -25,49 +21,72 @@
 	<div class="flex-1 overflow-y-auto p-4 space-y-6">
 		<!-- Menu Principal -->
 		<div class="space-y-1">
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-sidebar-accent text-sidebar-foreground font-medium transition-colors border border-sidebar-border">
-				<MessageSquare class="w-4 h-4 text-primary" />
-				Compass
+			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'home' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<LayoutDashboard class="w-4 h-4 {activeRoute === 'home' ? 'text-primary' : ''}" />
+				Briefing
 			</button>
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground transition-colors">
-				<LayoutDashboard class="w-4 h-4" />
+			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'pipeline' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<MessageSquare class="w-4 h-4 {activeRoute === 'pipeline' ? 'text-primary' : ''}" />
 				Pipeline
 			</button>
+			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'deal' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<FileText class="w-4 h-4 {activeRoute === 'deal' ? 'text-primary' : ''}" />
+				Deal Detail
+			</button>
+			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'compass' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<Sparkles class="w-4 h-4 {activeRoute === 'compass' ? 'text-primary' : ''}" />
+				Compass
+			</button>
+			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'alerts' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<Bell class="w-4 h-4 {activeRoute === 'alerts' ? 'text-primary' : ''}" />
+				Alertas
+			</button>
+			{#if isManager}
+				<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'reports' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+					<Database class="w-4 h-4 {activeRoute === 'reports' ? 'text-primary' : ''}" />
+					Relatorios
+				</button>
+			{/if}
 		</div>
 
-		<!-- Data Sources -->
-		<div>
-			<div class="flex items-center justify-between px-3 mb-2">
-				<span class="text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider">Fontes de Dados</span>
-				<a href="/settings/sources" class="text-sidebar-foreground/60 hover:text-primary transition-colors">
-					<Plus class="w-4 h-4" />
-				</a>
-			</div>
-			<div class="space-y-1">
-				{#if loading}
-					<div class="px-3 py-2 space-y-3">
-						<div class="h-4 bg-sidebar-accent animate-pulse rounded w-3/4"></div>
-						<div class="h-4 bg-sidebar-accent animate-pulse rounded w-1/2"></div>
+		<!-- Filtros Globais -->
+		<div class="space-y-3">
+			<span class="text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider px-3">Filtros</span>
+			<div class="space-y-2 px-3">
+				<div class="space-y-1">
+					<label class="text-[11px] uppercase tracking-wider text-sidebar-foreground/60">Regiao</label>
+					<select bind:value={selectedRegion} class="w-full rounded-lg bg-sidebar-accent/70 border border-sidebar-border px-3 py-2 text-sm text-sidebar-foreground focus:outline-none focus:ring-2 focus:ring-primary/40">
+						{#each regions as region}
+							<option value={region}>{region}</option>
+						{/each}
+					</select>
+				</div>
+				{#if isManager}
+					<div class="space-y-1">
+						<label class="text-[11px] uppercase tracking-wider text-sidebar-foreground/60">Manager</label>
+						<select bind:value={selectedManager} class="w-full rounded-lg bg-sidebar-accent/70 border border-sidebar-border px-3 py-2 text-sm text-sidebar-foreground focus:outline-none focus:ring-2 focus:ring-primary/40">
+							{#each managers as manager}
+								<option value={manager}>{manager}</option>
+							{/each}
+						</select>
 					</div>
-				{:else if sources.length === 0}
-					<p class="px-3 py-2 text-xs text-sidebar-foreground/60 italic">Nenhuma fonte conectada</p>
-				{:else}
-					{#each sources as source}
-						<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group {source.is_active ? 'bg-sidebar-accent text-sidebar-foreground' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground'}">
-							<Database class="w-4 h-4 {source.is_active ? 'text-primary' : 'text-sidebar-foreground/60 group-hover:text-sidebar-foreground'}" />
-							<span class="truncate">{source.name}</span>
-							{#if source.is_active}
-								<div class="w-1.5 h-1.5 rounded-full bg-primary ml-auto shadow-[0_0_8px_rgba(196,149,42,0.6)] opacity-80"></div>
-							{/if}
-						</button>
-					{/each}
 				{/if}
+				<div class="space-y-1">
+					<label class="text-[11px] uppercase tracking-wider text-sidebar-foreground/60">Vendedor</label>
+					<select bind:value={selectedSeller} class="w-full rounded-lg bg-sidebar-accent/70 border border-sidebar-border px-3 py-2 text-sm text-sidebar-foreground focus:outline-none focus:ring-2 focus:ring-primary/40">
+						{#each sellers as seller}
+							<option value={seller}>{seller}</option>
+						{/each}
+					</select>
+				</div>
 			</div>
 		</div>
+
+
 	</div>
 
 	<div class="p-4 border-t border-sidebar-border">
-		<a href="/settings/sources" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground transition-colors">
+		<a href="/settings" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground transition-colors">
 			<Settings class="w-4 h-4" />
 			Configurações
 		</a>
