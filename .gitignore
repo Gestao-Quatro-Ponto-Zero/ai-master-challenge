@@ -12,5 +12,5 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# API Keys
+.env.example

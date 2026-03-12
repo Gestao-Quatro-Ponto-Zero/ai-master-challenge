@@ -1,0 +1,21 @@
+# Dependências
+solution/frontend/node_modules/
+solution/backend/__pycache__/
+
+# Build / cache
+solution/frontend/.next/
+solution/.cache/
+
+# Datasets (disponíveis no Kaggle)
+solution/Datasets/
+
+# Secrets
+solution/backend/.env
+solution/backend/.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebook checkpoints
+.ipynb_checkpoints/
