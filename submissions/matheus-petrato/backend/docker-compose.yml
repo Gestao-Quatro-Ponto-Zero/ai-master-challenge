@@ -23,6 +23,8 @@ services:
     environment:
       - DATABASE_URL=postgres://compass:compass@db:5432/compass?sslmode=disable
       - PORT=8080
+      - ENV=development
+      - JWT_SECRET=super-secret-key
       - MERCURY_API_KEY=${MERCURY_API_KEY}
       - MERCURY_MODEL=${MERCURY_MODEL:-mercury-2}
     depends_on:
