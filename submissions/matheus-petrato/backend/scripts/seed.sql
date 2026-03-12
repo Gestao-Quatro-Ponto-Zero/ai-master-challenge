@@ -20,10 +20,10 @@ ON CONFLICT (id) DO NOTHING;
 
 -- 4. Users
 -- Note: 'admin123' works in development due to handler override.
-INSERT INTO users (id, email, password_hash, role, manager_id) VALUES 
-('018e3000-0005-7000-8000-000000000001', 'camila@g4.com', '$2a$10$Xm6/X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X', 'manager', '018e3000-0003-7000-8000-000000000001')
+INSERT INTO users (id, name, email, password_hash, role, manager_id) VALUES 
+('018e3000-0005-7000-8000-000000000001', 'Camila Torres', 'camila@g4.com', '$2a$10$Xm6/X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X', 'manager', '018e3000-0003-7000-8000-000000000001')
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO users (id, email, password_hash, role, sales_agent_id) VALUES 
-('018e3000-0005-7000-8000-000000000002', 'joao@g4.com', '$2a$10$Xm6/X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X', 'seller', '018e3000-0004-7000-8000-000000000001')
+INSERT INTO users (id, name, email, password_hash, role, sales_agent_id) VALUES 
+('018e3000-0005-7000-8000-000000000002', 'Joao da Silva', 'joao@g4.com', '$2a$10$Xm6/X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X6X', 'seller', '018e3000-0004-7000-8000-000000000001')
 ON CONFLICT (email) DO NOTHING;

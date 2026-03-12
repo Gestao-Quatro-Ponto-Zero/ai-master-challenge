@@ -6,6 +6,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/matheus-petrato/sales-copilot-back/internal/models"
 	"golang.org/x/crypto/bcrypt"
@@ -37,6 +38,7 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 
 	ctx := c.Context()
 	var user models.User
+	var uManagerID *uuid.UUID // Temp to hold direct table field
 	
 	// Enriched query to get role-specific IDs and Region
 	query := `
@@ -53,7 +55,7 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 
 	err := h.pool.QueryRow(ctx, query, req.Email).Scan(
 		&user.ID, &user.Name, &user.Email, &user.PasswordHash, &user.Role,
-		&user.SalesAgentID, &user.ManagerID, &user.CreatedAt, &user.UpdatedAt,
+		&user.SalesAgentID, &uManagerID, &user.CreatedAt, &user.UpdatedAt,
 		&user.Region, &user.ManagerID, &user.TeamID,
 	)
 
@@ -99,6 +101,7 @@ func (h *AuthHandler) Me(c *fiber.Ctx) error {
 
 	ctx := c.Context()
 	var user models.User
+	var uManagerID *uuid.UUID // Temp to hold direct table field
 	
 	query := `
 		SELECT 
@@ -114,7 +117,7 @@ func (h *AuthHandler) Me(c *fiber.Ctx) error {
 
 	err := h.pool.QueryRow(ctx, query, userID).Scan(
 		&user.ID, &user.Name, &user.Email, &user.Role,
-		&user.SalesAgentID, &user.ManagerID, &user.CreatedAt, &user.UpdatedAt,
+		&user.SalesAgentID, &uManagerID, &user.CreatedAt, &user.UpdatedAt,
 		&user.Region, &user.ManagerID, &user.TeamID,
 	)
 

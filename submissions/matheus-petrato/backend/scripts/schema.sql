@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS deals (
 
 CREATE TABLE IF NOT EXISTS users (
   id             UUID PRIMARY KEY,
+  name           VARCHAR(200) NOT NULL,
   email          VARCHAR(200) NOT NULL UNIQUE,
   password_hash  VARCHAR(200) NOT NULL,
   role           VARCHAR(20) NOT NULL DEFAULT 'agent',  -- 'agent' | 'manager' | 'admin'
