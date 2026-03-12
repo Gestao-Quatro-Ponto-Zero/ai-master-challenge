@@ -29,8 +29,8 @@
 		</button>
 		
 		<textarea
-			class="flex-1 max-h-[200px] min-h-[44px] bg-transparent border-0 focus:ring-0 resize-none px-2 py-3 text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-			placeholder="Pergunte qualquer coisa sobre seu pipeline..."
+			class="flex-1 max-h-[200px] min-h-[44px] bg-transparent border-0 focus:ring-0 resize-none px-2 py-3 text-[13px] sm:text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 placeholder:text-muted-foreground/70"
+			placeholder="Pergunte sobre seus deals..."
 			rows="1"
 			bind:value
 			onkeydown={handleKeydown}
@@ -53,7 +53,7 @@
 	<!-- Ferramentas/Sources Selection (Manus inspired) -->
 	<div class="flex items-center gap-2 px-1 py-1 overflow-x-auto no-scrollbar">
 		<span class="text-xs text-muted-foreground flex items-center gap-1 shrink-0 px-2">
-			<Globe class="w-3 h-3" /> Filtros rapidos do pipeline:
+			<Globe class="w-3 h-3" /> Filtros do pipeline:
 		</span>
 		
 		<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-xs text-secondary-foreground hover:bg-secondary/80 transition-colors border border-border/50 shrink-0 shadow-sm">

@@ -10,7 +10,7 @@
 	const statusBadge = (status: string) => {
 		if (status === 'processed') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
 		if (status === 'processing') return 'bg-amber-50 text-amber-700 border-amber-200';
-		return 'bg-red-50 text-red-700 border-red-200';
+		return 'bg-rose-50 text-rose-700 border-rose-200';
 	};
 
 	const statusLabel = (status: string) =>
@@ -78,7 +78,7 @@
 										<span class="text-xs text-muted-foreground">({item.size})</span>
 									</td>
 									<td class="py-3">
-										<span class="px-2 py-1 rounded-full border text-xs {statusBadge(item.status)}">
+										<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[11px] font-medium {statusBadge(item.status)}">
 											<svelte:component this={statusIcon(item.status)} class="inline w-3 h-3 mr-1" />
 											{statusLabel(item.status)}
 										</span>
