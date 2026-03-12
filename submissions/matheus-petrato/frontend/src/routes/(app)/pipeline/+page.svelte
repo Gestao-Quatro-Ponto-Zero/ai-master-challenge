@@ -90,7 +90,7 @@
 		</button>
 	</header>
 
-	<div class="flex-1 overflow-y-auto px-6 pb-10 pt-8">
+	<div class="flex-1 overflow-y-auto px-4 md:px-6 pb-16 pt-6">
 		<div class="max-w-6xl mx-auto space-y-6">
 			<div class="flex flex-col gap-2">
 				<h1 class="text-3xl font-bold tracking-tight text-foreground">Pipeline priorizado</h1>
@@ -110,8 +110,8 @@
 
 			<div class="grid grid-cols-1 gap-4">
 				{#each filteredDeals as deal}
-					<div class="p-5 rounded-2xl border border-border bg-card shadow-sm flex flex-col gap-4">
-						<div class="flex items-start justify-between gap-4">
+					<div class="p-4 md:p-5 rounded-2xl border border-border bg-card shadow-sm flex flex-col gap-4">
+						<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
 							<div class="space-y-2">
 								<div class="flex items-center gap-2">
 									<span class="text-lg font-semibold text-foreground">{deal.name}</span>

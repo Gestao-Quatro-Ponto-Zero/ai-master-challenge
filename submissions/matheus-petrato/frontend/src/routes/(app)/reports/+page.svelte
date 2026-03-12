@@ -38,7 +38,7 @@
 		</button>
 	</header>
 
-	<div class="flex-1 overflow-y-auto px-6 pb-10 pt-8">
+	<div class="flex-1 overflow-y-auto px-4 md:px-6 pb-16 pt-6">
 		{#if $role === 'manager'}
 			<div class="max-w-6xl mx-auto space-y-8">
 				<div class="flex flex-col gap-2">

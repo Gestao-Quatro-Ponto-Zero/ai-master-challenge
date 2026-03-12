@@ -53,7 +53,7 @@
 		</button>
 	</header>
 
-	<div class="flex-1 overflow-y-auto px-6 pb-10 pt-8">
+	<div class="flex-1 overflow-y-auto px-4 md:px-6 pb-16 pt-6">
 		<div class="max-w-6xl mx-auto space-y-8">
 			<div class="flex flex-col gap-2">
 				<h1 class="text-3xl font-bold tracking-tight text-foreground">Seu briefing do dia</h1>
@@ -61,9 +61,9 @@
 			</div>
 
 			{#if $role === 'manager'}
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-					{#each teamSnapshot as item}
-						<div class="p-4 rounded-2xl border border-border bg-card shadow-sm flex items-center gap-3">
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				{#each teamSnapshot as item}
+					<div class="p-4 rounded-2xl border border-border bg-card shadow-sm flex items-center gap-3">
 							<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
 								<item.icon class="w-5 h-5" />
 							</div>
@@ -76,7 +76,7 @@
 				</div>
 			{/if}
 
-			<div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 				{#each kpis as kpi}
 					<div class="p-4 rounded-2xl border border-border bg-card shadow-sm">
 						<div class="flex items-center justify-between">

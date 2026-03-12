@@ -61,7 +61,7 @@
 		</button>
 	</header>
 
-	<div class="flex-1 overflow-y-auto px-6 pb-10 pt-8">
+	<div class="flex-1 overflow-y-auto px-4 md:px-6 pb-16 pt-6">
 		<div class="max-w-5xl mx-auto space-y-8">
 			<div class="flex items-center gap-3">
 				<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
