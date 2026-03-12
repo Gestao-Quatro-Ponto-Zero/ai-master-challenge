@@ -25,4 +25,5 @@ echo "Subindo stack dev (backend + frontend + db)..."
 docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up --build -d
 
 echo "Aguardando frontend iniciar..."
+echo "Quando aparecer 'ready' no log, abra http://localhost:5173"
 docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" logs -f --tail=0 frontend
