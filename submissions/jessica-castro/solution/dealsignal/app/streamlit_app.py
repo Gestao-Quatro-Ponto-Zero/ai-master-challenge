@@ -35,36 +35,73 @@ from utils.signals import (  # noqa: E402
 RESULTS_PATH = ROOT / "data" / "results.csv"
 METADATA_PATH = ROOT / "model" / "artifacts" / "metadata.json"
 
+# ── Paleta de cores — rating ──────────────────────────────────────────────────
 RATING_COLORS = {
     "AAA": "#1a7a1a",
-    "AA": "#2ecc71",
-    "A": "#82e0aa",
+    "AA":  "#2ecc71",
+    "A":   "#82e0aa",
     "BBB": "#f39c12",
-    "BB": "#e67e22",
-    "B": "#e74c3c",
+    "BB":  "#e67e22",
+    "B":   "#e74c3c",
     "CCC": "#922b21",
 }
 
 RATING_ORDER = ["AAA", "AA", "A", "BBB", "BB", "B", "CCC"]
 
+# Emoji mapeado para cada rating (usado na tabela)
+# Cores próximas às do RATING_COLORS: verde / laranja / vermelho
 RATING_EMOJI = {
-    "AAA": "🟢", "AA": "🟢", "A": "🟡",
-    "BBB": "🟡", "BB": "🔴", "B": "🔴", "CCC": "🔴",
+    "AAA": "🟢",
+    "AA":  "🟢",
+    "A":   "🟢",
+    "BBB": "🟠",
+    "BB":  "🟠",
+    "B":   "🔴",
+    "CCC": "🔴",
 }
+
+# Constantes de estilo para gráficos Plotly
+_CHART_FONT   = dict(family="sans-serif", size=12, color="#C0C4D0")
+_CHART_MARGIN = dict(l=10, r=90, t=10, b=30)
 
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="DealSignal",
-    page_icon="📈",
     layout="wide",
 )
 
 st.markdown(
     """
     <style>
-    .metric-card { background: #1e1e2e; border-radius: 8px; padding: 16px; }
-    .stDataFrame { font-size: 13px; }
+    /* ── Design tokens ───────────────────────── */
+    :root {
+        --surface:    #1E2130;
+        --border:     rgba(255,255,255,0.09);
+        --text-muted: #8A8FA8;
+    }
+
+    /* KPI cards — fundo e borda */
+    [data-testid="stMetric"] {
+        background: #f0f2f6;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 10px;
+        padding: 1rem 1.2rem;
+    }
+
+    /* Tabela compacta */
+    [data-testid="stDataFrame"] { font-size: 13px; }
+
+    /* Painel direito fixo (sticky) */
+    [data-testid="stHorizontalBlock"]:last-of-type > div:last-child {
+        position: sticky;
+        top: 60px;
+        align-self: flex-start;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+        border-left: 1px solid var(--border);
+        padding-left: 1.2rem;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -91,7 +128,7 @@ def load_metadata() -> dict:
         return json.load(f)
 
 
-ALL = "All"
+ALL = "Todos"
 FILTER_KEYS = ["sel_office", "sel_manager", "sel_agent"]
 
 
@@ -107,31 +144,52 @@ def format_currency(value: float) -> str:
     return f"${value:,.0f}" if pd.notna(value) else "—"
 
 
+def _engine_label(score: int) -> str:
+    if score >= 70:
+        return "🟢 Forte"
+    if score >= 45:
+        return "🟡 Moderado"
+    return "🔴 Fraco"
+
+
+
+
+_BADGE_STYLE = (
+    "color:white; font-size:12px; font-weight:700; "
+    "border-radius:5px; padding:3px 10px; display:inline-block; "
+    "letter-spacing:0.5px;"
+)
+
+
+def _rating_badge(rating: str) -> str:
+    """Badge colorido padronizado — usado no painel de análise."""
+    color = RATING_COLORS.get(rating, "#888888")
+    return f'<span style="background:{color}; {_BADGE_STYLE}">{rating}</span>'
+
+
+
 # ── Display dataframe ─────────────────────────────────────────────────────────
 
 def build_display_dataframe(scored_df: pd.DataFrame) -> pd.DataFrame:
-    """Return a compact display-ready DataFrame for the pipeline table."""
+    """Retorna DataFrame compacto para exibição na tabela de pipeline."""
     out = pd.DataFrame()
     out["opportunity_id"] = scored_df["opportunity_id"].values
     out["Rating"] = scored_df["deal_rating"].apply(
         lambda r: f"{RATING_EMOJI.get(r, '')} {r}"
     ).values
-    out["Account"] = scored_df["account"].values
-    out["Product"] = scored_df["product"].values
-    out["Sales Agent"] = scored_df["sales_agent"].values
-    out["Win Prob"] = scored_df["win_probability"].apply(format_probability_bar).values
-    out["Exp. Revenue"] = scored_df["expected_revenue"].apply(format_currency).values
-    out["Signals"] = scored_df["top_contributing_factors"].apply(
-        lambda s: "  ".join(label for label, _ in get_signals(s, max_signals=2))
-        if pd.notna(s) else ""
-    ).values
+    out["Conta"]   = scored_df["account"].values
+    out["Produto"] = scored_df["product"].values
+    out["Vendedor"] = scored_df["sales_agent"].values
+    # Coluna float para ProgressColumn (nativa do Streamlit)
+    out["_win_prob"] = (scored_df["win_probability"].values * 100).round(1)
+    out["Rec. Esperada"] = scored_df["expected_revenue"].apply(format_currency).values
     return out
 
 
 # ── Signal payload ────────────────────────────────────────────────────────────
 
 def build_signals_for_deal(row: pd.Series, df: pd.DataFrame) -> dict:
-    """Build structured signal payload for the Deal Insight Panel."""
+    """Monta payload estruturado de sinais para o painel de análise."""
     factors_raw = row.get("top_contributing_factors", "")
     factors = parse_factors(str(factors_raw) if pd.notna(factors_raw) else "")
 
@@ -150,20 +208,15 @@ def build_signals_for_deal(row: pd.Series, df: pd.DataFrame) -> dict:
         elif val < -0.05:
             risk_signals.append(entry)
 
-    signals_short = "  ·  ".join(
-        label for label, _ in get_signals(str(factors_raw) if pd.notna(factors_raw) else "", max_signals=3)
-    )
-
     return {
-        "signals_short": signals_short,
         "positive_signals": positive_signals[:3],
-        "risk_signals": risk_signals[:3],
-        "rating_engines": compute_engine_scores(row, df),
-        "model_factors": factors,
+        "risk_signals":     risk_signals[:3],
+        "rating_engines":   compute_engine_scores(row, df),
+        "model_factors":    factors,
     }
 
 
-# ── Filter helpers ────────────────────────────────────────────────────────────
+# ── Helpers de filtro ─────────────────────────────────────────────────────────
 
 def _valid_options(df: pd.DataFrame, col: str, filters: dict) -> list:
     mask = pd.Series(True, index=df.index)
@@ -177,6 +230,8 @@ def _init_filters():
     for key in FILTER_KEYS:
         if key not in st.session_state:
             st.session_state[key] = ALL
+    if "selected_deal_id" not in st.session_state:
+        st.session_state["selected_deal_id"] = None
 
 
 def _reset_filters():
@@ -184,14 +239,13 @@ def _reset_filters():
         st.session_state[key] = ALL
     if "sel_ratings" in st.session_state:
         st.session_state["sel_ratings"] = RATING_ORDER
-    if "sel_deal" in st.session_state:
-        st.session_state["sel_deal"] = None
+    st.session_state["selected_deal_id"] = None
 
 
 def _validate_and_apply_cascade(df: pd.DataFrame):
     current = {
-        "office": st.session_state.get("sel_office", ALL),
-        "manager": st.session_state.get("sel_manager", ALL),
+        "office":      st.session_state.get("sel_office", ALL),
+        "manager":     st.session_state.get("sel_manager", ALL),
         "sales_agent": st.session_state.get("sel_agent", ALL),
     }
     valid = {col: _valid_options(df, col, current) for col in current}
@@ -204,123 +258,122 @@ def _validate_and_apply_cascade(df: pd.DataFrame):
     return valid
 
 
-# ── Pipeline table ────────────────────────────────────────────────────────────
-
-def render_pipeline_table(display_df: pd.DataFrame) -> Optional[str]:
-    """Render the compact pipeline table and return the selected opportunity_id."""
-    st.dataframe(
-        display_df,
-        column_config={"opportunity_id": None},  # hide id column
-        use_container_width=True,
-        height=460,
-    )
-
-    # Deal selector — reliability-first approach using selectbox
-    options = [None] + display_df["opportunity_id"].tolist()
-    label_map = {None: "— Select a deal to inspect —"}
-    label_map.update({
-        oid: f"{row['Account']} · {row['Product']}"
-        for oid, row in zip(display_df["opportunity_id"], display_df.to_dict("records"))
-    })
-
-    selected_id = st.selectbox(
-        "Select deal to inspect:",
-        options=options,
-        format_func=lambda x: label_map.get(x, str(x)),
-        key="sel_deal",
-    )
-    return selected_id
-
-
-# ── Deal Insight Panel renderers ──────────────────────────────────────────────
+# ── Painel de Análise do Deal ─────────────────────────────────────────────────
 
 def render_deal_header(row: pd.Series) -> None:
-    rating = str(row.get("deal_rating", ""))
-    rating_color = RATING_COLORS.get(rating, "#888888")
+    """Cabeçalho compacto — exibe apenas informações não presentes na tabela."""
+    account = row.get("account", "—")
+    product = row.get("product", "—")
+    rating  = str(row.get("deal_rating", ""))
 
     st.markdown(
-        f'<span style="background:{rating_color}; color:white; padding:5px 14px; '
-        f'border-radius:6px; font-size:18px; font-weight:bold;">{rating}</span>',
+        f"<div style='display:flex; align-items:center; gap:10px;'>"
+        f"{_rating_badge(rating)}"
+        f"<span style='font-weight:700; font-size:15px;'>{account} · {product}</span>"
+        f"</div>",
         unsafe_allow_html=True,
     )
-    st.write("")
 
-    col_info, col_metrics = st.columns([1, 1])
-    with col_info:
-        st.markdown(f"**Account** &nbsp;&nbsp; {row.get('account', '—')}")
-        st.markdown(f"**Product** &nbsp;&nbsp; {row.get('product', '—')}")
-        st.markdown(f"**Sales Agent** &nbsp;&nbsp; {row.get('sales_agent', '—')}")
-        st.markdown(f"**Office** &nbsp;&nbsp; {row.get('office', '—')}")
-
-    with col_metrics:
-        st.metric("Win Probability", format_probability_bar(row.get("win_probability", 0.0)))
-        st.metric("Expected Revenue", format_currency(row.get("expected_revenue", 0.0)))
-        st.metric("Deal Value", format_currency(row.get("effective_value", 0.0)))
+    prob  = float(row.get("win_probability", 0.0))
+    value = format_currency(row.get("effective_value", 0.0))
+    pct   = round(prob * 100, 1)
+    st.markdown(
+        f"<div style='margin-top:8px;'>"
+        f"<div style='display:flex; align-items:center; gap:12px;'>"
+        f"<div>"
+        f"<span style='font-size:15px; font-weight:600; color:#333;'>{value}</span>"
+        f"<span style='font-size:11px; color:#aaa; margin-left:4px;'>preço do produto</span>"
+        f"</div>"
+        f"<div style='display:flex; align-items:center; gap:8px; flex:1;'>"
+        f"<div style='flex:1; background:#e0e0e0; border-radius:4px; height:6px;'>"
+        f"<div style='width:{pct}%; background:#71808b; border-radius:4px; height:6px;'></div>"
+        f"</div>"
+        f"<span style='font-size:12px; color:#777; white-space:nowrap;'>{pct}% fechamento</span>"
+        f"</div>"
+        f"</div>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
 
 
 def render_positive_signals(signal_payload: dict) -> None:
-    st.markdown("#### ✅ Positive Signals")
+    st.markdown("**✅ Sinais Positivos**")
     if signal_payload["positive_signals"]:
         for s in signal_payload["positive_signals"]:
             st.success(f"**{s['title']}** — {s['description']}")
     else:
-        st.info("No strong positive signals identified.")
+        st.info("Nenhum sinal positivo forte identificado.")
 
 
 def render_risk_signals(signal_payload: dict) -> None:
-    st.markdown("#### ⚠️ Risk Signals")
+    st.markdown("**⚠️ Sinais de Risco**")
     if signal_payload["risk_signals"]:
         for s in signal_payload["risk_signals"]:
             st.error(f"**{s['title']}** — {s['description']}")
     else:
-        st.info("No risk signals identified.")
+        st.info("Nenhum sinal de risco relevante detectado.")
+
+
+_ENGINE_LABELS_PT: dict[str, str] = {
+    "Seller Power":        "Força do Vendedor",
+    "Deal Momentum":       "Momento do Deal",
+    "Product Performance": "Desempenho do Produto",
+    "Account Strength":    "Solidez da Conta",
+    "Deal Size":           "Tamanho do Deal",
+}
 
 
 def render_rating_engines(signal_payload: dict) -> None:
-    st.markdown("#### ⚡ Rating Engines")
+    _LABEL_COLOR = {"🟢 Forte": "#4CAF50", "🟡 Moderado": "#FF9800", "🔴 Fraco": "#F44336"}
+    _LABEL_TEXT  = {"🟢 Forte": "Forte",   "🟡 Moderado": "Moderado", "🔴 Fraco": "Fraco"}
+    rows_html = ""
     for engine, score in signal_payload["rating_engines"].items():
-        col1, col2 = st.columns([4, 1])
-        col1.progress(score / 100, text=engine)
-        col2.markdown(f"**{score}**")
-
-
-def render_model_factors(signal_payload: dict) -> None:
-    with st.expander("🔬 Model Factors"):
-        factors = signal_payload["model_factors"]
-        if factors:
-            factors_df = pd.DataFrame(factors, columns=["Feature", "Contribution"])
-            factors_df["Contribution"] = factors_df["Contribution"].map(lambda x: f"{x:+.3f}")
-            st.dataframe(factors_df, hide_index=True, use_container_width=True)
-        else:
-            st.caption("No factor data available.")
+        label   = _engine_label(score)
+        name_pt = _ENGINE_LABELS_PT.get(engine, engine)
+        color   = _LABEL_COLOR.get(label, "#888")
+        text    = _LABEL_TEXT.get(label, label)
+        rows_html += (
+            f"<div style='margin-bottom:12px;'>"
+            # linha 1: nome + pill badge
+            f"<div style='display:flex; align-items:center; gap:6px; margin-bottom:5px;'>"
+            f"<span style='font-size:14px; font-weight:400; color:#333;'>{name_pt}</span>"
+            f"<span style='font-size:10px; font-weight:600; color:white; background:{color}; "
+            f"padding:1px 7px; border-radius:10px; line-height:16px;'>{text}</span>"
+            f"</div>"
+            # linha 2: barra (60% da largura) + score
+            f"<div style='display:flex; align-items:center; gap:8px;'>"
+            f"<div style='width:60%; background:#e0e0e0; border-radius:3px; height:5px; flex-shrink:0;'>"
+            f"<div style='width:{score}%; background:{color}; height:5px; border-radius:3px;'></div>"
+            f"</div>"
+            f"<span style='font-size:14px; color:{color};'>{score}</span>"
+            f"</div>"
+            f"</div>"
+        )
+    st.markdown("**⚡ Motores de Rating**")
+    st.markdown(rows_html, unsafe_allow_html=True)
 
 
 def render_deal_insight_panel(row: pd.Series, signal_payload: dict) -> None:
-    st.divider()
-    st.subheader("🔍 Deal Insights")
+    st.markdown("#### Análise do Deal")
     render_deal_header(row)
     st.divider()
-    col_pos, col_risk = st.columns(2)
-    with col_pos:
-        render_positive_signals(signal_payload)
-    with col_risk:
-        render_risk_signals(signal_payload)
+    render_positive_signals(signal_payload)
+    render_risk_signals(signal_payload)
     st.divider()
     render_rating_engines(signal_payload)
-    render_model_factors(signal_payload)
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 def main():
-    st.title("📈 DealSignal — Deal Rating Engine")
-    st.caption("AI-powered opportunity prioritization based on win probability and expected revenue")
+    st.title("DealSignal")
+    st.caption("Priorização inteligente de oportunidades com base em probabilidade de fechamento e receita esperada")
 
     df = load_results()
     metadata = load_metadata()
 
     if df.empty:
         st.error(
-            "No results found. Run the pipeline first:\n\n"
+            "Nenhum resultado encontrado. Execute o pipeline primeiro:\n\n"
             "```bash\npython run_pipeline.py\n```"
         )
         return
@@ -328,10 +381,10 @@ def main():
     _init_filters()
     valid = _validate_and_apply_cascade(df)
 
-    # Apply filters (before sidebar so download buttons see filtered data)
-    selected_office = st.session_state["sel_office"]
+    # Aplicar filtros
+    selected_office  = st.session_state["sel_office"]
     selected_manager = st.session_state["sel_manager"]
-    selected_agent = st.session_state["sel_agent"]
+    selected_agent   = st.session_state["sel_agent"]
     ratings = st.session_state.get("sel_ratings", RATING_ORDER)
 
     filtered = df.copy()
@@ -347,28 +400,34 @@ def main():
 
     auc = metadata.get("cv_auc", None)
     kpis = {
-        "Total Exp. Revenue": format_currency(filtered["expected_revenue"].sum()),
-        "Top 10 Exp. Revenue": format_currency(filtered.head(10)["expected_revenue"].sum()),
-        "Open Deals": str(len(filtered)),
-        "Model AUC": f"{auc:.3f}" if auc else "—",
+        "Pipeline Total":  format_currency(filtered["expected_revenue"].sum()),
+        "Top 10 Pipeline": format_currency(filtered.head(10)["expected_revenue"].sum()),
+        "Deals Ativos":    str(len(filtered)),
+        "AUC do Modelo":   f"{auc:.3f}" if auc else "—",
     }
     active_filters = {
-        "Office": selected_office,
-        "Manager": selected_manager,
-        "Agent": selected_agent,
+        "Escritório": selected_office,
+        "Gerente":    selected_manager,
+        "Vendedor":   selected_agent,
     }
 
-    # ── Sidebar ───────────────────────────────────────────────────────────────
+    # ── Sidebar — filtros + legenda de rating + downloads ─────────────────────
     with st.sidebar:
-        st.header("Filters")
-        st.selectbox("Regional Office", options=[ALL] + valid["office"], key="sel_office")
-        st.selectbox("Manager", options=[ALL] + valid["manager"], key="sel_manager")
-        st.selectbox("Sales Agent", options=[ALL] + valid["sales_agent"], key="sel_agent")
-        st.multiselect("Rating", options=RATING_ORDER, default=RATING_ORDER, key="sel_ratings")
-        st.button("Clear Filters", on_click=_reset_filters, use_container_width=True)
+        st.header("Filtros")
+        st.selectbox("Escritório", options=[ALL] + valid["office"],      key="sel_office")
+        st.selectbox("Gerente",    options=[ALL] + valid["manager"],     key="sel_manager")
+        st.selectbox("Vendedor",   options=[ALL] + valid["sales_agent"], key="sel_agent")
+
+        st.multiselect(
+            "Rating",
+            options=RATING_ORDER,
+            default=RATING_ORDER,
+            key="sel_ratings",
+        )
+        st.button("Limpar Filtros", on_click=_reset_filters, use_container_width=True)
 
         st.divider()
-        st.markdown("**Download Report**")
+        st.markdown("**Exportar Relatório**")
         dl_col1, dl_col2 = st.columns(2)
         dl_col1.download_button(
             label="CSV",
@@ -388,26 +447,26 @@ def main():
         st.divider()
         st.caption("DealSignal v1.0")
         if metadata:
-            st.caption(f"Model AUC: {metadata.get('cv_auc', '—')}")
-            st.caption(f"Features: {metadata.get('n_features', '—')}")
-            st.caption(f"Trained on: {metadata.get('n_train', '—')} deals")
+            st.caption(f"AUC do Modelo: {metadata.get('cv_auc', '—')}")
+            st.caption(f"Variáveis: {metadata.get('n_features', '—')}")
+            st.caption(f"Treinado com: {metadata.get('n_train', '—')} deals")
 
-    # ── KPI cards ─────────────────────────────────────────────────────────────
+    # ── KPIs ──────────────────────────────────────────────────────────────────
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Pipeline (Exp. Revenue)", kpis["Total Exp. Revenue"])
-    col2.metric("Top 10 Expected Revenue", kpis["Top 10 Exp. Revenue"])
-    col3.metric("Open Deals", kpis["Open Deals"])
-    col4.metric("Model AUC", kpis["Model AUC"])
+    col1.metric("Pipeline Total",  kpis["Pipeline Total"])
+    col2.metric("Top 10 Pipeline", kpis["Top 10 Pipeline"])
+    col3.metric("Deals Ativos",    kpis["Deals Ativos"])
+    col4.metric("AUC do Modelo",   kpis["AUC do Modelo"])
 
     st.divider()
 
-    # ── Top 10 chart + Rating Distribution (side by side) ────────────────────
+    # ── Top 10 + Distribuição por Rating lado a lado ───────────────────────────
     col_top10, col_dist = st.columns([2, 1])
 
     with col_top10:
-        st.subheader("🎯 Top 10 Deals to Prioritize")
+        st.subheader("Top 10 Deals para Priorizar")
         top10 = filtered.head(10).copy()
-        top10["label"] = top10["account"] + " · " + top10["product"]
+        top10["label"]   = top10["account"] + " · " + top10["product"]
         top10["win_pct"] = (top10["win_probability"] * 100).round(1)
 
         if not top10.empty:
@@ -420,7 +479,7 @@ def main():
                 color_discrete_map=RATING_COLORS,
                 category_orders={"deal_rating": RATING_ORDER},
                 text=top10["win_pct"].astype(str) + "%",
-                labels={"expected_revenue": "Expected Revenue ($)", "label": ""},
+                labels={"expected_revenue": "", "label": ""},
                 height=420,
             )
             fig.update_traces(textposition="outside")
@@ -428,15 +487,19 @@ def main():
                 yaxis={"autorange": "reversed"},
                 showlegend=True,
                 legend_title="Rating",
+                legend=dict(orientation="v", x=1.01, y=1),
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
+                font=_CHART_FONT,
+                margin=_CHART_MARGIN,
+                xaxis_title="",
             )
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.info("No deals match the current filters.")
+            st.info("Nenhum deal corresponde aos filtros selecionados.")
 
     with col_dist:
-        st.subheader("📊 Rating Distribution")
+        st.subheader("Distribuição por Rating")
         rating_counts = (
             filtered["deal_rating"]
             .value_counts()
@@ -444,15 +507,15 @@ def main():
             .dropna()
             .reset_index()
         )
-        rating_counts.columns = ["Rating", "Count"]
+        rating_counts.columns = ["Rating", "Quantidade"]
         fig2 = px.bar(
             rating_counts,
             x="Rating",
-            y="Count",
+            y="Quantidade",
             color="Rating",
             color_discrete_map=RATING_COLORS,
             category_orders={"Rating": RATING_ORDER},
-            text="Count",
+            text="Quantidade",
             height=420,
         )
         fig2.update_traces(textposition="outside")
@@ -460,23 +523,69 @@ def main():
             showlegend=False,
             plot_bgcolor="rgba(0,0,0,0)",
             paper_bgcolor="rgba(0,0,0,0)",
+            font=_CHART_FONT,
+            margin=_CHART_MARGIN,
+            xaxis_title="",
+            yaxis_title="Qtd",
         )
         st.plotly_chart(fig2, use_container_width=True)
 
     st.divider()
 
-    # ── Full pipeline table ───────────────────────────────────────────────────
-    st.subheader("📋 Full Pipeline")
-    st.caption(f"Showing {len(filtered)} deals — sorted by Expected Revenue (descending).")
+    # ── Master-detail: tabela (esquerda) | Análise do Deal (direita) ──────────
+    col_left, col_right = st.columns([3, 1])
 
-    display_df = build_display_dataframe(filtered)
-    selected_id = render_pipeline_table(display_df)
+    with col_left:
+        st.markdown(
+            f"#### Pipeline Completo "
+            f"<span style='font-size:12px; font-weight:400; color:#888;'>"
+            f"{len(filtered)} deals</span>",
+            unsafe_allow_html=True,
+        )
 
-    # ── Deal Insight Panel ────────────────────────────────────────────────────
-    if selected_id:
-        row = filtered[filtered["opportunity_id"] == selected_id].iloc[0]
-        payload = build_signals_for_deal(row, filtered)
-        render_deal_insight_panel(row, payload)
+        display_df = build_display_dataframe(filtered)
+
+        event = st.dataframe(
+            display_df,
+            column_config={
+                "opportunity_id": None,
+                "_win_prob": st.column_config.ProgressColumn(
+                    "% Fechamento",
+                    min_value=0,
+                    max_value=100,
+                    format="%.1f%%",
+                    width="medium",
+                ),
+                "Rating":        st.column_config.TextColumn("Rating",        width="small"),
+                "Conta":         st.column_config.TextColumn("Conta",         width="medium"),
+                "Produto":       st.column_config.TextColumn("Produto",       width="medium"),
+                "Vendedor":      st.column_config.TextColumn("Vendedor",      width="medium"),
+                "Rec. Esperada": st.column_config.TextColumn("Rec. Esperada", width="small"),
+            },
+            use_container_width=True,
+            height=760,
+            selection_mode="single-row",
+            on_select="rerun",
+            hide_index=True,
+            key="pipeline_table",
+        )
+        rows = event.selection.rows
+        if rows:
+            st.session_state["selected_deal_id"] = display_df.iloc[rows[0]]["opportunity_id"]
+
+    # Validar que o deal selecionado ainda está no dataset filtrado
+    selected_id = st.session_state.get("selected_deal_id")
+    if selected_id and selected_id not in filtered["opportunity_id"].values:
+        st.session_state["selected_deal_id"] = None
+        selected_id = None
+
+    with col_right:
+        if selected_id:
+            row = filtered[filtered["opportunity_id"] == selected_id].iloc[0]
+            payload = build_signals_for_deal(row, filtered)
+            render_deal_insight_panel(row, payload)
+        else:
+            st.info("← Clique em uma linha da tabela para ver a análise do deal.")
 
 
 if __name__ == "__main__":
