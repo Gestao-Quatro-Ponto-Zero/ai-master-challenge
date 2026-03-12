@@ -3,7 +3,6 @@
 	import { locales, localizeHref } from '$lib/paraglide/runtime';
 	import { onMount } from 'svelte';
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
 
 	let { children } = $props();
 
@@ -17,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/logo-icon.svg" />
 </svelte:head>
 
 {@render children()}

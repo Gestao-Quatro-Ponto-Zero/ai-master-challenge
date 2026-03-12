@@ -30,7 +30,7 @@
 		
 		<textarea
 			class="flex-1 max-h-[200px] min-h-[44px] bg-transparent border-0 focus:ring-0 resize-none px-2 py-3 text-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-			placeholder="Pergunte qualquer coisa sobre seus dados..."
+			placeholder="Pergunte qualquer coisa sobre seu pipeline..."
 			rows="1"
 			bind:value
 			onkeydown={handleKeydown}
@@ -53,21 +53,20 @@
 	<!-- Ferramentas/Sources Selection (Manus inspired) -->
 	<div class="flex items-center gap-2 px-1 py-1 overflow-x-auto no-scrollbar">
 		<span class="text-xs text-muted-foreground flex items-center gap-1 shrink-0 px-2">
-			<Globe class="w-3 h-3" /> Conecte ou filtre por fonte:
+			<Globe class="w-3 h-3" /> Filtros rapidos do pipeline:
 		</span>
 		
 		<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-xs text-secondary-foreground hover:bg-secondary/80 transition-colors border border-border/50 shrink-0 shadow-sm">
 			<span class="w-2 h-2 rounded-full bg-primary/80"></span>
-			Todos os Dados
+			Todos os deals
 		</button>
 		<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-secondary/50 text-xs text-muted-foreground hover:text-foreground transition-colors border border-transparent hover:border-border/50 shrink-0">
-			<img src="https://supabase.com/dashboard/img/supabase-logo.svg" alt="Supabase" class="w-3 h-3 grayscale opacity-70" />
-			Supabase Vendas
+			<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+			Em risco
 		</button>
 		<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-transparent hover:bg-secondary/50 text-xs text-muted-foreground hover:text-foreground transition-colors border border-transparent hover:border-border/50 shrink-0">
-			<!-- Generic Postgres Icon -->
-			<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 grayscale opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-			Analytics DB
+			<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+			Quentes
 		</button>
 	</div>
 </div>

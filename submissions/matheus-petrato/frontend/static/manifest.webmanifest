@@ -1,23 +1,23 @@
 {
-	"name": "Datapus",
-	"short_name": "Datapus",
-	"description": "Conversational BI platform for data-driven teams.",
+	"name": "G4 Compass",
+	"short_name": "G4 Compass",
+	"description": "Sales Co-Pilot para times B2B com pipeline priorizado e alertas proativos.",
 	"start_url": "/",
 	"scope": "/",
 	"display": "standalone",
-	"background_color": "#0b1220",
-	"theme_color": "#0b1220",
+	"background_color": "#0C1923",
+	"theme_color": "#0C1923",
 	"icons": [
 		{
-			"src": "/mockup.png",
-			"sizes": "640x640",
-			"type": "image/png",
+			"src": "/logo-icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
 			"purpose": "any"
 		},
 		{
-			"src": "/avatar.png",
-			"sizes": "640x640",
-			"type": "image/png",
+			"src": "/logo-icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
 			"purpose": "maskable"
 		}
 	]

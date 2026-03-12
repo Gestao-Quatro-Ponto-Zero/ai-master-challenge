@@ -2,7 +2,7 @@
 	import ChatInput from '$lib/components/blocks/ChatInput.svelte';
 	import Onboarding from '$lib/components/blocks/Onboarding.svelte';
 	import Markdown from '$lib/components/blocks/Markdown.svelte';
-	import { Sparkles, Code, PenTool, Brain, BrainCircuit, User as UserIcon } from 'lucide-svelte';
+	import { Sparkles, Activity, TrendingUp, Target, BrainCircuit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { api, getStoredToken, getStoredUser } from '$lib/services/api';
 
@@ -12,10 +12,10 @@
 	}
 
 	const suggestions: Suggestion[] = [
-		{ icon: PenTool, label: 'Escrever query' },
-		{ icon: Brain, label: 'Aprender SQL' },
-		{ icon: Code, label: 'Código Go' },
-		{ icon: Sparkles, label: 'Resumo Mês' },
+		{ icon: TrendingUp, label: 'Deals quentes' },
+		{ icon: Activity, label: 'Deals em risco' },
+		{ icon: Target, label: 'Priorizar semana' },
+		{ icon: Sparkles, label: 'Resumo do mes' },
 	];
 
 	interface Message {
@@ -33,12 +33,12 @@
 
 	// Thinking Effect Logic
 	const thinkingPhrases = [
-		"Mergulhando nas suas tabelas...",
-		"Pedindo permissão para o Mercury...",
-		"Estudando os relacionamentos...",
-		"Preparando os tentáculos...",
-		"Cruzando dados semânticos...",
-		"Analisando contextos de negócio..."
+		"Analisando seu pipeline...",
+		"Calculando score dos deals...",
+		"Checando oportunidades em risco...",
+		"Comparando com historico do time...",
+		"Montando seu briefing diario...",
+		"Priorizando os proximos passos..."
 	];
 	let thinkingPhrase = $state(thinkingPhrases[0]);
 
@@ -139,7 +139,7 @@
 
 	// Helper para UX "Mock" (Usado só se não houver um Backend Mock ou Real rodando WS na 8080)
 	function simulateStreaming(msgId: string) {
-		const sampleText = "Analisando os dados da sua base... O faturamento total de Vendas neste período parece indicar uma alta de 15% em relação ao semestre passado. Você gostaria que eu gerasse um gráfico sobre os top produtos?";
+		const sampleText = "Analisei seu pipeline: 3 deals entraram em zona ideal e 5 estao em risco. Quer que eu priorize o que atacar hoje e gere um resumo rapido para a semana?";
 		let i = 0;
 		const interval = setInterval(() => {
 			const idx = messages.findIndex(m => m.id === msgId);
@@ -160,11 +160,11 @@
 
 <div class="flex-1 flex flex-col h-full bg-background relative overflow-hidden text-foreground">
 	<!-- Top Bar -->
-	<header class="h-14 flex items-center justify-between px-6 w-full shrink-0 border-b border-border/10 bg-background/50 backdrop-blur-md z-10 absolute top-0">
-		<div class="font-medium text-sm flex items-center gap-2 text-muted-foreground">
-			<span>Datapus 1.0 Lite</span>
+	<header class="h-14 flex items-center justify-between px-6 w-full shrink-0 border-b border-[#1F2A37] bg-[#0C1923] text-white z-10 absolute top-0">
+		<div class="font-medium text-sm flex items-center gap-2 text-white/70">
+			<span>G4 Compass</span>
 		</div>
-		<button class="w-8 h-8 rounded-full bg-secondary border border-border flex justify-center items-center text-xs font-bold font-mono tracking-wider overflow-hidden">
+		<button class="w-8 h-8 rounded-full bg-[#152634] border border-[#1F2A37] flex justify-center items-center text-xs font-bold font-mono tracking-wider overflow-hidden text-white/80">
 			MP
 		</button>
 	</header>
@@ -182,11 +182,11 @@
 			<div class="max-w-2xl w-full mb-12 text-center">
 				<div class="flex items-center justify-center gap-3 mb-4">
 					<div class="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/20">
-						<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.7 3.6l1.3 2.1a1 1 0 0 1-.4 1.3l-2.1 1.3a1 1 0 0 1-1.4-.4L11 14.8V19a1 1 0 0 1-2 0v-4.2l-.7 1.1a1 1 0 0 1-1.4.4l-2.1-1.3a1 1 0 0 1-.4-1.3l1.3-2.1C4.7 10.8 4 9.5 4 8a4 4 0 0 1 4-4"/></svg>
+						<img src="/logo-icon.svg" alt="G4 Compass" class="w-6 h-6" />
 					</div>
-					<h1 class="text-3xl font-bold tracking-tight">Datapus</h1>
+					<h1 class="text-3xl font-bold tracking-tight">G4 Compass</h1>
 				</div>
-                <p class="text-muted-foreground">Bem-vindo, Matheus! Vamos conectar seu primeiro banco de dados para liberar seu assistente.</p>
+                <p class="text-muted-foreground">Bem-vindo! Vamos conectar sua fonte de pipeline para liberar o Compass.</p>
 			</div>
 			
 			<div class="w-full max-w-3xl">
@@ -207,7 +207,7 @@
 			<div class="flex flex-col items-center gap-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
 				<Sparkles class="w-8 h-8 text-foreground" />
 				<h1 class="text-3xl text-foreground font-medium tracking-tight">
-					Olá Matheus, estou de volta!
+					Pronto para priorizar seus deals hoje?
 				</h1>
 			</div>
 
@@ -235,13 +235,13 @@
 						
 						{#if msg.role === 'assistant'}
 							<!-- Assistant Marker -->
-							<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 mr-4 shadow-sm border border-primary/20">
-								<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.7 3.6l1.3 2.1a1 1 0 0 1-.4 1.3l-2.1 1.3a1 1 0 0 1-1.4-.4L11 14.8V19a1 1 0 0 1-2 0v-4.2l-.7 1.1a1 1 0 0 1-1.4.4l-2.1-1.3a1 1 0 0 1-.4-1.3l1.3-2.1C4.7 10.8 4 9.5 4 8a4 4 0 0 1 4-4"/></svg>
+							<div class="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center shrink-0 mr-4 shadow-sm border border-primary/20">
+								<img src="/logo-icon.svg" alt="G4 Compass" class="w-5 h-5" />
 							</div>
 						{/if}
 
 						<div class="max-w-[85%] rounded-2xl px-5 py-4 text-[15px] leading-relaxed 
-							{msg.role === 'user' ? 'bg-[#2B2B2B] text-foreground border border-border/50' : 'bg-transparent text-foreground'}">
+							{msg.role === 'user' ? 'bg-[#0C1923] text-white border border-[#1F2A37]' : 'bg-transparent text-foreground'}">
 							
 							{#if msg.role === 'assistant' && !msg.content && msg.isStreaming}
 								<div class="flex flex-col gap-2">

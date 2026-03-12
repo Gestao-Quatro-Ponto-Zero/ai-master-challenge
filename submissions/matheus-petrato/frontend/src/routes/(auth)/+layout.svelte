@@ -8,10 +8,7 @@
 	<div class="flex flex-col relative bg-background">
 		<!-- Header / Logo -->
 		<header class="absolute top-8 left-8 flex items-center gap-2 z-10">
-			<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground shadow-sm shadow-primary/30">
-				<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a4 4 0 0 1 4 4c0 1.5-.7 2.8-1.7 3.6l1.3 2.1a1 1 0 0 1-.4 1.3l-2.1 1.3a1 1 0 0 1-1.4-.4L11 14.8V19a1 1 0 0 1-2 0v-4.2l-.7 1.1a1 1 0 0 1-1.4.4l-2.1-1.3a1 1 0 0 1-.4-1.3l1.3-2.1C4.7 10.8 4 9.5 4 8a4 4 0 0 1 4-4"/></svg>
-			</div>
-			<span class="font-bold tracking-wide text-lg text-foreground">Datapus</span>
+			<img src="/logo-full.svg" alt="G4 Compass" class="h-7 w-auto" />
 		</header>
 
 		<!-- Content -->
@@ -23,19 +20,19 @@
 
 		<!-- Footer -->
 		<footer class="absolute bottom-8 left-8 right-8 flex justify-between items-center text-xs text-muted-foreground/80 pointer-events-none">
-			<span>© Datapus 2026</span>
-			<a href="mailto:help@datapus.com" class="flex items-center gap-1.5 hover:text-foreground pointer-events-auto transition-colors">
-				<Mail class="w-4 h-4" /> help@datapus.com
+			<span>© G4 Compass 2026</span>
+			<a href="mailto:help@g4compass.com" class="flex items-center gap-1.5 hover:text-foreground pointer-events-auto transition-colors">
+				<Mail class="w-4 h-4" /> help@g4compass.com
 			</a>
 		</footer>
 	</div>
 
 	<!-- Direita: Testimonial Minimalista -->
-	<div class="hidden lg:flex flex-col relative overflow-hidden p-12 justify-center items-center bg-[#F9FAFB]">
+	<div class="hidden lg:flex flex-col relative overflow-hidden p-12 justify-center items-center bg-[#F5F6F8]">
 		
 		<div class="max-w-xl w-full flex flex-col items-center text-center relative z-10">
 			<!-- Stars -->
-			<div class="flex text-amber-400 mb-8 gap-1">
+			<div class="flex text-[#C4952A] mb-8 gap-1">
 				<Star class="w-6 h-6 fill-current" />
 				<Star class="w-6 h-6 fill-current" />
 				<Star class="w-6 h-6 fill-current" />
@@ -44,8 +41,8 @@
 			</div>
 
 			<!-- Quote -->
-			<h2 class="text-[34px] font-medium leading-[1.3] text-[#111827] mb-12">
-				Datapus tem nos poupado milhares de horas de trabalho de dados. Nós conseguimos subir projetos e extrair análises muito mais rápido.
+			<h2 class="text-[34px] font-medium leading-[1.3] text-foreground mb-12">
+				G4 Compass ajudou nosso time a priorizar deals certos toda semana e acelerar o fechamento sem depender de feeling.
 			</h2>
 			
 			<!-- Avatar & Info -->
@@ -56,7 +53,7 @@
 						<svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg>
 					</div>
 				</div>
-				<div class="font-semibold text-base text-[#111827]">Lori Bryson</div>
+				<div class="font-semibold text-base text-foreground">Lori Bryson</div>
 				<div class="text-sm text-muted-foreground mt-0.5">Product Designer, Sisyphus</div>
 			</div>
 

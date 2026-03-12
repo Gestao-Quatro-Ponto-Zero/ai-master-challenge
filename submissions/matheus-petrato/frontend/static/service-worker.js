@@ -14,11 +14,11 @@ self.addEventListener('push', (event) => {
 		payload = { body: event.data ? event.data.text() : '' };
 	}
 
-	const title = payload.title || 'Datapus';
+	const title = payload.title || 'G4 Compass';
 	const options = {
-		body: payload.body || 'Nova atualizacao para o seu time.',
-		icon: '/mockup.png',
-		badge: '/avatar.png',
+		body: payload.body || 'Novo alerta do seu pipeline.',
+		icon: '/logo-icon.svg',
+		badge: '/logo-icon.svg',
 		data: {
 			url: payload.url || '/'
 		}

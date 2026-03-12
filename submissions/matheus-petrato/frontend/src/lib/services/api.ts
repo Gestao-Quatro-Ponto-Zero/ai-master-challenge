@@ -24,31 +24,31 @@ export interface DataSource {
 // Stores (Svelte 5 runed store approach)
 export function getStoredToken(): string | null {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem('datapus_token');
+    return localStorage.getItem('g4_compass_token');
 }
 
 export function setStoredToken(token: string) {
     if (typeof window !== 'undefined') {
-        localStorage.setItem('datapus_token', token);
+        localStorage.setItem('g4_compass_token', token);
     }
 }
 
 export function getStoredUser(): User | null {
     if (typeof window === 'undefined') return null;
-    const user = localStorage.getItem('datapus_user');
+    const user = localStorage.getItem('g4_compass_user');
     return user ? JSON.parse(user) : null;
 }
 
 export function setStoredUser(user: User) {
     if (typeof window !== 'undefined') {
-        localStorage.setItem('datapus_user', JSON.stringify(user));
+        localStorage.setItem('g4_compass_user', JSON.stringify(user));
     }
 }
 
 export function clearStoredAuth() {
     if (typeof window !== 'undefined') {
-        localStorage.removeItem('datapus_token');
-        localStorage.removeItem('datapus_user');
+        localStorage.removeItem('g4_compass_token');
+        localStorage.removeItem('g4_compass_user');
     }
 }
 

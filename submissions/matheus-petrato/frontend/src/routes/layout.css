@@ -5,73 +5,74 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.15 0.05 264);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.05 264);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.05 264);
-  --primary: oklch(0.45 0.25 264);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0.02 264);
-  --secondary-foreground: oklch(0.25 0.05 264);
-  --muted: oklch(0.96 0.02 264);
-  --muted-foreground: oklch(0.55 0.03 264);
-  --accent: oklch(0.96 0.02 264);
-  --accent-foreground: oklch(0.25 0.05 264);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.02 264);
-  --input: oklch(0.92 0.02 264);
-  --ring: oklch(0.45 0.25 264);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.98 0.01 264);
-  --sidebar-foreground: oklch(0.15 0.05 264);
-  --sidebar-primary: oklch(0.45 0.25 264);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.94 0.02 264);
-  --sidebar-accent-foreground: oklch(0.25 0.05 264);
-  --sidebar-border: oklch(0.92 0.02 264);
-  --sidebar-ring: oklch(0.45 0.25 264);
+  --radius: 0.75rem;
+  --background: #f8fafc;
+  --foreground: #1a2332;
+  --card: #ffffff;
+  --card-foreground: #1a2332;
+  --popover: #ffffff;
+  --popover-foreground: #1a2332;
+  --primary: #c4952a;
+  --primary-foreground: #0c1923;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #4a5568;
+  --muted: #f1f5f9;
+  --muted-foreground: #94a3b8;
+  --accent: #f6e9c6;
+  --accent-foreground: #1a2332;
+  --destructive: #ef4444;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #c4952a;
+  --chart-1: #c4952a;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #ef4444;
+  --chart-5: #94a3b8;
+  --sidebar: #0c1923;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #c4952a;
+  --sidebar-primary-foreground: #0c1923;
+  --sidebar-accent: #162632;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #1f2a37;
+  --sidebar-ring: #c4952a;
+  --font-body: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-heading: "Outfit", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 .dark {
-  --radius: 0.75rem;
-  --background: #212121;
-  --foreground: #f4f4f5;
-  --card: #27272a;
-  --card-foreground: #f4f4f5;
-  --popover: #27272a;
-  --popover-foreground: #f4f4f5;
-  --primary: #f8fafc;
-  --primary-foreground: #09090b;
-  --secondary: #2e2e2e;
-  --secondary-foreground: #f4f4f5;
-  --muted: #2e2e2e;
-  --muted-foreground: #a1a1aa;
-  --accent: #2e2e2e;
-  --accent-foreground: #f4f4f5;
+  --background: #0c1923;
+  --foreground: #e2e8f0;
+  --card: #101f2c;
+  --card-foreground: #e2e8f0;
+  --popover: #101f2c;
+  --popover-foreground: #e2e8f0;
+  --primary: #c4952a;
+  --primary-foreground: #0c1923;
+  --secondary: #152634;
+  --secondary-foreground: #e2e8f0;
+  --muted: #152634;
+  --muted-foreground: #94a3b8;
+  --accent: #1d2f40;
+  --accent-foreground: #e2e8f0;
   --destructive: #ef4444;
-  --border: #3f3f46;
-  --input: #313131;
-  --ring: #d4d4d8;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: #1e1e1e;
-  --sidebar-foreground: #f4f4f5;
-  --sidebar-primary: #f8fafc;
-  --sidebar-primary-foreground: #09090b;
-  --sidebar-accent: #2e2e2e;
-  --sidebar-accent-foreground: #f4f4f5;
-  --sidebar-border: #3f3f46;
-  --sidebar-ring: #d4d4d8;
+  --border: #1f2a37;
+  --input: #1f2a37;
+  --ring: #c4952a;
+  --chart-1: #c4952a;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #ef4444;
+  --chart-5: #94a3b8;
+  --sidebar: #0c1923;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #c4952a;
+  --sidebar-primary-foreground: #0c1923;
+  --sidebar-accent: #162632;
+  --sidebar-accent-foreground: #e2e8f0;
+  --sidebar-border: #1f2a37;
+  --sidebar-ring: #c4952a;
 }
 
 @theme inline {
@@ -117,6 +118,15 @@
     @apply border-border outline-ring/50;
   }
   body {
+    font-family: var(--font-body);
     @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
   }
 }

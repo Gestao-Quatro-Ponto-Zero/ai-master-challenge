@@ -56,7 +56,7 @@
             onboardingStep = 3;
 
         } catch (err: any) {
-            errorMessage = err.message || 'Erro ao conectar ao banco';
+            errorMessage = err.message || 'Erro ao conectar a fonte';
             onboardingStep = 1; // Devolve p form se der pau
         }
     }
@@ -87,8 +87,8 @@
     <!-- STEP 1: O Engate -->
     {#if onboardingStep === 1}
         <div class="animate-in fade-in duration-300">
-            <h2 class="text-xl font-medium tracking-tight mb-2">Onde estão os seus dados?</h2>
-            <p class="text-sm text-muted-foreground mb-8">Conecte sua base de dados master para eu começar a estudar sua empresa.</p>
+            <h2 class="text-xl font-medium tracking-tight mb-2">Onde esta o seu pipeline?</h2>
+            <p class="text-sm text-muted-foreground mb-8">Conecte sua fonte principal para o Compass entender seus deals.</p>
             
             {#if errorMessage}
                 <div class="bg-destructive/10 border border-destructive/50 text-destructive text-sm p-4 rounded-xl mb-6 flex items-center gap-3">
@@ -100,11 +100,11 @@
             <form onsubmit={handleConnect} class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label for="name" class="text-sm font-medium">Nome / Apelido da Conexão</label>
-                        <input id="name" bind:value={name} required placeholder="Ex: Financeiro Principal" class="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none" />
+                        <label for="name" class="text-sm font-medium">Nome / Apelido da Conexao</label>
+                        <input id="name" bind:value={name} required placeholder="Ex: CRM Principal" class="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none" />
                     </div>
                     <div class="space-y-2">
-                        <label for="type" class="text-sm font-medium">Tipo de Banco</label>
+                        <label for="type" class="text-sm font-medium">Fonte de Dados</label>
                         <select id="type" bind:value={type} class="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none">
                             <option value="supabase">Supabase / Postgres</option>
                             <option value="postgres">PostgreSQL Nativo</option>
@@ -115,7 +115,7 @@
                 <div class="space-y-2">
                     <label for="uri" class="text-sm font-medium">Connection URI (DSN)</label>
                     <input id="uri" bind:value={connectionUri} required placeholder="postgresql://user:pass@host:port/db" class="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/50 outline-none font-mono text-sm" />
-                    <p class="text-[12px] text-muted-foreground mt-1">Essa será a sua via de mão única para conversarmos de forma segura.</p>
+                    <p class="text-[12px] text-muted-foreground mt-1">Essa sera a sua via segura para ler o pipeline.</p>
                 </div>
 
                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-border/50">
@@ -138,9 +138,9 @@
                 <div class="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
                 <BrainCircuit class="w-10 h-10 text-primary animate-pulse relative z-10" />
             </div>
-            <h3 class="text-xl font-medium mb-3 text-foreground">Iniciando tentáculos...</h3>
+            <h3 class="text-xl font-medium mb-3 text-foreground">Iniciando Compass...</h3>
             <p class="text-sm text-primary font-mono tracking-tight animate-pulse bg-primary/10 px-4 py-1.5 rounded-full inline-block">
-                Lendo tabelas... Pedindo pro Mercury analisar contextos...
+                Lendo pipeline... Calculando scores e contexto...
             </p>
         </div>
 
@@ -149,7 +149,7 @@
         <div class="animate-in fade-in slide-in-from-right-8 duration-500">
             <div class="flex items-center gap-3 mb-2">
                 <Sparkles class="w-6 h-6 text-primary" />
-                <h2 class="text-xl font-medium tracking-tight">Ajude a treinar o Polvo</h2>
+                <h2 class="text-xl font-medium tracking-tight">Ajude o Compass a entender</h2>
             </div>
             <p class="text-sm text-muted-foreground mb-8">Nossa inteligência gerou um rascunho de contexto para o seu banco. Sinta-se à vontade para ajustar.</p>
 
@@ -176,7 +176,7 @@
                 {#if Object.keys(scanDraft.tables || {}).length === 0}
                     <div class="p-8 border-2 border-dashed border-border/50 rounded-xl bg-background/30 flex flex-col items-center justify-center text-center">
                         <p class="text-sm font-medium text-foreground mb-1">Nenhum rascunho detalhado pronto.</p>
-                        <p class="text-xs text-muted-foreground">Sem problemas, eu irei aprender a estrutura das tabelas conforme você conversa comigo no chat.</p>
+                        <p class="text-xs text-muted-foreground">Sem problemas, eu irei aprender a estrutura do pipeline conforme voce conversa comigo no chat.</p>
                     </div>
                 {/if}
             </div>

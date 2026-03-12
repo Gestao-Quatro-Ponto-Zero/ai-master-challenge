@@ -1,6 +1,6 @@
-# Documentação da API e Fluxo de Onboarding — Datapus
+# Documentação da API e Fluxo de Onboarding — G4 Compass
 
-Este documento serve como referência definitiva para a integração do Frontend com o Backend do Datapus. Ele detalha todos os endpoints disponíveis, seus contratos (payloads e respostas) e descreve o fluxo ideal de experiência do usuário (UX) para o Onboarding.
+Este documento serve como referência definitiva para a integração do Frontend com o Backend do G4 Compass. Ele detalha todos os endpoints disponíveis, seus contratos (payloads e respostas) e descreve o fluxo ideal de experiência do usuário (UX) para o Onboarding.
 
 ---
 
@@ -18,14 +18,14 @@ Para que o cliente B2B alcance o momento "Aha!" o mais rápido possível e justi
 - **Ação:** O usuário clica em "Conectar". O frontend dispara a chamada para `POST /api/v1/datasources`.
 
 ### Passo 2: O Escaneamento (A Mágica da IA)
-*O banco conectou. Agora o Datapus assume o protagonismo.*
+*O banco conectou. Agora o G4 Compass assume o protagonismo.*
 - **Tela:** O botão de "Conectar" se transforma num *loader state* com micro-animações. Aparece um texto dinâmico estilo hacker: *"Iniciando tentáculos... Lendo tabelas... Pedindo pro Mercury analisar contextos de negócio..."*
 - **Ação:** Em background (sem ação do usuário), o frontend faz uma chamada imediatamente para `POST /api/v1/datasources/:id/scan`.
 - *Wait time esperado:* ~2 a 4 segundos.
 
 ### Passo 3: A Curadoria (Treinando o Polvo)
 *O backend retorna o payload do `/scan` com o rascunho de como ele entendeu a empresa.*
-- **Tela:** "Ajude o Datapus a ter 100% de precisão". 
+- **Tela:** "Ajude o G4 Compass a ter 100% de precisão". 
 - **O que exibir:** O frontend pega o objeto `.draft` retornado pela API e monta um formulário onde as chaves são lidas do JSON.
   - **Exemplo de UI:** 
     - 🗄️ Tabela: `users`
@@ -47,7 +47,7 @@ Todas as chamadas à API (exceto `/auth`) exigem o token JWT no cabeçalho:
   ```json
   {
     "name": "Matheus Teodoro",
-    "org_name": "Datapus Inc",
+    "org_name": "G4 Compass Inc",
     "email": "matheus@empresa.com",
     "password": "senha_segura123"
   }
@@ -148,7 +148,7 @@ Todas as chamadas à API (exceto `/auth`) exigem o token JWT no cabeçalho:
 
 ### 3. A Central de Chat (WebSocket via Streaming)
 
-O Chat do Datapus não usa chamadas REST POST comuns. Para conseguir a sensação de "Digitação da IA em tempo real", usamos WebSockets nativos.
+O Chat do G4 Compass não usa chamadas REST POST comuns. Para conseguir a sensação de "Digitação da IA em tempo real", usamos WebSockets nativos.
 
 #### 3.1 Conectar
 - **URL:** `ws://localhost:8080/ws/chat` *(ajuste o host em prod)*
