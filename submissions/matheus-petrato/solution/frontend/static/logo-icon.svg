@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4A840"/>
+      <stop offset="100%" stop-color="#C4952A"/>
+    </linearGradient>
+    <linearGradient id="navyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A3048"/>
+      <stop offset="100%" stop-color="#0C1923"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="72" height="72" rx="18" fill="url(#navyGrad)"/>
+
+  <!-- Outer ring -->
+  <circle cx="36" cy="36" r="28" fill="none" stroke="url(#goldGrad)" stroke-width="1.25" opacity="0.5"/>
+
+  <!-- Tick marks -->
+  <g stroke="#C4952A" stroke-width="1" opacity="0.5">
+    <line x1="36" y1="8" x2="36" y2="13"/>
+    <line x1="36" y1="59" x2="36" y2="64"/>
+    <line x1="8" y1="36" x2="13" y2="36"/>
+    <line x1="59" y1="36" x2="64" y2="36"/>
+    <line x1="16" y1="16" x2="19.5" y2="19.5"/>
+    <line x1="52.5" y1="52.5" x2="56" y2="56"/>
+    <line x1="56" y1="16" x2="52.5" y2="19.5"/>
+    <line x1="19.5" y1="52.5" x2="16" y2="56"/>
+  </g>
+
+  <!-- Inner ring -->
+  <circle cx="36" cy="36" r="18" fill="none" stroke="#C4952A" stroke-width="0.75" opacity="0.2"/>
+
+  <!-- N pointer (gold, prominent) -->
+  <path d="M36 12 L40.5 33 L36 29.5 L31.5 33 Z" fill="url(#goldGrad)" filter="url(#glow)"/>
+  <!-- S pointer (muted) -->
+  <path d="M36 60 L31.5 39 L36 42.5 L40.5 39 Z" fill="#C4952A" opacity="0.4"/>
+  <!-- E pointer -->
+  <path d="M60 36 L39 31.5 L42.5 36 L39 40.5 Z" fill="#C4952A" opacity="0.25"/>
+  <!-- W pointer -->
+  <path d="M12 36 L33 40.5 L29.5 36 L33 31.5 Z" fill="#C4952A" opacity="0.25"/>
+
+  <!-- Center -->
+  <circle cx="36" cy="36" r="4" fill="url(#goldGrad)"/>
+  <circle cx="36" cy="36" r="1.8" fill="#0C1923"/>
+
+  <!-- N label -->
+  <text x="36" y="10.5" text-anchor="middle" font-family="Georgia, serif" font-size="5" font-weight="700" fill="#C4952A" opacity="0.8">N</text>
+</svg>

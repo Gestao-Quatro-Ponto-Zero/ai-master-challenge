@@ -1,0 +1,24 @@
+{
+	"name": "G4 Compass",
+	"short_name": "G4 Compass",
+	"description": "Sales Co-Pilot para times B2B com pipeline priorizado e alertas proativos.",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#0C1923",
+	"theme_color": "#0C1923",
+	"icons": [
+		{
+			"src": "/logo-icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		},
+		{
+			"src": "/logo-icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "maskable"
+		}
+	]
+}
