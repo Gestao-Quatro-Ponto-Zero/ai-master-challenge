@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+from config.constants import WOE_CAP, WOE_MIN_BIN_SIZE
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -12,7 +13,7 @@ EPSILON = 1e-6
 
 
 class WoETransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, n_bins: int = 10, min_bin_size: float = 0.05, woe_cap: float = 3.0):
+    def __init__(self, n_bins: int = 10, min_bin_size: float = WOE_MIN_BIN_SIZE, woe_cap: float = WOE_CAP):
         self.n_bins = n_bins
         self.min_bin_size = min_bin_size
         self.woe_cap = woe_cap

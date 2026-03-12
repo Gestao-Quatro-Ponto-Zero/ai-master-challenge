@@ -19,7 +19,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 import pandas as pd
 
 from enrichment.digital_enrichment import run_enrichment
-from features.feature_engineering import FEATURE_COLS_V2 as FEATURE_COLS, build_features
+from features.feature_columns import FEATURE_COLS_V2 as FEATURE_COLS
+from features.feature_engineering import build_features
 from features.feature_store import save_features
 from model.feature_selection_iv import select_features_by_iv
 from model.health_engine   import compute_deal_health

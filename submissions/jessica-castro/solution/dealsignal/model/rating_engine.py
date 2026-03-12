@@ -2,19 +2,10 @@ from typing import List
 
 import pandas as pd
 
+from config.constants import RATING_THRESHOLDS
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
-
-RATING_THRESHOLDS = [
-    (0.90, "AAA"),
-    (0.80, "AA"),
-    (0.70, "A"),
-    (0.60, "BBB"),
-    (0.50, "BB"),
-    (0.40, "B"),
-    (0.00, "CCC"),
-]
 
 
 def assign_rating(win_probability: float) -> str:

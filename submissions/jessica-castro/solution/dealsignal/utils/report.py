@@ -10,16 +10,7 @@ from typing import Optional
 import pandas as pd
 from fpdf import FPDF
 
-# ── Rating colour palette (R, G, B) ──────────────────────────────────────────
-RATING_RGB = {
-    "AAA": (26, 122, 26),
-    "AA":  (46, 204, 113),
-    "A":   (130, 224, 170),
-    "BBB": (243, 156, 18),
-    "BB":  (230, 126, 34),
-    "B":   (231, 76, 60),
-    "CCC": (146, 43, 33),
-}
+from config.constants import RATING_RGB
 
 DISPLAY_COLS = [
     ("deal_rating",            "Rating"),
