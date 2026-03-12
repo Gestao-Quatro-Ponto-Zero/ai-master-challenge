@@ -9,8 +9,7 @@
 		ArrowUpRight,
 		Users
 	} from 'lucide-svelte';
-
-	const isManager = true;
+	import { role } from '$lib/stores/role';
 
 	const kpis = [
 		{ label: 'Pipeline total', value: 'R$ 3,36M', delta: '+6,2%', icon: TrendingUp },
@@ -61,7 +60,7 @@
 				<p class="text-muted-foreground">Prioridades, alertas e proximos passos recomendados pelo Compass.</p>
 			</div>
 
-			{#if isManager}
+			{#if $role === 'manager'}
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 					{#each teamSnapshot as item}
 						<div class="p-4 rounded-2xl border border-border bg-card shadow-sm flex items-center gap-3">

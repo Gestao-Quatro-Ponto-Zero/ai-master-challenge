@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { role } from '$lib/stores/role';
 	import { LayoutDashboard, Settings, MessageSquare, Bell, FileText, Sparkles, Database } from 'lucide-svelte';
 
-	const isManager = true;
 	const currentPath = $derived(page.url.pathname);
 	const isActive = (path: string) => {
 		if (path === '/') return currentPath === '/';
@@ -46,7 +46,7 @@
 				<Bell class="w-4 h-4 {isActive('/alerts') ? 'text-primary' : ''}" />
 				Alertas
 			</a>
-			{#if isManager}
+			{#if $role === 'manager'}
 				<a href="/reports" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/reports') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
 					<Database class="w-4 h-4 {isActive('/reports') ? 'text-primary' : ''}" />
 					Relatorios
@@ -66,7 +66,7 @@
 						{/each}
 					</select>
 				</div>
-				{#if isManager}
+				{#if $role === 'manager'}
 					<div class="space-y-1">
 						<label class="text-[11px] uppercase tracking-wider text-sidebar-foreground/60">Manager</label>
 						<select bind:value={selectedManager} class="w-full rounded-lg bg-sidebar-accent/70 border border-sidebar-border px-3 py-2 text-sm text-sidebar-foreground focus:outline-none focus:ring-2 focus:ring-primary/40">
