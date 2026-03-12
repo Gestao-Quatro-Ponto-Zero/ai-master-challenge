@@ -4,3 +4,4 @@
 
 Agora com algumas informações em mente, hora de trocar uma ideia com o claude e apresentar as ideias.
 
+Usando codex e antigravity pra implementar juntos backend e frontend
