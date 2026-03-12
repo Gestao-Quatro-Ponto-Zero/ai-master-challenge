@@ -22,4 +22,7 @@ if [ ! -f "${ENV_FILE}" ]; then
 fi
 
 echo "Subindo stack dev (backend + frontend + db)..."
-docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up --build
+docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" up --build -d
+
+echo "Aguardando frontend iniciar..."
+docker compose --env-file "${ENV_FILE}" -f "${COMPOSE_FILE}" logs -f --tail=0 frontend
