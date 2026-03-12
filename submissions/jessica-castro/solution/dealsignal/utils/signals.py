@@ -15,35 +15,62 @@ import pandas as pd
 # ── Feature → Engine mapping ─────────────────────────────────────────────────
 
 FEATURE_TO_ENGINE: dict[str, str] = {
-    "agent_win_rate":         "Seller Power",
-    "agent_avg_deal_value":   "Seller Power",
-    "product_win_rate":       "Product Performance",
-    "product_avg_deal_value": "Product Performance",
-    "days_since_engage":      "Deal Momentum",
-    "pipeline_velocity":      "Deal Momentum",
-    "digital_maturity_index": "Account Strength",
-    "digital_presence_score": "Account Strength",
-    "revenue_per_employee":   "Account Strength",
-    "company_age":            "Account Strength",
-    "effective_value":        "Deal Size",
-    "deal_value_percentile":  "Deal Size",
+    # Seller Power — V1 + V2
+    "agent_win_rate":          "Seller Power",
+    "agent_avg_deal_value":    "Seller Power",
+    "seller_win_rate":         "Seller Power",
+    "seller_rank_percentile":  "Seller Power",
+    "seller_pipeline_load":    "Seller Power",
+    # Deal Momentum
+    "days_since_engage":       "Deal Momentum",
+    "log_days_since_engage":   "Deal Momentum",
+    "pipeline_velocity":       "Deal Momentum",
+    # Product Performance
+    "product_win_rate":        "Product Performance",
+    "product_avg_deal_value":  "Product Performance",
+    "product_rank_percentile": "Product Performance",
+    # Deal Size
+    "effective_value":         "Deal Size",
+    "deal_value_percentile":   "Deal Size",
+    # Stagnation Risk
+    "is_stale_flag":              "Stagnation Risk",
+    "is_very_old_deal":           "Stagnation Risk",
+    "deal_age_percentile":        "Stagnation Risk",
+    "deal_age_vs_pipeline_avg":   "Stagnation Risk",
+    "seller_overloaded_flag":     "Stagnation Risk",
 }
 
 # ── Natural language explanations per feature ─────────────────────────────────
 
 FEATURE_EXPLANATIONS: dict[str, str] = {
-    "agent_win_rate":         "Este vendedor possui taxa de fechamento acima da média do time.",
-    "agent_avg_deal_value":   "Este vendedor fecha deals de alto valor com consistência.",
-    "product_win_rate":       "Este produto tem alta taxa de conversão histórica.",
-    "product_avg_deal_value": "Produto associado a deals de alto ticket médio.",
-    "days_since_engage":      "Engajamento recente indica deal ativo e com bom momentum.",
-    "pipeline_velocity":      "Deal avançando lentamente pelo funil — risco de estagnação.",
-    "digital_maturity_index": "Empresa com presença digital forte e maturidade tecnológica.",
-    "digital_presence_score": "Alta presença digital — empresa fácil de engajar online.",
-    "revenue_per_employee":   "Empresa com alta geração de receita por colaborador.",
-    "company_age":            "Empresa estabelecida com histórico sólido no mercado.",
-    "effective_value":        "Deal de alto valor — prioridade estratégica.",
-    "deal_value_percentile":  "Este deal está entre os maiores do pipeline.",
+    # Seller Power
+    "agent_win_rate":          "Este vendedor possui taxa de fechamento acima da média do time.",
+    "agent_avg_deal_value":    "Este vendedor fecha deals de alto valor com consistência.",
+    "seller_win_rate":         "Este vendedor possui alta taxa de fechamento histórica.",
+    "seller_rank_percentile":  "Vendedor bem posicionado em relação ao time — forte histórico.",
+    "seller_pipeline_load":    "Vendedor com muitos deals simultâneos — atenção distribuída.",
+    # Deal Momentum
+    "days_since_engage":       "Engajamento recente indica deal ativo e com bom momentum.",
+    "log_days_since_engage":   "Deal com muito tempo no pipeline — risco de estagnação.",
+    "pipeline_velocity":       "Deal avançando lentamente pelo funil.",
+    # Product Performance
+    "product_win_rate":        "Este produto tem alta taxa de conversão histórica.",
+    "product_avg_deal_value":  "Produto associado a deals de alto ticket médio.",
+    "product_rank_percentile": "Produto com bom ranking histórico de conversão.",
+    # Account Strength
+    "digital_maturity_index":  "Empresa com presença digital forte e maturidade tecnológica.",
+    "digital_presence_score":  "Alta presença digital — empresa fácil de engajar online.",
+    "revenue_per_employee":    "Empresa com alta geração de receita por colaborador.",
+    "company_age":             "Empresa estabelecida com histórico sólido no mercado.",
+    # Deal Size
+    "effective_value":         "Deal de alto valor — prioridade estratégica.",
+    "deal_value_percentile":   "Este deal está entre os maiores do pipeline.",
+    # Stagnation Risk
+    "is_stale_flag":              "Deal parado há muito tempo — risco de estagnação no pipeline.",
+    "is_very_old_deal":           "Deal muito antigo — requer atenção imediata para reativar.",
+    "deal_age_percentile":        "Deal entre os mais antigos do pipeline — risco de perda por inatividade.",
+    "deal_age_vs_pipeline_avg":   "Deal mais velho que a média do pipeline.",
+    "seller_overloaded_flag":     "Vendedor com muitos deals simultâneos — atenção distribuída.",
 }
 
 # ── Parsing ───────────────────────────────────────────────────────────────────
@@ -110,10 +137,10 @@ def get_signals(s: str, max_signals: int = 3) -> list[tuple[str, str]]:
 # Maps engine name → (feature_col, invert)
 # invert=True means lower feature value = better score (e.g. days_since_engage)
 _ENGINE_FEATURES: dict[str, tuple[str, bool]] = {
-    "Seller Power":        ("agent_win_rate",        False),
-    "Deal Momentum":       ("days_since_engage",      True),
-    "Product Performance": ("product_win_rate",       False),
-    "Account Strength":    ("digital_maturity_index", False),
+    "Seller Power":        ("seller_win_rate",        False),  # V2: usa seller_win_rate
+    "Deal Momentum":       ("days_since_engage",       True),  # invert: menos dias = melhor
+    "Product Performance": ("product_rank_percentile", False), # V2: usa percentil de produto
+    "Stagnation Risk":     ("deal_age_percentile",     True),  # invert: mais velho = pior
 }
 
 

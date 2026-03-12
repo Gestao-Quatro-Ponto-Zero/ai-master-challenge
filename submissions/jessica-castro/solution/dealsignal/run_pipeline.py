@@ -19,10 +19,12 @@ sys.path.insert(0, str(Path(__file__).parent))
 import pandas as pd
 
 from enrichment.digital_enrichment import run_enrichment
-from features.feature_engineering import FEATURE_COLS, build_features
+from features.feature_engineering import FEATURE_COLS_V2 as FEATURE_COLS, build_features
 from features.feature_store import save_features
 from model.feature_selection_iv import select_features_by_iv
+from model.health_engine   import compute_deal_health
 from model.logistic_model import DealScoringModel
+from model.priority_engine import compute_priority
 from model.rating_engine import score_pipeline
 from model.woe_transformer import WoETransformer
 from utils.cache import artifact_exists, load_artifact, save_artifact
@@ -146,6 +148,10 @@ def main(force_enrich: bool = False, force_train: bool = False) -> None:
         scored, X_score_woe, model.coefficients, selected_features
     )
 
+    # ── V2: Deal Health Engine + Priority Engine ───────────────────────────
+    scored = compute_deal_health(scored)
+    scored = compute_priority(scored)
+
     # Step 8: Save results
     output_cols = [
         "opportunity_id", "account", "product", "sales_agent",
@@ -156,6 +162,11 @@ def main(force_enrich: bool = False, force_train: bool = False) -> None:
         "agent_win_rate", "product_win_rate",
         "days_since_engage", "pipeline_velocity",
         "digital_maturity_index",
+        "deal_health_score", "deal_health_status",
+        "priority_score", "priority_tier",
+        "seller_win_rate", "seller_rank_percentile", "seller_pipeline_load",
+        "is_stale_flag", "deal_age_percentile",
+        "product_rank_percentile",
     ]
     available_cols = [c for c in output_cols if c in scored.columns]
     results = scored[available_cols].sort_values("expected_revenue", ascending=False)

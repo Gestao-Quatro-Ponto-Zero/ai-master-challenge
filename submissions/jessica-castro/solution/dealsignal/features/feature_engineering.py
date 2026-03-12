@@ -4,6 +4,11 @@ import numpy as np
 import pandas as pd
 
 from utils.logger import get_logger
+from features.deal_features import compute_deal_features
+from features.seller_features import compute_seller_features
+from features.product_features import compute_product_features
+from features.account_features import compute_account_features
+from features.risk_features import compute_risk_features
 
 logger = get_logger(__name__)
 
@@ -33,6 +38,25 @@ FEATURE_COLS = [
     "digital_maturity_index",
     "digital_presence_score",
     "tech_stack_count",
+]
+
+FEATURE_COLS_V2: list[str] = [
+    "seller_win_rate",
+    "seller_rank_percentile",
+    "seller_close_speed",
+    "seller_product_experience",
+    "seller_pipeline_load",
+    "log_days_since_engage",  # deal_age_percentile excluded (collinear)
+    "log_deal_value",
+    "deal_value_percentile",
+    "is_stale_flag",
+    "product_win_rate",
+    "product_rank_percentile",
+    "product_avg_sales_cycle",
+    "account_size_percentile",
+    "digital_maturity_index",
+    "revenue_per_employee",
+    "company_age_score",
 ]
 
 
@@ -189,6 +213,13 @@ def build_features(
     for col in FEATURE_COLS:
         if col in df.columns:
             df[col] = df[col].fillna(df[col].median() if df[col].notna().any() else 0)
+
+    # ── V2 feature modules ───────────────────────────────────────────────────
+    df = compute_deal_features(df)
+    df = compute_seller_features(df, df[train_mask].copy())
+    df = compute_product_features(df, df[train_mask].copy())
+    df = compute_account_features(df)
+    df = compute_risk_features(df)
 
     logger.info(
         "Feature matrix: %d rows, %d feature cols. Train=%d, Score=%d",

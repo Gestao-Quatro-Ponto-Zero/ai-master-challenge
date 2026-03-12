@@ -22,6 +22,16 @@
 
 
 
+Diagnóstico final:
+
+O AUC 0.624 é um teto de sinal, não um problema de modelo ou pipeline. As features atuais capturam atributos estáticos (quem é o vendedor, qual produto, há quanto tempo o deal está parado), mas não capturam o que realmente separa Won de Lost: atividade de engajamento, progressão no pipeline, e características específicas da oportunidade/conta.
+
+Para elevar o AUC, a prioridade é adicionar:
+
+Engajamento: nº de atividades, emails, calls registrados
+Progressão: velocidade de avanço entre stages
+Histórico da conta: já foi cliente? teve deals anteriores perdidos?
+Interações: seller_win_rate × product_win_rate
 
 
 cd /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal
@@ -30,3 +40,4 @@ python3 run_pipeline.py
 
 cd /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal
 streamlit run app/streamlit_app.py
+

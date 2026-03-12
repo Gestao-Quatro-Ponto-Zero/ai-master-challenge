@@ -39,9 +39,18 @@ class DealScoringModel:
         logger.info("Cross-validated AUC-ROC: %.4f", cv_auc)
         self.cv_auc_ = cv_auc
 
-        # Calibrate on full training set
+        # Calibrate with sigmoid (Platt) + proper CV to avoid overfitting
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.preprocessing import FunctionTransformer
+        base_lr = LogisticRegression(
+            C=best_C,
+            class_weight="balanced",
+            solver="lbfgs",
+            max_iter=1000,
+            random_state=42,
+        )
         self._model = CalibratedClassifierCV(
-            self._base_model, method="isotonic", cv="prefit"
+            base_lr, method="sigmoid", cv=self.cv
         )
         self._model.fit(X_woe, y)
         logger.info("Model calibration complete")

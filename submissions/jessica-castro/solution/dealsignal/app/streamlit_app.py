@@ -186,10 +186,10 @@ _ENGINE_INTERPRETATIONS: dict[str, dict[str, str]] = {
         "moderate": "Produto com conversão na média — sem vantagem competitiva clara.",
         "weak":     "Produto entre os mais fracos do portfólio — considere reforçar o pitch ou mudar o produto.",
     },
-    "Account Strength": {
-        "strong":   "Conta com alta maturidade digital — boa receptividade a soluções tech.",
-        "moderate": "Conta com maturidade digital na média — abordagem padrão.",
-        "weak":     "Conta com baixa maturidade digital — pode precisar de abordagem consultiva.",
+    "Stagnation Risk": {
+        "strong":   "Deal ativo e recente — sem sinais de estagnação.",
+        "moderate": "Deal com algum tempo parado — monitore o engajamento.",
+        "weak":     "Deal parado há muito tempo — risco real de perda por inatividade.",
     },
 }
 
@@ -234,6 +234,10 @@ def build_display_dataframe(scored_df: pd.DataFrame) -> pd.DataFrame:
     # Coluna float para ProgressColumn (nativa do Streamlit)
     out["_win_prob"] = (scored_df["win_probability"].values * 100).round(1)
     out["Rec. Esperada"] = scored_df["expected_revenue"].apply(format_currency).values
+    if "deal_health_score" in scored_df.columns:
+        out["Saúde"] = scored_df["deal_health_status"].values
+    if "priority_tier" in scored_df.columns:
+        out["Prioridade"] = scored_df["priority_tier"].values
     return out
 
 
@@ -271,14 +275,15 @@ def build_signals_for_deal(row: pd.Series, df: pd.DataFrame) -> dict:
 
 def build_top_seller_benchmark(df: pd.DataFrame, min_deals: int = 10) -> dict:
     """Retorna métricas agregadas do melhor vendedor (maior agent_win_rate com min_deals)."""
+    win_rate_col = "seller_win_rate" if "seller_win_rate" in df.columns else "agent_win_rate"
     agg = (
         df.groupby("sales_agent")
         .agg(
             deals       =("sales_agent",      "count"),
-            win_rate    =("agent_win_rate",   "mean"),
-            exp_revenue =("expected_revenue", "mean"),
-            eff_value   =("effective_value",  "mean"),
-            win_prob    =("win_probability",  "mean"),
+            win_rate    =(win_rate_col,        "mean"),
+            exp_revenue =("expected_revenue",  "mean"),
+            eff_value   =("effective_value",   "mean"),
+            win_prob    =("win_probability",   "mean"),
         )
         .reset_index()
     )
@@ -303,7 +308,13 @@ def build_engine_details(row: pd.Series, df: pd.DataFrame, engine_scores: dict) 
     account = row.get("account", "—")
 
     # ── Seller Power ──────────────────────────────────────────────────────────
-    agent_wr    = pd.to_numeric(row.get("agent_win_rate"), errors="coerce")
+    # Prefer V2 seller_win_rate; fall back to V1 agent_win_rate
+    agent_wr    = pd.to_numeric(
+        row.get("seller_win_rate") if "seller_win_rate" in row.index else row.get("agent_win_rate"),
+        errors="coerce",
+    )
+    seller_rank = pd.to_numeric(row.get("seller_rank_percentile"), errors="coerce")
+    seller_load = pd.to_numeric(row.get("seller_pipeline_load"), errors="coerce")
     agent_deals = df[df["sales_agent"] == agent]
     agent_exp   = agent_deals["expected_revenue"].mean() if len(agent_deals) else None
     agent_eff   = agent_deals["effective_value"].mean()  if len(agent_deals) else None
@@ -313,33 +324,36 @@ def build_engine_details(row: pd.Series, df: pd.DataFrame, engine_scores: dict) 
 
     # ── Deal Momentum ─────────────────────────────────────────────────────────
     days_eng = pd.to_numeric(row.get("days_since_engage"), errors="coerce")
-    velocity = pd.to_numeric(row.get("pipeline_velocity"), errors="coerce")
-    p33_days = df["days_since_engage"].quantile(0.33)
-    p66_days = df["days_since_engage"].quantile(0.66)
-    p33_vel  = df["pipeline_velocity"].quantile(0.33)
-    p66_vel  = df["pipeline_velocity"].quantile(0.66)
-    if pd.notna(days_eng) and pd.notna(velocity) and days_eng <= p33_days and velocity <= p33_vel:
+    is_stale = int(row.get("is_stale_flag", 0)) if pd.notna(row.get("is_stale_flag")) else 0
+    if pd.notna(days_eng) and days_eng <= 7:
         momentum_status = "Acelerado"
-    elif pd.notna(days_eng) and pd.notna(velocity) and (days_eng >= p66_days or velocity >= p66_vel):
-        momentum_status = "Lento"
-    else:
+    elif pd.notna(days_eng) and days_eng < 45:
         momentum_status = "Adequado"
+    else:
+        momentum_status = "Lento"
     dm_score = engine_scores.get("Deal Momentum", 50)
 
     # ── Product Performance ───────────────────────────────────────────────────
     prod_wr    = pd.to_numeric(row.get("product_win_rate"), errors="coerce")
+    prod_rank  = pd.to_numeric(row.get("product_rank_percentile"), errors="coerce")
     prod_deals = df[df["product"] == product]
     prod_exp   = prod_deals["expected_revenue"].mean() if len(prod_deals) else None
     pp_score   = engine_scores.get("Product Performance", 50)
 
-    # ── Account Strength ──────────────────────────────────────────────────────
-    dmi           = pd.to_numeric(row.get("digital_maturity_index"), errors="coerce")
-    account_count = len(df[df["account"] == account])
-    as_score      = engine_scores.get("Account Strength", 50)
+    # ── Stagnation Risk ───────────────────────────────────────────────────────
+    age_pct      = pd.to_numeric(row.get("deal_age_percentile"), errors="coerce")
+    pipeline_avg = df["days_since_engage"].mean()
+    sr_score     = engine_scores.get("Stagnation Risk", 50)
 
     return {
         "Seller Power": {
-            
+            "metrics": [
+                ("Vendedor",                  agent),
+                ("Taxa de conversão (V2)",    f"{agent_wr:.0%}" if pd.notna(agent_wr) else "—"),
+                ("Percentil no time",         f"{seller_rank * 100:.0f}º" if pd.notna(seller_rank) else "—"),
+                ("Deals em aberto",           f"{int(seller_load)}" if pd.notna(seller_load) else "—"),
+                ("Posição no time",           _engine_position(sp_score)),
+            ],
             "benchmark":   top,
             "agent_stats": {
                 "name":        agent,
@@ -355,7 +369,8 @@ def build_engine_details(row: pd.Series, df: pd.DataFrame, engine_scores: dict) 
             "metrics": [
                 ("Estágio atual",        row.get("deal_stage", "—")),
                 ("Sem contato há",       f"{int(days_eng)} dias" if pd.notna(days_eng) else "—"),
-                ("Velocidade do Deal",   momentum_status),
+                ("Ritmo do Deal",        momentum_status),
+                ("Deal parado",          "⚠️ Sim" if is_stale else "✅ Não"),
                 ("Posição no pipeline",  _engine_position(dm_score)),
                 ("Data de engajamento",  str(row.get("engage_date", "—"))[:10]),
             ],
@@ -365,21 +380,22 @@ def build_engine_details(row: pd.Series, df: pd.DataFrame, engine_scores: dict) 
             "metrics": [
                 ("Produto",                     product),
                 ("Taxa de conversão histórica", f"{prod_wr:.0%}" if pd.notna(prod_wr) else "—"),
+                ("Ranking do produto",          f"{prod_rank * 100:.0f}º percentil" if pd.notna(prod_rank) else "—"),
                 ("Posição entre os produtos",   _engine_position(pp_score)),
                 ("Deals com este produto",      str(len(prod_deals))),
                 ("Receita esperada média",      format_currency(prod_exp) if prod_exp else "—"),
             ],
             "interpretation": _engine_interpretation("Product Performance", pp_score),
         },
-        "Account Strength": {
+        "Stagnation Risk": {
             "metrics": [
-                ("Conta",                   account),
-                ("Maturidade digital",      f"{dmi:.2f}" if pd.notna(dmi) else "—"),
-                ("Posição entre as contas", _engine_position(as_score)),
-                ("Escritório",              row.get("office", "—")),
-                ("Deals com a conta",       str(account_count)),
+                ("Dias no pipeline",          f"{int(days_eng)} dias" if pd.notna(days_eng) else "—"),
+                ("Percentil de idade",        f"{age_pct * 100:.0f}º percentil" if pd.notna(age_pct) else "—"),
+                ("Deal parado (flag)",        "⚠️ Sim" if is_stale else "✅ Não"),
+                ("Média do pipeline",         f"{pipeline_avg:.0f} dias"),
+                ("Posição (saúde da idade)",  _engine_position(sr_score)),
             ],
-            "interpretation": _engine_interpretation("Account Strength", as_score),
+            "interpretation": _engine_interpretation("Stagnation Risk", sr_score),
         },
     }
 
@@ -463,6 +479,15 @@ def render_deal_header(row: pd.Series) -> None:
         unsafe_allow_html=True,
     )
 
+    health_score  = row.get("deal_health_score",  None)
+    health_status = row.get("deal_health_status", None)
+    priority_tier = row.get("priority_tier",       None)
+
+    if health_score is not None and pd.notna(health_score):
+        st.metric("Saúde do Deal", f"{health_score:.0f}", delta=str(health_status))
+    if priority_tier is not None and str(priority_tier) != "nan":
+        st.metric("Prioridade", str(priority_tier))
+
 
 def render_positive_signals(signal_payload: dict) -> None:
     st.markdown("**✅ Sinais Positivos**")
@@ -486,8 +511,8 @@ _ENGINE_LABELS_PT: dict[str, str] = {
     "Seller Power":        "Força do Vendedor",
     "Deal Momentum":       "Momento do Deal",
     "Product Performance": "Desempenho do Produto",
-    "Account Strength":    "Solidez da Conta",
     "Deal Size":           "Tamanho do Deal",
+    "Stagnation Risk": "Risco de Estagnação",
 }
 
 
@@ -571,12 +596,26 @@ def render_rating_engines(signal_payload: dict) -> None:
                     st.info(details["interpretation"])
 
 
+def render_deal_explanation(row: pd.Series) -> None:
+    """Natural language explanation combining win probability, health and value."""
+    prob   = float(row.get("win_probability", 0))
+    health = str(row.get("deal_health_status", "—"))
+    days   = row.get("days_since_engage", None)
+    value  = row.get("effective_value", None)
+    stale  = int(row.get("is_stale_flag", 0))
+
+    prob_text  = "alta probabilidade histórica" if prob >= 0.65 else "probabilidade moderada"
+    value_text = f"impacto financeiro de {format_currency(value)}" if value else ""
+    stale_text = f", parado há **{int(days)} dias**" if stale and days else ""
+
+    parts = [p for p in [prob_text, value_text] if p]
+    st.info(f"Deal com {', '.join(parts)}{stale_text}. Saúde atual: **{health}**.")
+
+
 def render_deal_insight_panel(row: pd.Series, signal_payload: dict) -> None:
     st.markdown("#### Análise do Deal")
     render_deal_header(row)
-    st.divider()
-    render_positive_signals(signal_payload)
-    render_risk_signals(signal_payload)
+    render_deal_explanation(row)
     st.divider()
     render_rating_engines(signal_payload)
 

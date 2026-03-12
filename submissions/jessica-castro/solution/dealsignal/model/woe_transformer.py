@@ -12,9 +12,10 @@ EPSILON = 1e-6
 
 
 class WoETransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, n_bins: int = 10, min_bin_size: float = 0.05):
+    def __init__(self, n_bins: int = 10, min_bin_size: float = 0.05, woe_cap: float = 3.0):
         self.n_bins = n_bins
         self.min_bin_size = min_bin_size
+        self.woe_cap = woe_cap
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> "WoETransformer":
         self.feature_names_in_ = list(X.columns)
@@ -66,7 +67,7 @@ class WoETransformer(BaseEstimator, TransformerMixin):
 
             stats["event_rate"] = (stats["events"] + EPSILON) / total_events
             stats["non_event_rate"] = (stats["non_events"] + EPSILON) / total_non_events
-            stats["woe"] = np.log(stats["event_rate"] / stats["non_event_rate"])
+            stats["woe"] = np.log(stats["event_rate"] / stats["non_event_rate"]).clip(-self.woe_cap, self.woe_cap)
             stats["iv_contrib"] = (stats["event_rate"] - stats["non_event_rate"]) * stats["woe"]
 
             self.woe_maps_[col] = dict(zip(stats["bin"], stats["woe"]))
@@ -91,12 +92,15 @@ class WoETransformer(BaseEstimator, TransformerMixin):
                 result[col] = 0.0
                 continue
 
-            # Clip to training range
-            series = series.clip(lower=bins[0], upper=bins[-1])
+            # Track out-of-training-range values before clipping — they get WoE=0 (neutral)
+            out_of_range = (series < bins[0]) | (series > bins[-1])
+
+            # Clip to training range for binning
+            series_clipped = series.clip(lower=bins[0], upper=bins[-1])
 
             # Assign bins
             binned = pd.cut(
-                series,
+                series_clipped,
                 bins=bins,
                 include_lowest=True,
                 labels=False,
@@ -108,6 +112,9 @@ class WoETransformer(BaseEstimator, TransformerMixin):
             for i, interval in enumerate(bin_intervals):
                 mask = binned == i
                 woe_values[mask] = self.woe_maps_[col][interval]
+
+            # Neutral WoE for out-of-range values (no extrapolation)
+            woe_values[out_of_range] = 0.0
 
             result[col] = woe_values
         return result
