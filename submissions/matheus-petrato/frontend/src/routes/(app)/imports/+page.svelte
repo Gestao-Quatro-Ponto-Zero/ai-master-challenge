@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { UploadCloud, FileText, CheckCircle2, Clock, AlertTriangle, ArrowUpRight } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { api } from '$lib/services/api';
 
-	const uploads = [
-		{ name: 'sales_pipeline.csv', size: '2.1 MB', status: 'processed', updated: 'Hoje, 09:12' },
-		{ name: 'accounts.csv', size: '420 KB', status: 'processing', updated: 'Hoje, 08:45' },
-		{ name: 'products.csv', size: '180 KB', status: 'error', updated: 'Ontem, 18:32' }
-	];
+	let uploads = $state<any[]>([]);
+	let uploading = $state(false);
+	let errorMessage = $state('');
+	let successMessage = $state('');
 
 	const statusBadge = (status: string) => {
 		if (status === 'processed') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
@@ -18,6 +19,73 @@
 
 	const statusIcon = (status: string) =>
 		status === 'processed' ? CheckCircle2 : status === 'processing' ? Clock : AlertTriangle;
+
+	const normalizeStatus = (status: string) => {
+		if (status === 'success') return 'processed';
+		if (status === 'failed') return 'error';
+		return status;
+	};
+
+	const formatSize = (value: any) => {
+		if (typeof value !== 'number') return value ?? '-';
+		if (value > 1024 * 1024) return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+		if (value > 1024) return `${Math.round(value / 1024)} KB`;
+		return `${value} B`;
+	};
+
+	const loadImports = async () => {
+		try {
+			const data = await api.imports.list();
+			uploads = (data || []).map((item: any) => ({
+				id: item.id ?? item.ID,
+				name: item.file ?? item.File ?? '-',
+				size: formatSize(item.size ?? item.Size),
+				status: normalizeStatus(item.status ?? item.Status ?? 'processing'),
+				updated: item.updated_at ?? item.updatedAt ?? '-'
+			}));
+		} catch (err) {
+			console.warn('Falha ao carregar imports:', err);
+		}
+	};
+
+	const handleFileInput = async (event: Event) => {
+		const input = event.target as HTMLInputElement;
+		if (!input.files || input.files.length === 0) return;
+		const file = input.files[0];
+		uploading = true;
+		errorMessage = '';
+		successMessage = '';
+		try {
+			await api.imports.upload(file);
+			successMessage = 'Upload iniciado com sucesso.';
+			await loadImports();
+		} catch (err: any) {
+			errorMessage = err.message || 'Falha ao enviar arquivo.';
+		} finally {
+			uploading = false;
+			input.value = '';
+		}
+	};
+
+	const handleReprocess = async (id: string) => {
+		try {
+			await api.imports.reprocess(id);
+			await loadImports();
+		} catch (err) {
+			console.warn('Falha ao reprocessar:', err);
+		}
+	};
+
+	const handleRemove = async (id: string) => {
+		try {
+			await api.imports.remove(id);
+			await loadImports();
+		} catch (err) {
+			console.warn('Falha ao remover:', err);
+		}
+	};
+
+	onMount(loadImports);
 </script>
 
 <div class="flex-1 flex flex-col h-full bg-background text-foreground">
@@ -46,9 +114,16 @@
 					</div>
 					<div class="text-sm text-foreground font-semibold">Arraste e solte seus CSVs aqui</div>
 					<div class="text-xs text-muted-foreground">Formatos aceitos: sales_pipeline, accounts, products, sales_teams.</div>
-					<button class="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm">
-						Selecionar arquivo
-					</button>
+					<label class="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm cursor-pointer">
+						{uploading ? 'Enviando...' : 'Selecionar arquivo'}
+						<input type="file" accept=".csv" class="hidden" onchange={handleFileInput} />
+					</label>
+					{#if errorMessage}
+						<div class="text-xs text-red-600">{errorMessage}</div>
+					{/if}
+					{#if successMessage}
+						<div class="text-xs text-emerald-600">{successMessage}</div>
+					{/if}
 				</div>
 			</div>
 
@@ -86,8 +161,8 @@
 									<td class="py-3 text-muted-foreground">{item.updated}</td>
 									<td class="py-3 text-xs text-primary space-x-3">
 										<button>Mapear</button>
-										<button>Reprocessar</button>
-										<button class="text-red-600">Remover</button>
+										<button onclick={() => handleReprocess(item.id)}>Reprocessar</button>
+										<button class="text-red-600" onclick={() => handleRemove(item.id)}>Remover</button>
 									</td>
 								</tr>
 							{/each}

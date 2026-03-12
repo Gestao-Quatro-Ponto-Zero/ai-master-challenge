@@ -203,7 +203,29 @@ export const api = {
         team: () => apiFetch('/stats/team')
     },
     imports: {
-        list: () => apiFetch('/imports')
+        list: () => apiFetch('/imports'),
+        upload: async (file: File) => {
+            const token = getStoredToken();
+            const form = new FormData();
+            form.append('file', file);
+            const response = await fetch(`${API_BASE_URL}/imports`, {
+                method: 'POST',
+                headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+                body: form
+            });
+            if (response.status === 401) {
+                clearStoredAuth();
+                window.location.href = '/login';
+                throw new Error('Sessão expirada');
+            }
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
+                throw new Error(error.message || 'Erro na requisição');
+            }
+            return response.json();
+        },
+        reprocess: (id: string) => apiFetch(`/imports/${id}/reprocess`, { method: 'POST' }),
+        remove: (id: string) => apiFetch(`/imports/${id}`, { method: 'DELETE' })
     },
     chat: {
         history: (sessionId?: string) => {
