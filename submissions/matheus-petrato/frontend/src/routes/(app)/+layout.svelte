@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/state';
-	import { role } from '$lib/stores/role';
-	import Sidebar from '$lib/components/blocks/Sidebar.svelte';
-	import { LayoutDashboard, MessageSquare, Sparkles, Bell, Database, UploadCloud, Settings } from 'lucide-svelte';
+import { page } from '$app/state';
+import { role } from '$lib/stores/role';
+import Sidebar from '$lib/components/blocks/Sidebar.svelte';
+import { LayoutDashboard, MessageSquare, Sparkles, Bell, Database, UploadCloud } from 'lucide-svelte';
 	let { children } = $props();
 
 	const currentPath = $derived(page.url.pathname);
@@ -47,10 +47,7 @@
 					Bases
 				</a>
 			{/if}
-			<a href="/settings" class="flex flex-col items-center justify-center min-w-[64px] text-xs {isActive('/settings') ? 'text-primary' : 'text-white/70'}">
-				<Settings class="w-4 h-4 mb-1" />
-				Config
-			</a>
+			
 		</div>
 	</nav>
 </div>

@@ -1,11 +1,15 @@
 // Re-export constants and types
-export const API_BASE_URL = 'http://localhost:8080';
+export const API_BASE_URL = 'http://localhost:8080/api';
 
 // Types
 export interface User {
     id: string;
     email: string;
     name: string;
+    role?: 'seller' | 'manager';
+    region?: string;
+    team_id?: string;
+    manager_id?: string;
 }
 
 export interface AuthResponse {
@@ -19,6 +23,21 @@ export interface DataSource {
     type: string;
     config: string;
     is_active: boolean;
+}
+
+export interface Deal {
+    id: string;
+    name: string;
+    score: number;
+    stage?: string;
+    days?: number;
+    value?: number | string;
+    trend?: number | string;
+    status?: string;
+    action?: string;
+    owner?: string;
+    factors?: Array<{ factor: string; impact: number; sentiment: string; detail?: string }>;
+    next_actions?: string[];
 }
 
 // Stores (Svelte 5 runed store approach)
@@ -42,6 +61,9 @@ export function getStoredUser(): User | null {
 export function setStoredUser(user: User) {
     if (typeof window !== 'undefined') {
         localStorage.setItem('g4_compass_user', JSON.stringify(user));
+        if (user?.role) {
+            localStorage.setItem('g4_compass_role', user.role);
+        }
     }
 }
 
@@ -49,6 +71,7 @@ export function clearStoredAuth() {
     if (typeof window !== 'undefined') {
         localStorage.removeItem('g4_compass_token');
         localStorage.removeItem('g4_compass_user');
+        localStorage.removeItem('g4_compass_role');
     }
 }
 
@@ -94,13 +117,17 @@ const mapDataSource = (ds: any): DataSource => ({
 const mapUser = (u: any): User => ({
     id: u.ID || u.id,
     email: u.Email || u.email,
-    name: u.Name || u.name
+    name: u.Name || u.name,
+    role: u.Role || u.role,
+    region: u.Region || u.region,
+    team_id: u.TeamID || u.team_id,
+    manager_id: u.ManagerID || u.manager_id
 });
 
 export const api = {
     auth: {
         login: async (credentials: any) => {
-            const res = await apiFetch('/api/auth/login', {
+            const res = await apiFetch('/auth/login', {
                 method: 'POST',
                 body: JSON.stringify(credentials)
             });
@@ -110,7 +137,7 @@ export const api = {
             };
         },
         register: async (data: any) => {
-            const res = await apiFetch('/api/auth/register', {
+            const res = await apiFetch('/auth/register', {
                 method: 'POST',
                 body: JSON.stringify(data)
             });
@@ -122,25 +149,25 @@ export const api = {
     },
     datasources: {
         list: async () => {
-            const list = await apiFetch('/api/v1/datasources');
+            const list = await apiFetch('/datasources');
             return Array.isArray(list) ? list.map(mapDataSource) : [];
         },
         create: async (data: Partial<DataSource>) => {
-            const res = await apiFetch('/api/v1/datasources', {
+            const res = await apiFetch('/datasources', {
                 method: 'POST',
                 body: JSON.stringify(data)
             });
             return mapDataSource(res);
         },
         update: async (id: string, data: Partial<DataSource>) => {
-            const res = await apiFetch(`/api/v1/datasources/${id}`, {
+            const res = await apiFetch(`/datasources/${id}`, {
                 method: 'PATCH',
                 body: JSON.stringify(data)
             });
             return mapDataSource(res);
         },
         scan: async (id: string) => {
-            const res = await apiFetch(`/api/v1/datasources/${id}/scan`, {
+            const res = await apiFetch(`/datasources/${id}/scan`, {
                 method: 'POST'
             });
             const draftRaw = res.draft || res.Draft || {};
@@ -153,7 +180,35 @@ export const api = {
             };
         }
     },
+    briefing: {
+        get: () => apiFetch('/briefing')
+    },
+    deals: {
+        list: (params: Record<string, string | number | undefined> = {}) => {
+            const query = new URLSearchParams();
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined && value !== null && value !== '') {
+                    query.set(key, String(value));
+                }
+            });
+            const suffix = query.toString() ? `?${query.toString()}` : '';
+            return apiFetch(`/deals${suffix}`);
+        },
+        get: (id: string) => apiFetch(`/deals/${id}`)
+    },
+    alerts: {
+        list: () => apiFetch('/alerts')
+    },
+    stats: {
+        team: () => apiFetch('/stats/team')
+    },
+    imports: {
+        list: () => apiFetch('/imports')
+    },
     chat: {
-        history: () => apiFetch('/api/v1/chat/history') 
+        history: (sessionId?: string) => {
+            const suffix = sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : '';
+            return apiFetch(`/chat/history${suffix}`);
+        }
     }
 };
