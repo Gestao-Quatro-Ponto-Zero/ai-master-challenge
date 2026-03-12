@@ -162,6 +162,45 @@ def _engine_label(score: int) -> str:
     return "🔴 Fraco"
 
 
+def _engine_position(score: int) -> str:
+    if score >= 70:
+        return "Entre os mais fortes"
+    if score >= 45:
+        return "Na faixa intermediária"
+    return "Entre os mais fracos"
+
+
+_ENGINE_INTERPRETATIONS: dict[str, dict[str, str]] = {
+    "Seller Power": {
+        "strong":   "Vendedor entre os melhores do time — bom histórico de fechamentos.",
+        "moderate": "Vendedor com desempenho na média — acompanhe de perto.",
+        "weak":     "Vendedor abaixo da média do time — deal pode precisar de suporte adicional.",
+    },
+    "Deal Momentum": {
+        "strong":   "Deal avançando rapidamente — alta chance de fechamento no curto prazo.",
+        "moderate": "Deal em ritmo normal — acompanhe para manter o momentum.",
+        "weak":     "Deal estagnado no pipeline — recomendado acompanhamento ativo para reativar engajamento.",
+    },
+    "Product Performance": {
+        "strong":   "Produto entre os melhores do portfólio — forte histórico de conversão.",
+        "moderate": "Produto com conversão na média — sem vantagem competitiva clara.",
+        "weak":     "Produto entre os mais fracos do portfólio — considere reforçar o pitch ou mudar o produto.",
+    },
+    "Account Strength": {
+        "strong":   "Conta com alta maturidade digital — boa receptividade a soluções tech.",
+        "moderate": "Conta com maturidade digital na média — abordagem padrão.",
+        "weak":     "Conta com baixa maturidade digital — pode precisar de abordagem consultiva.",
+    },
+}
+
+
+def _engine_interpretation(engine: str, score: int) -> str:
+    texts = _ENGINE_INTERPRETATIONS.get(engine, {})
+    if score >= 70:
+        return texts.get("strong", "")
+    if score >= 45:
+        return texts.get("moderate", "")
+    return texts.get("weak", "")
 
 
 _BADGE_STYLE = (
@@ -220,11 +259,128 @@ def build_signals_for_deal(row: pd.Series, df: pd.DataFrame) -> dict:
         elif val < -0.05:
             risk_signals.append(entry)
 
+    engine_scores = compute_engine_scores(row, df)
     return {
         "positive_signals": positive_signals[:3],
         "risk_signals":     risk_signals[:3],
-        "rating_engines":   compute_engine_scores(row, df),
+        "rating_engines":   engine_scores,
         "model_factors":    factors,
+        "engine_details":   build_engine_details(row, df, engine_scores),
+    }
+
+
+def build_top_seller_benchmark(df: pd.DataFrame, min_deals: int = 10) -> dict:
+    """Retorna métricas agregadas do melhor vendedor (maior agent_win_rate com min_deals)."""
+    agg = (
+        df.groupby("sales_agent")
+        .agg(
+            deals       =("sales_agent",      "count"),
+            win_rate    =("agent_win_rate",   "mean"),
+            exp_revenue =("expected_revenue", "mean"),
+            eff_value   =("effective_value",  "mean"),
+            win_prob    =("win_probability",  "mean"),
+        )
+        .reset_index()
+    )
+    candidates = agg[agg["deals"] >= min_deals]
+    if candidates.empty:
+        return {}
+    best = candidates.loc[candidates["win_rate"].idxmax()]
+    return {
+        "name":        best["sales_agent"],
+        "deals":       int(best["deals"]),
+        "win_rate":    best["win_rate"],
+        "exp_revenue": best["exp_revenue"],
+        "eff_value":   best["eff_value"],
+        "win_prob":    best["win_prob"],
+    }
+
+
+def build_engine_details(row: pd.Series, df: pd.DataFrame, engine_scores: dict) -> dict:
+    """Métricas explicativas por motor — interpretações derivadas do score relativo."""
+    agent   = row.get("sales_agent", "—")
+    product = row.get("product", "—")
+    account = row.get("account", "—")
+
+    # ── Seller Power ──────────────────────────────────────────────────────────
+    agent_wr    = pd.to_numeric(row.get("agent_win_rate"), errors="coerce")
+    agent_deals = df[df["sales_agent"] == agent]
+    agent_exp   = agent_deals["expected_revenue"].mean() if len(agent_deals) else None
+    agent_eff   = agent_deals["effective_value"].mean()  if len(agent_deals) else None
+    agent_wp    = agent_deals["win_probability"].mean()  if len(agent_deals) else None
+    top         = build_top_seller_benchmark(df)
+    sp_score    = engine_scores.get("Seller Power", 50)
+
+    # ── Deal Momentum ─────────────────────────────────────────────────────────
+    days_eng = pd.to_numeric(row.get("days_since_engage"), errors="coerce")
+    velocity = pd.to_numeric(row.get("pipeline_velocity"), errors="coerce")
+    p33_days = df["days_since_engage"].quantile(0.33)
+    p66_days = df["days_since_engage"].quantile(0.66)
+    p33_vel  = df["pipeline_velocity"].quantile(0.33)
+    p66_vel  = df["pipeline_velocity"].quantile(0.66)
+    if pd.notna(days_eng) and pd.notna(velocity) and days_eng <= p33_days and velocity <= p33_vel:
+        momentum_status = "Acelerado"
+    elif pd.notna(days_eng) and pd.notna(velocity) and (days_eng >= p66_days or velocity >= p66_vel):
+        momentum_status = "Lento"
+    else:
+        momentum_status = "Adequado"
+    dm_score = engine_scores.get("Deal Momentum", 50)
+
+    # ── Product Performance ───────────────────────────────────────────────────
+    prod_wr    = pd.to_numeric(row.get("product_win_rate"), errors="coerce")
+    prod_deals = df[df["product"] == product]
+    prod_exp   = prod_deals["expected_revenue"].mean() if len(prod_deals) else None
+    pp_score   = engine_scores.get("Product Performance", 50)
+
+    # ── Account Strength ──────────────────────────────────────────────────────
+    dmi           = pd.to_numeric(row.get("digital_maturity_index"), errors="coerce")
+    account_count = len(df[df["account"] == account])
+    as_score      = engine_scores.get("Account Strength", 50)
+
+    return {
+        "Seller Power": {
+            
+            "benchmark":   top,
+            "agent_stats": {
+                "name":        agent,
+                "deals":       len(agent_deals),
+                "win_rate":    agent_wr,
+                "exp_revenue": agent_exp,
+                "eff_value":   agent_eff,
+                "win_prob":    agent_wp,
+            },
+            "interpretation": _engine_interpretation("Seller Power", sp_score),
+        },
+        "Deal Momentum": {
+            "metrics": [
+                ("Estágio atual",        row.get("deal_stage", "—")),
+                ("Sem contato há",       f"{int(days_eng)} dias" if pd.notna(days_eng) else "—"),
+                ("Velocidade do Deal",   momentum_status),
+                ("Posição no pipeline",  _engine_position(dm_score)),
+                ("Data de engajamento",  str(row.get("engage_date", "—"))[:10]),
+            ],
+            "interpretation": _engine_interpretation("Deal Momentum", dm_score),
+        },
+        "Product Performance": {
+            "metrics": [
+                ("Produto",                     product),
+                ("Taxa de conversão histórica", f"{prod_wr:.0%}" if pd.notna(prod_wr) else "—"),
+                ("Posição entre os produtos",   _engine_position(pp_score)),
+                ("Deals com este produto",      str(len(prod_deals))),
+                ("Receita esperada média",      format_currency(prod_exp) if prod_exp else "—"),
+            ],
+            "interpretation": _engine_interpretation("Product Performance", pp_score),
+        },
+        "Account Strength": {
+            "metrics": [
+                ("Conta",                   account),
+                ("Maturidade digital",      f"{dmi:.2f}" if pd.notna(dmi) else "—"),
+                ("Posição entre as contas", _engine_position(as_score)),
+                ("Escritório",              row.get("office", "—")),
+                ("Deals com a conta",       str(account_count)),
+            ],
+            "interpretation": _engine_interpretation("Account Strength", as_score),
+        },
     }
 
 
@@ -335,34 +491,84 @@ _ENGINE_LABELS_PT: dict[str, str] = {
 }
 
 
+def _render_seller_benchmark(current: dict, top: dict) -> None:
+    """Tabela HTML comparando vendedor atual vs melhor vendedor do time."""
+    def _fmt_wr(v):
+        return f"{v:.0%}" if v is not None and pd.notna(v) else "—"
+    def _fmt_cur(v):
+        return format_currency(v) if v is not None and pd.notna(v) else "—"
+    def _fmt_wp(v):
+        return f"{v:.0%}" if v is not None and pd.notna(v) else "—"
+
+    is_top  = current["name"] == top["name"]
+    cur_badge = " 🏆" if is_top else ""
+
+    rows = [
+        ("Vendedor",               current["name"] + cur_badge,          top["name"] + " 🏆"),
+        ("Deals no pipeline",      str(current["deals"]),                  str(top["deals"])),
+        ("Taxa de conversão",      _fmt_wr(current["win_rate"]),           _fmt_wr(top["win_rate"])),
+        ("Expected Revenue médio", _fmt_cur(current["exp_revenue"]),       _fmt_cur(top["exp_revenue"])),
+        ("Valor efetivo médio",    _fmt_cur(current["eff_value"]),         _fmt_cur(top["eff_value"])),
+        ("Win Probability média",  _fmt_wp(current["win_prob"]),           _fmt_wp(top["win_prob"])),
+    ]
+
+    html = (
+        "<table style='width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px;'>"
+        "<thead><tr>"
+        "<th style='text-align:left;padding:4px 6px;border-bottom:2px solid #ddd;color:#555;'>Métrica</th>"
+        "<th style='text-align:center;padding:4px 6px;border-bottom:2px solid #ddd;color:#1976D2;'>Vendedor Atual</th>"
+        "<th style='text-align:center;padding:4px 6px;border-bottom:2px solid #ddd;color:#388E3C;'>🏆 Melhor Vendedor</th>"
+        "</tr></thead><tbody>"
+    )
+    for metric, cur_val, top_val in rows:
+        html += (
+            f"<tr>"
+            f"<td style='padding:4px 6px;border-bottom:1px solid #f0f0f0;color:#444;'>{metric}</td>"
+            f"<td style='padding:4px 6px;border-bottom:1px solid #f0f0f0;text-align:center;font-weight:600;color:#1976D2;'>{cur_val}</td>"
+            f"<td style='padding:4px 6px;border-bottom:1px solid #f0f0f0;text-align:center;font-weight:600;color:#388E3C;'>{top_val}</td>"
+            f"</tr>"
+        )
+    html += "</tbody></table>"
+    st.markdown(html, unsafe_allow_html=True)
+
+
 def render_rating_engines(signal_payload: dict) -> None:
-    _LABEL_COLOR = {"🟢 Forte": "#4CAF50", "🟡 Moderado": "#FF9800", "🔴 Fraco": "#F44336"}
-    _LABEL_TEXT  = {"🟢 Forte": "Forte",   "🟡 Moderado": "Moderado", "🔴 Fraco": "Fraco"}
-    rows_html = ""
+    _LABEL_COLOR   = {"🟢 Forte": "#4CAF50", "🟡 Moderado": "#FF9800", "🔴 Fraco": "#F44336"}
+    _LABEL_TEXT    = {"🟢 Forte": "Forte",   "🟡 Moderado": "Moderado", "🔴 Fraco": "Fraco"}
+    engine_details = signal_payload.get("engine_details", {})
+    st.markdown("**⚡ Motores de Rating**")
     for engine, score in signal_payload["rating_engines"].items():
         label   = _engine_label(score)
         name_pt = _ENGINE_LABELS_PT.get(engine, engine)
         color   = _LABEL_COLOR.get(label, "#888")
         text    = _LABEL_TEXT.get(label, label)
-        rows_html += (
-            f"<div style='margin-bottom:12px;'>"
-            # linha 1: nome + pill badge
-            f"<div style='display:flex; align-items:center; gap:6px; margin-bottom:5px;'>"
-            f"<span style='font-size:14px; font-weight:400; color:#333;'>{name_pt}</span>"
-            f"<span style='font-size:10px; font-weight:600; color:white; background:{color}; "
-            f"padding:1px 7px; border-radius:10px; line-height:16px;'>{text}</span>"
+        st.markdown(
+            f"<div style='margin-bottom:2px;'>"
+            f"<div style='display:flex;align-items:center;gap:6px;margin-bottom:5px;'>"
+            f"<span style='font-size:12px;font-weight:600;color:#333;'>{name_pt}</span>"
+            f"<span style='font-size:10px;font-weight:600;color:white;background:{color};"
+            f"padding:1px 7px;border-radius:10px;line-height:16px;'>{text}</span>"
             f"</div>"
-            # linha 2: barra (60% da largura) + score
-            f"<div style='display:flex; align-items:center; gap:8px;'>"
-            f"<div style='width:60%; background:#e0e0e0; border-radius:3px; height:5px; flex-shrink:0;'>"
-            f"<div style='width:{score}%; background:{color}; height:5px; border-radius:3px;'></div>"
+            f"<div style='display:flex;align-items:center;gap:8px;'>"
+            f"<div style='width:70%;background:#e0e0e0;border-radius:3px;height:5px;flex-shrink:0;'>"
+            f"<div style='width:{score}%;background:{color};height:5px;border-radius:3px;'></div>"
             f"</div>"
-            f"<span style='font-size:14px; color:{color};'>{score}</span>"
-            f"</div>"
-            f"</div>"
+            f"<span style='font-size:12px;font-weight:700;color:{color};'>{score}</span>"
+            f"</div></div>",
+            unsafe_allow_html=True,
         )
-    st.markdown("**⚡ Motores de Rating**")
-    st.markdown(rows_html, unsafe_allow_html=True)
+        details = engine_details.get(engine, {})
+        if details:
+            with st.expander("Ver detalhes", expanded=False):
+                if engine == "Seller Power":
+                    benchmark   = details.get("benchmark", {})
+                    agent_stats = details.get("agent_stats", {})
+                    if benchmark and agent_stats:
+                        _render_seller_benchmark(agent_stats, benchmark)
+                for k, v in details.get("metrics", []):
+                    st.markdown(f"**{k}:** {v}")
+                if details.get("interpretation"):
+                    st.info(details["interpretation"])
 
 
 def render_deal_insight_panel(row: pd.Series, signal_payload: dict) -> None:
@@ -377,7 +583,9 @@ def render_deal_insight_panel(row: pd.Series, signal_payload: dict) -> None:
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 def main():
-    st.title("DealSignal")
+    logo_path = ROOT / "assets" / "dealsignal_logo.png"
+    if logo_path.exists():
+        st.image(str(logo_path), width=260)
     st.caption("Priorização inteligente de oportunidades com base em probabilidade de fechamento e receita esperada")
 
     df = load_results()
@@ -438,6 +646,19 @@ def main():
         )
         st.button("Limpar Filtros", on_click=_reset_filters, use_container_width=True)
 
+        st.markdown("**Escala de Rating**")
+        rows = "".join(
+            f"<tr>"
+            f"<td style='padding:3px 6px;'>{_rating_badge(r)}</td>"
+            f"<td style='padding:3px 6px; font-size:12px; color:#555;'>{RATING_RANGES[r]}</td>"
+            f"</tr>"
+            for r in RATING_ORDER
+        )
+        st.markdown(
+            f"<table style='border-collapse:collapse; width:100%;'>{rows}</table>",
+            unsafe_allow_html=True,
+        )
+
         st.divider()
         st.markdown("**Exportar Relatório**")
         dl_col1, dl_col2 = st.columns(2)
@@ -454,27 +675,6 @@ def main():
             file_name=make_pdf_filename(active_filters),
             mime="application/pdf",
             use_container_width=True,
-        )
-
-        st.divider()
-        st.caption("DealSignal v1.0")
-        if metadata:
-            st.caption(f"AUC do Modelo: {metadata.get('cv_auc', '—')}")
-            st.caption(f"Variáveis: {metadata.get('n_features', '—')}")
-            st.caption(f"Treinado com: {metadata.get('n_train', '—')} deals")
-
-        st.divider()
-        st.markdown("**Escala de Rating**")
-        rows = "".join(
-            f"<tr>"
-            f"<td style='padding:3px 6px;'>{_rating_badge(r)}</td>"
-            f"<td style='padding:3px 6px; font-size:12px; color:#555;'>{RATING_RANGES[r]}</td>"
-            f"</tr>"
-            for r in RATING_ORDER
-        )
-        st.markdown(
-            f"<table style='border-collapse:collapse; width:100%;'>{rows}</table>",
-            unsafe_allow_html=True,
         )
 
     # ── KPIs ──────────────────────────────────────────────────────────────────

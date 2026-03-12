@@ -22,9 +22,6 @@
 
 
 
-cd submissions/jessica-castro/dealsignal
-python3 run_pipeline.py --force-train
-streamlit run app/streamlit_app.py
 
 
 cd /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal
