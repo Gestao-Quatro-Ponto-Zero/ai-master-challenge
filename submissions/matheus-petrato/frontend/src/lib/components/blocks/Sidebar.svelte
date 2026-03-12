@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { role } from '$lib/stores/role';
-	import { LayoutDashboard, Settings, MessageSquare, Bell, FileText, Sparkles, Database } from 'lucide-svelte';
+	import { LayoutDashboard, Settings, MessageSquare, Bell, FileText, Sparkles, Database, UploadCloud } from 'lucide-svelte';
 
 	const currentPath = $derived(page.url.pathname);
 	const isActive = (path: string) => {
@@ -50,6 +50,10 @@
 				<a href="/reports" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/reports') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
 					<Database class="w-4 h-4 {isActive('/reports') ? 'text-primary' : ''}" />
 					Relatorios
+				</a>
+				<a href="/imports" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/imports') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+					<UploadCloud class="w-4 h-4 {isActive('/imports') ? 'text-primary' : ''}" />
+					Bases (CSV)
 				</a>
 			{/if}
 		</div>
