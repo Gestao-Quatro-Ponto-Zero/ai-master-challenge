@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sales_copilot_db
+    environment:
+      POSTGRES_DB: compass
+      POSTGRES_USER: compass
+      POSTGRES_PASSWORD: compass
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./scripts/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: sales_copilot_backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://compass:compass@db:5432/compass?sslmode=disable
+      - PORT=8080
+      - MERCURY_API_KEY=${MERCURY_API_KEY}
+      - MERCURY_MODEL=${MERCURY_MODEL:-mercury-2}
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
