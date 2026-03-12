@@ -18,7 +18,7 @@
 
 </script>
 
-<aside class="w-72 border-r border-sidebar-border bg-sidebar text-sidebar-foreground h-screen flex flex-col">
+<aside class="w-72 border-r border-sidebar-border bg-sidebar text-sidebar-foreground h-screen flex-col hidden md:flex">
 	<div class="h-16 flex items-center px-6 border-b border-sidebar-border">
 		<img src="/logo-full.svg" alt="G4 Compass" class="h-7 w-auto" />
 	</div>

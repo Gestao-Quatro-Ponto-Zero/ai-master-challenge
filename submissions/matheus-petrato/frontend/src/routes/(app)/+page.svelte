@@ -234,7 +234,7 @@
 		</div>
 	{:else}
 		<!-- Chat History Area -->
-		<div class="flex-1 overflow-y-auto w-full pt-16 pb-32 px-4 flex flex-col scroll-smooth">
+		<div class="flex-1 overflow-y-auto w-full pt-16 pb-40 md:pb-32 px-4 flex flex-col scroll-smooth">
 			<div class="max-w-3xl w-full mx-auto flex flex-col gap-6">
 				{#each messages as msg}
 					<div class="flex w-full {msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -277,7 +277,7 @@
 		</div>
 
 		<!-- Pinned Bottom Input -->
-		<div class="w-full absolute bottom-0 left-0 bg-gradient-to-t from-background via-background/95 to-transparent pb-6 pt-10 px-4">
+		<div class="w-full absolute bottom-16 md:bottom-0 left-0 bg-gradient-to-t from-background via-background/95 to-transparent pb-16 md:pb-6 pt-10 px-4">
 			<div class="max-w-3xl mx-auto">
 				<ChatInput onsubmit={sendMessage} />
 			</div>
