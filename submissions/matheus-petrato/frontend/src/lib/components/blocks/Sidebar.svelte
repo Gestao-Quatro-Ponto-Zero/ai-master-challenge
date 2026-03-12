@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import { LayoutDashboard, Settings, MessageSquare, Bell, FileText, Sparkles, Database } from 'lucide-svelte';
 
 	const isManager = true;
-	const activeRoute = 'home';
+	const currentPath = $derived(page.url.pathname);
+	const isActive = (path: string) => {
+		if (path === '/') return currentPath === '/';
+		return currentPath === path || currentPath.startsWith(`${path}/`);
+	};
 	const regions = ['Central', 'East', 'West'];
 	let selectedRegion = $state('Central');
 	const managers = ['Amanda Rocha', 'Bianca Lima', 'Diego Souza'];
@@ -21,31 +26,31 @@
 	<div class="flex-1 overflow-y-auto p-4 space-y-6">
 		<!-- Menu Principal -->
 		<div class="space-y-1">
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'home' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
-				<LayoutDashboard class="w-4 h-4 {activeRoute === 'home' ? 'text-primary' : ''}" />
+			<a href="/briefing" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/briefing') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<LayoutDashboard class="w-4 h-4 {isActive('/briefing') ? 'text-primary' : ''}" />
 				Briefing
-			</button>
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'pipeline' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
-				<MessageSquare class="w-4 h-4 {activeRoute === 'pipeline' ? 'text-primary' : ''}" />
+			</a>
+			<a href="/pipeline" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/pipeline') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<MessageSquare class="w-4 h-4 {isActive('/pipeline') ? 'text-primary' : ''}" />
 				Pipeline
-			</button>
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'deal' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
-				<FileText class="w-4 h-4 {activeRoute === 'deal' ? 'text-primary' : ''}" />
+			</a>
+			<a href="/deal/overview" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/deal') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<FileText class="w-4 h-4 {isActive('/deal') ? 'text-primary' : ''}" />
 				Deal Detail
-			</button>
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'compass' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
-				<Sparkles class="w-4 h-4 {activeRoute === 'compass' ? 'text-primary' : ''}" />
+			</a>
+			<a href="/" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<Sparkles class="w-4 h-4 {isActive('/') ? 'text-primary' : ''}" />
 				Compass
-			</button>
-			<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'alerts' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
-				<Bell class="w-4 h-4 {activeRoute === 'alerts' ? 'text-primary' : ''}" />
+			</a>
+			<a href="/alerts" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/alerts') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+				<Bell class="w-4 h-4 {isActive('/alerts') ? 'text-primary' : ''}" />
 				Alertas
-			</button>
+			</a>
 			{#if isManager}
-				<button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {activeRoute === 'reports' ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
-					<Database class="w-4 h-4 {activeRoute === 'reports' ? 'text-primary' : ''}" />
+				<a href="/reports" class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors border {isActive('/reports') ? 'bg-sidebar-accent text-sidebar-foreground border-sidebar-border' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/70 hover:text-sidebar-foreground border-transparent'}">
+					<Database class="w-4 h-4 {isActive('/reports') ? 'text-primary' : ''}" />
 					Relatorios
-				</button>
+				</a>
 			{/if}
 		</div>
 
