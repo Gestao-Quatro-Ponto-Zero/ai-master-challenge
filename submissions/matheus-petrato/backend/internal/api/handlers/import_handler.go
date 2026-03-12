@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -29,13 +30,23 @@ func (h *ImportHandler) UploadCSV(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusUnauthorized, "invalid user")
 	}
 
-	sourceType := models.ImportSourceType(c.FormValue("type"))
+	sourceType := models.ImportSourceType(strings.ToLower(c.FormValue("type")))
 	if sourceType == "" {
 		return fiber.NewError(fiber.StatusBadRequest, "type is required (deals, accounts, products, team)")
 	}
 
+	switch sourceType {
+	case models.ImportSourceDeals, models.ImportSourceAccounts, models.ImportSourceProducts, models.ImportSourceTeam:
+	default:
+		return fiber.NewError(fiber.StatusBadRequest, "invalid source type")
+	}
+
 	file, err := c.FormFile("file")
 	if err != nil {
+		return err
+	}
+
+	if err := h.validateImportOrder(c, sourceType); err != nil {
 		return err
 	}
 
@@ -83,8 +94,6 @@ func (h *ImportHandler) UploadCSV(c *fiber.Ctx) error {
 		importErr = h.Service.ImportProducts(ctx, data)
 	case models.ImportSourceDeals:
 		importErr = h.Service.ImportDeals(ctx, data)
-	default:
-		return fiber.NewError(fiber.StatusBadRequest, "invalid source type")
 	}
 
 	if importErr != nil {
@@ -112,7 +121,7 @@ func (h *ImportHandler) UploadCSV(c *fiber.Ctx) error {
 func (h *ImportHandler) ListImports(c *fiber.Ctx) error {
 	ctx := c.Context()
 	rows, err := h.Service.GetPool().Query(ctx, `
-		SELECT id, filename, file_size_bytes, status, COALESCE(finished_at, created_at) as timestamp
+		SELECT id, source_type, filename, file_size_bytes, status, COALESCE(finished_at, created_at) as timestamp
 		FROM data_imports
 		ORDER BY created_at DESC`)
 	if err != nil {
@@ -123,12 +132,13 @@ func (h *ImportHandler) ListImports(c *fiber.Ctx) error {
 	var imports []map[string]any
 	for rows.Next() {
 		var id uuid.UUID
-		var filename, status string
+		var filename, status, sourceType string
 		var size int64
 		var timestamp interface{}
-		rows.Scan(&id, &filename, &size, &status, &timestamp)
+		rows.Scan(&id, &sourceType, &filename, &size, &status, &timestamp)
 		imports = append(imports, map[string]any{
 			"id":         id,
+			"source_type": sourceType,
 			"file":       filename,
 			"size":       size,
 			"status":     status,
@@ -157,4 +167,35 @@ func (h *ImportHandler) DeleteImport(c *fiber.Ctx) error {
 func (h *ImportHandler) ReprocessImport(c *fiber.Ctx) error {
 	// Skeleton: logic to find the file and run h.Service again
 	return c.SendStatus(fiber.StatusNotImplemented)
+}
+
+func (h *ImportHandler) validateImportOrder(c *fiber.Ctx, sourceType models.ImportSourceType) error {
+	ctx := c.Context()
+	pool := h.Service.GetPool()
+	var agentsCount, productsCount, accountsCount int
+
+	if err := pool.QueryRow(ctx, "SELECT COUNT(*) FROM sales_agents").Scan(&agentsCount); err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "failed to check sales agents")
+	}
+	if err := pool.QueryRow(ctx, "SELECT COUNT(*) FROM products").Scan(&productsCount); err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "failed to check products")
+	}
+	if err := pool.QueryRow(ctx, "SELECT COUNT(*) FROM accounts").Scan(&accountsCount); err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "failed to check accounts")
+	}
+
+	if (sourceType == models.ImportSourceProducts || sourceType == models.ImportSourceAccounts) && agentsCount == 0 {
+		return fiber.NewError(fiber.StatusConflict, "Importe primeiro o time (sales_teams.csv) para cadastrar vendedores")
+	}
+
+	if sourceType == models.ImportSourceDeals {
+		if agentsCount == 0 {
+			return fiber.NewError(fiber.StatusConflict, "Importe primeiro o time (sales_teams.csv) para cadastrar vendedores")
+		}
+		if productsCount == 0 || accountsCount == 0 {
+			return fiber.NewError(fiber.StatusConflict, "Importe produtos e contas antes do pipeline (products.csv e accounts.csv)")
+		}
+	}
+
+	return nil
 }
