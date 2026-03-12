@@ -2,7 +2,8 @@
 	import ChatInput from '$lib/components/blocks/ChatInput.svelte';
 	import Onboarding from '$lib/components/blocks/Onboarding.svelte';
 	import Markdown from '$lib/components/blocks/Markdown.svelte';
-	import { Sparkles, Activity, TrendingUp, Target, BrainCircuit } from 'lucide-svelte';
+	import { role } from '$lib/stores/role';
+	import { Sparkles, Activity, TrendingUp, Target, BrainCircuit, Users } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { api, getStoredToken, getStoredUser } from '$lib/services/api';
 
@@ -11,12 +12,24 @@
 		label: string;
 	}
 
-	const suggestions: Suggestion[] = [
+	const sellerSuggestions: Suggestion[] = [
 		{ icon: TrendingUp, label: 'Deals quentes' },
 		{ icon: Activity, label: 'Deals em risco' },
 		{ icon: Target, label: 'Priorizar semana' },
 		{ icon: Sparkles, label: 'Resumo do mes' },
 	];
+
+	const managerSuggestions: Suggestion[] = [
+		{ icon: Users, label: 'Top vendedores' },
+		{ icon: Activity, label: 'Risco do time' },
+		{ icon: Target, label: 'Foco da semana' },
+		{ icon: Sparkles, label: 'Resumo executivo' },
+	];
+
+	const suggestions = $derived($role === 'manager' ? managerSuggestions : sellerSuggestions);
+	const greeting = $derived(
+		$role === 'manager' ? 'Pronto para priorizar o time hoje?' : 'Pronto para priorizar seus deals hoje?'
+	);
 
 	interface Message {
 		id: string;
@@ -30,6 +43,7 @@
 	let isConnecting = $state(false);
 	let showOnboarding = $state(false);
 	let loadingPage = $state(true);
+	const enableOnboarding = false;
 
 	// Thinking Effect Logic
 	const thinkingPhrases = [
@@ -50,23 +64,15 @@
 
 		const token = getStoredToken();
 		
-		// 1. Fetch History and Check Datasources
+		// 1. Fetch History (no onboarding required for now)
 		try {
-			const [history, dsList] = await Promise.all([
-				api.chat.history().catch(() => []),
-				api.datasources.list().catch(() => [])
-			]);
-
-			if (dsList.length === 0) {
-				showOnboarding = true;
-			} else {
-				messages = history.map((m: any) => ({
-					id: m.id,
-					role: m.role,
-					content: m.content,
-					isStreaming: false
-				}));
-			}
+			const history = await api.chat.history().catch(() => []);
+			messages = history.map((m: any) => ({
+				id: m.id,
+				role: m.role,
+				content: m.content,
+				isStreaming: false
+			}));
 		} catch (err) {
 			console.warn("Erro no startup da página:", err);
 		} finally {
@@ -176,7 +182,7 @@
 				<BrainCircuit class="w-6 h-6 text-primary animate-pulse relative z-10" />
 			</div>
 		</div>
-	{:else if showOnboarding}
+	{:else if enableOnboarding && showOnboarding}
 		<!-- Onboarding Wizard Overlay -->
 		<div class="flex-1 flex flex-col items-center justify-center p-4 bg-background animate-in fade-in duration-700">
 			<div class="max-w-2xl w-full mb-12 text-center">
@@ -206,9 +212,9 @@
 			<!-- Greeting -->
 			<div class="flex flex-col items-center gap-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
 				<Sparkles class="w-8 h-8 text-foreground" />
-				<h1 class="text-3xl text-foreground font-medium tracking-tight">
-					Pronto para priorizar seus deals hoje?
-				</h1>
+					<h1 class="text-3xl text-foreground font-medium tracking-tight">
+						{greeting}
+					</h1>
 			</div>
 
 			<!-- Chat Input Block -->
