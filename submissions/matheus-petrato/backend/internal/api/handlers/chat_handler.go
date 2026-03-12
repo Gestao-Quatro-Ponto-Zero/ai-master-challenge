@@ -8,6 +8,8 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/websocket/v2"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/matheus-petrato/sales-copilot-back/internal/services"
 	"github.com/matheus-petrato/sales-copilot-back/pkg/agent"
@@ -41,46 +43,10 @@ func (h *ChatHandler) SendMessage(c *fiber.Ctx) error {
 	userIDStr := c.Locals("user_id").(string)
 	userID, _ := uuid.Parse(userIDStr)
 
-	// Determine Session ID
-	var convID uuid.UUID
-	if req.SessionID != "" {
-		convID, _ = uuid.Parse(req.SessionID)
+	convID, text, err := h.runAgent(c.Context(), userID, req)
+	if err != nil {
+		return err
 	}
-
-	if convID == uuid.Nil {
-		conv, err := h.ConvService.CreateConversation(c.Context(), userID, nil)
-		if err != nil {
-			return err
-		}
-		convID = conv.ID
-	}
-
-	// Get History
-	history, _ := h.ConvService.GetHistory(c.Context(), convID)
-
-	// Setup Agent
-	apiKey := os.Getenv("MERCURY_API_KEY")
-	model := os.Getenv("MERCURY_MODEL")
-	provider := providers.NewMercuryProvider(apiKey, model, "")
-	al := agent.NewAgentLoop(provider)
-
-	// Register Tools
-	agentID := uuid.MustParse("018e3000-0000-0000-0000-000000000000") // TODO: get from profile context
-	al.Tools.Register(&services.GetMyDealsTool{BaseAgentTool: services.BaseAgentTool{Connector: h.DataConnector, AgentID: agentID}})
-	al.Tools.Register(&services.GetDealDetailTool{BaseAgentTool: services.BaseAgentTool{Connector: h.DataConnector, AgentID: agentID}})
-	al.Tools.Register(&services.SearchDealsTool{BaseAgentTool: services.BaseAgentTool{Connector: h.DataConnector, AgentID: agentID}})
-
-	// Convert history to agent messages
-	messages := []agent.Message{
-		{Role: "system", Content: agent.CompassSystemPrompt},
-	}
-	for _, m := range history {
-		messages = append(messages, agent.Message{Role: m.Role, Content: m.Content})
-	}
-	messages = append(messages, agent.Message{Role: "user", Content: req.Content})
-
-	// Save User Message
-	h.ConvService.SaveMessage(c.Context(), convID, "user", req.Content, nil)
 
 	// SSE Streaming
 	c.Set("Content-Type", "text/event-stream")
@@ -88,19 +54,8 @@ func (h *ChatHandler) SendMessage(c *fiber.Ctx) error {
 	c.Set("Connection", "keep-alive")
 
 	c.Context().SetBodyStreamWriter(fasthttp.StreamWriter(func(w *bufio.Writer) {
-		resp, err := al.Run(context.Background(), messages)
-		if err != nil {
-			fmt.Fprintf(w, "event: error\ndata: %v\n\n", err)
-			w.Flush()
-			return
-		}
-
-		// Save Assistant Message
-		h.ConvService.SaveMessage(context.Background(), convID, "assistant", resp.Text, nil)
-
-		// Send final text
 		jsonResp, _ := json.Marshal(map[string]any{
-			"text":       resp.Text,
+			"text":       text,
 			"session_id": convID,
 		})
 		fmt.Fprintf(w, "event: message\ndata: %s\n\n", jsonResp)
@@ -137,4 +92,125 @@ func (h *ChatHandler) GetHistory(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(history)
+}
+
+func (h *ChatHandler) WebSocketChat(c *websocket.Conn) {
+	tokenString := c.Query("token")
+	if tokenString == "" {
+		_ = c.WriteJSON(fiber.Map{"error": "Missing token"})
+		return
+	}
+
+	claims, err := parseJWT(tokenString)
+	if err != nil {
+		_ = c.WriteJSON(fiber.Map{"error": "Invalid token"})
+		return
+	}
+
+	userIDStr := fmt.Sprintf("%v", claims["sub"])
+	userID, _ := uuid.Parse(userIDStr)
+
+	for {
+		_, msg, err := c.ReadMessage()
+		if err != nil {
+			break
+		}
+
+		var req ChatRequest
+		if err := json.Unmarshal(msg, &req); err != nil {
+			_ = c.WriteJSON(fiber.Map{"error": "Invalid message"})
+			continue
+		}
+
+		convID, text, err := h.runAgent(context.Background(), userID, req)
+		if err != nil {
+			_ = c.WriteJSON(fiber.Map{"error": err.Error()})
+			continue
+		}
+
+		_ = c.WriteJSON(map[string]any{
+			"channel":      "web",
+			"chat_id":      userID.String(),
+			"session_id":   convID.String(),
+			"content":      text,
+			"stream_state": "chunk",
+		})
+		_ = c.WriteJSON(map[string]any{
+			"channel":      "web",
+			"chat_id":      userID.String(),
+			"session_id":   convID.String(),
+			"content":      "",
+			"stream_state": "done",
+		})
+	}
+}
+
+func parseJWT(tokenString string) (jwt.MapClaims, error) {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		secret = "super-secret-key"
+	}
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fiber.NewError(fiber.StatusUnauthorized, "Unexpected signing method")
+		}
+		return []byte(secret), nil
+	})
+
+	if err != nil || !token.Valid {
+		return nil, fiber.NewError(fiber.StatusUnauthorized, "Invalid or expired token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, fiber.NewError(fiber.StatusUnauthorized, "Invalid token claims")
+	}
+
+	return claims, nil
+}
+
+func (h *ChatHandler) runAgent(ctx context.Context, userID uuid.UUID, req ChatRequest) (uuid.UUID, string, error) {
+	var convID uuid.UUID
+	if req.SessionID != "" {
+		convID, _ = uuid.Parse(req.SessionID)
+	}
+
+	if convID == uuid.Nil {
+		conv, err := h.ConvService.CreateConversation(ctx, userID, nil)
+		if err != nil {
+			return uuid.Nil, "", err
+		}
+		convID = conv.ID
+	}
+
+	history, _ := h.ConvService.GetHistory(ctx, convID)
+
+	apiKey := os.Getenv("MERCURY_API_KEY")
+	model := os.Getenv("MERCURY_MODEL")
+	provider := providers.NewMercuryProvider(apiKey, model, "")
+	al := agent.NewAgentLoop(provider)
+
+	agentID := uuid.MustParse("018e3000-0000-0000-0000-000000000000")
+	al.Tools.Register(&services.GetMyDealsTool{BaseAgentTool: services.BaseAgentTool{Connector: h.DataConnector, AgentID: agentID}})
+	al.Tools.Register(&services.GetDealDetailTool{BaseAgentTool: services.BaseAgentTool{Connector: h.DataConnector, AgentID: agentID}})
+	al.Tools.Register(&services.SearchDealsTool{BaseAgentTool: services.BaseAgentTool{Connector: h.DataConnector, AgentID: agentID}})
+
+	messages := []agent.Message{
+		{Role: "system", Content: agent.CompassSystemPrompt},
+	}
+	for _, m := range history {
+		messages = append(messages, agent.Message{Role: m.Role, Content: m.Content})
+	}
+	messages = append(messages, agent.Message{Role: "user", Content: req.Content})
+
+	h.ConvService.SaveMessage(ctx, convID, "user", req.Content, nil)
+
+	resp, err := al.Run(context.Background(), messages)
+	if err != nil {
+		return convID, "", err
+	}
+
+	h.ConvService.SaveMessage(context.Background(), convID, "assistant", resp.Text, nil)
+	return convID, resp.Text, nil
 }

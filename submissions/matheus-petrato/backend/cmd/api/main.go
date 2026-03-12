@@ -12,6 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/websocket/v2"
 	"github.com/joho/godotenv"
 	"github.com/matheus-petrato/sales-copilot-back/internal/api/handlers"
 	"github.com/matheus-petrato/sales-copilot-back/internal/api/middleware"
@@ -126,6 +127,15 @@ func main() {
 	// Settings
 	protected.Get("/settings", settingsHandler.GetSettings)
 	protected.Patch("/settings", settingsHandler.UpdateSettings)
+
+	// WebSocket (Chat)
+	app.Use("/ws", func(c *fiber.Ctx) error {
+		if websocket.IsWebSocketUpgrade(c) {
+			return c.Next()
+		}
+		return fiber.ErrUpgradeRequired
+	})
+	app.Get("/ws/chat", websocket.New(chatHandler.WebSocketChat))
 
 	// Start server
 	port := os.Getenv("PORT")
