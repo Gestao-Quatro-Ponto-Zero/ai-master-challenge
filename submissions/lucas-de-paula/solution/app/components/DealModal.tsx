@@ -390,8 +390,9 @@ export function DealModal({ deal, onClose, onUpdate }: DealModalProps) {
                 </div>
 
                 {aiError && (
-                  <div className="rounded-xl p-3 text-xs bg-red-500/10 border border-red-500/25 text-red-400">
-                    {aiError}
+                  <div className="rounded-xl p-3 text-xs bg-amber-500/10 border border-amber-500/25 text-amber-400 space-y-1">
+                    <p className="font-semibold">Coach de IA temporariamente indisponível</p>
+                    <p className="text-amber-400/70">O score e o breakdown detalhado acima já mostram todos os fatores de qualificação deste deal.</p>
                   </div>
                 )}
 
