@@ -1,140 +1,237 @@
-# Process Log — Lead Scorer · Lucas de Paula
+# DEVLOG — Challenge 003 G4 Educação · Lead Scorer
 
-Evidência do processo de uso de IA na construção da solução.
-**Ferramentas usadas:** Claude Code (Anthropic) · Claude agente PM personalizado · Gemini 2.0 Flash (Google)
-
----
-
-## Fase 1 — Leitura humana antes de qualquer prompt
-
-**Por que não joguei o desafio direto na IA:** tenho um agente de Product Manager customizado no Claude que uso nos meus produtos. Se eu jogasse o challenge direto nele, ele poderia trazer uma solução genérica ou enviesar minha leitura dos dados antes de eu ter feito a minha própria análise.
-
-**O que fiz primeiro:**
-- Li o README do desafio inteiro sozinho
-- Baixei os 4 CSVs e abri em planilha — analisei campo a campo
-- Identifiquei os dados mais relevantes: `deal_stage`, `days_in_stage` (calculado), `close_value`, `account_revenue`, `product_price`, histórico Won/Lost por agente
-- Conclusão própria antes de qualquer prompt: o maior problema do pipeline é a falta de visibilidade sobre zumbis e a ausência de um critério objetivo de priorização
-
-Tenho experiência com ferramentas de pré-vendas (tenho um SaaS voltado para essa área), então sabia exatamente qual dor a Head de RevOps estava descrevendo.
-
-**Insights que só surgiram porque eu olhei os dados antes:**
-- 71% dos deals em Engaging são zumbis +90d — a IA não saberia calibrar isso sem ver a distribuição real
-- GTK 500 custa 486× mais que MG Special — esse dado justificou dar peso 25 ao componente Produto
-- Win rate real varia de ~20% a ~70% no mesmo time — ignorado no CRM, fundamental para o score
-
----
-
-## Fase 2 — Decomposição do problema com agente PM
-
-Após entender os dados, usei meu agente PM para estruturar o produto — não para gerar código, mas para pensar em:
-- Qual seria o usuário-alvo real (vendedor, manager ou RevOps)?
-- Quais features resolveriam o problema vs. seriam nice-to-have?
-- Qual seria a jornada de uso (segunda de manhã, abre o app, o que precisa ver?)
-
-**Decisões que tomei — não a IA:**
-- Foco no gestor/manager, não no vendedor individual (ele precisa de visão de portfólio)
-- Score com explicação por componente — "por que esse deal tem 83?" é mais útil que só o número
-- Interface web funcional, não notebook ou script
-- Slack ao invés de email — gerentes usam Slack, não configuram SMTP
-- Gemini ao invés de GPT ou Claude para o AI Coach — custo/performance para análise de deal individual
-- Removi a feature de "visão do vendedor" (separada) por ser complexa e fora do foco do teste
-
----
-
-## Fase 3 — Construção com Claude Code
-
-Todo o desenvolvimento foi feito com **Claude Code** (CLI), com eu direcionando cada etapa.
-
-### Como usei a IA estrategicamente:
-
-**O que eu pedia:**
-- Implementar features específicas já com a lógica definida por mim
-- Sugerir padrões de código (ex: estrutura de componentes Next.js)
-- Debugar erros de TypeScript e de build
-
-**O que eu não deixava para a IA decidir:**
-- Os pesos do scoring (eu calibrei com base nos dados reais)
-- Quais features entravam ou saíam (cada decisão foi minha)
-- O design de UX (eu direcionava o layout, cores, hierarquia)
-
-### Onde a IA errou — e como corrigi:
-
-| Erro | O que aconteceu | Como resolvi |
-|---|---|---|
-| `scoreDeals()` com 1 argumento | IA chamou a função sem o parâmetro `winRates` obrigatório | Identifiquei o erro de TypeScript e pedi para importar `calcAgentWinRates` + `loadPipeline` |
-| Hydration mismatch | `HowToUsePanel` usava `localStorage` diretamente no `useState` (roda no SSR do server) | Corrigi inicializando como `true` e ajustando em `useEffect` |
-| URL errada no Vercel | Estava testando na URL com hash de deploy antigo (imutável) | Identifiquei o padrão da URL e dirigi o teste para a URL de produção |
-| Email com SMTP | Primeira versão usava nodemailer — complexo demais para o gestor configurar | Decidi trocar por Slack webhook (mais simples, mais adotado) |
-| `Em risco` incluía zumbis | Lógica `days > 30` capturava deals +90d que já tinham card próprio | Corrigi para `days > 30 && days <= 90` — grupos mutuamente exclusivos |
-| KPI "Alta prioridade" com overlap | Score ≥70 é cross-cutting e se sobrepunha aos grupos de stage — total não fechava | Substituí por "Saudável (≤30d)" — funil fecha matematicamente |
-| Gemini model name | IA usou nome incorreto de modelo na API | Corrigido para `gemini-2.0-flash`; expus o erro real no response para debug |
-
-### Onde gastamos mais tempo:
-
-1. **Deploy no Vercel** — variáveis de ambiente não sobem com o `.gitignore`; precisei configurar manualmente no painel (SUPABASE URL, anon key, service role, ADMIN_TOKEN, VIEWER_TOKEN, GEMINI_API_KEY) e fazer redeploy. Também tive confusão com a URL de deploy imutável vs. URL de produção.
-
-2. **KPI funil fechado** — o card "Alta prioridade" era cross-cutting (overlap com outros grupos), o que confundia o gestor; substituí por "Saudável (≤30d)" para que os 4 grupos somassem exatamente o total.
-
-3. **Hydration mismatch no Next.js** — SSR rodava `localStorage` no servidor, onde `window` é undefined. Erros de hidratação React (#418, #423, #425) apareceram em produção mas não em desenvolvimento. Corrigi o padrão de inicialização.
-
-### Onde gastamos menos tempo:
-
-- **Scoring engine** — a lógica já estava clara na minha cabeça pela análise dos dados; foi só implementar
-- **Componentes visuais** — Claude Code é muito bom em Tailwind/React
-- **Integração Gemini** — a API é simples e direta; o prompt estruturado retornou JSON limpo na primeira tentativa
-
----
-
-## Fase 4 — Iterações de produto
-
-Várias features foram adicionadas ou removidas durante o desenvolvimento com base no meu julgamento:
-
-**Adicionadas (decisão minha):**
-- KPI cards com funil fechado (Saudável + Em risco + Prospecting + Zumbis = total)
-- ScoreBreakdown modal com explicação componente a componente
-- Coach de IA com Gemini — analisar deal individual com contexto real do pipeline
-- Action tags por deal com urgency note dinâmica
-- WelcomeModal com guia de boas-vindas (para onboarding em vídeo)
-- Responsividade mobile (o manager vai acessar pelo celular)
-- Anotações por deal (contexto local do vendedor)
-- Integração Slack com webhook salvo no Supabase
-- Filtros por vendedor, manager e região
-
-**Removidas (decisão minha):**
-- `nodemailer` / SMTP — complexidade desnecessária para o avaliador, substituído por Slack
-- "Visão do vendedor" separada — escopo grande, avaliador quer visão de gestão
-- Feature de conta como filtro extra — já está no pipeline, redundante
-
----
-
-## Fase 5 — O que eu adicionei que a IA sozinha não faria
-
-1. **A lógica dos pesos** — calibrei A=30, B=25, C=25, D=20 com base na leitura dos dados reais, não em heurísticas genéricas. Um LLM sozinho chutaria pesos sem olhar a distribuição dos produtos (GTK 500 custa 486× MG Special).
-
-2. **A decisão de usar Slack** — entendo que gestores de vendas B2B usam Slack como canal primário. A IA sugeriu email; eu corrigi.
-
-3. **O KPI "Saudável (≤30d)"** — a IA criou "Alta prioridade (score ≥70)" que se sobrepunha aos outros grupos. Eu identifiquei o problema de comunicação para o gestor e propus o grupo que fechava o funil matematicamente.
-
-4. **O foco no gestor** — o challenge diz "vendedor", mas com 35 vendedores e 2.092 deals ativos, a ferramenta mais útil é para quem gerencia o portfólio inteiro.
-
-5. **O AI Coach com contexto de pipeline** — não pedi só para a IA analisar o deal; mandei os benchmarks do pipeline junto (ciclo médio 52d, threshold de score ≥70) para que a análise retornasse orientação relativa ao contexto real, não genérica.
-
-6. **As recomendações de integração de canais** — integrar WhatsApp, e-mail e tráfego pago para recepção centralizada e distribuição automática de leads pelo pipeline. Isso vai além do scoring — é uma visão de plataforma de operação comercial que veio da minha experiência com o produto de pré-vendas que desenvolvo.
-
----
-
-## Ferramentas e iterações
-
-| Ferramenta | Uso |
-|---|---|
-| **Claude Code** | Desenvolvimento principal — todo o código da aplicação |
-| **Claude (agente PM)** | Fase de produto — estruturar visão, features, prioridades |
-| **Gemini 2.0 Flash** | Feature de IA Coach embarcada no produto |
-| **Supabase** | Banco de dados (pipeline + configurações Slack) |
-| **Vercel** | Deploy e variáveis de ambiente |
-
-**Número de iterações relevantes:** ~30 sessões de edição de código, com múltiplos ciclos de "implementa → testa → ajusta → decide".
-
-**Git history como evidência adicional:** todos os commits estão no repositório com mensagens descritivas mostrando a evolução — de MVP básico até Coach de IA e responsividade mobile.
-
+**Ferramentas:** Claude Code (Anthropic) · Claude agente PM personalizado · Gemini 2.0 Flash (Google)
 **Repositório:** https://github.com/oetnegro/lead-scorer-g4
+**Live:** https://lead-scorer-g4.vercel.app
+
+---
+
+## [2026-03-11 — ANÁLISE EXPLORATÓRIA DOS DADOS (sem IA)]
+
+**Contexto:** li o desafio e os dados antes de abrir qualquer ferramenta de IA. Tenho um SaaS de pré-vendas — sabia exatamente qual dor a Head de RevOps estava descrevendo. Queria minha própria leitura dos dados antes de deixar um LLM criar vieses.
+
+**O que analisei nos 4 CSVs:**
+- `sales_pipeline.csv` — campo central: `deal_stage`, `engage_date`, `close_date`, `close_value`
+- `accounts.csv` — `annual_revenue`, `sector`, `parent_company` (subsidiárias)
+- `products.csv` — preço de cada produto (variação de 486× entre GTK 500 e MG Special)
+- `sales_teams.csv` — estrutura de managers e escritórios regionais
+
+**Achados que eu trouxe — a IA não teria chegado sem os dados:**
+- 71% dos deals em Engaging estão parados há mais de 90 dias — zumbis invisíveis no pipeline
+- GTK 500 = R$55.900 · MG Special = R$115 — diferença de 486× justifica peso dedicado ao produto
+- Win rate varia de ~20% a ~70% entre vendedores do mesmo time — dado ignorado no CRM
+- Ciclo médio saudável de Engaging: ~52 dias (calculado manualmente)
+
+**Decisão tomada:** os quatro achados acima viraram os quatro componentes do scoring engine. Nenhum foi gerado por IA.
+
+---
+
+## [2026-03-11 — DEFINIÇÃO DO PRODUTO COM AGENTE PM]
+
+**Ferramenta:** agente PM customizado (Claude) para estruturar a visão de produto.
+
+**O que o agente PM fez:** estruturou as features em must-have vs. nice-to-have e mapeou a jornada do usuário-alvo.
+
+**Decisões que eu tomei — não a IA:**
+
+| Decisão | Alternativa descartada | Motivo |
+|---|---|---|
+| Interface web funcional | Jupyter Notebook | "O vendedor abre" — notebook não é produto |
+| Score explicável por componente | Score único opaco | Entender "por que 83?" vale mais que accuracy |
+| Foco no gestor/manager | Foco no vendedor individual | 35 vendedores + 2.092 deals = visão de portfólio é mais útil |
+| Slack webhook | Email com nodemailer (SMTP) | Gestores de vendas B2B usam Slack, não configuram SMTP |
+| Gemini 2.0 Flash para AI Coach | GPT-4 | Custo/performance para análise contextual de deals individuais |
+
+**Fora do escopo inicial:** IA generativa, Slack, autenticação robusta, notificações. Entraram em iterações posteriores à medida que o MVP foi validado.
+
+---
+
+## [2026-03-12 — MVP: SCORING ENGINE + API + DASHBOARD]
+
+**O que foi construído:**
+- `lib/scoring.ts` — scoring engine com 4 componentes (0–100 pts)
+- `lib/data.ts` — parse e merge dos 4 CSVs via Supabase
+- `app/api/deals/route.ts` — GET que retorna deals ativos com score calculado
+- `app/page.tsx` — dashboard com tabela paginada, filtros e KPI cards
+- `app/components/ScoreBreakdown.tsx` — modal com breakdown dos 4 fatores por deal
+- `app/components/DealTable.tsx` — tabela ordenável com ScoreBadge colorido
+
+**Scoring engine — 4 componentes calibrados:**
+
+| Componente | Peso | Lógica |
+|---|---|---|
+| A. Stage + Momentum | 30pts | Engaging ≤30d=30 · 31–60d=22 · 61–90d=12 · +90d=4 · Prospecting com conta=10 |
+| B. Produto / Ticket | 25pts | GTK 500=25 · GTX Plus Pro=22 · GTXPro=20 · MG Special=3 |
+| C. Qualidade da Conta | 25pts | Enterprise=25 · Large=18 · Mid-market=11 · SMB=6 · Sem conta=0 · +3 subsidiária |
+| D. Win Rate do Vendedor | 20pts | Calculado do histórico real Won/Lost · >70%=20 · >50%=15 · >30%=10 · ≤30%=5 |
+
+**Por que esses pesos:** Stage/Momentum é o indicador mais acionável no curto prazo — um deal parado 6 meses não merece o mesmo foco que um deal quente. Produto captura impacto de receita (GTK 500 vs MG Special não são comparáveis). Conta filtra deals sem qualificação. Win rate ajusta a expectativa por vendedor.
+
+---
+
+## [2026-03-12 — ERRO #1: scoreDeals() chamado sem parâmetro obrigatório]
+
+**Problema:** Claude Code chamou `scoreDeals(deals)` sem passar `winRates`. A função exigia dois parâmetros: `deals` e `winRates`. TypeScript apontou o erro.
+
+**Causa raiz:** a IA implementou a chamada antes de verificar a assinatura completa da função que ela mesma havia escrito.
+
+**Correção:** identifiquei o erro no output do TypeScript e pedi para importar `calcAgentWinRates()` + `loadPipeline()` e passar o resultado como segundo argumento.
+
+**Registro de erro:** eu (Claude Code) devia ter verificado a assinatura da função antes de implementar a chamada. A ordem de implementação estava errada — a chamada veio antes de garantir que os dados de entrada estavam completos.
+
+---
+
+## [2026-03-12 — PONTO DE INFLEXÃO #1: KPI cards com overlap — total não fechava]
+
+**Contexto:** primeiro KPI implementado foi "Alta prioridade" (score ≥70). Problema: esse critério é cross-cutting — um deal zumbi (+90d) de uma conta Enterprise ainda pode ter score ≥70. Os 4 cards somavam mais que o total de deals ativos.
+
+**Diagnóstico:** o gestor abriria o painel e veria números que não fecham. Isso gera desconfiança imediata — se os cards não somam ao total, o vendedor não confia nos dados.
+
+**Decisão tomada (minha, não da IA):** substituir "Alta prioridade (score ≥70)" por "Saudável (≤30d)" — um critério baseado em stage + dias que é mutuamente exclusivo com os outros grupos.
+
+**Funil final — grupos mutuamente exclusivos:**
+- 🟢 Saudável (≤30d): 20 deals
+- 🟡 Em risco (31–90d): 93 deals → filtro corrigido para `days > 30 && days <= 90`
+- 🔵 Prospecting: 500 deals
+- 💀 Zumbis (+90d): 1.479 deals
+- **Total: 2.092** ✓
+
+**Erro #2 registrado:** `Em risco` usava `days > 30` que capturava deals +90d que já tinham card próprio (zumbis). Corrigi para `days > 30 && days <= 90`. A IA não percebeu o overlap — eu identifiquei revisando os números.
+
+---
+
+## [2026-03-12 — ERRO #3: hydration mismatch no Next.js (SSR)]
+
+**Problema:** `HowToUsePanel` inicializava state com `localStorage`:
+```ts
+// Errado — localStorage não existe no servidor
+const [open, setOpen] = useState(() => {
+  return localStorage.getItem("pipeline-howto-closed") !== "1";
+});
+```
+React lançou os erros de hidratação #418, #423, #425 em produção. Em desenvolvimento local não aparecia porque o SSR se comporta diferente.
+
+**Causa raiz:** Claude Code aplicou o padrão de `localStorage` no inicializador do `useState` sem considerar que o Next.js renderiza esse componente no servidor onde `window` é `undefined`.
+
+**Correção:**
+```ts
+// Correto — SSR-safe
+const [open, setOpen] = useState(true);
+useEffect(() => {
+  setOpen(localStorage.getItem("pipeline-howto-closed") !== "1");
+}, []);
+```
+
+**Registro de erro:** eu (Claude Code) devia ter aplicado o padrão SSR-safe desde o início. `localStorage` em `useState` direto é um erro clássico em Next.js App Router — não deveria ter gerado esse padrão.
+
+---
+
+## [2026-03-12 — INTEGRAÇÃO SLACK: nodemailer descartado]
+
+**Primeira versão:** Claude Code implementou relatórios por email via `nodemailer` (SMTP).
+
+**Problema identificado por mim:** gestores de vendas B2B usam Slack como canal operacional primário. Configurar SMTP para uma demo é complexidade desnecessária — o avaliador não vai configurar um servidor de email para testar.
+
+**Decisão:** descartei nodemailer e reimplementei com Slack webhook.
+
+**O que foi construído:**
+- `lib/slack.ts` — `buildMorningBlocks()` + `buildEveningBlocks()` + `sendSlackBlocks()` (Block Kit)
+- `app/api/admin/settings/route.ts` — GET/POST para webhook URL salva no Supabase
+- `app/api/slack/report/route.ts` — endpoint que dispara o relatório
+- `app/admin/page.tsx` — painel Admin com SlackTab para configurar o webhook
+
+---
+
+## [2026-03-12 — DEPLOY: variáveis de ambiente no Vercel]
+
+**Problema:** o `.env.local` está no `.gitignore` — não sobe para o repositório. Deploy inicial no Vercel falhou com 401 em todas as chamadas autenticadas.
+
+**Causa:** todas as env vars precisavam ser configuradas manualmente no painel do Vercel:
+```
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+ADMIN_TOKEN=g4admin2024
+VIEWER_TOKEN=g4viewer2024
+GEMINI_API_KEY
+```
+
+**Erro adicional detectado:** estava testando na URL de deploy com hash imutável (`lead-scorer-g4-bbprc0whr-oetnegros-projects.vercel.app`) em vez da URL de produção (`lead-scorer-g4.vercel.app`). Deploys com hash são snapshots imutáveis — não refletem as env vars adicionadas depois. Identifiquei o padrão e direcionei os testes para a URL de produção.
+
+---
+
+## [2026-03-13 — AI COACH COM GEMINI 2.0 FLASH]
+
+**Motivação:** scoring passivo diz "esse deal tem score 83" mas não diz o que o vendedor deve fazer. Um coach de IA que analisa cada deal individualmente transforma o número em ação concreta.
+
+**O que foi construído:**
+- `app/api/ai/analyze/route.ts` — POST endpoint que recebe os dados do deal, monta prompt com benchmarks do pipeline e retorna JSON estruturado via Gemini
+
+**Prompt montado com contexto real do pipeline:**
+```
+Benchmarks do pipeline: ciclo médio saudável = 52 dias, score ≥70 = alta prioridade.
+Deal: [todos os campos — conta, produto, ticket, receita, setor, stage, dias, score, vendedor, manager, região]
+Retorne JSON: { urgencia, resumo, acao, raciocinio }
+```
+
+**Por que incluí os benchmarks:** sem contexto do pipeline, o Gemini retornaria análise genérica. Com os benchmarks, ele consegue dizer "esse deal está 38 dias além do ciclo médio" em vez de "o deal está em Engaging há muito tempo".
+
+**Erro #4: model name incorreto**
+
+Claude Code usou `gemini-1.5-flash` — modelo com problemas na versão da API utilizada. Erro 500 retornado. Corrigi para `gemini-2.0-flash` e mudei o tratamento de erro para expor a mensagem real em vez de string genérica ("Falha") — isso permitiu debugar mais rápido.
+
+**Erro #5: GEMINI_API_KEY não estava no Vercel**
+
+O AI Coach funcionou local mas retornou 500 em produção. A env var não havia sido adicionada ao Vercel. Adicionada manualmente e redeploy realizado.
+
+---
+
+## [2026-03-13 — REVISÃO FINAL: WelcomeModal + mobile + vídeo]
+
+**WelcomeModal:**
+- Criado com 4 tiles de features, botão CTA e backdrop para fechar
+- Movido de `page.tsx` para `layout.tsx` para aparecer em todas as páginas
+- Botão "?" na Navbar despacha `CustomEvent("reopen-welcome")` para reabrir sem recarregar
+- Fix: `pathname === "/login"` adicionado para não renderizar na tela de login
+
+**Responsividade mobile:**
+- `DealTable.tsx`: colunas `#` e `Ticket` com `hidden sm:table-cell`, `Produto` e `Vendedor` com `hidden md:table-cell`
+- Padding ajustado no `app/page.tsx` para dispositivos pequenos
+
+**Vídeo demo:**
+- Gravado e publicado no YouTube: https://youtu.be/6IO9yX8Lra8
+- URL de embed configurada como fallback em `WelcomeModal.tsx`
+
+---
+
+## [2026-03-13 — ESTADO FINAL DA SUBMISSÃO]
+
+| Entregável | Arquivo | Status |
+|---|---|---|
+| Solução funcional | https://lead-scorer-g4.vercel.app | ✅ Live em produção |
+| Scoring engine (4 componentes) | `lib/scoring.ts` | ✅ Completo |
+| Dashboard com filtros | `app/page.tsx` + `DealTable.tsx` | ✅ Completo |
+| ScoreBreakdown modal | `app/components/ScoreBreakdown.tsx` | ✅ Completo |
+| Visão de Equipe | `app/manager/page.tsx` | ✅ Completo |
+| Insights | `app/insights/page.tsx` | ✅ Completo |
+| AI Coach (Gemini) | `app/api/ai/analyze/route.ts` | ✅ Live |
+| Integração Slack | `lib/slack.ts` + Admin | ✅ Completo |
+| Auth com perfis | `middleware.ts` | ✅ Admin + Viewer |
+| Mobile responsivo | `DealTable.tsx` + `page.tsx` | ✅ Completo |
+| README (template G4) | `README.md` | ✅ Completo |
+| Process Log | `PROCESS_LOG.md` | ✅ Completo |
+| Vídeo demo | https://youtu.be/6IO9yX8Lra8 | ✅ Publicado |
+
+**O que a solução entrega que vai além do esperado:**
+- AI Coach embarcado rodando em produção com contexto real do pipeline — não só score passivo
+- Integração Slack com Block Kit (relatórios matinais + noturnos prontos para configurar)
+- KPI cards com funil matematicamente fechado — gestores não confiam em números que não somam
+- Auth com dois perfis (Admin/Viewer) — já pensando em segregação de acesso
+- WelcomeModal com vídeo demo integrado — onboarding do usuário resolvido
+
+**Registro de erros documentados (total: 5):**
+1. `scoreDeals()` chamado sem `winRates` — erro de sequência de implementação
+2. KPI `Em risco` com `days > 30` capturava zumbis — overlap não detectado pela IA
+3. Hydration mismatch: `localStorage` em `useState` direto no Next.js SSR
+4. Gemini model name incorreto: `gemini-1.5-flash` → `gemini-2.0-flash`
+5. `GEMINI_API_KEY` ausente no Vercel — env var local não sobe com `.gitignore`
