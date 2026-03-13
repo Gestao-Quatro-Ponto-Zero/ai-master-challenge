@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-g4-navy: #1E293B;
+  --color-g4-gray-blue: #476382;
+  --color-g4-ice-blue: #E1EBF0;
+  --color-g4-bg-light: #F8FAFC;
+  --color-g4-soft-gray: #94A3B8;
+  --color-g4-border: #E2E8F0;
+}
+
+@layer base {
+  body {
+    @apply transition-colors duration-300;
+  }
+}
