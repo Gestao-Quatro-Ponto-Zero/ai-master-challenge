@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Lucas de Paula
-- **LinkedIn:** https://www.linkedin.com/in/lucasdepaula
+- **LinkedIn:** https://www.linkedin.com/in/lucas-de-paula-b73a4496/
 - **Challenge escolhido:** Challenge 003 — G4 Educação · Lead Scoring para Pipeline B2B
 
 ---
