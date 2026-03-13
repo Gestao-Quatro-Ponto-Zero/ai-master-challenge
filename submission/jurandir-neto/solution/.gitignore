@@ -1,0 +1,29 @@
+# Private scoring (never commit)
+_internal/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data downloads (candidates get from Kaggle)
+datasets/
+
+# IDE
+.vscode/
+.idea/
+
+# Submissions (if candidates fork)
+submissions/
+
+# Medallion data layers — não commitar dados
+data/raw/*.csv
+data/bronze/*.parquet
+data/silver/*.parquet
+data/gold/*.parquet
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
