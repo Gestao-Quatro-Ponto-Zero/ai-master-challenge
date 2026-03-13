@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(export:*)",
+      "Bash(wc:*)",
+      "Bash(gh pr:*)",
+      "Bash(git push:*)",
+      "Bash(xargs ls:*)",
+      "Bash(cd /Users/brunocamparadiniz/Desktop/projetos/ai-master-challenge/submissions/brunocamparadiniz/sales-prioritizer && npm run build 2>&1)",
+      "Bash(npm run:*)"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+/* Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────────────────────────── */
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    /* Subtle three-stop gradient: ice → sky tint → mint tint */
+    background: linear-gradient(145deg, #F8FAFC 0%, #EFF6FF 55%, #F0FDF4 100%);
+    background-attachment: fixed;
+    color: #1e293b;
+  }
+}
+
+/* ─── Glassmorphism components ───────────────────────────────────────────────── */
+@layer components {
+  /**
+   * .glass-card
+   * Elevated, semi-transparent card with a frosted-glass effect.
+   * Use for deal cards, stat cards, and any primary content surface.
+   *
+   * Properties:
+   *   - bg-white/60    → 60% opaque white lets the gradient show through
+   *   - backdrop-blur  → frosted glass effect on the content beneath
+   *   - border-white/40 → thin bright rim simulates a glass edge
+   *   - shadow         → diffuse shadow for subtle depth without heaviness
+   */
+  .glass-card {
+    @apply bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl;
+    box-shadow:
+      0 2px 12px 0 rgb(148 163 184 / 0.10),
+      0 1px 3px  0 rgb(148 163 184 / 0.06),
+      inset 0 1px 0 rgb(255 255 255 / 0.70);
+  }
+
+  /**
+   * .glass-panel
+   * Lighter, more translucent surface for secondary panels and filter areas.
+   * More blur than .glass-card to push it further "back" visually.
+   *
+   * Properties:
+   *   - bg-white/40    → 40% opaque — more see-through than .glass-card
+   *   - backdrop-blur-lg → heavier blur for a deeper glass feel
+   *   - border-white/30 → even subtler rim
+   */
+  .glass-panel {
+    @apply bg-white/40 backdrop-blur-lg border border-white/30 rounded-2xl;
+    box-shadow:
+      0 4px 24px 0 rgb(148 163 184 / 0.12),
+      inset 0 1px 0 rgb(255 255 255 / 0.60);
+  }
+
+  /**
+   * .glass-header
+   * Sticky navigation surface. Highest opacity and blur so the content
+   * beneath the header is readable but clearly "behind" the nav.
+   */
+  .glass-header {
+    @apply bg-white/80 backdrop-blur-xl;
+    border-bottom: 1px solid rgb(203 213 225 / 0.5);
+    box-shadow: 0 1px 8px 0 rgb(148 163 184 / 0.08);
+  }
+}
