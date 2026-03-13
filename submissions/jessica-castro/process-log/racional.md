@@ -24,6 +24,7 @@
 - [ ] Criar um endpoint onde o CRM pode enviar os dados de uma oportunidade de venda (deal) e receber de volta,score de prioridade, probabilidade de fechamento, etc. Ou seja, a aplicação funcionaria como um serviço de scoring. Hoje os arquivos de dataset estão estáticos em uma pasta /data
 - [ ] padronize as cores do ratting, na sidebar devem ser as mesma cores dos gráficos e na sidebar direita
 - [ ] Fazer o envio de e-mails através de APIs ou provedores como SendGrid, Resend, Mailgun. E para mais controle substituir a cron por um painel que programmo quando enviar.
+- chaves expostas, somente para o chanlege
 
 
 cd /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal

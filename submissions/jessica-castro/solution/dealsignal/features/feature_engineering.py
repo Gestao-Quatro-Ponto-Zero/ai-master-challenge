@@ -19,6 +19,8 @@ from features.seller_features import compute_seller_features
 from features.product_features import compute_product_features
 from features.account_features import compute_account_features
 from features.risk_features import compute_risk_features
+from features.lead_features import compute_lead_features
+from features.geo_features import compute_geo_features
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -73,9 +75,13 @@ def build_features(
     df     : DataFrame with all feature columns (train + score rows)
     target : Series with 1/Won, 0/Lost, NaN/open for each row
     """
-    # Derive reference date before merging (used for company_age reproducibility)
-    raw_dates = pd.to_datetime(pipeline_df["close_date"], errors="coerce")
-    dataset_end = raw_dates.max()
+    # Derive reference date before merging (used for company_age reproducibility).
+    # Falls back to today if the dataset does not have a close_date column.
+    if "close_date" in pipeline_df.columns:
+        raw_dates = pd.to_datetime(pipeline_df["close_date"], errors="coerce")
+        dataset_end = raw_dates.max()
+    else:
+        dataset_end = pd.Timestamp.now()
 
     df = merge_raw_data(pipeline_df, accounts_df, products_df, teams_df, enriched_df, dataset_end)
 
@@ -113,6 +119,8 @@ def build_features(
     df = compute_product_features(df, df[train_mask].copy())
     df = compute_account_features(df, reference_date=dataset_end)
     df = compute_risk_features(df)
+    df = compute_lead_features(df, df[train_mask].copy())
+    df = compute_geo_features(df, df[train_mask].copy())
 
     logger.info(
         "Feature matrix: %d rows, %d V2 feature cols. Train=%d, Score=%d",
