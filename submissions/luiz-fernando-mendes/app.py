@@ -442,7 +442,7 @@ def main():
     # Carregar dados
     accounts, sales_teams, products, sales_pipeline = load_data()
     # Define a data de referência como o último dia do arquivo para não expirar os scores
-data_hoje = pd.to_datetime(sales_pipeline['engage_date']).max()
+    data_hoje = pd.to_datetime(sales_pipeline['engage_date']).max()
     
     if accounts is None:
         st.stop()
