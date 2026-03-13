@@ -211,7 +211,7 @@ Rastrear como o score de cada deal evolui ao longo do tempo — identifica padr�
 
 - **Git history:** https://github.com/oetnegro/lead-scorer-g4 — commits descritivos mostrando a evolução de MVP básico até Coach de IA e responsividade mobile (~30 iterações)
 - **Live app:** https://lead-scorer-g4.vercel.app — funcional em produção com dados reais
-- **Vídeo demo:** em breve (será adicionado à WelcomeModal após upload no YouTube)
+- **Vídeo demo:** https://youtu.be/6IO9yX8Lra8
 
 ---
 

@@ -6,7 +6,7 @@ export const WELCOME_STORAGE_KEY = "g4-welcome-v2";
 
 // Defina NEXT_PUBLIC_DEMO_VIDEO_URL no Vercel/env para exibir o vídeo de demo.
 // Formato: https://www.youtube.com/embed/SEU_VIDEO_ID
-const DEMO_VIDEO_URL = process.env.NEXT_PUBLIC_DEMO_VIDEO_URL ?? "";
+const DEMO_VIDEO_URL = process.env.NEXT_PUBLIC_DEMO_VIDEO_URL ?? "https://www.youtube.com/embed/6IO9yX8Lra8";
 
 const features = [
   {
