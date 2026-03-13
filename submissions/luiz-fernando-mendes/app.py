@@ -417,32 +417,58 @@ def main():
     # Injeção de CSS Adaptativo (Light/Dark Mode)
     st.markdown("""
         <style>
-            .main { background-color: #F8FAFC; }
-            [data-testid="stSidebar"] { background-color: #1E293B; }
-            
-            /* Efeito de Card do React nas métricas */
-            [data-testid="stMetric"] {
-                background-color: white;
-                padding: 15px;
-                border-radius: 12px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                border: 1px solid #E2E8F0;
+            /* Detecta a preferência do sistema e ajusta variáveis */
+            :root {
+                --g4-blue: #1E293B;
+                --g4-accent: #476382;
+                --g4-text-light: #F8FAFC;
+                --g4-text-dim: #94A3B8;
+            }
+
+            /* Estilização Geral Adaptativa */
+            .main {
+                transition: background-color 0.3s ease;
             }
             
-            /* Títulos e Identidade */
-            h1, h2, h3 { color: #1E293B !important; font-family: 'Inter', sans-serif; }
-            
-            /* Esconde menus do Streamlit para parecer um App profissional */
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
+            /* Customização do Banner para Sobreviver a Qualquer Tema */
+            .banner-container {
+                background-color: var(--g4-blue);
+                padding: 40px;
+                border-radius: 15px;
+                border-left: 12px solid var(--g4-accent);
+                margin-bottom: 35px;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+
+            .g4-title { 
+                color: #FFFFFF !important; 
+                font-size: 36px; 
+                font-weight: 700; 
+                margin: 0; 
+                letter-spacing: -1px;
+            }
+
+            .g4-subtitle { 
+                color: var(--g4-text-dim) !important; 
+                font-size: 19px; 
+                margin-top: 8px; 
+                font-weight: 400; 
+            }
+
+            /* Ajuste de métricas para não "sumirem" no modo escuro */
+            [data-testid="stMetricValue"] {
+                color: var(--g4-accent) !important;
+            }
         </style>
+        
+        <div class="banner-container">
+            <p class="g4-title">G4 AI MASTER</p>
+            <p class="g4-subtitle">Lead Scorer: Priorização Estratégica para Escala de Vendas</p>
+        </div>
     """, unsafe_allow_html=True)
     
     # Carregar dados
     accounts, sales_teams, products, sales_pipeline = load_data()
-    # Define a data de referência como o último dia do arquivo para não expirar os scores
-    data_hoje = pd.to_datetime(sales_pipeline['engage_date']).max()
     
     if accounts is None:
         st.stop()
@@ -515,9 +541,8 @@ def main():
     
     for idx, row in pipeline_filtered.iterrows():
         score, explanation = calculate_deal_score(
-    row, accounts, sales_teams, products, sales_pipeline, 
-    reference_date=data_hoje # <-- ADICIONE ISSO AQUI
-)
+            row, accounts, sales_teams, products, sales_pipeline
+        )
         scores.append(score)
         explanations.append(explanation)
     
