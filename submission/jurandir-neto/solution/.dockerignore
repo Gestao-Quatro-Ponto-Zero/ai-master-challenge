@@ -1,0 +1,10 @@
+.venv/
+.git/
+.claude/
+__pycache__/
+*.pyc
+.DS_Store
+.env
+data/bronze/
+data/silver/
+data/gold/
