@@ -1,0 +1,5 @@
+{
+  "name": "Lead Scorer Inteligente",
+  "description": "Sistema de priorização de deals baseado em análise preditiva de CRM, utilizando métricas de maturidade, performance de agentes e fit de produto.",
+  "requestFramePermissions": []
+}
