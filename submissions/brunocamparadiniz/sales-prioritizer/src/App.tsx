@@ -57,11 +57,16 @@ function getScoreJustification(deal: ScoredDeal): string {
   const bestStr  = best.value  >= 50 ? best.highText  : best.lowText
   const worstStr = worst.value <  50 ? worst.lowText  : worst.highText
 
-  if (deal.managerBonusApplied) {
-    return `${bestStr} · manager da região acima da média (+10 pts)`
-  }
-  if (best === worst) return bestStr
-  return `${bestStr} · ${worstStr}`
+  const bonuses: string[] = []
+  if (deal.accountLoyaltyApplied) bonuses.push('cliente recorrente (+15 pts)')
+  if (deal.managerBonusApplied) bonuses.push('manager top (+10 pts)')
+  if (deal.isHotSector) bonuses.push('setor quente')
+  if (deal.isHighConversionProduct) bonuses.push('produto alta conversão')
+
+  const bonusStr = bonuses.length > 0 ? ` · ${bonuses.join(' · ')}` : ''
+
+  if (best === worst) return `${bestStr}${bonusStr}`
+  return `${bestStr} · ${worstStr}${bonusStr}`
 }
 
 // ─── Circular score ring ──────────────────────────────────────────────────────
@@ -174,6 +179,106 @@ function CtaButton({ deal }: { deal: ScoredDeal }) {
   )
 }
 
+// ─── Daily Focus helpers ───────────────────────────────────────────────────────
+/** Generates a concrete, one-sentence action phrase based on a deal's scoring signals. */
+function getActionPhrase(deal: ScoredDeal): string {
+  if (deal.stagnation.isStagnant && deal.deal_stage === 'Engaging') {
+    return `Ligar agora — parado há ${deal.stagnation.daysEngaging}d (P75 = ${deal.stagnation.p75ThresholdDays}d)`
+  }
+  if (deal.scoreBreakdown.recency === 0) {
+    return 'Retomar contato urgente — sem atividade detectada recentemente'
+  }
+  if (deal.score >= 80 && deal.deal_stage === 'Engaging' && !deal.stagnation.isStagnant) {
+    return 'Avançar para proposta formal — deal quente com win rate alto'
+  }
+  if (deal.score >= 70 && deal.deal_stage === 'Prospecting') {
+    return 'Mover para Engaging — score alto indica momento ideal para avançar'
+  }
+  if (deal.accountLoyaltyApplied && deal.score >= 60) {
+    return 'Cliente recorrente com score sólido — preparar proposta personalizada'
+  }
+  return 'Priorizar esta semana — maior potencial no pipeline atual'
+}
+
+/** Returns the single highest-impact action a seller can take to raise this deal's score. */
+function getScoreUpgradeTip(deal: ScoredDeal): string {
+  if (deal.stagnation.isStagnant) {
+    const recovery = Math.round(deal.score * 0.25)
+    return `Reativar este deal removeria a penalidade de 20% (≈+${recovery} pts)`
+  }
+  if (deal.scoreBreakdown.recency < 30) {
+    const delta = Math.round((100 - deal.scoreBreakdown.recency) * 0.25)
+    return `Um contato hoje elevaria a recência para 100 (≈+${delta} pts)`
+  }
+  if (deal.deal_stage === 'Prospecting') {
+    return 'Avançar para Engaging adicionaria +8 pts de estágio no score'
+  }
+  if (deal.scoreBreakdown.winRate < 40) {
+    return 'Compartilhar cases de sucesso do setor pode elevar o win rate projetado'
+  }
+  return 'Deal bem posicionado — mantenha a cadência de contato ativa'
+}
+
+// ─── Daily Focus card ─────────────────────────────────────────────────────────
+/**
+ * Surfaces the 3 most urgent deals from the full pipeline (ignores active filters).
+ * Urgency = score + bonus for stagnation (+20) + bonus for zero recency (+10).
+ */
+function DailyFocus({ deals }: { deals: ScoredDeal[] }) {
+  if (deals.length === 0) return null
+
+  const top3 = [...deals]
+    .sort((a, b) => {
+      const urgA = a.score + (a.stagnation.isStagnant ? 20 : 0) + (a.scoreBreakdown.recency < 20 ? 10 : 0)
+      const urgB = b.score + (b.stagnation.isStagnant ? 20 : 0) + (b.scoreBreakdown.recency < 20 ? 10 : 0)
+      return urgB - urgA
+    })
+    .slice(0, 3)
+
+  return (
+    <div className="glass-card p-4 border border-blue-100/60" style={{ background: 'linear-gradient(135deg, rgb(239 246 255 / 0.6), rgb(255 255 255 / 0.8))' }}>
+      <div className="flex items-center gap-2 mb-3.5">
+        <Flame size={14} className="text-blue-500" />
+        <p className="text-sm font-bold text-slate-700 tracking-tight">Daily Focus</p>
+        <p className="text-xs text-slate-400">— 3 deals para agir agora</p>
+      </div>
+      <div className="space-y-3">
+        {top3.map((deal, i) => {
+          const action = getActionPhrase(deal)
+          const rankColors = [
+            'bg-blue-600 text-white',
+            'bg-slate-300 text-slate-700',
+            'bg-slate-100 text-slate-400',
+          ]
+          const scoreColor =
+            deal.score >= 80 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' :
+            deal.score >= 50 ? 'text-amber-700 bg-amber-50 border-amber-200' :
+                               'text-rose-700 bg-rose-50 border-rose-200'
+          return (
+            <div key={deal.opportunity_id} className="flex items-start gap-2.5">
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5 ${rankColors[i]}`}>
+                {i + 1}
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="text-sm font-semibold text-slate-800 truncate">{deal.account}</span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${scoreColor}`}>
+                    {deal.score}
+                  </span>
+                  {deal.stagnation.isStagnant && (
+                    <Clock size={11} className="text-amber-400 flex-shrink-0" />
+                  )}
+                </div>
+                <p className="text-[11px] text-slate-500 leading-snug">{action}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ─── Deal card ────────────────────────────────────────────────────────────────
 function DealCard({ deal }: { deal: ScoredDeal }) {
   const [expanded, setExpanded] = useState(false)
@@ -187,7 +292,7 @@ function DealCard({ deal }: { deal: ScoredDeal }) {
   const insight = getScoreJustification(deal)
 
   return (
-    <div className={`glass-card p-4 transition-all ${cardBorder}`}>
+    <div className={`glass-card p-4 transition-all group ${cardBorder}`}>
       {/* Stagnation warning */}
       {deal.stagnation.isStagnant && (
         <div className="flex items-center gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-200/60 rounded-xl px-3 py-1.5 mb-3">
@@ -217,6 +322,21 @@ function DealCard({ deal }: { deal: ScoredDeal }) {
                 <Star size={10} />Manager top
               </span>
             )}
+            {deal.accountLoyaltyApplied && (
+              <span className="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <Award size={10} />Cliente recorrente
+              </span>
+            )}
+            {deal.isHotSector && (
+              <span className="text-xs text-orange-600 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <Flame size={10} />Setor Quente
+              </span>
+            )}
+            {deal.isHighConversionProduct && (
+              <span className="text-xs text-teal-600 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <Sparkles size={10} />Produto Alta Conversão
+              </span>
+            )}
           </div>
 
           {/* Score insight — top 2 factors */}
@@ -234,6 +354,16 @@ function DealCard({ deal }: { deal: ScoredDeal }) {
           </div>
 
           <CtaButton deal={deal} />
+
+          {/* Score upgrade tip — visible on hover or when expanded */}
+          <div className={`flex items-start gap-1.5 text-[10px] rounded-lg px-2.5 py-1.5 mt-2 border transition-opacity duration-150 ${
+            expanded
+              ? 'opacity-100 text-indigo-600 bg-indigo-50 border-indigo-100'
+              : 'opacity-0 group-hover:opacity-100 text-indigo-500 bg-indigo-50/70 border-indigo-100/70'
+          }`}>
+            <Sparkles size={10} className="flex-shrink-0 mt-0.5" />
+            <span>Dica: {getScoreUpgradeTip(deal)}</span>
+          </div>
         </div>
 
         <button
@@ -254,17 +384,40 @@ function DealCard({ deal }: { deal: ScoredDeal }) {
             <ScoreBar label="Recência do engajamento" value={deal.scoreBreakdown.recency} color="bg-emerald-400" />
             <ScoreBar label="Eficiência de valor" value={deal.scoreBreakdown.valueEfficiency} color="bg-amber-400" />
             <ScoreBar label="Estágio do deal" value={deal.scoreBreakdown.stageWeight} color="bg-purple-400" />
+            {deal.accountLoyaltyApplied && (
+              <div className="flex items-center gap-2 text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-2.5 py-1.5">
+                <Award size={11} />
+                Bônus Account Loyalty: cliente com histórico de compra (+15 pts)
+              </div>
+            )}
             {deal.managerBonusApplied && (
               <div className="flex items-center gap-2 text-xs text-violet-600 bg-violet-50 border border-violet-100 rounded-lg px-2.5 py-1.5">
                 <Star size={11} />
-                Bônus: manager da região com win rate acima da média (+10 pts)
+                Bônus Suporte Gerencial: manager acima da média (+10 pts)
+              </div>
+            )}
+            {deal.productSeriesWinRate !== null && (
+              <div className={`flex items-center gap-2 text-xs rounded-lg px-2.5 py-1.5 border ${deal.isHighConversionProduct ? 'text-teal-700 bg-teal-50 border-teal-100' : 'text-slate-500 bg-slate-50 border-slate-100'}`}>
+                <Sparkles size={11} />
+                Série {deal.series}: {Math.round(deal.productSeriesWinRate * 100)}% win rate histórico
+                {deal.isHighConversionProduct ? ' · Alta Conversão' : ' · Baixa Conversão'}
               </div>
             )}
           </div>
           <div className="text-xs text-slate-400 space-y-2">
             <div className="flex justify-between"><span>Opportunity ID</span><span className="text-slate-700 font-mono text-[11px]">{deal.opportunity_id}</span></div>
             <div className="flex justify-between"><span>Manager</span><span className="text-slate-700">{deal.manager}</span></div>
-            <div className="flex justify-between"><span>Regional</span><span className="text-slate-700">{deal.regional_office}</span></div>
+            <div className="flex justify-between">
+              <span>Regional</span>
+              <span className="text-slate-700 flex items-center gap-1.5">
+                {deal.regional_office}
+                {deal.regionalWinRate !== null && (
+                  <span className="text-[10px] font-semibold text-blue-500 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded">
+                    {Math.round(deal.regionalWinRate * 100)}% WR
+                  </span>
+                )}
+              </span>
+            </div>
             <div className="flex justify-between"><span>Série do produto</span><span className="text-slate-700">{deal.series}</span></div>
             <div className="flex justify-between"><span>Previsão de fechamento</span><span className="text-slate-700">{deal.close_date || '—'}</span></div>
             <div className="flex justify-between">
@@ -450,6 +603,9 @@ export default function App() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6 space-y-5">
+        {/* Daily Focus — top 3 urgent deals */}
+        <DailyFocus deals={deals} />
+
         {/* KPI Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <StatCard icon={<Building2 size={17} />} label="Deals filtrados" value={filtered.length}

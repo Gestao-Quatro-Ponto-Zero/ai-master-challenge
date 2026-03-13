@@ -55,6 +55,29 @@ export interface DealScoreInput {
    * historical win rate above the cross-manager average. Value: 10 points.
    */
   managerBonus?: number
+  /**
+   * Product series name — used to look up the series win rate multiplier.
+   */
+  series: string
+  /**
+   * Historical win rate for the deal's product series (0–1).
+   * Null when the series has < 3 closed deals (avoids small-sample bias).
+   * Applied as a multiplier to baseScore: multiplier = 0.85 + seriesWinRate × 0.30
+   * mapping 0% → ×0.85 (penalty), 50% → ×1.00 (neutral), 100% → ×1.15 (bonus).
+   */
+  seriesWinRate: number | null
+  /**
+   * +15 flat bonus when the account has at least one historical Won deal (Account Loyalty).
+   * Signals the prospect has already committed to a purchase before.
+   */
+  accountLoyaltyBonus: number
+  /**
+   * Historical win rate (0–1) for the deal's regional office.
+   * Null when the region has < 5 closed deals. Mentioned in justification to give authority.
+   */
+  regionalWinRate: number | null
+  /** Regional office name — used to label the regional win rate in justification. */
+  regionalOffice: string
 }
 
 /** Output of computeDealScore — fully self-contained scoring result. */
@@ -144,10 +167,10 @@ export function computeP75DaysToClose(pipeline: PipelineRow[]): number {
  * @param engageDateStr - ISO date string from engage_date column.
  * @returns Integer 0–100.
  */
-export function scoreRecency(engageDateStr: string): number {
+export function scoreRecency(engageDateStr: string, today: Date): number {
   const daysAgo = Math.max(
     0,
-    (Date.now() - new Date(engageDateStr).getTime()) / 86_400_000
+    (today.getTime() - new Date(engageDateStr).getTime()) / 86_400_000
   )
   return Math.max(0, Math.round(100 - (daysAgo / 180) * 100))
 }
@@ -228,10 +251,10 @@ export function scoreWinRate(
  * @param engageDateStr - ISO date string from engage_date column.
  * @returns { score: 0–100, label: human-readable value tier }.
  */
-export function scoreValueEfficiency(listPrice: number, engageDateStr: string): { score: number; label: string } {
+export function scoreValueEfficiency(listPrice: number, engageDateStr: string, today: Date): { score: number; label: string } {
   const daysInPipeline = Math.max(
     1,
-    (Date.now() - new Date(engageDateStr).getTime()) / 86_400_000
+    (today.getTime() - new Date(engageDateStr).getTime()) / 86_400_000
   )
   const valuePerDay = listPrice / daysInPipeline
   const score = Math.min(100, Math.round((valuePerDay / 100) * 100))
@@ -293,7 +316,11 @@ export function buildJustification(
   stage: string,
   totalScore: number,
   stagnation: StagnationInfo,
-  managerBonusApplied?: boolean
+  managerBonusApplied?: boolean,
+  accountLoyaltyApplied?: boolean,
+  seriesWinRate?: number | null,
+  regionalWinRate?: number | null,
+  regionalOffice?: string,
 ): string {
   const parts: string[] = []
 
@@ -312,8 +339,25 @@ export function buildJustification(
     )
   }
 
+  if (accountLoyaltyApplied) {
+    parts.push('conta com histórico de compra anterior (+15 pts lealdade)')
+  }
+
   if (managerBonusApplied) {
     parts.push('manager da região com win rate acima da média (+10 pts)')
+  }
+
+  if (seriesWinRate !== null && seriesWinRate !== undefined) {
+    const pct = Math.round(seriesWinRate * 100)
+    if (seriesWinRate >= 0.55) {
+      parts.push(`série do produto com alta conversão histórica (${pct}% win rate)`)
+    } else if (seriesWinRate <= 0.35) {
+      parts.push(`série do produto com baixa conversão (${pct}% win rate) — multiplicador aplicado`)
+    }
+  }
+
+  if (regionalWinRate !== null && regionalWinRate !== undefined && regionalOffice) {
+    parts.push(`regional ${regionalOffice} fecha ${Math.round(regionalWinRate * 100)}% dos deals historicamente`)
   }
 
   const prefix =
@@ -343,11 +387,15 @@ export function buildJustification(
  * @returns Composite score, per-component breakdown, stagnation status, and justification.
  */
 export function computeDealScore(input: DealScoreInput): DealScoreResult {
-  const { row, listPrice, byAccount, byAgent, p75ThresholdDays, today, managerBonus = 0 } = input
+  const {
+    row, listPrice, byAccount, byAgent, p75ThresholdDays, today,
+    managerBonus = 0, series: _series, seriesWinRate, accountLoyaltyBonus = 0,
+    regionalWinRate, regionalOffice = '—',
+  } = input
 
-  const recency = scoreRecency(row.engage_date)
+  const recency = scoreRecency(row.engage_date, today)
   const { score: winRate, label: winRateLabel } = scoreWinRate(row.account, row.sales_agent, byAccount, byAgent)
-  const { score: valueEfficiency, label: valueLabel } = scoreValueEfficiency(listPrice, row.engage_date)
+  const { score: valueEfficiency, label: valueLabel } = scoreValueEfficiency(listPrice, row.engage_date, today)
   const stageWeightScore = getStageWeight(row.deal_stage)
 
   const baseScore = Math.round(
@@ -357,18 +405,29 @@ export function computeDealScore(input: DealScoreInput): DealScoreResult {
     stageWeightScore * 0.15
   )
 
+  // Product series win-rate multiplier: maps 0%→×0.85, 50%→×1.00, 100%→×1.15
+  const seriesMultiplier = seriesWinRate !== null && seriesWinRate !== undefined
+    ? 0.85 + seriesWinRate * 0.30
+    : 1.0
+  const adjustedBase = Math.round(baseScore * seriesMultiplier)
+
   const daysEngaging = Math.round((today.getTime() - new Date(row.engage_date).getTime()) / 86_400_000)
   const isStagnant = row.deal_stage === 'Engaging' && daysEngaging > p75ThresholdDays
   const stagnation: StagnationInfo = { isStagnant, daysEngaging, p75ThresholdDays }
 
-  // Stagnation penalty applied first, then manager bonus (flat add, capped at 100)
-  const penalised = isStagnant ? Math.round(baseScore * 0.8) : baseScore
-  const score = Math.min(100, penalised + managerBonus)
+  // Order: series adjustment → stagnation penalty → flat bonuses → clamp 1–99
+  const penalised = isStagnant ? Math.round(adjustedBase * 0.8) : adjustedBase
+  const withBonuses = penalised + managerBonus + accountLoyaltyBonus
+  // Clamp to 1–99 so no deal shows 0 (ignored) or 100 (falsely perfect) from edge cases
+  const score = Math.max(1, Math.min(99, withBonuses))
 
   return {
     score,
     scoreBreakdown: { winRate, recency, valueEfficiency, stageWeight: stageWeightScore },
     stagnation,
-    justification: buildJustification(recency, winRateLabel, valueLabel, row.deal_stage, score, stagnation, managerBonus > 0),
+    justification: buildJustification(
+      recency, winRateLabel, valueLabel, row.deal_stage, score, stagnation,
+      managerBonus > 0, accountLoyaltyBonus > 0, seriesWinRate, regionalWinRate, regionalOffice,
+    ),
   }
 }
