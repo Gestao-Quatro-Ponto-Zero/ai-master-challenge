@@ -197,21 +197,57 @@ Rastrear como o score de cada deal evolui ao longo do tempo — identifica padr�
 
 ### O que eu adicionei que a IA sozinha não faria
 
-1. **A lógica dos pesos do score** — calibrei A=30, B=25, C=25, D=20 com base na leitura dos dados reais. Um LLM sem os dados chutaria pesos genéricos; eu soube dar peso 25 ao produto porque vi que GTK 500 custa 486× mais que MG Special.
+1. **A lógica dos pesos do score** — os pesos A=30, B=25, C=25, D=20 foram calibrados com base na minha análise dos dados, não gerados pela IA. Sem olhar os dados, um LLM não saberia que o GTK 500 representa 486× mais receita que o MG Special — isso justificou o peso 25 ao componente Produto.
 
-2. **A decisão de usar Slack** — entendo que gestores de vendas B2B usam Slack como canal primário de operação. A IA sugeriu email com SMTP; eu corrigi para webhook Slack.
+2. **O KPI "Saudável (≤30d)"** — a IA propôs "Alta prioridade (score ≥70)" como card de KPI, mas esse critério é cross-cutting e se sobrepõe aos grupos de stage (um zumbi com conta Enterprise também teria score ≥70). Substituí por "Saudável (≤30d)" para que os 4 grupos somassem exatamente o total — gestores não confiam em números que não fecham.
 
-3. **O KPI "Saudável (≤30d)"** — a IA gerou "Alta prioridade (score ≥70)" que se sobrepunha aos grupos de stage. Eu identifiquei o problema de comunicação para o gestor (números que não fecham geram desconfiança) e propus o grupo que fechava o funil matematicamente.
+3. **O foco no gestor** — o challenge menciona "vendedor", mas com 35 vendedores e 2.092 deals, a ferramenta mais útil é para quem gerencia o portfólio. Essa decisão mudou toda a arquitetura da interface (visão de equipe, ranking por agente, filtros cruzados).
 
-4. **O foco no gestor** — o challenge diz "vendedor", mas com 35 vendedores e 2.092 deals, a ferramenta mais útil é para quem gerencia o portfólio. Essa decisão de produto mudou toda a arquitetura da interface.
-
-5. **O AI Coach com contexto de pipeline** — não pedi só para a IA analisar o deal; mandei os benchmarks do pipeline junto (ciclo médio 52d, threshold de score ≥70) para que a análise fosse relativa ao contexto real, não genérica.
+4. **O AI Coach com contexto de pipeline** — não enviei apenas os dados do deal para o Gemini. Incluí os benchmarks do pipeline (ciclo médio 52d, limiar score ≥70) para que a análise fosse relativa ao contexto real do time, não uma análise genérica desconectada dos dados.
 
 ### Evidências
 
 - **Git history:** https://github.com/oetnegro/lead-scorer-g4 — commits descritivos mostrando a evolução de MVP básico até Coach de IA e responsividade mobile (~30 iterações)
 - **Live app:** https://lead-scorer-g4.vercel.app — funcional em produção com dados reais
 - **Vídeo demo:** https://youtu.be/6IO9yX8Lra8
+
+---
+
+## Setup
+
+### Produção (sem instalar nada)
+
+Acesse https://lead-scorer-g4.vercel.app e use um dos tokens:
+- `g4admin2024` → perfil Admin (acesso total + painel de configuração)
+- `g4viewer2024` → perfil Viewer (pipeline + insights + equipe)
+
+### Rodar localmente
+
+```bash
+# 1. Instalar dependências
+npm install
+
+# 2. Configurar variáveis de ambiente
+cp solution/.env.example .env.local
+# Preencher: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY,
+# SUPABASE_SERVICE_ROLE_KEY, ADMIN_TOKEN, VIEWER_TOKEN, GEMINI_API_KEY
+
+# 3. Rodar
+npm run dev
+# Acesse http://localhost:3000
+```
+
+### Tabela Supabase (integração Slack)
+```sql
+create table if not exists app_settings (
+  key        text primary key,
+  value      text not null,
+  updated_at timestamptz default now()
+);
+alter table app_settings enable row level security;
+```
+
+**Stack:** Next.js 14 (App Router) · TypeScript · Tailwind CSS · Supabase · Gemini 2.0 Flash · Vercel
 
 ---
 
