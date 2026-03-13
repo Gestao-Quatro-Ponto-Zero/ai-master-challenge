@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Luiz Fernando Mendes
-- **LinkedIn:** [[Seu Link de Perfil Aqui]](https://www.linkedin.com/in/luizfmmendes/)
+- **LinkedIn:** [[Link de Perfil]](https://www.linkedin.com/in/luizfmmendes/)
 - **Challenge escolhido:** Lead Scorer Inteligente (RevOps & Data Science)
 
 ---
