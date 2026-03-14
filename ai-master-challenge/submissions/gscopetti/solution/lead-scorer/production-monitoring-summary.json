@@ -1,0 +1,55 @@
+{
+  "timestamp": "2026-03-14T18:23:33.738Z",
+  "totalDeals": 6711,
+  "totalWon": 4238,
+  "baselineWinRate": 0.6315005215318135,
+  "byTier": {
+    "HOT": {
+      "total": 0,
+      "won": 0,
+      "lost": 0,
+      "winRate": 0,
+      "precision": 0,
+      "revenue": 0,
+      "avgValue": 0
+    },
+    "WARM": {
+      "total": 199,
+      "won": 131,
+      "lost": 68,
+      "winRate": 0.6582914572864321,
+      "precision": 0.6582914572864321,
+      "revenue": 710409,
+      "avgValue": 5422.969465648855
+    },
+    "COOL": {
+      "total": 5056,
+      "won": 3188,
+      "lost": 1868,
+      "winRate": 0.6305379746835443,
+      "precision": 0.6305379746835443,
+      "revenue": 8608953,
+      "avgValue": 2700.4244040150566
+    },
+    "COLD": {
+      "total": 1456,
+      "won": 919,
+      "lost": 537,
+      "winRate": 0.6311813186813187,
+      "precision": 0.6311813186813187,
+      "revenue": 686172,
+      "avgValue": 746.6507072905332
+    }
+  },
+  "lift": {
+    "hot": 0,
+    "warm": 1.0424242496104874,
+    "combined": 1.0424242496104874
+  },
+  "roi": {
+    "topTierAttempts": 199,
+    "topTierWins": 131,
+    "topTierRevenue": 710409,
+    "revenuePerAttempt": "3570"
+  }
+}
