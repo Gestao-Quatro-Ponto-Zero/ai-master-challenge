@@ -294,7 +294,7 @@ def main():
         if selected_id:
             row     = filtered[filtered["opportunity_id"] == selected_id].iloc[0]
             payload = build_signals_for_deal(row, filtered)
-            render_deal_insight_panel(row, payload)
+            render_deal_insight_panel(row, payload, df)
         else:
             st.info("← Clique em uma linha da tabela para ver a análise do deal.")
 
@@ -372,85 +372,50 @@ def main():
             st.info("Nenhum deal corresponde aos filtros selecionados.")
 
     with col_dist:
-        st.subheader("Saúde do Pipeline")
-        # Agregar quantidade de deals, receita esperada e probabilidade média por rating
-        rating_agg = (
-            filtered.groupby("deal_rating")
-            .agg(
-                Quantidade=("opportunity_id", "count"),
-                ReceitaEsperada=("expected_revenue", "sum"),
-                WinProb=("win_probability", "mean"),
-            )
-            .reindex(RATING_ORDER)
-            .fillna(0)
-            .reset_index()
-        )
-        rating_agg["Quantidade"] = rating_agg["Quantidade"].astype(int)
-        rating_agg["Receita Esperada"] = rating_agg["ReceitaEsperada"].apply(lambda v: f"${v:,.0f}")
-        # Texto exibido após a barra: receita esperada + probabilidade média + quantidade
-        rating_agg["label_text"] = rating_agg.apply(
-            lambda r: f"${r['ReceitaEsperada']/1000:.0f}k · {r['WinProb']*100:.0f}% ({r['Quantidade']})", axis=1
-        )
-        fig2 = px.bar(
-            rating_agg,
-            y="deal_rating",
-            x="Quantidade",
-            color="deal_rating",
-            color_discrete_map=RATING_COLORS,
-            category_orders={"deal_rating": RATING_ORDER},
-            orientation="h",
-            text="label_text",
-            height=240,
-        )
-        fig2.update_traces(textposition="outside", cliponaxis=False)
-        fig2.update_layout(
-            showlegend=False,
-            plot_bgcolor="rgba(0,0,0,0)",
-            paper_bgcolor="rgba(0,0,0,0)",
-            font=_CHART_FONT,
-            margin=dict(l=10, r=160, t=5, b=15),
-            xaxis_title="",
-            yaxis_title="",
-            yaxis=dict(autorange="reversed"),
-        )
-        st.plotly_chart(fig2, theme="streamlit", use_container_width=True)
-
-        # Risco do pipeline (mesmo coluna direita, abaixo da saúde)
+        st.subheader("Saúde por Rating")
         if "deal_health_status" in filtered.columns:
-            st.subheader("Risco do Pipeline")
-            health_order = ["Saudável", "Atenção", "Em risco"]
-            health_colors = {"Saudável": "#2e7d32", "Atenção": "#f9a825", "Em risco": "#c62828"}
-            health_counts = (
-                filtered["deal_health_status"]
-                .value_counts()
-                .reindex(health_order)
+            _health_order  = ["Saudável", "Atenção", "Em risco"]
+            _health_colors = ["#2e7d32", "#f9a825", "#c62828"]
+            rating_health = (
+                filtered.groupby(["deal_rating", "deal_health_status"])["opportunity_id"]
+                .count()
+                .unstack("deal_health_status")
+                .reindex(RATING_ORDER)
+                .reindex(columns=_health_order)
                 .fillna(0)
                 .astype(int)
-                .reset_index()
             )
-            health_counts.columns = ["Status", "Quantidade"]
-            fig3 = px.bar(
-                health_counts,
-                y="Status",
-                x="Quantidade",
-                color="Status",
-                color_discrete_map=health_colors,
-                orientation="h",
-                text="Quantidade",
-                height=160,
+            st.bar_chart(rating_health, color=_health_colors, height=420)
+        else:
+            rating_counts = (
+                filtered.groupby("deal_rating")["opportunity_id"]
+                .count()
+                .reindex(RATING_ORDER)
+                .fillna(0)
+                .astype(int)
+                .to_frame("Deals")
             )
-            fig3.update_traces(textposition="outside")
-            fig3.update_layout(
-                showlegend=False,
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                font=_CHART_FONT,
-                margin=dict(l=10, r=40, t=5, b=15),
-                xaxis_title="",
-                yaxis_title="",
-                yaxis=dict(autorange="reversed"),
-            )
-            st.plotly_chart(fig3, theme="streamlit", use_container_width=True)
+            st.bar_chart(rating_counts, height=420)
+
+    # ── Evolução mensal full-width ────────────────────────────────────────────
+    if "engage_date" in filtered.columns and "deal_health_status" in filtered.columns:
+        st.subheader("Evolução Mensal do Pipeline")
+        _health_order  = ["Saudável", "Atenção", "Em risco"]
+        _health_colors = ["#2e7d32", "#f9a825", "#c62828"]
+        monthly = (
+            filtered
+            .assign(mes=pd.to_datetime(filtered["engage_date"], errors="coerce")
+                        .dt.to_period("M").astype(str))
+            .groupby(["mes", "deal_health_status"])["opportunity_id"]
+            .count()
+            .unstack("deal_health_status")
+            .reindex(columns=_health_order)
+            .fillna(0)
+            .astype(int)
+            .sort_index()
+        )
+        if not monthly.empty:
+            st.bar_chart(monthly, color=_health_colors, height=300)
 
 
 if __name__ == "__main__":
