@@ -62,7 +62,7 @@ Analisei os dados de suporte (Quase 8.5K tickets operacionais + 48K tickets IT) 
 - A base RAG depende da qualidade dos dados históricos; textos template do DS1 limitam o valor semântico
 - O protótipo usa banco in-memory (dados não persistem entre reinicializações)
 - Auto-assignment assume agentes online; em produção, integração com status real seria necessária
-- Tentei conectar API versão paga mas o Google Cloud retornou erro diversas vezes e não consegui (Afeta rate limit)
+- Tentei conectar API versão paga mas o Google Cloud retornou erro diversas vezes e não consegui (Afeta rate limit do uso)
 
 ---
 
@@ -74,35 +74,39 @@ Analisei os dados de suporte (Quase 8.5K tickets operacionais + 48K tickets IT) 
 
 | Ferramenta | Para que usou |
 |------------|--------------|
+| Google AI Studio | Utilizei para gerar hipóteses iniciais de como resolver o problema do desafio mas não ajudou muito |
 | Cursor (Claude Opus 4.6 & GPT 5.3 Codex Ultra High) | Desenvolvimento completo: planejamento, análise de dados, backend FastAPI, frontend Next.js, integração Gemini, documentação, revisão, segurança |
 | Google Gemini 3.1 Flash Lite | Motor LLM do protótipo: classificação, resumo, soluções, respostas |
 | Google Gemini 2 Embedding | Embeddings para RAG e detecção de duplicatas |
 
 ### Workflow
 
-1. **Planejamento**: Li os READMEs do desafio e discuti 3 hipóteses de solução com a IA. Escolhi combinar dashboard + API técnica.
+1. **Planejamento**: Li os READMEs do desafio e do Challenge 02 e discuti 3 hipóteses de solução dentro do Cursor para gerar o plano (Depois de ter gerado algumas ideias dentro do Google AI Studio). Escolhi combinar dashboard + API técnica que foi uma ideia que sugeri junto com uma outra que a IA citou (Google AI Studio não agregou muito mas iniciou a tração na ideia).
 2. **Iteração do escopo**: Refinei requisitos em múltiplas conversas, adicionei sistema de 3 níveis, governança, alertas, duas interfaces diferentes e muito mais.
-3. **Backend v1**: Construí API FastAPI com classificação HuggingFace (DeBERTa) e frontend Streamlit
-4. **Frontend refactor**: Migrei para Next.js por melhor UX a IA ajudou na criação das páginas.
-5. **Integração Gemini**: Substituí HuggingFace pelo Gemini como motor principal, mantendo fallback
-6. **Notebook**: Criei diagnóstico operacional com EDA completa, a IA sugeriu análises e verifiquei cada insight
-7. **Produção**: Adicionei CRUD, upload, webhook, auto-assignment para tornar viável com dados reais
-8. **Documentação**: Gerei proposta executiva e README com base nos dados do diagnóstico para realizar entrega final
+3. **Backend v1**: Construí API FastAPI com classificação HuggingFace (DeBERTa) e frontend (Não ficou bom por conta da usabilidade e delay, qualidade ruim).
+4. **Frontend refactor v2**: Migrei para Next.js por melhor UX a IA ajudou na criação das páginas mas a solução não estava completa ainda, era um esqueleto que poderia ser adaptado conforme o worfklow do Desafio.
+5. **Integração Gemini**: Substituí HuggingFace pelo Gemini como motor LLM principal, mantendo fallback em caso de problemas (Mitigar)
+6. **Notebook EDA dos dados**: Criei diagnóstico operacional com EDA completa, a IA gerou análises e verifiquei cada insight encontrado no cruzamento dos dois datasets (Tempo médio de atendimento, meios de comunicação, quantidade de tickets, níveis de complexidade) e foi assim que vislumbrei 100% a ideia da plataforma que citei nos passos 3 e 4 (Confirmou ainda mais a ideia).
+7. **Produção & Adaptação**: Adicionei CRUD, upload, webhook, auto-assignment para tornar viável com dados reais com dados de arquivos CSV & XLSX ou de ferramentas como SalesForce ou Zendesk (Fácil migração).
+8. **Documentação final**: Gerei proposta de automação e diagnóstico final e README com base nos dados do notebook EDA para realizar entrega final e reforçar minhas decisões do porque a automação era uma potencial solução para o problema (Data-backed).
 
 ### Onde a IA errou e como corrigi
 
-- **Errou ao mensurar impactos para empresa**: Não conseguiu captar muito bem números de impactos e gastos 
-- **Modelos antigos e errados**: Confundiu modelos utilizados com modelos LLM e embeddings mais antigos
-- **Bug de filtro**: Frontend crashava ao filtrar tickets por nível médio ou crítico faltava um import de ícone (`Inbox`)
+- **Decisão sobre o que criar e hipotéses iniciais**: No inicio, acabei lendo os documentos disponíveis no repo do Desafio AI Master, para compreender mais a fundo o objetivo do desafio e especificamente sobre o Challenge 02 (No qual eu selecionei para resolver) sobre qual solução eu poderia construir para resolver o problema. Não comecei a construir diretamente no Cursor pois eu queria utilizar esse "recuo mental" para avaliar a situação antes de tentar construir algo sem sentido. Como já tenho experiência com projetos e soluções de IA para empresas, não foi muito dificil surgir a ideia de ter uma ferramenta com dashboard de volume de tickets, diferentes níveis de acesso e automação de tickets nível "LOW" (Wedge case) com IA e tickets nível "Medium" mais simples com IA + aviso para agente de suporte.
+- **Decisão sobre automação (O que automatizar vs o que NÃO automatizar)**: A IA não compreendeu muito bem o potencial de automação dos problemas de suporte ao cliente nos dados providenciados (Dataset), foi onde analisei mais profundamente para encontrar um margem de automação que fosse o mais proximo da realidade e o que deve ser automatizado e o que não deve. Utilizando principíos da estratégia "Wedge case" para automações, onde o foco inicial para ter o maior impacto (ROI) e de forma mais rapida são **tarefas de baixo nível de complexidade mas que possuem alto volume**, como tickets de suporte nivel "Low" (Fontes para referência: https://www.linkedin.com/posts/jasonshuman_great-ai-wedges-dont-need-to-be-hard-to-activity-7343254072042438658-AedB/, https://www.gladly.ai/blog/customer-service-automation-a-complete-guide/, https://get.mem.ai/blog/automation-of-tasks-how-to-be-more-efficient-at-work)
+- **Errou ao mensurar impactos para a empresa**: Não conseguiu captar muito bem números de impactos e gastos e assim tive que utilizar minha experiência e intuição de análise de problemas e soluções para empresas para estimar melhor os impactos, evitando projeções muito agressivas e irreais mas também nem tão pessimistas (Utilizei dados comuns do mercado para a especifidade de automação para suporte ao cliente). 
+- **Modelos antigos e errados**: Confundiu modelos utilizados com modelos LLM e embeddings mais antigos e assim tive que corrigir e esterçar a IA para os modelos mais recentes e com melhor qualidade (Gemini 2 Embedding que está sendo utilizado lançou no mesmo dia que entreguei meu projeto).
+- **Bug de filtro**: Frontend crashava ao filtrar tickets por nível médio ou crítico faltava um import de ícone (`Inbox`) e para resolver, esterçei a IA para corrigir o bug e tudo funcionou sem problemas após o resultado final e adiante.
 
 ### O que eu adicionei que a IA sozinha não faria
 
+**Pivotação da solução**: Após a primeira versão do esqueleto da solução (Nem perto da entrega final) acabei percebendo que não daria certo por conta de problemas na usabilidade, delay, qualidade técnica em geral (Versão com Streamlit). Assim, decidi pivotar e construir uma solução mais elevada tecnicamente e com outros frameworks (Next.Js e FastAPI) que facilitaria a versão esqueleto estar mais "robusta" para ser lapidada daquele momento e adiante de acordo com novas ideias e relacionar com os dados do que automatizar (Como um módulo pronto para ser adaptado para o objetivo).
 - **Decisão de usar LLM + RAG**: Escolha baseada em IA generativa avançada e em custo-benefício real (~R$ 0,035/ticket vs modelos maiores)
-- **Sistema de 3 níveis**: Conceito de "onde IA resolve, onde IA auxilia, onde humano decide" — a IA tenderia a automatizar tudo
+- **Sistema de 3 níveis**: Conceito de "onde IA resolve, onde IA auxilia, onde humano decide", a IA tenderia a automatizar tudo
 - **Sistema de login**: Sistema de login e proteção de cada conta segmentando acesso de diferentes pessoas a diferentes dados
 - **Governança com alertas**: Ideia de notificar gestores quando volume sobre tickets específicos excedem limites
-- **Interpretação dos dados e impacto**: IA não conseguiu concluir muito bem sobre mensurar impacto e custos, acabei fazendo eu mesmo e passando para ela
-- **Raciocinio sobre processos da empresa**: Por mais que a IA tente, ela ainda não consegue entender e captar 100% de um processo diário real dentro de uma empresa por não conseguir viver de forma física (Ainda)
+- **Interpretação dos dados e impacto**: IA não conseguiu concluir muito bem sobre mensurar impacto e custos, acabei fazendo eu mesmo e passando para ela de acordo com minha experiência em projetos de IA com empresas.
+- **Raciocinio sobre processos da empresa na parte de suporte ao cliente**: Por mais que a IA tente, ela ainda não conseguiu entender e captar 100% de um processo diário real dentro de uma empresa por não conseguir viver de forma física e captar essas especifidades de interações humanas (Ainda)
 
 ---
 
