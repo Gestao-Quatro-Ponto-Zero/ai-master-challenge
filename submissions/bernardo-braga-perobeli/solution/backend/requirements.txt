@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pydantic
+python-jose[cryptography]
+python-dotenv
+python-multipart
+openpyxl
+google-genai
+transformers
+sentence-transformers
+torch
+pandas
+numpy
+scikit-learn
+joblib
