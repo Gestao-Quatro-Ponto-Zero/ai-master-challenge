@@ -27,6 +27,10 @@
 - chaves expostas, somente para o chanlege
 
 
+- modificar "O sistema identificou ..." para "o DealSignal identificou ..."
+- no card análise por IA o que é a Confiança: Baixo
+
+
 cd /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal
 python3 run_pipeline.py
 

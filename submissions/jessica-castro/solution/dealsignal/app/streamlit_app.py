@@ -37,6 +37,12 @@ from app.ui.filters import (  # noqa: E402
 from app.ui.formatters import _rating_badge  # noqa: E402
 from app.ui.signals_builder import build_display_dataframe, build_signals_for_deal  # noqa: E402
 from app.ui.ui_constants import APP_CSS, _CHART_FONT  # noqa: E402
+from app.ui.charts import (  # noqa: E402
+    render_top_opportunities,
+    render_pipeline_by_rating,
+    render_friction_distribution,
+    render_velocity_map,
+)
 
 # ── Page config (must be the first Streamlit call) ────────────────────────────
 st.set_page_config(page_title="DealSignal", layout="wide")
@@ -151,10 +157,10 @@ def main():
     }
 
     # ── Header: logo + caption ────────────────────────────────────────────────
-    hdr_logo, hdr_text = st.columns([1, 5])
+    hdr_logo, hdr_text = st.columns([1.6, 5])
     with hdr_logo:
         if logo_path.exists():
-            st.image(str(logo_path), width=200)
+            st.image(str(logo_path), use_container_width=True)
     with hdr_text:
         st.markdown(
             "<div style='padding-top:18px; font-size:13px; color:#888;'>"
@@ -213,12 +219,12 @@ def main():
         )
         table_df = table_df[mask].reset_index(drop=True)
     with col_left:
-        tbl_title, tbl_search, tbl_csv, tbl_pdf, tbl_info = st.columns([2.5, 3, 0.8, 0.8, 0.8])
+        tbl_title, tbl_search, tbl_csv, tbl_pdf, tbl_info = st.columns([3, 3, 1, 1, 1])
         with tbl_title:
             st.markdown(
-                f"#### Pipeline Completo "
-                f"<span style='font-size:12px; font-weight:400; color:#888;'>"
-                f"{len(table_df)} deals</span>",
+                f"#### Ranking de Oportunidades "
+                f"<span style='font-size:12px; font-weight:400; color:#888;'>",
+                
                 unsafe_allow_html=True,
             )
         with tbl_search:
@@ -259,13 +265,14 @@ def main():
             for i, v in enumerate(display_df["Conta"])
         ]
         display_df = display_df[
-            ["opportunity_id", "Rating", "Conta", "Produto", "Valor", "Rec. Esperada", "_win_prob"]
+            ["opportunity_id", "Rating", "Etapa", "Conta", "Produto", "Valor", "Rec. Esperada", "_win_prob"]
         ]
 
         event = st.dataframe(
             display_df,
             column_config={
                 "Rating":        st.column_config.TextColumn("Rating"),
+                "Etapa":         st.column_config.TextColumn("Etapa"),
                 "Conta":         st.column_config.TextColumn("Conta"),
                 "Produto":       st.column_config.TextColumn("Produto"),
                 "_win_prob":     None,
@@ -294,128 +301,24 @@ def main():
         if selected_id:
             row     = filtered[filtered["opportunity_id"] == selected_id].iloc[0]
             payload = build_signals_for_deal(row, filtered)
-            render_deal_insight_panel(row, payload, df)
+            render_deal_insight_panel(row, payload, df, auc=metadata.get("cv_auc"))
         else:
             st.info("← Clique em uma linha da tabela para ver a análise do deal.")
 
     st.divider()
 
-    # ── Gráficos analíticos ──────────────────────────────────────────────────
-    col_top10, col_dist = st.columns([3, 2])
+    # ── Gráficos operacionais 2×2 ─────────────────────────────────────────────
+    row1_left, row1_right = st.columns(2)
+    with row1_left:
+        render_top_opportunities(filtered)
+    with row1_right:
+        render_pipeline_by_rating(filtered)
 
-    with col_top10:
-        st.subheader("Top 50 Deals — Mapa de Oportunidades")
-        top50 = filtered.head(50).copy().reset_index(drop=True)
-
-        if not top50.empty:
-            top50["win_pct"] = (top50["win_probability"] * 100).round(1)
-            top50["label"] = top50["account"] + " — " + top50["product"]
-
-            fig = px.scatter(
-                top50,
-                x="win_pct",
-                y="effective_value",
-                size="expected_revenue",
-                color="deal_rating",
-                color_discrete_map=RATING_COLORS,
-                category_orders={"deal_rating": RATING_ORDER},
-                hover_name="label",
-                hover_data={
-                    "win_pct": False,
-                    "effective_value": False,
-                    "expected_revenue": False,
-                    "deal_rating": False,
-                    "Probabilidade": (":.1f%%", top50["win_pct"]),
-                    "Valor": (True, top50["effective_value"].apply(lambda v: f"${v:,.0f}")),
-                    "Receita Esperada": (True, top50["expected_revenue"].apply(lambda v: f"${v:,.0f}")),
-                    "Vendedor": (True, top50["sales_agent"]),
-                },
-                labels={
-                    "win_pct": "Probabilidade de Fechamento (%)",
-                    "effective_value": "Valor do Deal ($)",
-                },
-                height=420,
-            )
-            fig.update_traces(
-                marker=dict(
-                    opacity=0.8,
-                    line=dict(width=1, color="white"),
-                    sizemin=8,
-                    sizeref=2.0 * top50["expected_revenue"].max() / (40.0 ** 2),
-                    sizemode="area",
-                ),
-            )
-            fig.update_layout(
-                showlegend=True,
-                legend_title="Rating",
-                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                font=_CHART_FONT,
-                margin=dict(l=10, r=30, t=40, b=30),
-                xaxis=dict(
-                    range=[
-                        max(0, top50["win_pct"].min() - 5),
-                        min(105, top50["win_pct"].max() + 5),
-                    ],
-                    ticksuffix="%",
-                    gridcolor="rgba(128,128,128,0.12)",
-                ),
-                yaxis=dict(
-                    gridcolor="rgba(128,128,128,0.12)",
-                    tickprefix="$",
-                    tickformat=",",
-                ),
-            )
-            st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-        else:
-            st.info("Nenhum deal corresponde aos filtros selecionados.")
-
-    with col_dist:
-        st.subheader("Saúde por Rating")
-        if "deal_health_status" in filtered.columns:
-            _health_order  = ["Saudável", "Atenção", "Em risco"]
-            _health_colors = ["#2e7d32", "#f9a825", "#c62828"]
-            rating_health = (
-                filtered.groupby(["deal_rating", "deal_health_status"])["opportunity_id"]
-                .count()
-                .unstack("deal_health_status")
-                .reindex(RATING_ORDER)
-                .reindex(columns=_health_order)
-                .fillna(0)
-                .astype(int)
-            )
-            st.bar_chart(rating_health, color=_health_colors, height=420)
-        else:
-            rating_counts = (
-                filtered.groupby("deal_rating")["opportunity_id"]
-                .count()
-                .reindex(RATING_ORDER)
-                .fillna(0)
-                .astype(int)
-                .to_frame("Deals")
-            )
-            st.bar_chart(rating_counts, height=420)
-
-    # ── Evolução mensal full-width ────────────────────────────────────────────
-    if "engage_date" in filtered.columns and "deal_health_status" in filtered.columns:
-        st.subheader("Evolução Mensal do Pipeline")
-        _health_order  = ["Saudável", "Atenção", "Em risco"]
-        _health_colors = ["#2e7d32", "#f9a825", "#c62828"]
-        monthly = (
-            filtered
-            .assign(mes=pd.to_datetime(filtered["engage_date"], errors="coerce")
-                        .dt.to_period("M").astype(str))
-            .groupby(["mes", "deal_health_status"])["opportunity_id"]
-            .count()
-            .unstack("deal_health_status")
-            .reindex(columns=_health_order)
-            .fillna(0)
-            .astype(int)
-            .sort_index()
-        )
-        if not monthly.empty:
-            st.bar_chart(monthly, color=_health_colors, height=300)
+    row2_left, row2_right = st.columns(2)
+    with row2_left:
+        render_friction_distribution(filtered)
+    with row2_right:
+        render_velocity_map(filtered)
 
 
 if __name__ == "__main__":
