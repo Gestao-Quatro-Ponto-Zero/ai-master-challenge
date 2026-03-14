@@ -1,0 +1,21 @@
+account,sector,year_established,revenue,employees,office_location,subsidiary_of,cnpj_verified,company_type,digital_maturity_index,digital_presence_score,tech_stack_count,uses_modern_stack,website_traffic_estimate,enrichment_source
+Atlas Solutions,Technology,2008,45000000,220,São Paulo,,False,SA,0.09750985201163656,0.10394535253314097,3,False,62553,mock
+NovaBridge Consulting,Marketing,2012,18000000,95,Rio de Janeiro,Prime Holdings,False,LTDA,0.09877800744817748,0.0635146581450705,28,True,152492,mock
+Vertex Dynamics,Financial Services,2001,120000000,640,São Paulo,,False,EIRELI,0.164634046098506,0.1696711050314663,24,True,413065,mock
+Apex Retail Group,Retail,2015,9000000,48,Curitiba,Vertex Group,False,MEI,0.2798833715076728,0.4279997722869287,29,True,9992,mock
+PrimeWave Systems,Business Services,2006,35000000,180,São Paulo,,False,EIRELI,0.42382715083707934,0.6487208252574782,38,True,8066,mock
+Orion Partners,Healthcare,2010,22000000,120,Belo Horizonte,,False,EIRELI,0.02927105740461183,0.11176774288509886,10,False,3528,mock
+BluePeak Consulting,Education,2014,15000000,75,Campinas,Atlas Group,False,EIRELI,0.5429402221145537,0.16585310612860762,30,True,29425,mock
+Summit Ventures,Logistics,2003,67000000,350,Rio de Janeiro,,False,SA,0.10382608925909854,0.35505993543139824,22,True,61037,mock
+CoreAxis Group,Technology,2011,52000000,260,São Paulo,,False,SA,0.28497534527864926,0.5848375625382455,18,False,5938,mock
+Elevate Labs,Professional Services,2018,8000000,40,Curitiba,Nova Capital,False,LTDA,0.1405360538410558,0.4618968908955972,12,False,6804,mock
+Nexa Advisors,Financial Services,2005,98000000,510,Rio de Janeiro,,False,SA,0.22817173611426136,0.3008021906257372,31,True,41662,mock
+BridgeWorks,Operations,2009,27000000,140,Belo Horizonte,,False,SA,0.10315490541736803,0.18170055277107983,18,False,3918,mock
+Pulse Capital,Consulting,2007,31000000,165,São Paulo,Prime Holdings,False,LTDA,0.22257906919527193,0.33569862279318446,24,True,16508,mock
+Frontier Systems,Technology,2013,76000000,390,Porto Alegre,,False,MEI,0.31880966245056824,0.11780155852561561,39,True,34706,mock
+Vértice Solutions,Retail,2016,14000000,60,Curitiba,,False,LTDA,0.06682572266571232,0.4800118326227315,20,False,5966,mock
+NovaEdge Group,Business Services,2004,20000000,88,Salvador,Vertex Group,False,LTDA,0.5984390528720157,0.053801935416152386,16,False,110376,mock
+Prime Horizon,Healthcare,2017,17000000,70,Recife,,False,EIRELI,0.37810028332842055,0.36513769015895503,6,False,23641,mock
+Atlas Growth,Marketing,2002,41000000,205,São Paulo,,False,MEI,0.10208649010476643,0.2255117847318334,25,True,2141,mock
+Vertex Partners,Financial Services,2000,110000000,590,Rio de Janeiro,Atlas Group,False,MEI,0.060651782095022054,0.4683165762861249,29,True,226213,mock
+BlueWave Dynamics,Technology,2019,12500000,55,Florianópolis,,False,EIRELI,0.1822500060842467,0.40347283648167154,5,False,11159,mock
