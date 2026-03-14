@@ -3,7 +3,7 @@
 ## Sobre mim
 
 * **Nome:** Daniel Franco Schkolnick
-* **LinkedIn:** https://www.linkedin.com/in/daniel-f-schkolnick-976a22208/
+* **LinkedIn:** [https://www.linkedin.com/in/daniel-f-schkolnick-976a22208/](https://www.linkedin.com/in/daniel-f-schkolnick-976a22208/)
 * **Challenge escolhido:** Challenge 003 — Lead Scorer
 
 ---
@@ -11,8 +11,8 @@
 ## Executive Summary
 
 Construí uma ferramenta de priorização comercial que combina um CRM operacional com Score Size estrutural e uma camada de gestão para managers. A solução resolve dois problemas centrais: a dificuldade do vendedor em decidir quais leads priorizar no dia a dia e a falta de preenchimento correto do CRM, que impede qualquer priorização confiável. O principal achado foi que o problema de dados incompletos é ainda mais estrutural do que a própria priorização, porque sem preenchimento correto o time comercial perde capacidade de direcionamento, análise e gestão. Como principal recomendação, a empresa deve garantir que todos os leads sejam criados com preenchimento completo e que os gestores passem a cobrar isso sistematicamente, para então usar o Score Size como base de priorização operacional.
-Link Produto final: https://g4challenge.lovable.app
 
+Link Produto final: [https://g4challenge.lovable.app](https://g4challenge.lovable.app)
 
 ---
 
@@ -67,7 +67,6 @@ O que o gerente consegue fazer com o produto:
 * acompanhar o desempenho do time com base em métricas consistentes;
 * comparar seu time com o contexto global e entender melhor os gargalos.
 
-
 ### Recomendações
 
 1. Treinar o time comercial para preencher corretamente o CRM e reforçar por que isso é indispensável para priorização.
@@ -98,12 +97,12 @@ Se eu tivesse mais tempo, faria uma etapa adicional com o time de desenvolviment
 
 ### Ferramentas usadas
 
-| Ferramenta                      | Para que usou                                                                                                                           |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| ChatGPT                         | Decomposição do enunciado, análise exploratória dos dados, formulação de hipóteses, desenho do produto e refinamento da lógica do score |
-| Lovable                         | Construção do protótipo funcional e iteração da interface                                                                               |
-| Planilha (com PROCV)            | Consolidação dos dados e cruzamento entre pipeline, accounts e sales team                                                               |
-| Gerador de prompt intermediário | Refinamento do prompt enviado ao Lovable                                                                                                |
+| Ferramenta | Para que usou |
+|---|---|
+| ChatGPT | Decomposição do enunciado, análise exploratória dos dados, formulação de hipóteses, desenho do produto e refinamento da lógica do score |
+| Lovable | Construção do protótipo funcional e iteração da interface |
+| Planilha (com PROCV) | Consolidação dos dados e cruzamento entre pipeline, accounts e sales team |
+| Gerador de prompt intermediário | Refinamento do prompt enviado ao Lovable |
 
 ### Workflow
 
@@ -142,13 +141,45 @@ O detalhe que mais mostra pensamento de adoção real é a presença do dashboar
 
 *Anexe ou linke as evidências do processo:*
 
+* [x] Chat exports  
+Chat principal: [https://drive.google.com/file/d/1KnaeOlPpavkFE6Xsr_Dka56fWcYaLHHA/view?usp=sharing](https://drive.google.com/file/d/1KnaeOlPpavkFE6Xsr_Dka56fWcYaLHHA/view?usp=sharing)  
+Chat Rafael Milagre: [https://drive.google.com/file/d/10Ki4dT4dqUN_Opjg-CAfwh7RO_C_gHX_/view?usp=sharing](https://drive.google.com/file/d/10Ki4dT4dqUN_Opjg-CAfwh7RO_C_gHX_/view?usp=sharing)
 
-* [x] Chat exports
-Chat principal: https://drive.google.com/file/d/1KnaeOlPpavkFE6Xsr_Dka56fWcYaLHHA/view?usp=sharing
-Chat Rafael Milagre: https://drive.google.com/file/d/10Ki4dT4dqUN_Opjg-CAfwh7RO_C_gHX_/view?usp=sharing
+* [x] Outro: Link do produto final  
+[https://g4challenge.lovable.app/](https://g4challenge.lovable.app/)
 
-* [x] Outro: Link do produto final
-https://g4challenge.lovable.app/
+* [x] Outro: Código da aplicação exportado  
+Onde encontrar:  
+`ai-master-challenge\submissions\daniel-schkolnick\process-log\app\`
+
+Arquivos principais para auditoria:  
+`ai-master-challenge\submissions\daniel-schkolnick\process-log\app\src\lib\scoring.ts`  
+`ai-master-challenge\submissions\daniel-schkolnick\process-log\app\src\lib\parseWorkbook.ts`  
+`ai-master-challenge\submissions\daniel-schkolnick\process-log\app\public\data\seed.xlsx`
+
+* [x] Outro: Evidências geradas a partir da seed real  
+Onde encontrar:  
+`ai-master-challenge\submissions\daniel-schkolnick\process-log\evidencias\`
+
+Arquivos incluídos:  
+`distribution_summary.md`  
+`scored_output_seed.csv`  
+`validation_examples.md`
+
+Critérios validados nessas evidências:  
+- processamento da seed real do MVP;  
+- separação entre leads completos e dados incompletos;  
+- classificação dinâmica em Score A, B, C e D;  
+- existência de exemplo real de score alto;  
+- existência de exemplo real de score baixo;  
+- existência de exemplo real de dado incompleto.
+
+* [x] Outro: Como utilizar para confirmar a validação  
+1. Abrir o arquivo `scoring.ts` para verificar a lógica de cálculo do Score Size.  
+2. Abrir o arquivo `parseWorkbook.ts` para verificar a ingestão e tratamento da planilha.  
+3. Conferir a base usada em `seed.xlsx`.  
+4. Abrir `scored_output_seed.csv` para ver a saída real gerada pela seed.  
+5. Abrir `distribution_summary.md` para confirmar a contagem total de leads, completos, incompletos e distribuição A/B/C/D.  
+6. Abrir `validation_examples.md` para conferir os 3 exemplos reais de validação.  
 ---
-
-*Submissão enviada em: 11/03/2026*
+ `*Submissão enviada em: 13/03/2026*`
