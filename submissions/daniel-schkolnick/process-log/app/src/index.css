@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+
+    --primary: 45 100% 51%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 93%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 93%;
+    --muted-foreground: 0 0% 40%;
+
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 45 100% 51%;
+
+    --radius: 0.5rem;
+
+    --score-a: 45 100% 51%;
+    --score-a-foreground: 0 0% 9%;
+    --score-b: 45 60% 70%;
+    --score-b-foreground: 0 0% 9%;
+    --score-c: 0 0% 70%;
+    --score-c-foreground: 0 0% 9%;
+    --score-d: 0 0% 82%;
+    --score-d-foreground: 0 0% 40%;
+    --incomplete: 0 85% 55%;
+    --incomplete-foreground: 0 0% 100%;
+
+    --action-focus: 45 100% 51%;
+    --action-focus-foreground: 0 0% 9%;
+    --action-later: 210 15% 70%;
+    --action-later-foreground: 0 0% 9%;
+    --action-low: 0 0% 82%;
+    --action-low-foreground: 0 0% 40%;
+    --action-fix: 25 95% 55%;
+    --action-fix-foreground: 0 0% 100%;
+    --action-won: 140 60% 45%;
+    --action-won-foreground: 0 0% 100%;
+    --action-lost: 0 0% 70%;
+    --action-lost-foreground: 0 0% 40%;
+
+    --sidebar-background: 0 0% 7%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 45 100% 51%;
+    --sidebar-primary-foreground: 0 0% 9%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 45 100% 51%;
+
+    --kanban-column: 0 0% 94%;
+
+    --chart-gold: 45 100% 51%;
+    --chart-green: 140 60% 45%;
+    --chart-red: 0 85% 55%;
+    --chart-blue: 210 70% 55%;
+    --chart-gray: 0 0% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
+@layer utilities {
+  .font-tabular {
+    font-feature-settings: 'tnum';
+  }
+  .badge-caps {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
