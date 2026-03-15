@@ -69,17 +69,17 @@ GPT-5.3-Codex: Leitura do repositório, planejamento da abordagem, análise do d
 
 ### Workflow
 
-1. Li o challenge, criei planejamento completo e elaborei prompt central inicial.
-2. Revisei a análise da IA e simplifiquei a comunicação para leitura executiva.
-3. Adicionei estratégia proprietária `Rede de Influenciadores` como o "Algo a mais" solicitado.
+1. Usei a IA para mapear hipóteses e cortes possíveis, mas persegui só as análises que respondiam ao brief: plataforma, período, categoria, creator band e comparação patrocinado vs. orgânico por estrato.
+2. Quando surgiram caminhos mais amplos, escolhi o pacote `Operating System + Dashboard` e descartei uma entrega mais preditiva para manter profundidade, clareza e utilidade prática.
+3. Depois da análise, reescrevi os outputs para leitura executiva e mantive no README apenas o que era decisivo para aprovação.
 
 ### Onde a IA errou e como corrigi
 
-Em uma versão anterior, o `README.md` ficou inconsistente e a estrutura de pastas não estava no formato final pedido. Corrigi isso, reescrevi o README no template exato e fiz a reorganização final de arquivos.
+A IA partiu do pressuposto de que existia `engagement_rate`, mas no CSV real essa coluna não existia. Interrompi a linha de análise, derivei a métrica a partir de `likes + shares + comments_count / views` e documentei a limitação. Também recusei conclusões fortes em grupos frágeis: os insights principais ficaram restritos a células com `n >= 80`.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-A direção estratégica inicial, orientação na abordagem e análise dos dados e elaboração da estratégia de Rede de Influenciadores. 
+A decisão de comparar patrocinado vs. orgânico apenas dentro de estratos equivalentes foi minha, para evitar conclusões agregadas enganosas. Também descartei claims de ROI de negócio porque o dataset não tinha Lead/MQL/SQL/CAC e transformei essa lacuna em recomendação de instrumentação no dashboard. Por fim, a adaptação da minha estratégia `Rede de Influenciadores` para um operating model conectado aos dados foi contribuição minha, não texto aceito automaticamente da IA.
 
 ---
 
