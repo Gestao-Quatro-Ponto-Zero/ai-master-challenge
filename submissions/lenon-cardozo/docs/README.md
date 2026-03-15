@@ -10,6 +10,10 @@ Documentação de suporte da submissão.
 - `analysis_summary.json`
 - `validation_report.md`
 
+## Visual Experience
+- `g4-social-intelligence/`
+  Experiência visual híbrida com storytelling executivo + mini-dashboard interativo em HTML/CSS/JS.
+
 ## Reprodutibilidade
 - `build_analysis.py`
 - `validate_outputs.py`

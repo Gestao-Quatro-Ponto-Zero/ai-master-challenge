@@ -12,6 +12,9 @@
 
 Analisei 52.214 posts para responder três perguntas: o que gera engajamento real, quando patrocínio funciona e qual estratégia aplicar no dia a dia. O principal achado foi simples: patrocínio no agregado é quase neutro. Ele só funciona bem em segmentos específicos. Por isso, a recomendação é operar por células de performance, com decisão semanal de escalar, manter, pausar ou testar.
 
+Leitura visual rápida:
+- Apresentação ao vivo: https://skill-deploy-nof601wqs3-codex-agent-deploys.vercel.app
+
 ---
 
 ## Solução
