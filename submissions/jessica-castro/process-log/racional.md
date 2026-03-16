@@ -17,18 +17,13 @@
 - [x] Crie filtros dependentes (cascata) em uma aplicação de dashboard.
 - [x] Lógica: Criar, documento "critérios de scoring você usou e por quê"
 - [x] Planilha inteligente com fórmulas de scoring, onde está?
-- [ ] Bot que envia prioridades por Slack/email, onde está?
+- [x] Bot que envia prioridades por Slack/email, onde está?
 - [x] Porque somente 6711 deals treinados? cade o resto?
 
 *Melhorias Futuro*
 - [ ] Criar um endpoint onde o CRM pode enviar os dados de uma oportunidade de venda (deal) e receber de volta,score de prioridade, probabilidade de fechamento, etc. Ou seja, a aplicação funcionaria como um serviço de scoring. Hoje os arquivos de dataset estão estáticos em uma pasta /data
-- [ ] padronize as cores do ratting, na sidebar devem ser as mesma cores dos gráficos e na sidebar direita
 - [ ] Fazer o envio de e-mails através de APIs ou provedores como SendGrid, Resend, Mailgun. E para mais controle substituir a cron por um painel que programmo quando enviar.
 - chaves expostas, somente para o chanlege
-
-
-- modificar "O sistema identificou ..." para "o DealSignal identificou ..."
-- no card análise por IA o que é a Confiança: Baixo
 
 
 cd /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal
