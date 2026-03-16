@@ -5,6 +5,7 @@
 **Nome:** Fernando Paes  
 **LinkedIn:** [(adicione seu link](https://www.linkedin.com/in/ferpaes/) ](https://www.linkedin.com/in/ferpaes/)
 **Challenge escolhido:** Support System Redesign
+**Resultado final:** https://tech-support-ticket-ufba.bolt.host/llm-models (operador@gmail.com / Admin2024#)
 
 ---
 
