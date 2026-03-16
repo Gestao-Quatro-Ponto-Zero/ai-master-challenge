@@ -725,9 +725,10 @@ select {
     flex-wrap: nowrap;
     gap: 10px;
     overflow-x: auto;
-    margin: 0 -2px 18px;
-    padding: 2px 2px 6px;
+    margin: 0 0 18px;
+    padding: 2px 1px 6px;
     scroll-snap-type: x proximity;
+    scroll-padding-left: 1px;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -798,7 +799,6 @@ select {
     justify-items: center;
   }
 
-  .hero-copy,
   .section-head,
   .thesis-panel,
   .insight-card,
@@ -809,25 +809,44 @@ select {
   .detail-card,
   .audience-card,
   .footer,
-  .footer-note {
-    text-align: center;
+  .footer-note,
+  .stat-card,
+  .mini-stat,
+  .metric-card {
+    text-align: left;
   }
 
   .panel-head {
-    justify-items: center;
+    justify-items: start;
   }
 
-  .hero-actions,
+  .hero-actions {
+    justify-items: stretch;
+  }
+
   .stat-row,
   .mini-stat-grid,
   .metric-row,
   .insight-grid,
-  .dashboard-grid,
+  .dashboard-grid {
+    justify-items: stretch;
+  }
+
   .source-links {
     justify-items: center;
   }
 
-  .lead,
+  .hero-copy {
+    text-align: left;
+  }
+
+  .lead {
+    max-width: 28ch;
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .section-copy,
   .panel-note,
   .thesis-panel p,
@@ -837,13 +856,18 @@ select {
   .detail-card p,
   .audience-card p,
   .stat-card p {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
   }
 
   .hero-copy h1 {
-    max-width: 10.5ch;
-    font-size: clamp(1.95rem, 10.6vw, 2.45rem);
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    font-size: clamp(2rem, 10.2vw, 2.45rem);
+    line-height: 0.99;
+    letter-spacing: -0.05em;
   }
 
   .stat-row,
@@ -851,14 +875,24 @@ select {
     grid-template-columns: 1fr;
   }
 
+  .thesis-panel h2,
+  .section-head h2,
+  .panel-head h3,
+  .selected-platform h3,
+  .insight-card h3 {
+    font-size: clamp(1.42rem, 7.8vw, 1.9rem);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+  }
+
   .bar-row,
   .bar-chart-tight .bar-row {
-    justify-items: center;
+    justify-items: stretch;
   }
 
   .bar-row > div:first-child,
   .bar-value {
-    text-align: center;
+    text-align: left;
   }
 
   .bar-track {
@@ -881,8 +915,8 @@ select {
   }
 
   .detail-item {
-    justify-content: center;
-    text-align: center;
+    justify-content: start;
+    text-align: left;
   }
 
   .stat-card strong,
