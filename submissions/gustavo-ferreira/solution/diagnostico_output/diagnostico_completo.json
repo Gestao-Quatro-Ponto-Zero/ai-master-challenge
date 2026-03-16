@@ -1,0 +1,410 @@
+{
+  "gargalos": {
+    "backlog": {
+      "total_tickets": 8469,
+      "closed": 2769,
+      "open": 2819,
+      "pending": 2881,
+      "nao_resolvidos": 5700,
+      "pct_nao_resolvidos": 67.3
+    },
+    "priorizacao": {
+      "distribuicao_global": {
+        "Medium": 0.259,
+        "Critical": 0.251,
+        "High": 0.246,
+        "Low": 0.244
+      },
+      "uniformidade": "SIM — ~25% em cada nível, independente do tipo",
+      "evidencia": "Refund request Critical tem mesma proporção que Product inquiry Critical",
+      "por_tipo": {
+        "Critical": {
+          "Billing inquiry": 0.257,
+          "Cancellation request": 0.25,
+          "Product inquiry": 0.246,
+          "Refund request": 0.253,
+          "Technical issue": 0.251
+        },
+        "High": {
+          "Billing inquiry": 0.234,
+          "Cancellation request": 0.235,
+          "Product inquiry": 0.243,
+          "Refund request": 0.256,
+          "Technical issue": 0.262
+        },
+        "Low": {
+          "Billing inquiry": 0.244,
+          "Cancellation request": 0.244,
+          "Product inquiry": 0.243,
+          "Refund request": 0.251,
+          "Technical issue": 0.236
+        },
+        "Medium": {
+          "Billing inquiry": 0.266,
+          "Cancellation request": 0.271,
+          "Product inquiry": 0.269,
+          "Refund request": 0.24,
+          "Technical issue": 0.25
+        }
+      }
+    },
+    "gargalos_canal_tipo": {
+      "piores_combinacoes": [
+        {
+          "Ticket Channel": "Social media",
+          "Ticket Type": "Cancellation request",
+          "total": 413,
+          "pct_resolvido": 0.262
+        },
+        {
+          "Ticket Channel": "Phone",
+          "Ticket Type": "Cancellation request",
+          "total": 426,
+          "pct_resolvido": 0.277
+        },
+        {
+          "Ticket Channel": "Email",
+          "Ticket Type": "Product inquiry",
+          "total": 427,
+          "pct_resolvido": 0.295
+        },
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Product inquiry",
+          "total": 388,
+          "pct_resolvido": 0.299
+        },
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Technical issue",
+          "total": 453,
+          "pct_resolvido": 0.313
+        }
+      ],
+      "todas": [
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Billing inquiry",
+          "total": 398,
+          "pct_resolvido": 0.344
+        },
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Cancellation request",
+          "total": 408,
+          "pct_resolvido": 0.333
+        },
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Product inquiry",
+          "total": 388,
+          "pct_resolvido": 0.299
+        },
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Refund request",
+          "total": 426,
+          "pct_resolvido": 0.336
+        },
+        {
+          "Ticket Channel": "Chat",
+          "Ticket Type": "Technical issue",
+          "total": 453,
+          "pct_resolvido": 0.313
+        },
+        {
+          "Ticket Channel": "Email",
+          "Ticket Type": "Billing inquiry",
+          "total": 405,
+          "pct_resolvido": 0.331
+        },
+        {
+          "Ticket Channel": "Email",
+          "Ticket Type": "Cancellation request",
+          "total": 448,
+          "pct_resolvido": 0.344
+        },
+        {
+          "Ticket Channel": "Email",
+          "Ticket Type": "Product inquiry",
+          "total": 427,
+          "pct_resolvido": 0.295
+        },
+        {
+          "Ticket Channel": "Email",
+          "Ticket Type": "Refund request",
+          "total": 455,
+          "pct_resolvido": 0.376
+        },
+        {
+          "Ticket Channel": "Email",
+          "Ticket Type": "Technical issue",
+          "total": 408,
+          "pct_resolvido": 0.331
+        },
+        {
+          "Ticket Channel": "Phone",
+          "Ticket Type": "Billing inquiry",
+          "total": 434,
+          "pct_resolvido": 0.316
+        },
+        {
+          "Ticket Channel": "Phone",
+          "Ticket Type": "Cancellation request",
+          "total": 426,
+          "pct_resolvido": 0.277
+        },
+        {
+          "Ticket Channel": "Phone",
+          "Ticket Type": "Product inquiry",
+          "total": 424,
+          "pct_resolvido": 0.347
+        },
+        {
+          "Ticket Channel": "Phone",
+          "Ticket Type": "Refund request",
+          "total": 427,
+          "pct_resolvido": 0.323
+        },
+        {
+          "Ticket Channel": "Phone",
+          "Ticket Type": "Technical issue",
+          "total": 421,
+          "pct_resolvido": 0.359
+        },
+        {
+          "Ticket Channel": "Social media",
+          "Ticket Type": "Billing inquiry",
+          "total": 397,
+          "pct_resolvido": 0.343
+        },
+        {
+          "Ticket Channel": "Social media",
+          "Ticket Type": "Cancellation request",
+          "total": 413,
+          "pct_resolvido": 0.262
+        },
+        {
+          "Ticket Channel": "Social media",
+          "Ticket Type": "Product inquiry",
+          "total": 402,
+          "pct_resolvido": 0.358
+        },
+        {
+          "Ticket Channel": "Social media",
+          "Ticket Type": "Refund request",
+          "total": 444,
+          "pct_resolvido": 0.324
+        },
+        {
+          "Ticket Channel": "Social media",
+          "Ticket Type": "Technical issue",
+          "total": 465,
+          "pct_resolvido": 0.327
+        }
+      ]
+    },
+    "tempos": {
+      "nota": "FRT e TTR são timestamps fabricados (2023) para compras de 2020-2021. Usamos a diferença relativa FRT→TTR como proxy.",
+      "delta_frt_ttr_stats": {
+        "mean": -0.06,
+        "median": 0.17,
+        "std": 9.56,
+        "min": -23.23,
+        "max": 23.47,
+        "pct_negativo": 49.3
+      },
+      "delta_por_prioridade": {
+        "Critical": 0.35,
+        "High": 0.07,
+        "Low": 0.35,
+        "Medium": -0.3
+      },
+      "delta_por_canal": {
+        "Chat": 0.52,
+        "Email": 0.37,
+        "Phone": -0.78,
+        "Social media": 0.35
+      },
+      "delta_por_tipo": {
+        "Billing inquiry": 0.11,
+        "Cancellation request": 0.39,
+        "Product inquiry": -0.48,
+        "Refund request": 0.26,
+        "Technical issue": 0.48
+      }
+    }
+  },
+  "csat": {
+    "distribuicao": {
+      "1.0": 553,
+      "2.0": 549,
+      "3.0": 580,
+      "4.0": 543,
+      "5.0": 544
+    },
+    "media_global": 2.99,
+    "uniformidade_comprovada": "Distribuição quase perfeita: ~550 respostas por nota. Variação máxima de 37 respostas entre notas (580 vs 543). CSAT não reflete satisfação real.",
+    "csat_por_ticket_type": {
+      "medias": {
+        "Billing inquiry": 3.03,
+        "Cancellation request": 3.03,
+        "Product inquiry": 3.02,
+        "Refund request": 2.93,
+        "Technical issue": 2.96
+      },
+      "contagem": {
+        "Billing inquiry": 544,
+        "Cancellation request": 516,
+        "Product inquiry": 533,
+        "Refund request": 596,
+        "Technical issue": 580
+      },
+      "variacao_max": 0.1,
+      "interpretacao": "Variação de apenas 0.1 pontos — estatisticamente irrelevante"
+    },
+    "csat_por_ticket_channel": {
+      "medias": {
+        "Chat": 3.08,
+        "Email": 2.96,
+        "Phone": 2.95,
+        "Social media": 2.97
+      },
+      "contagem": {
+        "Chat": 674,
+        "Email": 720,
+        "Phone": 691,
+        "Social media": 684
+      },
+      "variacao_max": 0.13,
+      "interpretacao": "Variação de apenas 0.13 pontos — estatisticamente irrelevante"
+    },
+    "csat_por_ticket_priority": {
+      "medias": {
+        "Critical": 2.96,
+        "High": 2.98,
+        "Low": 3.05,
+        "Medium": 2.98
+      },
+      "contagem": {
+        "Critical": 726,
+        "High": 705,
+        "Low": 644,
+        "Medium": 694
+      },
+      "variacao_max": 0.09,
+      "interpretacao": "Variação de apenas 0.09 pontos — estatisticamente irrelevante"
+    },
+    "correlacao_tempo_csat": {
+      "pearson_r": 0.0199,
+      "interpretacao": "Correlação praticamente zero — tempo não explica satisfação"
+    }
+  },
+  "desperdicio": {
+    "backlog": {
+      "tickets_parados": 5700,
+      "horas_acumuladas": 1900.0,
+      "custo_estimado_brl": 85500.0
+    },
+    "automacao_por_tipo": {
+      "Refund request": {
+        "total": 1752,
+        "pct_volume": 20.7,
+        "automatizavel_pct": 10,
+        "tickets_automatizaveis": 175,
+        "horas_economia": 58.3,
+        "economia_brl": 2625.0,
+        "como": "Apenas verificação de elegibilidade"
+      },
+      "Technical issue": {
+        "total": 1747,
+        "pct_volume": 20.6,
+        "automatizavel_pct": 30,
+        "tickets_automatizaveis": 524,
+        "horas_economia": 174.7,
+        "economia_brl": 7860.0,
+        "como": "Troubleshooting guiado (apenas L1)"
+      },
+      "Cancellation request": {
+        "total": 1695,
+        "pct_volume": 20.0,
+        "automatizavel_pct": 0,
+        "tickets_automatizaveis": 0,
+        "horas_economia": 0.0,
+        "economia_brl": 0.0,
+        "como": "NUNCA — requer retenção humana"
+      },
+      "Product inquiry": {
+        "total": 1641,
+        "pct_volume": 19.4,
+        "automatizavel_pct": 70,
+        "tickets_automatizaveis": 1148,
+        "horas_economia": 382.7,
+        "economia_brl": 17220.0,
+        "como": "FAQ + base de conhecimento"
+      },
+      "Billing inquiry": {
+        "total": 1634,
+        "pct_volume": 19.3,
+        "automatizavel_pct": 60,
+        "tickets_automatizaveis": 980,
+        "horas_economia": 326.7,
+        "economia_brl": 14700.0,
+        "como": "Consulta de status + self-service"
+      }
+    },
+    "economia_total": {
+      "tickets_automatizaveis": 2827,
+      "pct_do_total": 33.4,
+      "horas_economia_mensal": 78.5,
+      "economia_mensal_brl": 3533.75,
+      "economia_anual_brl": 42405.0
+    },
+    "premissas": {
+      "custo_hora_agente_brl": 45.0,
+      "aht_minutos": 20,
+      "nota": "Valores baseados em benchmarks de mercado brasileiro para suporte técnico N1/N2"
+    }
+  },
+  "qualidade_dados": {
+    "ticket_description": {
+      "com_placeholder_literal": 8469,
+      "pct": 100.0,
+      "exemplo": "I'm having an issue with the {product_purchased}. Please assist.\n\nYour billing zip code is: 71701.\n\nWe appreciate that you have requested a website address.\n\nPlease double check your email address. I'",
+      "conclusao": "Textos são templates sintéticos com variáveis não substituídas"
+    },
+    "resolution": {
+      "nulos": 5700,
+      "pct_nulo": 67.3,
+      "media_palavras": 5.5,
+      "exemplos": [
+        "Case maybe show recently my computer follow.",
+        "Try capital clearly never color toward story.",
+        "West decision evidence bit."
+      ],
+      "conclusao": "Texto gerado aleatoriamente — sem valor semântico"
+    },
+    "timestamps": {
+      "date_of_purchase_range": [
+        "2020-01",
+        "2021-12"
+      ],
+      "frt_range": [
+        "2023-05-31",
+        "2023-06-02"
+      ],
+      "gap_anos": "1.5 a 3.5 anos entre compra e resposta",
+      "conclusao": "Timestamps fabricados independentemente — análise temporal inválida"
+    },
+    "dataset2_textos": {
+      "media_caracteres": 292.0,
+      "exemplo": "connection with icon icon dear please setup icon per icon engineers please let other details needed thanks lead",
+      "conclusao": "Textos pesadamente tokenizados (stopwords removidas, fragmentados)"
+    },
+    "readme_erro": {
+      "readme_diz": "3 tipos: Technical issue, Billing inquiry, Product inquiry",
+      "realidade": "5 tipos: Billing inquiry, Cancellation request, Product inquiry, Refund request, Technical issue",
+      "impacto": "Refund request + Cancellation request = 40.7% dos tickets"
+    }
+  }
+}
