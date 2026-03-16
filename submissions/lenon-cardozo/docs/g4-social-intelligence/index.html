@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>G4 Social Intelligence</title>
+    <meta
+      name="description"
+      content="Apresentação premium e minimalista da análise social do Challenge 004."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="page">
+      <header class="masthead reveal">
+        <div class="brand-chip">
+          <img src="./assets/logo-g4.svg" alt="G4 Business" class="brand-logo">
+          <div class="brand-copy">
+            <span class="brand-meta">Challenge 004</span>
+            <strong>Leitura simples das redes sociais</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="section hero reveal">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <span class="eyebrow">Leitura executiva</span>
+            <h1>Pagar para divulgar não melhora tudo. Funciona só em alguns casos.</h1>
+            <p class="lead">
+              A análise de 52.214 posts mostra uma coisa simples: o que mais muda o resultado é o
+              tipo certo de post, no lugar certo, com o tamanho certo de perfil e no momento certo.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#dashboard">Ver Painel de Decisão</a>
+            </div>
+          </div>
+
+          <article class="panel thesis-panel">
+            <span class="panel-label">Ideia principal</span>
+            <h2>Compare grupos parecidos. Invista só onde já deu certo.</h2>
+            <p>
+              Quando a comparação é justa, pagar e não pagar ficam quase empatados. Por isso, o
+              dinheiro só deve entrar nos poucos casos que já mostraram melhora clara.
+            </p>
+            <div class="mini-stat-grid">
+              <div class="mini-stat">
+                <span>No geral</span>
+                <strong>quase igual</strong>
+              </div>
+              <div class="mini-stat">
+                <span>Melhor regra</span>
+                <strong>testar pouco e comparar bem</strong>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="stat-row">
+          <article class="stat-card panel">
+            <span class="stat-label">Posts analisados</span>
+            <strong>52.214</strong>
+            <p>todo o conjunto foi lido</p>
+          </article>
+          <article class="stat-card panel">
+            <span class="stat-label">Comparações justas</span>
+            <strong>280</strong>
+            <p>grupos pagos e não pagos</p>
+          </article>
+          <article class="stat-card panel">
+            <span class="stat-label">Maior aumento de alcance</span>
+            <strong>+46.7%</strong>
+            <p>em um dos melhores grupos do conjunto</p>
+          </article>
+          <article class="stat-card panel">
+            <span class="stat-label">Parte mais fraca do conjunto</span>
+            <strong>25%</strong>
+            <p>teve resultado abaixo do ponto esperado</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section reveal">
+        <div class="section-head">
+          <span class="eyebrow">O que ficou claro</span>
+          <h2>Três conclusões simples para decidir mais rápido.</h2>
+        </div>
+
+        <div class="insight-grid">
+          <article class="panel insight-card">
+            <span class="panel-label">1</span>
+            <h3>Perfis médios com vídeos mais longos foram o grupo mais forte.</h3>
+            <p>
+              Esse grupo apareceu várias vezes entre os melhores casos. Ele levou o post mais longe
+              sem depender de regras genéricas por rede.
+            </p>
+          </article>
+          <article class="panel insight-card">
+            <span class="panel-label">2</span>
+            <h3>Pagar para divulgar deve ser exceção, não regra.</h3>
+            <p>
+              No geral, pagar não melhorou o resultado. Em alguns poucos casos, melhorou. Fora
+              deles, a tendência foi desperdiçar dinheiro.
+            </p>
+          </article>
+          <article class="panel insight-card">
+            <span class="panel-label">3</span>
+            <h3>A idade ajuda no detalhe, mas não decide o dinheiro.</h3>
+            <p>
+              A diferença por idade foi pequena. O que mais pesou mesmo foi o tipo de post, o
+              tamanho do perfil e a categoria do conteúdo.
+            </p>
+          </article>
+        </div>
+
+        <article class="panel chart-panel">
+          <div class="panel-head">
+            <div>
+              <span class="panel-label">Melhores grupos</span>
+              <h3>Os grupos que mais fizeram o post chegar longe.</h3>
+            </div>
+            <p class="panel-note">Comparação com a média da mesma rede.</p>
+          </div>
+          <div id="global-top-cells" class="bar-chart"></div>
+        </article>
+      </section>
+
+      <section class="section reveal" id="dashboard">
+        <div class="section-head">
+          <span class="eyebrow">Painel de Decisão</span>
+          <h2>Veja o que fazer em cada rede.</h2>
+          <p class="section-copy">
+            Escolha uma rede para ver onde vale insistir, onde vale parar e qual é o próximo passo
+            mais seguro.
+          </p>
+        </div>
+
+        <div class="platform-filter" id="platform-filter" aria-label="Filtro de plataforma"></div>
+
+        <article class="panel selected-platform">
+          <div class="selected-copy">
+            <span class="panel-label" id="selected-platform-eyebrow">YouTube</span>
+            <h3 id="selected-platform-title"></h3>
+            <p id="selected-platform-copy"></p>
+          </div>
+          <div class="metric-row" id="selected-platform-metrics"></div>
+        </article>
+
+        <div class="dashboard-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-label">Melhores grupos</span>
+                <h3>O que vale manter.</h3>
+              </div>
+            </div>
+            <div id="platform-cells-chart" class="bar-chart bar-chart-tight"></div>
+          </article>
+
+          <article class="panel dual-panel">
+            <div class="subpanel">
+              <span class="panel-label">Onde vale investir mais</span>
+              <div id="paid-positive"></div>
+            </div>
+            <div class="subpanel">
+              <span class="panel-label">Onde vale parar</span>
+              <div id="paid-negative"></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-label">Idade do público</span>
+                <h3>Ajuda no detalhe, não na decisão principal.</h3>
+              </div>
+            </div>
+            <div id="audience-card" class="audience-card"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <span class="panel-label">Próximos passos</span>
+                <h3>O que fazer agora.</h3>
+              </div>
+            </div>
+            <ul id="action-list" class="action-list"></ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="section footer reveal">
+        <div class="footer-note">
+          <span class="panel-label">De onde saíram os números</span>
+          <p>
+            Todos os números desta página saíram dos arquivos finais da submissão. Aqui, nós também
+            olhamos para os posts fracos, e não só para os melhores.
+          </p>
+        </div>
+        <div class="source-links">
+          <span class="source-pill">analysis.md</span>
+          <span class="source-pill">recomendations.md</span>
+          <span class="source-pill">analysis_summary.json</span>
+          <span class="source-pill">sponsorship_comparison.csv</span>
+        </div>
+      </footer>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
