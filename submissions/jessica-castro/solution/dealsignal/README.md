@@ -7,19 +7,23 @@ DealSignal ajuda times de vendas a priorizar oportunidades com base em **win pro
 ## Arquitetura
 
 ```
-CSVs → Enrichment → Feature Engineering → WoE → IV Selection → Logistic Regression
-     → Rating → Health Engine → Priority Engine → Streamlit
+CSVs → Enrichment → Feature Engineering (79 features) → Target Encoding + Scaler
+     → L1 Feature Selection → Logistic Regression → Rating → Health → Priority Engine
+     → Streamlit Dashboard
+     → FastAPI REST (scoring em tempo real + envio de email)
 ```
 
 ### Componentes
 
 | Módulo | Responsabilidade |
 |---|---|
+| `api.py` | API REST (FastAPI): `/score`, `/notify-email`, `/notify-email/preview` |
 | `config/` | Constantes centralizadas: rating thresholds, paletas de cores, parâmetros WoE |
 | `enrichment/` | Enriquecimento via BrasilAPI, BuiltWith, Similarweb (+ mock determinístico) |
-| `features/` | 16 features V2: deal momentum, deal size, seller/product stats, account strength |
-| `model/` | WoETransformer, IV selector, LogisticRegressionCV + calibração, health/priority engines |
-| `utils/` | Logger, cache, explainability, geração de relatórios PDF/CSV |
+| `features/` | 79 features (V3+V4): deal momentum, seller/product stats, account strength, lead/geo, interaction terms |
+| `model/` | Target encoder, StandardScaler, LogisticRegression, health/priority engines |
+| `engine/` | Friction engine (execucao/decisao/urgencia/valor) + Next Best Action |
+| `utils/` | Logger, cache, explainability, sinais, geração de relatórios PDF/CSV |
 | `app/` | Interface Streamlit com filtros, KPIs e Top 10 prioritization |
 | `app/ui/` | Módulos de UI: formatters, loaders, filtros, signal builder, deal panel |
 
@@ -29,6 +33,9 @@ CSVs → Enrichment → Feature Engineering → WoE → IV Selection → Logisti
 
 ```
 dealsignal/
+├── api.py                        # API REST FastAPI (score + notify-email)
+├── run_pipeline.py               # Orquestrador do pipeline completo
+├── requirements.txt
 ├── config/
 │   └── constants.py          # Constantes centralizadas (ratings, paletas, thresholds)
 ├── app/
@@ -71,9 +78,7 @@ dealsignal/
 │   └── report.py             # Exportação PDF e CSV
 ├── experiments/              # Scripts de ablation e comparação de modelos
 ├── data/                     # CSVs de entrada e resultados
-├── .env.example              # Template de variáveis de ambiente
-├── run_pipeline.py           # Orquestrador do pipeline completo
-└── requirements.txt
+└── .env.example              # Template de variáveis de ambiente
 ```
 
 ---
@@ -107,10 +112,113 @@ python run_pipeline.py --force-enrich
 python run_pipeline.py --force-train
 ```
 
-### 4. Rodar a aplicação Streamlit
+### 4. Subir a API REST (FastAPI)
+
+```bash
+uvicorn api:app --reload --port 8000
+```
+
+| Interface | URL |
+|---|---|
+| Swagger UI (docs interativas) | http://localhost:8000/docs |
+| ReDoc | http://localhost:8000/redoc |
+
+### 5. Rodar o dashboard Streamlit
 
 ```bash
 streamlit run app/streamlit_app.py
+```
+
+| Interface | URL |
+|---|---|
+| Dashboard Streamlit | http://localhost:8501 |
+
+---
+
+## API REST
+
+A API expõe scoring em tempo real e envio de prioridades por email.
+
+### Endpoints
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/health` | Status do servidor e modelo |
+| `POST` | `/score` | Recebe dados de um deal e retorna score completo |
+| `POST` | `/notify-email` | Envia email com os deals prioritários via SMTP |
+| `POST` | `/notify-email/preview` | Retorna o HTML do email sem enviar — sem SMTP necessário |
+
+### POST /score — exemplo
+
+```bash
+curl -X POST http://localhost:8000/score \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sales_agent": "Diego Ferreira",
+    "product": "Finance Management",
+    "effective_value": 25000.0,
+    "engage_date": "2024-10-01",
+    "deal_stage": "Engaging"
+  }'
+```
+
+### POST /notify-email — exemplo
+
+```bash
+curl -X POST http://localhost:8000/notify-email \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipients": ["gestor@empresa.com"],
+    "deals": [
+      {
+        "account_name": "Conta Azul",
+        "final_score": 42,
+        "rating": "C",
+        "friction": "high",
+        "win_probability": 0.42,
+        "days_in_stage": 28,
+        "next_action": "Mapear decisor"
+      }
+    ]
+  }'
+```
+
+### POST /notify-email/preview — teste sem SMTP
+
+```bash
+curl -X POST http://localhost:8000/notify-email/preview \
+  -H "Content-Type: application/json" \
+  -d '{
+    "deals": [
+      {
+        "account_name": "Conta Azul",
+        "final_score": 42,
+        "rating": "C",
+        "friction": "high",
+        "win_probability": 0.42,
+        "days_in_stage": 28,
+        "next_action": "Mapear decisor"
+      }
+    ]
+  }'
+```
+
+Retorna HTML renderizado — ideal para testar via `/docs` sem configurar SMTP.
+
+### Regras de prioridade (`/notify-email`)
+
+Um deal é considerado prioritário se qualquer condição for verdadeira:
+
+- `rating == "C"`
+- `friction == "high"`
+- `days_in_stage > 20`
+- `win_probability < 0.55`
+
+Os 5 deals com maior `priority_score` são incluídos no email:
+
+```
+priority_score = (100 - final_score) + (days_in_stage × 1.5) + friction_weight
+friction_weight: high=20 | medium=10 | low=0
 ```
 
 ---
@@ -128,38 +236,38 @@ cp .env.example .env
 | `BUILTWITH_API_KEY` | Não | Chave da API BuiltWith para tech-stack enrichment |
 | `SIMILARWEB_API_KEY` | Não | Chave da API Similarweb para dados de tráfego |
 | `LOG_LEVEL` | Não | Nível de log: `DEBUG` / `INFO` / `WARNING` (padrão: `INFO`) |
+| `SMTP_HOST` | Sim (notify-email) | Servidor SMTP (ex: `smtp.gmail.com`) |
+| `SMTP_PORT` | Não | Porta SMTP (padrão: `587`) |
+| `SMTP_USER` | Sim (notify-email) | Usuário SMTP |
+| `SMTP_PASSWORD` | Sim (notify-email) | Senha SMTP |
+| `SMTP_SENDER` | Não | Remetente (padrão: `SMTP_USER`) |
 
-O sistema funciona sem chaves — usa dados mock determinísticos por padrão.
+O sistema funciona sem chaves de enrichment — usa dados mock determinísticos por padrão.
+O endpoint `/notify-email/preview` funciona sem qualquer configuração SMTP.
 
 ---
 
-## Features (V2 — produção)
+## Features (V3+V4 — produção)
 
-| Feature | Categoria | Descrição |
-|---|---|---|
-| `seller_win_rate` | Seller Power | Taxa histórica de vitória do vendedor |
-| `seller_rank_percentile` | Seller Power | Percentile rank do vendedor no time |
-| `seller_close_speed` | Seller Power | Velocidade média de fechamento (dias) |
-| `seller_product_experience` | Seller Power | Qtd. de deals pelo combo vendedor×produto |
-| `seller_pipeline_load` | Seller Power | Deals em aberto do vendedor |
-| `log_days_since_engage` | Deal Momentum | Log(snapshot_date − engage_date) |
-| `log_deal_value` | Deal Size | Log(effective_value) |
-| `deal_value_percentile` | Deal Size | Percentile rank do valor do deal |
-| `is_stale_flag` | Stagnation Risk | Deal na faixa ≥ 75º percentil de idade |
-| `product_win_rate` | Product Performance | Taxa histórica de vitória por produto |
-| `product_rank_percentile` | Product Performance | Percentile rank do produto |
-| `product_avg_sales_cycle` | Product Performance | Ciclo médio de fechamento (dias) |
-| `account_size_percentile` | Account Strength | Percentile rank por receita |
-| `digital_maturity_index` | Enrichment | Maturidade digital (0-1) |
-| `revenue_per_employee` | Account Strength | Receita / funcionários |
-| `company_age_score` | Account Strength | Idade da empresa normalizada 0-1 |
+O modelo usa **79 features** divididas em 48 numéricas e 31 target-encoded (TE).
 
-### Features experimentais (V3)
+### Numéricas (48)
 
-O módulo `features/interaction_features.py` implementa features V3 (interaction terms,
-buckets, cross-features seller×produto) que foram desenvolvidas e testadas mas excluídas
-da produção pois não melhoraram o AUC além do baseline V2. Consulte o docstring do
-módulo antes de utilizá-las.
+| Grupo | Features |
+|---|---|
+| Seller Power | `seller_win_rate`, `seller_rank_percentile`, `seller_close_speed`, `seller_product_experience`, `seller_pipeline_load`, `seller_product_win_rate` |
+| Deal Momentum | `log_days_since_engage`, `deal_age_percentile` |
+| Deal Size | `log_deal_value`, `deal_value_percentile`, `deal_value_percentile_within_seller`, `deal_value_percentile_within_product`, `deal_value_vs_account_size` |
+| Product Performance | `product_win_rate`, `product_rank_percentile`, `product_avg_sales_cycle`, `product_relative_performance` |
+| Account Strength | `account_size_percentile`, `digital_maturity_index`, `revenue_per_employee`, `company_age_score` |
+| Risk Flags | `is_stale_flag`, `is_very_old_deal`, `seller_overloaded_flag`, `low_product_performance_flag`, `deal_estagnado`, `deal_muito_antigo`, `produto_fraco`, `conta_fraca` |
+| Buckets | `bucket_deal_age`, `bucket_deal_value`, `bucket_account_size` |
+| Interaction Terms | `interact_seller_product`, `interact_seller_value`, `interact_product_age`, `interact_account_value` |
+| Lead / Geo (V4) | `lead_source_wr`, `lead_origin_wr`, `lead_quality_score`, `activity_count`, `has_activity`, `last_activity_is_positive`, `lead_tag_wr`, `country_wr`, `is_india`, `contact_role_wr`, `last_activity_type_wr`, `page_views_per_visit` |
+
+### Target-Encoded (31)
+
+Colunas categóricas (`sales_agent`, `product`, `city`, `country`, `lead_source`, `lead_origin`, `lead_quality`, `lead_tag`, `last_activity_type`, `office`, `manager`, etc.) transformadas com target encoding (mean de `won`, smoothing m=10).
 
 ---
 

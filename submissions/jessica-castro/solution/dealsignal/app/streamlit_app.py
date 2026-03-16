@@ -90,6 +90,8 @@ def main():
         return
 
     _init_filters()
+    st.session_state.setdefault("chart_days_filter", None)
+    st.session_state.setdefault("chart_rating_filter", None)
     valid = _validate_and_apply_cascade(df)
 
     # ── Lê estado atual → aplica filtros → calcula KPIs (antes de renderizar) ─
@@ -107,6 +109,22 @@ def main():
         filtered = filtered[filtered["sales_agent"] == selected_agent]
     if ratings:
         filtered = filtered[filtered["deal_rating"].isin(ratings)]
+    # Apply chart-driven filters
+    _DAYS_BINS = {
+        "0–30 dias":  (0,   30),
+        "30–60 dias": (30,  60),
+        "60–90 dias": (60,  90),
+        "90+ dias":   (90,  99999),
+    }
+    if st.session_state.get("chart_days_filter"):
+        lo, hi = _DAYS_BINS[st.session_state["chart_days_filter"]]
+        filtered = filtered[
+            (filtered["days_since_engage"] >= lo) &
+            (filtered["days_since_engage"] < hi)
+        ]
+    if st.session_state.get("chart_rating_filter"):
+        filtered = filtered[filtered["deal_rating"] == st.session_state["chart_rating_filter"]]
+
     filtered = filtered.sort_values("expected_revenue", ascending=False).reset_index(drop=True)
 
     avg_prob = filtered["win_probability"].mean() if not filtered.empty else 0
@@ -307,18 +325,47 @@ def main():
 
     st.divider()
 
-    # ── Gráficos operacionais 2×2 ─────────────────────────────────────────────
-    row1_left, row1_right = st.columns(2)
-    with row1_left:
-        render_top_opportunities(filtered)
-    with row1_right:
-        render_pipeline_by_rating(filtered)
+    # ── Badge de filtros de gráfico ativos ────────────────────────────────────
+    active_chart_filters = [v for v in [
+        st.session_state.get("chart_days_filter"),
+        st.session_state.get("chart_rating_filter"),
+    ] if v]
+    if active_chart_filters:
+        badge_col, clear_col = st.columns([8, 1])
+        with badge_col:
+            st.caption(f"Filtro ativo: {' · '.join(active_chart_filters)}")
+        with clear_col:
+            if st.button("✕ Limpar", key="clear_chart_filters"):
+                st.session_state["chart_days_filter"] = None
+                st.session_state["chart_rating_filter"] = None
+                st.rerun()
 
-    row2_left, row2_right = st.columns(2)
-    with row2_left:
-        render_friction_distribution(filtered)
-    with row2_right:
-        render_velocity_map(filtered)
+    # ── Gráficos operacionais: esquerda empilhada | direita quadrante ─────────
+    col_left, col_right = st.columns(2)
+    with col_left:
+        sub_a, sub_b = st.columns(2)
+        with sub_a:
+            days_click = render_top_opportunities(filtered)
+        with sub_b:
+            render_friction_distribution(filtered)
+        rating_click = render_pipeline_by_rating(filtered)
+    with col_right:
+        deal_click = render_velocity_map(filtered)
+
+    # Processar cliques (toggle: clicar no mesmo valor limpa o filtro)
+    if days_click is not None:
+        current = st.session_state.get("chart_days_filter")
+        st.session_state["chart_days_filter"] = None if current == days_click else days_click
+        st.rerun()
+
+    if rating_click is not None:
+        current = st.session_state.get("chart_rating_filter")
+        st.session_state["chart_rating_filter"] = None if current == rating_click else rating_click
+        st.rerun()
+
+    if deal_click is not None:
+        st.session_state["selected_deal_id"] = deal_click
+        st.rerun()
 
 
 if __name__ == "__main__":
