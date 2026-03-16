@@ -1,0 +1,6 @@
+pandas>=2.0
+numpy>=1.24
+streamlit>=1.30
+plotly>=5.18
+openai>=1.10
+python-dotenv>=1.0
