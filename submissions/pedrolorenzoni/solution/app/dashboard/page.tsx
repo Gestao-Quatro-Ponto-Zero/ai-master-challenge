@@ -123,6 +123,7 @@ export default function DashboardPage() {
   const router = useRouter()
   const [view, setView] = useState<ViewMode>('list')
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null)
+  const [showDealsWithoutAccount, setShowDealsWithoutAccount] = useState(false)
   const [dealsState, dispatchDealsState] = useReducer(dealsStateReducer, {
     dealsInScope: [],
     dealStatusHistory: {},
@@ -184,15 +185,26 @@ export default function DashboardPage() {
       .map((x) => x.deal)
   }, [role, dealsInScope])
 
+  const dealsWithoutAccountCount = useMemo(() => {
+    if (role !== 'seller' || !agent) return 0
+    return dealsInScope.filter((d) => !d.account?.trim()).length
+  }, [role, agent, dealsInScope])
+
   const filteredDeals = useMemo(() => {
     if (role === 'seller' && agent) {
-      if (selectedAccount) {
-        return dealsInScope.filter((d) => d.account === selectedAccount)
+      let sellerDeals = dealsInScope
+
+      if (!showDealsWithoutAccount) {
+        sellerDeals = sellerDeals.filter((d) => Boolean(d.account?.trim()))
       }
-      return dealsInScope
+
+      if (selectedAccount) {
+        return sellerDeals.filter((d) => d.account === selectedAccount)
+      }
+      return sellerDeals
     }
     return dealsInScope
-  }, [role, agent, selectedAccount, dealsInScope])
+  }, [role, agent, selectedAccount, dealsInScope, showDealsWithoutAccount])
 
   if (!isAuthenticated) {
     return (
@@ -293,6 +305,11 @@ export default function DashboardPage() {
               selectedAccount={selectedAccount}
               dealStatusHistory={dealStatusHistory}
               onChangeDealStatus={handleDealStatusChange}
+              showDealsWithoutAccount={showDealsWithoutAccount}
+              onToggleShowDealsWithoutAccount={() =>
+                setShowDealsWithoutAccount((current) => !current)
+              }
+              dealsWithoutAccountCount={dealsWithoutAccountCount}
             />
           ) : (
             <KanbanView
