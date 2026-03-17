@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { ChevronDown, Shield, User, ArrowRight } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { SALES_AGENTS } from '../../lib/data'
@@ -61,15 +62,15 @@ export default function LoginPage() {
       >
         {/* Logo area */}
         <div className="flex flex-col items-center mb-8">
-          {/* Wordmark logo since no PNG guaranteed */}
           <div className="flex items-center gap-2 mb-4">
-            <div
-              className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-lg select-none"
-              style={{ background: '#af4332', color: '#ffffff' }}
-              aria-hidden="true"
-            >
-              G4
-            </div>
+            <Image
+              src="/logo-g4.png"
+              alt="G4 Business"
+              width={48}
+              height={48}
+              className="object-contain"
+              priority
+            />
             <div>
               <div className="font-bold text-xl text-text-main leading-none" style={{ letterSpacing: '-0.02em' }}>
                 G4 Business
