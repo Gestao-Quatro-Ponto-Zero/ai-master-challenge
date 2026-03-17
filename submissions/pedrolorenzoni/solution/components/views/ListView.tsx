@@ -22,6 +22,9 @@ interface ListViewProps {
   selectedAccount: string | null
   dealStatusHistory: Record<string, DealStatusHistoryEntry[]>
   onChangeDealStatus: (dealId: string, nextStage: DealStage) => void
+  showDealsWithoutAccount: boolean
+  onToggleShowDealsWithoutAccount: () => void
+  dealsWithoutAccountCount: number
 }
 
 type DealWithScores = Deal & { dealSmell: number; killerScore: number }
@@ -358,6 +361,9 @@ export default function ListView({
   selectedAccount,
   dealStatusHistory,
   onChangeDealStatus,
+  showDealsWithoutAccount,
+  onToggleShowDealsWithoutAccount,
+  dealsWithoutAccountCount,
 }: ListViewProps) {
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null)
   const [focusMode, setFocusMode] = useState<SellerFocusMode>('software')
@@ -499,8 +505,8 @@ export default function ListView({
           </p>
         </div>
 
-        {focusMode !== 'software' && (
-          <div className="flex justify-end">
+        <div className="flex flex-col items-end gap-2">
+          {focusMode !== 'software' && (
             <button
               type="button"
               onClick={() => setFocusMode('software')}
@@ -514,8 +520,25 @@ export default function ListView({
               <Undo2 size={13} />
               Voltar para visão indicada pelo software
             </button>
-          </div>
-        )}
+          )}
+
+          {dealsWithoutAccountCount > 0 && (
+            <button
+              type="button"
+              onClick={onToggleShowDealsWithoutAccount}
+              className="text-xs px-3 py-1.5 rounded-full border font-semibold transition-colors"
+              style={{
+                borderColor: showDealsWithoutAccount ? 'rgba(175,67,50,0.28)' : 'rgba(15,26,69,0.18)',
+                color: showDealsWithoutAccount ? '#af4332' : '#0f1a45',
+                background: showDealsWithoutAccount ? 'rgba(175,67,50,0.08)' : '#ffffff',
+              }}
+            >
+              {showDealsWithoutAccount
+                ? 'Ocultar deals sem conta'
+                : `Mostrar deals sem conta (${dealsWithoutAccountCount})`}
+            </button>
+          )}
+        </div>
 
         <div className="space-y-2">
           <label
