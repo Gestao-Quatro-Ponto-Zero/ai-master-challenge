@@ -171,6 +171,7 @@ function AgentRow({ stats, rank, onSelect, isMe }: {
 }) {
   return (
     <tr
+      className={isMe ? 'agent-row-blink' : undefined}
       onClick={onSelect}
       style={{ cursor: 'pointer', borderBottom: '1px solid rgba(0,31,53,0.06)', transition: 'background 0.15s' }}
       onMouseEnter={e => (e.currentTarget as HTMLTableRowElement).style.background = '#f8f9fa'}
@@ -180,7 +181,7 @@ function AgentRow({ stats, rank, onSelect, isMe }: {
         {rank <= 3 ? <Star size={14} style={{ display: 'inline', marginRight: '4px' }} /> : null}#{rank}
       </td>
       <td style={{ padding: '12px 16px' }}>
-        <p className={isMe ? 'agent-blink' : ''} style={{ fontSize: '14px', fontWeight: 600, color: '#001f35', fontFamily: 'Manrope, sans-serif' }}>{stats.sales_agent}</p>
+        <p style={{ fontSize: '14px', fontWeight: 600, color: '#001f35', fontFamily: 'Manrope, sans-serif' }}>{stats.sales_agent}</p>
         <p style={{ fontSize: '11px', color: '#60708a', fontFamily: 'Inter, sans-serif' }}>{stats.manager}</p>
       </td>
       <td style={{ padding: '12px 16px', fontSize: '13px', color: '#60708a', fontFamily: 'Inter, sans-serif' }}>{stats.regional_office}</td>
@@ -304,6 +305,7 @@ function OrgChart({ agentStats, visibleAgents, currentAgent }: { agentStats: Ret
                         return (
                           <div
                             key={a.sales_agent}
+                            className={isMe ? 'agent-row-blink' : undefined}
                             style={{
                               background: '#f8f9fa',
                               borderRadius: '6px',
@@ -314,7 +316,7 @@ function OrgChart({ agentStats, visibleAgents, currentAgent }: { agentStats: Ret
                               columnGap: '18px',
                             }}
                           >
-                            <p className={isMe ? 'agent-blink' : ''} style={{ fontSize: '11px', fontWeight: 600, color: '#001f35', fontFamily: 'Manrope, sans-serif' }}>
+                            <p style={{ fontSize: '11px', fontWeight: 600, color: '#001f35', fontFamily: 'Manrope, sans-serif' }}>
                               {a.sales_agent.split(' ')[0]}
                             </p>
                             <span style={{ fontSize: '10px', color: '#0f1a45', fontWeight: 700, fontFamily: 'Inter, sans-serif', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
@@ -374,11 +376,11 @@ export default function TeamPage() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8f9fa' }}>
       <style>{`
-        @keyframes blink-name {
+        @keyframes blink-row {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.2; }
         }
-        .agent-blink { animation: blink-name 1.2s ease-in-out infinite; }
+        .agent-row-blink { animation: blink-row 1.2s ease-in-out infinite; }
       `}</style>
       <DashboardNavbar />
 

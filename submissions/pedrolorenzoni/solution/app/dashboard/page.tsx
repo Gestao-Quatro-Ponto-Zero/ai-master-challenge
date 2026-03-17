@@ -11,6 +11,7 @@ import { DEALS, Deal, DealStage } from '../../lib/data'
 import { DealStatusHistoryEntry } from '../../lib/dealStatusHistory'
 import { computeDealSmell, computeKillerScore } from '../../lib/scores'
 import DailyBriefingModal from '../../components/DailyBriefingModal'
+import InfoModal from '../../components/InfoModal'
 
 type ViewMode = 'list' | 'kanban'
 type KpiCard = {
@@ -128,6 +129,7 @@ export default function DashboardPage() {
     dealsInScope: [],
     dealStatusHistory: {},
   })
+  const [showIntroModal, setShowIntroModal] = useState(false)
   const [showBriefing, setShowBriefing] = useState(false)
 
   const dealsInScope = dealsState.dealsInScope
@@ -142,14 +144,37 @@ export default function DashboardPage() {
 
   // Auto-open daily briefing once per session for sellers
   useEffect(() => {
-    if (role === 'seller' && isAuthenticated) {
-      const key = `g4crm_briefing_${agent}`
-      if (!sessionStorage.getItem(key)) {
+    if (role === 'seller' && isAuthenticated && agent) {
+      const introKey = `g4crm_intro_${agent}`
+      const briefingKey = `g4crm_briefing_${agent}`
+
+      if (!sessionStorage.getItem(introKey)) {
+        setShowIntroModal(true)
+        return
+      }
+
+      if (!sessionStorage.getItem(briefingKey)) {
         setShowBriefing(true)
-        sessionStorage.setItem(key, '1')
       }
     }
   }, [role, isAuthenticated, agent])
+
+  const handleCloseIntroModal = useCallback(() => {
+    if (!agent) return
+    const briefingKey = `g4crm_briefing_${agent}`
+    sessionStorage.setItem(`g4crm_intro_${agent}`, '1')
+    setShowIntroModal(false)
+    if (!sessionStorage.getItem(briefingKey)) {
+      setShowBriefing(true)
+    }
+  }, [agent])
+
+  const handleCloseBriefingModal = useCallback(() => {
+    if (agent) {
+      sessionStorage.setItem(`g4crm_briefing_${agent}`, '1')
+    }
+    setShowBriefing(false)
+  }, [agent])
 
   const scopedDeals = useMemo(() => {
     if (role === 'seller' && agent) {
@@ -221,11 +246,13 @@ export default function DashboardPage() {
     <div className="dashboard-layout">
       <DashboardNavbar view={view} onViewChange={setView} />
 
+      {showIntroModal && <InfoModal onClose={handleCloseIntroModal} />}
+
       {showBriefing && top3Deals.length > 0 && (
         <DailyBriefingModal
           deals={top3Deals}
           agentName={agent ?? ''}
-          onClose={() => setShowBriefing(false)}
+          onClose={handleCloseBriefingModal}
         />
       )}
 
