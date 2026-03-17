@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { ChevronDown, Shield, User, ArrowRight } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { SALES_AGENTS } from '../../lib/data'
@@ -62,21 +61,14 @@ export default function LoginPage() {
       >
         {/* Logo area */}
         <div className="flex flex-col items-center mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Image
-              src="/logo-g4.png"
-              alt="G4 Business"
-              width={48}
-              height={48}
-              className="object-contain"
-              priority
-            />
-            <div>
-              <div className="font-bold text-xl text-text-main leading-none" style={{ letterSpacing: '-0.02em' }}>
-                G4 Business
-              </div>
-              <div className="text-xs text-text-muted font-ui mt-0.5">CRM Sales Analytics</div>
+          <div className="mb-4 text-center">
+            <div
+              className="font-bold text-text-main leading-none"
+              style={{ letterSpacing: '-0.02em', fontSize: 'clamp(2.1rem, 6vw, 3rem)' }}
+            >
+              G4 Business
             </div>
+            <div className="text-2xl text-text-muted font-ui mt-1">CRM Sales Analytics</div>
           </div>
 
           {/* Gold separator */}
