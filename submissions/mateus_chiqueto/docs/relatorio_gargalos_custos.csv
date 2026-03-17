@@ -1,0 +1,11 @@
+Ticket Channel,Product Purchased,Ticket Type,Ticket Priority,Tempo_Medio_Resolucao_h,Desperdicio_Total_h,Custo_Total_R,Total_Tickets
+Chat,Roomba Robot Vacuum,Technical issue,High,14.733333333333334,44.2,690.625,3
+Chat,LG OLED,Refund request,High,14.022222222222224,42.06666666666667,657.2916666666666,3
+Email,Samsung Galaxy,Refund request,Medium,13.822222222222223,41.46666666666667,647.9166666666666,3
+Social media,PlayStation,Refund request,Low,13.816666666666665,41.449999999999996,647.6562499999999,3
+Phone,Google Nest,Product inquiry,Medium,9.7375,38.95,608.59375,4
+Chat,Sony PlayStation,Cancellation request,High,16.683333333333334,33.36666666666667,521.3541666666667,2
+Social media,Microsoft Xbox Controller,Cancellation request,Low,10.96111111111111,32.88333333333333,513.8020833333333,3
+Social media,Nest Thermostat,Product inquiry,Critical,6.5200000000000005,32.6,509.375,5
+Social media,GoPro Hero,Technical issue,High,10.522222222222222,31.566666666666666,493.22916666666663,3
+Social media,Bose QuietComfort,Product inquiry,Low,10.327777777777778,30.983333333333334,484.11458333333337,3
