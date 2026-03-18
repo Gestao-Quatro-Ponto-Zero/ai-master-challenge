@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page:    #0f1117;
+    --bg-card:    #141b2d;
+    --bg-surface: #1a2340;
+    --border:     #1e2740;
+    --text-main:  #adb8cc;
+    --text-head:  #eef1f8;
+  }
+
+  html, body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2d3a56 transparent;
+  }
+  *::-webkit-scrollbar { width: 5px; height: 5px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #2d3a56; border-radius: 99px; }
+  *::-webkit-scrollbar-thumb:hover { background: #3d4a66; }
+}
+
+@layer components {
+  .bg-white {
+    background-color: #141b2d !important;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  textarea,
+  select {
+    background-color: #0f1117 !important;
+    border-color: #2d3a56 !important;
+    color: #eef1f8 !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #4d5a72 !important;
+    opacity: 1 !important;
+  }
+
+  .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) !important; }
+  .shadow    { box-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) !important; }
+  .shadow-md { box-shadow: 0 4px 16px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05) !important; }
+  .shadow-lg { box-shadow: 0 8px 24px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06) !important; }
+  .shadow-xl { box-shadow: 0 12px 40px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.07) !important; }
+  .shadow-2xl{ box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.08) !important; }
+}
