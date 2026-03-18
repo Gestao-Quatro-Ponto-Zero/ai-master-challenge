@@ -1,350 +1,304 @@
-# Submissão — Fer Paes — Challenge Support Redesign
+# G4 Tech Support Tickets
 
-## Sobre mim
-
-**Nome:** Fernando Paes  
-**LinkedIn:** [(Fernando Paes)](https://www.linkedin.com/in/ferpaes/)
-
-**Challenge escolhido:** Support Tickets System
-
-**Resultado final:** https://tech-support-ticket-ufba.bolt.host/llm-models ( operador@gmail.com / Operador@123 )
-
-**Video do processo:** https://drive.google.com/file/d/1I7u3XAVG-yoGOt51ddj0zwvzYR1hQoo8/view?usp=drive_link
+A full-featured customer support and helpdesk platform built with React, TypeScript, Vite, Tailwind CSS, and Supabase. Includes omnichannel ticket management, AI agents, knowledge base, operator workspace, campaign management, LLM observability, and more.
 
 ---
 
+## Table of Contents
 
-# Executive Summary
-
-A análise dos datasets de suporte revelou gargalos principalmente relacionados à triagem manual de tickets e à falta de classificação eficiente das solicitações. O dataset indica padrões recorrentes de problemas técnicos, especialmente após atualizações de software, além de inconsistências entre resolução registrada e satisfação do cliente.
-
-Com base nesses insights, propus um sistema de suporte baseado em **orquestração de agentes de IA**, responsável por classificar automaticamente tickets, direcionar solicitações para especialistas e sugerir respostas baseadas em histórico de casos similares.
-
-A solução inclui um **orquestrador de tickets, agentes especializados por categoria e dashboards operacionais**, permitindo reduzir tempo de triagem, acelerar resolução e melhorar a experiência do cliente.
-
----
-
-# Solução
-
-A solução proposta consiste em um **sistema de suporte baseado em arquitetura multiagente**, capaz de automatizar triagem, classificação e roteamento de tickets.
-
-## Fluxo do sistema
-
-1. Cliente abre ticket via canal (chat, email, telefone ou social)
-2. Um **orquestrador de IA** analisa o conteúdo do ticket
-3. O ticket é classificado automaticamente
-4. O sistema direciona para um **agente especializado**
-5. O agente pode:
-   - sugerir resposta automática
-   - executar automações
-   - escalar para humano quando necessário
-
-## Arquitetura proposta
-User Input
-↓
-Ticket Orchestrator (LLM)
-↓
-Category Detection
-↓
-Routing Engine
-↓
-Specialized Agents
-├ Technical Support Agent
-├ Billing Agent
-├ Refund Agent
-└ Product Inquiry Agent
-
-
-Além disso, foi proposto um **dashboard operacional**, permitindo visualizar:
-
-- gargalos de atendimento
-- tempo médio de resolução
-- tickets por categoria
-- tickets que exigem intervenção humana
+- [Prerequisites](#prerequisites)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Database Setup](#database-setup)
+- [Edge Functions](#edge-functions)
+- [Creating the First Admin User](#creating-the-first-admin-user)
+- [Running the Project](#running-the-project)
+- [Roles and Permissions](#roles-and-permissions)
+- [Main Features](#main-features)
 
 ---
 
-# Abordagem
+## Prerequisites
 
-O processo seguiu quatro etapas principais.
-
-## 1. Exploração do dataset
-
-Foram analisados dois datasets:
-
-### Dataset 1
-Contém métricas operacionais:
-- canal de atendimento
-- prioridade
-- status do ticket
-- tempo de resolução
-- satisfação do cliente
-
-### Dataset 2
-Contém dados textuais:
-
-- 48.000 tickets
-- descrição completa dos problemas
-- classificação em oito categorias
-
-Essa análise permitiu identificar padrões de problemas e distribuição dos tickets.
+- [Node.js](https://nodejs.org/) v18 or higher
+- [npm](https://www.npmjs.com/) v9 or higher
+- A [Supabase](https://supabase.com/) account and project (already provisioned)
 
 ---
 
-## 2. Identificação de padrões
+## Tech Stack
 
-Alguns padrões identificados:
-
-Problemas técnicos recorrentes:
-
-- falhas após atualização de software
-- problemas de bateria
-- falhas de conectividade
-- perda de dados
-
-Também foi identificado que muitos usuários:
-
-- tentam resolver o problema antes de abrir ticket
-- seguem manuais ou fóruns
-- realizam reset de fábrica
+| Layer       | Technology                          |
+|-------------|-------------------------------------|
+| Frontend    | React 18, TypeScript, Vite          |
+| Styling     | Tailwind CSS                        |
+| Icons       | Lucide React                        |
+| Routing     | React Router DOM v7                 |
+| Database    | Supabase (PostgreSQL + RLS)         |
+| Auth        | Supabase Auth (email/password)      |
+| Backend     | Supabase Edge Functions (Deno)      |
+| CSV Parsing | PapaParse                           |
 
 ---
 
-## 3. Avaliação da qualidade dos dados
+## Project Structure
 
-Foram identificadas algumas inconsistências importantes:
+```
+src/
+├── channels/          # Channel adapters (email, chat, API) and normalizers
+├── components/        # Feature-specific UI components
+│   ├── agents/        # AI agent management components
+│   ├── ai-usage/      # AI usage analytics
+│   ├── automations/   # Automation rule editor
+│   ├── budget/        # LLM budget management
+│   ├── campaigns/     # Campaign management UI
+│   ├── costs/         # LLM cost tracking
+│   ├── customer-analytics/
+│   ├── dashboard/
+│   ├── events/
+│   ├── knowledge/     # Knowledge base management
+│   ├── layout/        # Sidebar, main layout
+│   ├── llm/           # LLM model, policy and log components
+│   ├── metrics/       # Operator performance metrics
+│   ├── operators/
+│   ├── queues/
+│   ├── router/        # LLM router debug
+│   ├── scheduler/     # Campaign scheduler
+│   ├── segments/      # Customer segmentation
+│   ├── supervisor/    # Supervisor monitoring dashboard
+│   ├── tickets/       # Ticket list, detail, composer
+│   ├── tokens/        # Token usage tracking
+│   ├── users/
+│   └── workspace/     # Operator workspace
+├── contexts/          # React context providers (Auth)
+├── hooks/             # Custom React hooks
+├── layouts/           # Page layouts
+├── lib/               # Supabase client, API client
+├── pages/             # Route-level page components
+├── router/            # React Router configuration
+├── services/          # Business logic and Supabase service calls
+├── types/             # TypeScript type definitions
+└── widgets/           # Embeddable chat widget
 
-- tickets fechados sem solução clara
-- satisfação do cliente inconsistente
-- campo de resolução aparentemente com placeholders
-
-Isso indica que o dataset é adequado para **classificação de problemas**, mas não para aprendizado direto de soluções.
-
----
-
-## 4. Modelagem da solução
-
-Com base nesses insights, foi proposta uma arquitetura baseada em:
-
-- classificação automática de tickets
-- orquestração via LLM
-- agentes especializados
-- integração com sistemas internos
-
-O objetivo é reduzir triagem manual e acelerar resolução.
-
----
-
-# Resultados / Findings
-
-## Distribuição por canal
-
-Grande parte dos tickets chega por:
-
-- chat
-- redes sociais
-
-Seguidos por:
-
-- telefone
-- email
-
-Isso indica que automação conversacional pode gerar impacto relevante na operação.
-
----
-
-## Problemas técnicos dominam o volume
-
-Grande parte dos tickets está relacionada a:
-
-- hardware
-- acesso a contas
-- conectividade
-- erros após atualização
-
-Esses tipos de problema são bons candidatos para automação parcial.
+supabase/
+├── functions/         # Supabase Edge Functions (Deno)
+└── migrations/        # SQL migrations (applied in order)
+```
 
 ---
 
-## Inconsistência nas métricas de satisfação
+## Installation
 
-Foi observado que alguns tickets não resolvidos receberam nota máxima de satisfação.
+1. **Clone the repository:**
 
-Isso sugere possível problema de coleta ou modelagem do indicador.
+```bash
+git clone <repository-url>
+cd g4-tech-support-tickets
+```
 
----
+2. **Install dependencies:**
 
-## Dataset ideal para classificação
+```bash
+npm install
+```
 
-O dataset textual com 48k tickets é adequado para:
-
-- classificação automática
-- roteamento inteligente
-- triagem inicial
-
----
-
-# Recomendações
-
-## 1. Classificação automática de tickets
-
-Utilizar modelos de NLP para classificar tickets automaticamente.
-
-Benefícios:
-
-- redução da triagem manual
-- melhor distribuição de workload
-- menor tempo de resposta
+3. **Configure environment variables** (see next section).
 
 ---
 
-## 2. Implementar roteamento inteligente
+## Environment Variables
 
-Criar um orquestrador responsável por direcionar tickets para:
+Create a `.env` file at the root of the project with the following variables:
 
-- agentes automáticos
-- especialistas humanos
+```env
+VITE_SUPABASE_URL=https://<your-project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
+```
 
----
+You can find these values in your Supabase project under **Project Settings > API**.
 
-## 3. Automatizar problemas recorrentes
-
-Automação recomendada para:
-
-- reset de senha
-- troubleshooting básico
-- consultas de produto
-- status de pedidos
+> **Note:** Never commit your `.env` file to version control. It is already listed in `.gitignore`.
 
 ---
 
-## 4. Criar dashboards operacionais
+## Database Setup
 
-Monitorar:
+All database migrations are located in `supabase/migrations/` and must be applied in order. The migrations cover:
 
-- gargalos de atendimento
-- tempo médio de resolução
-- distribuição por categoria
-- taxa de automação
+- RBAC (Roles, Permissions, User Roles)
+- User profiles with extended fields
+- Audit logs (immutable)
+- Omnichannel tickets and conversations
+- SLA policies
+- Tags system
+- Automation rules
+- Macros
+- Operator presence
+- AI Agents schema
+- Knowledge base with vector search (pgvector)
+- LLM usage logs, model registry, token tracking, cost calculator
+- LLM policies and budgets
+- Customer analytics, events, segmentation
+- Campaign management, scheduler, delivery, analytics
+- API keys and integration logs
 
----
+### Applying migrations
 
-# Limitações
-
-Algumas limitações foram identificadas durante a análise.
-
-## Dataset incompleto
-
-O dataset não contém:
-
-- procedimentos realizados pelo suporte
-- solução aplicada ao problema
-
-Isso limita o treinamento de sistemas de resposta automática.
-
----
-
-## Possível natureza sintética dos dados
-
-Algumas distribuições parecem artificialmente balanceadas, o que pode não refletir uma operação real.
+If you are using the Supabase dashboard, navigate to **SQL Editor** and run each migration file in chronological order, or use the Supabase MCP tools if available in your environment.
 
 ---
 
-## Falta de contexto operacional
+## Edge Functions
 
-Não há informação sobre:
+The following Edge Functions are deployed to Supabase:
 
-- SLA
-- regras de atendimento
-- estrutura organizacional do suporte
-
-Esses fatores impactam diretamente o design do sistema.
-
----
-
-# Process Log — Como usei IA
-
-## Ferramentas usadas
-
-| Ferramenta | Uso |
-|---|---|
-| ChatGPT | análise exploratória e estruturação da solução |
-| NotebookLM | exploração inicial dos datasets |
-| GPT | análise textual do dataset de tickets |
-| Bolt.new | desenvolvimento do protótipo de sistema multiagente |
-
----
-
-# Workflow
-
-O processo foi conduzido em ciclos iterativos.
-
-## 1. Análise exploratória
-
-Os datasets foram analisados utilizando IA para identificar padrões nos tickets.
+| Function                    | Description                                      |
+|-----------------------------|--------------------------------------------------|
+| `create-admin-user`         | Creates a new auth user with admin privileges    |
+| `agent-executor`            | Executes AI agent runs                           |
+| `agent-router`              | Routes requests to the appropriate agent         |
+| `agent-memory`              | Manages agent memory (short and long term)       |
+| `agent-observability`       | Logs agent traces and metrics                    |
+| `agent-tools`               | Provides tool execution for agents               |
+| `llm-router`                | Routes LLM requests with policy enforcement      |
+| `llm-manager`               | Manages LLM model configurations                 |
+| `rag-engine`                | Retrieval-Augmented Generation engine            |
+| `retrieval-service`         | Vector similarity retrieval                      |
+| `document-ingest`           | Ingests documents into the knowledge base        |
+| `document-process`          | Processes and chunks documents                   |
+| `embedding-pipeline`        | Generates and stores embeddings                  |
+| `channel-ingest`            | Ingests messages from external channels          |
+| `campaign-scheduler-worker` | Triggers scheduled campaigns                     |
+| `campaign-delivery-worker`  | Executes campaign message delivery               |
 
 ---
 
-## 2. Identificação de padrões
+## Creating the First Admin User
 
-A IA foi utilizada para:
+After applying all migrations, you need to create an admin user. Call the `create-admin-user` Edge Function:
 
-- identificar padrões recorrentes
-- agrupar problemas semelhantes
-- gerar mapas mentais do dataset
+```bash
+curl -X POST https://<your-project-ref>.supabase.co/functions/v1/create-admin-user \
+  -H "Authorization: Bearer <your-supabase-anon-key>" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "admin@example.com", "password": "your-secure-password"}'
+```
 
----
+After the user is created, go to the Supabase **SQL Editor** and assign the admin role:
 
-## 3. Modelagem da solução
-
-A partir dos insights obtidos, foi definida uma arquitetura baseada em:
-
-- orquestrador de tickets
-- agentes especializados
-- classificação automática
-
----
-
-## 4. Prototipação
-
-A arquitetura foi transformada em escopo técnico e protótipo utilizando ferramentas de desenvolvimento assistido por IA.
+```sql
+INSERT INTO user_roles (user_id, role_id)
+SELECT '<user-id-returned>', id FROM roles WHERE name = 'admin';
+```
 
 ---
 
-# Onde a IA errou e como corrigi
+## Running the Project
 
-Durante a análise inicial, a IA sugeriu utilizar o dataset para treinar respostas automáticas.
+**Development server:**
 
-Após análise manual, foi identificado que o dataset não contém as soluções aplicadas pelo suporte, apenas descrições de problemas.
+```bash
+npm run dev
+```
 
-Por esse motivo, o dataset foi utilizado apenas para **classificação de tickets**.
+The app will be available at `http://localhost:5173`.
 
----
+**Type checking:**
 
-# O que eu adicionei que a IA sozinha não faria
+```bash
+npm run typecheck
+```
 
-A principal contribuição humana foi:
+**Production build:**
 
-- identificar limitações estruturais do dataset
-- definir arquitetura de orquestração multiagente
-- separar fluxos de suporte entre **produto e comercial**
-- modelar agentes especializados
+```bash
+npm run build
+```
 
----
+**Preview production build:**
 
-# Evidências
-
-Evidências do processo incluem:
-
-- screenshots das interações com IA
-- transcrição do processo de análise
-- histórico de desenvolvimento do protótipo
-- registros de prompts utilizados
-
-Arquivos disponíveis em:
-process-log/
+```bash
+npm run preview
+```
 
 ---
 
-**Submissão enviada em:** 16/03/2026
+## Roles and Permissions
 
+The system ships with four default roles:
+
+| Role       | Description                                           |
+|------------|-------------------------------------------------------|
+| admin      | Full system access — manages users, roles, all modules |
+| supervisor | Manages tickets and users, views reports              |
+| operator   | Creates and resolves tickets, handles workspace       |
+| viewer     | Read-only access to tickets                           |
+
+Roles can be customized via the **Roles** page (requires `roles.manage` permission). Custom roles can be created and fine-grained permissions can be assigned per role.
+
+---
+
+## Main Features
+
+### Ticketing
+- Omnichannel support: email, chat, API
+- Ticket creation, assignment, SLA tracking, tagging, macros
+- Automated rules (automations)
+- Resolution with notes
+
+### Operator Workspace
+- Real-time conversation panel
+- Internal notes
+- Transfer between operators and queues
+- Presence indicators
+
+### Supervisor Dashboard
+- Live queue monitoring
+- Operator performance metrics
+- Active ticket oversight
+
+### AI Agents
+- Agent creation and configuration
+- LLM model assignment
+- Tool definitions and execution
+- Agent memory (short/long term)
+- Observability traces
+
+### Knowledge Base
+- Document ingestion and processing
+- Chunk viewer and embedding monitor
+- Vector similarity search (pgvector)
+- Feedback loop for retrieval quality
+
+### LLM Observability
+- Model registry
+- Request logging
+- Token usage tracking
+- Cost calculator per model and agent
+- Budget limits per agent/model
+- Prompt policies enforcement
+- Router debug panel
+
+### Customer Management
+- Customer profiles with event history
+- Segmentation with rule builder
+- CSV import
+
+### Campaigns
+- Campaign creation and targeting by segment
+- Scheduler with recurring execution
+- Delivery engine with status tracking
+- Analytics and performance charts
+
+### Integrations & Developers
+- API key management
+- Integration logs
+- Developer portal
+
+### Administration
+- User management
+- Role and permission editor
+- Audit log (immutable)
+- CSV import

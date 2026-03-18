@@ -13,6 +13,7 @@
 
 ---
 
+
 # Executive Summary
 
 A análise dos datasets de suporte revelou gargalos principalmente relacionados à triagem manual de tickets e à falta de classificação eficiente das solicitações. O dataset indica padrões recorrentes de problemas técnicos, especialmente após atualizações de software, além de inconsistências entre resolução registrada e satisfação do cliente.
