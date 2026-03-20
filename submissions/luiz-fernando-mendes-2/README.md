@@ -37,6 +37,7 @@ Para garantir a integridade das afirmações analíticas, incluí o script de de
 * **Identificação de Ouro:** Isolamento de 229 deals de "Alta Prioridade" com os pilares ideais de fechamento.
 * **Explainability:** O sistema detalha individualmente o "porquê" de cada score, eliminando a "caixa-preta" da IA para o vendedor.
 * **Consistência Monetária:** Interface totalmente ajustada para **USD ($)**, mantendo fidelidade ao dataset original.
+* **Priorização Realista:** Ajuste manual de thresholds de scoring (limite de **50 pontos**) para garantir que nenhum lead em risco seja ignorado pelo dashboard, corrigindo distorções geradas pela lógica automatizada inicial.
 
 ---
 
