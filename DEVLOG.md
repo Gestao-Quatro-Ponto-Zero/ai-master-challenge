@@ -71,6 +71,34 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 ---
 
+## Sessão 4 — Lead Scorer: dashboard e correções
+
+**[user]** Pediu dashboard central com dados visuais (distribuições, proporções).
+
+**[ai]** Implementou `getDashboardStats()` em `queries.ts` — computa tudo sobre o cache já existente, sem nova query DuckDB. Dashboard como Server Component puro: KPIs, barra empilhada hot/warm/cold, stage split, pipeline por região e produto (mini-bars CSS), aging em 4 buckets, top 10 agentes por score médio. Zero JS client, zero lib de charts.
+
+**[ai]** Adicionou link "Dashboard" no nav e trocou redirect da `/` para apontar à nova página.
+
+---
+
+## Sessão 5 — Support Triage: correções e IA nos insights
+
+**[user]** Identificou que o classificador usava `@anthropic-ai/sdk` — pediu troca para OpenRouter.
+
+**[user]** Identificou que os insights do card de diagnóstico eram template strings com valores injetados — a narrativa era minha, não da IA. Pediu que fossem gerados dinamicamente.
+
+**[ai]** Trocou Anthropic SDK por `fetch` nativo para OpenRouter (`OPENROUTER_API_KEY`). Removeu dependência `@anthropic-ai/sdk`. Sem SDK extra.
+
+**❌ [ai]** `medianHours = 7.7` estava hardcoded na página de diagnóstico — valor que eu havia explorado antes de codar. Corrigido para usar `overview.avgResolutionHours` vindo da query. `worstChannel` também era assumido pela posição no array — corrigido para derivar do sort sobre os dados.
+
+**[ai]** Criou `insights.ts` com `generateInsights()`: envia o payload completo dos dados para o OpenRouter e pede 4 achados em JSON. Fallback computa texto dinamicamente dos valores reais (sem strings hardcoded). `InsightsCard` e `ProposalDiagnosis` são async Server Components envolvidos em `<Suspense>` — a estrutura da página carrega imediata, os insights aparecem depois da resposta da IA.
+
+**[user]** Pediu skeleton mais bonito, cache para não bater sempre na IA, e orientação sobre `.env`.
+
+**[ai]** Skeleton agora tem spinner CSS (`border-t-transparent animate-spin`) + texto "Gerando insights com IA…". Cache em memória com TTL de 1h em `insights.ts` — key derivada dos valores reais do payload. Criado `.env.example` documentando `OPENROUTER_API_KEY`. Local: `.env.local` na raiz do app; Railway: painel de variáveis do projeto.
+
+---
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->
