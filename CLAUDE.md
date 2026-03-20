@@ -55,8 +55,8 @@ All documentation in this repo is in **Portuguese**. When adding or editing chal
 `DEVLOG.md` na raiz do projeto é o diário de decisões e estratégias da submissão. **Toda vez que uma decisão relevante for tomada, um erro for identificado, ou uma etapa for concluída, registrar uma entrada no DEVLOG antes de fazer o commit.**
 
 Formato de entrada:
-- `✅` para decisões/etapas concluídas corretamente
-- `❌` para erros identificados e corrigidos (com o aprendizado)
-- `🔄` para iterações e mudanças de abordagem
+- `**[user]**` para decisões e direcionamentos do humano
+- `**[ai]**` para o que foi sugerido ou executado pelo Claude
+- `**❌ [user|ai]**` para erros — sempre com o aprendizado
 
-O DEVLOG serve tanto como process log da submissão quanto como memória do projeto para futuras sessões. Não reconstruir entradas retroativamente — registrar ao vivo.
+O DEVLOG serve como process log da submissão e memória do projeto. Não reconstruir retroativamente — registrar ao vivo, antes do commit.
