@@ -45,6 +45,8 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** Lead Scorer funcionando: API `/api/pipeline` retornando 2089 deals com score e breakdown, páginas `/pipeline`, `/pipeline/[id]`, `/team`, `/team/[agent]` implementadas.
 
+**❌ [user]** Erro em produção: `Cannot read properties of null` em `sales_price.toLocaleString()`. **[ai]** investigou — 333 deals têm produto `'GTXPro'` (sem espaço) que não casa com `'GTX Pro'` na tabela de produtos. Problema de qualidade nos dados do dataset. Corrigido com `REPLACE(p.product, 'GTXPro', 'GTX Pro')` no JOIN. Também adicionado guard `!= null` na célula da tabela.
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->

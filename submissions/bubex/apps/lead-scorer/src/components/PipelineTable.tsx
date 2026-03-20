@@ -45,7 +45,7 @@ const columns = [
   col.accessor('product', { header: 'Produto' }),
   col.accessor('sales_price', {
     header: 'Valor ($)',
-    cell: (i) => `$${i.getValue().toLocaleString()}`,
+    cell: (i) => i.getValue() != null ? `$${i.getValue().toLocaleString()}` : '—',
   }),
   col.accessor('sales_agent', { header: 'Agente' }),
   col.accessor('regional_office', { header: 'Região' }),

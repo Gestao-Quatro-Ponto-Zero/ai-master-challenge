@@ -87,7 +87,8 @@ SELECT
   )) AS score
 
 FROM ${csv('sales_pipeline.csv')} p
-LEFT JOIN ${csv('products.csv')}    pr  ON p.product     = pr.product
+-- 'GTXPro' in pipeline doesn't match 'GTX Pro' in products — normalize on join
+LEFT JOIN ${csv('products.csv')}    pr  ON REPLACE(p.product, 'GTXPro', 'GTX Pro') = pr.product
 LEFT JOIN ${csv('accounts.csv')}    a   ON p.account     = a.account
 LEFT JOIN ${csv('sales_teams.csv')} t   ON p.sales_agent = t.sales_agent
 LEFT JOIN agent_stats               ast ON p.sales_agent = ast.sales_agent
