@@ -9,7 +9,6 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.40.0",
     "@duckdb/node-api": "1.5.0-r.1",
     "@challenge/ui": "workspace:*",
     "@tanstack/react-table": "^8.21.3",

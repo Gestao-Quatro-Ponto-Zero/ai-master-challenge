@@ -49,10 +49,10 @@ export default async function DiagnosticPage() {
     getTypeStats(),
   ])
 
-  const medianHours = 7.7 // avg from data exploration
+  const avgHours = overview.avgResolutionHours
   const worstBottleneck = bottlenecks[0]
   const bestChannel = [...channelStats].sort((a, b) => b.avgCsat - a.avgCsat)[0]
-  const worstChannel = channelStats[0]
+  const worstChannel = [...channelStats].sort((a, b) => a.avgCsat - b.avgCsat)[0]
 
   return (
     <div className="space-y-8">
@@ -116,7 +116,7 @@ export default async function DiagnosticPage() {
                   <span className="text-gray-700 font-medium">{c.channel}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-gray-400 text-xs">{c.total} tickets</span>
-                    <HoursBadge hours={c.avgHours} median={medianHours} />
+                    <HoursBadge hours={c.avgHours} median={avgHours} />
                     <CsatBadge csat={c.avgCsat} />
                   </div>
                 </div>
@@ -139,7 +139,7 @@ export default async function DiagnosticPage() {
                   <span className="text-gray-700 font-medium">{t.type}</span>
                   <div className="flex items-center gap-2">
                     <span className="text-gray-400 text-xs">{t.total}</span>
-                    <HoursBadge hours={t.avgHours} median={medianHours} />
+                    <HoursBadge hours={t.avgHours} median={avgHours} />
                     <CsatBadge csat={t.avgCsat} />
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export default async function DiagnosticPage() {
                   <td className="px-4 py-3 text-gray-600">{b.type}</td>
                   <td className="px-4 py-3 text-gray-500">{b.n}</td>
                   <td className="px-4 py-3">
-                    <HoursBadge hours={b.avgHours} median={medianHours} />
+                    <HoursBadge hours={b.avgHours} median={avgHours} />
                   </td>
                   <td className="px-4 py-3">
                     <CsatBadge csat={b.avgCsat} />

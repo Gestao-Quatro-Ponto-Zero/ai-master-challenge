@@ -1,4 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk'
 import type { ClassifyResult, ItCategory } from '@/types'
 
 const CATEGORIES: ItCategory[] = [
@@ -47,18 +46,10 @@ function keywordFallback(text: string): ClassifyResult {
 }
 
 export async function classifyTicket(text: string): Promise<ClassifyResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY
+  const apiKey = process.env.OPENROUTER_API_KEY
   if (!apiKey) return keywordFallback(text)
 
-  const client = new Anthropic({ apiKey })
-
-  try {
-    const message = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 300,
-      messages: [{
-        role: 'user',
-        content: `Você é um classificador de tickets de suporte de TI corporativo.
+  const prompt = `Você é um classificador de tickets de suporte de TI corporativo.
 Classifique o ticket abaixo em UMA das categorias: ${CATEGORIES.join(' | ')}
 
 Responda APENAS com JSON válido, sem texto extra:
@@ -72,13 +63,34 @@ Responda APENAS com JSON válido, sem texto extra:
 }
 
 Ticket:
-${text.slice(0, 1000)}`,
-      }],
+${text.slice(0, 1000)}`
+
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
+        'X-Title': 'Support Triage — AI Master Challenge',
+      },
+      body: JSON.stringify({
+        model: 'anthropic/claude-haiku-4-5',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }],
+      }),
     })
 
-    const raw = (message.content[0] as { type: string; text: string }).text.trim()
-    const json = JSON.parse(raw)
+    if (!res.ok) {
+      console.error('[classify] OpenRouter error', res.status, await res.text())
+      return keywordFallback(text)
+    }
 
+    const data = await res.json()
+    const raw = data.choices?.[0]?.message?.content?.trim()
+    if (!raw) return keywordFallback(text)
+
+    const json = JSON.parse(raw)
     return {
       category:            json.category,
       confidence:          Number(json.confidence),
@@ -88,7 +100,8 @@ ${text.slice(0, 1000)}`,
       automationReasoning: json.automationReasoning,
       mode:                'ai',
     }
-  } catch {
+  } catch (err) {
+    console.error('[classify] failed', err)
     return keywordFallback(text)
   }
 }
