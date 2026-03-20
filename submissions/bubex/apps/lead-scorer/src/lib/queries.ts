@@ -221,3 +221,88 @@ export async function getAgentDeals(agentName: string): Promise<Deal[]> {
   const all = await getAllDeals()
   return all.filter(d => d.sales_agent === agentName)
 }
+
+// ── Dashboard stats ───────────────────────────────────────────────────────────
+
+function groupBy<T>(arr: T[], key: (item: T) => string): Map<string, T[]> {
+  const map = new Map<string, T[]>()
+  for (const item of arr) {
+    const k = key(item)
+    const existing = map.get(k)
+    if (existing) existing.push(item)
+    else map.set(k, [item])
+  }
+  return map
+}
+
+export interface DashboardStats {
+  total: number
+  pipelineValue: number
+  hot: number
+  warm: number
+  cold: number
+  avgScore: number
+  engaging: number
+  prospecting: number
+  byRegion: { region: string; deals: number; value: number }[]
+  byProduct: { product: string; deals: number; value: number }[]
+  byAging: { label: string; deals: number }[]
+  topAgents: { agent: string; avgScore: number; hot: number; deals: number }[]
+}
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const all = await getAllDeals()
+
+  const hot  = all.filter(d => d.score >= 70).length
+  const warm = all.filter(d => d.score >= 40 && d.score < 70).length
+  const cold = all.filter(d => d.score < 40).length
+  const pipelineValue = all.reduce((s, d) => s + (d.sales_price ?? 0), 0)
+  const avgScore = Math.round(all.reduce((s, d) => s + d.score, 0) / all.length)
+  const engaging    = all.filter(d => d.deal_stage === 'Engaging').length
+  const prospecting = all.filter(d => d.deal_stage === 'Prospecting').length
+
+  const regionMap = groupBy(all, d => d.regional_office ?? 'N/A')
+  const byRegion = Array.from(regionMap.entries())
+    .map(([region, deals]) => ({
+      region,
+      deals: deals.length,
+      value: deals.reduce((s, d) => s + (d.sales_price ?? 0), 0),
+    }))
+    .sort((a, b) => b.value - a.value)
+
+  const productMap = groupBy(all, d => d.product ?? 'N/A')
+  const byProduct = Array.from(productMap.entries())
+    .map(([product, deals]) => ({
+      product,
+      deals: deals.length,
+      value: deals.reduce((s, d) => s + (d.sales_price ?? 0), 0),
+    }))
+    .sort((a, b) => b.value - a.value)
+
+  const agingBuckets = [
+    { label: '0–60 dias',  test: (d: Deal) => d.days_in_pipeline <= 60 },
+    { label: '61–120 dias', test: (d: Deal) => d.days_in_pipeline > 60  && d.days_in_pipeline <= 120 },
+    { label: '121–200 dias', test: (d: Deal) => d.days_in_pipeline > 120 && d.days_in_pipeline <= 200 },
+    { label: '200+ dias',  test: (d: Deal) => d.days_in_pipeline > 200 },
+  ]
+  const byAging = agingBuckets.map(b => ({
+    label: b.label,
+    deals: all.filter(b.test).length,
+  }))
+
+  const agentMap = groupBy(all, d => d.sales_agent)
+  const topAgents = Array.from(agentMap.entries())
+    .map(([agent, deals]) => ({
+      agent,
+      avgScore: Math.round(deals.reduce((s, d) => s + d.score, 0) / deals.length),
+      hot: deals.filter(d => d.score >= 70).length,
+      deals: deals.length,
+    }))
+    .sort((a, b) => b.avgScore - a.avgScore)
+    .slice(0, 10)
+
+  return {
+    total: all.length, pipelineValue, hot, warm, cold, avgScore,
+    engaging, prospecting, byRegion, byProduct, byAging, topAgents,
+  }
+}

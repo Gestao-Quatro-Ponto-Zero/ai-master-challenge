@@ -14,6 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-8">
           <span className="font-semibold text-gray-800 text-lg">Lead Scorer</span>
           <nav className="flex gap-6 text-sm">
+            <Link href="/" className="text-gray-600 hover:text-gray-900 font-medium">
+              Dashboard
+            </Link>
             <Link href="/pipeline" className="text-gray-600 hover:text-gray-900 font-medium">
               Pipeline
             </Link>
