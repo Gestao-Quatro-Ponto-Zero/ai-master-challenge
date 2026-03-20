@@ -93,7 +93,9 @@ ${dataSummary}`
     const raw = data.choices?.[0]?.message?.content?.trim()
     if (!raw) return fallbackInsights(payload)
 
-    const parsed = JSON.parse(raw)
+    // Strip markdown code fences if the model wrapped the JSON
+    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
+    const parsed = JSON.parse(cleaned)
     if (Array.isArray(parsed) && parsed.length > 0) {
       cache.set(key, { insights: parsed, at: Date.now() })
       return parsed as string[]

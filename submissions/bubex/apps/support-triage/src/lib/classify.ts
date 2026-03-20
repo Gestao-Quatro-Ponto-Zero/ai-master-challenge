@@ -90,7 +90,8 @@ ${text.slice(0, 1000)}`
     const raw = data.choices?.[0]?.message?.content?.trim()
     if (!raw) return keywordFallback(text)
 
-    const json = JSON.parse(raw)
+    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
+    const json = JSON.parse(cleaned)
     return {
       category:            json.category,
       confidence:          Number(json.confidence),
