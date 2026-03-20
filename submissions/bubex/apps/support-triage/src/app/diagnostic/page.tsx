@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { getOverview, getBottlenecks, getChannelStats, getTypeStats } from '@/lib/queries'
+import { getDiagnosticOutput } from '@/lib/notebook-output'
 import { InsightsCard, InsightsCardSkeleton } from '@/components/InsightsCard'
 
 function pct(n: number, total: number) {
@@ -14,15 +15,6 @@ function KpiCard({ label, value, sub, accent }: {
       <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">{label}</p>
       <p className={`text-2xl font-bold ${accent ?? 'text-gray-900'}`}>{value}</p>
       {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
-    </div>
-  )
-}
-
-function Bar({ value, max, color }: { value: number; max: number; color: string }) {
-  const w = max === 0 ? 0 : Math.round((value / max) * 100)
-  return (
-    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-      <div className={`h-full rounded-full ${color}`} style={{ width: `${w}%` }} />
     </div>
   )
 }
@@ -43,23 +35,47 @@ function HoursBadge({ hours, median }: { hours: number; median: number }) {
   )
 }
 
+const PRIORITY_ORDER = ['Critical', 'High', 'Medium', 'Low']
+const PRIORITY_COLOR: Record<string, string> = {
+  Critical: 'bg-red-500',
+  High:     'bg-orange-400',
+  Medium:   'bg-yellow-400',
+  Low:      'bg-green-400',
+}
+const PRIORITY_TEXT: Record<string, string> = {
+  Critical: 'text-red-700',
+  High:     'text-orange-700',
+  Medium:   'text-yellow-700',
+  Low:      'text-green-700',
+}
+
 export default async function DiagnosticPage() {
-  const [overview, bottlenecks, channelStats, typeStats] = await Promise.all([
+  const [overview, bottlenecks, channelStats, typeStats, notebookData] = await Promise.all([
     getOverview(),
     getBottlenecks(),
     getChannelStats(),
     getTypeStats(),
+    Promise.resolve(getDiagnosticOutput()),
   ])
 
   const avgHours = overview.avgResolutionHours
   const worstBottleneck = bottlenecks[0]
+
+  const priorityRows = notebookData?.priority
+    ? [...notebookData.priority].sort(
+        (a, b) => PRIORITY_ORDER.indexOf(a.priority) - PRIORITY_ORDER.indexOf(b.priority)
+      )
+    : null
+
+  const waste = notebookData?.waste ?? null
+  const csatDrivers = notebookData?.csat_drivers ?? null
 
   return (
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Diagnóstico Operacional</h1>
         <p className="text-gray-500 text-sm mt-1">
-          {overview.totalTickets.toLocaleString()} tickets analisados · Dataset: customer_support_tickets.csv
+          {overview.totalTickets.toLocaleString()} tickets analisados · Dataset 1: customer_support_tickets.csv
         </p>
       </div>
 
@@ -109,7 +125,7 @@ export default async function DiagnosticPage() {
                 </div>
                 <div className="flex gap-1 h-2">
                   <div className="bg-green-400 rounded-full" style={{ width: `${pct(c.closed, c.total)}%` }} title={`Fechados: ${c.closed}`} />
-                  <div className="bg-gray-200 rounded-full flex-1" title={`Abertos/pendentes`} />
+                  <div className="bg-gray-200 rounded-full flex-1" title="Abertos/pendentes" />
                 </div>
                 <p className="text-xs text-gray-400 mt-0.5">{pct(c.closed, c.total)}% resolvidos</p>
               </div>
@@ -144,6 +160,142 @@ export default async function DiagnosticPage() {
           </div>
         </div>
       </div>
+
+      {/* Priority breakdown — from notebook analysis */}
+      {priorityRows ? (
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Por prioridade</h2>
+            <span className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
+              via notebook Python
+            </span>
+          </div>
+          <div className="space-y-4">
+            {priorityRows.map(p => {
+              const barColor = PRIORITY_COLOR[p.priority] ?? 'bg-gray-400'
+              const textColor = PRIORITY_TEXT[p.priority] ?? 'text-gray-700'
+              const maxVol = Math.max(...priorityRows.map(r => r.volume))
+              return (
+                <div key={p.priority}>
+                  <div className="flex items-center justify-between text-sm mb-1">
+                    <span className={`font-medium ${textColor}`}>{p.priority}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-400 text-xs">{p.volume.toLocaleString()} tickets</span>
+                      <span className="text-xs font-medium px-2 py-0.5 rounded bg-gray-100 text-gray-600">
+                        {p.avg_resolution_h}h
+                      </span>
+                      <CsatBadge csat={p.avg_csat} />
+                    </div>
+                  </div>
+                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${barColor}`}
+                      style={{ width: `${Math.round((p.volume / maxVol) * 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-400 mt-0.5">{p.resolution_rate}% resolvidos</p>
+                </div>
+              )
+            })}
+          </div>
+          {/* Priority paradox callout */}
+          {(() => {
+            const critical = priorityRows.find(r => r.priority === 'Critical')
+            const low      = priorityRows.find(r => r.priority === 'Low')
+            if (!critical || !low) return null
+            return (
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+                <span className="font-semibold">Paradoxo da prioridade:</span>{' '}
+                tickets Critical têm CSAT {critical.avg_csat} vs {low.avg_csat} em tickets Low.
+                Clientes com problemas críticos têm expectativas mais altas — mesmo com SLA cumprido,
+                o impacto do problema resulta em satisfação similar ou inferior.
+              </div>
+            )
+          })()}
+        </div>
+      ) : null}
+
+      {/* What impacts CSAT — from notebook */}
+      {csatDrivers ? (
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">O que impacta o CSAT?</h2>
+            <span className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
+              via notebook Python
+            </span>
+          </div>
+          <div className="space-y-3 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[
+                { label: 'Tempo de resolução', r: csatDrivers.pearson_r, p: csatDrivers.pearson_p },
+                { label: 'Canal', r: null, p: csatDrivers.kruskal_channel_p },
+                { label: 'Tipo de ticket', r: null, p: csatDrivers.kruskal_type_p },
+                { label: 'Prioridade', r: null, p: csatDrivers.kruskal_priority_p },
+              ].map(({ label, r, p }) => {
+                const sig = p < 0.05
+                return (
+                  <div key={label} className={`rounded-lg p-3 border ${sig ? 'border-green-200 bg-green-50' : 'border-gray-100 bg-gray-50'}`}>
+                    <p className="text-xs text-gray-500 mb-1">{label}</p>
+                    {r !== null && (
+                      <p className="font-mono text-xs text-gray-700">r = {r.toFixed(4)}</p>
+                    )}
+                    <p className={`font-mono text-xs ${sig ? 'text-green-700 font-semibold' : 'text-gray-500'}`}>
+                      p = {p.toFixed(4)}
+                    </p>
+                    <p className={`text-xs mt-1 ${sig ? 'text-green-700' : 'text-gray-400'}`}>
+                      {sig ? 'significativo' : 'não significativo'}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+            <p className="text-xs text-gray-500 italic bg-gray-50 rounded-lg p-3">
+              {csatDrivers.conclusion}
+            </p>
+          </div>
+        </div>
+      ) : null}
+
+      {/* Waste estimation — from notebook */}
+      {waste ? (
+        <div className="bg-white rounded-xl border border-gray-200 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Desperdício estimado</h2>
+            <span className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
+              via notebook Python
+            </span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-xs text-gray-400 mb-1">Mediana de resolução</p>
+              <p className="text-xl font-bold text-gray-800">{waste.median_hours}h</p>
+              <p className="text-xs text-gray-400">baseline eficiente</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3">
+              <p className="text-xs text-gray-400 mb-1">Média atual</p>
+              <p className="text-xl font-bold text-red-600">{waste.mean_hours}h</p>
+              <p className="text-xs text-gray-400">+{(waste.mean_hours - waste.median_hours).toFixed(1)}h acima da mediana</p>
+            </div>
+            <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
+              <p className="text-xs text-gray-400 mb-1">Excesso/ano</p>
+              <p className="text-xl font-bold text-amber-700">{waste.annual_excess_hours.toLocaleString()}h</p>
+              <p className="text-xs text-gray-400">{waste.annual_volume.toLocaleString()} tickets/ano projetados</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-3 border border-green-100">
+              <p className="text-xs text-gray-400 mb-1">Custo recuperável</p>
+              <p className="text-xl font-bold text-green-700">
+                R${(waste.annual_cost_brl / 1_000_000).toFixed(1)}M
+              </p>
+              <p className="text-xs text-gray-400">a R$35/h (agente CLT)</p>
+            </div>
+          </div>
+          <p className="text-xs text-gray-400 italic">
+            Premissas: volume anual de {waste.annual_volume.toLocaleString()} tickets (conforme enunciado),
+            excesso calculado sobre tickets acima da mediana ({waste.above_median_pct}% do total),
+            custo de R$35/h. Validar com dados de produção.
+          </p>
+        </div>
+      ) : null}
 
       {/* Bottleneck table */}
       <div className="bg-white rounded-xl border border-gray-200 p-5">
@@ -182,9 +334,10 @@ export default async function DiagnosticPage() {
 
       {/* Data quality note */}
       <p className="text-xs text-gray-400 italic">
-        Nota: dataset sintético — `Ticket Description` contém placeholders não substituídos
+        Nota: dataset sintético — <code>Ticket Description</code> contém placeholders não substituídos
         (ex: <code>{'{product_purchased}'}</code>). Timestamps de resolução podem estar invertidos;
         usamos <code>ABS(DATE_DIFF)</code> para corrigir.
+        {notebookData && ` · ${notebookData.data_quality.same_day_timestamps_pct}% dos tickets têm timestamps no mesmo dia.`}
       </p>
     </div>
   )

@@ -141,7 +141,12 @@ export default function TriagePage() {
             </span>
             {result.mode === 'fallback' && (
               <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
-                Modo offline — sem API key
+                Modo keywords — sem API key
+              </span>
+            )}
+            {result.mode === 'ai' && (
+              <span className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full">
+                Modo LLM (Claude Haiku)
               </span>
             )}
           </div>
@@ -176,11 +181,114 @@ export default function TriagePage() {
         </div>
       )}
 
+      {/* Classifier accuracy — from notebook validation */}
+      <ClassifierMetrics />
+
       {/* Dataset info */}
       <div className="text-xs text-gray-400 space-y-1">
         <p>Categorias: Hardware · HR Support · Access · Storage · Purchase · Internal Project · Administrative rights · Miscellaneous</p>
-        <p>Modelo de classificação treinado conceitualmente com Dataset 2 — 47.837 tickets de TI classificados em 8 categorias.</p>
+        <p>Categorias definidas pelo Dataset 2 — 47.837 tickets de TI classificados em 8 grupos (ground truth).</p>
       </div>
+    </div>
+  )
+}
+
+// Server component split not possible in 'use client' page — fetch from API instead
+function ClassifierMetrics() {
+  const [data, setData] = useState<null | {
+    overall_accuracy: number
+    majority_baseline: number
+    llm_accuracy_estimate: number
+    lift_over_majority: number
+    total_tickets_evaluated: number
+    per_category: { category: string; accuracy: number; total: number }[]
+  }>(null)
+  const [loaded, setLoaded] = useState(false)
+
+  function loadMetrics() {
+    if (loaded) return
+    fetch('/api/classifier-metrics')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setData(d) })
+      .finally(() => setLoaded(true))
+  }
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <h2 className="text-sm font-semibold text-gray-700">Validação do classificador</h2>
+          <p className="text-xs text-gray-400 mt-0.5">
+            Medida sobre Dataset 2 — 47.837 tickets IT com ground truth
+          </p>
+        </div>
+        <span className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
+          via notebook Python
+        </span>
+      </div>
+
+      {!loaded && !data && (
+        <button
+          onClick={loadMetrics}
+          className="text-xs px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600"
+        >
+          Carregar métricas
+        </button>
+      )}
+
+      {loaded && !data && (
+        <p className="text-xs text-gray-400 italic">
+          Notebook não executado ainda — rode <code>01_diagnostic.ipynb</code> e <code>02_classifier_validation.ipynb</code> para gerar os dados.
+        </p>
+      )}
+
+      {data && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-gray-50 rounded-lg p-3 text-center">
+              <p className="text-xs text-gray-400 mb-1">Keywords</p>
+              <p className="text-xl font-bold text-gray-800">{Math.round(data.overall_accuracy * 100)}%</p>
+              <p className="text-xs text-gray-400">acurácia real</p>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-3 text-center">
+              <p className="text-xs text-gray-400 mb-1">Baseline</p>
+              <p className="text-xl font-bold text-gray-500">{Math.round(data.majority_baseline * 100)}%</p>
+              <p className="text-xs text-gray-400">majoritário</p>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-3 text-center border border-blue-100">
+              <p className="text-xs text-gray-400 mb-1">LLM (est.)</p>
+              <p className="text-xl font-bold text-blue-700">{Math.round(data.llm_accuracy_estimate * 100)}%</p>
+              <p className="text-xs text-gray-400">Claude Haiku</p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Acurácia por categoria — keywords</p>
+            {[...data.per_category]
+              .sort((a, b) => b.accuracy - a.accuracy)
+              .map(c => (
+                <div key={c.category}>
+                  <div className="flex items-center justify-between text-xs mb-0.5">
+                    <span className="text-gray-600">{c.category}</span>
+                    <span className="font-mono text-gray-500">{Math.round(c.accuracy * 100)}%</span>
+                  </div>
+                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${c.accuracy >= 0.5 ? 'bg-green-400' : c.accuracy >= 0.3 ? 'bg-yellow-400' : 'bg-red-400'}`}
+                      style={{ width: `${Math.round(c.accuracy * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <p className="text-xs text-gray-400 italic">
+            {data.total_tickets_evaluated.toLocaleString()} tickets avaliados ·
+            lift sobre majoritário: {data.lift_over_majority.toFixed(2)}× ·
+            estimativa LLM baseada em benchmarks de classificação de texto curto
+          </p>
+        </div>
+      )}
     </div>
   )
 }
