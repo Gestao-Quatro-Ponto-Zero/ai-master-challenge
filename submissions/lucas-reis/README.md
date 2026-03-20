@@ -59,11 +59,13 @@
 
 ## 📈 Dashboard interativo 
 
+[🌐 Acessar Dashboard](https://g4-challenge-web.vercel.app/)
+
 <p align="center">
-  <a href="process-log/screenshots/screenshot_dashboard_web_001.png">
+  <a href="https://g4-challenge-web.vercel.app/">
     <img src="process-log/screenshots/screenshot_dashboard_web_001.png" width="400" style="margin:5px;">
   </a>
-  <a href="process-log/screenshots/screenshot_dashboard_web_002.png">
+  <a href="https://g4-challenge-web.vercel.app/">
     <img src="process-log/screenshots/screenshot_dashboard_web_002.png" width="400" style="margin:5px;">
   </a>
   <a href="process-log/screenshots/screenshot_dashboard_web_003.png">
@@ -71,10 +73,10 @@
   </a>
 </p>
 <p align="center">
-  <a href="process-log/screenshots/screenshot_dashboard_web_004.png">
+  <a href="https://g4-challenge-web.vercel.app/">
     <img src="process-log/screenshots/screenshot_dashboard_web_004.png" width="500" style="margin:5px;">
   </a>
-  <a href="process-log/screenshots/screenshot_dashboard_web_005.png">
+  <a href="https://g4-challenge-web.vercel.app/">
     <img src="process-log/screenshots/screenshot_dashboard_web_005.png" width="500" style="margin:5px;">
   </a>
 </p>
