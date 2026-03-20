@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import { getOverview, getBottlenecks, getChannelStats, getTypeStats } from '@/lib/queries'
+import { InsightsCard, InsightsCardSkeleton } from '@/components/InsightsCard'
 
 function pct(n: number, total: number) {
   return total === 0 ? 0 : Math.round((n / total) * 100)
@@ -51,8 +53,6 @@ export default async function DiagnosticPage() {
 
   const avgHours = overview.avgResolutionHours
   const worstBottleneck = bottlenecks[0]
-  const bestChannel = [...channelStats].sort((a, b) => b.avgCsat - a.avgCsat)[0]
-  const worstChannel = [...channelStats].sort((a, b) => a.avgCsat - b.avgCsat)[0]
 
   return (
     <div className="space-y-8">
@@ -81,28 +81,15 @@ export default async function DiagnosticPage() {
           accent="text-red-600" />
       </div>
 
-      {/* Insight destaque */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-        <p className="text-sm font-semibold text-amber-800 mb-1">Achados principais</p>
-        <ul className="text-sm text-amber-700 space-y-1 list-disc list-inside">
-          <li>
-            <strong>{overview.backlogRate}% dos tickets não estão resolvidos</strong> — {overview.openTickets} abertos
-            + {overview.pendingTickets} aguardando resposta do cliente.
-          </li>
-          <li>
-            <strong>CSAT médio é {overview.avgCsat}/5</strong> — abaixo do benchmark típico de 3.5.
-            {worstChannel && ` Canal mais crítico: ${worstChannel.channel} (${worstChannel.avgCsat}).`}
-          </li>
-          <li>
-            <strong>Chat tem o melhor CSAT ({bestChannel?.avgCsat})</strong> mas representa
-            apenas {pct(channelStats.find(c => c.channel === bestChannel?.channel)?.total ?? 0, overview.totalTickets)}% do volume.
-          </li>
-          <li>
-            <strong>Pior gargalo:</strong> {worstBottleneck?.channel} + {worstBottleneck?.type} —
-            {' '}{worstBottleneck?.n} tickets com média de {worstBottleneck?.avgHours}h de resolução.
-          </li>
-        </ul>
-      </div>
+      {/* Insight destaque — gerado por IA sobre os dados reais */}
+      <Suspense fallback={<InsightsCardSkeleton />}>
+        <InsightsCard
+          overview={overview}
+          bottlenecks={bottlenecks}
+          channelStats={channelStats}
+          typeStats={typeStats}
+        />
+      </Suspense>
 
       {/* Channel breakdown + Type breakdown */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import { getOverview, getBottlenecks, getChannelStats, getTypeStats } from '@/lib/queries'
+import { ProposalDiagnosis, ProposalDiagnosisSkeleton } from '@/components/ProposalDiagnosis'
 
 export default async function ProposalPage() {
   const [overview, bottlenecks, channelStats, typeStats] = await Promise.all([
@@ -8,10 +10,6 @@ export default async function ProposalPage() {
     getTypeStats(),
   ])
 
-  const worstBottleneck = bottlenecks[0]
-  const bestChannel = [...channelStats].sort((a, b) => b.avgCsat - a.avgCsat)[0]
-  const worstType = typeStats.sort((a, b) => b.avgHours - a.avgHours)[0]
-
   return (
     <div className="space-y-10 max-w-3xl">
       <div>
@@ -19,35 +17,15 @@ export default async function ProposalPage() {
         <p className="text-gray-500 text-sm mt-1">Baseada nos dados reais do diagnóstico operacional.</p>
       </div>
 
-      {/* Diagnóstico resumido */}
-      <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Diagnóstico resumido</h2>
-        <ul className="space-y-2 text-sm text-gray-700">
-          <li className="flex gap-2">
-            <span className="text-red-500 font-bold mt-0.5">→</span>
-            <span>
-              <strong>{overview.backlogRate}% dos tickets não estão resolvidos</strong> ({overview.openTickets} abertos
-              + {overview.pendingTickets} pendentes). O volume de tickets sem resposta é maior do que o volume
-              resolvido — o time não está conseguindo fechar o backlog.
-            </span>
-          </li>
-          <li className="flex gap-2">
-            <span className="text-red-500 font-bold mt-0.5">→</span>
-            <span>
-              <strong>CSAT médio de {overview.avgCsat}/5</strong> — abaixo do benchmark de 3.5 esperado
-              para operações de suporte saudáveis. Chat é o único canal com CSAT aceitável ({bestChannel?.avgCsat}).
-            </span>
-          </li>
-          <li className="flex gap-2">
-            <span className="text-red-500 font-bold mt-0.5">→</span>
-            <span>
-              <strong>Pior gargalo: {worstBottleneck?.channel} + {worstBottleneck?.type}</strong> —
-              {' '}{worstBottleneck?.avgHours}h de resolução média em {worstBottleneck?.n} tickets.
-              O tipo {worstType?.type} tem o maior volume de tickets sem resolução.
-            </span>
-          </li>
-        </ul>
-      </section>
+      {/* Diagnóstico resumido — gerado por IA sobre os dados reais */}
+      <Suspense fallback={<ProposalDiagnosisSkeleton />}>
+        <ProposalDiagnosis
+          overview={overview}
+          bottlenecks={bottlenecks}
+          channelStats={channelStats}
+          typeStats={typeStats}
+        />
+      </Suspense>
 
       {/* Fluxo proposto */}
       <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
