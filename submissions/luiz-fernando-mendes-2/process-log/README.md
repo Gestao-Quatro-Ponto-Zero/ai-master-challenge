@@ -72,6 +72,10 @@ O projeto iniciou com a criação de um **GEM personalizado no Gemini chamado "L
 - **Imagem 19 (O Bug das Datas)**: O sistema não priorizava os leads corretamente porque a IA usava referências temporais de 2026 para um dataset de 2017. Ajustei a lógica para tratar os dados históricos com precisão.
 > ![Correção de Data](./screenshots/19.png)
 
+### D. Refinamento de Lógica de Negócio (Scoring Threshold)
+- **O Erro**: O card "Requer Atenção" exibia valor zero. Identifiquei que a IA configurou o filtro para scores < 30, sendo que a pontuação mínima teórica do algoritmo era 32.5.
+- **A Correção**: Ajustei manualmente o limite para < 50 e alterei a identidade visual do card para laranja, garantindo que o dashboard reflita fielmente os leads em zonas críticas (🟠 e 🔴).
+> **Evidência:** ![Ajuste de Scoring](./screenshots/41.png) 
 ---
 
 ## 4. Refinamento de UX e Identidade Visual (G4 Scale)
