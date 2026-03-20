@@ -130,9 +130,31 @@ O projeto iniciou com a criação de um **GEM personalizado no Gemini chamado "L
 - **Imagem 37**: Organização dos dados na pasta `/data` e configuração da conexão da plataforma com as planilhas locais.
 > ![Estrutura de Dados](./screenshots/37.png)
 
+## 7. Infraestrutura e Deploy de Alta Performance
+
+Após a construção em React, iniciei o processo de deploy para um servidor de produção definitivo. Esta etapa exigiu a superação de barreiras técnicas de ambiente e a configuração de um pipeline de entrega manual via FTP.
+
+- **Ação**: Identifiquei que o comando `vite` não estava sendo reconhecido globalmente no terminal.
+- **Correção**: Executei o `npm install` para restaurar as dependências e utilizei o `npx vite build` para forçar a geração da pasta de produção (`dist`) de forma otimizada.
+> **Evidência:** ![Resolução do Build Local](./screenshots/43.png) 
+
+- **Ação**: Configuração de hospedagem em servidor externo via FTP.
+- **Processo**: Utilizei o FileZilla (Porta 21) para realizar o upload manual do conteúdo da pasta `dist` diretamente para o diretório `public_html/htdocs`.
+- **Ajuste Técnico**: Garanti que o `index.html` estivesse na raiz do servidor para que a Single Page Application (SPA) fosse carregada corretamente.
+> **Evidência:** ![Configuração FTP FileZilla](./screenshots/42.png)
+
 ---
 
-## 7. Resultado Final
+## 8. Resultado Final e Tutorial de Onboarding
+
+- **Image 43**: A aplicação agora está hospedada em um domínio personalizado (leadscoreinteligente.unaux.com), oferecendo uma experiência estável e profissional para o usuário final.
+> ![Aplicação em Produção](./screenshots/44.png)
+
+- **Image 44**: Implementação de um tutorial interativo de boas-vindas. Esta foi uma decisão de UX para garantir que qualquer vendedor entenda como conectar seus dados (CSV ou API) e interpretar o scoring sem necessidade de treinamento prévio.
+> ![Tutorial de Onboarding](./screenshots/45.png)
+---
+
+## 9. Resultado Final
 
 - **Imagem 38, 39 e 40**: Deploy final no Netlify. Sistema 100% funcional, estável, com tutorial de boas-vindas e dashboard de alta performance.
 > ![Deploy Final](./screenshots/38.png)
