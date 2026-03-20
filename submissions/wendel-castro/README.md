@@ -128,4 +128,17 @@ python analise_completa.py
 
 ---
 
-*Submissão enviada em: 16/03/2026*
+## Process Log — Como usei IA
+
+O process log completo está em [`process-log/process-log.md`](process-log/process-log.md), com:
+
+- **7 fases detalhadas** do workflow, separando o que eu direcionei vs. o que a IA executou
+- **9 screenshots** da interação com o Claude Code (CLI), documentando desde a exploração inicial até o redirecionamento das recomendações
+- **3 erros documentados** da IA e como corrigi cada um
+- **6 contribuições exclusivamente humanas** que a IA sozinha não faria
+
+O momento mais relevante: a IA processou 52K linhas sem questionar e gerou recomendações baseadas em deltas de 0.01pp. Fui eu que identifiquei os dados sintéticos, descartei os insights falsos, e redirecionei para recomendações de processo. As evidências visuais desse momento estão nas screenshots 4-6.
+
+---
+
+*Submissão enviada em: 16/03/2026 | Atualizada em: 20/03/2026*
