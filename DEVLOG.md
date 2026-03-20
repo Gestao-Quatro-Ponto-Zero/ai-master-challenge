@@ -57,6 +57,20 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 ---
 
+## Sessão 3 — Support Triage (Challenge 002)
+
+**[user]** Iniciou o challenge 002.
+
+**[ai]** Explorou os dois CSVs antes de codar: `customer_support_tickets.csv` (8.469 tickets, 3 status, 5 tipos, 4 canais) e `all_tickets_processed_improved_v3.csv` (47.837 tickets IT com 8 categorias para benchmark do classificador).
+
+**[ai]** Descobriu que `Time to Resolution` e `First Response Time` são TIMESTAMP (não string com "hours" como o plano assumia). Resoluções calculadas com `ABS(DATE_DIFF('minute', ...)) / 60`. Avg resolução real: 7.7h.
+
+**[ai]** Dataset é sintético: `Ticket Description` contém placeholders não substituídos (`{product_purchased}`), timestamps agrupados em 2023-06-01, CSAT uniforme (~3.0 em todos os segmentos. Limitações documentadas na página `/proposal`.
+
+**[ai]** Implementou 3 rotas: `/diagnostic` (Server Component com KPIs + gargalos + breakdown por canal e tipo), `/triage` (client component com textarea e chamada ao classificador), `/proposal` (automação, ROI estimado, limitações honestas). Classificador usa Claude Haiku quando `ANTHROPIC_API_KEY` está disponível, fallback por keywords quando não está.
+
+---
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->

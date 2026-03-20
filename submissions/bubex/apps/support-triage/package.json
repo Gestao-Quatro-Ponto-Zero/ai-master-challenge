@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.0",
-    "@challenge/data-utils": "workspace:*",
+    "@duckdb/node-api": "1.5.0-r.1",
     "@challenge/ui": "workspace:*",
     "@tanstack/react-table": "^8.21.3",
     "next": "^15.2.4",
