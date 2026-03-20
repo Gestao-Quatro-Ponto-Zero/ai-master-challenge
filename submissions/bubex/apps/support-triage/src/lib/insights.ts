@@ -7,11 +7,40 @@ export interface InsightsPayload {
   typeStats: TypeStats[]
 }
 
+// ── In-memory cache ───────────────────────────────────────────────────────────
+
+const TTL_MS = 60 * 60 * 1000 // 1 hour
+
+interface CacheEntry { insights: string[]; at: number }
+const cache = new Map<string, CacheEntry>()
+
+function cacheKey(payload: InsightsPayload): string {
+  const { overview, bottlenecks } = payload
+  return [
+    overview.totalTickets,
+    overview.backlogRate,
+    overview.avgResolutionHours,
+    overview.avgCsat,
+    bottlenecks[0]?.channel,
+    bottlenecks[0]?.avgHours,
+  ].join('|')
+}
+
+// ── Main function ─────────────────────────────────────────────────────────────
+
 /** Generates 4 diagnostic insights from real data via OpenRouter.
+ *  Results are cached in memory for 1 hour.
  *  Falls back to data-derived text if no API key is set or the call fails. */
 export async function generateInsights(payload: InsightsPayload): Promise<string[]> {
+  const key = cacheKey(payload)
+  const cached = cache.get(key)
+  if (cached && Date.now() - cached.at < TTL_MS) return cached.insights
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) return fallbackInsights(payload)
+  if (!apiKey) {
+    const result = fallbackInsights(payload)
+    cache.set(key, { insights: result, at: Date.now() })
+    return result
+  }
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
 
@@ -65,12 +94,19 @@ ${dataSummary}`
     if (!raw) return fallbackInsights(payload)
 
     const parsed = JSON.parse(raw)
-    if (Array.isArray(parsed) && parsed.length > 0) return parsed as string[]
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      cache.set(key, { insights: parsed, at: Date.now() })
+      return parsed as string[]
+    }
 
-    return fallbackInsights(payload)
+    const fallback = fallbackInsights(payload)
+    cache.set(key, { insights: fallback, at: Date.now() })
+    return fallback
   } catch (err) {
     console.error('[insights] failed', err)
-    return fallbackInsights(payload)
+    const fallback = fallbackInsights(payload)
+    cache.set(key, { insights: fallback, at: Date.now() })
+    return fallback
   }
 }
 

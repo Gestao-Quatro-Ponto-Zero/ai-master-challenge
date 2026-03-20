@@ -26,11 +26,14 @@ export async function ProposalDiagnosis(payload: InsightsPayload) {
 
 export function ProposalDiagnosisSkeleton() {
   return (
-    <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-3 animate-pulse">
-      <div className="h-4 bg-gray-100 rounded w-40 mb-3" />
-      <div className="space-y-2">
+    <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-3">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-4 h-4 rounded-full border-2 border-gray-300 border-t-transparent animate-spin" />
+        <p className="text-sm font-semibold text-gray-500">Gerando diagnóstico com IA…</p>
+      </div>
+      <div className="space-y-2 animate-pulse">
         {[90, 75, 85].map(w => (
-          <div key={w} className="h-3 bg-gray-100 rounded" style={{ width: `${w}%` }} />
+          <div key={w} className="h-3 bg-gray-100 rounded-full" style={{ width: `${w}%` }} />
         ))}
       </div>
     </section>
