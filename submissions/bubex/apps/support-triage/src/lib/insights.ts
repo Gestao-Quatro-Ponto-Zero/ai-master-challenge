@@ -126,9 +126,11 @@ export interface ProposalSections {
 }
 
 const proposalCache = new Map<string, { data: ProposalSections; at: number }>()
+// cache bust: bump this string when the prompt changes to force regeneration
+const PROPOSAL_PROMPT_VERSION = 'v2'
 
 export async function generateProposal(payload: InsightsPayload): Promise<ProposalSections> {
-  const key = 'proposal|' + cacheKey(payload)
+  const key = `proposal|${PROPOSAL_PROMPT_VERSION}|` + cacheKey(payload)
   const cached = proposalCache.get(key)
   if (cached && Date.now() - cached.at < TTL_MS) return cached.data
 
@@ -152,22 +154,15 @@ export async function generateProposal(payload: InsightsPayload): Promise<Propos
   })
 
   const prompt = `Você é um consultor de operações analisando dados reais de suporte ao cliente.
-Com base nos dados abaixo, gere:
+Com base nos dados abaixo, gere exatamente:
+- 3 itens para AUTOMATIZAR (automate: true)
+- 3 itens para NÃO automatizar (automate: false)
+- 3 limitações honestas desta análise
 
-1. Uma lista de 4-5 itens do que AUTOMATIZAR com IA (baseado no que os dados indicam — gargalos, volumes altos, padrões repetitivos)
-2. Uma lista de 4-5 itens do que NÃO automatizar (onde os dados mostram risco, variabilidade ou necessidade de julgamento humano)
-3. Uma lista de 3-4 limitações honestas desta análise (baseado na qualidade e características dos dados)
+Responda APENAS com JSON válido, sem texto extra, sem markdown:
+{"automationItems":[{"title":"...","reason":"...","automate":true},{"title":"...","reason":"...","automate":false}],"limitations":["...","...","..."]}
 
-Responda APENAS com JSON válido, sem texto extra:
-{
-  "automationItems": [
-    { "title": "...", "reason": "...", "automate": true },
-    { "title": "...", "reason": "...", "automate": false }
-  ],
-  "limitations": ["...", "..."]
-}
-
-Dados:
+Mantenha "reason" e "title" curtos (máx 15 palavras cada). Dados:
 ${dataSummary}`
 
   try {
@@ -181,7 +176,7 @@ ${dataSummary}`
       },
       body: JSON.stringify({
         model: 'anthropic/claude-haiku-4-5',
-        max_tokens: 800,
+        max_tokens: 1200,
         messages: [{ role: 'user', content: prompt }],
       }),
     })

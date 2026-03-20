@@ -109,6 +109,37 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 ---
 
+## Sessão 6 — Support Triage: pipeline notebook → dashboard
+
+**[user]** Reanalisou a implementação contra os critérios do challenge. Identificou gaps: (1) Dataset 2 praticamente não usado; (2) análise por prioridade e correlação CSAT ausentes no app; (3) sem validação real do classificador. Mais importante: a arquitetura correta é que o colaborador rode o notebook e veja os resultados **na dashboard**, não analise saída de terminal.
+
+**[ai]** Decidiu pipeline: notebooks exportam JSON para `data/` → Next.js lê e exibe na dashboard. Notebooks são a camada de análise/ETL; o app é a interface de consumo.
+
+**[ai]** Criou `notebooks/01_diagnostic.ipynb` — análise do Dataset 1 com pandas (prioridade, correlação CSAT, heatmap canal×tipo, estimativa de desperdício). Exporta `data/diagnostic_output.json`.
+
+**[ai]** Criou `notebooks/02_classifier_validation.ipynb` — validação do keyword classifier contra ground truth do Dataset 2 (47.837 tickets). Exporta `data/classifier_output.json` com acurácia por categoria, confusion matrix data, exemplos de onde LLM supera keywords.
+
+**[ai]** Atualizou o web app para consumir os JSONs exportados: nova seção de prioridade no `/diagnostic` (com paradoxo da prioridade em callout), seção CSAT drivers com p-values, waste estimation com R$ em cards no `/diagnostic`, métricas reais do classificador (acurácia por categoria, comparação keywords vs LLM) no `/triage`. Pipeline completo validado: notebooks executam, exportam JSON, app lê e exibe sem recalcular nada.
+
+---
+
+## Sessão 7 — Containerização (Docker multi-stage)
+
+**[user]** Pediu containerização completa via Dockerfile para facilitar execução pelos avaliadores e integração com Railway.
+
+**[ai]** Tentou rodar notebooks via `jupyter nbconvert --execute` dentro do Docker (Stage 1). Falhou com erro de kernel (`_preprocess`). Causa: `nbconvert` requer ipykernel configurado e contexto de display que conflita com ambiente headless do Docker.
+
+**[ai]** Solução: extrair a lógica de geração dos JSONs para scripts Python puros (`scripts/generate_diagnostic.py` e `scripts/generate_classifier.py`) sem dependência de matplotlib/jupyter. Notebooks continuam existindo como documentação com gráficos para análise local; scripts são a camada de produção.
+
+**[ai]** Dockerfile multi-stage final:
+- Stage 1 (python:3.11-slim): instala pandas/numpy/scipy/scikit-learn, roda os scripts, gera os JSONs
+- Stage 2 (node:20-slim): instala pnpm, resolve workspace, copia JSONs do stage 1, builda Next.js
+- Stage 3 (node:20-slim): copia node_modules + .next + data, serve a aplicação
+
+**[ai]** `docker-compose.yml` na raiz do workspace para avaliadores subirem com `docker compose up`. Build testado e validado: HTTP 200 em `/diagnostic` com container em produção.
+
+**[ai]** `OPENROUTER_API_KEY` passada como env var opcional no docker-compose — sem ela, classificador usa fallback por keywords.
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->
