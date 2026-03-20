@@ -1,19 +1,18 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getPipeline } from '@/lib/queries'
+import { getAgentDeals } from '@/lib/queries'
 import { PipelineTable } from '@/components/PipelineTable'
 
 export default async function AgentPage({ params }: { params: Promise<{ agent: string }> }) {
   const { agent } = await params
   const agentName = decodeURIComponent(agent)
 
-  const all = await getPipeline()
-  const deals = all.filter(d => d.sales_agent === agentName)
+  const deals = await getAgentDeals(agentName)
   if (!deals.length) notFound()
 
   const first = deals[0]
   const hot = deals.filter(d => d.score >= 70).length
-  const totalValue = deals.reduce((s, d) => s + d.sales_price, 0)
+  const totalValue = deals.reduce((s, d) => s + (d.sales_price ?? 0), 0)
 
   return (
     <div className="space-y-6">
@@ -34,7 +33,7 @@ export default async function AgentPage({ params }: { params: Promise<{ agent: s
         </div>
       </div>
 
-      <PipelineTable deals={deals} />
+      <PipelineTable agentFilter={agentName} />
     </div>
   )
 }

@@ -1,20 +1,30 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
 } from '@tanstack/react-table'
 import Link from 'next/link'
 import type { Deal } from '@/types'
+import type { PipelinePage } from '@/lib/queries'
 import { ScoreBadge } from './ScoreBadge'
 
 const col = createColumnHelper<Deal>()
+
+const SORTABLE_COLUMNS: Partial<Record<keyof Deal, string>> = {
+  score: 'Score',
+  deal_stage: 'Stage',
+  account: 'Conta',
+  product: 'Produto',
+  sales_price: 'Valor ($)',
+  sales_agent: 'Agente',
+  regional_office: 'Região',
+  days_in_pipeline: 'Dias',
+}
 
 const columns = [
   col.accessor('score', {
@@ -33,9 +43,7 @@ const columns = [
     header: 'Stage',
     cell: (i) => (
       <span className={`text-xs font-medium px-2 py-0.5 rounded ${
-        i.getValue() === 'Engaging'
-          ? 'bg-purple-100 text-purple-700'
-          : 'bg-gray-100 text-gray-600'
+        i.getValue() === 'Engaging' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'
       }`}>
         {i.getValue()}
       </span>
@@ -59,97 +67,184 @@ const columns = [
   }),
 ]
 
-interface Props {
-  deals: Deal[]
-}
-
-export function PipelineTable({ deals }: Props) {
+export function PipelineTable({ agentFilter }: { agentFilter?: string }) {
+  const [data, setData] = useState<PipelinePage | null>(null)
+  const [loading, setLoading] = useState(true)
   const [sorting, setSorting] = useState<SortingState>([{ id: 'score', desc: true }])
-  const [globalFilter, setGlobalFilter] = useState('')
-  const [stageFilter, setStageFilter] = useState<string>('all')
-  const [regionFilter, setRegionFilter] = useState<string>('all')
-  const [agentFilter, setAgentFilter] = useState<string>('all')
+  const [page, setPage] = useState(1)
+  const [q, setQ] = useState('')
+  const [stage, setStage] = useState('all')
+  const [region, setRegion] = useState('all')
+  const [agent, setAgent] = useState(agentFilter ?? 'all')
 
-  const regions = useMemo(() => ['all', ...Array.from(new Set(deals.map(d => d.regional_office))).sort()], [deals])
-  const agents = useMemo(() => ['all', ...Array.from(new Set(deals.map(d => d.sales_agent))).sort()], [deals])
+  // Debounce search
+  const searchTimeout = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const [debouncedQ, setDebouncedQ] = useState('')
+  useEffect(() => {
+    clearTimeout(searchTimeout.current)
+    searchTimeout.current = setTimeout(() => {
+      setDebouncedQ(q)
+      setPage(1)
+    }, 300)
+    return () => clearTimeout(searchTimeout.current)
+  }, [q])
 
-  const filtered = useMemo(() => deals.filter(d => {
-    if (stageFilter !== 'all' && d.deal_stage !== stageFilter) return false
-    if (regionFilter !== 'all' && d.regional_office !== regionFilter) return false
-    if (agentFilter !== 'all' && d.sales_agent !== agentFilter) return false
-    return true
-  }), [deals, stageFilter, regionFilter, agentFilter])
+  // Reset page on filter/sort change
+  const handleFilterChange = useCallback((setter: (v: string) => void) => (v: string) => {
+    setter(v)
+    setPage(1)
+  }, [])
 
-  const hot = filtered.filter(d => d.score >= 70).length
-  const warm = filtered.filter(d => d.score >= 40 && d.score < 70).length
-  const cold = filtered.filter(d => d.score < 40).length
+  const fetch = useCallback(async () => {
+    setLoading(true)
+    const sort = sorting[0]
+    const params = new URLSearchParams({
+      page: String(page),
+      pageSize: '50',
+      sort: sort?.id ?? 'score',
+      order: sort?.desc ? 'desc' : 'asc',
+      q: debouncedQ,
+      stage,
+      region,
+      agent,
+    })
+    try {
+      const res = await globalThis.fetch(`/api/pipeline?${params}`)
+      const json = await res.json()
+      setData(json)
+    } finally {
+      setLoading(false)
+    }
+  }, [page, sorting, debouncedQ, stage, region, agent])
+
+  useEffect(() => { fetch() }, [fetch])
 
   const table = useReactTable({
-    data: filtered,
+    data: data?.deals ?? [],
     columns,
-    state: { sorting, globalFilter },
-    onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter,
+    state: { sorting },
+    onSortingChange: (updater) => {
+      setSorting(updater)
+      setPage(1)
+    },
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    manualSorting: true,
+    manualFiltering: true,
+    manualPagination: true,
   })
+
+  const regions = data?.regions ?? []
+  const agents = data?.agents ?? []
+  const hot  = data?.deals.filter(d => d.score >= 70).length ?? 0
+  const warm = data?.deals.filter(d => d.score >= 40 && d.score < 70).length ?? 0
+  const cold = data?.deals.filter(d => d.score < 40).length ?? 0
 
   return (
     <div className="space-y-4">
-      {/* Summary chips */}
+      {/* Summary */}
       <div className="flex items-center gap-4 text-sm">
-        <span className="text-gray-500">{filtered.length} deals</span>
-        <span className="text-red-600 font-medium">🔥 {hot} hot</span>
-        <span className="text-yellow-600 font-medium">☀️ {warm} warm</span>
-        <span className="text-blue-500 font-medium">❄️ {cold} cold</span>
+        {loading ? (
+          <span className="text-gray-400">Carregando…</span>
+        ) : (
+          <>
+            <span className="text-gray-500">{data?.total ?? 0} deals</span>
+            <span className="text-red-600 font-medium">🔥 {hot} hot</span>
+            <span className="text-yellow-600 font-medium">☀️ {warm} warm</span>
+            <span className="text-blue-500 font-medium">❄️ {cold} cold</span>
+          </>
+        )}
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-3">
         <input
-          value={globalFilter}
-          onChange={e => setGlobalFilter(e.target.value)}
+          value={q}
+          onChange={e => setQ(e.target.value)}
           placeholder="Buscar conta, agente, produto…"
           className="border border-gray-200 rounded px-3 py-1.5 text-sm w-64 focus:outline-none focus:ring-1 focus:ring-gray-400"
         />
-        <Select value={stageFilter} onChange={setStageFilter} options={['all', 'Engaging', 'Prospecting']} label="Stage" />
-        <Select value={regionFilter} onChange={setRegionFilter} options={regions} label="Região" />
-        <Select value={agentFilter} onChange={setAgentFilter} options={agents} label="Agente" />
+        <Select value={stage} onChange={handleFilterChange(setStage)}
+          options={['all', 'Engaging', 'Prospecting']} label="Stage" />
+        <Select value={region} onChange={handleFilterChange(setRegion)}
+          options={['all', ...regions]} label="Região" />
+        {!agentFilter && (
+          <Select value={agent} onChange={handleFilterChange(setAgent)}
+            options={['all', ...agents]} label="Agente" />
+        )}
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+      <div className={`overflow-x-auto rounded-lg border border-gray-200 bg-white transition-opacity ${loading ? 'opacity-50' : ''}`}>
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             {table.getHeaderGroups().map(hg => (
               <tr key={hg.id}>
-                {hg.headers.map(h => (
-                  <th
-                    key={h.id}
-                    onClick={h.column.getToggleSortingHandler()}
-                    className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide cursor-pointer select-none hover:text-gray-900"
-                  >
-                    {flexRender(h.column.columnDef.header, h.getContext())}
-                    {h.column.getIsSorted() === 'asc' ? ' ↑' : h.column.getIsSorted() === 'desc' ? ' ↓' : ''}
-                  </th>
-                ))}
+                {hg.headers.map(h => {
+                  const sortable = h.id in SORTABLE_COLUMNS
+                  return (
+                    <th
+                      key={h.id}
+                      onClick={sortable ? h.column.getToggleSortingHandler() : undefined}
+                      className={`px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide select-none ${sortable ? 'cursor-pointer hover:text-gray-900' : ''}`}
+                    >
+                      {flexRender(h.column.columnDef.header, h.getContext())}
+                      {h.column.getIsSorted() === 'asc' ? ' ↑' : h.column.getIsSorted() === 'desc' ? ' ↓' : ''}
+                    </th>
+                  )
+                })}
               </tr>
             ))}
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {table.getRowModel().rows.map(row => (
-              <tr key={row.id} className="hover:bg-gray-50">
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-4 py-3 whitespace-nowrap">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {loading && !data ? (
+              Array.from({ length: 10 }).map((_, i) => (
+                <tr key={i}>
+                  {columns.map((_, j) => (
+                    <td key={j} className="px-4 py-3">
+                      <div className="h-4 bg-gray-100 rounded animate-pulse w-20" />
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              table.getRowModel().rows.map(row => (
+                <tr key={row.id} className="hover:bg-gray-50">
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="px-4 py-3 whitespace-nowrap">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {data && data.totalPages > 1 && (
+        <div className="flex items-center justify-between text-sm text-gray-500">
+          <span>
+            Página {data.page} de {data.totalPages} — {data.total} deals
+          </span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={data.page <= 1}
+              className="px-3 py-1.5 border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              ← Anterior
+            </button>
+            <button
+              onClick={() => setPage(p => Math.min(data.totalPages, p + 1))}
+              disabled={data.page >= data.totalPages}
+              className="px-3 py-1.5 border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Próxima →
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

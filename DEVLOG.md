@@ -47,6 +47,16 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **❌ [user]** Erro em produção: `Cannot read properties of null` em `sales_price.toLocaleString()`. **[ai]** investigou — 333 deals têm produto `'GTXPro'` (sem espaço) que não casa com `'GTX Pro'` na tabela de produtos. Problema de qualidade nos dados do dataset. Corrigido com `REPLACE(p.product, 'GTXPro', 'GTX Pro')` no JOIN. Também adicionado guard `!= null` na célula da tabela.
 
+**[user]** Identificou que a tabela carregava todos os 2089 deals no frontend sem paginação. Pediu paginação server-side com filtros e loading state.
+
+**[ai]** Refatorou para arquitetura cache+paginate: `getAllDeals()` executa a query DuckDB uma vez e guarda em memória; `queryPipeline()` filtra/ordena/pagina em JS sobre os dados cacheados. API `/api/pipeline` expõe params `page`, `pageSize`, `sort`, `order`, `q`, `stage`, `region`, `agent`. `PipelineTable.tsx` reescrito como client component com `useEffect`/`fetch`, debounce de 300ms na busca, TanStack Table em modo manual, skeleton de loading e controles de paginação.
+
+**❌ [ai]** `BigInt` ainda escapava em `DATE_DIFF` no JSON da API. Adicionado `safeJson()` com replacer no `JSON.stringify` como segunda camada de proteção.
+
+**❌ [ai]** `account` pode ser null em alguns deals — `toLowerCase()` quebrava o filtro de busca. Corrigido com `(d.account ?? '').toLowerCase()` em todos os campos do filtro de texto.
+
+---
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->

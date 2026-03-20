@@ -98,29 +98,105 @@ ORDER BY score DESC, pr.sales_price DESC
 `
 }
 
-// Module-level cache
+// ── Types ────────────────────────────────────────────────────────────────────
+
+export interface PipelineParams {
+  page?: number
+  pageSize?: number
+  sort?: keyof Deal
+  order?: 'asc' | 'desc'
+  q?: string
+  stage?: string
+  region?: string
+  agent?: string
+}
+
+export interface PipelinePage {
+  deals: Deal[]
+  total: number
+  page: number
+  pageSize: number
+  totalPages: number
+  // for filter dropdowns
+  regions: string[]
+  agents: string[]
+}
+
+// ── Module-level cache ────────────────────────────────────────────────────────
+
 let pipelineCache: Deal[] | null = null
 
-export async function getPipeline(): Promise<Deal[]> {
+async function getAllDeals(): Promise<Deal[]> {
   if (!pipelineCache) {
     pipelineCache = await query<Deal>(buildPipelineSQL())
   }
   return pipelineCache
 }
 
+// ── Public API ────────────────────────────────────────────────────────────────
+
+export async function queryPipeline(params: PipelineParams = {}): Promise<PipelinePage> {
+  const {
+    page = 1,
+    pageSize = 50,
+    sort = 'score',
+    order = 'desc',
+    q = '',
+    stage = 'all',
+    region = 'all',
+    agent = 'all',
+  } = params
+
+  const all = await getAllDeals()
+
+  // Filter
+  let filtered = all
+  if (stage !== 'all') filtered = filtered.filter(d => d.deal_stage === stage)
+  if (region !== 'all') filtered = filtered.filter(d => d.regional_office === region)
+  if (agent !== 'all') filtered = filtered.filter(d => d.sales_agent === agent)
+  if (q) {
+    const term = q.toLowerCase()
+    filtered = filtered.filter(d =>
+      (d.account ?? '').toLowerCase().includes(term) ||
+      (d.sales_agent ?? '').toLowerCase().includes(term) ||
+      (d.product ?? '').toLowerCase().includes(term) ||
+      (d.opportunity_id ?? '').toLowerCase().includes(term)
+    )
+  }
+
+  // Sort
+  const sorted = [...filtered].sort((a, b) => {
+    const av = a[sort as keyof Deal] as number | string
+    const bv = b[sort as keyof Deal] as number | string
+    const cmp = av < bv ? -1 : av > bv ? 1 : 0
+    return order === 'desc' ? -cmp : cmp
+  })
+
+  // Paginate
+  const total = sorted.length
+  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const safePage = Math.min(page, totalPages)
+  const offset = (safePage - 1) * pageSize
+  const deals = sorted.slice(offset, offset + pageSize)
+
+  // Dropdown options (from full dataset, not filtered)
+  const regions = [...new Set(all.map(d => d.regional_office))].sort()
+  const agents = [...new Set(all.map(d => d.sales_agent))].sort()
+
+  return { deals, total, page: safePage, pageSize, totalPages, regions, agents }
+}
+
 export async function getDeal(id: string): Promise<Deal | null> {
-  const all = await getPipeline()
+  const all = await getAllDeals()
   return all.find(d => d.opportunity_id === id) ?? null
 }
 
 export async function getTeamStats(): Promise<AgentStats[]> {
-  const deals = await getPipeline()
+  const deals = await getAllDeals()
 
   const byAgent = new Map<string, Deal[]>()
   for (const d of deals) {
-    const list = byAgent.get(d.sales_agent) ?? []
-    list.push(d)
-    byAgent.set(d.sales_agent, list)
+    ;(byAgent.get(d.sales_agent) ?? (byAgent.set(d.sales_agent, []), byAgent.get(d.sales_agent)!)).push(d)
   }
 
   return Array.from(byAgent.entries()).map(([agent, agentDeals]) => {
@@ -130,7 +206,7 @@ export async function getTeamStats(): Promise<AgentStats[]> {
       manager: first.manager,
       regional_office: first.regional_office,
       open_deals: agentDeals.length,
-      pipeline_value: agentDeals.reduce((s, d) => s + d.sales_price, 0),
+      pipeline_value: agentDeals.reduce((s, d) => s + (d.sales_price ?? 0), 0),
       avg_score: Math.round(agentDeals.reduce((s, d) => s + d.score, 0) / agentDeals.length),
       hot_deals: agentDeals.filter(d => d.score >= 70).length,
       warm_deals: agentDeals.filter(d => d.score >= 40 && d.score < 70).length,
@@ -138,4 +214,10 @@ export async function getTeamStats(): Promise<AgentStats[]> {
       win_rate_pct: first.win_rate_pct,
     }
   }).sort((a, b) => b.avg_score - a.avg_score)
+}
+
+/** Used by /team/[agent] page */
+export async function getAgentDeals(agentName: string): Promise<Deal[]> {
+  const all = await getAllDeals()
+  return all.filter(d => d.sales_agent === agentName)
 }
