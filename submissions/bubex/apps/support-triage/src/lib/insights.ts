@@ -112,6 +112,138 @@ ${dataSummary}`
   }
 }
 
+// ── Proposal sections ─────────────────────────────────────────────────────────
+
+export interface AutomationItem {
+  title: string
+  reason: string
+  automate: boolean
+}
+
+export interface ProposalSections {
+  automationItems: AutomationItem[]
+  limitations: string[]
+}
+
+const proposalCache = new Map<string, { data: ProposalSections; at: number }>()
+
+export async function generateProposal(payload: InsightsPayload): Promise<ProposalSections> {
+  const key = 'proposal|' + cacheKey(payload)
+  const cached = proposalCache.get(key)
+  if (cached && Date.now() - cached.at < TTL_MS) return cached.data
+
+  const apiKey = process.env.OPENROUTER_API_KEY
+  if (!apiKey) {
+    const data = fallbackProposal(payload)
+    proposalCache.set(key, { data, at: Date.now() })
+    return data
+  }
+
+  const { overview, bottlenecks, channelStats, typeStats } = payload
+
+  const dataSummary = JSON.stringify({
+    totalTickets:       overview.totalTickets,
+    backlogRate:        overview.backlogRate,
+    avgResolutionHours: overview.avgResolutionHours,
+    avgCsat:            overview.avgCsat,
+    top5Bottlenecks:    bottlenecks.slice(0, 5),
+    channelStats,
+    typeStats,
+  })
+
+  const prompt = `Você é um consultor de operações analisando dados reais de suporte ao cliente.
+Com base nos dados abaixo, gere:
+
+1. Uma lista de 4-5 itens do que AUTOMATIZAR com IA (baseado no que os dados indicam — gargalos, volumes altos, padrões repetitivos)
+2. Uma lista de 4-5 itens do que NÃO automatizar (onde os dados mostram risco, variabilidade ou necessidade de julgamento humano)
+3. Uma lista de 3-4 limitações honestas desta análise (baseado na qualidade e características dos dados)
+
+Responda APENAS com JSON válido, sem texto extra:
+{
+  "automationItems": [
+    { "title": "...", "reason": "...", "automate": true },
+    { "title": "...", "reason": "...", "automate": false }
+  ],
+  "limitations": ["...", "..."]
+}
+
+Dados:
+${dataSummary}`
+
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
+        'X-Title': 'Support Triage - AI Master Challenge',
+      },
+      body: JSON.stringify({
+        model: 'anthropic/claude-haiku-4-5',
+        max_tokens: 800,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    })
+
+    if (!res.ok) {
+      console.error('[proposal] OpenRouter error', res.status)
+      const data = fallbackProposal(payload)
+      proposalCache.set(key, { data, at: Date.now() })
+      return data
+    }
+
+    const response = await res.json()
+    const raw = response.choices?.[0]?.message?.content?.trim()
+    if (!raw) {
+      const data = fallbackProposal(payload)
+      proposalCache.set(key, { data, at: Date.now() })
+      return data
+    }
+
+    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
+    const parsed = JSON.parse(cleaned) as ProposalSections
+
+    if (parsed.automationItems?.length && parsed.limitations?.length) {
+      proposalCache.set(key, { data: parsed, at: Date.now() })
+      return parsed
+    }
+
+    const data = fallbackProposal(payload)
+    proposalCache.set(key, { data, at: Date.now() })
+    return data
+  } catch (err) {
+    console.error('[proposal] failed', err)
+    const data = fallbackProposal(payload)
+    proposalCache.set(key, { data, at: Date.now() })
+    return data
+  }
+}
+
+function fallbackProposal({ overview, bottlenecks, typeStats }: InsightsPayload): ProposalSections {
+  const worst = bottlenecks[0]
+  const highVolumeType = typeStats.sort((a, b) => b.total - a.total)[0]
+
+  return {
+    automationItems: [
+      { title: 'Classificação e roteamento', reason: `${highVolumeType?.type || 'Tickets'} representam o maior volume — critério claro e alto grau de repetição.`, automate: true },
+      { title: 'Triagem de prioridade inicial', reason: 'Urgência detectável por palavras-chave; erro tem baixo custo imediato.', automate: true },
+      { title: `Gargalo ${worst?.channel} + ${worst?.type}`, reason: `${worst?.n} tickets com ${worst?.avgHours}h médios — candidato prioritário à automação.`, automate: true },
+      { title: 'Tickets com carga emocional alta', reason: 'Frustração e raiva exigem empatia humana — IA piora o atendimento.', automate: false },
+      { title: 'Decisões de cancelamento/reembolso', reason: 'Impacto financeiro direto — requer autorização humana.', automate: false },
+      { title: 'Resposta final ao cliente', reason: 'IA sugere, mas humano sempre revisa antes de enviar.', automate: false },
+    ],
+    limitations: [
+      `Backlog de ${overview.backlogRate}% sugere sub-dimensionamento da equipe — automação ajuda, mas não resolve o problema estrutural.`,
+      'Dataset sintético com timestamps agrupados em uma única data — impossível analisar tendências temporais ou sazonalidade.',
+      'CSAT uniforme (~3.0 em todos os segmentos) indica dado gerado artificialmente; em produção a variação seria mais reveladora.',
+      'ROI estimado não considera custo de implementação, treinamento ou manutenção do modelo de classificação.',
+    ],
+  }
+}
+
+// ── Insights fallback ─────────────────────────────────────────────────────────
+
 /** Data-driven fallback — all values come from the actual payload, no hardcoding. */
 function fallbackInsights({ overview, bottlenecks, channelStats }: InsightsPayload): string[] {
   const worst = bottlenecks[0]
