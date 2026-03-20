@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.turbo/
+dist/
+out/
+
+# Datasets — download from Kaggle, never commit
+**/data/*.csv
+**/data/*.json
+
+# Env
+.env
+.env.local
+.env*.local

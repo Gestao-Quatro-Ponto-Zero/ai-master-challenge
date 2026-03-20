@@ -12,5 +12,6 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# Submissions (if candidates fork) — allow our own
+submissions/*
+!submissions/bubex/

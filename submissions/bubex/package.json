@@ -1,0 +1,16 @@
+{
+  "name": "ai-master-challenge-submission",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev:lead-scorer": "pnpm --filter @challenge/lead-scorer dev",
+    "dev:churn": "pnpm --filter @challenge/churn-dashboard dev",
+    "dev:support": "pnpm --filter @challenge/support-triage dev",
+    "dev:social": "pnpm --filter @challenge/social-dashboard dev",
+    "build:all": "pnpm -r build",
+    "type-check": "pnpm -r type-check"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
