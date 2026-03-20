@@ -29,7 +29,7 @@ O problema foi decomposto em três frentes:
 ### Validação Técnica (Data Science)
 Para garantir a integridade das afirmações analíticas, incluí o script de derivação:
 * 📁 **Arquivo:** `solution/data_analysis.py`
-* **O que ele prova:** Processa o `sales_pipeline.csv` original, calcula o Win Rate por janelas temporais e valida matematicamente que a maior conversão histórica ocorre na janela de **30-120 dias**, sustentando a lógica do Dashboard.
+* **O que ele prova:** Processa o `sales_pipeline.csv` original, calcula o Win Rate por janelas temporais e valida matematicamente que a maior conversão histórica ocorre na janela de **30-120 dias**, sustentando a lógica do Dashboard. O script carrega os dados reais que eu usei calculando o tempo de fechamento (Close Date - Created Date) e agrupando os leads por janelas de tempo. Isso prova matematicamente que o Win Rate é maior entre 30 e 120 dias.
 
 ### Resultados / Findings
 
