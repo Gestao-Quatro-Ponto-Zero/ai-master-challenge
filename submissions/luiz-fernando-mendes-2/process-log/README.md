@@ -1,48 +1,136 @@
-# 🛠️ Relatório de Processo (Process Log) — Luiz Fernando Mendes
+# 🛠️ Relatório de Processo Detalhado (Process Log) — Luiz Fernando Mendes
 
-Este documento detalha a jornada de desenvolvimento do **Lead Scorer Inteligente**, desde a concepção estratégica até o deploy final, documentando o uso de múltiplas IAs e a supervisão humana crítica.
+Este documento registra a jornada completa de desenvolvimento do **Lead Scorer Inteligente**, documentando a colaboração estratégica entre inteligência humana e artificial, erros superados e mudanças de rota.
 
 ---
 
-## 1. Concepção e Mentoria Estratégica
-O projeto não começou com código, mas com estratégia. Criei um **GEM personalizado no Gemini chamado "Luiz"** (uma homenagem ao meu pai). Este agente foi alimentado com conhecimentos de psicologia comportamental, marketing e vendas (Napoleon Hill, Kotler).
-- **Ação:** Definição da base de conhecimento e diretrizes do sistema.
-- **Evidência:** ![Configuração do GEM Luiz](./screenshots/01.jpeg)
+## 1. Concepção e Mentoria Estratégica (O Fator Luiz)
 
-## 2. Exploração e Prototipagem (Python + Qwen)
-Após validar a estratégia com o "Luiz", utilizei a IA **Qwen** para gerar o código bruto em Python. 
-- **Workflow:** Gere o código na Qwen -> Validei a lógica com o Gemini -> Tentei rodar no **VS Code**.
-- **Evidência de Geração:** ![Geração de código na Qwen](./screenshots/6.png)
-- **Evidência de Análise:** ![Gemini analisando código da Qwen](./screenshots/12.png)
+O projeto iniciou com a criação de um **GEM personalizado no Gemini chamado "Luiz"**. Este nome é uma homenagem ao meu pai, falecido há menos de um ano. A base de conhecimento do Luiz foi estruturada com autores que focam em influência, criação de marcas e comportamento humano, como Napoleon Hill e Philip Kotler, unindo psicologia comportamental, marketing e vendas. Eu peguei toda a informação que o **G4** enviou e enviei para o Luiz me guiar.
+
+- **Imagem 1**: Definição da base de conhecimento estratégica do mentor "Luiz".
+> ![Base de Conhecimento](./screenshots/1.jpg)
+
+- **Imagem 1.1**: Minha metodologia de trabalho: utilizo um GEM específico para cada finalidade, garantindo que a IA atue com profundidade técnica em nichos isolados.
+> ![Especialização de GEMs](./screenshots/1.1.png)
+
+- **Imagem 2**: Fase de brainstorming e consulta estratégica com o Luiz sobre a viabilidade e os pilares do sistema de scoring.
+> ![Consulta Estratégica](./screenshots/2.jpg)
+
+---
+
+## 2. Fase 1: Prototipagem em Python (Qwen + VS Code)
+
+- **Imagem 3**: Com as diretrizes do Luiz, utilizei a IA chinesa **Qwen** para gerar o código bruto em Python.
+> ![Comando Qwen](./screenshots/3.jpg)
+
+- **Imagem 4**: Submissão do resultado da Qwen para a auditoria do Luiz, garantindo que a lógica de negócios estava preservada.
+> ![Auditoria do Luiz](./screenshots/4.png)
+
+- **Imagem 5**: Configuração do ambiente no GitHub. Como utilizo a plataforma há menos de um mês, este passo documenta minha rápida curva de aprendizado em versionamento.
+> ![Configuração GitHub](./screenshots/5.jpg)
+
+- **Imagem 6**: Início da aplicação prática do código e iteração direta na Qwen.
+> ![Aplicação Qwen](./screenshots/6.png)
+
+- **Imagem 7**: Monitoramento do processo de geração dos blocos de código.
+> ![Processo de Código](./screenshots/7.png)
+
+- **Imagem 8**: Revisão final do código gerado pela Qwen antes da implementação local.
+> ![Finalização Qwen](./screenshots/8.png)
+
+---
 
 ## 3. Desafios Técnicos e Intervenção Humana (Onde a IA Errou)
 
-### A. Conflitos de Ambiente (Python 3.14)
-Durante o build, enfrentei erros de dependência que a IA não previu. O sistema tinha múltiplas versões de Python.
-- **Correção:** Forcei a instalação via `python -m pip` para garantir que o Streamlit funcionasse no ambiente correto.
-- **Evidência:** ![Resolução de conflito Python](./screenshots/16.png)
+- **Imagem 9**: Teste inicial no **VS Code**. O código não funcionou de imediato, apresentando falhas de execução.
+> ![Teste VS Code](./screenshots/9.png)
 
-### B. O Bug Crítico da Referência Temporal
-O dataset é de 2017. A IA tentou calcular a "maturidade do lead" usando a data de hoje (2026), o que resultava em scores de "lead expirado" (zero) para todos os registros.
-- **Correção:** Intervi para criar uma variável de `data_referencia` dinâmica baseada no último registro do CSV.
-- **Evidência:** ![Identificação do erro de data](./screenshots/27.png)
+- **Imagem 10**: Retorno ao mentor Luiz para diagnóstico do erro técnico apresentado.
+> ![Suporte do Luiz](./screenshots/10.png)
 
-### C. Ajustes de UI e Sintaxe
-Erros de f-string e má formação de blocos de estilo CSS impediam a leitura correta dos dados no Dashboard.
-- **Correção:** Debug manual no VS Code e unificação dos componentes visuais.
-- **Evidência:** ![Ajuste de Design e Sintaxe](./screenshots/33.png)
+- **Imagem 11 (Correção Crítica)**: Durante o build, o ambiente Python 3.14 apresentou conflitos de dependência com o Streamlit. Identifiquei múltiplas instalações de Python e forcei a instalação via `python -m pip` para garantir a integridade do ambiente.
+> ![Correção de Ambiente](./screenshots/11.png)
 
-## 4. Mudança de Rota Estratégica (Pivô para React)
-Após 4 horas desenvolvendo em Python, percebi que o fluxo era lento e o visual não atingia o padrão G4. 
-- **Decisão:** Abandonei o código Python e migrei para o **Google AI Studio** para reconstruir tudo em **React**.
-- **Resultado:** Maior performance, design "SaaS Style" e melhor explicabilidade.
-- **Evidência da Mudança:** ![Decisão de migrar para React](./screenshots/46.png)
+- **Imagem 12 e 13**: Conclusão da instalação com persistência de erros, exigindo análise mais profunda dos logs.
+> ![Erro de Instalação](./screenshots/12.png)
+> ![Log de Erro](./screenshots/13.png)
 
-## 5. Deploy e Infraestrutura Final
-Utilizei o **Netlify** para colocar a aplicação em produção. Enfrentei erros no `requirements.txt` e caminhos de pasta, resolvidos através de ajustes no `index.html` e nas variáveis de ambiente do Netlify.
-- **Evidência de Sucesso:** ![Deploy final no Netlify](./screenshots/52.png)
+- **Imagem 14 (Debug de Sintaxe)**: Identifiquei um erro de má formação de f-string na linha 590. Em vez de descartar o código, analisei a estrutura lógica, identifiquei a falta de fechamento da expressão e corrigi manualmente para garantir a exibição correta dos valores de preço.
+> ![Correção Manual](./screenshots/14.png)
+
+- **Imagem 15**: Resolução de erros secundários da IA ("erros bobos") que impediam a fluidez do sistema.
+> ![Erro Resolvido](./screenshots/15.png)
+
+- **Imagem 16**: Ajuste fino em trechos de código que apresentavam instabilidade devido à origem da IA geradora.
+> ![Estabilização](./screenshots/16.png)
+
+- **Imagem 17 e 18**: Identificação e resolução de erros nas camadas inferiores do script para garantir o funcionamento do dashboard.
+> ![Erro de Camada](./screenshots/17.png)
+> ![Resolução Final](./screenshots/18.png)
+
+- **Imagem 19 (O Bug das Datas)**: O sistema não priorizava os leads corretamente porque a IA usava referências temporais de 2026 para um dataset de 2017. Ajustei a lógica para tratar os dados históricos com precisão.
+> ![Correção de Data](./screenshots/19.png)
 
 ---
 
-## 🧠 Conclusão: O Toque do AI Master
-A IA foi o motor, mas o **julgamento humano** foi o piloto. A decisão de neutralizar o peso das "contas fantasmas" (leads sem Account) e a definição da **"Zona de Ouro" (30-120 dias)** foram conclusões analíticas próprias, garantindo que a ferramenta seja útil na prática comercial real.
+## 4. Refinamento de UX e Identidade Visual (G4 Scale)
+
+- **Imagem 20**: Decisão de mudar o layout para algo mais profissional e alinhado ao mercado.
+> ![Mudança de Layout](./screenshots/20.png)
+
+- **Imagem 21**: Pesquisa e coleta de referências visuais do **G4 SCALE** para inspiração estética.
+> ![Referências G4](./screenshots/21.png)
+
+- **Imagem 22**: Aplicação da nova identidade visual (cores e componentes) no protótipo.
+> ![Aplicação Visual](./screenshots/22.png)
+
+- **Imagem 23**: Resolução de elementos "fantasmas" no código que não estavam sendo localizados pela IA.
+> ![Debug Visual](./screenshots/23.png)
+
+- **Imagem 24 e 25**: Ajuste de contraste e legibilidade. Percebi que o tom original dificultava a leitura e encontrei erros de design que a IA havia ignorado.
+> ![Ajuste de Tom](./screenshots/24.png)
+> ![Visão Crítica](./screenshots/25.png)
+
+- **Imagem 26 e 27**: Implementação de funcionalidade de acessibilidade (Modo Claro e Escuro).
+> ![Modo Claro](./screenshots/26.png)
+> ![Modo Escuro](./screenshots/27.png)
+
+---
+
+## 5. Arquitetura de Dados e Deploy
+
+- **Imagem 28**: Decisão arquitetural sobre o consumo de dados: via planilhas locais ou integração por API externa.
+> ![Arquitetura](./screenshots/28.png)
+
+- **Imagem 29, 30, 31 e 32**: Processo de deploy no Netlify. Identifiquei e corrigi erros no arquivo `requirements.txt` que impediam a subida do app.
+> ![Deploy Netlify](./screenshots/29.png)
+> ![Erro de Build](./screenshots/30.png)
+> ![Correção Requirements](./screenshots/31.png)
+> ![Rebook App](./screenshots/32.png)
+
+---
+
+## 6. A Grande Virada: De Python para React
+
+- **Imagem 33**: App funcionando, mas com performance lenta e fluxo pouco intuitivo para o usuário final.
+> ![Análise de Performance](./screenshots/33.png)
+
+- **Imagem 34 e 35**: Tentativas de melhoria de design em Python sem sucesso. Tomei a decisão executiva de abandonar as 4 horas de trabalho em Python e migrar para **React via Google AI Studio** para garantir a entrega de um produto de alta qualidade.
+> ![Frustração Design](./screenshots/34.png)
+> ![Decisão de Pivô](./screenshots/35.png)
+
+- **Imagem 36**: Reconstrução total da lógica (100% funcional) no Google AI Studio e migração oficial para o novo repositório no GitHub.
+> ![Migração React](./screenshots/36.png)
+
+- **Imagem 37**: Organização dos dados na pasta `/data` e configuração da conexão da plataforma com as planilhas locais.
+> ![Estrutura de Dados](./screenshots/37.png)
+
+---
+
+## 7. Resultado Final
+
+- **Imagem 38, 39 e 40**: Deploy final no Netlify. Sistema 100% funcional, estável, com tutorial de boas-vindas e dashboard de alta performance.
+> ![Deploy Final](./screenshots/38.png)
+> ![Sucesso](./screenshots/39.png)
+> ![Sistema 100%](./screenshots/40.png)
