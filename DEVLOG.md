@@ -140,6 +140,28 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** `OPENROUTER_API_KEY` passada como env var opcional no docker-compose — sem ela, classificador usa fallback por keywords.
 
+## Sessão 8 — Churn Dashboard (Challenge 001)
+
+**[user]** Iniciou a implementação do Challenge 001 (Diagnóstico de Churn) com o plano detalhado: Python pipeline → JSON → Next.js 4 rotas, seguindo o padrão do support-triage.
+
+**[ai]** Explorou schema dos 5 CSVs RavenStack antes de codar: join path entre as tabelas, tipos das colunas (boolean columns como `True`/`False` Python-style exigem normalização no pandas), campos-chave para cruzamento (account_id, subscription_id, churn_flag).
+
+**[ai]** Arquitetura idêntica ao support-triage: `scripts/generate_analysis.py` → `data/churn_analysis.json`; `src/lib/db.ts` singleton DuckDB (cópia direta); `src/lib/queries.ts` queries ao vivo com CTEs cruzando `accounts` + `subscriptions`; `src/lib/analysis-output.ts` leitor do JSON Python; `src/lib/insights.ts` via OpenRouter com cache 24h.
+
+**[ai]** Python script computa: overview de churn, breakdown por segmento (indústria, canal, plano, país), feature comparison com Mann-Whitney U, support analysis churned vs retidos, motivos e feedback themes via word frequency, at-risk scoring de contas retidas, timeline mensal. Output em `data/churn_analysis.json`.
+
+**[ai]** 4 rotas implementadas: `/overview` (KPIs + Recharts trend chart + AI insights + segmentos), `/diagnostic` (feature table delta+p-value, support comparison, AI causa raiz, feedback keywords), `/segments` (tabela paginada com filtros client-side, risk score), `/recommendations` (ações via LLM).
+
+**[ai]** `package.json`: removido `@challenge/data-utils` (desnecessário), adicionado `@duckdb/node-api@1.5.0-r.1`. `next.config.ts` atualizado com bindings completos (padrão support-triage). `pnpm type-check` sem erros.
+
+---
+
+**[user]** Identificou que as funções de fallback e os callouts do diagnostic page continham análise narrativa minha — o mesmo erro do support-triage. Toda análise deve vir exclusivamente da aplicação via dados + LLM.
+
+**❌ [ai]** `fallbackInsights()` tinha framing interpretativo meu: "leads adquiridos por este canal têm X mais chance de cancelar" (claim causal não derivado dos dados). `fallbackRecommendations()` gerava recomendações completas sem LLM com estatísticas inventadas ("custo de reativação é 5x maior", "Reduzir MRR churned em 15-20%") e julgamentos de valor ("Correlação direta com retenção"). Diagnostic page tinha callouts hardcoded com minha análise: "Escalações são um preditor de churn — intervir antes do cancelamento" e "prioritizar adoção dessas features em onboarding". Aprendizado: dados brutos são da app; narrativa analítica é exclusivamente do LLM — sem API key, não existe análise, não existe fallback narrativo.
+
+**[ai]** Correção: removidas `fallbackInsights` e `fallbackRecommendations` integralmente. `generateInsights`, `generateDiagnosticInsights` e `generateRecommendations` retornam `null` sem API key — UI exibe banner "configure OPENROUTER_API_KEY" no lugar. Adicionado `generateDiagnosticInsights` novo que envia feature analysis + support comparison ao LLM para análise de causa raiz. Callouts analíticos hardcoded removidos do diagnostic page.
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->
