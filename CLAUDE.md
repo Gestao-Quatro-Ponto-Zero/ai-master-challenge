@@ -49,3 +49,14 @@ The PR structure enforces git competency as part of the evaluation.
 ## Documentation Language
 
 All documentation in this repo is in **Portuguese**. When adding or editing challenge READMEs, `CONTRIBUTING.md`, or submission guides, write in Portuguese.
+
+## DEVLOG — Registro obrigatório
+
+`DEVLOG.md` na raiz do projeto é o diário de decisões e estratégias da submissão. **Toda vez que uma decisão relevante for tomada, um erro for identificado, ou uma etapa for concluída, registrar uma entrada no DEVLOG antes de fazer o commit.**
+
+Formato de entrada:
+- `✅` para decisões/etapas concluídas corretamente
+- `❌` para erros identificados e corrigidos (com o aprendizado)
+- `🔄` para iterações e mudanças de abordagem
+
+O DEVLOG serve tanto como process log da submissão quanto como memória do projeto para futuras sessões. Não reconstruir entradas retroativamente — registrar ao vivo.
