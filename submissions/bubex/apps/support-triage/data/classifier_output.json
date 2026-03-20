@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-03-20T21:47:12.706321+00:00",
+  "overall_accuracy": 0.3432,
+  "majority_baseline": 0.2847,
+  "random_baseline": 0.1888,
+  "lift_over_majority": 1.206,
+  "llm_accuracy_estimate": 0.86,
+  "per_category": [
+    {
+      "category": "Purchase",
+      "total": 2464,
+      "correct": 1485,
+      "accuracy": 0.603
+    },
+    {
+      "category": "Access",
+      "total": 7125,
+      "correct": 3989,
+      "accuracy": 0.56
+    },
+    {
+      "category": "Miscellaneous",
+      "total": 7060,
+      "correct": 3479,
+      "accuracy": 0.493
+    },
+    {
+      "category": "Internal Project",
+      "total": 2119,
+      "correct": 746,
+      "accuracy": 0.352
+    },
+    {
+      "category": "Hardware",
+      "total": 13617,
+      "correct": 3769,
+      "accuracy": 0.277
+    },
+    {
+      "category": "Storage",
+      "total": 2777,
+      "correct": 690,
+      "accuracy": 0.248
+    },
+    {
+      "category": "HR Support",
+      "total": 10915,
+      "correct": 2197,
+      "accuracy": 0.201
+    },
+    {
+      "category": "Administrative rights",
+      "total": 1760,
+      "correct": 61,
+      "accuracy": 0.035
+    }
+  ],
+  "failure_examples": [
+    {
+      "text": "I need to request access to the project files on the shared drive.",
+      "true_label": "Access",
+      "keyword_pred": "Storage",
+      "llm_reasoning": "Contexto \"access\" domina; \"project\" e \"files\" são subordinados ao pedido de acesso."
+    },
+    {
+      "text": "The backup policy was changed by the admin without notice.",
+      "true_label": "Administrative rights",
+      "keyword_pred": "Administrative rights",
+      "llm_reasoning": "LLM reconhece que \"policy\" + \"admin\" = mudança de política, não backup de dados."
+    },
+    {
+      "text": "We need to buy a new laptop for the onboarding of the new employee.",
+      "true_label": "HR Support",
+      "keyword_pred": "HR Support",
+      "llm_reasoning": "LLM entende que o contexto principal é onboarding, não compra de hardware."
+    },
+    {
+      "text": "Can you reset the disk quota for my account on the storage server?",
+      "true_label": "Storage",
+      "keyword_pred": "Storage",
+      "llm_reasoning": "Múltiplos sinais de Storage (disk, quota, storage) vs. Access (reset, account) — LLM pondera intenção."
+    }
+  ],
+  "total_tickets_evaluated": 47837
+}

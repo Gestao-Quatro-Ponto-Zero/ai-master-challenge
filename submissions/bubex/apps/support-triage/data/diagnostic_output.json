@@ -1,0 +1,163 @@
+{
+  "generated_at": "2026-03-20T21:46:56.220003+00:00",
+  "priority": [
+    {
+      "priority": "Critical",
+      "volume": 2129,
+      "avg_csat": 2.96,
+      "resolution_rate": 34.1,
+      "avg_resolution_h": 7.56
+    },
+    {
+      "priority": "High",
+      "volume": 2085,
+      "avg_csat": 2.98,
+      "resolution_rate": 33.8,
+      "avg_resolution_h": 8.2
+    },
+    {
+      "priority": "Medium",
+      "volume": 2192,
+      "avg_csat": 2.98,
+      "resolution_rate": 31.7,
+      "avg_resolution_h": 7.36
+    },
+    {
+      "priority": "Low",
+      "volume": 2063,
+      "avg_csat": 3.05,
+      "resolution_rate": 31.2,
+      "avg_resolution_h": 7.86
+    }
+  ],
+  "csat_drivers": {
+    "pearson_r": -0.0013,
+    "pearson_p": 0.9472,
+    "kruskal_channel_h": 3.85,
+    "kruskal_channel_p": 0.2785,
+    "kruskal_type_h": 2.2,
+    "kruskal_type_p": 0.6993,
+    "kruskal_priority_h": 1.74,
+    "kruskal_priority_p": 0.6287,
+    "top_driver": "channel_num",
+    "top_driver_r": -0.0275,
+    "conclusion": "Nenhuma variável tem correlação significativa com CSAT — dataset sintético com CSAT uniformemente distribuído."
+  },
+  "waste": {
+    "median_hours": 6.7,
+    "mean_hours": 7.74,
+    "above_median_pct": 50.0,
+    "avg_excess_hours": 5.65,
+    "annual_volume": 30000,
+    "annual_excess_tickets": 14995,
+    "annual_excess_hours": 84780,
+    "annual_cost_brl": 2967283.32
+  },
+  "bottleneck_heatmap": [
+    {
+      "channel": "Social media",
+      "type": "Refund request",
+      "avg_hours": 9.0
+    },
+    {
+      "channel": "Chat",
+      "type": "Cancellation request",
+      "avg_hours": 8.7
+    },
+    {
+      "channel": "Email",
+      "type": "Cancellation request",
+      "avg_hours": 8.3
+    },
+    {
+      "channel": "Email",
+      "type": "Technical issue",
+      "avg_hours": 8.3
+    },
+    {
+      "channel": "Email",
+      "type": "Refund request",
+      "avg_hours": 8.0
+    },
+    {
+      "channel": "Email",
+      "type": "Product inquiry",
+      "avg_hours": 7.9
+    },
+    {
+      "channel": "Social media",
+      "type": "Cancellation request",
+      "avg_hours": 7.8
+    },
+    {
+      "channel": "Phone",
+      "type": "Refund request",
+      "avg_hours": 7.7
+    },
+    {
+      "channel": "Social media",
+      "type": "Product inquiry",
+      "avg_hours": 7.7
+    },
+    {
+      "channel": "Chat",
+      "type": "Product inquiry",
+      "avg_hours": 7.6
+    },
+    {
+      "channel": "Chat",
+      "type": "Refund request",
+      "avg_hours": 7.6
+    },
+    {
+      "channel": "Social media",
+      "type": "Billing inquiry",
+      "avg_hours": 7.6
+    },
+    {
+      "channel": "Chat",
+      "type": "Technical issue",
+      "avg_hours": 7.5
+    },
+    {
+      "channel": "Social media",
+      "type": "Technical issue",
+      "avg_hours": 7.5
+    },
+    {
+      "channel": "Phone",
+      "type": "Cancellation request",
+      "avg_hours": 7.4
+    },
+    {
+      "channel": "Phone",
+      "type": "Product inquiry",
+      "avg_hours": 7.4
+    },
+    {
+      "channel": "Phone",
+      "type": "Technical issue",
+      "avg_hours": 7.4
+    },
+    {
+      "channel": "Chat",
+      "type": "Billing inquiry",
+      "avg_hours": 7.2
+    },
+    {
+      "channel": "Phone",
+      "type": "Billing inquiry",
+      "avg_hours": 7.2
+    },
+    {
+      "channel": "Email",
+      "type": "Billing inquiry",
+      "avg_hours": 6.9
+    }
+  ],
+  "data_quality": {
+    "same_day_timestamps_pct": 30.2,
+    "csat_is_uniform": true,
+    "has_placeholder_text": true
+  }
+}

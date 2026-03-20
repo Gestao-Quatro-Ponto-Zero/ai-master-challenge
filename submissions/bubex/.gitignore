@@ -8,6 +8,10 @@ out/
 **/data/*.csv
 **/data/*.json
 
+# Exceção: outputs gerados pelos scripts Python (necessários para o app)
+!**/data/diagnostic_output.json
+!**/data/classifier_output.json
+
 # Env
 .env
 .env.local
