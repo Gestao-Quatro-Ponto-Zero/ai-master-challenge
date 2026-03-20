@@ -72,7 +72,7 @@ ${text.slice(0, 1000)}`
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
-        'X-Title': 'Support Triage — AI Master Challenge',
+        'X-Title': 'Support Triage - AI Master Challenge',
       },
       body: JSON.stringify({
         model: 'anthropic/claude-haiku-4-5',
