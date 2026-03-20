@@ -93,9 +93,19 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** Criou `insights.ts` com `generateInsights()`: envia o payload completo dos dados para o OpenRouter e pede 4 achados em JSON. Fallback computa texto dinamicamente dos valores reais (sem strings hardcoded). `InsightsCard` e `ProposalDiagnosis` são async Server Components envolvidos em `<Suspense>` — a estrutura da página carrega imediata, os insights aparecem depois da resposta da IA.
 
-**[user]** Pediu skeleton mais bonito, cache para não bater sempre na IA, e orientação sobre `.env`.
+**[user]** Pediu skeleton mais bonito e cache efêmero para não bater sempre na IA.
 
 **[ai]** Skeleton agora tem spinner CSS (`border-t-transparent animate-spin`) + texto "Gerando insights com IA…". Cache em memória com TTL de 1h em `insights.ts` — key derivada dos valores reais do payload. Criado `.env.example` documentando `OPENROUTER_API_KEY`. Local: `.env.local` na raiz do app; Railway: painel de variáveis do projeto.
+
+---
+
+**[user]** Identificou que seções "O que automatizar / não" e "Limitações honestas" ainda eram hardcoded. Pediu que fossem geradas por IA.
+
+**[ai]** Criou `generateProposal()` em `insights.ts` — envia os dados reais ao OpenRouter e recebe `automationItems` + `limitations` em JSON. `ProposalAutomation` e `ProposalLimitations` são async Server Components com Suspense. As duas seções compartilham uma única chamada de IA (mesma função, mesmo cache). "Fluxo proposto" mantido estático — é framework de processo, não output de dados.
+
+**[user]** Aumentou TTL do cache de 1h para 24h em todos os pontos.
+
+**[ai]** Alterou `TTL_MS` de `60 * 60 * 1000` para `24 * 60 * 60 * 1000` em `insights.ts`. Uma constante, dois caches (`cache` e `proposalCache`) — ambos herdam o mesmo TTL.
 
 ---
 
