@@ -1,0 +1,22 @@
+# Node
+node_modules
+**/node_modules
+**/.next
+**/tsconfig.tsbuildinfo
+
+# Python
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/.ipynb_checkpoints
+**/notebooks/*_executed.ipynb
+
+# Dev
+**/.env
+**/.env.local
+**/dist
+
+# Outros apps (não fazem parte do container de suporte)
+apps/lead-scorer
+apps/churn-dashboard
+apps/social-dashboard

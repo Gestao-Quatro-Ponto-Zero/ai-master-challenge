@@ -1,0 +1,12 @@
+services:
+  support-triage:
+    build:
+      context: .
+      dockerfile: apps/support-triage/Dockerfile
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=production
+      # Opcional: classificação via LLM (sem a key, usa fallback por keywords)
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+    restart: unless-stopped
