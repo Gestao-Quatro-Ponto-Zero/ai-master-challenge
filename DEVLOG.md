@@ -29,6 +29,22 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 ---
 
+## Sessão 2 — Lead Scorer
+
+**[user]** Iniciou a implementação do Lead Scorer (Challenge 003).
+
+**[ai]** Explorou os CSVs reais antes de codar: schema das 4 tabelas, distribuição de stages (2089 deals abertos), range de valores ($38–$30K), win rates por agente (55–70%), range de datas (2016–2017).
+
+**[ai]** Descobriu que o dataset é histórico — usar `CURRENT_DATE` no cálculo de "dias no pipeline" resultaria em ~9 anos para todos os deals. Adotou `DATE '2017-12-31'` como data de referência.
+
+**[ai]** Implementou scoring SQL com 6 componentes: stage (0-30), valor do produto (0-25), receita da conta (0-20), tempo no pipeline (0 a -15), série do produto (0-15), win rate do agente (0-10). Score total 0-100.
+
+**❌ [ai]** `serverExternalPackages` não funcionou com `@duckdb/node-api` porque o pacote passava por `transpilePackages` via `@challenge/data-utils`. Webpack tentou processar o binário `.node`. Solução: mover DuckDB para dentro de cada app (`src/lib/db.ts`) e remover do package compartilhado.
+
+**❌ [ai]** DuckDB retorna campos inteiros como `BigInt` — `JSON.stringify` falha silenciosamente. Adicionado `sanitize()` que converte `BigInt → Number` antes de retornar da query.
+
+**[ai]** Lead Scorer funcionando: API `/api/pipeline` retornando 2089 deals com score e breakdown, páginas `/pipeline`, `/pipeline/[id]`, `/team`, `/team/[agent]` implementadas.
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->

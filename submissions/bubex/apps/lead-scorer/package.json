@@ -9,8 +9,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@challenge/data-utils": "workspace:*",
     "@challenge/ui": "workspace:*",
+    "@duckdb/node-api": "1.5.0-r.1",
     "@tanstack/react-table": "^8.21.3",
     "next": "^15.2.4",
     "react": "^19.1.0",
