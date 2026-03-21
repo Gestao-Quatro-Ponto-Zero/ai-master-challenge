@@ -3,6 +3,7 @@
   "private": true,
   "packageManager": "pnpm@10.32.1",
   "scripts": {
+    "dev:portal": "pnpm --filter @challenge/portal dev",
     "dev:lead-scorer": "pnpm --filter @challenge/lead-scorer dev",
     "dev:churn": "pnpm --filter @challenge/churn-dashboard dev",
     "dev:support": "pnpm --filter @challenge/support-triage dev",

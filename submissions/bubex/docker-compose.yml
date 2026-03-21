@@ -1,4 +1,30 @@
 services:
+  portal:
+    build:
+      context: .
+      dockerfile: apps/portal/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # URLs dos outros serviços — apontam para o host local no contexto Docker
+      # Em produção (Railway), sobrescrever com as URLs públicas de cada serviço
+      - URL_CHURN=${URL_CHURN:-http://localhost:3002}
+      - URL_SUPPORT=${URL_SUPPORT:-http://localhost:3003}
+      - URL_LEAD_SCORER=${URL_LEAD_SCORER:-http://localhost:3001}
+      - URL_SOCIAL=${URL_SOCIAL:-http://localhost:3004}
+    restart: unless-stopped
+
+  churn-dashboard:
+    build:
+      context: .
+      dockerfile: apps/churn-dashboard/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
   support-triage:
     build:
       context: .
@@ -9,4 +35,24 @@ services:
       - NODE_ENV=production
       # Opcional: classificação via LLM (sem a key, usa fallback por keywords)
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+    restart: unless-stopped
+
+  lead-scorer:
+    build:
+      context: .
+      dockerfile: apps/lead-scorer/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  social-dashboard:
+    build:
+      context: .
+      dockerfile: apps/social-dashboard/Dockerfile
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
     restart: unless-stopped

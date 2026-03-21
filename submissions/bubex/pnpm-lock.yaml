@@ -14,12 +14,12 @@ importers:
 
   apps/churn-dashboard:
     dependencies:
-      '@challenge/data-utils':
-        specifier: workspace:*
-        version: link:../../packages/data-utils
       '@challenge/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@duckdb/node-api':
+        specifier: 1.5.0-r.1
+        version: 1.5.0-r.1
       '@tanstack/react-table':
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -98,14 +98,45 @@ importers:
         specifier: ^5.8.3
         version: 5.9.3
 
+  apps/portal:
+    dependencies:
+      next:
+        specifier: ^15.2.4
+        version: 15.5.14(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.1.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@tailwindcss/postcss':
+        specifier: ^4.1.3
+        version: 4.2.2
+      '@types/node':
+        specifier: ^22.14.0
+        version: 22.19.15
+      '@types/react':
+        specifier: ^19.1.1
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.1.1
+        version: 19.2.3(@types/react@19.2.14)
+      tailwindcss:
+        specifier: ^4.1.3
+        version: 4.2.2
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
   apps/social-dashboard:
     dependencies:
-      '@challenge/data-utils':
-        specifier: workspace:*
-        version: link:../../packages/data-utils
       '@challenge/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@duckdb/node-api':
+        specifier: 1.5.0-r.1
+        version: 1.5.0-r.1
       '@tanstack/react-table':
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)

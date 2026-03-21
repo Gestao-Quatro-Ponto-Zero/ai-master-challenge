@@ -63,4 +63,4 @@ EXPOSE 3003
 ENV NODE_ENV=production
 ENV PORT=3003
 
-CMD ["./node_modules/.bin/next", "start", "-p", "3003"]
+CMD ["sh", "-c", "./node_modules/.bin/next start -p ${PORT}"]

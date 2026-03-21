@@ -182,6 +182,18 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** Adicionada camada Python: `scripts/generate_analysis.py` gera `data/social_analysis.json` com 8 análises (temporal, hashtags, content length buckets, language performance, day-of-week, creator efficiency, location, platform×day heatmap). `src/lib/analysis-output.ts` lê o JSON (padrão churn-dashboard). 2 notebooks Jupyter criados: `notebooks/01_exploratory.ipynb` (17 células — EDA: distribuições, tendência temporal, orgânico vs patrocinado) e `notebooks/02_strategy.ipynb` (17 células — estratégia: eficiência por tier, hashtags, timing, correlações, disclosure). Overview page integra tendência temporal (volume mensal). Performance page integra `engPer1KFollowers` nos cards de tier. Achado relevante documentado nos notebooks: dataset é sintético — engagement rate ~19.9% em todas as dimensões, sem variância real; mas `engPer1KFollowers` mostra nano-creators 10x mais eficientes que micro.
 
+## Sessão 10 — Portal + Infraestrutura multi-app
+
+**[user]** Solicitou criação de app de entrada (portal) com cards para cada desafio e estratégia de deploy para todos os projetos rodando simultaneamente — tanto Docker quanto Railway.
+
+**[ai]** Criado `apps/portal` (porta 3000): Next.js puro (sem DuckDB), landing page com 4 cards coloridos por desafio. URLs dos outros serviços via env vars (`URL_CHURN`, `URL_SUPPORT`, `URL_LEAD_SCORER`, `URL_SOCIAL`) com defaults localhost. `export const dynamic = 'force-dynamic'` garante que Railway injete as URLs em runtime, não em build time.
+
+**[ai]** Dockerfiles criados para os 3 apps que não tinham (churn-dashboard, lead-scorer, social-dashboard) seguindo padrão 2-stage do support-triage (sem Python). `CMD ["sh", "-c", "... -p ${PORT}"]` em todos os Dockerfiles (incluindo atualização do support-triage) para compatibilidade com Railway que injeta `$PORT` dinamicamente.
+
+**[ai]** `docker-compose.yml` atualizado com todos os 5 serviços (portal + 4 apps). Portal recebe URLs dos outros via env com fallback `localhost:300X`. `.dockerignore` simplificado — removidas exclusões por app (cada Dockerfile só faz COPY do que precisa). `railway.toml` criado em cada app com `dockerfilePath` relativo ao workspace root.
+
+**[ai]** Estratégia Railway (monorepo): no Railway, criar 5 serviços do mesmo repo. Root Directory = `submissions/bubex` para todos. Config Path por serviço: `apps/NOME/railway.toml`. Cada `railway.toml` aponta para o Dockerfile correto. Serviço `portal` recebe env vars com URLs públicas Railway dos outros 4 serviços.
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->

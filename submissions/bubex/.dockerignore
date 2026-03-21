@@ -16,7 +16,5 @@ node_modules
 **/.env.local
 **/dist
 
-# Outros apps (não fazem parte do container de suporte)
-apps/lead-scorer
-apps/churn-dashboard
-apps/social-dashboard
+# Dados grandes (não versionados)
+**/datasets
