@@ -35,6 +35,10 @@ if [[ ! -f "$TOML" ]]; then
   exit 1
 fi
 
+# Preserva o railway.toml mínimo na raiz (força Docker no Git) após o deploy
+if [[ -f railway.toml ]]; then
+  cp railway.toml railway.toml.bak.minimal
+fi
 cp "$TOML" railway.toml
 echo "→ railway.toml ← $TOML"
 echo "→ railway service $SERVICE_NAME"
@@ -46,3 +50,8 @@ fi
 
 echo "→ railway up $*"
 railway up "$@"
+
+if [[ -f railway.toml.bak.minimal ]]; then
+  mv railway.toml.bak.minimal railway.toml
+  echo "→ railway.toml restaurado (config mínima na raiz)"
+fi

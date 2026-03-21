@@ -1,0 +1,12 @@
+# Força builder Docker no monorepo (evita Railpack/Node na raiz sem "start").
+# O Dockerfile de cada app está em apps/<nome>/Dockerfile — defina no Railway:
+#   • Build → Dockerfile path (ex.: apps/churn-dashboard/Dockerfile), ou
+#   • Config file path → apps/<app>/railway.toml (caminho desde a raiz do repo)
+#
+# Sem dockerfilePath aqui de propósito: cada service no painel aponta para o app certo.
+[build]
+builder = "dockerfile"
+
+[deploy]
+healthcheckPath = "/"
+restartPolicyType = "on_failure"

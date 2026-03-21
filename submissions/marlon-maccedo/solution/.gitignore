@@ -28,5 +28,5 @@ out/
 # Railway CLI (link local — fica em ~/.railway/config.json; projeto pode ter cache)
 .railway/
 
-# Cópia gerada por scripts/railway-deploy-service.sh (fonte: apps/*/railway.toml)
-/railway.toml
+# Backup temporário do script de deploy (restaura railway.toml raiz após `railway up`)
+railway.toml.bak.minimal
