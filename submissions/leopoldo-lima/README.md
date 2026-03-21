@@ -20,6 +20,7 @@ Cockpit web com **score explicável** sobre o **dataset oficial** do challenge, 
 - **Process log e evidências:** [`process-log/`](./process-log/)
 - **Docs complementares:** [`docs/`](./docs/)
 - **Índice detalhado:** [`docs/SUBMISSION_CONTENT_INDEX.md`](./docs/SUBMISSION_CONTENT_INDEX.md)
+- **Repositório original:** [`https://github.com/leopas/build-003-lead-scorer`](https://github.com/leopas/build-003-lead-scorer)
 
 ## Como rodar em 60 segundos
 
