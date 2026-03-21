@@ -1,0 +1,20 @@
+# Node
+node_modules
+**/node_modules
+**/.next
+**/tsconfig.tsbuildinfo
+
+# Python
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/.ipynb_checkpoints
+**/notebooks/*_executed.ipynb
+
+# Dev
+**/.env
+**/.env.local
+**/dist
+
+# Dados grandes (não versionados)
+**/datasets

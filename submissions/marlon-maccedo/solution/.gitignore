@@ -1,0 +1,32 @@
+node_modules/
+.next/
+.turbo/
+dist/
+out/
+
+# Datasets — por padrão não versionar (Kaggle etc.)
+**/data/*.csv
+**/data/*.json
+
+# Exceção: outputs gerados pelos scripts Python (support-triage)
+!**/data/diagnostic_output.json
+!**/data/classifier_output.json
+
+# Exceção: dados necessários para `next build` / Docker / Railway (upload respeita .gitignore)
+!apps/churn-dashboard/data/*.csv
+!apps/churn-dashboard/data/*.json
+!apps/lead-scorer/data/*.csv
+!apps/social-dashboard/data/*.csv
+!apps/social-dashboard/data/*.json
+!apps/support-triage/data/*.csv
+
+# Env
+.env
+.env.local
+.env*.local
+
+# Railway CLI (link local — fica em ~/.railway/config.json; projeto pode ter cache)
+.railway/
+
+# Backup temporário do script de deploy (restaura railway.toml raiz após `railway up`)
+railway.toml.bak.minimal

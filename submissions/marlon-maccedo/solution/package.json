@@ -1,0 +1,24 @@
+{
+  "name": "ai-master-challenge-submission",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev:portal": "pnpm --filter @challenge/portal dev",
+    "dev:lead-scorer": "dotenv -e .env -- pnpm --filter @challenge/lead-scorer dev",
+    "dev:churn": "dotenv -e .env -- pnpm --filter @challenge/churn-dashboard dev",
+    "dev:support": "dotenv -e .env -- pnpm --filter @challenge/support-triage dev",
+    "dev:social": "dotenv -e .env -- pnpm --filter @challenge/social-dashboard dev",
+    "build:all": "pnpm -r build",
+    "type-check": "pnpm -r type-check",
+    "railway:deploy:portal": "./scripts/railway-deploy-service.sh portal",
+    "railway:deploy:churn-dashboard": "./scripts/railway-deploy-service.sh churn-dashboard",
+    "railway:deploy:lead-scorer": "./scripts/railway-deploy-service.sh lead-scorer",
+    "railway:deploy:social-dashboard": "./scripts/railway-deploy-service.sh social-dashboard",
+    "railway:deploy:support-triage": "./scripts/railway-deploy-service.sh support-triage",
+    "railway:set-prod-vars": "./scripts/railway-set-prod-vars.sh"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0",
+    "typescript": "^5.8.3"
+  }
+}

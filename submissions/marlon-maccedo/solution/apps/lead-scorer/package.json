@@ -1,0 +1,29 @@
+{
+  "name": "@challenge/lead-scorer",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "type-check": "tsc --noEmit",
+    "sanity": "curl -s http://localhost:3001/api/sanity | jq"
+  },
+  "dependencies": {
+    "@challenge/ui": "workspace:*",
+    "@duckdb/node-api": "1.5.0-r.1",
+    "@tanstack/react-table": "^8.21.3",
+    "next": "^15.2.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^2.15.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.3",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.3",
+    "typescript": "^5.8.3"
+  }
+}

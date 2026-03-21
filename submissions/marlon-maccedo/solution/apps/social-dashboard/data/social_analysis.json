@@ -1,0 +1,629 @@
+{
+  "temporal": [
+    {
+      "month": "2023-05",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 188,
+      "totalViews": 1898818
+    },
+    {
+      "month": "2023-06",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2241,
+      "totalViews": 22636496
+    },
+    {
+      "month": "2023-07",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2221,
+      "totalViews": 22425828
+    },
+    {
+      "month": "2023-08",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 2233,
+      "totalViews": 22555419
+    },
+    {
+      "month": "2023-09",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2092,
+      "totalViews": 21132335
+    },
+    {
+      "month": "2023-10",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2186,
+      "totalViews": 22078142
+    },
+    {
+      "month": "2023-11",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2168,
+      "totalViews": 21897271
+    },
+    {
+      "month": "2023-12",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 2177,
+      "totalViews": 21982940
+    },
+    {
+      "month": "2024-01",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2192,
+      "totalViews": 22140371
+    },
+    {
+      "month": "2024-02",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2099,
+      "totalViews": 21199664
+    },
+    {
+      "month": "2024-03",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2210,
+      "totalViews": 22322168
+    },
+    {
+      "month": "2024-04",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 2121,
+      "totalViews": 21425517
+    },
+    {
+      "month": "2024-05",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2195,
+      "totalViews": 22167277
+    },
+    {
+      "month": "2024-06",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2165,
+      "totalViews": 21866512
+    },
+    {
+      "month": "2024-07",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2229,
+      "totalViews": 22519508
+    },
+    {
+      "month": "2024-08",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2347,
+      "totalViews": 23702162
+    },
+    {
+      "month": "2024-09",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2139,
+      "totalViews": 21607668
+    },
+    {
+      "month": "2024-10",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 2212,
+      "totalViews": 22348182
+    },
+    {
+      "month": "2024-11",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2151,
+      "totalViews": 21724203
+    },
+    {
+      "month": "2024-12",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 2228,
+      "totalViews": 22500047
+    },
+    {
+      "month": "2025-01",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 2146,
+      "totalViews": 21672074
+    },
+    {
+      "month": "2025-02",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1914,
+      "totalViews": 19332056
+    },
+    {
+      "month": "2025-03",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 2213,
+      "totalViews": 22351748
+    },
+    {
+      "month": "2025-04",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 2173,
+      "totalViews": 21954870
+    },
+    {
+      "month": "2025-05",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1974,
+      "totalViews": 19934917
+    }
+  ],
+  "topHashtags": [
+    {
+      "hashtag": "safe",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 170
+    },
+    {
+      "hashtag": "religious",
+      "avgEngagementRate": 19.99,
+      "totalPosts": 168
+    },
+    {
+      "hashtag": "economic",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 167
+    },
+    {
+      "hashtag": "participant",
+      "avgEngagementRate": 19.88,
+      "totalPosts": 167
+    },
+    {
+      "hashtag": "others",
+      "avgEngagementRate": 19.94,
+      "totalPosts": 166
+    },
+    {
+      "hashtag": "put",
+      "avgEngagementRate": 19.83,
+      "totalPosts": 166
+    },
+    {
+      "hashtag": "tend",
+      "avgEngagementRate": 19.93,
+      "totalPosts": 165
+    },
+    {
+      "hashtag": "should",
+      "avgEngagementRate": 19.97,
+      "totalPosts": 164
+    },
+    {
+      "hashtag": "develop",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 162
+    },
+    {
+      "hashtag": "this",
+      "avgEngagementRate": 19.93,
+      "totalPosts": 162
+    },
+    {
+      "hashtag": "second",
+      "avgEngagementRate": 19.85,
+      "totalPosts": 160
+    },
+    {
+      "hashtag": "brother",
+      "avgEngagementRate": 19.93,
+      "totalPosts": 159
+    },
+    {
+      "hashtag": "exist",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 159
+    },
+    {
+      "hashtag": "win",
+      "avgEngagementRate": 19.86,
+      "totalPosts": 158
+    },
+    {
+      "hashtag": "despite",
+      "avgEngagementRate": 19.94,
+      "totalPosts": 158
+    },
+    {
+      "hashtag": "painting",
+      "avgEngagementRate": 19.96,
+      "totalPosts": 158
+    },
+    {
+      "hashtag": "upon",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 158
+    },
+    {
+      "hashtag": "different",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 157
+    },
+    {
+      "hashtag": "million",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 157
+    },
+    {
+      "hashtag": "seven",
+      "avgEngagementRate": 19.86,
+      "totalPosts": 157
+    }
+  ],
+  "contentLength": [
+    {
+      "lengthBucket": "muito curto (<50)",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 5601,
+      "avgContentLength": 31.5
+    },
+    {
+      "lengthBucket": "curto (50-99)",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 8210,
+      "avgContentLength": 74.5
+    },
+    {
+      "lengthBucket": "médio (100-199)",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 16499,
+      "avgContentLength": 149.3
+    },
+    {
+      "lengthBucket": "longo (200-499)",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 16485,
+      "avgContentLength": 349.2
+    },
+    {
+      "lengthBucket": "muito longo (500+)",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 5419,
+      "avgContentLength": 549.4
+    }
+  ],
+  "languagePerf": [
+    {
+      "language": "Chinese",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 10428
+    },
+    {
+      "language": "Hindi",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 5272
+    },
+    {
+      "language": "Japanese",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 5177
+    },
+    {
+      "language": "Spanish",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 5227
+    },
+    {
+      "language": "English",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 26110
+    }
+  ],
+  "postingByDay": [
+    {
+      "day_of_week": "Monday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 7483
+    },
+    {
+      "day_of_week": "Tuesday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 7510
+    },
+    {
+      "day_of_week": "Wednesday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 7343
+    },
+    {
+      "day_of_week": "Thursday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 7537
+    },
+    {
+      "day_of_week": "Friday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 7495
+    },
+    {
+      "day_of_week": "Saturday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 7375
+    },
+    {
+      "day_of_week": "Sunday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 7471
+    }
+  ],
+  "creatorEfficiency": [
+    {
+      "tier": "nano (<10K)",
+      "avgEngagementRate": 19.9,
+      "avgEngPer1KFollowers": 0.0512,
+      "totalPosts": 454,
+      "avgFollowers": 5484
+    },
+    {
+      "tier": "micro (10K-100K)",
+      "avgEngagementRate": 19.91,
+      "avgEngPer1KFollowers": 0.0051,
+      "totalPosts": 4706,
+      "avgFollowers": 54873
+    },
+    {
+      "tier": "macro (100K-1M)",
+      "avgEngagementRate": 19.9,
+      "avgEngPer1KFollowers": 0.0005,
+      "totalPosts": 47054,
+      "avgFollowers": 549162
+    }
+  ],
+  "locationPerf": [
+    {
+      "location": "China",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 6648
+    },
+    {
+      "location": "UK",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 6570
+    },
+    {
+      "location": "Japan",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 6553
+    },
+    {
+      "location": "Brazil",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 6505
+    },
+    {
+      "location": "USA",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 6498
+    },
+    {
+      "location": "Germany",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 6497
+    },
+    {
+      "location": "India",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 6484
+    },
+    {
+      "location": "Russia",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 6459
+    }
+  ],
+  "platformDayHeatmap": [
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Friday",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 1519
+    },
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Monday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1499
+    },
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Saturday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1462
+    },
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Sunday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1547
+    },
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Thursday",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 1563
+    },
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Tuesday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1542
+    },
+    {
+      "platform": "Bilibili",
+      "day_of_week": "Wednesday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1466
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Friday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1477
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Monday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1511
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Saturday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1525
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Sunday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1465
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Thursday",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 1519
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Tuesday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1448
+    },
+    {
+      "platform": "Instagram",
+      "day_of_week": "Wednesday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1478
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Friday",
+      "avgEngagementRate": 19.93,
+      "totalPosts": 1468
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Monday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1493
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Saturday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1448
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Sunday",
+      "avgEngagementRate": 19.92,
+      "totalPosts": 1488
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Thursday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1516
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Tuesday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1527
+    },
+    {
+      "platform": "RedNote",
+      "day_of_week": "Wednesday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1462
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Friday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1510
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Monday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1452
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Saturday",
+      "avgEngagementRate": 19.93,
+      "totalPosts": 1417
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Sunday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1458
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Thursday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1471
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Tuesday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1466
+    },
+    {
+      "platform": "TikTok",
+      "day_of_week": "Wednesday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1522
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Friday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1521
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Monday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1528
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Saturday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1523
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Sunday",
+      "avgEngagementRate": 19.91,
+      "totalPosts": 1513
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Thursday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1468
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Tuesday",
+      "avgEngagementRate": 19.9,
+      "totalPosts": 1527
+    },
+    {
+      "platform": "YouTube",
+      "day_of_week": "Wednesday",
+      "avgEngagementRate": 19.89,
+      "totalPosts": 1415
+    }
+  ]
+}
