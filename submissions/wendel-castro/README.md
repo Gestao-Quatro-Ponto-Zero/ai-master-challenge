@@ -96,6 +96,36 @@ Mesmo com a limitação dos dados, executei análises em:
 
 ## O Algo a Mais
 
+### Validador de Qualidade de Dados (Data Health Report)
+
+O problema central deste challenge — dados sintéticos sendo analisados como se fossem reais — não deveria depender do senso crítico humano para ser detectado. Por isso, criei uma ferramenta que automatiza essa validação.
+
+**`validar_dataset.py`** roda 7 testes automatizados antes de qualquer análise:
+
+1. Variância numérica (CV, range, outliers)
+2. Correlações entre métricas relacionadas
+3. Distribuição categórica (uniformidade artificial)
+4. Padrões de dados gerados (Faker: LLC, Ltd, Lorem Ipsum)
+5. Integridade (nulos, duplicatas, IDs)
+6. Padrões temporais (distribuição por dia/hora)
+7. Consistência entre colunas (likes > views, etc.)
+
+**Resultado no dataset do challenge: Score 0/100 — SINTÉTICO/COMPROMETIDO**
+
+O script detectou automaticamente tudo que identifiquei manualmente: CV de 0.01 em views, correlações ~0 entre métricas de engajamento, padrões Faker em nomes de sponsors, distribuições uniformes por plataforma e localização, e ausência total de padrões temporais.
+
+```bash
+# Para usar
+python validar_dataset.py caminho/do/arquivo.csv
+
+# Exit codes para CI/CD:
+# 0 = dados OK | 1 = suspeito | 2 = comprometido
+```
+
+**Inclui também um skill para Claude Code** (`claude-code-skill/SKILL.md`) — basta instalar e usar `/validar-dataset arquivo.csv`. O skill interpreta o relatório automaticamente e decide se prossegue ou para a análise.
+
+O relatório completo gerado está em [`solution/data_health_report.md`](solution/data_health_report.md).
+
 ### Dashboard Interativo (Streamlit)
 
 Construí um dashboard completo com:
