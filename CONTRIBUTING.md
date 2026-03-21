@@ -29,12 +29,12 @@ submissions/seu-nome/
 
 ## Checklist antes de abrir o PR
 
-- [ ] Escolhi um challenge e li o README completo
-- [ ] Minha solução está na pasta `submissions/meu-nome/`
-- [ ] Incluí o process log com evidências de uso de IA
-- [ ] O README da minha submissão segue o [template](./templates/submission-template.md)
-- [ ] Se construí código, incluí instruções de setup
-- [ ] Não modifiquei nenhum arquivo fora da minha pasta
+- [ x] Escolhi um challenge e li o README completo
+- [ x] Minha solução está na pasta `submissions/meu-nome/`
+- [x ] Incluí o process log com evidências de uso de IA
+- [ x] O README da minha submissão segue o [template](./templates/submission-template.md)
+- [ x] Se construí código, incluí instruções de setup
+- [ x] Não modifiquei nenhum arquivo fora da minha pasta
 
 ## Regras do PR
 
