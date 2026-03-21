@@ -1,8 +1,11 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getDeal } from '@/lib/queries'
+import { generateDealAction } from '@/lib/insights'
 import { ScoreBadge } from '@/components/ScoreBadge'
 import { ScoreBreakdown } from '@/components/ScoreBreakdown'
+import type { Deal } from '@/types'
 
 export default async function DealPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -30,6 +33,52 @@ export default async function DealPage({ params }: { params: Promise<{ id: strin
       </div>
 
       <ScoreBreakdown deal={deal} />
+
+      <Suspense fallback={<ActionCardSkeleton />}>
+        <ActionCardAsync deal={deal} />
+      </Suspense>
+    </div>
+  )
+}
+
+async function ActionCardAsync({ deal }: { deal: Deal }) {
+  const { actions, fromLLM } = await generateDealAction(deal)
+  return <ActionCard actions={actions} fromLLM={fromLLM} />
+}
+
+function ActionCard({ actions, fromLLM }: { actions: string[]; fromLLM: boolean }) {
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs text-gray-400 uppercase tracking-wide font-medium">Próximos passos</p>
+        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+          fromLLM
+            ? 'bg-violet-100 text-violet-700'
+            : 'bg-gray-100 text-gray-500'
+        }`}>
+          {fromLLM ? 'IA' : 'Baseado nos dados'}
+        </span>
+      </div>
+      <ul className="space-y-2">
+        {actions.map((action, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+            <span className="mt-0.5 text-gray-400 shrink-0">→</span>
+            <span>{action}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function ActionCardSkeleton() {
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
+      <div className="h-3 bg-gray-200 rounded w-24 mb-3" />
+      <div className="space-y-2">
+        <div className="h-4 bg-gray-100 rounded w-full" />
+        <div className="h-4 bg-gray-100 rounded w-4/5" />
+      </div>
     </div>
   )
 }

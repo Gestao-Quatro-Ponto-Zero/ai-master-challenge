@@ -6,7 +6,8 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "sanity": "curl -s http://localhost:3001/api/sanity | jq"
   },
   "dependencies": {
     "@challenge/ui": "workspace:*",

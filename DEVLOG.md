@@ -194,6 +194,22 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** Estratégia Railway (monorepo): no Railway, criar 5 serviços do mesmo repo. Root Directory = `submissions/bubex` para todos. Config Path por serviço: `apps/NOME/railway.toml`. Cada `railway.toml` aponta para o Dockerfile correto. Serviço `portal` recebe env vars com URLs públicas Railway dos outros 4 serviços.
 
-## Próximas entradas
+---
 
-<!-- Registrar aqui ao vivo -->
+## Sessão 11 — Ajustes pós-análise dos 32 PRs
+
+**[user]** Analisou 32 PRs avaliados e identificou critérios hierarquizados do avaliador. Gaps principais: (1) nenhum app com README; (2) findings do lead-scorer no submission.md descrevem features inexistentes no dataset real; (3) lead-scorer sem notebook EDA; (4) lead-scorer sem LLM/insights; (5) nav frame de gestor.
+
+**[ai]** P1-C: Reescreveu seção Challenge 003 do `submission.md` com findings reais do dataset: composição de stages, impacto da série GTK vs MG, distribuição de win rate dos agentes, aging como fator de deterioração.
+
+**[ai]** P1-A: Criou `apps/lead-scorer/README.md` — tabela completa dos 6 componentes do score com thresholds e origem de cada um, interpretação Hot/Warm/Cold, como rodar (pnpm dev, Docker, .env.example), tabela dos 5 CSVs, rotas do app.
+
+**[ai]** P1-B: Criou READMEs para os outros 3 apps (churn-dashboard, support-triage, social-dashboard) — padrão uniforme: descrição, rotas, como rodar (com pré-requisitos Python onde necessário), findings principais, arquitetura de dados.
+
+**[ai]** P2-A: Criou `apps/lead-scorer/notebooks/01_eda.ipynb` — 7 findings numerados que derivam os thresholds do scoring engine a partir dos dados reais: composição do pipeline, tiers de preço, distribuição de win rate (range 55–70%), quartis de receita das contas (Q1/Q2/Q3 = exatamente os thresholds do SQL), breaks naturais do aging (120/200/300 dias), win rate por série (GTK > GTX > MG). Finding 7 aplica o scoring em Python e exibe distribuição Hot/Warm/Cold como validação cruzada com o SQL. Criado `notebooks/requirements.txt`.
+
+**[ai]** P2-B: Criou `apps/lead-scorer/src/lib/insights.ts` com `generateDealAction(deal)` — padrão idêntico ao `churn-dashboard/insights.ts`: OpenRouter (Claude Haiku), cache 24h por `opportunity_id`, retorna `{actions, fromLLM}`. Fallback determinístico com 5 regras baseadas em score/stage/aging/revenue sem texto inventado. Deal page (`/pipeline/[id]`) atualizada com `ActionCard` em Suspense + skeleton de loading. Badge "IA" / "Baseado nos dados" indica origem. Criado `.env.example`.
+
+**[ai]** P2-C: Renomeou "Time" → "Minha Carteira" no `layout.tsx` — frame de vendedor, não de gestor.
+
+**[ai]** P3-A: Criou `apps/lead-scorer/src/app/api/sanity/route.ts` — 4 assertions documentáveis: total 1000–5000, score 0–100 em todos, avg Engaging > avg Prospecting, soma de componentes ≤ 101. Script `sanity` adicionado ao `package.json`. `pnpm type-check` sem erros.

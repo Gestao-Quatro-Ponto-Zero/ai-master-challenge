@@ -74,23 +74,24 @@ Classificador LLM sem fine-tuning; em produção precisaria de dataset de treina
 
 **Abordagem**
 
-Score preditivo de leads a partir do dataset CRM com features de comportamento (visits, emails abertos, tempo no site) e firmographics (setor, tamanho). Modelo de ranqueamento com DuckDB para computação das features e Recharts para visualização do funil e distribuição de scores.
+Score de priorização do pipeline aberto (2.089 deals em Prospecting/Engaging) usando DuckDB com SQL direto sobre os 5 CSVs do dataset CRM. Seis componentes com thresholds derivados dos dados reais: stage, valor do produto, receita da conta, aging, série do produto e win rate do agente. UI com pipeline paginado, drill-down por deal e visão por agente.
 
 **Findings**
 
-- Leads de Enterprise com mais de 3 visitas ao site têm taxa de conversão 4× acima da média
-- Tempo de resposta do SDR acima de 48h cai conversão em ~60%
-- Setor de tecnologia e financeiro têm score médio 30% acima dos demais
+- Engaging concentra os deals mais quentes: stage sozinho responde por até 30 pontos (vs 15 de Prospecting), sendo o maior único componente do score
+- Série GTK domina em win rate histórico — o produto GTX Pro ($4.821, série GTX) é o único com valor acima do threshold premium de $4.000, criando um cluster de score alto para deals de alto valor
+- Win rate dos agentes distribui-se entre 55–70% (média 62,5%); a normalização linear nessa faixa gera diferenciação de até 10 pontos sem penalizar agentes medianos
+- Aging é o principal fator de deterioração: 120/200/300 dias são os breaks naturais da distribuição de `engage_date` — deals acima de 300 dias perdem 15 pontos independentemente dos demais componentes
 
 **Recomendações**
 
-1. Priorizar follow-up automático em leads com score > 70 em menos de 24h
-2. Criar tier "hot lead" para Enterprise com > 3 visitas — rota direto para AE
-3. Revisar critérios de qualificação de leads para setores de baixo score histórico
+1. Focar ação imediata em deals Hot (score ≥ 70) com aging 0 — combinação de score alto e deal jovem indica janela de fechamento
+2. Deals Warm (40–69) em contas com receita > $2.741M merecem envolvimento de AE senior — potencial de upgrade de componente de conta
+3. Revisar deals acima de 200 dias em Prospecting: ou avançar para Engaging (recupera 15 pts de stage) ou encerrar para limpar pipeline
 
 **Limitações**
 
-Dataset sintético sem variância temporal (sem sazonalidade real). Score precisaria ser recalibrado com dados históricos de conversão da empresa.
+Dataset histórico de 2016–2017; win rates e thresholds de receita precisariam ser recalibrados com dados atuais. Score não inclui frequência de contato nem atividade recente do cliente — dados ausentes no dataset.
 
 ---
 

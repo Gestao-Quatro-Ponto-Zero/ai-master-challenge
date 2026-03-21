@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Pipeline
             </Link>
             <Link href="/team" className="text-gray-600 hover:text-gray-900 font-medium">
-              Time
+              Minha Carteira
             </Link>
           </nav>
         </header>
