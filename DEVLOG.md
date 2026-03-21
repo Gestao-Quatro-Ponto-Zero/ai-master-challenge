@@ -223,3 +223,23 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 **[ai]** Ajustado `.gitignore`: exceções para `apps/*/data` dos quatro dashboards — o upload do CLI Railway respeita `.gitignore`; sem isso os CSV/JSON não iam no tarball e o `next build` falhava no Docker. `--no-gitignore` foi descartado (incluía `node_modules`, payload > 200MB).
 
 **[ai]** Variáveis `URL_CHURN`, `URL_LEAD_SCORER`, `URL_SOCIAL`, `URL_SUPPORT` configuradas no service do Portal com os domínios `*.up.railway.app` gerados. Scripts `pnpm railway:deploy:*` no `package.json`. `.env.example` documenta as variáveis do Portal para produção.
+
+## Sessão 13 — Cache de insights vs OPENROUTER_API_KEY
+
+**[user]** Com a key configurada na Railway, o app ainda mostrava o banner “Configure OPENROUTER_API_KEY…” (ex.: visão geral churn).
+
+**[ai]** Causa: cache em memória (TTL 24h) guardava `null` quando não havia chave; após configurar a env, o cache continuava devolvendo `null`. Ajuste: só reutilizar hit com `data !== null`; se `data === null`, só retornar cedo se ainda não há `OPENROUTER_API_KEY`; senão refazer a chamada à API. Arquivos: `churn-dashboard`, `social-dashboard` e `lead-scorer` `insights.ts`.
+
+## Sessão 14 — Railway Git: Root Directory do monorepo
+
+**[user]** Conectou o repo em cada service; build Railpack falhou (só enxergava `challenges/`, `templates/` na raiz do fork).
+
+**[ai]** Documentado em `solution/README.md`: Root Directory deve ser `submissions/<submissão>/solution`, builder Dockerfile e `dockerfilePath` por app (`apps/.../Dockerfile`). Comentário em `railway.toml` alinhado ao path real.
+
+**[user]** Dúvida: mesmo Root Directory em todos os services não faria todos apontarem para o portal?
+
+**[ai]** Esclarecido no README: Root Directory é só o monorepo; o **Dockerfile path** (por service) define qual app buildar. Omitir o path faz cair no `railway.toml` default do portal.
+
+**[user]** Mesmo com Root Directory correto, `solution/railway.toml` na raiz fazia todos herdarem o mesmo build (Portal).
+
+**[ai]** Removido `solution/railway.toml` versionado; cada service usa `apps/<app>/railway.toml` via **Config file path** no Railway (caminho desde a raiz do repo) ou Dockerfile path explícito. `/railway.toml` no `.gitignore` (cópia do script CLI).

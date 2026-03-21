@@ -1,8 +1,0 @@
-[build]
-builder = "dockerfile"
-# dockerfilePath é relativo ao rootDirectory configurado no Railway (submissions/marlon-maccedo)
-dockerfilePath = "apps/portal/Dockerfile"
-
-[deploy]
-healthcheckPath = "/"
-restartPolicyType = "on_failure"
