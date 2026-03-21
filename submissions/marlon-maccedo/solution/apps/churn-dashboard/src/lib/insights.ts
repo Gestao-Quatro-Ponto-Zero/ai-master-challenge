@@ -37,12 +37,15 @@ function overviewKey(o: ChurnOverview): string {
 /** Returns 4 AI-generated insights or null when no API key. */
 export async function generateInsights(payload: ChurnInsightsPayload): Promise<string[] | null> {
   const key = overviewKey(payload.overview) + '|' + payload.topIndustries[0]?.segment
-  const hit = insightsCache.get(key)
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.data
-
   const apiKey = process.env.OPENROUTER_API_KEY
+  const hit = insightsCache.get(key)
+  if (hit && Date.now() - hit.at < TTL_MS) {
+    if (hit.data !== null) return hit.data
+    // Não reutilizar cache de "sem resultado" se a chave foi configurada depois (evita 24h de banner falso)
+    if (!apiKey) return null
+  }
+
   if (!apiKey) {
-    insightsCache.set(key, { data: null, at: Date.now() })
     return null
   }
 
@@ -87,12 +90,14 @@ ${dataSummary}`
 /** Returns 3 AI-generated diagnostic findings or null when no API key. */
 export async function generateDiagnosticInsights(payload: DiagnosticInsightsPayload): Promise<string[] | null> {
   const key = `diag|${overviewKey(payload.overview)}|${payload.topFeatures[0]?.feature}`
-  const hit = diagCache.get(key)
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.data
-
   const apiKey = process.env.OPENROUTER_API_KEY
+  const hit = diagCache.get(key)
+  if (hit && Date.now() - hit.at < TTL_MS) {
+    if (hit.data !== null) return hit.data
+    if (!apiKey) return null
+  }
+
   if (!apiKey) {
-    diagCache.set(key, { data: null, at: Date.now() })
     return null
   }
 
@@ -143,12 +148,14 @@ export interface RecommendationsOutput {
 /** Returns AI-generated recommendations or null when no API key. */
 export async function generateRecommendations(payload: ChurnInsightsPayload): Promise<RecommendationsOutput | null> {
   const key = `reco|${RECO_VERSION}|${overviewKey(payload.overview)}|${payload.topChannels[0]?.segment}`
-  const hit = recoCache.get(key)
-  if (hit && Date.now() - hit.at < TTL_MS) return hit.data
-
   const apiKey = process.env.OPENROUTER_API_KEY
+  const hit = recoCache.get(key)
+  if (hit && Date.now() - hit.at < TTL_MS) {
+    if (hit.data !== null) return hit.data
+    if (!apiKey) return null
+  }
+
   if (!apiKey) {
-    recoCache.set(key, { data: null, at: Date.now() })
     return null
   }
 

@@ -40,14 +40,19 @@ function fallbackActions(deal: Deal): string[] {
 /** Returns action suggestions (string[]) or null when no API key — in that case use fallback. */
 export async function generateDealAction(deal: Deal): Promise<{ actions: string[]; fromLLM: boolean }> {
   const cacheKey = deal.opportunity_id
+  const apiKey = process.env.OPENROUTER_API_KEY
   const hit = actionCache.get(cacheKey)
   if (hit && Date.now() - hit.at < TTL_MS) {
-    return { actions: hit.data ?? fallbackActions(deal), fromLLM: hit.data !== null }
+    if (hit.data !== null) {
+      return { actions: hit.data, fromLLM: true }
+    }
+    if (!apiKey) {
+      return { actions: fallbackActions(deal), fromLLM: false }
+    }
+    // cache com falha/sem chave antiga — tentar de novo com a chave atual
   }
 
-  const apiKey = process.env.OPENROUTER_API_KEY
   if (!apiKey) {
-    actionCache.set(cacheKey, { data: null, at: Date.now() })
     return { actions: fallbackActions(deal), fromLLM: false }
   }
 
