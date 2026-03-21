@@ -9,7 +9,13 @@
 
 ## Executive Summary
 
-Dashboard interativo de diagnóstico de churn para a RavenStack (~500 contas SaaS B2B). A análise cruzou todas as 5 tabelas do dataset e revelou que o problema de churn é significativamente maior do que o CEO percebe: 70% das contas já churnearam pelo menos uma vez, contra os 22% visíveis. Os principais drivers são concentração setorial (DevTools = 31% churn), qualidade do canal de aquisição (eventos = 30% vs partners = 15%), e o "mid-market squeeze" ($1K-2.5K MRR = 26% churn). O dashboard inclui aba preditiva com modelo de churn e recomendações priorizadas por impacto em MRR.
+O CEO acredita que o churn está em 22%. O número real é **70%** — proporção de contas que já cancelaram ao menos uma vez. 277 reativaram, mascarando o problema. 175 cancelaram mais de uma vez.
+
+A análise cruzou todas as 5 tabelas e identificou três drivers principais com dados: DevTools (31% churn, 2x a média), canal de eventos (30%, 2x partners), e mid-market $1K–$2.5K MRR (26%, 55% da base). O churn está acelerando: **6 eventos em Q1/2023 → 251 em Q4/2024, 42x em 2 anos**.
+
+Adicionalmente: a pesquisa de satisfação tem escala quebrada — **zero respostas 1 ou 2** em 2.000 tickets. O CS está medindo um instrumento que não captura insatisfação.
+
+→ Ver `executive_summary.md` para o one-pager executivo.
 
 ---
 
@@ -102,7 +108,8 @@ Dashboard interativo de diagnóstico de churn para a RavenStack (~500 contas Saa
 ### 8. Satisfação dos churned é MAIOR que dos retidos (Parte 3)
 - Churned: 4.01 vs Retidos: 3.97
 - Explicação: o problema não é suporte — é pricing/features/competição
-- 40% dos scores são null → possível non-response bias dos insatisfeitos
+- 41% dos scores são null → non-response bias dos insatisfeitos
+- **Instrumento quebrado:** zero respostas 1 ou 2 em 2.000 tickets. Escala efetiva: 3–5. A métrica não detecta insatisfação — detecta ausência de resposta.
 
 ### 9. Feedback confirma: problema multifatorial (Parte 3)
 - "too expensive": 36% dos feedbacks
@@ -142,13 +149,15 @@ streamlit run app.py
 
 ## Recomendações
 
-| # | Ação | Impacto | Esforço | Prazo |
-|---|------|---------|---------|-------|
-| 1 | Programa retenção DevTools | ~$50K MRR | Médio | 90 dias |
-| 2 | Rever ROI de eventos vs partners | CAC savings | Baixo | 30 dias |
-| 3 | Tier "Growth" para mid-market | ~$120K MRR | Alto | 120 dias |
-| 4 | Salvar contas de alto risco ativas | Imediato | Baixo | 48h |
-| 5 | Corrigir métrica de churn (3 visões) | Visibilidade | Baixo | 30 dias |
+| # | Ação | Custo est. | Retorno potencial | Prazo |
+|---|------|-----------|-------------------|-------|
+| 1 | Squad CS dedicado DevTools | ~$8K/mês (1 CSM) | ~$50K MRR | 90 dias |
+| 2 | Realocar budget eventos → partners | $0 (redistribuição) | 2x LTV por lead | 30 dias |
+| 3 | Tier "Growth" para mid-market | ~$15K implementação | ~$120K MRR | 120 dias |
+| 4 | Outreach top 20 contas em risco | $0 (CS existente) | $35K MRR imediato | 48h |
+| 5 | Corrigir métrica de churn (3 visões) | $0 | Visibilidade executiva | 30 dias |
+
+**Potencial de recuperação conservador: ~$80–120K MRR nos próximos 6 meses.**
 
 ---
 
@@ -224,16 +233,21 @@ Documentado em detalhe em [`process-log/workflow.md`](process-log/workflow.md). 
 ```
 submissions/theo-garcia/
 ├── README.md                    # Este arquivo
+├── executive_summary.md         # One-pager executivo (CEO-ready)
 ├── requirements.txt             # Dependências Python
 ├── app.py                       # Dashboard Streamlit (3 abas)
-├── data/                        # 5 CSVs + master table (500x63)
-├── notebooks/                   # Scripts de análise
+├── data/
+│   ├── churn_scores.csv         # 500 contas rankeadas por risco + top 3 fatores
+│   ├── master_churn_analysis.csv # Master table (500x63)
+│   └── [5 CSVs originais]
+├── notebooks/
 │   ├── 01_data_exploration.py
 │   ├── 02_data_integration.py
 │   ├── 03_root_cause_analysis.py
 │   └── 04_risk_segmentation.py
-├── process-log/                 # Evidências de processo
-└── assets/                      # Imagens/gráficos
+├── process-log/
+│   └── workflow.md
+└── assets/
 ```
 
 ---
