@@ -139,11 +139,6 @@ export default function TriagePage() {
             <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${PRIORITY_COLORS[result.suggestedPriority]}`}>
               {result.suggestedPriority}
             </span>
-            {result.mode === 'fallback' && (
-              <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
-                Modo keywords — sem API key
-              </span>
-            )}
             {result.mode === 'ai' && (
               <span className="text-xs text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full">
                 Modo LLM (Claude Haiku)

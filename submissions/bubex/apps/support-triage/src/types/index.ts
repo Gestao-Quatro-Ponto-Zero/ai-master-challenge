@@ -48,7 +48,7 @@ export interface ClassifyResult {
   suggestedPriority: 'Low' | 'Medium' | 'High' | 'Critical'
   shouldAutomate: boolean
   automationReasoning: string
-  mode: 'ai' | 'fallback'
+  mode: 'ai'
 }
 
 // IT ticket categories from Dataset 2

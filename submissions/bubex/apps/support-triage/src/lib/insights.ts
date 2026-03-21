@@ -29,18 +29,14 @@ function cacheKey(payload: InsightsPayload): string {
 // ── Main function ─────────────────────────────────────────────────────────────
 
 /** Generates 4 diagnostic insights from real data via OpenRouter.
- *  Results are cached in memory for 1 hour.
- *  Falls back to data-derived text if no API key is set or the call fails. */
+ *  Results are cached in memory for 24 hours. */
 export async function generateInsights(payload: InsightsPayload): Promise<string[]> {
   const key = cacheKey(payload)
   const cached = cache.get(key)
   if (cached && Date.now() - cached.at < TTL_MS) return cached.insights
+
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) {
-    const result = fallbackInsights(payload)
-    cache.set(key, { insights: result, at: Date.now() })
-    return result
-  }
+  if (!apiKey) throw new Error('OPENROUTER_API_KEY não configurada')
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
 
@@ -68,48 +64,33 @@ Regras:
 Dados:
 ${dataSummary}`
 
-  try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
-        'X-Title': 'Support Triage - AI Master Challenge',
-      },
-      body: JSON.stringify({
-        model: 'anthropic/claude-haiku-4-5',
-        max_tokens: 600,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    })
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
+      'X-Title': 'Support Triage - AI Master Challenge',
+    },
+    body: JSON.stringify({
+      model: 'anthropic/claude-haiku-4-5',
+      max_tokens: 600,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  })
 
-    if (!res.ok) {
-      console.error('[insights] OpenRouter error', res.status)
-      return fallbackInsights(payload)
-    }
+  if (!res.ok) throw new Error(`[insights] OpenRouter error ${res.status}`)
 
-    const data = await res.json()
-    const raw = data.choices?.[0]?.message?.content?.trim()
-    if (!raw) return fallbackInsights(payload)
+  const data = await res.json()
+  const raw = data.choices?.[0]?.message?.content?.trim()
+  if (!raw) throw new Error('[insights] Resposta vazia da API')
 
-    // Strip markdown code fences if the model wrapped the JSON
-    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
-    const parsed = JSON.parse(cleaned)
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      cache.set(key, { insights: parsed, at: Date.now() })
-      return parsed as string[]
-    }
+  const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
+  const parsed = JSON.parse(cleaned)
+  if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('[insights] Formato inválido')
 
-    const fallback = fallbackInsights(payload)
-    cache.set(key, { insights: fallback, at: Date.now() })
-    return fallback
-  } catch (err) {
-    console.error('[insights] failed', err)
-    const fallback = fallbackInsights(payload)
-    cache.set(key, { insights: fallback, at: Date.now() })
-    return fallback
-  }
+  cache.set(key, { insights: parsed, at: Date.now() })
+  return parsed as string[]
 }
 
 // ── Proposal sections ─────────────────────────────────────────────────────────
@@ -135,11 +116,7 @@ export async function generateProposal(payload: InsightsPayload): Promise<Propos
   if (cached && Date.now() - cached.at < TTL_MS) return cached.data
 
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) {
-    const data = fallbackProposal(payload)
-    proposalCache.set(key, { data, at: Date.now() })
-    return data
-  }
+  if (!apiKey) throw new Error('OPENROUTER_API_KEY não configurada')
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
 
@@ -165,95 +142,34 @@ Responda APENAS com JSON válido, sem texto extra, sem markdown:
 Mantenha "reason" e "title" curtos (máx 15 palavras cada). Dados:
 ${dataSummary}`
 
-  try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
-        'X-Title': 'Support Triage - AI Master Challenge',
-      },
-      body: JSON.stringify({
-        model: 'anthropic/claude-haiku-4-5',
-        max_tokens: 1200,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    })
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://github.com/bubex/ai-master-challenge',
+      'X-Title': 'Support Triage - AI Master Challenge',
+    },
+    body: JSON.stringify({
+      model: 'anthropic/claude-haiku-4-5',
+      max_tokens: 1200,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  })
 
-    if (!res.ok) {
-      console.error('[proposal] OpenRouter error', res.status)
-      const data = fallbackProposal(payload)
-      proposalCache.set(key, { data, at: Date.now() })
-      return data
-    }
+  if (!res.ok) throw new Error(`[proposal] OpenRouter error ${res.status}`)
 
-    const response = await res.json()
-    const raw = response.choices?.[0]?.message?.content?.trim()
-    if (!raw) {
-      const data = fallbackProposal(payload)
-      proposalCache.set(key, { data, at: Date.now() })
-      return data
-    }
+  const response = await res.json()
+  const raw = response.choices?.[0]?.message?.content?.trim()
+  if (!raw) throw new Error('[proposal] Resposta vazia da API')
 
-    const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
-    const parsed = JSON.parse(cleaned) as ProposalSections
+  const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
+  const parsed = JSON.parse(cleaned) as ProposalSections
 
-    if (parsed.automationItems?.length && parsed.limitations?.length) {
-      proposalCache.set(key, { data: parsed, at: Date.now() })
-      return parsed
-    }
-
-    const data = fallbackProposal(payload)
-    proposalCache.set(key, { data, at: Date.now() })
-    return data
-  } catch (err) {
-    console.error('[proposal] failed', err)
-    const data = fallbackProposal(payload)
-    proposalCache.set(key, { data, at: Date.now() })
-    return data
+  if (!parsed.automationItems?.length || !parsed.limitations?.length) {
+    throw new Error('[proposal] Formato inválido')
   }
-}
 
-function fallbackProposal({ overview, bottlenecks, typeStats }: InsightsPayload): ProposalSections {
-  const worst = bottlenecks[0]
-  const highVolumeType = typeStats.sort((a, b) => b.total - a.total)[0]
-
-  return {
-    automationItems: [
-      { title: 'Classificação e roteamento', reason: `${highVolumeType?.type || 'Tickets'} representam o maior volume — critério claro e alto grau de repetição.`, automate: true },
-      { title: 'Triagem de prioridade inicial', reason: 'Urgência detectável por palavras-chave; erro tem baixo custo imediato.', automate: true },
-      { title: `Gargalo ${worst?.channel} + ${worst?.type}`, reason: `${worst?.n} tickets com ${worst?.avgHours}h médios — candidato prioritário à automação.`, automate: true },
-      { title: 'Tickets com carga emocional alta', reason: 'Frustração e raiva exigem empatia humana — IA piora o atendimento.', automate: false },
-      { title: 'Decisões de cancelamento/reembolso', reason: 'Impacto financeiro direto — requer autorização humana.', automate: false },
-      { title: 'Resposta final ao cliente', reason: 'IA sugere, mas humano sempre revisa antes de enviar.', automate: false },
-    ],
-    limitations: [
-      `Backlog de ${overview.backlogRate}% sugere sub-dimensionamento da equipe — automação ajuda, mas não resolve o problema estrutural.`,
-      'Dataset sintético com timestamps agrupados em uma única data — impossível analisar tendências temporais ou sazonalidade.',
-      'CSAT uniforme (~3.0 em todos os segmentos) indica dado gerado artificialmente; em produção a variação seria mais reveladora.',
-      'ROI estimado não considera custo de implementação, treinamento ou manutenção do modelo de classificação.',
-    ],
-  }
-}
-
-// ── Insights fallback ─────────────────────────────────────────────────────────
-
-/** Data-driven fallback — all values come from the actual payload, no hardcoding. */
-function fallbackInsights({ overview, bottlenecks, channelStats }: InsightsPayload): string[] {
-  const worst = bottlenecks[0]
-  const bestCh  = [...channelStats].sort((a, b) => b.avgCsat - a.avgCsat)[0]
-  const worstCh = [...channelStats].sort((a, b) => a.avgCsat - b.avgCsat)[0]
-  const bestChPct = overview.totalTickets > 0
-    ? Math.round((channelStats.find(c => c.channel === bestCh?.channel)?.total ?? 0) / overview.totalTickets * 100)
-    : 0
-
-  return [
-    `${overview.backlogRate}% dos tickets não estão resolvidos — ${overview.openTickets} abertos e ${overview.pendingTickets} aguardando resposta, superando os ${overview.closedTickets} fechados.`,
-    `CSAT médio de ${overview.avgCsat}/5 está abaixo do benchmark de 3.5. O canal mais crítico é ${worstCh?.channel} (${worstCh?.avgCsat}) e o melhor é ${bestCh?.channel} (${bestCh?.avgCsat}).`,
-    worst
-      ? `Pior gargalo: ${worst.channel} + ${worst.type} com ${worst.avgHours}h de resolução média em ${worst.n} tickets — ${(((worst.avgHours - overview.avgResolutionHours) / overview.avgResolutionHours) * 100).toFixed(0)}% acima da média geral.`
-      : `Tempo médio de resolução é ${overview.avgResolutionHours}h nos tickets fechados.`,
-    `${bestCh?.channel} tem o melhor CSAT (${bestCh?.avgCsat}) mas representa apenas ${bestChPct}% do volume total — potencial de escala subutilizado.`,
-  ]
+  proposalCache.set(key, { data: parsed, at: Date.now() })
+  return parsed
 }
