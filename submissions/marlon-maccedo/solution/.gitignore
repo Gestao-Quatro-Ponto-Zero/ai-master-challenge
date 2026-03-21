@@ -24,3 +24,6 @@ out/
 .env
 .env.local
 .env*.local
+
+# Railway CLI (link local — fica em ~/.railway/config.json; projeto pode ter cache)
+.railway/

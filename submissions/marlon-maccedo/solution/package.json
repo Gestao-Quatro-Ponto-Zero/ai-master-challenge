@@ -14,7 +14,8 @@
     "railway:deploy:churn-dashboard": "./scripts/railway-deploy-service.sh churn-dashboard",
     "railway:deploy:lead-scorer": "./scripts/railway-deploy-service.sh lead-scorer",
     "railway:deploy:social-dashboard": "./scripts/railway-deploy-service.sh social-dashboard",
-    "railway:deploy:support-triage": "./scripts/railway-deploy-service.sh support-triage"
+    "railway:deploy:support-triage": "./scripts/railway-deploy-service.sh support-triage",
+    "railway:set-prod-vars": "./scripts/railway-set-prod-vars.sh"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",
