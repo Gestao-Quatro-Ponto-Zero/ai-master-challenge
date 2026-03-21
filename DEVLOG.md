@@ -23,7 +23,7 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **❌ [ai]** Especificou `@duckdb/node-api@^1.2.2` — versão inexistente. Corrigido para `1.5.0-r.1` após checar `pnpm view`.
 
-**❌ [user]** Colocou os CSVs do Lead Scorer em `challenges/build-003-lead-scorer/data/` em vez de `submissions/bubex/apps/lead-scorer/data/`. **[ai]** identificou e moveu.
+**❌ [user]** Colocou os CSVs do Lead Scorer em `challenges/build-003-lead-scorer/data/` em vez de `submissions/marlon-maccedo/apps/lead-scorer/data/`. **[ai]** identificou e moveu.
 
 **[user]** Pediu criação do DEVLOG e diretriz no CLAUDE.md para registrar tudo ao vivo.
 
@@ -192,7 +192,7 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** `docker-compose.yml` atualizado com todos os 5 serviços (portal + 4 apps). Portal recebe URLs dos outros via env com fallback `localhost:300X`. `.dockerignore` simplificado — removidas exclusões por app (cada Dockerfile só faz COPY do que precisa). `railway.toml` criado em cada app com `dockerfilePath` relativo ao workspace root.
 
-**[ai]** Estratégia Railway (monorepo): no Railway, criar 5 serviços do mesmo repo. Root Directory = `submissions/bubex` para todos. Config Path por serviço: `apps/NOME/railway.toml`. Cada `railway.toml` aponta para o Dockerfile correto. Serviço `portal` recebe env vars com URLs públicas Railway dos outros 4 serviços.
+**[ai]** Estratégia Railway (monorepo): no Railway, criar 5 serviços do mesmo repo. Root Directory = `submissions/marlon-maccedo` para todos. Config Path por serviço: `apps/NOME/railway.toml`. Cada `railway.toml` aponta para o Dockerfile correto. Serviço `portal` recebe env vars com URLs públicas Railway dos outros 4 serviços.
 
 ---
 

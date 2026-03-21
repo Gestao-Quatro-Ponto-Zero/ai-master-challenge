@@ -21,7 +21,7 @@
 ### Monorepo com pnpm workspaces
 
 ```
-submissions/bubex/
+submissions/marlon-maccedo/
 ├── apps/
 │   ├── churn-dashboard/        # 001 — diagnóstico interativo de churn
 │   ├── support-triage/         # 002 — classificador + dashboard operacional

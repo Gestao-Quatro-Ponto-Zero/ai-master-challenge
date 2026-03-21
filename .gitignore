@@ -14,7 +14,7 @@ datasets/
 
 # Submissions (if candidates fork) — allow our own
 submissions/*
-!submissions/bubex/
+!submissions/marlon-maccedo/
 
 # Node modules
 node_modules/
