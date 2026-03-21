@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "data": [
+    {
+      "language": "Spanish",
+      "posts": 5227,
+      "avg_engagement_rate": 19.912
+    },
+    {
+      "language": "Japanese",
+      "posts": 5177,
+      "avg_engagement_rate": 19.9116
+    },
+    {
+      "language": "Hindi",
+      "posts": 5272,
+      "avg_engagement_rate": 19.9081
+    },
+    {
+      "language": "Chinese",
+      "posts": 10428,
+      "avg_engagement_rate": 19.9079
+    },
+    {
+      "language": "English",
+      "posts": 26110,
+      "avg_engagement_rate": 19.9014
+    }
+  ]
+}

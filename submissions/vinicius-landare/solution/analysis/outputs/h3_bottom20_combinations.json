@@ -1,0 +1,230 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "data": [
+    {
+      "platform": "RedNote",
+      "content_type": "video",
+      "content_category": "tech",
+      "audience_age_distribution": "50+",
+      "posts": 64,
+      "avg_engagement_rate": 19.8384,
+      "avg_likes": 1507.9688,
+      "avg_shares": 299.6406,
+      "avg_comments": 197.375
+    },
+    {
+      "platform": "Bilibili",
+      "content_type": "text",
+      "content_category": "tech",
+      "audience_age_distribution": "36-50",
+      "posts": 31,
+      "avg_engagement_rate": 19.835,
+      "avg_likes": 1506.7097,
+      "avg_shares": 299.129,
+      "avg_comments": 198.6774
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "image",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "50+",
+      "posts": 46,
+      "avg_engagement_rate": 19.8332,
+      "avg_likes": 1503.3261,
+      "avg_shares": 302.3043,
+      "avg_comments": 198.8043
+    },
+    {
+      "platform": "Bilibili",
+      "content_type": "mixed",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "36-50",
+      "posts": 85,
+      "avg_engagement_rate": 19.8326,
+      "avg_likes": 1505.8,
+      "avg_shares": 297.6588,
+      "avg_comments": 198.2
+    },
+    {
+      "platform": "Instagram",
+      "content_type": "mixed",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "26-35",
+      "posts": 121,
+      "avg_engagement_rate": 19.8295,
+      "avg_likes": 1502.8926,
+      "avg_shares": 299.6033,
+      "avg_comments": 199.7025
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "image",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "50+",
+      "posts": 43,
+      "avg_engagement_rate": 19.8267,
+      "avg_likes": 1506.7442,
+      "avg_shares": 299.2326,
+      "avg_comments": 197.2558
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "text",
+      "content_category": "beauty",
+      "audience_age_distribution": "36-50",
+      "posts": 71,
+      "avg_engagement_rate": 19.8252,
+      "avg_likes": 1501.5211,
+      "avg_shares": 302.8169,
+      "avg_comments": 198.8732
+    },
+    {
+      "platform": "Bilibili",
+      "content_type": "image",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "36-50",
+      "posts": 113,
+      "avg_engagement_rate": 19.8251,
+      "avg_likes": 1502.9646,
+      "avg_shares": 300.2655,
+      "avg_comments": 198.3805
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "text",
+      "content_category": "tech",
+      "audience_age_distribution": "36-50",
+      "posts": 32,
+      "avg_engagement_rate": 19.8247,
+      "avg_likes": 1504.5625,
+      "avg_shares": 295.0938,
+      "avg_comments": 199.8125
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "image",
+      "content_category": "beauty",
+      "audience_age_distribution": "50+",
+      "posts": 39,
+      "avg_engagement_rate": 19.824,
+      "avg_likes": 1509.7949,
+      "avg_shares": 292.2308,
+      "avg_comments": 198.6154
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "image",
+      "content_category": "tech",
+      "audience_age_distribution": "36-50",
+      "posts": 70,
+      "avg_engagement_rate": 19.8229,
+      "avg_likes": 1506.0429,
+      "avg_shares": 300.0571,
+      "avg_comments": 199.3857
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "text",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "26-35",
+      "posts": 110,
+      "avg_engagement_rate": 19.8201,
+      "avg_likes": 1505.3636,
+      "avg_shares": 299.7182,
+      "avg_comments": 200.3455
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "text",
+      "content_category": "tech",
+      "audience_age_distribution": "19-25",
+      "posts": 74,
+      "avg_engagement_rate": 19.8173,
+      "avg_likes": 1502.3243,
+      "avg_shares": 301.4459,
+      "avg_comments": 195.1351
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "video",
+      "content_category": "tech",
+      "audience_age_distribution": "13-18",
+      "posts": 205,
+      "avg_engagement_rate": 19.8137,
+      "avg_likes": 1505.2,
+      "avg_shares": 300.5171,
+      "avg_comments": 199.6488
+    },
+    {
+      "platform": "Instagram",
+      "content_type": "image",
+      "content_category": "tech",
+      "audience_age_distribution": "36-50",
+      "posts": 67,
+      "avg_engagement_rate": 19.8056,
+      "avg_likes": 1505.1642,
+      "avg_shares": 302.5075,
+      "avg_comments": 196.4627
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "text",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "50+",
+      "posts": 30,
+      "avg_engagement_rate": 19.7898,
+      "avg_likes": 1504.3667,
+      "avg_shares": 297.0667,
+      "avg_comments": 201.1333
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "mixed",
+      "content_category": "tech",
+      "audience_age_distribution": "13-18",
+      "posts": 32,
+      "avg_engagement_rate": 19.7876,
+      "avg_likes": 1497.125,
+      "avg_shares": 300.375,
+      "avg_comments": 202.9375
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "mixed",
+      "content_category": "tech",
+      "audience_age_distribution": "36-50",
+      "posts": 37,
+      "avg_engagement_rate": 19.7866,
+      "avg_likes": 1507.5946,
+      "avg_shares": 297.0541,
+      "avg_comments": 197.4324
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "image",
+      "content_category": "tech",
+      "audience_age_distribution": "36-50",
+      "posts": 51,
+      "avg_engagement_rate": 19.7615,
+      "avg_likes": 1499.5686,
+      "avg_shares": 300.9216,
+      "avg_comments": 198.7255
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "mixed",
+      "content_category": "lifestyle",
+      "audience_age_distribution": "36-50",
+      "posts": 46,
+      "avg_engagement_rate": 19.7468,
+      "avg_likes": 1497.0652,
+      "avg_shares": 296.2391,
+      "avg_comments": 201.1522
+    }
+  ]
+}

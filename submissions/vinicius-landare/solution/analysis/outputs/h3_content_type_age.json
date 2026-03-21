@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "data": [
+    {
+      "content_type": "image",
+      "audience_age_distribution": "13-18",
+      "posts": 1488,
+      "avg_engagement_rate": 19.9148
+    },
+    {
+      "content_type": "image",
+      "audience_age_distribution": "19-25",
+      "posts": 3659,
+      "avg_engagement_rate": 19.902
+    },
+    {
+      "content_type": "image",
+      "audience_age_distribution": "26-35",
+      "posts": 3057,
+      "avg_engagement_rate": 19.9064
+    },
+    {
+      "content_type": "image",
+      "audience_age_distribution": "36-50",
+      "posts": 1573,
+      "avg_engagement_rate": 19.8909
+    },
+    {
+      "content_type": "image",
+      "audience_age_distribution": "50+",
+      "posts": 526,
+      "avg_engagement_rate": 19.9107
+    },
+    {
+      "content_type": "mixed",
+      "audience_age_distribution": "13-18",
+      "posts": 751,
+      "avg_engagement_rate": 19.9042
+    },
+    {
+      "content_type": "mixed",
+      "audience_age_distribution": "19-25",
+      "posts": 1791,
+      "avg_engagement_rate": 19.9313
+    },
+    {
+      "content_type": "mixed",
+      "audience_age_distribution": "26-35",
+      "posts": 1616,
+      "avg_engagement_rate": 19.9104
+    },
+    {
+      "content_type": "mixed",
+      "audience_age_distribution": "36-50",
+      "posts": 780,
+      "avg_engagement_rate": 19.8977
+    },
+    {
+      "content_type": "mixed",
+      "audience_age_distribution": "50+",
+      "posts": 275,
+      "avg_engagement_rate": 19.895
+    },
+    {
+      "content_type": "text",
+      "audience_age_distribution": "13-18",
+      "posts": 777,
+      "avg_engagement_rate": 19.9126
+    },
+    {
+      "content_type": "text",
+      "audience_age_distribution": "19-25",
+      "posts": 1860,
+      "avg_engagement_rate": 19.9092
+    },
+    {
+      "content_type": "text",
+      "audience_age_distribution": "26-35",
+      "posts": 1533,
+      "avg_engagement_rate": 19.9149
+    },
+    {
+      "content_type": "text",
+      "audience_age_distribution": "36-50",
+      "posts": 774,
+      "avg_engagement_rate": 19.9265
+    },
+    {
+      "content_type": "text",
+      "audience_age_distribution": "50+",
+      "posts": 254,
+      "avg_engagement_rate": 19.9317
+    },
+    {
+      "content_type": "video",
+      "audience_age_distribution": "13-18",
+      "posts": 4836,
+      "avg_engagement_rate": 19.8914
+    },
+    {
+      "content_type": "video",
+      "audience_age_distribution": "19-25",
+      "posts": 10966,
+      "avg_engagement_rate": 19.9096
+    },
+    {
+      "content_type": "video",
+      "audience_age_distribution": "26-35",
+      "posts": 9494,
+      "avg_engagement_rate": 19.9001
+    },
+    {
+      "content_type": "video",
+      "audience_age_distribution": "36-50",
+      "posts": 4609,
+      "avg_engagement_rate": 19.9021
+    },
+    {
+      "content_type": "video",
+      "audience_age_distribution": "50+",
+      "posts": 1595,
+      "avg_engagement_rate": 19.9118
+    }
+  ]
+}

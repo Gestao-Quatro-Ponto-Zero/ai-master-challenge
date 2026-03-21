@@ -1,0 +1,294 @@
+{
+  "personas": [
+    {
+      "age_group": "13-18",
+      "total_posts": 7852,
+      "pct_dataset": 15.04,
+      "avg_engagement_rate": 19.8992,
+      "recommendations": {
+        "best_platform": "Instagram",
+        "best_content_type": "image",
+        "best_category": "lifestyle",
+        "best_creator_tier": "Micro (10K-50K)",
+        "best_post_hour": 14,
+        "best_post_day": "Sunday",
+        "top_locations": [
+          "Brazil",
+          "Japan",
+          "USA"
+        ],
+        "disclosure_type": "explicit",
+        "disclosure_location": "hashtags"
+      },
+      "engagement_by_platform": {
+        "Bilibili": 19.8994,
+        "Instagram": 19.9032,
+        "RedNote": 19.8995,
+        "TikTok": 19.8921,
+        "YouTube": 19.9017
+      },
+      "engagement_by_content_type": {
+        "image": 19.9148,
+        "mixed": 19.9042,
+        "text": 19.9126,
+        "video": 19.8914
+      },
+      "engagement_by_category": {
+        "beauty": 19.8933,
+        "lifestyle": 19.9071,
+        "tech": 19.8949
+      },
+      "engagement_organic_vs_sponsored": {
+        "organic": 19.899,
+        "sponsored": 19.8994
+      },
+      "gender_engagement": {
+        "female": 19.9007,
+        "male": 19.8978,
+        "non-binary": 19.905,
+        "unknown": 19.8927
+      },
+      "top_combination": {
+        "platform": "Instagram",
+        "content_type": "mixed",
+        "category": "tech",
+        "engagement_rate": 20.0423
+      }
+    },
+    {
+      "age_group": "19-25",
+      "total_posts": 18276,
+      "pct_dataset": 35.0,
+      "avg_engagement_rate": 19.9102,
+      "recommendations": {
+        "best_platform": "RedNote",
+        "best_content_type": "mixed",
+        "best_category": "lifestyle",
+        "best_creator_tier": "Nano (< 10K)",
+        "best_post_hour": 11,
+        "best_post_day": "Friday",
+        "top_locations": [
+          "UK",
+          "Brazil",
+          "Japan"
+        ],
+        "disclosure_type": "explicit",
+        "disclosure_location": "video"
+      },
+      "engagement_by_platform": {
+        "Bilibili": 19.9218,
+        "Instagram": 19.8939,
+        "RedNote": 19.9221,
+        "TikTok": 19.9084,
+        "YouTube": 19.9046
+      },
+      "engagement_by_content_type": {
+        "image": 19.902,
+        "mixed": 19.9313,
+        "text": 19.9092,
+        "video": 19.9096
+      },
+      "engagement_by_category": {
+        "beauty": 19.9082,
+        "lifestyle": 19.9149,
+        "tech": 19.9046
+      },
+      "engagement_organic_vs_sponsored": {
+        "organic": 19.9074,
+        "sponsored": 19.9139
+      },
+      "gender_engagement": {
+        "female": 19.9152,
+        "male": 19.908,
+        "non-binary": 19.8992,
+        "unknown": 19.9093
+      },
+      "top_combination": {
+        "platform": "Bilibili",
+        "content_type": "mixed",
+        "category": "lifestyle",
+        "engagement_rate": 20.0356
+      }
+    },
+    {
+      "age_group": "26-35",
+      "total_posts": 15700,
+      "pct_dataset": 30.07,
+      "avg_engagement_rate": 19.9038,
+      "recommendations": {
+        "best_platform": "TikTok",
+        "best_content_type": "text",
+        "best_category": "tech",
+        "best_creator_tier": "Mid (50K-100K)",
+        "best_post_hour": 18,
+        "best_post_day": "Monday",
+        "top_locations": [
+          "China",
+          "USA",
+          "UK"
+        ],
+        "disclosure_type": "explicit",
+        "disclosure_location": "hashtags"
+      },
+      "engagement_by_platform": {
+        "Bilibili": 19.8968,
+        "Instagram": 19.9135,
+        "RedNote": 19.8971,
+        "TikTok": 19.9154,
+        "YouTube": 19.8971
+      },
+      "engagement_by_content_type": {
+        "image": 19.9064,
+        "mixed": 19.9104,
+        "text": 19.9149,
+        "video": 19.9001
+      },
+      "engagement_by_category": {
+        "beauty": 19.9037,
+        "lifestyle": 19.9021,
+        "tech": 19.9075
+      },
+      "engagement_organic_vs_sponsored": {
+        "organic": 19.9052,
+        "sponsored": 19.902
+      },
+      "gender_engagement": {
+        "female": 19.899,
+        "male": 19.9042,
+        "non-binary": 19.927,
+        "unknown": 19.8978
+      },
+      "top_combination": {
+        "platform": "RedNote",
+        "content_type": "text",
+        "category": "tech",
+        "engagement_rate": 20.0013
+      }
+    },
+    {
+      "age_group": "36-50",
+      "total_posts": 7736,
+      "pct_dataset": 14.82,
+      "avg_engagement_rate": 19.9018,
+      "recommendations": {
+        "best_platform": "RedNote",
+        "best_content_type": "text",
+        "best_category": "beauty",
+        "best_creator_tier": "Mid (50K-100K)",
+        "best_post_hour": 18,
+        "best_post_day": "Wednesday",
+        "top_locations": [
+          "USA",
+          "Brazil",
+          "UK"
+        ],
+        "disclosure_type": "explicit",
+        "disclosure_location": "hashtags"
+      },
+      "engagement_by_platform": {
+        "Bilibili": 19.9022,
+        "Instagram": 19.8787,
+        "RedNote": 19.9182,
+        "TikTok": 19.8949,
+        "YouTube": 19.9141
+      },
+      "engagement_by_content_type": {
+        "image": 19.8909,
+        "mixed": 19.8977,
+        "text": 19.9265,
+        "video": 19.9021
+      },
+      "engagement_by_category": {
+        "beauty": 19.9107,
+        "lifestyle": 19.9034,
+        "tech": 19.881
+      },
+      "engagement_organic_vs_sponsored": {
+        "organic": 19.9107,
+        "sponsored": 19.8903
+      },
+      "gender_engagement": {
+        "female": 19.892,
+        "male": 19.9132,
+        "non-binary": 19.8864,
+        "unknown": 19.908
+      },
+      "top_combination": {
+        "platform": "RedNote",
+        "content_type": "mixed",
+        "category": "tech",
+        "engagement_rate": 20.0705
+      }
+    },
+    {
+      "age_group": "50+",
+      "total_posts": 2650,
+      "pct_dataset": 5.08,
+      "avg_engagement_rate": 19.9117,
+      "recommendations": {
+        "best_platform": "Bilibili",
+        "best_content_type": "text",
+        "best_category": "beauty",
+        "best_creator_tier": "Nano (< 10K)",
+        "best_post_hour": 21,
+        "best_post_day": "Monday",
+        "top_locations": [
+          "UK",
+          "China",
+          "Russia"
+        ],
+        "disclosure_type": "explicit",
+        "disclosure_location": "video"
+      },
+      "engagement_by_platform": {
+        "Bilibili": 19.9331,
+        "Instagram": 19.898,
+        "RedNote": 19.9049,
+        "TikTok": 19.9092,
+        "YouTube": 19.9137
+      },
+      "engagement_by_content_type": {
+        "image": 19.9107,
+        "mixed": 19.895,
+        "text": 19.9317,
+        "video": 19.9118
+      },
+      "engagement_by_category": {
+        "beauty": 19.9185,
+        "lifestyle": 19.9092,
+        "tech": 19.9034
+      },
+      "engagement_organic_vs_sponsored": {
+        "organic": 19.9071,
+        "sponsored": 19.918
+      },
+      "gender_engagement": {
+        "female": 19.9262,
+        "male": 19.8967,
+        "non-binary": 19.8647,
+        "unknown": 19.9622
+      },
+      "top_combination": {
+        "platform": "Instagram",
+        "content_type": "image",
+        "category": "beauty",
+        "engagement_rate": 20.0888
+      }
+    }
+  ],
+  "total_posts": 52214,
+  "total_creators": 5000,
+  "avg_engagement_rate": 19.9055,
+  "platforms": [
+    "RedNote",
+    "Bilibili",
+    "YouTube",
+    "TikTok",
+    "Instagram"
+  ],
+  "date_range": {
+    "start": "2023-05-29 00:15:00",
+    "end": "2025-05-28 11:08:00"
+  },
+  "sponsored_pct": 42.74
+}

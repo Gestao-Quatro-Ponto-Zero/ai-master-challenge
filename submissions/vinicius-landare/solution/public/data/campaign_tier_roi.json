@@ -1,0 +1,249 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:32:24.950746",
+    "data_source": "dataset_v1",
+    "analysis": "paid_traffic"
+  },
+  "data": [
+    {
+      "sponsor_category": "cosmetics",
+      "creator_tier": "Macro (100K-500K)",
+      "posts": 1501,
+      "avg_engagement": 19.9209,
+      "organic_baseline": 19.9043356715,
+      "lift": 0.0166
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "creator_tier": "Mega (500K+)",
+      "posts": 1852,
+      "avg_engagement": 19.9083,
+      "organic_baseline": 19.9066993812,
+      "lift": 0.0016
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "creator_tier": "Micro (10K-50K)",
+      "posts": 141,
+      "avg_engagement": 19.934,
+      "organic_baseline": 19.9060151851,
+      "lift": 0.028
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "creator_tier": "Mid (50K-100K)",
+      "posts": 159,
+      "avg_engagement": 19.9375,
+      "organic_baseline": 19.9153502275,
+      "lift": 0.0221
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "creator_tier": "Nano (< 10K)",
+      "posts": 35,
+      "avg_engagement": 19.9165,
+      "organic_baseline": 19.8795534454,
+      "lift": 0.0369
+    },
+    {
+      "sponsor_category": "electronics",
+      "creator_tier": "Macro (100K-500K)",
+      "posts": 1532,
+      "avg_engagement": 19.9028,
+      "organic_baseline": 19.9043356715,
+      "lift": -0.0015
+    },
+    {
+      "sponsor_category": "electronics",
+      "creator_tier": "Mega (500K+)",
+      "posts": 1851,
+      "avg_engagement": 19.9105,
+      "organic_baseline": 19.9066993812,
+      "lift": 0.0038
+    },
+    {
+      "sponsor_category": "electronics",
+      "creator_tier": "Micro (10K-50K)",
+      "posts": 153,
+      "avg_engagement": 19.8522,
+      "organic_baseline": 19.9060151851,
+      "lift": -0.0538
+    },
+    {
+      "sponsor_category": "electronics",
+      "creator_tier": "Mid (50K-100K)",
+      "posts": 187,
+      "avg_engagement": 19.9205,
+      "organic_baseline": 19.9153502275,
+      "lift": 0.0051
+    },
+    {
+      "sponsor_category": "electronics",
+      "creator_tier": "Nano (< 10K)",
+      "posts": 27,
+      "avg_engagement": 19.8456,
+      "organic_baseline": 19.8795534454,
+      "lift": -0.034
+    },
+    {
+      "sponsor_category": "fashion",
+      "creator_tier": "Macro (100K-500K)",
+      "posts": 1454,
+      "avg_engagement": 19.904,
+      "organic_baseline": 19.9043356715,
+      "lift": -0.0003
+    },
+    {
+      "sponsor_category": "fashion",
+      "creator_tier": "Mega (500K+)",
+      "posts": 1885,
+      "avg_engagement": 19.8762,
+      "organic_baseline": 19.9066993812,
+      "lift": -0.0305
+    },
+    {
+      "sponsor_category": "fashion",
+      "creator_tier": "Micro (10K-50K)",
+      "posts": 157,
+      "avg_engagement": 19.9149,
+      "organic_baseline": 19.9060151851,
+      "lift": 0.0089
+    },
+    {
+      "sponsor_category": "fashion",
+      "creator_tier": "Mid (50K-100K)",
+      "posts": 187,
+      "avg_engagement": 19.9037,
+      "organic_baseline": 19.9153502275,
+      "lift": -0.0117
+    },
+    {
+      "sponsor_category": "fashion",
+      "creator_tier": "Nano (< 10K)",
+      "posts": 27,
+      "avg_engagement": 19.9559,
+      "organic_baseline": 19.8795534454,
+      "lift": 0.0763
+    },
+    {
+      "sponsor_category": "food",
+      "creator_tier": "Macro (100K-500K)",
+      "posts": 1515,
+      "avg_engagement": 19.9154,
+      "organic_baseline": 19.9043356715,
+      "lift": 0.0111
+    },
+    {
+      "sponsor_category": "food",
+      "creator_tier": "Mega (500K+)",
+      "posts": 1936,
+      "avg_engagement": 19.8999,
+      "organic_baseline": 19.9066993812,
+      "lift": -0.0068
+    },
+    {
+      "sponsor_category": "food",
+      "creator_tier": "Micro (10K-50K)",
+      "posts": 170,
+      "avg_engagement": 19.974,
+      "organic_baseline": 19.9060151851,
+      "lift": 0.068
+    },
+    {
+      "sponsor_category": "food",
+      "creator_tier": "Mid (50K-100K)",
+      "posts": 188,
+      "avg_engagement": 19.9207,
+      "organic_baseline": 19.9153502275,
+      "lift": 0.0053
+    },
+    {
+      "sponsor_category": "food",
+      "creator_tier": "Nano (< 10K)",
+      "posts": 37,
+      "avg_engagement": 19.9754,
+      "organic_baseline": 19.8795534454,
+      "lift": 0.0958
+    },
+    {
+      "sponsor_category": "gaming",
+      "creator_tier": "Macro (100K-500K)",
+      "posts": 1462,
+      "avg_engagement": 19.9024,
+      "organic_baseline": 19.9043356715,
+      "lift": -0.0019
+    },
+    {
+      "sponsor_category": "gaming",
+      "creator_tier": "Mega (500K+)",
+      "posts": 1850,
+      "avg_engagement": 19.8998,
+      "organic_baseline": 19.9066993812,
+      "lift": -0.0069
+    },
+    {
+      "sponsor_category": "gaming",
+      "creator_tier": "Micro (10K-50K)",
+      "posts": 151,
+      "avg_engagement": 19.9338,
+      "organic_baseline": 19.9060151851,
+      "lift": 0.0278
+    },
+    {
+      "sponsor_category": "gaming",
+      "creator_tier": "Mid (50K-100K)",
+      "posts": 197,
+      "avg_engagement": 19.8553,
+      "organic_baseline": 19.9153502275,
+      "lift": -0.0601
+    },
+    {
+      "sponsor_category": "gaming",
+      "creator_tier": "Nano (< 10K)",
+      "posts": 27,
+      "avg_engagement": 19.8214,
+      "organic_baseline": 19.8795534454,
+      "lift": -0.0582
+    },
+    {
+      "sponsor_category": "travel",
+      "creator_tier": "Macro (100K-500K)",
+      "posts": 1504,
+      "avg_engagement": 19.9086,
+      "organic_baseline": 19.9043356715,
+      "lift": 0.0043
+    },
+    {
+      "sponsor_category": "travel",
+      "creator_tier": "Mega (500K+)",
+      "posts": 1750,
+      "avg_engagement": 19.906,
+      "organic_baseline": 19.9066993812,
+      "lift": -0.0007
+    },
+    {
+      "sponsor_category": "travel",
+      "creator_tier": "Micro (10K-50K)",
+      "posts": 150,
+      "avg_engagement": 19.8731,
+      "organic_baseline": 19.9060151851,
+      "lift": -0.0329
+    },
+    {
+      "sponsor_category": "travel",
+      "creator_tier": "Mid (50K-100K)",
+      "posts": 190,
+      "avg_engagement": 19.9189,
+      "organic_baseline": 19.9153502275,
+      "lift": 0.0035
+    },
+    {
+      "sponsor_category": "travel",
+      "creator_tier": "Nano (< 10K)",
+      "posts": 39,
+      "avg_engagement": 19.981,
+      "organic_baseline": 19.8795534454,
+      "lift": 0.1014
+    }
+  ]
+}

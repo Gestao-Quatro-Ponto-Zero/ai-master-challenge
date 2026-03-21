@@ -1,0 +1,59 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "total_posts": 52214,
+  "total_creators": 5000,
+  "platforms": [
+    "RedNote",
+    "Bilibili",
+    "YouTube",
+    "TikTok",
+    "Instagram"
+  ],
+  "date_range": {
+    "start": "2023-05-29 00:15:00",
+    "end": "2025-05-28 11:08:00"
+  },
+  "engagement_rate": {
+    "mean": 19.9055,
+    "median": 19.8992,
+    "p10": 19.2835,
+    "p25": 19.5758,
+    "p75": 20.2313,
+    "p90": 20.5324
+  },
+  "sponsored_ratio": 42.74,
+  "significance_tests": {
+    "h1_sponsored_vs_organic": {
+      "is_significant": false,
+      "p_value": 0.879003,
+      "effect_size": 0.0022,
+      "test": "mann_whitney_u"
+    },
+    "h2_creator_tiers": {
+      "is_significant": false,
+      "p_value": 0.736627,
+      "test": "kruskal_wallis"
+    },
+    "h3_platforms": {
+      "is_significant": false,
+      "p_value": 0.362098,
+      "test": "kruskal_wallis"
+    },
+    "h4_brazil_vs_others": {
+      "is_significant": false,
+      "p_value": 0.311912,
+      "effect_size": 0.0149,
+      "test": "mann_whitney_u"
+    },
+    "h5_disclosure_types": {
+      "is_significant": false,
+      "p_value": 0.125799,
+      "test": "kruskal_wallis"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "data": [
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "is_sponsored": false,
+      "posts": 12057,
+      "avg_engagement_rate": 19.9043,
+      "avg_engagement_rate_followers": 0.8055
+    },
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "is_sponsored": true,
+      "posts": 8968,
+      "avg_engagement_rate": 19.9091,
+      "avg_engagement_rate_followers": 0.8103
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "is_sponsored": false,
+      "posts": 14905,
+      "avg_engagement_rate": 19.9067,
+      "avg_engagement_rate_followers": 0.2789
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "is_sponsored": true,
+      "posts": 11124,
+      "avg_engagement_rate": 19.9,
+      "avg_engagement_rate_followers": 0.278
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "is_sponsored": false,
+      "posts": 1188,
+      "avg_engagement_rate": 19.906,
+      "avg_engagement_rate_followers": 8.1368
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "is_sponsored": true,
+      "posts": 922,
+      "avg_engagement_rate": 19.9146,
+      "avg_engagement_rate_followers": 8.1297
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "is_sponsored": false,
+      "posts": 1488,
+      "avg_engagement_rate": 19.9154,
+      "avg_engagement_rate_followers": 2.7871
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "is_sponsored": true,
+      "posts": 1108,
+      "avg_engagement_rate": 19.9083,
+      "avg_engagement_rate_followers": 2.7639
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "is_sponsored": false,
+      "posts": 262,
+      "avg_engagement_rate": 19.8796,
+      "avg_engagement_rate_followers": 50.7068
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "is_sponsored": true,
+      "posts": 192,
+      "avg_engagement_rate": 19.9231,
+      "avg_engagement_rate_followers": 53.0384
+    }
+  ]
+}

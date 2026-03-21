@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "data": [
+    {
+      "disclosure_location": "caption",
+      "posts": 8944,
+      "avg_engagement_rate": 19.8982
+    },
+    {
+      "disclosure_location": "hashtags",
+      "posts": 6124,
+      "avg_engagement_rate": 19.9114
+    },
+    {
+      "disclosure_location": "video",
+      "posts": 7246,
+      "avg_engagement_rate": 19.9076
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
+  },
+  "data": [
+    {
+      "platform": "Bilibili",
+      "audience_age_distribution": "13-18",
+      "posts": 1610,
+      "avg_engagement_rate": 19.8994,
+      "avg_likes": 1510.3286,
+      "avg_shares": 300.4261
+    },
+    {
+      "platform": "Bilibili",
+      "audience_age_distribution": "19-25",
+      "posts": 3696,
+      "avg_engagement_rate": 19.9218,
+      "avg_likes": 1511.1856,
+      "avg_shares": 300.2955
+    },
+    {
+      "platform": "Bilibili",
+      "audience_age_distribution": "26-35",
+      "posts": 3149,
+      "avg_engagement_rate": 19.8968,
+      "avg_likes": 1509.3223,
+      "avg_shares": 299.5678
+    },
+    {
+      "platform": "Bilibili",
+      "audience_age_distribution": "36-50",
+      "posts": 1627,
+      "avg_engagement_rate": 19.9022,
+      "avg_likes": 1510.4481,
+      "avg_shares": 300.201
+    },
+    {
+      "platform": "Bilibili",
+      "audience_age_distribution": "50+",
+      "posts": 516,
+      "avg_engagement_rate": 19.9331,
+      "avg_likes": 1511.6919,
+      "avg_shares": 300.4554
+    },
+    {
+      "platform": "Instagram",
+      "audience_age_distribution": "13-18",
+      "posts": 1567,
+      "avg_engagement_rate": 19.9032,
+      "avg_likes": 1510.2406,
+      "avg_shares": 300.0179
+    },
+    {
+      "platform": "Instagram",
+      "audience_age_distribution": "19-25",
+      "posts": 3662,
+      "avg_engagement_rate": 19.8939,
+      "avg_likes": 1508.8763,
+      "avg_shares": 300.1297
+    },
+    {
+      "platform": "Instagram",
+      "audience_age_distribution": "26-35",
+      "posts": 3156,
+      "avg_engagement_rate": 19.9135,
+      "avg_likes": 1510.8146,
+      "avg_shares": 300.1004
+    },
+    {
+      "platform": "Instagram",
+      "audience_age_distribution": "36-50",
+      "posts": 1507,
+      "avg_engagement_rate": 19.8787,
+      "avg_likes": 1507.9701,
+      "avg_shares": 300.5846
+    },
+    {
+      "platform": "Instagram",
+      "audience_age_distribution": "50+",
+      "posts": 531,
+      "avg_engagement_rate": 19.898,
+      "avg_likes": 1508.6422,
+      "avg_shares": 300.1563
+    },
+    {
+      "platform": "RedNote",
+      "audience_age_distribution": "13-18",
+      "posts": 1555,
+      "avg_engagement_rate": 19.8995,
+      "avg_likes": 1510.119,
+      "avg_shares": 299.2277
+    },
+    {
+      "platform": "RedNote",
+      "audience_age_distribution": "19-25",
+      "posts": 3618,
+      "avg_engagement_rate": 19.9221,
+      "avg_likes": 1511.8297,
+      "avg_shares": 300.2463
+    },
+    {
+      "platform": "RedNote",
+      "audience_age_distribution": "26-35",
+      "posts": 3140,
+      "avg_engagement_rate": 19.8971,
+      "avg_likes": 1509.7831,
+      "avg_shares": 299.6293
+    },
+    {
+      "platform": "RedNote",
+      "audience_age_distribution": "36-50",
+      "posts": 1579,
+      "avg_engagement_rate": 19.9182,
+      "avg_likes": 1511.2324,
+      "avg_shares": 300.1887
+    },
+    {
+      "platform": "RedNote",
+      "audience_age_distribution": "50+",
+      "posts": 510,
+      "avg_engagement_rate": 19.9049,
+      "avg_likes": 1510.8373,
+      "avg_shares": 298.5882
+    },
+    {
+      "platform": "TikTok",
+      "audience_age_distribution": "13-18",
+      "posts": 1576,
+      "avg_engagement_rate": 19.8921,
+      "avg_likes": 1510.0305,
+      "avg_shares": 299.7525
+    },
+    {
+      "platform": "TikTok",
+      "audience_age_distribution": "19-25",
+      "posts": 3675,
+      "avg_engagement_rate": 19.9084,
+      "avg_likes": 1510.7097,
+      "avg_shares": 299.9105
+    },
+    {
+      "platform": "TikTok",
+      "audience_age_distribution": "26-35",
+      "posts": 3012,
+      "avg_engagement_rate": 19.9154,
+      "avg_likes": 1510.8297,
+      "avg_shares": 300.0561
+    },
+    {
+      "platform": "TikTok",
+      "audience_age_distribution": "36-50",
+      "posts": 1492,
+      "avg_engagement_rate": 19.8949,
+      "avg_likes": 1509.6508,
+      "avg_shares": 299.3338
+    },
+    {
+      "platform": "TikTok",
+      "audience_age_distribution": "50+",
+      "posts": 541,
+      "avg_engagement_rate": 19.9092,
+      "avg_likes": 1512.2144,
+      "avg_shares": 300.3068
+    },
+    {
+      "platform": "YouTube",
+      "audience_age_distribution": "13-18",
+      "posts": 1544,
+      "avg_engagement_rate": 19.9017,
+      "avg_likes": 1510.0091,
+      "avg_shares": 299.9035
+    },
+    {
+      "platform": "YouTube",
+      "audience_age_distribution": "19-25",
+      "posts": 3625,
+      "avg_engagement_rate": 19.9046,
+      "avg_likes": 1509.9766,
+      "avg_shares": 300.2033
+    },
+    {
+      "platform": "YouTube",
+      "audience_age_distribution": "26-35",
+      "posts": 3243,
+      "avg_engagement_rate": 19.8971,
+      "avg_likes": 1510.082,
+      "avg_shares": 299.8807
+    },
+    {
+      "platform": "YouTube",
+      "audience_age_distribution": "36-50",
+      "posts": 1531,
+      "avg_engagement_rate": 19.9141,
+      "avg_likes": 1509.855,
+      "avg_shares": 300.4664
+    },
+    {
+      "platform": "YouTube",
+      "audience_age_distribution": "50+",
+      "posts": 552,
+      "avg_engagement_rate": 19.9137,
+      "avg_likes": 1511.0833,
+      "avg_shares": 301.0127
+    }
+  ]
+}

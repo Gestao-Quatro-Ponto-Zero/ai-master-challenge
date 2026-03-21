@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00",
+    "significance_brazil_vs_others": {
+      "is_significant": false,
+      "p_value": 0.311912,
+      "effect_size": 0.0149,
+      "test": "mann_whitney_u"
+    }
+  },
+  "data": [
+    {
+      "audience_location": "UK",
+      "posts": 6570,
+      "avg_engagement_rate": 19.9153,
+      "avg_likes": 1511.2409,
+      "avg_shares": 300.0326,
+      "avg_comments": 199.9212,
+      "avg_views": 10099.695,
+      "median_engagement_rate": 19.9048
+    },
+    {
+      "audience_location": "Brazil",
+      "posts": 6505,
+      "avg_engagement_rate": 19.9118,
+      "avg_likes": 1510.5251,
+      "avg_shares": 300.0164,
+      "avg_comments": 200.1468,
+      "avg_views": 10098.9579,
+      "median_engagement_rate": 19.9015
+    },
+    {
+      "audience_location": "China",
+      "posts": 6648,
+      "avg_engagement_rate": 19.9067,
+      "avg_likes": 1510.4931,
+      "avg_shares": 300.1834,
+      "avg_comments": 200.0433,
+      "avg_views": 10101.7515,
+      "median_engagement_rate": 19.9036
+    },
+    {
+      "audience_location": "USA",
+      "posts": 6498,
+      "avg_engagement_rate": 19.9061,
+      "avg_likes": 1510.281,
+      "avg_shares": 299.9577,
+      "avg_comments": 199.9786,
+      "avg_views": 10099.5148,
+      "median_engagement_rate": 19.9035
+    },
+    {
+      "audience_location": "Japan",
+      "posts": 6553,
+      "avg_engagement_rate": 19.9055,
+      "avg_likes": 1510.2246,
+      "avg_shares": 299.944,
+      "avg_comments": 199.9947,
+      "avg_views": 10099.5488,
+      "median_engagement_rate": 19.8964
+    },
+    {
+      "audience_location": "Russia",
+      "posts": 6459,
+      "avg_engagement_rate": 19.9051,
+      "avg_likes": 1510.0286,
+      "avg_shares": 299.8255,
+      "avg_comments": 200.1712,
+      "avg_views": 10099.0752,
+      "median_engagement_rate": 19.8982
+    },
+    {
+      "audience_location": "Germany",
+      "posts": 6497,
+      "avg_engagement_rate": 19.8988,
+      "avg_likes": 1509.7887,
+      "avg_shares": 300.0528,
+      "avg_comments": 200.1267,
+      "avg_views": 10101.9021,
+      "median_engagement_rate": 19.8976
+    },
+    {
+      "audience_location": "India",
+      "posts": 6484,
+      "avg_engagement_rate": 19.8941,
+      "avg_likes": 1509.5952,
+      "avg_shares": 300.1309,
+      "avg_comments": 199.742,
+      "avg_views": 10101.7978,
+      "median_engagement_rate": 19.8872
+    }
+  ]
+}
