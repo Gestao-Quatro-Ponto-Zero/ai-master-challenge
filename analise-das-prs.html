@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de PRs — G4 AI Master Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg: #0d0f14;
+            --surface: #141720;
+            --surface2: #1c2030;
+            --border: #252a3a;
+            --accent: #5b6af0;
+            --accent-soft: rgba(91, 106, 240, 0.12);
+            --green: #2dd878;
+            --green-soft: rgba(45, 216, 120, 0.1);
+            --red: #f05b5b;
+            --red-soft: rgba(240, 91, 91, 0.1);
+            --yellow: #f0c95b;
+            --yellow-soft: rgba(240, 201, 91, 0.1);
+            --text: #e2e8f0;
+            --text-muted: #8896ab;
+            --text-dim: #4a5568;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'DM Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 15px;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .header {
+            border-bottom: 1px solid var(--border);
+            padding: 48px 0 40px;
+            background: linear-gradient(180deg, rgba(91, 106, 240, 0.04) 0%, transparent 100%);
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid rgba(91, 106, 240, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 24px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .meta-item span {
+            color: var(--text);
+        }
+
+        main {
+            padding: 48px 0;
+        }
+
+        .section {
+            margin-bottom: 52px;
+        }
+
+        h2 {
+            font-size: 13px;
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -0.2px;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .pr-ref {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .badge-pass {
+            background: var(--green-soft);
+            color: var(--green);
+            border: 1px solid rgba(45, 216, 120, 0.2);
+        }
+
+        .badge-fail {
+            background: var(--red-soft);
+            color: var(--red);
+            border: 1px solid rgba(240, 91, 91, 0.2);
+        }
+
+        .badge-warn {
+            background: var(--yellow-soft);
+            color: var(--yellow);
+            border: 1px solid rgba(240, 201, 91, 0.2);
+        }
+
+        .detail-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .detail-list li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .detail-list li .icon {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .icon-ok {
+            background: var(--green-soft);
+            color: var(--green);
+        }
+
+        .icon-no {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+
+        .icon-warn {
+            background: var(--yellow-soft);
+            color: var(--yellow);
+        }
+
+        .score-display {
+            font-family: var(--mono);
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 4px;
+        }
+
+        .pattern-card {
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid;
+        }
+
+        .pattern-card.good {
+            background: var(--green-soft);
+            border-color: rgba(45, 216, 120, 0.2);
+        }
+
+        .pattern-card.bad {
+            background: var(--red-soft);
+            border-color: rgba(240, 91, 91, 0.2);
+        }
+
+        .pattern-title {
+            font-size: 12px;
+            font-family: var(--mono);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .pattern-card.good .pattern-title {
+            color: var(--green);
+        }
+
+        .pattern-card.bad .pattern-title {
+            color: var(--red);
+        }
+
+        .pattern-item {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .pattern-item::before {
+            content: '·';
+            position: absolute;
+            left: 0;
+            color: var(--text-dim);
+        }
+
+        .insight-box {
+            background: var(--accent-soft);
+            border: 1px solid rgba(91, 106, 240, 0.25);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+
+        .insight-box p {
+            color: rgba(226, 232, 240, 0.85);
+            margin: 0;
+        }
+
+        .insight-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 12px;
+            background: var(--surface2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--yellow);
+        }
+
+        .ranking-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ranking-row:last-child {
+            border-bottom: none;
+        }
+
+        .rank-num {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: var(--text-dim);
+            width: 24px;
+            flex-shrink: 0;
+        }
+
+        .rank-name {
+            font-weight: 500;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .rank-stack {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .rank-status {
+            font-family: var(--mono);
+            font-size: 11px;
+        }
+
+        .ok {
+            color: var(--green);
+        }
+
+        .warn {
+            color: var(--yellow);
+        }
+
+        .no {
+            color: var(--red);
+        }
+
+        @media (max-width: 640px) {
+            .pattern-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="container">
+            <div class="tag">Inteligência Competitiva</div>
+            <h1>Análise dos 32 PRs<br>G4 AI Master Challenge</h1>
+            <p class="subtitle">Padrões de acertos e erros extraídos diretamente dos feedbacks do avaliador</p>
+            <div class="meta-row">
+                <div class="meta-item">Desafio principal: <span>#003 Lead Scorer</span></div>
+                <div class="meta-item">PRs analisados: <span>32 total</span></div>
+                <div class="meta-item">Avaliador: <span>@joaovitor2763</span></div>
+                <div class="meta-item">Gerado em: <span>20 mar 2026</span></div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+
+            <!-- CONTEXTO -->
+            <div class="section">
+                <h2>01 — Contexto do Desafio</h2>
+                <p>O Challenge 003 pedia um <strong>Lead Scorer</strong> para o pipeline B2B da G4 Educação: um dataset
+                    com ~8.800 deals históricos e 2.089 deals ativos. A entrega esperada era uma ferramenta funcional
+                    que priorizasse o pipeline — não um relatório, não um notebook. A avaliação considerou qualidade do
+                    scoring engine, uso real de IA, evidências de processo e comunicação.</p>
+                <div class="insight-box">
+                    <div class="insight-label">Critério central identificado</div>
+                    <p>O avaliador avaliou sistematicamente três eixos: <strong>(1) o scoring engine</strong> está
+                        correto e usa os dados reais? <strong>(2) o processo com IA</strong> está documentado com
+                        evidências auditáveis? <strong>(3) a comunicação</strong> é clara o suficiente para um avaliador
+                        entender sem rodar o código?</p>
+                </div>
+            </div>
+
+            <!-- ANÁLISE PR A PR -->
+            <div class="section">
+                <h2>02 — Análise Individual dos PRs com Feedback</h2>
+
+                <!-- PR #25 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#25 · Lucas de Paula (oetnegro)</div>
+                            <h3>Lead Scorer com Gemini AI Coach</h3>
+                        </div>
+                        <div>
+                            <div class="badge badge-warn">Score 7.9/10 · Revisão pendente</div>
+                        </div>
+                    </div>
+                    <p>Stack Next.js 14 + Supabase + Gemini 2.0 Flash com app em produção no Vercel. Scoring com 4
+                        componentes derivados de análise manual dos dados (stage/momentum, produto, conta, win rate do
+                        vendedor).</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Análise dos dados ANTES de usar IA: identificou padrões
+                            reais (71% deals em Engaging há +90d, win rate variando 20–70%) que viraram os componentes
+                            do score</li>
+                        <li><span class="icon icon-ok">✓</span> 54 testes unitários cobrindo todos os componentes do
+                            scoring engine (vitest, 41ms)</li>
+                        <li><span class="icon icon-ok">✓</span> Erros documentados com causa raiz específica: hydration
+                            SSR, overlap de grupo em KPI, model name incorreto no Gemini</li>
+                        <li><span class="icon icon-ok">✓</span> KPI cards com funil matemático fechado (soma = 2.092 ✓)
+                            — evidência de verificação real</li>
+                        <li><span class="icon icon-ok">✓</span> DEVLOG cronológico como diário técnico reescrito após
+                            feedback</li>
+                        <li><span class="icon icon-no">✗</span> Pasta <code>process-log/screenshots/</code> existia mas
+                            estava vazia — faltou evidência visual das iterações</li>
+                        <li><span class="icon icon-no">✗</span> Avaliador pediu revisão dos pesos de calibração com
+                            justificativa baseada nos dados</li>
+                    </ul>
+                </div>
+
+                <!-- PR #24 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#24 · Luiz Fernando Mendes (kabutaro-design)</div>
+                            <h3>Lead Scorer Inteligente — React + Netlify</h3>
+                        </div>
+                        <div class="badge badge-pass">Aprovado ✅</div>
+                    </div>
+                    <p>App React com scoring ponderado (Maturidade 35%, Agente 30%, Produto 20%, Firmographics 15%).
+                        Tratamento correto de deals sem conta com score neutro em vez de penalização.</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Decisão de UX correta: 68% de deals sem conta recebem
+                            score neutro, não punição</li>
+                        <li><span class="icon icon-ok">✓</span> Identificação da "Zona de Ouro" (30–120 dias) com
+                            isolamento de 229 leads de alta prioridade</li>
+                        <li><span class="icon icon-ok">✓</span> Deploy funcional em produção</li>
+                        <li><span class="icon icon-no">✗</span> Process log em arquivo <code>.docx</code> — não
+                            auditável diretamente no repositório. O avaliador explicitou que screenshots e chat exports
+                            são formatos preferidos</li>
+                        <li><span class="icon icon-no">✗</span> Afirmações do README ("zona de ouro 30–120 dias",
+                            métricas de win rate) sem derivação visível nos dados — faltou notebook ou script gerando os
+                            números</li>
+                        <li><span class="icon icon-warn">!</span> Inconsistência de moeda: dataset em USD, UI exibindo
+                            R$ — sinalizou falta de revisão do output</li>
+                        <li><span class="icon icon-warn">!</span> 38 commits com mensagens genéricas ("Add files via
+                            upload", "Create a") — histórico de commits não conta a história do processo</li>
+                    </ul>
+                </div>
+
+                <!-- PR #23 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#23 · Felipe Calgaro (felipecalgaro)</div>
+                            <h3>Lead Scorer com testes unitários — Next.js</h3>
+                        </div>
+                        <div class="badge badge-pass">Aprovado ✅</div>
+                    </div>
+                    <p>Score determinístico e auditável, breakdown de fatores com explicação textual, rota de IA para
+                        traduzir breakdown em orientação prática. Testes unitários para o scoring em
+                        <code>deal-score.test.ts</code>.</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Análise pré-código com tabela de critérios, pesos,
+                            lógica de proporcionalidade e pseudocódigo por fator — evidência de raciocínio antes da
+                            execução</li>
+                        <li><span class="icon icon-ok">✓</span> Lógica de score isolada em util — fácil de testar e
+                            manter</li>
+                        <li><span class="icon icon-ok">✓</span> Testes unitários para o scoring engine</li>
+                        <li><span class="icon icon-ok">✓</span> Apenas 3 commits, todos descritivos e limpos</li>
+                        <li><span class="icon icon-no">✗</span> Dependência de <code>OPENAI_API_KEY</code> sem fallback
+                            — se chave indisponível ou latência alta, UI quebra</li>
+                        <li><span class="icon icon-warn">!</span> Normalização de múltiplos ratios pode ser difícil de
+                            explicar para o vendedor diretamente</li>
+                    </ul>
+                </div>
+
+                <!-- PR #22 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#22 · Matheus Petrato (Mpetrato)</div>
+                            <h3>G4 Compass — Go + Svelte + PostgreSQL</h3>
+                        </div>
+                        <div class="badge badge-pass">Aprovado ✅ (após revisão)</div>
+                    </div>
+                    <p>A entrega mais tecnicamente complexa do challenge: Go backend + Svelte frontend + PostgreSQL +
+                        agente LLM com tooling + Docker Compose + import CSV + roles seller/manager. O avaliador
+                        classificou como "excepcionalmente bem construído".</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Stack full que vai muito além do baseline —
+                            docker-compose completo com backend real</li>
+                        <li><span class="icon icon-ok">✓</span> Caderno de planejamento à mão + processo com múltiplos
+                            agentes — evidência de trabalho genuíno</li>
+                        <li><span class="icon icon-ok">✓</span> Agente LLM integrado com tooling real e dados do banco
+                            via WebSocket</li>
+                        <li><span class="icon icon-ok">✓</span> API guide e documentação técnica incluídos</li>
+                        <li><span class="icon icon-no">✗</span> Fator de timing do scoring não produzia diferenciação
+                            entre deals — bug de cálculo de datas com dados históricos (levou a "Request Changes"
+                            inicial)</li>
+                        <li><span class="icon icon-no">✗</span> Process log com evidências visuais mas sem narrativa das
+                            decisões — complexidade da entrega pedia mais documentação de processo</li>
+                        <li><span class="icon icon-no">✗</span> Chave de API hardcoded no repositório — mesmo em
+                            challenge, é má prática visível</li>
+                    </ul>
+                </div>
+
+                <!-- PR #16 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#16 · Mateus Nogueira (Mateus-Nogueira-GT)</div>
+                            <h3>Lead Scorer com 5 componentes e Kanban Monday Morning</h3>
+                        </div>
+                        <div class="badge badge-pass">Aprovado ✅</div>
+                    </div>
+                    <p>Scoring engine com 5 componentes (fit do produto, timing, qualidade da conta, performance do
+                        vendedor, valor do deal). Interface com visão Monday Morning (Kanban com buckets Fechar Agora /
+                        Nutrir / Repensar).</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> 3 sessões de debug documentadas com causa raiz por bug:
+                            normalização GTXPro vs GTX Pro, NaN guards, prioridade de alertas conflitantes, mutação de
+                            cache — 14 bugs corrigidos no total</li>
+                        <li><span class="icon icon-ok">✓</span> Ação sugerida por deal + visão Monday Morning que
+                            encaixa na rotina do vendedor</li>
+                        <li><span class="icon icon-ok">✓</span> Scoring calibrado em 8.800 deals históricos reais</li>
+                        <li><span class="icon icon-warn">!</span> Número contraintuitivo no executive summary: Won
+                            fechando em 52d vs Lost em 42d. Correto mas explicação da lógica (deals Lost "morrem mais
+                            cedo") não estava clara</li>
+                        <li><span class="icon icon-no">✗</span> Faltam sanity checks visíveis: distribuição do score,
+                            exemplos por bucket</li>
+                    </ul>
+                </div>
+
+                <!-- PR #13 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#13 · Eduardo Rabelo (eduramofo)</div>
+                            <h3>FastAPI + SQLite + Streamlit com score de oportunidade e conta</h3>
+                        </div>
+                        <div class="badge badge-pass">Aprovado ✅</div>
+                    </div>
+                    <p>Stack FastAPI + SQLite + Streamlit com Docker. Score de oportunidade e histórico de conta.
+                        Tratamento correto de edge case: <code>close_value</code> NULL em deals abertos com fallback
+                        para <code>sales_price</code>.</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Focou em ferramenta funcional para o vendedor, não em
+                            relatório — leitura correta do problema</li>
+                        <li><span class="icon icon-ok">✓</span> Edge case real identificado e tratado:
+                            <code>close_value</code> ausente em deals abertos</li>
+                        <li><span class="icon icon-ok">✓</span> "Memória de cálculo" por card: explicabilidade inline do
+                            score</li>
+                        <li><span class="icon icon-no">✗</span> Decisões de arquitetura quase inteiramente delegadas ao
+                            Cursor sem evidência de raciocínio próprio antes</li>
+                        <li><span class="icon icon-no">✗</span> README da submissão curto demais — documentação
+                            relevante dispersa no chat log</li>
+                        <li><span class="icon icon-no">✗</span> Fórmula e pesos do score não consolidados em lugar
+                            acessível</li>
+                    </ul>
+                </div>
+
+                <!-- PR #9 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#9 · Bruno Campara Diniz (brunocamparadiniz)</div>
+                            <h3>Sales Prioritizer PWA — React + TypeScript + IndexedDB</h3>
+                        </div>
+                        <div class="badge badge-pass">Aprovado ✅ (após revisão)</div>
+                    </div>
+                    <p>PWA com 4 visões (List, Kanban, Matrix SVG scatter, Agenda de Impacto). Scoring composto com
+                        Dexie.js (IndexedDB) processando ~8.800 registros em menos de 10ms sem backend.</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Recebeu "Request Changes" e implementou correções que
+                            foram além do pedido — responsividade ao feedback</li>
+                        <li><span class="icon icon-ok">✓</span> Data de referência corrigida para usar
+                            <code>max(engage_date)</code> do próprio dataset como âncora temporal</li>
+                        <li><span class="icon icon-ok">✓</span> Joins dinâmicos entre 4 tabelas com Account Loyalty e
+                            Regional Win Rate como fatores novos</li>
+                        <li><span class="icon icon-ok">✓</span> Scoring Coach (sugestão de ação por deal) e Daily Focus
+                            Card (top 3 deals críticos do dia)</li>
+                        <li><span class="icon icon-ok">✓</span> Separação limpa entre <code>scoreCalculator.ts</code>
+                            (funções puras testáveis) e <code>scoring.ts</code> (orquestração com I/O)</li>
+                        <li><span class="icon icon-no">✗</span> Versão inicial: fatores não contribuindo para o
+                            resultado como deveriam (bug de data de referência usando data atual, não data dos dados)
+                        </li>
+                        <li><span class="icon icon-no">✗</span> Versão inicial: dados disponíveis no dataset não
+                            aproveitados no scoring (firmographics ignorados)</li>
+                    </ul>
+                </div>
+
+                <!-- PR #18 - sem feedback formal -->
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="pr-ref">#18 · jeskgrb</div>
+                            <h3>v1 do projeto, arquivos criados pela IA (claude code)</h3>
+                        </div>
+                        <div class="badge badge-fail">Sem avaliação formal</div>
+                    </div>
+                    <p>Título do PR já revela o problema: a própria mensagem indica que os arquivos foram "criados pela
+                        IA" sem evidência de curadoria ou raciocínio próprio.</p>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-no">✗</span> Título do PR não segue o padrão
+                            <code>[Submission] Nome — Challenge XXX</code> — sinal de falta de atenção ao processo</li>
+                        <li><span class="icon icon-no">✗</span> Framing "arquivos criados pela IA" sem evidência de
+                            raciocínio próprio sobre o que foi gerado</li>
+                        <li><span class="icon icon-no">✗</span> Sem descrição no PR</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- PADRÕES AGREGADOS -->
+            <div class="section">
+                <h2>03 — Padrões Agregados</h2>
+                <p>Consolidação do que o avaliador consistentemente elogiou vs. criticou em todos os PRs:</p>
+                <div class="pattern-grid">
+                    <div class="pattern-card good">
+                        <div class="pattern-title">✓ Acertos Consistentes</div>
+                        <div class="pattern-item">Análise dos dados ANTES de usar IA para gerar código</div>
+                        <div class="pattern-item">Scoring engine derivado de padrões reais do dataset, não pesos
+                            arbitrários</div>
+                        <div class="pattern-item">Testes unitários para o scoring engine</div>
+                        <div class="pattern-item">Documentação de erros com causa raiz específica (não só "corrigido")
+                        </div>
+                        <div class="pattern-item">Edge cases identificados e tratados (NULLs, inconsistências de nome,
+                            datas históricas)</div>
+                        <div class="pattern-item">Ferramenta funcional orientada ao vendedor, não relatório para gestão
+                        </div>
+                        <div class="pattern-item">Deploy em produção com URL acessível</div>
+                        <div class="pattern-item">Fallback quando IA externa falha ou está indisponível</div>
+                        <div class="pattern-item">Responsividade ao feedback do avaliador com correções além do mínimo
+                        </div>
+                        <div class="pattern-item">Separação limpa entre lógica de scoring (pure functions) e I/O</div>
+                    </div>
+                    <div class="pattern-card bad">
+                        <div class="pattern-title">✗ Erros Recorrentes</div>
+                        <div class="pattern-item">Process log em .docx — não auditável no repositório</div>
+                        <div class="pattern-item">Screenshots prometidas mas pasta vazia</div>
+                        <div class="pattern-item">Afirmações no README sem derivação visível nos dados</div>
+                        <div class="pattern-item">Bug de data de referência: usar data atual ao invés de max(data) do
+                            dataset histórico</div>
+                        <div class="pattern-item">Fatores do scoring ignorando colunas disponíveis no dataset
+                            (firmographics)</div>
+                        <div class="pattern-item">Chave de API hardcoded no repositório</div>
+                        <div class="pattern-item">README muito curto com informação dispersa no chat log</div>
+                        <div class="pattern-item">Commits com mensagem "Add files via upload" — histórico sem valor
+                            narrativo</div>
+                        <div class="pattern-item">Dependência de API externa sem fallback quando indisponível</div>
+                        <div class="pattern-item">Inconsistências de dados ignoradas (moeda, normalização de strings)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- O QUE O AVALIADOR MAIS VALORIZOU -->
+            <div class="section">
+                <h2>04 — O Que o Avaliador Mais Valorizou</h2>
+
+                <div class="card">
+                    <h3>Evidência de raciocínio antes da execução</h3>
+                    <p>O feedback mais positivo foi para candidatos que mostraram análise manual dos dados antes de
+                        escrever uma linha de código. Felipe Calgaro fez tabela de critérios com pesos e pseudocódigo
+                        por fator. Lucas de Paula identificou 4 padrões no dataset que se tornaram os 4 componentes do
+                        score. Isso diferencia raciocínio próprio de delegação cega para a IA.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Documentação de falhas com causa raiz</h3>
+                    <p>Mateus Nogueira documentou 3 sessões de debug com causa raiz por bug — normalização de strings
+                        (GTXPro vs "GTX Pro"), NaN guards, conflito de prioridade de alertas, mutação de cache. O
+                        avaliador usou exatamente isso como evidência de "iteração real". Erros documentados
+                        corretamente valem mais do que código que funciona sem explicação.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Scoring calibrado nos dados, não em intuição</h3>
+                    <p>Lucas de Paula apresentou o funil matemático fechando (2.092 deals, soma dos KPI cards = 2.092).
+                        Bruno Campara calibrou o stagnation penalty no P75 histórico, não em valor arbitrário. Eduardo
+                        identificou e corrigiu o NULL em <code>close_value</code> para deals ativos. Cada um desses é
+                        evidência de que o candidato realmente rodou o código contra os dados reais.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Produto orientado à ação do vendedor</h3>
+                    <p>A visão Monday Morning (Mateus Nogueira), o Scoring Coach (Bruno Campara), a Agenda de Impacto e
+                        o Daily Focus Card foram explicitamente elogiados. O avaliador valorizou quem interpretou o
+                        problema como "ferramenta do vendedor" e não como "dashboard para o gestor".</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- CRITÉRIO OCULTO: EVIDÊNCIAS VISUAIS -->
+            <div class="section">
+                <h2>05 — Critério Crítico: Evidências Visuais do Processo com IA</h2>
+                <div class="insight-box">
+                    <div class="insight-label">Padrão mais citado pelo avaliador</div>
+                    <p>Em múltiplos PRs o avaliador pediu explicitamente evidências visuais do processo — não só log
+                        textual. Screenshots das conversas com IA e chat exports foram os formatos mais citados como
+                        preferidos. Esse foi o único ponto de melhoria pedido na submissão com nota 7.9 (PR #25 — Lucas
+                        de Paula). O process log em .docx foi explicitamente rejeitado como não auditável.</p>
+                </div>
+
+                <p>O que o avaliador considera evidência auditável:</p>
+                <ul class="detail-list">
+                    <li><span class="icon icon-ok">✓</span> Screenshots das conversas com IA (Claude Code, Cursor, etc.)
+                    </li>
+                    <li><span class="icon icon-ok">✓</span> Chat exports em formato legível no repositório</li>
+                    <li><span class="icon icon-ok">✓</span> Git history com commits descritivos incluindo contexto de
+                        decisão</li>
+                    <li><span class="icon icon-ok">✓</span> DEVLOG cronológico com raciocínio das decisões (não só
+                        ações)</li>
+                    <li><span class="icon icon-ok">✓</span> Testes que documentam comportamento esperado e casos de
+                        borda</li>
+                    <li><span class="icon icon-no">✗</span> Arquivo .docx com log (não renderizável no GitHub)</li>
+                    <li><span class="icon icon-no">✗</span> Pasta de screenshots criada mas vazia</li>
+                    <li><span class="icon icon-no">✗</span> Link para Google Drive com evidências (fora do repositório)
+                    </li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- RANKING COMPARATIVO -->
+            <div class="section">
+                <h2>06 — Ranking Comparativo (PRs com Feedback Formal)</h2>
+                <div class="card" style="padding: 8px 24px;">
+                    <div class="ranking-row">
+                        <div class="rank-num">01</div>
+                        <div class="rank-name">Matheus Petrato <span style="color:var(--text-dim);font-size:12px;">—
+                                #22</span></div>
+                        <div class="rank-stack">Go + Svelte + Postgres</div>
+                        <div class="rank-status ok">Aprovado</div>
+                    </div>
+                    <div class="ranking-row">
+                        <div class="rank-num">02</div>
+                        <div class="rank-name">Bruno Campara Diniz <span style="color:var(--text-dim);font-size:12px;">—
+                                #9</span></div>
+                        <div class="rank-stack">React PWA + IndexedDB</div>
+                        <div class="rank-status ok">Aprovado</div>
+                    </div>
+                    <div class="ranking-row">
+                        <div class="rank-num">03</div>
+                        <div class="rank-name">Felipe Calgaro <span style="color:var(--text-dim);font-size:12px;">—
+                                #23</span></div>
+                        <div class="rank-stack">Next.js + TypeScript</div>
+                        <div class="rank-status ok">Aprovado</div>
+                    </div>
+                    <div class="ranking-row">
+                        <div class="rank-num">04</div>
+                        <div class="rank-name">Mateus Nogueira <span style="color:var(--text-dim);font-size:12px;">—
+                                #16</span></div>
+                        <div class="rank-stack">Python + API REST</div>
+                        <div class="rank-status ok">Aprovado</div>
+                    </div>
+                    <div class="ranking-row">
+                        <div class="rank-num">05</div>
+                        <div class="rank-name">Lucas de Paula <span style="color:var(--text-dim);font-size:12px;">—
+                                #25</span></div>
+                        <div class="rank-stack">Next.js + Gemini + Supabase</div>
+                        <div class="rank-status warn">7.9 · Revisão pedida</div>
+                    </div>
+                    <div class="ranking-row">
+                        <div class="rank-num">06</div>
+                        <div class="rank-name">Eduardo Rabelo <span style="color:var(--text-dim);font-size:12px;">—
+                                #13</span></div>
+                        <div class="rank-stack">FastAPI + SQLite + Streamlit</div>
+                        <div class="rank-status ok">Aprovado</div>
+                    </div>
+                    <div class="ranking-row">
+                        <div class="rank-num">07</div>
+                        <div class="rank-name">Luiz Fernando Mendes <span
+                                style="color:var(--text-dim);font-size:12px;">— #24</span></div>
+                        <div class="rank-stack">React + Netlify</div>
+                        <div class="rank-status ok">Aprovado (com ressalvas)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- IMPLICAÇÕES PARA SUA SUBMISSÃO -->
+            <div class="section">
+                <h2>07 — Implicações para Sua Submissão</h2>
+                <p>Com base no padrão de avaliação identificado, estes são os pontos que podem diferenciar ou eliminar
+                    sua submissão:</p>
+
+                <div class="card">
+                    <h3>Obrigatório (eliminatório se ausente)</h3>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Evidências visuais do processo com IA — screenshots ou
+                            chat exports no repositório, não .docx</li>
+                        <li><span class="icon icon-ok">✓</span> Scoring engine que demonstravelmente usa os dados reais
+                            do dataset</li>
+                        <li><span class="icon icon-ok">✓</span> README com fórmula/pesos do score e como rodar</li>
+                        <li><span class="icon icon-ok">✓</span> Nenhuma chave de API hardcoded no repositório</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Diferenciadores (o que separa 7.x de 9.x)</h3>
+                    <ul class="detail-list">
+                        <li><span class="icon icon-ok">✓</span> Análise exploratória documentada dos dados ANTES do
+                            código — com achados numerados</li>
+                        <li><span class="icon icon-ok">✓</span> Testes unitários para o scoring engine</li>
+                        <li><span class="icon icon-ok">✓</span> DEVLOG cronológico com raciocínio de decisão (não só
+                            ações)</li>
+                        <li><span class="icon icon-ok">✓</span> Sanity checks visíveis: distribuição do score por
+                            estágio, top 10 deals com breakdown</li>
+                        <li><span class="icon icon-ok">✓</span> Fallback quando IA externa está indisponível</li>
+                        <li><span class="icon icon-ok">✓</span> Commits descritivos incluindo contexto da decisão, não
+                            só a ação</li>
+                    </ul>
+                </div>
+
+                <div class="insight-box">
+                    <div class="insight-label">Vantagem do seu perfil</div>
+                    <p>Seu background como engenheiro de software + PM significa que você pode fazer o que a maioria não
+                        fez: <strong>raciocinar sobre os dados antes de delegar para a IA, depois documentar esse
+                            raciocínio de forma auditável</strong>. Os candidatos aprovados com as notas mais altas
+                        fizeram exatamente isso. Os reprovados ou revisados delegaram o raciocínio sem deixar rastro.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+
+</html>

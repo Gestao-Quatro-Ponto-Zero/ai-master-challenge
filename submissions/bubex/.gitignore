@@ -4,13 +4,21 @@ node_modules/
 dist/
 out/
 
-# Datasets — download from Kaggle, never commit
+# Datasets — por padrão não versionar (Kaggle etc.)
 **/data/*.csv
 **/data/*.json
 
-# Exceção: outputs gerados pelos scripts Python (necessários para o app)
+# Exceção: outputs gerados pelos scripts Python (support-triage)
 !**/data/diagnostic_output.json
 !**/data/classifier_output.json
+
+# Exceção: dados necessários para `next build` / Docker / Railway (upload respeita .gitignore)
+!apps/churn-dashboard/data/*.csv
+!apps/churn-dashboard/data/*.json
+!apps/lead-scorer/data/*.csv
+!apps/social-dashboard/data/*.csv
+!apps/social-dashboard/data/*.json
+!apps/support-triage/data/*.csv
 
 # Env
 .env

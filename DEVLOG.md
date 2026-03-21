@@ -213,3 +213,13 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 **[ai]** P2-C: Renomeou "Time" → "Minha Carteira" no `layout.tsx` — frame de vendedor, não de gestor.
 
 **[ai]** P3-A: Criou `apps/lead-scorer/src/app/api/sanity/route.ts` — 4 assertions documentáveis: total 1000–5000, score 0–100 em todos, avg Engaging > avg Prospecting, soma de componentes ≤ 101. Script `sanity` adicionado ao `package.json`. `pnpm type-check` sem erros.
+
+## Sessão 12 — Railway: 5 services + URLs no Portal
+
+**[user]** Pediu um service Railway por app e cruzamento de URLs via env.
+
+**[ai]** Criados 4 services adicionais no projeto `g4-ai-master` (churn-dashboard, lead-scorer, social-dashboard, support-triage). Script `scripts/railway-deploy-service.sh` copia o `railway.toml` do app alvo, faz `railway service <nome>` e `railway up -c` (default). Portal continua no service existente `g4-ai-master` (nome legado do primeiro deploy).
+
+**[ai]** Ajustado `.gitignore`: exceções para `apps/*/data` dos quatro dashboards — o upload do CLI Railway respeita `.gitignore`; sem isso os CSV/JSON não iam no tarball e o `next build` falhava no Docker. `--no-gitignore` foi descartado (incluía `node_modules`, payload > 200MB).
+
+**[ai]** Variáveis `URL_CHURN`, `URL_LEAD_SCORER`, `URL_SOCIAL`, `URL_SUPPORT` configuradas no service do Portal com os domínios `*.up.railway.app` gerados. Scripts `pnpm railway:deploy:*` no `package.json`. `.env.example` documenta as variáveis do Portal para produção.

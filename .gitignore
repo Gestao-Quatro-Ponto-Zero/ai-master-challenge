@@ -15,3 +15,6 @@ datasets/
 # Submissions (if candidates fork) — allow our own
 submissions/*
 !submissions/bubex/
+
+# Node modules
+node_modules/

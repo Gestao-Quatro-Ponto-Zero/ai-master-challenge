@@ -9,7 +9,12 @@
     "dev:support": "dotenv -e .env -- pnpm --filter @challenge/support-triage dev",
     "dev:social": "dotenv -e .env -- pnpm --filter @challenge/social-dashboard dev",
     "build:all": "pnpm -r build",
-    "type-check": "pnpm -r type-check"
+    "type-check": "pnpm -r type-check",
+    "railway:deploy:portal": "./scripts/railway-deploy-service.sh portal",
+    "railway:deploy:churn-dashboard": "./scripts/railway-deploy-service.sh churn-dashboard",
+    "railway:deploy:lead-scorer": "./scripts/railway-deploy-service.sh lead-scorer",
+    "railway:deploy:social-dashboard": "./scripts/railway-deploy-service.sh social-dashboard",
+    "railway:deploy:support-triage": "./scripts/railway-deploy-service.sh support-triage"
   },
   "devDependencies": {
     "dotenv-cli": "^11.0.0",
