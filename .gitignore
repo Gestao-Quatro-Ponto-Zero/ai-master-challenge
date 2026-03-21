@@ -12,9 +12,5 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork) — allow our own
-submissions/*
-!submissions/marlon-maccedo/
-
-# Node modules
-node_modules/
+# Submissions (if candidates fork)
+submissions/
