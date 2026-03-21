@@ -162,6 +162,26 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 
 **[ai]** Correção: removidas `fallbackInsights` e `fallbackRecommendations` integralmente. `generateInsights`, `generateDiagnosticInsights` e `generateRecommendations` retornam `null` sem API key — UI exibe banner "configure OPENROUTER_API_KEY" no lugar. Adicionado `generateDiagnosticInsights` novo que envia feature analysis + support comparison ao LLM para análise de causa raiz. Callouts analíticos hardcoded removidos do diagnostic page.
 
+## Sessão 9 — Social Dashboard (Challenge 004)
+
+**[user]** Iniciou implementação do Challenge 004 (Estratégia Social Media) com plano detalhado. App scaffolded mas sem implementação real — 52K posts no CSV, arquitetura idêntica ao churn-dashboard.
+
+**[ai]** Explorou schema do CSV antes de codar: confirmou ausência de coluna `engagement_rate` (precisa computar como `(likes + shares + comments_count) / NULLIF(views, 0)`), `is_sponsored` é string `'TRUE'`/`'FALSE'` (não boolean), colunas `audience_age_distribution` e `audience_gender_distribution` são strings de valor único por post (não distribuições numéricas).
+
+**[ai]** Phase 1 — infra: removido `@challenge/data-utils` do `package.json` (não necessário, causa erro de transpilação), adicionado `@duckdb/node-api@1.5.0-r.1`, `next.config.ts` atualizado com `serverExternalPackages` completo (3 pacotes DuckDB). `pnpm install` sem erros.
+
+**[ai]** Phase 2 — biblioteca: `src/types/index.ts` com 12 interfaces; `src/lib/db.ts` cópia verbatim do churn-dashboard (singleton DuckDB, `csv()`, `sanitize()`, `query<T>()`); `src/lib/queries.ts` com 13 funções de query — todas computam engagement_rate inline; `src/lib/insights.ts` padrão OpenRouter + cache 24h — sem API key retorna `null`, nunca fabrica análise.
+
+**[ai]** Phase 3 — layout com nav: 5 links (Visão Geral | Performance | Patrocínios | Audiência | Estratégia).
+
+**[ai]** Phase 4 — 5 páginas Server Components: `/overview` (5 KPIs + AI insights card amber + 2 bar charts + lista categorias), `/performance` (heatmap CSS-only 5×4 + 4 tier cards + 2 bar charts), `/sponsorship` (cards organic/sponsored + tabela delta verde/vermelho + disclosure list + bar chart + 2 mini-heatmaps), `/audience` (stacked bars CSS por plataforma para idade e gênero + tabela age×engagement), `/strategy` (context grid + Suspense → StrategyContent → 5 recomendações LLM ou NoApiKeyBanner).
+
+**[ai]** Verificação: `pnpm type-check` zero erros. Dev server testado em todas as 5 rotas — sem Application Error. KPIs confirmados: 52,214 posts (≈52,215 esperado), engagement médio 19.9% (esperado 19-20%), organic 29,900 posts ✓, sponsored 22,314 posts ✓.
+
+**[user]** Identificou que o Challenge 004 lista Python/notebooks como ferramentas esperadas — implementação só com DuckDB não demonstra processo analítico.
+
+**[ai]** Adicionada camada Python: `scripts/generate_analysis.py` gera `data/social_analysis.json` com 8 análises (temporal, hashtags, content length buckets, language performance, day-of-week, creator efficiency, location, platform×day heatmap). `src/lib/analysis-output.ts` lê o JSON (padrão churn-dashboard). 2 notebooks Jupyter criados: `notebooks/01_exploratory.ipynb` (17 células — EDA: distribuições, tendência temporal, orgânico vs patrocinado) e `notebooks/02_strategy.ipynb` (17 células — estratégia: eficiência por tier, hashtags, timing, correlações, disclosure). Overview page integra tendência temporal (volume mensal). Performance page integra `engPer1KFollowers` nos cards de tier. Achado relevante documentado nos notebooks: dataset é sintético — engagement rate ~19.9% em todas as dimensões, sem variância real; mas `engPer1KFollowers` mostra nano-creators 10x mais eficientes que micro.
+
 ## Próximas entradas
 
 <!-- Registrar aqui ao vivo -->
