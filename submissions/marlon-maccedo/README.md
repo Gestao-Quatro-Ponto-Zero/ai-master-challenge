@@ -200,7 +200,7 @@ pnpm dev:social     # porta 3004
 ## Evidências
 
 - [x] Git history — todos os commits com mensagens descritivas (`git log --oneline`)
-- [x] DEVLOG.md na raiz do repositório — registro ao vivo de decisões, erros e correções por sessão
+- [x] DEVLOG.md process-log — registro ao vivo de decisões, erros e correções por sessão
 - [x] Notebooks Jupyter em `apps/support-triage/notebooks/` e `apps/social-dashboard/notebooks/`
 - [x] Scripts Python em `apps/support-triage/scripts/` e `apps/social-dashboard/scripts/`
 - [x] Dashboards funcionais — rodam via `docker-compose up --build` ou `pnpm dev:*`
