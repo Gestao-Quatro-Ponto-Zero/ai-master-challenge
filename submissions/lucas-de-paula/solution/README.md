@@ -83,7 +83,7 @@ Com os dados entendidos, usei meu agente PM customizado (Claude) para estruturar
 **Decisões que tomei — não a IA:**
 - Foco no **gestor/manager**, não só no vendedor individual — com 35 vendedores e 2.092 deals, quem precisa de visão de portfólio é o manager
 - Score **explicável por componente** — entender "por que 83?" é mais útil que só ver o número
-- **Slack** ao invés de email — gestores de vendas B2B usam Slack, não configuram SMTP
+- **Slack** ao invés de email — pesquisei que a G4 usa Slack internamente; faz sentido o relatório chegar onde o gestor já trabalha
 - **Gemini** ao invés de GPT — custo/benefício melhor para análise contextual de deals individuais
 
 ### 3. Scoring engine — 4 componentes calibrados (0–100 pts)
@@ -114,6 +114,16 @@ Todo o desenvolvimento foi feito com Claude Code (CLI), com eu direcionando cada
 | Em risco (31–90d) | 93 deals |
 | Win rate range no time | ~20% a ~70% |
 | Componentes de score explicados | 4 (com breakdown visual) |
+
+### Exemplos reais de output
+
+| Deal | Stage | Produto | Conta | Win Rate | Score | Prioridade |
+|---|---|---|---|---|---|---|
+| Bimbo — GTK 500 | Engaging 15d | GTK 500 (25pts) | $3B + subsidiária (25pts) | 80% (20pts) | **87/100** | 🟢 Alta |
+| Grupo Modelo — MG Advanced | Engaging 45d | MG Advanced (16pts) | $200M (11pts) | 60% (15pts) | **64/100** | 🟡 Média |
+| Unnamed — MG Special | Engaging 180d | MG Special (3pts) | SMB $50M (6pts) | 20% (5pts) | **18/100** | 🔴 Baixa |
+
+> Stage + Momentum contribui 30pts no deal quente (Engaging ≤30d) e cai para 4pts no zumbi (+90d). Essa diferenciação é o que separa os 20 deals saudáveis dos 1.479 zumbis identificados no dataset.
 
 **O que o gestor vê na segunda de manhã:**
 1. KPI cards — funil completo em 4 números que somam ao total

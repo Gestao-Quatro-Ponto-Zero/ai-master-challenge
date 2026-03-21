@@ -130,7 +130,7 @@ useEffect(() => {
 
 **Primeira versão:** Claude Code implementou relatórios por email via `nodemailer` (SMTP).
 
-**Problema identificado por mim:** gestores de vendas B2B usam Slack como canal operacional primário. Configurar SMTP para uma demo é complexidade desnecessária — o avaliador não vai configurar um servidor de email para testar.
+**Problema identificado por mim:** gestores de vendas B2B usam Slack como canal operacional primário. Pesquisei que a G4 Educação usa Slack internamente como principal canal de comunicação de times — faz sentido que o relatório chegue onde o gestor já trabalha, não em um canal paralelo. Configurar SMTP para uma demo é complexidade desnecessária — o avaliador não vai configurar um servidor de email para testar.
 
 **Decisão:** descartei nodemailer e reimplementei com Slack webhook.
 
