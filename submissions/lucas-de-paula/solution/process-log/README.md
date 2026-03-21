@@ -17,7 +17,7 @@ Esta pasta contém as evidências do processo de uso de IA na construção da so
 2. **Live app** — https://lead-scorer-g4.vercel.app
    Funcional em produção com os dados reais do challenge
 
-3. **Vídeo demo** — https://www.youtube.com/watch?v=_cXS8DyBenQ
+3. **Vídeo demo** — https://youtu.be/6IO9yX8Lra8
    Demo completo da solução em produção
 
 ## Screenshots das iterações com IA

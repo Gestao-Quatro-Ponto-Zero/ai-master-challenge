@@ -27,6 +27,8 @@ Aplicação web full-stack com três camadas de visão, um motor de scoring expl
 
 ### Pipeline (Vendedor / Manager)
 
+**Foco do Dia** — card no topo do dashboard com os 3 deals mais críticos que precisam de ação imediata. Prioriza deals Em risco (31–90d) com maior score, seguido de zumbis e saudáveis. Funciona como visão geral para o gestor e como visão individual para o vendedor quando filtrado pelo próprio nome.
+
 2.092 deals ativos scorados e rankeados em tempo real. O score é recalculado a cada carregamento com base nos dados do Supabase — qualquer atualização nos dados de entrada reflete imediatamente nos rankings.
 
 KPI cards com **funil matematicamente fechado**:
@@ -167,7 +169,7 @@ Rastrear como o score de cada deal evolui ao longo do tempo — identifica padr�
 - **Autenticação simplificada** — token único compartilhado, sem Row Level Security por usuário. Adequado para demonstração; inadequado para dados sensíveis em produção.
 - **Pesos do score heurísticos** — calibrados com base na análise dos dados reais, mas não validados contra dados de conversão futura. O modelo de regras é um bom ponto de partida; precisaria de dados de resultado para calibração supervisionada.
 - **Anotações no localStorage** — notas por deal salvas no navegador local; não persistem entre dispositivos nem são compartilhadas.
-- **Sem suite de testes automatizados** — a solução foi validada manualmente com dados reais do pipeline e está funcional em produção, mas não tem cobertura de testes unitários ou de integração para CI/CD.
+- **Sem testes de integração / CI/CD** — a solução tem 54 testes unitários cobrindo todos os componentes do scoring (`npm test`), mas não possui testes de integração nem pipeline de CI/CD automatizado.
 - **Rate limiting no Gemini** — a API key está segura nas env vars do Vercel, mas em produção com múltiplos usuários simultâneos precisaria de controle de rate limiting e cache de análises.
 
 ---
