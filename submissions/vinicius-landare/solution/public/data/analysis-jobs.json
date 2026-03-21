@@ -1,0 +1,38 @@
+{
+  "job-1774116354381": {
+    "id": "job-1774116354381",
+    "status": "error",
+    "profile": "g4.business",
+    "platform": "Instagram",
+    "created_at": "2026-03-21T18:05:54.381Z",
+    "updated_at": "2026-03-21T18:05:55.092Z",
+    "total_posts": 0,
+    "analyzed_posts": 0,
+    "posts": [],
+    "error": "Não foi possível coletar posts deste perfil. Verifique se o perfil é público."
+  },
+  "job-1774116593767": {
+    "id": "job-1774116593767",
+    "status": "error",
+    "profile": "g4.business",
+    "platform": "Instagram",
+    "created_at": "2026-03-21T18:09:53.767Z",
+    "updated_at": "2026-03-21T18:09:55.567Z",
+    "total_posts": 0,
+    "analyzed_posts": 0,
+    "posts": [],
+    "error": "Não foi possível coletar posts deste perfil. Verifique se o perfil é público."
+  },
+  "job-1774116744937": {
+    "id": "job-1774116744937",
+    "status": "error",
+    "profile": "g4.business",
+    "platform": "Instagram",
+    "created_at": "2026-03-21T18:12:24.937Z",
+    "updated_at": "2026-03-21T18:12:27.072Z",
+    "total_posts": 0,
+    "analyzed_posts": 0,
+    "posts": [],
+    "error": "Não foi possível coletar posts deste perfil. Verifique se o perfil é público."
+  }
+}

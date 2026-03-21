@@ -1,0 +1,733 @@
+{
+  "entries": [
+    {
+      "id": "2026-03-22-4898-01",
+      "generated_at": "2026-03-21T19:26:44.898Z",
+      "status": "aprovado",
+      "scheduled_date": "2026-03-22",
+      "scheduled_time": "7:00",
+      "platform": "Instagram",
+      "niche": "beauty",
+      "audience": "50+",
+      "script": {
+        "title": "Skincare 50+: 3 Ingredientes Que Transformaram Minha Pele (e Onde Encontrar)",
+        "copy": "✨ Pele 50+ sem viço NUNCA MAIS! ✨\n\nDescobri 3 ingredientes INCRÍVEIS que REVITALIZARAM minha pele e quero compartilhar esse segredo com vocês! 🤫\n\n➡️ Arraste para o lado e veja o antes e depois chocante!\n\n[FOTO 1] Antes: Pele opaca e sem vida.\n[FOTO 2] Depois: Pele radiante e hidratada!\n\nINGREDIENTES MÁGICOS:\n\n1️⃣ [Nome do Ingrediente 1]: [Benefícios e onde encontrar]\n2️⃣ [Nome do Ingrediente 2]: [Benefícios e onde encontrar]\n3️⃣ [Nome do Ingrediente 3]: [Benefícios e onde encontrar]\n\nJá usou algum desses? Me conta nos comentários! 👇\n\nCompartilhe com aquela amiga que PRECISA conhecer esses segredos! 😉",
+        "visual_spec": "Carrossel de fotos. Slide 1: Close-up do rosto 'antes', com iluminação natural, mostrando sinais de cansaço e falta de viço. Slide 2: Close-up do rosto 'depois', com pele visivelmente mais hidratada e luminosa. Slides 3, 4 e 5: Fotos dos produtos individuais, com embalagens bem visíveis e close-ups dos rótulos destacando os ingredientes-chave. Transição suave entre os slides.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Compartilhe esse post com uma amiga que precisa conhecer esses ingredientes secretos!",
+        "thumbnail_description": "Montagem com o antes e depois lado a lado, texto chamativo '3 Ingredientes Mágicos' e o logo da marca no canto inferior direito.",
+        "publish_time": "Quinta-feira, 11h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": "gestor",
+      "approved_at": "2026-03-21T20:09:28.193Z"
+    },
+    {
+      "id": "2026-03-23-7002-01",
+      "generated_at": "2026-03-21T19:27:27.002Z",
+      "status": "aprovado",
+      "scheduled_date": "2026-03-23",
+      "scheduled_time": "11:00",
+      "platform": "RedNote",
+      "niche": "tech",
+      "audience": "36-50",
+      "script": {
+        "title": "3 Funções ESCONDIDAS no seu celular",
+        "copy": "Se você usa celular, PRECISA conhecer esses truques! 🤯\n\n➡️ Arraste pro lado e descubra 3 funções INCRÍVEIS que estão escondidas no seu Android ou IOS e que vão facilitar MUITO o seu dia a dia.\n\nJá conhecia alguma delas? Me conta aqui nos comentários qual foi a sua favorita! 👇\n\nE não esquece de mandar esse post pra aquele amigo(a) que vive apanhando da tecnologia 🤣",
+        "visual_spec": "Carrossel de 3 imagens/cards. Cada card mostra um print de tela do celular (Android e IOS lado a lado, se aplicável) demonstrando o passo a passo da função escondida. Design limpo e direto, com setas e círculos destacados indicando onde o usuário deve clicar. Transição suave entre os cards (fade ou slide). Duração total estimada: 15 segundos (5 segundos por card).",
+        "hashtags": [
+          "#tech",
+          "#dicas",
+          "#tecnologia",
+          "#celular",
+          "#android"
+        ],
+        "cta": "Mandar o post para um amigo que tem dificuldades com tecnologia.",
+        "thumbnail_description": "Print de tela de um celular com um círculo vermelho chamativo em volta de um ícone pouco conhecido. Texto sobreposto: \"3 TRUQUES SECRETOS do seu celular!\"",
+        "publish_time": "Quinta-feira, 19h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": "gestor",
+      "approved_at": "2026-03-21T19:50:37.090Z"
+    },
+    {
+      "id": "2026-03-25-9283-01",
+      "generated_at": "2026-03-21T19:28:09.283Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-25",
+      "scheduled_time": "18:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "19-25",
+      "script": {
+        "title": "5 apps GRÁTIS que salvam a vida de qualquer estudante!",
+        "copy": "🤯 A vida de estudante já é uma loucura, né? Mas calma, seus problemas acabaram! \n\nTrouxe 5 aplicativos INCRÍVEIS e GRÁTIS que vão te ajudar a organizar os estudos, planejar o dia a dia e até relaxar um pouco. 😉\n\n[Tela dividida mostrando os apps em uso e minhas reações de surpresa]\n\nQual desses você já usa (ou vai começar a usar AGORA)? Deixe um emoji nos comentários! 👇\n\n#lifestyle #dicas #estudante",
+        "visual_spec": "Vídeo curto no formato 'tela dividida'. De um lado, a tela do celular mostrando o aplicativo em uso (navegação nas funcionalidades principais). Do outro lado, o criador de conteúdo reagindo de forma exagerada e divertida às funcionalidades. Transições rápidas e dinâmicas entre os aplicativos. Duração estimada: 30-45 segundos.",
+        "hashtags": [
+          "#lifestyle",
+          "#dicas",
+          "#estudante"
+        ],
+        "cta": "Qual desses você já usa (ou vai começar a usar AGORA)? Deixe um emoji nos comentários!",
+        "thumbnail_description": "Thumbnail com a tela dividida: de um lado, o ícone de um dos aplicativos (ex: um app de organização), do outro, o criador de conteúdo com uma expressão de surpresa e alívio. Texto chamativo: 'APPs GRÁTIS que todo estudante PRECISA!'",
+        "publish_time": "Quarta-feira, 18h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-27-7289-01",
+      "generated_at": "2026-03-21T19:28:47.289Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-27",
+      "scheduled_time": "21:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "36-50",
+      "script": {
+        "title": "3 Lições aos 40",
+        "copy": "A vida não vem com manual, né? 😅 Mas aos 40, olhando pra trás, tem umas coisas que eu queria MUITO ter sabido aos 20…\n\n✨ Primeira: Não tenha medo de arriscar! A gente se preocupa demais com o que os outros vão pensar e acaba perdendo oportunidades incríveis.\n\n✨ Segunda: Invista em você! Cursos, terapia, hobbies… O que te faz feliz e te ajuda a crescer.\n\n✨ Terceira: Abrace o agora! O passado já foi, o futuro é incerto. Viva intensamente cada momento.\n\nE você, qual lição daria para o seu 'eu' mais jovem? 👇 Conta aqui nos comentários!",
+        "visual_spec": "Formato 'storytime'. Criadora de conteúdo falando diretamente para a câmera em um ambiente acolhedor (ex: sala de estar com iluminação natural, plantas). Filtro suave para uma estética mais leve e acolhedora. Música de fundo inspiradora e suave. Duração estimada: 45-60 segundos. Legendas claras e concisas.",
+        "hashtags": [
+          "#lifestyle",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Compartilhe nos comentários qual lição você daria para o seu 'eu' mais jovem.",
+        "thumbnail_description": "Close-up do rosto da criadora sorrindo gentilmente. Cores quentes e acolhedoras. Texto: '3 Lições que eu queria ter aprendido aos 20!'",
+        "publish_time": "Quinta-feira, 19h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-29-0499-01",
+      "generated_at": "2026-03-21T19:29:20.499Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-29",
+      "scheduled_time": "7:00",
+      "platform": "RedNote",
+      "niche": "beauty",
+      "audience": "36-50",
+      "script": {
+        "title": "Alerta de amiga: 3 produtos de farmácia que salvam minha pele madura",
+        "copy": "✨ Pele radiante sem gastar uma fortuna? Vem comigo!\n\nNo vídeo de hoje, te mostro 3 produtinhos de farmácia que são meus aliados para uma pele saudável e luminosa, e o melhor: todos custam menos de R$30!\n\n1️⃣ [Nome do Produto 1]: Explicação rápida dos benefícios.\n2️⃣ [Nome do Produto 2]: Explicação rápida dos benefícios.\n3️⃣ [Nome do Produto 3]: Explicação rápida dos benefícios.\n\nJá testou algum desses? Me conta aqui nos comentários qual seu produto de farmácia favorito! 👇",
+        "visual_spec": "Selfie na câmera frontal, boa iluminação natural. Mostrar os produtos um a um, com close-ups nas embalagens. Transições suaves entre os produtos. Duração estimada: 45 segundos.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual o produto de farmácia favorito.",
+        "thumbnail_description": "Rosto sorrindo com pele radiante, segurando um dos produtos em destaque. Texto na tela: \"TOP 3 PRODUTOS DE FARMÁCIA (até R$30)\"",
+        "publish_time": "Quarta-feira, 19h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-22-4325-01",
+      "generated_at": "2026-03-21T19:29:44.325Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-22",
+      "scheduled_time": "7:00",
+      "platform": "Instagram",
+      "niche": "beauty",
+      "audience": "50+",
+      "script": {
+        "title": "Skincare matinal 50+: 3 produtos essenciais",
+        "copy": "✨ 50+ e pele radiante? TEMOS! ✨\n\nSe você passou dos 50, esses 3 produtinhos mudaram a minha pele e podem mudar a sua também! 😉\n\n1️⃣ [Nome do Produto 1]: Hidratação POWER para começar o dia. Pele macia e luminosa o dia todo!\n\n2️⃣ [Nome do Produto 2]: FPS SEMPRE! Proteção solar é o segredo número um para evitar manchas e rugas.\n\n3️⃣ [Nome do Produto 3]: Um toque de viço e cor para realçar a beleza natural. ✨\n\nE aí, qual desses você já usa? Me conta aqui nos comentários! 👇",
+        "visual_spec": "Selfie no espelho do banheiro. Transição suave mostrando a aplicação de cada produto. Enquadramento: rosto e mãos em destaque. Duração estimada: 30 segundos.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual dos produtos já usa.",
+        "thumbnail_description": "Rosto sorrindo, pele radiante, segurando um dos produtos. Texto na tela: \"Meus 3 segredos +50\".",
+        "publish_time": "Quinta-feira, 10h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-23-4859-01",
+      "generated_at": "2026-03-21T19:30:24.859Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-23",
+      "scheduled_time": "11:00",
+      "platform": "RedNote",
+      "niche": "tech",
+      "audience": "36-50",
+      "script": {
+        "title": "GUIA DEFINITIVO: Como proteger seus dados online (e evitar golpes!)",
+        "copy": "Seus dados valem OURO! 💰\n\nDescubra AGORA como blindar sua privacidade na internet e evitar cair em golpes!\n\n➡️ Arraste para o lado e confira o guia definitivo com dicas PRÁTICAS para proteger suas informações.\n\n🔒 Segurança online é fundamental! Compartilhe esse post com um amigo que precisa saber disso!\n\n#tech #dicas #trending",
+        "visual_spec": "Carrossel com design clean e cores chamativas (azul e branco). Cada slide com uma dica prática e um ícone ilustrativo correspondente. Animações sutis de transição entre os slides. Duração total estimada: 15 segundos (3 segundos por slide).",
+        "hashtags": [
+          "#tech",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Compartilhe esse post com um amigo que precisa saber disso! Segurança online é fundamental.",
+        "thumbnail_description": "Imagem de um cadeado digital estilizado sobre um fundo azul vibrante. Texto: 'GUIA DEFINITIVO: Proteja seus Dados Online!'",
+        "publish_time": "Quarta-feira, 19h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-25-9377-01",
+      "generated_at": "2026-03-21T19:30:59.377Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-25",
+      "scheduled_time": "18:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "19-25",
+      "script": {
+        "title": "DIY Criativo: Up no Quarto Gastando Pouco",
+        "copy": "Seu quarto tá sem graça? 😩\n\nEm 60 segundos te mostro como dar um UPGRADE total gastando QUASE NADA! ✨\n\n♻️ Materiais reciclados viram peças de DECOR incríveis\n🎨 Soluções criativas pra deixar tudo com a sua cara\n💸 E o melhor: sem estourar o orçamento!\n\nQual desses DIYs você vai testar primeiro? Me conta nos comentários e marca um amigo(a) que PRECISA dessa transformação! 👇",
+        "visual_spec": "Vídeo curto (60 segundos) no formato 'mixed'. Iniciar com o 'antes' do quarto, mostrando um ambiente sem graça. Transição rápida para o 'depois', revelando o quarto transformado com os DIYs. Close-ups dos materiais reciclados (garrafas, caixas, etc.) e das etapas de cada DIY. Utilizar overlay com texto conciso e explicativo em cada etapa. Música animada e inspiradora ao fundo. Transições dinâmicas e cortes rápidos para manter o ritmo.",
+        "hashtags": [
+          "#lifestyle",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual DIY vai testar primeiro e marcar um amigo(a).",
+        "thumbnail_description": "Foto do quarto 'depois', com a decoração DIY em destaque. Cores vibrantes e iluminação atraente. Texto chamativo: 'Quarto Novo GASTANDO POUCO!'",
+        "publish_time": "Quarta-feira, 18h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-27-3362-01",
+      "generated_at": "2026-03-21T19:31:33.362Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-27",
+      "scheduled_time": "21:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "36-50",
+      "script": {
+        "title": "Rotina Matinal Antiestresse: 3 Passos Simples",
+        "copy": "Acorda estressado(a)? 😩\n\nTestei e aprovei: 3 passos SIMPLES pra começar o dia no modo zen! ✨\n\n🧘‍♀️ Meditação guiada (5 minutinhos!) - Comece respirando fundo.\n\n🤸 Alongamento leve - Desperte o corpo sem pressa.\n\n☕ Bebida quente - Um abraço em forma de chá ou café.\n\nQual desses você vai testar HOJE? Me conta nos comentários! 👇",
+        "visual_spec": "Vídeo curto no formato 'tela dividida'. Lado esquerdo: pessoa com expressão de estresse ao acordar. Lado direito: a mesma pessoa executando os 3 passos (meditação guiada rápida com close no rosto e mãos, alongamento leve com foco na fluidez dos movimentos, close na xícara de bebida quente). Overlay com texto curto e direto dos passos em cada etapa. Transições suaves entre os passos. Duração estimada: 15-20 segundos.",
+        "hashtags": [
+          "#rotinamatinal",
+          "#antiestresse",
+          "#dicas",
+          "#bemestar",
+          "#lifestyle"
+        ],
+        "cta": "Comente qual dos 3 passos você vai testar HOJE.",
+        "thumbnail_description": "Tela dividida: lado esquerdo, rosto com expressão de cansaço/estresse; lado direito, rosto sorrindo bebendo uma xícara. Texto: '3 Passos Antiestresse'",
+        "publish_time": "Quarta-feira, 7h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-29-6365-01",
+      "generated_at": "2026-03-21T19:32:06.364Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-29",
+      "scheduled_time": "7:00",
+      "platform": "RedNote",
+      "niche": "beauty",
+      "audience": "36-50",
+      "script": {
+        "title": "Maquiagem Express: 3 Produtos Essenciais (35+)",
+        "copy": "Cansada de perder tempo se maquiando? 😩\n\nCom esses 3 produtinhos, você vai estar pronta em 5 minutos! ✨\n\n✅ Corretivo para iluminar\n✅ Blush cremoso para dar vida\n✅ Máscara de cílios para um olhar poderoso\n\nQual desses produtos já faz parte da sua rotina? Me conta nos comentários! 👇",
+        "visual_spec": "Vídeo curto no formato 'Get Ready With Me' filmado com a câmera frontal, mostrando a aplicação rápida dos produtos. Enquadramento próximo do rosto. Overlay com os nomes dos produtos e cronômetro acelerado no canto da tela. Transições rápidas e dinâmicas entre cada etapa da maquiagem. Duração estimada: 30 segundos.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual dos 3 produtos já usa na rotina.",
+        "thumbnail_description": "Close no rosto da influenciadora já maquiada com os 3 produtos, sorrindo e com olhar confiante. Texto na capa: 'Make em 5 minutos?'",
+        "publish_time": "Quinta-feira, 11h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-23-2006-01",
+      "generated_at": "2026-03-21T19:44:12.006Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-23",
+      "scheduled_time": "11:00",
+      "platform": "RedNote",
+      "niche": "tech",
+      "audience": "36-50",
+      "script": {
+        "title": "3 Funções ESCONDIDAS Que Vão EXPLODIR Sua Produtividade no Windows",
+        "copy": "🤯 Acha que conhece o Windows? Duvido que você saiba dessas 3 funções SECRETAS!\n\n1️⃣ Área de Transferência Turbinada: 🤫 Copie VÁRIOS textos e imagens e cole SÓ o que você precisa. (Windows + V)\n2️⃣ Anotações Adesivas: ✍️ Post-its digitais pra NUNCA mais perder um lembrete importante. (Windows + Shift + S)\n3️⃣ Atalhos Personalizados: 🚀 Abra seus apps favoritos com COMBINAÇÕES DE TECLAS personalizadas! (Propriedades > Atalho)\n\nJá conhecia alguma dessas funções? Qual você vai usar primeiro? Responda nos comentários! 👇",
+        "visual_spec": "Tela dividida: lado esquerdo mostra a tela do Windows demonstrando cada função (com close-ups nos comandos de teclado); lado direito, o criador reagindo e explicando em tempo real. Edição dinâmica com zoom nas áreas importantes e legendas concisas sincronizadas com a fala. Transições rápidas entre as funções para manter o ritmo.",
+        "hashtags": [
+          "#tech",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual das funções secretas do Windows vai usar primeiro.",
+        "thumbnail_description": "Thumbnail com a tela do Windows ao fundo e um close-up do criador com uma expressão de surpresa/revelação. Texto: \"3 TRUQUES SECRETOS DO WINDOWS!\" em letras garrafais e cores vibrantes.",
+        "publish_time": "Quarta-feira, 11h00"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-25-3284-01",
+      "generated_at": "2026-03-21T19:44:53.284Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-25",
+      "scheduled_time": "18:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "19-25",
+      "script": {
+        "title": "Como organizar as finanças sendo jovem e ganhando pouco (sem sofrer!)",
+        "copy": "Grana curta e boletos te assustam? 😰 Calma, jovem! Existe esperança! ✨\n\nNesse vídeo, te mostro como organizar suas finanças de um jeito SIMPLES e sem complicação, mesmo ganhando pouco. 😉\n\n✅ Dicas práticas para dividir o orçamento\n✅ Como identificar seus gastos essenciais\n✅ Estratégias para economizar no dia a dia\n\nE aí, qual a sua maior dificuldade com dinheiro? Compartilhe nos comentários para eu te ajudar! 👇",
+        "visual_spec": "Vídeo explicativo com motion graphics leves e cores vibrantes. Enquadramento dinâmico, alternando entre close-ups do rosto do apresentador e gráficos simples mostrando a divisão do orçamento (ex: pizza chart). Transições suaves e rápidas. Duração estimada: 60-90 segundos.",
+        "hashtags": [
+          "#lifestyle",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Compartilhe nos comentários qual a sua maior dificuldade com dinheiro.",
+        "thumbnail_description": "Apresentador sorrindo em frente a um fundo colorido com motion graphics de cifrões e gráficos. Texto: \"Grana Curta? Sem Stress!\"",
+        "publish_time": "Quarta-feira, 18h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-27-4314-01",
+      "generated_at": "2026-03-21T19:45:34.314Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-27",
+      "scheduled_time": "21:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "36-50",
+      "script": {
+        "title": "Desafio da Gratidão Fotográfica: Dia 1/7 - Sorrisos",
+        "copy": "✨ Dia 1/7 do nosso Desafio da Gratidão Fotográfica! ✨\n\nHoje, a missão é simples: encontre algo que te faz sorrir e capture esse momento em uma foto. Pode ser o seu café da manhã, seu pet, uma flor no jardim… O que trouxer alegria ao seu dia!\n\n📸 Compartilhe sua foto com a hashtag #GratidãoG4 e marque um amigo para espalhar essa energia positiva! Vamos juntos cultivar a gratidão?\n\n#desafio #gratidão #felicidade #lifestyle #dicas",
+        "visual_spec": "Post de texto com foto. A foto deve ser inspiradora e relacionada ao tema 'sorrisos'. Enquadramento aberto e cores vibrantes. Duração: post estático.",
+        "hashtags": [
+          "#desafio",
+          "#gratidão",
+          "#felicidade",
+          "#lifestyle",
+          "#dicas"
+        ],
+        "cta": "Compartilhe sua foto de hoje com a hashtag #GratidãoG4 e marque um amigo!",
+        "thumbnail_description": "Foto de uma pessoa sorrindo genuinamente, com luz natural e um fundo levemente desfocado. Texto sobreposto: 'Dia 1/7: Sorrisos'.",
+        "publish_time": "Segunda-feira, 10h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-29-2190-01",
+      "generated_at": "2026-03-21T19:46:12.190Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-29",
+      "scheduled_time": "7:00",
+      "platform": "RedNote",
+      "niche": "beauty",
+      "audience": "36-50",
+      "script": {
+        "title": "Resenha Honesta: Base [Marca] - Vale a Pena?",
+        "copy": "Chegou a hora da verdade! ✨ Testei a base [Marca] e vou te contar TUDO...\n\n(Aplicando a base no rosto) ➡️ Olha essa cobertura! E a textura, super leve!\n\n🤔 Será que vale o hype? No vídeo eu te conto minha opinião sincera sobre cobertura, durabilidade e muito mais!\n\nJá usou essa base? Me conta sua experiência nos comentários! 👇",
+        "visual_spec": "Vídeo curto (60s) no formato 'Get Ready With Me'. Usuária aplica a base [Marca] no rosto, mostrando a cobertura e textura em close-up. Usar boa iluminação para destacar o acabamento da pele. Overlay com preço e notas (de 0 a 5) para cada quesito (cobertura, durabilidade, transferência, etc.). Transições rápidas e dinâmicas entre os takes.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual a experiência com a base testada.",
+        "thumbnail_description": "Close-up do rosto da usuária com metade do rosto maquiado com a base e a outra metade sem maquiagem, mostrando a diferença de cobertura. Texto chamativo: 'Base [Marca]: Aprovada ou Decepção?'",
+        "publish_time": "Quarta-feira, 19h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-22-4898-01-rzv6l",
+      "generated_at": "2026-03-21T19:51:24.898Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-22",
+      "scheduled_time": "7:00",
+      "platform": "Instagram",
+      "niche": "beauty",
+      "audience": "50+",
+      "script": {
+        "title": "Acessórios de make para +50",
+        "copy": "Chega de make sem graça! ✨ Esses acessórios transformam qualquer visual +50.\n\nNo vídeo de hoje, te mostro meus segredinhos para uma make impecável e moderna, usando acessórios que fazem toda a diferença. 😉\n\nQual desses acessórios você já usa? Me conta nos comentários! 👇",
+        "visual_spec": "Reels curto (15-20 segundos). Transições rápidas mostrando cada acessório de maquiagem (ex: curvex, pincel chanfrado, esponja de maquiagem, etc.). Para cada acessório, mostrar rapidamente um exemplo de uso no rosto. Usar overlay com texto curto e objetivo identificando cada acessório. Música de fundo animada e moderna.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comente qual acessório você já usa.",
+        "thumbnail_description": "Close-up do rosto de uma mulher +50 sorrindo, com maquiagem impecável e um dos acessórios em destaque (ex: um pincel de maquiagem). Texto na capa: \"+50? Esses acessórios mudam TUDO!\"",
+        "publish_time": "Quinta-feira, 11h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-23-9556-01",
+      "generated_at": "2026-03-21T19:52:09.556Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-23",
+      "scheduled_time": "11:00",
+      "platform": "RedNote",
+      "niche": "tech",
+      "audience": "36-50",
+      "script": {
+        "title": "Review 'Batalha de Gadgets': Fone A vs Fone B - Qual o Melhor para Seu Home Office?",
+        "copy": "Se você trabalha em casa, PRECISA ver esse comparativo!\n\nTestamos lado a lado o Fone A e o Fone B pra te ajudar a escolher o melhor pro seu home office. Qual deles leva a melhor em:\n\n🎧 Qualidade de áudio pra calls?\n💪 Conforto pra longas jornadas?\n🎶 Imersão pra sua playlist?\n\nAssista até o final e descubra! E aí, qual dos dois você usaria no seu dia a dia? Comente A ou B!",
+        "visual_spec": "Vídeo tela dividida: lado a lado mostrando fone A e fone B em situações de uso (chamadas, música, conforto). Overlay com texto comparando especificações (ex: bateria, cancelamento de ruído, peso). Transições rápidas e dinâmicas entre os fones. Duração estimada: 60 segundos.",
+        "hashtags": [
+          "#tech",
+          "#dicas",
+          "#homeoffice",
+          "#fonesdeouvido",
+          "#gadgets"
+        ],
+        "cta": "Comente A ou B: Qual dos dois você usaria no seu dia a dia?",
+        "thumbnail_description": "Tela dividida com os dois fones em destaque. Texto chamativo: 'Fone A vs Fone B: Qual o melhor?' Logotipo da RedNote no canto superior.",
+        "publish_time": "Quinta-feira, 16h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-25-5153-01",
+      "generated_at": "2026-03-21T19:52:45.153Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-25",
+      "scheduled_time": "18:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "19-25",
+      "script": {
+        "title": "Rotina Matinal Produtiva",
+        "copy": "✨ Começando o dia com o pé direito! ☀️\n\nMostrei minha rotina matinal completa pra vocês se inspirarem e terem um dia super produtivo. 💪\n\nQual o seu ritual matinal favorito? Conta aqui nos comentários! 👇\n\n#lifestyle #rotinamatinal #dicas #produtividade #trending",
+        "visual_spec": "Vídeo curto (30-45 segundos). Abertura com time-lapse do sol nascendo. Transições rápidas mostrando cada etapa da rotina: acordar, alongamento, skincare, preparo do café da manhã, leitura. Música animada e inspiradora. Legendas concisas com os principais passos.",
+        "hashtags": [
+          "#lifestyle",
+          "#rotinamatinal",
+          "#dicas",
+          "#produtividade",
+          "#trending"
+        ],
+        "cta": "Comente qual o seu ritual matinal favorito",
+        "thumbnail_description": "Foto da influenciadora sorrindo, segurando uma xícara de café, com o sol da manhã ao fundo. Texto: \"Minha Rotina Matinal SECRETA!\"",
+        "publish_time": "Quarta-feira, 7h30"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-27-1628-01",
+      "generated_at": "2026-03-21T19:53:21.628Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-27",
+      "scheduled_time": "21:00",
+      "platform": "Bilibili",
+      "niche": "lifestyle",
+      "audience": "36-50",
+      "script": {
+        "title": "Organização Sem Stress: 5 Truques Para Um Armário Impecável",
+        "copy": "Seu armário é um caos? 🤯 Calma, eu te ajudo! \n\nCom essas 5 dicas, você vai transformar seu armário em um oásis de organização ✨\n\n1️⃣ Desapegue do que não usa mais! Menos é mais.\n2️⃣ Use caixas organizadoras para setorizar (roupas de ginástica, meias, etc).\n3️⃣ Dobre as roupas no estilo 'colmeia' para otimizar espaço e visualizar tudo.\n4️⃣ Cabides padronizados dão um toque clean e elegante.\n5️⃣ Use as portas do armário com ganchos e organizadores.\n\nQual desses truques você já usa? Compartilhe suas dicas nos comentários! 👇",
+        "visual_spec": "Carrossel com 5 fotos de 'antes e depois'. Cada slide mostra uma etapa da transformação de um armário desorganizado para um organizado. Adicionar texto sobreposto em cada foto com a dica correspondente. Transição suave entre os slides.",
+        "hashtags": [
+          "#lifestyle",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Compartilhe suas dicas de organização nos comentários.",
+        "thumbnail_description": "Foto de um armário extremamente bagunçado no lado esquerdo e um armário impecavelmente organizado no lado direito. Texto: 'Organização Sem Stress: 5 Truques Para Um Armário Impecável'",
+        "publish_time": "Quinta-feira, 15h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-29-6417-01",
+      "generated_at": "2026-03-21T19:53:56.417Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-29",
+      "scheduled_time": "7:00",
+      "platform": "RedNote",
+      "niche": "beauty",
+      "audience": "36-50",
+      "script": {
+        "title": "Dica Rápida: Contorno Facial para Afinar o Rosto (+35)",
+        "copy": "Seu rosto parece mais redondo nas fotos? 🤫\n\nVem aprender um contorno que afina NA HORA! ✨\n\nÉ super simples:\n1️⃣ Aplique um contorno matte 2 tons mais escuro que sua pele abaixo do osso da maçã do rosto.\n2️⃣ Esfume bem para não marcar.\n3️⃣ Ilumine o centro da testa, o queixo e abaixo dos olhos.\n\nPRONTO! Rosto mais fino e definido em segundos. 😉\n\nJá testou essa técnica? Me conta nos comentários que produtos você usou! 👇",
+        "visual_spec": "Vídeo curto (30 segundos). Tela dividida: um lado mostrando o rosto sem contorno, outro lado mostrando a aplicação do contorno em tempo real. Enquadramento: close-up no rosto. Transições rápidas entre as etapas do contorno. Overlay de texto com os números '1', '2', '3' e palavras-chave como 'Contorno', 'Esfume', 'Ilumine'. Música de fundo animada e moderna.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar quais produtos foram usados para o contorno.",
+        "thumbnail_description": "Thumbnail com o rosto em tela dividida: um lado sem contorno, outro lado com contorno. Texto chamativo: 'CONTORNO QUE AFINA!'. Cores vibrantes e modernas.",
+        "publish_time": "Quinta-feira, 19h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-21-ins-1-1-t2qqa",
+      "generated_at": "2026-03-21T20:09:25.296Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-21",
+      "scheduled_time": "7:00",
+      "platform": "Instagram",
+      "niche": "beauty",
+      "audience": "50+",
+      "script": {
+        "title": "Guia Rápido: 3 truques de maquiagem que rejuvenescem na hora!",
+        "copy": "Rugas e linhas de expressão te incomodam? 😩\n\nAprenda 3 truques de make que dão um UP na sua autoestima em segundos! ✨\n\n1️⃣ Corretivo: aplique um tom mais claro que a sua pele nas áreas escuras (olheiras, cantos do nariz). Ilumina e disfarça! 😉\n\n2️⃣ Blush: nas maçãs do rosto, em direção às têmporas. Cor e viço instantâneos! 💖\n\n3️⃣ Iluminador: um toque estratégico no arco do cupido e têmporas. Pele radiante e jovial! ✨\n\nQual truque você vai experimentar primeiro? Me conta aqui embaixo com um emoji! 👇",
+        "visual_spec": "Carrossel de Instagram. Slide 1: foto 'antes' do rosto (com rugas/linhas visíveis). Slide 2: foto 'depois' do mesmo rosto, com o truque 1 aplicado. Slide 3 e 4: o mesmo para o truque 2. Slide 5 e 6: o mesmo para o truque 3. Legendas concisas em cada slide, reforçando os benefícios. Transição suave entre os slides.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending",
+          "#maquiagem",
+          "#rejuvenescimento"
+        ],
+        "cta": "Comentar com um emoji qual truque vai experimentar primeiro.",
+        "thumbnail_description": "Close-up do rosto de uma mulher 50+ sorrindo, com maquiagem leve e radiante. Texto sobreposto: '3 Truques de Make para Rejuvenescer JÁ!'",
+        "publish_time": "Quinta-feira, 11h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-22-red-2-1-0x00n",
+      "generated_at": "2026-03-21T20:09:54.208Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-22",
+      "scheduled_time": "11:00",
+      "platform": "RedNote",
+      "niche": "tech",
+      "audience": "36-50",
+      "script": {
+        "title": "3 Apps INCRÍVEIS para Turbinar Seu Trabalho",
+        "copy": "Cansado dos mesmos apps de sempre? 🙄\n\nSe liga nesses 3 que vão mudar seu jogo (e ninguém te contou! 🤫):\n\n[App 1]: [Nome do App] - [Função principal e benefício]\n[App 2]: [Nome do App] - [Função principal e benefício]\n[App 3]: [Nome do App] - [Função principal e benefício]\n\nQual desses você já conhecia? Me conta nos comentários! 👇",
+        "visual_spec": "Vídeo curto no estilo TikTok. Tela dividida: um lado mostrando a tela do app sendo usado (captura de tela), o outro lado mostrando a reação/narração do apresentador. Legendas chamativas e dinâmicas, com cores vibrantes e animações simples. Duração estimada: 30-45 segundos. Transições rápidas entre os apps, com pequenos efeitos visuais (zoom, fade).",
+        "hashtags": [
+          "#tech",
+          "#dicas",
+          "#trending"
+        ],
+        "cta": "Comentar qual dos apps já conhecia.",
+        "thumbnail_description": "Captura de tela dividida mostrando um dos apps em destaque e a reação surpresa do apresentador. Texto chamativo: '3 Apps INCRÍVEIS!'",
+        "publish_time": "Quinta-feira, 18h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-21-ins-1-1-2k0d3",
+      "generated_at": "2026-03-21T20:10:25.033Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-21",
+      "scheduled_time": "7:00",
+      "platform": "Instagram",
+      "niche": "beauty",
+      "audience": "50+",
+      "script": {
+        "title": "Maquiagem Para o Dia a Dia: Simples, Rápida e Elegante (+50)",
+        "copy": "Sem tempo, amiga? ⏰ Em 3 minutinhos te mostro uma make completa pra você arrasar no dia a dia! ✨\n\nEssa make é perfeita pra quem busca praticidade sem abrir mão de uma produção elegante. 😉 Produtos acessíveis, fáceis de aplicar e que realçam a beleza natural da mulher +50. 💖\n\nPasso a passo:\n1️⃣ [Produto 1]\n2️⃣ [Produto 2]\n3️⃣ [Produto 3]\n...\n\nGostou da dica? Salve esse vídeo pra não esquecer e marque uma amiga que também vai amar essa make! 👇",
+        "visual_spec": "Vídeo selfie (câmera frontal) mostrando a aplicação da maquiagem passo a passo. Enquadramento próximo do rosto, boa iluminação natural. Transições rápidas entre cada etapa da maquiagem. Legendas concisas com o nome de cada produto utilizado. Duração estimada: 3 minutos.",
+        "hashtags": [
+          "#beauty",
+          "#dicas",
+          "#trending",
+          "#makeexpress",
+          "#maquiagem50mais"
+        ],
+        "cta": "Salve o vídeo e marque uma amiga que também vai amar essa make!",
+        "thumbnail_description": "Close no rosto da modelo com a maquiagem finalizada, sorrindo. Texto: \"Make Express +50: 3 minutos para arrasar!\" Fonte elegante e cores vibrantes.",
+        "publish_time": "Quarta-feira, 11h"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    },
+    {
+      "id": "2026-03-22-red-2-1-vm1uw",
+      "generated_at": "2026-03-21T20:11:02.578Z",
+      "status": "pendente",
+      "scheduled_date": "2026-03-22",
+      "scheduled_time": "11:00",
+      "platform": "RedNote",
+      "niche": "tech",
+      "audience": "36-50",
+      "script": {
+        "title": "RedNote Tech: 3 Apps que Facilitam a Vida no Home Office",
+        "copy": "Sério, PARE de perder tempo! 🤯\n\nEsses 3 apps VÃO TE SALVAR no home office (e aposto que você não conhecia nenhum):\n\n1️⃣ [Nome do App 1]: Descrição concisa do problema que resolve e como.\n2️⃣ [Nome do App 2]: Descrição concisa do problema que resolve e como.\n3️⃣ [Nome do App 3]: Descrição concisa do problema que resolve e como.\n\nQual desses apps você já conhecia? Comenta aqui embaixo e me conta! 👇",
+        "visual_spec": "Vídeo curto em tela dividida. Lado esquerdo: Screencast do app em uso, mostrando as funcionalidades na prática. Lado direito: Apresentador gesticulando e demonstrando entusiasmo com as dicas. Legendas dinâmicas e chamativas, com cores vibrantes e animações simples. Transições rápidas entre os apps. Duração estimada: 30-45 segundos.",
+        "hashtags": [
+          "#tech",
+          "#homeoffice",
+          "#produtividade",
+          "#dicas",
+          "#trabalhodigital"
+        ],
+        "cta": "Comentar qual dos apps já conhecia ou pretende testar.",
+        "thumbnail_description": "Tela dividida: Lado esquerdo: print com o logo de um dos apps em destaque. Lado direito: apresentador sorrindo e apontando para a tela, com a frase \"3 Apps INCRÍVEIS!\" em destaque.",
+        "publish_time": "Quinta-feira, 11h00"
+      },
+      "scores": {
+        "originality": 0,
+        "feasibility": 0,
+        "alignment": 0,
+        "overall": 0
+      },
+      "approved_by": null,
+      "approved_at": null
+    }
+  ]
+}

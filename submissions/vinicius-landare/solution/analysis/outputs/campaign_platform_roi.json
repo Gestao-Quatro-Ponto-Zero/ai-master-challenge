@@ -1,0 +1,413 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:32:24.950746",
+    "data_source": "dataset_v1",
+    "analysis": "paid_traffic"
+  },
+  "data": [
+    {
+      "sponsor_category": "food",
+      "platform": "Instagram",
+      "posts": 777,
+      "avg_engagement": 19.9353,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0408
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "Bilibili",
+      "posts": 736,
+      "avg_engagement": 19.9479,
+      "organic_baseline": 19.9104942793,
+      "lift": 0.0374
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "RedNote",
+      "posts": 776,
+      "avg_engagement": 19.941,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0355
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "Instagram",
+      "posts": 738,
+      "avg_engagement": 19.924,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0295
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "RedNote",
+      "posts": 774,
+      "avg_engagement": 19.9274,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0219
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "RedNote",
+      "posts": 706,
+      "avg_engagement": 19.9241,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0186
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "Instagram",
+      "posts": 704,
+      "avg_engagement": 19.9102,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0157
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "Instagram",
+      "posts": 690,
+      "avg_engagement": 19.9047,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0102
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "TikTok",
+      "posts": 745,
+      "avg_engagement": 19.9213,
+      "organic_baseline": 19.9123824301,
+      "lift": 0.0089
+    },
+    {
+      "sponsor_category": "electronics",
+      "platform": "RedNote",
+      "posts": 783,
+      "avg_engagement": 19.9137,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0082
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "YouTube",
+      "posts": 747,
+      "avg_engagement": 19.9127,
+      "organic_baseline": 19.9068110724,
+      "lift": 0.0059
+    },
+    {
+      "sponsor_category": "electronics",
+      "platform": "TikTok",
+      "posts": 752,
+      "avg_engagement": 19.9161,
+      "organic_baseline": 19.9123824301,
+      "lift": 0.0037
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "YouTube",
+      "posts": 750,
+      "avg_engagement": 19.9089,
+      "organic_baseline": 19.9068110724,
+      "lift": 0.0021
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "Bilibili",
+      "posts": 718,
+      "avg_engagement": 19.9115,
+      "organic_baseline": 19.9104942793,
+      "lift": 0.001
+    },
+    {
+      "sponsor_category": "electronics",
+      "platform": "Instagram",
+      "posts": 727,
+      "avg_engagement": 19.8952,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0007
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "Bilibili",
+      "posts": 771,
+      "avg_engagement": 19.9097,
+      "organic_baseline": 19.9104942793,
+      "lift": -0.0008
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "YouTube",
+      "posts": 773,
+      "avg_engagement": 19.9013,
+      "organic_baseline": 19.9068110724,
+      "lift": -0.0055
+    },
+    {
+      "sponsor_category": "electronics",
+      "platform": "YouTube",
+      "posts": 771,
+      "avg_engagement": 19.8992,
+      "organic_baseline": 19.9068110724,
+      "lift": -0.0076
+    },
+    {
+      "sponsor_category": "electronics",
+      "platform": "Bilibili",
+      "posts": 717,
+      "avg_engagement": 19.9001,
+      "organic_baseline": 19.9104942793,
+      "lift": -0.0104
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "YouTube",
+      "posts": 770,
+      "avg_engagement": 19.8949,
+      "organic_baseline": 19.9068110724,
+      "lift": -0.0119
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "RedNote",
+      "posts": 770,
+      "avg_engagement": 19.8925,
+      "organic_baseline": 19.9054722455,
+      "lift": -0.013
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "RedNote",
+      "posts": 712,
+      "avg_engagement": 19.8922,
+      "organic_baseline": 19.9054722455,
+      "lift": -0.0133
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "TikTok",
+      "posts": 715,
+      "avg_engagement": 19.8986,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0138
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "Bilibili",
+      "posts": 767,
+      "avg_engagement": 19.8862,
+      "organic_baseline": 19.9104942793,
+      "lift": -0.0243
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "TikTok",
+      "posts": 738,
+      "avg_engagement": 19.8863,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0261
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "YouTube",
+      "posts": 719,
+      "avg_engagement": 19.8802,
+      "organic_baseline": 19.9068110724,
+      "lift": -0.0266
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "TikTok",
+      "posts": 740,
+      "avg_engagement": 19.8832,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0292
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "Bilibili",
+      "posts": 744,
+      "avg_engagement": 19.8799,
+      "organic_baseline": 19.9104942793,
+      "lift": -0.0306
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "Instagram",
+      "posts": 733,
+      "avg_engagement": 19.8633,
+      "organic_baseline": 19.8945429225,
+      "lift": -0.0312
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "TikTok",
+      "posts": 751,
+      "avg_engagement": 19.8802,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0322
+    }
+  ],
+  "top_campaigns": [
+    {
+      "sponsor_category": "food",
+      "platform": "Instagram",
+      "posts": 777,
+      "avg_engagement": 19.9353,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0408
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "Bilibili",
+      "posts": 736,
+      "avg_engagement": 19.9479,
+      "organic_baseline": 19.9104942793,
+      "lift": 0.0374
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "RedNote",
+      "posts": 776,
+      "avg_engagement": 19.941,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0355
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "Instagram",
+      "posts": 738,
+      "avg_engagement": 19.924,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0295
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "RedNote",
+      "posts": 774,
+      "avg_engagement": 19.9274,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0219
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "RedNote",
+      "posts": 706,
+      "avg_engagement": 19.9241,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0186
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "Instagram",
+      "posts": 704,
+      "avg_engagement": 19.9102,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0157
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "Instagram",
+      "posts": 690,
+      "avg_engagement": 19.9047,
+      "organic_baseline": 19.8945429225,
+      "lift": 0.0102
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "TikTok",
+      "posts": 745,
+      "avg_engagement": 19.9213,
+      "organic_baseline": 19.9123824301,
+      "lift": 0.0089
+    },
+    {
+      "sponsor_category": "electronics",
+      "platform": "RedNote",
+      "posts": 783,
+      "avg_engagement": 19.9137,
+      "organic_baseline": 19.9054722455,
+      "lift": 0.0082
+    }
+  ],
+  "bottom_campaigns": [
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "RedNote",
+      "posts": 770,
+      "avg_engagement": 19.8925,
+      "organic_baseline": 19.9054722455,
+      "lift": -0.013
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "RedNote",
+      "posts": 712,
+      "avg_engagement": 19.8922,
+      "organic_baseline": 19.9054722455,
+      "lift": -0.0133
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "TikTok",
+      "posts": 715,
+      "avg_engagement": 19.8986,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0138
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "Bilibili",
+      "posts": 767,
+      "avg_engagement": 19.8862,
+      "organic_baseline": 19.9104942793,
+      "lift": -0.0243
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "TikTok",
+      "posts": 738,
+      "avg_engagement": 19.8863,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0261
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "YouTube",
+      "posts": 719,
+      "avg_engagement": 19.8802,
+      "organic_baseline": 19.9068110724,
+      "lift": -0.0266
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "TikTok",
+      "posts": 740,
+      "avg_engagement": 19.8832,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0292
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "Bilibili",
+      "posts": 744,
+      "avg_engagement": 19.8799,
+      "organic_baseline": 19.9104942793,
+      "lift": -0.0306
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "Instagram",
+      "posts": 733,
+      "avg_engagement": 19.8633,
+      "organic_baseline": 19.8945429225,
+      "lift": -0.0312
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "TikTok",
+      "posts": 751,
+      "avg_engagement": 19.8802,
+      "organic_baseline": 19.9123824301,
+      "lift": -0.0322
+    }
+  ]
+}

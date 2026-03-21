@@ -1,22 +1,46 @@
-[
-  {
-    "is_sponsored":false,
-    "posts":29900,
-    "avg_engagement_rate":19.9059,
-    "avg_likes":1510.2607,
-    "avg_shares":300.0742,
-    "avg_comments":199.9997,
-    "avg_views":10100.1601,
-    "median_engagement_rate":19.8977
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00",
+    "significance": {
+      "is_significant": false,
+      "p_value": 0.879003,
+      "effect_size": 0.0022,
+      "test": "mann_whitney_u"
+    },
+    "ci_organic": {
+      "ci_lower": 19.9004,
+      "ci_upper": 19.9114,
+      "margin": 0.0055
+    },
+    "ci_sponsored": {
+      "ci_lower": 19.8984,
+      "ci_upper": 19.9113,
+      "margin": 0.0064
+    }
   },
-  {
-    "is_sponsored":true,
-    "posts":22314,
-    "avg_engagement_rate":19.9048,
-    "avg_likes":1510.2929,
-    "avg_shares":299.9437,
-    "avg_comments":200.0366,
-    "avg_views":10100.4484,
-    "median_engagement_rate":19.9014
-  }
-]
+  "data": [
+    {
+      "is_sponsored": false,
+      "posts": 29900,
+      "avg_engagement_rate": 19.9059,
+      "avg_likes": 1510.2607,
+      "avg_shares": 300.0742,
+      "avg_comments": 199.9997,
+      "avg_views": 10100.1601,
+      "median_engagement_rate": 19.8977
+    },
+    {
+      "is_sponsored": true,
+      "posts": 22314,
+      "avg_engagement_rate": 19.9048,
+      "avg_likes": 1510.2929,
+      "avg_shares": 299.9437,
+      "avg_comments": 200.0366,
+      "avg_views": 10100.4484,
+      "median_engagement_rate": 19.9014
+    }
+  ]
+}

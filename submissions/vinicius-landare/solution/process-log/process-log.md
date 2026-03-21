@@ -123,6 +123,31 @@ Com base no briefing do gestor e no reconhecimento dos dados:
 
 ---
 
+## Meu processo de pensamento — antes de abrir qualquer ferramenta
+
+Antes de iniciar o Claude Code ou qualquer linha de código, organizei meu raciocínio com anotações manuais. Esse processo é o que direcionou toda a execução.
+
+### Fundamentos que identifiquei no briefing
+
+1. **O Head de Marketing quer analisar um dataset para entender o engajamento real** — não quer um sistema genérico, quer respostas concretas sobre o que funciona e o que não funciona.
+2. **Quer entender se vale a pena patrocinar influenciadores** — essa é uma pergunta de ROI que precisa de dados comparativos (orgânico vs patrocinado), não de opinião.
+3. **O dataset tem 52K posts** — isso limita a janela de contexto de qualquer LLM. Preciso de uma estratégia de processamento local antes de envolver a IA na interpretação.
+4. **Lembrei de um amigo que usou Data Priming para cruzamento de dados** — isso me deu a ideia de pesquisar a metodologia e validar se fazia sentido para esse tipo de análise.
+
+### Passos que segui (antes e durante o uso da IA)
+
+1. **Anotações manuais:** Fiz anotações à mão com os elementos principais do projeto — o que o gestor pediu, quais dados existem, qual o formato de entrega esperado. Isso me deu clareza antes de tocar em qualquer ferramenta.
+
+2. **Criação do ambiente:** Criei a pasta do projeto no Finder e decidi usar frontend (dashboard) porque a equipe de social media precisa visualizar os dados, não ler planilhas. Essa decisão veio antes da IA — foi uma leitura do perfil do usuário final.
+
+3. **Instalação técnica do Claude Code:** Configurei o ambiente (Node.js, Claude Code CLI) e preparei o workspace.
+
+4. **Contextualização da missão antes de qualquer geração:** Antes de deixar a IA criar qualquer coisa, alimentei o contexto com o briefing completo, as regras de submissão, e exemplos de entregas anteriores. Isso evitou que a IA começasse a gerar código sem entender o que era pedido — o que de fato aconteceu na primeira tentativa, quando ela montou uma stack de SaaS antes de eu ler o briefing.
+
+5. **Interação dirigida com a IA:** A partir daí, cada interação foi direcionada por mim: qual hipótese testar, qual dado gerar, qual visualização construir, o que remover. A IA executou, mas a direção estratégica foi minha o tempo todo.
+
+---
+
 ## Onde a IA errou e como corrigi
 
 | O que aconteceu | Como corrigi |

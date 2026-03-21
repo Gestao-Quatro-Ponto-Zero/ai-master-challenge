@@ -1,27 +1,35 @@
-[
-  {
-    "platform":"Instagram",
-    "posts":1288,
-    "avg_engagement_rate":19.9342
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "platform":"RedNote",
-    "posts":1295,
-    "avg_engagement_rate":19.9218
-  },
-  {
-    "platform":"TikTok",
-    "posts":1293,
-    "avg_engagement_rate":19.909
-  },
-  {
-    "platform":"Bilibili",
-    "posts":1294,
-    "avg_engagement_rate":19.9054
-  },
-  {
-    "platform":"YouTube",
-    "posts":1335,
-    "avg_engagement_rate":19.8895
-  }
-]
+  "data": [
+    {
+      "platform": "Instagram",
+      "posts": 1288,
+      "avg_engagement_rate": 19.9342
+    },
+    {
+      "platform": "RedNote",
+      "posts": 1295,
+      "avg_engagement_rate": 19.9218
+    },
+    {
+      "platform": "TikTok",
+      "posts": 1293,
+      "avg_engagement_rate": 19.909
+    },
+    {
+      "platform": "Bilibili",
+      "posts": 1294,
+      "avg_engagement_rate": 19.9054
+    },
+    {
+      "platform": "YouTube",
+      "posts": 1335,
+      "avg_engagement_rate": 19.8895
+    }
+  ]
+}

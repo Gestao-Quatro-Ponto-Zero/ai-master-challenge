@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:33:17.629583",
+    "data_source": "dataset_v1",
+    "analysis": "influencer_ranking"
+  },
+  "data": [
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "alinhar": 1091,
+      "incentivar": 11,
+      "manter": 411,
+      "reavaliar": 466
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "alinhar": 1341,
+      "incentivar": 12,
+      "manter": 608,
+      "reavaliar": 529
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "alinhar": 115,
+      "incentivar": 1,
+      "manter": 36,
+      "reavaliar": 56
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "alinhar": 158,
+      "incentivar": 0,
+      "manter": 63,
+      "reavaliar": 58
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "alinhar": 24,
+      "incentivar": 0,
+      "manter": 12,
+      "reavaliar": 8
+    }
+  ]
+}

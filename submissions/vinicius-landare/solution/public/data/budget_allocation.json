@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:32:24.950746",
+    "data_source": "dataset_v1",
+    "analysis": "paid_traffic"
+  },
+  "invest": [
+    {
+      "sponsor_category": "food",
+      "platform": "Instagram",
+      "lift": 0.0408,
+      "posts": 777
+    },
+    {
+      "sponsor_category": "cosmetics",
+      "platform": "Bilibili",
+      "lift": 0.0374,
+      "posts": 736
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "RedNote",
+      "lift": 0.0355,
+      "posts": 776
+    },
+    {
+      "sponsor_category": "travel",
+      "platform": "Instagram",
+      "lift": 0.0295,
+      "posts": 738
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "RedNote",
+      "lift": 0.0219,
+      "posts": 774
+    }
+  ],
+  "cut": [
+    {
+      "sponsor_category": "fashion",
+      "platform": "YouTube",
+      "lift": -0.0266,
+      "posts": 719
+    },
+    {
+      "sponsor_category": "gaming",
+      "platform": "TikTok",
+      "lift": -0.0292,
+      "posts": 740
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "Bilibili",
+      "lift": -0.0306,
+      "posts": 744
+    },
+    {
+      "sponsor_category": "fashion",
+      "platform": "Instagram",
+      "lift": -0.0312,
+      "posts": 733
+    },
+    {
+      "sponsor_category": "food",
+      "platform": "TikTok",
+      "lift": -0.0322,
+      "posts": 751
+    }
+  ],
+  "estimated_lift_if_reallocated": 0.063
+}

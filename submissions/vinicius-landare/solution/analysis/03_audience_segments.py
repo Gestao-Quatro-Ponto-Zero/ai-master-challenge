@@ -12,7 +12,7 @@ import json
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CSV_PATH = os.path.join(os.path.dirname(BASE_DIR), "social_media_dataset.csv")
+CSV_PATH = os.path.join(BASE_DIR, "assets", "social_media_dataset.csv")
 OUTPUT_DIR = os.path.join(BASE_DIR, "analysis", "outputs")
 
 print("Carregando dataset...")

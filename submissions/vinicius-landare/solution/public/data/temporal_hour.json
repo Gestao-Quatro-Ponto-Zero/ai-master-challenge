@@ -1,122 +1,130 @@
-[
-  {
-    "hour":0,
-    "posts":2236,
-    "avg_engagement_rate":19.9035
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "hour":1,
-    "posts":2203,
-    "avg_engagement_rate":19.907
-  },
-  {
-    "hour":2,
-    "posts":2097,
-    "avg_engagement_rate":19.9091
-  },
-  {
-    "hour":3,
-    "posts":2193,
-    "avg_engagement_rate":19.9004
-  },
-  {
-    "hour":4,
-    "posts":2221,
-    "avg_engagement_rate":19.8998
-  },
-  {
-    "hour":5,
-    "posts":2204,
-    "avg_engagement_rate":19.8882
-  },
-  {
-    "hour":6,
-    "posts":2165,
-    "avg_engagement_rate":19.9063
-  },
-  {
-    "hour":7,
-    "posts":2166,
-    "avg_engagement_rate":19.9207
-  },
-  {
-    "hour":8,
-    "posts":2149,
-    "avg_engagement_rate":19.9156
-  },
-  {
-    "hour":9,
-    "posts":2112,
-    "avg_engagement_rate":19.8996
-  },
-  {
-    "hour":10,
-    "posts":2151,
-    "avg_engagement_rate":19.9045
-  },
-  {
-    "hour":11,
-    "posts":2210,
-    "avg_engagement_rate":19.9209
-  },
-  {
-    "hour":12,
-    "posts":2126,
-    "avg_engagement_rate":19.8929
-  },
-  {
-    "hour":13,
-    "posts":2198,
-    "avg_engagement_rate":19.9117
-  },
-  {
-    "hour":14,
-    "posts":2128,
-    "avg_engagement_rate":19.9138
-  },
-  {
-    "hour":15,
-    "posts":2128,
-    "avg_engagement_rate":19.8893
-  },
-  {
-    "hour":16,
-    "posts":2208,
-    "avg_engagement_rate":19.8898
-  },
-  {
-    "hour":17,
-    "posts":2192,
-    "avg_engagement_rate":19.9151
-  },
-  {
-    "hour":18,
-    "posts":2133,
-    "avg_engagement_rate":19.9314
-  },
-  {
-    "hour":19,
-    "posts":2267,
-    "avg_engagement_rate":19.9067
-  },
-  {
-    "hour":20,
-    "posts":2128,
-    "avg_engagement_rate":19.897
-  },
-  {
-    "hour":21,
-    "posts":2232,
-    "avg_engagement_rate":19.9229
-  },
-  {
-    "hour":22,
-    "posts":2196,
-    "avg_engagement_rate":19.8925
-  },
-  {
-    "hour":23,
-    "posts":2171,
-    "avg_engagement_rate":19.892
-  }
-]
+  "data": [
+    {
+      "hour": 0,
+      "posts": 2236,
+      "avg_engagement_rate": 19.9035
+    },
+    {
+      "hour": 1,
+      "posts": 2203,
+      "avg_engagement_rate": 19.907
+    },
+    {
+      "hour": 2,
+      "posts": 2097,
+      "avg_engagement_rate": 19.9091
+    },
+    {
+      "hour": 3,
+      "posts": 2193,
+      "avg_engagement_rate": 19.9004
+    },
+    {
+      "hour": 4,
+      "posts": 2221,
+      "avg_engagement_rate": 19.8998
+    },
+    {
+      "hour": 5,
+      "posts": 2204,
+      "avg_engagement_rate": 19.8882
+    },
+    {
+      "hour": 6,
+      "posts": 2165,
+      "avg_engagement_rate": 19.9063
+    },
+    {
+      "hour": 7,
+      "posts": 2166,
+      "avg_engagement_rate": 19.9207
+    },
+    {
+      "hour": 8,
+      "posts": 2149,
+      "avg_engagement_rate": 19.9156
+    },
+    {
+      "hour": 9,
+      "posts": 2112,
+      "avg_engagement_rate": 19.8996
+    },
+    {
+      "hour": 10,
+      "posts": 2151,
+      "avg_engagement_rate": 19.9045
+    },
+    {
+      "hour": 11,
+      "posts": 2210,
+      "avg_engagement_rate": 19.9209
+    },
+    {
+      "hour": 12,
+      "posts": 2126,
+      "avg_engagement_rate": 19.8929
+    },
+    {
+      "hour": 13,
+      "posts": 2198,
+      "avg_engagement_rate": 19.9117
+    },
+    {
+      "hour": 14,
+      "posts": 2128,
+      "avg_engagement_rate": 19.9138
+    },
+    {
+      "hour": 15,
+      "posts": 2128,
+      "avg_engagement_rate": 19.8893
+    },
+    {
+      "hour": 16,
+      "posts": 2208,
+      "avg_engagement_rate": 19.8898
+    },
+    {
+      "hour": 17,
+      "posts": 2192,
+      "avg_engagement_rate": 19.9151
+    },
+    {
+      "hour": 18,
+      "posts": 2133,
+      "avg_engagement_rate": 19.9314
+    },
+    {
+      "hour": 19,
+      "posts": 2267,
+      "avg_engagement_rate": 19.9067
+    },
+    {
+      "hour": 20,
+      "posts": 2128,
+      "avg_engagement_rate": 19.897
+    },
+    {
+      "hour": 21,
+      "posts": 2232,
+      "avg_engagement_rate": 19.9229
+    },
+    {
+      "hour": 22,
+      "posts": 2196,
+      "avg_engagement_rate": 19.8925
+    },
+    {
+      "hour": 23,
+      "posts": 2171,
+      "avg_engagement_rate": 19.892
+    }
+  ]
+}

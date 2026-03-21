@@ -173,6 +173,14 @@ Escolhi esta metodologia apos comparar 4 alternativas:
 | Next.js 16 + shadcn/ui + Recharts | Dashboard interativo como diferencial da entrega |
 | Git + GitHub | Versionamento e submissao via Pull Request |
 
+### Meu processo de pensamento (antes de qualquer ferramenta)
+
+1. **Anotacoes manuais** — Fiz anotacoes com os elementos principais: o que o gestor pediu, quais dados existem, formato de entrega. Clareza antes de tocar em qualquer ferramenta.
+2. **Decisao pelo frontend** — A equipe de social media precisa visualizar dados, nao ler planilhas. Essa decisao veio antes da IA.
+3. **Contextualizacao da missao** — Alimentei o contexto da IA com briefing completo, regras e exemplos antes de qualquer geracao. Isso evitou que a IA criasse codigo sem entender o escopo.
+4. **Fundamentos identificados no briefing:** O gestor quer respostas concretas sobre engajamento real e ROI de patrocinio. O dataset de 52K posts limita a janela de contexto — preciso de processamento local. Lembrei de Data Priming como metodologia de cruzamento.
+5. **Interacao dirigida** — Cada hipotese testada, cada visualizacao construida, cada remocao de conteudo irrelevante foi decisao minha. A IA executou, a direcao estrategica foi minha.
+
 ### Workflow
 
 **Etapa 1 — Compreensao do desafio (antes de qualquer codigo)**

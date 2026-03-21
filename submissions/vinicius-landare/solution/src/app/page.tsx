@@ -4,18 +4,19 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { OverviewCards } from "@/components/dashboard/overview-cards";
-import { PlatformChart } from "@/components/dashboard/platform-chart";
-import { SponsorshipAnalysis } from "@/components/dashboard/sponsorship-analysis";
-import { PersonaCards } from "@/components/dashboard/persona-cards";
-import { CreatorTierChart } from "@/components/dashboard/creator-tier-chart";
-import { TopCombinations } from "@/components/dashboard/top-combinations";
-import { TemporalAnalysis } from "@/components/dashboard/temporal-analysis";
-import { Recommendations } from "@/components/dashboard/recommendations";
-import { MarketAnalysis } from "@/components/dashboard/market-analysis";
 import { AuthGate } from "@/components/dashboard/auth-gate";
+import { ZAPIConfig } from "@/components/dashboard/zapi-config";
+import { ExecutiveSummary } from "@/components/dashboard/executive-summary";
+import { EngagementDeepDive } from "@/components/dashboard/engagement-deep-dive";
+import { SponsorshipVerdict } from "@/components/dashboard/sponsorship-verdict";
+import { ContentCalendar } from "@/components/dashboard/content-calendar";
+import { InfluencerRanking } from "@/components/dashboard/influencer-ranking";
+import { ProfileAnalysis } from "@/components/dashboard/profile-analysis";
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export default function Dashboard() {
-  const [data, setData] = useState<Record<string, unknown> | null>(null);
+  const [data, setData] = useState<Record<string, any> | null>(null);
   const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -40,8 +41,19 @@ export default function Dashboard() {
       fetch("/data/h4_brazil_platform.json").then(r => r.json()),
       fetch("/data/h4_brazil_content_type.json").then(r => r.json()),
       fetch("/data/h4_brazil_age.json").then(r => r.json()),
-    ]).then(([summary, sponsored, tiers, top, bottom, dow, hour, platType, roi, locEng, brPlat, brContent, brAge]) => {
-      setData({ summary, sponsored, tiers, top, bottom, dow, hour, platType, roi, locEng, brPlat, brContent, brAge });
+      fetch("/data/paid_traffic_summary.json").then(r => r.json()).catch(() => null),
+      fetch("/data/campaign_roi.json").then(r => r.json()).catch(() => null),
+      fetch("/data/budget_allocation.json").then(r => r.json()).catch(() => null),
+      fetch("/data/influencer_ranking.json").then(r => r.json()).catch(() => null),
+      fetch("/data/general_stats.json").then(r => r.json()).catch(() => null),
+    ]).then(([
+      summary, sponsored, tiers, top, bottom, dow, hour, platType, roi, locEng, brPlat, brContent, brAge,
+      paidTrafficSummary, campaignRoi, budgetAllocation, influencerRanking, generalStats,
+    ]) => {
+      setData({
+        summary, sponsored, tiers, top, bottom, dow, hour, platType, roi, locEng, brPlat, brContent, brAge,
+        paidTrafficSummary, campaignRoi, budgetAllocation, influencerRanking, generalStats,
+      });
     });
   }, [authenticated]);
 
@@ -66,9 +78,11 @@ export default function Dashboard() {
     sponsored_pct: number; personas: Record<string, unknown>[];
   };
 
+  const extractData = (d: any) => d?.data || d;
+
   return (
     <div className="min-h-screen bg-[#F7F8FA]">
-      {/* Header G4 style — navy gradient */}
+      {/* Header */}
       <header className="bg-gradient-to-r from-[#0F1B2D] to-[#1A2D47] text-white">
         <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex items-center justify-between">
@@ -76,18 +90,14 @@ export default function Dashboard() {
               <Image src="/logo-g4.png" alt="G4" width={120} height={66} className="h-10 w-auto" priority />
               <div className="h-8 w-px bg-white/20" />
               <div>
-                <h1 className="text-lg font-semibold tracking-tight">Social Metrics</h1>
+                <h1 className="text-lg font-semibold tracking-tight">G4 Strategy</h1>
                 <p className="text-xs text-white/60">
-                  {summary.total_posts.toLocaleString("pt-BR")} publicações · {summary.total_creators.toLocaleString("pt-BR")} criadores
+                  {summary.total_posts.toLocaleString("pt-BR")} publicações analisadas
                 </p>
               </div>
             </div>
-            <div className="hidden md:flex gap-2">
-              {summary.platforms.map((p: string) => (
-                <span key={p} className="px-3 py-1 bg-white/10 text-white/80 rounded-full text-xs font-medium backdrop-blur-sm border border-white/10">
-                  {p}
-                </span>
-              ))}
+            <div className="hidden md:flex items-center gap-2">
+              <ZAPIConfig />
             </div>
           </div>
         </div>
@@ -96,67 +106,93 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-6 py-6 space-y-6">
         <OverviewCards summary={summary} />
 
-        <Tabs defaultValue="performance" className="space-y-4">
-          <TabsList className="bg-white border border-slate-200 shadow-sm p-1 rounded-xl grid w-full grid-cols-6">
-            <TabsTrigger value="performance" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs sm:text-sm transition-colors">
-              Desempenho
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList className="bg-white border border-slate-200 shadow-sm p-1 rounded-xl flex w-full">
+            <TabsTrigger value="overview" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs transition-colors flex-1">
+              Visão Geral
             </TabsTrigger>
-            <TabsTrigger value="sponsorship" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs sm:text-sm transition-colors">
+            <TabsTrigger value="engagement" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs transition-colors flex-1">
+              Engajamento
+            </TabsTrigger>
+            <TabsTrigger value="sponsorship" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs transition-colors flex-1">
               Patrocínio
             </TabsTrigger>
-            <TabsTrigger value="personas" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs sm:text-sm transition-colors">
-              Público-alvo
+            <TabsTrigger value="calendar" className="rounded-lg data-[state=active]:bg-[#E8734A] data-[state=active]:text-white text-xs transition-colors flex-1">
+              Calendário
             </TabsTrigger>
-            <TabsTrigger value="markets" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs sm:text-sm transition-colors">
-              Mercados
+            <TabsTrigger value="influencers" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs transition-colors flex-1">
+              Influenciadores
             </TabsTrigger>
-            <TabsTrigger value="temporal" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs sm:text-sm transition-colors">
-              Quando Postar
-            </TabsTrigger>
-            <TabsTrigger value="recommendations" className="rounded-lg data-[state=active]:bg-[#0F1B2D] data-[state=active]:text-white text-xs sm:text-sm transition-colors">
-              Plano de Ação
+            <TabsTrigger value="profile" className="rounded-lg data-[state=active]:bg-[#E8734A] data-[state=active]:text-white text-xs transition-colors flex-1">
+              Análise de Perfil
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="performance" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
-              <PlatformChart data={data.platType as Record<string, unknown>[]} />
-              <CreatorTierChart data={data.tiers as Record<string, unknown>[]} />
-            </div>
-            <TopCombinations topData={data.top as Record<string, unknown>[]} bottomData={data.bottom as Record<string, unknown>[]} />
+          {/* Tab 1: Visão Geral */}
+          <TabsContent value="overview" className="space-y-4">
+            <ExecutiveSummary
+              stats={data.generalStats}
+              topCombinations={extractData(data.top)}
+              bottomCombinations={extractData(data.bottom)}
+              sponsoredData={extractData(data.sponsored)}
+              paidTrafficSummary={data.paidTrafficSummary}
+              temporalDow={extractData(data.dow)}
+              temporalHour={extractData(data.hour)}
+            />
           </TabsContent>
 
+          {/* Tab 2: Engajamento (merge de 4 tabs antigas) */}
+          <TabsContent value="engagement" className="space-y-4">
+            <EngagementDeepDive
+              platType={extractData(data.platType)}
+              tiers={extractData(data.tiers)}
+              top={extractData(data.top)}
+              bottom={extractData(data.bottom)}
+              personas={summary.personas}
+              dow={extractData(data.dow)}
+              hour={extractData(data.hour)}
+              locEng={extractData(data.locEng)}
+              brPlat={extractData(data.brPlat)}
+              brContent={extractData(data.brContent)}
+              brAge={extractData(data.brAge)}
+            />
+          </TabsContent>
+
+          {/* Tab 3: Patrocínio (merge) */}
           <TabsContent value="sponsorship" className="space-y-4">
-            <SponsorshipAnalysis
-              generalData={data.sponsored as Record<string, unknown>[]}
-              roiData={data.roi as Record<string, unknown>[]}
+            <SponsorshipVerdict
+              generalData={extractData(data.sponsored)}
+              roiData={extractData(data.roi)}
+              paidTrafficSummary={data.paidTrafficSummary}
+              campaignRoi={data.campaignRoi}
+              budgetAllocation={data.budgetAllocation}
             />
           </TabsContent>
 
-          <TabsContent value="personas" className="space-y-4">
-            <PersonaCards personas={summary.personas} />
+          {/* Tab 4: Calendário */}
+          <TabsContent value="calendar" className="space-y-4">
+            <ContentCalendar />
           </TabsContent>
 
-          <TabsContent value="markets" className="space-y-4">
-            <MarketAnalysis
-              locationData={data.locEng as Record<string, unknown>[]}
-              brazilPlatform={data.brPlat as Record<string, unknown>[]}
-              brazilContentType={data.brContent as Record<string, unknown>[]}
-              brazilAge={data.brAge as Record<string, unknown>[]}
-            />
+          {/* Tab 5: Influenciadores */}
+          <TabsContent value="influencers" className="space-y-4">
+            {data.influencerRanking ? (
+              <InfluencerRanking rankingData={data.influencerRanking} />
+            ) : (
+              <div className="bg-white rounded-2xl border border-dashed border-slate-300 p-8 text-center">
+                <p className="text-xs text-slate-400">Execute python analysis/06_influencer_ranking.py para gerar o ranking</p>
+              </div>
+            )}
           </TabsContent>
 
-          <TabsContent value="temporal" className="space-y-4">
-            <TemporalAnalysis dowData={data.dow as Record<string, unknown>[]} hourData={data.hour as Record<string, unknown>[]} />
-          </TabsContent>
-
-          <TabsContent value="recommendations" className="space-y-4">
-            <Recommendations personas={summary.personas} />
+          {/* Tab 6: Análise de Perfil */}
+          <TabsContent value="profile" className="space-y-4">
+            <ProfileAnalysis />
           </TabsContent>
         </Tabs>
 
         <footer className="text-center text-[11px] text-slate-400 py-6 border-t border-slate-200">
-          Challenge 004 — Estratégia Social Media · Análise de {summary.total_posts.toLocaleString("pt-BR")} publicações
+          G4 Strategy · Social Media
         </footer>
       </main>
     </div>

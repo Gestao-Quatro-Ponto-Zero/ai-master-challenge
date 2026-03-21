@@ -1,182 +1,222 @@
-[
-  {
-    "platform":"Bilibili",
-    "content_type":"image",
-    "posts":2033,
-    "avg_engagement_rate":19.9032,
-    "avg_likes":1509.5529,
-    "avg_shares":300.6104,
-    "avg_comments":200.2518
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00",
+    "significance": {
+      "is_significant": false,
+      "p_value": 0.362098,
+      "test": "kruskal_wallis"
+    },
+    "confidence_intervals": {
+      "RedNote": {
+        "ci_lower": 19.9004,
+        "ci_upper": 19.9191,
+        "margin": 0.0094
+      },
+      "Bilibili": {
+        "ci_lower": 19.8992,
+        "ci_upper": 19.9178,
+        "margin": 0.0093
+      },
+      "YouTube": {
+        "ci_lower": 19.8945,
+        "ci_upper": 19.913,
+        "margin": 0.0093
+      },
+      "TikTok": {
+        "ci_lower": 19.8966,
+        "ci_upper": 19.9154,
+        "margin": 0.0094
+      },
+      "Instagram": {
+        "ci_lower": 19.8898,
+        "ci_upper": 19.9087,
+        "margin": 0.0095
+      }
+    }
   },
-  {
-    "platform":"Bilibili",
-    "content_type":"mixed",
-    "posts":1044,
-    "avg_engagement_rate":19.9163,
-    "avg_likes":1510.7605,
-    "avg_shares":299.8803,
-    "avg_comments":200.3036
-  },
-  {
-    "platform":"Bilibili",
-    "content_type":"text",
-    "posts":1078,
-    "avg_engagement_rate":19.92,
-    "avg_likes":1510.6113,
-    "avg_shares":300.5872,
-    "avg_comments":199.8358
-  },
-  {
-    "platform":"Bilibili",
-    "content_type":"video",
-    "posts":6443,
-    "avg_engagement_rate":19.907,
-    "avg_likes":1510.5952,
-    "avg_shares":299.8805,
-    "avg_comments":199.9654
-  },
-  {
-    "platform":"Instagram",
-    "content_type":"image",
-    "posts":2031,
-    "avg_engagement_rate":19.9038,
-    "avg_likes":1509.9695,
-    "avg_shares":300.4028,
-    "avg_comments":199.9212
-  },
-  {
-    "platform":"Instagram",
-    "content_type":"mixed",
-    "posts":1041,
-    "avg_engagement_rate":19.9146,
-    "avg_likes":1510.3775,
-    "avg_shares":300.0576,
-    "avg_comments":200.4803
-  },
-  {
-    "platform":"Instagram",
-    "content_type":"text",
-    "posts":1030,
-    "avg_engagement_rate":19.8975,
-    "avg_likes":1510.0864,
-    "avg_shares":299.5777,
-    "avg_comments":200.3282
-  },
-  {
-    "platform":"Instagram",
-    "content_type":"video",
-    "posts":6321,
-    "avg_engagement_rate":19.8955,
-    "avg_likes":1509.1509,
-    "avg_shares":300.2121,
-    "avg_comments":199.8742
-  },
-  {
-    "platform":"RedNote",
-    "content_type":"image",
-    "posts":2093,
-    "avg_engagement_rate":19.923,
-    "avg_likes":1511.3354,
-    "avg_shares":300.2317,
-    "avg_comments":200.4711
-  },
-  {
-    "platform":"RedNote",
-    "content_type":"mixed",
-    "posts":1093,
-    "avg_engagement_rate":19.9186,
-    "avg_likes":1511.2809,
-    "avg_shares":300.5361,
-    "avg_comments":200.2113
-  },
-  {
-    "platform":"RedNote",
-    "content_type":"text",
-    "posts":960,
-    "avg_engagement_rate":19.9268,
-    "avg_likes":1511.6646,
-    "avg_shares":299.8865,
-    "avg_comments":199.9021
-  },
-  {
-    "platform":"RedNote",
-    "content_type":"video",
-    "posts":6256,
-    "avg_engagement_rate":19.9012,
-    "avg_likes":1510.4322,
-    "avg_shares":299.5432,
-    "avg_comments":200.1773
-  },
-  {
-    "platform":"TikTok",
-    "content_type":"image",
-    "posts":1985,
-    "avg_engagement_rate":19.8928,
-    "avg_likes":1509.5209,
-    "avg_shares":300.001,
-    "avg_comments":199.8851
-  },
-  {
-    "platform":"TikTok",
-    "content_type":"mixed",
-    "posts":994,
-    "avg_engagement_rate":19.9134,
-    "avg_likes":1510.9829,
-    "avg_shares":299.5493,
-    "avg_comments":200.6117
-  },
-  {
-    "platform":"TikTok",
-    "content_type":"text",
-    "posts":1078,
-    "avg_engagement_rate":19.9055,
-    "avg_likes":1509.2727,
-    "avg_shares":300.7245,
-    "avg_comments":199.821
-  },
-  {
-    "platform":"TikTok",
-    "content_type":"video",
-    "posts":6239,
-    "avg_engagement_rate":19.9091,
-    "avg_likes":1511.0563,
-    "avg_shares":299.7254,
-    "avg_comments":199.9678
-  },
-  {
-    "platform":"YouTube",
-    "content_type":"image",
-    "posts":2161,
-    "avg_engagement_rate":19.8965,
-    "avg_likes":1509.9435,
-    "avg_shares":300.0416,
-    "avg_comments":199.4322
-  },
-  {
-    "platform":"YouTube",
-    "content_type":"mixed",
-    "posts":1041,
-    "avg_engagement_rate":19.9068,
-    "avg_likes":1510.0893,
-    "avg_shares":300.2988,
-    "avg_comments":200.3199
-  },
-  {
-    "platform":"YouTube",
-    "content_type":"text",
-    "posts":1052,
-    "avg_engagement_rate":19.9264,
-    "avg_likes":1511.4087,
-    "avg_shares":300.7405,
-    "avg_comments":199.9743
-  },
-  {
-    "platform":"YouTube",
-    "content_type":"video",
-    "posts":6241,
-    "avg_engagement_rate":19.9019,
-    "avg_likes":1509.8587,
-    "avg_shares":300.0471,
-    "avg_comments":199.8715
-  }
-]
+  "data": [
+    {
+      "platform": "Bilibili",
+      "content_type": "image",
+      "posts": 2033,
+      "avg_engagement_rate": 19.9032,
+      "avg_likes": 1509.5529,
+      "avg_shares": 300.6104,
+      "avg_comments": 200.2518
+    },
+    {
+      "platform": "Bilibili",
+      "content_type": "mixed",
+      "posts": 1044,
+      "avg_engagement_rate": 19.9163,
+      "avg_likes": 1510.7605,
+      "avg_shares": 299.8803,
+      "avg_comments": 200.3036
+    },
+    {
+      "platform": "Bilibili",
+      "content_type": "text",
+      "posts": 1078,
+      "avg_engagement_rate": 19.92,
+      "avg_likes": 1510.6113,
+      "avg_shares": 300.5872,
+      "avg_comments": 199.8358
+    },
+    {
+      "platform": "Bilibili",
+      "content_type": "video",
+      "posts": 6443,
+      "avg_engagement_rate": 19.907,
+      "avg_likes": 1510.5952,
+      "avg_shares": 299.8805,
+      "avg_comments": 199.9654
+    },
+    {
+      "platform": "Instagram",
+      "content_type": "image",
+      "posts": 2031,
+      "avg_engagement_rate": 19.9038,
+      "avg_likes": 1509.9695,
+      "avg_shares": 300.4028,
+      "avg_comments": 199.9212
+    },
+    {
+      "platform": "Instagram",
+      "content_type": "mixed",
+      "posts": 1041,
+      "avg_engagement_rate": 19.9146,
+      "avg_likes": 1510.3775,
+      "avg_shares": 300.0576,
+      "avg_comments": 200.4803
+    },
+    {
+      "platform": "Instagram",
+      "content_type": "text",
+      "posts": 1030,
+      "avg_engagement_rate": 19.8975,
+      "avg_likes": 1510.0864,
+      "avg_shares": 299.5777,
+      "avg_comments": 200.3282
+    },
+    {
+      "platform": "Instagram",
+      "content_type": "video",
+      "posts": 6321,
+      "avg_engagement_rate": 19.8955,
+      "avg_likes": 1509.1509,
+      "avg_shares": 300.2121,
+      "avg_comments": 199.8742
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "image",
+      "posts": 2093,
+      "avg_engagement_rate": 19.923,
+      "avg_likes": 1511.3354,
+      "avg_shares": 300.2317,
+      "avg_comments": 200.4711
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "mixed",
+      "posts": 1093,
+      "avg_engagement_rate": 19.9186,
+      "avg_likes": 1511.2809,
+      "avg_shares": 300.5361,
+      "avg_comments": 200.2113
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "text",
+      "posts": 960,
+      "avg_engagement_rate": 19.9268,
+      "avg_likes": 1511.6646,
+      "avg_shares": 299.8865,
+      "avg_comments": 199.9021
+    },
+    {
+      "platform": "RedNote",
+      "content_type": "video",
+      "posts": 6256,
+      "avg_engagement_rate": 19.9012,
+      "avg_likes": 1510.4322,
+      "avg_shares": 299.5432,
+      "avg_comments": 200.1773
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "image",
+      "posts": 1985,
+      "avg_engagement_rate": 19.8928,
+      "avg_likes": 1509.5209,
+      "avg_shares": 300.001,
+      "avg_comments": 199.8851
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "mixed",
+      "posts": 994,
+      "avg_engagement_rate": 19.9134,
+      "avg_likes": 1510.9829,
+      "avg_shares": 299.5493,
+      "avg_comments": 200.6117
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "text",
+      "posts": 1078,
+      "avg_engagement_rate": 19.9055,
+      "avg_likes": 1509.2727,
+      "avg_shares": 300.7245,
+      "avg_comments": 199.821
+    },
+    {
+      "platform": "TikTok",
+      "content_type": "video",
+      "posts": 6239,
+      "avg_engagement_rate": 19.9091,
+      "avg_likes": 1511.0563,
+      "avg_shares": 299.7254,
+      "avg_comments": 199.9678
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "image",
+      "posts": 2161,
+      "avg_engagement_rate": 19.8965,
+      "avg_likes": 1509.9435,
+      "avg_shares": 300.0416,
+      "avg_comments": 199.4322
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "mixed",
+      "posts": 1041,
+      "avg_engagement_rate": 19.9068,
+      "avg_likes": 1510.0893,
+      "avg_shares": 300.2988,
+      "avg_comments": 200.3199
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "text",
+      "posts": 1052,
+      "avg_engagement_rate": 19.9264,
+      "avg_likes": 1511.4087,
+      "avg_shares": 300.7405,
+      "avg_comments": 199.9743
+    },
+    {
+      "platform": "YouTube",
+      "content_type": "video",
+      "posts": 6241,
+      "avg_engagement_rate": 19.9019,
+      "avg_likes": 1509.8587,
+      "avg_shares": 300.0471,
+      "avg_comments": 199.8715
+    }
+  ]
+}

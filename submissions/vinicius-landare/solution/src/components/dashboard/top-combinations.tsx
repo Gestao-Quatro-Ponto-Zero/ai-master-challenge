@@ -70,10 +70,10 @@ export function TopCombinations({ topData, bottomData }: Props) {
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-1">
               <IconWarning className="w-5 h-5 text-red-500" />
-              <h3 className="text-base font-semibold text-[#0F1B2D]">O que NÃO Funciona</h3>
+              <h3 className="text-base font-semibold text-[#0F1B2D]">Menor Performance Relativa</h3>
             </div>
             <p className="text-xs text-slate-500">
-              As 10 piores combinações — considere parar de investir nestas estratégias
+              As 10 combinacoes com menor engagement no dataset — monitorar antes de cortar (diferencas pequenas)
             </p>
           </div>
           <div className="space-y-2">

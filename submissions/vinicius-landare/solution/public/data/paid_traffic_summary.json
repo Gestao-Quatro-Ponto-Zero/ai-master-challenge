@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:32:24.950746",
+    "data_source": "dataset_v1",
+    "analysis": "paid_traffic"
+  },
+  "kpis": {
+    "total_sponsored_posts": 22314,
+    "total_organic_posts": 29900,
+    "avg_engagement_sponsored": 19.9048,
+    "avg_engagement_organic": 19.9059,
+    "lift_geral_pp": -0.0011,
+    "avg_cpe_score": 5.03,
+    "sponsor_categories": 6,
+    "platforms_with_sponsored": 5,
+    "significance": {
+      "is_significant": false,
+      "p_value": 0.879003,
+      "test": "mann_whitney_u"
+    }
+  },
+  "pct_roi_positive": 50.0
+}

@@ -1,92 +1,100 @@
-[
-  {
-    "platform":"Bilibili",
-    "content_category":"beauty",
-    "posts":4251,
-    "avg_engagement_rate":19.9047
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "platform":"Bilibili",
-    "content_category":"lifestyle",
-    "posts":4160,
-    "avg_engagement_rate":19.9093
-  },
-  {
-    "platform":"Bilibili",
-    "content_category":"tech",
-    "posts":2187,
-    "avg_engagement_rate":19.9143
-  },
-  {
-    "platform":"Instagram",
-    "content_category":"beauty",
-    "posts":4197,
-    "avg_engagement_rate":19.8973
-  },
-  {
-    "platform":"Instagram",
-    "content_category":"lifestyle",
-    "posts":4137,
-    "avg_engagement_rate":19.9014
-  },
-  {
-    "platform":"Instagram",
-    "content_category":"tech",
-    "posts":2089,
-    "avg_engagement_rate":19.8989
-  },
-  {
-    "platform":"RedNote",
-    "content_category":"beauty",
-    "posts":4221,
-    "avg_engagement_rate":19.8991
-  },
-  {
-    "platform":"RedNote",
-    "content_category":"lifestyle",
-    "posts":4125,
-    "avg_engagement_rate":19.923
-  },
-  {
-    "platform":"RedNote",
-    "content_category":"tech",
-    "posts":2056,
-    "avg_engagement_rate":19.9052
-  },
-  {
-    "platform":"TikTok",
-    "content_category":"beauty",
-    "posts":4130,
-    "avg_engagement_rate":19.9156
-  },
-  {
-    "platform":"TikTok",
-    "content_category":"lifestyle",
-    "posts":4128,
-    "avg_engagement_rate":19.9007
-  },
-  {
-    "platform":"TikTok",
-    "content_category":"tech",
-    "posts":2038,
-    "avg_engagement_rate":19.8974
-  },
-  {
-    "platform":"YouTube",
-    "content_category":"beauty",
-    "posts":4224,
-    "avg_engagement_rate":19.9113
-  },
-  {
-    "platform":"YouTube",
-    "content_category":"lifestyle",
-    "posts":4211,
-    "avg_engagement_rate":19.9051
-  },
-  {
-    "platform":"YouTube",
-    "content_category":"tech",
-    "posts":2060,
-    "avg_engagement_rate":19.8853
-  }
-]
+  "data": [
+    {
+      "platform": "Bilibili",
+      "content_category": "beauty",
+      "posts": 4251,
+      "avg_engagement_rate": 19.9047
+    },
+    {
+      "platform": "Bilibili",
+      "content_category": "lifestyle",
+      "posts": 4160,
+      "avg_engagement_rate": 19.9093
+    },
+    {
+      "platform": "Bilibili",
+      "content_category": "tech",
+      "posts": 2187,
+      "avg_engagement_rate": 19.9143
+    },
+    {
+      "platform": "Instagram",
+      "content_category": "beauty",
+      "posts": 4197,
+      "avg_engagement_rate": 19.8973
+    },
+    {
+      "platform": "Instagram",
+      "content_category": "lifestyle",
+      "posts": 4137,
+      "avg_engagement_rate": 19.9014
+    },
+    {
+      "platform": "Instagram",
+      "content_category": "tech",
+      "posts": 2089,
+      "avg_engagement_rate": 19.8989
+    },
+    {
+      "platform": "RedNote",
+      "content_category": "beauty",
+      "posts": 4221,
+      "avg_engagement_rate": 19.8991
+    },
+    {
+      "platform": "RedNote",
+      "content_category": "lifestyle",
+      "posts": 4125,
+      "avg_engagement_rate": 19.923
+    },
+    {
+      "platform": "RedNote",
+      "content_category": "tech",
+      "posts": 2056,
+      "avg_engagement_rate": 19.9052
+    },
+    {
+      "platform": "TikTok",
+      "content_category": "beauty",
+      "posts": 4130,
+      "avg_engagement_rate": 19.9156
+    },
+    {
+      "platform": "TikTok",
+      "content_category": "lifestyle",
+      "posts": 4128,
+      "avg_engagement_rate": 19.9007
+    },
+    {
+      "platform": "TikTok",
+      "content_category": "tech",
+      "posts": 2038,
+      "avg_engagement_rate": 19.8974
+    },
+    {
+      "platform": "YouTube",
+      "content_category": "beauty",
+      "posts": 4224,
+      "avg_engagement_rate": 19.9113
+    },
+    {
+      "platform": "YouTube",
+      "content_category": "lifestyle",
+      "posts": 4211,
+      "avg_engagement_rate": 19.9051
+    },
+    {
+      "platform": "YouTube",
+      "content_category": "tech",
+      "posts": 2060,
+      "avg_engagement_rate": 19.8853
+    }
+  ]
+}

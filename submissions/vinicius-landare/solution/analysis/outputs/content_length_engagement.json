@@ -1,32 +1,40 @@
-[
-  {
-    "content_length_bin":"0-50",
-    "posts":5778,
-    "avg_engagement_rate":19.8997
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "content_length_bin":"51-100",
-    "posts":8184,
-    "avg_engagement_rate":19.9096
-  },
-  {
-    "content_length_bin":"101-200",
-    "posts":16406,
-    "avg_engagement_rate":19.9022
-  },
-  {
-    "content_length_bin":"201-300",
-    "posts":5470,
-    "avg_engagement_rate":19.9016
-  },
-  {
-    "content_length_bin":"301-400",
-    "posts":5616,
-    "avg_engagement_rate":19.9053
-  },
-  {
-    "content_length_bin":"401-600",
-    "posts":10760,
-    "avg_engagement_rate":19.9123
-  }
-]
+  "data": [
+    {
+      "content_length_bin": "0-50",
+      "posts": 5778,
+      "avg_engagement_rate": 19.8997
+    },
+    {
+      "content_length_bin": "51-100",
+      "posts": 8184,
+      "avg_engagement_rate": 19.9096
+    },
+    {
+      "content_length_bin": "101-200",
+      "posts": 16406,
+      "avg_engagement_rate": 19.9022
+    },
+    {
+      "content_length_bin": "201-300",
+      "posts": 5470,
+      "avg_engagement_rate": 19.9016
+    },
+    {
+      "content_length_bin": "301-400",
+      "posts": 5616,
+      "avg_engagement_rate": 19.9053
+    },
+    {
+      "content_length_bin": "401-600",
+      "posts": 10760,
+      "avg_engagement_rate": 19.9123
+    }
+  ]
+}

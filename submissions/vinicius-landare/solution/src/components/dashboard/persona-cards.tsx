@@ -141,15 +141,12 @@ export function PersonaCards({ personas }: Props) {
                         : <IconBan className="w-4 h-4 text-red-500 shrink-0" />
                       }
                       <span className={`text-xs font-semibold ${sponsorWins ? "text-emerald-700" : "text-red-700"}`}>
-                        {sponsorWins ? "Patrocínio vale a pena" : "Orgânico funciona melhor"}
+                        {sponsorWins ? "Tendencia: patrocinio com lift positivo" : "Tendencia: organico com vantagem"}
                       </span>
                     </div>
                     <p className={`text-[10px] leading-relaxed ${sponsorWins ? "text-emerald-600" : "text-red-600"}`}>
-                      Orgânico: {orgRate.toFixed(3)}% vs Patrocinado: {sponRate.toFixed(3)}%
-                      {sponsorWins
-                        ? ` — patrocínio supera o orgânico em ${diffPp}pp nesta faixa etária`
-                        : ` — orgânico supera o patrocinado em ${diffPp}pp, investir em conteúdo próprio`
-                      }
+                      Organico: {orgRate.toFixed(3)}% vs Patrocinado: {sponRate.toFixed(3)}%
+                      {` — diferenca de ${diffPp}% (validar com dados reais)`}
                     </p>
                   </div>
                 </div>

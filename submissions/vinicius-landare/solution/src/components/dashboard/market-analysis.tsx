@@ -54,11 +54,11 @@ export function MarketAnalysis({ locationData, brazilPlatform, brazilContentType
           <h3 className="text-base font-semibold">H4: A audiência brasileira se comporta diferente?</h3>
         </div>
         <p className="text-sm text-white/80 leading-relaxed">
-          O Brasil ocupa a <strong className="text-[#E8734A]">{brazilRank}ª posição</strong> entre 8 mercados com taxa de {brazilRate}%
-          ({Number(brazilDiff) >= 0 ? "+" : ""}{brazilDiff}pp vs média global).
-          A diferença entre mercados é <strong className="text-white">muito pequena</strong> (dados simulados),
-          mas os rankings relativos indicam que <strong className="text-[#F4A261]">não é necessária uma estratégia localizada</strong> — o
-          comportamento é similar entre os mercados analisados.
+          O Brasil ocupa a <strong className="text-[#E8734A]">{brazilRank}a posição</strong> entre 8 mercados com taxa de {brazilRate}%
+          ({Number(brazilDiff) >= 0 ? "+" : ""}{brazilDiff}% vs media global).
+          A diferenca entre mercados e <strong className="text-white">muito pequena</strong> neste dataset (dados simulados com distribuição uniforme).
+          Os dados <strong className="text-[#F4A261]">não permitem concluir</strong> se o Brasil precisa de estratégia localizada —
+          seria necessario validar com dados reais de cada mercado.
         </p>
       </div>
 

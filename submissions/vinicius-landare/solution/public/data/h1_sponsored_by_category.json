@@ -1,38 +1,46 @@
-[
-  {
-    "content_category":"beauty",
-    "is_sponsored":false,
-    "posts":12097,
-    "avg_engagement_rate":19.9114
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "content_category":"beauty",
-    "is_sponsored":true,
-    "posts":8926,
-    "avg_engagement_rate":19.8977
-  },
-  {
-    "content_category":"lifestyle",
-    "is_sponsored":false,
-    "posts":11870,
-    "avg_engagement_rate":19.9056
-  },
-  {
-    "content_category":"lifestyle",
-    "is_sponsored":true,
-    "posts":8891,
-    "avg_engagement_rate":19.911
-  },
-  {
-    "content_category":"tech",
-    "is_sponsored":false,
-    "posts":5933,
-    "avg_engagement_rate":19.8954
-  },
-  {
-    "content_category":"tech",
-    "is_sponsored":true,
-    "posts":4497,
-    "avg_engagement_rate":19.907
-  }
-]
+  "data": [
+    {
+      "content_category": "beauty",
+      "is_sponsored": false,
+      "posts": 12097,
+      "avg_engagement_rate": 19.9114
+    },
+    {
+      "content_category": "beauty",
+      "is_sponsored": true,
+      "posts": 8926,
+      "avg_engagement_rate": 19.8977
+    },
+    {
+      "content_category": "lifestyle",
+      "is_sponsored": false,
+      "posts": 11870,
+      "avg_engagement_rate": 19.9056
+    },
+    {
+      "content_category": "lifestyle",
+      "is_sponsored": true,
+      "posts": 8891,
+      "avg_engagement_rate": 19.911
+    },
+    {
+      "content_category": "tech",
+      "is_sponsored": false,
+      "posts": 5933,
+      "avg_engagement_rate": 19.8954
+    },
+    {
+      "content_category": "tech",
+      "is_sponsored": true,
+      "posts": 4497,
+      "avg_engagement_rate": 19.907
+    }
+  ]
+}

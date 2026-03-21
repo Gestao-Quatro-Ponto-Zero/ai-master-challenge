@@ -1,177 +1,185 @@
-[
-  {
-    "creator_tier":"Macro (100K-500K)",
-    "platform":"Bilibili",
-    "posts":4240,
-    "avg_engagement_rate":19.9025,
-    "avg_engagement_rate_followers":0.8122
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "creator_tier":"Macro (100K-500K)",
-    "platform":"Instagram",
-    "posts":4204,
-    "avg_engagement_rate":19.9057,
-    "avg_engagement_rate_followers":0.817
-  },
-  {
-    "creator_tier":"Macro (100K-500K)",
-    "platform":"RedNote",
-    "posts":4131,
-    "avg_engagement_rate":19.9174,
-    "avg_engagement_rate_followers":0.8058
-  },
-  {
-    "creator_tier":"Macro (100K-500K)",
-    "platform":"TikTok",
-    "posts":4201,
-    "avg_engagement_rate":19.8963,
-    "avg_engagement_rate_followers":0.7997
-  },
-  {
-    "creator_tier":"Macro (100K-500K)",
-    "platform":"YouTube",
-    "posts":4249,
-    "avg_engagement_rate":19.91,
-    "avg_engagement_rate_followers":0.803
-  },
-  {
-    "creator_tier":"Mega (500K+)",
-    "platform":"Bilibili",
-    "posts":5265,
-    "avg_engagement_rate":19.9108,
-    "avg_engagement_rate_followers":0.2785
-  },
-  {
-    "creator_tier":"Mega (500K+)",
-    "platform":"Instagram",
-    "posts":5232,
-    "avg_engagement_rate":19.8959,
-    "avg_engagement_rate_followers":0.2777
-  },
-  {
-    "creator_tier":"Mega (500K+)",
-    "platform":"RedNote",
-    "posts":5223,
-    "avg_engagement_rate":19.9017,
-    "avg_engagement_rate_followers":0.2787
-  },
-  {
-    "creator_tier":"Mega (500K+)",
-    "platform":"TikTok",
-    "posts":5081,
-    "avg_engagement_rate":19.9107,
-    "avg_engagement_rate_followers":0.2785
-  },
-  {
-    "creator_tier":"Mega (500K+)",
-    "platform":"YouTube",
-    "posts":5228,
-    "avg_engagement_rate":19.9001,
-    "avg_engagement_rate_followers":0.279
-  },
-  {
-    "creator_tier":"Micro (10K-50K)",
-    "platform":"Bilibili",
-    "posts":450,
-    "avg_engagement_rate":19.9506,
-    "avg_engagement_rate_followers":8.189
-  },
-  {
-    "creator_tier":"Micro (10K-50K)",
-    "platform":"Instagram",
-    "posts":393,
-    "avg_engagement_rate":19.8975,
-    "avg_engagement_rate_followers":8.4169
-  },
-  {
-    "creator_tier":"Micro (10K-50K)",
-    "platform":"RedNote",
-    "posts":425,
-    "avg_engagement_rate":19.905,
-    "avg_engagement_rate_followers":7.9537
-  },
-  {
-    "creator_tier":"Micro (10K-50K)",
-    "platform":"TikTok",
-    "posts":407,
-    "avg_engagement_rate":19.9068,
-    "avg_engagement_rate_followers":7.9315
-  },
-  {
-    "creator_tier":"Micro (10K-50K)",
-    "platform":"YouTube",
-    "posts":435,
-    "avg_engagement_rate":19.886,
-    "avg_engagement_rate_followers":8.1856
-  },
-  {
-    "creator_tier":"Mid (50K-100K)",
-    "platform":"Bilibili",
-    "posts":551,
-    "avg_engagement_rate":19.9096,
-    "avg_engagement_rate_followers":2.7901
-  },
-  {
-    "creator_tier":"Mid (50K-100K)",
-    "platform":"Instagram",
-    "posts":505,
-    "avg_engagement_rate":19.8782,
-    "avg_engagement_rate_followers":2.7459
-  },
-  {
-    "creator_tier":"Mid (50K-100K)",
-    "platform":"RedNote",
-    "posts":532,
-    "avg_engagement_rate":19.9276,
-    "avg_engagement_rate_followers":2.8007
-  },
-  {
-    "creator_tier":"Mid (50K-100K)",
-    "platform":"TikTok",
-    "posts":504,
-    "avg_engagement_rate":19.9348,
-    "avg_engagement_rate_followers":2.753
-  },
-  {
-    "creator_tier":"Mid (50K-100K)",
-    "platform":"YouTube",
-    "posts":504,
-    "avg_engagement_rate":19.9109,
-    "avg_engagement_rate_followers":2.7937
-  },
-  {
-    "creator_tier":"Nano (< 10K)",
-    "platform":"Bilibili",
-    "posts":92,
-    "avg_engagement_rate":19.8387,
-    "avg_engagement_rate_followers":53.4713
-  },
-  {
-    "creator_tier":"Nano (< 10K)",
-    "platform":"Instagram",
-    "posts":89,
-    "avg_engagement_rate":19.9183,
-    "avg_engagement_rate_followers":48.5305
-  },
-  {
-    "creator_tier":"Nano (< 10K)",
-    "platform":"RedNote",
-    "posts":91,
-    "avg_engagement_rate":19.9398,
-    "avg_engagement_rate_followers":50.9455
-  },
-  {
-    "creator_tier":"Nano (< 10K)",
-    "platform":"TikTok",
-    "posts":103,
-    "avg_engagement_rate":19.9259,
-    "avg_engagement_rate_followers":56.8457
-  },
-  {
-    "creator_tier":"Nano (< 10K)",
-    "platform":"YouTube",
-    "posts":79,
-    "avg_engagement_rate":19.8596,
-    "avg_engagement_rate_followers":47.3271
-  }
-]
+  "data": [
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "platform": "Bilibili",
+      "posts": 4240,
+      "avg_engagement_rate": 19.9025,
+      "avg_engagement_rate_followers": 0.8122
+    },
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "platform": "Instagram",
+      "posts": 4204,
+      "avg_engagement_rate": 19.9057,
+      "avg_engagement_rate_followers": 0.817
+    },
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "platform": "RedNote",
+      "posts": 4131,
+      "avg_engagement_rate": 19.9174,
+      "avg_engagement_rate_followers": 0.8058
+    },
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "platform": "TikTok",
+      "posts": 4201,
+      "avg_engagement_rate": 19.8963,
+      "avg_engagement_rate_followers": 0.7997
+    },
+    {
+      "creator_tier": "Macro (100K-500K)",
+      "platform": "YouTube",
+      "posts": 4249,
+      "avg_engagement_rate": 19.91,
+      "avg_engagement_rate_followers": 0.803
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "platform": "Bilibili",
+      "posts": 5265,
+      "avg_engagement_rate": 19.9108,
+      "avg_engagement_rate_followers": 0.2785
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "platform": "Instagram",
+      "posts": 5232,
+      "avg_engagement_rate": 19.8959,
+      "avg_engagement_rate_followers": 0.2777
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "platform": "RedNote",
+      "posts": 5223,
+      "avg_engagement_rate": 19.9017,
+      "avg_engagement_rate_followers": 0.2787
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "platform": "TikTok",
+      "posts": 5081,
+      "avg_engagement_rate": 19.9107,
+      "avg_engagement_rate_followers": 0.2785
+    },
+    {
+      "creator_tier": "Mega (500K+)",
+      "platform": "YouTube",
+      "posts": 5228,
+      "avg_engagement_rate": 19.9001,
+      "avg_engagement_rate_followers": 0.279
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "platform": "Bilibili",
+      "posts": 450,
+      "avg_engagement_rate": 19.9506,
+      "avg_engagement_rate_followers": 8.189
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "platform": "Instagram",
+      "posts": 393,
+      "avg_engagement_rate": 19.8975,
+      "avg_engagement_rate_followers": 8.4169
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "platform": "RedNote",
+      "posts": 425,
+      "avg_engagement_rate": 19.905,
+      "avg_engagement_rate_followers": 7.9537
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "platform": "TikTok",
+      "posts": 407,
+      "avg_engagement_rate": 19.9068,
+      "avg_engagement_rate_followers": 7.9315
+    },
+    {
+      "creator_tier": "Micro (10K-50K)",
+      "platform": "YouTube",
+      "posts": 435,
+      "avg_engagement_rate": 19.886,
+      "avg_engagement_rate_followers": 8.1856
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "platform": "Bilibili",
+      "posts": 551,
+      "avg_engagement_rate": 19.9096,
+      "avg_engagement_rate_followers": 2.7901
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "platform": "Instagram",
+      "posts": 505,
+      "avg_engagement_rate": 19.8782,
+      "avg_engagement_rate_followers": 2.7459
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "platform": "RedNote",
+      "posts": 532,
+      "avg_engagement_rate": 19.9276,
+      "avg_engagement_rate_followers": 2.8007
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "platform": "TikTok",
+      "posts": 504,
+      "avg_engagement_rate": 19.9348,
+      "avg_engagement_rate_followers": 2.753
+    },
+    {
+      "creator_tier": "Mid (50K-100K)",
+      "platform": "YouTube",
+      "posts": 504,
+      "avg_engagement_rate": 19.9109,
+      "avg_engagement_rate_followers": 2.7937
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "platform": "Bilibili",
+      "posts": 92,
+      "avg_engagement_rate": 19.8387,
+      "avg_engagement_rate_followers": 53.4713
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "platform": "Instagram",
+      "posts": 89,
+      "avg_engagement_rate": 19.9183,
+      "avg_engagement_rate_followers": 48.5305
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "platform": "RedNote",
+      "posts": 91,
+      "avg_engagement_rate": 19.9398,
+      "avg_engagement_rate_followers": 50.9455
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "platform": "TikTok",
+      "posts": 103,
+      "avg_engagement_rate": 19.9259,
+      "avg_engagement_rate_followers": 56.8457
+    },
+    {
+      "creator_tier": "Nano (< 10K)",
+      "platform": "YouTube",
+      "posts": 79,
+      "avg_engagement_rate": 19.8596,
+      "avg_engagement_rate_followers": 47.3271
+    }
+  ]
+}

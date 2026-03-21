@@ -1,244 +1,368 @@
-# Submissao — Vinicius Landare — Challenge 004
+# Submissão v2 — Vinicius Landare — Challenge 004
 
 ## Sobre mim
 
 - **Nome:** Vinicius Landare
 - **LinkedIn:** [linkedin.com/in/vinicius-landare](https://linkedin.com/in/vinicius-landare)
-- **Challenge escolhido:** Challenge 004 — Estrategia Social Media
+- **Challenge escolhido:** Challenge 004 — Estratégia Social Media
 
 ---
 
 ## Executive Summary
 
-Analisei 52.214 publicacoes de 5 plataformas sociais (Instagram, TikTok, YouTube, Bilibili, RedNote) usando metodologia Hypothesis-Driven Analysis para responder as 4 entregas obrigatorias do Head de Marketing. Construi um dashboard interativo em Next.js que transforma dados brutos em acoes concretas: quais combinacoes de plataforma/formato/audiencia funcionam, quando postar, como investir em patrocinio, e o que parar de fazer imediatamente. A principal recomendacao: **priorizar carrossel e texto para jovens adultos (19-25) em RedNote/Bilibili, usando micro e nano-influenciadores**.
+Reestruturei a solução após feedback, passando de um dashboard analítico estático para um **sistema operacional de social media** que responde diretamente as 3 perguntas do gestor. O sistema gera recomendações de conteúdo baseadas nos dados do dataset (top combinações, melhores horários, piores formatos a evitar), com pipeline IA de 3 etapas usando modelos diferentes por step, calendário de aprovação, explorador interativo de patrocínio, ranking de influenciadores com mensagens WhatsApp contextualizadas via ZAPI, e análise de perfis reais via Apify (5 plataformas). Todas as recomendações incluem disclaimers honestos sobre as limitações do dataset.
 
 ---
 
-## Solucao
+## O que mudou da v1 para a v2
 
-Dashboard interativo protegido por senha que responde diretamente as 4 entregas obrigatorias do desafio.
+### Feedback recebido
 
-**Stack:** Next.js 16 + TypeScript + Tailwind CSS v4 + shadcn/ui + Recharts
+> "Os resultados apresentados precisam de análise crítica antes de virar recomendação — verifique se as diferenças encontradas têm relevância prática real e comunique isso com honestidade. A configuração do ambiente de desenvolvimento precisa garantir que o candidato mantém controle e revisão sobre o que a IA produz."
 
-**Pre-requisitos:** Node.js 18+ e npm instalados.
+### Como respondi a cada ponto
 
-**Como rodar o dashboard:**
+| Feedback | O que fiz |
+|----------|-----------|
+| "Análise crítica antes de virar recomendação" | Testes estatísticos (Mann-Whitney U, Kruskal-Wallis) com p-values. Badge "significativo / não significativo" em cada insight. Afirmações absolutas trocadas por tendências |
+| "Diferenças com relevância prática real" | Disclaimer em todas as seções. Tab Análise de Perfil com Apify para validação com dados reais |
+| "Comunique com honestidade" | "Parar de investir" virou "Menor performance relativa". "Vale a pena" virou "Tendência positiva (validar com dados reais)" |
+| "Controle sobre o que a IA produz" | Documentado abaixo: cada decisão estratégica veio de mim, a IA executou |
+
+---
+
+## Solução v2
+
+**Stack:** Next.js 16 + TypeScript + Tailwind CSS v4 + shadcn/ui + Recharts + OpenRouter (Gemini Flash + Claude Sonnet 4.5) + ZAPI + Apify
+
+**Como rodar:**
 
 ```bash
-# 1. Entrar na pasta do projeto
 cd submissions/vinicius-landare/solution
-
-# 2. Instalar dependencias
+cp .env.example .env
+# Preencha as variáveis no .env (veja comentários no arquivo)
 npm install
-
-# 3. Iniciar o servidor de desenvolvimento
 npm run dev
-
-# 4. Abrir no navegador
 # http://localhost:3456
-
-# 5. Digitar a senha de acesso
 # Senha: g4social2024
 ```
 
-**Senha de acesso ao dashboard:** `g4social2024`
+**Variáveis de ambiente:** Copie `.env.example` para `.env` e preencha. Comentários no arquivo explicam onde obter cada credencial.
 
-**6 abas do dashboard:**
+| Variável | Obrigatória? | Onde obter |
+|----------|-------------|------------|
+| `OPENROUTER_API_KEY` | Sim — geração de conteúdo | [openrouter.ai/keys](https://openrouter.ai/keys) |
+| `APIFY_TOKEN` | Opcional — análise de perfil real | [console.apify.com](https://console.apify.com) |
+| `ZAPI_INSTANCE_ID` / `ZAPI_TOKEN` / `ZAPI_CLIENT_TOKEN` | Opcional — WhatsApp | [z-api.io](https://z-api.io) |
 
-| Aba | Entrega do desafio | O que mostra |
+Para solicitar credenciais de demonstração (com limites de uso pré-configurados): **viniciusoliveira@example.com**
+
+**Capturas de tela:** O processo completo de criação com IA está documentado em `process-log/screenshots/`.
+
+### As 6 abas e o que cada uma entrega
+
+| Aba | Pergunta do gestor | O que mostra |
 |-----|-------------------|--------------|
-| Desempenho | Engagement drivers + O que nao funciona | Ranking de plataformas, formatos, top 10 melhores e piores combinacoes |
-| Patrocinio | Sponsorship effectiveness | Organico vs patrocinado por plataforma e tier de influenciador, ROI |
-| Publico-alvo | Audience profile engagement | 5 perfis de audiencia (Gen Z Jovem a Boomers) com estrategia personalizada |
-| Mercados | Audience profile (por localizacao) | Brasil vs 7 mercados globais com detalhamento |
-| Quando Postar | Engagement drivers (temporal) | Analise temporal por dia da semana e hora do dia |
-| Plano de Acao | Strategic recommendations | 4 acoes rapidas, politica de patrocinio, o que parar, plano por audiencia |
+| **Visão Geral** | As 3 perguntas de uma vez | 3 cards (engajamento, patrocínio, estratégia) + recomendações do dataset (onde investir, o que evitar, melhores dias/horários) + conteúdos pendentes de aprovação |
+| **Engajamento** | "O que gera engajamento de verdade?" | Plataforma, formato, público, timing, mercados em seções colapsáveis com badges de significância |
+| **Patrocínio** | "Vale a pena patrocinar?" | Explorador interativo com filtros cruzados (6 dimensões × 3 métricas). Gráfico comparativo orgânico vs patrocinado + tabela com veredicto |
+| **Calendário** | "Ferramenta para acompanhar no dia a dia" | Calendário semanal. Conteúdos gerados pela IA baseados no dataset. Aprovar ou descartar |
+| **Influenciadores** | "Com que influenciador?" | Ranking (score 0-100), paginação, filtros, mensagem WhatsApp contextualizada com dados + envio via ZAPI ou wa.me |
+| **Análise de Perfil** | Validação com dados reais | Busca perfil via Apify (5 plataformas), cruza com dataset ou benchmark do mercado |
 
 ---
 
-## Abordagem
+## Como o sistema gera conteúdo
 
-### Metodologia: Hypothesis-Driven Analysis (Priming Analitico)
+### O problema que resolvi
 
-Escolhi esta metodologia apos comparar 4 alternativas:
+O gestor pediu: "me dá uma ferramenta pra acompanhar isso no dia a dia". Um dashboard estático não resolve. O gestor precisa de conteúdos prontos, baseados em dados, para aprovar e publicar.
 
-| Metodologia | Por que descartei |
-|-------------|-------------------|
-| EDA Livre | Gera relatorio generico — exatamente o que o briefing pede para NAO fazer |
-| Framework-First (RFM, AARRR) | Frameworks de compra nao se aplicam a dados de engajamento |
-| CRISP-DM | Robusto demais para o escopo — gestor quer respostas, nao pipeline de ML |
-| **Hypothesis-Driven** | **Escolhida** — parte das perguntas reais do gestor, cada analise responde uma pergunta de negocio |
+### A solução: Pipeline baseado no dataset
 
-### Sequencia de trabalho:
+O sistema não gera posts aleatórios. Cada recomendação é fundamentada nos dados:
 
-1. **Compreensao do desafio** — Li o briefing, CONTRIBUTING.md, submission-guide e submissoes anteriores antes de escrever qualquer codigo
-2. **Setup da stack** — Next.js 16 + TypeScript + shadcn/ui como diferencial visual
-3. **Reconhecimento dos dados** — 52.214 posts, 27 colunas, dados simulados com distribuicoes uniformes
-4. **Formulacao de hipoteses** — Cada uma vinculada a uma pergunta real do Head de Marketing
-5. **Analise com Python/pandas** — Scripts locais processando os 52K registros, gerando JSONs agregados
-6. **Dashboard interativo** — 6 abas com visualizacoes, insights e recomendacoes acionaveis
-7. **Revisao de compliance** — Auditei cada hipotese para garantir cobertura completa
+**1. Seleção do mix semanal (dados do dataset)**
+
+O cron carrega as top 20 combinações do dataset (plataforma × formato × categoria × audiência) e seleciona 3-5 slots para a semana, variando plataformas e priorizando as combinações com maior engagement. Os dias são os melhores do dataset (segunda, quarta, sexta, domingo) nos horários de pico (7h, 11h, 18h, 21h).
+
+**2. Geração com contexto (Draft — Gemini 3 Flash)**
+
+O prompt recebe o contexto completo do dataset:
+- Top 5 melhores combinações com engagement exato
+- 3 piores combinações para evitar
+- Melhores dias e horários
+- Hashtags com melhor performance
+- Dados de patrocínio (lift, % ROI positivo)
+- Histórico de conteúdos descartados/reprovados (para não repetir)
+
+A IA gera 5 ideias de conteúdo específicas para a combinação selecionada (ex: "Carrossel de beauty para 19-25 no Instagram").
+
+**3. Avaliação crítica (Critique — Claude Sonnet 4.5)**
+
+Modelo diferente avalia cada ideia em 4 dimensões: originalidade, viabilidade, alinhamento, risco. Nota mínima 7 para seguir. Ideias reprovadas são salvas no histórico para aprendizado.
+
+**4. Auto-retry**
+
+Se nenhuma ideia atingir nota 7, o pipeline refaz com mais criatividade (temperature sobe) e injeção no prompt: "ideias anteriores foram reprovadas, seja mais criativo". Até 3 tentativas. Se mesmo assim nenhuma passar, usa as melhores disponíveis — o gestor sempre recebe resultado.
+
+**5. Roteiro final (Refinement — Gemini 3 Flash)**
+
+Ideias aprovadas viram roteiros prontos para produção: copy exata, especificação visual, hashtags, horário, CTA, descrição de thumbnail.
+
+**6. Aprovação do gestor**
+
+Conteúdos aparecem na Visão Geral e no Calendário como "pendentes". O gestor revê, edita se quiser, e aprova ou descarta. Descartados vão para o histórico — a IA aprende o que o gestor não gosta.
+
+### Por que modelos diferentes por step?
+
+| Step | Modelo | Razão |
+|------|--------|-------|
+| Draft | Gemini 3 Flash | Rápido e criativo — precisa de volume de ideias |
+| Critique | Claude Sonnet 4.5 | Melhor raciocínio analítico — precisa ser duro na avaliação |
+| Refinement | Gemini 3 Flash | Rápido para formatação — o conteúdo já foi validado |
+
+Essa decisão veio da minha pesquisa: artigo da Anthropic sobre prompt chaining + vídeo do Don Woodlock sobre Draft → Critique → Output. Combinei as duas fontes.
+
+---
+
+## Explorador de Patrocínio
+
+O gestor não quer uma tabela fixa de "SIM/NÃO". Ele quer explorar os dados por conta própria.
+
+O explorador permite:
+- **Agrupar por:** plataforma, tier do creator, categoria, formato, faixa etária, mercado
+- **Cruzar com:** qualquer segunda dimensão
+- **Filtrar:** valor específico da segunda dimensão
+- **Métrica:** engagement rate, alcance relativo, custo por engajamento
+
+O resultado é um gráfico comparativo (orgânico vs patrocinado) + tabela detalhada com veredicto por linha.
+
+Script Python dedicado (`analysis/07_sponsorship_explorer.py`) gera todos os cruzamentos possíveis: 30 por dimensão individual, 105 por pares, 150 por detalhe de sponsor.
+
+---
+
+## Análise de Perfil — Como funciona a coleta e o cálculo
+
+### O problema do engagement em diferentes formatos
+
+O Instagram retorna métricas diferentes por tipo de conteúdo:
+- **Vídeos:** têm `views` públicas → engagement = (likes + comments) / views
+- **Carrosséis e imagens:** NÃO têm `views` públicas → como calcular?
+
+### A solução: duas métricas de engagement
+
+Implementei duas formas de medir engagement, e o gestor alterna entre elas:
+
+**1. Engagement por Seguidores (padrão da indústria)**
+- Fórmula: (likes + comments) / seguidores × 100
+- Funciona para TODOS os formatos
+- Permite comparação justa entre vídeo, carrossel e imagem
+- É o padrão usado por ferramentas como HypeAuditor, Social Blade, etc.
+
+**2. Engagement por Views (complementar)**
+- Fórmula: (likes + comments) / views × 100
+- Só funciona para vídeos
+- Útil para avaliar performance de vídeos específicos
+
+### Fluxo técnico da coleta
+
+1. **Normalização de input:** O sistema aceita qualquer formato — @usuario, username, link de perfil, link de post. Detecta a plataforma pela URL automaticamente.
+
+2. **Coleta em duas etapas (Instagram):**
+   - Etapa 1: `resultsType: "details"` → busca dados do perfil (seguidores, bio, nome)
+   - Etapa 2: `resultsType: "posts"` com `searchType: "user"` → busca últimos 5 posts
+
+3. **Normalização dos dados:** Cada post é normalizado para o mesmo schema. Valores negativos do Instagram (likesCount: -1 em alguns posts) são tratados como 0.
+
+4. **Cálculo de engagement:** Ambas as métricas são calculadas para cada post. O gráfico mostra barras coloridas por tipo de conteúdo (laranja = vídeo, navy = carrossel, verde = imagem).
+
+5. **Cruzamento com dataset:** Se o influenciador existe no ranking do dataset, mostra dados comparativos. Se é novo, compara com benchmark do mercado (plataforma × categoria).
+
+6. **Histórico em localStorage:** Análises ficam salvas para consulta rápida sem precisar chamar Apify novamente.
+
+### Por que essa abordagem?
+
+Ao testar com o perfil @g4.business, o primeiro resultado mostrava engagement de 9.001% — claramente errado. O problema: o Instagram retornava `likesCount: -1` para carrosséis e o cálculo dividia por `views: 1` (estimativa fictícia).
+
+Identifiquei o bug e mudei a abordagem: em vez de inventar views para posts estáticos, uso engagement por seguidores como métrica principal. Isso permite comparar todos os formatos na mesma escala, que é exatamente o que o gestor precisa para decidir qual formato investir.
+
+### 5 plataformas suportadas
+
+| Plataforma | Actor Apify | Dados coletados |
+|------------|-------------|-----------------|
+| Instagram | `apify/instagram-scraper` | Perfil (seguidores) + posts (likes, comments, views) |
+| TikTok | `clockworks/tiktok-scraper` | Posts (likes, comments, shares, views) |
+| YouTube | `streamers/youtube-scraper` | Vídeos (likes, comments, views) |
+| RedNote | `easyapi/all-in-one-rednote-xiaohongshu-scraper` | Posts (likes) |
+| Bilibili | `kuaima/bilibili-detail` | Vídeos (likes, comments, shares, views, coins) |
+
+---
+
+## Integração WhatsApp (ZAPI)
+
+O gestor pode enviar mensagens para influenciadores direto do dashboard:
+
+1. Configura ZAPI no `.env` (instance ID, token, client-token)
+2. Escaneia QR Code no modal (clicando "Conectar WhatsApp" no header)
+3. Na tab Influenciadores, clica num influenciador → gera mensagem via IA
+4. Edita a mensagem no textarea se quiser
+5. Envia via wa.me (link direto) ou via ZAPI (API)
+
+A mensagem é contextualizada com dados do influenciador: engagement, comparação com benchmark, ações concretas. Antes de enviar via ZAPI, o sistema verifica se o WhatsApp está conectado e mostra erro claro se não estiver.
+
+---
+
+## Análise de Perfil (5 plataformas via Apify)
+
+O gestor busca qualquer perfil e o sistema cruza com o dataset:
+
+**Cenário A — Influenciador do dataset:** Apify coleta posts reais → cruza com dados históricos → mostra delta.
+
+**Cenário B — Influenciador novo:** Apify coleta → gestor seleciona mercado → compara com benchmark do dataset naquele mercado.
+
+**Plataformas suportadas:**
+
+| Plataforma | Actor Apify |
+|------------|-------------|
+| Instagram | `apify/instagram-scraper` |
+| TikTok | `clockworks/tiktok-scraper` |
+| YouTube | `streamers/youtube-scraper` |
+| RedNote | `easyapi/all-in-one-rednote-xiaohongshu-scraper` |
+| Bilibili | `kuaima/bilibili-detail` |
 
 ---
 
 ## Resultados / Findings
 
-### Patrocinio reduz engagement vs organico?
+### O que gera engajamento?
 
-**Resposta: Nao — a diferenca e minima (0.009pp)**
+**Tendências identificadas** (dataset com variância de ~1.25%):
+- Top: Instagram + image + beauty para 50+ (20.09%), RedNote + mixed + tech para 36-50 (20.07%)
+- Horários de pico: 7h, 11h, 18h, 21h
+- Melhores dias: sexta e domingo
+- Posts com 2 hashtags performam melhor que 5+
 
-- Organico: 19.905% | Patrocinado: 19.906%
-- Nano-influenciadores no Bilibili e YouTube tem o melhor retorno de patrocinio (+0.17pp e +0.11pp)
-- Mega-influenciadores no TikTok mostram queda quando patrocinados — manter organico
+**Nota de honestidade:** Diferenças de ~1.25% entre melhor e pior combinação. Em dados reais, esperamos 5-20%. As tendências indicam *direção*, não certeza.
 
-### Micro-creators performam melhor que mega-influencers?
+### Patrocínio funciona?
 
-**Resposta: Sim, marginalmente**
+**Depende do contexto. Diferenças pequenas no dataset.**
 
-- Rankings por tier confirmam que nano e micro-creators entregam melhor taxa de engajamento
-- A diferenca e pequena (dados simulados), mas a direcao e consistente
+- Lift geral: +0.001% (não significativo, p > 0.05)
+- Tendência positiva: Nano/Micro no Bilibili e YouTube
+- Tendência negativa: Mega no TikTok
+- Use o explorador interativo para cada combinação específica
 
-### Qual a combinacao ideal de plataforma x formato x idade?
+### Estratégia de conteúdo
 
-**Resposta: Depende da audiencia**
-
-- **19-25 (35% do volume):** RedNote + Carrossel + Lifestyle = 20.04%
-- **13-18 (15%):** Instagram + Carrossel + Tech = 20.04%
-- **26-35 (30%):** RedNote + Texto + Tech = 20.00%
-- **36-50 (15%):** RedNote + Carrossel + Tech = 20.07%
-- **50+ (5%):** Instagram + Imagem + Beleza = 20.09%
-- Diferenca total entre melhor e pior combinacao: ~1.25pp (dados simulados)
-
-### A audiencia brasileira se comporta diferente dos outros mercados?
-
-**Resposta: Nao significativamente**
-
-- Brasil: 2o lugar entre 8 mercados (19.912%), atras apenas do UK (19.915%)
-- Diferenca entre o melhor (UK) e pior (India): apenas 0.02pp
-- Nao e necessaria estrategia localizada — comportamento e similar entre mercados
-
-### Existem conteudos com engagement zero ou padroes de baixa performance?
-
-**Resposta: Nao ha engagement zero, mas existem combinacoes consistentemente piores**
-
-- Piores combinacoes identificadas nas "10 piores" do ranking
-- Recomendacao de corte: carrossel de estilo de vida para 36-50 no TikTok (19.74%)
+Sistema gera conteúdos baseados nos dados do dataset (não aleatórios). Cada recomendação referencia qual dado justifica a escolha. O gestor aprova ou descarta. Descartados alimentam o aprendizado da IA.
 
 ---
 
-## Recomendacoes
+## Limitações
 
-### Implementar esta semana:
-1. Priorizar carrossel e texto para jovens adultos (19-25) em RedNote e Bilibili
-2. Publicar nos horarios de pico: 7h, 11h, 18h e 21h
-3. Usar exatamente 2 hashtags por publicacao
-4. Concentrar conteudo de valor nas sextas e domingos
-
-### Politica de patrocinio:
-- **Investir:** Nano e micro-influenciadores (ate 50mil seg.) no Bilibili, YouTube e Instagram
-- **Nao investir:** Mega-influenciadores no TikTok e YouTube — manter organico
-- **Regra:** Manter conteudo organico para mega-influenciadores
-
-### Parar de fazer:
-- Carrossel de estilo de vida para 36-50 no TikTok
-- Moda no Instagram com mega-influenciadores
-- Publicacoes nos horarios 15h-16h e 22h-23h
+1. **Dataset simulado** — variância de ~1.25%. Disclaimers em todas as seções.
+2. **Sem dados de conversão** — apenas métricas de engajamento.
+3. **Texto lorem ipsum** — impossibilita análise de sentimento.
+4. **Temporalidade limitada** — 9 meses sem sazonalidade real.
+5. **Dados Apify simulados na demo** — com token configurado, coleta dados reais de 5 plataformas.
 
 ---
 
-## Limitacoes
-
-1. **Dados simulados:** O dataset tem distribuicoes muito uniformes (~1.25pp de variacao total). Em dados reais, as diferencas seriam 5-20pp. Os rankings relativos e direcoes de tendencia sao validos, mas os valores absolutos nao refletem cenarios reais.
-
-2. **Conteudo dos posts:** As colunas `content_description` e `comments_text` contem texto lorem ipsum simulado, impossibilitando analise de sentimento ou tematica do conteudo.
-
-3. **Temporalidade:** Sem sazonalidade real nos dados — padroes temporais (dia/hora) podem nao refletir comportamento genuino de audiencia.
-
-4. **Amostragem por mercado:** ~6.500 posts por mercado e suficiente para medias, mas insuficiente para analises granulares por mercado + plataforma + formato.
-
-5. **Metricas de conversao:** O dataset tem apenas metricas de engajamento (likes, shares, comments). Nao ha dados de conversao, vendas ou ROI real.
-
----
-
-## Process Log — Como usei IA
-
-> Este bloco documenta o uso estrategico de IA ao longo de toda a construcao da solucao.
+## Process Log v2
 
 ### Ferramentas usadas
 
 | Ferramenta | Para que usei |
 |------------|---------------|
-| Claude Code (Claude Opus 4.6) | Arquitetura do sistema, analise de dados, geracao de scripts Python, construcao do dashboard Next.js, revisao de codigo e fundamentacao metodologica |
-| Python + pandas | Processamento e analise dos 52K posts — clustering, testes de hipoteses, geracao de dados agregados |
-| Next.js 16 + shadcn/ui + Recharts | Dashboard interativo como diferencial da entrega |
-| Git + GitHub | Versionamento e submissao via Pull Request |
+| Claude Code (Opus 4.6) | Arquitetura, código, análise crítica, implementação |
+| OpenRouter (Gemini Flash + Claude Sonnet 4.5) | Pipeline Draft/Critique/Output para geração de conteúdo |
+| Python + pandas + scipy | Testes estatísticos, ranking, tráfego pago, sponsorship explorer |
+| ChatGPT Codex + Antigravity | Validação cruzada de abordagens |
+| ZAPI | Integração WhatsApp para mensagens a influenciadores |
+| Apify | Coleta de dados reais de 5 plataformas |
 
-### Meu processo de pensamento (antes de qualquer ferramenta)
+### Evolução v1 → v2: Decisões que eu tomei
 
-1. **Anotacoes manuais** — Fiz anotacoes com os elementos principais: o que o gestor pediu, quais dados existem, formato de entrega. Clareza antes de tocar em qualquer ferramenta.
-2. **Decisao pelo frontend** — A equipe de social media precisa visualizar dados, nao ler planilhas. Essa decisao veio antes da IA.
-3. **Contextualizacao da missao** — Alimentei o contexto da IA com briefing completo, regras e exemplos antes de qualquer geracao. Isso evitou que a IA criasse codigo sem entender o escopo.
-4. **Fundamentos identificados no briefing:** O gestor quer respostas concretas sobre engajamento real e ROI de patrocinio. O dataset de 52K posts limita a janela de contexto — preciso de processamento local. Lembrei de Data Priming como metodologia de cruzamento.
-5. **Interacao dirigida** — Cada hipotese testada, cada visualizacao construida, cada remocao de conteudo irrelevante foi decisao minha. A IA executou, a direcao estrategica foi minha.
+**1. "Os dados antigos não servem para o gestor"**
+Dashboard v1 era organizado por hipóteses técnicas. Reorganizei para 6 tabs por pergunta de negócio.
 
-### Workflow
+**2. "Recomendações absolutas viram tendências"**
+"SIM para micro" com diferença de 0.17% não é um "SIM". É uma tendência a validar.
 
-**Etapa 1 — Compreensao do desafio (antes de qualquer codigo)**
+**3. "O gestor não quer clicar para gerar"**
+Criei cron que gera automaticamente com área de aprovação na Visão Geral.
 
-Usei o Claude Code para mapear completamente o repositorio do desafio: README, CONTRIBUTING.md, submission-guide.md, template de submissao e submissoes anteriores. Isso me deu visao completa do que era esperado.
+**4. "Geração não pode ser aleatória"**
+O cron carrega top combinações do dataset para definir o mix semanal. Cada conteúdo referencia qual dado do dataset justifica a escolha.
 
-**Etapa 2 — Setup da stack**
+**5. "Score mínimo com histórico"**
+Nota < 7 = auto-retry (até 3x). Conteúdos reprovados e descartados salvos para a IA aprender.
 
-Claude Code criou o projeto Next.js 16 com TypeScript, Tailwind CSS v4, shadcn/ui e Prisma. Encontramos um bug do Turbopack com acentos no path — corrigi trocando para webpack.
+**6. "Mensagens genéricas não servem"**
+Prompt com dados específicos: engagement, benchmark, ações mensuráveis. Textarea editável antes de enviar.
 
-**Etapa 3 — Reconhecimento dos dados**
+**7. "O gestor quer explorar, não só ver resumo"**
+Explorador interativo de patrocínio com 6 dimensões × 3 métricas × filtros cruzados.
 
-Script Python de reconhecimento sobre os 52.214 posts. Questionei o Claude sobre processar 52K no contexto — ele admitiu que nao cabe. Definimos: pandas local processa, apenas resultados agregados entram no contexto para interpretacao.
+**8. "Dados reais via Apify"**
+Análise de Perfil com 5 plataformas. Cruza com dataset ou benchmark por mercado.
 
-**Etapa 4 — Fundamentacao metodologica**
+**9. "Recomendações na Visão Geral"**
+Além dos conteúdos pendentes, a Visão Geral mostra onde investir, o que evitar, melhores dias e horários — tudo do dataset.
 
-Exigi que o Claude comparasse 4 metodologias antes de escolher. Isso me permite defender a escolha de Hypothesis-Driven Analysis para o gestor.
-
-**Etapa 5 — Analise e construcao do dashboard**
-
-Hipoteses testadas, 30+ JSONs gerados, dashboard com 6 abas interativas. Iteramos sobre design (paleta G4, SVG inline, sem emojis), UX (fonte Inter, dados explicativos) e compliance (analise de mercados adicionada apos auditoria, secao de disclosure removida por nao ser pergunta do gestor).
+**10. "WhatsApp funcional"**
+ZAPI integrado com QR Code no modal, verificação de status antes de enviar, erros claros.
 
 ### Onde a IA errou e como corrigi
 
 | O que aconteceu | Como corrigi |
 |-----------------|-------------|
-| Claude montou toda a stack antes de eu ler o briefing — priorizou dashboard sobre analise | Redirecionei: analise de dados e o core, dashboard e diferencial |
-| Turbopack crashava com acentos no path | Identifiquei o bug, troquei para webpack |
-| Prisma v7 mudou a API — Claude gerou codigo do v6 | Iteramos ate encontrar a sintaxe correta |
-| Claude sugeriu carregar todo o CSV no contexto | Questionei proativamente — definimos processamento local com pandas |
-| Na primeira abordagem, Claude ia fazer EDA livre | Pedi fundamentacao metodologica antes de executar |
-| Dashboard tinha emojis — visual amador | Exigi SVG inline, sem emojis, paleta G4 |
-| Textos de patrocinio nos cards sem fundamentacao | Forcei adicionar os dados reais (organico vs patrocinado com diferenca em pp) |
-| Analise de mercados (Brasil) faltava no dashboard | Fiz auditoria de compliance e identifiquei a lacuna |
-| Claude criou secao de "disclosure type" que nao foi pedida pelo gestor | Questionei a relevancia, confirmei que nao era pergunta do briefing, e mandei remover |
+| Diferenças de 0.1% como insights acionáveis | Disclaimers + badges de significância |
+| 9 tabs técnicas por hipótese | 6 tabs por pergunta de negócio |
+| Geração de conteúdo aleatória | Mix semanal baseado nos dados do dataset |
+| Score exposto ao gestor | Removido da UI — pipeline avalia internamente |
+| Gráfico de campanhas confuso (barras horizontais) | Trocado por tabela visual + explorador interativo |
+| Mensagens de influenciador genéricas | Prompt com dados + benchmark + ações mensuráveis |
+| Botão "Enviar ZAPI" sem verificação | Verifica status antes, mostra erro claro |
+| Texto sem acentos (Patrocinio, Calendario) | Busca completa e correção em todos os componentes |
+| "Credenciais expostas no frontend" | Removido, credenciais só no .env (server-side) |
 
-### O que eu adicionei que a IA sozinha nao faria
+### O que eu adicionei que a IA não faria
 
-1. **Redirecionamento estrategico:** A IA comecou construindo um SaaS. Eu li o briefing e entendi que o desafio avalia capacidade analitica, nao engenharia. Sem essa correcao, teriamos entregue um sistema bonito que nao responde nenhuma pergunta do gestor.
+1. **Análise crítica do próprio output** — identifiquei que recomendações absolutas não são honestas com diferenças de 0.1%.
 
-2. **Questionamento sobre janela de contexto:** Perguntei se 52K registros caberiam no contexto. Isso levou a arquitetura correta (pandas local -> JSONs agregados -> dashboard).
+2. **Pesquisa sobre prompt engineering** — combinei artigo da Anthropic (prompt chaining) + Don Woodlock (Draft → Critique → Output) para definir o pipeline com modelos diferentes por step.
 
-3. **Exigencia de fundamentacao metodologica:** Em vez de aceitar "vamos analisar", exigi comparacao de 4 metodologias com justificativa.
+3. **Multi-ferramenta** — validei com Claude Code, ChatGPT Codex e Antigravity. Decisão final minha.
 
-4. **Foco em acionaveis reais:** A cada insight generico, forcei a pergunta: "o que o Head de Marketing faz com isso segunda-feira?".
+4. **Geração baseada no dataset, não aleatória** — exigi que o cron carregasse os dados reais (top combinações, horários, hashtags) para fundamentar cada recomendação.
 
-5. **Auditoria de compliance:** Identifiquei que a analise de mercados (Brasil) faltava e exigi implementacao. Tambem identifiquei que o Claude havia criado uma secao sobre "disclosure type" que nao era pergunta do gestor — mandei remover para manter foco no que foi pedido.
+5. **Honestidade intelectual** — a IA nunca adiciona disclaimers nas próprias recomendações. Fui eu que forcei.
 
-6. **Design profissional:** Exigi paleta G4, remocao de emojis, SVG inline, dados fundamentados nos cards, senha de acesso.
+6. **Explorador interativo** — em vez de gráfico estático, o gestor monta sua própria consulta.
 
-### Evidencias
+7. **Histórico de aprendizado** — descartados e reprovados alimentam o próximo ciclo. A IA evolui com o uso.
 
-- [x] Process log documentado em tempo real
-- [x] Git history mostrando evolucao do codigo
-- [x] Dashboard funcional com 6 abas cobrindo todas as hipoteses
-- [x] Scripts de analise Python gerando 30+ JSONs de dados
-- [x] Senha de acesso ao dashboard: `g4social2024`
+### Evidências
+
+- [x] Process log documentando evolução v1 → v2
+- [x] Git history com toda a iteração
+- [x] Dashboard funcional: 6 abas + 14 API routes
+- [x] 7 scripts Python (hipóteses + estatística + ranking + tráfego pago + Apify 5 plataformas + sponsorship explorer)
+- [x] 40+ JSONs com metadados temporais e testes de significância
+- [x] Pipeline IA: Draft (Gemini) → Critique (Claude) → Output (Gemini) com auto-retry
+- [x] Calendário com geração baseada no dataset + aprovação do gestor
+- [x] Recomendações na Visão Geral (onde investir, o que evitar, timing)
+- [x] Explorador interativo de patrocínio (6 dimensões × 3 métricas)
+- [x] Integração ZAPI com QR Code + verificação de status
+- [x] Apify para 5 plataformas (Instagram, TikTok, YouTube, RedNote, Bilibili)
+- [x] Histórico de aprendizado (content-history.json)
+- [x] Disclaimers honestos em todas as seções
+- [x] Senha: `g4social2024`
 
 ---
 
-**Submissao enviada em:** 2026-03-11
+**Submissão v1:** 2026-03-11
+**Submissão v2:** 2026-03-21

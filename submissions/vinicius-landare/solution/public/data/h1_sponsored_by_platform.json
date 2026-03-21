@@ -1,92 +1,100 @@
-[
-  {
-    "platform":"Bilibili",
-    "is_sponsored":false,
-    "posts":6145,
-    "avg_engagement_rate":19.9105,
-    "avg_likes":1510.5976,
-    "avg_shares":300.1404,
-    "avg_comments":200.0329
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:34:20.754677",
+    "data_source": "dataset_v1",
+    "sample_size": 52214,
+    "period": "2023-05-29 00:15:00 to 2025-05-28 11:08:00"
   },
-  {
-    "platform":"Bilibili",
-    "is_sponsored":true,
-    "posts":4453,
-    "avg_engagement_rate":19.9057,
-    "avg_likes":1510.1588,
-    "avg_shares":300.026,
-    "avg_comments":200.051
-  },
-  {
-    "platform":"Instagram",
-    "is_sponsored":false,
-    "posts":6054,
-    "avg_engagement_rate":19.8945,
-    "avg_likes":1509.1297,
-    "avg_shares":300.3878,
-    "avg_comments":199.8244
-  },
-  {
-    "platform":"Instagram",
-    "is_sponsored":true,
-    "posts":4369,
-    "avg_engagement_rate":19.9058,
-    "avg_likes":1510.0737,
-    "avg_shares":299.8709,
-    "avg_comments":200.2165
-  },
-  {
-    "platform":"RedNote",
-    "is_sponsored":false,
-    "posts":5881,
-    "avg_engagement_rate":19.9055,
-    "avg_likes":1510.8732,
-    "avg_shares":299.6072,
-    "avg_comments":199.9803
-  },
-  {
-    "platform":"RedNote",
-    "is_sponsored":true,
-    "posts":4521,
-    "avg_engagement_rate":19.9153,
-    "avg_likes":1510.7436,
-    "avg_shares":300.0916,
-    "avg_comments":200.5194
-  },
-  {
-    "platform":"TikTok",
-    "is_sponsored":false,
-    "posts":5855,
-    "avg_engagement_rate":19.9124,
-    "avg_likes":1510.7691,
-    "avg_shares":299.8391,
-    "avg_comments":200.1395
-  },
-  {
-    "platform":"TikTok",
-    "is_sponsored":true,
-    "posts":4441,
-    "avg_engagement_rate":19.8976,
-    "avg_likes":1510.2993,
-    "avg_shares":299.9018,
-    "avg_comments":199.8129
-  },
-  {
-    "platform":"YouTube",
-    "is_sponsored":false,
-    "posts":5965,
-    "avg_engagement_rate":19.9068,
-    "avg_likes":1509.9589,
-    "avg_shares":300.379,
-    "avg_comments":200.0253
-  },
-  {
-    "platform":"YouTube",
-    "is_sponsored":true,
-    "posts":4530,
-    "avg_engagement_rate":19.8996,
-    "avg_likes":1510.1801,
-    "avg_shares":299.8263,
-    "avg_comments":199.5863
-  }
-]
+  "data": [
+    {
+      "platform": "Bilibili",
+      "is_sponsored": false,
+      "posts": 6145,
+      "avg_engagement_rate": 19.9105,
+      "avg_likes": 1510.5976,
+      "avg_shares": 300.1404,
+      "avg_comments": 200.0329
+    },
+    {
+      "platform": "Bilibili",
+      "is_sponsored": true,
+      "posts": 4453,
+      "avg_engagement_rate": 19.9057,
+      "avg_likes": 1510.1588,
+      "avg_shares": 300.026,
+      "avg_comments": 200.051
+    },
+    {
+      "platform": "Instagram",
+      "is_sponsored": false,
+      "posts": 6054,
+      "avg_engagement_rate": 19.8945,
+      "avg_likes": 1509.1297,
+      "avg_shares": 300.3878,
+      "avg_comments": 199.8244
+    },
+    {
+      "platform": "Instagram",
+      "is_sponsored": true,
+      "posts": 4369,
+      "avg_engagement_rate": 19.9058,
+      "avg_likes": 1510.0737,
+      "avg_shares": 299.8709,
+      "avg_comments": 200.2165
+    },
+    {
+      "platform": "RedNote",
+      "is_sponsored": false,
+      "posts": 5881,
+      "avg_engagement_rate": 19.9055,
+      "avg_likes": 1510.8732,
+      "avg_shares": 299.6072,
+      "avg_comments": 199.9803
+    },
+    {
+      "platform": "RedNote",
+      "is_sponsored": true,
+      "posts": 4521,
+      "avg_engagement_rate": 19.9153,
+      "avg_likes": 1510.7436,
+      "avg_shares": 300.0916,
+      "avg_comments": 200.5194
+    },
+    {
+      "platform": "TikTok",
+      "is_sponsored": false,
+      "posts": 5855,
+      "avg_engagement_rate": 19.9124,
+      "avg_likes": 1510.7691,
+      "avg_shares": 299.8391,
+      "avg_comments": 200.1395
+    },
+    {
+      "platform": "TikTok",
+      "is_sponsored": true,
+      "posts": 4441,
+      "avg_engagement_rate": 19.8976,
+      "avg_likes": 1510.2993,
+      "avg_shares": 299.9018,
+      "avg_comments": 199.8129
+    },
+    {
+      "platform": "YouTube",
+      "is_sponsored": false,
+      "posts": 5965,
+      "avg_engagement_rate": 19.9068,
+      "avg_likes": 1509.9589,
+      "avg_shares": 300.379,
+      "avg_comments": 200.0253
+    },
+    {
+      "platform": "YouTube",
+      "is_sponsored": true,
+      "posts": 4530,
+      "avg_engagement_rate": 19.8996,
+      "avg_likes": 1510.1801,
+      "avg_shares": 299.8263,
+      "avg_comments": 199.5863
+    }
+  ]
+}

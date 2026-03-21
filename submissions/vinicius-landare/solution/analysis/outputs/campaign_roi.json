@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "generated_at": "2026-03-21T11:32:24.950746",
+    "data_source": "dataset_v1",
+    "analysis": "paid_traffic"
+  },
+  "data": [
+    {
+      "sponsor_category": "cosmetics",
+      "posts": 3688,
+      "avg_engagement": 19.9157,
+      "avg_views": 10098.9845,
+      "avg_likes": 1511.3416,
+      "avg_shares": 299.7392,
+      "avg_comments": 199.9981,
+      "avg_cpe": 5.0242,
+      "lift_vs_organic": 0.0098,
+      "roi_positive": true
+    },
+    {
+      "sponsor_category": "food",
+      "posts": 3846,
+      "avg_engagement": 19.911,
+      "avg_views": 10099.9592,
+      "avg_likes": 1510.7738,
+      "avg_shares": 299.7626,
+      "avg_comments": 200.2585,
+      "avg_cpe": 5.0254,
+      "lift_vs_organic": 0.0051,
+      "roi_positive": true
+    },
+    {
+      "sponsor_category": "travel",
+      "posts": 3633,
+      "avg_engagement": 19.9072,
+      "avg_views": 10100.2766,
+      "avg_likes": 1510.2161,
+      "avg_shares": 300.0641,
+      "avg_comments": 200.1916,
+      "avg_cpe": 5.0263,
+      "lift_vs_organic": 0.0013,
+      "roi_positive": true
+    },
+    {
+      "sponsor_category": "electronics",
+      "posts": 3750,
+      "avg_engagement": 19.905,
+      "avg_views": 10100.6408,
+      "avg_likes": 1509.8403,
+      "avg_shares": 300.3747,
+      "avg_comments": 200.1123,
+      "avg_cpe": 5.027,
+      "lift_vs_organic": -0.0009,
+      "roi_positive": false
+    },
+    {
+      "sponsor_category": "gaming",
+      "posts": 3687,
+      "avg_engagement": 19.8993,
+      "avg_views": 10101.8028,
+      "avg_likes": 1510.3282,
+      "avg_shares": 299.8424,
+      "avg_comments": 199.8066,
+      "avg_cpe": 5.0284,
+      "lift_vs_organic": -0.0066,
+      "roi_positive": false
+    },
+    {
+      "sponsor_category": "fashion",
+      "posts": 3710,
+      "avg_engagement": 19.8907,
+      "avg_views": 10101.0383,
+      "avg_likes": 1509.2496,
+      "avg_shares": 299.8817,
+      "avg_comments": 199.845,
+      "avg_cpe": 5.0304,
+      "lift_vs_organic": -0.0152,
+      "roi_positive": false
+    }
+  ]
+}
