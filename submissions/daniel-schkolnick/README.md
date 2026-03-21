@@ -24,6 +24,69 @@ O Score Size foi desenhado como um mecanismo simples, explicável e operacional.
 
 Também incluí uma camada de “Dados incompletos”, porque identifiquei que o problema de preenchimento do CRM era uma causa estrutural do problema de priorização. Sem dados mínimos, os vendedores não sabem o que priorizar e os gestores não conseguem acompanhar a qualidade da carteira. Por isso, a solução não só prioriza, mas também disciplina a operação.
 
+### Como reproduzir e verificar localmente
+
+A solução pode ser reproduzida localmente a partir do código exportado da aplicação, disponível em:
+
+`submissions/daniel-schkolnick/process-log/app/`
+
+### Passos para execução local
+
+1. Entrar na pasta da aplicação:
+   ```bash
+   cd submissions/daniel-schkolnick/process-log/app
+
+2. Instalar as dependências
+npm install
+
+3. Iniciar a aplicação localmente
+npm run dev
+
+4. Abrir no navegador a URL local exibida no terminal.
+
+### Como verificar a solução localmente
+
+Para validar a solução, a pessoa avaliadora deve:
+
+1. Confirmar que a aplicação abre sem erro.
+2. Verificar que a base seed está disponível em:
+submissions/daniel-schkolnick/process-log/app/public/data/seed.xlsx
+3. Confirmar que o CRM exibe o pipeline com os leads classificados.
+4. Confirmar que existem leads com Score A, B, C e D.
+5. Confirmar que leads com dados ausentes aparecem como “Dados incompletos”.
+6. Validar que há filtros e visão gerencial por manager.
+7. Comparar a saída visual com os artefatos gerados em:
+submissions/daniel-schkolnick/process-log/evidencias/
+
+### Como verificar sem depender só da interface
+
+Além da interface, a auditoria pode ser feita diretamente pelos arquivos:
+lógica do score: submissions/daniel-schkolnick/process-log/app/src/lib/scoring.ts
+ingestão da planilha: submissions/daniel-schkolnick/process-log/app/src/lib/parseWorkbook.ts
+seed utilizada no MVP: submissions/daniel-schkolnick/process-log/app/public/data/seed.xlsx
+saída real do scoring: submissions/daniel-schkolnick/process-log/evidencias/scored_output_seed.csv
+distribuição consolidada: submissions/daniel-schkolnick/process-log/evidencias/distribution_summary.md
+exemplos reais de validação: submissions/daniel-schkolnick/process-log/evidencias/validation_examples.md
+
+### Decisões de arquitetura e design
+
+As principais decisões de arquitetura e design foram as seguintes:
+
+1. Aplicação front-end com planilha como fonte de dados
+Escolhi uma aplicação front-end com leitura direta de planilha porque o desafio pedia uma ferramenta funcional, mas não exigia integração real com CRM nem infraestrutura de backend. Essa decisão reduziu complexidade, acelerou a entrega e manteve a solução fácil de auditar.
+2. Uso de uma seed consolidada para o MVP
+Optei por trabalhar com uma base consolidada no MVP para simplificar a execução e garantir reprodutibilidade. Como o objetivo do desafio era priorização funcional e não engenharia de dados em produção, essa escolha permitiu focar na lógica de negócio e na usabilidade.
+3. Score estrutural determinístico em vez de modelo de machine learning
+Escolhi um score heurístico e explicável, baseado em win rate e tempo médio por segmento e porte, porque a Head de RevOps pediu algo utilizável e compreensível para a operação. A decisão foi privilegiar clareza, auditabilidade e adoção prática.
+4. Classificação em quartis A/B/C/D
+Optei por quartis dinâmicos porque isso transforma um score numérico contínuo em uma linguagem operacional simples para o time comercial. A classificação facilita priorização rápida e reduz atrito de uso no dia a dia.
+5. Tratamento de “Dados incompletos” como categoria operacional própria
+Essa foi uma decisão central da solução. Em vez de ignorar ou imputar dados faltantes, escolhi sinalizar esses leads separadamente porque o problema de cadastro incompleto apareceu como causa estrutural da priorização falha. Isso transforma qualidade de dados em ação gerencial concreta.
+6. Separação entre visão operacional e visão gerencial
+Estruturei o produto com duas camadas: uma para o vendedor priorizar leads e outra para o manager acompanhar carteira, preenchimento e desempenho. Essa escolha veio da necessidade de adoção real: priorização sem cobrança gerencial tende a não se sustentar.
+7. Explicabilidade do score no produto
+A solução foi desenhada para que o vendedor não veja apenas uma nota, mas também entenda o motivo do score. Essa decisão foi importante para aumentar confiança no uso e reduzir a percepção de arbitrariedade.
+
 ### Abordagem
 
 Meu primeiro passo foi destrinchar o enunciado para entender exatamente o problema de negócio, os stakeholders e o tipo de saída que faria sentido para o desafio. Em seguida, entrei em uma etapa de discovery, explorando os dados e fazendo perguntas estruturadas para identificar padrões, gargalos e comportamentos operacionais relevantes antes de pensar em qualquer solução.
@@ -182,4 +245,4 @@ Critérios validados nessas evidências:
 5. Abrir `distribution_summary.md` para confirmar a contagem total de leads, completos, incompletos e distribuição A/B/C/D.  
 6. Abrir `validation_examples.md` para conferir os 3 exemplos reais de validação.  
 ---
- `*Submissão enviada em: 13/03/2026*`
+ `*Submissão enviada em: 21/03/2026*`
