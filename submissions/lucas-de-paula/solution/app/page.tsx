@@ -7,6 +7,7 @@ import { DealModal } from "./components/DealModal";
 import { ScoreBreakdown } from "./components/ScoreBreakdown";
 import { Navbar } from "./components/Navbar";
 import { InfoTooltip } from "./components/InfoTooltip";
+import { DailyFocus } from "./components/DailyFocus";
 
 type QuickFilter = "all" | "healthy" | "atRisk" | "prospecting" | "zombie";
 
@@ -345,6 +346,9 @@ export default function DashboardPage() {
             onClick={() => handleKpiClick("zombie")}
           />
         </div>
+
+        {/* Daily Focus — top 3 deals críticos que precisam de ação hoje */}
+        <DailyFocus deals={deals} onSelectDeal={setSelectedDeal} />
 
         {/* How-to guide — collapsible, persisted in localStorage */}
         <HowToUsePanel />

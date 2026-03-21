@@ -253,6 +253,8 @@ O AI Coach funcionou local mas retornou 500 em produção. A env var não havia 
 - KPI cards com funil matematicamente fechado — gestores não confiam em números que não somam
 - Auth com dois perfis (Admin/Viewer) — já pensando em segregação de acesso
 - WelcomeModal com vídeo demo integrado — onboarding do usuário resolvido
+- **HowToUsePanel colapsível** — painel educativo com 4 blocos explicando cada tipo de deal (Saudável, Em risco, Prospecting, Zumbi) e a ação recomendada. Decisão minha: o vendedor que abre o app pela primeira vez não deve precisar de treinamento separado — o guia está embutido e pode ser ocultado depois. Cada KPI card tem InfoTooltip com contexto adicional pelo mesmo motivo.
+- **Foco do Dia** — card com os 3 deals mais críticos no topo do dashboard. Prioriza deals Em risco (31–90d) com score alto — maior score + prazo comprometido = máxima urgência de ação. Funciona como visão geral para o gestor e como visão individual para o vendedor quando filtrado pelo próprio nome.
 
 **Registro de erros documentados (total: 5):**
 1. `scoreDeals()` chamado sem `winRates` — erro de sequência de implementação
