@@ -67,6 +67,17 @@
 
 **Por que esses pesos:** Stage/Momentum é o indicador mais acionável no curto prazo — um deal parado 6 meses não merece o mesmo foco que um deal quente. Produto captura impacto de receita (GTK 500 vs MG Special não são comparáveis). Conta filtra deals sem qualificação. Win rate ajusta a expectativa por vendedor.
 
+**Justificativa do MG Special (3pts) — baseada nos dados do challenge:**
+
+| Produto | Deals no pipeline | Ticket médio | Receita potencial total |
+|---|---|---|---|
+| GTK 500 | 41 | R$26.768 | R$1.097.488 |
+| GTX Plus Pro | 78 | R$8.450 | R$659.100 |
+| GTXPro | 243 | R$2.890 | R$702.270 |
+| **MG Special** | **1.651** | **R$55** | **R$90.805** |
+
+O MG Special representa 79% dos deals do pipeline em volume, mas apenas 4% da receita potencial total. Um vendedor que fecha 1 MG Special gera R$55 — o mesmo vendedor com 1 GTK 500 gera R$26.768, ou seja, 486× mais receita. Dar peso alto ao MG Special distorceria o ranking priorizando volume de baixíssimo valor sobre deals que movem receita real. Os 3pts refletem que o produto existe no portfólio e merece acompanhamento, mas não deve dominar a priorização.
+
 ---
 
 ## [2026-03-12 — ERRO #1: scoreDeals() chamado sem parâmetro obrigatório]
