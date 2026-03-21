@@ -30,19 +30,20 @@ Análise do dataset SaaS de churn (Kaggle, MIT) via DuckDB diretamente no servid
 
 **Findings**
 
-- Taxa de churn concentrada nos primeiros 6 meses (onboarding crítico)
-- Clientes em planos mensais churnam 3–4× mais que anuais
-- Ausência de engajamento com suporte nos primeiros 30 dias é sinal de risco antecipado
+- DevTools tem churn 2× acima da média do portfólio (31% vs 22% geral) — maior gap entre segmentos
+- Plan tiers (Enterprise/Basic/Pro) churn a ~22% cada — plano não é variável de risco
+- Principais razões de churn: falta de features (19%), budget (17.3%) e qualidade de suporte (17.3%) — três frentes independentes
+- Escalation rate maior em churned (5.6%) vs retained (4.5%) — uso de suporte é sinal de risco, mas volume de tickets quase idêntico (3.93 vs 4.02)
 
 **Recomendações**
 
-1. Intervenção proativa nos primeiros 90 dias (health score + trigger de contato)
-2. Incentivar migração de mensal para anual no momento de renovação
-3. Criar jornada de onboarding monitorada com checkpoint de engajamento
+1. Focar retenção proativa em DevTools — churn 40% acima da média, gap provável no product-market fit desse segmento
+2. Programa de win-back segmentado por razão: features → roadmap, budget → downgrade/desconto, support → QA de atendimento
+3. Monitorar escalation rate como health signal precoce — diferença pequena mas consistente entre grupos
 
 **Limitações**
 
-Dataset não contém dados de produto (feature usage), o que limita a precisão do diagnóstico de causa raiz.
+Dataset não contém dados de tenure por conta (só por assinatura), o que impede segmentação de risco por tempo de cliente no dashboard. Análise de tenure via script aponta 15.6% de churn em 0–6 meses vs 3.5% em 7–12 meses, mas essa visão não está exposta na UI.
 
 ---
 
@@ -54,19 +55,21 @@ Pipeline de análise em duas etapas: scripts Python geram JSONs de diagnóstico 
 
 **Findings**
 
-- 40%+ dos tickets são problemas de billing — candidatos diretos a self-service
-- Tempo médio de resolução varia 5× entre agentes para o mesmo tipo de problema
-- Tickets sem resposta em 24h têm probabilidade de escalonamento 3× maior
+- Distribuição uniforme entre os 5 tipos de ticket (~20% cada) — sem concentração em nenhuma categoria
+- Taxa de resolução de apenas 32–34% independente de prioridade: Critical (34.1%) resolve na mesma proporção que Low (31.2%)
+- 50% dos tickets ultrapassam a mediana de resolução (6.7h), com excesso médio de 5.65h — custo anual estimado de R$ 2,9M em horas excedentes
+- Bottlenecks concentrados em combinações canal×tipo: Social media + Refund request (9.0h) e Chat/Email + Cancellation request (8.7h)
+- CSAT sem correlação estatística com canal, tipo ou prioridade (dataset sintético — CSAT uniformemente distribuído)
 
 **Recomendações**
 
-1. Automatizar triagem de billing (chatbot + base de conhecimento) — reduz volume ~40%
-2. Redistribuir tickets com base em histórico de resolução por agente
-3. SLA de primeira resposta em 4h como threshold para alerta de escalonamento
+1. Priorizar playbook para Cancellation requests — aparecem em 3 dos 5 piores bottlenecks por canal
+2. SLA diferenciado por canal: Social media precisa de triagem dedicada para Refund (pior combinação atual)
+3. Revisar workflow de Critical: 34% de resolução em tickets críticos indica falha de escalonamento, não falta de volume
 
 **Limitações**
 
-Classificador LLM sem fine-tuning; em produção precisaria de dataset de treinamento com labels validados por analistas.
+Dataset sem coluna de agente — não é possível analisar variação de desempenho individual. Classificador LLM sem fine-tuning; em produção precisaria de labels validados por analistas.
 
 ---
 
@@ -144,6 +147,7 @@ Dataset sintético impede conclusões sobre timing ótimo de publicação e vari
 - **Support triage**: IA gerou `fallbackInsights` e `fallbackRecommendations` hardcoded — análise fabricada sem dados. Removi integralmente e substituí por banner de "configure API key". Dado fabricado é pior que dado ausente.
 - **Proposta de suporte**: IA truncava o JSON de proposta quando muito longo (limite de contexto do LLM). Corrigi aumentando `max_tokens` e adicionando instrução de brevidade ao prompt.
 - **Docker (support-triage)**: primeiro Dockerfile não respeitava a estrutura do workspace pnpm — `node_modules` incorretos no runtime. Reescrito com multi-stage build e COPY explícito dos binários DuckDB nativos.
+- **Findings de churn e suporte**: IA gerou findings sem validar contra os dados — "mensal churn 3–4× mais que anual" (dados mostram 9.4% vs 10.0%, praticamente iguais), "40%+ billing" (billing é 19.3%, distribuição uniforme), "variação 5× entre agentes" (dataset não tem coluna de agente). Detectados na validação pós-entrega. Corrigidos no README com findings derivados dos dados reais.
 
 ### O que eu adicionei que a IA sozinha não faria
 
