@@ -1,9 +1,18 @@
 import { generateProposal, type InsightsPayload } from '@/lib/insights'
 
 export async function ProposalAutomation(payload: InsightsPayload) {
-  const { automationItems } = await generateProposal(payload)
-  const hasAI = !!process.env.OPENROUTER_API_KEY
+  const proposal = await generateProposal(payload)
 
+  if (!proposal) {
+    return (
+      <section className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-500 flex items-center gap-3">
+        <span className="text-gray-400 text-lg">🔑</span>
+        <span>Configure <code className="bg-gray-100 px-1 rounded text-xs">OPENROUTER_API_KEY</code> para ativar proposta de automação via IA.</span>
+      </section>
+    )
+  }
+
+  const { automationItems } = proposal
   const toAutomate = automationItems.filter(i => i.automate)
   const notAutomate = automationItems.filter(i => !i.automate)
 
@@ -11,9 +20,7 @@ export async function ProposalAutomation(payload: InsightsPayload) {
     <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
       <div className="flex items-center gap-2">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">O que automatizar — e o que não</h2>
-        <span className={`text-xs px-2 py-0.5 rounded-full ${hasAI ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
-          {hasAI ? 'gerado por IA' : 'calculado dos dados'}
-        </span>
+        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">gerado por IA</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -44,16 +51,24 @@ export async function ProposalAutomation(payload: InsightsPayload) {
 }
 
 export async function ProposalLimitations(payload: InsightsPayload) {
-  const { limitations } = await generateProposal(payload)
-  const hasAI = !!process.env.OPENROUTER_API_KEY
+  const proposal = await generateProposal(payload)
+
+  if (!proposal) {
+    return (
+      <section className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-500 flex items-center gap-3">
+        <span className="text-gray-400 text-lg">🔑</span>
+        <span>Configure <code className="bg-gray-100 px-1 rounded text-xs">OPENROUTER_API_KEY</code> para ativar limitações via IA.</span>
+      </section>
+    )
+  }
+
+  const { limitations } = proposal
 
   return (
     <section className="bg-amber-50 border border-amber-200 rounded-xl p-6 space-y-2">
       <div className="flex items-center gap-2">
         <h2 className="text-sm font-semibold text-amber-800 uppercase tracking-wide">Limitações honestas</h2>
-        <span className={`text-xs px-2 py-0.5 rounded-full ${hasAI ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-500'}`}>
-          {hasAI ? 'gerado por IA' : 'calculado dos dados'}
-        </span>
+        <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">gerado por IA</span>
       </div>
       <ul className="text-sm text-amber-700 space-y-1 list-disc list-inside">
         {limitations.map((l, i) => <li key={i}>{l}</li>)}

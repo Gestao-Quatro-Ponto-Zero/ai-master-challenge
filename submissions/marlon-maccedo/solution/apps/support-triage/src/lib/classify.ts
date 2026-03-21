@@ -5,9 +5,9 @@ const CATEGORIES: ItCategory[] = [
   'Purchase', 'Internal Project', 'Administrative rights', 'Miscellaneous',
 ]
 
-export async function classifyTicket(text: string): Promise<ClassifyResult> {
+export async function classifyTicket(text: string): Promise<ClassifyResult | null> {
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) throw new Error('OPENROUTER_API_KEY não configurada')
+  if (!apiKey) return null
 
   const prompt = `Você é um classificador de tickets de suporte de TI corporativo.
 Classifique o ticket abaixo em UMA das categorias: ${CATEGORIES.join(' | ')}

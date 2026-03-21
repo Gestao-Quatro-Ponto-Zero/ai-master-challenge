@@ -29,14 +29,14 @@ function cacheKey(payload: InsightsPayload): string {
 // ── Main function ─────────────────────────────────────────────────────────────
 
 /** Generates 4 diagnostic insights from real data via OpenRouter.
- *  Results are cached in memory for 24 hours. */
-export async function generateInsights(payload: InsightsPayload): Promise<string[]> {
+ *  Results are cached in memory for 24 hours. Returns null when no API key. */
+export async function generateInsights(payload: InsightsPayload): Promise<string[] | null> {
   const key = cacheKey(payload)
   const cached = cache.get(key)
   if (cached && Date.now() - cached.at < TTL_MS) return cached.insights
 
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) throw new Error('OPENROUTER_API_KEY não configurada')
+  if (!apiKey) return null
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
 
@@ -87,7 +87,7 @@ ${dataSummary}`
 
   const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
   const parsed = JSON.parse(cleaned)
-  if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('[insights] Formato inválido')
+  if (!Array.isArray(parsed) || parsed.length === 0) return null
 
   cache.set(key, { insights: parsed, at: Date.now() })
   return parsed as string[]
@@ -110,13 +110,13 @@ const proposalCache = new Map<string, { data: ProposalSections; at: number }>()
 // cache bust: bump this string when the prompt changes to force regeneration
 const PROPOSAL_PROMPT_VERSION = 'v2'
 
-export async function generateProposal(payload: InsightsPayload): Promise<ProposalSections> {
+export async function generateProposal(payload: InsightsPayload): Promise<ProposalSections | null> {
   const key = `proposal|${PROPOSAL_PROMPT_VERSION}|` + cacheKey(payload)
   const cached = proposalCache.get(key)
   if (cached && Date.now() - cached.at < TTL_MS) return cached.data
 
   const apiKey = process.env.OPENROUTER_API_KEY
-  if (!apiKey) throw new Error('OPENROUTER_API_KEY não configurada')
+  if (!apiKey) return null
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
 
@@ -167,7 +167,7 @@ ${dataSummary}`
   const parsed = JSON.parse(cleaned) as ProposalSections
 
   if (!parsed.automationItems?.length || !parsed.limitations?.length) {
-    throw new Error('[proposal] Formato inválido')
+    return null
   }
 
   proposalCache.set(key, { data: parsed, at: Date.now() })
