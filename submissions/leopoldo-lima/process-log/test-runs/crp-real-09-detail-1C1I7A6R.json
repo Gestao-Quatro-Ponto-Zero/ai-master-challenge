@@ -1,0 +1,34 @@
+{
+  "id": "1C1I7A6R",
+  "title": "Cancity",
+  "seller": "Moses Frase",
+  "manager": "Dustin Brinkmann",
+  "region": "Central",
+  "deal_stage": "Won",
+  "amount": 1054.0,
+  "scoreExplanation": {
+    "score": 85,
+    "priority_band": "high",
+    "positive_factors": [
+      "deal_stage Won contribuiu +25.",
+      "porte por headcount large (+4).",
+      "serie de produto GTX (+2).",
+      "escritorio regional identificado (Central); sinal de completude +1.",
+      "manager atribuido (completude de equipe).",
+      "close_date presente para oportunidade fechada (qualidade de registro)."
+    ],
+    "negative_factors": [
+      "close_value baixo sem bonus de valor."
+    ],
+    "risk_flags": [],
+    "next_action": "Priorizar fechamento com proposta final e plano de onboarding."
+  },
+  "account": "Cancity",
+  "product": "GTX Plus Basic",
+  "sales_agent": "Moses Frase",
+  "regional_office": "Central",
+  "close_value": 1054.0,
+  "engage_date": "2016-10-20",
+  "close_date": "2017-03-01",
+  "product_series": "GTX"
+}

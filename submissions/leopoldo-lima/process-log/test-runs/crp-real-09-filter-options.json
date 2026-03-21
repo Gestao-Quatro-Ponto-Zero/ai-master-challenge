@@ -1,0 +1,21 @@
+{
+  "regions": [
+    "Central",
+    "East",
+    "West"
+  ],
+  "managers": [
+    "Cara Losch",
+    "Celia Rouche",
+    "Dustin Brinkmann",
+    "Melvin Marxen",
+    "Rocco Neubert",
+    "Summer Sewald"
+  ],
+  "deal_stages": [
+    "Prospecting",
+    "Engaging",
+    "Won",
+    "Lost"
+  ]
+}

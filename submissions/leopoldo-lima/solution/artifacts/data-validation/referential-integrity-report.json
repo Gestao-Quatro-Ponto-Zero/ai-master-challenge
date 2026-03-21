@@ -1,0 +1,40 @@
+{
+  "relations": [
+    {
+      "relation": "sales_pipeline.account -> accounts.account",
+      "match_rate": 1.0,
+      "total_rows_with_value": 7375,
+      "matched_rows": 7375,
+      "classification": "ok",
+      "notes": "Conta vazia e permitida; chave presente deve bater com dimens\u00e3o."
+    },
+    {
+      "relation": "sales_pipeline.product -> products.product (com normalizacao)",
+      "match_rate": 1.0,
+      "total_rows_with_value": 8800,
+      "matched_rows": 8800,
+      "classification": "ok",
+      "notes": "Alias sem\u00e2ntico (ex.: GTXPro) aplicado antes do join."
+    },
+    {
+      "relation": "sales_pipeline.sales_agent -> sales_teams.sales_agent",
+      "match_rate": 1.0,
+      "total_rows_with_value": 8800,
+      "matched_rows": 8800,
+      "classification": "ok",
+      "notes": "Agente preenchido deve existir na dimens\u00e3o de times."
+    }
+  ],
+  "unused_dimension_agents": {
+    "count": 5,
+    "classification": "warning",
+    "samples": [
+      "Carl Lin",
+      "Carol Thompson",
+      "Elizabeth Anderson",
+      "Mei-Mei Johns",
+      "Natalya Ivanova"
+    ],
+    "notes": "Agentes sem uso no pipeline atual n\u00e3o bloqueiam integridade."
+  }
+}

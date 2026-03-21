@@ -1,0 +1,117 @@
+{
+  "version": 2,
+  "base_score": 50,
+  "deal_stage_weights": {
+    "Prospecting": 2,
+    "Engaging": 10,
+    "Won": 10,
+    "Lost": -30
+  },
+  "close_value": {
+    "high_threshold": 10000,
+    "high_weight": 10,
+    "mid_threshold": 3000,
+    "mid_weight": 5
+  },
+  "missing_account_penalty": -8,
+  "pipeline_age": {
+    "weights": {
+      "fresh": 6,
+      "active": 3,
+      "stale": -8,
+      "unknown": -5
+    }
+  },
+  "stage_rank_adjustment": {
+    "1": -2,
+    "2": 2,
+    "3": 0,
+    "0": 0
+  },
+  "account_revenue_band": {
+    "enterprise": 6,
+    "mid": 3,
+    "small": 0,
+    "unknown": -2
+  },
+  "employee_band": {
+    "large": 4,
+    "medium": 2,
+    "small": 0,
+    "unknown": -1
+  },
+  "product_series": {
+    "default": 0,
+    "by_series": {
+      "GTX": 2,
+      "MG": 1,
+      "GTK": 2,
+      "unknown": -1
+    }
+  },
+  "regional_office": {
+    "default": 0,
+    "known_office_bonus": 1,
+    "by_office": {
+      "Central": 0,
+      "East": 0,
+      "West": 0
+    }
+  },
+  "manager_signal": {
+    "known_manager_bonus": 1,
+    "unknown_penalty": 0
+  },
+  "product_price": {
+    "high_threshold": 8000,
+    "high_weight": 3,
+    "mid_threshold": 2000,
+    "mid_weight": 1
+  },
+  "data_quality": {
+    "missing_engage_date_penalty": -5,
+    "closed_deal_missing_close_date_penalty": -4,
+    "has_close_date_when_terminal_bonus": 2
+  },
+  "open_operational": {
+    "low_value_threshold": 2000,
+    "prospecting_no_traction_penalty": -4
+  },
+  "actions": {
+    "high": "Priorizar fechamento com proposta final e plano de onboarding.",
+    "medium": "Executar follow-up consultivo e remover bloqueios comerciais.",
+    "low": "Requalificar oportunidade e revisar aderencia produto-necessidade."
+  },
+  "actions_by_context": {
+    "won": [
+      "Consolidar handover a Customer Success e mapear oportunidades de expansão.",
+      "Agendar revisão de satisfação e upsell alinhado ao contrato assinado.",
+      "Documentar entregáveis e próximos marcos de renovação."
+    ],
+    "lost": [
+      "Registar lições aprendidas e atualizar motivo de perda no CRM.",
+      "Rever ICP e mensagem antes de reabordar a conta noutro ciclo.",
+      "Arquivar com contexto claro para não poluir o forecast."
+    ],
+    "open_stale": [
+      "Marcar reunião de decisão ou mover para nurture com data futura explícita.",
+      "Escalar à gestão e definir próximo passo comercial com data limite.",
+      "Validar bloqueio interno (preço, legal, técnico) antes de novo contato."
+    ],
+    "open_high": [
+      "Fechar proposta económica e cronograma com sponsor económico.",
+      "Alinhar trial ou piloto com métricas de sucesso acordadas.",
+      "Coordenar demonstração técnica focada nos casos de uso prioritários."
+    ],
+    "open_medium": [
+      "Confirmar próximo passo e dono da ação com o cliente na mesma chamada.",
+      "Enviar material adaptado ao estágio e pedir compromisso de calendarização.",
+      "Mapear stakeholders em falta e plano de contato multicanal."
+    ],
+    "open_low": [
+      "Enriquecer cadastro (dor, budget, timing) antes de nova proposta.",
+      "Requalificar fit produto/conta e ajustar narrativa de valor.",
+      "Definir se entra em nurture ou sai do forecast ativo."
+    ]
+  }
+}

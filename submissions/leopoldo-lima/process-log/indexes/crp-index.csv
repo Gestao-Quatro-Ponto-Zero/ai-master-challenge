@@ -1,0 +1,124 @@
+crp_file,group,status,source_pack,source_path,repo_path
+CRP-000-baseline-inventario-e-contrato.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-000-baseline-inventario-e-contrato.md,crps/executed/foundation/CRP-000-baseline-inventario-e-contrato.md
+CRP-001-fundamentos-do-metodo-no-repo.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-001-fundamentos-do-metodo-no-repo.md,crps/executed/foundation/CRP-001-fundamentos-do-metodo-no-repo.md
+CRP-002-ambiente-reproduzivel-e-onboarding.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-002-ambiente-reproduzivel-e-onboarding.md,crps/executed/foundation/CRP-002-ambiente-reproduzivel-e-onboarding.md
+CRP-003-modelo-de-dominio-e-contrato-dos-dados.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-003-modelo-de-dominio-e-contrato-dos-dados.md,crps/executed/foundation/CRP-003-modelo-de-dominio-e-contrato-dos-dados.md
+CRP-004-motor-de-scoring-v0.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-004-motor-de-scoring-v0.md,crps/executed/foundation/CRP-004-motor-de-scoring-v0.md
+CRP-005-api-servico-de-ranking-e-detalhe.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-005-api-servico-de-ranking-e-detalhe.md,crps/executed/foundation/CRP-005-api-servico-de-ranking-e-detalhe.md
+CRP-006-ui-shell-e-fluxo-principal.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-006-ui-shell-e-fluxo-principal.md,crps/executed/foundation/CRP-006-ui-shell-e-fluxo-principal.md
+CRP-007-qualidade-testes.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-007-qualidade-testes.md,crps/executed/foundation/CRP-007-qualidade-testes.md
+CRP-008-quality-gates-seguranca-e-dependencias.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-008-quality-gates-seguranca-e-dependencias.md,crps/executed/foundation/CRP-008-quality-gates-seguranca-e-dependencias.md
+CRP-009-ci-forte-em-pr.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-009-ci-forte-em-pr.md,crps/executed/foundation/CRP-009-ci-forte-em-pr.md
+CRP-010-containerizacao-release-e-ambiente-demo.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-010-containerizacao-release-e-ambiente-demo.md,crps/executed/foundation/CRP-010-containerizacao-release-e-ambiente-demo.md
+CRP-011-observabilidade-minima-e-rastreabilidade.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-011-observabilidade-minima-e-rastreabilidade.md,crps/executed/foundation/CRP-011-observabilidade-minima-e-rastreabilidade.md
+CRP-012-material-de-submissao-e-narrativa.md,foundation,executed,vibecoding-industrial-challenge-pack,vibecoding-industrial-challenge-pack/crps/CRP-012-material-de-submissao-e-narrativa.md,crps/executed/foundation/CRP-012-material-de-submissao-e-narrativa.md
+CRP-API-01-definir-contrato-http-do-frontend.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-01-definir-contrato-http-do-frontend.md,crps/executed/ui/CRP-API-01-definir-contrato-http-do-frontend.md
+CRP-API-02-criar-api-client.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-02-criar-api-client.md,crps/executed/ui/CRP-API-02-criar-api-client.md
+CRP-API-03-criar-dtos-e-mappers.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-03-criar-dtos-e-mappers.md,crps/executed/ui/CRP-API-03-criar-dtos-e-mappers.md
+CRP-API-04-implementar-apiopportunityrepository.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-04-implementar-apiopportunityrepository.md,crps/executed/ui/CRP-API-04-implementar-apiopportunityrepository.md
+CRP-API-05-trocar-factory-de-mock-para-api-por-flag.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-05-trocar-factory-de-mock-para-api-por-flag.md,crps/executed/ui/CRP-API-05-trocar-factory-de-mock-para-api-por-flag.md
+CRP-API-06-plugar-filtros-reais-na-listagem.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-06-plugar-filtros-reais-na-listagem.md,crps/executed/ui/CRP-API-06-plugar-filtros-reais-na-listagem.md
+CRP-API-07-estados-de-erro-e-observabilidade.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-07-estados-de-erro-e-observabilidade.md,crps/executed/ui/CRP-API-07-estados-de-erro-e-observabilidade.md
+CRP-API-08-testes-de-contrato-e-msw.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-08-testes-de-contrato-e-msw.md,crps/executed/ui/CRP-API-08-testes-de-contrato-e-msw.md
+CRP-API-09-remover-acoplamento-restante-aos-mocks.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-09-remover-acoplamento-restante-aos-mocks.md,crps/executed/ui/CRP-API-09-remover-acoplamento-restante-aos-mocks.md
+CRP-API-10-runbook-de-integracao-front-back.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-API-10-runbook-de-integracao-front-back.md,crps/executed/ui/CRP-API-10-runbook-de-integracao-front-back.md
+CRP-CBX-01.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-01.md,crps/executed/ui/CRP-CBX-01.md
+CRP-CBX-02.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-02.md,crps/executed/ui/CRP-CBX-02.md
+CRP-CBX-03.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-03.md,crps/executed/ui/CRP-CBX-03.md
+CRP-CBX-04.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-04.md,crps/executed/ui/CRP-CBX-04.md
+CRP-CBX-05.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-05.md,crps/executed/ui/CRP-CBX-05.md
+CRP-CBX-06.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-06.md,crps/executed/ui/CRP-CBX-06.md
+CRP-CBX-07.md,ui,executed,focus-score-combobox-crps-pack,crps/CRP-CBX-07.md,crps/executed/ui/CRP-CBX-07.md
+CRP-D01.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D01.md,crps/executed/data/CRP-D01.md
+CRP-D02.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D02.md,crps/executed/data/CRP-D02.md
+CRP-D03.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D03.md,crps/executed/data/CRP-D03.md
+CRP-D04.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D04.md,crps/executed/data/CRP-D04.md
+CRP-D05.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D05.md,crps/executed/data/CRP-D05.md
+CRP-D06.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D06.md,crps/executed/data/CRP-D06.md
+CRP-D07.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D07.md,crps/executed/data/CRP-D07.md
+CRP-D08.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D08.md,crps/executed/data/CRP-D08.md
+CRP-D09.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D09.md,crps/executed/data/CRP-D09.md
+CRP-D10.md,data,executed,vibecoding-industrial-dataset-alignment-pack,vibecoding-industrial-dataset-alignment-pack/crps/CRP-D10.md,crps/executed/data/CRP-D10.md
+CRP-DEL-01-inventario-final-entrega.md,data,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-DEL-01-inventario-final-entrega.md,crps/executed/data/CRP-DEL-01-inventario-final-entrega.md
+CRP-DOC-01-readme-final-no-template-oficial.md,data,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-DOC-01-readme-final-no-template-oficial.md,crps/executed/data/CRP-DOC-01-readme-final-no-template-oficial.md
+CRP-DOC-02-documentacao-de-entrega-e-referencias.md,data,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-DOC-02-documentacao-de-entrega-e-referencias.md,crps/executed/data/CRP-DOC-02-documentacao-de-entrega-e-referencias.md
+CRP-DOC-03-indice-consolidado-de-evidencias.md,data,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-DOC-03-indice-consolidado-de-evidencias.md,crps/executed/data/CRP-DOC-03-indice-consolidado-de-evidencias.md
+CRP-FIN-01-combobox-gestor-lista-total-e-filtro.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-01-combobox-gestor-lista-total-e-filtro.md,crps/executed/product-tuning/CRP-FIN-01-combobox-gestor-lista-total-e-filtro.md
+CRP-FIN-02-combobox-gestor-padrao-de-busca-e-acessibilidade.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-02-combobox-gestor-padrao-de-busca-e-acessibilidade.md,crps/executed/product-tuning/CRP-FIN-02-combobox-gestor-padrao-de-busca-e-acessibilidade.md
+CRP-FIN-03-score-open-pipeline-baseline.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-03-score-open-pipeline-baseline.md,crps/executed/product-tuning/CRP-FIN-03-score-open-pipeline-baseline.md
+CRP-FIN-04-score-feature-tuning-open-opps.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-04-score-feature-tuning-open-opps.md,crps/executed/product-tuning/CRP-FIN-04-score-feature-tuning-open-opps.md
+CRP-FIN-05-next-actions-diversificacao.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-05-next-actions-diversificacao.md,crps/executed/product-tuning/CRP-FIN-05-next-actions-diversificacao.md
+CRP-FIN-06-explanations-humanizacao.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-06-explanations-humanizacao.md,crps/executed/product-tuning/CRP-FIN-06-explanations-humanizacao.md
+CRP-FIN-07-explanations-diversidade-contextual.md,product-tuning,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-07-explanations-diversidade-contextual.md,crps/executed/product-tuning/CRP-FIN-07-explanations-diversidade-contextual.md
+CRP-FIN-08-cleanup-mocks-visibilidade.md,submission,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-08-cleanup-mocks-visibilidade.md,crps/executed/submission/CRP-FIN-08-cleanup-mocks-visibilidade.md
+CRP-FIN-09-cleanup-runtime-default.md,submission,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-09-cleanup-runtime-default.md,crps/executed/submission/CRP-FIN-09-cleanup-runtime-default.md
+CRP-FIN-10-cleanup-readme-submissao.md,submission,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-10-cleanup-readme-submissao.md,crps/executed/submission/CRP-FIN-10-cleanup-readme-submissao.md
+CRP-FIN-11-auditoria-final-ui-e-dados.md,submission,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-11-auditoria-final-ui-e-dados.md,crps/executed/submission/CRP-FIN-11-auditoria-final-ui-e-dados.md
+CRP-FIN-12-pacote-final-de-submissao.md,submission,executed,focus-score-final-tuning-crps-pack,focus-score-final-tuning-crps-pack/crps/CRP-FIN-12-pacote-final-de-submissao.md,crps/executed/submission/CRP-FIN-12-pacote-final-de-submissao.md
+CRP-REAL-01-baseline-runtime-real-data.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-01-baseline-runtime-real-data.md,crps/executed/data/CRP-REAL-01-baseline-runtime-real-data.md
+CRP-REAL-02-wire-csvs-to-serving-layer.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-02-wire-csvs-to-serving-layer.md,crps/executed/data/CRP-REAL-02-wire-csvs-to-serving-layer.md
+CRP-REAL-03-align-runtime-domain-to-challenge.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-03-align-runtime-domain-to-challenge.md,crps/executed/data/CRP-REAL-03-align-runtime-domain-to-challenge.md
+CRP-REAL-04-enrich-scoring-with-real-features.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-04-enrich-scoring-with-real-features.md,crps/executed/data/CRP-REAL-04-enrich-scoring-with-real-features.md
+CRP-REAL-05-surface-real-data-in-ui.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-05-surface-real-data-in-ui.md,crps/executed/data/CRP-REAL-05-surface-real-data-in-ui.md
+CRP-REAL-06-clean-repo-noise-and-isolate-legacy.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-06-clean-repo-noise-and-isolate-legacy.md,crps/executed/data/CRP-REAL-06-clean-repo-noise-and-isolate-legacy.md
+CRP-REAL-07-rewrite-readme-as-final-submission.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-07-rewrite-readme-as-final-submission.md,crps/executed/data/CRP-REAL-07-rewrite-readme-as-final-submission.md
+CRP-REAL-08-upgrade-tests-to-real-dataset-path.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-08-upgrade-tests-to-real-dataset-path.md,crps/executed/data/CRP-REAL-08-upgrade-tests-to-real-dataset-path.md
+CRP-REAL-09-refresh-demo-and-evidence-on-real-flow.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-09-refresh-demo-and-evidence-on-real-flow.md,crps/executed/data/CRP-REAL-09-refresh-demo-and-evidence-on-real-flow.md
+CRP-REAL-10-final-audit-against-challenge-readme.md,data,executed,focus-score-challenge-gap-closure-pack,focus-score-challenge-gap-closure-pack/crps/CRP-REAL-10-final-audit-against-challenge-readme.md,crps/executed/data/CRP-REAL-10-final-audit-against-challenge-readme.md
+CRP-SUB-01-auditoria-contra-o-submission-guide.md,submission,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-SUB-01-auditoria-contra-o-submission-guide.md,crps/executed/submission/CRP-SUB-01-auditoria-contra-o-submission-guide.md
+CRP-SUB-02-auditoria-contra-o-submission-template.md,submission,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-SUB-02-auditoria-contra-o-submission-template.md,crps/executed/submission/CRP-SUB-02-auditoria-contra-o-submission-template.md
+CRP-SUB-03-pacote-final-para-pr.md,submission,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-SUB-03-pacote-final-para-pr.md,crps/executed/submission/CRP-SUB-03-pacote-final-para-pr.md
+CRP-UI-01-baseline-e-governanca.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-01-baseline-e-governanca.md,crps/executed/ui/CRP-UI-01-baseline-e-governanca.md
+CRP-UI-02-alinhar-contratos-ao-dataset-real.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-02-alinhar-contratos-ao-dataset-real.md,crps/executed/ui/CRP-UI-02-alinhar-contratos-ao-dataset-real.md
+CRP-UI-03-separar-contrato-de-repositorio-e-implementacoes.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-03-separar-contrato-de-repositorio-e-implementacoes.md,crps/executed/ui/CRP-UI-03-separar-contrato-de-repositorio-e-implementacoes.md
+CRP-UI-04-isolar-mocks-como-fixture-de-demo.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-04-isolar-mocks-como-fixture-de-demo.md,crps/executed/ui/CRP-UI-04-isolar-mocks-como-fixture-de-demo.md
+CRP-UI-05-endurecer-typescript-e-quality-gates.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-05-endurecer-typescript-e-quality-gates.md,crps/executed/ui/CRP-UI-05-endurecer-typescript-e-quality-gates.md
+CRP-UI-06-refinar-hook-de-dashboard-para-casos-reais.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-06-refinar-hook-de-dashboard-para-casos-reais.md,crps/executed/ui/CRP-UI-06-refinar-hook-de-dashboard-para-casos-reais.md
+CRP-UI-07-melhorar-ux-operacional-da-tabela-e-do-drawer.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-07-melhorar-ux-operacional-da-tabela-e-do-drawer.md,crps/executed/ui/CRP-UI-07-melhorar-ux-operacional-da-tabela-e-do-drawer.md
+CRP-UI-08-limpar-template-lovable-e-branding-do-produto.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-08-limpar-template-lovable-e-branding-do-produto.md,crps/executed/ui/CRP-UI-08-limpar-template-lovable-e-branding-do-produto.md
+CRP-UI-09-cobertura-de-testes-do-front.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-09-cobertura-de-testes-do-front.md,crps/executed/ui/CRP-UI-09-cobertura-de-testes-do-front.md
+CRP-UI-10-ci-do-frontend.md,ui,executed,focus-score-ui-api-crps,focus-score-ui-api-crps/crps/CRP-UI-10-ci-do-frontend.md,crps/executed/ui/CRP-UI-10-ci-do-frontend.md
+CRP-UX-01.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-01.md,crps/executed/ui/CRP-UX-01.md
+CRP-UX-02.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-02.md,crps/executed/ui/CRP-UX-02.md
+CRP-UX-03.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-03.md,crps/executed/ui/CRP-UX-03.md
+CRP-UX-04.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-04.md,crps/executed/ui/CRP-UX-04.md
+CRP-UX-05.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-05.md,crps/executed/ui/CRP-UX-05.md
+CRP-UX-06.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-06.md,crps/executed/ui/CRP-UX-06.md
+CRP-UX-07.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-07.md,crps/executed/ui/CRP-UX-07.md
+CRP-UX-08.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-08.md,crps/executed/ui/CRP-UX-08.md
+CRP-UX-09.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-09.md,crps/executed/ui/CRP-UX-09.md
+CRP-UX-10.md,ui,executed,focus-score-ux-competition-pack,crps/CRP-UX-10.md,crps/executed/ui/CRP-UX-10.md
+CRP-VID-01-roteiro-e-cena-do-video.md,submission,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-VID-01-roteiro-e-cena-do-video.md,crps/executed/submission/CRP-VID-01-roteiro-e-cena-do-video.md
+CRP-VID-02-captura-automatizada-com-chromium.md,submission,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-VID-02-captura-automatizada-com-chromium.md,crps/executed/submission/CRP-VID-02-captura-automatizada-com-chromium.md
+CRP-VID-03-gerar-e-publicar-o-video.md,submission,executed,focus-score-delivery-submission-crps-pack,focus-score-delivery-submission-crps-pack/crps/CRP-VID-03-gerar-e-publicar-o-video.md,crps/executed/submission/CRP-VID-03-gerar-e-publicar-o-video.md
+CRP-SUB-08-curadoria-crps-e-narrativa.md,submission,executed,CRP-SUB-08,curadoria + narrativa,crps/executed/submission/CRP-SUB-08-curadoria-crps-e-narrativa.md
+CRP-000-baseline-inventario-e-contrato.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-000-baseline-inventario-e-contrato.md
+CRP-001-fundamentos-do-metodo-no-repo.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-001-fundamentos-do-metodo-no-repo.md
+CRP-002-ambiente-reproduzivel-e-onboarding.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-002-ambiente-reproduzivel-e-onboarding.md
+CRP-003-modelo-de-dominio-e-contrato-dos-dados.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-003-modelo-de-dominio-e-contrato-dos-dados.md
+CRP-004-motor-de-scoring-v0.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-004-motor-de-scoring-v0.md
+CRP-005-api-servico-de-ranking-e-detalhe.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-005-api-servico-de-ranking-e-detalhe.md
+CRP-006-ui-shell-e-fluxo-principal.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-006-ui-shell-e-fluxo-principal.md
+CRP-007-qualidade-testes.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-007-qualidade-testes.md
+CRP-008-quality-gates-seguranca-e-dependencias.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-008-quality-gates-seguranca-e-dependencias.md
+CRP-009-ci-forte-em-pr.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-009-ci-forte-em-pr.md
+CRP-010-containerizacao-release-e-ambiente-demo.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-010-containerizacao-release-e-ambiente-demo.md
+CRP-011-observabilidade-minima-e-rastreabilidade.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-011-observabilidade-minima-e-rastreabilidade.md
+CRP-012-material-de-submissao-e-narrativa.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-012-material-de-submissao-e-narrativa.md
+CRP-D01.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D01.md
+CRP-D02.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D02.md
+CRP-D03.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D03.md
+CRP-D04.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D04.md
+CRP-D05.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D05.md
+CRP-D06.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D06.md
+CRP-D07.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D07.md
+CRP-D08.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D08.md
+CRP-D09.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D09.md
+CRP-D10.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-D10.md
+CRP-S01-process-log-estrutura-e-template.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S01-process-log-estrutura-e-template.md
+CRP-S02-pasta-e-convencao-de-evidencias.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S02-pasta-e-convencao-de-evidencias.md
+CRP-S03-readme-submissao-a-partir-do-esqueleto.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S03-readme-submissao-a-partir-do-esqueleto.md
+CRP-S04-validacao-contra-criterios-do-desafio.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S04-validacao-contra-criterios-do-desafio.md
+CRP-S05-revisao-final-de-submissao-via-pr.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S05-revisao-final-de-submissao-via-pr.md
+CRP-S06-auditoria-output-generico-vs-verificavel.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S06-auditoria-output-generico-vs-verificavel.md
+CRP-S07-consolidar-prompts-e-correcoes-humanas.md,superseded-flat,archived,pre-SUB-08,crps/*.md (lista plana),archive/superseded/crps-root-flat-pre-SUB-08/CRP-S07-consolidar-prompts-e-correcoes-humanas.md

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Focus Score Cockpit — priorização B2B com score explicável sobre o dataset oficial do challenge."
+    />
+    <meta name="theme-color" content="#0f172a" />
+    <title>Focus Score Cockpit</title>
+    <link rel="stylesheet" href="/ui/styles.css" />
+  </head>
+  <body class="cockpit-body">
+    <header class="cockpit-header">
+      <div class="cockpit-header-inner">
+        <h1>Focus Score Cockpit</h1>
+        <p class="tagline">
+          Cockpit de decisão comercial: ranking priorizado e explicação de score sobre o
+          <strong>dataset oficial</strong> do challenge (pipeline e dimensões em CSV). O modo principal da API usa
+          dados reais; modo mock só com configuração explícita.
+        </p>
+      </div>
+    </header>
+
+    <main class="cockpit-main">
+      <section class="panel kpi-deck" aria-label="Indicadores do pipeline">
+        <div class="kpi-deck-head">
+          <h2 class="panel-title">Resumo do pipeline</h2>
+          <span class="kpi-deck-hint muted small">Valores do conjunto completo servido pela API</span>
+        </div>
+        <p id="kpi-state" class="state-line muted">A carregar indicadores…</p>
+        <div id="kpi-strip" class="kpi-strip" hidden></div>
+      </section>
+
+      <div class="cockpit-grid">
+        <div class="cockpit-primary">
+          <section class="panel filters-panel" aria-label="Filtros do ranking">
+            <div class="filters-head">
+              <h2 class="panel-title">Filtros</h2>
+              <p id="result-count" class="result-count" aria-live="polite"></p>
+            </div>
+            <form id="filters-form" class="filters-form">
+              <div class="filters-grid">
+                <label class="filter-field">
+                  <span class="filter-label">Escritório regional</span>
+                  <select id="filter-region" aria-label="Escritório regional">
+                    <option value="">Selecione o escritório (ou Todos)</option>
+                  </select>
+                </label>
+                <label class="filter-field filter-field-combobox">
+                  <span class="filter-label">Gestor comercial</span>
+                  <div id="manager-combobox-root" class="combobox-wrap">
+                    <input
+                      type="text"
+                      id="manager-search"
+                      class="combobox-input"
+                      autocomplete="off"
+                      role="combobox"
+                      aria-autocomplete="list"
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                      aria-busy="false"
+                      aria-controls="manager-listbox"
+                      placeholder="Ver todos ou filtrar por nome"
+                    />
+                    <input type="hidden" id="manager-value" value="" />
+                    <ul id="manager-listbox" class="combobox-list" role="listbox" hidden></ul>
+                  </div>
+                  <p id="manager-hint" class="combobox-hint muted small">
+                    Clique ou foco para ver todos os gestores. Digite para filtrar.
+                  </p>
+                  <p id="manager-empty" class="combobox-empty muted small" hidden>Nenhum gestor encontrado</p>
+                </label>
+                <label class="filter-field">
+                  <span class="filter-label">Estágio do negócio</span>
+                  <select id="filter-deal-stage" aria-label="Estágio do negócio">
+                    <option value="">Todos os estágios</option>
+                  </select>
+                </label>
+                <label class="filter-field">
+                  <span class="filter-label">Faixa de prioridade</span>
+                  <select id="priority-band" aria-label="Filtrar por faixa de prioridade do score">
+                    <option value="">Todas</option>
+                    <option value="high">Alta</option>
+                    <option value="medium">Média</option>
+                    <option value="low">Baixa</option>
+                  </select>
+                </label>
+                <label class="filter-field filter-field-grow">
+                  <span class="filter-label">Conta, ID ou título</span>
+                  <input
+                    id="search-q"
+                    type="search"
+                    placeholder="Texto em conta, ID da oportunidade ou título"
+                    autocomplete="off"
+                  />
+                </label>
+              </div>
+              <div class="filters-actions">
+                <button type="submit" class="btn-primary">Aplicar filtros</button>
+                <button type="button" id="filters-clear" class="btn-secondary">Limpar filtros</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel ranking-panel">
+            <div class="ranking-head">
+              <h2 class="panel-title">Ranking prioritário</h2>
+              <p class="muted small">Ordenação por score (maior primeiro). A primeira linha é a mais priorizada nesta página.</p>
+            </div>
+            <p id="ranking-state" class="state-line">A carregar oportunidades…</p>
+            <div class="table-wrap">
+              <table id="ranking-table" aria-label="Oportunidades do pipeline comercial">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Conta</th>
+                    <th>Produto</th>
+                    <th>Vendedor</th>
+                    <th>Gestor</th>
+                    <th>Escritório</th>
+                    <th>Estágio</th>
+                    <th>Valor</th>
+                    <th>Score</th>
+                    <th>Faixa</th>
+                    <th>Próxima ação</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="ranking-list"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside class="panel detail-panel" aria-live="polite">
+          <div class="detail-head">
+            <h2 class="panel-title">Detalhe e explicação</h2>
+            <p id="detail-state" class="state-line muted">Selecione uma linha na tabela.</p>
+          </div>
+          <div class="detail-actions">
+            <button id="detail-retry" type="button" class="btn-secondary" hidden>Tentar novamente</button>
+            <button id="detail-close" type="button" class="btn-secondary">Fechar painel</button>
+          </div>
+          <div id="detail-view" class="detail-view"></div>
+        </aside>
+      </div>
+    </main>
+
+    <script type="module" src="/ui/app.js"></script>
+  </body>
+</html>

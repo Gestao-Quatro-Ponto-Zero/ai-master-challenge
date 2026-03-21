@@ -1,0 +1,79 @@
+{
+  "inputs": {
+    "accounts_rows": 85,
+    "products_rows": 7,
+    "sales_teams_rows": 35,
+    "sales_pipeline_rows": 8800
+  },
+  "sample_pipeline_row": {
+    "opportunity_id": "1C1I7A6R",
+    "sales_agent": "Moses Frase",
+    "product": "GTX Plus Basic",
+    "account": "Cancity",
+    "deal_stage": "Won",
+    "engage_date": "2016-10-20",
+    "close_date": "2017-03-01",
+    "close_value": "1054"
+  },
+  "sample_raw_to_core": {
+    "opportunity_id": "1C1I7A6R",
+    "sales_agent": "Moses Frase",
+    "product": "GTX Plus Basic",
+    "account": "Cancity",
+    "deal_stage": "Won",
+    "engage_date": "2016-10-20",
+    "close_date": "2017-03-01",
+    "close_value": "1054"
+  },
+  "sample_core_to_gold_minimal": {
+    "opportunity_id": "1C1I7A6R",
+    "days_since_engage": 0,
+    "deal_stage": "Won",
+    "stage_rank": 0,
+    "pipeline_age_bucket": "unknown",
+    "has_account": true,
+    "has_close_date": true,
+    "is_open": false,
+    "is_won": true,
+    "is_lost": false,
+    "account_revenue_band": "unknown",
+    "employee_band": "unknown",
+    "product_series": "unknown",
+    "product_price": 0.0,
+    "regional_office": "unknown",
+    "manager_name": "unknown",
+    "close_value": 1054.0,
+    "normalized_product": "GTX Plus Basic"
+  },
+  "sample_feature_set_joined": {
+    "opportunity_id": "1C1I7A6R",
+    "days_since_engage": 3438,
+    "deal_stage": "Won",
+    "stage_rank": 3,
+    "pipeline_age_bucket": "stale",
+    "has_account": true,
+    "has_close_date": true,
+    "is_open": false,
+    "is_won": true,
+    "is_lost": false,
+    "account_revenue_band": "small",
+    "employee_band": "large",
+    "product_series": "GTX",
+    "product_price": 1096.0,
+    "regional_office": "Central",
+    "manager_name": "Dustin Brinkmann",
+    "close_value": 1054.0,
+    "normalized_product": "GTX Plus Basic"
+  },
+  "sample_score": {
+    "score": 75,
+    "positives": [
+      "deal_stage Won contribuiu +25."
+    ],
+    "negatives": [
+      "close_value baixo sem bonus de valor."
+    ],
+    "risks": [],
+    "next_best_action": "Priorizar fechamento com proposta final e plano de onboarding."
+  }
+}
