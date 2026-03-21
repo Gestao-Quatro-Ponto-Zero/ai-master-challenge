@@ -6,6 +6,20 @@
 
 ---
 
+## Onde a IA errou — e eu corrigi
+
+Resumo dos 3 momentos em que identifiquei erro da IA e redirecionei:
+
+| # | Erro da IA | O que eu fiz |
+|---|---|---|
+| 1 | `scoreDeals()` chamado sem o parâmetro `winRates` — chamada implementada antes de verificar a assinatura da função | Identifiquei no output do TypeScript, pedi para importar `calcAgentWinRates()` e passar como segundo argumento |
+| 2 | KPI cards com overlap: `Em risco` usava `days > 30` e capturava deals +90d que já tinham card próprio (zumbis) — total não fechava | Revisei os números, corrigi para `days > 30 && days <= 90`. A IA não percebeu o overlap — eu identifiquei validando a soma dos cards |
+| 3 | `HowToUsePanel` inicializou state com `localStorage` direto no `useState(() => localStorage...)` — padrão inválido em SSR, gerou erros de hydration #418, #423, #425 em produção | Identifiquei em produção (não aparecia em dev), apliquei padrão SSR-safe com `useState(true)` + `useEffect` |
+
+Detalhes completos em cada seção ERRO #1, #2, #3 abaixo.
+
+---
+
 ## [2026-03-11 — ANÁLISE EXPLORATÓRIA DOS DADOS (sem IA)]
 
 **Contexto:** li o desafio e os dados antes de abrir qualquer ferramenta de IA. Tenho um SaaS de pré-vendas — sabia exatamente qual dor a Head de RevOps estava descrevendo. Queria minha própria leitura dos dados antes de deixar um LLM criar vieses.
