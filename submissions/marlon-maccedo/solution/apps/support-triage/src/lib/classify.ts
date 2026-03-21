@@ -1,4 +1,5 @@
 import type { ClassifyResult, ItCategory } from '@/types'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 const CATEGORIES: ItCategory[] = [
   'Hardware', 'HR Support', 'Access', 'Storage',
@@ -6,7 +7,7 @@ const CATEGORIES: ItCategory[] = [
 ]
 
 export async function classifyTicket(text: string): Promise<ClassifyResult | null> {
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   if (!apiKey) return null
 
   const prompt = `Você é um classificador de tickets de suporte de TI corporativo.

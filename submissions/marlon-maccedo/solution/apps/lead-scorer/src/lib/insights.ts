@@ -1,4 +1,5 @@
 import type { Deal } from '@/types'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 // ── Cache ─────────────────────────────────────────────────────────────────────
 
@@ -40,7 +41,7 @@ function fallbackActions(deal: Deal): string[] {
 /** Returns action suggestions (string[]) or null when no API key — in that case use fallback. */
 export async function generateDealAction(deal: Deal): Promise<{ actions: string[]; fromLLM: boolean }> {
   const cacheKey = deal.opportunity_id
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   const hit = actionCache.get(cacheKey)
   if (hit && Date.now() - hit.at < TTL_MS) {
     if (hit.data !== null) {

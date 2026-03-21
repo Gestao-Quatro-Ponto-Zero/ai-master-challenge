@@ -1,15 +1,16 @@
 import { generateInsights, type InsightsPayload } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
+import { ApiFailureBanner, NoApiKeyBanner } from '@/components/OpenRouterBanners'
 
 export async function InsightsCard(payload: InsightsPayload) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const insights = await generateInsights(payload)
 
   if (!insights) {
-    return (
-      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-500 flex items-center gap-3">
-        <span className="text-gray-400 text-lg">🔑</span>
-        <span>Configure <code className="bg-gray-100 px-1 rounded text-xs">OPENROUTER_API_KEY</code> para ativar insights via IA.</span>
-      </div>
-    )
+    if (hasKey) {
+      return <ApiFailureBanner context="insights do diagnóstico" />
+    }
+    return <NoApiKeyBanner context="insights do diagnóstico via IA" />
   }
 
   return (

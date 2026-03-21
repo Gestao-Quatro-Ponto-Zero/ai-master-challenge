@@ -1,4 +1,5 @@
 import type { SocialOverview, PlatformEngagement, SponsorComparison } from '@/types'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 export interface SocialInsightsPayload {
   overview: SocialOverview
@@ -36,7 +37,7 @@ function overviewKey(o: SocialOverview): string {
 // ── OpenRouter helper ─────────────────────────────────────────────────────────
 
 async function callOpenRouter(prompt: string, maxTokens: number): Promise<string[] | null> {
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   if (!apiKey) return null
 
   try {
@@ -78,7 +79,7 @@ async function callOpenRouter(prompt: string, maxTokens: number): Promise<string
 /** Returns 4 AI-generated insights or null when no API key. */
 export async function generateOverviewInsights(payload: SocialInsightsPayload): Promise<string[] | null> {
   const key = overviewKey(payload.overview) + '|' + payload.topPlatform.platform
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   const hit = insightsCache.get(key)
   if (hit && Date.now() - hit.at < TTL_MS) {
     if (hit.data !== null) return hit.data
@@ -124,7 +125,7 @@ ${dataSummary}`
 /** Returns AI-generated strategy or null when no API key. */
 export async function generateStrategyRecommendations(payload: SocialInsightsPayload): Promise<StrategyOutput | null> {
   const key = `strat|${STRATEGY_VERSION}|${overviewKey(payload.overview)}|${payload.topPlatform.platform}`
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   const hit = strategyCache.get(key)
   if (hit && Date.now() - hit.at < TTL_MS) {
     if (hit.data !== null) return hit.data

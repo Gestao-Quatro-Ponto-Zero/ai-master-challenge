@@ -6,14 +6,19 @@ import {
   getEngagementByCategory,
 } from '@/lib/queries'
 import { generateOverviewInsights, type SocialInsightsPayload } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
 import { getAnalysisOutput } from '@/lib/analysis-output'
-import { InsightsSkeleton } from '@/components/SocialInsightsCard'
+import { ApiFailureBanner, InsightsSkeleton } from '@/components/SocialInsightsCard'
 import EngagementBarChart from '@/components/EngagementBarChart'
 
 async function OverviewInsightsCard({ payload }: { payload: SocialInsightsPayload }) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const insights = await generateOverviewInsights(payload)
 
   if (!insights) {
+    if (hasKey) {
+      return <ApiFailureBanner context="os achados da visão geral" />
+    }
     return (
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-sm text-gray-500 flex items-center gap-3">
         <span className="text-gray-400 text-lg">🔑</span>

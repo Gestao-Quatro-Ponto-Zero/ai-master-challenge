@@ -1,13 +1,22 @@
 import { generateInsights, type InsightsPayload } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
+import { ApiFailureBanner, NoApiKeyBanner } from '@/components/OpenRouterBanners'
 
 export async function ProposalDiagnosis(payload: InsightsPayload) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const insights = await generateInsights(payload)
 
   if (!insights) {
+    if (hasKey) {
+      return (
+        <section>
+          <ApiFailureBanner context="o diagnóstico resumido" />
+        </section>
+      )
+    }
     return (
-      <section className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-500 flex items-center gap-3">
-        <span className="text-gray-400 text-lg">🔑</span>
-        <span>Configure <code className="bg-gray-100 px-1 rounded text-xs">OPENROUTER_API_KEY</code> para ativar diagnóstico via IA.</span>
+      <section>
+        <NoApiKeyBanner context="diagnóstico via IA" />
       </section>
     )
   }

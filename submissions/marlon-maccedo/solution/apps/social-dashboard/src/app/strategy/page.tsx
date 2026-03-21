@@ -10,7 +10,8 @@ import {
   type SocialInsightsPayload,
   type StrategyOutput,
 } from '@/lib/insights'
-import { NoApiKeyBanner, StrategySkeleton } from '@/components/SocialInsightsCard'
+import { getOpenRouterApiKey } from '@/lib/env'
+import { ApiFailureBanner, NoApiKeyBanner, StrategySkeleton } from '@/components/SocialInsightsCard'
 
 const EFFORT_COLOR: Record<string, string> = {
   baixo: 'bg-green-100 text-green-700',
@@ -19,9 +20,13 @@ const EFFORT_COLOR: Record<string, string> = {
 }
 
 async function StrategyContent({ payload }: { payload: SocialInsightsPayload }) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const strategy = await generateStrategyRecommendations(payload)
 
   if (!strategy) {
+    if (hasKey) {
+      return <ApiFailureBanner context="as recomendações estratégicas" />
+    }
     return <NoApiKeyBanner />
   }
 

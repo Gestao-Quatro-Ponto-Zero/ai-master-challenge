@@ -249,3 +249,9 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 **[user]** Com `OPENROUTER_API_KEY` no Railway, churn ainda mostrava “Configure OPENROUTER…”.
 
 **[ai]** Duas causas prováveis: (1) Next.js pode tratar `process.env.OPENROUTER_API_KEY` no build sem a variável no estágio Docker — valor “fixo” vazio em runtime; (2) falha na API OpenRouter devolvia `null` e a UI usava o mesmo banner de “sem chave”. Correção: `src/lib/env.ts` com `process.env['OPENROUTER_API_KEY']` (notação em colchetes), `export const dynamic = 'force-dynamic'` no `layout.tsx` do churn, e banners distintos (⚠️ falha de API vs 🔑 sem key) em `InsightsCard` e recomendações.
+
+## Sessão 16 — OPENROUTER: paridade nos outros apps (002, 003, 004)
+
+**[user]** Churn já ok; estender o mesmo padrão (runtime env + `force-dynamic` + distinguir falha de API vs sem chave) para social-dashboard, lead-scorer e support-triage.
+
+**[ai]** `getOpenRouterApiKey()` em `src/lib/env.ts` (já criado), uso em `insights.ts` / `classify.ts`; `dynamic = 'force-dynamic'` nos três `layout.tsx`. Support: `insights.ts` deixa de lançar em erro HTTP/parse — retorna `null` para a UI tratar. Banners ⚠️/🔑 via `OpenRouterBanners.tsx` (support) e `SocialInsightsCard` (social). Lead Scorer: aviso ⚠️ na página do deal quando há chave mas `fromLLM === false` (fallback após falha).

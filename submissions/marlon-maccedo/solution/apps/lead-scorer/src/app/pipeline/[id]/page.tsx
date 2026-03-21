@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { getDeal } from '@/lib/queries'
 import { generateDealAction } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
 import { ScoreBadge } from '@/components/ScoreBadge'
 import { ScoreBreakdown } from '@/components/ScoreBreakdown'
 import type { Deal } from '@/types'
@@ -43,12 +44,36 @@ export default async function DealPage({ params }: { params: Promise<{ id: strin
 
 async function ActionCardAsync({ deal }: { deal: Deal }) {
   const { actions, fromLLM } = await generateDealAction(deal)
-  return <ActionCard actions={actions} fromLLM={fromLLM} />
+  const hasKey = Boolean(getOpenRouterApiKey())
+  const showApiFailure = hasKey && !fromLLM
+  return <ActionCard actions={actions} fromLLM={fromLLM} showApiFailure={showApiFailure} />
 }
 
-function ActionCard({ actions, fromLLM }: { actions: string[]; fromLLM: boolean }) {
+function ActionCard({
+  actions,
+  fromLLM,
+  showApiFailure,
+}: {
+  actions: string[]
+  fromLLM: boolean
+  showApiFailure: boolean
+}) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
+    <div className="space-y-3">
+      {showApiFailure && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-900 flex items-start gap-2">
+          <span className="text-base shrink-0">⚠️</span>
+          <span>
+            Não foi possível gerar sugestões via IA (falha na API OpenRouter ou resposta inválida). Exibindo
+            próximos passos heurísticos. Confira créditos em{' '}
+            <a href="https://openrouter.ai" className="underline font-medium" target="_blank" rel="noreferrer">
+              openrouter.ai
+            </a>
+            .
+          </span>
+        </div>
+      )}
+      <div className="bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex items-center justify-between mb-3">
         <p className="text-xs text-gray-400 uppercase tracking-wide font-medium">Próximos passos</p>
         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
@@ -67,6 +92,7 @@ function ActionCard({ actions, fromLLM }: { actions: string[]; fromLLM: boolean 
           </li>
         ))}
       </ul>
+      </div>
     </div>
   )
 }

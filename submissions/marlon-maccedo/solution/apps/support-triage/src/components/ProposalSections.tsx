@@ -1,13 +1,22 @@
 import { generateProposal, type InsightsPayload } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
+import { ApiFailureBanner, NoApiKeyBanner } from '@/components/OpenRouterBanners'
 
 export async function ProposalAutomation(payload: InsightsPayload) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const proposal = await generateProposal(payload)
 
   if (!proposal) {
+    if (hasKey) {
+      return (
+        <section>
+          <ApiFailureBanner context="a proposta de automação" />
+        </section>
+      )
+    }
     return (
-      <section className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-500 flex items-center gap-3">
-        <span className="text-gray-400 text-lg">🔑</span>
-        <span>Configure <code className="bg-gray-100 px-1 rounded text-xs">OPENROUTER_API_KEY</code> para ativar proposta de automação via IA.</span>
+      <section>
+        <NoApiKeyBanner context="proposta de automação via IA" />
       </section>
     )
   }
@@ -51,13 +60,20 @@ export async function ProposalAutomation(payload: InsightsPayload) {
 }
 
 export async function ProposalLimitations(payload: InsightsPayload) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const proposal = await generateProposal(payload)
 
   if (!proposal) {
+    if (hasKey) {
+      return (
+        <section>
+          <ApiFailureBanner context="as limitações da análise" />
+        </section>
+      )
+    }
     return (
-      <section className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-sm text-gray-500 flex items-center gap-3">
-        <span className="text-gray-400 text-lg">🔑</span>
-        <span>Configure <code className="bg-gray-100 px-1 rounded text-xs">OPENROUTER_API_KEY</code> para ativar limitações via IA.</span>
+      <section>
+        <NoApiKeyBanner context="limitações via IA" />
       </section>
     )
   }

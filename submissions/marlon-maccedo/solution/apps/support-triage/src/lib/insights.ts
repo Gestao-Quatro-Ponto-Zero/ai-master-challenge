@@ -1,4 +1,5 @@
 import type { DiagnosticOverview, Bottleneck, ChannelStats, TypeStats } from '@/types'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 export interface InsightsPayload {
   overview: DiagnosticOverview
@@ -35,7 +36,7 @@ export async function generateInsights(payload: InsightsPayload): Promise<string
   const cached = cache.get(key)
   if (cached && Date.now() - cached.at < TTL_MS) return cached.insights
 
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   if (!apiKey) return null
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
@@ -79,17 +80,27 @@ ${dataSummary}`
     }),
   })
 
-  if (!res.ok) throw new Error(`[insights] OpenRouter error ${res.status}`)
+  if (!res.ok) return null
 
-  const data = await res.json()
+  let data: { choices?: Array<{ message?: { content?: string } }> }
+  try {
+    data = await res.json()
+  } catch {
+    return null
+  }
   const raw = data.choices?.[0]?.message?.content?.trim()
-  if (!raw) throw new Error('[insights] Resposta vazia da API')
+  if (!raw) return null
 
   const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
-  const parsed = JSON.parse(cleaned)
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(cleaned)
+  } catch {
+    return null
+  }
   if (!Array.isArray(parsed) || parsed.length === 0) return null
 
-  cache.set(key, { insights: parsed, at: Date.now() })
+  cache.set(key, { insights: parsed as string[], at: Date.now() })
   return parsed as string[]
 }
 
@@ -115,7 +126,7 @@ export async function generateProposal(payload: InsightsPayload): Promise<Propos
   const cached = proposalCache.get(key)
   if (cached && Date.now() - cached.at < TTL_MS) return cached.data
 
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   if (!apiKey) return null
 
   const { overview, bottlenecks, channelStats, typeStats } = payload
@@ -157,14 +168,24 @@ ${dataSummary}`
     }),
   })
 
-  if (!res.ok) throw new Error(`[proposal] OpenRouter error ${res.status}`)
+  if (!res.ok) return null
 
-  const response = await res.json()
+  let response: { choices?: Array<{ message?: { content?: string } }> }
+  try {
+    response = await res.json()
+  } catch {
+    return null
+  }
   const raw = response.choices?.[0]?.message?.content?.trim()
-  if (!raw) throw new Error('[proposal] Resposta vazia da API')
+  if (!raw) return null
 
   const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim()
-  const parsed = JSON.parse(cleaned) as ProposalSections
+  let parsed: ProposalSections
+  try {
+    parsed = JSON.parse(cleaned) as ProposalSections
+  } catch {
+    return null
+  }
 
   if (!parsed.automationItems?.length || !parsed.limitations?.length) {
     return null
