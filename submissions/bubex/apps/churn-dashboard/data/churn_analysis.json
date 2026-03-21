@@ -1,0 +1,2045 @@
+{
+  "overview": {
+    "totalAccounts": 500,
+    "churnedAccounts": 110,
+    "churnRate": 22.0,
+    "mrrTotal": 11338747.0,
+    "mrrChurned": 2355245.0,
+    "mrrRetained": 8983502.0,
+    "arrTotal": 136064964.0,
+    "avgMrrChurned": 21411.0,
+    "avgMrrRetained": 23035.0
+  },
+  "segments": {
+    "by_industry": [
+      {
+        "segment": "DevTools",
+        "total": 113,
+        "churned": 35,
+        "churnRate": 31.0,
+        "mrrLost": 619317.0
+      },
+      {
+        "segment": "FinTech",
+        "total": 112,
+        "churned": 25,
+        "churnRate": 22.3,
+        "mrrLost": 545717.0
+      },
+      {
+        "segment": "HealthTech",
+        "total": 96,
+        "churned": 21,
+        "churnRate": 21.9,
+        "mrrLost": 456128.0
+      },
+      {
+        "segment": "EdTech",
+        "total": 79,
+        "churned": 13,
+        "churnRate": 16.5,
+        "mrrLost": 282851.0
+      },
+      {
+        "segment": "Cybersecurity",
+        "total": 100,
+        "churned": 16,
+        "churnRate": 16.0,
+        "mrrLost": 451232.0
+      }
+    ],
+    "by_channel": [
+      {
+        "segment": "event",
+        "total": 96,
+        "churned": 29,
+        "churnRate": 30.2,
+        "mrrLost": 727285.0
+      },
+      {
+        "segment": "other",
+        "total": 103,
+        "churned": 25,
+        "churnRate": 24.3,
+        "mrrLost": 484887.0
+      },
+      {
+        "segment": "ads",
+        "total": 98,
+        "churned": 23,
+        "churnRate": 23.5,
+        "mrrLost": 408135.0
+      },
+      {
+        "segment": "organic",
+        "total": 114,
+        "churned": 20,
+        "churnRate": 17.5,
+        "mrrLost": 432161.0
+      },
+      {
+        "segment": "partner",
+        "total": 89,
+        "churned": 13,
+        "churnRate": 14.6,
+        "mrrLost": 302777.0
+      }
+    ],
+    "by_plan": [
+      {
+        "segment": "Enterprise",
+        "total": 154,
+        "churned": 34,
+        "churnRate": 22.1,
+        "mrrLost": 674523.0
+      },
+      {
+        "segment": "Basic",
+        "total": 168,
+        "churned": 37,
+        "churnRate": 22.0,
+        "mrrLost": 926083.0
+      },
+      {
+        "segment": "Pro",
+        "total": 178,
+        "churned": 39,
+        "churnRate": 21.9,
+        "mrrLost": 754639.0
+      }
+    ],
+    "by_country": [
+      {
+        "segment": "DE",
+        "total": 25,
+        "churned": 8,
+        "churnRate": 32.0,
+        "mrrLost": 121722.0
+      },
+      {
+        "segment": "US",
+        "total": 291,
+        "churned": 68,
+        "churnRate": 23.4,
+        "mrrLost": 1461516.0
+      },
+      {
+        "segment": "FR",
+        "total": 22,
+        "churned": 5,
+        "churnRate": 22.7,
+        "mrrLost": 50398.0
+      },
+      {
+        "segment": "IN",
+        "total": 49,
+        "churned": 10,
+        "churnRate": 20.4,
+        "mrrLost": 322898.0
+      },
+      {
+        "segment": "UK",
+        "total": 58,
+        "churned": 11,
+        "churnRate": 19.0,
+        "mrrLost": 192951.0
+      },
+      {
+        "segment": "CA",
+        "total": 23,
+        "churned": 4,
+        "churnRate": 17.4,
+        "mrrLost": 74614.0
+      },
+      {
+        "segment": "AU",
+        "total": 32,
+        "churned": 4,
+        "churnRate": 12.5,
+        "mrrLost": 131146.0
+      }
+    ]
+  },
+  "featureAnalysis": {
+    "features": [
+      {
+        "feature": "feature_40",
+        "avgCountChurned": 10.45,
+        "avgCountRetained": 9.89,
+        "delta": -0.56,
+        "avgErrorChurned": 0.59,
+        "avgErrorRetained": 0.62,
+        "pValue": 0.0628
+      },
+      {
+        "feature": "feature_37",
+        "avgCountChurned": 9.64,
+        "avgCountRetained": 10.16,
+        "delta": 0.53,
+        "avgErrorChurned": 0.38,
+        "avgErrorRetained": 0.52,
+        "pValue": 0.0975
+      },
+      {
+        "feature": "feature_10",
+        "avgCountChurned": 9.69,
+        "avgCountRetained": 10.19,
+        "delta": 0.5,
+        "avgErrorChurned": 0.59,
+        "avgErrorRetained": 0.53,
+        "pValue": 0.1405
+      },
+      {
+        "feature": "feature_34",
+        "avgCountChurned": 10.4,
+        "avgCountRetained": 9.95,
+        "delta": -0.46,
+        "avgErrorChurned": 0.51,
+        "avgErrorRetained": 0.64,
+        "pValue": 0.1498
+      },
+      {
+        "feature": "feature_33",
+        "avgCountChurned": 9.54,
+        "avgCountRetained": 9.98,
+        "delta": 0.44,
+        "avgErrorChurned": 0.45,
+        "avgErrorRetained": 0.55,
+        "pValue": 0.1931
+      },
+      {
+        "feature": "feature_17",
+        "avgCountChurned": 10.24,
+        "avgCountRetained": 9.83,
+        "delta": -0.42,
+        "avgErrorChurned": 0.5,
+        "avgErrorRetained": 0.59,
+        "pValue": 0.0903
+      },
+      {
+        "feature": "feature_39",
+        "avgCountChurned": 10.51,
+        "avgCountRetained": 10.09,
+        "delta": -0.41,
+        "avgErrorChurned": 0.5,
+        "avgErrorRetained": 0.59,
+        "pValue": 0.2553
+      },
+      {
+        "feature": "feature_7",
+        "avgCountChurned": 9.57,
+        "avgCountRetained": 9.97,
+        "delta": 0.4,
+        "avgErrorChurned": 0.51,
+        "avgErrorRetained": 0.5,
+        "pValue": 0.1782
+      },
+      {
+        "feature": "feature_14",
+        "avgCountChurned": 10.09,
+        "avgCountRetained": 9.71,
+        "delta": -0.37,
+        "avgErrorChurned": 0.43,
+        "avgErrorRetained": 0.54,
+        "pValue": 0.2821
+      },
+      {
+        "feature": "feature_9",
+        "avgCountChurned": 9.68,
+        "avgCountRetained": 10.03,
+        "delta": 0.35,
+        "avgErrorChurned": 0.63,
+        "avgErrorRetained": 0.65,
+        "pValue": 0.1867
+      },
+      {
+        "feature": "feature_4",
+        "avgCountChurned": 10.42,
+        "avgCountRetained": 10.12,
+        "delta": -0.29,
+        "avgErrorChurned": 0.62,
+        "avgErrorRetained": 0.69,
+        "pValue": 0.3006
+      },
+      {
+        "feature": "feature_11",
+        "avgCountChurned": 9.95,
+        "avgCountRetained": 10.23,
+        "delta": 0.28,
+        "avgErrorChurned": 0.57,
+        "avgErrorRetained": 0.54,
+        "pValue": 0.4264
+      },
+      {
+        "feature": "feature_29",
+        "avgCountChurned": 10.16,
+        "avgCountRetained": 9.88,
+        "delta": -0.28,
+        "avgErrorChurned": 0.49,
+        "avgErrorRetained": 0.6,
+        "pValue": 0.3107
+      },
+      {
+        "feature": "feature_30",
+        "avgCountChurned": 10.25,
+        "avgCountRetained": 9.97,
+        "delta": -0.28,
+        "avgErrorChurned": 0.69,
+        "avgErrorRetained": 0.55,
+        "pValue": 0.2533
+      },
+      {
+        "feature": "feature_1",
+        "avgCountChurned": 9.92,
+        "avgCountRetained": 10.19,
+        "delta": 0.27,
+        "avgErrorChurned": 0.56,
+        "avgErrorRetained": 0.53,
+        "pValue": 0.2136
+      },
+      {
+        "feature": "feature_23",
+        "avgCountChurned": 9.74,
+        "avgCountRetained": 10.0,
+        "delta": 0.26,
+        "avgErrorChurned": 0.55,
+        "avgErrorRetained": 0.54,
+        "pValue": 0.352
+      },
+      {
+        "feature": "feature_15",
+        "avgCountChurned": 10.53,
+        "avgCountRetained": 10.28,
+        "delta": -0.24,
+        "avgErrorChurned": 0.49,
+        "avgErrorRetained": 0.56,
+        "pValue": 0.6387
+      },
+      {
+        "feature": "feature_18",
+        "avgCountChurned": 9.76,
+        "avgCountRetained": 10.0,
+        "delta": 0.24,
+        "avgErrorChurned": 0.55,
+        "avgErrorRetained": 0.65,
+        "pValue": 0.4887
+      },
+      {
+        "feature": "feature_35",
+        "avgCountChurned": 10.1,
+        "avgCountRetained": 9.85,
+        "delta": -0.24,
+        "avgErrorChurned": 0.72,
+        "avgErrorRetained": 0.48,
+        "pValue": 0.4658
+      },
+      {
+        "feature": "feature_22",
+        "avgCountChurned": 9.83,
+        "avgCountRetained": 10.06,
+        "delta": 0.23,
+        "avgErrorChurned": 0.54,
+        "avgErrorRetained": 0.54,
+        "pValue": 0.4149
+      },
+      {
+        "feature": "feature_2",
+        "avgCountChurned": 9.99,
+        "avgCountRetained": 10.21,
+        "delta": 0.22,
+        "avgErrorChurned": 0.62,
+        "avgErrorRetained": 0.63,
+        "pValue": 0.7031
+      },
+      {
+        "feature": "feature_27",
+        "avgCountChurned": 10.37,
+        "avgCountRetained": 10.15,
+        "delta": -0.22,
+        "avgErrorChurned": 0.54,
+        "avgErrorRetained": 0.61,
+        "pValue": 0.4727
+      },
+      {
+        "feature": "feature_3",
+        "avgCountChurned": 9.76,
+        "avgCountRetained": 9.93,
+        "delta": 0.17,
+        "avgErrorChurned": 0.65,
+        "avgErrorRetained": 0.56,
+        "pValue": 0.6203
+      },
+      {
+        "feature": "feature_13",
+        "avgCountChurned": 10.09,
+        "avgCountRetained": 9.93,
+        "delta": -0.16,
+        "avgErrorChurned": 0.47,
+        "avgErrorRetained": 0.65,
+        "pValue": 0.572
+      },
+      {
+        "feature": "feature_36",
+        "avgCountChurned": 9.99,
+        "avgCountRetained": 9.82,
+        "delta": -0.16,
+        "avgErrorChurned": 0.58,
+        "avgErrorRetained": 0.57,
+        "pValue": 0.6498
+      },
+      {
+        "feature": "feature_31",
+        "avgCountChurned": 9.86,
+        "avgCountRetained": 10.01,
+        "delta": 0.15,
+        "avgErrorChurned": 0.55,
+        "avgErrorRetained": 0.51,
+        "pValue": 0.7543
+      },
+      {
+        "feature": "feature_28",
+        "avgCountChurned": 9.86,
+        "avgCountRetained": 10.0,
+        "delta": 0.14,
+        "avgErrorChurned": 0.44,
+        "avgErrorRetained": 0.62,
+        "pValue": 0.9344
+      },
+      {
+        "feature": "feature_6",
+        "avgCountChurned": 10.1,
+        "avgCountRetained": 9.97,
+        "delta": -0.14,
+        "avgErrorChurned": 0.47,
+        "avgErrorRetained": 0.53,
+        "pValue": 0.489
+      },
+      {
+        "feature": "feature_26",
+        "avgCountChurned": 10.06,
+        "avgCountRetained": 9.94,
+        "delta": -0.12,
+        "avgErrorChurned": 0.69,
+        "avgErrorRetained": 0.63,
+        "pValue": 0.7327
+      },
+      {
+        "feature": "feature_38",
+        "avgCountChurned": 10.16,
+        "avgCountRetained": 10.05,
+        "delta": -0.11,
+        "avgErrorChurned": 0.56,
+        "avgErrorRetained": 0.55,
+        "pValue": 0.4587
+      },
+      {
+        "feature": "feature_16",
+        "avgCountChurned": 10.01,
+        "avgCountRetained": 10.11,
+        "delta": 0.1,
+        "avgErrorChurned": 0.64,
+        "avgErrorRetained": 0.63,
+        "pValue": 0.6292
+      },
+      {
+        "feature": "feature_19",
+        "avgCountChurned": 10.08,
+        "avgCountRetained": 10.0,
+        "delta": -0.09,
+        "avgErrorChurned": 0.59,
+        "avgErrorRetained": 0.6,
+        "pValue": 0.7427
+      },
+      {
+        "feature": "feature_20",
+        "avgCountChurned": 10.24,
+        "avgCountRetained": 10.15,
+        "delta": -0.09,
+        "avgErrorChurned": 0.32,
+        "avgErrorRetained": 0.53,
+        "pValue": 0.9339
+      },
+      {
+        "feature": "feature_21",
+        "avgCountChurned": 10.0,
+        "avgCountRetained": 10.09,
+        "delta": 0.09,
+        "avgErrorChurned": 0.46,
+        "avgErrorRetained": 0.63,
+        "pValue": 0.6025
+      },
+      {
+        "feature": "feature_25",
+        "avgCountChurned": 9.97,
+        "avgCountRetained": 9.88,
+        "delta": -0.09,
+        "avgErrorChurned": 0.44,
+        "avgErrorRetained": 0.6,
+        "pValue": 0.879
+      },
+      {
+        "feature": "feature_5",
+        "avgCountChurned": 9.92,
+        "avgCountRetained": 10.0,
+        "delta": 0.08,
+        "avgErrorChurned": 0.44,
+        "avgErrorRetained": 0.58,
+        "pValue": 0.5527
+      },
+      {
+        "feature": "feature_24",
+        "avgCountChurned": 9.99,
+        "avgCountRetained": 9.92,
+        "delta": -0.07,
+        "avgErrorChurned": 0.52,
+        "avgErrorRetained": 0.55,
+        "pValue": 0.6083
+      },
+      {
+        "feature": "feature_8",
+        "avgCountChurned": 10.08,
+        "avgCountRetained": 10.13,
+        "delta": 0.05,
+        "avgErrorChurned": 0.53,
+        "avgErrorRetained": 0.46,
+        "pValue": 0.7695
+      },
+      {
+        "feature": "feature_32",
+        "avgCountChurned": 10.12,
+        "avgCountRetained": 10.15,
+        "delta": 0.03,
+        "avgErrorChurned": 0.62,
+        "avgErrorRetained": 0.52,
+        "pValue": 0.9669
+      },
+      {
+        "feature": "feature_12",
+        "avgCountChurned": 9.92,
+        "avgCountRetained": 9.91,
+        "delta": -0.01,
+        "avgErrorChurned": 0.68,
+        "avgErrorRetained": 0.51,
+        "pValue": 0.7412
+      }
+    ],
+    "protectiveFeatures": [
+      "feature_37",
+      "feature_10",
+      "feature_33",
+      "feature_7",
+      "feature_9"
+    ],
+    "warningFeatures": [
+      "feature_40",
+      "feature_34",
+      "feature_17",
+      "feature_39",
+      "feature_14"
+    ]
+  },
+  "supportAnalysis": {
+    "avgTicketsChurned": 3.93,
+    "avgTicketsRetained": 4.02,
+    "avgResolutionHoursChurned": 35.7,
+    "avgResolutionHoursRetained": 35.9,
+    "avgCsatChurned": 4.01,
+    "avgCsatRetained": 3.97,
+    "escalationRateChurned": 5.6,
+    "escalationRateRetained": 4.5
+  },
+  "churnReasons": {
+    "reasonBreakdown": [
+      {
+        "reasonCode": "features",
+        "count": 114,
+        "mrrLost": 1906.0,
+        "pct": 19.0
+      },
+      {
+        "reasonCode": "budget",
+        "count": 104,
+        "mrrLost": 1248.0,
+        "pct": 17.3
+      },
+      {
+        "reasonCode": "support",
+        "count": 104,
+        "mrrLost": 1220.0,
+        "pct": 17.3
+      },
+      {
+        "reasonCode": "unknown",
+        "count": 95,
+        "mrrLost": 1742.0,
+        "pct": 15.8
+      },
+      {
+        "reasonCode": "competitor",
+        "count": 92,
+        "mrrLost": 1204.0,
+        "pct": 15.3
+      },
+      {
+        "reasonCode": "pricing",
+        "count": 91,
+        "mrrLost": 1333.0,
+        "pct": 15.2
+      }
+    ],
+    "feedbackThemes": [
+      {
+        "theme": "expensive",
+        "count": 161
+      },
+      {
+        "theme": "missing",
+        "count": 155
+      },
+      {
+        "theme": "features",
+        "count": 155
+      },
+      {
+        "theme": "switched",
+        "count": 136
+      },
+      {
+        "theme": "competitor",
+        "count": 136
+      }
+    ]
+  },
+  "atRiskAccounts": [
+    {
+      "accountId": "A-671f31",
+      "accountName": "Company_137",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 30385.0,
+      "riskScore": 70,
+      "riskFlags": [
+        "baixo uso de features",
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-1f7acb",
+      "accountName": "Company_281",
+      "industry": "FinTech",
+      "country": "UK",
+      "planTier": "Basic",
+      "mrr": 46912.0,
+      "riskScore": 60,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-09540c",
+      "accountName": "Company_239",
+      "industry": "Cybersecurity",
+      "country": "CA",
+      "planTier": "Basic",
+      "mrr": 23718.0,
+      "riskScore": 60,
+      "riskFlags": [
+        "uso moderado de features",
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-f19b24",
+      "accountName": "Company_462",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 2523.0,
+      "riskScore": 60,
+      "riskFlags": [
+        "baixo uso de features",
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-e08cd3",
+      "accountName": "Company_475",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 71020.0,
+      "riskScore": 55,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-afa505",
+      "accountName": "Company_157",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 66010.0,
+      "riskScore": 55,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-f03140",
+      "accountName": "Company_209",
+      "industry": "DevTools",
+      "country": "IN",
+      "planTier": "Pro",
+      "mrr": 21075.0,
+      "riskScore": 55,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-544d0a",
+      "accountName": "Company_153",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 18492.0,
+      "riskScore": 55,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-354f12",
+      "accountName": "Company_201",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 8889.0,
+      "riskScore": 55,
+      "riskFlags": [
+        "uso moderado de features",
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-87aa7b",
+      "accountName": "Company_433",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 22881.0,
+      "riskScore": 50,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-337bc1",
+      "accountName": "Company_424",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 19379.0,
+      "riskScore": 50,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-7cfe77",
+      "accountName": "Company_367",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 12765.0,
+      "riskScore": 50,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-e98302",
+      "accountName": "Company_286",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 12567.0,
+      "riskScore": 50,
+      "riskFlags": [
+        "uso moderado de features",
+        "conta trial",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-f1f639",
+      "accountName": "Company_296",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 2919.0,
+      "riskScore": 50,
+      "riskFlags": [
+        "baixo uso de features",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-342303",
+      "accountName": "Company_294",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 1695.0,
+      "riskScore": 50,
+      "riskFlags": [
+        "baixo uso de features",
+        "conta trial"
+      ]
+    },
+    {
+      "accountId": "A-993085",
+      "accountName": "Company_258",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 48456.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-cd458b",
+      "accountName": "Company_430",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 43291.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-3b5cd1",
+      "accountName": "Company_49",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 23676.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-bcbe98",
+      "accountName": "Company_452",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 21666.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "downgrade recente",
+        "alto volume de tickets",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-ffc04f",
+      "accountName": "Company_307",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 20039.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "downgrade recente",
+        "alto volume de tickets",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-f446b6",
+      "accountName": "Company_36",
+      "industry": "DevTools",
+      "country": "DE",
+      "planTier": "Pro",
+      "mrr": 11392.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "conta trial",
+        "alto volume de tickets",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-51ec1b",
+      "accountName": "Company_247",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 11087.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-ef84cf",
+      "accountName": "Company_274",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 7507.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-b9f5b1",
+      "accountName": "Company_494",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 7072.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "uso moderado de features",
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-c42f1f",
+      "accountName": "Company_21",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 5175.0,
+      "riskScore": 45,
+      "riskFlags": [
+        "downgrade recente",
+        "alto volume de tickets",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-aa9511",
+      "accountName": "Company_203",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 60970.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-d77f4c",
+      "accountName": "Company_470",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 48726.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-855a48",
+      "accountName": "Company_389",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 30376.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-4f18f0",
+      "accountName": "Company_145",
+      "industry": "DevTools",
+      "country": "CA",
+      "planTier": "Pro",
+      "mrr": 30264.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-3a5ad8",
+      "accountName": "Company_94",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 28701.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-3793ee",
+      "accountName": "Company_332",
+      "industry": "Cybersecurity",
+      "country": "CA",
+      "planTier": "Enterprise",
+      "mrr": 26705.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-ac9111",
+      "accountName": "Company_487",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 26626.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-462d45",
+      "accountName": "Company_13",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 23432.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-d42431",
+      "accountName": "Company_378",
+      "industry": "FinTech",
+      "country": "FR",
+      "planTier": "Enterprise",
+      "mrr": 21160.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-5a3eb9",
+      "accountName": "Company_283",
+      "industry": "DevTools",
+      "country": "CA",
+      "planTier": "Enterprise",
+      "mrr": 20293.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-cab532",
+      "accountName": "Company_218",
+      "industry": "DevTools",
+      "country": "FR",
+      "planTier": "Pro",
+      "mrr": 20088.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-00cac8",
+      "accountName": "Company_26",
+      "industry": "HealthTech",
+      "country": "AU",
+      "planTier": "Enterprise",
+      "mrr": 14121.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-378b99",
+      "accountName": "Company_60",
+      "industry": "EdTech",
+      "country": "UK",
+      "planTier": "Pro",
+      "mrr": 12116.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-7da956",
+      "accountName": "Company_141",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 10963.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-bb1eaa",
+      "accountName": "Company_468",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 10381.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-a2485e",
+      "accountName": "Company_467",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 8775.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "conta trial",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-cb6cc6",
+      "accountName": "Company_419",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 2622.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "uso moderado de features",
+        "conta trial"
+      ]
+    },
+    {
+      "accountId": "A-0be015",
+      "accountName": "Company_454",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 1178.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "uso moderado de features",
+        "alto volume de tickets",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-751bd4",
+      "accountName": "Company_408",
+      "industry": "Cybersecurity",
+      "country": "UK",
+      "planTier": "Pro",
+      "mrr": 190.0,
+      "riskScore": 40,
+      "riskFlags": [
+        "baixo uso de features",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-f6b2fb",
+      "accountName": "Company_418",
+      "industry": "DevTools",
+      "country": "AU",
+      "planTier": "Basic",
+      "mrr": 23359.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-40a557",
+      "accountName": "Company_86",
+      "industry": "Cybersecurity",
+      "country": "AU",
+      "planTier": "Pro",
+      "mrr": 23324.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "conta trial",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-de24d5",
+      "accountName": "Company_231",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 21327.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "conta trial",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-186a44",
+      "accountName": "Company_101",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 20989.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-3f9cc0",
+      "accountName": "Company_359",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 19940.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-700ade",
+      "accountName": "Company_472",
+      "industry": "Cybersecurity",
+      "country": "UK",
+      "planTier": "Enterprise",
+      "mrr": 16875.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "conta trial"
+      ]
+    },
+    {
+      "accountId": "A-b9eed8",
+      "accountName": "Company_189",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 16577.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-6c093d",
+      "accountName": "Company_12",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 16242.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-f25509",
+      "accountName": "Company_92",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 16122.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-cc8c8f",
+      "accountName": "Company_482",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 15600.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-0532a9",
+      "accountName": "Company_170",
+      "industry": "FinTech",
+      "country": "IN",
+      "planTier": "Pro",
+      "mrr": 15161.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-cbbe12",
+      "accountName": "Company_450",
+      "industry": "Cybersecurity",
+      "country": "DE",
+      "planTier": "Enterprise",
+      "mrr": 13081.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-dcc3f1",
+      "accountName": "Company_314",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 12747.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-c16101",
+      "accountName": "Company_139",
+      "industry": "EdTech",
+      "country": "IN",
+      "planTier": "Basic",
+      "mrr": 12422.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-474ad4",
+      "accountName": "Company_261",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 12125.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-45ce7a",
+      "accountName": "Company_31",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 8216.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-149a69",
+      "accountName": "Company_302",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 8058.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-bb3bd4",
+      "accountName": "Company_340",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 7452.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-241e75",
+      "accountName": "Company_242",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 3594.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-b2af2e",
+      "accountName": "Company_227",
+      "industry": "Cybersecurity",
+      "country": "UK",
+      "planTier": "Enterprise",
+      "mrr": 3112.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-44dc83",
+      "accountName": "Company_35",
+      "industry": "EdTech",
+      "country": "FR",
+      "planTier": "Basic",
+      "mrr": 456.0,
+      "riskScore": 35,
+      "riskFlags": [
+        "uso moderado de features",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-c58f49",
+      "accountName": "Company_480",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 70980.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-80eeb6",
+      "accountName": "Company_402",
+      "industry": "Cybersecurity",
+      "country": "UK",
+      "planTier": "Enterprise",
+      "mrr": 68489.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-f5641b",
+      "accountName": "Company_382",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 39120.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-92a3af",
+      "accountName": "Company_259",
+      "industry": "Cybersecurity",
+      "country": "IN",
+      "planTier": "Enterprise",
+      "mrr": 34538.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-883b7d",
+      "accountName": "Company_313",
+      "industry": "Cybersecurity",
+      "country": "IN",
+      "planTier": "Basic",
+      "mrr": 30524.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "alto volume de tickets",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-c37cab",
+      "accountName": "Company_278",
+      "industry": "Cybersecurity",
+      "country": "UK",
+      "planTier": "Pro",
+      "mrr": 29433.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-fd9422",
+      "accountName": "Company_263",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 28130.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-157070",
+      "accountName": "Company_85",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 27506.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-7f4db3",
+      "accountName": "Company_441",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 26276.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-58b9ff",
+      "accountName": "Company_425",
+      "industry": "DevTools",
+      "country": "IN",
+      "planTier": "Enterprise",
+      "mrr": 22642.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-39b19f",
+      "accountName": "Company_176",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 21237.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-313be3",
+      "accountName": "Company_136",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 19006.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-5790f4",
+      "accountName": "Company_446",
+      "industry": "FinTech",
+      "country": "UK",
+      "planTier": "Pro",
+      "mrr": 18926.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-22d9d2",
+      "accountName": "Company_188",
+      "industry": "DevTools",
+      "country": "FR",
+      "planTier": "Pro",
+      "mrr": 18746.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-4437e4",
+      "accountName": "Company_192",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 17831.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-50bb9f",
+      "accountName": "Company_373",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 17263.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "uso moderado de features",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-31ab9a",
+      "accountName": "Company_460",
+      "industry": "FinTech",
+      "country": "DE",
+      "planTier": "Pro",
+      "mrr": 15802.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "uso moderado de features",
+        "alto volume de tickets"
+      ]
+    },
+    {
+      "accountId": "A-9bfc9f",
+      "accountName": "Company_228",
+      "industry": "DevTools",
+      "country": "CA",
+      "planTier": "Pro",
+      "mrr": 15342.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-bc4d48",
+      "accountName": "Company_343",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Pro",
+      "mrr": 12390.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-3d957b",
+      "accountName": "Company_311",
+      "industry": "HealthTech",
+      "country": "UK",
+      "planTier": "Pro",
+      "mrr": 11852.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "baixo uso de features"
+      ]
+    },
+    {
+      "accountId": "A-684255",
+      "accountName": "Company_20",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 11844.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-df10db",
+      "accountName": "Company_143",
+      "industry": "DevTools",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 11730.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-92a333",
+      "accountName": "Company_116",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 10659.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-6a4e2d",
+      "accountName": "Company_46",
+      "industry": "EdTech",
+      "country": "UK",
+      "planTier": "Pro",
+      "mrr": 10394.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-396e5f",
+      "accountName": "Company_30",
+      "industry": "Cybersecurity",
+      "country": "CA",
+      "planTier": "Enterprise",
+      "mrr": 10236.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "downgrade recente",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-832ec2",
+      "accountName": "Company_19",
+      "industry": "FinTech",
+      "country": "UK",
+      "planTier": "Enterprise",
+      "mrr": 9299.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "conta trial",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-558c72",
+      "accountName": "Company_438",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 9171.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "uso moderado de features",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-856b1e",
+      "accountName": "Company_161",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 6321.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "uso moderado de features",
+        "tickets escalados"
+      ]
+    },
+    {
+      "accountId": "A-bbe56f",
+      "accountName": "Company_406",
+      "industry": "HealthTech",
+      "country": "US",
+      "planTier": "Enterprise",
+      "mrr": 6025.0,
+      "riskScore": 30,
+      "riskFlags": [
+        "baixo uso de features"
+      ]
+    },
+    {
+      "accountId": "A-d4e0d4",
+      "accountName": "Company_403",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 138060.0,
+      "riskScore": 25,
+      "riskFlags": [
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-18793f",
+      "accountName": "Company_488",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 78588.0,
+      "riskScore": 25,
+      "riskFlags": [
+        "conta trial"
+      ]
+    },
+    {
+      "accountId": "A-0cc442",
+      "accountName": "Company_198",
+      "industry": "EdTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 61935.0,
+      "riskScore": 25,
+      "riskFlags": [
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-e60f9d",
+      "accountName": "Company_178",
+      "industry": "FinTech",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 50817.0,
+      "riskScore": 25,
+      "riskFlags": [
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-054577",
+      "accountName": "Company_455",
+      "industry": "EdTech",
+      "country": "UK",
+      "planTier": "Basic",
+      "mrr": 44601.0,
+      "riskScore": 25,
+      "riskFlags": [
+        "downgrade recente"
+      ]
+    },
+    {
+      "accountId": "A-e3bd71",
+      "accountName": "Company_347",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "planTier": "Basic",
+      "mrr": 41630.0,
+      "riskScore": 25,
+      "riskFlags": [
+        "downgrade recente"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "month": "2023-01",
+      "count": 1,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-03",
+      "count": 5,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-04",
+      "count": 3,
+      "mrrLost": 38.0
+    },
+    {
+      "month": "2023-05",
+      "count": 3,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-06",
+      "count": 5,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-07",
+      "count": 5,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-08",
+      "count": 7,
+      "mrrLost": 71.0
+    },
+    {
+      "month": "2023-09",
+      "count": 5,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-10",
+      "count": 7,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2023-11",
+      "count": 11,
+      "mrrLost": 301.0
+    },
+    {
+      "month": "2023-12",
+      "count": 15,
+      "mrrLost": 358.0
+    },
+    {
+      "month": "2024-01",
+      "count": 20,
+      "mrrLost": 326.0
+    },
+    {
+      "month": "2024-02",
+      "count": 8,
+      "mrrLost": 0.0
+    },
+    {
+      "month": "2024-03",
+      "count": 23,
+      "mrrLost": 355.0
+    },
+    {
+      "month": "2024-04",
+      "count": 22,
+      "mrrLost": 280.0
+    },
+    {
+      "month": "2024-05",
+      "count": 24,
+      "mrrLost": 190.0
+    },
+    {
+      "month": "2024-06",
+      "count": 35,
+      "mrrLost": 514.0
+    },
+    {
+      "month": "2024-07",
+      "count": 32,
+      "mrrLost": 598.0
+    },
+    {
+      "month": "2024-08",
+      "count": 37,
+      "mrrLost": 694.0
+    },
+    {
+      "month": "2024-09",
+      "count": 46,
+      "mrrLost": 902.0
+    },
+    {
+      "month": "2024-10",
+      "count": 60,
+      "mrrLost": 718.0
+    },
+    {
+      "month": "2024-11",
+      "count": 59,
+      "mrrLost": 732.0
+    },
+    {
+      "month": "2024-12",
+      "count": 106,
+      "mrrLost": 2044.0
+    }
+  ]
+}
