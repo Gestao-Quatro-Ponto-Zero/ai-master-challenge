@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "description": "Contrato estrutural dos dados do challenge pack no snapshot atual.",
+  "datasets": {
+    "accounts.csv": {
+      "primary_key": "account",
+      "required_columns": [
+        "account",
+        "sector",
+        "year_established",
+        "revenue",
+        "employees",
+        "office_location",
+        "subsidiary_of"
+      ]
+    },
+    "products.csv": {
+      "primary_key": "product",
+      "required_columns": [
+        "product",
+        "series",
+        "sales_price"
+      ]
+    },
+    "sales_teams.csv": {
+      "primary_key": "sales_agent",
+      "required_columns": [
+        "sales_agent",
+        "manager",
+        "regional_office"
+      ]
+    },
+    "sales_pipeline.csv": {
+      "primary_key": "opportunity_id",
+      "required_columns": [
+        "opportunity_id",
+        "sales_agent",
+        "product",
+        "account",
+        "deal_stage",
+        "engage_date",
+        "close_date",
+        "close_value"
+      ],
+      "foreign_keys": {
+        "sales_agent": {
+          "dataset": "sales_teams.csv",
+          "column": "sales_agent"
+        },
+        "product": {
+          "dataset": "products.csv",
+          "column": "product"
+        },
+        "account": {
+          "dataset": "accounts.csv",
+          "column": "account"
+        }
+      }
+    },
+    "metadata.csv": {
+      "primary_key": null,
+      "required_columns": [
+        "Table",
+        "Field",
+        "Description"
+      ]
+    }
+  },
+  "normalization_aliases": {
+    "sales_pipeline.csv": {
+      "product": {
+        "GTXPro": "GTX Pro"
+      }
+    }
+  },
+  "quality_rules": {
+    "required_not_empty": [
+      {
+        "dataset": "sales_pipeline.csv",
+        "column": "opportunity_id"
+      },
+      {
+        "dataset": "sales_pipeline.csv",
+        "column": "sales_agent"
+      },
+      {
+        "dataset": "sales_pipeline.csv",
+        "column": "product"
+      },
+      {
+        "dataset": "sales_pipeline.csv",
+        "column": "deal_stage"
+      }
+    ]
+  }
+}

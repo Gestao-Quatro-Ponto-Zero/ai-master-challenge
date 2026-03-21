@@ -1,0 +1,11 @@
+{
+  "sales_pipeline.csv": {
+    "product": {
+      "GTXPro": {
+        "canonical": "GTX Pro",
+        "strategy": "semantic_alias",
+        "risk": "medium"
+      }
+    }
+  }
+}

@@ -1,0 +1,306 @@
+{
+  "accounts.csv": {
+    "file": "accounts.csv",
+    "source_of_truth": true,
+    "rows": 85,
+    "columns": {
+      "account": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 85,
+        "sample": [
+          "Acme Corporation",
+          "Betasoloin",
+          "Betatech"
+        ]
+      },
+      "sector": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 10,
+        "sample": [
+          "technolgy",
+          "medical",
+          "medical"
+        ]
+      },
+      "year_established": {
+        "inferred_type": "int",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 35,
+        "sample": [
+          "1996",
+          "1999",
+          "1986"
+        ]
+      },
+      "revenue": {
+        "inferred_type": "float",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 85,
+        "sample": [
+          "1100.04",
+          "251.41",
+          "647.18"
+        ]
+      },
+      "employees": {
+        "inferred_type": "int",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 85,
+        "sample": [
+          "2822",
+          "495",
+          "1185"
+        ]
+      },
+      "office_location": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 15,
+        "sample": [
+          "United States",
+          "United States",
+          "Kenya"
+        ]
+      },
+      "subsidiary_of": {
+        "inferred_type": "string",
+        "nullable": true,
+        "null_count": 70,
+        "cardinality_approx": 7,
+        "sample": [
+          "Acme Corporation",
+          "Massive Dynamic",
+          "Acme Corporation"
+        ]
+      }
+    },
+    "notes": "Nao renomear colunas na ingestao raw."
+  },
+  "products.csv": {
+    "file": "products.csv",
+    "source_of_truth": true,
+    "rows": 7,
+    "columns": {
+      "product": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 7,
+        "sample": [
+          "GTX Basic",
+          "GTX Pro",
+          "MG Special"
+        ]
+      },
+      "series": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 3,
+        "sample": [
+          "GTX",
+          "GTX",
+          "MG"
+        ]
+      },
+      "sales_price": {
+        "inferred_type": "int",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 7,
+        "sample": [
+          "550",
+          "4821",
+          "55"
+        ]
+      }
+    },
+    "notes": "Nao renomear colunas na ingestao raw."
+  },
+  "sales_teams.csv": {
+    "file": "sales_teams.csv",
+    "source_of_truth": true,
+    "rows": 35,
+    "columns": {
+      "sales_agent": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 35,
+        "sample": [
+          "Anna Snelling",
+          "Cecily Lampkin",
+          "Versie Hillebrand"
+        ]
+      },
+      "manager": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 6,
+        "sample": [
+          "Dustin Brinkmann",
+          "Dustin Brinkmann",
+          "Dustin Brinkmann"
+        ]
+      },
+      "regional_office": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 3,
+        "sample": [
+          "Central",
+          "Central",
+          "Central"
+        ]
+      }
+    },
+    "notes": "Nao renomear colunas na ingestao raw."
+  },
+  "sales_pipeline.csv": {
+    "file": "sales_pipeline.csv",
+    "source_of_truth": true,
+    "rows": 8800,
+    "columns": {
+      "opportunity_id": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 8800,
+        "sample": [
+          "1C1I7A6R",
+          "Z063OYW0",
+          "EC4QE1BX"
+        ]
+      },
+      "sales_agent": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 30,
+        "sample": [
+          "Moses Frase",
+          "Darcel Schlecht",
+          "Darcel Schlecht"
+        ]
+      },
+      "product": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 7,
+        "sample": [
+          "GTX Plus Basic",
+          "GTXPro",
+          "MG Special"
+        ]
+      },
+      "account": {
+        "inferred_type": "string",
+        "nullable": true,
+        "null_count": 1425,
+        "cardinality_approx": 85,
+        "sample": [
+          "Cancity",
+          "Isdom",
+          "Cancity"
+        ]
+      },
+      "deal_stage": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 4,
+        "sample": [
+          "Won",
+          "Won",
+          "Won"
+        ]
+      },
+      "engage_date": {
+        "inferred_type": "string",
+        "nullable": true,
+        "null_count": 500,
+        "cardinality_approx": 421,
+        "sample": [
+          "2016-10-20",
+          "2016-10-25",
+          "2016-10-25"
+        ]
+      },
+      "close_date": {
+        "inferred_type": "string",
+        "nullable": true,
+        "null_count": 2089,
+        "cardinality_approx": 306,
+        "sample": [
+          "2017-03-01",
+          "2017-03-11",
+          "2017-03-07"
+        ]
+      },
+      "close_value": {
+        "inferred_type": "int",
+        "nullable": true,
+        "null_count": 2089,
+        "cardinality_approx": 2051,
+        "sample": [
+          "1054",
+          "4514",
+          "50"
+        ]
+      }
+    },
+    "notes": "Nao renomear colunas na ingestao raw."
+  },
+  "metadata.csv": {
+    "file": "metadata.csv",
+    "source_of_truth": true,
+    "rows": 21,
+    "columns": {
+      "Table": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 4,
+        "sample": [
+          "accounts",
+          "accounts",
+          "accounts"
+        ]
+      },
+      "Field": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 18,
+        "sample": [
+          "account",
+          "sector",
+          "year_established"
+        ]
+      },
+      "Description": {
+        "inferred_type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "cardinality_approx": 18,
+        "sample": [
+          "Company name",
+          "Industry",
+          "Year Established"
+        ]
+      }
+    },
+    "notes": "Nao renomear colunas na ingestao raw."
+  }
+}

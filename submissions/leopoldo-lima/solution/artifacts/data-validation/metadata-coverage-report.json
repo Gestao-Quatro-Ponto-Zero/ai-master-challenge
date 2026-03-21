@@ -1,0 +1,97 @@
+{
+  "tables": {
+    "accounts": {
+      "file": "accounts.csv",
+      "schema_columns": [
+        "account",
+        "employees",
+        "office_location",
+        "revenue",
+        "sector",
+        "subsidiary_of",
+        "year_established"
+      ],
+      "metadata_columns": [
+        "account",
+        "employees",
+        "office_location",
+        "revenue",
+        "sector",
+        "subsidiary_of",
+        "year_established"
+      ],
+      "missing_in_metadata": [],
+      "extra_in_metadata": []
+    },
+    "products": {
+      "file": "products.csv",
+      "schema_columns": [
+        "product",
+        "sales_price",
+        "series"
+      ],
+      "metadata_columns": [
+        "product",
+        "sales_price",
+        "series"
+      ],
+      "missing_in_metadata": [],
+      "extra_in_metadata": []
+    },
+    "sales_teams": {
+      "file": "sales_teams.csv",
+      "schema_columns": [
+        "manager",
+        "regional_office",
+        "sales_agent"
+      ],
+      "metadata_columns": [
+        "manager",
+        "regional_office",
+        "sales_agent"
+      ],
+      "missing_in_metadata": [],
+      "extra_in_metadata": []
+    },
+    "sales_pipeline": {
+      "file": "sales_pipeline.csv",
+      "schema_columns": [
+        "account",
+        "close_date",
+        "close_value",
+        "deal_stage",
+        "engage_date",
+        "opportunity_id",
+        "product",
+        "sales_agent"
+      ],
+      "metadata_columns": [
+        "account",
+        "close_date",
+        "close_value",
+        "deal_stage",
+        "engage_date",
+        "opportunity_id",
+        "product",
+        "sales_agent"
+      ],
+      "missing_in_metadata": [],
+      "extra_in_metadata": []
+    },
+    "metadata": {
+      "file": "metadata.csv",
+      "schema_columns": [
+        "Description",
+        "Field",
+        "Table"
+      ],
+      "metadata_columns": [],
+      "missing_in_metadata": [
+        "Description",
+        "Field",
+        "Table"
+      ],
+      "extra_in_metadata": []
+    }
+  }
+}

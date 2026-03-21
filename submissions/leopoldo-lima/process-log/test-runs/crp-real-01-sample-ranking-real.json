@@ -1,0 +1,41 @@
+{
+  "total": 8800,
+  "items": [
+    {
+      "id": "4V0S4BA3",
+      "title": "Goodsilron",
+      "seller": "Markita Hansen",
+      "manager": "Celia Rouche",
+      "region": "West",
+      "deal_stage": "Won",
+      "amount": 29617.0,
+      "score": 98,
+      "priority_band": "high",
+      "next_action": "Priorizar fechamento com proposta final e plano de onboarding.",
+      "nextBestAction": "Priorizar fechamento com proposta final e plano de onboarding.",
+      "account": "Goodsilron",
+      "product": "GTK 500",
+      "sales_agent": "Markita Hansen",
+      "regional_office": "West",
+      "close_value": 29617.0
+    },
+    {
+      "id": "JXUXBANJ",
+      "title": "Y-corporation",
+      "seller": "Rosalina Dieter",
+      "manager": "Celia Rouche",
+      "region": "West",
+      "deal_stage": "Won",
+      "amount": 25288.0,
+      "score": 98,
+      "priority_band": "high",
+      "next_action": "Priorizar fechamento com proposta final e plano de onboarding.",
+      "nextBestAction": "Priorizar fechamento com proposta final e plano de onboarding.",
+      "account": "Y-corporation",
+      "product": "GTK 500",
+      "sales_agent": "Rosalina Dieter",
+      "regional_office": "West",
+      "close_value": 25288.0
+    }
+  ]
+}

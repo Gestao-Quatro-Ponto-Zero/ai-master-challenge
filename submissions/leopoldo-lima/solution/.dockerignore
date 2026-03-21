@@ -1,0 +1,11 @@
+.git
+.github
+.pytest_cache
+.mypy_cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+artifacts/process-log
+agent-transcripts

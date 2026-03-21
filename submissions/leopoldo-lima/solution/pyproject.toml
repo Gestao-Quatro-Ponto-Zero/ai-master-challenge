@@ -1,0 +1,33 @@
+[project]
+name = "build-003-lead-scorer"
+version = "0.1.0"
+description = "Challenge pack com trilha de CRPs e governanca de submissao."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115.0",
+  "httpx>=0.27.0",
+  "uvicorn>=0.30.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-httpx>=0.35.0",
+  "ruff>=0.6.0",
+  "mypy>=1.10.0",
+  "pip-audit>=2.7.0",
+  "pre-commit>=3.8.0",
+  "cyclonedx-bom>=4.0.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["legacy", "archive"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

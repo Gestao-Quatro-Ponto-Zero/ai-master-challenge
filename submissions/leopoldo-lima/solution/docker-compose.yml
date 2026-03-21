@@ -1,0 +1,18 @@
+services:
+  lead-scorer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lead-scorer:local
+    container_name: lead-scorer-demo
+    ports:
+      - "8787:8787"
+    environment:
+      LEAD_SCORER_PORT: "8787"
+      LEAD_SCORER_DATA_SOURCE_MODE: "real_dataset"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
