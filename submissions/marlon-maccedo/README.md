@@ -158,6 +158,14 @@ Dataset sintético impede conclusões sobre timing ótimo de publicação e vari
 
 ---
 
+## Demo em produção
+
+**Portal:** https://ai-master-challenge-production-c5c9.up.railway.app
+
+Todos os dashboards estão acessíveis via o portal. AI insights habilitados (OpenRouter configurado).
+
+---
+
 ## Setup e execução
 
 ### Pré-requisitos
