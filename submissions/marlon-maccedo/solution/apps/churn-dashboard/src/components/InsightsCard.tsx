@@ -1,11 +1,16 @@
 import { generateInsights, generateDiagnosticInsights, type ChurnInsightsPayload, type DiagnosticInsightsPayload } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 // ── Overview insights card ────────────────────────────────────────────────────
 
 export async function InsightsCard(payload: ChurnInsightsPayload) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const insights = await generateInsights(payload)
 
   if (!insights) {
+    if (hasKey) {
+      return <ApiFailureBanner context="insights da visão geral" />
+    }
     return <NoApiKeyBanner context="insights da visão geral" />
   }
 
@@ -27,9 +32,13 @@ export async function InsightsCard(payload: ChurnInsightsPayload) {
 // ── Diagnostic insights card ──────────────────────────────────────────────────
 
 export async function DiagnosticInsightsCard(payload: DiagnosticInsightsPayload) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const insights = await generateDiagnosticInsights(payload)
 
   if (!insights) {
+    if (hasKey) {
+      return <ApiFailureBanner context="análise de causa raiz" />
+    }
     return <NoApiKeyBanner context="análise de causa raiz" />
   }
 
@@ -44,6 +53,24 @@ export async function DiagnosticInsightsCard(payload: DiagnosticInsightsPayload)
           <li key={i}>{insight}</li>
         ))}
       </ul>
+    </div>
+  )
+}
+
+// ── API respondeu com erro (chave pode estar correta) ────────────────────────
+
+function ApiFailureBanner({ context }: { context: string }) {
+  return (
+    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 flex items-center gap-3">
+      <span className="text-lg">⚠️</span>
+      <span>
+        Não foi possível gerar {context} agora (falha na API OpenRouter ou resposta inválida). Confira
+        créditos/key em{' '}
+        <a href="https://openrouter.ai" className="underline font-medium" target="_blank" rel="noreferrer">
+          openrouter.ai
+        </a>{' '}
+        e os logs do serviço no Railway.
+      </span>
     </div>
   )
 }

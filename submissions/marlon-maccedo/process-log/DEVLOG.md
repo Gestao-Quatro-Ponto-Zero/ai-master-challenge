@@ -243,3 +243,9 @@ Registro de decisões e estratégias. Entradas ao vivo, não reconstituídas.
 **[user]** Mesmo com Root Directory correto, `solution/railway.toml` na raiz fazia todos herdarem o mesmo build (Portal).
 
 **[ai]** Removido `solution/railway.toml` versionado; cada service usa `apps/<app>/railway.toml` via **Config file path** no Railway (caminho desde a raiz do repo) ou Dockerfile path explícito. `/railway.toml` no `.gitignore` (cópia do script CLI).
+
+## Sessão 15 — OPENROUTER na Railway: banner 🔑 mesmo com env
+
+**[user]** Com `OPENROUTER_API_KEY` no Railway, churn ainda mostrava “Configure OPENROUTER…”.
+
+**[ai]** Duas causas prováveis: (1) Next.js pode tratar `process.env.OPENROUTER_API_KEY` no build sem a variável no estágio Docker — valor “fixo” vazio em runtime; (2) falha na API OpenRouter devolvia `null` e a UI usava o mesmo banner de “sem chave”. Correção: `src/lib/env.ts` com `process.env['OPENROUTER_API_KEY']` (notação em colchetes), `export const dynamic = 'force-dynamic'` no `layout.tsx` do churn, e banners distintos (⚠️ falha de API vs 🔑 sem key) em `InsightsCard` e recomendações.

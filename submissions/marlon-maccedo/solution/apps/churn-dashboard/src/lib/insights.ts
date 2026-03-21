@@ -1,4 +1,5 @@
 import type { ChurnOverview, SegmentBreakdown, SupportComparison, ChurnReason, FeatureComparison } from '@/types'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 export interface ChurnInsightsPayload {
   overview: ChurnOverview
@@ -37,7 +38,7 @@ function overviewKey(o: ChurnOverview): string {
 /** Returns 4 AI-generated insights or null when no API key. */
 export async function generateInsights(payload: ChurnInsightsPayload): Promise<string[] | null> {
   const key = overviewKey(payload.overview) + '|' + payload.topIndustries[0]?.segment
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   const hit = insightsCache.get(key)
   if (hit && Date.now() - hit.at < TTL_MS) {
     if (hit.data !== null) return hit.data
@@ -90,7 +91,7 @@ ${dataSummary}`
 /** Returns 3 AI-generated diagnostic findings or null when no API key. */
 export async function generateDiagnosticInsights(payload: DiagnosticInsightsPayload): Promise<string[] | null> {
   const key = `diag|${overviewKey(payload.overview)}|${payload.topFeatures[0]?.feature}`
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   const hit = diagCache.get(key)
   if (hit && Date.now() - hit.at < TTL_MS) {
     if (hit.data !== null) return hit.data
@@ -148,7 +149,7 @@ export interface RecommendationsOutput {
 /** Returns AI-generated recommendations or null when no API key. */
 export async function generateRecommendations(payload: ChurnInsightsPayload): Promise<RecommendationsOutput | null> {
   const key = `reco|${RECO_VERSION}|${overviewKey(payload.overview)}|${payload.topChannels[0]?.segment}`
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   const hit = recoCache.get(key)
   if (hit && Date.now() - hit.at < TTL_MS) {
     if (hit.data !== null) return hit.data
@@ -228,7 +229,7 @@ ${dataSummary}`
 // ── Shared OpenRouter helper ──────────────────────────────────────────────────
 
 async function callOpenRouter(prompt: string, maxTokens: number): Promise<string[] | null> {
-  const apiKey = process.env.OPENROUTER_API_KEY
+  const apiKey = getOpenRouterApiKey()
   if (!apiKey) return null
 
   try {

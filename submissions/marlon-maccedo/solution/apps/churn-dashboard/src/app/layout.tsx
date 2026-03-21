@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import './globals.css'
 
+/** Garante leitura de env em runtime (Railway) em vez de otimizações que fixam valores no build. */
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Churn Dashboard',
   description: 'Diagnóstico de churn — Challenge 001',

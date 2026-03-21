@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { getOverview, getChurnByIndustry, getChurnByChannel, getChurnByPlan } from '@/lib/queries'
 import { getAnalysisOutput } from '@/lib/analysis-output'
 import { generateRecommendations, type ChurnInsightsPayload } from '@/lib/insights'
+import { getOpenRouterApiKey } from '@/lib/env'
 
 const EFFORT_COLOR: Record<string, string> = {
   baixo: 'bg-green-100 text-green-700',
@@ -10,9 +11,20 @@ const EFFORT_COLOR: Record<string, string> = {
 }
 
 async function RecommendationsContent({ payload }: { payload: ChurnInsightsPayload }) {
+  const hasKey = Boolean(getOpenRouterApiKey())
   const reco = await generateRecommendations(payload)
 
   if (!reco) {
+    if (hasKey) {
+      return (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-sm text-amber-900 flex items-center gap-3">
+          <span className="text-lg">⚠️</span>
+          <span>
+            Não foi possível gerar recomendações agora (falha na API OpenRouter ou resposta inválida). Confira a key e os logs no Railway.
+          </span>
+        </div>
+      )
+    }
     return (
       <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 text-sm text-gray-500 flex items-center gap-3">
         <span className="text-gray-400 text-lg">🔑</span>
