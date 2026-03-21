@@ -154,6 +154,49 @@ Dataset sintético impede conclusões sobre timing ótimo de publicação e vari
 
 ---
 
+## Setup e execução
+
+### Pré-requisitos
+
+- [Docker](https://docs.docker.com/get-docker/) + Docker Compose
+- **Ou:** Node.js 20+ e [pnpm](https://pnpm.io/installation)
+
+### Docker (recomendado)
+
+```bash
+cd submissions/marlon-maccedo/solution
+
+# Opcional: habilita AI insights nos dashboards
+cp .env.example .env
+# edite .env e preencha OPENROUTER_API_KEY
+
+docker-compose up --build
+```
+
+| App | URL |
+|-----|-----|
+| Portal | http://localhost:3000 |
+| Lead Scorer | http://localhost:3001 |
+| Churn | http://localhost:3002 |
+| Support Triage | http://localhost:3003 |
+| Social Dashboard | http://localhost:3004 |
+
+### pnpm (dev local)
+
+```bash
+cd submissions/marlon-maccedo/solution
+cp .env.example .env   # preencha OPENROUTER_API_KEY se quiser AI insights
+pnpm install
+pnpm dev:churn      # porta 3002
+pnpm dev:support    # porta 3003
+pnpm dev:social     # porta 3004
+# etc.
+```
+
+> Sem `OPENROUTER_API_KEY` os dashboards funcionam normalmente — apenas os blocos de AI insights ficam desabilitados.
+
+---
+
 ## Evidências
 
 - [x] Git history — todos os commits com mensagens descritivas (`git log --oneline`)
