@@ -1,0 +1,25 @@
+# =============================================================================
+# Deal Prioritization Engine - Dependencies
+# =============================================================================
+
+# Core Data Processing
+pandas==2.1.0
+numpy==1.24.0
+
+# Streamlit UI
+streamlit>=1.36.0
+plotly>=5.18.0
+
+# API
+fastapi==0.104.0
+uvicorn[standard]==0.24.0
+pydantic==2.4.0
+
+# Optional: Testing (uncomment if implementing)
+# pytest==7.4.0
+# pytest-cov==4.1.0
+
+# Optional: Development
+# black==23.10.0
+# flake8==6.1.0
+# mypy==1.6.0
