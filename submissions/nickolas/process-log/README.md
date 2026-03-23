@@ -1,105 +1,127 @@
-# Process Log — Lead Scoring IA
+## Process Log — Lead Scoring IA
+
+### 1. Entendimento do problema (decisão inicial)
+Antes de pensar em código, tratei o desafio como um problema de negócio.
+
+Minha leitura foi:
+empresas não perdem vendas por falta de leads, mas por priorização errada.
+
+Na prática, isso acontece quando:
+- o lead parece bom, mas não tem dor real
+- o lead demonstra interesse, mas não tem timing
+- o lead quer avançar, mas não tem poder de decisão
+
+A decisão aqui foi clara:
+não fazia sentido construir um modelo técnico se ele não refletisse comportamento comercial real.
 
 ---
 
-## 1. Entendimento do problema
+### 2. Decomposição do problema (modelagem)
+Quebrei o problema nos fatores que realmente influenciam fechamento:
 
-Inicialmente, analisei o desafio e identifiquei que o problema não era técnico, mas sim de negócio:
-
-Empresas perdem tempo e dinheiro priorizando leads errados.
-
-Na prática de vendas, isso acontece quando:
-- O lead parece bom, mas não tem dor real
-- O lead tem interesse, mas não tem timing
-- O lead quer, mas não pode decidir
-
-Antes de pensar em código, foquei em entender o que realmente define um lead valioso.
-
----
-
-## 2. Decomposição do problema
-
-Quebrei o problema em fatores que impactam diretamente o fechamento:
-
-- ICP Fit (perfil ideal)
+- ICP Fit (aderência ao perfil ideal)
 - Dor / impacto financeiro
 - Timing (urgência)
 - Estágio do funil
 - Autoridade de decisão
 
-Esses fatores vieram da experiência prática em vendas consultivas.
+Esses critérios não vieram da IA, mas da minha experiência prática em vendas consultivas.
+
+A IA foi usada para organizar a estrutura, mas não para definir o modelo.
 
 ---
 
-## 3. Uso de IA
+### 3. Uso de IA (com validação ativa)
+Utilizei IA como apoio para:
 
-Utilizei IA (ChatGPT) como ferramenta para:
+- estruturar o raciocínio
+- transformar lógica comercial em código
+- organizar a solução
+- revisar clareza da explicação
 
-- Estruturar o raciocínio
-- Traduzir lógica de negócio em código
-- Organizar a solução
-- Revisar a clareza da explicação
+Mas não tratei a IA como fonte de verdade.
 
-Importante: não usei IA apenas para gerar código, mas como apoio para estruturar melhor o pensamento.
-
----
-
-## 4. Iterações e ajustes
-
-Durante o processo:
-
-- Inicialmente tentei uma abordagem mais técnica, mas percebi que não era o foco do desafio
-- Ajustei o modelo para refletir melhor a realidade comercial
-- Simplifiquei a lógica para manter clareza e aplicabilidade
-- Corrigi erros estruturais no repositório (organização de pastas e arquivos)
-
-Também enfrentei dificuldades com ambiente local (execução do código), mas priorizei a entrega da solução estruturada.
+Sempre que recebia uma sugestão, eu:
+- comparava com o objetivo do desafio
+- validava se fazia sentido na prática de vendas
+- ajustava quando percebia generalização ou simplificação excessiva
 
 ---
 
-## 5. Onde a IA errou e como corrigi
+### 4. Iterações e mudança de direção
+Inicialmente, segui uma abordagem mais técnica.
 
-Em alguns momentos, a IA sugeriu abordagens genéricas, como modelos padrão de scoring.
+Percebi rapidamente que isso levaria a uma solução “correta no papel”, mas pouco útil na prática.
 
-Corrigi isso trazendo contexto real de vendas, incluindo:
+A partir disso, mudei a direção:
+- reduzi complexidade técnica
+- aumentei foco em decisão comercial
+- simplifiquei a lógica para torná-la utilizável no dia a dia
 
-- Peso maior para dor e impacto
-- Consideração de autoridade de decisão
-- Separação entre interesse e capacidade real de compra
-
-Ou seja, refinei a solução para sair do genérico.
-
----
-
-## 6. O que adicionei além da IA
-
-A principal contribuição foi a lógica comercial:
-
-- Priorização baseada em impacto financeiro real
-- Interpretação de comportamento do cliente
-- Tradução de sinais qualitativos em decisão prática
-
-A IA ajudou na execução, mas a direção da solução veio da experiência prática.
+Também refinei a estrutura do repositório ao longo do processo para garantir aderência ao padrão exigido.
 
 ---
 
-## 7. Número de iterações
+### 5. Onde a IA falhou (e como corrigi)
+Em alguns momentos, a IA sugeriu modelos genéricos de lead scoring, baseados em boas práticas teóricas.
 
-Foram várias iterações entre:
+O problema:
+esses modelos não refletem como vendas realmente acontecem.
+
+Corrigi isso aplicando critérios práticos:
+
+- aumentei o peso de dor e impacto financeiro
+- tratei autoridade de decisão como fator crítico
+- separei claramente interesse de capacidade real de compra
+
+Ou seja, substituí uma lógica “bonita” por uma lógica aplicável.
+
+---
+
+### 6. Validação manual e senso crítico
+Durante o processo, tratei várias partes como hipótese, não como verdade.
+
+Sempre que algo parecia genérico ou automático demais, eu revisava.
+
+Essa validação manual foi essencial para:
+- evitar decisões superficiais
+- garantir aderência ao problema real
+- manter consistência entre lógica, código e explicação
+
+---
+
+### 7. O que foi decisivo na solução
+O diferencial da solução não está no código, mas no critério de priorização.
+
+As decisões mais importantes foram:
+
+- priorizar dor + timing + decisão acima de perfil perfeito
+- reconhecer que lead “imperfeito” pode fechar mais rápido que lead ideal
+- transformar sinais comerciais em ação prática para o vendedor
+
+Essas decisões vieram da experiência em vendas, não da IA.
+
+---
+
+### 8. Iteração real (processo não linear)
+A solução foi construída de forma iterativa, envolvendo:
 
 - definição do modelo
+- ajustes de lógica
 - estruturação do código
-- organização do repositório
-- refinamento da explicação
+- reorganização do repositório
+- refinamento da comunicação
 
-O processo não foi linear, mas evolutivo.
-
----
-
-## 8. Conclusão
-
-A solução final não é apenas um código, mas um modelo de decisão aplicável.
-
-O foco foi construir algo que um time comercial realmente usaria no dia a dia.
+Não foi um processo linear, mas um ciclo contínuo de ajuste e validação.
 
 ---
+
+### 9. Conclusão
+A IA foi utilizada como ferramenta de apoio para acelerar estrutura e clareza.
+
+Mas:
+- a interpretação do problema foi feita manualmente
+- as decisões críticas vieram da prática comercial
+- a validação foi feita com senso crítico, não apenas aceitação automática
+
+O resultado final é um modelo simples, mas aplicável — focado em ajudar um time comercial a tomar decisões melhores no dia a dia.
