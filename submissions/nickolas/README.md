@@ -5,7 +5,7 @@
 ## Sobre mim
 
 - **Nome:** Nickolas Daniel da Cruz Borba da Silva  
-- **LinkedIn:** (coloca aqui depois)  
+- **LinkedIn:** (https://www.linkedin.com/in/nickolas-cruz-borba-68479520a/)  
 - **Challenge escolhido:** 003 — Lead Scoring  
 
 Tenho experiência prática em vendas consultivas, atuando como SDR e Closer, com foco em diagnóstico real de clientes e geração de receita. Já trabalhei com marketing digital e atendimento a empresas, o que me deu visão clara sobre como leads se comportam na prática — não apenas na teoria.
