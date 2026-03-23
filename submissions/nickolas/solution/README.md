@@ -27,3 +27,13 @@ O objetivo não é prever fechamento com ML, mas **priorizar oportunidades acion
 1. Instalar dependências:
 ```bash
 pip install pandas
+
+## Exemplo de saída
+
+Após executar o script, as oportunidades são priorizadas:
+
+| opportunity_id | account | score | priority |
+|----------------|--------|------|----------|
+| 1023 | TechCorp | 87 | Alta |
+| 2045 | RetailCo | 62 | Média |
+| 3099 | SmallBiz | 34 | Baixa |
