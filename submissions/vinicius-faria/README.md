@@ -157,7 +157,7 @@ Exemplo de explicação gerada:
 
 ## Evidências
 
-- [x] Chat export da conversa com Claude: https://claude.ai/share/cbd0f362-c559-4868-bc4b-492c7233b5e0
+- [x] Chat export da conversa com Claude: [Evidência de uso de IA](./process-log/chat-exports/Claude%20Chat%20-%20G4%20Challenge.pdf)
 - [x] PRD completo v3.0 documentando todas as decisões de produto e scoring (`docs/PRD_LeadScorer.md`)
 - [x] Git history da construção incremental
 ---
