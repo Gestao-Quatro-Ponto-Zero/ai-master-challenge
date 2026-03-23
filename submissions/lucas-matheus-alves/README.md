@@ -27,7 +27,7 @@ Dashboard interativo com cinco abas navegáveis construído com identidade visua
 
 | Arquivo | Conteúdo |
 |---|---|
-| `dados_completos_5plat.csv` | 52.214 linhas com todas as métricas derivadas |
+| `dados_completos_5plat.csv` | 52.214 linhas com todas as métricas derivadas | -> Não está no repositório por ser a base de dados original 
 | `lift_roi_5plat.csv` | 314 grupos validados com lift orgânico vs patrocinado |
 | `roi_financeiro_5plat.csv` | 60 segmentos com ROI proxy ordenados por retorno |
 | `dashboard_social_media.html` | Dashboard G4 Venus completo e interativo |
