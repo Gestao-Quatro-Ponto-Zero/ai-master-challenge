@@ -1,16 +1,18 @@
-# Uso de IA no processo
+## Uso de IA no processo
 
-Durante o desenvolvimento, utilizei o ChatGPT para:
+Durante o desenvolvimento, utilizei o ChatGPT como suporte para:
 
-- Estruturar o projeto conforme o desafio
-- Refinar a lógica de lead scoring
-- Validar decisões técnicas (Streamlit, estrutura de arquivos)
-- Organizar a documentação final
+- Estruturar o projeto conforme o padrão do desafio (organização de pastas, naming)
+- Refinar a lógica de lead scoring com base em critérios de vendas reais
+- Validar decisões técnicas (uso de Streamlit, separação entre scoring e interface)
+- Revisar a documentação final para maior clareza
 
-## Exemplos de uso
+## Como a IA foi utilizada
 
-- Ajuste da lógica de scoring com base em impacto real
-- Organização das evidências do projeto
-- Definição de estrutura profissional para entrega
+A IA não foi usada para gerar a solução automaticamente, mas como apoio estratégico para:
 
-A IA foi utilizada como suporte estratégico, não substituindo o raciocínio próprio.
+- Organizar o raciocínio
+- Questionar decisões
+- Melhorar a clareza da entrega
+
+Todas as decisões finais foram tomadas com base em experiência prática em vendas.
