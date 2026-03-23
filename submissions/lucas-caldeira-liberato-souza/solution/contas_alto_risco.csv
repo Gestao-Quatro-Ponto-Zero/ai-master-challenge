@@ -1,0 +1,82 @@
+account_id,account_name,industry,referral_source,current_plan,mrr_amount,seats,country,core_pct,escalations,avg_csat,risk_score,risk_reasons
+A-9bfc9f,Company_228,DevTools,ads,Pro,2940,53,CA,16.5,1.0,3.33,11,DevTools | canal:ads | low_core:16% | escalations:1 | csat:3.3
+A-51ec1b,Company_247,DevTools,ads,Enterprise,3383,7,US,17.7,1.0,5.0,10,DevTools | canal:ads | low_core:18% | escalations:1
+A-ad296b,Company_112,DevTools,event,Pro,1862,38,AU,20.1,1.0,3.67,9,DevTools | canal:event | escalations:1 | csat:3.7
+A-7cfe77,Company_367,DevTools,ads,Basic,1311,69,US,19.5,0.0,3.5,9,DevTools | canal:ads | low_core:20% | csat:3.5
+A-3c1a3f,Company_224,DevTools,event,Basic,133,1,UK,17.1,0.0,3.5,9,DevTools | canal:event | low_core:17% | csat:3.5
+A-cc8c8f,Company_482,DevTools,ads,Basic,0,23,US,15.3,0.0,3.5,9,DevTools | canal:ads | low_core:15% | csat:3.5
+A-ad64c6,Company_175,DevTools,event,Enterprise,5572,12,UK,15.8,0.0,5.0,8,DevTools | canal:event | low_core:16%
+A-22d9d2,Company_188,DevTools,event,Pro,1568,8,FR,30.4,1.0,4.0,8,DevTools | canal:event | escalations:1
+A-f6b2fb,Company_418,DevTools,event,Basic,437,23,AU,25.2,1.0,4.0,8,DevTools | canal:event | escalations:1
+A-22f2df,Company_106,DevTools,ads,Basic,209,3,US,14.2,0.0,5.0,8,DevTools | canal:ads | low_core:14%
+A-f446b6,Company_36,DevTools,ads,Basic,95,5,DE,29.0,1.0,4.25,8,DevTools | canal:ads | escalations:1
+A-cc98bc,Company_469,DevTools,ads,Basic,0,32,US,16.0,0.0,4.0,8,DevTools | canal:ads | low_core:16%
+A-cb5333,Company_370,DevTools,ads,Pro,1617,33,US,20.5,0.0,3.0,7,DevTools | canal:ads | csat:3.0
+A-58b9ff,Company_425,DevTools,partner,Pro,1617,2,IN,17.2,1.0,4.0,7,DevTools | low_core:17% | escalations:1
+A-cb6cc6,Company_419,DevTools,ads,Pro,1225,13,US,20.7,0.0,3.5,7,DevTools | canal:ads | csat:3.5
+A-d4ac0e,Company_364,DevTools,ads,Pro,882,18,UK,21.2,0.0,3.5,7,DevTools | canal:ads | csat:3.5
+A-b54c01,Company_354,DevTools,event,Basic,551,29,US,35.4,0.0,3.0,7,DevTools | canal:event | csat:3.0
+A-8ae3fc,Company_495,DevTools,ads,Basic,380,9,CA,25.6,0.0,3.5,7,DevTools | canal:ads | csat:3.5
+A-019782,Company_142,DevTools,event,Enterprise,0,11,FR,25.3,0.0,3.0,7,DevTools | canal:event | csat:3.0
+A-f03140,Company_209,DevTools,event,Pro,0,27,IN,20.2,0.0,3.67,7,DevTools | canal:event | csat:3.7
+A-afa505,Company_157,DevTools,partner,Enterprise,13930,70,US,26.4,1.0,3.0,6,DevTools | escalations:1 | csat:3.0
+A-a0ca4e,Company_6,Cybersecurity,ads,Enterprise,5174,11,US,20.1,3.0,3.8,6,canal:ads | escalations:3 | csat:3.8
+A-49b828,Company_391,FinTech,ads,Enterprise,3980,6,IN,23.3,1.0,3.5,6,canal:ads | escalations:1 | csat:3.5
+A-05d3b3,Company_213,DevTools,ads,Enterprise,3781,9,AU,23.2,0.0,4.33,6,DevTools | canal:ads
+A-d3c88e,Company_490,DevTools,event,Enterprise,3184,16,US,26.6,0.0,4.0,6,DevTools | canal:event
+A-4a4c2d,Company_473,DevTools,event,Pro,2646,54,US,29.3,0.0,4.25,6,DevTools | canal:event
+A-df10db,Company_143,DevTools,other,Enterprise,2388,2,US,31.3,1.0,3.0,6,DevTools | escalations:1 | csat:3.0
+A-b78bf8,Company_148,DevTools,event,Pro,1617,33,US,26.8,0.0,4.2,6,DevTools | canal:event
+A-702032,Company_186,HealthTech,ads,Pro,1372,28,US,19.6,0.0,3.0,6,canal:ads | low_core:20% | csat:3.0
+A-bd4513,Company_205,DevTools,event,Basic,950,50,AU,21.9,0.0,4.67,6,DevTools | canal:event
+A-d27f50,Company_163,Cybersecurity,ads,Basic,836,44,UK,17.0,0.0,3.75,6,canal:ads | low_core:17% | csat:3.8
+A-6e7827,Company_372,DevTools,other,Pro,833,1,US,15.3,0.0,3.5,6,DevTools | low_core:15% | csat:3.5
+A-157070,Company_85,FinTech,ads,Basic,722,16,US,33.3,1.0,3.0,6,canal:ads | escalations:1 | csat:3.0
+A-149a69,Company_302,DevTools,event,Basic,646,34,US,28.8,0.0,4.2,6,DevTools | canal:event
+A-acb7f7,Company_330,EdTech,ads,Basic,608,32,US,17.3,0.0,3.5,6,canal:ads | low_core:17% | csat:3.5
+A-c1dfe1,Company_53,DevTools,ads,Basic,494,26,DE,31.2,0.0,4.0,6,DevTools | canal:ads
+A-c37cab,Company_278,Cybersecurity,event,Basic,437,13,UK,25.6,1.0,3.75,6,canal:event | escalations:1 | csat:3.8
+A-296d7c,Company_182,DevTools,other,Pro,294,2,DE,11.8,0.0,3.75,6,DevTools | low_core:12% | csat:3.8
+A-4437e4,Company_192,Cybersecurity,event,Basic,171,3,US,33.4,2.0,3.0,6,canal:event | escalations:2 | csat:3.0
+A-1b9609,Company_5,EdTech,ads,Enterprise,0,4,IN,19.3,0.0,3.0,6,canal:ads | low_core:19% | csat:3.0
+A-fabe19,Company_97,DevTools,ads,Enterprise,0,1,UK,40.4,0.0,4.0,6,DevTools | canal:ads
+A-671f31,Company_137,DevTools,ads,Enterprise,0,59,US,21.0,0.0,4.2,6,DevTools | canal:ads
+A-922109,Company_243,Cybersecurity,ads,Basic,0,3,US,18.9,0.0,3.0,6,canal:ads | low_core:19% | csat:3.0
+A-4bfa33,Company_251,Cybersecurity,event,Enterprise,0,8,US,10.6,0.0,3.67,6,canal:event | low_core:11% | csat:3.7
+A-e6afc1,Company_346,DevTools,ads,Pro,0,1,US,26.5,,,6,DevTools | canal:ads
+A-089363,Company_387,FinTech,event,Enterprise,0,2,AU,19.4,0.0,3.67,6,canal:event | low_core:19% | csat:3.7
+A-726cfa,Company_82,DevTools,partner,Enterprise,7562,11,US,18.4,0.0,4.0,5,DevTools | low_core:18%
+A-3f9cc0,Company_359,HealthTech,event,Enterprise,5970,22,US,27.0,1.0,4.5,5,canal:event | escalations:1
+A-832ec2,Company_19,FinTech,event,Enterprise,4378,4,UK,36.0,1.0,4.0,5,canal:event | escalations:1
+A-5b1bcd,Company_166,DevTools,organic,Pro,3577,73,US,19.7,0.0,4.5,5,DevTools | low_core:20%
+A-a2485e,Company_467,FinTech,event,Enterprise,3383,3,US,11.4,,,5,canal:event | low_core:11%
+A-09540c,Company_239,Cybersecurity,event,Pro,3283,67,CA,18.5,0.0,4.5,5,canal:event | low_core:19%
+A-e2cd1b,Company_121,DevTools,other,Enterprise,3184,15,US,14.6,0.0,4.0,5,DevTools | low_core:15%
+A-b9f5b1,Company_494,Cybersecurity,other,Enterprise,2985,15,US,13.4,1.0,3.33,5,low_core:13% | escalations:1 | csat:3.3
+A-bcf664,Company_248,DevTools,other,Pro,2303,5,US,26.4,1.0,4.0,5,DevTools | escalations:1
+A-65c341,Company_308,FinTech,ads,Pro,1911,11,US,19.8,0.0,4.0,5,canal:ads | low_core:20%
+A-bece89,Company_128,Cybersecurity,event,Pro,1862,26,IN,26.7,1.0,4.0,5,canal:event | escalations:1
+A-2bc93d,Company_43,HealthTech,event,Pro,1715,14,US,18.8,0.0,4.5,5,canal:event | low_core:19%
+A-65a46c,Company_95,HealthTech,event,Pro,1715,1,US,18.6,0.0,4.0,5,canal:event | low_core:19%
+A-fa3095,Company_174,FinTech,ads,Basic,1330,70,US,15.3,0.0,5.0,5,canal:ads | low_core:15%
+A-5f7781,Company_483,DevTools,other,Pro,1078,22,US,16.9,0.0,4.0,5,DevTools | low_core:17%
+A-0b0d6d,Company_267,DevTools,organic,Pro,1029,3,US,26.3,1.0,4.0,5,DevTools | escalations:1
+A-854864,Company_38,FinTech,event,Pro,980,20,IN,8.1,0.0,4.8,5,canal:event | low_core:8%
+A-378b99,Company_60,EdTech,ads,Pro,784,8,UK,18.1,0.0,4.5,5,canal:ads | low_core:18%
+A-bc4d48,Company_343,EdTech,ads,Basic,665,35,US,20.2,1.0,4.2,5,canal:ads | escalations:1
+A-5790f4,Company_446,FinTech,event,Basic,627,1,UK,27.4,1.0,4.0,5,canal:event | escalations:1
+A-fd7ad3,Company_100,Cybersecurity,event,Basic,551,1,US,31.0,1.0,4.17,5,canal:event | escalations:1
+A-eb7fac,Company_28,DevTools,organic,Basic,494,7,US,15.1,0.0,4.0,5,DevTools | low_core:15%
+A-4f18f0,Company_145,DevTools,other,Basic,456,24,CA,18.8,0.0,4.0,5,DevTools | low_core:19%
+A-544d0a,Company_153,DevTools,organic,Enterprise,398,2,US,23.5,1.0,4.0,5,DevTools | escalations:1
+A-dfbd31,Company_190,DevTools,partner,Basic,266,14,UK,16.0,0.0,4.25,5,DevTools | low_core:16%
+A-ffc04f,Company_307,EdTech,ads,Basic,247,13,US,25.4,1.0,4.5,5,canal:ads | escalations:1
+A-c9bb3e,Company_336,EdTech,ads,Basic,190,5,US,28.7,1.0,4.2,5,canal:ads | escalations:1
+A-92a333,Company_116,FinTech,event,Basic,171,9,US,39.6,1.0,,5,canal:event | escalations:1
+A-6c093d,Company_12,DevTools,partner,Enterprise,0,7,US,28.4,1.0,5.0,5,DevTools | escalations:1
+A-684255,Company_20,FinTech,ads,Basic,0,9,US,38.9,1.0,4.67,5,canal:ads | escalations:1
+A-4d1e75,Company_58,DevTools,other,Pro,0,20,US,17.0,0.0,4.0,5,DevTools | low_core:17%
+A-b179bf,Company_348,Cybersecurity,ads,Pro,0,43,IN,18.3,0.0,4.0,5,canal:ads | low_core:18%
+A-524364,Company_388,DevTools,partner,Enterprise,0,3,FR,10.1,0.0,4.33,5,DevTools | low_core:10%
+A-7c5768,Company_407,HealthTech,event,Enterprise,0,3,UK,13.9,0.0,4.0,5,canal:event | low_core:14%
+A-0be015,Company_454,FinTech,event,Basic,0,19,US,31.3,1.0,4.2,5,canal:event | escalations:1
