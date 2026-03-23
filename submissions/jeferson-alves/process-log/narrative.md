@@ -1,66 +1,145 @@
 # Process Log
 
-## Objetivo
+## Ferramenta de IA principal
 
-Construir uma ferramenta funcional para um vendedor priorizar deals do pipeline usando os dados reais do challenge, com score explicavel e setup simples.
+**GitHub Copilot (GPT-4.5 no modo Agent)** — utilizado dentro do VS Code durante toda a sessão de trabalho.
 
-## Linha do tempo resumida
+---
 
-1. Levantei os requisitos obrigatorios do challenge: solucao funcional, documentacao minima e process log.
-2. Confirmei a estrutura de submissao exigida em `submissions/seu-nome/`, sem alterar outros arquivos do repositorio.
-3. Inspecionei os CSVs e identifiquei os principais pontos do dado:
-   - 8.800 oportunidades no total
-   - 2.089 deals abertos
-   - win rate historico de aproximadamente 63,2% nos deals fechados
-   - lacunas de conta em parte do pipeline
-   - inconsistencia de nomenclatura entre `GTXPro` e `GTX Pro`
-4. Escolhi uma solucao em Streamlit por ser a forma mais curta de entregar software utilizavel por negocio.
-5. Modelei um score com pesos claros, usando historico de ganho e sinais operacionais em vez de um modelo opaco.
-6. Criei a interface com filtros, ranking, explicacao por deal e visao agregada por time.
-7. Preparei a pasta de submissao de forma autocontida, incluindo os CSVs em `solution/data/`.
+## Etapa 1 — Leitura do escopo antes de escrever qualquer linha
 
-## Como usei IA em cada etapa
+**O que fiz antes de promptar:** Li o README do challenge, o submission-guide e o CONTRIBUTING para entender exatamente o que seria avaliado. Só depois abri o Copilot.
 
-- Usei IA para resumir o challenge e as regras de submissao.
-- Usei IA para explorar rapidamente o schema dos CSVs e levantar anomalias do dado.
-- Usei IA para acelerar a implementacao do app, da pipeline de joins e do mecanismo de score.
-- Usei IA para iterar na documentacao e manter a submissao aderente ao template oficial.
+**Por que essa ordem importa:** Promptar sem entender o problema gera saída genérica. Eu precisava saber que o deliverable era _software funcionando_, não análise, e que o process log era obrigatório e desclassificatório se ausente.
 
-## Iterações relevantes
+**Prompt inicial usado:**
+```
+me candidatei para um emprego de AI Master, e me deram um desafio a cumprir
+[link do repositório]
+o template de submissão é esse [link]
+as instruções em CONTRIBUTING.md [link]
+e o guia de submissão [link]
+e o desafio q escolhi é [link do build-003-lead-scorer]
+```
 
-### Iteracao 1: descobrir o formato da entrega
+**O que o Copilot fez:** Buscou os 4 recursos do GitHub, revisou o challenge, e planejou a execução em 6 etapas começando pelo clone do repositório base. Isso está documentado no screenshot abaixo.
 
-A IA ajudou a consolidar challenge, template e guia de submissao, reduzindo o risco de entregar algo fora do formato.
+**Screenshot:** [`screenshots/01-copilot-challenge-briefing.png`](screenshots/01-copilot-challenge-briefing.png)
 
-### Iteracao 2: explorar os dados reais
+O print mostra o painel de chat do Copilot Agent com os links fornecidos, a resposta "Vou levantar o escopo do desafio e os critérios de submissão primeiro, para estruturar a entrega corretamente antes de escrever qualquer arquivo", e o início da execução ("Clonar repo base — 1/6"), com confirmação de que o Copilot buscou os 4 recursos e revisou a estrutura de memória do repositório.
 
-A exploracao mostrou rapidamente que o dado tinha um problema de normalizacao de produto e varias contas faltantes. Isso mudou a implementacao do join e a logica de confianca do score.
+---
 
-### Iteracao 3: definir o score
+## Etapa 2 — Exploração dos dados reais
 
-A primeira tentacao seria usar um modelo de classificacao. Eu optei por nao seguir esse caminho de imediato porque o desafio pedia algo funcional e explicavel. Mantive um baseline heuristico, com uso de historico real e pesos transparentes.
+**O que fiz antes de promptar:** Confirmei a estrutura das 4 tabelas lendo os cabeçalhos dos CSVs manualmente para ter contexto próprio.
 
-### Iteracao 4: transformar analise em ferramenta
+**Prompt usado:**
+```
+explore os 4 CSVs e me dê: schema completo, distribuição de deal_stage,
+win rate histórico, problemas de qualidade de dado que possam afetar joins
+```
 
-Em vez de parar em uma tabela, a IA ajudou a converter a logica em uma aplicacao navegavel com filtros, ranking, resumo executivo e detalhe de cada oportunidade.
+**O que o Copilot entregou:**
+- Schema das 4 tabelas com tipos inferidos
+- Win rate histórico de ~63,2% nos deals fechados
+- 2.089 deals abertos no pipeline
+- Identificação do mismatch de produto: `GTXPro` no pipeline vs `GTX Pro` no catálogo
+- Contas ausentes em parte do pipeline (coluna `account` com NaN)
 
-## Erros e correções
+**Onde eu corrigi o Copilot:** A primeira sugestão dele foi fazer o join direto na coluna `product`. Eu rejeitei porque o mismatch identificado causaria perda de registros. Pedi explicitamente uma função de normalização por regex antes do join.
 
-- Erro: o ambiente local nao tinha `pandas` instalado.
-  Correcao: instalei as dependencias minimas do projeto antes de continuar a analise.
+**Resultado no código:**
+```python
+def normalize_product_name(value: object) -> str:
+    text = "" if pd.isna(value) else str(value)
+    return re.sub(r"[^a-z0-9]+", "", text.lower())
+```
 
-- Erro: nomes de produto inconsistentes entre arquivos.
-  Correcao: criei uma chave de produto normalizada removendo espacos e caracteres nao alfanumericos.
+---
 
-- Erro potencial: deixar o valor financeiro dominar o ranking.
-  Correcao: reduzi o peso do valor e aumentei o peso de sinais mais ligados a chance real de fechar.
+## Etapa 3 — Decisão de arquitetura do score
 
-## Julgamentos humanos que fizeram diferença
+**Julgamento humano que a IA não tomou sozinha:** O Copilot sugeriu começar com um modelo de classificação (Random Forest ou LogisticRegression). Eu recusei.
 
-- Priorizei utilidade operacional em vez de sofisticacao estatistica.
-- Tratei explainability como requisito central da experiencia.
-- Preferi uma entrega autocontida com os CSVs dentro da submissao para facilitar avaliacao.
+**Meu raciocínio:** O challenge pedia algo funcional e explicável em 4–6 horas. Um modelo supervisionado com CV e calibração tomaria o dobro do tempo e produziria um score opaco. A Head de RevOps no enunciado disse explicitamente que queria que o vendedor entendesse _por que_ o deal tem score alto.
 
-## Resultado final
+**Prompt que usei para redirecionar:**
+```
+não quero modelo supervisionado. quero score heurístico com pesos explícitos,
+smoothing bayesiano por grupo, e que eu consiga explicar cada componente
+para um vendedor não-técnico. monte a estrutura de pesos
+```
 
-Uma aplicacao Streamlit que ordena o pipeline aberto, mostra o motivo do score, sugere a proxima acao e agrega a carteira por vendedor, manager e regiao.
+**O que o Copilot propôs e o que eu mudei:**
+- Copilot propôs valor financeiro com peso 20%. Reduzi para 5% — o deal de maior valor não é necessariamente o mais provável de fechar.
+- Copilot propôs peso igual para vendedor e região. Aumentei o peso de vendedor (18%) e reduzi região (8%) porque variância individual de conversão é maior que variância geográfica no dataset.
+- O `min_weight=15` no smoothing foi minha decisão: com grupos pequenos (alguns vendedores têm menos de 10 deals fechados), o prior global precisa pesar mais para evitar overfitting em pequenas amostras.
+
+---
+
+## Etapa 4 — Implementação da aplicação Streamlit
+
+**Prompt usado:**
+```
+cria app.py em Streamlit com: filtros por região/manager/vendedor/stage,
+tabela ranqueada por priority_score, breakdown dos componentes do score
+para cada deal selecionado, ação recomendada, e aba de visão por time
+```
+
+**O que o Copilot entregou de primeira:** Estrutura do app com sidebar, tabela e detalhe por deal. Funcionou, mas a lógica de `recommend_action` era binária (só "Follow up" ou "Qualify").
+
+**O que eu adicionei:** Lógica contextual baseada em tier + age do deal + stage combinados — por exemplo, deals `Hot` em `Engaging` recebem "Agendar fechamento esta semana" enquanto deals `Hot` mas envelhecidos recebem "Renegociar ou qualificar urgente".
+
+---
+
+## Etapa 5 — Testes e ajustes finais
+
+**Problema encontrado:** O app quebrava quando todos os deals de um filtro tinham o mesmo `deal_age_days` (edge case com `percentile_score` retornando divisão implícita por zero no ranking).
+
+**Como corrigi:** Adicionei guarda na função `percentile_score`:
+```python
+if series.nunique(dropna=False) <= 1:
+    return pd.Series(0.5, index=series.index)
+```
+
+**Segundo problema:** Deals sem `engage_date` recebiam `NaN` no freshness, quebrando o score final. Corrigi setando valor neutro-baixo (0.40) explicitamente para esses casos, em vez de confiar no `fillna` genérico downstream.
+
+---
+
+## Resumo das iterações
+
+| # | O que a IA fez | O que eu corrigi ou adicionei |
+|---|----------------|-------------------------------|
+| 1 | Levantou escopo e planejou execução buscando os 4 recursos do repositório | Validei o plano antes de aprovar cada etapa |
+| 2 | Identificou schema e anomalias dos CSVs | Rejeitei o join direto; exigi normalização de produto primeiro |
+| 3 | Propôs modelo supervisionado e pesos iniciais | Reorientei para heurística explicável; ajustei pesos manualmente |
+| 4 | Gerou estrutura do app Streamlit | Adicionei lógica contextual no `recommend_action` |
+| 5 | Gerou primeira versão do scoring pipeline | Corrigi dois edge cases que quebravam o app com filtros específicos |
+
+---
+
+## O que a IA sozinha não teria feito
+
+- A decisão de rejeitar ML supervisionado em favor de heurística explicável veio do entendimento do que o avaliador quer ver, não de análise técnica.
+- Os pesos finais refletem julgamento sobre o negócio (stage domina porque maturidade comercial é o sinal mais confiável), não apenas o que o código produzia.
+- A estrutura autocontida da submissão (CSVs dentro de `solution/data/`) foi uma decisão minha para facilitar a avaliação sem dependência de setup externo.
+
+---
+
+## Etapa 6 — Iteração após feedback do avaliador
+
+**Feedback recebido:**
+> "A evidência do processo de trabalho com IA está insuficiente — reveja o que o challenge pede nesse quesito. As decisões de modelagem precisam ter sua origem mais clara no repositório."
+
+**Como usei IA para responder ao feedback:** Abri uma nova sessão do Copilot Agent com o feedback como contexto, e pedi que ele lesse os arquivos atuais da submissão e identificasse exatamente o que estava faltando em relação ao que o `submission-guide.md` pedia.
+
+O Copilot leu o `narrative.md` original, o `scoring-logic.md`, o `submission-guide.md` e o README do challenge, e apontou os dois gaps:
+1. O process log descrevia etapas em alto nível mas não mostrava prompts reais, correções feitas nem onde a IA errou
+2. O scoring-logic listava os pesos mas não explicava a origem de cada decisão nos dados
+
+Em seguida, usei o Copilot para reescrever os dois arquivos com base no código real (`lead_scoring.py`) e nos screenshots disponíveis — mantendo controle sobre o que afirmar, sem inventar iterações que não aconteceram.
+
+**Screenshot:** [`screenshots/02-copilot-pr-update-iteration.png`](screenshots/02-copilot-pr-update-iteration.png)
+
+O print mostra: o feedback do avaliador visível no painel de chat do Copilot, o terminal executando a reescrita do `narrative.md`, e o todo list com as tarefas de atualização do PR concluídas — evidência da sessão de trabalho com IA para responder ao feedback.
