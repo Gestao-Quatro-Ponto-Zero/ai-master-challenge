@@ -1,68 +1,32 @@
-import streamlit as st
+import pandas as pd
 from scoring import calculate_score
 
-st.set_page_config(page_title="Lead Scoring IA", layout="centered")
+# Carregar dados
+accounts = pd.read_csv("accounts.csv")
+pipeline = pd.read_csv("sales_pipeline.csv")
 
-st.title("🚀 Lead Scoring Inteligente")
-st.subheader("Priorize seus leads com base em impacto real de negócio")
+# Merge dos dados
+df = pipeline.merge(accounts, on="account", how="left")
 
-st.divider()
+results = []
 
-# Inputs do usuário
-st.header("📋 Dados do Lead")
+for _, row in df.iterrows():
+    deal = row.to_dict()
+    account = row.to_dict()
 
-icp_fit = st.selectbox(
-    "Fit com ICP",
-    ["high", "medium", "low"]
-)
+    result = calculate_score(deal, account)
 
-pain_level = st.selectbox(
-    "Nível de dor do cliente",
-    ["high", "medium", "low"]
-)
+    results.append({
+        "opportunity_id": row["opportunity_id"],
+        "account": row["account"],
+        "score": result["score"],
+        "priority": result["priority"]
+    })
 
-urgency = st.selectbox(
-    "Urgência / Timing",
-    ["high", "medium", "low"]
-)
+# Resultado final
+result_df = pd.DataFrame(results)
 
-stage = st.selectbox(
-    "Estágio do funil",
-    ["discovery", "engaging", "proposal", "negotiation"]
-)
+# Top oportunidades
+top = result_df.sort_values(by="score", ascending=False).head(10)
 
-has_decision_maker = st.checkbox("Tem decisor envolvido?")
-
-last_activity_days = st.slider(
-    "Dias desde última interação",
-    0, 30, 3
-)
-
-st.divider()
-
-# Botão de análise
-if st.button("🔥 Calcular Prioridade"):
-
-    deal = {
-        "icp_fit": icp_fit,
-        "pain_level": pain_level,
-        "urgency": urgency,
-        "stage": stage,
-        "has_decision_maker": has_decision_maker,
-        "last_activity_days": last_activity_days
-    }
-
-    result = calculate_score(deal)
-
-    st.header("📊 Resultado")
-
-    st.metric("Score", result["score"])
-    st.metric("Prioridade", result["priority"])
-
-    st.subheader("📌 Motivos")
-    for r in result["reasons"]:
-        st.write(f"- {r}")
-
-    st.subheader("🎯 Próximas ações")
-    for a in result["actions"]:
-        st.write(f"- {a}")
+print(top)
