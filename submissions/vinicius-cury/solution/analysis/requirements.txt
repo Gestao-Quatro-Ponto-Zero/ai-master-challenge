@@ -1,0 +1,15 @@
+jupyter
+papermill
+nbformat
+pandas
+numpy
+matplotlib
+seaborn
+plotly
+scikit-learn
+supabase
+psycopg2-binary
+python-dotenv
+anthropic
+google-generativeai
+ipykernel
