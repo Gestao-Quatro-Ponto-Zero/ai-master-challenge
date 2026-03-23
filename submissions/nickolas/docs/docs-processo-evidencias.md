@@ -34,8 +34,13 @@ Executei testes via terminal para validar:
 - Funcionamento do script
 - Integração entre app e scoring
 
-![Estrutura do repositório](07-estrutura-repositorio.png)
-![Código do scoring](08-logica-lead-scoring.png)
+![Estrutura](../process-log/screenshots/07-estrutura-repositorio.png)
+![Lógica](../process-log/screenshots/08-logica-lead-scoring.png)
+
+
+
+
+
 
 
 
