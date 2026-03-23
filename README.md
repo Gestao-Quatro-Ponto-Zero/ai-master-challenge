@@ -60,6 +60,7 @@ Decomposição do problema:
 
 - Python (análise + backend)
 - Streamlit (interface funcional)
+- React (frontend)
 - Heurísticas + regras (não ML black box)
 
 ---
