@@ -116,6 +116,9 @@ A solução roda com dados reais do CRM, gera ação recomendada para cada deal,
 
   #### Streamlit View 
 
+https://github.com/user-attachments/assets/3b00edc1-18f3-4921-9108-7c2428c06da8
+
+
   * Interface analítica com 26 páginas organizadas em seis grupos, acessíveis por um hub de navegação central.
 
     * Documentação e contexto — enunciado do challenge, guia de navegação, instruções de inicialização e o próprio README renderizado na interface.
@@ -130,12 +133,15 @@ A solução roda com dados reais do CRM, gera ação recomendada para cada deal,
 
     * Sistema — Descrição completa sobre inicialização, arquitetura & stack e API da aplicação. 
 
-<!-- imagens / vídeo: streamlit view -->
+
 
 ---
 
 
 #### Seller View
+
+https://github.com/user-attachments/assets/1976d32f-93fe-45b9-99c3-806599a7583c
+
 
 * A experiência do vendedor começa com um dashboard pessoal: gráficos de saúde do pipeline, distribuição de ações recomendadas, série temporal de valor convertido e análise de win rate por produto — tudo filtrado para o próprio portfólio. 
 
@@ -150,23 +156,22 @@ A solução roda com dados reais do CRM, gera ação recomendada para cada deal,
     
   * O vendedor navega horizontalmente pelo feed, deal a deal, e sai sabendo exatamente o que fazer — sem precisar interpretar um único número.
 
-<!-- imagens / vídeo: seller view -->
 
 ---
 
 #### Manager View
 
-* A view do manager é organizada em cartões verticais que ocupam a altura total da tela, navegáveis com scroll. 
+https://github.com/user-attachments/assets/95597902-5b78-47a0-a647-ac62e504425b
 
+
+* A view do manager é organizada em cartões verticais que ocupam a altura total da tela, navegáveis com scroll.
+  
     * O primeiro cartão é um **dashboard analítico em carrossel** com três seções: 
       * *Macro Analysis* (KPIs agregados, valor convertido no tempo, saúde do prospecting e medianas de tempo no pipeline); 
       * *Products & Regional Analysis* (performance por produto e por escritório regional); 
       * *Transfer Analysis* (4 métricas de resumo — total de transfers, críticos, consider e score médio — seguidas de dois gráficos, razões mais frequentes para transferência e distribuição do ganho de viabilidade esperado, e três mini-cards de impacto: Δ viabilidade média, viabilidade atual → target e contagem de transfers de alto impacto). 
     
       * Outros cartões incluem **Transfers** (feed de deals com ações TRANSFER e CONSIDER_TRANSFER), **Seller Analysis** (drilldown por vendedor), **Alertas** e **Squad** (cards dos vendedores com acesso à seller view).
-
-<!-- imagens / vídeo: manager view -->
-
 
 ---
 
