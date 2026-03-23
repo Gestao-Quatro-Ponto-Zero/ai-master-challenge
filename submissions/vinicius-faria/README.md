@@ -157,11 +157,9 @@ Exemplo de explicação gerada:
 
 ## Evidências
 
-- [x] Screenshots do produto funcionando (incluídos na pasta `process-log/screenshots/`)
-- [x] Chat export desta conversa com Claude (incluído em `process-log/chat-exports/`)
+- [x] Chat export da conversa com Claude: https://claude.ai/share/cbd0f362-c559-4868-bc4b-492c7233b5e0
 - [x] PRD completo v3.0 documentando todas as decisões de produto e scoring (`docs/PRD_LeadScorer.md`)
 - [x] Git history da construção incremental
-
 ---
 
 *Submissão enviada em: 22/03/2026*
