@@ -1,73 +1,75 @@
-def calculate_score(deal):
+from datetime import datetime
+
+def calculate_score(deal, account):
     score = 0
     reasons = []
     actions = []
 
-    # 1. ICP Fit
-    if deal["icp_fit"] == "high":
+    # =========================
+    # 1. ICP (baseado na conta)
+    # =========================
+    if account["revenue"] > 1000000:
         score += 25
-        reasons.append("Cliente ideal (ICP perfeito)")
-    elif deal["icp_fit"] == "medium":
+        reasons.append("Empresa grande (alto potencial)")
+    elif account["revenue"] > 300000:
         score += 10
-        reasons.append("Fit razoável com ICP")
-    else:
-        score -= 10
-        reasons.append("Fora do ICP")
-
-    # 2. Dor / impacto
-    if deal["pain_level"] == "high":
-        score += 30
-        reasons.append("Dor crítica (perda real de dinheiro)")
-    elif deal["pain_level"] == "medium":
-        score += 15
-        reasons.append("Dor relevante")
-    else:
-        reasons.append("Baixa dor")
-
-    # 3. Urgência / timing
-    if deal["urgency"] == "high":
-        score += 20
-        reasons.append("Timing urgente")
-    elif deal["urgency"] == "medium":
-        score += 10
-        reasons.append("Interesse ativo")
+        reasons.append("Empresa média")
     else:
         score -= 5
-        reasons.append("Sem urgência clara")
+        reasons.append("Empresa pequena")
 
-    # 4. Estágio do funil
-    stage_scores = {
-        "discovery": 5,
-        "engaging": 10,
-        "proposal": 20,
-        "negotiation": 25,
-    }
-    stage_score = stage_scores.get(deal["stage"], 0)
-    score += stage_score
-    reasons.append(f"Estágio: {deal['stage']}")
-
-    # 5. Autoridade / risco
-    if not deal["has_decision_maker"]:
-        score -= 20
-        reasons.append("Sem decisor envolvido")
-        actions.append("Mapear e envolver o decisor")
+    # =========================
+    # 2. Valor do deal (proxy de dor)
+    # =========================
+    if deal["close_value"] > 3000:
+        score += 25
+        reasons.append("Alto valor (impacto relevante)")
+    elif deal["close_value"] > 1000:
+        score += 15
+        reasons.append("Valor médio")
     else:
-        score += 10
-        reasons.append("Decisor envolvido")
+        score += 5
+        reasons.append("Baixo valor")
 
-    # 6. Atividade recente
-    if deal["last_activity_days"] <= 3:
-        score += 10
-        reasons.append("Atividade recente")
-    elif deal["last_activity_days"] > 10:
-        score -= 15
-        reasons.append("Deal esfriando")
-        actions.append("Reengajar urgente")
+    # =========================
+    # 3. Estágio do funil
+    # =========================
+    stage_scores = {
+        "Prospecting": 5,
+        "Engaging": 10,
+        "Won": 30,
+        "Lost": -20,
+    }
 
+    stage = deal["deal_stage"]
+    score += stage_scores.get(stage, 0)
+    reasons.append(f"Estágio: {stage}")
+
+    # =========================
+    # 4. Tempo até fechamento (timing)
+    # =========================
+    if deal["engage_date"] and deal["close_date"]:
+        engage = datetime.strptime(deal["engage_date"], "%Y-%m-%d")
+        close = datetime.strptime(deal["close_date"], "%Y-%m-%d")
+
+        days = (close - engage).days
+
+        if days <= 10:
+            score += 20
+            reasons.append("Ciclo rápido (urgente)")
+        elif days <= 30:
+            score += 10
+            reasons.append("Ciclo médio")
+        else:
+            score -= 5
+            reasons.append("Ciclo lento")
+
+    # =========================
     # Classificação final
+    # =========================
     if score >= 80:
         priority = "Alta"
-        actions.append("Prioridade máxima: tentar fechar")
+        actions.append("Priorizar fechamento imediato")
     elif score >= 50:
         priority = "Média"
         actions.append("Nutrir e avançar")
