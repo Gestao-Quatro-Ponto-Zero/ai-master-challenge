@@ -152,11 +152,11 @@ As propsotas de como aplicar o modelo  na operação do negócio eram muito gene
 
 ## Evidências
 
-https://github.com/lucasoriani/ai-master-challenge/blob/main/master_table.sql
-https://github.com/lucasoriani/ai-master-challenge/blob/main/model%20tree.sql
-https://github.com/lucasoriani/ai-master-challenge/blob/main/modelo_tree_feature.sql
-https://github.com/lucasoriani/ai-master-challenge/blob/main/g4%20case%20AI%20master.pdf
-https://chatgpt.com/share/69c19697-9ac8-8010-84a9-f7bd1e7f560f
+- https://github.com/lucasoriani/ai-master-challenge/blob/main/master_table.sql
+- https://github.com/lucasoriani/ai-master-challenge/blob/main/model%20tree.sql
+- https://github.com/lucasoriani/ai-master-challenge/blob/main/modelo_tree_feature.sql
+- https://github.com/lucasoriani/ai-master-challenge/blob/main/g4%20case%20AI%20master.pdf
+- https://chatgpt.com/share/69c19697-9ac8-8010-84a9-f7bd1e7f560f
 
 - [x] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
