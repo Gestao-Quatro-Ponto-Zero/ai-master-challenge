@@ -17,14 +17,388 @@
 
 # Executive Summary: 
 
+# Executive Summary:
 
+Analisei 8.800 oportunidades e descobri que o problema não era vendedores 
+"não sabendo priorizar" — era vendedores sobrecarregados protegendo deals 
+ruins. 
 
+57% não prospectam, criando um círculo vicioso: 
+carga alta → sem novos deals → protegem os ruins → pipeline trava (165 dias mediana vs 
+57 dias Won). 
 
+Construí um sistema funcional que separa importância (Score) de capacidade (Viabilidade), gerando ações contextuais por vendedor. 
 
+O principal output de tudo isso é a recomendação de redistribuir 413 deals (26% do pipeline) de vendedores  sobrecarregados para vendedores com capacidade — isso quebraria o círculo 
+vicioso e liberaria atenção para os 32 deals realmente críticos.
 
+---
 
+# Solução + Abordagem
 
+**Ponto de partida: Decompor a pergunta**
 
+A Head de RevOps pediu "uma ferramenta que mostre onde focar". Poderia ter 
+feito um modelo preditivo tradicional (probabilidade × valor, ordenar, done). 
+
+Rejeitei essa abordagem porque ela responde "qual deal vale mais", não 
+"o que fazer segunda-feira de manhã".
+
+Decomposição do problema:
+
+1. **Exploração:** Por que pipeline está travado? (análise de tempo de ciclo)
+2. **Diagnóstico:** O que causa isso? (análise de prospecting e carga)
+3. **Validação:** Tempo corrói probabilidade? (correlação quantitativa)
+4. **Solução:** Como priorizar considerando contexto? (Score × Viabilidade)
+
+**Prioridades:**
+
+- ✅ Explicabilidade > Precisão (vendedor precisa confiar)
+- ✅ Contexto de capacidade (não adianta score alto se vendedor não pode agir)
+- ✅ Ações claras (não só número, mas "o que fazer")
+- ✅ Zero fricção inicial (usar dados existentes, não pedir input novo)
+
+**Stack técnico:**
+
+- Python (análise + backend)
+- Streamlit (interface funcional)
+- Heurísticas + regras (não ML black box)
+
+---
+
+### Resultados / Findings
+
+**🔍 Finding #1: Pipeline Travado por Falta de Ação**
+
+```
+Tempo de ciclo (medianas):
+- Won: 57 dias
+- Lost: 14 dias
+- Engaging: 165 dias (2.9× Won)
+```
+
+**Insight:** Se Won fecha em 57d e Lost desiste em 14d, por que Engaging 
+demora 165d? Não é dificuldade — é falta de ação.
+
+---
+
+**🔍 Finding #2: Círculo Vicioso de Sobrecarga**
+
+```
+Vendedores sem prospecting: 17/30 (57%)
+
+Padrão identificado:
+- Sem prospecting → Carga média: 108 deals
+- Com prospecting (>20) → Carga média: 52 deals
+
+Diferença: 2× de carga
+```
+
+**Insight:** Vendedores não prospectam porque estão sobrecarregados. 
+Protegem deals ruins para "manter pipeline". Isso trava ainda mais o pipeline.
+
+---
+
+**🔍 Finding #3: Tempo Corrói Probabilidade**
+
+```
+Win Rate por tempo em pipeline:
+- <28d: 68%
+- 28-57d: 64%
+- 57-85d: 61%
+- 85-165d: 55%
+- >200d: 38% (perda de 25 pontos vs global 63%)
+```
+
+**Insight:** Deals >200 dias têm probabilidade 40% menor. Ocupam atenção 
+mas não geram retorno.
+
+---
+
+**🔍 Finding #4: Desbalanceamento de Capacidade**
+
+```
+Top 3 sobrecarregados:
+- Corliss Cosme: 177 deals, 0 prospecting
+- Anna Snelling: 112 deals, 0 prospecting
+- Dustin Brinkmann: 130 deals, 0 prospecting
+
+Top 3 com capacidade:
+- Wilburn Tomas: 31 deals, 25 prospecting
+- Marty Freudenburg: 87 deals, 54 prospecting
+- Versie Hillebrand: 45 deals, 33 prospecting
+```
+
+**Insight:** Alguns vendedores têm 5× a carga de outros. Oportunidade 
+de redistribuição.
+
+---
+
+**💡 Solução Construída: Sistema de Priorização Contextual**
+
+**Arquitetura:**
+
+```
+SCORE (0-100) = 50% Urgência + 30% Probabilidade + 20% Valor
+└─ Importância OBJETIVA do deal (mesmo para todos os vendedores)
+
+VIABILIDADE (0-100) = f(prospecting, carga, especialização)
+└─ Capacidade CONTEXTUAL do vendedor (personalizada)
+
+AÇÃO = Matriz(Score, Viabilidade)
+└─ PUSH_HARD, TRANSFER, DISCARD, MONITOR, etc.
+```
+
+**Componentes do Score:**
+
+- **Urgência (50%):** Baseada em thresholds de tempo
+  - ≥200d → 100 pts (frozen)
+  - ≥165d → 80 pts (mediana Engaging)
+  - ≥57d → 40 pts (mediana Won)
+  - Multiplicadores: carga do vendedor, dificuldade da conta, deal oversized
+- **Probabilidade (30%):** Prior bayesiano × fatores
+  - Base: 63.15% (global win rate)
+  - Fatores: vendedor × produto × conta × região × especialização
+  - Penalidades: tempo excessivo, oversize, overload
+- **Valor (20%):** Percentil + ajustes estratégicos
+  - Percentil na distribuição (não absoluto)
+  - Bonus: produto premium (GTK 500), conta top 20
+  - Desconto: probabilidade baixa (valor esperado)
+
+**Viabilidade (separada):**
+
+```
+Viabilidade = 50 × prospecting_factor × load_factor × specialist_factor
+
+- prospecting_factor: 0.5 (sem) → 1.3 (ativo)
+- load_factor: 0.6 (>150 deals) → 1.3 (<40 deals)
+- specialist_factor: 0.8 (mismatch) → 1.2 (expert)
+```
+
+**Interface funcional:**
+
+Sistema Streamlit com 9 páginas:
+
+- 📊 Macro: Visão geral
+- 🧠 Heurística: Como chegamos à tese
+- 📋 Deal List: Todos os deals priorizados
+- 🔍 Deal Details: Drill-down com breakdown completo
+- 👥 Seller Analysis: Capacidade e carga por vendedor
+- 🔀 Transfer Analysis: 413 transferências recomendadas
+- 🎯 Action Analysis: Distribuição de ações
+- 📦 Product Analysis: Performance por produto
+- 🌍 Regional Analysis: Por região
+
+---
+
+### Recomendações
+
+**🎯 Prioridade 1: Testar Redistribuição (Quick Win)**
+
+**O quê:** Transferir 50-100 deals de vendedores sobrecarregados para 
+vendedores com capacidade.
+
+**Como:**
+
+1. Começar com 19 transfers CRÍTICOS (score ≥70, viab <40)
+2. Usar hierarquia: same team → same region → other region
+3. Medir impacto em 30 dias
+
+**Critério de sucesso:**
+
+- Vendedores sobrecarregados voltam a prospectar (>10 novos/mês)
+- Win rate em deals transferidos ≥ média global (63%)
+- Tempo de ciclo cai 20%
+
+**ROI esperado:**
+
+- Libera ~40h/semana de atenção
+- 19 deals críticos ganham vendedor com capacidade
+- Quebra círculo vicioso
+
+---
+
+**🎯 Prioridade 2: Campanha de Descarte (Liberar Atenção)**
+
+**O quê:** Descartar 443 deals (28% do pipeline) com score <60 e viab <40.
+
+**Como:**
+
+1. Vendedor revisa lista de DISCARD gerada pelo sistema
+2. Confirma descarte com 1 clique (ou contesta)
+3. Sistema move para Lost com tag "descarte_estratégico"
+
+**Critério de sucesso:**
+
+- Liberar ~150h/semana de atenção no time
+- Carga média cai de 87 para 65 deals (-25%)
+- Vendedores reportam "mais foco nos deals que importam"
+
+**ROI esperado:**
+
+- Deals descartados tinham prob média 38% (vs 63% global)
+- Tempo investido neles tinha ROI negativo
+- Atenção liberada vai para 32 deals HIGH (prob 75%+)
+
+---
+
+**🎯 Prioridade 3: Implementar Sistema (30-60 dias)**
+
+**O quê:** Colocar sistema em produção com vendedores reais.
+
+**Como:**
+
+1. **Fase 1 (piloto - 2 semanas):** 5 vendedores testam
+2. **Fase 2 (feedback - 2 semanas):** Ajustar com input real
+3. **Fase 3 (rollout - 4 semanas):** Todo o time
+
+**Melhorias necessárias:**
+
+- Integração com CRM (API Salesforce/HubSpot)
+- Alertas proativos (deal sem ação há 30d)
+- Mobile-friendly (vendedor acessa no celular)
+- Feedback loop (ação foi útil? 👍/👎)
+
+**Critério de sucesso:**
+
+- Adoção ≥80% do time em 60 dias
+- Sistema consultado ≥3× por semana por vendedor
+- Qualidade de dados melhora (deals atualizados)
+
+---
+
+**🎯 Prioridade 4: Melhorias Iterativas (60-90 dias)**
+
+**O quê:** Aprender com uso real e refinar modelo.
+
+**Como:**
+
+1. Capturar feedback de vendedores
+2. Ajustar thresholds (50/30/20 pode virar 55/25/20)
+3. Adicionar ML para refinar probabilidade (mantendo explicabilidade)
+4. Personalizar por vendedor (aprender padrões individuais)
+
+**Não fazer agora:**
+
+- ❌ Modelo preditivo complexo (ainda não temos dados de engajamento)
+- ❌ Automação de ações (vendedor precisa manter controle)
+- ❌ Integração com calendário/email (complexidade > valor no curto prazo)
+
+---
+
+### Limitações
+
+**📉 Dados Faltantes**
+
+- ❌ **Engajamento:** Não temos emails enviados, calls feitos, propostas apresentadas
+  - **Impacto:** Probabilidade é aproximada (baseada em histórico, não em ação recente)
+  - **Workaround:** Usar tempo sem update como proxy (deal sem ação há 90d)
+- ❌ **Motivação do vendedor:** Não sabemos se vendedor QUER o deal
+  - **Impacto:** Pode recomendar PUSH em deal que vendedor já desistiu mentalmente
+  - **Workaround:** Vendedor pode marcar deal como "não prioritário" (override manual)
+- ❌ **Contexto de mercado:** Não temos dados de sazonalidade, ciclos econômicos
+  - **Impacto:** Probabilidade não considera contexto externo
+  - **Workaround:** Adicionar fator manual "mercado aquecido/frio" (futuro)
+
+---
+
+**⚙️ Escolhas Técnicas**
+
+- ❌ **Regras fixas vs ML adaptativo:** Thresholds (200d, 165d, 57d) são fixos
+  - **Impacto:** Pode não generalizar para outros times/indústrias
+  - **Workaround:** Permitir configuração de thresholds por empresa
+- ❌ **Viabilidade simplificada:** Só 3 fatores (prospecting, carga, especialização)
+  - **Impacto:** Ignora contexto tipo "vendedor em férias", "novo no time"
+  - **Workaround:** Adicionar campo "status" (ativo, férias, onboarding)
+
+---
+
+**🔄 Premissas Não Validadas**
+
+- ⚠️ **Vendedores usarão o sistema:** Assumo que interface funcional = adoção
+  - **Risco:** Se não virem valor imediato, abandonam
+  - **Mitigação:** Value-first design (gera insight sem pedir esforço)
+- ⚠️ **Dados estão atualizados:** Modelo depende de `deal_stage` correto
+  - **Risco:** Garbage in, garbage out
+  - **Mitigação:** Alertas de qualidade ("deal sem update há 90d")
+- ⚠️ **Transferências são viáveis:** Assumo que vendedores aceitam receber deals
+  - **Risco:** Cultura de "cada um cuida do seu"
+  - **Mitigação:** Manager media transferências (não automático)
+
+---
+
+**🕐 Restrições de Tempo**
+
+- ❌ **Não validei com vendedores reais:** Sistema é simulação
+  - **Impacto:** Pode ter blindspots que só aparecem no uso real
+  - **Próximo passo:** Piloto com 5 vendedores por 2 semanas
+- ❌ **Não implementei feedback loop:** Sistema não aprende (ainda)
+  - **Impacto:** Não melhora com uso
+  - **Próximo passo:** Adicionar "ação foi útil?" (👍/👎)
+- ❌ **Não testei performance em escala:** 1.589 deals funciona, mas e 50.000?
+  - **Impacto:** Pode ser lento em empresas maiores
+  - **Próximo passo:** Otimizar queries, adicionar cache
+
+---
+
+# Process Log - Como usei IA
+
+### Ferramentas usadas:
+
+| Ferramenta | Para que usou |
+|------------|--------------|
+| _Claude Code_ | _Conversa inicial sobre o desafio + entendimento básico sobre os dados fornecidos_ |
+| _Cursor_ | _Construção do protótipo web_ |
+| _Claude code + Cursor_ | _Agente do claude dentro do cursor para auxílio no protótipo web_ |
+
+### Workflow:
+1. A primeira coisa que fiz foi recolher e juntar todo o material de contexto disponível do desafio.
+2. Juntei a descrição da vaga + descrição do desafio + sumário resumido do escopo dos dados fornecidos.
+3. Desde o princípio eu já tinha a ideia de trabalhar no desafio 03, mas mesmo assim enviei todas as descrições ao Claude para que - com base em um arquivo eu.md do meu ambiente -, ele pudesse me confirmar a escolha.
+4. Feita a escolha do desafio e, com todo contexto dele "em mãos", abri o kaggle e começei a tirar as minhas primeiras conclusões. 
+5. Confesso que apenas visualizando os dados-base fornecidos, não estava conseguindo ir muito além de um modelo preditivo tradicional.
+6. Foi quando finalmente comecei a utilizar o Claude para a análise de fato dos dados da data-base.
+8. Contextualizei o Claude sobre algumas análises que eu havia feito e o instiguei a "pensarmos fora da caixa".
+9. Foi ai que chegamos ao conceito de "features óbvias" vs "features imperdíveis".
+10. O claude me gerou +20 features chamadas de "imperdíveis", mas a maioria esmagadora era pautada em modelos de ML complexos e detalhados.
+11. Deixei claro a ele que o desafio não priorizava complexidade, e que a partir daquele momento nossa energia deveria estar concentrada em responder: "O que o vendedor precisa ver na tela segunda-feira de manhã?"
+12. Com esse conceito batido, abri o cursor e criei um projeto com os 4 arquivos csv da data-base. 
+13. Utilizando o ploty criei uma view-base dos dados dos csvs fornecidos - nada demais, apenas tornar visual as métricas primárias. 
+14. Devo confessar novamente que apenas com as visualização das métricas primárias, não consegui enxergar nada demais além do óbvio. 
+15. Foi aí que pedi ao agente do claude, dentro do cursor, que criasse as views detalhadas das features "imperdíveis" - as páginas de "Analysis" do streamlit.
+14. Com as métricas detalhadas em mãos, comecei a descartar algumas das 20 features imperdíveis.
+15. Em uma primeira limpeza, as 20 métricas foram reduzidas para 10.  
+16. Até que em dado momento chegamos ao questionamento principal da tese: Por que vendedores com 0 prospects tem sobrecarga em engage? 
+17. Ao investigar a fundo o ponto, descobrimos correlações com outras métricas e definimos que seria essa a tese.
+18. Com isso em mente, tratei de criar as documentações base da aplicação, que serviria posteriormente para um readme da vida mas principalmente que seriviria como ouro para a janela de contexto do agente Claude que eu conversava - criei vários arquivos .md dos conceitos discutidos e sempre que precisava recupera-los no contexto solicitava ao Claude. 
+19. Estimo que 70% do tempo investido no desafio foi na estruturação da página que pode ser visualizada no streamlit, eis o porque:
+20. Pode-se inferir que a página do streamlit é o data-center de toda a aplicação.
+21. Se observado com detalhe, todas as pontas que se derivam do projeto vem do que foi construído no streamlit: Documentações, teses, readme, gráficos, métricas, etc.
+22. Com essa "base" pronta, o que fiz após foi somente destinar os resultados lá armazenados aos destinos corretos: Alguns pontos foram para documentações, outros foram para o frontend em react, outros para arquivos do desafio como esse. 
+23. Bom, eu nunca havia descrito um process log de utilização de IA em algum projeto, e não achei que seria tão difícil.
+24. Mas se eu pudesse sintetizar todo o processo de utilização de IA nesse projeto, diria que foquei em utilizar a IA para fazer um arroz com feijão bem feito: Boas documentações e explicabilidade antes de modelos complexos ou lógicas revolucionárias. 
+
+# Onde a IA errou e como corrigi
+
+### Devo adimitir que não lembro de erros muito expressivos das IAs que utilzei na elaboração e construção da tese.
+### Um dos pontos nesse sentido claros e frescos para mim era que constantemente eu tinha que relembrar o contexto simples da tese, no sentido de rejeitar modelos complexos de ML ou coisas do tipo. 
+
+# Evidências:
+
+Em anexo abaixo todo o conteúdo recuperado referente ao desenvolvimento da tese com IA:
+>Me coloco a disposição para enviar maiores contextos de comprovação caso necessário 
+
+1. Chathistory da primeira conversa que tive com o Claude sobre o contexto inicialL: 
+https://claude.ai/share/07714d82-b304-43f4-b9b5-3c365b9d38c1
+
+2. Screenshots de algumas sessões (Claude + Cursor):
+
+<img width="1918" height="1044" alt="SS1-processlog" src="https://github.com/user-attachments/assets/11099a01-8a1f-41dd-9b8c-e0c7cb6594de" />
+<img width="1710" height="1070" alt="SS4-processlog" src="https://github.com/user-attachments/assets/1bec9eec-d5c1-4189-8f12-693ea143b53e" />
+<img width="1917" height="1047" alt="SS3-processlog" src="https://github.com/user-attachments/assets/ef2b0f5c-c6a0-43e1-bfff-e8c429f49b7b" />
+<img width="544" height="1060" alt="SS5-processlog" src="https://github.com/user-attachments/assets/06c52eaa-c129-4a04-9310-c6b24806e6c7" />
+<img width="538" height="1049" alt="SS6-processlog" src="https://github.com/user-attachments/assets/71c5897a-248c-4b21-a6f2-fb766f87a6f0" />
+<img width="1920" height="1046" alt="SS2-processlog" src="https://github.com/user-attachments/assets/20b760d5-f9ab-460e-a795-da434d3e6f17" />
 
 ---
 # README "Tradicional"
