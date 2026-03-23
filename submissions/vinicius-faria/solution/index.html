@@ -399,7 +399,7 @@
 
     .dashboard-row.line-2 {
       grid-template-columns: 200px 200px 1fr;
-      grid-auto-rows: 120px;
+      grid-auto-rows: auto;
     }
 
     /* Dashboard card */
@@ -11361,6 +11361,7 @@ LIB4KUZJ,Versie Hillebrand,MG Advanced,,Prospecting,,,
     }
 
     function formatPercent(value) {
+      if (value === null || value === undefined || isNaN(value)) return '—';
       return (value * 100).toFixed(1) + '%';
     }
 
@@ -11537,6 +11538,7 @@ LIB4KUZJ,Versie Hillebrand,MG Advanced,,Prospecting,,,
 
       const links = currentUser.role === 'director' ? [
         { id: 'dashboard',     icon: 'layout-dashboard', label: 'Dashboard' },
+        { id: 'regions',       icon: 'map-pin',           label: 'Regiões' },
         { id: 'managers',      icon: 'users-2',           label: 'Managers' },
         { id: 'prospect',     icon: 'target',            label: 'Prospect',
           page: 'pipeline', filters: { group: 'prospect' } },
@@ -11735,7 +11737,23 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
       const { deals, engaging, prospect, beyondP75, atRisk, rawData } = data;
 
       if (deals.length === 0) {
-        return <div><h1 className="page-title">Dashboard</h1><p className="page-subtitle">Nenhum deal ativo para este perfil.</p></div>;
+        return (
+          <div>
+            <h1 className="page-title">Dashboard</h1>
+            <div style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'center', padding: 48, color: '#6B7280', gap: 12
+            }}>
+              <Icon name="inbox" size={40} style={{ opacity: 0.4 }} />
+              <div style={{ fontSize: 16, fontWeight: 600, color: '#374151' }}>
+                Nenhum deal ativo
+              </div>
+              <div style={{ fontSize: 13, textAlign: 'center', maxWidth: 320 }}>
+                Este vendedor não possui deals registrados no pipeline no momento.
+              </div>
+            </div>
+          </div>
+        );
       }
 
       // --- Derived data ---
@@ -11753,7 +11771,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
 
       if (currentUser.role === 'seller') {
         const wr = rawData.winRateByAgent.get(currentUser.name);
-        winRate = wr !== undefined ? wr : 0;
+        winRate = wr !== undefined ? wr : null;
         scopedWon = rawData.wonDeals.filter(d => d.sales_agent === currentUser.name);
         scopedClosed = rawData.allDeals.filter(d =>
           d.sales_agent === currentUser.name && (d.deal_stage === 'Won' || d.deal_stage === 'Lost')
@@ -11773,7 +11791,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
             totalClosed += agentClosed.length;
           }
         });
-        winRate = totalClosed > 0 ? totalWon / totalClosed : 0;
+        winRate = totalClosed > 0 ? totalWon / totalClosed : null;
         scopedWon = rawData.wonDeals.filter(d => teamSellers.has(d.sales_agent));
         scopedClosed = rawData.allDeals.filter(d =>
           teamSellers.has(d.sales_agent) && (d.deal_stage === 'Won' || d.deal_stage === 'Lost')
@@ -11782,7 +11800,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
         // Director — global
         const totalWon = rawData.wonDeals.length;
         const totalLost = rawData.lostDeals.length;
-        winRate = (totalWon + totalLost) > 0 ? totalWon / (totalWon + totalLost) : 0;
+        winRate = (totalWon + totalLost) > 0 ? totalWon / (totalWon + totalLost) : null;
         scopedWon = rawData.wonDeals;
         scopedClosed = rawData.allDeals.filter(d => d.deal_stage === 'Won' || d.deal_stage === 'Lost');
       }
@@ -11900,7 +11918,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
             r.total++;
             if (d.deal_stage === 'Won') r.won++;
           });
-          const globalWR = winRate;
+          const globalWR = winRate || 0;
           regionStats.forEach((v, region) => {
             if (v.total > 0) {
               const regionWR = v.won / v.total;
@@ -11942,7 +11960,12 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
                   <span>Conta</span>
                   <span>Score</span>
                 </div>
-                {[...prospect].sort((a, b) => (b.displayScore || b.score) - (a.displayScore || a.score)).slice(0, 5).map(deal => (
+                {prospect.length === 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 16, color: 'rgba(255,255,255,0.5)', gap: 4 }}>
+                    <Icon name="search" size={20} style={{ opacity: 0.3 }} />
+                    <div style={{ fontSize: 11 }}>Nenhum deal nesta categoria</div>
+                  </div>
+                ) : [...prospect].sort((a, b) => (b.displayScore || b.score) - (a.displayScore || a.score)).slice(0, 5).map(deal => (
                   <div key={deal.opportunity_id}
                     onClick={(e) => { e.stopPropagation(); openLeadTab(deal); }}
                     style={{
@@ -11985,7 +12008,12 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
                   <span>Conta</span>
                   <span>Score</span>
                 </div>
-                {[...engaging].sort((a, b) => (b.displayScore || b.score) - (a.displayScore || a.score)).slice(0, 5).map(deal => (
+                {engaging.length === 0 ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 16, color: 'rgba(255,255,255,0.5)', gap: 4 }}>
+                    <Icon name="search" size={20} style={{ opacity: 0.3 }} />
+                    <div style={{ fontSize: 11 }}>Nenhum deal nesta categoria</div>
+                  </div>
+                ) : [...engaging].sort((a, b) => (b.displayScore || b.score) - (a.displayScore || a.score)).slice(0, 5).map(deal => (
                   <div key={deal.opportunity_id}
                     onClick={(e) => { e.stopPropagation(); openLeadTab(deal); }}
                     style={{
@@ -12088,8 +12116,8 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
               const totalValue = sellerDeals.reduce((s, d) => s + (d.potential_value || 0), 0);
               const engagingCount = sellerDeals.filter(d => d.group === 'engaging').length;
               const wr = rawData.winRateByAgent.get(seller);
-              return { name: seller, activeCount: sellerDeals.length, engagingCount, totalValue, winRate: wr !== undefined ? wr : 0 };
-            }).sort((a, b) => b.winRate - a.winRate);
+              return { name: seller, activeCount: sellerDeals.length, engagingCount, totalValue, winRate: wr !== undefined ? wr : null };
+            }).sort((a, b) => (b.winRate || 0) - (a.winRate || 0));
             return (
               <div className="dashboard-row" style={{ gridTemplateColumns: '1fr' }}>
                 <div className="dash-card" style={{ animationDelay: `${animIdx++ * 60}ms` }}>
@@ -12116,9 +12144,9 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
                             <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{s.name}</td>
                             <td>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)' }}>{(s.winRate * 100).toFixed(0)}%</span>
+                                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)' }}>{s.winRate !== null ? (s.winRate * 100).toFixed(0) + '%' : '—'}</span>
                                 <div className="ld-wr-bar-track" style={{ flex: 1 }}>
-                                  <div className="ld-wr-bar-fill" style={{ width: `${s.winRate * 100}%` }} />
+                                  <div className="ld-wr-bar-fill" style={{ width: `${(s.winRate || 0) * 100}%` }} />
                                 </div>
                               </div>
                             </td>
@@ -12443,11 +12471,26 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
           {/* Table or Empty state */}
           {filtered.length === 0 ? (
             <div className="pipeline-table-wrap">
-              <div className="pipeline-empty">
-                <Icon name="inbox" size={48} style={{ color: 'var(--text-secondary)', opacity: 0.5 }} />
-                <p>Nenhum deal encontrado com esses filtros</p>
-                <button onClick={clearFilters}>Limpar filtros</button>
-              </div>
+              {deals.length === 0 ? (
+                <div style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center',
+                  padding: 48, color: '#6B7280', gap: 8
+                }}>
+                  <Icon name="search" size={32} style={{ opacity: 0.3 }} />
+                  <div style={{ fontSize: 14, color: '#374151', fontWeight: 500 }}>
+                    Nenhum deal encontrado
+                  </div>
+                  <div style={{ fontSize: 12 }}>
+                    Não há deals nesta categoria para o vendedor selecionado.
+                  </div>
+                </div>
+              ) : (
+                <div className="pipeline-empty">
+                  <Icon name="inbox" size={48} style={{ color: 'var(--text-secondary)', opacity: 0.5 }} />
+                  <p>Nenhum deal encontrado com esses filtros</p>
+                  <button onClick={clearFilters}>Limpar filtros</button>
+                </div>
+              )}
             </div>
           ) : (
             <React.Fragment>
@@ -13031,7 +13074,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
           const wonDeals = entityAll.filter(d => d.deal_stage === 'Won');
           const lostDeals = entityAll.filter(d => d.deal_stage === 'Lost');
           const closedTotal = wonDeals.length + lostDeals.length;
-          const winRate = closedTotal > 0 ? wonDeals.length / closedTotal : 0;
+          const winRate = closedTotal > 0 ? wonDeals.length / closedTotal : null;
           const avgScore = entityActive.length > 0
             ? entityActive.reduce((s, d) => s + d.score, 0) / entityActive.length : 0;
           const engagingCount = entityActive.filter(d => d.group === 'engaging').length;
@@ -13049,7 +13092,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
         const maxValue = Math.max(...rawRows.map(r => r.totalValue), 1);
         const withScore = rawRows.map(r => ({
           ...r,
-          score_composto: r.winRate * 0.40 + (r.avgScore / 100) * 0.30
+          score_composto: (r.winRate || 0) * 0.40 + (r.avgScore / 100) * 0.30
             + r.engagingRatio * 0.20 + (r.totalValue / maxValue) * 0.10,
         }));
 
@@ -13129,7 +13172,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
                       <div className="rank-wr-cell">
                         <span style={{ fontSize: 'var(--text-sm)', fontFamily: 'var(--font-mono)' }}>{formatPercent(r.winRate)}</span>
                         <div className="ld-wr-bar-track">
-                          <div className="ld-wr-bar-fill" style={{ width: `${r.winRate * 100}%` }} />
+                          <div className="ld-wr-bar-fill" style={{ width: `${(r.winRate || 0) * 100}%` }} />
                         </div>
                       </div>
                     </td>
@@ -13331,11 +13374,11 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
         <div>
           {regionFilter && (
             <div style={{ marginBottom: 16 }}>
-              <button onClick={() => navigate('dashboard')} style={{
+              <button onClick={() => navigate('regions')} style={{
                 background: 'none', border: '1px solid var(--border-card)', borderRadius: 8, padding: '6px 12px',
                 cursor: 'pointer', fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 4
               }}>
-                <Icon name="chevron-left" size={16} /> Voltar ao Dashboard
+                <Icon name="chevron-left" size={16} /> Voltar a Regiões
               </button>
             </div>
           )}
@@ -13357,6 +13400,61 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
                   <span>Taxa de fechamento: <strong style={{ color: 'var(--text-primary)' }}>{(mgr.winRate * 100).toFixed(0)}%</strong></span>
                   <span>Vendedores: <strong style={{ color: 'var(--text-primary)' }}>{mgr.sellerCount}</strong></span>
                   <span>Score relativo: <strong style={{ color: 'var(--accent)' }}>{managerRanking.get(mgr.name) || 0}</strong></span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    /* ===== RegionsView (Director — drill-down regiões) ===== */
+    function RegionsView() {
+      const data = React.useContext(DataContext);
+      const { managers, teamsByManager } = React.useContext(UserContext);
+      const { navigate } = React.useContext(NavigationContext);
+
+      if (!data || !data.deals) return <div><h1 className="page-title">Regiões</h1><p className="page-subtitle">Carregando...</p></div>;
+
+      const { allScoredDeals, rawData } = data;
+      const regions = ['East', 'West', 'Central'];
+
+      const regionCards = React.useMemo(() => {
+        return regions.map(region => {
+          const regionSellers = new Set(rawData.salesTeams.filter(t => t.regional_office === region).map(t => t.sales_agent));
+          const regionDeals = allScoredDeals.filter(d => regionSellers.has(d.sales_agent));
+          const totalValue = regionDeals.reduce((s, d) => s + (d.potential_value || 0), 0);
+          const closed = rawData.allDeals.filter(d => regionSellers.has(d.sales_agent) && (d.deal_stage === 'Won' || d.deal_stage === 'Lost'));
+          const won = closed.filter(d => d.deal_stage === 'Won');
+          const winRate = closed.length > 0 ? won.length / closed.length : 0;
+          const regionManagers = managers.filter(m => {
+            const info = teamsByManager.get(m);
+            return info && info.regional_office === region;
+          });
+          const sellerCount = regionSellers.size;
+          return { region, dealCount: regionDeals.length, totalValue, winRate, managerCount: regionManagers.length, sellerCount };
+        });
+      }, [allScoredDeals, rawData, managers, teamsByManager]);
+
+      return (
+        <div>
+          <h1 className="page-title">Regiões</h1>
+          <p className="page-subtitle">Visão por região — clique para ver os managers</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 16 }}>
+            {regionCards.map(r => (
+              <div key={r.region} className="dash-card" style={{ cursor: 'pointer' }}
+                onClick={() => navigate('managers', { region: r.region })}>
+                <div className="dash-card-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Icon name="map-pin" size={14} style={{ color: 'var(--accent)' }} />
+                  Região {r.region}
+                </div>
+                <div className="dash-card-value">{r.dealCount}</div>
+                <div className="dash-card-sub">deals ativos</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 12, fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
+                  <span>Potencial: <strong style={{ color: 'var(--text-primary)' }}>{formatCurrency(r.totalValue)}</strong></span>
+                  <span>Taxa de fechamento: <strong style={{ color: 'var(--text-primary)' }}>{(r.winRate * 100).toFixed(0)}%</strong></span>
+                  <span>Managers: <strong style={{ color: 'var(--text-primary)' }}>{r.managerCount}</strong></span>
+                  <span>Vendedores: <strong style={{ color: 'var(--text-primary)' }}>{r.sellerCount}</strong></span>
                 </div>
               </div>
             ))}
@@ -13430,14 +13528,20 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
       // --- Top 10 Sellers ---
       const topSellers = React.useMemo(() => {
         const sellerMap = new Map();
+        // Garantir que todo vendedor do time apareça, mesmo sem deals
+        rawData.salesTeams.forEach(t => {
+          if (!sellerMap.has(t.sales_agent)) {
+            sellerMap.set(t.sales_agent, { value: 0 });
+          }
+        });
         allScoredDeals.forEach(d => {
           if (!sellerMap.has(d.sales_agent)) sellerMap.set(d.sales_agent, { value: 0 });
           sellerMap.get(d.sales_agent).value += (d.potential_value || 0);
         });
         return [...sellerMap.entries()].map(([name, v]) => {
           const wr = rawData.winRateByAgent.get(name);
-          return { name, winRate: wr !== undefined ? wr : 0, totalValue: v.value };
-        }).sort((a, b) => b.winRate - a.winRate).slice(0, 10);
+          return { name, winRate: wr !== undefined ? wr : null, totalValue: v.value };
+        }).sort((a, b) => (b.winRate || 0) - (a.winRate || 0)).slice(0, 10);
       }, [allScoredDeals, rawData]);
 
       let animIdx = 0;
@@ -13527,9 +13631,9 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
                         <td style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{s.name}</td>
                         <td>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)' }}>{(s.winRate * 100).toFixed(0)}%</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)' }}>{s.winRate !== null ? (s.winRate * 100).toFixed(0) + '%' : '—'}</span>
                             <div className="ld-wr-bar-track" style={{ flex: 1 }}>
-                              <div className="ld-wr-bar-fill" style={{ width: `${s.winRate * 100}%` }} />
+                              <div className="ld-wr-bar-fill" style={{ width: `${(s.winRate || 0) * 100}%` }} />
                             </div>
                           </div>
                         </td>
@@ -13554,6 +13658,7 @@ Responda sempre em português. Uma resposta por vez — nunca duplique conteúdo
         if (currentUser.role === 'director') {
           switch (activePage) {
             case 'dashboard': return <DirectorDashboard />;
+            case 'regions': return <RegionsView />;
             case 'managers': return <ManagersView />;
             case 'pipeline': return <PipelineView />;
             case 'ranking': return <RankingView />;

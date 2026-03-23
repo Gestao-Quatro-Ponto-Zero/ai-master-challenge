@@ -441,13 +441,6 @@ Prioriza Engaging com maior score. Sem duplicação. Chips contextuais após pri
 
 ---
 
-### Bugs conhecidos
-
-- **Carl Lin e Carol Thompson** — não carregam. Bug de string matching no código
-- **Ícones Lucide** — garantir ícones adequados para Prospect e Engaging na sidebar
-
----
-
 ## 5. Visões por Perfil
 
 | | Score relativo | Score global | Leads | Ranking time | Ranking global | Pipeline global |
@@ -477,9 +470,10 @@ open index.html
 
 **Dados:**
 - 1.425 deals sem conta (68% dos ativos) — fallback aplicado, precisão reduzida
-- Dataset estático 2016–2017 — data de referência fixa
-- GTK 500: P75 com apenas 15 deals históricos — amostra pequena
-- Win rate entre managers: range de 2,3pp — insuficiente para score composto confiável
+- Dataset estático 2016–2017 — data de referência fixa em 31/dez/2017
+- GTK 500: ciclo calculado com apenas 15 deals históricos — amostra pequena
+- Taxa de fechamento entre managers: range de 2,3pp — insuficiente para score composto confiável
+- **Carl Lin e Carol Thompson** constam no time de vendas mas não possuem nenhum deal associado no pipeline — exibidos com zero deals ativos, comportamento esperado dado o dataset
 
 **Produto:**
 - Autenticação simulada via seletor
@@ -601,16 +595,6 @@ Tela Deals: tabela densa, sub-menu Prospect/Engaging, filtro por região. Score 
 
 **PRIORIDADE 6 — ASSISTENTE AI**
 
-Botão flutuante canto inferior direito. Campo para chave OpenAI. Contexto do pipeline do usuário. Chips por nível. Resposta única.
-
----
-
-**PRIORIDADE 7 — BUGS E AJUSTES**
-
-Carl Lin e Carol Thompson: corrigir string matching.
-Topbar: seletor fixo à direita, abas crescem esquerda → direita.
-Interface 100% em português.
-Usuário padrão: Anna Snelling (Vendedora).
-Todos os elementos clicáveis: cursor pointer + hover state.
+Botão flutuante canto inferior direito. Campo para inserção de chave OpenAI pelo usuário — salva em localStorage. Model gpt-4o-mini. Contexto do pipeline do usuário injetado no system prompt. Chips contextuais por nível. Resposta única, sem duplicação.
 
 Execute na ordem. Confirme remoção do scoring anterior antes de implementar o novo."*
