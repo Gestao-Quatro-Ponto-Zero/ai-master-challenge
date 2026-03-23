@@ -3,65 +3,79 @@ def calculate_score(deal):
     reasons = []
     actions = []
 
-    # 1. ICP Fit
+    # 1. ICP Fit (QUEM é o cliente)
     if deal["icp_fit"] == "high":
-        score += 20
-        reasons.append("Alto fit com ICP")
+        score += 25
+        reasons.append("Cliente ideal (ICP perfeito)")
     elif deal["icp_fit"] == "medium":
         score += 10
-        reasons.append("Fit médio com ICP")
+        reasons.append("Fit razoável com ICP")
+    else:
+        score -= 10
+        reasons.append("Fora do ICP")
 
-    # 2. Dor / impacto
+    # 2. Dor (O TAMANHO DO PROBLEMA)
     if deal["pain_level"] == "high":
-        score += 25
-        reasons.append("Dor crítica com alto impacto")
+        score += 30
+        reasons.append("Dor crítica (perda real de dinheiro)")
     elif deal["pain_level"] == "medium":
         score += 15
         reasons.append("Dor relevante")
+    else:
+        score += 0
+        reasons.append("Baixa dor (pouca urgência real)")
 
-    # 3. Urgência / timing
+    # 3. Timing (QUANDO ele quer resolver)
     if deal["urgency"] == "high":
         score += 20
-        reasons.append("Timing urgente")
+        reasons.append("Cliente quer resolver agora")
     elif deal["urgency"] == "medium":
         score += 10
-        reasons.append("Timing moderado")
+        reasons.append("Interesse ativo")
+    else:
+        score -= 5
+        reasons.append("Sem urgência clara")
 
-    # 4. Estágio do funil
+    # 4. Estágio do funil (QUÃO PERTO DA VENDA)
     stage_scores = {
         "discovery": 5,
         "engaging": 10,
         "proposal": 20,
-        "negotiation": 18
+        "negotiation": 25
     }
-    score += stage_scores.get(deal["stage"], 0)
+
+    stage_score = stage_scores.get(deal["stage"], 0)
+    score += stage_score
     reasons.append(f"Estágio: {deal['stage']}")
 
-    # 5. Autoridade / risco
+    # 5. Autoridade (TEM QUEM DECIDE?)
     if not deal["has_decision_maker"]:
-        score -= 15
-        reasons.append("Sem decisor envolvido")
-        actions.append("Mapear e acessar decisor")
+        score -= 20
+        reasons.append("Sem decisor → alto risco de travar")
+        actions.append("Mapear decisor e envolver ASAP")
+    else:
+        score += 10
+        reasons.append("Decisor envolvido")
 
-    # 6. Atividade recente
+    # 6. Atividade (DEAL VIVO OU MORTO?)
     if deal["last_activity_days"] <= 3:
         score += 10
-        reasons.append("Atividade recente")
+        reasons.append("Deal ativo recentemente")
     elif deal["last_activity_days"] > 10:
-        score -= 10
-        reasons.append("Deal parado")
-        actions.append("Reengajar cliente imediatamente")
+        score -= 15
+        reasons.append("Deal esfriando")
+        actions.append("Reengajar urgente")
 
-    # Prioridade final
-    if score >= 70:
-        priority = "Alta"
-        actions.append("Atacar hoje")
-    elif score >= 40:
-        priority = "Média"
-        actions.append("Acompanhar de perto")
+    # 🎯 Classificação final
+    if score >= 80:
+        priority = "🔥 Alta"
+        actions.append("Prioridade máxima: tentar fechar")
+    elif score >= 50:
+        priority = "⚡ Média"
+        actions.append("Nutrir e avançar")
     else:
-        priority = "Baixa"
-        actions.append("Baixa prioridade no momento")
+        priority = "🧊 Baixa"
+        actions.append("Baixa prioridade")
 
     return {
         "score": score,
