@@ -17,8 +17,6 @@
 
 # Executive Summary: 
 
-# Executive Summary:
-
 Analisei 8.800 oportunidades e descobri que o problema não era vendedores 
 "não sabendo priorizar" — era vendedores sobrecarregados protegendo deals 
 ruins. 
