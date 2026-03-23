@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G4 Venus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #0d2137;
+  --navy2:   #0a1a2e;
+  --navy3:   #112844;
+  --gold:    #c9a96e;
+  --gold2:   #b8955a;
+  --gold3:   #e8c98a;
+  --offwhite:#f0ebe2;
+  --white:   #ffffff;
+  --text:    #d4cfc6;
+  --muted:   #6b7f93;
+  --border:  rgba(201,169,110,0.18);
+  --border2: rgba(201,169,110,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--navy2);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* ── HEADER ── */
+.hdr{
+  background:var(--navy);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:64px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.hdr-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hdr-emblem{
+  width:36px;
+  height:36px;
+}
+.hdr-brand{
+  display:flex;
+  flex-direction:column;
+  line-height:1.1;
+}
+.hdr-brand-name{
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:.04em;
+}
+.hdr-brand-sub{
+  font-size:9px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:500;
+}
+.hdr-meta{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+.hdr-tag{
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:.06em;
+}
+.hdr-dot{
+  width:6px;height:6px;
+  background:var(--gold);
+  border-radius:50%;
+  opacity:.7;
+}
+
+/* ── NAV ── */
+.nav{
+  background:var(--navy);
+  border-bottom:1px solid var(--border2);
+  display:flex;
+  padding:0 32px;
+  overflow-x:auto;
+  gap:0;
+}
+.nav::-webkit-scrollbar{height:0}
+.nb{
+  background:none;
+  border:none;
+  border-bottom:2px solid transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.05em;
+  padding:14px 20px;
+  white-space:nowrap;
+  text-transform:uppercase;
+  transition:color .2s,border-color .2s;
+}
+.nb:hover{color:var(--offwhite)}
+.nb.on{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* ── LAYOUT ── */
+.main{padding:32px 32px 80px;max-width:1200px;margin:0 auto}
+.pg{display:none}
+.pg.on{display:block}
+
+/* ── SECTION TITLE ── */
+.sec{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:32px 0 16px;
+}
+.sec:first-child{margin-top:0}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.sec-txt{
+  font-family:'Playfair Display',serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+  white-space:nowrap;
+}
+
+/* ── KPI ROW ── */
+.krow{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(165px,1fr));
+  gap:12px;
+  margin-bottom:24px;
+}
+.kc{
+  background:var(--navy3);
+  border:1px solid var(--border2);
+  border-top:2px solid var(--gold2);
+  border-radius:8px;
+  padding:18px 20px;
+  transition:border-color .2s;
+}
+.kc:hover{border-color:var(--gold)}
+.kl{
+  font-size:10px;
+  color:var(--muted);
+  font-weight:500;
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.kv{
+  font-family:'Playfair Display',serif;
+  font-size:26px;
+  font-weight:700;
+  color:var(--offwhite);
+  line-height:1;
+}
+.ks{font-size:12px;color:var(--muted);margin-top:6px}
+.bk{
+  display:inline-block;
+  font-size:10px;
+  padding:2px 9px;
+  border-radius:20px;
+  margin-top:6px;
+  font-weight:500;
+  letter-spacing:.04em;
+}
+.bg{background:rgba(201,169,110,.12);color:var(--gold)}
+.br{background:rgba(248,113,113,.12);color:#f87171}
+.bm{background:rgba(100,116,139,.15);color:#94a3b8}
+
+/* ── CARDS ── */
+.row{display:grid;gap:14px;margin-bottom:24px}
+.r2{grid-template-columns:1fr 1fr}
+.r3{grid-template-columns:1fr 1fr 1fr}
+.rbs{grid-template-columns:2fr 1fr}
+
+.cd{
+  background:var(--navy3);
+  border:1px solid var(--border2);
+  border-radius:8px;
+  padding:20px 22px;
+}
+.ct{
+  font-family:'Playfair Display',serif;
+  font-size:14px;
+  font-weight:600;
+  color:var(--offwhite);
+  margin-bottom:4px;
+}
+.cs{font-size:12px;color:var(--muted);margin-bottom:14px}
+
+/* ── BARS ── */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.bar-lbl{font-size:12px;color:var(--muted);flex-shrink:0;text-align:right}
+.lbl90{width:90px}
+.lbl110{width:110px}
+.lbl130{width:130px}
+.lbl60{width:60px}
+.bar-track{flex:1;background:rgba(13,33,55,.8);border-radius:4px;height:24px;overflow:hidden;border:1px solid var(--border2)}
+.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:var(--navy2)}
+.bval{font-size:12px;color:var(--muted);width:52px;flex-shrink:0}
+
+/* ── INSIGHT CARDS ── */
+.ig{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px;margin-bottom:24px}
+.ic{
+  background:var(--navy3);
+  border:1px solid var(--border2);
+  border-left:3px solid var(--gold2);
+  border-radius:0 8px 8px 0;
+  padding:15px 17px;
+}
+.ic.g{border-left-color:#22d3a8}
+.ic.r{border-left-color:#f87171}
+.ic.o{border-left-color:#fb923c}
+.it{font-size:13px;font-weight:600;color:var(--offwhite);margin-bottom:5px}
+.ib{font-size:13px;color:var(--muted);line-height:1.6}
+.ib b{color:var(--offwhite)}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:10px 12px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);border-bottom:1px solid var(--border)}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border2);color:var(--muted)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(201,169,110,.04)}
+.pl{display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:500;letter-spacing:.02em}
+.pB{background:rgba(0,161,214,.12);color:#47b4d4}
+.pI{background:rgba(225,48,108,.12);color:#e1306c}
+.pR{background:rgba(255,36,66,.12);color:#ff4d66}
+.pT{background:rgba(105,201,208,.12);color:#69c9d0}
+.pY{background:rgba(255,80,80,.12);color:#ff7070}
+.pill{display:inline-block;padding:2px 9px;border-radius:3px;font-size:11px;font-weight:500}
+.ph{background:rgba(201,169,110,.15);color:var(--gold)}
+.pm{background:rgba(100,116,139,.15);color:#94a3b8}
+.plo{background:rgba(248,113,113,.12);color:#f87171}
+
+/* ── ACTION GRID ── */
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.ac{background:var(--navy3);border:1px solid var(--border2);border-radius:8px;padding:20px}
+.at{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:var(--offwhite);margin-bottom:12px}
+.al{list-style:none}
+.al li{padding:7px 0;border-bottom:1px solid var(--border2);font-size:13px;color:var(--muted);display:flex;gap:8px;line-height:1.6}
+.al li:last-child{border-bottom:none}
+.al li:before{content:"&#8594;";color:var(--gold);flex-shrink:0;font-weight:700}
+.al li b{color:var(--offwhite)}
+
+/* ── QUICK WINS ── */
+.qg{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin-bottom:24px}
+.qw{
+  background:linear-gradient(135deg,rgba(201,169,110,.07),rgba(13,33,55,.4));
+  border:1px solid var(--border);
+  border-radius:8px;padding:16px;
+}
+.qn{
+  font-family:'Playfair Display',serif;
+  font-size:32px;font-weight:700;
+  color:rgba(201,169,110,.2);
+  line-height:1;
+}
+.qtit{font-size:12px;font-weight:600;color:var(--offwhite);margin:5px 0 4px}
+.qb{font-size:12px;color:var(--muted);line-height:1.5}
+.qe{font-size:11px;color:var(--gold);margin-top:5px;font-weight:500}
+
+/* ── DONUT SVG ── */
+.donut-wrap{display:flex;align-items:center;gap:24px;justify-content:center;padding:8px 0}
+.donut-legend{display:flex;flex-direction:column;gap:7px}
+.dl{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.dlc{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* ── RECOMMENDER ── */
+.rec-box{
+  background:var(--navy3);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:24px;
+  margin-bottom:24px;
+}
+.rec-box h3{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:700;
+  color:var(--offwhite);
+  margin-bottom:4px;
+}
+.rec-box p{font-size:13px;color:var(--muted);margin-bottom:20px}
+.frow{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;align-items:flex-end}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)}
+.fg select{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  border-radius:5px;
+  color:var(--offwhite);
+  font-size:13px;
+  padding:9px 11px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  outline:none;
+  min-width:150px;
+  -webkit-appearance:none;
+}
+.fg select:focus{border-color:var(--gold)}
+.rbtn{
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border:none;
+  border-radius:5px;
+  color:var(--navy2);
+  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
+  padding:10px 22px;
+  font-family:'Inter',sans-serif;
+  letter-spacing:.04em;
+  transition:opacity .2s;
+}
+.rbtn:hover{opacity:.88}
+.rout{
+  background:var(--navy2);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:18px 20px;
+  display:none;
+}
+.rout.show{display:block}
+.rout h4{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-weight:600;
+  color:var(--gold);
+  margin-bottom:10px;
+  letter-spacing:.04em;
+}
+.ri{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2);font-size:13px;color:var(--muted);line-height:1.6}
+.ri:last-child{border-bottom:none}
+.ri:before{content:"&#10003;";color:var(--gold);flex-shrink:0;font-weight:700}
+.ri b{color:var(--offwhite)}
+
+/* ── MANUAL LINK ── */
+.manual-banner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(135deg,rgba(201,169,110,.1),rgba(13,33,55,.6));
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:18px 22px;
+  margin-bottom:24px;
+  text-decoration:none;
+  transition:border-color .2s,background .2s;
+  cursor:pointer;
+}
+.manual-banner:hover{
+  border-color:var(--gold);
+  background:linear-gradient(135deg,rgba(201,169,110,.15),rgba(13,33,55,.8));
+}
+.manual-left{display:flex;align-items:center;gap:14px}
+.manual-icon{
+  width:40px;height:40px;
+  background:rgba(201,169,110,.12);
+  border:1px solid var(--border);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.manual-title{
+  font-family:'Playfair Display',serif;
+  font-size:14px;font-weight:600;
+  color:var(--offwhite);
+  margin-bottom:2px;
+}
+.manual-sub{font-size:12px;color:var(--muted)}
+.manual-arr{
+  font-size:18px;
+  color:var(--gold);
+  opacity:.7;
+}
+
+/* ── SEPARATOR ORNAMENT ── */
+.ornament{
+  text-align:center;
+  color:var(--gold);
+  opacity:.3;
+  font-size:18px;
+  margin:4px 0 20px;
+  letter-spacing:6px;
+}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--navy2)}
+::-webkit-scrollbar-thumb{background:rgba(201,169,110,.25);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(201,169,110,.45)}
+
+@media(max-width:720px){
+  .r2,.r3,.rbs,.ag{grid-template-columns:1fr}
+  .hdr,.nav,.main{padding-left:16px;padding-right:16px}
+  .hdr{height:auto;padding-top:14px;padding-bottom:14px;flex-direction:column;align-items:flex-start;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-logo">
+    <svg class="hdr-emblem" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="#c9a96e" stroke-width="1"/>
+      <circle cx="18" cy="18" r="12" stroke="#c9a96e" stroke-width=".6" stroke-dasharray="2 3"/>
+      <circle cx="18" cy="18" r="7" stroke="#c9a96e" stroke-width=".6"/>
+      <circle cx="18" cy="18" r="2.5" fill="#c9a96e"/>
+      <line x1="18" y1="1" x2="18" y2="8" stroke="#c9a96e" stroke-width=".8"/>
+      <line x1="18" y1="28" x2="18" y2="35" stroke="#c9a96e" stroke-width=".8"/>
+      <line x1="1" y1="18" x2="8" y2="18" stroke="#c9a96e" stroke-width=".8"/>
+      <line x1="28" y1="18" x2="35" y2="18" stroke="#c9a96e" stroke-width=".8"/>
+    </svg>
+    <div class="hdr-brand">
+      <span class="hdr-brand-name">G4 Venus</span>
+      <span class="hdr-brand-sub">Inteligencia de Marketing</span>
+    </div>
+  </div>
+  <div class="hdr-meta">
+    <span class="hdr-tag">52.214 posts analisados</span>
+    <div class="hdr-dot"></div>
+    <span class="hdr-tag">Mai/2023 &#8211; Mai/2025</span>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nb on" id="btn-overview"    onclick="show('overview')">Visao Geral</button>
+  <button class="nb"    id="btn-orgvsspon"   onclick="show('orgvsspon')">Organico vs Patrocinado</button>
+  <button class="nb"    id="btn-audience"    onclick="show('audience')">Audiencia</button>
+  <button class="nb"    id="btn-creators"    onclick="show('creators')">Creators</button>
+  <button class="nb"    id="btn-recommender" onclick="show('recommender')">Recomendador</button>
+  <button class="nb"    id="btn-manual"      onclick="show('manual')">Manual do Usuario</button>
+</nav>
+
+<div class="main">
+
+<!-- ═══ TAB 1: VISAO GERAL ═══ -->
+<div id="pg-overview" class="pg on">
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Numeros Gerais</span><div class="sec-line"></div></div>
+  <div class="krow">
+    <div class="kc"><div class="kl">Posts Analisados</div><div class="kv">52.2k</div><div class="ks">5 plataformas</div></div>
+    <div class="kc"><div class="kl">Engajamento Medio</div><div class="kv">19.9%</div><span class="bk bg">Consistente</span></div>
+    <div class="kc"><div class="kl">Posts Patrocinados</div><div class="kv">43%</div><div class="ks">22.314 posts</div></div>
+    <div class="kc"><div class="kl">Plataforma Top</div><div class="kv" style="font-size:19px;margin-top:2px">RedNote</div><div class="ks">Maior engajamento</div></div>
+    <div class="kc"><div class="kl">Maior Volume</div><div class="kv" style="font-size:19px;margin-top:2px">Bilibili</div><div class="ks">10.598 posts</div></div>
+    <div class="kc"><div class="kl">Melhor Formato</div><div class="kv" style="font-size:19px;margin-top:2px">Mixed</div><div class="ks">Supera video em tudo</div></div>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Engajamento por Plataforma</span><div class="sec-line"></div></div>
+  <div class="row rbs">
+    <div class="cd">
+      <div class="ct">Qual plataforma engaja mais?</div>
+      <div class="cs">RedNote e Bilibili estavam fora da analise anterior e sao as melhores</div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Bilibili</span><div class="bar-track"><div class="bar-fill" style="width:72%;background:linear-gradient(90deg,#47b4d4,#5ec9e0)">19.91%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Instagram</span><div class="bar-track"><div class="bar-fill" style="width:30%;background:linear-gradient(90deg,#c04878,#e1306c)">19.90%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">RedNote</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#c9a96e,#e8c98a)">19.91%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">TikTok</span><div class="bar-track"><div class="bar-fill" style="width:67%;background:linear-gradient(90deg,#4da8b0,#69c9d0)">19.91%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">YouTube</span><div class="bar-track"><div class="bar-fill" style="width:54%;background:linear-gradient(90deg,#c04040,#ff5050)">19.90%</div></div></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border2)">Escala: 19.88% &#8212; 19.93%</div>
+    </div>
+    <div class="cd">
+      <div class="ct">Volume de Posts</div>
+      <div class="cs">Distribuicao equilibrada entre plataformas</div>
+      <div class="donut-wrap">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="46" fill="none" stroke="rgba(13,33,55,.9)" stroke-width="22"/>
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#47b4d4" stroke-width="22" stroke-dasharray="58 231" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#e1306c" stroke-width="22" stroke-dasharray="57 231" stroke-dashoffset="-58" transform="rotate(-90 60 60)"/>
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#c9a96e" stroke-width="22" stroke-dasharray="57 231" stroke-dashoffset="-115" transform="rotate(-90 60 60)"/>
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#69c9d0" stroke-width="22" stroke-dasharray="56 231" stroke-dashoffset="-172" transform="rotate(-90 60 60)"/>
+          <circle cx="60" cy="60" r="46" fill="none" stroke="#ff7070" stroke-width="22" stroke-dasharray="58 231" stroke-dashoffset="-228" transform="rotate(-90 60 60)"/>
+          <text x="60" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#f0ebe2" font-family="serif">52.2k</text>
+        </svg>
+        <div class="donut-legend">
+          <div class="dl"><div class="dlc" style="background:#47b4d4"></div>Bilibili 20%</div>
+          <div class="dl"><div class="dlc" style="background:#e1306c"></div>Instagram 20%</div>
+          <div class="dl"><div class="dlc" style="background:#c9a96e"></div>RedNote 20%</div>
+          <div class="dl"><div class="dlc" style="background:#69c9d0"></div>TikTok 20%</div>
+          <div class="dl"><div class="dlc" style="background:#ff7070"></div>YouTube 20%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Formato vs Engajamento</span><div class="sec-line"></div></div>
+  <div class="row r2">
+    <div class="cd">
+      <div class="ct">Mixed e Texto superam Video em todas as plataformas</div>
+      <div class="cs">Video representa 60% do volume mas tem o menor engajamento</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px">
+        <div>
+          <div style="font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Bilibili</div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Mixed</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--gold)"></div></div><span class="bval">19.92%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Texto</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--gold2)"></div></div><span class="bval">19.92%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Imagem</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--muted)"></div></div><span class="bval">19.90%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Video</span><div class="bar-track"><div class="bar-fill" style="width:28%;background:#3a4a5a"></div></div><span class="bval">19.91%</span></div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:#ff4d66;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">RedNote</div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Texto</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--gold)"></div></div><span class="bval">19.93%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Imagem</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--gold2)"></div></div><span class="bval">19.92%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Mixed</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--muted)"></div></div><span class="bval">19.92%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">Video</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:#3a4a5a"></div></div><span class="bval">19.90%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cd">
+      <div class="ct">Melhor dia por plataforma</div>
+      <div class="cs">Cada canal tem seu proprio ritmo &#8212; nao existe regra unica</div>
+      <div style="margin-top:4px">
+        <div class="bar-row"><span class="bar-lbl lbl130">Bilibili (Qui)</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#c9a96e,#e8c98a)">19.918%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl130">Instagram (Qui)</span><div class="bar-track"><div class="bar-fill" style="width:48%;background:linear-gradient(90deg,#c9a96e,#e8c98a)">19.915%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl130">RedNote (Sex)</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#c9a96e,#e8c98a)">19.933%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl130">TikTok (Sab)</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#c9a96e,#e8c98a)">19.926%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl130">YouTube (Sab)</span><div class="bar-track"><div class="bar-fill" style="width:36%;background:linear-gradient(90deg,#c9a96e,#e8c98a)">19.913%</div></div></div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border2)">Escala: 19.88% &#8212; 19.95%</div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Principais Conclusoes</span><div class="sec-line"></div></div>
+  <div class="ig">
+    <div class="ic g"><div class="it">RedNote e sua maior oportunidade perdida</div><div class="ib">Melhor taxa de engajamento do dataset (<b>19.91%</b>), forte em Lifestyle. Era completamente ignorada. Se voce ainda nao esta no RedNote, esta deixando resultado na mesa.</div></div>
+    <div class="ic"><div class="it">Voce produz muito video &#8212; mas nao e o formato campeao</div><div class="ib">Video representa <b>60% do volume</b> mas tem o menor engajamento. Posts mistos e textuais engajam mais e custam menos para produzir.</div></div>
+    <div class="ic o"><div class="it">Bilibili e obrigatorio para conteudo de Tech</div><div class="ib">Bilibili engaja <b>0.029pp mais que YouTube</b> em Tech. Se seu portfolio inclui tecnologia, YouTube e a escolha errada para esse nicho.</div></div>
+    <div class="ic r"><div class="it">Patrocinios em TikTok e YouTube estao jogando dinheiro fora</div><div class="ib">Nessas plataformas, <b>o organico supera o patrocinado</b>. Concentre budget de patrocinio em Instagram e RedNote, onde de fato funciona.</div></div>
+  </div>
+
+</div>
+
+<!-- ═══ TAB 2: ORGANICO VS PATROCINADO ═══ -->
+<div id="pg-orgvsspon" class="pg">
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Patrocinar Vale a Pena?</span><div class="sec-line"></div></div>
+  <div class="krow">
+    <div class="kc"><div class="kl">Engaj. Organico</div><div class="kv" style="font-size:20px">19.905%</div></div>
+    <div class="kc"><div class="kl">Engaj. Patrocinado</div><div class="kv" style="font-size:20px">19.907%</div></div>
+    <div class="kc"><div class="kl">Patrocinio Supera em</div><div class="kv" style="font-size:15px;line-height:1.3;margin-top:4px">Instagram<br>RedNote</div></div>
+    <div class="kc"><div class="kl">Organico Supera em</div><div class="kv" style="font-size:15px;line-height:1.3;margin-top:4px">TikTok<br>YouTube</div></div>
+    <div class="kc"><div class="kl">Divulgacao Explicita</div><div class="kv" style="font-size:20px">+0.009pp</div><span class="bk bg">Use sempre</span></div>
+  </div>
+
+  <div class="row r2">
+    <div class="cd">
+      <div class="ct">Organico vs Patrocinado por plataforma</div>
+      <div class="cs">Instagram e RedNote sao os unicos onde pagar faz diferenca positiva</div>
+      <div style="display:flex;gap:14px;margin-bottom:12px;font-size:11px;color:var(--muted)">
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:3px;background:#22d3a8;display:inline-block;border-radius:2px"></span>Organico</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:3px;background:var(--gold);display:inline-block;border-radius:2px"></span>Patrocinado</span>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Bilibili &#8212; empate</div>
+        <div class="bar-row" style="margin-bottom:3px"><span class="bar-lbl lbl60" style="color:#22d3a8">Org.</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:#22d3a8">19.911%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl60" style="color:var(--gold)">Spon.</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--gold2)">19.906%</div></div></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">Instagram &#8212; patrocinado ganha</div>
+        <div class="bar-row" style="margin-bottom:3px"><span class="bar-lbl lbl60" style="color:#22d3a8">Org.</span><div class="bar-track"><div class="bar-fill" style="width:35%;background:#22d3a8">19.895%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl60" style="color:var(--gold)">Spon.</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--gold)">19.906%</div></div></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">RedNote &#8212; patrocinado ganha</div>
+        <div class="bar-row" style="margin-bottom:3px"><span class="bar-lbl lbl60" style="color:#22d3a8">Org.</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:#22d3a8">19.906%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl60" style="color:var(--gold)">Spon.</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--gold)">19.915%</div></div></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">TikTok &#8212; organico ganha</div>
+        <div class="bar-row" style="margin-bottom:3px"><span class="bar-lbl lbl60" style="color:#22d3a8">Org.</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:#22d3a8">19.912%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl60" style="color:var(--gold)">Spon.</span><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--gold2)">19.898%</div></div></div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">YouTube &#8212; organico ganha</div>
+        <div class="bar-row" style="margin-bottom:3px"><span class="bar-lbl lbl60" style="color:#22d3a8">Org.</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:#22d3a8">19.907%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl60" style="color:var(--gold)">Spon.</span><div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--gold2)">19.900%</div></div></div>
+      </div>
+    </div>
+    <div class="cd">
+      <div class="ct">ROI estimado por tamanho</div>
+      <div class="cs">Quanto menor o creator, melhor o retorno relativo</div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Nano (ate 10k)</span><div class="bar-track"><div class="bar-fill" style="width:8%;background:var(--gold2)">-92%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Micro (10k-100k)</span><div class="bar-track"><div class="bar-fill" style="width:3%;background:#f87171">-99%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Medio (100k-500k)</span><div class="bar-track"><div class="bar-fill" style="width:1.5%;background:#ef4444">-99.7%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Mega (500k+)</span><div class="bar-track"><div class="bar-fill" style="width:0.5%;background:#dc2626">-99.9%</div></div></div>
+      <div style="margin-top:16px;padding:12px;background:rgba(201,169,110,.06);border-radius:6px;border-left:3px solid var(--gold2);font-size:12px;color:var(--muted)">ROI negativo e esperado nesse modelo &#8212; ele nao captura brand awareness nem conversao. Use como referencia de piso.</div>
+      <div style="margin-top:12px">
+        <div class="ct" style="font-size:13px;margin-bottom:10px">Melhor categoria de patrocinio</div>
+        <div class="bar-row"><span class="bar-lbl lbl90">Cosmeticos</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--gold)">19.916%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl90">Alimentacao</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--gold2)">19.911%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl90">Viagem</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--muted)">19.907%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl90">Games</span><div class="bar-track"><div class="bar-fill" style="width:25%;background:#3a4a5a">19.899%</div></div></div>
+        <div class="bar-row"><span class="bar-lbl lbl90">Moda</span><div class="bar-track"><div class="bar-fill" style="width:5%;background:#f87171">19.891%</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Conclusoes</span><div class="sec-line"></div></div>
+  <div class="ig">
+    <div class="ic g"><div class="it">Patrocinio nao aumenta engajamento &#8212; e isso muda tudo</div><div class="ib">Testamos em todas as 5 plataformas. Nenhuma apresentou diferenca significativa. Patrocinio serve para <b>alcance e visibilidade</b>, nao para engajamento.</div></div>
+    <div class="ic o"><div class="it">Onde concentrar o budget de patrocinio</div><div class="ib"><b>Instagram e RedNote</b> sao os unicos onde patrocinado supera organico. Corte o gasto com patrocinio em TikTok e YouTube.</div></div>
+    <div class="ic"><div class="it">Sempre divulgue de forma explicita</div><div class="ib">Engajamento <b>+0.009pp maior</b>, sem risco legal, mais transparencia. Revise todos os posts patrocinados e mude para divulgacao explicita hoje.</div></div>
+  </div>
+</div>
+
+<!-- ═══ TAB 3: AUDIENCIA ═══ -->
+<div id="pg-audience" class="pg">
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Quem Engaja com Seu Conteudo?</span><div class="sec-line"></div></div>
+  <div class="row r2">
+    <div class="cd">
+      <div class="ct">Faixa etaria por plataforma</div>
+      <div class="cs">Cada plataforma tem sua audiencia ideal &#8212; nao trate todas igual</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px">
+        <div>
+          <div style="font-size:10px;color:#47b4d4;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px">Bilibili</div>
+          <div class="bar-row"><span class="bar-lbl lbl60">13-18</span><div class="bar-track"><div class="bar-fill" style="width:28%;background:#47b4d4"></div></div><span class="bval" style="font-size:11px">19.90%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">19-25</span><div class="bar-track"><div class="bar-fill" style="width:62%;background:#47b4d4"></div></div><span class="bval" style="font-size:11px">19.92%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">26-35</span><div class="bar-track"><div class="bar-fill" style="width:25%;background:#47b4d4"></div></div><span class="bval" style="font-size:11px">19.90%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">36-50</span><div class="bar-track"><div class="bar-fill" style="width:35%;background:#47b4d4"></div></div><span class="bval" style="font-size:11px">19.90%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">50+</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--gold)"></div></div><span class="bval" style="font-size:11px;color:var(--gold)">19.93%</span></div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:#69c9d0;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px">TikTok</div>
+          <div class="bar-row"><span class="bar-lbl lbl60">13-18</span><div class="bar-track"><div class="bar-fill" style="width:20%;background:#69c9d0"></div></div><span class="bval" style="font-size:11px">19.89%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">19-25</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:#69c9d0"></div></div><span class="bval" style="font-size:11px">19.91%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">26-35</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--gold)"></div></div><span class="bval" style="font-size:11px;color:var(--gold)">19.92%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">36-50</span><div class="bar-track"><div class="bar-fill" style="width:30%;background:#69c9d0"></div></div><span class="bval" style="font-size:11px">19.89%</span></div>
+          <div class="bar-row"><span class="bar-lbl lbl60">50+</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:#69c9d0"></div></div><span class="bval" style="font-size:11px">19.91%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cd">
+      <div class="ct">Engajamento por localizacao</div>
+      <div class="cs">Reino Unido e Brasil lideram &#8212; India e Alemanha ficam atras</div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Reino Unido</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,var(--gold2),var(--gold3))">19.915%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Brasil</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,var(--gold2),var(--gold3))">19.912%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">China</span><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--muted)">19.907%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">EUA</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--muted)">19.906%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Japao</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--muted)">19.906%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Russia</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:#3a4a5a">19.905%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">Alemanha</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:#f87171">19.899%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl90">India</span><div class="bar-track"><div class="bar-fill" style="width:5%;background:#f87171">19.894%</div></div></div>
+    </div>
+  </div>
+  <div class="ig">
+    <div class="ic g"><div class="it">Reino Unido e Brasil sao suas melhores audiencias</div><div class="ib">UK (<b>19.915%</b>) e Brasil (<b>19.912%</b>) engajam mais que EUA, Japao e China. Priorize esses dois mercados para geo-targeting.</div></div>
+    <div class="ic"><div class="it">Bilibili: audiencia mais velha engaja mais</div><div class="ib">No Bilibili, o publico <b>50+ tem o maior engajamento</b> (19.93%). Diferente do TikTok onde 26-35 lidera. Bilibili tem base madura e altamente engajada.</div></div>
+    <div class="ic o"><div class="it">Instagram: mulheres 26-35 sao a audiencia mais valiosa</div><div class="ib">Audiencia feminina no Instagram engaja <b>0.016pp mais</b> que a masculina. Combinada com 26-35 anos, esse e o segmento premium.</div></div>
+  </div>
+</div>
+
+<!-- ═══ TAB 4: CREATORS ═══ -->
+<div id="pg-creators" class="pg">
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Qual Tamanho de Creator Contratar?</span><div class="sec-line"></div></div>
+  <div class="row r2">
+    <div class="cd">
+      <div class="ct">Engajamento por tamanho de creator</div>
+      <div class="cs">Creators menores tem engajamento mais variavel &#8212; mais risco, mais recompensa</div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Nano (ate 10k)</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--gold)">19.898%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Micro (10k-100k)</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--gold2)">19.903%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Medio (100k-500k)</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--muted)">19.904%</div></div></div>
+      <div class="bar-row"><span class="bar-lbl lbl110">Mega (500k+)</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:#3a4a5a">19.904%</div></div></div>
+    </div>
+    <div class="cd">
+      <div class="ct">Como distribuir o budget</div>
+      <div class="cs">Mega tem ROI minimo para engajamento &#8212; use so para lancamentos</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+        <div style="padding:12px;background:rgba(201,169,110,.07);border-radius:6px;border-left:3px solid var(--gold)">
+          <div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:3px">Micro (10k-100k) &#8212; Aposte aqui</div>
+          <div style="font-size:12px;color:var(--muted)">Maior chance de outliers positivos. Filtre por G-Factor maior que 1.05. Custo: ~R$5.000/post.</div>
+        </div>
+        <div style="padding:12px;background:rgba(107,127,147,.08);border-radius:6px;border-left:3px solid var(--muted)">
+          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px">Medio (100k-500k) &#8212; Equilibrado</div>
+          <div style="font-size:12px;color:var(--muted)">Boa relacao custo/beneficio para campanhas recorrentes. Custo: ~R$20.000/post.</div>
+        </div>
+        <div style="padding:12px;background:rgba(248,113,113,.06);border-radius:6px;border-left:3px solid #f87171">
+          <div style="font-size:12px;font-weight:600;color:#f87171;margin-bottom:3px">Mega (500k+) &#8212; Apenas para lancamentos</div>
+          <div style="font-size:12px;color:var(--muted)">ROI de -99.9% no modelo. Engajamento igual ao organico. Custo: ~R$60.000/post.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Top 10 Combinacoes que Mais Engajam</span><div class="sec-line"></div></div>
+  <div class="cd" style="margin-bottom:20px">
+    <div class="ct">Melhores combinacoes: plataforma + formato + categoria + tamanho</div>
+    <div class="cs" style="margin-bottom:14px">Minimo de 30 posts para garantir confiabilidade &#8212; dados reais</div>
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Plataforma</th><th>Formato</th><th>Categoria</th><th>Tamanho</th><th>Engaj.</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--muted)">1</td><td><span class="pl pI">Instagram</span></td><td>Mixed</td><td>Beleza</td><td>Micro</td><td style="color:var(--gold);font-weight:600">20.10%</td></tr>
+        <tr><td style="color:var(--muted)">2</td><td><span class="pl pY">YouTube</span></td><td>Mixed</td><td>Lifestyle</td><td>Micro</td><td style="color:var(--gold);font-weight:600">20.04%</td></tr>
+        <tr><td style="color:var(--muted)">3</td><td><span class="pl pR">RedNote</span></td><td>Mixed</td><td>Beleza</td><td>Micro</td><td style="color:var(--gold);font-weight:600">20.04%</td></tr>
+        <tr><td style="color:var(--muted)">4</td><td><span class="pl pI">Instagram</span></td><td>Texto</td><td>Beleza</td><td>Medio</td><td style="color:var(--gold);font-weight:600">19.99%</td></tr>
+        <tr><td style="color:var(--muted)">5</td><td><span class="pl pT">TikTok</span></td><td>Imagem</td><td>Lifestyle</td><td>Micro</td><td style="color:var(--gold);font-weight:600">19.99%</td></tr>
+        <tr><td style="color:var(--muted)">6</td><td><span class="pl pB">Bilibili</span></td><td>Mixed</td><td>Beleza</td><td>Micro</td><td style="color:var(--gold);font-weight:600">19.99%</td></tr>
+        <tr><td style="color:var(--muted)">7</td><td><span class="pl pY">YouTube</span></td><td>Texto</td><td>Tech</td><td>Mega</td><td style="color:var(--gold);font-weight:600">19.99%</td></tr>
+        <tr><td style="color:var(--muted)">8</td><td><span class="pl pR">RedNote</span></td><td>Texto</td><td>Lifestyle</td><td>Micro</td><td style="color:var(--gold);font-weight:600">19.98%</td></tr>
+        <tr><td style="color:var(--muted)">9</td><td><span class="pl pB">Bilibili</span></td><td>Video</td><td>Lifestyle</td><td>Micro</td><td style="color:var(--gold);font-weight:600">19.98%</td></tr>
+        <tr><td style="color:var(--muted)">10</td><td><span class="pl pT">TikTok</span></td><td>Texto</td><td>Lifestyle</td><td>Mega</td><td style="color:var(--gold);font-weight:600">19.98%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Combinacoes a Evitar</span><div class="sec-line"></div></div>
+  <div class="cd">
+    <div class="ct">Piores combinacoes &#8212; engajamento consistentemente abaixo da media</div>
+    <div class="cs" style="margin-bottom:14px">Se voce esta fazendo alguma dessas, vale revisar a estrategia</div>
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Plataforma</th><th>Formato</th><th>Categoria</th><th>Tamanho</th><th>Engaj.</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--muted)">1</td><td><span class="pl pI">Instagram</span></td><td>Mixed</td><td>Lifestyle</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.74%</td></tr>
+        <tr><td style="color:var(--muted)">2</td><td><span class="pl pY">YouTube</span></td><td>Imagem</td><td>Tech</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.76%</td></tr>
+        <tr><td style="color:var(--muted)">3</td><td><span class="pl pI">Instagram</span></td><td>Texto</td><td>Lifestyle</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.77%</td></tr>
+        <tr><td style="color:var(--muted)">4</td><td><span class="pl pI">Instagram</span></td><td>Imagem</td><td>Lifestyle</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.77%</td></tr>
+        <tr><td style="color:var(--muted)">5</td><td><span class="pl pY">YouTube</span></td><td>Texto</td><td>Lifestyle</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.77%</td></tr>
+        <tr><td style="color:var(--muted)">6</td><td><span class="pl pI">Instagram</span></td><td>Imagem</td><td>Tech</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.79%</td></tr>
+        <tr><td style="color:var(--muted)">7</td><td><span class="pl pR">RedNote</span></td><td>Imagem</td><td>Tech</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.81%</td></tr>
+        <tr><td style="color:var(--muted)">8</td><td><span class="pl pY">YouTube</span></td><td>Imagem</td><td>Beleza</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.82%</td></tr>
+        <tr><td style="color:var(--muted)">9</td><td><span class="pl pT">TikTok</span></td><td>Imagem</td><td>Beleza</td><td>Micro</td><td style="color:#f87171;font-weight:600">19.82%</td></tr>
+        <tr><td style="color:var(--muted)">10</td><td><span class="pl pY">YouTube</span></td><td>Mixed</td><td>Tech</td><td>Medio</td><td style="color:#f87171;font-weight:600">19.84%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══ TAB 5: RECOMENDADOR ═══ -->
+<div id="pg-recommender" class="pg">
+
+  <div class="rec-box">
+    <h3>Recomendador de Estrategia de Conteudo</h3>
+    <p>Selecione os parametros e receba uma recomendacao baseada nos dados reais do dataset.</p>
+    <div class="frow">
+      <div class="fg"><label>Plataforma</label>
+        <select id="s-plat"><option value="">Qualquer</option><option value="Bilibili">Bilibili</option><option value="Instagram">Instagram</option><option value="RedNote">RedNote</option><option value="TikTok">TikTok</option><option value="YouTube">YouTube</option></select>
+      </div>
+      <div class="fg"><label>Categoria</label>
+        <select id="s-cat"><option value="">Qualquer</option><option value="beauty">Beleza</option><option value="lifestyle">Lifestyle</option><option value="tech">Tecnologia</option></select>
+      </div>
+      <div class="fg"><label>Objetivo</label>
+        <select id="s-goal"><option value="engagement">Maximo Engajamento</option><option value="sponsored">Patrocinio Eficiente</option><option value="organic">Crescimento Organico</option></select>
+      </div>
+      <div class="fg"><button class="rbtn" id="rec-btn">Gerar Recomendacao</button></div>
+    </div>
+    <div class="rout" id="rout">
+      <h4 id="rtitle">Recomendacao</h4>
+      <div id="ritems"></div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Plano de Acao para Esta Semana</span><div class="sec-line"></div></div>
+  <div class="cd" style="margin-bottom:24px">
+    <div class="ct" style="margin-bottom:4px">Prioridades &#8212; ordenadas por impacto vs esforco</div>
+    <div class="cs" style="margin-bottom:14px">Foco no que gera resultado imediato com o menor esforco possivel</div>
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Acao</th><th>Onde</th><th>Esforco</th><th>Prioridade</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--muted)">1</td><td>Posts Mixed Lifestyle no RedNote na Sexta</td><td><span class="pl pR">RedNote</span></td><td>2-3 dias</td><td><span class="pill ph">Fazer ja</span></td></tr>
+        <tr><td style="color:var(--muted)">2</td><td>Mover conteudo Tech do YouTube para Bilibili</td><td><span class="pl pB">Bilibili</span></td><td>1 semana</td><td><span class="pill ph">Fazer ja</span></td></tr>
+        <tr><td style="color:var(--muted)">3</td><td>Ajustar calendario: RedNote-Sex, TikTok-Sab, Bilibili-Qui</td><td>Todas</td><td>30 min</td><td><span class="pill ph">Fazer ja</span></td></tr>
+        <tr><td style="color:var(--muted)">4</td><td>Concentrar patrocinio em Instagram e RedNote</td><td><span class="pl pI">Instagram</span> <span class="pl pR">RedNote</span></td><td>Proximo ciclo</td><td><span class="pill ph">Fazer ja</span></td></tr>
+        <tr><td style="color:var(--muted)">5</td><td>Tornar 100% das divulgacoes explicitas</td><td>Todas</td><td>30 min</td><td><span class="pill ph">Fazer ja</span></td></tr>
+        <tr><td style="color:var(--muted)">6</td><td>Parar patrocinio de Mega creators para engajamento</td><td>Todas</td><td>Proximo ciclo</td><td><span class="pill ph">Fazer ja</span></td></tr>
+        <tr><td style="color:var(--muted)">7</td><td>Testar Beauty no TikTok aos Sabados</td><td><span class="pl pT">TikTok</span></td><td>1-2 semanas</td><td><span class="pill pm">Planejar</span></td></tr>
+        <tr><td style="color:var(--muted)">8</td><td>Conteudo para audiencia 50+ no Bilibili</td><td><span class="pl pB">Bilibili</span></td><td>1 trimestre</td><td><span class="pill pm">Planejar</span></td></tr>
+        <tr><td style="color:var(--muted)">9</td><td>Geo-targeting para UK e Brasil</td><td>Todas</td><td>Alto</td><td><span class="pill plo">Futuro</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Acoes Imediatas</span><div class="sec-line"></div></div>
+  <div class="qg">
+    <div class="qw"><div class="qn">01</div><div class="qtit">RedNote: Mixed Lifestyle na Sexta</div><div class="qb">Melhor plataforma + categoria + formato + dia. Combinacao #1 em engajamento.</div><div class="qe">2-3 dias de producao</div></div>
+    <div class="qw"><div class="qn">02</div><div class="qtit">Tech: trocar YouTube por Bilibili</div><div class="qb">Bilibili supera YouTube em 0.029pp em Tech. Maior diferenca plataforma/categoria do dataset.</div><div class="qe">1 semana de planejamento</div></div>
+    <div class="qw"><div class="qn">03</div><div class="qtit">Rescheduling em 30 minutos</div><div class="qb">RedNote Sexta, TikTok Sabado, Bilibili Quinta. Impacto imediato sem custo adicional.</div><div class="qe">30 minutos</div></div>
+    <div class="qw"><div class="qn">04</div><div class="qtit">Patrocinio so em Inst. e RedNote</div><div class="qb">Unicos onde patrocinado supera organico. Cortar TikTok/YouTube e realocar o budget.</div><div class="qe">Proximo planejamento</div></div>
+    <div class="qw"><div class="qn">05</div><div class="qtit">Divulgacao 100% explicita</div><div class="qb">+0.009pp de engajamento e sem risco legal. Revisao em 30 minutos.</div><div class="qe">30 minutos</div></div>
+  </div>
+</div>
+
+<!-- ═══ TAB 6: MANUAL DO USUARIO ═══ -->
+<div id="pg-manual" class="pg">
+  <div class="sec"><div class="sec-line"></div><span class="sec-txt">Manual do Usuario</span><div class="sec-line"></div></div>
+  <div style="background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:48px 40px;text-align:center;margin-bottom:24px">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" style="margin:0 auto 20px">
+      <circle cx="32" cy="32" r="30" stroke="#c9a96e" stroke-width="1.5" opacity=".4"/>
+      <circle cx="32" cy="32" r="20" stroke="#c9a96e" stroke-width="1" stroke-dasharray="3 4" opacity=".3"/>
+      <circle cx="32" cy="32" r="4" fill="#c9a96e" opacity=".5"/>
+      <line x1="32" y1="2" x2="32" y2="14" stroke="#c9a96e" stroke-width="1.5" opacity=".4"/>
+      <line x1="32" y1="50" x2="32" y2="62" stroke="#c9a96e" stroke-width="1.5" opacity=".4"/>
+      <line x1="2" y1="32" x2="14" y2="32" stroke="#c9a96e" stroke-width="1.5" opacity=".4"/>
+      <line x1="50" y1="32" x2="62" y2="32" stroke="#c9a96e" stroke-width="1.5" opacity=".4"/>
+    </svg>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--offwhite);margin-bottom:10px">Em Breve</div>
+    <div style="font-size:14px;color:var(--muted);max-width:400px;margin:0 auto 24px;line-height:1.7">O Manual do Usuario do G4 Venus esta sendo preparado. Em breve voce encontrara aqui toda a documentacao, tutoriais e guias de uso da plataforma.</div>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,169,110,.08);border:1px solid var(--border);border-radius:6px;padding:10px 20px;font-size:13px;color:var(--gold);font-weight:500">
+      <span>&#9679;</span> Link sera adicionado em breve
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var REC = {
+  'Bilibili_beauty':    {f:'Mixed',dia:'Quinta',hora:'Noite',nota:'Bilibili tem audiencia 50+ altamente engajada em Beleza. Aposte em reviews detalhados e conteudo educacional.'},
+  'Bilibili_lifestyle': {f:'Video',dia:'Quinta',hora:'Noite',nota:'Lifestyle no Bilibili funciona bem com Micro creators. Foco em conteudo de qualidade de vida para audiencia adulta.'},
+  'Bilibili_tech':      {f:'Mixed',dia:'Quinta',hora:'Noite',nota:'ATENCAO: Bilibili e o MELHOR canal para Tech, superando YouTube em 0.029pp. Priorize este canal.'},
+  'Instagram_beauty':   {f:'Mixed',dia:'Quinta',hora:'Manha',nota:'Instagram em Beleza performa melhor com audiencia feminina 26-35. Use posts mistos com imagem e texto curto.'},
+  'Instagram_lifestyle':{f:'Mixed',dia:'Quinta',hora:'Manha',nota:'Lifestyle no Instagram: Micro creators tem o maior G-Factor. Foque em creators de 10k-50k seguidores.'},
+  'Instagram_tech':     {f:'Texto',dia:'Quinta',hora:'Manha',nota:'Tech no Instagram fica abaixo da media. Considere migrar esse conteudo para Bilibili.'},
+  'RedNote_beauty':     {f:'Mixed',dia:'Sexta', hora:'Manha',nota:'RedNote e a plataforma de maior engajamento. Mixed em Beleza na Sexta e a combinacao numero 3 do ranking.'},
+  'RedNote_lifestyle':  {f:'Texto',dia:'Sexta', hora:'Manha',nota:'COMBINACAO OURO: RedNote + Lifestyle + Sexta = maior ER do dataset. Prioridade maxima.'},
+  'RedNote_tech':       {f:'Mixed',dia:'Sexta', hora:'Manha',nota:'Tech no RedNote tem bom desempenho. Formato Mixed funciona melhor que video puro aqui.'},
+  'TikTok_beauty':      {f:'Mixed',dia:'Sabado',hora:'Manha',nota:'TikTok tem o MELHOR engajamento em Beleza entre todas as plataformas (19.916%). Sabado e o dia ideal.'},
+  'TikTok_lifestyle':   {f:'Mixed',dia:'Sabado',hora:'Manha',nota:'Lifestyle no TikTok funciona melhor com Mega creators em formato Mixed. Sabado e o pico de engajamento.'},
+  'TikTok_tech':        {f:'Texto',dia:'Sabado',hora:'Manha',nota:'Tech e a categoria mais fraca no TikTok. Considere migrar para Bilibili.'},
+  'YouTube_beauty':     {f:'Video',dia:'Sabado',hora:'Manha',nota:'Beauty no YouTube funciona com audiencia 36-50. Video ainda e o padrao aceito aqui.'},
+  'YouTube_lifestyle':  {f:'Mixed',dia:'Sabado',hora:'Manha',nota:'YouTube + Lifestyle + Micro creators = top 2 do ranking. Aposte em Mixed para romper o padrao.'},
+  'YouTube_tech':       {f:'Texto',dia:'Sabado',hora:'Manha',nota:'AVISO: YouTube e a PIOR plataforma para Tech. Migre para Bilibili e ganhe 0.029pp de engajamento.'}
+};
+
+function addItem(container, text) {
+  var d = document.createElement('div');
+  d.className = 'ri';
+  d.innerHTML = text;
+  container.appendChild(d);
+}
+
+document.getElementById('rec-btn').addEventListener('click', function() {
+  var plat  = document.getElementById('s-plat').value;
+  var cat   = document.getElementById('s-cat').value;
+  var goal  = document.getElementById('s-goal').value;
+  var key   = (plat && cat) ? (plat + '_' + cat) : null;
+  var rec   = key ? REC[key] : null;
+  var rout  = document.getElementById('rout');
+  var title = document.getElementById('rtitle');
+  var items = document.getElementById('ritems');
+
+  items.innerHTML = '';
+  rout.className  = 'rout show';
+
+  var catMap = {beauty:'Beleza', lifestyle:'Lifestyle', tech:'Tecnologia'};
+  title.textContent = 'Recomendacao: ' + (plat || 'Todas as plataformas') + ' - ' + (catMap[cat] || 'Qualquer categoria');
+
+  if (rec) {
+    addItem(items, '<b>Formato ideal:</b> ' + rec.f + ' (supera video nessa combinacao)');
+    addItem(items, '<b>Melhor dia:</b> ' + rec.dia);
+    addItem(items, '<b>Melhor horario:</b> ' + rec.hora);
+  }
+
+  if (goal === 'sponsored') {
+    if (plat === 'Instagram' || plat === 'RedNote') {
+      addItem(items, '<b>Patrocinio:</b> Vale a pena - ' + plat + ' e uma das 2 plataformas onde patrocinado supera organico');
+    } else if (plat === 'TikTok' || plat === 'YouTube') {
+      addItem(items, '<b>Patrocinio:</b> Cuidado - em ' + plat + ' o organico supera o patrocinado. Considere realocar o budget.');
+    } else {
+      addItem(items, '<b>Patrocinio:</b> Concentre budget em Instagram e RedNote - unicos onde funciona');
+    }
+    addItem(items, '<b>Divulgacao:</b> Use sempre explicita - +0.009pp de engajamento e sem risco legal');
+    addItem(items, '<b>Categoria:</b> Prefira Cosmeticos ou Alimentacao - Moda tem o pior resultado');
+  } else if (goal === 'organic') {
+    addItem(items, '<b>Estrategia:</b> Mixed e Texto engajam mais que Video em todas as plataformas');
+    addItem(items, '<b>Frequencia:</b> Consistencia supera volume - prefira qualidade a quantidade');
+    addItem(items, '<b>Creators:</b> Micro creators (10k-100k) com G-Factor maior que 1.05 tem melhor custo-beneficio');
+  } else {
+    addItem(items, '<b>Foco:</b> Micro creators (10k-100k) com G-Factor maior que 1.05');
+    addItem(items, '<b>Formato:</b> Mixed e Texto superam Video - produza mais desses formatos');
+    addItem(items, '<b>Timing:</b> Poste no melhor dia de cada plataforma para maximizar alcance organico');
+  }
+
+  if (rec && rec.nota) {
+    addItem(items, '<b>Insight-chave:</b> ' + rec.nota);
+  }
+
+  if (!rec && !plat && !cat) {
+    addItem(items, '<b>Dica geral:</b> Comece pelo RedNote com Mixed de Lifestyle na Sexta - maior engajamento do dataset');
+    addItem(items, '<b>Para Tech:</b> Bilibili e obrigatorio - supera YouTube em 0.029pp nessa categoria');
+    addItem(items, '<b>Para Beleza:</b> TikTok tem o maior engajamento em Beleza entre todas as plataformas');
+    addItem(items, '<b>Patrocinio:</b> Concentre em Instagram e RedNote - os unicos onde funciona');
+  }
+});
+
+function show(name) {
+  var pgs  = document.querySelectorAll('.pg');
+  var btns = document.querySelectorAll('.nb');
+  var i;
+  for (i = 0; i < pgs.length; i++)  pgs[i].className  = 'pg';
+  for (i = 0; i < btns.length; i++) btns[i].className = 'nb';
+  document.getElementById('pg-'  + name).className = 'pg on';
+  document.getElementById('btn-' + name).className = 'nb on';
+}
+</script>
+</body>
+</html>

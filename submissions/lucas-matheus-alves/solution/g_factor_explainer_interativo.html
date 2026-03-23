@@ -1,0 +1,264 @@
+
+<style>
+@media (prefers-reduced-motion: no-preference) {
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+}
+.step-btn {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 7px 18px;
+  transition: background .15s;
+}
+.step-btn:hover { background: var(--color-background-tertiary); }
+.step-btn.active {
+  background: var(--color-background-info);
+  border-color: var(--color-border-info);
+  color: var(--color-text-info);
+}
+.creator-card {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px;
+  background: var(--color-background-secondary);
+}
+.gf-badge {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: var(--border-radius-md);
+  margin-top: 8px;
+}
+.gf-above { background: var(--color-background-success); color: var(--color-text-success); }
+.gf-below { background: var(--color-background-danger);  color: var(--color-text-danger); }
+.gf-mid   { background: var(--color-background-warning); color: var(--color-text-warning); }
+.bar-wrap  { background: var(--color-border-tertiary); border-radius: 4px; height: 10px; overflow: hidden; margin: 6px 0 2px; }
+.bar-inner { height: 100%; border-radius: 4px; transition: width .5s ease; }
+.dot-row { display: flex; gap: 6px; align-items: center; margin-bottom: 14px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; cursor: pointer; transition: transform .15s; border: 1.5px solid transparent; }
+.dot:hover { transform: scale(1.3); }
+.dot.active { border-color: var(--color-text-primary); transform: scale(1.3); }
+.lbl { font-size: 12px; color: var(--color-text-secondary); }
+.formula-box {
+  background: var(--color-background-tertiary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 12px 0;
+  text-align: center;
+  line-height: 1.8;
+}
+.formula-box b { color: var(--color-text-primary); font-weight: 500; }
+.insight-strip {
+  border-left: 3px solid var(--color-border-info);
+  padding: 10px 14px;
+  margin: 14px 0;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+.insight-strip b { color: var(--color-text-primary); font-weight: 500; }
+</style>
+
+<div style="padding: 1rem 0;">
+
+<div class="dot-row">
+  <span class="lbl">Passo</span>
+  <div class="dot active" id="d0" onclick="goStep(0)" title="O problema"></div>
+  <div class="dot" id="d1" onclick="goStep(1)" title="ER absoluto"></div>
+  <div class="dot" id="d2" onclick="goStep(2)" title="O grupo de referencia"></div>
+  <div class="dot" id="d3" onclick="goStep(3)" title="G-Factor"></div>
+  <div class="dot" id="d4" onclick="goStep(4)" title="Interpretacao"></div>
+  <div style="margin-left:auto;display:flex;gap:8px">
+    <button class="step-btn" onclick="prev()">&#8592;</button>
+    <button class="step-btn" onclick="next()">&#8594;</button>
+  </div>
+</div>
+
+<div id="panel-0">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:16px">Dois creators, mesmo engajamento — qual merece mais o deal?</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="creator-card">
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">Creator A — Nano</p>
+      <p style="font-size:15px;font-weight:500;color:var(--color-text-primary)">@beleza_real</p>
+      <div style="margin:10px 0">
+        <p class="lbl">Seguidores</p><p style="font-size:13px;color:var(--color-text-primary);font-weight:500">8.000</p>
+        <p class="lbl" style="margin-top:6px">Likes no post</p><p style="font-size:13px;color:var(--color-text-primary);font-weight:500">320</p>
+        <p class="lbl" style="margin-top:6px">Views</p><p style="font-size:13px;color:var(--color-text-primary);font-weight:500">1.600</p>
+      </div>
+      <div class="bar-wrap"><div class="bar-inner" style="width:80%;background:#1D9E75"></div></div>
+      <p class="lbl">ER = 20%</p>
+    </div>
+    <div class="creator-card">
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">Creator B — Mega</p>
+      <p style="font-size:15px;font-weight:500;color:var(--color-text-primary)">@megainfluencer</p>
+      <div style="margin:10px 0">
+        <p class="lbl">Seguidores</p><p style="font-size:13px;color:var(--color-text-primary);font-weight:500">1.200.000</p>
+        <p class="lbl" style="margin-top:6px">Likes no post</p><p style="font-size:13px;color:var(--color-text-primary);font-weight:500">320</p>
+        <p class="lbl" style="margin-top:6px">Views</p><p style="font-size:13px;color:var(--color-text-primary);font-weight:500">1.600</p>
+      </div>
+      <div class="bar-wrap"><div class="bar-inner" style="width:80%;background:#1D9E75"></div></div>
+      <p class="lbl">ER = 20%</p>
+    </div>
+  </div>
+  <div class="insight-strip" style="margin-top:14px">Comparar pelo ER absoluto faz parecer que os dois sao iguais. <b>Mas o contexto e completamente diferente.</b></div>
+</div>
+
+<div id="panel-1" style="display:none">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:16px">ER absoluto: engajamento dividido por views. Util, mas cego ao contexto.</p>
+  <div class="formula-box">
+    ER = <b>engagement_total</b> / max(views, 1) x 100<br>
+    <span style="font-size:12px">likes + shares + comments / views</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+    <div class="creator-card">
+      <p style="font-size:12px;color:var(--color-text-secondary)">@beleza_real (Nano)</p>
+      <p style="font-size:13px;margin:6px 0;color:var(--color-text-secondary)">320 / 1.600 x 100</p>
+      <div class="bar-wrap"><div class="bar-inner" style="width:80%;background:#1D9E75"></div></div>
+      <p style="font-size:20px;font-weight:500;color:var(--color-text-primary);margin-top:4px">ER = 20%</p>
+    </div>
+    <div class="creator-card">
+      <p style="font-size:12px;color:var(--color-text-secondary)">@megainfluencer (Mega)</p>
+      <p style="font-size:13px;margin:6px 0;color:var(--color-text-secondary)">320 / 1.600 x 100</p>
+      <div class="bar-wrap"><div class="bar-inner" style="width:80%;background:#1D9E75"></div></div>
+      <p style="font-size:20px;font-weight:500;color:var(--color-text-primary);margin-top:4px">ER = 20%</p>
+    </div>
+  </div>
+  <div class="insight-strip">O ER diz que sao iguais. <b>O problema: um Mega creator com 20% de ER e extraordinario. Um Nano com 20% e apenas mediano no seu grupo.</b> Precisamos de uma referencia justa para cada um.</div>
+</div>
+
+<div id="panel-2" style="display:none">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:16px">Cada creator e comparado com seus pares — mesma plataforma, mesmo tamanho.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="creator-card">
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Grupo de referencia: Nano Instagram</p>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="lbl">@nano_a</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">18%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:72%;background:var(--color-border-secondary)"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span class="lbl">@nano_b</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">21%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:84%;background:var(--color-border-secondary)"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span class="lbl">@nano_c</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">19%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:76%;background:var(--color-border-secondary)"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span class="lbl">@nano_d</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">22%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:88%;background:var(--color-border-secondary)"></div></div>
+        <div style="border-top:1px dashed var(--color-border-tertiary);margin-top:8px;padding-top:6px;display:flex;justify-content:space-between">
+          <span class="lbl" style="font-weight:500">Mediana do grupo</span>
+          <span style="font-size:13px;font-weight:500;color:var(--color-text-primary)">20%</span>
+        </div>
+      </div>
+    </div>
+    <div class="creator-card">
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Grupo de referencia: Mega Instagram</p>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="lbl">@mega_a</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">3%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:30%;background:var(--color-border-secondary)"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span class="lbl">@mega_b</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">2%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:20%;background:var(--color-border-secondary)"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span class="lbl">@mega_c</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">4%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:40%;background:var(--color-border-secondary)"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+          <span class="lbl">@mega_d</span>
+          <span style="font-size:12px;color:var(--color-text-secondary)">2%</span>
+        </div>
+        <div class="bar-wrap"><div class="bar-inner" style="width:20%;background:var(--color-border-secondary)"></div></div>
+        <div style="border-top:1px dashed var(--color-border-tertiary);margin-top:8px;padding-top:6px;display:flex;justify-content:space-between">
+          <span class="lbl" style="font-weight:500">Mediana do grupo</span>
+          <span style="font-size:13px;font-weight:500;color:var(--color-text-primary)">2.5%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="insight-strip">Nano creators naturalmente tem ER mais alto — audiencia menor, mais nichada. <b>A mediana e a referencia justa: cada creator e medido contra seus iguais.</b></div>
+</div>
+
+<div id="panel-3" style="display:none">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:16px">G-Factor: ER do creator dividido pela mediana do seu grupo.</p>
+  <div class="formula-box">
+    G-Factor = <b>ER individual</b> / <b>mediana(ER) do grupo</b><br>
+    <span style="font-size:12px">(platform, tier) — compara pares com pares</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+    <div class="creator-card" style="text-align:center">
+      <p style="font-size:12px;color:var(--color-text-secondary)">@beleza_real (Nano)</p>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:8px 0">20% / 20% =</p>
+      <div class="gf-badge gf-mid">G = 1.00</div>
+      <p class="lbl" style="margin-top:8px">Exatamente mediano no grupo</p>
+    </div>
+    <div class="creator-card" style="text-align:center">
+      <p style="font-size:12px;color:var(--color-text-secondary)">@megainfluencer (Mega)</p>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:8px 0">20% / 2.5% =</p>
+      <div class="gf-badge gf-above">G = 8.00</div>
+      <p class="lbl" style="margin-top:8px">800% acima da mediana do grupo</p>
+    </div>
+  </div>
+  <div class="insight-strip">O mesmo ER de 20% significa coisas completamente diferentes. <b>O Mega creator esta 8x acima do seu grupo — e um outlier extraordinario.</b> O Nano esta na media.</div>
+</div>
+
+<div id="panel-4" style="display:none">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-bottom:14px">Como ler o G-Factor — escala de referencia rapida.</p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--border-radius-md);background:var(--color-background-danger);border:0.5px solid var(--color-border-tertiary)">
+      <span style="font-size:18px;font-weight:500;color:var(--color-text-danger);min-width:52px">G &lt; 0.8</span>
+      <div><p style="font-size:13px;font-weight:500;color:var(--color-text-danger);margin:0">Abaixo da media</p><p class="lbl" style="margin:0">Evite esse creator para patrocinio</p></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary)">
+      <span style="font-size:18px;font-weight:500;color:var(--color-text-secondary);min-width:52px">G = 1.0</span>
+      <div><p style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin:0">Mediano — referencia</p><p class="lbl" style="margin:0">Desempenho esperado para o contexto</p></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--border-radius-md);background:var(--color-background-warning);border:0.5px solid var(--color-border-tertiary)">
+      <span style="font-size:18px;font-weight:500;color:var(--color-text-warning);min-width:52px">G &ge; 1.05</span>
+      <div><p style="font-size:13px;font-weight:500;color:var(--color-text-warning);margin:0">Acima da media</p><p class="lbl" style="margin:0">Threshold minimo para fechar deal</p></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--border-radius-md);background:var(--color-background-success);border:0.5px solid var(--color-border-tertiary)">
+      <span style="font-size:18px;font-weight:500;color:var(--color-text-success);min-width:52px">G &ge; 1.20</span>
+      <div><p style="font-size:13px;font-weight:500;color:var(--color-text-success);margin:0">Outlier positivo</p><p class="lbl" style="margin:0">Creator de alto valor — prioridade maxima</p></div>
+    </div>
+  </div>
+  <button class="step-btn" style="margin-top:14px;width:100%" onclick="sendPrompt('Como posso calcular o G-Factor dos meus creators parceiros com o arquivo lift_roi_5plat.csv?')">Como filtrar meus creators pelo G-Factor &#x2197;</button>
+</div>
+
+</div>
+
+<script>
+var current = 0;
+var total = 5;
+
+function goStep(n) {
+  document.getElementById('panel-' + current).style.display = 'none';
+  document.getElementById('d' + current).classList.remove('active');
+  current = n;
+  document.getElementById('panel-' + current).style.display = 'block';
+  document.getElementById('d' + current).classList.add('active');
+}
+
+function next() { goStep((current + 1) % total); }
+function prev() { goStep((current - 1 + total) % total); }
+</script>
