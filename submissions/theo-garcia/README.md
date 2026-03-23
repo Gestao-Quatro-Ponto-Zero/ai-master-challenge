@@ -173,10 +173,19 @@ streamlit run app.py
 
 | Ferramenta | Para que usei |
 |---|---|
-| Claude Code (Opus 4.6) | Analise exploratoria, feature engineering, dashboard, iteracao em tempo real |
+| Claude Code (Opus 4.6) | Motor principal — analise, feature engineering, dashboard |
+| OpenClaw (multi-agente) | Orquestracao paralela — decomposicao, validacao de hipoteses, revisao de entregaveis |
 | Python 3.11 + Pandas | Manipulacao de dados e integracao cross-table |
 | Plotly + Streamlit | Visualizacoes interativas e dashboard web |
 | Scikit-learn | Random Forest, K-Means, StandardScaler |
+
+### Rastreio completo de uso de IA
+
+→ **[`docs/IA_TRACE.md`](docs/IA_TRACE.md)** — trace detalhado por fase: ferramenta usada, o que pedi, o que a IA fez, onde errou, como corrigi, evidencia
+
+→ **[`process-log/iterations/`](process-log/iterations/)** — 3 momentos-chave documentados com dialogo e julgamento humano
+
+→ **[`process-log/prompts/`](process-log/prompts/)** — decisoes por fase (5 arquivos)
 
 ### Workflow
 
@@ -206,12 +215,15 @@ Documentado em detalhe em [`process-log/workflow.md`](process-log/workflow.md). 
 - Priorizacao de recomendacoes por impacto em MRR vs esforco vs prazo
 - Arquitetura da analise: segmentos > ML neste caso
 
-## Evidencias
+## Evidencias de Processo
 
-- [x] Git history com commits semanticos mostrando evolucao
-- [x] Process log detalhado (`process-log/workflow.md`)
-- [x] Notebooks comentados com raciocinio analitico (4 notebooks)
+- [x] Rastreio de IA por fase com correcoes documentadas (`docs/IA_TRACE.md`)
+- [x] 3 iteracoes-chave com dialogo humano-IA (`process-log/iterations/`)
+- [x] 5 prompt files com decisoes por fase (`process-log/prompts/`)
+- [x] Process log narrativo com 27 iteracoes (`process-log/workflow.md`)
+- [x] 4 notebooks comentados com raciocinio analitico
 - [x] Dashboard interativo funcional (`streamlit run app.py`)
+- [x] Git history com commits semanticos mostrando evolucao
 
 ---
 
@@ -232,21 +244,25 @@ Documentado em detalhe em [`process-log/workflow.md`](process-log/workflow.md). 
 
 ```
 submissions/theo-garcia/
-├── README.md                    # Este arquivo
-├── executive_summary.md         # One-pager executivo (CEO-ready)
-├── requirements.txt             # Dependências Python
-├── app.py                       # Dashboard Streamlit (3 abas)
+├── README.md
+├── executive_summary.md              # One-pager executivo (CEO-ready)
+├── requirements.txt
+├── app.py                            # Dashboard Streamlit (3 abas)
 ├── data/
-│   ├── churn_scores.csv         # 500 contas rankeadas por risco + top 3 fatores
-│   ├── master_churn_analysis.csv # Master table (500x63)
+│   ├── churn_scores.csv              # 500 contas rankeadas por risco
+│   ├── master_churn_analysis.csv     # Master table (500x63)
 │   └── [5 CSVs originais]
 ├── notebooks/
 │   ├── 01_data_exploration.py
 │   ├── 02_data_integration.py
 │   ├── 03_root_cause_analysis.py
 │   └── 04_risk_segmentation.py
+├── docs/
+│   └── IA_TRACE.md                   # Rastreio completo de uso de IA
 ├── process-log/
-│   └── workflow.md
+│   ├── workflow.md                   # Narrativa geral (27 iteracoes)
+│   ├── prompts/                      # Decisoes por fase (5 arquivos)
+│   └── iterations/                   # Momentos-chave humano-IA (3 arquivos)
 └── assets/
 ```
 
