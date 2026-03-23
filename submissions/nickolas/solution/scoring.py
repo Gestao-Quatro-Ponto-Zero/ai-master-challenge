@@ -83,3 +83,9 @@ def calculate_score(deal):
         "reasons": reasons,
         "actions": actions
     }
+if score >= 70:
+    priority = "Alta"
+elif score >= 40:
+    priority = "Média"
+else:
+    priority = "Baixa"
