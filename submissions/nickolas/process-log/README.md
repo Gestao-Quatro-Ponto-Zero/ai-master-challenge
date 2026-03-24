@@ -95,7 +95,14 @@ Refatorei a solução para usar diretamente:
   - revenue → ICP  
   - close_value → impacto  
   - datas → timing  
-  - stage → avanço  
+  - stage → avanço
+  - **Resposta da IA (trecho real):**
+
+> "Você pode usar proxies de negócio para construir o score:
+> - revenue como indicador de ICP
+> - close_value como impacto financeiro
+> - datas para calcular o ciclo de vendas
+> - estágio como indicador de maturidade do deal"
 
 **Decisão:**
 Implementei scoring baseado nessas variáveis reais.
