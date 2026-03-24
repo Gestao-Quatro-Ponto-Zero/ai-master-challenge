@@ -1,0 +1,6 @@
+## Prompt 1
+"Explique feature importance em modelos de churn"
+
+## Output (resumo)
+- importance_gain = impacto no split...
+- importance_weight = frequência...
