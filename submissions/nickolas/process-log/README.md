@@ -134,6 +134,42 @@ A receita das contas (revenue) permite segmentar empresas em diferentes níveis 
 O estágio do funil (deal_stage) indica claramente o nível de maturidade da oportunidade
 O tempo entre engage_date e close_date permite inferir urgência e velocidade do ciclo de venda
 
+7. Ajustes após review
+
+Após a nova revisão, refinei a modelagem para torná-la mais aderente ao comportamento real do pipeline.
+
+### Ajuste 1 — Remoção do proxy de timing
+
+Inicialmente, utilizei `close_date - engage_date` como proxy de urgência.
+
+Após o feedback, reconheci que essa variável não representa urgência real do cliente. Ela pode refletir apenas uma data estimada ou preenchida manualmente no CRM, sem evidência de comportamento comercial.
+
+**Decisão:**
+Removi timing do score nesta versão.
+
+### Ajuste 2 — Exclusão de `Won` e `Lost` da priorização ativa
+
+A primeira versão atribuía pontuação a estágios finais como `Won` e `Lost`.
+
+Após revisão, ficou claro que isso misturava oportunidades encerradas com deals ativos, prejudicando a priorização operacional.
+
+**Decisão:**
+Mantive `Won` e `Lost` apenas como contexto do dataset, mas removi esses estágios do ranking final de deals a priorizar.
+
+### Ajuste 3 — Substituição de limiares fixos por calibração nos dados
+
+A primeira versão usava cortes fixos para `revenue` e `close_value`.
+
+Após o feedback, refatorei a solução para calibrar os thresholds com base na distribuição real do dataset, usando percentis.
+
+**Decisão:**
+Passei a usar:
+- percentil 75 → faixa alta
+- percentil 40 → faixa intermediária
+- abaixo disso → faixa baixa
+
+Isso deixou o score menos arbitrário e mais defensável com base nos próprios dados do challenge.
+
 Essa análise orientou a construção do modelo de scoring, garantindo que as regras fossem baseadas em padrões observáveis nos dados reais.
 
 Decisão:
