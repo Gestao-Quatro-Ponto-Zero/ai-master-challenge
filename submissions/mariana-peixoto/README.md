@@ -119,12 +119,86 @@ Os dados CSV são lidos de `web/data/` na inicialização. Nenhuma configuraçã
 
 ## Evidências
 
-- [x] Screenshots dos designs gerados pelo Stitch — `evidence/screenshots/`
-- [x] Prompt usado no Stitch — `assets/stitch_prompt.md`
-- [x] Git history do desenvolvimento — `git log`
-- [ ] Screen recording do workflow — _a adicionar_
-- [ ] Chat exports — _a adicionar_
+### Designs gerados pelo Stitch
+
+![Dashboard Principal](process-log/screenshots/01_stitch_main_dashboard.png)
+*Dashboard principal — sidebar com métricas, tabela com score badges, filtros*
+
+![Empty State](process-log/screenshots/02_stitch_empty_state.png)
+*Empty state — ilustração neon e botão de reset de filtros*
+
+![Manager View](process-log/screenshots/03_stitch_manager_view.png)
+*Manager view — KPIs, leaderboard de vendedores, deals por rep*
+
+![Deal Breakdown](process-log/screenshots/04_stitch_deal_breakdown.png)
+*Deal breakdown — score 87/100, fatores explicados, ação recomendada*
+
+![Variações geradas pelo Stitch](process-log/screenshots/05_stitch_variations_geradas.png)
+*Variações geradas pelo Stitch — processo de curadoria do design*
 
 ---
 
-_Submissão enviada em: 2026-03-23_
+### Conversa real com Claude Code
+
+![Estrutura de pastas](process-log/screenshots/06_chat_estrutura_pastas.png)
+*Claude Code criando estrutura de pastas e recomendando Opção B*
+
+![Prompt do Stitch](process-log/screenshots/07_chat_prompt_stitch_criado.png)
+*Claude Code escrevendo o prompt para o Stitch*
+
+![Antigravity Kit](process-log/screenshots/08_chat_antigravity_kit.png)
+*Inclusão do Antigravity Kit na submissão*
+
+![Ferramentas usadas](process-log/screenshots/09_chat_ferramentas_usadas.png)
+*Tabela de ferramentas usadas preenchida*
+
+![Workflow](process-log/screenshots/10_chat_workflow.png)
+*As 9 etapas do workflow documentadas*
+
+![Decisões humanas](process-log/screenshots/11_chat_decisoes_humanas.png)
+*O que eu adicionei que a IA sozinha não faria*
+
+---
+
+### Sistema rodando (localhost:3000/lead-scorer)
+
+![Dashboard todos os deals ativos](process-log/screenshots/12_dashboard_todos_ativos.png)
+*2.089 deals ativos ranqueados por score*
+
+![Filtro Engajando](process-log/screenshots/13_dashboard_filtro_engajando.png)
+*Filtro "Engajando" ativo — 1.589 deals, score médio 36*
+
+![Filtro Prospecção](process-log/screenshots/14_dashboard_filtro_prospeccao.png)
+*Filtro "Prospecção" ativo — 500 deals*
+
+![Dropdown Regiões](process-log/screenshots/15_dashboard_dropdown_regioes.png)
+*Dropdown de regiões — Central, Leste, Oeste*
+
+![Dropdown Managers](process-log/screenshots/16_dashboard_dropdown_managers.png)
+*Dropdown de managers com os 6 gestores*
+
+![Dropdown Vendedores](process-log/screenshots/17_dashboard_dropdown_vendedores.png)
+*Dropdown de vendedores com scroll — 35 vendedores*
+
+![Dropdown Ordenação](process-log/screenshots/18_dashboard_dropdown_ordenacao.png)
+*Ordenação — Maior/Menor Score, Mais Recentes/Antigos*
+
+![Deal Detalhes Score](process-log/screenshots/19_dashboard_deal_detalhes_score.png)
+*Painel de detalhes — score 69/100 com 5 fatores explicados*
+
+![Agente de IA](process-log/screenshots/20_dashboard_deal_agente_ia.png)
+*Ação Recomendada + Estratégia do Agente de IA*
+
+---
+
+### Outros artefatos
+
+- [x] Prompt completo usado no Stitch — [`../../submission/assets/stitch_prompt.md`](../../submission/assets/stitch_prompt.md)
+- [x] Log detalhado da sessão com Claude Code — [`process-log/chat-export.md`](process-log/chat-export.md)
+- [x] Walkthrough do processo — [`process-log/walkthrough.md`](process-log/walkthrough.md)
+- [x] Git history do desenvolvimento — `git log --oneline`
+- [x] Screen recording substituído por 27 screenshots sequenciais cobrindo todo o workflow — `process-log/screenshots/`
+
+---
+
+_Submissão enviada em: 2026-03-24_

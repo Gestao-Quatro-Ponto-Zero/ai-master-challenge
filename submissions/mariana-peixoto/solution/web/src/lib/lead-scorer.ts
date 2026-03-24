@@ -108,11 +108,11 @@ export function loadAndScoreDeals(): { deals: Deal[]; summary: Summary } {
     const salesPrice = parseFloat(product.sales_price) || 0;
     const winRate = agentWinRates[deal.sales_agent] || 0;
 
-    const engageDate = new Date(deal.engage_date);
-    const daysInPipeline = Math.max(
+    const engageDate = deal.engage_date ? new Date(deal.engage_date) : null;
+    const daysInPipeline = (engageDate && !isNaN(engageDate.getTime())) ? Math.max(
       0,
       Math.floor((REFERENCE_DATE.getTime() - engageDate.getTime()) / (1000 * 60 * 60 * 24))
-    );
+    ) : 0;
 
     const factors: ScoreFactor[] = [];
     let totalScore = 0;
