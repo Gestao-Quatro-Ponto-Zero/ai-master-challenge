@@ -1,0 +1,44 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-primary:    #0F1117;
+  --bg-card:       #1C1F2E;
+  --bg-card-hover: #252839;
+  --border:        #2A2D3E;
+  --text-primary:  #E8E9ED;
+  --text-secondary:#8B8FA8;
+  --text-muted:    #555870;
+  --green:         #1D9E75;
+  --amber:         #F0A500;
+  --red:           #E24B4A;
+  --blue-accent:   #4F8EF7;
+  --green-subtle:  #0D2E22;
+  --amber-subtle:  #2E2200;
+  --red-subtle:    #2E0D0D;
+
+  /* Legado — mantidos para compatibilidade */
+  --alta:    #1D9E75;
+  --media:   #F0A500;
+  --baixa:   #E24B4A;
+  --surface: #1C1F2E;
+  --bg:      #0F1117;
+  --text-1:  #E8E9ED;
+  --text-2:  #8B8FA8;
+  --text-3:  #555870;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font-family: inherit; }
+button { cursor: pointer; }
+
+/* Scrollbar sutil */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }

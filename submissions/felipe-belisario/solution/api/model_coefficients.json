@@ -1,0 +1,2946 @@
+{
+  "intercept": 0.5731110086933273,
+  "coefficients": {
+    "wr_agent_product": 0.3018915988040685,
+    "wr_agent_recent": -0.0036174193512813835,
+    "wr_agent_sector": 0.41112194688446935
+  },
+  "scaler_mean": [
+    0.6316265172075748,
+    0.7738915797317542,
+    0.630742562021459
+  ],
+  "scaler_std": [
+    0.08112245173361936,
+    0.10691306420267933,
+    0.10061024191379662
+  ],
+  "features": [
+    "wr_agent_product",
+    "wr_agent_recent",
+    "wr_agent_sector"
+  ],
+  "min_deals_for_score": 10,
+  "ap_stats": [
+    {
+      "sales_agent": "Anna Snelling",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6274509803921569,
+      "n_agent_product": 51
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5208333333333334,
+      "n_agent_product": 48
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5833333333333334,
+      "n_agent_product": 48
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.4666666666666667,
+      "n_agent_product": 45
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "product": "MG Special",
+      "wr_agent_product": 0.7083333333333334,
+      "n_agent_product": 144
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6538461538461539,
+      "n_agent_product": 26
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 42
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.6206896551724138,
+      "n_agent_product": 29
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.7391304347826086,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.631578947368421,
+      "n_agent_product": 19
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "product": "MG Special",
+      "wr_agent_product": 0.6428571428571429,
+      "n_agent_product": 14
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.603448275862069,
+      "n_agent_product": 58
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6046511627906976,
+      "n_agent_product": 43
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5625,
+      "n_agent_product": 32
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.7169811320754716,
+      "n_agent_product": 53
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 60
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "product": "MG Special",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 15
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 24
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.8,
+      "n_agent_product": 20
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.6296296296296297,
+      "n_agent_product": 27
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.66,
+      "n_agent_product": 50
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "product": "MG Special",
+      "wr_agent_product": 0.6410256410256411,
+      "n_agent_product": 39
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "GTK 500",
+      "wr_agent_product": 0.0,
+      "n_agent_product": 1
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 54
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6136363636363636,
+      "n_agent_product": 44
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.7894736842105263,
+      "n_agent_product": 38
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6727272727272727,
+      "n_agent_product": 55
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.42857142857142855,
+      "n_agent_product": 21
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "product": "MG Special",
+      "wr_agent_product": 0.6875,
+      "n_agent_product": 16
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6111111111111112,
+      "n_agent_product": 18
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5849056603773585,
+      "n_agent_product": 53
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 27
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.7017543859649122,
+      "n_agent_product": 57
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.36363636363636365,
+      "n_agent_product": 22
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "product": "MG Special",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 10
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "GTK 500",
+      "wr_agent_product": 0.0,
+      "n_agent_product": 1
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6792452830188679,
+      "n_agent_product": 53
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6746987951807228,
+      "n_agent_product": 83
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.7021276595744681,
+      "n_agent_product": 47
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6037735849056604,
+      "n_agent_product": 265
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5901639344262295,
+      "n_agent_product": 61
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "product": "MG Special",
+      "wr_agent_product": 0.6511627906976745,
+      "n_agent_product": 43
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6081081081081081,
+      "n_agent_product": 74
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5121951219512195,
+      "n_agent_product": 41
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5666666666666667,
+      "n_agent_product": 30
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.547945205479452,
+      "n_agent_product": 73
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 48
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "product": "MG Special",
+      "wr_agent_product": 0.3333333333333333,
+      "n_agent_product": 9
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "GTK 500",
+      "wr_agent_product": 0.5833333333333334,
+      "n_agent_product": 12
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.8125,
+      "n_agent_product": 16
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.7142857142857143,
+      "n_agent_product": 7
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.16666666666666666,
+      "n_agent_product": 6
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.8,
+      "n_agent_product": 10
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5416666666666666,
+      "n_agent_product": 24
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "product": "MG Special",
+      "wr_agent_product": 0.6470588235294118,
+      "n_agent_product": 51
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.5161290322580645,
+      "n_agent_product": 31
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 12
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5217391304347826,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.65,
+      "n_agent_product": 20
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.7272727272727273,
+      "n_agent_product": 22
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "product": "MG Special",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 15
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.5384615384615384,
+      "n_agent_product": 26
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6206896551724138,
+      "n_agent_product": 29
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.56,
+      "n_agent_product": 25
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.52,
+      "n_agent_product": 50
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6226415094339622,
+      "n_agent_product": 53
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "product": "MG Special",
+      "wr_agent_product": 0.6122448979591837,
+      "n_agent_product": 49
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5238095238095238,
+      "n_agent_product": 42
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.9,
+      "n_agent_product": 10
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.7662337662337663,
+      "n_agent_product": 77
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "product": "MG Special",
+      "wr_agent_product": 0.7391304347826086,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6296296296296297,
+      "n_agent_product": 54
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6086956521739131,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.6875,
+      "n_agent_product": 64
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6060606060606061,
+      "n_agent_product": 33
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.75,
+      "n_agent_product": 16
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "product": "MG Special",
+      "wr_agent_product": 0.6875,
+      "n_agent_product": 16
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6454545454545455,
+      "n_agent_product": 110
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6296296296296297,
+      "n_agent_product": 54
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.625,
+      "n_agent_product": 8
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6458333333333334,
+      "n_agent_product": 48
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 18
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "product": "MG Special",
+      "wr_agent_product": 0.8076923076923077,
+      "n_agent_product": 26
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6574074074074074,
+      "n_agent_product": 108
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.52,
+      "n_agent_product": 50
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.8333333333333334,
+      "n_agent_product": 18
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.5476190476190477,
+      "n_agent_product": 42
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6923076923076923,
+      "n_agent_product": 26
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "product": "MG Special",
+      "wr_agent_product": 0.75,
+      "n_agent_product": 28
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6356589147286822,
+      "n_agent_product": 129
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5882352941176471,
+      "n_agent_product": 51
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.6451612903225806,
+      "n_agent_product": 31
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6493506493506493,
+      "n_agent_product": 77
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.4444444444444444,
+      "n_agent_product": 18
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "product": "MG Special",
+      "wr_agent_product": 0.6551724137931034,
+      "n_agent_product": 29
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.5714285714285714,
+      "n_agent_product": 98
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 25
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5882352941176471,
+      "n_agent_product": 17
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.509090909090909,
+      "n_agent_product": 55
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "product": "MG Special",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 36
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "GTK 500",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 5
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6170212765957447,
+      "n_agent_product": 47
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5675675675675675,
+      "n_agent_product": 37
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 14
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 30
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 40
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "product": "MG Special",
+      "wr_agent_product": 0.5185185185185185,
+      "n_agent_product": 54
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6538461538461539,
+      "n_agent_product": 26
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.625,
+      "n_agent_product": 56
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.71875,
+      "n_agent_product": 32
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.625,
+      "n_agent_product": 16
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.4878048780487805,
+      "n_agent_product": 41
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "product": "MG Special",
+      "wr_agent_product": 0.7391304347826086,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.5609756097560976,
+      "n_agent_product": 41
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.7428571428571429,
+      "n_agent_product": 70
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.8125,
+      "n_agent_product": 32
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.7666666666666667,
+      "n_agent_product": 30
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5882352941176471,
+      "n_agent_product": 17
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "product": "MG Special",
+      "wr_agent_product": 0.6521739130434783,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.7966101694915254,
+      "n_agent_product": 59
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.7083333333333334,
+      "n_agent_product": 24
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5416666666666666,
+      "n_agent_product": 24
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6190476190476191,
+      "n_agent_product": 42
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "product": "MG Special",
+      "wr_agent_product": 0.5652173913043478,
+      "n_agent_product": 46
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6037735849056604,
+      "n_agent_product": 53
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6481481481481481,
+      "n_agent_product": 54
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.8,
+      "n_agent_product": 15
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.14285714285714285,
+      "n_agent_product": 14
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.7058823529411765,
+      "n_agent_product": 17
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "product": "MG Special",
+      "wr_agent_product": 0.5454545454545454,
+      "n_agent_product": 22
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6486486486486487,
+      "n_agent_product": 37
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 42
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5625,
+      "n_agent_product": 32
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 63
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6363636363636364,
+      "n_agent_product": 44
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "product": "MG Special",
+      "wr_agent_product": 0.7894736842105263,
+      "n_agent_product": 19
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "GTK 500",
+      "wr_agent_product": 0.8333333333333334,
+      "n_agent_product": 6
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 15
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.8,
+      "n_agent_product": 5
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 2
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.8571428571428571,
+      "n_agent_product": 7
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6956521739130435,
+      "n_agent_product": 23
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "product": "MG Special",
+      "wr_agent_product": 0.5769230769230769,
+      "n_agent_product": 52
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.7777777777777778,
+      "n_agent_product": 9
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 6
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5555555555555556,
+      "n_agent_product": 18
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.8064516129032258,
+      "n_agent_product": 31
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5416666666666666,
+      "n_agent_product": 24
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "product": "MG Special",
+      "wr_agent_product": 0.6060606060606061,
+      "n_agent_product": 33
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.65,
+      "n_agent_product": 20
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 8
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.7142857142857143,
+      "n_agent_product": 21
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5869565217391305,
+      "n_agent_product": 46
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "product": "MG Special",
+      "wr_agent_product": 0.6923076923076923,
+      "n_agent_product": 169
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6746987951807228,
+      "n_agent_product": 83
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6842105263157895,
+      "n_agent_product": 19
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5925925925925926,
+      "n_agent_product": 27
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6779661016949152,
+      "n_agent_product": 59
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.569620253164557,
+      "n_agent_product": 79
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "product": "MG Special",
+      "wr_agent_product": 0.6375,
+      "n_agent_product": 80
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6,
+      "n_agent_product": 25
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.5882352941176471,
+      "n_agent_product": 17
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.4,
+      "n_agent_product": 5
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.5555555555555556,
+      "n_agent_product": 9
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.6551724137931034,
+      "n_agent_product": 29
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "product": "MG Special",
+      "wr_agent_product": 0.6574074074074074,
+      "n_agent_product": 108
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.75,
+      "n_agent_product": 12
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 1.0,
+      "n_agent_product": 3
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.5454545454545454,
+      "n_agent_product": 11
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6923076923076923,
+      "n_agent_product": 13
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.7241379310344828,
+      "n_agent_product": 29
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "product": "MG Special",
+      "wr_agent_product": 0.6363636363636364,
+      "n_agent_product": 11
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "product": "GTX Basic",
+      "wr_agent_product": 0.6075949367088608,
+      "n_agent_product": 79
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "product": "GTX Plus Basic",
+      "wr_agent_product": 0.6046511627906976,
+      "n_agent_product": 43
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "product": "GTX Plus Pro",
+      "wr_agent_product": 0.65625,
+      "n_agent_product": 32
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "product": "GTX Pro",
+      "wr_agent_product": 0.6666666666666666,
+      "n_agent_product": 69
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "product": "MG Advanced",
+      "wr_agent_product": 0.5555555555555556,
+      "n_agent_product": 18
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "product": "MG Special",
+      "wr_agent_product": 0.5,
+      "n_agent_product": 20
+    }
+  ],
+  "recent_stats": [
+    {
+      "sales_agent": "Anna Snelling",
+      "wr_agent_recent": 0.9
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "wr_agent_recent": 0.85
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "wr_agent_recent": 0.65
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "wr_agent_recent": 0.8
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "wr_agent_recent": 0.6
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "wr_agent_recent": 0.7
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "wr_agent_recent": 0.8
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "wr_agent_recent": 0.7
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "wr_agent_recent": 0.65
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "wr_agent_recent": 0.45
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "wr_agent_recent": 0.8
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "wr_agent_recent": 0.85
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "wr_agent_recent": 0.9
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "wr_agent_recent": 0.7
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "wr_agent_recent": 0.85
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "wr_agent_recent": 0.65
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "wr_agent_recent": 0.75
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "wr_agent_recent": 0.85
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "wr_agent_recent": 0.75
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "wr_agent_recent": 0.9
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "wr_agent_recent": 1.0
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "wr_agent_recent": 0.8
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "wr_agent_recent": 0.65
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "wr_agent_recent": 0.85
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "wr_agent_recent": 0.6
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "wr_agent_recent": 0.85
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "wr_agent_recent": 0.75
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "wr_agent_recent": 0.8
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "wr_agent_recent": 0.65
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "wr_agent_recent": 0.9
+    }
+  ],
+  "sector_stats": [
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "employment",
+      "wr_agent_sector": 0.5384615384615384,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "finance",
+      "wr_agent_sector": 0.4857142857142857,
+      "n_agent_sector": 35
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6428571428571429,
+      "n_agent_sector": 42
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "medical",
+      "wr_agent_sector": 0.625,
+      "n_agent_sector": 64
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "retail",
+      "wr_agent_sector": 0.6136363636363636,
+      "n_agent_sector": 44
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "services",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "software",
+      "wr_agent_sector": 0.64,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6935483870967742,
+      "n_agent_sector": 62
+    },
+    {
+      "sales_agent": "Anna Snelling",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5517241379310345,
+      "n_agent_sector": 29
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "employment",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 5
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.42857142857142855,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "finance",
+      "wr_agent_sector": 0.35294117647058826,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "medical",
+      "wr_agent_sector": 0.7777777777777778,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "retail",
+      "wr_agent_sector": 0.7142857142857143,
+      "n_agent_sector": 35
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "software",
+      "wr_agent_sector": 0.8095238095238095,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6756756756756757,
+      "n_agent_sector": 37
+    },
+    {
+      "sales_agent": "Boris Faz",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.0,
+      "n_agent_sector": 1
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "employment",
+      "wr_agent_sector": 0.8571428571428571,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "finance",
+      "wr_agent_sector": 0.5806451612903226,
+      "n_agent_sector": 31
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "marketing",
+      "wr_agent_sector": 0.47368421052631576,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "medical",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 35
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "retail",
+      "wr_agent_sector": 0.671875,
+      "n_agent_sector": 64
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "software",
+      "wr_agent_sector": 0.6333333333333333,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6222222222222222,
+      "n_agent_sector": 45
+    },
+    {
+      "sales_agent": "Cassey Cress",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "employment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.8,
+      "n_agent_sector": 5
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "finance",
+      "wr_agent_sector": 0.8,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6818181818181818,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "medical",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 33
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "retail",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 24
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "services",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "software",
+      "wr_agent_sector": 0.9166666666666666,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6428571428571429,
+      "n_agent_sector": 28
+    },
+    {
+      "sales_agent": "Cecily Lampkin",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5555555555555556,
+      "n_agent_sector": 9
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "employment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.7333333333333333,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "finance",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "medical",
+      "wr_agent_sector": 0.7142857142857143,
+      "n_agent_sector": 28
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "retail",
+      "wr_agent_sector": 0.5873015873015873,
+      "n_agent_sector": 63
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "software",
+      "wr_agent_sector": 0.5517241379310345,
+      "n_agent_sector": 29
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6739130434782609,
+      "n_agent_sector": 46
+    },
+    {
+      "sales_agent": "Corliss Cosme",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.875,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "employment",
+      "wr_agent_sector": 0.8571428571428571,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.4375,
+      "n_agent_sector": 16
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "finance",
+      "wr_agent_sector": 0.6923076923076923,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6428571428571429,
+      "n_agent_sector": 14
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "medical",
+      "wr_agent_sector": 0.5384615384615384,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "retail",
+      "wr_agent_sector": 0.5454545454545454,
+      "n_agent_sector": 44
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "software",
+      "wr_agent_sector": 0.5238095238095238,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.7368421052631579,
+      "n_agent_sector": 38
+    },
+    {
+      "sales_agent": "Daniell Hammack",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "employment",
+      "wr_agent_sector": 0.5333333333333333,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6470588235294118,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "finance",
+      "wr_agent_sector": 0.65625,
+      "n_agent_sector": 64
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "marketing",
+      "wr_agent_sector": 0.671875,
+      "n_agent_sector": 64
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "medical",
+      "wr_agent_sector": 0.5849056603773585,
+      "n_agent_sector": 106
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "retail",
+      "wr_agent_sector": 0.6756756756756757,
+      "n_agent_sector": 74
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "services",
+      "wr_agent_sector": 0.7916666666666666,
+      "n_agent_sector": 24
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "software",
+      "wr_agent_sector": 0.6181818181818182,
+      "n_agent_sector": 55
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6195652173913043,
+      "n_agent_sector": 92
+    },
+    {
+      "sales_agent": "Darcel Schlecht",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5476190476190477,
+      "n_agent_sector": 42
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "employment",
+      "wr_agent_sector": 0.46153846153846156,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.47368421052631576,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "finance",
+      "wr_agent_sector": 0.5238095238095238,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "marketing",
+      "wr_agent_sector": 0.375,
+      "n_agent_sector": 16
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "medical",
+      "wr_agent_sector": 0.6216216216216216,
+      "n_agent_sector": 37
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "retail",
+      "wr_agent_sector": 0.6493506493506493,
+      "n_agent_sector": 77
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "software",
+      "wr_agent_sector": 0.5588235294117647,
+      "n_agent_sector": 34
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6458333333333334,
+      "n_agent_sector": 48
+    },
+    {
+      "sales_agent": "Donn Cantrell",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.3,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "employment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "finance",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "marketing",
+      "wr_agent_sector": 0.0,
+      "n_agent_sector": 3
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "medical",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "retail",
+      "wr_agent_sector": 0.6333333333333333,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "services",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "software",
+      "wr_agent_sector": 0.6111111111111112,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Elease Gluck",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.631578947368421,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "employment",
+      "wr_agent_sector": 0.3333333333333333,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "finance",
+      "wr_agent_sector": 0.5384615384615384,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "marketing",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "medical",
+      "wr_agent_sector": 0.5384615384615384,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "retail",
+      "wr_agent_sector": 0.5806451612903226,
+      "n_agent_sector": 31
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "software",
+      "wr_agent_sector": 0.6842105263157895,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.7222222222222222,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Garret Kinder",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 2
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "employment",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "finance",
+      "wr_agent_sector": 0.6896551724137931,
+      "n_agent_sector": 29
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6571428571428571,
+      "n_agent_sector": 35
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "medical",
+      "wr_agent_sector": 0.5869565217391305,
+      "n_agent_sector": 46
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "retail",
+      "wr_agent_sector": 0.5428571428571428,
+      "n_agent_sector": 35
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "services",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 9
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "software",
+      "wr_agent_sector": 0.5294117647058824,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.43902439024390244,
+      "n_agent_sector": 41
+    },
+    {
+      "sales_agent": "Gladys Colclough",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "employment",
+      "wr_agent_sector": 0.8571428571428571,
+      "n_agent_sector": 14
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "finance",
+      "wr_agent_sector": 0.625,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "marketing",
+      "wr_agent_sector": 0.8181818181818182,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "medical",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "retail",
+      "wr_agent_sector": 0.7222222222222222,
+      "n_agent_sector": 36
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "services",
+      "wr_agent_sector": 0.5555555555555556,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "software",
+      "wr_agent_sector": 0.6428571428571429,
+      "n_agent_sector": 14
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.7142857142857143,
+      "n_agent_sector": 14
+    },
+    {
+      "sales_agent": "Hayden Neloms",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "employment",
+      "wr_agent_sector": 0.6923076923076923,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "finance",
+      "wr_agent_sector": 0.47058823529411764,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6818181818181818,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "medical",
+      "wr_agent_sector": 0.55,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "retail",
+      "wr_agent_sector": 0.6818181818181818,
+      "n_agent_sector": 44
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "services",
+      "wr_agent_sector": 0.6956521739130435,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "software",
+      "wr_agent_sector": 0.8235294117647058,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6470588235294118,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "James Ascencio",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "employment",
+      "wr_agent_sector": 0.3333333333333333,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.7142857142857143,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "finance",
+      "wr_agent_sector": 0.5666666666666667,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "marketing",
+      "wr_agent_sector": 0.5357142857142857,
+      "n_agent_sector": 28
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "medical",
+      "wr_agent_sector": 0.6470588235294118,
+      "n_agent_sector": 34
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "retail",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 32
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "services",
+      "wr_agent_sector": 0.45454545454545453,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "software",
+      "wr_agent_sector": 0.5652173913043478,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.7323943661971831,
+      "n_agent_sector": 71
+    },
+    {
+      "sales_agent": "Jonathan Berthelot",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "employment",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.7083333333333334,
+      "n_agent_sector": 24
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "finance",
+      "wr_agent_sector": 0.47058823529411764,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "marketing",
+      "wr_agent_sector": 0.72,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "medical",
+      "wr_agent_sector": 0.72,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "retail",
+      "wr_agent_sector": 0.6111111111111112,
+      "n_agent_sector": 54
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "services",
+      "wr_agent_sector": 0.6153846153846154,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "software",
+      "wr_agent_sector": 0.7307692307692307,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Kami Bicknell",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.48148148148148145,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "employment",
+      "wr_agent_sector": 0.6153846153846154,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "finance",
+      "wr_agent_sector": 0.8,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "marketing",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "medical",
+      "wr_agent_sector": 0.7333333333333333,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "retail",
+      "wr_agent_sector": 0.5492957746478874,
+      "n_agent_sector": 71
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "services",
+      "wr_agent_sector": 0.631578947368421,
+      "n_agent_sector": 38
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "software",
+      "wr_agent_sector": 0.65,
+      "n_agent_sector": 40
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.5121951219512195,
+      "n_agent_sector": 41
+    },
+    {
+      "sales_agent": "Kary Hendrixson",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.6296296296296297,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "employment",
+      "wr_agent_sector": 0.25,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 3
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "finance",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6206896551724138,
+      "n_agent_sector": 29
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "medical",
+      "wr_agent_sector": 0.49122807017543857,
+      "n_agent_sector": 57
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "retail",
+      "wr_agent_sector": 0.48148148148148145,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "services",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "software",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 24
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6153846153846154,
+      "n_agent_sector": 39
+    },
+    {
+      "sales_agent": "Lajuana Vencill",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.4,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "employment",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.9047619047619048,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "finance",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 16
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "marketing",
+      "wr_agent_sector": 0.5882352941176471,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "medical",
+      "wr_agent_sector": 0.42857142857142855,
+      "n_agent_sector": 14
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "retail",
+      "wr_agent_sector": 0.5306122448979592,
+      "n_agent_sector": 49
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "services",
+      "wr_agent_sector": 0.5454545454545454,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "software",
+      "wr_agent_sector": 0.6538461538461539,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.35714285714285715,
+      "n_agent_sector": 28
+    },
+    {
+      "sales_agent": "Markita Hansen",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.6086956521739131,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "employment",
+      "wr_agent_sector": 0.0,
+      "n_agent_sector": 3
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.8571428571428571,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "finance",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6521739130434783,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "medical",
+      "wr_agent_sector": 0.6410256410256411,
+      "n_agent_sector": 39
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "retail",
+      "wr_agent_sector": 0.5806451612903226,
+      "n_agent_sector": 31
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "services",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "software",
+      "wr_agent_sector": 0.4375,
+      "n_agent_sector": 16
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.5483870967741935,
+      "n_agent_sector": 31
+    },
+    {
+      "sales_agent": "Marty Freudenburg",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.9166666666666666,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "employment",
+      "wr_agent_sector": 0.6086956521739131,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "finance",
+      "wr_agent_sector": 0.5714285714285714,
+      "n_agent_sector": 14
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "marketing",
+      "wr_agent_sector": 0.7777777777777778,
+      "n_agent_sector": 9
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "medical",
+      "wr_agent_sector": 0.7894736842105263,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "retail",
+      "wr_agent_sector": 0.7692307692307693,
+      "n_agent_sector": 39
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "services",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "software",
+      "wr_agent_sector": 0.7241379310344828,
+      "n_agent_sector": 29
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.5789473684210527,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Maureen Marcano",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.7647058823529411,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "employment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "entertainment",
+      "wr_agent_sector": 1.0,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "finance",
+      "wr_agent_sector": 0.7727272727272727,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "marketing",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "medical",
+      "wr_agent_sector": 0.5777777777777777,
+      "n_agent_sector": 45
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "retail",
+      "wr_agent_sector": 0.7407407407407407,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "services",
+      "wr_agent_sector": 0.7272727272727273,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "software",
+      "wr_agent_sector": 0.5555555555555556,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6875,
+      "n_agent_sector": 32
+    },
+    {
+      "sales_agent": "Moses Frase",
+      "sector": "telecommunications",
+      "wr_agent_sector": 1.0,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "employment",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 3
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "finance",
+      "wr_agent_sector": 0.4,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "marketing",
+      "wr_agent_sector": 0.7,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "medical",
+      "wr_agent_sector": 0.625,
+      "n_agent_sector": 32
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "retail",
+      "wr_agent_sector": 0.44,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "services",
+      "wr_agent_sector": 1.0,
+      "n_agent_sector": 3
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "software",
+      "wr_agent_sector": 0.6111111111111112,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6785714285714286,
+      "n_agent_sector": 28
+    },
+    {
+      "sales_agent": "Niesha Huffines",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 16
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "employment",
+      "wr_agent_sector": 0.3333333333333333,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "finance",
+      "wr_agent_sector": 0.6956521739130435,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "medical",
+      "wr_agent_sector": 0.5588235294117647,
+      "n_agent_sector": 34
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "retail",
+      "wr_agent_sector": 0.625,
+      "n_agent_sector": 48
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "software",
+      "wr_agent_sector": 0.8,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6521739130434783,
+      "n_agent_sector": 46
+    },
+    {
+      "sales_agent": "Reed Clapper",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5555555555555556,
+      "n_agent_sector": 9
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "employment",
+      "wr_agent_sector": 0.5555555555555556,
+      "n_agent_sector": 9
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "finance",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "marketing",
+      "wr_agent_sector": 1.0,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "medical",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "retail",
+      "wr_agent_sector": 0.8333333333333334,
+      "n_agent_sector": 24
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "services",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 16
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "software",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Rosalina Dieter",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 11
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "finance",
+      "wr_agent_sector": 0.631578947368421,
+      "n_agent_sector": 19
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "marketing",
+      "wr_agent_sector": 0.9,
+      "n_agent_sector": 10
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "medical",
+      "wr_agent_sector": 0.6470588235294118,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "retail",
+      "wr_agent_sector": 0.72,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "software",
+      "wr_agent_sector": 0.5882352941176471,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.5294117647058824,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Rosie Papadopoulos",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.4,
+      "n_agent_sector": 5
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "employment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.42857142857142855,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "finance",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6744186046511628,
+      "n_agent_sector": 43
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "medical",
+      "wr_agent_sector": 0.7454545454545455,
+      "n_agent_sector": 55
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "retail",
+      "wr_agent_sector": 0.6071428571428571,
+      "n_agent_sector": 28
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "services",
+      "wr_agent_sector": 0.8571428571428571,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "software",
+      "wr_agent_sector": 0.5769230769230769,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6428571428571429,
+      "n_agent_sector": 42
+    },
+    {
+      "sales_agent": "Versie Hillebrand",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.7777777777777778,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "employment",
+      "wr_agent_sector": 0.7727272727272727,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "finance",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 21
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "marketing",
+      "wr_agent_sector": 0.8,
+      "n_agent_sector": 25
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "medical",
+      "wr_agent_sector": 0.6296296296296297,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "retail",
+      "wr_agent_sector": 0.6363636363636364,
+      "n_agent_sector": 66
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "services",
+      "wr_agent_sector": 0.4864864864864865,
+      "n_agent_sector": 37
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "software",
+      "wr_agent_sector": 0.55,
+      "n_agent_sector": 40
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6595744680851063,
+      "n_agent_sector": 47
+    },
+    {
+      "sales_agent": "Vicki Laflamme",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.6285714285714286,
+      "n_agent_sector": 35
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "employment",
+      "wr_agent_sector": 0.75,
+      "n_agent_sector": 4
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.6111111111111112,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "finance",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 20
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "marketing",
+      "wr_agent_sector": 0.6,
+      "n_agent_sector": 15
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "medical",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 27
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "retail",
+      "wr_agent_sector": 0.6037735849056604,
+      "n_agent_sector": 53
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "software",
+      "wr_agent_sector": 0.8333333333333334,
+      "n_agent_sector": 12
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6111111111111112,
+      "n_agent_sector": 36
+    },
+    {
+      "sales_agent": "Violet Mclelland",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.625,
+      "n_agent_sector": 8
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "finance",
+      "wr_agent_sector": 1.0,
+      "n_agent_sector": 7
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "marketing",
+      "wr_agent_sector": 0.4,
+      "n_agent_sector": 5
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "medical",
+      "wr_agent_sector": 0.5384615384615384,
+      "n_agent_sector": 13
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "retail",
+      "wr_agent_sector": 0.7727272727272727,
+      "n_agent_sector": 22
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "software",
+      "wr_agent_sector": 0.6666666666666666,
+      "n_agent_sector": 6
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.7777777777777778,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Wilburn Farren",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 2
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "employment",
+      "wr_agent_sector": 0.5652173913043478,
+      "n_agent_sector": 23
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "entertainment",
+      "wr_agent_sector": 0.5,
+      "n_agent_sector": 18
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "finance",
+      "wr_agent_sector": 0.4444444444444444,
+      "n_agent_sector": 9
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "marketing",
+      "wr_agent_sector": 0.5882352941176471,
+      "n_agent_sector": 17
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "medical",
+      "wr_agent_sector": 0.6153846153846154,
+      "n_agent_sector": 26
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "retail",
+      "wr_agent_sector": 0.6444444444444445,
+      "n_agent_sector": 45
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "services",
+      "wr_agent_sector": 0.7058823529411765,
+      "n_agent_sector": 34
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "software",
+      "wr_agent_sector": 0.6333333333333333,
+      "n_agent_sector": 30
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "technolgy",
+      "wr_agent_sector": 0.6060606060606061,
+      "n_agent_sector": 33
+    },
+    {
+      "sales_agent": "Zane Levy",
+      "sector": "telecommunications",
+      "wr_agent_sector": 0.6538461538461539,
+      "n_agent_sector": 26
+    }
+  ]
+}
