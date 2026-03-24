@@ -76,13 +76,13 @@ Abaixo estão exemplos representativos das interações.
 > "Preciso usar os datasets do CRM ou posso criar inputs manuais para o scoring?"
 
 **Resposta (resumo):**
-- é obrigatório usar os dados reais do CRM
-- inputs manuais não atendem ao desafio
+- é obrigatório usar os dados reais do CRM  
+- inputs manuais não atendem ao desafio  
 
 **Decisão:**
 Refatorei a solução para usar diretamente:
-- sales_pipeline.csv
-- accounts.csv
+- sales_pipeline.csv  
+- accounts.csv  
 
 ---
 
@@ -92,10 +92,10 @@ Refatorei a solução para usar diretamente:
 
 **Resposta (resumo):**
 - usar proxies de negócio:
-  - revenue → ICP
-  - close_value → impacto
-  - datas → timing
-  - stage → avanço
+  - revenue → ICP  
+  - close_value → impacto  
+  - datas → timing  
+  - stage → avanço  
 
 **Decisão:**
 Implementei scoring baseado nessas variáveis reais.
@@ -107,26 +107,11 @@ Implementei scoring baseado nessas variáveis reais.
 > "Depois do merge dos dados, faz sentido separar deal e account?"
 
 **Resposta (resumo):**
-- não
-- usar um único objeto simplifica
+- não  
+- usar um único objeto simplifica  
 
 **Decisão:**
 Refatorei para:
-
-```python
-calculate_score(row)
-
-## Exemplo de impacto direto no código
-
-A partir das interações com IA, foram realizadas mudanças concretas na implementação:
-
-Antes:
-- função separava `deal` e `account`
-- uso de inputs manuais (icp_fit, urgency)
-
-Depois:
-- uso direto dos dados do CRM via `row`
-- função refatorada para:
 
 ```python
 calculate_score(row)
