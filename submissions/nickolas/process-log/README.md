@@ -115,3 +115,18 @@ Refatorei para:
 
 ```python
 calculate_score(row)
+
+## Exemplo de impacto direto no código
+
+A partir das interações com IA, foram realizadas mudanças concretas na implementação:
+
+Antes:
+- função separava `deal` e `account`
+- uso de inputs manuais (icp_fit, urgency)
+
+Depois:
+- uso direto dos dados do CRM via `row`
+- função refatorada para:
+
+```python
+calculate_score(row)
