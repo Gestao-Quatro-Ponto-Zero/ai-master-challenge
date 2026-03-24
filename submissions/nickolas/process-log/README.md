@@ -1,127 +1,117 @@
-## Process Log — Lead Scoring IA
+# Process Log — Lead Scoring IA
 
-### 1. Entendimento do problema (decisão inicial)
-Antes de pensar em código, tratei o desafio como um problema de negócio.
+## 1. Visão geral
 
-Minha leitura foi:
-empresas não perdem vendas por falta de leads, mas por priorização errada.
+Este documento registra o processo de construção da solução, evidenciando:
 
-Na prática, isso acontece quando:
-- o lead parece bom, mas não tem dor real
-- o lead demonstra interesse, mas não tem timing
-- o lead quer avançar, mas não tem poder de decisão
+- raciocínio de negócio
+- decisões técnicas
+- uso de IA durante o desenvolvimento
 
-A decisão aqui foi clara:
-não fazia sentido construir um modelo técnico se ele não refletisse comportamento comercial real.
+O objetivo não foi apenas "fazer funcionar", mas construir uma solução:
 
----
-
-### 2. Decomposição do problema (modelagem)
-Quebrei o problema nos fatores que realmente influenciam fechamento:
-
-- ICP Fit (aderência ao perfil ideal)
-- Dor / impacto financeiro
-- Timing (urgência)
-- Estágio do funil
-- Autoridade de decisão
-
-Esses critérios não vieram da IA, mas da minha experiência prática em vendas consultivas.
-
-A IA foi usada para organizar a estrutura, mas não para definir o modelo.
+- explicável
+- aplicável no dia a dia comercial
+- aderente aos requisitos do desafio
 
 ---
 
-### 3. Uso de IA (com validação ativa)
-Utilizei IA como apoio para:
+## 2. Entendimento do problema
 
-- estruturar o raciocínio
-- transformar lógica comercial em código
-- organizar a solução
-- revisar clareza da explicação
+Inicialmente, o desafio foi interpretado como um sistema de scoring baseado em inputs manuais (ex: icp_fit, urgency).
 
-Mas não tratei a IA como fonte de verdade.
+Após análise mais cuidadosa, ficou claro que:
 
-Sempre que recebia uma sugestão, eu:
-- comparava com o objetivo do desafio
-- validava se fazia sentido na prática de vendas
-- ajustava quando percebia generalização ou simplificação excessiva
+- o desafio exige uso dos dados reais do CRM
+- o scoring deve ser derivado dos dados disponíveis
+- o valor está em transformar dados brutos em decisão comercial
+
+Isso levou à reconstrução da solução.
 
 ---
 
-### 4. Iterações e mudança de direção
-Inicialmente, segui uma abordagem mais técnica.
+## 3. Uso dos dados do CRM
 
-Percebi rapidamente que isso levaria a uma solução “correta no papel”, mas pouco útil na prática.
+Foram utilizados diretamente os datasets fornecidos:
 
-A partir disso, mudei a direção:
-- reduzi complexidade técnica
-- aumentei foco em decisão comercial
-- simplifiquei a lógica para torná-la utilizável no dia a dia
+- `sales_pipeline.csv` → oportunidades
+- `accounts.csv` → contexto das contas
 
-Também refinei a estrutura do repositório ao longo do processo para garantir aderência ao padrão exigido.
+Os dados foram integrados via:
 
----
+- `account` como chave de relacionamento
 
-### 5. Onde a IA falhou (e como corrigi)
-Em alguns momentos, a IA sugeriu modelos genéricos de lead scoring, baseados em boas práticas teóricas.
-
-O problema:
-esses modelos não refletem como vendas realmente acontecem.
-
-Corrigi isso aplicando critérios práticos:
-
-- aumentei o peso de dor e impacto financeiro
-- tratei autoridade de decisão como fator crítico
-- separei claramente interesse de capacidade real de compra
-
-Ou seja, substituí uma lógica “bonita” por uma lógica aplicável.
+Isso permitiu enriquecer cada oportunidade com contexto de negócio.
 
 ---
 
-### 6. Validação manual e senso crítico
-Durante o processo, tratei várias partes como hipótese, não como verdade.
+## 4. Construção da lógica de scoring
 
-Sempre que algo parecia genérico ou automático demais, eu revisava.
+A lógica foi construída com base em proxies reais de decisão comercial:
 
-Essa validação manual foi essencial para:
-- evitar decisões superficiais
-- garantir aderência ao problema real
-- manter consistência entre lógica, código e explicação
+- ICP → aproximado pela receita da empresa (`revenue`)
+- Impacto financeiro → valor do deal (`close_value`)
+- Timing → tempo entre `engage_date` e `close_date`
+- Estágio → avanço no funil (`deal_stage`)
 
----
-
-### 7. O que foi decisivo na solução
-O diferencial da solução não está no código, mas no critério de priorização.
-
-As decisões mais importantes foram:
-
-- priorizar dor + timing + decisão acima de perfil perfeito
-- reconhecer que lead “imperfeito” pode fechar mais rápido que lead ideal
-- transformar sinais comerciais em ação prática para o vendedor
-
-Essas decisões vieram da experiência em vendas, não da IA.
+O objetivo não foi prever com ML, mas priorizar oportunidades acionáveis.
 
 ---
 
-### 8. Iteração real (processo não linear)
-A solução foi construída de forma iterativa, envolvendo:
+## 5. Uso da IA no processo
 
-- definição do modelo
-- ajustes de lógica
-- estruturação do código
-- reorganização do repositório
-- refinamento da comunicação
+A IA (ChatGPT) foi utilizada como ferramenta de apoio para:
 
-Não foi um processo linear, mas um ciclo contínuo de ajuste e validação.
+- interpretar o desafio
+- estruturar a solução
+- revisar decisões técnicas
+- melhorar clareza da implementação
+
+Abaixo estão exemplos representativos das interações.
 
 ---
 
-### 9. Conclusão
-A IA foi utilizada como ferramenta de apoio para acelerar estrutura e clareza.
+### Prompt 1 — Entendimento do desafio
 
-Mas:
-- a interpretação do problema foi feita manualmente
-- as decisões críticas vieram da prática comercial
-- a validação foi feita com senso crítico, não apenas aceitação automática
+> "Preciso usar os datasets do CRM ou posso criar inputs manuais para o scoring?"
 
-O resultado final é um modelo simples, mas aplicável — focado em ajudar um time comercial a tomar decisões melhores no dia a dia.
+**Resposta (resumo):**
+- é obrigatório usar os dados reais do CRM
+- inputs manuais não atendem ao desafio
+
+**Decisão:**
+Refatorei a solução para usar diretamente:
+- sales_pipeline.csv
+- accounts.csv
+
+---
+
+### Prompt 2 — Construção do scoring
+
+> "Como transformar dados do CRM em score sem usar campos como icp_fit ou urgency?"
+
+**Resposta (resumo):**
+- usar proxies de negócio:
+  - revenue → ICP
+  - close_value → impacto
+  - datas → timing
+  - stage → avanço
+
+**Decisão:**
+Implementei scoring baseado nessas variáveis reais.
+
+---
+
+### Prompt 3 — Estrutura do código
+
+> "Depois do merge dos dados, faz sentido separar deal e account?"
+
+**Resposta (resumo):**
+- não
+- usar um único objeto simplifica
+
+**Decisão:**
+Refatorei para:
+
+```python
+calculate_score(row)
