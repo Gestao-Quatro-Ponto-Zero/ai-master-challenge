@@ -92,11 +92,12 @@ Refatorei a solução para usar diretamente:
 
 **Resposta (resumo):**
 - usar proxies de negócio:
-  - revenue → ICP  
-  - close_value → impacto  
-  - datas → timing  
+  - revenue → ICP
+  - close_value → impacto
+  - datas → timing
   - stage → avanço
-  - **Resposta da IA (trecho real):**
+
+**Resposta da IA (trecho real):**
 
 > "Você pode usar proxies de negócio para construir o score:
 > - revenue como indicador de ICP
