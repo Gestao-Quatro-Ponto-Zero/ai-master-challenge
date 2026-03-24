@@ -123,6 +123,8 @@ Refatorei para:
 
 ```python
 
+calculate_score(row)
+
 ## 6. Exploração dos dados (análise inicial)
 
 Antes de consolidar a lógica de scoring, foi realizada uma análise exploratória dos dados do CRM para entender padrões relevantes.
