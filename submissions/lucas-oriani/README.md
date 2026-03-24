@@ -108,6 +108,7 @@ Feature importance não explica interações complexas entre variáveis
 ---
 
 ## Process Log — Como usei IA
+Os prompts utilizados estão documentados em `process/chatgpt_prompts.md`, incluindo como cada output foi aplicado na análise.
 
 Utilizei o ChatGPT 5.3 para estruturar a análise, definir a abordagem do problema e apoiar na explicação das métricas do modelo, além de auxiliar na interpretação das feature importance e na geração de insights de negócio. 
 E BigQuery ML para o treinamento do modelo de churn, permitindo construir e avaliar o modelo diretamente sobre a base de dados.                         
@@ -158,7 +159,7 @@ As propsotas de como aplicar o modelo  na operação do negócio eram muito gene
 - https://github.com/lucasoriani/ai-master-challenge/blob/main/g4%20case%20AI%20master.pdf
 - https://chatgpt.com/share/69c19697-9ac8-8010-84a9-f7bd1e7f560f
 
-- [x] Screenshots das conversas com IA
+- [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
 - [x] Chat exports
 - [x] Git history (se construiu código)
