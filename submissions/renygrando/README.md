@@ -52,11 +52,11 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 
 **Gargalos Críticos Identificados:**
 
-| Combinação Crítica | Tempo Médio de Resolução | Impacto |
-|-------------------|-------------------------|---------|
-| Refund request + Chat + High Priority | 11.37 horas | Pior desempenho |
-| Social Media (qualquer tipo) | Desvio padrão 5.93h | Maior inconsistência operacional |
-| Hardware + HR Support | 28.5% + 22.8% do volume | Categorias dominantes |
+| Combinação Crítica                    | Tempo Médio de Resolução | Impacto                          |
+| ------------------------------------- | ------------------------ | -------------------------------- |
+| Refund request + Chat + High Priority | 11.37 horas              | Pior desempenho                  |
+| Social Media (qualquer tipo)          | Desvio padrão 5.93h      | Maior inconsistência operacional |
+| Hardware + HR Support                 | 28.5% + 22.8% do volume  | Categorias dominantes            |
 
 **Insight Crítico: A Regra dos 94%**
 
@@ -120,20 +120,24 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 #### 📁 Artefatos Analíticos
 
 **Datasets Sanitizados:**
+
 - `customer_support_tickets_sanitized_from_original.csv`
 - `all_tickets_processed_improved_v3_sanitized.csv`
 
 **Relatórios Executivos:**
+
 - [Análise de Gargalos Operacionais](assets/anlise_de_gargalos_operacionais_suporte_de_ti.pdf)
 - [Análise Estratégica de CSAT](assets/anlise_estratgica_de_satisfao_do_cliente_kpi_customer_satisfaction_rating.pdf)
 - [Quantificação de Desperdício Operacional](assets/quantificao_do_desperdcio_operacional_e_potencial_de_automao.pdf)
 
 **Materiais de Apresentação:**
+
 - [Plano Estratégico Completo](https://docs.google.com/document/d/1qkUPIMH8vld6oHtNg-Bf7nT-d9csb87_w93FN5vLAZ8/edit)
 - [Infográfico Executivo](assets/infografico.png)
 - [Apresentação de Slides](assets/Unlocking_IT_Support_Efficiency.pdf)
 
 **Dashboard Airtable:**
+
 - [Support Operations Command Center](https://airtable.com/appyQLnnOhn8YxI4A/pagWmPKMLotOzpqzG)
 
 ### Recomendações
@@ -217,7 +221,7 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
   - Estrutura de equipe atual (quantos agentes, turnos, especialidades)
   - SLAs contratuais vigentes
   - Políticas de reembolso e exceções
-  
+
 **Impacto:** Estimativas de ROI ($128k/mês) são baseadas em benchmark de mercado (não custos reais da empresa)
 
 **5. Tempo de Desenvolvimento**
@@ -241,36 +245,40 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 
 ### Ferramentas usadas
 
-| Ferramenta | Para que usou | Etapas |
-|------------|--------------|---------|
-| **Google Gemini** | Análise semântica de datasets, classificação de colunas, identificação de variáveis críticas para automação | 03 |
-| **ChatGPT** | Sanitização de dados com Python, geração do PRD, suporte ao desenvolvimento, planejamento inicial | 02, 04, 05, 07 |
-| **ChatGPT (Agent Mode)** | Tentativa de análise em escala (descartado por lentidão) | 04 |
-| **NotebookLLM** | Síntese de múltiplos relatórios PDF em plano estratégico unificado | 06 |
-| **Airtable** | Hospedagem de dados sanitizados, interface visual, análises nativas (IA do Airtable) | 05 |
-| **Replit** | Ambiente de desenvolvimento integrado, hospedagem da aplicação Hermes | 07 |
-| **GitHub Copilot** | Documentação do Process Log, assistência na estruturação do README | 01-07 |
-| **n8n** | Preparação de infraestrutura para automação futura (não implementado no protótipo) | 05 |
+| Ferramenta               | Para que usou                                                                                               | Etapas         |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- | -------------- |
+| **Google Gemini**        | Análise semântica de datasets, classificação de colunas, identificação de variáveis críticas para automação | 03             |
+| **ChatGPT**              | Sanitização de dados com Python, geração do PRD, suporte ao desenvolvimento, planejamento inicial           | 02, 04, 05, 07 |
+| **ChatGPT (Agent Mode)** | Tentativa de análise em escala (descartado por lentidão)                                                    | 04             |
+| **NotebookLLM**          | Síntese de múltiplos relatórios PDF em plano estratégico unificado                                          | 06             |
+| **Airtable**             | Hospedagem de dados sanitizados, interface visual, análises nativas (IA do Airtable)                        | 05             |
+| **Replit**               | Ambiente de desenvolvimento integrado, hospedagem da aplicação Hermes                                       | 07             |
+| **GitHub Copilot**       | Documentação do Process Log, assistência na estruturação do README                                          | 01-07          |
+| **n8n**                  | Preparação de infraestrutura para automação futura (não implementado no protótipo)                          | 05             |
 
 ### Workflow
 
 **Etapa 01: Setup Inicial (18:02)** — Criação da Estrutura de Log
+
 - Estabeleci sistema de documentação estruturado com dropdowns
 - Cada commit = nova seção no Process Log
 - Ferramenta: GitHub Copilot + Git
 
 **Etapa 02: Escolha do Desafio (18:37)** — Planejamento com ChatGPT
+
 - Selecionei Challenge 002 e criei checklist estruturado
 - ChatGPT me ajudou no brainstorming das etapas
 - [Conversa completa](https://chatgpt.com/share/e/69af3bef-f91c-8009-8cae-d8b748904466)
 
 **Etapa 03: Análise do Dataset (19:33)** — Mapeamento com Gemini
+
 - **Prompt 1:** _"Analise este dataset. Explique o papel de cada coluna e classifique em categorias (identificador, atributo cliente, variável operacional, textual, automação)."_
 - **Prompt 2:** _"Quais colunas são críticas para eficiência operacional e automação?"_
 - Descoberta: NotebookLLM limitado a 500k palavras → pivotei para Gemini
 - Output: Tabela com 17 colunas classificadas + identificação de variáveis críticas
 
 **Etapa 04: Auditoria de Qualidade (20:01)** — Diagnóstico com ChatGPT
+
 - **Prompt:** _"Faça auditoria estrutural verificando: ausência de valores, duplicação, consistência, valores fora de faixa, padrões suspeitos."_
 - Testei 3 ferramentas:
   - Agent Mode (muito lento) ❌
@@ -280,6 +288,7 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 - [Conversa completa](https://chatgpt.com/share/e/69af50d3-1e98-8009-b050-88a7892fa829)
 
 **Etapa 05: Sanitização + Stack Setup (21:10)** — Multi-tool Integration
+
 - Python via ChatGPT para limpeza de dados
 - Airtable para hospedagem visual
 - Gemini para análises pontuais
@@ -287,11 +296,13 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 - Output: 2 datasets sanitizados + 3 relatórios PDF + dashboard configurado
 
 **Etapa 06: Plano Estratégico (21:53)** — Síntese com NotebookLLM
+
 - **Prompt:** _"Gere plano estratégico de automação respondendo: O que automatizar, o que NÃO automatizar, como funcionaria na prática."_
 - Input: 3 relatórios PDF (gargalos + CSAT + desperdício)
 - Output: [Documento estratégico](https://docs.google.com/document/d/1qkUPIMH8vld6oHtNg-Bf7nT-d9csb87_w93FN5vLAZ8/edit) + infográfico + apresentação
 
 **Etapa 07: Implementação (23:30)** — Build no Replit
+
 - **Prompt ChatGPT:** _"Crie PRD completo para plataforma de automação de suporte baseado no plano estratégico."_
 - Desenvolvimento no Replit: aplicação full-stack com 7 funcionalidades
 - Deploy público: [g4-hermes.replit.app](https://g4-hermes.replit.app)
@@ -301,26 +312,31 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 ### Onde a IA errou e como corrigi
 
 **1. NotebookLLM excedeu limite de palavras (Etapa 03)**
+
 - **Erro:** Tentei fazer análise completa do dataset (30k linhas) e recebi erro de 500k palavras
 - **Correção:** Pivotei para Google Gemini, que aceita arquivos maiores via upload direto
 - **Aprendizado:** Validar capacidades de cada ferramenta antes de investir tempo
 
 **2. Airtable perdeu 99.97% dos dados no import (Etapa 04)**
+
 - **Erro:** Import via integração retornou apenas 8 linhas de 30.000
 - **Correção:** Mudei para upload direto de CSV, que funcionou perfeitamente
 - **Aprendizado:** Sempre validar output da IA com sanity checks (contagem de linhas, soma de valores críticos)
 
 **3. Agent Mode do ChatGPT muito lento (Etapa 04)**
+
 - **Erro:** Análise de dados em escala demorou >10 minutos sem concluir
 - **Correção:** Voltei para ChatGPT padrão com prompts estruturados em Python
 - **Aprendizado:** Agent Mode é melhor para pesquisa/web browsing, não para processamento de dados
 
 **4. Gemini limitação de context length (Etapa 04)**
+
 - **Erro:** Análise completa ultrapassou limite de tokens do Gemini
 - **Correção:** Dividi em perguntas focadas e usei ChatGPT para análises tabulares
 - **Aprendizado:** Escolher ferramenta certa para cada tipo de tarefa (Gemini = semântica, ChatGPT = estrutural)
 
 **5. Dashboard Airtable inicial genérico (Etapa 05)**
+
 - **Erro:** Primeira versão do dashboard não refletia insights dos relatórios
 - **Correção:** Criei 2 prompts detalhados:
   - Product Designer (prototipagem de UI)
@@ -332,6 +348,7 @@ Criei PRD com ChatGPT e implementei o sistema G4 Hermes no Replit com 7 funciona
 **1. Estratégia de Pivotagem**
 
 A IA não detecta suas próprias limitações em tempo real. Eu:
+
 - Identifiquei quando NotebookLLM não serviu e mudei para Gemini
 - Reconheci que Agent Mode era overkill e simplifiquei
 - Testei múltiplas ferramentas até encontrar a stack ideal
@@ -339,6 +356,7 @@ A IA não detecta suas próprias limitações em tempo real. Eu:
 **2. Validação de Sanidade dos Dados**
 
 ChatGPT gerou análises estatísticas, mas eu:
+
 - Questionei o resultado de "8 linhas" do Airtable (obviamente errado)
 - Identifiquei que 50.5% de nulos em `Resolution` era crítico (não apenas uma estatística)
 - Cruzei dados de satisfação com tempo de resolução para descobrir o threshold de 12h
@@ -346,6 +364,7 @@ ChatGPT gerou análises estatísticas, mas eu:
 **3. A "Regra dos 94%"**
 
 A IA reportou que "94% do tempo de resolução ocorre após first response", mas eu:
+
 - Interpretei o significado: **gargalo está em processos internos, não no atendimento inicial**
 - Traduzi isso em recomendação acionável: focar em aprovações internas, não em treinar primeira resposta
 - Priorizei isso no roadmap estratégico acima de outras métricas
@@ -353,6 +372,7 @@ A IA reportou que "94% do tempo de resolução ocorre após first response", mas
 **4. Definição do "Não Automatizar"**
 
 IA sempre sugere automatizar tudo. Eu:
+
 - Defini zona de risco: reclamações (CSAT < 3.0), reembolsos, tickets críticos
 - Justifiquei com dados: clientes insatisfeitos precisam de empatia humana, não respostas automáticas
 - Criei regra de negócio defensiva: "se CSAT histórico do cliente < 3.0, sempre rotear para humano"
@@ -360,6 +380,7 @@ IA sempre sugere automatizar tudo. Eu:
 **5. Arquitetura de Implementação Faseada**
 
 ChatGPT gerou PRD completo, mas eu:
+
 - Priorizei Fase 1 (Access - 100% automatizável) para ROI imediato
 - Adiei Fase 4 (alertas preditivos) para após validação do piloto
 - Criei critério de sucesso mensurável: redução de 60% no tempo de resolução de tickets "Access"
@@ -367,6 +388,7 @@ ChatGPT gerou PRD completo, mas eu:
 **6. Documentação como Artefato de Aprendizado**
 
 Process Log não era requisito técnico do desenvolvimento. Eu:
+
 - Documentei cada pivotagem com timestamp e raciocínio
 - Linkei conversas externas (ChatGPT/Gemini) para rastreabilidade total
 - Criei estrutura de dropdowns para navegabilidade (IA teria feito lista linear)
@@ -375,6 +397,7 @@ Process Log não era requisito técnico do desenvolvimento. Eu:
 **7. Trade-offs Conscientes**
 
 IA proporia solução perfeita. Eu:
+
 - Aceitei limitações do protótipo (documentação técnica incompleta, testes ausentes)
 - Comuniquei isso explicitamente na seção "Limitações"
 - Priorizei sistema funcional end-to-end vs. uma funcionalidade hiper-polida
@@ -387,30 +410,36 @@ IA proporia solução perfeita. Eu:
 **✅ Submissão completa com todos os artefatos:**
 
 ### 1. Process Log Detalhado
+
 - [x] [01-ProcessLog.md](01-ProcessLog.md) — 7 etapas documentadas com timestamps (18:02 às 23:30)
 - [x] Estrutura em dropdowns com 8 seções por etapa (Objetivo, Ferramenta, Prompt, Saída, Aproveitei, Descartei, Próxima Decisão)
 - [x] Seção de encerramento com resumo executivo e estatísticas do projeto
 
 ### 2. Screenshots & Evidências Visuais
+
 - [x] [Print 1 - Análise Gemini (Prompt 1)](prints/prompt1-gemini.jpeg)
 - [x] [Print 2 - Análise Gemini (Prompt 2)](prints/prompt2-gemini.jpeg)
 - [x] [Infográfico Executivo](assets/infografico.png)
 
 ### 3. Chat Exports
+
 - [x] [Conversa ChatGPT - Planejamento](https://chatgpt.com/share/e/69af3bef-f91c-8009-8cae-d8b748904466) (Etapa 02)
 - [x] [Conversa ChatGPT - Auditoria de Dados](https://chatgpt.com/share/e/69af50d3-1e98-8009-b050-88a7892fa829) (Etapa 04)
 
 ### 4. Git History
+
 - [x] [Repositório GitHub - Hermes](https://github.com/renygrando/Hermes) — Código-fonte completo
 - [x] [Projeto Replit](https://replit.com/join/biqtconfvm-orenygrando) — Histórico de desenvolvimento + prompts
 - [x] 11+ commits no repo ai-master-challenge com conventional commits detalhados
 
 ### 5. Aplicação Funcional
+
 - [x] [G4 Hermes (Deploy Público)](https://g4-hermes.replit.app) — Sistema rodando
 - [x] 7 funcionalidades implementadas e testáveis
 - [x] Autenticação funcional (Admin/User)
 
 ### 6. Relatórios & Análises
+
 - [x] [Análise de Gargalos Operacionais (PDF)](assets/anlise_de_gargalos_operacionais_suporte_de_ti.pdf)
 - [x] [Análise Estratégica de CSAT (PDF)](assets/anlise_estratgica_de_satisfao_do_cliente_kpi_customer_satisfaction_rating.pdf)
 - [x] [Quantificação de Desperdício Operacional (PDF)](assets/quantificao_do_desperdcio_operacional_e_potencial_de_automao.pdf)
@@ -418,11 +447,13 @@ IA proporia solução perfeita. Eu:
 - [x] [Apresentação Executiva (PDF)](assets/Unlocking_IT_Support_Efficiency.pdf)
 
 ### 7. Datasets & Dados
+
 - [x] [Dashboard Airtable](https://airtable.com/appyQLnnOhn8YxI4A/pagWmPKMLotOzpqzG) — Interface visual dos dados
 - [x] 2 datasets sanitizados (CSV) em [assets/](assets/)
 - [x] Relatórios de sanitização e logs de linhas rejeitadas
 
 ### 8. Rastreabilidade Completa
+
 - [x] Timestamps de todas as etapas (GMT-3)
 - [x] Links para conversas externas (ChatGPT, Google Docs)
 - [x] Prompts documentados textualmente no Process Log
