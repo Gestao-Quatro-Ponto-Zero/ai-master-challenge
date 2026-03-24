@@ -122,20 +122,4 @@ Implementei scoring baseado nessas variáveis reais.
 Refatorei para:
 
 ```python
-calculate_score(row)
 
-## 6. Exploração dos dados (análise inicial)
-
-Antes de consolidar a lógica de scoring, foi realizada uma análise exploratória dos dados do CRM para entender padrões relevantes.
-
-Principais observações:
-
-- O valor do deal (`close_value`) apresenta alta variação e é um forte indicador de impacto financeiro
-- A receita das contas (`revenue`) permite segmentar empresas em diferentes níveis de potencial
-- O estágio do funil (`deal_stage`) indica claramente o nível de maturidade da oportunidade
-- O tempo entre `engage_date` e `close_date` permite inferir urgência e velocidade do ciclo de venda
-
-Essa análise orientou a construção do modelo de scoring, garantindo que as regras fossem baseadas em padrões observáveis nos dados — e não em suposições.
-
-Decisão:
-A lógica de scoring foi estruturada a partir dessas variáveis, priorizando interpretabilidade e aplicabilidade no contexto comercial.
