@@ -112,7 +112,10 @@ Utilizei o ChatGPT 5.3 para estruturar a análise, definir a abordagem do proble
 E BigQuery ML para o treinamento do modelo de churn, permitindo construir e avaliar o modelo diretamente sobre a base de dados.   
 
 Chat exports: https://chatgpt.com/share/69c19697-9ac8-8010-84a9-f7bd1e7f560f
-Bigquery ML: https://github.com/lucasoriani/ai-master-challenge/blob/main/model%20tree.sql
+Bigquery ML: 
+- https://github.com/lucasoriani/ai-master-challenge/blob/main/model%20tree.sql
+- https://github.com/lucasoriani/ai-master-challenge/blob/lucas-oriani/model_temporal.sql
+- https://github.com/lucasoriani/ai-master-challenge/blob/lucas-oriani/modelo_tree_feature.sql
 
 ### Ferramentas usadas
 
