@@ -1,0 +1,528 @@
+You are a senior full-stack engineer and AI systems architect.
+
+Your task is to build a production-ready SaaS ticketing platform called:
+
+HERMES
+
+Hermes is an AI-native IT support ticket system designed to detect operational bottlenecks, classify tickets automatically, and route them intelligently.
+
+The system focuses on solving the biggest inefficiencies in support operations:
+
+• diagnosis delays
+• escalations
+• approval workflows
+• ticket backlog
+• repetitive requests
+
+Hermes must be built with modern architecture and optimized for AI-driven workflows.
+
+--------------------------------------------------
+
+PRODUCT IDENTITY
+
+Name:
+Hermes
+
+Meaning:
+Inspired by the Greek god Hermes — messenger, negotiator and guide between worlds.
+
+Design philosophy:
+Classical Greece + modern AI systems.
+
+Design system:
+
+Primary color:
+Deep Emerald Green #0F3D2E
+
+Secondary:
+Antique Gold #C8A44D
+
+Background:
+Marble white #F4F1EA
+
+Accent:
+Dark bronze #5A4633
+
+UI style:
+
+• minimal
+• classical
+• subtle greek ornamental patterns
+• columns, symmetry, geometry
+• serif headlines + modern UI body font
+
+Think:
+"ancient intelligence meets modern systems"
+
+--------------------------------------------------
+
+CORE PRODUCT OBJECTIVE
+
+Reduce operational inefficiency in support teams by:
+
+• automatic ticket classification
+• intelligent routing
+• AI suggested responses
+• bottleneck detection
+• workflow automation
+
+--------------------------------------------------
+
+ARCHITECTURE
+
+Use this stack:
+
+Frontend
+Next.js
+Typescript
+Tailwind
+Shadcn UI
+Chart.js / Recharts
+
+Backend
+Python
+FastAPI
+
+AI Layer
+OpenAI API
+Sentence Transformers
+FAISS vector database
+
+Database
+PostgreSQL
+
+Cache
+Redis
+
+Queue
+Celery or RabbitMQ
+
+Auth
+JWT + OAuth
+
+Deployment ready for:
+Docker
+
+--------------------------------------------------
+
+CORE MODULES
+
+System consists of 5 main engines:
+
+1
+Ticket Intake Engine
+
+2
+AI Classification Engine
+
+3
+AI Knowledge Engine
+
+4
+Routing & Priority Engine
+
+5
+Operational Intelligence Dashboard
+
+--------------------------------------------------
+
+DATABASE SCHEMA
+
+Users
+-----
+id
+name
+email
+role
+team
+created_at
+
+Teams
+-----
+id
+name
+type
+sla_hours
+
+Tickets
+-------
+id
+title
+description
+category
+priority
+status
+confidence_score
+channel
+customer_id
+assigned_team
+assigned_user
+created_at
+updated_at
+resolution_time
+
+TicketEvents
+------------
+id
+ticket_id
+event_type
+metadata
+timestamp
+
+TicketEmbeddings
+----------------
+ticket_id
+vector
+
+KnowledgeBase
+-------------
+id
+title
+content
+category
+embedding
+
+Suggestions
+-----------
+id
+ticket_id
+suggested_response
+confidence
+
+Bottlenecks
+-----------
+id
+category
+avg_resolution
+ticket_count
+risk_score
+timestamp
+
+--------------------------------------------------
+
+AI SYSTEM
+
+Hermes AI consists of three models.
+
+--------------------------------------------------
+
+1 TICKET CLASSIFIER
+
+Input:
+ticket text
+
+Output:
+
+category
+confidence_score
+
+Categories:
+
+Hardware
+Access
+HR Support
+Storage
+Purchase
+Administrative rights
+Internal Project
+Misc
+
+Implementation:
+
+Use transformer model:
+
+sentence-transformers/all-MiniLM-L6-v2
+
+Classification pipeline:
+
+text embedding
+similarity search
+classification layer
+
+Example response:
+
+{
+ category: "Access",
+ confidence: 0.92
+}
+
+--------------------------------------------------
+
+2 SIMILAR TICKET ENGINE
+
+Use vector search.
+
+Process:
+
+1 embed ticket text
+2 search FAISS index
+3 retrieve top 5 similar tickets
+4 extract solutions
+5 generate suggested response
+
+--------------------------------------------------
+
+3 RESPONSE SUGGESTION AI
+
+Prompt template:
+
+"You are a senior IT support engineer.
+Generate a helpful response for this ticket using past resolutions."
+
+Input:
+
+ticket
+similar tickets
+knowledge base
+
+Output:
+
+suggested response
+confidence score
+
+--------------------------------------------------
+
+ROUTING ENGINE
+
+Every ticket must be routed automatically.
+
+Routing rules:
+
+if category = Access
+route to Access Automation Engine
+
+if category = Hardware
+route to Hardware Team
+
+if category = HR Support
+route to HR Support Team
+
+Priority rules:
+
+if customer impact high
+priority = High
+
+if SLA risk detected
+priority escalates
+
+--------------------------------------------------
+
+AGING SYSTEM
+
+Tickets automatically increase priority over time.
+
+Rules:
+
+Low → Medium after 6 hours
+Medium → High after 12 hours
+
+--------------------------------------------------
+
+AUTO RESOLUTION SYSTEM
+
+Hermes automatically resolves some tickets.
+
+Example:
+
+Access requests
+
+Workflow:
+
+AI verification
+policy check
+API call to authentication system
+
+Ticket resolved automatically.
+
+--------------------------------------------------
+
+BOTTLENECK DETECTOR
+
+Detect operational friction.
+
+Metrics monitored:
+
+resolution time
+queue backlog
+team load
+ticket aging
+category spikes
+
+If threshold exceeded:
+
+system flags bottleneck.
+
+--------------------------------------------------
+
+DASHBOARD
+
+Real-time operational intelligence.
+
+Widgets:
+
+Ticket volume
+Resolution time
+SLA risk
+Category distribution
+Team load
+Backlog risk
+AI automation rate
+
+Charts:
+
+time series
+heatmaps
+category pie charts
+
+--------------------------------------------------
+
+FEATURE: SLA PREDICTION
+
+AI predicts probability that ticket will exceed SLA.
+
+Model input:
+
+category
+team
+text complexity
+historical patterns
+
+Output:
+
+risk score
+
+--------------------------------------------------
+
+FEATURE: OPERATIONAL RADAR
+
+Visual map showing bottlenecks.
+
+Color scale:
+
+green normal
+yellow warning
+red critical
+
+--------------------------------------------------
+
+FEATURE: KNOWLEDGE AUTOGENERATION
+
+When tickets solved:
+
+AI automatically converts resolution into knowledge base article.
+
+--------------------------------------------------
+
+FEATURE: WORKFLOW AUTOMATION
+
+Support flows like:
+
+refund approval
+access provisioning
+hardware triage
+
+--------------------------------------------------
+
+FEATURE: SOCIAL MEDIA CONNECTOR
+
+Collect tickets from:
+
+email
+chat
+social media
+forms
+
+--------------------------------------------------
+
+FEATURE: EXECUTIVE MODE
+
+Strategic dashboard showing:
+
+cost of inefficiency
+automation savings
+team performance
+SLA compliance
+
+--------------------------------------------------
+
+KEY METRICS
+
+System must track:
+
+Mean Resolution Time
+SLA Compliance
+Automation Rate
+Customer Satisfaction
+Backlog Risk
+
+--------------------------------------------------
+
+UI PAGES
+
+Login
+
+Dashboard
+
+Ticket List
+
+Ticket Detail
+
+Analytics
+
+Knowledge Base
+
+Automation Rules
+
+Settings
+
+--------------------------------------------------
+
+API ENDPOINTS
+
+POST /ticket/create
+
+POST /ticket/classify
+
+POST /ticket/suggest-response
+
+POST /ticket/route
+
+GET /dashboard/metrics
+
+GET /tickets
+
+GET /tickets/:id
+
+--------------------------------------------------
+
+FOLDER STRUCTURE
+
+/backend
+/api
+/models
+/services
+/ai
+/workflows
+/utils
+
+/frontend
+/components
+/pages
+/dashboard
+/tickets
+/charts
+
+--------------------------------------------------
+
+FINAL GOAL
+
+Hermes must function as an AI-powered operational intelligence platform, not just a ticket system.
+
+It should detect inefficiencies before they become bottlenecks.
+
+Focus on:
+
+automation
+clarity
+operational insight
+speed

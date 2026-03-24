@@ -12,5 +12,9 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# Node & Build
+node_modules
+dist
+server/public
+vite.config.ts.*
+*.tar.gz

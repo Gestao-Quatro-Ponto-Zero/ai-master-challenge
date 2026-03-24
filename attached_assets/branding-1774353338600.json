@@ -1,0 +1,128 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Manrope",
+      "role": "body"
+    }
+  ],
+  "colors": {
+    "primary": "#B9915B",
+    "accent": "#001F35",
+    "background": "#FFFFFF",
+    "textPrimary": "#001F35",
+    "link": "#001F35"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Manrope",
+      "heading": "Manrope"
+    },
+    "fontStacks": {
+      "heading": [
+        "Manrope",
+        "sans-serif"
+      ],
+      "body": [
+        "Manrope",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Manrope",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "140.16px",
+      "h2": "38px",
+      "body": "14px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "5px"
+  },
+  "components": {
+    "buttonPrimary": {
+      "background": "#B9915B",
+      "textColor": "#001F35",
+      "borderColor": "#001F35",
+      "borderRadius": "10px",
+      "borderRadiusCorners": {
+        "topLeft": "10px",
+        "topRight": "10px",
+        "bottomRight": "10px",
+        "bottomLeft": "10px"
+      },
+      "shadow": "none"
+    },
+    "buttonSecondary": {
+      "background": "#001F35",
+      "textColor": "#FFFFFF",
+      "borderColor": "#FFFFFF",
+      "borderRadius": "10px",
+      "borderRadiusCorners": {
+        "topLeft": "10px",
+        "topRight": "10px",
+        "bottomRight": "10px",
+        "bottomLeft": "10px"
+      },
+      "shadow": "none"
+    }
+  },
+  "images": {
+    "logo": "https://g4business.com/wp-content/uploads/2026/01/logo-g4-completa-branca.svg",
+    "favicon": "https://g4business.com/wp-content/uploads/2026/03/512x512-150x150.png",
+    "ogImage": null,
+    "logoHref": "https://g4business.com/"
+  },
+  "__llm_logo_reasoning": {
+    "selectedIndex": 0,
+    "reasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'G4'.",
+    "confidence": 0.9,
+    "source": "llm"
+  },
+  "__llm_button_reasoning": {
+    "primary": {
+      "index": 1,
+      "text": "Conheça agora o programa",
+      "reasoning": "Button #1 has a vibrant brand color (#B9915B) and action-oriented text ('Conheça agora o programa'), making it a strong primary CTA."
+    },
+    "secondary": {
+      "index": 0,
+      "text": "SAIBA MAIS",
+      "reasoning": "Button #0 has a different color group (#001F35) and serves as a secondary action with the text 'SAIBA MAIS'."
+    },
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "professional",
+    "energy": "medium",
+    "targetAudience": "business professionals"
+  },
+  "designSystem": {
+    "framework": "custom",
+    "componentLibrary": ""
+  },
+  "confidence": {
+    "buttons": 0.95,
+    "colors": 0.9,
+    "overall": 0.925
+  },
+  "__llm_metadata": {
+    "logoSelection": {
+      "llmCalled": true,
+      "llmSucceeded": true,
+      "finalSource": "llm",
+      "rawLogoSelection": {
+        "selectedLogoIndex": 0,
+        "selectedLogoReasoning": "Selected #0 because it is visible, located in the header, links to the homepage, and matches the brand name 'G4'.",
+        "confidence": 0.9
+      }
+    },
+    "buttonClassification": {
+      "llmCalled": true,
+      "llmSucceeded": true
+    }
+  }
+}

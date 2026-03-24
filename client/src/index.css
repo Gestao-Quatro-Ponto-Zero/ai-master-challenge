@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Manrope', sans-serif;
+  --font-sans: 'Manrope', sans-serif;
+
+  --background: 0 0% 100%;
+  --foreground: 204 100% 10%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 204 100% 10%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 204 100% 10%;
+  
+  --primary: 33 45% 54%;
+  --primary-foreground: 204 100% 10%;
+  
+  --secondary: 204 100% 10%;
+  --secondary-foreground: 0 0% 100%;
+  
+  --muted: 210 20% 96%;
+  --muted-foreground: 204 30% 40%;
+  
+  --accent: 210 15% 95%;
+  --accent-foreground: 204 100% 10%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 210 15% 90%;
+  --input: 210 15% 90%;
+  --ring: 33 45% 54%;
+
+  --radius: 0.3125rem;
+
+  --sidebar-background: 204 100% 10%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 33 45% 54%;
+  --sidebar-primary-foreground: 204 100% 10%;
+  --sidebar-accent: 204 80% 16%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 204 80% 16%;
+  --sidebar-ring: 33 45% 54%;
+
+  --chart-1: 33 45% 54%;
+  --chart-2: 204 100% 10%;
+  --chart-3: 204 60% 30%;
+  --chart-4: 33 30% 70%;
+  --chart-5: 210 20% 60%;
+}
+
+.dark {
+  --background: 204 60% 6%;
+  --foreground: 210 15% 90%;
+
+  --card: 204 50% 10%;
+  --card-foreground: 210 15% 90%;
+
+  --popover: 204 50% 10%;
+  --popover-foreground: 210 15% 90%;
+
+  --primary: 33 45% 54%;
+  --primary-foreground: 204 100% 10%;
+
+  --secondary: 204 80% 20%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 204 30% 15%;
+  --muted-foreground: 210 15% 60%;
+
+  --accent: 204 40% 18%;
+  --accent-foreground: 210 15% 90%;
+
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 204 30% 18%;
+  --input: 204 30% 18%;
+  --ring: 33 45% 54%;
+
+  --sidebar-background: 204 80% 6%;
+  --sidebar-foreground: 210 15% 90%;
+  --sidebar-primary: 33 45% 54%;
+  --sidebar-primary-foreground: 204 80% 6%;
+  --sidebar-accent: 204 60% 14%;
+  --sidebar-accent-foreground: 210 15% 90%;
+  --sidebar-border: 204 50% 14%;
+  --sidebar-ring: 33 45% 54%;
+
+  --chart-1: 33 45% 54%;
+  --chart-2: 204 60% 30%;
+  --chart-3: 204 40% 45%;
+  --chart-4: 33 30% 65%;
+  --chart-5: 210 20% 50%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-card/80 backdrop-blur-md border border-border shadow-sm;
+  }
+}

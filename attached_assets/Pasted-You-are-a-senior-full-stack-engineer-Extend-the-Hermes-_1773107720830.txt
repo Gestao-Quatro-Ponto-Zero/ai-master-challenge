@@ -1,0 +1,372 @@
+You are a senior full-stack engineer.
+
+Extend the Hermes AI Ticket System.
+
+The current system already supports:
+
+• Ticket creation
+• Ticket routing
+
+Now implement the next product layer.
+
+IMPORTANT:
+The entire application must be in Brazilian Portuguese (PT-BR).
+
+All UI labels, messages, errors and responses must be written in Portuguese.
+
+--------------------------------------------------
+
+SYSTEM GOAL
+
+Hermes is an AI-native IT ticket system.
+
+This phase adds:
+
+• Authentication
+• User and Admin interfaces
+• Conversational AI agent for ticket creation
+• Ticket classification
+• Full operational database schema
+
+--------------------------------------------------
+
+TECH STACK
+
+Frontend
+Next.js
+Typescript
+Tailwind
+Shadcn UI
+
+Backend
+Python
+FastAPI
+
+Database
+PostgreSQL
+
+AI
+OpenAI API
+Sentence Transformers
+
+Vector DB
+FAISS
+
+Auth
+JWT Authentication
+
+--------------------------------------------------
+
+AUTHENTICATION SYSTEM
+
+Roles:
+
+USER
+ADMIN
+
+Capabilities:
+
+USER
+- criar ticket
+- conversar com agente de IA
+- ver tickets próprios
+- responder tickets
+- avaliar satisfação
+
+ADMIN
+- ver todos tickets
+- dashboard operacional
+- alterar status
+- ver métricas
+- gerenciar usuários
+
+--------------------------------------------------
+
+DATABASE STRUCTURE
+
+Create tables according to this schema.
+
+Users
+------
+id
+name
+email
+password_hash
+role (admin | user)
+created_at
+
+Customers
+---------
+id
+name
+email
+age
+gender
+
+Tickets
+--------
+ticket_id
+customer_id
+product_purchased
+ticket_type
+ticket_subject
+ticket_description
+ticket_status
+resolution
+ticket_priority
+ticket_channel
+first_response_time
+time_to_resolution
+customer_satisfaction_rating
+topic_group
+created_at
+updated_at
+
+TicketMessages
+--------------
+id
+ticket_id
+sender_type
+message
+timestamp
+
+--------------------------------------------------
+
+TOPIC GROUP CATEGORIES
+
+The classifier must categorize tickets into:
+
+Access
+Administrative rights
+HR Support
+Hardware
+Internal Project
+Miscellaneous
+Purchase
+Storage
+
+--------------------------------------------------
+
+AI CLASSIFICATION SERVICE
+
+Create service:
+
+POST /ai/classify-ticket
+
+Input:
+
+ticket_description
+
+Output:
+
+topic_group
+confidence_score
+
+Use sentence transformer embeddings.
+
+Model:
+
+all-MiniLM-L6-v2
+
+--------------------------------------------------
+
+AI AGENT FOR TICKET CREATION
+
+Users must open tickets through conversation.
+
+Create an AI chat agent.
+
+User interaction example:
+
+User:
+"Meu notebook não liga depois da atualização."
+
+Agent:
+"Entendi. Vou registrar um chamado para suporte de hardware.
+Você poderia informar qual modelo do notebook?"
+
+Conversation continues until ticket is ready.
+
+Agent responsibilities:
+
+1 understand problem
+2 extract structured information
+3 create ticket automatically
+
+Fields extracted:
+
+ticket_subject
+ticket_description
+product_purchased
+ticket_channel
+
+Then system calls:
+
+POST /ticket/create
+
+--------------------------------------------------
+
+AI PROMPT FOR AGENT
+
+System prompt:
+
+You are Hermes Support Assistant.
+
+Your goal is to help users create IT support tickets.
+
+You must:
+
+• ask clarifying questions
+• identify the problem
+• structure the ticket
+• classify the category
+• confirm ticket creation
+
+Always respond in Brazilian Portuguese.
+
+--------------------------------------------------
+
+FRONTEND PAGES
+
+Create these pages.
+
+Login
+
+/entrar
+
+Register
+
+/cadastro
+
+User dashboard
+
+/meus-chamados
+
+Ticket chat
+
+/chamado/[id]
+
+AI assistant
+
+/abrir-chamado
+
+Admin dashboard
+
+/admin
+
+Admin tickets list
+
+/admin/chamados
+
+--------------------------------------------------
+
+USER INTERFACE
+
+User dashboard shows:
+
+• tickets abertos
+• tickets resolvidos
+• botão "Abrir chamado com IA"
+
+Ticket page shows:
+
+• conversation history
+• agent responses
+• ticket status
+
+--------------------------------------------------
+
+ADMIN INTERFACE
+
+Admin dashboard shows:
+
+Metrics:
+
+Total tickets
+Tickets abertos
+Tickets resolvidos
+Tempo médio de resolução
+Satisfação média
+
+Charts:
+
+Tickets por categoria
+Tickets por canal
+Tickets por prioridade
+
+--------------------------------------------------
+
+TICKET STATUS FLOW
+
+Open
+In Progress
+Pending Customer
+Resolved
+Closed
+
+--------------------------------------------------
+
+API ENDPOINTS
+
+POST /auth/register
+POST /auth/login
+
+POST /ticket/create
+GET /tickets/user
+GET /tickets/admin
+
+POST /ai/classify-ticket
+
+POST /ai/chat-agent
+
+--------------------------------------------------
+
+AI CHAT AGENT API
+
+Endpoint:
+
+POST /ai/chat-agent
+
+Input:
+
+conversation history
+
+Output:
+
+agent response
+ticket extraction data
+
+--------------------------------------------------
+
+UX DESIGN
+
+Use Hermes visual identity.
+
+Colors:
+
+emerald green
+antique gold
+marble white
+
+Style:
+
+clean
+minimal
+classical Greek inspiration
+
+--------------------------------------------------
+
+FINAL GOAL
+
+Hermes should feel like an intelligent support assistant.
+
+Users should be able to open tickets simply by talking to AI.
+
+Admins should immediately see operational bottlenecks.
+
+Focus on:
+
+clarity
+automation
+speed
+intelligent routing
