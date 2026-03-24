@@ -2,44 +2,42 @@
 
 A solução utiliza diretamente os datasets fornecidos:
 
-- sales_pipeline.csv → oportunidades
-- accounts.csv → dados das empresas
+- `sales_pipeline.csv` → oportunidades
+- `accounts.csv` → contexto das contas
 
-Os dados são integrados via merge pela coluna `account`, permitindo enriquecer cada oportunidade com contexto de negócio.
+Os dados são integrados via `merge` pela coluna `account`, enriquecendo cada oportunidade com contexto da conta.
 
 ---
 
 ## Lógica de scoring
 
-A lógica foi construída a partir de proxies reais de decisão comercial:
+A lógica foi construída a partir de proxies observáveis nos dados reais do CRM:
 
-- ICP → baseado na receita da empresa
-- Dor → inferida pelo valor do deal (`close_value`)
-- Timing → tempo entre `engage_date` e `close_date`
-- Estágio → avanço no funil (`deal_stage`)
+- **ICP** → aproximado pela receita da conta (`revenue`)
+- **Impacto financeiro** → aproximado pelo valor do deal (`close_value`)
+- **Estágio** → maturidade da oportunidade no pipeline (`deal_stage`)
 
-O objetivo não é prever fechamento com ML, mas **priorizar oportunidades acionáveis no dia a dia de vendas**.
+Nesta versão, removi o proxy de timing baseado em `close_date - engage_date`, porque ele não representa urgência real do cliente. Essa diferença pode refletir apenas uma data planejada ou preenchida no CRM, sem evidência de comportamento comercial.
+
+Também removi `Won` e `Lost` da lógica de priorização operacional. Esses estágios finais podem existir no dataset, mas não devem competir com deals ativos no ranking de próxima ação.
+
+---
+
+## Calibração dos critérios
+
+Os thresholds de `revenue` e `close_value` não são fixos. Eles são calibrados a partir da distribuição real dos dados:
+
+- faixa alta: percentil 75
+- faixa intermediária: percentil 40
+- faixa baixa: abaixo do percentil 40
+
+Isso reduz arbitrariedade e torna o score mais aderente ao dataset do challenge.
 
 ---
 
 ## Como executar
 
 1. Instalar dependências:
+
 ```bash
-pip install pandas
-
-## Exemplo de saída
-
-Após executar o script, as oportunidades são priorizadas:
-
-| opportunity_id | account | score | priority |
-|----------------|--------|------|----------|
-| 1023 | TechCorp | 87 | Alta |
-| 2045 | RetailCo | 62 | Média |
-| 3099 | SmallBiz | 34 | Baixa |
-
-Cada score inclui explicação baseada em:
-- tamanho da conta
-- valor do deal
-- estágio do funil
-- tempo de ciclo de venda
+pip install -r requirements.txt
