@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Bruno Reis
-- **LinkedIn:** [linkedin.com/in/brunoreis](https://linkedin.com/in/brunoreis)
+- **LinkedIn:** [linkedin.com/in/brunoreis](https://www.linkedin.com/in/bruno-reis-036901181/)
 - **Challenge escolhido:** 002 — Redesign de Suporte
 
 ---
