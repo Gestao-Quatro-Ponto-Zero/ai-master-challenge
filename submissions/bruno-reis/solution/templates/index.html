@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Intelligence | Challenge 002</title>
+  <meta name="description" content="Dashboard inteligente de triagem de tickets com classificação por IA e roteamento assistido.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎫</text></svg>">
+</head>
+<body>
+
+  <!-- Mobile menu toggle -->
+  <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menu">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h14M3 10h14M3 14h14"/></svg>
+  </button>
+
+  <div class="app-layout">
+
+    <!-- ═══════ SIDEBAR ═══════ -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">TI</div>
+        <div>
+          <h1>Ticket Intelligence</h1>
+          <div class="brand-sub">Challenge 002</div>
+        </div>
+      </div>
+
+      <div class="sidebar-nav">
+        <div class="nav-section-title">Principal</div>
+
+        <button class="nav-item active" data-page="dashboard" id="nav-dashboard">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </button>
+
+        <button class="nav-item" data-page="kanban" id="nav-kanban">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="10" y="3" width="5" height="12" rx="1"/><rect x="17" y="3" width="5" height="15" rx="1"/></svg>
+          Fila de Tickets
+          <span class="nav-badge" id="nav-badge-escalate">0</span>
+        </button>
+
+        <button class="nav-item" data-page="tester" id="nav-tester">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Testar Ticket
+        </button>
+
+        <div class="nav-section-title">Informações</div>
+
+        <button class="nav-item" data-page="about" id="nav-about">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          Sobre o Modelo
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="model-info">
+          <div class="model-dot"></div>
+          <div class="model-text">
+            <div class="model-label">SVM Classifier</div>
+            <div class="model-sub">F1 {{ "%.1f"|format(stats.macro_f1 * 100) }}% · {{ stats.total|int }} tickets</div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ═══════ MAIN CONTENT ═══════ -->
+    <div class="main-content">
+
+      <!-- ═══ DASHBOARD PAGE ═══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <span>Ticket Intelligence</span>
+            <span class="sep">/</span>
+            <span>Dashboard</span>
+          </div>
+          <h2>Painel de Controle</h2>
+          <p class="page-desc">Visão geral da operação de triagem inteligente.</p>
+        </div>
+        <div class="page-body">
+          <div class="kpi-grid" id="kpi-grid">
+            <div class="kpi-card blue">
+              <div class="kpi-icon">📊</div>
+              <div class="kpi-value" id="kpi-total">—</div>
+              <div class="kpi-label">Tickets na fila</div>
+            </div>
+            <div class="kpi-card green">
+              <div class="kpi-icon">✅</div>
+              <div class="kpi-value" id="kpi-auto">—</div>
+              <div class="kpi-label">Auto-roteamento</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-icon">👁️</div>
+              <div class="kpi-value" id="kpi-review">—</div>
+              <div class="kpi-label">Revisão humana</div>
+            </div>
+            <div class="kpi-card red">
+              <div class="kpi-icon">🚨</div>
+              <div class="kpi-value" id="kpi-escalate">—</div>
+              <div class="kpi-label">Escalar</div>
+            </div>
+            <div class="kpi-card purple">
+              <div class="kpi-icon">🏷️</div>
+              <div class="kpi-value">{{ stats.classes }}</div>
+              <div class="kpi-label">Categorias</div>
+            </div>
+            <div class="kpi-card cyan">
+              <div class="kpi-icon">🎯</div>
+              <div class="kpi-value">{{ "%.1f"|format(stats.accuracy * 100) }}%</div>
+              <div class="kpi-label">Acurácia do modelo</div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid" id="dashboard-charts">
+            <div class="dash-panel">
+              <h3>Distribuição por Categoria</h3>
+              <div id="chart-categories"></div>
+            </div>
+            <div class="dash-panel">
+              <h3>Distribuição por Ação Recomendada</h3>
+              <div id="chart-actions"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ KANBAN PAGE ═══ -->
+      <div class="page" id="page-kanban">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <span>Ticket Intelligence</span>
+            <span class="sep">/</span>
+            <span>Fila de Tickets</span>
+          </div>
+          <h2>Triagem Inteligente</h2>
+          <p class="page-desc">Tickets organizados pela ação recomendada pela IA. Clique em um ticket para ver detalhes.</p>
+        </div>
+        <div class="page-body">
+          <div class="kanban-toolbar">
+            <div class="search-box">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" id="search-input" placeholder="Buscar por texto ou categoria...">
+            </div>
+            <div class="filter-chips" id="filter-chips">
+              <button class="chip active" data-filter="all">Todos</button>
+            </div>
+          </div>
+          <div class="kanban-board" id="kanban-board">
+            <!-- Columns injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ DETAIL PAGE ═══ -->
+      <div class="page" id="page-detail">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <span>Ticket Intelligence</span>
+            <span class="sep">/</span>
+            <span>Fila de Tickets</span>
+            <span class="sep">/</span>
+            <span id="detail-breadcrumb">Ticket</span>
+          </div>
+          <h2 id="detail-page-title">Detalhe do Ticket</h2>
+          <p class="page-desc" id="detail-page-desc">Análise e recomendação de IA para este ticket.</p>
+        </div>
+        <div class="page-body">
+          <div class="detail-layout">
+            <div class="detail-main">
+              <!-- Recommendation -->
+              <div class="recommendation-card" id="rec-card">
+                <div class="rec-eyebrow">Ação Recomendada pela IA</div>
+                <div class="rec-action" id="rec-action-text">—</div>
+                <div class="rec-reason" id="rec-reason-text"></div>
+              </div>
+
+              <!-- Metadata -->
+              <div class="meta-row" id="meta-row"></div>
+
+              <!-- Confidence -->
+              <div class="confidence-block">
+                <div class="confidence-header">
+                  <span class="confidence-label">Nível de Confiança</span>
+                  <span class="confidence-value" id="conf-value">—</span>
+                </div>
+                <div class="confidence-bar-track">
+                  <div class="confidence-bar-fill" id="conf-fill" style="width: 0%"></div>
+                </div>
+                <div class="confidence-thresholds">
+                  <span>0%</span>
+                  <span>55% (limiar mín.)</span>
+                  <span>75% (auto-route)</span>
+                  <span>100%</span>
+                </div>
+              </div>
+
+              <!-- Text -->
+              <div class="ticket-text-card">
+                <h3>Texto do Ticket</h3>
+                <div class="ticket-body" id="detail-body">Selecione um ticket para visualizar.</div>
+              </div>
+            </div>
+
+            <div class="detail-aside">
+              <!-- Actions -->
+              <div>
+                <h3 style="font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;">Ações do Operador</h3>
+                <div class="action-buttons" id="action-buttons">
+                  <button class="action-btn confirm" data-action="Confirm route">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Confirmar e enviar
+                  </button>
+                  <button class="action-btn review" data-action="Human review">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    Revisar manualmente
+                  </button>
+                  <button class="action-btn escalate-btn" data-action="Escalate">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    Escalar para especialista
+                  </button>
+                  <button class="action-btn" data-action="Mark sensitive">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Marcar como sensível
+                  </button>
+                  <button class="action-btn" data-action="Correct category">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Corrigir categoria
+                  </button>
+                </div>
+              </div>
+
+              <!-- Similar -->
+              <div class="similar-section">
+                <h3>Tickets Similares</h3>
+                <div class="similar-grid" id="similar-grid">
+                  <div class="empty-state"><p>Nenhum similar carregado.</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TESTER PAGE ═══ -->
+      <div class="page" id="page-tester">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <span>Ticket Intelligence</span>
+            <span class="sep">/</span>
+            <span>Testar Ticket</span>
+          </div>
+          <h2>Teste de Classificação</h2>
+          <p class="page-desc">Cole o texto de um ticket e veja como a IA o classificaria em tempo real.</p>
+        </div>
+        <div class="page-body">
+          <div class="tester-layout">
+            <div class="tester-input-card">
+              <h3>Texto do Ticket</h3>
+              <p class="tester-desc">Digite ou cole o texto do ticket de suporte que deseja classificar.</p>
+              <textarea class="tester-textarea" id="tester-text" placeholder="Ex: I cannot access my email account. The password reset link is not working and I need to access important documents urgently..."></textarea>
+              <div class="tester-actions">
+                <button class="btn-primary" id="tester-run">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Classificar
+                </button>
+              </div>
+            </div>
+            <div class="tester-result-card">
+              <h3>Resultado da IA</h3>
+              <div id="tester-result">
+                <div class="result-placeholder">
+                  <div>
+                    <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24" style="opacity:0.3;margin-bottom:12px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    <p>Digite um texto e clique em "Classificar" para ver a predição da IA.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ABOUT PAGE ═══ -->
+      <div class="page" id="page-about">
+        <div class="page-header">
+          <div class="breadcrumb">
+            <span>Ticket Intelligence</span>
+            <span class="sep">/</span>
+            <span>Sobre o Modelo</span>
+          </div>
+          <h2>Sobre o Modelo</h2>
+          <p class="page-desc">Informações técnicas sobre o classificador e a estratégia de automação.</p>
+        </div>
+        <div class="page-body">
+          <div class="dashboard-grid">
+            <div class="dash-panel">
+              <h3>Arquitetura do Classificador</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="result-row"><div class="result-label">Modelo</div><div class="result-value">Linear SVM (SGD)</div></div>
+                <div class="result-row"><div class="result-label">Features</div><div class="result-value">TF-IDF (unigram, max 50K features)</div></div>
+                <div class="result-row"><div class="result-label">Treino</div><div class="result-value">{{ stats.total|int }} tickets · 8 categorias</div></div>
+                <div class="result-row"><div class="result-label">Acurácia</div><div class="result-value">{{ "%.1f"|format(stats.accuracy * 100) }}%</div></div>
+                <div class="result-row"><div class="result-label">Macro F1</div><div class="result-value">{{ "%.1f"|format(stats.macro_f1 * 100) }}%</div></div>
+              </div>
+            </div>
+            <div class="dash-panel">
+              <h3>Estratégia de Automação</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="result-row"><div class="result-label">≥ 75%</div><div class="result-value" style="color:var(--accent-green)">Auto-roteamento (categoria não sensível)</div></div>
+                <div class="result-row"><div class="result-label">55-75%</div><div class="result-value" style="color:var(--accent-amber)">Roteamento assistido + revisão humana</div></div>
+                <div class="result-row"><div class="result-label">< 55%</div><div class="result-value" style="color:var(--accent-red)">Escalar para revisão humana imediata</div></div>
+                <div class="result-row"><div class="result-label">Sensível</div><div class="result-value" style="color:var(--accent-red)">Access, Admin Rights, Purchase → sempre humano</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
