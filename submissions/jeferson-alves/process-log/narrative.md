@@ -143,3 +143,29 @@ Em seguida, usei o Copilot para reescrever os dois arquivos com base no código 
 **Screenshot:** [`screenshots/02-copilot-pr-update-iteration.png`](screenshots/02-copilot-pr-update-iteration.png)
 
 O print mostra: o feedback do avaliador visível no painel de chat do Copilot, o terminal executando a reescrita do `narrative.md`, e o todo list com as tarefas de atualização do PR concluídas — evidência da sessão de trabalho com IA para responder ao feedback.
+
+---
+
+## Evidências adicionais (gravação + prints sequenciais)
+
+Além dos dois screenshots anteriores, estão disponíveis uma gravação de tela completa e três prints sequenciais que documentam a sessão original de construção da solução no Windows com VS Code + Copilot Agent (GPT-4.5).
+
+### Gravação de tela
+
+**Arquivo:** [`screen-recording-full-session.mp4`](screen-recording-full-session.mp4)
+
+Gravação da sessão completa de trabalho com o Copilot Agent, cobrindo todas as etapas: leitura do escopo, exploração dos dados, implementação do scoring e criação da submissão.
+
+### Screenshots sequenciais
+
+**[`screenshots/03-copilot-scope-todos-created.png`](screenshots/03-copilot-scope-todos-created.png)**
+
+Etapa 1/6 — Copilot Agent após receber os 5 links do challenge. Mostra: o prompt inicial completo visível no chat, a resposta "Vou levantar o escopo do desafio e os critérios de submissão primeiro, para estruturar a entrega corretamente antes de escrever qualquer arquivo", a confirmação "Fetched 4 resources" e "Created 6 todos" com o plano de execução estruturado.
+
+**[`screenshots/04-copilot-data-inspection-gtxpro-fix.png`](screenshots/04-copilot-data-inspection-gtxpro-fix.png)**
+
+Etapa 2/6 — Copilot inspecionando os CSVs. Mostra: prompt "coloquei os arquivos necessários na pasta #file:data", o Copilot usando MCP server para ler os 4 arquivos ("Read data"), identificação do bug de dado crítico ("o pipeline usa GTXPro sem espaço, enquanto a tabela de produtos usa GTX Pro — vou incorporar normalização de chaves para não quebrar o join nem distorcer o score"), e o início da análise de distribuição de estágios e win rate.
+
+**[`screenshots/05-copilot-readme-final-review.png`](screenshots/05-copilot-readme-final-review.png)**
+
+Etapa final — Copilot recebendo os dados pessoais e fazendo a revisão final da submissão. Mostra: o LinkedIn e nome completo passados no chat, o Copilot executando "Updating project documentation", "Reviewed 2 files", "Updated README.md and applied patch", e a checagem final de "Searched for regex and reviewed solution file" antes de passar o passo a passo do PR.
