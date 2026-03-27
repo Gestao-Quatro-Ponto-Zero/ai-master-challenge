@@ -14,3 +14,7 @@ datasets/
 
 # Submissions (if candidates fork)
 submissions/
+
+!submissions/
+!submissions/aluisio-junior/
+!submissions/aluisio-junior/**
