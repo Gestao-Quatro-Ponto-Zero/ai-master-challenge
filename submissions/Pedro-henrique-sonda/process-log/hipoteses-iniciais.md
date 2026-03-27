@@ -21,7 +21,7 @@ O score deve considerar duas dimensões:
 
 Um deal com 80% de chance de fechar e valor de R$10k pode ter score maior que um deal com 20% de chance e valor de R$50k. A fórmula precisa balancear essas duas forças. 
 
-Além das features óbvias do pipeline. O score deve ser baseado também em tendências de fechamentos anteriores, indicando uma probabilidade de se repetir o que já aconteceu, em detrimento de hipóteses baseadas em dados passados inexistentes. 
+Além das features óbvias do pipeline. O score deve ser baseado em padrões reais identificados nos dados históricos de Won/Lost, não em suposições sem evidência.
 
 ## 3. Hipóteses — O que acredito que influencia o fechamento
 
@@ -35,7 +35,7 @@ Além das features óbvias do pipeline. O score deve ser baseado também em tend
 | 4 | **O tamanho da empresa influencia** | Empresas maiores (mais receita, mais funcionários) provavelmente geram deals de maior valor e podem ter processos de compra mais estruturados. Porém, podem levar mais tempo, o que reforça ao que foi dito na hipotése 2, que não necessariamente um deal com um tempo mais longe entre stages, seja um deal com baixo score. É necessário cruzar informaçõs e compreender as tendências para cada caso, nunca esquecendo de levar em consideração suas particularidades. |
 | 5 | **Alguns produtos convertem mais que outros** | Cada produto tem um perfil diferente de complexidade e preço, a taxa de conversão histórica por produto provavelmente varia. |
 | 6 | **O vendedor faz diferença na conversão** | Vendedores com mais experiência ou melhor técnica provavelmente convertem mais, independente do deal. Porém é importante ressaltar que, um vendedor que desenvolve um volume maior de atividades, tende a ter um resultado mais expressivo que um vendedor mais com mais experiencia e tecnica que desenvolve um volume menor. |
-| 7 | **O valor do deal influencia a chance de fechar** | Deals muito grandes podem ter ciclos mais longos e mais objeções. Deals menores podem fechar mais rápido. Priorizar volume de deals antes de seu valor, pode ser uma estratégia eficaz para ter um cicle time de vendas mais baixo, carteira de clientes maior, podendo gerar mais recomendações de novos clientes, e talvez, faturamento maior devido ao alto volume de vendas, mesmo com valores mais baixos.|
+| 7 | **O valor do deal influencia a chance de fechar** | Deals muito grandes podem ter ciclos mais longos e mais objeções. Deals menores podem fechar mais rápido. 
 
 ### Hipóteses sobre combinações (além do óbvio)
 
