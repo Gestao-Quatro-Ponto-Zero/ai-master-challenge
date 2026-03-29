@@ -167,7 +167,7 @@ Rastrear como o score de cada deal evolui ao longo do tempo — identifica padr�
 - **Autenticação simplificada** — token único compartilhado, sem Row Level Security por usuário. Adequado para demonstração; inadequado para dados sensíveis em produção.
 - **Pesos do score heurísticos** — calibrados com base na análise dos dados reais, mas não validados contra dados de conversão futura. O modelo de regras é um bom ponto de partida; precisaria de dados de resultado para calibração supervisionada.
 - **Anotações no localStorage** — notas por deal salvas no navegador local; não persistem entre dispositivos nem são compartilhadas.
-- **Sem suite de testes automatizados** — a solução foi validada manualmente com dados reais do pipeline e está funcional em produção, mas não tem cobertura de testes unitários ou de integração para CI/CD.
+- **Testes cobrem o scoring engine, não o sistema inteiro** — 54 testes unitários com Vitest validam todos os componentes do score (`scoreStage`, `scoreProduct`, `scoreAccount`, `scoreAgent`, `scoreDeals`, `scoreColor`, `scoreLabel`). Integração com CRM e testes end-to-end ficam fora do escopo desta versão.
 - **Rate limiting no Gemini** — a API key está segura nas env vars do Vercel, mas em produção com múltiplos usuários simultâneos precisaria de controle de rate limiting e cache de análises.
 
 ---
