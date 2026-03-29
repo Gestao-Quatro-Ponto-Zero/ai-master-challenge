@@ -2,6 +2,29 @@
 
 Esta pasta contém as evidências do processo de uso de IA na construção da solução.
 
+---
+
+## Controle de decisões — quem decidiu o quê
+
+> **12 decisões documentadas: 8 por iniciativa do candidato, 4 por consenso, 0 só da IA**
+
+| # | Decisão | Quem decidiu | Evidência |
+|---|---------|-------------|-----------|
+| 1 | Telas e componentes definidos antes de codar | Lucas | Screenshot 01 |
+| 2 | Foco no vendedor como usuário principal, não só gestor | Lucas | Screenshot 02 |
+| 3 | Features organizadas em 4 grupos de prioridade | Lucas | Screenshot 03 |
+| 4 | CSV local primeiro, Supabase só depois de validar | Lucas | Screenshot 04 |
+| 5 | Z-index incorreto no tooltip — identificado e corrigido pelo candidato | Lucas | Screenshot 07 |
+| 6 | KPI "Em risco": só 31–90d (zumbis >90d são categoria separada) | Lucas | Screenshot 09 |
+| 7 | Calibração dos 4 pesos com dados reais antes de escrever código | Lucas | Tabela abaixo |
+| 8 | REFERENCE_DATE = 2017-12-31 (dados históricos, não "hoje") | Lucas | `lib/data.ts:92` |
+| 9 | Supabase como banco de dados de produção | Consenso | Screenshot 04 |
+| 10 | DailyFocus: top 3 deals críticos para o gestor | Consenso | `DailyFocus.tsx` |
+| 11 | Integração com Slack (G4 usa Slack internamente) | Consenso | `README.md` |
+| 12 | AI Coach com Gemini 2.0 Flash | Consenso | `api/ai/analyze` |
+
+---
+
 ## Conteúdo
 
 | Item | Descrição |
