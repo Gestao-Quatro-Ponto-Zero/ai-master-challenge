@@ -1,10 +1,9 @@
 # 🚀 Churn Intelligence System (CIS)
 
-> This system does not only predict churn — it translates risk into financial impact and actionable executive decisions.
 
----
 
-## 👤 Author
+
+## Sobre Mim
 
 - **Name:** Aluísio Junior  
 - **LinkedIn:** https://www.linkedin.com/in/aluisio-riveiro-fagundes-junior-37610522/  
@@ -15,7 +14,7 @@
 ## 🔗 Live Access
 
 - **API (Swagger):** https://postoral-stan-salamandrine.ngrok-free.dev/docs  
-- **Frontend (Lovable):** https://id-preview--1ee8a3a8-bad6-4518-8b12-a1cae9864052.lovable.app/login  
+- **Frontend (Lovable):** https://fivvecis.lovable.app
 
 ---
 
@@ -30,7 +29,7 @@ It combines:
 - FastAPI backend
 - Product-oriented frontend (Lovable)
 
-👉 Goal: transform churn risk into **executive decisions and actionable workflows**
+Goal: transform churn risk into **executive decisions and actionable workflows**
 
 ---
 
