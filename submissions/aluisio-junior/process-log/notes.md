@@ -1,99 +1,106 @@
 # Process Log — AI Master Challenge
 
-## Objective
+## Objetivo
 
-Build a Churn Intelligence System that combines analytics, machine learning, generative AI, and product thinking to help executives identify churn risk, prioritize accounts, and convert insights into action.
-
----
-
-## Tools Used
-
-- **ChatGPT** — architecture design, KPI review, debugging, product framing, submission writing
-- **VS Code** — implementation and backend development
-- **FastAPI** — API layer
-- **XGBoost** — churn prediction model
-- **Gemini** — executive Q&A and insight generation
-- **Lovable** — frontend prototyping
-- **ngrok** — temporary API exposure for frontend integration
+Construir um Churn Intelligence System que combine analytics, machine learning, IA generativa e visão de produto para ajudar executivos a identificar risco de churn, priorizar contas e transformar insights em ação.
 
 ---
 
-## Workflow
+## Ferramentas Utilizadas
 
-1. Reviewed the challenge and reframed the solution as a **decision intelligence system**, not just a dashboard.
-2. Explored the RavenStack dataset and identified a key issue: historical churn, current active status, and predictive churn could not be treated as the same thing.
-3. Built the backend in FastAPI, separating ingestion, processing, analytics, ML, and AI orchestration.
-4. Trained an XGBoost model to generate `churn_score` and `risk_level`.
-5. Corrected financial metrics that were initially distorted by using average revenue instead of aggregated account revenue.
-6. Redesigned KPIs to distinguish:
-   - total MRR
-   - active MRR
-   - inactive MRR
-   - revenue at risk
-   - ARPU variants
-   - LTV proxy
-7. Reworked revenue segmentation to show:
-   - historical churn by revenue range
-   - predictive churn by revenue range
-   - active vs inactive MRR
-8. Adjusted Top 10 risk ranking so it would reflect **active accounts only**, prioritized by:
-   - risk level
+- **ChatGPT** — desenho de arquitetura, revisão de KPIs, debugging, definição de produto e apoio na documentação
+- **VS Code** — desenvolvimento e implementação do backend
+- **FastAPI** — camada de API
+- **XGBoost** — modelo de previsão de churn
+- **Gemini** — geração de insights e interpretação executiva
+- **Lovable** — prototipação e construção do frontend
+- **ngrok** — exposição temporária da API para integração com frontend
+
+---
+
+## Fluxo de Desenvolvimento
+
+1. Revisão do desafio e reposicionamento da solução como um **sistema de decisão**, não apenas um dashboard.
+2. Análise do dataset (RavenStack) e identificação de um problema crítico: churn histórico, status atual e churn preditivo não podem ser tratados da mesma forma.
+3. Construção do backend em FastAPI, separando claramente:
+   - ingestão
+   - processamento
+   - análise
+   - modelo de ML
+   - orquestração de IA
+4. Treinamento do modelo XGBoost para geração de:
+   - `churn_score`
+   - `risk_level`
+5. Correção de métricas financeiras que estavam distorcidas por uso de média ao invés de receita agregada.
+6. Redefinição dos KPIs:
+   - MRR total
+   - MRR ativo
+   - MRR inativo
+   - receita em risco
+   - variações de ARPU
+   - LTV como proxy
+7. Reestruturação da segmentação de receita para separar:
+   - churn histórico por faixa
+   - churn preditivo por faixa
+   - MRR ativo vs inativo
+8. Ajuste da tabela Top 10 para refletir apenas **contas ativas**, priorizando:
+   - nível de risco
    - MRR
    - churn score
-   - ABC classification
-9. Connected Gemini to provide executive interpretation and recommendations.
-10. Structured the product into modules:
-   - Executive Dashboard
+   - classificação ABC
+9. Integração do Gemini para gerar insights e recomendações executivas.
+10. Estruturação do produto em módulos:
+   - Dashboard Executivo
    - Churn Risk
-   - Recommendations
+   - Recomendações
    - Kanban
-   - WhatsApp approval simulation
+   - Aprovação via WhatsApp (simulada)
 
 ---
 
-## Where AI Was Wrong and How I Corrected It
+## Onde a IA Errou e Como Corrigi
 
-### 1. Revenue logic
-AI initially suggested revenue interpretations that used average MRR as executive revenue. I corrected this to use aggregated account MRR.
+### 1. Lógica de receita
+A IA sugeriu uso de média de MRR como base executiva. Corrigi para utilizar receita agregada por conta.
 
-### 2. Active vs churned accounts
-The dataset did not provide a reliable current active/inactive field. I defined operational logic based on churn history and account state in the analytical snapshot.
+### 2. Contas ativas vs churnadas
+O dataset não fornecia um status confiável. Defini uma lógica operacional baseada em histórico de churn e snapshot analítico.
 
-### 3. ARPU and LTV
-Initial formulas mixed historical revenue with active account counts. I corrected ARPU to use the appropriate population and treated LTV as a transparent proxy.
+### 3. ARPU e LTV
+As fórmulas iniciais misturavam bases inconsistentes. Corrigi o ARPU e tratei o LTV como proxy transparente.
 
-### 4. Top 10 risk ranking
-The first ranking mixed active and inactive accounts. I redesigned it to reflect only active accounts and prioritize executive relevance.
+### 4. Ranking Top 10
+Inicialmente misturava contas ativas e inativas. Corrigi para refletir apenas contas ativas com priorização executiva.
 
-### 5. Dashboard consistency
-Some visuals became inconsistent because cards, tables, and charts were not using the same population filters. I aligned them around the same business logic.
-
----
-
-## What I Added That AI Alone Would Not
-
-- Executive interpretation of KPI meaning
-- Separation of historical churn vs predictive churn
-- Prioritization based on revenue impact, not just risk score
-- Product framing beyond analytics into workflow and decision support
-- Consistency rules across metrics, charts, and ranking tables
+### 5. Consistência do dashboard
+Havia inconsistência entre gráficos e tabelas. Padronizei todas as visualizações com a mesma base de cálculo.
 
 ---
 
-## Key Design Decisions
+## O Que Foi Além da IA
 
-- Use **historical churn** as a conservative base for LTV proxy
-- Use **predictive churn** only for active accounts
-- Use **active accounts only** for executive risk views
-- Keep Top 10 risk aligned with executive prioritization
-- Treat the system as a **Revenue Protection platform**, not just churn analytics
+- Interpretação executiva dos KPIs
+- Separação clara entre churn histórico e preditivo
+- Priorização baseada em impacto financeiro
+- Transformação de análise em fluxo operacional
+- Consistência entre métricas, gráficos e tabelas
 
 ---
 
-## Evidence Included
+## Decisões de Design
 
-- API screenshots
-- Dashboard screenshots
-- Git history
-- AI-assisted design and debugging flow
-- Final code structure
+- Uso de churn histórico como base conservadora para LTV
+- Uso de churn preditivo apenas em contas ativas
+- Foco em contas ativas para visão executiva
+- Priorização do Top 10 baseada em impacto financeiro
+- Enquadramento do sistema como plataforma de **proteção de receita**
+
+---
+
+## Evidências
+
+- Screenshots da API
+- Screenshots do dashboard
+- Histórico do Git
+- Fluxo de uso de IA (design e debugging)
+- Estrutura final do código
