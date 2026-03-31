@@ -192,28 +192,61 @@ O dataset tem win rate oscilando entre 48% e 83% mês a mês. Sem documentação
 
 ## Evidências
 
-- [x] Narrativa escrita — este document descreve passo a passo cada fase com ferramentas e decisões
-- [x] Aplicação funcional ao vivo — [pipelinecoachai.lovable.app](https://pipelinecoachai.lovable.app/)
-- [x] Artefatos do processo preservados:
+### Solução auditável e reproduzível
 
-| Arquivo | Evidência de |
-|---------|-------------|
-| `sales_dashboard.html` | Análise exploratória antes de especificar o produto |
-| `pipeline_coach_docs.html` | PRD visual com diagramas gerado via Claude |
-| `agent-context/AGENT_INSTRUCTIONS.md` | Prompt engineering para agentes — 9 seções, erros proibidos documentados |
-| `agent-context/SCORING_ENGINE.md` | Scoring engine especificado antes do código |
-| `agent-context/MVP_BUILDER_PROMPT.md` | Prompt 1 enviado ao Lovable (574 linhas) |
-| `agent-context/MVP_UPDATE_RESULTS_PROMPT.md` | Prompt 2 — update após gap identificado em uso real |
-| `technical_documentation.html` | Documentação técnica completa com setup, scoring e limitações |
+**Aplicação ao vivo:** [pipelinecoachai.lovable.app](https://pipelinecoachai.lovable.app/)
 
-**Como reproduzir a aplicação do zero:**
-1. Acesse um construtor de sites com IA (Lovable, Bolt, Antigravity ou equivalente)
-2. Cole o conteúdo de `agent-context/MVP_BUILDER_PROMPT.md` como primeiro prompt
-3. Após a aplicação estar construída, cole `agent-context/MVP_UPDATE_RESULTS_PROMPT.md` como segundo prompt
-4. Faça upload dos 5 CSVs na tela `/upload`
+**Scoring engine executável** — o coração da solução pode ser rodado independentemente:
 
-Os 8 arquivos em `agent-context/` contêm todo o contexto necessário para qualquer agente entender, manter ou estender a aplicação.
+```bash
+# Pré-requisito: Python 3.8+, sem dependências externas
+# CSVs na mesma pasta que scoring_engine.py
+
+python scoring_engine.py --rep "Darcel Schlecht"
+# → Top 5 prioridades com score breakdown D1–D5
+
+python scoring_engine.py --validate
+# → Verifica: win rate 63,2% ✅, normalização GTXPro ✅, account vazio 16,2% ✅
+
+python scoring_engine.py --all-reps
+# → Top-1 prioridade de todos os 27 reps ativos
+
+python scoring_engine.py --rep "Lajuana Vencill" --top 10
+# → Rep com WR crítico (55%) — 80 deals abertos
+```
+
+### Artefatos do processo
+
+| Arquivo | O que evidencia | Verificável como |
+|---------|----------------|-----------------|
+| `scoring_engine.py` | Implementação completa do scoring — auditável linha a linha | `python scoring_engine.py --validate` |
+| `PROCESS_LOG.md` | Prompts reais, saídas reais, erros com código antes/depois | Leitura + execução dos comandos |
+| `sales_dashboard.html` | Análise exploratória feita *antes* do PRD | Ordem de criação dos arquivos |
+| `agent-context/SCORING_ENGINE.md` | Spec escrita *antes* do código | Compare com `scoring_engine.py` |
+| `agent-context/MVP_BUILDER_PROMPT.md` | Prompt que gerou a aplicação — 574 linhas | Cole no Lovable e execute |
+| `agent-context/MVP_UPDATE_RESULTS_PROMPT.md` | Prompt 2 — após gap identificado em uso real | Cole no Lovable após Prompt 1 |
+| `agent-context/AGENT_INSTRUCTIONS.md` | Erros proibidos — todos baseados em falhas reais da IA | Seção 7: "Things agents must not do" |
+| `technical_documentation.html` | Setup, scoring, limitações e roadmap | Abrir no browser |
+
+### Como reproduzir a aplicação do zero
+
+1. Abra [Lovable](https://lovable.dev), [Bolt](https://bolt.new) ou [Antigravity](https://antigravity.dev)
+2. Cole o conteúdo completo de `agent-context/MVP_BUILDER_PROMPT.md` como primeiro prompt
+3. Aguarde o build — a aplicação é gerada sem interação intermediária
+4. Cole o conteúdo de `agent-context/MVP_UPDATE_RESULTS_PROMPT.md` como segundo prompt
+5. Faça upload dos 5 CSVs na tela `/upload` da aplicação gerada
+
+### Como verificar que o scoring da aplicação é idêntico ao `scoring_engine.py`
+
+1. Execute `python scoring_engine.py --rep "Darcel Schlecht"`
+2. Anote o score e o breakdown do deal #1 (ex: Score=100, D1=25+D2=25+D3=20+D4=20+D5=10)
+3. Acesse [pipelinecoachai.lovable.app](https://pipelinecoachai.lovable.app/)
+4. Faça upload dos CSVs → selecione Darcel Schlecht
+5. O deal #1 na tela deve ter o mesmo score e a mesma razão
+
+Os dois implementam a mesma fórmula com a mesma `REFERENCE_DATE = 2017-12-27`.
 
 ---
 
-_Submissão enviada em: 31 de março de 2026_
+_Submissão enviada em: 31 de março de 2026_  
+_Atualizada em: 31 de março de 2026 — adicionados `scoring_engine.py` e `PROCESS_LOG.md` em resposta ao feedback do PR_
