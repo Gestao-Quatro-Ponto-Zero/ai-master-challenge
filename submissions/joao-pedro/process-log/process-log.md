@@ -1,48 +1,338 @@
-# Process Log - Como usei IA
-### Ferramentas usadas:
-| Ferramenta | Para que usou |
-|------------|--------------|
-| _Claude Code_ | _Conversa inicial sobre o desafio + entendimento básico sobre os dados fornecidos_ |
-| _Cursor_ | _Construção do protótipo web_ |
-| _Claude code + Cursor_ | _Agente do claude dentro do cursor para auxílio no protótipo web_ |
-### Workflow:
-1. A primeira coisa que fiz foi recolher e juntar todo o material de contexto disponível do desafio.
-2. Juntei a descrição da vaga + descrição do desafio + sumário resumido do escopo dos dados fornecidos.
-3. Desde o princípio eu já tinha a ideia de trabalhar no desafio 03, mas mesmo assim enviei todas as descrições ao Claude para que - com base em um arquivo eu.md do meu ambiente -, ele pudesse me confirmar a escolha.
-4. Feita a escolha do desafio e, com todo contexto dele "em mãos", abri o kaggle e começei a tirar as minhas primeiras conclusões.
-5. Confesso que apenas visualizando os dados-base fornecidos, não estava conseguindo ir muito além de um modelo preditivo tradicional.
-6. Foi quando finalmente comecei a utilizar o Claude para a análise de fato dos dados da data-base.
-8. Contextualizei o Claude sobre algumas análises que eu havia feito e o instiguei a "pensarmos fora da caixa".
-9. Foi ai que chegamos ao conceito de "features óbvias" vs "features imperdíveis".
-10. O claude me gerou +20 features chamadas de "imperdíveis", mas a maioria esmagadora era pautada em modelos de ML complexos e detalhados.
-11. Deixei claro a ele que o desafio não priorizava complexidade, e que a partir daquele momento nossa energia deveria estar concentrada em responder: "O que o vendedor precisa ver na tela segunda-feira de manhã?"
-12. Com esse conceito batido, abri o cursor e criei um projeto com os 4 arquivos csv da data-base.
-13. Utilizando o ploty criei uma view-base dos dados dos csvs fornecidos - nada demais, apenas tornar visual as métricas primárias.
-14. Devo confessar novamente que apenas com as visualização das métricas primárias, não consegui enxergar nada demais além do óbvio.
-15. Foi aí que pedi ao agente do claude, dentro do cursor, que criasse as views detalhadas das features "imperdíveis" - as páginas de "Analysis" do streamlit.
-14. Com as métricas detalhadas em mãos, comecei a descartar algumas das 20 features imperdíveis.
-15. Em uma primeira limpeza, as 20 métricas foram reduzidas para 10.
-16. Até que em dado momento chegamos ao questionamento principal da tese: Por que vendedores com 0 prospects tem sobrecarga em engage?
-17. Ao investigar a fundo o ponto, descobrimos correlações com outras métricas e definimos que seria essa a tese.
-18. Com isso em mente, tratei de criar as documentações base da aplicação, que serviria posteriormente para um readme da vida mas principalmente que seriviria como ouro para a janela de contexto do agente Claude que eu conversava - criei vários arquivos .md dos conceitos discutidos e sempre que precisava recupera-los no contexto solicitava ao Claude.
-19. Estimo que 70% do tempo investido no desafio foi na estruturação da página que pode ser visualizada no streamlit, eis o porque:
-20. Pode-se inferir que a página do streamlit é o data-center de toda a aplicação.
-21. Se observado com detalhe, todas as pontas que se derivam do projeto vem do que foi construído no streamlit: Documentações, teses, readme, gráficos, métricas, etc.
-22. Com essa "base" pronta, o que fiz após foi somente destinar os resultados lá armazenados aos destinos corretos: Alguns pontos foram para documentações, outros foram para o frontend em react, outros para arquivos do desafio como esse.
-23. Bom, eu nunca havia descrito um process log de utilização de IA em algum projeto, e não achei que seria tão difícil.
-24. Mas se eu pudesse sintetizar todo o processo de utilização de IA nesse projeto, diria que foquei em utilizar a IA para fazer um arroz com feijão bem feito: Boas documentações e explicabilidade antes de modelos complexos ou lógicas revolucionárias.
-# Onde a IA errou e como corrigi
-### Devo adimitir que não lembro de erros muito expressivos das IAs que utilzei na elaboração e construção da tese.
-### Um dos pontos nesse sentido claros e frescos para mim era que constantemente eu tinha que relembrar o contexto simples da tese, no sentido de rejeitar modelos complexos de ML ou coisas do tipo.
-# Evidências:
-Em anexo abaixo todo o conteúdo recuperado referente ao desenvolvimento da tese com IA:
->Me coloco a disposição para enviar maiores contextos de comprovação caso necessário
-1. Chathistory da primeira conversa que tive com o Claude sobre o contexto inicialL:
-https://claude.ai/share/07714d82-b304-43f4-b9b5-3c365b9d38c1
-2. Screenshots de algumas sessões (Claude + Cursor):
-<img width="1918" height="1044" alt="SS1-processlog" src="https://github.com/user-attachments/assets/11099a01-8a1f-41dd-9b8c-e0c7cb6594de" />
-<img width="1710" height="1070" alt="SS4-processlog" src="https://github.com/user-attachments/assets/1bec9eec-d5c1-4189-8f12-693ea143b53e" />
-<img width="1917" height="1047" alt="SS3-processlog" src="https://github.com/user-attachments/assets/ef2b0f5c-c6a0-43e1-bfff-e8c429f49b7b" />
-<img width="544" height="1060" alt="SS5-processlog" src="https://github.com/user-attachments/assets/06c52eaa-c129-4a04-9310-c6b24806e6c7" />
-<img width="538" height="1049" alt="SS6-processlog" src="https://github.com/user-attachments/assets/71c5897a-248c-4b21-a6f2-fb766f87a6f0" />
-<img width="1920" height="1046" alt="SS2-processlog" src="https://github.com/user-attachments/assets/20b760d5-f9ab-460e-a795-da434d3e6f17" />
+## Process Log — Como Usei IA
+
+## Descrição do Process Log
+
+Este documento registra o processo iterativo de desenvolvimento de uma solução de priorização de deals de vendas, detalhando como a IA foi utilizada como ferramenta de apoio — incluindo onde funcionou, onde falhou, e como as correções foram feitas através de julgamento humano.
+
+
+| Tópico                    | O que é                                                             |
+| ------------------------- | ------------------------------------------------------------------- |
+| **Ferramentas Usadas**    | Resumo das ferramentas de IA utilizadas e seus pontos fortes/fracos |
+| **Workflow Real**         | Registro cronológico das iterações, com erros (🔴) e acertos (🟢)   |
+| **Onde a IA Errou**       | Análise detalhada de 3 falhas específicas e como foram corrigidas   |
+| **O Que Eu Adicionei**    | 5 contribuições humanas que a IA sozinha não faria                  |
+| **Transcrições Literais** | Exemplos reais de interações com screenshots como evidência         |
+
+> **Obs:** Em `/process-log/screenshots/` há 14 imagens que comprovam as interações descritas neste documento, além de outras capturas adicionais do processo.
+
+### Ferramentas Usadas
+
+
+| Ferramenta         | Para Que Usei                                     | Quando Funcionou                                    | Quando Falhou                                               |
+| ------------------ | ------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------- |
+| Claude (chat)      | Análise exploratória, design de modelo, debugging | Geração rápida de hipóteses, validação quantitativa | Sugeriu ML tradicional (prob×valor) sem considerar contexto |
+| Cursor (assistant) | Protótipos de interface, visualizações            | Interface funcional em minutos, iteração rápida     | Primeiro layout era genérico demais, tive que redesenhar    |
+
+
+---
+
+### Workflow Real (Com Erros e Correções)
+
+#### 🔴 ITERAÇÃO 1: Falha — Solução Óbvia (Rejeitada)
+
+**Contexto do trecho inicial:**
+
+> "Tenho 8.800 deals. Quais nossas opções sem pensar em algo extremamente complexo?"
+
+**Resposta do Claude:**
+
+```
+Construa modelo preditivo:
+1. Feature engineering (dias, valor, vendedor, produto)
+2. Train/test split
+3. XGBoost para predição de win probability
+4. Ordenar por expected_value = prob × value
+```
+
+**Indaguei a ele:**
+
+- Não responde "o que fazer segunda-feira de manhã"
+- Ignora contexto de capacidade do vendedor
+- Ignora o que reforcei sobre priorizar simplicidade
+- Pouco intuitivo ao vendedor
+- O que podemos construir equilibrando simplicidade mas impacto visual? - nasce a ideia do "feed".
+
+---
+
+#### 🔴 ITERAÇÃO 2: Erro — Close Value para Deals Abertos
+
+**Contexto do meu input**
+Apenas deals_won possuem close_value
+Deals em Engaging não têm `close_value` - só quando fecham
+Precisamos criar a lógica de projeção de receita por vendedor - e consequentemente por squad, região, etc.
+
+**Claude sugeriu:**
+
+> "Use o sales_price do produto como proxy."
+
+**Contexto do meu retorno**
+"Nada mais óbvio do que usar sales_price"
+O que me diferencia de outros participantes?
+Juntamos uma boa base de contexto sobre operação
+Me ajude a pensar em lógicas que prezam a simplicidade mas que 
+correlacione o histórico de métricas acumulado de sellers, products e accounts
+
+> Houve um contexto consideravelmente grande até alcançar um modelo que combinasse simplicidade 
+>
+> e diferencial competitivo
+
+**Modelo alcançado:**
+Opção híbrida:
+
+1. Média histórica vendedor × produto (≥3 deals)
+2. Média histórica produto geral (≥5 deals)
+3. Sales price do catálogo
+4. Mediana geral (fallback)
+
+---
+
+#### 🟢 ITERAÇÃO 3: Acerto — Viabilidade Separada
+
+**Contexto: A primeira lógica criada não separava viabilidade do vendedor como fator de score**
+
+> "Score alto mas vendedor com 150 deals, a gente não está resolvendo nada aqui"
+
+**Contexto de retorno do Claude:**
+
+> "Penalizar score pela carga do vendedor."
+
+**Minha ideia:**
+"Não gosto da ideia do mesmo deal ter scores diferentes para vendedores diferentes"
+
+**Contrapropus:**
+Score = importância objetiva (igual para todos)
+Viabilidade = capacidade contextual (personalizada)
+Ação = f(score, viabilidade)
+
+**Claude refinamento:**
+Criou matriz de ação (score × viab → PUSH/TRANSFER/DISCARD)
+
+**Resultado:**
+Arquitetura final da tese central do modelo - viabilidade do vendedor como fator de score.
+
+---
+
+#### 🔴 ITERAÇÃO 4: Erro — Lógica de Transfer
+
+**Claude gerou inicialmente:**
+
+```python
+# Encontrar vendedor com menor carga
+target = min(sellers, key=lambda s: s.active_deals)
+```
+
+**O que percebi:**
+Deals estavam sendo transferidos sem qualquer tipo de regra
+Ignorava hierarquia organizacional (team, região).
+
+**Minha correção:**
+Criar hierarquia:
+
+1. Same team (mesmo manager)
+2. Same region (mesma região, outro team)
+3. Other region
+4. Escalate (nenhum disponível)
+
+**Claude implementou:**
+Lógica de scoring dentro de cada nível (prosp + carga + especialização).
+
+**Bug encontrado depois:**
+Transfer recomendava vendedor com 0 prospecting (protetor de deals).
+
+**Correção:**
+Filtro eliminatório: prospecting = 0 → excluir da lista de targets.
+
+---
+
+#### 🔴 ITERAÇÃO 5: Erro — Streamlit Travando
+
+**Problema:**
+Primeira versão carregava 8.800 deals toda vez (lento).
+
+**Indaguei:**
+Vamos inserir um sistema de cache para armazenamento de certos contextos, a
+navegação e o carregamento estão sobrecarregados
+
+**Problema adicional:**
+Claude criou 47 páginas no Streamlit (uma para cada análise).
+
+**Minha decisão:**
+Consolidar em 9 páginas hierarquizadas (Macro → Data → Analysis).
+
+---
+
+### Onde a IA Errou e Como Corrigi
+
+#### Erro #1: Close Value para Deals Abertos
+
+**O que Claude fez:**
+Sugeriu usar `sales_price` direto do catálogo.
+
+**Por que estava errado:**
+Sales price é teórico. Deals reais têm descontos, negociações.
+
+**Como detectei:**
+Validei distribuição de `close_value` em Won. Variação era 3× sales_price.
+
+**Como corrigi:**
+Criei lógica híbrida (média vendedor×produto → média produto → sales_price → mediana).
+
+---
+
+#### Erro #2: Transfer para Vendedor Protetor
+
+**O que Claude fez:**
+Recomendou transfer para vendedor com carga baixa (31 deals).
+
+**Por que estava errado:**
+Vendedor tinha 0 prospecting (protetor de deals, não pipeline saudável).
+
+**Como detectei:**
+Analisei padrão: vendedores com 0 prospecting têm deals mais antigos (círculo vicioso).
+
+**Como corrigi:**
+Filtro eliminatório: `prospecting = 0` → excluir de targets.
+
+---
+
+#### Erro #3: Streamlit com 47 Páginas
+
+**O que Claude fez:**
+Criou uma página para cada tipo de análise (seller individual, produto individual, etc).
+
+**Por que estava errado:**
+Menu lateral ficou poluído, navegação confusa.
+
+**Como detectei:**
+Testei interface, percebi que usuário se perdia.
+
+**Como corrigi:**
+Consolidei em 9 páginas hierarquizadas (Macro → Data → Analysis).
+
+---
+
+### O Que Eu Adicionei Que a IA Sozinha Não Faria
+
+#### 1. **Insight da Tese Central**
+
+**IA disse:**
+"Deals em Engaging demoram mais. Vamos criar modelo preditivo."
+
+**Eu percebi:**
+Won fecha em 57d, Lost em 14d. Se Engaging demora 165d, o problema não pode ser só dificuldade.
+Além disso, medianas históricas de deals_won/lost são consideravelmentes inferiores.
+
+---
+
+#### 2. **Separação Score × Viabilidade**
+
+**IA sugeriu:**
+Penalizar score pela carga do vendedor.
+
+**Eu propus:**
+Score objetivo (importância) + Viabilidade contextual (capacidade) → Ação.
+
+**Por que isso importa:**
+Mantém score "justo" (mesmo deal = mesmo score) mas personaliza ação.
+
+---
+
+#### 3. **Hierarquia de Transfer**
+
+**IA fez:**
+Transferir para vendedor com menor carga.
+
+**Eu adicionei:**
+Respeitar hierarquia organizacional:
+
+1. Same team (minimize atrito)
+2. Same region (proximidade)
+3. Other region (último recurso)
+
+**Por que a IA não fez:**
+IA não entende dinâmica organizacional (manager, região, relações).
+
+---
+
+#### 4. **Value-First Design**
+
+**IA criou:**
+Sistema que pede input de vendedor (atualizar deal_stage, engajamento).
+
+**Eu mudei:**
+Usar APENAS dados existentes e criar uma espécie de "feed". 
+Um cockpit rápido que responde "o que o vendedor precisa segunda-feira de manhã"
+
+**Por que isso importa:**
+Vendedores abandonam CRM se não veem sentido em usar. Value-first garante adoção.
+
+---
+
+#### 5. **Trade-off Consciente: Regras > ML**
+
+**IA podia ter feito:**
+XGBoost com 71% acurácia.
+
+**Eu escolhi:**
+Regras com 65% acurácia, mas 100% explicabilidade.
+
+**Por que:**
+Modelo 70% preciso que vendedor USA > Modelo 95% preciso que vendedor IGNORA.
+
+---
+
+### Transcrições literais: casos de interação
+
+Exemplos de interações + evidência screenshot:
+
+> 1. Uma das primeiras interações sobre o projeto: /process-log/screenshots/Interaction-example-1.png
+
+"Analise os exemplos de soluções válidas descritas na descrição do desafio: Exemplos de soluções válidas:
+
+- Aplicação web (Streamlit, React, HTML+JS, qualquer coisa)
+- Dashboard interativo (Plotly Dash, Retool, Metabase)
+- CLI tool ou script que gera relatório priorizados
+- API que recebe dados de um deal e retorna score + explicação
+- Planilha inteligente com fórmulas de scoring
+- Bot que envia prioridades por Slack/email
+
+Prontamente veio a minha cabeça construir uma espécie de "CRM" ou algo do tipo, de forma a "simular" a utilização real de um possível vendedor. Mas percebi que em nenhum momento me questionei e refleti sobre minha escolha. Analise os exemplos citados e o contexto que pensei, vamos falar sobre"
+
+> Essa interação exemplifica um dos casos de uso mais comuns a mim. 
+>
+> Sempre priorizo CTAs como "Vamos falar sobre", sobretudo em momentos inicias de planejamento
+>
+> Evidência - /process-log/screenshots/Interaction-example-1.png"
+
+> 1. Ainda em uma das primeiras interações:  /process-log/screenshots/Interaction-example-3.png
+
+"O entendimento sobre a lógica de score ficou claro. O que preciso é que você me justifique cada escolha com base no solicitado no desafio + dados que você absorveu".
+
+> Mais um exemplo de uso "vamos falar sobre"
+>
+> Evidência: /process-log/screenshots/Interaction-example-3.png
+
+> 1. Trecho de início da conversa que origina a tese central: /process-log/screenshots/Interaction-example-6.png
+
+"Sim, vamos seguir nesse sentido, mas antes preciso rapidamente verificar uma possível falácia: Verifique os CSVS necessários para confirmar a tese: o tempo média de deals_engage em aberto está desproporcional à média de deals_won".
+
+> Acabei "negando a possível falácia", mas exemplifica um uso de caso para reflexão de pontos já "decididos"
+>
+> Evidência: /process-log/screenshots/Interaction-example-6.png
+
+> 1. Interação sobre uma possível alteração de ângulo de análise : /process-log/screenshots/Interaction-example-14.png
+
+"Vamos sim criar o doc em markdown, mas antes, veja essa provocação que quero inserir na heurística: 
+
+É sabida a dificuldade em geral dos vendedores no preenchimento correto de atualizacoes e dados em ferramentas de CRM. 
+
+Por dificuldade técnica ou não aproximação tecnológica, isso é um fato. 
+
+Essa minha visão não conflita com a tese, ainda tenho convicção que devemos nos fundamentar no aspecto de "proteger deals pela falta deles". 
+
+Mas fiquei pensando sobre a possibilidade e como deveria abordar esse ponto adicional da necessidade de preenchimento de atualizações e andamentos com o sistema, afim de que ele não se torne abandonado. 
+
+Me responda se estou viajando ou se voce tambem enxerga alguma relacao nisso".
+
+> Evidência:  /process-log/screenshots/Interaction-example-14.png
+
