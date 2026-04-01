@@ -45,19 +45,19 @@ Na **V1**, estruturei a arquitetura no Claude (claude.ai) com **7 fatores de sco
 Na **V2**, após uma análise exploratória profunda dos dados reais, reformulei para **4 pilares com penalizações**, incorporando os padrões descobertos:
 
 ```
-score = (valor_pilar × 0.35)
-      + (momentum_pilar × 0.30)
-      + (fit_conta × 0.20)
-      + (qualidade_rep × 0.15)
+score = (valor_pilar × 0.40)
+      + (momentum_pilar × 0.25)
+      + (fit_conta × 0.15)
+      + (qualidade_rep × 0.20)
       − penalidades
 ```
 
 | Pilar | Peso | Base nos dados |
 | --- | --- | --- |
-| **Valor do Deal** | 35% | log(close_value estimado) normalizado. Deals sem valor usam preço de lista como proxy |
-| **Momentum** | 30% | Curva de win rate por tempo: 15-90 dias = score cheio; <8 dias ou >90 dias = penalização progressiva. Baseado na descoberta de que deals 15-30 dias têm 73% de win rate |
-| **Fit da Conta** | 20% | Revenue bucket (Small/Mid/Large/Enterprise) × win rate histórica do setor |
-| **Qualidade do Rep** | 15% | Win rate do agente normalizada entre mínimo (55%) e máximo (70.4%) observados |
+| **Valor do Deal** | 40% | log(close_value estimado) normalizado. Deals sem valor usam preço de lista como proxy |
+| **Momentum** | 25% | Curva de win rate por tempo: 15-90 dias = score cheio; <8 dias ou >90 dias = penalização progressiva. Baseado na descoberta de que deals 15-30 dias têm 73% de win rate |
+| **Fit da Conta** | 15% | Revenue bucket (Small/Mid/Large/Enterprise) × win rate histórica do setor |
+| **Qualidade do Rep** | 20% | Win rate do agente normalizada entre mínimo (55%) e máximo (70.4%) observados |
 
 **Penalizações automáticas:**
 
@@ -66,7 +66,7 @@ score = (valor_pilar × 0.35)
 - Deal muito novo <8 dias: −10 pts
 - Rep abaixo de 60% win rate: −10 pts
 
-**Por que a evolução?** A V1 foi uma arquitetura sólida baseada em boas práticas de scoring. A V2 incorporou evidências empíricas dos dados — a descoberta de que o momentum (tempo no pipeline) tem um padrão contra-intuitivo levou a aumentar seu peso de 10% para 30% e criar um modelo de penalização progressiva baseado nas curvas reais de conversão.
+**Por que a evolução?** A V1 foi uma arquitetura sólida baseada em boas práticas de scoring. A V2 incorporou evidências empíricas dos dados — a descoberta de que o momentum (tempo no pipeline) tem um padrão contra-intuitivo levou a aumentar seu peso de 10% para 25% e criar um modelo de penalização progressiva baseado nas curvas reais de conversão.
 
 ### Setup — Como rodar
 
@@ -195,7 +195,7 @@ V2 — ARQUITETURA ORIENTADA POR DADOS (Claude no claude.ai)
 | — | **Descoberta 5** | Win rate por setor varia de 61% (Finance) a 65% (Marketing). Efeito pequeno mas real | IA recomendou manter como componente de peso moderado |
 | — | **Descoberta 6** | 1.425 deals sem conta associada (16% do pipeline aberto) | IA propôs penalização de -15 pontos e marcação "dados incompletos" na UI |
 | — | **Descoberta 7** | GTK 500 é outlier: 40 deals com EV médio de 16.024, quase 3× o segundo colocado | IA sugeriu atenção imediata a qualquer deal GTK 500 aberto |
-| — | Nova arquitetura | Com as 7 descobertas, Claude reformulou o scoring para 4 pilares: Valor (35%), Momentum (30%), Fit da Conta (20%), Qualidade do Rep (15%), com penalizações automáticas | IA redesenhou a fórmula inteira baseada em evidências empíricas dos dados |
+| — | Nova arquitetura | Com as 7 descobertas, Claude reformulou o scoring para 4 pilares: Valor (40%), Momentum (25%), Fit da Conta (15%), Qualidade do Rep (20%), com penalizações automáticas | IA redesenhou a fórmula inteira baseada em evidências empíricas dos dados |
 | — | Mapeamento de sinais | Pedi ao Claude quais colunas do CSV alimentam cada pilar | Claude mapeou: 8 colunas do pipeline, 3 do accounts, 2 do sales_teams, 2 do products — com tratamento explícito dos 1.425 nulos |
 | — | AIOS Master — Refatoração | Levei a nova arquitetura (4 pilares) de volta ao projeto. Pedi ao **AI Master** para coordenar a refatoração do scoring e da UI | AI Master redistribuiu tarefas: agente de analytics refatorou o scoring para 4 pilares + penalizações, agente de frontend atualizou os componentes de explicabilidade |
 
@@ -207,9 +207,11 @@ V2 — ARQUITETURA ORIENTADA POR DADOS (Claude no claude.ai)
 
 **O que a IA fez:** Na V1, o Claude criou uma arquitetura sólida com 7 fatores baseados em boas práticas gerais de scoring — win rate, valor, estágio, performance do vendedor, etc. Funcional, mas sem refletir os padrões específicos dos dados.
 
-**O problema:** Ao analisar os dados profundamente na V2, descobri que o tempo no pipeline tinha apenas 10% de peso na V1, mas os dados mostravam que esse é um dos sinais mais fortes: deals entre 15-30 dias têm 73% de win rate, enquanto deals <8 dias têm apenas 53%. O pilar de momentum precisava ser muito mais relevante.
+**O problema:** Ao analisar os dados profundamente na V2, descobri que o tempo no pipeline tinha apenas 10% de peso na V1, mas os dados 
+mostravam que esse é um dos sinais mais fortes: deals entre 15-30 dias têm 73% de win rate, enquanto deals <8 dias têm apenas 53%. 
+O pilar de momentum precisava ser muito mais relevante.
 
-**Minha correção:** Reformulei para 4 pilares, elevando o Momentum de 10% para 30% de peso e criando uma curva de penalização progressiva baseada nas faixas reais dos dados. Também adicionei penalizações automáticas que a V1 não tinha (estagnação >90d, deal muito novo <8d, rep fraco).
+**Minha correção:** Reformulei para 4 pilares, elevando o Momentum de 10% para 25% de peso e criando uma curva de penalização progressiva baseada nas faixas reais dos dados. Também adicionei penalizações automáticas que a V1 não tinha (estagnação >90d, deal muito novo <8d, rep fraco).
 
 ### 2. Normalização do valor do produto
 
@@ -280,7 +282,7 @@ A aplicação permite que o vendedor:
 - Filtre por vendedor, região, manager ou produto
 - Visualize o pipeline com clareza em dashboard profissional
 
-O scoring da V2 se mostrou mais preciso que a V1 por incorporar os padrões reais dos dados — especialmente o momentum (tempo no pipeline) que subiu de 10% para 30% de peso.
+O scoring da V2 se mostrou mais preciso que a V1 por incorporar os padrões reais dos dados — especialmente o momentum (tempo no pipeline) que subiu de 10% para 25% de peso.
 
 ---
 

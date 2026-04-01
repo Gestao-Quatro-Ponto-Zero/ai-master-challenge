@@ -318,7 +318,7 @@ export function calcManagerBonus(
 }
 
 /**
- * NEW MODEL: Calculate Valor Pilar (35%)
+ * NEW MODEL: Calculate Valor Pilar (40%)
  * Based on Expected Value (EV) of the product using log scale
  * EV = close_price × average_win_rate_for_product
  */
@@ -362,7 +362,7 @@ export function calcValorPilar(
 }
 
 /**
- * NEW MODEL: Calculate Momentum Pilar (30%)
+ * NEW MODEL: Calculate Momentum Pilar (25%)
  * Based on win rate curve by days in pipeline
  * <8d = 53%, 15-30d = 73% (sweet spot), >90d = cold
  */

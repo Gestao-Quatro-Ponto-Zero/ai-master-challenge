@@ -96,8 +96,8 @@ function calculateDealScoreV2(
   const valorContribution = (valorPilarScore / 100) * 40;
 
   factors.push({
-    name: 'Pilar 1: Valor (35%)',
-    weight: 35,
+    name: 'Pilar 1: Valor (40%)',
+    weight: 40,
     raw_value: `EV: ${deal.product}`,
     normalized_value: valorPilarScore / 100,
     contribution: valorContribution,
@@ -120,8 +120,8 @@ function calculateDealScoreV2(
           : 'stagnated — >90d são frios';
 
   factors.push({
-    name: 'Pilar 2: Momentum (30%)',
-    weight: 30,
+    name: 'Pilar 2: Momentum (25%)',
+    weight: 25,
     raw_value: `${daysInPipeline}d`,
     normalized_value: momentumScore / 100,
     contribution: momentumContribution,
@@ -137,8 +137,8 @@ function calculateDealScoreV2(
     : 'Conta não identificada — penalty -15 aplicada';
 
   factors.push({
-    name: 'Pilar 3: Fit da Conta (20%)',
-    weight: 20,
+    name: 'Pilar 3: Fit da Conta (15%)',
+    weight: 15,
     raw_value: account ? `${account.account}` : '—',
     normalized_value: fitContaScore / 100,
     contribution: fitContaContribution,
@@ -155,8 +155,8 @@ function calculateDealScoreV2(
   const agentLost = agentDeals.filter((d) => d.deal_stage === 'Lost').length;
 
   factors.push({
-    name: 'Pilar 4: Qualidade Rep (15%)',
-    weight: 15,
+    name: 'Pilar 4: Qualidade Rep (20%)',
+    weight: 20,
     raw_value: `${agentWon}W/${agentLost}L`,
     normalized_value: qualidadeRepScore / 100,
     contribution: qualidadeContribution,
