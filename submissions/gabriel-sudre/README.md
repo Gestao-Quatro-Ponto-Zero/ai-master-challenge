@@ -101,10 +101,12 @@ Toda a explicação do Score é fornecida diretamente no card do Deal, além de 
 
 ## Evidências
 
-- [x] Documento de arquitetura iterado: `infraestrutura_base.md`
-- [x] Schema SQL versionado: `supabase/schema.sql`
-- [x] Process log detalhado: `PROCESS_LOG.md`
-- [x] Scheenshots de utilização de IA e Infraestrutura
+- [x] **Git history com commits incrementais:** [github.com/G4bsudr3/lead-scorer](https://github.com/G4bsudr3/lead-scorer) — repositório de desenvolvimento com histórico real de commits
+- [x] **Chat export completo:** `process-log/chat-exports/session-lead-scorer-2026-03-30.jsonl` — 2.590 linhas da sessão Claude Code (secrets sanitizados), mostrando toda a evolução v1→v4, debugging, decisões e correções
+- [x] Screenshots de utilização de IA e infraestrutura (6 capturas)
+- [x] Documento de arquitetura iterado: `docs/infraestrutura_base.md`
+- [x] Schema SQL versionado: `solution/supabase/schema.sql`
+- [x] Process log detalhado: `process-log/PROCESS_LOG.md`
 - [x] Testes automatizados: `test_scoring.py` (10 checks) + `test_pipeline.py` (12 checks)
 - [x] Aplicação funcional deployada via Docker no EasyPanel
 
