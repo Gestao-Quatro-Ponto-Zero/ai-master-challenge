@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+solution/.env
+solution/web/.env
+solution/.streamlit/
+.venv/
+node_modules/
+dist/
+*.log
