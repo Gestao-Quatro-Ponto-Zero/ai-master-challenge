@@ -3,7 +3,7 @@ DealSignal - Streamlit App
 
 Run with:
     streamlit run streamlit_app.py
-"""
+""" 
 
 import sys
 from pathlib import Path
