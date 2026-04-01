@@ -1,0 +1,2 @@
+# Este arquivo garante que o diretório data/metrics/ seja versionado no Git
+# mesmo que esteja vazio.
