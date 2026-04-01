@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root, [data-theme="light"] {
+  --g4-gold: #B9915B;
+  --g4-gold-light: #D4B896;
+  --g4-red: #AF4332;
+  --g4-navy: #0F1A45;
+  --g4-deep: #001F35;
+
+  --bg-primary: #F5F4F3;
+  --bg-secondary: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #0F1A45;
+  --bg-hover: #ECEFF3;
+  --bg-input: #F5F4F3;
+
+  --text-primary: #001F35;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-on-dark: #F5F4F3;
+
+  --accent: #B9915B;
+  --accent-hover: #A07D4E;
+  --accent-light: rgba(185, 145, 91, 0.12);
+
+  --success: #16A34A;
+  --warning: #D97706;
+  --danger: #DC2626;
+
+  /* Status colors for badges/labels */
+  --won-text: #15803D;
+  --won-bg: rgba(21, 128, 61, 0.12);
+  --lost-text: #B91C1C;
+  --lost-bg: rgba(185, 28, 28, 0.12);
+  --engaging-text: #1D4ED8;
+  --engaging-bg: rgba(29, 78, 216, 0.08);
+  --prospecting-text: #7C3AED;
+  --prospecting-bg: rgba(124, 58, 237, 0.08);
+
+  --border: #E5E7EB;
+  --border-strong: #D1D5DB;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  /* Chart tooltip */
+  --tooltip-bg: #FFFFFF;
+  --tooltip-border: #E5E7EB;
+}
+
+[data-theme="dark"] {
+  --g4-navy: #C5CAD9;
+  --g4-deep: #E2E8F0;
+
+  --bg-primary: #0B0F1A;
+  --bg-secondary: #131825;
+  --bg-card: #131825;
+  --bg-sidebar: #080C15;
+  --bg-hover: #1A2035;
+  --bg-input: #1A2035;
+
+  --text-primary: #E2E8F0;
+  --text-secondary: #8896AB;
+  --text-muted: #5A6578;
+
+  --success: #4ADE80;
+  --warning: #FBBF24;
+  --danger: #F87171;
+
+  --won-text: #4ADE80;
+  --won-bg: rgba(74, 222, 128, 0.12);
+  --lost-text: #F87171;
+  --lost-bg: rgba(248, 113, 113, 0.12);
+  --engaging-text: #60A5FA;
+  --engaging-bg: rgba(96, 165, 250, 0.10);
+  --prospecting-text: #A78BFA;
+  --prospecting-bg: rgba(167, 139, 250, 0.10);
+
+  --border: #1E2A3A;
+  --border-strong: #2A3650;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+
+  --tooltip-bg: #131825;
+  --tooltip-border: #1E2A3A;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+* { box-sizing: border-box; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
