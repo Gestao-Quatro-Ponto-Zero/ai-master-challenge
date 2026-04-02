@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 4%;
+    --foreground: 214 32% 91%;
+
+    --card: 220 18% 8%;
+    --card-foreground: 214 32% 91%;
+
+    --popover: 220 18% 8%;
+    --popover-foreground: 214 32% 91%;
+
+    --primary: 160 100% 45%;
+    --primary-foreground: 220 20% 4%;
+
+    --secondary: 217 19% 17%;
+    --secondary-foreground: 214 32% 91%;
+
+    --muted: 217 19% 17%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 217 19% 17%;
+    --accent-foreground: 214 32% 91%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 14% 16%;
+    --input: 220 14% 16%;
+    --ring: 160 100% 45%;
+
+    --radius: 0.5rem;
+
+    --won: 160 100% 45%;
+    --lost: 0 84% 60%;
+    --engaging: 217 91% 60%;
+    --prospecting: 38 92% 50%;
+
+    --score-critico: 0 84% 60%;
+    --score-critico-bg: 0 60% 15%;
+    --score-alto: 25 95% 53%;
+    --score-alto-bg: 25 60% 15%;
+    --score-medio: 45 93% 47%;
+    --score-medio-bg: 45 60% 15%;
+    --score-baixo: 215 16% 47%;
+    --score-baixo-bg: 215 16% 15%;
+
+    --sidebar-background: 220 18% 6%;
+    --sidebar-foreground: 214 32% 91%;
+    --sidebar-primary: 160 100% 45%;
+    --sidebar-primary-foreground: 220 20% 4%;
+    --sidebar-accent: 217 19% 17%;
+    --sidebar-accent-foreground: 214 32% 91%;
+    --sidebar-border: 220 14% 16%;
+    --sidebar-ring: 160 100% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-mono;
+    font-family: 'DM Mono', monospace;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Syne', sans-serif;
+  }
+}
