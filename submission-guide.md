@@ -6,12 +6,12 @@ Sua submissão tem **duas partes obrigatórias**:
 
 ### 1. A Solução
 
-O deliverable principal do desafio. O formato varia por challenge — leia o brief específico.
+O deliverable principal do desafio. O formato varia por challenge — leia o README específico.
 
 Pode ser:
-- Documento de análise (PDF, Markdown, Notion)
-- Código funcional (repo, notebook, script)
-- Protótipo/aplicação rodando (link + código fonte)
+- Documento de análise (PDF, Markdown)
+- Código funcional (scripts, notebooks, aplicação)
+- Protótipo/aplicação rodando (código fonte + instruções de setup)
 - Redesign de processo documentado
 - Combinação dos acima
 
@@ -33,7 +33,7 @@ Formatos aceitos (escolha um ou combine):
 **O que queremos ver no process log:**
 
 - Quais ferramentas de IA você usou e por quê
-- Como você decomôs o problema antes de promptar
+- Como você decompôs o problema antes de promptar
 - Onde a IA errou e como você corrigiu
 - O que você adicionou que a IA sozinha não faria
 - Quantas iterações foram necessárias
@@ -42,27 +42,15 @@ Formatos aceitos (escolha um ou combine):
 
 ## Como enviar
 
-**Email:** `g4os@g4business.com`
+Via **Pull Request** — o único canal aceito. Veja [CONTRIBUTING.md](./CONTRIBUTING.md) para o passo a passo.
 
-**Assunto:** `[AI Master] Seu Nome — Challenge XXX`
-
-Exemplo: `[AI Master] Maria Silva — Challenge 001`
-
-**Corpo do email:**
-- Breve apresentação (2-3 frases sobre você)
-- Link para LinkedIn
-- Links para a solução e process log (Google Drive, GitHub, Notion — o que preferir)
-
-**Ou, se preferir:**
-- Fork este repositório
-- Crie uma pasta `submissions/seu-nome/` com sua solução e process log
-- Abra um Pull Request
+Use o [template de submissão](./templates/submission-template.md) como base para o README da sua pasta.
 
 ---
 
 ## Formato da solução
 
-Não há template obrigatório. Mas soluções que funcionam bem geralmente têm:
+Não há template obrigatório para a solução em si. Mas submissões que funcionam bem geralmente têm:
 
 1. **Executive summary** (1 parágrafo) — o que você encontrou/construiu e por que importa
 2. **Abordagem** — como você atacou o problema

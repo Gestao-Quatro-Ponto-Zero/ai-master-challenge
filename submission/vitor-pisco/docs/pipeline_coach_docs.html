@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Coach AI — Documentação</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: #e2ddd5;
+  --ink: #1a1714;
+  --ink2: #4a4540;
+  --ink3: #8a8078;
+  --accent: #e84b2a;
+  --accent2: #2a7be8;
+  --accent3: #2ac87a;
+  --accent4: #f0a020;
+  --accent5: #9b2ae8;
+  --sidebar-w: 280px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--ink);
+  color: #f7f5f0;
+  position: fixed;
+  left: 0; top: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-logo .product-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: #f7f5f0;
+  line-height: 1.2;
+}
+
+.sidebar-logo .product-sub {
+  font-size: 11px;
+  color: rgba(247,245,240,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+
+.sidebar-section {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(247,245,240,0.35);
+  padding: 12px 24px 6px;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 24px;
+  color: rgba(247,245,240,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover {
+  color: #f7f5f0;
+  background: rgba(255,255,255,0.06);
+}
+
+.nav-item.active {
+  color: #f7f5f0;
+  border-left-color: var(--accent);
+  background: rgba(232,75,42,0.12);
+}
+
+.nav-item .nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.nav-item.active .nav-dot { opacity: 1; background: var(--accent); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 24px;
+  font-size: 11px;
+  color: rgba(247,245,240,0.25);
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ══ MAIN CONTENT ══ */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 900px;
+  padding: 60px 64px;
+}
+
+/* ══ SECTIONS ══ */
+.doc-section {
+  display: none;
+  animation: fadeSlide 0.3s ease;
+}
+.doc-section.active { display: block; }
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ══ HERO HEADER ══ */
+.section-hero {
+  margin-bottom: 48px;
+}
+
+.section-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 42px;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.section-lead {
+  font-size: 17px;
+  color: var(--ink2);
+  max-width: 620px;
+  line-height: 1.7;
+}
+
+/* ══ DIVIDER ══ */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 40px 0;
+}
+
+/* ══ PROSE ══ */
+h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  color: var(--ink);
+  margin: 44px 0 16px;
+  line-height: 1.2;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 28px 0 10px;
+  letter-spacing: -0.2px;
+}
+
+p {
+  color: var(--ink2);
+  margin-bottom: 16px;
+}
+
+strong { color: var(--ink); font-weight: 600; }
+
+/* ══ CALLOUT BOXES ══ */
+.callout {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 24px 0;
+  border-left: 4px solid;
+}
+
+.callout-red { background: rgba(232,75,42,0.07); border-color: var(--accent); }
+.callout-blue { background: rgba(42,123,232,0.07); border-color: var(--accent2); }
+.callout-green { background: rgba(42,200,122,0.07); border-color: var(--accent3); }
+.callout-amber { background: rgba(240,160,32,0.1); border-color: var(--accent4); }
+
+.callout-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.callout-red .callout-title { color: var(--accent); }
+.callout-blue .callout-title { color: var(--accent2); }
+.callout-green .callout-title { color: var(--accent3); }
+.callout-amber .callout-title { color: var(--accent4); }
+
+.callout p { margin-bottom: 0; font-size: 14px; }
+
+/* ══ FEATURE GRID ══ */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.feature-card:hover { border-color: var(--ink3); transform: translateY(-2px); }
+
+.feature-card .fc-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.feature-card .fc-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.feature-card .fc-body {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.5;
+}
+
+/* ══ USER TYPE CARDS ══ */
+.user-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.user-card {
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.user-card-primary { background: var(--ink); color: #f7f5f0; }
+.user-card-secondary { background: var(--surface2); border: 1px solid var(--border); }
+
+.user-card .uc-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.5;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.user-card .uc-role {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.user-card .uc-desc {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.user-card-primary .uc-label { color: #f7f5f0; }
+.user-card-primary .uc-role { color: #f7f5f0; }
+.user-card-primary .uc-desc { color: rgba(247,245,240,0.6); }
+
+/* ══ FLOW DIAGRAM ══ */
+.flow-diagram {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 24px;
+  margin: 28px 0;
+  overflow-x: auto;
+}
+
+.flow-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: 600px;
+}
+
+.flow-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+}
+
+.flow-step-num {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #f7f5f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.flow-step.highlight .flow-step-num {
+  background: var(--accent);
+}
+
+.flow-step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.flow-step-sub {
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+.flow-arrow {
+  color: var(--ink3);
+  font-size: 18px;
+  flex-shrink: 0;
+  padding: 0 4px;
+  margin-bottom: 20px;
+}
+
+/* ══ VERTICAL FLOW ══ */
+.vflow {
+  margin: 24px 0;
+  position: relative;
+}
+
+.vflow::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 20px;
+  bottom: 20px;
+  width: 2px;
+  background: var(--border);
+}
+
+.vflow-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.vflow-dot {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  z-index: 1;
+  transition: border-color 0.2s;
+}
+
+.vflow-item:hover .vflow-dot { border-color: var(--ink); }
+
+.vflow-content {
+  padding-top: 6px;
+  flex: 1;
+}
+
+.vflow-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.vflow-body {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.5;
+}
+
+/* ══ SCORE FORMULA ══ */
+.formula-box {
+  background: var(--ink);
+  color: #f7f5f0;
+  border-radius: 12px;
+  padding: 28px;
+  margin: 24px 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.formula-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(247,245,240,0.4);
+  margin-bottom: 16px;
+}
+
+.formula {
+  font-size: 18px;
+  font-weight: 500;
+  color: #f7f5f0;
+  margin-bottom: 20px;
+}
+
+.formula span { color: var(--accent4); }
+.formula .plus { color: var(--ink3); }
+
+.formula-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.formula-item {
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.formula-item .fi-pts {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--accent4);
+  margin-bottom: 4px;
+}
+
+.formula-item .fi-label {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px;
+  color: rgba(247,245,240,0.6);
+  font-weight: 500;
+}
+
+.formula-item .fi-desc {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px;
+  color: rgba(247,245,240,0.35);
+  margin-top: 4px;
+}
+
+/* ══ STRENGTH / RISK CARDS ══ */
+.sr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 28px 0;
+}
+
+.strength-card {
+  background: rgba(42,200,122,0.07);
+  border: 1px solid rgba(42,200,122,0.25);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.risk-card {
+  background: rgba(232,75,42,0.06);
+  border: 1px solid rgba(232,75,42,0.2);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.sr-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.strength-card .sr-number { color: var(--accent3); }
+.risk-card .sr-number { color: var(--accent); }
+
+.sr-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.sr-body {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.5;
+}
+
+/* ══ QUOTE BLOCK ══ */
+.insight-quote {
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin: 28px 0;
+  background: var(--surface);
+  border-radius: 0 10px 10px 0;
+}
+
+.insight-quote p {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* ══ DASHBOARD BLOCKS ══ */
+.dashboard-blocks {
+  margin: 28px 0;
+}
+
+.db-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.db-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+}
+
+.db-num {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #f7f5f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.db-title {
+  font-weight: 700;
+  font-size: 14px;
+  flex: 1;
+}
+
+.db-arrow {
+  color: var(--ink3);
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.db-block.open .db-arrow { transform: rotate(90deg); }
+
+.db-body {
+  display: none;
+  padding: 0 20px 16px 62px;
+  font-size: 13px;
+  color: var(--ink3);
+}
+
+.db-block.open .db-body { display: block; }
+
+.db-items {
+  list-style: none;
+}
+
+.db-items li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.db-items li:last-child { border-bottom: none; }
+
+.db-tag {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.tag-green { background: rgba(42,200,122,0.15); color: var(--accent3); }
+.tag-red { background: rgba(232,75,42,0.12); color: var(--accent); }
+.tag-blue { background: rgba(42,123,232,0.12); color: var(--accent2); }
+.tag-amber { background: rgba(240,160,32,0.15); color: var(--accent4); }
+
+/* ══ KPI ROW ══ */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.kpi-card .kc-val {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.kpi-card .kc-label {
+  font-size: 12px;
+  color: var(--ink3);
+  font-weight: 500;
+}
+
+/* ══ COMPARISON DIAGRAM ══ */
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  margin: 28px 0;
+  align-items: stretch;
+}
+
+.comp-side {
+  padding: 24px;
+  border-radius: 10px;
+}
+
+.comp-left {
+  background: rgba(232,75,42,0.07);
+  border: 1px solid rgba(232,75,42,0.2);
+}
+
+.comp-right {
+  background: rgba(42,200,122,0.07);
+  border: 1px solid rgba(42,200,122,0.2);
+}
+
+.comp-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  color: var(--ink3);
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.comp-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.comp-left .comp-label { color: var(--accent); }
+.comp-right .comp-label { color: var(--accent3); }
+
+.comp-item {
+  font-size: 13px;
+  color: var(--ink2);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comp-item::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.comp-left .comp-item::before { background: var(--accent); }
+.comp-right .comp-item::before { background: var(--accent3); }
+
+/* ══ UX JOURNEY DIAGRAM ══ */
+.journey-diagram {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  margin: 28px 0;
+}
+
+.journey-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.journey-steps {
+  position: relative;
+}
+
+.journey-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.journey-node {
+  width: 140px;
+  flex-shrink: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-align: center;
+}
+
+.journey-node.habit {
+  background: var(--ink);
+  color: #f7f5f0;
+  border-color: var(--ink);
+}
+
+.journey-node.break {
+  background: rgba(232,75,42,0.1);
+  border-color: rgba(232,75,42,0.3);
+  color: var(--accent);
+}
+
+.journey-node-title { font-size: 12px; font-weight: 700; }
+.journey-node-sub { font-size: 10px; color: var(--ink3); margin-top: 2px; }
+
+.journey-node.habit .journey-node-sub { color: rgba(247,245,240,0.5); }
+.journey-node.break .journey-node-sub { color: var(--accent); opacity: 0.7; }
+
+.journey-arrow { color: var(--ink3); font-size: 14px; }
+
+.journey-outcome {
+  flex: 1;
+  font-size: 12px;
+  color: var(--ink3);
+  font-style: italic;
+}
+
+/* ══ RECOMMENDATION BOX ══ */
+.rec-box {
+  background: var(--ink);
+  color: #f7f5f0;
+  border-radius: 12px;
+  padding: 28px;
+  margin: 28px 0;
+}
+
+.rec-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: #f7f5f0;
+  margin-bottom: 20px;
+}
+
+.rec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.rec-item {
+  background: rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.rec-icon { font-size: 18px; flex-shrink: 0; }
+
+.rec-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(247,245,240,0.9);
+  margin-bottom: 3px;
+}
+
+.rec-body {
+  font-size: 12px;
+  color: rgba(247,245,240,0.45);
+  line-height: 1.4;
+}
+
+/* ══ SCREEN LAYOUT DIAGRAM ══ */
+.screen-diagram {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.screen-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--ink3);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.screen-layout {
+  display: grid;
+  gap: 8px;
+}
+
+.screen-block {
+  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+
+.screen-block.priority {
+  background: rgba(232,75,42,0.1);
+  border-color: rgba(232,75,42,0.3);
+  border-left: 4px solid var(--accent);
+}
+
+.screen-block.risk {
+  background: rgba(240,160,32,0.08);
+  border-color: rgba(240,160,32,0.25);
+}
+
+.screen-block.contact {
+  background: rgba(42,123,232,0.07);
+  border-color: rgba(42,123,232,0.2);
+}
+
+.screen-block.score {
+  background: rgba(42,200,122,0.07);
+  border-color: rgba(42,200,122,0.2);
+}
+
+.screen-block.secondary {
+  background: var(--surface);
+  border-color: var(--border);
+  opacity: 0.6;
+}
+
+.sb-label {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.sb-desc {
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+.sb-tag {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 3px;
+  margin-left: 8px;
+}
+
+.priority .sb-tag { background: var(--accent); color: white; }
+.risk .sb-tag { background: var(--accent4); color: white; }
+.contact .sb-tag { background: var(--accent2); color: white; }
+.score .sb-tag { background: var(--accent3); color: white; }
+.secondary .sb-tag { background: var(--ink3); color: white; }
+
+/* ══ BADGE / TAG INLINE ══ */
+.inline-tag {
+  display: inline-block;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 1px 8px;
+  color: var(--ink2);
+  vertical-align: middle;
+}
+
+/* ══ FRICTION METER ══ */
+.friction-meter {
+  margin: 24px 0;
+}
+
+.fm-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.fm-label {
+  width: 180px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.fm-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: var(--surface2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fm-bar {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.fm-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+  width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ══ EMAIL PREVIEW ══ */
+.email-preview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.email-header {
+  background: var(--ink);
+  padding: 14px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.email-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+.email-subject {
+  color: rgba(247,245,240,0.6);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.email-body {
+  padding: 20px;
+}
+
+.email-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.email-row:last-child { border-bottom: none; }
+
+.email-row-icon { font-size: 18px; }
+
+.email-row-text { flex: 1; font-size: 13px; color: var(--ink2); }
+
+.email-row-badge {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ══ PAGE INDEX ══ */
+#home-index { }
+
+.index-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 28px 0;
+}
+
+.index-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.index-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--card-color, var(--ink));
+}
+
+.index-card:hover {
+  border-color: var(--card-color, var(--ink));
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.ic-doc {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+
+.ic-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.ic-desc {
+  font-size: 13px;
+  color: var(--ink3);
+}
+
+.ic-count {
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--ink3);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="product-name">Pipeline Coach AI</div>
+    <div class="product-sub">Documentação de Produto</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Início</div>
+    <a class="nav-item active" onclick="showSection('home')">
+      <span class="nav-dot"></span> Visão Geral
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">PRD — Produto</div>
+    <a class="nav-item" onclick="showSection('prd-objetivo')">
+      <span class="nav-dot"></span> Objetivo
+    </a>
+    <a class="nav-item" onclick="showSection('prd-usuarios')">
+      <span class="nav-dot"></span> Usuários
+    </a>
+    <a class="nav-item" onclick="showSection('prd-jornada')">
+      <span class="nav-dot"></span> Jornada Diária
+    </a>
+    <a class="nav-item" onclick="showSection('prd-dashboard-vendedor')">
+      <span class="nav-dot"></span> Dashboard — Vendedor
+    </a>
+    <a class="nav-item" onclick="showSection('prd-dashboard-gestor')">
+      <span class="nav-dot"></span> Dashboard — Gestor
+    </a>
+    <a class="nav-item" onclick="showSection('prd-execution')">
+      <span class="nav-dot"></span> Execution Tracking
+    </a>
+    <a class="nav-item" onclick="showSection('prd-benchmark')">
+      <span class="nav-dot"></span> Benchmarking
+    </a>
+    <a class="nav-item" onclick="showSection('prd-email')">
+      <span class="nav-dot"></span> Email Diário
+    </a>
+    <a class="nav-item" onclick="showSection('prd-ia')">
+      <span class="nav-dot"></span> Regras da IA
+    </a>
+    <a class="nav-item" onclick="showSection('prd-kpis')">
+      <span class="nav-dot"></span> KPIs do Produto
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">UX — Análise</div>
+    <a class="nav-item" onclick="showSection('ux-jornada')">
+      <span class="nav-dot"></span> Jornada do Usuário
+    </a>
+    <a class="nav-item" onclick="showSection('ux-forcas')">
+      <span class="nav-dot"></span> Pontos Fortes
+    </a>
+    <a class="nav-item" onclick="showSection('ux-riscos')">
+      <span class="nav-dot"></span> Ameaças de UX
+    </a>
+    <a class="nav-item" onclick="showSection('ux-insight')">
+      <span class="nav-dot"></span> Insight Principal
+    </a>
+    <a class="nav-item" onclick="showSection('ux-recomendacoes')">
+      <span class="nav-dot"></span> Recomendações
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    Pipeline Coach AI · PRD + UX · v1.0
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <!-- HOME -->
+  <div id="section-home" class="doc-section active">
+    <div class="section-hero">
+      <div class="section-eyebrow">Documentação</div>
+      <div class="section-title">Pipeline Coach AI</div>
+      <div class="section-lead">Assistente operacional de pipeline para vendedores B2B — prioriza ações diárias, reduz ciclos de venda e aumenta conversão via Execution Score.</div>
+    </div>
+
+    <div class="callout callout-blue">
+      <div class="callout-title">O que é este documento</div>
+      <p>Esta página reúne o <strong>PRD UX completo</strong> e a análise de <strong>pontos fortes e ameaças da jornada do usuário</strong>. Navegue pelo menu lateral para explorar cada seção com diagramas e visualizações.</p>
+    </div>
+
+    <div class="index-grid">
+      <div class="index-card" style="--card-color: #e84b2a" onclick="showSection('prd-objetivo')">
+        <div class="ic-doc">PRD — Produto</div>
+        <div class="ic-title">Objetivo & Escopo do Produto</div>
+        <div class="ic-desc">O que o Pipeline Coach AI resolve e para quem ele foi projetado.</div>
+        <div class="ic-count">10 seções · PRD completo</div>
+      </div>
+      <div class="index-card" style="--card-color: #2a7be8" onclick="showSection('ux-jornada')">
+        <div class="ic-doc">Análise UX</div>
+        <div class="ic-title">Jornada e Análise de Adoção</div>
+        <div class="ic-desc">A jornada principal do vendedor, pontos fortes e ameaças de UX que impactam adoção.</div>
+        <div class="ic-count">5 seções · Análise completa</div>
+      </div>
+      <div class="index-card" style="--card-color: #2ac87a" onclick="showSection('prd-jornada')">
+        <div class="ic-doc">Fluxo</div>
+        <div class="ic-title">Jornada Diária do Usuário</div>
+        <div class="ic-desc">Passo a passo do ciclo diário: email → dashboard → ação → registro → melhora.</div>
+        <div class="ic-count">7 etapas · Fluxo obrigatório</div>
+      </div>
+      <div class="index-card" style="--card-color: #f0a020" onclick="showSection('prd-ia')">
+        <div class="ic-doc">Inteligência</div>
+        <div class="ic-title">Regras da IA & Score</div>
+        <div class="ic-desc">Como a IA prioriza ações: tempo sem contato, aging, valor, stage e benchmark.</div>
+        <div class="ic-count">5 dimensões de score</div>
+      </div>
+    </div>
+
+    <h2>Resumo Executivo</h2>
+    <p>O Pipeline Coach AI transforma analytics passivo em <strong>comportamento ativo</strong>. O problema central que resolve: vendedores perdem tempo em deals que não vão fechar e deixam oportunidades boas esfriarem por falta de priorização estruturada.</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kc-val">3×</div>
+        <div class="kc-label">Aumento de adoção com email diário às 08:00</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kc-val">Top 5</div>
+        <div class="kc-label">Ações diárias priorizadas pela IA para cada vendedor</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kc-val">1 clique</div>
+        <div class="kc-label">Para registrar execução — sem formulários</div>
+      </div>
+    </div>
+
+    <div class="comparison">
+      <div class="comp-side comp-left">
+        <div class="comp-label">❌ Sem o produto</div>
+        <div class="comp-item">Priorização "no feeling"</div>
+        <div class="comp-item">Sem visibilidade de benchmark</div>
+        <div class="comp-item">Analytics passivo — ninguém usa</div>
+        <div class="comp-item">Gestor sem visão de execução</div>
+        <div class="comp-item">Deals bons esfriando</div>
+      </div>
+      <div class="comp-center">→</div>
+      <div class="comp-side comp-right">
+        <div class="comp-label">✅ Com Pipeline Coach AI</div>
+        <div class="comp-item">Priorização automática por IA</div>
+        <div class="comp-item">Benchmark vendedor vs equipe</div>
+        <div class="comp-item">Rotina diária via email + score</div>
+        <div class="comp-item">Execution Score em tempo real</div>
+        <div class="comp-item">Alertas de contas em risco</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRD: OBJETIVO -->
+  <div id="section-prd-objetivo" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 1</div>
+      <div class="section-title">Objetivo do Produto</div>
+      <div class="section-lead">Construir um assistente operacional de pipeline que transforma dados CRM em ação diária.</div>
+    </div>
+
+    <p>O Pipeline Coach AI é um <strong>assistente operacional</strong> — não um BI, não um analytics tool. Ele existe para transformar dados do CRM em ações concretas que o vendedor executa hoje.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon">🎯</div>
+        <div class="fc-title">Priorização Automática</div>
+        <div class="fc-body">A IA analisa todo o pipeline e entrega ao vendedor as Top 5 ações mais importantes do dia — sem que ele precise analisar nada.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">⏱️</div>
+        <div class="fc-title">Redução do Lead Time</div>
+        <div class="fc-body">Identificar e acionar deals estagnados antes que esfriem. Reduzir o ciclo médio de fechamento da empresa.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">📈</div>
+        <div class="fc-title">Aumento de Conversão</div>
+        <div class="fc-body">Focar esforço nos produtos e contas com maior probabilidade de fechar, aumentando a taxa de conversão por produto.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🔄</div>
+        <div class="fc-title">Execution Score</div>
+        <div class="fc-body">Medir consistência operacional — quantas das ações recomendadas o vendedor realmente executa e registra.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">📊</div>
+        <div class="fc-title">Benchmark Automático</div>
+        <div class="fc-body">Comparação contínua entre vendedor vs equipe vs empresa em lead time, tempo sem contato e conversão.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🚨</div>
+        <div class="fc-title">Alertas Acionáveis</div>
+        <div class="fc-body">Não apenas mostrar dados — gerar alertas que dizem exatamente o que fazer. "Ligue para conta X que está 14 dias sem contato."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRD: USUÁRIOS -->
+  <div id="section-prd-usuarios" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 2</div>
+      <div class="section-title">Usuários do Sistema</div>
+      <div class="section-lead">Três perfis distintos com necessidades e perspectivas diferentes sobre o mesmo produto.</div>
+    </div>
+
+    <div class="user-cards">
+      <div class="user-card user-card-primary">
+        <div class="uc-label">Usuário Primário</div>
+        <div class="uc-role">Vendedor B2B</div>
+        <div class="uc-desc">Quer saber o que fazer agora. Não quer analytics. Quer ação.</div>
+      </div>
+      <div class="user-card user-card-secondary">
+        <div class="uc-label">Usuário Secundário</div>
+        <div class="uc-role">Gestor Comercial</div>
+        <div class="uc-desc">Quer visão da equipe, execution scores e quem precisa de coaching.</div>
+      </div>
+      <div class="user-card user-card-secondary">
+        <div class="uc-label">Usuário Terciário</div>
+        <div class="uc-role">RevOps</div>
+        <div class="uc-desc">Quer dados de pipeline coverage, ciclo médio e previsibilidade de receita.</div>
+      </div>
+    </div>
+
+    <h2>Perspectivas por Perfil</h2>
+
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-dot">👤</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Vendedor — "O que faço agora?"</div>
+          <div class="vflow-body">Precisa de clareza operacional imediata. Não tem tempo (nem paciência) para navegar dashboards complexos. O produto precisa ir até ele — não o contrário. Motivado por benchmark, atormentado por formulários.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot">👔</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Gestor — "Como está minha equipe?"</div>
+          <div class="vflow-body">Quer ranking de execution score, aging médio por vendedor e quem precisa de atenção. Cuidado: se o produto parecer ferramenta de controle, os vendedores vão resistir ao uso.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot">📐</div>
+        <div class="vflow-content">
+          <div class="vflow-title">RevOps — "Como está o pipeline?"</div>
+          <div class="vflow-body">Pipeline coverage, previsibilidade, ciclo médio de venda e conversão por produto. É o usuário mais analítico — consegue extrair valor de dashboards mais complexos.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-amber">
+      <div class="callout-title">⚠️ Risco Político</div>
+      <p>O dashboard do gestor pode ser percebido como <strong>ferramenta de vigilância</strong>. O produto precisa ser posicionado como <em>acelerador de performance individual</em>, não como sistema de monitoramento. Esta distinção é crítica para adoção.</p>
+    </div>
+  </div>
+
+  <!-- PRD: JORNADA -->
+  <div id="section-prd-jornada" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 3</div>
+      <div class="section-title">Jornada Diária do Usuário</div>
+      <div class="section-lead">O fluxo obrigatório que transforma o produto em hábito — ou em dashboard ignorado.</div>
+    </div>
+
+    <div class="callout callout-green">
+      <div class="callout-title">💡 A hipótese central</div>
+      <p>Se esse ciclo rodar diariamente, o produto vira <strong>hábito</strong>. Se quebrar em qualquer etapa, vira mais um dashboard que ninguém abre.</p>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step highlight">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-label">Email 08:00</div>
+          <div class="flow-step-sub">Trigger automático</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-label">Abre Dashboard</div>
+          <div class="flow-step-sub">1 clique do email</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-label">Vê Prioridades</div>
+          <div class="flow-step-sub">Top 5 ações do dia</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-label">Executa Ações</div>
+          <div class="flow-step-sub">Liga, envia, reúne</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-label">Registra</div>
+          <div class="flow-step-sub">1 clique + seleção</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">6</div>
+          <div class="flow-step-label">Acompanha Score</div>
+          <div class="flow-step-sub">Execution Score</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-num">7</div>
+          <div class="flow-step-label">Melhora</div>
+          <div class="flow-step-sub">Performance sobe</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>O Que Pode Quebrar o Ciclo</h2>
+
+    <div class="journey-diagram">
+      <div class="journey-title">Pontos críticos de abandono</div>
+      <div class="journey-steps">
+        <div class="journey-row">
+          <div class="journey-node"><div class="journey-node-title">Email não abre</div><div class="journey-node-sub">Baixo engajamento</div></div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-outcome">Vendedor não entra no produto. Ciclo termina antes de começar.</div>
+        </div>
+        <div class="journey-row">
+          <div class="journey-node break"><div class="journey-node-title">Dashboard confuso</div><div class="journey-node-sub">Overload cognitivo</div></div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-outcome">Muitas informações na primeira tela = vendedor ignora metade.</div>
+        </div>
+        <div class="journey-row">
+          <div class="journey-node break"><div class="journey-node-title">Registro &gt; 5s</div><div class="journey-node-sub">Alta fricção</div></div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-outcome">Se registrar ação for chato, ninguém registra. Execution Score perde valor.</div>
+        </div>
+        <div class="journey-row">
+          <div class="journey-node break"><div class="journey-node-title">Score sem impacto</div><div class="journey-node-sub">Número decorativo</div></div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-outcome">Se o score não mudar nada, o vendedor para de se importar com ele.</div>
+        </div>
+        <div class="journey-row">
+          <div class="journey-node habit"><div class="journey-node-title">Ciclo completo</div><div class="journey-node-sub">Hábito formado</div></div>
+          <div class="journey-arrow">→</div>
+          <div class="journey-outcome">Produto vira parte da rotina. Adoção sustentável e performance crescente.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRD: DASHBOARD VENDEDOR -->
+  <div id="section-prd-dashboard-vendedor" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 4</div>
+      <div class="section-title">Dashboard do Vendedor</div>
+      <div class="section-lead">Cinco blocos funcionais com hierarquia clara: hoje vem primeiro, o resto vem depois.</div>
+    </div>
+
+    <p>A estrutura do dashboard segue uma <strong>hierarquia temporal</strong> — o que precisa ser feito hoje fica no topo, análises e contexto ficam abaixo. Isso resolve o problema de overload cognitivo na tela inicial.</p>
+
+    <div class="screen-diagram">
+      <div class="screen-title">Layout Recomendado — Tela Principal</div>
+      <div class="screen-layout">
+        <div class="screen-block priority">
+          <div class="sb-label">🔥 Prioridades do Dia <span class="sb-tag">HOJE</span></div>
+          <div class="sb-desc">Top 5 ações com botões: Executado · Reagendar · Ignorar</div>
+        </div>
+        <div class="screen-block risk">
+          <div class="sb-label">⚠️ Contas em Risco <span class="sb-tag">HOJE</span></div>
+          <div class="sb-desc">Ranking por aging acima da média da equipe</div>
+        </div>
+        <div class="screen-block contact">
+          <div class="sb-label">📉 Ranking sem Contato <span class="sb-tag">HOJE</span></div>
+          <div class="sb-desc">Contas ordenadas por dias sem interação</div>
+        </div>
+        <div class="screen-block score">
+          <div class="sb-label">📊 Execution Score <span class="sb-tag">SEMANA</span></div>
+          <div class="sb-desc">Indicador percentual com meta diária e progresso acumulado</div>
+        </div>
+        <div class="screen-block secondary">
+          <div class="sb-label">📈 Benchmark <span class="sb-tag">MÊS</span></div>
+          <div class="sb-desc">Você vs Equipe vs Empresa — lead time, conversão, contato</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Blocos Detalhados</h2>
+
+    <div class="dashboard-blocks">
+      <div class="db-block" onclick="toggleBlock(this)">
+        <div class="db-header">
+          <div class="db-num">1</div>
+          <div class="db-title">Prioridades do Dia</div>
+          <div class="db-arrow">▶</div>
+        </div>
+        <div class="db-body">
+          <p>Lista Top 5 gerada automaticamente pela IA. Cada item tem 3 ações possíveis:</p>
+          <ul class="db-items">
+            <li><strong>Executado</strong> <span class="db-tag tag-green">+score</span> — registra que a ação foi feita</li>
+            <li><strong>Reagendar</strong> <span class="db-tag tag-amber">neutro</span> — move para amanhã com nova data</li>
+            <li><strong>Ignorar</strong> <span class="db-tag tag-red">-score</span> — descarta a recomendação (penaliza leve no score)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="db-block" onclick="toggleBlock(this)">
+        <div class="db-header">
+          <div class="db-num">2</div>
+          <div class="db-title">Contas em Risco</div>
+          <div class="db-arrow">▶</div>
+        </div>
+        <div class="db-body">
+          <p>Ranking de deals com aging acima da média da equipe. Mostra: conta, produto, dias sem movimento, aging vs benchmark. O vendedor reconhece imediatamente "essas contas estão esfriando" — cria urgência real.</p>
+        </div>
+      </div>
+
+      <div class="db-block" onclick="toggleBlock(this)">
+        <div class="db-header">
+          <div class="db-num">3</div>
+          <div class="db-title">Ranking sem Contato</div>
+          <div class="db-arrow">▶</div>
+        </div>
+        <div class="db-body">
+          <p>Contas ordenadas por dias sem interação registrada. Extremamente acionável: o vendedor vê instantaneamente quais contas estão sendo negligenciadas e pode agir com 1 clique.</p>
+        </div>
+      </div>
+
+      <div class="db-block" onclick="toggleBlock(this)">
+        <div class="db-header">
+          <div class="db-num">4</div>
+          <div class="db-title">Execution Score</div>
+          <div class="db-arrow">▶</div>
+        </div>
+        <div class="db-body">
+          <p>Indicador percentual que mede quantas das ações recomendadas foram executadas e registradas. Precisa impactar: prioridade, ranking, email e dashboard do gestor. Sem impacto visível → vira número decorativo.</p>
+        </div>
+      </div>
+
+      <div class="db-block" onclick="toggleBlock(this)">
+        <div class="db-header">
+          <div class="db-num">5</div>
+          <div class="db-title">Benchmark</div>
+          <div class="db-arrow">▶</div>
+        </div>
+        <div class="db-body">
+          <p>Comparação: Você <span class="db-tag tag-blue">58 dias</span> vs Equipe <span class="db-tag tag-green">46 dias</span> vs Empresa <span class="db-tag tag-amber">52 dias</span>. Motivação comportamental automática. Cuidado no framing: sempre Comparação + Sugestão de Ação, nunca comparação isolada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRD: DASHBOARD GESTOR -->
+  <div id="section-prd-dashboard-gestor" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 5</div>
+      <div class="section-title">Dashboard do Gestor</div>
+      <div class="section-lead">Visão de equipe com cinco blocos de gestão + filtros obrigatórios.</div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon">🏆</div>
+        <div class="fc-title">Ranking Execution Score</div>
+        <div class="fc-body">Quem está executando mais as ações recomendadas? Ranking da equipe completa com score individual.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">⏳</div>
+        <div class="fc-title">Aging Médio por Vendedor</div>
+        <div class="fc-body">Comparação do tempo médio que cada vendedor leva por deal — identifica quem precisa de coaching.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">📵</div>
+        <div class="fc-title">Tempo sem Contato</div>
+        <div class="fc-body">Ranking de quem tem mais contas sem interação recente — risco de pipeline secando.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🎯</div>
+        <div class="fc-title">Pipeline Coverage</div>
+        <div class="fc-body">Cobertura de pipeline por vendedor vs meta. Quem tem pipeline suficiente para bater cota?</div>
+      </div>
+    </div>
+
+    <h3>Filtros Obrigatórios</h3>
+
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0;">
+      <span class="inline-tag">escritório</span>
+      <span class="inline-tag">produto</span>
+      <span class="inline-tag">período</span>
+      <span class="inline-tag">vendedor</span>
+    </div>
+
+    <div class="callout callout-amber">
+      <div class="callout-title">⚠️ Posicionamento Crítico</div>
+      <p>O dashboard do gestor <strong>NÃO pode parecer ferramenta de cobrança</strong>. Deve ser apresentado como <em>ferramenta de aceleração do time</em>. Se parecer controle, os vendedores vão evitar usar o produto para não "entregar dados ao chefe".</p>
+    </div>
+  </div>
+
+  <!-- PRD: EXECUTION TRACKING -->
+  <div id="section-prd-execution" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 6</div>
+      <div class="section-title">Execution Tracking</div>
+      <div class="section-lead">O registro de ações deve custar menos de 5 segundos — ou ninguém vai fazer.</div>
+    </div>
+
+    <div class="insight-quote">
+      <p>"Se registrar ação demorar mais de 5 segundos, ninguém registra."</p>
+    </div>
+
+    <p>O Execution Tracking é o coração do produto. Sem registro, o Execution Score perde sentido. Sem score, o produto vira analytics passivo. A regra de UX é <strong>1 clique + 1 seleção</strong>, sem formulário longo.</p>
+
+    <h3>Tipos de Ação</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-icon">📞</div>
+        <div class="fc-title">Ligação realizada</div>
+        <div class="fc-body">Registro de chamada telefônica ou videochamada com o contato da conta.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">✉️</div>
+        <div class="fc-title">Email enviado</div>
+        <div class="fc-body">Follow-up, proposta, ou qualquer comunicação por email com a conta.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🤝</div>
+        <div class="fc-title">Reunião realizada</div>
+        <div class="fc-body">Presencial ou remota. Atualiza automaticamente o campo de data de último contato.</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-icon">🔄</div>
+        <div class="fc-title">Follow-up executado</div>
+        <div class="fc-body">Qualquer atividade de acompanhamento que não se enquadra nas categorias acima.</div>
+      </div>
+    </div>
+
+    <h3>Resultado da Ação</h3>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0;">
+      <span class="inline-tag" style="background: rgba(42,200,122,0.12); border-color: rgba(42,200,122,0.3); color: var(--accent3)">✓ Avanço de estágio</span>
+      <span class="inline-tag" style="background: rgba(42,123,232,0.1); border-color: rgba(42,123,232,0.25); color: var(--accent2)">⏳ Aguardando resposta</span>
+      <span class="inline-tag" style="background: rgba(240,160,32,0.12); border-color: rgba(240,160,32,0.3); color: var(--accent4)">📅 Reagendado</span>
+      <span class="inline-tag" style="background: rgba(232,75,42,0.1); border-color: rgba(232,75,42,0.25); color: var(--accent)">✗ Perdido</span>
+    </div>
+
+    <div class="callout callout-green">
+      <div class="callout-title">✅ Design Ideal de Registro</div>
+      <p>Interface de 1 clique com botões grandes e visíveis: <strong>[Liguei]</strong> · <strong>[Email enviado]</strong> · <strong>[Reunião feita]</strong>. Após clicar, aparece apenas um seletor de resultado. Tudo em menos de 5 segundos.</p>
+    </div>
+  </div>
+
+  <!-- PRD: BENCHMARK -->
+  <div id="section-prd-benchmark" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 7</div>
+      <div class="section-title">Benchmarking Automático</div>
+      <div class="section-lead">Comparações que motivam — quando bem contextualizadas com uma ação sugerida.</div>
+    </div>
+
+    <p>O benchmarking é <strong>uma das ferramentas mais fortes de UX comportamental</strong> em times comerciais. Mas precisa ser usado com cuidado: comparação isolada gera frustração; comparação + sugestão de ação gera motivação.</p>
+
+    <div class="formula-box">
+      <div class="formula-title">Comparações obrigatórias</div>
+      <div class="formula-items">
+        <div class="formula-item">
+          <div class="fi-pts">Lead Time</div>
+          <div class="fi-label">Ciclo médio</div>
+          <div class="fi-desc">Vendedor vs Equipe vs Empresa</div>
+        </div>
+        <div class="formula-item">
+          <div class="fi-pts">Contato</div>
+          <div class="fi-label">Tempo sem toque</div>
+          <div class="fi-desc">Vendedor vs Média Equipe</div>
+        </div>
+        <div class="formula-item">
+          <div class="fi-pts">Conversão</div>
+          <div class="fi-label">Taxa por produto</div>
+          <div class="fi-desc">Vendedor vs Média Empresa</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Benchmark Visual — Exemplo</h3>
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin: 16px 0;">
+      <div style="font-size: 13px; color: var(--ink3); margin-bottom: 12px; font-weight: 600;">Lead Time Médio</div>
+      <div class="friction-meter">
+        <div class="fm-item">
+          <div class="fm-label" style="color: var(--accent);">Você</div>
+          <div class="fm-bar-wrap"><div class="fm-bar" style="width:79%; background: var(--accent);"></div></div>
+          <div class="fm-val">58d</div>
+        </div>
+        <div class="fm-item">
+          <div class="fm-label" style="color: var(--ink3);">Empresa</div>
+          <div class="fm-bar-wrap"><div class="fm-bar" style="width:70%; background: var(--ink3);"></div></div>
+          <div class="fm-val">52d</div>
+        </div>
+        <div class="fm-item">
+          <div class="fm-label" style="color: var(--accent3);">Equipe</div>
+          <div class="fm-bar-wrap"><div class="fm-bar" style="width:62%; background: var(--accent3);"></div></div>
+          <div class="fm-val">46d</div>
+        </div>
+      </div>
+      <div style="font-size: 13px; color: var(--accent4); padding: 10px 14px; background: rgba(240,160,32,0.08); border-radius: 6px; border-left: 3px solid var(--accent4);">
+        💡 Você está 6 dias acima da média da equipe. Sugestão: priorize follow-ups em Engaging &gt; 14 dias.
+      </div>
+    </div>
+
+    <div class="comparison">
+      <div class="comp-side comp-left">
+        <div class="comp-label">❌ Framing errado</div>
+        <div class="comp-item">"Você está pior que a equipe"</div>
+        <div class="comp-item">Comparação sem contexto</div>
+        <div class="comp-item">Destaque negativo isolado</div>
+        <div class="comp-item">Sem caminho de melhora</div>
+      </div>
+      <div class="comp-center">→</div>
+      <div class="comp-side comp-right">
+        <div class="comp-label">✅ Framing correto</div>
+        <div class="comp-item">"Você está 6 dias acima da média"</div>
+        <div class="comp-item">Número específico e concreto</div>
+        <div class="comp-item">Sugestão de ação imediata</div>
+        <div class="comp-item">Tom de coaching, não de cobrança</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRD: EMAIL DIÁRIO -->
+  <div id="section-prd-email" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 8</div>
+      <div class="section-title">Email Diário Automático</div>
+      <div class="section-lead">O produto vai até o vendedor — não espera que o vendedor venha até ele.</div>
+    </div>
+
+    <div class="callout callout-green">
+      <div class="callout-title">🚀 Principal alavanca de adoção</div>
+      <p>O email diário às 08:00 aumenta adoção em <strong>2–3x</strong>. O motivo: não depende do vendedor abrir o sistema espontaneamente. Você traz o sistema até ele — que é exatamente como ele deve ser usado.</p>
+    </div>
+
+    <h3>Conteúdo Obrigatório</h3>
+
+    <div class="email-preview">
+      <div class="email-header">
+        <div class="email-dot" style="background: #ff5f57;"></div>
+        <div class="email-dot" style="background: #ffc42d;"></div>
+        <div class="email-dot" style="background: #2ac95a;"></div>
+        <div class="email-subject" style="margin-left: 10px;">Pipeline Coach — Suas prioridades de hoje, 27 mar · 08:00</div>
+      </div>
+      <div class="email-body">
+        <div class="email-row">
+          <div class="email-row-icon">🔥</div>
+          <div class="email-row-text"><strong>Prioridades do dia</strong> — 5 ações geradas pela IA com base no seu pipeline atual</div>
+          <div class="email-row-badge" style="background: rgba(232,75,42,0.12); color: var(--accent);">HOJE</div>
+        </div>
+        <div class="email-row">
+          <div class="email-row-icon">⚠️</div>
+          <div class="email-row-text"><strong>Contas em risco</strong> — 3 contas com aging acima da média da equipe</div>
+          <div class="email-row-badge" style="background: rgba(240,160,32,0.15); color: var(--accent4);">URGENTE</div>
+        </div>
+        <div class="email-row">
+          <div class="email-row-icon">📵</div>
+          <div class="email-row-text"><strong>Ranking sem contato</strong> — Conta XPTO está há 14 dias sem interação</div>
+          <div class="email-row-badge" style="background: rgba(42,123,232,0.12); color: var(--accent2);">ATENÇÃO</div>
+        </div>
+        <div class="email-row">
+          <div class="email-row-icon">📊</div>
+          <div class="email-row-text"><strong>Execution Score atual</strong> — 72% esta semana · Meta: 80%</div>
+          <div class="email-row-badge" style="background: rgba(42,200,122,0.12); color: var(--accent3);">SCORE</div>
+        </div>
+        <div class="email-row">
+          <div class="email-row-icon">🤖</div>
+          <div class="email-row-text"><strong>Sugestão principal da IA</strong> — Você tem 2 deals GTX Plus Pro em Engaging &gt; 20 dias sem contato. Ligue hoje.</div>
+          <div class="email-row-badge" style="background: rgba(155,42,232,0.12); color: var(--accent5);">IA</div>
+        </div>
+      </div>
+    </div>
+
+    <p>Envio configurado para <strong>diariamente às 08:00</strong>. Apenas dias úteis ou todos os dias — a definir com base no comportamento do time.</p>
+  </div>
+
+  <!-- PRD: IA -->
+  <div id="section-prd-ia" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 9</div>
+      <div class="section-title">Regras da IA — Score de Prioridade</div>
+      <div class="section-lead">Como a IA decide quais são as Top 5 ações de cada vendedor a cada dia.</div>
+    </div>
+
+    <p>O score de prioridade é calculado com base em <strong>5 dimensões</strong> que combinam urgência, valor e comportamento histórico. A saída é sempre uma lista ordenada das 5 ações mais importantes do dia.</p>
+
+    <div class="formula-box">
+      <div class="formula-title">Score de Prioridade — Dimensões</div>
+      <div class="formula">
+        Score = <span>tempo_sem_contato</span> <span class="plus">+</span> <span>aging</span> <span class="plus">+</span> <span>valor</span> <span class="plus">+</span> <span>stage</span> <span class="plus">+</span> <span>benchmark</span>
+      </div>
+      <div class="formula-items">
+        <div class="formula-item">
+          <div class="fi-pts">📵</div>
+          <div class="fi-label">Tempo sem Contato</div>
+          <div class="fi-desc">Quanto tempo desde a última interação registrada com essa conta</div>
+        </div>
+        <div class="formula-item">
+          <div class="fi-pts">⏳</div>
+          <div class="fi-label">Aging da Oportunidade</div>
+          <div class="fi-desc">Há quanto tempo o deal está no mesmo stage sem avançar</div>
+        </div>
+        <div class="formula-item">
+          <div class="fi-pts">💰</div>
+          <div class="fi-label">Valor da Oportunidade</div>
+          <div class="fi-desc">Peso proporcional ao valor do deal — deals maiores têm mais urgência</div>
+        </div>
+        <div class="formula-item">
+          <div class="fi-pts">🔄</div>
+          <div class="fi-label">Stage Atual</div>
+          <div class="fi-desc">Deals mais avançados no funil recebem mais urgência que deals iniciais</div>
+        </div>
+        <div class="formula-item">
+          <div class="fi-pts">📈</div>
+          <div class="fi-label">Benchmark da Equipe</div>
+          <div class="fi-desc">Comparação com a média do time: deals acima do aging médio são priorizados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-amber">
+      <div class="callout-title">💡 Explainability é obrigatória</div>
+      <p>Se a IA disser "Priorize conta XPTO" sem explicar o motivo, o vendedor não vai confiar. A recomendação sempre deve vir com contexto: <em>"Engaging + alto valor + tempo acima da média da equipe"</em>. Explainability aumenta confiança e adoção.</p>
+    </div>
+  </div>
+
+  <!-- PRD: KPIs -->
+  <div id="section-prd-kpis" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">PRD · Seção 10</div>
+      <div class="section-title">KPIs do Produto</div>
+      <div class="section-lead">Cinco métricas de sucesso que definem se o Pipeline Coach AI está funcionando.</div>
+    </div>
+
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-dot">📉</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Redução do Lead Time Médio</div>
+          <div class="vflow-body">O tempo médio entre abertura e fechamento de deal deve cair. Indica que o produto está ajudando vendedores a agir mais rápido nos deals certos.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot">⬆️</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Aumento do Execution Score Médio</div>
+          <div class="vflow-body">A média de execution score do time deve crescer semana a semana. Indica que os vendedores estão executando mais as ações recomendadas.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot">📞</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Aumento da Taxa de Contato Semanal</div>
+          <div class="vflow-body">Número de interações registradas por semana por vendedor. Indica que o produto está gerando mais atividade real com contas.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot">🎯</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Aumento de Conversão por Produto</div>
+          <div class="vflow-body">Taxa de fechamento por categoria de produto. Indica que o produto está direcionando esforço para os produtos com melhor fit.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot">🛡️</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Aumento do Pipeline Coverage</div>
+          <div class="vflow-body">Ratio entre pipeline total e meta de receita. Indica saúde do funil e previsibilidade de resultado futuro.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UX: JORNADA -->
+  <div id="section-ux-jornada" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">Análise UX · Seção 1</div>
+      <div class="section-title">Jornada Principal do Usuário</div>
+      <div class="section-lead">A jornada completa que transforma o produto em hábito diário — e os pontos onde ela pode quebrar.</div>
+    </div>
+
+    <p>A análise da jornada do usuário (vendedor) revela que o produto funciona como um <strong>ciclo de reforço</strong>: cada etapa bem executada alimenta a próxima, criando um hábito sustentável. Se qualquer etapa quebrar, o ciclo para.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-steps">
+        <div class="flow-step highlight">
+          <div class="flow-step-num">📧</div>
+          <div class="flow-step-label">Email 08:00</div>
+          <div class="flow-step-sub">Trigger</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-step-num">📱</div>
+          <div class="flow-step-label">Dashboard</div>
+          <div class="flow-step-sub">Acesso</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-step-num">🎯</div>
+          <div class="flow-step-label">Prioridades</div>
+          <div class="flow-step-sub">Decisão</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-step-num">✅</div>
+          <div class="flow-step-label">Execução</div>
+          <div class="flow-step-sub">Ação</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-step-num">📝</div>
+          <div class="flow-step-label">Registro</div>
+          <div class="flow-step-sub">1 clique</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-step-num">📊</div>
+          <div class="flow-step-label">Score</div>
+          <div class="flow-step-sub">Evolução</div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step highlight">
+          <div class="flow-step-num">🚀</div>
+          <div class="flow-step-label">Performance</div>
+          <div class="flow-step-sub">Hábito</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>A Bifurcação Crítica</h2>
+
+    <div class="comparison">
+      <div class="comp-side comp-left">
+        <div class="comp-label">💀 Ciclo quebra</div>
+        <div class="comp-item">Email ignorado → não abre</div>
+        <div class="comp-item">Dashboard confuso → abandona</div>
+        <div class="comp-item">Registro demorado → não registra</div>
+        <div class="comp-item">Score sem impacto → irrelevante</div>
+        <div class="comp-item" style="font-weight: 700; color: var(--accent);">→ Dashboard ignorado</div>
+      </div>
+      <div class="comp-center">↕</div>
+      <div class="comp-side comp-right">
+        <div class="comp-label">✅ Ciclo roda</div>
+        <div class="comp-item">Email abre → vai ao dashboard</div>
+        <div class="comp-item">3 blocos claros → age rápido</div>
+        <div class="comp-item">1 clique → registra sempre</div>
+        <div class="comp-item">Score muda algo → importa</div>
+        <div class="comp-item" style="font-weight: 700; color: var(--accent3);">→ Produto vira hábito</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UX: FORÇAS -->
+  <div id="section-ux-forcas" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">Análise UX · Seção 2</div>
+      <div class="section-title">Pontos Fortes da Jornada</div>
+      <div class="section-lead">Cinco features com alto potencial de adoção — o que o produto acerta por design.</div>
+    </div>
+
+    <div style="display: grid; gap: 16px; margin: 24px 0;">
+      <div class="strength-card">
+        <div class="sr-number">FORÇA 01</div>
+        <div class="sr-title">🔥 Prioridade Diária Clara — a feature mais valiosa</div>
+        <div class="sr-body">A tela "Minha prioridade hoje" resolve a <strong>ansiedade operacional do vendedor</strong>. Ele não quer analytics. Ele quer: <em>"o que faço agora?"</em> Isso aumenta foco, velocidade e percepção de utilidade do produto. É o diferencial que justifica adoção.</div>
+      </div>
+
+      <div class="strength-card">
+        <div class="sr-number">FORÇA 02</div>
+        <div class="sr-title">📊 Benchmark Individual vs Equipe — motivação automática</div>
+        <div class="sr-body">Mostrar "Você: 58 dias / Equipe: 46 dias / Empresa: 52 dias" gera motivação comportamental automática. Benchmark é uma das ferramentas mais fortes de UX em times comerciais — especialmente quando combinado com sugestão de ação.</div>
+      </div>
+
+      <div class="strength-card">
+        <div class="sr-number">FORÇA 03</div>
+        <div class="sr-title">📵 Ranking de Contas sem Contato — urgência real</div>
+        <div class="sr-body">Este insight é extremamente acionável. O vendedor reconhece imediatamente "essas contas estão esfriando" — e pode agir com 1 clique. Cria urgência real, não urgência artificial de produto.</div>
+      </div>
+
+      <div class="strength-card">
+        <div class="sr-number">FORÇA 04</div>
+        <div class="sr-title">✅ Execution Score — transforma analytics em comportamento</div>
+        <div class="sr-body">Este indicador é a feature diferenciadora do produto. Sem ele: produto vira leitura. Com ele: produto vira rotina. O score transforma um número em responsabilidade pessoal diária.</div>
+      </div>
+
+      <div class="strength-card">
+        <div class="sr-number">FORÇA 05</div>
+        <div class="sr-title">📧 Email Diário às 08:00 — o produto vai até o vendedor</div>
+        <div class="sr-body">Excelente decisão de UX operacional. Não depende do vendedor abrir o sistema espontaneamente — o produto vai até ele. Isso aumenta adoção em 2–3x normalmente em produtos SaaS com this pattern.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UX: RISCOS -->
+  <div id="section-ux-riscos" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">Análise UX · Seção 3</div>
+      <div class="section-title">Ameaças de UX</div>
+      <div class="section-lead">Sete riscos que podem matar o produto se não forem tratados antes do lançamento.</div>
+    </div>
+
+    <div class="callout callout-red">
+      <div class="callout-title">Atenção</div>
+      <p>Esses não são problemas teóricos. São padrões conhecidos de falha em produtos SaaS voltados para times comerciais. Cada um já derrubou produtos semelhantes antes.</p>
+    </div>
+
+    <div style="display: grid; gap: 16px; margin: 24px 0;">
+      <div class="risk-card">
+        <div class="sr-number">RISCO 01 — Alta Probabilidade</div>
+        <div class="sr-title">🧠 Overload Cognitivo na Primeira Tela</div>
+        <div class="sr-body">Se aging, coverage, benchmark, score, forecast, ranking de contas e ranking de contato aparecerem juntos, o vendedor ignora metade. <strong>Solução:</strong> hierarquia visual estrita — Hoje → Esta semana → Este mês. Máximo 3-4 elementos na tela principal.</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="sr-number">RISCO 02 — Alta Probabilidade</div>
+        <div class="sr-title">📝 Registro como Fricção</div>
+        <div class="sr-body">Se registrar ação demorar mais de 5 segundos, ninguém registra. Sem registro → Execution Score morre → produto perde sentido. <strong>Solução:</strong> Máximo 1 clique + 1 seleção. Sem campos de texto obrigatórios. Sem formulários longos.</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="sr-number">RISCO 03 — Médio</div>
+        <div class="sr-title">🔢 Score sem Impacto Visível</div>
+        <div class="sr-body">Se o Execution Score não mudar nada no produto, ele vira número decorativo em 2 semanas. <strong>Solução:</strong> Score precisa impactar prioridade, ranking, email e dashboard do gestor. O vendedor precisa sentir que o score <em>significa algo</em>.</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="sr-number">RISCO 04 — Médio</div>
+        <div class="sr-title">📈 Falta de Sensação de Progresso</div>
+        <div class="sr-body">Sem progresso visível, engajamento cai rapidamente. <strong>Solução:</strong> Mostrar feedback de progresso: "Você reduziu aging em 4 dias esta semana" ou "Seu coverage subiu 22%". Pequenas vitórias visíveis mantêm engajamento.</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="sr-number">RISCO 05 — Médio</div>
+        <div class="sr-title">❓ Falta de Contexto na Recomendação</div>
+        <div class="sr-body">Se a IA disser "Priorize conta XPTO" sem explicar por quê, o vendedor não vai confiar. <strong>Solução:</strong> Sempre mostrar contexto mínimo: "+ Engaging + alto valor + tempo acima da média da equipe". Explainability aumenta confiança.</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="sr-number">RISCO 06 — Baixo (mas importante)</div>
+        <div class="sr-title">⚡ Benchmark Mal Posicionado Gera Resistência</div>
+        <div class="sr-body">Comparação pode motivar ou bloquear. <strong>Evitar:</strong> "Você está pior que a equipe". <strong>Usar:</strong> "Você está 6 dias acima da média da equipe. Sugestão: priorize follow-ups em Engaging &gt; 14 dias". Comparação + ação = motivação. Comparação isolada = frustração.</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="sr-number">RISCO 07 — Baixo (mas político)</div>
+        <div class="sr-title">👁️ Dashboard do Gestor como Ferramenta de Controle</div>
+        <div class="sr-body">Muito comum em SalesOps tools. Se parecer "ferramenta de cobrança", o vendedor vai evitar usar o produto para não se expor. <strong>Solução:</strong> Posicionamento como "ferramenta de aceleração pessoal", não de vigilância. Design e copywriting devem reforçar isso consistentemente.</div>
+      </div>
+    </div>
+
+    <h2>Friction Score por Risco</h2>
+    <div class="friction-meter">
+      <div class="fm-item">
+        <div class="fm-label">Overload Cognitivo</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:90%; background: var(--accent);"></div></div>
+        <div class="fm-val" style="color:var(--accent)">90%</div>
+      </div>
+      <div class="fm-item">
+        <div class="fm-label">Registro = Fricção</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:88%; background: var(--accent);"></div></div>
+        <div class="fm-val" style="color:var(--accent)">88%</div>
+      </div>
+      <div class="fm-item">
+        <div class="fm-label">Score Decorativo</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:70%; background: var(--accent4);"></div></div>
+        <div class="fm-val" style="color:var(--accent4)">70%</div>
+      </div>
+      <div class="fm-item">
+        <div class="fm-label">Sem Progresso Visível</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:65%; background: var(--accent4);"></div></div>
+        <div class="fm-val" style="color:var(--accent4)">65%</div>
+      </div>
+      <div class="fm-item">
+        <div class="fm-label">Sem Contexto na IA</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:60%; background: var(--accent4);"></div></div>
+        <div class="fm-val" style="color:var(--accent4)">60%</div>
+      </div>
+      <div class="fm-item">
+        <div class="fm-label">Benchmark Mal Posicionado</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:40%; background: var(--accent3);"></div></div>
+        <div class="fm-val" style="color:var(--accent3)">40%</div>
+      </div>
+      <div class="fm-item">
+        <div class="fm-label">Dashboard = Controle</div>
+        <div class="fm-bar-wrap"><div class="fm-bar" style="width:35%; background: var(--accent3);"></div></div>
+        <div class="fm-val" style="color:var(--accent3)">35%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UX: INSIGHT PRINCIPAL -->
+  <div id="section-ux-insight" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">Análise UX · Seção 4</div>
+      <div class="section-title">O Insight Principal de UX</div>
+      <div class="section-lead">A diferença que define se o produto vai funcionar ou não.</div>
+    </div>
+
+    <div class="insight-quote">
+      <p>Pipeline Coach AI não pode parecer uma analytics tool. Ele precisa parecer um assistente pessoal de performance.</p>
+    </div>
+
+    <div class="comparison">
+      <div class="comp-side comp-left">
+        <div class="comp-label">❌ Analytics Tool</div>
+        <div class="comp-item">Dashboards para explorar</div>
+        <div class="comp-item">O usuário extrai insights</div>
+        <div class="comp-item">Requer análise ativa</div>
+        <div class="comp-item">Dependência de motivação</div>
+        <div class="comp-item">Usado 1-2x por semana</div>
+        <div class="comp-item">Ignorado em período de crise</div>
+      </div>
+      <div class="comp-center">≠</div>
+      <div class="comp-side comp-right">
+        <div class="comp-label">✅ Assistente de Performance</div>
+        <div class="comp-item">Ações prontas para executar</div>
+        <div class="comp-item">O produto entrega insights</div>
+        <div class="comp-item">Requer apenas 1 decisão</div>
+        <div class="comp-item">Gera motivação interna</div>
+        <div class="comp-item">Usado todos os dias</div>
+        <div class="comp-item">Mais crítico em crise</div>
+      </div>
+    </div>
+
+    <h2>Por Que Isso Importa</h2>
+
+    <p>A maioria dos produtos de sales intelligence falha porque trata o vendedor como <strong>analista de dados</strong>. O vendedor não quer analisar — quer vender. Cada segundo que ele passa navegando um dashboard é um segundo que ele não está ligando para uma conta.</p>
+
+    <p>Um bom assistente de performance <strong>processa os dados por ele</strong> e entrega apenas a decisão binária: fazer ou não fazer. Com contexto suficiente para confiar na recomendação, mas sem carga cognitiva desnecessária.</p>
+
+    <div class="callout callout-green">
+      <div class="callout-title">🧠 O Teste de Produto</div>
+      <p>Faça esta pergunta ao testar qualquer nova feature: <em>"Isso requer que o vendedor analise dados — ou apenas tome uma decisão?"</em>. Se requer análise, redesenhe. O produto deve processar a análise por conta própria e entregar apenas a conclusão.</p>
+    </div>
+  </div>
+
+  <!-- UX: RECOMENDAÇÕES -->
+  <div id="section-ux-recomendacoes" class="doc-section">
+    <div class="section-hero">
+      <div class="section-eyebrow">Análise UX · Seção 5</div>
+      <div class="section-title">Recomendações de UX</div>
+      <div class="section-lead">Ações concretas para maximizar adoção — baseadas na análise da jornada.</div>
+    </div>
+
+    <h2>Tela Inicial — Hierarquia Obrigatória</h2>
+
+    <div class="screen-diagram">
+      <div class="screen-title">O que deve aparecer na tela principal</div>
+      <div class="screen-layout">
+        <div class="screen-block priority">
+          <div class="sb-label">🔥 Prioridades hoje <span class="sb-tag">VISÍVEL SEMPRE</span></div>
+          <div class="sb-desc">Máximo 5 itens. Com botão de ação em cada um. Primeiro elemento da tela.</div>
+        </div>
+        <div class="screen-block risk">
+          <div class="sb-label">⚠️ Contas em risco <span class="sb-tag">VISÍVEL SEMPRE</span></div>
+          <div class="sb-desc">Lista compacta. Máximo 3 itens na visão principal. Link para ver todos.</div>
+        </div>
+        <div class="screen-block contact">
+          <div class="sb-label">📉 Contas sem contato <span class="sb-tag">VISÍVEL SEMPRE</span></div>
+          <div class="sb-desc">Ranking por dias sem interação. Os 3 piores na tela principal.</div>
+        </div>
+        <div class="screen-block score">
+          <div class="sb-label">📊 Execution Score <span class="sb-tag">VISÍVEL SEMPRE</span></div>
+          <div class="sb-desc">Número + barra de progresso + meta do dia. Compacto.</div>
+        </div>
+        <div class="screen-block secondary">
+          <div class="sb-label">Tudo mais <span class="sb-tag">SEGUNDA CAMADA</span></div>
+          <div class="sb-desc">Benchmark, forecast, conversão por produto, ranking completo → em abas ou seções expandíveis.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-box">
+      <div class="rec-title">Feature Bônus — Impacto Estimado</div>
+      <p style="color: rgba(247,245,240,0.5); font-size: 14px; margin-bottom: 20px;">Esta feature aumentaria drasticamente o engajamento ao tornar as ações tangíveis:</p>
+      <div style="background: rgba(255,255,255,0.08); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+        <div style="font-size: 13px; color: rgba(247,245,240,0.5); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 1px;">Impacto estimado se executar ações hoje:</div>
+        <div style="font-size: 18px; color: var(--accent3); font-weight: 600; margin-bottom: 4px;">+2 oportunidades aceleradas</div>
+        <div style="font-size: 18px; color: var(--accent4); font-weight: 600; margin-bottom: 4px;">+1 fechamento provável esta semana</div>
+        <div style="font-size: 18px; color: #f7f5f0; font-weight: 600;">−4 dias no ciclo médio</div>
+      </div>
+      <p style="color: rgba(247,245,240,0.5); font-size: 13px;">Isso transforma ação abstrata em resultado tangível. O vendedor entende <em>por que</em> vale a pena executar hoje.</p>
+    </div>
+
+    <h2>Prioridade de Desenvolvimento</h2>
+
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-dot" style="background: var(--accent); border-color: var(--accent); color: white; font-size: 12px; font-weight: 700;">P0</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Registro de 1 clique</div>
+          <div class="vflow-body">Sem isso, tudo mais falha. O Execution Score só funciona se o registro for praticamente automático. Resolver isso antes de qualquer outra feature.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot" style="background: var(--accent4); border-color: var(--accent4); color: white; font-size: 12px; font-weight: 700;">P1</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Hierarquia da tela inicial</div>
+          <div class="vflow-body">Máximo 4 elementos na view principal. Tudo mais vai para segunda camada. Testar com vendedores reais antes de lançar.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot" style="background: var(--accent4); border-color: var(--accent4); color: white; font-size: 12px; font-weight: 700;">P1</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Contexto nas recomendações da IA</div>
+          <div class="vflow-body">Sempre mostrar o "por quê" da recomendação. Sem isso, o vendedor não confia e não executa.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot" style="background: var(--accent2); border-color: var(--accent2); color: white; font-size: 12px; font-weight: 700;">P2</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Indicadores de progresso</div>
+          <div class="vflow-body">"Você reduziu aging em 4 dias esta semana." Feedback positivo que sustenta o hábito. Importante para retenção de longo prazo.</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-dot" style="background: var(--accent3); border-color: var(--accent3); color: white; font-size: 12px; font-weight: 700;">P3</div>
+        <div class="vflow-content">
+          <div class="vflow-title">Feature de Impacto Estimado</div>
+          <div class="vflow-body">"+2 oportunidades aceleradas hoje" — transforma ação em resultado tangível. Grande impacto em engajamento. Implementar após P0-P2 estabilizados.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function showSection(id) {
+  // Hide all
+  document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // Show target
+  const target = document.getElementById('section-' + id);
+  if (target) target.classList.add('active');
+
+  // Highlight nav
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) {
+      n.classList.add('active');
+    }
+  });
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleBlock(el) {
+  el.classList.toggle('open');
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') showSection('home');
+});
+</script>
+</body>
+</html>

@@ -23,10 +23,12 @@ Não estamos testando se você sabe usar ChatGPT. Estamos testando se você cons
 
 ## Como funciona
 
-1. Escolha **um desafio** da pasta [`/challenges`](./challenges/)
-2. Leia o brief completo
-3. Resolva usando **qualquer ferramenta de IA** que quiser
-4. Envie sua solução seguindo o [Guia de Submissão](./submission-guide.md)
+1. **Fork** este repositório
+2. Escolha **um desafio** da pasta [`/challenges`](./challenges/)
+3. Leia o README completo do challenge
+4. Resolva usando **qualquer ferramenta de IA** que quiser
+5. Coloque sua solução em `submissions/seu-nome/`
+6. Abra um **Pull Request** — detalhes em [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ### Regras
 
@@ -34,6 +36,14 @@ Não estamos testando se você sabe usar ChatGPT. Estamos testando se você cons
 - **Qualquer ferramenta é permitida.** Claude, ChatGPT, Gemini, Cursor, Claude Code, Copilot, scripts custom, APIs — tanto faz.
 - **Envie evidências do seu processo.** A solução sozinha não basta. Precisamos ver como você chegou lá.
 - **Sem evidência de processo = desclassificado.**
+
+### Sobre o baseline
+
+Nós já rodamos cada challenge em múltiplos modelos de IA (Claude, GPT, Gemini) para gerar respostas de referência. **Esse é o nosso baseline.** Se você simplesmente colar o brief em qualquer IA e enviar o resultado, sua resposta vai ser parecida com algo que já temos.
+
+Parecido com o baseline não é suficiente. Esperamos que a sua entrega **supere substancialmente** o que a IA produz sozinha — em profundidade de análise, em julgamento, em qualidade de execução, ou em criatividade da solução.
+
+O valor de um AI Master não é saber pedir pra IA. É saber o que pedir, quando desconfiar, o que ajustar, e o que só um humano com contexto consegue fazer.
 
 ### O que NÃO estamos avaliando
 
@@ -58,7 +68,7 @@ Não estamos testando se você sabe usar ChatGPT. Estamos testando se você cons
 - [**003 — Lead Scorer**](./challenges/build-003-lead-scorer/) · Vendas / RevOps
 - [**004 — Estratégia Social Media**](./challenges/marketing-004-social/) · Marketing
 
-> Cada desafio tem seu próprio brief com contexto, dados e o que entregar.
+> Cada desafio tem seu próprio README com contexto completo, links para dados, e critérios de qualidade. Veja o [índice de challenges](./challenges/) para ajuda na escolha.
 
 ---
 
@@ -72,12 +82,14 @@ Valorizamos **inteligência no uso do tempo**, não quantidade de horas.
 
 ## Submissão
 
-Leia o [Guia de Submissão](./submission-guide.md) completo antes de começar.
+A submissão é feita **exclusivamente via Pull Request**. Isso faz parte do teste.
 
-**Resumo:**
-- Envie para: `g4os@g4business.com`
-- Assunto: `[AI Master] Seu Nome — Challenge XXX`
-- Anexos: solução + process log (evidência de uso de IA)
+1. Fork → branch `submission/seu-nome` → pasta `submissions/seu-nome/`
+2. Use o [template de submissão](./templates/submission-template.md) para estruturar sua entrega
+3. Abra o PR seguindo as instruções em [CONTRIBUTING.md](./CONTRIBUTING.md)
+4. Leia o [Guia de Submissão](./submission-guide.md) para detalhes sobre o que enviar
+
+> Se você não sabe abrir um Pull Request, esse é um bom momento pra aprender. Um AI Master resolve esse tipo de problema em 10 minutos.
 
 ---
 
@@ -90,7 +102,7 @@ Pode, mas preferimos um bem feito do que dois superficiais.
 Sim. O ponto não é fazer sem IA. É usar IA melhor do que a média.
 
 **Se eu só colar o problema no ChatGPT e enviar a resposta?**
-Nós fazemos a mesma coisa. Se sua resposta for igual à nossa, você não agregou nada. Próximo.
+Nós já fizemos isso — com vários modelos. Temos as respostas. Se a sua for parecida, você não agregou nada. Próximo.
 
 **Quanto tempo tenho?**
 Recomendamos 4-6 horas. Envie quando estiver pronto — não há deadline fixo para o desafio (mas vagas são limitadas).
@@ -108,4 +120,4 @@ Estamos construindo o futuro do trabalho com IA — e precisamos de pessoas que 
 
 ---
 
-*Tem dúvidas? Abra uma [issue](../../issues) ou envie email para `g4os@g4business.com`.*
+*Tem dúvidas? Abra uma [issue](../../issues).*

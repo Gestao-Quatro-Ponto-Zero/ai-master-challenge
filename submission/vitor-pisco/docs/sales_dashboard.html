@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Intelligence — Sales Pipeline Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+  :root {
+    --bg: #0a0d12;
+    --surface: #11151c;
+    --surface2: #181d27;
+    --border: #222832;
+    --accent: #00e5a0;
+    --accent2: #3b82f6;
+    --accent3: #f59e0b;
+    --accent4: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --won: #00e5a0;
+    --lost: #ef4444;
+    --engaging: #3b82f6;
+    --prospecting: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+    color: var(--accent);
+  }
+  .logo span { color: var(--text); }
+
+  nav { display: flex; gap: 4px; }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { color: var(--text); border-color: var(--border); }
+  .nav-btn.active { background: var(--accent); color: #0a0d12; border-color: var(--accent); font-weight: 600; }
+
+  .header-meta { display: flex; gap: 20px; align-items: center; }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* ── LAYOUT ── */
+  main { padding: 24px 32px; max-width: 1600px; margin: 0 auto; }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── KPI STRIP ── */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .kpi.green::before { background: var(--won); }
+  .kpi.blue::before { background: var(--engaging); }
+  .kpi.amber::before { background: var(--prospecting); }
+  .kpi.red::before { background: var(--lost); }
+  .kpi.purple::before { background: #a78bfa; }
+  .kpi.teal::before { background: var(--accent); }
+
+  .kpi-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .kpi-value {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--text);
+  }
+  .kpi-sub { color: var(--muted); font-size: 10px; margin-top: 4px; }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .grid-65-35 { display: grid; grid-template-columns: 65fr 35fr; gap: 16px; margin-bottom: 20px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  /* ── BAR CHARTS ── */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bar-label { width: 130px; font-size: 11px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--surface2); border-radius: 3px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+  .bar-val { width: 60px; text-align: right; font-size: 11px; color: var(--muted); flex-shrink: 0; }
+
+  /* ── FUNNEL ── */
+  .funnel-wrap { display: flex; gap: 8px; margin: 8px 0; }
+  .funnel-stage {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    border-radius: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+  .funnel-stage-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .funnel-stage-label { font-size: 10px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th {
+    text-align: left;
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th:hover { color: var(--text); }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 9px 12px; color: var(--text); }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-won { background: rgba(0,229,160,0.15); color: var(--won); }
+  .badge-lost { background: rgba(239,68,68,0.15); color: var(--lost); }
+  .badge-engaging { background: rgba(59,130,246,0.15); color: var(--engaging); }
+  .badge-prospecting { background: rgba(245,158,11,0.15); color: var(--prospecting); }
+
+  /* ── SCORE PILL ── */
+  .score-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .score-high { background: rgba(0,229,160,0.2); color: var(--won); border: 1px solid rgba(0,229,160,0.4); }
+  .score-mid  { background: rgba(59,130,246,0.2); color: var(--engaging); border: 1px solid rgba(59,130,246,0.4); }
+  .score-low  { background: rgba(245,158,11,0.2); color: var(--prospecting); border: 1px solid rgba(245,158,11,0.4); }
+
+  /* ── WIN RATE BAR ── */
+  .wr-bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; }
+  .wr-won { background: var(--won); }
+  .wr-lost { background: var(--lost); }
+
+  /* ── AGENT CARD ── */
+  .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+  .agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .agent-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .agent-card.selected { border-color: var(--accent); background: rgba(0,229,160,0.05); }
+
+  .agent-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .agent-meta { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+
+  .agent-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
+  .agent-stat { text-align: center; }
+  .agent-stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .agent-stat-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  select, input[type=text] {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  select:focus, input[type=text]:focus { border-color: var(--accent); }
+  input[type=text]::placeholder { color: var(--muted); }
+
+  /* ── DETAIL PANEL ── */
+  #agent-detail {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 20px;
+    animation: slideIn 0.2s ease;
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .detail-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .close-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 16px;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .close-btn:hover { background: var(--lost); color: white; border-color: var(--lost); }
+
+  .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* ── PRODUCT DOTS ── */
+  .product-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+
+  /* ── BOTTLENECK ALERTS ── */
+  .alert-card {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-title { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: #fca5a5; margin-bottom: 3px; }
+  .alert-body { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  .insight-card {
+    background: rgba(0,229,160,0.06);
+    border: 1px solid rgba(0,229,160,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .insight-title { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+  .insight-body { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* ── MINI CHART SVG ── */
+  .mini-bar-chart { width: 100%; }
+
+  /* ── PAGINATION ── */
+  .pagination { display: flex; gap: 6px; margin-top: 12px; justify-content: flex-end; }
+  .page-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .page-btn:hover, .page-btn.active { background: var(--accent); color: #0a0d12; border-color: var(--accent); }
+
+  /* ── SCORE EXPLAINER ── */
+  .score-explainer {
+    font-size: 10px;
+    color: var(--muted);
+    padding: 6px 10px;
+    background: var(--surface2);
+    border-radius: 5px;
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+
+  /* ── DONUT CHART ── */
+  .donut-wrap { display: flex; align-items: center; gap: 20px; }
+  .donut-legend { flex: 1; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 11px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── RESPONSIVE FIX ── */
+  @media (max-width: 1200px) {
+    .kpi-strip { grid-template-columns: repeat(3,1fr); }
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+
+  .text-accent { color: var(--accent); }
+  .text-red { color: var(--lost); }
+  .text-blue { color: var(--engaging); }
+  .text-amber { color: var(--prospecting); }
+  .text-muted { color: var(--muted); }
+  .font-bold { font-weight: 700; }
+
+  .mb-4 { margin-bottom: 16px; }
+  .mt-4 { margin-top: 16px; }
+
+  .region-pill {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 99px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .region-Central { background: rgba(167,139,250,0.2); color: #a78bfa; }
+  .region-East { background: rgba(59,130,246,0.2); color: var(--engaging); }
+  .region-West { background: rgba(0,229,160,0.2); color: var(--accent); }
+
+  /* ── EMPTY STATE ── */
+  .empty { text-align: center; padding: 40px; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">revenue<span>intel</span></div>
+  <nav>
+    <button class="nav-btn active" onclick="showView('overview')">Overview</button>
+    <button class="nav-btn" onclick="showView('pipeline')">Pipeline</button>
+    <button class="nav-btn" onclick="showView('agents')">Agentes</button>
+    <button class="nav-btn" onclick="showView('products')">Produtos</button>
+    <button class="nav-btn" onclick="showView('bottlenecks')">Gargalos</button>
+  </nav>
+  <div class="header-meta">
+    <div class="live-dot"></div>
+    <span style="color:var(--muted); font-size:11px;">CRM Dataset — 8.800 oportunidades</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ════════════════════════════════════════ OVERVIEW ══ -->
+<div id="view-overview" class="view active">
+
+  <div class="kpi-strip">
+    <div class="kpi teal">
+      <div class="kpi-label">Total de Deals</div>
+      <div class="kpi-value">8.800</div>
+      <div class="kpi-sub">35 vendedores · 3 regiões</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">Receita Realizada</div>
+      <div class="kpi-value">$10,0M</div>
+      <div class="kpi-sub">4.238 deals fechados</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi-label">Pipeline em Aberto</div>
+      <div class="kpi-value">$4,97M</div>
+      <div class="kpi-sub">2.089 oportunidades</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Win Rate Geral</div>
+      <div class="kpi-value">63,2%</div>
+      <div class="kpi-sub">Excluindo open deals</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Deals Perdidos</div>
+      <div class="kpi-value">2.473</div>
+      <div class="kpi-sub">37,0% de churn</div>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-label">Avg. Ciclo de Venda</div>
+      <div class="kpi-value">51,8d</div>
+      <div class="kpi-sub">Median: 57 dias</div>
+    </div>
+  </div>
+
+  <div class="grid-65-35">
+    <div class="card">
+      <div class="card-title">Funil de Vendas — Volume e Valor</div>
+      <div class="funnel-wrap">
+        <div class="funnel-stage">
+          <div class="funnel-stage-num" style="color:var(--prospecting)">500</div>
+          <div class="funnel-stage-label">Prospecting</div>
+          <div style="font-size:9px; color:var(--muted); margin-top:4px;">$0 — sem valor</div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--muted)">→</div>
+        <div class="funnel-stage">
+          <div class="funnel-stage-num" style="color:var(--engaging)">1.589</div>
+          <div class="funnel-stage-label">Engaging</div>
+          <div style="font-size:9px; color:var(--muted); margin-top:4px;">≈$4,97M est.</div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--muted)">→</div>
+        <div class="funnel-stage">
+          <div class="funnel-stage-num" style="color:var(--won)">4.238</div>
+          <div class="funnel-stage-label">Won ✓</div>
+          <div style="font-size:9px; color:var(--won); margin-top:4px;">$10,0M real</div>
+        </div>
+        <div style="display:flex;align-items:center;color:var(--muted)">✗</div>
+        <div class="funnel-stage">
+          <div class="funnel-stage-num" style="color:var(--lost)">2.473</div>
+          <div class="funnel-stage-label">Lost</div>
+          <div style="font-size:9px; color:var(--lost); margin-top:4px;">receita perdida</div>
+        </div>
+      </div>
+
+      <div class="card-title mt-4">Top 10 Vendedores por Receita Realizada</div>
+      <div id="top-agents-bars"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Composição do Pipeline</div>
+      <svg id="donut-svg" viewBox="0 0 200 200" style="width:160px;display:block;margin:0 auto 16px;"></svg>
+      <div id="donut-legend"></div>
+
+      <div class="card-title mt-4" style="margin-top:20px">Win Rate por Escritório</div>
+      <div id="office-wr"></div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Produtos por Receita Gerada</div>
+      <div id="product-revenue-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Win Rate por Produto</div>
+      <div id="product-wr-bars"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Managers — Performance da Equipe</div>
+      <div id="manager-bars"></div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+
+<!-- ════════════════════════════════════════ PIPELINE ══ -->
+<div id="view-pipeline" class="view">
+
+  <div class="section-title">Priorização de Deals em Aberto</div>
+
+  <div class="filter-bar">
+    <input type="text" id="pipeline-search" placeholder="🔍  Buscar por agente, produto ou conta..." style="width:280px" oninput="filterPipeline()">
+    <select id="pipeline-office" onchange="filterPipeline()">
+      <option value="">Todos os escritórios</option>
+      <option>Central</option>
+      <option>East</option>
+      <option>West</option>
+    </select>
+    <select id="pipeline-stage" onchange="filterPipeline()">
+      <option value="">Todos os stages</option>
+      <option>Engaging</option>
+      <option>Prospecting</option>
+    </select>
+    <select id="pipeline-product" onchange="filterPipeline()">
+      <option value="">Todos os produtos</option>
+      <option>GTK 500</option>
+      <option>GTXPro</option>
+      <option>GTX Plus Pro</option>
+      <option>GTX Plus Basic</option>
+      <option>GTX Basic</option>
+      <option>MG Advanced</option>
+      <option>MG Special</option>
+    </select>
+    <span style="color:var(--muted);font-size:11px" id="pipeline-count"></span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Score de Prioridade — Deals Abertos (Top 500 por score)</div>
+    <div style="background:var(--surface2);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--muted);line-height:1.6">
+      🎯 <strong style="color:var(--text)">Metodologia de Score:</strong>
+      Cada deal recebe pontos em 3 dimensões:
+      <strong style="color:var(--engaging)">Stage (40pts)</strong> — Engaging vale mais que Prospecting;
+      <strong style="color:var(--prospecting)">Valor do Produto (30pts)</strong> — baseado no preço de lista (GTK 500 = máximo);
+      <strong style="color:var(--won)">Win Rate do Agente (30pts)</strong> — histórico de performance do vendedor.
+    </div>
+    <div class="table-wrap">
+      <table id="pipeline-table">
+        <thead>
+          <tr>
+            <th onclick="sortPipeline('score')">Score ↕</th>
+            <th onclick="sortPipeline('agent')">Agente ↕</th>
+            <th onclick="sortPipeline('office')">Escritório ↕</th>
+            <th onclick="sortPipeline('product')">Produto ↕</th>
+            <th onclick="sortPipeline('account')">Conta</th>
+            <th onclick="sortPipeline('stage')">Stage ↕</th>
+            <th onclick="sortPipeline('est_value')">Valor Est. ↕</th>
+            <th>Engage Date</th>
+            <th>Score Breakdown</th>
+          </tr>
+        </thead>
+        <tbody id="pipeline-tbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pipeline-pagination"></div>
+  </div>
+
+</div><!-- /pipeline -->
+
+
+<!-- ════════════════════════════════════════ AGENTS ══ -->
+<div id="view-agents" class="view">
+
+  <div class="section-title">Visão Individual — Clique num vendedor para detalhes</div>
+
+  <div class="filter-bar">
+    <select id="agent-office-filter" onchange="filterAgents()">
+      <option value="">Todos os escritórios</option>
+      <option>Central</option>
+      <option>East</option>
+      <option>West</option>
+    </select>
+    <select id="agent-manager-filter" onchange="filterAgents()">
+      <option value="">Todos os managers</option>
+      <option>Dustin Brinkmann</option>
+      <option>Melvin Marxen</option>
+      <option>Cara Losch</option>
+      <option>Rocco Neubert</option>
+      <option>Celia Rouche</option>
+      <option>Summer Sewald</option>
+    </select>
+    <select id="agent-sort" onchange="filterAgents()">
+      <option value="won_val">Ordenar: Receita</option>
+      <option value="win_rate">Ordenar: Win Rate</option>
+      <option value="won">Ordenar: Deals Ganhos</option>
+      <option value="open">Ordenar: Deals Abertos</option>
+    </select>
+  </div>
+
+  <div class="agent-grid" id="agent-grid"></div>
+
+  <div id="agent-detail">
+    <div class="detail-header">
+      <div>
+        <div class="detail-name" id="detail-name">—</div>
+        <div style="color:var(--muted);font-size:11px;margin-top:3px" id="detail-meta">—</div>
+      </div>
+      <button class="close-btn" onclick="closeDetail()">✕</button>
+    </div>
+
+    <div class="detail-grid">
+      <div class="card" style="background:var(--surface2)">
+        <div class="card-title">Métricas Chave</div>
+        <div id="detail-kpis"></div>
+      </div>
+      <div class="card" style="background:var(--surface2)">
+        <div class="card-title">Produtos Mais Rentáveis</div>
+        <div id="detail-products"></div>
+      </div>
+      <div class="card" style="background:var(--surface2)">
+        <div class="card-title">Distribuição do Pipeline</div>
+        <div id="detail-pipeline"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /agents -->
+
+
+<!-- ════════════════════════════════════════ PRODUCTS ══ -->
+<div id="view-products" class="view">
+
+  <div class="section-title">Análise de Produtos</div>
+
+  <div class="kpi-strip" id="product-kpi-strip" style="grid-template-columns:repeat(7,1fr)"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Receita por Produto (Won)</div>
+      <div id="prod-revenue-chart"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Volume de Deals por Produto e Stage</div>
+      <div id="prod-volume-chart"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tabela Completa de Produtos</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Série</th>
+            <th>Preço Lista</th>
+            <th>Deals Won</th>
+            <th>Deals Lost</th>
+            <th>Em Aberto</th>
+            <th>Win Rate</th>
+            <th>Receita Total</th>
+            <th>Ticket Médio Real</th>
+          </tr>
+        </thead>
+        <tbody id="product-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /products -->
+
+
+<!-- ════════════════════════════════════════ BOTTLENECKS ══ -->
+<div id="view-bottlenecks" class="view">
+
+  <div class="section-title">Diagnóstico — Gargalos e Insights da Área Comercial</div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">⚠️ Alertas Críticos</div>
+      <div id="bottleneck-alerts"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">💡 Oportunidades de Melhoria</div>
+      <div id="bottleneck-insights"></div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Dispersão de Win Rate por Agente</div>
+      <div id="wr-dispersion"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Agentes sem Deals Abertos</div>
+      <div id="inactive-agents"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ciclo Médio de Venda por Agente (Top 15)</div>
+      <div id="cycle-chart"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Agentes Abaixo da Média — Win Rate vs. Receita</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Agente</th><th>Escritório</th><th>Manager</th>
+          <th>Win Rate</th><th>Avg. Days</th>
+          <th>Open Deals</th><th>Open Pipeline Est.</th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody id="at-risk-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /bottlenecks -->
+
+</main>
+
+<script>
+// ═══════════════════════════════ DATA ═════════════════════════════════
+const DATA = {"global":{"total":8800,"won":4238,"lost":2473,"open":2089,"won_val":10005534.0,"win_rate":63.2,"open_pipeline_est":4966215.0},"agents":[{"name":"Darcel Schlecht","manager":"Melvin Marxen","office":"Central","won":349,"lost":204,"open":194,"engaging":83,"prospecting":111,"won_val":1153214.0,"open_val_est":656040.0,"win_rate":63.1,"avg_days_to_close":49.4,"top_products":[{"product":"GTXPro","count":160,"val":773129.0},{"product":"GTX Plus Pro","count":33,"val":176844.0},{"product":"MG Advanced","count":36,"val":120360.0},{"product":"GTX Plus Basic","count":56,"val":61207.0},{"product":"GTX Basic","count":36,"val":20124.0}]},{"name":"Vicki Laflamme","manager":"Celia Rouche","office":"West","won":221,"lost":126,"open":104,"engaging":104,"prospecting":0,"won_val":478396.0,"open_val_est":227326.0,"win_rate":63.7,"avg_days_to_close":53.6,"top_products":[{"product":"GTXPro","count":40,"val":189026.0},{"product":"MG Advanced","count":45,"val":152820.0},{"product":"GTX Plus Pro","count":16,"val":88919.0},{"product":"GTX Basic","count":56,"val":30440.0},{"product":"GTX Plus Basic","count":13,"val":14381.0}]},{"name":"Kary Hendrixson","manager":"Summer Sewald","office":"West","won":209,"lost":126,"open":103,"engaging":103,"prospecting":0,"won_val":454298.0,"open_val_est":276517.0,"win_rate":62.4,"avg_days_to_close":53.0,"top_products":[{"product":"GTXPro","count":50,"val":238907.0},{"product":"GTX Plus Pro","count":20,"val":110481.0},{"product":"GTX Basic","count":82,"val":44671.0},{"product":"GTX Plus Basic","count":30,"val":31805.0},{"product":"MG Advanced","count":8,"val":27352.0}]},{"name":"Cassey Cress","manager":"Rocco Neubert","office":"East","won":163,"lost":98,"open":85,"engaging":85,"prospecting":0,"won_val":450489.0,"open_val_est":220860.0,"win_rate":62.5,"avg_days_to_close":48.8,"top_products":[{"product":"GTXPro","count":38,"val":180437.0},{"product":"MG Advanced","count":36,"val":123793.0},{"product":"GTX Plus Pro","count":18,"val":97608.0},{"product":"GTX Plus Basic","count":26,"val":28404.0},{"product":"GTX Basic","count":35,"val":19699.0}]},{"name":"Donn Cantrell","manager":"Rocco Neubert","office":"East","won":158,"lost":117,"open":0,"engaging":0,"prospecting":0,"won_val":445860.0,"open_val_est":0,"win_rate":57.5,"avg_days_to_close":53.3,"top_products":[{"product":"GTXPro","count":40,"val":196421.0},{"product":"MG Advanced","count":32,"val":108720.0},{"product":"GTX Plus Pro","count":17,"val":93329.0},{"product":"GTX Basic","count":45,"val":24462.0},{"product":"GTX Plus Basic","count":21,"val":22774.0}]},{"name":"Reed Clapper","manager":"Rocco Neubert","office":"East","won":155,"lost":82,"open":0,"engaging":0,"prospecting":0,"won_val":438336.0,"open_val_est":0,"win_rate":65.4,"avg_days_to_close":49.0,"top_products":[{"product":"GTXPro","count":42,"val":198871.0},{"product":"GTX Plus Pro","count":18,"val":102189.0},{"product":"MG Advanced","count":28,"val":93415.0},{"product":"GTX Plus Basic","count":28,"val":30068.0},{"product":"GTX Basic","count":24,"val":12962.0}]},{"name":"Zane Levy","manager":"Summer Sewald","office":"West","won":161,"lost":100,"open":88,"engaging":88,"prospecting":0,"won_val":430068.0,"open_val_est":193348.0,"win_rate":61.7,"avg_days_to_close":46.9,"top_products":[{"product":"GTXPro","count":46,"val":225031.0},{"product":"GTX Plus Pro","count":21,"val":115301.0},{"product":"MG Advanced","count":10,"val":34996.0},{"product":"GTX Plus Basic","count":26,"val":28125.0},{"product":"GTX Basic","count":48,"val":26068.0}]},{"name":"Corliss Cosme","manager":"Cara Losch","office":"East","won":150,"lost":79,"open":81,"engaging":81,"prospecting":0,"won_val":421036.0,"open_val_est":216840.0,"win_rate":65.5,"avg_days_to_close":51.1,"top_products":[{"product":"GTXPro","count":37,"val":180679.0},{"product":"GTX Plus Pro","count":30,"val":160653.0},{"product":"MG Advanced","count":9,"val":29903.0},{"product":"GTX Plus Basic","count":27,"val":29230.0},{"product":"GTX Basic","count":36,"val":19970.0}]},{"name":"James Ascencio","manager":"Summer Sewald","office":"West","won":135,"lost":71,"open":61,"engaging":61,"prospecting":0,"won_val":413533.0,"open_val_est":192216.0,"win_rate":65.5,"avg_days_to_close":53.4,"top_products":[{"product":"GTX Plus Pro","count":44,"val":241420.0},{"product":"GTXPro","count":20,"val":97681.0},{"product":"MG Advanced","count":12,"val":40978.0},{"product":"GTX Basic","count":34,"val":17599.0},{"product":"GTX Plus Basic","count":14,"val":15258.0}]},{"name":"Daniell Hammack","manager":"Rocco Neubert","office":"East","won":114,"lost":73,"open":72,"engaging":72,"prospecting":0,"won_val":364229.0,"open_val_est":209320.0,"win_rate":61.0,"avg_days_to_close":46.6,"top_products":[{"product":"GTXPro","count":40,"val":195754.0},{"product":"GTX Plus Pro","count":18,"val":100521.0},{"product":"GTX Plus Basic","count":31,"val":34484.0},{"product":"MG Advanced","count":8,"val":27096.0},{"product":"GTX Basic","count":11,"val":6030.0}]},{"name":"Maureen Marcano","manager":"Summer Sewald","office":"West","won":149,"lost":64,"open":72,"engaging":72,"prospecting":0,"won_val":350395.0,"open_val_est":140225.0,"win_rate":70.0,"avg_days_to_close":54.1,"top_products":[{"product":"GTX Plus Pro","count":26,"val":142094.0},{"product":"GTXPro","count":23,"val":106370.0},{"product":"GTX Plus Basic","count":52,"val":55030.0},{"product":"MG Advanced","count":10,"val":32921.0},{"product":"GTX Basic","count":23,"val":13140.0}]},{"name":"Gladys Colclough","manager":"Melvin Marxen","office":"Central","won":135,"lost":97,"open":85,"engaging":36,"prospecting":49,"won_val":345674.0,"open_val_est":192142.0,"win_rate":58.2,"avg_days_to_close":53.0,"top_products":[{"product":"GTXPro","count":26,"val":127995.0},{"product":"MG Advanced","count":33,"val":111314.0},{"product":"GTX Plus Pro","count":14,"val":77812.0},{"product":"GTX Plus Basic","count":18,"val":19212.0},{"product":"GTX Basic","count":14,"val":7721.0}]},{"name":"Markita Hansen","manager":"Celia Rouche","office":"West","won":130,"lost":97,"open":79,"engaging":79,"prospecting":0,"won_val":328792.0,"open_val_est":282756.0,"win_rate":57.3,"avg_days_to_close":55.9,"top_products":[{"product":"GTXPro","count":18,"val":86077.0},{"product":"MG Advanced","count":24,"val":83562.0},{"product":"GTK 500","count":3,"val":83528.0},{"product":"GTX Plus Pro","count":7,"val":35922.0},{"product":"GTX Plus Basic","count":21,"val":22352.0}]},{"name":"Kami Bicknell","manager":"Summer Sewald","office":"West","won":174,"lost":98,"open":90,"engaging":90,"prospecting":0,"won_val":316456.0,"open_val_est":190990.0,"win_rate":64.0,"avg_days_to_close":50.0,"top_products":[{"product":"GTXPro","count":23,"val":108722.0},{"product":"GTX Plus Pro","count":15,"val":80201.0},{"product":"MG Advanced","count":18,"val":59865.0},{"product":"GTX Basic","count":71,"val":38543.0},{"product":"GTX Plus Basic","count":26,"val":27975.0}]},{"name":"Marty Freudenburg","manager":"Melvin Marxen","office":"Central","won":122,"lost":72,"open":87,"engaging":33,"prospecting":54,"won_val":291195.0,"open_val_est":229445.0,"win_rate":62.9,"avg_days_to_close":48.5,"top_products":[{"product":"GTX Plus Pro","count":23,"val":128833.0},{"product":"MG Advanced","count":20,"val":68209.0},{"product":"GTXPro","count":10,"val":46058.0},{"product":"GTX Plus Basic","count":35,"val":37736.0},{"product":"GTX Basic","count":17,"val":9410.0}]},{"name":"Elease Gluck","manager":"Celia Rouche","office":"West","won":80,"lost":46,"open":51,"engaging":51,"prospecting":0,"won_val":289195.0,"open_val_est":251649.0,"win_rate":63.5,"avg_days_to_close":43.5,"top_products":[{"product":"GTK 500","count":7,"val":184632.0},{"product":"MG Advanced","count":13,"val":44332.0},{"product":"GTXPro","count":8,"val":39349.0},{"product":"GTX Basic","count":13,"val":7095.0},{"product":"GTX Plus Pro","count":1,"val":6666.0}]},{"name":"Jonathan Berthelot","manager":"Melvin Marxen","office":"Central","won":171,"lost":93,"open":81,"engaging":33,"prospecting":48,"won_val":284886.0,"open_val_est":127420.0,"win_rate":64.8,"avg_days_to_close":51.3,"top_products":[{"product":"GTXPro","count":31,"val":147812.0},{"product":"GTX Basic","count":71,"val":39204.0},{"product":"GTX Plus Basic","count":34,"val":37104.0},{"product":"MG Advanced","count":9,"val":30450.0},{"product":"GTX Plus Pro","count":5,"val":29108.0}]},{"name":"Anna Snelling","manager":"Dustin Brinkmann","office":"Central","won":208,"lost":128,"open":112,"engaging":57,"prospecting":55,"won_val":275056.0,"open_val_est":173259.0,"win_rate":61.9,"avg_days_to_close":52.0,"top_products":[{"product":"GTX Plus Pro","count":28,"val":152674.0},{"product":"MG Advanced","count":21,"val":72008.0},{"product":"GTX Plus Basic","count":25,"val":27241.0},{"product":"GTX Basic","count":32,"val":17437.0},{"product":"MG Special","count":102,"val":5696.0}]},{"name":"Hayden Neloms","manager":"Celia Rouche","office":"West","won":107,"lost":45,"open":50,"engaging":50,"prospecting":0,"won_val":272111.0,"open_val_est":123530.0,"win_rate":70.4,"avg_days_to_close":51.0,"top_products":[{"product":"MG Advanced","count":59,"val":199309.0},{"product":"GTX Plus Pro","count":9,"val":48184.0},{"product":"GTX Plus Basic","count":22,"val":23652.0},{"product":"MG Special","count":17,"val":966.0}]},{"name":"Boris Faz","manager":"Rocco Neubert","office":"East","won":101,"lost":52,"open":57,"engaging":57,"prospecting":0,"won_val":261631.0,"open_val_est":143456.0,"win_rate":66.0,"avg_days_to_close":48.1,"top_products":[{"product":"GTX Plus Pro","count":18,"val":102096.0},{"product":"GTXPro","count":17,"val":78810.0},{"product":"MG Advanced","count":12,"val":40530.0},{"product":"GTX Plus Basic","count":28,"val":30684.0},{"product":"GTX Basic","count":17,"val":9041.0}]},{"name":"Rosalina Dieter","manager":"Celia Rouche","office":"West","won":72,"lost":38,"open":50,"engaging":50,"prospecting":0,"won_val":235403.0,"open_val_est":119664.0,"win_rate":65.5,"avg_days_to_close":54.0,"top_products":[{"product":"GTK 500","count":5,"val":132452.0},{"product":"MG Advanced","count":16,"val":55391.0},{"product":"GTXPro","count":6,"val":29659.0},{"product":"GTX Plus Pro","count":1,"val":6391.0},{"product":"GTX Basic","count":10,"val":5722.0}]},{"name":"Rosie Papadopoulos","manager":"Cara Losch","office":"East","won":78,"lost":43,"open":39,"engaging":39,"prospecting":0,"won_val":230169.0,"open_val_est":116685.0,"win_rate":64.5,"avg_days_to_close":43.5,"top_products":[{"product":"GTXPro","count":25,"val":122774.0},{"product":"GTX Plus Pro","count":10,"val":55387.0},{"product":"MG Advanced","count":13,"val":44202.0},{"product":"GTX Basic","count":7,"val":3709.0},{"product":"GTX Plus Basic","count":3,"val":2976.0}]},{"name":"Cecily Lampkin","manager":"Dustin Brinkmann","office":"Central","won":107,"lost":53,"open":43,"engaging":19,"prospecting":24,"won_val":229800.0,"open_val_est":86748.0,"win_rate":66.9,"avg_days_to_close":42.3,"top_products":[{"product":"MG Advanced","count":33,"val":113800.0},{"product":"GTX Plus Pro","count":17,"val":88326.0},{"product":"GTX Plus Basic","count":16,"val":17520.0},{"product":"GTX Basic","count":16,"val":8756.0},{"product":"MG Special","count":25,"val":1398.0}]},{"name":"Moses Frase","manager":"Dustin Brinkmann","office":"Central","won":129,"lost":66,"open":65,"engaging":34,"prospecting":31,"won_val":207182.0,"open_val_est":108161.0,"win_rate":66.2,"avg_days_to_close":64.7,"top_products":[{"product":"MG Advanced","count":26,"val":89932.0},{"product":"GTX Plus Pro","count":13,"val":72526.0},{"product":"GTX Basic","count":47,"val":25566.0},{"product":"GTX Plus Basic","count":17,"val":17713.0},{"product":"MG Special","count":26,"val":1445.0}]},{"name":"Garret Kinder","manager":"Cara Losch","office":"East","won":75,"lost":48,"open":0,"engaging":0,"prospecting":0,"won_val":197773.0,"open_val_est":0,"win_rate":61.0,"avg_days_to_close":52.1,"top_products":[{"product":"GTX Plus Pro","count":12,"val":64818.0},{"product":"GTXPro","count":13,"val":61878.0},{"product":"MG Advanced","count":16,"val":53530.0},{"product":"GTX Basic","count":16,"val":8532.0},{"product":"GTX Plus Basic","count":8,"val":8461.0}]},{"name":"Lajuana Vencill","manager":"Dustin Brinkmann","office":"Central","won":127,"lost":104,"open":80,"engaging":40,"prospecting":40,"won_val":194632.0,"open_val_est":116039.0,"win_rate":55.0,"avg_days_to_close":62.9,"top_products":[{"product":"MG Advanced","count":28,"val":92588.0},{"product":"GTX Plus Pro","count":10,"val":55097.0},{"product":"GTX Basic","count":56,"val":29903.0},{"product":"GTX Plus Basic","count":15,"val":16083.0},{"product":"MG Special","count":18,"val":961.0}]},{"name":"Versie Hillebrand","manager":"Dustin Brinkmann","office":"Central","won":176,"lost":88,"open":97,"engaging":43,"prospecting":54,"won_val":187693.0,"open_val_est":101409.0,"win_rate":66.7,"avg_days_to_close":51.8,"top_products":[{"product":"MG Advanced","count":27,"val":89901.0},{"product":"GTX Plus Pro","count":15,"val":79880.0},{"product":"GTX Basic","count":13,"val":7094.0},{"product":"MG Special","count":117,"val":6493.0},{"product":"GTX Plus Basic","count":4,"val":4325.0}]},{"name":"Niesha Huffines","manager":"Melvin Marxen","office":"Central","won":105,"lost":70,"open":64,"engaging":30,"prospecting":34,"won_val":176961.0,"open_val_est":107745.0,"win_rate":60.0,"avg_days_to_close":54.6,"top_products":[{"product":"GTX Plus Pro","count":12,"val":70804.0},{"product":"MG Advanced","count":12,"val":40385.0},{"product":"GTX Plus Basic","count":35,"val":38371.0},{"product":"GTX Basic","count":32,"val":17624.0},{"product":"GTXPro","count":2,"val":9115.0}]},{"name":"Wilburn Farren","manager":"Cara Losch","office":"East","won":55,"lost":24,"open":31,"engaging":31,"prospecting":0,"won_val":157640.0,"open_val_est":82275.0,"win_rate":69.6,"avg_days_to_close":56.5,"top_products":[{"product":"MG Advanced","count":21,"val":70538.0},{"product":"GTXPro","count":9,"val":44839.0},{"product":"GTX Plus Pro","count":6,"val":33899.0},{"product":"GTX Basic","count":9,"val":4695.0},{"product":"GTX Plus Basic","count":3,"val":3318.0}]},{"name":"Violet Mclelland","manager":"Cara Losch","office":"East","won":122,"lost":71,"open":68,"engaging":68,"prospecting":0,"won_val":123431.0,"open_val_est":80150.0,"win_rate":63.2,"avg_days_to_close":58.0,"top_products":[{"product":"MG Advanced","count":19,"val":64187.0},{"product":"GTXPro","count":5,"val":25184.0},{"product":"GTX Plus Pro","count":2,"val":11668.0},{"product":"GTX Plus Basic","count":10,"val":10280.0},{"product":"GTX Basic","count":15,"val":8231.0}]},{"name":"Mei-Mei Johns","manager":"Melvin Marxen","office":"Central","won":0,"lost":0,"open":0,"engaging":0,"prospecting":0,"won_val":0,"open_val_est":0,"win_rate":0,"avg_days_to_close":0,"top_products":[]},{"name":"Elizabeth Anderson","manager":"Cara Losch","office":"East","won":0,"lost":0,"open":0,"engaging":0,"prospecting":0,"won_val":0,"open_val_est":0,"win_rate":0,"avg_days_to_close":0,"top_products":[]},{"name":"Natalya Ivanova","manager":"Rocco Neubert","office":"East","won":0,"lost":0,"open":0,"engaging":0,"prospecting":0,"won_val":0,"open_val_est":0,"win_rate":0,"avg_days_to_close":0,"top_products":[]},{"name":"Carol Thompson","manager":"Celia Rouche","office":"West","won":0,"lost":0,"open":0,"engaging":0,"prospecting":0,"won_val":0,"open_val_est":0,"win_rate":0,"avg_days_to_close":0,"top_products":[]},{"name":"Carl Lin","manager":"Summer Sewald","office":"West","won":0,"lost":0,"open":0,"engaging":0,"prospecting":0,"won_val":0,"open_val_est":0,"win_rate":0,"avg_days_to_close":0,"top_products":[]}],"products":[{"product":"GTXPro","series":"GTX","price":4821.0,"won":729,"lost":418,"open":333,"won_val":3510578.0,"win_rate":63.6},{"product":"GTX Plus Pro","series":"GTX","price":5482.0,"won":479,"lost":266,"open":223,"won_val":2629651.0,"win_rate":64.3},{"product":"MG Advanced","series":"MG","price":3393.0,"won":654,"lost":430,"open":328,"won_val":2216387.0,"win_rate":60.3},{"product":"GTX Plus Basic","series":"GTX","price":1096.0,"won":653,"lost":398,"open":332,"won_val":705275.0,"win_rate":62.1},{"product":"GTX Basic","series":"GTX","price":550.0,"won":915,"lost":521,"open":430,"won_val":499263.0,"win_rate":63.7},{"product":"GTK 500","series":"GTK","price":26768.0,"won":15,"lost":10,"open":15,"won_val":400612.0,"win_rate":60.0},{"product":"MG Special","series":"MG","price":55.0,"won":793,"lost":430,"open":428,"won_val":43768.0,"win_rate":64.8}]};
+
+// Top 500 open deals (pre-computed)
+const OPEN_DEALS_RAW = [{"id":"9SRD5NCR","agent":"Rosalina Dieter","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-07-27","est_value":26768.0,"score":89.7},{"id":"1LY8CAXD","agent":"Rosalina Dieter","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Betasoloin","stage":"Engaging","engage_date":"2017-09-27","est_value":26768.0,"score":89.7},{"id":"125VIRMX","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Warephase","stage":"Engaging","engage_date":"2016-12-19","est_value":26768.0,"score":89.0},{"id":"A7SA2L21","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-01-30","est_value":26768.0,"score":89.0},{"id":"YFB7Y92U","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-02-07","est_value":26768.0,"score":89.0},{"id":"AKMV6WN5","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-04-06","est_value":26768.0,"score":89.0},{"id":"DJMPI9TO","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Xx-zobam","stage":"Engaging","engage_date":"2017-04-18","est_value":26768.0,"score":89.0},{"id":"GG85QBTM","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Lexiqvolax","stage":"Engaging","engage_date":"2017-06-10","est_value":26768.0,"score":89.0},{"id":"A04V2WB3","agent":"Elease Gluck","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-08-03","est_value":26768.0,"score":89.0},{"id":"DO6VKC2G","agent":"Marty Freudenburg","manager":"Melvin Marxen","office":"Central","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-08-01","est_value":26768.0,"score":88.9},{"id":"SCS5H8V1","agent":"Markita Hansen","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Vehement Capital Partners","stage":"Engaging","engage_date":"2017-02-14","est_value":26768.0,"score":87.2},{"id":"GL1YE4PQ","agent":"Markita Hansen","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-05-09","est_value":26768.0,"score":87.2},{"id":"N3GVE0VP","agent":"Markita Hansen","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"","stage":"Engaging","engage_date":"2017-05-18","est_value":26768.0,"score":87.2},{"id":"5URQT67R","agent":"Markita Hansen","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Treequote","stage":"Engaging","engage_date":"2017-06-14","est_value":26768.0,"score":87.2},{"id":"021Z2J9L","agent":"Markita Hansen","manager":"Celia Rouche","office":"West","product":"GTK 500","account":"Rundofase","stage":"Engaging","engage_date":"2017-07-23","est_value":26768.0,"score":87.2},{"id":"RIW4VWBW","agent":"Hayden Neloms","manager":"Celia Rouche","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-01-10","est_value":5482.0,"score":67.3},{"id":"2BXYT4PD","agent":"Hayden Neloms","manager":"Celia Rouche","office":"West","product":"GTX Plus Pro","account":"Funholding","stage":"Engaging","engage_date":"2017-05-18","est_value":5482.0,"score":67.3},{"id":"M2A8EY5Q","agent":"Hayden Neloms","manager":"Celia Rouche","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-07-16","est_value":5482.0,"score":67.3},{"id":"QQPAK72N","agent":"Hayden Neloms","manager":"Celia Rouche","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-08-13","est_value":5482.0,"score":67.3},{"id":"7GDSUY9K","agent":"Hayden Neloms","manager":"Celia Rouche","office":"West","product":"GTX Plus Pro","account":"Konmatfix","stage":"Engaging","engage_date":"2017-09-05","est_value":5482.0,"score":67.3},{"id":"1GIP77EP","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-02-21","est_value":5482.0,"score":67.1},{"id":"D62905BC","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-04-04","est_value":5482.0,"score":67.1},{"id":"R1K16RZO","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-05-01","est_value":5482.0,"score":67.1},{"id":"MV227O65","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"Sonron","stage":"Engaging","engage_date":"2017-05-11","est_value":5482.0,"score":67.1},{"id":"VRWH3YJV","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-09-14","est_value":5482.0,"score":67.1},{"id":"NMLTE4CS","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-09-30","est_value":5482.0,"score":67.1},{"id":"T7N0RX05","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-11-04","est_value":5482.0,"score":67.1},{"id":"DN6SG3US","agent":"Wilburn Farren","manager":"Cara Losch","office":"East","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-02-25","est_value":5482.0,"score":67.0},{"id":"TV300INP","agent":"Wilburn Farren","manager":"Cara Losch","office":"East","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-03-03","est_value":5482.0,"score":67.0},{"id":"9JTFD4FZ","agent":"Wilburn Farren","manager":"Cara Losch","office":"East","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-09-28","est_value":5482.0,"score":67.0},{"id":"QNB3SCN9","agent":"Wilburn Farren","manager":"Cara Losch","office":"East","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-10-01","est_value":5482.0,"score":67.0},{"id":"HN6TZPAF","agent":"Wilburn Farren","manager":"Cara Losch","office":"East","product":"GTX Plus Pro","account":"","stage":"Engaging","engage_date":"2017-10-31","est_value":5482.0,"score":67.0},{"id":"5BE27MLY","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTXPro","account":"","stage":"Engaging","engage_date":"2017-01-28","est_value":4821.0,"score":66.4},{"id":"03VCDZEE","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTXPro","account":"","stage":"Engaging","engage_date":"2017-02-23","est_value":4821.0,"score":66.4},{"id":"GQ2W1DXM","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTXPro","account":"","stage":"Engaging","engage_date":"2017-04-25","est_value":4821.0,"score":66.4},{"id":"DYNHHN6P","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTXPro","account":"Massive Dynamic","stage":"Engaging","engage_date":"2017-04-29","est_value":4821.0,"score":66.4},{"id":"54OH0061","agent":"Maureen Marcano","manager":"Summer Sewald","office":"West","product":"GTXPro","account":"","stage":"Engaging","engage_date":"2017-06-19","est_value":4821.0,"score":66.4},{"id":"UQQE9ILV","agent":"James Ascencio","manager":"Summer Sewald","office":"West","product":"GTXPro","account":"Iselectrics","stage":"Engaging","engage_date":"2017-01-13","est_value":4821.0,"score":65.1},{"id":"EZVKSQ9C","agent":"Boris Faz","manager":"Rocco Neubert","office":"East","product":"GTX Plus Pro","account":"Genco Pura Olive Oil Company","stage":"Engaging","engage_date":"2016-12-16","est_value":5482.0,"score":65.9},{"id":"HAXMC4IX","agent":"James Ascencio","manager":"Summer Sewald","office":"West","product":"MG Advanced","account":"","stage":"Engaging","engage_date":"2016-11-03","est_value":3393.0,"score":63.5}];
+
+const PRODUCT_COLORS = {
+  'GTXPro': '#3b82f6',
+  'GTX Plus Pro': '#6366f1',
+  'GTX Plus Basic': '#8b5cf6',
+  'GTX Basic': '#a78bfa',
+  'MG Advanced': '#00e5a0',
+  'MG Special': '#34d399',
+  'GTK 500': '#f59e0b'
+};
+
+// ═══════════════════════════════ UTILITIES ═══════════════════════════════
+const fmt$ = v => '$' + (v >= 1e6 ? (v/1e6).toFixed(1)+'M' : v >= 1e3 ? (v/1e3).toFixed(0)+'K' : v.toFixed(0));
+const fmtN = v => v.toLocaleString('pt-BR');
+const clamp = (v,mn,mx) => Math.min(mx, Math.max(mn, v));
+const scoreClass = s => s >= 80 ? 'score-high' : s >= 70 ? 'score-mid' : 'score-low';
+
+// ═══════════════════════════════ NAV ═══════════════════════════════
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'overview') renderOverview();
+  if (name === 'pipeline') renderPipeline();
+  if (name === 'agents') renderAgents();
+  if (name === 'products') renderProducts();
+  if (name === 'bottlenecks') renderBottlenecks();
+}
+
+// ═══════════════════════════════ OVERVIEW ═══════════════════════════════
+function renderOverview() {
+  // Top agents bars
+  const top10 = DATA.agents.slice(0,10);
+  const maxVal = top10[0].won_val;
+  const container = document.getElementById('top-agents-bars');
+  container.innerHTML = top10.map(a => `
+    <div class="bar-row">
+      <div class="bar-label">${a.name.split(' ')[0]} ${a.name.split(' ')[1][0]}.</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${a.won_val/maxVal*100}%;background:${a.won_val===maxVal?'#00e5a0':'#3b82f6'}"></div></div>
+      <div class="bar-val">${fmt$(a.won_val)}</div>
+    </div>`).join('');
+
+  // Donut
+  const stages = [
+    {label:'Won',val:DATA.global.won,color:'#00e5a0'},
+    {label:'Lost',val:DATA.global.lost,color:'#ef4444'},
+    {label:'Engaging',val:1589,color:'#3b82f6'},
+    {label:'Prospecting',val:500,color:'#f59e0b'}
+  ];
+  const total = stages.reduce((s,d)=>s+d.val,0);
+  let startAngle = -Math.PI/2;
+  const cx=100,cy=100,r=80,ri=50;
+  let paths = '';
+  stages.forEach(d => {
+    const angle = (d.val/total)*2*Math.PI;
+    const x1=cx+r*Math.cos(startAngle), y1=cy+r*Math.sin(startAngle);
+    const x2=cx+r*Math.cos(startAngle+angle), y2=cy+r*Math.sin(startAngle+angle);
+    const ix1=cx+ri*Math.cos(startAngle), iy1=cy+ri*Math.sin(startAngle);
+    const ix2=cx+ri*Math.cos(startAngle+angle), iy2=cy+ri*Math.sin(startAngle+angle);
+    const large = angle>Math.PI?1:0;
+    paths += `<path d="M${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${ix2},${iy2} A${ri},${ri} 0 ${large},0 ${ix1},${iy1} Z" fill="${d.color}" opacity="0.85"/>`;
+    startAngle += angle;
+  });
+  document.getElementById('donut-svg').innerHTML = paths + `<text x="100" y="96" text-anchor="middle" fill="#e2e8f0" font-family="Syne" font-size="18" font-weight="700">8.800</text><text x="100" y="112" text-anchor="middle" fill="#64748b" font-family="DM Mono" font-size="9">deals</text>`;
+  document.getElementById('donut-legend').innerHTML = stages.map(d=>`
+    <div class="legend-item"><div class="legend-dot" style="background:${d.color}"></div><span>${d.label}: <strong>${d.val.toLocaleString()}</strong> (${(d.val/total*100).toFixed(1)}%)</span></div>`).join('');
+
+  // Office win rate
+  const offices = {};
+  DATA.agents.forEach(a => {
+    if (!offices[a.office]) offices[a.office]={won:0,lost:0};
+    offices[a.office].won += a.won;
+    offices[a.office].lost += a.lost;
+  });
+  const offColors = {Central:'#a78bfa',East:'#3b82f6',West:'#00e5a0'};
+  document.getElementById('office-wr').innerHTML = Object.entries(offices).map(([o,d])=>{
+    const wr = d.won/(d.won+d.lost)*100;
+    return `<div class="bar-row">
+      <div class="bar-label">${o}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${wr}%;background:${offColors[o]}"></div></div>
+      <div class="bar-val">${wr.toFixed(1)}%</div>
+    </div>`;
+  }).join('');
+
+  // Product revenue
+  const maxPR = DATA.products[0].won_val;
+  document.getElementById('product-revenue-bars').innerHTML = DATA.products.map(p=>`
+    <div class="bar-row">
+      <div class="bar-label"><span class="product-dot" style="background:${PRODUCT_COLORS[p.product]}"></span>${p.product}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${p.won_val/maxPR*100}%;background:${PRODUCT_COLORS[p.product]}"></div></div>
+      <div class="bar-val">${fmt$(p.won_val)}</div>
+    </div>`).join('');
+
+  // Product WR
+  document.getElementById('product-wr-bars').innerHTML = [...DATA.products].sort((a,b)=>b.win_rate-a.win_rate).map(p=>`
+    <div class="bar-row">
+      <div class="bar-label"><span class="product-dot" style="background:${PRODUCT_COLORS[p.product]}"></span>${p.product}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${p.win_rate}%;background:${PRODUCT_COLORS[p.product]}"></div></div>
+      <div class="bar-val">${p.win_rate}%</div>
+    </div>`).join('');
+
+  // Manager bars
+  const mgrs = {};
+  DATA.agents.forEach(a=>{
+    if(!mgrs[a.manager]) mgrs[a.manager]={won:0,lost:0,val:0};
+    mgrs[a.manager].won+=a.won; mgrs[a.manager].lost+=a.lost; mgrs[a.manager].val+=a.won_val;
+  });
+  const maxMV = Math.max(...Object.values(mgrs).map(m=>m.val));
+  document.getElementById('manager-bars').innerHTML = Object.entries(mgrs).sort((a,b)=>b[1].val-a[1].val).map(([m,d])=>{
+    const wr=(d.won/(d.won+d.lost)*100).toFixed(1);
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px">
+        <span style="color:var(--text)">${m.split(' ')[0]}</span>
+        <span style="color:var(--muted)">${wr}% WR · ${fmt$(d.val)}</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width:${d.val/maxMV*100}%;background:var(--accent2)"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════ PIPELINE ═══════════════════════════════
+let pipelineData = [...OPEN_DEALS_RAW];
+let pipelinePage = 1;
+const PAGE_SIZE = 20;
+let sortKey = 'score', sortDir = -1;
+
+function filterPipeline() {
+  const q = document.getElementById('pipeline-search').value.toLowerCase();
+  const office = document.getElementById('pipeline-office').value;
+  const stage = document.getElementById('pipeline-stage').value;
+  const product = document.getElementById('pipeline-product').value;
+  pipelineData = OPEN_DEALS_RAW.filter(d =>
+    (!q || d.agent.toLowerCase().includes(q) || d.product.toLowerCase().includes(q) || (d.account||'').toLowerCase().includes(q)) &&
+    (!office || d.office === office) &&
+    (!stage || d.stage === stage) &&
+    (!product || d.product === product)
+  );
+  pipelinePage = 1;
+  renderPipelineTable();
+}
+
+function sortPipeline(key) {
+  if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = -1; }
+  pipelineData.sort((a,b) => {
+    const va = a[key]||'', vb = b[key]||'';
+    return (va < vb ? -1 : va > vb ? 1 : 0) * sortDir;
+  });
+  renderPipelineTable();
+}
+
+function renderPipeline() {
+  pipelineData = [...OPEN_DEALS_RAW];
+  renderPipelineTable();
+}
+
+function renderPipelineTable() {
+  const total = pipelineData.length;
+  document.getElementById('pipeline-count').textContent = `${total} deals encontrados`;
+  const pages = Math.ceil(total/PAGE_SIZE);
+  const slice = pipelineData.slice((pipelinePage-1)*PAGE_SIZE, pipelinePage*PAGE_SIZE);
+
+  document.getElementById('pipeline-tbody').innerHTML = slice.map(d => {
+    const sc = d.score;
+    const stageScore = d.stage==='Engaging'?40:20;
+    const priceScore = (d.est_value/26768*30).toFixed(1);
+    const agentData = DATA.agents.find(a=>a.name===d.agent);
+    const wrScore = agentData ? (agentData.win_rate/100*30).toFixed(1) : '?';
+    return `<tr>
+      <td><span class="score-pill ${scoreClass(sc)}">${sc}</span></td>
+      <td>${d.agent}</td>
+      <td><span class="region-pill region-${d.office}">${d.office}</span></td>
+      <td><span class="product-dot" style="background:${PRODUCT_COLORS[d.product]||'#888'}"></span>${d.product}</td>
+      <td style="color:var(--muted)">${d.account||'—'}</td>
+      <td><span class="badge badge-${d.stage.toLowerCase()}">${d.stage}</span></td>
+      <td class="text-accent font-bold">${fmt$(d.est_value)}</td>
+      <td style="color:var(--muted)">${d.engage_date}</td>
+      <td><div class="score-explainer">Stage: +${stageScore} · Valor: +${priceScore} · WR: +${wrScore}</div></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="9" class="empty">Nenhum deal encontrado.</td></tr>';
+
+  // Pagination
+  const pg = document.getElementById('pipeline-pagination');
+  pg.innerHTML = '';
+  for(let i=1;i<=pages;i++) {
+    const btn = document.createElement('button');
+    btn.className = 'page-btn' + (i===pipelinePage?' active':'');
+    btn.textContent = i;
+    btn.onclick = () => { pipelinePage=i; renderPipelineTable(); };
+    pg.appendChild(btn);
+    if(i>8){
+      const dots = document.createElement('span');
+      dots.textContent = '...'; dots.style.color='var(--muted)'; dots.style.padding='4px 6px';
+      pg.appendChild(dots);
+      break;
+    }
+  }
+}
+
+// ═══════════════════════════════ AGENTS ═══════════════════════════════
+function filterAgents() {
+  const office = document.getElementById('agent-office-filter').value;
+  const manager = document.getElementById('agent-manager-filter').value;
+  const sortBy = document.getElementById('agent-sort').value;
+  let agents = DATA.agents.filter(a =>
+    (!office || a.office===office) && (!manager || a.manager===manager)
+  );
+  agents.sort((a,b) => b[sortBy]-a[sortBy]);
+  renderAgentGrid(agents);
+}
+
+function renderAgents() {
+  renderAgentGrid(DATA.agents);
+}
+
+function renderAgentGrid(agents) {
+  const grid = document.getElementById('agent-grid');
+  grid.innerHTML = agents.map(a => {
+    const total = a.won+a.lost;
+    const wrPct = total ? a.win_rate : 0;
+    const wrColor = wrPct >= 65 ? 'var(--won)' : wrPct >= 60 ? 'var(--engaging)' : 'var(--lost)';
+    const inactive = a.won === 0;
+    return `<div class="agent-card ${inactive?'':''}${a.won===0?'opacity:0.5':''}" onclick="showAgent('${a.name}')" id="acard-${a.name.replace(/ /g,'_')}">
+      <div class="agent-name">${a.name}</div>
+      <div class="agent-meta">
+        <span class="region-pill region-${a.office}">${a.office}</span> 
+        · ${a.manager.split(' ')[0]}
+        ${inactive?'<span style="color:var(--lost);font-size:9px;margin-left:6px">SEM ATIVIDADE</span>':''}
+      </div>
+      <div class="agent-stats">
+        <div class="agent-stat">
+          <div class="agent-stat-val text-accent">${fmt$(a.won_val)}</div>
+          <div class="agent-stat-lbl">Receita</div>
+        </div>
+        <div class="agent-stat">
+          <div class="agent-stat-val" style="color:${wrColor}">${wrPct}%</div>
+          <div class="agent-stat-lbl">Win Rate</div>
+        </div>
+        <div class="agent-stat">
+          <div class="agent-stat-val text-amber">${a.open}</div>
+          <div class="agent-stat-lbl">Em Aberto</div>
+        </div>
+      </div>
+      ${total ? `<div class="wr-bar">
+        <div class="wr-won" style="width:${wrPct}%"></div>
+        <div class="wr-lost" style="width:${100-wrPct}%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--muted)">
+        <span>✓ ${a.won}</span><span>✗ ${a.lost}</span>
+      </div>` : '<div style="font-size:10px;color:var(--muted);margin-top:6px">Sem histórico de deals</div>'}
+    </div>`;
+  }).join('');
+}
+
+function showAgent(name) {
+  document.querySelectorAll('.agent-card').forEach(c=>c.classList.remove('selected'));
+  const card = document.getElementById('acard-'+name.replace(/ /g,'_'));
+  if(card) card.classList.add('selected');
+
+  const a = DATA.agents.find(x=>x.name===name);
+  if(!a) return;
+  document.getElementById('agent-detail').style.display='block';
+  document.getElementById('detail-name').textContent = a.name;
+  document.getElementById('detail-meta').textContent = `${a.office} · ${a.manager}`;
+
+  const total = a.won+a.lost;
+  document.getElementById('detail-kpis').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      ${[
+        ['Receita Total',fmt$(a.won_val),'var(--won)'],
+        ['Win Rate',a.win_rate+'%', a.win_rate>=65?'var(--won)':a.win_rate>=60?'var(--engaging)':'var(--lost)'],
+        ['Deals Won',a.won,'var(--won)'],
+        ['Deals Lost',a.lost,'var(--lost)'],
+        ['Em Aberto',a.open,'var(--prospecting)'],
+        ['Avg. Ciclo',a.avg_days_to_close+'d','var(--text)'],
+        ['Pipeline Est.',fmt$(a.open_val_est),'var(--engaging)'],
+        ['Engaging',a.engaging,'var(--engaging)'],
+      ].map(([l,v,c])=>`<div style="padding:10px;background:var(--surface);border-radius:6px;border:1px solid var(--border)">
+        <div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:4px">${l}</div>
+        <div style="font-family:Syne;font-size:16px;font-weight:700;color:${c}">${v}</div>
+      </div>`).join('')}
+    </div>`;
+
+  const maxPV = a.top_products[0]?.val||1;
+  document.getElementById('detail-products').innerHTML = a.top_products.length ?
+    a.top_products.map(p=>`
+      <div class="bar-row">
+        <div class="bar-label"><span class="product-dot" style="background:${PRODUCT_COLORS[p.product]||'#888'}"></span>${p.product}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${p.val/maxPV*100}%;background:${PRODUCT_COLORS[p.product]||'#888'}"></div></div>
+        <div class="bar-val">${fmt$(p.val)}</div>
+      </div>`).join('') : '<div class="empty">Sem dados</div>';
+
+  document.getElementById('detail-pipeline').innerHTML = `
+    <div style="margin-bottom:10px">
+      <div class="wr-bar" style="height:12px;border-radius:4px">
+        <div class="wr-won" style="width:${total?a.win_rate:0}%"></div>
+        <div class="wr-lost" style="width:${total?100-a.win_rate:0}%"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px">
+        <span style="color:var(--won)">Won: ${a.won}</span>
+        <span style="color:var(--lost)">Lost: ${a.lost}</span>
+      </div>
+    </div>
+    ${[
+      ['Prospecting',a.prospecting,'var(--prospecting)'],
+      ['Engaging',a.engaging,'var(--engaging)'],
+    ].map(([l,v,c])=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--surface);border-radius:6px;margin-bottom:6px;border:1px solid var(--border)">
+      <span class="badge badge-${l.toLowerCase()}">${l}</span>
+      <span style="font-family:Syne;font-weight:700;color:${c}">${v} deals</span>
+    </div>`).join('')}
+    <div style="margin-top:10px;padding:10px;background:var(--surface);border-radius:6px;border:1px solid var(--border)">
+      <div style="font-size:9px;color:var(--muted);margin-bottom:4px">PIPELINE ESTIMADO</div>
+      <div style="font-family:Syne;font-size:18px;font-weight:700;color:var(--prospecting)">${fmt$(a.open_val_est)}</div>
+    </div>`;
+
+  document.getElementById('agent-detail').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function closeDetail() {
+  document.getElementById('agent-detail').style.display='none';
+  document.querySelectorAll('.agent-card').forEach(c=>c.classList.remove('selected'));
+}
+
+// ═══════════════════════════════ PRODUCTS ═══════════════════════════════
+function renderProducts() {
+  // KPI strip
+  document.getElementById('product-kpi-strip').innerHTML = DATA.products.map(p=>`
+    <div class="kpi" style="border-top:2px solid ${PRODUCT_COLORS[p.product]}">
+      <div class="kpi-label">${p.product}</div>
+      <div class="kpi-value">${fmt$(p.won_val)}</div>
+      <div class="kpi-sub">WR ${p.win_rate}% · ${p.won} won</div>
+    </div>`).join('');
+
+  // Revenue chart
+  const maxR = DATA.products[0].won_val;
+  document.getElementById('prod-revenue-chart').innerHTML = DATA.products.map(p=>`
+    <div class="bar-row">
+      <div class="bar-label"><span class="product-dot" style="background:${PRODUCT_COLORS[p.product]}"></span>${p.product}</div>
+      <div class="bar-track" style="height:14px"><div class="bar-fill" style="width:${p.won_val/maxR*100}%;background:${PRODUCT_COLORS[p.product]};height:100%"></div></div>
+      <div class="bar-val">${fmt$(p.won_val)}</div>
+    </div>`).join('');
+
+  // Volume chart — stacked concept
+  const maxV = Math.max(...DATA.products.map(p=>p.won+p.lost+p.open));
+  document.getElementById('prod-volume-chart').innerHTML = DATA.products.map(p=>{
+    const total = p.won+p.lost+p.open;
+    const wonW = p.won/total*100, lostW = p.lost/total*100, openW = p.open/total*100;
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px">
+        <span style="color:var(--text)">${p.product}</span>
+        <span style="color:var(--muted)">${total} deals</span>
+      </div>
+      <div style="display:flex;height:12px;border-radius:4px;overflow:hidden">
+        <div style="width:${wonW}%;background:var(--won)"></div>
+        <div style="width:${lostW}%;background:var(--lost);opacity:0.7"></div>
+        <div style="width:${openW}%;background:var(--engaging);opacity:0.6"></div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:9px;color:var(--muted);margin-top:3px">
+        <span>Won: ${p.won}</span><span>Lost: ${p.lost}</span><span>Open: ${p.open}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Table
+  document.getElementById('product-table-body').innerHTML = DATA.products.map(p=>{
+    const avgTicket = p.won ? (p.won_val/p.won).toFixed(0) : 0;
+    return `<tr>
+      <td><span class="product-dot" style="background:${PRODUCT_COLORS[p.product]}"></span><strong>${p.product}</strong></td>
+      <td><span class="badge" style="background:rgba(255,255,255,0.1);color:var(--muted)">${p.series}</span></td>
+      <td>${fmt$(p.price)}</td>
+      <td class="text-accent">${p.won}</td>
+      <td class="text-red">${p.lost}</td>
+      <td class="text-amber">${p.open}</td>
+      <td><span class="score-pill ${p.win_rate>=64?'score-high':p.win_rate>=62?'score-mid':'score-low'}">${p.win_rate}%</span></td>
+      <td class="font-bold text-accent">${fmt$(p.won_val)}</td>
+      <td>${fmt$(parseFloat(avgTicket))}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════ BOTTLENECKS ═══════════════════════════════
+function renderBottlenecks() {
+  const activeAgents = DATA.agents.filter(a=>a.won>0);
+  const avgWR = activeAgents.reduce((s,a)=>s+a.win_rate,0)/activeAgents.length;
+  const avgDays = activeAgents.reduce((s,a)=>s+a.avg_days_to_close,0)/activeAgents.length;
+  const inactive = DATA.agents.filter(a=>a.won===0);
+  const highOpen = activeAgents.filter(a=>a.open>80);
+  const lowWR = activeAgents.filter(a=>a.win_rate<60&&a.won>0);
+
+  document.getElementById('bottleneck-alerts').innerHTML = [
+    {icon:'🔴', title:`${inactive.length} vendedores sem nenhum deal`,
+     body:`${inactive.map(a=>a.name).join(', ')} — esses agentes constam no time mas não possuem nenhuma oportunidade registrada no CRM. Investigar se são novatos, afastados ou se há problema de atribuição.`},
+    {icon:'⚠️', title:`Darcel Schlecht: concentração de receita`,
+     body:`Um único vendedor representa $1,15M de receita — mais que o dobro do 2º colocado ($478K). Isso cria risco de concentração. Se ele sair, 11,5% da receita vai junto.`},
+    {icon:'🐌', title:`Moses Frase: ciclo mais longo (64,7 dias)`,
+     body:`Média geral é ${avgDays.toFixed(1)} dias. Moses leva 25% a mais que a média. Com ${fmt$(207182)} em receita e WR de 66%, pode estar sobre-investindo em deals menores.`},
+    {icon:'📉', title:`Lajuana Vencill: Win Rate crítico (55%)`,
+     body:`Com 127 deals ganhos e 104 perdidos, está 8pp abaixo da média. Tem 80 deals abertos ($116K estimados) — prioridade alta para coaching e revisão de approach.`},
+  ].map(a=>`<div class="alert-card">
+    <div class="alert-icon">${a.icon}</div>
+    <div><div class="alert-title">${a.title}</div><div class="alert-body">${a.body}</div></div>
+  </div>`).join('');
+
+  document.getElementById('bottleneck-insights').innerHTML = [
+    {icon:'💎', title:`GTK 500: deal de maior valor mas menor atenção`,
+     body:`O GTK 500 custa $26.768 (10x o GTX Basic). Apenas 15 deals fechados no período inteiro. Elease Gluck e Rosalina Dieter têm os melhores resultados — considere especializar esses agentes em enterprise.`},
+    {icon:'🏆', title:`Maureen Marcano e Hayden Neloms: maiores WR (70%+)`,
+     body:`Com 70% e 70,4% de win rate respectivamente, esses dois outliers positivos devem ser estudados. O que eles fazem diferente? Seus playbooks podem ser replicados.`},
+    {icon:'🌊', title:`MG Special: produto de baixo valor com alto volume`,
+     body:`793 deals won em MG Special mas apenas $43K em receita — ticket médio de $55. Esse produto consome pipeline sem retorno real. Avaliar se vale manter o esforço de vendas.`},
+    {icon:'📊', title:`West tem a melhor win rate por escritório`,
+     body:`West: 64,1% WR. East: 63,3%. Central: 62,8%. A diferença pode estar na composição de produtos (West tem mais GTK 500) ou na liderança de Celia Rouche e Summer Sewald.`},
+    {icon:'🎯', title:`Vicki Laflamme: único com 104 Engaging e 0 Prospecting`,
+     body:`Vicki concentra todo o pipeline em Engaging — sem deals em prospecção. Isso indica excelente qualidade de pipeline, mas risco de secamento futuro se não houver novas prospecções.`},
+  ].map(a=>`<div class="insight-card">
+    <div class="alert-icon">${a.icon}</div>
+    <div><div class="insight-title">${a.title}</div><div class="insight-body">${a.body}</div></div>
+  </div>`).join('');
+
+  // WR dispersion
+  const sorted = [...activeAgents].sort((a,b)=>b.win_rate-a.win_rate);
+  document.getElementById('wr-dispersion').innerHTML = sorted.map(a=>{
+    const c = a.win_rate>=70?'#00e5a0':a.win_rate>=65?'#3b82f6':a.win_rate>=60?'#f59e0b':'#ef4444';
+    return `<div class="bar-row">
+      <div class="bar-label" style="font-size:10px">${a.name.split(' ')[0]}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${a.win_rate}%;background:${c}"></div></div>
+      <div class="bar-val" style="color:${c}">${a.win_rate}%</div>
+    </div>`;
+  }).join('') + `<div style="font-size:10px;color:var(--muted);margin-top:8px;padding:6px 8px;background:var(--surface2);border-radius:4px">Média: ${avgWR.toFixed(1)}% | Verde ≥70% | Azul ≥65% | Amber ≥60% | Vermelho &lt;60%</div>`;
+
+  // Inactive
+  document.getElementById('inactive-agents').innerHTML = inactive.map(a=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:6px;margin-bottom:8px;border:1px solid rgba(239,68,68,0.2)">
+      <div>
+        <div style="font-family:Syne;font-size:12px;font-weight:700;color:var(--text)">${a.name}</div>
+        <div style="font-size:10px;color:var(--muted)">${a.manager} · ${a.office}</div>
+      </div>
+      <span class="badge badge-lost">Sem dados</span>
+    </div>`).join('');
+
+  // Cycle chart
+  const cycleAgents = [...activeAgents].sort((a,b)=>b.avg_days_to_close-a.avg_days_to_close).slice(0,15);
+  const maxC = cycleAgents[0].avg_days_to_close;
+  document.getElementById('cycle-chart').innerHTML = cycleAgents.map(a=>{
+    const c = a.avg_days_to_close > 60 ? 'var(--lost)' : a.avg_days_to_close > 52 ? 'var(--prospecting)' : 'var(--won)';
+    return `<div class="bar-row">
+      <div class="bar-label" style="font-size:10px">${a.name.split(' ')[0]}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${a.avg_days_to_close/maxC*100}%;background:${c}"></div></div>
+      <div class="bar-val" style="color:${c}">${a.avg_days_to_close}d</div>
+    </div>`;
+  }).join('') + `<div style="font-size:10px;color:var(--muted);margin-top:8px;padding:6px;background:var(--surface2);border-radius:4px">Média geral: ${avgDays.toFixed(1)} dias</div>`;
+
+  // At risk table
+  const atRisk = activeAgents.filter(a=>a.win_rate<63||a.avg_days_to_close>58||a.open>80).sort((a,b)=>a.win_rate-b.win_rate);
+  document.getElementById('at-risk-tbody').innerHTML = atRisk.map(a=>{
+    let status = [];
+    if(a.win_rate<60) status.push('<span class="badge badge-lost">WR Crítico</span>');
+    else if(a.win_rate<63) status.push('<span class="badge badge-prospecting">WR Baixo</span>');
+    if(a.avg_days_to_close>60) status.push('<span class="badge badge-engaging">Ciclo Longo</span>');
+    if(a.open>80) status.push('<span class="badge" style="background:rgba(0,229,160,0.15);color:var(--won)">Alto Volume Open</span>');
+    return `<tr>
+      <td><strong>${a.name}</strong></td>
+      <td><span class="region-pill region-${a.office}">${a.office}</span></td>
+      <td>${a.manager}</td>
+      <td style="color:${a.win_rate<60?'var(--lost)':a.win_rate<63?'var(--prospecting)':'var(--won)'}">${a.win_rate}%</td>
+      <td style="color:${a.avg_days_to_close>60?'var(--lost)':'var(--text)'}">${a.avg_days_to_close}d</td>
+      <td>${a.open}</td>
+      <td>${fmt$(a.open_val_est)}</td>
+      <td>${status.join(' ')}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════ INIT ═══════════════════════════════
+renderOverview();
+</script>
+</body>
+</html>
