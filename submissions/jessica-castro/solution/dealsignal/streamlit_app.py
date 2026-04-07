@@ -9,13 +9,15 @@ import sys
 import os
 from pathlib import Path
 
-# Resolve project root and add to sys.path BEFORE any other imports.
-# On Streamlit Cloud, the working directory is the repo root, so we must
-# explicitly insert the dealsignal directory so local packages are found.
-ROOT = Path(__file__).resolve().parent
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-os.chdir(ROOT)
+# On Streamlit Cloud the CWD is the repo root, not this file's directory.
+# We must insert this file's directory into sys.path so local packages
+# (config, app, engine, utils, etc.) are importable.
+_HERE = os.path.abspath(os.path.dirname(__file__))
+if _HERE not in sys.path:
+    sys.path.insert(0, _HERE)
+os.chdir(_HERE)
+
+ROOT = Path(_HERE)
 
 import pandas as pd
 import streamlit as st
