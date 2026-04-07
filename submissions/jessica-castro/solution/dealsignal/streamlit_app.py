@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-import plotly.express as px
 import streamlit as st
 
 # Resolve project root and add to sys.path so all internal imports work
