@@ -6,14 +6,19 @@ Run with:
 """ 
 
 import sys
+import os
 from pathlib import Path
+
+# Resolve project root and add to sys.path BEFORE any other imports.
+# On Streamlit Cloud, the working directory is the repo root, so we must
+# explicitly insert the dealsignal directory so local packages are found.
+ROOT = Path(__file__).resolve().parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+os.chdir(ROOT)
 
 import pandas as pd
 import streamlit as st
-
-# Resolve project root and add to sys.path so all internal imports work
-ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT))
 
 from config.constants import (  # noqa: E402
     RATING_COLORS,
