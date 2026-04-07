@@ -13,7 +13,7 @@ import plotly.express as px
 import streamlit as st
 
 # Resolve project root and add to sys.path so all internal imports work
-ROOT = Path(__file__).parent
+ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from config.constants import (  # noqa: E402
