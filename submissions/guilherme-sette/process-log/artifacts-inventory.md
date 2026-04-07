@@ -27,10 +27,27 @@
 ## Process log
 
 - `submissions/guilherme-sette/process-log/README.md`
+- `submissions/guilherme-sette/process-log/evidence-index.md`
 - `submissions/guilherme-sette/process-log/timeline.md`
 - `submissions/guilherme-sette/process-log/bugs-and-fixes.md`
 - `submissions/guilherme-sette/process-log/artifacts-inventory.md`
 - `submissions/guilherme-sette/process-log/manual-evidence-checklist.md`
+- `submissions/guilherme-sette/process-log/chat-exports/conversation-history.md`
+
+## Evidência visual anexada
+
+### Screenshots das sessões com IA
+
+- `submissions/guilherme-sette/process-log/screenshots/codex_01.png`
+- `submissions/guilherme-sette/process-log/screenshots/codex_02.png`
+- `submissions/guilherme-sette/process-log/screenshots/codex_03.png`
+- `submissions/guilherme-sette/process-log/screenshots/codex_04.png`
+- `submissions/guilherme-sette/process-log/screenshots/codex_05.png`
+
+### Screenshots da ferramenta funcionando
+
+- `submissions/guilherme-sette/process-log/screenshots/dash_01.png`
+- `submissions/guilherme-sette/process-log/screenshots/dash_02.png`
 
 ## Documentação auxiliar
 

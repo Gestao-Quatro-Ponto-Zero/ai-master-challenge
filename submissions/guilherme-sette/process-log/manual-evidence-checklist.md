@@ -1,32 +1,30 @@
 # Checklist de evidências manuais
 
-Estas são as evidências que ainda vale anexar manualmente para fortalecer a submissão.
+## Já atendido nesta submissão
 
-## Alta prioridade
+- screenshots das conversas com IA
+- screenshots da interface final
+- export da conversa em markdown
+- narrativa escrita do processo
+- timeline das iterações
+- bugs e correções documentados
 
-- screenshots das conversas mostrando:
-  - decomposição do problema
-  - principais decisões de produto
-  - bugs encontrados e corrigidos
-- screenshots da interface final:
-  - aba `VENDEDOR`
-  - aba `HEAD`
-- screenshot do app rodando localmente
+## Opcional para fortalecer ainda mais
 
-## Média prioridade
-
-- export do chat, se a plataforma permitir
+- export nativo do chat, se a plataforma permitir
 - pequeno vídeo de navegação do app
-- screenshot do `git log`, quando os commits forem gerados
+- screenshot do PR aberto
+- screenshot do `git log`
 
-## O que vale priorizar nos prints da conversa
+## O que os screenshots atuais já cobrem
 
-- quando a lógica `Deal Forecast + Seller Fit` foi definida
-- quando a responsabilidade de movimentação de owner foi movida para a `HEAD`
-- quando a usabilidade da aba vendedor foi corrigida
-- quando bugs de forecast / plotly / HTML foram corrigidos
+- decomposição do problema
+- definição da lógica `Deal Forecast + Seller Fit`
+- decisões de produto e UX
+- bugs encontrados e corrigidos
+- ferramenta final funcionando
 
-## Estrutura sugerida
+## Estrutura usada
 
 - `process-log/screenshots/`
 - `process-log/chat-exports/`
@@ -34,9 +32,9 @@ Estas são as evidências que ainda vale anexar manualmente para fortalecer a su
 
 ## Observação
 
-Mesmo sem export completo da conversa, a submissão já fica defensável com:
+Com o material já anexado, a submissão agora combina:
 
-- narrativa escrita
-- screenshots selecionados
-- histórico de commits
-- solução funcional
+- evidência narrativa
+- evidência visual do uso de IA
+- evidência visual do produto funcionando
+- histórico de código e PR

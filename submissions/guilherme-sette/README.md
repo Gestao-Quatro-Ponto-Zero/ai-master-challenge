@@ -202,6 +202,7 @@ Ou seja: o objetivo não foi maximizar fit teórico a qualquer custo, mas maximi
 - Iteração 4: refino da UX do vendedor para separar venda de higiene de CRM.
 - Iteração 5: refino da `HEAD` para suportar movimentação de owner e leitura macro.
 - Iteração 6: correções finais de bugs, consistência visual e empacotamento da submissão.
+- Iteração 7: reforço das evidências com screenshots das sessões, screenshots da ferramenta funcionando e índice auditável do processo.
 
 ### Onde a IA errou e como corrigi
 
@@ -213,6 +214,8 @@ Ou seja: o objetivo não foi maximizar fit teórico a qualquer custo, mas maximi
   - HTML de card renderizando como texto literal
   Esses pontos foram identificados e corrigidos iterativamente.
 - Houve também risco de interpretação errada do papel de realocação: a ação de mover owner saiu da mão do vendedor e foi tratada como responsabilidade da liderança.
+- O process log inicialmente estava forte em narrativa, mas ainda fraco em auditabilidade.
+  - Corrigi adicionando screenshots reais das sessões com IA, screenshots da ferramenta final e um índice explícito das evidências.
 
 ### O que eu adicionei que a IA sozinha nao faria
 
@@ -226,11 +229,28 @@ Ou seja: o objetivo não foi maximizar fit teórico a qualquer custo, mas maximi
 
 ## Evidencias
 
-- [ ] Screenshots das conversas com IA
+- [x] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [ ] Chat exports
+- [x] Chat exports
 - [x] Git history (se construi codigo)
+- [x] Screenshots da ferramenta funcionando
 - [x] Outro: narrativa escrita do processo
+
+### Onde as evidências estão
+
+- Process log principal:
+  - [process-log/README.md](./process-log/README.md)
+- Índice das evidências:
+  - [process-log/evidence-index.md](./process-log/evidence-index.md)
+- Export da conversa:
+  - [process-log/chat-exports/conversation-history.md](./process-log/chat-exports/conversation-history.md)
+- Screenshots das sessões com IA e da dashboard funcionando:
+  - [process-log/screenshots](./process-log/screenshots)
+
+### Preview da solução funcionando
+
+![Dashboard vendedor/head 1](./process-log/screenshots/dash_01.png)
+![Dashboard vendedor/head 2](./process-log/screenshots/dash_02.png)
 
 ---
 
