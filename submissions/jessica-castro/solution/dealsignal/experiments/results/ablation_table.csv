@@ -1,0 +1,9 @@
+grupo,n_features,features,cv_auc_mean,cv_auc_std,cv_ap_mean
+all,36,"seller_win_rate, seller_rank_percentile, seller_close_speed, seller_product_experience, seller_pipeline_load, seller_product_win_rate, log_days_since_engage, deal_age_percentile, log_deal_value, deal_value_percentile, deal_value_percentile_within_seller, deal_value_percentile_within_product, deal_value_vs_account_size, product_win_rate, product_rank_percentile, product_avg_sales_cycle, product_relative_performance, account_size_percentile, digital_maturity_index, revenue_per_employee, company_age_score, is_stale_flag, is_very_old_deal, seller_overloaded_flag, low_product_performance_flag, deal_estagnado, deal_muito_antigo, produto_fraco, conta_fraca, bucket_deal_age, bucket_deal_value, bucket_account_size, interact_seller_product, interact_seller_value, interact_product_age, interact_account_value",0.6885,0.013,0.8099
+interactions,4,"interact_seller_product, interact_seller_value, interact_product_age, interact_account_value",0.6189,0.0077,0.7674
+seller,6,"seller_win_rate, seller_rank_percentile, seller_close_speed, seller_product_experience, seller_pipeline_load, seller_product_win_rate",0.6111,0.0119,0.7193
+deal,7,"log_days_since_engage, deal_age_percentile, log_deal_value, deal_value_percentile, deal_value_percentile_within_seller, deal_value_percentile_within_product, deal_value_vs_account_size",0.5884,0.0041,0.7496
+risk,8,"is_stale_flag, is_very_old_deal, seller_overloaded_flag, low_product_performance_flag, deal_estagnado, deal_muito_antigo, produto_fraco, conta_fraca",0.5882,0.0086,0.7244
+buckets,3,"bucket_deal_age, bucket_deal_value, bucket_account_size",0.5505,0.0147,0.6607
+account,4,"account_size_percentile, digital_maturity_index, revenue_per_employee, company_age_score",0.4965,0.0153,0.6344
+product,4,"product_win_rate, product_rank_percentile, product_avg_sales_cycle, product_relative_performance",0.486,0.0095,0.6237

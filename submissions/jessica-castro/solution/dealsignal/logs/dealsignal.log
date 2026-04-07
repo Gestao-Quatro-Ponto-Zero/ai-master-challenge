@@ -1,0 +1,1530 @@
+2026-03-11 14:42:25,677 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 14:42:25,692 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 14:42:25,693 [INFO] enrichment.digital_enrichment - Starting enrichment for 85 accounts
+2026-03-11 14:42:59,051 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/enriched_accounts.csv
+2026-03-11 14:42:59,051 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 14:42:59,109 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 14:42:59,940 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 14:42:59,942 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 14:42:59,942 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-11 14:43:00,022 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('effective_value', 21.424652674190426), ('deal_value_percentile', 21.424652674190426), ('days_since_engage', 0.08984521979665967), ('pipeline_velocity', 0.08984521979665967), ('agent_win_rate', 0.0204404899997407)]
+2026-03-11 14:43:00,022 [INFO] run_pipeline - Selecting features by IV...
+2026-03-11 14:43:00,022 [INFO] model.feature_selection_iv - =======================================================
+2026-03-11 14:43:00,022 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-11 14:43:00,022 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-11 14:43:00,022 [INFO] model.feature_selection_iv - effective_value                 21.4247  [Strong] SELECTED
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - deal_value_percentile           21.4247  [Strong] SELECTED
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - days_since_engage                0.0898  [Weak] SELECTED
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - pipeline_velocity                0.0898  [Weak] SELECTED
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - agent_win_rate                   0.0204  [Weak] SELECTED
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - company_age                      0.0068  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - company_age_score                0.0068  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - revenue                          0.0063  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - revenue_per_employee             0.0048  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - product_win_rate                 0.0041  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - product_avg_deal_value           0.0039  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - employees                        0.0039  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - digital_presence_score           0.0030  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - digital_maturity_index           0.0027  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - tech_stack_count                 0.0027  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - agent_avg_deal_value             0.0006  [Useless] rejected
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - =======================================================
+2026-03-11 14:43:00,023 [INFO] model.feature_selection_iv - Selected 5 / 16 features (IV >= 0.02)
+2026-03-11 14:43:00,029 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-11 14:43:01,543 [INFO] model.logistic_model - Best regularization C: 10.0000
+2026-03-11 14:43:02,465 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.9787
+2026-03-11 14:43:02,479 [INFO] model.logistic_model - Model calibration complete
+2026-03-11 14:43:02,486 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.9795039374751802), 'accuracy': 0.9651318730442557, 'precision': 1.0, 'recall': 0.9447852760736196, 'f1': 0.9716088328075709}
+2026-03-11 14:43:02,488 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/model/artifacts
+2026-03-11 14:43:02,488 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 14:43:02,499 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+AAA    501
+2026-03-11 14:43:02,499 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 14:43:02,519 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/results.csv (501 deals)
+2026-03-11 14:43:02,519 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 14:43:02,519 [INFO] run_pipeline -   [AAA] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,519 [INFO] run_pipeline -   [AAA] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,519 [INFO] run_pipeline -   [AAA] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,519 [INFO] run_pipeline -   [AAA] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,520 [INFO] run_pipeline -   [AAA] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,520 [INFO] run_pipeline -   [AAA] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,520 [INFO] run_pipeline -   [AAA] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $26768 | Prob: 100.0%
+2026-03-11 14:43:02,520 [INFO] run_pipeline -   [AAA] Donquadtech | GTX Plus Pro | Agent: Vicki Laflamme | ExpRev: $5482 | Prob: 100.0%
+2026-03-11 14:43:02,520 [INFO] run_pipeline -   [AAA] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $5482 | Prob: 100.0%
+2026-03-11 14:43:02,520 [INFO] run_pipeline -   [AAA] Conecom | GTX Plus Pro | Agent: Kary Hendrixson | ExpRev: $5482 | Prob: 100.0%
+2026-03-11 14:44:37,679 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 14:44:37,689 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 14:44:37,689 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-11 14:44:37,690 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 14:44:37,730 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 14:44:37,776 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 14:44:37,778 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 14:44:37,778 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-11 14:44:37,837 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('days_since_engage', 0.08984521979665967), ('pipeline_velocity', 0.08984521979665967), ('agent_win_rate', 0.0204404899997407), ('company_age', 0.006788206948233876), ('company_age_score', 0.006788206948233876)]
+2026-03-11 14:44:37,837 [INFO] run_pipeline - Selecting features by IV...
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - =======================================================
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - days_since_engage                0.0898  [Weak] SELECTED
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - pipeline_velocity                0.0898  [Weak] SELECTED
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - agent_win_rate                   0.0204  [Weak] SELECTED
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - company_age                      0.0068  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - company_age_score                0.0068  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - revenue                          0.0063  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - agent_avg_deal_value             0.0053  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - revenue_per_employee             0.0048  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - product_win_rate                 0.0041  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - effective_value                  0.0039  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - deal_value_percentile            0.0039  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - product_avg_deal_value           0.0039  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - employees                        0.0039  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - digital_presence_score           0.0030  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - digital_maturity_index           0.0027  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - tech_stack_count                 0.0027  [Useless] rejected
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - =======================================================
+2026-03-11 14:44:37,837 [INFO] model.feature_selection_iv - Selected 3 / 16 features (IV >= 0.02)
+2026-03-11 14:44:37,842 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-11 14:44:39,061 [INFO] model.logistic_model - Best regularization C: 0.1000
+2026-03-11 14:44:39,862 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6022
+2026-03-11 14:44:39,872 [INFO] model.logistic_model - Model calibration complete
+2026-03-11 14:44:39,878 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.5978816141177), 'accuracy': 0.6361198033080018, 'precision': 0.6366818873668189, 'recall': 0.987022180273714, 'f1': 0.7740562546262029}
+2026-03-11 14:44:39,880 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/model/artifacts
+2026-03-11 14:44:39,880 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 14:44:39,889 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+BBB    360
+A      141
+2026-03-11 14:44:39,889 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 14:44:39,907 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/results.csv (501 deals)
+2026-03-11 14:44:39,907 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [A] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $20452 | Prob: 76.4%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [BBB] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [BBB] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [BBB] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [BBB] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [BBB] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [BBB] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [A] Sonron | GTX Plus Pro | Agent: Maureen Marcano | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [A] Xx-zobam | GTX Plus Pro | Agent: Versie Hillebrand | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:44:39,908 [INFO] run_pipeline -   [A] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:45:31,290 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 14:45:31,300 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 14:45:31,300 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-11 14:45:31,301 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 14:45:31,343 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 14:45:31,393 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 14:45:31,395 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 14:45:31,395 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-11 14:45:31,455 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('days_since_engage', 0.08984521979665967), ('pipeline_velocity', 0.08984521979665967), ('agent_win_rate', 0.0204404899997407), ('company_age', 0.006788206948233876), ('company_age_score', 0.006788206948233876)]
+2026-03-11 14:45:31,455 [INFO] run_pipeline - Selecting features by IV...
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - =======================================================
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - days_since_engage                0.0898  [Weak] SELECTED
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - pipeline_velocity                0.0898  [Weak] SELECTED
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - agent_win_rate                   0.0204  [Weak] SELECTED
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - company_age                      0.0068  [Useless] rejected
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - company_age_score                0.0068  [Useless] rejected
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - revenue                          0.0063  [Useless] rejected
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - agent_avg_deal_value             0.0053  [Useless] rejected
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - revenue_per_employee             0.0048  [Useless] rejected
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - product_win_rate                 0.0041  [Useless] rejected
+2026-03-11 14:45:31,455 [INFO] model.feature_selection_iv - effective_value                  0.0039  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - deal_value_percentile            0.0039  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - product_avg_deal_value           0.0039  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - employees                        0.0039  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - digital_presence_score           0.0030  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - digital_maturity_index           0.0027  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - tech_stack_count                 0.0027  [Useless] rejected
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - =======================================================
+2026-03-11 14:45:31,456 [INFO] model.feature_selection_iv - Selected 3 / 16 features (IV >= 0.02)
+2026-03-11 14:45:31,460 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-11 14:45:32,691 [INFO] model.logistic_model - Best regularization C: 0.1000
+2026-03-11 14:45:33,493 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6022
+2026-03-11 14:45:33,504 [INFO] model.logistic_model - Model calibration complete
+2026-03-11 14:45:33,510 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.5978816141177), 'accuracy': 0.6361198033080018, 'precision': 0.6366818873668189, 'recall': 0.987022180273714, 'f1': 0.7740562546262029}
+2026-03-11 14:45:33,512 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/model/artifacts
+2026-03-11 14:45:33,512 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 14:45:33,521 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+BBB    360
+A      141
+2026-03-11 14:45:33,521 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 14:45:33,539 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/results.csv (501 deals)
+2026-03-11 14:45:33,540 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [A] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $20452 | Prob: 76.4%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [BBB] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [BBB] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [BBB] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [BBB] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [BBB] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [BBB] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [A] Sonron | GTX Plus Pro | Agent: Maureen Marcano | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [A] Xx-zobam | GTX Plus Pro | Agent: Versie Hillebrand | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:45:33,540 [INFO] run_pipeline -   [A] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:50:14,742 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 14:50:14,754 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 14:50:14,754 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-11 14:50:14,755 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 14:50:14,800 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 14:50:14,856 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 14:50:14,858 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 14:50:14,858 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-11 14:50:14,859 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 14:50:14,870 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+BBB    360
+A      141
+2026-03-11 14:50:14,870 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 14:50:14,890 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/submissions/jessica-castro/dealsignal/data/results.csv (501 deals)
+2026-03-11 14:50:14,890 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [A] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $20452 | Prob: 76.4%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [BBB] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [BBB] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [BBB] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [BBB] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [BBB] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [BBB] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [A] Sonron | GTX Plus Pro | Agent: Maureen Marcano | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:50:14,890 [INFO] run_pipeline -   [A] Xx-zobam | GTX Plus Pro | Agent: Versie Hillebrand | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 14:50:14,895 [INFO] run_pipeline -   [A] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:20:08,613 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 22:20:08,625 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 22:20:08,625 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-11 22:20:08,626 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 22:20:08,671 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 22:20:08,729 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 22:20:08,731 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 22:20:08,731 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-11 22:20:08,733 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 22:20:08,745 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+BBB    360
+A      141
+2026-03-11 22:20:08,745 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 22:20:08,766 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (501 deals)
+2026-03-11 22:20:08,766 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 22:20:08,766 [INFO] run_pipeline -   [A] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $20452 | Prob: 76.4%
+2026-03-11 22:20:08,766 [INFO] run_pipeline -   [BBB] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 22:20:08,766 [INFO] run_pipeline -   [BBB] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 22:20:08,766 [INFO] run_pipeline -   [BBB] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 22:20:08,766 [INFO] run_pipeline -   [BBB] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 22:20:08,767 [INFO] run_pipeline -   [BBB] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 22:20:08,767 [INFO] run_pipeline -   [BBB] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 22:20:08,767 [INFO] run_pipeline -   [A] Sonron | GTX Plus Pro | Agent: Maureen Marcano | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:20:08,767 [INFO] run_pipeline -   [A] Xx-zobam | GTX Plus Pro | Agent: Versie Hillebrand | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:20:08,767 [INFO] run_pipeline -   [A] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:44:31,428 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 22:44:31,442 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 22:44:31,442 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-11 22:44:31,443 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 22:44:31,489 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 22:44:31,549 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 22:44:31,552 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 22:44:31,552 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-11 22:44:31,553 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 22:44:31,564 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+BBB    360
+A      141
+2026-03-11 22:44:31,564 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 22:44:31,585 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (501 deals)
+2026-03-11 22:44:31,585 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 22:44:31,585 [INFO] run_pipeline -   [A] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $20452 | Prob: 76.4%
+2026-03-11 22:44:31,585 [INFO] run_pipeline -   [BBB] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 22:44:31,585 [INFO] run_pipeline -   [BBB] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [BBB] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [BBB] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [BBB] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [BBB] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [A] Sonron | GTX Plus Pro | Agent: Maureen Marcano | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [A] Xx-zobam | GTX Plus Pro | Agent: Versie Hillebrand | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:44:31,586 [INFO] run_pipeline -   [A] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 22:58:07,021 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 22:58:07,033 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-11 22:58:07,033 [INFO] enrichment.digital_enrichment - Starting enrichment for 85 accounts
+2026-03-11 22:58:42,772 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-11 22:58:42,772 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 22:58:42,829 [INFO] features.feature_engineering - Feature matrix: 6788 rows, 16 feature cols. Train=5585, Score=1203
+2026-03-11 22:58:42,897 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6788 rows)
+2026-03-11 22:58:42,899 [INFO] run_pipeline - Train size: 5585, Score size: 1203
+2026-03-11 22:58:42,899 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-11 22:58:42,901 [INFO] run_pipeline - Scoring 1203 open deals...
+2026-03-11 22:58:42,918 [INFO] model.rating_engine - Scored 1203 open deals. Rating distribution:
+deal_rating
+BBB    790
+A      408
+AA       3
+BB       2
+2026-03-11 22:58:42,918 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 22:58:42,963 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1203 deals)
+2026-03-11 22:58:42,963 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Quantumex | VaultX Enterprise | Agent: Ivan Novak | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Northern Star | VaultX Enterprise | Agent: Xander Cruz | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Elevate Inc | VaultX Enterprise | Agent: Kevin Adeyemi | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Axiom Global | VaultX Enterprise | Agent: Aaron Blake | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Goldmount | VaultX Enterprise | Agent: Xander Cruz | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Veridian Corp | VaultX Enterprise | Agent: Priya Nair | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Magnolia Holdings | VaultX Enterprise | Agent: Tara Olson | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Helionix | VaultX Enterprise | Agent: Tara Olson | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Helionix | VaultX Enterprise | Agent: Yasmin Torres | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 22:58:42,964 [INFO] run_pipeline -   [A] Kaleidoscope | VaultX Enterprise | Agent: Tyler Brooks | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:08:11,954 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 23:08:11,964 [INFO] run_pipeline - Loaded: accounts=85, products=7, pipeline=8800, teams=35
+2026-03-11 23:08:11,965 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-11 23:08:11,965 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 23:08:12,014 [INFO] features.feature_engineering - Feature matrix: 7212 rows, 16 feature cols. Train=6711, Score=501
+2026-03-11 23:08:12,075 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7212 rows)
+2026-03-11 23:08:12,077 [INFO] run_pipeline - Train size: 6711, Score size: 501
+2026-03-11 23:08:12,077 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-11 23:08:12,078 [INFO] run_pipeline - Scoring 501 open deals...
+2026-03-11 23:08:12,090 [INFO] model.rating_engine - Scored 501 open deals. Rating distribution:
+deal_rating
+BBB    360
+A      141
+2026-03-11 23:08:12,091 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 23:08:12,112 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (501 deals)
+2026-03-11 23:08:12,112 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [A] Betasoloin | GTK 500 | Agent: Rosalina Dieter | ExpRev: $20452 | Prob: 76.4%
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [BBB] Lexiqvolax | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [BBB] Warephase | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [BBB] Xx-zobam | GTK 500 | Agent: Elease Gluck | ExpRev: $18259 | Prob: 68.2%
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [BBB] Rundofase | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [BBB] Treequote | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 23:08:12,112 [INFO] run_pipeline -   [BBB] Vehement Capital Partners | GTK 500 | Agent: Markita Hansen | ExpRev: $17391 | Prob: 65.0%
+2026-03-11 23:08:12,113 [INFO] run_pipeline -   [A] Sonron | GTX Plus Pro | Agent: Maureen Marcano | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 23:08:12,113 [INFO] run_pipeline -   [A] Xx-zobam | GTX Plus Pro | Agent: Versie Hillebrand | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 23:08:12,113 [INFO] run_pipeline -   [A] Konmatfix | GTX Plus Pro | Agent: Hayden Neloms | ExpRev: $4188 | Prob: 76.4%
+2026-03-11 23:09:02,505 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-11 23:09:02,516 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-11 23:09:02,516 [INFO] enrichment.digital_enrichment - Starting enrichment for 85 accounts
+2026-03-11 23:09:39,199 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-11 23:09:39,199 [INFO] run_pipeline - Building feature matrix...
+2026-03-11 23:09:39,260 [INFO] features.feature_engineering - Feature matrix: 6788 rows, 16 feature cols. Train=5585, Score=1203
+2026-03-11 23:09:39,321 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6788 rows)
+2026-03-11 23:09:39,323 [INFO] run_pipeline - Train size: 5585, Score size: 1203
+2026-03-11 23:09:39,323 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-11 23:09:39,325 [INFO] run_pipeline - Scoring 1203 open deals...
+2026-03-11 23:09:39,343 [INFO] model.rating_engine - Scored 1203 open deals. Rating distribution:
+deal_rating
+BBB    790
+A      408
+AA       3
+BB       2
+2026-03-11 23:09:39,343 [INFO] run_pipeline - Computing feature contributions...
+2026-03-11 23:09:39,388 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1203 deals)
+2026-03-11 23:09:39,388 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-11 23:09:39,388 [INFO] run_pipeline -   [A] Quantumex | VaultX Enterprise | Agent: Ivan Novak | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,388 [INFO] run_pipeline -   [A] Northern Star | VaultX Enterprise | Agent: Xander Cruz | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,388 [INFO] run_pipeline -   [A] Elevate Inc | VaultX Enterprise | Agent: Kevin Adeyemi | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,388 [INFO] run_pipeline -   [A] Axiom Global | VaultX Enterprise | Agent: Aaron Blake | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,388 [INFO] run_pipeline -   [A] Goldmount | VaultX Enterprise | Agent: Xander Cruz | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,388 [INFO] run_pipeline -   [A] Veridian Corp | VaultX Enterprise | Agent: Priya Nair | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,389 [INFO] run_pipeline -   [A] Magnolia Holdings | VaultX Enterprise | Agent: Tara Olson | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,389 [INFO] run_pipeline -   [A] Helionix | VaultX Enterprise | Agent: Tara Olson | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,389 [INFO] run_pipeline -   [A] Helionix | VaultX Enterprise | Agent: Yasmin Torres | ExpRev: $22081 | Prob: 76.4%
+2026-03-11 23:09:39,389 [INFO] run_pipeline -   [A] Kaleidoscope | VaultX Enterprise | Agent: Tyler Brooks | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:11:39,109 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:11:39,120 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:11:39,120 [INFO] enrichment.digital_enrichment - Starting enrichment for 85 accounts
+2026-03-12 01:12:15,921 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-12 01:12:15,922 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:12:15,978 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:12:16,036 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:12:16,038 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:12:16,039 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 01:12:16,040 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:12:16,056 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+BBB    918
+A      332
+BB       9
+AA       3
+2026-03-12 01:12:16,057 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:12:16,102 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:12:16,102 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Xtreme Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Polaris Ventures | VaultX Enterprise | Agent: Zoe Campbell | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Ironwave | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Frontier Tech | VaultX Enterprise | Agent: Hannah Webb | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Rockford Tech | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Ironclad Inc | VaultX Enterprise | Agent: Kane Mitchell | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Bluestone Inc | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Silverpath | VaultX Enterprise | Agent: Hannah Webb | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Harbor Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:12:16,103 [INFO] run_pipeline -   [A] Novagen | VaultX Enterprise | Agent: Kane Mitchell | ExpRev: $22081 | Prob: 76.4%
+2026-03-12 01:27:37,753 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:27:37,764 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:27:37,764 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:27:37,765 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:27:37,859 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:27:37,923 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:30:31,143 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:30:31,152 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:30:31,152 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:30:31,153 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:30:31,231 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:30:31,274 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:30:31,276 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:30:31,276 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:30:31,336 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('days_since_engage', 3.0960777227229377), ('pipeline_velocity', 3.0960777227229377), ('agent_win_rate', 0.026302853646728665), ('revenue', 0.013002381436374432), ('revenue_per_employee', 0.009442014159748784)]
+2026-03-12 01:30:31,336 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - days_since_engage                3.0961  [Strong] SELECTED
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - pipeline_velocity                3.0961  [Strong] SELECTED
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - agent_win_rate                   0.0263  [Weak] SELECTED
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - revenue                          0.0130  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - agent_avg_deal_value             0.0073  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - company_age                      0.0065  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - tech_stack_count                 0.0058  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - employees                        0.0049  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - digital_presence_score           0.0037  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - effective_value                  0.0021  [Useless] rejected
+2026-03-12 01:30:31,336 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:30:31,337 [INFO] model.feature_selection_iv - product_avg_deal_value           0.0021  [Useless] rejected
+2026-03-12 01:30:31,337 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:30:31,337 [INFO] model.feature_selection_iv - Selected 3 / 16 features (IV >= 0.02)
+2026-03-12 01:30:31,341 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:30:32,721 [INFO] model.logistic_model - Best regularization C: 10.0000
+2026-03-12 01:30:33,518 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6249
+2026-03-12 01:30:33,535 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:30:33,541 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6291721542622252), 'accuracy': 0.6363636363636364, 'precision': 0.6519038076152305, 'recall': 0.9158220720720721, 'f1': 0.7616483259189886}
+2026-03-12 01:30:33,544 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:30:33,544 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:30:33,559 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+AAA    967
+BB     110
+AA     101
+BBB     57
+B       26
+A        1
+2026-03-12 01:30:33,559 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:30:33,615 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:30:33,615 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Skyward Inc | VaultX Enterprise | Agent: Lena Hoffman | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Primexus | VaultX Enterprise | Agent: Nina Osei | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Solaris Group | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Silverpath | VaultX Enterprise | Agent: Hannah Webb | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Frontier Tech | VaultX Enterprise | Agent: Diana Park | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Axiom Global | VaultX Enterprise | Agent: Yasmin Torres | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Omegaworks | VaultX Enterprise | Agent: James Okafor | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Vortexia | VaultX Enterprise | Agent: Iris Yamamoto | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Wavelength Inc | VaultX Enterprise | Agent: Mike Tanaka | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:30:33,615 [INFO] run_pipeline -   [AAA] Bridgepoint | VaultX Enterprise | Agent: Quinn Stokes | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,013 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:32:50,023 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:32:50,023 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:32:50,024 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:32:50,105 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:32:50,150 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:32:50,151 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:32:50,151 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 01:32:50,152 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:32:50,167 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+AAA    967
+BB     110
+AA     101
+BBB     57
+B       26
+A        1
+2026-03-12 01:32:50,167 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:32:50,222 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:32:50,223 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Skyward Inc | VaultX Enterprise | Agent: Lena Hoffman | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Primexus | VaultX Enterprise | Agent: Nina Osei | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Solaris Group | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Silverpath | VaultX Enterprise | Agent: Hannah Webb | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Frontier Tech | VaultX Enterprise | Agent: Diana Park | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Axiom Global | VaultX Enterprise | Agent: Yasmin Torres | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Omegaworks | VaultX Enterprise | Agent: James Okafor | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Vortexia | VaultX Enterprise | Agent: Iris Yamamoto | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Wavelength Inc | VaultX Enterprise | Agent: Mike Tanaka | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:32:50,223 [INFO] run_pipeline -   [AAA] Bridgepoint | VaultX Enterprise | Agent: Quinn Stokes | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:35:59,201 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:35:59,264 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 3.0960777227229377), ('deal_age_percentile', 3.0960777227229377), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432)]
+2026-03-12 01:37:32,606 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:37:32,615 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:37:32,616 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:37:32,617 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:37:32,695 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:37:32,752 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:37:32,753 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:37:32,753 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:37:32,813 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 3.0960777227229377), ('deal_age_percentile', 3.0960777227229377), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432)]
+2026-03-12 01:37:32,813 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - log_days_since_engage            3.0961  [Strong] SELECTED
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - deal_age_percentile              3.0961  [Strong] SELECTED
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:37:32,813 [INFO] model.feature_selection_iv - Selected 4 / 17 features (IV >= 0.02)
+2026-03-12 01:37:32,819 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:37:34,139 [INFO] model.logistic_model - Best regularization C: 0.0100
+2026-03-12 01:37:34,983 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6249
+2026-03-12 01:37:34,994 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:37:35,001 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6292534366926771), 'accuracy': 0.6363636363636364, 'precision': 0.6519038076152305, 'recall': 0.9158220720720721, 'f1': 0.7616483259189886}
+2026-03-12 01:37:35,003 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:37:35,003 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:37:35,018 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+AAA    967
+BB     143
+BBB    104
+B       46
+A        2
+2026-03-12 01:37:35,018 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:37:35,075 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:37:35,075 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Goldenseal | VaultX Enterprise | Agent: Samuel Kim | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Skyward Inc | VaultX Enterprise | Agent: Lena Hoffman | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Kaleidoscope | VaultX Enterprise | Agent: Tara Olson | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Crestline | VaultX Enterprise | Agent: Sandra Wu | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Celadon Corp | VaultX Enterprise | Agent: Lena Hoffman | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Tidemark Corp | VaultX Enterprise | Agent: Ethan Briggs | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Stormgate | VaultX Enterprise | Agent: Marco Vitale | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Eastwind Corp | VaultX Enterprise | Agent: Mike Tanaka | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Coastline Co | VaultX Enterprise | Agent: Xander Cruz | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:35,076 [INFO] run_pipeline -   [AAA] Highrise Corp | VaultX Enterprise | Agent: Fiona Scott | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:38,710 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:37:38,718 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:37:38,718 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:37:38,719 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:37:38,798 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:37:38,835 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:37:38,837 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:37:38,837 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:37:38,901 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 3.0960777227229377), ('deal_age_percentile', 3.0960777227229377), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432)]
+2026-03-12 01:37:38,902 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - log_days_since_engage            3.0961  [Strong] SELECTED
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - deal_age_percentile              3.0961  [Strong] SELECTED
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:37:38,902 [INFO] model.feature_selection_iv - Selected 4 / 17 features (IV >= 0.02)
+2026-03-12 01:37:38,908 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:37:40,196 [INFO] model.logistic_model - Best regularization C: 0.0100
+2026-03-12 01:37:41,114 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6249
+2026-03-12 01:37:41,128 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:37:41,134 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6292534366926771), 'accuracy': 0.6363636363636364, 'precision': 0.6519038076152305, 'recall': 0.9158220720720721, 'f1': 0.7616483259189886}
+2026-03-12 01:37:41,136 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:37:41,136 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:37:41,151 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+AAA    967
+BB     143
+BBB    104
+B       46
+A        2
+2026-03-12 01:37:41,151 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:37:41,210 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:37:41,210 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Goldenseal | VaultX Enterprise | Agent: Samuel Kim | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Skyward Inc | VaultX Enterprise | Agent: Lena Hoffman | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Kaleidoscope | VaultX Enterprise | Agent: Tara Olson | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Crestline | VaultX Enterprise | Agent: Sandra Wu | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Celadon Corp | VaultX Enterprise | Agent: Lena Hoffman | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Tidemark Corp | VaultX Enterprise | Agent: Ethan Briggs | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Stormgate | VaultX Enterprise | Agent: Marco Vitale | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Eastwind Corp | VaultX Enterprise | Agent: Mike Tanaka | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Coastline Co | VaultX Enterprise | Agent: Xander Cruz | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:37:41,210 [INFO] run_pipeline -   [AAA] Highrise Corp | VaultX Enterprise | Agent: Fiona Scott | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:12,660 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:39:12,669 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:39:12,670 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:39:12,670 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:39:12,754 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:39:12,799 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:39:12,801 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:39:12,801 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:39:12,867 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 0.5098803699196268), ('deal_age_percentile', 0.5098803699196268), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432)]
+2026-03-12 01:39:12,867 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - log_days_since_engage            0.5099  [Strong] SELECTED
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - deal_age_percentile              0.5099  [Strong] SELECTED
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:39:12,867 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:39:12,868 [INFO] model.feature_selection_iv - Selected 4 / 17 features (IV >= 0.02)
+2026-03-12 01:39:12,873 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:39:14,521 [INFO] model.logistic_model - Best regularization C: 1.0000
+2026-03-12 01:39:15,504 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6240
+2026-03-12 01:39:15,526 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:39:15,532 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6278434409617238), 'accuracy': 0.6352920164315057, 'precision': 0.6447469325153374, 'recall': 0.9467905405405406, 'f1': 0.7671076642335767}
+2026-03-12 01:39:15,534 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:39:15,534 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:39:15,550 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+AAA    967
+BB     170
+BBB     79
+B       32
+A       14
+2026-03-12 01:39:15,550 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:39:15,609 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:39:15,609 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Stormgate | VaultX Enterprise | Agent: Marco Vitale | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Kaleidoscope | VaultX Enterprise | Agent: Tara Olson | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Outpost Inc | VaultX Enterprise | Agent: Tara Olson | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Helionix | VaultX Enterprise | Agent: Bella Foster | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Cascade Tech | VaultX Enterprise | Agent: Diana Park | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Pacific Rim Corp | VaultX Enterprise | Agent: Diana Park | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Sunstone Inc | VaultX Enterprise | Agent: Uma Patel | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Elevate Inc | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Quasar Holdings | VaultX Enterprise | Agent: Julia Morales | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:39:15,609 [INFO] run_pipeline -   [AAA] Titanfall Corp | VaultX Enterprise | Agent: Fatima Diallo | ExpRev: $28900 | Prob: 100.0%
+2026-03-12 01:40:22,736 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:40:22,745 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:40:22,745 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:40:22,746 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:40:22,828 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:40:22,870 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:40:22,871 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:40:22,872 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:40:22,935 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 0.5098803699196268), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432), ('seller_pipeline_load', 0.010884985656268293)]
+2026-03-12 01:40:22,936 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - log_days_since_engage            0.5099  [Strong] SELECTED
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:40:22,936 [INFO] model.feature_selection_iv - Selected 3 / 16 features (IV >= 0.02)
+2026-03-12 01:40:22,940 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:40:24,216 [INFO] model.logistic_model - Best regularization C: 10.0000
+2026-03-12 01:40:25,158 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6241
+2026-03-12 01:40:25,208 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:40:25,217 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6239178846653199), 'accuracy': 0.6343989998213967, 'precision': 0.6458050765355551, 'recall': 0.9383445945945946, 'f1': 0.7650636979226443}
+2026-03-12 01:40:25,220 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:40:25,221 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:40:25,242 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+AAA    967
+BBB    127
+BB     126
+B       36
+A        6
+2026-03-12 01:40:25,242 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:40:25,303 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:40:25,303 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Xtreme Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Harbor Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Nebultech | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Solaris Group | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Bluestone Inc | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Rockford Tech | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Riverbend Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,303 [INFO] run_pipeline -   [AAA] Helionix | VaultX Enterprise | Agent: Bella Foster | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,304 [INFO] run_pipeline -   [AAA] Ironwave | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:40:25,304 [INFO] run_pipeline -   [AAA] Omegaworks | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $28760 | Prob: 99.5%
+2026-03-12 01:41:21,200 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:41:54,039 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:41:54,054 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:41:54,054 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:41:54,055 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:41:54,135 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:41:54,179 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:41:54,181 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:41:54,181 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:41:54,243 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 0.5098803699196268), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432), ('seller_pipeline_load', 0.010884985656268293)]
+2026-03-12 01:41:54,243 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:41:54,243 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:41:54,243 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:41:54,243 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:41:54,245 [INFO] model.feature_selection_iv - log_days_since_engage            0.5099  [Strong] SELECTED
+2026-03-12 01:41:54,245 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:41:54,246 [INFO] model.feature_selection_iv - Selected 3 / 16 features (IV >= 0.02)
+2026-03-12 01:41:54,251 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:41:55,665 [INFO] model.logistic_model - Best regularization C: 10.0000
+2026-03-12 01:41:56,515 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6241
+2026-03-12 01:41:56,551 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:41:56,560 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6239178846653199), 'accuracy': 0.6343989998213967, 'precision': 0.6458050765355551, 'recall': 0.9383445945945946, 'f1': 0.7650636979226443}
+2026-03-12 01:41:56,562 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:41:56,562 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:41:56,581 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+BBB    856
+BB     257
+A       79
+B       36
+AAA     34
+2026-03-12 01:41:56,581 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:41:56,638 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:41:56,638 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [AAA] Glacier Group | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [AAA] Deepblue Corp | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [AAA] Bridgepoint | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Ironwave | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Xtreme Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Bluestone Inc | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Solaris Group | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Riverbend Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Omegaworks | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:41:56,638 [INFO] run_pipeline -   [A] Harbor Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:05,617 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:42:05,626 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:42:05,627 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 01:42:05,627 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:42:05,710 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:42:05,748 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:42:05,750 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:42:05,750 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 01:42:05,813 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 0.5098803699196268), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432), ('seller_pipeline_load', 0.010884985656268293)]
+2026-03-12 01:42:05,813 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - log_days_since_engage            0.5099  [Strong] SELECTED
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 01:42:05,813 [INFO] model.feature_selection_iv - Selected 3 / 16 features (IV >= 0.02)
+2026-03-12 01:42:05,818 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 01:42:07,094 [INFO] model.logistic_model - Best regularization C: 10.0000
+2026-03-12 01:42:07,900 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6241
+2026-03-12 01:42:07,934 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 01:42:07,943 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6239178846653199), 'accuracy': 0.6343989998213967, 'precision': 0.6458050765355551, 'recall': 0.9383445945945946, 'f1': 0.7650636979226443}
+2026-03-12 01:42:07,944 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 01:42:07,944 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:42:07,962 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+BBB    856
+BB     257
+A       79
+B       36
+AAA     34
+2026-03-12 01:42:07,962 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:42:08,018 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:42:08,018 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [AAA] Glacier Group | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [AAA] Deepblue Corp | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [AAA] Bridgepoint | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Ironwave | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Xtreme Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Bluestone Inc | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Solaris Group | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Riverbend Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Omegaworks | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:42:08,019 [INFO] run_pipeline -   [A] Harbor Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:44:58,313 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 01:44:58,324 [INFO] run_pipeline - Loaded: accounts=85, products=10, pipeline=8000, teams=40
+2026-03-12 01:44:58,324 [INFO] enrichment.digital_enrichment - Starting enrichment for 85 accounts
+2026-03-12 01:45:33,020 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-12 01:45:33,020 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 01:45:33,120 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 01:45:33,180 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (6861 rows)
+2026-03-12 01:45:33,182 [INFO] run_pipeline - Train size: 5599, Score size: 1262
+2026-03-12 01:45:33,182 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 01:45:33,183 [INFO] run_pipeline - Scoring 1262 open deals...
+2026-03-12 01:45:33,203 [INFO] model.rating_engine - Scored 1262 open deals. Rating distribution:
+deal_rating
+BBB    856
+BB     257
+A       79
+B       36
+AAA     34
+2026-03-12 01:45:33,203 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 01:45:33,259 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (1262 deals)
+2026-03-12 01:45:33,259 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [AAA] Glacier Group | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [AAA] Deepblue Corp | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [AAA] Bridgepoint | VaultX Enterprise | Agent: Leo Santana | ExpRev: $28724 | Prob: 99.4%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Ironwave | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Xtreme Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Bluestone Inc | VaultX Enterprise | Agent: Clara Dumont | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Solaris Group | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Riverbend Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Omegaworks | VaultX Enterprise | Agent: Victor Reyes | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 01:45:33,260 [INFO] run_pipeline -   [A] Harbor Tech | VaultX Enterprise | Agent: Bella Foster | ExpRev: $20993 | Prob: 72.6%
+2026-03-12 02:11:14,751 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 02:11:14,846 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 17:10:23,890 [INFO] features.feature_engineering - Feature matrix: 6861 rows, 16 feature cols. Train=5599, Score=1262
+2026-03-12 17:10:24,067 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 0.5098803699196268), ('deal_age_percentile', 0.5098803699196268), ('interact_product_age', 0.47877405968866743), ('seller_product_win_rate', 0.291939702617522), ('bucket_deal_age', 0.039903873273986895)]
+2026-03-12 17:10:24,137 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('log_days_since_engage', 0.5098803699196268), ('deal_age_percentile', 0.5098803699196268), ('seller_win_rate', 0.026302853646728665), ('seller_rank_percentile', 0.026302853646728665), ('account_size_percentile', 0.013002381436374432)]
+2026-03-12 17:10:24,137 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 17:10:24,137 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - log_days_since_engage            0.5099  [Strong] SELECTED
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - deal_age_percentile              0.5099  [Strong] SELECTED
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - seller_win_rate                  0.0263  [Weak] SELECTED
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0263  [Weak] SELECTED
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - account_size_percentile          0.0130  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0109  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - revenue_per_employee             0.0094  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - company_age_score                0.0065  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - seller_product_experience        0.0052  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - seller_close_speed               0.0035  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - digital_maturity_index           0.0035  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0029  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - product_win_rate                 0.0028  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - product_rank_percentile          0.0028  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - log_deal_value                   0.0021  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - deal_value_percentile            0.0021  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 17:10:24,138 [INFO] model.feature_selection_iv - Selected 4 / 17 features (IV >= 0.02)
+2026-03-12 19:22:49,707 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:22:49,732 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:22:49,732 [INFO] enrichment.digital_enrichment - Starting enrichment for 20 accounts
+2026-03-12 19:22:57,774 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-12 19:22:57,774 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:23:48,186 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:23:48,209 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:23:48,209 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:23:48,210 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:27:53,844 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:27:53,870 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:27:53,870 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:27:53,871 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:35:30,351 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:35:30,372 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:35:30,373 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:35:30,373 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:35:54,818 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:35:54,840 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:35:54,840 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:35:54,841 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:35:54,858 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:35:54,935 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:35:55,052 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:35:55,053 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:35:55,057 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:35:55,058 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 19:35:55,059 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:35:55,132 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+BBB    9240
+2026-03-12 19:35:55,133 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:35:55,488 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:35:55,488 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:35:55,488 [INFO] run_pipeline -   [BBB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] BluePeak Consulting | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] Elevate Labs | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] Vertex Partners | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] NovaEdge Group | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] BridgeWorks | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] Vertex Partners | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] Elevate Labs | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] Apex Retail Group | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:35:55,489 [INFO] run_pipeline -   [BBB] Apex Retail Group | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $11061 | Prob: 69.1%
+2026-03-12 19:36:05,708 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:36:05,730 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:36:05,730 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:36:05,731 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:36:05,749 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:36:05,820 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:36:05,869 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:36:05,870 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:36:05,875 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:36:05,875 [INFO] run_pipeline - Fitting WoE transformer...
+2026-03-12 19:36:05,926 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('seller_product_experience', 0.2629696158810345), ('log_deal_value', 0.10663040725313588), ('deal_value_percentile', 0.10663040725313588), ('product_win_rate', 0.06049396220010218), ('product_rank_percentile', 0.06049396220010218)]
+2026-03-12 19:36:05,927 [INFO] run_pipeline - Selecting features by IV...
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - seller_product_experience        0.2630  [Medium] SELECTED
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - log_deal_value                   0.1066  [Medium] SELECTED
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - deal_value_percentile            0.1066  [Medium] SELECTED
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - product_win_rate                 0.0605  [Weak] SELECTED
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - product_rank_percentile          0.0605  [Weak] SELECTED
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - seller_win_rate                  0.0083  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0083  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - digital_maturity_index           0.0020  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - company_age_score                0.0012  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - account_size_percentile          0.0010  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - revenue_per_employee             0.0008  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - seller_close_speed               0.0000  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0000  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - log_days_since_engage            0.0000  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0000  [Useless] rejected
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 19:36:05,927 [INFO] model.feature_selection_iv - Selected 5 / 16 features (IV >= 0.02)
+2026-03-12 19:36:05,935 [INFO] run_pipeline - Training Logistic Regression model...
+2026-03-12 19:36:07,405 [INFO] model.logistic_model - Best regularization C: 0.1000
+2026-03-12 19:36:08,288 [INFO] model.logistic_model - Cross-validated AUC-ROC: 0.6210
+2026-03-12 19:36:08,330 [INFO] model.logistic_model - Model calibration complete
+2026-03-12 19:36:08,341 [INFO] run_pipeline - Train metrics: {'auc': np.float64(0.6213971632878518), 'accuracy': 0.6152597402597403, 'precision': 0.5348837209302325, 'recall': 0.012917719741645605, 'f1': 0.025226213326021388}
+2026-03-12 19:36:08,344 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 19:36:08,344 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:36:08,417 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 19:36:08,417 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:36:08,802 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:36:08,802 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:36:08,802 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,802 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,802 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,802 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,802 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,803 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,803 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,803 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,803 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:36:08,803 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,246 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:39:59,268 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:39:59,268 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:39:59,270 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:39:59,287 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:39:59,360 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:39:59,412 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:39:59,413 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:39:59,417 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:39:59,417 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 19:39:59,418 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:39:59,490 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 19:39:59,490 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:39:59,870 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:39:59,870 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:39:59,870 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:22,778 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:40:22,799 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:40:22,800 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:40:22,800 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:40:22,817 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:40:22,895 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:40:22,950 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:40:22,951 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:40:22,955 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:40:22,955 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 19:40:22,956 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:40:23,028 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 19:40:23,028 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:40:23,407 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:40:23,407 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:40:23,407 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,407 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,407 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,407 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,407 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,407 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,408 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,408 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,408 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:40:23,408 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:04,415 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:50:04,434 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:50:04,435 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:50:04,436 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:50:04,459 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:50:04,534 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:50:04,606 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:50:04,607 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:50:04,610 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:50:04,611 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 19:50:04,612 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:50:04,683 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 19:50:04,683 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:50:05,067 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:50:05,067 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:50:05,067 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,067 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,067 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,067 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,067 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,067 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,068 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,068 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,068 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:50:05,068 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,308 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:51:48,331 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:51:48,331 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:51:48,332 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:51:48,349 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:51:48,426 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:51:48,481 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:51:48,483 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:51:48,487 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:51:48,487 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 19:51:48,488 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:51:48,560 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 19:51:48,560 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:51:48,945 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:51:48,945 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,945 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:51:48,946 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:38,423 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 19:52:38,446 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 19:52:38,446 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 19:52:38,447 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 19:52:38,465 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2026-03-12
+2026-03-12 19:52:38,536 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 19:52:38,591 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 19:52:38,592 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 19:52:38,596 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 19:52:38,596 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 19:52:38,597 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 19:52:38,667 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 19:52:38,668 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 19:52:39,055 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 19:52:39,055 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 19:52:39,055 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,055 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,055 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,055 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,055 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,055 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,056 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,056 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,056 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 19:52:39,056 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:50,117 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 20:14:50,143 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 20:14:50,143 [INFO] enrichment.digital_enrichment - Starting enrichment for 20 accounts
+2026-03-12 20:14:58,194 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-12 20:14:58,195 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 20:14:58,239 [INFO] features.data_merger - merge_raw_data: 9240 rows after filtering. dataset_end=2025-12-31
+2026-03-12 20:14:58,327 [INFO] features.feature_engineering - Feature matrix: 9240 rows, 16 V2 feature cols. Train=9240, Score=0
+2026-03-12 20:14:58,402 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (9240 rows)
+2026-03-12 20:14:58,403 [WARNING] run_pipeline - No open deals found in the pipeline — scoring all 9240 deals (in-sample) for dashboard display.
+2026-03-12 20:14:58,406 [INFO] run_pipeline - Train size: 9240, Score size: 9240
+2026-03-12 20:14:58,406 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 20:14:58,408 [INFO] run_pipeline - Scoring 9240 open deals...
+2026-03-12 20:14:58,535 [INFO] model.rating_engine - Scored 9240 open deals. Rating distribution:
+deal_rating
+B      5085
+CCC    4069
+BB       86
+2026-03-12 20:14:58,535 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 20:14:58,943 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (9240 deals)
+2026-03-12 20:14:58,943 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] BlueWave Dynamics | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Elevate Labs | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Prime Horizon | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Pulse Capital | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Orion Partners | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Summit Ventures | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] NovaEdge Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:14:58,944 [INFO] run_pipeline -   [BB] Apex Retail Group | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $8063 | Prob: 50.4%
+2026-03-12 20:23:40,881 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 20:23:40,907 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 20:23:40,907 [INFO] enrichment.digital_enrichment - Starting enrichment for 20 accounts
+2026-03-12 20:23:49,142 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-12 20:23:49,142 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 20:23:49,185 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2025-12-31
+2026-03-12 20:23:49,261 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 20:23:49,330 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 20:23:49,332 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 20:23:49,333 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 20:23:49,334 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 20:23:49,360 [INFO] model.rating_engine - Scored 2033 open deals. Rating distribution:
+deal_rating
+B      1350
+CCC     683
+2026-03-12 20:23:49,360 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 20:23:49,453 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 20:23:49,453 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 20:23:49,453 [INFO] run_pipeline -   [B] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] BlueWave Dynamics | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] Apex Retail Group | Banking, Investment And Insurance | Agent: Ana Martins | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] Orion Partners | Banking, Investment And Insurance | Agent: Ana Martins | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] Pulse Capital | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] Vertex Partners | Banking, Investment And Insurance | Agent: Diego Ferreira | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] Summit Ventures | Banking, Investment And Insurance | Agent: Elisa Ramos | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] BlueWave Dynamics | Banking, Investment And Insurance | Agent: Ana Martins | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] BluePeak Consulting | Banking, Investment And Insurance | Agent: Felipe Costa | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:23:49,454 [INFO] run_pipeline -   [B] Elevate Labs | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:51,302 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 20:34:51,325 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 20:34:51,325 [INFO] enrichment.digital_enrichment - Starting enrichment for 20 accounts
+2026-03-12 20:34:59,315 [INFO] enrichment.digital_enrichment - Saved enriched accounts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv
+2026-03-12 20:34:59,315 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 20:34:59,359 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 20:34:59,455 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 20:34:59,584 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 20:34:59,586 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 20:34:59,586 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 20:34:59,587 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 20:34:59,620 [INFO] model.rating_engine - Scored 2033 open deals. Rating distribution:
+deal_rating
+B      1350
+CCC     683
+2026-03-12 20:34:59,620 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 20:34:59,717 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 20:34:59,717 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Atlas Solutions | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] BlueWave Dynamics | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Apex Retail Group | Banking, Investment And Insurance | Agent: Ana Martins | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Orion Partners | Banking, Investment And Insurance | Agent: Ana Martins | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Pulse Capital | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Vertex Partners | Banking, Investment And Insurance | Agent: Diego Ferreira | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Summit Ventures | Banking, Investment And Insurance | Agent: Elisa Ramos | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] BlueWave Dynamics | Banking, Investment And Insurance | Agent: Ana Martins | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] BluePeak Consulting | Banking, Investment And Insurance | Agent: Felipe Costa | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 20:34:59,718 [INFO] run_pipeline -   [B] Elevate Labs | Banking, Investment And Insurance | Agent: Carla Souza | ExpRev: $7356 | Prob: 46.0%
+2026-03-12 21:02:01,600 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:02:01,694 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:02:01,703 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:02:01,704 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:02:01,794 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('product_win_rate', 0.013392504910728666), ('product_rank_percentile', 0.013392504910728666), ('account_size_percentile', 0.011103370627227455), ('revenue_per_employee', 0.011102672640212356), ('digital_maturity_index', 0.007809451648954723)]
+2026-03-12 21:02:01,794 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 21:02:01,794 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 21:02:01,794 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 21:02:01,794 [INFO] model.feature_selection_iv - product_win_rate                 0.0134  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - product_rank_percentile          0.0134  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - account_size_percentile          0.0111  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - revenue_per_employee             0.0111  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - digital_maturity_index           0.0078  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - company_age_score                0.0053  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - log_days_since_engage            0.0043  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - seller_close_speed               0.0041  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - seller_win_rate                  0.0040  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0040  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0038  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - log_deal_value                   0.0038  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - deal_value_percentile            0.0038  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0028  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - seller_product_experience        0.0022  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 21:02:01,795 [INFO] model.feature_selection_iv - Selected 0 / 16 features (IV >= 0.02)
+2026-03-12 21:06:23,153 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:06:23,247 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:06:23,257 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:06:23,258 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:06:23,448 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('seller_product_win_rate', 0.0965013984454302), ('interact_seller_product', 0.018503244960877165), ('product_win_rate', 0.013392504910728666), ('product_rank_percentile', 0.013392504910728666), ('product_relative_performance', 0.013392504910728666)]
+2026-03-12 21:06:23,526 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('product_win_rate', 0.013392504910728666), ('product_rank_percentile', 0.013392504910728666), ('account_size_percentile', 0.011103370627227455), ('revenue_per_employee', 0.011102672640212356), ('digital_maturity_index', 0.007809451648954723)]
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - Feature                              IV  Status
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - -------------------------------------------------------
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - product_win_rate                 0.0134  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - product_rank_percentile          0.0134  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - account_size_percentile          0.0111  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - revenue_per_employee             0.0111  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - digital_maturity_index           0.0078  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - company_age_score                0.0053  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - log_days_since_engage            0.0043  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - deal_age_percentile              0.0043  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - seller_close_speed               0.0041  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - seller_win_rate                  0.0040  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - seller_rank_percentile           0.0040  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - seller_pipeline_load             0.0038  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - log_deal_value                   0.0038  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - deal_value_percentile            0.0038  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - product_avg_sales_cycle          0.0028  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - seller_product_experience        0.0022  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - is_stale_flag                    0.0000  [Useless] rejected
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - =======================================================
+2026-03-12 21:06:23,526 [INFO] model.feature_selection_iv - Selected 0 / 17 features (IV >= 0.02)
+2026-03-12 21:08:34,560 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:08:34,654 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:08:34,663 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:08:34,665 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:09:32,252 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:15:54,890 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:15:54,983 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:15:54,994 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:15:54,995 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:15:55,072 [INFO] model.woe_transformer - WoE fit complete. Top features by IV: [('product_win_rate', 0.01375304954012408), ('product_rank_percentile', 0.01375304954012408), ('account_size_percentile', 0.011103370627227455), ('revenue_per_employee', 0.011102672640212356), ('digital_maturity_index', 0.007809451648954723)]
+2026-03-12 21:17:28,943 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:17:29,035 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:17:29,046 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:17:29,048 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:18:33,459 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:18:33,552 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:18:33,565 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:18:33,566 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:19:42,394 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:19:42,493 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:19:42,504 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:19:42,506 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:20:56,970 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:20:57,060 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:20:57,070 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:20:57,071 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:23:29,659 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:23:29,753 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:23:29,764 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:23:29,765 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:25:34,573 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:25:34,667 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:25:34,676 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:25:34,678 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:27:19,988 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:27:20,077 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:27:20,087 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:27:20,088 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:34:37,008 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 21:34:37,034 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 21:34:37,035 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 21:34:37,035 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 21:34:37,067 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:34:37,163 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:34:37,172 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:34:37,173 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:34:37,257 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 21:34:37,282 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 21:34:37,282 [INFO] run_pipeline - Fitting target encoder...
+2026-03-12 21:34:37,852 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:34:37,908 [INFO] run_pipeline - L1 feature selection from 79 features...
+2026-03-12 21:34:38,198 [INFO] run_pipeline - Selected 29 / 79 features via L1
+2026-03-12 21:34:38,199 [INFO] run_pipeline - Training Logistic Regression on 29 features...
+2026-03-12 21:34:39,882 [INFO] run_pipeline - Cross-validated AUC-ROC: 0.7968 ± 0.0077
+2026-03-12 21:34:39,888 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 21:34:39,889 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 21:34:39,961 [INFO] run_pipeline - Scored 2033 deals. Rating distribution:
+deal_rating
+CCC    866
+B      277
+BBB    272
+BB     271
+A      180
+AA     100
+AAA     67
+2026-03-12 21:34:39,962 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 21:34:40,130 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 21:34:40,130 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 21:34:40,130 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Diego Ferreira | ExpRev: $15655 | Prob: 99.1%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Vértice Solutions | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $15603 | Prob: 97.5%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] PrimeWave Systems | Finance Management | Agent: Diego Ferreira | ExpRev: $15525 | Prob: 98.3%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $15491 | Prob: 96.8%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15475 | Prob: 97.9%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: Isabela Rocha | ExpRev: $15449 | Prob: 96.6%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Elisa Ramos | ExpRev: $15297 | Prob: 96.8%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15150 | Prob: 95.9%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] Vertex Partners | Finance Management | Agent: Hugo Mendes | ExpRev: $14950 | Prob: 94.6%
+2026-03-12 21:34:40,131 [INFO] run_pipeline -   [AAA] CoreAxis Group | Finance Management | Agent: Diego Ferreira | ExpRev: $14870 | Prob: 94.1%
+2026-03-12 21:36:21,840 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 21:36:21,861 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 21:36:21,862 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 21:36:21,863 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 21:36:21,887 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:36:21,979 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:36:21,988 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:36:21,989 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:36:22,055 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 21:36:22,081 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 21:36:22,081 [INFO] run_pipeline - Fitting target encoder...
+2026-03-12 21:36:22,137 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:36:22,196 [INFO] run_pipeline - L1 feature selection from 79 features...
+2026-03-12 21:36:22,475 [INFO] run_pipeline - Selected 29 / 79 features via L1
+2026-03-12 21:36:22,475 [INFO] run_pipeline - Training Logistic Regression on 29 features...
+2026-03-12 21:36:22,543 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:36:22,676 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:36:22,808 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:36:22,940 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:36:23,072 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:36:23,163 [INFO] run_pipeline - Nested CV AUC-ROC: 0.5222 ± 0.0163
+2026-03-12 21:36:23,165 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 21:36:23,165 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 21:36:23,214 [INFO] run_pipeline - Scored 2033 deals. Rating distribution:
+deal_rating
+CCC    866
+B      277
+BBB    272
+BB     271
+A      180
+AA     100
+AAA     67
+2026-03-12 21:36:23,214 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 21:36:23,368 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 21:36:23,368 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 21:36:23,368 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Diego Ferreira | ExpRev: $15655 | Prob: 99.1%
+2026-03-12 21:36:23,368 [INFO] run_pipeline -   [AAA] Vértice Solutions | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $15603 | Prob: 97.5%
+2026-03-12 21:36:23,368 [INFO] run_pipeline -   [AAA] PrimeWave Systems | Finance Management | Agent: Diego Ferreira | ExpRev: $15525 | Prob: 98.3%
+2026-03-12 21:36:23,368 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $15491 | Prob: 96.8%
+2026-03-12 21:36:23,368 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15475 | Prob: 97.9%
+2026-03-12 21:36:23,368 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: Isabela Rocha | ExpRev: $15449 | Prob: 96.6%
+2026-03-12 21:36:23,369 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Elisa Ramos | ExpRev: $15297 | Prob: 96.8%
+2026-03-12 21:36:23,369 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15150 | Prob: 95.9%
+2026-03-12 21:36:23,369 [INFO] run_pipeline -   [AAA] Vertex Partners | Finance Management | Agent: Hugo Mendes | ExpRev: $14950 | Prob: 94.6%
+2026-03-12 21:36:23,369 [INFO] run_pipeline -   [AAA] CoreAxis Group | Finance Management | Agent: Diego Ferreira | ExpRev: $14870 | Prob: 94.1%
+2026-03-12 21:37:03,092 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 21:37:03,116 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 21:37:03,117 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 21:37:03,117 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 21:37:03,139 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:37:03,233 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:37:03,246 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:37:03,247 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:37:03,301 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 21:37:03,327 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 21:37:03,327 [INFO] run_pipeline - Fitting target encoder...
+2026-03-12 21:37:03,386 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:03,447 [INFO] run_pipeline - L1 feature selection from 79 features...
+2026-03-12 21:37:03,726 [INFO] run_pipeline - Selected 29 / 79 features via L1
+2026-03-12 21:37:03,727 [INFO] run_pipeline - Training Logistic Regression on 29 features...
+2026-03-12 21:37:03,796 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:04,097 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:04,312 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:04,581 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:04,763 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:05,004 [INFO] run_pipeline - Nested CV AUC-ROC: 0.5162 ± 0.0190
+2026-03-12 21:37:05,005 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 21:37:05,005 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 21:37:05,051 [INFO] run_pipeline - Scored 2033 deals. Rating distribution:
+deal_rating
+CCC    866
+B      277
+BBB    272
+BB     271
+A      180
+AA     100
+AAA     67
+2026-03-12 21:37:05,051 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 21:37:05,206 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 21:37:05,206 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 21:37:05,206 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Diego Ferreira | ExpRev: $15655 | Prob: 99.1%
+2026-03-12 21:37:05,206 [INFO] run_pipeline -   [AAA] Vértice Solutions | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $15603 | Prob: 97.5%
+2026-03-12 21:37:05,206 [INFO] run_pipeline -   [AAA] PrimeWave Systems | Finance Management | Agent: Diego Ferreira | ExpRev: $15525 | Prob: 98.3%
+2026-03-12 21:37:05,206 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $15491 | Prob: 96.8%
+2026-03-12 21:37:05,206 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15475 | Prob: 97.9%
+2026-03-12 21:37:05,206 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: Isabela Rocha | ExpRev: $15449 | Prob: 96.6%
+2026-03-12 21:37:05,207 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Elisa Ramos | ExpRev: $15297 | Prob: 96.8%
+2026-03-12 21:37:05,207 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15150 | Prob: 95.9%
+2026-03-12 21:37:05,207 [INFO] run_pipeline -   [AAA] Vertex Partners | Finance Management | Agent: Hugo Mendes | ExpRev: $14950 | Prob: 94.6%
+2026-03-12 21:37:05,207 [INFO] run_pipeline -   [AAA] CoreAxis Group | Finance Management | Agent: Diego Ferreira | ExpRev: $14870 | Prob: 94.1%
+2026-03-12 21:37:55,498 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 21:37:55,528 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 21:37:55,529 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 21:37:55,530 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 21:37:55,558 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:37:55,655 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:37:55,665 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:37:55,666 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:37:55,718 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 21:37:55,751 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 21:37:55,751 [INFO] run_pipeline - Fitting target encoder...
+2026-03-12 21:37:55,818 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:55,887 [INFO] run_pipeline - L1 feature selection from 79 features...
+2026-03-12 21:37:56,226 [INFO] run_pipeline - Selected 29 / 79 features via L1
+2026-03-12 21:37:56,227 [INFO] run_pipeline - Training Logistic Regression on 29 features...
+2026-03-12 21:37:56,292 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:56,391 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:56,493 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:56,575 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:56,649 [INFO] model.target_encoder - TargetEncoder fit: 13 singles, 11 pairs, 7 triples → 31 features
+2026-03-12 21:37:58,472 [INFO] run_pipeline - OOF CV AUC-ROC: 0.6742 ± 0.0099
+2026-03-12 21:37:58,477 [INFO] run_pipeline - Saved model artifacts to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/model/artifacts
+2026-03-12 21:37:58,478 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 21:37:58,551 [INFO] run_pipeline - Scored 2033 deals. Rating distribution:
+deal_rating
+CCC    866
+B      277
+BBB    272
+BB     271
+A      180
+AA     100
+AAA     67
+2026-03-12 21:37:58,552 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 21:37:58,754 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 21:37:58,754 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Diego Ferreira | ExpRev: $15655 | Prob: 99.1%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Vértice Solutions | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $15603 | Prob: 97.5%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] PrimeWave Systems | Finance Management | Agent: Diego Ferreira | ExpRev: $15525 | Prob: 98.3%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $15491 | Prob: 96.8%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15475 | Prob: 97.9%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: Isabela Rocha | ExpRev: $15449 | Prob: 96.6%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Elisa Ramos | ExpRev: $15297 | Prob: 96.8%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15150 | Prob: 95.9%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] Vertex Partners | Finance Management | Agent: Hugo Mendes | ExpRev: $14950 | Prob: 94.6%
+2026-03-12 21:37:58,755 [INFO] run_pipeline -   [AAA] CoreAxis Group | Finance Management | Agent: Diego Ferreira | ExpRev: $14870 | Prob: 94.1%
+2026-03-12 21:40:34,770 [INFO] run_pipeline - Loading raw CSV files...
+2026-03-12 21:40:34,794 [INFO] run_pipeline - Loaded: accounts=20, products=16, pipeline=9240, teams=10
+2026-03-12 21:40:34,794 [INFO] enrichment.digital_enrichment - Enriched accounts cache found at /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/enriched_accounts.csv — skipping enrichment
+2026-03-12 21:40:34,796 [INFO] run_pipeline - Building feature matrix...
+2026-03-12 21:40:34,826 [INFO] features.data_merger - merge_raw_data: 7577 rows after filtering. dataset_end=2026-02-28
+2026-03-12 21:40:34,924 [INFO] features.lead_features - Lead features computed: 10 new columns added.
+2026-03-12 21:40:34,934 [INFO] features.geo_features - Geo features computed: 2 new columns added.
+2026-03-12 21:40:34,935 [INFO] features.feature_engineering - Feature matrix: 7577 rows, 16 V2 feature cols. Train=5544, Score=2033
+2026-03-12 21:40:35,004 [INFO] features.feature_store - Saved feature store to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/features.parquet (7577 rows)
+2026-03-12 21:40:35,039 [INFO] run_pipeline - Train size: 5544, Score size: 2033
+2026-03-12 21:40:35,039 [INFO] run_pipeline - Loading cached model artifacts...
+2026-03-12 21:40:35,042 [INFO] run_pipeline - Scoring 2033 open deals...
+2026-03-12 21:40:35,092 [INFO] run_pipeline - Scored 2033 deals. Rating distribution:
+deal_rating
+CCC    866
+B      277
+BBB    272
+BB     271
+A      180
+AA     100
+AAA     67
+2026-03-12 21:40:35,092 [INFO] run_pipeline - Computing feature contributions...
+2026-03-12 21:40:35,251 [INFO] run_pipeline - Results saved to /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal/data/results.csv (2033 deals)
+2026-03-12 21:40:35,252 [INFO] run_pipeline - 
+=== TOP 10 DEALS TO PRIORITIZE ===
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Diego Ferreira | ExpRev: $15655 | Prob: 99.1%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Vértice Solutions | Banking, Investment And Insurance | Agent: Hugo Mendes | ExpRev: $15603 | Prob: 97.5%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] PrimeWave Systems | Finance Management | Agent: Diego Ferreira | ExpRev: $15525 | Prob: 98.3%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: João Ribeiro | ExpRev: $15491 | Prob: 96.8%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15475 | Prob: 97.9%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Vertex Partners | Banking, Investment And Insurance | Agent: Isabela Rocha | ExpRev: $15449 | Prob: 96.6%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Prime Horizon | Finance Management | Agent: Elisa Ramos | ExpRev: $15297 | Prob: 96.8%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Vértice Solutions | Finance Management | Agent: Diego Ferreira | ExpRev: $15150 | Prob: 95.9%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] Vertex Partners | Finance Management | Agent: Hugo Mendes | ExpRev: $14950 | Prob: 94.6%
+2026-03-12 21:40:35,252 [INFO] run_pipeline -   [AAA] CoreAxis Group | Finance Management | Agent: Diego Ferreira | ExpRev: $14870 | Prob: 94.1%
