@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.py$\")",
+      "Bash(find /Users/jessicacastro/claudecode/ai-master-challenge/submissions/jessica-castro/solution/dealsignal -name *.json)"
+    ]
+  }
+}

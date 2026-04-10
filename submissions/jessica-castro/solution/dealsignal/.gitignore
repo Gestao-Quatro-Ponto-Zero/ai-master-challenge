@@ -1,0 +1,23 @@
+# Generated model artifacts (binary)
+model/artifacts/*.pkl
+
+# Feature store (large binary)
+data/features.parquet
+
+# API cache
+.cache/
+
+# Logs
+logs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# OS
+.DS_Store
+
+# Streamlit secrets (API keys — configure via Community Cloud UI)
+.streamlit/secrets.toml

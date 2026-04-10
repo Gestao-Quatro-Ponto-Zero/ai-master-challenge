@@ -1,0 +1,56 @@
+
+DealSignal V2 — Resultado dos Experimentos
+===========================================
+Data: 2026-03-12 17:10
+
+BASELINE (pipeline atual)
+  Modelo:  LR + WoE + IV (3 features: seller_win_rate, seller_rank_percentile, log_days_since_engage)
+  CV AUC:  0.6241
+
+MELHOR EXPERIMENTO
+  Modelo:  LogisticRegression
+  Features: V3 (36 features)
+  CV AUC:  0.6914 ± 0.0189
+  Delta vs baseline: +0.0673
+
+MELHOR GRUPO DE FEATURES (ablation)
+  Grupo:   all
+  N:       36
+  AUC:     0.6885 ± 0.0130
+
+TOP 5 FEATURES MAIS IMPORTANTES (RF+GBM)
+    1. seller_product_win_rate
+  2. deal_age_percentile
+  3. interact_product_age
+  4. log_days_since_engage
+  5. deal_value_vs_account_size
+
+TABELA COMPARATIVA COMPLETA
+                   experimento  features_selecionadas             modelo  cv_auc_mean  cv_auc_std  cv_ap_mean
+  2b. LR + V3 features (todas)                     36 LogisticRegression       0.6914      0.0189      0.7981
+    6. LogisticRegression + V3                     36 LogisticRegression       0.6914      0.0189      0.7981
+          6. RandomForest + V3                     36       RandomForest       0.6885      0.0130      0.8099
+      6. GradientBoosting + V3                     36   GradientBoosting       0.6805      0.0098      0.8068
+2c. LR + apenas features novas                     16 LogisticRegression       0.6726      0.0162      0.7851
+     1. Baseline LR + WoE + IV                      4 LogisticRegression       0.6238      0.0146      0.7701
+2a. LR + V2 features (sem WoE)                     17 LogisticRegression       0.6171      0.0075      0.7486
+
+ABLATION STUDY
+       grupo  n_features  cv_auc_mean  cv_auc_std
+         all          36       0.6885      0.0130
+interactions           4       0.6189      0.0077
+      seller           6       0.6111      0.0119
+        deal           7       0.5884      0.0041
+        risk           8       0.5882      0.0086
+     buckets           3       0.5505      0.0147
+     account           4       0.4965      0.0153
+     product           4       0.4860      0.0095
+
+CONCLUSÃO
+---------
+O dataset possui sinal moderado (AUC 0.65–0.75). Melhorias de feature engineering ajudam, mas o teto está próximo.
+
+A engenharia de features conseguiu elevar o AUC sem adicionar novos dados externos.
+Delta AUC = +0.0673 (baseline → melhor modelo).
+
+Os grupos com mais sinal: all, interactions, seller
