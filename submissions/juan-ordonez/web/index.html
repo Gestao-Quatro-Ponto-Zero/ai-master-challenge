@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Scorer — smoke test (Etapa 4)</title>
+
+  <!-- Tailwind via vendor local (não depende de CDN/internet) -->
+  <script src="vendor/tailwind.min.js"></script>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans antialiased text-slate-800">
+
+  <div
+    x-data="{
+      deals: (window.DATA && window.DATA.deals) || [],
+      metadata: (window.DATA && window.DATA.metadata) || {},
+      ready: !!window.DATA
+    }"
+    x-init="
+      console.log('[smoke-test] window.DATA existe?', !!window.DATA);
+      if (window.DATA) {
+        console.log('[smoke-test] deals:', window.DATA.deals.length);
+        console.log('[smoke-test] metadata:', window.DATA.metadata);
+      }
+    "
+    class="max-w-3xl mx-auto p-8"
+  >
+
+    <h1 class="text-3xl font-bold tracking-tight">Lead Scorer</h1>
+    <p class="text-sm text-slate-500 mt-1">Smoke test — Etapa 4 · carga de <code>data.js</code> e Alpine</p>
+
+    <!-- Bloco de verificação: se DATA carregou, mostra; senão, mostra erro -->
+    <div x-show="!ready" class="mt-8 p-6 bg-red-50 border border-red-200 rounded-lg">
+      <div class="font-semibold text-red-800">❌ data.js não carregou</div>
+      <div class="text-sm text-red-700 mt-2">
+        <code>window.DATA</code> está indefinido. Isso significa que o navegador bloqueou
+        o carregamento por CORS, ou o caminho está errado, ou houve erro de parse.
+        Abre o console (F12) para ver o erro real.
+      </div>
+    </div>
+
+    <div x-show="ready" class="mt-8 space-y-4">
+
+      <!-- Card 1: contagens básicas -->
+      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Dados carregados</h2>
+        <dl class="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+          <dt class="text-slate-600">Snapshot</dt>
+          <dd class="text-slate-900 font-medium" x-text="metadata.snapshot_date"></dd>
+
+          <dt class="text-slate-600">Deals abertos</dt>
+          <dd class="text-slate-900 font-medium" x-text="metadata.total_open_deals"></dd>
+
+          <dt class="text-slate-600">Vendedores com pipeline</dt>
+          <dd class="text-slate-900 font-medium" x-text="metadata.total_agents_with_pipeline"></dd>
+
+          <dt class="text-slate-600">Win rate global (baseline)</dt>
+          <dd class="text-slate-900 font-medium" x-text="(metadata.global_win_rate * 100).toFixed(1) + '%'"></dd>
+        </dl>
+      </div>
+
+      <!-- Card 2: distribuição por priority -->
+      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Distribuição por categoria</h2>
+        <table class="mt-3 w-full text-sm">
+          <tbody>
+            <template x-for="action in ['Foco da semana', 'Foco secundário', 'Ganho rápido', 'Repensar', 'Atribuir conta']" :key="action">
+              <tr x-show="metadata.action_counts && metadata.action_counts[action]" class="border-b border-slate-100 last:border-b-0">
+                <td class="py-2 text-slate-700" x-text="action"></td>
+                <td class="py-2 text-right font-mono text-slate-900" x-text="metadata.action_counts ? metadata.action_counts[action] : ''"></td>
+                <td class="py-2 text-right text-slate-500 font-mono w-16" x-text="metadata.action_counts ? ((metadata.action_counts[action] / metadata.total_open_deals * 100).toFixed(1) + '%') : ''"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Card 3: primeiros 3 deals do primeiro vendedor com pipeline (confirmação de shape) -->
+      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Amostra: primeiros 3 deals do dataset</h2>
+        <div class="mt-3 space-y-3">
+          <template x-for="deal in deals.slice(0, 3)" :key="deal.id">
+            <div class="p-3 bg-slate-50 rounded border border-slate-100 text-sm">
+              <div class="flex justify-between gap-4">
+                <span class="font-medium text-slate-900" x-text="deal.agent"></span>
+                <span class="text-xs font-mono text-slate-500" x-text="deal.action"></span>
+              </div>
+              <div class="text-slate-600 mt-1" x-text="deal.product + ' · ' + (deal.account || 'sem conta') + ' · $' + deal.value.toLocaleString()"></div>
+              <div class="text-slate-500 text-xs mt-2 italic" x-text="deal.explanation"></div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <div class="text-xs text-slate-400 mt-6">
+        ✅ Se você vê este bloco com dados, a Etapa 4 passou: Alpine + Tailwind locais + data.js carregando via <code>window.DATA</code> sem CORS.
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Ordem importa: data.js define window.DATA antes de Alpine inicializar -->
+  <script src="data.js"></script>
+  <script src="vendor/alpine.min.js" defer></script>
+
+</body>
+</html>

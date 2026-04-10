@@ -12,5 +12,17 @@ datasets/
 .vscode/
 .idea/
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
 # Submissions (if candidates fork)
-submissions/
+submissions/*
+!submissions/juan-ordonez/
+!submissions/juan-ordonez/**
+# Re-ignorar lixo Python dentro da submissão
+# (a exceção acima teria precedência sobre as regras globais Python)
+submissions/juan-ordonez/**/__pycache__/
+submissions/juan-ordonez/**/*.pyc
+submissions/juan-ordonez/**/*.pyo
