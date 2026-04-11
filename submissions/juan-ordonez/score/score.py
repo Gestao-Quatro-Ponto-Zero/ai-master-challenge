@@ -146,15 +146,24 @@ def _classify_tier(wr: float) -> str:
 
 def compute_features(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Adiciona as colunas derivadas usadas pelo score:
+    Adiciona as colunas derivadas usadas pelo score e pela UI:
 
-    - is_new_combo : bool ou NaN, conforme definição acima
+    Score:
+    - is_new_combo : bool ou NaN
     - agent_wr     : win rate histórico do vendedor (fechados apenas)
     - agent_tier   : 'top' / 'mid' / 'low' / 'unknown'
-    - days_open    : (SNAPSHOT_DATE - engage_date).days; NaN se sem engage_date
+    - days_open    : (SNAPSHOT_DATE - engage_date).days
 
-    O DataFrame retornado é ordenado por engage_date (necessário para o
-    cálculo de is_new_combo). Vendedores sem deal fechado viram 'unknown'.
+    UI — coluna TIPO:
+    - deal_type    : 'CROSS-SELL' | 'RENOVAÇÃO' | None
+                     CROSS-SELL = conta já comprou outro produto, nunca este
+                     RENOVAÇÃO = conta já comprou este produto
+                     None = sem conta atribuída
+
+    UI — card expandido:
+    - account_last_won_days : dias desde a última compra Won da conta (ou None)
+    - account_ltv           : soma de close_value dos Won da conta (lifetime value)
+    - agent_sold_to_account : bool, vendedor já tem Won com esta conta
     """
     df = df.sort_values("engage_date", na_position="last").reset_index(drop=True)
 
@@ -163,6 +172,7 @@ def compute_features(df: pd.DataFrame) -> pd.DataFrame:
 
     # agent_wr calculado só sobre deals fechados.
     closed = df[df["deal_stage"].isin(["Won", "Lost"])]
+    won = df[df["deal_stage"] == "Won"]
     agent_wr = (
         closed.groupby("sales_agent")["deal_stage"]
         .apply(lambda s: (s == "Won").mean())
@@ -172,8 +182,67 @@ def compute_features(df: pd.DataFrame) -> pd.DataFrame:
 
     df["agent_tier"] = df["agent_wr"].apply(_classify_tier)
 
-    # days_open: quantos dias o deal está aberto, usando SNAPSHOT_DATE como "hoje".
+    # days_open
     df["days_open"] = (SNAPSHOT_DATE - df["engage_date"]).dt.days
+
+    # ── deal_type: CROSS-SELL vs RENOVAÇÃO ──────────────────────────
+    # Pra cada conta, quais produtos ela já comprou (Won)?
+    account_products_won = (
+        won.groupby("account")["product"]
+        .apply(set)
+        .to_dict()
+    )
+    # Pra cada conta, ela tem ALGUM Won?
+    accounts_with_won = set(won["account"].dropna().unique())
+
+    deal_types = []
+    for row in df.itertuples(index=False):
+        if pd.isna(row.account):
+            deal_types.append(None)
+            continue
+        products_won_by_account = account_products_won.get(row.account, set())
+        if row.product in products_won_by_account:
+            deal_types.append("RENOVAÇÃO")
+        elif row.account in accounts_with_won:
+            deal_types.append("CROSS-SELL")
+        else:
+            deal_types.append("NOVO")
+    df["deal_type"] = deal_types
+
+    # ── account_last_won_days: dias desde a última compra da conta ──
+    account_last_won = (
+        won.groupby("account")["close_date"]
+        .max()
+        .to_dict()
+    )
+    df["account_last_won_days"] = df["account"].apply(
+        lambda a: (
+            (SNAPSHOT_DATE - account_last_won[a]).days
+            if pd.notna(a) and a in account_last_won
+            else None
+        )
+    )
+
+    # ── account_ltv: lifetime value da conta (soma dos Won) ─────────
+    account_ltv = (
+        won.groupby("account")["close_value"]
+        .sum()
+        .to_dict()
+    )
+    df["account_ltv"] = df["account"].apply(
+        lambda a: round(account_ltv.get(a, 0), 2) if pd.notna(a) else None
+    )
+
+    # ── agent_sold_to_account: vendedor já vendeu pra esta conta? ───
+    agent_account_won = set(
+        zip(won["sales_agent"], won["account"])
+    )
+    df["agent_sold_to_account"] = [
+        (row.sales_agent, row.account) in agent_account_won
+        if pd.notna(row.account)
+        else None
+        for row in df.itertuples(index=False)
+    ]
 
     return df
 
@@ -267,20 +336,34 @@ def score_deal(row: pd.Series, buckets: pd.DataFrame) -> dict:
     days_open = row.get("days_open")
     days_open = int(days_open) if pd.notna(days_open) else None
 
+    # Campos de contexto comercial (pra UI)
+    acct_last_won = row.get("account_last_won_days")
+    acct_last_won = int(acct_last_won) if pd.notna(acct_last_won) else None
+    acct_ltv = row.get("account_ltv")
+    acct_ltv = round(float(acct_ltv), 2) if pd.notna(acct_ltv) else None
+    agent_sold = row.get("agent_sold_to_account")
+    agent_sold = bool(agent_sold) if pd.notna(agent_sold) else None
+
     return {
         "id": row["opportunity_id"],
         "agent": row["sales_agent"],
-        "_agent_tier_internal": tier if tier != "unknown" else None,  # uso interno, não exibir
+        "_agent_tier_internal": tier if tier != "unknown" else None,
         "account": row["account"] if pd.notna(row["account"]) else None,
         "product": row["product"],
+        "stage": row["deal_stage"],
+        "deal_type": row.get("deal_type"),
         "value": round(value, 2),
         "days_open": days_open,
         "is_new_combo": None if pd.isna(is_new) else bool(is_new),
         "prob": round(prob, 3),
         "ev": round(ev, 2),
+        "similar_cases": bucket_n if bucket_n > 0 else None,
         "confidence": confidence,
         "action": action,
         "explanation": explanation,
+        "account_last_won_days": acct_last_won,
+        "account_ltv": acct_ltv,
+        "agent_sold_to_account": agent_sold,
     }
 
 
@@ -333,28 +416,19 @@ def build_explanation(
     product=None,
 ) -> str:
     """
-    Gera a frase que o vendedor lê no card do deal. Estilo pessoal,
-    direto, sem jargão técnico. NUNCA menciona o tier ("top"/"mid"/"low")
-    nem termos de analista ("win rate", "histórico").
+    Gera a frase que o vendedor lê no card expandido do deal.
 
-    Quatro variações por `prob_source`:
+    Estilo: pessoal, direto, zero jargão técnico. NUNCA menciona tier,
+    "win rate", "combo", "bucket" ou qualquer termo interno.
 
-    1. Deal sem conta atribuída:
-       "Sem conta atribuída — atribua para eu ranquear."
+    Estrutura: "{contexto da situação}. Vendedores como você fecham {X}%
+    em cenários similares."
 
-    2. Deal com bucket válido — combo novo (caso principal):
-       "Primeira vez oferecendo MG Advanced pra Ganjaflex. Vendedores como
-        você fecham 68% dos combos novos."
-
-    3. Deal com bucket válido — combo recorrente:
-       "Já tentaram GTX Plus Basic com Zathunicon antes. Vendedores como
-        você fecham 61% em recompras."
-
-    4. Deal com fallback de agent_wr (sem is_new_combo):
-       "Teu histórico médio é 63%. Sem dado específico do combo."
-
-    5. Deal sem histórico nenhum (global fallback):
-       "Sem histórico — chance estimada em 63% (média geral)."
+    Variações por prob_source:
+    1. Sem conta   → "Sem conta atribuída — atribua para eu ranquear."
+    2. Bucket      → contexto (primeira vez / já tentaram) + "cenários similares"
+    3. Agent       → "Sua média pessoal é X%."
+    4. Global      → "Sem histórico — chance estimada em X% (média geral)."
     """
     prob_pct = int(round(prob * 100))
 
@@ -366,17 +440,17 @@ def build_explanation(
             if pd.notna(account) and pd.notna(product):
                 context = f"Primeira vez oferecendo {product} pra {account}."
             else:
-                context = "Combo novo."
-            return f"{context} Vendedores como você fecham {prob_pct}% dos combos novos."
+                context = "Primeira tentativa com essa combinação."
+            return f"{context} Vendedores como você fecham {prob_pct}% em cenários similares."
         else:
             if pd.notna(account) and pd.notna(product):
                 context = f"Já tentaram {product} com {account} antes."
             else:
-                context = "Combo recorrente."
-            return f"{context} Vendedores como você fecham {prob_pct}% em recompras."
+                context = "Tentativa repetida com essa combinação."
+            return f"{context} Vendedores como você fecham {prob_pct}% em cenários similares."
 
     if prob_source == "agent_fallback":
-        return f"Teu histórico médio é {prob_pct}%. Sem dado específico do combo."
+        return f"Sua média pessoal é {prob_pct}%. Sem dados específicos desse cenário."
 
     return f"Sem histórico — chance estimada em {prob_pct}% (média geral)."
 

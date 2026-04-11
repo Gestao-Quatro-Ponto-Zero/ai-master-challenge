@@ -27,7 +27,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.605 (alta)
 - **expected value:** $3,318
 - **ação:** **Foco da semana**
-- **texto:** _Já tentaram GTX Plus Pro com Isdom antes. Vendedores como você fecham 61% em recompras._
+- **texto:** _Já tentaram GTX Plus Pro com Isdom antes. Vendedores como você fecham 61% em cenários similares._
 
 ## 3. Darcel Schlecht — GTX Pro — —
 
@@ -71,7 +71,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.681 (alta)
 - **expected value:** $18,232
 - **ação:** **Foco da semana**
-- **texto:** _Primeira vez oferecendo GTK 500 pra Betasoloin. Vendedores como você fecham 68% dos combos novos._
+- **texto:** _Primeira vez oferecendo GTK 500 pra Betasoloin. Vendedores como você fecham 68% em cenários similares._
 
 ## 7. Elease Gluck — GTK 500 — Warephase
 
@@ -82,7 +82,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.635 (alta)
 - **expected value:** $17,008
 - **ação:** **Foco da semana**
-- **texto:** _Primeira vez oferecendo GTK 500 pra Warephase. Vendedores como você fecham 64% dos combos novos._
+- **texto:** _Primeira vez oferecendo GTK 500 pra Warephase. Vendedores como você fecham 64% em cenários similares._
 
 ## 8. Markita Hansen — GTK 500 — Vehement Capital Partners
 
@@ -93,7 +93,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.635 (alta)
 - **expected value:** $17,008
 - **ação:** **Foco da semana**
-- **texto:** _Primeira vez oferecendo GTK 500 pra Vehement Capital Partners. Vendedores como você fecham 64% dos combos novos._
+- **texto:** _Primeira vez oferecendo GTK 500 pra Vehement Capital Partners. Vendedores como você fecham 64% em cenários similares._
 
 ## 9. James Ascencio — MG Advanced — —
 
@@ -115,7 +115,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.681 (alta)
 - **expected value:** $375
 - **ação:** **Ganho rápido**
-- **texto:** _Primeira vez oferecendo GTX Basic pra Green-Plus. Vendedores como você fecham 68% dos combos novos._
+- **texto:** _Primeira vez oferecendo GTX Basic pra Green-Plus. Vendedores como você fecham 68% em cenários similares._
 
 ## 11. Corliss Cosme — GTX Pro — Globex Corporation
 
@@ -126,7 +126,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.681 (alta)
 - **expected value:** $3,284
 - **ação:** **Foco secundário**
-- **texto:** _Primeira vez oferecendo GTX Pro pra Globex Corporation. Vendedores como você fecham 68% dos combos novos._
+- **texto:** _Primeira vez oferecendo GTX Pro pra Globex Corporation. Vendedores como você fecham 68% em cenários similares._
 
 ## 12. Daniell Hammack — GTX Plus Basic — Zathunicon
 
@@ -137,7 +137,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.605 (alta)
 - **expected value:** $663
 - **ação:** **Repensar**
-- **texto:** _Já tentaram GTX Plus Basic com Zathunicon antes. Vendedores como você fecham 61% em recompras._
+- **texto:** _Já tentaram GTX Plus Basic com Zathunicon antes. Vendedores como você fecham 61% em cenários similares._
 
 ## 13. Elease Gluck — GTK 500 — —
 
@@ -159,7 +159,7 @@ Total selecionado: **16** deals.
 - **prob:** 0.681 (alta)
 - **expected value:** $2,311
 - **ação:** **Foco da semana**
-- **texto:** _Primeira vez oferecendo MG Advanced pra Ganjaflex. Vendedores como você fecham 68% dos combos novos._
+- **texto:** _Primeira vez oferecendo MG Advanced pra Ganjaflex. Vendedores como você fecham 68% em cenários similares._
 
 ## 15. Lajuana Vencill — MG Special — —
 
@@ -181,5 +181,5 @@ Total selecionado: **16** deals.
 - **prob:** 0.639 (média)
 - **expected value:** $700
 - **ação:** **Ganho rápido**
-- **texto:** _Primeira vez oferecendo GTX Plus Basic pra Konmatfix. Vendedores como você fecham 64% dos combos novos._
+- **texto:** _Primeira vez oferecendo GTX Plus Basic pra Konmatfix. Vendedores como você fecham 64% em cenários similares._
 

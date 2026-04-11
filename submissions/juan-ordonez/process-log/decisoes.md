@@ -259,6 +259,61 @@ notei que "filtro por manager/região" é **bônus explícito** do brief.
 feature de score. Dropdown de vendedores agrupado por manager via
 `<optgroup>` HTML. Cobre o bonus sem expandir escopo.
 
+### Pivô 8 · Sanity check dados oficiais vs mirror
+
+**O que descobrimos:** baixamos o dataset diretamente do Kaggle oficial
+(`agungpambudi/crm-sales-predictive-analytics`) e comparamos byte-a-byte
+com os CSVs do mirror GitHub que estávamos usando.
+
+**Resultado:** MD5 dos 4 CSVs é **idêntico** após normalizar line endings
+(oficial usa CRLF, mirror usava LF). `data.js` regerado com dados oficiais
+é **bit-a-bit idêntico** ao anterior (MD5 `315329073a96a6577c087e52afe35c98`).
+
+**Ação:** substituímos os CSVs pelos oficiais (com CRLF) e adicionamos
+`metadata.csv` (dicionário de campos que o mirror omitia). O dataset agora
+tem 5 arquivos, todos com MD5 conferido contra a fonte oficial.
+
+### Pivô 9 · Filtro por manager/região virou dropdown com 3 seções
+
+**O que mudou:** a proposta inicial de `<optgroup>` só reorganizava
+visualmente o dropdown de vendedores — não implementava filtro real por
+manager/região. O usuário questionou se isso atendia o bonus do brief.
+
+**Resposta honesta:** não. O optgroup visual cobria ~30% do pedido.
+
+**Solução definitiva:** dropdown único com 3 seções (Regionais · Times ·
+Vendedores). Ao selecionar um manager, a ferramenta mostra o pipeline
+**agregado** de todo o time. Ao selecionar uma região, mostra o pipeline
+agregado do escritório. Cada card de deal ganha um badge com o nome do
+vendedor dono (nas visões de time/regional, não na individual).
+
+Para suportar isso, `build_data.py` agora gera 3 blocos no metadata:
+`agents` (27), `managers` (6 com `action_counts` agregados), e
+`regional_offices` (3 com `action_counts` agregados).
+
+### Pivô 10 · Visão agregada = união dos P1 individuais
+
+**Decisão discutida:** quando um manager olha o time dele, o que é "P1 Foco
+da semana"? Duas opções:
+
+- (a) União dos P1 individuais — mostra os P1 de cada vendedor justapostos
+- (b) Recalcular top N sobre o pipeline agregado do time
+
+**Escolhido: (a).** Razão: é mais honesto e informativo. Mostra "como o
+time está dividindo atenção esta semana", não uma lista artificial de
+"top deals do time". Consequência: os `action_counts` agregados nos blocos
+`managers` e `regional_offices` são a soma direta dos counts individuais.
+
+### Pivô 11 · Campos `deal_stage` e `similar_cases` no data.js
+
+**Adicionados antes de implementar a UI**, para que o card expandido
+tivesse informação completa:
+
+- `deal_stage` (Engaging/Prospecting): informa ao vendedor se o deal já
+  está em negociação ou ainda em qualificação. Afeta a próxima ação.
+- `similar_cases` (N de deals históricos do bucket): fornece a "prova
+  social" do score — "baseado em 1.052 casos históricos, confiança alta".
+
 ---
 
 ## Onde a IA errou e como corrigi (casos concretos)
@@ -346,9 +401,24 @@ P4  Repensar             100   4.8%
 
 ---
 
-## Ainda pendente
+## Estado atual (atualizado)
 
-- [ ] Screenshots do fluxo de trabalho (**usuário está capturando em paralelo**)
-- [ ] Executive Summary e Abordagem no README da submissão (fase final)
-- [ ] Loom curto de demonstração (fase final, opcional mas recomendado pelo template)
-- [ ] Git workflow: fork do repo oficial + branch `submission/juan-ordonez` + PR
+### Concluído
+- [x] Motor de score com lookup empírico + ranking per-vendedor
+- [x] Pipeline de geração data.js com metadata completa (agents, managers, regional_offices)
+- [x] Dados oficiais Kaggle (5 CSVs, MD5 conferido)
+- [x] Taxonomia P1-P4 + Atribuir conta
+- [x] UI implementada: dropdown 3 seções, cards expandíveis, Atribuir conta agrupado por produto
+- [x] Fork + clone + branch `submission/juan-ordonez`
+- [x] Primeiro commit (`f0cd57a`)
+- [x] Process log com 11 pivôs, 5 casos de erro corrigido, distribuição final
+
+### Pendente
+- [ ] Testar e polir a UI (visual, comportamento, edge cases)
+- [ ] Commit da UI (`feat(ui): implement lead scorer interface`)
+- [ ] PDF de evidências do processo (**usuário preparando em paralelo**)
+- [ ] README da submissão — preencher Executive Summary, Abordagem, Resultados, Recomendações, Workflow, Erros IA, O que adicionei
+- [ ] LinkedIn do usuário no README
+- [ ] `git push origin submission/juan-ordonez`
+- [ ] Abrir PR no repo oficial
+- [ ] Loom curto de demonstração (opcional)

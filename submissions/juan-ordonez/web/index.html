@@ -3,106 +3,363 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lead Scorer — smoke test (Etapa 4)</title>
-
-  <!-- Tailwind via vendor local (não depende de CDN/internet) -->
+  <title>Lead Scorer</title>
   <script src="vendor/tailwind.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+    :root {
+      --sh-card: 0 1px 3px 0 rgb(0 0 0 / .04), 0 1px 2px -1px rgb(0 0 0 / .04);
+      --sh-card-h: 0 4px 6px -1px rgb(0 0 0 / .06), 0 2px 4px -2px rgb(0 0 0 / .04);
+      --sh-drop: 0 10px 15px -3px rgb(0 0 0 / .08), 0 4px 6px -4px rgb(0 0 0 / .05);
+    }
+    .shadow-card { box-shadow: var(--sh-card); }
+    .shadow-card-h { box-shadow: var(--sh-card-h); }
+    .shadow-drop { box-shadow: var(--sh-drop); }
+    .sec-expand { transition: max-height .3s cubic-bezier(.4,0,.2,1), opacity .25s ease; overflow: hidden; }
+  </style>
 </head>
-<body class="bg-slate-50 min-h-screen font-sans antialiased text-slate-800">
+<body class="bg-gray-200 min-h-screen font-sans antialiased text-gray-900">
 
-  <div
-    x-data="{
-      deals: (window.DATA && window.DATA.deals) || [],
-      metadata: (window.DATA && window.DATA.metadata) || {},
-      ready: !!window.DATA
-    }"
-    x-init="
-      console.log('[smoke-test] window.DATA existe?', !!window.DATA);
-      if (window.DATA) {
-        console.log('[smoke-test] deals:', window.DATA.deals.length);
-        console.log('[smoke-test] metadata:', window.DATA.metadata);
-      }
-    "
-    class="max-w-3xl mx-auto p-8"
-  >
+<div x-cloak x-data="leadScorer()" class="max-w-[1060px] mx-auto px-5 pt-8 pb-4">
 
-    <h1 class="text-3xl font-bold tracking-tight">Lead Scorer</h1>
-    <p class="text-sm text-slate-500 mt-1">Smoke test — Etapa 4 · carga de <code>data.js</code> e Alpine</p>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- HEADER CARD                                                -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="bg-white rounded-xl shadow-card border border-gray-200 px-6 py-5 mb-6">
 
-    <!-- Bloco de verificação: se DATA carregou, mostra; senão, mostra erro -->
-    <div x-show="!ready" class="mt-8 p-6 bg-red-50 border border-red-200 rounded-lg">
-      <div class="font-semibold text-red-800">❌ data.js não carregou</div>
-      <div class="text-sm text-red-700 mt-2">
-        <code>window.DATA</code> está indefinido. Isso significa que o navegador bloqueou
-        o carregamento por CORS, ou o caminho está errado, ou houve erro de parse.
-        Abre o console (F12) para ver o erro real.
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <h1 class="text-2xl font-semibold tracking-tight text-gray-900">Lead Scorer</h1>
+        <p class="text-[13px] text-gray-500 mt-1">Priorize deals por retorno esperado</p>
       </div>
+      <span class="text-[11px] text-gray-500 font-medium mt-1 bg-gray-100 px-2.5 py-1 rounded-md" x-text="snapshotLabel"></span>
     </div>
 
-    <div x-show="ready" class="mt-8 space-y-4">
-
-      <!-- Card 1: contagens básicas -->
-      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Dados carregados</h2>
-        <dl class="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-          <dt class="text-slate-600">Snapshot</dt>
-          <dd class="text-slate-900 font-medium" x-text="metadata.snapshot_date"></dd>
-
-          <dt class="text-slate-600">Deals abertos</dt>
-          <dd class="text-slate-900 font-medium" x-text="metadata.total_open_deals"></dd>
-
-          <dt class="text-slate-600">Vendedores com pipeline</dt>
-          <dd class="text-slate-900 font-medium" x-text="metadata.total_agents_with_pipeline"></dd>
-
-          <dt class="text-slate-600">Win rate global (baseline)</dt>
-          <dd class="text-slate-900 font-medium" x-text="(metadata.global_win_rate * 100).toFixed(1) + '%'"></dd>
-        </dl>
-      </div>
-
-      <!-- Card 2: distribuição por priority -->
-      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Distribuição por categoria</h2>
-        <table class="mt-3 w-full text-sm">
-          <tbody>
-            <template x-for="action in ['Foco da semana', 'Foco secundário', 'Ganho rápido', 'Repensar', 'Atribuir conta']" :key="action">
-              <tr x-show="metadata.action_counts && metadata.action_counts[action]" class="border-b border-slate-100 last:border-b-0">
-                <td class="py-2 text-slate-700" x-text="action"></td>
-                <td class="py-2 text-right font-mono text-slate-900" x-text="metadata.action_counts ? metadata.action_counts[action] : ''"></td>
-                <td class="py-2 text-right text-slate-500 font-mono w-16" x-text="metadata.action_counts ? ((metadata.action_counts[action] / metadata.total_open_deals * 100).toFixed(1) + '%') : ''"></td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Card 3: primeiros 3 deals do primeiro vendedor com pipeline (confirmação de shape) -->
-      <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-        <h2 class="text-sm font-semibold text-slate-500 uppercase tracking-wider">Amostra: primeiros 3 deals do dataset</h2>
-        <div class="mt-3 space-y-3">
-          <template x-for="deal in deals.slice(0, 3)" :key="deal.id">
-            <div class="p-3 bg-slate-50 rounded border border-slate-100 text-sm">
-              <div class="flex justify-between gap-4">
-                <span class="font-medium text-slate-900" x-text="deal.agent"></span>
-                <span class="text-xs font-mono text-slate-500" x-text="deal.action"></span>
-              </div>
-              <div class="text-slate-600 mt-1" x-text="deal.product + ' · ' + (deal.account || 'sem conta') + ' · $' + deal.value.toLocaleString()"></div>
-              <div class="text-slate-500 text-xs mt-2 italic" x-text="deal.explanation"></div>
+    <!-- Dropdown custom -->
+    <div class="mb-5">
+      <label class="block text-[11px] font-medium uppercase tracking-widest text-gray-500 mb-2">Ver pipeline de</label>
+      <div @click.outside="dropOpen = false" class="relative max-w-sm">
+        <button @click="dropOpen = !dropOpen"
+          class="flex items-center justify-between w-full h-10 px-3.5 text-[13px] bg-white border rounded-lg transition-all"
+          :class="dropOpen ? 'border-gray-400 ring-2 ring-gray-200 shadow-sm' : 'border-gray-300 hover:border-gray-400 hover:shadow-sm'">
+          <span class="text-gray-900 font-medium" x-text="dropLabel"></span>
+          <svg class="w-3.5 h-3.5 text-gray-400 ml-2 transition-transform duration-200" :class="dropOpen && 'rotate-180'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div x-show="dropOpen" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+             class="absolute top-full left-0 mt-1.5 w-full bg-white border border-gray-200 rounded-xl overflow-hidden z-50 max-h-[360px] overflow-y-auto shadow-drop">
+          <template x-for="grp in dropGroups" :key="grp.label">
+            <div>
+              <div class="px-3 py-2 text-[10px] font-semibold text-gray-400 uppercase tracking-widest flex items-center gap-1.5 bg-gray-50 border-b border-gray-100 sticky top-0" x-text="grp.icon + ' ' + grp.label"></div>
+              <template x-for="item in grp.items" :key="item.key">
+                <button @click="selectedKey = item.key; dropOpen = false; recompute()"
+                  class="w-full px-3 py-2 text-[13px] text-left flex items-center justify-between transition-colors"
+                  :class="selectedKey === item.key ? 'bg-gray-50 text-gray-900' : 'text-gray-700 hover:bg-gray-50/60'">
+                  <span class="flex items-center gap-2">
+                    <svg x-show="selectedKey === item.key" class="w-3.5 h-3.5 text-gray-700 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span x-show="selectedKey !== item.key" class="w-3.5 shrink-0"></span>
+                    <span class="font-medium" x-text="item.name"></span>
+                  </span>
+                  <span class="text-[11px] text-gray-500 tabular-nums" x-text="item.detail"></span>
+                </button>
+              </template>
             </div>
           </template>
         </div>
       </div>
-
-      <div class="text-xs text-slate-400 mt-6">
-        ✅ Se você vê este bloco com dados, a Etapa 4 passou: Alpine + Tailwind locais + data.js carregando via <code>window.DATA</code> sem CORS.
-      </div>
-
     </div>
 
+    <!-- Selected info -->
+    <div class="mb-4 pb-4 border-b border-gray-200">
+      <h2 class="text-base font-semibold text-gray-900" x-text="info.label"></h2>
+      <p class="text-[13px] text-gray-500 mt-0.5" x-text="info.sub"></p>
+    </div>
+
+    <!-- Priority chips -->
+    <div>
+      <label class="block text-[11px] font-medium uppercase tracking-widest text-gray-500 mb-2">Prioridade</label>
+      <div class="flex items-center gap-2 flex-wrap">
+        <button @click="filterPriority = null"
+          class="inline-flex items-center gap-2 h-8 px-3.5 rounded-lg text-[13px] font-medium border transition-all"
+          :class="filterPriority === null ? 'border-gray-300 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 bg-white text-gray-500 hover:text-gray-800 hover:border-gray-300'">
+          <span class="font-semibold">Todas</span>
+          <span class="text-[12px] text-gray-500 tabular-nums" x-text="totalFiltered"></span>
+        </button>
+        <template x-for="cat in categories" :key="cat.key">
+          <button @click="filterPriority = (filterPriority === cat.key ? null : cat.key)"
+            class="inline-flex items-center gap-2 h-8 px-3.5 rounded-lg text-[13px] font-medium border transition-all"
+            :class="filterPriority === cat.key ? 'border-gray-300 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 bg-white text-gray-500 hover:text-gray-800 hover:border-gray-300'">
+            <span class="w-2 h-2 rounded-full shrink-0" :style="'background:' + cat.dotColor"></span>
+            <span class="font-semibold text-gray-800" x-text="cat.short"></span>
+            <span class="text-[12px] text-gray-500 tabular-nums" x-text="counts[cat.action] || 0"></span>
+          </button>
+        </template>
+      </div>
+    </div>
   </div>
 
-  <!-- Ordem importa: data.js define window.DATA antes de Alpine inicializar -->
-  <script src="data.js"></script>
-  <script src="vendor/alpine.min.js" defer></script>
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PRIORITY SECTIONS                                          -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="space-y-3">
+    <template x-for="sec in visibleSections" :key="sec.key">
+      <section :id="'sec-' + sec.key" class="bg-white rounded-xl border border-gray-200 overflow-hidden transition-shadow" :class="sections[sec.key] ? 'shadow-card-h' : 'shadow-card'">
+        <!-- Section header -->
+        <button @click="sections[sec.key] = !sections[sec.key]"
+          class="w-full flex items-center gap-3.5 px-5 py-4 text-left transition-colors border-l-[3px]"
+          :style="'border-left-color:' + sec.borderColor + ';' + (sections[sec.key] ? 'background:' + sec.bgColor : '')"
+          :class="!sections[sec.key] && 'hover:bg-gray-50/60'">
+          <svg class="w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200" :class="sections[sec.key] && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          <span class="text-[15px]" x-text="sec.emoji"></span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-baseline gap-2">
+              <h3 class="text-[14px] font-semibold text-gray-900" x-text="sec.label"></h3>
+              <span class="text-[12px] text-gray-500" x-text="sec.deals.length + ' oportunidades'"></span>
+            </div>
+            <p class="text-[12px] text-gray-600 mt-0.5" x-text="sec.desc"></p>
+          </div>
+        </button>
 
+        <!-- Expandable content -->
+        <div class="sec-expand" :style="sections[sec.key] ? 'max-height:9999px;opacity:1' : 'max-height:0;opacity:0'">
+          <div class="border-t border-gray-200">
+            <!-- Table header -->
+            <div class="flex items-center gap-6 px-5 py-2 text-[10px] font-medium uppercase tracking-widest text-gray-500 border-b border-gray-200 bg-gray-50/60">
+              <div class="w-5 shrink-0"></div>
+              <div class="flex-1 min-w-0">Conta</div>
+              <div class="w-[120px]">Produto</div>
+              <div x-show="info.type !== 'agent'" class="w-[90px] text-center">Vendedor</div>
+              <div class="w-[70px] text-right">Chance</div>
+              <div class="w-[90px] text-right">Valor</div>
+              <div class="w-[100px] text-center">Relação</div>
+              <div class="w-[90px] text-right">Aberto há</div>
+            </div>
+
+            <!-- Deal rows -->
+            <template x-for="(deal, idx) in sec.deals.slice(0, 20)" :key="deal.id">
+              <div>
+                <div @click="toggleExpand(deal.id)"
+                  class="flex items-center gap-6 px-5 py-2.5 transition-colors hover:bg-gray-50/60 cursor-pointer"
+                  :class="idx < Math.min(19, sec.deals.length - 1) && !expanded[deal.id] && 'border-b border-gray-100'">
+                  <!-- Chevron expand indicator -->
+                  <div class="w-5 shrink-0 flex justify-center">
+                    <svg class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200" :class="expanded[deal.id] && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <span class="text-[13px] font-semibold text-gray-900 truncate block" x-text="deal.account || '—'"></span>
+                  </div>
+                  <div class="w-[120px]">
+                    <span class="text-[13px] text-gray-800 truncate block" x-text="deal.product"></span>
+                  </div>
+                  <div x-show="info.type !== 'agent'" class="w-[90px]">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-gray-100 text-gray-900 truncate max-w-full" x-text="deal.agent.split(' ')[0]"></span>
+                  </div>
+                  <div class="w-[70px] text-right">
+                    <span class="text-[13px] font-semibold tabular-nums"
+                      :class="deal.prob >= 0.65 ? 'text-emerald-600' : deal.prob >= 0.55 ? 'text-gray-800' : 'text-gray-500'"
+                      x-text="fmtProb(deal.prob)"></span>
+                  </div>
+                  <div class="w-[90px] text-right">
+                    <span class="text-[13px] font-semibold text-gray-900 tabular-nums" x-text="fmtMoney(deal.value)"></span>
+                  </div>
+                  <div class="w-[100px] flex justify-center">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                      :class="deal.agent_sold_to_account ? 'text-blue-700 bg-blue-50' : 'text-amber-700 bg-amber-50'"
+                      x-text="deal.agent_sold_to_account ? 'CLIENTE' : 'PROSPECT'"></span>
+                  </div>
+                  <div class="w-[90px] text-right">
+                    <span class="text-[12px] tabular-nums text-gray-600" x-text="deal.days_open != null ? deal.days_open + ' dias' : 'Prospecção'"></span>
+                  </div>
+                </div>
+
+                <!-- Expanded detail -->
+                <div x-show="expanded[deal.id]" class="px-5 py-4 bg-gray-50 border-b border-gray-200">
+                  <div class="ml-11">
+                    <!-- INSIGHT -->
+                    <p class="text-[13px] text-gray-800 italic leading-relaxed" x-text="deal.explanation"></p>
+                    <!-- LTV -->
+                    <div x-show="deal.account_ltv" class="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg">
+                      <span class="text-[11px] text-gray-500 uppercase tracking-wide font-medium">LTV da conta</span>
+                      <span class="text-[13px] font-bold text-gray-900" x-text="fmtMoney(deal.account_ltv)"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- Overflow indicator -->
+            <template x-if="sec.deals.length > 20">
+              <div class="px-5 py-2.5 text-[12px] text-gray-500 text-center bg-gray-50/40 border-t border-gray-200">
+                <span x-text="'+ ' + (sec.deals.length - 20) + ' oportunidades adicionais'"></span>
+              </div>
+            </template>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ATRIBUIR CONTA                                         -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <template x-if="(filterPriority === null || filterPriority === 'assign') && assignGroups.length > 0">
+      <div>
+        <div class="border-t border-dashed border-gray-300 my-4"></div>
+        <section id="sec-assign" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-card">
+          <button @click="sections.assign = !sections.assign"
+            class="w-full flex items-center gap-3.5 px-5 py-4 text-left transition-colors border-l-[3px]"
+            :style="'border-left-color:#9ca3af;' + (sections.assign ? 'background:#f9fafb' : '')"
+            :class="!sections.assign && 'hover:bg-gray-50/60'">
+            <svg class="w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200" :class="sections.assign && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            <span class="text-[15px]">📋</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-2">
+                <h3 class="text-[14px] font-semibold text-gray-900">Atribuir conta</h3>
+                <span class="text-[12px] text-gray-500" x-text="(counts['Atribuir conta'] || 0) + ' oportunidades'"></span>
+              </div>
+              <p class="text-[12px] text-gray-600 mt-0.5">Sem conta no CRM. Atribuir antes de priorizar.</p>
+            </div>
+          </button>
+          <div class="sec-expand" :style="sections.assign ? 'max-height:9999px;opacity:1' : 'max-height:0;opacity:0'">
+            <div class="border-t border-gray-200">
+              <template x-for="(g, idx) in assignGroups" :key="g.product">
+                <div class="flex items-center justify-between px-5 py-3 transition-colors hover:bg-gray-50/60"
+                     :class="idx < assignGroups.length - 1 && 'border-b border-gray-100'">
+                  <div class="flex items-baseline gap-3">
+                    <span class="text-[13px] font-medium text-gray-900" x-text="g.product"></span>
+                    <span class="text-[11px] text-gray-500 tabular-nums" x-text="g.count + ' deals'"></span>
+                  </div>
+                  <span class="text-[12px] text-gray-500">potencial <span class="font-semibold text-gray-900 tabular-nums" x-text="fmtMoney(g.totalValue)"></span></span>
+                </div>
+              </template>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FOOTER                                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="pt-6 pb-8 text-center space-y-1">
+    <p class="text-[11px] text-gray-500" x-text="metadata.total_open_deals + ' deals abertos · calibrado em ' + (8800 - metadata.total_open_deals) + ' deals históricos (Won/Lost)'"></p>
+    <p class="text-[10px] text-gray-400">Lead Scorer · G4 AI Master Challenge · build-003</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- DATA + LOGIC + ALPINE                                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script src="data.js"></script>
+<script>
+function leadScorer() {
+  const D = window.DATA, meta = D.metadata;
+  const MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const snap = meta.snapshot_date.split('-');
+  const snapshotLabel = 'snapshot · ' + snap[2] + ' ' + MONTHS[parseInt(snap[1])-1] + ' ' + snap[0];
+
+  const C = {
+    p1: { border: '#ef4444', bg: '#fef2f2', dot: '#ef4444' },
+    p2: { border: '#f97316', bg: '#fff7ed', dot: '#f97316' },
+    p3: { border: '#10b981', bg: '#ecfdf5', dot: '#10b981' },
+    p4: { border: '#f59e0b', bg: '#fffbeb', dot: '#f59e0b' },
+  };
+
+  const categories = [
+    { key: 'p1', action: 'Foco da semana',  short: 'P1', dotColor: C.p1.dot },
+    { key: 'p2', action: 'Foco secundário', short: 'P2', dotColor: C.p2.dot },
+    { key: 'p3', action: 'Ganho rápido',    short: 'P3', dotColor: C.p3.dot },
+    { key: 'p4', action: 'Repensar',        short: 'P4', dotColor: C.p4.dot },
+    { key: 'assign', action: 'Atribuir conta', short: 'Outros', dotColor: '#9ca3af' },
+  ];
+
+  const sectionDefs = [
+    { key: 'p1', action: 'Foco da semana',  label: 'P1 — Foco da semana',  desc: 'Melhor retorno esperado. Atacar esta semana.', emoji: '🎯', borderColor: C.p1.border, bgColor: C.p1.bg },
+    { key: 'p2', action: 'Foco secundário', label: 'P2 — Foco secundário', desc: 'Deals grandes fora do top. Manter no radar.',   emoji: '💰', borderColor: C.p2.border, bgColor: C.p2.bg },
+    { key: 'p3', action: 'Ganho rápido',    label: 'P3 — Ganho rápido',    desc: 'Alta chance de fechar. Valor menor — trabalhar em lote.', emoji: '⚡', borderColor: C.p3.border, bgColor: C.p3.bg },
+    { key: 'p4', action: 'Repensar',        label: 'P4 — Repensar',        desc: 'Chance abaixo da média. Decidir se vale insistir.', emoji: '🤔', borderColor: C.p4.border, bgColor: C.p4.bg },
+  ];
+
+  return {
+    metadata: meta, categories, snapshotLabel,
+    selectedKey: 'agent:Darcel Schlecht',
+    dropOpen: false, filterPriority: null,
+    sections: { p1: true, p2: true, p3: false, p4: false, assign: false },
+    expanded: {},
+    info: {}, counts: {}, totalFiltered: 0,
+    dropLabel: '', dropGroups: [],
+    visibleSections: [], assignGroups: [],
+
+    init() {
+      this.buildDropGroups();
+      this.$watch('selectedKey', () => this.recompute());
+      this.$watch('filterPriority', () => this.updateVisible());
+      this.recompute();
+    },
+
+    buildDropGroups() {
+      this.dropGroups = [
+        { icon: '🌐', label: 'Regionais', items: meta.regional_offices.map(r => ({ key: 'regional:'+r.name, name: r.name, detail: r.open_deals_count+' deals · '+r.agent_count+' vend.' })) },
+        { icon: '👥', label: 'Times', items: meta.managers.map(m => ({ key: 'manager:'+m.name, name: m.name, detail: m.open_deals_count+' deals · '+m.agent_count+' vend.' })) },
+        { icon: '👤', label: 'Vendedores', items: meta.agents.map(a => ({ key: 'agent:'+a.name, name: a.name, detail: a.open_deals_count+' deals' })) },
+      ];
+    },
+
+    recompute() {
+      const idx = this.selectedKey.indexOf(':');
+      const type = this.selectedKey.substring(0, idx);
+      const name = this.selectedKey.substring(idx + 1);
+      let agents, info;
+      if (type === 'agent') {
+        const a = meta.agents.find(x => x.name === name);
+        agents = new Set([name]); info = { label: name, sub: (a?a.open_deals_count:0)+' deals abertos', type };
+      } else if (type === 'manager') {
+        const m = meta.managers.find(x => x.name === name);
+        agents = new Set(m.agents); info = { label: 'Time '+name, sub: m.agent_count+' vendedores · '+m.open_deals_count+' deals', type };
+      } else {
+        const r = meta.regional_offices.find(x => x.name === name);
+        agents = new Set(r.agents); info = { label: 'Regional '+name, sub: r.manager_count+' times · '+r.agent_count+' vendedores · '+r.open_deals_count+' deals', type };
+      }
+      this.info = info;
+      // dropLabel usa total (calculado abaixo) — NÃO extrair de info.sub via regex
+
+      const byAction = {}, counts = {}; let total = 0;
+      for (const d of D.deals) {
+        if (!agents.has(d.agent)) continue;
+        (byAction[d.action] = byAction[d.action] || []).push(d);
+        counts[d.action] = (counts[d.action] || 0) + 1; total++;
+      }
+      this.counts = counts; this.totalFiltered = total;
+      this.dropLabel = info.label + ' — ' + total + ' deals';
+
+      const s = a => (a||[]).slice().sort((x,y) => y.ev - x.ev);
+      this._allSections = sectionDefs.map(def => ({...def, deals: s(byAction[def.action])})).filter(sec => sec.deals.length > 0);
+
+      const grp = {};
+      for (const d of (byAction['Atribuir conta']||[])) {
+        if (!grp[d.product]) grp[d.product] = {product:d.product,count:0,totalValue:0};
+        grp[d.product].count++; grp[d.product].totalValue += d.value;
+      }
+      this.assignGroups = Object.values(grp).sort((a,b) => b.totalValue - a.totalValue);
+      this.expanded = {};
+      this.updateVisible();
+    },
+
+    updateVisible() {
+      if (this.filterPriority === null) {
+        this.visibleSections = this._allSections;
+      } else if (this.filterPriority === 'assign') {
+        this.visibleSections = [];
+      } else {
+        this.visibleSections = this._allSections.filter(s => s.key === this.filterPriority);
+      }
+    },
+
+    toggleExpand(id) { this.expanded[id] = !this.expanded[id]; },
+    fmtMoney(v) { return '$'+Math.round(v).toLocaleString('pt-BR'); },
+    fmtProb(p) { return Math.round(p*100)+'%'; },
+  };
+}
+</script>
+<script src="vendor/alpine.min.js" defer></script>
 </body>
 </html>
