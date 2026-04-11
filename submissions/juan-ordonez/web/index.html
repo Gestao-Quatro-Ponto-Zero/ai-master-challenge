@@ -16,6 +16,13 @@
     .shadow-card-h { box-shadow: var(--sh-card-h); }
     .shadow-drop { box-shadow: var(--sh-drop); }
     .sec-expand { transition: max-height .3s cubic-bezier(.4,0,.2,1), opacity .25s ease; overflow: hidden; }
+    /* Deal expand via native <details> — no JS state needed */
+    details.deal > summary { list-style: none; cursor: pointer; }
+    details.deal > summary::-webkit-details-marker { display: none; }
+    details.deal > summary .deal-chevron { transition: transform .2s; }
+    details.deal[open] > summary .deal-chevron { transform: rotate(90deg); }
+    details.deal[open] > summary { background: var(--sec-bg); }
+    details.deal[open] > .deal-body { background: var(--sec-bg); }
   </style>
 </head>
 <body class="bg-gray-200 min-h-screen font-sans antialiased text-gray-900">
@@ -134,15 +141,12 @@
               <div class="w-[90px] text-right">Aberto há</div>
             </div>
 
-            <!-- Deal rows -->
+            <!-- Deal rows (native <details> for expand — no JS state bugs) -->
             <template x-for="(deal, idx) in sec.deals.slice(0, 20)" :key="deal.id">
-              <div>
-                <div @click="toggleExpand(deal.id)"
-                  class="flex items-center gap-6 px-5 py-2.5 transition-colors hover:bg-gray-50/60 cursor-pointer"
-                  :class="idx < Math.min(19, sec.deals.length - 1) && !expanded[deal.id] && 'border-b border-gray-100'">
-                  <!-- Chevron expand indicator -->
+              <details class="deal" :style="'--sec-bg:' + sec.bgColor">
+                <summary class="flex items-center gap-6 px-5 py-2.5 hover:bg-gray-50/60 border-b border-gray-100">
                   <div class="w-5 shrink-0 flex justify-center">
-                    <svg class="w-3.5 h-3.5 text-gray-400 transition-transform duration-200" :class="expanded[deal.id] && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    <svg class="deal-chevron w-3.5 h-3.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                   </div>
                   <div class="flex-1 min-w-0">
                     <span class="text-[13px] font-semibold text-gray-900 truncate block" x-text="deal.account || '—'"></span>
@@ -169,21 +173,17 @@
                   <div class="w-[90px] text-right">
                     <span class="text-[12px] tabular-nums text-gray-600" x-text="deal.days_open != null ? deal.days_open + ' dias' : 'Prospecção'"></span>
                   </div>
-                </div>
-
-                <!-- Expanded detail -->
-                <div x-show="expanded[deal.id]" class="px-5 py-4 bg-gray-50 border-b border-gray-200">
+                </summary>
+                <div class="deal-body px-5 py-4 border-b border-gray-200">
                   <div class="ml-11">
-                    <!-- INSIGHT -->
                     <p class="text-[13px] text-gray-800 italic leading-relaxed" x-text="deal.explanation"></p>
-                    <!-- LTV -->
                     <div x-show="deal.account_ltv" class="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-200 rounded-lg">
                       <span class="text-[11px] text-gray-500 uppercase tracking-wide font-medium">LTV da conta</span>
                       <span class="text-[13px] font-bold text-gray-900" x-text="fmtMoney(deal.account_ltv)"></span>
                     </div>
                   </div>
                 </div>
-              </div>
+              </details>
             </template>
 
             <!-- Overflow indicator -->
@@ -221,13 +221,36 @@
           <div class="sec-expand" :style="sections.assign ? 'max-height:9999px;opacity:1' : 'max-height:0;opacity:0'">
             <div class="border-t border-gray-200">
               <template x-for="(g, idx) in assignGroups" :key="g.product">
-                <div class="flex items-center justify-between px-5 py-3 transition-colors hover:bg-gray-50/60"
-                     :class="idx < assignGroups.length - 1 && 'border-b border-gray-100'">
-                  <div class="flex items-baseline gap-3">
-                    <span class="text-[13px] font-medium text-gray-900" x-text="g.product"></span>
-                    <span class="text-[11px] text-gray-500 tabular-nums" x-text="g.count + ' deals'"></span>
+                <div x-data="{ open: false }">
+                  <div @click="open = !open"
+                    class="flex items-center justify-between px-5 py-3 transition-colors hover:bg-gray-50/60 cursor-pointer"
+                    :class="idx < assignGroups.length - 1 && !open && 'border-b border-gray-100'">
+                    <div class="flex items-center gap-3">
+                      <svg class="w-3.5 h-3.5 text-gray-400 shrink-0 transition-transform duration-200" :class="open && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                      <span class="text-[13px] font-medium text-gray-900" x-text="g.product"></span>
+                      <span class="text-[11px] text-gray-500 tabular-nums" x-text="g.count + ' deals'"></span>
+                    </div>
+                    <span class="text-[12px] text-gray-500">potencial <span class="font-semibold text-gray-900 tabular-nums" x-text="fmtMoney(g.totalValue)"></span></span>
                   </div>
-                  <span class="text-[12px] text-gray-500">potencial <span class="font-semibold text-gray-900 tabular-nums" x-text="fmtMoney(g.totalValue)"></span></span>
+                  <div x-show="open" class="bg-gray-50 border-b border-gray-200">
+                    <div class="flex items-center gap-6 px-5 pl-12 py-1.5 text-[10px] font-medium uppercase tracking-widest text-gray-500 border-b border-gray-100">
+                      <div class="flex-1">Vendedor</div>
+                      <div class="w-[90px] text-right">Valor</div>
+                      <div class="w-[90px] text-right">Aberto há</div>
+                    </div>
+                    <template x-for="d in g.deals.slice(0, 15)" :key="d.id">
+                      <div class="flex items-center gap-6 px-5 pl-12 py-2 border-b border-gray-100/60 text-[13px]">
+                        <div class="flex-1 text-gray-800" x-text="d.agent"></div>
+                        <div class="w-[90px] text-right font-semibold text-gray-900 tabular-nums" x-text="fmtMoney(d.value)"></div>
+                        <div class="w-[90px] text-right text-gray-600 text-[12px] tabular-nums" x-text="d.days_open != null ? d.days_open + ' dias' : 'Prospecção'"></div>
+                      </div>
+                    </template>
+                    <template x-if="g.deals.length > 15">
+                      <div class="px-5 pl-12 py-2 text-[12px] text-gray-500 text-center">
+                        <span x-text="'+ ' + (g.deals.length - 15) + ' deals adicionais'"></span>
+                      </div>
+                    </template>
+                  </div>
                 </div>
               </template>
             </div>
@@ -258,10 +281,10 @@ function leadScorer() {
   const snapshotLabel = 'snapshot · ' + snap[2] + ' ' + MONTHS[parseInt(snap[1])-1] + ' ' + snap[0];
 
   const C = {
-    p1: { border: '#ef4444', bg: '#fef2f2', dot: '#ef4444' },
-    p2: { border: '#f97316', bg: '#fff7ed', dot: '#f97316' },
-    p3: { border: '#10b981', bg: '#ecfdf5', dot: '#10b981' },
-    p4: { border: '#f59e0b', bg: '#fffbeb', dot: '#f59e0b' },
+    p1: { border: '#ef4444', bg: '#fef8f8', dot: '#ef4444' },
+    p2: { border: '#f97316', bg: '#fffbf6', dot: '#f97316' },
+    p3: { border: '#10b981', bg: '#f6fefa', dot: '#10b981' },
+    p4: { border: '#f59e0b', bg: '#fffdf5', dot: '#f59e0b' },
   };
 
   const categories = [
@@ -284,7 +307,6 @@ function leadScorer() {
     selectedKey: 'agent:Darcel Schlecht',
     dropOpen: false, filterPriority: null,
     sections: { p1: true, p2: true, p3: false, p4: false, assign: false },
-    expanded: {},
     info: {}, counts: {}, totalFiltered: 0,
     dropLabel: '', dropGroups: [],
     visibleSections: [], assignGroups: [],
@@ -336,11 +358,11 @@ function leadScorer() {
 
       const grp = {};
       for (const d of (byAction['Atribuir conta']||[])) {
-        if (!grp[d.product]) grp[d.product] = {product:d.product,count:0,totalValue:0};
+        if (!grp[d.product]) grp[d.product] = {product:d.product,count:0,totalValue:0,deals:[]};
         grp[d.product].count++; grp[d.product].totalValue += d.value;
+        grp[d.product].deals.push(d);
       }
       this.assignGroups = Object.values(grp).sort((a,b) => b.totalValue - a.totalValue);
-      this.expanded = {};
       this.updateVisible();
     },
 
@@ -354,7 +376,6 @@ function leadScorer() {
       }
     },
 
-    toggleExpand(id) { this.expanded[id] = !this.expanded[id]; },
     fmtMoney(v) { return '$'+Math.round(v).toLocaleString('pt-BR'); },
     fmtProb(p) { return Math.round(p*100)+'%'; },
   };
