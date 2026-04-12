@@ -165,7 +165,7 @@ def compute_features(df: pd.DataFrame) -> pd.DataFrame:
     - account_ltv           : soma de close_value dos Won da conta (lifetime value)
     - agent_sold_to_account : bool, vendedor já tem Won com esta conta
     """
-    df = df.sort_values("engage_date", na_position="last").reset_index(drop=True)
+    df = df.sort_values(["engage_date", "opportunity_id"], na_position="last", kind="mergesort").reset_index(drop=True)
 
     # is_new_combo depende da ordem cronológica.
     df["is_new_combo"] = _compute_is_new_combo(df)

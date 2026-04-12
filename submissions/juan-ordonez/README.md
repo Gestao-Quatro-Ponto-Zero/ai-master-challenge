@@ -12,7 +12,7 @@
 
 ## Executive Summary
 
-Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals abertos usando scoring empírico calibrado em 6.711 deals históricos. A exploração dos dados revelou que o dataset é de cross-sell numa base fixa de 85 contas, que variáveis consideradas óbvias (setor, região, tamanho da conta) não têm impacto relevante nos resultados, e que o sinal mais forte vem da combinação do perfil do vendedor com a novidade da relação vendedor × conta × produto. A ferramenta entrega a cada vendedor um ranking pessoal de 5 a 15 deals prioritários por semana, o que chamamos de Prioridade 1, com explicação em linguagem natural de por que cada deal está ali. Recomendação principal: dois terços do pipeline (1.425 deals) não têm conta atribuída no CRM. Resolver isso deve vir antes de qualquer otimização de priorização.
+Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals abertos usando scoring empírico calibrado em 6.711 deals históricos. A exploração dos dados revelou que o dataset é de cross-sell numa base fixa de 85 contas, que variáveis consideradas óbvias (setor, região, tamanho da conta) não têm impacto relevante nos resultados, e que o sinal mais forte vem da combinação do perfil do vendedor com a novidade da relação vendedor × conta × produto. A ferramenta entrega a cada vendedor um ranking pessoal de até 15 deals prioritários por semana, o que chamamos de Prioridade 1, com explicação em linguagem natural de por que cada deal está ali. Recomendação principal: dois terços do pipeline (1.425 deals) não têm conta atribuída no CRM. Resolver isso deve vir antes de qualquer otimização de priorização.
 
 ---
 
@@ -24,7 +24,7 @@ Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals ab
 
 2. **Score empírico em vez de machine learning:** Avaliei três caminhos: heurística com pesos manuais, lookup empírico em grupos calibrados nos dados, e regressão logística. Escolhi o lookup empírico porque cada probabilidade pode ser defendida com "baseado em N casos históricos do mesmo perfil". O vendedor entende de onde o número vem. Um modelo de ML seria mais sofisticado estatisticamente, mas produziria coeficientes que nenhum vendedor consegue interpretar.
 
-3. **Ranking por vendedor, não limites de corte fixos:** A primeira versão usava limites de corte fixos (thresholds) para classificar deals em categorias. Ao testar, a maioria dos deals caía em categorias genéricas que não ajudavam o vendedor a decidir o que fazer. Basicamente a ferramenta estava rotulando em vez de priorizando. A solução foi trocar para um ranking relativo: o "Foco da semana" (Prioridade 1) é o top 30% do pipeline de cada vendedor ordenado por retorno esperado (chance × valor), com um mínimo de 5 e máximo de 15 deals. Cada vendedor recebe uma lista pessoal e proporcional ao tamanho do seu pipeline.
+3. **Ranking por vendedor, não limites de corte fixos:** A primeira versão usava limites de corte fixos (thresholds) para classificar deals em categorias. Ao testar, a maioria dos deals caía em categorias genéricas que não ajudavam o vendedor a decidir o que fazer. Basicamente a ferramenta estava rotulando em vez de priorizando. A solução foi trocar para um ranking relativo: o "Foco da semana" (Prioridade 1) é o top 30% do pipeline de cada vendedor ordenado por retorno esperado (chance × valor), com até 15 deals. Cada vendedor recebe uma lista pessoal e proporcional ao tamanho do seu pipeline.
 
 4. **Front estático sem build:** A ferramenta é um arquivo HTML que abre com duplo clique, sem servidor, sem build, sem dependência de rede. Os dados são pré-computados em Python e embutidos como `data.js`. Essa decisão priorizou confiabilidade (funciona em qualquer máquina) sobre sofisticação tecnológica.
 
@@ -53,7 +53,7 @@ Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals ab
 
 1. **Resolver o backlog de "Atribuir conta":** 1.425 deals (68% do pipeline aberto) não têm conta atribuída no CRM. Sem essa informação, a ferramenta não consegue priorizá-los. Ação imediata: uma blitz de qualificação de pipeline resolveria o maior gargalo antes de qualquer otimização.
 
-2. **Focar Prioridade 1 na segunda de manhã:** cada vendedor tem 5 a 15 deals com melhor retorno esperado. Se o vendedor trabalhar só esses na semana, maximiza resultado com mínimo esforço de decisão.
+2. **Focar Prioridade 1 na segunda de manhã:** cada vendedor tem até 15 deals com melhor retorno esperado. Se o vendedor trabalhar só esses na semana, maximiza resultado com mínimo esforço de decisão.
 
 3. **Revisar Prioridade 4 mensalmente:** deals com chance abaixo da média global (63%) devem ser reavaliados conscientemente: vale insistir ou realocar tempo para deals com melhor retorno?
 
@@ -119,7 +119,7 @@ A ferramenta atual opera sobre um snapshot estático: os CSVs são lidos uma vez
 
 3. **Texto da explicação em linguagem técnica:** A primeira versão gerava frases como "68% é o win rate histórico de vendedores top em combos novos (1052 deals similares)." Identifiquei que "win rate", "vendedores top" e "combos novos" são termos que um vendedor não usa. Corrigi para "Vendedores como você fecham 68% em cenários similares", pessoal, direto, sem jargão.
 
-4. **Distribuição desequilibrada de categorias:** Com a primeira fórmula baseada em limites de corte fixos, 56% dos deals caíam numa categoria genérica que não ajudava o vendedor a entender o que fazer. A IA considerou a distribuição aceitável. Forcei a discussão e a solução nasceu do meu questionamento: trocar de limites fixos para ranking relativo por vendedor, garantindo que cada vendedor recebe exatamente 5-15 deals no "Foco da semana".
+4. **Distribuição desequilibrada de categorias:** Com a primeira fórmula baseada em limites de corte fixos, 56% dos deals caíam numa categoria genérica que não ajudava o vendedor a entender o que fazer. A IA considerou a distribuição aceitável. Forcei a discussão e a solução nasceu do meu questionamento: trocar de limites fixos para ranking relativo por vendedor, garantindo que cada vendedor recebe até 15 deals no "Foco da semana".
 
 ### O que eu adicionei que a IA sozinha não faria
 
