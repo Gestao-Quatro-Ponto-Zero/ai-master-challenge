@@ -19,8 +19,12 @@ st.markdown("""
 # --- 2. ENGENHARIA DE DADOS (BLINDADA) ---
 @st.cache_data
 def carregar_e_tratar_mestre():
-    path = "data/"
+    # Descobre o caminho absoluto da pasta onde o app.py está
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_path, "data")
+    
     try:
+        # Agora o path será sempre o caminho completo e correto
         pipe = pd.read_csv(os.path.join(path, "sales_pipeline.csv"))
         contas = pd.read_csv(os.path.join(path, "accounts.csv"))
         teams = pd.read_csv(os.path.join(path, "sales_teams.csv"))
