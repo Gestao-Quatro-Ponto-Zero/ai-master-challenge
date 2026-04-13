@@ -42,14 +42,18 @@
       <span class="text-[11px] text-gray-500 font-medium mt-1 bg-gray-100 px-2.5 py-1 rounded-md" x-text="snapshotLabel"></span>
     </div>
 
-    <!-- Dropdown custom -->
-    <div class="mb-5">
+    <!-- Dropdown + metric cards row -->
+    <div class="mb-5 flex items-start gap-4 flex-wrap">
+      <div class="flex-1 min-w-[280px]">
       <label class="block text-[11px] font-medium uppercase tracking-widest text-gray-500 mb-2">Ver pipeline de</label>
-      <div @click.outside="dropOpen = false" class="relative max-w-sm">
+      <div @click.outside="dropOpen = false" class="relative">
         <button @click="dropOpen = !dropOpen"
-          class="flex items-center justify-between w-full h-10 px-3.5 text-[13px] bg-white border rounded-lg transition-all"
+          class="flex items-center justify-between w-full min-h-[48px] px-3.5 py-2 text-left bg-white border rounded-lg transition-all"
           :class="dropOpen ? 'border-gray-400 ring-2 ring-gray-200 shadow-sm' : 'border-gray-300 hover:border-gray-400 hover:shadow-sm'">
-          <span class="text-gray-900 font-medium" x-text="dropLabel"></span>
+          <div>
+            <div class="text-[14px] text-gray-900 font-semibold" x-text="info.label"></div>
+            <div class="text-[11px] text-gray-500" x-text="info.sub"></div>
+          </div>
           <svg class="w-3.5 h-3.5 text-gray-400 ml-2 transition-transform duration-200" :class="dropOpen && 'rotate-180'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div x-show="dropOpen" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
@@ -73,13 +77,26 @@
           </template>
         </div>
       </div>
+      </div>
+      <div class="flex gap-3 mt-5">
+        <div class="bg-gray-50 border border-gray-200 rounded-xl px-5 py-3 text-center min-w-[140px]">
+          <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">Oportunidades</div>
+          <div class="text-xl font-bold text-gray-900 tabular-nums mt-1" x-text="totalFiltered"></div>
+          <div class="text-[11px] text-gray-500 mt-0.5">abertas</div>
+        </div>
+        <div class="bg-blue-50/40 border border-blue-100 rounded-xl px-5 py-3 text-center min-w-[140px]">
+          <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">Pipeline total</div>
+          <div class="text-xl font-bold text-gray-900 tabular-nums mt-1" x-text="fmtMoney(pipelineTotal)"></div>
+        </div>
+        <div class="bg-orange-50/40 border border-orange-100 rounded-xl px-5 py-3 text-center min-w-[140px]">
+          <div class="text-[10px] text-gray-500 font-semibold uppercase tracking-widest">Em foco esta semana</div>
+          <div class="text-xl font-bold text-gray-900 tabular-nums mt-1" x-text="fmtMoney(focusTotal)"></div>
+          <div class="text-[11px] text-gray-500 mt-0.5" x-text="(counts['Foco da semana'] || 0) + ' oportunidades'"></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Selected info -->
-    <div class="mb-4 pb-4 border-b border-gray-200">
-      <h2 class="text-base font-semibold text-gray-900" x-text="info.label"></h2>
-      <p class="text-[13px] text-gray-500 mt-0.5" x-text="info.sub"></p>
-    </div>
+    <div class="mb-4 pb-4 border-b border-gray-200"></div>
 
     <!-- Priority chips -->
     <div>
@@ -118,11 +135,26 @@
           <svg class="w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200" :class="sections[sec.key] && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
           <span class="text-[15px]" x-text="sec.emoji"></span>
           <div class="flex-1 min-w-0">
-            <div class="flex items-baseline gap-2">
+            <div class="flex items-baseline gap-1">
               <h3 class="text-[14px] font-semibold text-gray-900" x-text="sec.label"></h3>
-              <span class="text-[12px] text-gray-500" x-text="sec.deals.length + ' oportunidades'"></span>
             </div>
             <p class="text-[12px] text-gray-600 mt-0.5" x-text="sec.desc"></p>
+          </div>
+          <div class="flex items-center shrink-0">
+            <div class="w-[100px] text-right">
+              <div class="text-lg font-bold tabular-nums leading-tight" :class="(sec.key === 'p1' || sec.key === 'p2') ? 'text-gray-900' : 'text-gray-600'" x-text="sec.deals.length"></div>
+              <div class="text-[10px] text-gray-600 uppercase tracking-wide">oport. abertas</div>
+            </div>
+            <div class="w-px h-8 bg-gray-200 mx-4"></div>
+            <div class="w-[110px] text-right">
+              <div class="text-lg font-bold tabular-nums leading-tight" :class="(sec.key === 'p1' || sec.key === 'p2') ? 'text-gray-900' : 'text-gray-600'" x-text="fmtMoney(sec.pipeline)"></div>
+              <div class="text-[10px] text-gray-600 uppercase tracking-wide">pipeline</div>
+            </div>
+            <div class="w-px h-8 bg-gray-200 mx-4"></div>
+            <div class="w-[110px] text-right">
+              <div class="text-lg font-bold tabular-nums leading-tight" :class="(sec.key === 'p1' || sec.key === 'p2') ? 'text-gray-900' : 'text-gray-600'" x-text="fmtMoney(sec.weighted)"></div>
+              <div class="text-[10px] text-gray-600 uppercase tracking-wide">expected value</div>
+            </div>
           </div>
         </button>
 
@@ -211,11 +243,26 @@
             <svg class="w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200" :class="sections.assign && 'rotate-90'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             <span class="text-[15px]">📋</span>
             <div class="flex-1 min-w-0">
-              <div class="flex items-baseline gap-2">
+              <div class="flex items-baseline gap-1">
                 <h3 class="text-[14px] font-semibold text-gray-900">Atribuir conta</h3>
-                <span class="text-[12px] text-gray-500" x-text="(counts['Atribuir conta'] || 0) + ' oportunidades'"></span>
               </div>
               <p class="text-[12px] text-gray-600 mt-0.5">Sem conta no CRM. Atribuir antes de priorizar.</p>
+            </div>
+            <div class="flex items-center shrink-0">
+              <div class="w-[100px] text-right">
+                <div class="text-lg font-bold text-gray-600 tabular-nums leading-tight" x-text="counts['Atribuir conta'] || 0"></div>
+                <div class="text-[10px] text-gray-600 uppercase tracking-wide">oport. abertas</div>
+              </div>
+              <div class="w-px h-8 bg-gray-200 mx-4"></div>
+              <div class="w-[110px] text-right">
+                <div class="text-lg font-bold text-gray-600 tabular-nums leading-tight" x-text="fmtMoney(assignPipeline)"></div>
+                <div class="text-[10px] text-gray-600 uppercase tracking-wide">pipeline</div>
+              </div>
+              <div class="w-px h-8 bg-gray-200 mx-4"></div>
+              <div class="w-[110px] text-right">
+                <div class="text-lg font-bold text-gray-600 tabular-nums leading-tight" x-text="fmtMoney(assignEV)"></div>
+                <div class="text-[10px] text-gray-600 uppercase tracking-wide">expected value</div>
+              </div>
             </div>
           </button>
           <div class="sec-expand" :style="sections.assign ? 'max-height:9999px;opacity:1' : 'max-height:0;opacity:0'">
@@ -308,6 +355,7 @@ function leadScorer() {
     dropOpen: false, filterPriority: null,
     sections: { p1: true, p2: true, p3: false, p4: false, assign: false },
     info: {}, counts: {}, totalFiltered: 0,
+    pipelineTotal: 0, focusTotal: 0, assignPipeline: 0, assignEV: 0,
     dropLabel: '', dropGroups: [],
     visibleSections: [], assignGroups: [],
 
@@ -319,7 +367,10 @@ function leadScorer() {
     },
 
     buildDropGroups() {
+      const totalDeals = meta.agents.reduce((s, a) => s + a.open_deals_count, 0);
+      const totalAgents = meta.agents.length;
       this.dropGroups = [
+        { icon: '🏢', label: 'Visão geral', items: [{ key: 'all:empresa', name: 'Toda a empresa', detail: totalDeals+' deals · '+totalAgents+' vend.' }] },
         { icon: '🌐', label: 'Regionais', items: meta.regional_offices.map(r => ({ key: 'regional:'+r.name, name: r.name, detail: r.open_deals_count+' deals · '+r.agent_count+' vend.' })) },
         { icon: '👥', label: 'Times', items: meta.managers.map(m => ({ key: 'manager:'+m.name, name: m.name, detail: m.open_deals_count+' deals · '+m.agent_count+' vend.' })) },
         { icon: '👤', label: 'Vendedores', items: meta.agents.map(a => ({ key: 'agent:'+a.name, name: a.name, detail: a.open_deals_count+' deals' })) },
@@ -331,7 +382,13 @@ function leadScorer() {
       const type = this.selectedKey.substring(0, idx);
       const name = this.selectedKey.substring(idx + 1);
       let agents, info;
-      if (type === 'agent') {
+      if (type === 'all') {
+        agents = new Set(meta.agents.map(a => a.name));
+        const totalAgents = meta.agents.length;
+        const totalManagers = meta.managers.length;
+        const totalRegions = meta.regional_offices.length;
+        info = { label: 'Toda a empresa', sub: totalRegions+' regionais · '+totalManagers+' times · '+totalAgents+' vendedores', type };
+      } else if (type === 'agent') {
         const a = meta.agents.find(x => x.name === name);
         agents = new Set([name]); info = { label: name, sub: (a?a.open_deals_count:0)+' deals abertos', type };
       } else if (type === 'manager') {
@@ -344,17 +401,28 @@ function leadScorer() {
       this.info = info;
       // dropLabel usa total (calculado abaixo) — NÃO extrair de info.sub via regex
 
-      const byAction = {}, counts = {}; let total = 0;
+      const byAction = {}, counts = {}; let total = 0; let pipTotal = 0;
       for (const d of D.deals) {
         if (!agents.has(d.agent)) continue;
         (byAction[d.action] = byAction[d.action] || []).push(d);
         counts[d.action] = (counts[d.action] || 0) + 1; total++;
+        pipTotal += d.value;
       }
       this.counts = counts; this.totalFiltered = total;
+      this.pipelineTotal = pipTotal;
       this.dropLabel = info.label + ' — ' + total + ' deals';
 
       const s = a => (a||[]).slice().sort((x,y) => y.ev - x.ev);
-      this._allSections = sectionDefs.map(def => ({...def, deals: s(byAction[def.action])})).filter(sec => sec.deals.length > 0);
+      this._allSections = sectionDefs.map(def => {
+        const deals = s(byAction[def.action]);
+        const pipeline = deals.reduce((sum, d) => sum + d.value, 0);
+        const weighted = deals.reduce((sum, d) => sum + d.ev, 0);
+        return {...def, deals, pipeline, weighted};
+      }).filter(sec => sec.deals.length > 0);
+
+      // Foco da semana = pipeline do P1
+      const p1sec = this._allSections.find(s => s.key === 'p1');
+      this.focusTotal = p1sec ? p1sec.pipeline : 0;
 
       const grp = {};
       for (const d of (byAction['Atribuir conta']||[])) {
@@ -363,6 +431,8 @@ function leadScorer() {
         grp[d.product].deals.push(d);
       }
       this.assignGroups = Object.values(grp).sort((a,b) => b.totalValue - a.totalValue);
+      this.assignPipeline = Object.values(grp).reduce((s, g) => s + g.totalValue, 0);
+      this.assignEV = (byAction['Atribuir conta']||[]).reduce((s, d) => s + d.ev, 0);
       this.updateVisible();
     },
 
