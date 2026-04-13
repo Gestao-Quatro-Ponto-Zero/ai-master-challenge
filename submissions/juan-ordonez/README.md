@@ -10,9 +10,16 @@
 
 ---
 
+## Demo online
+
+**[Abrir Lead Scorer no Vercel →](https://lead-scorer-g4-juan.vercel.app/)**
+
+
+---
+
 ## Executive Summary
 
-Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals abertos usando scoring empírico calibrado em 6.711 deals históricos. A exploração dos dados revelou que o dataset é de cross-sell numa base fixa de 85 contas, que variáveis consideradas óbvias (setor, região, tamanho da conta) não têm impacto relevante nos resultados, e que o sinal mais forte vem da combinação do perfil do vendedor com a novidade da relação vendedor × conta × produto. A ferramenta entrega a cada vendedor um ranking pessoal de até 15 deals prioritários por semana, o que chamamos de Prioridade 1, com explicação em linguagem natural de por que cada deal está ali. Recomendação principal: dois terços do pipeline (1.425 deals) não têm conta atribuída no CRM. Resolver isso deve vir antes de qualquer otimização de priorização.
+Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals abertos usando scoring empírico calibrado em 6.711 deals históricos. A exploração dos dados revelou que o dataset é de cross-sell numa base fixa de 85 contas, que variáveis consideradas óbvias (setor, região, tamanho da conta) não têm impacto relevante nos resultados, e que o sinal mais forte vem da combinação do perfil do vendedor com a novidade da relação vendedor × conta × produto. A ferramenta entrega a cada vendedor um ranking pessoal dos deals mais promissores da semana (top 30% do pipeline, mínimo 5, máximo 15), o que chamamos de Prioridade 1, com explicação em linguagem natural de por que cada deal está ali. A interface oferece 4 níveis de navegação (empresa, regional, time, vendedor) com métricas executivas de pipeline e expected value por prioridade. Recomendação principal: dois terços do pipeline (1.425 deals) não têm conta atribuída no CRM. Resolver isso deve vir antes de qualquer otimização de priorização.
 
 ---
 
@@ -24,7 +31,7 @@ Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals ab
 
 2. **Score empírico em vez de machine learning:** Avaliei três caminhos: heurística com pesos manuais, lookup empírico em grupos calibrados nos dados, e regressão logística. Escolhi o lookup empírico porque cada probabilidade pode ser defendida com "baseado em N casos históricos do mesmo perfil". O vendedor entende de onde o número vem. Um modelo de ML seria mais sofisticado estatisticamente, mas produziria coeficientes que nenhum vendedor consegue interpretar.
 
-3. **Ranking por vendedor, não limites de corte fixos:** A primeira versão usava limites de corte fixos (thresholds) para classificar deals em categorias. Ao testar, a maioria dos deals caía em categorias genéricas que não ajudavam o vendedor a decidir o que fazer. Basicamente a ferramenta estava rotulando em vez de priorizando. A solução foi trocar para um ranking relativo: o "Foco da semana" (Prioridade 1) é o top 30% do pipeline de cada vendedor ordenado por retorno esperado (chance × valor), com até 15 deals. Cada vendedor recebe uma lista pessoal e proporcional ao tamanho do seu pipeline.
+3. **Ranking por vendedor, não limites de corte fixos:** A primeira versão usava limites de corte fixos (thresholds) para classificar deals em categorias. Ao testar, a maioria dos deals caía em categorias genéricas que não ajudavam o vendedor a decidir o que fazer. Basicamente a ferramenta estava rotulando em vez de priorizando. A solução foi trocar para um ranking relativo: o "Foco da semana" (Prioridade 1) é o top 30% do pipeline de cada vendedor ordenado por retorno esperado (chance × valor), com mínimo de 5 e máximo de 15 deals. Cada vendedor recebe uma lista pessoal e proporcional ao tamanho do seu pipeline.
 
 4. **Front estático sem build:** A ferramenta é um arquivo HTML que abre com duplo clique, sem servidor, sem build, sem dependência de rede. Os dados são pré-computados em Python e embutidos como `data.js`. Essa decisão priorizou confiabilidade (funciona em qualquer máquina) sobre sofisticação tecnológica.
 
@@ -45,15 +52,17 @@ Construí uma ferramenta web que prioriza o pipeline de vendas de 2.089 deals ab
 **O que a ferramenta entrega:**
 
 - **5 categorias de prioridade** com ação clara: Prioridade 1 (Foco da semana), Prioridade 2 (Foco secundário), Prioridade 3 (Ganho rápido), Prioridade 4 (Repensar), e Atribuir conta (fora da escala de prioridade, por ser bloqueio estrutural por falta de dados no CRM)
-- **Dropdown com filtro por vendedor, time ou região:** 3 visões no mesmo seletor. Na visão de time, o pipeline de todos os vendedores do manager é agregado como união dos focos individuais
+- **4 níveis de navegação** no mesmo dropdown: toda a empresa, regional, time e vendedor individual. Na visão de time ou regional, o pipeline é agregado como união dos focos individuais dos vendedores
+- **Métricas executivas** no header (deals abertos, pipeline total, valor em foco na semana) e em cada seção de prioridade (deals, pipeline, expected value), permitindo leitura rápida sem expandir nenhum deal
 - **Cards expandíveis** com explicação personalizada ("Primeira vez oferecendo GTX Pro pra Donquadtech. Vendedores como você fecham 64% em cenários similares") e LTV da conta
-- **Coluna Relação** mostrando Cliente (o vendedor já vendeu pra essa conta no passado) ou Prospect (primeiro contato do vendedor com essa conta), baseado no histórico real, não em suposição
+- **Paginação progressiva** ("Ver mais") em todas as seções, permitindo acesso ao pipeline completo sem sobrecarregar a tela
+- **Coluna Relação** mostrando Cliente (o vendedor já fechou negócio com essa conta no passado) ou Novo (o vendedor nunca fechou negócio com essa conta), baseado no histórico real de vendas
 
 ### Recomendações
 
 1. **Resolver o backlog de "Atribuir conta":** 1.425 deals (68% do pipeline aberto) não têm conta atribuída no CRM. Sem essa informação, a ferramenta não consegue priorizá-los. Ação imediata: uma blitz de qualificação de pipeline resolveria o maior gargalo antes de qualquer otimização.
 
-2. **Focar Prioridade 1 na segunda de manhã:** cada vendedor tem até 15 deals com melhor retorno esperado. Se o vendedor trabalhar só esses na semana, maximiza resultado com mínimo esforço de decisão.
+2. **Focar Prioridade 1 na segunda de manhã:** cada vendedor tem entre 5 e 15 deals com melhor retorno esperado (top 30% do seu pipeline). Se o vendedor trabalhar só esses na semana, maximiza resultado com mínimo esforço de decisão.
 
 3. **Revisar Prioridade 4 mensalmente:** deals com chance abaixo da média global (63%) devem ser reavaliados conscientemente: vale insistir ou realocar tempo para deals com melhor retorno?
 
@@ -111,6 +120,10 @@ A ferramenta atual opera sobre um snapshot estático: os CSVs são lidos uma vez
 
 5. **Validação:** Fiz uma auditoria completa do motor antes de submeter. Verifiquei que as probabilidades calculadas para cada grupo reproduziam as taxas de conversão observadas nos dados históricos (diferença menor que 1 ponto percentual em todos os 6 grupos). Selecionei 10 deals aleatórios e confirmei que os números no motor batiam exatamente com os números no arquivo de dados da interface. Verifiquei que o ranking do vendedor com mais pipeline (Darcel Schlecht, 194 deals) continha exatamente os 15 deals com maior retorno esperado. Conferi que as contagens agregadas por manager e região somavam ao total global.
 
+6. **Revisão externa com Codex:** Submeti o projeto a 3 rodadas de revisão rigorosa com o Codex (OpenAI), pedindo que agisse como avaliador hostil. Na primeira rodada foram identificados 12 problemas (1 bloqueador, 6 importantes, 5 menores). Na segunda rodada, 3 remanescentes. Na terceira, apenas ajustes de docstring. Todos os problemas foram corrigidos antes da submissão.
+
+7. **Deploy no Vercel:** Publiquei a ferramenta em produção para que o avaliador possa acessar sem baixar arquivos: https://lead-scorer-g4-juan.vercel.app/
+
 ### Onde a IA errou e como corrigi
 
 1. **Cálculo de "combo novo" sobre base incompleta:** Na primeira versão, o Claude calculou o efeito de "combo novo" usando apenas deals já fechados, ignorando os deals abertos que já existiam no pipeline. Isso inflou o efeito para ~10 pontos percentuais, fazendo a variável parecer mais poderosa do que realmente era. Identifiquei a inconsistência ao perceber que os números tinham mudado entre rodadas de análise. Quando incluí deals abertos no histórico (que é o cenário real de uso), o efeito caiu para ~4 pontos percentuais, mais modesto, mas mais fiel à realidade.
@@ -119,7 +132,9 @@ A ferramenta atual opera sobre um snapshot estático: os CSVs são lidos uma vez
 
 3. **Texto da explicação em linguagem técnica:** A primeira versão gerava frases como "68% é o win rate histórico de vendedores top em combos novos (1052 deals similares)." Identifiquei que "win rate", "vendedores top" e "combos novos" são termos que um vendedor não usa. Corrigi para "Vendedores como você fecham 68% em cenários similares", pessoal, direto, sem jargão.
 
-4. **Distribuição desequilibrada de categorias:** Com a primeira fórmula baseada em limites de corte fixos, 56% dos deals caíam numa categoria genérica que não ajudava o vendedor a entender o que fazer. A IA considerou a distribuição aceitável. Forcei a discussão e a solução nasceu do meu questionamento: trocar de limites fixos para ranking relativo por vendedor, garantindo que cada vendedor recebe até 15 deals no "Foco da semana".
+4. **Bug: deals apareciam pré-expandidos ao trocar de vendedor:** A IA implementou o expand/collapse dos deals usando estado reativo do Alpine.js (`x-data`), mas ao trocar de vendedor no dropdown, os novos deals herdavam o estado expandido dos anteriores. Identifiquei o bug ao testar e a solução foi trocar para `<details>/<summary>` nativo do HTML, que não depende de estado JavaScript e garante que cada deal começa fechado por construção.
+
+5. **Distribuição desequilibrada de categorias:** Com a primeira fórmula baseada em limites de corte fixos, 56% dos deals caíam numa categoria genérica que não ajudava o vendedor a entender o que fazer. A IA considerou a distribuição aceitável. Forcei a discussão e a solução nasceu do meu questionamento: trocar de limites fixos para ranking relativo por vendedor, garantindo que cada vendedor recebe entre 5 e 15 deals no "Foco da semana" (top 30% do pipeline).
 
 ### O que eu adicionei que a IA sozinha não faria
 
@@ -129,9 +144,13 @@ A ferramenta atual opera sobre um snapshot estático: os CSVs são lidos uma vez
 
 - **Filtragem de informações irrelevantes para o vendedor**: a IA sugeriu diversas informações técnicas para exibir na interface, como o "retorno esperado" (probabilidade multiplicada pelo valor, que resultava num número em reais que confundia com o valor real do deal), quantidade de "casos similares" usados na calibração, nível de confiança estatística, e categorias de tipo de deal que tinham distribuição de 99% concentrada num único valor. Vetei todas essas sugestões porque, do ponto de vista do vendedor, nenhuma delas muda a decisão. O vendedor precisa saber o que fazer, não como o modelo foi calibrado
 
-- **Linguagem de vendedor, não de analista**: forcei 3 iterações no texto da explicação até chegar numa versão sem jargão. Também renomeei as categorias e colunas até ficarem acionáveis (Prioridade 1 em vez de "Agir hoje", coluna Relação com Cliente/Prospect em vez de "Tipo")
+- **Linguagem de vendedor, não de analista**: forcei 3 iterações no texto da explicação até chegar numa versão sem jargão. Também renomeei as categorias e colunas até ficarem acionáveis (Prioridade 1 em vez de "Agir hoje", coluna Relação com Cliente/Novo em vez de "Tipo")
 
-- **Todo o design visual e a experiência do usuário**: layout em estilo de CRM profissional (inspirado em Notion e Linear), dropdown com 3 seções (regionais, times, vendedores), sistema de cores por prioridade com cores suaves ao expandir, contrastes altos para leitura rápida, badges com texto preto, espaçamento generoso entre colunas, cards expandíveis com seta indicativa, seção "Atribuir conta" separada visualmente e agrupada por produto. A IA gerou versões rudimentares da interface; todas as iterações de refinamento visual foram direcionadas por mim
+- **Visão global "Toda a empresa"**: propus adicionar um nível de agregação acima das regionais para que o Head de RevOps veja o pipeline inteiro de uma vez. A IA não havia sugerido. Ficou como 4o nível de navegação no dropdown.
+
+- **Métricas executivas por seção**: pedi para cada card de prioridade mostrar 3 métricas (deals abertos, pipeline, expected value), alinhadas como colunas invisíveis entre todas as seções. Com hierarquia visual: Prioridade 1 e 2 em preto, Prioridade 3 e 4 em cinza escuro.
+
+- **Todo o design visual e a experiência do usuário**: layout em estilo de CRM profissional (inspirado em Notion e Linear), dropdown com 4 seções (empresa, regionais, times, vendedores), sistema de cores por prioridade com cores suaves ao expandir, contrastes altos para leitura rápida, badges com texto preto, espaçamento generoso entre colunas, cards expandíveis com seta circular indicativa, numeração de linhas, paginação progressiva ("Ver mais"), e seção "Atribuir conta" separada visualmente com header de colunas unificado. A IA gerou versões rudimentares da interface; todas as iterações de refinamento visual foram direcionadas por mim
 
 - **HTML estático em vez de Streamlit**: a IA sugeriu Streamlit como stack. Argumentei que Streamlit tem aparência de ferramenta interna de análise de dados, funcional mas sem cara de produto que um vendedor usaria no dia a dia. Escolhi HTML estático porque abre com duplo clique, não precisa de servidor, e permite controle total sobre o visual
 
@@ -140,9 +159,11 @@ A ferramenta atual opera sobre um snapshot estático: os CSVs são lidos uma vez
 ## Evidências
 
 - [x] Decisões detalhadas e cronologia dos pivôs: `process-log/decisoes.md`
-- [ ] Evidências visuais do processo (PDF consolidado): `process-log/evidencias-processo.pdf`
-- [x] Código-fonte versionado: `score/`, `web/`
+- [x] Screenshots do processo de desenvolvimento: `process-log/screenshots/`
+- [x] Vídeo de demonstração do workflow: `process-log/demo.mp4`
+- [x] Código-fonte versionado: `solution/`
 - [x] Git history com commits descritivos
+
 
 ---
 
@@ -153,7 +174,7 @@ A ferramenta atual opera sobre um snapshot estático: os CSVs são lidos uma vez
 Abra o arquivo diretamente no navegador, não precisa de servidor:
 
 ```
-submissions/juan-ordonez/web/index.html
+submissions/juan-ordonez/solution/web/index.html
 ```
 
 Duplo clique no arquivo ou arraste para o Chrome. Funciona offline, sem dependências.
@@ -163,16 +184,16 @@ Duplo clique no arquivo ou arraste para o Chrome. Funciona offline, sem dependê
 Se quiser rodar o motor de score e regenerar o `data.js` a partir dos CSVs originais:
 
 ```bash
-cd submissions/juan-ordonez/score
+cd submissions/juan-ordonez/solution/score
 pip install pandas numpy       # dependências (se não tiver)
 python score.py                # self-test do motor
 python build_data.py           # gera ../web/data.js
 ```
 
-Depois abra `web/index.html` normalmente.
+Depois abra `solution/web/index.html` normalmente.
 
-**Dataset:** [CRM Sales Predictive Analytics](https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics) (licença CC0), incluído completo em `data/` (5 arquivos: `accounts.csv`, `products.csv`, `sales_teams.csv`, `sales_pipeline.csv`, `metadata.csv`).
+**Dataset:** [CRM Sales Predictive Analytics](https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics) (licença CC0), incluído completo em `solution/data/` (5 arquivos: `accounts.csv`, `products.csv`, `sales_teams.csv`, `sales_pipeline.csv`, `metadata.csv`).
 
 ---
 
-_Submissão enviada em: 11 de abril de 2026_
+_Submissão enviada em: 13 de abril de 2026_

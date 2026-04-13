@@ -1,4 +1,4 @@
-# Golden deals — 20 casos de referência
+# Golden deals — casos de referência
 
 Snapshot dos números gerados pelo motor para deals específicos.
 Se o score for refatorado e os números mudarem, a diferença fica visível aqui e vira smoke test.
@@ -7,29 +7,18 @@ Total selecionado: **16** deals.
 
 ---
 
-## 1. Darcel Schlecht — GTX Basic — —
-
-- **id:** `X8M3SCVF`
-- **valor:** $550
-- **dias aberto:** 166
-- **combo:** sem conta
-- **prob:** 0.631 (média)
-- **expected value:** $347
-- **ação:** **Atribuir conta**
-- **texto:** _Sem conta atribuída — atribua para eu ranquear._
-
-## 2. Darcel Schlecht — GTX Plus Pro — Isdom
+## 1. Darcel Schlecht — GTX Plus Pro — Isdom
 
 - **id:** `I3KQNE9V`
 - **valor:** $5,482
 - **dias aberto:** 166
 - **combo:** recorrente
-- **prob:** 0.605 (alta)
-- **expected value:** $3,318
+- **prob:** 0.606 (alta)
+- **expected value:** $3,322
 - **ação:** **Foco da semana**
 - **texto:** _Já tentaram GTX Plus Pro com Isdom antes. Vendedores como você fecham 61% em cenários similares._
 
-## 3. Darcel Schlecht — GTX Pro — —
+## 2. Darcel Schlecht — GTX Pro — —
 
 - **id:** `NU4ACGMY`
 - **valor:** $4,821
@@ -40,14 +29,25 @@ Total selecionado: **16** deals.
 - **ação:** **Atribuir conta**
 - **texto:** _Sem conta atribuída — atribua para eu ranquear._
 
-## 4. Darcel Schlecht — GTX Plus Basic — —
+## 3. Darcel Schlecht — GTX Basic — —
 
-- **id:** `LHBWJAD3`
-- **valor:** $1,096
+- **id:** `X8M3SCVF`
+- **valor:** $550
+- **dias aberto:** 166
+- **combo:** sem conta
+- **prob:** 0.631 (média)
+- **expected value:** $347
+- **ação:** **Atribuir conta**
+- **texto:** _Sem conta atribuída — atribua para eu ranquear._
+
+## 4. Darcel Schlecht — GTX Pro — —
+
+- **id:** `6V7FT2YU`
+- **valor:** $4,821
 - **dias aberto:** 165
 - **combo:** sem conta
 - **prob:** 0.631 (média)
-- **expected value:** $692
+- **expected value:** $3,043
 - **ação:** **Atribuir conta**
 - **texto:** _Sem conta atribuída — atribua para eu ranquear._
 
@@ -68,8 +68,8 @@ Total selecionado: **16** deals.
 - **valor:** $26,768
 - **dias aberto:** 96
 - **combo:** novo
-- **prob:** 0.681 (alta)
-- **expected value:** $18,232
+- **prob:** 0.683 (alta)
+- **expected value:** $18,281
 - **ação:** **Foco da semana**
 - **texto:** _Primeira vez oferecendo GTK 500 pra Betasoloin. Vendedores como você fecham 68% em cenários similares._
 
@@ -79,10 +79,10 @@ Total selecionado: **16** deals.
 - **valor:** $26,768
 - **dias aberto:** 378
 - **combo:** novo
-- **prob:** 0.635 (alta)
-- **expected value:** $17,008
+- **prob:** 0.634 (alta)
+- **expected value:** $16,983
 - **ação:** **Foco da semana**
-- **texto:** _Primeira vez oferecendo GTK 500 pra Warephase. Vendedores como você fecham 64% em cenários similares._
+- **texto:** _Primeira vez oferecendo GTK 500 pra Warephase. Vendedores como você fecham 63% em cenários similares._
 
 ## 8. Markita Hansen — GTK 500 — Vehement Capital Partners
 
@@ -90,10 +90,10 @@ Total selecionado: **16** deals.
 - **valor:** $26,768
 - **dias aberto:** 321
 - **combo:** novo
-- **prob:** 0.635 (alta)
-- **expected value:** $17,008
+- **prob:** 0.634 (alta)
+- **expected value:** $16,983
 - **ação:** **Foco da semana**
-- **texto:** _Primeira vez oferecendo GTK 500 pra Vehement Capital Partners. Vendedores como você fecham 64% em cenários similares._
+- **texto:** _Primeira vez oferecendo GTK 500 pra Vehement Capital Partners. Vendedores como você fecham 63% em cenários similares._
 
 ## 9. James Ascencio — MG Advanced — —
 
@@ -112,8 +112,8 @@ Total selecionado: **16** deals.
 - **valor:** $550
 - **dias aberto:** 407
 - **combo:** novo
-- **prob:** 0.681 (alta)
-- **expected value:** $375
+- **prob:** 0.683 (alta)
+- **expected value:** $376
 - **ação:** **Ganho rápido**
 - **texto:** _Primeira vez oferecendo GTX Basic pra Green-Plus. Vendedores como você fecham 68% em cenários similares._
 
@@ -123,8 +123,8 @@ Total selecionado: **16** deals.
 - **valor:** $4,821
 - **dias aberto:** 345
 - **combo:** novo
-- **prob:** 0.681 (alta)
-- **expected value:** $3,284
+- **prob:** 0.683 (alta)
+- **expected value:** $3,293
 - **ação:** **Foco secundário**
 - **texto:** _Primeira vez oferecendo GTX Pro pra Globex Corporation. Vendedores como você fecham 68% em cenários similares._
 
@@ -134,8 +134,8 @@ Total selecionado: **16** deals.
 - **valor:** $1,096
 - **dias aberto:** 335
 - **combo:** recorrente
-- **prob:** 0.605 (alta)
-- **expected value:** $663
+- **prob:** 0.606 (alta)
+- **expected value:** $664
 - **ação:** **Repensar**
 - **texto:** _Já tentaram GTX Plus Basic com Zathunicon antes. Vendedores como você fecham 61% em cenários similares._
 
@@ -156,8 +156,8 @@ Total selecionado: **16** deals.
 - **valor:** $3,393
 - **dias aberto:** 417
 - **combo:** novo
-- **prob:** 0.681 (alta)
-- **expected value:** $2,311
+- **prob:** 0.683 (alta)
+- **expected value:** $2,317
 - **ação:** **Foco da semana**
 - **texto:** _Primeira vez oferecendo MG Advanced pra Ganjaflex. Vendedores como você fecham 68% em cenários similares._
 

@@ -306,13 +306,16 @@ time está dividindo atenção esta semana", não uma lista artificial de
 
 ### Pivô 11 · Campos `deal_stage` e `similar_cases` no data.js
 
-**Adicionados antes de implementar a UI**, para que o card expandido
-tivesse informação completa:
+**Adicionados ao data.js** para enriquecer o dataset. Ambos estão
+disponíveis no data.js para consumo:
 
-- `deal_stage` (Engaging/Prospecting): informa ao vendedor se o deal já
-  está em negociação ou ainda em qualificação. Afeta a próxima ação.
-- `similar_cases` (N de deals históricos do bucket): fornece a "prova
-  social" do score — "baseado em 1.052 casos históricos, confiança alta".
+- `deal_stage` (Engaging/Prospecting): informa se o deal já está em
+  negociação ou ainda em qualificação. Na UI, o estágio é comunicado
+  indiretamente pela coluna "Aberto há" (dias = Engaging, "Prospecção" = Prospecting).
+- `similar_cases` (N de deals históricos do bucket): disponível no data.js.
+  Na UI final, optamos por não exibir na interface para manter o card expandido
+  limpo e focado na explicação + LTV. O rigor estatístico está documentado
+  no score.py (self-test) e no decisoes.md.
 
 ---
 
@@ -404,21 +407,25 @@ P4  Repensar             100   4.8%
 ## Estado atual (atualizado)
 
 ### Concluído
-- [x] Motor de score com lookup empírico + ranking per-vendedor
+- [x] Motor de score com lookup empírico + ranking per-vendedor + ordenação estável
 - [x] Pipeline de geração data.js com metadata completa (agents, managers, regional_offices)
 - [x] Dados oficiais Kaggle (5 CSVs, MD5 conferido)
 - [x] Taxonomia P1-P4 + Atribuir conta
-- [x] UI implementada: dropdown 3 seções, cards expandíveis, Atribuir conta agrupado por produto
+- [x] UI final: visão global, métricas executivas, tabela CRM, cards expandíveis, dropdown 4 níveis
 - [x] Fork + clone + branch `submission/juan-ordonez`
-- [x] Primeiro commit (`f0cd57a`)
-- [x] Process log com 11 pivôs, 5 casos de erro corrigido, distribuição final
+- [x] 7 commits incrementais no fork
+- [x] README completo (todas as seções preenchidas)
+- [x] LinkedIn preenchido
+- [x] Process log com 11 pivôs, 5 casos de erro corrigido
+- [x] Auditoria Codex: todas as sugestões relevantes incorporadas
+- [x] .gitignore restaurado (zero modificação fora de submissions/juan-ordonez/)
+- [x] Scripts eda/01-06 incluídos em solution/eda/
+- [x] Estrutura reorganizada: solution/ + process-log/ conforme CONTRIBUTING.md
+- [x] Screenshots do processo em `process-log/screenshots/`
+- [x] Deploy no Vercel: https://lead-scorer-g4-juan.vercel.app/
+- [x] Link do Vercel no README
 
 ### Pendente
-- [ ] Testar e polir a UI (visual, comportamento, edge cases)
-- [ ] Commit da UI (`feat(ui): implement lead scorer interface`)
-- [ ] PDF de evidências do processo (**usuário preparando em paralelo**)
-- [ ] README da submissão — preencher Executive Summary, Abordagem, Resultados, Recomendações, Workflow, Erros IA, O que adicionei
-- [ ] LinkedIn do usuário no README
 - [ ] `git push origin submission/juan-ordonez`
 - [ ] Abrir PR no repo oficial
-- [ ] Loom curto de demonstração (opcional)
+- [ ] Loom de demonstração (opcional)
