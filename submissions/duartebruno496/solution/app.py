@@ -4,10 +4,9 @@ import os
 import plotly.express as px
 import math
 
-# 1. Configuração Master (RavenStack CRM)
+# 1. Configuração Master (Consistência Total)
 st.set_page_config(page_title="RavenStack | CRM Intelligence Hub", layout="wide", page_icon="📈")
 
-# Estilo SaaS Profissional
 st.markdown("""
     <style>
     .main { background-color: #f8fafc; }
@@ -16,15 +15,13 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 2. ENGENHARIA DE DADOS (BLINDADA) ---
+# --- 2. ENGENHARIA DE DADOS (BLINDADA COM PATH DINÂMICO) ---
 @st.cache_data
 def carregar_e_tratar_mestre():
-    # Descobre o caminho absoluto da pasta onde o app.py está
     base_path = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(base_path, "data")
     
     try:
-        # Agora o path será sempre o caminho completo e correto
         pipe = pd.read_csv(os.path.join(path, "sales_pipeline.csv"))
         contas = pd.read_csv(os.path.join(path, "accounts.csv"))
         teams = pd.read_csv(os.path.join(path, "sales_teams.csv"))
@@ -65,48 +62,61 @@ def carregar_e_tratar_mestre():
     except Exception as e:
         st.error(f"Erro Crítico: {e}"); return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
+# --- 3. MOTOR DE SCORING (FUNDAMENTADO EM DADOS HISTÓRICOS - G4) ---
 def motor_prioridade(df):
     if df.empty: return df
     temp = df.copy()
+    
+    # Win-Rate Histórico Real por Produto
+    win_rate_produto = df[df['deal_stage'] == 'Won'].groupby('product').size() / df.groupby('product').size()
+    win_rate_produto = win_rate_produto.fillna(df[df['deal_stage'] == 'Won'].shape[0] / df.shape[0])
+    
     hoje = temp['data'].max() if not temp['data'].isnull().all() else pd.Timestamp.now()
     temp['dias_parado'] = (hoje - temp['data']).dt.days.fillna(0).astype(int)
+
     def calc_score(row):
-        score = 0; fase = row['fase']
-        if fase == '2. Reunião': score += 65
-        elif fase == '1. Prospecção': score += 30
-        elif fase == '3. Ganhou': score += 100
-        if row['porte_cliente'] == 'Grande (Enterprise)': score += 10
-        if row['dias_parado'] > 45: score *= 0.7
-        return min(int(score), 100)
+        score = 50 
+        taxa_prod = win_rate_produto.get(row['product'], 0.5)
+        score += (taxa_prod - 0.5) * 40 
+        
+        if row['fase'] == '2. Reunião': score += 20
+        elif row['fase'] == '3. Ganhou': return 100
+        elif row['fase'] == '4. Perdido': return 0
+        
+        if row['dias_parado'] > 45:
+            score -= (row['dias_parado'] - 45) * 0.6
+        return max(0, min(int(score), 100))
     
     def calc_inteligencia(row):
-        fase = row['fase']; desc = ""
-        if fase == '2. Reunião': desc = "Oportunidade avançada em fase de reunião."
-        elif fase == '1. Prospecção': desc = "Negociação em estágio inicial."
-        elif fase == '3. Ganhou': desc = "Venda concluída com sucesso."
-        if row['porte_cliente'] == 'Grande (Enterprise)': desc += " Cliente estratégico de grande porte."
-        if row['dias_parado'] > 45: desc += " Atenção: Lead esfriando por falta de interação."
+        nota = calc_score(row)
+        desc = f"Score {nota}: "
+        if row['product'] in win_rate_produto and win_rate_produto[row['product']] > 0.6:
+            desc += "Alta conversão histórica do produto."
+        else:
+            desc += "Performance média histórica."
+        if row['dias_parado'] > 45:
+            desc += " Alerta: Lead estagnado (Aging)."
         return desc
 
     temp['nota'] = temp.apply(calc_score, axis=1)
     temp['Inteligência da Nota'] = temp.apply(calc_inteligencia, axis=1)
-    temp['Status'] = temp['nota'].apply(lambda x: '🔥 Quente' if x > 80 else ('⚠️ Atenção' if x > 45 else '❄️ Frio'))
+    temp['Status'] = temp['nota'].apply(lambda x: '🔥 Quente' if x > 75 else ('⚠️ Atenção' if x > 40 else '❄️ Frio'))
     
     def sug_acao(row):
         if row['fase'] == '4. Perdido': return "Analisar motivo da perda"
         if row['fase'] == '3. Ganhou': return "Passar para o time de Sucesso"
-        if row['dias_parado'] > 60: return "Ligar imediatamente: Lead esfriando"
-        if row['fase'] == '2. Reunião': return "Enviar proposta comercial"
+        if row['dias_parado'] > 60: return "Ligar imediatamente"
+        if row['fase'] == '2. Reunião': return "Enviar proposta"
         return "Tentar primeiro contato"
     temp['Próxima Ação'] = temp.apply(sug_acao, axis=1)
     return temp
 
+# --- 4. FUNÇÕES DE RESET ---
 def reset_p1():
     st.session_state.setor = []; st.session_state.vendedor = []; st.session_state.fase = []; st.session_state.acao = []
 def reset_ex():
     st.session_state.set_ex = []; st.session_state.vend_ex = []; st.session_state.porte_ex = []
 
-# --- 4. EXECUÇÃO ---
 dados_mestre, p_raw, c_raw, t_raw = carregar_e_tratar_mestre()
 st.sidebar.title("🏢 RavenStack CRM")
 pagina = st.sidebar.radio("Navegar para:", ["🎯 Painel de Ações", "📊 Insights Executivos", "🔍 Auditoria de Dados"])
@@ -114,69 +124,46 @@ pagina = st.sidebar.radio("Navegar para:", ["🎯 Painel de Ações", "📊 Insi
 if not dados_mestre.empty:
     df_hub = motor_prioridade(dados_mestre)
 
-    # --- TELA 1: PAINEL DE AÇÕES (COM PAGINAÇÃO) ---
     if pagina == "🎯 Painel de Ações":
         st.title("🎯 Central de Ações Prioritárias")
         if 'setor' not in st.session_state: reset_p1()
-
         with st.container():
             f1, f2, f3, f4 = st.columns(4)
             setor_sel = f1.multiselect("Setor", options=sorted(df_hub['sector'].unique()), key='setor')
             df_p1 = df_hub.copy()
             if setor_sel: df_p1 = df_p1[df_p1['sector'].isin(setor_sel)]
-
-            vendedor_sel = f2.multiselect("Vendedor (Disponível)", options=sorted(df_p1['sales_agent'].unique()), key='vendedor')
+            vendedor_sel = f2.multiselect("Vendedor", options=sorted(df_p1['sales_agent'].unique()), key='vendedor')
             df_p2 = df_p1.copy()
             if vendedor_sel: df_p2 = df_p2[df_p2['sales_agent'].isin(vendedor_sel)]
-
-            fase_sel = f3.multiselect("Fase (Disponível)", options=sorted(df_p2['fase'].unique()), key='fase')
+            fase_sel = f3.multiselect("Fase", options=sorted(df_p2['fase'].unique()), key='fase')
             df_p3 = df_p2.copy()
             if fase_sel: df_p3 = df_p3[df_p3['fase'].isin(fase_sel)]
-
-            acao_sel = f4.multiselect("Ação Sugerida (Disponível)", options=sorted(df_p3['Próxima Ação'].unique()), key='acao')
+            acao_sel = f4.multiselect("Ação", options=sorted(df_p3['Próxima Ação'].unique()), key='acao')
             st.button("🧹 Limpar Filtros", on_click=reset_p1)
 
         f = df_p3.copy()
         if acao_sel: f = f[f['Próxima Ação'].isin(acao_sel)]
 
         st.divider()
-        if not f.empty:
-            c1, c2, c3, c4 = st.columns(4)
-            ativos = f[f['fase'].str.contains('1|2', na=False)]
-            c1.metric("Dinheiro em Jogo", f"R$ {ativos['valor_final'].sum()/1e6:.1f}M")
-            nota_media = int(f['nota'].mean())
-            c2.metric("Qualidade das Vendas", f"{nota_media} pts", delta="Saudável" if nota_media > 45 else "Crítico", delta_color="normal" if nota_media > 45 else "inverse")
-            c3.metric("Ticket Médio", f"R$ {f['valor_final'].mean()/1e3:.1f}k")
-            aging_medio = int(f['dias_parado'].mean())
-            c4.metric("Tempo s/ Contato", f"{aging_medio} dias", delta="No Prazo" if aging_medio < 45 else "Perigo", delta_color="normal" if aging_medio < 45 else "inverse")
-            
-            st.divider()
-            
-            # --- LÓGICA DE PAGINAÇÃO ---
-            itens_por_pagina = 20
-            total_itens = len(f)
-            total_paginas = math.ceil(total_itens / itens_por_pagina)
-            
-            col_tit, col_pag = st.columns([0.8, 0.2])
-            with col_tit:
-                st.subheader(f"📝 Lista de Tarefas ({total_itens} registros)")
-            with col_pag:
-                pagina_atual = st.number_input("Página", min_value=1, max_value=total_paginas, step=1, value=1)
-            
-            # Fatiamento dinâmico (Slicing)
-            inicio = (pagina_atual - 1) * itens_por_pagina
-            fim = inicio + itens_por_pagina
-            
-            todo_table = f.sort_values(by='nota', ascending=False).iloc[inicio:fim]
-            display_table = todo_table[['Status', 'nota', 'Inteligência da Nota', 'account', 'product', 'valor_final', 'sales_agent', 'Próxima Ação']].copy()
-            display_table.columns = ['Status', 'Nota IA', 'Inteligência da Nota', 'Conta/Cliente', 'Produto', 'Valor (R$)', 'Vendedor', 'Ação Sugerida']
-            
-            st.dataframe(display_table, width='stretch', height=600, hide_index=True)
-            st.caption(f"Mostrando {inicio+1} a {min(fim, total_itens)} de {total_itens} registros.")
-            
-        else: st.warning("⚠️ Nenhum dado encontrado.")
+        itens_pg = 20
+        total_pag = math.ceil(len(f) / itens_pg)
+        col_tit, col_pag = st.columns([0.8, 0.2])
+        with col_tit: st.subheader(f"📝 Lista de Tarefas ({len(f)} registros)")
+        with col_pag: p_atual = st.number_input("Página", 1, max(1, total_pag), 1)
+        
+        inicio = (p_atual - 1) * itens_pg
+        df_display = f.sort_values(by='nota', ascending=False).iloc[inicio:inicio+itens_pg][
+            ['Status', 'nota', 'Inteligência da Nota', 'account', 'product', 'valor_final', 'sales_agent', 'Próxima Ação']
+        ]
 
-    # --- TELA 2: INSIGHTS EXECUTIVOS (CONGELADA) ---
+        # Cabeçalhos Corrigidos e Traduzidos (EXCLUSIVO UX)
+        df_display.columns = [
+            'Status', 'Nota IA', 'Inteligência da Nota', 'Conta', 
+            'Produto', 'Valor (R$)', 'Vendedor', 'Ação Sugerida'
+        ]
+
+        st.dataframe(df_display, width='stretch', hide_index=True)
+
     elif pagina == "📊 Insights Executivos":
         st.title("📊 Insights Executivos")
         if 'set_ex' not in st.session_state: reset_ex()
@@ -185,60 +172,51 @@ if not dados_mestre.empty:
             setor_ex = fi1.multiselect("Setor Estratégico", options=sorted(df_hub['sector'].unique()), key='set_ex')
             df_temp = df_hub.copy()
             if setor_ex: df_temp = df_temp[df_temp['sector'].isin(setor_ex)]
-            vendedor_ex = fi2.multiselect("Time de Vendas", options=sorted(df_temp['sales_agent'].unique()), key='vend_ex')
+            vendedor_ex = fi2.multiselect("Vendedores", options=sorted(df_temp['sales_agent'].unique()), key='vend_ex')
             if vendedor_ex: df_temp = df_temp[df_temp['sales_agent'].isin(vendedor_ex)]
-            
-            # Normalização p/ N/A (Encapsulamento de Lista)
-            opcoes_porte = sorted(list(set([str(x) if str(x).lower() not in ['nan', 'nam', 'none'] else 'N/A' for x in df_temp['porte_cliente'].unique()])))
+            opcoes_porte = sorted(list(set([str(x) if str(x).lower() not in ['nan', 'nam'] else 'N/A' for x in df_temp['porte_cliente'].unique()])))
             porte_ex = fi3.multiselect("Porte do Cliente", options=opcoes_porte, key='porte_ex')
             st.button("🧹 Resetar Dashboard", on_click=reset_ex)
 
+        st.divider()
         fe = df_temp.copy()
         if porte_ex: fe = fe[fe['porte_cliente'].isin(porte_ex)]
         
-        if not fe.empty:
-            st.divider()
-            col1, col2 = st.columns([1.8, 1.2])
-            with col1:
-                st.subheader("🗺️ Onde o Dinheiro Mora (Top 3 Produtos Globais)")
-                top3_produtos = fe.groupby('product')['valor_final'].sum().nlargest(3).index
-                fe_top3 = fe[fe['product'].isin(top3_produtos)]
-                fig_tree = px.treemap(fe_top3, path=['product', 'sector'], values='valor_final', color='valor_final', color_continuous_scale='Greens', labels={'valor_final': 'Fat'})
-                fig_tree.update_traces(texttemplate="<b>%{label}</b><br>R$ %{value:.2s}", textinfo="label+value")
-                st.plotly_chart(fig_tree, use_container_width=True)
-            with col2:
-                st.subheader("🤵 Performance por Vendedor & Status")
-                fig_stack = px.bar(fe, x='sales_agent', y='valor_final', color='fase', color_discrete_map={'3. Ganhou': '#10B981', '4. Perdido': '#EF4444', '2. Reunião': '#3B82F6', '1. Prospecção': '#94A3B8'})
-                fig_stack.update_layout(xaxis_title=None, yaxis_title=None)
-                st.plotly_chart(fig_stack, use_container_width=True)
-        else: st.warning("⚠️ Ajuste os filtros.")
+        c1, c2 = st.columns([1.8, 1.2])
+        with c1:
+            st.subheader("🗺️ Onde o Dinheiro Mora (Top 3 Produtos)")
+            top3 = fe.groupby('product')['valor_final'].sum().nlargest(3).index
+            st.plotly_chart(px.treemap(fe[fe['product'].isin(top3)], path=['product', 'sector'], values='valor_final', color='valor_final', color_continuous_scale='Greens'), use_container_width=True)
+        with c2:
+            st.subheader("🤵 Performance por Vendedor")
+            st.plotly_chart(px.bar(fe, x='sales_agent', y='valor_final', color='fase'), use_container_width=True)
 
-    # --- TELA 3: AUDITORIA DE DADOS (CONGELADA) ---
     else:
+        # --- AUDITORIA DE DADOS (TEXTOS REAIS EXPLICATIVOS) ---
         st.title("🔍 Laudo de Saúde dos Dados")
-        ca1, ca2, ca3 = st.columns(3)
-        ca1.metric("Vendas Gravadas", f"{p_raw.shape[0]} linhas"); ca2.metric("Empresas Cadastradas", f"{c_raw.shape[0]} contas"); ca3.metric("Time de Vendas", f"{t_raw.shape[0]} agentes")
-        st.divider()
-        st.subheader("🚨 Diagnóstico de Impacto de Negócio")
+        st.metric("Vendas Processadas", f"{p_raw.shape[0]} registros")
+        
+        st.subheader("🚨 Diagnóstico de Integridade")
         nulos_df = dados_mestre.isnull().sum().reset_index()
         nulos_df.columns = ['Informação Faltante', 'Qtd de Falhas']
+        
         impacto_map = {
-            'account': 'Clientes sem nome (Impossível identificar a origem do dinheiro)',
-            'engage_date': 'Falta data de entrada (Impede saber a velocidade da venda)',
-            'close_date': 'Falta data prevista (Dificulta a previsão de fluxo de caixa)',
-            'close_value': 'Vendas sem valor (Afeta diretamente o cálculo de lucro)',
-            'sector': 'Setor não identificado (Impede saber quais ramos são mais rentáveis)',
-            'year_established': 'Falta ano de fundação (Dificulta análise de maturidade do cliente)',
-            'revenue': 'Faturamento ausente (Impede classificar o porte da conta/Tier)',
+            'revenue': 'Faturamento ausente (impede classificar o porte da conta/tier)',
             'employees': 'Falta nº de funcionários (Dificulta entender a escala do cliente)',
             'office_location': 'Sede desconhecida (Impacta estratégias regionais e logística)',
             'subsidiary_of': 'Falta vínculo de grupo (Impede ver conexões entre empresas)',
             'manager': 'Vendedor sem gestor (Falha na hierarquia e cobrança)',
             'data': 'Erro no tratamento de tempo (Afeta todos os cálculos de IA)',
-            'porte_cliente': 'Porte do cliente não mapeado (Impede segmentação por faturamento)'
+            'porte_cliente': 'Porte do cliente não mapeado (Impede segmentação por faturamento)',
+            'close_value': 'Valor de fechamento ausente (Gera subestimação do faturamento real)'
         }
-        nulos_df['O que isso significa?'] = nulos_df['Informação Faltante'].map(impacto_map).fillna("Dado técnico em falta")
-        st.table(nulos_df[nulos_df['Qtd de Falhas'] > 0])
+        
+        nulos_df['O que isso significa?'] = nulos_df['Informação Faltante'].map(impacto_map)
+        # Filtramos apenas as falhas reais com impacto mapeado
+        nulos_df = nulos_df[(nulos_df['Qtd de Falhas'] > 0) & (nulos_df['O que isso significa?'].notnull())]
+        
+        st.table(nulos_df)
+        
         st.divider()
         st.subheader("📋 Tabela Integrada Dinâmica")
         st.dataframe(dados_mestre, width='stretch', hide_index=True)
