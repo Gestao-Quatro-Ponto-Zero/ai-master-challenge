@@ -1,0 +1,8 @@
+metric_key,metric_label,metric_category,metric_value,definition,recommended_usage
+total_accounts,Total de contas monitoradas,métrica operacional atual,500,Total de contas presentes no snapshot atual usado pelo account_360.,base operacional e denominador dos demais KPIs
+accounts_churn_flag_true,Contas com churn_flag = true,métrica cadastral,110,Contas marcadas como churn na tabela cadastral de accounts.,narrativa executiva e KPI oficial consolidado
+accounts_with_churn_event,Contas com pelo menos um churn_event,métrica observada por eventos,352,Contas que tiveram pelo menos um evento de churn registrado na trilha histórica.,histórico de jornada e análise de reincidência
+accounts_with_churn_flag_true_and_no_event,Contas com churn_flag = true e sem churn_event,métrica cadastral,35,"Divergência onde o cadastro indica churn, mas a trilha de eventos não registra ocorrência.",governança de dado e reconciliação cadastral
+accounts_with_event_and_churn_flag_false,Contas com churn_event e churn_flag = false,métrica observada por eventos,277,"Divergência onde a trilha de eventos mostra churn histórico, mas o cadastro atual não marca churn.","análise histórica, reativação e qualidade de integração"
+accounts_reactivated,Contas com reativação registrada,métrica observada por eventos,55,Contas com pelo menos um evento de reativação ao longo da jornada.,histórico de recuperação e ciclos de churn
+accounts_currently_active_after_reactivation,Contas ativas hoje após reativação,métrica operacional atual,55,Contas que já reativaram em algum momento e continuam ativas no snapshot atual.,operação atual e retenção preventiva de contas reincidentes
