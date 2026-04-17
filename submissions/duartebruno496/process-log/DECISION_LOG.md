@@ -3,13 +3,13 @@ AI Master Challenge — Lead Scorer | Log de Decisões e Processo
 Tempo Médio de Criação: ~5 horas (Desenvolvimento, Debug de Ambiente e Refatoração).
 
 Este documento detalha o processo de desenvolvimento do RavenStack CRM, registrando a interação estratégica entre o AI Master (Bruno Duarte) e a IA Generativa para a construção de uma solução robusta e auditável.
-🛠 1. Ferramentas e Papéis
+ 1. Ferramentas e Papéis
 
     AI Master (Bruno Duarte): Definição de requisitos de negócio, arquitetura de software, supervisão técnica, gestão de ambiente virtual (venv), governança de dados e controle de consistência de interface.
 
     IA (Gemini 3 Flash): Co-piloto de codificação, geração de protótipos e suporte em lógica matemática.
 
-🏗 2. Decomposição do Problema
+ 2. Decomposição do Problema
 
 O desenvolvimento foi estruturado em quatro sprints principais:
 
@@ -21,7 +21,7 @@ O desenvolvimento foi estruturado em quatro sprints principais:
 
     Laudo de Saúde: Criação de uma página de auditoria com mapeamento de impacto estratégico.
 
-🔄 3. Histórico de Iterações e Decisões Críticas
+ 3. Histórico de Iterações e Decisões Críticas
 🔴 Iteração 1: O Bug de Tipagem (Float vs String)
 
     Contexto: Erro de tipagem ao categorizar o porte dos clientes.
@@ -40,7 +40,7 @@ O desenvolvimento foi estruturado em quatro sprints principais:
 
     Decisão: Implementação de lógica de slicing e paginação dinâmica (math.ceil) para garantir fluidez na UX.
 
-📊 4. Evolução do Scoring (Feedback G4)
+ 4. Evolução do Scoring (Feedback G4)
 
 Atendendo ao critério de fundamentação em dados históricos, o motor de inteligência passou por uma migração crítica:
 
@@ -52,7 +52,7 @@ Atendendo ao critério de fundamentação em dados históricos, o motor de intel
 
         Lógica de Aging: Implementação de penalidade por estagnação. Leads sem interação há mais de 45 dias sofrem decaimento de score, refletindo a perda de tração observada nos dados históricos.
 
-⚠️ 5. Desafios de Governança e Consistência
+5. Desafios de Governança e Consistência
 
 A maior dificuldade deste projeto foi manter a consistência do código e da interface. Por ser uma IA aberta, o modelo apresentou falhas frequentes de reconhecimento de contexto:
 
@@ -62,11 +62,41 @@ A maior dificuldade deste projeto foi manter a consistência do código e da int
 
     Manutenção da Integridade: A consistência final foi garantida pela supervisão do AI Master, que bloqueou alterações desnecessárias em páginas já aprovadas enquanto focava exclusivamente na evolução da lógica do motor de score.
 
-🔍 6. Auditoria e Solo Sagrado
+ 6. Auditoria e Solo Sagrado
 
     Página de Auditoria: Preservada com o Mapa de Impacto Real, traduzindo falhas de dados em riscos de negócio (ex: falta de revenue impede o tiering de contas).
 
     Painel de Ações: Mantido com a estrutura de 4 colunas de filtros e botões de reset via session_state.
 
+https://gemini.google.com/share/ee613d7a2aeb
+
+
+7. Rigor do Motor de Scoring (Refatoração Crítica)
+
+Atendendo ao feedback de rigor metodológico, o cálculo de priorização foi completamente reconstruído para eliminar distorsões estatísticas:
+
+    Como era antes (Distorcido): O Win Rate era calculado usando todos os deals do dataset como denominador (WinRate = lWon/Total). Isso incluía oportunidades "Abertas", o que punia injustamente produtos com muitos leads novos no funil, baixando a nota de forma artificial.
+
+Como está agora (Rigor Matemático): O motor agora utiliza apenas desfechos consolidados para refletir a taxa real de conversão histórica do produto:
+
+    Denominador Limpo: Apenas leads com status Won ou Lost são considerados no cálculo (WinRate = Won / Won + Lost). 
+
+Remoção de Viés: Oportunidades em aberto não distorcem mais a performance histórica, garantindo que o score reflita a probabilidade real de fechamento baseada em fatos passados.
+
+Média de Segurança: Implementação de fallback para produtos sem histórico finalizado, utilizando a média geral de conversão do funil para evitar scores zerados em lançamentos
+
+8. Inteligência de Mercado e Planejamento (Nova Camada)
+
+Para elevar o projeto ao nível de BI (Business Intelligence), foi criada uma nova página dedicada à análise estratégica, cruzando dados de todas as fontes:
+
+    Margem Média Retida: Cálculo em tempo real da diferença entre o valor de tabela (products.csv) e o valor de fechamento (close_value), auditando a saúde financeira das vendas.
+
+    Performance Regional e Hierárquica: Novos gráficos de faturamento por Localidade Regional e por Gerente de Unidade, permitindo identificar gargalos de gestão e sucessos geográficos.
+
+    Filtros 360°: Implementação de filtros combinados (Setor, Vendedor, Gerente e Localidade) para exploração granular dos dados.
+
+    Formatação BRL: Toda a interface foi adaptada para o padrão monetário brasileiro (R$), garantindo consistência com o mercado local.​​
+
 Bruno Duarte
 AI Master | Data Analyst | Software Engineering Student
+
