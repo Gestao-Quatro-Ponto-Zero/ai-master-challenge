@@ -2,122 +2,119 @@
 
 **O teste para quem vai transformar áreas inteiras usando IA.**
 
-O G4 está construindo um novo tipo de profissional: o **AI Master**. Uma pessoa capaz de entrar em qualquer área — vendas, suporte, marketing, operações — e usar IA generativa para resolver problemas reais de forma transformacional.
-
-Este repositório contém os desafios do processo seletivo.
+O G4 está construindo um novo tipo de profissional: o **AI Master** — capaz de entrar em qualquer área e usar IA generativa para resolver problemas reais de forma transformacional.
 
 ---
 
-## O que é um AI Master?
+## Descrição
 
-Um AI Master é um "one-person team" que:
+Este repositório contém os desafios do processo seletivo para AI Master no G4 Educação. Os desafios cobrem quatro áreas de negócio (dados, operações, vendas e marketing) e avaliam como candidatos usam IA como ferramenta estratégica — não apenas para executar, mas para pensar, diagnosticar e entregar soluções funcionais.
 
-- **Entende o problema de negócio** antes de abrir qualquer ferramenta
-- **Usa IA generativa como alavanca**, não como muleta
-- **Entrega soluções funcionais** — não apresentações bonitas
-- **Sabe o que automatizar e o que não automatizar**
-
-Não estamos testando se você sabe usar ChatGPT. Estamos testando se você consegue **resolver problemas complexos usando IA como ferramenta estratégica**.
+A submissão é feita via Pull Request, e o processo de uso de IA precisa ser documentado. Entregar algo parecido com o output direto de um modelo não é suficiente — o baseline já foi gerado internamente com múltiplos modelos.
 
 ---
 
-## Como funciona
+## Tech Stack
 
-1. **Fork** este repositório
-2. Escolha **um desafio** da pasta [`/challenges`](./challenges/)
-3. Leia o README completo do challenge
-4. Resolva usando **qualquer ferramenta de IA** que quiser
-5. Coloque sua solução em `submissions/seu-nome/`
-6. Abra um **Pull Request** — detalhes em [CONTRIBUTING.md](./CONTRIBUTING.md)
+Os challenges não impõem tecnologia. Exemplos aceitos por challenge:
 
-### Regras
+| Challenge | Ferramentas prováveis |
+|-----------|----------------------|
+| 001 — Churn | Python/R, Jupyter, Pandas, visualização |
+| 002 — Suporte | Python, NLP/LLMs, frameworks web |
+| 003 — Lead Scorer | Qualquer stack funcional (React, Streamlit, etc.) |
+| 004 — Social Media | Python/R, notebooks, visualização |
 
-- **Use IA.** Esperamos que você use. Queremos ver *como* você usa.
-- **Qualquer ferramenta é permitida.** Claude, ChatGPT, Gemini, Cursor, Claude Code, Copilot, scripts custom, APIs — tanto faz.
-- **Envie evidências do seu processo.** A solução sozinha não basta. Precisamos ver como você chegou lá.
-- **Sem evidência de processo = desclassificado.**
+---
 
-### Sobre o baseline
+## Como instalar e rodar
 
-Nós já rodamos cada challenge em múltiplos modelos de IA (Claude, GPT, Gemini) para gerar respostas de referência. **Esse é o nosso baseline.** Se você simplesmente colar o brief em qualquer IA e enviar o resultado, sua resposta vai ser parecida com algo que já temos.
+Este repositório é o ponto de entrada para candidatos. Não há aplicação central a instalar — cada submissão tem seu próprio setup.
 
-Parecido com o baseline não é suficiente. Esperamos que a sua entrega **supere substancialmente** o que a IA produz sozinha — em profundidade de análise, em julgamento, em qualidade de execução, ou em criatividade da solução.
+### Para participar
 
-O valor de um AI Master não é saber pedir pra IA. É saber o que pedir, quando desconfiar, o que ajustar, e o que só um humano com contexto consegue fazer.
+```bash
+# 1. Fork este repositório
+# 2. Clone o fork
+git clone https://github.com/SEU-USUARIO/ai-master-challenge.git
+cd ai-master-challenge
 
-### O que NÃO estamos avaliando
+# 3. Crie sua branch
+git checkout -b submission/seu-nome
 
-- Conhecimento de uma linguagem de programação específica
-- Memorização de frameworks ou metodologias
-- Experiência prévia no setor de educação
-- Se você usou a ferramenta X ou Y
+# 4. Crie sua pasta de submissão
+mkdir -p submissions/seu-nome
 
-### O que estamos avaliando
+# 5. Desenvolva sua solução e adicione ao process log
+# 6. Commit e push
+git push origin submission/seu-nome
 
-- Você entendeu o problema antes de sair executando?
-- Usou IA de forma inteligente ou só deu copy-paste?
-- O resultado resolve o problema de verdade?
-- Alguém consegue entender e agir com base no que você entregou?
+# 7. Abra um Pull Request para main com título:
+# [Submission] Seu Nome — Challenge XXX
+```
+
+**Requisitos:** Git, conta no GitHub, e qualquer runtime exigido pela sua solução.
 
 ---
 
 ## Desafios disponíveis
 
-- [**001 — Diagnóstico de Churn**](./challenges/data-001-churn/) · Dados / Analytics
-- [**002 — Redesign de Suporte**](./challenges/process-002-support/) · Operações / CX
-- [**003 — Lead Scorer**](./challenges/build-003-lead-scorer/) · Vendas / RevOps
-- [**004 — Estratégia Social Media**](./challenges/marketing-004-social/) · Marketing
+| # | Desafio | Área | O que entregar |
+|---|---------|------|---------------|
+| [001](./challenges/data-001-churn/) | Diagnóstico de Churn | Dados / Analytics | Análise de causa-raiz + recomendações acionáveis |
+| [002](./challenges/process-002-support/) | Redesign de Suporte | Operações / CX | Diagnóstico de 30K tickets + protótipo de automação |
+| [003](./challenges/build-003-lead-scorer/) | Lead Scorer | Vendas / RevOps | Ferramenta funcional de priorização de pipeline |
+| [004](./challenges/marketing-004-social/) | Estratégia Social Media | Marketing | Análise de 52K posts + estratégia baseada em dados |
 
-> Cada desafio tem seu próprio README com contexto completo, links para dados, e critérios de qualidade. Veja o [índice de challenges](./challenges/) para ajuda na escolha.
+**Time budget recomendado:** 4–6 horas por challenge.
 
 ---
 
-## Time budget
+## O que é avaliado
 
-Cada desafio foi projetado para ser resolvido em **4 a 6 horas**. Não há cronômetro — mas soluções que levaram 40 horas não recebem pontos extras por isso.
+- Entendimento do problema antes de executar
+- Uso inteligente de IA (não copy-paste)
+- Solução que resolve o problema de verdade
+- Documentação do processo de uso de IA (obrigatória — sem ela a submissão é desclassificada)
 
-Valorizamos **inteligência no uso do tempo**, não quantidade de horas.
+---
+
+## Estrutura do repositório
+
+```
+ai-master-challenge/
+├── challenges/
+│   ├── README.md                    ← Índice e guia de escolha
+│   ├── data-001-churn/              ← Challenge 001: Diagnóstico de Churn
+│   ├── process-002-support/         ← Challenge 002: Redesign de Suporte
+│   ├── build-003-lead-scorer/       ← Challenge 003: Lead Scorer
+│   └── marketing-004-social/        ← Challenge 004: Estratégia Social Media
+├── submissions/
+│   └── <nome-candidato>/
+│       ├── README.md                ← Resumo executivo + process log
+│       ├── solution/                ← Solução (análise, código, protótipo)
+│       ├── process-log/             ← Evidências de uso de IA
+│       └── docs/                    ← Documentação adicional
+├── templates/
+│   └── submission-template.md       ← Template obrigatório para README da submissão
+├── CONTRIBUTING.md                  ← Instruções de submissão via PR
+├── submission-guide.md              ← O que incluir e como estruturar
+└── README.md
+```
 
 ---
 
 ## Submissão
 
-A submissão é feita **exclusivamente via Pull Request**. Isso faz parte do teste.
-
-1. Fork → branch `submission/seu-nome` → pasta `submissions/seu-nome/`
-2. Use o [template de submissão](./templates/submission-template.md) para estruturar sua entrega
-3. Abra o PR seguindo as instruções em [CONTRIBUTING.md](./CONTRIBUTING.md)
-4. Leia o [Guia de Submissão](./submission-guide.md) para detalhes sobre o que enviar
-
-> Se você não sabe abrir um Pull Request, esse é um bom momento pra aprender. Um AI Master resolve esse tipo de problema em 10 minutos.
-
----
-
-## FAQ
-
-**Posso fazer mais de um desafio?**
-Pode, mas preferimos um bem feito do que dois superficiais.
-
-**Posso usar IA pra tudo?**
-Sim. O ponto não é fazer sem IA. É usar IA melhor do que a média.
-
-**Se eu só colar o problema no ChatGPT e enviar a resposta?**
-Nós já fizemos isso — com vários modelos. Temos as respostas. Se a sua for parecida, você não agregou nada. Próximo.
-
-**Quanto tempo tenho?**
-Recomendamos 4-6 horas. Envie quando estiver pronto — não há deadline fixo para o desafio (mas vagas são limitadas).
-
-**Preciso saber programar?**
-Não necessariamente. Mas um AI Master que consegue "vibe code" uma solução funcional tem vantagem sobre um que só escreve documento.
+- Leia o [Guia de Submissão](./submission-guide.md)
+- Use o [template de submissão](./templates/submission-template.md)
+- Siga as regras em [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Só modifique arquivos dentro de `submissions/seu-nome/`
 
 ---
 
 ## Sobre o G4
 
-O [G4](https://g4educacao.com) é a maior plataforma de educação executiva do Brasil. Formamos líderes e gestores com metodologias práticas baseadas em empresas de alto crescimento.
+O [G4](https://g4educacao.com) é a maior plataforma de educação executiva do Brasil. Este processo seletivo busca profissionais que usem IA para transformar áreas inteiras de negócio — não apenas para automatizar tarefas pontuais.
 
-Estamos construindo o futuro do trabalho com IA — e precisamos de pessoas que construam junto.
-
----
-
-*Tem dúvidas? Abra uma [issue](../../issues).*
+*Dúvidas? Abra uma [issue](../../issues).*
