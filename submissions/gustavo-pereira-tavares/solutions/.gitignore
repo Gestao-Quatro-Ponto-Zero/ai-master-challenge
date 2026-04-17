@@ -42,24 +42,18 @@ env/
 .streamlit/secrets.local.toml
 .streamlit/.credentials/
 
-# Models and large files (EXCETO para submissão)
-# models/  ← Comentado para permitir submissão
-# *.pkl  ← Comentado para permitir submissão
+# Models and large files
+models/
+*.pkl
 *.joblib
 *.h5
 *.pb
 
-# Data and outputs (EXCETO para submissão)
-# outputs/  ← Comentado para permitir submissão
-# *.pdf  ← Comentado para permitir submissão
+# Data and outputs
+outputs/
+*.pdf
 *.csv.bak
 data_processed/
-
-# Exceções para submissão (NÃO ignorar)
-!models/
-!models/**/*.pkl
-!outputs/
-!outputs/
 
 # Environment variables
 .env
@@ -116,5 +110,5 @@ Pipfile.lock
 !requirements.txt
 !.streamlit/config.toml
 
-!submissions/
+submissions/*
 !submissions/gustavo-pereira-tavares/

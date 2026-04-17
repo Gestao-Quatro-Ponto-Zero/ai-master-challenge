@@ -1,0 +1,5 @@
+Link da conversa que originou a churn-analysis-skill.md
+
+https://claude.ai/chat/b2408a23-2865-4a9d-b5da-4d9ae103e62b
+
+Com este arquivo churn-analysis-skill.md, foi utilizado como plano para gerar todo o projeto do challenge, na IDE do editor de código Abacus AI utilizando o modelo Claude Haiku 4.5.
