@@ -129,6 +129,106 @@ e encontramos variação real e significativa:
 - Depois: desvio padrão de 8.4 pts, range de 48 pts, 31 deals Tier A
 - Feature passou de 1 valor único (0) para 7 valores distintos
 
+#### Como isso impacta a tomada de decisão do vendedor
+
+Antes dessa melhoria, dois deals com o mesmo vendedor recebiam 
+o mesmo peso na Feature 5 — independente do setor.
+
+Com o win rate combinado, o sistema diferencia:
+
+**Exemplo real dos dados:**
+
+| Situação | Vendedor | Setor | Win Rate usado | Pts Feature 5 |
+|---|---|---|---|---|
+| Deal A | Boris Faz | software | 81,0% | 8 pts |
+| Deal B | Boris Faz | finance | 35,3% | 4 pts |
+| Deal C | Markita Hansen | entertainment | 90,5% | 9 pts |
+| Deal D | Markita Hansen | technology | 35,7% | 4 pts |
+
+Na prática:
+- Boris Faz abre o app e vê seus deals de software no topo — 
+  o sistema sabe que ele converte 81% nesse setor
+- Seus deals de finance aparecem mais abaixo — histórico de 
+  apenas 35% de conversão nesse setor
+- O gestor identifica que Boris Faz não deve receber leads de 
+  finance e redireciona para vendedores com melhor fit
+- Markita Hansen vê seus deals de entertainment priorizados 
+  (90,5%) e os de technology despriorizados (35,7%) — mesmo 
+  que o valor dos deals seja similar
+
+Isso transforma o score de uma métrica genérica em uma 
+recomendação personalizada — o sistema conhece os pontos 
+fortes e fracos de cada vendedor com base em histórico real.
+
+---
+
+### Como o app ajuda o vendedor na prática
+
+O objetivo central do sistema não é gerar um número — é ajudar 
+o vendedor a tomar decisões melhores em menos tempo. Cada parte 
+do app foi pensada para isso:
+
+#### Segunda-feira de manhã — Aba Pipeline
+
+O vendedor filtra pelo próprio nome na sidebar e vê 
+imediatamente seus deals ordenados por score. Tier A em verde, 
+Tier B em dourado, Tier C em vermelho. Sem precisar analisar 
+nada: os deals que merecem atenção hoje estão no topo.
+
+O score não é uma caixa preta — o vendedor consegue entender 
+rapidamente por que um deal está bem ou mal posicionado pelas 
+cores e pela posição na tabela.
+
+#### Entendendo o score — Aba Análise IA
+
+Ao clicar em qualquer deal, o vendedor vê o breakdown visual 
+do score: um gráfico de barras mostrando quantos pontos cada 
+feature contribuiu. Ele entende imediatamente se o deal está 
+bem rankeado por causa do estágio, do setor, do valor ou da 
+sazonalidade.
+
+Com a chave da API conectada, o botão "Analisar com IA" gera 
+em segundos:
+- O principal risco daquele deal específico
+- A próxima ação recomendada para hoje ou amanhã
+- Uma justificativa conectando os dados ao score
+
+#### Análise conversacional — Aba Chat com IA
+
+O vendedor pode fazer perguntas em linguagem natural sobre 
+o próprio pipeline, sem precisar filtrar tabelas ou interpretar 
+gráficos:
+
+- "Quais meus 3 melhores deals para fechar essa semana?"
+- "Por que meu score médio está baixo?"
+- "Quais setores têm mais chance de fechar?"
+- "Quais deals devo abandonar?"
+
+O chat usa os dados reais do pipeline filtrado — responde com 
+contas, números e contexto específico do vendedor, não respostas 
+genéricas. Tem filtros inline por vendedor, tier e região 
+independentes da sidebar.
+
+#### Visão do gestor — Aba Gestor
+
+O manager vê em uma tela quais vendedores têm mais deals Tier A, 
+o valor total do pipeline por equipe, e o win rate histórico por 
+mês — útil para entender sazonalidade e planejar metas.
+
+O gráfico de win rate por mês mostra visualmente quais períodos 
+historicamente convertem melhor, ajudando a calibrar expectativas 
+e intensidade de esforço ao longo do ano.
+
+#### Resultado esperado
+
+Um vendedor com 80-100 deals abertos gastava tempo decidindo 
+no feeling onde focar. Com o app, em menos de 2 minutos ele 
+sabe quais são seus top deals, por que estão priorizados, 
+qual a próxima ação recomendada e pode perguntar qualquer 
+coisa sobre o pipeline em linguagem natural.
+
+---
+
 ### Resultados
 
 - 2.089 deals abertos processados e priorizados
@@ -209,6 +309,15 @@ O visual foi atualizado para seguir o padrão G4 Educação:
    quantitativa (win rate por mês calculado do histórico)
 5. Adicionei chat com IA para análise conversacional do pipeline
 6. Iterei o design para seguir o padrão visual G4
+7. Após receber feedback que o scoring precisava de mais 
+   profundidade, rodei uma análise exploratória completa dos 
+   6.711 deals históricos com o Claude Code para identificar 
+   quais features tinham mais poder preditivo real. A análise 
+   revelou que a combinação vendedor + setor tinha variação de 
+   até 54 pp — muito maior que qualquer feature isolada. Com 
+   base nesse diagnóstico, decidi substituir o win rate do 
+   vendedor isolado pelo win rate combinado vendedor + setor 
+   com fallback inteligente.
 
 ### Onde a IA errou e como corrigi
 
@@ -221,6 +330,13 @@ O visual foi atualizado para seguir o padrão G4 Educação:
 - Tentei 3 abordagens de substituição antes de encontrar a 
   viável — close_date nulo e ausência de data de Prospecting 
   eliminaram duas hipóteses
+- Na análise de aprofundamento do scoring, o Claude Code 
+  apresentou os dados brutos de win rate por combinação 
+  vendedor+setor mas não identificou automaticamente o insight 
+  de negócio mais importante: que a variação não é de talento 
+  individual (apenas 15 pp de spread entre vendedores) mas sim 
+  de fit vendedor+setor (até 54 pp). Essa leitura foi minha — 
+  a IA trouxe os números, eu trouxe a interpretação.
 
 ### O que eu adicionei que a IA sozinha não faria
 
@@ -235,6 +351,11 @@ O visual foi atualizado para seguir o padrão G4 Educação:
 - Identificação do padrão de win rate por mês como insight 
   real do negócio — dezembro e janeiro convertem 80% vs 55% 
   em julho
+- Interpretação do padrão vendedor+setor como problema de fit, 
+  não de talento — isso mudou a feature de "quão bom é esse 
+  vendedor" para "quão adequado é esse vendedor para esse setor 
+  específico". A IA calculou os números, eu defini o que eles 
+  significavam para o negócio.
 
 ---
 

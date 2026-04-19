@@ -91,7 +91,7 @@ def load_and_merge() -> pd.DataFrame:
     return df
 
 
-def compute_win_rates(df: pd.DataFrame) -> tuple[dict, dict, dict]:
+def compute_win_rates(df: pd.DataFrame) -> tuple[dict, dict, dict, dict]:
     closed = df[df["deal_stage"].isin(["Won", "Lost"])].copy()
     closed["won"] = (closed["deal_stage"] == "Won").astype(int)
 
@@ -106,10 +106,18 @@ def compute_win_rates(df: pd.DataFrame) -> tuple[dict, dict, dict]:
     month_grp["win_rate"] = month_grp["sum"] / month_grp["count"]
     month_wr = month_grp["win_rate"].to_dict()
 
-    return win_rate_dict("sector"), win_rate_dict("sales_agent"), month_wr
+    # Combined agent+sector win rate (min 10 deals for statistical reliability)
+    agent_sector_wr = {}
+    for (agent, sector), group in closed.groupby(["sales_agent", "sector"]):
+        total = len(group)
+        if total >= 10:
+            wins = (group["deal_stage"] == "Won").sum()
+            agent_sector_wr[(agent, sector)] = wins / total
+
+    return win_rate_dict("sector"), win_rate_dict("sales_agent"), month_wr, agent_sector_wr
 
 
-def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float, month_wr: dict) -> tuple[int, str, dict]:
+def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float, month_wr: dict, agent_sector_wr: dict) -> tuple[int, str, dict]:
     breakdown = {}
 
     # 1. Deal stage (max 30)
@@ -136,9 +144,18 @@ def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float, month_wr:
     sector_score = round(sector_wr.get(row.get("sector", ""), 0.5) * 15)
     breakdown["Win rate do setor"] = sector_score
 
-    # 5. Agent win rate — from historical data (max 10)
-    agent_score = round(agent_wr.get(row.get("sales_agent", ""), 0.5) * 10)
-    breakdown["Win rate do vendedor"] = agent_score
+    # 5. Agent+sector combined win rate — fallback to agent win rate (max 10)
+    agent  = row.get("sales_agent", "")
+    sector_val = row.get("sector", "")
+    combo_key = (agent, sector_val)
+    if combo_key in agent_sector_wr:
+        combo_wr = agent_sector_wr[combo_key]
+        wr_label = "Win rate vendedor+setor"
+    else:
+        combo_wr = agent_wr.get(agent, 0.5)
+        wr_label = "Win rate vendedor"
+    combo_wr_pts = round(combo_wr * 10)
+    breakdown[wr_label] = combo_wr_pts
 
     # 6. Account size — revenue in millions USD (max 5)
     rev = float(row.get("revenue", 0))
@@ -160,13 +177,13 @@ def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float, month_wr:
 def score_all(df: pd.DataFrame) -> pd.DataFrame:
     open_deals = df[df["deal_stage"].isin(["Engaging", "Prospecting"])].copy()
 
-    sector_wr, agent_wr, month_wr = compute_win_rates(df)
+    sector_wr, agent_wr, month_wr, agent_sector_wr = compute_win_rates(df)
     max_value = open_deals["effective_value"].max()
     if max_value == 0:
         max_value = 1
 
     results = open_deals.apply(
-        lambda row: pd.Series(score_deal(row, sector_wr, agent_wr, max_value, month_wr)),
+        lambda row: pd.Series(score_deal(row, sector_wr, agent_wr, max_value, month_wr, agent_sector_wr)),
         axis=1,
     )
     results.columns = ["score", "tier", "breakdown"]

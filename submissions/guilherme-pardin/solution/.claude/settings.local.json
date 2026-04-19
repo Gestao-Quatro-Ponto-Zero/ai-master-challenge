@@ -10,7 +10,8 @@
       "Bash(python3 -c \"from ai_insights import get_recommendation; print\\('ai_insights OK'\\)\")",
       "Bash(python -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")",
       "Bash(python3 -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")",
-      "Bash(python3 -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK'\\)\")"
+      "Bash(python3 -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK'\\)\")",
+      "Bash(timeout 15 python3 -m streamlit run app.py --server.headless true --server.port 8502)"
     ]
   }
 }

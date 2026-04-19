@@ -50,7 +50,7 @@ FEATURE_CAPTION = (
 def get_all_data():
     df = load_and_merge()
     scored = score_all(df)
-    _, _, month_wr = compute_win_rates(df)
+    _, _, month_wr, _ = compute_win_rates(df)
     return scored, month_wr
 
 
@@ -283,6 +283,11 @@ with tab2:
                 font=dict(color="#FFFFFF", family="sans-serif"),
             )
             st.plotly_chart(fig, use_container_width=True)
+            st.caption(
+                "**Win rate vendedor+setor:** usa o histórico real da combinação "
+                "vendedor + setor quando há 10+ deals. "
+                "Caso contrário, usa o win rate geral do vendedor."
+            )
 
         with right:
             # Full deal fields table
@@ -364,11 +369,14 @@ with tab3:
                 sk = next((k for k in bd if k.startswith("Sazonalidade")), "")
                 season = sk.split(" — ", 1)[1] if " — " in sk else "N/A"
                 val = f"R$ {float(r['effective_value']):,.0f}".replace(",", ".")
+                wr_agent_key = next((k for k in bd if k.startswith("Win rate vendedor")), "")
+                wr_agent_pts = bd.get(wr_agent_key, "?")
+                wr_agent_type = "combo" if "+" in wr_agent_key else "geral"
                 lines.append(
                     f"#{rank} | {r['account']} | {r['deal_stage']} | "
                     f"Score {r['score']} ({r['tier']}) | {val} | "
                     f"Setor: {r['sector']} | WR setor: {bd.get('Win rate do setor','?')}pts | "
-                    f"WR vendedor: {bd.get('Win rate do vendedor','?')}pts | Sazon: {season}"
+                    f"WR vendedor({wr_agent_type}): {wr_agent_pts}pts | Sazon: {season}"
                 )
             summary = (
                 f"Total: {len(df)} | Tier A: {(df['tier']=='A').sum()} | "
