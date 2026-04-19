@@ -13,7 +13,31 @@ st.set_page_config(
     layout="wide",
 )
 
-TIER_COLORS = {"A": "#d4edda", "B": "#fff3cd", "C": "#f8d7da"}  # kept for other uses
+st.markdown("""<style>
+.stDeployButton{display:none!important}
+header[data-testid="stHeader"]{background-color:#072B3A!important}
+div[data-testid="stMetricValue"]{color:#C89B5A!important;font-size:28px!important;font-weight:800!important}
+div[data-testid="stMetricLabel"]{color:#A0A0A0!important;font-size:10px!important;text-transform:uppercase!important;letter-spacing:1px!important}
+button[data-baseweb="tab"][aria-selected="true"]{color:#C89B5A!important;border-bottom:2px solid #C89B5A!important}
+div[data-testid="stSidebar"] .stButton>button{background-color:#C89B5A!important;color:#0B0B0B!important;font-weight:700!important;border:none!important;width:100%!important;border-radius:8px!important}
+.stButton>button{border:1px solid #C89B5A!important;color:#C89B5A!important;border-radius:8px!important}
+.stButton>button:hover{background-color:#C89B5A!important;color:#0B0B0B!important}
+span[data-baseweb="tag"]{background-color:#0F3F52!important;color:#C89B5A!important;border:1px solid #C89B5A!important}
+div[data-testid="stChatInputContainer"] textarea{border:1px solid #C89B5A!important;border-radius:8px!important}
+div[data-testid="stAlert"]{border-left:4px solid #C89B5A!important}
+hr{border-color:#1a3a5c!important}
+</style>""", unsafe_allow_html=True)
+
+G4_PLOTLY = dict(
+    paper_bgcolor="#072B3A",
+    plot_bgcolor="#0F3F52",
+    font=dict(color="#FFFFFF", family="sans-serif"),
+    xaxis=dict(gridcolor="#1a3a5c", linecolor="#1a3a5c"),
+    yaxis=dict(gridcolor="#1a3a5c", linecolor="#1a3a5c"),
+)
+G4_MARGIN = dict(l=20, r=20, t=40, b=20)
+
+TIER_COLORS = {"A": "#4ade80", "B": "#C89B5A", "C": "#f87171"}
 FEATURE_CAPTION = (
     "**Como o score é calculado (máx 100 pts):** "
     "Estágio do deal (30) · Sazonalidade: win rate histórico do mês de entrada (20) · Valor do deal (20) · "
@@ -33,7 +57,7 @@ def get_all_data():
 # ── Sidebar ─────────────────────────────────────────────────────────────────
 
 with st.sidebar:
-    st.title("📊 Lead Scorer")
+    st.sidebar.markdown('<div style="margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid #1a3a5c;"><span style="color:#C89B5A;font-weight:800;font-size:26px;">G4</span><span style="color:#fff;font-weight:300;font-size:26px;"> Lead Scorer</span></div>', unsafe_allow_html=True)
     st.markdown("---")
 
     api_key = st.text_input(
@@ -91,7 +115,7 @@ view = view.reset_index(drop=True)
 
 # ── Header metrics ───────────────────────────────────────────────────────────
 
-st.markdown("# 📊 Lead Scorer — Priorização de Pipeline")
+st.markdown('<div style="margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1a3a5c"><span style="color:#C89B5A;font-weight:800;font-size:30px;">G4</span><span style="color:#fff;font-weight:300;font-size:30px;"> Lead Scorer</span><div style="color:#A0A0A0;font-size:12px;margin-top:6px;text-transform:uppercase;letter-spacing:1.5px;">Priorização inteligente de pipeline</div></div>', unsafe_allow_html=True)
 
 tier_a = view[view["tier"] == "A"]
 col1, col2, col3, col4 = st.columns(4)
@@ -249,11 +273,14 @@ with tab2:
             fig.update_layout(
                 title="Score por feature",
                 xaxis_title="Pontos",
-                xaxis=dict(range=[0, 38]),
-                yaxis=dict(tickfont=dict(size=13)),
+                xaxis=dict(range=[0, 38], gridcolor="#1a3a5c", linecolor="#1a3a5c"),
+                yaxis=dict(tickfont=dict(size=13), gridcolor="#1a3a5c", linecolor="#1a3a5c"),
                 height=320,
                 margin=dict(l=160, r=60, t=30, b=40),
                 showlegend=False,
+                paper_bgcolor="#072B3A",
+                plot_bgcolor="#0F3F52",
+                font=dict(color="#FFFFFF", family="sans-serif"),
             )
             st.plotly_chart(fig, use_container_width=True)
 
@@ -419,20 +446,22 @@ with tab4:
             name="Tier A",
             x=agent_summary["sales_agent"],
             y=agent_summary["Tier A"],
-            marker_color="#28a745",
+            marker_color="#4ade80",
         ))
         fig_agents.add_trace(go.Bar(
             name="Tier B",
             x=agent_summary["sales_agent"],
             y=agent_summary["Tier B"],
-            marker_color="#ffc107",
+            marker_color="#C89B5A",
         ))
         fig_agents.update_layout(
             barmode="group",
-            title="Top 15 Vendedores — Tier A (verde) e Tier B (amarelo)",
+            title="Top 15 Vendedores — Tier A (verde) e Tier B (dourado)",
             xaxis_tickangle=-45,
             height=420,
+            **G4_PLOTLY,
         )
+        fig_agents.update_layout(margin=G4_MARGIN)
         st.plotly_chart(fig_agents, use_container_width=True)
 
         # Manager summary table
@@ -455,7 +484,7 @@ with tab4:
 
         # Scatter: effective_value vs score
         st.markdown("### Distribuição de Score × Valor do Deal")
-        color_map = {"A": "#28a745", "B": "#ffc107", "C": "#dc3545"}
+        color_map = {"A": "#4ade80", "B": "#C89B5A", "C": "#f87171"}
 
         fig_scatter = px.scatter(
             view,
@@ -472,6 +501,8 @@ with tab4:
             title="Score × Valor do Deal",
             height=420,
         )
+        fig_scatter.update_layout(**G4_PLOTLY)
+        fig_scatter.update_layout(margin=G4_MARGIN)
         st.plotly_chart(fig_scatter, use_container_width=True)
 
         # Win rate histórico por mês de entrada no pipeline
@@ -488,7 +519,7 @@ with tab4:
         months_sorted = sorted(month_wr.keys())
         month_labels  = [MONTH_NAMES_PT[m] for m in months_sorted]
         month_values  = [round(month_wr[m] * 100, 1) for m in months_sorted]
-        bar_colors    = ["#28a745" if v >= 65 else ("#ffc107" if v >= 55 else "#dc3545") for v in month_values]
+        bar_colors    = ["#4ade80" if v >= 65 else ("#C89B5A" if v >= 55 else "#f87171") for v in month_values]
         bar_texts     = [f"{v}% ({_month_counts.get(m, 0)} deals)" for m, v in zip(months_sorted, month_values)]
 
         fig_month = go.Figure(go.Bar(
@@ -504,7 +535,9 @@ with tab4:
             yaxis_range=[0, max(month_values) * 1.25],
             height=400,
             showlegend=False,
+            **G4_PLOTLY,
         )
+        fig_month.update_layout(margin=G4_MARGIN)
         st.plotly_chart(fig_month, use_container_width=True)
         st.caption(
             "Meses com win rate alto geram mais pontos de sazonalidade no score. "
