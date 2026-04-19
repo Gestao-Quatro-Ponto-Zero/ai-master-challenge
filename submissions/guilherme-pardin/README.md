@@ -297,6 +297,45 @@ O visual foi atualizado para seguir o padrão G4 Educação:
 | Claude (claude.ai) | Planejamento da arquitetura, decisões de scoring, análise do feedback, iteração do modelo |
 | Claude Code (Desktop) | Geração e iteração de todo o código, análise dos dados reais, diagnóstico de problemas |
 
+### Técnicas de prompting utilizadas
+
+Cada interação com o modelo foi estruturada com técnicas deliberadas de engenharia de prompt — não prompts genéricos.
+
+**Role prompting + domain grounding**
+Cada sessão iniciou com definição explícita de persona e contexto de domínio, ancorando o modelo no problema real antes de qualquer instrução técnica. Efeito: o modelo priorizou decisões de negócio sobre soluções técnicas genéricas — ex: sugeriu win rate histórico como feature antes de qualquer métrica de ML clássica.
+
+Exemplo aplicado:
+"Você é um especialista em RevOps e análise de dados para times de vendas B2B. Está construindo um MVP funcional de Lead Scoring. O critério principal de avaliação é: funciona de verdade, o vendedor consegue usar, e o scoring vai além do óbvio."
+
+**Data grounding via file injection**
+Antes de qualquer geração de código, o Claude Code foi instruído a inspecionar os arquivos reais do dataset. Isso forçou o modelo a trabalhar com o schema real — valores exatos de deal_stage, tipos de coluna, distribuição de nulos — evitando código escrito para dados imaginários. Foi essa inspeção que revelou o GTXPro vs GTX Pro, o close_value nulo nos deals abertos e o dataset de 2016-2017.
+
+Exemplo aplicado:
+"PRIMEIRA AÇÃO OBRIGATÓRIA: leia todos os arquivos em data/ e liste os campos reais e valores exatos de deal_stage antes de escrever qualquer linha de código."
+
+**Diagnostic-first prompting**
+Para qualquer problema identificado, o prompt bloqueava a geração de solução até que o diagnóstico estivesse completo. Resultado: em vez de substituir NaN por zero (correção superficial), o modelo identificou que 68% dos deals abertos não tinham account no CSV de origem — limitação real documentada, não escondida.
+
+Exemplo aplicado:
+"Antes de corrigir os NaNs, investigue a causa raiz. Mostre quantas linhas têm NaN por coluna e quais valores do sales_pipeline não casaram com as outras tabelas."
+
+**Chain-of-thought estruturado para análise exploratória**
+Na etapa de aprofundamento do scoring, o prompt decompôs a análise em sub-queries independentes antes de qualquer conclusão. Essa decomposição forçou o modelo a calcular cada dimensão separadamente antes de sintetizar — o que permitiu identificar que a variação de 54 pp em combinações vendedor+setor era estrutural, não ruído amostral.
+
+Exemplo aplicado:
+"Analise os dados históricos e responda em sequência: 1) win rate por deal_stage de entrada, 2) tabela cruzada sector x stage x win_rate, 3) win rate por sales_agent com ranking, 4) win rate por produto, 5) combinações sales_agent x sector com delta maior que 10pp vs média global."
+
+**Output-constrained prompting para validação**
+Cada implementação foi acompanhada de critério de aceitação explícito no próprio prompt. Isso criou um loop de validação quantitativa — a mudança só era aceita se os números confirmassem o comportamento esperado, não apenas se o código rodasse sem erro.
+
+Exemplo aplicado:
+"Após implementar, mostre obrigatoriamente: quantas combinações vendedor+setor têm 10 ou mais deals, top 5 win rate e bottom 5 win rate, comparação da distribuição Tier A/B/C antes e depois."
+
+**Human-in-the-loop para decisões de negócio**
+A divisão de responsabilidade foi explícita ao longo de todo o projeto. A IA executou: leitura de dados, geração de código, cálculo de win rates, validação de distribuições. O humano decidiu: qual hipótese investigar, qual feature faz sentido de negócio, qual trade-off aceitar.
+
+Exemplo concreto: o modelo calculou que a variação de vendedor+setor chegava a 54 pp. A interpretação — que isso representa fit vendedor+setor e não talento individual, e que Boris Faz não deveria receber leads de finance — foi decisão humana com base nos números.
+
 ### Workflow
 
 1. Discuti a arquitetura e lógica de scoring com Claude antes 
