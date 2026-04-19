@@ -4,8 +4,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 
-from scoring import load_and_merge, score_all, compute_win_rates, MONTH_NAMES_PT
-from ai_insights import get_recommendation, chat_completion
+from scoring import load_and_merge, score_all
+from ai_insights import get_recommendation
 
 st.set_page_config(
     page_title="Lead Scorer",
@@ -16,18 +16,16 @@ st.set_page_config(
 TIER_COLORS = {"A": "#d4edda", "B": "#fff3cd", "C": "#f8d7da"}  # kept for other uses
 FEATURE_CAPTION = (
     "**Como o score é calculado (máx 100 pts):** "
-    "Estágio do deal (30) · Sazonalidade: win rate histórico do mês de entrada (20) · Valor do deal (20) · "
+    "Estágio do deal (30) · Tempo no pipeline (20) · Valor do deal (20) · "
     "Win rate do setor histórico (15) · Win rate do vendedor histórico (10) · "
     "Tamanho da conta (5)"
 )
 
 
 @st.cache_data(ttl=3600)
-def get_all_data():
+def get_scored_df():
     df = load_and_merge()
-    scored = score_all(df)
-    _, _, month_wr = compute_win_rates(df)
-    return scored, month_wr
+    return score_all(df)
 
 
 # ── Sidebar ─────────────────────────────────────────────────────────────────
@@ -44,25 +42,13 @@ with st.sidebar:
     )
 
     st.markdown("---")
-    _model_options = {
-        "claude-sonnet-4": "claude-sonnet-4-20250514",
-        "claude-haiku-4":  "claude-haiku-4-5-20251001",
-    }
-    _model_label = st.selectbox(
-        "Modelo Claude",
-        list(_model_options.keys()),
-        help="Sonnet: mais preciso. Haiku: mais rápido e barato.",
-    )
-    model = _model_options[_model_label]
-
-    st.markdown("---")
     st.subheader("Filtros")
 
     if st.button("🔄 Atualizar scores", use_container_width=True):
         st.cache_data.clear()
         st.rerun()
 
-scored_df, month_wr = get_all_data()
+scored_df = get_scored_df()
 
 # Build filter options from scored data
 all_agents = sorted(scored_df["sales_agent"].dropna().unique())
@@ -105,7 +91,7 @@ col4.metric("Score médio", f"{round(view['score'].mean())}" if len(view) > 0 el
 
 # ── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4 = st.tabs(["🗂 Pipeline", "🤖 Análise IA", "💬 Chat com IA", "📈 Gestor"])
+tab1, tab2, tab3 = st.tabs(["🗂 Pipeline", "🤖 Análise IA", "📈 Gestor"])
 
 # ═══════════════════════════════════════════════════════════════════════════
 # TAB 1 — Pipeline
@@ -158,7 +144,7 @@ with tab1:
             )
 
         headers = ["Conta", "Estágio", "Vendedor", "Região",
-                   "Valor Esperado (R$)", "Score", "Tier"]
+                   "Valor Esperado (R$)", "Dias no Pipeline", "Score", "Tier"]
 
         rows_html = ""
         for _, row in view.head(100).iterrows():
@@ -174,6 +160,7 @@ with tab1:
                 row["sales_agent"],
                 row.get("regional_office", ""),
                 val_fmt,
+                str(int(row["days_in_pipeline"])),
                 score_cell,
                 badge,
             ]
@@ -245,14 +232,11 @@ with tab2:
                 text=[f"{v} pts" for v in values],
                 textposition="outside",
             ))
-            fig.update_traces(width=0.6)
             fig.update_layout(
                 title="Score por feature",
                 xaxis_title="Pontos",
-                xaxis=dict(range=[0, 38]),
-                yaxis=dict(tickfont=dict(size=13)),
                 height=320,
-                margin=dict(l=160, r=60, t=30, b=40),
+                margin=dict(l=10, r=60, t=40, b=10),
                 showlegend=False,
             )
             st.plotly_chart(fig, use_container_width=True)
@@ -271,6 +255,7 @@ with tab2:
                 "Receita da Conta (USD M)": f"${float(selected_deal.get('revenue', 0)):,.1f}M",
                 "Funcionários": int(selected_deal.get("employees", 0)),
                 "Valor Esperado": f"R$ {float(selected_deal.get('effective_value', 0)):,.0f}".replace(",", "."),
+                "Dias no Pipeline": selected_deal.get("days_in_pipeline", ""),
                 "Data Engage": str(selected_deal.get("engage_date", ""))[:10],
             }
             detail_df = pd.DataFrame(
@@ -282,7 +267,7 @@ with tab2:
                 if st.button("🤖 Analisar com IA", use_container_width=True):
                     with st.spinner("Consultando Claude..."):
                         insight = get_recommendation(
-                            selected_deal.to_dict(), breakdown, api_key, model
+                            selected_deal.to_dict(), breakdown, api_key
                         )
                     urgency_map = {"alta": "🔴 Alta", "media": "🟡 Média", "baixa": "🟢 Baixa"}
                     st.markdown(f"**Urgência:** {urgency_map.get(insight.get('urgency','media'), insight.get('urgency',''))}")
@@ -293,107 +278,10 @@ with tab2:
                 st.warning("Cole sua chave Anthropic na barra lateral para obter recomendações com IA.")
 
 # ═══════════════════════════════════════════════════════════════════════════
-# TAB 3 — Chat com IA
+# TAB 3 — Gestor
 # ═══════════════════════════════════════════════════════════════════════════
-
-CHAT_SUGGESTIONS = [
-    "Quais meus 3 melhores deals para fechar essa semana?",
-    "Quais setores têm mais chance de fechar?",
-    "Por que meu score médio está baixo?",
-    "Quais deals devo abandonar?",
-]
 
 with tab3:
-    st.session_state.setdefault("chat_messages", [])
-
-    chat_agents  = sorted(scored_df["sales_agent"].dropna().unique())
-    chat_regions = sorted(scored_df["regional_office"].dropna().unique())
-
-    cc1, cc2, cc3 = st.columns(3)
-    with cc1:
-        chat_agent = st.selectbox("Vendedor", ["Todos"] + chat_agents, key="chat_agent")
-    with cc2:
-        chat_tier = st.selectbox("Tier", ["Todos", "A", "B", "C"], key="chat_tier")
-    with cc3:
-        chat_region = st.selectbox("Região", ["Todos"] + chat_regions, key="chat_region")
-
-    chat_view = scored_df.copy()
-    if chat_agent  != "Todos": chat_view = chat_view[chat_view["sales_agent"]     == chat_agent]
-    if chat_tier   != "Todos": chat_view = chat_view[chat_view["tier"]            == chat_tier]
-    if chat_region != "Todos": chat_view = chat_view[chat_view["regional_office"] == chat_region]
-    chat_view = chat_view.reset_index(drop=True)
-
-    ctx_label = chat_agent if chat_agent != "Todos" else "todos os vendedores"
-    st.caption(f"{len(chat_view)} deals | {ctx_label}")
-    st.markdown("---")
-
-    if not api_key:
-        st.warning("Cole sua chave Anthropic na barra lateral para usar o chat com IA.")
-    else:
-        def build_pipeline_context(df) -> str:
-            lines = []
-            for rank, (_, r) in enumerate(df.head(50).iterrows(), 1):
-                bd = r.get("breakdown", {})
-                sk = next((k for k in bd if k.startswith("Sazonalidade")), "")
-                season = sk.split(" — ", 1)[1] if " — " in sk else "N/A"
-                val = f"R$ {float(r['effective_value']):,.0f}".replace(",", ".")
-                lines.append(
-                    f"#{rank} | {r['account']} | {r['deal_stage']} | "
-                    f"Score {r['score']} ({r['tier']}) | {val} | "
-                    f"Setor: {r['sector']} | WR setor: {bd.get('Win rate do setor','?')}pts | "
-                    f"WR vendedor: {bd.get('Win rate do vendedor','?')}pts | Sazon: {season}"
-                )
-            summary = (
-                f"Total: {len(df)} | Tier A: {(df['tier']=='A').sum()} | "
-                f"Tier B: {(df['tier']=='B').sum()} | "
-                f"Score médio: {round(df['score'].mean()) if len(df) else 0}\n"
-            )
-            return summary + "\n".join(lines)
-
-        for msg in st.session_state.chat_messages:
-            with st.chat_message(msg["role"]):
-                st.markdown(msg["content"])
-
-        if not st.session_state.chat_messages:
-            st.markdown("**Sugestões:**")
-            scols = st.columns(2)
-            for i, sug in enumerate(CHAT_SUGGESTIONS):
-                if scols[i % 2].button(sug, key=f"sug_{i}", use_container_width=True):
-                    st.session_state.chat_messages.append({"role": "user", "content": sug})
-                    with st.chat_message("user"):
-                        st.markdown(sug)
-                    with st.chat_message("assistant"):
-                        with st.spinner("Consultando Claude..."):
-                            reply = chat_completion(
-                                st.session_state.chat_messages,
-                                build_pipeline_context(chat_view), api_key, model,
-                            )
-                        st.markdown(reply)
-                    st.session_state.chat_messages.append({"role": "assistant", "content": reply})
-                    st.rerun()
-
-        if prompt := st.chat_input("Pergunte sobre seu pipeline..."):
-            st.session_state.chat_messages.append({"role": "user", "content": prompt})
-            with st.chat_message("user"):
-                st.markdown(prompt)
-            with st.chat_message("assistant"):
-                with st.spinner("Consultando Claude..."):
-                    reply = chat_completion(
-                        st.session_state.chat_messages,
-                        build_pipeline_context(chat_view), api_key, model,
-                    )
-                st.markdown(reply)
-            st.session_state.chat_messages.append({"role": "assistant", "content": reply})
-
-        if st.button("🗑 Limpar conversa"):
-            st.session_state.chat_messages = []
-            st.rerun()
-
-# ═══════════════════════════════════════════════════════════════════════════
-# TAB 4 — Gestor
-# ═══════════════════════════════════════════════════════════════════════════
-
-with tab4:
     if view.empty:
         st.info("Nenhum deal encontrado com os filtros atuais.")
     else:
@@ -453,63 +341,28 @@ with tab4:
         mgr_df = pd.DataFrame(mgr_summary).sort_values("Deals Tier A", ascending=False)
         st.dataframe(mgr_df, use_container_width=True, hide_index=True)
 
-        # Scatter: effective_value vs score
-        st.markdown("### Distribuição de Score × Valor do Deal")
+        # Scatter: days_in_pipeline vs score
+        st.markdown("### Distribuição de Score × Tempo no Pipeline")
         color_map = {"A": "#28a745", "B": "#ffc107", "C": "#dc3545"}
+        scatter_df = view.copy()
+        scatter_df["cor"] = scatter_df["tier"].map(color_map)
 
         fig_scatter = px.scatter(
-            view,
-            x="effective_value",
+            scatter_df,
+            x="days_in_pipeline",
             y="score",
             color="tier",
             color_discrete_map=color_map,
             hover_data={"account": True, "sales_agent": True, "deal_stage": True},
             labels={
-                "effective_value": "Valor Esperado (R$)",
+                "days_in_pipeline": "Dias no Pipeline",
                 "score": "Score",
                 "tier": "Tier",
             },
-            title="Score × Valor do Deal",
+            title="Score × Dias no Pipeline",
             height=420,
         )
         st.plotly_chart(fig_scatter, use_container_width=True)
-
-        # Win rate histórico por mês de entrada no pipeline
-        st.markdown("### Win rate histórico por mês de entrada no pipeline")
-
-        @st.cache_data(ttl=3600)
-        def _get_month_counts():
-            df = load_and_merge()
-            closed = df[df["deal_stage"].isin(["Won", "Lost"])].copy()
-            closed["engage_month"] = closed["engage_date"].dt.month
-            return closed.groupby("engage_month").size().to_dict()
-        _month_counts = _get_month_counts()
-
-        months_sorted = sorted(month_wr.keys())
-        month_labels  = [MONTH_NAMES_PT[m] for m in months_sorted]
-        month_values  = [round(month_wr[m] * 100, 1) for m in months_sorted]
-        bar_colors    = ["#28a745" if v >= 65 else ("#ffc107" if v >= 55 else "#dc3545") for v in month_values]
-        bar_texts     = [f"{v}% ({_month_counts.get(m, 0)} deals)" for m, v in zip(months_sorted, month_values)]
-
-        fig_month = go.Figure(go.Bar(
-            x=month_labels,
-            y=month_values,
-            marker_color=bar_colors,
-            text=bar_texts,
-            textposition="outside",
-        ))
-        fig_month.update_layout(
-            title="Win rate por mês de entrada no pipeline",
-            yaxis_title="Win Rate (%)",
-            yaxis_range=[0, max(month_values) * 1.25],
-            height=400,
-            showlegend=False,
-        )
-        st.plotly_chart(fig_month, use_container_width=True)
-        st.caption(
-            "Meses com win rate alto geram mais pontos de sazonalidade no score. "
-            "Base: todos os deals Won e Lost históricos."
-        )
 
 # ── Footer ───────────────────────────────────────────────────────────────────
 

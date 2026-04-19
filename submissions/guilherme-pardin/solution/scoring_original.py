@@ -4,12 +4,6 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).parent / "data"
 
-MONTH_NAMES_PT = {
-    1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
-    5: "Maio", 6: "Junho", 7: "Julho", 8: "Agosto",
-    9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro",
-}
-
 
 def _normalize_str(series: pd.Series) -> pd.Series:
     """Strip whitespace and normalize case for join keys."""
@@ -91,7 +85,7 @@ def load_and_merge() -> pd.DataFrame:
     return df
 
 
-def compute_win_rates(df: pd.DataFrame) -> tuple[dict, dict, dict]:
+def compute_win_rates(df: pd.DataFrame) -> tuple[dict, dict]:
     closed = df[df["deal_stage"].isin(["Won", "Lost"])].copy()
     closed["won"] = (closed["deal_stage"] == "Won").astype(int)
 
@@ -100,32 +94,29 @@ def compute_win_rates(df: pd.DataFrame) -> tuple[dict, dict, dict]:
         grp["win_rate"] = grp["sum"] / grp["count"]
         return grp["win_rate"].to_dict()
 
-    # Monthly win rate: key is month number (1–12)
-    closed["engage_month"] = closed["engage_date"].dt.month
-    month_grp = closed.groupby("engage_month")["won"].agg(["sum", "count"])
-    month_grp["win_rate"] = month_grp["sum"] / month_grp["count"]
-    month_wr = month_grp["win_rate"].to_dict()
-
-    return win_rate_dict("sector"), win_rate_dict("sales_agent"), month_wr
+    return win_rate_dict("sector"), win_rate_dict("sales_agent")
 
 
-def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float, month_wr: dict) -> tuple[int, str, dict]:
+def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float) -> tuple[int, str, dict]:
     breakdown = {}
 
     # 1. Deal stage (max 30)
     stage_scores = {"Engaging": 30, "Prospecting": 15}
     breakdown["Estágio do deal"] = stage_scores.get(row["deal_stage"], 0)
 
-    # 2. Sazonalidade: win rate histórico do mês de engage_date (max 20)
-    engage_month = row["engage_date"].month if pd.notna(row["engage_date"]) else None
-    month_wr_val = month_wr.get(engage_month, 0.5)
-    season_score = round(month_wr_val * 20)
-    if engage_month:
-        month_name = MONTH_NAMES_PT.get(engage_month, str(engage_month))
-        season_label = f"Sazonalidade — {month_name} ({round(month_wr_val * 100)}% win rate)"
+    # 2. Days in pipeline (max 20)
+    days = int(row["days_in_pipeline"])
+    if days <= 30:
+        days_score = 20
+    elif days <= 60:
+        days_score = 15
+    elif days <= 90:
+        days_score = 8
+    elif days <= 180:
+        days_score = 3
     else:
-        season_label = "Sazonalidade — mês desconhecido"
-    breakdown[season_label] = season_score
+        days_score = 0
+    breakdown["Tempo no pipeline"] = days_score
 
     # 3. Deal value relative to max (max 20)
     val = float(row["effective_value"]) if max_value > 0 else 0
@@ -160,13 +151,13 @@ def score_deal(row, sector_wr: dict, agent_wr: dict, max_value: float, month_wr:
 def score_all(df: pd.DataFrame) -> pd.DataFrame:
     open_deals = df[df["deal_stage"].isin(["Engaging", "Prospecting"])].copy()
 
-    sector_wr, agent_wr, month_wr = compute_win_rates(df)
+    sector_wr, agent_wr = compute_win_rates(df)
     max_value = open_deals["effective_value"].max()
     if max_value == 0:
         max_value = 1
 
     results = open_deals.apply(
-        lambda row: pd.Series(score_deal(row, sector_wr, agent_wr, max_value, month_wr)),
+        lambda row: pd.Series(score_deal(row, sector_wr, agent_wr, max_value)),
         axis=1,
     )
     results.columns = ["score", "tier", "breakdown"]

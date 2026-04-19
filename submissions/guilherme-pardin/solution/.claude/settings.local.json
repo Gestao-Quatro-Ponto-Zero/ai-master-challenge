@@ -7,7 +7,10 @@
       "Bash(pip3 install *)",
       "Bash(python3 -c \"from scoring import load_and_merge, score_all; df = load_and_merge\\(\\); scored = score_all\\(df\\); print\\('Total open:', len\\(scored\\)\\); print\\('Tier A:', len\\(scored[scored.tier=='A']\\)\\); print\\('Tier B:', len\\(scored[scored.tier=='B']\\)\\); print\\('Tier C:', len\\(scored[scored.tier=='C']\\)\\); print\\(scored[['account','deal_stage','sales_agent','score','tier']].head\\(5\\).to_string\\(\\)\\)\")",
       "Bash(timeout 15 python3 -m streamlit run app.py --server.headless true --server.port 8501)",
-      "Bash(python3 -c \"from ai_insights import get_recommendation; print\\('ai_insights OK'\\)\")"
+      "Bash(python3 -c \"from ai_insights import get_recommendation; print\\('ai_insights OK'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")",
+      "Bash(python3 -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK — sem erros de sintaxe'\\)\")",
+      "Bash(python3 -c \"import ast; ast.parse\\(open\\('app.py'\\).read\\(\\)\\); print\\('OK'\\)\")"
     ]
   }
 }

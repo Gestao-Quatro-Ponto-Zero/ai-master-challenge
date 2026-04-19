@@ -2,7 +2,7 @@ import json
 import anthropic
 
 
-def get_recommendation(row, breakdown: dict, api_key: str) -> dict:
+def get_recommendation(row, breakdown: dict, api_key: str, model: str = "claude-sonnet-4-20250514") -> dict:
     fallback = {
         "urgency": "media",
         "main_risk": "Não foi possível obter análise da IA.",
@@ -48,7 +48,7 @@ Retorne EXATAMENTE este JSON (sem markdown, sem ```):
 
         client = anthropic.Anthropic(api_key=api_key)
         message = client.messages.create(
-            model="claude-sonnet-4-20250514",
+            model=model,
             max_tokens=512,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -68,3 +68,26 @@ Retorne EXATAMENTE este JSON (sem markdown, sem ```):
 
     except Exception:
         return fallback
+
+
+def chat_completion(messages: list[dict], pipeline_context: str, api_key: str, model: str = "claude-sonnet-4-20250514") -> str:
+    system_prompt = (
+        "Você é um assistente de vendas especialista em análise de pipeline. "
+        "Responda sempre de forma direta e acionável. "
+        "Use os dados reais do pipeline fornecidos. "
+        "Cite números e deals específicos nas respostas. "
+        "Nunca invente dados que não estejam no contexto.\n\n"
+        f"PIPELINE ATUAL DO VENDEDOR (top 50 por score):\n{pipeline_context}"
+    )
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model=model,
+            max_tokens=1024,
+            system=system_prompt,
+            messages=messages,
+        )
+        return response.content[0].text.strip()
+    except Exception as e:
+        return f"Erro ao consultar a IA: {e}"
