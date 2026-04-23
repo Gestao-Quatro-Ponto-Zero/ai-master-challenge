@@ -265,6 +265,20 @@ sabe quais são seus top deals, por que estão priorizados,
 qual a próxima ação recomendada e pode perguntar qualquer 
 coisa sobre o pipeline em linguagem natural.
 
+#### Flexibilidade de provedor de IA
+
+O app suporta 3 provedores de IA intercambiáveis — o usuário 
+escolhe na sidebar e cola a própria chave:
+
+| Provedor | Modelo | Quando usar |
+|---|---|---|
+| Anthropic | Claude Sonnet/Haiku | Melhor qualidade de análise |
+| Google | Gemini 2.0 Flash Lite | Gratuito com conta Google |
+| OpenAI | GPT-4o mini | Alternativa acessível |
+
+O scoring por regras funciona 100% sem nenhuma chave — 
+a IA é uma camada de enriquecimento opcional.
+
 ---
 
 ### Resultados
@@ -278,6 +292,9 @@ coisa sobre o pipeline em linguagem natural.
 - Cache em memória para respostas da IA — zero rechamadas para 
   o mesmo deal na mesma sessão
 - Interface com 4 abas: Pipeline / Análise IA / Chat com IA / Gestor
+- Suporte a 3 provedores de IA: Anthropic Claude, Google Gemini 
+  e OpenAI GPT-4o mini — usuário escolhe na sidebar e cola 
+  a própria chave
 
 ### Lógica de scoring (100 pts total)
 
@@ -329,6 +346,9 @@ O visual foi atualizado para seguir o padrão G4 Educação:
 - Chat e Análise IA requerem chave Anthropic com créditos
 - Dataset de 2016-2017 — sazonalidade baseada em padrões 
   históricos desse período
+- IA requer chave própria do usuário (Anthropic, Google ou 
+  OpenAI) — o scoring por regras funciona sem chave, mas 
+  chat e análise detalhada dependem de API key com créditos
 
 ---
 
@@ -407,6 +427,15 @@ Exemplo concreto: o modelo calculou que a variação de vendedor+setor chegava a
    pandas. Implementei cache em memória com hash MD5 para evitar 
    rechamadas desnecessárias à API — decisão de custo e UX, 
    não só performance técnica.
+9. Durante a hospedagem, tentei usar Gemini API no free tier 
+   para deixar a IA ativa sem custo. Descobri que a conta 
+   precisava de faturamento configurado e que o modelo 
+   disponível variava por região e plano. Em vez de forçar 
+   um único provider com limitações, decidi arquitetar o 
+   sistema para suportar 3 providers intercambiáveis — 
+   Anthropic, Google e OpenAI — com o usuário trazendo 
+   a própria chave. Isso elimina dependência de custo meu 
+   e torna o app mais flexível para demonstração.
 
 ### Onde a IA errou e como corrigi
 
@@ -452,6 +481,12 @@ Exemplo concreto: o modelo calculou que a variação de vendedor+setor chegava a
 - Identificação do bottleneck real de performance via profiling 
   antes de otimizar — em vez de otimizar às cegas, medi primeiro 
   e otimizei onde importava
+- Decisão arquitetural de suportar múltiplos providers de IA 
+  em vez de forçar um único — surgiu de uma limitação prática 
+  (quota do Gemini) mas virou um diferencial de design: 
+  o app não está acoplado a nenhum provider específico e 
+  pode ser adaptado conforme o custo e disponibilidade 
+  de cada organização
 
 ---
 
