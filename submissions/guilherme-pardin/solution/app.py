@@ -59,26 +59,8 @@ def get_all_data():
 with st.sidebar:
     st.sidebar.markdown('<div style="margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid #1a3a5c;"><span style="color:#C89B5A;font-weight:800;font-size:26px;">G4</span><span style="color:#fff;font-weight:300;font-size:26px;"> Lead Scorer</span></div>', unsafe_allow_html=True)
     st.markdown("---")
-
-    api_key = st.text_input(
-        "Chave Anthropic (opcional)",
-        type="password",
-        placeholder="sk-ant-...",
-        help="Cole sua chave para análise com IA",
-    )
-
-    st.markdown("---")
-    _model_options = {
-        "claude-sonnet-4": "claude-sonnet-4-20250514",
-        "claude-haiku-4":  "claude-haiku-4-5-20251001",
-    }
-    _model_label = st.selectbox(
-        "Modelo Claude",
-        list(_model_options.keys()),
-        help="Sonnet: mais preciso. Haiku: mais rápido e barato.",
-    )
-    model = _model_options[_model_label]
-
+    api_provider = st.selectbox("Provedor de IA", ["Anthropic (Claude)", "Google (Gemini)", "OpenAI (GPT-4o mini)"])
+    api_key = st.text_input("Chave da API", type="password", placeholder="Cole sua chave aqui")
     st.markdown("---")
     st.subheader("Filtros")
 
@@ -312,9 +294,9 @@ with tab2:
 
             if api_key:
                 if st.button("🤖 Analisar com IA", use_container_width=True):
-                    with st.spinner("Consultando Claude..."):
+                    with st.spinner("Consultando IA..."):
                         insight = get_recommendation(
-                            selected_deal.to_dict(), breakdown, api_key, model
+                            selected_deal.to_dict(), breakdown, api_key, api_provider
                         )
                     urgency_map = {"alta": "🔴 Alta", "media": "🟡 Média", "baixa": "🟢 Baixa"}
                     st.markdown(f"**Urgência:** {urgency_map.get(insight.get('urgency','media'), insight.get('urgency',''))}")
@@ -322,7 +304,7 @@ with tab2:
                     st.success(f"✅ **Próxima Ação:** {insight.get('next_action','')}")
                     st.caption(f"💡 **Por que este score:** {insight.get('why_score','')}")
             else:
-                st.warning("Cole sua chave Anthropic na barra lateral para obter recomendações com IA.")
+                st.warning("Cole sua chave de API na barra lateral para ativar a análise com IA.")
 
 # ═══════════════════════════════════════════════════════════════════════════
 # TAB 3 — Chat com IA
@@ -359,32 +341,32 @@ with tab3:
     st.caption(f"{len(chat_view)} deals | {ctx_label}")
     st.markdown("---")
 
-    if not api_key:
-        st.warning("Cole sua chave Anthropic na barra lateral para usar o chat com IA.")
-    else:
-        def build_pipeline_context(df) -> str:
-            lines = []
-            for rank, (_, r) in enumerate(df.head(50).iterrows(), 1):
-                bd = r.get("breakdown", {})
-                sk = next((k for k in bd if k.startswith("Sazonalidade")), "")
-                season = sk.split(" — ", 1)[1] if " — " in sk else "N/A"
-                val = f"R$ {float(r['effective_value']):,.0f}".replace(",", ".")
-                wr_agent_key = next((k for k in bd if k.startswith("Win rate vendedor")), "")
-                wr_agent_pts = bd.get(wr_agent_key, "?")
-                wr_agent_type = "combo" if "+" in wr_agent_key else "geral"
-                lines.append(
-                    f"#{rank} | {r['account']} | {r['deal_stage']} | "
-                    f"Score {r['score']} ({r['tier']}) | {val} | "
-                    f"Setor: {r['sector']} | WR setor: {bd.get('Win rate do setor','?')}pts | "
-                    f"WR vendedor({wr_agent_type}): {wr_agent_pts}pts | Sazon: {season}"
-                )
-            summary = (
-                f"Total: {len(df)} | Tier A: {(df['tier']=='A').sum()} | "
-                f"Tier B: {(df['tier']=='B').sum()} | "
-                f"Score médio: {round(df['score'].mean()) if len(df) else 0}\n"
+    def build_pipeline_context(df) -> str:
+        lines = []
+        for rank, (_, r) in enumerate(df.head(50).iterrows(), 1):
+            bd = r.get("breakdown", {})
+            sk = next((k for k in bd if k.startswith("Sazonalidade")), "")
+            season = sk.split(" — ", 1)[1] if " — " in sk else "N/A"
+            val = f"R$ {float(r['effective_value']):,.0f}".replace(",", ".")
+            wr_agent_key = next((k for k in bd if k.startswith("Win rate vendedor")), "")
+            wr_agent_pts = bd.get(wr_agent_key, "?")
+            wr_agent_type = "combo" if "+" in wr_agent_key else "geral"
+            lines.append(
+                f"#{rank} | {r['account']} | {r['deal_stage']} | "
+                f"Score {r['score']} ({r['tier']}) | {val} | "
+                f"Setor: {r['sector']} | WR setor: {bd.get('Win rate do setor','?')}pts | "
+                f"WR vendedor({wr_agent_type}): {wr_agent_pts}pts | Sazon: {season}"
             )
-            return summary + "\n".join(lines)
+        summary = (
+            f"Total: {len(df)} | Tier A: {(df['tier']=='A').sum()} | "
+            f"Tier B: {(df['tier']=='B').sum()} | "
+            f"Score médio: {round(df['score'].mean()) if len(df) else 0}\n"
+        )
+        return summary + "\n".join(lines)
 
+    if not api_key:
+        st.warning("Cole sua chave de API na barra lateral para usar o chat com IA.")
+    else:
         for msg in st.session_state.chat_messages:
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
@@ -398,10 +380,12 @@ with tab3:
                     with st.chat_message("user"):
                         st.markdown(sug)
                     with st.chat_message("assistant"):
-                        with st.spinner("Consultando Claude..."):
+                        with st.spinner("Consultando IA..."):
                             reply = chat_completion(
                                 st.session_state.chat_messages,
-                                build_pipeline_context(chat_view), api_key, model,
+                                build_pipeline_context(chat_view),
+                                api_key,
+                                api_provider,
                             )
                         st.markdown(reply)
                     st.session_state.chat_messages.append({"role": "assistant", "content": reply})
@@ -412,10 +396,12 @@ with tab3:
             with st.chat_message("user"):
                 st.markdown(prompt)
             with st.chat_message("assistant"):
-                with st.spinner("Consultando Claude..."):
+                with st.spinner("Consultando IA..."):
                     reply = chat_completion(
                         st.session_state.chat_messages,
-                        build_pipeline_context(chat_view), api_key, model,
+                        build_pipeline_context(chat_view),
+                        api_key,
+                        api_provider,
                     )
                 st.markdown(reply)
             st.session_state.chat_messages.append({"role": "assistant", "content": reply})
@@ -462,9 +448,9 @@ with tab4:
         if api_key:
             if _summary_key not in st.session_state:
                 if st.button("✨ Gerar resumo com IA", use_container_width=False):
-                    with st.spinner("Consultando Claude..."):
+                    with st.spinner("Consultando IA..."):
                         st.session_state[_summary_key] = get_executive_summary(
-                            _exec_stats, api_key, model
+                            _exec_stats, api_key, api_provider
                         )
             if _summary_key in st.session_state:
                 st.info(st.session_state[_summary_key])
@@ -472,7 +458,7 @@ with tab4:
                     del st.session_state[_summary_key]
                     st.rerun()
         else:
-            st.warning("Cole sua chave Anthropic na barra lateral para gerar o resumo executivo com IA.")
+            st.warning("Cole sua chave de API na barra lateral para gerar o resumo executivo com IA.")
 
         st.markdown("---")
 
