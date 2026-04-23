@@ -1,6 +1,41 @@
+import hashlib
 import json
 import anthropic
 
+# ── In-process cache (lives for the duration of the Streamlit server process)
+_cache: dict[str, object] = {}
+
+
+def _make_key(row_dict: dict, model: str) -> str:
+    """Hash key for get_recommendation cache."""
+    content = json.dumps(
+        {
+            k: str(v)
+            for k, v in row_dict.items()
+            if k in [
+                "opportunity_id", "account", "deal_stage",
+                "score", "tier", "sector", "sales_agent",
+                "effective_value",
+            ]
+        },
+        sort_keys=True,
+    ) + model
+    return hashlib.md5(content.encode()).hexdigest()
+
+
+def _make_chat_key(messages: list[dict], pipeline_context: str, model: str) -> str:
+    """Hash key for chat_completion cache."""
+    content = json.dumps(messages, sort_keys=True) + pipeline_context[:500] + model
+    return hashlib.md5(content.encode()).hexdigest()
+
+
+def _make_summary_key(stats: dict, model: str) -> str:
+    """Hash key for get_executive_summary cache."""
+    content = json.dumps({k: str(v) for k, v in stats.items()}, sort_keys=True) + model
+    return hashlib.md5(content.encode()).hexdigest()
+
+
+# ── get_recommendation ───────────────────────────────────────────────────────
 
 def get_recommendation(row, breakdown: dict, api_key: str, model: str = "claude-sonnet-4-20250514") -> dict:
     fallback = {
@@ -9,6 +44,11 @@ def get_recommendation(row, breakdown: dict, api_key: str, model: str = "claude-
         "next_action": "Revisar o deal manualmente e definir próximo passo.",
         "why_score": "Score calculado com base nas 6 features do modelo de regras.",
     }
+
+    # ── Cache check ──────────────────────────────────────────────────────────
+    cache_key = _make_key(row if isinstance(row, dict) else row.to_dict(), model)
+    if cache_key in _cache:
+        return _cache[cache_key]
 
     try:
         breakdown_text = "\n".join(
@@ -54,23 +94,28 @@ Retorne EXATAMENTE este JSON (sem markdown, sem ```):
         )
 
         raw = message.content[0].text.strip()
-        # Remove markdown code fences if present
         raw = raw.replace("```json", "").replace("```", "").strip()
-
         result = json.loads(raw)
 
-        # Validate required keys
         for key in ("urgency", "main_risk", "next_action", "why_score"):
             if key not in result:
                 result[key] = fallback[key]
 
+        _cache[cache_key] = result
         return result
 
     except Exception:
         return fallback
 
 
+# ── chat_completion ──────────────────────────────────────────────────────────
+
 def chat_completion(messages: list[dict], pipeline_context: str, api_key: str, model: str = "claude-sonnet-4-20250514") -> str:
+    # ── Cache check ──────────────────────────────────────────────────────────
+    cache_key = _make_chat_key(messages, pipeline_context, model)
+    if cache_key in _cache:
+        return _cache[cache_key]
+
     system_prompt = (
         "Você é um assistente de vendas especialista em análise de pipeline. "
         "Responda sempre de forma direta e acionável. "
@@ -88,6 +133,49 @@ def chat_completion(messages: list[dict], pipeline_context: str, api_key: str, m
             system=system_prompt,
             messages=messages,
         )
-        return response.content[0].text.strip()
+        result = response.content[0].text.strip()
+        _cache[cache_key] = result
+        return result
     except Exception as e:
         return f"Erro ao consultar a IA: {e}"
+
+
+# ── get_executive_summary ────────────────────────────────────────────────────
+
+def get_executive_summary(stats: dict, api_key: str, model: str = "claude-sonnet-4-20250514") -> str:
+    # ── Cache check ──────────────────────────────────────────────────────────
+    cache_key = _make_summary_key(stats, model)
+    if cache_key in _cache:
+        return _cache[cache_key]
+
+    user_prompt = f"""Analise este pipeline de vendas e gere um resumo executivo em 4 bullets curtos e diretos:
+
+DADOS DO PIPELINE:
+- Total de deals abertos: {stats['total_deals']}
+- Tier A (score ≥70): {stats['tier_a_count']} deals | R$ {stats['tier_a_value']:,.0f}
+- Tier B (score 40-69): {stats['tier_b_count']} deals
+- Score médio: {stats['avg_score']:.0f}/100
+- Top vendedor por Tier A: {stats['top_seller']}
+- Setor com mais Tier A: {stats['top_sector']}
+- Mês com maior win rate histórico: {stats['best_month']} ({stats['best_wr']:.0%})
+- Mês com menor win rate histórico: {stats['worst_month']} ({stats['worst_wr']:.0%})
+
+Gere exatamente 4 bullets no formato:
+- [insight acionável com número concreto]"""
+
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        message = client.messages.create(
+            model=model,
+            max_tokens=512,
+            system=(
+                "Você é um analista de RevOps especialista em pipeline B2B. "
+                "Seja direto e objetivo. Responda em português."
+            ),
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        result = message.content[0].text.strip()
+        _cache[cache_key] = result
+        return result
+    except Exception as e:
+        return f"Erro ao gerar resumo: {e}"

@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from datetime import date
 from pathlib import Path
@@ -178,19 +179,109 @@ def score_all(df: pd.DataFrame) -> pd.DataFrame:
     open_deals = df[df["deal_stage"].isin(["Engaging", "Prospecting"])].copy()
 
     sector_wr, agent_wr, month_wr, agent_sector_wr = compute_win_rates(df)
-    max_value = open_deals["effective_value"].max()
-    if max_value == 0:
-        max_value = 1
+    max_value = float(open_deals["effective_value"].max()) or 1.0
 
-    results = open_deals.apply(
-        lambda row: pd.Series(score_deal(row, sector_wr, agent_wr, max_value, month_wr, agent_sector_wr)),
-        axis=1,
+    # ── 1. Stage pts (vectorized) ────────────────────────────────────────────
+    stage_pts = (
+        open_deals["deal_stage"]
+        .map({"Engaging": 30, "Prospecting": 15})
+        .fillna(0)
+        .astype(int)
     )
-    results.columns = ["score", "tier", "breakdown"]
 
+    # ── 2. Sazonalidade pts (vectorized) ────────────────────────────────────
+    engage_month = open_deals["engage_date"].dt.month
+    month_wr_vals = engage_month.map(month_wr).fillna(0.5)
+    season_pts = (month_wr_vals * 20).round().astype(int)
+
+    # ── 3. Value pts (vectorized) ────────────────────────────────────────────
+    value_pts = (
+        (open_deals["effective_value"] / max_value * 20)
+        .round()
+        .clip(0, 20)
+        .astype(int)
+    )
+
+    # ── 4. Sector win rate pts (vectorized) ──────────────────────────────────
+    sector_pts = (
+        (open_deals["sector"].map(sector_wr).fillna(0.5) * 15)
+        .round()
+        .astype(int)
+    )
+
+    # ── 5. Agent+sector combo pts (plain Python loop — no pd.Series overhead) ─
+    _agents  = open_deals["sales_agent"].values
+    _sectors = open_deals["sector"].values
+    _combo_pts_list:   list[int] = []
+    _combo_label_list: list[str] = []
+    for _ag, _sec in zip(_agents, _sectors):
+        _key = (_ag, _sec)
+        if _key in agent_sector_wr:
+            _combo_pts_list.append(round(agent_sector_wr[_key] * 10))
+            _combo_label_list.append("Win rate vendedor+setor")
+        else:
+            _combo_pts_list.append(round(agent_wr.get(_ag, 0.5) * 10))
+            _combo_label_list.append("Win rate vendedor")
+    combo_pts    = pd.Series(_combo_pts_list,   index=open_deals.index, dtype=int)
+    combo_labels = pd.Series(_combo_label_list, index=open_deals.index)
+
+    # ── 6. Account size pts (np.select vectorized) ───────────────────────────
+    rev = open_deals["revenue"].astype(float)
+    emp = open_deals["employees"].astype(float)
+    size_pts_arr = np.select(
+        condlist=[(rev > 10) | (emp > 500), (rev > 1) | (emp > 100)],
+        choicelist=[5, 3],
+        default=1,
+    )
+    size_pts = pd.Series(size_pts_arr, index=open_deals.index)
+
+    # ── Score & tier (vectorized) ────────────────────────────────────────────
+    score = (
+        stage_pts + season_pts + value_pts + sector_pts + combo_pts + size_pts
+    ).clip(0, 100).astype(int)
+
+    tier = pd.cut(
+        score,
+        bins=[-1, 39, 69, 100],
+        labels=["C", "B", "A"],
+    ).astype(str)
+
+    # ── Breakdown dicts (Python loop with array indexing — display only) ─────
+    _stage_arr   = stage_pts.values
+    _season_arr  = season_pts.values
+    _value_arr   = value_pts.values
+    _sector_arr  = sector_pts.values
+    _combo_arr   = combo_pts.values
+    _size_arr2   = size_pts.values
+    _month_arr   = engage_month.values
+    _mwr_arr     = month_wr_vals.values
+    _labels_arr  = combo_labels.values
+
+    breakdowns = []
+    for i in range(len(open_deals)):
+        _m   = _month_arr[i]
+        _mwr = _mwr_arr[i]
+        if not np.isnan(float(_m)) if _m is not None else False:
+            _season_label = (
+                f"Sazonalidade — {MONTH_NAMES_PT.get(int(_m), str(int(_m)))} "
+                f"({round(_mwr * 100)}% win rate)"
+            )
+        else:
+            _season_label = "Sazonalidade — mês desconhecido"
+        breakdowns.append({
+            "Estágio do deal":   int(_stage_arr[i]),
+            _season_label:       int(_season_arr[i]),
+            "Valor do deal":     int(_value_arr[i]),
+            "Win rate do setor": int(_sector_arr[i]),
+            _labels_arr[i]:      int(_combo_arr[i]),
+            "Tamanho da conta":  int(_size_arr2[i]),
+        })
+    breakdowns_series = pd.Series(breakdowns, index=open_deals.index)
+
+    # ── Assemble result ──────────────────────────────────────────────────────
     scored = open_deals.copy()
-    scored["score"] = results["score"].astype(int)
-    scored["tier"] = results["tier"]
-    scored["breakdown"] = results["breakdown"]
+    scored["score"]     = score
+    scored["tier"]      = tier
+    scored["breakdown"] = breakdowns_series
 
     return scored.sort_values("score", ascending=False).reset_index(drop=True)

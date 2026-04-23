@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from datetime import datetime
 
 from scoring import load_and_merge, score_all, compute_win_rates, MONTH_NAMES_PT
-from ai_insights import get_recommendation, chat_completion
+from ai_insights import get_recommendation, chat_completion, get_executive_summary
 
 st.set_page_config(
     page_title="Lead Scorer",
@@ -432,6 +432,50 @@ with tab4:
     if view.empty:
         st.info("Nenhum deal encontrado com os filtros atuais.")
     else:
+        # ── Resumo Executivo do Pipeline ──────────────────────────────────────
+        st.markdown("### Resumo Executivo do Pipeline")
+
+        _tier_a_v = view[view["tier"] == "A"]
+        _tier_b_v = view[view["tier"] == "B"]
+        _exec_stats = {
+            "total_deals":   len(view),
+            "tier_a_count":  len(_tier_a_v),
+            "tier_a_value":  _tier_a_v["effective_value"].sum(),
+            "tier_b_count":  len(_tier_b_v),
+            "avg_score":     view["score"].mean() if len(view) else 0,
+            "top_seller": (
+                _tier_a_v["sales_agent"].value_counts().index[0]
+                if len(_tier_a_v) else "N/A"
+            ),
+            "top_sector": (
+                _tier_a_v["sector"].value_counts().index[0]
+                if len(_tier_a_v) else "N/A"
+            ),
+            "best_month":  MONTH_NAMES_PT.get(max(month_wr, key=month_wr.get), "N/A") if month_wr else "N/A",
+            "worst_month": MONTH_NAMES_PT.get(min(month_wr, key=month_wr.get), "N/A") if month_wr else "N/A",
+            "best_wr":     max(month_wr.values()) if month_wr else 0,
+            "worst_wr":    min(month_wr.values()) if month_wr else 0,
+        }
+
+        _summary_key = f"exec_summary_{hash(frozenset((k, str(v)) for k, v in _exec_stats.items()))}"
+
+        if api_key:
+            if _summary_key not in st.session_state:
+                if st.button("✨ Gerar resumo com IA", use_container_width=False):
+                    with st.spinner("Consultando Claude..."):
+                        st.session_state[_summary_key] = get_executive_summary(
+                            _exec_stats, api_key, model
+                        )
+            if _summary_key in st.session_state:
+                st.info(st.session_state[_summary_key])
+                if st.button("🔄 Regenerar resumo", key="regen_exec"):
+                    del st.session_state[_summary_key]
+                    st.rerun()
+        else:
+            st.warning("Cole sua chave Anthropic na barra lateral para gerar o resumo executivo com IA.")
+
+        st.markdown("---")
+
         # Grouped bar: deals per agent by tier
         agent_tier = (
             view.groupby(["sales_agent", "tier"])
