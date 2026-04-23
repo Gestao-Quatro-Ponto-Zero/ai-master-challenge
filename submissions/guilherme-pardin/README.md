@@ -160,6 +160,44 @@ Isso transforma o score de uma métrica genérica em uma
 recomendação personalizada — o sistema conhece os pontos 
 fortes e fracos de cada vendedor com base em histórico real.
 
+#### Melhoria 3 — Vetorização do scoring e cache da IA
+
+**Performance do scoring:**
+O scoring original usava loop Python puro com apply() e criação 
+de pd.Series por linha — 2.089 iterações com overhead de objeto 
+por deal. Após profiling identificamos o bottleneck e reescrevemos 
+usando operações vetorizadas pandas:
+
+- deal_stage_pts: pd.Series.map()
+- close_value_pts: operação vetorial direta
+- sector_wr_pts: df["sector"].map(sector_wr)
+- tier: pd.cut() com bins e labels
+- Apenas o combo vendedor+setor manteve loop (fallback condicional 
+  necessário)
+
+Resultado: 135ms → 54ms (2,5× mais rápido). Em produção com 
+volume maior o ganho seria proporcional.
+
+**Cache das respostas da IA:**
+Cada clique em "Analisar com IA" fazia uma chamada nova à API — 
+mesmo para o mesmo deal. Implementamos cache em memória com 
+chave MD5 baseada nos campos relevantes do deal + modelo selecionado.
+
+- get_recommendation(): cacheia por opportunity_id + campos do deal + model
+- chat_completion(): cacheia por hash das mensagens + contexto + model  
+- get_executive_summary(): cacheia por hash dos stats do pipeline
+
+Cache HIT retorna instantaneamente sem chamada à API.
+Cache MISS chama a API, armazena e retorna.
+
+**Resumo executivo automático:**
+Adicionamos na Aba Gestor um botão "Gerar resumo com IA" que 
+envia os dados agregados do pipeline para o Claude e retorna 
+4 bullets executivos com insights acionáveis — top vendedor, 
+setor com mais Tier A, meses de maior e menor conversão histórica. 
+O resultado é cacheado na sessão para não regenerar a cada 
+interação.
+
 ---
 
 ### Como o app ajuda o vendedor na prática
@@ -231,8 +269,14 @@ coisa sobre o pipeline em linguagem natural.
 
 ### Resultados
 
-- 2.089 deals abertos processados e priorizados
-- 31 deals Tier A (score ≥70) — R$ 480.533 em valor total
+- 2.072 deals abertos processados e priorizados
+- 32 deals Tier A (score ≥70) — R$ 486.015 em valor total
+- 2.040 deals Tier B — pipeline principal de trabalho
+- Win rates reais calculados: por setor, por vendedor e por 
+  combinação vendedor+setor (235 combinações com ≥10 deals)
+- Scoring vetorizado com pandas — 2,5x mais rápido que loop Python
+- Cache em memória para respostas da IA — zero rechamadas para 
+  o mesmo deal na mesma sessão
 - Interface com 4 abas: Pipeline / Análise IA / Chat com IA / Gestor
 
 ### Lógica de scoring (100 pts total)
@@ -357,6 +401,12 @@ Exemplo concreto: o modelo calculou que a variação de vendedor+setor chegava a
    base nesse diagnóstico, decidi substituir o win rate do 
    vendedor isolado pelo win rate combinado vendedor + setor 
    com fallback inteligente.
+8. Após implementar as melhorias analíticas, identifiquei 
+   gargalos de performance com profiling real (timeit sobre 
+   5 execuções) e reescrevi o scoring com operações vetorizadas 
+   pandas. Implementei cache em memória com hash MD5 para evitar 
+   rechamadas desnecessárias à API — decisão de custo e UX, 
+   não só performance técnica.
 
 ### Onde a IA errou e como corrigi
 
@@ -395,6 +445,13 @@ Exemplo concreto: o modelo calculou que a variação de vendedor+setor chegava a
   vendedor" para "quão adequado é esse vendedor para esse setor 
   específico". A IA calculou os números, eu defini o que eles 
   significavam para o negócio.
+- Decisão de cachear respostas da IA por hash de conteúdo — 
+  a IA implementou o cache, mas a decisão de qual granularidade 
+  usar (por deal vs por sessão vs por modelo) foi minha, 
+  balanceando custo de API, freshness dos dados e UX
+- Identificação do bottleneck real de performance via profiling 
+  antes de otimizar — em vez de otimizar às cegas, medi primeiro 
+  e otimizei onde importava
 
 ---
 
