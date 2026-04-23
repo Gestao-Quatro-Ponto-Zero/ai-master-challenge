@@ -1,0 +1,52 @@
+Loading and preprocessing data...
+Raw data shape: (7429, 41)
+
+Engineering features with temporal validation...
+Processed data shape: (7429, 79)
+
+Feature columns created:
+Total new features: 42
+  - adoption_rate
+  - adoption_risk
+  - base_risk_score
+  - country_AU
+  - country_CA
+  - country_DE
+  - country_FR
+  - country_IN
+  - country_UK
+  - country_US
+  - country_grouped
+  - days_since_activity
+  - days_since_last_use
+  - days_since_signup
+  - days_to_first_use
+  - engagement_risk
+  - escalation_rate
+  - financial_risk
+  - first_response_efficiency
+  - has_downgrade
+  - has_upgrade
+  - has_urgent_tickets
+  - high_risk_industry
+  - industry_Cybersecurity
+  - industry_DevTools
+  - industry_EdTech
+  - industry_FinTech
+  - industry_HealthTech
+  - is_mature_account
+  - is_new_account
+  - log_mrr
+  - log_seats
+  - low_satisfaction
+  - plan_tier_encoded
+  - recent_activity_days
+  - subscription_tenure_days
+  - support_engagement_level
+  - support_quality_score
+  - support_risk
+  - upgrade_downgrade_pattern
+  - usage_intensity
+  - uses_beta_features
+
+Validation status: PASSED

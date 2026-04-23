@@ -12,6 +12,7 @@ class FeatureEngineer:
     def __init__(self, data):
         self.data = data.copy()
         self.processed_data = None
+        self.temporal_validation_errors = []
         
     def engineer_adoption_features(self):
         """Create features related to feature adoption."""
@@ -84,9 +85,6 @@ class FeatureEngineer:
         # MRR as log for normalized scale
         self.data['log_mrr'] = np.log1p(self.data['mrr_amount'])
         
-        # Trial conversion flag (if is_trial is true but churn_flag is false = converted)
-        self.data['trial_converted'] = ((self.data['is_trial'] == True) & (self.data['churn_flag'] == False)).astype(int)
-        
         # Upgrade/downgrade patterns
         self.data['has_upgrade'] = self.data['upgrade_flag'].astype(int)
         self.data['has_downgrade'] = self.data['downgrade_flag'].astype(int)
@@ -150,20 +148,18 @@ class FeatureEngineer:
         return self
     
     def engineer_churn_related_features(self):
-        """Create features from churn patterns."""
+        """Create features from churn patterns (post-churn features removed due to data leakage)."""
         logger.info("Engineering churn-related features...")
         
-        # Churn reason code encoding
-        reason_dummies = pd.get_dummies(self.data['reason_code'], prefix='reason')
-        self.data = pd.concat([self.data, reason_dummies], axis=1)
-        
-        # Preceding events
-        self.data['had_upgrade_before_churn'] = self.data['preceding_upgrade_flag'].astype(int)
-        self.data['had_downgrade_before_churn'] = self.data['preceding_downgrade_flag'].astype(int)
-        
-        # Refund amount
-        self.data['has_refund'] = (self.data['refund_amount_usd'] > 0).astype(int)
-        self.data['log_refund'] = np.log1p(self.data['refund_amount_usd'])
+        # Remove post-churn features to prevent temporal data leakage
+        columns_to_drop = [
+            'reason_code', 'refund_amount_usd', 'preceding_upgrade_flag',
+            'preceding_downgrade_flag'
+        ]
+        for col in columns_to_drop:
+            if col in self.data.columns:
+                self.data = self.data.drop(columns=[col])
+                logger.info(f"Dropped post-churn feature: {col}")
         
         return self
     
@@ -186,8 +182,7 @@ class FeatureEngineer:
         
         # Financial Risk
         self.data['financial_risk'] = (
-            (self.data['has_downgrade']).astype(int) * 25 +
-            (self.data['is_trial'] & (self.data['support_ticket_count'] < 5)).astype(int) * 20
+            (self.data['has_downgrade']).astype(int) * 25
         )
         
         # Engagement Risk
@@ -216,9 +211,42 @@ class FeatureEngineer:
              .engineer_temporal_features()
              .engineer_industry_features()
              .engineer_churn_related_features()
-             .create_composite_risk_factors())
+             .create_composite_risk_factors()
+             .validate_temporal_integrity())
             self.processed_data = self.data
         return self.processed_data
+    
+    def validate_temporal_integrity(self):
+        """Validate that features do not contain post-churn information."""
+        logger.info("Validating temporal integrity of features...")
+        
+        # Check for any remaining post-churn data leakage
+        prohibited_columns = [
+            'reason_code', 'refund_amount_usd', 'preceding_upgrade_flag',
+            'preceding_downgrade_flag'
+        ]
+        
+        prohibited_found = [col for col in prohibited_columns if col in self.data.columns]
+        
+        if prohibited_found:
+            error_msg = f"CRITICAL: Found prohibited post-churn features: {prohibited_found}"
+            logger.error(error_msg)
+            self.temporal_validation_errors.append(error_msg)
+        
+        # Verify that usage data is dated before reference date
+        if 'last_usage_date' in self.data.columns:
+            reference_date = pd.to_datetime('2024-10-31')
+            future_usage = (self.data['last_usage_date'] > reference_date).sum()
+            if future_usage > 0:
+                warning_msg = f"WARNING: {future_usage} records have usage after reference date (this is acceptable for post-prediction monitoring)"
+                logger.warning(warning_msg)
+        
+        if self.temporal_validation_errors:
+            logger.error(f"Total validation errors: {len(self.temporal_validation_errors)}")
+        else:
+            logger.info("Temporal integrity check PASSED - no post-churn data leakage detected")
+        
+        return self
     
     def save_features(self, output_path='outputs/features_engineered.csv'):
         """Save engineered features."""

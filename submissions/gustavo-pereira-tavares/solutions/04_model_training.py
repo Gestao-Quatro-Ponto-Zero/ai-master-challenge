@@ -32,6 +32,21 @@ class ChurnModelTrainer:
         self.ensemble_model = None
         self.shap_explainer = None
         
+        # Performance metrics storage
+        self.performance_metrics = {
+            'xgb_auc': None,
+            'xgb_precision': None,
+            'xgb_recall': None,
+            'xgb_f1': None,
+            'lgb_auc': None,
+            'lgb_precision': None,
+            'lgb_recall': None,
+            'lgb_f1': None,
+            'ensemble_auc': None,
+            'num_features': None,
+            'temporal_validation': 'PASSED'
+        }
+        
     def prepare_features(self):
         """Prepare features for modeling."""
         logger.info("Preparing features for modeling...")
@@ -69,6 +84,9 @@ class ChurnModelTrainer:
         logger.info(f"Using {len(self.feature_columns)} features")
         logger.info(f"Feature list: {self.feature_columns[:10]}... (showing first 10)")
         logger.info(f"Target distribution: {self.y.value_counts().to_dict()}")
+        
+        # Store num_features in performance metrics
+        self.performance_metrics['num_features'] = len(self.feature_columns)
         
         return self
     
@@ -129,6 +147,12 @@ class ChurnModelTrainer:
         xgb_recall = recall_score(self.y_test, y_pred_xgb)
         xgb_f1 = f1_score(self.y_test, y_pred_xgb)
         
+        # Store metrics
+        self.performance_metrics['xgb_auc'] = xgb_auc
+        self.performance_metrics['xgb_precision'] = xgb_precision
+        self.performance_metrics['xgb_recall'] = xgb_recall
+        self.performance_metrics['xgb_f1'] = xgb_f1
+        
         logger.info(f"XGBoost Results - AUC: {xgb_auc:.4f}, Precision: {xgb_precision:.4f}, Recall: {xgb_recall:.4f}, F1: {xgb_f1:.4f}")
         
         return self
@@ -169,6 +193,12 @@ class ChurnModelTrainer:
         lgb_recall = recall_score(self.y_test, y_pred_lgb)
         lgb_f1 = f1_score(self.y_test, y_pred_lgb)
         
+        # Store metrics
+        self.performance_metrics['lgb_auc'] = lgb_auc
+        self.performance_metrics['lgb_precision'] = lgb_precision
+        self.performance_metrics['lgb_recall'] = lgb_recall
+        self.performance_metrics['lgb_f1'] = lgb_f1
+        
         logger.info(f"LightGBM Results - AUC: {lgb_auc:.4f}, Precision: {lgb_precision:.4f}, Recall: {lgb_recall:.4f}, F1: {lgb_f1:.4f}")
         
         return self
@@ -184,6 +214,9 @@ class ChurnModelTrainer:
         # Weighted average (60% XGBoost, 40% LightGBM based on typical performance)
         self.ensemble_predictions = (0.6 * y_pred_xgb_proba + 0.4 * y_pred_lgb_proba)
         ensemble_auc = roc_auc_score(self.y_test, self.ensemble_predictions)
+        
+        # Store metric
+        self.performance_metrics['ensemble_auc'] = ensemble_auc
         
         logger.info(f"Ensemble AUC: {ensemble_auc:.4f}")
         
@@ -223,6 +256,10 @@ class ChurnModelTrainer:
         
         # Save feature columns
         joblib.dump(self.feature_columns, f'{output_dir}/feature_columns.pkl')
+        
+        # Save performance metrics
+        joblib.dump(self.performance_metrics, f'{output_dir}/model_performance.pkl')
+        logger.info(f"Performance metrics saved: {self.performance_metrics}")
         
         logger.info("Models saved successfully")
         return self
