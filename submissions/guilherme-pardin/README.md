@@ -1,5 +1,14 @@
 # Submissão — Guilherme Pardin — Challenge 003
 
+## 🚀 Demo ao vivo
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://g4-lead-scorer.streamlit.app/)
+
+**URL:** https://g4-lead-scorer.streamlit.app/
+
+> Scoring funciona sem chave. Para Análise IA e Chat, 
+> cole sua chave Anthropic, Google ou OpenAI na sidebar.
+
 ## Sobre mim
 - **Nome:** Guilherme Pardin
 - **LinkedIn:** https://www.linkedin.com/in/guipardindev/
@@ -21,6 +30,10 @@ Roda localmente com um comando.
 ---
 
 ## Como rodar
+
+### Acesso rápido
+O app está hospedado e disponível sem instalação:
+**https://g4-lead-scorer.streamlit.app/**
 
 ### Pré-requisitos
 - Python 3.9 ou superior
