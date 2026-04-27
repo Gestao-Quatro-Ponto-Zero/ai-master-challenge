@@ -1,60 +1,225 @@
-# Sales Priority OS 🎯
+# Submissão — Richard — Challenge 003
 
-**Prioridade comercial explicável para vendedores e RevOps.**
+---
+**Richard W. Papadimitriou**  
+[LinkedIn](https://www.linkedin.com/in/richard-w-papadimitriou-b40a3a189/)  
+**Challenge 003 — Lead Scorer**
 
-Esta aplicação foi desenvolvida para o challenge G4 AI Master, focando na priorização inteligente e transparente de oportunidades de vendas.
+---
+
+## Sobre mim
+
+Atuo como AI Engineer com foco em Revenue Operations, utilizando IA como sistema operacional para resolver problemas reais de negócio.
+
+Meu trabalho não é construir modelos — é transformar dados em decisões acionáveis que impactam diretamente a receita.
+
+Tenho experiência estruturando soluções que:
+- reduzem desperdício comercial ao priorizar corretamente oportunidades
+- transformam pipelines em sistemas de decisão
+- conectam análise de dados com execução prática do time de vendas
+
+Neste challenge, tratei o problema não como um exercício de scoring, mas como uma falha de comportamento comercial — e construí uma solução para corrigir isso.
+
+---
 
 ## 🧠 Tese Central
-"O problema do time não é falta de leads. É desperdício de atenção. Deals com alta probabilidade e alto valor estão sendo ignorados enquanto o time trabalha oportunidades com baixa chance de fechamento. Esta solução não é apenas um modelo de previsão; é um **sistema de correção de comportamento comercial**. O foco é reduzir o desperdício e maximizar a execução onde o ROI é real."
 
-## 🚀 Executive Summary (Resumo Executivo)
-O **Sales Priority OS** é uma solução de Revenue Operations de alta performance. Através de um motor de scoring estatisticamente rigoroso (Bayesian Smoothing), a ferramenta quantifica o **ROI Potencial** e identifica a **Realidade do Pipeline** — onde o dinheiro está parado por falta de execução. O resultado é um aumento imediato na conversão de deals estratégicos e uma gestão executiva baseada em impacto financeiro real.
+O problema do time não é falta de leads.
 
-## 🔴 O Problema
-Vendedores gastam tempo demais em deals que não vão fechar ("feeling" impreciso) e deixam oportunidades boas esfriar por falta de um plano de ação claro. A ausência de visibilidade executiva para o manager impede intervenções de coaching precisas em deals de alto valor.
+É desperdício de atenção.
 
-## 🟢 A Solução
-Uma aplicação Streamlit que atua como o "Sistema Operacional" da segunda-feira de manhã. Ela integra 4 bases de dados do CRM para gerar scores de 0-100, classificações operacionais, mensagens sugeridas e planos de ação automáticos.
+Deals com alta probabilidade e alto valor estão sendo ignorados, enquanto o time trabalha oportunidades com baixa chance de fechamento.
 
-## 🧠 Abordagem (Como o problema foi atacado)
-1.  **Integração de Dados**: Relacionamento centralizado no `sales_pipeline.csv` cruzando com contas, produtos e times.
-2.  **Análise Histórica**: Cálculo de taxas de ganho (Win Rate) reais para fundamentar o score em fatos, não apenas suposições.
-3.  **Design focado na Persona**: Criação de abas distintas para Vendedor (Rotina) e Manager (Controle).
-4.  **Explicabilidade**: Cada score é acompanhado de um "AI Decision Memo", garantindo adoção rápida pelo time.
+Essa solução não é um modelo de previsão.
 
-## 💡 Recomendações
-- **Vendedores**: Iniciar a semana pela aba "Monday Morning Plan", focando nos top 3 deals e utilizando as mensagens sugeridas para ganhar agilidade.
-- **Managers**: Utilizar o "Manager Command Center" para identificar vendedores com baixa média de score e realizar sessões de coaching focadas em qualificação.
-- **RevOps**: Monitorar os deals penalizados por estagnação (>90 dias) para realizar limpezas periódicas no pipeline (Pipeline Hygiene).
+É um sistema de correção de comportamento comercial.
 
-## 🌟 Diferenciais da Solução
-- **Monday Morning Plan**: Aba de execução tática com insights de pipeline por vendedor.
-- **Realidade do Pipeline**: Bloco executivo que quantifica a receita pronta para fechamento e deals ignorados.
-- **Loss Analysis**: Cálculo automático de "Onde estamos perdendo dinheiro" devido a falhas de execução.
-- **Rigor Estatístico (Bayesian Smoothing)**: Win rates calibrados (k=30) para evitar vieses.
-- **Dead Zone Detection**: Sinalização de Zombie Deals para higiene de pipeline.
-- **AI Decision Memo (Natural Language)**: Narrativa decisional executiva para cada oportunidade.
-- **Strategic Insights**: Detecção de anomalias e gaps de execução (ex: Gap de Execução, Tração Setorial).
+---
 
-## 🧠 Lógica de Scoring (0-100)
-| Critério | Peso | Racional de Negócio |
-| :--- | :--- | :--- |
-| **Estágio (Stage)** | 20% | Prioriza deals avançados (`Engaging`). |
-| **Win Rate Histórico** | 30% | Baseado na performance real por vendedor, produto e setor. |
-| **Perfil da Conta** | 15% | Foco em contas de alta receita e grande porte. |
-| **Valor Potencial** | 15% | Priorização pelo ticket médio do produto. |
-| **Momentum/Risco** | 20% | Penalização drástica por estagnação (>90 dias). |
+## Executive Summary
 
-## 🛠️ Setup e Como Rodar
-### Instalação
-```bash
-pip install -r requirements.txt
-```
-### Execução
-```bash
-streamlit run app.py
-```
+O **Sales Priority OS** é uma aplicação funcional desenvolvida para transformar um pipeline de vendas em um sistema de decisão operacional.
 
-## ⚠️ Limitações e Próximos Passos
-- **Limitação**: O valor potencial é baseado no preço de tabela; negociações específicas de desconto não são capturadas.
-- **Próximo Passo**: Evoluir para um modelo de ML (XGBoost) para capturar padrões não-lineares de perda.
+A solução processa ~8.800 oportunidades e identifica:
+- quais deals devem ser priorizados imediatamente
+- onde o time está perdendo dinheiro
+- quais oportunidades deveriam estar fechando agora, mas estão sendo ignoradas
+
+Ao invés de apresentar apenas um score, a ferramenta entrega:
+- priorização clara
+- explicação do contexto
+- recomendação de ação
+- impacto financeiro associado
+
+O resultado é um aumento direto na eficiência comercial e na previsibilidade de receita.
+
+---
+
+## Solução
+
+### Abordagem
+
+A solução foi estruturada em quatro camadas:
+
+1. **Integração de Dados**  
+   Consolidação das tabelas de pipeline, contas, produtos e vendedores em uma base única.
+
+2. **Motor de Decisão**  
+   Sistema de scoring baseado em:
+   - estágio do deal  
+   - tempo no pipeline  
+   - histórico de ganho (win rate)  
+   - perfil da conta  
+   - produto  
+   - risco de inércia  
+
+3. **Camada Operacional (Vendedor)**  
+   Interface focada na execução:
+   - Monday Morning Plan  
+   - priorização dos top deals  
+   - próxima ação sugerida  
+   - mensagens prontas para contato  
+
+4. **Camada Executiva (Manager / RevOps)**  
+   Visão de controle e impacto:
+   - receita em risco  
+   - deals ignorados  
+   - oportunidades que deveriam estar fechando  
+   - recomendações de intervenção  
+
+---
+
+## Principais Resultados
+
+- **Priorização real**  
+  Identificação automática das oportunidades que realmente merecem atenção
+
+- **Redução de desperdício**  
+  Separação clara entre:
+  - deals com potencial real  
+  - oportunidades estagnadas (zombie deals)
+
+- **Identificação de falha de execução**  
+  Detecção de oportunidades com:
+  - alta probabilidade  
+  - alto valor  
+  - baixa ação  
+
+- **Impacto financeiro visível**  
+  Quantificação de:
+  - receita em risco  
+  - oportunidades sendo ignoradas  
+  - valor parado no pipeline  
+
+---
+
+## Como Usar
+
+### Vendedores
+
+Utilizar a aba **Monday Morning Plan** para:
+
+- identificar os deals prioritários do dia  
+- entender o contexto de cada oportunidade  
+- executar ações imediatas com base nas sugestões  
+
+---
+
+### Managers
+
+Utilizar o **Manager Command Center** para:
+
+- identificar gargalos no pipeline  
+- entender onde o time está errando  
+- direcionar coaching com base em dados  
+- agir sobre oportunidades críticas  
+
+---
+
+### RevOps
+
+- manter a higiene do pipeline  
+- eliminar oportunidades sem tração  
+- monitorar concentração de risco  
+- ajustar estratégia de priorização  
+
+---
+
+## Limitações
+
+- O valor dos deals é baseado no preço de tabela (`sales_price`)  
+- Descontos comerciais não são considerados  
+- O modelo depende da qualidade histórica dos dados (Won/Lost)  
+- Não considera interações externas (ex: e-mails, reuniões reais)
+
+---
+
+## Process Log — Uso de IA
+
+### Ferramentas
+
+- **Antigravity (Google DeepMind)**  
+  Utilizada como ambiente de desenvolvimento assistido, permitindo iteração rápida, construção de código e validação contínua da aplicação.
+
+---
+
+### Workflow
+
+O desenvolvimento foi conduzido em ciclos iterativos:
+
+1. estruturação do problema  
+2. construção da base funcional  
+3. criação da camada operacional  
+4. expansão para visão gerencial  
+5. inclusão de impacto financeiro  
+6. refinamento da linguagem executiva  
+
+---
+
+### Onde a IA errou e como foi corrigido
+
+- **Gerenciamento de estado (cache)**  
+  Erro ao acessar colunas não atualizadas  
+  → corrigido com controle de cache e acesso seguro  
+
+- **Scoring inicial genérico**  
+  → refinado com lógica de negócio  
+
+- **Saída pouco acionável**  
+  → reescrita para foco em decisão  
+
+- **Ausência de impacto financeiro**  
+  → inclusão de ROI e métricas de receita em risco  
+
+---
+
+### Decisões Humanas Críticas
+
+- não utilizar modelo de ML (priorizar explicabilidade)  
+- transformar score em ação prática  
+- criar rotina real de uso para vendedores  
+- incluir camada de gestão  
+- trazer impacto financeiro para o centro da decisão  
+- expor falhas de execução do time  
+
+---
+
+## Evidências
+
+- Código completo disponível na pasta `/solution`  
+- Aplicação funcional via Streamlit  
+- Instruções de execução no README da pasta solution  
+
+---
+
+## Conclusão
+
+A IA foi utilizada como acelerador de desenvolvimento.
+
+Mas:
+
+> as decisões críticas de produto, lógica e estratégia foram humanas.
+
+O resultado não é apenas uma ferramenta de análise.
+
+É um sistema de decisão comercial, orientado à execução e impacto direto na receita.
