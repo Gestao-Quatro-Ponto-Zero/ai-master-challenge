@@ -26,7 +26,7 @@ st.markdown("""
 
 # Data Loading
 @st.cache_data
-def get_processed_data(version_bust=4.0):
+def get_processed_data(version_bust=4.1):
     raw_df = load_data()
     scored_df = calculate_scores(raw_df)
     return raw_df, scored_df

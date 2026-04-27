@@ -1,13 +1,12 @@
 import pandas as pd
 import os
 
-def load_data(data_dir='data'):
+def load_data(data_dir=None):
     """
     Loads and merges the 4 CSV files: accounts, products, sales_teams, sales_pipeline.
     """
-    # Robust Path Detection for Streamlit Cloud
-    if not os.path.exists(data_dir):
-        # Fallback to path relative to this script: src/.. -> solution/data
+    # Force path relative to this script: src/.. -> solution/data
+    if data_dir is None:
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         data_dir = os.path.join(base_dir, 'data')
         
