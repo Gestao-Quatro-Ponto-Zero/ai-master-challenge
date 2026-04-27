@@ -5,6 +5,8 @@
 [LinkedIn](https://www.linkedin.com/in/richard-w-papadimitriou-b40a3a189/)  
 **Challenge 003 — Lead Scorer**
 
+[![Live Demo](https://img.shields.io/badge/Streamlit-Live%20Demo-FF4B4B?style=for-the-badge&logo=Streamlit)](https://ai-master-challenge-69kcdbc99vbtnzpewryhuj.streamlit.app/)
+
 ---
 
 ## Sobre mim
