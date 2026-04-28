@@ -160,6 +160,17 @@
     .action.executive { background:linear-gradient(180deg, rgba(106,166,255,.12), rgba(255,255,255,.03)); border-color:rgba(106,166,255,.18); }
     .action.executive strong { letter-spacing:-.02em; }
     .model-card { background:linear-gradient(180deg, rgba(106,166,255,.08), rgba(255,255,255,.03)); }
+    .model-warning {
+      margin-top:18px;
+      padding:18px 20px;
+      border-radius:20px;
+      border:1px solid rgba(245,158,11,.34);
+      background:linear-gradient(180deg, rgba(245,158,11,.15), rgba(255,255,255,.035));
+      color:#ffe8bd;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 12px 34px rgba(0,0,0,.18);
+    }
+    .model-warning strong { display:block; margin-bottom:8px; color:#fff3d7; font-size:15px; letter-spacing:-.01em; }
+    .model-warning p { margin:0; color:#ffe8bd; line-height:1.58; font-size:14px; }
     .segment-card { height:100%; }
 
   </style>
@@ -811,7 +822,17 @@
           </div>
         </div>
         <div class='bar-track'><div class='bar-fill blue' style='width:70.0%'></div></div>
-      </div></div></div><div class='panel card' style='margin-top:18px;'><div class='model-grid'><div class='model-card'><div class='kpi-label'>Modelo vencedor</div><div class='metric'>LOGISTIC_REGRESSION</div><p>Modelo usado como apoio para ordenar melhor as contas que merecem mais atenção agora.</p></div><div class='model-card'><div class='kpi-label'>Separação entre risco e estabilidade</div><div class='metric'>0.484</div><p>Indica o quanto o modelo consegue separar contas mais propensas a churn das menos propensas.</p></div><div class='model-card'><div class='kpi-label'>Qualidade da priorização</div><div class='metric'>0.071</div><p>Mostra se o modelo está colocando mais acima da fila as contas que realmente merecem atenção.</p></div></div><div class='insight-note'><strong>Leitura executiva:</strong> o modelo não toma a decisão sozinho. Ele ajuda a organizar a fila e deixa mais claro por que cada conta apareceu como prioridade.</div></div><div class='grid-2' style='margin-top:18px;'><div class='panel card'><h3>Explicabilidade global do modelo</h3><div class='head'>Aqui mostramos, de forma simples, quais fatores mais empurram o risco para cima ou para baixo no conjunto da carteira. É uma ajuda para entender o modelo, não para substituir os drivers de negócio.</div>
+      </div></div></div><div class='panel card' style='margin-top:18px;'><div class='model-grid'><div class='model-card'><div class='kpi-label'>Modelo vencedor</div><div class='metric'>LOGISTIC_REGRESSION</div><p>Modelo usado como apoio para ordenar melhor as contas que merecem mais atenção agora.</p></div><div class='model-card'><div class='kpi-label'>Separação entre risco e estabilidade</div><div class='metric'>0.484</div><p>Indica o quanto o modelo consegue separar contas mais propensas a churn das menos propensas.</p></div><div class='model-card'><div class='kpi-label'>Qualidade da priorização</div><div class='metric'>0.071</div><p>Mostra se o modelo está colocando mais acima da fila as contas que realmente merecem atenção.</p></div></div>
+      <div class='model-warning'>
+        <strong>Atenção sobre o uso do score</strong>
+        <p>
+          As métricas de validação indicam que o modelo teve desempenho próximo de uma escolha aleatória, com AUC de 0.484. 
+          Portanto, o score não deve ser tratado como uma previsão confiável de churn individual. 
+          Ele deve ser usado como um 
+          <span style="font-weight:600;">indicador exploratório de risco relativo</span>, 
+          sempre combinado com drivers de negócio, histórico de churn/reativação e revisão humana antes de qualquer decisão sobre uma conta específica.
+        </p>
+      </div><div class='insight-note' style='margin-top:14px;'><strong>Leitura executiva:</strong> o modelo não toma a decisão sozinho. Ele funciona como uma camada auxiliar para ordenar risco relativo e abrir investigação, não como motor automático de decisão individual.</div></div><div class='grid-2' style='margin-top:18px;'><div class='panel card'><h3>Explicabilidade global do modelo</h3><div class='head'>Aqui mostramos, de forma simples, quais fatores mais empurram o risco para cima ou para baixo no conjunto da carteira. É uma ajuda para entender o modelo, não para substituir os drivers de negócio.</div>
     <div class='bar-row'>
       <div class='bar-meta'>
         <div>

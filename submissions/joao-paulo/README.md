@@ -52,6 +52,57 @@ Principais achados do projeto:
 
 ---
 
+## Análise do desempenho do modelo
+
+O modelo treinado apresentou métricas próximas de aleatoriedade (ROC AUC ~ 0.5), o que indica baixa capacidade preditiva no dataset utilizado.
+
+Essa observação foi analisada considerando os seguintes fatores:
+
+### 1. Natureza do dataset
+
+O dataset RavenStack é sintético e não foi gerado com foco explícito em separabilidade entre classes de churn. Isso significa que:
+
+- muitas variáveis possuem baixo poder discriminatório
+- relações entre comportamento e churn não são fortemente estruturadas
+
+### 2. Sinal limitado nas features
+
+Apesar da engenharia de features, os sinais disponíveis (uso, suporte, receita) não apresentaram separação clara entre churn e não churn.
+
+Isso sugere que:
+- ou o churn é pouco explicável com essas variáveis
+- ou o dataset não contém padrões fortes suficientes
+
+### 3. Objetivo da solução
+
+O foco principal desta submissão não foi maximizar performance preditiva, mas sim:
+
+- estruturar corretamente o problema de churn
+- construir uma base analítica consistente (account_360)
+- traduzir sinais em uma narrativa executiva acionável
+
+### 4. Valor da abordagem mesmo com baixa AUC
+
+Mesmo com baixa performance do modelo, a solução gera valor ao:
+
+- identificar drivers operacionais relevantes
+- estruturar priorização de contas baseada em múltiplos sinais
+- fornecer visibilidade executiva do risco
+
+### 5. Próximos passos sugeridos
+
+Para melhoria do modelo em um cenário real:
+
+- inclusão de mais dados comportamentais
+- criação de features temporais mais ricas
+- análise de balanceamento e qualidade do target
+
+Em resumo, a baixa performance do modelo não invalida a solução, mas reforça a importância de interpretar churn como um problema multifatorial, e não puramente preditivo. 
+
+obs: Foram realizados testes com variações de modelos, sem ganho significativo de performance, reforçando a hipótese de baixo poder preditivo do dataset.
+
+---
+
 ### Recomendações
 
 1. **Criar uma fila de retenção priorizada por risco e impacto financeiro**  
