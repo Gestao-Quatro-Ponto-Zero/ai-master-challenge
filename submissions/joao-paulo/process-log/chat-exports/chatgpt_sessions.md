@@ -82,6 +82,14 @@ Uso:
 
 ---
 
+## 7. Alterações na narrativa de perfomance do modelo
+
+### Dashboard
+
+- https://chatgpt.com/share/69effa32-25e8-83e9-9a2d-e01e9182684b
+
+---
+
 ## Observação
 
 Os links acima representam interações reais ao longo do desenvolvimento.
