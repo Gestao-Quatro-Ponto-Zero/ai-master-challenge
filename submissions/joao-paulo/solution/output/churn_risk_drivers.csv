@@ -1,0 +1,1093 @@
+account_id,health_score,risk_level,triggered_specification,weight,evidence_metric,interpretation
+A-2e4581,40,medium,recent_usage_drop,22,0.6578947368421053,Queda relevante de uso nos ultimos 30 dias.
+A-2e4581,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-43a9e3,25,low,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-0a282f,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-1f0ac7,33,medium,high_error_rate,15,0.10714285714285714,Taxa de erro elevada no uso recente.
+A-1f0ac7,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ce550d,55,high,recent_usage_drop,22,0.5348837209302325,Queda relevante de uso nos ultimos 30 dias.
+A-ce550d,55,high,high_error_rate,15,0.15,Taxa de erro elevada no uso recente.
+A-ce550d,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1b9609,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-1b9609,58,high,usage_stale,18,42,Conta com recencia de uso ruim.
+A-1b9609,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a0ca4e,28,low,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-a0ca4e,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e5d6ab,73,high,recent_usage_drop,22,0.6666666666666666,Queda relevante de uso nos ultimos 30 dias.
+A-e5d6ab,73,high,usage_stale,18,30,Conta com recencia de uso ruim.
+A-e5d6ab,73,high,high_error_rate,15,0.1111111111111111,Taxa de erro elevada no uso recente.
+A-e5d6ab,73,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7dacce,40,medium,recent_usage_drop,22,0.76,Queda relevante de uso nos ultimos 30 dias.
+A-7dacce,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-10b8da,33,medium,high_error_rate,15,0.13636363636363635,Taxa de erro elevada no uso recente.
+A-10b8da,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-592832,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-592832,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d40bf7,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-d40bf7,58,high,usage_stale,18,41,Conta com recencia de uso ruim.
+A-d40bf7,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6c093d,43,medium,high_error_rate,15,0.10606060606060606,Taxa de erro elevada no uso recente.
+A-6c093d,43,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-6c093d,43,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-462d45,60,high,recent_usage_drop,22,0.71875,Queda relevante de uso nos ultimos 30 dias.
+A-462d45,60,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-462d45,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-956988,100,critical,recent_usage_drop,22,0.7714285714285715,Queda relevante de uso nos ultimos 30 dias.
+A-956988,100,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-956988,100,critical,poor_support_experience,18,118.0,Experiencia de suporte abaixo do ideal.
+A-956988,100,critical,high_error_rate,15,0.5,Taxa de erro elevada no uso recente.
+A-956988,100,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-956988,100,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ac14bb,33,medium,high_error_rate,15,0.18181818181818182,Taxa de erro elevada no uso recente.
+A-ac14bb,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-463db0,60,high,recent_usage_drop,22,0.35714285714285715,Queda relevante de uso nos ultimos 30 dias.
+A-463db0,60,high,poor_support_experience,18,94.83333333333333,Experiencia de suporte abaixo do ideal.
+A-463db0,60,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-ce66f8,32,medium,recent_usage_drop,22,0.4482758620689655,Queda relevante de uso nos ultimos 30 dias.
+A-c4ea60,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c4ea60,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-832ec2,50,medium,recent_usage_drop,22,0.5,Queda relevante de uso nos ultimos 30 dias.
+A-832ec2,50,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-832ec2,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-684255,55,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-684255,55,high,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-684255,55,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-c42f1f,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c42f1f,48,medium,usage_stale,18,63,Conta com recencia de uso ruim.
+A-4e44e8,68,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-4e44e8,68,high,usage_stale,18,38,Conta com recencia de uso ruim.
+A-4e44e8,68,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-4e44e8,68,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-30b4ca,36,medium,poor_support_experience,18,108.33333333333333,Experiencia de suporte abaixo do ideal.
+A-30b4ca,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9f2731,34,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-9f2731,34,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-32fb14,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-32fb14,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-00cac8,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-00cac8,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-35083d,36,medium,poor_support_experience,18,119.0,Experiencia de suporte abaixo do ideal.
+A-35083d,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-eb7fac,32,medium,recent_usage_drop,22,0.6428571428571429,Queda relevante de uso nos ultimos 30 dias.
+A-b20d99,46,medium,usage_stale,18,100,Conta com recencia de uso ruim.
+A-b20d99,46,medium,poor_support_experience,18,27.0,Experiencia de suporte abaixo do ideal.
+A-396e5f,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-396e5f,53,medium,high_error_rate,15,0.11627906976744186,Taxa de erro elevada no uso recente.
+A-396e5f,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-45ce7a,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-45ce7a,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-08e34e,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8145a0,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bad8c1,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-bad8c1,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-44dc83,26,low,usage_stale,18,84,Conta com recencia de uso ruim.
+A-44dc83,26,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f446b6,40,medium,recent_usage_drop,22,0.4444444444444444,Queda relevante de uso nos ultimos 30 dias.
+A-f446b6,40,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-a45270,71,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-a45270,71,high,poor_support_experience,18,110.0,Experiencia de suporte abaixo do ideal.
+A-a45270,71,high,high_error_rate,15,0.12903225806451613,Taxa de erro elevada no uso recente.
+A-a45270,71,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1b7577,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-1b7577,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-05f0e5,25,low,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-9077b0,48,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-9077b0,48,medium,usage_stale,18,44,Conta com recencia de uso ruim.
+A-9077b0,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7f8241,40,medium,recent_usage_drop,22,0.4,Queda relevante de uso nos ultimos 30 dias.
+A-7f8241,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2bc93d,50,medium,recent_usage_drop,22,0.8873239436619719,Queda relevante de uso nos ultimos 30 dias.
+A-2bc93d,50,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-2bc93d,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f3ff05,33,medium,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-f3ff05,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2d4502,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-2d4502,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6a4e2d,40,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6a4e2d,40,medium,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-eb7c38,60,high,recent_usage_drop,22,0.6923076923076923,Queda relevante de uso nos ultimos 30 dias.
+A-eb7c38,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-eb7c38,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c37601,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3b5cd1,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-3b5cd1,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b2225d,85,critical,recent_usage_drop,22,0.7142857142857143,Queda relevante de uso nos ultimos 30 dias.
+A-b2225d,85,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-b2225d,85,critical,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-b2225d,85,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-b2225d,85,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-94f8c9,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-94f8c9,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c1dfe1,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-c1dfe1,48,medium,poor_support_experience,18,93.66666666666667,Experiencia de suporte abaixo do ideal.
+A-32728c,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-32728c,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4c38bc,36,medium,poor_support_experience,18,43.0,Experiencia de suporte abaixo do ideal.
+A-4c38bc,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1b707d,65,high,recent_usage_drop,22,0.7567567567567568,Queda relevante de uso nos ultimos 30 dias.
+A-1b707d,65,high,high_error_rate,15,0.2222222222222222,Taxa de erro elevada no uso recente.
+A-1b707d,65,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-1b707d,65,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6f8ad2,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6f8ad2,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4d1e75,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4d1e75,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9ee962,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-9ee962,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-378b99,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-378b99,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-94d3da,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e351e1,24,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-e351e1,24,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9badbd,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-9badbd,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-118d55,30,medium,recent_downgrade,20,4,Historico comercial recente indica downgrade.
+A-526d93,58,high,recent_usage_drop,22,0.5172413793103449,Queda relevante de uso nos ultimos 30 dias.
+A-526d93,58,high,poor_support_experience,18,134.6,Experiencia de suporte abaixo do ideal.
+A-526d93,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f92792,63,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-f92792,63,high,high_error_rate,15,0.09090909090909091,Taxa de erro elevada no uso recente.
+A-f92792,63,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-f92792,63,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-84ebe4,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5b4ebb,40,medium,recent_usage_drop,22,0.5789473684210527,Queda relevante de uso nos ultimos 30 dias.
+A-5b4ebb,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2922b6,25,low,high_error_rate,15,0.1111111111111111,Taxa de erro elevada no uso recente.
+A-9b9fe9,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-9b9fe9,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a8b49c,58,high,recent_usage_drop,22,0.6666666666666666,Queda relevante de uso nos ultimos 30 dias.
+A-a8b49c,58,high,poor_support_experience,18,105.0,Experiencia de suporte abaixo do ideal.
+A-a8b49c,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9174e0,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a1bbb6,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c45b23,24,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-c45b23,24,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-02cd81,43,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-02cd81,43,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-02cd81,43,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ee42db,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-ee42db,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-432483,73,high,recent_usage_drop,22,0.42857142857142855,Queda relevante de uso nos ultimos 30 dias.
+A-432483,73,high,poor_support_experience,18,128.0,Experiencia de suporte abaixo do ideal.
+A-432483,73,high,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-432483,73,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9208f0,46,medium,recent_usage_drop,22,0.5666666666666667,Queda relevante de uso nos ultimos 30 dias.
+A-9208f0,46,medium,reactivation_risk,10,2.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-9208f0,46,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-98a59a,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-98a59a,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fe79a5,33,medium,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-fe79a5,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-726cfa,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c43359,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c43359,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-271f46,43,medium,high_error_rate,15,0.09375,Taxa de erro elevada no uso recente.
+A-271f46,43,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-271f46,43,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-157070,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-157070,48,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-157070,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-40a557,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-66224b,40,medium,recent_usage_drop,22,0.7906976744186046,Queda relevante de uso nos ultimos 30 dias.
+A-66224b,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-91e948,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-104f1a,40,medium,recent_usage_drop,22,0.42105263157894735,Queda relevante de uso nos ultimos 30 dias.
+A-104f1a,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7988d1,40,medium,recent_usage_drop,22,0.47368421052631576,Queda relevante de uso nos ultimos 30 dias.
+A-7988d1,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-faa28c,36,medium,poor_support_experience,18,115.5,Experiencia de suporte abaixo do ideal.
+A-faa28c,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f25509,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-f25509,48,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-f25509,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3a7284,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-3a7284,48,medium,poor_support_experience,18,104.33333333333333,Experiencia de suporte abaixo do ideal.
+A-3a5ad8,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-3a5ad8,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8b25f2,38,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-8b25f2,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fabe19,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-adc1f3,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-503d5a,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-503d5a,53,medium,high_error_rate,15,0.13725490196078433,Taxa de erro elevada no uso recente.
+A-503d5a,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fd7ad3,76,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-fd7ad3,76,critical,usage_stale,18,37,Conta com recencia de uso ruim.
+A-fd7ad3,76,critical,poor_support_experience,18,98.125,Experiencia de suporte abaixo do ideal.
+A-fd7ad3,76,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-fd7ad3,76,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-186a44,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-186a44,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-186a44,78,critical,usage_stale,18,35,Conta com recencia de uso ruim.
+A-186a44,78,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e888d1,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-69fad4,36,medium,recent_usage_drop,22,0.5681818181818182,Queda relevante de uso nos ultimos 30 dias.
+A-69fad4,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9289f6,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-9289f6,58,high,usage_stale,18,33,Conta com recencia de uso ruim.
+A-9289f6,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f19409,40,medium,recent_usage_drop,22,0.5849056603773585,Queda relevante de uso nos ultimos 30 dias.
+A-f19409,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-22f2df,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-22f2df,53,medium,high_error_rate,15,0.3125,Taxa de erro elevada no uso recente.
+A-22f2df,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-039727,38,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-039727,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2e3bad,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-2e3bad,58,high,usage_stale,18,50,Conta com recencia de uso ruim.
+A-2e3bad,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-425e76,38,medium,poor_support_experience,18,119.2,Experiencia de suporte abaixo do ideal.
+A-425e76,38,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-e83938,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ad296b,50,medium,recent_usage_drop,22,0.42857142857142855,Queda relevante de uso nos ultimos 30 dias.
+A-ad296b,50,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-ad296b,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e51ec7,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-e51ec7,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0aaf6e,33,medium,high_error_rate,15,0.09302325581395349,Taxa de erro elevada no uso recente.
+A-0aaf6e,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e61e98,33,medium,high_error_rate,15,0.3,Taxa de erro elevada no uso recente.
+A-e61e98,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-92a333,52,medium,recent_usage_drop,22,0.6944444444444444,Queda relevante de uso nos ultimos 30 dias.
+A-92a333,52,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-95b24a,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-95b24a,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-42e5e1,85,critical,recent_usage_drop,22,0.75,Queda relevante de uso nos ultimos 30 dias.
+A-42e5e1,85,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-42e5e1,85,critical,high_error_rate,15,0.375,Taxa de erro elevada no uso recente.
+A-42e5e1,85,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-42e5e1,85,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7d514c,55,high,recent_usage_drop,22,0.5333333333333333,Queda relevante de uso nos ultimos 30 dias.
+A-7d514c,55,high,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-7d514c,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-65aeb5,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-65aeb5,48,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-65aeb5,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e2cd1b,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-180abf,40,medium,recent_usage_drop,22,0.4444444444444444,Queda relevante de uso nos ultimos 30 dias.
+A-180abf,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f17767,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-f17767,48,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-f17767,48,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-5a184f,60,high,recent_usage_drop,22,0.5405405405405406,Queda relevante de uso nos ultimos 30 dias.
+A-5a184f,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-5a184f,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7df7a7,63,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-7df7a7,63,high,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-7df7a7,63,high,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-7df7a7,63,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1ac5e0,55,high,recent_usage_drop,22,0.631578947368421,Queda relevante de uso nos ultimos 30 dias.
+A-1ac5e0,55,high,high_error_rate,15,0.2857142857142857,Taxa de erro elevada no uso recente.
+A-1ac5e0,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-52dd88,76,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-52dd88,76,critical,usage_stale,18,40,Conta com recencia de uso ruim.
+A-52dd88,76,critical,poor_support_experience,18,111.0,Experiencia de suporte abaixo do ideal.
+A-52dd88,76,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bece89,25,low,high_error_rate,15,0.17857142857142858,Taxa de erro elevada no uso recente.
+A-029f69,33,medium,high_error_rate,15,0.22727272727272727,Taxa de erro elevada no uso recente.
+A-029f69,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fb186e,36,medium,usage_stale,18,65,Conta com recencia de uso ruim.
+A-fb186e,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ae052e,74,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-ae052e,74,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-ae052e,74,high,usage_stale,18,31,Conta com recencia de uso ruim.
+A-ae052e,74,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9f9299,33,medium,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-9f9299,33,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-96e141,40,medium,recent_usage_drop,22,0.5789473684210527,Queda relevante de uso nos ultimos 30 dias.
+A-96e141,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-117171,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-117171,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-313be3,55,high,recent_usage_drop,22,0.7428571428571429,Queda relevante de uso nos ultimos 30 dias.
+A-313be3,55,high,high_error_rate,15,0.2222222222222222,Taxa de erro elevada no uso recente.
+A-313be3,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-671f31,60,high,recent_usage_drop,22,0.6111111111111112,Queda relevante de uso nos ultimos 30 dias.
+A-671f31,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-671f31,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bbc346,38,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-bbc346,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c16101,40,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c16101,40,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-50f3f7,75,critical,recent_usage_drop,22,0.40384615384615385,Queda relevante de uso nos ultimos 30 dias.
+A-50f3f7,75,critical,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-50f3f7,75,critical,high_error_rate,15,0.12903225806451613,Taxa de erro elevada no uso recente.
+A-50f3f7,75,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7da956,38,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-7da956,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-019782,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-019782,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-df10db,61,high,poor_support_experience,18,86.5,Experiencia de suporte abaixo do ideal.
+A-df10db,61,high,high_error_rate,15,0.08823529411764706,Taxa de erro elevada no uso recente.
+A-df10db,61,high,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-df10db,61,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3932db,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-3932db,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4f18f0,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4f18f0,53,medium,high_error_rate,15,0.10526315789473684,Taxa de erro elevada no uso recente.
+A-4f18f0,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4c6f11,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4c6f11,38,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-8ae05d,33,medium,high_error_rate,15,0.08,Taxa de erro elevada no uso recente.
+A-8ae05d,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b78bf8,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-b78bf8,53,medium,high_error_rate,15,0.08,Taxa de erro elevada no uso recente.
+A-b78bf8,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-eafc6e,76,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-eafc6e,76,critical,usage_stale,18,32,Conta com recencia de uso ruim.
+A-eafc6e,76,critical,poor_support_experience,18,136.0,Experiencia de suporte abaixo do ideal.
+A-eafc6e,76,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-10b8f2,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-439b2f,13,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-544d0a,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-544d0a,48,medium,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-544d0a,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ba6516,38,medium,recent_downgrade,20,3,Historico comercial recente indica downgrade.
+A-ba6516,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-712426,28,low,reactivation_risk,10,2.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-712426,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-038089,46,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-038089,46,medium,usage_stale,18,34,Conta com recencia de uso ruim.
+A-afa505,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-afa505,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d5a319,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-d5a319,48,medium,high_escalation_load,10,1.0,Volume elevado de escalacoes.
+A-d5a319,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f97b9a,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2f6a32,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-856b1e,33,medium,high_error_rate,15,0.4444444444444444,Taxa de erro elevada no uso recente.
+A-856b1e,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d27f50,40,medium,recent_usage_drop,22,0.6296296296296297,Queda relevante de uso nos ultimos 30 dias.
+A-d27f50,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e36807,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ff79f2,76,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-ff79f2,76,critical,usage_stale,18,40,Conta com recencia de uso ruim.
+A-ff79f2,76,critical,poor_support_experience,18,82.5,Experiencia de suporte abaixo do ideal.
+A-ff79f2,76,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5b1bcd,55,high,recent_usage_drop,22,0.4230769230769231,Queda relevante de uso nos ultimos 30 dias.
+A-5b1bcd,55,high,high_error_rate,15,0.23333333333333334,Taxa de erro elevada no uso recente.
+A-5b1bcd,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-71615e,36,medium,poor_support_experience,18,77.0,Experiencia de suporte abaixo do ideal.
+A-71615e,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-794a0b,40,medium,recent_usage_drop,22,0.9016393442622951,Queda relevante de uso nos ultimos 30 dias.
+A-794a0b,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-86902e,33,medium,high_error_rate,15,0.20689655172413793,Taxa de erro elevada no uso recente.
+A-86902e,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0532a9,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-9779ad,40,medium,recent_usage_drop,22,0.75,Queda relevante de uso nos ultimos 30 dias.
+A-9779ad,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f45426,53,medium,recent_downgrade,20,3,Historico comercial recente indica downgrade.
+A-f45426,53,medium,high_error_rate,15,0.1016949152542373,Taxa de erro elevada no uso recente.
+A-f45426,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c1e51e,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-fa3095,58,high,recent_usage_drop,22,0.5172413793103449,Queda relevante de uso nos ultimos 30 dias.
+A-fa3095,58,high,poor_support_experience,18,84.0,Experiencia de suporte abaixo do ideal.
+A-fa3095,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ad64c6,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-ad64c6,58,high,usage_stale,18,51,Conta com recencia de uso ruim.
+A-ad64c6,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-39b19f,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-39b19f,56,high,usage_stale,18,79,Conta com recencia de uso ruim.
+A-39b19f,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-56962b,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-56962b,58,high,usage_stale,18,42,Conta com recencia de uso ruim.
+A-56962b,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e60f9d,74,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-e60f9d,74,high,usage_stale,18,64,Conta com recencia de uso ruim.
+A-e60f9d,74,high,poor_support_experience,18,106.5,Experiencia de suporte abaixo do ideal.
+A-e60f9d,74,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-88c6ca,36,medium,poor_support_experience,18,12.0,Experiencia de suporte abaixo do ideal.
+A-88c6ca,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-158f4e,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-158f4e,58,high,usage_stale,18,40,Conta com recencia de uso ruim.
+A-158f4e,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5b051a,18,low,high_error_rate,15,0.1388888888888889,Taxa de erro elevada no uso recente.
+A-296d7c,69,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-296d7c,69,high,usage_stale,18,36,Conta com recencia de uso ruim.
+A-296d7c,69,high,poor_support_experience,18,105.2,Experiencia de suporte abaixo do ideal.
+A-296d7c,69,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1619f8,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a1b80b,63,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-a1b80b,63,high,high_error_rate,15,0.11214953271028037,Taxa de erro elevada no uso recente.
+A-a1b80b,63,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-a1b80b,63,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-139c3b,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-702032,43,medium,usage_stale,18,30,Conta com recencia de uso ruim.
+A-702032,43,medium,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-7a0d69,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-22d9d2,67,high,recent_usage_drop,22,0.4528301886792453,Queda relevante de uso nos ultimos 30 dias.
+A-22d9d2,67,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-22d9d2,67,high,high_error_rate,15,0.1724137931034483,Taxa de erro elevada no uso recente.
+A-b9eed8,40,medium,recent_downgrade,20,3,Historico comercial recente indica downgrade.
+A-b9eed8,40,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-dfbd31,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-dfbd31,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8e47ca,32,medium,recent_usage_drop,22,0.8461538461538461,Queda relevante de uso nos ultimos 30 dias.
+A-4437e4,63,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4437e4,63,high,high_error_rate,15,0.12121212121212122,Taxa de erro elevada no uso recente.
+A-4437e4,63,high,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-4437e4,63,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-779e4e,45,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-779e4e,45,medium,high_error_rate,15,0.375,Taxa de erro elevada no uso recente.
+A-53f4e3,20,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-692f18,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-692f18,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-13466a,28,low,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-13466a,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-13466a,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1986ca,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-1986ca,58,high,usage_stale,18,39,Conta com recencia de uso ruim.
+A-1986ca,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0cc442,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-0cc442,48,medium,reactivation_risk,10,2.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-0cc442,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c608c8,70,high,recent_usage_drop,22,0.5,Queda relevante de uso nos ultimos 30 dias.
+A-c608c8,70,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c608c8,70,high,poor_support_experience,18,66.0,Experiencia de suporte abaixo do ideal.
+A-3be56b,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-3be56b,53,medium,high_error_rate,15,0.08,Taxa de erro elevada no uso recente.
+A-3be56b,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-354f12,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-354f12,56,high,poor_support_experience,18,137.5,Experiencia de suporte abaixo do ideal.
+A-354f12,56,high,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-68f37c,50,medium,recent_usage_drop,22,0.5833333333333334,Queda relevante de uso nos ultimos 30 dias.
+A-68f37c,50,medium,reactivation_risk,10,2.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-68f37c,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-aa9511,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-aa9511,56,high,poor_support_experience,18,98.5,Experiencia de suporte abaixo do ideal.
+A-aa9511,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-af0cd2,36,medium,poor_support_experience,18,149.33333333333334,Experiencia de suporte abaixo do ideal.
+A-af0cd2,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bd4513,18,low,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-34d880,36,medium,poor_support_experience,18,90.8,Experiencia de suporte abaixo do ideal.
+A-34d880,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-508199,76,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-508199,76,critical,usage_stale,18,39,Conta com recencia de uso ruim.
+A-508199,76,critical,poor_support_experience,18,67.33333333333333,Experiencia de suporte abaixo do ideal.
+A-508199,76,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f03140,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-f03140,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-410e86,33,medium,high_error_rate,15,0.09090909090909091,Taxa de erro elevada no uso recente.
+A-410e86,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fa2041,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-de58ca,33,medium,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-de58ca,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-05d3b3,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-249769,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-249769,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e43bf7,32,medium,recent_usage_drop,22,0.6363636363636364,Queda relevante de uso nos ultimos 30 dias.
+A-eb2fdc,50,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-eb2fdc,50,medium,usage_stale,18,33,Conta com recencia de uso ruim.
+A-e1462e,88,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-e1462e,88,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-e1462e,88,critical,usage_stale,18,52,Conta com recencia de uso ruim.
+A-e1462e,88,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-e1462e,88,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cab532,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cab532,53,medium,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-cab532,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9123ac,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-9123ac,48,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-9123ac,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6e08f3,70,high,recent_usage_drop,22,0.78125,Queda relevante de uso nos ultimos 30 dias.
+A-6e08f3,70,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6e08f3,70,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-6e08f3,70,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d922bf,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-d922bf,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8ed5dd,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-7c6b6b,39,medium,poor_support_experience,18,82.4,Experiencia de suporte abaixo do ideal.
+A-7c6b6b,39,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-3c1a3f,60,high,recent_usage_drop,22,0.75,Queda relevante de uso nos ultimos 30 dias.
+A-3c1a3f,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-3c1a3f,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b48f73,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-b48f73,58,high,usage_stale,18,37,Conta com recencia de uso ruim.
+A-b48f73,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-76fa4d,32,medium,recent_usage_drop,22,0.5945945945945946,Queda relevante de uso nos ultimos 30 dias.
+A-b2af2e,66,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-b2af2e,66,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-b2af2e,66,high,usage_stale,18,51,Conta com recencia de uso ruim.
+A-9bfc9f,53,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-9bfc9f,53,medium,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-9bfc9f,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4ae22a,21,low,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-fda07f,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-fda07f,53,medium,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-fda07f,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-de24d5,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-de24d5,58,high,usage_stale,18,40,Conta com recencia de uso ruim.
+A-de24d5,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-977ca0,36,medium,poor_support_experience,18,123.0,Experiencia de suporte abaixo do ideal.
+A-977ca0,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ab438f,40,medium,recent_usage_drop,22,0.5,Queda relevante de uso nos ultimos 30 dias.
+A-ab438f,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e89151,18,low,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-40906c,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-81edc3,36,medium,poor_support_experience,18,70.0,Experiencia de suporte abaixo do ideal.
+A-81edc3,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-328bd0,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-328bd0,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b3fe05,73,high,recent_usage_drop,22,0.5,Queda relevante de uso nos ultimos 30 dias.
+A-b3fe05,73,high,poor_support_experience,18,94.25,Experiencia de suporte abaixo do ideal.
+A-b3fe05,73,high,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-b3fe05,73,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-09540c,71,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-09540c,71,high,usage_stale,18,30,Conta com recencia de uso ruim.
+A-09540c,71,high,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-09540c,71,high,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-e693b6,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2446e3,85,critical,recent_usage_drop,22,0.6097560975609756,Queda relevante de uso nos ultimos 30 dias.
+A-2446e3,85,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-2446e3,85,critical,high_error_rate,15,0.3125,Taxa de erro elevada no uso recente.
+A-2446e3,85,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-2446e3,85,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-241e75,26,low,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-922109,40,medium,recent_usage_drop,22,0.6190476190476191,Queda relevante de uso nos ultimos 30 dias.
+A-922109,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ff3c73,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8b0451,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-331424,36,medium,usage_stale,18,30,Conta com recencia de uso ruim.
+A-331424,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-51ec1b,86,critical,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-51ec1b,86,critical,usage_stale,18,71,Conta com recencia de uso ruim.
+A-51ec1b,86,critical,poor_support_experience,18,150.0,Experiencia de suporte abaixo do ideal.
+A-51ec1b,86,critical,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-51ec1b,86,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-bcf664,65,high,recent_usage_drop,22,0.813953488372093,Queda relevante de uso nos ultimos 30 dias.
+A-bcf664,65,high,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-bcf664,65,high,reactivation_risk,10,2.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-bcf664,65,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-90a8c8,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-86cdb4,51,medium,recent_usage_drop,22,0.676056338028169,Queda relevante de uso nos ultimos 30 dias.
+A-86cdb4,51,medium,high_error_rate,15,0.13043478260869565,Taxa de erro elevada no uso recente.
+A-86cdb4,51,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4bfa33,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-dbc825,51,medium,poor_support_experience,18,108.16666666666667,Experiencia de suporte abaixo do ideal.
+A-dbc825,51,medium,high_error_rate,15,0.10810810810810811,Taxa de erro elevada no uso recente.
+A-dbc825,51,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c70870,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c70870,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7c4956,21,low,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-0651a4,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3ce5b8,55,high,recent_usage_drop,22,0.3793103448275862,Queda relevante de uso nos ultimos 30 dias.
+A-3ce5b8,55,high,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-3ce5b8,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bd4708,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-993085,38,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-993085,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-92a3af,70,high,recent_usage_drop,22,0.5777777777777777,Queda relevante de uso nos ultimos 30 dias.
+A-92a3af,70,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-92a3af,70,high,poor_support_experience,18,39.0,Experiencia de suporte abaixo do ideal.
+A-151c9a,45,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-151c9a,45,medium,high_error_rate,15,0.21739130434782608,Taxa de erro elevada no uso recente.
+A-474ad4,70,high,recent_usage_drop,22,0.725,Queda relevante de uso nos ultimos 30 dias.
+A-474ad4,70,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-474ad4,70,high,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-474ad4,70,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4ef964,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fd9422,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-fd9422,53,medium,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-fd9422,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0baac2,28,low,usage_stale,18,62,Conta com recencia de uso ruim.
+A-bb1486,40,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-bb1486,40,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-560d27,36,medium,usage_stale,18,65,Conta com recencia de uso ruim.
+A-560d27,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0b0d6d,25,low,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-2789e3,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-2789e3,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b07346,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-902ef7,54,medium,usage_stale,18,72,Conta com recencia de uso ruim.
+A-902ef7,54,medium,poor_support_experience,18,85.0,Experiencia de suporte abaixo do ideal.
+A-902ef7,54,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-20736a,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-20736a,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e4bf56,52,medium,recent_usage_drop,22,0.3793103448275862,Queda relevante de uso nos ultimos 30 dias.
+A-e4bf56,52,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cea1f0,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cea1f0,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ef84cf,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-ef84cf,48,medium,reactivation_risk,10,2.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-ef84cf,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d49cc5,47,medium,recent_usage_drop,22,0.7647058823529411,Queda relevante de uso nos ultimos 30 dias.
+A-d49cc5,47,medium,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-4e960a,75,critical,recent_usage_drop,22,0.3958333333333333,Queda relevante de uso nos ultimos 30 dias.
+A-4e960a,75,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4e960a,75,critical,high_error_rate,15,0.20689655172413793,Taxa de erro elevada no uso recente.
+A-4e960a,75,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c37cab,75,critical,recent_usage_drop,22,0.3877551020408163,Queda relevante de uso nos ultimos 30 dias.
+A-c37cab,75,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c37cab,75,critical,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-c37cab,75,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-533452,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-533452,48,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-533452,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-443b7c,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1f7acb,38,medium,recent_downgrade,20,3,Historico comercial recente indica downgrade.
+A-1f7acb,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f51f16,33,medium,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-f51f16,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5a3eb9,60,high,recent_usage_drop,22,0.6428571428571429,Queda relevante de uso nos ultimos 30 dias.
+A-5a3eb9,60,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-5a3eb9,60,high,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-5f2961,68,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-5f2961,68,high,usage_stale,18,58,Conta com recencia de uso ruim.
+A-5f2961,68,high,poor_support_experience,18,19.0,Experiencia de suporte abaixo do ideal.
+A-417d2f,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e98302,55,high,recent_usage_drop,22,0.5454545454545454,Queda relevante de uso nos ultimos 30 dias.
+A-e98302,55,high,high_error_rate,15,0.8,Taxa de erro elevada no uso recente.
+A-e98302,55,high,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-8bde0c,55,high,recent_usage_drop,22,0.5384615384615384,Queda relevante de uso nos ultimos 30 dias.
+A-8bde0c,55,high,high_error_rate,15,0.3333333333333333,Taxa de erro elevada no uso recente.
+A-8bde0c,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bcf87c,93,critical,recent_usage_drop,22,0.6923076923076923,Queda relevante de uso nos ultimos 30 dias.
+A-bcf87c,93,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-bcf87c,93,critical,poor_support_experience,18,49.5,Experiencia de suporte abaixo do ideal.
+A-bcf87c,93,critical,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-bcf87c,93,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-54ecc2,60,high,recent_usage_drop,22,0.5384615384615384,Queda relevante de uso nos ultimos 30 dias.
+A-54ecc2,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-54ecc2,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-625d0b,36,medium,poor_support_experience,18,72.4,Experiencia de suporte abaixo do ideal.
+A-625d0b,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fce879,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-fce879,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-fce879,78,critical,usage_stale,18,32,Conta com recencia de uso ruim.
+A-fce879,78,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b07b56,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6da850,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6da850,56,high,poor_support_experience,18,76.4,Experiencia de suporte abaixo do ideal.
+A-6da850,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-342303,51,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-342303,51,medium,usage_stale,18,36,Conta com recencia de uso ruim.
+A-342303,51,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e7a1e2,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-e7a1e2,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f1f639,16,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-a865bd,47,medium,recent_usage_drop,22,0.4444444444444444,Queda relevante de uso nos ultimos 30 dias.
+A-a865bd,47,medium,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-4e631b,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4e631b,53,medium,high_error_rate,15,0.16,Taxa de erro elevada no uso recente.
+A-4e631b,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7f6b86,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8adedc,51,medium,poor_support_experience,18,56.75,Experiencia de suporte abaixo do ideal.
+A-8adedc,51,medium,high_error_rate,15,0.16666666666666666,Taxa de erro elevada no uso recente.
+A-8adedc,51,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-149a69,28,low,usage_stale,18,137,Conta com recencia de uso ruim.
+A-a6d261,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-00bed1,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ffc04f,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-ffc04f,53,medium,high_error_rate,15,0.23529411764705882,Taxa de erro elevada no uso recente.
+A-ffc04f,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-65c341,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-dcc2f0,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3d957b,28,low,usage_stale,18,73,Conta com recencia de uso ruim.
+A-89ee83,25,low,high_error_rate,15,0.20833333333333334,Taxa de erro elevada no uso recente.
+A-883b7d,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-dcc3f1,60,high,recent_usage_drop,22,0.52,Queda relevante de uso nos ultimos 30 dias.
+A-dcc3f1,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-dcc3f1,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c62e55,33,medium,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-c62e55,33,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-e4144b,51,medium,poor_support_experience,18,172.33333333333334,Experiencia de suporte abaixo do ideal.
+A-e4144b,51,medium,high_error_rate,15,0.13333333333333333,Taxa de erro elevada no uso recente.
+A-e4144b,51,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e40f45,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-96215d,32,medium,recent_usage_drop,22,0.36,Queda relevante de uso nos ultimos 30 dias.
+A-2b9d3e,40,medium,recent_usage_drop,22,0.8387096774193549,Queda relevante de uso nos ultimos 30 dias.
+A-2b9d3e,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b7724f,16,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-310452,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-310452,58,high,usage_stale,18,37,Conta com recencia de uso ruim.
+A-310452,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-eb1312,50,medium,recent_usage_drop,22,0.6808510638297872,Queda relevante de uso nos ultimos 30 dias.
+A-eb1312,50,medium,poor_support_experience,18,117.0,Experiencia de suporte abaixo do ideal.
+A-df1e44,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-df1e44,56,high,poor_support_experience,18,109.5,Experiencia de suporte abaixo do ideal.
+A-df1e44,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6a7c9d,32,medium,recent_usage_drop,22,0.6842105263157895,Queda relevante de uso nos ultimos 30 dias.
+A-cbd1a3,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a8d89d,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-600734,36,medium,poor_support_experience,18,89.42857142857143,Experiencia de suporte abaixo do ideal.
+A-600734,36,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-86fc1d,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-78f02b,50,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-78f02b,50,medium,usage_stale,18,33,Conta com recencia de uso ruim.
+A-acb7f7,60,high,recent_usage_drop,22,0.48484848484848486,Queda relevante de uso nos ultimos 30 dias.
+A-acb7f7,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-acb7f7,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-712f1c,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3793ee,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-3793ee,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9a532a,54,medium,usage_stale,18,72,Conta com recencia de uso ruim.
+A-9a532a,54,medium,poor_support_experience,18,128.5,Experiencia de suporte abaixo do ideal.
+A-9a532a,54,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2ebb4b,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-2ebb4b,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6843f2,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-6843f2,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6843f2,78,critical,usage_stale,18,36,Conta com recencia de uso ruim.
+A-6843f2,78,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c9bb3e,36,medium,usage_stale,18,61,Conta com recencia de uso ruim.
+A-c9bb3e,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4814a3,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4814a3,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b7b7b7,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ccc747,36,medium,recent_usage_drop,22,0.46153846153846156,Queda relevante de uso nos ultimos 30 dias.
+A-ccc747,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bb3bd4,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-09316c,36,medium,poor_support_experience,18,106.25,Experiencia de suporte abaixo do ideal.
+A-09316c,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-96bbc6,58,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-96bbc6,58,high,poor_support_experience,18,67.0,Experiencia de suporte abaixo do ideal.
+A-96bbc6,58,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-bc4d48,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b30291,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cdf020,68,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-cdf020,68,high,usage_stale,18,37,Conta com recencia de uso ruim.
+A-cdf020,68,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-cdf020,68,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e6afc1,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e3bd71,60,high,recent_usage_drop,22,0.8135593220338984,Queda relevante de uso nos ultimos 30 dias.
+A-e3bd71,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-e3bd71,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b179bf,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-098560,28,low,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-098560,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-82861f,32,medium,recent_usage_drop,22,0.42105263157894735,Queda relevante de uso nos ultimos 30 dias.
+A-94c3cd,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a33200,32,medium,recent_usage_drop,22,0.7222222222222222,Queda relevante de uso nos ultimos 30 dias.
+A-034368,40,medium,recent_usage_drop,22,0.5333333333333333,Queda relevante de uso nos ultimos 30 dias.
+A-034368,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b54c01,32,medium,usage_stale,18,88,Conta com recencia de uso ruim.
+A-b54c01,32,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d82ef9,60,high,recent_usage_drop,22,0.543859649122807,Queda relevante de uso nos ultimos 30 dias.
+A-d82ef9,60,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-d82ef9,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bb2f49,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-1f559b,96,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-1f559b,96,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-1f559b,96,critical,usage_stale,18,41,Conta com recencia de uso ruim.
+A-1f559b,96,critical,poor_support_experience,18,116.2,Experiencia de suporte abaixo do ideal.
+A-1f559b,96,critical,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-5a215a,40,medium,recent_usage_drop,22,0.45,Queda relevante de uso nos ultimos 30 dias.
+A-5a215a,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3f9cc0,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-3f9cc0,48,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-3f9cc0,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f9cc74,73,high,recent_usage_drop,22,0.4583333333333333,Queda relevante de uso nos ultimos 30 dias.
+A-f9cc74,73,high,poor_support_experience,18,118.33333333333333,Experiencia de suporte abaixo do ideal.
+A-f9cc74,73,high,high_error_rate,15,0.15384615384615385,Taxa de erro elevada no uso recente.
+A-f9cc74,73,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ed510f,33,medium,high_error_rate,15,0.10714285714285714,Taxa de erro elevada no uso recente.
+A-ed510f,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5c9849,36,medium,poor_support_experience,18,41.0,Experiencia de suporte abaixo do ideal.
+A-5c9849,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a7bd4b,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d4ac0e,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ffdfd5,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0dbdc6,33,medium,high_error_rate,15,0.16,Taxa de erro elevada no uso recente.
+A-0dbdc6,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7cfe77,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-1f0636,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-40de06,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-40de06,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cb5333,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cb5333,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-309e54,75,critical,recent_usage_drop,22,0.6363636363636364,Queda relevante de uso nos ultimos 30 dias.
+A-309e54,75,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-309e54,75,critical,high_error_rate,15,0.125,Taxa de erro elevada no uso recente.
+A-309e54,75,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6e7827,65,high,recent_usage_drop,22,0.42857142857142855,Queda relevante de uso nos ultimos 30 dias.
+A-6e7827,65,high,poor_support_experience,18,83.5,Experiencia de suporte abaixo do ideal.
+A-6e7827,65,high,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-50bb9f,20,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-5fe118,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5247b3,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f44180,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c16cf7,36,medium,poor_support_experience,18,111.66666666666667,Experiencia de suporte abaixo do ideal.
+A-c16cf7,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d42431,60,high,recent_usage_drop,22,0.4782608695652174,Queda relevante de uso nos ultimos 30 dias.
+A-d42431,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-d42431,60,high,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-6965e1,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6965e1,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0354fe,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0a62f5,50,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-0a62f5,50,medium,usage_stale,18,42,Conta com recencia de uso ruim.
+A-f5641b,60,high,recent_usage_drop,22,0.42857142857142855,Queda relevante de uso nos ultimos 30 dias.
+A-f5641b,60,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-f5641b,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b44e3e,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-b44e3e,58,high,usage_stale,18,33,Conta com recencia de uso ruim.
+A-b44e3e,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3b37d9,40,medium,recent_usage_drop,22,0.5769230769230769,Queda relevante de uso nos ultimos 30 dias.
+A-3b37d9,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-54d94a,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-54d94a,48,medium,poor_support_experience,18,82.75,Experiencia de suporte abaixo do ideal.
+A-7f29a7,33,medium,high_error_rate,15,0.09090909090909091,Taxa de erro elevada no uso recente.
+A-7f29a7,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-089363,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-524364,36,medium,usage_stale,18,100,Conta com recencia de uso ruim.
+A-524364,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-855a48,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-855a48,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-855a48,78,critical,usage_stale,18,43,Conta com recencia de uso ruim.
+A-855a48,78,critical,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-756192,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-49b828,50,medium,recent_usage_drop,22,0.6857142857142857,Queda relevante de uso nos ultimos 30 dias.
+A-49b828,50,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-49b828,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c7ffc2,51,medium,poor_support_experience,18,86.0,Experiencia de suporte abaixo do ideal.
+A-c7ffc2,51,medium,high_error_rate,15,0.0967741935483871,Taxa de erro elevada no uso recente.
+A-c7ffc2,51,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-751c58,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-751c58,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-72799b,63,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-72799b,63,high,high_error_rate,15,0.17647058823529413,Taxa de erro elevada no uso recente.
+A-72799b,63,high,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-72799b,63,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-812c5b,33,medium,high_error_rate,15,0.08,Taxa de erro elevada no uso recente.
+A-812c5b,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-69b156,53,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-69b156,53,medium,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-69b156,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-075038,40,medium,recent_usage_drop,22,0.4583333333333333,Queda relevante de uso nos ultimos 30 dias.
+A-075038,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-940b8b,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-940b8b,56,high,usage_stale,18,65,Conta com recencia de uso ruim.
+A-940b8b,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-2d1036,40,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-2d1036,40,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-0f6450,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-0f6450,58,high,usage_stale,18,54,Conta com recencia de uso ruim.
+A-0f6450,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9affe6,28,low,poor_support_experience,18,76.0,Experiencia de suporte abaixo do ideal.
+A-80eeb6,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-80eeb6,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d4e0d4,52,medium,recent_usage_drop,22,0.375,Queda relevante de uso nos ultimos 30 dias.
+A-d4e0d4,52,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-c7e58b,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-c7e58b,58,high,usage_stale,18,43,Conta com recencia de uso ruim.
+A-c7e58b,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-016043,33,medium,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-016043,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bbe56f,58,high,recent_usage_drop,22,0.42857142857142855,Queda relevante de uso nos ultimos 30 dias.
+A-bbe56f,58,high,usage_stale,18,30,Conta com recencia de uso ruim.
+A-bbe56f,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7c5768,32,medium,usage_stale,18,30,Conta com recencia de uso ruim.
+A-7c5768,32,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-751bd4,30,medium,recent_usage_drop,22,0.5,Queda relevante de uso nos ultimos 30 dias.
+A-751bd4,30,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4e0e85,58,high,recent_usage_drop,22,0.47368421052631576,Queda relevante de uso nos ultimos 30 dias.
+A-4e0e85,58,high,poor_support_experience,18,119.5,Experiencia de suporte abaixo do ideal.
+A-4e0e85,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ad3abd,50,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-ad3abd,50,medium,usage_stale,18,41,Conta com recencia de uso ruim.
+A-e19ff6,40,medium,recent_usage_drop,22,0.5454545454545454,Queda relevante de uso nos ultimos 30 dias.
+A-e19ff6,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7920cc,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5a92e7,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-fdfc91,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-fdfc91,58,high,usage_stale,18,43,Conta com recencia de uso ruim.
+A-fdfc91,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1e50e0,28,low,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-1e50e0,28,low,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-1e1b80,40,medium,recent_usage_drop,22,0.6875,Queda relevante de uso nos ultimos 30 dias.
+A-1e1b80,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-659280,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f6b2fb,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-f6b2fb,56,high,poor_support_experience,18,88.6,Experiencia de suporte abaixo do ideal.
+A-f6b2fb,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cb6cc6,14,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d62e02,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-d535f6,38,medium,recent_downgrade,20,3,Historico comercial recente indica downgrade.
+A-d535f6,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-39868b,50,medium,recent_usage_drop,22,0.6333333333333333,Queda relevante de uso nos ultimos 30 dias.
+A-39868b,50,medium,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-39868b,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-3cc791,86,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-3cc791,86,critical,usage_stale,18,37,Conta com recencia de uso ruim.
+A-3cc791,86,critical,poor_support_experience,18,95.83333333333333,Experiencia de suporte abaixo do ideal.
+A-3cc791,86,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-3cc791,86,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-337bc1,38,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-337bc1,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-58b9ff,66,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-58b9ff,66,high,poor_support_experience,18,79.0,Experiencia de suporte abaixo do ideal.
+A-58b9ff,66,high,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-58b9ff,66,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bf7919,48,medium,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-bf7919,48,medium,usage_stale,18,40,Conta com recencia de uso ruim.
+A-bf7919,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1d5444,40,medium,recent_usage_drop,22,0.7346938775510204,Queda relevante de uso nos ultimos 30 dias.
+A-1d5444,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0f3e88,51,medium,poor_support_experience,18,67.0,Experiencia de suporte abaixo do ideal.
+A-0f3e88,51,medium,high_error_rate,15,0.08571428571428572,Taxa de erro elevada no uso recente.
+A-0f3e88,51,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7641d3,48,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-7641d3,48,medium,high_escalation_load,10,0.4,Volume elevado de escalacoes.
+A-7641d3,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cd458b,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cd458b,38,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-c16b88,76,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-c16b88,76,critical,usage_stale,18,43,Conta com recencia de uso ruim.
+A-c16b88,76,critical,poor_support_experience,18,137.66666666666666,Experiencia de suporte abaixo do ideal.
+A-c16b88,76,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-59f724,40,medium,recent_usage_drop,22,0.8392857142857143,Queda relevante de uso nos ultimos 30 dias.
+A-59f724,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-87aa7b,48,medium,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-87aa7b,48,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-87aa7b,48,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-1e6fc3,26,low,usage_stale,18,89,Conta com recencia de uso ruim.
+A-1e6fc3,26,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-39ddf4,47,medium,recent_usage_drop,22,0.6818181818181818,Queda relevante de uso nos ultimos 30 dias.
+A-39ddf4,47,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-34ea2f,33,medium,high_error_rate,15,0.1282051282051282,Taxa de erro elevada no uso recente.
+A-34ea2f,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-716841,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-716841,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-558c72,65,high,recent_usage_drop,22,0.5454545454545454,Queda relevante de uso nos ultimos 30 dias.
+A-558c72,65,high,poor_support_experience,18,79.25,Experiencia de suporte abaixo do ideal.
+A-558c72,65,high,high_error_rate,15,0.6,Taxa de erro elevada no uso recente.
+A-b11cd0,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cc1d8d,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cc1d8d,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7f4db3,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-7f4db3,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-db5e9e,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-db5e9e,56,high,poor_support_experience,18,97.5,Experiencia de suporte abaixo do ideal.
+A-db5e9e,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cc102e,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-82d8a6,60,high,recent_usage_drop,22,0.7391304347826086,Queda relevante de uso nos ultimos 30 dias.
+A-82d8a6,60,high,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-82d8a6,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-dec005,58,high,recent_usage_drop,22,0.4634146341463415,Queda relevante de uso nos ultimos 30 dias.
+A-dec005,58,high,poor_support_experience,18,152.0,Experiencia de suporte abaixo do ideal.
+A-dec005,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5790f4,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-7c83a1,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-7c83a1,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-297a2d,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-297a2d,58,high,usage_stale,18,48,Conta com recencia de uso ruim.
+A-297a2d,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4c56c9,55,high,recent_usage_drop,22,0.47058823529411764,Queda relevante de uso nos ultimos 30 dias.
+A-4c56c9,55,high,high_error_rate,15,0.3333333333333333,Taxa de erro elevada no uso recente.
+A-4c56c9,55,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cbbe12,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cbbe12,56,high,usage_stale,18,30,Conta com recencia de uso ruim.
+A-cbbe12,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-4a267b,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-4a267b,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4a267b,78,critical,usage_stale,18,37,Conta com recencia de uso ruim.
+A-4a267b,78,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-bcbe98,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-bcbe98,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-427b69,33,medium,high_error_rate,15,0.12195121951219512,Taxa de erro elevada no uso recente.
+A-427b69,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0be015,26,low,usage_stale,18,70,Conta com recencia de uso ruim.
+A-0be015,26,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-054577,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-054577,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0f7d77,16,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-e7beab,36,medium,usage_stale,18,80,Conta com recencia de uso ruim.
+A-e7beab,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a09355,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-a09355,53,medium,high_error_rate,15,0.09803921568627451,Taxa de erro elevada no uso recente.
+A-a09355,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-31ab9a,68,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-31ab9a,68,high,usage_stale,18,31,Conta com recencia de uso ruim.
+A-31ab9a,68,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-31ab9a,68,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0158bb,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-f19b24,64,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-f19b24,64,high,usage_stale,18,59,Conta com recencia de uso ruim.
+A-f19b24,64,high,high_escalation_load,10,0.5,Volume elevado de escalacoes.
+A-f19b24,64,high,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-798a3f,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-798a3f,58,high,usage_stale,18,31,Conta com recencia de uso ruim.
+A-798a3f,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-068fc6,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-6f50ae,70,high,recent_usage_drop,22,0.5714285714285714,Queda relevante de uso nos ultimos 30 dias.
+A-6f50ae,70,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-6f50ae,70,high,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-6f50ae,70,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-a2485e,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-a2485e,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-a2485e,78,critical,usage_stale,18,35,Conta com recencia de uso ruim.
+A-a2485e,78,critical,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-bb1eaa,70,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-bb1eaa,70,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-bb1eaa,70,high,usage_stale,18,46,Conta com recencia de uso ruim.
+A-cc98bc,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d77f4c,53,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-d77f4c,53,medium,high_error_rate,15,0.2222222222222222,Taxa de erro elevada no uso recente.
+A-d77f4c,53,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ccabf0,30,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-700ade,36,medium,usage_stale,18,81,Conta com recencia de uso ruim.
+A-700ade,36,medium,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-4a4c2d,75,critical,recent_usage_drop,22,0.5384615384615384,Queda relevante de uso nos ultimos 30 dias.
+A-4a4c2d,75,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-4a4c2d,75,critical,high_error_rate,15,0.08333333333333333,Taxa de erro elevada no uso recente.
+A-4a4c2d,75,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b7ef83,28,low,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-b7ef83,28,low,trial_fragility,8,False,Conta em trial ou com fragilidade de conversao.
+A-e08cd3,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-e08cd3,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-19b2c8,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-970c97,63,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-970c97,63,high,poor_support_experience,18,139.0,Experiencia de suporte abaixo do ideal.
+A-970c97,63,high,high_error_rate,15,0.1,Taxa de erro elevada no uso recente.
+A-6dee43,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-6dee43,58,high,usage_stale,18,44,Conta com recencia de uso ruim.
+A-6dee43,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5ed98d,40,medium,recent_usage_drop,22,0.5161290322580645,Queda relevante de uso nos ultimos 30 dias.
+A-5ed98d,40,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-c58f49,50,medium,recent_usage_drop,22,0.47619047619047616,Queda relevante de uso nos ultimos 30 dias.
+A-c58f49,50,medium,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-c58f49,50,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9c18c4,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-cc8c8f,78,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-cc8c8f,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-cc8c8f,78,critical,usage_stale,18,41,Conta com recencia de uso ruim.
+A-cc8c8f,78,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-5f7781,33,medium,high_error_rate,15,0.14285714285714285,Taxa de erro elevada no uso recente.
+A-5f7781,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-e1b9cd,60,high,recent_usage_drop,22,0.43478260869565216,Queda relevante de uso nos ultimos 30 dias.
+A-e1b9cd,60,high,recent_downgrade,20,3,Historico comercial recente indica downgrade.
+A-e1b9cd,60,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ac85cd,80,critical,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-ac85cd,80,critical,recent_downgrade,20,2,Historico comercial recente indica downgrade.
+A-ac85cd,80,critical,usage_stale,18,35,Conta com recencia de uso ruim.
+A-ac85cd,80,critical,reactivation_risk,10,1.0,Conta com historico de reativacao e risco estrutural de recorrencia.
+A-d792a6,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-d792a6,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ac9111,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-ac9111,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-18793f,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-9f0b68,38,medium,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-9f0b68,38,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d3c88e,58,high,recent_usage_drop,22,0.375,Queda relevante de uso nos ultimos 30 dias.
+A-d3c88e,58,high,poor_support_experience,18,48.0,Experiencia de suporte abaixo do ideal.
+A-d3c88e,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-ccb686,56,high,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-ccb686,56,high,poor_support_experience,18,30.0,Experiencia de suporte abaixo do ideal.
+A-ccb686,56,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-118f1c,54,medium,usage_stale,18,88,Conta com recencia de uso ruim.
+A-118f1c,54,medium,poor_support_experience,18,141.0,Experiencia de suporte abaixo do ideal.
+A-118f1c,54,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-0e966d,28,low,high_escalation_load,10,0.3333333333333333,Volume elevado de escalacoes.
+A-0e966d,28,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-b9f5b1,58,high,recent_usage_drop,22,1.0,Queda relevante de uso nos ultimos 30 dias.
+A-b9f5b1,58,high,usage_stale,18,33,Conta com recencia de uso ruim.
+A-b9f5b1,58,high,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-8ae3fc,33,medium,high_error_rate,15,0.13636363636363635,Taxa de erro elevada no uso recente.
+A-8ae3fc,33,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-55f257,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-d26ab4,78,critical,recent_usage_drop,22,0.6764705882352942,Queda relevante de uso nos ultimos 30 dias.
+A-d26ab4,78,critical,recent_downgrade,20,1,Historico comercial recente indica downgrade.
+A-d26ab4,78,critical,poor_support_experience,18,110.0,Experiencia de suporte abaixo do ideal.
+A-d26ab4,78,critical,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-712533,18,low,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.
+A-781cc0,36,medium,poor_support_experience,18,106.0,Experiencia de suporte abaixo do ideal.
+A-781cc0,36,medium,trial_fragility,8,True,Conta em trial ou com fragilidade de conversao.

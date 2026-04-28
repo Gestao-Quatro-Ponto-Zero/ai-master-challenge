@@ -1,0 +1,501 @@
+account_id,health_score,risk_level,mrr_at_risk,primary_driver,secondary_driver,recommended_action
+A-2e4581,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-43a9e3,25,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-0a282f,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-1f0ac7,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ce550d,55,high,25355.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-1b9609,58,high,16614.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-a0ca4e,28,low,0.0,high_escalation_load,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e5d6ab,73,high,12383.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-7dacce,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-10b8da,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-592832,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d40bf7,58,high,43247.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-6c093d,43,medium,0.0,high_error_rate,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-462d45,60,high,18752.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-956988,100,critical,29407.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-ac14bb,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-463db0,60,high,13266.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-ce66f8,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c4ea60,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-832ec2,50,medium,0.0,recent_usage_drop,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-684255,55,high,10864.0,recent_downgrade,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-c42f1f,48,medium,0.0,recent_downgrade,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4e44e8,68,high,20531.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-30b4ca,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9f2731,34,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-32fb14,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-00cac8,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-35083d,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-eb7fac,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b20d99,46,medium,0.0,usage_stale,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-396e5f,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-45ce7a,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-08e34e,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-8145a0,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-bad8c1,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-44dc83,26,low,0.0,usage_stale,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-f446b6,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-a45270,71,high,19984.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-854864,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-1b7577,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-05f0e5,25,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-9077b0,48,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7f8241,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2bc93d,50,medium,0.0,recent_usage_drop,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f3ff05,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2d4502,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-6a4e2d,40,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-eb7c38,60,high,17144.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-c37601,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-3b5cd1,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b2225d,85,critical,19088.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-94f8c9,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-02fac6,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-c1dfe1,48,medium,0.0,recent_downgrade,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-32728c,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-4c38bc,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-1b707d,65,high,9180.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-6f8ad2,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4d1e75,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9ee962,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-378b99,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-94d3da,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e351e1,24,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-9badbd,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7e0a10,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-118d55,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-526d93,58,high,30644.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-f92792,63,high,18807.0,recent_downgrade,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-84ebe4,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-5b4ebb,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2922b6,25,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-9b9fe9,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-a8b49c,58,high,11567.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-9174e0,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-a1bbb6,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-c45b23,24,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-02cd81,43,medium,0.0,high_error_rate,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ee42db,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-432483,73,high,22941.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-9208f0,46,medium,0.0,recent_usage_drop,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-98a59a,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-fe79a5,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-726cfa,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-c43359,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-271f46,43,medium,0.0,high_error_rate,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-157070,48,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-40a557,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-66224b,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-91e948,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-104f1a,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7988d1,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-faa28c,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f25509,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-3a7284,48,medium,0.0,recent_downgrade,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-3a5ad8,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-65a46c,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-8b25f2,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-fabe19,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-adc1f3,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-503d5a,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-fd7ad3,76,critical,904.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-186a44,78,critical,20609.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-e888d1,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-69fad4,36,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9289f6,58,high,12868.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-f19409,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-22f2df,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-039727,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2e3bad,58,high,41724.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-484819,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-425e76,38,medium,0.0,poor_support_experience,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e83938,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-ad296b,50,medium,0.0,recent_usage_drop,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e51ec7,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0aaf6e,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e61e98,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-92a333,52,medium,0.0,recent_usage_drop,recent_downgrade,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-95b24a,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-42e5e1,85,critical,4936.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-7d514c,55,high,15717.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-65aeb5,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e2cd1b,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-180abf,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f17767,48,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-5a184f,60,high,19999.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-7df7a7,63,high,26568.0,recent_downgrade,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-1ac5e0,55,high,18249.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-52dd88,76,critical,16592.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-bece89,25,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-029f69,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-5c046d,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-fb186e,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ae052e,74,high,3822.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-9f9299,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-96e141,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-117171,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-313be3,55,high,19006.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-671f31,60,high,30385.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-bbc346,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c16101,40,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-50f3f7,75,critical,44077.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-7da956,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-019782,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-df10db,61,high,11464.0,poor_support_experience,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-3932db,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4f18f0,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4c6f11,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-8ae05d,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b78bf8,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-eafc6e,76,critical,16229.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-37f969,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-10b8f2,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-439b2f,13,low,0.0,reactivation_risk,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-544d0a,48,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ba6516,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-712426,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-038089,46,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-afa505,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d5a319,48,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f97b9a,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-2f6a32,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-856b1e,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-17939a,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-d27f50,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e36807,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-ff79f2,76,critical,23408.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-5b1bcd,55,high,131911.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-71615e,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-794a0b,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-86902e,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0532a9,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9779ad,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f45426,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c1e51e,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-fa3095,58,high,69230.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-ad64c6,58,high,14120.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-39b19f,56,high,11902.0,recent_downgrade,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-56962b,58,high,54605.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-e60f9d,74,high,50095.0,recent_downgrade,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-88c6ca,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-158f4e,58,high,42700.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-5b051a,18,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-296d7c,69,high,1989.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-1619f8,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-a1b80b,63,high,34589.0,recent_downgrade,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-139c3b,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-702032,43,medium,0.0,usage_stale,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7a0d69,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-22d9d2,67,high,14336.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-b9eed8,40,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-dfbd31,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-8e47ca,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4437e4,63,high,17831.0,recent_downgrade,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-779e4e,45,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-53f4e3,20,low,0.0,reactivation_risk,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-692f18,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-13466a,28,low,0.0,high_escalation_load,reactivation_risk,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-1986ca,58,high,27661.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-0cc442,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c608c8,70,high,7325.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-3be56b,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-354f12,56,high,8889.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-68f37c,50,medium,0.0,recent_usage_drop,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-aa9511,56,high,55995.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-af0cd2,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-bd4513,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-c222ab,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-34d880,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-508199,76,critical,8436.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-f03140,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-410e86,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-fa2041,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-de58ca,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-05d3b3,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-249769,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e43bf7,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-eb2fdc,50,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e1462e,88,critical,12030.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-cab532,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9123ac,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-6e08f3,70,high,18190.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-d922bf,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-8ed5dd,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7c6b6b,39,medium,0.0,poor_support_experience,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-3c1a3f,60,high,11192.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-b48f73,58,high,28320.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-76fa4d,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b2af2e,66,high,3112.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-9bfc9f,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4ae22a,21,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-fda07f,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-de24d5,58,high,17554.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-977ca0,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ab438f,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e89151,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-40906c,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-81edc3,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-328bd0,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b3fe05,73,high,24102.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-09540c,71,high,22445.0,recent_downgrade,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-e693b6,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-2446e3,85,critical,24138.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-241e75,26,low,0.0,recent_downgrade,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-922109,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ff3c73,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-8b0451,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-331424,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-51ec1b,86,critical,8567.0,recent_downgrade,usage_stale,"CS + Revenue: abordagem comercial imediata para revisar plano, renovacao e novo risco de downgrade."
+A-bcf664,65,high,11340.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-90a8c8,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-86cdb4,51,medium,0.0,recent_usage_drop,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4bfa33,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-dbc825,51,medium,0.0,poor_support_experience,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c70870,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7c4956,21,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-0651a4,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-3ce5b8,55,high,16650.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-bd4708,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-993085,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-92a3af,70,high,34538.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-151c9a,45,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-474ad4,70,high,10533.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-4ef964,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-fd9422,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0baac2,28,low,0.0,usage_stale,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-bb1486,40,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-560d27,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0b0d6d,25,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-2789e3,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b07346,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-902ef7,54,medium,0.0,usage_stale,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-20736a,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e4bf56,52,medium,0.0,recent_usage_drop,recent_downgrade,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-cea1f0,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ef84cf,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d49cc5,47,medium,0.0,recent_usage_drop,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-67be94,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-4e960a,75,critical,23942.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-c37cab,75,critical,9931.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-533452,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-443b7c,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-1f7acb,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f51f16,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-5a3eb9,60,high,19411.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-5f2961,68,high,10299.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-417d2f,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e98302,55,high,9725.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-8bde0c,55,high,32385.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-bcf87c,93,critical,13611.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-54ecc2,60,high,16168.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-625d0b,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-fce879,78,critical,6797.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-b07b56,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-6da850,56,high,16534.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-342303,51,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e7a1e2,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-f1f639,16,low,0.0,reactivation_risk,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-a865bd,47,medium,0.0,recent_usage_drop,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4e631b,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7f6b86,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-8adedc,51,medium,0.0,poor_support_experience,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2edab2,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-149a69,28,low,0.0,usage_stale,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-a6d261,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-443f6f,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-202b67,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-00bed1,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-ffc04f,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-65c341,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-dcc2f0,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-ced9aa,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-3d957b,28,low,0.0,usage_stale,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-89ee83,25,low,0.0,high_error_rate,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-883b7d,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-dcc3f1,60,high,12747.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-c62e55,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e4144b,51,medium,0.0,poor_support_experience,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e40f45,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-96215d,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2b9d3e,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b7724f,16,low,0.0,reactivation_risk,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-310452,58,high,11003.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-eb1312,50,medium,0.0,recent_usage_drop,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-df1e44,56,high,10719.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-6a7c9d,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-cbd1a3,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-a8d89d,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-600734,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-86fc1d,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-78f02b,50,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-acb7f7,60,high,32574.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-712f1c,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-3793ee,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9a532a,54,medium,0.0,usage_stale,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-2ebb4b,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-6843f2,78,critical,16520.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-c9bb3e,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4814a3,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b7b7b7,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-ccc747,36,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-bb3bd4,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-09316c,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-96bbc6,58,high,30426.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-bc4d48,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-b30291,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-cdf020,68,high,9771.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-e6afc1,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e3bd71,60,high,35461.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-b179bf,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-098560,28,low,0.0,high_escalation_load,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-82861f,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-94c3cd,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-a33200,32,medium,0.0,recent_usage_drop,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-034368,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-b54c01,32,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d82ef9,60,high,13320.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-bb2f49,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-1f559b,96,critical,10350.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-5a215a,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-3f9cc0,48,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f9cc74,73,high,14550.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-ed510f,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-5c9849,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-a7bd4b,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-d4ac0e,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-ffdfd5,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-0dbdc6,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7cfe77,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-1f0636,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-40de06,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-cb5333,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-309e54,75,critical,26932.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-6e7827,65,high,5894.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-50bb9f,20,low,0.0,reactivation_risk,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-5fe118,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-5247b3,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-f44180,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-c16cf7,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d42431,60,high,20742.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-6965e1,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0354fe,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-0a62f5,50,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-f5641b,60,high,32951.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-b44e3e,58,high,35561.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-3b37d9,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-54d94a,48,medium,0.0,recent_downgrade,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7f29a7,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-089363,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-524364,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-855a48,78,critical,30376.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-756192,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-49b828,50,medium,0.0,recent_usage_drop,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c7ffc2,51,medium,0.0,poor_support_experience,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-751c58,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-72799b,63,high,16935.0,recent_downgrade,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-812c5b,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-69b156,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-075038,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-940b8b,56,high,9640.0,recent_downgrade,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-2d1036,40,medium,0.0,recent_downgrade,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0f6450,58,high,23800.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-9affe6,28,low,0.0,poor_support_experience,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-80eeb6,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d4e0d4,52,medium,0.0,recent_usage_drop,recent_downgrade,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c7e58b,58,high,5384.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-016043,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-bbe56f,58,high,6025.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-7c5768,32,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-751bd4,30,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4e0e85,58,high,4544.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-ad3abd,50,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e19ff6,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7920cc,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-5a92e7,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-fdfc91,58,high,19191.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-1e50e0,28,low,0.0,high_escalation_load,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-1e1b80,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-659280,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-f6b2fb,56,high,22232.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-cb6cc6,14,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-d62e02,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d535f6,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-39868b,50,medium,0.0,recent_usage_drop,reactivation_risk,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-3cc791,86,critical,8522.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-337bc1,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-58b9ff,66,high,22244.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-bf7919,48,medium,0.0,recent_usage_drop,usage_stale,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-1d5444,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0f3e88,51,medium,0.0,poor_support_experience,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7641d3,48,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-cd458b,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c16b88,76,critical,20338.0,recent_usage_drop,usage_stale,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-59f724,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-87aa7b,48,medium,0.0,recent_downgrade,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-1e6fc3,26,low,0.0,usage_stale,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-39ddf4,47,medium,0.0,recent_usage_drop,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-34ea2f,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-716841,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-558c72,65,high,6783.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-b11cd0,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-cc1d8d,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-7f4db3,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-db5e9e,56,high,5868.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-cc102e,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-82d8a6,60,high,27626.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-dec005,58,high,19998.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-5790f4,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-7c83a1,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-297a2d,58,high,14373.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-4c56c9,55,high,16256.0,recent_usage_drop,high_error_rate,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-cbbe12,56,high,12321.0,recent_downgrade,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-4a267b,78,critical,22458.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-bcbe98,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-427b69,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0be015,26,low,0.0,usage_stale,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-054577,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-bc87bc,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-0f7d77,16,low,0.0,reactivation_risk,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e7beab,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-a09355,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-31ab9a,68,high,15802.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-0158bb,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-f19b24,64,high,2523.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-798a3f,58,high,13563.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-42b791,10,low,0.0,healthy,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-068fc6,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-6f50ae,70,high,26608.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-a2485e,78,critical,8775.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-bb1eaa,70,high,10381.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-cc98bc,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-d77f4c,53,medium,0.0,recent_downgrade,high_error_rate,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ccabf0,30,medium,0.0,recent_downgrade,healthy,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-700ade,36,medium,0.0,usage_stale,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-4a4c2d,75,critical,32940.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-b7ef83,28,low,0.0,reactivation_risk,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-e08cd3,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-19b2c8,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-970c97,63,high,14868.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-6dee43,58,high,20075.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-5ed98d,40,medium,0.0,recent_usage_drop,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-c58f49,50,medium,0.0,recent_usage_drop,high_escalation_load,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-9c18c4,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-cc8c8f,78,critical,15600.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-5f7781,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-e1b9cd,60,high,26362.0,recent_usage_drop,recent_downgrade,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-ac85cd,80,critical,37663.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-d792a6,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-ac9111,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-18793f,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-9f0b68,38,medium,0.0,recent_downgrade,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-d3c88e,58,high,26183.0,recent_usage_drop,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-ccb686,56,high,21351.0,recent_downgrade,poor_support_experience,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-118f1c,54,medium,0.0,usage_stale,poor_support_experience,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-0e966d,28,low,0.0,high_escalation_load,trial_fragility,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-b9f5b1,58,high,7072.0,recent_usage_drop,usage_stale,"CS: priorizar contato nesta semana e revisar adocao, erros e uso recente."
+A-8ae3fc,33,medium,0.0,high_error_rate,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.
+A-55f257,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-d26ab4,78,critical,15731.0,recent_usage_drop,recent_downgrade,CS: abrir playbook de retencao nas proximas 24h com contato humano e revisao de adocao.
+A-712533,18,low,0.0,trial_fragility,healthy,Manter acompanhamento padrao e avaliar potencial de expansao.
+A-781cc0,36,medium,0.0,poor_support_experience,trial_fragility,Automacao de nurture e monitoramento quinzenal com foco em ativacao.

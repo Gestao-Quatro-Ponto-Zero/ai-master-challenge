@@ -1,0 +1,316 @@
+{
+  "roc_auc": 0.4835226980617963,
+  "average_precision": 0.07084103129833519,
+  "best_model_name": "logistic_regression",
+  "best_selection_score": 0.06802133176843854,
+  "best_threshold": 0.51,
+  "threshold_strategy": {
+    "source": "out_of_fold_train_val_grouped_by_account",
+    "optimized_metric": "f1",
+    "cv_folds": 5
+  },
+  "oof_metrics": {
+    "accuracy": 0.6337893732103086,
+    "precision": 0.0819234194122885,
+    "recall": 0.4339622641509434,
+    "f1": 0.13782771535580524,
+    "roc_auc": 0.5143215336384646,
+    "pr_auc": 0.07371835413379366,
+    "threshold": 0.51,
+    "confusion_matrix": [
+      [
+        1900,
+        1031
+      ],
+      [
+        120,
+        92
+      ]
+    ]
+  },
+  "random_validation_metrics": {
+    "accuracy": 0.6543837357052097,
+    "precision": 0.053061224489795916,
+    "recall": 0.24528301886792453,
+    "f1": 0.087248322147651,
+    "roc_auc": 0.4835226980617963,
+    "pr_auc": 0.07084103129833519,
+    "threshold": 0.51,
+    "confusion_matrix": [
+      [
+        502,
+        232
+      ],
+      [
+        40,
+        13
+      ]
+    ],
+    "sample_size": 787,
+    "train_sample_size": 3143
+  },
+  "temporal_validation_metrics": {
+    "accuracy": 0.6850108616944244,
+    "precision": 0.07712082262210797,
+    "recall": 0.2830188679245283,
+    "f1": 0.12121212121212122,
+    "roc_auc": 0.49761006289308174,
+    "pr_auc": 0.09210861574542323,
+    "threshold": 0.63,
+    "confusion_matrix": [
+      [
+        916,
+        359
+      ],
+      [
+        76,
+        30
+      ]
+    ],
+    "sample_size": 1381,
+    "train_sample_size": 2549,
+    "train_end_date": "2024-08-10",
+    "validation_start_date": "2024-08-11"
+  },
+  "validation_gap_summary": {
+    "relevant_gap": false,
+    "deltas": {
+      "roc_auc": 0.01408736483128542,
+      "pr_auc": 0.02126758444708804,
+      "precision": 0.02405959813231205,
+      "recall": 0.037735849056603765,
+      "f1": 0.03396379906447021
+    },
+    "note": "Random and temporal validation are broadly aligned."
+  },
+  "target_definition": "target=1 when a non-reactivation churn happens within 30 days after snapshot_date",
+  "training_dataset_strategy": "multi_snapshot_per_account_temporal_horizon",
+  "dataset_rows": 3930,
+  "dataset_columns": 83,
+  "positive_rate": 0.06743002544529263,
+  "leakage_report": {
+    "post_churn_usage_rate_in_raw": 0.2762957762957763,
+    "post_churn_ticket_rate_in_raw": 0.26874536005939126,
+    "forbidden_feature_columns_absent": true,
+    "features_within_snapshot_boundary": true,
+    "target_uses_only_future_churn": true,
+    "multiple_snapshots_per_account": true
+  },
+  "current_scoring": {
+    "rows": 500,
+    "scored_at": "2025-01-01T00:00:00",
+    "output_columns": [
+      "account_id",
+      "current_churn_probability",
+      "current_decision_threshold",
+      "current_predicted_churn_30d",
+      "current_risk_band",
+      "scored_at",
+      "current_primary_model_driver",
+      "current_primary_model_driver_label",
+      "current_primary_model_driver_value",
+      "current_primary_model_driver_baseline",
+      "current_primary_model_driver_impact",
+      "current_primary_model_driver_explanation",
+      "current_secondary_model_driver",
+      "current_secondary_model_driver_label",
+      "current_secondary_model_driver_value",
+      "current_secondary_model_driver_baseline",
+      "current_secondary_model_driver_impact",
+      "current_secondary_model_driver_explanation",
+      "protective_feature",
+      "protective_feature_label",
+      "protective_feature_value",
+      "protective_baseline_value",
+      "protective_local_impact",
+      "protective_explanation_text",
+      "current_model_driver_summary",
+      "current_model_explanation"
+    ]
+  },
+  "explainability_strategy": {
+    "global": "aggregated raw feature importance + average local impact on current portfolio",
+    "local": "per-account probability impact after replacing each feature with the training baseline profile",
+    "dependencies": "no additional heavy dependencies"
+  },
+  "top_global_drivers": [
+    {
+      "feature": "country",
+      "importance": 1.3980474996040202,
+      "transformed_features": 7,
+      "normalized_importance": 0.0901040527238853,
+      "feature_label": "País",
+      "avg_signed_impact": 0.007823163190650823,
+      "avg_abs_impact": 0.022732376063655253,
+      "median_abs_impact": 0.0,
+      "accounts_raising_risk": 468,
+      "accounts_reducing_risk": 32,
+      "sample_size": 500,
+      "raising_share": 0.936,
+      "portfolio_direction": "elevates_risk",
+      "impact_statement": "País tende a elevar risco no portfólio; ao voltar ao perfil típico, a probabilidade mudaria em média 0.8 p.p."
+    },
+    {
+      "feature": "monthly_subscriptions",
+      "importance": 0.7801563938904488,
+      "transformed_features": 1,
+      "normalized_importance": 0.05028101896959259,
+      "feature_label": "Monthly subscriptions",
+      "avg_signed_impact": 0.11443519210778473,
+      "avg_abs_impact": 0.13200181417599904,
+      "median_abs_impact": 0.12036761742087693,
+      "accounts_raising_risk": 441,
+      "accounts_reducing_risk": 59,
+      "sample_size": 500,
+      "raising_share": 0.882,
+      "portfolio_direction": "elevates_risk",
+      "impact_statement": "Monthly subscriptions tende a elevar risco no portfólio; ao voltar ao perfil típico, a probabilidade mudaria em média 11.4 p.p."
+    },
+    {
+      "feature": "account_age_days",
+      "importance": 0.5701162782102949,
+      "transformed_features": 1,
+      "normalized_importance": 0.036743949833718474,
+      "feature_label": "Account age days",
+      "avg_signed_impact": -0.0401598429260036,
+      "avg_abs_impact": 0.09579081337794561,
+      "median_abs_impact": 0.08724083050236364,
+      "accounts_raising_risk": 214,
+      "accounts_reducing_risk": 286,
+      "sample_size": 500,
+      "raising_share": 0.428,
+      "portfolio_direction": "reduces_risk",
+      "impact_statement": "Account age days atua mais como fator protetivo; ao perder esse perfil, a probabilidade mudaria em média 4.0 p.p."
+    },
+    {
+      "feature": "urgent_tickets_30d",
+      "importance": 0.5191400793672357,
+      "transformed_features": 1,
+      "normalized_importance": 0.03345853777903563,
+      "feature_label": "Urgent tickets 30d",
+      "avg_signed_impact": 0.005744513694769065,
+      "avg_abs_impact": 0.005744513694769065,
+      "median_abs_impact": 0.0,
+      "accounts_raising_risk": 500,
+      "accounts_reducing_risk": 0,
+      "sample_size": 500,
+      "raising_share": 1.0,
+      "portfolio_direction": "elevates_risk",
+      "impact_statement": "Urgent tickets 30d tende a elevar risco no portfólio; ao voltar ao perfil típico, a probabilidade mudaria em média 0.6 p.p."
+    },
+    {
+      "feature": "annual_subscriptions",
+      "importance": 0.5062949246140599,
+      "transformed_features": 1,
+      "normalized_importance": 0.032630668553237194,
+      "feature_label": "Annual subscriptions",
+      "avg_signed_impact": 0.06800787916738903,
+      "avg_abs_impact": 0.0811998203964462,
+      "median_abs_impact": 0.07630691919574434,
+      "accounts_raising_risk": 435,
+      "accounts_reducing_risk": 65,
+      "sample_size": 500,
+      "raising_share": 0.87,
+      "portfolio_direction": "elevates_risk",
+      "impact_statement": "Annual subscriptions tende a elevar risco no portfólio; ao voltar ao perfil típico, a probabilidade mudaria em média 6.8 p.p."
+    }
+  ],
+  "comparison": [
+    {
+      "model": "logistic_regression",
+      "cv_accuracy_mean": 0.6178472263410442,
+      "cv_precision_mean": 0.08011454382884382,
+      "cv_recall_mean": 0.44374307862679957,
+      "cv_f1_mean": 0.13552991629114,
+      "cv_roc_auc_mean": 0.514078492042078,
+      "cv_pr_auc_mean": 0.08136542942167999,
+      "oof_f1": 0.13782771535580524,
+      "oof_pr_auc": 0.07371835413379366,
+      "train_val_f1": 0.19116582186821143,
+      "threshold": 0.51,
+      "overfit_gap_f1": 0.0533381065124062,
+      "underfit_flag": true,
+      "selection_score": 0.06802133176843854
+    },
+    {
+      "model": "random_forest",
+      "cv_accuracy_mean": 0.9306390000769917,
+      "cv_precision_mean": 0.0,
+      "cv_recall_mean": 0.0,
+      "cv_f1_mean": 0.0,
+      "cv_roc_auc_mean": 0.5056854145459606,
+      "cv_pr_auc_mean": 0.06812314773639631,
+      "oof_f1": 0.12974296205630356,
+      "oof_pr_auc": 0.06527899675560848,
+      "train_val_f1": 0.16536661466458658,
+      "threshold": 0.25,
+      "overfit_gap_f1": 0.03562365260828301,
+      "underfit_flag": true,
+      "selection_score": 0.06000296437146398
+    },
+    {
+      "model": "xgboost",
+      "cv_accuracy_mean": 0.9325488154750049,
+      "cv_precision_mean": 0.0,
+      "cv_recall_mean": 0.0,
+      "cv_f1_mean": 0.0,
+      "cv_roc_auc_mean": 0.5043423326101341,
+      "cv_pr_auc_mean": 0.07365467137239351,
+      "oof_f1": 0.07509881422924901,
+      "oof_pr_auc": 0.06775663717814852,
+      "train_val_f1": 0.6217616580310881,
+      "threshold": 0.12,
+      "overfit_gap_f1": 0.546662843801839,
+      "underfit_flag": true,
+      "selection_score": -0.03774220935596005
+    }
+  ],
+  "train_val_metrics": {
+    "accuracy": 0.6446070633153038,
+    "precision": 0.11291702309666382,
+    "recall": 0.6226415094339622,
+    "f1": 0.19116582186821143,
+    "roc_auc": 0.6812778818485545,
+    "pr_auc": 0.12234936624564825,
+    "threshold": 0.51,
+    "confusion_matrix": [
+      [
+        1894,
+        1037
+      ],
+      [
+        80,
+        132
+      ]
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.6543837357052097,
+    "precision": 0.053061224489795916,
+    "recall": 0.24528301886792453,
+    "f1": 0.087248322147651,
+    "roc_auc": 0.4835226980617963,
+    "pr_auc": 0.07084103129833519,
+    "threshold": 0.51,
+    "confusion_matrix": [
+      [
+        502,
+        232
+      ],
+      [
+        40,
+        13
+      ]
+    ],
+    "sample_size": 787,
+    "train_sample_size": 3143
+  },
+  "robustness": {
+    "train_val_vs_oof_f1_gap": 0.0533381065124062,
+    "oof_vs_test_f1_gap": 0.05057939320815423,
+    "train_val_vs_test_f1_gap": 0.10391749972056043,
+    "oof_vs_test_pr_auc_gap": 0.002877322835458468,
+    "train_val_vs_test_pr_auc_gap": 0.051508334947313064,
+    "train_val_vs_test_roc_auc_gap": 0.19775518378675822
+  }
+}
