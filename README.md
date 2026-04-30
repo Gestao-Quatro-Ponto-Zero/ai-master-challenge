@@ -8,15 +8,15 @@ O G4 está construindo um novo tipo de profissional: o **AI Master** — capaz d
 
 ## Descrição
 
-Este repositório contém os desafios do processo seletivo para AI Master no G4 Educação. Os desafios cobrem quatro áreas de negócio (dados, operações, vendas e marketing) e avaliam como candidatos usam IA como ferramenta estratégica — não apenas para executar, mas para pensar, diagnosticar e entregar soluções funcionais.
+Repositório do processo seletivo para AI Master no G4 Educação. Os desafios cobrem quatro áreas de negócio (dados, operações, vendas e marketing) e avaliam como candidatos usam IA como ferramenta estratégica — não apenas para executar, mas para pensar, diagnosticar e entregar soluções funcionais.
 
-A submissão é feita via Pull Request, e o processo de uso de IA precisa ser documentado. Entregar algo parecido com o output direto de um modelo não é suficiente — o baseline já foi gerado internamente com múltiplos modelos.
+A submissão é feita via Pull Request e o processo de uso de IA precisa ser documentado. Entregar algo parecido com o output direto de um modelo não é suficiente — o baseline já foi gerado internamente com múltiplos modelos.
 
 ---
 
 ## Tech Stack
 
-Os challenges não impõem tecnologia. Exemplos aceitos por challenge:
+Os challenges não impõem tecnologia. Ferramentas comuns por challenge:
 
 | Challenge | Ferramentas prováveis |
 |-----------|----------------------|
@@ -25,11 +25,24 @@ Os challenges não impõem tecnologia. Exemplos aceitos por challenge:
 | 003 — Lead Scorer | Qualquer stack funcional (React, Streamlit, etc.) |
 | 004 — Social Media | Python/R, notebooks, visualização |
 
+A submissão de referência (`submissions/luis-braghin`) usa:
+
+| Tecnologia | Uso |
+|-----------|-----|
+| React 18 + TypeScript | Framework UI |
+| Vite 5 | Build tool |
+| Tailwind CSS 3 + shadcn/ui | Design system |
+| Recharts | Gráficos (bar, pie, scatter, line) |
+| TanStack Query | Gerenciamento de estado/dados |
+| React Router 6 | Roteamento |
+| Lucide React | Ícones |
+| Vitest + Playwright | Testes |
+
 ---
 
 ## Como instalar e rodar
 
-Este repositório é o ponto de entrada para candidatos. Não há aplicação central a instalar — cada submissão tem seu próprio setup.
+Este repositório é o ponto de entrada para candidatos. Não há aplicação central — cada submissão tem seu próprio setup.
 
 ### Para participar
 
@@ -45,7 +58,7 @@ git checkout -b submission/seu-nome
 # 4. Crie sua pasta de submissão
 mkdir -p submissions/seu-nome
 
-# 5. Desenvolva sua solução e adicione ao process log
+# 5. Desenvolva sua solução e documente o process log
 # 6. Commit e push
 git push origin submission/seu-nome
 
@@ -54,6 +67,21 @@ git push origin submission/seu-nome
 ```
 
 **Requisitos:** Git, conta no GitHub, e qualquer runtime exigido pela sua solução.
+
+### Rodar a solução de referência (Challenge 003)
+
+**Opção 1 — Deploy:**
+Acesse [g4-lead-scorer.vercel.app](https://g4-lead-scorer.vercel.app/)
+
+**Opção 2 — Local:**
+```bash
+cd submissions/luis-braghin/solution
+npm install
+npm run dev
+# Abrir http://localhost:8080
+```
+
+**Requisitos:** Node.js 18+
 
 ---
 
@@ -70,12 +98,13 @@ git push origin submission/seu-nome
 
 ---
 
-## O que é avaliado
+## Principais funcionalidades
 
-- Entendimento do problema antes de executar
-- Uso inteligente de IA (não copy-paste)
-- Solução que resolve o problema de verdade
-- Documentação do processo de uso de IA (obrigatória — sem ela a submissão é desclassificada)
+- **4 challenges independentes** cobrindo dados, operações, vendas e marketing
+- **Submissão via Pull Request** com estrutura padronizada
+- **Process log obrigatório** — documenta como a IA foi usada (sem ele, a submissão é desclassificada)
+- **Template de submissão** com seções obrigatórias (executive summary, abordagem, resultados, limitações)
+- **Solução de referência** (Challenge 003) — dashboard interativo G4 Deal Intelligence com scoring multidimensional de 2.089 deals, 6 visões (vendedor, manager, executivo, analytics, deal detail, premissas) e deploy funcional
 
 ---
 
@@ -96,11 +125,20 @@ ai-master-challenge/
 │       ├── process-log/             ← Evidências de uso de IA
 │       └── docs/                    ← Documentação adicional
 ├── templates/
-│   └── submission-template.md       ← Template obrigatório para README da submissão
+│   └── submission-template.md       ← Template obrigatório para o README da submissão
 ├── CONTRIBUTING.md                  ← Instruções de submissão via PR
 ├── submission-guide.md              ← O que incluir e como estruturar
 └── README.md
 ```
+
+---
+
+## O que é avaliado
+
+- Entendimento do problema antes de executar
+- Uso inteligente de IA (não copy-paste)
+- Solução que resolve o problema de verdade
+- Documentação do processo de uso de IA (obrigatória — sem ela a submissão é desclassificada)
 
 ---
 
