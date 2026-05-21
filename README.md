@@ -35,8 +35,10 @@ A submissão de referência (`submissions/luis-braghin`) usa:
 | Recharts | Gráficos (bar, pie, scatter, line) |
 | TanStack Query | Gerenciamento de estado/dados |
 | React Router 6 | Roteamento |
+| React Hook Form + Zod | Formulários e validação |
+| Radix UI | Primitivos de componentes |
 | Lucide React | Ícones |
-| Vitest + Playwright | Testes |
+| Vitest + Playwright | Testes unitários e E2E |
 
 ---
 
@@ -77,8 +79,10 @@ Acesse [g4-lead-scorer.vercel.app](https://g4-lead-scorer.vercel.app/)
 ```bash
 cd submissions/luis-braghin/solution
 npm install
-npm run dev
-# Abrir http://localhost:8080
+npm run dev          # http://localhost:8080
+npm run build        # Build de produção
+npm run test         # Rodar testes (Vitest)
+npm run lint         # Checar ESLint
 ```
 
 **Requisitos:** Node.js 18+
@@ -104,7 +108,8 @@ npm run dev
 - **Submissão via Pull Request** com estrutura padronizada
 - **Process log obrigatório** — documenta como a IA foi usada (sem ele, a submissão é desclassificada)
 - **Template de submissão** com seções obrigatórias (executive summary, abordagem, resultados, limitações)
-- **Solução de referência** (Challenge 003) — dashboard interativo G4 Deal Intelligence com scoring multidimensional de 2.089 deals, 6 visões (vendedor, manager, executivo, analytics, deal detail, premissas) e deploy funcional
+- **Solução de referência** (Challenge 003) — dashboard interativo G4 Deal Intelligence com scoring multidimensional de 2.089 deals, 6 visões (vendedor, manager, executivo, analytics, deal detail, premissas) e deploy funcional em [g4-lead-scorer.vercel.app](https://g4-lead-scorer.vercel.app/)
+- **Licença MIT** — código aberto para fins educacionais e de processo seletivo
 
 ---
 
@@ -128,6 +133,7 @@ ai-master-challenge/
 │   └── submission-template.md       ← Template obrigatório para o README da submissão
 ├── CONTRIBUTING.md                  ← Instruções de submissão via PR
 ├── submission-guide.md              ← O que incluir e como estruturar
+├── LICENSE                          ← MIT License
 └── README.md
 ```
 
