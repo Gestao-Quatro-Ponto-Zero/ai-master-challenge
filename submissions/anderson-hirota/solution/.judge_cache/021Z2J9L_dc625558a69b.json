@@ -1,0 +1,16 @@
+{
+  "action": "Send GTK 500 a final close-push now\u2014only 10 days before this 161-day deal ghost-flips at Rundofase.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 161,
+    "score": 58.8,
+    "must_act_reason": "time_critical",
+    "product": "GTK 500",
+    "account": "Rundofase",
+    "sector": "technolgy",
+    "account_revenue": 1008.06,
+    "other_open": 7,
+    "rep_close_rate_pct": 57,
+    "days_remaining": 10
+  }
+}

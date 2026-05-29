@@ -1,0 +1,16 @@
+{
+  "action": "Lock the Sonron GTX Plus Pro deal now\u2014only 4 days before it ghost-flips after 167d engaging.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 167,
+    "score": 63.4,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Pro",
+    "account": "Sonron",
+    "sector": "telecommunications",
+    "account_revenue": 1699.85,
+    "other_open": 5,
+    "rep_close_rate_pct": 64,
+    "days_remaining": 4
+  }
+}

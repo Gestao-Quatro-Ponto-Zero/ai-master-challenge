@@ -1,0 +1,18 @@
+{
+  "action": "You call Sonron's economic buyer now\u2014Vicki can't unlock the exec sponsor across 5 open deals, and you have 4 days before ghost-flip.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 167,
+    "expected_value": 5472.03,
+    "product": "GTX Plus Pro",
+    "account": "Sonron",
+    "sector": "telecommunications",
+    "rep_name": "Vicki Laflamme",
+    "rep_close_rate_pct": 64,
+    "rep_sector_signal": "neutral",
+    "other_open": 5,
+    "days_remaining": 4,
+    "rationale": "5 other open deals at this account \u00b7 only 4d before ghost-flip"
+  }
+}

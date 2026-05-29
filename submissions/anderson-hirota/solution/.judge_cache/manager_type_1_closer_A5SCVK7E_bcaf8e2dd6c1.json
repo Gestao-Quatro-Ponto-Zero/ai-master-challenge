@@ -1,0 +1,18 @@
+{
+  "action": "You lead the Goodsilron close personally\u2014your exec presence and pricing authority unlock the $5,472 deal and its 6 open accounts Corliss can't move alone.",
+  "payload": {
+    "action_type": "type_1_closer",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 121,
+    "expected_value": 5472.03,
+    "product": "GTX Plus Pro",
+    "account": "Goodsilron",
+    "sector": "marketing",
+    "rep_name": "Corliss Cosme",
+    "rep_close_rate_pct": 66,
+    "rep_sector_signal": "neutral",
+    "other_open": 6,
+    "days_remaining": 50,
+    "rationale": "top-value strategic deal ($5,472)"
+  }
+}

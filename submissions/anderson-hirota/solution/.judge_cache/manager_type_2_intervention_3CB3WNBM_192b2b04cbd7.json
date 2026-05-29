@@ -1,0 +1,18 @@
+{
+  "action": "Boris Faz can't crack Kinnamplus in 4 days \u2014 you own the buyer relationship across all 10 open deals there; call the decision-maker now and consolidate.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 167,
+    "expected_value": 549.0,
+    "product": "GTX Basic",
+    "account": "Kinnamplus",
+    "sector": "retail",
+    "rep_name": "Boris Faz",
+    "rep_close_rate_pct": 66,
+    "rep_sector_signal": "neutral",
+    "other_open": 10,
+    "days_remaining": 4,
+    "rationale": "10 other open deals at this account \u00b7 only 4d before ghost-flip"
+  }
+}

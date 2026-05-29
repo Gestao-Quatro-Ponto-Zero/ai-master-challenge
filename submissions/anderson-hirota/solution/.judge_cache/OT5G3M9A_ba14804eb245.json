@@ -1,0 +1,16 @@
+{
+  "action": "Send 9 deals at Treequote into one MG Advanced bundle within 9 days\u2014your 67% close rate clears it before the ghost-flip.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 162,
+    "score": 64.5,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": "Treequote",
+    "sector": "telecommunications",
+    "account_revenue": 5266.09,
+    "other_open": 9,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 9
+  }
+}

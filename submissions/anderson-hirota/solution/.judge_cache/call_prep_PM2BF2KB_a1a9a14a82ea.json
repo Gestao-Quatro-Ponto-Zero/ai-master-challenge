@@ -1,0 +1,20 @@
+{
+  "dossier": "**Account snapshot** \u2014 Xx-holding (finance), engaging GTX Plus Basic 18 days; $1,094 EV at 63% close prob, 8 total open deals here.\n\n**Why it matters today** \u2014 Score 76 clears the quality floor (high-score, must-act). Not time-critical yet (153 days to ghost-flip), so the play is *compounding*: this account holds 7 other open deals worth pursuing in parallel before the window narrows.\n\n**3 discovery questions**\n- With GTX Plus Basic in eval, which other Xx-holding teams or entities drive the remaining 7 open deals \u2014 same buyer or separate budgets?\n- After 18 days engaging, what's the internal decision path and who signs off at a $7.5K-revenue holding?\n- Is GTX Plus Basic the entry point, or are you scoping a holding-wide rollout?\n\n**Positioning angle** \u2014 Account context: 8 concurrent open deals signals a multi-entity buyer, not a one-seat purchase. Anchor on a holding-wide framing to lift deal size beyond the $1,094 single-line EV.\n\n**Likely objection + counter** \u2014 \"We're a small shop ($7.5K revenue) \u2014 Basic is all we need.\" Counter: with 8 active evaluations across the holding, consolidating on one platform now beats stitching together point tools as each entity scales.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 18,
+    "score": 76.2,
+    "close_probability": 0.632,
+    "expected_value": 1094.01,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Basic",
+    "account": "Xx-holding",
+    "sector": "finance",
+    "account_revenue": 7537.24,
+    "rep_close_rate_pct": 62,
+    "rep_sector_signal": "neutral",
+    "other_open": 7,
+    "days_remaining": 153,
+    "recommended_action": "Engage the 7 other open deals at Xx-holding now to compound this 76-score account before its 153-day window."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "draft": "Boris, you're carrying a lot right now \u2014 two time-critical deals plus 13 orphan records that need clearing, and Bluth Company and Kinnamplus are the ones bleeding your attention. Block two hours Tuesday morning to batch-call Bluth and Kinnamplus back-to-back while they're still warm; that $6.5K in must-acts moves faster as one focused push than scattered all week. Lean into your industrial strength \u2014 you're running +12pp over the team there, so trust your instincts on those accounts. I'm taking the orphan cleanup off your plate so you can focus on closing. You've got this.\n\nRocco",
+  "payload": {
+    "rep": "Boris Faz",
+    "manager": "Rocco Neubert",
+    "tc_count": 2,
+    "hs_count": 1,
+    "orphan_count": 13,
+    "top_deals": [
+      "Bluth Company (GTX Plus Basic, $1094)",
+      "Kinnamplus (GTX Basic, $549)"
+    ],
+    "sector_alpha": [
+      "industrial (+12pp)"
+    ],
+    "sector_bleed": [
+      "technology (-28pp)"
+    ],
+    "pipeline_value": 6566.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": "Investigate Xx-holding's 7 open deals alongside this 158-day $7,537 MG Advanced deal before it ghosts in 13 days.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 158,
+    "score": 65.8,
+    "must_act_reason": "both",
+    "product": "MG Advanced",
+    "account": "Xx-holding",
+    "sector": "finance",
+    "account_revenue": 7537.24,
+    "other_open": 7,
+    "rep_close_rate_pct": 58,
+    "days_remaining": 13
+  }
+}

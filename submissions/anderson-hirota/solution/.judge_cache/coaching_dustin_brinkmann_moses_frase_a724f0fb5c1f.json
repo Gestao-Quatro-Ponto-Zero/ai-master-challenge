@@ -1,0 +1,22 @@
+{
+  "draft": "Moses \u2014 five deals on the clock and 20 orphans to clear is a real load, so let's cut through it. Block two hours Tuesday morning to batch-call Genco Pura and Xx-holding; that's $9.5K in must-acts and they won't move themselves. Lean into your telecom edge \u2014 you're +38pp over the team there, so press the accounts that play to it and don't bleed time on marketing deals. I'll take the orphan cleanup off your plate and cover anything that slips. You've got this.\n\n\u2014Dustin",
+  "payload": {
+    "rep": "Moses Frase",
+    "manager": "Dustin Brinkmann",
+    "tc_count": 5,
+    "hs_count": 1,
+    "orphan_count": 20,
+    "top_deals": [
+      "Genco Pura Olive Oil Company (GTX Plus Pro, $5472)",
+      "Xx-holding (MG Advanced, $3387)"
+    ],
+    "sector_alpha": [
+      "telecommunications (+38pp)",
+      "finance (+16pp)"
+    ],
+    "sector_bleed": [
+      "marketing (-15pp)"
+    ],
+    "pipeline_value": 9518.0
+  }
+}

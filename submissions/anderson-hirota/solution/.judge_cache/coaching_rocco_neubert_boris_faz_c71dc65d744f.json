@@ -1,0 +1,23 @@
+{
+  "draft": "Boris \u2014 I see you carrying two time-critical deals plus 13 orphans, and that $6,570 sitting in must-acts is a heavy load to hold alone. Block two hours Tuesday morning to batch-call Sunnamplex and Kinnamplus back-to-back while they're warm \u2014 clear them, then breathe. Lean into your software and medical strength; you're +17pp and +15pp over the team there, so point your sharpest energy at those accounts. I'm taking the orphan cleanup off your plate so you can stay focused on closing. You've got this. \u2014 Rocco",
+  "payload": {
+    "rep": "Boris Faz",
+    "manager": "Rocco Neubert",
+    "tc_count": 2,
+    "hs_count": 1,
+    "orphan_count": 13,
+    "top_deals": [
+      "Sunnamplex (GTX Basic, $549)",
+      "Kinnamplus (GTX Basic, $549)"
+    ],
+    "sector_alpha": [
+      "software (+17pp)",
+      "medical (+15pp)"
+    ],
+    "sector_bleed": [
+      "finance (-26pp)",
+      "entertainment (-22pp)"
+    ],
+    "pipeline_value": 6570.0
+  }
+}

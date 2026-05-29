@@ -1,0 +1,16 @@
+{
+  "action": "Cover the 6 other open deals at Umbrella before this GTXPro deal ghost-flips in 8 days.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 50.2,
+    "must_act_reason": "time_critical",
+    "product": "GTXPro",
+    "account": "Umbrella Corporation",
+    "sector": "finance",
+    "account_revenue": 2022.14,
+    "other_open": 6,
+    "rep_close_rate_pct": 64,
+    "days_remaining": 8
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "action": "You step in because James has 13 other deals at Donquadtech\u2014you call the economic buyer to consolidate them into one master agreement before the 13-day ghost-flip.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 158,
+    "expected_value": 0.0,
+    "product": "GTXPro",
+    "account": "Donquadtech",
+    "sector": "technolgy",
+    "rep_name": "James Ascencio",
+    "rep_close_rate_pct": 66,
+    "rep_sector_signal": "neutral",
+    "other_open": 13,
+    "days_remaining": 13,
+    "rationale": "13 other open deals at this account \u00b7 only 13d before ghost-flip"
+  }
+}

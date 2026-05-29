@@ -1,0 +1,18 @@
+{
+  "action": "Voc\u00ea escala direto pro decisor de Plussunin: 11 deals abertos travam num rep, mas s\u00f3 sua autoridade destrava pre\u00e7o/sponsor \u2014 faltam 7d pro ghost-flip.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 164,
+    "expected_value": 1094.01,
+    "product": "GTX Plus Basic",
+    "account": "Plussunin",
+    "sector": "retail",
+    "rep_name": "Wilburn Farren",
+    "rep_close_rate_pct": 70,
+    "rep_sector_signal": "neutral",
+    "other_open": 11,
+    "days_remaining": 7,
+    "rationale": "11 other open deals at this account \u00b7 only 7d before ghost-flip"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": "Track MG Special's 6 other Hottechi deals to close this within 8 days before the 163-day deal ghost-flips.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 58.2,
+    "must_act_reason": "time_critical",
+    "product": "MG Special",
+    "account": "Hottechi",
+    "sector": "technolgy",
+    "account_revenue": 8170.38,
+    "other_open": 6,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 8
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": "Pull GTX Plus Basic forward this week\u2014only 7 days before ghost-flip, and your 70% close rate plus 11 open Plussunin deals justify the push.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 164,
+    "score": 58.2,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Plussunin",
+    "sector": "retail",
+    "account_revenue": 1419.98,
+    "other_open": 11,
+    "rep_close_rate_pct": 70,
+    "days_remaining": 7
+  }
+}

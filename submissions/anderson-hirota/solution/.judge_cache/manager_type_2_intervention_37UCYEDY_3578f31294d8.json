@@ -1,0 +1,18 @@
+{
+  "action": "You call Bluth's exec sponsor now\u201410 open deals signal account stakes Cassey can't reach; 13 days to ghost-flip.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 158,
+    "expected_value": 1094.01,
+    "product": "GTX Plus Basic",
+    "account": "Bluth Company",
+    "sector": "technolgy",
+    "rep_name": "Cassey Cress",
+    "rep_close_rate_pct": 62,
+    "rep_sector_signal": "neutral",
+    "other_open": 10,
+    "days_remaining": 13,
+    "rationale": "10 other open deals at this account \u00b7 only 13d before ghost-flip"
+  }
+}

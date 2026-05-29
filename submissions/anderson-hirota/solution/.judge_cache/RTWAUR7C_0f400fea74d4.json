@@ -1,0 +1,16 @@
+{
+  "action": "Engage the rep's 6 other open deals at Y-corporation to bundle GTX Plus Pro before the 11-day ghost flip.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 160,
+    "score": 66.2,
+    "must_act_reason": "both",
+    "product": "GTX Plus Pro",
+    "account": "Y-corporation",
+    "sector": "employment",
+    "account_revenue": 2871.35,
+    "other_open": 6,
+    "rep_close_rate_pct": 58,
+    "days_remaining": 11
+  }
+}

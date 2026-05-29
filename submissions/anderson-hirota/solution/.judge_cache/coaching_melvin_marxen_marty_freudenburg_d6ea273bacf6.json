@@ -1,0 +1,22 @@
+{
+  "draft": "Marty, you're carrying a lot right now \u2014 5 time-critical deals plus 20 orphan accounts to clean, with Silis and Ontomedia (both GTX Plus Pro, $5,472 each) sitting at the top. Block 2 hours Tuesday morning to batch-call Silis and Ontomedia back-to-back while they're still warm. Lean into your telecom edge \u2014 you're +29pp over the team there, so push the deals that play to it. You're not alone on this: I'll personally work the orphan cleanup with you so it doesn't eat your selling time. Let's close.\n\nMelvin",
+  "payload": {
+    "rep": "Marty Freudenburg",
+    "manager": "Melvin Marxen",
+    "tc_count": 5,
+    "hs_count": 1,
+    "orphan_count": 20,
+    "top_deals": [
+      "Silis (GTX Plus Pro, $5472)",
+      "Ontomedia (GTX Plus Pro, $5472)"
+    ],
+    "sector_alpha": [
+      "telecommunications (+29pp)",
+      "entertainment (+21pp)"
+    ],
+    "sector_bleed": [
+      "software (-20pp)"
+    ],
+    "pipeline_value": 12642.0
+  }
+}

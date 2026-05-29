@@ -1,0 +1,16 @@
+{
+  "action": "Bundle GTX Plus Pro with Goodsilron's 6 other open deals into one offer to close before the 50-day ghost deadline.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 121,
+    "score": 65.1,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Pro",
+    "account": "Goodsilron",
+    "sector": "marketing",
+    "account_revenue": 2952.73,
+    "other_open": 6,
+    "rep_close_rate_pct": 66,
+    "days_remaining": 50
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "dossier": "**Account snapshot**\nGoodsilron (marketing, ~$2,953 annual rev) \u2014 GTX Plus Pro deal, engaging 121 days, EV $5,472.\n\n**Why it matters today**\nHigh score (65, above quality floor; 63% close prob) but stalling \u2014 50 days before ghost-flip. Acting now protects a deal that's already 121 days in motion.\n\n**3 discovery questions**\n- You've got 7 open deals with us \u2014 who owns the buying decision across all of them, and is it one budget or several?\n- What's blocking GTX Plus Pro specifically after four months of engagement?\n- If we packaged all 7 into a single rollout, would that simplify your approval path or complicate it?\n\n**Positioning angle**\nAccount context is the lever: 6 other open deals at Goodsilron. Bundle GTX Plus Pro into one consolidated offer \u2014 one decision, one close, before the 50-day deadline. Volume here is your alpha, not the standalone $5,472.\n\n**Likely objection + counter**\nObjection: \"We're a small shop ($2,953 rev) \u2014 can't justify another line item right now.\" Counter: A bundled package spreads value across all 7 deals and lets them lock pricing once instead of negotiating seven times \u2014 lower friction, not higher spend.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 121,
+    "score": 65.1,
+    "close_probability": 0.632,
+    "expected_value": 5472.03,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Pro",
+    "account": "Goodsilron",
+    "sector": "marketing",
+    "account_revenue": 2952.73,
+    "rep_close_rate_pct": 66,
+    "rep_sector_signal": "neutral",
+    "other_open": 6,
+    "days_remaining": 50,
+    "recommended_action": "Bundle GTX Plus Pro with Goodsilron's 6 other open deals into one offer to close before the 50-day ghost deadline."
+  }
+}

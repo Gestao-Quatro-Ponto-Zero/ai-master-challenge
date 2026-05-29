@@ -1,0 +1,16 @@
+{
+  "action": "Reduce GTX Basic's 9-day ghost window: call today and leverage your 67% close rate to push for a commit decision.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 162,
+    "score": 54.3,
+    "must_act_reason": "time_critical",
+    "product": "GTX Basic",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 9
+  }
+}

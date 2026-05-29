@@ -1,0 +1,16 @@
+{
+  "action": "Engage the rep's 6 other open deals at Genco Pura to save GTX Plus Pro before it ghost-flips in 7 days.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 164,
+    "score": 59.6,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Pro",
+    "account": "Genco Pura Olive Oil Company",
+    "sector": "retail",
+    "account_revenue": 894.33,
+    "other_open": 6,
+    "rep_close_rate_pct": 66,
+    "days_remaining": 7
+  }
+}

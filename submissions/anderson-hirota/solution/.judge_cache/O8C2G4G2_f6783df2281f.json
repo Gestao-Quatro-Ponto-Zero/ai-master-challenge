@@ -1,0 +1,16 @@
+{
+  "action": "Call the MG Advanced buyer today\u2014only 4 days until ghost-flip; use your 62% close rate to force a yes/no now.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 167,
+    "score": 58.9,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 62,
+    "days_remaining": 4
+  }
+}

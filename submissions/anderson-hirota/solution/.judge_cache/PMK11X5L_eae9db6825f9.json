@@ -1,0 +1,16 @@
+{
+  "action": "Stress-test GTX Plus Basic against the prospect's actual use case now\u2014at 53 days engaged with a 70% close rate, stalling signals risk.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 53,
+    "score": 65.6,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Basic",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 70,
+    "days_remaining": 118
+  }
+}

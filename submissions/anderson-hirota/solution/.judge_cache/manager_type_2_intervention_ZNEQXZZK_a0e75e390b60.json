@@ -1,0 +1,18 @@
+{
+  "action": "You call Donquadtech's economic buyer now\u2014Anna can't unlock the 13-deal portfolio without manager-level exec sponsorship, and ghost-flip hits in 12d.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "expected_value": 3386.83,
+    "product": "MG Advanced",
+    "account": "Donquadtech",
+    "sector": "technolgy",
+    "rep_name": "Anna Snelling",
+    "rep_close_rate_pct": 62,
+    "rep_sector_signal": "neutral",
+    "other_open": 13,
+    "days_remaining": 12,
+    "rationale": "13 other open deals at this account \u00b7 only 12d before ghost-flip"
+  }
+}

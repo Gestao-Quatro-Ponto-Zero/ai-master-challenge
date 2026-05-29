@@ -1,0 +1,16 @@
+{
+  "action": "Reclaim the GTX Plus Pro deal now\u2014only 11 days before ghost-flip; your 62% close rate beats this 61 score.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 160,
+    "score": 61.2,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Pro",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 62,
+    "days_remaining": 11
+  }
+}

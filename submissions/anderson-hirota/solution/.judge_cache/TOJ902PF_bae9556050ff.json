@@ -1,0 +1,16 @@
+{
+  "action": "Engage Bioholding's 8 other open deals to bundle GTX Plus Basic against their 66 score before the 16d stalls.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 16,
+    "score": 66.2,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Basic",
+    "account": "Bioholding",
+    "sector": "medical",
+    "account_revenue": 587.34,
+    "other_open": 8,
+    "rep_close_rate_pct": 61,
+    "days_remaining": 155
+  }
+}

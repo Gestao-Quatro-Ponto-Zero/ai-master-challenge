@@ -1,0 +1,16 @@
+{
+  "action": "Reduce MG Special ghost-flip risk: book a decision call this week \u2014 only 12 days left at 51 score, 65% close odds favor you.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 51.2,
+    "must_act_reason": "time_critical",
+    "product": "MG Special",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 65,
+    "days_remaining": 12
+  }
+}

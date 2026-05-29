@@ -1,0 +1,16 @@
+{
+  "action": "Pull the 13 other open Donquadtech deals into one MG Advanced bundle and close this 60-score before the 12-day ghost-flip.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 60.2,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": "Donquadtech",
+    "sector": "technolgy",
+    "account_revenue": 1712.68,
+    "other_open": 13,
+    "rep_close_rate_pct": 62,
+    "days_remaining": 12
+  }
+}

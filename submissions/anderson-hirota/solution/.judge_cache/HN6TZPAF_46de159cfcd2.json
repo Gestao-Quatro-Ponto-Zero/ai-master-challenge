@@ -1,0 +1,16 @@
+{
+  "action": "Push GTX Plus Pro to a proposal call this week\u201461 days engaging with a 66 score needs a close step.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 61,
+    "score": 65.7,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Pro",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 70,
+    "days_remaining": 110
+  }
+}

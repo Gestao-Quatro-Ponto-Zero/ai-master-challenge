@@ -1,0 +1,16 @@
+{
+  "action": "Send Xx-zobam a same-day MG Special proposal to lock 1 of 10 open deals before its 6-day ghost-flip.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 165,
+    "score": 56.3,
+    "must_act_reason": "time_critical",
+    "product": "MG Special",
+    "account": "Xx-zobam",
+    "sector": "entertainment",
+    "account_revenue": 3838.39,
+    "other_open": 10,
+    "rep_close_rate_pct": 70,
+    "days_remaining": 6
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": "Reassign 3 of Umbrella's 6 open deals so you can close MG Advanced inside its 12-day ghost window.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 61.4,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": "Umbrella Corporation",
+    "sector": "finance",
+    "account_revenue": 2022.14,
+    "other_open": 6,
+    "rep_close_rate_pct": 55,
+    "days_remaining": 12
+  }
+}

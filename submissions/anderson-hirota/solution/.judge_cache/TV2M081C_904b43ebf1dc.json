@@ -1,0 +1,16 @@
+{
+  "action": "MG Advanced deal hits ghost-flip in 9 days\u2014book a closing call this week and lean on your 66% close rate to finalize.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 162,
+    "score": 58.9,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 66,
+    "days_remaining": 9
+  }
+}

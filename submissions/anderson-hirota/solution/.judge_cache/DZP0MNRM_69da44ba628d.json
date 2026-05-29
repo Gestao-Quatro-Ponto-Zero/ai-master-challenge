@@ -1,0 +1,16 @@
+{
+  "action": "Lock GTX Plus Basic at Konex this week\u2014only 12 days before ghost-flip, and 6 other open deals ride on it.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 63.4,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Konex",
+    "sector": "technolgy",
+    "account_revenue": 7708.38,
+    "other_open": 6,
+    "rep_close_rate_pct": 60,
+    "days_remaining": 12
+  }
+}

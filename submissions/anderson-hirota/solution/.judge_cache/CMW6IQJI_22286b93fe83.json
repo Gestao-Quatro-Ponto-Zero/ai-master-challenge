@@ -1,0 +1,16 @@
+{
+  "action": "Engage Faxquote's economic buyer on MG Advanced within 12 days to beat the ghost-flip; 60% close rate backs the push.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 61.6,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": "Faxquote",
+    "sector": "telecommunications",
+    "account_revenue": 1825.82,
+    "other_open": 11,
+    "rep_close_rate_pct": 60,
+    "days_remaining": 12
+  }
+}

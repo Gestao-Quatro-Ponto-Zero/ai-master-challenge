@@ -1,0 +1,16 @@
+{
+  "action": "Call Ontomedia now\u2014GTX Plus Pro ghost-flips in 6 days; bundle it with the 2 other open deals to close.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 165,
+    "score": 60.3,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Pro",
+    "account": "Ontomedia",
+    "sector": "employment",
+    "account_revenue": 882.12,
+    "other_open": 2,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 6
+  }
+}

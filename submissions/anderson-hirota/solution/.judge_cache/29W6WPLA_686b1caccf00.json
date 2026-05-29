@@ -1,0 +1,16 @@
+{
+  "action": "Call Gekko & Co this week to close GTX Plus Basic before the 7-day ghost-flip window.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 164,
+    "score": 59.0,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Gekko & Co",
+    "sector": "retail",
+    "account_revenue": 2520.83,
+    "other_open": 2,
+    "rep_close_rate_pct": 65,
+    "days_remaining": 7
+  }
+}

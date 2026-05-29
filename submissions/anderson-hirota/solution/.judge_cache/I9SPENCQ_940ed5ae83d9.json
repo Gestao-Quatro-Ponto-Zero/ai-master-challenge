@@ -1,0 +1,16 @@
+{
+  "action": "Call Cheers today and propose bundling GTX Plus Basic with their 7 open deals into one close-by-June-5 package.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 61.6,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Cheers",
+    "sector": "entertainment",
+    "account_revenue": 4269.9,
+    "other_open": 7,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 8
+  }
+}

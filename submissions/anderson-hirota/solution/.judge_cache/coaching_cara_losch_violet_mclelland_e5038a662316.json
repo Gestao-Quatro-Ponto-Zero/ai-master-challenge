@@ -1,0 +1,19 @@
+{
+  "draft": "Violet \u2014 you've got a lot on your plate this week: two time-critical deals plus 19 orphan records to clean, with Lexiqvolax and Cheers both stalling. Block two hours Tuesday morning to batch-call those two before anything else \u2014 that's $4.5K sitting in must-acts. Lean into your software edge; you're running +19pp over the team there, so trust your instincts on those accounts. And you're not alone on this \u2014 I'm personally watching the orphan cleanup so it doesn't bury you. Go close them.\n\nCara",
+  "payload": {
+    "rep": "Violet Mclelland",
+    "manager": "Cara Losch",
+    "tc_count": 2,
+    "hs_count": 1,
+    "orphan_count": 19,
+    "top_deals": [
+      "Lexiqvolax (MG Advanced, $3387)",
+      "Cheers (GTX Plus Basic, $1094)"
+    ],
+    "sector_alpha": [
+      "software (+19pp)"
+    ],
+    "sector_bleed": [],
+    "pipeline_value": 4536.0
+  }
+}

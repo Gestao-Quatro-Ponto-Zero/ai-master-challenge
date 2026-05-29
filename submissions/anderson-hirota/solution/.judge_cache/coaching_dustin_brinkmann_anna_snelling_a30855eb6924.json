@@ -1,0 +1,21 @@
+{
+  "draft": "Anna, you're carrying a lot right now \u2014 5 time-critical deals, two GTX Plus Pro accounts (Scotfind and Labdrill) worth $5,472 each, plus 38 orphan deals cluttering your view. Block 2 hours Tuesday morning to batch-call Scotfind and Labdrill back-to-back while you're warm \u2014 those two alone anchor most of your $17.8K at risk. Lean into entertainment, where you're running +10pp over the team; that's your closing muscle. I'll take the orphan cleanup off your plate and ride shotgun on finance so it stops bleeding. You've got this \u2014 I'm on the deals with you.\n\nDustin",
+  "payload": {
+    "rep": "Anna Snelling",
+    "manager": "Dustin Brinkmann",
+    "tc_count": 5,
+    "hs_count": 2,
+    "orphan_count": 38,
+    "top_deals": [
+      "Scotfind (GTX Plus Pro, $5472)",
+      "Labdrill (GTX Plus Pro, $5472)"
+    ],
+    "sector_alpha": [
+      "entertainment (+10pp)"
+    ],
+    "sector_bleed": [
+      "finance (-13pp)"
+    ],
+    "pipeline_value": 17773.0
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "action": "You activate the exec sponsor at Lexiqvolax today\u20148 tangled open deals exceed Violet's reach; MG Advanced ghost-flips in 6 days.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 165,
+    "expected_value": 3386.83,
+    "product": "MG Advanced",
+    "account": "Lexiqvolax",
+    "sector": "medical",
+    "rep_name": "Violet Mclelland",
+    "rep_close_rate_pct": 63,
+    "rep_sector_signal": "neutral",
+    "other_open": 8,
+    "days_remaining": 6,
+    "rationale": "8 other open deals at this account \u00b7 only 6d before ghost-flip"
+  }
+}

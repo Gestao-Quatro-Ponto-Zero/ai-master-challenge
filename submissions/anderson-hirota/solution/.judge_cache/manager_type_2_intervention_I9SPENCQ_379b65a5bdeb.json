@@ -1,0 +1,18 @@
+{
+  "action": "You step into the Cheers account\u2014Violet can't move $1,094 GTX Plus Basic alone, but your authority bundles all 8 open deals into one exec conversation before the 8-day ghost-flip.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "expected_value": 1094.01,
+    "product": "GTX Plus Basic",
+    "account": "Cheers",
+    "sector": "entertainment",
+    "rep_name": "Violet Mclelland",
+    "rep_close_rate_pct": 63,
+    "rep_sector_signal": "neutral",
+    "other_open": 7,
+    "days_remaining": 8,
+    "rationale": "7 other open deals at this account \u00b7 only 8d before ghost-flip"
+  }
+}

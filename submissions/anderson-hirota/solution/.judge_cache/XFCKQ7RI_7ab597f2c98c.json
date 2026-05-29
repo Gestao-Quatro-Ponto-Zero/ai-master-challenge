@@ -1,0 +1,16 @@
+{
+  "action": "Anchor the MG Advanced deal before its 12-day ghost-flip\u2014your 63% close rate is wasted if it lapses at day 159.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 58.9,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 12
+  }
+}

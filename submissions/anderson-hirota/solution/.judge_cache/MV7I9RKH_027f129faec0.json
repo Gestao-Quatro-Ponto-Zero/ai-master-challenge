@@ -1,0 +1,16 @@
+{
+  "action": "Call Treequote within 8 days to lock GTX Plus Basic before ghost-flip, leveraging the 9 open deals as urgency.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 62.3,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Treequote",
+    "sector": "telecommunications",
+    "account_revenue": 5266.09,
+    "other_open": 9,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 8
+  }
+}

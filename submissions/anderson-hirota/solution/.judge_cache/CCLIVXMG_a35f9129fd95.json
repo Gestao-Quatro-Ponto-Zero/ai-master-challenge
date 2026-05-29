@@ -1,0 +1,16 @@
+{
+  "action": "Call the GTXPro champion today to lock a close date\u2014only 6 days left before this 165-day deal flips to ghost.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 165,
+    "score": 47.7,
+    "must_act_reason": "time_critical",
+    "product": "GTXPro",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 6
+  }
+}

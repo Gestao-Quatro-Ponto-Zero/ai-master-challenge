@@ -1,0 +1,16 @@
+{
+  "action": "Pursue Scotfind's MG Special deal alongside its 6 other open deals to consolidate; your 64% close rate clears the 67 score.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 46,
+    "score": 67.0,
+    "must_act_reason": "high_score",
+    "product": "MG Special",
+    "account": "Scotfind",
+    "sector": "software",
+    "account_revenue": 6354.87,
+    "other_open": 6,
+    "rep_close_rate_pct": 64,
+    "days_remaining": 125
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": "Engage your nan champion now: book a 30-min GTX Basic scoping call before the 8-day ghost-flip closes.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 54.3,
+    "must_act_reason": "time_critical",
+    "product": "GTX Basic",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 64,
+    "days_remaining": 8
+  }
+}

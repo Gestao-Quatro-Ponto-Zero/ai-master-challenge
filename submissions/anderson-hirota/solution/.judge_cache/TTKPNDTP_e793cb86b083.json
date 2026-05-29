@@ -1,0 +1,16 @@
+{
+  "action": "Engage MG Advanced champion now \u2014 only 9 days before this 162-day deal ghost-flips, and your 67% close rate beats the odds.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 162,
+    "score": 58.9,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 9
+  }
+}

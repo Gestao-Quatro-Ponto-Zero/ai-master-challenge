@@ -1,0 +1,16 @@
+{
+  "action": "Engage the GTX Plus Basic deal now while score is 69 and 160 days remain to lock the close.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 11,
+    "score": 69.2,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Basic",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 70,
+    "days_remaining": 160
+  }
+}

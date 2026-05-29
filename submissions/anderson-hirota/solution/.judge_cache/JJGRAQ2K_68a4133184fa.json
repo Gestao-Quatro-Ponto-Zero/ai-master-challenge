@@ -1,0 +1,16 @@
+{
+  "action": "Engage 8 other open deals at Rangreen alongside GTX Plus Pro now to leverage your 62% close rate.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 69,
+    "score": 70.5,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Pro",
+    "account": "Rangreen",
+    "sector": "technolgy",
+    "account_revenue": 2938.67,
+    "other_open": 8,
+    "rep_close_rate_pct": 62,
+    "days_remaining": 102
+  }
+}

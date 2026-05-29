@@ -1,0 +1,16 @@
+{
+  "action": "Send Xx-zobam a final close offer on GTX Plus Basic within 10 days before it ghost-flips; your 60% close rate fits.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 161,
+    "score": 61.8,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Xx-zobam",
+    "sector": "entertainment",
+    "account_revenue": 3838.39,
+    "other_open": 10,
+    "rep_close_rate_pct": 60,
+    "days_remaining": 10
+  }
+}

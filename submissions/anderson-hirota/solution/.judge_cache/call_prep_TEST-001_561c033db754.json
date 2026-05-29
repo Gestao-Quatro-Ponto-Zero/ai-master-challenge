@@ -1,0 +1,20 @@
+{
+  "dossier": "**Account snapshot**\nScotfind (technology, $4.2M rev) \u2014 GTX Plus Pro deal, 160 days engaging, 55% close prob, $5,472 EV.\n\n**Why it matters today**\nTop-priority deal: high score (68) AND time-critical. Ghost-flip in **11 days** \u2014 momentum dies without a close call now.\n\n**3 discovery questions**\n- After 160 days engaging, what's specifically still unresolved before GTX Plus Pro gets a yes?\n- You have 6 other open deals with us \u2014 is there a reason to evaluate them separately, or can we align them on one timeline?\n- What internal deadline or budget cycle makes the next 11 days the right (or wrong) window to decide?\n\n**Positioning angle**\nLean on rep alpha: Anna closes +8pp above her 62% baseline in technology. Frame the call as a bundled GTX Plus Pro + 6-deal consolidation \u2014 one decision, one rollout, less procurement overhead for Scotfind.\n\n**Likely objection + counter**\n*\"We've been at this for months \u2014 no rush to decide in 11 days.\"*\nCounter: That's exactly why we consolidate now \u2014 one bundled close ends the 160-day drag and gets all 7 deals live on a single timeline instead of stalling another quarter.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 160,
+    "score": 68.0,
+    "close_probability": 0.55,
+    "expected_value": 5472.0,
+    "must_act_reason": "both",
+    "product": "GTX Plus Pro",
+    "account": "Scotfind",
+    "sector": "technology",
+    "account_revenue": 4200000,
+    "rep_close_rate_pct": 62,
+    "rep_sector_signal": "+8pp alpha (rep is strong here)",
+    "other_open": 6,
+    "days_remaining": 11,
+    "recommended_action": "Book a GTX Plus Pro close call within 11 days and bundle Scotfind's 6 other open deals into one ask."
+  }
+}

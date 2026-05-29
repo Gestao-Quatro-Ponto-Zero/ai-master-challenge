@@ -1,0 +1,16 @@
+{
+  "action": "Convert GTX Plus Basic deal from 160-day engagement before its 11-day ghost flip\u2014you close 67% of deals, so call now.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 160,
+    "score": 56.6,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 11
+  }
+}

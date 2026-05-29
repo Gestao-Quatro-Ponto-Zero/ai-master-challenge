@@ -1,0 +1,16 @@
+{
+  "action": "MG Special is in its final 12-day window before ghost-flip at 159d\u2014call the buyer today to lock a next step.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 51.2,
+    "must_act_reason": "time_critical",
+    "product": "MG Special",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 62,
+    "days_remaining": 12
+  }
+}

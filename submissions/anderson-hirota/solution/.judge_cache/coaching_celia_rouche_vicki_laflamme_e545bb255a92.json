@@ -1,0 +1,22 @@
+{
+  "draft": "Vicki \u2014 three deals on the clock plus 27 orphans to clear is a real load, and I see it. Block two focused hours Tuesday morning to push Sonron (GTX Plus Pro, $5,472) and re-engage Umbrella before they stall further \u2014 that's most of the $10,944 sitting in must-acts. Lean into your marketing and employment strength; you're +15pp over the team there, so play to it. You're not carrying this solo \u2014 I'm personally on the orphan cleanup and the time-critical follow-ups with you. \u2014 Celia",
+  "payload": {
+    "rep": "Vicki Laflamme",
+    "manager": "Celia Rouche",
+    "tc_count": 3,
+    "hs_count": 1,
+    "orphan_count": 27,
+    "top_deals": [
+      "Sonron (GTX Plus Pro, $5472)",
+      "Umbrella Corporation (GTXPro, $0)"
+    ],
+    "sector_alpha": [
+      "marketing (+15pp)",
+      "employment (+15pp)"
+    ],
+    "sector_bleed": [
+      "services (-15pp)"
+    ],
+    "pipeline_value": 10944.0
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": "Engage all 6 open deals at Scotfind now\u2014only 8 days before MG Advanced ghosts at score 66.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 65.6,
+    "must_act_reason": "both",
+    "product": "MG Advanced",
+    "account": "Scotfind",
+    "sector": "software",
+    "account_revenue": 6354.87,
+    "other_open": 6,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 8
+  }
+}

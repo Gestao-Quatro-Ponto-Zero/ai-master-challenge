@@ -1,0 +1,7 @@
+
+# Action audit log — runtime state, not source
+.action_log/
+
+# Python bytecode — transient
+__pycache__/
+*.pyc

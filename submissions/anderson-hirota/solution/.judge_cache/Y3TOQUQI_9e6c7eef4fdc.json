@@ -1,0 +1,16 @@
+{
+  "action": "Call Revert if any other Zotware deal nears its window\u20144 open deals at this account in software warrant a multi-thread push now.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 60.5,
+    "must_act_reason": "time_critical",
+    "product": "GTX Basic",
+    "account": "Zotware",
+    "sector": "software",
+    "account_revenue": 4478.47,
+    "other_open": 4,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 12
+  }
+}

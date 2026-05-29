@@ -1,0 +1,18 @@
+{
+  "action": "You step in: 6 deals ride on Scotfind and only 8 days remain\u2014you open the exec sponsor Darcel can't reach to lock all $20K+ before ghost-flip.",
+  "payload": {
+    "action_type": "type_2_intervention",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "expected_value": 3386.83,
+    "product": "MG Advanced",
+    "account": "Scotfind",
+    "sector": "software",
+    "rep_name": "Darcel Schlecht",
+    "rep_close_rate_pct": 63,
+    "rep_sector_signal": "neutral",
+    "other_open": 6,
+    "days_remaining": 8,
+    "rationale": "6 other open deals at this account \u00b7 only 8d before ghost-flip"
+  }
+}

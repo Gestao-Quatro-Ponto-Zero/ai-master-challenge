@@ -1,0 +1,16 @@
+{
+  "action": "Engage the 7 other open deals at Xx-holding now to compound this 76-score account before its 153-day window.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 18,
+    "score": 76.2,
+    "must_act_reason": "high_score",
+    "product": "GTX Plus Basic",
+    "account": "Xx-holding",
+    "sector": "finance",
+    "account_revenue": 7537.24,
+    "other_open": 7,
+    "rep_close_rate_pct": 62,
+    "days_remaining": 153
+  }
+}

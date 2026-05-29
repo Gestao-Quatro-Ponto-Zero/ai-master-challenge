@@ -1,0 +1,16 @@
+{
+  "action": "Call Funholding now to close GTX Plus Basic within its 9-day window before it ghost-flips.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 162,
+    "score": 60.8,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": "Funholding",
+    "sector": "finance",
+    "account_revenue": 2819.5,
+    "other_open": 9,
+    "rep_close_rate_pct": 58,
+    "days_remaining": 9
+  }
+}

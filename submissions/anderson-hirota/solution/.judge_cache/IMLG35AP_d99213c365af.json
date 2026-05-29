@@ -1,0 +1,16 @@
+{
+  "action": "Schedule a GTX Plus Pro decision call within the next 9 days to lock the close before this 162-day deal ghost-flips.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 162,
+    "score": 61.2,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Pro",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 55,
+    "days_remaining": 9
+  }
+}

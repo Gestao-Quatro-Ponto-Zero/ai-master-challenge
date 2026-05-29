@@ -1,0 +1,16 @@
+{
+  "action": "Book a GTX Plus Basic close call in the next 8 days to beat the ghost-flip on this 163-day-old deal.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 56.6,
+    "must_act_reason": "time_critical",
+    "product": "GTX Plus Basic",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 8
+  }
+}

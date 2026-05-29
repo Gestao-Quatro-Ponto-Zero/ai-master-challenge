@@ -1,0 +1,16 @@
+{
+  "action": "Anchor the MG Advanced deal now\u20144 days from ghost-flip, 167d engaged, your 63% close rate\u2014to lock it before day 0.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 167,
+    "score": 58.9,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": NaN,
+    "sector": null,
+    "account_revenue": null,
+    "other_open": 0,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 4
+  }
+}

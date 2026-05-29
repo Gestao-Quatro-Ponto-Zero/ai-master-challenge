@@ -1,0 +1,18 @@
+{
+  "action": "You lead the close on the $5,472 GTX Plus Pro deal James has nursed 73 days\u2014your exec authority unlocks the pricing exception he can't grant.",
+  "payload": {
+    "action_type": "type_1_closer",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 73,
+    "expected_value": 5472.03,
+    "product": "GTX Plus Pro",
+    "account": null,
+    "sector": null,
+    "rep_name": "James Ascencio",
+    "rep_close_rate_pct": 66,
+    "rep_sector_signal": "neutral",
+    "other_open": 0,
+    "days_remaining": 98,
+    "rationale": "top-value strategic deal ($5,472)"
+  }
+}

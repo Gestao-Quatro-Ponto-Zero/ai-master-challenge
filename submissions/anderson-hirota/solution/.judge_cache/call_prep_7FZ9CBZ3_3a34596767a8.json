@@ -1,0 +1,20 @@
+{
+  "dossier": "**Account snapshot** \u2014 Scotfind (software, $6.4K annual rev); engaging 160 days on GTX Plus Pro, EV $5,472, 7 open deals total.\n\n**Why it matters today** \u2014 Score 68 / 63% close prob = high score AND time-critical. Ghost-flip in **11 days** after 160 days of stall. Act now or lose momentum entirely.\n\n**3 discovery questions**\n- \"After 160 days, what's the one thing that's kept GTX Plus Pro from getting signed internally?\"\n- \"You've got 6 other open items with us \u2014 is there a budget or approval cycle they're all waiting on?\"\n- \"Who besides you signs off, and what would they need to see to move this quarter?\"\n\n**Positioning angle** \u2014 Account context: 7 open deals stuck in parallel signals a decision-process bottleneck, not product doubt. Bundle all 7 into a single approval ask \u2014 one decision instead of seven removes the friction that's caused the 160-day stall.\n\n**Likely objection + counter** \u2014 \"We're not ready to commit on price yet.\" Counter: \"Let's lock the bundle scope and timeline today; I'll structure pricing around all 7 deals so you get one clean number to approve \u2014 that's faster than re-litigating each.\"\n\n*(Note: your signal in software is neutral \u2014 lean on the bundle structure, not sector pitch.)*",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 160,
+    "score": 67.9,
+    "close_probability": 0.632,
+    "expected_value": 5472.03,
+    "must_act_reason": "both",
+    "product": "GTX Plus Pro",
+    "account": "Scotfind",
+    "sector": "software",
+    "account_revenue": 6354.87,
+    "rep_close_rate_pct": 62,
+    "rep_sector_signal": "neutral",
+    "other_open": 6,
+    "days_remaining": 11,
+    "recommended_action": "Book a GTX Plus Pro close call within 11 days and bundle Scotfind's 6 other open deals into one ask."
+  }
+}

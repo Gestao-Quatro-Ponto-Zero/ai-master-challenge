@@ -1,0 +1,16 @@
+{
+  "action": "Reduce MG Advanced ghost risk: call Xx-holding this week to advance one of its 8 open deals before the 12-day cutoff.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 159,
+    "score": 65.8,
+    "must_act_reason": "both",
+    "product": "MG Advanced",
+    "account": "Xx-holding",
+    "sector": "finance",
+    "account_revenue": 7537.24,
+    "other_open": 7,
+    "rep_close_rate_pct": 66,
+    "days_remaining": 12
+  }
+}

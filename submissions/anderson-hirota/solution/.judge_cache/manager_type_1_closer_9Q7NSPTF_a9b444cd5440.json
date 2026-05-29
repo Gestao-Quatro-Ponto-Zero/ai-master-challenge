@@ -1,0 +1,18 @@
+{
+  "action": "You lead the GTX Plus Pro close at this account\u2014Cassey's 62% can't match the exec parity and pricing exception you bring before the 10-day ghost-flip.",
+  "payload": {
+    "action_type": "type_1_closer",
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 161,
+    "expected_value": 5472.03,
+    "product": "GTX Plus Pro",
+    "account": null,
+    "sector": null,
+    "rep_name": "Cassey Cress",
+    "rep_close_rate_pct": 62,
+    "rep_sector_signal": "neutral",
+    "other_open": 0,
+    "days_remaining": 10,
+    "rationale": "top-value strategic deal ($5,472)"
+  }
+}

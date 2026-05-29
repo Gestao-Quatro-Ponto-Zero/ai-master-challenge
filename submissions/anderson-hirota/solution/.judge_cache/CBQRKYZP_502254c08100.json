@@ -1,0 +1,16 @@
+{
+  "action": "Push to ghost in 8 days\u2014book a GTX Plus Pro demo at Silis now, leveraging your 63% close rate.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 163,
+    "score": 65.1,
+    "must_act_reason": "both",
+    "product": "GTX Plus Pro",
+    "account": "Silis",
+    "sector": "medical",
+    "account_revenue": 2818.38,
+    "other_open": 8,
+    "rep_close_rate_pct": 63,
+    "days_remaining": 8
+  }
+}

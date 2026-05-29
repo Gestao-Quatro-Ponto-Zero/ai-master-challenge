@@ -1,0 +1,22 @@
+{
+  "draft": "Niesha \u2014 five time-critical deals plus fifteen orphans to clean is a real load, and I see you carrying Blackzim and Faxquote at the top of it. Block two hours Tuesday morning to batch-call Blackzim ($5,472) and Faxquote ($3,387) back to back while you're fresh \u2014 those two alone are most of your at-risk pipeline. Lean into telecom, where you're running +12pp over the team; that's your fastest close. You're not alone on this \u2014 I'm personally on the orphan cleanup, so you focus the human energy on the deals that move. Melvin",
+  "payload": {
+    "rep": "Niesha Huffines",
+    "manager": "Melvin Marxen",
+    "tc_count": 5,
+    "hs_count": 0,
+    "orphan_count": 15,
+    "top_deals": [
+      "Blackzim (GTX Plus Pro, $5472)",
+      "Faxquote (MG Advanced, $3387)"
+    ],
+    "sector_alpha": [
+      "telecommunications (+12pp)"
+    ],
+    "sector_bleed": [
+      "finance (-21pp)",
+      "retail (-19pp)"
+    ],
+    "pipeline_value": 12141.0
+  }
+}

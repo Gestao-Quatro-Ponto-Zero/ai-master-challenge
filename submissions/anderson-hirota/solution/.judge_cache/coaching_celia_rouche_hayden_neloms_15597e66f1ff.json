@@ -1,0 +1,20 @@
+{
+  "draft": "Hayden, I see what you're juggling \u2014 Konmatfix and Xx-zobam both clock-ticking, plus a dozen orphan deals dragging on you. Don't try to boil it all down at once: block two hours Tuesday morning and batch-call Konmatfix first, since that's where the real dollars sit. You're our strongest closer in employment (+23pp) and marketing (+17pp), so lean those instincts into these accounts \u2014 they're your home turf. I'm taking the orphan cleanup off your plate this week so you can focus on the must-acts. You've got this.\n\nCelia",
+  "payload": {
+    "rep": "Hayden Neloms",
+    "manager": "Celia Rouche",
+    "tc_count": 2,
+    "hs_count": 1,
+    "orphan_count": 12,
+    "top_deals": [
+      "Konmatfix (GTX Plus Basic, $1094)",
+      "Xx-zobam (MG Special, $55)"
+    ],
+    "sector_alpha": [
+      "employment (+23pp)",
+      "marketing (+17pp)"
+    ],
+    "sector_bleed": [],
+    "pipeline_value": 1204.0
+  }
+}

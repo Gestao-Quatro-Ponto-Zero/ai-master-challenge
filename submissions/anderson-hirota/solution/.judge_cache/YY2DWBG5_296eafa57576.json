@@ -1,0 +1,16 @@
+{
+  "action": "Send MG Advanced's 11-day ghost flip on Ron-tech's other 4 open deals; your 67% close rate clears this final window.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 160,
+    "score": 63.6,
+    "must_act_reason": "time_critical",
+    "product": "MG Advanced",
+    "account": "Ron-tech",
+    "sector": "medical",
+    "account_revenue": 3922.42,
+    "other_open": 4,
+    "rep_close_rate_pct": 67,
+    "days_remaining": 11
+  }
+}

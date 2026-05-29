@@ -1,0 +1,16 @@
+{
+  "action": "Send GTX Basic's 3-day ghost deadline to Sunnamplex now while you still hold a 66% close rate.",
+  "payload": {
+    "deal_stage": "Engaging",
+    "days_in_pipeline": 168,
+    "score": 52.9,
+    "must_act_reason": "time_critical",
+    "product": "GTX Basic",
+    "account": "Sunnamplex",
+    "sector": "marketing",
+    "account_revenue": 894.37,
+    "other_open": 2,
+    "rep_close_rate_pct": 66,
+    "days_remaining": 3
+  }
+}
