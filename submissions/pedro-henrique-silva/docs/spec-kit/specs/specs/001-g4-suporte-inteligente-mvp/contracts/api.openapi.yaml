@@ -1,0 +1,199 @@
+openapi: 3.0.3
+info:
+  title: G4 Suporte Inteligente API
+  version: 0.1.0
+  description: Contratos mínimos das rotas de API do MVP.
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/transcribe:
+    post:
+      summary: Transcreve áudio enviado para texto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [audio_path]
+              properties:
+                audio_path:
+                  type: string
+      responses:
+        '200':
+          description: Transcrição concluída
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [text]
+                properties:
+                  text:
+                    type: string
+        '400':
+          description: Payload inválido
+        '500':
+          description: Falha de transcrição
+
+  /api/rag-search:
+    post:
+      summary: Busca casos similares e retorna sugestão
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+      responses:
+        '200':
+          description: Sugestão gerada
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [suggestion, confidence, sources]
+                properties:
+                  suggestion:
+                    type: string
+                  confidence:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  sources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        similarity:
+                          type: number
+        '400':
+          description: Payload inválido
+
+  /api/classify:
+    post:
+      summary: Classifica categoria e prioridade do ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text]
+              properties:
+                text:
+                  type: string
+      responses:
+        '200':
+          description: Classificação concluída
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [category, priority, confidence]
+                properties:
+                  category:
+                    type: string
+                  priority:
+                    type: string
+                    enum: [low, medium, high, critical]
+                  confidence:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  reasoning:
+                    type: string
+
+  /api/tickets:
+    post:
+      summary: Cria ticket após falha de deflexão
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [source, raw_text]
+              properties:
+                source:
+                  type: string
+                  enum: [text, audio]
+                raw_text:
+                  type: string
+                audio_path:
+                  type: string
+                category:
+                  type: string
+                priority:
+                  type: string
+                  enum: [low, medium, high, critical]
+                rag_suggestion:
+                  type: string
+                rag_confidence:
+                  type: number
+      responses:
+        '201':
+          description: Ticket criado
+        '400':
+          description: Payload inválido
+        '401':
+          description: Não autenticado
+
+    get:
+      summary: Lista tickets (escopo depende de role)
+      responses:
+        '200':
+          description: Lista de tickets
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+
+  /api/deflection:
+    post:
+      summary: Registra evento de deflexão
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [raw_text]
+              properties:
+                raw_text:
+                  type: string
+                top_matches:
+                  type: array
+                  items:
+                    type: object
+      responses:
+        '201':
+          description: Evento registrado
+        '400':
+          description: Payload inválido
+
+  /api/insights:
+    get:
+      summary: Retorna snapshot de insights para dashboard admin
+      responses:
+        '200':
+          description: Insights carregados
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Não autenticado
+        '403':
+          description: Sem permissão

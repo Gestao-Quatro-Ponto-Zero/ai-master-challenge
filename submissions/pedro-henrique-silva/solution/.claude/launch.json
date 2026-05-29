@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "/Users/eupedrohie/Downloads/ai-master-challenge/submissions/pedro-henrique-silva/solution",
+      "env": { "PORT": "3001" },
+      "port": 3001,
+      "autoPort": false
+    }
+  ]
+}

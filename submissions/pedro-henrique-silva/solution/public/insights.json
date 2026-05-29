@@ -1,0 +1,291 @@
+{
+  "generated_at": "2026-05-28T08:45:24.588440+00:00",
+  "data_source": "kaggle_datasets_real_analysis",
+  "dataset_files": {
+    "support_dataset_csv": "/Users/eupedrohie/.cache/kagglehub/datasets/suraj520/customer-support-ticket-dataset/versions/1/customer_support_tickets.csv",
+    "it_dataset_csv": "/Users/eupedrohie/.cache/kagglehub/datasets/adisongoh/it-service-ticket-classification-dataset/versions/1/all_tickets_processed_improved_v3.csv"
+  },
+  "ticket_status_summary": {
+    "total_tickets": 8469,
+    "open_tickets": 2819,
+    "pending_tickets": 2881,
+    "closed_tickets": 2769,
+    "resolved_tickets": 1087,
+    "resolved_definition": "tickets fechados com CSAT >= 4"
+  },
+  "channel_bottlenecks": [
+    {
+      "channel": "Phone",
+      "avg_resolution_hours": 12.09,
+      "median_resolution_hours": 12.33,
+      "ticket_volume": 691
+    },
+    {
+      "channel": "Social media",
+      "avg_resolution_hours": 11.91,
+      "median_resolution_hours": 12.17,
+      "ticket_volume": 684
+    },
+    {
+      "channel": "Chat",
+      "avg_resolution_hours": 11.55,
+      "median_resolution_hours": 11.32,
+      "ticket_volume": 674
+    },
+    {
+      "channel": "Email",
+      "avg_resolution_hours": 11.55,
+      "median_resolution_hours": 11.1,
+      "ticket_volume": 720
+    }
+  ],
+  "ticket_type_analysis": [
+    {
+      "ticket_type": "Refund request",
+      "ticket_volume": 1752,
+      "share_pct": 20.7,
+      "avg_resolution_hours": 11.98
+    },
+    {
+      "ticket_type": "Technical issue",
+      "ticket_volume": 1747,
+      "share_pct": 20.6,
+      "avg_resolution_hours": 11.45
+    },
+    {
+      "ticket_type": "Cancellation request",
+      "ticket_volume": 1695,
+      "share_pct": 20.0,
+      "avg_resolution_hours": 11.51
+    },
+    {
+      "ticket_type": "Product inquiry",
+      "ticket_volume": 1641,
+      "share_pct": 19.4,
+      "avg_resolution_hours": 12.18
+    },
+    {
+      "ticket_type": "Billing inquiry",
+      "ticket_volume": 1634,
+      "share_pct": 19.3,
+      "avg_resolution_hours": 11.75
+    }
+  ],
+  "customer_satisfaction": {
+    "positive_count": 1087,
+    "neutral_count": 580,
+    "negative_count": 1102,
+    "unrated_count": 5700,
+    "positive_pct": 12.8,
+    "neutral_pct": 6.8,
+    "negative_pct": 13.0,
+    "unrated_pct": 67.3,
+    "sample_size": 2769,
+    "total_tickets": 8469
+  },
+  "calculation_rationale": [
+    {
+      "metrica": "Tickets abertos",
+      "racional": "Contagem de registros cujo status indica atendimento aberto."
+    },
+    {
+      "metrica": "Tickets pendentes",
+      "racional": "Contagem de registros cujo status indica pendência de resposta."
+    },
+    {
+      "metrica": "Tickets fechados",
+      "racional": "Contagem de registros cujo status indica fechamento do ticket."
+    },
+    {
+      "metrica": "Tickets resolvidos",
+      "racional": "Subset dos tickets fechados com avaliação de satisfação maior ou igual a 4."
+    },
+    {
+      "metrica": "Gargalo por canal",
+      "racional": "Tempo médio de resolução por canal, em horas, ordenado do maior para o menor."
+    },
+    {
+      "metrica": "Análise por tipo de ticket",
+      "racional": "Volume e participação percentual de cada tipo de ticket, com tempo médio de resolução."
+    },
+    {
+      "metrica": "Satisfação do cliente",
+      "racional": "Positivo = CSAT >= 4, Neutro = CSAT = 3, Negativo = CSAT <= 2."
+    }
+  ],
+  "flow_bottlenecks": [
+    {
+      "segment": "Chat | Technical issue | Low",
+      "avg_resolution_hours": 14.61,
+      "sample_size": 33
+    },
+    {
+      "segment": "Chat | Refund request | High",
+      "avg_resolution_hours": 14.1,
+      "sample_size": 41
+    },
+    {
+      "segment": "Social media | Technical issue | Medium",
+      "avg_resolution_hours": 14.09,
+      "sample_size": 30
+    },
+    {
+      "segment": "Social media | Product inquiry | Critical",
+      "avg_resolution_hours": 13.85,
+      "sample_size": 34
+    },
+    {
+      "segment": "Phone | Product inquiry | Medium",
+      "avg_resolution_hours": 13.84,
+      "sample_size": 49
+    },
+    {
+      "segment": "Phone | Cancellation request | Medium",
+      "avg_resolution_hours": 13.51,
+      "sample_size": 33
+    },
+    {
+      "segment": "Phone | Refund request | High",
+      "avg_resolution_hours": 13.44,
+      "sample_size": 31
+    },
+    {
+      "segment": "Chat | Product inquiry | High",
+      "avg_resolution_hours": 13.37,
+      "sample_size": 30
+    },
+    {
+      "segment": "Email | Product inquiry | High",
+      "avg_resolution_hours": 13.29,
+      "sample_size": 35
+    },
+    {
+      "segment": "Social media | Billing inquiry | Medium",
+      "avg_resolution_hours": 13.28,
+      "sample_size": 29
+    }
+  ],
+  "csat_drivers": [
+    {
+      "feature": "derived_resolution_hours",
+      "impact": -0.4169,
+      "importance": 0.4169,
+      "correlation": -0.0187
+    },
+    {
+      "feature": "Customer Age",
+      "impact": -0.2552,
+      "importance": 0.2552,
+      "correlation": -0.0037
+    },
+    {
+      "feature": "Ticket Type",
+      "impact": 0.1286,
+      "importance": 0.1286,
+      "correlation": 0.0
+    },
+    {
+      "feature": "Ticket Priority",
+      "impact": 0.105,
+      "importance": 0.105,
+      "correlation": 0.0
+    },
+    {
+      "feature": "Ticket Channel",
+      "impact": 0.0943,
+      "importance": 0.0943,
+      "correlation": 0.0
+    }
+  ],
+  "waste_estimation": {
+    "recoverable_hours": 8601.31,
+    "recoverable_brl": 301045.85,
+    "hourly_cost_brl": 35.0
+  },
+  "automation_patterns": [
+    {
+      "pattern": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm",
+      "volume": 1429,
+      "estimated_savings_brl": 17505.25
+    },
+    {
+      "pattern": "I'm having an issue with the {product_purchased}. Please assist. I have to ask for support from you, the customers, befo",
+      "volume": 1298,
+      "estimated_savings_brl": 15900.5
+    },
+    {
+      "pattern": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue.",
+      "volume": 902,
+      "estimated_savings_brl": 11049.5
+    },
+    {
+      "pattern": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue.",
+      "volume": 878,
+      "estimated_savings_brl": 10755.5
+    },
+    {
+      "pattern": "I'm having an issue with the {product_purchased}. Please assist. Thank you.\n\n{product_purchased} is not the exact type y",
+      "volume": 685,
+      "estimated_savings_brl": 8391.25
+    },
+    {
+      "pattern": "I'm having an issue with the {product_purchased}. Please assist. (Thanks) I will contact all my suppliers and confirm.\n\n",
+      "volume": 684,
+      "estimated_savings_brl": 8379.0
+    },
+    {
+      "pattern": "I'm having an issue with the {product_purchased}. Please assist. We have not yet provided an address or a name for this ",
+      "volume": 663,
+      "estimated_savings_brl": 8121.75
+    },
+    {
+      "pattern": "I'm having an issue with the {product_purchased}. Please assist.\n\nI'm having an issue with the product_purchased}. Pleas",
+      "volume": 593,
+      "estimated_savings_brl": 7264.25
+    },
+    {
+      "pattern": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue.",
+      "volume": 450,
+      "estimated_savings_brl": 5512.5
+    },
+    {
+      "pattern": "I'm having an issue with the {product_purchased}. Please assist. We hope that every vendor takes the time it takes in to",
+      "volume": 418,
+      "estimated_savings_brl": 5120.5
+    }
+  ],
+  "it_category_volume": [
+    {
+      "category": "Hardware",
+      "volume": 13617
+    },
+    {
+      "category": "HR Support",
+      "volume": 10915
+    },
+    {
+      "category": "Access",
+      "volume": 7125
+    },
+    {
+      "category": "Miscellaneous",
+      "volume": 7060
+    },
+    {
+      "category": "Storage",
+      "volume": 2777
+    },
+    {
+      "category": "Purchase",
+      "volume": 2464
+    },
+    {
+      "category": "Internal Project",
+      "volume": 2119
+    },
+    {
+      "category": "Administrative rights",
+      "volume": 1760
+    }
+  ]
+}
