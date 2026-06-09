@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: rotadesk-classifier
+    runtime: python
+    plan: free
+    rootDir: submissions/jean-felipe/solution/rotadesk/ml
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"

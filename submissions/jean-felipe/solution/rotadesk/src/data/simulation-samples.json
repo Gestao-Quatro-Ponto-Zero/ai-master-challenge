@@ -1,0 +1,1602 @@
+[
+  {
+    "customer_name": "James Smith",
+    "customer_email": "debra98@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I'm using xda-developer for something different. If there are issues with the {product_purchased} it's likely you are not using the I've tried clearing the cache and data for the {product_purchased} app, but the issue persists."
+  },
+  {
+    "customer_name": "Erica Reed",
+    "customer_email": "carsonjames@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Low",
+    "subject": "Battery life",
+    "description": "I'm having trouble connecting my {product_purchased} to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue? I will refer to this issue I've checked for any available software updates for my {product_purchased}, but there are none."
+  },
+  {
+    "customer_name": "Mrs. Madison Thompson MD",
+    "customer_email": "taylorjames@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease give credit to: @joeyclay I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Sarah Nunez",
+    "customer_email": "martinezkenneth@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n4. Check and compare product pricing\n\nYou will see that prices are based on the current prices on your credit card. If you are a resident of I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "James White",
+    "customer_email": "rivasdavid@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI would like my price to rise so that I can return it.\n\nPlease notify me if you do not want their refund.\n\nPlease do I've noticed a sudden decrease in battery life on my {product_purchased}. It used to last much longer."
+  },
+  {
+    "customer_name": "Rachel Bullock",
+    "customer_email": "owensjonathan@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Refund request",
+    "description": "I've encountered a data loss issue with my {product_purchased}. All the files and documents seem to have disappeared. Can you guide me on how to retrieve them?\n\n\nI cannot verify this information though. It doesn't look very I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "Rebecca Smith",
+    "customer_email": "ugonzalez@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Max Dawson",
+    "customer_email": "brandymorgan@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIf you are having trouble with your package you need to contact customer service with the following:\n\nWebsite\n\nP.O. Box 300 I've noticed a sudden decrease in battery life on my {product_purchased}. It used to last much longer."
+  },
+  {
+    "customer_name": "James Weaver",
+    "customer_email": "hbaird@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Hardware issue",
+    "description": "I'm encountering a software bug in the {product_purchased}. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available? Will my account get frozen in order to save money? Is my password I've checked for software updates, and my {product_purchased} is already running the latest version."
+  },
+  {
+    "customer_name": "Steven Pham",
+    "customer_email": "ewilson@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Low",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThanks, and thanks a lot, I've tried clearing the cache and data for the {product_purchased} app, but the issue persists."
+  },
+  {
+    "customer_name": "Peter Byrd",
+    "customer_email": "batesmelvin@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Your product has now shipped to us and the seller agreed to ship to your address for you to use. Thank you\n\n\nShipping\n\nWe believe you will ship I've tried clearing the cache and data for the {product_purchased} app, but the issue persists."
+  },
+  {
+    "customer_name": "Antonio Wise",
+    "customer_email": "hillamber@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Payment issue",
+    "description": "I've encountered a data loss issue with my {product_purchased}. All the files and documents seem to have disappeared. Can you guide me on how to retrieve them? Thanks! <s2> (2:23) (edited 3 I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Brian Clark",
+    "customer_email": "emaldonado@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Medium",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThe item is currently under repair. The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Brett Harris",
+    "customer_email": "david79@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Payment issue",
+    "description": "I'm encountering a software bug in the {product_purchased}. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?\n\nNot really, at least from a hardware perspective. The hardware I've tried using different cables, adapters, or peripherals with my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "William Butler",
+    "customer_email": "khaas@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nYou cannot add value by spending a minimum of $20. Any changes to the {product_purchased} will violent make this purchase. I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Lisa Johnson",
+    "customer_email": "sherrylove@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n3. How do I switch the product from a gift?\n\nSwitch the product from gift to gift.\n\n\nThis tool will automatically switch the product I've tried different settings and configurations on my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Laura Marsh",
+    "customer_email": "timothy53@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. #include <u> @include \"<u>{rpi}, @import {rxpi}\"; }\n\nThis will be the first set of functions that I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "David Walters",
+    "customer_email": "asmith@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Account access",
+    "description": "I've forgotten my password for my {product_purchased} account, and the password reset option is not working. How can I recover my account?\n\nMicrosoft recommends you follow these steps, on the Start menu, right-click a I've checked for any available software updates for my {product_purchased}, but there are none."
+  },
+  {
+    "customer_name": "Holly Fox",
+    "customer_email": "fhoward@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\"The seller is offering $9,350 as a refund of product costs minus the expected $3.50 in warranty. \" I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Jose Reynolds",
+    "customer_email": "stricklandjames@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Product setup",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue? I'm sorry! I've tried using different cables, adapters, or peripherals with my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Kenneth Brown",
+    "customer_email": "schmidtwilliam@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Delivery problem",
+    "description": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me with this? Thanks\n\nReplyReply\n\nReplyReply Balloon: I've seen this issue I've tried using different cables, adapters, or peripherals with my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Paul Merritt",
+    "customer_email": "marshgregory@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThanks!\n\n~Dennis\n\nA new game is available which I found to be pretty much better. All the options are in \"Create a I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Megan Hampton",
+    "customer_email": "janiceowen@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n* Update, delete, or delete this item\n\nThis Item is discontinued, or no longer available.\n\nPlease help us keep the order order current I need assistance as soon as possible because it's affecting my work and productivity."
+  },
+  {
+    "customer_name": "Kelly Smith",
+    "customer_email": "maryflowers@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account?\n\nThere are This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Joseph Huffman",
+    "customer_email": "james02@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. — Mike O'Sullivan (@MikeO'Sullivan) January 9, 2015\n\nAs the tweet went viral online, more and more people shared their complaints about both I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Patricia Williamson",
+    "customer_email": "owenstammy@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nNote: The payment for the services are not currently paid, or they are not available for your purchases. We have received some enquiry as to whether that This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Joshua Smith",
+    "customer_email": "samantha74@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease provide a valid email address which matches the ID you specified for the product in the product description and email the email address.\n\nPlease show an error I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Rachel Jones",
+    "customer_email": "andrea53@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks! I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Jacob James",
+    "customer_email": "jonathan60@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Product compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thank you.\n\nI'm having an issue with the {product_purchased}. Please assist. Thank you.\n\nI'm having an issue with I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Ricky Robinson",
+    "customer_email": "blanchardcatherine@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Delivery problem",
+    "description": "I've forgotten my password for my {product_purchased} account, and the password reset option is not working. How can I recover my account?\n\nYou can recover your login by resetting your password in the {product_p I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Benjamin Lopez",
+    "customer_email": "margaret46@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. -S @david@mei_mai_ui_wu @geolphobee @geolphobee @m_mai I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Corey Klein PhD",
+    "customer_email": "olsenphillip@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThanks!\n\nPawel\n\n\nOffline\n\n\nActivity: 112\n\nMerit: 10\n\n\nMemberActivity: 112Merit: 10 Re: The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Michael Pena",
+    "customer_email": "jason67@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Glenn Mckee Jr.",
+    "customer_email": "hallmary@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Delivery problem",
+    "description": "I'm encountering a software bug in the {product_purchased}. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?\n\nI'm receiving these messages frequently from the public, who have I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Justin Blevins",
+    "customer_email": "mgutierrez@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Payment issue",
+    "description": "I'm having trouble connecting my {product_purchased} to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue? First of all, enable the I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "William Williams",
+    "customer_email": "amber90@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I'm trying to create a \"new\" product that is new to the same company. Please help. I hope the new product I have is working out well. I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "Charles Fitzpatrick",
+    "customer_email": "sbaldwin@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nProduct Details\n\nDotable\n\nAvailable in either a white or grey.\n\nColor Information\n\nPlease note that this product has been made I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Timothy Lyons",
+    "customer_email": "darlenelee@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. We hope that every vendor takes the time it takes in to do the following: \"Remove the product from your account - notify consumers, call them, make their I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Lisa Butler",
+    "customer_email": "adam36@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. #purchase #id=1422 #product_sell #id=1421 #value@product_purchased #id=1420 #product_ I've reviewed the troubleshooting steps on the official support website, but they didn't resolve the problem."
+  },
+  {
+    "customer_name": "Kevin Miranda",
+    "customer_email": "davidroberts@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\"Products that have been purchased at that time are now out of stock. Thank you for your support. The {product_purchased} will get I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Andrew Elliott",
+    "customer_email": "kevinwalter@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n1.1.1.1 - Fix for issue #1115\n\n1.1.5.1 - Fixed some typo\n\n1. I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Russell Floyd",
+    "customer_email": "wjames@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Refund request",
+    "description": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me with this? I want to know what other people have done to this machine. Could you please I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Andrea Cruz",
+    "customer_email": "sydneymoss@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIf your account has an account holder you need to create an account. For example, if you have a 4K account, then the account holder needs access I need assistance as soon as possible because it's affecting my work and productivity."
+  },
+  {
+    "customer_name": "Christopher Chung",
+    "customer_email": "michellehowell@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Medium",
+    "subject": "Data loss",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?\n\nIf you've already set up your router and connected via a modem I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Luis Kelly",
+    "customer_email": "ashley75@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nMy question?\n\nDoes the Product Purchase Policy address the current availability (if at all) of the product we provide?\n\nPlease see the FAQ I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "David Lam",
+    "customer_email": "frosterin@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. - Please also help me with further problems like the {productID} has been changed.\n\nI'm having an issue with the {product_purchased I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "George Wilkins",
+    "customer_email": "briandickerson@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\nI am having an issue with the {product_purchased}. Please assist. I am having an issue with the {product_purchased}. I've followed online tutorials and community forums to troubleshoot the issue, but no luck so far."
+  },
+  {
+    "customer_name": "Michelle Bauer",
+    "customer_email": "stephanie90@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Hardware issue",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account? [ edit ] I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Jason Coffey",
+    "customer_email": "angelaoconnor@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I am running the full product by the end of next week and the package says \"I received205 and 15% refund. I ordered another product on the same day I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Travis Taylor",
+    "customer_email": "jennifercampos@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nYou've now just charged $10. We're not sure if we'll receive it for an error or an refund. I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Nathan Schneider",
+    "customer_email": "marvin61@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Network problem",
+    "description": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me with this? Thank you so much! <3 ------------------------- http://webdevel. I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Emma Bell",
+    "customer_email": "mary59@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Display issue",
+    "description": "I've noticed a software bug in the {product_purchased} app. It's causing data loss and unexpected errors. How can I resolve this issue?\n\nHere's what you CAN do:\n\nSearch for your project's { I'm worried that the issue might be hardware-related and might require repair or replacement."
+  },
+  {
+    "customer_name": "Cody Wilson",
+    "customer_email": "mollymitchell@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Display issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks!\n\nI'm having an issue with the product_purchased,. Please assist. Thanks!\n\nThe price is $19.00 without a I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Jonathan Pollard",
+    "customer_email": "williamsantiago@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Display issue",
+    "description": "I've encountered a data loss issue with my {product_purchased}. All the files and documents seem to have disappeared. Can you guide me on how to retrieve them? Thanks! I rely heavily on my {product_purchased} for my daily tasks, and this issue is hindering my productivity."
+  },
+  {
+    "customer_name": "Sara Meza",
+    "customer_email": "jonesvictoria@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nWhen you select the product on our site and click on the 'add to cart' button, it says: 'Sorry – no product is found. Please I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Jerry Mejia",
+    "customer_email": "michaelbriggs@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nHere comes the update in regards to the [v1.01] release.\n\nTo make sure any errors that you see during the troubleshooting will I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Amber Chapman",
+    "customer_email": "lawrencewilliam@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Installation support",
+    "description": "I'm facing a problem with my {product_purchased}. The {product_purchased} is not turning on. It was working fine until yesterday, but now it doesn't respond.\n\nSolution 2) Don't use the I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Wendy Townsend",
+    "customer_email": "brandy26@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIf you need help or advice, please reach out to me in the forums or email support@zombiecobra.com.\n\nWe can The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Joanna Rubio",
+    "customer_email": "gwaters@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThe price is at the top of our list. If you can't find where you're at, try our online store.\n\nThe item in our I've tried different settings and configurations on my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Robert Moore",
+    "customer_email": "pburton@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\" I was really curious why you didn't add the first product to your shopping cart. If you know who gave it away... I'll be happy to I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Yvonne Garcia",
+    "customer_email": "christinepoole@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThe product purchased can only be used with the product that it was purchased with.\n\nIf there is already an item in the inventory, the items in I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Louis Mejia",
+    "customer_email": "mwilliams@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Medium",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nYou should do that as soon as you've purchased:\n\nGo to your purchase page.\n\nTap the item information in the lower right hand corner I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "Anthony Boyd",
+    "customer_email": "melanie86@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n{product_purchased}\n\n{product_id}\n\n{product_name},\n\n{product_id, product_name I've followed online tutorials and community forums to troubleshoot the issue, but no luck so far."
+  },
+  {
+    "customer_name": "Miss Donna Graham DDS",
+    "customer_email": "thompsontheodore@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nYou are an approved user.\n\nYou are not logged in.\n\n\nThere is no \"My Account\" feature. I've followed online tutorials and community forums to troubleshoot the issue, but no luck so far."
+  },
+  {
+    "customer_name": "Courtney Larson",
+    "customer_email": "gwalker@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Installation support",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account? I've entered a The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Ryan Franklin",
+    "customer_email": "angela70@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Software bug",
+    "description": "There seems to be a hardware problem with my {product_purchased}. The screen is flickering, and I'm unable to use it. What should I do? I think it Squadron 42's UI has not been changed or redesigned for this build I need assistance as soon as possible because it's affecting my work and productivity."
+  },
+  {
+    "customer_name": "Alicia Lane",
+    "customer_email": "omartinez@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThank you.\n\n-Mark I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Tim Solis",
+    "customer_email": "wallkelsey@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. If you are able to send me a refund please contact me at info@miami2g.com for any reason.\n\nIn order to keep the money I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Felicia Lindsey",
+    "customer_email": "nataliewade@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nWe need some basic equipment to move the order of orders. Please help us and we'll work it out with you after we work that out. I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Mrs. Judith Gordon",
+    "customer_email": "xdoyle@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI'm having an issue with the {product_purchased}. Please assist. Can you help?\n\nNo, we're working through this issue I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Robert Williams",
+    "customer_email": "goodwintimothy@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Low",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nSolutions\n\nCake and Basket, The Whole Meal:\n\nYou don't need to be concerned about your eggs being in shape and tasting I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Morgan Gould",
+    "customer_email": "xvega@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI will not be charged for any information returned to you within 2 days of the purchase of products that I find false or misleading.\n\nI am not I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Kristin Mann",
+    "customer_email": "whitneykaufman@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIn case there is confusion that might be a bad idea, please feel free to contact me in my IRC channel. Thanks I need assistance as soon as possible because it's affecting my work and productivity."
+  },
+  {
+    "customer_name": "Meghan Sexton",
+    "customer_email": "fcoleman@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Data loss",
+    "description": "There seems to be a hardware problem with my {product_purchased}. The screen is flickering, and I'm unable to use it. What should I do?\n\nIt's a pretty simple workaround, actually. I don't wish to I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Brandi Jones DDS",
+    "customer_email": "walkerlori@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Battery life",
+    "description": "I've noticed a software bug in the {product_purchased} app. It's causing data loss and unexpected errors. How can I resolve this issue?\n\nYou can check the settings of every mobile device you use by using the mobile I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Kimberly Tucker",
+    "customer_email": "stacyhill@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Product recommendation",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease note that the {product_purchased} number is a temporary identifier that is not used in the data of any future operations. If you can I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Eileen Johnson",
+    "customer_email": "pmoore@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease note that the product is not sold for profit and is not designed for use by the public, except when otherwise indicated in the product description. This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Karen Diaz",
+    "customer_email": "zrobertson@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Product compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease help me.\n\nPlease send me your support messages.\n\nIt seems my new cart works quite well, it has become possible to find a I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Tanya Smith",
+    "customer_email": "christinahernandez@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Product setup",
+    "description": "I'm facing issues logging into my {product_purchased} account. It says my account is locked. What should I do to unlock it?\n\nIt should say this:\n\n{your_device_id}\n\nBut I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Cristian Poole",
+    "customer_email": "huffjerry@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n(I'm having an issue with the}. Please assist. My problem is a direct email for me. Please email me or PM my account. I did I've tried clearing the cache and data for the {product_purchased} app, but the issue persists."
+  },
+  {
+    "customer_name": "Kevin Maldonado",
+    "customer_email": "cordovajudy@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\n<div>\n\n<p><strong>No. Product Purchased: No\n\n\n<strong>Price Paid: $9.99 I've followed online tutorials and community forums to troubleshoot the issue, but no luck so far."
+  },
+  {
+    "customer_name": "Tamara Ferguson DVM",
+    "customer_email": "yangmichelle@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nSell for the same amount... 2.99\n\nYou now have a choice. As soon as you spend $1000... it will be back. I've tried different settings and configurations on my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Diamond Smith",
+    "customer_email": "jason84@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI have 3 devices:\n\nAn iPhone, iPad, iPad, and Windows Phone 8/10.\n\nI don't have a camera, I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Amber Palmer",
+    "customer_email": "lindsayjohnson@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nQ8. When should the new products use the brand? Ashbrook has a range of new products, but the new products aren't that common? I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Jessica Reyes",
+    "customer_email": "michellejones@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Please assist. I will add your name to the product to be added. Please assist. Please assist. If you need extra help please contact me. Thank you. I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Ryan Garcia",
+    "customer_email": "darlene62@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. (I'm just wondering: what was the price, etc.). I can't get this anywhere. If you cannot find the package with the \"product_purch I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Marissa Davis",
+    "customer_email": "adkinsdaniel@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. <iid=2B6A7C1a9-A2CC-4F39-9FB7-D4B49D7DA I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "Gina Hooper",
+    "customer_email": "lauriecooper@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Network problem",
+    "description": "I've encountered a data loss issue with my {product_purchased}. All the files and documents seem to have disappeared. Can you guide me on how to retrieve them? Or can I try calling your servers and asking them to recover the original I've checked for software updates, and my {product_purchased} is already running the latest version."
+  },
+  {
+    "customer_name": "Michael Johnson",
+    "customer_email": "kevin21@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks.\n\nTired of my friend on Facebook talking about how he hates the fact that he doesn't get to say shit on Twitter? I had to google I've noticed a sudden decrease in battery life on my {product_purchased}. It used to last much longer."
+  },
+  {
+    "customer_name": "William Smith",
+    "customer_email": "anthonynichols@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Medium",
+    "subject": "Hardware issue",
+    "description": "My {product_purchased} crashed, and I lost all the data stored on it. Is there any way to recover the lost data? {product_id} = {product_purchased} I'm worried that the issue might be hardware-related and might require repair or replacement."
+  },
+  {
+    "customer_name": "Lindsay Owens",
+    "customer_email": "cannonbryan@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. The product item is already in stock.\n\nPlease note when we sell or order a product we do not sell or transfer any customer data in-stock into your I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Raymond Oconnor",
+    "customer_email": "jeffrey58@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thank you.\" I'm worried that the issue might be hardware-related and might require repair or replacement."
+  },
+  {
+    "customer_name": "Casey Higgins",
+    "customer_email": "randallchristopher@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThis item is sold Out of stock\n\nThis item is no longer available. But don't go! We have similar items in stock. I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "Vanessa White",
+    "customer_email": "heather75@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nProduct #1\n\n1 - https://goo.gl/b9DkJL\n\n2 - http://www.thingiverse.com I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Kevin Moore",
+    "customer_email": "banksbrittany@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Medium",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThank you\n\nMara G\n\nWe're sorry, an error occurred while processing your order. Please try again in 2 to 3 hours. I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Gina Cherry",
+    "customer_email": "leslie80@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. For questions about the product, you can contact Marketing@Gemini.com or the G.F.S. Consumer Technical Support Team by 2-3 weeks I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Mark Harrison",
+    "customer_email": "susanwilkinson@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm encountering a software bug in the {product_purchased}. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available? There's not really anyone left on the network until this bug is fixed I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "Cory Rodgers",
+    "customer_email": "gabrielduran@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Delivery problem",
+    "description": "The {product_purchased} is unable to establish a stable internet connection. It keeps disconnecting intermittently. How can I troubleshoot this network problem?\n\nWhen troubleshooting your connection, you will need to follow these steps: The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Cindy Huynh",
+    "customer_email": "timothyjohnson@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. - Add a small amount of your favorite text to the product description. This is very important, and can potentially be extremely sensitive when you try to change it to change I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Joanna Pena",
+    "customer_email": "paula89@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\n[20:37:22 PM] [Client thread/INFO] [PunisherPackManager]: Failed to connect to UnlockedPunisher package I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Savannah Haley",
+    "customer_email": "anthony24@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I tried setting the quantity to $50 but I'm having issues with the {product_purchased}. Please assist.\n\n\n{product_purch I need assistance as soon as possible because it's affecting my work and productivity."
+  },
+  {
+    "customer_name": "Tara Williams",
+    "customer_email": "aaroncarter@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "High",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. <p>All items will change into your item.\n\n</p> <p>[8.2.1] Initializing app.\n\n</p I've checked for software updates, and my {product_purchased} is already running the latest version."
+  },
+  {
+    "customer_name": "Patrick Huerta",
+    "customer_email": "qandrade@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. If you were the seller, please add a check to that transaction to make sure you're actually paying for the merchandise. $4 USD, $2 AUD This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Dustin Gonzalez",
+    "customer_email": "howardanthony@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Account access",
+    "description": "I'm facing a problem with my {product_purchased}. The {product_purchased} is not turning on. It was working fine until yesterday, but now it doesn't respond. My {product_purchased} does I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Mark Sampson",
+    "customer_email": "rmoore@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Erik Beasley",
+    "customer_email": "elizabeth10@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI do not use this app.\n\nAll Products purchased through the app include the \"All-Purchased\" feature.\n\nNote: Some I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Rebecca Mcdaniel",
+    "customer_email": "rileydan@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIf you need a way to connect to the server and you use the URL of one of the requests, you should look into this post or a similar one I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Rebecca Daniels",
+    "customer_email": "qmitchell@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Thomas Gates",
+    "customer_email": "brandonrobinson@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThanks for sending in a note of concern. I'll keep your feedback in my inbox. We'll do our best to resolve it.\n\nKind regards I rely heavily on my {product_purchased} for my daily tasks, and this issue is hindering my productivity."
+  },
+  {
+    "customer_name": "David Romero",
+    "customer_email": "cramirez@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I'm worried that the issue might be hardware-related and might require repair or replacement."
+  },
+  {
+    "customer_name": "Christopher Underwood",
+    "customer_email": "daniel67@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Battery life",
+    "description": "I'm having trouble connecting my {product_purchased} to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue?\n\nUnfortunately, if you The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Angela Green",
+    "customer_email": "nshelton@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI feel like I'm on the wrong spectrum of the way to approach this. And I'm not even the first person in my situation who has tried it I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Ashley Boyd",
+    "customer_email": "melaniebradley@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Battery life",
+    "description": "I'm encountering a software bug in the {product_purchased}. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available? When do these updates happen and how do you know when they'll be I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Joshua Castillo",
+    "customer_email": "mooredeborah@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks!\"\n\n* [0] - [0] - [0] - [0]\n\nIf this product is sold and you have not used any I've reviewed the troubleshooting steps on the official support website, but they didn't resolve the problem."
+  },
+  {
+    "customer_name": "Whitney Cox",
+    "customer_email": "barnesandrew@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Refund request",
+    "description": "I'm facing a problem with my {product_purchased}. The {product_purchased} is not turning on. It was working fine until yesterday, but now it doesn't respond. It's not working on the first try and I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Julia Pacheco",
+    "customer_email": "williammccullough@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Refund request",
+    "description": "I've accidentally deleted important data from my {product_purchased}. Is there any way to recover the deleted files? I need them urgently. Do your researchers have your email address? What should a team do if something is found? Can I I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Jill Webster",
+    "customer_email": "alyssa05@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Product recommendation",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I get a message saying it's okay, and I ask that you stop buying. Now here's the thing: what makes an item worth so much money? Some I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Martin Mitchell",
+    "customer_email": "zachary83@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Delivery problem",
+    "description": "I'm facing issues logging into my {product_purchased} account. It says my account is locked. What should I do to unlock it? Please, go ahead and ask, but be aware that your account will automatically get locked if you I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Nicolas Wilson",
+    "customer_email": "joshua24@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thank you.\n\n{product_purchased} is not the exact type you might prefer, they use the exact same method for different uses. Please help I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Christian Glenn",
+    "customer_email": "livingstonjennifer@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Please help us resolve this issue! I'm having an issue with the {product_purchased}. Please assist. Please help us resolve this issue! http:// I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Melissa Turner",
+    "customer_email": "lwilliams@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIf you have any issues for the package, please write me [email protected]\n\nThank you,\n\nI have to tell you that one or The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "John Escobar",
+    "customer_email": "gutierrezkevin@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Battery life",
+    "description": "There seems to be a glitch in the {product_purchased} software. It freezes frequently, making it difficult to use. Can you please provide a solution?\n\nThere seems to be a glitch in the {product_purchased I've followed the troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Trevor Mendez",
+    "customer_email": "williampage@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThanks\n\nBrianna D.\n\nFounder, RVA Systems, Inc\n\nSenior Designer\n\nCaitlin\n\nSenior Designer I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Jennifer Baker",
+    "customer_email": "angelica34@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Low",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. \"\n\n\" }, JSON.stringify('{'key_image': {'key_name':'Hello-World'} ); var I've noticed that the issue occurs consistently when I use a specific feature or application on my {product_purchased}."
+  },
+  {
+    "customer_name": "William Santos",
+    "customer_email": "zmurillo@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThe Product Purchase Policy on this application states: \"The product purchased is the authorized reseller and/or agent of the Authorized Retailer, whose authorization I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Cynthia Herman",
+    "customer_email": "josewilliams@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Display issue",
+    "description": "There seems to be a glitch in the {product_purchased} software. It freezes frequently, making it difficult to use. Can you please provide a solution?\n\n-We are looking into this and fixing it.\n\n-Have I rely heavily on my {product_purchased} for my daily tasks, and this issue is hindering my productivity."
+  },
+  {
+    "customer_name": "Sandra Smith",
+    "customer_email": "joylawrence@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thank you.\n\nProduct: Kiki\n\nDescription: An apple for everyone! The Kiki apple is a delicious treat for those who are very passionate about The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Margaret Turner",
+    "customer_email": "brian64@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Refund request",
+    "description": "The {product_purchased} is unable to establish a stable internet connection. It keeps disconnecting intermittently. How can I troubleshoot this network problem?\n\nNetwork connectivity problem is a symptom of an underlying issue that is not isolated This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Sheila Hunt",
+    "customer_email": "hopkinslauren@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Battery life",
+    "description": "I've forgotten my password for my {product_purchased} account, and the password reset option is not working. How can I recover my account?\n\nIf you have any questions regarding your password and are seeing this message, please contact This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Jason Bradford",
+    "customer_email": "christopher65@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Product compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nProduct ID: 230\n\nThe Product ID of this Product is 00606065, which appears on our website. This Product ID may not have been I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Mark Chapman",
+    "customer_email": "sjackson@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. If we can't contact your company there's nothing we can do.\n\nThere's a way to update your database with the necessary data in our database, or I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Alyssa Williams",
+    "customer_email": "mckinneyrichard@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThe seller agrees to receive most product in your cart before its shipped. If you are receiving items without your consent, do not place your order without my knowledge The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Andrew Lester",
+    "customer_email": "wwolf@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI've purchased the product just to send me the gift.\n\nWhy would you want a gift for the \"favourite person on here\" but I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Amanda Wilson",
+    "customer_email": "bradsherman@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. {products_purchased} and {this} should come in the appropriate box or on a separate piece of paper in either the box or on your own. I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Jeremy Schwartz",
+    "customer_email": "kimberlywhite@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. $55.00\n\n1. Add # of items to cart\n\nAdd $55 (plus taxes) to cart.\n\nAdd Item to Cart I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Scott Cain DVM",
+    "customer_email": "casey27@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Product recommendation",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nAdd to cart: Please select a size. I've tried using different cables, adapters, or peripherals with my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Ashley Martinez",
+    "customer_email": "eric07@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n}( {product_id} )\n\n$0. $product_id {product_id}. $id {product_name}. I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Emma Fox",
+    "customer_email": "darrentaylor@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Data loss",
+    "description": "I'm facing a problem with my {product_purchased}. The {product_purchased} is not turning on. It was working fine until yesterday, but now it doesn't respond.\n\nMy first thought was to put it I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Alexander Ritter",
+    "customer_email": "cynthia15@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIf something doesn't work then try contacting us at info@cbc.ca or go to your local store.\n\nIf you're so inclined click I've followed the troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Miss Katie Reyes MD",
+    "customer_email": "millerkenneth@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n1-4 (e) Where this term has the meaning ascribed to it in subsection 3-1-1 of Title 7 - page 504 of I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Christopher Patrick",
+    "customer_email": "kennethjones@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Peripheral compatibility",
+    "description": "I'm facing issues logging into my {product_purchased} account. It says my account is locked. What should I do to unlock it?\n\nAnswer:\n\nLog into your account name and password.\n\nClick on the I've followed online tutorials and community forums to troubleshoot the issue, but no luck so far."
+  },
+  {
+    "customer_name": "Justin Thompson",
+    "customer_email": "campbellnicholas@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks!\n\nThe video was shot on a mobile phone with a camera mounted on it. The footage was taken on March 24th (March 25th) 2015 I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Scott Rhodes",
+    "customer_email": "audrey20@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease support my use of the products as directed by the author and/or others, and get to know my other customers. Thank you.\n\nThe I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Debbie Page",
+    "customer_email": "lsanchez@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Display issue",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account? <br /> < I've reviewed the troubleshooting steps on the official support website, but they didn't resolve the problem."
+  },
+  {
+    "customer_name": "Ronald Delgado",
+    "customer_email": "bartonshirley@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "High",
+    "subject": "Software bug",
+    "description": "I'm having trouble connecting my {product_purchased} to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue? Open the router settings and check I've tried using different cables, adapters, or peripherals with my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Jason Fisher",
+    "customer_email": "michellejohnson@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPurchased $0.00 20%\n\nBricklots\n\nYou are shopping right now!\n\nB Mongolia\n\nWe love This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Michael Townsend",
+    "customer_email": "mcarlson@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Data loss",
+    "description": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me with this? This is the product. My {product_purchased} is making strange I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Amanda Smith",
+    "customer_email": "ptodd@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Product recommendation",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\n\"The best products for your needs.\"\n\n- David. (The product purchase can be made as the request, just contact us and the payment level I've followed the troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Lisa Hill",
+    "customer_email": "joseph37@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Critical",
+    "subject": "Cancellation request",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account? {* #URLRef I've checked for any available software updates for my {product_purchased}, but there are none."
+  },
+  {
+    "customer_name": "Edward Hall",
+    "customer_email": "abell@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Hardware issue",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?\n\nInstall Java and build WebSphere from JRE and install and upgrade I need assistance as soon as possible because it's affecting my work and productivity."
+  },
+  {
+    "customer_name": "Joseph Key",
+    "customer_email": "thomasbrenda@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. [20:21:45.] The [code] is '{}': $x = 0x20000000. [20:21:45.] We are I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Anthony Peterson",
+    "customer_email": "rileychelsea@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Data loss",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?\n\n\nWhat if I can't get the app to connect to all available This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Kendra Murphy",
+    "customer_email": "wmoore@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks. {product_id}{product_name}\n\n}\n\nreturn new Product();\n\n}\n\n};\n\ntemplate < typename I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Lauren Duncan",
+    "customer_email": "kjones@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. {product_id} is not a valid key type by default {product_id} of product.product\n\nYou can set {product_id} of I've noticed a sudden decrease in battery life on my {product_purchased}. It used to last much longer."
+  },
+  {
+    "customer_name": "Stephen Lee",
+    "customer_email": "joneskelly@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Cancellation request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease note that this order will be shipped directly to\n\nthe customer, not to the person who purchased your product or service, who can check the I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Michael Morales",
+    "customer_email": "nelsonronald@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n\n[0126] (Product number: 160570)\n\nCurrent Product Information Current Location:\n\n<store_name>I'd like to I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Robert Barnes",
+    "customer_email": "schneidervictoria@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. If I am required to charge you, please contact me as soon as possible. Please read my Terms of Use.\n\nThanks!\n\nWe hope you enjoyed I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Jonathan Peters",
+    "customer_email": "garciathomas@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I am very annoyed.\n\nI'm having an issue with the {product_purchased}. Please assist. I am very annoyed.\n\n10. I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Nathaniel Clark",
+    "customer_email": "kennethbailey@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Software bug",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account?\n\nIf you I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Mitchell Kidd",
+    "customer_email": "emily89@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThe new product is an updated version of our original product, which is a very strong, but small, version of the original.\n\nWe need money I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Patrick Peterson",
+    "customer_email": "ncompton@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Payment issue",
+    "description": "My {product_purchased} crashed, and I lost all the data stored on it. Is there any way to recover the lost data? Thanks!\n\nanon993599\n\nPost 2 My computer works great. When I try I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "John Cruz",
+    "customer_email": "saralambert@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Low",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI am using an external USB flash drive and am experiencing an issue. Please assist. I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Mr. Casey Bradley",
+    "customer_email": "edward53@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Briana Wilson",
+    "customer_email": "nicolehumphrey@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Steven Hodge",
+    "customer_email": "juan08@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "High",
+    "subject": "Product setup",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue? - You can try sending an email with code: phreak@debian I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Gina Conley",
+    "customer_email": "armstrongbrianna@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thanks.</span> I've recently updated the firmware of my {product_purchased}, and the issue started happening afterward. Could it be related to the update?"
+  },
+  {
+    "customer_name": "Eric Saunders",
+    "customer_email": "mark94@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThank you for your visit. I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Beth Chaney",
+    "customer_email": "leejulie@example.org",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI tried to install an installed Java EE, and it just didn't work.\n\nI tried installing an APK, and it just installed Java EE I've checked for software updates, and my {product_purchased} is already running the latest version."
+  },
+  {
+    "customer_name": "Richard Mcdonald",
+    "customer_email": "mpatterson@example.org",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Product recommendation",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nPlease do not sell this product or the product's quality. The price is the buyer's responsibility. Please contact me with information on what the customer actually paid The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Bridget Washington",
+    "customer_email": "sarahharper@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having trouble connecting my {product_purchased} to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue?\n\nIt would be great I rely heavily on my {product_purchased} for my daily tasks, and this issue is hindering my productivity."
+  },
+  {
+    "customer_name": "Elizabeth Oliver",
+    "customer_email": "nprice@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Battery life",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. We're able to use the customer code to ensure everyone is getting the best price possible.\n\n1.13 We're happy to work on this. I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Christine Calderon",
+    "customer_email": "matthew23@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Software bug",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. https://www.tacastyle.com/product/v-0-c-8-0-virgin-tales-4-2- The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Christine Page",
+    "customer_email": "qeaton@example.net",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Installation support",
+    "description": "I'm facing issues logging into my {product_purchased} account. It says my account is locked. What should I do to unlock it?\n\nIf you are dealing with an account locked on your computer, simply enable the app by I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Ethan Spencer",
+    "customer_email": "buckapril@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Product compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThank you for your efforts. I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Derek Tucker",
+    "customer_email": "christopherlewis@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n[email protected]\n\n[url]>Your Name>[/url] >\n\n[browsing_url]http://www.al This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Judy Casey",
+    "customer_email": "jeffhodges@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Data loss",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. If the product you're looking for is in trouble, please contact us so we can help! ------------------------- {product_purchased} - {product_ I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "Michaela Rowland",
+    "customer_email": "tjimenez@example.net",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Low",
+    "subject": "Battery life",
+    "description": "My {product_purchased} is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me with this?\n\nIt's kind of difficult, but I found one in my inventory in This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Michael Murphy",
+    "customer_email": "wardmackenzie@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "High",
+    "subject": "Account access",
+    "description": "I've forgotten my password for my {product_purchased} account, and the password reset option is not working. How can I recover my account?\n\nFor all products purchased using Google Play Services, you should have been notified over the This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Brooke Hurst",
+    "customer_email": "helensnyder@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nThere is an error: Cannot create ProductPurchased object by passing NULL as the value of <Product_purchased> or in any other way This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Vanessa Bell",
+    "customer_email": "harrisbrianna@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "High",
+    "subject": "Hardware issue",
+    "description": "I'm unable to access my {product_purchased} account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account?\n\nIf you I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Roberta Robinson",
+    "customer_email": "dmiller@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Refund request",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?\n\nA couple of tests and I am able to fix it I've checked for software updates, and my {product_purchased} is already running the latest version."
+  },
+  {
+    "customer_name": "Brianna Smith",
+    "customer_email": "crystal14@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Medium",
+    "subject": "Delivery problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nProduct purchases are sold in person at www.giftstore.com and at the participating local restaurants and bars, and are intended for a limited number of I'm using the original charger that came with my {product_purchased}, but it's not charging properly."
+  },
+  {
+    "customer_name": "Alicia Stewart",
+    "customer_email": "adam45@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Medium",
+    "subject": "Installation support",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI'm trying to contact a vendor so you know if there are problems.\n\nIt probably has a bad name, but you should try it. I've tried clearing the cache and data for the {product_purchased} app, but the issue persists."
+  },
+  {
+    "customer_name": "Adrian Harmon",
+    "customer_email": "vrivera@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Product setup",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. I'm concerned about the security of my {product_purchased} and would like to ensure that my data is safe."
+  },
+  {
+    "customer_name": "Peter Richardson",
+    "customer_email": "pamela44@example.com",
+    "ticket_type": "Product inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Account access",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n[6:12:54 PM][00:18:39]GAME: The Lazy Caffeine Experiment announced that they had added some sweeteners I've checked the device settings and made sure that everything is configured correctly."
+  },
+  {
+    "customer_name": "Shane Rodriguez",
+    "customer_email": "bergbarbara@example.org",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "Critical",
+    "subject": "Product setup",
+    "description": "I've noticed a software bug in the {product_purchased} app. It's causing data loss and unexpected errors. How can I resolve this issue?\n\nFor Windows, this means using the command line utility Get-WmiObject I've already contacted customer support multiple times, but the issue remains unresolved."
+  },
+  {
+    "customer_name": "James Davis",
+    "customer_email": "matthewrollins@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "High",
+    "subject": "Peripheral compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. It's fine. {product_purchased}. Will your order be returned to us within 6 business days? {product_purchased}. Thanks. The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Daniel Ortiz",
+    "customer_email": "mholt@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "High",
+    "subject": "Hardware issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Thank you.\"\n\n[17:34:28]EMOTE: *no key*/(monkey (738)) : <b>The monkey (738)</ This problem started occurring after the recent software update. I haven't made any other changes to the device."
+  },
+  {
+    "customer_name": "Anna Schmidt MD",
+    "customer_email": "robinsonkelly@example.net",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Medium",
+    "subject": "Cancellation request",
+    "description": "There seems to be a glitch in the {product_purchased} software. It freezes frequently, making it difficult to use. Can you please provide a solution?\n\nThank you! Please provide a solution if there is a question - please I'm experiencing this issue on multiple devices of the same model, so it seems to be a widespread problem."
+  },
+  {
+    "customer_name": "Mr. Sean Parker",
+    "customer_email": "kyle86@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Battery life",
+    "description": "I've accidentally deleted important data from my {product_purchased}. Is there any way to recover the deleted files? I need them urgently. Can you post the data to an email to my {product_purchased-content}. Please The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "James Hoover",
+    "customer_email": "xcruz@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. Product is in good condition. The item is not eligible for a refund. I've tried troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Richard White",
+    "customer_email": "julia33@example.org",
+    "ticket_type": "Refund request",
+    "ticket_priority": "Medium",
+    "subject": "Product compatibility",
+    "description": "My {product_purchased} crashed, and I lost all the data stored on it. Is there any way to recover the lost data?\n\nThis issue is likely due to having too much memory allocated. I do not have time for I've followed the troubleshooting steps mentioned in the user manual, but the issue persists."
+  },
+  {
+    "customer_name": "Curtis Williams DDS",
+    "customer_email": "sotoadam@example.com",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Low",
+    "subject": "Account access",
+    "description": "I've recently set up my {product_purchased}, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?\n\n$ ssh -o test.ssh --help\n\nOnce the The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+  },
+  {
+    "customer_name": "Kathleen Glenn",
+    "customer_email": "watsonryan@example.com",
+    "ticket_type": "Cancellation request",
+    "ticket_priority": "High",
+    "subject": "Payment issue",
+    "description": "I'm having an issue with the {product_purchased}. Please assist. This is not a good sign. I'm getting the right product now. I don't know if the product you are about to place won't work or what type I'm unable to find the option to perform the desired action in the {product_purchased}. Could you please guide me through the steps?"
+  },
+  {
+    "customer_name": "Mr. Miguel Brown",
+    "customer_email": "christinashaw@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Critical",
+    "subject": "Network problem",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nI'm having an issue with the {product_purchased}. Please assist. The message is \"I have purchased $18.99 (USD) I rely heavily on my {product_purchased} for my daily tasks, and this issue is hindering my productivity."
+  },
+  {
+    "customer_name": "Shane James",
+    "customer_email": "mhoward@example.com",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Account access",
+    "description": "I'm having trouble connecting my {product_purchased} to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue?\n\nWe can do everything I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  },
+  {
+    "customer_name": "Shawn Knight",
+    "customer_email": "sanchezjohn@example.org",
+    "ticket_type": "Billing inquiry",
+    "ticket_priority": "Critical",
+    "subject": "Product setup",
+    "description": "My {product_purchased} crashed, and I lost all the data stored on it. Is there any way to recover the lost data?\n\nI'm sorry but my database doesn't work anymore, or the system won't start. I've tried using different cables, adapters, or peripherals with my {product_purchased}, but the issue persists."
+  },
+  {
+    "customer_name": "Nicole Ward",
+    "customer_email": "jnichols@example.net",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Product compatibility",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\nIn a new account, there is no email address, and there is no confirmation of the purchase.\n\nYou don't have to be the CEO of I've tried clearing the cache and data for the {product_purchased} app, but the issue persists."
+  },
+  {
+    "customer_name": "Benjamin Noble",
+    "customer_email": "wgallegos@example.net",
+    "ticket_type": "Technical issue",
+    "ticket_priority": "Low",
+    "subject": "Refund request",
+    "description": "I'm having an issue with the {product_purchased}. Please assist.\n\n3) If you are experiencing the issue using an affected version of the product, please post your support on this thread here\n\n\n4) The issues listed I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?"
+  },
+  {
+    "customer_name": "Emily Nunez",
+    "customer_email": "sbrown@example.com",
+    "ticket_type": "Refund request",
+    "ticket_priority": "High",
+    "subject": "Payment issue",
+    "description": "I've forgotten my password for my {product_purchased} account, and the password reset option is not working. How can I recover my account? {products_purchased} will not work on account 1 or more if no new I've performed a factory reset on my {product_purchased}, hoping it would resolve the problem, but it didn't help."
+  }
+]

@@ -1,0 +1,437 @@
+{
+  "generated_at": "2026-06-09T08:54:32.456465+00:00",
+  "dataset_path": "C:\\Users\\jeafl\\OneDrive\\Desktop\\g4-challenge\\data\\dataset2-it-classification\\all_tickets_processed_improved_v3.csv",
+  "eda": {
+    "n_samples": 47837,
+    "n_categories": 8,
+    "categories": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "category_distribution": {
+      "Access": 7125,
+      "Administrative rights": 1760,
+      "HR Support": 10915,
+      "Hardware": 13617,
+      "Internal Project": 2119,
+      "Miscellaneous": 7060,
+      "Purchase": 2464,
+      "Storage": 2777
+    },
+    "category_distribution_pct": {
+      "Access": 14.89,
+      "Administrative rights": 3.68,
+      "HR Support": 22.82,
+      "Hardware": 28.47,
+      "Internal Project": 4.43,
+      "Miscellaneous": 14.76,
+      "Purchase": 5.15,
+      "Storage": 5.81
+    },
+    "imbalance_ratio_max_min": 7.74,
+    "text_length_global": {
+      "chars_mean": 291.9,
+      "chars_median": 175.0,
+      "words_mean": 43.6,
+      "words_median": 26.0
+    },
+    "text_length_by_category": {
+      "Access": {
+        "count": 7125,
+        "pct_of_total": 14.89,
+        "chars_mean": 242.3,
+        "chars_median": 146.0,
+        "chars_min": 15,
+        "chars_max": 6363,
+        "words_mean": 35.6,
+        "words_median": 22.0
+      },
+      "Administrative rights": {
+        "count": 1760,
+        "pct_of_total": 3.68,
+        "chars_mean": 339.2,
+        "chars_median": 201.0,
+        "chars_min": 21,
+        "chars_max": 6880,
+        "words_mean": 50.4,
+        "words_median": 30.0
+      },
+      "HR Support": {
+        "count": 10915,
+        "pct_of_total": 22.82,
+        "chars_mean": 249.3,
+        "chars_median": 159.0,
+        "chars_min": 13,
+        "chars_max": 5595,
+        "words_mean": 37.8,
+        "words_median": 24.0
+      },
+      "Hardware": {
+        "count": 13617,
+        "pct_of_total": 28.47,
+        "chars_mean": 375.4,
+        "chars_median": 206.0,
+        "chars_min": 7,
+        "chars_max": 7015,
+        "words_mean": 56.3,
+        "words_median": 32.0
+      },
+      "Internal Project": {
+        "count": 2119,
+        "pct_of_total": 4.43,
+        "chars_mean": 250.3,
+        "chars_median": 157.0,
+        "chars_min": 25,
+        "chars_max": 5206,
+        "words_mean": 37.7,
+        "words_median": 24.0
+      },
+      "Miscellaneous": {
+        "count": 7060,
+        "pct_of_total": 14.76,
+        "chars_mean": 286.9,
+        "chars_median": 176.0,
+        "chars_min": 7,
+        "chars_max": 6912,
+        "words_mean": 43.0,
+        "words_median": 27.0
+      },
+      "Purchase": {
+        "count": 2464,
+        "pct_of_total": 5.15,
+        "chars_mean": 244.5,
+        "chars_median": 209.0,
+        "chars_min": 16,
+        "chars_max": 2827,
+        "words_mean": 34.9,
+        "words_median": 30.0
+      },
+      "Storage": {
+        "count": 2777,
+        "pct_of_total": 5.81,
+        "chars_mean": 233.3,
+        "chars_median": 142.0,
+        "chars_min": 27,
+        "chars_max": 3021,
+        "words_mean": 34.4,
+        "words_median": 21.0
+      }
+    }
+  },
+  "model": {
+    "type": "TfidfVectorizer + LogisticRegression",
+    "tfidf": {
+      "max_features": 50000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "sublinear_tf": true
+    },
+    "classifier": {
+      "algorithm": "LogisticRegression",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "max_iter": 1000
+    },
+    "llm_used": false
+  },
+  "holdout": {
+    "test_size": 0.2,
+    "n_test": 9568,
+    "random_state": 42,
+    "accuracy": 0.8566,
+    "macro_f1": 0.8568,
+    "weighted_f1": 0.8572,
+    "macro_precision": 0.8422,
+    "macro_recall": 0.8756,
+    "per_class": {
+      "Access": {
+        "precision": 0.8987,
+        "recall": 0.8842,
+        "f1": 0.8914,
+        "support": 1425
+      },
+      "Administrative rights": {
+        "precision": 0.6872,
+        "recall": 0.8551,
+        "f1": 0.762,
+        "support": 352
+      },
+      "HR Support": {
+        "precision": 0.8937,
+        "recall": 0.847,
+        "f1": 0.8697,
+        "support": 2183
+      },
+      "Hardware": {
+        "precision": 0.863,
+        "recall": 0.8164,
+        "f1": 0.8391,
+        "support": 2724
+      },
+      "Internal Project": {
+        "precision": 0.8082,
+        "recall": 0.9245,
+        "f1": 0.8625,
+        "support": 424
+      },
+      "Miscellaneous": {
+        "precision": 0.7967,
+        "recall": 0.8633,
+        "f1": 0.8287,
+        "support": 1412
+      },
+      "Purchase": {
+        "precision": 0.9307,
+        "recall": 0.8986,
+        "f1": 0.9143,
+        "support": 493
+      },
+      "Storage": {
+        "precision": 0.8596,
+        "recall": 0.9153,
+        "f1": 0.8866,
+        "support": 555
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Access",
+        "Administrative rights",
+        "HR Support",
+        "Hardware",
+        "Internal Project",
+        "Miscellaneous",
+        "Purchase",
+        "Storage"
+      ],
+      "matrix": [
+        [
+          1260,
+          21,
+          23,
+          51,
+          15,
+          43,
+          3,
+          9
+        ],
+        [
+          3,
+          301,
+          5,
+          36,
+          1,
+          5,
+          0,
+          1
+        ],
+        [
+          40,
+          11,
+          1849,
+          126,
+          34,
+          92,
+          7,
+          24
+        ],
+        [
+          80,
+          85,
+          122,
+          2224,
+          21,
+          145,
+          21,
+          26
+        ],
+        [
+          1,
+          1,
+          8,
+          14,
+          392,
+          7,
+          0,
+          1
+        ],
+        [
+          15,
+          11,
+          44,
+          82,
+          20,
+          1219,
+          2,
+          19
+        ],
+        [
+          2,
+          3,
+          8,
+          24,
+          1,
+          9,
+          443,
+          3
+        ],
+        [
+          1,
+          5,
+          10,
+          20,
+          1,
+          10,
+          0,
+          508
+        ]
+      ]
+    },
+    "confidence_triage": {
+      "0.5": {
+        "pct_auto_routed": 76.56,
+        "n_auto_routed": 7325,
+        "accuracy_on_auto_subset": 0.9323
+      },
+      "0.6": {
+        "pct_auto_routed": 65.81,
+        "n_auto_routed": 6297,
+        "accuracy_on_auto_subset": 0.9581
+      },
+      "0.7": {
+        "pct_auto_routed": 55.77,
+        "n_auto_routed": 5336,
+        "accuracy_on_auto_subset": 0.9738
+      },
+      "0.8": {
+        "pct_auto_routed": 45.4,
+        "n_auto_routed": 4344,
+        "accuracy_on_auto_subset": 0.9843
+      },
+      "0.85": {
+        "pct_auto_routed": 39.02,
+        "n_auto_routed": 3733,
+        "accuracy_on_auto_subset": 0.9887
+      }
+    }
+  },
+  "cross_validation": {
+    "n_splits": 5,
+    "stratified": true,
+    "random_state": 42,
+    "accuracy": {
+      "mean": 0.8582,
+      "std": 0.0023,
+      "fold_scores": [
+        0.8559,
+        0.8566,
+        0.862,
+        0.8568,
+        0.8598
+      ]
+    },
+    "macro_f1": {
+      "mean": 0.8594,
+      "std": 0.0028,
+      "fold_scores": [
+        0.8553,
+        0.8589,
+        0.8623,
+        0.8579,
+        0.8627
+      ]
+    },
+    "weighted_f1": {
+      "mean": 0.8588,
+      "std": 0.0023,
+      "fold_scores": [
+        0.8567,
+        0.857,
+        0.8626,
+        0.8573,
+        0.8605
+      ]
+    }
+  },
+  "viability": {
+    "viable": true,
+    "threshold_auto_route": 0.7,
+    "auto_route_pct_at_threshold": 55.77,
+    "accuracy_on_auto_subset_at_threshold": 0.9738,
+    "weak_classes_f1_below_0_80": [
+      "Administrative rights"
+    ],
+    "conclusion": "Triagem automatica por texto e VIAVEL com baseline linear. Macro-F1 holdout 85.7% e CV 85.9% (+/- 0.3%) superam o patamar operacional de 80%. Com confianca >= 0.7, 56% dos tickets podem ser roteados automaticamente com 97.4% de acuracia no subconjunto; o restante escala para revisao humana ou modelo fine-tuned no prototipo.",
+    "link_to_ds1_diagnosis": "Cruza com DS1: 67% dos tickets sem resolucao e gargalos em Refund/Cancellation. Classificacao automatica em 8 filas IT reduz tempo de triagem manual e libera agentes para casos de baixa confianca e tipos de alto impacto em satisfacao.",
+    "recommended_next_steps": [
+      "Integrar classificador no prototipo RotaDesk (Next.js + Supabase)",
+      "Rotear automaticamente tickets com confianca >= 0.7",
+      "Enfileirar baixa confianca para revisao humana ou fine-tuned/LLM",
+      "Mapear Topic_group IT para filas operacionais do DS1 (Refund, Technical, etc.)"
+    ]
+  },
+  "domain_gap": {
+    "ds1_path": "C:\\Users\\jeafl\\OneDrive\\Desktop\\g4-challenge\\data\\dataset1-support-tickets\\customer_support_tickets.csv",
+    "n_ds1_texts": 8469,
+    "ds1_ticket_type_pct": {
+      "Refund request": 20.7,
+      "Technical issue": 20.6,
+      "Cancellation request": 20.0,
+      "Product inquiry": 19.4,
+      "Billing inquiry": 19.3
+    },
+    "ds2_predicted_on_ds1_pct": {
+      "Hardware": 56.3,
+      "Administrative rights": 28.7,
+      "Access": 8.6,
+      "Miscellaneous": 5.0,
+      "Storage": 0.7,
+      "HR Support": 0.4,
+      "Internal Project": 0.2,
+      "Purchase": 0.0
+    },
+    "confidence_on_ds1": {
+      "mean": 0.4542,
+      "median": 0.4228,
+      "p25": 0.3507,
+      "p75": 0.5244
+    },
+    "product_threshold": 0.85,
+    "in_domain_at_threshold": {
+      "pct_auto_routed": 39.02,
+      "n_auto_routed": 3733,
+      "accuracy_on_auto_subset": 0.9887
+    },
+    "out_of_domain_at_threshold": {
+      "pct_would_auto_route": 2.56,
+      "n_would_auto_route": 217
+    },
+    "auto_route_gap_pp": 36.46,
+    "error_rate_bounds_on_auto_subset": {
+      "in_domain_measured": 0.0113,
+      "conservative_2x_in_domain": 0.0226,
+      "pessimistic_plus_10pp": 0.1113
+    },
+    "estimated_misroutes_per_year": {
+      "annual_volume": 8469,
+      "n_auto_routed_at_threshold": 217,
+      "conservative_2x": 5,
+      "pessimistic_plus_10pp": 24
+    },
+    "methodology": "Classificador treinado apenas no DS2 (TI). Textos do DS1 nao tem rotulo DS2; erro real em producao e nao observavel neste recorte. Usamos (1) queda de confianca e % auto-roteavel no DS1 como proxy de domain shift e (2) bounds de erro no subconjunto auto do holdout in-domain (medido) com penalidade 2x (conservador) ou +10pp (pessimista).",
+    "caveats": [
+      "Taxonomias DS1 (Refund, Billing, ...) e DS2 (Hardware, HR, ...) nao sao comparaveis.",
+      "Bounds nao substituem piloto com revisao humana e taxa de correcao medida.",
+      "Regras de produto (Refund/Cancel/Critical, Admin rights) reduzem auto-roteamento alem do threshold."
+    ]
+  }
+}

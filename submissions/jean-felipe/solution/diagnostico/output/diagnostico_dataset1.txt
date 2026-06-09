@@ -1,0 +1,247 @@
+Dataset: C:\Users\jeafl\OneDrive\Desktop\g4-challenge\data\dataset1-support-tickets\customer_support_tickets.csv
+
+========================================================================
+0. EXPLORACAO DO DATASET
+========================================================================
+Linhas fisicas no arquivo: 29,808
+Tickets parseados (registros): 8,469
+Ticket IDs unicos: 8,469
+Diferenca linhas vs tickets: 21,339 (campos multilinha em Ticket Description/Resolution; parse OK se IDs unicos = registros)
+Ticket Description com quebra de linha: 6,150 (72.6%)
+Colunas: 17
+
+Colunas e tipos:
+  - Ticket ID: int64
+  - Customer Name: str
+  - Customer Email: str
+  - Customer Age: int64
+  - Customer Gender: str
+  - Product Purchased: str
+  - Date of Purchase: str
+  - Ticket Type: str
+  - Ticket Subject: str
+  - Ticket Description: str
+  - Ticket Status: str
+  - Resolution: str
+  - Ticket Priority: str
+  - Ticket Channel: str
+  - First Response Time: str
+  - Time to Resolution: str
+  - Customer Satisfaction Rating: float64
+
+Valores ausentes:
+  - Resolution: 5,700 (67.3%)
+  - First Response Time: 2,819 (33.3%)
+  - Time to Resolution: 5,700 (67.3%)
+  - Customer Satisfaction Rating: 5,700 (67.3%)
+
+Cardinalidade (categóricas):
+
+  Ticket Type:
+    Refund request: 1,752
+    Technical issue: 1,747
+    Cancellation request: 1,695
+    Product inquiry: 1,641
+    Billing inquiry: 1,634
+
+  Ticket Status:
+    Pending Customer Response: 2,881
+    Open: 2,819
+    Closed: 2,769
+
+  Ticket Priority:
+    Medium: 2,192
+    Critical: 2,129
+    High: 2,085
+    Low: 2,063
+
+  Ticket Channel:
+    Email: 2,143
+    Phone: 2,132
+    Social media: 2,121
+    Chat: 2,073
+
+  Customer Gender:
+    Male: 2,896
+    Female: 2,887
+    Other: 2,686
+
+Padrão de missing por status (campos operacionais):
+  Pending Customer Response (n=2,881):
+    First Response Time ausente: 0
+    Time to Resolution ausente:  2,881
+    Satisfaction ausente:        2,881
+  Closed (n=2,769):
+    First Response Time ausente: 0
+    Time to Resolution ausente:  0
+    Satisfaction ausente:        0
+  Open (n=2,819):
+    First Response Time ausente: 2,819
+    Time to Resolution ausente:  2,819
+    Satisfaction ausente:        2,819
+
+Nota sobre tempos: 'First Response Time' e 'Time to Resolution' sao timestamps (nao duracoes em horas). O tempo de ciclo sera calculado na secao seguinte como |TTR - FRT| (ver DIAGNOSTICO.md).
+
+========================================================================
+0b. TEMPO DE CICLO - METODOLOGIA
+========================================================================
+Definicao: cycle_hours = |Time to Resolution - First Response Time| convertido em horas.
+Motivo do valor absoluto: em dados sinteticos, TTR pode ser anterior a FRT sem indicar ciclo negativo; trata-se de ruido de ordem, nao de evento real.
+Tickets Closed com ambos timestamps: 2,769
+Ordem invertida (TTR < FRT): 1,365 (49.3%) - abs() aplicado em todos os closed.
+
+========================================================================
+1. ONDE O FLUXO TRAVA - GARGALOS
+========================================================================
+Tickets sem resolução: 5,700 (67.3%)
+  - Open (sem primeira resposta): 2,819
+  - Pending Customer Response: 2,881
+
+Volume de tickets não resolvidos por canal:
+Ticket Channel
+Phone           1441
+Social media    1437
+Email           1423
+Chat            1399
+
+Tempo de ciclo medio/mediano (Closed) - por canal:
+                media_h  mediana_h    n
+Ticket Channel                         
+Social media       7.93       6.94  684
+Email              7.90       6.76  720
+Chat               7.70       6.92  674
+Phone              7.43       6.40  691
+
+Por tipo de ticket:
+                      media_h  mediana_h    n
+Ticket Type                                  
+Cancellation request     8.07       6.90  516
+Refund request           8.06       6.99  596
+Technical issue          7.68       6.76  580
+Product inquiry          7.65       6.77  533
+Billing inquiry          7.24       5.61  544
+
+Por prioridade:
+                 media_h  mediana_h    n
+Ticket Priority                         
+High                8.20       7.28  705
+Low                 7.86       6.97  644
+Critical            7.56       6.55  726
+Medium              7.36       6.18  694
+
+Piores combinacoes canal x tipo x prioridade (media de horas, n>=20):
+   Ticket Channel           Ticket Type Ticket Priority  media_h  mediana_h   n
+38          Email       Technical issue             Low    10.05      10.31  30
+73   Social media        Refund request            High     9.94       8.15  40
+75   Social media        Refund request          Medium     9.58       8.53  31
+4            Chat  Cancellation request        Critical     9.51       8.47  28
+24          Email  Cancellation request        Critical     9.44       9.28  45
+46          Phone  Cancellation request             Low     9.25       8.90  21
+13           Chat        Refund request            High     9.23       8.38  41
+53          Phone        Refund request            High     9.22       9.45  31
+21          Email       Billing inquiry            High     8.91       7.53  30
+5            Chat  Cancellation request            High     8.91       8.22  41
+14           Chat        Refund request             Low     8.88       7.47  36
+26          Email  Cancellation request             Low     8.82       6.10  33
+70   Social media       Product inquiry             Low     8.82       8.68  37
+77   Social media       Technical issue            High     8.78       8.47  41
+17           Chat       Technical issue            High     8.77       8.06  40
+
+Onde o fluxo trava além do tempo:
+Ticket Status                                        total  pct_nao_resolvido
+Ticket Channel Ticket Type          Ticket Priority                          
+Phone          Cancellation request Low                108              80.56
+Social media   Cancellation request High                99              79.80
+Email          Product inquiry      Medium             101              79.21
+Social media   Technical issue      Medium             124              75.81
+               Cancellation request Medium             102              75.49
+Chat           Cancellation request Low                 99              74.75
+Email          Technical issue      High               113              74.34
+Social media   Cancellation request Low                101              74.26
+Phone          Cancellation request Medium             128              74.22
+               Product inquiry      Low                 89              74.16
+Chat           Technical issue      Medium             116              74.14
+Email          Billing inquiry      Critical           112              74.11
+
+========================================================================
+2. O QUE IMPACTA A SATISFAÇÃO
+========================================================================
+Tickets com nota (Closed): 2,769
+Média geral: 2.99  |  Mediana: 3.0
+
+Satisfação média por canal:
+                media_nota  mediana_nota    n
+Ticket Channel                               
+Phone                 2.95          3.00  691
+Email                 2.96          3.00  720
+Social media          2.97          3.00  684
+Chat                  3.08          3.00  674
+
+Por tipo:
+                      media_nota  mediana_nota    n
+Ticket Type                                        
+Refund request              2.93          3.00  596
+Technical issue             2.96          3.00  580
+Product inquiry             3.02          3.00  533
+Billing inquiry             3.03          3.00  544
+Cancellation request        3.03          3.00  516
+
+Por prioridade:
+                 media_nota  mediana_nota    n
+Ticket Priority                               
+Critical               2.96          3.00  726
+Medium                 2.98          3.00  694
+High                   2.98          3.00  705
+Low                    3.05          3.00  644
+
+Correlacao Pearson (nota x tempo de ciclo em horas): -0.001
+
+Satisfação por faixa de tempo de tratamento:
+             media_nota    n
+faixa_horas                 
+0-4h               2.98  903
+4-8h               2.99  700
+8-12h              3.07  508
+12-24h             2.96  656
+
+Desvio vs média global (2.99):
+  Ticket Channel: pior=Phone (-0.04), melhor=Chat (+0.09)
+  Ticket Type: pior=Refund request (-0.06), melhor=Cancellation request (+0.04)
+  Ticket Priority: pior=Critical (-0.03), melhor=Low (+0.06)
+
+Leitura: tipo 'Refund request' e prioridade 'Critical' puxam notas para baixo; tempo de resolucao tem correlacao fraca; canal e natureza do pedido pesam mais.
+
+========================================================================
+3. QUANTO ESTAMOS DESPERDIÇANDO (HORAS)
+========================================================================
+Metodologia:
+  A) Closed  -> soma real de cycle_hours = |TTR-FRT| (tempo de ciclo ja consumido)
+  B) Pending -> n x mediana closed (tempo investido sem fechamento)
+  C) Open    -> n x mediana closed (fila sem primeira resposta)
+  Mediana de referência: 6.7h  |  Média: 7.7h
+
+A) Horas em tickets fechados:         21,439 h
+B) Estimativa tickets pendentes:      19,303 h  (2,881 tickets)
+C) Estimativa tickets abertos:        18,887 h  (2,819 tickets)
+   TOTAL ESTIMADO:                    59,629 h
+   Equivalente (~40h/semana):           1,491 semanas-pessoa
+
+Custo ilustrativo (@ US$35/h agente): US$2,087,002
+
+Maior desperdício recuperável por dimensão (horas estimadas em não resolvidos):
+  Ticket Channel: Phone -> 9,655 h estimadas (16.2% do total)
+  Ticket Type: Cancellation request -> 7,899 h estimadas (13.2% do total)
+  Ticket Priority: Medium -> 10,037 h estimadas (16.8% do total)
+
+Cenário conservador: tickets closed acima do P75 reduzidos ao P25 -> 8,838 h recuperaveis (41.2% do tempo ja gasto em closed)
+
+Gráfico salvo: C:\Users\jeafl\OneDrive\Desktop\g4-challenge\ai-master-challenge\submissions\jean-felipe\solution\diagnostico\output\gargalos_por_dimensao.png
+Gráfico salvo: C:\Users\jeafl\OneDrive\Desktop\g4-challenge\ai-master-challenge\submissions\jean-felipe\solution\diagnostico\output\satisfacao_por_canal.png
+
+========================================================================
+RESUMO EXECUTIVO
+========================================================================
+- Arquivo: 29,808 linhas fisicas -> 8,469 tickets unicos (campos multilinha).
+- 5,700 tickets (67%) sem resolucao.
+- Tempo de ciclo (|TTR-FRT|): media 7.7h, mediana 6.7h; 49% com ordem invertida nos timestamps.
+- Desperdicio estimado: 59,629 h; 8,838 h recuperaveis (cenario P75->P25).

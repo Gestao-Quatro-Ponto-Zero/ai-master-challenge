@@ -1,0 +1,83 @@
+Dataset: C:\Users\jeafl\OneDrive\Desktop\g4-challenge\data\dataset2-it-classification\all_tickets_processed_improved_v3.csv
+
+========================================================================
+1. EDA — 8 CATEGORIAS
+========================================================================
+Amostras: 47,837  |  Categorias: 8
+Razao desbalanceamento (maior/menor classe): 7.74x
+Texto global: 175 chars mediana, 26 palavras mediana
+
+Distribuicao por Topic_group:
+            categoria     n   pct  chars_med  palavras_med
+               Access  7125 14.89      146.0          22.0
+Administrative rights  1760  3.68      201.0          30.0
+           HR Support 10915 22.82      159.0          24.0
+             Hardware 13617 28.47      206.0          32.0
+     Internal Project  2119  4.43      157.0          24.0
+        Miscellaneous  7060 14.76      176.0          27.0
+             Purchase  2464  5.15      209.0          30.0
+              Storage  2777  5.81      142.0          21.0
+
+========================================================================
+2. BASELINE — TF-IDF + LOGISTIC REGRESSION
+========================================================================
+Modelo: TfidfVectorizer(1-2 grams, max 50k) + LogisticRegression(balanced)
+Sem LLM — baseline linear para triagem; baixa confianca escala no prototipo.
+
+Treino: 38,269  |  Holdout: 9,568 (20%)
+
+Treinando pipeline...
+
+Holdout accuracy:  0.8566
+Holdout macro-F1:  0.8568
+Holdout weighted-F1: 0.8572
+
+F1 por classe (holdout):
+  Access                     P=0.899  R=0.884  F1=0.891  n=1425
+  Administrative rights      P=0.687  R=0.855  F1=0.762  n=352
+  HR Support                 P=0.894  R=0.847  F1=0.870  n=2183
+  Hardware                   P=0.863  R=0.816  F1=0.839  n=2724
+  Internal Project           P=0.808  R=0.924  F1=0.863  n=424
+  Miscellaneous              P=0.797  R=0.863  F1=0.829  n=1412
+  Purchase                   P=0.931  R=0.899  F1=0.914  n=493
+  Storage                    P=0.860  R=0.915  F1=0.887  n=555
+
+Triagem por confianca (holdout):
+  conf >= 0.5:  76.6% auto (7,325 tickets), acc no subconjunto=0.932
+  conf >= 0.6:  65.8% auto (6,297 tickets), acc no subconjunto=0.958
+  conf >= 0.7:  55.8% auto (5,336 tickets), acc no subconjunto=0.974
+  conf >= 0.8:  45.4% auto (4,344 tickets), acc no subconjunto=0.984
+  conf >= 0.85:  39.0% auto (3,733 tickets), acc no subconjunto=0.989
+
+========================================================================
+3. VALIDACAO CRUZADA 5-FOLD
+========================================================================
+Rodando CV estratificada no dataset completo (pode levar ~1 min)...
+Accuracy:    0.8582 +/- 0.0023
+Macro-F1:    0.8594 +/- 0.0028
+Weighted-F1: 0.8588 +/- 0.0023
+Folds macro-F1: [0.8553, 0.8589, 0.8623, 0.8579, 0.8627]
+
+========================================================================
+4. VIABILIDADE DA TRIAGEM AUTOMATICA
+========================================================================
+Triagem automatica por texto e VIAVEL com baseline linear. Macro-F1 holdout 85.7% e CV 85.9% (+/- 0.3%) superam o patamar operacional de 80%. Com confianca >= 0.7, 56% dos tickets podem ser roteados automaticamente com 97.4% de acuracia no subconjunto; o restante escala para revisao humana ou modelo fine-tuned no prototipo.
+
+Cruza com DS1: 67% dos tickets sem resolucao e gargalos em Refund/Cancellation. Classificacao automatica em 8 filas IT reduz tempo de triagem manual e libera agentes para casos de baixa confianca e tipos de alto impacto em satisfacao.
+
+Classes com F1 < 0.80 no holdout: Administrative rights
+
+========================================================================
+5. GAP DS2 x SUPORTE REAL (DS1) — PROXY DE ERRO EM PRODUCAO
+========================================================================
+Classificador treinado apenas no DS2 (TI). Textos do DS1 nao tem rotulo DS2; erro real em producao e nao observavel neste recorte. Usamos (1) queda de confianca e % auto-roteavel no DS1 como proxy de domain shift e (2) bounds de erro no subconjunto auto do holdout in-domain (medido) com penalidade 2x (conservador) ou +10pp (pessimista).
+
+Confianca no DS1 (n=8,469): media=0.454, mediana=0.423
+Auto-roteavel conf>=0.85: in-domain 39.0% vs DS1 2.6% (gap +36.5 pp)
+
+Erro no subconjunto auto (in-domain, medido): 1.13%
+Bounds em producao: conservador 2x=2.26%, pessimista +10pp=11.13%
+Misroutes/ano estimados (217 auto @ threshold): conservador=5, pessimista=24
+
+Grafico salvo: C:\Users\jeafl\OneDrive\Desktop\g4-challenge\ai-master-challenge\submissions\jean-felipe\solution\automacao\output\eda_categorias.png
+Grafico salvo: C:\Users\jeafl\OneDrive\Desktop\g4-challenge\ai-master-challenge\submissions\jean-felipe\solution\automacao\output\confusion_matrix_holdout.png
