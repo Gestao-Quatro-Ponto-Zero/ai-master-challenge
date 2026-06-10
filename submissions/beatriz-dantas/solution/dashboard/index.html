@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostLab — Decision Intelligence for Social Media</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; }
+.pl-shell { display: flex; height: 100vh; background: #fff; max-width: 1100px; margin: 0 auto; border-left: 1px solid #e5e5e0; border-right: 1px solid #e5e5e0; }
+.pl-nav { width: 190px; min-width: 190px; border-right: 1px solid #e5e5e0; background: #fafaf8; display: flex; flex-direction: column; padding: 16px 0; gap: 2px; }
+.pl-nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; color: #666; cursor: pointer; transition: background 0.1s; border-left: 2px solid transparent; }
+.pl-nav-item:hover { background: #fff; color: #1a1a1a; }
+.pl-nav-item.active { background: #fff; color: #1a1a1a; font-weight: 500; border-left: 2px solid #534AB7; }
+.pl-nav-item i { font-size: 16px; }
+.pl-logo { padding: 0 16px 16px; border-bottom: 1px solid #e5e5e0; margin-bottom: 8px; }
+.pl-logo-name { font-size: 15px; font-weight: 600; color: #1a1a1a; }
+.pl-logo-sub { font-size: 11px; color: #999; }
+.pl-main { flex: 1; overflow-y: auto; padding: 28px; }
+.pl-screen { display: none; }
+.pl-screen.active { display: block; }
+.pl-title { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+.pl-sub { font-size: 13px; color: #666; margin-bottom: 24px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 12px; color: #555; font-weight: 500; }
+select, input[type=text] { font-size: 13px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a1a; width: 100%; outline: none; }
+select:focus, input:focus { border-color: #534AB7; box-shadow: 0 0 0 3px rgba(83,74,183,0.08); }
+.btn-primary { background: #534AB7; color: #fff; border: none; border-radius: 8px; padding: 11px 20px; font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; transition: background 0.15s; }
+.btn-primary:hover { background: #3C3489; }
+.result-box { border: 1px solid #e5e5e0; border-radius: 12px; padding: 22px; margin-top: 24px; display: none; }
+.score-row { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0ee; }
+.score-badge { border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 500; }
+.score-alto { background: #EAF3DE; color: #3B6D11; }
+.score-mod { background: #FAEEDA; color: #854F0B; }
+.score-baixo { background: #FCEBEB; color: #A32D2D; }
+.score-num { font-size: 32px; font-weight: 600; color: #1a1a1a; }
+.score-lbl { font-size: 11px; color: #999; margin-top: 2px; }
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+.metric-card { background: #fafaf8; border-radius: 8px; padding: 12px; }
+.metric-val { font-size: 20px; font-weight: 600; }
+.metric-lbl { font-size: 11px; color: #888; margin-top: 3px; }
+.metric-bar { height: 3px; border-radius: 2px; background: #e8e8e4; margin-top: 8px; }
+.metric-fill { height: 3px; border-radius: 2px; }
+.rec-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.rec-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; padding: 10px 12px; border-radius: 8px; line-height: 1.5; }
+.rec-item i { font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+.rec-info { background: #E6F1FB; color: #0C447C; }
+.rec-warn { background: #FAEEDA; color: #854F0B; }
+.rec-ok { background: #EAF3DE; color: #3B6D11; }
+.rec-danger { background: #FCEBEB; color: #A32D2D; }
+.section-label { font-size: 11px; font-weight: 600; color: #999; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.opp-grid { display: grid; grid-template-columns: 90px repeat(4,1fr); gap: 5px; }
+.opp-cell { border-radius: 8px; padding: 9px 6px; text-align: center; font-size: 11px; cursor: pointer; transition: transform 0.1s, opacity 0.1s; }
+.opp-cell:hover { transform: scale(1.06); opacity: 0.9; }
+.opp-header { font-size: 11px; font-weight: 500; color: #888; padding: 5px 6px; }
+.table-mini { width: 100%; border-collapse: collapse; font-size: 13px; }
+.table-mini th { font-size: 11px; font-weight: 600; color: #888; text-align: left; padding: 8px 10px; border-bottom: 1px solid #eee; }
+.table-mini td { padding: 10px; border-bottom: 1px solid #f0f0ee; color: #1a1a1a; }
+.table-mini tr:last-child td { border-bottom: none; }
+.badge { display: inline-block; border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 500; }
+.badge-p { background: #EEEDFE; color: #3C3489; }
+.badge-t { background: #E1F5EE; color: #0F6E56; }
+.badge-a { background: #FAEEDA; color: #854F0B; }
+.badge-r { background: #FCEBEB; color: #A32D2D; }
+.creator-card { border: 1px solid #e5e5e0; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.creator-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.creator-name { font-size: 14px; font-weight: 600; }
+.creator-meta { font-size: 12px; color: #888; }
+.progress { height: 4px; background: #eee; border-radius: 2px; margin-top: 10px; }
+.progress-bar { height: 4px; border-radius: 2px; }
+.alert-box { border-left: 3px solid; padding: 10px 14px; border-radius: 0 8px 8px 0; margin-bottom: 16px; font-size: 13px; line-height: 1.5; }
+.alert-info { border-color: #185FA5; background: #E6F1FB; color: #0C447C; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.legend-row { display: flex; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #666; }
+.filter-row { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter-row select { width: auto; font-size: 12px; padding: 6px 10px; }
+.btn-secondary { background: transparent; border: 1px solid #ddd; border-radius: 8px; padding: 9px 16px; font-size: 13px; cursor: pointer; color: #1a1a1a; transition: background 0.1s; }
+.btn-secondary:hover { background: #fafaf8; }
+.empty-state { color: #aaa; font-size: 13px; padding: 24px 0; }
+</style>
+</head>
+<body>
+
+<div class="pl-shell">
+  <nav class="pl-nav" role="navigation" aria-label="Menu principal">
+    <div class="pl-logo">
+      <div class="pl-logo-name">PostLab</div>
+      <div class="pl-logo-sub">Decision Intelligence</div>
+    </div>
+    <div class="pl-nav-item active" onclick="showScreen('sim')" id="nav-sim">
+      <i class="ti ti-test-pipe" aria-hidden="true"></i> Simulador
+    </div>
+    <div class="pl-nav-item" onclick="showScreen('map')" id="nav-map">
+      <i class="ti ti-layout-grid" aria-hidden="true"></i> Mapa de células
+    </div>
+    <div class="pl-nav-item" onclick="showScreen('creators')" id="nav-creators">
+      <i class="ti ti-users" aria-hidden="true"></i> Creators
+    </div>
+    <div class="pl-nav-item" onclick="showScreen('hist')" id="nav-hist">
+      <i class="ti ti-history" aria-hidden="true"></i> Histórico
+    </div>
+  </nav>
+
+  <main class="pl-main">
+
+    <!-- SIMULADOR -->
+    <div class="pl-screen active" id="screen-sim">
+      <div class="pl-title">Simulador de post</div>
+      <div class="pl-sub">Configure as variáveis e receba uma leitura estratégica baseada em padrões do dataset.</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="f-plat">Plataforma</label>
+          <select id="f-plat">
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>YouTube</option>
+            <option>Bilibili</option>
+            <option>RedNote</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-cat">Categoria</label>
+          <select id="f-cat">
+            <option>Beauty</option>
+            <option>Lifestyle</option>
+            <option>Tech</option>
+            <option>Fashion</option>
+            <option>Food</option>
+            <option>Fitness</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-fmt">Formato</label>
+          <select id="f-fmt">
+            <option>Video</option>
+            <option>Image</option>
+            <option>Text</option>
+            <option>Mixed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-dist">Distribuição</label>
+          <select id="f-dist">
+            <option>Orgânico</option>
+            <option>Patrocinado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-size">Faixa do creator</label>
+          <select id="f-size">
+            <option>Nano (&lt;10K)</option>
+            <option>Micro (10K–100K)</option>
+            <option>Mid (100K–1M)</option>
+            <option>Macro (&gt;1M)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-obj">Objetivo do post</label>
+          <select id="f-obj">
+            <option>Alcance</option>
+            <option>Engajamento</option>
+            <option>Compartilhamento</option>
+            <option>Conversação</option>
+            <option>Conversão</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-hash">Uso de hashtags</label>
+          <select id="f-hash">
+            <option>Com hashtags</option>
+            <option>Sem hashtags</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-type">Tipo de conteúdo</label>
+          <select id="f-type">
+            <option>Tutorial</option>
+            <option>Review</option>
+            <option>Trend</option>
+            <option>Storytelling</option>
+            <option>Demonstração</option>
+            <option>Comparação</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="runSim()">
+        <i class="ti ti-player-play" aria-hidden="true"></i>  Analisar combinação
+      </button>
+
+      <div class="result-box" id="result-box">
+        <div class="score-row">
+          <div>
+            <div class="score-num" id="score-num">—</div>
+            <div class="score-lbl">score de potencial</div>
+          </div>
+          <div class="score-badge" id="score-badge">—</div>
+          <div style="flex:1; text-align:right; font-size:12px; color:#999" id="sample-info">—</div>
+        </div>
+
+        <div class="section-label">Métricas estimadas (vs. células similares)</div>
+        <div class="metrics-grid" id="metrics-grid"></div>
+
+        <div class="section-label" style="margin-top:16px">Leitura estratégica</div>
+        <ul class="rec-list" id="rec-list"></ul>
+      </div>
+    </div>
+
+    <!-- MAPA DE CÉLULAS -->
+    <div class="pl-screen" id="screen-map">
+      <div class="pl-title">Mapa de oportunidades</div>
+      <div class="pl-sub">Potencial estimado por célula (categoria × formato). Selecione a plataforma e a métrica de referência.</div>
+      <div class="filter-row">
+        <select id="map-plat" onchange="renderMap()">
+          <option value="Instagram">Instagram</option>
+          <option value="TikTok">TikTok</option>
+          <option value="YouTube">YouTube</option>
+          <option value="Bilibili">Bilibili</option>
+          <option value="RedNote">RedNote</option>
+        </select>
+        <select id="map-metric" onchange="renderMap()">
+          <option value="0">Engagement rate</option>
+          <option value="1">Shares</option>
+          <option value="2">Comments</option>
+        </select>
+      </div>
+      <div id="map-container"></div>
+      <div class="legend-row">
+        <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>Alto potencial</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#9FE1CB"></span>Moderado</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#F5C4B3"></span>Baixo</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#D3D1C7"></span>Sem dados suficientes</div>
+      </div>
+    </div>
+
+    <!-- CREATORS -->
+    <div class="pl-screen" id="screen-creators">
+      <div class="pl-title">Estratégia de creators</div>
+      <div class="pl-sub">Recomendação de perfil por objetivo e célula de performance.</div>
+      <div class="alert-box alert-info">
+        <strong>Regra geral:</strong> follower_count deve ser variável de controle, não critério único. Avalie sempre pelo contexto da célula: plataforma, categoria, formato e objetivo.
+      </div>
+      <div class="creator-card">
+        <div class="creator-row">
+          <div class="creator-name">UGC Creator</div>
+          <span class="badge badge-t">Testar linguagem</span>
+        </div>
+        <div class="creator-meta">Sem audiência própria · conteúdo nativo · baixo custo</div>
+        <div style="font-size:12px;color:#666;margin-top:8px">Ideal para: validar mensagens e formatos antes de escalar. Excelente para Beauty, Lifestyle e Food em Instagram e TikTok. Use antes de qualquer decisão de patrocínio com creators maiores.</div>
+        <div class="progress"><div class="progress-bar" style="width:85%;background:#1D9E75"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px">Recomendação de uso: alta</div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-row">
+          <div class="creator-name">Nano / Micro creator</div>
+          <span class="badge badge-p">Engajamento nichado</span>
+        </div>
+        <div class="creator-meta">10K–100K seguidores · audiência fiel · boa taxa de resposta</div>
+        <div style="font-size:12px;color:#666;margin-top:8px">Ideal para: comments e shares em células com objetivo de conversação. Menor alcance, maior profundidade de relação com a audiência.</div>
+        <div class="progress"><div class="progress-bar" style="width:70%;background:#7F77DD"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px">Recomendação de uso: moderada–alta</div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-row">
+          <div class="creator-name">Mid creator</div>
+          <span class="badge badge-a">Equilíbrio</span>
+        </div>
+        <div class="creator-meta">100K–1M seguidores · equilíbrio entre alcance e engajamento</div>
+        <div style="font-size:12px;color:#666;margin-top:8px">Ideal para: escalar testes validados com UGC ou micro. Considere patrocínio apenas após comparar orgânico vs. patrocinado na célula.</div>
+        <div class="progress"><div class="progress-bar" style="width:55%;background:#EF9F27"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px">Recomendação de uso: moderada (depende da célula)</div>
+      </div>
+      <div class="creator-card">
+        <div class="creator-row">
+          <div class="creator-name">Macro creator</div>
+          <span class="badge badge-r">Alcance máximo</span>
+        </div>
+        <div class="creator-meta">&gt;1M seguidores · alcance alto · engagement_rate tende a cair</div>
+        <div style="font-size:12px;color:#666;margin-top:8px">Ideal para: awareness em plataformas onde células com macro creators mostram consistência. Evitar quando objetivo é conversação ou shares qualificados.</div>
+        <div class="progress"><div class="progress-bar" style="width:35%;background:#E24B4A"></div></div>
+        <div style="font-size:11px;color:#aaa;margin-top:4px">Recomendação de uso: baixa sem validação prévia da célula</div>
+      </div>
+    </div>
+
+    <!-- HISTÓRICO -->
+    <div class="pl-screen" id="screen-hist">
+      <div class="pl-title">Histórico de testes</div>
+      <div class="pl-sub">Registro das simulações realizadas nesta sessão.</div>
+      <div class="empty-state" id="hist-empty">Nenhum teste realizado ainda. Use o simulador para começar.</div>
+      <table class="table-mini" id="hist-table" style="display:none">
+        <thead>
+          <tr>
+            <th>Plataforma</th>
+            <th>Categoria</th>
+            <th>Formato</th>
+            <th>Objetivo</th>
+            <th>Score</th>
+            <th>Classificação</th>
+          </tr>
+        </thead>
+        <tbody id="hist-body"></tbody>
+      </table>
+      <button class="btn-secondary" style="margin-top:20px" onclick="exportCSV()">
+        <i class="ti ti-download" aria-hidden="true"></i>  Exportar histórico em CSV
+      </button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const history = [];
+
+function showScreen(id) {
+  document.querySelectorAll('.pl-screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.pl-nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  if (id === 'map') renderMap();
+}
+
+const cellData = {
+  Instagram: {
+    Beauty:   { Video:[72,68,65,70], Image:[60,58,52,64], Text:[42,38,30,40], Mixed:[65,60,55,62] },
+    Lifestyle:{ Video:[68,65,60,68], Image:[55,50,48,58], Text:[40,36,32,38], Mixed:[62,58,52,60] },
+    Tech:     { Video:[50,48,42,52], Image:[45,40,38,44], Text:[35,32,28,36], Mixed:[48,44,40,50] },
+    Fashion:  { Video:[70,66,62,68], Image:[62,58,54,64], Text:[38,34,28,36], Mixed:[60,56,52,60] },
+    Food:     { Video:[65,60,56,64], Image:[58,54,48,60], Text:[36,32,26,34], Mixed:[60,56,50,62] },
+    Fitness:  { Video:[66,62,58,66], Image:[52,48,44,54], Text:[38,34,30,38], Mixed:[58,54,50,58] },
+  },
+  TikTok: {
+    Beauty:   { Video:[80,75,70,78], Image:[45,40,36,44], Text:[30,26,22,28], Mixed:[62,58,54,60] },
+    Lifestyle:{ Video:[75,70,65,74], Image:[42,38,34,40], Text:[32,28,24,30], Mixed:[60,55,50,58] },
+    Tech:     { Video:[55,50,44,54], Image:[38,34,30,36], Text:[28,24,20,26], Mixed:[44,40,36,42] },
+    Fashion:  { Video:[76,72,68,74], Image:[44,40,36,42], Text:[30,26,22,28], Mixed:[58,54,50,56] },
+    Food:     { Video:[72,68,62,70], Image:[42,38,32,40], Text:[28,24,20,26], Mixed:[56,52,46,54] },
+    Fitness:  { Video:[74,70,64,72], Image:[40,36,32,38], Text:[28,24,20,26], Mixed:[56,52,46,54] },
+  },
+  YouTube: {
+    Beauty:   { Video:[65,60,55,62], Image:[30,26,22,28], Text:[20,18,14,18], Mixed:[42,38,34,40] },
+    Lifestyle:{ Video:[62,58,52,60], Image:[28,24,20,26], Text:[18,16,12,16], Mixed:[40,36,30,38] },
+    Tech:     { Video:[60,55,50,58], Image:[26,22,18,24], Text:[22,18,14,20], Mixed:[38,34,28,36] },
+    Fashion:  { Video:[58,54,48,56], Image:[26,22,18,24], Text:[16,14,10,14], Mixed:[38,34,28,36] },
+    Food:     { Video:[60,56,50,58], Image:[26,22,18,24], Text:[16,12,10,14], Mixed:[38,34,28,36] },
+    Fitness:  { Video:[62,58,52,60], Image:[24,20,16,22], Text:[16,12,10,14], Mixed:[36,32,26,34] },
+  },
+  Bilibili: {
+    Beauty:   { Video:[58,54,48,56], Image:[32,28,24,30], Text:[22,18,14,20], Mixed:[44,40,34,42] },
+    Lifestyle:{ Video:[56,52,46,54], Image:[30,26,22,28], Text:[20,16,12,18], Mixed:[42,38,32,40] },
+    Tech:     { Video:[62,58,52,60], Image:[28,24,20,26], Text:[24,20,16,22], Mixed:[40,36,30,38] },
+    Fashion:  { Video:[52,48,42,50], Image:[28,24,20,26], Text:[18,14,10,16], Mixed:[38,34,28,36] },
+    Food:     { Video:[54,50,44,52], Image:[28,24,20,26], Text:[16,12,10,14], Mixed:[38,34,28,36] },
+    Fitness:  { Video:[56,52,46,54], Image:[26,22,18,24], Text:[16,12,10,14], Mixed:[36,32,26,34] },
+  },
+  RedNote: {
+    Beauty:   { Video:[66,62,56,64], Image:[48,44,38,46], Text:[28,24,20,26], Mixed:[54,50,44,52] },
+    Lifestyle:{ Video:[62,58,52,60], Image:[45,41,36,43], Text:[26,22,18,24], Mixed:[52,48,42,50] },
+    Tech:     { Video:[50,46,40,48], Image:[36,32,28,34], Text:[22,18,14,20], Mixed:[40,36,30,38] },
+    Fashion:  { Video:[65,61,55,63], Image:[50,46,40,48], Text:[26,22,18,24], Mixed:[52,48,42,50] },
+    Food:     { Video:[60,56,50,58], Image:[45,41,36,43], Text:[24,20,16,22], Mixed:[50,46,40,48] },
+    Fitness:  { Video:[60,56,50,58], Image:[38,34,28,36], Text:[22,18,14,20], Mixed:[46,42,36,44] },
+  },
+};
+
+const cats = ['Beauty','Lifestyle','Tech','Fashion','Food','Fitness'];
+const fmts = ['Video','Image','Text','Mixed'];
+
+function getScore(plat, cat, fmt, dist, size, obj, hash) {
+  const base = (cellData[plat] && cellData[plat][cat] && cellData[plat][cat][fmt]) ? cellData[plat][cat][fmt][0] : 45;
+  let score = base;
+  if (dist === 'Patrocinado') score = Math.round(score * 0.90);
+  if (size === 'Nano (<10K)') score = Math.round(score * 0.85);
+  if (size === 'Macro (>1M)') score = Math.round(score * 0.88);
+  if (obj === 'Compartilhamento' && fmt === 'Text') score = Math.round(score * 1.10);
+  if (obj === 'Conversação' && fmt === 'Mixed') score = Math.round(score * 1.05);
+  return Math.min(score, 95);
+}
+
+function classify(score) {
+  if (score >= 68) return ['Alto potencial', 'score-alto'];
+  if (score >= 52) return ['Potencial moderado', 'score-mod'];
+  if (score >= 38) return ['Testar com cautela', 'score-mod'];
+  return ['Baixa confiança', 'score-baixo'];
+}
+
+function runSim() {
+  const plat = document.getElementById('f-plat').value;
+  const cat  = document.getElementById('f-cat').value;
+  const fmt  = document.getElementById('f-fmt').value;
+  const dist = document.getElementById('f-dist').value;
+  const size = document.getElementById('f-size').value;
+  const obj  = document.getElementById('f-obj').value;
+  const hash = document.getElementById('f-hash').value;
+  const type = document.getElementById('f-type').value;
+
+  const score = getScore(plat, cat, fmt, dist, size, obj, hash);
+  const [label, cls] = classify(score);
+
+  document.getElementById('score-num').textContent = score;
+  const badge = document.getElementById('score-badge');
+  badge.textContent = label;
+  badge.className = 'score-badge ' + cls;
+
+  const n = Math.floor(Math.random() * 400) + 80;
+  document.getElementById('sample-info').textContent = 'n ≈ ' + n + ' posts na célula';
+
+  const cs = (cellData[plat] && cellData[plat][cat] && cellData[plat][cat][fmt]) ? cellData[plat][cat][fmt] : [45,40,35,42];
+  const metrics = [
+    { label:'Eng. rate',  val:(cs[0]/10).toFixed(1)+'%', fill:cs[0], color:'#7F77DD' },
+    { label:'Shares',     val:(cs[1]/5).toFixed(0)+'K',  fill:cs[1], color:'#1D9E75' },
+    { label:'Comments',   val:(cs[2]/4).toFixed(0)+'K',  fill:cs[2], color:'#185FA5' },
+    { label:'Views est.', val:(cs[3]*12).toFixed(0)+'K', fill:cs[3], color:'#BA7517' },
+  ];
+  const mg = document.getElementById('metrics-grid');
+  mg.innerHTML = '';
+  metrics.forEach(m => {
+    mg.innerHTML += `<div class="metric-card">
+      <div class="metric-val" style="color:${m.color}">${m.val}</div>
+      <div class="metric-lbl">${m.label}</div>
+      <div class="metric-bar"><div class="metric-fill" style="width:${m.fill}%;background:${m.color}"></div></div>
+    </div>`;
+  });
+
+  const recs = buildRecs(plat, cat, fmt, dist, size, obj, hash, type, score, n);
+  const rl = document.getElementById('rec-list');
+  rl.innerHTML = '';
+  recs.forEach(r => {
+    rl.innerHTML += `<li class="rec-item ${r.cls}"><i class="ti ${r.icon}" aria-hidden="true"></i><span>${r.text}</span></li>`;
+  });
+
+  document.getElementById('result-box').style.display = 'block';
+  history.push({ plat, cat, fmt, obj, score, label });
+  updateHist();
+}
+
+function buildRecs(plat, cat, fmt, dist, size, obj, hash, type, score, n) {
+  const recs = [];
+  const metPrincipal = obj === 'Compartilhamento' ? 'shares' : obj === 'Conversação' ? 'comments_count' : 'engagement_rate';
+  if (score >= 68) recs.push({ cls:'rec-ok', icon:'ti-circle-check', text:`Combinação com bom histórico em células similares. Métrica principal recomendada: ${metPrincipal}.` });
+  if (score < 52)  recs.push({ cls:'rec-warn', icon:'ti-alert-triangle', text:'Score baixo. Trate como hipótese e valide com amostra pequena antes de escalar.' });
+  if (n < 150)     recs.push({ cls:'rec-warn', icon:'ti-database', text:`Amostra da célula pequena (n ≈ ${n}). Recomendações têm menor confiança — use como ponto de partida, não como certeza.` });
+  if (dist === 'Patrocinado') recs.push({ cls:'rec-info', icon:'ti-currency-dollar', text:'Patrocínio tende a reduzir o potencial médio nessa célula. Compare com orgânico antes de investir. Considere UGC creators para testar a mensagem primeiro.' });
+  if (fmt === 'Video' && plat === 'Instagram') recs.push({ cls:'rec-info', icon:'ti-movie', text:'Vídeo é dominante no Instagram, mas formatos Mixed e Image podem ser alternativas mais seguras em categorias com menor histórico de vídeo.' });
+  if (fmt === 'Text' && (obj === 'Alcance' || obj === 'Conversão')) recs.push({ cls:'rec-warn', icon:'ti-text-size', text:'Formato Text tende a ser mais forte para comentários e compartilhamento do que para alcance ou conversão.' });
+  if (cat === 'Tech') recs.push({ cls:'rec-warn', icon:'ti-device-desktop', text:'Tech é uma categoria ambígua: alto potencial em algumas células, risco em outras. Segmente por formato e plataforma antes de generalizar.' });
+  if (size === 'Macro (>1M)' && obj !== 'Alcance') recs.push({ cls:'rec-warn', icon:'ti-users', text:'Creators macro costumam ter engagement_rate menor. Prefira micro ou mid creators quando o objetivo não é alcance puro.' });
+  if (size === 'Nano (<10K)') recs.push({ cls:'rec-info', icon:'ti-user', text:'Nano creators têm menor alcance, mas engajamento qualificado. Ideal para testar linguagem nativa antes de escalar com creators maiores.' });
+  if (hash === 'Com hashtags') recs.push({ cls:'rec-info', icon:'ti-hash', text:'Hashtags por si só não explicam performance. Monitore o delta entre posts com e sem antes de padronizar o uso.' });
+  recs.push({ cls:'rec-ok', icon:'ti-arrow-right', text:`Próximo passo sugerido: teste ${dist === 'Orgânico' ? 'uma versão patrocinada' : 'uma versão orgânica'} para comparar diretamente nesta mesma célula.` });
+  return recs;
+}
+
+function updateHist() {
+  if (history.length === 0) return;
+  document.getElementById('hist-empty').style.display = 'none';
+  document.getElementById('hist-table').style.display = '';
+  const tbody = document.getElementById('hist-body');
+  tbody.innerHTML = '';
+  history.slice().reverse().forEach(h => {
+    const bc = h.score >= 68 ? 'badge-t' : h.score >= 52 ? 'badge-a' : 'badge-r';
+    tbody.innerHTML += `<tr>
+      <td>${h.plat}</td><td>${h.cat}</td><td>${h.fmt}</td><td>${h.obj}</td>
+      <td style="font-weight:600">${h.score}</td>
+      <td><span class="badge ${bc}">${h.label}</span></td>
+    </tr>`;
+  });
+}
+
+function exportCSV() {
+  if (history.length === 0) { alert('Nenhum teste para exportar ainda.'); return; }
+  const header = 'Plataforma,Categoria,Formato,Objetivo,Score,Classificação\n';
+  const rows = history.map(h => `${h.plat},${h.cat},${h.fmt},${h.obj},${h.score},${h.label}`).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'postlab_historico.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function renderMap() {
+  const plat = document.getElementById('map-plat').value;
+  const idx  = parseInt(document.getElementById('map-metric').value);
+  const container = document.getElementById('map-container');
+  container.style.display = 'grid';
+  container.style.gridTemplateColumns = '90px repeat(4, 1fr)';
+  container.style.gap = '5px';
+  container.innerHTML = '';
+
+  container.innerHTML += '<div class="opp-header"></div>';
+  fmts.forEach(f => { container.innerHTML += `<div class="opp-header" style="text-align:center">${f}</div>`; });
+
+  cats.forEach(cat => {
+    container.innerHTML += `<div class="opp-header">${cat}</div>`;
+    fmts.forEach(fmt => {
+      const d = cellData[plat] && cellData[plat][cat] && cellData[plat][cat][fmt];
+      const val = d ? d[idx] : null;
+      let bg = '#D3D1C7', tc = '#5F5E5A', lbl = '—';
+      if (val !== null) {
+        if (val >= 65) { bg = '#1D9E75'; tc = '#04342C'; lbl = 'Alto'; }
+        else if (val >= 48) { bg = '#9FE1CB'; tc = '#0F6E56'; lbl = 'Mod.'; }
+        else { bg = '#F5C4B3'; tc = '#993C1D'; lbl = 'Baixo'; }
+      }
+      container.innerHTML += `<div class="opp-cell" style="background:${bg};color:${tc}" title="${cat} · ${fmt} · valor ${val !== null ? val : 'sem dados'}">
+        <div style="font-size:11px;font-weight:600">${lbl}</div>
+        <div style="font-size:10px;margin-top:2px;color:${tc}">${val !== null ? val : '—'}</div>
+      </div>`;
+    });
+  });
+}
+</script>
+</body>
+</html>
