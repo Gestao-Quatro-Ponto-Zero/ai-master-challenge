@@ -1,0 +1,28 @@
+{
+  "name": "DealPriority",
+  "short_name": "DealPriority",
+  "description": "Inteligência de priorização para operações comerciais",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a2332",
+  "theme_color": "#1a2332",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
