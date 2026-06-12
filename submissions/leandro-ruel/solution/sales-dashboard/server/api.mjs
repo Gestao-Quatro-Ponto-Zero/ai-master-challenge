@@ -88,10 +88,8 @@ app.get('/opportunities', (req, res) => {
       params.push(parseFloat(min_score));
     }
 
-    // Only get open opportunities
-    query += " AND sp.deal_stage IN ('Prospecting', 'Engaging')";
-
-    query += ` ORDER BY ds.${sort_by} ${sort_dir}`;
+    const sortColumns = { total_score: 'ds.total_score', stage_score: 'ds.stage_score', account_score: 'ds.account_score', seller_score: 'ds.seller_score', product_score: 'ds.product_score', time_score: 'ds.time_score', success_probability: 'ds.success_probability', sales_agent: 'sp.sales_agent', account: 'sp.account', product: 'sp.product', deal_stage: 'sp.deal_stage' };
+    query += ` ORDER BY ${sortColumns[sort_by] || 'ds.total_score'} ${['ASC', 'DESC'].includes(sort_dir) ? sort_dir : 'DESC'}`;
     query += ` LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`;
 
     const opportunities = db.prepare(query).all(...params);
@@ -183,26 +181,23 @@ app.get('/opportunities/:id', (req, res) => {
 app.get('/filters', (req, res) => {
   try {
     const sales_agents = db.prepare(`
-      SELECT DISTINCT sales_agent FROM sales_pipeline 
-      WHERE deal_stage IN ('Prospecting', 'Engaging')
+      SELECT DISTINCT sales_agent FROM sales_pipeline
       ORDER BY sales_agent
     `).all().map(r => r.sales_agent);
 
     const deal_stages = db.prepare(`
       SELECT DISTINCT deal_stage FROM sales_pipeline
-      WHERE deal_stage IN ('Prospecting', 'Engaging')
       ORDER BY deal_stage
     `).all().map(r => r.deal_stage);
 
     const products = db.prepare(`
-      SELECT DISTINCT product FROM sales_pipeline 
-      WHERE deal_stage IN ('Prospecting', 'Engaging')
+      SELECT DISTINCT product FROM sales_pipeline
       ORDER BY product
     `).all().map(r => r.product);
 
     const accounts = db.prepare(`
-      SELECT DISTINCT account FROM sales_pipeline 
-      WHERE account IS NOT NULL AND deal_stage IN ('Prospecting', 'Engaging')
+      SELECT DISTINCT account FROM sales_pipeline
+      WHERE account IS NOT NULL
       ORDER BY account
     `).all().map(r => r.account);
 
