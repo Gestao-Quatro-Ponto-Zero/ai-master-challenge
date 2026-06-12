@@ -190,7 +190,7 @@ export const OpportunitiesTable = ({ filters, refreshTrigger, selectedDeal, onSe
                       <td className="table-body-cell text-gray-700 font-medium">{opp.product}</td>
                       <td className="table-body-cell">
                         <span className="stage-badge bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200">
-                          {opp.deal_stage}
+                          {t('stages.' + opp.deal_stage) || opp.deal_stage}
                         </span>
                       </td>
                       <td className="table-body-cell tabular-nums text-gray-500">
@@ -324,7 +324,7 @@ export const DealDetailModal = ({ deal, onClose }) => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider truncate">{t('dealDetail.stage')}</p>
-                  <p className="text-sm font-bold text-gray-900 mt-1.5 truncate">{details.deal_stage}</p>
+                  <p className="text-sm font-bold text-gray-900 mt-1.5 truncate">{t('stages.' + details.deal_stage) || details.deal_stage}</p>
                   <p className="text-xs text-gray-500 mt-0.5 truncate">{t('dealDetail.engaged')}: {formatDate(details.engage_date)}</p>
                 </div>
                 <div className="min-w-0">
@@ -411,7 +411,7 @@ export const DealDetailModal = ({ deal, onClose }) => {
                           <p className="text-sm font-semibold text-gray-900 truncate">{h.product}</p>
                           <p className="text-xs text-gray-500 mt-0.5">
                             <span className="stage-badge bg-indigo-50 text-indigo-700 text-[10px] mr-1.5">
-                              {h.deal_stage}
+                              {t('stages.' + h.deal_stage) || h.deal_stage}
                             </span>
                             {formatDate(h.close_date)}
                           </p>

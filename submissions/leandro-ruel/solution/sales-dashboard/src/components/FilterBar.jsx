@@ -132,7 +132,7 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
             >
               <option value="">{t('filters.allStages')}</option>
               {filterOptions.deal_stages?.map((stage) => (
-                <option key={stage} value={stage}>{stage}</option>
+                <option key={stage} value={stage}>{t('stages.' + stage) || stage}</option>
               ))}
             </select>
           </div>

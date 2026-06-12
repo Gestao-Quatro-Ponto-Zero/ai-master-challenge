@@ -28,6 +28,12 @@ export const translations = {
       noResults: 'No opportunities found matching your filters',
       loadingFilters: 'Loading...'
     },
+    stages: {
+      Prospecting: 'Prospecting',
+      Engaging: 'Engaging',
+      Won: 'Won',
+      Lost: 'Lost'
+    },
     table: {
       agent: 'Sales Agent',
       account: 'Account',
@@ -149,6 +155,12 @@ export const translations = {
       minScorePlaceholder: '0',
       noResults: 'Nenhuma oportunidade encontrada',
       loadingFilters: 'Carregando...'
+    },
+    stages: {
+      Prospecting: 'Prospecção',
+      Engaging: 'Engajamento',
+      Won: 'Ganho',
+      Lost: 'Perdido'
     },
     table: {
       agent: 'Agente de Vendas',
