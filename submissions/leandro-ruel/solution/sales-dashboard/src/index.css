@@ -1,0 +1,56 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f8fafc;
+}
+
+@layer components {
+  .badge-score {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium cursor-pointer hover:shadow-md transition-all;
+  }
+
+  .badge-excellent {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .badge-good {
+    @apply bg-blue-100 text-blue-800;
+  }
+
+  .badge-fair {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-poor {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .score-breakdown {
+    @apply space-y-2 text-sm;
+  }
+
+  .score-item {
+    @apply flex items-center justify-between px-3 py-2 rounded bg-gray-50;
+  }
+
+  .score-bar {
+    @apply h-2 rounded-full bg-gray-200 flex-1 mx-2;
+  }
+
+  .score-bar-fill {
+    @apply h-full rounded-full transition-all;
+  }
+}
