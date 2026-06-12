@@ -11,6 +11,8 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
     deal_stage: '',
     product: '',
     account: '',
+    region: '',
+    manager: '',
     min_score: '',
   });
 
@@ -19,6 +21,8 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
     deal_stages: [],
     products: [],
     accounts: [],
+    regions: [],
+    managers: [],
   });
 
   const [loading, setLoading] = useState(true);
@@ -43,6 +47,8 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
       deal_stage: '',
       product: '',
       account: '',
+      region: '',
+      manager: '',
       min_score: '',
     };
     setFilters(emptyFilters);
@@ -87,8 +93,8 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {[1, 2, 3, 4, 5].map((i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+          {[1, 2, 3, 4, 5, 6, 7].map((i) => (
             <div key={i} className="animate-pulse space-y-2">
               <div className="h-3 w-20 bg-gray-200 rounded" />
               <div className="h-10 bg-gray-100 rounded-lg" />
@@ -96,7 +102,7 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
           <div>
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-agent">
               {t('filters.salesAgent')}
@@ -127,6 +133,40 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
               <option value="">{t('filters.allStages')}</option>
               {filterOptions.deal_stages?.map((stage) => (
                 <option key={stage} value={stage}>{stage}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-region">
+              {t('filters.region')}
+            </label>
+            <select
+              id="filter-region"
+              value={filters.region}
+              onChange={(e) => handleChange('region', e.target.value)}
+              className="select-field"
+            >
+              <option value="">{t('filters.allRegions')}</option>
+              {filterOptions.regions?.map((r) => (
+                <option key={r} value={r}>{r}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-manager">
+              {t('filters.manager')}
+            </label>
+            <select
+              id="filter-manager"
+              value={filters.manager}
+              onChange={(e) => handleChange('manager', e.target.value)}
+              className="select-field"
+            >
+              <option value="">{t('filters.allManagers')}</option>
+              {filterOptions.managers?.map((m) => (
+                <option key={m} value={m}>{m}</option>
               ))}
             </select>
           </div>

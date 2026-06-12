@@ -27,6 +27,8 @@ app.get('/opportunities', (req, res) => {
       deal_stage,
       account,
       product,
+      region,
+      manager,
       min_score,
       sort_by = 'total_score',
       sort_dir = 'DESC',
@@ -82,6 +84,14 @@ app.get('/opportunities', (req, res) => {
     if (product) {
       query += ' AND sp.product = ?';
       params.push(product);
+    }
+    if (region) {
+      query += ' AND st.regional_office = ?';
+      params.push(region);
+    }
+    if (manager) {
+      query += ' AND st.manager = ?';
+      params.push(manager);
     }
     if (min_score) {
       query += ' AND ds.total_score >= ?';
@@ -201,11 +211,25 @@ app.get('/filters', (req, res) => {
       ORDER BY account
     `).all().map(r => r.account);
 
+    const regions = db.prepare(`
+      SELECT DISTINCT regional_office FROM sales_teams
+      WHERE regional_office IS NOT NULL
+      ORDER BY regional_office
+    `).all().map(r => r.regional_office);
+
+    const managers = db.prepare(`
+      SELECT DISTINCT manager FROM sales_teams
+      WHERE manager IS NOT NULL
+      ORDER BY manager
+    `).all().map(r => r.manager);
+
     res.json({
       sales_agents,
       deal_stages,
       products,
-      accounts
+      accounts,
+      regions,
+      managers
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

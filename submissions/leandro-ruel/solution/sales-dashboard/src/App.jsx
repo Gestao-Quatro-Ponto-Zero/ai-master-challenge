@@ -17,6 +17,8 @@ export default function App() {
     deal_stage: '',
     product: '',
     account: '',
+    region: '',
+    manager: '',
     min_score: '',
   });
 
