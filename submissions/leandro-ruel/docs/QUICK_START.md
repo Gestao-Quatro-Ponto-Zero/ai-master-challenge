@@ -2,6 +2,35 @@
 
 ## For Non-Technical Users
 
+### 🟢 EASIEST — One Command (recommended)
+
+Open a terminal in the `solution` folder and run:
+
+**Mac/Linux:**
+```bash
+bash start.sh
+```
+
+**Windows:**
+```
+start.bat
+```
+
+The script will:
+- Check if Node.js is installed (guides you if not)
+- Install dependencies automatically
+- Load data from CSV files
+- Start both servers
+- Open the dashboard in your browser
+
+> No need to run separate setup or start commands.
+
+---
+
+### Step-by-Step Alternative
+
+If you prefer to run things manually:
+
 ### Step 1: One-Time Setup (5 minutes)
 
 1. **Open Terminal/Command Prompt** in the `sales-dashboard` folder
@@ -26,7 +55,7 @@
 
 After setup completes, choose ONE method:
 
-#### 🟢 EASIEST - Run Everything Together:
+#### Run Everything Together:
 ```
 npm start
 ```

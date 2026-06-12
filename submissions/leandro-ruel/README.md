@@ -10,7 +10,8 @@
 
 ## Executive Summary
 
-_Em 3-5 frases: o que você fez, o que encontrou, e qual a principal recomendação._
+primeiro, fiz uma rápida pesquisa no google de ferramentas prontas (metabase por ex) para saber se vai atender as necessidades deste desafio, mas como não tinha certeza se essas ferramentas iriam permitir total customização, perguntei ao chatGPT sobre metabase, mas resolvi prosseguir e desenvolver o dashboard diretamente com react mesmo.
+então usei llms para desenvolvimento do dashbord completo com uma stack da minha própria escolha: React + Vite + Shadcn + Tailwind + SQLite. 
 
 
 
