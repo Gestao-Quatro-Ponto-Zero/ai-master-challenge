@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, RefreshCw } from 'lucide-react';
+import { Search, Filter, RefreshCw, X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../i18n/LanguageContext';
 import { opportunitiesApi } from '../api/client';
 
@@ -21,6 +22,7 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
   });
 
   const [loading, setLoading] = useState(true);
+  const hasActiveFilters = Object.values(filters).some(v => v !== '');
 
   useEffect(() => {
     opportunitiesApi.getFilters()
@@ -48,119 +50,141 @@ export const FilterBar = ({ onFiltersChange, onRefresh }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 space-y-4">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-          <Filter className="w-5 h-5" />
-          {t('filters.title')}
-        </h2>
-        <button
-          onClick={() => {
-            handleReset();
-            onRefresh();
-          }}
-          className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1"
-        >
-          <RefreshCw className="w-4 h-4" />
-          {t('filters.reset')}
-        </button>
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2 }}
+      className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-4"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center">
+            <Filter className="w-4 h-4 text-indigo-600" aria-hidden="true" />
+          </div>
+          <h2 className="text-base font-bold text-gray-900">{t('filters.title')}</h2>
+          {hasActiveFilters && (
+            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse-light" />
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {hasActiveFilters && (
+            <button
+              onClick={handleReset}
+              className="btn-secondary text-xs px-3 py-1.5"
+            >
+              <X className="w-3 h-3" aria-hidden="true" />
+              {t('filters.reset')}
+            </button>
+          )}
+          <button
+            onClick={onRefresh}
+            className="btn-secondary text-xs px-3 py-1.5"
+            aria-label="Refresh data"
+          >
+            <RefreshCw className="w-3 h-3" aria-hidden="true" />
+          </button>
+        </div>
       </div>
 
       {loading ? (
-        <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-gray-200 rounded" />
-          <div className="h-10 bg-gray-200 rounded" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="animate-pulse space-y-2">
+              <div className="h-3 w-20 bg-gray-200 rounded" />
+              <div className="h-10 bg-gray-100 rounded-lg" />
+            </div>
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {/* Sales Agent Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-agent">
               {t('filters.salesAgent')}
             </label>
             <select
+              id="filter-agent"
               value={filters.sales_agent}
               onChange={(e) => handleChange('sales_agent', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="select-field"
             >
               <option value="">{t('filters.allAgents')}</option>
               {filterOptions.sales_agents?.map((agent) => (
-                <option key={agent} value={agent}>
-                  {agent}
-                </option>
+                <option key={agent} value={agent}>{agent}</option>
               ))}
             </select>
           </div>
 
-          {/* Deal Stage Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-stage">
               {t('filters.dealStage')}
             </label>
             <select
+              id="filter-stage"
               value={filters.deal_stage}
               onChange={(e) => handleChange('deal_stage', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="select-field"
             >
               <option value="">{t('filters.allStages')}</option>
               {filterOptions.deal_stages?.map((stage) => (
-                <option key={stage} value={stage}>
-                  {stage}
-                </option>
+                <option key={stage} value={stage}>{stage}</option>
               ))}
             </select>
           </div>
 
-          {/* Product Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-product">
               {t('filters.product')}
             </label>
             <select
+              id="filter-product"
               value={filters.product}
               onChange={(e) => handleChange('product', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="select-field"
             >
               <option value="">{t('filters.allProducts')}</option>
               {filterOptions.products?.map((product) => (
-                <option key={product} value={product}>
-                  {product}
-                </option>
+                <option key={product} value={product}>{product}</option>
               ))}
             </select>
           </div>
 
-          {/* Account Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-account">
               {t('filters.account')}
             </label>
-            <input
-              type="text"
-              placeholder={t('filters.searchAccount')}
-              value={filters.account}
-              onChange={(e) => handleChange('account', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            />
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" aria-hidden="true" />
+              <input
+                id="filter-account"
+                type="text"
+                placeholder={t('filters.searchAccount')}
+                value={filters.account}
+                onChange={(e) => handleChange('account', e.target.value)}
+                className="input-field pl-9"
+                autoComplete="off"
+                spellCheck={false}
+              />
+            </div>
           </div>
 
-          {/* Min Score Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" htmlFor="filter-score">
               {t('filters.minScore')}
             </label>
             <input
+              id="filter-score"
               type="number"
               min="0"
               max="100"
               placeholder={t('filters.minScorePlaceholder')}
               value={filters.min_score}
               onChange={(e) => handleChange('min_score', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              className="input-field tabular-nums"
+              autoComplete="off"
             />
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };

@@ -17,6 +17,8 @@ export const dashboardApi = {
   getStats: () => api.get('/stats'),
   getTimeOnPipeline: () => api.get('/analytics/time-on-pipeline'),
   getAccountSize: () => api.get('/analytics/account-size'),
+  getForecast: (month) => api.get('/analytics/forecast', { params: { month } }),
+  getMonths: () => api.get('/analytics/months'),
 };
 
 export default api;

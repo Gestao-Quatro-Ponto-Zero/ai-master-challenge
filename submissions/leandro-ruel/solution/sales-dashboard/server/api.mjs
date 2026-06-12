@@ -334,6 +334,81 @@ app.get('/analytics/account-size', (req, res) => {
   }
 });
 
+// Get available months for forecast filter
+app.get('/analytics/months', (req, res) => {
+  try {
+    const months = db.prepare(`
+      SELECT DISTINCT strftime('%Y-%m', engage_date) as month
+      FROM sales_pipeline
+      WHERE engage_date IS NOT NULL AND engage_date != ''
+      ORDER BY month DESC
+    `).all().map(r => r.month).filter(Boolean);
+
+    res.json(months);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get forecast by month
+app.get('/analytics/forecast', (req, res) => {
+  try {
+    const { month } = req.query;
+
+    let openQuery = `
+      SELECT 
+        COUNT(*) as open_deals,
+        ROUND(AVG(ds.success_probability), 3) as avg_probability,
+        ROUND(SUM(p.sales_price * ds.success_probability), 0) as weighted_revenue,
+        ROUND(SUM(p.sales_price), 0) as pipeline_value,
+        SUM(CASE WHEN sp.deal_stage = 'Prospecting' THEN 1 ELSE 0 END) as prospecting_count,
+        SUM(CASE WHEN sp.deal_stage = 'Engaging' THEN 1 ELSE 0 END) as engaging_count,
+        ROUND(SUM(CASE WHEN sp.deal_stage = 'Prospecting' THEN p.sales_price * ds.success_probability ELSE 0 END), 0) as prospecting_forecast,
+        ROUND(SUM(CASE WHEN sp.deal_stage = 'Engaging' THEN p.sales_price * ds.success_probability ELSE 0 END), 0) as engaging_forecast
+      FROM sales_pipeline sp
+      LEFT JOIN deal_scores ds ON sp.opportunity_id = ds.opportunity_id
+      LEFT JOIN products p ON sp.product = p.product
+      WHERE sp.deal_stage IN ('Prospecting', 'Engaging')
+    `;
+
+    const openParams = [];
+
+    if (month) {
+      openQuery += ' AND strftime(\'%Y-%m\', sp.engage_date) = ?';
+      openParams.push(month);
+    }
+
+    const openForecast = db.prepare(openQuery).get(...openParams);
+
+    // Get actual closed revenue for past months (for context)
+    let closedQuery = `
+      SELECT 
+        COUNT(*) as won_deals,
+        ROUND(SUM(sp.close_value), 0) as closed_revenue,
+        ROUND(AVG(sp.close_value), 0) as avg_deal_value
+      FROM sales_pipeline sp
+      WHERE sp.deal_stage = 'Won'
+    `;
+
+    const closedParams = [];
+
+    if (month) {
+      closedQuery += ' AND strftime(\'%Y-%m\', sp.close_date) = ?';
+      closedParams.push(month);
+    }
+
+    const closedActual = db.prepare(closedQuery).get(...closedParams);
+
+    res.json({
+      month: month || null,
+      forecast: openForecast,
+      actual: closedActual,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });

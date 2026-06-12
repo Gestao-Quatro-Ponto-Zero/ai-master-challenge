@@ -1,10 +1,10 @@
-# Submissão — [Seu Nome] — Challenge [XXX]
+# Submissão — Leandro Ruel — Challenge 003
 
 ## Sobre mim
 
-- **Nome:**
-- **LinkedIn:**
-- **Challenge escolhido:**
+- **Nome:** Leandro Ribeiro Ruel
+- **LinkedIn:** https://www.linkedin.com/in/leandro-ribeiro-ruel/
+- **Challenge escolhido:** Challenge 003 — Lead Scorer
 
 ---
 
