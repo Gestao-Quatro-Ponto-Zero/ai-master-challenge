@@ -10,8 +10,7 @@
 
 ## Executive Summary
 
-primeiro, fiz uma rápida pesquisa no google de ferramentas prontas (metabase por ex) para saber se vai atender as necessidades deste desafio, mas como não tinha certeza se essas ferramentas iriam permitir total customização, perguntei ao chatGPT sobre metabase, mas resolvi prosseguir e desenvolver o dashboard diretamente com react mesmo.
-então usei llms para desenvolvimento do dashbord completo com uma stack da minha própria escolha: React + Vite + Shadcn + Tailwind + SQLite. 
+Para este projeto desenvolvi um dashboard react usando llms que mostra o score de um deal para o agente de vendas com analytics e filtros avançados. nas minhas buscas encontrei busquei ferramentas, a melhor forma de abordá-las. recomendo rodar o `start.sh` em seu terminal para iniciar a aplicação.
 
 
 
@@ -19,8 +18,11 @@ então usei llms para desenvolvimento do dashbord completo com uma stack da minh
 
 ## Solução
 
-_Sua análise, protótipo, redesign ou o que o challenge pedir. Use o formato que melhor comunicar._
-
+Realizei primeiro uma análise de como realizar o cálculo do score, com ajuda da llm, que é baseado no seguinte:
+```
+Fase do Negócio (0-25) + Tamanho da Conta (0-20) + Desempenho do Vendedor (0-20) + Desempenho do Produto (0-20) + Tempo no Pipeline (0-15) = Pontuação Total (0-100)
+```
+depois, pesquisei a melhor abordagem de desenvolvimento, como tinha incertezas se ferramentas prontas me dariam a liberdade de customização, optei por pedir a llm que construisse tudo usando react + sqlite. em questão de design, realizei diversas mudanças pontuais até alcançar um resultado satisfatório, de modo que mostre um datatable com filtros e uma aba de analytics que podem dar insights para o vendedor.
 ### Abordagem
 
 _Como você atacou o problema. Por onde começou? Como decompôs? O que priorizou?_
