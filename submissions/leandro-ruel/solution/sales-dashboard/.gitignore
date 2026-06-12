@@ -1,7 +1,3 @@
 node_modules/
+.vite/
 dist/
-data/
-.DS_Store
-*.log
-.env
-.env.local
