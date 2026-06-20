@@ -5,7 +5,7 @@
 
 Lead scorer para o Challenge 003 (Vendas/RevOps). Lê o pipeline do CRM (~8.800 oportunidades, 35 vendedores) e devolve, para cada vendedor, a **lista priorizada dos deals abertos** — com score 0-100, o **porquê** de cada score (fator a fator) e a ação recomendada. O vendedor abre na segunda de manhã e sabe onde focar.
 
-> 🔗 **Como rodar:** local em 3 comandos (abaixo) — SQLite + Streamlit, sem API key, sem Docker.
+> 🔗 **Demo ao vivo (Streamlit Cloud):** https://ai-master-challenge-whltkcmfjkn7qsrufhr3es.streamlit.app/ — ou rode local em 3 comandos (abaixo), SQLite + Streamlit, sem API key, sem Docker.
 
 ## Diagnóstico de negócio
 

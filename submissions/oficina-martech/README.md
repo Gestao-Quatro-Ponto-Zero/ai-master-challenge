@@ -9,7 +9,8 @@
 - **Nome:** Kehlween Zascha Nienow Wirmond
 - **LinkedIn:** https://pt.linkedin.com/in/kehlween
 - **Challenge escolhido:** 003 — Lead Scorer · Vendas / RevOps
-- **Como rodar:** local em 3 comandos (`make setup && make run`) — SQLite + Streamlit, sem API key nem Docker. Passo a passo em [`docs/GUIA-DO-PRODUTO.md`](docs/GUIA-DO-PRODUTO.md).
+- **Demo ao vivo:** https://ai-master-challenge-whltkcmfjkn7qsrufhr3es.streamlit.app/ (Streamlit Cloud)
+- **Como rodar local:** 3 comandos (`make setup && make run`) — SQLite + Streamlit, sem API key nem Docker. Passo a passo em [`docs/GUIA-DO-PRODUTO.md`](docs/GUIA-DO-PRODUTO.md).
 
 ---
 
@@ -113,7 +114,8 @@ Rejeição **empírica** de features óbvias (spread medido, não assumido); thr
 
 ## Evidências
 
-- [x] **Como rodar** — local em 3 comandos (`make setup && make run`), sem API key nem Docker; banco auto-inicializa no primeiro boot
+- [x] **Demo ao vivo (Streamlit Cloud)** — https://ai-master-challenge-whltkcmfjkn7qsrufhr3es.streamlit.app/
+- [x] **Como rodar local** — 3 comandos (`make setup && make run`), sem API key nem Docker; banco auto-inicializa no primeiro boot
 - [x] **Git history** — evolução do código com desenvolvimento assistido por IA
 - [x] **Narrativa escrita** — [`process-log/process-log.md`](process-log/process-log.md) + [`docs/decisoes.md`](docs/decisoes.md)
 - [x] **Chat exports / conversas com IA** — `process-log/chat-exports/`: sessão Claude Code Opus 4.8 + sessão OpenCode GLM 5.2
