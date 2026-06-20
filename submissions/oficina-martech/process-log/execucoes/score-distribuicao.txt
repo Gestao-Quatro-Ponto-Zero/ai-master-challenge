@@ -1,0 +1,21 @@
+Deals scorados: 2089
+
+Distribuicao (tier efetivo, vivos = não-stale):
+Foco Agora          124
+Trabalhar           348
+Baixa Prioridade    326
+Revisar/Descartar (is_stale > 138d = Won mais velho): 1291 (62%) -> reportado como insight de pipeline inflado
+
+[R1] value_sub independe de P: True
+[R2] Engaging com urgencia saturada (=100): 4% (aceite <40%)
+[R3] Top-10 Foco Agora sem stale: True | max days_open no top-10: 94 (< 138 por construção)
+[V9] breakdown soma == score (TODOS os 2089): True
+[R5] Brief sem 'conta não atribuída' (deals sem conta excluídos): True
+     Brief (Darcel Schlecht): Bom dia, Darcel. Você tem 5 deals quentes pra atacar hoje — comece por estes:
+1. GTX Plus Pro · Hatfan — R$ 5.482, o maior ticket da sua lista e você fecha 63% dos seus deals neste perfil. Ligue hoje.
+2. GTX Plus Pro · Zathunicon — ticket de R$ 5.482 e você fecha 63% dos seus deals neste perfil. Ligue hoje.
+3. GTX Plus Pro · Green-Plus — ticket de R$ 5.482 e você fecha 63% dos seus deals neste perfil. Ligue hoje.
+4. GTX Plus Pro · Finjob — ticket de R$ 5.482 e você fecha 63% dos seus deals neste perfil. Ligue hoje.
+5. GTX Pro · Zencorporation — ticket de R$ 4.821 e você fecha 63% dos seus deals neste perfil. Ligue hoje.
+
+[Saúde] sem conta / abertos = 1425/2089 = 68% (numerador e denominador ambos sobre ABERTOS)
