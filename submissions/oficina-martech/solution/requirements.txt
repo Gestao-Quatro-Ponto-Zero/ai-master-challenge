@@ -1,0 +1,6 @@
+# Versões pinadas (==) para reprodutibilidade — não depender de release futuro.
+# Atualizadas em 2026-06-20 a partir do ambiente validado (31 testes + boot OK).
+pandas==2.3.3
+streamlit==1.50.0
+# sqlite3 é stdlib — sem dependência de banco
+pytest==8.4.2
