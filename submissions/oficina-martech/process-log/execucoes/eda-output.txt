@@ -1,0 +1,154 @@
+======================================================================
+H5 — HIGIENE DE DADOS
+======================================================================
+pipeline=8800  accounts=85  products=7  teams=35
+
+Produtos no pipeline vs catálogo:
+  no pipeline mas NÃO no catálogo: ['GTXPro']
+  catálogo: ['GTK 500', 'GTX Basic', 'GTX Plus Basic', 'GTX Plus Pro', 'GTX Pro', 'MG Advanced', 'MG Special']
+
+Nulos por coluna (pipeline):
+opportunity_id       0
+sales_agent          0
+product              0
+account           1425
+deal_stage           0
+engage_date        500
+close_date        2089
+close_value       2089
+
+Contas no pipeline ausentes em accounts: 0
+Agentes no pipeline ausentes em teams: set()
+
+[FIX] GTXPro -> GTX Pro aplicado. Produtos agora batem catálogo: True
+
+======================================================================
+H1 — DISTRIBUIÇÃO DE ESTÁGIO E WIN-RATE
+======================================================================
+deal_stage
+Won            4238
+Lost           2473
+Engaging       1589
+Prospecting     500
+
+Deals fechados (Won+Lost): 6711  | win-rate global: 63.2%
+Deals ABERTOS (universo a scorar): 2089  [Prospecting=500, Engaging=1589]
+  → sem_conta: 1425 (68% dos abertos sem conta atribuída no CRM)
+  → pipeline_bruto: close_value=0 para abertos (campo só preenchido em Won)
+
+======================================================================
+H2 — WIN-RATE POR DIMENSÃO (sinal não-óbvio)
+======================================================================
+
+Por VENDEDOR (top5/bottom5 com n>=30):
+  spread: 55.0% a 70.4%
+                       mean  count
+sales_agent
+Hayden Neloms      0.703947    152
+Maureen Marcano    0.699531    213
+Wilburn Farren     0.696203     79
+Cecily Lampkin     0.668750    160
+Versie Hillebrand  0.666667    264
+  ...
+                      mean  count
+sales_agent
+Niesha Huffines   0.600000    175
+Gladys Colclough  0.581897    232
+Donn Cantrell     0.574545    275
+Markita Hansen    0.572687    227
+Lajuana Vencill   0.549784    231
+
+Por PRODUTO:
+  spread: 60.0%–64.8% (4.8pp — sinal fraco)
+                    mean  count  win_rate  ticket_medio
+product
+MG Special      0.648406   1223   64.8%   R$36
+GTX Plus Pro    0.642953    745   64.3%   R$3.530
+GTX Basic       0.637187   1436   63.7%   R$348
+GTX Pro         0.635571   1147   63.6%   R$3.061
+GTX Plus Basic  0.621313   1051   62.1%   R$671
+MG Advanced     0.603321   1084   60.3%   R$2.045
+GTK 500         0.600000     25   60.0%   R$16.024
+
+Por REGIONAL:
+  spread: 62.6%–63.9% (1.3pp — sinal muito fraco, descartado)
+  regional_office  fechados  won   lost  win_rate  receita_won
+  West             2249      1438   811    63.9%   R$3.568.647
+  East             1858      1171   687    63.0%   R$3.090.594
+  Central          2604      1629   975    62.6%   R$3.346.293
+
+Por SETOR (top/bottom):
+                   mean  count
+sector
+marketing      0.648475    623
+entertainment  0.646766    402
+software       0.639205    704
+technolgy      0.634216   1058
+                        mean  count
+sector
+telecommunications  0.625000    456
+medical             0.623158    950
+finance             0.611746    613
+
+Por MANAGER (spread):
+  62.1% a 64.4%
+
+H2-combinações — tamanho das células agente×produto (justifica smoothing):
+  células: 178  | n<10: 10%  | n<5: 2%
+  -> células pequenas frequentes => smoothing bayesiano necessário
+
+======================================================================
+H3 — CICLO DE VENDA (urgência data-driven)
+======================================================================
+Ciclo Won (n=4238): min=1  p25=9  mediana=57  média=52  p75=88  p90=106  max=138
+Ciclo Lost (dias): mediana=14
+-> threshold 'esfriando' = 57d (mediana Won); crítico > 88d (p75); stale > 138d (max Won)
+
+[REVISÃO GLM 5.2 — 2026-06-19]
+days_open OPEN Engaging (universo a priorizar):
+  n=1589  mediana=165  média=199  p75=263  p90=319  max=423
+  bins: <30d=17  30-57=30  57-88=57  88-120=107  120-171=614  ≥171=764
+  → Conclusão: urgência calibrada no ciclo Won (57d) ≠ distribuição dos abertos (mediana 165d)
+  → Fix aplicado: stale_days = max Won (138d) como limite superior; urgência recalibrada nos abertos
+
+======================================================================
+H4 — VALOR vs PROBABILIDADE
+======================================================================
+Win-rate por faixa de preço do produto:
+                       mean  count
+val_bucket
+(54.999, 550.0]    0.642347   2659
+(550.0, 1096.0]    0.621313   1051
+(1096.0, 4821.0]   0.619901   2231
+(4821.0, 26768.0]  0.641558    770
+
+close_value dos Won: mediana=1117  total pipeline Won=R$10.005.534
+
+======================================================================
+MÉTRICAS GLOBAIS DO PIPELINE — AUDITORIA GLM 5.2 (2026-06-19)
+======================================================================
+Total de registros: 8800
+  Won:          4238 (48.2%)   receita total Won: R$10.005.534   ticket médio: R$2.361
+  Lost:         2473 (28.1%)
+  Engaging:     1589 (18.1%)
+  Prospecting:   500  (5.7%)
+
+Receita Won por regional:
+  West:    R$3.568.647  (63.9% win-rate)
+  Central: R$3.346.293  (62.6% win-rate)
+  East:    R$3.090.594  (63.0% win-rate)
+  TOTAL:   R$10.005.534
+
+Top 10 vendedores por win-rate (mín 30 fechados):
+  Hayden Neloms      70.4%  (n=152)
+  Maureen Marcano    70.0%  (n=213)
+  Wilburn Farren     69.6%  (n=79)
+  Cecily Lampkin     66.9%  (n=160)
+  Versie Hillebrand  66.7%  (n=264)
+  Moses Frase        66.2%  (n=195)
+  Boris Faz          66.0%  (n=153)
+  Rosalina Dieter    65.5%  (n=110)
+  James Ascencio     65.5%  (n=206)
+  Corliss Cosme      65.5%  (n=229)
+
+>> EDA concluída. Auditoria de dados GLM 5.2 incorporada.

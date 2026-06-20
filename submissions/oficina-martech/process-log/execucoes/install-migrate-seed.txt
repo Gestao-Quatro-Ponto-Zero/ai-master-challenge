@@ -1,0 +1,25 @@
+# Evidência de instalação — regenerada por 'make evidence'
+# Executado em: submissions/oficina-martech/solution/
+
+## pip install -r requirements.txt
+Requirement already satisfied: urllib3<3,>=1.21.1 in /Users/kehlween/Library/Python/3.9/lib/python/site-packages (from requests<3,>=2.27->streamlit==1.50.0->-r requirements.txt (line 4)) (2.6.3)
+WARNING: You are using pip version 21.2.4; however, version 26.0.1 is available.
+You should consider upgrading via the '/Applications/Xcode.app/Contents/Developer/usr/bin/python3 -m pip install --upgrade pip' command.
+
+## python -m db.migrate --reset   (recria do zero, aplica as migrations)
+[reset] foco.db removido
+  ✓ 0001_init aplicada
+  ✓ 0002_views aplicada
+  ✓ 0003_actions aplicada
+  ✓ 0004_refine_datas aplicada
+  ✓ 0005_health_sem_conta_abertos aplicada
+Migrations OK (5 nova(s)). Banco: /Users/kehlween/Documents/GitHub/ai-master-challenge/submissions/oficina-martech/solution/db/foco.db
+
+## python -m db.seed
+Seed concluído. Contagens:
+  ✓ products            7 (esperado 7)
+  ✓ accounts           85 (esperado 85)
+  ✓ sales_teams        35 (esperado 35)
+  ✓ sales_pipeline   8800 (esperado 8800)
+  → saúde: total=8800 abertos=2089 sem_conta=1425 ciclo_won=52.0d as_of=2017-12-31
+Banco pronto para uso. ✅

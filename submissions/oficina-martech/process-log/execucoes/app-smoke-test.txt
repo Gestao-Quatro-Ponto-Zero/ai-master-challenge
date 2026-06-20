@@ -1,0 +1,47 @@
+# Smoke test — app Foco — 2026-06-19
+# python3 -m streamlit run app/main.py → HTTP 200 em localhost:8501
+
+## Boot
+Local URL: http://localhost:8501
+HTTP 200 ✅
+
+## View 'Foco do Dia' — Lista
+Vendedor: Cecily Lampkin
+- Foco Agora: 16 · Trabalhar: 8 · Baixa Prioridade: 0
+- Card top: GTX Plus Pro · score 93 · tier 🔥 Foco Agora
+- Ação "✓ Contatado hoje" disponível
+- Expander "Por que esse score?" funcionando (breakdown: +14 vendedor · +41 tamanho · +0 urgência)
+- Alerta de higiene: 17 deals sem conta no CRM
+- Brief do dia: expander com 5 contatos priorizados
+✅ OK
+
+## View 'Foco do Dia' — Kanban
+- 3 colunas: 🔥 Foco Agora (16) · ⭐ Trabalhar (8) · ⏳ Baixa Prioridade (0)
+- Cards compactos com score, chip de tier, ação "✓ Contatado" e "× Descartar"
+- Toggle Lista/Kanban via segmented_control nativo
+✅ OK
+
+## View 'Time'
+Manager: Cara Losch
+- 4 vendedores · 22 Foco Agora · R$ 54.467 em risco (>57d)
+- Rep cards ordenados por receita em risco: Corliss (R$ 26.748) → Wilburn → Rosie → Violet
+- Export CSV: "Exportar Foco Agora do time (22 deals, CSV)"
+- Expander "Tabela completa do time" disponível
+✅ OK
+
+## View 'Saúde'
+- Deals abertos: 2.089 · Sem conta: 1.425 (68% dos abertos) · Ciclo médio Won: 52 dias
+- Aviso: R$ 2.113.265 em valor esperado sem contexto de conta
+- Alerta: R$ 302.340 na janela de risco (88–138d)
+- Recomendação: tornar `conta` obrigatório no CRM
+- Expander "Ações recentes dos vendedores (5)" com log de auditoria
+✅ OK
+
+## Camada de ação persistida
+- Clique "✓ Contatado hoje" em deal 1T5WFCEJ: persistido no banco SQLite
+- Clique "× Descartar": move deal para seção "Descartados" (reversível via "↩ Reativar")
+- Ações visíveis no log da view Saúde
+✅ OK
+
+RESULTADO: TODAS AS VIEWS OK ✅
+31 testes unitários passando (pytest)

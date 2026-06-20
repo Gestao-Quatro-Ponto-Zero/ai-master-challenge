@@ -1,0 +1,12 @@
+# Banco gerado (recriável via migrate+seed) — não versionar
+solution/db/foco.db
+*.db
+*.sqlite3
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+# OS
+.DS_Store
