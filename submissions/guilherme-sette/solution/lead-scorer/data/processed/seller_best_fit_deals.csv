@@ -1,0 +1,271 @@
+current_sales_agent,opportunity_id,deal_stage,product,ticket_band,estimated_deal_value,account,sector,days_open_as_of_snapshot,current_match_score,current_match_confidence,current_match_band,current_specialist_rank,recommended_sales_agent,recommended_differs_from_current,priority_score
+Anna Snelling,7FZ9CBZ3,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Scotfind,software,160.0,60.80457692528538,0.8806225774829856,specialist_match,23.0,Maureen Marcano,True,83.3567256094268
+Anna Snelling,LD4F6QTP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Groovestreet,retail,164.0,60.451188335968666,0.8880340843082951,specialist_match,23.0,Maureen Marcano,True,83.13667035344344
+Anna Snelling,T4AW06MM,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,162.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.70856909365969
+Anna Snelling,513PSPBN,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,160.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.64190242699301
+Anna Snelling,1T5WFCEJ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,157.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.54190242699302
+Anna Snelling,N9GIC5PC,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,157.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.54190242699302
+Anna Snelling,T0TDA2O1,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,155.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.47523576032636
+Anna Snelling,OVA9HMN1,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,148.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.24190242699302
+Anna Snelling,FCBSZ6FJ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,144.0,60.089753742851585,0.5000000000000001,generalist_match,24.0,Maureen Marcano,True,82.10856909365968
+Anna Snelling,NSX4NR40,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Bioholding,medical,139.0,60.05650016498664,0.982915619758885,possible_specialist,23.0,Maureen Marcano,True,81.90864884912807
+Boris Faz,WQAKXOYU,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,182.0,67.53559743155327,0.49368350311176834,specialist_match,4.0,Maureen Marcano,True,90.4974855490355
+Boris Faz,QCNOCX0P,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,268.0,67.53559743155327,0.49368350311176834,specialist_match,4.0,Maureen Marcano,True,90.4974855490355
+Boris Faz,6HG76L6U,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,313.0,67.53559743155327,0.49368350311176834,specialist_match,4.0,Maureen Marcano,True,90.4974855490355
+Boris Faz,CFI2GXN1,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,177.0,67.53559743155327,0.49368350311176834,specialist_match,4.0,Maureen Marcano,True,90.39748554903551
+Boris Faz,ALZNZ666,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Toughzap,retail,231.0,67.45906644412909,0.8295335550545632,specialist_match,7.0,Hayden Neloms,True,89.71859533571744
+Boris Faz,MOAP4XN7,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,148.0,67.53559743155327,0.49368350311176834,specialist_match,4.0,Maureen Marcano,True,89.43081888236884
+Boris Faz,EZVKSQ9C,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Genco Pura Olive Oil Company,retail,380.0,65.76234698756167,0.8774596669241485,specialist_match,11.0,Maureen Marcano,True,88.98116233836977
+Boris Faz,41RF80KQ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,222.0,65.71958764849364,0.5000000000000001,possible_specialist,8.0,Maureen Marcano,True,88.93840299930174
+Boris Faz,OIO2H2MY,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,244.0,65.71958764849364,0.5000000000000001,possible_specialist,8.0,Maureen Marcano,True,88.93840299930174
+Boris Faz,EBLSL27F,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,190.0,65.71958764849364,0.5000000000000001,possible_specialist,8.0,Maureen Marcano,True,88.93840299930174
+Cassey Cress,MNVMY83P,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Plussunin,retail,386.0,66.80615556794395,0.9935414346693485,specialist_match,9.0,Maureen Marcano,True,89.76804368542618
+Cassey Cress,WW1WV7IT,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Cancity,retail,275.0,65.71760632820202,0.9,specialist_match,11.0,Maureen Marcano,True,88.67949444568426
+Cassey Cress,QRQ8C6MQ,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Globex Corporation,technology,303.0,64.97012731979207,0.9,specialist_match,13.0,Maureen Marcano,True,87.9320154372743
+Cassey Cress,OLVI7L8M,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,410.0,64.48706353847835,0.5000000000000001,specialist_match,14.0,Maureen Marcano,True,87.44895165596058
+Cassey Cress,GL95LARP,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,267.0,64.48706353847835,0.5000000000000001,specialist_match,14.0,Maureen Marcano,True,87.44895165596058
+Cassey Cress,7VOW7BUJ,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,327.0,64.48706353847835,0.5000000000000001,specialist_match,14.0,Maureen Marcano,True,87.44895165596058
+Cassey Cress,HDALWEHF,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,250.0,64.48706353847835,0.5000000000000001,specialist_match,14.0,Maureen Marcano,True,87.44895165596058
+Cassey Cress,9FPDDSIJ,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,284.0,64.48706353847835,0.5000000000000001,specialist_match,14.0,Maureen Marcano,True,87.44895165596058
+Cassey Cress,4ZX1WPS7,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Inity,marketing,242.0,63.29874456834966,0.8779513042005219,specialist_match,16.0,Maureen Marcano,True,86.2606326858319
+Cassey Cress,6KEWAQMX,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,141.0,64.48706353847835,0.5000000000000001,specialist_match,14.0,Maureen Marcano,True,86.14895165596059
+Cecily Lampkin,OT5G3M9A,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Treequote,telecommunications,162.0,69.44579810075123,0.6961769203083568,specialist_match,3.0,Hayden Neloms,True,91.10532699233958
+Cecily Lampkin,SXFE42KG,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Gogozoom,telecommunications,159.0,68.98834612471872,0.592195444572929,specialist_match,3.0,Hayden Neloms,True,90.54787501630706
+Cecily Lampkin,IG540SIB,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,154.0,68.79942715958568,0.5000000000000001,specialist_match,3.0,Hayden Neloms,True,90.19228938450736
+Cecily Lampkin,0PT4RY4P,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,153.0,68.79942715958568,0.5000000000000001,specialist_match,3.0,Hayden Neloms,True,90.15895605117402
+Cecily Lampkin,QIEAKLRU,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,150.0,68.79942715958568,0.5000000000000001,specialist_match,3.0,Hayden Neloms,True,90.05895605117402
+Cecily Lampkin,Q8QGD2OG,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,145.0,68.79942715958568,0.5000000000000001,specialist_match,3.0,Hayden Neloms,True,89.89228938450735
+Cecily Lampkin,8MUD1WS1,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,141.0,68.79942715958568,0.5000000000000001,specialist_match,3.0,Hayden Neloms,True,89.75895605117402
+Cecily Lampkin,UJ58VMZT,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,163.0,69.84075629824987,0.4738612787525831,specialist_match,2.0,Maureen Marcano,True,89.27475855213368
+Cecily Lampkin,E8GD44YC,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,163.0,69.84075629824987,0.4738612787525831,specialist_match,2.0,Maureen Marcano,True,89.27475855213368
+Cecily Lampkin,5DQZSOBE,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,162.0,69.84075629824987,0.4738612787525831,specialist_match,2.0,Maureen Marcano,True,89.24142521880034
+Corliss Cosme,5VYJCJAE,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Zoomit,entertainment,350.0,71.12345483621989,0.8503093275813479,specialist_match,2.0,Maureen Marcano,True,94.34227018702799
+Corliss Cosme,CVFUMOK9,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Rangreen,technology,263.0,69.976383559131,0.9,specialist_match,3.0,Maureen Marcano,True,93.1951989099391
+Corliss Cosme,0STR2QEA,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Inity,marketing,220.0,69.5454309151695,0.8414213562373096,specialist_match,3.0,Maureen Marcano,True,92.7642462659776
+Corliss Cosme,FOJG3OCO,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,183.0,69.21379131703326,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,92.43260666784136
+Corliss Cosme,LXZD2PZD,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,271.0,69.21379131703326,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,92.43260666784136
+Corliss Cosme,DWUXMAGZ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,379.0,69.21379131703326,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,92.43260666784136
+Corliss Cosme,W24IDMVV,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,319.0,69.21379131703326,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,92.43260666784136
+Corliss Cosme,RXAQJKSL,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,249.0,69.21379131703326,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,92.43260666784136
+Corliss Cosme,HF74MC9F,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Ganjaflex,retail,239.0,68.72547840731329,0.9935414346693485,specialist_match,3.0,Maureen Marcano,True,91.94429375812139
+Corliss Cosme,WZN26QZQ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Lexiqvolax,medical,126.0,70.42485284729207,0.9,specialist_match,3.0,Maureen Marcano,True,91.84366819810018
+Daniell Hammack,Z6R4KJFU,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,189.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,V74O6XQT,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,292.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,2J5E145N,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,327.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,HTF7TYQS,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,187.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,UGTXH980,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,213.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,GMN9KQN2,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,218.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,6R6S91WE,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,281.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,BJO4VYLK,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,193.0,63.40213266738296,0.5000000000000001,specialist_match,17.0,Maureen Marcano,True,86.36402078486519
+Daniell Hammack,ICMXZOVL,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Stanredtax,finance,388.0,63.3942843639901,0.8308620170922052,specialist_match,18.0,Maureen Marcano,True,86.35617248147233
+Daniell Hammack,KKRJ6TBY,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Scotfind,software,274.0,62.80996666963484,0.8870828693386972,specialist_match,18.0,Maureen Marcano,True,85.77185478711706
+Darcel Schlecht,7TFHGN6O,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Inity,marketing,158.0,64.32045973958952,1.0,specialist_match,12.0,Maureen Marcano,True,86.80594175706429
+Darcel Schlecht,R55U5QI4,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Scottech,marketing,154.0,64.13526038436433,0.9968245836551854,specialist_match,14.0,Maureen Marcano,True,86.48740906850577
+Darcel Schlecht,5NGPM4C3,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,148.0,63.90260951665106,0.5000000000000001,specialist_match,13.0,Maureen Marcano,True,86.05475820079249
+Darcel Schlecht,RCJRB8W8,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,148.0,63.90260951665106,0.5000000000000001,specialist_match,13.0,Maureen Marcano,True,86.05475820079249
+Darcel Schlecht,Z4OOTJAJ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,143.0,63.90260951665106,0.5000000000000001,specialist_match,13.0,Maureen Marcano,True,85.88809153412582
+Darcel Schlecht,I3KQNE9V,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Isdom,medical,165.0,62.94868043602173,1.0,specialist_match,19.0,Maureen Marcano,True,85.66749578682983
+Darcel Schlecht,GQ7H31ZJ,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Funholding,finance,157.0,63.260117826304885,1.0,possible_specialist,20.0,Maureen Marcano,True,85.45533927712044
+Darcel Schlecht,WLDFQR7Z,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Bubba Gump,software,163.0,63.25925519725403,0.9,possible_specialist,13.0,Hayden Neloms,True,84.9521174221757
+Darcel Schlecht,TJ95PY76,engaging,GTX Pro,high_ticket_4k_to_10k,4821,J-Texon,retail,154.0,62.80666085937128,0.9,possible_specialist,18.0,Maureen Marcano,True,84.90188231018685
+Darcel Schlecht,1976N63N,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Kinnamplus,retail,158.0,65.62853578767962,0.9,specialist_match,11.0,Maureen Marcano,True,84.89587137489674
+Elease Gluck,DJMPI9TO,engaging,GTK 500,strategic_ticket_10k_plus,26768,Xx-zobam,entertainment,257.0,63.67263005974055,0.5443829012161987,possible_specialist,15.0,Hayden Neloms,True,90.06262962087708
+Elease Gluck,GG85QBTM,engaging,GTK 500,strategic_ticket_10k_plus,26768,Lexiqvolax,medical,204.0,63.46151176717558,0.41087412264662176,generalist_match,18.0,Maureen Marcano,True,89.8515113283121
+Elease Gluck,YFB7Y92U,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,327.0,63.32077313369209,0.21213203435596428,low_confidence,15.0,Hayden Neloms,True,89.71077269482862
+Elease Gluck,AKMV6WN5,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,269.0,63.32077313369209,0.21213203435596428,low_confidence,15.0,Hayden Neloms,True,89.71077269482862
+Elease Gluck,A7SA2L21,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,335.0,63.32077313369209,0.21213203435596428,low_confidence,15.0,Hayden Neloms,True,89.71077269482862
+Elease Gluck,125VIRMX,engaging,GTK 500,strategic_ticket_10k_plus,26768,Warephase,services,377.0,63.262746445495964,0.5689880056550409,generalist_match,17.0,Maureen Marcano,True,89.65274600663248
+Elease Gluck,A04V2WB3,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,150.0,63.32077313369209,0.21213203435596428,low_confidence,15.0,Hayden Neloms,True,88.71077269482862
+Elease Gluck,04OAV3CV,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,228.0,63.43543909820883,0.0,low_confidence,16.0,Maureen Marcano,True,86.65425444901693
+Elease Gluck,K5CWSFCW,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Blackzim,retail,375.0,63.63122341284966,0.3687609240042189,generalist_match,16.0,Maureen Marcano,True,86.5931115303319
+Elease Gluck,3IWUUUCN,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,221.0,63.43543909820883,0.0,low_confidence,16.0,Maureen Marcano,True,86.39732721569106
+Gladys Colclough,COSC7XVA,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,163.0,59.21581989401588,0.5000000000000001,possible_specialist,24.0,Hayden Neloms,True,80.90868211893756
+Gladys Colclough,8AK3KGFA,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,159.0,59.21581989401588,0.5000000000000001,possible_specialist,24.0,Hayden Neloms,True,80.77534878560422
+Gladys Colclough,82K9NWKO,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,157.0,59.21581989401588,0.5000000000000001,possible_specialist,24.0,Hayden Neloms,True,80.70868211893756
+Gladys Colclough,9C3YHNBY,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,152.0,59.21581989401588,0.5000000000000001,possible_specialist,24.0,Hayden Neloms,True,80.54201545227089
+Gladys Colclough,8TFYRWZ6,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Mathtouch,marketing,162.0,58.57023609311657,0.9,possible_specialist,24.0,Hayden Neloms,True,80.22976498470491
+Gladys Colclough,EFKPYBI9,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Xx-holding,finance,158.0,58.46135510896969,0.8707106781186548,specialist_match,24.0,Hayden Neloms,True,79.9875506672247
+Gladys Colclough,751V8OFM,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Funholding,finance,162.0,60.072040461778734,0.9,specialist_match,23.0,Maureen Marcano,True,79.4727093823292
+Gladys Colclough,WOO9JXOQ,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Sumace,retail,153.0,57.64315602549749,0.8,possible_specialist,26.0,Hayden Neloms,True,79.00268491708583
+Gladys Colclough,RTWAUR7C,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Y-corporation,employment,160.0,56.27401868648526,0.7000000000000001,specialist_match,26.0,Maureen Marcano,True,78.82616737062669
+Gladys Colclough,G7RZTAMV,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,157.0,55.85072174055262,0.5000000000000001,generalist_match,26.0,Maureen Marcano,True,78.30287042469405
+Hayden Neloms,3N46WQVI,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Faxquote,telecommunications,232.0,75.83948919938175,0.8581138830084191,specialist_match,1.0,Hayden Neloms,False,98.09901809097009
+Hayden Neloms,WRUG19FZ,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Vehement Capital Partners,finance,352.0,74.56876453792678,0.674636624686739,specialist_match,1.0,Hayden Neloms,False,96.82829342951513
+Hayden Neloms,0EYXI1UN,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,256.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,ERFRHR3Z,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,382.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,Y2EC6KYG,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,220.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,XQ0N9T87,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,265.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,U0E0XHK9,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,269.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,NUQPJV8A,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,251.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,MRCYKUX4,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,292.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+Hayden Neloms,MIY4MF3R,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,274.0,74.19302882850188,0.5000000000000001,specialist_match,1.0,Hayden Neloms,False,96.45255772009023
+James Ascencio,EF24VTVA,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Kinnamplus,retail,231.0,67.85954916720183,0.8961769203083568,possible_specialist,4.0,Maureen Marcano,True,91.07836451800993
+James Ascencio,OLGT0VHP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Statholdings,employment,244.0,67.35639258161838,0.8299754751255982,possible_specialist,5.0,Maureen Marcano,True,90.57520793242648
+James Ascencio,AY3KTIXX,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Cheers,entertainment,206.0,67.32356586116146,0.9561207005157727,specialist_match,5.0,Maureen Marcano,True,90.54238121196956
+James Ascencio,VKT0UN11,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Codehow,software,351.0,68.23995319086916,0.8107582331656675,specialist_match,5.0,Hayden Neloms,True,90.4994820824575
+James Ascencio,H176AX96,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Gekko & Co,retail,196.0,67.63703616064078,0.8424331508596329,possible_specialist,7.0,Hayden Neloms,True,89.89656505222912
+James Ascencio,JSZZN48S,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,306.0,66.57595272208489,0.5000000000000001,possible_specialist,5.0,Maureen Marcano,True,89.79476807289299
+James Ascencio,D85PDC6S,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,227.0,66.57595272208489,0.5000000000000001,possible_specialist,5.0,Maureen Marcano,True,89.79476807289299
+James Ascencio,1B27CZ2M,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,296.0,66.57595272208489,0.5000000000000001,possible_specialist,5.0,Maureen Marcano,True,89.79476807289299
+James Ascencio,5BXUKFPR,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,323.0,66.57595272208489,0.5000000000000001,possible_specialist,5.0,Maureen Marcano,True,89.79476807289299
+James Ascencio,DQ7GS2BN,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,273.0,66.57595272208489,0.5000000000000001,possible_specialist,5.0,Maureen Marcano,True,89.79476807289299
+Jonathan Berthelot,PJ75Q8VM,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,164.0,64.8953452967243,0.5000000000000001,generalist_match,12.0,Maureen Marcano,True,87.3239000808732
+Jonathan Berthelot,7K31BXX3,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,156.0,64.8953452967243,0.5000000000000001,generalist_match,12.0,Maureen Marcano,True,87.05723341420654
+Jonathan Berthelot,KBPKLB2X,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,139.0,64.8953452967243,0.5000000000000001,generalist_match,12.0,Maureen Marcano,True,86.49056674753987
+Jonathan Berthelot,PQOHTS9I,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Inity,marketing,165.0,63.9592079709891,0.975,specialist_match,13.0,Maureen Marcano,True,86.42109608847133
+Jonathan Berthelot,29W6WPLA,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Gekko & Co,retail,164.0,65.7618360856487,0.9,specialist_match,10.0,Maureen Marcano,True,85.22917167286582
+Jonathan Berthelot,PU62ZGX4,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Singletechno,retail,157.0,65.7618360856487,0.9,specialist_match,9.0,Maureen Marcano,True,84.99583833953248
+Jonathan Berthelot,CDVDL9I5,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,164.0,64.58087656615885,0.5000000000000001,generalist_match,11.0,Maureen Marcano,True,84.04821215337597
+Jonathan Berthelot,02K37JAK,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,163.0,64.58087656615885,0.5000000000000001,generalist_match,11.0,Maureen Marcano,True,84.01487882004264
+Jonathan Berthelot,6F5TIV66,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,163.0,64.58087656615885,0.5000000000000001,generalist_match,11.0,Maureen Marcano,True,84.01487882004264
+Jonathan Berthelot,MBPJUJ7F,engaging,GTX Basic,low_ticket_under_1k,550,Plexzap,retail,143.0,66.59192374798158,0.9,specialist_match,8.0,Hayden Neloms,True,83.98206003295408
+Kami Bicknell,S3W6Q07M,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Acme Corporation,technology,349.0,66.61536289291323,0.8598076211353317,specialist_match,7.0,Maureen Marcano,True,89.83417824372133
+Kami Bicknell,JQA8H6M5,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,319.0,65.89940481261729,0.45980762113533163,specialist_match,7.0,Maureen Marcano,True,89.11822016342539
+Kami Bicknell,059K86LU,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Labdrill,medical,127.0,66.84102173019174,0.9427232408942167,specialist_match,7.0,Maureen Marcano,True,88.29317041433318
+Kami Bicknell,KBR253C0,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,336.0,64.76238763178034,0.5000000000000001,possible_specialist,10.0,Hayden Neloms,True,87.02191652336869
+Kami Bicknell,KDPBAHOJ,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,194.0,64.76238763178034,0.5000000000000001,possible_specialist,10.0,Hayden Neloms,True,87.02191652336869
+Kami Bicknell,VPXW8RJS,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,360.0,64.76238763178034,0.5000000000000001,possible_specialist,10.0,Hayden Neloms,True,87.02191652336869
+Kami Bicknell,4E5A84H1,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,311.0,64.76238763178034,0.5000000000000001,possible_specialist,10.0,Hayden Neloms,True,87.02191652336869
+Kami Bicknell,TDJ3N8EJ,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Kinnamplus,retail,164.0,64.98052850472351,0.9,possible_specialist,11.0,Hayden Neloms,True,86.70672406297852
+Kami Bicknell,4OYGRQGO,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,155.0,64.76238763178034,0.5000000000000001,possible_specialist,10.0,Hayden Neloms,True,86.18858319003536
+Kami Bicknell,30R81VZX,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Zoomit,entertainment,328.0,62.648211976567595,0.9,possible_specialist,18.0,Maureen Marcano,True,85.61010009404983
+Kary Hendrixson,EB89ONZN,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Funholding,finance,277.0,64.3788216186678,0.8825741858350554,specialist_match,14.0,Maureen Marcano,True,87.34070973615003
+Kary Hendrixson,BYF6ABTZ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Opentech,finance,257.0,63.59446945445353,0.8825741858350554,specialist_match,17.0,Maureen Marcano,True,86.81328480526163
+Kary Hendrixson,74KGIZW4,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Betasoloin,medical,190.0,63.823041547731215,0.8948683298050514,specialist_match,14.0,Maureen Marcano,True,86.78492966521344
+Kary Hendrixson,5WHMLQDK,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,244.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Kary Hendrixson,OZ5S8NCK,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,347.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Kary Hendrixson,EUYJDW9C,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,216.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Kary Hendrixson,GXC8JN36,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,210.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Kary Hendrixson,INBGKE14,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,318.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Kary Hendrixson,7PXJ92C5,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,291.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Kary Hendrixson,10AEGW41,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,259.0,62.91009537954826,0.5000000000000001,generalist_match,19.0,Maureen Marcano,True,85.8719834970305
+Lajuana Vencill,IMLG35AP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,162.0,55.21717150379561,0.252487623459052,low_confidence,29.0,Maureen Marcano,True,77.83598685460372
+Lajuana Vencill,OD895EQM,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,158.0,55.21717150379561,0.252487623459052,low_confidence,29.0,Maureen Marcano,True,77.70265352127038
+Lajuana Vencill,0T2CY70E,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,162.0,52.69492570854898,0.5000000000000001,generalist_match,29.0,Hayden Neloms,True,74.35445460013733
+Lajuana Vencill,YCQTM2BQ,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,159.0,52.69492570854898,0.5000000000000001,generalist_match,29.0,Hayden Neloms,True,74.25445460013732
+Lajuana Vencill,VBB0LCEN,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,158.0,52.69492570854898,0.5000000000000001,generalist_match,29.0,Hayden Neloms,True,74.22112126680399
+Lajuana Vencill,UBO7V799,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,153.0,52.69492570854898,0.5000000000000001,generalist_match,29.0,Hayden Neloms,True,74.05445460013732
+Lajuana Vencill,JH643YRI,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Umbrella Corporation,finance,159.0,52.37439073688782,0.9,specialist_match,29.0,Hayden Neloms,True,73.93391962847616
+Lajuana Vencill,I2ESAAIK,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,162.0,54.318726490443574,0.5000000000000001,generalist_match,29.0,Maureen Marcano,True,73.71939541099404
+Lajuana Vencill,HHWZEWDV,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,153.0,54.318726490443574,0.5000000000000001,generalist_match,29.0,Maureen Marcano,True,73.41939541099403
+Lajuana Vencill,2KWJIZX6,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,143.0,54.318726490443574,0.5000000000000001,generalist_match,29.0,Maureen Marcano,True,73.0860620776607
+Markita Hansen,N3GVE0VP,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,227.0,57.85218771360926,0.0,low_confidence,28.0,Hayden Neloms,True,84.24218727474579
+Markita Hansen,GL1YE4PQ,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,236.0,57.85218771360926,0.0,low_confidence,28.0,Hayden Neloms,True,84.24218727474579
+Markita Hansen,5URQT67R,engaging,GTK 500,strategic_ticket_10k_plus,26768,Treequote,telecommunications,200.0,56.704086283805374,0.39578900207451223,generalist_match,28.0,Maureen Marcano,True,83.0940858449419
+Markita Hansen,SCS5H8V1,engaging,GTK 500,strategic_ticket_10k_plus,26768,Vehement Capital Partners,finance,320.0,56.581098967256395,0.3632993161855453,generalist_match,28.0,Hayden Neloms,True,82.97109852839291
+Markita Hansen,QP006VDE,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Domzoom,entertainment,244.0,59.544153783637086,0.8870828693386972,specialist_match,23.0,Hayden Neloms,True,81.80368267522543
+Markita Hansen,021Z2J9L,engaging,GTK 500,strategic_ticket_10k_plus,26768,Rundofase,technology,161.0,54.36565470365623,0.4000000000000001,generalist_match,27.0,Hayden Neloms,True,80.12232093145941
+Markita Hansen,ZI89S9HC,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Dalttechnology,software,203.0,57.837749755930375,0.8774596669241485,specialist_match,26.0,Hayden Neloms,True,80.09727864751872
+Markita Hansen,G5JP0G7Q,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,315.0,57.37171850419942,0.5000000000000001,generalist_match,27.0,Hayden Neloms,True,79.63124739578777
+Markita Hansen,CY7C3ZPJ,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,252.0,57.37171850419942,0.5000000000000001,generalist_match,27.0,Hayden Neloms,True,79.63124739578777
+Markita Hansen,9Y85N0W5,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,284.0,57.37171850419942,0.5000000000000001,generalist_match,27.0,Hayden Neloms,True,79.63124739578777
+Marty Freudenburg,DO6VKC2G,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,152.0,62.91667262022619,0.0,low_confidence,18.0,Hayden Neloms,True,88.37333884802938
+Marty Freudenburg,CBQRKYZP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Silis,medical,163.0,65.65588737090636,0.9,specialist_match,8.0,Maureen Marcano,True,88.3080360550478
+Marty Freudenburg,E3XLWCWX,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Ontomedia,employment,165.0,65.05874921648262,0.7000000000000001,specialist_match,11.0,Maureen Marcano,True,87.77756456729072
+Marty Freudenburg,RV5Y8DRY,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,159.0,64.83792882392267,0.5000000000000001,specialist_match,10.0,Maureen Marcano,True,87.35674417473076
+Marty Freudenburg,MBYOJR5A,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,152.0,64.83792882392267,0.5000000000000001,specialist_match,10.0,Maureen Marcano,True,87.12341084139743
+Marty Freudenburg,AD2YEH7W,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,147.0,64.83792882392267,0.5000000000000001,specialist_match,10.0,Maureen Marcano,True,86.95674417473077
+Marty Freudenburg,FSNL204U,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Hatfan,services,144.0,64.51082250700476,0.7000000000000001,specialist_match,13.0,Maureen Marcano,True,86.52963785781286
+Marty Freudenburg,J31SUXQJ,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Sumace,retail,143.0,64.27851408985697,0.8,specialist_match,14.0,Maureen Marcano,True,86.26399610733174
+Marty Freudenburg,NBJR3GVR,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,152.0,63.46029956166656,0.44494897427831787,specialist_match,15.0,Maureen Marcano,True,85.48885434581545
+Marty Freudenburg,7439NGIG,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Sumace,retail,164.0,62.900884827600855,0.744948974278318,specialist_match,17.0,Maureen Marcano,True,85.32943961174976
+Maureen Marcano,MV227O65,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Sonron,telecommunications,234.0,76.8785098909634,0.8683250823060348,specialist_match,1.0,Maureen Marcano,False,100.0973252417715
+Maureen Marcano,1GIP77EP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,313.0,74.25820338006682,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,97.47701873087492
+Maureen Marcano,R1K16RZO,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,244.0,74.25820338006682,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,97.47701873087492
+Maureen Marcano,D62905BC,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,271.0,74.25820338006682,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,97.47701873087492
+Maureen Marcano,DYNHHN6P,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Massive Dynamic,entertainment,246.0,73.91038903450817,0.87162939659906,specialist_match,1.0,Maureen Marcano,False,96.8722771519904
+Maureen Marcano,5BE27MLY,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,337.0,73.54787621751144,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,96.50976433499368
+Maureen Marcano,GQ2W1DXM,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,250.0,73.54787621751144,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,96.50976433499368
+Maureen Marcano,03VCDZEE,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,311.0,73.54787621751144,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,96.50976433499368
+Maureen Marcano,54OH0061,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,195.0,73.54787621751144,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,96.50976433499368
+Maureen Marcano,81PWOUF0,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,178.0,73.54787621751144,0.5000000000000001,specialist_match,1.0,Maureen Marcano,False,96.44309766832701
+Moses Frase,MLD3WEJC,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Xx-holding,finance,159.0,68.39026868913786,0.7823149321741925,specialist_match,5.0,Hayden Neloms,True,89.9497975807262
+Moses Frase,0R5KAHNB,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Umbrella Corporation,finance,150.0,68.06365969706616,0.8914854215512676,specialist_match,4.0,Hayden Neloms,True,89.3231885886545
+Moses Frase,FUI9BIS3,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Funholding,finance,149.0,68.06365969706616,0.8914854215512676,specialist_match,4.0,Hayden Neloms,True,89.28985525532117
+Moses Frase,F3EOBN5A,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Genco Pura Olive Oil Company,retail,164.0,66.18005113528815,0.9299193338482968,specialist_match,9.0,Maureen Marcano,True,88.86553315276292
+Moses Frase,KIKG1BGV,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Domzoom,entertainment,151.0,67.37852385805652,0.6948683298050515,specialist_match,6.0,Hayden Neloms,True,88.6713860829782
+Moses Frase,TV2M081C,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,162.0,66.67886466929271,0.5000000000000001,generalist_match,6.0,Hayden Neloms,True,88.33839356088106
+Moses Frase,SJGOQMLT,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,162.0,66.67886466929271,0.5000000000000001,generalist_match,6.0,Hayden Neloms,True,88.33839356088106
+Moses Frase,JOLNKYNH,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,162.0,66.67886466929271,0.5000000000000001,generalist_match,6.0,Hayden Neloms,True,88.33839356088106
+Moses Frase,BB1PRS3T,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,158.0,66.67886466929271,0.5000000000000001,generalist_match,6.0,Hayden Neloms,True,88.20506022754772
+Moses Frase,P3K1DVYB,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,158.0,66.67886466929271,0.5000000000000001,generalist_match,6.0,Hayden Neloms,True,88.20506022754772
+Niesha Huffines,SJ3QA8KP,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Treequote,telecommunications,156.0,62.545866132008086,0.8987025594034822,specialist_match,16.0,Hayden Neloms,True,84.00539502359644
+Niesha Huffines,LXS3Z82E,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,161.0,62.17844020537477,0.452487623459052,specialist_match,20.0,Hayden Neloms,True,83.80463576362978
+Niesha Huffines,CMW6IQJI,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Faxquote,telecommunications,159.0,62.065763519936986,0.8157869396445973,specialist_match,20.0,Hayden Neloms,True,83.62529241152532
+Niesha Huffines,ATMWAQL5,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Gogozoom,telecommunications,150.0,62.46583275854964,0.7581676459905967,specialist_match,18.0,Maureen Marcano,True,81.4665016791001
+Niesha Huffines,DZP0MNRM,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Konex,technology,159.0,62.142393574119716,0.8,specialist_match,18.0,Maureen Marcano,True,81.44306249467017
+Niesha Huffines,AERVH1AC,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,164.0,61.680580134823494,0.5000000000000001,specialist_match,20.0,Maureen Marcano,True,81.14791572204062
+Niesha Huffines,OBC504T8,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,159.0,61.680580134823494,0.5000000000000001,specialist_match,20.0,Maureen Marcano,True,80.98124905537395
+Niesha Huffines,TX5SADEI,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Dontechi,software,154.0,61.662087247267095,0.8598076211353316,specialist_match,19.0,Maureen Marcano,True,80.79608950115089
+Niesha Huffines,STI8KYWL,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,,,153.0,61.680580134823494,0.5000000000000001,specialist_match,20.0,Maureen Marcano,True,80.78124905537395
+Niesha Huffines,49SUORYW,engaging,GTX Plus Basic,mid_ticket_1k_to_4k,1096,Betasoloin,medical,149.0,61.68993401554153,0.7948683298050515,specialist_match,21.0,Maureen Marcano,True,80.65726960275866
+Rosalina Dieter,9SRD5NCR,engaging,GTK 500,strategic_ticket_10k_plus,26768,,,157.0,65.02778743577433,0.0,low_confidence,10.0,Hayden Neloms,True,90.65112033024418
+Rosalina Dieter,E887HZT1,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Cheers,entertainment,322.0,67.37393532093523,0.6334723921495307,possible_specialist,6.0,Hayden Neloms,True,89.63346421252358
+Rosalina Dieter,5RNWV17L,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Golddex,finance,323.0,67.34369357060619,0.6186193239791627,possible_specialist,6.0,Hayden Neloms,True,89.60322246219454
+Rosalina Dieter,XAC1J3TF,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,230.0,67.22975297684799,0.46101550841858346,possible_specialist,5.0,Hayden Neloms,True,89.48928186843634
+Rosalina Dieter,10IY4PV4,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,288.0,67.22975297684799,0.46101550841858346,possible_specialist,5.0,Hayden Neloms,True,89.48928186843634
+Rosalina Dieter,OIFERO7S,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,238.0,67.22975297684799,0.46101550841858346,possible_specialist,5.0,Hayden Neloms,True,89.48928186843634
+Rosalina Dieter,A194RP0I,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,384.0,67.22975297684799,0.46101550841858346,possible_specialist,5.0,Hayden Neloms,True,89.48928186843634
+Rosalina Dieter,OW9OM3UO,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,175.0,67.22975297684799,0.46101550841858346,possible_specialist,5.0,Hayden Neloms,True,89.32261520176966
+Rosalina Dieter,1LY8CAXD,engaging,GTK 500,strategic_ticket_10k_plus,26768,Betasoloin,medical,95.0,65.14172802953253,0.15760381556057926,low_confidence,8.0,Maureen Marcano,True,88.69839425733572
+Rosalina Dieter,WWCMITY9,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Funholding,finance,202.0,65.2091646333911,0.19082951062292478,possible_specialist,12.0,Maureen Marcano,True,88.17105275087333
+Rosie Papadopoulos,XOVYPE58,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Betasoloin,medical,256.0,68.42833820492424,0.7390357604246895,specialist_match,5.0,Maureen Marcano,True,91.39022632240648
+Rosie Papadopoulos,PFKDTEYU,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Xx-zobam,entertainment,198.0,68.28579680809763,0.7668875984270115,specialist_match,3.0,Maureen Marcano,True,91.24768492557986
+Rosie Papadopoulos,SWEQFKRF,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,223.0,68.07980309865687,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,91.0416912161391
+Rosie Papadopoulos,96798U7Y,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,194.0,68.07980309865687,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,91.0416912161391
+Rosie Papadopoulos,FHWXZ6HL,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,236.0,68.07980309865687,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,91.0416912161391
+Rosie Papadopoulos,QV3TAWDT,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,174.0,68.07980309865687,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,90.8416912161391
+Rosie Papadopoulos,PQJZNRKK,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,139.0,68.07980309865687,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,89.67502454947244
+Rosie Papadopoulos,68EYCEV4,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Faxquote,telecommunications,143.0,67.63660864324945,0.6806225774829856,specialist_match,5.0,Maureen Marcano,True,89.36516342739834
+Rosie Papadopoulos,8XY5IA68,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Sonron,telecommunications,111.0,67.63660864324945,0.6806225774829856,specialist_match,5.0,Maureen Marcano,True,88.29849676073168
+Rosie Papadopoulos,NS6JLCZ2,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,93.0,68.07980309865687,0.5000000000000001,specialist_match,3.0,Maureen Marcano,True,88.1416912161391
+Versie Hillebrand,18YA4UUP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Xx-zobam,entertainment,157.0,68.60277879281156,0.6255380714699401,specialist_match,4.0,Maureen Marcano,True,91.054927476953
+Versie Hillebrand,3YDXZ4FA,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,163.0,67.77782920781395,0.4255380714699401,possible_specialist,4.0,Maureen Marcano,True,90.42997789195539
+Versie Hillebrand,WRKPDK7O,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Hatfan,services,152.0,68.06432243995242,0.6255380714699401,possible_specialist,4.0,Maureen Marcano,True,90.34980445742718
+Versie Hillebrand,1RXGKOUE,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,155.0,67.77782920781395,0.4255380714699401,possible_specialist,4.0,Maureen Marcano,True,90.16331122528872
+Versie Hillebrand,YY2DWBG5,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Ron-tech,medical,160.0,68.27533186947085,0.975,specialist_match,4.0,Hayden Neloms,True,89.86819409439252
+Versie Hillebrand,SZS2IPM3,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Doncon,technology,160.0,65.91831243966415,0.9,generalist_match,9.0,Hayden Neloms,True,87.51117466458582
+Versie Hillebrand,TTKPNDTP,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,162.0,65.52347623430107,0.5000000000000001,generalist_match,9.0,Hayden Neloms,True,87.18300512588942
+Versie Hillebrand,RN7M3757,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,154.0,65.52347623430107,0.5000000000000001,generalist_match,9.0,Hayden Neloms,True,86.91633845922276
+Versie Hillebrand,OMJHW2J1,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,147.0,65.52347623430107,0.5000000000000001,generalist_match,9.0,Hayden Neloms,True,86.68300512588942
+Versie Hillebrand,G6CMP5I9,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,147.0,65.52347623430107,0.5000000000000001,generalist_match,9.0,Hayden Neloms,True,86.68300512588942
+Vicki Laflamme,B06D1F9M,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Faxquote,telecommunications,321.0,65.36046614981933,0.9901387818865998,specialist_match,10.0,Maureen Marcano,True,88.32235426730156
+Vicki Laflamme,R69OYH4Z,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Umbrella Corporation,finance,163.0,65.83780513585886,0.8870828693386972,specialist_match,9.0,Maureen Marcano,True,88.23302658667443
+Vicki Laflamme,IGHYUSN8,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,Golddex,finance,239.0,64.9942984415475,0.9577935474573519,specialist_match,11.0,Maureen Marcano,True,88.2131137923556
+Vicki Laflamme,U4IJO6SL,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,267.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Vicki Laflamme,6G6ZCKSB,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,259.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Vicki Laflamme,DOGKQHQP,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,275.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Vicki Laflamme,Q6OUJCH5,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,254.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Vicki Laflamme,3F34LWKM,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,239.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Vicki Laflamme,RW39Y63V,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,355.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Vicki Laflamme,A8QRKXG3,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,189.0,64.74244166469498,0.5000000000000001,possible_specialist,13.0,Maureen Marcano,True,87.70432978217721
+Violet Mclelland,DMG5EOFC,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Lexiqvolax,medical,165.0,64.9484911945635,0.9,specialist_match,11.0,Hayden Neloms,True,86.70802008615185
+Violet Mclelland,8Z4ZMS9U,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,226.0,64.2772315067002,0.5000000000000001,possible_specialist,11.0,Hayden Neloms,True,86.53676039828855
+Violet Mclelland,9GYIYGHW,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,208.0,64.2772315067002,0.5000000000000001,possible_specialist,11.0,Hayden Neloms,True,86.53676039828855
+Violet Mclelland,G3SJ8X1K,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,275.0,64.2772315067002,0.5000000000000001,possible_specialist,11.0,Hayden Neloms,True,86.53676039828855
+Violet Mclelland,Z2E1UVVB,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,238.0,64.2772315067002,0.5000000000000001,possible_specialist,11.0,Hayden Neloms,True,86.53676039828855
+Violet Mclelland,GVYF29NM,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,309.0,64.2772315067002,0.5000000000000001,possible_specialist,11.0,Hayden Neloms,True,86.53676039828855
+Violet Mclelland,SZAMHBGA,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Nam-zim,services,186.0,64.267891618202,0.7000000000000001,possible_specialist,11.0,Hayden Neloms,True,86.52742050979035
+Violet Mclelland,8LW65NDL,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,355.0,63.20528121022723,0.0,low_confidence,17.0,Maureen Marcano,True,86.42409656103533
+Violet Mclelland,YQ0Y0YQS,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,Newex,services,301.0,64.00447163717665,0.7000000000000001,possible_specialist,12.0,Hayden Neloms,True,86.264000528765
+Violet Mclelland,8GE7FY98,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,284.0,63.20528121022723,0.0,low_confidence,18.0,Maureen Marcano,True,86.16716932770946
+Wilburn Farren,DN6SG3US,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,309.0,,,not_candidate,,Maureen Marcano,True,23.218815350808097
+Wilburn Farren,TV300INP,engaging,GTX Plus Pro,high_ticket_4k_to_10k,5482,,,303.0,,,not_candidate,,Maureen Marcano,True,23.218815350808097
+Wilburn Farren,89P5UVQ0,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,231.0,,,not_candidate,,Maureen Marcano,True,22.961888117482232
+Wilburn Farren,0IO43YMS,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,314.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Wilburn Farren,QNVW1NSS,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,215.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Wilburn Farren,1D54L027,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,340.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Wilburn Farren,5C8HCDXT,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,285.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Wilburn Farren,UJ7BYO6A,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,241.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Wilburn Farren,RFQP9VCW,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,299.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Wilburn Farren,B6Z5NFV0,engaging,MG Advanced,mid_ticket_1k_to_4k,3393,,,194.0,,,not_candidate,,Hayden Neloms,True,22.259528891588342
+Zane Levy,UU25XD9E,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Hatfan,services,237.0,63.80641728996213,0.9866025403784439,specialist_match,14.0,Maureen Marcano,True,86.76830540744436
+Zane Levy,SQLYCFGV,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Opentech,finance,374.0,63.47968467211633,0.7000000000000001,specialist_match,17.0,Maureen Marcano,True,86.44157278959855
+Zane Levy,23NAJF9W,engaging,GTX Pro,high_ticket_4k_to_10k,4821,Plussunin,retail,188.0,62.925310840350484,0.9,possible_specialist,17.0,Maureen Marcano,True,85.88719895783271
+Zane Levy,01EH41WA,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,302.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183
+Zane Levy,MWSPTOQK,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,217.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183
+Zane Levy,NGCM47PC,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,299.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183
+Zane Levy,XRDF1NAB,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,305.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183
+Zane Levy,G1AKE0NR,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,207.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183
+Zane Levy,8YIANRVX,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,336.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183
+Zane Levy,PD2198ZH,engaging,GTX Pro,high_ticket_4k_to_10k,4821,,,287.0,62.897587492789604,0.5000000000000001,possible_specialist,20.0,Maureen Marcano,True,85.85947561027183

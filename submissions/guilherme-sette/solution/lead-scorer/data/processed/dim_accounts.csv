@@ -1,0 +1,86 @@
+account_id,account,sector,year_established,account_age_years_as_of_snapshot,revenue,revenue_band,employees,employee_band,office_location,subsidiary_of,is_subsidiary
+acme_corporation,Acme Corporation,technology,1996,21,1100.04,500m_to_1_5b,2822,2k_to_10k,United States,,False
+betasoloin,Betasoloin,medical,1999,18,251.41,under_500m,495,under_500,United States,,False
+betatech,Betatech,medical,1986,31,647.18,500m_to_1_5b,1185,500_to_2k,Kenya,,False
+bioholding,Bioholding,medical,2012,5,587.34,500m_to_1_5b,1356,500_to_2k,Philipines,,False
+bioplex,Bioplex,medical,1991,26,326.82,under_500m,1016,500_to_2k,United States,,False
+blackzim,Blackzim,retail,2009,8,497.11,under_500m,1588,500_to_2k,United States,,False
+bluth_company,Bluth Company,technology,1993,24,1242.32,500m_to_1_5b,3027,2k_to_10k,United States,Acme Corporation,True
+bubba_gump,Bubba Gump,software,2002,15,987.39,500m_to_1_5b,2253,2k_to_10k,United States,,False
+cancity,Cancity,retail,2001,16,718.62,500m_to_1_5b,2448,2k_to_10k,United States,,False
+cheers,Cheers,entertainment,1993,24,4269.9,over_3b,6472,2k_to_10k,United States,Massive Dynamic,True
+codehow,Codehow,software,1998,19,2714.9,1_5b_to_3b,2641,2k_to_10k,United States,Acme Corporation,True
+condax,Condax,medical,2017,0,4.54,under_500m,9,under_500,United States,,False
+conecom,Conecom,technology,2005,12,1520.66,1_5b_to_3b,1806,500_to_2k,United States,,False
+dalttechnology,Dalttechnology,software,2013,4,98.79,under_500m,96,under_500,United States,Bubba Gump,True
+domzoom,Domzoom,entertainment,1998,19,217.87,under_500m,551,500_to_2k,United States,,False
+doncon,Doncon,technology,2010,7,587.72,500m_to_1_5b,1501,500_to_2k,United States,,False
+donquadtech,Donquadtech,technology,1992,25,1712.68,1_5b_to_3b,3194,2k_to_10k,United States,Acme Corporation,True
+dontechi,Dontechi,software,1982,35,4618.0,over_3b,10083,over_10k,United States,,False
+donware,Donware,marketing,1999,18,1197.44,500m_to_1_5b,2570,2k_to_10k,United States,,False
+fasehatice,Fasehatice,retail,1990,27,4968.91,over_3b,7523,2k_to_10k,United States,,False
+faxquote,Faxquote,telecommunications,1995,22,1825.82,1_5b_to_3b,5595,2k_to_10k,United States,Sonron,True
+finhigh,Finhigh,finance,2006,11,1102.43,500m_to_1_5b,1759,500_to_2k,United States,,False
+finjob,Finjob,employment,1988,29,2059.9,1_5b_to_3b,3644,2k_to_10k,United States,,False
+funholding,Funholding,finance,1991,26,2819.5,1_5b_to_3b,7227,2k_to_10k,United States,Golddex,True
+ganjaflex,Ganjaflex,retail,1995,22,5158.71,over_3b,17479,over_10k,Japan,,False
+gekko_co,Gekko & Co,retail,1990,27,2520.83,1_5b_to_3b,3502,2k_to_10k,United States,,False
+genco_pura_olive_oil_company,Genco Pura Olive Oil Company,retail,2007,10,894.33,500m_to_1_5b,1635,500_to_2k,Italy,,False
+globex_corporation,Globex Corporation,technology,2000,17,1223.72,500m_to_1_5b,2497,2k_to_10k,Norway,,False
+gogozoom,Gogozoom,telecommunications,2007,10,86.68,under_500m,187,under_500,United States,Sonron,True
+golddex,Golddex,finance,2008,9,52.5,under_500m,165,under_500,United States,,False
+goodsilron,Goodsilron,marketing,2000,17,2952.73,1_5b_to_3b,5107,2k_to_10k,United States,,False
+green_plus,Green-Plus,services,2003,14,692.19,500m_to_1_5b,1922,500_to_2k,United States,,False
+groovestreet,Groovestreet,retail,2003,14,223.8,under_500m,299,under_500,United States,,False
+hatfan,Hatfan,services,1982,35,792.46,500m_to_1_5b,1299,500_to_2k,United States,,False
+hottechi,Hottechi,technology,1997,20,8170.38,over_3b,16499,over_10k,Korea,,False
+initech,Initech,telecommunications,1994,23,6395.05,over_3b,20275,over_10k,United States,,False
+inity,Inity,marketing,1986,31,2403.58,1_5b_to_3b,8801,2k_to_10k,United States,,False
+isdom,Isdom,medical,2002,15,3178.24,over_3b,4540,2k_to_10k,United States,,False
+iselectrics,Iselectrics,technology,2011,6,527.11,500m_to_1_5b,1428,500_to_2k,United States,Acme Corporation,True
+j_texon,J-Texon,retail,1989,28,1388.67,500m_to_1_5b,3583,2k_to_10k,United States,,False
+kan_code,Kan-code,software,1982,35,11698.03,over_3b,34288,over_10k,United States,,False
+kinnamplus,Kinnamplus,retail,2004,13,702.72,500m_to_1_5b,1831,500_to_2k,United States,,False
+konex,Konex,technology,1980,37,7708.38,over_3b,13756,over_10k,United States,,False
+konmatfix,Konmatfix,marketing,1985,32,375.43,under_500m,1190,500_to_2k,United States,,False
+labdrill,Labdrill,medical,1985,32,2741.37,1_5b_to_3b,9226,2k_to_10k,United States,,False
+lexiqvolax,Lexiqvolax,medical,2004,13,1618.89,1_5b_to_3b,3889,2k_to_10k,United States,,False
+massive_dynamic,Massive Dynamic,entertainment,1989,28,665.06,500m_to_1_5b,1095,500_to_2k,United States,,False
+mathtouch,Mathtouch,marketing,1984,33,3027.46,over_3b,9516,2k_to_10k,Jordan,,False
+nam_zim,Nam-zim,services,1987,30,405.59,under_500m,1179,500_to_2k,Brazil,Warephase,True
+newex,Newex,services,1991,26,1012.72,500m_to_1_5b,3492,2k_to_10k,Germany,,False
+ontomedia,Ontomedia,employment,1997,20,882.12,500m_to_1_5b,2769,2k_to_10k,United States,,False
+opentech,Opentech,finance,1994,23,355.23,under_500m,853,500_to_2k,United States,,False
+plexzap,Plexzap,retail,2001,16,2437.85,1_5b_to_3b,4874,2k_to_10k,United States,,False
+plusstrip,Plusstrip,entertainment,2002,15,349.81,under_500m,315,under_500,United States,,False
+plussunin,Plussunin,retail,2003,14,1419.98,500m_to_1_5b,4018,2k_to_10k,United States,,False
+rangreen,Rangreen,technology,1987,30,2938.67,1_5b_to_3b,8775,2k_to_10k,Panama,,False
+rantouch,Rantouch,telecommunications,1994,23,1188.42,500m_to_1_5b,3015,2k_to_10k,United States,,False
+ron_tech,Ron-tech,medical,1992,25,3922.42,over_3b,6837,2k_to_10k,United States,,False
+rundofase,Rundofase,technology,1983,34,1008.06,500m_to_1_5b,1238,500_to_2k,United States,,False
+scotfind,Scotfind,software,1996,21,6354.87,over_3b,16780,over_10k,United States,Bubba Gump,True
+scottech,Scottech,marketing,2012,5,45.39,under_500m,100,under_500,United States,Inity,True
+silis,Silis,medical,1994,23,2818.38,1_5b_to_3b,6290,2k_to_10k,United States,,False
+singletechno,Singletechno,retail,1996,21,2214.94,1_5b_to_3b,5374,2k_to_10k,United States,,False
+sonron,Sonron,telecommunications,1999,18,1699.85,1_5b_to_3b,5108,2k_to_10k,United States,,False
+stanredtax,Stanredtax,finance,1987,30,1698.2,1_5b_to_3b,3798,2k_to_10k,United States,,False
+statholdings,Statholdings,employment,1997,20,291.27,under_500m,586,500_to_2k,United States,,False
+streethex,Streethex,retail,1988,29,1376.8,500m_to_1_5b,1165,500_to_2k,Belgium,,False
+sumace,Sumace,retail,2000,17,167.89,under_500m,493,under_500,Romania,,False
+sunnamplex,Sunnamplex,marketing,2008,9,894.37,500m_to_1_5b,1593,500_to_2k,Poland,,False
+the_new_york_inquirer,The New York Inquirer,medical,1996,21,439.21,under_500m,792,500_to_2k,United States,,False
+toughzap,Toughzap,retail,1995,22,332.43,under_500m,799,500_to_2k,United States,,False
+treequote,Treequote,telecommunications,1988,29,5266.09,over_3b,8595,2k_to_10k,United States,Sonron,True
+umbrella_corporation,Umbrella Corporation,finance,1998,19,2022.14,1_5b_to_3b,5113,2k_to_10k,United States,,False
+vehement_capital_partners,Vehement Capital Partners,finance,1993,24,646.1,500m_to_1_5b,883,500_to_2k,United States,Golddex,True
+warephase,Warephase,services,1997,20,2041.73,1_5b_to_3b,5276,2k_to_10k,United States,,False
+xx_holding,Xx-holding,finance,1993,24,7537.24,over_3b,20293,over_10k,United States,,False
+xx_zobam,Xx-zobam,entertainment,1989,28,3838.39,over_3b,8274,2k_to_10k,United States,,False
+y_corporation,Y-corporation,employment,1983,34,2871.35,1_5b_to_3b,9561,2k_to_10k,United States,,False
+yearin,Yearin,retail,2005,12,2261.05,1_5b_to_3b,3851,2k_to_10k,United States,,False
+zathunicon,Zathunicon,retail,2010,7,71.12,under_500m,144,under_500,United States,,False
+zencorporation,Zencorporation,technology,2011,6,40.79,under_500m,142,under_500,China,,False
+zoomit,Zoomit,entertainment,1992,25,324.19,under_500m,978,500_to_2k,United States,,False
+zotware,Zotware,software,1979,38,4478.47,over_3b,13809,over_10k,United States,,False
+zumgoity,Zumgoity,medical,1984,33,441.08,under_500m,1210,500_to_2k,United States,,False
+dambase,dambase,marketing,1995,22,2173.98,1_5b_to_3b,2928,2k_to_10k,United States,Inity,True

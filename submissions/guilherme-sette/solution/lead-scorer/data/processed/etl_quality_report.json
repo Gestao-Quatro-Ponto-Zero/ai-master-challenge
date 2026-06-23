@@ -1,0 +1,52 @@
+{
+  "snapshot_date": "2017-12-31",
+  "raw_rows": {
+    "accounts": 85,
+    "products": 7,
+    "sales_teams": 35,
+    "sales_pipeline": 8800,
+    "data_dictionary": 21
+  },
+  "processed_rows": {
+    "dim_accounts": 85,
+    "dim_products": 7,
+    "dim_sales_teams": 35,
+    "fact_sales_pipeline": 8800,
+    "opportunities_enriched": 8800,
+    "training_closed_opportunities": 6711,
+    "open_pipeline_for_scoring": 2089
+  },
+  "deal_stage_counts": {
+    "engaging": 1589,
+    "lost": 2473,
+    "prospecting": 500,
+    "won": 4238
+  },
+  "quality_checks": {
+    "duplicate_accounts": 0,
+    "duplicate_products": 0,
+    "duplicate_sales_agents": 0,
+    "duplicate_opportunities": 0,
+    "unknown_product_after_canonicalization": 0,
+    "unknown_sales_agent_after_join": 0,
+    "open_rows_missing_account": 1425,
+    "closed_rows_missing_account": 0
+  },
+  "leakage_policy": {
+    "training_table_excludes": [
+      "deal_stage",
+      "engage_date",
+      "close_date",
+      "close_value"
+    ],
+    "scoring_table_excludes": [
+      "close_date",
+      "close_value",
+      "target_won"
+    ],
+    "allowed_status_for_scoring": [
+      "prospecting",
+      "engaging"
+    ]
+  }
+}

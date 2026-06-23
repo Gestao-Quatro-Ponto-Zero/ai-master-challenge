@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lead Scorer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">LS</div>
+          <div>
+            <p class="eyebrow">RevOps</p>
+            <h1>Lead Scorer</h1>
+          </div>
+        </div>
+
+        <nav class="portal-switch" aria-label="Portal">
+          <button class="portal-button active" type="button" data-portal="seller">
+            <span class="button-icon" aria-hidden="true">S</span>
+            Vendedor
+          </button>
+          <button class="portal-button" type="button" data-portal="manager">
+            <span class="button-icon" aria-hidden="true">M</span>
+            Gerente
+          </button>
+        </nav>
+
+        <div class="sidebar-block">
+          <p class="sidebar-label">Modelo</p>
+          <div class="mini-metric">
+            <span>Score</span>
+            <strong>0-100</strong>
+          </div>
+          <div class="mini-metric">
+            <span>Corte alto valor</span>
+            <strong id="cutoffValue">-</strong>
+          </div>
+          <div class="mini-metric">
+            <span>Fit gap remanejamento</span>
+            <strong id="fitGapValue">-</strong>
+          </div>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="portalEyebrow">Portal do vendedor</p>
+            <h2 id="portalTitle">Fila de prioridades</h2>
+          </div>
+          <div class="topbar-actions">
+            <label class="field">
+              <span id="primarySelectLabel">Vendedor</span>
+              <select id="primarySelect"></select>
+            </label>
+            <label class="field">
+              <span>Sinal</span>
+              <select id="signalFilter">
+                <option value="all">Todos</option>
+                <option value="manter">Manter</option>
+                <option value="consultar_especialista">Consultar especialista</option>
+                <option value="remanejar">Remanejar</option>
+                <option value="manager_review">Revisão gerente</option>
+                <option value="corrigir_dados">Corrigir dados</option>
+                <option value="last_chance">Última tentativa</option>
+                <option value="nurture">Nutrição</option>
+              </select>
+            </label>
+            <label class="search-field">
+              <span>Buscar</span>
+              <input id="searchInput" type="search" placeholder="Conta, produto, vendedor..." />
+            </label>
+          </div>
+        </header>
+
+        <section class="metrics-grid" id="metricsGrid"></section>
+
+        <nav class="view-tabs" id="managerTabs" aria-label="Visões do gerente" hidden>
+          <button class="view-tab active" type="button" data-manager-tab="scenario">Cenário</button>
+          <button class="view-tab" type="button" data-manager-tab="approvals">Aprovações</button>
+        </nav>
+
+        <section class="content-grid" id="contentGrid">
+          <div class="panel primary-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow" id="queueEyebrow">Carteira atual</p>
+                <h3 id="queueTitle">Oportunidades priorizadas</h3>
+              </div>
+              <div class="table-count" id="tableCount">0 deals</div>
+            </div>
+            <div class="table-wrap" id="tableWrap">
+              <table>
+                <thead id="dealsHead"></thead>
+                <tbody id="dealsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <aside class="panel side-panel" id="sidePanel">
+            <div class="panel-header compact">
+              <div>
+                <p class="eyebrow" id="sideEyebrow">Resumo</p>
+                <h3 id="sideTitle">Carteira</h3>
+              </div>
+            </div>
+            <div id="sideContent" class="side-content"></div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
