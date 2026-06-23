@@ -1,0 +1,13 @@
+strategy,top_cut,top_n,top_win_rate,lift_vs_overall_win_rate,won_revenue_capture,avg_score_top
+v1_compatible_score,10.0%,201,0.6517,1.049,0.2482,72.01
+v1_compatible_score,20.0%,403,0.6278,1.011,0.4439,71.11
+v1_compatible_score,30.0%,604,0.6325,1.018,0.6365,70.44
+value_only,10.0%,201,0.6219,1.001,0.2582,75.2
+value_only,20.0%,403,0.6476,1.043,0.486,73.91
+value_only,30.0%,604,0.6474,1.042,0.6901,73.16
+seller_win_rate_baseline,10.0%,201,0.6617,1.065,0.1164,68.31
+seller_win_rate_baseline,20.0%,403,0.6278,1.011,0.2196,67.55
+seller_win_rate_baseline,30.0%,604,0.6341,1.021,0.3162,67.01
+product_win_rate_baseline,10.0%,201,0.6368,1.025,0.0024,65.34
+product_win_rate_baseline,20.0%,403,0.6278,1.011,0.0346,65.32
+product_win_rate_baseline,30.0%,604,0.5795,0.933,0.0702,65.11
