@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G4 Lead Scorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy: #001F35;
+  --navy-light: #002D4F;
+  --navy-mid: #003A66;
+  --gold: #B9915B;
+  --gold-light: #D4B07A;
+  --light: #F5F4F3;
+  --white: #FFFFFF;
+  --gray-50: #FAFAF9;
+  --gray-100: #F8F8F7;
+  --gray-200: #EDEDEB;
+  --gray-300: #D9D9D6;
+  --gray-400: #A8A8A3;
+  --gray-500: #6B6B66;
+  --green: #3A7D44;
+  --green-bg: #EDF5EE;
+  --green-subtle: #D0E4D2;
+  --red: #B33030;
+  --red-bg: #FAEEEE;
+  --orange: #C45A00;
+  --orange-bg: #FBF3E8;
+  --blue: #2966A3;
+  --blue-bg: #EAF0F8;
+}
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--light);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ── Header ──────────────────────────────────── */
+.header {
+  background: var(--navy);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.header-logo-img {
+  height: 30px;
+  width: auto;
+}
+.logo {
+  width: 34px; height: 34px;
+  background: var(--gold);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px; color: var(--navy);
+}
+.header h1 { color: var(--white); font-size: 16px; font-weight: 700; }
+.header h1 span { color: var(--gold); }
+.nav-tabs {
+  display: flex; gap: 4px;
+}
+.nav-tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--gray-400);
+  transition: all 0.2s;
+}
+.nav-tab:hover { color: var(--gray-200); }
+.nav-tab.active {
+  background: var(--navy-light);
+  color: var(--white);
+}
+.user-badge {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--navy-light);
+  padding: 7px 14px;
+  border-radius: 8px;
+  color: var(--white);
+  font-size: 12px;
+}
+.user-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--gold); color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px;
+}
+
+/* ── Main Layout ─────────────────────────────── */
+.main { max-width: 1440px; margin: 0 auto; padding: 16px 24px; }
+
+/* ── Tab pages ───────────────────────────────── */
+.tab-page { display: none; }
+.tab-page.active { display: block; }
+
+/* ── Guia do Dia ─────────────────────────────── */
+.daily-guide {
+  background: var(--navy);
+  border-radius: 8px;
+  padding: 18px 24px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  color: var(--white);
+}
+.guide-icon {
+  display: none;
+}
+.guide-content { flex: 1; }
+.guide-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--gold-light);
+}
+.guide-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--gray-300);
+}
+.guide-step-num {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 10px;
+  min-width: 18px; height: 18px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.guide-step strong { color: var(--white); font-weight: 600; }
+.guide-step .guide-val { color: var(--gold-light); font-weight: 600; }
+.guide-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.guide-btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.guide-btn.primary { background: var(--gold); color: var(--navy); }
+.guide-btn.primary:hover { background: var(--gold-light); }
+.guide-btn.secondary {
+  background: var(--navy-light);
+  color: var(--white);
+  border: 1px solid var(--navy-mid);
+}
+.guide-btn.secondary:hover { background: var(--navy-mid); }
+
+/* ── Resumo do Dia ───────────────────────────── */
+.day-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.summary-card {
+  background: var(--white);
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--gray-200);
+  position: relative;
+  overflow: hidden;
+}
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+}
+.summary-card.attack::before { background: var(--green); }
+.summary-card.rescue::before { background: var(--orange); }
+.summary-card.advance::before { background: var(--blue); }
+.summary-card.total::before { background: var(--gold); }
+.summary-number { font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+.summary-card.attack .summary-number { color: var(--green); }
+.summary-card.rescue .summary-number { color: var(--orange); }
+.summary-card.advance .summary-number { color: var(--blue); }
+.summary-card.total .summary-number { color: var(--gold); }
+.summary-label { font-size: 11px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+.summary-detail { display: none; }
+.summary-value { font-size: 13px; font-weight: 700; color: var(--navy); margin-top: 2px; }
+
+/* ── Funil de Vendas ─────────────────────────── */
+.funnel-section { margin-bottom: 18px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.section-title { font-size: 14px; font-weight: 700; color: var(--navy); }
+.funnel-container {
+  display: flex; gap: 0;
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+  overflow: hidden; height: 84px;
+}
+.funnel-stage {
+  flex: 1; padding: 14px 18px;
+  display: flex; flex-direction: column; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+  position: relative;
+  border-right: 1px solid var(--gray-200);
+}
+.funnel-stage:last-child { border-right: none; }
+.funnel-stage:hover { background: var(--gray-100); }
+.funnel-stage.active { background: var(--navy); color: var(--white); }
+.funnel-stage.active .funnel-label { color: var(--gray-400); }
+.funnel-stage.active .funnel-count { color: var(--white); }
+.funnel-stage.active .funnel-value { color: var(--gold-light); }
+.funnel-label { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.funnel-count { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1; }
+.funnel-value { font-size: 11px; font-weight: 600; color: var(--gold); margin-top: 2px; }
+.funnel-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gray-200); }
+.funnel-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+.funnel-stage:nth-child(1) .funnel-bar-fill { background: var(--gray-400); }
+.funnel-stage:nth-child(2) .funnel-bar-fill { background: var(--blue); }
+.funnel-stage:nth-child(3) .funnel-bar-fill { background: var(--green); }
+.funnel-stage:nth-child(4) .funnel-bar-fill { background: var(--red); }
+
+/* ── Toolbar ─────────────────────────────────── */
+.toolbar { display: flex; gap: 10px; margin-bottom: 14px; align-items: center; flex-wrap: wrap; }
+.legend {
+  display: flex; gap: 16px; padding: 8px 14px;
+  background: var(--white); border-radius: 8px;
+  border: 1px solid var(--gray-200); font-size: 11px; align-items: center;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; color: var(--gray-500); }
+.legend-swatch { width: 3px; height: 16px; border-radius: 2px; }
+.legend-swatch.old { background: var(--navy); }
+.legend-swatch.new { background: var(--gold); }
+.filter-chip {
+  padding: 6px 12px; border-radius: 6px;
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--gray-300);
+  background: var(--white); color: var(--gray-500); transition: all 0.2s;
+}
+.filter-chip:hover { border-color: var(--navy); color: var(--navy); }
+.filter-chip.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.filter-select {
+  padding: 6px 10px; border-radius: 6px;
+  font-family: inherit; font-size: 11px; font-weight: 400;
+  border: 1px solid var(--gray-300); background: var(--white); color: var(--navy); cursor: pointer;
+}
+
+/* ── Kanban ───────────────────────────────────── */
+.kanban { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.kanban-col { background: var(--gray-100); border-radius: 8px; padding: 10px; min-height: 420px; }
+.kanban-col.drag-over { background: rgba(185,145,91,0.08); outline: 2px dashed var(--gold); }
+.col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid transparent; }
+.col-header.attack { border-color: var(--green); }
+.col-header.rescue { border-color: var(--orange); }
+.col-header.advance { border-color: var(--blue); }
+.col-header.work { border-color: var(--gold); }
+.col-header.nurture { border-color: var(--gray-300); }
+.col-title { font-size: 12px; font-weight: 700; color: var(--navy); }
+.col-count { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: var(--white); color: var(--gray-500); }
+.col-value { font-size: 10px; color: var(--gray-400); margin-top: 1px; font-weight: 600; }
+
+/* ── Deal Cards ──────────────────────────────── */
+.deal-card {
+  background: var(--white); border-radius: 8px; padding: 12px;
+  margin-bottom: 8px; border: 1px solid var(--gray-200);
+  cursor: grab; transition: all 0.15s; position: relative;
+  border-left: 3px solid var(--gray-300);
+}
+.deal-card:active { cursor: grabbing; }
+.deal-card:hover { border-color: var(--gray-300); border-left-color: var(--gold); }
+.deal-card.dragging { opacity: 0.4; transform: rotate(1deg); }
+.deal-card.old-account { border-left-color: var(--navy); }
+.deal-card.new-account { border-left-color: var(--gold); }
+.card-row-1 { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
+.card-account { font-size: 12px; font-weight: 700; color: var(--navy); line-height: 1.3; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.card-tag { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.3px; }
+.card-tag.new { background: rgba(185,145,91,0.12); color: var(--gold); }
+.card-tag.old { background: rgba(0,31,53,0.06); color: var(--navy-mid); }
+.card-product { font-size: 10px; color: var(--gray-400); margin-bottom: 8px; font-weight: 400; }
+.card-chance { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.chance-label { font-size: 10px; color: var(--gray-400); font-weight: 400; min-width: 42px; }
+.chance-track { flex: 1; height: 4px; background: var(--gray-200); border-radius: 2px; overflow: hidden; }
+.chance-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+.chance-pct { font-size: 11px; font-weight: 700; min-width: 32px; text-align: right; line-height: 1; }
+.chance-high { color: var(--green); }
+.chance-mid { color: var(--gold); }
+.chance-low { color: var(--red); }
+.card-reason {
+  font-size: 10px; color: var(--gray-500); line-height: 1.45;
+  margin-bottom: 8px; padding: 7px 9px;
+  background: var(--gray-50); border-radius: 5px;
+  border-left: 2px solid var(--gray-200);
+}
+.card-reason strong { color: var(--navy); font-weight: 600; }
+.card-bottom { display: flex; align-items: center; justify-content: space-between; }
+.card-value { font-size: 13px; font-weight: 700; color: var(--navy); }
+.card-days { font-size: 10px; color: var(--gray-400); font-weight: 400; }
+.card-days.urgent { color: var(--red); font-weight: 600; }
+.card-days.warning { color: var(--orange); font-weight: 600; }
+.card-actions { display: flex; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--gray-200); }
+.card-btn {
+  flex: 1; padding: 5px 0; border-radius: 5px;
+  font-family: inherit; font-size: 10px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--gray-200);
+  background: var(--white); color: var(--gray-500); transition: all 0.15s; text-align: center;
+}
+.card-btn:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.card-btn.contacted { background: var(--green-bg); color: var(--green); border-color: var(--green-subtle); }
+.card-detail { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--gray-200); }
+.deal-card.expanded .card-detail { display: block; }
+.detail-row { display: flex; justify-content: space-between; font-size: 10px; padding: 2px 0; }
+.detail-label { color: var(--gray-400); }
+.detail-value { color: var(--navy); font-weight: 600; }
+.notes-area {
+  width: 100%; margin-top: 6px; padding: 7px 8px;
+  border: 1px solid var(--gray-200); border-radius: 5px;
+  font-family: inherit; font-size: 10px;
+  resize: vertical; min-height: 40px; color: var(--navy); background: var(--gray-50);
+}
+.notes-area:focus { outline: none; border-color: var(--gold); background: var(--white); }
+.notes-area::placeholder { color: var(--gray-400); }
+.kanban-col .cards-container { max-height: 560px; overflow-y: auto; padding-right: 2px; }
+.cards-container::-webkit-scrollbar { width: 3px; }
+.cards-container::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 2px; }
+
+/* ── Como Funciona Page ──────────────────────── */
+.como-page { max-width: 900px; margin: 0 auto; }
+.como-hero {
+  background: var(--navy);
+  border-radius: 8px;
+  padding: 24px;
+  color: var(--white);
+  margin-bottom: 20px;
+  text-align: center;
+}
+.como-hero h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.como-hero p {
+  font-size: 13px;
+  color: var(--gray-300);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.como-section {
+  background: var(--white);
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+  padding: 22px;
+  margin-bottom: 14px;
+}
+.como-section h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.como-section .subtitle {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Signal bars */
+.signal-list { display: flex; flex-direction: column; gap: 14px; }
+.signal-item {
+  display: grid;
+  grid-template-columns: 180px 1fr 50px;
+  align-items: center;
+  gap: 14px;
+}
+.signal-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.signal-desc {
+  font-size: 10px;
+  color: var(--gray-400);
+  font-weight: 400;
+  margin-top: 1px;
+}
+.signal-bar-bg {
+  height: 10px;
+  background: var(--gray-200);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.signal-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.6s ease;
+}
+.signal-pct {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Cascade visual */
+.cascade {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 16px;
+}
+.cascade-step {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+}
+.cascade-line-col {
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+.cascade-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cascade-line {
+  width: 2px;
+  flex: 1;
+  min-height: 12px;
+}
+.cascade-content {
+  flex: 1;
+  padding: 12px 16px;
+  background: var(--gray-50);
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+  margin-bottom: 8px;
+}
+.cascade-content.active-step {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+.cascade-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.cascade-desc {
+  font-size: 11px;
+  color: var(--gray-500);
+  line-height: 1.4;
+}
+.cascade-example {
+  font-size: 11px;
+  color: var(--navy);
+  font-weight: 600;
+  margin-top: 4px;
+  font-style: italic;
+}
+.cascade-fallback {
+  font-size: 10px;
+  color: var(--gray-400);
+  margin-top: 4px;
+}
+
+/* Comparison boxes */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+.compare-box {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--gray-200);
+}
+.compare-box.known {
+  background: rgba(0,31,53,0.03);
+  border-left: 4px solid var(--navy);
+}
+.compare-box.new-acct {
+  background: rgba(185,145,91,0.04);
+  border-left: 4px solid var(--gold);
+}
+.compare-box h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+.info-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.info-dot.on { background: var(--green); }
+.info-dot.partial { background: var(--gold); }
+.info-dot.off { background: var(--gray-300); }
+.info-label { color: var(--gray-500); flex: 1; }
+.info-status { font-weight: 600; font-size: 11px; }
+.info-status.on { color: var(--green); }
+.info-status.partial { color: var(--gold); }
+.info-status.off { color: var(--gray-400); }
+
+/* Urgency visual */
+.urgency-timeline {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  margin-top: 16px;
+  height: 80px;
+  padding: 0 4px;
+}
+.urgency-bar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.urgency-bar {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  max-width: 80px;
+  transition: height 0.4s ease;
+}
+.urgency-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-align: center;
+  line-height: 1.2;
+}
+.urgency-pct {
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Formula visual */
+.formula-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  margin-top: 14px;
+  background: var(--gray-50);
+  border-radius: 8px;
+}
+.formula-block {
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  min-width: 100px;
+}
+.formula-block.highlight {
+  border-color: var(--gold);
+  background: rgba(185,145,91,0.05);
+}
+.formula-block .f-label {
+  font-size: 10px;
+  color: var(--gray-400);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.formula-block .f-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.formula-op {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--gray-400);
+}
+
+/* Action buckets visual */
+.bucket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+.bucket-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+}
+.bucket-color {
+  width: 4px;
+  height: 36px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.bucket-info { flex: 1; }
+.bucket-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.bucket-rule {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+.bucket-example {
+  font-size: 11px;
+  color: var(--gray-400);
+  flex-shrink: 0;
+  text-align: right;
+  max-width: 200px;
+}
+
+/* Number highlight */
+.num-highlight {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 20px;
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
+/* ── Login Screen ─────────────────────────────── */
+.login-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.login-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.02);
+}
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 0 24px;
+}
+.login-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.login-logo .logo {
+  width: 48px; height: 48px;
+  font-size: 22px;
+}
+.login-logo h1 {
+  color: var(--white);
+  font-size: 24px;
+  font-weight: 700;
+}
+.login-logo h1 span { color: var(--gold); }
+.login-card {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 32px 28px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.login-card h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+  text-align: center;
+}
+.login-card .login-subtitle {
+  font-size: 13px;
+  color: var(--gray-500);
+  text-align: center;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.login-field {
+  margin-bottom: 20px;
+}
+.login-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+.login-field select {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  border: 2px solid var(--gray-200);
+  background: var(--gray-50);
+  color: var(--navy);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A8A8A3' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.login-field select:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.login-agent-info {
+  display: none;
+  background: var(--gray-50);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border: 1px solid var(--gray-200);
+}
+.login-agent-info.visible { display: block; }
+.agent-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.agent-info-item {
+  display: flex;
+  flex-direction: column;
+}
+.agent-info-item .ai-label {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.agent-info-item .ai-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 1px;
+}
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: var(--gold);
+  color: var(--navy);
+  transition: all 0.2s;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.login-btn.enabled {
+  opacity: 1;
+  pointer-events: auto;
+}
+.login-btn.enabled:hover {
+  background: var(--gold-light);
+}
+.login-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 11px;
+  color: var(--gray-500);
+}
+
+@media (max-width: 1200px) { .kanban { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+  .kanban { grid-template-columns: 1fr; }
+  .day-summary { grid-template-columns: 1fr 1fr; }
+  .daily-guide { flex-direction: column; text-align: center; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .signal-item { grid-template-columns: 1fr; }
+}
+
+/* ── Summary Modal ───────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,16,30,0.5);
+  z-index: 9000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
+.modal-box {
+  background: var(--white);
+  border-radius: 10px;
+  width: 90%; max-width: 720px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  animation: modalFadeIn 0.2s ease;
+}
+@keyframes modalFadeIn { from { opacity:0; } to { opacity:1; } }
+.modal-header {
+  position: sticky; top: 0;
+  background: var(--navy);
+  color: var(--white);
+  padding: 20px 28px;
+  border-radius: 10px 10px 0 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h2 { font-size: 15px; font-weight: 700; }
+.modal-header .modal-subtitle { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.modal-close {
+  background: var(--navy-light);
+  border: none; color: var(--white);
+  width: 32px; height: 32px; border-radius: 4px;
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.modal-close:hover { background: var(--navy-mid); }
+.modal-body { padding: 16px 20px; }
+.modal-bucket {
+  margin-bottom: 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.modal-bucket-header {
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.modal-bucket-header:hover { filter: brightness(0.97); }
+.mbh-left { display: flex; align-items: center; gap: 10px; }
+.mbh-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.mbh-name { font-weight: 700; font-size: 14px; color: var(--navy); }
+.mbh-count {
+  background: var(--gray-200);
+  border-radius: 4px;
+  padding: 1px 8px;
+  font-size: 11px; font-weight: 600; color: var(--gray-500);
+}
+.mbh-right { display: flex; align-items: center; gap: 12px; }
+.mbh-value { font-size: 13px; font-weight: 600; color: var(--navy); }
+.mbh-arrow { font-size: 12px; color: var(--gray-400); transition: transform 0.2s; }
+.modal-bucket.expanded .mbh-arrow { transform: rotate(180deg); }
+.mbh-reason {
+  font-size: 12px; color: var(--gray-500);
+  padding: 0 16px 10px 36px;
+  line-height: 1.5;
+  display: none;
+}
+.modal-bucket.expanded .mbh-reason { display: block; }
+.modal-deal-list { display: none; padding: 0 12px 12px; }
+.modal-bucket.expanded .modal-deal-list { display: block; }
+.modal-deal-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.modal-deal-item:last-child { border-bottom: none; }
+.modal-deal-item:hover { background: var(--gray-50); }
+.mdi-account { font-weight: 600; color: var(--navy); }
+.mdi-product { color: var(--gray-500); font-size: 11px; }
+.mdi-chance { font-weight: 700; }
+.mdi-value { font-weight: 600; color: var(--navy); text-align: right; }
+.mdi-days { color: var(--gray-500); text-align: right; font-size: 11px; }
+.mdi-reason {
+  grid-column: 1 / -1;
+  font-size: 11px; color: var(--gray-500);
+  line-height: 1.4;
+  padding-top: 2px;
+}
+.modal-total-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--navy);
+  color: var(--white);
+  padding: 14px 20px;
+  border-radius: 0 0 10px 10px;
+  font-size: 13px; font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="assets/logo-g4.svg" alt="G4" style="height:52px;">
+    </div>
+    <div class="login-card">
+      <h2>Bem-vindo</h2>
+      <p class="login-subtitle">Selecione seu nome para ver seus deals e o plano de ação personalizado.</p>
+      <div class="login-field">
+        <label>Vendedor</label>
+        <select id="loginSelect" onchange="onLoginSelect()">
+          <option value="">Selecione seu nome...</option>
+        </select>
+      </div>
+      <div class="login-agent-info" id="loginAgentInfo">
+        <div class="agent-info-grid">
+          <div class="agent-info-item"><span class="ai-label">Escritório</span><span class="ai-value" id="loginOffice">—</span></div>
+          <div class="agent-info-item"><span class="ai-label">Gestor</span><span class="ai-value" id="loginManager">—</span></div>
+          <div class="agent-info-item"><span class="ai-label">Taxa de fechamento</span><span class="ai-value" id="loginWR">—</span></div>
+          <div class="agent-info-item"><span class="ai-label">Deals ativos</span><span class="ai-value" id="loginDeals">—</span></div>
+        </div>
+      </div>
+      <button class="login-btn" id="loginBtn" onclick="doLogin()">Entrar</button>
+    </div>
+    <div class="login-footer">G4 Lead Scorer v5. Motor de priorização de deals</div>
+  </div>
+</div>
+
+<!-- App (hidden until login) -->
+<div id="appWrapper" style="display:none;">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <img src="assets/logo-g4.svg" alt="G4" class="header-logo-img">
+    <span style="color:var(--gray-400);font-size:13px;font-weight:400;margin-left:4px;">Lead Scorer</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('deals')">Meus Deals</button>
+    <button class="nav-tab" onclick="switchTab('como')">Como Funciona</button>
+  </div>
+  <div class="user-badge">
+    <div class="user-avatar" id="headerAvatar">—</div>
+    <div>
+      <div style="font-weight:600;" id="headerName">—</div>
+      <div style="font-size:10px;color:var(--gray-400);" id="headerSub">—</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 1: MEUS DEALS                              -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-page active" id="tabDeals">
+
+  <div class="daily-guide">
+    <div class="guide-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    </div>
+    <div class="guide-content">
+      <div class="guide-title" id="guideTitle">Bom dia, Darcel!</div>
+      <div class="guide-steps" id="guideSteps"></div>
+    </div>
+    <div class="guide-actions">
+      <button class="guide-btn primary" onclick="openSummaryModal()">Resumo dos Deals</button>
+      <button class="guide-btn secondary" onclick="switchTab('como')">Como funciona</button>
+    </div>
+  </div>
+
+  <div class="day-summary">
+    <div class="summary-card attack">
+      <div class="summary-label">Fechar agora</div>
+      <div class="summary-number" id="sumAttack">0</div>
+      <div class="summary-detail">Chance alta e no ponto certo</div>
+      <div class="summary-value" id="sumAttackVal">R$ 0</div>
+    </div>
+    <div class="summary-card rescue">
+      <div class="summary-label">Resgatar hoje</div>
+      <div class="summary-number" id="sumRescue">0</div>
+      <div class="summary-detail">Bons deals esfriando</div>
+      <div class="summary-value" id="sumRescueVal">R$ 0</div>
+    </div>
+    <div class="summary-card advance">
+      <div class="summary-label">Avançar qualificação</div>
+      <div class="summary-number" id="sumAdvance">0</div>
+      <div class="summary-detail">Potencial bom, precisa empurrar</div>
+      <div class="summary-value" id="sumAdvanceVal">R$ 0</div>
+    </div>
+    <div class="summary-card total">
+      <div class="summary-label">Pipeline total</div>
+      <div class="summary-number" id="sumTotal">0</div>
+      <div class="summary-detail">Deals ativos no seu funil</div>
+      <div class="summary-value" id="sumTotalVal">R$ 0</div>
+    </div>
+  </div>
+
+  <div class="funnel-section">
+    <div class="section-header"><div class="section-title">Funil de Vendas</div></div>
+    <div class="funnel-container">
+      <div class="funnel-stage" data-stage="Prospecting" onclick="filterByStage(this)">
+        <div class="funnel-label">Prospecção</div>
+        <div class="funnel-count" id="funnelProspecting">0</div>
+        <div class="funnel-value" id="funnelProspectingVal">R$ 0</div>
+        <div class="funnel-bar"><div class="funnel-bar-fill" style="width:34%;"></div></div>
+      </div>
+      <div class="funnel-stage active" data-stage="Engaging" onclick="filterByStage(this)">
+        <div class="funnel-label">Em negociação</div>
+        <div class="funnel-count" id="funnelEngaging">0</div>
+        <div class="funnel-value" id="funnelEngagingVal">R$ 0</div>
+        <div class="funnel-bar"><div class="funnel-bar-fill" style="width:68%;"></div></div>
+      </div>
+      <div class="funnel-stage" data-stage="Won"><div class="funnel-label">Ganhos (mes)</div><div class="funnel-count">7</div><div class="funnel-value">R$ 22.400</div><div class="funnel-bar"><div class="funnel-bar-fill" style="width:100%;"></div></div></div>
+      <div class="funnel-stage" data-stage="Lost"><div class="funnel-label">Perdidos (mes)</div><div class="funnel-count">4</div><div class="funnel-value">R$ 11.200</div><div class="funnel-bar"><div class="funnel-bar-fill" style="width:57%;"></div></div></div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch old"></div> Conta conhecida</div>
+      <div class="legend-item"><div class="legend-swatch new"></div> Conta nova</div>
+    </div>
+    <select class="filter-select" id="fProduct" onchange="renderKanban()">
+      <option value="">Todos os produtos</option>
+      <option>GTX Basic</option><option>GTX Pro</option><option>GTX Plus Basic</option>
+      <option>GTX Plus Pro</option><option>GTK 500</option><option>MG Special</option><option>MG Advanced</option>
+    </select>
+    <button class="filter-chip active" onclick="toggleAccountFilter(this, '')">Todos</button>
+    <button class="filter-chip" onclick="toggleAccountFilter(this, 'old')">Contas conhecidas</button>
+    <button class="filter-chip" onclick="toggleAccountFilter(this, 'new')">Contas novas</button>
+  </div>
+
+  <div class="kanban" id="kanban">
+    <div class="kanban-col" data-bucket="Atacar Agora" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+      <div class="col-header attack"><div><div class="col-title">Fechar Agora</div><div class="col-value" id="colAttackVal"></div></div><div class="col-count" id="colAttackCount">0</div></div>
+      <div class="cards-container" id="cardsAttack"></div>
+    </div>
+    <div class="kanban-col" data-bucket="Resgatar Hoje" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+      <div class="col-header rescue"><div><div class="col-title">Resgatar Hoje</div><div class="col-value" id="colRescueVal"></div></div><div class="col-count" id="colRescueCount">0</div></div>
+      <div class="cards-container" id="cardsRescue"></div>
+    </div>
+    <div class="kanban-col" data-bucket="Avançar Qualificação" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+      <div class="col-header advance"><div><div class="col-title">Avançar</div><div class="col-value" id="colAdvanceVal"></div></div><div class="col-count" id="colAdvanceCount">0</div></div>
+      <div class="cards-container" id="cardsAdvance"></div>
+    </div>
+    <div class="kanban-col" data-bucket="Trabalhar Esta Semana" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+      <div class="col-header work"><div><div class="col-title">Trabalhar</div><div class="col-value" id="colWorkVal"></div></div><div class="col-count" id="colWorkCount">0</div></div>
+      <div class="cards-container" id="cardsWork"></div>
+    </div>
+    <div class="kanban-col" data-bucket="Nutrir" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+      <div class="col-header nurture"><div><div class="col-title">Nutrir</div><div class="col-value" id="colNurtureVal"></div></div><div class="col-count" id="colNurtureCount">0</div></div>
+      <div class="cards-container" id="cardsNurture"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TAB 2: COMO FUNCIONA                           -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="tab-page" id="tabComo">
+<div class="como-page">
+
+  <div class="como-hero">
+    <h2>Como calculamos a chance de cada deal</h2>
+    <p>O motor analisa o histórico de todos os deals já fechados para encontrar padrões. Com base nesses padrões, ele calcula a chance de cada deal aberto virar venda.</p>
+  </div>
+
+  <!-- SECTION 1: Os 5 sinais -->
+  <div class="como-section">
+    <h3>1. Analisamos 5 sinais do seu histórico</h3>
+    <p class="subtitle">Cada sinal contribui com um peso diferente. Quanto mais forte o sinal, maior o peso.</p>
+
+    <div class="signal-list">
+      <div class="signal-item">
+        <div>
+          <div class="signal-name">Seu desempenho geral</div>
+          <div class="signal-desc">Sua taxa de fechamento em todos os deals</div>
+        </div>
+        <div class="signal-bar-bg"><div class="signal-bar-fill" style="width:30%;background:var(--navy);"></div></div>
+        <div class="signal-pct" style="color:var(--navy);">30%</div>
+      </div>
+      <div class="signal-item">
+        <div>
+          <div class="signal-name">Você + este produto</div>
+          <div class="signal-desc">Como você se sai vendendo este produto específico</div>
+        </div>
+        <div class="signal-bar-bg"><div class="signal-bar-fill" style="width:25%;background:var(--blue);"></div></div>
+        <div class="signal-pct" style="color:var(--blue);">25%</div>
+      </div>
+      <div class="signal-item">
+        <div>
+          <div class="signal-name">Seu histórico com a conta</div>
+          <div class="signal-desc">Se você ou seu time já venderam para esta conta antes</div>
+        </div>
+        <div class="signal-bar-bg"><div class="signal-bar-fill" style="width:25%;background:var(--gold);"></div></div>
+        <div class="signal-pct" style="color:var(--gold);">25%</div>
+      </div>
+      <div class="signal-item">
+        <div>
+          <div class="signal-name">Desempenho do produto</div>
+          <div class="signal-desc">Taxa de fechamento geral deste produto</div>
+        </div>
+        <div class="signal-bar-bg"><div class="signal-bar-fill" style="width:10%;background:var(--green);"></div></div>
+        <div class="signal-pct" style="color:var(--green);">10%</div>
+      </div>
+      <div class="signal-item">
+        <div>
+          <div class="signal-name">Epoca do ano</div>
+          <div class="signal-desc">Alguns meses fecham mais que outros</div>
+        </div>
+        <div class="signal-bar-bg"><div class="signal-bar-fill" style="width:10%;background:var(--orange);"></div></div>
+        <div class="signal-pct" style="color:var(--orange);">10%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Contas conhecidas vs novas -->
+  <div class="como-section">
+    <h3>2. Contas conhecidas vs. contas novas</h3>
+    <p class="subtitle">Quando você já vendeu para uma conta antes, temos muito mais informação. Veja a diferença:</p>
+
+    <div class="compare-grid">
+      <div class="compare-box known">
+        <h4>Conta conhecida</h4>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Seu desempenho geral</span><span class="info-status on">Disponível</span></div>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Você + este produto</span><span class="info-status on">Disponível</span></div>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Historico com a conta</span><span class="info-status on">Disponível</span></div>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Setor da empresa</span><span class="info-status on">Disponível</span></div>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Epoca do ano</span><span class="info-status on">Disponível</span></div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-200);font-size:12px;color:var(--navy);font-weight:700;">
+          100% dos sinais informados
+        </div>
+      </div>
+      <div class="compare-box new-acct">
+        <h4>Conta nova</h4>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Seu desempenho geral</span><span class="info-status on">Disponível</span></div>
+        <div class="info-row"><div class="info-dot on"></div><span class="info-label">Você + este produto</span><span class="info-status on">Disponível</span></div>
+        <div class="info-row"><div class="info-dot off"></div><span class="info-label">Historico com a conta</span><span class="info-status off">Sem dados</span></div>
+        <div class="info-row"><div class="info-dot off"></div><span class="info-label">Setor da empresa</span><span class="info-status off">Sem dados</span></div>
+        <div class="info-row"><div class="info-dot partial"></div><span class="info-label">Epoca do ano</span><span class="info-status partial">76% tem data</span></div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gray-200);font-size:12px;color:var(--gold);font-weight:700;">
+          ~75% dos sinais informados
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Cascade -->
+  <div class="como-section">
+    <h3>3. Como funciona o histórico com a conta</h3>
+    <p class="subtitle">Para contas conhecidas, o motor procura o dado mais preciso primeiro. Se não encontra, busca o próximo melhor.</p>
+
+    <div class="cascade">
+      <div class="cascade-step">
+        <div class="cascade-line-col">
+          <div class="cascade-dot" style="background:var(--green);"></div>
+          <div class="cascade-line" style="background:var(--gray-300);"></div>
+        </div>
+        <div class="cascade-content active-step">
+          <div class="cascade-title">Você + esta conta</div>
+          <div class="cascade-desc">Quantas vezes você já vendeu para esta empresa e quantas fechou.</div>
+          <div class="cascade-example">"Darcel vendeu 31 vezes para Codehow. Fechou 61%."</div>
+          <div class="cascade-fallback">Usado em 93% dos deals com conta</div>
+        </div>
+      </div>
+      <div class="cascade-step">
+        <div class="cascade-line-col">
+          <div class="cascade-dot" style="background:var(--blue);"></div>
+          <div class="cascade-line" style="background:var(--gray-300);"></div>
+        </div>
+        <div class="cascade-content">
+          <div class="cascade-title">Seu gestor + esta conta</div>
+          <div class="cascade-desc">Se você ainda não vendeu para esta conta, o motor olha como seu time inteiro se saiu.</div>
+          <div class="cascade-example">"Time do Melvin vendeu 45 vezes para Codehow. Fechou 68%."</div>
+          <div class="cascade-fallback">Se você tem menos de 3 deals com a conta</div>
+        </div>
+      </div>
+      <div class="cascade-step">
+        <div class="cascade-line-col">
+          <div class="cascade-dot" style="background:var(--gold);"></div>
+          <div class="cascade-line" style="background:var(--gray-300);"></div>
+        </div>
+        <div class="cascade-content">
+          <div class="cascade-title">Você + este setor</div>
+          <div class="cascade-desc">Como você se sai com empresas do mesmo setor (tecnologia, varejo, etc.).</div>
+          <div class="cascade-example">"Darcel em tecnologia: fecha 68% dos deals."</div>
+          <div class="cascade-fallback">Se seu time tem menos de 3 deals com a conta</div>
+        </div>
+      </div>
+      <div class="cascade-step">
+        <div class="cascade-line-col">
+          <div class="cascade-dot" style="background:var(--gray-400);"></div>
+          <div class="cascade-line" style="background:transparent;"></div>
+        </div>
+        <div class="cascade-content">
+          <div class="cascade-title">Média geral</div>
+          <div class="cascade-desc">Se nenhuma informação específica esta disponível, usa a média geral de fechamento (63%).</div>
+          <div class="cascade-fallback">Usado para contas novas sem histórico</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Urgência -->
+  <div class="como-section">
+    <h3>4. Urgência: há quanto tempo o deal está aberto</h3>
+    <p class="subtitle">Analisamos todos os deals que já fecharam. Resultado: 77% das vendas acontecem antes de 90 dias. Depois disso, a chance cai rápido.</p>
+
+    <div class="urgency-timeline">
+      <div class="urgency-bar-wrapper">
+        <div class="urgency-pct" style="color:var(--green);">Baixa</div>
+        <div class="urgency-bar" style="height:24px;background:var(--green);"></div>
+        <div class="urgency-label">0-30 dias</div>
+      </div>
+      <div class="urgency-bar-wrapper">
+        <div class="urgency-pct" style="color:var(--green);">Media</div>
+        <div class="urgency-bar" style="height:40px;background:var(--gold);"></div>
+        <div class="urgency-label">31-60 dias</div>
+      </div>
+      <div class="urgency-bar-wrapper">
+        <div class="urgency-pct" style="color:var(--orange);">Alta</div>
+        <div class="urgency-bar" style="height:56px;background:var(--orange);"></div>
+        <div class="urgency-label">61-90 dias</div>
+      </div>
+      <div class="urgency-bar-wrapper">
+        <div class="urgency-pct" style="color:var(--red);">Urgente</div>
+        <div class="urgency-bar" style="height:72px;background:var(--red);"></div>
+        <div class="urgency-label">91-120 dias</div>
+      </div>
+      <div class="urgency-bar-wrapper">
+        <div class="urgency-pct" style="color:var(--red);">Critica</div>
+        <div class="urgency-bar" style="height:80px;background:var(--red);"></div>
+        <div class="urgency-label">+120 dias</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Prioridade -->
+  <div class="como-section">
+    <h3>5. Nota final: como montamos a prioridade</h3>
+    <p class="subtitle">A nota final combina tres fatores. A chance de fechar e o mais importante.</p>
+
+    <div class="formula-visual">
+      <div class="formula-block highlight">
+        <div class="f-label">Chance de fechar</div>
+        <div class="f-value">55%</div>
+      </div>
+      <div class="formula-op">+</div>
+      <div class="formula-block">
+        <div class="f-label">Urgência</div>
+        <div class="f-value">25%</div>
+      </div>
+      <div class="formula-op">+</div>
+      <div class="formula-block">
+        <div class="f-label">Valor do deal</div>
+        <div class="f-value">20%</div>
+      </div>
+      <div class="formula-op">=</div>
+      <div class="formula-block highlight">
+        <div class="f-label">Nota final</div>
+        <div class="f-value" style="color:var(--gold);">Prioridade</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Plano de acao -->
+  <div class="como-section">
+    <h3>6. O plano de ação: o que fazer com cada deal</h3>
+    <p class="subtitle">Com base na chance, urgência e tempo aberto, cada deal recebe uma recomendação clara.</p>
+
+    <div class="bucket-list">
+      <div class="bucket-item">
+        <div class="bucket-color" style="background:var(--green);"></div>
+        <div class="bucket-info">
+          <div class="bucket-name">Fechar Agora</div>
+          <div class="bucket-rule">Chance alta (acima de 60%) e o deal já está maduro</div>
+        </div>
+        <div class="bucket-example" style="color:var(--green);font-weight:600;">Prioridade máxima</div>
+      </div>
+      <div class="bucket-item">
+        <div class="bucket-color" style="background:var(--orange);"></div>
+        <div class="bucket-info">
+          <div class="bucket-name">Resgatar Hoje</div>
+          <div class="bucket-rule">Chance razoável (acima de 45%) mas está aberto ha mais de 90 dias</div>
+        </div>
+        <div class="bucket-example" style="color:var(--orange);font-weight:600;">Risco de perder</div>
+      </div>
+      <div class="bucket-item">
+        <div class="bucket-color" style="background:var(--blue);"></div>
+        <div class="bucket-info">
+          <div class="bucket-name">Avançar Qualificação</div>
+          <div class="bucket-rule">Chance boa (acima de 55%) mas ainda é recente, precisa de mais contato</div>
+        </div>
+        <div class="bucket-example" style="color:var(--blue);font-weight:600;">Potencial alto</div>
+      </div>
+      <div class="bucket-item">
+        <div class="bucket-color" style="background:var(--gold);"></div>
+        <div class="bucket-info">
+          <div class="bucket-name">Trabalhar Esta Semana</div>
+          <div class="bucket-rule">Chance moderada (acima de 45%), manter no radar e trabalhar normalmente</div>
+        </div>
+        <div class="bucket-example" style="color:var(--gold);font-weight:600;">Rotina</div>
+      </div>
+      <div class="bucket-item">
+        <div class="bucket-color" style="background:var(--gray-300);"></div>
+        <div class="bucket-info">
+          <div class="bucket-name">Nutrir</div>
+          <div class="bucket-rule">Chance baixa ou deal muito novo, manter contato leve sem investir muito tempo</div>
+        </div>
+        <div class="bucket-example" style="color:var(--gray-400);font-weight:600;">Baixa prioridade</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+</div><!-- /main -->
+
+<!-- Summary Modal -->
+<div class="modal-overlay" id="summaryModal" onclick="closeSummaryModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <h2 id="modalTitle">Resumo dos Deals</h2>
+        <div class="modal-subtitle" id="modalSubtitle">Visão completa do seu pipeline</div>
+      </div>
+      <button class="modal-close" onclick="closeSummaryModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-total-bar" id="modalTotalBar"></div>
+  </div>
+</div>
+
+</div><!-- /appWrapper -->
+
+<script>
+// ── State ─────────────────────────────────────
+let allDeals = [];
+let allData = null;
+let selectedAgent = "";
+let accountFilter = "";
+let contactLog = JSON.parse(localStorage.getItem('g4_contacts') || '{}');
+let dealNotes = JSON.parse(localStorage.getItem('g4_notes') || '{}');
+let draggedId = null;
+
+// ── Login ─────────────────────────────────────
+function populateLoginSelect() {
+  const select = document.getElementById('loginSelect');
+  if (!allData) return;
+  const agents = [...new Set(allData.active_deals.map(d => d.agent))].sort();
+  agents.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    select.appendChild(opt);
+  });
+}
+
+function onLoginSelect() {
+  const agent = document.getElementById('loginSelect').value;
+  const infoBox = document.getElementById('loginAgentInfo');
+  const btn = document.getElementById('loginBtn');
+  if (!agent) {
+    infoBox.classList.remove('visible');
+    btn.classList.remove('enabled');
+    return;
+  }
+  const stats = allData.agent_stats[agent] || {};
+  const deals = allData.active_deals.filter(d => d.agent === agent);
+  document.getElementById('loginOffice').textContent = stats.office || '—';
+  document.getElementById('loginManager').textContent = stats.manager || '—';
+  document.getElementById('loginWR').textContent = (stats.wr || 0) + '%';
+  document.getElementById('loginDeals').textContent = deals.length;
+  infoBox.classList.add('visible');
+  btn.classList.add('enabled');
+}
+
+function doLogin() {
+  const agent = document.getElementById('loginSelect').value;
+  if (!agent) return;
+  selectedAgent = agent;
+  // Update header
+  const initials = agent.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+  document.getElementById('headerAvatar').textContent = initials;
+  document.getElementById('headerName').textContent = agent;
+  const stats = allData.agent_stats[agent] || {};
+  document.getElementById('headerSub').textContent = (stats.office || '—') + ' · ' + (stats.manager || '—');
+  // Update guide title
+  const firstName = agent.split(' ')[0];
+  document.getElementById('guideTitle').textContent = 'Bom dia, ' + firstName + '!';
+  // Show app
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appWrapper').style.display = 'block';
+  renderAll();
+}
+
+// ── Tab switching ─────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  if (tab === 'deals') {
+    document.getElementById('tabDeals').classList.add('active');
+    document.querySelectorAll('.nav-tab')[0].classList.add('active');
+  } else {
+    document.getElementById('tabComo').classList.add('active');
+    document.querySelectorAll('.nav-tab')[1].classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}
+
+// ── Load data ─────────────────────────────────
+fetch('data/scored_deals.json')
+  .then(r => r.json())
+  .then(data => {
+    allData = data;
+    allDeals = data.active_deals;
+    populateLoginSelect();
+  });
+
+function renderAll() { renderSummary(); renderFunnel(); renderGuide(); renderKanban(); }
+
+function getAgentDeals() {
+  let deals = allDeals.filter(d => d.agent === selectedAgent);
+  if (accountFilter === 'new') deals = deals.filter(d => d.account_missing);
+  if (accountFilter === 'old') deals = deals.filter(d => !d.account_missing);
+  const prod = document.getElementById('fProduct')?.value;
+  if (prod) deals = deals.filter(d => d.product === prod);
+  return deals;
+}
+
+function renderGuide() {
+  const deals = getAgentDeals();
+  const attack = deals.filter(d => d.action === 'Atacar Agora');
+  const rescue = deals.filter(d => d.action === 'Resgatar Hoje');
+  const advance = deals.filter(d => d.action === 'Avançar Qualificação');
+  const work = deals.filter(d => d.action === 'Trabalhar Esta Semana');
+  const known = deals.filter(d => !d.account_missing);
+  const newD = deals.filter(d => d.account_missing);
+
+  const steps = [];
+  let step = 1;
+
+  // Passo 1: Prioridade maxima
+  if (attack.length > 0) {
+    const topDeal = attack[0];
+    const name = topDeal.account_missing ? topDeal.product : topDeal.account;
+    const val = formatMoney(attack.reduce((s,d) => s+d.price, 0));
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Ligue agora para <strong>${attack.length} deal${attack.length>1?'s':''}</strong> pronto${attack.length>1?'s':''} para fechar. Comece por <strong>${name}</strong>. Total: <span class="guide-val">${val}</span></span></div>`);
+  }
+
+  // Passo 2: Resgate urgente
+  if (rescue.length > 0) {
+    const val = formatMoney(rescue.reduce((s,d) => s+d.price, 0));
+    const oldest = Math.max(...rescue.map(d => d.age_days));
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Resgate <strong>${rescue.length} deal${rescue.length>1?'s':''}</strong> que ${rescue.length>1?'estao':'esta'} esfriando (ate ${oldest} dias parado${oldest>1?'s':''}). Sao <span class="guide-val">${val}</span> em risco.</span></div>`);
+  }
+
+  // Passo 3: Avançar
+  if (advance.length > 0) {
+    const val = formatMoney(advance.reduce((s,d) => s+d.price, 0));
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Avance a qualificacao de <strong>${advance.length} deal${advance.length>1?'s':''}</strong> com boa chance. Agende reuniao ou envie proposta. Total: <span class="guide-val">${val}</span></span></div>`);
+  }
+
+  // Passo 4: Orientacao sobre contas
+  if (known.length > 0 && newD.length > 0) {
+    const knownPct = Math.round(known.length / deals.length * 100);
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Priorize as <strong>${known.length} contas que voce ja conhece</strong> (${knownPct}% do pipeline). Para as ${newD.length} contas novas, foque nas de maior valor primeiro.</span></div>`);
+  } else if (known.length > 0) {
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Todos os seus ${deals.length} deals sao de contas conhecidas. Use seu historico a favor.</span></div>`);
+  } else if (newD.length > 0) {
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Todos os ${deals.length} deals sao contas novas. Foque nos de maior valor e pesquise o perfil antes de ligar.</span></div>`);
+  }
+
+  // Passo extra: volume de trabalho semanal
+  if (work.length > 10) {
+    steps.push(`<div class="guide-step"><span class="guide-step-num">${step++}</span><span>Voce tem <strong>${work.length} deals</strong> para trabalhar esta semana. Reserve blocos de tempo no calendario para nao acumular.</span></div>`);
+  }
+
+  if (steps.length === 0) {
+    steps.push(`<div class="guide-step"><span class="guide-step-num">1</span><span>${deals.length} deals no pipeline. Revise o kanban abaixo e comece pelos de maior prioridade.</span></div>`);
+  }
+
+  document.getElementById('guideSteps').innerHTML = steps.join('');
+}
+
+function renderFunnel() {
+  const deals = getAgentDeals();
+  const e = deals.filter(d => d.stage === 'Engaging'), p = deals.filter(d => d.stage === 'Prospecting');
+  document.getElementById('funnelEngaging').textContent = e.length;
+  document.getElementById('funnelEngagingVal').textContent = formatMoney(e.reduce((s,d) => s+d.price, 0));
+  document.getElementById('funnelProspecting').textContent = p.length;
+  document.getElementById('funnelProspectingVal').textContent = formatMoney(p.reduce((s,d) => s+d.price, 0));
+}
+
+function renderSummary() {
+  const deals = getAgentDeals();
+  const sets = {
+    attack: deals.filter(d => d.action === 'Atacar Agora'),
+    rescue: deals.filter(d => d.action === 'Resgatar Hoje'),
+    advance: deals.filter(d => d.action === 'Avançar Qualificação'),
+  };
+  for (const [k, arr] of Object.entries(sets)) {
+    const id = k.charAt(0).toUpperCase() + k.slice(1);
+    document.getElementById('sum' + id).textContent = arr.length;
+    document.getElementById('sum' + id + 'Val').textContent = formatMoney(arr.reduce((s,d) => s+d.price, 0));
+  }
+  document.getElementById('sumTotal').textContent = deals.length;
+  document.getElementById('sumTotalVal').textContent = formatMoney(deals.reduce((s,d) => s+d.price, 0));
+}
+
+function renderKanban() {
+  const deals = getAgentDeals();
+  const buckets = { 'Atacar Agora':[], 'Resgatar Hoje':[], 'Avançar Qualificação':[], 'Trabalhar Esta Semana':[], 'Nutrir':[] };
+  deals.forEach(d => {
+    const b = buckets[d.action] !== undefined ? d.action : 'Nutrir';
+    buckets[b].push(d);
+  });
+  deals.filter(d => d.action === 'Limpar Pipeline').forEach(d => { if (!buckets['Nutrir'].includes(d)) buckets['Nutrir'].push(d); });
+
+  const map = {
+    'Atacar Agora':         {c:'cardsAttack',  n:'colAttackCount',  v:'colAttackVal'},
+    'Resgatar Hoje':        {c:'cardsRescue',  n:'colRescueCount',  v:'colRescueVal'},
+    'Avançar Qualificação': {c:'cardsAdvance', n:'colAdvanceCount', v:'colAdvanceVal'},
+    'Trabalhar Esta Semana':{c:'cardsWork',    n:'colWorkCount',    v:'colWorkVal'},
+    'Nutrir':               {c:'cardsNurture', n:'colNurtureCount', v:'colNurtureVal'},
+  };
+  for (const [bucket, arr] of Object.entries(buckets)) {
+    arr.sort((a,b) => b.priority - a.priority);
+    const m = map[bucket];
+    document.getElementById(m.n).textContent = arr.length;
+    document.getElementById(m.v).textContent = formatMoney(arr.reduce((s,d) => s+d.price, 0));
+    document.getElementById(m.c).innerHTML = arr.map(renderCard).join('');
+  }
+  renderSummary(); renderFunnel(); renderGuide();
+}
+
+function renderCard(d) {
+  const isNew = d.account_missing;
+  const cardBorder = isNew ? 'new-account' : 'old-account';
+  const tagClass = isNew ? 'new' : 'old';
+  const tagLabel = isNew ? 'NOVA' : 'CONHECIDA';
+  const accountDisplay = isNew ? `<span style="color:var(--gray-500)">ID Oportunidade: ${d.id}</span>` : d.account;
+  const q = d.quality;
+  // Cor da barra muda conforme a coluna (ação) do deal
+  const bucketColors = {
+    'Atacar Agora': 'var(--green)',
+    'Resgatar Hoje': 'var(--orange)',
+    'Avançar Qualificação': 'var(--blue)',
+    'Trabalhar Esta Semana': 'var(--gold)',
+    'Nutrir': 'var(--gray-400)',
+    'Limpar Pipeline': 'var(--red)',
+  };
+  const qColor = bucketColors[d.action] || (q >= 0.65 ? 'var(--green)' : q >= 0.58 ? 'var(--gold)' : 'var(--red)');
+  const qClass = q >= 0.65 ? 'chance-high' : q >= 0.58 ? 'chance-mid' : 'chance-low';
+  const contacted = contactLog[d.id];
+  const note = dealNotes[d.id] || '';
+  const reason = buildReason(d);
+  const daysText = d.age_days > 0 ? d.age_days + ' dias' : 'Novo';
+  const daysClass = d.age_days > 120 ? 'urgent' : d.age_days > 90 ? 'warning' : '';
+  const stageLabel = d.stage === 'Prospecting' ? 'Prospecção' : 'Negociação';
+
+  const borderColor = bucketColors[d.action] || 'var(--gray-300)';
+  return `<div class="deal-card ${cardBorder}" draggable="true" ondragstart="onDragStart(event,'${d.id}')" ondragend="onDragEnd(event)" onclick="toggleExpand(this)" style="border-left-color:${borderColor}">
+    <div class="card-row-1"><div class="card-account">${accountDisplay}</div><span class="card-tag ${tagClass}">${tagLabel}</span></div>
+    <div class="card-product">${d.product} · ${stageLabel}</div>
+    <div class="card-chance"><span class="chance-label">Chance</span><div class="chance-track"><div class="chance-fill" style="width:${Math.round(q*100)}%;background:${qColor};"></div></div><span class="chance-pct ${qClass}">${Math.round(q*100)}%</span></div>
+    <div class="card-reason">${reason}</div>
+    <div class="card-bottom"><div class="card-value">R$ ${d.price.toLocaleString('pt-BR')}</div><div class="card-days ${daysClass}">${daysText}</div></div>
+    <div class="card-actions">
+      <button class="card-btn ${contacted?'contacted':''}" onclick="event.stopPropagation();markContact('${d.id}',this)">${contacted?'Contatado':'Já contatei'}</button>
+      <button class="card-btn" onclick="event.stopPropagation();toggleExpand(this.closest('.deal-card'))">Anotar</button>
+    </div>
+    <div class="card-detail">
+      <div class="detail-row"><span class="detail-label">Produto</span><span class="detail-value">${d.product}</span></div>
+      <div class="detail-row"><span class="detail-label">Valor</span><span class="detail-value">R$ ${d.price.toLocaleString('pt-BR')}</span></div>
+      ${!isNew?`<div class="detail-row"><span class="detail-label">Setor</span><span class="detail-value">${d.sector}</span></div>`:''}
+      ${!isNew?`<div class="detail-row"><span class="detail-label">Porte</span><span class="detail-value">${d.tier}</span></div>`:''}
+      <div class="detail-row"><span class="detail-label">Estágio</span><span class="detail-value">${d.stage==='Prospecting'?'Prospecção':'Em negociação'}</span></div>
+      <div class="detail-row"><span class="detail-label">Aberto ha</span><span class="detail-value">${d.age_days} dias</span></div>
+      <textarea class="notes-area" placeholder="Suas anotações..." onclick="event.stopPropagation()" onblur="saveNote('${d.id}',this.value)">${note}</textarea>
+    </div>
+  </div>`;
+}
+
+function buildReason(d) {
+  const parts = [];
+  const q = d.quality;
+  if (d.account_missing) {
+    if (q >= 0.58) parts.push('Bom desempenho com ' + d.product + '.');
+    else if (q >= 0.50) parts.push('Chance razoavel com ' + d.product + '.');
+    else parts.push('Resultado abaixo da media com ' + d.product + '.');
+  } else {
+    if (q >= 0.65) parts.push('Historico forte com ' + d.account + '.');
+    else if (q >= 0.55) parts.push('Ja vendeu para ' + d.account + ' antes.');
+    else parts.push('Historico limitado com ' + d.account + '.');
+  }
+  if (d.age_days > 120) parts.push('Aberto ha ' + d.age_days + ' dias, risco alto.');
+  else if (d.age_days > 90) parts.push(d.age_days + ' dias aberto, passando do ideal.');
+  return parts.join(' ');
+}
+
+// ── Interactions ──────────────────────────────
+function toggleExpand(card) { card.classList.toggle('expanded'); }
+function markContact(id, btn) {
+  if (contactLog[id]) { delete contactLog[id]; btn.classList.remove('contacted'); btn.textContent='Já contatei'; }
+  else { contactLog[id]=new Date().toISOString(); btn.classList.add('contacted'); btn.textContent='Contatado'; }
+  localStorage.setItem('g4_contacts', JSON.stringify(contactLog));
+}
+function saveNote(id, text) { text.trim() ? dealNotes[id]=text : delete dealNotes[id]; localStorage.setItem('g4_notes', JSON.stringify(dealNotes)); }
+function toggleAccountFilter(btn, f) { accountFilter=f; document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active')); btn.classList.add('active'); renderKanban(); }
+function filterByStage(el) { document.querySelectorAll('.funnel-stage').forEach(s=>s.classList.remove('active')); el.classList.add('active'); }
+function scrollToColumn(col) { const m={attack:'cardsAttack',rescue:'cardsRescue'}; document.getElementById(m[col])?.closest('.kanban-col')?.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+// ── Drag & Drop ───────────────────────────────
+function onDragStart(e, id) { draggedId=id; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain',id); }
+function onDragEnd(e) { e.target.classList.remove('dragging'); document.querySelectorAll('.kanban-col').forEach(c=>c.classList.remove('drag-over')); }
+function onDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e) { e.preventDefault(); const col=e.currentTarget; col.classList.remove('drag-over'); const b=col.getAttribute('data-bucket'); if(!draggedId||!b) return; const deal=allDeals.find(d=>d.id===draggedId); if(deal){deal.action=b; renderKanban();} draggedId=null; }
+function formatMoney(v) { if(v>=1e6) return 'R$ '+(v/1e6).toFixed(1)+'M'; if(v>=1e3) return 'R$ '+(v/1e3).toFixed(1)+'k'; return 'R$ '+v.toLocaleString('pt-BR'); }
+
+// ── Summary Modal ────────────────────────────
+function openSummaryModal() {
+  const deals = getAgentDeals();
+  const buckets = [
+    { key:'Atacar Agora',          color:'var(--green)',  dot:'#3A7D44',
+      why:'Alta chance de fechar e timing ideal. Priorize contato imediato.' },
+    { key:'Resgatar Hoje',         color:'var(--orange)', dot:'#C45A00',
+      why:'Potencial real, mas passaram de 90 dias. Aja rapido.' },
+    { key:'Avançar Qualificação',  color:'var(--blue)',   dot:'#2966A3',
+      why:'Boa chance, ainda cedo no processo. Precisa mais interacoes.' },
+    { key:'Trabalhar Esta Semana', color:'var(--gold)',    dot:'#B9915B',
+      why:'Chance moderada. Manter acompanhamento regular.' },
+    { key:'Nutrir',                color:'var(--gray-400)',dot:'#A8A8A3',
+      why:'Fase inicial ou chance mais baixa. Contato leve.' },
+    { key:'Limpar Pipeline',       color:'var(--red)',     dot:'#B33030',
+      why:'Baixa chance e muito tempo aberto. Considere encerrar.' },
+  ];
+
+  let html = '';
+  let totalDeals = 0, totalValue = 0;
+
+  buckets.forEach(b => {
+    const arr = deals.filter(d => d.action === b.key).sort((a,c) => c.priority - a.priority);
+    if (arr.length === 0) return;
+    totalDeals += arr.length;
+    const val = arr.reduce((s,d) => s + d.price, 0);
+    totalValue += val;
+    const avgChance = Math.round(arr.reduce((s,d) => s + d.quality, 0) / arr.length * 100);
+
+    html += `<div class="modal-bucket" onclick="this.classList.toggle('expanded')">
+      <div class="modal-bucket-header">
+        <div class="mbh-left">
+          <div class="mbh-dot" style="background:${b.dot};"></div>
+          <span class="mbh-name">${b.key}</span>
+          <span class="mbh-count">${arr.length} deal${arr.length>1?'s':''}</span>
+        </div>
+        <div class="mbh-right">
+          <span style="font-size:12px;color:var(--gray-500);">Chance media: ${avgChance}%</span>
+          <span class="mbh-value">${formatMoney(val)}</span>
+          <span class="mbh-arrow">&#9660;</span>
+        </div>
+      </div>
+      <div class="mbh-reason">${b.why}</div>
+      <div class="modal-deal-list">`;
+
+    arr.forEach(d => {
+      const acct = d.account_missing ? `ID: ${d.id}` : d.account;
+      const chanceColor = d.quality >= 0.65 ? 'var(--green)' : d.quality >= 0.55 ? 'var(--gold)' : 'var(--gray-500)';
+      const reason = buildModalReason(d);
+      html += `<div class="modal-deal-item">
+        <div><div class="mdi-account">${acct}</div><div class="mdi-product">${d.product}</div></div>
+        <div class="mdi-chance" style="color:${chanceColor}">${Math.round(d.quality*100)}%</div>
+        <div class="mdi-value">R$ ${d.price.toLocaleString('pt-BR')}</div>
+        <div class="mdi-days">${d.age_days > 0 ? d.age_days + 'd' : 'Novo'}</div>
+        <div class="mdi-reason">${reason}</div>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modalSubtitle').textContent = `${totalDeals} deals ativos no pipeline de ${selectedAgent}`;
+  document.getElementById('modalTotalBar').innerHTML = `<span>Total: ${totalDeals} deals</span><span>Valor: ${formatMoney(totalValue)}</span>`;
+  document.getElementById('summaryModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buildModalReason(d) {
+  const q = d.quality;
+  const action = d.action;
+  let parts = [];
+
+  // Motivo da chance
+  if (d.account_missing) {
+    if (q >= 0.60) parts.push('Seu desempenho com ' + d.product + ' e acima da media.');
+    else if (q >= 0.50) parts.push('Desempenho mediano com ' + d.product + '.');
+    else parts.push('Resultado abaixo da media com ' + d.product + '.');
+  } else {
+    if (q >= 0.65) parts.push('Historico forte com ' + d.account + '.');
+    else if (q >= 0.55) parts.push('Ja vendeu para ' + d.account + ' antes.');
+    else parts.push('Historico limitado com ' + d.account + '.');
+  }
+
+  // Motivo do timing
+  if (d.age_days > 120) parts.push('Aberto ha ' + d.age_days + ' dias, risco alto de perder.');
+  else if (d.age_days > 90) parts.push('Ha ' + d.age_days + ' dias, passando do ideal.');
+  else if (d.age_days > 60) parts.push(d.age_days + ' dias, precisa de acompanhamento.');
+  else if (d.age_days > 0) parts.push(d.age_days + ' dias, dentro do esperado.');
+
+  // Motivo da acao
+  if (action === 'Atacar Agora') parts.push('Chance e timing alinhados para fechar.');
+  else if (action === 'Resgatar Hoje') parts.push('Bom potencial, mas esta esfriando.');
+  else if (action === 'Avançar Qualificação') parts.push('Precisa mais interacoes para amadurecer.');
+  else if (action === 'Limpar Pipeline') parts.push('Considere encerrar e liberar foco.');
+
+  return parts.join(' ');
+}
+
+function closeSummaryModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('summaryModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSummaryModal(); });
+</script>
+</body>
+</html>
