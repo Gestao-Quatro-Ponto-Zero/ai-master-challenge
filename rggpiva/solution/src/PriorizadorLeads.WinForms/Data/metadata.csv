@@ -1,0 +1,22 @@
+﻿tabela;campo;descricao
+contas;conta;Nome da empresa
+contas;setor;Setor de atuação
+contas;ano_fundacao;Ano de fundação
+contas;receita_anual_milhoes_usd;Receita anual em milhões de dólares
+contas;funcionarios;Número de funcionários
+contas;localizacao_matriz;Localização da matriz
+contas;subsidiaria_de;Empresa controladora
+produtos;produto;Nome do produto
+produtos;serie;Série do produto
+produtos;preco_venda_sugerido;Preço de venda sugerido
+equipes_vendas;vendedor;Vendedor
+equipes_vendas;gerente;Gerente comercial responsável
+equipes_vendas;escritorio_regional;Escritório regional
+funil_vendas;id_oportunidade;Identificador único da oportunidade
+funil_vendas;vendedor;Vendedor
+funil_vendas;produto;Nome do produto
+funil_vendas;conta;Nome da empresa
+funil_vendas;etapa_negocio;Etapa do funil de vendas (Prospecção > Em negociação > Ganha / Perdida)
+funil_vendas;data_engajamento;Data em que a etapa de negociação foi iniciada
+funil_vendas;data_fechamento;Data em que a oportunidade foi ganha ou perdida
+funil_vendas;valor_fechamento;Receita obtida na oportunidade

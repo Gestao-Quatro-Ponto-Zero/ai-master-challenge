@@ -1,0 +1,32 @@
+Validação exploratória do modelo supervisionado (prototipação em Python para conferir a estratégia antes da implementação ML.NET)
+
+Linhas fechadas usadas como base: 6711
+Treino: 5368
+Teste: 1343
+
+Acurácia: 0,635
+AUC ROC: 0,570
+AUC Precision-Recall: 0,682
+F1-Score: 0,767
+Log Loss: 0,654
+
+Features usadas:
+- vendedor
+- gerente
+- escritório regional
+- conta
+- setor
+- produto
+- série do produto
+- faixa de receita
+- faixa de funcionários
+- receita anual
+- número de funcionários
+- preço sugerido
+- idade/ciclo da oportunidade
+
+Observação metodológica:
+A etapa do negócio não foi usada como feature do modelo, porque nas oportunidades fechadas ela é o próprio resultado final: Ganha ou Perdida. Usá-la como entrada causaria vazamento de informação e inflaria artificialmente as métricas.
+
+Saída gerada:
+outputs/prioridades_oportunidades_abertas_ptbr_ml.csv

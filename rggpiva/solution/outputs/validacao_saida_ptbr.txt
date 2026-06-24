@@ -1,0 +1,13 @@
+Validação da base em português
+
+Linhas contas: 85
+Linhas produtos: 7
+Linhas equipes_vendas: 35
+Linhas funil_vendas: 8800
+Oportunidades abertas: 2089
+Oportunidades fechadas: 6711
+Taxa histórica de ganho: 0.6315
+Ciclo mediano de oportunidades ganhas: 57.0 dias
+Soma valor_fechamento: 10005534.00
+Soma valor_potencial abertas: 4966215.00
+Score médio abertas: 53.49
