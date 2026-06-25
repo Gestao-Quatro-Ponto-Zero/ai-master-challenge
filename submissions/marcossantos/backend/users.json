@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin Geral",
+      "email": "admin@leadscorer.com",
+      "password": "admin123",
+      "role": "admin",
+      "sales_agent": null,
+      "manager": null,
+      "regional_office": null
+    },
+    {
+      "id": "2",
+      "name": "Melanie Crist",
+      "email": "melanie@leadscorer.com",
+      "password": "senha123",
+      "role": "manager",
+      "sales_agent": null,
+      "manager": "Melanie Crist",
+      "regional_office": "Central"
+    },
+    {
+      "id": "3",
+      "name": "Dustin Brinkmann",
+      "email": "dustin@leadscorer.com",
+      "password": "senha123",
+      "role": "manager",
+      "sales_agent": null,
+      "manager": "Dustin Brinkmann",
+      "regional_office": "East"
+    },
+    {
+      "id": "4",
+      "name": "Celia Rouche",
+      "email": "celia@leadscorer.com",
+      "password": "senha123",
+      "role": "manager",
+      "sales_agent": null,
+      "manager": "Celia Rouche",
+      "regional_office": "West"
+    },
+    {
+      "id": "5",
+      "name": "Hayden Neloms",
+      "email": "hayden@leadscorer.com",
+      "password": "senha123",
+      "role": "agent",
+      "sales_agent": "Hayden Neloms",
+      "manager": "Melanie Crist",
+      "regional_office": "West"
+    },
+    {
+      "id": "6",
+      "name": "Kami Bicknell",
+      "email": "kami@leadscorer.com",
+      "password": "senha123",
+      "role": "agent",
+      "sales_agent": "Kami Bicknell",
+      "manager": "Melanie Crist",
+      "regional_office": "West"
+    },
+    {
+      "id": "7",
+      "name": "Violet Mclelland",
+      "email": "violet@leadscorer.com",
+      "password": "senha123",
+      "role": "agent",
+      "sales_agent": "Violet Mclelland",
+      "manager": "Melanie Crist",
+      "regional_office": "East"
+    },
+    {
+      "id": "8",
+      "name": "Zane Levy",
+      "email": "zane@leadscorer.com",
+      "password": "senha123",
+      "role": "agent",
+      "sales_agent": "Zane Levy",
+      "manager": "Dustin Brinkmann",
+      "regional_office": "West"
+    }
+  ]
+}
