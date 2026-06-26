@@ -1,0 +1,101 @@
+route,domain,predicted_topic,topic_confidence,expected_category,text_preview
+AUTO_RESOLVE,B2E_IT,Hardware,0.9327354985445414,Hardware,issue with server process sent tuesday issue with server process hi could you please help with following issue getting once few minutes disc
+AUTO_RESOLVE,B2E_IT,Purchase,0.9997448586759667,Purchase,new purchase po wednesday february purchase po dear purchased please log installation please take consideration mandatory receipts section o
+AUTO_RESOLVE,B2E_IT,Hardware,0.8677266910602833,Hardware,oracle pas urgent re we updated rights query hi can get some assistance here looks like have full control for codes only one working for can
+AGENT_ASSIST,B2E_IT,HR Support,0.9991424893701473,HR Support,new starter access thursday pm re starter form hello please find attached employees added comments needs each person profile please take con
+AUTO_RESOLVE,B2E_IT,Hardware,0.9930295445529803,Hardware,new phone phone hi taken work mobile phone speak everything thanks
+AUTO_RESOLVE,B2E_IT,Access,0.999997155520955,Access,confluence account confluence hello please create confluence thank
+AUTO_RESOLVE,B2E_IT,Hardware,0.9881222676519624,Hardware,web not working on hello we changed configuration for documents be client app web app we shut down web app apologize for misunderstanding tr
+AGENT_ASSIST,B2E_IT,Internal Project,0.9951554082269057,Internal Project,new project setup oracle july pm setup hi please per attached setup form please let questions thanks director
+AUTO_RESOLVE,B2E_IT,Hardware,0.9861935924394761,Hardware,cable needed for monitor re rejected hi please allocate proper cable her monitor kind regards administrator thursday october rejected hi rai
+AGENT_ASSIST,B2E_IT,HR Support,0.6066503452038855,HR Support,timecard deletion inquiry pm re updated links hi delete cause wrong option please let how proceed thank
+AUTO_RESOLVE,B2E_IT,Purchase,0.9993310214968386,Purchase,new purchase po purchase po dear purchased hub shuttle type please log allocation after receive item please take consideration mandatory rec
+AGENT_ASSIST,B2E_IT,Administrative rights,0.7462997757765805,Administrative rights,unable to log and outlook sent wednesday unable get any more was forced change password yesterday since then laptop most devices cannot conn
+AUTO_RESOLVE,B2E_IT,Hardware,0.9471597532555058,Hardware,still cannot connect to through still cannot connect through hi have asked about before something was done but enough still cannot connect a
+AGENT_ASSIST,B2E_IT,Hardware,0.6570188574380679,Hardware,old laptop required to test a new data centre line old required test centre hi please log require old os centre test thanks allot infrastruc
+AUTO_RESOLVE,B2E_IT,Access,0.9950764433448362,Access,enable accounts and reset passwords enable accounts seems seems seems infrastructure
+AUTO_RESOLVE,B2E_IT,Hardware,0.9851449858885603,Hardware,laptop issues sent wednesday november laptop issues hi please log laptop issues into queue thanks
+AUTO_RESOLVE,B2E_IT,Hardware,0.8788049129362067,Hardware,error drive enclosure error problem original message sent february error drive enclosure event enclosure event fault enclosure status over v
+AUTO_RESOLVE,B2E_IT,Hardware,0.9228060234637988,Hardware,help to access files on the new hello please be advised below regarding kind regards analyst ext hub sent tuesday december re awaiting your 
+HUMAN_ESCALATION,B2E_IT,Miscellaneous,0.4666347013080198,Miscellaneous,list modification team friday october modification importance high please today ext
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.9953086412731051,Miscellaneous,name change to october pm name change dear changed her name she wants reflected please action let other updates made by except changing her 
+AUTO_RESOLVE,B2E_IT,Purchase,0.9199707301015726,Purchase,new delivery thursday pm hello received black po please advise please log thank engineer
+HUMAN_ESCALATION,B2E_IT,HR Support,0.7898112813316429,HR Support,access to oracle modules wednesday march pm modules hi please roles best regards analyst wednesday march pm modules wednesday march modules 
+HUMAN_ESCALATION,B2E_IT,Miscellaneous,0.3770950490038518,Miscellaneous,please correct access tuesday october pm please please same se screen shots thanks engineer ext date please engineer ext date thursday pm pl
+AGENT_ASSIST,B2E_IT,HR Support,0.656483534921896,HR Support,the filter for the field task details is not working sent monday december re starter bogota hi guys trying log some hours fusion but seems f
+AGENT_ASSIST,B2E_IT,Hardware,0.627586234868312,Hardware,can find sent wednesday can find dear would you please check why can find discipline thanks head testing
+AGENT_ASSIST,B2E_IT,HR Support,0.9850767719995158,HR Support,new starter account thursday november assistants starter hi dear please informed candidate accepted become december test engineer grade st p
+AGENT_ASSIST,B2E_IT,Internal Project,0.9862248703064392,Internal Project,project code missing pm tuesday pm code pm hello please assign kind regards tuesday code pm hi please made create code thank best regards re
+AGENT_ASSIST,B2E_IT,Internal Project,0.9998911370055213,Internal Project,new project code oracle fusion tuesday march pm code setup hi please code thank officer
+AUTO_RESOLVE,B2E_IT,Access,0.9189266687647691,Access,password reset please marsh thanks tuesday october hi app tried requesting by never received thanks marsh product east avenue cell marsh inf
+HUMAN_ESCALATION,B2E_IT,Access,0.7777013451902283,Access,platform access pm platform hi guys gain namely administrating user accounts word press platform product jabber ibm notes timeout other hand
+AUTO_RESOLVE,B2E_IT,Access,0.9983936521630785,Access,access card access card hi please consider access card lost initiate issuing card thank you regards tester
+AUTO_RESOLVE,B2E_IT,Hardware,0.9405297961101483,Hardware,enable on mobile phone resolved enable mobile phone resolved hello please assign she requested enable her personal mobile phone connect phon
+AGENT_ASSIST,B2E_IT,Internal Project,0.7985119662673494,Internal Project,full import of data new pas wednesday july pm import hi please queue thanks
+AUTO_RESOLVE,B2E_IT,Purchase,0.9987820146311379,Purchase,new purchase po tuesday pm re purchase po hello receipt number has aforementioned products thank engineer tuesday pm purchase po dear purcha
+AGENT_ASSIST,B2E_IT,Hardware,0.6439136988770472,Hardware,for issue sent july for issue hello please raise incident assign order job for database transaction log release some space moment logs file 
+HUMAN_ESCALATION,B2E_IT,Purchase,0.9925399814029302,Purchase,new purchase po purchase po dear purchased please log allocation please take consideration mandatory receipts section order receive item ord
+AGENT_ASSIST,B2E_IT,Administrative rights,0.39433998554580135,Hardware,windows reinstallation reported she needs reinstallation due her working slowly making her job difficult
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.5590477656922642,Miscellaneous,warning mc not communicating original message sent monday warning mc communicating event controller receiving data controller normal during 
+AUTO_RESOLVE,B2E_IT,Purchase,0.9674918620149411,Purchase,po hardware allocation thursday november pm po hello teams adaptor apple thunderbolt la gigabit were requested by please log allocation plea
+AGENT_ASSIST,B2E_IT,HR Support,0.9968028739026938,HR Support,new starter and confluence re hello please find attached his form thanks hello please fill date thank administration officer
+AUTO_RESOLVE,B2E_IT,Hardware,0.826686544407106,Hardware,surge protectors request tuesday surge protector dear took surge protector sockets
+AUTO_RESOLVE,B2E_IT,Access,0.9946830721157607,Access,external user pass reset user pass hi please provide pass please pass once updated thank
+AUTO_RESOLVE,B2E_IT,Hardware,0.818743108420984,Hardware,doc to be uploaded march doc uploaded hi please help upload attached document policies document visible entity employees thank
+AGENT_ASSIST,B2E_IT,HR Support,0.9836323646005651,HR Support,error oracle error sheet for logged incorrectly cannot modify because error can you please unblock thanks
+AGENT_ASSIST,B2E_IT,HR Support,0.9799153881028825,HR Support,new job title oracle job title designer grade intern
+AGENT_ASSIST,B2E_IT,HR Support,0.6039546744797265,HR Support,entry to be deleted tuesday pm deleted hi delete somehow got by duplicate needed regards
+AUTO_RESOLVE,B2E_IT,Hardware,0.9059403079813729,Hardware,access good morning require currently created by best regards design lead phone mobile ext blvd zone
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.7531077841445122,Miscellaneous,assign to wednesday assign hi please assign his pm approve his vacations thank
+AGENT_ASSIST,B2E_IT,Administrative rights,0.783152343613423,Administrative rights,snow blocked by outlook arrived mailbox mention unsafe item
+AUTO_RESOLVE,B2E_IT,Access,0.9459674903043855,Access,license march pm re license approved also thanks march license hello please provide license please approve thanks
+AGENT_ASSIST,B2E_IT,Administrative rights,0.3140990749882692,Administrative rights,update update hello please he has left thank senior software developer
+AGENT_ASSIST,B2E_IT,HR Support,0.99103178710129,HR Support,please action submit your time cards for approval march please action submit cards hi getting these few times thought resolved provided date
+AUTO_RESOLVE,B2E_IT,Hardware,0.8898384860824471,Hardware,issue not receiving certain hello receive some specific nor forwarded could you please solve problem thank you tester en
+AGENT_ASSIST,B2E_IT,HR Support,0.680675970785671,HR Support,access rights thursday rights hi also provide assignment role replicate kind regards mobility officer
+AGENT_ASSIST,B2E_IT,HR Support,0.9861516985590044,HR Support,error oracle sent monday forgot mention number hours per week for with entered status higher than have idea why happened moment submitted th
+AUTO_RESOLVE,B2E_IT,Hardware,0.8201925232710535,Administrative rights,outlook not synchronizing with mobile phone with mobil phone working within for client dear sirs madames sent receives laptop but mobil phon
+AGENT_ASSIST,B2E_IT,Internal Project,0.4863117803250728,Internal Project,board tuesday july pm board hi board proof concept doing code billing towards please advise more board please assist next steps thanks best 
+AGENT_ASSIST,B2E_IT,Hardware,0.6787979141716955,Hardware,make visible console march re switch jabber messenger hi informed about by discipline lead disable jabber thank tester march switch jabber m
+AGENT_ASSIST,B2E_IT,Internal Project,0.9986290408738183,Internal Project,unknown pipeline set up request thursday pm unknown pipeline hi please generate unknown pipeline setup form press editable by regards
+AGENT_ASSIST,B2E_IT,HR Support,0.823653068786125,HR Support,new starter access card enabling kale building card hello please note received starter started couple days ago had hardware allocation close
+AGENT_ASSIST,B2E_IT,HR Support,0.9257471337513247,HR Support,oracle error sent friday july re error hi call logged kind regards sent july error hi getting following error message when try submit for li
+AUTO_RESOLVE,B2E_IT,Purchase,0.9998178200491539,Purchase,new purchase po pm purchase po dear purchased apple pro retina please log installation kind regards administrator
+AUTO_RESOLVE,B2E_IT,Hardware,0.9585531508264471,Hardware,for calls issues for calls issues hi dear please help issue we keep when we using for calls there might be something wrong with since lately
+HUMAN_ESCALATION,B2E_IT,Miscellaneous,0.8375428348884558,Miscellaneous,please disable the logged notification sent by the service desk wednesday october pm please disable logged by hi logged somewhere logging ag
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.9947346479564433,Miscellaneous,action required approve requisition action required approve requisition hi please let task had approved by instead thanks date thursday octo
+AGENT_ASSIST,B2E_IT,Hardware,0.5461245447674421,Hardware,new services hello kindly asking configuring hosting event monitoring germany hosting event monitoring hosting event monitoring canada tier 
+AGENT_ASSIST,B2E_IT,HR Support,0.9969837887183388,HR Support,new starter tower pm assistants starter discipline dear please informed candidate accepted job offer become discipline developer st please c
+AGENT_ASSIST,B2E_IT,Internal Project,0.9271701468509219,Internal Project,project code mapped wrong to client sent thursday december code mapped wrong client dear have noticed we have code ca mapped can you please 
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.979885388437049,Miscellaneous,check project approval july pm period requires hi alerts approve level these please thanks july period requires hi these sitting july period
+HUMAN_ESCALATION,B2E_IT,Access,0.49804395573738014,Access,account disabled disabled hi guys try sign laptop but seems disabled could you help thank you
+AGENT_ASSIST,B2E_IT,HR Support,0.9858772072636315,HR Support,new starter access card enabling bucharest tuesday july pm re doc tuesday july pm ne prima administration officer
+AUTO_RESOLVE,B2E_IT,Purchase,0.9994075803215854,Purchase,new purchase po friday pm purchase po dear purchased requested by backpack inch please log allocation please take consideration mandatory re
+AGENT_ASSIST,B2E_IT,HR Support,0.9991543876065601,HR Support,new starter new october pm re starter form complete completed starter form attached regards head testing mob
+AUTO_RESOLVE,B2E_IT,Storage,0.964819766141713,Storage,access to mailbox saturday december pm mailbox hi guys please mailbox make available thanks
+AUTO_RESOLVE,B2E_IT,Hardware,0.8467959806693522,Hardware,charger charger hello please log providing charger return by thank programme officer
+AUTO_RESOLVE,B2E_IT,Hardware,0.9975023184439685,Hardware,issues insufficient memory related attached error sent tuesday laptop low memory la laptop care minute si pot sa ca se inched plus ca ca pot
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.5138946639989326,Miscellaneous,install recurrent issue sent monday november update install hi could you please raise ticket for below best regards applications analyst en 
+AUTO_RESOLVE,B2E_IT,Hardware,0.9815513364959081,Hardware,laptop freezes unexpectedly laptop freezes unexpectedly hello encountered today weird behavior laptop kind freezes after while one hour bein
+AUTO_RESOLVE,B2E_IT,Hardware,0.9992215796039223,Hardware,meeting room cannot connect to tv hi plugged cable laptop selected correct input tv but tv still shows signal can you please fix thanks
+AGENT_ASSIST,B2E_IT,Internal Project,0.7209732804666694,Internal Project,pas closing inactive projects closing inactive hi please close inactive name code date zoom possible ending date please advise closest possi
+AGENT_ASSIST,B2E_IT,Access,0.5399565526182452,Access,permission to create new projects needed tuesday october pm permission create needed hello please log assign directly queue has done thanks 
+AGENT_ASSIST,B2E_IT,HR Support,0.9927878519196082,HR Support,error while submitting time card receiving error while trying submit for week error indicates task active expenditure item date screen cap a
+AGENT_ASSIST,B2E_IT,Hardware,0.5860866491097004,Hardware,access tuesday october pm hi had problems connecting client wireless problem solved helped please assign him kind regards developer
+AGENT_ASSIST,B2E_IT,HR Support,0.8455985088057115,HR Support,issues with time logging oracle issues with logging hello having difficulties with logging for past week receiving errors when trying popula
+HUMAN_ESCALATION,B2E_IT,Miscellaneous,0.9156928539465984,Miscellaneous,managers list saturday pm hi please add thanks director central
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.5677168811327594,Miscellaneous,to pm hello please add policies configurations he lead client policy computer host file regards design lead ext
+HUMAN_ESCALATION,B2E_IT,Hardware,0.5909045012779754,Hardware,problem with deleting a user sent thursday march problem with deleting hello part procedure for leavers we supposed delete their however alw
+AUTO_RESOLVE,B2E_IT,Purchase,0.9990029274213261,Purchase,new purchase po tuesday pm purchase po dear purchased received items galaxy mobile subscription updated include device under user name link 
+AUTO_RESOLVE,B2E_IT,Storage,0.99956399204352,Storage,access to and shared folder to and shared folder hi guys please provide she joined needs also please shared folder thanks
+AGENT_ASSIST,B2E_IT,HR Support,0.8695326667306309,HR Support,new starter babu access card enabling wednesday pm re hello please find attached please order assign him equipment create ad credentials ple
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.9485461501157805,Miscellaneous,please put user ad groups friday pm please user ad groups hello please log queue thanks friday pm please user ad groups hello please ad grou
+AUTO_RESOLVE,B2E_IT,Storage,0.972624293577631,Storage,access to us mailbox mailbox hello please mailbox order perform daily tasks thank accounts payable accountant phone
+AGENT_ASSIST,B2E_IT,Miscellaneous,0.9463338955008734,Miscellaneous,notifications to be enabled for and tuesday hello neither receiving thresholds snow incidents requests please activate both example tickets 
+HUMAN_ESCALATION,B2E_IT,Hardware,0.35546615777081714,Hardware,active directory user and computers not visible on site desktop hi we would greatly appreciate your investigation upon matter reported check
+HUMAN_ESCALATION,B2E_IT,Access,0.74733627213686,Access,project test creation issue sent tuesday december client portal confluence zephyr dear created today client portal we need be able create te
+AGENT_ASSIST,B2E_IT,Hardware,0.7324680970585314,Hardware,alert original message sent friday july critical alert following alert occurred status active description disk disk device cannot be detecte
+AGENT_ASSIST,B2E_IT,HR Support,0.8428265497612042,HR Support,oracle hi have issue with until we were entering hours per requires enter hours per there any change we should be aware encountering same is
+AGENT_ASSIST,B2E_IT,HR Support,0.944463835225636,HR Support,access to for maxim dear please member thank officer
+HUMAN_ESCALATION,B2E_IT,Access,0.9294836480376362,Access,confluence and are not working the and belgrade offices sent tuesday confluence issue dear please be informed confluence app running could y
+HUMAN_ESCALATION,B2E_IT,Hardware,0.4007282178289958,Internal Project,problems problems hello have problems for for following periods because code used inactive think period can you please advise kind regards m

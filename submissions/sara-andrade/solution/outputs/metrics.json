@@ -1,0 +1,52 @@
+{
+  "dataset_1_rows": 8469,
+  "dataset_2_rows": 47837,
+  "status_counts": {
+    "Pending Customer Response": 2881,
+    "Open": 2819,
+    "Closed": 2769
+  },
+  "status_percent": {
+    "Pending Customer Response": 34.0,
+    "Open": 33.3,
+    "Closed": 32.7
+  },
+  "non_closed_pct": 67.30428622033298,
+  "pending_customer_response_pct": 34.018183965049005,
+  "closed_tickets": 2769,
+  "negative_delta_count": 1365,
+  "negative_delta_pct": 49.29577464788733,
+  "positive_delta_count": 1404,
+  "templated_description_count": 8469,
+  "templated_description_pct": 100.0,
+  "csat_counts": {
+    "1": 553,
+    "2": 549,
+    "3": 580,
+    "4": 543,
+    "5": 544
+  },
+  "csat_chi_square_pvalue": 0.7968287774654618,
+  "status_by_channel_chi_square_pvalue": 0.7709841190107417,
+  "status_by_priority_chi_square_pvalue": 0.22696733419078632,
+  "kruskal_delta_by_channel_pvalue_on_positive_subset": 0.7907105418975421,
+  "kruskal_delta_by_type_pvalue_on_positive_subset": 0.16039079221223523,
+  "kruskal_delta_by_priority_pvalue_on_positive_subset": 0.09092177944741833,
+  "d1_text_to_ticket_type_accuracy": 0.20956316410861867,
+  "d1_text_to_ticket_type_f1_macro": 0.20802556026813018,
+  "d2_logreg_accuracy": 0.8643394648829431,
+  "d2_logreg_f1_macro": 0.8627351108196406,
+  "d2_nb_accuracy": 0.8094690635451505,
+  "d2_nb_f1_macro": 0.7965217657470791,
+  "domain_router_accuracy": 1.0,
+  "domain_shift_d1_pred_distribution": {
+    "Hardware": 7551,
+    "Access": 561,
+    "Administrative rights": 153,
+    "Miscellaneous": 147,
+    "HR Support": 45,
+    "Storage": 7,
+    "Internal Project": 5
+  },
+  "domain_shift_d1_confidence_mean": 0.668391506780334
+}
