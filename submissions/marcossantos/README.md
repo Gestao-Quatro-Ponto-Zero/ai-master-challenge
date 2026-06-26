@@ -14,8 +14,9 @@ O vendedor abre o dashboard, vê o pipeline ordenado por score e sabe exatamente
 5. [Sistema de alertas](#sistema-de-alertas)
 6. [Deal Notes](#deal-notes)
 7. [Analytics](#analytics)
-8. [Referência da API](#referência-da-api)
-9. [Limitações e próximos passos](#limitações-e-próximos-passos)
+8. [Notificações por email](#notificações-por-email)
+9. [Referência da API](#referência-da-api)
+10. [Limitações e próximos passos](#limitações-e-próximos-passos)
 
 ---
 
@@ -76,11 +77,11 @@ npm run dev
 
 Abra `http://localhost:5173` e use um dos acessos de demo:
 
-| Perfil  | Email                        | Senha    | O que vê                    |
-|---------|------------------------------|----------|-----------------------------|
-| Admin   | admin@leadscorer.com         | admin123 | Pipeline completo + analytics |
-| Manager | melanie@leadscorer.com       | senha123 | Time dela + analytics       |
-| Agent   | hayden@leadscorer.com        | senha123 | Só os próprios deals        |
+| Perfil  | Email                    | Senha    | O que vê                      |
+|---------|--------------------------|----------|-------------------------------|
+| Admin   | admin@leadscorer.com     | admin123 | Pipeline completo + analytics |
+| Manager | melanie@leadscorer.com   | senha123 | Time dela + analytics         |
+| Agent   | hayden@leadscorer.com    | senha123 | Só os próprios deals          |
 
 ---
 
@@ -89,66 +90,74 @@ Abra `http://localhost:5173` e use um dos acessos de demo:
 ```
 lead-scorer/
 ├── backend/
-│   ├── main.py                  # Rotas FastAPI — sem lógica de negócio
+│   ├── main.py                    # Rotas FastAPI — sem lógica de negócio
 │   ├── requirements.txt
-│   ├── users.json               # Usuários de demo (substitui banco em dev)
-│   ├── notes.json               # Notas persistidas (gerado automaticamente)
-│   ├── alerts.json              # Fila de alertas (gerado automaticamente)
+│   ├── .env                       # Credenciais (não commitar)
+│   ├── .gitignore
+│   ├── users.json                 # Usuários de demo
+│   ├── notes.json                 # Notas persistidas (gerado automaticamente)
+│   ├── alerts.json                # Fila de alertas (gerado automaticamente)
 │   │
 │   ├── data/
-│   │   └── loader.py            # Lê CSVs, join das 4 tabelas, métricas históricas
+│   │   └── loader.py              # Lê CSVs, join das 4 tabelas, métricas históricas
 │   │
 │   ├── scoring/
-│   │   ├── factors.py           # 6 fatores — cada um é uma função isolada
-│   │   └── engine.py            # Orquestra fatores → score 0-100 + ação
+│   │   ├── factors.py             # 6 fatores — cada um é uma função isolada
+│   │   └── engine.py              # Orquestra fatores → score 0-100 + ação
 │   │
 │   ├── models/
-│   │   └── schemas.py           # Contratos Pydantic da API
+│   │   └── schemas.py             # Contratos Pydantic da API
 │   │
 │   ├── auth/
-│   │   ├── models.py            # Schemas de autenticação
-│   │   ├── service.py           # JWT manual (hmac/sha256), login, tokens
-│   │   ├── dependencies.py      # get_current_user, require_role()
-│   │   └── router.py            # POST /auth/login, GET /auth/me
+│   │   ├── models.py              # Schemas de autenticação
+│   │   ├── service.py             # JWT manual + bcrypt para senhas
+│   │   ├── dependencies.py        # get_current_user, require_role()
+│   │   └── router.py              # POST /auth/login, GET /auth/me
 │   │
 │   ├── alerts/
-│   │   ├── models.py            # Alert, AlertType, AlertSeverity
-│   │   ├── detector.py          # 4 detectores independentes
-│   │   ├── queue.py             # Persistência em alerts.json + deduplicação
-│   │   ├── scheduler.py         # Job assíncrono a cada 15 min
-│   │   └── router.py            # GET/POST /api/alerts
+│   │   ├── models.py              # Alert, AlertType, AlertSeverity
+│   │   ├── detector.py            # 4 detectores independentes
+│   │   ├── queue.py               # Persistência + deduplicação
+│   │   ├── scheduler.py           # Job assíncrono a cada 15 min
+│   │   └── router.py              # GET/POST /api/alerts
 │   │
 │   ├── notes/
-│   │   ├── models.py            # Note, NoteCreate, NotesResponse
-│   │   ├── store.py             # Persistência em notes.json
-│   │   └── router.py            # GET/POST/DELETE /api/deal/{id}/notes
+│   │   ├── models.py              # Note, NoteCreate, NotesResponse
+│   │   ├── store.py               # Persistência em notes.json
+│   │   └── router.py              # GET/POST/DELETE /api/deal/{id}/notes
 │   │
-│   └── analytics/
-│       ├── models.py            # Schemas de analytics
-│       ├── service.py           # Lógica de agregação isolada das rotas
-│       └── router.py            # GET /api/analytics/{team,funnel,at-risk}
+│   ├── analytics/
+│   │   ├── models.py              # Schemas de analytics
+│   │   ├── service.py             # Lógica de agregação isolada das rotas
+│   │   └── router.py              # GET /api/analytics/{team,funnel,at-risk}
+│   │
+│   └── notifications/
+│       ├── config.py              # Lê credenciais do .env
+│       ├── sender.py              # SMTP Gmail + templates HTML
+│       ├── digest.py              # Scheduler do resumo diário
+│       └── router.py             # GET/POST /api/notifications
 │
 └── frontend/
     └── src/
-        ├── App.jsx              # Roteamento login ↔ pipeline ↔ analytics
-        ├── main.jsx             # Entrada React com AuthProvider
-        ├── index.css            # Design tokens + estilos globais
+        ├── App.jsx                # Roteamento login ↔ pipeline ↔ analytics
+        ├── main.jsx               # Entrada React com AuthProvider
+        ├── index.css              # Design tokens + estilos globais
         ├── context/
-        │   └── AuthContext.jsx  # Estado global de auth, token em memória
+        │   └── AuthContext.jsx    # Estado global de auth, token em memória
         ├── hooks/
-        │   └── useApi.js        # Hooks: usePipeline, useAlerts, useNotes, useAnalytics
+        │   └── useApi.js          # Hooks: usePipeline, useAlerts, useNotes, useAnalytics
         └── components/
-            ├── LoginPage.jsx    # Tela de login com acesso rápido demo
-            ├── Sidebar.jsx      # Filtros + navegação pipeline/analytics
-            ├── TopBar.jsx       # KPIs + sino de alertas + usuário logado
-            ├── DealsTable.jsx   # Tabela de deals com score bar inline
-            ├── DetailPanel.jsx  # Painel deslizante: score + fatores + notas
-            ├── AlertsPanel.jsx  # Painel de alertas com dismiss
+            ├── LoginPage.jsx      # Tela de login com acesso rápido demo
+            ├── Sidebar.jsx        # Filtros + navegação pipeline/analytics
+            ├── TopBar.jsx         # KPIs + sino de alertas + usuário logado
+            ├── DealsTable.jsx     # Tabela de deals com score bar inline
+            ├── DetailPanel.jsx    # Painel deslizante: score + fatores + notas
+            ├── AlertsPanel.jsx    # Painel de alertas com dismiss
             └── analytics/
-                ├── AnalyticsPage.jsx  # Container com tabs
-                ├── TeamRanking.jsx    # Ranking de vendedores
-                ├── FunnelCharts.jsx   # Gráficos de stage e produto
-                └── AtRiskTable.jsx    # Deals em risco por região
+                ├── AnalyticsPage.jsx   # Container com tabs
+                ├── TeamRanking.jsx     # Ranking de vendedores
+                ├── FunnelCharts.jsx    # Gráficos de stage e produto
+                └── AtRiskTable.jsx     # Deals em risco por região
 ```
 
 ---
@@ -160,14 +169,14 @@ Os 3 marcados com ⭐ vão além das features óbvias do enunciado.
 
 ### Fator 1 — Stage Score (0–25 pts)
 
-| Stage | Pontos | Razão |
-|-------|--------|-------|
-| Engaging | 25 | Negociação ativa — próximo do fechamento |
-| Prospecting | 10 | Potencial, mas ainda distante |
+| Stage | Pontos |
+|-------|--------|
+| Engaging | 25 |
+| Prospecting | 10 |
 
 ### Fator 2 — Velocidade no Pipeline (0–25 pts) ⭐
 
-Compara `days_in_pipeline` do deal vs. a **média histórica de Won deals do mesmo produto**.
+Compara `days_in_pipeline` vs. média histórica de Won deals do mesmo produto.
 
 | Ratio (dias / média do produto) | Pontos | Sinal |
 |---------------------------------|--------|-------|
@@ -175,57 +184,54 @@ Compara `days_in_pipeline` do deal vs. a **média histórica de Won deals do mes
 | 0.5–0.85x | 20 | 🟢 Ritmo bom |
 | 0.85–1.2x — na média | 15 | 🟡 Normal |
 | 1.2–1.8x | 8 | 🔴 Esfriando |
-| > 1.8x | 2 | 🔴 Parado — ação urgente |
-
-> Deals que ficam muito tempo num stage têm probabilidade de fechamento drasticamente menor. Esta feature captura o esfriamento antes que o deal seja perdido.
+| > 1.8x | 2 | 🔴 Parado |
 
 ### Fator 3 — Fit da Conta (0–20 pts)
 
-Combina porte da empresa (`employees` + `revenue`) vs. perfil histórico das contas que fecham.  
+Porte da empresa (`employees` + `revenue`) vs. perfil histórico de contas que fecham.  
 Bônus de +3 pts para setores com win rate acima da média global.
 
 ### Fator 4 — Win Rate do Produto (0–15 pts) ⭐
 
-Win rate histórico do produto específico calculado dos dados reais.  
-Produtos têm taxas de conversão muito diferentes — um deal com produto de 65% WR merece mais atenção que um com 30%.
+Win rate histórico calculado dos dados reais por produto.
 
 ### Fator 5 — Performance do Vendedor (0–15 pts) ⭐
 
-Win rate histórico do vendedor responsável pelo deal.  
-Um vendedor com track record forte em deals similares aumenta a probabilidade real de fechamento.
+Win rate histórico do vendedor responsável pelo deal.
 
 ### Fator 6 — Atividade de Contato (0–10 pts)
 
-Baseado nas notas registradas pelo vendedor no deal.
+Baseado nas notas registradas no deal.
 
-| Situação | Pontos | Sinal |
-|----------|--------|-------|
-| Nota nos últimos 2 dias | 10 | 🟢 Deal ativo |
-| Nota nos últimos 5 dias | 7 | 🟢 Bom ritmo |
-| Nota nos últimos 10 dias | 3 | 🟡 Razoável |
-| Sem notas (deal novo) | 5 | ⚪ Neutro |
-| Engaging sem nota há 10–20 dias | 0 | 🔴 Esquecido |
-| Engaging sem nota há 20+ dias | 0 | 🔴 Abandonado |
+| Situação | Pontos |
+|----------|--------|
+| Nota nos últimos 2 dias | 10 |
+| Nota nos últimos 5 dias | 7 |
+| Nota nos últimos 10 dias | 3 |
+| Sem notas (deal novo) | 5 neutro |
+| Engaging sem nota há 10–20 dias | 0 ⚠ |
+| Engaging sem nota há 20+ dias | 0 🚨 |
 
-### Tiers e ações recomendadas
+### Tiers
 
-| Score | Tier | Cor | Exemplo de ação |
-|-------|------|-----|-----------------|
-| 70–100 | 🔥 HOT | Vermelho | "Ligue HOJE — deal prioritário esfriando" |
-| 45–69 | 🌡 WARM | Âmbar | "Monitore — mantenha cadência" |
-| 0–44 | ❄ COLD | Cinza | "Reavalie — foque em deals prioritários" |
+| Score | Tier | Ação gerada |
+|-------|------|-------------|
+| 70–100 | 🔥 HOT | "Ligue HOJE — deal prioritário esfriando" |
+| 45–69 | 🌡 WARM | "Monitore — mantenha cadência" |
+| 0–44 | ❄ COLD | "Reavalie — foque em prioritários primeiro" |
 
 ---
 
 ## Autenticação e roles
 
-JWT implementado sem biblioteca externa (usa `hmac` + `hashlib` do Python padrão).  
+JWT implementado com `hmac` + `hashlib` do Python padrão (sem biblioteca externa).  
+Senhas armazenadas com **bcrypt** (work factor 12) — migração automática no startup.  
 Token válido por 8 horas, armazenado em memória no frontend (sem localStorage).
 
 ### Sistema de roles
 
-| Role | Pipeline | Analytics | Admin |
-|------|----------|-----------|-------|
+| Role | Pipeline | Analytics | Notificações |
+|------|----------|-----------|--------------|
 | `agent` | Só os próprios deals | ✗ | ✗ |
 | `manager` | Só o seu time | ✅ time dele | ✗ |
 | `admin` | Pipeline completo | ✅ tudo | ✅ |
@@ -240,14 +246,14 @@ POST /auth/logout  → instrução para descartar o token
 
 ### Adicionar usuários
 
-Edite `backend/users.json`. Os campos `sales_agent` e `manager` devem bater **exatamente** com os nomes nos CSVs para que os filtros por role funcionem.
+Edite `backend/users.json`. Os campos `sales_agent` e `manager` devem bater **exatamente** com os nomes nos CSVs.
 
 ```json
 {
   "id": "9",
   "name": "Nome Completo",
   "email": "email@empresa.com",
-  "password": "senha",
+  "password": "senha_em_texto",
   "role": "agent",
   "sales_agent": "Nome Completo",
   "manager": "Nome do Manager",
@@ -255,12 +261,15 @@ Edite `backend/users.json`. Os campos `sales_agent` e `manager` devem bater **ex
 }
 ```
 
+> A senha é convertida para hash bcrypt automaticamente no próximo startup.
+
 ---
 
 ## Sistema de alertas
 
-O scheduler roda automaticamente 3 segundos após o startup e depois a cada 15 minutos.  
-Alertas são persistidos em `backend/alerts.json` com deduplicação automática (o mesmo deal não gera dois alertas iguais).
+Scheduler roda 3 segundos após o startup e depois a cada 15 minutos.  
+Alertas persistidos em `alerts.json` com deduplicação — o mesmo deal não gera dois alertas iguais.  
+Alertas críticos também disparam **email imediato** se as notificações estiverem configuradas.
 
 ### Tipos de alerta
 
@@ -277,17 +286,15 @@ Alertas são persistidos em `backend/alerts.json` com deduplicação automática
 GET  /api/alerts                  → alertas do usuário (filtrado por role)
 POST /api/alerts/{id}/dismiss     → marca como visto
 POST /api/alerts/dismiss-all      → marca todos como vistos
-POST /api/alerts/refresh          → força detecção agora (admin/manager)
+POST /api/alerts/refresh          → força detecção agora (manager/admin)
 ```
 
 ---
 
 ## Deal Notes
 
-Vendedores registram contatos, decisões e próximos passos diretamente no deal.  
+Vendedores registram contatos diretamente no deal.  
 As notas alimentam o **Fator 6** do scoring — deals com contato recente sobem de score automaticamente.
-
-### Endpoints
 
 ```
 GET    /api/deal/{id}/notes            → histórico de notas
@@ -299,28 +306,60 @@ DELETE /api/deal/{id}/notes/{note_id}  → remove nota (autor ou admin)
 
 ## Analytics
 
-Disponível para `manager` e `admin`. Acessível pelo menu lateral do dashboard.
+Disponível para `manager` e `admin` — acessível pelo menu lateral do dashboard.
 
-### GET /api/analytics/team
-Ranking de vendedores com win rate, deals ativos, hot deals e status:
-- `strong` — win rate 15%+ acima da média
-- `average` — dentro da faixa normal
-- `needs_coaching` — win rate 15%+ abaixo da média
+```
+GET /api/analytics/team     → ranking de vendedores com win rate e status de coaching
+GET /api/analytics/funnel   → distribuição por stage e win rate por produto
+GET /api/analytics/at-risk  → deals em risco agrupados por região
+```
 
-### GET /api/analytics/funnel
-- Distribuição de deals por stage (Prospecting / Engaging)
-- Win rate histórico por produto com média de dias até fechar
+---
 
-### GET /api/analytics/at-risk
-- Deals parados acima da média histórica do produto
-- Agrupados por região com contagem de críticos e valor em risco
-- Parâmetro `?min_ratio=1.5` controla o limiar de risco
+## Notificações por email
+
+### Configuração
+
+Edite o arquivo `backend/.env`:
+
+```env
+EMAIL_ENABLED=true
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=seu_email@gmail.com
+EMAIL_PASSWORD=xxxx xxxx xxxx xxxx
+EMAIL_FROM_NAME=Lead Scorer
+ALERT_RECIPIENT=destinatario@gmail.com
+DAILY_DIGEST_TIME=08:00
+DAILY_DIGEST_ENABLED=true
+```
+
+> **Gmail:** gere uma App Password em https://myaccount.google.com/apppasswords  
+> Não use sua senha normal — o Gmail bloqueia acesso via SMTP com senha comum.
+
+### Tipos de notificação
+
+**1. Alerta crítico (imediato)**  
+Enviado automaticamente quando o scheduler detecta um alerta de severidade `critical`.  
+Inclui: nome da conta, vendedor responsável, dias no pipeline e valor do deal.
+
+**2. Resumo diário**  
+Enviado no horário configurado em `DAILY_DIGEST_TIME`.  
+Inclui: KPIs hot/warm/cold, valor total em pipeline, top 5 deals por score e contagem de alertas ativos.
+
+### Testar (Swagger — login como admin)
+
+```
+GET  /api/notifications/status      → confirma configuração SMTP
+POST /api/notifications/test-alert  → envia email de alerta agora
+POST /api/notifications/test-digest → envia resumo diário agora
+```
 
 ---
 
 ## Referência da API
 
-### Públicas
+### Pública
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
@@ -334,45 +373,53 @@ Ranking de vendedores com win rate, deals ativos, hot deals e status:
 | GET | `/auth/me` | Dados do usuário logado |
 | POST | `/auth/logout` | Logout |
 
-### Pipeline (requer auth)
+### Pipeline
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| GET | `/api/filters` | Opções de filtro disponíveis |
-| GET | `/api/pipeline` | Deals com scores, suporta filtros |
-| GET | `/api/deal/{id}` | Score detalhado de um deal |
-| GET | `/api/summary` | KPIs: hot/warm/cold + valor total |
+| GET | `/api/filters` | Opções de filtro |
+| GET | `/api/pipeline` | Deals com scores |
+| GET | `/api/deal/{id}` | Score detalhado |
+| GET | `/api/summary` | KPIs do pipeline |
 
-### Alertas (requer auth)
+### Alertas
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| GET | `/api/alerts` | Lista alertas do usuário |
+| GET | `/api/alerts` | Lista alertas |
 | POST | `/api/alerts/{id}/dismiss` | Marca como visto |
 | POST | `/api/alerts/dismiss-all` | Limpa todos |
-| POST | `/api/alerts/refresh` | Força detecção (manager/admin) |
+| POST | `/api/alerts/refresh` | Força detecção |
 
-### Notas (requer auth)
+### Notas
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| GET | `/api/deal/{id}/notes` | Histórico de notas |
+| GET | `/api/deal/{id}/notes` | Histórico |
 | POST | `/api/deal/{id}/notes` | Adiciona nota |
 | DELETE | `/api/deal/{id}/notes/{note_id}` | Remove nota |
 
-### Analytics (manager/admin)
+### Analytics
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | GET | `/api/analytics/team` | Ranking de vendedores |
 | GET | `/api/analytics/funnel` | Funil de conversão |
-| GET | `/api/analytics/at-risk` | Deals em risco por região |
+| GET | `/api/analytics/at-risk` | Deals em risco |
+
+### Notificações (admin)
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | `/api/notifications/status` | Status SMTP |
+| POST | `/api/notifications/test-alert` | Teste de alerta |
+| POST | `/api/notifications/test-digest` | Teste de digest |
 
 ### Admin
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| GET | `/api/admin/users` | Lista usuários (sem senhas) |
+| GET | `/api/admin/users` | Lista usuários |
 
 ---
 
@@ -380,17 +427,15 @@ Ranking de vendedores com win rate, deals ativos, hot deals e status:
 
 ### O que a solução não faz
 
-- **Sem ML preditivo** — scoring baseado em regras + heurísticas. Explicável e útil, mas não aprende automaticamente com novos dados.
+- **Sem ML preditivo** — scoring baseado em regras + heurísticas. Explicável e útil, mas não aprende automaticamente.
 - **Sem banco de dados** — CSVs em memória, notas e alertas em JSON. Reiniciar o servidor relê tudo.
-- **Senhas em texto plano** — `users.json` sem hash bcrypt. Aceitável para demo, inaceitável em produção.
 - **Sem atualização em tempo real** — pipeline reflete o snapshot dos CSVs no startup.
 - **JWT sem refresh token** — sessão expira em 8h sem renovação automática.
 
 ### Para escalar para produção
 
 1. **Banco de dados** — PostgreSQL + SQLAlchemy substituindo CSVs e JSONs
-2. **Senhas** — bcrypt no `auth/service.py` (trocar a comparação direta)
-3. **Integração com CRM real** — webhooks Salesforce/HubSpot para pipeline em tempo real
-4. **ML** — XGBoost treinado nos dados históricos com SHAP values para manter explainability
-5. **Refresh token** — par access/refresh com rotação automática
-6. **Notificações** — email ou Slack quando alertas críticos são gerados
+2. **Integração com CRM real** — webhooks Salesforce/HubSpot para pipeline em tempo real
+3. **ML** — XGBoost treinado nos dados históricos com SHAP values para manter explainability
+4. **Refresh token** — par access/refresh com rotação automática
+5. **WebSocket** — alertas em push real-time em vez de polling a cada 60s
