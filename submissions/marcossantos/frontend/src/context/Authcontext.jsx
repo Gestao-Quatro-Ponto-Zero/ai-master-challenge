@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const [user,  setUser]  = useState(null)
 
   const login = useCallback(async (email, password) => {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch('/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
     setToken(data.access_token)
 
     // Busca dados do usuário logado
-    const meRes = await fetch('/api/auth/me', {
+    const meRes = await fetch('/auth/me', {
       headers: { Authorization: `Bearer ${data.access_token}` },
     })
     const me = await meRes.json()
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(async () => {
     if (token) {
-      await fetch('/api/auth/logout', {
+      await fetch('/auth/logout', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
       }).catch(() => {})
