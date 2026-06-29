@@ -48,10 +48,14 @@ export function priorityRank(p: Priority): number {
   return { High: 3, Priority: 2, Watch: 1, Low: 0 }[p];
 }
 
+function productKey(product?: string): string {
+  return (product ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
 /** Build lookup indexes and precomputed distributions for the dataset. */
 function buildContext(data: Dataset) {
   const accountBy = new Map(data.accounts.map((a) => [a.account, a]));
-  const productBy = new Map(data.products.map((p) => [p.product, p]));
+  const productBy = new Map(data.products.map((p) => [productKey(p.product), p]));
   const teamBy = new Map(data.salesTeams.map((t) => [t.sales_agent, t]));
 
   // Reference "now" = latest date in dataset (datasets are historical).
@@ -103,7 +107,7 @@ function buildContext(data: Dataset) {
     if (typeof r.close_value === "number" && r.close_value > 0) {
       return { value: r.close_value, estimated: false };
     }
-    const p = productBy.get(r.product);
+    const p = productBy.get(productKey(r.product));
     return { value: p?.sales_price ?? 0, estimated: true };
   };
   for (const r of data.pipeline) {
@@ -161,7 +165,7 @@ export function scoreDataset(data: Dataset, lang: Lang = "pt"): ScoreResult {
     if (!OPEN_STAGES.includes(r.deal_stage)) continue;
 
     const account = ctx.accountBy.get(r.account);
-    const product = ctx.productBy.get(r.product);
+    const product = ctx.productBy.get(productKey(r.product));
     const team = ctx.teamBy.get(r.sales_agent);
     const positives: ScoreFactor[] = [];
     const risks: ScoreFactor[] = [];
