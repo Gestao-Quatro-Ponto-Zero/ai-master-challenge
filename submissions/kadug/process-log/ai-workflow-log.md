@@ -76,3 +76,108 @@ Usei Codex/GPT-5 para:
 ### Julgamento humano aplicado
 
 Os dois critiques concordaram que a arquitetura estava correta, mas que a camada de apresentacao estava cara demais. A decisao final preserva a maturidade da arquitetura e troca a tecnologia de dashboard para reduzir risco de entrega.
+
+## Sessao 3 - Contrato de Dados, Camada Limpa e Preflight
+
+**Data:** 2026-06-28
+
+### Objetivo
+
+Transformar o `data_quality_report.md` em contrato executavel para os cinco CSVs RavenStack, sem modificar os dados brutos.
+
+### Decisoes tomadas
+
+- Criar `solution/analysis/build_exports.py` como script unico e reproduzivel.
+- Gerar camada limpa em `solution/analysis/clean/`.
+- Criar `feature_usage_row_id` porque `usage_id` tem duplicidades.
+- Gerar `usage_in_subscription_window_flag` a partir de `usage_date`, `start_date` e `end_date`.
+- Preservar `account_churn_flag` e `has_churn_event` como labels separados.
+- Copiar `data_quality_report.md` para `solution/analysis/data_quality_report.md`.
+- Registrar preflight de Python, Streamlit e pastas exigidas em `preflight_report.json`.
+
+### Uso de IA
+
+Usei Codex/GPT-5 para converter as regras da story e do DQ report em um pipeline auditavel, depois acionei um subagente no papel de `@dev` para o quality gate da Story 1.1.
+
+### Correcoes e julgamento humano
+
+- O script foi mantido como fonte unica para evitar divergencia entre relatorio, exports e dashboard.
+- O gate de Story 1.1 passou em schema, integridade de joins e flags de qualidade.
+- Os comandos globais `npm run lint`, `npm run typecheck` e `npm test` foram tentados, mas nao ha `package.json` em `C:\Projects\desafio-g4`; por isso, os gates npm nao sao aplicaveis a este workspace Python/Markdown.
+- `python -m py_compile` falhou ao tentar gravar bytecode em `__pycache__` por permissao do Windows. A validacao de sintaxe foi refeita em memoria com `compile(...)`, sem depender de escrita de `.pyc`.
+
+## Sessao 4 - Exports Canonicos e Score de Risco
+
+**Data:** 2026-06-28
+
+### Objetivo
+
+Gerar os contratos canonicos que servem como fonte da verdade para report e dashboard.
+
+### Artefatos gerados
+
+- `account_health.csv/json`: 500 contas, uma linha por `account_id`.
+- `risk_segments.csv/json`: 4 segmentos que somam 500 contas.
+- `priority_accounts.csv/json`: 60 contas priorizadas por score, MRR em risco e sinais operacionais.
+- `action_backlog.csv/json`: 58 acoes com dono, prioridade, esforco, confianca e gatilho.
+- `executive_findings.csv/json`: 7 findings executivos com evidencia, interpretacao, decisao e rastreabilidade.
+- `churner_comparison.csv/json`: comparativo auxiliar entre contas com e sem evento de churn.
+
+### Uso de IA
+
+Usei Codex/GPT-5 para implementar as agregacoes e acionei um subagente no papel de `@data-engineer` para revisar contrato de export, risco de multiplicacao de linhas e score deterministico.
+
+### Correcoes e julgamento humano
+
+- A primeira revisao local identificou que um finding do backlog somava MRR por acao e duplicava exposicao financeira. Corrigi para reportar exposicao de portfolio sem dupla contagem.
+- Adicionei `churner_comparison` para tornar a Story 1.3 auditavel sem recalcular metricas no relatorio.
+- O gate de Story 1.2 passou: `account_health` tem 500 linhas e zero duplicidade de `account_id`; `risk_segments` soma 500; score e segmentos foram recomputados pelo reviewer sem divergencias.
+
+## Sessao 5 - Findings, Causalidade e Revisao Analitica
+
+**Data:** 2026-06-28
+
+### Objetivo
+
+Transformar exports canonicos em findings executivos rastreaveis, respondendo causa, segmentos/contas em risco e acoes recomendadas.
+
+### Uso de IA
+
+Usei Codex/GPT-5 para gerar os primeiros findings e acionei um subagente no papel de `@analyst` para revisar a Story 1.3 antes do gate de PM.
+
+### Erros encontrados pela IA e correcoes aplicadas
+
+- O primeiro export de `executive_findings` nao tinha campos explicitos suficientes para Story 1.3. Corrigi adicionando `evidence_summary`, `interpretation`, `owner_team`, `recommended_action`, `effort_size`, `expected_impact_metric`, `related_action_ids` e `false_causality_risk`.
+- A comparacao churners vs non-churners cobria apenas `has_churn_event`. Corrigi `churner_comparison` para comparar tambem `account_churn_flag`.
+- A contradicao "uso cresceu" estava coberta apenas por caveat de janela de assinatura. Corrigi criando `usage_growth_tests.csv/json`, com crescimento bruto vs crescimento valid-window por portfolio, segmento de risco, plano e labels de churn.
+- A primeira tabela de causa candidata ranqueou qualidade de dados como top causa. Isso explica ambiguidade analitica, nao churn de cliente. Corrigi criando `root_cause_candidates.csv/json` com categoria de causa de negocio e rebaixando data quality para confiabilidade analitica.
+
+### Julgamento humano aplicado
+
+Mantive a causa raiz como candidata, nao como prova causal: "value-realization erosion before renewal". O plano recomendado e agir em Critical/High accounts e usar a cadencia de duas semanas para validar qual intervencao realmente muda risco de renovacao.
+
+## Sessao 6 - Dashboard Streamlit como Presentation Adapter
+
+**Data:** 2026-06-28
+
+### Objetivo
+
+Criar um dashboard minimo para stakeholders sem duplicar a logica analitica.
+
+### Decisoes tomadas
+
+- O app fica em `solution/dashboard/streamlit_app.py`.
+- O dashboard le apenas exports em `solution/exports/`.
+- A interface usa header executivo, KPIs, top findings, segmentos de risco, contas prioritarias, backlog e notas de data quality.
+- O visual segue a direcao G4 adaptada: navy/off-white/gold, cards simples, tabelas densas e foco operacional.
+
+### Validacoes executadas
+
+- Import do app e carregamento dos exports: passou.
+- Syntax check por `compile(...)`: passou.
+- Smoke test local com Streamlit em job temporario: `http://localhost:8765` respondeu HTTP 200.
+- Busca por `data/raw`, `merge(` e `groupby(` no dashboard: nao encontrada; o app nao recalcula joins nem score.
+
+### Julgamento humano aplicado
+
+Mantive o dashboard como camada de leitura e filtro, nao como ferramenta analitica. Isso preserva a fonte da verdade nos exports e evita que relatorio e UI discordem.

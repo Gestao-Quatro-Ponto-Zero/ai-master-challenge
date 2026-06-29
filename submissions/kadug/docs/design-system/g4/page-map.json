@@ -1,0 +1,110 @@
+{
+  "source": {
+    "brand": "G4",
+    "target": "https://g4business.com/",
+    "capturedAt": "2026-06-28",
+    "mode": "audit-only",
+    "evidence": [
+      "evidence/g4-home.html",
+      "evidence/post-7.css",
+      "evidence/post-32690.css",
+      "evidence/post-25730.css",
+      "evidence/base-desktop.css",
+      "evidence/g4-home-desktop.png",
+      "evidence/g4-home-mobile.png",
+      "css-token-inventory.json"
+    ]
+  },
+  "sections": [
+    {
+      "id": "top-announcement",
+      "order": 1,
+      "contentRole": "Promotional urgency band for current offer",
+      "visualRole": "Compact premium announcement before the main nav",
+      "layoutPattern": "Full-width dark band with left campaign wordmark, centered message, right outlined CTA",
+      "componentFamilies": ["announcement bar", "inline editorial emphasis", "outline CTA"],
+      "distinctiveEffects": ["deep navy gradient", "gold italic emphasis", "thin outline button"],
+      "artDirectionConstraints": ["keep height tight", "avoid large hero typography", "use gold as emphasis only"]
+    },
+    {
+      "id": "main-navigation",
+      "order": 2,
+      "contentRole": "Primary navigation and conversion actions",
+      "visualRole": "Dark executive nav with G4 logo and two-tier CTA hierarchy",
+      "layoutPattern": "Logo left, nav centered, gold primary action plus outlined secondary action right",
+      "componentFamilies": ["logo lockup", "dropdown nav item", "primary CTA", "secondary CTA"],
+      "distinctiveEffects": ["navy background", "white nav text", "gold filled CTA", "white outlined student-area CTA"],
+      "artDirectionConstraints": ["do not use bright SaaS blue", "keep nav dense and businesslike"]
+    },
+    {
+      "id": "hero-campaign",
+      "order": 3,
+      "contentRole": "Current conversion campaign for G4 Gestao e Estrategia",
+      "visualRole": "Full-bleed editorial hero with founder/mentor photography and dark navy copy block",
+      "layoutPattern": "Split visual field: dark copy area left, large cropped people image right, carousel controls on sides",
+      "componentFamilies": ["campaign mark", "large headline", "supporting copy", "gold CTA", "carousel arrow"],
+      "distinctiveEffects": ["navy photographic overlay", "muted gold divider", "large human crop", "round rust carousel controls"],
+      "artDirectionConstraints": ["use real subject imagery when available", "keep type restrained and high-contrast", "do not replace people-led proof with generic illustration"]
+    },
+    {
+      "id": "business-lines",
+      "order": 4,
+      "contentRole": "Four-pillar ecosystem overview",
+      "visualRole": "Light surface proof band that contrasts the dark hero",
+      "layoutPattern": "Four columns with G4 icon mark, short explanatory text, and arrow link",
+      "componentFamilies": ["pillar card", "inline icon", "text link", "arrow affordance"],
+      "distinctiveEffects": ["off-white background", "gold compass-like icon", "navy headings", "sparse card boundaries"],
+      "artDirectionConstraints": ["prefer text blocks over heavy cards", "use low-radius or no-radius containers"]
+    },
+    {
+      "id": "teacher-proof",
+      "order": 5,
+      "contentRole": "Credibility claim around practitioners teaching",
+      "visualRole": "Dark section transition with editorial italic emphasis",
+      "layoutPattern": "Centered statement, short subtitle, mentor carousel/list follows",
+      "componentFamilies": ["section headline", "italic display span", "mentor profile module"],
+      "distinctiveEffects": ["navy background", "white headline", "gold italic phrase", "photographic mentor cards"],
+      "artDirectionConstraints": ["accent one phrase, not the whole headline", "keep contrast calm"]
+    },
+    {
+      "id": "testimonials",
+      "order": 6,
+      "contentRole": "Social proof from participants",
+      "visualRole": "Video/social proof carousel",
+      "layoutPattern": "Section headline plus media cards/thumbnails and carousel controls",
+      "componentFamilies": ["video thumbnail", "testimonial card", "carousel dot", "carousel arrow"],
+      "distinctiveEffects": ["rust navigation controls", "dark/light alternation", "media thumbnail emphasis"],
+      "artDirectionConstraints": ["media should feel evidentiary, not decorative"]
+    },
+    {
+      "id": "mission-metrics",
+      "order": 7,
+      "contentRole": "Impact narrative and employment milestone",
+      "visualRole": "Mission proof section leading into metrics",
+      "layoutPattern": "Large editorial statements followed by counters and sector/program breakdowns",
+      "componentFamilies": ["impact statement", "counter", "metric grid", "sector row", "program card"],
+      "distinctiveEffects": ["large numeric emphasis", "navy/gold color split", "clear proof hierarchy"],
+      "artDirectionConstraints": ["numbers should be large and sparse", "avoid chart decoration without data"]
+    },
+    {
+      "id": "program-highlights",
+      "order": 8,
+      "contentRole": "Featured programs and offers",
+      "visualRole": "Conversion-oriented product/program cards",
+      "layoutPattern": "Grid of program tiles with image, title, short proof, and CTA",
+      "componentFamilies": ["program card", "image crop", "title", "CTA"],
+      "distinctiveEffects": ["photographic crops", "off-white surface", "navy text", "gold call-to-action"],
+      "artDirectionConstraints": ["use cards only for actual repeated items", "keep radius modest"]
+    },
+    {
+      "id": "content-and-faq",
+      "order": 9,
+      "contentRole": "Content discovery and objection handling",
+      "visualRole": "Editorial support area with content cards and accordion FAQ",
+      "layoutPattern": "Content list/grid followed by FAQ accordion and footer link groups",
+      "componentFamilies": ["article card", "FAQ accordion", "footer link group", "trust badge"],
+      "distinctiveEffects": ["editorial thumbnails", "accordion dividers", "gold links", "dense footer"],
+      "artDirectionConstraints": ["keep content secondary to executive decision flow in the challenge dashboard"]
+    }
+  ]
+}

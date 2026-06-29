@@ -1,0 +1,23 @@
+{
+  "mode": "audit-only",
+  "rationale": "The task is to extract the G4 visual identity for later frontend use, not to generate a visual reconstruction of the G4 website.",
+  "evidence": [
+    "evidence/g4-home.html",
+    "evidence/g4-home-desktop.png",
+    "evidence/g4-home-mobile.png",
+    "evidence/post-7.css",
+    "evidence/post-32690.css",
+    "evidence/post-25730.css",
+    "css-token-inventory.json"
+  ],
+  "requiresCalibration": false,
+  "requiresSceneGraph": false,
+  "calibrationFile": null,
+  "sceneGraphFile": null,
+  "knownGaps": [
+    "No pixel-calibrated reconstruction was produced.",
+    "Computed runtime styles were not captured through Playwright because launching the browser through Playwright was blocked; screenshots were captured with Chrome headless instead.",
+    "Official brand permission and font licensing must be confirmed before shipping public assets."
+  ],
+  "gateStatus": "pass"
+}

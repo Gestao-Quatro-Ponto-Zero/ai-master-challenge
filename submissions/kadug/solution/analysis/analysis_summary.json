@@ -1,0 +1,46 @@
+{
+  "preflight": {
+    "generated_at": "2026-06-29T00:21:00.210207+00:00",
+    "python_executable": "C:\\Users\\kadug\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+    "python_version": "3.13.14",
+    "python_available": true,
+    "streamlit_available": true,
+    "pandas_version": "3.0.4",
+    "raw_dir": "C:\\Projects\\desafio-g4\\data\\raw\\ravenstack",
+    "required_dirs": {
+      "ai-master-challenge\\submissions\\kadug\\solution": true,
+      "ai-master-challenge\\submissions\\kadug\\solution\\analysis": true,
+      "ai-master-challenge\\submissions\\kadug\\solution\\exports": true,
+      "ai-master-challenge\\submissions\\kadug\\solution\\dashboard": true
+    },
+    "fallback_decision": "Python and Streamlit available; no dashboard fallback required."
+  },
+  "clean_validation_passed": true,
+  "export_validation_passed": true,
+  "exports": {
+    "account_health": {
+      "rows": 500
+    },
+    "risk_segments": {
+      "rows": 4
+    },
+    "priority_accounts": {
+      "rows": 60
+    },
+    "churner_comparison": {
+      "rows": 4
+    },
+    "usage_growth_tests": {
+      "rows": 12
+    },
+    "root_cause_candidates": {
+      "rows": 6
+    },
+    "action_backlog": {
+      "rows": 58
+    },
+    "executive_findings": {
+      "rows": 7
+    }
+  }
+}

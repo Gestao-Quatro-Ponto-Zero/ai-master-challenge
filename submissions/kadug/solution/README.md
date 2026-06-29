@@ -4,13 +4,31 @@ Esta pasta concentra os artefatos da solucao do Challenge 001.
 
 ## Estrutura
 
-- `analysis/`: notebooks ou scripts de analise.
-- `dashboard/`: dashboard minimo em Streamlit.
-- `exports/`: CSVs, JSONs, imagens e outputs usados no relatorio.
+- `analysis/`: analytics core reproduzivel, camada limpa, relatorios de validacao e copia local do DQ report.
+- `exports/`: contratos canonicos em CSV/JSON usados pelo relatorio e pelo dashboard.
+- `dashboard/`: dashboard minimo em Streamlit que consome apenas os exports.
+- `requirements.txt`: dependencias Python.
 
-## Prioridade
+## Como reproduzir
 
-1. Analise reproduzivel.
-2. Relatorio executivo.
-3. Exports verificaveis.
-4. Dashboard operacional, se houver tempo.
+Execute a partir da raiz do repositorio:
+
+```powershell
+python ai-master-challenge/submissions/kadug/solution/analysis/build_exports.py
+```
+
+Validacao sem rebuild:
+
+```powershell
+python ai-master-challenge/submissions/kadug/solution/analysis/build_exports.py --validate-only
+```
+
+## Contratos principais
+
+- `exports/account_health.csv`: uma linha por `account_id`.
+- `exports/risk_segments.csv`: agregacao por banda de risco.
+- `exports/priority_accounts.csv`: fila priorizada de contas acionaveis.
+- `exports/action_backlog.csv`: acoes por dono, prioridade, gatilho, impacto e confianca.
+- `exports/executive_findings.json`: achados executivos com evidencia e rastreabilidade.
+
+O dashboard e o README final nao recalculam joins nem score de risco; eles leem esses contratos.
