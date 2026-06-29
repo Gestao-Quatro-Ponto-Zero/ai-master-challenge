@@ -1,0 +1,54 @@
+{
+  "account_health": {
+    "rows": 500,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "risk_segments": {
+    "rows": 4,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "priority_accounts": {
+    "rows": 60,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "action_backlog": {
+    "rows": 58,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "executive_findings": {
+    "rows": 7,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "churner_comparison": {
+    "rows": 4,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "usage_growth_tests": {
+    "rows": 12,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "root_cause_candidates": {
+    "rows": 6,
+    "missing_required_columns": [],
+    "passed": true
+  },
+  "contract_checks": {
+    "account_health_500_rows": true,
+    "account_health_unique_account_id": true,
+    "risk_segments_sum_to_500": true,
+    "priority_rank_unique": true,
+    "executive_findings_trace_exports": true,
+    "executive_findings_have_action_links": true,
+    "churner_comparison_covers_both_labels": true,
+    "usage_growth_tests_include_portfolio": true,
+    "root_cause_candidates_ranked": true
+  },
+  "passed": true
+}

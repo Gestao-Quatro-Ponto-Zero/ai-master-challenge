@@ -1,0 +1,37 @@
+{
+  "raw_row_counts": {
+    "accounts": 500,
+    "subscriptions": 5000,
+    "feature_usage": 25000,
+    "support_tickets": 2000,
+    "churn_events": 600
+  },
+  "clean_row_counts": {
+    "accounts": 500,
+    "subscriptions": 5000,
+    "feature_usage": 25000,
+    "support_tickets": 2000,
+    "churn_events": 600
+  },
+  "fk_orphans": {
+    "subscriptions_to_accounts": 0,
+    "support_to_accounts": 0,
+    "churn_to_accounts": 0,
+    "usage_to_subscriptions": 0
+  },
+  "feature_usage_row_id_unique": true,
+  "usage_id_duplicate_surplus": 21,
+  "usage_window_counts": {
+    "before_subscription_start": 19142,
+    "after_subscription_end": 290,
+    "in_window": 5568,
+    "out_of_window": 19432
+  },
+  "churn_label_counts": {
+    "account_churn_flag_true_accounts": 110,
+    "has_churn_event_accounts": 352,
+    "event_accounts_with_account_flag_false": 277,
+    "account_flag_true_without_event": 35
+  },
+  "passed": true
+}

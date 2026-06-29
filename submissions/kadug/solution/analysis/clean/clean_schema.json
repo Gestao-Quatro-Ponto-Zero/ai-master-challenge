@@ -1,0 +1,357 @@
+{
+  "accounts": {
+    "rows": 500,
+    "columns": [
+      {
+        "name": "account_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "account_name",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "industry",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "country",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "signup_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "referral_source",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "initial_plan_tier",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "account_seats",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "account_is_trial",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "account_churn_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      }
+    ]
+  },
+  "subscriptions": {
+    "rows": 5000,
+    "columns": [
+      {
+        "name": "subscription_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "account_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "start_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "end_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 4514
+      },
+      {
+        "name": "plan_tier",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "seats",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "mrr_amount",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "arr_amount",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "is_trial",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "upgrade_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "downgrade_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "churn_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "billing_frequency",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "auto_renew_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      }
+    ]
+  },
+  "feature_usage": {
+    "rows": 25000,
+    "columns": [
+      {
+        "name": "feature_usage_row_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "usage_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "subscription_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "usage_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "feature_name",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "usage_count",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "usage_duration_secs",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "error_count",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "is_beta_feature",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "account_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "start_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "end_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 22627
+      },
+      {
+        "name": "usage_in_subscription_window_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      }
+    ]
+  },
+  "support_tickets": {
+    "rows": 2000,
+    "columns": [
+      {
+        "name": "ticket_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "account_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "submitted_at",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "closed_at",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "resolution_time_hours",
+        "pandas_dtype": "float64",
+        "logical_type": "decimal",
+        "nulls": 0
+      },
+      {
+        "name": "priority",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "first_response_time_minutes",
+        "pandas_dtype": "int64",
+        "logical_type": "integer",
+        "nulls": 0
+      },
+      {
+        "name": "satisfaction_score",
+        "pandas_dtype": "float64",
+        "logical_type": "decimal",
+        "nulls": 825
+      },
+      {
+        "name": "escalation_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      }
+    ]
+  },
+  "churn_events": {
+    "rows": 600,
+    "columns": [
+      {
+        "name": "churn_event_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "account_id",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "churn_date",
+        "pandas_dtype": "datetime64[us]",
+        "logical_type": "datetime64[us]",
+        "nulls": 0
+      },
+      {
+        "name": "reason_code",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 0
+      },
+      {
+        "name": "refund_amount_usd",
+        "pandas_dtype": "float64",
+        "logical_type": "decimal",
+        "nulls": 0
+      },
+      {
+        "name": "preceding_upgrade_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "preceding_downgrade_flag",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "is_reactivation",
+        "pandas_dtype": "bool",
+        "logical_type": "boolean",
+        "nulls": 0
+      },
+      {
+        "name": "feedback_text",
+        "pandas_dtype": "str",
+        "logical_type": "str",
+        "nulls": 148
+      }
+    ]
+  }
+}
