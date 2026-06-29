@@ -6,12 +6,12 @@ Esta pasta concentra os artefatos da solucao do Challenge 001.
 
 - `analysis/`: analytics core reproduzivel, camada limpa, relatorios de validacao e copia local do DQ report.
 - `exports/`: contratos canonicos em CSV/JSON usados pelo relatorio e pelo dashboard.
-- `dashboard/`: dashboard minimo em Streamlit que consome apenas os exports.
+- `dashboard/`: dashboard Streamlit que consome apenas os exports.
 - `requirements.txt`: dependencias Python.
 
 ## Como reproduzir
 
-Execute a partir da raiz do repositorio:
+Execute a partir da raiz do workspace que contem `data/raw/ravenstack` e `ai-master-challenge/`:
 
 ```powershell
 python ai-master-challenge/submissions/kadug/solution/analysis/build_exports.py

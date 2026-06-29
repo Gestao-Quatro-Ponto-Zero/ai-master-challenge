@@ -4,7 +4,7 @@ Esta pasta contem o analytics core reproduzivel do diagnostico RavenStack.
 
 ## Comando unico
 
-Execute a partir da raiz do repositorio:
+Execute a partir da raiz do workspace que contem `data/raw/ravenstack` e `ai-master-challenge/`:
 
 ```powershell
 python ai-master-challenge/submissions/kadug/solution/analysis/build_exports.py

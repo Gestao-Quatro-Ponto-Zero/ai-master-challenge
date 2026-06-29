@@ -2,7 +2,8 @@
 """Build clean RavenStack analytics layer and canonical exports.
 
 This script is intentionally self-contained so the submission can be
-reproduced with a single command:
+reproduced from the workspace root that contains data/raw/ravenstack and
+ai-master-challenge:
 
     python ai-master-challenge/submissions/kadug/solution/analysis/build_exports.py
 """
@@ -12,7 +13,6 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
-import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -815,10 +815,10 @@ def build_priority_accounts(account_health: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_churner_comparison(account_health: pd.DataFrame) -> pd.DataFrame:
-    """Compare churn labels across required Story 1.3 dimensions.
+    """Compare churn labels across required finding dimensions.
 
     This is an analysis support artifact, not one of the five canonical exports.
-    It keeps Story 1.3 traceable without making the report recompute metrics.
+    It keeps the finding traceable without making the report recompute metrics.
     """
 
     frame = account_health.copy()
@@ -1984,7 +1984,11 @@ def copy_data_quality_report(project_root: Path, analysis_dir: Path) -> None:
     destination = analysis_dir / "data_quality_report.md"
     if not source.exists():
         raise FileNotFoundError(source)
-    shutil.copyfile(source, destination)
+    lines = [line.rstrip() for line in source.read_text(encoding="utf-8").splitlines()]
+    while lines and not lines[-1]:
+        lines.pop()
+    normalized = "\n".join(lines)
+    destination.write_text(f"{normalized}\n", encoding="utf-8")
 
 
 def load_exports_from_disk(exports_dir: Path) -> dict[str, pd.DataFrame]:

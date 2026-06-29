@@ -20,7 +20,7 @@ RavenStack nao tem um unico "numero culpado"; a melhor hipotese e erosao de valo
 
 Comecei pelo contrato dos dados, porque o CEO descreve uma contradicao entre times e isso geralmente nasce de labels, janelas e agregacoes diferentes. O pipeline em [`solution/analysis/build_exports.py`](solution/analysis/build_exports.py) le os cinco CSVs brutos, cria uma camada limpa, preserva `account_churn_flag` e `has_churn_event`, gera `feature_usage_row_id` e marca `usage_in_subscription_window_flag`. A partir disso, o script produz exports em [`solution/exports/`](solution/exports/) que viram a unica fonte de verdade para relatorio e dashboard.
 
-Comando de reproducao:
+Comando de reproducao, a partir da raiz do workspace que contem `data/raw/ravenstack` e `ai-master-challenge/`:
 
 ```powershell
 python ai-master-challenge/submissions/kadug/solution/analysis/build_exports.py
@@ -119,9 +119,9 @@ A media de satisfacao nao e suficiente. Contas com evento de churn tiveram 88.9%
 
 | Ferramenta | Para que usou |
 |------------|---------------|
-| Codex / GPT-5 | Leitura do challenge, estruturacao da arquitetura, implementacao do pipeline, geracao de findings e revisoes com agentes |
-| Subagentes AIOX | Quality gates por papel: data-engineer, dev, analyst, pm |
-| Python / pandas / Streamlit | Analytics core, exports e dashboard minimo |
+| Codex / GPT-5 | Leitura do challenge, estruturacao da arquitetura, implementacao do pipeline, geracao de findings e revisoes assistidas |
+| Revisoes de IA por especialidade | Validacao de contrato de dados, qualidade analitica, rastreabilidade e valor para stakeholder |
+| Python / pandas / Streamlit | Analytics core, exports e dashboard Streamlit |
 
 ### Workflow
 
@@ -129,13 +129,13 @@ A media de satisfacao nao e suficiente. Contas com evento de churn tiveram 88.9%
 2. Decompus a entrega em contrato de dados, analytics core, exports, findings, relatorio e dashboard.
 3. Gerei a camada limpa e validei joins, schema, flags e caveats.
 4. Gerei exports canonicos e corrigi dupla contagem de MRR em findings.
-5. Usei review `@analyst` para achar lacunas semanticas: campos ausentes em findings, labels incompletas, uso sem teste de crescimento e causa raiz mal ranqueada.
-6. Corrigi os exports e rodei gate `@pm`, que passou em rastreabilidade, causalidade e valor para stakeholder.
+5. Usei revisao analitica assistida por IA para achar lacunas semanticas: campos ausentes em findings, labels incompletas, uso sem teste de crescimento e causa raiz mal ranqueada.
+6. Corrigi os exports e rodei revisao de produto, que passou em rastreabilidade, causalidade e valor para stakeholder.
 
 ### Onde a IA errou e como corrigi
 
 - O primeiro finding de backlog somava MRR por acao e duplicava exposicao. Corrigi para expor MRR de portfolio sem dupla contagem.
-- A primeira versao de Story 1.3 nao tinha owner, action, causality risk, effort e impact como campos explicitos. Corrigi `executive_findings`.
+- A primeira versao dos findings nao tinha owner, action, causality risk, effort e impact como campos explicitos. Corrigi `executive_findings`.
 - A primeira comparacao churners vs non-churners usava so `has_churn_event`. Corrigi para incluir tambem `account_churn_flag`.
 - A primeira tabela de causa candidata ranqueou data quality como top causa. Rebaixei para confiabilidade analitica e coloquei causa de negocio no topo.
 
@@ -152,10 +152,10 @@ Priorizei clareza executiva sobre sofisticao: preferi score de risco auditavel, 
 - [x] Data quality report em [`solution/analysis/data_quality_report.md`](solution/analysis/data_quality_report.md)
 - [x] Script reproduzivel em [`solution/analysis/build_exports.py`](solution/analysis/build_exports.py)
 - [x] Findings summary em [`solution/analysis/findings_summary.md`](solution/analysis/findings_summary.md)
-- [x] Dashboard minimo em [`solution/dashboard/`](solution/dashboard/)
+- [x] Dashboard Streamlit em [`solution/dashboard/`](solution/dashboard/)
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [ ] Git history
+- [x] Git history
 
 ---
 

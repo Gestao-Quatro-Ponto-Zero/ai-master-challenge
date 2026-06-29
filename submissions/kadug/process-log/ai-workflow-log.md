@@ -97,12 +97,12 @@ Transformar o `data_quality_report.md` em contrato executavel para os cinco CSVs
 
 ### Uso de IA
 
-Usei Codex/GPT-5 para converter as regras da story e do DQ report em um pipeline auditavel, depois acionei um subagente no papel de `@dev` para o quality gate da Story 1.1.
+Usei Codex/GPT-5 para converter os requisitos do challenge e do DQ report em um pipeline auditavel, depois rodei uma revisao tecnica assistida por IA sobre schema, joins e flags de qualidade.
 
 ### Correcoes e julgamento humano
 
 - O script foi mantido como fonte unica para evitar divergencia entre relatorio, exports e dashboard.
-- O gate de Story 1.1 passou em schema, integridade de joins e flags de qualidade.
+- A revisao tecnica passou em schema, integridade de joins e flags de qualidade.
 - Os comandos globais `npm run lint`, `npm run typecheck` e `npm test` foram tentados, mas nao ha `package.json` em `C:\Projects\desafio-g4`; por isso, os gates npm nao sao aplicaveis a este workspace Python/Markdown.
 - `python -m py_compile` falhou ao tentar gravar bytecode em `__pycache__` por permissao do Windows. A validacao de sintaxe foi refeita em memoria com `compile(...)`, sem depender de escrita de `.pyc`.
 
@@ -125,13 +125,13 @@ Gerar os contratos canonicos que servem como fonte da verdade para report e dash
 
 ### Uso de IA
 
-Usei Codex/GPT-5 para implementar as agregacoes e acionei um subagente no papel de `@data-engineer` para revisar contrato de export, risco de multiplicacao de linhas e score deterministico.
+Usei Codex/GPT-5 para implementar as agregacoes e rodei uma revisao de dados assistida por IA sobre contrato de export, risco de multiplicacao de linhas e score deterministico.
 
 ### Correcoes e julgamento humano
 
 - A primeira revisao local identificou que um finding do backlog somava MRR por acao e duplicava exposicao financeira. Corrigi para reportar exposicao de portfolio sem dupla contagem.
-- Adicionei `churner_comparison` para tornar a Story 1.3 auditavel sem recalcular metricas no relatorio.
-- O gate de Story 1.2 passou: `account_health` tem 500 linhas e zero duplicidade de `account_id`; `risk_segments` soma 500; score e segmentos foram recomputados pelo reviewer sem divergencias.
+- Adicionei `churner_comparison` para tornar os findings auditaveis sem recalcular metricas no relatorio.
+- A revisao de dados passou: `account_health` tem 500 linhas e zero duplicidade de `account_id`; `risk_segments` soma 500; score e segmentos foram recomputados sem divergencias.
 
 ## Sessao 5 - Findings, Causalidade e Revisao Analitica
 
@@ -143,11 +143,11 @@ Transformar exports canonicos em findings executivos rastreaveis, respondendo ca
 
 ### Uso de IA
 
-Usei Codex/GPT-5 para gerar os primeiros findings e acionei um subagente no papel de `@analyst` para revisar a Story 1.3 antes do gate de PM.
+Usei Codex/GPT-5 para gerar os primeiros findings e rodei uma revisao analitica assistida por IA antes da revisao de produto.
 
 ### Erros encontrados pela IA e correcoes aplicadas
 
-- O primeiro export de `executive_findings` nao tinha campos explicitos suficientes para Story 1.3. Corrigi adicionando `evidence_summary`, `interpretation`, `owner_team`, `recommended_action`, `effort_size`, `expected_impact_metric`, `related_action_ids` e `false_causality_risk`.
+- O primeiro export de `executive_findings` nao tinha campos explicitos suficientes para auditoria dos findings. Corrigi adicionando `evidence_summary`, `interpretation`, `owner_team`, `recommended_action`, `effort_size`, `expected_impact_metric`, `related_action_ids` e `false_causality_risk`.
 - A comparacao churners vs non-churners cobria apenas `has_churn_event`. Corrigi `churner_comparison` para comparar tambem `account_churn_flag`.
 - A contradicao "uso cresceu" estava coberta apenas por caveat de janela de assinatura. Corrigi criando `usage_growth_tests.csv/json`, com crescimento bruto vs crescimento valid-window por portfolio, segmento de risco, plano e labels de churn.
 - A primeira tabela de causa candidata ranqueou qualidade de dados como top causa. Isso explica ambiguidade analitica, nao churn de cliente. Corrigi criando `root_cause_candidates.csv/json` com categoria de causa de negocio e rebaixando data quality para confiabilidade analitica.
