@@ -39,9 +39,7 @@ RISK_COLORS = {
     "Medium": "#706F6F",
     "Low": "#001F35",
 }
-G4_NAVY = "#001F35"
 G4_INK = "#031A26"
-G4_GOLD = "#B9915B"
 G4_RUST = "#842E20"
 G4_BORDER = "#D6D5D5"
 G4_MUTED = "#706F6F"
@@ -83,13 +81,6 @@ def rate(value: float | int | str) -> str:
     if pd.isna(numeric):
         return "-"
     return f"{numeric * 100:.1f}%"
-
-
-def pct_value(value: float | int | str) -> str:
-    numeric = as_number(value, default=float("nan"))
-    if pd.isna(numeric):
-        return "-"
-    return f"{numeric:.1f}%"
 
 
 def sorted_values(df: pd.DataFrame, column: str) -> list[str]:
@@ -488,10 +479,10 @@ def render_root_cause(exports: dict[str, pd.DataFrame]) -> None:
     with left:
         render_plotly_or_table(cause_chart(root_causes), root_causes.head(6))
     with right:
-        st.markdown('<div class="g4-action-grid">', unsafe_allow_html=True)
+        cards_html = ['<div class="g4-action-grid">']
         for _, row in root_causes.head(4).iterrows():
             hot = "g4-action-card--hot" if as_number(row.get("rank"), 9) <= 2 else ""
-            st.markdown(
+            cards_html.append(
                 f"""
                 <div class="g4-action-card {hot}">
                   <strong>{safe(row['root_cause_candidate'])}</strong>
@@ -502,10 +493,10 @@ def render_root_cause(exports: dict[str, pd.DataFrame]) -> None:
                     <span class="g4-pill">{safe(row['owner_team'])}</span>
                   </div>
                 </div>
-                """,
-                unsafe_allow_html=True,
+                """
             )
-        st.markdown("</div>", unsafe_allow_html=True)
+        cards_html.append("</div>")
+        st.markdown("".join(cards_html), unsafe_allow_html=True)
 
 
 def render_risk_segments(
@@ -771,10 +762,10 @@ def render_action_backlog(action_backlog: pd.DataFrame) -> None:
         return
 
     cards = filtered.head(8)
-    st.markdown('<div class="g4-action-grid">', unsafe_allow_html=True)
+    cards_html = ['<div class="g4-action-grid">']
     for _, row in cards.iterrows():
         hot = "g4-action-card--hot" if as_text(row["priority"]) in {"Critical", "High"} else ""
-        st.markdown(
+        cards_html.append(
             f"""
             <div class="g4-action-card {hot}">
               <strong>{safe(row['recommended_action'])}</strong>
@@ -786,10 +777,10 @@ def render_action_backlog(action_backlog: pd.DataFrame) -> None:
                 <span class="g4-pill">{money(row['mrr_at_risk'], compact=True)} MRR</span>
               </div>
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
-    st.markdown("</div>", unsafe_allow_html=True)
+    cards_html.append("</div>")
+    st.markdown("".join(cards_html), unsafe_allow_html=True)
 
     st.markdown("#### Backlog table")
     st.dataframe(
