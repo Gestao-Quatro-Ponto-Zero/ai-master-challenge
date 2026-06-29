@@ -1,0 +1,129 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Pipeline Focus Console - G4 AI Master design system.
+ * Identity: dark navy, off-white, executive gold. Operational, premium, high contrast.
+ * All semantic tokens defined below. Components must use these, never ad-hoc colors.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand + operational tokens */
+  --color-navy-950: var(--navy-950);
+  --color-navy-900: var(--navy-900);
+  --color-navy-800: var(--navy-800);
+  --color-navy-700: var(--navy-700);
+  --color-gold: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+  --color-offwhite: var(--offwhite);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --color-ring-offset-background: var(--background);
+}
+
+:root {
+  --radius: 0.625rem;
+
+  /* Brand palette (G4) */
+  --navy-950: #031521;
+  --navy-900: #062235;
+  --navy-800: #0a2e45;
+  --navy-700: #134063;
+  --gold-500: #c99a52;
+  --gold-600: #b88439;
+  --offwhite: #f7f4ef;
+  --success: #28b87c;
+  --warning: #e0b04a;
+  --danger: #d56a5a;
+
+  /* Semantic mapping - app is always dark navy */
+  --background: #031521;
+  --foreground: #f7f4ef;
+  --card: #062235;
+  --card-foreground: #f7f4ef;
+  --popover: #0a2e45;
+  --popover-foreground: #f7f4ef;
+  --primary: #c99a52;
+  --primary-foreground: #07131c;
+  --secondary: #0a2e45;
+  --secondary-foreground: #f7f4ef;
+  --muted: #0a2e45;
+  --muted-foreground: #9aa7b4;
+  --accent: #0e3a57;
+  --accent-foreground: #f7f4ef;
+  --destructive: #d56a5a;
+  --destructive-foreground: #f7f4ef;
+  --border: rgba(247, 244, 239, 0.1);
+  --input: rgba(247, 244, 239, 0.14);
+  --ring: #c99a52;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  ::selection {
+    background-color: rgba(201, 154, 82, 0.3);
+  }
+
+  /* Slim, premium scrollbars */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(247, 244, 239, 0.14);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(247, 244, 239, 0.24);
+    background-clip: padding-box;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
