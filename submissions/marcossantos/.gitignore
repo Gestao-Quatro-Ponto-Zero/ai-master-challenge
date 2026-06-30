@@ -1,0 +1,12 @@
+# Credenciais — NUNCA commitar
+.env
+
+# Dados gerados em runtime
+alerts.json
+notes.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/

@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin Geral",
+      "email": "admin@leadscorer.com",
+      "password": "$2b$12$qWP/pJDl5U90VEBJxFllleOuaNCF5vhLTnpisInGR6g3xqIlkqwXq",
+      "role": "admin",
+      "sales_agent": null,
+      "manager": null,
+      "regional_office": null
+    },
+    {
+      "id": "2",
+      "name": "Melanie Crist",
+      "email": "melanie@leadscorer.com",
+      "password": "$2b$12$Moo7ltclbD4cs0GlWyazxetd10.boFci7MkcfME0wD9RiSrBjkDou",
+      "role": "manager",
+      "sales_agent": null,
+      "manager": "Melanie Crist",
+      "regional_office": "Central"
+    },
+    {
+      "id": "3",
+      "name": "Dustin Brinkmann",
+      "email": "dustin@leadscorer.com",
+      "password": "$2b$12$eixUGM77oyflPMMHaZLhw.qwO4fFixRSY2qk/laGO.aCK12zyORtC",
+      "role": "manager",
+      "sales_agent": null,
+      "manager": "Dustin Brinkmann",
+      "regional_office": "East"
+    },
+    {
+      "id": "4",
+      "name": "Celia Rouche",
+      "email": "celia@leadscorer.com",
+      "password": "$2b$12$ahfOtb.MJnwqH64CZht9HOCbeLSnpe1iudFJIVtksaRlA21pGx4I2",
+      "role": "manager",
+      "sales_agent": null,
+      "manager": "Celia Rouche",
+      "regional_office": "West"
+    },
+    {
+      "id": "5",
+      "name": "Hayden Neloms",
+      "email": "hayden@leadscorer.com",
+      "password": "$2b$12$0uv1Wwh19szxiglLwKLsR.3vIFkbwDwPazrtbSjsLr/XaJPilh2xm",
+      "role": "agent",
+      "sales_agent": "Hayden Neloms",
+      "manager": "Melanie Crist",
+      "regional_office": "West"
+    },
+    {
+      "id": "6",
+      "name": "Kami Bicknell",
+      "email": "kami@leadscorer.com",
+      "password": "$2b$12$UyONim/YszymtVU35/SBieyxbFa8QdyeF/ojc9UAhWns1NcWXu2My",
+      "role": "agent",
+      "sales_agent": "Kami Bicknell",
+      "manager": "Melanie Crist",
+      "regional_office": "West"
+    },
+    {
+      "id": "7",
+      "name": "Violet Mclelland",
+      "email": "violet@leadscorer.com",
+      "password": "$2b$12$fphjf8KV.3D1QOMlqlMiAu6eACnRyqgt/ujVR2DjZLjUtkJBNGPhC",
+      "role": "agent",
+      "sales_agent": "Violet Mclelland",
+      "manager": "Melanie Crist",
+      "regional_office": "East"
+    },
+    {
+      "id": "8",
+      "name": "Zane Levy",
+      "email": "zane@leadscorer.com",
+      "password": "$2b$12$ZJJ/NpYvei9WnTZwMcrJjuDtJptPFFXxEo7mj0hgqbJM/xyodmh7y",
+      "role": "agent",
+      "sales_agent": "Zane Levy",
+      "manager": "Dustin Brinkmann",
+      "regional_office": "West"
+    }
+  ]
+}
