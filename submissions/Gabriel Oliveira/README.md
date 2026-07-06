@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Gabriel Oliveira
-- **LinkedIn:** _(preencher antes do PR)_
+- **LinkedIn:** https://www.linkedin.com/in/gabrielrodrigues/
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 
 ---
