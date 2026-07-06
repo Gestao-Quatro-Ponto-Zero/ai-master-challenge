@@ -1,0 +1,8 @@
+streamlit>=1.30
+pandas>=2.0
+numpy>=1.24
+plotly>=5.18
+openpyxl>=3.1
+python-dotenv>=1.0
+# kaggle (opcional — só para download dos dados, não para rodar o app)
+kaggle>=1.6

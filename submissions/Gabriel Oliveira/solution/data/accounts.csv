@@ -1,0 +1,86 @@
+account,industry,country,acquisition_channel,revenue,employees,parent_company,has_trial
+account_0001,Manufacturing,Australia,Inbound,31750,84,Stark Industries,True
+account_0002,Education,Canada,Partner,4616,488,Acme Corp,False
+account_0003,Media,Germany,Partner,63277,1295,Stark Industries,False
+account_0004,Logistics,USA,Referral,7854,701,Stark Industries,False
+account_0005,Technology,Australia,Partner,17644,145,,False
+account_0006,Manufacturing,USA,Partner,14435,896,Acme Corp,False
+account_0007,Manufacturing,Brazil,Referral,287787,219,Initech,False
+account_0008,Education,UK,Outbound,85371,340,Globex,False
+account_0009,Media,Canada,Partner,53739,911,Stark Industries,False
+account_0010,Education,USA,Referral,28636,1490,Globex,True
+account_0011,Manufacturing,Canada,Outbound,31161,1039,Stark Industries,False
+account_0012,Finance,USA,Partner,10232,267,Stark Industries,False
+account_0013,Retail,Germany,Partner,2923,244,Umbrella,False
+account_0014,Healthcare,UK,Referral,57069,239,Globex,False
+account_0015,Media,USA,Referral,4765,73,Globex,False
+account_0016,Retail,Canada,Referral,50442,212,Umbrella,False
+account_0017,Healthcare,USA,Inbound,38106,149,Acme Corp,False
+account_0018,Logistics,Germany,Referral,39512,199,Acme Corp,False
+account_0019,Finance,Brazil,Event,48945,348,Umbrella,False
+account_0020,Healthcare,Australia,Outbound,3879,55,,False
+account_0021,Healthcare,Canada,Outbound,13991,2832,Stark Industries,False
+account_0022,Manufacturing,Australia,Inbound,17213,97,Initech,False
+account_0023,Retail,Brazil,Partner,37097,576,,False
+account_0024,Healthcare,Germany,Inbound,11668,571,Umbrella,False
+account_0025,Media,USA,Inbound,6449,527,Initech,False
+account_0026,Finance,Germany,Event,33800,3622,Globex,False
+account_0027,Retail,Germany,Outbound,13797,51,Acme Corp,False
+account_0028,Technology,USA,Outbound,6511,645,Initech,False
+account_0029,Retail,UK,Referral,36217,91,Globex,False
+account_0030,Healthcare,USA,Outbound,13380,161,Stark Industries,False
+account_0031,Healthcare,USA,Event,18208,85,Stark Industries,False
+account_0032,Logistics,Canada,Outbound,30847,5720,Acme Corp,False
+account_0033,Finance,Germany,Partner,5313,94,Initech,False
+account_0034,Finance,Australia,Event,60245,104,Globex,False
+account_0035,Finance,USA,Partner,20974,151,Acme Corp,False
+account_0036,Technology,Canada,Referral,4752,522,,False
+account_0037,Technology,Canada,Outbound,31038,2861,Umbrella,False
+account_0038,Manufacturing,Brazil,Inbound,36846,4038,,False
+account_0039,Logistics,USA,Event,159709,5353,Globex,False
+account_0040,Logistics,Canada,Outbound,5834,105,,False
+account_0041,Finance,Brazil,Outbound,18103,669,Acme Corp,False
+account_0042,Logistics,Canada,Event,1881,374,Umbrella,False
+account_0043,Technology,Canada,Referral,14750,1593,Acme Corp,True
+account_0044,Logistics,Brazil,Inbound,39585,195,Initech,False
+account_0045,Logistics,Australia,Partner,109631,319,Acme Corp,False
+account_0046,Education,USA,Event,27224,79,Initech,False
+account_0047,Education,Canada,Partner,209444,112,Initech,False
+account_0048,Healthcare,Canada,Outbound,32167,2462,Stark Industries,False
+account_0049,Logistics,Australia,Event,18120,81,Umbrella,False
+account_0050,Logistics,Australia,Outbound,7690,350,Initech,False
+account_0051,Media,Canada,Referral,4698,77,Acme Corp,True
+account_0052,Finance,Canada,Outbound,14158,673,Globex,True
+account_0053,Finance,Brazil,Partner,55983,774,Acme Corp,True
+account_0054,Finance,Brazil,Referral,16550,270,Acme Corp,False
+account_0055,Media,Brazil,Referral,74254,509,Umbrella,False
+account_0056,Manufacturing,Brazil,Referral,9266,648,Globex,False
+account_0057,Healthcare,USA,Inbound,145513,719,Initech,False
+account_0058,Technology,USA,Partner,5797,2408,,True
+account_0059,Finance,Australia,Outbound,67032,797,Stark Industries,False
+account_0060,Education,USA,Referral,23457,260,Umbrella,False
+account_0061,Media,UK,Event,128770,8,Umbrella,False
+account_0062,Finance,UK,Event,14096,28,Globex,False
+account_0063,Manufacturing,UK,Inbound,62105,246,Stark Industries,False
+account_0064,Media,UK,Event,104825,966,Globex,False
+account_0065,Finance,Canada,Partner,178567,779,Umbrella,False
+account_0066,Technology,Brazil,Partner,9538,1780,Stark Industries,False
+account_0067,Education,USA,Event,23968,2337,Stark Industries,True
+account_0068,Logistics,Australia,Inbound,3339,364,Stark Industries,False
+account_0069,Logistics,Australia,Inbound,47336,141,Globex,False
+account_0070,Finance,Germany,Inbound,9844,644,Umbrella,False
+account_0071,Logistics,Canada,Partner,31737,449,Initech,False
+account_0072,Media,USA,Event,10836,978,Acme Corp,False
+account_0073,Finance,Canada,Event,60833,171,Initech,False
+account_0074,Media,UK,Partner,29181,605,Globex,True
+account_0075,Retail,UK,Event,34894,1807,Initech,False
+account_0076,Healthcare,Canada,Event,9024,117,Initech,False
+account_0077,Media,Australia,Partner,108526,1458,Acme Corp,False
+account_0078,Manufacturing,Germany,Inbound,17219,19,Stark Industries,True
+account_0079,Manufacturing,Brazil,Referral,106028,36,Initech,False
+account_0080,Education,Canada,Partner,37330,885,Acme Corp,False
+account_0081,Media,Australia,Inbound,23511,198,Acme Corp,False
+account_0082,Retail,USA,Event,9948,496,,True
+account_0083,Media,Canada,Referral,9455,308,Globex,False
+account_0084,Technology,USA,Inbound,41167,270,Acme Corp,False
+account_0085,Healthcare,Australia,Outbound,4648,43,Acme Corp,False
