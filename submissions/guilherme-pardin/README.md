@@ -28,7 +28,7 @@ A descoberta-chave veio da análise cruzada dos 4 CSVs: a combinação vendedor+
 
 ### Resultados / Findings
 
-**Demo ao vivo:** [TODO: URL da Vercel]
+**Demo ao vivo:** https://g4-lead-scorer-xi.vercel.app
 
 **Pipeline Kanban com etapas reais** — Prospecção (500), Em Negociação (1.589), Vendas Fechadas (4.238), Perdidas (2.473). Deals ordenados por pontuação dentro de cada coluna, com badge de prioridade e produto de interesse.
 
