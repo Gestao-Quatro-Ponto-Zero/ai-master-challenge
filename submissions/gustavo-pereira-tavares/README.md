@@ -150,24 +150,25 @@ Solução
 | `lgb_model.pkl` | Modelo LightGBM treinado | AUC: 0.9981 (sem data leakage) |
 | `model_performance.pkl` | Métricas de desempenho do modelo | Carregadas dinamicamente no PDF |
 | `risk_register.csv` | Registro de risco por conta | 20 variáveis de output |
-| `root_cause_analysis.json` | Análise de causas raiz | 6 categorias |
+| `root_cause_analysis.json` | Análise de causas raiz | categorias |
 | `churn_analysis_report.pdf` | Relatório com métricas dinâmicas | Atualizado a cada pipeline run |
 
 **Distribuição de Risco:**
 
 | Tier | Contas | % | ARR em Risco |
 | --- | --- | --- | --- |
-| **Critical** | 1.538 | 20,7% | $37,7M |
-| **High** | 79 | 1,1% | $2,8M |
-| **Medium** | 33 | 0,4% | N/A |
-| **Low** | 5.779 | 77,8% | N/A |
+| **Critical** | 2.039 | 27,4% | $54,1M |
+| **High** | 1.790 | 24,1% | Incluído em $99,6M |
+| **Medium** | 1.433 | 19,3% | Incluído em $99,6M |
+| **Low** | 2.167 | 29,1% | Menor risco |
+| **TOTAL EM RISCO** | 5.262 | 70,9% | **$99,6M (50,2% do ARR total)** |
 
-**Top 5 Fatores de Risco (por importância):**
-1. Days Since Signup (187) - Tempo desde cadastro forte preditor
-2. Support Ticket Resolution Time (157) - Velocidade de resolução crítica
-3. Support Quality Score (153) - Satisfação correlacionada com retenção
-4. First Response Time (108) - Tempo de primeira resposta importante
-5. Account Size/Seats (37) - Tamanho da conta relevante
+**Causas de Churn:**
+1. Lacuna de Adocao de Recursos
+2. Problemas de Qualidade de Suporte
+3. Falha de Conversao de Trial
+4. Padroes de Downgrade
+5. Time-to-Value Curto
 
 **Performance do Modelo:**
 - XGBoost AUC: **0.9975** (discriminação excelente, sem data leakage)
@@ -176,31 +177,20 @@ Solução
 - Precision (Critical): 99.99%
 - Recall (Critical): 97.86%
 - F1 Score: 0.9892
+- **Probabilidade Média de Churn: 50,9%** (+32,6% acima do baseline)
+- **Receita Total em Risco: $99,6M** (50,2% do ARR total)
 
 ### Recomendações
 
-**Ações Estratégicas (por tier):**
+**Recomendações e Prioridade:**
 
-1. **Critical Risk Accounts (1.538)**
-   - Atribuir customer success manager dedicado
-   - Oferecer desconto/upgrade gratuito para re-engajamento
-   - Prioridade máxima de suporte (SLA < 2 horas)
-   - Análise individualizada de churn (entrevista com cliente)
+1. **Implementar onboarding obrigatorio para 3+ recursos principais para todas as novas contas (Prioridade: Crítica)**
 
-2. **High Risk Accounts (79)**
-   - Revisar contrato antes de vencimento
-   - Sugerir features não utilizadas
-   - Oferecer treinamento customizado
+2. **Reduzir tempo medio de resolucao de 96h para <24h; implementar monitoramento de satisfacao (Prioridade: Alta)**
 
-3. **Medium Risk Accounts (33)**
-   - Monitoramento proativo mensal
-   - Análise de usage patterns
-   - Recomendações automáticas de features
+3. **Check-in automatico 48h apos downgrade; oferecer consierge de suporte e treinamento (Prioridade: Alta)**
 
-4. **Low Risk Accounts (5.779)**
-   - Onboarding padrão mantido
-   - Cross-sell/upsell opportunities
-   - Program de referência
+4. **Implementar success playbook com 3 milestones; oferecer 20% desconto se converter (Prioridade: Média)**
 
 **Dashboard Interativo:**
 - Risk Overview com KPIs em tempo real
@@ -208,6 +198,8 @@ Solução
 - Top 25 contas para ação imediata
 - Simulador de cenários ("E se adoption aumentasse para 80%?")
 - Export de action lists
+- **Acesso em produção:** https://caseg4.streamlit.app/
+- **Última atualização:** 2026-07-07 03:50:18
 
 ### Limitações
 
@@ -217,6 +209,17 @@ Solução
 4. **Segmentação por persona**: Faltaram dados de job title/role para análise de stakeholder risk
 5. **Causas qualitativas**: Análise limitada a dados quantitativos; feedback de churn é textual e requer NLP avançado
 6. **Custo de ação**: Modelo não leva em conta custo de intervenção vs. LTV de conta
+
+---
+
+Sincronização com Produção
+--------------------------
+
+### Status de Atualização (2026-07-07)
+
+**Análise Realizada:**
+- ✅ Acesso ao dashboard em produção: https://caseg4.streamlit.app/
+- ✅ Extração de métricas reais do sistema
 
 ---
 
@@ -358,7 +361,7 @@ streamlit run app.py
 
 ---
 
-*Submissão finalizada em: 13 de Abril de 2026*
+*Submissão finalizada em: 23 de junho de 2026*
 
 ---
 
