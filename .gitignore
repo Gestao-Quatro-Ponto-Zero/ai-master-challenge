@@ -13,4 +13,5 @@ datasets/
 .idea/
 
 # Submissions (if candidates fork)
-submissions/
+# submissions/  ← Comentado para permitir submissões de candidatos
+!submissions/
