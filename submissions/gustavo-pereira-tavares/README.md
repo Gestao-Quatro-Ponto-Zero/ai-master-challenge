@@ -203,12 +203,11 @@ Solução
 
 ### Limitações
 
-1. **Dados históricos limitados**: Apenas ~22% de taxa de churn no dataset limita poder preditivo em classes extremas
-2. **Recência de dados**: Dataset pode estar desatualizado; retrainamento mensal recomendado
-3. **Features de comportamento futuro**: Não foi possível incluir dados de roadmap de features ou mudanças de liderança
-4. **Segmentação por persona**: Faltaram dados de job title/role para análise de stakeholder risk
-5. **Causas qualitativas**: Análise limitada a dados quantitativos; feedback de churn é textual e requer NLP avançado
-6. **Custo de ação**: Modelo não leva em conta custo de intervenção vs. LTV de conta
+1. **Recência de dados**: Dataset pode estar desatualizado; retrainamento mensal recomendado
+2. **Features de comportamento futuro**: Não foi possível incluir dados de roadmap de features ou mudanças de liderança
+3. **Segmentação por persona**: Faltaram dados de job title/role para análise de stakeholder risk
+4. **Causas qualitativas**: Análise limitada a dados quantitativos; feedback de churn é textual e requer NLP avançado
+65. **Custo de ação**: Modelo não leva em conta custo de intervenção vs. LTV de conta
 
 ---
 
