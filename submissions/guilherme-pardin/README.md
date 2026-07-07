@@ -107,7 +107,7 @@ A descoberta-chave veio da análise cruzada dos 4 CSVs: a combinação vendedor+
 - [x] Chat export da conversa com Claude (planejamento, análise, scoring)
 - [x] CLAUDE.md usado como input para o Claude Code
 - [x] Screenshots do app funcionando
-- [ ] Vídeo demonstrativo do app [TODO]
+
 
 ---
 
