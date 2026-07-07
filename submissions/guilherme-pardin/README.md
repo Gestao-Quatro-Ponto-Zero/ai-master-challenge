@@ -6,6 +6,12 @@
 - **LinkedIn:** https://www.linkedin.com/in/guipardindev/
 - **Challenge escolhido:** Build-003 — Lead Scorer
 
+## Demo ao vivo
+
+**URL:** https://g4-lead-scorer-xi.vercel.app
+
+> O app funciona sem dependência externa, API key ou configuração. Basta abrir.
+
 ## Executive Summary
 
 Construí um CRM funcional de priorização de pipeline que resolve o problema central: vendedores gastam tempo em negociações que não vão fechar e deixam oportunidades boas esfriar. O sistema calcula um score de 0-100 para cada um dos 2.089 deals abertos usando 6 dimensões baseadas em dados históricos de 6.711 deals fechados, classifica automaticamente em 4 níveis de prioridade, e redistribui negociações para o vendedor com melhor taxa de conversão histórica no setor. A principal recomendação é organizar o time por especialização setorial — a variação de conversão vendedor+setor chega a 54 pontos percentuais, tornando essa a maior alavanca de desempenho disponível.
