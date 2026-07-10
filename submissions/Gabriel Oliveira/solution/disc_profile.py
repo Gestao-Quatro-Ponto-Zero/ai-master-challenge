@@ -40,19 +40,19 @@ def _safe_float(value: Any, default: float = 0.0) -> float:
 def infer_disc_profile(lead_row: pd.Series, today: pd.Timestamp) -> DiscInference:
     """Infere DISC com confianca 0-100 e racional em linguagem comercial.
 
-    Regras usam apenas colunas reais:
+    Regras usam apenas colunas reais do dataset CRM Sales:
     - deal_stage, engage_date, close_value
-    - revenue, employees, acquisition_channel, has_trial
-    - industry, product
+    - revenue (em milhoes de USD), employees, sector
+    - subsidiary_of, year_established, product
     """
     stage = _safe_text(lead_row.get("deal_stage")).strip()
-    channel = _safe_text(lead_row.get("acquisition_channel")).lower()
-    industry = _safe_text(lead_row.get("industry"))
+    sector = _safe_text(lead_row.get("sector")).lower()
     product = _safe_text(lead_row.get("product"))
-    revenue = _safe_float(lead_row.get("revenue"), 0.0)
+    revenue = _safe_float(lead_row.get("revenue"), 0.0)      # milhoes de USD
     employees = _safe_float(lead_row.get("employees"), 0.0)
     close_value = _safe_float(lead_row.get("close_value"), 0.0)
-    has_trial = bool(lead_row.get("has_trial", False))
+    year_established = _safe_float(lead_row.get("year_established"), 0.0)
+    is_subsidiary = bool(_safe_text(lead_row.get("subsidiary_of")).strip())
 
     engage_date = pd.to_datetime(lead_row.get("engage_date"), errors="coerce")
     age_days = -1
@@ -62,8 +62,13 @@ def infer_disc_profile(lead_row: pd.Series, today: pd.Timestamp) -> DiscInferenc
     missing_critical = []
     if not stage:
         missing_critical.append("deal_stage")
-    if close_value <= 0:
-        missing_critical.append("close_value")
+    if not sector and revenue <= 0 and employees <= 0:
+        missing_critical.append("conta_sem_cadastro")
+
+    # Agrupamento de setores reais por afinidade comportamental predominante
+    i_sectors = {"marketing", "retail", "entertainment", "services"}
+    s_sectors = {"medical", "finance", "telecommunications", "employment"}
+    c_sectors = {"technolgy", "software"}  # 'technolgy' e typo original do dataset
 
     d_score = 0
     i_score = 0
@@ -75,15 +80,15 @@ def infer_disc_profile(lead_row: pd.Series, today: pd.Timestamp) -> DiscInferenc
         d_score += 2
     if close_value >= 10000:
         d_score += 2
-    if revenue >= 2_000_000:
+    if revenue >= 2_000:              # >= US$ 2bi (milhoes)
         d_score += 2
     if 0 <= age_days <= 45:
         d_score += 1
 
     # Influencia (I): abertura relacional e resposta a prova social
-    if channel in {"social", "referral", "webinar"}:
+    if sector in i_sectors:
         i_score += 2
-    if has_trial:
+    if is_subsidiary:                 # parte de um grupo -> decisao mais relacional
         i_score += 1
     if stage == "Engaging":
         i_score += 1
@@ -93,21 +98,21 @@ def infer_disc_profile(lead_row: pd.Series, today: pd.Timestamp) -> DiscInferenc
     # Estabilidade (S): ritmo constante, previsibilidade, seguranca
     if age_days >= 45:
         s_score += 2
-    if has_trial:
+    if 1900 < year_established <= 1995:   # empresa consolidada, aversa a ruptura
         s_score += 1
     if stage == "Prospecting":
         s_score += 1
-    if industry in {"Education", "Healthcare", "Public Sector"}:
+    if sector in s_sectors:
         s_score += 1
 
     # Conformidade (C): criterio, risco e justificativa tecnica
-    if revenue >= 3_000_000:
+    if revenue >= 4_000:              # >= US$ 4bi (milhoes)
         c_score += 2
-    if employees >= 500:
+    if employees >= 5_000:
         c_score += 2
     if stage == "Prospecting":
         c_score += 1
-    if channel in {"outbound", "partner"}:
+    if sector in c_sectors:
         c_score += 1
 
     profile_scores = {"D": d_score, "I": i_score, "S": s_score, "C": c_score}
@@ -193,7 +198,7 @@ def build_lead_profile(lead_row: pd.Series, today: pd.Timestamp) -> dict[str, An
     profile = {
         "lead_id": _safe_text(lead_row.get("opportunity_id")),
         "lead_name": _safe_text(lead_row.get("account")) or None,
-        "segment": _safe_text(lead_row.get("industry")) or None,
+        "segment": _safe_text(lead_row.get("sector")) or None,
         "deal_stage": _safe_text(lead_row.get("deal_stage")) or None,
         "days_in_stage": days_in_stage,
         "close_value": _safe_float(lead_row.get("close_value"), 0.0),
@@ -207,9 +212,8 @@ def build_lead_profile(lead_row: pd.Series, today: pd.Timestamp) -> dict[str, An
         "objections": disc.objections,
         "buying_signals": disc.buying_signals,
         "next_best_action": None,
-        "industry": _safe_text(lead_row.get("industry")) or None,
-        "acquisition_channel": _safe_text(lead_row.get("acquisition_channel")) or None,
-        "has_trial": bool(lead_row.get("has_trial", False)),
+        "sector": _safe_text(lead_row.get("sector")) or None,
+        "subsidiary_of": _safe_text(lead_row.get("subsidiary_of")) or None,
         "product": _safe_text(lead_row.get("product")) or None,
     }
 

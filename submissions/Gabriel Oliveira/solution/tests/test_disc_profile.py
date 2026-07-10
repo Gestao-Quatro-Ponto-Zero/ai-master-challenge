@@ -10,25 +10,25 @@ from disc_profile import build_lead_profile, infer_disc_profile
 
 class DiscProfileTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.today = pd.Timestamp("2025-07-01")
+        self.today = pd.Timestamp("2017-12-31")
 
     def test_returns_defined_disc_for_complete_data(self) -> None:
         row = pd.Series(
             {
-                "opportunity_id": "OPP_X",
-                "sales_agent": "Ana",
-                "product": "GTX Enterprise",
-                "account": "account_0001",
+                "opportunity_id": "1C1I7A6R",
+                "sales_agent": "Moses Frase",
+                "product": "GTK 500",
+                "account": "Cancity",
                 "deal_stage": "Engaging",
-                "engage_date": "05/20/2025",
+                "engage_date": "2017-11-10",
                 "close_value": 18000,
-                "industry": "Technology",
-                "acquisition_channel": "social",
-                "revenue": 3_500_000,
-                "employees": 800,
-                "has_trial": True,
-                "manager": "Carlos",
-                "regional_office": "Sao Paulo",
+                "sector": "technolgy",
+                "subsidiary_of": "Acme Corporation",
+                "revenue": 3_500.0,
+                "employees": 8000,
+                "year_established": 1992,
+                "manager": "Dustin Brinkmann",
+                "regional_office": "Central",
             }
         )
 
@@ -40,17 +40,17 @@ class DiscProfileTests(unittest.TestCase):
         row = pd.Series(
             {
                 "opportunity_id": None,
-                "sales_agent": "Ana",
-                "product": "GTX Enterprise",
+                "sales_agent": "Moses Frase",
+                "product": "GTK 500",
                 "account": None,
                 "deal_stage": None,
                 "engage_date": None,
                 "close_value": 0,
-                "industry": None,
-                "acquisition_channel": None,
+                "sector": None,
+                "subsidiary_of": None,
                 "revenue": None,
                 "employees": None,
-                "has_trial": None,
+                "year_established": None,
                 "manager": None,
                 "regional_office": None,
             }

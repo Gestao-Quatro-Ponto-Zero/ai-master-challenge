@@ -63,11 +63,24 @@ class DealScore:
 # --- Normalization helpers -------------------------------------------------
 
 def _minmax(value: float, lo: float, hi: float) -> float:
-    """Normaliza valor para 0-100 com clamp. Robusto a hi==lo."""
+    """Normaliza valor para 0-100 com clamp. Robusto a hi==lo e a NaN."""
+    if value is None or (isinstance(value, float) and np.isnan(value)):
+        return 0.0
     if hi <= lo:
         return 50.0
     clipped = max(lo, min(hi, value))
     return float((clipped - lo) / (hi - lo) * 100.0)
+
+
+def _num(value: object, default: float = 0.0) -> float:
+    """Coage valor para float tratando None/NaN (comum em merges com dados reais)."""
+    if value is None:
+        return default
+    try:
+        f = float(value)
+    except (TypeError, ValueError):
+        return default
+    return default if np.isnan(f) else f
 
 
 # --- Configuração de pesos (decisão humana — ver HARNESS.md seção 5.3) ----
@@ -91,8 +104,8 @@ def score_deal(
     today: pd.Timestamp,
     velocity_optimal_days: int = 30,
     velocity_max_days: int = 120,
-    account_revenue_cap: float = 5_000_000,
-    account_employees_cap: float = 5_000,
+    account_revenue_cap: float = 5_000.0,   # revenue em milhoes de USD (~p90 real)
+    account_employees_cap: float = 10_000,  # funcionarios (~p90 real)
 ) -> DealScore:
     """
     Calcula score 0-100 para um deal + breakdown explicável.
@@ -168,14 +181,20 @@ def score_deal(
     # ---- 3) Account size (20%) ----
     # Hipótese: contas maiores (receita + funcionários) geram deals maiores e estratégicos.
     # Recebido via df_accounts merge antecipado em row: 'revenue', 'employees'
-    rev = float(row.get("revenue", 0) or 0)
-    emp = float(row.get("employees", 0) or 0)
+    # Dados reais: revenue esta em MILHOES de USD (metadata.csv); muitos deals sem
+    # account associado (~16%) caem com revenue/employees = 0 (fallback abaixo).
+    rev = _num(row.get("revenue"))
+    emp = _num(row.get("employees"))
     rev_sub = _minmax(rev, 0, account_revenue_cap)
     emp_sub = _minmax(emp, 0, account_employees_cap)
     acct_sub = (rev_sub * 0.6 + emp_sub * 0.4)  # receita pesa mais
+    if rev > 0 or emp > 0:
+        acct_label = f"Conta: receita US$ {rev:,.0f}M, {emp:.0f} funcionários"
+    else:
+        acct_label = "Conta: sem cadastro vinculado — enriquecer dados da conta"
     components.append(ScoreComponent(
         name="account_size",
-        label_ptbr=f"Conta: receita ${rev:,.0f}, {emp:.0f} funcionários",
+        label_ptbr=acct_label,
         raw_value=rev,
         subscore=acct_sub,
         weight=WEIGHTS["account_size"],
@@ -183,9 +202,9 @@ def score_deal(
 
     # ---- 4) Product value (15%) ----
     # Hipótese: produtos de ticket maior justificam mais atenção.
-    price = float(row.get("sales_price", 0) or 0)
-    # Calibração: cap em $30k (produto mais caro do catálogo sintético)
-    prod_sub = _minmax(price, 0, 30_000)
+    price = _num(row.get("sales_price"))
+    # Calibração: cap no produto mais caro do catálogo real (GTK 500 = US$ 26.768)
+    prod_sub = _minmax(price, 0, 26_768)
     components.append(ScoreComponent(
         name="product_value",
         label_ptbr=f"Produto: {row.get('product','?')} — ticket ${price:,.0f}",
@@ -205,7 +224,7 @@ def score_deal(
         # SPEC edge E5: agente novo sem histórico
         wr = 0.5
         agent_label = f"Vendedor: {agent} — novo, sem histórico ainda"
-    agent_sub = _minmax(wr, 0.10, 0.85)  # range observado na EDA
+    agent_sub = _minmax(wr, 0.50, 0.72)  # range real observado na EDA (0.55-0.70)
     components.append(ScoreComponent(
         name="agent_record",
         label_ptbr=agent_label,
@@ -216,8 +235,8 @@ def score_deal(
 
     # ---- 6) Deal value (5%) ----
     # Peso baixo de propósito — o challenge avisa contra "só ordenar por valor".
-    close_val = float(row.get("close_value", 0) or 0)
-    deal_sub = _minmax(close_val, 0, 30_000)
+    close_val = _num(row.get("close_value"))
+    deal_sub = _minmax(close_val, 0, 30_288)  # max close_value real do pipeline
     components.append(ScoreComponent(
         name="deal_value",
         label_ptbr=f"Valor esperado do deal: ${close_val:,.0f}",
@@ -269,14 +288,19 @@ def score_pipeline(
     today = today or pd.Timestamp.now().normalize()
 
     # SPEC seção 6 item 6: caller é responsável por converter datas com formato explícito.
-    # Armadilha A1 do HARNESS: nunca confiar em ISO; usar format='%m/%d/%Y'.
+    # Dados reais do challenge (CRM Sales) usam ISO 8601: format='%Y-%m-%d'.
     pipeline = pipeline.copy()
     pipeline["engage_date"] = pd.to_datetime(
-        pipeline["engage_date"], format="%m/%d/%Y", errors="coerce"
+        pipeline["engage_date"], format="%Y-%m-%d", errors="coerce"
     )
     pipeline["close_date"] = pd.to_datetime(
-        pipeline["close_date"], format="%m/%d/%Y", errors="coerce"
+        pipeline["close_date"], format="%Y-%m-%d", errors="coerce"
     )
+
+    # Data quality real: o pipeline traz "GTXPro" onde o catálogo tem "GTX Pro"
+    # (typo conhecido do dataset). Normalizamos antes do merge para não perder
+    # sales_price nesses deals.
+    pipeline["product"] = pipeline["product"].replace({"GTXPro": "GTX Pro"})
 
     df = pipeline.merge(accounts, on="account", how="left")
     df = df.merge(products, on="product", how="left")
@@ -304,6 +328,10 @@ def score_pipeline(
     df["score"] = [s.total_score for s in scores]
     df["summary"] = [s.summary_ptbr for s in scores]
     df["components_json"] = [s.to_dict()["components"] for s in scores]
+    # Valor potencial do deal aberto: no dataset real, close_value só existe para
+    # deals Won/Lost. Para priorização de deals abertos, o valor "em jogo" é o
+    # preço de lista do produto negociado (sales_price).
+    df["expected_value"] = df["sales_price"].fillna(0.0)
     df = df.sort_values("score", ascending=False).reset_index(drop=True)
     return df
 
@@ -317,7 +345,7 @@ if __name__ == "__main__":
     sales_teams = pd.read_csv(DATA / "sales_teams.csv")
 
     scored = score_pipeline(pipeline, accounts, products, sales_teams,
-                            today=pd.Timestamp("2025-07-01"))
+                            today=pd.Timestamp("2017-12-31"))
     print(f"Deals scored: {len(scored)}")
     print(f"Score stats: min={scored['score'].min():.1f} "
           f"mean={scored['score'].mean():.1f} max={scored['score'].max():.1f}")

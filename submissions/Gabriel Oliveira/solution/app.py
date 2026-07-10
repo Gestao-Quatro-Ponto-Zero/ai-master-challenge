@@ -48,8 +48,10 @@ ACCOUNTS_CSV = DATA_DIR / "accounts.csv"
 PRODUCTS_CSV = DATA_DIR / "products.csv"
 SALES_TEAMS_CSV = DATA_DIR / "sales_teams.csv"
 
-# "Hoje" — fixado para reprodutibilidade (determinismo, ver AC5)
-TODAY = pd.Timestamp("2025-07-01")
+# "Hoje" — fixado para reprodutibilidade (determinismo, ver AC5).
+# O dataset real (CRM Sales) cobre 2016-10 a 2017-12; usamos o dia seguinte ao
+# fim da base como "hoje" para que a velocity do pipeline faça sentido.
+TODAY = pd.Timestamp("2017-12-31")
 
 
 # --- CSS custom para aplicar design tokens não-cobertos pelo config.toml ---
@@ -574,15 +576,16 @@ def render_distribution_chart(df: pd.DataFrame) -> go.Figure:
 
 
 def render_scatter_chart(df: pd.DataFrame) -> go.Figure:
-    """Scatter score x close_value."""
+    """Scatter score x valor potencial do deal (preço de lista do produto)."""
     plot_df = df.copy()
+    y_col = "expected_value" if "expected_value" in plot_df.columns else "close_value"
     plot_df["score_band_label"] = pd.cut(
         plot_df["score"],
         bins=[-0.001, 49.999, 79.999, 100.0],
         labels=["Frio", "Morno", "Quente"],
     )
     fig = px.scatter(
-        plot_df, x="score", y="close_value",
+        plot_df, x="score", y=y_col,
         color="score_band_label",
         color_discrete_map={
             "Quente": G4_GREEN,
@@ -590,8 +593,8 @@ def render_scatter_chart(df: pd.DataFrame) -> go.Figure:
             "Frio": G4_PRIMARY,
         },
         hover_data=["opportunity_id", "sales_agent", "account", "deal_stage"],
-        labels={"score": "Score", "close_value": "Valor esperado (R$)"},
-        title="Score × Valor esperado",
+        labels={"score": "Score", y_col: "Valor potencial (R$)"},
+        title="Score × Valor potencial",
     )
     fig.update_layout(
         plot_bgcolor="rgba(0,0,0,0)",
@@ -654,7 +657,10 @@ def main() -> None:
     # --- KPIs no topo ---
     n_deals = len(filtered)
     mean_score = filtered["score"].mean() if n_deals else 0
-    total_value = filtered["close_value"].sum() if n_deals else 0
+    # Deals abertos não têm close_value (só Won/Lost). Usamos expected_value
+    # (preço de lista do produto) como valor potencial em jogo.
+    value_col = "expected_value" if "expected_value" in filtered.columns else "close_value"
+    total_value = filtered[value_col].sum() if n_deals else 0
     top_deal = filtered.iloc[0] if n_deals else None
     top_deal_label = (
         f"{top_deal['score']:.0f} · {top_deal['opportunity_id']}" if top_deal is not None else "—"
@@ -693,7 +699,7 @@ def main() -> None:
                     f"""
                     **{row['opportunity_id']}** · {row['sales_agent']} ·
                     {row['product']} · {row['account']} ·
-                    {row['deal_stage']} · {fmt_brl(row['close_value'])}
+                    {row['deal_stage']} · {fmt_brl(row.get(value_col, 0))}
                     """,
                     unsafe_allow_html=True,
                 )
@@ -728,7 +734,7 @@ def main() -> None:
     st.markdown("### Pipeline completo (filtrado)")
     table_cols = [
         "opportunity_id", "sales_agent", "manager", "regional_office",
-        "product", "account", "deal_stage", "close_value", "score", "summary",
+        "product", "account", "deal_stage", "expected_value", "score", "summary",
     ]
     available_cols = [c for c in table_cols if c in filtered.columns]
     st.dataframe(
@@ -743,8 +749,8 @@ def main() -> None:
                 min_value=0,
                 max_value=100,
             ),
-            "close_value": st.column_config.NumberColumn(
-                "Valor (R$)", format="R$ %d"
+            "expected_value": st.column_config.NumberColumn(
+                "Valor potencial (R$)", format="R$ %d"
             ),
         },
     )

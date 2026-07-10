@@ -8,7 +8,7 @@ Regras do harness aplicadas:
 - Não assumir nomes de coluna — print df.columns + dtypes primeiro
 - Paths relativos via pathlib (sem hardcode de máquina)
 - Sem PII printado (sales_agent anonimizado em relatório)
-- Formato de data MM/DD/YYYY explicitado — não confiar em ISO
+- Formato de data ISO 8601 (%Y-%m-%d) explicitado — padrão do dataset real
 - Output paralelo em eda_report.txt para auditoria
 
 Uso:
@@ -31,7 +31,7 @@ ACCOUNTS_CSV = DATA_DIR / "accounts.csv"
 PRODUCTS_CSV = DATA_DIR / "products.csv"
 SALES_TEAMS_CSV = DATA_DIR / "sales_teams.csv"
 
-DATE_FORMAT = "%m/%d/%Y"  # validado na mão — primeira linha: 02/15/2025
+DATE_FORMAT = "%Y-%m-%d"  # dataset real usa ISO 8601 — primeira linha: 2016-10-20
 
 
 def _emit(buf: StringIO, msg: str = "") -> None:
@@ -196,11 +196,12 @@ def report_aux_tables(buf: StringIO) -> None:
         acc = pd.read_csv(ACCOUNTS_CSV)
         _emit(buf, f"accounts.csv: {len(acc)} contas")
         _emit(buf, f"Colunas: {list(acc.columns)}")
-        _emit(buf, f"  industries: {acc['industry'].nunique()} valores únicos")
-        _emit(buf, f"  countries: {acc['country'].nunique()}")
-        _emit(buf, f"  revenue: min={acc['revenue'].min()}, max={acc['revenue'].max()}, median={acc['revenue'].median()}")
+        _emit(buf, f"  sectors: {acc['sector'].nunique()} valores únicos")
+        _emit(buf, f"  office_location: {acc['office_location'].nunique()} países")
+        _emit(buf, f"  revenue (US$ milhões): min={acc['revenue'].min()}, max={acc['revenue'].max()}, median={acc['revenue'].median()}")
         _emit(buf, f"  employees: min={acc['employees'].min()}, max={acc['employees'].max()}")
-        _emit(buf, f"  has_trial: {acc['has_trial'].value_counts().to_dict()}")
+        _emit(buf, f"  subsidiary_of preenchido: {acc['subsidiary_of'].notna().sum()}/{len(acc)} contas")
+        _emit(buf, f"  year_established: {int(acc['year_established'].min())}–{int(acc['year_established'].max())}")
     _emit(buf)
     if PRODUCTS_CSV.exists():
         prod = pd.read_csv(PRODUCTS_CSV)

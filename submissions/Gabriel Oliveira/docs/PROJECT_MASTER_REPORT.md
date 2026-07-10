@@ -30,14 +30,14 @@
 
 ## 1. Resumo executivo
 
-- App Streamlit funcional que prioriza 4.708 deals abertos com score 0-100 explicável.
+- App Streamlit funcional que prioriza 2.089 deals abertos com score 0-100 explicável.
 - Scoring composto por 6 componentes ponderados (regras + heurísticas, sem ML black-box).
 - Filtros por vendedor, manager, escritório, stage, score mínimo e top N.
 - Feature DISC + Assistente de Follow-up: 3 copys por tom, ganchos de venda, próxima melhor ação.
 - Design system G4 aplicado (tokens extraídos de g4business.com via Playwright).
 - Metodologia: Spec-Driven Development + Prompt Harness de 8 prompts rastreáveis.
-- Dataset: fallback sintético schema-compatível (credenciais Kaggle indisponíveis noambiente).
-- Validação: 8 ACs do scoring + 6 testes unitários da feature DISC/follow-up passando.
+- Dataset: dados reais do challenge (CRM Sales Predictive Analytics, Kaggle/CC0 — 8.800 oportunidades).
+- Validação: 8 ACs do scoring + 6 testes unitários da feature DISC/follow-up passando (nos dados reais).
 
 ---
 
@@ -61,7 +61,6 @@
 - `followup_engine.py`: 3 copys por tom (consultivo, direto, provocativo elegante) + fallback.
 - `sales_hooks.py`: 3-5 ganchos de venda por DISC + próxima melhor ação.
 - `eda.py`: diagnóstico exploratório + `eda_report.txt`.
-- `generate_synth_data.py`: fallback sintético schema-compatível.
 - `test_scoring_ac.py`: validação dos 8 ACs da SPEC de scoring.
 - `tests/`: 6 testes unitários para DISC + follow-up + hooks.
 - Documentação: `HARNESS.md`, `HARNESS_STEPS.md`, `G4-DESIGN-SYSTEM-PROMPT.md`, `DISC_FOLLOWUP_SPEC.md`, `PROCESS_LOG.md` + 8 prompts.
@@ -140,9 +139,9 @@ CSVs (accounts, products, sales_teams, sales_pipeline)
 - **Streamlit sobre Plotly Dash/React:** velocidade de entrega + vendedor abre no navegador + Python end-to-end.
 - **Regras + heurísticas > ML:** explainability é multiplicador de valor; calibragem de modelo exigiria dados históricos rotulados.
 - **Componente "Agent track record" (15%):** impacto do vendedor na conversão, frequentemente ignorado pela IA genérica.
-- **`TODAY` fixado em 2025-07-01:** determinismo/auditoria (AC5).
-- **Dataset sintético:** fallback transparente por ausência de credenciais Kaggle; app funciona igual com dados reais.
-- **DISC inferido de features disponíveis:** sem inventar colunas; fallback "indefinido" quando evidência é insuficiente.
+- **`TODAY` fixado em 2017-12-31:** dia seguinte ao fim da base real (2016-10 a 2017-12); determinismo/auditoria (AC5).
+- **Dados reais do challenge:** os 4 CSVs do dataset CRM Sales (Kaggle/CC0) versionados em `solution/data/`; download público sem credenciais.
+- **DISC inferido de features disponíveis:** sem inventar colunas; usa `sector`, `subsidiary_of`, `year_established`; fallback "indefinido" quando evidência é insuficiente.
 - **Clipboard via JS com fallback:** robustez para ambientes sem `navigator.clipboard`.
 
 ---
@@ -151,14 +150,16 @@ CSVs (accounts, products, sales_teams, sales_pipeline)
 
 | # | Erro | Correção |
 |---|------|----------|
-| 1 | `engage_date` assumido em ISO; real era MM/DD/YYYY | `pd.to_datetime(format='%m/%d/%Y')` virou instinto do HARNESS |
-| 2 | Peso 5% para agent win rate (IA) | Elevado para 15% com base na EDA |
+| 1 | Assumiu ISO na 1ª versão; confirmado ISO 8601 nos dados reais | `pd.to_datetime(format='%Y-%m-%d')` no `score_pipeline` |
+| 2 | Peso 5% para agent win rate (IA) | Elevado para 15% com base na EDA (win rate real 55-70%) |
 | 3 | `st.selectbox` com options hardcoded | Corrigido para ler `df.unique()` em runtime |
 | 4 | Edge case `engage_date=NaT` não tratado | SPEC E1: velocity=0 com label específico |
 | 5 | `use_container_width=True` deprecated | Substituído por `width="stretch"` |
 | 6 | Label de agente novo mascarava "sem histórico" | SPEC E5: label explícita |
 | 7 | `score_deal` reconvertia data dentro do apply | Conversão movida para `score_pipeline` |
 | 8 | `color_discrete_map` só cobria 2 stages | Adicionado Won/Lost para robustez |
+| 9 | `NaN or 0` dava score de conta máximo a deals sem cadastro | Coerção NaN-safe (`_num`/`_minmax`) |
+| 10 | `GTXPro` do pipeline não casava com `GTX Pro` do catálogo | Normalização antes do merge |
 | 9 | Super prompt DS novo não referenciado no harness | Seção 5 substituída por apontamento canônico |
 | 10 | KPIs quebravam linha em telas estreitas | Tipografia responsiva com `clamp()` + modo compacto |
 | 11 | `StreamlitDuplicateElementId` no selectbox do assistente | `render_followup_assistant` movido para fora do loop de deals |
@@ -222,8 +223,8 @@ pip install -r requirements.txt
 
 ### Dados
 
-- Dataset sintético já em `solution/data/` (gerado por `generate_synth_data.py`).
-- Para dados reais: baixar do Kaggle (link no README do challenge) e colocar os 4 CSVs em `solution/data/`.
+- Os 4 CSVs reais do challenge (CRM Sales, Kaggle/CC0) já estão em `solution/data/`.
+- Para rebaixá-los (sem credenciais): `curl -sL -o crm.zip "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics" && unzip -o crm.zip -d solution/data/`.
 
 ### Rodar o app
 
@@ -320,12 +321,12 @@ Saída: `eda_report.txt` na mesma pasta.
 
 ### Limitações conhecidas
 
-- Dataset sintético (credenciais Kaggle indisponíveis).
+- Dados reais do challenge (CRM Sales); ~16% dos deals sem `account` vinculado (data quality real).
 - Scoring heurístico, não ML preditivo.
 - PII `sales_agent` exibida no app (roadmap: toggle de masking).
-- `TODAY` fixado para determinismo.
-- `df.apply` axis=1 (não vetorizado) — OK para 4.708 deals.
-- Range de `agent_sub` genérico (não calibrado com percentis).
+- `TODAY` fixado em 2017-12-31 para determinismo.
+- `df.apply` axis=1 (não vetorizado) — OK para 2.089 deals.
+- Range de `agent_sub` calibrado à faixa real de win rate (0.50-0.72).
 
 ---
 
@@ -355,7 +356,6 @@ submissions/Gabriel Oliveira/
     ├── sales_hooks.py
     ├── eda.py
     ├── eda_report.txt
-    ├── generate_synth_data.py
     ├── test_scoring_ac.py
     ├── requirements.txt
     ├── .streamlit/config.toml
@@ -371,35 +371,31 @@ submissions/Gabriel Oliveira/
 
 ## 14. Pendências abertas e riscos
 
-- Substituir dataset sintético por Kaggle real (depende de `kaggle.json`).
 - Abrir PR final no fork (passo externo não executado).
 - PII toggle ("Modo apresentação") para masking de nomes.
-- Account humanizada (`account_0077` → `Media · Australia · Acme Corp`).
+- Enriquecer contas sem cadastro (~16% dos deals) com setor/receita.
 - Ação no deal (botão "Assumir"/"Descartar" via `st.session_state`).
-- Calibração de `agent_sub` com percentis reais do dataset.
 - Vetorização para escalar a 100K+ deals.
 
 ---
 
 ## 15. Roadmap v2 (priorizado)
 
-1. **Account humanizada** (1h) — enrich account com industry/country/parent_company.
+1. **Enriquecer contas sem cadastro** (1h) — puxar setor/receita para os ~16% de deals sem `account`.
 2. **PII toggle** (30min) — "Modo apresentação" mascarando nomes reais.
 3. **Ação no deal** (2h) — botão "Assumir"/"Descatar" via `st.session_state`.
-4. **Dataset real Kaggle** — substituir CSVs sintéticos quando credenciais disponíveis.
-5. **Calibração de pesos** — usar percentis reais do dataset para `agent_sub` e outros.
-6. **ML baseline** — Gradient Boosting para comparar contra heurística.
-7. **CRM integration** — conectar com Salesforce/HubSpot via API.
-8. **Vetorização** — refatorar `score_deal` com NumPy para 100K+ deals.
-9. **Auth/roles** — login + role-based masking para produção.
-10. **Histórico de scores** — trend temporal para comparar períodos.
+4. **ML baseline** — Gradient Boosting para comparar contra heurística.
+5. **CRM integration** — conectar com Salesforce/HubSpot via API.
+6. **Vetorização** — refatorar `score_deal` com NumPy para 100K+ deals.
+7. **Auth/roles** — login + role-based masking para produção.
+8. **Histórico de scores** — trend temporal para comparar períodos.
 
 ---
 
 ## 16. Changelog consolidado por etapa
 
 - **Prompt 01 (Research-First):** hipóteses e armadilhas catalogadas.
-- **Prompt 02 (EDA):** `eda.py` + `eda_report.txt`; formato de data MM/DD/YYYY confirmado.
+- **Prompt 02 (EDA):** `eda.py` + `eda_report.txt`; formato de data ISO 8601 (YYYY-MM-DD) confirmado.
 - **Prompt 03 (SPEC scoring):** 6 componentes com 8 ACs e edge cases.
 - **Prompt 04 (Build scoring):** `scoring.py` com `score_deal` + `score_pipeline`.
 - **Prompt 05 (App Streamlit):** `app.py` com filtros, KPIs, charts, design G4.

@@ -6,9 +6,6 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Dado auxiliar derivado (PII redundante — recalculado em runtime)
-solution/data/_agent_winrate_synth.csv
-
 # OS
 .DS_Store
 Thumbs.db

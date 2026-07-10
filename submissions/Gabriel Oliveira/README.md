@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Construí uma **aplicação Streamlit funcional** que permite a um vendedor abrir, ver o pipeline de 4.708 oportunidades abertas, e saber exatamente **onde focar** — cada deal tem um score 0-100 e a explicação em PT-BR do porquê daquele número. O scoring combina 6 componentes explicáveis (stage, velocity, account size, product value, agent track record, deal value) calibrados pela EDA contra os dados reais. O app segue o design system do G4 (navy #001F35, cream #F5F4F3, Manrope/PPMuseum) extraído via Playwright do g4business.com. A metodologia usada foi **Spec-Driven Development** com um **Prompt Harness**estruturado de 8 prompts, documentado em `docs/HARNESS_STEPS.md` — cada interação com IA é rastreável, reproduzível e auditável. A principal recomendação: **usar o top-10 + filtros por manager hoy** para os 3 managers sênior; antes de rollout full pros 35 vendedores, aplicar 3 fixes (account humanizada, ação no deal, PII toggle).
+Construí uma **aplicação Streamlit funcional** que permite a um vendedor abrir, ver o pipeline de 2.089 oportunidades abertas, e saber exatamente **onde focar** — cada deal tem um score 0-100 e a explicação em PT-BR do porquê daquele número. O scoring combina 6 componentes explicáveis (stage, velocity, account size, product value, agent track record, deal value) calibrados pela EDA contra os **dados reais do challenge** (CRM Sales Predictive Analytics, Kaggle/CC0 — 8.800 oportunidades, 85 contas, 35 vendedores). O app segue o design system do G4 (navy #001F35, cream #F5F4F3, Manrope/PPMuseum) extraído via Playwright do g4business.com. A metodologia usada foi **Spec-Driven Development** com um **Prompt Harness** estruturado de 8 prompts, documentado em `docs/HARNESS_STEPS.md` — cada interação com IA é rastreável, reproduzível e auditável. A principal recomendação: **usar o top-10 + filtros por manager hoje** para os managers sênior; antes de rollout full pros 35 vendedores, aplicar 3 fixes (enriquecimento das contas sem cadastro, ação no deal, PII toggle).
 
 ---
 
@@ -21,7 +21,7 @@ Construí uma **aplicação Streamlit funcional** que permite a um vendedor abri
 A metodologia foi **Spec-Driven + Prompt Harness**, executada em 8 prompts sequenciais:
 
 1. **Research-First** (AGENT-A) — hipóteses falsificáveis + catálogo de armadilhas do dataset
-2. **EDA** (AGENT-B) — schema validado contra CSV real, formato de data MM/DD/YYYY confirmado, win rate 42-67% medido
+2. **EDA** (AGENT-B) — schema validado contra CSV real, formato de data ISO 8601 (YYYY-MM-DD) confirmado, win rate 55-70% medido
 3. **SPEC do scoring** (AGENT-A) — 6 componentes com pesos justificados por hipótese de negócio + EDA
 4. **Build da função** (AGENT-B) — `scoring.py` com `score_deal` + `score_pipeline`, type hints, docstrings
 5. **App Streamlit** (AGENT-B) — UI com filtros, KPIs, top-N com breakdown, charts plotly, design G4
@@ -33,24 +33,25 @@ Cada prompt seguiu o envelope `[AGENT: X] [SKILL: Y]` com contexto + tarefa + co
 
 ### Resultados / Findings
 
-**App funcional rodando:**
-- 4.708 deals abertos scored (de 8.800 totais, restante são Won/Lost — fora do escopo)
-- Score range: 15.8 a 71.4, média 32.8
+**App funcional rodando (dados reais do challenge):**
+- 2.089 deals abertos scored (de 8.800 totais: 1.589 Engaging + 500 Prospecting; restante são Won/Lost — fora do escopo de priorização)
+- Score range: 12.2 a 69.8, média 32.7
 - Top-10 deals: 10/10 são `Engaging` (valida peso 25% do stage)
-- Valor em jogo: R$ 10.298.556
+- Valor em jogo: R$ 4.966.215 (soma do preço de lista dos produtos dos deals abertos — no dataset real `close_value` só existe para deals Won/Lost)
 
-**Exemplo real do breakdown (top deal OPP_03446, score 71 "Morno"):**
+**Exemplo real do breakdown (top deal 4ZQTMS3Z — Violet Mclelland / conta Kan-code, score 70 "Morno"):**
 ```
-score 71/100 — puxado por Estágio: Engaging + Idade: 30 dias no pipeline
-— atenção: Conta: receita $108.526, 1.458 funcionários
+score 70/100 — puxado por Estágio: Engaging + Conta: receita US$ 11.698M, 34.288 funcionários
+— atenção: Valor esperado do deal: $0
 
-  Estágio: Engaging              90.0 × 25% = 22.5
-  Idade: 30 dias no pipeline     100.0 × 20% = 20.0
-  Conta: receita $108.526        13.0 × 20% = 2.6
-  Produto: GTX Enterprise $25K   83.3 × 15% = 12.5
-  Vendedor: Bianca Costa — 60%   66.7 × 15% = 10.0
-  Valor: $22.956                 76.5 × 5%  = 3.8
+  Estágio: Engaging                          90.0 × 25% = 22.5
+  Idade: 38 dias no pipeline                 91.1 × 20% = 18.2
+  Conta: receita US$ 11.698M, 34.288 func.  100.0 × 20% = 20.0
+  Produto: MG Special — ticket $55            0.2 × 15% =  0.0
+  Vendedor: Violet Mclelland — win rate 63%  60.1 × 15% =  9.0
+  Valor esperado do deal: $0                  0.0 × 5%  =  0.0
 ```
+Este caso ilustra a explainability: o deal sobe pelo estágio + conta gigante, mas o vendedor vê na hora que o produto é de ticket baixo (MG Special, $55) — contexto que um número solto esconderia.
 
 **Validação contra SPEC (8 ACs):** todos PASS — score em [0,100], 6 componentes, determinismo 2x, edge case engage_date=NaT, top-10 ≥7 Engaging.
 
@@ -60,23 +61,25 @@ score 71/100 — puxado por Estágio: Engaging + Idade: 30 dias no pipeline
 
 **O que o Head de RevOps usaria amanhã:**
 1. Top-10 ranking com breakdown → manda Slack pros 10 vendedores "toca esses hoje"
-2. Filtros por Manager + Escritório regional → permite focar no time certo
-3. KPI "Valor em jogo" R$ 10.298.556 → número pra board terça-feira
+2. Filtros por Manager + Escritório regional (Central/East/West) → permite focar no time certo
+3. KPI "Valor em jogo" R$ 4.966.215 → número pra board terça-feira
 
 **Antes de rollout full (3 fixes críticos, ~3.5h):**
-1. Account humanizada (1h) — `account_0077` virar `Media · Australia · Acme Corp`
+1. Enriquecer contas sem cadastro (1h) — ~16% dos deals abertos não têm `account` vinculado no CRM; puxar setor/receita para dar contexto ao card
 2. Ação no deal (2h) — botão "Assumir"/"Descartar" via `st.session_state`
 3. PII toggle (30min) — "Modo apresentação" mascarando nomes reais
 
 ### Limitações
 
-- **Dataset sintético:** o download do Kaggle exigia credenciais não disponíveis no ambiente. Gerei um dataset sintético que segue exatamente o schema esperado (`generate_synth_data.py`), documentado transparentemente. Para usar dados reais: baixar do Kaggle (link no README do challenge) e colocar os 4 CSVs em `solution/data/`. O app funciona igual com dados reais ou sintéticos.
+- **Dados reais do challenge:** a solução usa os 4 CSVs reais do dataset [CRM Sales Predictive Analytics](https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics) (Kaggle, licença CC0). O download público (`https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics`) não exige credenciais. Os 4 CSVs já estão versionados em `solution/data/`.
+- **Contas sem cadastro:** ~16% dos deals no pipeline não têm `account` vinculado no CRM (data quality real). Esses deals recebem subscore de account_size = 0 com label explícito "sem cadastro vinculado — enriquecer dados da conta", em vez de crédito indevido.
+- **`close_value` só existe para deals fechados:** no dataset real, deals abertos (Prospecting/Engaging) não têm `close_value`. Para o "valor em jogo" e o componente de deal value, usamos o preço de lista do produto (`sales_price`) como valor potencial.
 - **Scoring é heurístico, não ML** — decisão consciente baseada no README do challenge que diz "regras bem apresentadas valem mais que XGBoost sem interface". Não há modelo preditivo calibrado; score é prioridade de atenção, não probabilidade de fechamento.
 - **PII `sales_agent` é exibida no app** — aceitável para audit interno do G4; em produção exigiria role-based masking (documentado no item 3 das recomendações).
-- **Sem benchmark histórico** — score médio 32.8 sem comparação com período anterior (Gap C2 do AGENT-D).
-- **`TODAY` fixado em 2025-07-01** — para determinismo/auditoria. Em produção seria `pd.Timestamp.now()`.
-- **Range de `agent_sub` é genérico (0.10-0.85)** — não calibrado com percentis reais do dataset (review R3 diferido como Non-Goal).
-- **`df.apply` axis=1** — não vetorizado. OK para 4708 deals; precisaria refatorar com NumPy para escalar a 100K+.
+- **Sem benchmark histórico** — score médio 32.7 sem comparação com período anterior (Gap C2 do AGENT-D).
+- **`TODAY` fixado em 2017-12-31** — dia seguinte ao fim da base real (2016-10 a 2017-12), para que a velocity do pipeline faça sentido e o resultado seja determinístico/auditável. Em produção seria `pd.Timestamp.now()`.
+- **Range de `agent_sub` calibrado (0.50-0.72)** — reflete a faixa real de win rate observada na EDA (55-70%), estreita porque os vendedores têm performance homogênea neste dataset.
+- **`df.apply` axis=1** — não vetorizado. OK para 2.089 deals; precisaria refatorar com NumPy para escalar a 100K+.
 
 ---
 
@@ -96,7 +99,7 @@ score 71/100 — puxado por Estágio: Engaging + Idade: 30 dias no pipeline
 ### Workflow
 
 1. **Discovery** (Prompt 01, AGENT-A + SKILL-01) — hipóteses de negócio + armadilhas do dataset, SEM código
-2. **EDA** (Prompt 02, AGENT-B + SKILL-04) — schema validado, formato MM/DD/YYYY confirmado, win rate 42-67% medido
+2. **EDA** (Prompt 02, AGENT-B + SKILL-04) — schema validado, formato ISO 8601 (YYYY-MM-DD) confirmado, win rate 55-70% medido
 3. **SPEC** (Prompt 03, AGENT-A + SKILL-02) — 6 componentes com ACs mensuráveis, markdown
 4. **Build scoring** (Prompt 04, AGENT-B) — `scoring.py` implementado contra SPEC
 5. **Build app** (Prompt 05, AGENT-B) — `app.py` Streamlit com design system G4
@@ -110,15 +113,16 @@ Evidência completa em `process-log/` (8 arquivos markdown, ~30KB) + `docs/HARNE
 
 | # | Erro | Correção |
 |---|------|----------|
-| 1 | Assumiu `engage_date` em ISO; real era MM/DD/YYYY | `pd.to_datetime(..., format='%m/%d/%Y')` — virou instinto do HARNESS |
-| 2 | Sugeriu peso 5% para win rate do agente | Elevei para 15% baseado na EDA (dispersão 42-67%) |
+| 1 | Assumiu formato de data ISO na 1ª versão sintética; ao migrar para os dados reais, confirmei ISO 8601 e travei `format='%Y-%m-%d'` | Parsing explícito no `score_pipeline`, sem inferência silenciosa |
+| 2 | Sugeriu peso 5% para win rate do agente | Elevei para 15% baseado na EDA (win rate real 55-70%) |
 | 3 | Gerou `st.selectbox("Vendedor", ["Option 1"])` hardcoded | Corrigido para ler `df.unique()` em runtime |
 | 4 | Não tratou edge case `engage_date=NaT` em abertos | Spec E1 definiu velocity=0 com label específico |
 | 5 | `use_container_width=True` deprecated | Substituído por `width="stretch"` (sintaxe Streamlit 1.59+) |
 | 6 | Label de agente novo mascarava caso "sem histórico" | Spec E5: label explícita "novo, sem histórico ainda" |
 | 7 | `score_deal` reconvertia data dentro do apply (lento) | Movida para caller `score_pipeline` conforme SPEC seção 6 |
 | 8 | `color_discrete_map` só cobria 2 stages | Adicionei Won/Lost para robustez futura |
-| 9 | Arquivo `_agent_winrate_synth.csv` com PII redundante | Adicionado ao `.gitignore` |
+| 9 | `NaN or 0` não zerava contas sem cadastro → `min(cap, NaN)` do Python devolvia o cap e dava score de conta máximo indevido | Coerção NaN-safe (`_num`/`_minmax`) tratando None/NaN como 0 |
+| 10 | `GTXPro` no pipeline não casava com `GTX Pro` do catálogo (data quality real) → `sales_price` NaN | Normalização do nome antes do merge |
 
 ### O que eu adicionei que a IA sozinha não faria
 
@@ -155,12 +159,11 @@ python -m venv venv
 # Linux/Mac: source venv/bin/activate
 pip install -r requirements.txt
 
-# (Opcional) gerar dataset sintético se não tiver os CSVs do Kaggle:
-python generate_synth_data.py
-
-# OU baixar dados reais do Kaggle (link no README do challenge) e
-# colocar os 4 CSVs (accounts.csv, products.csv, sales_teams.csv,
-# sales_pipeline.csv) em solution/data/
+# Os 4 CSVs reais do challenge já estão em solution/data/.
+# Para rebaixá-los do Kaggle (CC0, sem credenciais):
+#   curl -sL -o crm.zip \
+#     "https://www.kaggle.com/api/v1/datasets/download/agungpambudi/crm-sales-predictive-analytics"
+#   unzip -o crm.zip -d data/
 
 # Rodar EDA (opcional, gera eda_report.txt):
 python eda.py

@@ -8,7 +8,7 @@ import numpy as np
 from scoring import score_deal, score_pipeline, DealScore
 
 DATA = Path(__file__).resolve().parent / "data"
-TODAY = pd.Timestamp("2025-07-01")
+TODAY = pd.Timestamp("2017-12-31")
 
 print("=" * 70)
 print("VALIDAÇÃO DOS CRITÉRIOS DE ACEITAÇÃO — SPEC Prompt 03")

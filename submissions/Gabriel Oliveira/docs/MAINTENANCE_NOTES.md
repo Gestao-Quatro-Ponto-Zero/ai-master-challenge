@@ -52,13 +52,13 @@ cd "...\submissions\Gabriel Oliveira\solution"
 
 ## Limitações ativas
 
-- Dataset sintético (credenciais Kaggle indisponíveis).
-- `TODAY` fixado em 2025-07-01 (determinismo).
+- Dados reais do challenge (CRM Sales); ~16% dos deals sem `account` vinculado.
+- `TODAY` fixado em 2017-12-31 (determinismo; fim da base real).
 - PII `sales_agent` exibida (roadmap: toggle).
-- `df.apply` não vetorizado (OK para 4.708 deals).
+- `df.apply` não vetorizado (OK para 2.089 deals).
 
 ## Próximos 3 fixes rápidos
 
-1. Account humanizada (1h).
+1. Enriquecer contas sem cadastro (1h).
 2. PII toggle (30min).
 3. Ação no deal via `st.session_state` (2h).
