@@ -1,0 +1,173 @@
+======================================================================
+EDA REPORT — Challenge 003 Lead Scorer
+Fonte: sales_pipeline.csv
+======================================================================
+
+======================================================================
+1. SCHEMA E DTYPES
+======================================================================
+Shape: 8800 linhas × 8 colunas
+
+Colunas:
+  - opportunity_id: object
+  - sales_agent: object
+  - product: object
+  - account: object
+  - deal_stage: object
+  - engage_date: datetime64[ns]
+  - close_date: datetime64[ns]
+  - close_value: float64
+
+head(3):
+opportunity_id     sales_agent        product account deal_stage engage_date close_date  close_value
+      1C1I7A6R     Moses Frase GTX Plus Basic Cancity        Won  2016-10-20 2017-03-01       1054.0
+      Z063OYW0 Darcel Schlecht         GTXPro   Isdom        Won  2016-10-25 2017-03-11       4514.0
+      EC4QE1BX Darcel Schlecht     MG Special Cancity        Won  2016-10-25 2017-03-07         50.0
+
+======================================================================
+2. NULOS POR COLUNA
+======================================================================
+                n_nulos    pct
+close_date         2089  23.74
+close_value        2089  23.74
+account            1425  16.19
+engage_date         500   5.68
+opportunity_id        0   0.00
+sales_agent           0   0.00
+product               0   0.00
+deal_stage            0   0.00
+
+ALERTA: colunas com >20% nulos:
+  - close_date: 23.74% nulos
+  - close_value: 23.74% nulos
+
+======================================================================
+3. DISTRIBUIÇÃO DE DEAL_STAGE
+======================================================================
+             contagem    pct
+deal_stage                  
+Won              4238  48.16
+Lost             2473  28.10
+Engaging         1589  18.06
+Prospecting       500   5.68
+
+======================================================================
+4. WIN RATE POR SALES_AGENT (WON / WON+LOST)
+======================================================================
+          won  lost  total_fechados  win_rate
+agent_01  107    45             152     70.39
+agent_02  149    64             213     69.95
+agent_03   55    24              79     69.62
+agent_04  107    53             160     66.88
+agent_05  176    88             264     66.67
+agent_06  129    66             195     66.15
+agent_07  101    52             153     66.01
+agent_08  135    71             206     65.53
+agent_09  150    79             229     65.50
+agent_10   72    38             110     65.45
+agent_11  155    82             237     65.40
+agent_12  171    93             264     64.77
+agent_13   78    43             121     64.46
+agent_14  174    98             272     63.97
+agent_15  221   126             347     63.69
+agent_16   80    46             126     63.49
+agent_17  122    71             193     63.21
+agent_18  349   204             553     63.11
+agent_19  122    72             194     62.89
+agent_20  163    98             261     62.45
+agent_21  209   126             335     62.39
+agent_22  208   128             336     61.90
+agent_23  161   100             261     61.69
+agent_24   75    48             123     60.98
+agent_25  114    73             187     60.96
+agent_26  105    70             175     60.00
+agent_27  135    97             232     58.19
+agent_28  158   117             275     57.45
+agent_29  130    97             227     57.27
+agent_30  127   104             231     54.98
+
+Agentes no dataset (anonimizados no relatório): 30
+Faixa de win rate: 54.98% a 70.39%
+Win rate médio global: 63.15%
+
+======================================================================
+5. DISTRIBUIÇÃO DE CLOSE_VALUE POR DEAL_STAGE
+======================================================================
+             count     mean  median   min      max         sum
+deal_stage                                                    
+Engaging         0      NaN     NaN   NaN      NaN         0.0
+Lost          2473     0.00     0.0   0.0      0.0         0.0
+Prospecting      0      NaN     NaN   NaN      NaN         0.0
+Won           4238  2360.91  1117.0  38.0  30288.0  10005534.0
+
+Deals Won com close_value=0 (potencial bug): 0
+
+======================================================================
+6. TEMPO MÉDIO ENTRE ENGAGE_DATE E CLOSE_DATE POR STAGE
+======================================================================
+            count   mean  median  min  max
+deal_stage                                
+Lost         2473  41.48    14.0    1  138
+Won          4238  51.78    57.0    1  138
+
+Distribuição geral (dias no pipeline, deals fechados):
+count    6711.00
+mean       47.99
+std        41.06
+min         1.00
+25%         8.00
+50%        45.00
+75%        85.00
+max       138.00
+
+======================================================================
+7. NULOS EM ENGAGE_DATE POR DEAL_STAGE (ARMADILHA A2)
+======================================================================
+             n_nulos_engage  total    pct
+deal_stage                               
+Engaging                  0   1589    0.0
+Lost                      0   2473    0.0
+Prospecting             500    500  100.0
+Won                       0   4238    0.0
+
+======================================================================
+8. CROSSTAB MANAGER × REGIONAL_OFFICE (ARMADILHA A10)
+======================================================================
+regional_office   Central  East  West
+manager                              
+Cara Losch              0     6     0
+Celia Rouche            0     0     6
+Dustin Brinkmann        5     0     0
+Melvin Marxen           6     0     0
+Rocco Neubert           0     6     0
+Summer Sewald           0     0     6
+
+Managers cobrindo exatamente 1 escritório: 6/6
+ALERTA: manager e regional_office são colineares — usar só um deles.
+
+======================================================================
+9. TABELAS AUXILIARES (ACCOUNTS / PRODUCTS)
+======================================================================
+accounts.csv: 85 contas
+Colunas: ['account', 'sector', 'year_established', 'revenue', 'employees', 'office_location', 'subsidiary_of']
+  sectors: 10 valores únicos
+  office_location: 15 países
+  revenue (US$ milhões): min=4.54, max=11698.03, median=1223.72
+  employees: min=9, max=34288
+  subsidiary_of preenchido: 15/85 contas
+  year_established: 1979–2017
+
+products.csv: 7 produtos
+Colunas: ['product', 'series', 'sales_price']
+       product series  sales_price
+     GTX Basic    GTX          550
+       GTX Pro    GTX         4821
+    MG Special     MG           55
+   MG Advanced     MG         3393
+  GTX Plus Pro    GTX         5482
+GTX Plus Basic    GTX         1096
+       GTK 500    GTK        26768
+
+======================================================================
+FIM DO RELATÓRIO
+======================================================================
