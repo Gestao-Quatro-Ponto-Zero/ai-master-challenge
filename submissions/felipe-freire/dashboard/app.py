@@ -247,6 +247,20 @@ hr {{ border-color: var(--g4-border); }}
     color: #001F35 !important;
     fill: #001F35 !important;
 }}
+[data-testid="stSidebar"] [role="radiogroup"] label:nth-child(1) p::before,
+[data-testid="stSidebar"] [role="radiogroup"] label:nth-child(2) p::before {{
+    font-family: "Material Symbols Rounded" !important;
+    font-size: 1.15rem;
+    font-weight: normal;
+    vertical-align: -0.18rem;
+    margin-right: 0.35rem;
+}}
+[data-testid="stSidebar"] [role="radiogroup"] label:nth-child(1) p::before {{
+    content: "light_mode";
+}}
+[data-testid="stSidebar"] [role="radiogroup"] label:nth-child(2) p::before {{
+    content: "dark_mode";
+}}
 </style>
 <section class="g4-hero">
   <div class="g4-eyebrow">{t("eyebrow")}</div>
@@ -279,7 +293,7 @@ filtered = apply_filters(data, selected)
 summary = kpis(filtered)
 
 if filtered.empty:
-    st.warning("Dados insuficientes para os filtros selecionados.")
+    st.warning(t("insufficient"))
     st.stop()
 
 cols = st.columns(4)
@@ -307,53 +321,23 @@ with st.expander(t("glossary")):
 
 st.header(t("answers"))
 st.info(t("answer_summary"))
-if language != "pt":
-    st.caption(t("detail_note"))
 
 with st.container(border=True):
-    st.subheader("1. O que gera engajamento?")
-    st.success(
-        "Resposta: nenhuma plataforma, formato, categoria ou faixa de creator apresenta "
-        "vantagem material validada neste dataset."
-    )
-    st.markdown(
-        """
-- Plataforma: amplitude bruta de apenas **0,0105 p.p.**.
-- Tipo de conteúdo: amplitude bruta de apenas **0,0121 p.p.**.
-- O modelo ajustado explica menos de **0,1%** da variação (`R²=0,000899`).
-- Conclusão: rankings observados não justificam realocação de esforço.
-"""
-    )
+    st.subheader(t("q1_title"))
+    st.success(t("q1_answer"))
+    st.markdown(t("q1_body"))
 
 with st.container(border=True):
-    st.subheader("2. Patrocínio funciona?")
-    st.error(
-        "Resposta: não foi detectado ganho material de engagement, views, shares ou "
-        "alcance relativo após os controles."
-    )
-    st.markdown(
-        """
-- Efeito ajustado no engagement: **−0,0010 p.p.**.
-- IC95%: **−0,0095 a +0,0074 p.p.**; `p=0,8115`.
-- Views: **+0,26**, IC95% **−1,50 a +2,02**.
-- Custos e receita não existem no arquivo; portanto **ROI não pode ser calculado**.
-- Política: não expandir patrocínio fora de pilotos controlados com custo e conversão.
-"""
-    )
+    st.subheader(t("q2_title"))
+    st.error(t("q2_answer"))
+    st.markdown(t("q2_body"))
 
 with st.container(border=True):
-    st.subheader("3. Qual audiência mais engaja?")
-    st.warning(
-        "Resposta: não há perfil de audiência validado. As diferenças são pequenas e "
-        "a audiência é uma categoria agregada do post, não um atributo individual."
-    )
-    st.markdown(
-        "A amplitude entre localizações é aproximadamente **0,0211 p.p.**. "
-        "Use os controles abaixo para verificar explicitamente idade, gênero ou "
-        "localização por plataforma, formato e categoria."
-    )
+    st.subheader(t("q3_title"))
+    st.warning(t("q3_answer"))
+    st.markdown(t("q3_body"))
     audience_dimension = st.selectbox(
-        "Dimensão de audiência",
+        t("audience_dimension"),
         [
             "audience_age_distribution",
             "audience_gender_distribution",
@@ -362,7 +346,7 @@ with st.container(border=True):
         key="audience_dimension",
     )
     audience_context = st.selectbox(
-        "Cruzar por",
+        t("cross_by"),
         ["platform", "content_type", "content_category"],
         key="audience_context",
     )
@@ -374,7 +358,7 @@ with st.container(border=True):
         color=audience_context,
         size="n",
         hover_data=["n", "engagement_median", "views_mean"],
-        labels={"engagement_mean": "Interações por view", "n": "Posts"},
+        labels={"engagement_mean": t("interactions_view"), "n": t("posts")},
     )
     audience_fig.update_layout(
         xaxis_range=[0.19, 0.21],
@@ -386,28 +370,13 @@ with st.container(border=True):
     st.dataframe(audience_table, use_container_width=True, hide_index=True)
 
 with st.container(border=True):
-    st.subheader("4. O que não funciona?")
-    st.markdown(
-        """
-- patrocínio indiscriminado;
-- escolher plataforma ou formato por médias mínimas;
-- contratar creator apenas por seguidores/engagement histórico;
-- definir frequência com este arquivo;
-- usar top performers como prova causal;
-- chamar engagement ou alcance de ROI.
-"""
-    )
+    st.subheader(t("q4_title"))
+    st.markdown(t("q4_body"))
 
 with st.container(border=True):
-    st.subheader("5. Onde concentrar esforço?")
-    st.info(
-        "Resposta: concentrar em instrumentação, experimentação e qualidade de mensuração — "
-        "não em uma plataforma ou formato supostamente vencedor."
-    )
-    st.markdown(
-        "Coletar custo, fee, mídia, produção, reach único, cliques, conversões, "
-        "receita/margem e grupo de comparação."
-    )
+    st.subheader(t("q5_title"))
+    st.info(t("q5_answer"))
+    st.markdown(t("q5_body"))
 
 st.divider()
 st.header(t("decide"))
@@ -451,37 +420,23 @@ with st.container(border=True):
     )
 st.caption(t("calculator_note"))
 with st.container(border=True):
-    st.subheader("6. Qual frequência, creator e threshold usar?")
-    st.warning("Resposta: o dataset não permite recomendar frequência nem threshold de seguidores.")
-    st.markdown(
-        "Testar cadências controladas. Escalar patrocínio somente quando o limite inferior "
-        "do efeito incremental superar o break-even aprovado — não por follower count."
-    )
+    st.subheader(t("q6_title"))
+    st.warning(t("q6_answer"))
+    st.markdown(t("q6_body"))
 
 with st.container(border=True):
-    st.subheader("7. O que fazer esta semana?")
-    st.markdown(
-        """
-1. Suspender expansão de campanhas sem mensuração.
-2. Adicionar custos, conversões e receita ao contrato.
-3. Criar três hipóteses com métrica, MDE e stop condition.
-4. Usar este dashboard com `n` e limitações visíveis.
-5. Revisar 90 dias de patrocínios quando custos reais estiverem disponíveis.
-"""
-    )
+    st.subheader(t("q7_title"))
+    st.markdown(t("q7_body"))
 
 with st.container(border=True):
-    st.subheader("8. Machine Learning vale a pena?")
-    st.info(
-        "Resposta: não agora. O gate foi marcado SKIPPED porque o dataset não contém "
-        "sinal preditivo útil; modelar seria aprender ruído sintético."
-    )
+    st.subheader(t("q8_title"))
+    st.info(t("q8_answer"))
 
 st.divider()
 st.header(t("explore"))
 
 dimension = st.selectbox(
-    "Dimensão",
+    t("dimension"),
     [
         "platform",
         "content_type",
@@ -493,14 +448,14 @@ dimension = st.selectbox(
 )
 grouped = performance_by(filtered, dimension)
 
-st.subheader("Performance por dimensão")
+st.subheader(t("performance_dimension"))
 fig = px.scatter(
     grouped,
     x="engagement_mean",
     y=dimension,
     size="n",
     hover_data=["n", "views_mean"],
-    labels={"engagement_mean": "Interações por view", "n": "Posts"},
+    labels={"engagement_mean": t("interactions_view"), "n": t("posts")},
 )
 fig.update_layout(
     xaxis_range=[0.19, 0.21],
@@ -511,7 +466,7 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True, theme=None)
 st.dataframe(grouped, use_container_width=True, hide_index=True)
 
-st.subheader("Patrocinado versus orgânico — descritivo")
+st.subheader(t("sponsor_comparison"))
 sponsor = (
     filtered.groupby(["platform", "is_sponsored"], observed=True)
     .agg(
@@ -523,16 +478,8 @@ sponsor = (
 )
 st.dataframe(sponsor, use_container_width=True, hide_index=True)
 
-with st.expander("Como interpretar"):
-    st.markdown(
-        """
-- As diferenças observadas não são causais.
-- O dataset não contém custos ou receita; este painel não calcula ROI.
-- Rankings pequenos não constituem recomendação e devem considerar `n` e incerteza.
-- O relatório estatístico não encontrou ganho material de patrocínio.
-- Fonte: dataset Kaggle declarado no contrato; período 29/05/2023–28/05/2025.
-"""
-    )
+with st.expander(t("interpret")):
+    st.markdown(t("interpret_body"))
 
 st.divider()
 st.markdown(
