@@ -53,9 +53,8 @@ async def list_accounts_risk(
         }
 
         if llm_explain and explainer:
-            import asyncio
             try:
-                explanation = asyncio.run(explainer.explain(account_data, depth="short"))
+                explanation = await explainer.explain(account_data, depth="short")
                 entry["llm_narrative"] = explanation["narrative"]
             except Exception:
                 entry["llm_narrative"] = None
@@ -92,9 +91,8 @@ async def explain_account(
         raise HTTPException(status_code=503, detail="LLM Explainer não inicializado")
 
     account_data = match.iloc[0].to_dict()
-    import asyncio
     try:
-        result = asyncio.run(explainer.explain(account_data, depth=depth))
+        result = await explainer.explain(account_data, depth=depth)
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
