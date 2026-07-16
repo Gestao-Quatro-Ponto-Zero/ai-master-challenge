@@ -204,6 +204,36 @@ st.markdown(
         color: var(--g4-gold) !important;
     }
 
+    /* Clear filters button */
+    div.st-key-clear_filters_button button {
+        background: transparent;
+        color: var(--g4-text);
+        border: 1px solid var(--g4-border);
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    div.st-key-clear_filters_button button * {
+        color: var(--g4-text) !important;
+        font-weight: 600 !important;
+        transition: color 0.2s ease;
+    }
+
+    div.st-key-clear_filters_button button:hover,
+    div.st-key-clear_filters_button button:focus,
+    div.st-key-clear_filters_button button:active {
+        background: var(--g4-surface-2);
+        color: var(--g4-gold);
+        border-color: var(--g4-gold);
+    }
+
+    div.st-key-clear_filters_button button:hover *,
+    div.st-key-clear_filters_button button:focus *,
+    div.st-key-clear_filters_button button:active * {
+        color: var(--g4-gold) !important;
+    }
+
     /* Hide only the Streamlit Deploy button */
     [data-testid="stAppDeployButton"] {
         display: none !important;
@@ -303,12 +333,11 @@ st.markdown(
 # -----------------------------------------------------------------------------
 
 with st.sidebar:
-    st.header("Filters")
+    st.header("Filtros")
 
     st.button(
-        ":material/filter_alt_off: Clear all filters",
+        ":material/filter_alt_off: Limpar todos os filtros",
         key="clear_filters_button",
-        help="Reset all filters to their default values",
         on_click=clear_filters,
         width="stretch",
     )
@@ -324,7 +353,7 @@ with st.sidebar:
     ]
 
     selected_manager = st.selectbox(
-        "Manager",
+        "Gerente",
         managers,
         key="filter_manager",
     )
@@ -358,7 +387,7 @@ with st.sidebar:
         st.session_state["filter_sales_agent"] = "All"
 
     selected_seller = st.selectbox(
-        "Sales Agent",
+        "Agente de Vendas",
         sellers,
         key="filter_sales_agent",
     )
@@ -374,13 +403,13 @@ with st.sidebar:
     ]
 
     selected_region = st.selectbox(
-        "Regional Office",
+        "Regional",
         regions,
         key="filter_region",
     )
 
     selected_stage = st.selectbox(
-        "Stage",
+        "Etapa",
         [
             "All",
             "Engaging",
@@ -400,7 +429,7 @@ with st.sidebar:
     ]
 
     selected_product = st.selectbox(
-        "Product",
+        "Produto",
         products,
         key="filter_product",
     )
@@ -416,7 +445,7 @@ with st.sidebar:
     ]
 
     selected_action = st.selectbox(
-        "Action Category",
+        "Categoria da Ação",
         actions,
         key="filter_action",
     )
@@ -588,14 +617,14 @@ table = filtered[
     visible_columns
 ].rename(
     columns={
-        "action_category": "Action",
+        "action_category": "Categoria da Ação",
         "opportunity_id": "Opportunity",
         "account": "Account",
-        "sales_agent": "Sales Agent",
-        "manager": "Manager",
-        "regional_office": "Region",
-        "product": "Product",
-        "deal_stage": "Stage",
+        "sales_agent": "Agente de Vendas",
+        "manager": "Gerente",
+        "regional_office": "Regional",
+        "product": "Produto",
+        "deal_stage": "Etapa",
         "priority_score": "Priority",
         "historical_fit": "Historical Fit",
         "attention_state": "Attention",
@@ -711,12 +740,12 @@ if not filtered.empty:
 st.markdown("### Export current view")
 
 filters_payload = {
-    "Manager": selected_manager,
-    "Sales Agent": selected_seller,
-    "Region": selected_region,
-    "Stage": selected_stage,
-    "Product": selected_product,
-    "Action": selected_action,
+    "Gerente": selected_manager,
+    "Agente de Vendas": selected_seller,
+    "Regional": selected_region,
+    "Etapa": selected_stage,
+    "Produto": selected_product,
+    "Categoria da Ação": selected_action,
 }
 
 export_columns = st.columns(2)

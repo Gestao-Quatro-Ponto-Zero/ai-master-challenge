@@ -88,8 +88,8 @@ http://localhost:8501
 ## 6. Smoke test manual
 
 1. Sem filtros, confirme `Open Deals = 2.089`.
-2. Filtre por `Manager`, `Sales Agent` e `Regional Office`.
-3. Confirme que o filtro de vendedor respeita o manager selecionado.
+2. Filtre por `Gerente`, `Agente de Vendas` e `Regional`.
+3. Confirme que o filtro de vendedor respeita o gerente selecionado.
 4. Abra um deal em `Focus Now` e confira score, fit, attention, evidence e recomendação.
 5. Confirme que `Prospecting` mostra `Timeline unavailable`.
 6. Exporte Excel e abra as abas `Prioritized Pipeline` e `Scoring Guide`.

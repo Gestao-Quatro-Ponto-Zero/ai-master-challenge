@@ -97,7 +97,7 @@ def build_pdf_export(filtered: pd.DataFrame, filters: Mapping[str, object]) -> b
         Paragraph('G4 | LEAD SCORER', styles['TitleG4']),
         Paragraph('Pipeline Action Report', styles['Heading3']),
         Spacer(1, 4*mm),
-        Paragraph(f'<b>Filters:</b> {_format_filters(filters)}', styles['SmallG4']),
+        Paragraph(f'<b>Filtros:</b> {_format_filters(filters)}', styles['SmallG4']),
         Spacer(1, 5*mm),
     ]
 
@@ -126,8 +126,8 @@ def build_pdf_export(filtered: pd.DataFrame, filters: Mapping[str, object]) -> b
         account = row['account'] if pd.notna(row.get('account')) else 'Account unavailable'
         story.append(Paragraph(
             f"<b>{idx}. {row['opportunity_id']} - {account}</b><br/>"
-            f"Action: <b>{row['action_category']}</b> | Priority: <b>{row['priority_score']:.1f}</b> | "
-            f"Stage: {row['deal_stage']} | Product: {row['product']}", styles['BodyG4']))
+            f"Categoria da Ação: <b>{row['action_category']}</b> | Priority: <b>{row['priority_score']:.1f}</b> | "
+            f"Etapa: {row['deal_stage']} | Product: {row['product']}", styles['BodyG4']))
         why = [row.get(f'explanation_{i}', '') for i in range(1,5)]
         why = [x for x in why if isinstance(x, str) and x.strip()]
         for line in why[:3]:
