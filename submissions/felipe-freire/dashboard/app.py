@@ -25,8 +25,10 @@ try:
         performance_by,
     )
     from dashboard.decision import break_even, experiment_copy
+    from dashboard.i18n import LANGUAGES, text
 except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own directory.
     from decision import break_even, experiment_copy  # type: ignore[no-redef]
+    from i18n import LANGUAGES, text  # type: ignore[no-redef]
 
     from data import (  # type: ignore[no-redef]
         FILTERS,
@@ -41,6 +43,49 @@ ASSETS = Path(__file__).resolve().parent / "assets"
 LOGO = ASSETS / "g4-logo.svg"
 
 st.set_page_config(page_title="G4 Social Intelligence", page_icon="📈", layout="wide")
+
+with st.sidebar:
+    st.image(str(LOGO), width=150)
+    selected_language = st.selectbox("Idioma · Language", list(LANGUAGES), key="language")
+    language = LANGUAGES[selected_language]
+    tx = text(language)
+    theme = st.radio(
+        str(tx["theme"]),
+        ["light", "dark"],
+        format_func=lambda value: str(tx[value]),
+        horizontal=True,
+        key="theme_mode",
+    )
+
+
+def t(key: str) -> str:
+    """Return a scalar translated UI label."""
+    return str(tx[key])
+
+
+palette = {
+    "light": {
+        "bg": "#F5F4F3",
+        "surface": "#FFFFFF",
+        "ink": "#152B3A",
+        "muted": "#526876",
+        "border": "#C7D2D9",
+        "header": "rgba(245,244,243,.92)",
+        "container": "rgba(255,255,255,.78)",
+        "plot": "rgba(255,255,255,.72)",
+    },
+    "dark": {
+        "bg": "#071721",
+        "surface": "#0E2737",
+        "ink": "#F5F4F3",
+        "muted": "#B9C7CF",
+        "border": "#365367",
+        "header": "rgba(7,23,33,.92)",
+        "container": "rgba(14,39,55,.90)",
+        "plot": "rgba(14,39,55,.72)",
+    },
+}[theme]
+
 st.markdown(
     """
 <style>
@@ -49,18 +94,26 @@ st.markdown(
 :root {
     --g4-navy: #001F35;
     --g4-gold: #B9915B;
-    --g4-cream: #F5F4F3;
+    --g4-bg: #F5F4F3;
+    --g4-surface: #FFFFFF;
     --g4-white: #FFFFFF;
     --g4-ink: #152B3A;
+    --g4-muted: #526876;
+    --g4-border: #C7D2D9;
 }
 
 html, body, [data-testid="stAppViewContainer"] { font-family: "Manrope", sans-serif; }
-[data-testid="stAppViewContainer"] { background: var(--g4-cream); color: var(--g4-ink); }
-[data-testid="stHeader"] { background: rgba(245, 244, 243, 0.92); }
+[data-testid="stAppViewContainer"] { background: var(--g4-bg); color: var(--g4-ink); }
+[data-testid="stHeader"] { background: rgba(245,244,243,.92); }
 [data-testid="stSidebar"] { background: var(--g4-navy); }
-[data-testid="stSidebar"] * { color: var(--g4-white); }
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] label,
+[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 { color: var(--g4-white) !important; }
 [data-testid="stSidebar"] [data-baseweb="tag"] { background: var(--g4-gold); }
-[data-testid="stSidebar"] input { color: var(--g4-navy); }
+[data-testid="stSidebar"] input { color: var(--g4-white); }
+.material-symbols-rounded, [data-testid="stIconMaterial"] {
+    font-family: "Material Symbols Rounded" !important;
+}
 
 .block-container { max-width: 1240px; padding-top: 2.5rem; padding-bottom: 4rem; }
 h1, h2, h3 { color: var(--g4-navy); letter-spacing: -0.025em; }
@@ -132,11 +185,65 @@ hr { border-color: rgba(0, 31, 53, 0.14); }
     unsafe_allow_html=True,
 )
 st.markdown(
-    """
+    f"""
+<style>
+:root {{
+    --g4-bg: {palette["bg"]}; --g4-surface: {palette["surface"]};
+    --g4-ink: {palette["ink"]}; --g4-muted: {palette["muted"]};
+    --g4-border: {palette["border"]};
+}}
+[data-testid="stHeader"] {{ background: {palette["header"]}; }}
+h1, h2, h3 {{ color: var(--g4-ink); }}
+[data-testid="stMetric"] {{ background: var(--g4-surface); border-color: var(--g4-border); }}
+[data-testid="stMetricLabel"] {{ color: var(--g4-muted); }}
+[data-testid="stMetricValue"] {{ color: var(--g4-ink); }}
+[data-testid="stWidgetLabel"] p, [data-testid="stWidgetLabel"] label,
+[data-testid="stSelectbox"] label, [data-testid="stNumberInput"] label,
+[data-testid="stTextInput"] label {{ color: var(--g4-ink) !important; }}
+[data-testid="stAppViewContainer"] [data-baseweb="select"] > div,
+[data-testid="stAppViewContainer"] [data-baseweb="input"] > div,
+[data-testid="stAppViewContainer"] input {{
+    background: var(--g4-surface) !important; color: var(--g4-ink) !important;
+    border-color: var(--g4-border) !important;
+}}
+[data-testid="stAppViewContainer"] [data-baseweb="select"] span,
+[data-testid="stAppViewContainer"] [data-baseweb="select"] svg {{
+    color: var(--g4-ink) !important; fill: var(--g4-ink) !important;
+}}
+[data-testid="stExpander"] summary, [data-testid="stExpander"] summary span,
+[data-testid="stExpander"] summary p {{ color: var(--g4-ink) !important; }}
+[data-testid="stVerticalBlockBorderWrapper"] {{
+    background: {palette["container"]}; border-color: var(--g4-border);
+}}
+[data-testid="stAlert"] {{ background: var(--g4-surface); border-color: var(--g4-border); }}
+hr {{ border-color: var(--g4-border); }}
+.g4-footer {{ color: var(--g4-muted); }}
+.g4-footer strong {{ color: var(--g4-ink); }}
+
+/* Sidebar must keep its own contrast independently of the selected main theme. */
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p,
+[data-testid="stSidebar"] [data-testid="stWidgetLabel"] label,
+[data-testid="stSidebar"] [data-testid="stSelectbox"] label,
+[data-testid="stSidebar"] [data-testid="stMultiSelect"] label {{
+    color: #FFFFFF !important;
+}}
+[data-testid="stSidebar"] [data-baseweb="select"] > div,
+[data-testid="stSidebar"] [data-baseweb="input"] > div,
+[data-testid="stSidebar"] input {{
+    background: #FFFFFF !important;
+    color: #001F35 !important;
+    border-color: #C7D2D9 !important;
+}}
+[data-testid="stSidebar"] [data-baseweb="select"] span,
+[data-testid="stSidebar"] [data-baseweb="select"] svg {{
+    color: #001F35 !important;
+    fill: #001F35 !important;
+}}
+</style>
 <section class="g4-hero">
-  <div class="g4-eyebrow">Challenge 004 · Estratégia Social Media</div>
+  <div class="g4-eyebrow">{t("eyebrow")}</div>
   <h1>G4 Social Intelligence</h1>
-  <p>Decisões de marketing baseadas em evidência — sem rankings ou ROI fabricados.</p>
+  <p>{t("subtitle")}</p>
 </section>
 """,
     unsafe_allow_html=True,
@@ -144,18 +251,17 @@ st.markdown(
 
 data = load_data()
 with st.sidebar:
-    st.image(str(LOGO), width=150)
-    st.caption("Projeto independente desenvolvido para o AI Masters Challenge.")
+    st.caption(t("independent"))
     st.divider()
-    st.header("Filtros")
-    st.caption("Use os filtros para auditar os dados; eles não criam uma recomendação causal.")
+    st.header(t("filters"))
+    st.caption(t("filter_help"))
     selected: dict[str, list[object]] = {}
     filter_labels = {
-        "platform": "Plataforma",
-        "content_type": "Formato",
-        "content_category": "Categoria",
-        "creator_size": "Tamanho do creator",
-        "is_sponsored": "Patrocinado",
+        "platform": t("platform"),
+        "content_type": t("format"),
+        "content_category": t("category"),
+        "creator_size": t("creator"),
+        "is_sponsored": t("sponsored"),
     }
     for column in FILTERS:
         options = sorted(data[column].dropna().unique().tolist(), key=str)
@@ -169,58 +275,32 @@ if filtered.empty:
     st.stop()
 
 cols = st.columns(4)
-cols[0].metric("Posts (n)", f"{summary['posts']:,}")
-cols[1].metric("Engagement/view", f"{summary['engagement_mean']:.3%}")
-cols[2].metric("Views médias", f"{summary['views_mean']:,.1f}")
-cols[3].metric("Posts patrocinados", f"{summary['sponsored_share']:.1%}")
+cols[0].metric(t("posts"), f"{summary['posts']:,}")
+cols[1].metric(t("engagement"), f"{summary['engagement_mean']:.3%}")
+cols[2].metric(t("views"), f"{summary['views_mean']:,.1f}")
+cols[3].metric(t("sponsored_posts"), f"{summary['sponsored_share']:.1%}")
 
-st.header("Decisão executiva")
-st.error(
-    "Não amplie patrocínio com base neste arquivo. O ganho ajustado foi praticamente zero "
-    "e o dataset não possui custos, conversões ou receita."
-)
+st.header(t("executive"))
+st.error(t("main_decision"))
 
 now, avoid, approve = st.columns(3)
 with now:
-    st.subheader("Faça agora")
-    st.markdown(
-        """
-- instrumente custo e conversão;
-- teste hipóteses com grupo de comparação;
-- defina a métrica antes de ver o resultado.
-"""
-    )
+    st.subheader(t("do"))
+    st.markdown(t("do_items"))
 with avoid:
-    st.subheader("Não faça")
-    st.markdown(
-        """
-- escolher plataforma por diferença mínima;
-- contratar apenas por seguidores;
-- chamar alcance ou engagement de ROI.
-"""
-    )
+    st.subheader(t("avoid"))
+    st.markdown(t("avoid_items"))
 with approve:
-    st.subheader("Decisão do Head")
-    st.markdown(
-        """
-- aprovar objetivo e orçamento;
-- aprovar ganho mínimo aceitável;
-- definir quando escalar ou interromper.
-"""
-    )
+    st.subheader(t("head"))
+    st.markdown(t("head_items"))
 
-with st.expander("Tradução dos termos usados na análise"):
-    st.markdown(
-        """
-- **Efeito incremental:** resultado adicional provocado pela ação, além do que ocorreria sem ela.
-- **IC95%:** faixa de resultados compatíveis com os dados; quanto mais ampla, maior a incerteza.
-- **MDE:** menor ganho que justificaria mudar uma decisão de negócio.
-- **Break-even:** resultado mínimo necessário para pagar todos os custos da ação.
-- **Guardrail:** indicador que não pode piorar enquanto buscamos o resultado principal.
-"""
-    )
+with st.expander(t("glossary")):
+    st.markdown(t("glossary_text"))
 
-st.header("Respostas explícitas às perguntas do desafio")
+st.header(t("answers"))
+st.info(t("answer_summary"))
+if language != "pt":
+    st.caption(t("detail_note"))
 
 with st.container(border=True):
     st.subheader("1. O que gera engajamento?")
@@ -291,8 +371,8 @@ with st.container(border=True):
     audience_fig.update_layout(
         xaxis_range=[0.19, 0.21],
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(255,255,255,0.55)",
-        font={"family": "Manrope", "color": "#152B3A"},
+        plot_bgcolor=palette["plot"],
+        font={"family": "Manrope", "color": palette["ink"]},
     )
     st.plotly_chart(audience_fig, use_container_width=True, theme=None)
     st.dataframe(audience_table, use_container_width=True, hide_index=True)
@@ -322,57 +402,46 @@ with st.container(border=True):
     )
 
 st.divider()
-st.header("Decidir e testar")
-st.write(
-    "Preencha premissas reais para transformar uma ideia em experimento. "
-    "Os valores abaixo são exemplos editáveis e não vêm do dataset."
-)
+st.header(t("decide"))
+st.write(t("decide_intro"))
 
 left, right = st.columns(2)
 with left:
-    objective = st.selectbox(
-        "Qual é o objetivo principal?",
-        ["Alcance", "Compartilhamento", "Conversa", "Conversão"],
-        key="experiment_objective",
-    )
+    objective_options = list(tx["objectives"])
+    objective = st.selectbox(t("objective"), objective_options, key="experiment_objective")
     hypothesis = st.text_input(
-        "Hipótese a testar",
-        "Conteúdo patrocinado gera resultado incremental suficiente para pagar o investimento.",
+        t("hypothesis"),
+        t("hypothesis_default"),
     )
-    owner = st.text_input("Responsável", "Social Media Lead")
-    duration = st.number_input("Duração planejada (dias)", 7, 90, 30)
+    owner = st.text_input(t("owner"), "Social Media Lead")
+    duration = st.number_input(t("duration"), 7, 90, 30)
 
 with right:
-    campaign_cost = st.number_input("Custo total da campanha (R$)", 0.0, value=10_000.0, step=500.0)
-    margin = st.number_input("Margem por conversão (R$)", 0.01, value=250.0, step=10.0)
-    eligible = st.number_input("Pessoas elegíveis no teste", 1, value=100_000, step=1_000)
+    campaign_cost = st.number_input(t("cost"), 0.0, value=10_000.0, step=500.0)
+    margin = st.number_input(t("margin"), 0.01, value=250.0, step=10.0)
+    eligible = st.number_input(t("eligible"), 1, value=100_000, step=1_000)
 
 threshold = break_even(campaign_cost, margin, int(eligible))
-copy = experiment_copy(objective)
+canonical_objectives = ["Alcance", "Compartilhamento", "Conversa", "Conversão"]
+canonical_objective = canonical_objectives[objective_options.index(objective)]
+copy = experiment_copy(canonical_objective, language)
 decision_cols = st.columns(3)
-decision_cols[0].metric(
-    "Conversões incrementais mínimas", f"{threshold['incremental_conversions']:,}"
-)
-decision_cols[1].metric("Ganho mínimo na taxa", f"{threshold['incremental_rate']:.3%}")
-decision_cols[2].metric("Margem mínima", f"R$ {threshold['required_margin']:,.2f}")
+decision_cols[0].metric(t("min_conversions"), f"{threshold['incremental_conversions']:,}")
+decision_cols[1].metric(t("min_rate"), f"{threshold['incremental_rate']:.3%}")
+decision_cols[2].metric(t("min_margin"), f"R$ {threshold['required_margin']:,.2f}")
 
 with st.container(border=True):
-    st.subheader("Briefing do experimento")
+    st.subheader(t("brief"))
     st.markdown(
-        f"**Hipótese:** {hypothesis}\n\n"
-        f"**Owner:** {owner}\n\n"
-        f"**Prazo:** {int(duration)} dias\n\n"
-        f"**Métrica principal:** {copy['metric']}\n\n"
-        f"**Guardrail:** {copy['guardrail']}\n\n"
-        "**Regra de escala:** escalar somente se o ganho incremental comprovado superar "
-        "o break-even acima e o guardrail permanecer saudável.\n\n"
-        "**Regra de parada:** interromper por dano no guardrail, falha de instrumentação "
-        "ou inviabilidade do ganho mínimo antes de aumentar o orçamento."
+        f"**{t('hypothesis')}:** {hypothesis}\n\n"
+        f"**{t('owner')}:** {owner}\n\n"
+        f"**{t('duration')}:** {int(duration)}\n\n"
+        f"**{t('metric')}:** {copy['metric']}\n\n"
+        f"**{t('guardrail')}:** {copy['guardrail']}\n\n"
+        f"**{t('scale')}:** {t('scale_text')}\n\n"
+        f"**{t('stop')}:** {t('stop_text')}"
     )
-st.caption(
-    "A calculadora define o mínimo econômico. Ela não prova causalidade nem substitui "
-    "randomização, tamanho amostral e aprovação financeira."
-)
+st.caption(t("calculator_note"))
 with st.container(border=True):
     st.subheader("6. Qual frequência, creator e threshold usar?")
     st.warning("Resposta: o dataset não permite recomendar frequência nem threshold de seguidores.")
@@ -401,7 +470,7 @@ with st.container(border=True):
     )
 
 st.divider()
-st.header("Exploração dos dados")
+st.header(t("explore"))
 
 dimension = st.selectbox(
     "Dimensão",
@@ -428,8 +497,8 @@ fig = px.scatter(
 fig.update_layout(
     xaxis_range=[0.19, 0.21],
     paper_bgcolor="rgba(0,0,0,0)",
-    plot_bgcolor="rgba(255,255,255,0.55)",
-    font={"family": "Manrope", "color": "#152B3A"},
+    plot_bgcolor=palette["plot"],
+    font={"family": "Manrope", "color": palette["ink"]},
 )
 st.plotly_chart(fig, use_container_width=True, theme=None)
 st.dataframe(grouped, use_container_width=True, hide_index=True)
@@ -459,10 +528,10 @@ with st.expander("Como interpretar"):
 
 st.divider()
 st.markdown(
-    """
+    f"""
 <footer class="g4-footer">
   <strong>Felipe de Oliveira Freire</strong><br>
-  Cientista/Analista de Dados<br>
+  {t("footer_role")}<br>
   <a href="https://www.linkedin.com/in/felipe-freire-659615284/" target="_blank">
     LinkedIn · felipe-freire-659615284
   </a>

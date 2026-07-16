@@ -1,5 +1,9 @@
 # Dashboard
 
+O painel público oferece temas claro e escuro e interface executiva em Português,
+Español e English. Os controles ficam no topo da barra lateral; nomes de campos e
+valores técnicos permanecem estáveis para preservar a rastreabilidade da análise.
+
 ## Versão pública
 
 **Acesso:** https://felipe-social-media-intelligence.streamlit.app/

@@ -20,9 +20,9 @@ def break_even(
     }
 
 
-def experiment_copy(objective: str) -> dict[str, str]:
+def experiment_copy(objective: str, language: str = "pt") -> dict[str, str]:
     """Translate a marketing objective into a primary metric and safety guardrail."""
-    mapping = {
+    mapping_pt = {
         "Alcance": {
             "metric": "alcance único incremental",
             "guardrail": "frequência e custo por pessoa alcançada",
@@ -40,6 +40,32 @@ def experiment_copy(objective: str) -> dict[str, str]:
             "guardrail": "CAC, reembolso e frequência",
         },
     }
-    if objective not in mapping:
+    if objective not in mapping_pt:
         raise ValueError(f"unsupported objective: {objective}")
-    return mapping[objective]
+    translations = {
+        "es": {
+            "Alcance": ("alcance único incremental", "frecuencia y costo por persona alcanzada"),
+            "Compartilhamento": (
+                "tasa incremental de compartidos",
+                "comentarios negativos y tasa de unfollow",
+            ),
+            "Conversa": (
+                "comentarios cualificados incrementales",
+                "sentimiento negativo y tiempo de moderación",
+            ),
+            "Conversão": ("margen incremental", "CAC, reembolsos y frecuencia"),
+        },
+        "en": {
+            "Alcance": ("incremental unique reach", "frequency and cost per person reached"),
+            "Compartilhamento": ("incremental share rate", "negative comments and unfollow rate"),
+            "Conversa": (
+                "incremental qualified comments",
+                "negative sentiment and moderation time",
+            ),
+            "Conversão": ("incremental margin", "CAC, refunds, and frequency"),
+        },
+    }
+    if language in translations:
+        metric, guardrail = translations[language][objective]
+        return {"metric": metric, "guardrail": guardrail}
+    return mapping_pt[objective]
