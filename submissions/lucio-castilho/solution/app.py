@@ -618,17 +618,17 @@ table = filtered[
 ].rename(
     columns={
         "action_category": "Categoria da Ação",
-        "opportunity_id": "Opportunity",
-        "account": "Account",
+        "opportunity_id": "Oportunidade",
+        "account": "Conta",
         "sales_agent": "Agente de Vendas",
         "manager": "Gerente",
         "regional_office": "Regional",
         "product": "Produto",
         "deal_stage": "Etapa",
-        "priority_score": "Priority",
-        "historical_fit": "Historical Fit",
-        "attention_state": "Attention",
-        "evidence_confidence": "Evidence",
+        "priority_score": "Prioridade",
+        "historical_fit": "Aderência Histórica",
+        "attention_state": "Atenção",
+        "evidence_confidence": "Evidência",
     }
 )
 
