@@ -25,10 +25,10 @@ try:
         performance_by,
     )
     from dashboard.decision import break_even, experiment_copy
-    from dashboard.i18n import LANGUAGES, text
+    from dashboard.i18n import LANGUAGES, option_label, text
 except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own directory.
     from decision import break_even, experiment_copy  # type: ignore[no-redef]
-    from i18n import LANGUAGES, text  # type: ignore[no-redef]
+    from i18n import LANGUAGES, option_label, text  # type: ignore[no-redef]
 
     from data import (  # type: ignore[no-redef]
         FILTERS,
@@ -42,7 +42,7 @@ except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own d
 ASSETS = Path(__file__).resolve().parent / "assets"
 LOGO = ASSETS / "g4-logo.svg"
 
-st.set_page_config(page_title="G4 Social Intelligence", page_icon="📈", layout="wide")
+st.set_page_config(page_title="G4 Social Intelligence", page_icon=str(LOGO), layout="wide")
 
 with st.sidebar:
     st.image(str(LOGO), width=150)
@@ -61,6 +61,21 @@ with st.sidebar:
 def t(key: str) -> str:
     """Return a scalar translated UI label."""
     return str(tx[key])
+
+
+def table_columns(extra: dict[str, str] | None = None) -> dict[str, str]:
+    """Return localized, readable labels for embedded analytical tables."""
+    labels = {
+        "n": t("sample_size"),
+        "engagement_mean": t("mean_engagement"),
+        "engagement_median": t("median_engagement"),
+        "views_mean": t("mean_views"),
+        "is_sponsored": t("sponsored"),
+        "platform": t("platform"),
+    }
+    if extra:
+        labels.update(extra)
+    return labels
 
 
 palette = {
@@ -287,7 +302,11 @@ with st.sidebar:
     }
     for column in FILTERS:
         options = sorted(data[column].dropna().unique().tolist(), key=str)
-        selected[column] = st.multiselect(filter_labels[column], options)
+        selected[column] = st.multiselect(
+            filter_labels[column],
+            options,
+            format_func=lambda value: option_label(language, value),
+        )
 
 filtered = apply_filters(data, selected)
 summary = kpis(filtered)
@@ -343,16 +362,25 @@ with st.container(border=True):
             "audience_gender_distribution",
             "audience_location",
         ],
+        format_func=lambda value: option_label(language, value),
         key="audience_dimension",
     )
     audience_context = st.selectbox(
         t("cross_by"),
         ["platform", "content_type", "content_category"],
+        format_func=lambda value: option_label(language, value),
         key="audience_context",
     )
     audience_table = audience_cross(filtered, audience_dimension, audience_context)
+    audience_display = audience_table.copy()
+    audience_display[audience_dimension] = audience_display[audience_dimension].map(
+        lambda value: option_label(language, value)
+    )
+    audience_display[audience_context] = audience_display[audience_context].map(
+        lambda value: option_label(language, value)
+    )
     audience_fig = px.scatter(
-        audience_table,
+        audience_display,
         x="engagement_mean",
         y=audience_dimension,
         color=audience_context,
@@ -367,7 +395,17 @@ with st.container(border=True):
         font={"family": "Manrope", "color": palette["ink"]},
     )
     st.plotly_chart(audience_fig, use_container_width=True, theme=None)
-    st.dataframe(audience_table, use_container_width=True, hide_index=True)
+    st.dataframe(
+        audience_display,
+        use_container_width=True,
+        hide_index=True,
+        column_config=table_columns(
+            {
+                audience_dimension: option_label(language, audience_dimension),
+                audience_context: option_label(language, audience_context),
+            }
+        ),
+    )
 
 with st.container(border=True):
     st.subheader(t("q4_title"))
@@ -445,12 +483,17 @@ dimension = st.selectbox(
         "audience_age_distribution",
         "audience_location",
     ],
+    format_func=lambda value: option_label(language, value),
 )
 grouped = performance_by(filtered, dimension)
+grouped_display = grouped.copy()
+grouped_display[dimension] = grouped_display[dimension].map(
+    lambda value: option_label(language, value)
+)
 
 st.subheader(t("performance_dimension"))
 fig = px.scatter(
-    grouped,
+    grouped_display,
     x="engagement_mean",
     y=dimension,
     size="n",
@@ -464,7 +507,12 @@ fig.update_layout(
     font={"family": "Manrope", "color": palette["ink"]},
 )
 st.plotly_chart(fig, use_container_width=True, theme=None)
-st.dataframe(grouped, use_container_width=True, hide_index=True)
+st.dataframe(
+    grouped_display,
+    use_container_width=True,
+    hide_index=True,
+    column_config=table_columns({dimension: option_label(language, dimension)}),
+)
 
 st.subheader(t("sponsor_comparison"))
 sponsor = (
@@ -476,7 +524,16 @@ sponsor = (
     )
     .reset_index()
 )
-st.dataframe(sponsor, use_container_width=True, hide_index=True)
+sponsor_display = sponsor.copy()
+sponsor_display["is_sponsored"] = sponsor_display["is_sponsored"].map(
+    lambda value: option_label(language, value)
+)
+st.dataframe(
+    sponsor_display,
+    use_container_width=True,
+    hide_index=True,
+    column_config=table_columns(),
+)
 
 with st.expander(t("interpret")):
     st.markdown(t("interpret_body"))
