@@ -53,7 +53,7 @@ st.markdown(
     }
 
     .g4-eyebrow {
-        color: var(--g4-accent);
+        color: var(--g4-gold);
         font-size: .82rem;
         font-weight: 800;
         letter-spacing: .12em;
