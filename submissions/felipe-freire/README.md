@@ -70,7 +70,13 @@ A arquitetura, os prompts e o protocolo de handoff estão em [`docs/agent-archit
 
 ## Sobre mim
 
-- **Nome:** Felipe Freire
+- **Nome:** Felipe de Oliveira Freire
+- **Atuação:** Cientista/Analista de Dados
 - **LinkedIn:** https://www.linkedin.com/in/felipe-freire-659615284/
 - **PR:** https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91
 - **Dashboard público:** https://felipe-social-media-intelligence.streamlit.app/
+
+---
+
+**Felipe de Oliveira Freire**  
+*Cientista/Analista de Dados*
