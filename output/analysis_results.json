@@ -1,0 +1,388 @@
+{
+  "overall_stats": {
+    "total_accounts": 500,
+    "total_churned": 110,
+    "churn_rate": 0.22,
+    "total_mrr_lost": 254952,
+    "avg_mrr_lost": 2317.75
+  },
+  "segments": [
+    {
+      "segment": "industry",
+      "config": "object",
+      "churn_rates": [
+        {
+          "industry": "DevTools",
+          "churn_rate": 0.30973451327433627,
+          "churned": 35,
+          "total": 113,
+          "pct_of_total_churn": 0.3181818181818182
+        },
+        {
+          "industry": "FinTech",
+          "churn_rate": 0.22321428571428573,
+          "churned": 25,
+          "total": 112,
+          "pct_of_total_churn": 0.22727272727272727
+        },
+        {
+          "industry": "HealthTech",
+          "churn_rate": 0.21875,
+          "churned": 21,
+          "total": 96,
+          "pct_of_total_churn": 0.19090909090909092
+        },
+        {
+          "industry": "EdTech",
+          "churn_rate": 0.16455696202531644,
+          "churned": 13,
+          "total": 79,
+          "pct_of_total_churn": 0.11818181818181818
+        },
+        {
+          "industry": "Cybersecurity",
+          "churn_rate": 0.16,
+          "churned": 16,
+          "total": 100,
+          "pct_of_total_churn": 0.14545454545454545
+        }
+      ],
+      "mrr_impact": [
+        {
+          "industry": "Cybersecurity",
+          "0": {
+            "total_mrr": "226218",
+            "mrr_lost": "30487",
+            "avg_mrr_lost": 1905.4375
+          }
+        },
+        {
+          "industry": "DevTools",
+          "0": {
+            "total_mrr": "192311",
+            "mrr_lost": "67153",
+            "avg_mrr_lost": 1918.6571428571428
+          }
+        },
+        {
+          "industry": "EdTech",
+          "0": {
+            "total_mrr": "274696",
+            "mrr_lost": "22289",
+            "avg_mrr_lost": 1714.5384615384614
+          }
+        },
+        {
+          "industry": "FinTech",
+          "0": {
+            "total_mrr": "303409",
+            "mrr_lost": "77150",
+            "avg_mrr_lost": 3086.0
+          }
+        },
+        {
+          "industry": "HealthTech",
+          "0": {
+            "total_mrr": "221921",
+            "mrr_lost": "57873",
+            "avg_mrr_lost": 2755.8571428571427
+          }
+        }
+      ]
+    },
+    {
+      "segment": "country",
+      "config": "object",
+      "churn_rates": [
+        {
+          "country": "DE",
+          "churn_rate": 0.32,
+          "churned": 8,
+          "total": 25,
+          "pct_of_total_churn": 0.07272727272727272
+        },
+        {
+          "country": "US",
+          "churn_rate": 0.23367697594501718,
+          "churned": 68,
+          "total": 291,
+          "pct_of_total_churn": 0.6181818181818182
+        },
+        {
+          "country": "FR",
+          "churn_rate": 0.22727272727272727,
+          "churned": 5,
+          "total": 22,
+          "pct_of_total_churn": 0.045454545454545456
+        },
+        {
+          "country": "IN",
+          "churn_rate": 0.20408163265306123,
+          "churned": 10,
+          "total": 49,
+          "pct_of_total_churn": 0.09090909090909091
+        },
+        {
+          "country": "UK",
+          "churn_rate": 0.1896551724137931,
+          "churned": 11,
+          "total": 58,
+          "pct_of_total_churn": 0.1
+        },
+        {
+          "country": "CA",
+          "churn_rate": 0.17391304347826086,
+          "churned": 4,
+          "total": 23,
+          "pct_of_total_churn": 0.03636363636363636
+        },
+        {
+          "country": "AU",
+          "churn_rate": 0.125,
+          "churned": 4,
+          "total": 32,
+          "pct_of_total_churn": 0.03636363636363636
+        }
+      ],
+      "mrr_impact": [
+        {
+          "country": "AU",
+          "0": {
+            "total_mrr": "116487",
+            "mrr_lost": "19665",
+            "avg_mrr_lost": 4916.25
+          }
+        },
+        {
+          "country": "CA",
+          "0": {
+            "total_mrr": "36911",
+            "mrr_lost": "3151",
+            "avg_mrr_lost": 787.75
+          }
+        },
+        {
+          "country": "DE",
+          "0": {
+            "total_mrr": "68770",
+            "mrr_lost": "18476",
+            "avg_mrr_lost": 2309.5
+          }
+        },
+        {
+          "country": "FR",
+          "0": {
+            "total_mrr": "76051",
+            "mrr_lost": "8180",
+            "avg_mrr_lost": 1636.0
+          }
+        },
+        {
+          "country": "IN",
+          "0": {
+            "total_mrr": "117698",
+            "mrr_lost": "22183",
+            "avg_mrr_lost": 2218.3
+          }
+        },
+        {
+          "country": "UK",
+          "0": {
+            "total_mrr": "161611",
+            "mrr_lost": "23348",
+            "avg_mrr_lost": 2122.5454545454545
+          }
+        },
+        {
+          "country": "US",
+          "0": {
+            "total_mrr": "641027",
+            "mrr_lost": "159949",
+            "avg_mrr_lost": 2352.1911764705883
+          }
+        }
+      ]
+    },
+    {
+      "segment": "referral_source",
+      "config": "object",
+      "churn_rates": [
+        {
+          "referral_source": "event",
+          "churn_rate": 0.3020833333333333,
+          "churned": 29,
+          "total": 96,
+          "pct_of_total_churn": 0.2636363636363636
+        },
+        {
+          "referral_source": "other",
+          "churn_rate": 0.24271844660194175,
+          "churned": 25,
+          "total": 103,
+          "pct_of_total_churn": 0.22727272727272727
+        },
+        {
+          "referral_source": "ads",
+          "churn_rate": 0.23469387755102042,
+          "churned": 23,
+          "total": 98,
+          "pct_of_total_churn": 0.20909090909090908
+        },
+        {
+          "referral_source": "organic",
+          "churn_rate": 0.17543859649122806,
+          "churned": 20,
+          "total": 114,
+          "pct_of_total_churn": 0.18181818181818182
+        },
+        {
+          "referral_source": "partner",
+          "churn_rate": 0.14606741573033707,
+          "churned": 13,
+          "total": 89,
+          "pct_of_total_churn": 0.11818181818181818
+        }
+      ],
+      "mrr_impact": [
+        {
+          "referral_source": "ads",
+          "0": {
+            "total_mrr": "211220",
+            "mrr_lost": "40447",
+            "avg_mrr_lost": 1758.5652173913043
+          }
+        },
+        {
+          "referral_source": "event",
+          "0": {
+            "total_mrr": "217593",
+            "mrr_lost": "84888",
+            "avg_mrr_lost": 2927.1724137931033
+          }
+        },
+        {
+          "referral_source": "organic",
+          "0": {
+            "total_mrr": "275978",
+            "mrr_lost": "49447",
+            "avg_mrr_lost": 2472.35
+          }
+        },
+        {
+          "referral_source": "other",
+          "0": {
+            "total_mrr": "249130",
+            "mrr_lost": "49565",
+            "avg_mrr_lost": 1982.6
+          }
+        },
+        {
+          "referral_source": "partner",
+          "0": {
+            "total_mrr": "264634",
+            "mrr_lost": "30605",
+            "avg_mrr_lost": 2354.230769230769
+          }
+        }
+      ]
+    },
+    {
+      "segment": "billing_frequency",
+      "config": "object",
+      "churn_rates": [
+        {
+          "billing_frequency": "annual",
+          "churn_rate": 0.24014336917562723,
+          "churned": 67,
+          "total": 279,
+          "pct_of_total_churn": 0.6090909090909091
+        },
+        {
+          "billing_frequency": "monthly",
+          "churn_rate": 0.19457013574660634,
+          "churned": 43,
+          "total": 221,
+          "pct_of_total_churn": 0.39090909090909093
+        }
+      ],
+      "mrr_impact": [
+        {
+          "billing_frequency": "annual",
+          "0": {
+            "total_mrr": "664637",
+            "mrr_lost": "120012",
+            "avg_mrr_lost": 1791.2238805970148
+          }
+        },
+        {
+          "billing_frequency": "monthly",
+          "0": {
+            "total_mrr": "553918",
+            "mrr_lost": "134940",
+            "avg_mrr_lost": 3138.139534883721
+          }
+        }
+      ]
+    }
+  ],
+  "descriptive": {
+    "overall_stats": {
+      "total_accounts": 500,
+      "total_churned": 110,
+      "churn_rate": 0.22,
+      "total_mrr_lost": 254952,
+      "avg_mrr_lost": 2317.75
+    },
+    "churn_type_split": {
+      "voluntary": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "involuntary": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "unknown": {
+        "count": 0,
+        "pct": 0.0
+      }
+    },
+    "simpson_paradox": [
+      {
+        "segment": "DevTools",
+        "segment_rate": 0.3097,
+        "overall_rate": 0.22,
+        "direction": "up",
+        "n": 113
+      },
+      {
+        "segment": "FinTech",
+        "segment_rate": 0.2232,
+        "overall_rate": 0.22,
+        "direction": "up",
+        "n": 112
+      },
+      {
+        "segment": "HealthTech",
+        "segment_rate": 0.2188,
+        "overall_rate": 0.22,
+        "direction": "down",
+        "n": 96
+      },
+      {
+        "segment": "EdTech",
+        "segment_rate": 0.1646,
+        "overall_rate": 0.22,
+        "direction": "down",
+        "n": 79
+      },
+      {
+        "segment": "Cybersecurity",
+        "segment_rate": 0.16,
+        "overall_rate": 0.22,
+        "direction": "down",
+        "n": 100
+      }
+    ]
+  }
+}

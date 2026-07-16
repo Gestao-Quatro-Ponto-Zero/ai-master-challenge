@@ -12,5 +12,13 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Project output
+output/

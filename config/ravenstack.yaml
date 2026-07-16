@@ -1,0 +1,212 @@
+# ─── Churn Platform Config — RavenStack ───────────────────────────────
+# SPEC-2: Pipeline de Dados
+
+pipeline:
+  name: "ravenstack-churn-diagnostic"
+  version: "1.0"
+  description: "Diagnóstico de churn para RavenStack SaaS B2B"
+
+sources:
+  accounts:
+    path: "submissions/rodolfo/data/ravenstack_accounts.csv"
+    description: "Contas com indústria, país, canal de aquisição, plano, flag de trial"
+    primary_key: "account_id"
+    schema:
+      account_id: { type: string, required: true }
+      account_name: { type: string }
+      industry: { type: string, categories: ["EdTech", "FinTech", "DevTools", "HealthTech", "Cybersecurity"] }
+      country: { type: string }
+      signup_date: { type: date }
+      referral_source: { type: string }
+      plan_tier: { type: string, categories: ["Basic", "Pro", "Enterprise"] }
+      seats: { type: integer, min: 0 }
+      is_trial: { type: boolean }
+      churn_flag: { type: boolean, required: true }
+
+  subscriptions:
+    path: "submissions/rodolfo/data/ravenstack_subscriptions.csv"
+    description: "Assinaturas com MRR, ARR, upgrades/downgrades, billing frequency"
+    primary_key: "subscription_id"
+    foreign_key: "account_id"
+    schema:
+      subscription_id: { type: string, required: true }
+      account_id: { type: string, required: true }
+      start_date: { type: date, required: true }
+      end_date: { type: date }
+      plan_tier: { type: string }
+      seats: { type: integer }
+      mrr_amount: { type: integer, min: 0 }
+      arr_amount: { type: integer, min: 0 }
+      is_trial: { type: boolean }
+      upgrade_flag: { type: boolean }
+      downgrade_flag: { type: boolean }
+      churn_flag: { type: boolean }
+      billing_frequency: { type: string, categories: ["monthly", "annual", "quarterly"] }
+      auto_renew_flag: { type: boolean }
+
+  feature_usage:
+    path: "submissions/rodolfo/data/ravenstack_feature_usage.csv"
+    description: "Uso diário por feature — contagem, duração, erros, flag de beta"
+    primary_key: "usage_id"
+    foreign_key: "subscription_id"
+    schema:
+      usage_id: { type: string, required: true }
+      subscription_id: { type: string, required: true }
+      usage_date: { type: date, required: true }
+      feature_name: { type: string }
+      usage_count: { type: integer, min: 0 }
+      usage_duration_secs: { type: integer, min: 0 }
+      error_count: { type: integer, min: 0 }
+      is_beta_feature: { type: boolean }
+
+  support_tickets:
+    path: "submissions/rodolfo/data/ravenstack_support_tickets.csv"
+    description: "Tickets com tempo de resolução, first response, satisfação, escalações"
+    primary_key: "ticket_id"
+    foreign_key: "account_id"
+    schema:
+      ticket_id: { type: string, required: true }
+      account_id: { type: string, required: true }
+      submitted_at: { type: datetime, required: true }
+      closed_at: { type: datetime }
+      resolution_time_hours: { type: float, min: 0 }
+      priority: { type: string, categories: ["low", "medium", "high", "critical", "urgent"] }
+      first_response_time_minutes: { type: integer, min: 0 }
+      satisfaction_score: { type: float, min: 1, max: 5 }
+      escalation_flag: { type: boolean }
+
+  churn_events:
+    path: "submissions/rodolfo/data/ravenstack_churn_events.csv"
+    description: "Eventos de churn com reason code, refund, feedback"
+    primary_key: "churn_event_id"
+    foreign_key: "account_id"
+    schema:
+      churn_event_id: { type: string, required: true }
+      account_id: { type: string, required: true }
+      churn_date: { type: date, required: true }
+      reason_code: { type: string, categories: ["pricing", "support", "features", "competitor", "budget", "unknown"] }
+      refund_amount_usd: { type: float, min: 0 }
+      preceding_upgrade_flag: { type: boolean }
+      preceding_downgrade_flag: { type: boolean }
+      is_reactivation: { type: boolean }
+      feedback_text: { type: string }
+
+merges:
+  main_view:
+    type: "sequential"
+    steps:
+      - from: "accounts"
+        with: "subscriptions"
+        "on": "account_id"
+        strategy: "latest_subscription"
+        suffix: ["_acc", "_sub"]
+
+      - from: null
+        with: "feature_usage"
+        "on": "subscription_id"
+        strategy: "aggregate"
+        aggregations:
+          total_usage_count: { method: sum, column: usage_count }
+          avg_usage_duration: { method: mean, column: usage_duration_secs }
+          total_error_count: { method: sum, column: error_count }
+          unique_features: { method: nunique, column: feature_name }
+          beta_feature_used: { method: max, column: is_beta_feature }
+          usage_days: { method: nunique, column: usage_date }
+
+      - from: null
+        with: "support_tickets"
+        "on": "account_id"
+        strategy: "aggregate"
+        aggregations:
+          total_tickets: { method: count, column: ticket_id }
+          avg_resolution_hours: { method: mean, column: resolution_time_hours }
+          avg_first_response_min: { method: mean, column: first_response_time_minutes }
+          avg_satisfaction: { method: mean, column: satisfaction_score }
+          escalation_count: { method: sum, column: escalation_flag }
+          high_priority_tickets:
+            method: count_where
+            column: priority
+            condition: "in ['high', 'critical', 'urgent']"
+
+analysis:
+  segments:
+    - industry
+    - plan_tier
+    - country
+    - referral_source
+    - billing_frequency
+    - seats_quartile
+    - mrr_band
+    - tenure_cohort
+
+  churn_reason_taxonomy:
+    voluntary:
+      - pricing
+      - support
+      - features
+      - competitor
+    involuntary:
+      - budget
+    unknown:
+      - unknown
+
+scoring:
+  health_score:
+    pillars:
+      usage:
+        weight: 0.35
+        signals:
+          - name: usage_trend
+            weight: 0.30
+          - name: usage_level
+            weight: 0.25
+          - name: feature_adoption
+            weight: 0.25
+          - name: error_rate
+            weight: 0.20
+      support:
+        weight: 0.25
+        signals:
+          - name: ticket_volume
+            weight: 0.25
+          - name: escalation_rate
+            weight: 0.30
+          - name: satisfaction
+            weight: 0.30
+          - name: response_time
+            weight: 0.15
+      engagement:
+        weight: 0.20
+        signals:
+          - name: login_frequency
+            weight: 0.35
+          - name: days_since_login
+            weight: 0.35
+          - name: beta_adoption
+            weight: 0.30
+      financial:
+        weight: 0.20
+        signals:
+          - name: downgrade_flag
+            weight: 0.40
+          - name: billing_frequency
+            weight: 0.30
+          - name: mrr_trend
+            weight: 0.30
+
+    tiers:
+      - name: "Critical"
+        range: [0, 40]
+      - name: "At Risk"
+        range: [41, 60]
+      - name: "Neutral"
+        range: [61, 75]
+      - name: "Healthy"
+        range: [76, 90]
+      - name: "Champion"
+        range: [91, 100]
+
+output:
+  report_path: "output/report.html"
+  data_path: "output/account_view.parquet"
+  format: "parquet"

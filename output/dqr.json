@@ -1,0 +1,365 @@
+{
+  "accounts": {
+    "rows": 500,
+    "cols": 10,
+    "columns": {
+      "account_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 500
+      },
+      "account_name": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 500
+      },
+      "industry": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 5
+      },
+      "country": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 7
+      },
+      "signup_date": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 370
+      },
+      "referral_source": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 5
+      },
+      "plan_tier": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 3
+      },
+      "seats": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 73,
+        "min": 1.0,
+        "max": 163.0,
+        "mean": 20.56
+      },
+      "is_trial": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "churn_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      }
+    }
+  },
+  "subscriptions": {
+    "rows": 5000,
+    "cols": 14,
+    "columns": {
+      "subscription_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 5000
+      },
+      "account_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 500
+      },
+      "start_date": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 625
+      },
+      "end_date": {
+        "dtype": "object",
+        "nulls": 4514,
+        "null_rate": 0.903,
+        "unique": 208
+      },
+      "plan_tier": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 3
+      },
+      "seats": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 123,
+        "min": 1.0,
+        "max": 189.0,
+        "mean": 29.85
+      },
+      "mrr_amount": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 306,
+        "min": 0.0,
+        "max": 33830.0,
+        "mean": 2267.75
+      },
+      "arr_amount": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 306,
+        "min": 0.0,
+        "max": 405960.0,
+        "mean": 27212.99
+      },
+      "is_trial": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "upgrade_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "downgrade_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "churn_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "billing_frequency": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "auto_renew_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      }
+    }
+  },
+  "feature_usage": {
+    "rows": 25000,
+    "cols": 8,
+    "columns": {
+      "usage_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 24979
+      },
+      "subscription_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 4967
+      },
+      "usage_date": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 731
+      },
+      "feature_name": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 40
+      },
+      "usage_count": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 27,
+        "min": 0.0,
+        "max": 26.0,
+        "mean": 10.02
+      },
+      "usage_duration_secs": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 4168,
+        "min": 0.0,
+        "max": 12696.0,
+        "mean": 3042.2
+      },
+      "error_count": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 9,
+        "min": 0.0,
+        "max": 8.0,
+        "mean": 0.56
+      },
+      "is_beta_feature": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      }
+    }
+  },
+  "support_tickets": {
+    "rows": 2000,
+    "cols": 9,
+    "columns": {
+      "ticket_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2000
+      },
+      "account_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 492
+      },
+      "submitted_at": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 671
+      },
+      "closed_at": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 1893
+      },
+      "resolution_time_hours": {
+        "dtype": "float64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 72,
+        "min": 1.0,
+        "max": 72.0,
+        "mean": 35.86
+      },
+      "priority": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 4
+      },
+      "first_response_time_minutes": {
+        "dtype": "int64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 180,
+        "min": 1.0,
+        "max": 180.0,
+        "mean": 88.48
+      },
+      "satisfaction_score": {
+        "dtype": "float64",
+        "nulls": 825,
+        "null_rate": 0.412,
+        "unique": 3,
+        "min": 3.0,
+        "max": 5.0,
+        "mean": 3.98
+      },
+      "escalation_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      }
+    }
+  },
+  "churn_events": {
+    "rows": 600,
+    "cols": 9,
+    "columns": {
+      "churn_event_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 600
+      },
+      "account_id": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 352
+      },
+      "churn_date": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 311
+      },
+      "reason_code": {
+        "dtype": "object",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 6
+      },
+      "refund_amount_usd": {
+        "dtype": "float64",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 142,
+        "min": 0.0,
+        "max": 392.92,
+        "mean": 14.42
+      },
+      "preceding_upgrade_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "preceding_downgrade_flag": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "is_reactivation": {
+        "dtype": "bool",
+        "nulls": 0,
+        "null_rate": 0.0,
+        "unique": 2
+      },
+      "feedback_text": {
+        "dtype": "object",
+        "nulls": 148,
+        "null_rate": 0.247,
+        "unique": 3
+      }
+    }
+  }
+}

@@ -1,0 +1,91 @@
+# Schema definitions for validation (SPEC-2 REQ-2-002)
+# Each dataset defines: required columns, types, constraints
+
+accounts:
+  required: ["account_id", "churn_flag"]
+  types:
+    account_id: string
+    account_name: string
+    industry: string
+    country: string
+    signup_date: string
+    referral_source: string
+    plan_tier: string
+    seats: integer
+    is_trial: boolean
+    churn_flag: boolean
+  constraints:
+    seats: { min: 0 }
+    churn_flag: { in: [true, false] }
+
+subscriptions:
+  required: ["subscription_id", "account_id", "start_date"]
+  types:
+    subscription_id: string
+    account_id: string
+    start_date: string
+    end_date: string
+    plan_tier: string
+    seats: integer
+    mrr_amount: integer
+    arr_amount: integer
+    is_trial: boolean
+    upgrade_flag: boolean
+    downgrade_flag: boolean
+    churn_flag: boolean
+    billing_frequency: string
+    auto_renew_flag: boolean
+  constraints:
+    mrr_amount: { min: 0 }
+    arr_amount: { min: 0 }
+    billing_frequency: { in: ["monthly", "annual", "quarterly"] }
+
+feature_usage:
+  required: ["usage_id", "subscription_id", "usage_date"]
+  types:
+    usage_id: string
+    subscription_id: string
+    usage_date: string
+    feature_name: string
+    usage_count: integer
+    usage_duration_secs: integer
+    error_count: integer
+    is_beta_feature: boolean
+  constraints:
+    usage_count: { min: 0 }
+    usage_duration_secs: { min: 0 }
+    error_count: { min: 0 }
+
+support_tickets:
+  required: ["ticket_id", "account_id", "submitted_at"]
+  types:
+    ticket_id: string
+    account_id: string
+    submitted_at: string
+    closed_at: string
+    resolution_time_hours: float
+    priority: string
+    first_response_time_minutes: integer
+    satisfaction_score: float
+    escalation_flag: boolean
+  constraints:
+    resolution_time_hours: { min: 0 }
+    first_response_time_minutes: { min: 0 }
+    satisfaction_score: { min: 1, max: 5 }
+    priority: { in: ["low", "medium", "high", "critical", "urgent"] }
+
+churn_events:
+  required: ["churn_event_id", "account_id", "churn_date"]
+  types:
+    churn_event_id: string
+    account_id: string
+    churn_date: string
+    reason_code: string
+    refund_amount_usd: float
+    preceding_upgrade_flag: boolean
+    preceding_downgrade_flag: boolean
+    is_reactivation: boolean
+    feedback_text: string
+  constraints:
+    refund_amount_usd: { min: 0 }
+    reason_code: { in: ["pricing", "support", "features", "competitor", "budget", "unknown"] }
