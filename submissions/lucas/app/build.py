@@ -12,7 +12,13 @@ JSON inline no HTML. O SCORE CONTINUA SENDO CALCULADO NO BROWSER, em JS,
 a partir desses dados — so a etapa de "carregar arquivo" muda de fetch()
 pra "já esta na pagina".
 
-Rode este script de novo se os dados em ../analysis ou ../data mudarem.
+COMO RODAR (regenera app/index.html a partir de ../analysis e ../data):
+    cd app
+    python build.py     (ou: py build.py, no Windows)
+
+Rode de novo sempre que scoring_reference.json, pipeline_clean.csv,
+accounts.csv ou sales_teams.csv mudarem — o index.html não lê esses
+arquivos em tempo de execução, então ele não se atualiza sozinho.
 """
 import json
 import pandas as pd
@@ -82,20 +88,28 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   header { padding: 28px 0 8px; }
   h1 { font-size: 22px; margin: 0 0 4px; }
   .subtitle { color: var(--muted); font-size: 13.5px; margin: 0; }
-  section { margin-top: 20px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  section { margin-top: 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
 
-  .filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
-  .filters label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); gap: 4px; }
-  .filters select {
-    font-size: 13.5px; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--line);
-    background: #fff; min-width: 150px;
+  .filters-grid {
+    display: grid; grid-template-columns: repeat(4, minmax(140px, 1fr)) auto;
+    gap: 16px; align-items: end;
   }
-  .filters button {
-    font-size: 13px; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--line);
-    background: #fff; cursor: pointer; color: var(--muted);
+  .filters-grid label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); gap: 6px; font-weight: 500; }
+  .filters-grid select {
+    width: 100%; font-size: 13.5px; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink);
   }
-  .filters button:hover { background: var(--gray-bg); }
+  .filters-grid button {
+    font-size: 13px; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--line);
+    background: #fff; cursor: pointer; color: var(--muted); white-space: nowrap; height: 34px;
+  }
+  .filters-grid button:hover { background: var(--gray-bg); }
+  .filters-active {
+    margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line);
+    font-size: 12.5px; color: var(--muted);
+  }
+  .filters-active b { color: var(--ink); font-weight: 600; }
 
   .summary { font-size: 13.5px; color: var(--muted); }
   .summary b { color: var(--ink); }
@@ -140,9 +154,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .dr-ev { margin-left: auto; font-weight: 700; }
   .dr-days { color: var(--muted); font-size: 12px; }
   .conf { font-size: 11px; padding: 2px 7px; border-radius: 999px; border: 1px solid; }
-  .conf-alta { color: #1e7e34; border-color: #b7e1c3; }
-  .conf-media { color: #a15c00; border-color: #f3d5a8; }
-  .conf-baixa { color: #b3261e; border-color: #f6c6c0; }
+  .conf-alta { color: #1e7e34; border-color: #b7e1c3; background: #f1f9f3; }
+  .conf-media { color: #a15c00; border-color: #f3d5a8; background: #fdf6ea; }
+  .conf-baixa { color: #b3261e; border-color: #f6c6c0; background: #fdf1f0; }
   .drivers { padding: 2px 12px 12px 34px; font-size: 12.5px; color: #3a3f47; }
   .drivers ul { margin: 4px 0 0; padding-left: 18px; }
   .drivers li { margin-bottom: 3px; }
@@ -161,20 +175,23 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <p class="subtitle">Pipeline referente a __REF_DATE_BR__ · __N_OPEN__ deals abertos · organizador de ação, não previsão</p>
   </header>
 
-  <section class="card filters">
-    <label>Vendedor
-      <select id="f-agent"><option value="">Todos</option></select>
-    </label>
-    <label>Manager
-      <select id="f-manager"><option value="">Todos</option></select>
-    </label>
-    <label>Região
-      <select id="f-region"><option value="">Todas</option></select>
-    </label>
-    <label>Produto
-      <select id="f-product"><option value="">Todos</option></select>
-    </label>
-    <button id="f-clear">Limpar filtros</button>
+  <section class="card">
+    <div class="filters-grid">
+      <label>Vendedor
+        <select id="f-agent"><option value="">Todos</option></select>
+      </label>
+      <label>Manager
+        <select id="f-manager"><option value="">Todos</option></select>
+      </label>
+      <label>Região
+        <select id="f-region"><option value="">Todas</option></select>
+      </label>
+      <label>Produto
+        <select id="f-product"><option value="">Todos</option></select>
+      </label>
+      <button id="f-clear">Limpar filtros</button>
+    </div>
+    <div class="filters-active" id="filters-active" style="display:none;"></div>
   </section>
 
   <section class="summary" id="summary"></section>
@@ -182,8 +199,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   <section class="card">
     <div class="matrix-grid" id="matrix"></div>
     <p class="matrix-caption">
-      Alto/baixo valor = acima/abaixo da mediana de EV de todos os __N_OPEN__ deals abertos da empresa (fixo, não muda com o filtro).
-      Esfriando = entre os 25% mais velhos (dias desde o engajamento) entre os deals abertos <em>do mesmo produto</em>, considerando toda a empresa.
+      Alto/baixo valor = acima/abaixo da mediana de EV de todos os __N_OPEN__ deals abertos da empresa (fixo, não muda com o filtro — um deal caro é caro independente de quem o trabalha).
+      Esfriando = entre os 25% mais velhos (dias desde o engajamento) do mesmo produto <em>dentro do que está filtrado agora</em>. Sem filtro ativo, a comparação é com a empresa toda; ao filtrar (ex: por vendedor), a comparação passa a ser só dentro do que está sendo exibido.
       Deals em Prospecting nunca são flagados como esfriando (ainda não têm data de engajamento).
     </p>
   </section>
@@ -274,32 +291,39 @@ function scoreDeal(raw) {
 
 const DEALS = OPEN_DEALS_RAW.map(scoreDeal);
 
-// esfriando: relativo, top 25% mais velhos entre ABERTOS do MESMO PRODUTO (empresa toda)
-const agesByProduct = {};
-DEALS.forEach((d) => {
-  if (d.deal_stage === "Engaging" && d.days_open != null) {
-    (agesByProduct[d.product] = agesByProduct[d.product] || []).push(d.days_open);
-  }
-});
-const coolingThreshold = {};
-for (const [product, ages] of Object.entries(agesByProduct)) {
-  coolingThreshold[product] = percentile(ages, 75);
-}
-DEALS.forEach((d) => {
-  d.esfriando = d.deal_stage === "Engaging" && d.days_open != null && d.days_open >= coolingThreshold[d.product];
-});
-
-// alto/baixo valor: mediana global de EV, fixa (nao muda com filtro)
+// alto/baixo valor: mediana de EV de TODOS os deals abertos da empresa,
+// fixa — nao muda com o filtro (um deal caro e caro independente de quem
+// o trabalha).
 const medianEV = percentile(DEALS.map((d) => d.ev), 50);
+DEALS.forEach((d) => { d.alto = d.ev >= medianEV; });
 
-function quadrantOf(d) {
-  const alto = d.ev >= medianEV;
-  if (alto && !d.esfriando) return "trabalhar";
-  if (alto && d.esfriando) return "resgatar";
-  if (!alto && !d.esfriando) return "radar";
-  return "despriorizar";
+// esfriando: relativo ao SUBCONJUNTO FILTRADO no momento — top 25% mais
+// velhos (dias desde o engajamento) entre os deals Engaging do MESMO
+// PRODUTO dentro do que esta sendo exibido agora. Sem filtro ativo, o
+// subconjunto filtrado e a empresa toda, entao o limiar cai naturalmente
+// pro nivel empresa. Recalculado a cada render() — nao e um valor fixo
+// por deal como o valor.
+function classify(deals) {
+  const agesByProduct = {};
+  deals.forEach((d) => {
+    if (d.deal_stage === "Engaging" && d.days_open != null) {
+      (agesByProduct[d.product] = agesByProduct[d.product] || []).push(d.days_open);
+    }
+  });
+  const threshold = {};
+  for (const [product, ages] of Object.entries(agesByProduct)) {
+    threshold[product] = percentile(ages, 75);
+  }
+  deals.forEach((d) => {
+    d.esfriando = d.deal_stage === "Engaging" && d.days_open != null && d.days_open >= threshold[d.product];
+    if (d.alto) {
+      d.quadrant = d.esfriando ? "resgatar" : "trabalhar";
+    } else {
+      d.quadrant = d.esfriando ? "despriorizar" : "radar";
+    }
+  });
+  return deals;
 }
-DEALS.forEach((d) => { d.quadrant = quadrantOf(d); });
 
 const QUADRANTS = [
   { key: "trabalhar", cls: "q-trabalhar", emoji: "🟢", title: "Trabalhar agora", desc: "alto valor, dentro do ciclo" },
@@ -379,18 +403,26 @@ function renderMatrix(deals) {
   });
 }
 
+const MAX_LIST = 50;
+const CONFIDENCE_ORDER = { alta: 0, media: 1, baixa: 2 };
+
 function renderDealList(deals) {
   const q = QUADRANTS.find((x) => x.key === selectedQuadrant);
   document.getElementById("deal-list-title").textContent = `${q.emoji} ${q.title} (${q.desc})`;
   const listEl = document.getElementById("deal-list");
-  const items = deals.filter((d) => d.quadrant === selectedQuadrant).sort((a, b) => b.ev - a.ev);
+  // ordena por confianca (alta -> media -> baixa) primeiro, EV decrescente dentro de cada nivel —
+  // evita que deals de confianca baixa (ex.: produto raro, preco alto) dominem o topo so por EV
+  const all = deals.filter((d) => d.quadrant === selectedQuadrant).sort((a, b) =>
+    (CONFIDENCE_ORDER[a.confidence] - CONFIDENCE_ORDER[b.confidence]) || (b.ev - a.ev)
+  );
 
-  if (items.length === 0) {
+  if (all.length === 0) {
     listEl.innerHTML = `<div class="empty-state">Nenhum deal neste quadrante com os filtros atuais.</div>`;
     return;
   }
 
-  listEl.innerHTML = items.map((d) => `
+  const items = all.slice(0, MAX_LIST);
+  const rowsHtml = items.map((d) => `
     <details class="deal-row">
       <summary>
         <span class="dr-id">${d.opportunity_id}</span>
@@ -407,6 +439,11 @@ function renderDealList(deals) {
       </div>
     </details>
   `).join("");
+
+  const capNote = all.length > MAX_LIST
+    ? `<p class="matrix-caption">Mostrando os ${MAX_LIST} maiores por EV, de ${all.length} deals neste quadrante. Refine com os filtros acima pra ver o resto.</p>`
+    : "";
+  listEl.innerHTML = rowsHtml + capNote;
 }
 
 function renderSummary(deals) {
@@ -415,11 +452,27 @@ function renderSummary(deals) {
     `<b>${deals.length}</b> deals abertos no filtro atual · <b>${fmtMoney(total)}</b> em EV total`;
 }
 
+function renderActiveFilters() {
+  const el = document.getElementById("filters-active");
+  const parts = [];
+  if (filters.agent) parts.push(`Vendedor: <b>${filters.agent}</b>`);
+  if (filters.manager) parts.push(`Manager: <b>${filters.manager}</b>`);
+  if (filters.region) parts.push(`Região: <b>${filters.region}</b>`);
+  if (filters.product) parts.push(`Produto: <b>${filters.product}</b>`);
+  if (parts.length) {
+    el.style.display = "";
+    el.innerHTML = "Filtro ativo: " + parts.join(" · ");
+  } else {
+    el.style.display = "none";
+  }
+}
+
 function render() {
-  const deals = filteredDeals();
+  const deals = classify(filteredDeals());
   renderSummary(deals);
   renderMatrix(deals);
   renderDealList(deals);
+  renderActiveFilters();
 }
 
 ["agent", "manager", "region", "product"].forEach((key) => {
