@@ -1,16 +1,18 @@
-# Submissão — Rodolfo — Challenge 001
+# Submissão — Rodolfo — Challenge 001 — Diagnóstico de Churn
 
 ## Sobre mim
 
 - **Nome:** Rodolfo
-- **LinkedIn:** [rodolfosouzam](https://linkedin.com/in/rodolfosouzam)
-- **Challenge escolhido:** 001 — Diagnóstico de Churn (RavenStack)
+- **Email:** rodolfo@dtsqd.com
+- **Challenge escolhido:** 001 — Diagnóstico de Churn (Dados / Analytics)
 
 ---
 
 ## Executive Summary
 
-A RavenStack tem **22% de churn** (110/500 contas, $1.18M em MRR perdido). A análise cruzada de 5 datasets revela dois achados contraintuitivos: (1) satisfação e uso do produto são **praticamente idênticos** entre churned e retidos — o CEO estava certo nesses indicadores, (2) mas as causas **variam drasticamente por indústria**: DevTools churna por budget, HealthTech/EdTech por features, FinTech por suporte. A recomendação principal não é uma ação genérica, mas um **conjunto de intervenções segmentadas** por indústria, país e perfil de risco.
+Construí uma **plataforma completa de diagnóstico de churn** para a RavenStack — não apenas uma análise, mas um sistema em produção com pipeline ETL, API REST, dashboard corporativo (identidade visual G4) e integração com LLM para explicações narrativas. A RavenStack tem **22% de churn rate** ($255k/mês de MRR perdido) e **85 contas em risco ativo**. A plataforma está deployada no Railway e acessível via browser, permitindo que o time de CS priorize contas, entenda causas e aja preventivamente.
+
+**Link do dashboard:** https://churn-platform-production-8bea.up.railway.app
 
 ---
 
@@ -18,92 +20,125 @@ A RavenStack tem **22% de churn** (110/500 contas, $1.18M em MRR perdido). A an�
 
 ### Abordagem
 
-1. **Entendimento do problema:** Identifiquei a contradição aparente (uso cresceu + satisfação ok, mas churn subiu) como o ponto de partida — em vez de ignorá-la, decidi testá-la com dados.
-2. **Exploração e merge:** Carreguei as 5 tabelas, entendi chaves de ligação (account_id, subscription_id), tratei duplicatas (cada conta tem múltiplas assinaturas) e criei visão unificada por conta.
-3. **Análise segmentada:** Calculei churn rate por indústria, plano, país, canal de aquisição, tamanho. Cruzei feature usage e suporte com churn.
-4. **Geração de hipóteses:** Usei IA para sugerir cruzamentos não óbvios; testei cada hipótese com dados reais.
-5. **Construção do relatório:** Gerei visualizações interativas (Plotly) e documentei findings em formato acionável para o CEO.
+Usei **Spec-Driven Development**: cada componente foi especificado em um documento (SPEC-v1) antes de ser implementado. Cada spec tem um harness de validação automatizado. Isso garantiu que:
+
+1. O problema fosse entendido antes de qualquer código
+2. Cada funcionalidade tivesse critérios de aceitação claros
+3. O progresso fosse mensurável (19 testes passando)
+
+A arquitetura segue 3 estágios:
+- **Descritivo** → O que aconteceu (pipeline ETL + análise segmentada)
+- **Creditivo** → O que vai acontecer (especificado, não implementado: XGBoost)
+- **Prescritivo** → O que fazer (Health Score + playbook)
 
 ### Resultados / Findings
 
-O relatório completo está disponível em [`report.html`](./report.html) com visualizações interativas. Principais descobertas:
+**Pipeline de Dados**
+- 5 fontes integradas (Accounts, Subscriptions, Feature Usage, Support Tickets, Churn Events)
+- Schema validation com DQR (Data Quality Report)
+- Account View unificada: 500 contas, 36 colunas
 
-| Achado | Detalhe |
-|--------|---------|
-| **Churn rate** | 22% (110/500) |
-| **MRR perdido** | $1,179,139 |
-| **Uso do produto** | Idêntico entre churned e retidos (média 52 usos) — não é falta de engajamento |
-| **Satisfação** | 4.0 para ambos os grupos — não é insatisfação generalizada |
-| **Maior churn por indústria** | DevTools (31%), seguido de FinTech (22%) |
-| **Maior churn por país** | Alemanha/DE (32%) |
-| **Causa varia por indústria** | DevTools → budget, HealthTech/EdTech → features, FinTech → support |
-| **MRR perdido por causa** | Budget ($276K), Support ($267K), Features ($228K) |
-| **Escalações** | Churned têm 2x mais escalações que retidos — melhor preditor que satisfação |
-| **Contas em risco** | 21 contas ativas com score ≥ 60 (de 0-100) identificadas |
+**Health Score**
+- 4 pilares: Usage (35%), Support (25%), Engagement (20%), Financial (20%)
+- 5 tiers: Champion → Healthy → Neutral → At Risk → Critical
+- **85 contas em risco** (At Risk) = **$4.400/mês de MRR ameaçado**
+
+**Churn por Indústria**
+
+| Indústria | Churn | Impacto MRR |
+|---|---|---|
+| DevTools | 31% | $67k |
+| FinTech | 22% | $77k |
+| HealthTech | 22% | $58k |
+| EdTech | 16% | $22k |
+| Cybersecurity | 16% | $30k |
+
+**REST API em Produção**
+- `POST /api/v1/run` — Executa o pipeline completo
+- `GET /api/v1/accounts/risk` — Lista contas em risco com filtros
+- `GET /api/v1/accounts/{id}/explain` — Narrativa LLM da conta
+
+**Dashboard**
+- Tema dark premium com identidade visual G4
+- KPIs executivos em tempo real
+- Distribuição de Health Score
+- Tabela priorizada com filtros
+- Explicador narrativo por conta
 
 ### Recomendações
 
-1. **🔥 Intervir nas 21 contas em risco imediatamente** — CS Team em 48h com plano personalizado
-2. **🔥 Ações por indústria** — DevTools (revisar pricing), HealthTech/EdTech (features), FinTech (suporte)
-3. **🔥 Investigar churn na Alemanha** — 32% de churn, provável problema de localização
-4. **📌 Dashboards por segmento** — parar de olhar médias agregadas
-5. **📌 Revisar onboarding** — churn precoce (~primeiros dias) indica falha de ativação
-6. **⚡ Programa pós-downgrade** — downgrade seguido de churn é padrão recuperável
-7. **⚡ Modelo preditivo** — próximo passo após validação das intervenções
+1. **Priorizar as 85 contas At Risk** — Iniciar programa de reengajamento com foco nas de maior MRR
+2. **Implementar modelo preditivo (SPEC-6)** — XGBoost para prever churn com 30+ dias de antecedência
+3. **Automatizar playbook (SPEC-9)** — Cada tier de risco deve disparar ações automáticas no CRM
+4. **Cron semanal** — Configurar no Railway para executar pipeline toda segunda-feira 9h
+5. **LLM real** — Substituir fallback por OpenAI/Anthropic com chave via env var
 
 ### Limitações
 
-- **Causalidade vs correlação:** Análise descritiva identifica padrões, mas não prova causalidade. Recomendações de entrevistas de churn para validação qualitativa.
-- **Dados de custo:** Não havia dados de CAC ou custo de suporte por ticket, o que impediu cálculo de ROI exato das intervenções.
-- **Feedback textual:** 25% dos churn events têm feedback_text vazio. Análise de NLP seria mais robusta com preenchimento completo.
-- **Modelo preditivo:** Não implementado como parte desta entrega (análise descritiva já responde às perguntas do CEO; modelo viria como next step).
+- **Modelos preditivos** não implementados (XGBoost, Survival, Uplift) — especificados mas sem código
+- **OpenCode** não disponível no Railway — fallback semântico usado em vez de LLM real
+- **Dados sintéticos** — os padrões identificados podem não refletir comportamento real de churn
+- **Cron job** precisa ser configurado manualmente no Railway dashboard (sem CLI disponível)
 
 ---
 
 ## Process Log — Como usei IA
 
+> **Este bloco é obrigatório.** Sem ele, a submissão é desclassificada.
+
 ### Ferramentas usadas
 
 | Ferramenta | Para que usou |
-|------------|--------------|
-| Claude Code | Análise exploratória, merge de datasets, geração de hipóteses, criação de visualizações, construção do relatório HTML |
-| KaggleHub API | Download do dataset SaaS Subscription & Churn Analytics |
-| Python (pandas, plotly, numpy) | Processamento, análise estatística e visualizações interativas |
-| Git/GitHub | Fork do repositório, versionamento, PR de submissão |
+|---|---|
+| **Claude Code (opencode)** | Agente principal — spec writing, implementação, debugging, deploy |
+| **Claude Web Fetch** | Pesquisa de mercado (McKinsey, BCG, Gartner benchmarks) |
+| **Bash** | Execução de comandos, testes, deploy Railway |
+| **Git/GitHub** | Versionamento, PR management |
 
 ### Workflow
 
-1. **Entendimento do problema:** Li o README do challenge e identifiquei que o CEO tem uma contradição aparente (uso cresceu + satisfação ok, mas churn subiu) — usei isso como bússola da análise.
-2. **Exploração dos dados:** Carreguei as 5 tabelas, entendi estrutura, chaves de ligação e qualidade com ajuda do Claude para identificar rapidamente os schemas e possíveis joins.
-3. **Merge cruzado:** IA sugeriu o merge completo, mas eu percebi que cada account_id tem múltiplas subscriptions — precisei corrigir para pegar apenas a subscription ativa no momento do churn.
-4. **Análise segmentada:** Claude gerou blocos de código para análise por indústria, plano, país. Eu validei cada output contra os dados brutos.
-5. **Hipóteses:** IA sugeriu cruzamentos (beta features, upgrade/downgrade, etc.). Testei cada um com dados reais.
-6. **Construção do relatório:** IA gerou o HTML + CSS + Plotly. Eu editei os insights e recomendações com base no que os dados realmente diziam.
+1. **Pesquisa de mercado** (4 agentes paralelos) → benchmarks de churn analytics
+2. **Spec-Driven** → SPEC-v1 com 10+ specs, cada uma com harness de teste
+3. **Pipeline ETL** → load, clean, merge, validate, account_view
+4. **Health Score** → 4 pilares com pesos configuráveis via YAML
+5. **Análise** → segmentação por indústria/plano/país/canal
+6. **API** → FastAPI com 5 endpoints + documentação automática
+7. **LLM** → OpenCode integration com cache + fallback
+8. **Dashboard** → HTML/CSS/JS com identidade G4
+9. **Deploy** → Railway (Docker) — 3 iterações de debugging
+10. **Testes** → 19 harness tests automatizados
 
 ### Onde a IA errou e como corrigi
 
-- **Merge incorreto:** Claude fez merge direto account_id sem considerar múltiplas subscriptions por conta. Corrigi usando a subscription ativa na data do churn (start_date ≤ churn_date ≤ end_date).
-- **Hipótese falsa:** IA sugeriu que "clientes com baixo uso churnam mais". Testei: uso é IDÊNTICO entre grupos. Removi essa conclusão e investiguei outras causas.
-- **Satisfação:** IA inicialmente concluiu "satisfação é menor entre churned". Testei: média é 4.0 para ambos. Corrigi o insight — o que difere são escalações, não satisfação.
-- **Over-engineering:** Claude sugeriu modelo XGBoost como primeira abordagem. Optei por análise descritiva + heurísticas primeiro, que já geram valor imediato.
+| Erro | Correção |
+|---|---|
+| numpy serialization na API | Adicionei `_convert_numpy()` |
+| `asyncio.run()` em rota async | Troquei por `await` |
+| pip install -e . falhou no Docker | Mudei para requirements.txt |
+| pyarrow ausente no Railway | Adicionei ao requirements.txt |
+| Root "/" retornando 404 | Adicionei dashboard HTML na raiz |
+| .venv (983MB) enviado ao Railway | Adicionei `.railwayignore` |
 
 ### O que eu adicionei que a IA sozinha não faria
 
-- **Contexto de negócio:** Entendi que a fala do CEO não é erro — é o paradoxo clássico de médias agregadas que escondem segmentos. A IA tratou como "dados inconsistentes"; eu tratei como "pista de investigação".
-- **Análise por indústria:** IA não segmentou por indústria até eu pedir. Quando fiz, descobri que as causas de churn são completamente diferentes entre setores — o insight mais valioso do relatório.
-- **Julgamento sobre o que não automatizar:** Decidi conscientemente não construir modelo preditivo — a análise descritiva já responde às perguntas do CEO. Modelo viria em uma segunda iteração.
-- **Priorização das recomendações:** Não listei 20 ações. Priorizei 7, das quais 3 são críticas e acionáveis imediatamente.
-- **Tom e comunicação:** Adaptei a linguagem para CEO não-técnico — executive summary de 5 frases, recomendações com "o que fazer" em vez de "o que observar".
+1. **Arquitetura Spec-Driven** — especificar antes de implementar, com validação automatizada
+2. **Pesquisa de mercado** — benchmarks reais para fundamentar a abordagem
+3. **Visão de produto** — arquitetura 3 estágios + diferencial de explicabilidade
+4. **Identidade visual G4** — design intencional, não genérico
+5. **Julgamento de deploy** — fallback semântico vs LLM real, simplificação do Dockerfile
+6. **Curadoria da submissão** — o que é relevante destacar para o avaliador
 
 ---
 
 ## Evidências
 
-- [x] Código-fonte da análise: [`analysis.py`](./analysis.py)
-- [x] Visualizações interativas: [`report.html`](./report.html) + 10 gráficos Plotly individuais
-- [x] Dados brutos: pasta [`data/`](./data/) com os 5 CSVs
-- [x] Git history: branch `submission/rodolfo` neste repositório
+- [x] **Git history**: branch `submission/rodolfo` com ~30 commits
+- [x] **Código funcional em produção**: [churn-platform-production-8bea.up.railway.app](https://churn-platform-production-8bea.up.railway.app)
+- [x] **Testes automatizados**: `bash harness/run_all.sh` — 19/19 passando
+- [x] **Spec document**: `SPEC-v1-churn-platform.md`
+- [x] **Process log**: `process-log/process-log.md`
+- [x] **Plano estratégico**: `plano-estrategico-churn.md`
 
 ---
 
-*Submissão enviada em: 16/07/2026*
+_Submissão enviada em: 16/07/2026_
