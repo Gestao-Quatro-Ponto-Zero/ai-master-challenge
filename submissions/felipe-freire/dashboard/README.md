@@ -4,6 +4,8 @@
 
 **Acesso:** https://felipe-social-media-intelligence.streamlit.app/
 
+A interface usa a identidade visual de referência da G4 — azul-marinho, dourado, creme e Manrope — e inclui a marca no menu lateral. A legenda deixa explícito que se trata de um projeto independente desenvolvido para o Challenge 004.
+
 O app está preparado para o Streamlit Community Cloud. O arquivo de entrada é
 `submissions/felipe-freire/dashboard/app.py`; as dependências mínimas estão em
 `dashboard/requirements.txt` e a visualização usa um asset Parquet compacto, sem texto livre,

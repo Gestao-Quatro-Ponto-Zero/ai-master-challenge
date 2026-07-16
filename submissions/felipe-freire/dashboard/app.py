@@ -2,8 +2,18 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import plotly.express as px
 import streamlit as st
+
+px.defaults.color_discrete_sequence = [
+    "#B9915B",
+    "#1E526F",
+    "#4F7C68",
+    "#8E5A66",
+    "#537A9E",
+]
 
 try:
     from dashboard.data import (
@@ -27,12 +37,92 @@ except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own d
         performance_by,
     )
 
-st.set_page_config(page_title="Social Media Intelligence", layout="wide")
-st.title("Social Media Intelligence")
-st.caption("Decisões de marketing baseadas em evidência — sem rankings ou ROI fabricados")
+ASSETS = Path(__file__).resolve().parent / "assets"
+LOGO = ASSETS / "g4-logo.svg"
+
+st.set_page_config(page_title="G4 Social Intelligence", page_icon="📈", layout="wide")
+st.markdown(
+    """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --g4-navy: #001F35;
+    --g4-gold: #B9915B;
+    --g4-cream: #F5F4F3;
+    --g4-white: #FFFFFF;
+    --g4-ink: #152B3A;
+}
+
+html, body, [class*="st-"] { font-family: "Manrope", sans-serif; }
+[data-testid="stAppViewContainer"] { background: var(--g4-cream); color: var(--g4-ink); }
+[data-testid="stHeader"] { background: rgba(245, 244, 243, 0.92); }
+[data-testid="stSidebar"] { background: var(--g4-navy); }
+[data-testid="stSidebar"] * { color: var(--g4-white); }
+[data-testid="stSidebar"] [data-baseweb="tag"] { background: var(--g4-gold); }
+[data-testid="stSidebar"] input { color: var(--g4-navy); }
+
+.block-container { max-width: 1240px; padding-top: 2.5rem; padding-bottom: 4rem; }
+h1, h2, h3 { color: var(--g4-navy); letter-spacing: -0.025em; }
+h1 { font-weight: 800; }
+h2 { font-weight: 750; margin-top: 1.4rem; }
+h3 { font-weight: 700; }
+
+.g4-hero {
+    background: var(--g4-navy);
+    border-radius: 18px;
+    padding: 2.1rem 2.3rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 14px 34px rgba(0, 31, 53, 0.15);
+}
+.g4-eyebrow {
+    color: var(--g4-gold);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+.g4-hero h1 { color: var(--g4-white); margin: 0.4rem 0 0.45rem; }
+.g4-hero p { color: #DCE5EA; max-width: 760px; margin: 0; font-size: 1.02rem; }
+
+[data-testid="stMetric"] {
+    background: var(--g4-white);
+    border: 1px solid #D8E0E5;
+    border-top: 4px solid var(--g4-gold);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+}
+[data-testid="stMetricLabel"] { color: #526876; }
+[data-testid="stMetricValue"] { color: var(--g4-navy); font-weight: 800; }
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: rgba(255, 255, 255, 0.78);
+    border-color: #D8E0E5;
+    border-radius: 14px;
+}
+[data-testid="stAlert"] { border-radius: 12px; }
+hr { border-color: rgba(0, 31, 53, 0.14); }
+.g4-footer { color: #526876; text-align: center; padding-top: 1rem; }
+.g4-footer strong { color: var(--g4-navy); }
+</style>
+""",
+    unsafe_allow_html=True,
+)
+st.markdown(
+    """
+<section class="g4-hero">
+  <div class="g4-eyebrow">Challenge 004 · Estratégia Social Media</div>
+  <h1>G4 Social Intelligence</h1>
+  <p>Decisões de marketing baseadas em evidência — sem rankings ou ROI fabricados.</p>
+</section>
+""",
+    unsafe_allow_html=True,
+)
 
 data = load_data()
 with st.sidebar:
+    st.image(str(LOGO), width=150)
+    st.caption("Projeto independente desenvolvido para o AI Masters Challenge.")
+    st.divider()
     st.header("Filtros")
     st.caption("Use os filtros para auditar os dados; eles não criam uma recomendação causal.")
     selected: dict[str, list[object]] = {}
@@ -174,7 +264,12 @@ with st.container(border=True):
         hover_data=["n", "engagement_median", "views_mean"],
         labels={"engagement_mean": "Interações por view", "n": "Posts"},
     )
-    audience_fig.update_layout(xaxis_range=[0.19, 0.21])
+    audience_fig.update_layout(
+        xaxis_range=[0.19, 0.21],
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,0.55)",
+        font={"family": "Manrope", "color": "#152B3A"},
+    )
     st.plotly_chart(audience_fig, use_container_width=True)
     st.dataframe(audience_table, use_container_width=True, hide_index=True)
 
@@ -306,7 +401,12 @@ fig = px.scatter(
     hover_data=["n", "views_mean"],
     labels={"engagement_mean": "Interações por view", "n": "Posts"},
 )
-fig.update_layout(xaxis_range=[0.19, 0.21])
+fig.update_layout(
+    xaxis_range=[0.19, 0.21],
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(255,255,255,0.55)",
+    font={"family": "Manrope", "color": "#152B3A"},
+)
 st.plotly_chart(fig, use_container_width=True)
 st.dataframe(grouped, use_container_width=True, hide_index=True)
 
@@ -334,5 +434,12 @@ with st.expander("Como interpretar"):
     )
 
 st.divider()
-st.markdown("**Felipe de Oliveira Freire**")
-st.caption("Cientista/Analista de Dados")
+st.markdown(
+    """
+<footer class="g4-footer">
+  <strong>Felipe de Oliveira Freire</strong><br>
+  Cientista/Analista de Dados
+</footer>
+""",
+    unsafe_allow_html=True,
+)
