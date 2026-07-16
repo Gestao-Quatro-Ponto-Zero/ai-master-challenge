@@ -29,6 +29,10 @@ O plano com owners, métricas e condições de decisão está em [`reports/30-da
 
 O dashboard Streamlit responde explicitamente às perguntas do desafio, permite auditar audiência por plataforma/conteúdo/categoria e mantém tamanho amostral e limitações visíveis.
 
+### [Abrir dashboard público](https://felipe-social-media-intelligence.streamlit.app/)
+
+Não requer instalação ou login. O app publicado usa somente o asset analítico compacto versionado nesta submissão.
+
 ![Dashboard — visão geral](outputs/figures/dashboard/dashboard-01-visao-geral.png)
 
 ![Dashboard — audiência](outputs/figures/dashboard/dashboard-02-audiencia.png)
@@ -69,3 +73,4 @@ A arquitetura, os prompts e o protocolo de handoff estão em [`docs/agent-archit
 - **Nome:** Felipe Freire
 - **LinkedIn:** https://www.linkedin.com/in/felipe-freire-659615284/
 - **PR:** https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91
+- **Dashboard público:** https://felipe-social-media-intelligence.streamlit.app/

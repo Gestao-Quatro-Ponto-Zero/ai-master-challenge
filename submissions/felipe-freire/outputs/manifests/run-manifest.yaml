@@ -107,7 +107,7 @@ gates:
   PUBLISH:
     owner: github-publisher
     status: PASS
-    artifact: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91
+    artifact: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91, https://felipe-social-media-intelligence.streamlit.app/
     evidence_ids: []
     pendencies: []
     conditional: true

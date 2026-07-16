@@ -60,6 +60,8 @@ Leia o [relatório executivo](../reports/executive-report.md) e o [registro de e
 
 ### Dashboard — evidências visuais
 
+**Dashboard público:** https://felipe-social-media-intelligence.streamlit.app/
+
 Visão geral com KPIs e respostas diretas sobre engagement e patrocínio:
 
 ![Dashboard — visão geral e respostas do desafio](../outputs/figures/dashboard/dashboard-01-visao-geral.png)

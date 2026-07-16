@@ -67,6 +67,8 @@ Não existe threshold de seguidores defensável hoje. O threshold correto é eco
 
 O dashboard Streamlit oferece filtros, KPIs reconciliados, contraste patrocinado/orgânico e tamanho amostral:
 
+**Acesso público:** https://felipe-social-media-intelligence.streamlit.app/
+
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run dashboard\app.py
 ```

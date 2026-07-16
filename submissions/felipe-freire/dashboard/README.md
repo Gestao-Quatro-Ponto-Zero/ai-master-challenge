@@ -2,6 +2,8 @@
 
 ## Versão pública
 
+**Acesso:** https://felipe-social-media-intelligence.streamlit.app/
+
 O app está preparado para o Streamlit Community Cloud. O arquivo de entrada é
 `submissions/felipe-freire/dashboard/app.py`; as dependências mínimas estão em
 `dashboard/requirements.txt` e a visualização usa um asset Parquet compacto, sem texto livre,
