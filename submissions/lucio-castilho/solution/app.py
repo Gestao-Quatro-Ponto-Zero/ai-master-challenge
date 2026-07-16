@@ -562,7 +562,7 @@ for action in priority_sections:
             account = (
                 row["account"]
                 if pd.notna(row["account"])
-                else "Account unavailable"
+                else "Conta indisponível"
             )
 
             st.markdown(
@@ -574,12 +574,12 @@ for action in priority_sections:
                 f'{row["deal_stage"]}'
                 f'</div>'
                 f'<div class="score">'
-                f'Priority {row["priority_score"]:.1f}'
+                f'Prioridade {row["priority_score"]:.1f}'
                 f'</div>'
                 f'<div class="deal-meta">'
                 f'Fit {row["historical_fit"]:.1f} · '
                 f'{row["fit_category"]} · '
-                f'Evidence {row["evidence_confidence"]}'
+                f'Evidência {row["evidence_confidence"]}'
                 f'</div>'
                 f'</div>',
                 unsafe_allow_html=True,
@@ -676,30 +676,30 @@ if not filtered.empty:
         )
 
         st.metric(
-            "Priority Score",
+            "Pontuação de Prioridade",
             f'{row["priority_score"]:.1f} / 100',
         )
 
         st.metric(
-            "Historical Fit",
+            "Aderência Histórica",
             f'{row["historical_fit"]:.1f} / 100',
         )
 
         st.write(
-            f'**Fit:** {row["fit_category"]}'
+            f'**Aderência:** {row["fit_category"]}'
         )
 
         st.write(
-            f'**Attention:** {row["attention_state"]}'
+            f'**Atenção:** {row["attention_state"]}'
         )
 
         st.write(
-            f'**Evidence:** {row["evidence_confidence"]}'
+            f'**Evidência:** {row["evidence_confidence"]}'
         )
 
     with right:
         st.markdown(
-            "#### Why this deal is here"
+            "#### Por que esta oportunidade está aqui"
         )
 
         for index in range(
@@ -720,7 +720,7 @@ if not filtered.empty:
                 )
 
         st.markdown(
-            "#### Recommended action"
+            "#### Ação recomendada"
         )
 
         st.success(
@@ -728,8 +728,8 @@ if not filtered.empty:
         )
 
         st.caption(
-            "Priority Score is an operational ranking, "
-            "not a probability of closing."
+            "A Pontuação de Prioridade é uma classificação operacional, "
+            "não uma probabilidade de fechamento."
         )
 
 
