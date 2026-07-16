@@ -736,6 +736,6 @@ with export_columns[1]:
 
 st.caption(
     f"Data source: CRM Sales Predictive Analytics (CC0) · "
-    f"local path: {DATA_DIR}. "
+    f"local path: ../ai-master-challenge/datasets/crm-sales-predictive-analytics. "
     "No synthetic CRM records are created by this application."
 )
