@@ -11,7 +11,7 @@ echo "╔═══════════════════════�
 echo "║  Churn Platform — Spec Harness Runner        ║"
 echo "╚══════════════════════════════════════════════╝"
 
-for spec in spec-2 spec-5 spec-6 spec-10 spec-11 spec-12; do
+for spec in spec-2 spec-5 spec-6 spec-7 spec-10 spec-11 spec-12; do
     echo ""
     echo "────────────────────────────────────────────"
     echo "  Running $spec..."

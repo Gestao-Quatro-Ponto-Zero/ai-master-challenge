@@ -78,9 +78,15 @@
 
 ## Evidências
 
-- [x] Git history: branch `submission/rodolfo` com ~30 commits mostrando evolução incremental
+- [x] Git history: branch `submission/rodolfo` com ~35 commits mostrando evolução incremental
 - [x] Código funcional em produção: `https://churn-platform-production-8bea.up.railway.app`
-- [x] 19 testes automatizados: `bash harness/run_all.sh`
+- [x] **25 testes automatizados**: `bash harness/run_all.sh`
 - [x] Spec document: `submissions/rodolfo/SPEC-v1-churn-platform.md`
 - [x] Plano estratégico: `submissions/rodolfo/plano-estrategico-churn.md`
 - [x] Este process log: `submissions/rodolfo/process-log/process-log.md`
+
+### Screenshots — Survival Analysis
+
+| Curva KM por Segmento | Curva KM Global | Hazard Ratios CoxPH |
+|---|---|---|
+| ![KM Segments](screenshots/survival_km_curves.png) | ![KM Global](screenshots/survival_global_km.png) | ![CoxPH](screenshots/survival_coxph.png) |

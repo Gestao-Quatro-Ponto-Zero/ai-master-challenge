@@ -20,6 +20,7 @@ from churn_platform.report import html_report
 from churn_platform.predictive import train as pred_train
 from churn_platform.predictive import predict as pred_predict
 from churn_platform.predictive import explain as pred_explain
+from churn_platform.survival import analysis as survival
 
 logging.basicConfig(
     level=logging.INFO,
@@ -38,7 +39,7 @@ def _load_yaml(path: str) -> dict:
 @click.command()
 @click.option("--config", default="config/ravenstack.yaml", help="Caminho do arquivo de config YAML")
 @click.option("--output", default="output", help="Diretório de saída")
-@click.option("--stage", default="all", help="Estágio: all | pipeline | analyze | score | predict | report")
+@click.option("--stage", default="all", help="Estágio: all | pipeline | analyze | score | predict | survival | report")
 @click.option("--verbose", is_flag=True, help="Log detalhado")
 def run(config: str, output: str, stage: str, verbose: bool):
     """Churn Platform — Diagnóstico, Predição e Prescrição de Churn."""
@@ -138,7 +139,17 @@ def run(config: str, output: str, stage: str, verbose: bool):
         logger.info("  Alto risco: %s contas", len(high_risk))
         logger.info("  Predições salvas: %s", out / "predictions.parquet")
 
-    # ── STAGE 5: Report ────────────────────────────────────────
+    # ── STAGE 5: Survival Analysis ─────────────────────────────
+    if stage in ("all", "survival"):
+        logger.info("")
+        logger.info("━" * 50)
+        logger.info("STAGE 5: Survival Analysis (SPEC-7)")
+
+        surv_result = survival.run_survival_analysis(df, output_dir=str(out))
+        logger.info("  C-index: %.4f", surv_result["concordance_index"])
+        logger.info("  KM curves: %s", surv_result["outputs"]["km_curves"])
+
+    # ── STAGE 6: Report ────────────────────────────────────────
     if stage in ("all", "report"):
         logger.info("")
         logger.info("━" * 50)

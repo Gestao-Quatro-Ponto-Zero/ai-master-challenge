@@ -18,7 +18,7 @@
 | 4 | [Segmentação e Análise](#spec-4-segmentação) | Implemented | `harness/segmentation.test.sh` |
 | 5 | [Health Score e Scoring](#spec-5-health-score) | Implemented | `harness/scoring.test.sh` |
 | 6 | [Modelagem Preditiva](#spec-6-modelagem-preditiva) | Implemented | `harness/predictive.test.sh` |
-| 7 | [Survival Analysis](#spec-7-survival-analysis) | Draft | `harness/survival.test.sh` |
+| 7 | [Survival Analysis](#spec-7-survival-analysis) | Implemented | `harness/survival.test.sh` |
 | 8 | [Causal Inference & Uplift](#spec-8-causal-uplift) | Draft | `harness/uplift.test.sh` |
 | 9 | [Intervention Playbook](#spec-9-playbook) | Draft | `harness/playbook.test.sh` |
 | 10 | [Dashboard, API e Visualização](#spec-10-dashboard-api-e-visualização) | Implemented | `harness/dashboard.test.sh` |
