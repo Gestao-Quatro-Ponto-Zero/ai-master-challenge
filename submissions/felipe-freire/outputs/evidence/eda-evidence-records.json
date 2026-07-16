@@ -1,0 +1,99 @@
+{
+  "EDA-BASE-001": {
+    "status": "EXPLORATORY",
+    "claim": "A distribuição de engagement é muito estreita e não contém posts zerados.",
+    "n": 52214,
+    "estimate": {
+      "mean": 0.19905453842360282,
+      "median": 0.198992315,
+      "std": 0.004869297965014943,
+      "min": 0.17880096,
+      "max": 0.22227895
+    },
+    "source": "outputs/tables/EDA-OVERVIEW.csv",
+    "limitations": [
+      "provável geração sintética",
+      "validade externa limitada"
+    ]
+  },
+  "EDA-PLAT-001": {
+    "status": "EXPLORATORY",
+    "claim": "A amplitude bruta entre médias de plataforma é mínima.",
+    "n": 52214,
+    "estimate_absolute": 0.00010510834981297679,
+    "estimate_percentage_points": 0.010510834981297679,
+    "source": "outputs/tables/EDA-BY-PLATFORM.csv",
+    "limitations": [
+      "não ajustado",
+      "relevância prática ainda não validada"
+    ]
+  },
+  "EDA-CONTENT-001": {
+    "status": "EXPLORATORY",
+    "claim": "A amplitude bruta entre tipos de conteúdo é mínima.",
+    "n": 52214,
+    "estimate_absolute": 0.00012126936475176375,
+    "estimate_percentage_points": 0.012126936475176375,
+    "source": "outputs/tables/EDA-BY-CONTENT_TYPE.csv",
+    "limitations": [
+      "não ajustado",
+      "interações podem existir"
+    ]
+  },
+  "EDA-COMBO-001": {
+    "status": "EXPLORATORY",
+    "claim": "Extremos de combinações elegíveis têm diferença pequena e alto risco de multiplicidade.",
+    "n": 47796,
+    "estimate": {
+      "top_mean": 0.2001047866972477,
+      "top_n": 109,
+      "bottom_mean": 0.19845098452554744,
+      "bottom_n": 137,
+      "absolute_range": 0.0016538021717002749
+    },
+    "source": "outputs/tables/EDA-COMBINATIONS-N100.csv",
+    "limitations": [
+      "somente células com n >= 100",
+      "múltiplas comparações",
+      "não validado para recomendação"
+    ]
+  },
+  "EDA-AUD-001": {
+    "status": "EXPLORATORY",
+    "claim": "Localizações de audiência têm médias brutas muito próximas.",
+    "n": 52214,
+    "estimate_absolute_range": 0.00021114702611885194,
+    "estimate_percentage_points": 0.021114702611885194,
+    "source": "outputs/tables/EDA-BY-AUDIENCE_LOCATION.csv",
+    "limitations": [
+      "audiência agregada por post",
+      "não permite inferência individual",
+      "não ajustado"
+    ]
+  },
+  "EDA-TIME-001": {
+    "status": "EXPLORATORY",
+    "claim": "Médias mensais são excessivamente estáveis.",
+    "n": 52214,
+    "estimate_absolute_range": 0.00029110713216737305,
+    "estimate_percentage_points": 0.029110713216737305,
+    "source": "outputs/tables/EDA-BY-MONTH.csv",
+    "limitations": [
+      "estabilidade pode refletir geração sintética",
+      "não prova ausência de sazonalidade real"
+    ]
+  },
+  "EDA-SPON-001": {
+    "status": "EXPLORATORY",
+    "claim": "Patrocinado e orgânico têm médias brutas praticamente iguais.",
+    "n": 52214,
+    "estimate_sponsored_minus_organic": -1.0713549263158262e-05,
+    "estimate_percentage_points": -0.0010713549263158262,
+    "source": "outputs/tables/EDA-SPONSOR-CRUDE-SEGMENTS.csv",
+    "limitations": [
+      "não causal",
+      "requer ajuste e diagnóstico de overlap",
+      "custos ausentes"
+    ]
+  }
+}

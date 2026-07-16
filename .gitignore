@@ -12,5 +12,7 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# Submissions (if candidates fork). Esta submissão é a entrega ativa.
+submissions/*
+!submissions/felipe-freire/
+!submissions/felipe-freire/**

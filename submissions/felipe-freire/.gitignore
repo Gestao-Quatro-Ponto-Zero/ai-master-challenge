@@ -1,0 +1,18 @@
+.venv/
+.venv-clean/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.py[cod]
+*.egg-info/
+
+# Dados são reconstruídos/baixados e não devem entrar no Git.
+data/raw/*.csv
+data/raw/*.zip
+data/processed/*.csv
+data/processed/*.parquet
+
+# Outputs transitórios; artefatos finais curados podem ser adicionados explicitamente.
+outputs/models/*
