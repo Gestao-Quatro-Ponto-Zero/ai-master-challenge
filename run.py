@@ -17,6 +17,9 @@ from churn_platform.datamodel import account_view as dv
 from churn_platform.analysis import segmentation, descriptive
 from churn_platform.scoring import health_score
 from churn_platform.report import html_report
+from churn_platform.predictive import train as pred_train
+from churn_platform.predictive import predict as pred_predict
+from churn_platform.predictive import explain as pred_explain
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,7 +38,7 @@ def _load_yaml(path: str) -> dict:
 @click.command()
 @click.option("--config", default="config/ravenstack.yaml", help="Caminho do arquivo de config YAML")
 @click.option("--output", default="output", help="Diretório de saída")
-@click.option("--stage", default="all", help="Estágio: all | pipeline | analyze | score | report")
+@click.option("--stage", default="all", help="Estágio: all | pipeline | analyze | score | predict | report")
 @click.option("--verbose", is_flag=True, help="Log detalhado")
 def run(config: str, output: str, stage: str, verbose: bool):
     """Churn Platform — Diagnóstico, Predição e Prescrição de Churn."""
@@ -115,7 +118,27 @@ def run(config: str, output: str, stage: str, verbose: bool):
             n = tier_dist.get(tier, 0)
             logger.info("  %-12s: %s contas", tier, n)
 
-    # ── STAGE 4: Report ────────────────────────────────────────
+    # ── STAGE 4: Predict ───────────────────────────────────────
+    if stage in ("all", "predict"):
+        logger.info("")
+        logger.info("━" * 50)
+        logger.info("STAGE 4: Modelagem Preditiva (SPEC-6)")
+
+        merged_df = df.merge(
+            scored[["account_id", "health_score", "pillar_usage", "pillar_support", "pillar_engagement", "pillar_financial"]],
+            on="account_id",
+        )
+        pred_train.train_model(merged_df, output_dir=str(out))
+        pred_results = pred_predict.predict_churn(merged_df, output_dir=str(out))
+        pred_results.to_parquet(out / "predictions.parquet", index=False)
+
+        pred_explain.explain_model(merged_df, output_dir=str(out), top_n=50)
+
+        high_risk = pred_results[pred_results["churn_risk_label"] == "High"]
+        logger.info("  Alto risco: %s contas", len(high_risk))
+        logger.info("  Predições salvas: %s", out / "predictions.parquet")
+
+    # ── STAGE 5: Report ────────────────────────────────────────
     if stage in ("all", "report"):
         logger.info("")
         logger.info("━" * 50)

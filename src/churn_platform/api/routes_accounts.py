@@ -38,10 +38,22 @@ async def list_accounts_risk(
     accounts = []
     explainer = state.get("explainer")
 
+    predictions = state.get("predictions_df")
+    pred_map = {}
+    if predictions is not None:
+        pred_map = {
+            r["account_id"]: {
+                "churn_probability": r["churn_probability"],
+                "churn_risk_label": r["churn_risk_label"],
+            }
+            for r in predictions.to_dict("records")
+        }
+
     for _, row in df.iterrows():
         account_data = row.to_dict()
+        account_id = account_data.get("account_id")
         entry = {
-            "account_id": account_data.get("account_id"),
+            "account_id": account_id,
             "health_score": round(account_data.get("health_score", 0), 1),
             "health_tier": account_data.get("health_tier", "Unknown"),
             "mrr_amount": int(account_data.get("mrr_amount", 0)),
@@ -51,6 +63,9 @@ async def list_accounts_risk(
             "recommended_action": _top_action(account_data),
             "estimated_save_roi": _estimate_roi(account_data),
         }
+        if account_id in pred_map:
+            entry["churn_probability"] = pred_map[account_id]["churn_probability"]
+            entry["churn_risk_label"] = pred_map[account_id]["churn_risk_label"]
 
         if llm_explain and explainer:
             try:

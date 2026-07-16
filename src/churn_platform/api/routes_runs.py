@@ -18,6 +18,8 @@ from churn_platform.datamodel import account_view as dv
 from churn_platform.pipeline import cleaner, loader, merger, validator
 from churn_platform.report import html_report
 from churn_platform.scoring import health_score
+from churn_platform.predictive import train as pred_train
+from churn_platform.predictive import predict as pred_predict
 
 from . import get_state
 
@@ -84,6 +86,14 @@ async def run_pipeline(config_path: str = "config/ravenstack.yaml"):
         scored = health_score.run(df, cfg)
         scored.to_parquet(output_dir / "scored_accounts.parquet", index=False)
 
+        merged_df = df.merge(
+            scored[["account_id", "health_score", "pillar_usage", "pillar_support", "pillar_engagement", "pillar_financial"]],
+            on="account_id",
+        )
+        pred_train.train_model(merged_df, output_dir=str(output_dir))
+        preds = pred_predict.predict_churn(merged_df, output_dir=str(output_dir))
+        preds.to_parquet(output_dir / "predictions.parquet", index=False)
+
         report_path = html_report.build_report(
             account_view=df,
             stats=stats,
@@ -95,6 +105,7 @@ async def run_pipeline(config_path: str = "config/ravenstack.yaml"):
 
         state["accounts_df"] = df
         state["scored_df"] = scored
+        state["predictions_df"] = preds
         state["analysis_data"] = analysis_data
 
         health_dist = {
