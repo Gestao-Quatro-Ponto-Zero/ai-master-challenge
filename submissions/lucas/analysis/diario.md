@@ -75,4 +75,30 @@ contexto. Vou provar o lift real (modesto) no backtest em vez de fingir modelo.
 
 3. Ajuste por setor move <2pp e só existe em 1/3 dos deals. Mantive por ser
    barato e explicável, mas assumo: o modelo se apoia em produto + valor.
-   
+
+## Fase 4 — Backtest: a prova que redefiniu a ferramenta
+
+**Resultado, sem maquiagem:** AUC 0,485 (produto+setor não discrimina quem
+fecha). EV captura 46,8% do valor no top-20% — mas "ordenar por preço puro"
+captura 47,9%. Rankings 98,5% correlacionados. O componente empírico NÃO
+supera simplesmente perseguir o deal mais caro.
+
+**O que decidi com isso (não escondi, reposicionei):**
+- A tese "EV refina a priorização por probabilidade" está morta neste
+  dataset — e provei isso em vez de assumir. Reporto o 0,98x como é.
+- Mas o valor da ferramenta nunca foi prever fechamento. É: (1) visibilidade
+  + explicabilidade sobre pipeline priorizado no feeling; (2) estágio
+  (engajado > prospect); (3) flag de deal de alto valor sendo negligenciado.
+  Nenhuma dessas é backtestável no universo fechado — mas são o que muda a
+  ação olhando pra frente.
+- Reposicionei o app: de "score preditivo" para "organizador de ação"
+  (matriz Valor × Abandono + corte por estágio). Abraço o achado em vez de
+  fingir um lift que não existe.
+
+**Crédito à IA (honestidade):** o agente pegou sozinho que usar deal_stage
+como baseline seria vazamento (estágio = rótulo no universo fechado) e
+flagrou a inversão no decil de topo. Bons calls, não fui eu.
+
+**Limitação que fica:** o backtest só valida o ramo "com conta" (100% dos
+fechados têm conta); o fallback "só produto" (~68% do pipeline aberto) fica
+sem validação empírica possível neste dataset.
