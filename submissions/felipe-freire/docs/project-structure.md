@@ -18,7 +18,6 @@ submissions/felipe-freire/
 ├── process-log/           # evidências de uso de IA e julgamento humano
 ├── reports/               # relatório executivo, técnico e verdict final
 ├── solution/              # pacote final curado para submissão
-├── .github/workflows/     # CI criado na consolidação técnica
 ├── pyproject.toml         # dependências, ferramentas e comandos da fundação
 ├── src/
 │   ├── analysis/          # métricas, EDA e inferência
@@ -28,3 +27,5 @@ submissions/felipe-freire/
 ```
 
 `prompts/` não é criado em paralelo: os prompts prontos para uso vivem no local nativo `.claude/agents/`, evitando duas fontes de verdade. Contratos ficam separados dos prompts porque são consumidos por código e humanos. O Software Engineer é owner da infraestrutura técnica, testes integrados e CI, não da lógica analítica. Artefatos finais nunca devem depender de arquivos temporários ou de uma conversa.
+
+O workflow de CI validado durante a consolidação não foi publicado: GitHub Actions só executa arquivos na raiz do repositório, e o `CONTRIBUTING.md` proíbe alterar qualquer caminho fora de `submissions/felipe-freire/`.

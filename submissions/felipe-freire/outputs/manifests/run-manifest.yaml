@@ -83,11 +83,10 @@ gates:
   TECH-CONSOLIDATION:
     owner: software-engineer
     status: PASS
-    artifact: .github/workflows/felipe-social-media.yml (raiz do repo), scripts/run_pipeline.ps1, tests/integration/test_end_to_end.py, tests/dashboard/test_app_smoke.py, docs/technical-consolidation-report.md
+    artifact: scripts/run_pipeline.ps1, tests/integration/test_end_to_end.py, tests/dashboard/test_app_smoke.py, docs/technical-consolidation-report.md
     evidence_ids: []
     pendencies:
-      - "full pipeline CI requer RUN_FULL_PIPELINE=true e secrets Kaggle"
-      - "REV-MINOR-002 resolvido: removido submissions/felipe-freire/.github/workflows/ci.yml (duplicado, criado por engano nesta sessao; GitHub so le .github/workflows na raiz do repo, entao nunca seria executado). Workflow valido e unico: .github/workflows/felipe-social-media.yml na raiz."
+      - "workflow de referencia validado e removido da PR: CONTRIBUTING.md proibe alteracoes fora de submissions/felipe-freire"
     timestamp: "2026-07-16T15:35:00-03:00"
     orchestrator_notes: "Testes de reconciliacao cross-component e Streamlit AppTest headless. Dashboard ampliado com respostas explicitas e audiencia por plataforma/conteudo/categoria. Suite completa 19/19 PASS; ruff check/format PASS."
   DOC:
@@ -107,14 +106,18 @@ gates:
     timestamp: "2026-07-16T15:28:02-03:00"
   PUBLISH:
     owner: github-publisher
-    status: PENDING
-    artifact: null
+    status: PASS
+    artifact: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91
     evidence_ids: []
-    pendencies: ["aguarda FINAL=PASS e autorizacao humana explicita"]
+    pendencies: []
     conditional: true
-    timestamp: null
+    timestamp: "2026-07-16T16:13:00-03:00"
 
-human_approvals: []
+human_approvals:
+  - gate: PUBLISH
+    approved_by: Felipe Freire
+    evidence: "autorizacao explicita no chat: Pode subir para PR"
+    timestamp: "2026-07-16T16:00:00-03:00"
 correction_requests:
   - status: RESOLVED
     issue_id: DQ-007

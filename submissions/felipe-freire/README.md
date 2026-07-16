@@ -1,27 +1,71 @@
-# Arquitetura de agentes — Challenge 004
+# Felipe Freire — Challenge 004: Estratégia Social Media
 
-Sistema multiagente para desenvolver a análise e estratégia social media com gates, contexto mínimo e rastreabilidade de evidências.
+## Resumo executivo
 
-## Como usar
+Analisei 52.214 posts e não encontrei um vencedor acionável por plataforma, formato ou perfil de audiência. As diferenças são materialmente pequenas e o patrocínio não apresentou ganho detectável após controles: efeito de **−0,0010 p.p.** no engagement, com **IC95% de −0,0095 a +0,0074 p.p.**. Como o arquivo não contém custos, conversões ou receita, não é possível calcular ROI com honestidade.
 
-1. Abra o Claude Code nesta pasta: `cd submissions/felipe-freire`.
-2. Confirme a configuração com `/memory` e `/agents`.
-3. Inicie o coordenador como agente principal: `claude --agent orchestrator`.
-4. Solicite a execução do Challenge 004 e forneça/aprove a fonte de dados quando necessário.
-5. Acompanhe o estado em `outputs/manifests/run-manifest.yaml`.
+**Decisão recomendada:** não ampliar patrocínio indiscriminadamente. Instrumentar custos e conversões, testar hipóteses controladas e escalar somente quando o efeito incremental superar o break-even aprovado.
 
-O Orchestrator deve permanecer como agente principal porque subagentes do Claude Code não podem criar outros subagentes. Reinicie a sessão ou use `/agents` após alterar manualmente arquivos em `.claude/agents/`.
+## Respostas diretas ao desafio
 
-## Documentação
+| Pergunta | Resposta baseada nos dados | Ação |
+|---|---|---|
+| O que gera engagement? | Nenhuma variável disponível separa performance de forma material; diferenças máximas entre plataformas e formatos são 0,0105 e 0,0121 p.p. | Não realocar orçamento por rankings deste arquivo; testar hipóteses pré-especificadas. |
+| Patrocínio funciona? | Não há ganho ajustado detectável em engagement, views, share rate ou views/follower. | Suspender expansão não experimental e exigir custo, outcome e comparador. |
+| Qual audiência mais engaja? | Não há perfil validado; diferenças são pequenas e os dados de audiência são agregados por post. | Usar os cruzamentos apenas para formular testes, não para targeting causal. |
+| O que não funciona? | Patrocínio indiscriminado, escolha por média, contratação por seguidores e chamar alcance de ROI. | Adotar política de testes incrementais com condições de parada. |
 
-- [Arquitetura, fluxo, automação e armadilhas](docs/agent-architecture.md)
-- [Protocolo de handoff e contexto](docs/handoff-protocol.md)
-- [Estrutura de diretórios](docs/project-structure.md)
-- [Regras globais](CLAUDE.md)
-- [Contratos](docs/contracts/README.md)
+## O que fazer na segunda-feira
 
-Os prompts prontos para uso estão em `.claude/agents/`, incluindo o Software Engineer em dois modos e o GitHub Publisher isolado. Não há uma cópia em `prompts/`: manter uma única fonte evita divergência entre documentação e configuração executável.
+1. Congelar a expansão de campanhas sem custo, conversão e comparador definidos.
+2. Adicionar `campaign_id`, fee, mídia, produção, reach único, cliques, conversões, receita/margem e janela de atribuição.
+3. Aprovar métrica primária, efeito mínimo relevante e break-even.
+4. Iniciar três testes controlados de conteúdo, cadência e patrocínio.
+5. Usar o dashboard para monitoramento descritivo, sempre conferindo `n` e limitações.
 
-## Primeiro gate
+O plano com owners, métricas e condições de decisão está em [`reports/30-day-experiment-plan.md`](reports/30-day-experiment-plan.md).
 
-Antes de qualquer análise, o Planner cria `docs/execution-plan.md`; depois, o Data Engineer compreende o dataset e materializa os contratos listados em `docs/contracts/README.md`. O Software Engineer então executa a fundação técnica. Antes do Writer, o mesmo agente retorna em modo consolidação para integrar e validar o pipeline completo. Arquivos descritos como outputs futuros não são placeholders de resultado e só devem surgir durante uma execução real.
+## Dashboard
+
+O dashboard Streamlit responde explicitamente às perguntas do desafio, permite auditar audiência por plataforma/conteúdo/categoria e mantém tamanho amostral e limitações visíveis.
+
+![Dashboard — visão geral](outputs/figures/dashboard/dashboard-01-visao-geral.png)
+
+![Dashboard — audiência](outputs/figures/dashboard/dashboard-02-audiencia.png)
+
+![Dashboard — exploração](outputs/figures/dashboard/dashboard-03-exploracao.png)
+
+Para executar:
+
+```powershell
+cd submissions/felipe-freire
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_pipeline.ps1
+.\.venv\Scripts\python.exe -m streamlit run dashboard\app.py
+```
+
+Instruções detalhadas: [`docs/technical-setup.md`](docs/technical-setup.md).
+
+## Caminho de leitura
+
+- [Solução completa](solution/README.md) — abordagem, resultados, limitações e uso de IA.
+- [Relatório executivo](reports/executive-report.md) — respostas e recomendações em linguagem de negócio.
+- [Plano operacional de 30 dias](reports/30-day-experiment-plan.md) — como produzir evidência para decidir investimento.
+- [Registro de estratégia](reports/strategy-register.md) — owners, KPIs, guardrails e stop conditions.
+- [Process log](process-log/README.md) — conversas, vídeos, imagens, erros e correções.
+- [Veredicto de revisão](reports/review-verdict.md) — auditoria adversarial da entrega.
+
+## Limitações essenciais
+
+O dataset tem fortes sinais de geração sintética, não contém posts com engagement zero e possui inconsistências de creator. Também não inclui custos, conversões, receita, timezone ou frequência planejada. O desenho é observacional: os resultados descrevem este arquivo e não demonstram causalidade.
+
+## Diferencial: uso inteligente de IA
+
+A IA foi usada como sistema de trabalho, não como fonte de verdade. Claude Code e Codex foram separados em agentes/gates de planejamento, dados, análise, estatística, estratégia, dashboard, engenharia, escrita e revisão. Rankings aparentes foram rejeitados após validação; ML recebeu `NO-GO` por ausência de sinal; falhas `Connection closed mid-response` foram recuperadas por manifest sem presumir etapas concluídas.
+
+A arquitetura, os prompts e o protocolo de handoff estão em [`docs/agent-architecture.md`](docs/agent-architecture.md), [`.claude/agents/`](.claude/agents/) e [`docs/handoff-protocol.md`](docs/handoff-protocol.md).
+
+## Sobre mim
+
+- **Nome:** Felipe Freire
+- **LinkedIn:** https://www.linkedin.com/in/felipe-freire-659615284/
+- **PR:** https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91

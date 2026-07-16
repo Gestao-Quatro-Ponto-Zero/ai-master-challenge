@@ -50,7 +50,7 @@ Zero `BLOCKER` e zero `MAJOR`. A entrega responde ao desafio sem fabricar conclu
 - 19 testes finais passaram, incluindo respostas explícitas e cruzamentos de audiência no dashboard.
 - Ruff lint e format passaram.
 - Streamlit smoke test retornou HTTP 200.
-- Workflow GitHub Actions existe na raiz e tem job leve + integração condicional com Kaggle.
+- A automação foi validada localmente; o workflow de referência foi removido da PR para cumprir a regra de não alterar arquivos fora da pasta do candidato.
 - Nenhum arquivo excede 100 MB; raw, processed e ambientes estão ignorados.
 
 ## Process log
@@ -66,12 +66,12 @@ O log registra uso de Claude/Codex, interrupções `Connection closed mid-respon
 - Resolução: LinkedIn incluído no README da solução.
 - Gate impactado: `PUBLISH`, não `FINAL`.
 
-### REV-MINOR-002 — workflow duplicado — RESOLVIDO
+### REV-MINOR-002 — workflow fora do escopo da submissão — RESOLVIDO
 
 - Severidade: `MINOR`.
-- Resolução: workflow duplicado removido; permanece apenas `.github/workflows/felipe-social-media.yml` na raiz.
+- Resolução: workflows foram removidos do pacote publicado; a PR altera somente `submissions/felipe-freire/`, conforme `CONTRIBUTING.md`.
 - Owner: Software Engineer/GitHub Publisher.
-- Ação: decidir se mantém como referência ou remove antes do commit para evitar confusão.
+- Ação concluída no commit de publicação `53cca9a`.
 - Gate impactado: `PUBLISH`, não `FINAL`.
 
 ### REV-MINOR-003 — aprovações de negócio
@@ -83,4 +83,4 @@ O log registra uso de Claude/Codex, interrupções `Connection closed mid-respon
 
 ## Condição de publicação
 
-`FINAL=PASS` não autoriza publicação automática. `PUBLISH` permanece pendente até autorização humana explícita. O Publisher não pode alterar conteúdo analítico sem reabrir o review.
+`FINAL=PASS` não autorizou publicação automática. Após autorização humana explícita, a entrega foi publicada na PR #91. O Publisher não alterou conclusões analíticas.
