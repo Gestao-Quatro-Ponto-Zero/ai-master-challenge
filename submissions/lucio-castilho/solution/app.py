@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
@@ -7,9 +8,12 @@ from src.data_loader import DatasetNotFoundError, get_data_dir
 from src.exports import build_excel_export, build_pdf_export
 from src.scoring import load_data, score_open_pipeline, scoring_summary
 
+BASE_DIR = Path(__file__).resolve().parent
+FAVICON_PATH = BASE_DIR / "src" / "favicon.png"
+
 st.set_page_config(
     page_title="G4 Lead Scorer",
-    page_icon="◼",
+    page_icon=str(FAVICON_PATH),
     layout="wide",
     initial_sidebar_state="expanded",
 )
