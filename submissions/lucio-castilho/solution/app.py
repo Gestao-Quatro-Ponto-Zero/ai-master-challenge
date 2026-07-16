@@ -33,6 +33,12 @@ st.markdown(
         color: var(--g4-text);
     }
 
+    /* Main application content spacing */
+    [data-testid="stMainBlockContainer"] {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
     [data-testid="stSidebar"] {
         background: #111111;
         border-right: 1px solid var(--g4-border);
@@ -160,7 +166,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
 
 @st.cache_data(show_spinner=False)
 def get_scored_data(data_dir: str) -> tuple[pd.DataFrame, pd.DataFrame]:
