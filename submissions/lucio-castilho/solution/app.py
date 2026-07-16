@@ -272,7 +272,7 @@ table = filtered[visible_columns].rename(columns={
     "attention_state": "Attention",
     "evidence_confidence": "Evidence",
 })
-st.dataframe(table, use_container_width=True, hide_index=True, height=420)
+st.dataframe(table, width="stretch", hide_index=True, height=420)
 
 st.markdown("### Deal detail")
 if not filtered.empty:
@@ -313,7 +313,7 @@ with export_columns[0]:
         data=build_excel_export(filtered),
         file_name="g4-deal-focus.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        use_container_width=True,
+        width="stretch",
     )
 
 with export_columns[1]:
@@ -322,7 +322,7 @@ with export_columns[1]:
         data=build_pdf_export(filtered, filters_payload),
         file_name="g4-deal-focus.pdf",
         mime="application/pdf",
-        use_container_width=True,
+        width="stretch",
     )
 
 st.caption(
