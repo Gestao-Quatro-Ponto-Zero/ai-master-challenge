@@ -88,7 +88,7 @@ gates:
     pendencies:
       - "workflow de referencia validado e removido da PR: CONTRIBUTING.md proibe alteracoes fora de submissions/felipe-freire"
     timestamp: "2026-07-16T15:35:00-03:00"
-    orchestrator_notes: "Testes de reconciliacao cross-component e Streamlit AppTest headless. Dashboard ampliado com respostas explicitas e audiencia por plataforma/conteudo/categoria. Suite completa 19/19 PASS; ruff check/format PASS."
+    orchestrator_notes: "Testes de reconciliacao cross-component e Streamlit AppTest headless. Dashboard ampliado com respostas explicitas, audiencia por plataforma/conteudo/categoria e camada executiva de break-even/briefing. Suite completa 22/22 PASS; ruff check/format PASS."
   DOC:
     owner: executive-writer
     status: PASS

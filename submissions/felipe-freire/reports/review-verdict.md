@@ -47,7 +47,7 @@ Zero `BLOCKER` e zero `MAJOR`. A entrega responde ao desafio sem fabricar conclu
 
 - Pipeline end-to-end executado com `PASS`.
 - Ambiente limpo e lock de 68 dependências criados.
-- 19 testes finais passaram, incluindo respostas explícitas e cruzamentos de audiência no dashboard.
+- 22 testes finais passaram, incluindo respostas explícitas, cruzamentos de audiência, break-even e briefing executivo no dashboard.
 - Ruff lint e format passaram.
 - Streamlit smoke test retornou HTTP 200.
 - A automação foi validada localmente; o workflow de referência foi removido da PR para cumprir a regra de não alterar arquivos fora da pasta do candidato.

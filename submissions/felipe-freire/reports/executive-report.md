@@ -69,6 +69,8 @@ O dashboard Streamlit oferece filtros, KPIs reconciliados, contraste patrocinado
 
 **Acesso público:** https://felipe-social-media-intelligence.streamlit.app/
 
+A camada “Decidir e testar” converte premissas financeiras informadas pelo Head em break-even, métrica principal, guardrail e regras de escala/parada. Ela apoia a decisão sem transformar o dataset observacional em prova causal.
+
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run dashboard\app.py
 ```
@@ -95,7 +97,7 @@ A exploração mantém a escala controlada e exibe o tamanho das células:
 - EDA separada de inferência;
 - regressão ajustada com erros clusterizados por 5.000 creators;
 - diagnóstico de propensity/overlap, interações com FDR e outcomes alternativos;
-- pipeline end-to-end, ambiente limpo, lock, CI, 19 testes, lint e dashboard smoke test.
+- pipeline end-to-end, ambiente limpo, lock, 22 testes, lint e dashboard smoke test.
 
 ## Limitações
 

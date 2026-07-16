@@ -9,6 +9,8 @@ O app está preparado para o Streamlit Community Cloud. O arquivo de entrada é
 `dashboard/requirements.txt` e a visualização usa um asset Parquet compacto, sem texto livre,
 credenciais ou dados pessoais.
 
+Além da auditoria descritiva, a camada executiva traduz a conclusão em ações e permite ao Head de Marketing informar custo, margem e público elegível para calcular o break-even e gerar um briefing de experimento. Os valores são sempre fornecidos pelo usuário; o app não inventa custos, ROI ou causalidade.
+
 Para reconstruir o asset depois de executar o pipeline:
 
 ```powershell

@@ -14,7 +14,10 @@ try:
         load_data,
         performance_by,
     )
+    from dashboard.decision import break_even, experiment_copy
 except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own directory.
+    from decision import break_even, experiment_copy  # type: ignore[no-redef]
+
     from data import (  # type: ignore[no-redef]
         FILTERS,
         apply_filters,
@@ -26,15 +29,23 @@ except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own d
 
 st.set_page_config(page_title="Social Media Intelligence", layout="wide")
 st.title("Social Media Intelligence")
-st.caption("Monitoramento descritivo — dados observacionais e provavelmente sintéticos")
+st.caption("Decisões de marketing baseadas em evidência — sem rankings ou ROI fabricados")
 
 data = load_data()
 with st.sidebar:
     st.header("Filtros")
+    st.caption("Use os filtros para auditar os dados; eles não criam uma recomendação causal.")
     selected: dict[str, list[object]] = {}
+    filter_labels = {
+        "platform": "Plataforma",
+        "content_type": "Formato",
+        "content_category": "Categoria",
+        "creator_size": "Tamanho do creator",
+        "is_sponsored": "Patrocinado",
+    }
     for column in FILTERS:
         options = sorted(data[column].dropna().unique().tolist(), key=str)
-        selected[column] = st.multiselect(column.replace("_", " ").title(), options)
+        selected[column] = st.multiselect(filter_labels[column], options)
 
 filtered = apply_filters(data, selected)
 summary = kpis(filtered)
@@ -48,6 +59,52 @@ cols[0].metric("Posts (n)", f"{summary['posts']:,}")
 cols[1].metric("Engagement/view", f"{summary['engagement_mean']:.3%}")
 cols[2].metric("Views médias", f"{summary['views_mean']:,.1f}")
 cols[3].metric("Posts patrocinados", f"{summary['sponsored_share']:.1%}")
+
+st.header("Decisão executiva")
+st.error(
+    "Não amplie patrocínio com base neste arquivo. O ganho ajustado foi praticamente zero "
+    "e o dataset não possui custos, conversões ou receita."
+)
+
+now, avoid, approve = st.columns(3)
+with now:
+    st.subheader("Faça agora")
+    st.markdown(
+        """
+- instrumente custo e conversão;
+- teste hipóteses com grupo de comparação;
+- defina a métrica antes de ver o resultado.
+"""
+    )
+with avoid:
+    st.subheader("Não faça")
+    st.markdown(
+        """
+- escolher plataforma por diferença mínima;
+- contratar apenas por seguidores;
+- chamar alcance ou engagement de ROI.
+"""
+    )
+with approve:
+    st.subheader("Decisão do Head")
+    st.markdown(
+        """
+- aprovar objetivo e orçamento;
+- aprovar ganho mínimo aceitável;
+- definir quando escalar ou interromper.
+"""
+    )
+
+with st.expander("Tradução dos termos usados na análise"):
+    st.markdown(
+        """
+- **Efeito incremental:** resultado adicional provocado pela ação, além do que ocorreria sem ela.
+- **IC95%:** faixa de resultados compatíveis com os dados; quanto mais ampla, maior a incerteza.
+- **MDE:** menor ganho que justificaria mudar uma decisão de negócio.
+- **Break-even:** resultado mínimo necessário para pagar todos os custos da ação.
+- **Guardrail:** indicador que não pode piorar enquanto buscamos o resultado principal.
+"""
+    )
 
 st.header("Respostas explícitas às perguntas do desafio")
 
@@ -145,6 +202,58 @@ with st.container(border=True):
         "receita/margem e grupo de comparação."
     )
 
+st.divider()
+st.header("Decidir e testar")
+st.write(
+    "Preencha premissas reais para transformar uma ideia em experimento. "
+    "Os valores abaixo são exemplos editáveis e não vêm do dataset."
+)
+
+left, right = st.columns(2)
+with left:
+    objective = st.selectbox(
+        "Qual é o objetivo principal?",
+        ["Alcance", "Compartilhamento", "Conversa", "Conversão"],
+        key="experiment_objective",
+    )
+    hypothesis = st.text_input(
+        "Hipótese a testar",
+        "Conteúdo patrocinado gera resultado incremental suficiente para pagar o investimento.",
+    )
+    owner = st.text_input("Responsável", "Social Media Lead")
+    duration = st.number_input("Duração planejada (dias)", 7, 90, 30)
+
+with right:
+    campaign_cost = st.number_input("Custo total da campanha (R$)", 0.0, value=10_000.0, step=500.0)
+    margin = st.number_input("Margem por conversão (R$)", 0.01, value=250.0, step=10.0)
+    eligible = st.number_input("Pessoas elegíveis no teste", 1, value=100_000, step=1_000)
+
+threshold = break_even(campaign_cost, margin, int(eligible))
+copy = experiment_copy(objective)
+decision_cols = st.columns(3)
+decision_cols[0].metric(
+    "Conversões incrementais mínimas", f"{threshold['incremental_conversions']:,}"
+)
+decision_cols[1].metric("Ganho mínimo na taxa", f"{threshold['incremental_rate']:.3%}")
+decision_cols[2].metric("Margem mínima", f"R$ {threshold['required_margin']:,.2f}")
+
+with st.container(border=True):
+    st.subheader("Briefing do experimento")
+    st.markdown(
+        f"**Hipótese:** {hypothesis}\n\n"
+        f"**Owner:** {owner}\n\n"
+        f"**Prazo:** {int(duration)} dias\n\n"
+        f"**Métrica principal:** {copy['metric']}\n\n"
+        f"**Guardrail:** {copy['guardrail']}\n\n"
+        "**Regra de escala:** escalar somente se o ganho incremental comprovado superar "
+        "o break-even acima e o guardrail permanecer saudável.\n\n"
+        "**Regra de parada:** interromper por dano no guardrail, falha de instrumentação "
+        "ou inviabilidade do ganho mínimo antes de aumentar o orçamento."
+    )
+st.caption(
+    "A calculadora define o mínimo econômico. Ela não prova causalidade nem substitui "
+    "randomização, tamanho amostral e aprovação financeira."
+)
 with st.container(border=True):
     st.subheader("6. Qual frequência, creator e threshold usar?")
     st.warning("Resposta: o dataset não permite recomendar frequência nem threshold de seguidores.")
@@ -223,3 +332,7 @@ with st.expander("Como interpretar"):
 - Fonte: dataset Kaggle declarado no contrato; período 29/05/2023–28/05/2025.
 """
     )
+
+st.divider()
+st.markdown("**Felipe de Oliveira Freire**")
+st.caption("Cientista/Analista de Dados")

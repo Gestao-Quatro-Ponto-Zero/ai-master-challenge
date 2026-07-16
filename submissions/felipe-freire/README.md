@@ -29,6 +29,8 @@ O plano com owners, métricas e condições de decisão está em [`reports/30-da
 
 O dashboard Streamlit responde explicitamente às perguntas do desafio, permite auditar audiência por plataforma/conteúdo/categoria e mantém tamanho amostral e limitações visíveis.
 
+Para o Head de Marketing, a ferramenta também apresenta “Faça agora”, “Não faça” e “Decisão do Head”, traduz os termos estatísticos e gera um briefing de experimento com break-even, métrica, guardrail e regras de escala/parada a partir de premissas reais informadas pelo usuário.
+
 ### [Abrir dashboard público](https://felipe-social-media-intelligence.streamlit.app/)
 
 Não requer instalação ou login. O app publicado usa somente o asset analítico compacto versionado nesta submissão.
