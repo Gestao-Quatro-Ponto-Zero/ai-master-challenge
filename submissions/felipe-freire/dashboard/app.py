@@ -212,6 +212,14 @@ h1, h2, h3 {{ color: var(--g4-ink); }}
 }}
 [data-testid="stExpander"] summary, [data-testid="stExpander"] summary span,
 [data-testid="stExpander"] summary p {{ color: var(--g4-ink) !important; }}
+[data-testid="stExpander"] details,
+[data-testid="stExpander"] summary {{
+    background: var(--g4-surface) !important;
+    border-color: var(--g4-border) !important;
+}}
+[data-testid="stExpander"] summary:hover {{
+    background: {palette["container"]} !important;
+}}
 [data-testid="stVerticalBlockBorderWrapper"] {{
     background: {palette["container"]}; border-color: var(--g4-border);
 }}

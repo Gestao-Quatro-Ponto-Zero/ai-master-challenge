@@ -14,8 +14,8 @@ LANGUAGES = {
 UI = {
     "pt": {
         "theme": "Tema",
-        "light": "☀️ Claro",
-        "dark": "🌙 Escuro",
+        "light": ":material/light_mode: Claro",
+        "dark": ":material/dark_mode: Escuro",
         "independent": "Projeto independente desenvolvido para o AI Masters Challenge.",
         "eyebrow": "Challenge 004 · Estratégia Social Media",
         "subtitle": "Decisões de marketing baseadas em evidência — sem rankings ou ROI fabricados.",
@@ -70,8 +70,8 @@ UI = {
     },
     "es": {
         "theme": "Tema",
-        "light": "☀️ Claro",
-        "dark": "🌙 Oscuro",
+        "light": ":material/light_mode: Claro",
+        "dark": ":material/dark_mode: Oscuro",
         "independent": "Proyecto independiente desarrollado para el AI Masters Challenge.",
         "eyebrow": "Challenge 004 · Estrategia de Social Media",
         "subtitle": "Decisiones de marketing basadas en evidencia, sin rankings ni ROI inventados.",
@@ -126,8 +126,8 @@ UI = {
     },
     "en": {
         "theme": "Theme",
-        "light": "☀️ Light",
-        "dark": "🌙 Dark",
+        "light": ":material/light_mode: Light",
+        "dark": ":material/dark_mode: Dark",
         "independent": "Independent project developed for the AI Masters Challenge.",
         "eyebrow": "Challenge 004 · Social Media Strategy",
         "subtitle": "Evidence-based marketing decisions, without fabricated rankings or ROI.",
