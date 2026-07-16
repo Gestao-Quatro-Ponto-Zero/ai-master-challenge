@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Construí o **G4 Lead Scorer**, uma aplicação web em Python que transforma o pipeline aberto em uma fila de decisões explicável para o vendedor. Antes de implementar um score, auditei os datasets, testei hipóteses de conversão e comparei modelos com split temporal; os modelos preditivos apresentaram AUC próxima de 0,50 e lift pequeno/instável, então rejeitei a ideia de apresentar uma falsa probabilidade de fechamento. A solução final combina **Historical Fit** (contexto histórico regularizado) e **Attention Need** (urgência operacional baseada no tempo em Engaging) para gerar um **Priority Score**, uma **Action Category** e uma explicação rastreável. O objetivo é simples: mostrar onde focar, quais deals precisam de uma decisão e por quê.
+Construí o **G4 | Lead Scorer**, uma aplicação web em Python que transforma o pipeline aberto em uma fila de decisões explicável para o vendedor. Antes de implementar um score, auditei os datasets, testei hipóteses de conversão e comparei modelos com split temporal; os modelos preditivos apresentaram AUC próxima de 0,50 e lift pequeno/instável, então rejeitei a ideia de apresentar uma falsa probabilidade de fechamento. A solução final combina **Historical Fit** (contexto histórico regularizado) e **Attention Need** (urgência operacional baseada no tempo em Engaging) para gerar um **Priority Score**, uma **Action Category** e uma explicação rastreável. O objetivo é simples: mostrar onde focar, quais deals precisam de uma decisão e por quê.
 
 ## Solução
 

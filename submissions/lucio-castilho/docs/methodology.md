@@ -1,4 +1,4 @@
-# Metodologia — G4 Lead Scorer
+# Metodologia — G4 | Lead Scorer
 
 ## 1. Objetivo
 

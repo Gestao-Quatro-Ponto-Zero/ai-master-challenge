@@ -1,4 +1,4 @@
-# Process Log — G4 Lead Scorer
+# Process Log — G4 | Lead Scorer
 
 Este documento registra como a IA foi usada durante a resolução do Challenge 003 e, principalmente, onde as hipóteses iniciais foram rejeitadas após verificação nos dados.
 
