@@ -261,7 +261,7 @@ try:
 
 except DatasetNotFoundError as exc:
     st.markdown(
-        '<div class="g4-eyebrow">G4 · REVENUE OPERATIONS</div>',
+        '<div class="g4-eyebrow">G4 · Para quem quer mais</div>',
         unsafe_allow_html=True,
     )
 
@@ -311,7 +311,7 @@ def clear_filters() -> None:
 # -----------------------------------------------------------------------------
 
 st.markdown(
-    '<div class="g4-eyebrow">G4 · REVENUE OPERATIONS</div>',
+    '<div class="g4-eyebrow">G4 · Para quem quer mais</div>',
     unsafe_allow_html=True,
 )
 
@@ -322,7 +322,7 @@ st.markdown(
 
 st.markdown(
     '<div class="g4-subtitle">'
-    'Turn your open pipeline into an explainable action plan.'
+    'Transforme seu pipeline em aberto em um plano de ação explicável.'
     '</div>',
     unsafe_allow_html=True,
 )
@@ -481,22 +481,22 @@ columns = st.columns(4)
 
 metric_specs = [
     (
-        "OPEN DEALS",
+        "NEGÓCIOS EM ABERTO",
         summary["open_deals"],
         False,
     ),
     (
-        "FOCUS NOW",
+        "FOCO AGORA",
         summary["focus_now"],
         True,
     ),
     (
-        "NEED DECISION",
+        "PRECISA DE DECISÃO",
         summary["need_decision"],
         False,
     ),
     (
-        "LIMITED EVIDENCE",
+        "EVIDÊNCIAS LIMITADAS",
         summary["limited_evidence"],
         False,
     ),
@@ -529,7 +529,7 @@ for column, (
 # Focus section
 # -----------------------------------------------------------------------------
 
-st.markdown("### Your focus")
+st.markdown("### Seu foco")
 
 priority_sections = [
     "Focus Now",
@@ -596,7 +596,7 @@ if shown == 0:
 # Prioritized pipeline
 # -----------------------------------------------------------------------------
 
-st.markdown("### Prioritized pipeline")
+st.markdown("### Pipeline priorizado")
 
 visible_columns = [
     "action_category",
@@ -644,7 +644,7 @@ st.dataframe(
 # Deal detail
 # -----------------------------------------------------------------------------
 
-st.markdown("### Deal detail")
+st.markdown("### Detalhes do negócio")
 
 if not filtered.empty:
     selected_id = st.selectbox(
@@ -737,7 +737,7 @@ if not filtered.empty:
 # Export current view
 # -----------------------------------------------------------------------------
 
-st.markdown("### Export current view")
+st.markdown("### Exportar visualização atual")
 
 filters_payload = {
     "Gerente": selected_manager,
@@ -753,7 +753,7 @@ export_columns = st.columns(2)
 
 with export_columns[0]:
     st.download_button(
-        label=":material/table_view: Export Excel",
+        label=":material/table_view: Exportar Excel",
         data=build_excel_export(filtered),
         file_name="g4-lead-scorer.xlsx",
         mime=(
@@ -766,7 +766,7 @@ with export_columns[0]:
 
 with export_columns[1]:
     st.download_button(
-        label=":material/picture_as_pdf: Export PDF",
+        label=":material/picture_as_pdf: Exportar PDF",
         data=build_pdf_export(
             filtered,
             filters_payload,
@@ -782,7 +782,7 @@ with export_columns[1]:
 # -----------------------------------------------------------------------------
 
 st.caption(
-    f"Data source: CRM Sales Predictive Analytics (CC0) · "
-    f"local path: ../ai-master-challenge/datasets/crm-sales-predictive-analytics. "
-    "No synthetic CRM records are created by this application."
+    f"Fonte de dados: CRM Sales Predictive Analytics (CC0) · "
+    f"Caminho local: ../ai-master-challenge/datasets/crm-sales-predictive-analytics. "
+    "Nenhum registro sintético de CRM é criado por esta aplicação."
 )
