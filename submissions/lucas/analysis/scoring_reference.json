@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "generated_from": "pipeline_clean.csv",
+    "reference_date": "2017-12-31",
+    "global_win_rate": 0.6315,
+    "global_n_closed": 6711,
+    "shrinkage_k": 30,
+    "shrinkage_formula": "shrunk = (n*raw + k*global) / (n+k)",
+    "shrinkage_threshold_note": "segmentos com n<30 regridem fortemente a media global; em n=k=30 o peso e 50/50 entre taxa crua e media global",
+    "valor_potencial_note": "para deals abertos, valor potencial = products.sales_price do produto (close_value e desconhecido ate o fechamento)",
+    "cooling_note": "esfriando = dias desde engage_date > p75 do days_to_close de deals WON do mesmo produto; Prospecting nunca recebe a flag (sem engage_date)",
+    "stage_multiplier_note": "HEURISTICO, nao derivado do historico (deal_stage nao tem outcome historico associado por linha, e um estado unico, nao uma serie temporal de transicoes)"
+  },
+  "product_win_rate": {
+    "GTK 500": {
+      "n": 25,
+      "raw": 0.6,
+      "shrunk": 0.6172
+    },
+    "GTX Basic": {
+      "n": 1436,
+      "raw": 0.6372,
+      "shrunk": 0.6371
+    },
+    "GTX Plus Basic": {
+      "n": 1051,
+      "raw": 0.6213,
+      "shrunk": 0.6216
+    },
+    "GTX Plus Pro": {
+      "n": 745,
+      "raw": 0.643,
+      "shrunk": 0.6425
+    },
+    "GTX Pro": {
+      "n": 1147,
+      "raw": 0.6356,
+      "shrunk": 0.6355
+    },
+    "MG Advanced": {
+      "n": 1084,
+      "raw": 0.6033,
+      "shrunk": 0.6041
+    },
+    "MG Special": {
+      "n": 1223,
+      "raw": 0.6484,
+      "shrunk": 0.648
+    }
+  },
+  "sector_win_rate": {
+    "employment": {
+      "n": 286,
+      "raw": 0.6259,
+      "shrunk": 0.6264
+    },
+    "entertainment": {
+      "n": 402,
+      "raw": 0.6468,
+      "shrunk": 0.6457
+    },
+    "finance": {
+      "n": 613,
+      "raw": 0.6117,
+      "shrunk": 0.6127
+    },
+    "marketing": {
+      "n": 623,
+      "raw": 0.6485,
+      "shrunk": 0.6477
+    },
+    "medical": {
+      "n": 950,
+      "raw": 0.6232,
+      "shrunk": 0.6234
+    },
+    "retail": {
+      "n": 1267,
+      "raw": 0.6306,
+      "shrunk": 0.6306
+    },
+    "services": {
+      "n": 352,
+      "raw": 0.6335,
+      "shrunk": 0.6334
+    },
+    "software": {
+      "n": 704,
+      "raw": 0.6392,
+      "shrunk": 0.6389
+    },
+    "technolgy": {
+      "n": 1058,
+      "raw": 0.6342,
+      "shrunk": 0.6341
+    },
+    "telecommunications": {
+      "n": 456,
+      "raw": 0.625,
+      "shrunk": 0.6254
+    }
+  },
+  "stage_multiplier": {
+    "Prospecting": 0.85,
+    "Engaging": 1.15
+  },
+  "product_cooling_threshold_days": {
+    "GTK 500": {
+      "n_won": 15,
+      "p75_days": 99.5
+    },
+    "GTX Basic": {
+      "n_won": 915,
+      "p75_days": 91.0
+    },
+    "GTX Plus Basic": {
+      "n_won": 653,
+      "p75_days": 90.0
+    },
+    "GTX Plus Pro": {
+      "n_won": 479,
+      "p75_days": 85.0
+    },
+    "GTX Pro": {
+      "n_won": 729,
+      "p75_days": 84.0
+    },
+    "MG Advanced": {
+      "n_won": 654,
+      "p75_days": 87.0
+    },
+    "MG Special": {
+      "n_won": 793,
+      "p75_days": 88.0
+    }
+  },
+  "product_sales_price": {
+    "GTX Basic": 550,
+    "GTX Pro": 4821,
+    "MG Special": 55,
+    "MG Advanced": 3393,
+    "GTX Plus Pro": 5482,
+    "GTX Plus Basic": 1096,
+    "GTK 500": 26768
+  }
+}

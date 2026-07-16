@@ -13,8 +13,4 @@ datasets/
 .idea/
 
 # Submissions (if candidates fork)
-submissions/*
-
-# Exceção: versionar a minha submissão
-!submissions/lucas/
-!submissions/lucas/**
+submissions/
