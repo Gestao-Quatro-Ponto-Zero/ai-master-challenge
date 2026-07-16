@@ -7,8 +7,11 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import AsyncGenerator
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 from churn_platform import __version__
@@ -68,6 +71,16 @@ def create_app(output_dir: str = "output") -> FastAPI:
     output_path = Path(output_dir)
     if output_path.exists():
         app.mount("/output", StaticFiles(directory=str(output_path)), name="output")
+
+    static_dir = Path(__file__).parent / "static"
+    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
+
+    @app.get("/", response_class=HTMLResponse)
+    async def dashboard():
+        index_path = static_dir / "index.html"
+        if index_path.exists():
+            return index_path.read_text(encoding="utf-8")
+        return "<h1>Churn Platform</h1><p>Dashboard not found.</p>"
 
     state = get_state()
     state["explainer"] = LLMExplainer(cache_dir=str(output_path / "cache"))

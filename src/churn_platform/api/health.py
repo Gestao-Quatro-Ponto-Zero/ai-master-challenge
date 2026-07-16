@@ -6,7 +6,6 @@ import time
 from datetime import datetime
 
 from fastapi import APIRouter
-from fastapi.responses import RedirectResponse
 
 from churn_platform import __version__
 from churn_platform.api import get_state
@@ -14,11 +13,6 @@ from churn_platform.api import get_state
 router = APIRouter()
 
 _start_time = time.time()
-
-
-@router.get("/")
-async def root():
-    return RedirectResponse(url="/docs")
 
 
 @router.get("/health")
