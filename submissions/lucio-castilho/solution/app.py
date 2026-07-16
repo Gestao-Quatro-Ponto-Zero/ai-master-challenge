@@ -8,7 +8,7 @@ from src.exports import build_excel_export, build_pdf_export
 from src.scoring import load_data, score_open_pipeline, scoring_summary
 
 st.set_page_config(
-    page_title="G4 Deal Focus",
+    page_title="G4 Lead Scorer",
     page_icon="◼",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -174,14 +174,14 @@ try:
     scored, teams = get_scored_data(str(DATA_DIR))
 except DatasetNotFoundError as exc:
     st.markdown('<div class="g4-eyebrow">G4 · REVENUE OPERATIONS</div>', unsafe_allow_html=True)
-    st.markdown('<div class="g4-title">DEAL FOCUS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="g4-title">LEAD SCORER</div>', unsafe_allow_html=True)
     st.error("Dataset not found")
     st.code(str(exc), language=None)
     st.info("See solution/README.md for local dataset setup instructions.")
     st.stop()
 
 st.markdown('<div class="g4-eyebrow">G4 · REVENUE OPERATIONS</div>', unsafe_allow_html=True)
-st.markdown('<div class="g4-title">DEAL FOCUS</div>', unsafe_allow_html=True)
+st.markdown('<div class="g4-title">LEAD SCORER</div>', unsafe_allow_html=True)
 st.markdown('<div class="g4-subtitle">Turn your open pipeline into an explainable action plan.</div>', unsafe_allow_html=True)
 
 with st.sidebar:

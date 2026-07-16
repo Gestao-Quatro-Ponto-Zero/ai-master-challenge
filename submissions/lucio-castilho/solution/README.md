@@ -1,4 +1,4 @@
-# G4 Deal Focus — Local Setup
+# G4 Lead Scorer — Local Setup
 
 Aplicação Streamlit que transforma as oportunidades abertas do dataset **CRM Sales Predictive Analytics** em uma fila de decisões explicável.
 

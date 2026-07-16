@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Construí o **G4 Deal Focus**, uma aplicação web em Python que transforma o pipeline aberto em uma fila de decisões explicável para o vendedor. Antes de implementar um score, auditei os datasets, testei hipóteses de conversão e comparei modelos com split temporal; os modelos preditivos apresentaram AUC próxima de 0,50 e lift pequeno/instável, então rejeitei a ideia de apresentar uma falsa probabilidade de fechamento. A solução final combina **Historical Fit** (contexto histórico regularizado) e **Attention Need** (urgência operacional baseada no tempo em Engaging) para gerar um **Priority Score**, uma **Action Category** e uma explicação rastreável. O objetivo é simples: mostrar onde focar, quais deals precisam de uma decisão e por quê.
+Construí o **G4 Lead Scorer**, uma aplicação web em Python que transforma o pipeline aberto em uma fila de decisões explicável para o vendedor. Antes de implementar um score, auditei os datasets, testei hipóteses de conversão e comparei modelos com split temporal; os modelos preditivos apresentaram AUC próxima de 0,50 e lift pequeno/instável, então rejeitei a ideia de apresentar uma falsa probabilidade de fechamento. A solução final combina **Historical Fit** (contexto histórico regularizado) e **Attention Need** (urgência operacional baseada no tempo em Engaging) para gerar um **Priority Score**, uma **Action Category** e uma explicação rastreável. O objetivo é simples: mostrar onde focar, quais deals precisam de uma decisão e por quê.
 
 ## Solução
 
@@ -83,7 +83,7 @@ Deals muito antigos não recebem urgência infinita. A aplicação diferencia um
 
 ## Recomendações
 
-1. **Usar o Deal Focus como camada de priorização semanal/diária**, começando pelos blocos `Focus Now` e `Need Decision`.
+1. **Usar o Lead Scorer como camada de priorização semanal/diária**, começando pelos blocos `Focus Now` e `Need Decision`.
 2. **Melhorar a captura de dados no CRM**, especialmente `created_date`, `last_activity_date`, próxima ação, valor estimado e conta associada.
 3. **Revalidar um modelo preditivo somente depois de enriquecer os dados comportamentais**, porque as features estáticas atuais não demonstraram sinal suficiente fora da amostra.
 4. **Tratar score alto como necessidade de atenção**, não como garantia de fechamento.
@@ -103,11 +103,11 @@ O log detalhado está em [`process-log/README.md`](process-log/README.md).
 
 ### Ferramentas usadas
 
-| Ferramenta | Para que usei |
-|---|---|
-| ChatGPT | Decomposição do problema, auditoria metodológica, geração e revisão de código, desenho do scoring, testes e documentação |
-| Python / pandas | Validação das hipóteses diretamente nos CSVs e construção dos indicadores |
-| Streamlit | Construção rápida do produto funcional |
+| Ferramenta      | Para que usei                                                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| ChatGPT         | Decomposição do problema, auditoria metodológica, geração e revisão de código, desenho do scoring, testes e documentação |
+| Python / pandas | Validação das hipóteses diretamente nos CSVs e construção dos indicadores                                                |
+| Streamlit       | Construção rápida do produto funcional                                                                                   |
 
 ### Evidências
 

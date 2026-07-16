@@ -1,14 +1,14 @@
-# Process Log — G4 Deal Focus
+# Process Log — G4 Lead Scorer
 
 Este documento registra como a IA foi usada durante a resolução do Challenge 003 e, principalmente, onde as hipóteses iniciais foram rejeitadas após verificação nos dados.
 
 ## Ferramentas usadas
 
-| Ferramenta | Uso |
-|---|---|
-| ChatGPT | Estruturação do problema, geração de hipóteses, revisão metodológica, assistência no código, testes e documentação |
-| Python / pandas | Auditoria e validação quantitativa diretamente nos CSVs |
-| Streamlit | Construção do MVP web |
+| Ferramenta      | Uso                                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------------------ |
+| ChatGPT         | Estruturação do problema, geração de hipóteses, revisão metodológica, assistência no código, testes e documentação |
+| Python / pandas | Auditoria e validação quantitativa diretamente nos CSVs                                                            |
+| Streamlit       | Construção do MVP web                                                                                              |
 
 ## Workflow
 

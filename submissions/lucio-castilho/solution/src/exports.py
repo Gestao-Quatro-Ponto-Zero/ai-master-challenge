@@ -94,7 +94,7 @@ def build_pdf_export(filtered: pd.DataFrame, filters: Mapping[str, object]) -> b
     styles.add(ParagraphStyle(name='BodyG4', parent=styles['BodyText'], fontSize=9.5, leading=13, textColor=BLACK))
 
     story = [
-        Paragraph('G4 DEAL FOCUS', styles['TitleG4']),
+        Paragraph('G4 LEAD SCORER', styles['TitleG4']),
         Paragraph('Pipeline Action Report', styles['Heading3']),
         Spacer(1, 4*mm),
         Paragraph(f'<b>Filters:</b> {_format_filters(filters)}', styles['SmallG4']),

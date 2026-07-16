@@ -1,4 +1,4 @@
-# Metodologia — G4 Deal Focus
+# Metodologia — G4 Lead Scorer
 
 ## 1. Objetivo
 
@@ -9,7 +9,6 @@ O produto não tenta responder "qual deal vai fechar?" como se houvesse informa�
 ## 2. Dados
 
 Os CSVs são dependências locais e não são versionados na submissão. A aplicação os procura em `datasets/crm-sales-predictive-analytics/`, diretamente em `datasets/`, ou no caminho definido por `CRM_DATA_DIR`.
-
 
 Arquivos usados:
 
@@ -109,13 +108,13 @@ Somente deals em `Engaging` possuem `engage_date`. Para eles:
 
 Estados:
 
-| Percentil histórico | Score | Estado |
-|---|---:|---|
-| < P50 | 20 | Normal |
-| P50–P75 | 40 | Watch |
-| P75–P90 | 70 | Needs Attention |
-| P90–P95 | 100 | Urgent Review |
-| > P95 | 60 | Stale |
+| Percentil histórico | Score | Estado          |
+| ------------------- | ----: | --------------- |
+| < P50               |    20 | Normal          |
+| P50–P75             |    40 | Watch           |
+| P75–P90             |    70 | Needs Attention |
+| P90–P95             |   100 | Urgent Review   |
+| > P95               |    60 | Stale           |
 
 `Stale` cai para 60 propositalmente: um deal extremamente velho deve provocar uma decisão de pipeline, não receber esforço infinito.
 
