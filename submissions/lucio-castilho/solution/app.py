@@ -22,7 +22,7 @@ FAVICON_PATH = BASE_DIR / "src" / "favicon.png"
 # -----------------------------------------------------------------------------
 
 st.set_page_config(
-    page_title="G4 Lead Scorer",
+    page_title="G4 | Lead Scorer",
     page_icon=str(FAVICON_PATH),
     layout="wide",
     initial_sidebar_state="expanded",
@@ -37,29 +37,47 @@ st.markdown(
     """
     <style>
     :root {
-        --g4-black: #0A0A0A;
-        --g4-surface: #151515;
-        --g4-surface-2: #202020;
-        --g4-border: #333333;
-        --g4-text: #FFFFFF;
-        --g4-muted: #A3A3A3;
+        /* Main backgrounds */
+        --g4-background: #F4F7F9;
+        --g4-sidebar: #E8EEF2;
+
+        /* Elevated surfaces */
+        --g4-surface: #DCE5EA;
+        --g4-surface-2: #CBD8DF;
+
+        /* KPI cards */
+        --g4-card-dark: #001F35;
+        --g4-card-border: #16445E;
+
+        /* Borders */
+        --g4-border: #B8C8D1;
+
+        /* Typography */
+        --g4-text: #001F35;
+        --g4-text-inverse: #FFFFFF;
+        --g4-muted: #607786;
+        --g4-muted-inverse: #A9BCC8;
+
+        /* Operational highlight */
         --g4-accent: #C7FF00;
+
+        /* Brand / primary action */
         --g4-gold: #B9915B;
     }
 
     .stApp {
-        background: var(--g4-black);
+        background: var(--g4-background);
         color: var(--g4-text);
     }
 
     /* Main application content spacing */
     [data-testid="stMainBlockContainer"] {
-        padding-top: 2rem;
+        padding-top: 3rem;
         padding-bottom: 3rem;
     }
 
     [data-testid="stSidebar"] {
-        background: #111111;
+        background: var(--g4-sidebar);
         border-right: 1px solid var(--g4-border);
     }
 
@@ -87,22 +105,22 @@ st.markdown(
     }
 
     .metric-card {
-        background: var(--g4-surface);
-        border: 1px solid var(--g4-border);
+        background: var(--g4-card-dark);
+        border: 1px solid var(--g4-card-border);
         border-radius: 12px;
         padding: 16px;
         min-height: 104px;
     }
 
     .metric-label {
-        color: var(--g4-muted);
+        color: var(--g4-muted-inverse);
         font-size: .78rem;
         text-transform: uppercase;
         letter-spacing: .08em;
     }
 
     .metric-value {
-        color: var(--g4-text);
+        color: var(--g4-text-inverse);
         font-size: 2rem;
         font-weight: 900;
         margin-top: .25rem;
@@ -115,7 +133,7 @@ st.markdown(
     .deal-card {
         background: var(--g4-surface);
         border: 1px solid var(--g4-border);
-        border-left: 4px solid var(--g4-accent);
+        border-left: 4px solid var(--g4-gold);
         border-radius: 10px;
         padding: 14px 16px;
         margin-bottom: 10px;
@@ -127,7 +145,7 @@ st.markdown(
     }
 
     .score {
-        color: var(--g4-accent);
+        color: #3F5F00;
         font-size: 1.45rem;
         font-weight: 900;
     }

@@ -2,14 +2,14 @@
 toolbarMode = "minimal"
 
 [theme]
-base = "dark"
+base = "light"
 primaryColor = "#B9915B"
-backgroundColor = "#0A0A0A"
-secondaryBackgroundColor = "#151515"
-textColor = "#FFFFFF"
+backgroundColor = "#F4F7F9"
+secondaryBackgroundColor = "#E8EEF2"
+textColor = "#001F35"
 
 [theme.sidebar]
 primaryColor = "#B9915B"
-backgroundColor = "#111111"
-secondaryBackgroundColor = "#151515"
-textColor = "#FFFFFF"
+backgroundColor = "#E8EEF2"
+secondaryBackgroundColor = "#DCE5EA"
+textColor = "#001F35"
