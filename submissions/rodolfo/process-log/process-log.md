@@ -85,7 +85,29 @@
 - [x] Plano estratégico: `submissions/rodolfo/plano-estrategico-churn.md`
 - [x] Este process log: `submissions/rodolfo/process-log/process-log.md`
 
-### Screenshots — Survival Analysis
+### Screenshots
+
+**Dashboard & KPIs**
+
+![Dashboard Overview](screenshots/dashboard_overview.png)
+
+**Pipeline Architecture**
+
+![Pipeline](screenshots/pipeline_architecture.png)
+
+**Test Results — 25/25 passando**
+
+![Testes](screenshots/test_results.png)
+
+**Churn por Indústria**
+
+![Industry Churn](screenshots/churn_by_industry.png)
+
+**Feature Importance (XGBoost)**
+
+![Features](screenshots/feature_importance.png)
+
+**Survival Analysis — Kaplan-Meier + CoxPH**
 
 | Curva KM por Segmento | Curva KM Global | Hazard Ratios CoxPH |
 |---|---|---|
