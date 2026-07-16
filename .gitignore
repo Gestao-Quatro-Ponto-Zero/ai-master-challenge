@@ -14,3 +14,7 @@ datasets/
 
 # Submissions (if candidates fork)
 submissions/
+
+# Exceção: versionar a minha submissão (branch submission/lucas)
+!submissions/lucas/
+!submissions/lucas/**
