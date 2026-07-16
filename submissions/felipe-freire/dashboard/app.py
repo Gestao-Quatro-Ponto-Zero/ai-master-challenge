@@ -54,7 +54,7 @@ st.markdown(
     --g4-ink: #152B3A;
 }
 
-html, body, [class*="st-"] { font-family: "Manrope", sans-serif; }
+html, body, [data-testid="stAppViewContainer"] { font-family: "Manrope", sans-serif; }
 [data-testid="stAppViewContainer"] { background: var(--g4-cream); color: var(--g4-ink); }
 [data-testid="stHeader"] { background: rgba(245, 244, 243, 0.92); }
 [data-testid="stSidebar"] { background: var(--g4-navy); }
@@ -94,6 +94,28 @@ h3 { font-weight: 700; }
 }
 [data-testid="stMetricLabel"] { color: #526876; }
 [data-testid="stMetricValue"] { color: var(--g4-navy); font-weight: 800; }
+[data-testid="stWidgetLabel"] p,
+[data-testid="stWidgetLabel"] label,
+[data-testid="stSelectbox"] label,
+[data-testid="stNumberInput"] label,
+[data-testid="stTextInput"] label { color: var(--g4-navy) !important; font-weight: 650; }
+[data-testid="stAppViewContainer"] [data-baseweb="select"] > div,
+[data-testid="stAppViewContainer"] [data-baseweb="input"] > div,
+[data-testid="stAppViewContainer"] input {
+    background: var(--g4-white) !important;
+    color: var(--g4-navy) !important;
+    border-color: #C7D2D9 !important;
+}
+[data-testid="stAppViewContainer"] [data-baseweb="select"] span,
+[data-testid="stAppViewContainer"] [data-baseweb="select"] svg {
+    color: var(--g4-navy) !important;
+    fill: var(--g4-navy) !important;
+}
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] div { color: var(--g4-ink) !important; }
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] summary span,
+[data-testid="stExpander"] summary p { color: var(--g4-navy) !important; }
 [data-testid="stVerticalBlockBorderWrapper"] {
     background: rgba(255, 255, 255, 0.78);
     border-color: #D8E0E5;
@@ -103,6 +125,8 @@ h3 { font-weight: 700; }
 hr { border-color: rgba(0, 31, 53, 0.14); }
 .g4-footer { color: #526876; text-align: center; padding-top: 1rem; }
 .g4-footer strong { color: var(--g4-navy); }
+.g4-footer a { color: var(--g4-gold); font-weight: 700; text-decoration: none; }
+.g4-footer a:hover { text-decoration: underline; }
 </style>
 """,
     unsafe_allow_html=True,
@@ -270,7 +294,7 @@ with st.container(border=True):
         plot_bgcolor="rgba(255,255,255,0.55)",
         font={"family": "Manrope", "color": "#152B3A"},
     )
-    st.plotly_chart(audience_fig, use_container_width=True)
+    st.plotly_chart(audience_fig, use_container_width=True, theme=None)
     st.dataframe(audience_table, use_container_width=True, hide_index=True)
 
 with st.container(border=True):
@@ -407,7 +431,7 @@ fig.update_layout(
     plot_bgcolor="rgba(255,255,255,0.55)",
     font={"family": "Manrope", "color": "#152B3A"},
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True, theme=None)
 st.dataframe(grouped, use_container_width=True, hide_index=True)
 
 st.subheader("Patrocinado versus orgânico — descritivo")
@@ -438,7 +462,10 @@ st.markdown(
     """
 <footer class="g4-footer">
   <strong>Felipe de Oliveira Freire</strong><br>
-  Cientista/Analista de Dados
+  Cientista/Analista de Dados<br>
+  <a href="https://www.linkedin.com/in/felipe-freire-659615284/" target="_blank">
+    LinkedIn · felipe-freire-659615284
+  </a>
 </footer>
 """,
     unsafe_allow_html=True,
