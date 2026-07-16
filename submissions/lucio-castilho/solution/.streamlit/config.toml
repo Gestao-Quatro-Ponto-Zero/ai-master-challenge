@@ -1,4 +1,15 @@
 [client]
 toolbarMode = "minimal"
+
 [theme]
 base = "dark"
+primaryColor = "#B9915B"
+backgroundColor = "#0A0A0A"
+secondaryBackgroundColor = "#151515"
+textColor = "#FFFFFF"
+
+[theme.sidebar]
+primaryColor = "#B9915B"
+backgroundColor = "#111111"
+secondaryBackgroundColor = "#151515"
+textColor = "#FFFFFF"
