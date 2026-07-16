@@ -12,5 +12,19 @@ datasets/
 .vscode/
 .idea/
 
-# Submissions (if candidates fork)
-submissions/
+# Submissions — keep only data CSVs
+submissions/rodolfo/*.html
+submissions/rodolfo/*.md
+submissions/rodolfo/*.py
+submissions/rodolfo/*.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Project output
+output/
