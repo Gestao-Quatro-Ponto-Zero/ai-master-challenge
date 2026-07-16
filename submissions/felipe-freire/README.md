@@ -78,5 +78,6 @@ A arquitetura, os prompts e o protocolo de handoff estão em [`docs/agent-archit
 
 ---
 
-**Felipe de Oliveira Freire**  
+**Felipe de Oliveira Freire**
+
 *Cientista/Analista de Dados*
