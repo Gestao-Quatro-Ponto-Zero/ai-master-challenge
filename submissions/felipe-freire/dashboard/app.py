@@ -5,14 +5,24 @@ from __future__ import annotations
 import plotly.express as px
 import streamlit as st
 
-from dashboard.data import (
-    FILTERS,
-    apply_filters,
-    audience_cross,
-    kpis,
-    load_data,
-    performance_by,
-)
+try:
+    from dashboard.data import (
+        FILTERS,
+        apply_filters,
+        audience_cross,
+        kpis,
+        load_data,
+        performance_by,
+    )
+except ModuleNotFoundError:  # Streamlit Cloud executes this file from its own directory.
+    from data import (  # type: ignore[no-redef]
+        FILTERS,
+        apply_filters,
+        audience_cross,
+        kpis,
+        load_data,
+        performance_by,
+    )
 
 st.set_page_config(page_title="Social Media Intelligence", layout="wide")
 st.title("Social Media Intelligence")

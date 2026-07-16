@@ -7,14 +7,14 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_PATH = ROOT / "data" / "processed" / "posts_analytical.csv"
+DATA_PATH = ROOT / "dashboard" / "assets" / "dashboard_posts.parquet"
 
 FILTERS = ["platform", "content_type", "content_category", "creator_size", "is_sponsored"]
 
 
 def load_data(path: Path = DATA_PATH) -> pd.DataFrame:
     """Load the contract-approved analytical dataset."""
-    frame = pd.read_csv(path, parse_dates=["post_datetime"])
+    frame = pd.read_parquet(path)
     if len(frame) != 52_214:
         raise ValueError(f"unexpected row count: {len(frame)}")
     return frame
