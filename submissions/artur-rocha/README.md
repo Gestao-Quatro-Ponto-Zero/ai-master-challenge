@@ -14,6 +14,27 @@ O CEO perguntou "o que está causando o churn?" e eu respondi a pergunta que ele
 
 ---
 
+## O diagnóstico em 6 gráficos
+
+> O relatório completo, na voz de consultor, está em [`solution/report.html`](solution/report.html) (baixe e abra no navegador). Abaixo, a história em imagens para leitura direta aqui no GitHub.
+
+**As 3 afirmações do CEO, testadas:**
+
+![Churn subiu de fato, 20x em 24 meses](solution/outputs/charts/1_churn_trend.png)
+![O uso não cresceu, está estagnado](solution/outputs/charts/2_usage_flat.png)
+![Satisfação não distingue quem cancela](solution/outputs/charts/3_satisfaction_blind.png)
+
+**Por que ninguém consegue prever o churn (o achado central):**
+
+![Nenhum modelo prevê churn melhor que cara-ou-coroa](solution/outputs/charts/4_auc_coinflip.png)
+
+**Onde agir, já que não dá para prever quem sai:**
+
+![A receita está concentrada: top 20% das contas = 67% do MRR](solution/outputs/charts/5_revenue_concentration.png)
+![DevTools: mais churn e menores contas, o ICP exposto a build vs buy](solution/outputs/charts/6_icp_devtools.png)
+
+---
+
 ## Solução
 
 **Entregável principal: [`solution/report.html`](solution/report.html)** (relatório executivo auto-contido, abre em qualquer navegador). Ferramenta que acompanha: watchlist de contas priorizadas por receita em risco (`solution/outputs/watchlist_full.csv`).
