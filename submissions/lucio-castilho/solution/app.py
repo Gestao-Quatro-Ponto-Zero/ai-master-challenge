@@ -140,26 +140,35 @@ st.markdown(
     }
 
     /* Excel and PDF export buttons */
-    div[data-testid="stDownloadButton"] > button {
+    div[data-testid="stDownloadButton"] button {
         background: var(--g4-gold);
         color: #FFFFFF;
         border: 1px solid var(--g4-gold);
-        font-weight: 600;
         border-radius: 8px;
         transition: all 0.2s ease;
     }
 
-    div[data-testid="stDownloadButton"] > button:hover {
+    /* Text and icon */
+    div[data-testid="stDownloadButton"] button * {
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+        transition: color 0.2s ease;
+    }
+
+    /* Hover, focus and active */
+    div[data-testid="stDownloadButton"] button:hover,
+    div[data-testid="stDownloadButton"] button:focus,
+    div[data-testid="stDownloadButton"] button:active {
         background: transparent;
         color: var(--g4-gold);
         border-color: var(--g4-gold);
     }
 
-    div[data-testid="stDownloadButton"] > button:focus,
-    div[data-testid="stDownloadButton"] > button:active {
-        background: transparent;
-        color: var(--g4-gold);
-        border-color: var(--g4-gold);
+    /* Text and icon on hover, focus and active */
+    div[data-testid="stDownloadButton"] button:hover *,
+    div[data-testid="stDownloadButton"] button:focus *,
+    div[data-testid="stDownloadButton"] button:active * {
+        color: var(--g4-gold) !important;
     }
 
     /* Hide only the Streamlit Deploy button */
