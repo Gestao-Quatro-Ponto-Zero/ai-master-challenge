@@ -31,7 +31,7 @@ export default function DealRow({ deal }: { deal: any }) {
         
         <div className="col-span-2 flex flex-col">
           <span className="text-sm font-bold text-gray-800">
-            {deal.valor_esperado ? `$${deal.valor_esperado.toLocaleString()}` : '-'}
+            {deal.valor_esperado ? `R$ ${(deal.valor_esperado).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}` : '-'}
           </span>
           <span className="text-xs text-gray-400">Valor Esperado</span>
         </div>
@@ -85,9 +85,8 @@ export default function DealRow({ deal }: { deal: any }) {
                 </div>
                 <ul className="p-4 space-y-3">
                   {deal.explicacoes.map((exp: string, idx: number) => (
-                    <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
-                      <span className="mt-0.5">{exp.charAt(0)}</span>
-                      <span>{exp.substring(1)}</span>
+                    <li key={idx} className="text-sm text-gray-700 flex items-start gap-2 mb-2">
+                      <span>{exp}</span>
                     </li>
                   ))}
                 </ul>
@@ -98,11 +97,9 @@ export default function DealRow({ deal }: { deal: any }) {
               <button onClick={() => setIsModalOpen(false)} className="px-6 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition-colors">
                 Fechar
               </button>
-              {(hasHotSignal || deal.tags?.includes('🚨 SEM RESPOSTA')) && (
-                <button className="px-6 py-2 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-md flex items-center gap-2 transition-all">
-                  <Zap size={16} /> Acionar IA Auto-Responder
-                </button>
-              )}
+              <button className="px-6 py-2 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 shadow-md flex items-center gap-2 transition-all">
+                <Zap size={16} /> Acionar Assistente de IA
+              </button>
             </div>
           </div>
         </div>

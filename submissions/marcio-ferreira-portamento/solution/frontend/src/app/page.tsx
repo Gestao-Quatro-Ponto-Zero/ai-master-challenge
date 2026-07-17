@@ -8,6 +8,7 @@ import { Filter, Search, Download } from 'lucide-react';
 export default function Home() {
   const [data, setData] = useState<{ metrics: any, deals: any[] } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'all' | 'hot' | 'risk'>('all');
 
   const agentName = "Darcel Schlecht";
 
@@ -49,21 +50,53 @@ export default function Home() {
     color: statusColors[key] || '#9CA3AF'
   }));
 
-  const sectorColors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#6366F1'];
-  const chartSector = Object.keys(data?.metrics.leads_por_setor || {}).map((key, i) => ({
-    name: key,
-    value: data?.metrics.leads_por_setor[key],
+  const sectorColors = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#9CA3AF'];
+  let chartSector = Object.keys(data?.metrics.leads_por_setor || {})
+    .map(key => ({
+      name: key,
+      value: data?.metrics.leads_por_setor[key]
+    }));
+
+  if (chartSector.length > 4) {
+    const top3 = chartSector.slice(0, 3);
+    const othersValue = chartSector.slice(3).reduce((acc, curr) => acc + curr.value, 0);
+    chartSector = [...top3, { name: 'Outros', value: othersValue }];
+  }
+
+  chartSector = chartSector.map((item, i) => ({
+    ...item,
     color: sectorColors[i % sectorColors.length]
   }));
   
-  // Agrupar leads por mês de engajamento simulado para o Gráfico de Tendência (usando os 10 primeiros deals como exemplo de histórico)
+  // Lógica do Gráfico de Estagnação (Dados Reais)
   const trendData = [
-    { name: '10 Dia(s)', deals: 4, valor: 4500 },
-    { name: '20 Dia(s)', deals: 12, valor: 12500 },
-    { name: '40 Dia(s)', deals: 8, valor: 8300 },
-    { name: '60 Dia(s)', deals: 25, valor: 32000 },
-    { name: '80+ Dias', deals: 42, valor: 51000 },
+    { name: '< 30d', deals: 0, fill: '#10B981' }, 
+    { name: '30-60d', deals: 0, fill: '#F59E0B' }, 
+    { name: '60-85d', deals: 0, fill: '#F97316' }, 
+    { name: '85+d', deals: 0, fill: '#EF4444' }    
   ];
+
+  data?.deals?.forEach(deal => {
+    const days = deal.days_open || 0;
+    if (days < 30) trendData[0].deals += 1;
+    else if (days < 60) trendData[1].deals += 1;
+    else if (days <= 85) trendData[2].deals += 1;
+    else trendData[3].deals += 1;
+  });
+
+  // Lógica de Filtragem das Abas
+  let displayedDeals = data?.deals || [];
+  if (activeTab === 'hot') {
+    displayedDeals = displayedDeals.filter(d => d?.tags?.includes('🔥 SINAL QUENTE'));
+  } else if (activeTab === 'risk') {
+    displayedDeals = displayedDeals.filter(d => d?.tags?.includes('🚨 ESTAGNADO') || d?.tags?.includes('🚨 SEM RESPOSTA'));
+  }
+
+  const getTabClass = (tabId: string) => {
+    return activeTab === tabId 
+      ? "text-blue-600 font-semibold border-b-2 border-blue-600 pb-4 -mb-[17px] transition-colors"
+      : "text-gray-500 font-medium hover:text-gray-800 pb-4 transition-colors cursor-pointer";
+  };
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] text-gray-900 font-sans flex">
@@ -87,12 +120,12 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Abas e Filtros (Mock) */}
+        {/* Abas e Filtros */}
         <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
           <div className="flex gap-6">
-            <button className="text-blue-600 font-semibold border-b-2 border-blue-600 pb-4 -mb-[17px]">Todas Oportunidades</button>
-            <button className="text-gray-500 font-medium hover:text-gray-800 pb-4">Sinais Quentes</button>
-            <button className="text-gray-500 font-medium hover:text-gray-800 pb-4">Risco de Estagnação</button>
+            <button onClick={() => setActiveTab('all')} className={getTabClass('all')}>Todas Oportunidades</button>
+            <button onClick={() => setActiveTab('hot')} className={getTabClass('hot')}>Sinais Quentes</button>
+            <button onClick={() => setActiveTab('risk')} className={getTabClass('risk')}>Risco de Estagnação</button>
           </div>
           <div className="flex gap-3">
             <div className="relative">
@@ -160,7 +193,7 @@ export default function Home() {
             <div className="flex flex-col gap-1 w-full">
               <h3 className="text-gray-900 font-bold text-sm">Top Setores</h3>
               <ul className="text-xs text-gray-500 space-y-1 mt-1">
-                {chartSector.slice(0,3).map((s, i) => (
+                {chartSector.map((s, i) => (
                   <li key={i} className="flex justify-between items-center truncate">
                     <span className="flex items-center gap-1 truncate"><div className="w-2 h-2 rounded-full flex-shrink-0" style={{backgroundColor: s.color}}></div> <span className="truncate">{s.name}</span></span> <b>{s.value}</b>
                   </li>
@@ -172,11 +205,16 @@ export default function Home() {
           {/* Card: Tendência (Bar Chart) */}
           <div className="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm flex flex-col justify-between h-full">
              <h3 className="text-gray-900 font-bold text-sm mb-2">Volume vs Estagnação</h3>
-             <div className="h-20 w-full">
+             <div className="h-[90px] w-full mt-2">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={trendData}>
+                  <BarChart data={trendData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9CA3AF' }} dy={5} />
                     <Tooltip cursor={{fill: '#f3f4f6'}} contentStyle={{fontSize: '12px', borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}/>
-                    <Bar dataKey="deals" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="deals" radius={[4, 4, 0, 0]}>
+                      {trendData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
              </div>
@@ -191,7 +229,7 @@ export default function Home() {
               Pipeline Priorizado 
               <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-bold">Ordenado por AI Score</span>
             </h2>
-            <span className="text-sm text-gray-500 font-medium">Exibindo os primeiros 50 registros</span>
+            <span className="text-sm text-gray-500 font-medium">Exibindo os primeiros {Math.min(50, displayedDeals.length)} registros</span>
           </div>
           
           <div className="p-6">
@@ -205,9 +243,15 @@ export default function Home() {
             </div>
             
             <div className="flex flex-col">
-              {data?.deals.slice(0, 50).map((deal, idx) => (
-                <DealRow key={deal.opportunity_id || idx} deal={deal} />
-              ))}
+              {displayedDeals.length > 0 ? (
+                displayedDeals.slice(0, 50).map((deal, idx) => (
+                  <DealRow key={deal.opportunity_id || idx} deal={deal} />
+                ))
+              ) : (
+                <div className="py-12 text-center text-gray-500">
+                  Nenhuma oportunidade encontrada com este filtro.
+                </div>
+              )}
             </div>
           </div>
         </section>

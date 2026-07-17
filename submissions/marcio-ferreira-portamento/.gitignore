@@ -1,5 +1,37 @@
-.venv/
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+.pytest_cache/
+
+# Node / Next.js
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 .next/
+out/
+build/
+dist/
+
+# Env vars
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Databases & Datasets
+*.sqlite
+*.sqlite3
+*.db
+*.csv
+dataset/
+
+# OS generated files
+.DS_Store
+Thumbs.db

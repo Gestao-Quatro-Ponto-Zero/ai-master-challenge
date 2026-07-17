@@ -27,8 +27,8 @@ def load_data():
     return df
 
 def calculate_score(row):
-    score = 40
-    explicacoes = []
+    score = 40  # Base inicial
+    explicacoes = ["⚪ 40 pts: Score base inicial (ponto de partida padrão)."]
     tags = []
     
     # 1. Lógica de Estágio (Sinal Quente)
