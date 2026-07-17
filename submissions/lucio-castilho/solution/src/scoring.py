@@ -51,14 +51,14 @@ def _fit_score_from_relative(relative_fit: float) -> float:
 
 def _fit_category(score: float) -> str:
     if score < 35:
-        return 'Weak Historical Fit'
+        return 'Baixa Aderência Histórica'
     if score < 45:
-        return 'Below Average'
+        return 'Abaixo da Média'
     if score <= 55:
-        return 'Typical'
+        return 'Típica'
     if score < 70:
-        return 'Above Average'
-    return 'Strong Historical Fit'
+        return 'Acima da Média'
+    return 'Alta Aderência Histórica'
 
 
 def _confidence(seller_product_n: int, product_sector_n: int, has_account_context: bool) -> str:
@@ -181,7 +181,7 @@ def _percentile_rank(value: float, reference: np.ndarray) -> float:
 
 def compute_attention(row: pd.Series, ref: dict) -> tuple[float | None, str, float | None]:
     if row['deal_stage'] != 'Engaging' or pd.isna(row['engage_date']):
-        return None, 'Timeline unavailable', None
+        return None, 'Prazo indisponível', None
 
     age_days = max(int((SNAPSHOT_DATE - row['engage_date']).days), 0)
     reference = None
@@ -256,48 +256,48 @@ def _explanation_lines(row: pd.Series, ref: dict, evidence: FitEvidence) -> list
 
     seller_delta = evidence.seller_product_rate / global_rate - 1
     if seller_delta >= 0.03:
-        lines.append(f"Seller-product history is {seller_delta:.0%} above the portfolio baseline.")
+        lines.append(f"O histórico do vendedor com o produto está {seller_delta:.0%} acima da referência do portfólio.")
     elif seller_delta <= -0.03:
-        lines.append(f"Seller-product history is {abs(seller_delta):.0%} below the portfolio baseline.")
+        lines.append(f"O histórico do vendedor com o produto está {abs(seller_delta):.0%} abaixo da referência do portfólio.")
     else:
-        lines.append('Seller-product history is close to the portfolio baseline.')
+        lines.append('O histórico do vendedor com o produto está próximo da referência do portfólio.')
 
     if evidence.product_sector_rate is not None:
         sector_delta = evidence.product_sector_rate / global_rate - 1
         if sector_delta >= 0.03:
-            lines.append(f"Product-sector history is {sector_delta:.0%} above the portfolio baseline.")
+            lines.append(f"O histórico do produto no setor está {sector_delta:.0%} acima da referência do portfólio.")
         elif sector_delta <= -0.03:
-            lines.append(f"Product-sector history is {abs(sector_delta):.0%} below the portfolio baseline.")
+            lines.append(f"O histórico do produto no setor está {abs(sector_delta):.0%} abaixo da referência do portfólio.")
         else:
-            lines.append('Product-sector history is close to the portfolio baseline.')
+            lines.append('O histórico do produto no setor está próximo da referência do portfólio.')
     else:
-        lines.append('Account context is unavailable; fit uses core historical evidence only.')
+        lines.append('O contexto da conta não está disponível; a aderência utiliza apenas as evidências históricas principais.')
 
     product_delta = evidence.product_rate / global_rate - 1
     if abs(product_delta) >= 0.03:
         direction = 'above' if product_delta > 0 else 'below'
-        lines.append(f"Product history is {abs(product_delta):.0%} {direction} the portfolio baseline.")
+        lines.append(f"O histórico do produto está {abs(product_delta):.0%} {direction} da referência do portfólio.")
 
     return lines
 
 
 def recommended_action(action: str) -> str:
     mapping = {
-        'Focus Now': 'Follow up now and confirm a concrete next step.',
-        'Review Now': 'Review the deal today and define whether it should advance, be requalified, or be closed.',
-        'Follow Up': 'Schedule a follow-up and confirm the next milestone.',
-        'Re-engage': 'Attempt a focused re-engagement; if there is no response, review pipeline status.',
-        'Requalify': 'Revalidate need, timing and decision process before investing more sales effort.',
-        'Qualify or Drop': 'Make an explicit pipeline decision: requalify with evidence or remove from the active focus queue.',
-        'Monitor': 'Keep visible and review on the next pipeline cadence.',
-        'Keep Warm': 'Maintain momentum without over-allocating attention.',
-        'Low Priority': 'Deprioritize relative to stronger or more urgent opportunities.',
-        'High-Potential Prospect': 'Prioritize initial qualification based on stronger historical context.',
-        'Prioritize Qualification': 'Move this prospect toward qualification before lower-fit prospects.',
-        'Qualify': 'Qualify the opportunity; timeline urgency cannot be assessed from the available data.',
-        'Low-Priority Qualification': 'Qualify only after higher-priority prospects; historical context is weaker.',
+        'Focus Now': 'Faça o acompanhamento agora e confirme um próximo passo concreto.',
+        'Review Now': 'Revise a oportunidade hoje e defina se ela deve avançar, ser requalificada ou ser encerrada.',
+        'Follow Up': 'Agende um acompanhamento e confirme o próximo marco.',
+        'Re-engage': 'Tente uma reativação focada; se não houver resposta, revise o status da oportunidade no pipeline.',
+        'Requalify': 'Revalide a necessidade, o momento e o processo de decisão antes de investir mais esforço comercial.',
+        'Qualify or Drop': 'Tome uma decisão explícita sobre o pipeline: requalifique com base em evidências ou remova da fila de foco ativo.',
+        'Monitor': 'Mantenha a oportunidade visível e revise-a na próxima rodada de revisão do pipeline.',
+        'Keep Warm': 'Mantenha o ritmo sem dedicar atenção excessiva.',
+        'Low Priority': 'Reduza a prioridade em relação a oportunidades mais promissoras ou urgentes.',
+        'High-Potential Prospect': 'Priorize a qualificação inicial com base em um contexto histórico mais favorável.',
+        'Prioritize Qualification': 'Avance este prospect para a qualificação antes de prospects com menor aderência.',
+        'Qualify': 'Qualifique a oportunidade; a urgência em relação ao prazo não pode ser avaliada com os dados disponíveis.',
+        'Low-Priority Qualification': 'Qualifique somente após os prospects de maior prioridade; o contexto histórico é menos favorável.',
     }
-    return mapping.get(action, 'Review the opportunity and define the next concrete action.')
+    return mapping.get(action, 'Revise a oportunidade e defina a próxima ação concreta.')
 
 
 def score_open_pipeline(enriched: pd.DataFrame) -> pd.DataFrame:
@@ -317,11 +317,11 @@ def score_open_pipeline(enriched: pd.DataFrame) -> pd.DataFrame:
         if row['deal_stage'] == 'Engaging':
             age_days = max(int((SNAPSHOT_DATE - row['engage_date']).days), 0)
             explanations.append(
-                f"This deal has been Engaging for {age_days} days, around the {age_percentile:.0f}th percentile of comparable historical cycles."
+                f"Esta oportunidade está em negociação há {age_days} dias, aproximadamente no percentil {age_percentile:.0f} dos ciclos históricos comparáveis."
             )
         else:
             age_days = np.nan
-            explanations.append('No created date is available for Prospecting deals, so timeline urgency is not estimated.')
+            explanations.append('Não há uma data de criação disponível para oportunidades em Prospecção, portanto a urgência em relação ao prazo não é estimada.')
 
         rec = row.to_dict()
         rec.update({
