@@ -120,9 +120,38 @@ roda no D2 como prova e aponta o D1 como gap de instrumentação.
 achado dos Blocos 1 e 2, fluxo desenhado ponta a ponta, fronteira do que não
 automatizar justificada por FAIL ou WARN.
 
-## Bloco 4 — Protótipo funcional _(a decupar)_
+## Bloco 4 — Protótipo funcional _(fechado)_
 
-Classificador e o que o dado permitir. Métrica real em holdout.
+Classificador que roda no D2 com métrica real em holdout, mais a camada de
+abstenção que desvia o ticket difuso para revisão humana. Notebook próprio,
+`solution/04_prototipo_classificador.ipynb`, autossuficiente. Prova o que o dado
+real permite: o D2 tem rótulo e sinal, o D1 não treina classificador.
+
+**Regras do bloco:**
+
+- Métrica em holdout, F1-macro. As classes são desbalanceadas e a acurácia
+  premia a maioria.
+- Split estratificado, sem vazamento de treino para holdout.
+- Classificador simples e inspecionável: TF-IDF mais um linear. Transformer é
+  infra que o protótipo não pede.
+- A abstenção da opção (b) é demonstrada por número, não afirmada.
+- A IA generativa do fluxo (Bloco 3) é proposta. O protótipo classifica o texto
+  do D2 direto.
+
+- [x] **4.1** Classificador base com holdout. Split estratificado treino e
+      holdout, TF-IDF mais linear, F1-macro contra um baseline trivial (classe
+      majoritária), matriz de confusão.
+- [x] **4.2** Camada de abstenção (opção b). Score de confiança e limiar. Ticket
+      abaixo do limiar vai para revisão humana. Medir o ganho de qualidade na
+      fração automatizada e a composição do que foi desviado, com atenção à
+      participação de `Miscellaneous`.
+- [x] **4.3** Contrato de inferência e síntese. Função texto para categoria,
+      confiança e decisão automática ou revisão, um exemplo inspecionável, e um
+      dict de resultados que o Bloco 5 consome.
+
+**Pronto quando:** notebook roda ponta a ponta, F1-macro em holdout reportado
+contra baseline, ganho da abstenção quantificado, contrato de inferência roda
+num exemplo, resultados num dict para o Bloco 5.
 
 ## Bloco 5 — Empacotamento _(a decupar)_
 
