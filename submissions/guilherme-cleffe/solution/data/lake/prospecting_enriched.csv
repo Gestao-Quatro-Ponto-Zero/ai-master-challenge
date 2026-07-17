@@ -1,0 +1,501 @@
+opportunity_id,sales_agent,agent_winrate_quartile,agent_revenue_quartile,product,sales_price,product_win_rate,blended_win_prob,priority_value,account,sector,revenue_musd,employees,account_known,enrichment_needed,next_action
+KQPNPH8A,Cecily Lampkin,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.681,3733.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SGI0VM1F,Cecily Lampkin,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.681,3733.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2SZX9B7J,Cecily Lampkin,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.681,3733.0,Sunnamplex,marketing,894.37,1593.0,True,False,qualify against account data
+0ZG6U7MQ,Cecily Lampkin,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.681,3733.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZXNPF7PL,Versie Hillebrand,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.679,3722.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NKFG3KKP,Versie Hillebrand,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.679,3722.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7MKYTX69,Moses Frase,Q1,Q4,GTX Plus Pro,5482,0.6429530201342282,0.674,3695.0,,,,,False,True,identify account + qualify (no CRM account attached)
+B26TNOGQ,Jonathan Berthelot,Q2,Q3,GTX Plus Pro,5482,0.6429530201342282,0.659,3613.0,Silis,medical,2818.38,6290.0,True,False,qualify against account data
+FW2CVY2X,Jonathan Berthelot,Q2,Q3,GTX Plus Pro,5482,0.6429530201342282,0.659,3613.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OAMIMSUU,Jonathan Berthelot,Q2,Q3,GTX Plus Pro,5482,0.6429530201342282,0.659,3613.0,Cheers,entertainment,4269.9,6472.0,True,False,qualify against account data
+QN1UL4N3,Jonathan Berthelot,Q2,Q3,GTX Plus Pro,5482,0.6429530201342282,0.659,3613.0,,,,,False,True,identify account + qualify (no CRM account attached)
+A4TA5P1B,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FU2PQZR4,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,Green-Plus,services,692.19,1922.0,True,False,qualify against account data
+CVMNBKGH,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,Hatfan,services,792.46,1299.0,True,False,qualify against account data
+LZW4N9KF,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,Zathunicon,retail,71.12,144.0,True,False,qualify against account data
+XETF5BVH,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,Finjob,employment,2059.9,3644.0,True,False,qualify against account data
+JVXGG70X,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UH9TR8Y1,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+28EJ0L9T,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+74LCNGIK,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6RQUXORL,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ODSFN0YA,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+PCXGIH9X,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KIKV29M0,Darcel Schlecht,Q3,Q1,GTX Plus Pro,5482,0.6429530201342282,0.643,3525.0,,,,,False,True,identify account + qualify (no CRM account attached)
+F11IGBLD,Marty Freudenburg,Q3,Q2,GTX Plus Pro,5482,0.6429530201342282,0.64,3508.0,,,,,False,True,identify account + qualify (no CRM account attached)
+5JS1Z5BQ,Marty Freudenburg,Q3,Q2,GTX Plus Pro,5482,0.6429530201342282,0.64,3508.0,,,,,False,True,identify account + qualify (no CRM account attached)
+CC70D9SD,Marty Freudenburg,Q3,Q2,GTX Plus Pro,5482,0.6429530201342282,0.64,3508.0,,,,,False,True,identify account + qualify (no CRM account attached)
+5EUHU5AF,Marty Freudenburg,Q3,Q2,GTX Plus Pro,5482,0.6429530201342282,0.64,3508.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BVRUBA3A,Marty Freudenburg,Q3,Q2,GTX Plus Pro,5482,0.6429530201342282,0.64,3508.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6KHIXTAD,Anna Snelling,Q3,Q3,GTX Plus Pro,5482,0.6429530201342282,0.63,3454.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9P9ISECL,Anna Snelling,Q3,Q3,GTX Plus Pro,5482,0.6429530201342282,0.63,3454.0,Sumace,retail,167.89,493.0,True,False,qualify against account data
+9PDR4X2R,Anna Snelling,Q3,Q3,GTX Plus Pro,5482,0.6429530201342282,0.63,3454.0,Hatfan,services,792.46,1299.0,True,False,qualify against account data
+GNN53C6D,Anna Snelling,Q3,Q3,GTX Plus Pro,5482,0.6429530201342282,0.63,3454.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0D8Y5JA0,Anna Snelling,Q3,Q3,GTX Plus Pro,5482,0.6429530201342282,0.63,3454.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Z99W80UY,Niesha Huffines,Q4,Q4,GTX Plus Pro,5482,0.6429530201342282,0.611,3350.0,Zencorporation,technology,40.79,142.0,True,False,qualify against account data
+DDHNCZMO,Niesha Huffines,Q4,Q4,GTX Plus Pro,5482,0.6429530201342282,0.611,3350.0,Konex,technology,7708.38,13756.0,True,False,qualify against account data
+K8ITR8PA,Niesha Huffines,Q4,Q4,GTX Plus Pro,5482,0.6429530201342282,0.611,3350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+B7KZYEII,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,,,,,False,True,identify account + qualify (no CRM account attached)
+49T7VKA7,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,Plussunin,retail,1419.98,4018.0,True,False,qualify against account data
+9RGWSKNU,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,Kan-code,software,11698.03,34288.0,True,False,qualify against account data
+V5PKXYWS,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,,,,,False,True,identify account + qualify (no CRM account attached)
+67CBAWHG,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BTDY3DHP,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,Vehement Capital Partners,finance,646.1,883.0,True,False,qualify against account data
+73CWPT9H,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UZ7DU3D9,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2WTPSQTN,Gladys Colclough,Q4,Q2,GTX Plus Pro,5482,0.6429530201342282,0.592,3245.0,,,,,False,True,identify account + qualify (no CRM account attached)
+R14YE68N,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,Plexzap,retail,2437.85,4874.0,True,False,qualify against account data
+8RQCHZ5O,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+90KRHC6T,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8NLGRTU5,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9R8AKL0D,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,Initech,telecommunications,6395.05,20275.0,True,False,qualify against account data
+NUEPXB8Z,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+F0K8UDEG,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+QMRDG7WP,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FBDS7GIZ,Jonathan Berthelot,Q2,Q3,GTX Pro,4821,0.6355710549258936,0.652,3143.0,,,,,False,True,identify account + qualify (no CRM account attached)
+F14T88OP,Lajuana Vencill,Q4,Q4,GTX Plus Pro,5482,0.6429530201342282,0.56,3070.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P6Z4X54S,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+910NLQ80,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+T12MT0HL,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HZVVOITE,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+51HOGHF0,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+4YJKB8EC,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+LFD1ZGJ8,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D01U08PR,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Zumgoity,medical,441.08,1210.0,True,False,qualify against account data
+E4YR0OE6,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BBV196A3,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KO7JWXCT,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FGSBCJSC,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+65SMA4OZ,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+537X47QY,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D95K3R9N,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8JL58ECD,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+XGMTNND1,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6R94B0SG,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BV75OM0B,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Rundofase,technology,1008.06,1238.0,True,False,qualify against account data
+3K70RL7Q,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7YOJ4KU7,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZGTCQT1A,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Rundofase,technology,1008.06,1238.0,True,False,qualify against account data
+4ROECHG6,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Ron-tech,medical,3922.42,6837.0,True,False,qualify against account data
+FVVATY89,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Ron-tech,medical,3922.42,6837.0,True,False,qualify against account data
+A8NXNY0M,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Plusstrip,entertainment,349.81,315.0,True,False,qualify against account data
+SYP74C5W,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Bioholding,medical,587.34,1356.0,True,False,qualify against account data
+VJILDVVF,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Zathunicon,retail,71.12,144.0,True,False,qualify against account data
+A9DGDN56,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Zencorporation,technology,40.79,142.0,True,False,qualify against account data
+2IRZM0LB,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Xx-zobam,entertainment,3838.39,8274.0,True,False,qualify against account data
+99YRLZM0,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Yearin,retail,2261.05,3851.0,True,False,qualify against account data
+8IPMP8NT,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+N6BT2U29,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+DIGG7U6M,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+VMXGBINH,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NST2FEF3,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+PRUFERA6,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+YBWUG6QP,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Condax,medical,4.54,9.0,True,False,qualify against account data
+IHKIAB1W,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Dontechi,software,4618.0,10083.0,True,False,qualify against account data
+6RN7I8ZF,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Condax,medical,4.54,9.0,True,False,qualify against account data
+R0Q5BZ9Y,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Blackzim,retail,497.11,1588.0,True,False,qualify against account data
+YKBJP191,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Faxquote,telecommunications,1825.82,5595.0,True,False,qualify against account data
+R6HYAPR6,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Opentech,finance,355.23,853.0,True,False,qualify against account data
+5MNF16D8,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+PES548QV,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P7UPCSTC,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Faxquote,telecommunications,1825.82,5595.0,True,False,qualify against account data
+GEQ8IGKW,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Finjob,employment,2059.9,3644.0,True,False,qualify against account data
+GR8JTX1T,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Warephase,services,2041.73,5276.0,True,False,qualify against account data
+8XE8GGIW,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Donquadtech,technology,1712.68,3194.0,True,False,qualify against account data
+OT0GOR3I,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Bluth Company,technology,1242.32,3027.0,True,False,qualify against account data
+DX1M0XF0,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EYR5E7LO,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Initech,telecommunications,6395.05,20275.0,True,False,qualify against account data
+LO8L5ELD,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Inity,marketing,2403.58,8801.0,True,False,qualify against account data
+S1U1RD6K,Darcel Schlecht,Q3,Q1,GTX Pro,4821,0.6355710549258936,0.635,3061.0,Iselectrics,technology,527.11,1428.0,True,False,qualify against account data
+HFVWQIMF,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UND13JS5,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,Plusstrip,entertainment,349.81,315.0,True,False,qualify against account data
+SAUIIUTV,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9YLUGU6I,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,,,,,False,True,identify account + qualify (no CRM account attached)
+B5H6M7AP,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0BQTT5UF,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,Donware,marketing,1197.44,2570.0,True,False,qualify against account data
+M7UNLZEP,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,Finhigh,finance,1102.43,1759.0,True,False,qualify against account data
+EG7S6ZOI,Marty Freudenburg,Q3,Q2,GTX Pro,4821,0.6355710549258936,0.633,3052.0,Konmatfix,marketing,375.43,1190.0,True,False,qualify against account data
+X2REWR7J,Niesha Huffines,Q4,Q4,GTX Pro,4821,0.6355710549258936,0.604,2912.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8O212QCV,Niesha Huffines,Q4,Q4,GTX Pro,4821,0.6355710549258936,0.604,2912.0,,,,,False,True,identify account + qualify (no CRM account attached)
+G4B3UCWQ,Niesha Huffines,Q4,Q4,GTX Pro,4821,0.6355710549258936,0.604,2912.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BJE7KCZ1,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,Genco Pura Olive Oil Company,retail,894.33,1635.0,True,False,qualify against account data
+847RHYQE,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OA3RDG12,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EJCPWP6V,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,Bioholding,medical,587.34,1356.0,True,False,qualify against account data
+XARW0KTX,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TK9J8AOZ,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,Treequote,telecommunications,5266.09,8595.0,True,False,qualify against account data
+0C34Z5UZ,Gladys Colclough,Q4,Q2,GTX Pro,4821,0.6355710549258936,0.586,2825.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NR2EDMKC,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+F77XD7IZ,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+IAV71BEX,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,Singletechno,retail,2214.94,5374.0,True,False,qualify against account data
+R0MBBXL8,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+61GDYW9T,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SJE81OUR,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+IXW68X6Z,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TFCQZ28G,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SU8FTFLS,Cecily Lampkin,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.639,2168.0,,,,,False,True,identify account + qualify (no CRM account attached)
+LIB4KUZJ,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8I5ONXJX,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+18IUIUK0,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+IUM2FVA1,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9MIWFW5J,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6SLKZ8FI,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+WNWI8RJU,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FCNN6UY0,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,Ganjaflex,retail,5158.71,17479.0,True,False,qualify against account data
+8M2O0Q8V,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,Silis,medical,2818.38,6290.0,True,False,qualify against account data
+4H6DFFO4,Versie Hillebrand,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.637,2161.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SRYX0U85,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8O98HGMW,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BIN9U8D9,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+RLDCYEJU,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D6YEYMJC,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0CECGPEJ,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+M5ZYQFGR,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HP8IWA1E,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9H2V1F1E,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,Funholding,finance,2819.5,7227.0,True,False,qualify against account data
+EL09RK8X,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,Dalttechnology,software,98.79,96.0,True,False,qualify against account data
+Y9EBNML6,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,Donquadtech,technology,1712.68,3194.0,True,False,qualify against account data
+OYRF34VN,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2872DC79,Moses Frase,Q1,Q4,MG Advanced,3393,0.6033210332103321,0.632,2144.0,,,,,False,True,identify account + qualify (no CRM account attached)
+CGRMC7OE,Jonathan Berthelot,Q2,Q3,MG Advanced,3393,0.6033210332103321,0.619,2100.0,,,,,False,True,identify account + qualify (no CRM account attached)
+X4THRRSJ,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,,,,,False,True,identify account + qualify (no CRM account attached)
+3PN3YSPK,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EJUQOEY5,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,Bubba Gump,software,987.39,2253.0,True,False,qualify against account data
+9HA8VBAP,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,Donquadtech,technology,1712.68,3194.0,True,False,qualify against account data
+YI92HVHO,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,,,,,False,True,identify account + qualify (no CRM account attached)
+F6AOT0NK,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,,,,,False,True,identify account + qualify (no CRM account attached)
+1XR36ESV,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,,,,,False,True,identify account + qualify (no CRM account attached)
+39NJ6UC9,Darcel Schlecht,Q3,Q1,MG Advanced,3393,0.6033210332103321,0.603,2046.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2NO97U9Z,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7KQAH6UI,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,,,,,False,True,identify account + qualify (no CRM account attached)
+A8PVW8RI,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,Condax,medical,4.54,9.0,True,False,qualify against account data
+MI3MV7PU,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,Acme Corporation,technology,1100.04,2822.0,True,False,qualify against account data
+F1NWH30L,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,,,,,False,True,identify account + qualify (no CRM account attached)
+WJ7HDR4Q,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,,,,,False,True,identify account + qualify (no CRM account attached)
+AP74NF6M,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,Iselectrics,technology,527.11,1428.0,True,False,qualify against account data
+S4V0T890,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,Finjob,employment,2059.9,3644.0,True,False,qualify against account data
+KTSP63I0,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BKI3OLP8,Marty Freudenburg,Q3,Q2,MG Advanced,3393,0.6033210332103321,0.601,2039.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D382N39B,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OEG8QG42,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,Bioplex,medical,326.82,1016.0,True,False,qualify against account data
+BG0BLC6S,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,Fasehatice,retail,4968.91,7523.0,True,False,qualify against account data
+FEEOZHT8,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+YYUJ1DCF,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Y7WAFW9D,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+RSY2XLKK,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,Streethex,retail,1376.8,1165.0,True,False,qualify against account data
+5Q2BX622,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,Inity,marketing,2403.58,8801.0,True,False,qualify against account data
+WTD6O2OR,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,Betasoloin,medical,251.41,495.0,True,False,qualify against account data
+OH0HJ6KK,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+5TGQL49J,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+I8NC3RFB,Anna Snelling,Q3,Q3,MG Advanced,3393,0.6033210332103321,0.591,2005.0,,,,,False,True,identify account + qualify (no CRM account attached)
+YVFK9Q0W,Niesha Huffines,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.573,1944.0,Faxquote,telecommunications,1825.82,5595.0,True,False,qualify against account data
+PF7M8CG2,Niesha Huffines,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.573,1944.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KFSKQ291,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,Plusstrip,entertainment,349.81,315.0,True,False,qualify against account data
+ZT1234V3,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,Ron-tech,medical,3922.42,6837.0,True,False,qualify against account data
+JLZCOLIE,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,,,,,False,True,identify account + qualify (no CRM account attached)
+JQBN7PXK,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,Xx-zobam,entertainment,3838.39,8274.0,True,False,qualify against account data
+J5IXJWVU,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,Cancity,retail,718.62,2448.0,True,False,qualify against account data
+J5IF7CT6,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,,,,,False,True,identify account + qualify (no CRM account attached)
+37PEZCGO,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,,,,,False,True,identify account + qualify (no CRM account attached)
+AAQ5H36J,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,,,,,False,True,identify account + qualify (no CRM account attached)
+X9NUTLTR,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,,,,,False,True,identify account + qualify (no CRM account attached)
+L5PS6S68,Gladys Colclough,Q4,Q2,MG Advanced,3393,0.6033210332103321,0.556,1887.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P25KLAD2,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,Rangreen,technology,2938.67,8775.0,True,False,qualify against account data
+44JDHBI8,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+94ZZLWOH,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NDJBDONI,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+4V17GRKW,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+MJK3UJ1B,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+4XQ43RJW,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KKUHAY4O,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZKJIVMSG,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,Finjob,employment,2059.9,3644.0,True,False,qualify against account data
+EOJHYLXG,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,,,,,False,True,identify account + qualify (no CRM account attached)
+3TMNC3GW,Lajuana Vencill,Q4,Q4,MG Advanced,3393,0.6033210332103321,0.525,1781.0,Kinnamplus,retail,702.72,1831.0,True,False,qualify against account data
+LABZ0UGB,Cecily Lampkin,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.658,721.0,,,,,False,True,identify account + qualify (no CRM account attached)
+3R4W7ZVY,Cecily Lampkin,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.658,721.0,,,,,False,True,identify account + qualify (no CRM account attached)
+I79B9KJ2,Cecily Lampkin,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.658,721.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6IO91583,Versie Hillebrand,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.656,719.0,,,,,False,True,identify account + qualify (no CRM account attached)
+C5B5WBY9,Versie Hillebrand,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.656,719.0,Sumace,retail,167.89,493.0,True,False,qualify against account data
+0E8D6TCQ,Moses Frase,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.651,713.0,,,,,False,True,identify account + qualify (no CRM account attached)
+1HD5JJM3,Moses Frase,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.651,713.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NWPSEF2I,Moses Frase,Q1,Q4,GTX Plus Basic,1096,0.621313035204567,0.651,713.0,,,,,False,True,identify account + qualify (no CRM account attached)
+B2YZJ212,Jonathan Berthelot,Q2,Q3,GTX Plus Basic,1096,0.621313035204567,0.637,698.0,,,,,False,True,identify account + qualify (no CRM account attached)
+IRTO8ZJW,Jonathan Berthelot,Q2,Q3,GTX Plus Basic,1096,0.621313035204567,0.637,698.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P4D8H19O,Jonathan Berthelot,Q2,Q3,GTX Plus Basic,1096,0.621313035204567,0.637,698.0,Isdom,medical,3178.24,4540.0,True,False,qualify against account data
+ARBTXSEH,Jonathan Berthelot,Q2,Q3,GTX Plus Basic,1096,0.621313035204567,0.637,698.0,Globex Corporation,technology,1223.72,2497.0,True,False,qualify against account data
+94DGJSLN,Jonathan Berthelot,Q2,Q3,GTX Plus Basic,1096,0.621313035204567,0.637,698.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UD1GNRL4,Jonathan Berthelot,Q2,Q3,GTX Plus Basic,1096,0.621313035204567,0.637,698.0,,,,,False,True,identify account + qualify (no CRM account attached)
+VAM56BG4,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,Acme Corporation,technology,1100.04,2822.0,True,False,qualify against account data
+FEL7FQQG,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+MTGV7WOM,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZTCQWF53,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,Faxquote,telecommunications,1825.82,5595.0,True,False,qualify against account data
+IEMOIN3K,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+1LWG4COF,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0TQP0E65,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P95E1DOX,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+LKDSEQ2Q,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,Yearin,retail,2261.05,3851.0,True,False,qualify against account data
+JCRT0QHO,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+V2V69I86,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OQX98BBL,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+RH0FJYPZ,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HD6YD6P9,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+64OXRCSR,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OAECXU4A,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FY0SHNZY,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TJ64MOUR,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+I2LEEFAM,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+XTXMQMRC,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EG3X1ACF,Darcel Schlecht,Q3,Q1,GTX Plus Basic,1096,0.621313035204567,0.621,681.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EABYCHB3,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FMRVHL9O,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,Toughzap,retail,332.43,799.0,True,False,qualify against account data
+0HR4TEU4,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,Plussunin,retail,1419.98,4018.0,True,False,qualify against account data
+O8JCYJSV,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,Silis,medical,2818.38,6290.0,True,False,qualify against account data
+YYMKOAVY,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,Donquadtech,technology,1712.68,3194.0,True,False,qualify against account data
+I43F0Z77,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,Betasoloin,medical,251.41,495.0,True,False,qualify against account data
+VUFZB941,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+465ZW6J2,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+VZ28EXFN,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+QY7GTG6Y,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+YMI68O7S,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,Zumgoity,medical,441.08,1210.0,True,False,qualify against account data
+KOPIWJO5,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6Z6DMG2V,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BZ96Z7AI,Marty Freudenburg,Q3,Q2,GTX Plus Basic,1096,0.621313035204567,0.619,678.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Q9UWOC28,Anna Snelling,Q3,Q3,GTX Plus Basic,1096,0.621313035204567,0.609,667.0,Plusstrip,entertainment,349.81,315.0,True,False,qualify against account data
+OJDZN6UK,Anna Snelling,Q3,Q3,GTX Plus Basic,1096,0.621313035204567,0.609,667.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OM60BJ4S,Anna Snelling,Q3,Q3,GTX Plus Basic,1096,0.621313035204567,0.609,667.0,,,,,False,True,identify account + qualify (no CRM account attached)
+YL29KX3L,Anna Snelling,Q3,Q3,GTX Plus Basic,1096,0.621313035204567,0.609,667.0,Zumgoity,medical,441.08,1210.0,True,False,qualify against account data
+E0S2ZL6X,Niesha Huffines,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.59,647.0,Streethex,retail,1376.8,1165.0,True,False,qualify against account data
+MNCY3CKD,Niesha Huffines,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.59,647.0,Nam-zim,services,405.59,1179.0,True,False,qualify against account data
+0PXJYUT7,Niesha Huffines,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.59,647.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D45LXDPW,Niesha Huffines,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.59,647.0,,,,,False,True,identify account + qualify (no CRM account attached)
+52WACRCG,Niesha Huffines,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.59,647.0,,,,,False,True,identify account + qualify (no CRM account attached)
+XT9QCG8T,Niesha Huffines,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.59,647.0,Zoomit,entertainment,324.19,978.0,True,False,qualify against account data
+NXJNQ3Z9,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,Plexzap,retail,2437.85,4874.0,True,False,qualify against account data
+9P9J2ANM,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+566X0PLZ,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SFR7RG9V,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OJWGRIXN,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TLJWMKEO,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,Iselectrics,technology,527.11,1428.0,True,False,qualify against account data
+Q62STRQQ,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HWKJ7TFJ,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EB393LSH,Gladys Colclough,Q4,Q2,GTX Plus Basic,1096,0.621313035204567,0.573,628.0,,,,,False,True,identify account + qualify (no CRM account attached)
+W2K1S9N3,Lajuana Vencill,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.541,593.0,Dalttechnology,software,98.79,96.0,True,False,qualify against account data
+ZTFYF8PV,Lajuana Vencill,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.541,593.0,,,,,False,True,identify account + qualify (no CRM account attached)
+L7PPTHLF,Lajuana Vencill,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.541,593.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Q620I4AZ,Lajuana Vencill,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.541,593.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8U9CA21G,Lajuana Vencill,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.541,593.0,,,,,False,True,identify account + qualify (no CRM account attached)
+U0U1RIMI,Lajuana Vencill,Q4,Q4,GTX Plus Basic,1096,0.621313035204567,0.541,593.0,,,,,False,True,identify account + qualify (no CRM account attached)
+QR63ME8L,Cecily Lampkin,Q1,Q4,GTX Basic,550,0.6371866295264624,0.675,371.0,,,,,False,True,identify account + qualify (no CRM account attached)
+38K5251H,Cecily Lampkin,Q1,Q4,GTX Basic,550,0.6371866295264624,0.675,371.0,Fasehatice,retail,4968.91,7523.0,True,False,qualify against account data
+2TI0MAKP,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,Lexiqvolax,medical,1618.89,3889.0,True,False,qualify against account data
+ZHPJ73Q6,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,Inity,marketing,2403.58,8801.0,True,False,qualify against account data
+Z6VQW8TB,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FNLAOXF8,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2WWMPY7O,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EPOB4B15,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2G5ZMOYC,Versie Hillebrand,Q1,Q4,GTX Basic,550,0.6371866295264624,0.673,370.0,Scottech,marketing,45.39,100.0,True,False,qualify against account data
+52V1RWCZ,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,Stanredtax,finance,1698.2,3798.0,True,False,qualify against account data
+IVTNXNYP,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HOXD9TTL,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,,,,,False,True,identify account + qualify (no CRM account attached)
+H046CU4Z,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,,,,,False,True,identify account + qualify (no CRM account attached)
+JF4MEWPX,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,,,,,False,True,identify account + qualify (no CRM account attached)
+XS7L2AQE,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,Zencorporation,technology,40.79,142.0,True,False,qualify against account data
+M22PCEKY,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HKMMBDMW,Moses Frase,Q1,Q4,GTX Basic,550,0.6371866295264624,0.667,367.0,Plusstrip,entertainment,349.81,315.0,True,False,qualify against account data
+2BD1SDBX,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Vehement Capital Partners,finance,646.1,883.0,True,False,qualify against account data
+AE3YDLK3,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Xx-zobam,entertainment,3838.39,8274.0,True,False,qualify against account data
+0XVL2UMH,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Groovestreet,retail,223.8,299.0,True,False,qualify against account data
+NT38RBZY,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Gogozoom,telecommunications,86.68,187.0,True,False,qualify against account data
+OIIFWY81,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Conecom,technology,1520.66,1806.0,True,False,qualify against account data
+UFZFCBOS,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Lexiqvolax,medical,1618.89,3889.0,True,False,qualify against account data
+UY93W9NZ,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NVH71LD4,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+XVQ3OA99,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+DJDJ5A58,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+22TUMCKT,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TN4KM3D1,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Bluth Company,technology,1242.32,3027.0,True,False,qualify against account data
+WE2CEE8A,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Dontechi,software,4618.0,10083.0,True,False,qualify against account data
+D00AN5HY,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+C54CWZIT,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,Zencorporation,technology,40.79,142.0,True,False,qualify against account data
+8Y3OMER4,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7UVKZD60,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+E6798P2J,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OQ1P1OLH,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZT163LH3,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0RLU8I9Q,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+MR08TTTT,Jonathan Berthelot,Q2,Q3,GTX Basic,550,0.6371866295264624,0.654,360.0,,,,,False,True,identify account + qualify (no CRM account attached)
+LEJWV2Y5,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,Donquadtech,technology,1712.68,3194.0,True,False,qualify against account data
+CAONNFXN,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,Kinnamplus,retail,702.72,1831.0,True,False,qualify against account data
+RMJG8OS2,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9L0WKMJ2,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+R1HFBU5H,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+R8V3ALA8,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,Konmatfix,marketing,375.43,1190.0,True,False,qualify against account data
+CPEYUW7V,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+03P9VXWG,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+5ZATE1WV,Darcel Schlecht,Q3,Q1,GTX Basic,550,0.6371866295264624,0.637,350.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZB3JRI67,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9CYYLZ11,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,Stanredtax,finance,1698.2,3798.0,True,False,qualify against account data
+RGW7PKJ6,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,Xx-zobam,entertainment,3838.39,8274.0,True,False,qualify against account data
+BW0NOLCK,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,,,,,False,True,identify account + qualify (no CRM account attached)
+G7K3HJAT,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ETJR6FUL,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,Plexzap,retail,2437.85,4874.0,True,False,qualify against account data
+4AUWVKUU,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NBE5EMSV,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D00KRY2S,Marty Freudenburg,Q3,Q2,GTX Basic,550,0.6371866295264624,0.635,349.0,,,,,False,True,identify account + qualify (no CRM account attached)
+G99CS23F,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,,,,,False,True,identify account + qualify (no CRM account attached)
+XRJ54GNR,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6CWZFOHJ,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,Green-Plus,services,692.19,1922.0,True,False,qualify against account data
+3LCLVRVV,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,,,,,False,True,identify account + qualify (no CRM account attached)
+GR9S7VHI,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8E0VRCLW,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,,,,,False,True,identify account + qualify (no CRM account attached)
+YIU1B39V,Anna Snelling,Q3,Q3,GTX Basic,550,0.6371866295264624,0.625,344.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UEI0RABV,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HUG2KAHE,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+FJHKS2T2,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,Plussunin,retail,1419.98,4018.0,True,False,qualify against account data
+MON9ZE47,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,Groovestreet,retail,223.8,299.0,True,False,qualify against account data
+PGN9I1HU,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+647SQRGL,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UIP7MXOR,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+27ZK0L0F,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+K38J8D75,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TS9QPHNA,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TAKHOTRW,Niesha Huffines,Q4,Q4,GTX Basic,550,0.6371866295264624,0.605,333.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ATOYVLLB,Gladys Colclough,Q4,Q2,GTX Basic,550,0.6371866295264624,0.587,323.0,,,,,False,True,identify account + qualify (no CRM account attached)
+RJ21Q4HO,Gladys Colclough,Q4,Q2,GTX Basic,550,0.6371866295264624,0.587,323.0,Hottechi,technology,8170.38,16499.0,True,False,qualify against account data
+NSYCCHCJ,Gladys Colclough,Q4,Q2,GTX Basic,550,0.6371866295264624,0.587,323.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0M4K6F8Q,Gladys Colclough,Q4,Q2,GTX Basic,550,0.6371866295264624,0.587,323.0,,,,,False,True,identify account + qualify (no CRM account attached)
+97WEHB4X,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Z4JQEOMT,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9HFEMESD,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6KW4PU0S,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+00400B1S,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+PAUK1IU0,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NB67WD27,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+PELBIQ95,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+IMN2GUYV,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,Statholdings,employment,291.27,586.0,True,False,qualify against account data
+0KSK9O00,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,Bluth Company,technology,1242.32,3027.0,True,False,qualify against account data
+76WK0KFZ,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,Konex,technology,7708.38,13756.0,True,False,qualify against account data
+HLE798LQ,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Y533QVR5,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+2RQOUJ9V,Lajuana Vencill,Q4,Q4,GTX Basic,550,0.6371866295264624,0.555,305.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SPTF1MZ4,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TFPZNRS3,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+WI5RHGX9,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+WAT7H38N,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Q5RRTVJK,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+1FAU5C6V,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8NI8O26G,Cecily Lampkin,Q1,Q4,MG Special,55,0.6484055600981193,0.687,38.0,Goodsilron,marketing,2952.73,5107.0,True,False,qualify against account data
+9F9NDO41,Cecily Lampkin,Q1,Q4,MG Special,55,0.6484055600981193,0.687,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+MTH7D617,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+DGI6CB5K,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P43NZA0V,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+S6BD2RV6,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+A5DN7SE1,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+5697WKA6,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+SH4FSTJV,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+AV50UWVV,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+E54FFQBM,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KAZ72JJ0,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+QVWEPN6J,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+JD7ACALY,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8GNSME5U,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+NSGU1K3N,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KIOF5EM0,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+9BM1CGBV,Cecily Lampkin,Q1,Q4,MG Special,55,0.6484055600981193,0.687,38.0,Sumace,retail,167.89,493.0,True,False,qualify against account data
+5P4OCP0Q,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+6WNENPQM,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Goodsilron,marketing,2952.73,5107.0,True,False,qualify against account data
+DS5HZHDA,Cecily Lampkin,Q1,Q4,MG Special,55,0.6484055600981193,0.687,38.0,Betatech,medical,647.18,1185.0,True,False,qualify against account data
+6QKBZAEQ,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TLZGG7G5,Cecily Lampkin,Q1,Q4,MG Special,55,0.6484055600981193,0.687,38.0,Conecom,technology,1520.66,1806.0,True,False,qualify against account data
+ROM4I2T0,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Rundofase,technology,1008.06,1238.0,True,False,qualify against account data
+GSBUIL1E,Cecily Lampkin,Q1,Q4,MG Special,55,0.6484055600981193,0.687,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UK00OVV2,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+JQ338VQC,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Blackzim,retail,497.11,1588.0,True,False,qualify against account data
+W2149WNZ,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Golddex,finance,52.5,165.0,True,False,qualify against account data
+WJK0O5J9,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Doncon,technology,587.72,1501.0,True,False,qualify against account data
+A4M34F8C,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+VW8CEV4C,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Konmatfix,marketing,375.43,1190.0,True,False,qualify against account data
+DWGARGA2,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KLUS7RVS,Versie Hillebrand,Q1,Q4,MG Special,55,0.6484055600981193,0.685,38.0,Opentech,finance,355.23,853.0,True,False,qualify against account data
+473F6L9F,Moses Frase,Q1,Q4,MG Special,55,0.6484055600981193,0.679,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+1969NL80,Moses Frase,Q1,Q4,MG Special,55,0.6484055600981193,0.679,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+DYA87PL1,Jonathan Berthelot,Q2,Q3,MG Special,55,0.6484055600981193,0.665,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+E0HMRMZ9,Jonathan Berthelot,Q2,Q3,MG Special,55,0.6484055600981193,0.665,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+0QMDTHBS,Jonathan Berthelot,Q2,Q3,MG Special,55,0.6484055600981193,0.665,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+URRD7VUB,Jonathan Berthelot,Q2,Q3,MG Special,55,0.6484055600981193,0.665,37.0,Blackzim,retail,497.11,1588.0,True,False,qualify against account data
+32NDDT4L,Moses Frase,Q1,Q4,MG Special,55,0.6484055600981193,0.679,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+KN4LCS4D,Moses Frase,Q1,Q4,MG Special,55,0.6484055600981193,0.679,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+IKR0NSUE,Moses Frase,Q1,Q4,MG Special,55,0.6484055600981193,0.679,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+GM5X0CSG,Jonathan Berthelot,Q2,Q3,MG Special,55,0.6484055600981193,0.665,37.0,,,,,False,True,identify account + qualify (no CRM account attached)
+11T4HX93,Jonathan Berthelot,Q2,Q3,MG Special,55,0.6484055600981193,0.665,37.0,Bluth Company,technology,1242.32,3027.0,True,False,qualify against account data
+CLPDG9BG,Moses Frase,Q1,Q4,MG Special,55,0.6484055600981193,0.679,37.0,Yearin,retail,2261.05,3851.0,True,False,qualify against account data
+TR7WLH5Q,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7N6AHU7C,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7WXPAXAV,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,Rangreen,technology,2938.67,8775.0,True,False,qualify against account data
+7CZU8GS1,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+APXWBOOT,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+1BB5LME9,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,Globex Corporation,technology,1223.72,2497.0,True,False,qualify against account data
+ZVO432VF,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,Faxquote,telecommunications,1825.82,5595.0,True,False,qualify against account data
+COGXUYLL,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,Doncon,technology,587.72,1501.0,True,False,qualify against account data
+HW367OVT,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+O6NIPA7N,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+WR9CQB8E,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+GSOR2INK,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BTH2O9OF,Marty Freudenburg,Q3,Q2,MG Special,55,0.6484055600981193,0.646,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+M64OQCC3,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TWWD62O3,Darcel Schlecht,Q3,Q1,MG Special,55,0.6484055600981193,0.648,36.0,,,,,False,True,identify account + qualify (no CRM account attached)
+EU4DPJGN,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+DW5BQ220,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Zoomit,entertainment,324.19,978.0,True,False,qualify against account data
+5C59O9GU,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Conecom,technology,1520.66,1806.0,True,False,qualify against account data
+ZQRBJVZF,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Dontechi,software,4618.0,10083.0,True,False,qualify against account data
+OXKLRULK,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+426EL41A,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+JSTHYUCD,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+DYXD1AXO,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+V9JDJ861,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D3ZJX20X,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+GI94RTL5,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Labdrill,medical,2741.37,9226.0,True,False,qualify against account data
+47P0HBNM,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Plussunin,retail,1419.98,4018.0,True,False,qualify against account data
+Z89NKUC7,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Plussunin,retail,1419.98,4018.0,True,False,qualify against account data
+10ALJD82,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Nam-zim,services,405.59,1179.0,True,False,qualify against account data
+I93XL6Q9,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Finhigh,finance,1102.43,1759.0,True,False,qualify against account data
+4ENCEYPG,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+F4W7Z1UU,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Vehement Capital Partners,finance,646.1,883.0,True,False,qualify against account data
+JC7DDV56,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+7Q90C2VN,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+5ELMZN3E,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ASDR6QEZ,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+ZIMT5RQ2,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,,,,,False,True,identify account + qualify (no CRM account attached)
+UDAUS3DF,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Sonron,telecommunications,1699.85,5108.0,True,False,qualify against account data
+E6DGJSDW,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Green-Plus,services,692.19,1922.0,True,False,qualify against account data
+JHNDPI2N,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,J-Texon,retail,1388.67,3583.0,True,False,qualify against account data
+4H8GZ075,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Scotfind,software,6354.87,16780.0,True,False,qualify against account data
+UMD1BA4S,Anna Snelling,Q3,Q3,MG Special,55,0.6484055600981193,0.636,35.0,Ganjaflex,retail,5158.71,17479.0,True,False,qualify against account data
+RKP2DVSU,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,Hottechi,technology,8170.38,16499.0,True,False,qualify against account data
+6IG2A8KD,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+K7L1RE8B,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+RPCZJOE2,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+8TLX2786,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Z9CW6K35,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+MFU6Y5HX,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+T3T4OE0A,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,Konex,technology,7708.38,13756.0,True,False,qualify against account data
+Y0EKPBLQ,Niesha Huffines,Q4,Q4,MG Special,55,0.6484055600981193,0.616,34.0,,,,,False,True,identify account + qualify (no CRM account attached)
+P0B49XCI,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,Codehow,software,2714.9,2641.0,True,False,qualify against account data
+DOP1NORG,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,Plexzap,retail,2437.85,4874.0,True,False,qualify against account data
+X3KQZM1K,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,,,,,False,True,identify account + qualify (no CRM account attached)
+OIBR7UA7,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,,,,,False,True,identify account + qualify (no CRM account attached)
+WA3U0EVI,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,,,,,False,True,identify account + qualify (no CRM account attached)
+Q9CASEJL,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,,,,,False,True,identify account + qualify (no CRM account attached)
+BUOI3TBI,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,Rundofase,technology,1008.06,1238.0,True,False,qualify against account data
+HP50ZWIZ,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,,,,,False,True,identify account + qualify (no CRM account attached)
+D8ZJ6F45,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,Yearin,retail,2261.05,3851.0,True,False,qualify against account data
+F22C6LKO,Gladys Colclough,Q4,Q2,MG Special,55,0.6484055600981193,0.597,33.0,The New York Inquirer,medical,439.21,792.0,True,False,qualify against account data
+GLQLEZJM,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,,,,,False,True,identify account + qualify (no CRM account attached)
+M4WW6I1S,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,,,,,False,True,identify account + qualify (no CRM account attached)
+TBNPWPNE,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,,,,,False,True,identify account + qualify (no CRM account attached)
+N6JMQG0E,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,,,,,False,True,identify account + qualify (no CRM account attached)
+O7MBZPN4,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,,,,,False,True,identify account + qualify (no CRM account attached)
+HSGGBG9J,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,Codehow,software,2714.9,2641.0,True,False,qualify against account data
+XS7B6QT7,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,,,,,False,True,identify account + qualify (no CRM account attached)
+JZ4QLP1W,Lajuana Vencill,Q4,Q4,MG Special,55,0.6484055600981193,0.565,31.0,Bioplex,medical,326.82,1016.0,True,False,qualify against account data
