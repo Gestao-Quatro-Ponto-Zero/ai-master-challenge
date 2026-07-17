@@ -1,0 +1,85 @@
+{
+  "INF-SPON-001": {
+    "status": "VALIDATED",
+    "claim": "Não foi detectada associação material entre patrocínio e engagement após ajuste.",
+    "estimand": "diferença média ajustada em interações por view",
+    "result": {
+      "estimate": -1.025342748299596e-05,
+      "standard_error_clustered": 4.2987706532616626e-05,
+      "ci95_low": -9.450778406490176e-05,
+      "ci95_high": 7.400092909890982e-05,
+      "p_value": 0.8114778101950182,
+      "estimate_percentage_points": -0.001025342748299596,
+      "ci95_percentage_points": [
+        -0.009450778406490177,
+        0.0074000929098909825
+      ],
+      "model_r_squared": 0.0008991639256833439,
+      "n": 52214,
+      "creator_clusters": 5000
+    },
+    "secondary_outcomes": [
+      {
+        "outcome": "views",
+        "estimate": 0.2623348946740356,
+        "standard_error_clustered": 0.8991715136683891,
+        "ci95_low": -1.500008888040372,
+        "ci95_high": 2.024678677388443,
+        "p_value": 0.7704764116102667,
+        "model_r_squared": 0.0007950364534161647
+      },
+      {
+        "outcome": "share_rate_views",
+        "estimate": -1.3715692322001336e-05,
+        "standard_error_clustered": 1.5360700911359174e-05,
+        "ci95_low": -4.38221128855569e-05,
+        "ci95_high": 1.639072824155423e-05,
+        "p_value": 0.37190645679164813,
+        "model_r_squared": 0.0008104487022427831
+      },
+      {
+        "outcome": "views_per_follower",
+        "estimate": 0.0006089406176115669,
+        "standard_error_clustered": 0.002256199968633881,
+        "ci95_low": -0.0038131300628312394,
+        "ci95_high": 0.005031011298054373,
+        "p_value": 0.7872398312013246,
+        "model_r_squared": 0.3211008752619062
+      }
+    ],
+    "equivalence_sensitivity": {
+      "within_plus_minus_0.0005": true,
+      "within_plus_minus_0.001": true
+    },
+    "overlap": {
+      "auc_in_sample": 0.5180769275734028,
+      "min": 0.36028684275411965,
+      "p01": 0.39282273080143837,
+      "median": 0.42736314423958194,
+      "p99": 0.46182481784492563,
+      "max": 0.48400500404571745,
+      "share_outside_0_1_0_9": 0.0
+    },
+    "interaction_min_fdr_p": 0.696813728071163,
+    "controls": [
+      "platform",
+      "content_type",
+      "content_category",
+      "language",
+      "audience_age_distribution",
+      "audience_gender_distribution",
+      "audience_location",
+      "post_month",
+      "log_followers",
+      "content_length",
+      "hashtag_count"
+    ],
+    "uncertainty": "erros-padrão clusterizados por creator_id",
+    "limitations": [
+      "dados observacionais e provavelmente sintéticos",
+      "confundimento não medido permanece possível",
+      "custo e receita ausentes; ROI não estimável",
+      "thresholds de equivalência são análises de sensibilidade, não decisão humana aprovada"
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+run_id: "20260716-1729-4aed364"
+dataset_version: "social_media_dataset.csv (Kaggle omenkj/social-media-sponsorship-and-engagement-dataset, MIT, baixado 2026-07-16)"
+orchestrator: main-session
+created_at: "2026-07-16T17:29:00Z"
+updated_at: "2026-07-16T15:41:17-03:00"
+
+gates:
+  P0:
+    owner: planner
+    status: PASS
+    artifact: docs/execution-plan.md
+    evidence_ids: []
+    pendencies: []
+    timestamp: "2026-07-16T14:36:46-03:00"
+  DQ:
+    owner: data-engineer
+    status: PASS
+    artifact: data/processed/posts_analytical.csv (sha256 410e2d8101ca5206bafb2825de4417f33ab5922ea85b2de2acb0c5fc0ee649f0), docs/contracts/source-data.md, docs/contracts/analytical-dataset.md, docs/contracts/metric-registry.md, docs/data-quality-report.md, docs/data-lineage.md
+    evidence_ids: [DQ-001, DQ-002, DQ-003, DQ-004, DQ-005, DQ-006, DQ-007]
+    pendencies:
+      - "validade externa limitada: fortes sinais de dataset sintetico"
+      - "creator_name inconsistente para todas as 5000 creator_id; campo excluido do analitico"
+      - "custos ausentes; ROI proibido"
+      - "DQ-007 RESOLVIDO: instabilidade de follower_count documentada; follower_count/creator_size tratados como atributos do post."
+    timestamp: "2026-07-16T14:57:00-03:00"
+    orchestrator_notes: "Reexecutado build_dataset.ps1 e test_build_dataset.ps1 (ambos ja corrigidos pelo data-engineer para usar InvariantCulture) porque o CSV processado estava desatualizado em relacao ao script (defeito anterior: rate columns exportadas com virgula decimal, viravam string/object no pandas). Apos rerun: 52214 linhas, teste PASS, colunas de taxa confirmadas float64. Hash do artefato atualizado acima."
+  TECH-FOUNDATION:
+    owner: software-engineer
+    status: PASS
+    artifact: pyproject.toml, src/, tests/
+    evidence_ids: []
+    pendencies:
+      - "gerar lock limpo na consolidacao; venv atual reutiliza system-site-packages"
+      - "CI pertence ao gate TECH-CONSOLIDATION"
+    timestamp: "2026-07-16T14:58:42-03:00"
+  EDA:
+    owner: data-analyst
+    status: PASS
+    artifact: outputs/tables/, outputs/figures/
+    evidence_ids: [EDA-BASE-001, EDA-PLAT-001, EDA-CONTENT-001, EDA-SPON-001]
+    pendencies:
+      - "findings permanecem EXPLORATORY ate o gate INF"
+      - "rankings nao sao acionaveis sem validacao e relevancia pratica"
+      - "EDA-008 RESOLVIDO: EDA-COMBO-001, EDA-AUD-001 e EDA-TIME-001 adicionados ao evidence pack e regenerados."
+    timestamp: "2026-07-16T15:07:00-03:00"
+  INF:
+    owner: statistician
+    status: PASS
+    artifact: outputs/tables/ (validated), docs/statistical-methods-report.md
+    evidence_ids: [INF-SPON-001]
+    pendencies:
+      - "metrica primaria e thresholds de equivalencia aguardam validacao humana"
+      - "inferencia descreve dataset provavelmente sintetico; nao generalizar"
+    timestamp: "2026-07-16T15:08:01-03:00"
+  STR:
+    owner: marketing-strategist
+    status: PASS
+    artifact: reports/strategy-register.md
+    evidence_ids: [INF-SPON-001, EDA-PLAT-001, EDA-CONTENT-001, EDA-AUD-001]
+    pendencies:
+      - "Head de Marketing deve aprovar metrica, MDE, break-even, budget e guardrails"
+    timestamp: "2026-07-16T15:08:01-03:00"
+  ML:
+    owner: ml-engineer
+    status: SKIPPED
+    artifact: reports/strategy-register.md#decisao-de-ml
+    evidence_ids: []
+    pendencies:
+      - "NO-GO: R2 ajustado 0.000899 e ausencia de sinal decisorio"
+      - "reabrir somente com dados reais, target/horizonte e ganho minimo"
+    conditional: true
+    timestamp: "2026-07-16T15:08:01-03:00"
+  UI:
+    owner: dashboard-builder
+    status: PASS
+    artifact: dashboard/
+    evidence_ids: [INF-SPON-001, EDA-PLAT-001, EDA-CONTENT-001]
+    pendencies:
+      - "dashboard e descritivo; nao estima causalidade ou ROI"
+      - "respostas obrigatorias explicitadas; audiencia cruzada por platform/content_type/content_category"
+    conditional: false
+    timestamp: "2026-07-16T15:14:22-03:00"
+  TECH-CONSOLIDATION:
+    owner: software-engineer
+    status: PASS
+    artifact: scripts/run_pipeline.ps1, tests/integration/test_end_to_end.py, tests/dashboard/test_app_smoke.py, docs/technical-consolidation-report.md
+    evidence_ids: []
+    pendencies:
+      - "workflow de referencia validado e removido da PR: CONTRIBUTING.md proibe alteracoes fora de submissions/felipe-freire"
+    timestamp: "2026-07-16T15:35:00-03:00"
+    orchestrator_notes: "Testes de reconciliacao cross-component e Streamlit AppTest headless. Dashboard ampliado com respostas explicitas, audiencia por plataforma/conteudo/categoria e camada executiva de break-even/briefing. Suite completa 22/22 PASS; ruff check/format PASS."
+  DOC:
+    owner: executive-writer
+    status: PASS
+    artifact: reports/executive-report.md, solution/README.md
+    evidence_ids: [INF-SPON-001, EDA-PLAT-001, EDA-CONTENT-001, EDA-AUD-001]
+    pendencies: []
+    timestamp: "2026-07-16T15:28:02-03:00"
+  FINAL:
+    owner: reviewer
+    status: PASS
+    artifact: reports/review-verdict.md
+    evidence_ids: [INF-SPON-001, EDA-PLAT-001, EDA-CONTENT-001, EDA-AUD-001]
+    pendencies:
+      - "REV-MINOR-003: aprovacoes de negocio antes de operacao real"
+    timestamp: "2026-07-16T15:28:02-03:00"
+  PUBLISH:
+    owner: github-publisher
+    status: PASS
+    artifact: https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91, https://felipe-social-media-intelligence.streamlit.app/
+    evidence_ids: []
+    pendencies: []
+    conditional: true
+    timestamp: "2026-07-16T16:13:00-03:00"
+
+human_approvals:
+  - gate: PUBLISH
+    approved_by: Felipe Freire
+    evidence: "autorizacao explicita no chat: Pode subir para PR"
+    timestamp: "2026-07-16T16:00:00-03:00"
+correction_requests:
+  - status: RESOLVED
+    issue_id: DQ-007
+    owner: data-engineer
+    severity: MAJOR
+    evidence: "follower_count varia dentro do mesmo creator_id quase tanto quanto na populacao inteira (nunique medio 10.44 de ~10.44 posts/creator; std intra-creator media ~284k vs std populacional 288k); nao esta em source-data.md nem em docs/data-quality-report.md"
+    expected_fix: "Adicionar a instabilidade de follower_count a lista de limitacoes (mesmo padrao usado para creator_name em DQ-001) e confirmar no contrato analitico que creator_size/follower_count sao atributos do post, nao do creator"
+    impacted_artifacts: ["docs/contracts/source-data.md", "docs/data-quality-report.md", "docs/contracts/analytical-dataset.md"]
+    gates_to_rerun: []
+    blocking: false
+    note: "Nao bloqueia DQ nem gates seguintes; EDA/INF/STR devem tratar follower_count como atributo do post desde ja, independente da atualizacao documental."
+    resolution: "Contratos source/analytical e data-quality-report atualizados."
+  - status: RESOLVED
+    issue_id: EDA-008
+    owner: data-analyst
+    severity: MAJOR
+    evidence: "outputs/manifests/run-manifest.yaml listava evidence_ids EDA-COMBO-001/EDA-AUD-001/EDA-TIME-001 que nao existem em outputs/evidence/eda-evidence-records.json (confirmado lendo o JSON: soh 4 chaves presentes)"
+    expected_fix: "Adicionar em src/analysis/run_eda.py os registros EDA-COMBO-001 (para EDA-COMBINATIONS-N100.csv), EDA-AUD-001 (para as tabelas EDA-BY-AUDIENCE_*.csv) e EDA-TIME-001 (para EDA-BY-MONTH.csv), com claim/estimate/n/source/limitations, e regravar eda-evidence-records.json"
+    impacted_artifacts: ["src/analysis/run_eda.py", "outputs/evidence/eda-evidence-records.json"]
+    gates_to_rerun: []
+    blocking: false
+    note: "EDA permanece PASS porque as tabelas subjacentes existem e reconciliam; o gap e apenas na formalizacao do evidence pack. Statistician/Strategist NAO podem citar EDA-COMBO-001/EDA-AUD-001/EDA-TIME-001 ate esses registros existirem de fato."
+    resolution: "run_eda.py e eda-evidence-records.json agora contem os tres registros."
