@@ -1,0 +1,264 @@
+<title>Segunda de Manhã — Boletim do Pipeline</title>
+<style>
+  :root {
+    --paper: #FAF9F6;
+    --ink: #24262B;
+    --ink-soft: #5C6068;
+    --hairline: #D9D6CE;
+    --accent: #0E6E5C;
+    --accent-soft: #E7F0ED;
+    --warn: #A97407;
+    --crit: #A63A24;
+    --crit-soft: #F6ECE9;
+    --mono-bg: #F0EEE8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #1A1C20;
+      --ink: #E8E6E1;
+      --ink-soft: #9BA0A8;
+      --hairline: #3A3D44;
+      --accent: #4FB39C;
+      --accent-soft: #22322E;
+      --warn: #D9A03B;
+      --crit: #D96A50;
+      --crit-soft: #33241F;
+      --mono-bg: #24262C;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1A1C20; --ink: #E8E6E1; --ink-soft: #9BA0A8; --hairline: #3A3D44;
+    --accent: #4FB39C; --accent-soft: #22322E; --warn: #D9A03B; --crit: #D96A50;
+    --crit-soft: #33241F; --mono-bg: #24262C;
+  }
+  :root[data-theme="light"] {
+    --paper: #FAF9F6; --ink: #24262B; --ink-soft: #5C6068; --hairline: #D9D6CE;
+    --accent: #0E6E5C; --accent-soft: #E7F0ED; --warn: #A97407; --crit: #A63A24;
+    --crit-soft: #F6ECE9; --mono-bg: #F0EEE8;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 15px/1.55 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 32px 16px 56px;
+  }
+  .email { max-width: 680px; margin: 0 auto; }
+
+  .masthead { border-bottom: 3px double var(--hairline); padding-bottom: 16px; }
+  .masthead .eyebrow {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+  }
+  .masthead h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px; line-height: 1.15; margin: 6px 0 4px; font-weight: 400;
+    text-wrap: balance;
+  }
+  .masthead .meta { color: var(--ink-soft); font-size: 13px; }
+
+  .tldr {
+    font-family: Georgia, serif; font-size: 17px; line-height: 1.5;
+    margin: 22px 0 6px; text-wrap: pretty;
+  }
+  .tldr strong { color: var(--accent); font-weight: 600; }
+
+  .verbs {
+    display: flex; flex-wrap: wrap; gap: 8px 22px;
+    margin: 14px 0 8px; padding: 12px 0;
+    border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+    font-variant-numeric: tabular-nums;
+  }
+  .verbs div { font-size: 13px; color: var(--ink-soft); }
+  .verbs b { display: block; font-size: 20px; color: var(--ink); font-weight: 600; }
+  .verbs .hot b { color: var(--warn); }
+  .verbs .dead b { color: var(--crit); }
+
+  section { margin-top: 30px; }
+  .sect-eyebrow {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 600;
+  }
+  section h2 {
+    font-family: Georgia, serif; font-weight: 400;
+    font-size: 21px; margin: 4px 0 12px; text-wrap: balance;
+  }
+
+  .ledger { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .ledger th {
+    text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); font-weight: 600; padding: 6px 10px 6px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .ledger td {
+    padding: 9px 10px 9px 0; border-bottom: 1px solid var(--hairline);
+    vertical-align: top; font-size: 14px;
+  }
+  .ledger td.num { text-align: right; white-space: nowrap; }
+  .ledger th.num { text-align: right; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px;
+    border-radius: 2px;
+  }
+  .tag.go   { background: var(--accent-soft); color: var(--accent); }
+  .tag.warn { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); }
+  .tag.crit { background: var(--crit-soft); color: var(--crit); }
+  .note { font-size: 13px; color: var(--ink-soft); margin: 10px 0 0; }
+  .why { font-size: 13px; color: var(--ink-soft); }
+
+  .deals { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13.5px; }
+  .deals td { padding: 7px 10px 7px 0; border-bottom: 1px solid var(--hairline); }
+  .deals .id {
+    font-family: Consolas, "SF Mono", Menlo, monospace; font-size: 12px;
+    background: var(--mono-bg); padding: 1px 5px; border-radius: 2px;
+  }
+  .deals .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  ol.bottlenecks { margin: 12px 0 0; padding: 0; list-style: none; counter-reset: bn; }
+  ol.bottlenecks li {
+    counter-increment: bn; padding: 14px 0; border-top: 1px solid var(--hairline);
+    display: grid; grid-template-columns: 44px 1fr; gap: 0 14px;
+  }
+  ol.bottlenecks li::before {
+    content: counter(bn, decimal-leading-zero);
+    font-family: Georgia, serif; font-size: 24px; color: var(--crit); line-height: 1.1;
+  }
+  ol.bottlenecks h3 { margin: 0 0 3px; font-size: 15px; font-weight: 600; }
+  ol.bottlenecks p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  ol.bottlenecks .own { color: var(--ink); font-weight: 600; }
+
+  footer {
+    margin-top: 34px; padding-top: 14px; border-top: 3px double var(--hairline);
+    font-size: 12.5px; color: var(--ink-soft); line-height: 1.6;
+  }
+  @media (max-width: 540px) { .verbs { gap: 8px 16px; } .table-wrap { overflow-x: auto; } }
+</style>
+
+<div class="email">
+  <div class="masthead">
+    <div class="eyebrow">Segunda de Manhã · Boletim do Pipeline</div>
+    <h1>Seu pipeline de $3,1M na verdade vale $1,1M. Eis a semana.</h1>
+    <div class="meta">Semana de seg, 1º/jan/2018 · de RevOps · para gerentes &amp; vendedores · dados de 31/dez</div>
+  </div>
+
+  <p class="tldr">No papel, carregamos <strong>$3,14M</strong> de pipeline aberto — 2.089 deals. Mas $2,02M estão em 1.291 deals além da <strong>linha dos 138 dias</strong>, idade da qual nenhum deal da nossa história jamais voltou. O pipeline trabalhável é <strong>$1,12M em 798 deals</strong>, e se resume a cinco verbos:</p>
+
+  <div class="verbs">
+    <div class="hot"><b>43</b>empurre agora</div>
+    <div><b>29</b>trabalhe hoje</div>
+    <div><b>546</b>corrija a conta</div>
+    <div><b>163</b>triagem</div>
+    <div class="dead"><b>1.291</b>purga</div>
+  </div>
+
+  <section>
+    <div class="sect-eyebrow">Topo de funil</div>
+    <h2>500 leads sem triagem, todos da região Central</h2>
+    <div class="table-wrap">
+    <table class="ledger">
+      <tr><th></th><th>Fila</th><th class="num">Deals</th><th class="num">Valor esp.</th><th>Nesta semana</th></tr>
+      <tr>
+        <td><span class="tag go">Pronto</span></td>
+        <td>Qualificar &amp; engajar</td>
+        <td class="num">163</td><td class="num">$231k</td>
+        <td class="why">Trabalhe em ordem de prioridade — produtos premium primeiro (mesmas chances, prêmio maior). A fila pertence a 10 vendedores.</td>
+      </tr>
+      <tr>
+        <td><span class="tag crit">Bloqueado</span></td>
+        <td>Sem conta vinculada</td>
+        <td class="num">337</td><td class="num">—</td>
+        <td class="why">Não podem ser qualificados até identificar a conta. Ver gargalo 02.</td>
+      </tr>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sect-eyebrow">Meio de funil</div>
+    <h2>Onde a semana é ganha ou perdida</h2>
+    <div class="table-wrap">
+    <table class="ledger">
+      <tr><th></th><th>Ação</th><th class="num">Deals</th><th class="num">Valor esp.</th><th>Por quê</th></tr>
+      <tr>
+        <td><span class="tag warn">Empurre já</span></td>
+        <td>Dia 110–138 — a janela fecha nesta semana</td>
+        <td class="num">43</td><td class="num">$47k</td>
+        <td class="why">Nenhum deal jamais ganhou depois do dia 138. Essas ligações acontecem segunda–terça.</td>
+      </tr>
+      <tr>
+        <td><span class="tag go">Foco</span></td>
+        <td>Alto valor, dentro da janela ganhável</td>
+        <td class="num">29</td><td class="num">$79k</td>
+        <td class="why">Trabalho de horas nobres. Top 5 abaixo.</td>
+      </tr>
+      <tr>
+        <td><span class="tag crit">Corrija</span></td>
+        <td>Vincule a conta no CRM</td>
+        <td class="num">546</td><td class="num">$756k</td>
+        <td class="why">Todo deal que já fechou tinha conta vinculada. Estes estruturalmente não fecham. Central 341 · Oeste 127 · Leste 78.</td>
+      </tr>
+      <tr>
+        <td><span class="tag go">Nutrir</span></td>
+        <td>Baixo valor, na janela</td>
+        <td class="num">17</td><td class="num">$4k</td>
+        <td class="why">Mantenha aquecido; não é trabalho de horas nobres.</td>
+      </tr>
+    </table>
+    </div>
+
+    <table class="deals">
+      <tr>
+        <td><span class="id">1LY8CAXD</span></td><td>GTK 500 · Betasoloin</td><td>Rosalina Dieter, West</td><td class="num">$26,768</td>
+      </tr>
+      <tr>
+        <td><span class="id">FZWU2I30</span></td><td>GTX Plus Pro · The New York Inquirer</td><td>Zane Levy, West</td><td class="num">$5,482</td>
+      </tr>
+      <tr>
+        <td><span class="id">JJGRAQ2K</span></td><td>GTX Plus Pro · Rangreen</td><td>Kary Hendrixson, West</td><td class="num">$5,482</td>
+      </tr>
+      <tr>
+        <td><span class="id">01XZ9CRY</span></td><td>GTX Plus Pro · Initech</td><td>Zane Levy, West</td><td class="num">$5,482</td>
+      </tr>
+      <tr>
+        <td><span class="id">4SOUOUKH</span></td><td>GTX Plus Pro · Treequote</td><td>Vicki Laflamme, West</td><td class="num">$5,482</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <div class="sect-eyebrow">Fundo de funil</div>
+    <h2>Notas de coaching para gerentes</h2>
+    <p>A taxa de conversão é plana, ~63% para todos — ninguém fecha "melhor", e nenhum produto ou segmento é mais seguro. A separação de receita vem do <b>mix premium</b>: os vendedores de maior receita fazem 53% de deals da série premium contra 33% na base, com as mesmas chances. Puxe conversas de MG&nbsp;Advanced / GTX&nbsp;Pro / GTX&nbsp;Plus&nbsp;Pro nesta semana.</p>
+    <p class="note">Exceção: o <b>GTK 500</b> trava em 44% — o dobro da norma. O carro-chefe de $26,8k exige envolvimento do gerente em todo deal aberto.</p>
+  </section>
+
+  <section>
+    <div class="sect-eyebrow">Gargalos</div>
+    <h2>Três bloqueios, em ordem de dinheiro</h2>
+    <ol class="bottlenecks">
+      <li>
+        <div>
+          <h3>Purga de zumbis — 1.291 deals, $2,02M de pipeline fictício</h3>
+          <p><span class="own">O Oeste tem 562 deles ($992k):</span> Summer Sewald 305, Celia Rouche 257. Gerentes fecham ou reciclam até sexta — o forecast fica honesto imediatamente, e os vendedores param de guardar deals mortos.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Vinculação de conta — $756k congelados em 546 deals</h3>
+          <p>Um único campo do CRM. Nenhum deal na história da empresa fechou sem ele. O maior destravamento disponível nesta semana, e não custa tempo de venda.</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Processo do GTK 500 — 44% de travamento no carro-chefe</h3>
+          <p>Designe um sponsor executivo para cada deal aberto de GTK 500. High-ticket exige um movimento diferente dos produtos de recorrência.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <footer>
+    Scores e ações vêm do lead scorer — regras validadas em 6.711 deals históricos fechados, com cada score decomposto em fatores nomeados (ver <b>scored_pipeline.csv</b> e <b>PLAYBOOK.md</b>). Responda ao RevOps com correções; o boletim é regenerado do CRM toda semana.
+  </footer>
+</div>
