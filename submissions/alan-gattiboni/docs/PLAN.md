@@ -61,9 +61,37 @@ provar onde e como.
 **Pronto quando:** notebook roda ponta a ponta, cada hipótese testada com
 evidência, veredito PASS/WARN/FAIL por fonte legível em minutos.
 
-## Bloco 2 — Diagnóstico operacional _(a decupar)_
+## Bloco 2 — Diagnóstico operacional _(fechado)_
 
-Gargalos, drivers de satisfação, desperdício quantificado.
+Diagnóstico das duas fontes auditadas. A operação real sai do D2. O D1 sintético
+vira achado sobre a própria medição. Notebook próprio,
+`solution/02_diagnostico_operacional.ipynb`, autossuficiente.
+
+**Regras do bloco:**
+
+- Cada achado responde uma pergunta com evidência computada.
+- Relação medida por tamanho de efeito. Em amostra grande o p-valor sinaliza
+  significância para diferença irrelevante.
+- Tabela e número neste bloco. Visual fica no empacotamento.
+- Um notebook autossuficiente, sem estado importado do Bloco 1.
+
+- [x] **2.1** Demanda real (D2). Top-3 `Topic_group` em 66,18% (Hardware 28,47%,
+      HR Support 22,82%, Access 14,89%). Cauda de seis categorias abaixo de 6%.
+- [x] **2.2** Desperdício de triagem (D2). `Miscellaneous` reúne 7.060 tickets
+      (14,76%), 5.925 termos distintos, termo de topo `change` em 24,6% dos docs
+      contra 80,4% de `administrator` em `Purchase`. Custo de re-roteamento a 3
+      min por ticket: 353 horas.
+- [x] **2.3** Lacuna de instrumentação (D1). Eta-quadrado no máximo 0,00210 nas
+      9 combinações atributo por desfecho, faixa desprezível. Diferença
+      `Time to
+      Resolution` menos `First Response Time` negativa em 49,3%
+      dos `Closed`. Os atributos não explicam os desfechos e os carimbos de
+      tempo não medem duração.
+- [x] **2.4** Síntese. Dict `diagnostico` com demanda, desperdício e
+      instrumentação, renderizado em tabela.
+
+**Pronto quando:** notebook roda ponta a ponta, os três achados sustentados por
+número, lacuna do D1 provada por tamanho de efeito.
 
 ## Bloco 3 — Proposta de automação _(a decupar)_
 
