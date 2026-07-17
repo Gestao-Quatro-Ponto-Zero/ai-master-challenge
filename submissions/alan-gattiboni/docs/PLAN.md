@@ -93,9 +93,32 @@ vira achado sobre a própria medição. Notebook próprio,
 **Pronto quando:** notebook roda ponta a ponta, os três achados sustentados por
 número, lacuna do D1 provada por tamanho de efeito.
 
-## Bloco 3 — Proposta de automação _(a decupar)_
+## Bloco 3 — Proposta de automação _(fechado)_
 
-O que automatizar, o que não, fluxo desenhado ponta a ponta.
+Desenho da automação de suporte ancorado nos achados dos Blocos 1 e 2. Documento
+próprio, `solution/03_proposta_automacao.md`. Arquitetura agnóstica de fonte que
+roda no D2 como prova e aponta o D1 como gap de instrumentação.
+
+**Regras do bloco:**
+
+- Cada decisão de automação ancorada num achado numérico dos Blocos 1 e 2.
+- Cada fronteira do que fica humano justificada por um FAIL ou WARN provado.
+- Desenho e decisão neste bloco. O protótipo que roda é o Bloco 4.
+- IA generativa entra onde recupera sinal, com critério explícito.
+
+- [x] **3.1** O que automatizar e o que não. Triagem automática de tickets como
+      alvo, ancorada no desperdício de 2.2 (353h de re-roteamento) e no sinal de
+      1.4. Fronteira do que fica humano: priorização e previsão de desfecho no
+      domínio do cliente, bloqueadas pelo D1 (2.3).
+- [x] **3.2** Fluxo ponta a ponta. Pipeline com portas de ingestão agnósticas de
+      fonte, normalização, classificação (Bloco 4), roteamento, escalonamento
+      por confiança. Papel da IA generativa com critério.
+- [x] **3.3** Pré-requisito de instrumentação. O que capturar para estender a
+      arquitetura ao cliente. O D1 é a prova do gap.
+
+**Pronto quando:** documento existe, cada decisão de automação ancorada em
+achado dos Blocos 1 e 2, fluxo desenhado ponta a ponta, fronteira do que não
+automatizar justificada por FAIL ou WARN.
 
 ## Bloco 4 — Protótipo funcional _(a decupar)_
 
