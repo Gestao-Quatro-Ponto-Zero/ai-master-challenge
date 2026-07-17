@@ -58,7 +58,6 @@ Instruções detalhadas: [`docs/technical-setup.md`](docs/technical-setup.md).
 - [Plano operacional de 30 dias](reports/30-day-experiment-plan.md) — como produzir evidência para decidir investimento.
 - [Registro de estratégia](reports/strategy-register.md) — owners, KPIs, guardrails e stop conditions.
 - [Process log](process-log/README.md) — conversas, vídeos, imagens, erros e correções.
-- [Veredicto de revisão](reports/review-verdict.md) — auditoria adversarial da entrega.
 
 ## Limitações essenciais
 
