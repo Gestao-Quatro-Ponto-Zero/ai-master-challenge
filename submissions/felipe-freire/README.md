@@ -128,7 +128,7 @@ A arquitetura, os prompts e o protocolo de handoff estão em [Arquitetura de age
 
 ---
 
-*Submissão enviada em: 17 de julho de 2026*
+*Submissão enviada em: 16 de julho de 2026*
 
 **Felipe de Oliveira Freire**<br>
 *Cientista/Analista de Dados*
