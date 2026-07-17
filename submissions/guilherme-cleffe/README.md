@@ -2,15 +2,15 @@
 
 ## Sobre mim
 
-- **Nome:** Guilherme Cleffe
-- **LinkedIn:** _[preencher]_
+- **Nome:** Guilherme Cleffe, CFA, PMP
+- **LinkedIn:** https://www.linkedin.com/in/guilherme-cleffe
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 
 ---
 
 ## Executive Summary
 
-Construí um lead scorer explicável que transforma um pipeline de 8.800 oportunidades em uma fila de trabalho semanal com 6 ações claras por deal. O achado central: dos $3,14M de pipeline aberto, $2,02M (64%) estão em 1.291 deals "zumbis" — além dos 138 dias, idade da qual nenhum deal na história jamais fechou. Cada regra de scoring foi validada contra 6.711 deals históricos fechados **antes** de entrar no produto — inclusive rejeitando, via backtest temporal, um fator de "probabilidade de vitória" que parecia ótimo in-sample (AUC 0,49 = moeda ao ar). A recomendação principal: purgar os zumbis, corrigir os 546 deals sem conta vinculada ($756k congelados) e priorizar por valor esperado dentro da janela ganhável de 14–138 dias.
+Construí uma ferramenta de priorização de leads de forma a melhorar o foco e produtividade da equipe de vendas. Key insights: curva de distribuição dos leads fechados (entre 14 e ~100 dias de aging), filtrar os leads zumbis (muitos), sem sensibilidade a preços, etc. Cada regra foi baseada em hipóteses extraídas sobre a base de dados. 
 
 ---
 
@@ -39,13 +39,13 @@ python src/scorer.py backtest
 Saídas prontas para consumo:
 - `solution/data/lake/scored_pipeline.csv` — a fila priorizada, com explicação em linguagem natural por deal
 - `solution/data/lake/prospecting_enriched.csv` — os 500 leads de prospecção triados e ranqueados
-- `docs/monday-morning-email.md` / `.html` — o boletim "Segunda de Manhã" gerado a partir dos scores (pt-BR)
+- `docs/monday-morning-email.md` / `.html` — o boletim "Segunda de Manhã" gerado a partir dos scores
 
 ### Abordagem
 
 Método **Architect/Builder**: eu (Architect) defini hipóteses e decisões de negócio; o Claude Code (Builder) implementou, validou e desafiou cada hipótese com dados antes de virar regra. Sequência:
 
-1. **Datalake primeiro** — perfilamento das 4 tabelas, correção de inconsistências (`GTXPro`≠`GTX Pro` teria descartado ~1.480 deals silenciosamente), centralização em SQLite + CSVs com gate de validação.
+1. **Datalake primeiro** — parametrização das 4 tabelas, correção de inconsistências (`GTXPro`≠`GTX Pro` teria descartado ~1.480 deals silenciosamente), centralização em SQLite + CSVs com gate de validação.
 2. **Hipóteses antes de regras** — cada intuição de negócio foi testada: perfil de deals ganhos, regra das 2 semanas, triagem de prospecção, segmentação por conta.
 3. **Scorer baseado em regras validadas** — sem ML caixa-preta; score 0–100 decomposto em fatores nomeados que um vendedor entende.
 4. **Eval antes de confiar** — backtest com corte temporal derrubou o fator mais "sofisticado" do modelo antes de ele chegar ao usuário.
