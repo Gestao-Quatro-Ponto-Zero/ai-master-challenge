@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Inspector · Challenge 002 · Alan Gattiboni</title>
+<style>
+  :root {
+    --bg:        #f5f5f2;
+    --surface:   #ffffff;
+    --ink:       #1b1b1a;
+    --ink-soft:  #6b6b66;
+    --ink-faint: #9a9a94;
+    --line:      #e3e3df;
+    --mono-bg:   #f0f0ec;
+    --pass-ink:  #2f6a4a; --pass-bg: #e8f0ea; --pass-line: #cfe0d4;
+    --warn-ink:  #8a6d16; --warn-bg: #f4eddb; --warn-line: #e6d9b8;
+    --fail-ink:  #96393e; --fail-bg: #f2e5e5; --fail-line: #e2c9c9;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 28px 80px;
+  }
+
+  /* ---------- header ---------- */
+  .masthead { border-bottom: 1px solid var(--line); padding-bottom: 24px; }
+  .masthead h1 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .masthead .tagline {
+    margin: 4px 0 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .meta-row {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 22px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+  }
+  .meta-row b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- section shell ---------- */
+  .section { padding-top: 44px; }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 4px;
+  }
+  .section h2 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .section .lede {
+    margin: 0 0 22px;
+    color: var(--ink-soft);
+    font-size: 14px;
+    max-width: 62ch;
+  }
+
+  /* ---------- record (D1) ---------- */
+  .record {
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .record-fields {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  .record-fields dt {
+    padding: 8px 14px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .record-fields dd {
+    padding: 8px 14px;
+    margin: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .record-fields .null { color: var(--ink-faint); font-style: italic; }
+  .payload {
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+    color: var(--ink);
+  }
+  mark.tpl {
+    background: var(--warn-bg);
+    color: var(--warn-ink);
+    padding: 0 3px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  .defects { list-style: none; margin: 18px 0 0; padding: 0; }
+  .defects li {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 14px;
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .defects li:first-child { border-top: 0; }
+  .defects .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    align-self: start;
+    padding-top: 1px;
+  }
+  .tag.fail { color: var(--fail-ink); }
+  .tag.pass { color: var(--pass-ink); }
+  .defects .body b { font-weight: 600; }
+  .defects .body span { color: var(--ink-soft); }
+
+  /* ---------- gates ---------- */
+  .gates { border-top: 1px solid var(--line); }
+  .gate {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    align-items: baseline;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .pill {
+    justify-self: start;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+  .pill.pass { color: var(--pass-ink); background: var(--pass-bg); border-color: var(--pass-line); }
+  .pill.warn { color: var(--warn-ink); background: var(--warn-bg); border-color: var(--warn-line); }
+  .pill.fail { color: var(--fail-ink); background: var(--fail-bg); border-color: var(--fail-line); }
+  .gate .name { font-weight: 600; font-size: 14px; }
+  .gate .name span {
+    display: block;
+    font-weight: 400;
+    color: var(--ink-soft);
+    font-size: 13px;
+    margin-top: 1px;
+  }
+
+  /* ---------- classifier ---------- */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    margin-bottom: 26px;
+  }
+  .metric { padding: 16px 18px; border-right: 1px solid var(--line); }
+  .metric:last-child { border-right: 0; }
+  .metric .k { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.02em; }
+  .metric .v {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 3px;
+    letter-spacing: -0.02em;
+  }
+  .metric .sub { font-size: 11px; color: var(--ink-faint); font-family: var(--mono); margin-top: 2px; }
+
+  .infer {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    margin-top: 16px;
+  }
+  .infer-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--mono-bg);
+  }
+  .infer-head .route {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .route.auto  { color: var(--pass-ink); }
+  .route.human { color: var(--warn-ink); }
+  .infer-head .kind { font-size: 11px; color: var(--ink-faint); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
+  .infer-body { padding: 14px 16px; }
+  .infer-body .in {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--mono-bg);
+    padding: 10px 12px;
+    border-radius: 2px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .conf { margin-top: 14px; }
+  .conf-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  .conf-line .lab { color: var(--ink-soft); }
+  .conf-line .val { font-weight: 600; font-size: 13px; }
+  .bar { height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--ink); }
+  .top2 {
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    display: grid;
+    gap: 3px;
+  }
+  .top2 .row { display: flex; justify-content: space-between; }
+  .top2 .row b { color: var(--ink); font-weight: 600; }
+  .infer-note {
+    margin-top: 12px;
+    padding-top: 11px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .infer-note b { color: var(--fail-ink); font-weight: 600; }
+
+  /* ---------- footer ---------- */
+  .foot {
+    margin-top: 52px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 620px) {
+    .wrap { padding: 40px 18px 60px; }
+    .metrics { grid-template-columns: 1fr; }
+    .metric { border-right: 0; border-bottom: 1px solid var(--line); }
+    .metric:last-child { border-bottom: 0; }
+    .record-fields { grid-template-columns: 1fr; }
+    .record-fields dt { border-right: 0; }
+    .defects li { grid-template-columns: 1fr; gap: 3px; }
+    .gate { grid-template-columns: 1fr; gap: 6px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bar > i { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Pipeline Inspector</h1>
+    <p class="tagline">Auditoria de qualidade e classificação com abstenção.</p>
+    <div class="meta-row">
+      <span>challenge <b>002 · Suporte</b></span>
+      <span>autor <b>Alan Gattiboni</b></span>
+      <span>D1 <b>8.469 tickets</b></span>
+      <span>D2 <b>47.837 tickets</b></span>
+    </div>
+  </header>
+
+  <!-- ============ SEÇÃO 1 ============ -->
+  <section class="section">
+    <p class="eyebrow">Origem</p>
+    <h2>Registro cru · D1</h2>
+    <p class="lede">Amostra direta do dataset externo de suporte ao cliente, sem transformação. O primeiro registro do arquivo já expõe os defeitos que definem o teto de uso desta fonte.</p>
+
+    <div class="record">
+      <dl class="record-fields">
+        <dt>Ticket ID</dt><dd>1</dd>
+        <dt>Type</dt><dd>Technical issue</dd>
+        <dt>Subject</dt><dd>Product setup</dd>
+        <dt>Status</dt><dd>Pending Customer Response</dd>
+        <dt>Priority</dt><dd>Critical</dd>
+        <dt>Channel</dt><dd>Social media</dd>
+        <dt>Satisfaction</dt><dd class="null">null</dd>
+        <dt>Resolution</dt><dd class="null">null</dd>
+      </dl>
+      <div class="payload">I'm having an issue with the <mark class="tpl">{product_purchased}</mark>. Please assist.
+
+Your billing zip code is: 71701.
+
+We appreciate that you have requested a website address.
+
+Please double check your email address. I've tried troubleshooting steps mentioned in the user manual, but the issue persists.</div>
+    </div>
+
+    <ul class="defects">
+      <li>
+        <span class="tag fail">FAIL · texto</span>
+        <span class="body"><b>Placeholder de template não resolvido.</b> <span>O marcador <code>{product_purchased}</code> aparece cru em 100% das descrições. Não há nome de produto real para extrair.</span></span>
+      </li>
+      <li>
+        <span class="tag fail">FAIL · texto</span>
+        <span class="body"><b>Corpo montado por template, sem coesão.</b> <span>Sentenças sobre CEP de cobrança, endereço de site e e-mail coladas a um chamado declarado como "product setup". Sem sinal semântico aproveitável.</span></span>
+      </li>
+      <li>
+        <span class="tag pass">PASS · nulos</span>
+        <span class="body"><b>Desfecho nulo por status.</b> <span>Satisfaction e Resolution vazios porque o ticket está em Pending. Nulo previsto para tickets em aberto.</span></span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ SEÇÃO 2 ============ -->
+  <section class="section">
+    <p class="eyebrow">Qualidade</p>
+    <h2>Gates de auditoria</h2>
+    <p class="lede">Veredito por dimensão, aplicado às duas fontes. PASS libera uso, WARN condiciona, FAIL bloqueia a dimensão para o objetivo do desafio.</p>
+
+    <div class="gates">
+      <div class="gate">
+        <span class="pill pass">PASS</span>
+        <span class="name">D1 · Integridade<span>Ticket ID único em 8.469 registros, zero violações de chave.</span></span>
+      </div>
+      <div class="gate">
+        <span class="pill pass">PASS</span>
+        <span class="name">D1 · Nulos<span>100% dos nulos explicados por Ticket Status. Ausência prevista pelo ciclo de vida do ticket.</span></span>
+      </div>
+      <div class="gate">
+        <span class="pill fail">FAIL</span>
+        <span class="name">D1 · Texto livre<span>Placeholder de template cru em toda descrição. Sinal textual inexistente.</span></span>
+      </div>
+      <div class="gate">
+        <span class="pill warn">WARN</span>
+        <span class="name">D1 · Metadados<span>Entropia normalizada acima de 0,999 nos campos categóricos. Distribuição uniforme, sem poder de discriminação.</span></span>
+      </div>
+      <div class="gate">
+        <span class="pill warn">WARN</span>
+        <span class="name">D2 · Rótulos<span>Categoria Miscellaneous (14,76%) difusa, sem termo dominante.</span></span>
+      </div>
+      <div class="gate">
+        <span class="pill warn">WARN</span>
+        <span class="name">D2 · Sinal textual<span>Sinal discriminativo presente sob ruído de pré-processamento. Recuperável.</span></span>
+      </div>
+      <div class="gate">
+        <span class="pill fail">FAIL</span>
+        <span class="name">D1 × D2 · Cruzabilidade<span>Domínios distintos (cliente externo vs. TI interno), sem chave comum. Cruzamento não sustentável.</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEÇÃO 3 ============ -->
+  <section class="section">
+    <p class="eyebrow">Classificação</p>
+    <h2>Triagem com abstenção · D2</h2>
+    <p class="lede">TF-IDF com regressão logística sobre a fonte com sinal recuperável. A camada de abstenção separa o que roteia sozinho do que vai para revisão humana, medida por limiar de confiança.</p>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="k">F1-macro · holdout</div>
+        <div class="v">0,856</div>
+        <div class="sub">baseline 0,055</div>
+      </div>
+      <div class="metric">
+        <div class="k">F1-macro · fração automatizada</div>
+        <div class="v">0,931</div>
+        <div class="sub">limiar 0,50</div>
+      </div>
+      <div class="metric">
+        <div class="k">Cobertura automatizada</div>
+        <div class="v">76,7%</div>
+        <div class="sub">23,3% a revisão</div>
+      </div>
+    </div>
+
+    <!-- caso automático -->
+    <div class="infer">
+      <div class="infer-head">
+        <span class="route auto">→ ROTEAMENTO AUTOMÁTICO</span>
+        <span class="kind">confiança ≥ limiar</span>
+      </div>
+      <div class="infer-body">
+        <div class="in">phone calls are disconnecting when using for sent friday phone calls disconnecting when using for hello since while ago audio connection was dropping for few seconds when conversation was held via for today got even wors</div>
+        <div class="conf">
+          <div class="conf-line"><span class="lab">predição · Hardware</span><span class="val">0,882</span></div>
+          <div class="bar"><i style="width:88.2%"></i></div>
+        </div>
+        <div class="top2">
+          <div class="row"><span>Hardware</span><b>0,882</b></div>
+          <div class="row"><span>Administrative rights</span><b>0,059</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- caso abstenção -->
+    <div class="infer">
+      <div class="infer-head">
+        <span class="route human">⇥ REVISÃO HUMANA</span>
+        <span class="kind">confiança &lt; limiar</span>
+      </div>
+      <div class="infer-body">
+        <div class="in">anti bribery policy new version for thursday october pm bribery policy version hello bribery policy attached please version replace version locations thanks</div>
+        <div class="conf">
+          <div class="conf-line"><span class="lab">predição · Hardware</span><span class="val">0,190</span></div>
+          <div class="bar"><i style="width:19%"></i></div>
+        </div>
+        <div class="top2">
+          <div class="row"><span>Hardware</span><b>0,190</b></div>
+          <div class="row"><span>HR Support</span><b>0,181</b></div>
+        </div>
+        <p class="infer-note">Rótulo verdadeiro: <b>Administrative rights</b>. A predição de maior score estava incorreta e os dois primeiros scores quase empatam. A camada de abstenção captura exatamente o caso que o modelo erraria e o encaminha para decisão humana.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>pipeline · micro-medallion</span>
+    <span>D1 · customer_support_tickets (Kaggle)</span>
+    <span>D2 · it_service_ticket_classification (Kaggle)</span>
+    <span>evidência: notebooks 01–04 + dev-log</span>
+  </footer>
+
+</div>
+</body>
+</html>

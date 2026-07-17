@@ -153,6 +153,27 @@ real permite: o D2 tem rótulo e sinal, o D1 não treina classificador.
 contra baseline, ganho da abstenção quantificado, contrato de inferência roda
 num exemplo, resultados num dict para o Bloco 5.
 
-## Bloco 5 — Empacotamento _(a decupar)_
+## Bloco 5 — Empacotamento _(fechado)_
 
-README final, process log completo, PR.
+Empacotamento da submissão para avaliação. Três artefatos: a capa que o avaliador
+lê, a vitrine que ele inspeciona, o PR que entrega. A capa carrega a narrativa dos
+quatro blocos, o HTML é a versão visual dela, o PR aponta para a capa.
+
+**Regras do bloco:**
+- A capa é o documento avaliável. O HTML e o PR não duplicam a narrativa dela.
+- HTML standalone, dados embutidos, abre do arquivo sem servidor.
+- O HTML mostra o que foi feito: auditoria, gates, classificador. Sem ETL que os
+  Blocos 1 a 4 não construíram.
+- Cada artefato inspecionável em minutos. Nada de infra que o brief não pediu.
+
+- [X] **5.1** Capa `README.md`. Preencher os placeholders com a narrativa real:
+      Executive Summary, Abordagem, Findings com os números dos Blocos 1 a 4,
+      Recomendações, Limitações, e a tabela do Process Log apontando os dev-logs.
+- [X] **5.2** HTML Pipeline Inspector. Vitrine standalone com dados embutidos dos
+      Blocos 1 a 4. Três seções: registro cru do D1 com os defeitos anotados,
+      gates PASS/WARN/FAIL, e o classificador com predição e confiança.
+- [X] **5.3** Pull Request. Corpo curto que aponta para a capa e confirma
+      conformidade com as regras. Título `[Submission] Alan Gattiboni — Challenge 002`.
+
+**Pronto quando:** capa sem placeholder órfão, HTML abre do arquivo e mostra as
+três seções, PR aberto do fork para o upstream com o título correto.
