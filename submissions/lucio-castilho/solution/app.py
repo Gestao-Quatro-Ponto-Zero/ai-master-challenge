@@ -270,7 +270,7 @@ except DatasetNotFoundError as exc:
         unsafe_allow_html=True,
     )
 
-    st.error("Dataset not found")
+    st.error("Conjunto de dados não encontrado")
 
     st.code(
         str(exc),
@@ -278,7 +278,7 @@ except DatasetNotFoundError as exc:
     )
 
     st.info(
-        "See solution/README.md for local dataset setup instructions."
+        "Consulte solution/README.md para obter instruções de configuração do conjunto de dados local."
     )
 
     st.stop()
@@ -588,7 +588,7 @@ for action in priority_sections:
 
 if shown == 0:
     st.info(
-        "No immediate-action deals match the current filters."
+        "Nenhuma oportunidade que exija ação imediata corresponde aos filtros atuais."
     )
 
 
