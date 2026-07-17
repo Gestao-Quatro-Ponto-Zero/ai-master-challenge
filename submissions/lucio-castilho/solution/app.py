@@ -481,17 +481,17 @@ columns = st.columns(4)
 
 metric_specs = [
     (
-        "NEGÓCIOS EM ABERTO",
+        "OPORTUNIDADES EM ABERTO",
         summary["open_deals"],
         False,
     ),
     (
-        "FOCO AGORA",
+        "FOCO IMEDIATO",
         summary["focus_now"],
         True,
     ),
     (
-        "PRECISA DE DECISÃO",
+        "REQUER DECISÃO",
         summary["need_decision"],
         False,
     ),
