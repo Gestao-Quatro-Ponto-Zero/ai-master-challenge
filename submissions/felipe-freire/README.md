@@ -90,6 +90,8 @@ Em ordem de prioridade, a empresa deveria:
 
 ### Workflow
 
+**Quantidade de iterações:** foram necessárias **19 iterações versionadas da entrega**, contadas pelos commits exclusivos desta branch até a adequação final ao template. Elas cobrem implementação inicial, correção de escopo, revisão da narrativa executiva, publicação, transformação do dashboard em ferramenta de decisão, branding, acessibilidade visual, temas, internacionalização, atualização das evidências e conformidade final. Testes e revisões internas executados dentro do mesmo commit não foram inflados como iterações separadas; a sequência completa pode ser auditada no [histórico da PR #91](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/91/commits).
+
 1. Li o desafio e converti as perguntas em critérios verificáveis e entregáveis.
 2. Modelei uma arquitetura de agentes com responsabilidades limitadas, contexto mínimo e contratos de handoff.
 3. O Data Engineer auditou o dataset e preparou a camada analítica; o Software Engineer criou a fundação técnica, contratos e testes.
