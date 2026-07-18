@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RavenStack - Churn Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <img src="https://cdn.prod.website-files.com/62e2d83398c8c541c888d3da/62e2d83398c8c5750d88d407_Logo-G4-Educa%C3%A7%C3%A3o-Branco.svg" alt="G4 Educação" style="width: 150px; margin-bottom: 20px;">
+            <div class="nav-links">
+                <button class="nav-btn active" onclick="switchTab('overview')">Visão Geral</button>
+                <button class="nav-btn" onclick="switchTab('chat')">Chat com Dados</button>
+            </div>
+            
+            <div class="api-key-container">
+                <label>OpenAI API Key</label>
+                <input type="password" id="api-key" placeholder="sk-...">
+                <p class="help-text">Necessário para usar o chat.</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Tab -->
+            <div id="overview-tab" class="tab-content active">
+                <header>
+                    <h1>Dashboard Analítico</h1>
+                    <p>Métricas de Risco de Churn e Satisfação</p>
+                </header>
+
+                <div class="kpi-container">
+                    <div class="kpi-card glass-panel">
+                        <h3>Taxa Global de Churn</h3>
+                        <div id="kpi-churn" class="kpi-val">--%</div>
+                    </div>
+                    <div class="kpi-card glass-panel">
+                        <h3>MRR Médio por Conta</h3>
+                        <div id="kpi-mrr" class="kpi-val">$0</div>
+                    </div>
+                    <div class="kpi-card glass-panel">
+                        <h3>Uso Médio (30d)</h3>
+                        <div id="kpi-usage" class="kpi-val">0</div>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card glass-panel">
+                        <h3>Churn por Indústria</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+                            Indica quais setores de mercado estão cancelando mais. A indústria de DevTools (Ferramentas para Desenvolvedores) lidera as taxas de cancelamento.
+                        </p>
+                        <div id="chart-ind" class="plot-container"></div>
+                    </div>
+                    <div class="chart-card glass-panel">
+                        <h3>Uso de Features vs Churn</h3>
+                        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+                            Compara o volume de uso nos últimos 30 dias. Repare no paradoxo: os clientes que cancelaram (vermelho) usaram a ferramenta <strong>mais vezes</strong> do que os ativos (cinza).
+                        </p>
+                        <div id="chart-use" class="plot-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Tab -->
+            <div id="chat-tab" class="tab-content">
+                <header>
+                    <h1>Analista de Dados Virtual</h1>
+                    <p>Faça perguntas sobre os dados de Churn.</p>
+                </header>
+                
+                <div class="chat-container glass-panel">
+                    <div id="chat-history" class="chat-history">
+                        <div class="message assistant">Olá! Insira sua API Key no menu lateral e me pergunte qualquer coisa sobre a base de clientes (ex: "Qual indústria cancelou mais?").</div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Digite sua pergunta..." onkeypress="handleEnter(event)">
+                        <button onclick="sendMessage()">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+### H1: Volume vs Concentração de Features
+Contas com 'Uso Crescente' usam em média 27.5 features distintas, vs 26.9 para outras contas.
+Taxa de churn para 'Uso Crescente': 22.7%
+### H2: Erros vs Tickets e Churn
+Correlação Pearson Erros x Tickets: 0.01
+Média de erros em churned: 24.9 | Em ativas: 28.2
+### H3: Tempo de Resposta
+Tempo Médio de Resolução (h): Churned = 36.2 | Ativas = 36.5
+First Response Time (m): Churned = 85.2 | Ativas = 89.6
+### H4: Downgrade antes do Churn
+Taxa de churn para contas com downgrade prévio: 20.9%
+Taxa de churn sem downgrade: 22.6%
+### H5: Segmentos com Churn Desproporcional
+Média global de churn: 22.0%
+Piores indústrias:
+industry
+DevTools    0.309735
+FinTech     0.223214
+Name: churn_flag, dtype: float64
+Piores canais:
+referral_source
+event    0.302083
+other    0.242718
+Name: churn_flag, dtype: float64
+### H6: Reason Code 'Preço' vs Realidade
+Média de erros para churn por 'Preço': 27.6
+Média de erros para outros churns: 24.4
+Média CSAT para churn por 'Preço': 3.68
+### H7: Features Beta vs Erros e Churn
+Média de erros (Usuários Beta): 27.8 | Não Beta: 12.5
+Taxa de churn (Usuários Beta): 21.7% | Não Beta: 36.4%
