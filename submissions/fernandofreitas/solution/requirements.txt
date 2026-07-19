@@ -1,0 +1,6 @@
+pandas
+scikit-learn
+kagglehub
+openai
+flask
+gunicorn

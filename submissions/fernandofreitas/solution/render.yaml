@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: support-copilot-fernandofreitas
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn flask_app:app
+    envVars:
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: CLIENT_PASSWORD
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
