@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+data/processed/
+data/app.db
+models/

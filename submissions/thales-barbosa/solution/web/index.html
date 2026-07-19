@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PAUTA — A leitura definitiva da sua operação de suporte</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/fonts.css">
+<link rel="stylesheet" href="/css/tokens.css">
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+
+<aside class="sidebar" aria-label="Navegação principal">
+  <div class="brand">
+    <div class="wordmark">PAUTA<span class="dot">.</span></div>
+    <div class="wordsub">Support Intelligence</div>
+  </div>
+  <nav class="nav">
+    <a href="#/portal" data-route="portal" data-roles="cliente" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><line x1="6" y1="6" x2="9.5" y2="9.5"/><line x1="18" y1="6" x2="14.5" y2="9.5"/><line x1="6" y1="18" x2="9.5" y2="14.5"/><line x1="18" y1="18" x2="14.5" y2="14.5"/></svg>
+      Central de Ajuda
+    </a>
+    <a href="#/executivo" data-route="executivo" data-roles="admin" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      Visão Executiva
+    </a>
+    <a href="#/operacao" data-route="operacao" data-roles="admin" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1" fill="currentColor" stroke="none"/></svg>
+      Mesa de Operações
+    </a>
+    <a href="#/fila" data-route="fila" data-roles="admin" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12h-5l-2 3h-4l-2-3H3"/><path d="M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+      Fila de Chamados <span class="badge-count" id="nav-fila-count" hidden></span>
+    </a>
+    <a href="#/copilot" data-route="copilot" data-roles="admin" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 7.1L21 12l-7.1 1.9L12 21l-1.9-7.1L3 12l7.1-1.9L12 3z"/></svg>
+      Copilot <span class="badge-ia">IA</span>
+    </a>
+    <a href="#/roi" data-route="roi" data-roles="admin" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      Projeção de ROI
+    </a>
+  </nav>
+  <div class="side-foot">
+    <div class="live"><span class="pulse"></span><span id="foot-status">carregando…</span></div>
+    <a class="side-logout" id="logout-link" hidden>Sair da sessão</a>
+    <div class="side-note">Challenge 002 · G4 Educação<br>Protótipo — dados públicos (Kaggle)</div>
+  </div>
+</aside>
+
+<main id="main">
+
+  <!-- ============================ LOGIN ============================ -->
+  <section class="view" data-view="login" hidden>
+    <div class="login-wrap">
+      <div class="login-brand">
+        <span class="wordmark">PAUTA<span class="dot">.</span></span>
+        <span class="wordsub">Support Intelligence</span>
+      </div>
+      <h1>Suporte que tenta resolver antes de abrir chamado.</h1>
+      <p class="dek">Entre como <strong>cliente</strong> para resolver sua dúvida na hora — ou
+      abrir um chamado já qualificado pela IA. Entre como <strong>admin</strong> para ver o
+      diagnóstico, a fila, o Copilot e a projeção de ROI.</p>
+      <div class="role-cards" role="radiogroup" aria-label="Perfil">
+        <button class="role-card" data-role="cliente" aria-pressed="true">
+          <div class="rc-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+            Cliente
+          </div>
+          <div class="rc-sub">Central de ajuda: descreva o problema, receba resposta na hora
+          ou abra um chamado qualificado.</div>
+        </button>
+        <button class="role-card" data-role="admin" aria-pressed="false">
+          <div class="rc-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+            Admin
+          </div>
+          <div class="rc-sub">Diagnóstico executivo, mesa de operações, fila de chamados,
+          Copilot e ROI.</div>
+        </button>
+      </div>
+      <label class="ctrl-label" for="login-pass">Senha</label>
+      <input type="password" id="login-pass" placeholder="Digite a senha do perfil" autocomplete="current-password">
+      <div class="login-error" id="login-error" hidden></div>
+      <button class="btn-primary" id="login-btn">Entrar</button>
+      <p class="cp-honest">Demo: <code>cliente123</code> / <code>admin123</code> — senhas de
+      demonstração, trocadas por variáveis de ambiente no deploy.</p>
+    </div>
+  </section>
+
+  <!-- ============================ PORTAL (CLIENTE) ============================ -->
+  <section class="view" data-view="portal" hidden>
+    <header class="view-head">
+      <div class="kicker">Central de ajuda</div>
+      <h1>Resolva agora — ou abra um chamado já qualificado.</h1>
+      <p class="dek">Descreva o problema em poucas linhas. O assistente consulta
+      <strong>47.823 casos reais</strong> e as resoluções validadas pela equipe. Quando não
+      tem confiança suficiente, ele não inventa: organiza o contexto para um humano continuar.</p>
+    </header>
+
+    <div class="portal-stack">
+      <div class="cp-panel">
+        <div class="cp-panel-title">Seu problema</div>
+        <textarea id="pt-text" rows="4" maxlength="900" spellcheck="false"
+          placeholder="Ex.: não consigo acessar minha conta depois de redefinir a senha…"></textarea>
+        <div class="cp-panel-title" style="margin-top:16px">Ou comece por um exemplo</div>
+        <div class="pt-examples" id="pt-examples"></div>
+        <button class="btn-primary" id="pt-run">Tentar resolver agora</button>
+        <p class="cp-honest">A resposta vem de casos reais e resoluções validadas — quando a
+        confiança é baixa ou o caso é sensível, você é direcionado direto para um humano.</p>
+      </div>
+
+      <div class="pt-hint" id="pt-empty">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="18" fill="none" stroke="var(--copper)" stroke-opacity=".5"/>
+          <circle cx="60" cy="60" r="38" fill="none" stroke="var(--copper)" stroke-opacity=".25"/>
+          <circle cx="60" cy="60" r="56" fill="none" stroke="var(--copper)" stroke-opacity=".12"/>
+          <circle cx="60" cy="60" r="3" fill="var(--copper)"/>
+        </svg>
+        <p>Descreva o problema — ou toque em um exemplo — e a resposta aparece aqui embaixo.
+        Se não resolver, o chamado já sai categorizado e priorizado.</p>
+      </div>
+
+      <div class="cp-loading" id="pt-loading" hidden>
+        <div class="pipe-step"><span class="pipe-dot"></span>Lendo o seu relato</div>
+        <div class="pipe-step"><span class="pipe-dot"></span>Consultando casos resolvidos</div>
+        <div class="pipe-step"><span class="pipe-dot"></span>Preparando a resposta</div>
+      </div>
+
+      <div id="pt-answer" hidden></div>
+
+      <div class="cp-panel" id="pt-ticket-form" hidden>
+        <div class="cp-panel-title">Abrir chamado</div>
+        <p class="story-sub">O chamado já vai com o seu relato, a categoria sugerida e a
+        prioridade inicial — um agente humano assume a partir daqui.</p>
+        <div class="pt-summary mono" id="pt-ticket-summary"></div>
+        <label class="ctrl-label" for="pt-extra" style="display:block;margin:14px 0 6px">
+          Detalhes adicionais para o agente</label>
+        <textarea id="pt-extra" rows="4" maxlength="900"
+          placeholder="Inclua o erro exibido, o produto, o horário ou o que você já tentou."></textarea>
+        <div class="pt-actions">
+          <button class="btn-primary" id="pt-ticket-send">Abrir chamado</button>
+          <button class="btn-ghost" id="pt-ticket-back">Voltar</button>
+        </div>
+      </div>
+
+      <div id="pt-success" hidden></div>
+    </div>
+  </section>
+
+  <!-- ============================ FILA (ADMIN) ============================ -->
+  <section class="view" data-view="fila" hidden>
+    <header class="view-head">
+      <div class="kicker">Fila de chamados</div>
+      <h1>O que o portal mandou para a redação.</h1>
+      <p class="dek">Chamados abertos pelos clientes chegam categorizados e priorizados pela IA.
+      Cada resolução humana validada entra <strong>na hora</strong> na base de conhecimento da
+      busca semântica — o portal aprende com a equipe.</p>
+    </header>
+
+    <div class="manchetes manchetes-sm" id="fila-stats"></div>
+
+    <article class="story">
+      <h2 class="story-title">Chamados</h2>
+      <p class="story-sub">Prioridade e categoria são sugestões da IA registradas na abertura —
+      o humano decide. Resolver um chamado alimenta a base de conhecimento.</p>
+      <div class="table-wrap">
+        <table class="tbl" id="fila-table">
+          <thead><tr>
+            <th class="num">ID</th><th>Aberto em</th><th>Status</th><th>Prioridade</th>
+            <th>Categoria IA</th><th>Problema</th><th style="min-width:280px">Resolução</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="story">
+      <h2 class="story-title">Base de conhecimento aprendida com a equipe</h2>
+      <p class="story-sub">Resoluções validadas viram vetores no mesmo espaço da busca do
+      portal — a próxima pergunta parecida já encontra a resposta da equipe.</p>
+      <div class="table-wrap">
+        <table class="tbl tbl-dense" id="fila-kb">
+          <thead><tr><th>Quando</th><th>Categoria</th><th>Problema</th><th>Resolução validada</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============================ EXECUTIVO ============================ -->
+  <section class="view" data-view="executivo" hidden>
+    <header class="view-head">
+      <div class="kicker">Visão executiva · diagnóstico</div>
+      <h1>Onde a operação perde tempo — e quanto custa recuperar.</h1>
+      <p class="dek">A leitura do Diretor de Operações: o fluxo trava de forma sistêmica, não em um
+      canal vilão. Abaixo, o tamanho do problema e o retorno da automação — com as premissas à vista.</p>
+    </header>
+
+    <div class="manchetes" id="ex-manchetes" aria-label="Indicadores principais"></div>
+
+    <div class="grid-2 gap-lg">
+      <article class="story">
+        <h2 class="story-title">Onde o fluxo trava</h2>
+        <p class="story-sub">Snapshot da fila: dois problemas distintos, duas alavancas distintas.
+          O backlog é <em>uniforme</em> em canais, tipos e prioridades<span class="fn" tabindex="0" data-note="Qui-quadrado: p&gt;0,10 em todos os segmentos, com poder para detectar associações a partir de w≈0,04 (n=8.469). Não existe segmento vilão — o gargalo é do sistema. FASE 3 §1.2.">¹</span> —
+          o gargalo é capacidade, não um segmento.</p>
+        <div class="funnel" id="ex-funnel"></div>
+      </article>
+
+      <article class="story">
+        <h2 class="story-title">Satisfação por segmento — uniformemente baixa</h2>
+        <p class="story-sub">Média geral <strong id="ex-sat-mean">—</strong>, com
+          <strong id="ex-sat-detr">—</strong> de detratores. Nenhum par de segmentos difere em mais de
+          0,33 ponto<span class="fn" tabindex="0" data-note="Tukey HSD a 95% sobre os 2.769 tickets fechados e avaliados: nenhuma diferença entre grupos excede 0,33 ponto na escala 1–5. Não há segmento a 'consertar' — a insatisfação é generalizada. FASE 3 §P2.">²</span>.</p>
+        <div class="seg-tabs" id="ex-sat-tabs" role="tablist">
+          <button role="tab" data-seg="Ticket Channel" aria-selected="true">Canal</button>
+          <button role="tab" data-seg="Ticket Type" aria-selected="false">Tipo</button>
+          <button role="tab" data-seg="Ticket Priority" aria-selected="false">Prioridade</button>
+        </div>
+        <div class="chart" id="ex-sat-chart" style="height:250px"></div>
+      </article>
+    </div>
+
+    <article class="story">
+      <h2 class="story-title">Quanto a operação economiza — três leituras da mesma automação</h2>
+      <p class="story-sub">Horas de agente liberadas por deflexão + assistência, convertidas em R$
+        (custo/hora carregado)<span class="fn" tabindex="0" data-note="Construção interna pelo próprio time de AI — sem investimento externo de implantação (premissa desta proposta, D-019). O único custo recorrente da solução é rodar a IA (tokens de LLM + plataforma, ~R$ 1/ticket): a linha 'líquido' de cada cenário já desconta isso. Premissas ajustáveis na Projeção de ROI.">¹</span>.
+        Os cenários variam a <em>performance</em> da automação (deflexão e assistência nas pontas
+        pessimista/base/otimista) — a recomendação segue sendo piloto com gates para validar as
+        taxas antes de expandir.</p>
+      <div class="scenarios" id="ex-scenarios"></div>
+    </article>
+
+    <aside class="edit-note">
+      <div class="edit-note-title">Nota da redação — por que não publicamos SLA</div>
+      <p>A auditoria provou que os timestamps do dataset são sorteio, não medição
+      <span class="fn" tabindex="0" data-note="TTR &lt; FRT em 49,3% dos casos; correlação FRT×TTR ≈ 0,06; todos os eventos em 3 dias de calendário; delta com distribuição triangular ±24h — assinatura de duas uniformes independentes. FASE 1 §2.">³</span>.
+      Uma taxa de SLA calculada sobre eles seria ruído com cara de métrica. O mecanismo
+      <code>sla_violation()</code> está implementado e testado; instrumentar
+      <code>created_at</code>/<code>resolved_at</code> o liga em produção — os alvos propostos
+      (Critical 4&nbsp;h · High 8&nbsp;h · Medium 24&nbsp;h · Low 48&nbsp;h) já estão parametrizados.</p>
+    </aside>
+  </section>
+
+  <!-- ============================ OPERAÇÃO ============================ -->
+  <section class="view" data-view="operacao" hidden>
+    <header class="view-head">
+      <div class="kicker">Mesa de operações</div>
+      <h1>O recorte da fila, sem retoque.</h1>
+      <p class="dek">Filtre por canal, tipo, prioridade e status. Volumes e taxas são medidos na
+      amostra; horas e custos são premissas declaradas, nunca medição.</p>
+    </header>
+
+    <div class="filterbar" id="op-filters">
+      <div class="filter-group" data-dim="channel"><span class="filter-label">Canal</span></div>
+      <div class="filter-group" data-dim="type"><span class="filter-label">Tipo</span></div>
+      <div class="filter-group" data-dim="priority"><span class="filter-label">Prioridade</span></div>
+      <div class="filter-group" data-dim="status"><span class="filter-label">Status</span></div>
+      <div class="filter-meta">
+        <span class="filter-count mono" id="op-count">—</span>
+        <button class="filter-clear" id="op-clear" hidden>limpar ×</button>
+      </div>
+    </div>
+
+    <div class="manchetes manchetes-sm" id="op-kpis"></div>
+
+    <div class="grid-2 gap-lg">
+      <article class="story">
+        <h2 class="story-title">Volume por tipo</h2>
+        <p class="story-sub">Contagem na amostra filtrada — o mix é ~uniforme por construção do
+          dataset<span class="fn" tabindex="0" data-note="Qui-quadrado de uniformidade: p=0,115 para Ticket Type. Todas as categóricas do Dataset 1 são ~uniformes — assinatura de dados sintéticos. O mix é tratado como retrato do dataset, não como verdade de mercado. FASE 1 §1.4.">¹</span>.</p>
+        <div class="chart" id="op-vol-chart" style="height:260px"></div>
+      </article>
+      <article class="story">
+        <h2 class="story-title">Backlog decomposto por canal</h2>
+        <p class="story-sub">
+          <span class="swatch" style="background:var(--critical)"></span> Open — sem 1ª resposta ·
+          <span class="swatch" style="background:var(--warn)"></span> Pending — esperando o cliente
+        </p>
+        <div class="chart" id="op-backlog-chart" style="height:260px"></div>
+      </article>
+    </div>
+
+    <article class="story">
+      <h2 class="story-title">Oportunidades de automação — decisão × carga</h2>
+      <p class="story-sub">A matriz da FASE 4 aplicada ao recorte: onde a deflexão libera mais horas
+        sob as premissas declaradas<span class="fn" tabindex="0" data-note="Horas/ano = volume anualizado × esforço por ticket (premissa FASE 2 §3: AHT por canal × multiplicadores de tipo e prioridade). Deflexão = premissa base da matriz FASE 4, líquida de escalação, a validar em piloto.">²</span>.</p>
+      <div class="table-wrap">
+        <table class="tbl" id="op-auto-table">
+          <thead><tr>
+            <th>Tipo</th><th>Decisão (FASE 4)</th>
+            <th class="num">Tickets/ano</th><th class="num">Horas/ano</th>
+            <th>Deflexão base</th><th class="num">Horas defletíveis/ano</th>
+            <th class="num">R$ defletíveis/ano</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="story">
+      <h2 class="story-title">Tickets — amostra do recorte</h2>
+      <p class="story-sub" id="op-sample-note">As descrições do Dataset 1 são texto sintético de
+        template — servem à demonstração, nunca a treino (FASE 1 §1.5).</p>
+      <div class="table-wrap table-scroll">
+        <table class="tbl tbl-dense" id="op-tickets-table">
+          <thead><tr>
+            <th class="num">ID</th><th>Tipo</th><th>Canal</th><th>Prioridade</th>
+            <th>Status</th><th>Assunto</th><th class="num">Satisf.</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <!-- ============================ COPILOT ============================ -->
+  <section class="view" data-view="copilot" hidden>
+    <header class="view-head">
+      <div class="kicker">Copilot · <span class="ia-ink">inteligência artificial</span></div>
+      <h1>A redação que edita cada ticket.</h1>
+      <p class="dek">Classificador real treinado em 47.823 tickets de TI + busca semântica FAISS +
+      as regras de automação da FASE 4 — o mesmo pipeline proposto para produção, funcionando.</p>
+      <div class="model-card mono" id="cp-model-card">
+        <span id="cp-model-metrics">carregando modelo…</span>
+        <span class="fn" tabindex="0" data-note="FASE 5 comparou TF-IDF LogReg, LinearSVC calibrado e Sentence-Transformers (vencedor em inglês: TF-IDF, F1 0,865 — D-014). Para o portal em pt-BR, o modelo SERVIDO foi trocado por embeddings multilíngues (D-018): o F1 em inglês cai, mas pergunta em português encontra tickets em inglês no mesmo espaço vetorial — e a ação automática passou a exigir dupla trava: gate de confiança + piso de evidência da busca (0,55).">¹</span>
+        <span class="model-status" id="cp-status"><span class="pulse pulse-warn"></span> aquecendo modelos…</span>
+      </div>
+    </header>
+
+    <div class="copilot-grid">
+      <div class="cp-left">
+        <div class="cp-panel">
+          <div class="cp-panel-title">O original</div>
+          <textarea id="cp-text" rows="9" spellcheck="false"
+            placeholder="Cole aqui o texto do ticket — ou use um exemplo abaixo."></textarea>
+          <div class="cp-examples" id="cp-examples"></div>
+          <button class="btn-primary" id="cp-run">Analisar ticket</button>
+          <p class="cp-honest">Prioridade e resposta sugerida são heurística/template de
+            demonstração — rotuladas como tal. Em produção: modelo com rótulos reais e LLM+RAG,
+            atrás dos mesmos vetos e gate.</p>
+        </div>
+      </div>
+
+      <div class="cp-right" id="cp-right">
+        <div class="cp-empty" id="cp-empty">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="18" fill="none" stroke="var(--copper)" stroke-opacity=".5"/>
+            <circle cx="60" cy="60" r="34" fill="none" stroke="var(--copper)" stroke-opacity=".28"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--copper)" stroke-opacity=".14"/>
+            <circle cx="60" cy="60" r="3" fill="var(--copper)"/>
+          </svg>
+          <p>Cole um ticket — ou use um exemplo — para ver a edição completa:<br>
+          categoria, confiança, vetos, tickets semelhantes e o rascunho de resposta.</p>
+        </div>
+
+        <div class="cp-loading" id="cp-loading" hidden>
+          <div class="pipe-step" data-step="0"><span class="pipe-dot"></span>Lendo o manuscrito</div>
+          <div class="pipe-step" data-step="1"><span class="pipe-dot"></span>Consultando o arquivo — 47.823 tickets</div>
+          <div class="pipe-step" data-step="2"><span class="pipe-dot"></span>Aplicando as regras da redação</div>
+          <div class="pipe-step" data-step="3"><span class="pipe-dot"></span>Editando a resposta</div>
+        </div>
+
+        <div class="cp-results" id="cp-results" hidden>
+          <div class="cp-verdict cascade">
+            <div class="cp-verdict-main">
+              <div>
+                <div class="kicker">O veredito</div>
+                <div class="cp-category" id="cp-category">—</div>
+                <div class="cp-team mono" id="cp-team">—</div>
+              </div>
+              <div class="stamp" id="cp-stamp">—</div>
+            </div>
+            <div class="conf-row">
+              <div class="conf-bar" id="cp-conf-bar">
+                <div class="conf-fill" id="cp-conf-fill"></div>
+                <div class="conf-gate" id="cp-conf-gate" title="gate de confiança"></div>
+              </div>
+              <span class="mono conf-val" id="cp-conf-val">—</span>
+            </div>
+            <div class="cp-top3 mono" id="cp-top3"></div>
+          </div>
+
+          <div class="cp-reco cascade" id="cp-reco"></div>
+          <div class="cp-vetoes cascade" id="cp-vetoes"></div>
+
+          <div class="cascade">
+            <div class="kicker">Do arquivo · busca semântica<span class="fn" tabindex="0" data-note="FAISS IndexFlatIP sobre embeddings MiniLM normalizados (similaridade de cosseno) dos 47.823 documentos do Dataset 2 — os 5 vizinhos mais próximos do texto colado. FASE 5 §4.">²</span></div>
+            <div class="cp-similar" id="cp-similar"></div>
+          </div>
+
+          <div class="cascade">
+            <div class="kicker">Rascunho de resposta</div>
+            <div class="cp-draft">
+              <div class="cp-draft-text" id="cp-draft"></div>
+              <button class="btn-ghost" id="cp-copy">Copiar rascunho</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ ROI ============================ -->
+  <section class="view" data-view="roi" hidden>
+    <header class="view-head">
+      <div class="kicker">Projeção de ROI</div>
+      <h1>Quanto volta — e quando.</h1>
+      <p class="dek">O mesmo modelo testado da FASE 3 (<code>src/roi_model.py</code>, 14 testes) —
+      os controles sobrescrevem as premissas declaradas. Nenhum valor vem de medição nos dados.</p>
+    </header>
+
+    <div class="roi-grid">
+      <div class="roi-controls">
+        <div class="ctrl-group">
+          <div class="ctrl-group-title">Alavancas de valor</div>
+          <div class="ctrl" data-ctrl="tickets_year"></div>
+          <div class="ctrl" data-ctrl="agent_cost_hour"></div>
+          <div class="ctrl" data-ctrl="deflection_scale"></div>
+          <div class="ctrl" data-ctrl="assist_reduction"></div>
+        </div>
+        <div class="ctrl-group">
+          <div class="ctrl-group-title">Custo recorrente e adoção</div>
+          <div class="ctrl" data-ctrl="ramp_up_year1"></div>
+          <div class="ctrl" data-ctrl="run_cost_per_ticket"></div>
+        </div>
+        <p class="cp-honest">Implantação incremental fixa em R$ 0: construção interna pelo AI
+          Master. O custo de run cobre tokens de LLM + plataforma + sustentação, sobre 100% dos
+          tickets — inclusive tentativas de deflexão que escalam.</p>
+      </div>
+
+      <div class="roi-results">
+        <div class="manchetes manchetes-sm" id="roi-kpis"></div>
+        <article class="story">
+          <h2 class="story-title">Economia × custo por horizonte</h2>
+          <p class="story-sub">
+            <span class="swatch" style="background:var(--copper)"></span> Economia bruta ·
+            <span class="swatch" style="background:var(--ink-3)"></span> Custo da solução ·
+            <span class="swatch swatch-diamond"></span> Líquido</p>
+          <div class="chart" id="roi-chart" style="height:300px"></div>
+        </article>
+        <article class="story">
+          <h2 class="story-title">O que mais move o resultado</h2>
+          <p class="story-sub">Sensibilidade one-at-a-time sobre a economia líquida do ano 1
+            (premissas fixas no cenário base)<span class="fn" tabindex="0" data-note="Cada barra varia UMA premissa entre low e high, mantendo as demais no base. Implantação não aparece porque é uma premissa fixa em R$ 0; o risco econômico está na performance e no custo recorrente. FASE 3 §3.3.">¹</span>.
+            O modelo mostra quais alavancas de performance e adoção mais movem o resultado.</p>
+          <div class="chart" id="roi-tornado" style="height:300px"></div>
+        </article>
+        <details class="premises">
+          <summary>Premissas e fórmulas — transparência total</summary>
+          <div id="roi-premises"></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="/vendor/echarts.min.js"></script>
+<script src="/js/theme.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

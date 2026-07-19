@@ -1,0 +1,58 @@
+/* PAUTA — design tokens (fonte única de cores, tipos e medidas)
+   Paleta categórica validada (dataviz validator, dark #0D0C0A):
+   worst adjacent CVD ΔE 41,3 · todos os checks PASS. */
+:root {
+  color-scheme: dark;
+
+  /* fundos e superfícies (preto-tinta quente) */
+  --bg:            #0D0C0A;
+  --surface-1:     #151310;
+  --surface-2:     #1D1A16;
+  --border:        #2A2620;
+  --border-strong: #3A342C;
+  --hairline:      #211E19;
+
+  /* tinta */
+  --ink-1: #F2EDE3;
+  --ink-2: #A9A192;
+  --ink-3: #8F8776;  /* 5,2:1 sobre surface-1 — AA para texto pequeno (revisão UX) */
+
+  /* acentos */
+  --copper:        #E8703A;
+  --copper-bright: #FF8A50;
+  --copper-dim:    rgba(232, 112, 58, 0.12);
+  --sage:          #8FAE8B;
+  --sage-dim:      rgba(143, 174, 139, 0.12);
+
+  /* semânticas (estado — nunca série) */
+  --good:         #6BBF8E;
+  --good-dim:     rgba(107, 191, 142, 0.12);
+  --warn:         #D9A94E;
+  --warn-dim:     rgba(217, 169, 78, 0.12);
+  --critical:     #D95757;
+  --critical-dim: rgba(217, 87, 87, 0.14);
+
+  /* categóricas de gráfico — ordem FIXA entre views, nunca ciclada */
+  --series-1: #D95926;  /* cobre — protagonista, sempre */
+  --series-2: #3987E5;
+  --series-3: #C98500;
+  --series-4: #199E70;
+  --series-5: #9085E9;
+  --series-6: #D55181;
+
+  /* tipografia */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-ui: 'Instrument Sans', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Mono', monospace;
+
+  /* medidas */
+  --r-input: 6px;
+  --r-card: 10px;
+  --r-panel: 14px;
+  --sidebar-w: 232px;
+  --content-max: 1360px;
+
+  /* elevação editorial: sem sombra difusa em cards */
+  --inset-paper: inset 0 1px 0 rgba(242, 237, 227, 0.04);
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
