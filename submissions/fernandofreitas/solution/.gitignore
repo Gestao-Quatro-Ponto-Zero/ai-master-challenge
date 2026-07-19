@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+support_copilot.db
+.env
+.streamlit/
+*.sqlite
+*.sqlite3
+*.log
+OPENAI_API_KEY*
+secrets.toml
