@@ -134,7 +134,7 @@ O principal julgamento foi reposicionar a solução: em vez de apenas classifica
 - [x] Diagnóstico e auditorias em `solution/docs/`
 - [x] Checklist de aderência em `solution/docs/challenge-checklist.md`
 - [x] Screenshots do app em `process-log/screenshots/`
-- [ ] Git history após commit final
+- [x] Git history com commits separados por módulo
 
 ---
 
