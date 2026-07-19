@@ -18,13 +18,13 @@ Comecei validando os dois datasets e descobri que os campos de tempo do dataset 
 
 ### Como executar
 
-Requer Python 3.13. A primeira preparação baixa modelos e pode levar dezenas de minutos em CPU.
+Requer Python 3.13.
 
 ```bash
 cd solution
-pip install -r requirements.txt
-python bootstrap.py
-python app.py
+pip install -r requirements.txt   # ~8 min
+python bootstrap.py               # ~25-30 min (uma vez; baixa modelos e gera embeddings)
+python app.py                     # abre na hora
 ```
 
 Abra [http://localhost:8502](http://localhost:8502). Perfis de demonstração:
@@ -32,7 +32,9 @@ Abra [http://localhost:8502](http://localhost:8502). Perfis de demonstração:
 - Cliente: `cliente123`
 - Administrador: `admin123`
 
-O bootstrap retoma etapas interrompidas e não refaz o que já estiver pronto. Para apenas verificar os artefatos: `python bootstrap.py --check`. Para executar os testes: `pytest tests/ -q`.
+**Tempos** (medidos num ambiente limpo, Windows + Python 3.13, CPU): instalação ~8 min, preparação ~25–30 min só na primeira vez (roda quase sozinha — baixa dois modelos da HuggingFace e gera os embeddings dos 47.823 tickets), e o app sobe instantaneamente. O bootstrap é retomável: se interromper, continua de onde parou (`python bootstrap.py` de novo). Para só verificar os artefatos: `python bootstrap.py --check`. Testes: `pytest tests/ -q` (51 testes).
+
+Quem não quiser rodar encontra a jornada completa do app em [`process-log/screenshots/`](process-log/screenshots/).
 
 ### Abordagem
 
