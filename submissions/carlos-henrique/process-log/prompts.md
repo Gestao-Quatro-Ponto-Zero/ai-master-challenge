@@ -42,3 +42,46 @@
 A execução deve parar se branch, árvore inicial, staging, remotes ou HEAD divergirem; se qualquer arquivo externo precisar ser alterado ou entrar no staging; se houver conteúdo prévio do Challenge 002 no clone; se arquivo oficial precisar ser modificado; se a estrutura oficial tiver mudado materialmente; ou se existir dúvida sobre exclusão ou sobrescrita.
 
 Nenhum prompt de fase futura foi executado.
+
+---
+
+## Prompt da Fase 1
+
+- **Identificação:** “FASE 1 — AUDITORIA DAS CINCO FONTES”.
+- **Finalidade:** produzir uma auditoria técnica e metodológica defensável das cinco fontes reais da RavenStack.
+- **Estado:** executado nesta fase; nenhuma instrução da Fase 2 foi executada.
+
+### Reprodução fiel do escopo recebido
+
+1. Repetir os gates Git e interromper diante de branch, HEAD, working tree ou staging divergentes.
+2. Tratar os cinco CSVs como read-only, registrar bytes, SHA-256, modificação e linhas físicas antes e depois e nunca versioná-los.
+3. Usar Python compatível e somente pandas, NumPy e pytest; usar o `.venv` local quando necessário.
+4. Criar somente loader, auditor, CLI, testes, três relatórios e quatro artefatos nos caminhos autorizados; atualizar contrato e process log.
+5. Resolver caminhos independentemente do diretório atual, tentar UTF-8 primeiro, detectar delimiter, preservar colunas e registrar dtypes inferidos sem conversão silenciosa.
+6. Perfilar registros, colunas, missingness, cardinalidade, duplicidade, constantes, strings vazias, espaços, IDs, datas, negativos, sentinelas e amostras sanitizadas.
+7. Validar empiricamente chaves de contas, assinaturas, uso, tickets e churn; não declarar chave primária sem completude, unicidade, estabilidade e grão coerente.
+8. Testar as quatro relações mínimas, órfãos, taxas de match, cardinalidades e risco de inflação.
+9. Simular joins simples e encadeado somente com chaves em memória; não salvar mega-join nem derivar métricas dele.
+10. Auditar todas as datas reais e cronologias entre conta, assinatura, uso, tickets e churn, classificando erro, suspeita, comportamento possível ou decisão pendente.
+11. Quantificar churn zero/único/recorrente, reativação explícita ou inferível e assinaturas após churn sem fechar a regra final.
+12. Classificar leakage explícito, temporal e proxy; não remover colunas nesta fase.
+13. Auditar texto e privacidade apenas com regex e contagens agregadas; não reproduzir texto, não fazer semântica e não usar LLM.
+14. Gerar deterministicamente `raw_file_manifest.json`, `data_profile.json`, `schema_map.json` e `relationship_matrix.csv` em UTF-8, sem PII.
+15. Gerar `data-audit.md`, `relationship-audit.md` e `temporal-audit.md` sem findings de churn.
+16. Substituir pendências do contrato pelos resultados testados e usar somente statuses autorizados.
+17. Adicionar decisões D011 em diante somente quando sustentadas por evidência.
+18. Criar testes de presença, ausência, hash, perfil, chaves, órfãos, match, inflação, datas, cronologia, leakage, sanitização, ausência de texto e idempotência.
+19. Executar pytest e compileall; registrar erros reais e correções, sem fabricá-los.
+20. Revisar manualmente schemas, chaves, cardinalidades, órfãos, joins, datas, recorrência, reativação, leakage, privacidade, hashes e relatórios.
+21. Validar escopo e usar staging seletivo, individual, sem adicionar CSV ou diretório inteiro.
+22. Criar, somente após aprovação de todos os gates, o commit local `data: audit RavenStack source tables`.
+23. Não fazer push, tracking remoto ou Pull Request.
+24. Classificar a viabilidade do event log como `PASS`, `PASS_WITH_WARNINGS` ou `BLOCKED` e não avançar automaticamente.
+
+### Proibições preservadas
+
+Não construir event log, diagnóstico de churn, segmentação, receita em risco, survival analysis, journey mining, grafo, watchlist, dashboard, modelo preditivo ou business case. Não baixar, editar, mover, converter, copiar ou versionar os CSVs.
+
+### Resultado do prompt
+
+A auditoria foi executada com outputs estruturais e gate `PASS_WITH_WARNINGS`. O event log não foi iniciado.
