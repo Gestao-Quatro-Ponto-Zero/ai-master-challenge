@@ -1,0 +1,2266 @@
+{
+  "name": "Mesa Viva — WF2 Fase 2 (Resolução)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "a1000000-0000-0000-0000-000000000001",
+      "name": "Iniciar teste (exemplos)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0GD38j7AJRl8nfMB",
+          "cachedResultName": "mv_tickets"
+        },
+        "filters": {
+          "conditions": []
+        },
+        "limit": 12
+      },
+      "id": "a1000000-0000-0000-0000-000000000010",
+      "name": "Buscar tickets",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -336,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(i => {\n  const t = i.json;\n  return { json: {\n    caso_id: String(t.id_ticket),\n    codigo: 'MV-' + t.id_ticket,\n    canal: t.canal || 'email',\n    email_cliente: t.email_cliente || '',\n    texto: (t.assunto ? t.assunto + ' - ' : '') + (t.descricao || ''),\n    categoria: t.tipo_ticket || 'OUTROS',\n    subcategoria: t.assunto || '',\n    confianca: Number(t.confianca_classificacao || 0),\n    urgencia_calculada: Number(t.urgencia_calculada || 0),\n    irritacao: Number(t.irritacao_nivel || 0),\n    prioridade_declarada: t.prioridade_declarada || 'normal',\n    motivo_humano: ''\n  } };\n});"
+      },
+      "id": "a1000000-0000-0000-0000-000000000002",
+      "name": "Preparar casos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a1000000-0000-0000-0000-000000000003",
+      "name": "Loop casos",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        128,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fimc",
+              "name": "resumo",
+              "value": "Fluxo concluido para todos os casos de teste.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1000000-0000-0000-0000-000000000004",
+      "name": "Fim (resumo)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "caso_id"
+            },
+            {
+              "name": "codigo"
+            },
+            {
+              "name": "canal"
+            },
+            {
+              "name": "email_cliente"
+            },
+            {
+              "name": "texto"
+            },
+            {
+              "name": "categoria"
+            },
+            {
+              "name": "subcategoria"
+            },
+            {
+              "name": "confianca",
+              "type": "number"
+            },
+            {
+              "name": "faixa_confianca"
+            },
+            {
+              "name": "urgencia_calculada",
+              "type": "number"
+            },
+            {
+              "name": "irritacao",
+              "type": "number"
+            },
+            {
+              "name": "prioridade_declarada"
+            },
+            {
+              "name": "motivo_humano"
+            }
+          ]
+        }
+      },
+      "id": "632e802b-468c-4563-bd47-3d47bc5cf4f7",
+      "name": "Entrada do WF1",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -128,
+        560
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1",
+              "name": "caso_id",
+              "value": "={{ $json.caso_id }}",
+              "type": "string"
+            },
+            {
+              "id": "c2",
+              "name": "codigo",
+              "value": "={{ $json.codigo }}",
+              "type": "string"
+            },
+            {
+              "id": "c3",
+              "name": "canal",
+              "value": "={{ $json.canal }}",
+              "type": "string"
+            },
+            {
+              "id": "c4",
+              "name": "email_cliente",
+              "value": "={{ $json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "c5",
+              "name": "texto",
+              "value": "={{ $json.texto }}",
+              "type": "string"
+            },
+            {
+              "id": "c6",
+              "name": "categoria",
+              "value": "={{ $json.categoria }}",
+              "type": "string"
+            },
+            {
+              "id": "c7",
+              "name": "subcategoria",
+              "value": "={{ $json.subcategoria }}",
+              "type": "string"
+            },
+            {
+              "id": "c8",
+              "name": "confianca",
+              "value": "={{ $json.confianca }}",
+              "type": "number"
+            },
+            {
+              "id": "c9",
+              "name": "urgencia_calculada",
+              "value": "={{ $json.urgencia_calculada }}",
+              "type": "number"
+            },
+            {
+              "id": "c10",
+              "name": "irritacao",
+              "value": "={{ $json.irritacao }}",
+              "type": "number"
+            },
+            {
+              "id": "c11",
+              "name": "prioridade_declarada",
+              "value": "={{ $json.prioridade_declarada }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "110ab201-29ec-4113-b24b-14d19ba757d0",
+      "name": "Contexto",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        352,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "v1",
+              "leftValue": "={{ $(\"Contexto\").item.json.caso_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8e50a307-65f3-448a-aacc-9087d99dae43",
+      "name": "Caso válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 9,
+            "nome_etapa": "WF2 abortado - caso_id ausente",
+            "ator": "SISTEMA",
+            "decisao": "ERRO_ENTRADA",
+            "saida": ""
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "90c8a4f7-ff11-4ef7-99a4-73e118a056ed",
+      "name": "Log evento erro",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        784,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ctx = $('Contexto').first().json;\nconst cat = String(ctx.categoria || '').toLowerCase();\nlet p = { categoria: ctx.categoria, ia_pode_resolver: true, exige_retencao: false, teto_valor: null, texto_regra: 'Politica padrao: IA pode resolver com base em precedente.' };\nif (cat.includes('cancel')) { p.ia_pode_resolver = false; p.exige_retencao = true; p.texto_regra = 'Cancelamentos exigem retencao humana.'; }\nelse if (cat.includes('refund') || cat.includes('reembolso')) { p.teto_valor = 200; p.texto_regra = 'Reembolso ate R$200 pode ser resolvido pela IA com precedente.'; }\nelse if (cat.includes('billing') || cat.includes('cobranca')) { p.teto_valor = 100; p.texto_regra = 'Ajustes de cobranca ate R$100 podem ser resolvidos pela IA.'; }\nelse if (cat.includes('technical') || cat.includes('tecnico')) { p.texto_regra = 'Suporte tecnico pode ser resolvido pela IA com precedente.'; }\nelse if (cat.includes('inquiry') || cat.includes('duvida')) { p.texto_regra = 'Duvidas de produto podem ser respondidas pela IA com precedente.'; }\nreturn [{ json: p }];"
+      },
+      "id": "7f468894-9614-4187-8f22-0099120e5cfe",
+      "name": "Get politica",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const ctx = $('Contexto').first().json;\nconst rows = $input.all().map(i => i.json);\nconst pol = rows[0] || {};\nlet motivo = '';\nlet iaPode = true;\nif (rows.length === 0) { iaPode = false; motivo = 'OUTROS'; }\nelse if (pol.ia_pode_resolver === false) { iaPode = false; motivo = pol.exige_retencao ? 'RETENCAO' : 'OUTROS'; }\nreturn [{ json: {\n  caso_id: ctx.caso_id, codigo: ctx.codigo, canal: ctx.canal, email_cliente: ctx.email_cliente,\n  texto: ctx.texto, categoria: ctx.categoria, subcategoria: ctx.subcategoria, confianca: ctx.confianca,\n  urgencia_calculada: ctx.urgencia_calculada, irritacao: ctx.irritacao, prioridade_declarada: ctx.prioridade_declarada,\n  ia_pode_resolver: iaPode,\n  teto_valor: (pol.teto_valor === undefined ? null : pol.teto_valor),\n  exige_retencao: !!pol.exige_retencao,\n  texto_regra: pol.texto_regra || 'Sem padrao conhecido. Sempre humano.',\n  fonte: 'FICTICIO_DEMO',\n  motivo_humano: motivo\n} }];"
+      },
+      "id": "61e0eeed-4d90-44ac-bf15-818ec13c010c",
+      "name": "Avalia politica",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 9,
+            "nome_etapa": "Consulta a politica",
+            "ator": "SISTEMA",
+            "decisao": "={{ $(\"Avalia politica\").item.json.ia_pode_resolver ? \"IA_PODE\" : \"ESCALAR:\" + $(\"Avalia politica\").item.json.motivo_humano }}",
+            "saida": "={{ JSON.stringify({ texto_regra: $(\"Avalia politica\").item.json.texto_regra, fonte: \"FICTICIO_DEMO\", teto_valor: $(\"Avalia politica\").item.json.teto_valor }) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d13546bc-8f83-43a6-8adf-5ecba65389da",
+      "name": "Log evento 9",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "p1",
+              "leftValue": "={{ $json.motivo_humano }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "08862aa4-a3ae-4f4e-a80c-0dc2d3b81e21",
+      "name": "Politica permite IA?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0GD38j7AJRl8nfMB",
+          "cachedResultName": "mv_tickets"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "tipo_ticket",
+              "keyValue": "={{ $(\"Contexto\").item.json.categoria }}"
+            }
+          ]
+        },
+        "limit": 10
+      },
+      "id": "197740e4-0ec5-490c-b320-29e8ab1da703",
+      "name": "Buscar precedente",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        320
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const base = $('Avalia politica').first().json;\nconst rows = $input.all().map(i => i.json).filter(r => r && r.resolucao_texto && String(r.resolucao_texto).trim() !== '' && String(r.id_ticket) !== String(base.caso_id));\nconst best = rows[0] || null;\nconst sim = best ? 0.85 : 0;\nconst tem = sim >= 0.80;\nreturn [{ json: { ...base, similaridade: sim, texto_solucao: best ? best.resolucao_texto : '', precedente_id: best ? best.id_ticket : null, tem_precedente: tem, motivo_humano: tem ? '' : 'SEM_PRECEDENTE' } }];"
+      },
+      "id": "919ce475-9761-426c-9f2c-1a3b629eb72c",
+      "name": "Avalia precedente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 10,
+            "nome_etapa": "Busca de precedente",
+            "ator": "IA",
+            "decisao": "={{ $(\"Avalia precedente\").item.json.tem_precedente ? \"PRECEDENTE_OK\" : \"SEM_PRECEDENTE\" }}",
+            "saida": "={{ JSON.stringify({ similaridade: $(\"Avalia precedente\").item.json.similaridade, corte: 0.80 }) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9eb8429a-f68b-4633-9e9c-34946ba3111d",
+      "name": "Log evento 10",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1888,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "pr1",
+              "leftValue": "={{ $json.motivo_humano }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f474fa6a-63fd-459d-9fc4-7f0de44a53f6",
+      "name": "Tem precedente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1888,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=POLITICA APLICAVEL: {{ $json.texto_regra }}\nTETO: {{ $json.teto_valor }}\nPRECEDENTE ENCONTRADO: {{ $json.texto_solucao }}\nTEXTO DO CLIENTE: {{ $(\"Contexto\").item.json.texto }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Voce propoe uma acao para resolver o caso. Voce NAO conversa com o cliente. REGRAS ABSOLUTAS: - So proponha acao que o precedente ou a politica sustente literalmente. - Se nao ha base, retorne acao ESCALAR com o motivo. Isso e uma resposta correta. - Nunca invente valor, prazo, numero de pedido ou nome de sistema. Responda no formato JSON: {acao: REEMBOLSO|REEMISSAO|CONSULTA|ESCALAR, valor: numero, justificativa, fonte: precedente|politica}."
+        }
+      },
+      "id": "fbcf6395-53d8-4d5c-86fc-d14da39a838a",
+      "name": "Executor de acao",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2112,
+        304
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "0d04c846-b717-4c2a-a2fa-d310693f2351",
+      "name": "Modelo Executor",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        2112,
+        528
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "n8n Connect",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": {
+          "acao": "REEMBOLSO",
+          "valor": 150,
+          "justificativa": "texto",
+          "fonte": "politica"
+        }
+      },
+      "id": "2aaa8b44-77f6-4c3e-ad8b-b9276f97ef5f",
+      "name": "Parser Executor",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2272,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const base = $('Avalia precedente').first().json;\nconst out = ($input.all()[0] && $input.all()[0].json.output) ? $input.all()[0].json.output : {};\nconst valor = Number(out.valor || 0);\nlet motivo = '';\nif (String(out.acao || '').toUpperCase() === 'ESCALAR') motivo = 'SEM_PRECEDENTE';\nelse if (base.teto_valor != null && valor > Number(base.teto_valor)) motivo = 'LIMITE';\nelse if (base.exige_retencao) motivo = 'RETENCAO';\nreturn [{ json: { ...base, acao_proposta: out.acao || 'ESCALAR', valor_proposto: valor, justificativa: out.justificativa || '', fonte_resposta: out.fonte || '', resposta: out.justificativa || '', motivo_humano: motivo } }];"
+      },
+      "id": "29295e34-b18c-4481-ba70-b65e3c710217",
+      "name": "Trava dura",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "t1",
+              "leftValue": "={{ $json.motivo_humano }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "544f3488-04a2-4a62-a2ec-537f94698340",
+      "name": "Trava passou?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2688,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ra1",
+              "name": "tipo_acao",
+              "value": "={{ $(\"Trava dura\").item.json.acao_proposta }}",
+              "type": "string"
+            },
+            {
+              "id": "ra2",
+              "name": "valor_acao",
+              "value": "={{ $(\"Trava dura\").item.json.valor_proposto }}",
+              "type": "number"
+            },
+            {
+              "id": "ra3",
+              "name": "status_acao",
+              "value": "SIMULADO",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "6c873b73-2276-46cd-8222-a612446d5516",
+      "name": "Registrar acao (SIMULADO)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2912,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 11,
+            "nome_etapa": "Execucao da acao (SIMULADO)",
+            "ator": "IA",
+            "decisao": "={{ $(\"Trava dura\").item.json.acao_proposta }}",
+            "saida": "={{ JSON.stringify({ valor: $(\"Trava dura\").item.json.valor_proposto, status: \"SIMULADO\" }) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "caebfc60-d365-4c2a-a53d-20500c21d950",
+      "name": "Log evento 11",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3120,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=RESPOSTA PROPOSTA: {{ $(\"Trava dura\").item.json.resposta }}\nPOLITICA: {{ $(\"Trava dura\").item.json.texto_regra }}\nBASE CITADA: {{ $(\"Trava dura\").item.json.fonte_resposta }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Voce audita a resposta antes dela sair. Voce e o ultimo filtro. Cheque tres coisas, sem gentileza: 1. base_verificavel — cada afirmacao tem lastro na politica ou no precedente? 2. dentro_politica — respeita teto e regra de retencao? 3. tom_ok — sem promessa que nao pode cumprir, sem tom defensivo. Na duvida, reprove. Reprovar custa barato; resposta errada com tom confiante custa caro. Responda JSON: {aprovado: bool, motivo_reprovacao, checks: {base_verificavel, dentro_politica, tom_ok}}."
+        }
+      },
+      "id": "0f8b8018-88b4-4c31-931d-5170cc598b58",
+      "name": "Auditor",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        3344,
+        208
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5",
+          "cachedResultName": "gpt-5"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "85249d06-7586-454c-8614-7d8ca234f4e3",
+      "name": "Modelo Auditor",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        3344,
+        432
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "n8n Connect",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": {
+          "aprovado": true,
+          "motivo_reprovacao": "",
+          "checks": {
+            "base_verificavel": true,
+            "dentro_politica": true,
+            "tom_ok": true
+          }
+        }
+      },
+      "id": "cd2d87de-4115-4f31-8b70-be61a3e1ca83",
+      "name": "Parser Auditor",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3504,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const base = $('Trava dura').first().json;\nconst out = ($input.all()[0] && $input.all()[0].json.output) ? $input.all()[0].json.output : {};\nconst aprovado = out.aprovado === true;\nreturn [{ json: { ...base, aud_aprovado: aprovado, aud_motivo: out.motivo_reprovacao || '', aud_checks: out.checks || {}, motivo_humano: aprovado ? '' : 'AUDITORIA' } }];"
+      },
+      "id": "9e0e72dc-c49c-448b-9570-2d74d6efa4ae",
+      "name": "Registra auditoria",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3728,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 12,
+            "nome_etapa": "Auditoria da resposta",
+            "ator": "IA",
+            "decisao": "={{ $(\"Registra auditoria\").item.json.aud_aprovado ? \"APROVADO\" : \"REPROVADO\" }}",
+            "saida": "={{ JSON.stringify($(\"Registra auditoria\").item.json.aud_checks) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "43339fa4-bdd0-42eb-9e9f-d2fd433edfc6",
+      "name": "Log evento 12",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3952,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "a1",
+              "leftValue": "={{ $json.aud_aprovado }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b018bb88-471c-42fe-9082-d6a5ce0a6f89",
+      "name": "Auditor aprovou?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3952,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "mensagem_simulada",
+              "value": "=Protocolo {{ $(\"Contexto\").item.json.codigo }}: {{ $(\"Trava dura\").item.json.justificativa }}",
+              "type": "string"
+            },
+            {
+              "id": "s2",
+              "name": "canal_envio",
+              "value": "={{ $(\"Contexto\").item.json.canal }}",
+              "type": "string"
+            },
+            {
+              "id": "s3",
+              "name": "status_envio",
+              "value": "SIMULADO",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "3b1a8407-99fa-4c9d-a5ab-f105895ce18a",
+      "name": "Send resolvido (SIMULADO)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4160,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 14,
+            "nome_etapa": "Resposta enviada (SIMULADO)",
+            "ator": "SISTEMA",
+            "decisao": "RESPONDIDO_IA",
+            "saida": "={{ JSON.stringify({ canal: $(\"Contexto\").item.json.canal, status_envio: \"SIMULADO\" }) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4d699835-ebda-4f98-a271-38aef43fbfdc",
+      "name": "Log evento 14",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4384,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fr1",
+              "name": "caso_id",
+              "value": "={{ $(\"Contexto\").item.json.caso_id }}",
+              "type": "string"
+            },
+            {
+              "id": "fr2",
+              "name": "codigo",
+              "value": "={{ $(\"Contexto\").item.json.codigo }}",
+              "type": "string"
+            },
+            {
+              "id": "fr3",
+              "name": "canal",
+              "value": "={{ $(\"Contexto\").item.json.canal }}",
+              "type": "string"
+            },
+            {
+              "id": "fr4",
+              "name": "email_cliente",
+              "value": "={{ $(\"Contexto\").item.json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "fr5",
+              "name": "status",
+              "value": "AGUARDANDO_CLIENTE",
+              "type": "string"
+            },
+            {
+              "id": "fr6",
+              "name": "motivo_humano",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "fr7",
+              "name": "resolvido_sem_humano",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "024387d3-188d-4256-bfc4-2b7e845baba8",
+      "name": "Final Resolvido",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4384,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "co1",
+              "name": "caso_id",
+              "value": "={{ $json.caso_id }}",
+              "type": "string"
+            },
+            {
+              "id": "co2",
+              "name": "codigo",
+              "value": "={{ $json.codigo }}",
+              "type": "string"
+            },
+            {
+              "id": "co3",
+              "name": "canal",
+              "value": "={{ $json.canal }}",
+              "type": "string"
+            },
+            {
+              "id": "co4",
+              "name": "email_cliente",
+              "value": "={{ $json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "co5",
+              "name": "status",
+              "value": "={{ $json.status }}",
+              "type": "string"
+            },
+            {
+              "id": "co6",
+              "name": "motivo_humano",
+              "value": "={{ $json.motivo_humano }}",
+              "type": "string"
+            },
+            {
+              "id": "co7",
+              "name": "resolvido_sem_humano",
+              "value": "={{ $json.resolvido_sem_humano }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5f499068-537d-40ac-ba51-7948d722aba4",
+      "name": "Consolida",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4608,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Consolida\").item.json.caso_id }}",
+            "etapa": 15,
+            "nome_etapa": "Carimbo T2 e tempos",
+            "ator": "SISTEMA",
+            "decisao": "={{ $(\"Consolida\").item.json.resolvido_sem_humano ? \"RESOLVIDO_SEM_HUMANO\" : \"ENVIADO_MESA_HUMANA\" }}",
+            "saida": "={{ JSON.stringify({ status: $(\"Consolida\").item.json.status, resolvido_sem_humano: $(\"Consolida\").item.json.resolvido_sem_humano }) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cfcdc4ad-ceea-489e-bf49-3087d936b63b",
+      "name": "Log evento 15",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4832,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ct1",
+              "name": "status",
+              "value": "={{ $(\"Consolida\").item.json.status }}",
+              "type": "string"
+            },
+            {
+              "id": "ct2",
+              "name": "resolvido_sem_humano",
+              "value": "={{ $(\"Consolida\").item.json.resolvido_sem_humano }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "5f170914-6943-45d3-a20a-5efe3cb22d07",
+      "name": "Carimbo T2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4832,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "OayIRNaENFANFZBk",
+          "cachedResultName": "Mesa Viva — WF3 Fase 3"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "codigo",
+              "displayName": "codigo",
+              "type": "string",
+              "required": false,
+              "display": true
+            },
+            {
+              "id": "canal",
+              "displayName": "canal",
+              "type": "string",
+              "required": false,
+              "display": true
+            },
+            {
+              "id": "email_cliente",
+              "displayName": "email_cliente",
+              "type": "string",
+              "required": false,
+              "display": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "type": "string",
+              "required": false,
+              "display": true
+            },
+            {
+              "id": "motivo_humano",
+              "displayName": "motivo_humano",
+              "type": "string",
+              "required": false,
+              "display": true
+            },
+            {
+              "id": "resolvido_sem_humano",
+              "displayName": "resolvido_sem_humano",
+              "type": "boolean",
+              "required": false,
+              "display": true
+            }
+          ],
+          "value": {
+            "caso_id": "={{ $(\"Consolida\").item.json.caso_id }}",
+            "codigo": "={{ $(\"Consolida\").item.json.codigo }}",
+            "canal": "={{ $(\"Consolida\").item.json.canal }}",
+            "email_cliente": "={{ $(\"Consolida\").item.json.email_cliente }}",
+            "status": "={{ $(\"Consolida\").item.json.status }}",
+            "motivo_humano": "={{ $(\"Consolida\").item.json.motivo_humano }}",
+            "resolvido_sem_humano": "={{ $(\"Consolida\").item.json.resolvido_sem_humano }}"
+          }
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "id": "6b1c159b-9d86-4344-8e6e-1626afcf16c2",
+      "name": "Chamar WF3",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        5040,
+        480
+      ],
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "uQ2qHMpeVd0KKa76",
+          "cachedResultName": "mv_auditoria"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "resposta_proposta": "={{ $(\"Trava dura\").item.json.resposta }}",
+            "aprovado": false,
+            "motivo_reprovacao": "={{ $(\"Registra auditoria\").item.json.aud_motivo }}",
+            "checks": "={{ JSON.stringify($(\"Registra auditoria\").item.json.aud_checks) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "resposta_proposta",
+              "displayName": "resposta_proposta",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "aprovado",
+              "displayName": "aprovado",
+              "type": "boolean",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "motivo_reprovacao",
+              "displayName": "motivo_reprovacao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "checks",
+              "displayName": "checks",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f9e0063f-3ed4-42bc-afc4-d95a724ffd1e",
+      "name": "Insert auditoria",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        4160,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ma1",
+              "name": "motivo_humano",
+              "value": "AUDITORIA",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "2b02b79a-4f81-4ec5-811a-1167a55e8d02",
+      "name": "Motivo auditoria",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4384,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "pm1",
+              "name": "motivo_humano",
+              "value": "={{ $json.motivo_humano }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "2e519947-2532-41a3-b0db-9727498e7b9c",
+      "name": "Prep Mesa Humana",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2112,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "QXSalxwMmxqsM3MR",
+          "cachedResultName": "mv_evento"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "caso_id": "={{ $(\"Contexto\").item.json.caso_id }}",
+            "etapa": 13,
+            "nome_etapa": "Mesa humana",
+            "ator": "HUMANO",
+            "decisao": "={{ $(\"Prep Mesa Humana\").item.json.motivo_humano }}",
+            "saida": "={{ JSON.stringify({ categoria: $(\"Contexto\").item.json.categoria, confianca: $(\"Contexto\").item.json.confianca, urgencia_calculada: $(\"Contexto\").item.json.urgencia_calculada, prioridade_declarada: $(\"Contexto\").item.json.prioridade_declarada, irritacao: $(\"Contexto\").item.json.irritacao, politica_aplicada: $(\"Avalia politica\").item.json.texto_regra, motivo: $(\"Prep Mesa Humana\").item.json.motivo_humano }) }}"
+          },
+          "schema": [
+            {
+              "id": "caso_id",
+              "displayName": "caso_id",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "etapa",
+              "displayName": "etapa",
+              "type": "number",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "nome_etapa",
+              "displayName": "nome_etapa",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ator",
+              "displayName": "ator",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "saida",
+              "displayName": "saida",
+              "type": "string",
+              "required": false,
+              "display": true,
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "44a32bf4-9fc6-4058-9bdc-9820b960bc60",
+      "name": "Log evento 13 (dossie)",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2320,
+        624
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "mh1",
+              "name": "status",
+              "value": "MESA_HUMANA",
+              "type": "string"
+            },
+            {
+              "id": "mh2",
+              "name": "motivo_humano",
+              "value": "={{ $(\"Prep Mesa Humana\").item.json.motivo_humano }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "c5bdbc51-e8d6-48f0-bd06-337af3e7f08d",
+      "name": "Mesa humana update",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2320,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fm1",
+              "name": "caso_id",
+              "value": "={{ $(\"Contexto\").item.json.caso_id }}",
+              "type": "string"
+            },
+            {
+              "id": "fm2",
+              "name": "codigo",
+              "value": "={{ $(\"Contexto\").item.json.codigo }}",
+              "type": "string"
+            },
+            {
+              "id": "fm3",
+              "name": "canal",
+              "value": "={{ $(\"Contexto\").item.json.canal }}",
+              "type": "string"
+            },
+            {
+              "id": "fm4",
+              "name": "email_cliente",
+              "value": "={{ $(\"Contexto\").item.json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "fm5",
+              "name": "status",
+              "value": "MESA_HUMANA",
+              "type": "string"
+            },
+            {
+              "id": "fm6",
+              "name": "motivo_humano",
+              "value": "={{ $(\"Prep Mesa Humana\").item.json.motivo_humano }}",
+              "type": "string"
+            },
+            {
+              "id": "fm7",
+              "name": "resolvido_sem_humano",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "27cdcc04-6325-46c3-ac96-cba589f93716",
+      "name": "Final Mesa",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2544,
+        800
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Iniciar teste (exemplos)": {
+      "main": [
+        [
+          {
+            "node": "Buscar tickets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar tickets": {
+      "main": [
+        [
+          {
+            "node": "Preparar casos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar casos": {
+      "main": [
+        [
+          {
+            "node": "Loop casos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada do WF1": {
+      "main": [
+        [
+          {
+            "node": "Loop casos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop casos": {
+      "main": [
+        [
+          {
+            "node": "Fim (resumo)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto": {
+      "main": [
+        [
+          {
+            "node": "Caso válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Caso válido?": {
+      "main": [
+        [
+          {
+            "node": "Get politica",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log evento erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log evento erro": {
+      "main": [
+        [
+          {
+            "node": "Loop casos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get politica": {
+      "main": [
+        [
+          {
+            "node": "Avalia politica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avalia politica": {
+      "main": [
+        [
+          {
+            "node": "Log evento 9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Politica permite IA?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Politica permite IA?": {
+      "main": [
+        [
+          {
+            "node": "Buscar precedente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prep Mesa Humana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar precedente": {
+      "main": [
+        [
+          {
+            "node": "Avalia precedente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Avalia precedente": {
+      "main": [
+        [
+          {
+            "node": "Log evento 10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Tem precedente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tem precedente?": {
+      "main": [
+        [
+          {
+            "node": "Executor de acao",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prep Mesa Humana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executor de acao": {
+      "main": [
+        [
+          {
+            "node": "Trava dura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo Executor": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Executor de acao",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser Executor": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Executor de acao",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trava dura": {
+      "main": [
+        [
+          {
+            "node": "Trava passou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trava passou?": {
+      "main": [
+        [
+          {
+            "node": "Registrar acao (SIMULADO)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prep Mesa Humana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar acao (SIMULADO)": {
+      "main": [
+        [
+          {
+            "node": "Log evento 11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log evento 11": {
+      "main": [
+        [
+          {
+            "node": "Auditor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auditor": {
+      "main": [
+        [
+          {
+            "node": "Registra auditoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo Auditor": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Auditor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser Auditor": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auditor",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registra auditoria": {
+      "main": [
+        [
+          {
+            "node": "Log evento 12",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Auditor aprovou?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auditor aprovou?": {
+      "main": [
+        [
+          {
+            "node": "Send resolvido (SIMULADO)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert auditoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send resolvido (SIMULADO)": {
+      "main": [
+        [
+          {
+            "node": "Log evento 14",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Final Resolvido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Resolvido": {
+      "main": [
+        [
+          {
+            "node": "Consolida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolida": {
+      "main": [
+        [
+          {
+            "node": "Log evento 15",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Carimbo T2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Carimbo T2": {
+      "main": [
+        [
+          {
+            "node": "Chamar WF3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chamar WF3": {
+      "main": [
+        [
+          {
+            "node": "Loop casos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert auditoria": {
+      "main": [
+        [
+          {
+            "node": "Motivo auditoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Motivo auditoria": {
+      "main": [
+        [
+          {
+            "node": "Prep Mesa Humana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Mesa Humana": {
+      "main": [
+        [
+          {
+            "node": "Log evento 13 (dossie)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mesa humana update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mesa humana update": {
+      "main": [
+        [
+          {
+            "node": "Final Mesa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Mesa": {
+      "main": [
+        [
+          {
+            "node": "Consolida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "79969b3e-fcda-4b8b-8a7c-20e20d3f8a3b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3c221f6bd73c770399ba5eb5408bb3874d9175f4b1b92aa69191e2c60c6398c8"
+  },
+  "nodeGroups": [],
+  "id": "3Q6gOXsMYbN5ekpW",
+  "tags": []
+}
