@@ -1,0 +1,14 @@
+# Stack planejada para Python 3.11+.
+# As versões serão fixadas após a validação do ambiente na fase técnica apropriada.
+pandas
+numpy
+scipy
+statsmodels
+scikit-learn
+lifelines
+networkx
+plotly
+streamlit
+pyarrow
+pydantic
+pytest
