@@ -184,3 +184,103 @@ Aguardar o prompt da Fase 2. Não iniciar automaticamente o event log.
 - dois diretórios temporários deixados na raiz pela primeira tentativa do pytest foram removidos;
 - caches `__pycache__` e o `pytest-temp` foram removidos após a validação;
 - staging permaneceu vazio até a conclusão da revisão humana.
+
+---
+
+# Workflow — Fase 2
+
+## Registro da execução
+
+- **Data e hora local:** 2026-07-20 17:18:29 -03:00;
+- **Fuso horário:** America/Sao_Paulo;
+- **Objetivo:** construir e validar a camada temporal canônica sem produzir diagnóstico, receita em risco, survival, journey mining, grafo, watchlist, modelo ou dashboard;
+- **Commit-base:** `b9f341b92af080e4abf30282171994905cf0a780`.
+
+## Gate de entrada
+
+Antes de qualquer alteração foram confirmados workspace e raiz Git corretos, branch `submission/carlos-henrique`, HEAD esperado, working tree limpo, staging vazio, nenhum CSV bruto versionado e nenhuma modificação externa ao escopo.
+
+Os cinco SHA-256 foram recalculados pelo build e comparados ao `raw_file_manifest.json` da Fase 1. Todos permaneceram idênticos.
+
+## Semântica implementada
+
+1. eventos permanecem separados por fonte e entidade, sem mega-join;
+2. `event_id` usa hash determinístico de fonte, ID original, linha física, tipo e tempo;
+3. `source_table`, `source_record_id` e `source_row_number` preservam provenance;
+4. datas usam `datetime64[ns]` e `NAIVE_SOURCE_TIME`;
+5. desempate no mesmo dia é técnico, estável e não causal;
+6. churn é evento recorrente de conta;
+7. reativação explícita é evento distinto e não cria assinatura;
+8. cada `subscription_id` forma um episódio independente;
+9. atribuição churn–assinatura somente preenche candidato para uma assinatura ativa exata;
+10. texto livre, nomes, flags snapshot, motivo e refund não entram no event log.
+
+## Política de qualidade
+
+Foram separados três statuses: `VALID`, `VALID_WITH_WARNING` e `QUARANTINED`. A política conservadora coloca em quarentena cronologia fatal confirmada, incluindo evento pré-conta, uso pré/pós-assinatura, churn pré-assinatura e reativação sem churn anterior utilizável.
+
+Duplicatas distintas de `usage_id` ou chave candidata foram preservadas e sinalizadas. Somente duplicatas integrais secundárias podem ser removidas; zero foram encontradas no snapshot.
+
+## Outputs finais
+
+- eventos gerados: 35.586;
+- ativos: 13.927;
+- válidos: 10.703;
+- com warning: 3.224;
+- quarentena: 21.659;
+- episódios: 5.000;
+- diferença não explicada: zero;
+- período: 2023-01-01 00:00:00 a 2024-12-31 19:00:00.
+
+Tipos gerados: 500 ACCOUNT_CREATED, 5.000 SUBSCRIPTION_STARTED, 486 SUBSCRIPTION_ENDED, 25.000 FEATURE_USED, 2.000 SUPPORT_TICKET_OPENED, 2.000 SUPPORT_TICKET_CLOSED, 539 CHURN_RECORDED e 61 REACTIVATION_RECORDED.
+
+## Qualidade observada
+
+- 19.142 usos pré-assinatura;
+- 290 usos pós-assinatura;
+- 15.347 eventos pré-conta, considerando todas as fontes;
+- 53 churns pré-primeira-assinatura;
+- 55 eventos de churn/reativação sem assinatura ativa;
+- 478 atribuições com múltiplas assinaturas ativas;
+- 31 reativações sem churn anterior utilizável;
+- 42 linhas afetadas por `usage_id` duplicado e 6 pela chave candidata duplicada;
+- 5.011 eventos com desempate técnico no mesmo dia.
+
+## Churn, reativação e episódios
+
+Após separar as 61 reativações dos churns, existem 161 contas sem CHURN_RECORDED, 190 com um e 149 com múltiplos; o máximo permanece cinco. Há 501 churns sem reativação posterior observada.
+
+Das 600 ocorrências de churn/reativação, 67 têm uma assinatura ativa exata, 478 têm múltiplas candidatas, 53 não têm assinatura iniciada e 2 possuem somente uma assinatura anterior. Nenhum vínculo ambíguo foi inventado.
+
+Os 5.000 episódios incluem 4.514 abertos, 486 encerrados e 4.992 afetados por sobreposição. Sobreposição é warning; churn não altera `end_date`.
+
+## Testes e idempotência
+
+- `compileall` de `src`, `scripts` e testes: aprovado;
+- pytest final: 38 testes aprovados;
+- duas gerações consecutivas: 10 de 10 outputs com SHA-256 idêntico;
+- `IDEMPOTENCE_FAILURES=0`;
+- Parquet finais: aproximadamente 0,64 MB, 0,89 MB e 0,20 MB.
+
+## Erros reais e correções
+
+1. O `.venv` não continha engine Parquet. PyArrow 25.0.0 foi instalado somente em diretório temporário externo ao repositório; `.venv` e requirements não foram alterados, e o diretório temporário foi removido após a validação.
+2. O sandbox negou leitura ao pacote temporário. O build foi repetido com permissão local restrita ao acesso do engine e aos outputs autorizados.
+3. A primeira revisão agregada revelou que múltiplas assinaturas ativas recebiam incorretamente a flag de ausência de assinatura. A condição foi restringida aos estados realmente sem ativa.
+4. Churn pré-primeira-assinatura estava como warning apesar da política textual de quarentena. A flag foi incluída no conjunto fatal e os outputs foram regenerados.
+5. O primeiro pytest teve 37 aprovações e uma falha no teste de privacidade porque a concatenação tinha índice repetido para `to_json`. O teste passou a usar `orient=records`; resultado final 38/38.
+6. A ferramenta de patch encontrou a limitação de writable roots do sandbox do Windows em atualizações pontuais. Os mesmos diffs foram aplicados como patches Git textuais, sem staging e sem ampliação de escopo.
+7. Um patch documental amplo não encontrou o contexto completo e adicionou zero alterações. A atualização foi dividida em hunks menores e revisada em UTF-8.
+8. A primeira adição extensa ao contrato terminou no cabeçalho `Uso proibido` por contagem incorreta do hunk. A revisão do diff detectou a truncagem e as regras proibidas e o gate foram completados em patch separado.
+
+## Revisão humana
+
+Foram revisados tipos e volumes de evento, provenance, flags fatais e warnings, duplicatas, churn recorrente, reativação, atribuição a assinatura, episódios abertos/sobrepostos, reconciliação por fonte, período temporal, schemas Parquet, hashes, ausência de texto livre e tamanho dos outputs.
+
+## Limitações e gate
+
+A cobertura ativa é reduzida pela quarentena material de uso e suporte. Datas diárias não permitem ordem intradiária causal. Atribuição de churn é majoritariamente ambígua devido a assinaturas sobrepostas. A estabilidade longitudinal dos IDs e a disponibilidade as-of de atributos mutáveis não são provadas pelo snapshot.
+
+**Gate da Fase 3:** `PASS_WITH_WARNINGS`. O log é auditável e reconciliado, mas diagnósticos devem excluir quarentena, respeitar warnings e declarar cutoffs.
+
+Não foram executados diagnóstico, análise de receita, survival, journey mining, grafo, watchlist, modelo, dashboard, push ou Pull Request.

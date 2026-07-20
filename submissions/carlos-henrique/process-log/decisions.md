@@ -205,3 +205,105 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **Justificativa:** é possível construir eventos por fonte sem mega-join; os riscos são controláveis por regras explícitas, quarentena e reconciliação.
 - **Consequências:** antes de produzir qualquer event log, a Fase 2 deve implementar identidade substituta de uso, precedência do target, cutoffs as-of, flags de cronologia, separação de grãos e preservação de recorrência/reativação.
 - **Status:** APROVADA COM RESSALVAS
+
+---
+
+## D021 — Schema canônico do event log
+
+- **ID:** D021
+- **Título:** Evento normalizado com provenance por linha
+- **Contexto:** fases posteriores precisam reconstruir jornadas sem perder grão ou origem.
+- **Decisão:** adotar schema de 28 campos, `event_id` determinístico e obrigatório, `account_id` obrigatório no ativo, assinatura opcional, tempo canônico, origem, linha física, regra, qualidade e metadados de recorrência.
+- **Justificativa:** separa fontes e entidades, permite auditoria e evita mega-join.
+- **Consequências:** todo novo tipo deverá preencher o mesmo contrato e registrar sua disponibilidade temporal.
+- **Status:** APROVADA
+
+## D022 — Política de deduplicação
+
+- **ID:** D022
+- **Título:** Preservar registros distintos e remover somente cópia integral secundária
+- **Contexto:** `usage_id` e a chave candidata duplicam, mas não há duplicata integral no snapshot.
+- **Decisão:** incluir `source_row_number` na identidade; sinalizar todas as linhas de IDs/chaves repetidos; remover apenas duplicata exata secundária e reconciliá-la separadamente.
+- **Justificativa:** evita perda e soma silenciosa de eventos legítimos ou conflitantes.
+- **Consequências:** 42 linhas recebem `DUPLICATE_SOURCE_ID`, 6 recebem `DUPLICATE_CANDIDATE_KEY` e nenhuma é removida neste build.
+- **Status:** APROVADA COM RESSALVAS
+
+## D023 — Política de quarentena
+
+- **ID:** D023
+- **Título:** Erro temporal fatal permanece auditável fora do log ativo
+- **Contexto:** uso, suporte, churn e reativação contêm cronologias incompatíveis.
+- **Decisão:** classificar como `QUARANTINED` evento pré-conta, uso pré/pós-assinatura, timestamp/ID inválido, fim antes do início, fechamento antes da abertura, churn pré-assinatura e reativação sem churn anterior utilizável.
+- **Justificativa:** 21.659 eventos não podem sustentar sequência válida, mas também não podem desaparecer.
+- **Consequências:** análises usam somente o log ativo; quarentena permanece rastreável e recuperável mediante evidência upstream.
+- **Status:** APROVADA
+
+## D024 — Ordenação de eventos no mesmo dia
+
+- **ID:** D024
+- **Título:** Desempate técnico estável e não causal
+- **Contexto:** fontes diárias perdem sequência intradiária e 5.011 eventos compartilham conta/data com outra ocorrência.
+- **Decisão:** aplicar a ordem documentada em `event_order_on_same_day` e marcar `SAME_DAY_ORDER_ASSIGNED`.
+- **Justificativa:** garante idempotência sem inventar causalidade ou horário.
+- **Consequências:** a ordem serve somente para sort; análises não podem tratá-la como precedência factual.
+- **Status:** APROVADA COM RESSALVAS
+
+## D025 — Modelo de churn recorrente
+
+- **ID:** D025
+- **Título:** Churn como sequência de eventos de conta
+- **Contexto:** após separar reativações, 149 contas têm múltiplos churns e o máximo é cinco.
+- **Decisão:** preservar cada CHURN_RECORDED com sequência, anterior, próximo e dias desde o anterior.
+- **Justificativa:** um flag binário destruiria ciclos observados.
+- **Consequências:** fases posteriores devem declarar primeiro, último ou n-ésimo churn e nunca inferir retained por ausência.
+- **Status:** APROVADA
+
+## D026 — Modelo de reativação
+
+- **ID:** D026
+- **Título:** Reativação explícita, separada e dependente de churn utilizável anterior
+- **Contexto:** há 61 flags explícitas; 31 não possuem churn anterior utilizável após a quarentena.
+- **Decisão:** gerar REACTIVATION_RECORDED somente do flag real, preservar sequência e quarentenar ausência de churn anterior utilizável; não inferir retorno por assinatura nova.
+- **Justificativa:** evita apagar churn, inventar assinatura ou misturar outcome com retorno.
+- **Consequências:** 30 reativações permanecem temporalmente utilizáveis e 31 ficam auditáveis na quarentena.
+- **Status:** APROVADA COM RESSALVAS
+
+## D027 — Atribuição churn–assinatura
+
+- **ID:** D027
+- **Título:** Candidato somente para assinatura ativa exata
+- **Contexto:** churn é de conta e múltiplas assinaturas frequentemente se sobrepõem.
+- **Decisão:** preencher `candidate_subscription_id` somente em `EXACT_ACTIVE_MATCH`; manter nulo em múltiplas ativas, anterior única, ausência e ambiguidade.
+- **Justificativa:** apenas 67 de 600 ocorrências têm uma assinatura ativa exata; 478 têm múltiplas candidatas.
+- **Consequências:** o campo é evidência de atribuição, não alteração do grão do churn.
+- **Status:** APROVADA COM RESSALVAS
+
+## D028 — Modelo de episódio
+
+- **ID:** D028
+- **Título:** Uma assinatura, um episódio inicial
+- **Contexto:** contas possuem múltiplas assinaturas, muitas abertas e sobrepostas.
+- **Decisão:** criar 5.000 episódios independentes, preservar datas de origem e inferir previous/next somente pela ordem na conta.
+- **Justificativa:** fusão ou encerramento por churn inventaria fatos ausentes.
+- **Consequências:** 4.514 episódios permanecem abertos; 4.992 recebem warning de sobreposição.
+- **Status:** APROVADA COM RESSALVAS
+
+## D029 — Campos excluídos por leakage e privacidade
+
+- **ID:** D029
+- **Título:** Minimização temporal e textual no event log
+- **Contexto:** flags snapshot, end_date, motivo, refund, feedback e métricas pós-interação podem antecipar desfecho ou expor texto.
+- **Decisão:** não copiar nome, feedback, motivo, refund ou churn flags; usar `end_date` somente como evento no próprio tempo e atributos de fechamento somente em SUPPORT_TICKET_CLOSED.
+- **Justificativa:** aplica LGPD by design e evita leakage explícito, proxy e temporal.
+- **Consequências:** outputs mantêm categorias controladas, números autorizados e provenance sem texto livre.
+- **Status:** APROVADA
+
+## D030 — Gate do event log
+
+- **ID:** D030
+- **Título:** Camada temporal utilizável com filtros obrigatórios
+- **Contexto:** 35.586 oportunidades reconciliam integralmente, porém 21.659 eventos são temporalmente inválidos e a atribuição de churn é majoritariamente ambígua.
+- **Decisão:** classificar a Fase 2 como `PASS_WITH_WARNINGS`.
+- **Justificativa:** 13.927 eventos ativos, provenance completo, IDs determinísticos, reconciliação zero e idempotência permitem diagnóstico controlado.
+- **Consequências:** Fase 3 deve excluir quarentena, respeitar flags, declarar cutoffs, manter churn no grão de conta e não interpretar desempate como causalidade.
+- **Status:** APROVADA COM RESSALVAS

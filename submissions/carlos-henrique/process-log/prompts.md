@@ -85,3 +85,50 @@ Não construir event log, diagnóstico de churn, segmentação, receita em risco
 ### Resultado do prompt
 
 A auditoria foi executada com outputs estruturais e gate `PASS_WITH_WARNINGS`. O event log não foi iniciado.
+
+---
+
+## Prompt da Fase 2
+
+- **Identificação:** “FASE 2 — CONSTRUÇÃO E VALIDAÇÃO DO EVENT LOG TEMPORAL”.
+- **Finalidade:** construir uma camada temporal canônica, auditável, conservadora e reproduzível a partir das cinco fontes validadas.
+- **Estado:** executado nesta fase; nenhuma instrução da Fase 3 foi executada.
+
+### Reprodução fiel do escopo recebido
+
+1. Repetir os gates Git, exigir a branch e o commit-base esperados e bloquear diante de working tree ou staging divergentes.
+2. Recalcular as evidências da Fase 1, manter os CSVs imutáveis e impedir mega-join.
+3. Definir event log com identidade, entidade, timestamp, tipo, subtipo, origem, provenance, regra, qualidade, flags, quarentena e episódio.
+4. Criar IDs determinísticos e preservar ID e linha física da fonte.
+5. Gerar somente eventos sustentados pelos schemas reais e preferir eventos de origem.
+6. Criar ACCOUNT_CREATED, SUBSCRIPTION_STARTED/ENDED, FEATURE_USED, SUPPORT_TICKET_OPENED/CLOSED, CHURN_RECORDED e REACTIVATION_RECORDED conforme regras temporais.
+7. Não criar upgrade/downgrade ou eventos comportamentais sem timestamp e regra inequívocos.
+8. Formalizar EXACT_DUPLICATE, DUPLICATE_SOURCE_ID, DUPLICATE_CANDIDATE_KEY e LEGITIMATE_REPEAT_EVENT, sem alterar CSVs ou descartar registros distintos.
+9. Colocar erros temporais confirmados em quarentena e usar warning para ocorrências possíveis ou ambíguas.
+10. Normalizar timestamps para `datetime64[ns]`, declarar `NAIVE_SOURCE_TIME` e usar desempate técnico não causal no mesmo dia.
+11. Criar um episódio por assinatura, preservar abertos, registrar sobreposição e inferir previous/next apenas por ordem temporal na conta.
+12. Preservar churn recorrente e reativação explícita como eventos distintos, com sequência e intervalos permitidos.
+13. Não atribuir churn a assinatura sem regra; preencher candidato apenas quando houver uma ativa exata.
+14. Produzir reconciliação por fonte com diferença não explicada zero.
+15. Criar três Parquet, quatro artefatos JSON, três relatórios, quatro módulos/scripts e duas suítes de teste nos caminhos autorizados.
+16. Atualizar arquitetura, contrato e process logs; registrar D021 em diante somente com evidência.
+17. Validar pytest, compileall, duas execuções idempotentes, hashes, PII, tamanho dos Parquet e diff completo.
+18. Versionar Parquet somente se pequenos, seguros e necessários; nunca usar Git LFS.
+19. Fazer staging seletivo arquivo por arquivo e criar somente o commit local `data: build validated temporal event log`.
+20. Não fazer diagnóstico, findings executivos, receita em risco, survival, journey mining, grafo, watchlist, modelo, dashboard, business case, LLM, push ou Pull Request.
+
+### Políticas preservadas
+
+- evento inválido não desaparece;
+- evento derivado declara regra;
+- conta e assinatura permanecem entidades distintas;
+- churn de conta não encerra ou escolhe assinatura automaticamente;
+- flags snapshot sem timestamp não viram eventos históricos;
+- não criar eventos para preencher lacunas;
+- texto completo, nome, feedback, motivo e refund não entram nos outputs;
+- informação futura não pode contaminar fases preditivas;
+- toda oportunidade reconcilia com ativo, quarentena, remoção exata ou ausência aplicável.
+
+### Resultado do prompt
+
+O event log, a quarentena e os episódios foram construídos com reconciliação zero e gate `PASS_WITH_WARNINGS`. Nenhum diagnóstico foi iniciado.

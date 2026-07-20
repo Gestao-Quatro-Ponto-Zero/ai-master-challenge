@@ -1,6 +1,6 @@
-# Contrato de dados — Fase 1
+# Contrato de dados — Fases 1 e 2
 
-> **Status geral:** `VALIDATED_WITH_WARNINGS`. Os cinco arquivos foram lidos em UTF-8, os schemas foram observados diretamente e os relacionamentos mínimos têm cobertura referencial completa. A identidade de eventos de uso, a precedência do target e regras temporais permanecem abertas para a Fase 2.
+> **Status geral:** `VALIDATED_WITH_WARNINGS`. As cinco fontes foram auditadas e a camada temporal foi implementada com identidade determinística, provenance, quarentena e reconciliação zero. Eventos ativos continuam sujeitos aos warnings e cutoffs descritos neste contrato.
 
 ## Inventário validado
 
@@ -106,3 +106,135 @@ As quatro relações mínimas têm taxa de match de 100%, zero chaves estrangeir
 ## Gate para a Fase 2
 
 **`PASS_WITH_WARNINGS`**. Chaves relacionais, cobertura e campos temporais permitem construir um event log, desde que a Fase 2: defina identidade substituta para uso; não use `accounts.churn_flag` como fonte soberana sem regra de precedência; mantenha fontes em grãos separados; aplique corte as-of; marque ou coloque em quarentena eventos temporalmente impossíveis; e preserve churn recorrente e reativação sem colapsá-los.
+
+---
+
+## Camada temporal canônica — Fase 2
+
+### Event log ativo
+
+- **Arquivo:** `solution/data/processed/event_log.parquet`.
+- **Registros/colunas:** 13.927/28.
+- **Período:** 2023-01-01 00:00:00 a 2024-12-31 19:00:00.
+- **Grão:** uma ocorrência de evento de origem temporalmente utilizável.
+- **Chave:** `event_id`, hash SHA-256 determinístico truncado, único neste build.
+- **Timezone:** `NAIVE_SOURCE_TIME`; datas sem hora usam meia-noite como representação técnica.
+
+| Campo | Tipo lógico | Nulabilidade | Regra |
+|---|---|---|---|
+| `event_id` | string | não nulo | identidade determinística por fonte, registro, linha, tipo e tempo |
+| `account_id` | string | não nulo no ativo | entidade obrigatória e provenance relacional |
+| `subscription_id` | string | opcional | preenchido somente para eventos de assinatura/uso |
+| `event_time` | datetime64[ns] | não nulo no ativo | timestamp canônico da fonte |
+| `event_type` | enum | não nulo | um dos oito tipos implementados |
+| `event_subtype` | string controlada | opcional | subtipo categórico, nunca texto livre |
+| `event_value_numeric` | float | opcional | MRR no início, uso ou satisfação no momento permitido |
+| `event_value_category` | string controlada | opcional | plano, funcionalidade, prioridade ou escalonamento |
+| `source_table` | enum | não nulo | tabela oficial de origem |
+| `source_record_id` | string | não nulo no ativo | ID preservado do registro original |
+| `source_row_number` | int | não nulo | linha física do CSV, com cabeçalho na linha 1 |
+| `derivation_type` | enum | não nulo | `SOURCE`; nenhum evento comportamental derivado nesta fase |
+| `derivation_rule` | string controlada | não nulo | regra versionada de geração |
+| `quality_status` | enum | não nulo | `VALID` ou `VALID_WITH_WARNING` no log ativo |
+| `quality_flags` | string delimitada | opcional | flags ordenadas por `|` |
+| `is_quarantined` | bool | não nulo | sempre falso no log ativo |
+| `is_post_churn` | bool | não nulo | evento estritamente posterior ao primeiro churn utilizável |
+| `is_pre_subscription` | bool | não nulo | uso anterior ao episódio; somente verdadeiro na quarentena |
+| `is_post_subscription` | bool | não nulo | uso posterior ao episódio; somente verdadeiro na quarentena |
+| `episode_id` | string | opcional | vínculo determinístico para assinatura/uso |
+| `event_order_on_same_day` | int | não nulo | desempate técnico não causal |
+| `candidate_subscription_id` | string | opcional | somente `EXACT_ACTIVE_MATCH` para churn/reativação |
+| `churn_assignment_status` | enum | opcional | resultado conservador da atribuição |
+| `churn_sequence_number` | int | opcional | ordem de churn por conta |
+| `reactivation_sequence_number` | int | opcional | ordem de reativação explícita por conta |
+| `previous_churn_time` | datetime64[ns] | opcional | churn anterior utilizável |
+| `next_churn_time` | datetime64[ns] | opcional | próximo churn observado |
+| `days_since_previous_churn` | int | opcional | diferença calendária sem inferência causal |
+
+### Tipos implementados
+
+`ACCOUNT_CREATED`, `SUBSCRIPTION_STARTED`, `SUBSCRIPTION_ENDED`, `FEATURE_USED`, `SUPPORT_TICKET_OPENED`, `SUPPORT_TICKET_CLOSED`, `CHURN_RECORDED` e `REACTIVATION_RECORDED`.
+
+Não foram implementados upgrade, downgrade, satisfação separada, inatividade ou variação de uso porque não há timestamp inequívoco ou necessidade estrutural nesta fase.
+
+### Quarentena
+
+- **Arquivo:** `solution/data/processed/quarantined_events.parquet`.
+- **Registros/colunas:** 21.659/28.
+- **Schema:** idêntico ao event log; `quality_status=QUARANTINED` e `is_quarantined=true`.
+- **Regra:** preservar eventos com erro fatal sem permitir seu uso analítico como cronologia válida.
+
+Erros fatais incluem ID obrigatório ausente, timestamp inválido, evento pré-conta, uso pré/pós-assinatura, fim anterior ao início, fechamento anterior à abertura, churn anterior à primeira assinatura e reativação sem churn anterior utilizável.
+
+### Episódios de assinatura
+
+- **Arquivo:** `solution/data/processed/subscription_episodes.parquet`.
+- **Registros/colunas:** 5.000/16.
+- **Grão:** uma linha por `subscription_id`; assinaturas nunca são fundidas automaticamente.
+
+| Campo | Regra |
+|---|---|
+| `episode_id` | hash determinístico de conta e assinatura |
+| `account_id`, `subscription_id` | identidades de origem |
+| `episode_start`, `episode_end` | datas preservadas da assinatura |
+| `episode_status` | `OPEN` ou `CLOSED` conforme `end_date` |
+| `plan`, `mrr` | atributos do episódio, sem texto livre |
+| `previous_subscription_id`, `next_subscription_id` | ordem temporal na mesma conta, sem fusão |
+| `is_post_churn_start` | início estritamente após churn anterior |
+| `has_churn_during_episode` | churn de conta dentro do intervalo |
+| `has_reactivation_during_episode` | reativação explícita dentro do intervalo |
+| `has_overlap` | outra assinatura da conta cruza o intervalo |
+| `quality_status`, `quality_flags` | qualidade do episódio |
+
+Há 4.514 episódios abertos, 486 encerrados e 4.992 episódios afetados por sobreposição. Sobreposição é warning; churn não encerra assinatura automaticamente.
+
+## Provenance e identidade
+
+1. `source_table`, `source_record_id` e `source_row_number` rastreiam cada evento ao CSV.
+2. `event_id` inclui a linha física para preservar registros distintos com o mesmo ID de origem.
+3. `derivation_rule` documenta a transformação; todos os tipos implementados são `SOURCE`.
+4. `episode_id` não substitui `subscription_id`; é uma identidade técnica estável.
+5. Nenhum nome, feedback, motivo, refund ou texto completo é copiado.
+
+## Quality statuses e flags
+
+- `VALID`: sem anomalia sustentada;
+- `VALID_WITH_WARNING`: utilizável somente com filtro e interpretação documentados;
+- `QUARANTINED`: preservado para auditoria, proibido em cronologia analítica válida.
+
+Flags observadas: `PRE_ACCOUNT_EVENT`, `PRE_SUBSCRIPTION_USAGE`, `POST_SUBSCRIPTION_USAGE`, `CHURN_BEFORE_FIRST_SUBSCRIPTION`, `CHURN_WITHOUT_ACTIVE_SUBSCRIPTION`, `DUPLICATE_SOURCE_ID`, `DUPLICATE_CANDIDATE_KEY`, `MULTIPLE_ACTIVE_SUBSCRIPTIONS`, `AMBIGUOUS_CHURN_SUBSCRIPTION`, `POST_CHURN_EVENT`, `REACTIVATION_WITHOUT_PRIOR_CHURN` e `SAME_DAY_ORDER_ASSIGNED`.
+
+## Reconciliação da camada temporal
+
+| Métrica | Resultado |
+|---|---:|
+| registros de origem | 33.100 |
+| oportunidades de evento | 35.586 |
+| eventos gerados | 35.586 |
+| eventos válidos | 10.703 |
+| eventos com warning | 3.224 |
+| eventos em quarentena | 21.659 |
+| duplicatas exatas removidas | 0 |
+| diferença não explicada | 0 |
+
+O denominador é oportunidade de evento porque assinatura e ticket podem produzir dois tipos temporais. Todos os detalhes por fonte estão em `reconciliation_report.json`.
+
+## Uso permitido
+
+- reconstruir jornadas usando o log ativo e qualidade explícita;
+- analisar churn recorrente e reativação como eventos separados;
+- aplicar cutoffs as-of e filtros por `quality_status`/`quality_flags`;
+- usar atribuição a assinatura apenas quando `EXACT_ACTIVE_MATCH`.
+
+## Uso proibido
+
+- usar quarentena como sequência válida ou remover suas ocorrências silenciosamente;
+- tratar desempate no mesmo dia como causal ou intradiário;
+- usar churn flags snapshot, motivo, refund, feedback ou end date antes de disponíveis;
+- atribuir churn a múltiplas assinaturas ou criar assinatura ausente;
+- colapsar churn recorrente, reativação ou duplicatas distintas;
+- materializar mega-join ou produzir diagnóstico nesta fase.
+
+## Gate para a Fase 3
+
+**`PASS_WITH_WARNINGS`**. Event log e episódios estão reconciliados, auditáveis e reproduzíveis. Diagnósticos futuros devem excluir quarentena, respeitar warnings, declarar cutoffs e preservar a semântica de conta versus assinatura.

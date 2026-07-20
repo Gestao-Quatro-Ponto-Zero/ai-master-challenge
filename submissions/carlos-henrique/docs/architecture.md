@@ -1,6 +1,20 @@
 # Arquitetura planejada do JourneyGraph
 
-> **Status: arquitetura planejada, ainda não implementada.**
+> **Status na Fase 2:** auditoria, event log, qualidade temporal, quarentena e episódios de assinatura implementados. Camadas analíticas e de produto permanecem não implementadas.
+
+## Estado de implementação
+
+| Componente | Estado | Evidência |
+|---|---|---|
+| Data audit | `IMPLEMENTED` | perfis, schemas, relações e relatórios da Fase 1 |
+| Event log | `IMPLEMENTED_WITH_WARNINGS` | `data/processed/event_log.parquet` |
+| Temporal quality | `IMPLEMENTED` | flags, statuses e `temporal_quality_summary.json` |
+| Quarantine | `IMPLEMENTED` | `data/processed/quarantined_events.parquet` |
+| Subscription episodes | `IMPLEMENTED_WITH_WARNINGS` | `data/processed/subscription_episodes.parquet` |
+| Diagnóstico, survival e journey mining | `NOT_IMPLEMENTED` | fora do escopo da Fase 2 |
+| Graph | `NOT_IMPLEMENTED` | depende do gate temporal |
+| Watchlist e app | `NOT_IMPLEMENTED` | dependem de análise e validação posteriores |
+
 
 ## Objetivo do produto
 
@@ -43,11 +57,11 @@ Os nomes exibidos no diagrama são rótulos conceituais abreviados; os nomes ofi
 
 ## Event-log-first
 
-O event log é um gate arquitetural. Antes do grafo, deverão ser confirmados identidade, granularidade, timestamps, timezone, duplicidade, ordem temporal, recorrência de churn, reativação e integridade entre fontes. O grafo não poderá corrigir ou ocultar inconsistências do modelo relacional.
+O event log é um gate arquitetural agora implementado com qualidade por evento, provenance, quarentena e reconciliação zero. Identidade substituta de uso, granularidade, timestamps, timezone, duplicidade, ordem temporal, churn recorrente, reativação e integridade foram formalizados. O grafo continua proibido de corrigir ou ocultar inconsistências do modelo relacional e não foi construído nesta fase.
 
 ## Modelo conceitual do grafo
 
-O desenho preliminar considera entidades conceituais como conta, assinatura, evento de uso, interação de suporte e desfecho de retenção. Arestas poderão representar vínculos relacionais ou sucessões temporais. Tipos de nós, arestas, identificadores, propriedades, direção e janelas temporais permanecem **A CONFIRMAR NA FASE 1** e nas fases subsequentes de event log.
+O desenho preliminar considera entidades conceituais como conta, assinatura, evento de uso, interação de suporte e desfecho de retenção. Arestas poderão representar vínculos relacionais ou sucessões temporais. Tipos de nós, arestas, propriedades e projeção permanecem **NÃO IMPLEMENTADOS**; a Fase 2 entrega somente a camada temporal que poderá sustentá-los posteriormente.
 
 O MVP deverá usar NetworkX. Neo4j somente poderá ser avaliado depois de comprovados o modelo relacional, a necessidade operacional e o valor incremental do grafo.
 
@@ -91,11 +105,11 @@ Componentes opcionais exigirão justificativa de valor, custo, segurança e manu
 
 ## Fora de escopo nesta fase
 
-- ingestão ou download dos datasets;
-- implementação de pipelines, análises, modelos ou grafos;
-- dashboard, API, automação, cloud ou CI/CD;
+- diagnóstico de causas de churn, receita em risco e findings executivos;
+- survival analysis, journey mining, grafo, watchlist e modelo preditivo;
+- dashboard, app, API, automação, cloud ou CI/CD;
 - Neo4j, GNNs, embeddings e agentes autônomos;
-- qualquer resultado analítico ou estimativa de impacto.
+- qualquer alegação causal, business case ou estimativa de impacto.
 
 ## Riscos arquiteturais
 
@@ -112,4 +126,9 @@ Componentes opcionais exigirão justificativa de valor, custo, segurança e manu
 
 ## Decisões dependentes da auditoria
 
-Permanecem pendentes até a inspeção dos cinco arquivos: schemas reais, chaves e cardinalidades; unidade temporal e timezone; janela de observação; definição operacional de conta ativa, churn e reativação; regras de receita em risco; tratamento de múltiplas assinaturas; estratégia de censura; política de texto livre; modelo do event log; projeção do grafo; e limites de escala do MVP.
+Foram resolvidos nas Fases 1 e 2: schemas, chaves candidatas, cardinalidades, timezone `NAIVE_SOURCE_TIME`, modelo canônico do event log, identidade determinística, política de duplicatas, quarentena, churn recorrente, reativação explícita, atribuição conservadora a assinatura, episódios e política de texto livre.
+
+Permanecem pendentes para fases autorizadas posteriores:
+
+- definição analítica de coortes, janela de observação e censura;
+- regras de receita em risco, disponibilidade as-of de atributos mutáveis e projeção do grafo.

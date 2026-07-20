@@ -1,0 +1,97 @@
+{
+  "affected_accounts": 500,
+  "affected_subscriptions": 4866,
+  "churn_recurrence": {
+    "accounts_with_multiple_churns": 149,
+    "accounts_with_one_churn": 190,
+    "accounts_without_churn": 161,
+    "churn_events_without_subsequent_reactivation": 501,
+    "maximum_churns_per_account": 5
+  },
+  "churn_subscription_assignment": {
+    "EXACT_ACTIVE_MATCH": 67,
+    "MULTIPLE_ACTIVE_CANDIDATES": 478,
+    "NO_ACTIVE_SUBSCRIPTION": 53,
+    "SINGLE_PRIOR_SUBSCRIPTION": 2
+  },
+  "duplicate_summary": {
+    "duplicate_candidate_key_excess": 3,
+    "duplicate_candidate_key_rows": 6,
+    "duplicate_source_id_excess": 21,
+    "duplicate_source_id_rows": 42,
+    "exact_duplicate_rows_removed": 0
+  },
+  "episodes": {
+    "closed": 486,
+    "open": 4514,
+    "overlapping": 4992,
+    "quality_status_counts": {
+      "VALID": 8,
+      "VALID_WITH_WARNING": 4992
+    },
+    "total": 5000
+  },
+  "event_type_counts": {
+    "ACCOUNT_CREATED": 500,
+    "CHURN_RECORDED": 539,
+    "FEATURE_USED": 25000,
+    "REACTIVATION_RECORDED": 61,
+    "SUBSCRIPTION_ENDED": 486,
+    "SUBSCRIPTION_STARTED": 5000,
+    "SUPPORT_TICKET_CLOSED": 2000,
+    "SUPPORT_TICKET_OPENED": 2000
+  },
+  "inconsistencies_by_source": {
+    "accounts": {
+      "VALID": 435,
+      "VALID_WITH_WARNING": 65
+    },
+    "churn_events": {
+      "QUARANTINED": 78,
+      "VALID": 58,
+      "VALID_WITH_WARNING": 464
+    },
+    "feature_usage": {
+      "QUARANTINED": 19432,
+      "VALID": 4878,
+      "VALID_WITH_WARNING": 690
+    },
+    "subscriptions": {
+      "VALID": 4610,
+      "VALID_WITH_WARNING": 876
+    },
+    "support_tickets": {
+      "QUARANTINED": 2149,
+      "VALID": 722,
+      "VALID_WITH_WARNING": 1129
+    }
+  },
+  "post_churn_events": 6882,
+  "post_subscription_events": 290,
+  "pre_account_events": 15347,
+  "pre_subscription_events": 19142,
+  "quality_flag_counts": {
+    "AMBIGUOUS_CHURN_SUBSCRIPTION": 478,
+    "CHURN_BEFORE_FIRST_SUBSCRIPTION": 53,
+    "CHURN_WITHOUT_ACTIVE_SUBSCRIPTION": 55,
+    "DUPLICATE_CANDIDATE_KEY": 6,
+    "DUPLICATE_SOURCE_ID": 42,
+    "MULTIPLE_ACTIVE_SUBSCRIPTIONS": 478,
+    "POST_CHURN_EVENT": 619,
+    "POST_SUBSCRIPTION_USAGE": 290,
+    "PRE_ACCOUNT_EVENT": 15347,
+    "PRE_SUBSCRIPTION_USAGE": 19142,
+    "REACTIVATION_WITHOUT_PRIOR_CHURN": 31,
+    "SAME_DAY_ORDER_ASSIGNED": 5011
+  },
+  "quality_status_counts": {
+    "QUARANTINED": 21659,
+    "VALID": 10703,
+    "VALID_WITH_WARNING": 3224
+  },
+  "reactivation": {
+    "accounts": 55,
+    "events": 61,
+    "without_prior_churn": 31
+  }
+}

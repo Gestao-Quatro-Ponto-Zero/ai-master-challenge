@@ -1,0 +1,96 @@
+{
+  "active_event_count": 13927,
+  "distinct_accounts_with_events": 500,
+  "distinct_subscriptions_with_events": 5000,
+  "events_by_source": {
+    "accounts": 500,
+    "churn_events": 600,
+    "feature_usage": 25000,
+    "subscriptions": 5486,
+    "support_tickets": 4000
+  },
+  "events_by_type": {
+    "ACCOUNT_CREATED": 500,
+    "CHURN_RECORDED": 539,
+    "FEATURE_USED": 25000,
+    "REACTIVATION_RECORDED": 61,
+    "SUBSCRIPTION_ENDED": 486,
+    "SUBSCRIPTION_STARTED": 5000,
+    "SUPPORT_TICKET_CLOSED": 2000,
+    "SUPPORT_TICKET_OPENED": 2000
+  },
+  "reconciliation_basis": "event_opportunities; optional end/close fields create additional opportunities",
+  "sources": {
+    "accounts": {
+      "active_events": 500,
+      "eligible_source_records": 500,
+      "event_opportunities": 500,
+      "events_generated": 500,
+      "exact_duplicate_event_opportunities_removed": 0,
+      "exact_duplicate_rows_removed": 0,
+      "quarantined_events": 0,
+      "records_without_applicable_event": 0,
+      "source_records": 500,
+      "unexplained_difference": 0
+    },
+    "churn_events": {
+      "active_events": 522,
+      "eligible_source_records": 600,
+      "event_opportunities": 600,
+      "events_generated": 600,
+      "exact_duplicate_event_opportunities_removed": 0,
+      "exact_duplicate_rows_removed": 0,
+      "quarantined_events": 78,
+      "records_without_applicable_event": 0,
+      "source_records": 600,
+      "unexplained_difference": 0
+    },
+    "feature_usage": {
+      "active_events": 5568,
+      "eligible_source_records": 25000,
+      "event_opportunities": 25000,
+      "events_generated": 25000,
+      "exact_duplicate_event_opportunities_removed": 0,
+      "exact_duplicate_rows_removed": 0,
+      "quarantined_events": 19432,
+      "records_without_applicable_event": 0,
+      "source_records": 25000,
+      "unexplained_difference": 0
+    },
+    "subscriptions": {
+      "active_events": 5486,
+      "eligible_source_records": 5000,
+      "event_opportunities": 5486,
+      "events_generated": 5486,
+      "exact_duplicate_event_opportunities_removed": 0,
+      "exact_duplicate_rows_removed": 0,
+      "quarantined_events": 0,
+      "records_without_applicable_event": 0,
+      "source_records": 5000,
+      "unexplained_difference": 0
+    },
+    "support_tickets": {
+      "active_events": 1851,
+      "eligible_source_records": 2000,
+      "event_opportunities": 4000,
+      "events_generated": 4000,
+      "exact_duplicate_event_opportunities_removed": 0,
+      "exact_duplicate_rows_removed": 0,
+      "quarantined_events": 2149,
+      "records_without_applicable_event": 0,
+      "source_records": 2000,
+      "unexplained_difference": 0
+    }
+  },
+  "totals": {
+    "event_opportunities": 35586,
+    "events_generated": 35586,
+    "exact_duplicate_event_opportunities_removed": 0,
+    "exact_duplicate_rows_removed": 0,
+    "quarantined_events": 21659,
+    "source_records": 33100,
+    "unexplained_difference": 0,
+    "valid_events": 10703,
+    "warning_events": 3224
+  }
+}

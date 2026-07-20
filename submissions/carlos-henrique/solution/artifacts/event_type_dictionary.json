@@ -1,0 +1,154 @@
+{
+  "event_types": [
+    {
+      "allowed_use": "Journey anchoring and temporal validation.",
+      "derivation_type": "SOURCE",
+      "description": "Account creation observed at source signup date.",
+      "entity": "ACCOUNT",
+      "fields_used": [
+        "account_id",
+        "signup_date"
+      ],
+      "leakage_risk": "LOW",
+      "name": "ACCOUNT_CREATED",
+      "prohibited_use": "Do not enrich with account_name or snapshot churn_flag.",
+      "source": "accounts",
+      "timestamp_field": "signup_date"
+    },
+    {
+      "allowed_use": "Episode construction and as-of journey ordering.",
+      "derivation_type": "SOURCE",
+      "description": "Subscription episode start observed in the subscription source.",
+      "entity": "SUBSCRIPTION",
+      "fields_used": [
+        "subscription_id",
+        "account_id",
+        "start_date",
+        "plan_tier",
+        "mrr_amount"
+      ],
+      "leakage_risk": "MEDIUM",
+      "name": "SUBSCRIPTION_STARTED",
+      "prohibited_use": "Do not infer upgrade, downgrade, or churn from snapshot flags.",
+      "source": "subscriptions",
+      "timestamp_field": "start_date"
+    },
+    {
+      "allowed_use": "Outcome chronology after the end timestamp.",
+      "derivation_type": "SOURCE",
+      "description": "Subscription end observed when a source end date exists.",
+      "entity": "SUBSCRIPTION",
+      "fields_used": [
+        "subscription_id",
+        "account_id",
+        "end_date",
+        "plan_tier"
+      ],
+      "leakage_risk": "HIGH_PROXY",
+      "name": "SUBSCRIPTION_ENDED",
+      "prohibited_use": "Do not use as a pre-outcome feature without an as-of cutoff.",
+      "source": "subscriptions",
+      "timestamp_field": "end_date"
+    },
+    {
+      "allowed_use": "Usage sequencing after temporal-quality filtering.",
+      "derivation_type": "SOURCE",
+      "description": "Feature usage record preserved at source grain.",
+      "entity": "SUBSCRIPTION",
+      "fields_used": [
+        "usage_id",
+        "subscription_id",
+        "usage_date",
+        "feature_name",
+        "usage_count"
+      ],
+      "leakage_risk": "TEMPORAL",
+      "name": "FEATURE_USED",
+      "prohibited_use": "Do not use quarantined usage or collapse duplicate IDs silently.",
+      "source": "feature_usage",
+      "timestamp_field": "usage_date"
+    },
+    {
+      "allowed_use": "Support interaction sequencing after account creation.",
+      "derivation_type": "SOURCE",
+      "description": "Support ticket submission observed in the source.",
+      "entity": "ACCOUNT",
+      "fields_used": [
+        "ticket_id",
+        "account_id",
+        "submitted_at",
+        "priority"
+      ],
+      "leakage_risk": "TEMPORAL",
+      "name": "SUPPORT_TICKET_OPENED",
+      "prohibited_use": "Do not attach response, satisfaction, or closure facts before available.",
+      "source": "support_tickets",
+      "timestamp_field": "submitted_at"
+    },
+    {
+      "allowed_use": "Post-closure journey analysis with an as-of cutoff.",
+      "derivation_type": "SOURCE",
+      "description": "Support ticket closure observed when a close timestamp exists.",
+      "entity": "ACCOUNT",
+      "fields_used": [
+        "ticket_id",
+        "account_id",
+        "closed_at",
+        "satisfaction_score",
+        "escalation_flag"
+      ],
+      "leakage_risk": "POST_INTERACTION",
+      "name": "SUPPORT_TICKET_CLOSED",
+      "prohibited_use": "Do not expose closure attributes before closed_at.",
+      "source": "support_tickets",
+      "timestamp_field": "closed_at"
+    },
+    {
+      "allowed_use": "Outcome sequencing and recurrent-churn analysis.",
+      "derivation_type": "SOURCE",
+      "description": "Explicit non-reactivation churn occurrence at account grain.",
+      "entity": "ACCOUNT",
+      "fields_used": [
+        "churn_event_id",
+        "account_id",
+        "churn_date",
+        "is_reactivation"
+      ],
+      "leakage_risk": "OUTCOME",
+      "name": "CHURN_RECORDED",
+      "prohibited_use": "Do not use reason, refund, feedback, or the event itself before outcome.",
+      "source": "churn_events",
+      "timestamp_field": "churn_date"
+    },
+    {
+      "allowed_use": "Return-cycle reconstruction after a prior churn.",
+      "derivation_type": "SOURCE",
+      "description": "Explicit source-marked reactivation retained as a distinct account event.",
+      "entity": "ACCOUNT",
+      "fields_used": [
+        "churn_event_id",
+        "account_id",
+        "churn_date",
+        "is_reactivation"
+      ],
+      "leakage_risk": "OUTCOME_HISTORY",
+      "name": "REACTIVATION_RECORDED",
+      "prohibited_use": "Do not infer an unobserved subscription or erase prior churn.",
+      "source": "churn_events",
+      "timestamp_field": "churn_date"
+    }
+  ],
+  "rules_version": "phase2-v1",
+  "same_day_order": {
+    "ACCOUNT_CREATED": 1,
+    "CHURN_RECORDED": 6,
+    "FEATURE_USED": 3,
+    "REACTIVATION_RECORDED": 7,
+    "SUBSCRIPTION_ENDED": 8,
+    "SUBSCRIPTION_STARTED": 2,
+    "SUPPORT_TICKET_CLOSED": 5,
+    "SUPPORT_TICKET_OPENED": 4
+  },
+  "schema_version": "2.0.0",
+  "timezone_policy": "NAIVE_SOURCE_TIME"
+}
