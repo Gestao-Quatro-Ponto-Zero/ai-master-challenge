@@ -1,0 +1,162 @@
+{
+  "analytical_window": {
+    "censoring": "ADMINISTRATIVE_AT_OBSERVATION_END",
+    "granularity": "DAILY_WITH_SOURCE_DATETIME_WHERE_AVAILABLE",
+    "maximum": "2024-12-31T19:00:00",
+    "minimum": "2023-01-02T00:00:00",
+    "observation_end": "2024-12-31T19:00:00",
+    "timezone": "NAIVE_SOURCE_TIME"
+  },
+  "data_health": {
+    "accounts_affected_by_quarantine": 500,
+    "accounts_with_usable_event": 500,
+    "analytical_coverage_ratio": 0.39136177148316753,
+    "coverage_by_account": {
+      "accounts": 500,
+      "events_per_account_max": 72,
+      "events_per_account_median": 26.0,
+      "events_per_account_min": 4
+    },
+    "coverage_by_event_type": [
+      {
+        "accounts": 500,
+        "event_type": "ACCOUNT_CREATED",
+        "usable_events": 500,
+        "valid_events": 435,
+        "warning_events": 65
+      },
+      {
+        "accounts": 325,
+        "event_type": "CHURN_RECORDED",
+        "usable_events": 492,
+        "valid_events": 57,
+        "warning_events": 435
+      },
+      {
+        "accounts": 469,
+        "event_type": "FEATURE_USED",
+        "usable_events": 5568,
+        "valid_events": 4878,
+        "warning_events": 690
+      },
+      {
+        "accounts": 26,
+        "event_type": "REACTIVATION_RECORDED",
+        "usable_events": 30,
+        "valid_events": 1,
+        "warning_events": 29
+      },
+      {
+        "accounts": 312,
+        "event_type": "SUBSCRIPTION_ENDED",
+        "usable_events": 486,
+        "valid_events": 389,
+        "warning_events": 97
+      },
+      {
+        "accounts": 500,
+        "event_type": "SUBSCRIPTION_STARTED",
+        "usable_events": 5000,
+        "valid_events": 4221,
+        "warning_events": 779
+      },
+      {
+        "accounts": 375,
+        "event_type": "SUPPORT_TICKET_CLOSED",
+        "usable_events": 928,
+        "valid_events": 362,
+        "warning_events": 566
+      },
+      {
+        "accounts": 374,
+        "event_type": "SUPPORT_TICKET_OPENED",
+        "usable_events": 923,
+        "valid_events": 360,
+        "warning_events": 563
+      }
+    ],
+    "coverage_by_period": [
+      {
+        "accounts": 55,
+        "period": "2023Q1",
+        "usable_events": 136
+      },
+      {
+        "accounts": 99,
+        "period": "2023Q2",
+        "usable_events": 282
+      },
+      {
+        "accounts": 159,
+        "period": "2023Q3",
+        "usable_events": 569
+      },
+      {
+        "accounts": 219,
+        "period": "2023Q4",
+        "usable_events": 905
+      },
+      {
+        "accounts": 279,
+        "period": "2024Q1",
+        "usable_events": 1355
+      },
+      {
+        "accounts": 343,
+        "period": "2024Q2",
+        "usable_events": 2026
+      },
+      {
+        "accounts": 419,
+        "period": "2024Q3",
+        "usable_events": 3142
+      },
+      {
+        "accounts": 500,
+        "period": "2024Q4",
+        "usable_events": 5512
+      }
+    ],
+    "eligible_generated_events": 35586,
+    "episodes": 5000,
+    "limitations": [
+      "Analytical coverage measures usability of this dataset, not customer or business quality.",
+      "One event may carry multiple warning flags."
+    ],
+    "methodology": "Data-health metrics use quarantine only as exclusion and coverage evidence, never as business behavior.",
+    "overlapping_episode_ratio": 0.9984,
+    "population": "All generated Phase 2 events for quality; usable population for analytical coverage.",
+    "quarantine_ratio": 0.6086382285168325,
+    "quarantined_events": 21659,
+    "strict_coverage_ratio": 0.30076434552914066,
+    "subscriptions_with_warning": 4992,
+    "valid_events": 10703,
+    "warning_events": 3224,
+    "warning_ratio_among_usable": 0.23149278380124938
+  },
+  "gate": "PASS_WITH_WARNINGS",
+  "input_validation": {
+    "all_hashes_match": true,
+    "expected_phase3_base_commit": "75be8ef0663f0f49b425092735ffe0a3c6ed65f6",
+    "phase2_manifest_base_commit": "b9f341b92af080e4abf30282171994905cf0a780",
+    "reconciliation_unexplained_difference": 0,
+    "verified_files": 14
+  },
+  "limitations": [
+    "Warning events materially affect outcome coverage.",
+    "Administrative censoring and daily timestamps constrain interpretation.",
+    "Quarantine is excluded from all behavior, revenue and journey evidence."
+  ],
+  "methodology": "Governed descriptive diagnosis at separate account, episode and event grains; no prediction, survival model, graph or causal claim.",
+  "outputs": {
+    "account_rows": 500,
+    "attention_segments": 5,
+    "episode_rows": 5000,
+    "principal_findings": 5
+  },
+  "population": {
+    "main": "VALID + VALID_WITH_WARNING; quarantine excluded",
+    "quarantine": "Data health only",
+    "strict": "VALID only; quarantine excluded"
+  }
+}

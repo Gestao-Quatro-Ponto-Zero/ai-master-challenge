@@ -1,0 +1,78 @@
+{
+  "denominator_accounts": 500,
+  "denominator_episodes": 5000,
+  "episode_mrr_total": 11338747.0,
+  "limitations": [
+    "MRR fields are associations at observed cutoffs and do not prove realized loss or recovery.",
+    "Overlapping episodes can make episode-level MRR non-additive as account exposure."
+  ],
+  "methodology": "MRR is descriptive. Account MRR is the sum active at that account's cutoff; episode MRR is not called lost or saved revenue.",
+  "mrr_associated_with_churned_accounts": 3295497.0,
+  "mrr_associated_with_closed_episodes": 1179139.0,
+  "mrr_associated_with_no_usage_30d": 1949214.0,
+  "mrr_associated_with_open_episodes": 10159608.0,
+  "mrr_associated_with_reactivated_accounts": 197250.0,
+  "mrr_associated_with_recent_churn_90d": 1961360.0,
+  "mrr_at_account_cutoffs_total": 6754622.0,
+  "mrr_band_definition": "Quartiles of account MRR active at the account-specific cutoff; stable rank tie-breaking.",
+  "mrr_bands": [
+    {
+      "accounts": 125,
+      "band": "Q1_LOW",
+      "churn_observed_accounts": 115,
+      "mrr": 205157.0
+    },
+    {
+      "accounts": 125,
+      "band": "Q2",
+      "churn_observed_accounts": 95,
+      "mrr": 833367.0
+    },
+    {
+      "accounts": 125,
+      "band": "Q3",
+      "churn_observed_accounts": 63,
+      "mrr": 1669327.0
+    },
+    {
+      "accounts": 125,
+      "band": "Q4_HIGH",
+      "churn_observed_accounts": 52,
+      "mrr": 4046771.0
+    }
+  ],
+  "mrr_by_outcome": [
+    {
+      "accounts": 175,
+      "median_mrr_at_account_cutoff": 16256.0,
+      "mrr_at_account_cutoff": 3459125.0,
+      "outcome": "NO_CHURN_OBSERVED"
+    },
+    {
+      "accounts": 22,
+      "median_mrr_at_account_cutoff": 3985.0,
+      "mrr_at_account_cutoff": 178729.0,
+      "outcome": "REACTIVATED"
+    },
+    {
+      "accounts": 4,
+      "median_mrr_at_account_cutoff": 3845.0,
+      "mrr_at_account_cutoff": 18521.0,
+      "outcome": "REACTIVATED_THEN_CHURNED_AGAIN"
+    },
+    {
+      "accounts": 118,
+      "median_mrr_at_account_cutoff": 5737.5,
+      "mrr_at_account_cutoff": 912966.0,
+      "outcome": "RECURRING_CHURN"
+    },
+    {
+      "accounts": 181,
+      "median_mrr_at_account_cutoff": 7491.0,
+      "mrr_at_account_cutoff": 2185281.0,
+      "outcome": "SINGLE_CHURN"
+    }
+  ],
+  "mrr_in_accounts_with_multiple_subscriptions": 6605219.0,
+  "population": "Usable account features and all governed subscription episodes"
+}

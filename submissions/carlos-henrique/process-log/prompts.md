@@ -132,3 +132,33 @@ A auditoria foi executada com outputs estruturais e gate `PASS_WITH_WARNINGS`. O
 ### Resultado do prompt
 
 O event log, a quarentena e os episódios foram construídos com reconciliação zero e gate `PASS_WITH_WARNINGS`. Nenhum diagnóstico foi iniciado.
+
+---
+
+## Prompt da Fase 3
+
+- **Identificação:** “FASE 3 — DIAGNÓSTICO EXECUTIVO DE CHURN, JORNADAS E RECEITA”.
+- **Finalidade:** produzir diagnóstico descritivo governado a partir do event log validado, com cutoffs, censura, sensibilidade e findings quantitativos.
+- **Estado:** executado; nenhuma instrução de survival analysis foi iniciada.
+
+### Escopo reproduzido
+
+1. Repetir gates Git, validar HEAD, hashes, Parquets, manifestos e ausência de CSV versionado.
+2. Usar `VALID + VALID_WITH_WARNING` como população principal, `VALID` como estrita e quarentena somente em Data Health.
+3. Preservar grãos de conta, episódio e evento; proibir mega-join.
+4. Fixar `observation_end`, cutoffs por primeiro churn, janelas 7/30/60/90 e lifetime, sem informação futura.
+5. Classificar outcomes mutuamente exclusivos com prioridade documentada e ausência de churn como observação censurada.
+6. Criar tabelas de features por conta e episódio, preservando episódios abertos.
+7. Produzir diagnósticos de Data Health, churn recorrente, reativação, uso, suporte, MRR associado e coortes.
+8. Gerar jornadas agregadas com duplicatas consecutivas colapsadas e limite de comprimento, sem sequence mining.
+9. Comparar grupos por estatísticas descritivas, efeito, n e missingness, sem inferência explicativa.
+10. Recalcular métricas em populações estrita e ampliada; impedir promoção de findings `UNSTABLE`.
+11. Criar no máximo dez findings e cinco situações de atenção, sempre com evidência, denominador e limitação.
+12. Gerar dez JSONs, cinco relatórios Markdown e três Parquets autorizados, sem PII ou IDs em agregados públicos.
+13. Criar cinco suítes de teste, executar pytest, compileall, pipeline duas vezes e comparar hashes.
+14. Atualizar arquitetura, contrato e process logs; registrar D031–D041.
+15. Fazer staging seletivo arquivo por arquivo e criar somente o commit local `analysis: add governed churn and journey diagnostics`.
+
+### Proibições preservadas
+
+Não foram implementados modelo preditivo, propensão, survival analysis, Kaplan–Meier, Cox, sequence mining, grafo, embeddings, clustering, atribuição explicativa, IA de recomendação, dashboard, LLM, push ou Pull Request.

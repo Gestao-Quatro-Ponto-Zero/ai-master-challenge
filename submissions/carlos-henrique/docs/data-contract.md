@@ -238,3 +238,77 @@ O denominador é oportunidade de evento porque assinatura e ticket podem produzi
 ## Gate para a Fase 3
 
 **`PASS_WITH_WARNINGS`**. Event log e episódios estão reconciliados, auditáveis e reproduzíveis. Diagnósticos futuros devem excluir quarentena, respeitar warnings, declarar cutoffs e preservar a semântica de conta versus assinatura.
+
+---
+
+## Contrato analítico — Fase 3
+
+### Populações
+
+- **principal:** eventos `VALID` ou `VALID_WITH_WARNING`, sempre com `is_quarantined=false`;
+- **estrita:** somente eventos `VALID`, com quarentena excluída;
+- **sensibilidade:** recálculo independente nas populações principal e estrita;
+- **quarentena:** autorizada exclusivamente para cobertura, exclusão e qualidade.
+
+### Janela, cutoff e censura
+
+- `observation_end`: maior `event_time` utilizável da população principal;
+- granularidade: diária, preservando datetime de origem onde existente;
+- timezone: `NAIVE_SOURCE_TIME`;
+- conta com churn: `feature_cutoff_time = first_churn_time`;
+- conta sem churn: `feature_cutoff_time = observation_end`;
+- janelas as-of: 7, 30, 60 e 90 dias, além de lifetime até o cutoff;
+- episódio aberto: não recebe fim artificial; `is_censored_episode=true` e duração observada até `observation_end`.
+
+`NO_CHURN_OBSERVED` significa ausência de churn utilizável no horizonte observado, nunca retenção definitiva.
+
+### Desfecho principal mutuamente exclusivo
+
+Prioridade: `REACTIVATED_THEN_CHURNED_AGAIN`, `REACTIVATED`, `RECURRING_CHURN`, `SINGLE_CHURN`, `NO_CHURN_OBSERVED`. Estados auxiliares podem se sobrepor, mas tabelas executivas usam exatamente um estado principal por conta.
+
+### Schema de account diagnostic
+
+- **Arquivo/grão:** `solution/data/processed/account_diagnostic_features.parquet`; uma linha por `account_id`;
+- **identidade e desfecho:** `account_id`, `primary_outcome`, `churn_count`, `reactivation_count`, `first_churn_time`, `last_churn_time`, `first_reactivation_time`, `last_reactivation_time` e flags auxiliares;
+- **observação:** `observation_start`, `observation_end`, `feature_cutoff_time`, `observed_days`;
+- **assinatura/MRR:** `subscription_count`, `active_subscription_count_at_observation_end`, `closed_subscription_count`, `overlapping_subscription_count`, `total_mrr_current`, `max_mrr`, `mean_mrr`, `first_plan`, `latest_plan`;
+- **uso:** contagens de eventos, usos, features distintas e dias ativos em lifetime/7d/30d/60d/90d, intensidade, concentração, recência e variação 30d versus 60 dias anteriores;
+- **suporte:** tickets em lifetime/7d/30d/60d/90d, fechamentos, resolução média/mediana, satisfação média/mais recente e recência;
+- **qualidade:** `has_usage_warning`, `has_support_warning`, `has_subscription_overlap`, `quality_coverage_ratio`.
+
+Por compatibilidade com o campo mínimo solicitado, `active_subscription_count_at_observation_end` e `total_mrr_current` são calculados no cutoff específico da conta. O nome não autoriza consulta posterior ao primeiro churn; `feature_cutoff_time` torna a disponibilidade auditável.
+
+### Schema de subscription diagnostic
+
+- **Arquivo/grão:** `solution/data/processed/subscription_diagnostic_features.parquet`; uma linha por `episode_id`;
+- **identidade:** `episode_id`, `account_id`, `subscription_id`;
+- **tempo/censura:** `episode_start`, `episode_end`, `episode_duration_days`, `observed_duration_days`, `episode_status`, `is_censored_episode`;
+- **negócio:** `plan`, `mrr`, churn e reativação utilizáveis durante o intervalo;
+- **uso:** `usage_event_count`, `usage_active_days`, `distinct_features_used`, sempre vinculado pela assinatura;
+- **suporte contextual:** `support_ticket_count`, `mean_resolution_hours` no intervalo da conta;
+- **qualidade:** `overlap_count`, `quality_status`, `quality_flags`.
+
+Suporte não possui `subscription_id` na fonte. Por isso suas métricas de episódio são contexto de conta/intervalo e podem repetir em episódios sobrepostos; não constituem atribuição a uma assinatura.
+
+### Resolução de tickets
+
+`resolution_time_hours` é o único complemento lido do CSV bruto. A consulta é read-only, por `ticket_id` único, e o valor só entra quando existe evento `SUPPORT_TICKET_CLOSED` utilizável disponível até o cutoff. Nenhum texto, prioridade futura ou atributo posterior é copiado.
+
+### Receita associada
+
+- conta: soma do MRR dos episódios ativos no cutoff da conta;
+- episódio: MRR preservado no grão original;
+- faixas: quartis por rank estável do MRR no cutoff;
+- terminologia: somente “MRR associado”, sem inferir perda, recuperação ou reconhecimento contábil.
+
+### Grupos pequenos e findings
+
+Coortes com menos de 20 contas recebem `SMALL_SAMPLE` e não são findings principais. Findings exigem evidência quantitativa, denominador, n, comparação, efeito, limitação e sensibilidade. `UNSTABLE` é automaticamente rejeitado.
+
+### Campos proibidos e controles de leakage
+
+São proibidos em features: `churn_flag`, `account_name`, `feedback_text`, `reason_code`, refund, flags snapshot, `end_date` como antecipação do desfecho e qualquer evento posterior ao cutoff. Fechamento, satisfação e resolução só entram se disponíveis até o cutoff. Quarentena nunca entra em uso, suporte, MRR, outcomes ou jornadas.
+
+### Artefato de atenção
+
+`retention_attention_segments.parquet` contém no máximo cinco linhas agregadas com definição, contagem, MRR associado, evidência, limitação, ação de investigação e prioridade. Não contém `account_id` e não é score preditivo.

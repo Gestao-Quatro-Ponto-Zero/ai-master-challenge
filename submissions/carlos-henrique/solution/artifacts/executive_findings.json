@@ -1,0 +1,111 @@
+{
+  "finding_count": 5,
+  "findings": [
+    {
+      "business_relevance": "Decisões de retenção exigem ressalva explícita de cobertura.",
+      "comparison": "Eventos utilizáveis / eventos gerados",
+      "confidence_level": "HIGH",
+      "effect_size": 0.39136177148316753,
+      "evidence": {
+        "analytical_coverage_ratio": 0.39136177148316753,
+        "generated_events": 35586,
+        "usable_events": 13927
+      },
+      "finding_id": "F001",
+      "limitations": "O indicador mede qualidade analítica, não qualidade do negócio.",
+      "metric": "analytical_coverage_ratio",
+      "population": "Todos os eventos gerados na Fase 2",
+      "recommended_investigation": "Priorizar correção upstream das regras temporais com maior quarentena.",
+      "sample_size": 35586,
+      "sensitivity_status": "ROBUST",
+      "statement": "Menos da metade dos eventos gerados compõe a população analítica utilizável.",
+      "title": "A cobertura analítica limita a leitura comportamental"
+    },
+    {
+      "business_relevance": "MRR e churn não devem ser atribuídos a uma assinatura sem regra adicional.",
+      "comparison": "Episódios sobrepostos / episódios",
+      "confidence_level": "HIGH",
+      "effect_size": 0.9984,
+      "evidence": {
+        "episodes": 5000,
+        "overlapping_episode_ratio": 0.9984
+      },
+      "finding_id": "F002",
+      "limitations": "Sobreposição pode ser legítima; não prova duplicidade de cobrança ou churn.",
+      "metric": "overlapping_episode_ratio",
+      "population": "Episódios de assinatura governados",
+      "recommended_investigation": "Validar semântica de múltiplas assinaturas com produto e billing.",
+      "sample_size": 5000,
+      "sensitivity_status": "ROBUST",
+      "statement": "A maioria dos episódios possui ao menos uma sobreposição temporal observada.",
+      "title": "Sobreposição de assinaturas é quase universal no snapshot"
+    },
+    {
+      "business_relevance": "O grupo merece validação de adoção antes de intervenção.",
+      "comparison": "Contas sem uso 30d / contas",
+      "confidence_level": "MEDIUM",
+      "effect_size": 0.432,
+      "evidence": {
+        "accounts_without_usage_30d": 216,
+        "denominator_accounts": 500,
+        "observed_share": 0.432
+      },
+      "finding_id": "F003",
+      "limitations": "Uso em quarentena é excluído e ausência medida não equivale a ausência real.",
+      "metric": "observed_no_usage_30d_proportion",
+      "population": "Contas na população ampliada",
+      "recommended_investigation": "Cruzar qualitativamente cobertura e contexto de produto, sem inferir causalidade.",
+      "sample_size": 500,
+      "sensitivity_status": "SENSITIVE",
+      "statement": "Há contas sem eventos de uso nos 30 dias anteriores ao cutoff governado.",
+      "title": "Ausência de uso recente aparece em parte relevante das contas"
+    },
+    {
+      "business_relevance": "Satisfação não deve sustentar decisão isoladamente.",
+      "comparison": "Satisfação ausente / fechamentos utilizáveis",
+      "confidence_level": "MEDIUM",
+      "effect_size": 0.40301724137931033,
+      "evidence": {
+        "available": 554,
+        "missing": 374,
+        "usable_closures": 928
+      },
+      "finding_id": "F004",
+      "limitations": "Missingness pode não ser aleatório e reduz comparabilidade.",
+      "metric": "satisfaction_missing_share",
+      "population": "Eventos utilizáveis de fechamento de ticket",
+      "recommended_investigation": "Auditar o processo de coleta de satisfação por período e prioridade.",
+      "sample_size": 928,
+      "sensitivity_status": "ROBUST",
+      "statement": "Uma parcela dos fechamentos de suporte utilizáveis não possui satisfação observada.",
+      "title": "A satisfação tem cobertura parcial entre fechamentos utilizáveis"
+    },
+    {
+      "business_relevance": "A censura precisa ser preservada na próxima análise temporal.",
+      "comparison": "MRR de episódios abertos / MRR de episódios",
+      "confidence_level": "HIGH",
+      "effect_size": 0.8960079980618669,
+      "evidence": {
+        "episode_mrr_total": 11338747.0,
+        "observed_share": 0.8960079980618669,
+        "open_episode_mrr": 10159608.0
+      },
+      "finding_id": "F005",
+      "limitations": "MRR associado não é receita salva, perdida ou reconhecida.",
+      "metric": "open_episode_mrr_share",
+      "population": "Episódios de assinatura governados",
+      "recommended_investigation": "Usar exposição temporal explícita na Fase 4, sem fechar episódios abertos.",
+      "sample_size": 5000,
+      "sensitivity_status": "ROBUST",
+      "statement": "A maior parcela do MRR de episódios está associada a episódios administrativamente censurados.",
+      "title": "O MRR de episódios abertos domina o snapshot"
+    }
+  ],
+  "limitations": [
+    "Findings are descriptive associations or governance observations.",
+    "UNSTABLE candidates are excluded from the principal list."
+  ],
+  "methodology": "Rule-based evidence gate; no LLM, model, causal ranking or automated recommendation.",
+  "population": "Only governed aggregate evidence; quarantine used solely for data health.",
+  "rejected_candidates": []
+}

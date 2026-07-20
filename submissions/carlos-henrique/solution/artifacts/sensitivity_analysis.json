@@ -1,0 +1,111 @@
+{
+  "classification_rules": {
+    "ROBUST": "relative magnitude difference at most 10%",
+    "SENSITIVE": "same numeric definition with relative difference above 10% and at most 30%",
+    "UNSTABLE": "relative difference above 30%, unavailable result, or changed top journey"
+  },
+  "comparisons": [
+    {
+      "absolute_difference": 3.0,
+      "classification": "ROBUST",
+      "expanded_value": 500.0,
+      "metric": "account_population",
+      "relative_difference_to_larger_magnitude": 0.006,
+      "strict_value": 497.0
+    },
+    {
+      "absolute_difference": 0.5514084507042254,
+      "classification": "UNSTABLE",
+      "expanded_value": 0.65,
+      "metric": "observed_churn_proportion",
+      "relative_difference_to_larger_magnitude": 0.8483206933911159,
+      "strict_value": 0.09859154929577464
+    },
+    {
+      "absolute_difference": 0.23990342052313884,
+      "classification": "UNSTABLE",
+      "expanded_value": 0.256,
+      "metric": "observed_recurring_churn_proportion",
+      "relative_difference_to_larger_magnitude": 0.9371227364185111,
+      "strict_value": 0.01609657947686117
+    },
+    {
+      "absolute_difference": 0.04998792756539235,
+      "classification": "UNSTABLE",
+      "expanded_value": 0.052,
+      "metric": "observed_reactivated_proportion",
+      "relative_difference_to_larger_magnitude": 0.9613062993344683,
+      "strict_value": 0.002012072434607646
+    },
+    {
+      "absolute_difference": 0.11208048289738431,
+      "classification": "SENSITIVE",
+      "expanded_value": 0.432,
+      "metric": "observed_no_usage_30d_proportion",
+      "relative_difference_to_larger_magnitude": 0.2594455622624637,
+      "strict_value": 0.3199195171026157
+    },
+    {
+      "absolute_difference": -1.0,
+      "classification": "UNSTABLE",
+      "expanded_value": 2.0,
+      "metric": "median_feature_events_90d",
+      "relative_difference_to_larger_magnitude": 0.3333333333333333,
+      "strict_value": 3.0
+    },
+    {
+      "absolute_difference": 0.0,
+      "classification": "ROBUST",
+      "expanded_value": 0.0,
+      "metric": "median_support_tickets_90d",
+      "relative_difference_to_larger_magnitude": 0.0,
+      "strict_value": 0.0
+    },
+    {
+      "absolute_difference": -2498479.0,
+      "classification": "SENSITIVE",
+      "expanded_value": 6754622.0,
+      "metric": "mrr_at_account_cutoffs_total",
+      "relative_difference_to_larger_magnitude": 0.27001531702723225,
+      "strict_value": 9253101.0
+    }
+  ],
+  "expanded_population": "VALID + VALID_WITH_WARNING; quarantine excluded",
+  "journey_top_rank": {
+    "classification": "ROBUST",
+    "expanded_sequence": [
+      "ACCOUNT_CREATED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED"
+    ],
+    "strict_sequence": [
+      "ACCOUNT_CREATED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED",
+      "FEATURE_USED",
+      "SUBSCRIPTION_STARTED"
+    ]
+  },
+  "limitations": [
+    "Thresholds are governance rules, not statistical significance tests.",
+    "Strict filtering can change both cutoff dates and available events for an account."
+  ],
+  "methodology": "All principal metrics are recomputed for VALID only and VALID + VALID_WITH_WARNING.",
+  "strict_population": "VALID only; quarantine excluded"
+}

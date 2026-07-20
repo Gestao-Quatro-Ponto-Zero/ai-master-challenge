@@ -132,3 +132,32 @@ Permanecem pendentes para fases autorizadas posteriores:
 
 - definição analítica de coortes, janela de observação e censura;
 - regras de receita em risco, disponibilidade as-of de atributos mutáveis e projeção do grafo.
+
+---
+
+## Atualização de implementação — Fase 3
+
+> **Status:** diagnóstico executivo implementado com ressalvas de cobertura e sensibilidade. Nenhum modelo temporal avançado ou produto operacional foi construído.
+
+| Componente | Estado na Fase 3 | Evidência |
+|---|---|---|
+| Diagnostic feature layer | `IMPLEMENTED_WITH_WARNINGS` | `account_diagnostic_features.parquet` e `subscription_diagnostic_features.parquet` |
+| Data health | `IMPLEMENTED` | `diagnostic_summary.json` e `data-health.md` |
+| Churn diagnostics | `IMPLEMENTED_WITH_WARNINGS` | `churn_diagnostics.json`; resultados centrais são sensíveis a warnings |
+| Reactivation diagnostics | `IMPLEMENTED_WITH_WARNINGS` | reativação explícita, separada e recalculada na população estrita |
+| Revenue diagnostics | `IMPLEMENTED_WITH_WARNINGS` | MRR associado, sem linguagem de perda ou recuperação comprovada |
+| Cohort diagnostics | `IMPLEMENTED` | seis critérios de coorte com `SMALL_SAMPLE` abaixo de 20 contas |
+| Descriptive journey analytics | `IMPLEMENTED_WITH_WARNINGS` | sequências reduzidas, agregadas e limitadas; sem mineração formal |
+| Survival analysis | `NOT_IMPLEMENTED` | reservado à Fase 4 |
+| Sequence mining | `NOT_IMPLEMENTED` | PrefixSpan, Markov e equivalentes fora do escopo |
+| Graph | `NOT_IMPLEMENTED` | nenhuma projeção ou banco de grafos criado |
+| Individual watchlist | `NOT_IMPLEMENTED` | segmentos são apenas agregados, sem IDs |
+| App/dashboard | `NOT_IMPLEMENTED` | interface fora do escopo |
+
+### Fluxo implementado
+
+O event log ativo alimenta agregações independentes nos grãos de conta, episódio e evento. A conta usa cutoff no primeiro churn utilizável ou em `observation_end`; episódios abertos permanecem censurados; quarentena alimenta somente Data Health. Os agregados geram diagnósticos, análise de sensibilidade, findings com gate e no máximo cinco situações de atenção agregadas.
+
+### Caminho de maior retorno e menor esforço
+
+Antes de operacionalizar retenção individual, o maior retorno está em corrigir cronologias upstream e validar a semântica de assinaturas simultâneas. Isso reduz incerteza em churn, uso e MRR sem adicionar infraestrutura, modelo ou interface prematuramente.

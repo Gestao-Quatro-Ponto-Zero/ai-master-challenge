@@ -307,3 +307,90 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **Justificativa:** 13.927 eventos ativos, provenance completo, IDs determinísticos, reconciliação zero e idempotência permitem diagnóstico controlado.
 - **Consequências:** Fase 3 deve excluir quarentena, respeitar flags, declarar cutoffs, manter churn no grão de conta e não interpretar desempate como causalidade.
 - **Status:** APROVADA COM RESSALVAS
+
+---
+
+## D031 — População analítica principal
+
+- **Decisão:** usar `VALID + VALID_WITH_WARNING`, com quarentena excluída; `VALID` forma a população estrita.
+- **Justificativa:** warnings são utilizáveis com ressalva e preservam cobertura, enquanto quarentena contém cronologias não autorizadas.
+- **Consequência:** métricas principais exigem análise de sensibilidade.
+- **Status:** APROVADA COM RESSALVAS
+
+## D032 — Definição de observation_end
+
+- **Decisão:** maior `event_time` utilizável da população principal, `2024-12-31T19:00:00`.
+- **Justificativa:** é o último ponto temporal autorizado no event log.
+- **Consequência:** episódios abertos são observados, não artificialmente encerrados.
+- **Status:** APROVADA
+
+## D033 — Classificação principal de desfecho
+
+- **Decisão:** prioridade `REACTIVATED_THEN_CHURNED_AGAIN`, `REACTIVATED`, `RECURRING_CHURN`, `SINGLE_CHURN`, `NO_CHURN_OBSERVED`.
+- **Justificativa:** garante exatamente um estado executivo sem apagar estados auxiliares.
+- **Consequência:** 500 contas permanecem únicas no grão.
+- **Status:** APROVADA
+
+## D034 — Cutoff do primeiro churn
+
+- **Decisão:** primeiro churn utilizável para contas com churn; `observation_end` para as demais.
+- **Justificativa:** impede uso de eventos posteriores ao desfecho em features comparativas.
+- **Consequência:** pós-reativação aparece somente em diagnóstico descritivo separado.
+- **Status:** APROVADA
+
+## D035 — Janelas temporais
+
+- **Decisão:** 7, 30, 60 e 90 dias, mais lifetime até o cutoff, com inclusão do dia do cutoff.
+- **Justificativa:** acomoda granularidade diária sem inventar ordem intradiária.
+- **Consequência:** toda feature de janela é reproduzível por `feature_cutoff_time`.
+- **Status:** APROVADA
+
+## D036 — Política de censura
+
+- **Decisão:** manter `NO_CHURN_OBSERVED` e `is_censored_episode`; calcular duração observada de abertos até `observation_end`.
+- **Justificativa:** ausência de evento futuro não prova retenção ou encerramento.
+- **Consequência:** Fase 4 deverá preservar a censura administrativa.
+- **Status:** APROVADA
+
+## D037 — Definição de receita associada
+
+- **Decisão:** MRR de conta é a soma ativa no cutoff; MRR de episódio permanece no grão original.
+- **Justificativa:** evita antecipação temporal e alegação financeira não comprovada.
+- **Consequência:** relatórios usam “MRR associado”, nunca perda ou recuperação automática.
+- **Status:** APROVADA COM RESSALVAS
+
+## D038 — Política de grupos pequenos
+
+- **Decisão:** `MIN_GROUP_SIZE=20`; grupos menores recebem `SMALL_SAMPLE` e não podem sustentar finding principal.
+- **Justificativa:** reduz destaque de diferenças frágeis sem ocultar o grupo técnico.
+- **Consequência:** todos os grupos permanecem nos JSONs com status explícito.
+- **Status:** APROVADA
+
+## D039 — Confidence level dos findings
+
+- **Decisão:** `HIGH`, `MEDIUM` ou `LOW` conforme tamanho, cobertura, warnings, evidência e estabilidade; evidência vazia é erro.
+- **Justificativa:** separa força da evidência de relevância operacional.
+- **Consequência:** cada finding inclui n, efeito, comparação, limitação e investigação recomendada.
+- **Status:** APROVADA
+
+## D040 — Sensitivity analysis
+
+- **Decisão:** recalcular métricas em `VALID` e `VALID + VALID_WITH_WARNING`; classificar diferença relativa até 10% como `ROBUST`, até 30% como `SENSITIVE` e acima como `UNSTABLE`.
+- **Justificativa:** warnings alteram tanto eventos quanto cutoffs disponíveis.
+- **Consequência:** churn observado, recorrência, reativação e mediana de uso 90d ficaram `UNSTABLE` e não são findings principais.
+- **Status:** APROVADA COM RESSALVAS
+
+## D041 — Gate do diagnóstico executivo
+
+- **Decisão:** `PASS_WITH_WARNINGS`.
+- **Justificativa:** 500 contas, 5.000 episódios, reconciliação zero, cutoffs auditáveis, outputs determinísticos e findings governados permitem avançar; cobertura analítica de 39,1362%, sobreposição de 99,84% e sensibilidade dos outcomes impedem `PASS` pleno.
+- **Consequência:** Fase 4 pode usar apenas as populações, cutoffs e censura documentados; nenhuma métrica instável pode ser tratada como evidência principal sem estratificação.
+- **Status:** APROVADA COM RESSALVAS
+
+## Revisão operacional complementar
+
+- **Resolução de suporte:** lookup read-only por `ticket_id`, autorizado somente no fechamento utilizável e antes do cutoff.
+- **Suporte por episódio:** contexto de conta no intervalo, sem atribuição à assinatura.
+- **Sobreposição:** recalculada até o boundary pertinente; não usa episódio futuro para feature de conta.
+- **Segmentos:** cinco agregados sem `account_id`, não constituem score.
+- **Jornadas:** ordenação estável, duplicatas consecutivas colapsadas, limite 12 e suporte explícito; nenhuma mineração formal.

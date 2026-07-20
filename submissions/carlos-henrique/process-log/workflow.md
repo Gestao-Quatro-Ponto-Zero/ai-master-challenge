@@ -284,3 +284,58 @@ A cobertura ativa é reduzida pela quarentena material de uso e suporte. Datas d
 **Gate da Fase 3:** `PASS_WITH_WARNINGS`. O log é auditável e reconciliado, mas diagnósticos devem excluir quarentena, respeitar warnings e declarar cutoffs.
 
 Não foram executados diagnóstico, análise de receita, survival, journey mining, grafo, watchlist, modelo, dashboard, push ou Pull Request.
+
+---
+
+## Fase 3 — diagnóstico executivo governado
+
+### Gate e fontes
+
+1. Reexecutados `pwd`, raiz Git, branch, status, diffs, staging e log.
+2. Confirmados branch `submission/carlos-henrique`, HEAD `75be8ef0663f0f49b425092735ffe0a3c6ed65f6`, working tree limpo e staging vazio.
+3. Confirmados zero CSVs brutos versionados.
+4. Recalculados hashes dos cinco CSVs e dos outputs registrados no manifesto da Fase 2; todos coincidiram.
+5. Lidos `event_log.parquet` (13.927), `quarantined_events.parquet` (21.659) e `subscription_episodes.parquet` (5.000); reconciliação inexplicada permaneceu zero.
+
+### Execução
+
+1. Construídas features main e strict com cutoff no primeiro churn ou `observation_end`.
+2. Mantidos grãos separados de conta, episódio e evento; nenhum mega-join foi materializado.
+3. Consultado `resolution_time_hours` no CSV de suporte somente para fechamentos utilizáveis, por lookup único e read-only.
+4. Gerados Data Health, churn, reativação, uso, suporte, receita associada, coortes, jornadas agregadas e sensibilidade.
+5. Findings passaram por gate de evidência e exclusão automática de status `UNSTABLE`.
+6. Segmentos de atenção foram persistidos apenas no agregado, sem IDs de conta.
+
+### Erros reais e correções
+
+- **E031 — fixture incompleto:** o primeiro teste novo falhou porque o fixture de episódios omitia `subscription_id`. O fixture foi corrigido para refletir o contrato; 13/13 testes novos passaram na repetição.
+- **E032 — cache do pytest no sandbox:** uma execução ficou bloqueada ao criar cache temporário. Foi encerrada e repetida com o cache provider desabilitado para a validação intermediária.
+- **E033 — timeout de agregação:** duas execuções do pipeline excederam 120/180 segundos por filtros globais repetidos e reconstrução redundante de episódios estritos. Eventos e episódios foram pré-agrupados, strings Arrow foram convertidas em memória para slicing eficiente, e a tabela de episódios estrita desnecessária foi removida. A execução seguinte concluiu em 102,8 segundos.
+- **E034 — revisão semântica:** a primeira versão pareava uma reativação futura com mais de um churn e estimava tickets abertos por diferença bruta de contagens. O pareamento passou a usar o churn imediatamente anterior e tickets abertos passaram a usar diferença de IDs.
+
+### Revisão humana antes do commit
+
+- população principal, estrita e quarentena separadas;
+- cutoffs e janelas auditados contra eventos reais;
+- episódios abertos preservados e censurados;
+- MRR tratado como associado;
+- `SMALL_SAMPLE` aplicado abaixo de 20;
+- jornadas limitadas, agregadas e sem mineração formal;
+- findings instáveis excluídos;
+- linguagem, PII, texto livre e caminhos absolutos verificados;
+- tamanhos dos três Parquets revisados;
+- CSVs brutos imutáveis, não versionados e fora do staging.
+
+### Validação final da Fase 3
+
+- pytest: 57 testes aprovados, zero warnings;
+- compileall: src e scripts aprovados;
+- pipeline: duas execuções finais completas;
+- idempotência: 18 arquivos comparados, zero divergências SHA-256;
+- grãos: 500/500 contas únicas e 5.000/5.000 episódios únicos;
+- privacidade: zero IDs operacionais nos JSONs/relatórios, zero emails e zero caminhos absolutos;
+- linguagem: zero ocorrências das alegações explicativas proibidas;
+- reconciliação: diferença inexplicada zero;
+- dados brutos: cinco hashes intactos e zero CSVs versionados;
+- escopo: somente submissions/carlos-henrique/ elegível para staging;
+- gate: PASS_WITH_WARNINGS por cobertura de 39,1362%, sobreposição de 99,84% e outcomes sensíveis a warnings.
