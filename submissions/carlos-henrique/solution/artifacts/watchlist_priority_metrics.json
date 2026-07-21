@@ -1,0 +1,37 @@
+{
+  "matrix_type": "EXPLICIT_DISCRETE_P1_P4",
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "priorities": [
+    {
+      "accounts_highest_priority": 228,
+      "items": 548,
+      "priority": "P1"
+    },
+    {
+      "accounts_highest_priority": 1,
+      "items": 213,
+      "priority": "P2"
+    },
+    {
+      "accounts_highest_priority": 271,
+      "items": 845,
+      "priority": "P3"
+    },
+    {
+      "accounts_highest_priority": 0,
+      "items": 3,
+      "priority": "P4"
+    }
+  ],
+  "weighted_score": false
+}

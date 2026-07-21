@@ -251,4 +251,23 @@ NetworkX ? a implementa??o de refer?ncia local. O `INSTANCE_GRAPH` preserva rast
 
 ### Limite arquitetural
 
+---
+
+## Atualiza??o de implementa??o ? Fase 7
+
+> **Status:** Intervention Watchlist governada implementada com ressalvas; revis?o humana obrigat?ria.
+
+| Componente | Estado | Limite |
+|---|---|---|
+| Watchlist rules engine | `IMPLEMENTED` | 16 regras determin?sticas versionadas |
+| Retrospective feature layer | `IMPLEMENTED` | cutoff expl?cito e janelas 7/30/60/90 dias |
+| Quality gate | `IMPLEMENTED_WITH_WARNINGS` | quarentena somente para qualidade; LOW bloqueia P1 comportamental |
+| Evidence packets | `IMPLEMENTED` | fontes, m?tricas, denominadores, cutoff e provenance |
+| Deterministic priority matrix | `IMPLEMENTED` | componentes discretos e matriz P1?P4, sem score ponderado |
+| Graph-based explanations | `IMPLEMENTED_WITH_WARNINGS` | somente padr?es promov?veis ROBUST/SENSITIVE, n?o causais |
+| Human-review workflow | `IMPLEMENTED` | nenhuma a??o operacional ? autorizada |
+| Prediction / automated intervention / experiment execution / dashboard / LLM recommendation / outbound actions | `NOT_IMPLEMENTED` | fora do escopo |
+
+Fluxo: features cutoff-safe ? gate de qualidade ? regras independentes ? quatro componentes discretos ? matriz P1?P4 ? evidence packet ? consolida??o por conta ? revis?o humana. A camada ? descritiva, an?nima e audit?vel.
+
 Centralidade ? propriedade estrutural apenas de EventType; Pattern recebe ranking agregado por suporte ou MRR associado. Account nunca recebe centralidade. Nenhuma aresta ou propriedade comunica causalidade, perda ou economia. A exporta??o Neo4j ? derivada e opcional; GraphML mant?m os grafos completos e o CSV de EventInstance usa amostra determin?stica.

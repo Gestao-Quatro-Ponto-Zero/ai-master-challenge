@@ -638,3 +638,67 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **E050 ? falso positivo do gate financeiro:** o schema documentava `revenue_lost` como propriedade proibida e o scanner interpretava a lista preventiva como exposi??o; a valida??o passou a procurar chaves publicadas, mantendo a proibi??o.
 - **E051 ? consulta de MRR sem filtro terminal:** GQ05 usava o ranking global de MRR; a consulta passou a restringir explicitamente caminhos terminando em CHURN e com pelo menos dez contas.
 - **E052 ? cobertura sem?ntica em n?s:** o primeiro validador inspecionava texto apenas de arestas; o gate foi ampliado para propriedades textuais de n?s.
+
+## D075 ? Watchlist como fila de investiga??o humana
+
+- **Decis?o:** cada item exige revis?o humana e n?o autoriza a??o operacional.
+- **Status:** APROVADA
+
+## D076 ? Regras determin?sticas versionadas
+
+- **Decis?o:** configurar 16 regras audit?veis em JSON, sem texto livre ou l?gica secreta.
+- **Status:** APROVADA
+
+## D077 ? Separa??o dos componentes
+
+- **Decis?o:** preservar evid?ncia, urg?ncia, materialidade e confian?a como dimens?es discretas independentes.
+- **Status:** APROVADA
+
+## D078 ? Prioridade discreta sem score preditivo
+
+- **Decis?o:** usar matriz expl?cita P1?P4; proibir m?dia ponderada e probabilidade.
+- **Status:** APROVADA
+
+## D079 ? Data quality gate antes de sinal comportamental
+
+- **Decis?o:** quarentena ? quality-only e confian?a LOW bloqueia P1 comportamental.
+- **Status:** APROVADA
+
+## D080 ? Evid?ncia estruturada e provenance
+
+- **Decis?o:** cada item registra fontes controladas, m?tricas, popula??o, denominadores, cutoff, janela e estabilidade.
+- **Status:** APROVADA
+
+## D081 ? Explica??es por template
+
+- **Decis?o:** gerar linguagem determin?stica, descritiva e n?o causal, sem LLM.
+- **Status:** APROVADA
+
+## D082 ? MRR associado e deduplicado
+
+- **Decis?o:** usar MRR somente como materialidade contextual e deduplicar por conta nos agregados.
+- **Status:** APROVADA
+
+## D083 ? Integra??o somente com grafo promov?vel
+
+- **Decis?o:** usar somente ROBUST/SENSITIVE, n?o-HIGH, n?o-small e `is_promotable=true`.
+- **Status:** APROVADA
+
+## D084 ? Proibi??o de interven??o autom?tica
+
+- **Decis?o:** n?o produzir contato, desconto, mudan?a de plano, cancelamento ou a??o outbound.
+- **Status:** APROVADA
+
+## D085 ? Gate da watchlist
+
+- **Decis?o:** `PASS_WITH_WARNINGS`.
+- **Justificativa:** outputs reconciliados e explic?veis; W011 ? ampla por overlap sist?mico, W015 exige revis?o por cobrir mais de 40%, warnings e amostra reduzida de reativa??o limitam confian?a.
+- **Status:** APROVADA COM RESSALVAS
+
+## Erros e corre??es da Fase 7
+
+- **E053 ? janela nula em regra de qualidade:** template tentou converter aus?ncia de janela em inteiro; passou a registrar zero como janela n?o temporal.
+- **E054 ? schema consolidado inicial:** nomes internos foram alinhados ao contrato (`active_queue_count`, `rule_ids`, extremos de componentes e revis?o humana).
+- **E055 ? volume amplo:** W011 foi preservada exclusivamente como exce??o DATA_QUALITY_REVIEW; W015 recebeu `BROAD_RULE_REVIEW_REQUIRED`, sem promo??o silenciosa.
+- **E056 ? tmp_path bloqueado pelo sandbox:** quatro setups da su?te hist?rica n?o acessaram o tempor?rio padr?o do Windows; a mesma su?te foi repetida fora do sandbox com `--basetemp` isolado em `C:\tmp` e encerrou com 111 testes aprovados.
+- **E057 ? inspe??o visual no Windows:** o visualizador local n?o atravessou o wrapper de sandbox; um montage derivado fora do reposit?rio permitiu revisar t?tulos, legibilidade, agrega??o, paleta e aus?ncia de IDs nas seis figuras.

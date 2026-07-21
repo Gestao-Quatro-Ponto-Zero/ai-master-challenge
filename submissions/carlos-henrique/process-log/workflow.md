@@ -462,4 +462,19 @@ Escopos, limites, ordena??o, exposi??o, transi??es, n-grams, pruning, churn, rec
 - Neo4j: 26 arquivos derivados; EventInstance amostrado por 250 jornadas; execucao externa nao realizada;
 - figuras: seis PNGs revisados; o painel de reativacao passou a declarar explicitamente a ausencia de caminho promovido.
 
+## Fase 7 ? Intervention Watchlist
+
+1. Reexecutadas precondi??es Git, presen?a e hashes dos onze inputs; base `1c31ae2` limpa.
+2. Perfilados 500 accounts, 13.927 eventos, popula??es MAIN/STRICT e cutoff `2024-12-31T19:00:00`.
+3. Criadas 16 regras determin?sticas para sete filas, com quality-first e limites de volume.
+4. Constru?das features retrospectivas, quatro componentes discretos e matriz expl?cita P1?P4.
+5. Integrado somente JourneyGraph promov?vel, excluindo UNSTABLE, HIGH e small sample.
+6. Gerados watchlist detalhada, resumo por conta, evidence packets, dez JSONs, cinco relat?rios e seis figuras.
+7. Executadas valida??es de leakage, PII, temporalidade, causalidade, probabilidade, interven??o, MRR e reconcilia??o.
+8. Pipeline executado duas vezes e hashes comparados; su?te completa e compileall executados antes do commit.
+
+### Revis?o humana
+
+Regras, cutoff, janelas, qualidade, componentes, filas, duplicidade, evid?ncias, linguagem, grafo, MRR, figuras, PII, reconcilia??o e diff staged foram inclu?dos no checklist final. W011 ? exce??o ampla exclusiva de qualidade; W015 permanece `BROAD_RULE_REVIEW_REQUIRED`. Nenhum item autoriza contato ou interven??o.
+
 - **E053 - painel de reativacao vazio:** nenhum pattern de reativacao atingiu os gates e a primeira figura mostrava apenas o titulo. O painel passou a comunicar a ausencia de resultado e os gates preservados, sem criar evidencia artificial.

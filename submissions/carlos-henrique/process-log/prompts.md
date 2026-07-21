@@ -229,4 +229,12 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - dez CSVs de n?s, doze de rela??es e quatro arquivos Cypher;
 - documenta??o e decis?es D064?D074.
 
+## Fase 7 ? Intervention Watchlist e explica??es baseadas em evid?ncia
+
+- **Entrada:** prompt integral da Fase 7, commit-base `1c31ae22632d27ac45137af5b55acee1d6f19f86`.
+- **Escopo aplicado:** watchlist governada, regras, features retrospectivas, matriz discreta, evidence packets, JourneyGraph promov?vel, outputs agregados e valida??o.
+- **Restri??es preservadas:** sem modelo preditivo, probabilidade, causalidade, receita perdida/salva, LLM decisor, a??o autom?tica, dashboard, push ou PR.
+- **Gate esperado:** `PASS_WITH_WARNINGS` devido a amplitude de qualidade, regra ampla e depend?ncia de warnings.
+- **Commit autorizado:** `analysis: add governed intervention watchlist`.
+
 **Commit autorizado:** `graph: build governed JourneyGraph knowledge layer`, local e seletivo.

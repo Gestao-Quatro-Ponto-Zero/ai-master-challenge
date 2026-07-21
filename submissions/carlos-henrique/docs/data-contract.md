@@ -471,4 +471,32 @@ A exporta??o cont?m dez CSVs de n?s, doze CSVs de rela??es, constraints, ?ndices
 
 ### Uso permitido e proibido
 
+---
+
+## Contratos da Fase 7 ? Intervention Watchlist
+
+### `intervention_watchlist.parquet`
+
+Gr?o: `account_key ? reference_date ? watchlist_rule_id`. Chave an?nima, regra, fila, quatro componentes LOW/MEDIUM/HIGH, prioridade P1?P4, m?tricas retrospectivas, qualidade, MRR associado, evid?ncia de grafo promov?vel, propriet?rio humano e limites operacionais.
+
+### `account_watchlist_summary.parquet`
+
+Gr?o: uma linha por `account_key` no cutoff. Cont?m prioridade mais alta, filas e regras serializadas, extremos discretos dos componentes, MRR deduplicado, outcome, taxonomia, qualidade e revis?o humana obrigat?ria.
+
+### `watchlist_evidence.parquet`
+
+Gr?o: um pacote por `watchlist_item_key`. Cont?m `rule_id`, fontes, m?tricas observadas, padr?es/caminhos/findings promov?veis, popula??o, denominadores, cutoff, janelas, flags, estabilidade, limita??es, provenance e explica??o estruturada.
+
+### Configura??o e prioridade
+
+`config/watchlist_rules.json` versiona condi??es, exclus?es, cobertura, estabilidade, suporte, propriet?rio, investiga??o autorizada e a??es proibidas. A prioridade combina evidence strength, temporal urgency, materiality e data confidence por matriz expl?cita; n?o existe m?dia ponderada, score ou probabilidade.
+
+### Provenance e explica??o
+
+Fontes controladas: `PHASE_3_DIAGNOSTIC`, `PHASE_4_SURVIVAL`, `PHASE_5_JOURNEY`, `PHASE_6_GRAPH` e `DATA_QUALITY`. Caminhos s?o relativos. Templates registram observa??o, motivo, evid?ncia, contexto temporal/de grafo/de qualidade, limita??es, pr?ximo passo autorizado e interpreta??o proibida.
+
+### Privacidade
+
+Parquets individuais usam apenas `account_key` an?nimo. JSONs agregados, relat?rios e figuras n?o cont?m account keys, IDs brutos, PII ou texto livre sens?vel.
+
 Permitido: investiga??o agregada, estrutura, caminhos observados, qualidade, suporte, estabilidade, taxonomia e MRR associado. Proibido: score individual, causalidade, previs?o, perda/economia atribu?da, ranking de conta, recomenda??o autom?tica, contato, interven??o, GNN, link prediction e app.

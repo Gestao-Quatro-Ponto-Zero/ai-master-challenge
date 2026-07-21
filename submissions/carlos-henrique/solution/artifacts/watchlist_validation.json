@@ -1,0 +1,76 @@
+{
+  "difference_unexplained": 0,
+  "explainability": {
+    "unsafe_language_violations": 0
+  },
+  "financial": {
+    "deduplicated_associated_mrr": 2942293.0,
+    "item_level_naive_mrr": 9940702.0,
+    "reconciled": true
+  },
+  "gate_result": "PASS_WITH_WARNINGS",
+  "graph": {
+    "graph_evidence_items": 1609,
+    "unstable_high_or_small_attached": 0
+  },
+  "input_gate": {
+    "all_hashes_match": true,
+    "expected_base_commit": "1c31ae22632d27ac45137af5b55acee1d6f19f86",
+    "input_hashes": {
+      "artifacts/graph_findings.json": "ecb52c72df6b5a498feb0b5269c67c3d0bdfd945c0b83c3eac15c36556a7d360",
+      "artifacts/graph_queries.json": "d6fdf02d6553b71757df57490229fc1a9934b20923aecceb4468f211f00e4992",
+      "artifacts/journey_findings.json": "58f31818ec28049c334190c10c9405a82b7062d34b4cf0185de90b1ed2c02008",
+      "artifacts/survival_findings.json": "0357cb4692d8cb94ef594450d2e2557322c62c8be70c4725dda9fcbf85cc04cc",
+      "data/processed/account_diagnostic_features.parquet": "cc3a4fb1c90f3bfd8110e35998421b7dd854a1841ac71a11df41b6c247cd7988",
+      "data/processed/account_journey_taxonomy.parquet": "87f5d43bc4503e313084790fb25947c44b9f9362b556a2bf1fb9793edc0f348e",
+      "data/processed/account_journeys.parquet": "1d9dc6795a92f2389f315503a38263f24713290d2c74eb4e8823e0eb283faeed",
+      "data/processed/account_survival_dataset.parquet": "f0e82247f3ca4d4db32886c818881011f9dbd1f18adaab8f1d36291cd6c92c4e",
+      "data/processed/event_log.parquet": "0e9e60d06ce6fbd62103924aab7beda6d0eab9ed5a87ea32cee786abcdb0373f",
+      "data/processed/journey_analytical_graph.graphml": "84e20c30dd2e8674257b1dc737b37f88bccd17c80425bec4b7e58a3c3cbb6775",
+      "data/processed/journey_instance_graph.graphml": "b9c645109097d589e15703e829eb28357dbf46194702d4b5b6d24ba90ae164dc"
+    },
+    "verified_inputs": 11
+  },
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "operational_actions": 0,
+  "priority": {
+    "behavioral_low_confidence_p1": 0,
+    "matrix_is_discrete": true,
+    "weighted_score_used": false
+  },
+  "privacy": {
+    "forbidden_columns_exposed": 0,
+    "raw_account_ids_exposed": 0
+  },
+  "quality": {
+    "accounts_requiring_data_review": 467,
+    "quality_first": true,
+    "quarantined_behavioral_signals": 0
+  },
+  "rules": {
+    "broad_behavioral_promoted": 0,
+    "configured": 16,
+    "promoted": 15
+  },
+  "schema": {
+    "duplicate_items": 0,
+    "evidence_rows": 1609,
+    "summary_rows": 500,
+    "watchlist_rows": 1609
+  },
+  "temporal": {
+    "future_evidence_rows": 0,
+    "historical_cutoff_supported": true,
+    "reference_date": "2024-12-31T19:00:00"
+  }
+}

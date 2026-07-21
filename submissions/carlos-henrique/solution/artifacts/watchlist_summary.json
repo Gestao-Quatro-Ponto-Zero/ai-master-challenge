@@ -1,0 +1,21 @@
+{
+  "accounts": 500,
+  "configured_rules": 16,
+  "deduplicated_associated_mrr": 2942293.0,
+  "human_review_required": true,
+  "items": 1609,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "operational_actions": 0,
+  "queues": 7,
+  "reference_date": "2024-12-31T19:00:00"
+}
