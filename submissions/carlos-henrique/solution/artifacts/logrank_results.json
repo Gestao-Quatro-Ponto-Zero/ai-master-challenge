@@ -1,0 +1,688 @@
+{
+  "dimensions": [
+    {
+      "comparisons": [
+        {
+          "events_a": 102,
+          "events_b": 111,
+          "group_a": "Basic",
+          "group_b": "Enterprise",
+          "group_dimension": "first_plan",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.10512648903520759,
+          "p_value_bh": 0.31537946710562276,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": 35.406390686056255,
+          "sample_size_a": 164,
+          "sample_size_b": 171,
+          "statistic": 2.6259964723494997,
+          "strict_effect_180d": 0.009764042872441814,
+          "strict_population_stability": "SENSITIVE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.12201526448738326,
+            "365d": 0.06750814975531988,
+            "90d": 0.1023006680311499
+          }
+        },
+        {
+          "events_a": 102,
+          "events_b": 112,
+          "group_a": "Basic",
+          "group_b": "Pro",
+          "group_dimension": "first_plan",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.2609421580796662,
+          "p_value_bh": 0.39141323711949927,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": 15.246143242269198,
+          "sample_size_a": 164,
+          "sample_size_b": 165,
+          "statistic": 1.2637515928035223,
+          "strict_effect_180d": 0.012356006484686155,
+          "strict_population_stability": "SENSITIVE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.08180294412377337,
+            "365d": 0.00750233783457499,
+            "90d": 0.028367849625125507
+          }
+        },
+        {
+          "events_a": 111,
+          "events_b": 112,
+          "group_a": "Enterprise",
+          "group_b": "Pro",
+          "group_dimension": "first_plan",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.6846690452223596,
+          "p_value_bh": 0.6846690452223596,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": -20.160247443787057,
+          "sample_size_a": 171,
+          "sample_size_b": 165,
+          "statistic": 0.1649172990264033,
+          "strict_effect_180d": 0.0025919636122443412,
+          "strict_population_stability": "UNSTABLE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.04021232036360989,
+            "365d": -0.06000581192074489,
+            "90d": -0.07393281840602439
+          }
+        }
+      ],
+      "eligible_groups": {
+        "Basic": {
+          "censored_count": 62,
+          "event_count": 102,
+          "sample_size": 164
+        },
+        "Enterprise": {
+          "censored_count": 60,
+          "event_count": 111,
+          "sample_size": 171
+        },
+        "Pro": {
+          "censored_count": 53,
+          "event_count": 112,
+          "sample_size": 165
+        }
+      },
+      "group_dimension": "first_plan",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "MAIN",
+      "skipped_groups": []
+    },
+    {
+      "comparisons": [
+        {
+          "events_a": 106,
+          "events_b": 64,
+          "group_a": "HIGH_GE_2000",
+          "group_b": "LOW_LT_500",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.01213369039085361,
+          "p_value_bh": 0.07280214234512167,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": -57.6174732749067,
+          "sample_size_a": 151,
+          "sample_size_b": 97,
+          "statistic": 6.291228761103072,
+          "strict_effect_180d": -0.01374259448659032,
+          "strict_population_stability": "SENSITIVE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.19682814919153513,
+            "365d": -0.10620955424053141,
+            "90d": -0.18911293974902743
+          }
+        },
+        {
+          "events_a": 106,
+          "events_b": 100,
+          "group_a": "HIGH_GE_2000",
+          "group_b": "MID_500_1999",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.05472402104615853,
+          "p_value_bh": 0.12039762846993134,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": -36.375043686954,
+          "sample_size_a": 151,
+          "sample_size_b": 163,
+          "statistic": 3.690475261365702,
+          "strict_effect_180d": 0.016731758353605186,
+          "strict_population_stability": "UNSTABLE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.08605390888945708,
+            "365d": -0.12119028342986887,
+            "90d": -0.07684572488726504
+          }
+        },
+        {
+          "events_a": 106,
+          "events_b": 55,
+          "group_a": "HIGH_GE_2000",
+          "group_b": "ZERO",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.06019881423496566,
+          "p_value_bh": 0.12039762846993134,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": -39.29441226378401,
+          "sample_size_a": 151,
+          "sample_size_b": 89,
+          "statistic": 3.531898700822271,
+          "strict_effect_180d": -0.0208644103920943,
+          "strict_population_stability": "SENSITIVE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.1015268933946748,
+            "365d": -0.1436579092640785,
+            "90d": -0.07471575199594438
+          }
+        },
+        {
+          "events_a": 64,
+          "events_b": 100,
+          "group_a": "LOW_LT_500",
+          "group_b": "MID_500_1999",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.5577001478090913,
+          "p_value_bh": 0.8365502217136369,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": 21.2424295879527,
+          "sample_size_a": 97,
+          "sample_size_b": 163,
+          "statistic": 0.34370193763906104,
+          "strict_effect_180d": 0.030474352840195507,
+          "strict_population_stability": "SENSITIVE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.11077424030207805,
+            "365d": -0.01498072918933746,
+            "90d": 0.11226721486176239
+          }
+        },
+        {
+          "events_a": 64,
+          "events_b": 55,
+          "group_a": "LOW_LT_500",
+          "group_b": "ZERO",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.7642496716091867,
+          "p_value_bh": 0.8855719563045014,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": 18.32306101112269,
+          "sample_size_a": 97,
+          "sample_size_b": 89,
+          "statistic": 0.08994296871017457,
+          "strict_effect_180d": -0.007121815905503981,
+          "strict_population_stability": "UNSTABLE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.09530125579686033,
+            "365d": -0.0374483550235471,
+            "90d": 0.11439718775308305
+          }
+        },
+        {
+          "events_a": 100,
+          "events_b": 55,
+          "group_a": "MID_500_1999",
+          "group_b": "ZERO",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.8855719563045014,
+          "p_value_bh": 0.8855719563045014,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": -2.91936857683001,
+          "sample_size_a": 163,
+          "sample_size_b": 89,
+          "statistic": 0.02070993601114468,
+          "strict_effect_180d": -0.03759616874569949,
+          "strict_population_stability": "ROBUST",
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.015472984505217724,
+            "365d": -0.022467625834209637,
+            "90d": 0.002129972891320664
+          }
+        }
+      ],
+      "eligible_groups": {
+        "HIGH_GE_2000": {
+          "censored_count": 45,
+          "event_count": 106,
+          "sample_size": 151
+        },
+        "LOW_LT_500": {
+          "censored_count": 33,
+          "event_count": 64,
+          "sample_size": 97
+        },
+        "MID_500_1999": {
+          "censored_count": 63,
+          "event_count": 100,
+          "sample_size": 163
+        },
+        "ZERO": {
+          "censored_count": 34,
+          "event_count": 55,
+          "sample_size": 89
+        }
+      },
+      "group_dimension": "mrr_band",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "MAIN",
+      "skipped_groups": []
+    },
+    {
+      "comparisons": [],
+      "eligible_groups": {
+        "ONE": {
+          "censored_count": 172,
+          "event_count": 314,
+          "sample_size": 486
+        }
+      },
+      "group_dimension": "subscription_count_band",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "MAIN",
+      "skipped_groups": [
+        {
+          "event_count": 1,
+          "group": "FIVE_PLUS",
+          "reasons": [
+            "n<20",
+            "events<5"
+          ],
+          "sample_size": 2,
+          "status": "INSUFFICIENT_EVENTS"
+        },
+        {
+          "event_count": 10,
+          "group": "TWO_TO_FOUR",
+          "reasons": [
+            "n<20"
+          ],
+          "sample_size": 12,
+          "status": "SMALL_SAMPLE"
+        }
+      ]
+    },
+    {
+      "comparisons": [],
+      "eligible_groups": {
+        "False": {
+          "censored_count": 172,
+          "event_count": 314,
+          "sample_size": 486
+        }
+      },
+      "group_dimension": "has_subscription_overlap",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "MAIN",
+      "skipped_groups": [
+        {
+          "event_count": 11,
+          "group": "True",
+          "reasons": [
+            "n<20"
+          ],
+          "sample_size": 14,
+          "status": "SMALL_SAMPLE"
+        }
+      ]
+    },
+    {
+      "comparisons": [
+        {
+          "events_a": 294,
+          "events_b": 31,
+          "group_a": "INCLUDES_WARNING",
+          "group_b": "VALID_ONLY",
+          "group_dimension": "quality_population",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.37139818870665353,
+          "p_value_bh": 0.37139818870665353,
+          "population": "MAIN",
+          "rmst_365_difference_days_a_minus_b": 18.40970161129306,
+          "sample_size_a": 441,
+          "sample_size_b": 59,
+          "statistic": 0.7989810660848409,
+          "strict_effect_180d": null,
+          "strict_population_stability": "NOT_COMPARABLE",
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.07011160324099763,
+            "365d": -0.1235511705188681,
+            "90d": 0.19646936973946072
+          }
+        }
+      ],
+      "eligible_groups": {
+        "INCLUDES_WARNING": {
+          "censored_count": 147,
+          "event_count": 294,
+          "sample_size": 441
+        },
+        "VALID_ONLY": {
+          "censored_count": 28,
+          "event_count": 31,
+          "sample_size": 59
+        }
+      },
+      "group_dimension": "quality_population",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "MAIN",
+      "skipped_groups": []
+    }
+  ],
+  "executed_comparisons": 10,
+  "method": "PAIRWISE_LOG_RANK_WITH_BENJAMINI_HOCHBERG",
+  "minimum_group_events": 5,
+  "minimum_group_size": 20,
+  "strict_dimensions": [
+    {
+      "comparisons": [
+        {
+          "events_a": 13,
+          "events_b": 17,
+          "group_a": "Basic",
+          "group_b": "Enterprise",
+          "group_dimension": "first_plan",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.5893642632725304,
+          "p_value_bh": 0.9140591579622307,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": 5.031440743569817,
+          "sample_size_a": 155,
+          "sample_size_b": 173,
+          "statistic": 0.2913381851603555,
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.009764042872441814,
+            "365d": 0.020517700503103864,
+            "90d": 0.009764042872441814
+          }
+        },
+        {
+          "events_a": 13,
+          "events_b": 16,
+          "group_a": "Basic",
+          "group_b": "Pro",
+          "group_dimension": "first_plan",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.6799559696023133,
+          "p_value_bh": 0.9140591579622307,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": 4.624162573029366,
+          "sample_size_a": 155,
+          "sample_size_b": 169,
+          "statistic": 0.17017540179308913,
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.012356006484686155,
+            "365d": 0.012356006484686155,
+            "90d": 0.012356006484686155
+          }
+        },
+        {
+          "events_a": 17,
+          "events_b": 16,
+          "group_a": "Enterprise",
+          "group_b": "Pro",
+          "group_dimension": "first_plan",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.9140591579622307,
+          "p_value_bh": 0.9140591579622307,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": -0.4072781705404509,
+          "sample_size_a": 173,
+          "sample_size_b": 169,
+          "statistic": 0.011646724797267746,
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.0025919636122443412,
+            "365d": -0.008161694018417709,
+            "90d": 0.0025919636122443412
+          }
+        }
+      ],
+      "eligible_groups": {
+        "Basic": {
+          "censored_count": 142,
+          "event_count": 13,
+          "sample_size": 155
+        },
+        "Enterprise": {
+          "censored_count": 156,
+          "event_count": 17,
+          "sample_size": 173
+        },
+        "Pro": {
+          "censored_count": 153,
+          "event_count": 16,
+          "sample_size": 169
+        }
+      },
+      "group_dimension": "first_plan",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "STRICT",
+      "skipped_groups": []
+    },
+    {
+      "comparisons": [
+        {
+          "events_a": 15,
+          "events_b": 8,
+          "group_a": "HIGH_GE_2000",
+          "group_b": "LOW_LT_500",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.6394914881161697,
+          "p_value_bh": 0.7738705680366068,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": -4.867583905364938,
+          "sample_size_a": 154,
+          "sample_size_b": 99,
+          "statistic": 0.21940783646991355,
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.01374259448659032,
+            "365d": -0.026845919637424442,
+            "90d": -0.01374259448659032
+          }
+        },
+        {
+          "events_a": 15,
+          "events_b": 17,
+          "group_a": "HIGH_GE_2000",
+          "group_b": "MID_500_1999",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.7542910039151123,
+          "p_value_bh": 0.7738705680366068,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": 4.594694498126273,
+          "sample_size_a": 154,
+          "sample_size_b": 159,
+          "statistic": 0.09796047896641814,
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.016731758353605186,
+            "365d": 0.003628433202771064,
+            "90d": 0.016731758353605186
+          }
+        },
+        {
+          "events_a": 15,
+          "events_b": 6,
+          "group_a": "HIGH_GE_2000",
+          "group_b": "ZERO",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.43948377122265314,
+          "p_value_bh": 0.7738705680366068,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": -9.14714797665141,
+          "sample_size_a": 154,
+          "sample_size_b": 85,
+          "statistic": 0.5976298657511362,
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.0208644103920943,
+            "365d": -0.03396773554292842,
+            "90d": -0.0208644103920943
+          }
+        },
+        {
+          "events_a": 8,
+          "events_b": 17,
+          "group_a": "LOW_LT_500",
+          "group_b": "MID_500_1999",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.47452412150637413,
+          "p_value_bh": 0.7738705680366068,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": 9.462278403491212,
+          "sample_size_a": 99,
+          "sample_size_b": 159,
+          "statistic": 0.511421557313399,
+          "survival_probability_difference_a_minus_b": {
+            "180d": 0.030474352840195507,
+            "365d": 0.030474352840195507,
+            "90d": 0.030474352840195507
+          }
+        },
+        {
+          "events_a": 8,
+          "events_b": 6,
+          "group_a": "LOW_LT_500",
+          "group_b": "ZERO",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.7738705680366068,
+          "p_value_bh": 0.7738705680366068,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": -4.279564071286472,
+          "sample_size_a": 99,
+          "sample_size_b": 85,
+          "statistic": 0.08255033722986684,
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.007121815905503981,
+            "365d": -0.007121815905503981,
+            "90d": -0.007121815905503981
+          }
+        },
+        {
+          "events_a": 17,
+          "events_b": 6,
+          "group_a": "MID_500_1999",
+          "group_b": "ZERO",
+          "group_dimension": "mrr_band",
+          "interpretation": "DESCRIPTIVE_ASSOCIATION_ONLY",
+          "limitation": "Pairwise log-rank does not establish causality or individual future risk.",
+          "multiplicity_status": "NOT_BH_SIGNIFICANT_0_05",
+          "p_value": 0.31907571458104134,
+          "p_value_bh": 0.7738705680366068,
+          "population": "STRICT",
+          "rmst_365_difference_days_a_minus_b": -13.741842474777684,
+          "sample_size_a": 159,
+          "sample_size_b": 85,
+          "statistic": 0.992731387626606,
+          "survival_probability_difference_a_minus_b": {
+            "180d": -0.03759616874569949,
+            "365d": -0.03759616874569949,
+            "90d": -0.03759616874569949
+          }
+        }
+      ],
+      "eligible_groups": {
+        "HIGH_GE_2000": {
+          "censored_count": 139,
+          "event_count": 15,
+          "sample_size": 154
+        },
+        "LOW_LT_500": {
+          "censored_count": 91,
+          "event_count": 8,
+          "sample_size": 99
+        },
+        "MID_500_1999": {
+          "censored_count": 142,
+          "event_count": 17,
+          "sample_size": 159
+        },
+        "ZERO": {
+          "censored_count": 79,
+          "event_count": 6,
+          "sample_size": 85
+        }
+      },
+      "group_dimension": "mrr_band",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "STRICT",
+      "skipped_groups": []
+    },
+    {
+      "comparisons": [],
+      "eligible_groups": {
+        "ONE": {
+          "censored_count": 451,
+          "event_count": 46,
+          "sample_size": 497
+        }
+      },
+      "group_dimension": "subscription_count_band",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "STRICT",
+      "skipped_groups": []
+    },
+    {
+      "comparisons": [],
+      "eligible_groups": {
+        "False": {
+          "censored_count": 451,
+          "event_count": 46,
+          "sample_size": 497
+        }
+      },
+      "group_dimension": "has_subscription_overlap",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "STRICT",
+      "skipped_groups": []
+    },
+    {
+      "comparisons": [],
+      "eligible_groups": {
+        "VALID_ONLY": {
+          "censored_count": 451,
+          "event_count": 46,
+          "sample_size": 497
+        }
+      },
+      "group_dimension": "quality_population",
+      "minimum_group_events": 5,
+      "minimum_group_size": 20,
+      "population": "STRICT",
+      "skipped_groups": []
+    }
+  ]
+}

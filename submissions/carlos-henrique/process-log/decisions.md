@@ -394,3 +394,77 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **Sobreposição:** recalculada até o boundary pertinente; não usa episódio futuro para feature de conta.
 - **Segmentos:** cinco agregados sem `account_id`, não constituem score.
 - **Jornadas:** ordenação estável, duplicatas consecutivas colapsadas, limite 12 e suporte explícito; nenhuma mineração formal.
+
+---
+
+## D042 ? Unidade principal conta
+
+- **Decis?o:** usar uma linha por conta; IDs permanecem somente em Parquets operacionais.
+- **Justificativa:** churn ? evento de conta e epis?dios repetidos violam independ?ncia simples.
+- **Status:** APROVADA
+
+## D043 ? Primeiro churn como endpoint
+
+- **Decis?o:** usar o primeiro churn utiliz?vel em ou ap?s a exposi??o; recorr?ncias n?o substituem o endpoint e churns anteriores s?o apenas contabilizados.
+- **Justificativa:** define um ?nico evento temporal reproduz?vel sem antecipar jornadas futuras.
+- **Status:** APROVADA
+
+## D044 ? Origem temporal principal
+
+- **Decis?o:** primeira assinatura utiliz?vel; signup entra somente em sensibilidade.
+- **Justificativa:** assinatura inicia exposi??o comercial observ?vel, enquanto signup testa depend?ncia da origem.
+- **Status:** APROVADA COM RESSALVAS
+
+## D045 ? Censura administrativa
+
+- **Decis?o:** censura ? direita em `2024-12-31T19:00:00` para contas sem primeiro churn observado.
+- **Justificativa:** aus?ncia de evento at? o fim da janela n?o prova reten??o definitiva.
+- **Status:** APROVADA COM RESSALVAS
+
+## D046 ? Popula??es estrita e principal
+
+- **Decis?o:** principal usa `VALID + VALID_WITH_WARNING`; estrita usa somente `VALID`; quarentena ? proibida.
+- **Justificativa:** preserva cobertura e mede influ?ncia dos warnings.
+- **Status:** APROVADA COM RESSALVAS
+
+## D047 ? Landmarks
+
+- **Decis?o:** marcos em 30, 60 e 90 dias; excluir churn at? o marco e falta de observabilidade; calcular features somente at? o marco.
+- **Justificativa:** evita tempo imortal e exposi??o desigual em vari?veis comportamentais.
+- **Status:** APROVADA
+
+## D048 ? Pol?tica de grupos pequenos
+
+- **Decis?o:** exigir n m?nimo 20, pelo menos cinco eventos por grupo e at-risk m?nimo 20; registrar grupos omitidos.
+- **Justificativa:** impede destaque de curvas e p-values sem suporte observacional razo?vel.
+- **Status:** APROVADA
+
+## D049 ? Uso de RMST
+
+- **Decis?o:** estimar RMST em 90, 180 e 365 dias e comunicar somente diferen?a observada de tempo m?dio sem primeiro churn.
+- **Justificativa:** resume curvas quando mediana ou proporcionalidade s?o fr?geis sem criar interpreta??o causal.
+- **Status:** APROVADA COM RESSALVAS
+
+## D050 ? Crit?rios para Cox
+
+- **Decis?o:** n?o executar Cox nesta fase.
+- **Justificativa:** endpoints s?o sens?veis a warnings, a popula??o estrita tem somente 46 eventos eleg?veis e riscos proporcionais n?o foram testados de forma est?vel.
+- **Consequ?ncia:** nenhum coeficiente, hazard ratio, concord?ncia, score ou res?duo foi produzido.
+- **Status:** N?O EXECUTADA POR GATE
+
+## D051 ? Gate de sobreviv?ncia
+
+- **Decis?o:** `PASS_WITH_WARNINGS`.
+- **Justificativa:** 500 contas principais, 497 estritas, quatro Parquets, oito JSONs, quatro relat?rios, seis figuras, testes e 22 hashes id?nticos sustentam uso descritivo; 325 versus 46 eventos e censura de 35,0% versus 90,74% demonstram sensibilidade material.
+- **Consequ?ncia:** Fase 5 pode usar curvas e landmarks somente com popula??es, censura, at-risk e sensibilidade preservados; score, causalidade e interven??o permanecem proibidos.
+- **Status:** APROVADA COM RESSALVAS
+
+## Revis?o humana complementar da Fase 4
+
+- exposi??o, endpoint, censura, dura??o e exclus?es revisados;
+- churn recorrente e pr?-exposi??o revisados;
+- landmark features e aus?ncia de futuro revisados;
+- curvas, at-risk, intervalos, log-rank, BH e RMST revisados;
+- Cox e assinatura explicitamente n?o executados;
+- pressupostos, sensibilidade e linguagem causal revisados;
+- figuras, PII, hashes, escopo e diff revisados.

@@ -339,3 +339,50 @@ Não foram executados diagnóstico, análise de receita, survival, journey minin
 - dados brutos: cinco hashes intactos e zero CSVs versionados;
 - escopo: somente submissions/carlos-henrique/ elegível para staging;
 - gate: PASS_WITH_WARNINGS por cobertura de 39,1362%, sobreposição de 99,84% e outcomes sensíveis a warnings.
+
+---
+
+## Fase 4 ? survival analysis governada
+
+### Gate e execu??o
+
+1. Reexecutados `pwd`, raiz Git, branch, status, diffs, staging e log; confirmado HEAD `dd1f013cc502d9e690a1790331397897729edfd3`.
+2. Confirmados 500 registros e 500 IDs ?nicos na tabela anal?tica, Parquets leg?veis, hashes do event log/epis?dios compat?veis e zero CSVs brutos versionados.
+3. Instalados somente no `.venv` local: PyArrow 25.0.0, SciPy 1.18.0 e Matplotlib 3.11.1; ambiente global e requirements permaneceram inalterados.
+4. Constru?do o dataset principal com 500 contas eleg?veis; a popula??o estrita teve 497 eleg?veis e tr?s exclus?es por aus?ncia de assinatura inicial `VALID`.
+5. Fixados primeiro churn como endpoint e `2024-12-31T19:00:00` como censura administrativa.
+6. Geradas Kaplan?Meier, Nelson?Aalen, RMST, dez compara??es log-rank eleg?veis com BH e seis cen?rios de sensibilidade.
+7. Gerados landmarks 30/60/90 com features exclusivamente anteriores ou iguais ao marco e reconcilia??o integral de exclus?es.
+8. Cox e curvas por assinatura foram formalmente n?o executados; n?o houve score, predi??o, causalidade, grafo, sequence mining ou dashboard.
+9. Produzidos quatro Parquets, oito JSONs agregados, quatro relat?rios e seis PNGs.
+
+### Erros reais e corre??es
+
+- **E041 ? depend?ncias locais ausentes:** PyArrow, SciPy e Matplotlib n?o estavam dispon?veis. A instala??o foi restrita ao `.venv`, com vers?es registradas.
+- **E042 ? timeout ap?s instala??o:** o comando de pip excedeu o timeout, mas a verifica??o posterior confirmou instala??o completa. Nenhuma segunda instala??o foi feita.
+- **E043 ? cache de fontes fora da writable root:** o primeiro pipeline gerou outputs, mas Matplotlib tentou gravar no AppData e excedeu o timeout. `MPLCONFIGDIR` foi redirecionado para `.venv/.matplotlib`.
+- **E044 ? custo de slicing temporal:** tr?s popula??es/origens e tr?s landmarks demoraram mais de 100 segundos. Strings Arrow foram convertidas em mem?ria para objetos antes dos slices; a execu??o caiu para aproximadamente 78 segundos sem mudar a regra temporal.
+- **E045 ? fixture de mediana incorreto:** o teste `NOT_REACHED` continha evento quando restava uma conta em risco e corretamente levava KM a zero. O fixture passou a ter censura completa.
+- **E046 ? diret?rio tempor?rio do pytest bloqueado:** AppData e `C:/tmp` n?o eram grav?veis pelo subprocesso Python no sandbox. O teste idempotente passou a usar arquivo transit?rio dentro do `.venv` ignorado.
+- **E047 ? fixtures legados fora do sandbox:** duas su?tes antigas ainda dependiam de `tmp_path` no AppData. A execu??o completa foi repetida fora do sandbox apenas para os tempor?rios e aprovou 76/76 testes; nenhum arquivo versionado foi alterado pela escalada.
+
+### Valida??o e revis?o humana
+
+- testes novos: 19 aprovados;
+- pytest completo: 76 aprovados em 3,92 segundos;
+- pipeline final: duas execu??es completas consecutivas;
+- idempot?ncia: 22 outputs, zero diverg?ncias SHA-256;
+- conta: 500/500 IDs ?nicos; zero dura??o negativa eleg?vel;
+- endpoint: 325 eventos e 175 censuras na principal; 46 eventos e 451 censuras na estrita;
+- quarentena utilizada: zero;
+- future features detectadas: zero;
+- PII/IDs em JSONs, relat?rios ou figuras: zero;
+- reconcilia??o inexplicada: zero;
+- findings principais: dois, nenhum `UNSTABLE`;
+- assinatura: an?lise n?o executada devido a 99,84% de overlap e depend?ncia;
+- Cox: n?o executado por sensibilidade dos endpoints e proporcionalidade n?o testada;
+- gr?ficos: seis PNGs revisados quanto a t?tulo, eixos, intervalos, suporte, cores, IDs e PII.
+
+### Gate
+
+`PASS_WITH_WARNINGS`. As curvas de conta s?o reproduz?veis e metodologicamente governadas, mas a diferen?a entre popula??es principal e estrita, a censura e os pressupostos impedem `PASS` pleno e qualquer uso individual ou causal.

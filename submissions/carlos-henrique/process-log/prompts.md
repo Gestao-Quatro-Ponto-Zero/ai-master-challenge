@@ -162,3 +162,30 @@ O event log, a quarentena e os episódios foram construídos com reconciliação
 ### Proibições preservadas
 
 Não foram implementados modelo preditivo, propensão, survival analysis, Kaplan–Meier, Cox, sequence mining, grafo, embeddings, clustering, atribuição explicativa, IA de recomendação, dashboard, LLM, push ou Pull Request.
+
+---
+
+## Prompt da Fase 4
+
+- **Identifica??o:** ?FASE 4 ? SURVIVAL ANALYSIS E CURVAS DE RISCO TEMPORAL?.
+- **Finalidade:** construir an?lise temporal governada de tempo at? primeiro churn, censura, curvas, risco acumulado, landmarks, compara??es e sensibilidade.
+- **Estado:** executado com `PASS_WITH_WARNINGS`; nenhuma instru??o da Fase 5 foi executada.
+
+### Escopo reproduzido
+
+1. Repetir gates Git e validar commit-base, outputs da Fase 3, hashes, 500 contas ?nicas e aus?ncia de CSV bruto versionado.
+2. Usar conta como unidade, primeira assinatura como origem principal, signup como sensibilidade e primeiro churn utiliz?vel como endpoint.
+3. Aplicar censura administrativa ? direita e n?o chamar censurados de retidos definitivamente.
+4. Criar dataset de conta e landmarks de 30, 60 e 90 dias sem eventos futuros.
+5. Estimar Kaplan?Meier, Nelson?Aalen, at-risk, intervalos, mediana e RMST sem extrapola??o.
+6. Comparar grupos temporalmente defens?veis, aplicar log-rank somente com suporte e corrigir p-values por Benjamini?Hochberg.
+7. Executar seis cen?rios de sensibilidade e impedir findings `UNSTABLE`.
+8. Avaliar pressupostos e condicionar Cox a eventos, missingness, proporcionalidade, estabilidade e aus?ncia de leakage.
+9. Gerar oito JSONs agregados, quatro relat?rios, quatro Parquets, at? seis PNGs, c?digo modular e cinco su?tes de teste.
+10. Executar pytest, compileall, pipeline duas vezes, hashes, valida??o de PII, leakage, escopo e revis?o humana.
+11. Atualizar arquitetura, contrato e process logs; registrar D042?D051.
+12. Fazer staging seletivo, commit local exato, sem push ou Pull Request.
+
+### Proibi??es preservadas
+
+N?o foram constru?dos score individual, modelo preditivo operacional, ranking, causalidade, interven??o automatizada, sequence mining, grafo, embeddings, LLM, dashboard, push ou Pull Request.

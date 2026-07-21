@@ -161,3 +161,37 @@ O event log ativo alimenta agregações independentes nos grãos de conta, epis�
 ### Caminho de maior retorno e menor esforço
 
 Antes de operacionalizar retenção individual, o maior retorno está em corrigir cronologias upstream e validar a semântica de assinaturas simultâneas. Isso reduz incerteza em churn, uso e MRR sem adicionar infraestrutura, modelo ou interface prematuramente.
+
+---
+
+## Atualiza??o de implementa??o ? Fase 4
+
+> **Status:** survival analysis de conta implementada com ressalvas; nenhuma previs?o, a??o operacional ou infer?ncia causal foi constru?da.
+
+| Componente | Estado na Fase 4 | Evid?ncia |
+|---|---|---|
+| Survival dataset de conta | `IMPLEMENTED` | `account_survival_dataset.parquet`; uma linha por conta |
+| Camada de censura | `IMPLEMENTED_WITH_LIMITATIONS` | censura administrativa ? direita em `2024-12-31T19:00:00` |
+| Kaplan?Meier | `IMPLEMENTED_WITH_WARNINGS` | curvas principal, estrita e grupos com IC, at-risk e suporte |
+| Nelson?Aalen | `IMPLEMENTED_WITH_WARNINGS` | risco acumulado descritivo com intervalos |
+| Landmark analysis | `IMPLEMENTED` | datasets e curvas em 30, 60 e 90 dias, sem features futuras |
+| Sensitivity analysis | `IMPLEMENTED_WITH_WARNINGS` | popula??o, origem, overlap e cobertura de qualidade |
+| Log-rank e BH | `IMPLEMENTED_WITH_WARNINGS` | somente grupos com n e eventos m?nimos |
+| RMST | `IMPLEMENTED_WITH_WARNINGS` | horizontes de 90, 180 e 365 dias |
+| Cox PH | `CONDITIONAL_NOT_EXECUTED` | endpoints sens?veis a warnings e proporcionalidade n?o testada |
+| Sequence mining | `NOT_IMPLEMENTED` | reservado ? Fase 5 |
+| Graph | `NOT_IMPLEMENTED` | nenhuma proje??o criada |
+| Intervention engine | `NOT_IMPLEMENTED` | fora do escopo |
+| App/dashboard | `NOT_IMPLEMENTED` | fora do escopo |
+
+### Fluxo temporal implementado
+
+O event log ativo ? filtrado em popula??es principal e estrita. A primeira assinatura utiliz?vel abre a exposi??o; o primeiro churn utiliz?vel em ou ap?s a origem encerra o tempo com evento; na aus?ncia dele, `observation_end` encerra a observa??o como censura ? direita. Kaplan?Meier e Nelson?Aalen recebem somente contas eleg?veis. Vari?veis de uso e suporte entram exclusivamente em janelas landmark fixas, ap?s exclus?o de churns anteriores ou no marco.
+
+### Decis?o de baixo custo e alto retorno
+
+A an?lise permanece n?o operacional. O maior retorno antes de qualquer score est? em corrigir cronologias com warning e validar a sem?ntica de assinaturas simult?neas. Isso reduz a diverg?ncia entre 325 eventos na popula??o principal e 46 na estrita sem adicionar modelo, banco de grafo ou dashboard.
+
+### Limite por assinatura
+
+Curvas por assinatura n?o foram executadas. Sobreposi??o em 99,84% dos epis?dios, correla??o intracliente e aus?ncia de equival?ncia entre encerramento e churn invalidam a hip?tese simples de epis?dios independentes.

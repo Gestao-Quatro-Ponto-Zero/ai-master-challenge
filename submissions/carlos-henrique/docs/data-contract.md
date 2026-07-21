@@ -312,3 +312,62 @@ São proibidos em features: `churn_flag`, `account_name`, `feedback_text`, `reas
 ### Artefato de atenção
 
 `retention_attention_segments.parquet` contém no máximo cinco linhas agregadas com definição, contagem, MRR associado, evidência, limitação, ação de investigação e prioridade. Não contém `account_id` e não é score preditivo.
+
+---
+
+## Contrato anal?tico ? Fase 4
+
+### Unidade, origem e endpoint
+
+- **unidade:** conta, no m?ximo uma linha por `account_id`;
+- **origem principal:** primeira `SUBSCRIPTION_STARTED` utiliz?vel;
+- **origem alternativa:** `ACCOUNT_CREATED` utiliz?vel, somente em sensibilidade;
+- **endpoint:** primeiro `CHURN_RECORDED` utiliz?vel em ou ap?s a origem;
+- **censura:** administrativa ? direita em `2024-12-31T19:00:00`;
+- **popula??o principal:** `VALID + VALID_WITH_WARNING`, sem quarentena;
+- **popula??o estrita:** somente `VALID`, sem quarentena.
+
+Churn anterior ? exposi??o ? ignorado e contabilizado. Churn recorrente n?o substitui o primeiro endpoint. Dura??o zero ? preservada como `same_day_event`; dura??o negativa ou origem ausente recebe `exclusion_reason` e n?o entra na curva.
+
+### `account_survival_dataset.parquet`
+
+- **gr?o:** uma linha por conta da tabela anal?tica da Fase 3; 500 linhas m?ximas;
+- **tempo:** `exposure_start`, `exposure_end`, `duration_days`, `first_churn_time`, `observation_end`, `time_origin`;
+- **evento/censura:** `event_observed`, `censoring_status`, `same_day_event`, `exclusion_reason`, `is_eligible`;
+- **baseline:** `first_plan`, `latest_plan`, `baseline_mrr`, `mrr_band`, `subscription_count_band`, `has_subscription_overlap`;
+- **qualidade:** `quality_population`, `quality_coverage_ratio`;
+- **comportamento controlado:** `initial_usage_band`, `support_band`, `behavior_window_days=30`, `behavior_group_use=LANDMARK_ONLY`;
+- **auditoria:** `pre_exposure_churn_count`, `primary_outcome` reduzido a primeiro churn/censura/exclus?o.
+
+`account_id` permanece apenas nos Parquets operacionais locais. JSONs, relat?rios e figuras cont?m somente agregados. S?o proibidos `account_name`, `churn_flag`, feedback, motivo, refund e qualquer evento posterior ao endpoint.
+
+### Landmarks
+
+Arquivos:
+
+- `account_survival_landmark_30d.parquet`;
+- `account_survival_landmark_60d.parquet`;
+- `account_survival_landmark_90d.parquet`.
+
+Campos: `account_id`, `landmark_days`, `landmark_time`, `duration_after_landmark`, `event_observed_after_landmark`, contagem de uso, dias ativos, features distintas, suporte, resolu??o, satisfa??o, MRR, quantidade de assinaturas, popula??o de qualidade e bandas comportamentais no marco.
+
+Somente contas observ?veis at? o marco e sem churn antes ou no marco entram. Features usam eventos entre exposi??o e landmark, inclusive; eventos posteriores s?o proibidos. Exclus?es reconciliam com a popula??o de origem.
+
+### Estimadores e suporte
+
+- Kaplan?Meier: produto `1-d/n`, intervalo de 95% por Greenwood;
+- Nelson?Aalen: soma `d/n`, com intervalo normal descritivo;
+- at-risk m?nimo: 20; abaixo disso, `LOW_AT_RISK`;
+- grupos: n m?nimo 20 e ao menos 5 eventos para log-rank;
+- multiplicidade: Benjamini?Hochberg;
+- RMST: 90, 180 e 365 dias, sem interpreta??o causal;
+- mediana: `NOT_REACHED` quando a curva n?o atinge 0,5;
+- al?m do maior suporte observado: `BEYOND_SUPPORT`, sem extrapola??o.
+
+### Sensibilidade
+
+S?o comparados: principal, estrita, signup, primeira assinatura, exclus?o de overlap no baseline e cobertura de qualidade `>=0,50`. Varia??o relativa at? 10% ? `ROBUST`, at? 30% ? `SENSITIVE`; acima disso, falta de suporte ou mudan?a de ordena??o ? `UNSTABLE`. Resultados inst?veis n?o s?o findings principais.
+
+### Uso permitido e proibido
+
+Permitido: evid?ncia agregada descritiva de tempo at? primeiro churn, censura, suporte, landmarks e sensibilidade. Proibido: probabilidade individual, score, ranking, causalidade, previs?o, taxa empresarial, a??o automatizada, curva independente por assinatura ou uso de quarentena.
