@@ -1,0 +1,45 @@
+{
+  "origem": "05_contexto_similar.py",
+  "artefato": "painel de contexto (chamados similares ja roteados)",
+  "nao_e": "resposta sugerida / rascunho / texto ao cliente",
+  "parametros": {
+    "k_vizinhos": 3,
+    "sim_minima": 0.3,
+    "sim_gemeo": 0.9,
+    "semente": 42
+  },
+  "dataset1_resolution": {
+    "nao_nulas": 2769,
+    "unicidade": 1.0,
+    "sobreposicao_com_proprio_problema": 0.010179882715093982,
+    "sobreposicao_com_problema_alheio": 0.007634267141309396,
+    "ttest_pareado_p": 0.012795087556287846,
+    "cohen_d_pareado": 0.047339044891038635,
+    "frac_sem_palavra_em_comum_proprio": 0.9490790899241603,
+    "frac_sem_palavra_em_comum_alheio": 0.9595521849042976
+  },
+  "repeticao_de_problema": {
+    "espaco": "vetorizador do classificador (min_df=3, 1-2gram, sublinear_tf, fit no treino)",
+    "nota": "bloco 3 mediu 12.17% de gemeos cruzando o split num espaco mais frouxo (min_df=2, unigrama, sem sublinear_tf, fit na base inteira); a diferenca e de metodo e esta declarada na PARTE 2",
+    "frac_sim1_maior_igual_0.9": 0.06333612040133779,
+    "frac_sim1_maior_igual_0.7": 0.19387541806020067,
+    "frac_sim1_maior_igual_0.5": 0.35137959866220736,
+    "frac_sim1_maior_igual_0.3": 0.6942934782608695
+  },
+  "voto_vizinhos": {
+    "precisao_modelo_geral": 0.8650710702341137,
+    "precisao_quando_concordam": 0.9284920340866988,
+    "precisao_quando_discordam": 0.7325301204819277,
+    "separacao": 0.1959619136047711,
+    "separacao_sem_gemeo": 0.18562342527127706
+  },
+  "contrafactual_R5": {
+    "implementada": false,
+    "sairiam_do_auto": 784,
+    "precisao_auto_atual": 0.8965275833099972,
+    "precisao_auto_com_R5": 0.9083044982698962,
+    "taxa_auto_atual": 0.7464464882943144,
+    "taxa_auto_com_R5": 0.6645066889632107
+  },
+  "bloqueio": "resolution_code / kb_article_id — item 10 da PARTE 3 do bloco 0"
+}

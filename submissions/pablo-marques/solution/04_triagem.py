@@ -195,11 +195,18 @@ class Triador:
         # la so valem se o modelo aqui for o mesmo modelo.
         self.vetor = TfidfVectorizer(min_df=3, ngram_range=(1, 2),
                                      sublinear_tf=True, strip_accents="unicode")
-        Xtr = self.vetor.fit_transform(itsm["Document"].to_numpy()[i_tr])
+        self.Xtr = self.vetor.fit_transform(itsm["Document"].to_numpy()[i_tr])
         self.modelo = LogisticRegression(max_iter=1000, C=4.0,
                                          random_state=SEMENTE, n_jobs=-1)
-        self.modelo.fit(Xtr, itsm["Topic_group"].to_numpy()[i_tr])
+        self.modelo.fit(self.Xtr, itsm["Topic_group"].to_numpy()[i_tr])
         self.classes = list(self.modelo.classes_)
+        # treino e teste ficam expostos porque o bloco 5 recupera chamados
+        # similares DO TREINO para um chamado de teste. A matriz Xtr fica junto
+        # pelo mesmo motivo: o indice de similaridade tem de ser o mesmo espaco
+        # de features do classificador, senao o vizinho exibido ao agente nao
+        # explica a decisao que ele esta vendo.
+        self._treino = (itsm["Document"].to_numpy()[i_tr],
+                        itsm["Topic_group"].to_numpy()[i_tr])
         self._teste = (itsm["Document"].to_numpy()[i_te],
                        itsm["Topic_group"].to_numpy()[i_te])
         if verbose:
