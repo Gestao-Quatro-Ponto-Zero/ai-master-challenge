@@ -246,3 +246,13 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - **Restri??es preservadas:** sem interven??o real, contato, desconto, altera??o de produto, dados futuros, resultados fabricados, uplift, infer?ncia causal, dashboard, push ou Pull Request.
 - **Gate esperado:** `PASS_WITH_WARNINGS`, pois apenas um desenho est? pronto para revis?o e os demais s?o piloto, subdimensionados ou n?o vi?veis.
 - **Commit autorizado:** `analysis: add governed experiment design lab`, local e seletivo.
+---
+
+## Fase 9 - Dashboard executivo e experiencia de demonstracao
+
+- **Entrada:** prompt integral da Fase 9, commit-base `3e96b07e9f113c15ec2a9635324054c3e7b27b00`.
+- **Escopo aplicado:** app Next.js local, camada JSON derivada, overview, qualidade, Journey Explorer, JourneyGraph, watchlist, Experiment Lab, governanca, Guided Demo, testes, documentacao e screenshots.
+- **Restricoes preservadas:** nenhum resultado analitico alterado, nenhuma nova conclusao, nenhum dataset baixado, nenhum backend externo, PII, score, probabilidade, causalidade, receita em risco/salva, intervencao, contato, execucao experimental, push ou Pull Request.
+- **Contrato de demonstracao:** tres contas reais anonimas sob rotulos DEMO, grafo reduzido/promovivel, filas separadas, experimentos `UNTESTED`, explicacoes deterministicas e cutoff fixo.
+- **Gate esperado e obtido:** `PASS`, apos build, validacao responsiva, revisao visual e reprodutibilidade.
+- **Commit autorizado:** `feat: add governed JourneyGraph demonstration dashboard`, local e seletivo.

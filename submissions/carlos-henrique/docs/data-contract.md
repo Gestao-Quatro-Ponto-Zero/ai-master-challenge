@@ -520,3 +520,36 @@ Permitido: investiga??o agregada, estrutura, caminhos observados, qualidade, sup
 ### Estados e linguagem
 
 Estados permitidos: `DRAFT`, `READY_FOR_REVIEW`, `PILOT_ONLY`, `UNDERPOWERED`, `NOT_FEASIBLE` e `BLOCKED`. O contrato pro?be `RUNNING`, `SUCCESS`, `FAILED`, `EFFECTIVE`, uplift observado, efeito estimado ou resultado causal. Um futuro sistema operacional dever? impor uma interven??o comportamental por conta, aprova??es, consentimento e monitoramento externo.
+---
+
+## Contratos da Fase 9 - Dashboard local
+
+O produtor exclusivo e `solution/scripts/build_dashboard_data.py`. A camada verifica 25 hashes de entrada e escreve exatamente 15 JSONs UTF-8 em `solution/app/public/data/`, todos sob cutoff historico fixo `2024-12-31T19:00:00`. O manifesto SHA-256 completo esta em `solution/reports/dashboard-data-contract.md`.
+
+### Schemas executivos e de qualidade
+
+`overview.json` possui metricas headline, pipeline, outcomes, contexto de negocio, limitacoes e provenance. `quality.json` separa MAIN, STRICT, warnings, quarentena e backlog. Quarentena nunca e sinal comportamental.
+
+### Schema de jornada demo
+
+`journey_index.json` define filtros e tres rotulos publicos. `journey_samples.json` contem tres contas analiticas reais, anonimas, com jornadas, timeline, padroes promoviveis, outcome, qualidade e explicacao deterministica. `account_key` e chave salted `acct_*`, nao ID operacional, e nao e renderizada.
+
+### Schema das visoes de grafo
+
+`graph_nodes.json` e `graph_edges.json` contem `modes` para `event-flow`, `pattern-explorer` e `governance-view`. Nos usam `id`, `type`, `label`, `properties`; arestas usam `id`, `source`, `target`, `type`, `properties`. Cada modo declara `truncated=true`, maximo de 35 nos e 80 arestas. UNSTABLE, HIGH dependency e small sample sao proibidos.
+
+### Schema da watchlist demo
+
+`watchlist_summary.json`, `watchlist_items_demo.json` e `watchlist_rules.json` preservam fila, regra, prioridade discreta P1-P4, quatro componentes, metricas retrospectivas, evidencia, qualidade, limitacoes, acoes proibidas e revisao humana. Prioridade nao e score; MRR associado nao e risco, perda, economia ou impacto causal.
+
+### Schema experimental
+
+`experiment_registry.json` e `experiment_details.json` registram oito hipoteses, elegibilidade, viabilidade, amostra, metricas, MDE/power, SAP, guardrails, stopping rules, etica, aprovacoes e limitacoes. `causal_status=UNTESTED` e obrigatorio. Assignment, exposicao, resultado, uplift e execucao sao proibidos.
+
+### Governance, demo e metadata
+
+`governance.json` registra controles e limitacoes; `demo_story.json` possui oito passos ordenados; `metadata.json` registra commit de origem, cutoff, hashes, inventario e contrato de privacidade.
+
+### Invariantes
+
+JSONs devem conter apenas numeros finitos e vocabularios controlados. Sao proibidos PII, `account_id` bruto, account name, email, feedback, score, probabilidade, causalidade, receita em risco/salva, acao automatica, outcome sintetico e experimento executado. Dois rebuilds finais devem produzir zero diferencas byte a byte.

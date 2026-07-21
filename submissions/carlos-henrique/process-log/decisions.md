@@ -773,3 +773,60 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **E060 ? amostra sem baseline:** popula??o eleg?vel zero agora produz amostra requerida zero e `NOT_FEASIBLE`.
 - **E061 ? tmp_path bloqueado pelo sandbox:** quatro fixtures hist?ricas falharam por permiss?o; a su?te foi repetida fora do sandbox com diret?rio tempor?rio isolado e passou integralmente.
 - **E062 ? visualizador local bloqueado no Windows:** as seis figuras foram reunidas em montage tempor?rio fora do reposit?rio e revisadas sem alterar os artefatos finais.
+## Decisoes da Fase 9
+
+## D098 - Dashboard como narrativa de produto
+
+- **Decisao:** organizar a experiencia como fluxo auditado de dados fragmentados ate desenho experimental, com resposta executiva antes do detalhe tecnico.
+- **Status:** APROVADA
+
+## D099 - Dados locais derivados para demo
+
+- **Decisao:** gerar 15 snapshots JSON deterministicos a partir de inputs congelados e verificados por SHA-256.
+- **Status:** APROVADA
+
+## D100 - Separacao visual entre qualidade e comportamento
+
+- **Decisao:** manter quarentena e regras de qualidade fora da interpretacao comportamental e das filas de acao.
+- **Status:** APROVADA
+
+## D101 - Grafo reduzido e promovivel
+
+- **Decisao:** limitar modos a 35 nos/80 arestas, excluir UNSTABLE, HIGH dependency e small sample, e mostrar apenas 16 relacoes no event-flow inicial.
+- **Status:** APROVADA
+
+## D102 - Explicacao deterministica na interface
+
+- **Decisao:** derivar `Explain this` somente de evidencia local estruturada, sem LLM ou geracao livre.
+- **Status:** APROVADA
+
+## D103 - Guided Demo como fluxo principal
+
+- **Decisao:** disponibilizar oito etapas in-product e roteiro de 3:10 como caminho padrao de avaliacao.
+- **Status:** APROVADA
+
+## D104 - Experiment Lab sem resultados
+
+- **Decisao:** apresentar elegibilidade, power, metricas, SAP e governanca mantendo os oito experimentos como `UNTESTED`.
+- **Status:** APROVADA
+
+## D105 - Interface em ingles
+
+- **Decisao:** usar ingles na aplicacao e no material operacional da demo para ampliar compreensao de avaliadores e compradores enterprise.
+- **Status:** APROVADA
+
+## D106 - Modo demo sem servicos externos
+
+- **Decisao:** prerenderizar rotas com JSONs locais, sem backend, banco, API, credenciais ou rede em runtime.
+- **Status:** APROVADA
+
+## D107 - Protecao contra linguagem causal
+
+- **Decisao:** validar termos proibidos no builder/testes e repetir limitacoes descritivas nas telas de grafo, watchlist e experimentos.
+- **Status:** APROVADA
+
+## D108 - Gate do dashboard
+
+- **Decisao:** `PASS`.
+- **Justificativa:** build estatico, lint, typecheck, 18 testes UI, 36 smokes responsivos, 130 testes Python, 15 JSONs idempotentes e sete screenshots reais revisadas passaram; privacidade, causalidade e escopo reconciliaram em zero violacoes.
+- **Status:** APROVADA

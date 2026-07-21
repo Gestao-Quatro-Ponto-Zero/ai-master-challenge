@@ -290,3 +290,35 @@ Centralidade ? propriedade estrutural apenas de EventType; Pattern recebe rankin
 | Execu??o, contato, produto, uplift, resultados causais, monitoramento e dashboard | `NOT_IMPLEMENTED` | fora do escopo autorizado |
 
 Fluxo: cat?logo governado ? hip?tese falsific?vel ? elegibilidade cutoff-safe ? baseline descritivo ? MDE/power ? simula??o de aloca??o ? SAP ? gates ?ticos e operacionais ? revis?o humana. A camada n?o aciona interven??es e n?o cont?m resultados futuros.
+---
+
+## Atualizacao de implementacao - Fase 9
+
+> **Status:** dashboard local de demonstracao implementado e validado; nenhuma operacao, intervencao ou execucao experimental foi adicionada.
+
+| Componente | Estado | Limite |
+|---|---|---|
+| Dashboard executivo | `IMPLEMENTED` | snapshot historico local |
+| Guided Demo | `IMPLEMENTED` | oito etapas, roteiro de 3:10 |
+| Journey Explorer | `IMPLEMENTED` | tres contas reais anonimas sob rotulos DEMO |
+| Graph Explorer | `IMPLEMENTED_WITH_BOUNDS` | tres modos; no maximo 35 nos/80 arestas; visao inicial com 16 relacoes |
+| Watchlist UI | `IMPLEMENTED_HUMAN_REVIEW_ONLY` | sete filas; nenhuma acao automatica |
+| Experiment UI | `IMPLEMENTED_UNTESTED_ONLY` | oito desenhos; nenhum resultado ou execucao |
+| Governance UI | `IMPLEMENTED` | controles, limitacoes e linguagem proibida visiveis |
+| Deterministic explanation UI | `IMPLEMENTED` | explicacoes derivadas apenas dos JSONs locais |
+| Local demo data layer | `IMPLEMENTED` | 15 JSONs deterministicos com hash gate |
+| Live backend | `NOT_IMPLEMENTED` | fora do escopo |
+| Authentication / authorization | `NOT_IMPLEMENTED` | fora do escopo |
+| Automated intervention | `NOT_IMPLEMENTED` | proibida |
+| Live experiment execution | `NOT_IMPLEMENTED` | proibida |
+| External LLM | `NOT_IMPLEMENTED` | explicacao nao generativa |
+| Production observability | `NOT_IMPLEMENTED` | fora do escopo |
+| Outbound integrations | `NOT_IMPLEMENTED` | fora do escopo |
+
+### Fluxo arquitetural
+
+Artefatos governados das Fases 3-8 passam por verificacao SHA-256 e gates de schema, privacidade, semantica e volume no `build_dashboard_data.py`. Quinze snapshots JSON locais alimentam rotas estaticas do Next.js. Zod valida os payloads no limite do servidor; componentes cliente executam somente filtros, selecao, graficos e explicacoes deterministicas.
+
+### Limite arquitetural
+
+A aplicacao e uma superficie de demonstracao local, nao um console operacional. Chaves analiticas anonimas preservam joins internos, enquanto a interface expoe apenas `DEMO_A`, `DEMO_B` e `DEMO_C`. Relacoes do grafo, prioridades e MRR associado sao descritivos; nao autorizam previsao, causalidade, contato, intervencao ou efeito economico atribuido.

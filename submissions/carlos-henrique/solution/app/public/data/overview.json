@@ -1,0 +1,96 @@
+{
+  "cards": [
+    {
+      "metric": "13,927 usable events",
+      "summary": "Warnings remain visible; quarantined events are excluded from behavioral evidence.",
+      "title": "Data Quality"
+    },
+    {
+      "metric": "4,221 governed journeys",
+      "summary": "Repeated paths are counted by account and tested across MAIN and STRICT populations.",
+      "title": "Journey Intelligence"
+    },
+    {
+      "metric": "7 human-review queues",
+      "summary": "Deterministic rules prioritize investigation without a predictive score.",
+      "title": "Explainable Watchlist"
+    },
+    {
+      "metric": "1 ready for review",
+      "summary": "Seven designs remain pilot-only, underpowered, or not feasible.",
+      "title": "Experiment Readiness"
+    }
+  ],
+  "cutoff": "2024-12-31T19:00:00",
+  "headline": "From fragmented customer events to governed retention intelligence.",
+  "metrics": [
+    {
+      "context": "Anonymous analytical population",
+      "label": "Accounts",
+      "value": 500
+    },
+    {
+      "context": "Before quality gates",
+      "label": "Events processed",
+      "value": 35586
+    },
+    {
+      "context": "MAIN population",
+      "label": "Usable events",
+      "value": 13927
+    },
+    {
+      "context": "Across governed scopes",
+      "label": "Journeys",
+      "value": 4221
+    },
+    {
+      "context": "ROBUST or SENSITIVE",
+      "label": "Promotable patterns",
+      "value": 435
+    },
+    {
+      "context": "No HIGH dependency",
+      "label": "Promotable transitions",
+      "value": 43
+    },
+    {
+      "context": "Human investigation only",
+      "label": "Review queues",
+      "value": 7
+    },
+    {
+      "context": "All hypotheses untested",
+      "label": "Experiment designs",
+      "value": 8
+    },
+    {
+      "context": "Phase 8 baseline",
+      "label": "Tests approved",
+      "value": 119
+    },
+    {
+      "context": "Dashboard contract",
+      "label": "PII exposed",
+      "value": 0
+    },
+    {
+      "context": "Cutoff-enforced",
+      "label": "Future leakage",
+      "value": 0
+    },
+    {
+      "context": "Descriptive evidence only",
+      "label": "Causal claims",
+      "value": 0
+    }
+  ],
+  "pipeline": [
+    "Raw Data",
+    "Audited Events",
+    "Customer Journeys",
+    "JourneyGraph",
+    "Human Review",
+    "Experiment Design"
+  ]
+}

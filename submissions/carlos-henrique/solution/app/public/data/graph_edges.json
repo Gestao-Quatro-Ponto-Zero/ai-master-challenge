@@ -1,0 +1,1487 @@
+{
+  "cutoff": "2024-12-31T19:00:00",
+  "modes": {
+    "event-flow": {
+      "edge_count": 35,
+      "edges": [
+        {
+          "id": "edge_1e5a14544bf2ec",
+          "properties": {
+            "account_support": 161,
+            "associated_mrr": 875484.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.0016923000348414,
+            "mean_mrr": 5437.788819875776,
+            "median_mrr": 4577.0,
+            "mrr_account_count": 161,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 161,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.8895027624309392,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.6917127071823205,
+            "stability_status": "ROBUST",
+            "strict_support": 32,
+            "transition_count": 626
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_7668a95372a0ff",
+          "properties": {
+            "account_support": 156,
+            "associated_mrr": 1205826.0,
+            "denominator_accounts": 175,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.0038610038610039,
+            "mean_mrr": 7729.653846153846,
+            "median_mrr": 6965.0,
+            "mrr_account_count": 156,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 156,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.8914285714285715,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.7334183673469388,
+            "stability_status": "ROBUST",
+            "strict_support": 397,
+            "transition_count": 575
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_fb2e9650c3f41b",
+          "properties": {
+            "account_support": 102,
+            "associated_mrr": 464164.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 0.973431058176821,
+            "mean_mrr": 4550.6274509803925,
+            "median_mrr": 3184.5,
+            "mrr_account_count": 102,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 102,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.864406779661017,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.6330578512396694,
+            "stability_status": "ROBUST",
+            "strict_support": 6,
+            "transition_count": 383
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_d6d730da621981",
+          "properties": {
+            "account_support": 96,
+            "associated_mrr": 753793.0,
+            "denominator_accounts": 175,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.0429114611624117,
+            "mean_mrr": 7852.010416666667,
+            "median_mrr": 6965.0,
+            "mrr_account_count": 96,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 96,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.5485714285714286,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.44339622641509435,
+            "stability_status": "SENSITIVE",
+            "strict_support": 143,
+            "transition_count": 141
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_372c927fd86711",
+          "properties": {
+            "account_support": 91,
+            "associated_mrr": 381599.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 2.0082980225988702,
+            "mean_mrr": 4193.395604395604,
+            "median_mrr": 3184.0,
+            "mrr_account_count": 91,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 91,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.7711864406779662,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.5208333333333334,
+            "stability_status": "SENSITIVE",
+            "strict_support": 8,
+            "transition_count": 125
+          },
+          "source": "eventtype_churn",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_622bb03380ced6",
+          "properties": {
+            "account_support": 88,
+            "associated_mrr": 402784.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.2661141804788212,
+            "mean_mrr": 4577.090909090909,
+            "median_mrr": 3121.5,
+            "mrr_account_count": 88,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 88,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.4861878453038674,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.5116279069767442,
+            "stability_status": "SENSITIVE",
+            "strict_support": 34,
+            "transition_count": 88
+          },
+          "source": "eventtype_churn",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_535ef99f16879e",
+          "properties": {
+            "account_support": 81,
+            "associated_mrr": 590390.0,
+            "denominator_accounts": 175,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.0150375939849623,
+            "mean_mrr": 7288.765432098766,
+            "median_mrr": 6965.0,
+            "mrr_account_count": 81,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 81,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.46285714285714286,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.4308176100628931,
+            "stability_status": "SENSITIVE",
+            "strict_support": 110,
+            "transition_count": 137
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_878255cb53a0df",
+          "properties": {
+            "account_support": 64,
+            "associated_mrr": 279021.0,
+            "denominator_accounts": 99,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 0.9415408439798685,
+            "mean_mrr": 4359.703125,
+            "median_mrr": 3184.5,
+            "mrr_account_count": 64,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 64,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.6464646464646465,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.5384615384615384,
+            "stability_status": "ROBUST",
+            "strict_support": 4,
+            "transition_count": 98
+          },
+          "source": "eventtype_subscription_start",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_433fd18d00e10b",
+          "properties": {
+            "account_support": 62,
+            "associated_mrr": 516450.0,
+            "denominator_accounts": 145,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 1.0155172413793105,
+            "mean_mrr": 8329.838709677419,
+            "median_mrr": 7064.5,
+            "mrr_account_count": 62,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 62,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.42758620689655175,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.8383838383838383,
+            "stability_status": "ROBUST",
+            "strict_support": 162,
+            "transition_count": 83
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_2deeab0822a99b",
+          "properties": {
+            "account_support": 56,
+            "associated_mrr": 277409.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.0523546435148645,
+            "mean_mrr": 4953.732142857143,
+            "median_mrr": 3980.0,
+            "mrr_account_count": 56,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 56,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.30939226519337015,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.48226950354609927,
+            "stability_status": "ROBUST",
+            "strict_support": 10,
+            "transition_count": 68
+          },
+          "source": "eventtype_subscription_end",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_29a60e8d6cb6e9",
+          "properties": {
+            "account_support": 50,
+            "associated_mrr": 358035.0,
+            "denominator_accounts": 175,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.0060362173038229,
+            "mean_mrr": 7160.7,
+            "median_mrr": 6965.0,
+            "mrr_account_count": 50,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 50,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.2857142857142857,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.4566929133858268,
+            "stability_status": "ROBUST",
+            "strict_support": 115,
+            "transition_count": 58
+          },
+          "source": "eventtype_subscription_end",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_6e239f6b3fab6f",
+          "properties": {
+            "account_support": 48,
+            "associated_mrr": 274843.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 0.9337794724145981,
+            "mean_mrr": 5725.895833333333,
+            "median_mrr": 4975.0,
+            "mrr_account_count": 48,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 48,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.26519337016574585,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.3971631205673759,
+            "stability_status": "SENSITIVE",
+            "strict_support": 7,
+            "transition_count": 56
+          },
+          "source": "eventtype_subscription_end",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_bd18a71d9f5078",
+          "properties": {
+            "account_support": 46,
+            "associated_mrr": 394279.0,
+            "denominator_accounts": 175,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 0.8940719144800777,
+            "mean_mrr": 8571.282608695652,
+            "median_mrr": 6865.5,
+            "mrr_account_count": 46,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 46,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.26285714285714284,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.41732283464566927,
+            "stability_status": "ROBUST",
+            "strict_support": 130,
+            "transition_count": 53
+          },
+          "source": "eventtype_subscription_end",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_b3f378cb3c6102",
+          "properties": {
+            "account_support": 44,
+            "associated_mrr": 389068.0,
+            "denominator_accounts": 154,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_60D_JOURNEY",
+            "lift": 1.0413223140495866,
+            "mean_mrr": 8842.454545454546,
+            "median_mrr": 7263.5,
+            "mrr_account_count": 44,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 44,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.2857142857142857,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.8059701492537313,
+            "stability_status": "ROBUST",
+            "strict_support": 120,
+            "transition_count": 54
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_d3ccfeea11426f",
+          "properties": {
+            "account_support": 37,
+            "associated_mrr": 161413.0,
+            "denominator_accounts": 99,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 0.8876262626262628,
+            "mean_mrr": 4362.513513513513,
+            "median_mrr": 2587.0,
+            "mrr_account_count": 37,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 37,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.37373737373737376,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.7160493827160493,
+            "stability_status": "ROBUST",
+            "strict_support": 3,
+            "transition_count": 58
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_e2e47b3e4d6870",
+          "properties": {
+            "account_support": 33,
+            "associated_mrr": 101178.0,
+            "denominator_accounts": 99,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 1.7863247863247862,
+            "mean_mrr": 3066.0,
+            "median_mrr": 1519.0,
+            "mrr_account_count": 33,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 33,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.3333333333333333,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.75,
+            "stability_status": "SENSITIVE",
+            "strict_support": 3,
+            "transition_count": 39
+          },
+          "source": "eventtype_churn",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_43ad0ef0af3a69",
+          "properties": {
+            "account_support": 32,
+            "associated_mrr": 162215.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 0.9548818333731202,
+            "mean_mrr": 5069.21875,
+            "median_mrr": 3980.0,
+            "mrr_account_count": 32,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 32,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.2711864406779661,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.3763440860215054,
+            "stability_status": "SENSITIVE",
+            "strict_support": 4,
+            "transition_count": 35
+          },
+          "source": "eventtype_subscription_end",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_7fcd622757f8b9",
+          "properties": {
+            "account_support": 31,
+            "associated_mrr": 98795.0,
+            "denominator_accounts": 106,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_60D_JOURNEY",
+            "lift": 1.8424528301886793,
+            "mean_mrr": 3186.935483870968,
+            "median_mrr": 1519.0,
+            "mrr_account_count": 31,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 31,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.29245283018867924,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.7446808510638298,
+            "stability_status": "SENSITIVE",
+            "strict_support": 3,
+            "transition_count": 35
+          },
+          "source": "eventtype_churn",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_cdda645976f4b5",
+          "properties": {
+            "account_support": 31,
+            "associated_mrr": 141015.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 0.8935777700910874,
+            "mean_mrr": 4548.870967741936,
+            "median_mrr": 2388.0,
+            "mrr_account_count": 31,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 31,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.2627118644067797,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.40860215053763443,
+            "stability_status": "ROBUST",
+            "strict_support": 2,
+            "transition_count": 38
+          },
+          "source": "eventtype_subscription_end",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_374f96775f795b",
+          "properties": {
+            "account_support": 28,
+            "associated_mrr": 211589.0,
+            "denominator_accounts": 145,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 0.9385725741780273,
+            "mean_mrr": 7556.75,
+            "median_mrr": 7263.5,
+            "mrr_account_count": 28,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 28,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.19310344827586207,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.5686274509803921,
+            "stability_status": "SENSITIVE",
+            "strict_support": 39,
+            "transition_count": 29
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_c90a19cc19dc58",
+          "properties": {
+            "account_support": 26,
+            "associated_mrr": 118174.0,
+            "denominator_accounts": 106,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_60D_JOURNEY",
+            "lift": 0.8939653828161547,
+            "mean_mrr": 4545.153846153846,
+            "median_mrr": 2487.5,
+            "mrr_account_count": 26,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 26,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.24528301886792453,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.7037037037037037,
+            "stability_status": "SENSITIVE",
+            "strict_support": 1,
+            "transition_count": 38
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_d303406e01948b",
+          "properties": {
+            "account_support": 23,
+            "associated_mrr": 85623.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.3922518159806294,
+            "mean_mrr": 3722.7391304347825,
+            "median_mrr": 3781.0,
+            "mrr_account_count": 23,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 23,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.19491525423728814,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.14084507042253522,
+            "stability_status": "SENSITIVE",
+            "strict_support": 1,
+            "transition_count": 30
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_support_open",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_be861f4cc099f5",
+          "properties": {
+            "account_support": 22,
+            "associated_mrr": 101269.0,
+            "denominator_accounts": 22,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.1261261261261262,
+            "mean_mrr": 4603.136363636364,
+            "median_mrr": 2592.0,
+            "mrr_account_count": 22,
+            "outcome": "REACTIVATED",
+            "principal_support": 22,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 1.0,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.6017699115044248,
+            "stability_status": "ROBUST",
+            "strict_support": 1,
+            "transition_count": 68
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_710f150619cbbe",
+          "properties": {
+            "account_support": 20,
+            "associated_mrr": 90215.0,
+            "denominator_accounts": 114,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_30D_JOURNEY",
+            "lift": 1.942064463484292,
+            "mean_mrr": 4510.75,
+            "median_mrr": 4378.0,
+            "mrr_account_count": 20,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 20,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.17543859649122806,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.7333333333333333,
+            "stability_status": "SENSITIVE",
+            "strict_support": 2,
+            "transition_count": 22
+          },
+          "source": "eventtype_churn",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_28ccd7cf2a2d39",
+          "properties": {
+            "account_support": 19,
+            "associated_mrr": 63986.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "BETWEEN_RECURRING_CHURNS",
+            "lift": 1.0305084745762711,
+            "mean_mrr": 3367.684210526316,
+            "median_mrr": 2786.0,
+            "mrr_account_count": 19,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 19,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.16101694915254236,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.07251908396946564,
+            "stability_status": "SENSITIVE",
+            "strict_support": 1,
+            "transition_count": 19
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_end",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_b1000b829f6159",
+          "properties": {
+            "account_support": 18,
+            "associated_mrr": 88973.0,
+            "denominator_accounts": 22,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 0.9070751864543439,
+            "mean_mrr": 4942.944444444444,
+            "median_mrr": 2691.5,
+            "mrr_account_count": 18,
+            "outcome": "REACTIVATED",
+            "principal_support": 18,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.8181818181818182,
+            "same_day_dependency": "PARTIAL",
+            "small_sample": false,
+            "source_conditional_probability": 0.5819672131147541,
+            "stability_status": "ROBUST",
+            "strict_support": 1,
+            "transition_count": 71
+          },
+          "source": "eventtype_subscription_start",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_db1f8dae99cbc8",
+          "properties": {
+            "account_support": 18,
+            "associated_mrr": 156681.0,
+            "denominator_accounts": 154,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_60D_JOURNEY",
+            "lift": 0.9204545454545455,
+            "mean_mrr": 8704.5,
+            "median_mrr": 7661.5,
+            "mrr_account_count": 18,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 18,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.11688311688311688,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.5806451612903226,
+            "stability_status": "SENSITIVE",
+            "strict_support": 24,
+            "transition_count": 18
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_fb813ee0fd560d",
+          "properties": {
+            "account_support": 16,
+            "associated_mrr": 75488.0,
+            "denominator_accounts": 152,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 1.5714285714285712,
+            "mean_mrr": 4718.0,
+            "median_mrr": 2791.0,
+            "mrr_account_count": 16,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 16,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.10526315789473684,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.10810810810810811,
+            "stability_status": "ROBUST",
+            "strict_support": 3,
+            "transition_count": 16
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_churn",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_06c87250b4a16f",
+          "properties": {
+            "account_support": 15,
+            "associated_mrr": 42391.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "FULL_OBSERVED_JOURNEY",
+            "lift": 1.2948895027624308,
+            "mean_mrr": 2826.0666666666666,
+            "median_mrr": 2156.0,
+            "mrr_account_count": 15,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 15,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.08287292817679558,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.046583850931677016,
+            "stability_status": "ROBUST",
+            "strict_support": 3,
+            "transition_count": 15
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_churn",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_2849097e8de15c",
+          "properties": {
+            "account_support": 15,
+            "associated_mrr": 78094.0,
+            "denominator_accounts": 22,
+            "is_promotable": true,
+            "journey_scope": "POST_REACTIVATION",
+            "lift": 1.0427807486631016,
+            "mean_mrr": 5206.266666666666,
+            "median_mrr": 2587.0,
+            "mrr_account_count": 15,
+            "outcome": "REACTIVATED",
+            "principal_support": 15,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.6818181818181818,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.6888888888888889,
+            "stability_status": "SENSITIVE",
+            "strict_support": 1,
+            "transition_count": 31
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_7262908a8214a3",
+          "properties": {
+            "account_support": 15,
+            "associated_mrr": 42391.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "PRE_FIRST_CHURN",
+            "lift": 1.0359116022099446,
+            "mean_mrr": 2826.0666666666666,
+            "median_mrr": 2156.0,
+            "mrr_account_count": 15,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 15,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.08287292817679558,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.08670520231213873,
+            "stability_status": "ROBUST",
+            "strict_support": 3,
+            "transition_count": 15
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_churn",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_862a89f199b7cf",
+          "properties": {
+            "account_support": 15,
+            "associated_mrr": 138703.0,
+            "denominator_accounts": 145,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_90D_JOURNEY",
+            "lift": 1.2354679802955664,
+            "mean_mrr": 9246.866666666667,
+            "median_mrr": 7960.0,
+            "mrr_account_count": 15,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 15,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.10344827586206896,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.29411764705882354,
+            "stability_status": "SENSITIVE",
+            "strict_support": 21,
+            "transition_count": 15
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_feature",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_005a7933905842",
+          "properties": {
+            "account_support": 14,
+            "associated_mrr": 127353.0,
+            "denominator_accounts": 167,
+            "is_promotable": true,
+            "journey_scope": "LANDMARK_30D_JOURNEY",
+            "lift": 0.8143712574850299,
+            "mean_mrr": 9096.642857142857,
+            "median_mrr": 7064.5,
+            "mrr_account_count": 14,
+            "outcome": "NO_CHURN_OBSERVED",
+            "principal_support": 14,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.08383233532934131,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.8235294117647058,
+            "stability_status": "ROBUST",
+            "strict_support": 43,
+            "transition_count": 14
+          },
+          "source": "eventtype_feature",
+          "target": "eventtype_subscription_start",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_23b17593e7281c",
+          "properties": {
+            "account_support": 14,
+            "associated_mrr": 82575.0,
+            "denominator_accounts": 181,
+            "is_promotable": true,
+            "journey_scope": "PRE_FIRST_CHURN",
+            "lift": 0.8379373848987108,
+            "mean_mrr": 5898.214285714285,
+            "median_mrr": 6268.5,
+            "mrr_account_count": 14,
+            "outcome": "SINGLE_CHURN",
+            "principal_support": 14,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.07734806629834254,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.09826589595375723,
+            "stability_status": "SENSITIVE",
+            "strict_support": 2,
+            "transition_count": 17
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_support_open",
+          "type": "TRANSITIONS_TO"
+        },
+        {
+          "id": "edge_5832408e2bad71",
+          "properties": {
+            "account_support": 14,
+            "associated_mrr": 52176.0,
+            "denominator_accounts": 118,
+            "is_promotable": true,
+            "journey_scope": "PRE_FIRST_CHURN",
+            "lift": 1.2853107344632768,
+            "mean_mrr": 3726.8571428571427,
+            "median_mrr": 3880.5,
+            "mrr_account_count": 14,
+            "outcome": "RECURRING_CHURN",
+            "principal_support": 14,
+            "relationship": "TRANSITIONS_TO",
+            "relative_support": 0.11864406779661017,
+            "same_day_dependency": "NONE",
+            "small_sample": false,
+            "source_conditional_probability": 0.17204301075268819,
+            "stability_status": "ROBUST",
+            "strict_support": 1,
+            "transition_count": 16
+          },
+          "source": "eventtype_support_close",
+          "target": "eventtype_support_open",
+          "type": "TRANSITIONS_TO"
+        }
+      ],
+      "truncated": true
+    },
+    "governance-view": {
+      "edge_count": 20,
+      "edges": [
+        {
+          "id": "edge_09932403e5c3e1",
+          "properties": {
+            "relationship": "RECOMMENDS_INVESTIGATION",
+            "requires_human_review": true
+          },
+          "source": "finding_jf06",
+          "target": "investigation_validate_pattern_in_new_cohort",
+          "type": "RECOMMENDS_INVESTIGATION"
+        },
+        {
+          "id": "edge_da70732fc7da9b",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_0fe41e388f06c3bf",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_bdfb4d2889ad2f",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_299755ad41e4eacd",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_3d6d1b82abb69f",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_2e193a13d3a5920c",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_e89e0979523e28",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_3a1a1e3603b366a5",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_e245abe19f3f43",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_3ce5237226c36e29",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_a4e22ef6803e35",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_3d69cbe29ea46203",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_9551cc9b291115",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_42c48206fd154771",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_7cab511541a825",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_42c64ec481f1017f",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_7ba061a2d06905",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_4a4e78ad08c3ba07",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_e0f7fbf0ac8b0f",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_601a66dd19ed3729",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_01bba239e81147",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_606c58ababef6a31",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_346bd68e84d88e",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_61997ae3a408c9e6",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_0eb43098ddd1b6",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_67b399fa3bc26d5c",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_de788e511ab1d9",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_7f8cb4c84e5962a4",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_e31f004e753e64",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_901b9828c55cbe91",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_364040cd525a1b",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_92a740e56ff82eda",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_7475b82a83e399",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_92e3d53350e1dfb6",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_a383e05f8b7c96",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_bf830bcb8e463846",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        },
+        {
+          "id": "edge_474234357006c9",
+          "properties": {
+            "denominator": 175,
+            "relationship": "SUPPORTED_BY",
+            "support": 156
+          },
+          "source": "pattern_e5546aa261009f72",
+          "target": "finding_jf06",
+          "type": "SUPPORTED_BY"
+        }
+      ],
+      "truncated": true
+    },
+    "pattern-explorer": {
+      "edge_count": 30,
+      "edges": [
+        {
+          "id": "edge_ec2bac54d00410",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_08cd45ac3d1f9501",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_28c9a559d3cff9",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_08cd45ac3d1f9501",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_433eae9fccbcd2",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_1178289f579da167",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_5eaf18c1efb24f",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_1178289f579da167",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_228414d2ee7ff2",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_2aeefd48b242b6a6",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_3c9ca82e76cde7",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_2aeefd48b242b6a6",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_bced5f305ae32c",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_397b7706ee5651f2",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_f114abf2579bb7",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_397b7706ee5651f2",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_b80bb24e32750a",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_601a66dd19ed3729",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_9cfa707cb8d384",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_601a66dd19ed3729",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_3bde258532c4ee",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_67e0785943360fc0",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_a64f72c8c6c012",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_67e0785943360fc0",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_59ecc68880e408",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_6c86ffe4abdb5f40",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_3f8a4788917330",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_6c86ffe4abdb5f40",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_76171fb08a4888",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_913afda6fbc021c1",
+          "target": "eventtype_support_close",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_a898a26f00ca85",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_913afda6fbc021c1",
+          "target": "eventtype_support_open",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_3ec61ac3272d8c",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_a9084e7fd9e4d3cc",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_f91f347aafacb9",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_a9084e7fd9e4d3cc",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_d3a78bbf2f6a21",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_cc8afea302893226",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_7e37bcbf16e4a9",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_cc8afea302893226",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_7f872e924c036f",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_d0f71bf319eeddf0",
+          "target": "eventtype_account",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_440a46f78007c1",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_d0f71bf319eeddf0",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_a80a7807dd4142",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_d5b7fe7eca241c0e",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_09057ed94ef4d7",
+          "properties": {
+            "occurrences_in_pattern": 3,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_d5b7fe7eca241c0e",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_6bd245d9738833",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_dd8fdf97b3205c0e",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_affc9cf8e39abc",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_dd8fdf97b3205c0e",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_4b810be3431b31",
+          "properties": {
+            "occurrences_in_pattern": 1,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_e8c2fbc2c8080a96",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_511a3655d2ab86",
+          "properties": {
+            "occurrences_in_pattern": 3,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_e8c2fbc2c8080a96",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_7eddb9ad849306",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_eb377d486ee2bcc9",
+          "target": "eventtype_feature",
+          "type": "CONTAINS_EVENT_TYPE"
+        },
+        {
+          "id": "edge_7e8f9478820c93",
+          "properties": {
+            "occurrences_in_pattern": 2,
+            "relationship": "CONTAINS_EVENT_TYPE"
+          },
+          "source": "pattern_eb377d486ee2bcc9",
+          "target": "eventtype_subscription_start",
+          "type": "CONTAINS_EVENT_TYPE"
+        }
+      ],
+      "truncated": true
+    }
+  }
+}

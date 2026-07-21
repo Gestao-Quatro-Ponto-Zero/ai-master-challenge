@@ -1,0 +1,119 @@
+{
+  "assumptions": [
+    "Historical observational data only.",
+    "Daily source timestamps can limit within-day ordering.",
+    "Associated MRR is context, not loss or exposure."
+  ],
+  "checks": [
+    {
+      "label": "No PII",
+      "passed": true
+    },
+    {
+      "label": "No future leakage",
+      "passed": true
+    },
+    {
+      "label": "No causal claims",
+      "passed": true
+    },
+    {
+      "label": "No predictive score",
+      "passed": true
+    },
+    {
+      "label": "No automated intervention",
+      "passed": true
+    },
+    {
+      "label": "Deterministic rules",
+      "passed": true
+    },
+    {
+      "label": "Human review",
+      "passed": true
+    },
+    {
+      "label": "Reconciled outputs",
+      "passed": true
+    },
+    {
+      "label": "Versioned rules",
+      "passed": true
+    },
+    {
+      "label": "Reproducible pipeline",
+      "passed": true
+    },
+    {
+      "label": "MAIN / STRICT sensitivity",
+      "passed": true
+    },
+    {
+      "label": "Explicit limitations",
+      "passed": true
+    }
+  ],
+  "cutoff": "2024-12-31T19:00:00",
+  "decision_count": 97,
+  "decision_groups": [
+    {
+      "category": "Data",
+      "count": 20,
+      "range": "D001–D020"
+    },
+    {
+      "category": "Temporal",
+      "count": 21,
+      "range": "D021–D041"
+    },
+    {
+      "category": "Survival",
+      "count": 10,
+      "range": "D042–D051"
+    },
+    {
+      "category": "Journey",
+      "count": 12,
+      "range": "D052–D063"
+    },
+    {
+      "category": "Graph",
+      "count": 11,
+      "range": "D064–D074"
+    },
+    {
+      "category": "Watchlist",
+      "count": 11,
+      "range": "D075–D085"
+    },
+    {
+      "category": "Experimentation",
+      "count": 12,
+      "range": "D086–D097"
+    }
+  ],
+  "human_decision_points": [
+    "Resolve data-quality review",
+    "Inspect journey evidence",
+    "Approve experiment design",
+    "Authorize any future operational workflow"
+  ],
+  "limitations": [
+    "Demo is a fixed local snapshot.",
+    "No production observability or authentication.",
+    "No external database or LLM."
+  ],
+  "prohibited_operations": [
+    "Customer contact",
+    "Automatic plan change",
+    "Automatic cancellation",
+    "Live experiment execution",
+    "External account-level data transfer"
+  ],
+  "warnings": [
+    "Source warnings persist.",
+    "Reactivation evidence is limited.",
+    "Most experiment designs are not yet feasible."
+  ]
+}

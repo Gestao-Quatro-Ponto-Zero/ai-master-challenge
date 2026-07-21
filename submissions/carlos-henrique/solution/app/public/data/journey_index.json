@@ -1,0 +1,186 @@
+{
+  "accounts": 500,
+  "cutoff": "2024-12-31T19:00:00",
+  "filters": {
+    "outcomes": [
+      "NO_CHURN_OBSERVED",
+      "REACTIVATED",
+      "REACTIVATED_THEN_CHURNED_AGAIN",
+      "RECURRING_CHURN",
+      "SINGLE_CHURN"
+    ],
+    "qualities": [
+      "MAIN",
+      "STRICT"
+    ],
+    "scopes": [
+      "BETWEEN_CHURN_AND_REACTIVATION",
+      "BETWEEN_RECURRING_CHURNS",
+      "FULL_OBSERVED_JOURNEY",
+      "LANDMARK_30D_JOURNEY",
+      "LANDMARK_60D_JOURNEY",
+      "LANDMARK_90D_JOURNEY",
+      "POST_REACTIVATION",
+      "PRE_FIRST_CHURN"
+    ],
+    "taxonomies": [
+      "ADOPTION_JOURNEY",
+      "CHURN_PATH",
+      "DATA_QUALITY_CONSTRAINED",
+      "DORMANT_JOURNEY",
+      "HIGH_VALUE_LOW_USAGE",
+      "REACTIVATION_PATH",
+      "RECOVERY_JOURNEY",
+      "RECURRING_CHURN_PATH",
+      "SUPPORT_HEAVY_JOURNEY"
+    ]
+  },
+  "journeys": 4221,
+  "limitations": [
+    "Account samples are intentionally bounded.",
+    "Quarantined events are excluded.",
+    "No operational identifier is exported."
+  ],
+  "outcome_distribution": [
+    {
+      "accounts": 175,
+      "outcome": "NO_CHURN_OBSERVED"
+    },
+    {
+      "accounts": 22,
+      "outcome": "REACTIVATED"
+    },
+    {
+      "accounts": 4,
+      "outcome": "REACTIVATED_THEN_CHURNED_AGAIN"
+    },
+    {
+      "accounts": 118,
+      "outcome": "RECURRING_CHURN"
+    },
+    {
+      "accounts": 181,
+      "outcome": "SINGLE_CHURN"
+    }
+  ],
+  "scope_distribution": [
+    {
+      "journey_scope": "BETWEEN_CHURN_AND_REACTIVATION",
+      "journeys": 26,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "BETWEEN_CHURN_AND_REACTIVATION",
+      "journeys": 1,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "BETWEEN_RECURRING_CHURNS",
+      "journeys": 128,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "BETWEEN_RECURRING_CHURNS",
+      "journeys": 8,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "journeys": 500,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "journeys": 497,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "LANDMARK_30D_JOURNEY",
+      "journeys": 476,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "LANDMARK_30D_JOURNEY",
+      "journeys": 473,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "LANDMARK_60D_JOURNEY",
+      "journeys": 441,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "LANDMARK_60D_JOURNEY",
+      "journeys": 437,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "journeys": 418,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "journeys": 415,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "POST_REACTIVATION",
+      "journeys": 26,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "POST_REACTIVATION",
+      "journeys": 1,
+      "quality_population": "STRICT"
+    },
+    {
+      "journey_scope": "PRE_FIRST_CHURN",
+      "journeys": 325,
+      "quality_population": "MAIN"
+    },
+    {
+      "journey_scope": "PRE_FIRST_CHURN",
+      "journeys": 49,
+      "quality_population": "STRICT"
+    }
+  ],
+  "taxonomy_distribution": [
+    {
+      "accounts": 190,
+      "taxonomy": "CHURN_PATH"
+    },
+    {
+      "accounts": 116,
+      "taxonomy": "RECURRING_CHURN_PATH"
+    },
+    {
+      "accounts": 49,
+      "taxonomy": "SUPPORT_HEAVY_JOURNEY"
+    },
+    {
+      "accounts": 43,
+      "taxonomy": "ADOPTION_JOURNEY"
+    },
+    {
+      "accounts": 39,
+      "taxonomy": "HIGH_VALUE_LOW_USAGE"
+    },
+    {
+      "accounts": 24,
+      "taxonomy": "DORMANT_JOURNEY"
+    },
+    {
+      "accounts": 20,
+      "taxonomy": "DATA_QUALITY_CONSTRAINED"
+    },
+    {
+      "accounts": 17,
+      "taxonomy": "RECOVERY_JOURNEY"
+    },
+    {
+      "accounts": 2,
+      "taxonomy": "REACTIVATION_PATH"
+    }
+  ]
+}

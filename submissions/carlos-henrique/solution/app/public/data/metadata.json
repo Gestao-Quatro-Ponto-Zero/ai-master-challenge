@@ -1,0 +1,71 @@
+{
+  "artifact_hashes": {
+    "artifacts/diagnostic_summary.json": "b83795407a369fd5253c3f984ef2e1e12d0a7b5a4abe1bc77cf5db99142815a0",
+    "artifacts/experiment_balance.json": "d82047c5cfac85419608a3c256e3f15b87329a82372797f8a5f60360d7177688",
+    "artifacts/experiment_ethics.json": "1853f1adc22d8ddad35818db1ee859a737d0a9b72b97b3d05c3f87e4d67d24c6",
+    "artifacts/experiment_feasibility.json": "def622141615f84f9b7efdc942b9219de2cd75290bfb9e9f3532c6cc7943217d",
+    "artifacts/experiment_findings.json": "03fe69d64dc442a35221062c25dd4543145f5a0e5b07202c8584c1dc73aed8db",
+    "artifacts/experiment_guardrails.json": "f6b88dbf5e95acbb0ad2284ad1f53018f3fa5d6175f6b5628dedea5be85833e5",
+    "artifacts/experiment_hypotheses.json": "28c76f0ab2409b55fe943a3557045feafe9d2aea2e9b5527ff1f0ac70053dbea",
+    "artifacts/experiment_lab_summary.json": "f0bb61d09b26f9b70f9428c428b3be79347f79df2980be365f28dfb29419d801",
+    "artifacts/experiment_sample_size.json": "3688b105dd6f2b049258bbd997f7e643c2d06aa47a9ad4320cdd72a5a29527d4",
+    "artifacts/graph_findings.json": "ecb52c72df6b5a498feb0b5269c67c3d0bdfd945c0b83c3eac15c36556a7d360",
+    "artifacts/graph_summary.json": "7b3f4327d0cb304b53c5d132792f3ea79d839ff8071c523c9be661394af8795b",
+    "artifacts/journey_findings.json": "58f31818ec28049c334190c10c9405a82b7062d34b4cf0185de90b1ed2c02008",
+    "artifacts/journey_summary.json": "e97de7722678e42e863b487265468a63ee29d8fd239dd96e145f1a4f84e7116e",
+    "artifacts/temporal_quality_summary.json": "4ae7be9a8616f98410607efb8e919df2876c73445673fe1ff303eec813393bed",
+    "artifacts/watchlist_findings.json": "fbe4aa080104f81847efbd4ad5e015026b3857f656d53f308d4ccbdbc3807e21",
+    "artifacts/watchlist_rules.json": "fe29b1939ff670510d5cb3ef92e3da67abb55b5bc28aec2cc56459a241dc6e4d",
+    "artifacts/watchlist_summary.json": "7da712d65739513bc93c43fe98f08356bc3f286c940b0a07e4392ff23c921721",
+    "data/processed/account_journey_taxonomy.parquet": "87f5d43bc4503e313084790fb25947c44b9f9362b556a2bf1fb9793edc0f348e",
+    "data/processed/account_journeys.parquet": "1d9dc6795a92f2389f315503a38263f24713290d2c74eb4e8823e0eb283faeed",
+    "data/processed/account_watchlist_summary.parquet": "89f927b65c73db78febcd890be7aec3e65e9f2d288af25e280bcb8cdcc503c2d",
+    "data/processed/experiment_registry.parquet": "87e9900939fcf3e22af2889798b050a70052a7827d8361ea661a6ec9a3b85385",
+    "data/processed/experiment_specifications.parquet": "8b04d9c3c845f65a4b553d4b2083ef1bc698549064923301a7fc1943d5230600",
+    "data/processed/intervention_watchlist.parquet": "17636089c4ff4ff6a62280a04fb39575cdb27d7b35496ab5c337149cac806361",
+    "data/processed/journey_analytical_graph.graphml": "84e20c30dd2e8674257b1dc737b37f88bccd17c80425bec4b7e58a3c3cbb6775",
+    "data/processed/watchlist_evidence.parquet": "c841ce99d7f29a0113ee07f12f9fd127f6ba7ffebaaecf6c8589774e4b502f10"
+  },
+  "build_timestamp_policy": "FIXED_TO_DATA_CUTOFF",
+  "causal_status": "NO_CAUSAL_CLAIM",
+  "dashboard_version": "9.0.0",
+  "data_cutoff": "2024-12-31T19:00:00",
+  "demo_mode": true,
+  "external_dependencies": [],
+  "limitations": [
+    "HISTORICAL_OBSERVATIONAL_DATA",
+    "LOCAL_DEMO_SNAPSHOT",
+    "NO_LIVE_BACKEND",
+    "NO_CAUSAL_CLAIM"
+  ],
+  "pii_status": "NONE_EXPOSED",
+  "pipeline_phases": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "populations": {
+    "accounts": 500,
+    "journeys": 4221,
+    "usable_events": 13927
+  },
+  "project_name": "JourneyGraph Retention Intelligence",
+  "source_commit": "3e96b07e9f113c15ec2a9635324054c3e7b27b00",
+  "test_count": 119,
+  "validation": {
+    "experiment_status_passed": true,
+    "graph_limits_passed": true,
+    "non_finite_values": 0,
+    "output_count": 15,
+    "pii_fields": 0,
+    "prohibited_language": 0,
+    "raw_operational_ids": 0,
+    "watchlist_priority_passed": true
+  }
+}

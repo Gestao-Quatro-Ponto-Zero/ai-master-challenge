@@ -514,3 +514,44 @@ Regras, cutoff, janelas, qualidade, componentes, filas, duplicidade, evid?ncias,
 - reconcilia??o inexplicada: zero;
 - revis?o visual: seis PNGs inspecionados em montage; t?tulos, denominadores, escalas e aus?ncia de identificadores aprovados;
 - revis?o humana: hip?teses, interven??es, linguagem, elegibilidade, exclus?es, randomiza??o, contamina??o, m?tricas, MDE, amostra, atrito, baselines, balanceamento, SAP, guardrails, stopping rules, ?tica, PII, causalidade, figuras, reconcilia??o e diff inclu?dos no checklist.
+## Fase 9 - Dashboard executivo e experiencia de demonstracao
+
+1. Reexecutadas as precondicoes Git na branch `submission/carlos-henrique`, com base `3e96b07e9f113c15ec2a9635324054c3e7b27b00`, working tree limpo e staging vazio.
+2. Verificados presenca e hashes de 25 artefatos autorizados das Fases 3-8; nenhum input analitico foi alterado.
+3. Construido `build_dashboard_data.py` com hash gate, serializacao deterministica e validacoes fail-closed de privacidade, semantica, finitude, grafo, filas e status experimental.
+4. Gerados 15 JSONs locais: overview, qualidade, tres jornadas demo reais, tres modos de grafo, watchlist governada, oito experimentos `UNTESTED`, governanca, guided demo e metadata.
+5. Implementado Next.js App Router com TypeScript strict, Tailwind, Recharts, Cytoscape, Lucide, Zod, Vitest e Playwright, sem backend ou servico externo.
+6. Entregues sete areas principais, rota metodologica e Guided Demo de oito etapas; explicacoes sao deterministicas e baseadas em evidencia.
+7. Executados lint, typecheck, 18 testes Vitest, build estatico, 36 testes Playwright responsivos, 130 testes Python e compileall.
+8. Capturadas sete screenshots do build real. A revisao visual identificou densidade excessiva no event-flow; a visao inicial foi reduzida para 16 relacoes e layout circular, seguida de novo build e recaptura.
+9. Executado o builder duas vezes apos a ultima alteracao; 15/15 arquivos permaneceram byte a byte identicos.
+10. Revisados homepage, qualidade, jornadas, grafo, watchlist, experimentos, governanca, guided demo, desktop/tablet/mobile, loading, empty/error states, textos, labels, numeros, MRR, limitacoes, PII, causalidade e performance.
+
+### Resultado de validacao
+
+- Gate: `PASS`.
+- npm audit de producao: zero vulnerabilidades.
+- rotas estaticas: 10, incluindo not-found e metodologia;
+- Vitest: 18 aprovados;
+- Playwright responsivo: 36 aprovados;
+- execucao desktop e screenshots: 12 aprovados;
+- pytest completo: 130 aprovados em 33,84 segundos;
+- JSONs: 15, volume total 549.036 bytes, zero divergencias;
+- PII, IDs operacionais brutos, score, probabilidade, causalidade, acao automatica, experimento executado e outcome sintetico: zero;
+- console errors e falhas de `/data/` no smoke: zero;
+- screenshots revisadas: sete PNGs reais;
+- push e Pull Request: nao executados.
+
+### Erros e correcoes
+
+- **E063 - nome de artefato presumido:** `diagnostic_findings.json` nao existia; a selecao foi alinhada aos artefatos reais da Fase 3.
+- **E064 - falso positivo de nao finito:** busca textual por `nan` atingia palavras legitimas; a validacao passou a percorrer valores tipados.
+- **E065 - helper inserido no escopo incorreto:** a normalizacao de acoes proibidas foi movida para funcao de modulo e retestada.
+- **E066 - instalacao cache-only bloqueada:** dependencias ausentes exigiram instalacao npm aprovada; runtime continua totalmente local.
+- **E067 - advisories em versoes iniciais:** Next, Vitest e dependencias foram atualizados; PostCSS foi fixado em versao corrigida.
+- **E068 - plugin React/Vite incompativel:** removido o plugin que carregava Vite duplicado; JSX passou a usar o transformador nativo.
+- **E069 - spawn bloqueado pelo sandbox:** testes/build foram repetidos fora do wrapper restrito, sem acesso externo do app.
+- **E070 - perfis tablet/mobile exigiam WebKit ausente:** os dispositivos foram mantidos, com browser explicitamente Chromium.
+- **E071 - seletor estrito duplicado:** assercoes foram tornadas semanticas/exatas.
+- **E072 - hairball na primeira captura:** event-flow inicial passou de 35 para 16 relacoes visiveis e layout circular.
+- **E073 - visualizador local bloqueado no Windows:** contact sheet e previews temporarios foram inspecionados fora do repositorio; apenas screenshots finais revisadas permaneceram.

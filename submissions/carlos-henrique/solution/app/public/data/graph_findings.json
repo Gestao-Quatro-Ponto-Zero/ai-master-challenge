@@ -1,0 +1,72 @@
+{
+  "cutoff": "2024-12-31T19:00:00",
+  "findings": [
+    {
+      "confidence": "MEDIUM",
+      "denominator": 181,
+      "display_summary": "Existing governed graph finding; inspect support, population, stability, and limitations together.",
+      "finding_id": "GF01",
+      "limitations": [
+        "STRUCTURAL_NOT_CAUSAL"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "source_phase": "PHASE_6_GRAPH",
+      "stability": "ROBUST",
+      "title": "Transição ROBUST com suporte elevado"
+    },
+    {
+      "confidence": "MEDIUM",
+      "denominator": 175,
+      "display_summary": "Existing governed graph finding; inspect support, population, stability, and limitations together.",
+      "finding_id": "GF02",
+      "limitations": [
+        "STRUCTURAL_NOT_CAUSAL"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "source_phase": "PHASE_6_GRAPH",
+      "stability": "ROBUST",
+      "title": "Transição ROBUST com suporte elevado"
+    },
+    {
+      "confidence": "LOW",
+      "denominator": 325,
+      "display_summary": "Existing governed graph finding; inspect support, population, stability, and limitations together.",
+      "finding_id": "GF03",
+      "limitations": [
+        "ASSOCIATION_NOT_CAUSATION",
+        "EXPOSURE_CONTROL_INHERITED_FROM_PHASE5"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "source_phase": "PHASE_6_GRAPH",
+      "stability": "SENSITIVE",
+      "title": "Caminho promovível observado antes de churn"
+    },
+    {
+      "confidence": "MEDIUM",
+      "denominator": 8,
+      "display_summary": "Existing governed graph finding; inspect support, population, stability, and limitations together.",
+      "finding_id": "GF05",
+      "limitations": [
+        "CENTRALITY_IS_NOT_CAUSAL_IMPORTANCE"
+      ],
+      "population": "AGGREGATED_PROMOTABLE",
+      "source_phase": "PHASE_6_GRAPH",
+      "stability": "ROBUST",
+      "title": "Centralidade estrutural estável entre pesos"
+    },
+    {
+      "confidence": "LOW",
+      "denominator": 500,
+      "display_summary": "Existing governed graph finding; inspect support, population, stability, and limitations together.",
+      "finding_id": "GF06",
+      "limitations": [
+        "MRR_ASSOCIATED_NOT_LOST_OR_SAVED",
+        "NO_CAUSAL_ATTRIBUTION"
+      ],
+      "population": "MAIN",
+      "source_phase": "PHASE_6_GRAPH",
+      "stability": "ROBUST",
+      "title": "Caminho com maior MRR associado"
+    }
+  ]
+}

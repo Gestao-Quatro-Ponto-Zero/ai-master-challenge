@@ -1,0 +1,14 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { loadData } from "@/lib/data";
+import type { Metric } from "@/lib/types";
+import { DataFreshness, LimitationCallout, MetricCard, SectionHeader } from "@/components/ui";
+import { MultiColorBarChart } from "@/components/DashboardCharts";
+
+interface Overview { headline: string; cutoff: string; metrics: Metric[]; pipeline: string[]; cards: Array<{ title: string; metric: string; summary: string }> }
+interface JourneyIndex { outcome_distribution: Array<{ outcome: string; accounts: number }> }
+
+export default async function OverviewPage() {
+  const [overview, journeys] = await Promise.all([loadData<Overview>("overview.json"), loadData<JourneyIndex>("journey_index.json")]);
+  return <div><SectionHeader eyebrow="Executive overview" title="From fragmented events to governed retention intelligence." description="A product narrative that turns audited historical evidence into explainable journeys, human-review queues, and testable hypotheses." /><DataFreshness cutoff={overview.cutoff} /><div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{overview.metrics.slice(0, 8).map((metric) => <MetricCard key={metric.label} metric={metric} />)}</div><section className="mt-8 panel p-6"><p className="eyebrow">Evidence pipeline</p><ol className="mt-5 grid gap-3 md:grid-cols-3 xl:grid-cols-6">{overview.pipeline.map((step, index) => <li key={step} className="relative rounded-xl border border-line bg-slate-50 p-4"><span className="font-mono text-xs text-muted">0{index + 1}</span><p className="mt-2 text-sm font-semibold">{step}</p>{index < overview.pipeline.length - 1 && <ArrowRight className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 rounded-full bg-white text-muted xl:block" size={20} aria-hidden />}</li>)}</ol></section><section className="mt-8 grid gap-5 xl:grid-cols-[1fr_1fr]"><div className="grid gap-4 sm:grid-cols-2">{overview.cards.map((card) => <article className="panel p-5" key={card.title}><p className="eyebrow">{card.title}</p><h3 className="mt-3 text-xl font-semibold">{card.metric}</h3><p className="mt-2 text-sm leading-6 text-muted">{card.summary}</p></article>)}</div><MultiColorBarChart data={journeys.outcome_distribution} category="outcome" value="accounts" title="Observed journey outcomes" subtitle="Accounts · FULL_OBSERVED_JOURNEY · MAIN population" summary="Observed outcomes are descriptive classifications and do not imply future behavior." /></section><div className="mt-8"><LimitationCallout>All evidence is historical through Dec 31, 2024. Associated MRR is not revenue at risk. Watchlists require human review, and every experiment hypothesis remains untested.</LimitationCallout></div><div className="mt-8 flex flex-wrap gap-3"><Link className="button-primary" href="/demo">Start 3-minute guided demo</Link><Link className="button-secondary" href="/methodology">Read methodology</Link></div></div>;
+}
