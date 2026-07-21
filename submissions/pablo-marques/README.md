@@ -16,6 +16,109 @@ Auditei os dois datasets antes de analisar qualquer coisa e o Dataset 1 não sus
 
 <!-- gif entra aqui -->
 
+```
+.venv/Scripts/python.exe demo.py "meu notebook nao liga desde ontem"
+echo "please grant access to the finance folder" | .venv/Scripts/python.exe demo.py
+.venv/Scripts/python.exe demo.py --sessao     # os 5 chamados reais abaixo
+```
+
+Saída **literal** de [`solution/demo.py`](solution/demo.py) — dois dos cinco casos da sessão gravada. Os cinco (as três rotas, um chamado sem precedente e um erro do modelo) estão em [`solution/demo/sessao_demo.txt`](solution/demo/sessao_demo.txt), e nenhum foi escolhido a dedo: são os primeiros do conjunto de teste que satisfazem cada critério.
+
+```text
+### CASO 2 — criterio: aprovacao (categoria sensivel)
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  create record net which points to thursday pm dear please create record
+  which points thanks regards engineer
+
+  [rotulo real: Access — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Access
+  confianca          : 0.831
+  segunda hipotese   : Miscellaneous (margem 0.764)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : APROVACAO   -> humano com poder de aprovar decide.
+  regra  : R1 — categoria sensivel (vence tudo, inclusive confianca alta)
+  limiar : tau=0.00 para 'Access', da curva medida do bloco 3
+  motivo :
+           categoria sensivel: 'Access' concede privilegio; exige aprovacao
+           humana [decisao de processo]
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  1. similaridade 0.726 | foi para a fila 'Access'
+     texto     : create a record net tuesday hi please create record which
+                 points record exists change destination thanks regar
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+  2. similaridade 0.405 | foi para a fila 'Access'
+     texto     : create new record for prod service friday pm create record
+                 prod hi create record prod questions please let bes
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+  voto dos vizinhos : 'Access'
+  modelo            : 'Access'   -> CONCORDAM
+
+
+### CASO 5 — criterio: o modelo errou
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  mailbox user creation mailbox volume purchase plan apple apple profile
+  push apple please
+
+  [rotulo real: Purchase — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Storage
+  confianca          : 0.555
+  segunda hipotese   : Access (margem 0.183)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : AUTO        -> fila automatica. auto-ROTEADO, NAO resolvido.
+  regra  : R4 — auto-roteado (nenhuma regra anterior disparou)
+  limiar : tau=0.00 para 'Storage', da curva medida do bloco 3
+  motivo :
+           auto-ROTEADO para a fila 'Storage': confianca 0.555 >= tau=0.00,
+           margem 0.183 ok. Nao resolvido — agente atende normalmente.
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  1. similaridade 0.345 | foi para a fila 'Hardware'
+     texto     : set up and install latest apple and prepare for purchase hi
+                 please tickets assign two tickets each each differ
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+  2. similaridade 0.340 | foi para a fila 'Storage'
+     texto     : mailbox creation mailbox creation hello please create
+                 mailbox user permissions mailbox mails please thank
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+  voto dos vizinhos : 'Hardware'
+  modelo            : 'Storage'   -> DISCORDAM
+  (discordancia nao muda a rota nesta politica; e um sinal para o
+   agente. Precisao medida: 0.928 quando concordam, 0.733 quando nao.)
+```
+
+O caso 5 é o sistema errando — `Purchase` classificado como `Storage`, com confiança 0,555 e margem 0,183 — e ficou porque o critério o escolheu, não apesar disso. Ele mostra o mecanismo funcionando onde importa: os vizinhos discordaram do modelo exatamente no caso em que o modelo estava errado.
+
 ---
 
 ## Solução
@@ -93,6 +196,8 @@ No lugar, o Bloco 5 entrega um **painel de contexto**: para um chamado novo, os 
 **2. Ligar o auto-roteamento, não a auto-resolução.** 74,6% do volume com 89,7% de precisão contra o piso de 83,3%. O agente continua atendendo, escrevendo e resolvendo; o que a máquina poupa é a triagem manual.
 
 **3. O que NÃO automatizar — e não é uma lista de assuntos proibidos.** Esperava-se alguma categoria cair fora por baixa separabilidade; **nenhuma das oito cai**, em nenhum κ da faixa. O piso não morde em exclusão de classe, morde em **cobertura**: a taxa de automação global vai de 96,5% (κ=5) a 85,2% (κ=10) e 66,3% (κ=20). O que fica com humano é, **dentro de cada assunto, a cauda de baixa confiança** — por isso o corte é uma regra em [`04_triagem.py`](solution/04_triagem.py), testável, e não regra de negócio estática em slide.
+
+> **Os 96,5% e os 74,6% não se contradizem — são dois estágios.** 96,5% é a cobertura medida do classificador ponderada pelo mix (Σ w_c · cobertura_c), **antes** de qualquer regra de política: é o teto que a medição do Bloco 3 autoriza. 74,6% é o que sobra **depois** que a política do Bloco 4 corta — R1 tira 17,4% por categoria sensível, R2 tira 6,6% por empate no topo, R3 tira 1,4% por confiança abaixo do limiar da classe. A distância entre os dois números é exatamente o preço das regras, e ele está discriminado.
 
 **4. Access e Administrative rights exigem aprovação humana — decisão de processo, com o preço na mesa.** Desvia **17,4% do volume** que a máquina classificaria com **90,6% de precisão**, acima do piso. A regra não existe porque a precisão é ruim; existe *apesar* de ela ser boa: conceder privilégio não tem desfazer barato, e o custo de errar não está na fila errada, está no privilégio concedido a quem não devia. Quem discordar da troca move `CATEGORIAS_SENSIVEIS` e reroda.
 
