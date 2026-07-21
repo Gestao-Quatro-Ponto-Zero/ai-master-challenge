@@ -13,13 +13,14 @@ O que este script entrega:
   SECAO 0 — divergencia entre briefing e arquivo (tamanho E natureza)
   SECAO 1 — o modelo, e a algebra que elimina V e H
   SECAO 2 — resultado livre de premissa: piso de precisao p*(k)
-  SECAO 3 — decisao A (prioridade) e sua invariancia ao handle time
-  SECAO 4 — teste de segunda ordem: o que teria que ser verdade pra inverter
+  SECAO 3 — decisao A: o que a algebra garante e o que ela NAO garante
+  SECAO 4 — quantificacao do que a SECAO 3 nao garante
   SECAO 5 — decisao B (FTE) e o ponto de cruzamento na faixa
   SECAO 6 — o que este bloco NAO entrega, e o gancho pro bloco 3
 
 O que este script NAO entrega, por decisao explicita: ranking de prioridade.
-Ver SECAO 6.
+Nenhuma tabela deste arquivo ordena categorias por horas recuperaveis. Ver
+SECAO 6.
 
 Uso:
     python 02_business_case.py
@@ -387,84 +388,107 @@ CONSEQUENCIA OPERACIONAL — este e o entregavel do bloco pro bloco 3:
 # ==========================================================================
 # SECAO 3 — DECISAO A E SUA INVARIANCIA
 # ==========================================================================
-titulo("SECAO 3 — DECISAO A: 'POR ONDE EU COMECO?'")
+titulo("SECAO 3 — DECISAO A: O QUE A ALGEBRA GARANTE E O QUE ELA NAO GARANTE")
 
-print("""
+print(f"""
 DECISAO NOMEADA
-  O Diretor de Operacoes olha o numero e decide em que categoria a
-  automacao entra primeiro. Decisao de sequenciamento, nao de investimento.
+  O Diretor de Operacoes decide em que categoria a automacao entra
+  primeiro. Decisao de sequenciamento, nao de investimento.
 
 PERGUNTA DE SENSIBILIDADE
   Em que ponto da faixa de handle time essa decisao vira?
 
-RESPOSTA: em nenhum. E a razao e estrutural, nao e a faixa ser estreita.
+RESPOSTA, E ELA TEM DUAS METADES QUE PRECISAM SER LIDAS JUNTAS:
 
-  Sob a premissa de handle time uniforme entre categorias, H e escalar puro
-  multiplicando TODAS as categorias pelo mesmo valor:
+  A invariancia e ao NIVEL do handle time. Nao e a RAZAO entre categorias.
+  E quem decide por onde comecar e a razao, nao o nivel.
 
-      horas(c) = [V * H * cobertura * g] * w_c
-                  \\________ constante ________/
+  METADE 1 — o nivel cancela, e cancela por algebra.
 
-  O colchete e identico para toda categoria. A ordem entre categorias e
-  portanto a ordem de w_c, qualquer que seja H. H nao encolhe a diferenca
-  nem inverte par nenhum: ele cancela.
+    Sob handle time uniforme, H e escalar puro multiplicando todas as
+    categorias pelo mesmo valor:
 
-  Nao e que a faixa {H_MIN}-{H_MAX} min seja estreita demais pra virar a
-  decisao. E que NENHUMA faixa vira, inclusive faixas absurdas. A premissa
-  de handle time nao e carregadora para a decisao A. Ela poderia estar
-  errada por uma ordem de grandeza sem alterar a resposta.
+        horas(c) = [ V * H * cobertura * g ] * w_c
+                    \\_______ constante _______/
 
-DEMONSTRACAO NUMERICA (ordem nos dois extremos da faixa e nos extremos de k)
-""".replace("{H_MIN}", f"{H_MIN_MINUTOS:.0f}").replace("{H_MAX}", f"{H_MAX_MINUTOS:.0f}"))
+    O colchete nao depende de c. A ordem entre categorias e portanto a
+    ordem de w_c, qualquer que seja H. Nao e que a faixa de {H_MIN_MINUTOS:.0f} a {H_MAX_MINUTOS:.0f} min
+    seja estreita demais pra virar a decisao — e que NENHUMA faixa vira.
+    A premissa poderia estar errada por uma ordem de grandeza e a resposta
+    seria a mesma. Errar o nivel de H nao custa nada aqui.
+
+  METADE 2 — a razao NAO cancela, e e ela que manda.
+
+    A premissa de uniformidade e arbitrada e quase certamente falsa: nao
+    ha motivo para um chamado de Administrative rights custar o mesmo que
+    um de Hardware. Assim que H varia por categoria, ele sai do colchete
+    e entra no termo que varia:
+
+        horas(c) = [ V * cobertura * g ] * w_c * H_c
+                    \\____ constante ____/    \\_ varia _/
+
+    A ordem passa a ser a de (w_c * H_c). O nivel continua cancelando; a
+    razao H_c/H_c' passa a decidir tudo. Ou seja:
+
+        a decisao A e imune a errar QUANTO custa um ticket,
+        e totalmente exposta a errar QUAIS tickets custam mais.
+
+    A SECAO 4 quantifica exatamente essa exposicao. Ela nao e uma ressalva
+    que retrata esta secao — e a outra metade da mesma resposta, e o
+    motivo de este bloco nao publicar ranking (SECAO 6).
+
+VERIFICACAO DA METADE 1
+  Se o nivel cancela, a participacao percentual de cada categoria nas
+  horas totais tem que ser identica em qualquer H. Medido nos dois
+  extremos da faixa arbitrada e nos dois extremos de k:
+""")
 
 cob_ref, prec_ref = curva_placeholder(0.50)
-cenarios = [
-    ("H=3min,  k=1.25", H_LO, 1.25),
-    ("H=30min, k=1.25", H_HI, 1.25),
-    ("H=3min,  k=4.00", H_LO, 4.00),
-    ("H=30min, k=4.00", H_HI, 4.00),
-]
-ordens = {}
-for rotulo, h, k in cenarios:
-    serie = pd.Series(
-        {c: horas_liquidas_ano(mix[c], cob_ref, prec_ref, k, h) for c in CATEGORIAS}
-    ).sort_values(ascending=False)
-    ordens[rotulo] = list(serie.index)
 
-comp = pd.DataFrame({rot: ordem for rot, ordem in ordens.items()})
-comp.index = [f"{i + 1}o" for i in range(len(comp))]
-print(comp.to_string())
 
-todas_iguais = all(o == ordens[cenarios[0][0]] for o in ordens.values())
-print(f"\n  ordens identicas nos quatro cenarios: {todas_iguais}")
-print("  (identicas por construcao algebrica, nao por coincidencia numerica)")
+def participacoes(h_horas: float, k: float) -> pd.Series:
+    """Fracao de cada categoria nas horas liquidas totais."""
+    s = pd.Series(
+        {c: horas_liquidas_ano(mix[c], cob_ref, prec_ref, k, h_horas) for c in CATEGORIAS}
+    )
+    return s / s.sum()
 
+
+base = participacoes(H_LO, 1.25)
+desvio_max = max(
+    (participacoes(h, k) - base).abs().max()
+    for h, k in [(H_HI, 1.25), (H_LO, 4.00), (H_HI, 4.00)]
+)
+print(f"    desvio maximo absoluto de participacao entre os cenarios: "
+      f"{desvio_max * 100:.3f} pp")
+print("    (zero por construcao algebrica — nao e coincidencia numerica)")
 print("""
-  Vale registrar o que essa invariancia NAO significa. Ela nao diz que a
-  ordem esta certa — diz que a ordem nao depende da premissa de handle
-  time. Se a ordem estiver errada, sera por outro motivo, e o teste da
-  SECAO 4 mostra qual.
+  Nao ha tabela de ordem aqui de proposito. Imprimir a ordem seria imprimir
+  o ranking que a SECAO 6 explica por que este bloco nao publica.
 """)
 
 
 # ==========================================================================
 # SECAO 4 — TESTE DE SEGUNDA ORDEM
 # ==========================================================================
-titulo("SECAO 4 — TESTE DE SEGUNDA ORDEM: O QUE TERIA QUE SER VERDADE")
+titulo("SECAO 4 — QUANTIFICACAO DA METADE 2: O QUE TERIA QUE SER VERDADE")
 
 print(f"""
-A SECAO 3 vale sob a premissa de que o handle time e UNIFORME entre
-categorias. Essa premissa e arbitrada e provavelmente falsa: nao ha razao
-para um chamado de Administrative rights custar o mesmo que um de Hardware.
+Esta secao mede a exposicao anunciada na METADE 2 da SECAO 3. A pergunta
+certa nao e "a conclusao aguenta a faixa de H?" — a METADE 1 ja respondeu
+que sim, e por algebra. A pergunta que sobra e sobre a razao:
 
-Entao a pergunta certa nao e "a conclusao aguenta a faixa de H?" — ja
-sabemos que sim. E: quanto o handle time de uma categoria menor teria que
-ser MAIOR que o de {MAIOR} para inverter a ordem?
+  quanto o handle time de uma categoria teria que ser MAIOR que o de
+  {MAIOR} para que ela passasse na frente?
 
     w_c * H_c > w_maior * H_maior   <=>   H_c / H_maior > w_maior / w_c
 
 A razao necessaria depende so do mix [dados]. Nao depende de H, de V, de k
-nem da curva placeholder.
+nem da curva placeholder — e o mesmo tipo de resultado da SECAO 2: forma
+fechada, livre de escala.
+
+(A tabela abaixo esta ordenada por w_c, que ja e publico como [dados] na
+SECAO 1. Ela nao ordena categorias por horas recuperaveis — ver SECAO 6.)
 """)
 
 w_maior = mix[MAIOR]
@@ -487,7 +511,7 @@ print(pd.DataFrame(linhas).to_string(index=False))
 
 razao_segundo = w_maior / mix[CATEGORIAS[1]]
 print(f"""
-LEITURA — e aqui a invariancia da SECAO 3 tem um limite honesto:
+LEITURA — a exposicao e assimetrica, e e isso que orienta a acao:
 
   O primeiro lugar NAO esta protegido. Basta {CATEGORIAS[1]} custar
   {razao_segundo:.2f}x o handle time de {MAIOR} para assumir a lideranca — uma
@@ -562,23 +586,36 @@ print("H* — handle time que faz o ganho cruzar 1 FTE   [PLACEHOLDER na curva]"
 print(pd.DataFrame(grade).to_string(index=False))
 
 print(f"""
-LEITURA DA GRADE
+LEITURA DA GRADE — separando o que e estrutura do que e placeholder
 
-  1. Existe interior otimo em tau. Nem tau baixo (cobertura alta, precisao
-     ruim, muito retrabalho) nem tau alto (precisao alta, cobertura minima,
-     poucos tickets tocados) minimizam H*. O melhor ponto fica no meio — e
-     achar esse ponto por classe e exatamente o trabalho do bloco 3.
+  ANTES DE TUDO: os VALORES das celulas acima nao sao resultado. Eles saem
+  da curva placeholder, que eu escolhi, e vao mudar quando o bloco 3 medir
+  a curva real por classe. Nenhum "7 min", "18 min" ou "nunca" desta grade
+  deve ser citado como numero. O que a grade entrega e o FORMATO da
+  resposta: o tipo de tabela que o Diretor vai ler quando os numeros forem
+  medidos, e onde eles vao entrar.
 
-  2. As colunas de k alto morrem por cima. Quando a precisao fica abaixo do
-     piso p*(k) da SECAO 2, nenhuma quantidade de handle time salva: a
-     celula e 'nunca', nao um numero grande. Isso e o modelo se recusando a
-     virar positivo por forca bruta de escala — que era o objetivo de ter
-     o termo de erro.
+  1. ESTRUTURAL — existe otimo interior em tau. Nem tau baixo (cobertura
+     alta, precisao ruim, muito retrabalho) nem tau alto (precisao alta,
+     cobertura minima, poucos tickets tocados) minimizam H*. Isso nao vem
+     da forma da curva que eu inventei: vem de cobertura e precisao se
+     moverem em sentidos opostos, que e propriedade de qualquer
+     classificador com limiar. Sobrevive a medicao. A posicao do otimo e
+     que e placeholder — e acha-la por classe e o trabalho do bloco 3.
 
-  3. O cruzamento de {LIMIAR_FTE:.0f} FTE cai DENTRO da faixa de handle time arbitrada
-     na maior parte da grade util. Ou seja: a decisao B, ao contrario da
-     decisao A, E sensivel a premissa. Aqui a premissa e carregadora e o
-     texto tem que dizer isso.
+  2. ESTRUTURAL na forma, PLACEHOLDER no valor — o mecanismo do 'nunca'.
+     Quando a precisao cai abaixo do piso p*(k) da SECAO 2, nenhuma
+     quantidade de handle time salva: a celula vira 'nunca', nao um numero
+     grande. O mecanismo e real e vem da SECAO 2, que e forma fechada. Mas
+     ONDE a fronteira do 'nunca' cai nesta grade e consequencia direta da
+     precisao que a minha curva atribui a cada tau. Com a curva medida, a
+     fronteira se move — pode cobrir mais celulas ou quase nenhuma.
+
+  3. PLACEHOLDER — o cruzamento de {LIMIAR_FTE:.0f} FTE cai dentro da faixa de handle
+     time arbitrada na maior parte da grade util. O que se pode afirmar
+     hoje nao e onde ele cai, e sim que ele E sensivel a premissa de
+     handle time, ao contrario da decisao A. Essa assimetria entre as duas
+     decisoes e estrutural; a posicao do cruzamento nao e.
 """)
 
 print("FAIXA DE FTE LIBERADO NOS EXTREMOS DA FAIXA DE H")
@@ -624,14 +661,22 @@ REGRA DE ARREDONDAMENTO APLICADA
 titulo("SECAO 6 — O QUE ESTE BLOCO NAO ENTREGA (e por que)")
 
 print(f"""
-NAO HA RANKING DE PRIORIDADE NESTA SAIDA. A omissao e deliberada.
+NAO HA RANKING DE PRIORIDADE NESTA SAIDA. Nenhuma tabela deste arquivo
+ordena categorias por horas recuperaveis. A omissao e deliberada e vale
+conferir: as unicas tabelas ordenadas aqui sao o mix (SECAO 1) e as razoes
+de inversao (SECAO 4), ambas ordenadas por w_c, que e [dados] cru.
 
-A SECAO 3 provou que, sob handle time uniforme, a ordem das categorias por
-horas recuperaveis E a ordem de w_c. Publicar esse ranking agora seria
-publicar o histograma do dataset 2 com outro nome: {MAIOR} apareceria em
-primeiro lugar porque {MAIOR} e {mix[MAIOR] * 100:.1f}% da base [dados]. Isso e
-contagem, nao achado. Renomear uma contagem de 'priorizacao' e o tipo de
-coisa que enche slide e nao sustenta pergunta.
+A METADE 1 da SECAO 3 mostrou que, sob handle time uniforme, a ordem das
+categorias por horas recuperaveis E exatamente a ordem de w_c. Publicar
+esse ranking seria publicar o histograma do dataset 2 com outro nome:
+{MAIOR} apareceria em primeiro lugar porque {MAIOR} e {mix[MAIOR] * 100:.1f}% da base
+[dados]. Isso e contagem, nao achado. Renomear uma contagem de
+'priorizacao' e o tipo de coisa que enche slide e nao sustenta pergunta.
+
+E a METADE 2 mostrou o outro motivo, independente do primeiro: mesmo que
+alguem quisesse publicar essa ordem, ela viraria com {razao_segundo:.2f}x de diferenca
+de handle time entre as duas primeiras. Nao ha ranking defensavel aqui —
+nem por falta de conteudo, nem por falta de robustez.
 
 O QUE FALTA PARA O RANKING NASCER DE VERDADE
 
