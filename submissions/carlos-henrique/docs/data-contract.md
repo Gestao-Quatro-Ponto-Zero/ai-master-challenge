@@ -500,3 +500,23 @@ Fontes controladas: `PHASE_3_DIAGNOSTIC`, `PHASE_4_SURVIVAL`, `PHASE_5_JOURNEY`,
 Parquets individuais usam apenas `account_key` an?nimo. JSONs agregados, relat?rios e figuras n?o cont?m account keys, IDs brutos, PII ou texto livre sens?vel.
 
 Permitido: investiga??o agregada, estrutura, caminhos observados, qualidade, suporte, estabilidade, taxonomia e MRR associado. Proibido: score individual, causalidade, previs?o, perda/economia atribu?da, ranking de conta, recomenda??o autom?tica, contato, interven??o, GNN, link prediction e app.
+
+---
+
+## Contratos da Fase 8 ? Experiment Lab
+
+### Registro e especifica??es
+
+`experiment_registry.parquet` tem uma linha por experimento e registra desenho, unidades, cutoff, regras, popula??o eleg?vel, amostra requerida, MDE, alpha, power, dura??o, riscos, aprova??es, limita??es e `causal_status=UNTESTED`. `experiment_specifications.parquet` normaliza se??es e par?metros das oito especifica??es individuais em JSON.
+
+### Cat?logo, hip?teses e an?lise
+
+`config/intervention_catalog.json` versiona dez interven??es somente como op??es futuras. Os artefatos agregados de hip?teses, elegibilidade, baseline, power, SAP, guardrails, stopping rules, governan?a e findings n?o cont?m chaves de conta. Baselines s?o hist?ricos e descritivos; n?o equivalem a bra?o de controle.
+
+### Simula??o de assignment
+
+`experiment_assignment_simulation.parquet` usa apenas `account_key` an?nima, experimento, bra?o simulado, bloco, seed, elegibilidade, motivo e `simulation_only=true`. A simula??o testa reprodutibilidade e balan?o; n?o constitui execu??o, exposi??o, tratamento ou resultado.
+
+### Estados e linguagem
+
+Estados permitidos: `DRAFT`, `READY_FOR_REVIEW`, `PILOT_ONLY`, `UNDERPOWERED`, `NOT_FEASIBLE` e `BLOCKED`. O contrato pro?be `RUNNING`, `SUCCESS`, `FAILED`, `EFFECTIVE`, uplift observado, efeito estimado ou resultado causal. Um futuro sistema operacional dever? impor uma interven??o comportamental por conta, aprova??es, consentimento e monitoramento externo.

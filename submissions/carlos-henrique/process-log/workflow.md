@@ -478,3 +478,39 @@ Escopos, limites, ordena??o, exposi??o, transi??es, n-grams, pruning, churn, rec
 Regras, cutoff, janelas, qualidade, componentes, filas, duplicidade, evid?ncias, linguagem, grafo, MRR, figuras, PII, reconcilia??o e diff staged foram inclu?dos no checklist final. W011 ? exce??o ampla exclusiva de qualidade; W015 permanece `BROAD_RULE_REVIEW_REQUIRED`. Nenhum item autoriza contato ou interven??o.
 
 - **E053 - painel de reativacao vazio:** nenhum pattern de reativacao atingiu os gates e a primeira figura mostrava apenas o titulo. O painel passou a comunicar a ausencia de resultado e os gates preservados, sem criar evidencia artificial.
+
+## Fase 8 ? Experiment Lab
+
+1. Reexecutadas precondi??es Git e conferidos os hashes dos dez inputs autorizados sobre a base `1ed6655` limpa.
+2. Criados cat?logo com dez interven??es e registro de oito hip?teses futuras, todas `UNTESTED`.
+3. Aplicadas regras de elegibilidade cutoff-safe, conflitos futuros e bloqueios de qualidade ou unidade de randomiza??o ausente.
+4. Calculados baselines hist?ricos, MDEs e power para propor??es, m?dias e tempo at? evento, com infla??o por atrito.
+5. Simulada aloca??o determin?stica e bloqueada, estritamente marcada como `simulation_only` e sem outcomes.
+6. Especificados ITT, guardrails, stopping rules, missingness, multiplicidade, heterogeneidade e an?lises de sensibilidade.
+7. Gerados tr?s Parquets, onze JSONs agregados, oito especifica??es, seis relat?rios e seis figuras.
+8. Validada a aus?ncia de IDs brutos, PII, futuro, resultados, uplift, execu??o e sem?ntica causal.
+
+### Gate
+
+`PASS_WITH_WARNINGS`. EXP003 e EXP007 n?o s?o vi?veis sem chaves operacionais; EXP001, EXP002, EXP004 e EXP008 est?o subdimensionados; EXP005 permanece piloto; EXP006 est? pronto somente para revis?o. Nenhum status autoriza execu??o.
+
+### Erros e corre??es
+
+- **E058 ? depend?ncia estat?stica opcional ausente:** `statsmodels` n?o estava instalada; f?rmulas transparentes com SciPy foram usadas sem ampliar depend?ncias.
+- **E059 ? serializa??o de se??es em lista:** o normalizador de especifica??es passou a aceitar dicion?rios e listas sem perder itens.
+- **E060 ? power para popula??o vazia:** desenhos sem popula??o eleg?vel passaram a retornar amostra n?o estim?vel como zero e status `NOT_FEASIBLE`.
+
+### Resultado final da valida??o da Fase 8
+
+- testes novos: 8 aprovados;
+- pytest completo: 119 aprovados em 11,92 segundos na execu??o final fora do sandbox, com `--basetemp` isolado;
+- compileall de `src` e `scripts`: aprovado;
+- pipeline final: duas execu??es completas consecutivas ap?s a ?ltima altera??o de c?digo;
+- idempot?ncia: 34 outputs, zero diverg?ncias SHA-256;
+- registry: 8 experimentos e status causal `UNTESTED` em todos;
+- assignment: 1.155 linhas candidatas, 654 eleg?veis e `simulation_only=true` em todas;
+- invent?rio: 3 Parquets, 11 JSONs agregados, 8 especifica??es, 6 relat?rios e 6 figuras;
+- leakage temporal, PII, execu??o, contatos, resultados, uplift e outcomes sint?ticos: zero;
+- reconcilia??o inexplicada: zero;
+- revis?o visual: seis PNGs inspecionados em montage; t?tulos, denominadores, escalas e aus?ncia de identificadores aprovados;
+- revis?o humana: hip?teses, interven??es, linguagem, elegibilidade, exclus?es, randomiza??o, contamina??o, m?tricas, MDE, amostra, atrito, baselines, balanceamento, SAP, guardrails, stopping rules, ?tica, PII, causalidade, figuras, reconcilia??o e diff inclu?dos no checklist.

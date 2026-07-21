@@ -271,3 +271,22 @@ NetworkX ? a implementa??o de refer?ncia local. O `INSTANCE_GRAPH` preserva rast
 Fluxo: features cutoff-safe ? gate de qualidade ? regras independentes ? quatro componentes discretos ? matriz P1?P4 ? evidence packet ? consolida??o por conta ? revis?o humana. A camada ? descritiva, an?nima e audit?vel.
 
 Centralidade ? propriedade estrutural apenas de EventType; Pattern recebe ranking agregado por suporte ou MRR associado. Account nunca recebe centralidade. Nenhuma aresta ou propriedade comunica causalidade, perda ou economia. A exporta??o Neo4j ? derivada e opcional; GraphML mant?m os grafos completos e o CSV de EventInstance usa amostra determin?stica.
+
+---
+
+## Atualiza??o de implementa??o ? Fase 8
+
+> **Status:** Experiment Lab de desenho implementado com ressalvas; nenhum experimento foi executado.
+
+| Componente | Estado | Limite |
+|---|---|---|
+| Cat?logo de interven??es | `IMPLEMENTED` | dez interven??es versionadas, com riscos, aprova??es e usos proibidos |
+| Registro de hip?teses | `IMPLEMENTED` | oito hip?teses futuras; uma m?trica prim?ria e status causal `UNTESTED` |
+| Elegibilidade | `IMPLEMENTED` | cutoff fixo, confian?a m?nima, cobertura e exclus?es expl?citas |
+| Power e MDE | `IMPLEMENTED` | cen?rios de planejamento; baselines hist?ricos n?o s?o controles |
+| Randomiza??o | `SIMULATION_ONLY` | aloca??o bloqueada e determin?stica apenas para validar o desenho |
+| SAP e guardrails | `IMPLEMENTED_AS_SPECIFICATION` | ITT, missingness, multiplicidade, heterogeneidade e stopping rules |
+| ?tica e governan?a | `IMPLEMENTED` | revis?o humana, consentimento, fairness e uso neutro de MRR |
+| Execu??o, contato, produto, uplift, resultados causais, monitoramento e dashboard | `NOT_IMPLEMENTED` | fora do escopo autorizado |
+
+Fluxo: cat?logo governado ? hip?tese falsific?vel ? elegibilidade cutoff-safe ? baseline descritivo ? MDE/power ? simula??o de aloca??o ? SAP ? gates ?ticos e operacionais ? revis?o humana. A camada n?o aciona interven??es e n?o cont?m resultados futuros.

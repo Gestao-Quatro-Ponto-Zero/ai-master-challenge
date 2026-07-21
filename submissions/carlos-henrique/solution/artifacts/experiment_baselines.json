@@ -1,0 +1,207 @@
+{
+  "baselines": [
+    {
+      "baseline_mean": 0.0,
+      "baseline_median": 0.0,
+      "baseline_rate": 0.0,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 0,
+      "experiment_id": "EXP001",
+      "interquartile_range": 0.0,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "ADOPTION_RATE_30D",
+      "observation_window": 30,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "rule_ids": [
+        "W001",
+        "W002"
+      ],
+      "sample_size": 23,
+      "standard_deviation": 0.0
+    },
+    {
+      "baseline_mean": 0.9710144927536232,
+      "baseline_median": 0.0,
+      "baseline_rate": null,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 69,
+      "experiment_id": "EXP002",
+      "interquartile_range": 2.0,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "FEATURE_DIVERSITY_30D",
+      "observation_window": 30,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "ADOPTION_REVIEW",
+      "rule_ids": [
+        "W003",
+        "W016"
+      ],
+      "sample_size": 69,
+      "standard_deviation": 1.4139121207065837
+    },
+    {
+      "baseline_mean": null,
+      "baseline_median": null,
+      "baseline_rate": null,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 0,
+      "experiment_id": "EXP003",
+      "interquartile_range": null,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "SUPPORT_RECURRENCE_30D",
+      "observation_window": 30,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "rule_ids": [
+        "W009",
+        "W010"
+      ],
+      "sample_size": 0,
+      "standard_deviation": null
+    },
+    {
+      "baseline_mean": 0.0,
+      "baseline_median": 0.0,
+      "baseline_rate": 0.0,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 0,
+      "experiment_id": "EXP004",
+      "interquartile_range": 0.0,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "SUBSCRIPTION_CONTINUATION",
+      "observation_window": 90,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "RECURRING_CHURN_REVIEW",
+      "rule_ids": [
+        "W005",
+        "W006"
+      ],
+      "sample_size": 26,
+      "standard_deviation": 0.0
+    },
+    {
+      "baseline_mean": 0.7894736842105263,
+      "baseline_median": 1.0,
+      "baseline_rate": 0.7894736842105263,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 15,
+      "experiment_id": "EXP005",
+      "interquartile_range": 0.0,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "REACTIVATION_USAGE_RETURN",
+      "observation_window": 30,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "REACTIVATION_REVIEW",
+      "rule_ids": [
+        "W007",
+        "W008"
+      ],
+      "sample_size": 19,
+      "standard_deviation": 0.41885390829169555
+    },
+    {
+      "baseline_mean": 0.04741379310344827,
+      "baseline_median": 0.0,
+      "baseline_rate": 0.04741379310344827,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 22,
+      "experiment_id": "EXP006",
+      "interquartile_range": 0.0,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "SUBSCRIPTION_RECONCILIATION_RATE",
+      "observation_window": 30,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "DATA_QUALITY_REVIEW",
+      "rule_ids": [
+        "W011",
+        "W012",
+        "W013",
+        "W014"
+      ],
+      "sample_size": 464,
+      "standard_deviation": 0.21275167564483471
+    },
+    {
+      "baseline_mean": null,
+      "baseline_median": null,
+      "baseline_rate": null,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 0,
+      "experiment_id": "EXP007",
+      "interquartile_range": null,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "FEATURE_DIVERSITY_90D",
+      "observation_window": 90,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "ADOPTION_REVIEW",
+      "rule_ids": [
+        "W003",
+        "W016"
+      ],
+      "sample_size": 0,
+      "standard_deviation": null
+    },
+    {
+      "baseline_mean": 61.716981132075475,
+      "baseline_median": 41.0,
+      "baseline_rate": null,
+      "data_quality": "HISTORICAL_DESCRIPTIVE",
+      "event_count": 53,
+      "experiment_id": "EXP008",
+      "interquartile_range": 74.0,
+      "limitations": [
+        "NOT_A_RANDOMIZED_CONTROL",
+        "NO_FUTURE_OUTCOME"
+      ],
+      "metric_name": "TIME_TO_OBSERVED_CHURN",
+      "observation_window": 90,
+      "population": "ELIGIBLE_HISTORICAL_WATCHLIST",
+      "queue": "RECENT_CHURN_REVIEW",
+      "rule_ids": [
+        "W004",
+        "W015"
+      ],
+      "sample_size": 53,
+      "standard_deviation": 62.681544750026994
+    }
+  ],
+  "historical_control_valid": false,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  }
+}

@@ -1,0 +1,566 @@
+{
+  "experiments": [
+    {
+      "adjusted_required_sample": 164,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 23,
+      "baseline_value": 0.0,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP001",
+      "feasibility_ratio": 0.1402439024390244,
+      "feasibility_status": "UNDERPOWERED",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.1,
+      "power": 0.8,
+      "required_sample": 147,
+      "requires_approval": true,
+      "status": "UNDERPOWERED"
+    },
+    {
+      "adjusted_required_sample": 280,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 69,
+      "baseline_value": 0.9710144927536232,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP002",
+      "feasibility_ratio": 0.24642857142857144,
+      "feasibility_status": "UNDERPOWERED",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.5,
+      "power": 0.8,
+      "required_sample": 252,
+      "requires_approval": true,
+      "status": "UNDERPOWERED"
+    },
+    {
+      "adjusted_required_sample": 0,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 0,
+      "baseline_value": null,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP003",
+      "feasibility_ratio": 0.0,
+      "feasibility_status": "NOT_FEASIBLE",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+        "DATA_GATE": "FAIL",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "FAIL",
+        "OPERATIONAL_GATE": "FAIL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.1,
+      "power": 0.8,
+      "required_sample": 0,
+      "requires_approval": true,
+      "status": "NOT_FEASIBLE"
+    },
+    {
+      "adjusted_required_sample": 164,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 26,
+      "baseline_value": 0.0,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP004",
+      "feasibility_ratio": 0.15853658536585366,
+      "feasibility_status": "UNDERPOWERED",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.1,
+      "power": 0.8,
+      "required_sample": 147,
+      "requires_approval": true,
+      "status": "UNDERPOWERED"
+    },
+    {
+      "adjusted_required_sample": 180,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 19,
+      "baseline_value": 0.7894736842105263,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP005",
+      "feasibility_ratio": 0.10555555555555556,
+      "feasibility_status": "PILOT_ONLY",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "PILOT"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.15,
+      "power": 0.8,
+      "required_sample": 162,
+      "requires_approval": true,
+      "status": "PILOT_ONLY"
+    },
+    {
+      "adjusted_required_sample": 305,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 464,
+      "baseline_value": 0.04741379310344827,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP006",
+      "feasibility_ratio": 1.521311475409836,
+      "feasibility_status": "READY_FOR_REVIEW",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "PASS"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.1,
+      "power": 0.8,
+      "required_sample": 274,
+      "requires_approval": true,
+      "status": "READY_FOR_REVIEW"
+    },
+    {
+      "adjusted_required_sample": 0,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 0,
+      "baseline_value": null,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP007",
+      "feasibility_ratio": 0.0,
+      "feasibility_status": "NOT_FEASIBLE",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+        "DATA_GATE": "FAIL",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "FAIL",
+        "OPERATIONAL_GATE": "FAIL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.5,
+      "power": 0.8,
+      "required_sample": 0,
+      "requires_approval": true,
+      "status": "NOT_FEASIBLE"
+    },
+    {
+      "adjusted_required_sample": 708,
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "available_eligible_sample": 53,
+      "baseline_value": 61.716981132075475,
+      "causal_status": "UNTESTED",
+      "experiment_id": "EXP008",
+      "feasibility_ratio": 0.0748587570621469,
+      "feasibility_status": "UNDERPOWERED",
+      "gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "intervention_executed": false,
+      "minimum_detectable_effect": 0.8,
+      "power": 0.8,
+      "required_sample": 637,
+      "requires_approval": true,
+      "status": "UNDERPOWERED"
+    }
+  ],
+  "gates": [
+    {
+      "experiment_id": "EXP001",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP001",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP001",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP001",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP001",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP001",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_APPROVAL"
+    },
+    {
+      "experiment_id": "EXP001",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_APPROVAL"
+    },
+    {
+      "experiment_id": "EXP002",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_DESIGN_CONTROL"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP003",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_APPROVAL"
+    },
+    {
+      "experiment_id": "EXP004",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PILOT"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_APPROVAL"
+    },
+    {
+      "experiment_id": "EXP005",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_DESIGN_CONTROL"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_APPROVAL"
+    },
+    {
+      "experiment_id": "EXP006",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_DESIGN_CONTROL"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP007",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "DATA_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "SAMPLE_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "FAIL"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "QUALITY_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "CONTAMINATION_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "ETHICS_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_CONSTRAINTS"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "OPERATIONAL_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS_WITH_APPROVAL"
+    },
+    {
+      "experiment_id": "EXP008",
+      "gate": "MEASUREMENT_GATE",
+      "limitation": "Design review required before any execution.",
+      "status": "PASS"
+    }
+  ],
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  }
+}

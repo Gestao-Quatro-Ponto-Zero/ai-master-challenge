@@ -702,3 +702,74 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **E055 ? volume amplo:** W011 foi preservada exclusivamente como exce??o DATA_QUALITY_REVIEW; W015 recebeu `BROAD_RULE_REVIEW_REQUIRED`, sem promo??o silenciosa.
 - **E056 ? tmp_path bloqueado pelo sandbox:** quatro setups da su?te hist?rica n?o acessaram o tempor?rio padr?o do Windows; a mesma su?te foi repetida fora do sandbox com `--basetemp` isolado em `C:\tmp` e encerrou com 111 testes aprovados.
 - **E057 ? inspe??o visual no Windows:** o visualizador local n?o atravessou o wrapper de sandbox; um montage derivado fora do reposit?rio permitiu revisar t?tulos, legibilidade, agrega??o, paleta e aus?ncia de IDs nas seis figuras.
+
+## Decis?es da Fase 8
+
+## D086 ? Laborat?rio de desenho, n?o execu??o
+
+- **Decis?o:** limitar a fase a especifica??es e valida??o de viabilidade.
+- **Status:** APROVADA
+
+## D087 ? Separa??o entre observa??o, hip?tese e efeito
+
+- **Decis?o:** hist?ricos sustentam hip?teses, nunca resultados ou causalidade.
+- **Status:** APROVADA
+
+## D088 ? Cat?logo governado de interven??es
+
+- **Decis?o:** versionar dez op??es com riscos, aprova??es e usos proibidos.
+- **Status:** APROVADA
+
+## D089 ? Unidade de randomiza??o expl?cita
+
+- **Decis?o:** bloquear desenhos quando a unidade operacional necess?ria n?o existe.
+- **Status:** APROVADA
+
+## D090 ? Uma m?trica prim?ria
+
+- **Decis?o:** cada hip?tese possui exatamente uma m?trica prim?ria e m?tricas secund?rias separadas.
+- **Status:** APROVADA
+
+## D091 ? Power e MDE antes de promo??o
+
+- **Decis?o:** classificar viabilidade antes de qualquer execu??o futura.
+- **Status:** APROVADA
+
+## D092 ? Assignment somente simulado
+
+- **Decis?o:** usar seed fixa e bra?os explicitamente simulados, sem exposi??o real.
+- **Status:** APROVADA
+
+## D093 ? ITT como estimando principal
+
+- **Decis?o:** especificar intention-to-treat como an?lise prim?ria futura.
+- **Status:** APROVADA
+
+## D094 ? Guardrails e stopping rules
+
+- **Decis?o:** especificar crit?rios de prote??o antes de observar resultados.
+- **Status:** APROVADA
+
+## D095 ? Gate ?tico obrigat?rio
+
+- **Decis?o:** exigir revis?o humana, consentimento aplic?vel, fairness e MRR neutro.
+- **Status:** APROVADA
+
+## D096 ? Subdimensionamento n?o ? promo??o
+
+- **Decis?o:** classificar amostra insuficiente como `UNDERPOWERED` ou `PILOT_ONLY`.
+- **Status:** APROVADA
+
+## D097 ? Gate do Experiment Lab
+
+- **Decis?o:** `PASS_WITH_WARNINGS`.
+- **Justificativa:** artefatos s?o reproduz?veis e governados, mas h? desenhos n?o vi?veis, piloto e subdimensionados; nenhum experimento foi executado.
+- **Status:** APROVADA COM RESSALVAS
+
+## Erros e corre??es da Fase 8
+
+- **E058 ? statsmodels ausente:** adotadas f?rmulas audit?veis com SciPy, sem instala??o.
+- **E059 ? lista em especifica??o:** normalizador passou a preservar se??es em lista.
+- **E060 ? amostra sem baseline:** popula??o eleg?vel zero agora produz amostra requerida zero e `NOT_FEASIBLE`.
+- **E061 ? tmp_path bloqueado pelo sandbox:** quatro fixtures hist?ricas falharam por permiss?o; a su?te foi repetida fora do sandbox com diret?rio tempor?rio isolado e passou integralmente.
+- **E062 ? visualizador local bloqueado no Windows:** as seis figuras foram reunidas em montage tempor?rio fora do reposit?rio e revisadas sem alterar os artefatos finais.

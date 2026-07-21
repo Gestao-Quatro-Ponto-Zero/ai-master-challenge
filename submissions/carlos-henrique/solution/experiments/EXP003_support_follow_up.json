@@ -1,0 +1,960 @@
+{
+  "causal_status": "UNTESTED",
+  "execution_authorized": false,
+  "experiment": {
+    "adjusted_required_sample": 0,
+    "allocation_ratio": 1.0,
+    "alpha": 0.05,
+    "baseline_value": NaN,
+    "causal_status": "UNTESTED",
+    "contamination_risk": "HIGH",
+    "data_confidence": "NOT_ESTIMABLE",
+    "design_type": "CLUSTER_RANDOMIZED_TRIAL",
+    "duration_days": 60,
+    "eligibility_rule_ids": "[\"W009\",\"W010\"]",
+    "eligible_accounts": 0,
+    "estimated_cost_category": "HIGH",
+    "ethical_risk": "MEDIUM",
+    "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+    "experiment_id": "EXP003",
+    "experiment_name": "SUPPORT_FOLLOW_UP",
+    "feasibility_status": "NOT_FEASIBLE",
+    "follow_up_days": 30,
+    "hypothesis_id": "H003",
+    "intervention_id": "I004",
+    "limitations": "[\"NO_EXPERIMENT_EXECUTED\",\"NO_RESULT_AVAILABLE\",\"HISTORICAL_BASELINE_NOT_CONTROL\"]",
+    "minimum_detectable_effect": 0.1,
+    "operational_complexity": "HIGH",
+    "power": 0.8,
+    "primary_metric": "SUPPORT_RECURRENCE_30D",
+    "queue": "SUPPORT_JOURNEY_REVIEW",
+    "reference_date": "2024-12-31T19:00:00",
+    "required_sample": 0,
+    "requires_approval": true,
+    "status": "NOT_FEASIBLE",
+    "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+    "unit_of_analysis": "ACCOUNT",
+    "unit_of_randomization": "SUPPORT_AGENT",
+    "version": "1.0.0"
+  },
+  "experiment_conflict_policy": {
+    "behavioral_active_limit_per_account": 1,
+    "cooldown_days": 90,
+    "data_quality_studies_may_coexist": true,
+    "queue_precedence": [
+      "REACTIVATION_REVIEW",
+      "SUPPORT_JOURNEY_REVIEW",
+      "RECURRING_CHURN_REVIEW",
+      "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "ADOPTION_REVIEW",
+      "RECENT_CHURN_REVIEW"
+    ],
+    "recent_exposure_exclusion": true,
+    "simulation_policy": "INDEPENDENT_DESIGN_VALIDATION_NOT_CONCURRENT_OPERATION"
+  },
+  "feasibility": {
+    "adjusted_required_sample": 0,
+    "allocation_ratio": 1.0,
+    "alpha": 0.05,
+    "available_eligible_sample": 0,
+    "baseline_value": null,
+    "causal_status": "UNTESTED",
+    "experiment_id": "EXP003",
+    "feasibility_ratio": 0.0,
+    "feasibility_status": "NOT_FEASIBLE",
+    "gates": {
+      "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+      "DATA_GATE": "FAIL",
+      "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+      "MEASUREMENT_GATE": "FAIL",
+      "OPERATIONAL_GATE": "FAIL",
+      "QUALITY_GATE": "PASS",
+      "SAMPLE_GATE": "FAIL"
+    },
+    "intervention_executed": false,
+    "minimum_detectable_effect": 0.1,
+    "power": 0.8,
+    "required_sample": 0,
+    "requires_approval": true,
+    "status": "NOT_FEASIBLE"
+  },
+  "hypothesis": {
+    "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+    "causal_status": "UNTESTED",
+    "contamination_risk": "HIGH",
+    "data_confidence": "TO_BE_DERIVED",
+    "design_type": "CLUSTER_RANDOMIZED_TRIAL",
+    "directionality": "DECREASE",
+    "ethical_risk": "MEDIUM",
+    "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+    "expected_duration": 60,
+    "experiment_id": "EXP003",
+    "experiment_name": "SUPPORT_FOLLOW_UP",
+    "feasibility_status": "TO_BE_EVALUATED",
+    "follow_up_window": 30,
+    "guardrail_metrics": [
+      "OBSERVED_CHURN_RATE",
+      "DATA_COMPLETENESS"
+    ],
+    "hypothesis_id": "H003",
+    "intervention_id": "I004",
+    "limitations": [
+      "NO_EXPERIMENT_EXECUTED",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_A_CONTROL"
+    ],
+    "mechanism_hypothesis": "A consistent post-resolution process may change support recurrence or measured satisfaction; the mechanism is untested.",
+    "minimum_detectable_effect": 0.1,
+    "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+    "observation": "Support events occurred near churn or repeatedly in some historical journeys.",
+    "operational_complexity": "HIGH",
+    "primary_metric": "SUPPORT_RECURRENCE_30D",
+    "queue": "SUPPORT_JOURNEY_REVIEW",
+    "secondary_metrics": [
+      "SATISFACTION_RATE",
+      "ADOPTION_RATE_30D"
+    ],
+    "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+    "unit_of_analysis": "ACCOUNT",
+    "unit_of_randomization": "SUPPORT_AGENT",
+    "watchlist_rule_ids": [
+      "W009",
+      "W010"
+    ]
+  },
+  "result": null,
+  "specifications": [
+    {
+      "experiment_id": "EXP003",
+      "section": "DESIGN",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "contamination_risk",
+      "specification_value": "HIGH",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "DESIGN",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "design_type",
+      "specification_value": "CLUSTER_RANDOMIZED_TRIAL",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "DESIGN",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "unit_of_randomization",
+      "specification_value": "SUPPORT_AGENT",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "allowed_outcomes",
+      "specification_value": "QUEUE_DEFINED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "allowed_priorities",
+      "specification_value": "[\"P1\",\"P2\",\"P3\",\"P4\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "allowed_stability",
+      "specification_value": "[\"ROBUST\",\"SENSITIVE\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "exclusions",
+      "specification_value": "[\"LOW_DATA_CONFIDENCE\",\"LOW_QUALITY_COVERAGE\",\"MISSING_DESIGN_UNIT\",\"METRIC_SPECIFIC_DATA_BLOCKER\",\"ACTIVE_CONFLICTING_EXPERIMENT\",\"UNAVAILABLE_FOLLOW_UP\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "experiment_id",
+      "specification_value": "EXP003",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "minimum_data_confidence",
+      "specification_value": "MEDIUM",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "minimum_quality_coverage",
+      "specification_value": "0.4",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "queue",
+      "specification_value": "SUPPORT_JOURNEY_REVIEW",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "reference_date",
+      "specification_value": "2024-12-31T19:00:00",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "required_activity_history",
+      "specification_value": "SUPPORT_RECURRENCE_30D",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "required_mrr_band",
+      "specification_value": "ANY",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "required_observation_window",
+      "specification_value": "30",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ELIGIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "required_subscription_state",
+      "specification_value": "METRIC_DEPENDENT",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "behavioral_data_use",
+      "specification_value": "MINIMIZED_AND_AUDITABLE",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "consent_review",
+      "specification_value": "REQUIRED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "constraints",
+      "specification_value": "[\"HUMAN_APPROVAL_REQUIRED\",\"DATA_MINIMIZATION\",\"NO_MRR_BASED_SERVICE_DENIAL\",\"NO_AUTOMATED_OUTREACH\",\"REVERSIBILITY_PLAN\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "ethical_risk",
+      "specification_value": "MEDIUM",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "ethics_gate",
+      "specification_value": "PASS_WITH_CONSTRAINTS",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "experiment_id",
+      "specification_value": "EXP003",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "fairness_review",
+      "specification_value": "REQUIRED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "human_review",
+      "specification_value": "True",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "intervention_executed",
+      "specification_value": "False",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "mrr_use",
+      "specification_value": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "ETHICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "reversibility",
+      "specification_value": "MEDIUM",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "adjusted_required_sample",
+      "specification_value": "0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "allocation_ratio",
+      "specification_value": "1.0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "alpha",
+      "specification_value": "0.05",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "available_eligible_sample",
+      "specification_value": "0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "baseline_value",
+      "specification_value": "None",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "causal_status",
+      "specification_value": "UNTESTED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "experiment_id",
+      "specification_value": "EXP003",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "feasibility_ratio",
+      "specification_value": "0.0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "feasibility_status",
+      "specification_value": "NOT_FEASIBLE",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "gates",
+      "specification_value": "{\"CONTAMINATION_GATE\":\"PASS_WITH_DESIGN_CONTROL\",\"DATA_GATE\":\"FAIL\",\"ETHICS_GATE\":\"PASS_WITH_CONSTRAINTS\",\"MEASUREMENT_GATE\":\"FAIL\",\"OPERATIONAL_GATE\":\"FAIL\",\"QUALITY_GATE\":\"PASS\",\"SAMPLE_GATE\":\"FAIL\"}",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "intervention_executed",
+      "specification_value": "False",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "minimum_detectable_effect",
+      "specification_value": "0.1",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "power",
+      "specification_value": "0.8",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "required_sample",
+      "specification_value": "0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "requires_approval",
+      "specification_value": "True",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "FEASIBILITY",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "status",
+      "specification_value": "NOT_FEASIBLE",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "GUARDRAILS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "items",
+      "specification_value": "[{\"direction\":\"BELOW\",\"evaluation_frequency\":\"WEEKLY\",\"experiment_id\":\"EXP003\",\"guardrail_id\":\"EXP003_G01\",\"guardrail_metric\":\"DATA_COMPLETENESS\",\"owner\":\"Data Governance\",\"specification_only\":true,\"stop_action\":\"PAUSE_FOR_DATA_REVIEW\",\"threshold\":0.8},{\"direction\":\"ABOVE\",\"evaluation_frequency\":\"WEEKLY\",\"experiment_id\":\"EXP003\",\"guardrail_id\":\"EXP003_G02\",\"guardrail_metric\":\"DELIVERY_FAILURE_RATE\",\"owner\":\"Operational Owner\",\"specification_only\":true,\"stop_action\":\"PAUSE_FOR_OPERATIONAL_REVIEW\",\"threshold\":0.1},{\"direction\":\"ABOVE\",\"evaluation_frequency\":\"CONTINUOUS_IF_FUTURE_EXECUTION\",\"experiment_id\":\"EXP003\",\"guardrail_id\":\"EXP003_G03\",\"guardrail_metric\":\"CONSENT_VIOLATION_COUNT\",\"owner\":\"Privacy + Legal\",\"specification_only\":true,\"stop_action\":\"SAFETY_STOP\",\"threshold\":0}]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "alternative_hypothesis",
+      "specification_value": "A difference exists in the pre-specified direction for the primary estimand.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "causal_status",
+      "specification_value": "UNTESTED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "contamination_risk",
+      "specification_value": "HIGH",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "data_confidence",
+      "specification_value": "TO_BE_DERIVED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "design_type",
+      "specification_value": "CLUSTER_RANDOMIZED_TRIAL",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "directionality",
+      "specification_value": "DECREASE",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "ethical_risk",
+      "specification_value": "MEDIUM",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "evidence_strength",
+      "specification_value": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "expected_duration",
+      "specification_value": "60",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "experiment_id",
+      "specification_value": "EXP003",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "experiment_name",
+      "specification_value": "SUPPORT_FOLLOW_UP",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "feasibility_status",
+      "specification_value": "TO_BE_EVALUATED",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "follow_up_window",
+      "specification_value": "30",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "guardrail_metrics",
+      "specification_value": "[\"OBSERVED_CHURN_RATE\",\"DATA_COMPLETENESS\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "hypothesis_id",
+      "specification_value": "H003",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "intervention_id",
+      "specification_value": "I004",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "limitations",
+      "specification_value": "[\"NO_EXPERIMENT_EXECUTED\",\"NO_RESULT_AVAILABLE\",\"HISTORICAL_BASELINE_NOT_A_CONTROL\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "mechanism_hypothesis",
+      "specification_value": "A consistent post-resolution process may change support recurrence or measured satisfaction; the mechanism is untested.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "minimum_detectable_effect",
+      "specification_value": "0.1",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "null_hypothesis",
+      "specification_value": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "observation",
+      "specification_value": "Support events occurred near churn or repeatedly in some historical journeys.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "operational_complexity",
+      "specification_value": "HIGH",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "primary_metric",
+      "specification_value": "SUPPORT_RECURRENCE_30D",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "queue",
+      "specification_value": "SUPPORT_JOURNEY_REVIEW",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "secondary_metrics",
+      "specification_value": "[\"SATISFACTION_RATE\",\"ADOPTION_RATE_30D\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "target_population",
+      "specification_value": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "unit_of_analysis",
+      "specification_value": "ACCOUNT",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "unit_of_randomization",
+      "specification_value": "SUPPORT_AGENT",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "HYPOTHESIS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "watchlist_rule_ids",
+      "specification_value": "[\"W009\",\"W010\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "METRICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "mde",
+      "specification_value": "0.1",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "METRICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "primary",
+      "specification_value": "SUPPORT_RECURRENCE_30D",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "METRICS",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "secondary",
+      "specification_value": "[\"SATISFACTION_RATE\",\"ADOPTION_RATE_30D\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "RANDOMIZATION",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "allocation_ratio",
+      "specification_value": "1.0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "RANDOMIZATION",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "assignment_method",
+      "specification_value": "DETERMINISTIC_SEEDED_BLOCK_SIMULATION_ONLY",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "RANDOMIZATION",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "randomization_seed",
+      "specification_value": "20260721",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "RANDOMIZATION",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "stratification_variables",
+      "specification_value": "[\"mrr_band\",\"data_confidence\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "analysis_population",
+      "specification_value": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "covariate_adjustment",
+      "specification_value": "[\"baseline metric\",\"MRR band\",\"data confidence\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "experiment_id",
+      "specification_value": "EXP003",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "heterogeneity_analysis",
+      "specification_value": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "intention_to_treat",
+      "specification_value": "True",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "interim_analysis",
+      "specification_value": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "missing_data_policy",
+      "specification_value": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "multiple_testing_policy",
+      "specification_value": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "outlier_policy",
+      "specification_value": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "per_protocol_policy",
+      "specification_value": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "primary_analysis",
+      "specification_value": "Cluster-aware generalized linear model",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "primary_estimand",
+      "specification_value": "Absolute difference in SUPPORT_RECURRENCE_30D between future assigned groups at the pre-specified follow-up.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "reporting_policy",
+      "specification_value": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "secondary_analyses",
+      "specification_value": "[\"pre-specified secondary metrics\",\"exposure diagnostic without causal replacement of ITT\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "sensitivity_analysis",
+      "specification_value": "[\"complete-case versus conservative missing-data scenario\",\"covariate-adjusted versus unadjusted\",\"contamination sensitivity\"]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "stopping_rule",
+      "specification_value": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SAP",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "version",
+      "specification_value": "1.0.0",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "STOPPING_RULES",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "items",
+      "specification_value": "[{\"authorized_decision\":\"Pause future delivery and convene review\",\"condition\":\"> 0 confirmed event\",\"experiment_id\":\"EXP003\",\"metric\":\"CONSENT_OR_HARM_EVENT\",\"monitoring_implemented\":false,\"owner\":\"Ethics Owner\",\"stop_type\":\"SAFETY_STOP\"},{\"authorized_decision\":\"Recommend methodological review\",\"condition\":\"< 20% at pre-specified information fraction\",\"experiment_id\":\"EXP003\",\"metric\":\"CONDITIONAL_POWER\",\"monitoring_implemented\":false,\"owner\":\"Statistician\",\"stop_type\":\"FUTILITY_STOP\"},{\"authorized_decision\":\"Pause measurement and repair data\",\"condition\":\"< 80%\",\"experiment_id\":\"EXP003\",\"metric\":\"DATA_COMPLETENESS\",\"monitoring_implemented\":false,\"owner\":\"Data Governance\",\"stop_type\":\"DATA_QUALITY_STOP\"},{\"authorized_decision\":\"Pause future delivery\",\"condition\":\"> 10%\",\"experiment_id\":\"EXP003\",\"metric\":\"DELIVERY_FAILURE_RATE\",\"monitoring_implemented\":false,\"owner\":\"Operational Owner\",\"stop_type\":\"OPERATIONAL_STOP\"},{\"authorized_decision\":\"Classify underpowered\",\"condition\":\"Eligible pool exhausted before required sample\",\"experiment_id\":\"EXP003\",\"metric\":\"RECRUITMENT\",\"monitoring_implemented\":false,\"owner\":\"Experiment Owner\",\"stop_type\":\"SAMPLE_EXHAUSTION\"},{\"authorized_decision\":\"Lock future analysis dataset\",\"condition\":\"Required sample and follow-up complete\",\"experiment_id\":\"EXP003\",\"metric\":\"FOLLOW_UP\",\"monitoring_implemented\":false,\"owner\":\"Experiment Owner\",\"stop_type\":\"PLANNED_COMPLETION\"}]",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SUCCESS_CRITERIA",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "confidence_interval_policy",
+      "specification_value": "95% interval reported regardless of direction",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SUCCESS_CRITERIA",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "decision_threshold",
+      "specification_value": "Pre-specified MDE with confidence interval excluding null and no guardrail violation",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SUCCESS_CRITERIA",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "minimum_data_completeness",
+      "specification_value": "0.8",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SUCCESS_CRITERIA",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "minimum_exposure_rate",
+      "specification_value": "0.8",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SUCCESS_CRITERIA",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "practical_significance",
+      "specification_value": "Must meet pre-specified MDE",
+      "version": "1.0.0"
+    },
+    {
+      "experiment_id": "EXP003",
+      "section": "SUCCESS_CRITERIA",
+      "source": "PHASE_8_GOVERNED_DESIGN",
+      "specification_key": "statistical_significance",
+      "specification_value": "Not p-value alone",
+      "version": "1.0.0"
+    }
+  ]
+}

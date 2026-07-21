@@ -1,0 +1,285 @@
+{
+  "guardrails": [
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP001",
+      "guardrail_id": "EXP001_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP001",
+      "guardrail_id": "EXP001_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP001",
+      "guardrail_id": "EXP001_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP002",
+      "guardrail_id": "EXP002_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP002",
+      "guardrail_id": "EXP002_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP002",
+      "guardrail_id": "EXP002_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP003",
+      "guardrail_id": "EXP003_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP003",
+      "guardrail_id": "EXP003_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP003",
+      "guardrail_id": "EXP003_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP004",
+      "guardrail_id": "EXP004_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP004",
+      "guardrail_id": "EXP004_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP004",
+      "guardrail_id": "EXP004_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP005",
+      "guardrail_id": "EXP005_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP005",
+      "guardrail_id": "EXP005_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP005",
+      "guardrail_id": "EXP005_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP006",
+      "guardrail_id": "EXP006_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP006",
+      "guardrail_id": "EXP006_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP006",
+      "guardrail_id": "EXP006_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP007",
+      "guardrail_id": "EXP007_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP007",
+      "guardrail_id": "EXP007_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP007",
+      "guardrail_id": "EXP007_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    },
+    {
+      "direction": "BELOW",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP008",
+      "guardrail_id": "EXP008_G01",
+      "guardrail_metric": "DATA_COMPLETENESS",
+      "owner": "Data Governance",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_DATA_REVIEW",
+      "threshold": 0.8
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "WEEKLY",
+      "experiment_id": "EXP008",
+      "guardrail_id": "EXP008_G02",
+      "guardrail_metric": "DELIVERY_FAILURE_RATE",
+      "owner": "Operational Owner",
+      "specification_only": true,
+      "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+      "threshold": 0.1
+    },
+    {
+      "direction": "ABOVE",
+      "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+      "experiment_id": "EXP008",
+      "guardrail_id": "EXP008_G03",
+      "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+      "owner": "Privacy + Legal",
+      "specification_only": true,
+      "stop_action": "SAFETY_STOP",
+      "threshold": 0
+    }
+  ],
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  },
+  "monitoring_implemented": false
+}

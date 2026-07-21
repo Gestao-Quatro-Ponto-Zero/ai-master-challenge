@@ -1,0 +1,102 @@
+{
+  "balance": {
+    "checks": 54,
+    "documented": true,
+    "review_required": 21
+  },
+  "deterministic": true,
+  "eligibility": {
+    "candidate_rows": 1155,
+    "eligible_rows": 654,
+    "sample_reconciled": true
+  },
+  "gate_result": "PASS_WITH_WARNINGS",
+  "governance": {
+    "analysis_plan": {
+      "analysis_plans": 8,
+      "guardrails": 24,
+      "itt_false": 0,
+      "monitoring_implemented": 0,
+      "stopping_rules": 48
+    },
+    "approvals_bypassed": 0,
+    "causal_status_violations": 0,
+    "contacts_sent": 0,
+    "eligibility": {
+      "eligible_rows": 654,
+      "excluded_rows": 501,
+      "operational_assignments": 0,
+      "rows": 1155
+    },
+    "forbidden_statuses": 0,
+    "interventions_executed": 0,
+    "unsupported_result_language": 0
+  },
+  "input_gate": {
+    "all_hashes_match": true,
+    "expected_base_commit": "1ed6655cf86f9068f56a10af25537ea8747a25b1",
+    "input_hashes": {
+      "artifacts/graph_findings.json": "ecb52c72df6b5a498feb0b5269c67c3d0bdfd945c0b83c3eac15c36556a7d360",
+      "artifacts/journey_findings.json": "58f31818ec28049c334190c10c9405a82b7062d34b4cf0185de90b1ed2c02008",
+      "artifacts/survival_findings.json": "0357cb4692d8cb94ef594450d2e2557322c62c8be70c4725dda9fcbf85cc04cc",
+      "artifacts/watchlist_findings.json": "fbe4aa080104f81847efbd4ad5e015026b3857f656d53f308d4ccbdbc3807e21",
+      "artifacts/watchlist_rules.json": "fe29b1939ff670510d5cb3ef92e3da67abb55b5bc28aec2cc56459a241dc6e4d",
+      "data/processed/account_survival_dataset.parquet": "f0e82247f3ca4d4db32886c818881011f9dbd1f18adaab8f1d36291cd6c92c4e",
+      "data/processed/account_watchlist_summary.parquet": "89f927b65c73db78febcd890be7aec3e65e9f2d288af25e280bcb8cdcc503c2d",
+      "data/processed/event_log.parquet": "0e9e60d06ce6fbd62103924aab7beda6d0eab9ed5a87ea32cee786abcdb0373f",
+      "data/processed/intervention_watchlist.parquet": "17636089c4ff4ff6a62280a04fb39575cdb27d7b35496ab5c337149cac806361",
+      "data/processed/watchlist_evidence.parquet": "c841ce99d7f29a0113ee07f12f9fd127f6ba7ffebaaecf6c8589774e4b502f10"
+    },
+    "verified_inputs": 10
+  },
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  },
+  "privacy": {
+    "pii_fields": 0,
+    "raw_account_ids": 0
+  },
+  "randomization": {
+    "not_assigned": 501,
+    "operational_assignments": 0,
+    "rows": 1155,
+    "simulated_assignments": 654,
+    "simulation_only_false": 0,
+    "synthetic_outcomes": 0
+  },
+  "reconciliation": {
+    "difference_unexplained": 0
+  },
+  "registry": {
+    "duplicate_experiments": 0,
+    "experiments": 8
+  },
+  "results": {
+    "contacts": 0,
+    "experimental_results": 0,
+    "interventions_executed": 0,
+    "synthetic_outcomes": 0,
+    "uplift_values": 0
+  },
+  "specifications": {
+    "duplicate_logical_rows": 0,
+    "rows": 832
+  },
+  "temporal": {
+    "cutoff": "2024-12-31T19:00:00",
+    "future_events_used": 0
+  }
+}

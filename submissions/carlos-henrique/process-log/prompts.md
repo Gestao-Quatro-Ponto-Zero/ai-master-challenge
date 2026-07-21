@@ -238,3 +238,11 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - **Commit autorizado:** `analysis: add governed intervention watchlist`.
 
 **Commit autorizado:** `graph: build governed JourneyGraph knowledge layer`, local e seletivo.
+
+## Fase 8 ? Experiment Lab e desenho de interven??es test?veis
+
+- **Entrada:** prompt integral da Fase 8, commit-base `1ed6655cf86f9068f56a10af25537ea8747a25b1`.
+- **Escopo aplicado:** cat?logo governado, hip?teses falsific?veis, elegibilidade, baselines, power/MDE, simula??o de randomiza??o, SAP, guardrails, stopping rules, ?tica e relat?rios.
+- **Restri??es preservadas:** sem interven??o real, contato, desconto, altera??o de produto, dados futuros, resultados fabricados, uplift, infer?ncia causal, dashboard, push ou Pull Request.
+- **Gate esperado:** `PASS_WITH_WARNINGS`, pois apenas um desenho est? pronto para revis?o e os demais s?o piloto, subdimensionados ou n?o vi?veis.
+- **Commit autorizado:** `analysis: add governed experiment design lab`, local e seletivo.
