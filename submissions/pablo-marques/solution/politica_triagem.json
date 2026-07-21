@@ -1,0 +1,66 @@
+{
+  "origem": "04_triagem.py",
+  "kappa": 5,
+  "piso_precisao": 0.8333333333333334,
+  "margem_minima": 0.15,
+  "categorias_sensiveis": [
+    "Access",
+    "Administrative rights"
+  ],
+  "limiares_por_classe": {
+    "Access": {
+      "tau": 0.0,
+      "cobertura": 0.9796491228070175,
+      "precisao": 0.9083094555873925,
+      "automatizavel": true
+    },
+    "Administrative rights": {
+      "tau": 0.0,
+      "cobertura": 0.7670454545454546,
+      "precisao": 0.8962962962962963,
+      "automatizavel": true
+    },
+    "HR Support": {
+      "tau": 0.0,
+      "cobertura": 1.0068712780577187,
+      "precisao": 0.8689717925386715,
+      "automatizavel": true
+    },
+    "Hardware": {
+      "tau": 0.5,
+      "cobertura": 0.9636563876651982,
+      "precisao": 0.8662857142857143,
+      "automatizavel": true
+    },
+    "Internal Project": {
+      "tau": 0.0,
+      "cobertura": 0.8962264150943396,
+      "precisao": 0.9131578947368421,
+      "automatizavel": true
+    },
+    "Miscellaneous": {
+      "tau": 0.3,
+      "cobertura": 1.0021246458923512,
+      "precisao": 0.8353356890459364,
+      "automatizavel": true
+    },
+    "Purchase": {
+      "tau": 0.0,
+      "cobertura": 0.8945233265720081,
+      "precisao": 0.9682539682539683,
+      "automatizavel": true
+    },
+    "Storage": {
+      "tau": 0.0,
+      "cobertura": 0.9081081081081082,
+      "precisao": 0.9384920634920635,
+      "automatizavel": true
+    }
+  },
+  "resultado_teste": {
+    "n": 9568,
+    "taxa_auto": 0.7464464882943144,
+    "precisao_auto": 0.8965275833099972
+  },
+  "escopo": "auto-ROTEAMENTO apenas; auto-resolucao nao avaliavel sem resolution_code"
+}
