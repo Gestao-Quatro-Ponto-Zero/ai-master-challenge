@@ -16,12 +16,6 @@ Auditei os dois datasets antes de analisar qualquer coisa e o Dataset 1 não sus
 
 <!-- gif entra aqui -->
 
-```
-.venv/Scripts/python.exe demo.py "meu notebook nao liga desde ontem"
-echo "please grant access to the finance folder" | .venv/Scripts/python.exe demo.py
-.venv/Scripts/python.exe demo.py --sessao     # os 5 chamados reais abaixo
-```
-
 Saída **literal** de [`solution/demo.py`](solution/demo.py) — dois dos cinco casos da sessão gravada. Os cinco (as três rotas, um chamado sem precedente e um erro do modelo) estão em [`solution/demo/sessao_demo.txt`](solution/demo/sessao_demo.txt), e nenhum foi escolhido a dedo: são os primeiros do conjunto de teste que satisfazem cada critério.
 
 ```text
@@ -118,6 +112,49 @@ CHAMADO RECEBIDO
 ```
 
 O caso 5 é o sistema errando — `Purchase` classificado como `Storage`, com confiança 0,555 e margem 0,183 — e ficou porque o critério o escolheu, não apesar disso. Ele mostra o mecanismo funcionando onde importa: os vizinhos discordaram do modelo exatamente no caso em que o modelo estava errado.
+
+## Como rodar
+
+Testado em Python 3.14 no Windows. Todos os comandos partem da **raiz do repositório clonado**; nos exemplos, `.venv/Scripts/python.exe` é o Python do venv no Windows — em Linux/macOS troque por `.venv/bin/python`.
+
+**1. Baixar os dois CSVs para `data/` na raiz do repo.** Eles não vão no PR (licença CC0, ~50 MB), e os scripts procuram a pasta `data/` subindo a partir de `solution/`:
+
+| Arquivo esperado | Fonte |
+|---|---|
+| `data/customer_support_tickets.csv` | [Customer Support Ticket Dataset](https://www.kaggle.com/datasets/suraj520/customer-support-ticket-dataset) |
+| `data/all_tickets_processed_improved_v3.csv` | [IT Service Ticket Classification Dataset](https://www.kaggle.com/datasets/adisongoh/it-service-ticket-classification-dataset) |
+
+**2. Criar o ambiente e instalar as dependências:**
+
+```bash
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r submissions/pablo-marques/solution/requirements.txt
+```
+
+**3. Rodar os cinco blocos, nesta ordem.** Cada um reescreve o seu `*_saida.txt` ao lado do script; o Bloco 3 é o mais demorado (~84s, por causa da varredura completa de quase-duplicatas) e regenera o `curva_medida.json` que os blocos 4 e 5 consomem — ele já vem versionado, então os blocos rodam isolados também.
+
+```bash
+.venv/Scripts/python.exe submissions/pablo-marques/solution/01_exploracao.py       # auditoria dos dados
+.venv/Scripts/python.exe submissions/pablo-marques/solution/02_business_case.py    # business case parametrico
+.venv/Scripts/python.exe submissions/pablo-marques/solution/03_classificador.py    # classificador + curva medida
+.venv/Scripts/python.exe submissions/pablo-marques/solution/04_triagem.py          # politica de triagem
+.venv/Scripts/python.exe submissions/pablo-marques/solution/05_contexto_similar.py # painel de contexto
+```
+
+**4. A demo, nos três modos:**
+
+```bash
+# a) texto como argumento
+.venv/Scripts/python.exe submissions/pablo-marques/solution/demo.py "meu notebook nao liga desde ontem"
+
+# b) texto por stdin
+echo "please grant access to the finance folder" | .venv/Scripts/python.exe submissions/pablo-marques/solution/demo.py
+
+# c) sessao gravada: 5 chamados reais do conjunto de teste -> solution/demo/sessao_demo.txt
+.venv/Scripts/python.exe submissions/pablo-marques/solution/demo.py --sessao
+```
+
+Semente fixa em 42 e versões travadas no `requirements.txt`: os números desta submissão são reproduzíveis.
 
 ---
 
@@ -257,7 +294,7 @@ No lugar, o Bloco 5 entrega um **painel de contexto**: para um chamado novo, os 
 - [ ] Screen recording do workflow
 - [x] **Chat exports** — [duas sessões de trabalho exportadas na íntegra](process-log/chat-exports/)
 - [x] **Git history** — commits incrementais, um por bloco concluído, na branch `submission/pablo-marques`
-- [x] **Outro: código rodando** — cinco scripts reproduzíveis (semente 42) com a saída completa versionada em [`solution/`](solution/), mais [`curva_medida.json`](solution/curva_medida.json), [`politica_triagem.json`](solution/politica_triagem.json) e [`contexto_medido.json`](solution/contexto_medido.json). Dependências em [`requirements.txt`](solution/requirements.txt); os CSVs não vão no PR — baixar do Kaggle ([Dataset 1](https://www.kaggle.com/datasets/suraj520/customer-support-ticket-dataset), [Dataset 2](https://www.kaggle.com/datasets/adisongoh/it-service-ticket-classification-dataset)) para `data/`.
+- [x] **Outro: código rodando** — cinco scripts reproduzíveis (semente 42) com a saída completa versionada em [`solution/`](solution/), mais [`curva_medida.json`](solution/curva_medida.json), [`politica_triagem.json`](solution/politica_triagem.json), [`contexto_medido.json`](solution/contexto_medido.json) e a sessão da demo em [`solution/demo/`](solution/demo/sessao_demo.txt). Instruções de instalação e execução na seção [Como rodar](#como-rodar).
 
 ---
 
