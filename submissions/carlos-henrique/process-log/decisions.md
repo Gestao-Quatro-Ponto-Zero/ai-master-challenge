@@ -468,3 +468,85 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - Cox e assinatura explicitamente n?o executados;
 - pressupostos, sensibilidade e linguagem causal revisados;
 - figuras, PII, hashes, escopo e diff revisados.
+
+---
+
+## D052 ? Conta como unidade sequencial
+
+- **Decis?o:** suporte e jornada usam conta, nunca ocorr?ncia isolada, como unidade.
+- **Justificativa:** limita domin?ncia de contas com grande volume.
+- **Status:** APROVADA
+
+## D053 ? Escopos de jornada
+
+- **Decis?o:** oito escopos temporais expl?citos; nenhum evento posterior ao boundary entra na linha.
+- **Justificativa:** impede mistura de jornadas e leakage temporal.
+- **Status:** APROVADA
+
+## D054 ? Representa??es raw, collapsed e bucketed
+
+- **Decis?o:** preservar tipo completo em raw, vocabul?rio reduzido em collapsed e JSON estruturado di?rio em bucketed.
+- **Justificativa:** concilia auditoria, minera??o e parsing determin?stico.
+- **Status:** APROVADA
+
+## D055 ? Pol?tica de ordena??o no mesmo dia
+
+- **Decis?o:** desempate t?cnico por ordem can?nica e event_id; depend?ncia classificada NONE/PARTIAL/HIGH.
+- **Justificativa:** ordem t?cnica n?o deve ser comunicada como causal.
+- **Status:** APROVADA COM RESSALVAS
+
+## D056 ? Suporte por conta
+
+- **Decis?o:** account_support ? o n?mero de contas distintas que cont?m o padr?o.
+- **Justificativa:** ocorr?ncias permanecem medida secund?ria.
+- **Status:** APROVADA
+
+## D057 ? Par?metros de n-gram
+
+- **Decis?o:** collapsed 2?5, raw bigram de sensibilidade; suporte m?nimo 10, relativo 2%, grupo 20.
+- **Justificativa:** oferece baseline transparente antes da minera??o flex?vel.
+- **Status:** APROVADA
+
+## D058 ? Par?metros de sequence mining
+
+- **Decis?o:** implementa??o pr?pria testada; suporte 15 contas, comprimento 5, gap 5 eventos/90 dias.
+- **Justificativa:** evita depend?ncia adicional e mant?m sem?ntica audit?vel.
+- **Status:** APROVADA
+
+## D059 ? Pol?tica de padr?es fechados
+
+- **Decis?o:** remover padr?o menor quando superpadr?o tem conjunto id?ntico de contas; contabilizar antes/depois.
+- **Justificativa:** reduz redund?ncia sem ocultar exclus?es.
+- **Status:** APROVADA
+
+## D060 ? Taxonomia de jornadas
+
+- **Decis?o:** dez classes determin?sticas, uma principal e secund?rias opcionais; nenhuma classe ? score ou previs?o.
+- **Justificativa:** transforma sequ?ncias em vocabul?rio de neg?cio audit?vel.
+- **Status:** APROVADA COM RESSALVAS
+
+## D061 ? Estabilidade principal versus estrita
+
+- **Decis?o:** ROBUST, SENSITIVE e UNSTABLE dependem de presen?a, dire??o, magnitude, amostra e ordem.
+- **Justificativa:** warnings n?o podem ser apagados da interpreta??o.
+- **Status:** APROVADA COM RESSALVAS
+
+## D062 ? Controle de exposi??o
+
+- **Decis?o:** janelas 7/30/60/90d, landmarks, suporte por conta e bandas Q33/Q67.
+- **Justificativa:** jornadas longas geram mais combina??es por constru??o.
+- **Status:** APROVADA
+
+## D063 ? Gate de journey mining
+
+- **Decis?o:** `PASS_WITH_WARNINGS`.
+- **Justificativa:** outputs reconciliados e padr?es est?veis permitem proje??o governada futura; warnings, exposi??o residual e ordem t?cnica impedem PASS pleno.
+- **Consequ?ncia:** apenas padr?es ROBUST/SENSITIVE com suporte, denominador, escopo e depend?ncia de ordem preservados podem alimentar a Fase 6.
+- **Status:** APROVADA COM RESSALVAS
+
+## Revis?o humana complementar da Fase 5
+
+- sequ?ncias, escopos, ordena??o, exposi??o, transi??es, n-grams e padr?es revisados;
+- pruning, churn, recorr?ncia, reativa??o, estabilidade e taxonomia revisados;
+- findings, figuras, causalidade, PII, hashes, escopo e diff revisados;
+- grafo, centralidade, comunidades, interven??o e app confirmados como n?o implementados.

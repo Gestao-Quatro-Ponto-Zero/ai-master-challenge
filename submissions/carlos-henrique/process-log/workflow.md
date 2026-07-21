@@ -386,3 +386,26 @@ Não foram executados diagnóstico, análise de receita, survival, journey minin
 ### Gate
 
 `PASS_WITH_WARNINGS`. As curvas de conta s?o reproduz?veis e metodologicamente governadas, mas a diferen?a entre popula??es principal e estrita, a censura e os pressupostos impedem `PASS` pleno e qualquer uso individual ou causal.
+
+---
+
+## Fase 5 ? Journey mining e padr?es sequenciais
+
+1. Gate Git e hashes das Fases 2?4 validados; event log ativo com 500 contas e zero quarentena anal?tica.
+2. Depend?ncias locais verificadas; `prefixspan` ausente e substitu?do por implementa??o pr?pria simples e testada, sem instala??o.
+3. Jornadas principal e estrita constru?das nos oito escopos com ordena??o est?vel, colapso consecutivo e buckets di?rios estruturados.
+4. Transi??es e n-grams calculados antes da minera??o; suporte contabilizado por conta e denominadores preservados.
+5. Enumera??o de subsequ?ncias executada com gaps de eventos/dias e pruning de padr?es fechados.
+6. Pr?-churn comparado em janelas fixas contra pseudo-cutoff em `observation_end`; recorr?ncia e reativa??o descritas somente por eventos expl?citos.
+7. Taxonomia determin?stica classificada em Parquet; agregados n?o exp?em IDs.
+8. Sensibilidade principal/estrita reconciliada; padr?es HIGH, UNSTABLE ou pequenos bloqueados em findings.
+9. Dez JSONs, quatro relat?rios e seis figuras gerados; nenhum grafo constru?do.
+
+### Erros e corre??es
+
+- A enumera??o inicial de subsequ?ncias excedeu a janela operacional de observa??o. A execu??o foi interrompida de forma segura; a busca passou a expandir apenas ?ndices dentro do gap configurado, preservando os mesmos par?metros.
+- `matplotlib` reportou limita??o de `tight_layout` no gr?fico de padr?es pr?-churn; o arquivo foi salvo com bounding box expl?cito e ser? revisado visualmente.
+
+### Revis?o humana
+
+Escopos, limites, ordena??o, exposi??o, transi??es, n-grams, pruning, churn, recorr?ncia, reativa??o, estabilidade, taxonomia, findings, figuras, causalidade, PII e diff foram inclu?dos no checklist. O gate permanece `PASS_WITH_WARNINGS` por warnings e sensibilidade material.

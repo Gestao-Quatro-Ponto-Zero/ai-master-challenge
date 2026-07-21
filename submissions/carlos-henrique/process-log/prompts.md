@@ -189,3 +189,17 @@ Não foram implementados modelo preditivo, propensão, survival analysis, Kaplan
 ### Proibi??es preservadas
 
 N?o foram constru?dos score individual, modelo preditivo operacional, ranking, causalidade, interven??o automatizada, sequence mining, grafo, embeddings, LLM, dashboard, push ou Pull Request.
+
+---
+
+## Fase 5 ? Journey mining e padr?es sequenciais
+
+**Objetivo recebido:** construir sequ?ncias temporais por conta, normalizar jornadas, calcular transi??es e n-grams, minerar padr?es frequentes, comparar desfechos, analisar churn/recorr?ncia/reativa??o, reconciliar principal/estrita e criar taxonomia descritiva.
+
+**Restri??es preservadas:** sem causalidade, score, modelo preditivo, interven??o, grafo, centralidade, comunidades, embeddings, LLM, dashboard, push ou Pull Request.
+
+**Fontes autorizadas:** event log ativo como fonte principal; features diagn?sticas, survival datasets e artefatos de sensibilidade/qualidade apenas como complementos. Quarentena usada somente em cobertura.
+
+**Entreg?veis:** dois Parquets, dez JSONs agregados, quatro relat?rios, seis figuras, seis m?dulos/runner, cinco su?tes de teste, documenta??o e log de decis?es D052?D063.
+
+**Commit autorizado:** `analysis: add governed journey and sequence mining`, local e seletivo.

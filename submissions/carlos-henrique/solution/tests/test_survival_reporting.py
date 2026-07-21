@@ -53,4 +53,5 @@ def test_input_hashes_and_mandatory_figures() -> None:
         "landmark-survival-comparison.png", "rmst-comparison.png",
     }
     actual = {path.name for path in (ROOT / "reports" / "figures").glob("*.png")}
-    assert actual == expected
+    # Later governed phases may add figures; Phase 4 assets must remain present.
+    assert expected.issubset(actual)

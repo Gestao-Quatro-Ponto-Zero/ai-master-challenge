@@ -1,0 +1,231 @@
+{
+  "classification_counts": {
+    "DORMANT_INTERVAL": 26,
+    "REACTIVATION_PATH": 4,
+    "REPEATED_CHURN_PATH": 167,
+    "SUPPORT_HEAVY_INTERVAL": 4,
+    "USAGE_RECOVERY_INTERVAL": 115
+  },
+  "denominator_accounts": 128,
+  "intervals_represented": 167,
+  "journey_scope": "BETWEEN_RECURRING_CHURNS",
+  "limitations": [
+    "PARQUET_RETAINS_ONE_SCOPE_ROW_PER_ACCOUNT",
+    "INTERNAL_ANALYSIS_USES_CONSECUTIVE_CHURN_INTERVALS",
+    "DESCRIPTIVE_NOT_CAUSAL"
+  ],
+  "median_interval_days": 61.0,
+  "population": "MAIN",
+  "top_patterns": [
+    {
+      "account_support": 23,
+      "pattern": [
+        "CHURN",
+        "CHURN"
+      ],
+      "pattern_label": "CHURN -> CHURN"
+    },
+    {
+      "account_support": 8,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 8,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> FEATURE -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 7,
+      "pattern": [
+        "FEATURE",
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> FEATURE -> FEATURE -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 6,
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 6,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 6,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 6,
+      "pattern": [
+        "FEATURE",
+        "FEATURE",
+        "FEATURE",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> FEATURE -> FEATURE -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 4,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 4,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 4,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 4,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> FEATURE -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 4,
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> FEATURE -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 3,
+      "pattern": [
+        "CHURN",
+        "FEATURE",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "CHURN -> FEATURE -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "CHURN",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "CHURN -> FEATURE -> CHURN"
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_END -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_END -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "FEATURE",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_START -> CHURN"
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_END",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_END -> CHURN"
+    }
+  ]
+}

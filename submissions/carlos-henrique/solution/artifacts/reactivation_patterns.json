@@ -1,0 +1,299 @@
+{
+  "denominator_accounts": 26,
+  "feature_use_present": 18,
+  "journey_scope": "BETWEEN_CHURN_AND_REACTIVATION",
+  "limitations": [
+    "DESCRIPTIVE_NOT_CAUSAL",
+    "CUSTOMER_SUCCESS_ACTION_NOT_INFERRED"
+  ],
+  "median_days_to_reactivation": 43.5,
+  "median_feature_events_after_reactivation": 3.5,
+  "median_feature_events_before_reactivation": 2.0,
+  "median_support_opens_after_reactivation": 0.0,
+  "median_support_opens_before_reactivation": 1.0,
+  "new_churn_after_reactivation": 4,
+  "population": "MAIN",
+  "subscription_start_present": 19,
+  "support_present": 8,
+  "top_sequences": [
+    {
+      "account_support": 5,
+      "pattern": [
+        "CHURN",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> REACTIVATION",
+      "relative_support": 0.19230769230769232
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "CHURN",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> FEATURE -> REACTIVATION",
+      "relative_support": 0.07692307692307693
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> SUPPORT_OPEN -> SUPPORT_CLOSE -> REACTIVATION",
+      "relative_support": 0.07692307692307693
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> REACTIVATION",
+      "relative_support": 0.07692307692307693
+    },
+    {
+      "account_support": 2,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> REACTIVATION",
+      "relative_support": 0.07692307692307693
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "REACTIVATION"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> CHURN -> FEATURE -> SUBSCRIPTION_START -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_END",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_END -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "FEATURE",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> CHURN -> SUPPORT_OPEN -> SUPPORT_CLOSE -> FEATURE -> SUPPORT_OPEN -> SUPPORT_CLOSE -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_START -> SUBSCRIPTION_END -> SUBSCRIPTION_START -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_END -> SUBSCRIPTION_START -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN",
+        "FEATURE",
+        "SUBSCRIPTION_END",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN -> FEATURE -> SUBSCRIPTION_END -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_END",
+        "FEATURE",
+        "CHURN",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_END -> FEATURE -> CHURN -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_END",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> SUBSCRIPTION_END -> FEATURE -> SUBSCRIPTION_START -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "REACTIVATION",
+        "SUBSCRIPTION_END"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> REACTIVATION -> SUBSCRIPTION_END",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_START -> SUPPORT_OPEN -> SUPPORT_CLOSE -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "FEATURE",
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> SUPPORT_OPEN -> SUPPORT_CLOSE -> FEATURE -> SUBSCRIPTION_END -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_END -> SUBSCRIPTION_START -> FEATURE -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    },
+    {
+      "account_support": 1,
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "REACTIVATION"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> CHURN -> SUBSCRIPTION_START -> REACTIVATION",
+      "relative_support": 0.038461538461538464
+    }
+  ]
+}

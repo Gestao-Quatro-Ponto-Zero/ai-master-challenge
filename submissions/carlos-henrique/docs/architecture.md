@@ -195,3 +195,30 @@ A an?lise permanece n?o operacional. O maior retorno antes de qualquer score est
 ### Limite por assinatura
 
 Curvas por assinatura n?o foram executadas. Sobreposi??o em 99,84% dos epis?dios, correla??o intracliente e aus?ncia de equival?ncia entre encerramento e churn invalidam a hip?tese simples de epis?dios independentes.
+
+---
+
+## Atualiza??o de implementa??o ? Fase 5
+
+> **Status:** journey mining implementado com ressalvas de warnings, exposi??o e ordena??o t?cnica; nenhum grafo ou mecanismo de interven??o foi criado.
+
+| Componente | Estado na Fase 5 | Evid?ncia |
+|---|---|---|
+| Sequence layer | `IMPLEMENTED_WITH_WARNINGS` | `account_journeys.parquet`; escopos e representa??es governados |
+| Transition analytics | `IMPLEMENTED_WITH_WARNINGS` | `transition_matrix.json`; suporte por conta e lift protegido |
+| N-gram mining | `IMPLEMENTED_WITH_WARNINGS` | 2- a 5-grams colapsados e bigram raw de sensibilidade |
+| Sequential pattern mining | `IMPLEMENTED_WITH_WARNINGS` | subsequ?ncias frequentes, gaps expl?citos e padr?es fechados |
+| Journey taxonomy | `IMPLEMENTED_WITH_WARNINGS` | `account_journey_taxonomy.parquet`; regras determin?sticas |
+| Stability analysis | `IMPLEMENTED` | reconcilia??o principal versus estrita |
+| Graph | `NOT_IMPLEMENTED` | reservado ? Fase 6; nenhuma aresta ou proje??o criada |
+| Centrality / communities | `NOT_IMPLEMENTED` | fora do escopo desta fase |
+| Intervention engine | `NOT_IMPLEMENTED` | nenhum score ou a??o individual |
+| App/dashboard | `NOT_IMPLEMENTED` | fora do escopo |
+
+### Fluxo implementado
+
+O event log ativo ? filtrado em popula??es principal e estrita, ordenado de modo determin?stico e projetado em escopos temporais expl?citos. Transi??es e n-grams precedem a minera??o de subsequ?ncias. Somente agregados estabilizados, com denominador e controle de exposi??o, chegam ao gate de findings.
+
+### Limite arquitetural
+
+Os padr?es s?o descri??es de recorr?ncia observada. Uma futura proje??o em grafo dever? preservar escopo, dire??o temporal t?cnica, suporte por conta, exposi??o, estabilidade e depend?ncia intradi?ria; n?o poder? converter associa??o em causalidade.

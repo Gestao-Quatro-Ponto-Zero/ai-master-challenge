@@ -1,0 +1,88 @@
+{
+  "accounts": 500,
+  "dependencies": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "pyarrow": "25.0.0",
+    "pytest": "9.1.1",
+    "scipy": "1.18.0"
+  },
+  "event_rows": 13927,
+  "finding_count": 6,
+  "gate_result": "PASS_WITH_WARNINGS",
+  "generation_timestamp": "2024-12-31T19:00:00",
+  "generation_timestamp_basis": "event_log_observation_end",
+  "input_validation": {
+    "account_features_sha256": "cc3a4fb1c90f3bfd8110e35998421b7dd854a1841ac71a11df41b6c247cd7988",
+    "account_rows": 500,
+    "all_hashes_match": true,
+    "event_log_sha256": "0e9e60d06ce6fbd62103924aab7beda6d0eab9ed5a87ea32cee786abcdb0373f",
+    "event_rows": 13927,
+    "expected_base_commit": "83d9b16a270e2227bd67c52e4ebf3ce4aae3eb61",
+    "reconciliation_unexplained_difference": 0,
+    "verified_files": 16
+  },
+  "journey_rows": 4221,
+  "length_bands": {
+    "basis": "MAIN_FULL_OBSERVED_JOURNEY_Q33_Q67",
+    "medium_upper": 33.0,
+    "short_upper": 21.0
+  },
+  "limitations": [
+    "DESCRIPTIVE_NOT_CAUSAL",
+    "VALID_WITH_WARNING_IN_MAIN",
+    "TECHNICAL_SAME_DAY_ORDER",
+    "UNEQUAL_JOURNEY_EXPOSURE_CONTROLLED_NOT_ELIMINATED"
+  ],
+  "main_accounting": {
+    "accounts_with_usable_events": 500,
+    "empty_scopes_not_silently_discarded": {},
+    "journey_rows": 2340,
+    "observation_end": "2024-12-31T19:00:00",
+    "population": "MAIN",
+    "quarantined_events_used": 0,
+    "rows_by_scope": {
+      "BETWEEN_CHURN_AND_REACTIVATION": 26,
+      "BETWEEN_RECURRING_CHURNS": 128,
+      "FULL_OBSERVED_JOURNEY": 500,
+      "LANDMARK_30D_JOURNEY": 476,
+      "LANDMARK_60D_JOURNEY": 441,
+      "LANDMARK_90D_JOURNEY": 418,
+      "POST_REACTIVATION": 26,
+      "PRE_FIRST_CHURN": 325
+    }
+  },
+  "ngram_rows": 7234,
+  "patterns_after_pruning": 4996,
+  "patterns_before_pruning": 5480,
+  "quarantined_events_used": 0,
+  "redundancy_removed": 484,
+  "same_day_dependency_counts": {
+    "HIGH": 12,
+    "NONE": 3440,
+    "PARTIAL": 769
+  },
+  "schema_version": "5.0.0",
+  "scope_count": 8,
+  "sequential_pattern_count": 4996,
+  "strict_accounting": {
+    "accounts_with_usable_events": 497,
+    "empty_scopes_not_silently_discarded": {},
+    "journey_rows": 1881,
+    "observation_end": "2024-12-31T19:00:00",
+    "population": "STRICT",
+    "quarantined_events_used": 0,
+    "rows_by_scope": {
+      "BETWEEN_CHURN_AND_REACTIVATION": 1,
+      "BETWEEN_RECURRING_CHURNS": 8,
+      "FULL_OBSERVED_JOURNEY": 497,
+      "LANDMARK_30D_JOURNEY": 473,
+      "LANDMARK_60D_JOURNEY": 437,
+      "LANDMARK_90D_JOURNEY": 415,
+      "POST_REACTIVATION": 1,
+      "PRE_FIRST_CHURN": 49
+    }
+  },
+  "transition_rows": 612
+}

@@ -371,3 +371,54 @@ S?o comparados: principal, estrita, signup, primeira assinatura, exclus?o de ove
 ### Uso permitido e proibido
 
 Permitido: evid?ncia agregada descritiva de tempo at? primeiro churn, censura, suporte, landmarks e sensibilidade. Proibido: probabilidade individual, score, ranking, causalidade, previs?o, taxa empresarial, a??o automatizada, curva independente por assinatura ou uso de quarentena.
+
+---
+
+## Contratos da Fase 5 ? jornadas e padr?es
+
+### `account_journeys.parquet`
+
+Gr?o: uma linha por `account_id + journey_scope + quality_population`. Escopos autorizados: `FULL_OBSERVED_JOURNEY`, `PRE_FIRST_CHURN`, `BETWEEN_CHURN_AND_REACTIVATION`, `POST_REACTIVATION`, `BETWEEN_RECURRING_CHURNS` e landmarks de 30/60/90 dias.
+
+Campos principais:
+
+- limites: `journey_start`, `journey_end`;
+- representa??es est?veis: `raw_sequence`, `collapsed_sequence`, `time_bucketed_sequence`;
+- m?tricas: `raw_length`, `collapsed_length`, `distinct_event_types`, `observed_days`, `repeated_event_ratio`;
+- governan?a: `same_day_order_dependency`, `quality_coverage_ratio`, `source_contract`;
+- marcadores descritivos: `contains_churn`, `contains_reactivation` e sequ?ncias num?ricas.
+
+`RAW_SEQUENCE` preserva tipos can?nicos completos. `COLLAPSED_SEQUENCE` usa vocabul?rio reduzido e colapsa repeti??es consecutivas. `TIME_BUCKETED_SEQUENCE` ? JSON estruturado por dia, evento e contagem.
+
+### Transi??es
+
+Gr?o agregado: `source_event + target_event + journey_scope + outcome + quality_population`. Cont?m suporte por conta, ocorr?ncias, denominador, probabilidade condicional de origem, lift versus refer?ncia, estabilidade, depend?ncia de ordem e gate de amostra.
+
+### Padr?es
+
+Gr?o agregado: padr?o serializado + representa??o + escopo + desfecho + popula??o. N-grams t?m comprimento 2?5; subsequ?ncias frequentes usam suporte m?nimo 15 contas, comprimento m?ximo 5, gap m?ximo 5 eventos/90 dias e pruning fechado.
+
+### `account_journey_taxonomy.parquet`
+
+Gr?o: uma linha por `account_id + journey_scope + quality_population`. Campos:
+
+- `primary_journey_class`: uma classe determin?stica;
+- `secondary_journey_classes`: JSON est?vel com zero ou mais classes;
+- `classification_rule` e `supporting_metrics`: regra e evid?ncia audit?veis;
+- `confidence_level`, `stability_status`, `limitations`.
+
+O Parquet cont?m IDs t?cnicos para rastreabilidade; JSONs, relat?rios e figuras cont?m somente agregados.
+
+### Estabilidade
+
+- `ROBUST`: presen?a/dire??o preservadas e suporte materialmente est?vel, sem depend?ncia HIGH;
+- `SENSITIVE`: presen?a/dire??o preservadas com varia??o relevante;
+- `UNSTABLE`: desaparecimento, invers?o, amostra pequena ou depend?ncia HIGH.
+
+### Controle de exposi??o
+
+S?o obrigat?rios suporte por conta, janelas fixas, pseudo-cutoff no fim da observa??o para n?o churn, landmarks e bandas `SHORT_JOURNEY`, `MEDIUM_JOURNEY`, `LONG_JOURNEY` baseadas nos quantis 33%/67% da jornada completa principal.
+
+### Restri??es
+
+Quarentena, texto livre, PII, causalidade, score, previs?o, interven??o, grafo, centralidade, comunidades e app n?o integram os contratos desta fase.
