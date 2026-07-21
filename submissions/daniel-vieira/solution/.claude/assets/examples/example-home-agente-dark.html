@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadScorer -- Inicio do agente (exemplo, tema escuro)</title>
+<style>
+/*
+ * example-home-agente-dark.html
+ * Prototipo autonomo (nao normativo) da tela inicial da aplicacao do agente:
+ * faixa de seis cartoes de indicadores e lista de destaque (top tier), com
+ * barras por indicador, notas de ajuda no hover dos rotulos e menu responsivo.
+ * Tema escuro IBM Carbon Gray 100. Dados sinteticos coerentes com o modelo.
+ */
+
+/* === Fontes IBM Plex (locais) === */
+@font-face { font-family:'IBM Plex Sans'; font-weight:400; font-display:swap;
+  src:url('../fonts/IBMPlexSans-Regular.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Sans'; font-weight:500; font-display:swap;
+  src:url('../fonts/IBMPlexSans-Medium.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Sans'; font-weight:600; font-display:swap;
+  src:url('../fonts/IBMPlexSans-SemiBold.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Mono'; font-weight:400; font-display:swap;
+  src:url('../fonts/IBMPlexMono-Regular.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Mono'; font-weight:500; font-display:swap;
+  src:url('../fonts/IBMPlexMono-Medium.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Serif'; font-weight:600; font-display:swap;
+  src:url('../fonts/IBMPlexSerif-SemiBold.woff2') format('woff2'); }
+
+/* === Tokens (embutidos do design system) === */
+:root {
+  --font-sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --font-serif:'IBM Plex Serif',Georgia,serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --bg-base:#161616; --bg-raised:#262626; --bg-overlay:#393939;
+  --fg-primary:#f4f4f4; --fg-secondary:#c6c6c6; --fg-muted:#8d8d8d; --fg-disabled:#525252;
+  --border-subtle:#262626; --border-strong:#393939;
+  --accent:#ffffff; --accent-muted:rgba(255,255,255,0.08);
+  --positive:#42be65; --negative:#fa4d56; --warning:#f1c21b; --info:#4589ff;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --radius-sm:2px; --radius-md:4px;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body { background:var(--bg-base); color:var(--fg-primary);
+  font-family:var(--font-sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+
+/* === Barra de navegacao com menu responsivo (alternancia CSS) === */
+.navbar { display:flex; align-items:center; gap:var(--space-6);
+  padding:0 calc(max(0px, (100% - 1360px) / 2) + var(--space-6));
+  height:56px; border-bottom:1px solid var(--border-strong);
+  position:sticky; top:0; background:var(--bg-base); z-index:20; }
+.navbar .brand { font-family:var(--font-serif); font-weight:600; font-size:18px; }
+.nav-cb { display:none; }
+.nav-toggle { display:none; flex-direction:column; justify-content:center; gap:4px;
+  width:24px; height:24px; cursor:pointer; }
+.nav-toggle span { display:block; height:1.5px; background:var(--fg-secondary); }
+.nav-tabs { display:flex; gap:var(--space-5); flex:1; margin-left:calc(100px - var(--space-6)); }
+.nav-tabs a { color:var(--fg-muted); text-decoration:none; font-size:14px;
+  padding:18px 0; border-bottom:2px solid transparent; white-space:nowrap; }
+.nav-tabs a:hover { color:var(--fg-secondary); }
+.nav-tabs a.active { color:var(--fg-primary); border-bottom-color:var(--accent); }
+.nav-right { display:flex; align-items:center; gap:var(--space-4); }
+.user-pill { font-family:var(--font-mono); font-size:12px; color:var(--fg-secondary);
+  text-decoration:none; border-bottom:1px solid var(--border-strong); }
+.pill { display:inline-flex; align-items:center; gap:var(--space-2); font-family:var(--font-mono);
+  font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-secondary);
+  padding:4px 10px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); }
+.dot { width:7px; height:7px; border-radius:50%; background:var(--positive); }
+.btn { display:inline-flex; align-items:center; justify-content:center; padding:6px 14px;
+  font-family:var(--font-sans); font-size:13px; font-weight:500; border:1px solid var(--border-strong);
+  background:transparent; color:var(--fg-primary); border-radius:var(--radius-sm); cursor:pointer; }
+.btn:hover { background:var(--accent-muted); }
+.btn-primary { background:var(--fg-primary); color:var(--bg-base); border-color:var(--fg-primary); }
+.btn-primary:hover { background:var(--accent); }
+.btn-sm { padding:4px 12px; font-size:12px; }
+
+/* === Layout de pagina === */
+.page { padding:var(--space-6); max-width:1360px; margin:0 auto; }
+.page-head { display:flex; align-items:baseline; gap:var(--space-3); margin-bottom:var(--space-5); }
+.page-head h1 { font-family:var(--font-serif); font-weight:600; font-size:22px; margin:0; }
+.page-head .sub { font-family:var(--font-mono); font-size:12px; color:var(--fg-muted); }
+
+/* === Nota de ajuda no hover (rotulos) === */
+.help { position:relative; display:inline-flex; align-items:center; gap:5px; cursor:help; }
+.help .ico { display:inline-flex; align-items:center; justify-content:center; width:13px; height:13px;
+  border:1px solid var(--fg-disabled); border-radius:50%; font-size:9px; line-height:1;
+  color:var(--fg-muted); font-family:var(--font-mono); flex:none; }
+.help:hover .ico { border-color:var(--info); color:var(--info); }
+.help .tip { position:absolute; top:calc(100% + 8px); left:0; z-index:40; width:212px;
+  background:var(--bg-overlay); border:1px solid var(--border-strong); border-radius:var(--radius-md);
+  padding:10px 12px; font-family:var(--font-sans); font-weight:400; font-size:12px;
+  text-transform:none; letter-spacing:normal; color:var(--fg-secondary); line-height:1.45;
+  white-space:normal; text-align:left; opacity:0; visibility:hidden; transition:opacity .12s;
+  pointer-events:none; }
+.help:hover .tip { opacity:1; visibility:visible; }
+.help .tip b { color:var(--fg-primary); font-weight:600; }
+.help.r .tip { left:auto; right:0; }
+.help .tip .w { display:block; margin-top:5px; font-family:var(--font-mono); font-size:11px;
+  color:var(--fg-muted); }
+
+/* === Faixa de KPIs === */
+.kpi-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:var(--space-4);
+  margin-bottom:var(--space-7); }
+.kpi { background:var(--bg-raised); border:1px solid var(--border-subtle);
+  border-left:2px solid var(--border-strong); border-radius:var(--radius-md); padding:var(--space-4); }
+.kpi.pos { border-left-color:var(--positive); }
+.kpi .label { font-family:var(--font-mono); font-size:11px; text-transform:uppercase;
+  letter-spacing:0.07em; color:var(--fg-muted); margin-bottom:var(--space-2); }
+.kpi .value { font-family:var(--font-mono); font-size:26px; font-weight:500;
+  font-variant-numeric:tabular-nums; line-height:1.1; }
+.kpi .value.pos { color:var(--positive); }
+.kpi .unit { font-size:13px; color:var(--fg-muted); margin-left:2px; }
+.kpi .foot { font-family:var(--font-mono); font-size:11px; color:var(--fg-muted); margin-top:var(--space-2); }
+
+/* === Secao e tabela === */
+.section-head { display:flex; align-items:baseline; justify-content:space-between;
+  margin-bottom:var(--space-3); }
+.section-head h2 { font-family:var(--font-sans); font-weight:600; font-size:15px; margin:0; }
+.section-head .note { font-size:12px; color:var(--fg-muted); }
+.section-head .note a { color:var(--fg-secondary); }
+.table-wrap { overflow-x:auto; border:1px solid var(--border-subtle); border-radius:var(--radius-md); }
+table { width:100%; border-collapse:collapse; min-width:920px; }
+thead th { font-family:var(--font-mono); font-size:11px; font-weight:400; text-transform:uppercase;
+  letter-spacing:0.06em; color:var(--fg-muted); text-align:left; padding:var(--space-3) var(--space-4);
+  border-bottom:1px solid var(--border-strong); white-space:nowrap; background:var(--bg-base); }
+thead th.n { text-align:right; }
+thead th.n .help { justify-content:flex-end; }
+tbody td { padding:var(--space-3) var(--space-4); border-bottom:1px solid var(--border-subtle);
+  vertical-align:middle; }
+tbody td.n { text-align:right; }
+tbody tr:hover { background:var(--accent-muted); }
+tbody tr { border-left:2px solid var(--accent); }
+.rank { font-family:var(--font-mono); color:var(--fg-muted); font-size:12px; }
+.acct { font-weight:500; }
+.prod { color:var(--fg-secondary); font-size:13px; }
+
+/* === Celula de potencial (barra azul) === */
+.score { display:inline-flex; flex-direction:column; gap:4px; align-items:flex-end; }
+.score b { font-family:var(--font-mono); font-size:16px; font-weight:600; font-variant-numeric:tabular-nums; }
+.score .bar { width:52px; height:3px; background:var(--border-strong); border-radius:2px; overflow:hidden; }
+.score .bar i { display:block; height:100%; background:var(--info); }
+
+/* === Celula de dimensao (numero mais barra; branca, momentum amarelo) === */
+.mcell { display:inline-flex; flex-direction:column; gap:4px; align-items:flex-end; }
+.mcell .v { font-family:var(--font-mono); font-size:14px; font-variant-numeric:tabular-nums;
+  color:var(--fg-secondary); }
+
+footer { padding:var(--space-5) var(--space-6); border-top:1px solid var(--border-subtle);
+  font-family:var(--font-mono); font-size:11px; color:var(--fg-muted); letter-spacing:0.04em; }
+
+/* === Responsivo (iPhone 13, 390 px) === */
+@media (max-width:900px) { .kpi-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:820px) {
+  .navbar { gap:var(--space-4); padding:0 var(--space-4); }
+  .nav-toggle { display:flex; }
+  .nav-tabs { display:none; position:absolute; top:56px; left:0; right:0; flex-direction:column;
+    gap:0; background:var(--bg-overlay); border-bottom:1px solid var(--border-strong); z-index:30;
+    margin-left:0; }
+  .nav-tabs a { padding:14px var(--space-4); border-bottom:1px solid var(--border-subtle); }
+  .nav-cb:checked ~ .nav-tabs { display:flex; }
+}
+@media (max-width:560px) {
+  .nav-right .user-pill { display:none; }
+  .page { padding:var(--space-4); }
+  .kpi-grid { grid-template-columns:1fr 1fr; gap:var(--space-3); }
+  .kpi .value { font-size:22px; }
+  .section-head { flex-direction:column; align-items:flex-start; gap:var(--space-2); }
+}
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <input type="checkbox" id="nav" class="nav-cb" aria-label="Abrir menu">
+    <label class="nav-toggle" for="nav"><span></span><span></span><span></span></label>
+    <span class="brand">LeadScorer</span>
+    <div class="nav-tabs">
+      <a href="#" class="active">Início</a>
+      <a href="example-disponiveis-dark.html">Oportunidades Disponíveis</a>
+      <a href="example-engajadas-dark.html">Oportunidades Engajadas</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="user-pill">anna-snelling</a>
+      <span class="pill"><span class="dot"></span>Ciclo ativo</span>
+      <button class="btn btn-sm">Sair</button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-head">
+      <h1>Meu desempenho</h1>
+      <span class="sub">agente anna-snelling --- acumulado</span>
+    </div>
+
+    <!-- Faixa de seis indicadores -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">Engajamentos</div>
+        <div class="value">34</div>
+        <div class="foot">ciclos acumulados</div>
+      </div>
+      <div class="kpi pos">
+        <div class="label">Sucessos</div>
+        <div class="value pos">21</div>
+        <div class="foot">desfecho won</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Taxa de sucesso</div>
+        <div class="value">61,8<span class="unit">%</span></div>
+        <div class="foot">won sobre fechados</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Ticket médio</div>
+        <div class="value"><span class="unit">US$ </span>2.847</div>
+        <div class="foot">média de fechamento</div>
+      </div>
+      <div class="kpi pos">
+        <div class="label">Total em vendas</div>
+        <div class="value pos"><span class="unit">US$ </span>59.787</div>
+        <div class="foot">soma dos won</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Tempo médio de venda</div>
+        <div class="value">47<span class="unit"> d</span></div>
+        <div class="foot">engajamento a fechamento</div>
+      </div>
+    </div>
+
+    <!-- Lista de destaque: top tier -->
+    <div class="section-head">
+      <h2>Meu top tier</h2>
+      <span class="note">
+        as dez disponíveis mais bem ranqueadas para mim ---
+        <a href="example-disponiveis-dark.html">ver todas as disponíveis</a>
+      </span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th class="n"><span class="help r"><span>Potencial</span><span class="ico">?</span>
+              <span class="tip"><b>Potencial da oportunidade</b> (0 a 100)<br>Potencial de venda do produto indicado para o cliente específico.
+              Média geométrica ponderada das quatro dimensões de decisão: Momentum, Retorno,
+              Afinidade e Especialização. Após o engajamento, sofre decaimento temporal, acompanhando o
+              decaimento do Momentum.</span></span></th>
+            <th class="n"><span class="help r"><span>Momentum</span><span class="ico">?</span>
+              <span class="tip"><b>Momentum</b> (0 a 100)<br>Eixo primário do ranqueamento. Exprime o comportamento e recorrência
+              de compra do cliente no tempo para o produto indicado. Medida de maturidade para
+              (re)compra. Após o engajamento, sofre decaimento temporal. Recebe peso 33%.</span></span></th>
+            <th class="n"><span class="help r"><span>Retorno</span><span class="ico">?</span>
+              <span class="tip"><b>Retorno</b> (0 a 100)<br>Exprime o potencial econômico da transação, ancorado no ticket médio
+              do cliente para aquele produto, com recuo por setor. Recebe peso 27%.</span></span></th>
+            <th class="n"><span class="help r"><span>Afinidade</span><span class="ico">?</span>
+              <span class="tip"><b>Afinidade com o produto</b> (0 a 100)<br>Exprime interesse potencial do cliente no produto indicado. Medida
+              da afinidade histórica do cliente pelo produto, ancorada no volume de negócios
+              fechados anteriormente. Recebe peso 23%.</span></span></th>
+            <th class="n"><span class="help r"><span>Especialização</span><span class="ico">?</span>
+              <span class="tip"><b>Especialização do agente</b> (0 a 100)<br>Exprime habilidade histórica do agente em obter sucesso na venda
+              do produto indicado. Personaliza o ranqueamento por agente. Recebe peso 17%.</span></span></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank">01</td><td class="acct">Golddex</td><td class="prod">GTX Plus Pro</td>
+            <td class="n"><span class="score"><b>94</b><span class="bar"><i style="width:94%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">91</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">98</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">88</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">89</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">02</td><td class="acct">Konmatfix</td><td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>90</b><span class="bar"><i style="width:90%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">88</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">93</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">86</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">92</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">03</td><td class="acct">Bioholding</td><td class="prod">MG Advanced</td>
+            <td class="n"><span class="score"><b>87</b><span class="bar"><i style="width:87%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">90</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">84</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">82</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">85</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">04</td><td class="acct">Zumgoity</td><td class="prod">GTX Plus Pro</td>
+            <td class="n"><span class="score"><b>85</b><span class="bar"><i style="width:85%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">83</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">96</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">79</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">80</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">05</td><td class="acct">Ontomedia</td><td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>82</b><span class="bar"><i style="width:82%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">80</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">90</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">78</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">81</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">06</td><td class="acct">Sumace</td><td class="prod">GTX Basic</td>
+            <td class="n"><span class="score"><b>79</b><span class="bar"><i style="width:79%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">84</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">62</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">80</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">86</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">07</td><td class="acct">Betasoloin</td><td class="prod">MG Advanced</td>
+            <td class="n"><span class="score"><b>77</b><span class="bar"><i style="width:77%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">76</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">83</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">74</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">78</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">08</td><td class="acct">Zencorporation</td><td class="prod">GTX Plus Basic</td>
+            <td class="n"><span class="score"><b>74</b><span class="bar"><i style="width:74%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">78</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">68</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">72</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">75</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">09</td><td class="acct">Cheers</td><td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>72</b><span class="bar"><i style="width:72%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">73</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">79</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">68</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">70</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">10</td><td class="acct">Xylophar</td><td class="prod">MG Special</td>
+            <td class="n"><span class="score"><b>69</b><span class="bar"><i style="width:69%"></i></span></span></td>
+            <td class="n"><span class="mcell mom"><span class="v">75</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">54</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">66</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">71</span></span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    LeadScorer MVP --- protótipo estático não normativo --- tema escuro Gray 100
+  </footer>
+</body>
+</html>

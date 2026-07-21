@@ -1,0 +1,20 @@
+[sqlfluff]
+dialect = duckdb
+max_line_length = 96
+large_file_skip_byte_limit = 0
+
+# Impoem-se as regras aderentes ao std-sql.md (caixa de palavras-chave e funcoes,
+# qualificacao de colunas, uso de AS, limite de linha). Excluem-se o modelo de
+# indentacao e de quebra de linha opinativo do sqlfluff, em favor da indentacao
+# consistente da casa, e RF05, falso positivo sobre os caminhos de CSV lidos
+# diretamente como tabela (extensao DuckDB adotada no ADR F3N8).
+exclude_rules = LT01, LT02, LT07, LT08, LT09, LT13, LT14, AM05, AM06, ST05, ST09, RF04, RF05, AL10
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = upper

@@ -1,0 +1,45 @@
+/*
+ * tokens.css
+ *
+ * Tokens canônicos, independentes de tema, do sistema de design principal.
+ * Arquivo companheiro de '.claude/rules/design.md'.
+ *
+ * Define as primitivas de tipografia, espaçamento e raio compartilhadas por
+ * todos os temas. Os tokens específicos de tema (escuro e claro) residem em
+ * arquivos separados:
+ *   - dark-theme-tokens.css
+ *   - light-theme-tokens.css
+ *
+ * As regras e princípios de aplicação residem em design.md; este arquivo
+ * contém os valores referenciados por essas regras.
+ */
+
+:root {
+
+  /* === Tipografia === */
+  /* Família IBM Plex com fontes de contingência do sistema */
+  --font-sans:  'IBM Plex Sans',  system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+  --font-mono:  'IBM Plex Mono',  ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+
+
+  /* === Espaçamento === */
+  /* Linha de base Carbon estrita 4/8, 10 passos */
+  --space-1:    4px;    /* Vãos de fio de cabelo; seta-delta ao número */
+  --space-2:    8px;    /* Ritmo vertical dentro do KPI; vão entre badge e rótulo */
+  --space-3:   12px;    /* Preenchimento vertical de células densas; vão da faixa de KPI */
+  --space-4:   16px;    /* Preenchimento interno padrão de cartões; vão de coluna padrão */
+  --space-5:   24px;    /* Vão entre cartões na grade; subespaçamento de seção */
+  --space-6:   32px;    /* Título do slide ao subtítulo; respiro de subseção */
+  --space-7:   48px;    /* Margem entre seções da página */
+  --space-8:   64px;    /* Preenchimento horizontal do slide; preenchimento vertical de seção */
+  --space-9:   96px;    /* Preenchimento superior do slide de capa; respiro pré-rodapé */
+  --space-10: 128px;    /* Slides de capa extralargos; seções de destaque */
+
+
+  /* === Raio === */
+  /* Arredondamento de fio de cabelo: cantos mínimos */
+  --radius-sm: 2px;     /* Badges, pills, microcampos, chips de status */
+  --radius-md: 4px;     /* Cartões, painéis, campos padrão, blocos de KPI */
+
+}

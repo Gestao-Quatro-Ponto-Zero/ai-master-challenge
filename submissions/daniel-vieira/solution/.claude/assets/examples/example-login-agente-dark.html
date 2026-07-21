@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadScorer -- Identificacao (exemplo, tema escuro)</title>
+<style>
+/*
+ * example-login-agente-dark.html
+ * Prototipo autonomo (nao normativo) da tela de identificacao por selecao de
+ * usuario semeado, aplicacao do agente. Tema escuro IBM Carbon Gray 100.
+ * Estilos e tokens embutidos; fontes IBM Plex servidas de '../fonts/'.
+ */
+
+/* === Fontes IBM Plex (locais) === */
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('../fonts/IBMPlexSans-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 500;
+  font-display: swap; src: url('../fonts/IBMPlexSans-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 600;
+  font-display: swap; src: url('../fonts/IBMPlexSans-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('../fonts/IBMPlexMono-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500;
+  font-display: swap; src: url('../fonts/IBMPlexMono-Medium.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Serif'; font-style: normal; font-weight: 600;
+  font-display: swap; src: url('../fonts/IBMPlexSerif-SemiBold.woff2') format('woff2');
+}
+
+/* === Tokens (embutidos do design system) === */
+:root {
+  --font-sans:  'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'IBM Plex Serif', Georgia, serif;
+  --font-mono:  'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --bg-base: #161616; --bg-raised: #262626; --bg-overlay: #393939;
+  --fg-primary: #f4f4f4; --fg-secondary: #c6c6c6; --fg-muted: #8d8d8d;
+  --fg-disabled: #525252;
+  --border-subtle: #262626; --border-strong: #393939;
+  --accent: #ffffff; --accent-muted: rgba(255,255,255,0.08);
+  --positive: #42be65; --negative: #fa4d56; --warning: #f1c21b; --info: #4589ff;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 2px; --radius-md: 4px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg-base); color: var(--fg-primary);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+
+/* === Faixa superior minima (contexto de aplicacao) === */
+.appbar {
+  display: flex; align-items: baseline; gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border-strong);
+}
+.wordmark {
+  font-family: var(--font-serif); font-weight: 600; font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.appbar .scope {
+  font-family: var(--font-mono); font-size: 12px; color: var(--fg-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+/* === Area central === */
+main {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: var(--space-7) var(--space-4);
+}
+.card {
+  width: 100%; max-width: 420px;
+  background: var(--bg-raised); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md); padding: var(--space-6);
+}
+.card h1 {
+  font-family: var(--font-serif); font-weight: 600; font-size: 24px;
+  margin: 0 0 var(--space-2);
+}
+.card .lead {
+  color: var(--fg-secondary); margin: 0 0 var(--space-6); font-size: 14px;
+}
+.field { margin-bottom: var(--space-5); }
+.field > label {
+  display: block; font-family: var(--font-mono); font-size: 11px;
+  text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-muted);
+  margin-bottom: var(--space-2);
+}
+.select {
+  position: relative; display: block;
+}
+.select select {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; padding: var(--space-3) var(--space-4);
+  padding-right: var(--space-8);
+  background: var(--bg-base); color: var(--fg-primary);
+  font-family: var(--font-sans); font-size: 14px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.select select:focus { outline: 2px solid var(--info); outline-offset: 0; }
+.select::after {
+  content: ''; position: absolute; right: var(--space-4); top: 50%;
+  width: 8px; height: 8px; margin-top: -6px;
+  border-right: 1px solid var(--fg-muted); border-bottom: 1px solid var(--fg-muted);
+  transform: rotate(45deg); pointer-events: none;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%; padding: var(--space-3) var(--space-4);
+  font-family: var(--font-sans); font-size: 14px; font-weight: 500;
+  border-radius: var(--radius-sm); cursor: pointer; border: 1px solid transparent;
+}
+.btn-primary { background: var(--fg-primary); color: var(--bg-base); }
+.btn-primary:hover { background: var(--accent); }
+.hint {
+  margin-top: var(--space-5); padding-top: var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 12px; color: var(--fg-muted);
+}
+footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono); font-size: 11px; color: var(--fg-muted);
+  letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+  <header class="appbar">
+    <span class="wordmark">LeadScorer</span>
+    <span class="scope">Aplicação do agente</span>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>Identificação</h1>
+      <p class="lead">
+        Selecione o seu nome de usuário para iniciar a sessão. O acesso é por
+        seleção, sem senha, restrito aos usuários semeados.
+      </p>
+      <form onsubmit="return false">
+        <div class="field">
+          <label for="user">Agente de vendas</label>
+          <span class="select">
+            <select id="user" name="user">
+              <option value="" disabled selected>Escolha um agente</option>
+              <option>anna-snelling</option>
+              <option>boris-faz</option>
+              <option>cecily-lampkin</option>
+              <option>darcel-schlecht</option>
+              <option>gladys-colclough</option>
+              <option>rosalina-dieter</option>
+            </select>
+          </span>
+        </div>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </form>
+      <p class="hint">
+        A aplicação do gerente é servida em endereço próprio, com a mesma forma
+        de identificação. As duas aplicações são segregadas, sem gestão de papéis.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    LeadScorer MVP --- protótipo estático não normativo --- tema escuro Gray 100
+  </footer>
+</body>
+</html>

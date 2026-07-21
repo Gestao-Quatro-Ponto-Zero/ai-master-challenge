@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadScorer -- Acompanhamento do time (exemplo, tema escuro)</title>
+<style>
+/*
+ * example-acompanhamento-gerente-dark.html
+ * Prototipo autonomo (nao normativo) da visao de acompanhamento do time
+ * (aplicacao do gerente): oportunidades engajadas pelos agentes e historico de
+ * ciclos com desfecho, filtros por agente, produto, conta e data, e ordenacao.
+ * Tema escuro IBM Carbon Gray 100. Dados sinteticos.
+ */
+
+/* === Fontes IBM Plex (locais) === */
+@font-face { font-family:'IBM Plex Sans'; font-weight:400; font-display:swap;
+  src:url('../fonts/IBMPlexSans-Regular.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Sans'; font-weight:500; font-display:swap;
+  src:url('../fonts/IBMPlexSans-Medium.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Sans'; font-weight:600; font-display:swap;
+  src:url('../fonts/IBMPlexSans-SemiBold.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Mono'; font-weight:400; font-display:swap;
+  src:url('../fonts/IBMPlexMono-Regular.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Mono'; font-weight:500; font-display:swap;
+  src:url('../fonts/IBMPlexMono-Medium.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Serif'; font-weight:600; font-display:swap;
+  src:url('../fonts/IBMPlexSerif-SemiBold.woff2') format('woff2'); }
+
+/* === Tokens (embutidos do design system) === */
+:root {
+  --font-sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --font-serif:'IBM Plex Serif',Georgia,serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --bg-base:#161616; --bg-raised:#262626; --bg-overlay:#393939;
+  --fg-primary:#f4f4f4; --fg-secondary:#c6c6c6; --fg-muted:#8d8d8d; --fg-disabled:#525252;
+  --border-subtle:#262626; --border-strong:#393939;
+  --accent:#ffffff; --accent-muted:rgba(255,255,255,0.08);
+  --positive:#42be65; --negative:#fa4d56; --warning:#f1c21b; --info:#4589ff;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --radius-sm:2px; --radius-md:4px;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body { background:var(--bg-base); color:var(--fg-primary);
+  font-family:var(--font-sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+
+/* === Barra de navegacao === */
+.navbar { display:flex; align-items:center; gap:var(--space-6);
+  padding:0 calc(max(0px, (100% - 1360px) / 2) + var(--space-6));
+  height:56px; border-bottom:1px solid var(--border-strong);
+  position:sticky; top:0; background:var(--bg-base); z-index:20; }
+.navbar .brand { font-family:var(--font-serif); font-weight:600; font-size:18px; }
+.navbar .brand .role { font-family:var(--font-mono); font-size:11px; font-weight:400;
+  text-transform:uppercase; letter-spacing:0.08em; color:var(--fg-muted); margin-left:var(--space-2); }
+.nav-cb { display:none; }
+.nav-toggle { display:none; flex-direction:column; justify-content:center; gap:4px;
+  width:24px; height:24px; cursor:pointer; }
+.nav-toggle span { display:block; height:1.5px; background:var(--fg-secondary); }
+.nav-tabs { display:flex; gap:var(--space-5); flex:1; margin-left:calc(100px - var(--space-6)); }
+.nav-tabs a { color:var(--fg-muted); text-decoration:none; font-size:14px;
+  padding:18px 0; border-bottom:2px solid transparent; }
+.nav-tabs a:hover { color:var(--fg-secondary); }
+.nav-tabs a.active { color:var(--fg-primary); border-bottom-color:var(--accent); }
+.nav-right { display:flex; align-items:center; gap:var(--space-4); }
+.user-pill { font-family:var(--font-mono); font-size:12px; color:var(--fg-secondary);
+  text-decoration:none; border-bottom:1px solid var(--border-strong); }
+.pill { display:inline-flex; align-items:center; gap:var(--space-2); font-family:var(--font-mono);
+  font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-secondary);
+  padding:4px 10px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); }
+.dot { width:7px; height:7px; border-radius:50%; background:var(--positive); }
+.btn { display:inline-flex; align-items:center; justify-content:center; padding:6px 14px;
+  font-family:var(--font-sans); font-size:13px; font-weight:500; border:1px solid var(--border-strong);
+  background:transparent; color:var(--fg-primary); border-radius:var(--radius-sm); cursor:pointer; }
+.btn:hover { background:var(--accent-muted); }
+.btn-sm { padding:4px 12px; font-size:12px; }
+
+/* === Layout === */
+.page { padding:var(--space-6); max-width:1360px; margin:0 auto; }
+.page-head { display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:var(--space-3); margin-bottom:var(--space-5); }
+.page-head h1 { font-family:var(--font-serif); font-weight:600; font-size:22px; margin:0; }
+.page-head .sub { font-family:var(--font-mono); font-size:12px; color:var(--fg-muted); }
+.count-chip { display:inline-flex; align-items:center; gap:var(--space-2); font-family:var(--font-mono);
+  font-size:12px; color:var(--fg-secondary); padding:5px 12px; border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm); }
+.count-chip b { color:var(--fg-primary); font-weight:500; }
+
+/* === Barra de filtros === */
+.toolbar { display:flex; flex-wrap:wrap; gap:var(--space-3); align-items:flex-end;
+  padding-bottom:var(--space-4); margin-bottom:var(--space-4);
+  border-bottom:1px solid var(--border-subtle); }
+.filter { display:flex; flex-direction:column; gap:5px; }
+.filter > span { font-family:var(--font-mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:0.06em; color:var(--fg-muted); }
+.f-input { position:relative; }
+.f-input select, .f-input input { -webkit-appearance:none; appearance:none; min-width:128px;
+  padding:7px 28px 7px 10px; background:var(--bg-raised); color:var(--fg-primary);
+  font-family:var(--font-sans); font-size:13px; border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm); cursor:pointer; }
+.f-input input { padding-right:10px; }
+.f-input.sel::after { content:''; position:absolute; right:11px; top:50%; width:7px; height:7px;
+  margin-top:-6px; border-right:1px solid var(--fg-muted); border-bottom:1px solid var(--fg-muted);
+  transform:rotate(45deg); pointer-events:none; }
+.toolbar .spacer { flex:1; }
+
+/* === Tabela === */
+.table-wrap { overflow-x:auto; border:1px solid var(--border-subtle); border-radius:var(--radius-md); }
+table { width:100%; border-collapse:collapse; min-width:1120px; }
+thead th { font-family:var(--font-mono); font-size:11px; font-weight:400; text-transform:uppercase;
+  letter-spacing:0.05em; color:var(--fg-muted); text-align:left; padding:var(--space-3) var(--space-4);
+  border-bottom:1px solid var(--border-strong); white-space:nowrap; background:var(--bg-base); }
+thead th.n { text-align:right; }
+tbody td { padding:var(--space-3) var(--space-4); border-bottom:1px solid var(--border-subtle);
+  vertical-align:middle; white-space:nowrap; }
+tbody td.n { text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+tbody tr:hover { background:var(--accent-muted); }
+.agent { font-family:var(--font-mono); font-size:12px; color:var(--fg-secondary); }
+.acct { font-weight:500; }
+.prod { color:var(--fg-secondary); font-size:13px; }
+.when { font-family:var(--font-mono); font-size:12px; color:var(--fg-secondary); }
+.when.none { color:var(--fg-disabled); }
+.score { display:flex; flex-direction:column; gap:4px; align-items:flex-end; min-width:56px; }
+.score b { font-family:var(--font-mono); font-size:15px; font-weight:600; font-variant-numeric:tabular-nums; }
+.score .bar { width:48px; height:3px; background:var(--border-strong); border-radius:2px; overflow:hidden; }
+.score .bar i { display:block; height:100%; background:var(--info); }
+.just { font-family:var(--font-mono); font-size:11px; color:var(--fg-muted); }
+.just.none { color:var(--fg-disabled); }
+.val { font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+.val.none { color:var(--fg-disabled); }
+.badge { font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.05em;
+  padding:2px 8px; border-radius:var(--radius-sm); border:1px solid var(--border-strong); color:var(--fg-muted); }
+.badge.won { color:var(--positive); border-color:var(--positive); }
+.badge.lost { color:var(--negative); border-color:var(--negative); }
+.badge.open { color:var(--info); border-color:var(--info); }
+.badge.expired { color:var(--warning); border-color:var(--warning); }
+
+footer { padding:var(--space-5) var(--space-6); border-top:1px solid var(--border-subtle);
+  font-family:var(--font-mono); font-size:11px; color:var(--fg-muted); letter-spacing:0.04em; }
+
+@media (max-width:820px) {
+  .navbar { gap:var(--space-4); padding:0 var(--space-4); }
+  .nav-toggle { display:flex; }
+  .nav-tabs { display:none; position:absolute; top:56px; left:0; right:0; flex-direction:column;
+    gap:0; background:var(--bg-overlay); border-bottom:1px solid var(--border-strong); z-index:30;
+    margin-left:0; }
+  .nav-tabs a { padding:14px var(--space-4); border-bottom:1px solid var(--border-subtle); }
+  .nav-cb:checked ~ .nav-tabs { display:flex; }
+}
+@media (max-width:560px) {
+  .nav-right .user-pill { display:none; }
+  .page { padding:var(--space-4); }
+}
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <input type="checkbox" id="nav" class="nav-cb" aria-label="Abrir menu">
+    <label class="nav-toggle" for="nav"><span></span><span></span><span></span></label>
+    <span class="brand">LeadScorer<span class="role">gerente</span></span>
+    <div class="nav-tabs">
+      <a href="example-home-gerente-dark.html">Início</a>
+      <a href="#" class="active">Acompanhamento</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="user-pill">dustin-brinkmann</a>
+      <span class="pill"><span class="dot"></span>Time ativo</span>
+      <button class="btn btn-sm">Sair</button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <h1>Acompanhamento do time</h1>
+        <span class="sub">oportunidades engajadas e ciclos recentes dos 6 agentes</span>
+      </div>
+      <span class="count-chip"><b>8</b>&nbsp;em curso&nbsp;&middot;&nbsp;<b>214</b>&nbsp;ciclos</span>
+    </div>
+
+    <div class="toolbar">
+      <label class="filter"><span>Agente</span>
+        <span class="f-input sel"><select>
+          <option>Todos</option><option>anna-snelling</option><option>boris-faz</option>
+          <option>cecily-lampkin</option><option>darcel-schlecht</option>
+          <option>gladys-colclough</option><option>rosalina-dieter</option>
+        </select></span></label>
+      <label class="filter"><span>Produto</span>
+        <span class="f-input sel"><select>
+          <option>Todos</option><option>GTX Basic</option><option>GTX Plus Pro</option>
+          <option>GTX Pro</option><option>MG Advanced</option><option>MG Special</option>
+        </select></span></label>
+      <label class="filter"><span>Conta</span>
+        <span class="f-input"><input type="text" placeholder="Nome do cliente"></span></label>
+      <label class="filter"><span>Desfecho</span>
+        <span class="f-input sel"><select>
+          <option>Todos</option><option>Em curso</option><option>Won</option>
+          <option>Lost</option><option>Expirado</option>
+        </select></span></label>
+      <label class="filter"><span>Engajada desde</span>
+        <span class="f-input"><input type="date" value="2026-07-01"></span></label>
+      <span class="spacer"></span>
+      <label class="filter"><span>Ordenar por</span>
+        <span class="f-input sel"><select>
+          <option>Engajada em (recente)</option><option>Fechada em (recente)</option>
+          <option>Potencial (maior)</option><option>Valor de fechamento (maior)</option>
+          <option>Agente (A-Z)</option><option>Cliente (A-Z)</option>
+        </select></span></label>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Agente</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th class="n">Potencial</th>
+            <th>Engajada em</th>
+            <th>Fechada em</th>
+            <th>Desfecho</th>
+            <th>Justificativa</th>
+            <th class="n">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="agent">anna-snelling</td><td class="acct">Golddex</td>
+            <td class="prod">GTX Plus Pro</td>
+            <td class="n"><span class="score"><b>88</b><span class="bar"><i style="width:88%"></i></span></span></td>
+            <td class="when">19/07 14:03</td><td class="when none">&minus;</td>
+            <td><span class="badge open">Em curso</span></td>
+            <td class="just none">&minus;</td><td class="n val none">&minus;</td>
+          </tr>
+          <tr>
+            <td class="agent">cecily-lampkin</td><td class="acct">Ontomedia</td>
+            <td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>79</b><span class="bar"><i style="width:79%"></i></span></span></td>
+            <td class="when">19/07 13:56</td><td class="when none">&minus;</td>
+            <td><span class="badge open">Em curso</span></td>
+            <td class="just">consulta direta</td><td class="n val none">&minus;</td>
+          </tr>
+          <tr>
+            <td class="agent">darcel-schlecht</td><td class="acct">Bioholding</td>
+            <td class="prod">MG Advanced</td>
+            <td class="n"><span class="score"><b>75</b><span class="bar"><i style="width:75%"></i></span></span></td>
+            <td class="when">19/07 13:51</td><td class="when none">&minus;</td>
+            <td><span class="badge open">Em curso</span></td>
+            <td class="just">discordância</td><td class="n val none">&minus;</td>
+          </tr>
+          <tr>
+            <td class="agent">boris-faz</td><td class="acct">Zumgoity</td>
+            <td class="prod">GTX Plus Pro</td>
+            <td class="n"><span class="score"><b>91</b><span class="bar"><i style="width:91%"></i></span></span></td>
+            <td class="when">18/07 10:22</td><td class="when">18/07 10:39</td>
+            <td><span class="badge won">Won</span></td>
+            <td class="just none">&minus;</td><td class="n val">US$ 5.482</td>
+          </tr>
+          <tr>
+            <td class="agent">anna-snelling</td><td class="acct">Konmatfix</td>
+            <td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>86</b><span class="bar"><i style="width:86%"></i></span></span></td>
+            <td class="when">18/07 09:05</td><td class="when">18/07 09:21</td>
+            <td><span class="badge won">Won</span></td>
+            <td class="just none">&minus;</td><td class="n val">US$ 4.821</td>
+          </tr>
+          <tr>
+            <td class="agent">gladys-colclough</td><td class="acct">Betasoloin</td>
+            <td class="prod">MG Advanced</td>
+            <td class="n"><span class="score"><b>64</b><span class="bar"><i style="width:64%"></i></span></span></td>
+            <td class="when">17/07 16:40</td><td class="when">17/07 16:58</td>
+            <td><span class="badge lost">Lost</span></td>
+            <td class="just">outro motivo</td><td class="n val none">&minus;</td>
+          </tr>
+          <tr>
+            <td class="agent">rosalina-dieter</td><td class="acct">Sumace</td>
+            <td class="prod">GTX Basic</td>
+            <td class="n"><span class="score"><b>58</b><span class="bar"><i style="width:58%"></i></span></span></td>
+            <td class="when">17/07 11:12</td><td class="when">17/07 11:32</td>
+            <td><span class="badge expired">Expirado</span></td>
+            <td class="just">consulta direta</td><td class="n val none">&minus;</td>
+          </tr>
+          <tr>
+            <td class="agent">boris-faz</td><td class="acct">Cheers</td>
+            <td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>72</b><span class="bar"><i style="width:72%"></i></span></span></td>
+            <td class="when">16/07 14:18</td><td class="when">16/07 14:35</td>
+            <td><span class="badge won">Won</span></td>
+            <td class="just none">&minus;</td><td class="n val">US$ 4.821</td>
+          </tr>
+          <tr>
+            <td class="agent">cecily-lampkin</td><td class="acct">Xylophar</td>
+            <td class="prod">MG Special</td>
+            <td class="n"><span class="score"><b>61</b><span class="bar"><i style="width:61%"></i></span></span></td>
+            <td class="when">16/07 09:47</td><td class="when">16/07 10:05</td>
+            <td><span class="badge lost">Lost</span></td>
+            <td class="just none">&minus;</td><td class="n val none">&minus;</td>
+          </tr>
+          <tr>
+            <td class="agent">darcel-schlecht</td><td class="acct">Zencorporation</td>
+            <td class="prod">GTX Plus Basic</td>
+            <td class="n"><span class="score"><b>67</b><span class="bar"><i style="width:67%"></i></span></span></td>
+            <td class="when">15/07 13:30</td><td class="when">15/07 13:48</td>
+            <td><span class="badge won">Won</span></td>
+            <td class="just">discordância</td><td class="n val">US$ 1.096</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    LeadScorer MVP --- protótipo estático não normativo --- tema escuro Gray 100
+  </footer>
+</body>
+</html>

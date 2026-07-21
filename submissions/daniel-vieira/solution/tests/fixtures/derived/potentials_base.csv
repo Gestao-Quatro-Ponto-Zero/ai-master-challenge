@@ -1,0 +1,4 @@
+account,sector,product,series,list_price,economic_value,last_close_value,cadence_days,pair_won_count,sector_won_avg,days_since_last_close
+Acme,Tech,GTX Basic,GTX,550,545.0,540,16.0,5,3.0,16
+Acme,Tech,GTK 500,GTK,26768,26768.0,,33.0,0,0.0,
+Acme,Tech,MG Special,MG,55,54.0,54,17.0,8,4.0,0

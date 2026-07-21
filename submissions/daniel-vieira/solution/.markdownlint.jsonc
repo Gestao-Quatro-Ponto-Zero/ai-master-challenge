@@ -1,0 +1,15 @@
+{
+  // Alinha o markdownlint as convencoes de documentacao do projeto.
+  // Fonte das convencoes: .claude/rules/ e CLAUDE.md (limite de 96 colunas;
+  // ate duas linhas em branco entre secoes; multiplos titulos de primeiro
+  // nivel por documento; URLs nuas nas referencias).
+  "default": true,
+  // Limite de 96 colunas do projeto; codigo e tabelas isentos.
+  "MD013": { "line_length": 96, "code_blocks": false, "tables": false },
+  // O estilo do projeto usa ate duas linhas em branco entre secoes.
+  "MD012": { "maximum": 2 },
+  // Os documentos da casa usam varios titulos '#' por arquivo, um por secao.
+  "MD025": false,
+  // As referencias listam URLs nuas, sem sintaxe de link.
+  "MD034": false
+}

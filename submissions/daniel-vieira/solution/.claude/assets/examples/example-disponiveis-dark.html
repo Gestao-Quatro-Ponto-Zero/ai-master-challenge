@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadScorer -- Oportunidades disponiveis (exemplo, tema escuro)</title>
+<style>
+/*
+ * example-disponiveis-dark.html
+ * Prototipo autonomo (nao normativo) da lista ranqueada de oportunidades
+ * disponiveis (aplicacao do agente): filtros, ordenacao, filtro de corte,
+ * notas de ajuda no hover dos rotulos, barras por indicador, destaque do top
+ * tier e fronteira de corte. Colunas de contexto em disposicao ampla (uma por
+ * atributo); a tabela pode exceder a largura visivel e rolar horizontalmente.
+ * As dimensoes inertes nao sao exibidas como colunas; a nota do Potencial as
+ * menciona. Tema escuro IBM Carbon Gray 100. Dados e pesos ilustrativos.
+ */
+
+/* === Fontes IBM Plex (locais) === */
+@font-face { font-family:'IBM Plex Sans'; font-weight:400; font-display:swap;
+  src:url('../fonts/IBMPlexSans-Regular.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Sans'; font-weight:500; font-display:swap;
+  src:url('../fonts/IBMPlexSans-Medium.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Sans'; font-weight:600; font-display:swap;
+  src:url('../fonts/IBMPlexSans-SemiBold.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Mono'; font-weight:400; font-display:swap;
+  src:url('../fonts/IBMPlexMono-Regular.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Mono'; font-weight:500; font-display:swap;
+  src:url('../fonts/IBMPlexMono-Medium.woff2') format('woff2'); }
+@font-face { font-family:'IBM Plex Serif'; font-weight:600; font-display:swap;
+  src:url('../fonts/IBMPlexSerif-SemiBold.woff2') format('woff2'); }
+
+/* === Tokens (embutidos do design system) === */
+:root {
+  --font-sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+  --font-serif:'IBM Plex Serif',Georgia,serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --bg-base:#161616; --bg-raised:#262626; --bg-overlay:#393939;
+  --fg-primary:#f4f4f4; --fg-secondary:#c6c6c6; --fg-muted:#8d8d8d; --fg-disabled:#525252;
+  --border-subtle:#262626; --border-strong:#393939;
+  --accent:#ffffff; --accent-muted:rgba(255,255,255,0.08);
+  --positive:#42be65; --negative:#fa4d56; --warning:#f1c21b; --info:#4589ff;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --radius-sm:2px; --radius-md:4px;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body { background:var(--bg-base); color:var(--fg-primary);
+  font-family:var(--font-sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+
+/* === Barra de navegacao com menu responsivo (alternancia CSS) === */
+.navbar { display:flex; align-items:center; gap:var(--space-6);
+  padding:0 calc(max(0px, (100% - 1360px) / 2) + var(--space-6));
+  height:56px; border-bottom:1px solid var(--border-strong);
+  position:sticky; top:0; background:var(--bg-base); z-index:20; }
+.navbar .brand { font-family:var(--font-serif); font-weight:600; font-size:18px; }
+.nav-cb { display:none; }
+.nav-toggle { display:none; flex-direction:column; justify-content:center; gap:4px;
+  width:24px; height:24px; cursor:pointer; }
+.nav-toggle span { display:block; height:1.5px; background:var(--fg-secondary); }
+.nav-tabs { display:flex; gap:var(--space-5); flex:1; margin-left:calc(100px - var(--space-6)); }
+.nav-tabs a { color:var(--fg-muted); text-decoration:none; font-size:14px;
+  padding:18px 0; border-bottom:2px solid transparent; white-space:nowrap; }
+.nav-tabs a:hover { color:var(--fg-secondary); }
+.nav-tabs a.active { color:var(--fg-primary); border-bottom-color:var(--accent); }
+.nav-right { display:flex; align-items:center; gap:var(--space-4); }
+.user-pill { font-family:var(--font-mono); font-size:12px; color:var(--fg-secondary);
+  text-decoration:none; border-bottom:1px solid var(--border-strong); }
+.pill { display:inline-flex; align-items:center; gap:var(--space-2); font-family:var(--font-mono);
+  font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--fg-secondary);
+  padding:4px 10px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); }
+.dot { width:7px; height:7px; border-radius:50%; background:var(--positive); }
+.btn { display:inline-flex; align-items:center; justify-content:center; padding:6px 14px;
+  font-family:var(--font-sans); font-size:13px; font-weight:500; border:1px solid var(--border-strong);
+  background:transparent; color:var(--fg-primary); border-radius:var(--radius-sm); cursor:pointer; }
+.btn:hover { background:var(--accent-muted); }
+.btn-primary { background:var(--fg-primary); color:var(--bg-base); border-color:var(--fg-primary); }
+.btn-primary:hover { background:var(--accent); }
+.btn-sm { padding:4px 12px; font-size:12px; }
+
+/* === Layout === */
+.page { padding:var(--space-6); max-width:1360px; margin:0 auto; }
+.page-head { display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:var(--space-3); margin-bottom:var(--space-5); }
+.page-head h1 { font-family:var(--font-serif); font-weight:600; font-size:22px; margin:0; }
+.page-head .sub { font-family:var(--font-mono); font-size:12px; color:var(--fg-muted); }
+.cut-chip { display:inline-flex; align-items:center; gap:var(--space-2); font-family:var(--font-mono);
+  font-size:12px; color:var(--fg-secondary); padding:5px 12px; border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm); }
+.cut-chip .dot { background:var(--warning); }
+.cut-chip b { font-weight:500; color:var(--fg-primary); }
+
+/* === Barra de filtros e ordenacao === */
+.toolbar { display:flex; flex-wrap:wrap; gap:var(--space-3); align-items:flex-end;
+  padding-bottom:var(--space-4); margin-bottom:var(--space-4);
+  border-bottom:1px solid var(--border-subtle); }
+.filter { display:flex; flex-direction:column; gap:5px; }
+.filter > span { font-family:var(--font-mono); font-size:10px; text-transform:uppercase;
+  letter-spacing:0.06em; color:var(--fg-muted); }
+.f-input { position:relative; }
+.f-input select, .f-input input {
+  -webkit-appearance:none; appearance:none; min-width:130px;
+  padding:7px 28px 7px 10px; background:var(--bg-raised); color:var(--fg-primary);
+  font-family:var(--font-sans); font-size:13px; border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm); cursor:pointer; }
+.f-input input { padding-right:10px; }
+.f-input select:focus, .f-input input:focus { outline:2px solid var(--info); }
+.f-input.sel::after { content:''; position:absolute; right:11px; top:50%; width:7px; height:7px;
+  margin-top:-6px; border-right:1px solid var(--fg-muted); border-bottom:1px solid var(--fg-muted);
+  transform:rotate(45deg); pointer-events:none; }
+.toolbar .spacer { flex:1; }
+
+/* === Nota de ajuda no hover (rotulos) === */
+.help { position:relative; display:inline-flex; align-items:center; gap:5px; cursor:help; }
+.help .ico { display:inline-flex; align-items:center; justify-content:center; width:13px; height:13px;
+  border:1px solid var(--fg-disabled); border-radius:50%; font-size:9px; line-height:1;
+  color:var(--fg-muted); font-family:var(--font-mono); flex:none; }
+.help:hover .ico { border-color:var(--info); color:var(--info); }
+.help .tip { position:absolute; top:calc(100% + 8px); left:0; z-index:40; width:220px;
+  background:var(--bg-overlay); border:1px solid var(--border-strong); border-radius:var(--radius-md);
+  padding:10px 12px; font-family:var(--font-sans); font-weight:400; font-size:12px;
+  text-transform:none; letter-spacing:normal; color:var(--fg-secondary); line-height:1.45;
+  white-space:normal; text-align:left; opacity:0; visibility:hidden; transition:opacity .12s;
+  pointer-events:none; }
+.help:hover .tip { opacity:1; visibility:visible; }
+.help .tip b { color:var(--fg-primary); font-weight:600; }
+.help.r .tip { left:auto; right:0; }
+.help .tip .w { display:block; margin-top:5px; font-family:var(--font-mono); font-size:11px;
+  color:var(--fg-muted); }
+
+/* === Tabela === */
+.table-wrap { overflow-x:auto; border:1px solid var(--border-subtle); border-radius:var(--radius-md); }
+table { width:100%; border-collapse:collapse; min-width:1160px; }
+thead th { font-family:var(--font-mono); font-size:11px; font-weight:400; text-transform:uppercase;
+  letter-spacing:0.05em; color:var(--fg-muted); text-align:left; padding:var(--space-3) var(--space-4);
+  border-bottom:1px solid var(--border-strong); white-space:nowrap; background:var(--bg-base); }
+thead th.n { text-align:right; }
+thead th.n .help { justify-content:flex-end; }
+tbody td { padding:var(--space-3) var(--space-4); border-bottom:1px solid var(--border-subtle);
+  vertical-align:middle; white-space:nowrap; }
+tbody td.n { text-align:right; }
+tbody tr { border-left:2px solid transparent; }
+tbody tr:hover { background:var(--accent-muted); }
+tbody tr.top { border-left-color:var(--accent); }
+tbody tr.demoted td { color:var(--fg-muted); }
+tbody tr.demoted .acct { color:var(--fg-muted); font-weight:400; }
+.rank { font-family:var(--font-mono); color:var(--fg-muted); font-size:12px; }
+.acct { font-weight:500; }
+.prod { color:var(--fg-secondary); font-size:13px; }
+.ctx { color:var(--fg-secondary); font-size:12.5px; }
+
+/* === Celula de potencial (barra azul) === */
+.score { display:inline-flex; flex-direction:column; gap:4px; align-items:flex-end; }
+.score b { font-family:var(--font-mono); font-size:16px; font-weight:600; font-variant-numeric:tabular-nums; }
+.score .bar { width:52px; height:3px; background:var(--border-strong); border-radius:2px; overflow:hidden; }
+.score .bar i { display:block; height:100%; background:var(--info); }
+
+/* === Celula de dimensao (numero mais barra branca) === */
+.mcell { display:inline-flex; flex-direction:column; gap:4px; align-items:flex-end; }
+.mcell .v { font-family:var(--font-mono); font-size:14px; font-variant-numeric:tabular-nums;
+  color:var(--fg-secondary); }
+
+/* Linhas rebaixadas: barras e numeros esmaecidos */
+tr.demoted .score .bar i { background:var(--fg-disabled); }
+tr.demoted .mcell .v { color:var(--fg-muted); }
+
+.xs { font-family:var(--font-mono); font-size:11px; padding:1px 7px; border-radius:var(--radius-sm);
+  border:1px solid var(--border-strong); color:var(--fg-muted); }
+.xs.on { color:var(--info); border-color:var(--info); }
+.tag { font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:0.05em;
+  color:var(--warning); border:1px solid var(--warning); border-radius:var(--radius-sm); padding:1px 6px; }
+
+/* Linha de corte do modelo */
+tr.cut td { padding:7px var(--space-4); background:var(--bg-base);
+  border-top:1px solid var(--border-strong); border-bottom:1px solid var(--border-strong);
+  color:var(--warning); font-family:var(--font-mono); font-size:11px; text-transform:uppercase;
+  letter-spacing:0.06em; }
+tr.cut .dot { display:inline-block; width:7px; height:7px; border-radius:50%;
+  background:var(--warning); margin-right:8px; vertical-align:middle; }
+
+footer { padding:var(--space-5) var(--space-6); border-top:1px solid var(--border-subtle);
+  font-family:var(--font-mono); font-size:11px; color:var(--fg-muted); letter-spacing:0.04em; }
+
+/* === Responsivo (iPhone 13, 390 px) === */
+@media (max-width:820px) {
+  .navbar { gap:var(--space-4); padding:0 var(--space-4); }
+  .nav-toggle { display:flex; }
+  .nav-tabs { display:none; position:absolute; top:56px; left:0; right:0; flex-direction:column;
+    gap:0; background:var(--bg-overlay); border-bottom:1px solid var(--border-strong); z-index:30;
+    margin-left:0; }
+  .nav-tabs a { padding:14px var(--space-4); border-bottom:1px solid var(--border-subtle); }
+  .nav-cb:checked ~ .nav-tabs { display:flex; }
+}
+@media (max-width:560px) {
+  .nav-right .user-pill { display:none; }
+  .page { padding:var(--space-4); }
+}
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <input type="checkbox" id="nav" class="nav-cb" aria-label="Abrir menu">
+    <label class="nav-toggle" for="nav"><span></span><span></span><span></span></label>
+    <span class="brand">LeadScorer</span>
+    <div class="nav-tabs">
+      <a href="example-home-agente-dark.html">Início</a>
+      <a href="#" class="active">Oportunidades Disponíveis</a>
+      <a href="example-engajadas-dark.html">Oportunidades Engajadas</a>
+    </div>
+    <div class="nav-right">
+      <a href="#" class="user-pill">anna-snelling</a>
+      <span class="pill"><span class="dot"></span>Ciclo ativo</span>
+      <button class="btn btn-sm">Sair</button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <h1>Oportunidades disponíveis</h1>
+        <span class="sub">ranqueadas para anna-snelling --- 128 pares conta-produto</span>
+      </div>
+      <span class="cut-chip">
+        <span class="dot"></span>Filtro de corte do modelo:&nbsp;<b>potencial &ge; 40</b>
+      </span>
+    </div>
+
+    <!-- Barra de filtros e ordenacao -->
+    <div class="toolbar">
+      <label class="filter">
+        <span>Localidade</span>
+        <span class="f-input sel"><select>
+          <option>Todas</option><option>Central</option><option>East</option><option>West</option>
+        </select></span>
+      </label>
+      <label class="filter">
+        <span>Setor</span>
+        <span class="f-input sel"><select>
+          <option>Todos</option><option>technology</option><option>medical</option>
+          <option>retail</option><option>finance</option><option>software</option>
+        </select></span>
+      </label>
+      <label class="filter">
+        <span>Série do produto</span>
+        <span class="f-input sel"><select>
+          <option>Todas</option><option>GTX</option><option>MG</option>
+        </select></span>
+      </label>
+      <label class="filter">
+        <span>Produto</span>
+        <span class="f-input sel"><select>
+          <option>Todos</option><option>GTX Basic</option><option>GTX Plus Basic</option>
+          <option>GTX Plus Pro</option><option>GTX Pro</option><option>MG Special</option>
+          <option>MG Advanced</option>
+        </select></span>
+      </label>
+      <label class="filter">
+        <span>Cross-selling</span>
+        <span class="f-input sel"><select>
+          <option>Indiferente</option><option>Somente cross-sell</option><option>Somente novo</option>
+        </select></span>
+      </label>
+      <label class="filter">
+        <span>Disponível desde</span>
+        <span class="f-input"><input type="date" value="2026-07-01"></span>
+      </label>
+      <span class="spacer"></span>
+      <label class="filter">
+        <span>Ordenar por</span>
+        <span class="f-input sel"><select>
+          <option>Potencial (maior)</option><option>Porte do cliente</option>
+          <option>Prazo de decisão</option><option>Valor da última compra</option>
+          <option>Funcionários</option><option>Receita do cliente</option>
+          <option>Data de fundação</option><option>Cliente (A-Z)</option>
+        </select></span>
+      </label>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th class="n"><span class="help r"><span>Potencial</span><span class="ico">?</span>
+              <span class="tip"><b>Potencial da oportunidade</b> (0 a 100)<br>Potencial de venda do produto indicado para o cliente específico.
+              Média geométrica ponderada das quatro dimensões de decisão: Momentum, Retorno,
+              Afinidade e Especialização. Após o engajamento, sofre decaimento temporal, acompanhando o
+              decaimento do Momentum.</span></span></th>
+            <th class="n"><span class="help r"><span>Momentum</span><span class="ico">?</span>
+              <span class="tip"><b>Momentum</b> (0 a 100)<br>Eixo primário do ranqueamento. Exprime o comportamento e recorrência
+              de compra do cliente no tempo para o produto indicado. Medida de maturidade para
+              (re)compra. Após o engajamento, sofre decaimento temporal. Recebe peso 33%.</span></span></th>
+            <th class="n"><span class="help r"><span>Retorno</span><span class="ico">?</span>
+              <span class="tip"><b>Retorno</b> (0 a 100)<br>Exprime o potencial econômico da transação, ancorado no ticket médio
+              do cliente para aquele produto, com recuo por setor. Recebe peso 27%.</span></span></th>
+            <th class="n"><span class="help r"><span>Afinidade</span><span class="ico">?</span>
+              <span class="tip"><b>Afinidade com o produto</b> (0 a 100)<br>Exprime interesse potencial do cliente no produto indicado. Medida
+              da afinidade histórica do cliente pelo produto, ancorada no volume de negócios
+              fechados anteriormente. Recebe peso 23%.</span></span></th>
+            <th class="n"><span class="help r"><span>Especialização</span><span class="ico">?</span>
+              <span class="tip"><b>Especialização do agente</b> (0 a 100)<br>Exprime habilidade histórica do agente em obter sucesso na venda
+              do produto indicado. Personaliza o ranqueamento por agente. Recebe peso 17%.</span></span></th>
+            <th>Localidade</th>
+            <th>Setor</th>
+            <th class="n">Prazo dec.</th>
+            <th class="n">Últ. compra</th>
+            <th>Cross-sell</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="top">
+            <td class="rank">01</td><td class="acct">Golddex</td><td class="prod">GTX Plus Pro</td>
+            <td class="n"><span class="score"><b>94</b><span class="bar"><i style="width:94%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">91</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">98</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">88</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">89</span></span></td>
+            <td class="ctx">West</td><td class="ctx">technology</td>
+            <td class="n">18 d</td><td class="n">US$ 5.482</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">02</td><td class="acct">Konmatfix</td><td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>90</b><span class="bar"><i style="width:90%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">88</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">93</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">86</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">92</span></span></td>
+            <td class="ctx">Central</td><td class="ctx">finance</td>
+            <td class="n">24 d</td><td class="n">US$ 4.821</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">03</td><td class="acct">Bioholding</td><td class="prod">MG Advanced</td>
+            <td class="n"><span class="score"><b>87</b><span class="bar"><i style="width:87%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">90</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">84</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">82</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">85</span></span></td>
+            <td class="ctx">East</td><td class="ctx">medical</td>
+            <td class="n">31 d</td><td class="n">US$ 3.393</td><td><span class="xs">não</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">04</td><td class="acct">Zumgoity</td><td class="prod">GTX Plus Pro</td>
+            <td class="n"><span class="score"><b>85</b><span class="bar"><i style="width:85%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">83</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">96</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">79</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">80</span></span></td>
+            <td class="ctx">West</td><td class="ctx">retail</td>
+            <td class="n">22 d</td><td class="n">US$ 5.482</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">05</td><td class="acct">Ontomedia</td><td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>82</b><span class="bar"><i style="width:82%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">80</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">90</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">78</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">81</span></span></td>
+            <td class="ctx">Central</td><td class="ctx">software</td>
+            <td class="n">27 d</td><td class="n">US$ 4.821</td><td><span class="xs">não</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">06</td><td class="acct">Sumace</td><td class="prod">GTX Basic</td>
+            <td class="n"><span class="score"><b>79</b><span class="bar"><i style="width:79%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">84</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">62</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">80</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">86</span></span></td>
+            <td class="ctx">East</td><td class="ctx">retail</td>
+            <td class="n">15 d</td><td class="n">US$ 550</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">07</td><td class="acct">Betasoloin</td><td class="prod">MG Advanced</td>
+            <td class="n"><span class="score"><b>77</b><span class="bar"><i style="width:77%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">76</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">83</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">74</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">78</span></span></td>
+            <td class="ctx">Central</td><td class="ctx">medical</td>
+            <td class="n">35 d</td><td class="n">US$ 3.393</td><td><span class="xs">não</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">08</td><td class="acct">Zencorporation</td><td class="prod">GTX Plus Basic</td>
+            <td class="n"><span class="score"><b>74</b><span class="bar"><i style="width:74%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">78</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">68</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">72</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">75</span></span></td>
+            <td class="ctx">West</td><td class="ctx">technology</td>
+            <td class="n">29 d</td><td class="n">US$ 1.096</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">09</td><td class="acct">Cheers</td><td class="prod">GTX Pro</td>
+            <td class="n"><span class="score"><b>72</b><span class="bar"><i style="width:72%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">73</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">79</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">68</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">70</span></span></td>
+            <td class="ctx">East</td><td class="ctx">finance</td>
+            <td class="n">26 d</td><td class="n">US$ 4.821</td><td><span class="xs">não</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr class="top">
+            <td class="rank">10</td><td class="acct">Xylophar</td><td class="prod">MG Special</td>
+            <td class="n"><span class="score"><b>69</b><span class="bar"><i style="width:69%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">75</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">54</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">66</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">71</span></span></td>
+            <td class="ctx">Central</td><td class="ctx">software</td>
+            <td class="n">33 d</td><td class="n">US$ 55</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm btn-primary">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">11</td><td class="acct">Streethex</td><td class="prod">GTX Plus Basic</td>
+            <td class="n"><span class="score"><b>63</b><span class="bar"><i style="width:63%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">66</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">58</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">61</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">64</span></span></td>
+            <td class="ctx">East</td><td class="ctx">retail</td>
+            <td class="n">41 d</td><td class="n">US$ 1.096</td><td><span class="xs">não</span></td>
+            <td class="n"><button class="btn btn-sm">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">12</td><td class="acct">Dalttechnology</td><td class="prod">GTX Basic</td>
+            <td class="n"><span class="score"><b>57</b><span class="bar"><i style="width:57%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">59</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">51</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">55</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">60</span></span></td>
+            <td class="ctx">Central</td><td class="ctx">technology</td>
+            <td class="n">38 d</td><td class="n">US$ 550</td><td><span class="xs on">sim</span></td>
+            <td class="n"><button class="btn btn-sm">Engajar</button></td>
+          </tr>
+          <tr>
+            <td class="rank">13</td><td class="acct">Y&amp;y</td><td class="prod">MG Special</td>
+            <td class="n"><span class="score"><b>44</b><span class="bar"><i style="width:44%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">46</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">39</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">43</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">48</span></span></td>
+            <td class="ctx">West</td><td class="ctx">finance</td>
+            <td class="n">52 d</td><td class="n">US$ 55</td><td><span class="xs">não</span></td>
+            <td class="n"><button class="btn btn-sm">Engajar</button></td>
+          </tr>
+          <tr class="cut">
+            <td colspan="14"><span class="dot"></span>Corte do modelo --- abaixo de 40 as
+              oportunidades são rebaixadas ao final da lista</td>
+          </tr>
+          <tr class="demoted">
+            <td class="rank">14</td><td class="acct">Groovestreet</td><td class="prod">GTX Basic</td>
+            <td class="n"><span class="score"><b>28</b><span class="bar"><i style="width:28%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">19</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">44</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">33</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">37</span></span></td>
+            <td class="ctx">East</td><td class="ctx">retail</td>
+            <td class="n">61 d</td><td class="n">US$ 550</td><td><span class="tag">decaído</span></td>
+            <td class="n"><button class="btn btn-sm">Engajar</button></td>
+          </tr>
+          <tr class="demoted">
+            <td class="rank">15</td><td class="acct">Isdom</td><td class="prod">GTX Plus Basic</td>
+            <td class="n"><span class="score"><b>21</b><span class="bar"><i style="width:21%"></i></span></span></td>
+            <td class="n"><span class="mcell"><span class="v">14</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">36</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">27</span></span></td>
+            <td class="n"><span class="mcell"><span class="v">31</span></span></td>
+            <td class="ctx">Central</td><td class="ctx">software</td>
+            <td class="n">73 d</td><td class="n">US$ 1.096</td><td><span class="tag">decaído</span></td>
+            <td class="n"><button class="btn btn-sm">Engajar</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    LeadScorer MVP --- protótipo estático não normativo --- tema escuro Gray 100
+  </footer>
+</body>
+</html>

@@ -1,0 +1,82 @@
+# compose.yaml --- Definicao de ambiente do LeadScorer (banco e aplicacao).
+#
+# Arquivo unico compativel com Docker e Podman (ADR D4M3). Define o servico de
+# banco 'db' e o servico da aplicacao 'app', que sobe as duas aplicacoes web
+# (agente e gerente) e provisiona a persistencia de forma idempotente no
+# arranque. Omite-se o campo 'version' (obsoleto) e usa-se um volume nomeado. Os
+# segredos residem em '.env' (fora do controle de versao); um '.env.example'
+# versionado documenta as variaveis.
+#
+# Uso (execucao em um passo, a partir do clone):
+#   cp .env.example .env   # e definir PGPASSWORD
+#   docker compose up --build
+# As aplicacoes ficam em http://127.0.0.1:8081 (agente) e :8082 (gerente).
+
+---
+services:
+  db:
+    image: ${POSTGRES_IMAGE:-docker.io/library/postgres:17}
+    env_file: .env
+    environment:
+      POSTGRES_DB: ${PGDATABASE}
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      # O servidor PostgreSQL honra PGPORT; fixa-se 5432 no conteiner para
+      # desacopla-lo da porta publicada no host (PGPORT, voltada ao cliente).
+      # Sem isso, o PGPORT do '.env' faria o servidor escutar noutra porta,
+      # quebrando o mapeamento ':5432' e a conexao da app por 'db:5432'.
+      PGPORT: 5432
+    # Publicacao restrita ao laco local: o acesso ao banco pelo host e para o
+    # desenvolvimento; a execucao em um passo o alcanca pela rede do compose.
+    ports:
+      - "127.0.0.1:${PGPORT:-5433}:5432"
+    volumes:
+      - leadscorer-db-data:/var/lib/postgresql/data
+    healthcheck:
+      # Valida uma conexao efetivamente autenticada, nao apenas a aceitacao de
+      # conexoes: conecta por TCP ao proprio IP de rede do conteiner
+      # ('-h "$(hostname)"'), que casa a regra 'host all all all scram-sha-256'
+      # do pg_hba e exige a senha (PGPASSWORD, injetada pelo env_file). Conectar
+      # pelo socket ou a 127.0.0.1 casaria a regra 'local ... trust' e aceitaria
+      # qualquer senha, dando um falso positivo (licao da D3P7). Assim, uma
+      # credencial divergente (ex.: volume obsoleto) reporta 'unhealthy' no
+      # proprio healthcheck, em vez de so falhar mais tarde na conexao da
+      # aplicacao (28P01). O 'start_period' cobre a fase de inicializacao da
+      # imagem, em que o servidor escuta apenas no socket (sem TCP).
+      # A guarda 'test -n' e fail-closed: se 'hostname' resolver vazio, o
+      # 'psql -h ""' recairia para o socket (regra 'trust') e aceitaria qualquer
+      # senha; a guarda faz o healthcheck falhar em vez de dar falso positivo.
+      test:
+        - CMD-SHELL
+        - >-
+          h="$$(hostname)"; test -n "$$h" &&
+          psql -h "$$h" -U ${PGUSER} -d ${PGDATABASE}
+          -tAc 'SELECT 1' > /dev/null
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  app:
+    build: .
+    env_file: .env
+    environment:
+      # Dentro da rede do compose, a aplicacao alcanca o banco pelo nome de
+      # servico 'db' na porta interna 5432, ignorando a porta publicada no host.
+      PGHOST: db
+      PGPORT: 5432
+      # No conteiner, os servidores vinculam a todas as interfaces para serem
+      # alcancaveis do host; o padrao de desenvolvimento (127.0.0.1) restringe
+      # ao laco local (ver 'src/web/config.lisp').
+      LEADSCORER_BIND_ADDRESS: 0.0.0.0
+    # Publicacao restrita ao laco local (127.0.0.1), coerente com o README e com
+    # o menor privilegio: as telas nao ficam expostas na rede do host.
+    ports:
+      - "127.0.0.1:8081:8081"
+      - "127.0.0.1:8082:8082"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  leadscorer-db-data:

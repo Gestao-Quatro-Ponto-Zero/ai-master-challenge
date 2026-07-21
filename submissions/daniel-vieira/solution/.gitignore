@@ -1,0 +1,34 @@
+# Ambiente Common Lisp e qlot
+.qlot/
+*.fasl
+*.fas
+*.lx64fsl
+*.dx64fsl
+
+# Segredos e variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Dados do dataset (ADR V9K3): os brutos e os artefatos de scoring dependentes
+# dos pesos ('data/derived/*_scored.csv') não são versionados. São versionados a
+# fonte normalizada (insumo do seed) e as features derivadas independentes dos
+# pesos (insumo do modelo em tempo de execução), para viabilizar a execução
+# conteinerizada em um passo.
+data/*
+!data/.gitkeep
+!data/normalized/
+data/normalized/*
+!data/normalized/*.csv
+!data/derived/
+data/derived/*
+!data/derived/potentials_base.csv
+!data/derived/initiated_base.csv
+!data/derived/adherence.csv
+!data/derived/decay.csv
+
+# Transcrições brutas de sessão (apenas a forma higienizada é versionada)
+.claude/sessions/*.raw.jsonl
+
+# Artefatos do sistema operacional
+.DS_Store

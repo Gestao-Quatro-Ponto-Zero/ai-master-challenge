@@ -1,0 +1,2 @@
+{"type":"user","uuid":"u1","parentUuid":null,"sessionId":"sess-4","timestamp":"2026-07-19T00:00:00Z","message":{"role":"user","content":"Documente a chave de exemplo publica AKIAIOSFODNN7EXAMPLE no guia."}}
+{"type":"assistant","uuid":"a1","parentUuid":"u1","sessionId":"sess-4","timestamp":"2026-07-19T00:00:01Z","message":{"role":"assistant","content":[{"type":"text","text":"A chave AKIAIOSFODNN7EXAMPLE e um exemplo publico da AWS."}]}}

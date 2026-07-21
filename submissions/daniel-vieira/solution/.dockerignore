@@ -1,0 +1,30 @@
+# .dockerignore --- Restringe o contexto de build ao necessario a imagem.
+#
+# Exclui o controle de versao, os artefatos regenerados na imagem, os segredos e
+# os diretorios que a imagem nao consome. A fonte normalizada do seed
+# ('data/normalized/') e mantida; os dados brutos e derivados sao excluidos.
+
+.git
+.gitignore
+
+# Ambiente Common Lisp regenerado na imagem via 'qlot install'.
+.qlot
+**/*.fasl
+**/*.fas
+
+# Segredos e ambiente (nunca embutidos na imagem).
+.env
+.env.*
+
+# Documentacao, testes e trabalho agentico nao consumidos em tempo de execucao.
+.claude
+docs
+tests
+
+# Dados: a fonte normalizada e as features derivadas versionadas entram na
+# imagem; os brutos (data/*.csv na raiz) e os artefatos '*_scored' ficam de fora.
+data/*.csv
+data/derived/*_scored.csv
+
+# Artefatos do sistema operacional.
+.DS_Store

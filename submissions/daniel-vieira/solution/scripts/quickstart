@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+#
+# quickstart --- Sobe o LeadScorer em um passo, de forma idempotente.
+#
+# Prepara o ambiente ('.env') na primeira execucao e sobe as duas aplicacoes web.
+# Reexecucoes reutilizam o '.env' existente e a imagem ja compilada, de modo que
+# apenas a primeira execucao paga o custo do build. Compativel com Docker e
+# Podman (ADR D4M3). Encerre com Ctrl-C.
+#
+# Uso:
+#   scripts/quickstart [--build]
+#
+# Opcoes:
+#   --build   Forca a recompilacao da imagem (use apos alterar o codigo-fonte).
+
+set -euo pipefail
+
+PROGRAM_NAME="$(basename -- "${BASH_SOURCE[0]}")"
+readonly PROGRAM_NAME
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+readonly REPO_ROOT
+
+readonly -a APP_PORTS=(8081 8082)
+readonly DEFAULT_PGPORT=5433
+
+# Comando de compose resolvido em tempo de execucao ('docker compose' ou
+# 'podman compose'), preenchido por DETECT_COMPOSE.
+declare -a COMPOSE=()
+
+# warn --- Escreve um diagnostico prefixado no erro padrao.
+warn() {
+  printf '%s: %s\n' "${PROGRAM_NAME}" "$*" >&2
+}
+
+# die --- Escreve um diagnostico e encerra com estado nao-zero.
+die() {
+  warn "$*"
+  exit 1
+}
+
+# detect_compose --- Preenche COMPOSE com o comando de compose disponivel, dando
+# preferencia ao Docker. Encerra quando nenhum e encontrado.
+detect_compose() {
+  if docker compose version >/dev/null 2>&1; then
+    COMPOSE=(docker compose)
+  elif command -v podman >/dev/null 2>&1 && podman compose version >/dev/null 2>&1; then
+    COMPOSE=(podman compose)
+  else
+    die "Nao encontrei 'docker compose' nem 'podman compose'; instale um deles."
+  fi
+}
+
+# port_in_use --- Retorna 0 se a porta TCP local do argumento esta ocupada, 1 se
+# livre. Usa o /dev/tcp do proprio Bash, sem depender de ferramentas externas.
+port_in_use() {
+  (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null
+}
+
+# free_pgport --- Ecoa a primeira porta de host livre a partir de DEFAULT_PGPORT,
+# para o acesso opcional ao banco sem colidir com servicos ja em execucao.
+free_pgport() {
+  local port="${DEFAULT_PGPORT}"
+  while port_in_use "${port}"; do
+    port=$((port + 1))
+    (( port > DEFAULT_PGPORT + 50 )) \
+      && die "Nenhuma porta de host livre proxima de ${DEFAULT_PGPORT} para o banco."
+  done
+  printf '%s' "${port}"
+}
+
+# generate_password --- Ecoa uma senha aleatoria para o banco local do ambiente.
+generate_password() {
+  if command -v openssl >/dev/null 2>&1; then
+    openssl rand -hex 16
+  else
+    LC_ALL=C tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32
+  fi
+}
+
+# ensure_env --- Cria '.env' a partir de '.env.example' na primeira execucao,
+# com senha gerada e porta de banco livre. Idempotente: preserva um '.env'
+# existente.
+ensure_env() {
+  if [[ -f "${REPO_ROOT}/.env" ]]; then
+    printf '%s: .env ja existe; preservado.\n' "${PROGRAM_NAME}"
+    return 0
+  fi
+  local password pgport
+  password="$(generate_password)"
+  pgport="$(free_pgport)"
+  awk -v pw="${password}" -v port="${pgport}" '
+    /^PGPASSWORD=/ { print "PGPASSWORD=" pw; next }
+    /^PGPORT=/     { print "PGPORT=" port; next }
+    { print }
+  ' "${REPO_ROOT}/.env.example" > "${REPO_ROOT}/.env"
+  printf '%s: .env criado (senha gerada; porta do banco no host: %s).\n' \
+    "${PROGRAM_NAME}" "${pgport}"
+}
+
+# warn_busy_app_ports --- Avisa quando as portas das aplicacoes estao ocupadas
+# por outro processo. Nao aborta: quando a propria pilha ja esta no ar, o compose
+# apenas reaproveita os conteineres; um conflito real falha no bind, com mensagem
+# clara do proprio compose.
+warn_busy_app_ports() {
+  local port
+  for port in "${APP_PORTS[@]}"; do
+    port_in_use "${port}" \
+      && warn "Aviso: a porta ${port} esta ocupada; se nao for esta pilha, libere-a."
+  done
+  return 0
+}
+
+# reset_stale_state --- Remove conteineres e volumes de um projeto de compose
+# homonimo preexistente, de modo que o banco seja reinicializado com a senha
+# recem-gerada em '.env'. Sem isso, um volume nomeado persistente de execucao
+# anterior (que sobrevive a um novo clone e carrega outra senha) faz a
+# autenticacao falhar permanentemente (28P01), pois o Postgres pula a
+# inicializacao quando o diretorio de dados ja existe. A imagem obsoleta e
+# tratada a parte, pela recompilacao forcada em MAIN. Idempotente: no-op quando
+# nada preexiste.
+#
+# Seguranca do descarte: esta funcao so e chamada quando um '.env' novo foi
+# gerado, isto e, com uma senha nova aleatoria. A senha do volume preexistente,
+# se houver, era a de um '.env' anterior ja ausente, de modo que o seu conteudo
+# ja esta inacessivel (nao autenticavel); o descarte nao perde dado utilizavel.
+# O 'stderr' e preservado para que uma falha real do 'down' (por exemplo, volume
+# em uso por outro conteiner) seja visivel, enquanto o '|| true' cobre o no-op
+# legitimo quando nada ha a remover.
+reset_stale_state() {
+  printf '%s: .env novo; reinicializando o banco (removendo volume anterior, se houver).\n' \
+    "${PROGRAM_NAME}"
+  ( cd -- "${REPO_ROOT}" && "${COMPOSE[@]}" down --volumes --remove-orphans ) \
+    >/dev/null || true
+}
+
+main() {
+  local build_flag=""
+  case "${1:-}" in
+    --build) build_flag="--build" ;;
+    "")      ;;
+    *)       die "Argumento desconhecido: '$1' (use --build ou nenhum)." ;;
+  esac
+
+  detect_compose
+
+  # Detecta '.env' recem-criado para, nesse caso, garantir a coerencia entre a
+  # senha nova e o estado do banco e da imagem (ver RESET_STALE_STATE).
+  local env_existed="yes"
+  [[ -f "${REPO_ROOT}/.env" ]] || env_existed="no"
+  ensure_env
+  if [[ "${env_existed}" == "no" ]]; then
+    reset_stale_state
+    build_flag="--build"
+  fi
+
+  warn_busy_app_ports
+
+  printf '%s: subindo o ambiente com "%s up"%s...\n' \
+    "${PROGRAM_NAME}" "${COMPOSE[*]}" "${build_flag:+ --build}"
+  printf '%s: as aplicacoes ficarao em http://127.0.0.1:8081 e :8082. Ctrl-C encerra.\n' \
+    "${PROGRAM_NAME}"
+
+  cd -- "${REPO_ROOT}"
+  # Sem '--build', a imagem e compilada apenas na primeira vez e reutilizada
+  # depois; o word-splitting de BUILD_FLAG e intencional.
+  # shellcheck disable=SC2086
+  exec "${COMPOSE[@]}" up ${build_flag}
+}
+
+main "$@"
