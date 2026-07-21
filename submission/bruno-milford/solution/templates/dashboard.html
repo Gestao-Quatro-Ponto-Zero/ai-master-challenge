@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block page_title %}Visao Executiva{% endblock %}
+{% block page_description %}Acompanhe churn, receita, engajamento e risco da base de clientes.{% endblock %}
+{% block topbar_actions %}
+<button class="btn btn-primary filters-toggle" id="openFilters" type="button">Filtros</button>
+{% endblock %}
+
+{% block content %}
+<section class="executive-summary" aria-labelledby="summaryTitle">
+  <div>
+    <p class="eyebrow">Resumo executivo</p>
+    <h2 id="summaryTitle">Visao Executiva</h2>
+    <p>Indicadores consolidados por conta, usando a assinatura corrente ou mais recente para evitar duplicidade de receita.</p>
+  </div>
+  <div class="summary-metrics">
+    <div><span>Periodo analisado</span><strong id="periodLabel">Base completa</strong></div>
+    <div><span>Status dos dados</span><strong>Validado</strong></div>
+    <div><span>Contas consideradas</span><strong id="accountCount">0</strong></div>
+  </div>
+</section>
+
+<section class="panel filters-panel" id="filtersPanel" aria-labelledby="filtersTitle">
+  <div class="panel-header">
+    <div>
+      <h2 id="filtersTitle">Filtros globais</h2>
+      <p>Refine KPIs, graficos e tabelas sem recarregar a pagina.</p>
+    </div>
+    <button class="icon-button filters-collapse" id="collapseFilters" type="button" aria-label="Recolher filtros">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5H7Z"/></svg>
+    </button>
+  </div>
+  <form id="filtersForm" class="filters-grid">
+    <label for="startDate">Periodo inicial<input id="startDate" type="date" name="start_date"></label>
+    <label for="endDate">Periodo final<input id="endDate" type="date" name="end_date"></label>
+    <label for="planTier">Plano<select id="planTier" name="plan_tier"><option value="">Todos</option></select></label>
+    <label for="industry">Industria<select id="industry" name="industry"><option value="">Todas</option></select></label>
+    <label for="country">Pais<select id="country" name="country"><option value="">Todos</option></select></label>
+    <label for="referral">Origem<select id="referral" name="referral_source"><option value="">Todas</option></select></label>
+    <label for="trial">Trial<select id="trial" name="is_trial"><option value="">Todos</option><option value="1">Trial</option><option value="0">Pagante</option></select></label>
+    <label for="status">Status<select id="status" name="status"><option value="">Todos</option><option value="active">Ativo</option><option value="churn">Churn</option></select></label>
+    <label for="billing">Cobranca<select id="billing" name="billing_frequency"><option value="">Todas</option></select></label>
+    <label for="renewal">Renovacao<select id="renewal" name="auto_renew_flag"><option value="">Todas</option><option value="1">Automatica</option><option value="0">Manual</option></select></label>
+    <label for="reason">Motivo<select id="reason" name="reason_code"><option value="">Todos</option></select></label>
+    <div class="filter-actions">
+      <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+      <button type="button" id="clearFilters" class="btn btn-secondary">Limpar</button>
+    </div>
+  </form>
+  <div class="active-filters" id="activeFilters" aria-label="Filtros aplicados"></div>
+</section>
+
+<section id="overview" class="dashboard-section">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">KPIs</p>
+      <h2>Saude da base</h2>
+    </div>
+  </div>
+  <div id="loading" class="skeleton-grid">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div id="kpiGrid" class="kpi-groups"></div>
+</section>
+
+<section class="dashboard-section" aria-labelledby="attentionTitle">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Prioridades</p>
+      <h2 id="attentionTitle">O que exige atencao</h2>
+    </div>
+  </div>
+  <div id="attentionGrid" class="attention-grid"></div>
+</section>
+
+<section class="dashboard-section" aria-labelledby="actionPlanTitle">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Plano de acao</p>
+      <h2 id="actionPlanTitle">5 prioridades executivas</h2>
+    </div>
+  </div>
+  <div id="actionPlan" class="action-plan"></div>
+</section>
+
+<section id="churn" class="dashboard-section">
+  <div class="analytics-grid analytics-grid-primary">
+    <article class="panel chart-panel chart-panel-large">
+      <div class="panel-header">
+        <div><h2>Churn ao longo do tempo</h2><p>Eventos de churn e MRR perdido por mes.</p></div>
+      </div>
+      <div id="churnTimeline" class="chart-canvas"></div>
+    </article>
+    <article class="panel chart-panel">
+      <div class="panel-header"><div><h2>Motivos de churn</h2><p>Principais razoes declaradas.</p></div></div>
+      <div id="churnReasons" class="chart-canvas"></div>
+    </article>
+  </div>
+  <div class="analytics-grid">
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Churn por plano</h2><p>Volume e taxa por tier.</p></div></div><div id="churnPlan" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Churn por industria</h2><p>Segmentos com maior exposicao.</p></div></div><div id="churnIndustry" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Churn por pais</h2><p>Base, churn e taxa por geografia.</p></div></div><div id="churnCountry" class="chart-canvas"></div></article>
+  </div>
+</section>
+
+<section id="revenue" class="dashboard-section">
+  <div class="section-heading"><div><p class="eyebrow">Receita</p><h2>Impacto financeiro</h2></div></div>
+  <div class="analytics-grid">
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>MRR ativo por plano</h2><p>Receita recorrente atual.</p></div></div><div id="mrrPlan" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>ARR ativo por industria</h2><p>Valor anual por segmento.</p></div></div><div id="arrIndustry" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>MRR perdido por plano</h2><p>Receita associada a churn.</p></div></div><div id="lostMrrPlan" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Faixas de MRR</h2><p>Distribuicao de contas por valor.</p></div></div><div id="mrrBands" class="chart-canvas"></div></article>
+  </div>
+</section>
+
+<section id="usage" class="dashboard-section">
+  <div class="section-heading"><div><p class="eyebrow">Produto</p><h2>Uso e engajamento</h2></div></div>
+  <div class="analytics-grid">
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Funcionalidades mais utilizadas</h2><p>Top features por volume.</p></div></div><div id="featureUsage" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Uso: ativas vs churn</h2><p>Uso medio por status.</p></div></div><div id="usageStatus" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Tendencia de uso</h2><p>Volume mensal consolidado.</p></div></div><div id="usageTimeline" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Beta vs geral</h2><p>Uso e erros por tipo.</p></div></div><div id="betaUsage" class="chart-canvas"></div></article>
+  </div>
+</section>
+
+<section id="support" class="dashboard-section">
+  <div class="section-heading"><div><p class="eyebrow">Suporte</p><h2>Experiencia do cliente</h2></div></div>
+  <div class="analytics-grid">
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Tickets por prioridade</h2><p>Distribuicao dos chamados.</p></div></div><div id="ticketsPriority" class="chart-canvas"></div></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Suporte: ativas vs churn</h2><p>Tickets e satisfacao por status.</p></div></div><div id="supportStatus" class="chart-canvas"></div></article>
+    <article class="panel insight-panel" id="supportSummary"></article>
+    <article class="panel chart-panel"><div class="panel-header"><div><h2>Reativacoes</h2><p>Eventos positivos apos churn.</p></div></div><div id="reactivationChart" class="chart-canvas"></div></article>
+  </div>
+</section>
+
+<section id="risk" class="panel risk-workspace">
+  <div class="panel-header">
+    <div>
+      <p class="eyebrow">Customer Success</p>
+      <h2>Contas em risco</h2>
+      <p>Score heuristico de risco, valor financeiro e prioridade de atuacao.</p>
+    </div>
+    <div class="table-tools">
+      <input id="riskSearch" type="search" placeholder="Buscar conta" aria-label="Buscar conta em risco">
+      <a id="exportRisk" class="btn btn-secondary" href="/api/export/risk-accounts.csv">Exportar CSV</a>
+    </div>
+  </div>
+  <div class="risk-summary" id="riskSummary"></div>
+  <div class="quick-filters" id="riskQuickFilters" aria-label="Filtros rapidos de risco">
+    <button class="chip active" type="button" data-risk-filter="all">Todas</button>
+    <button class="chip" type="button" data-risk-filter="critical">Criticas</button>
+    <button class="chip" type="button" data-risk-filter="high">Alto risco</button>
+    <button class="chip" type="button" data-risk-filter="value">Alto valor</button>
+    <button class="chip" type="button" data-risk-filter="inactive">Sem uso recente</button>
+    <button class="chip" type="button" data-risk-filter="satisfaction">Baixa satisfacao</button>
+  </div>
+  <div class="risk-layout">
+    <div class="risk-chart-card"><div id="riskDistribution" class="chart-canvas chart-compact"></div></div>
+    <div class="table-wrap table-scroll">
+      <table class="data-table" id="riskTable"></table>
+    </div>
+  </div>
+  <div class="pagination" id="riskPagination"></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}?v=20260719-4"></script>
+{% endblock %}
