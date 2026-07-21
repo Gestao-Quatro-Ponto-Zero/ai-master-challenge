@@ -1,0 +1,254 @@
+
+==============================================================================
+DEMO — CINCO CHAMADOS REAIS DO CONJUNTO DE TESTE
+==============================================================================
+
+Chamados do split de teste (semente 42), que o modelo nunca viu no treino.
+Nao sao exemplos escritos por mim: sao os PRIMEIROS do conjunto de teste que
+satisfazem cada criterio abaixo, para cobrir as tres rotas, o caso sem
+precedente e um erro. Nenhum foi escolhido por ficar bonito.
+
+  caso 1  primeiro 'auto' em que os vizinhos concordam com o modelo
+  caso 2  primeiro 'aprovacao' (categoria sensivel — R1)
+  caso 3  primeiro 'humano' (o modelo se abstem)
+  caso 4  primeiro caso sem nenhum chamado comparavel (painel VAZIO)
+  caso 5  primeiro caso em que o modelo ERROU a categoria
+
+
+
+### CASO 1 — criterio: auto + vizinhos concordam
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  project codes july pm codes hello please assign task thank kind regards
+  july pm codes hi pm attached codes pm thanks
+
+  [rotulo real: Internal Project — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Internal Project
+  confianca          : 0.997
+  segunda hipotese   : HR Support (margem 0.996)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : AUTO        -> fila automatica. auto-ROTEADO, NAO resolvido.
+  regra  : R4 — auto-roteado (nenhuma regra anterior disparou)
+  limiar : tau=0.00 para 'Internal Project', da curva medida do bloco 3
+  motivo :
+           auto-ROTEADO para a fila 'Internal Project': confianca 0.997 >=
+           tau=0.00, margem 0.996 ok. Nao resolvido — agente atende
+           normalmente.
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  1. similaridade 0.437 | foi para a fila 'Internal Project'
+     texto     : pm set up for project codes pm codes hi please thank kind
+                 regards thursday pm codes good morning please pm cod
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+  2. similaridade 0.370 | foi para a fila 'Internal Project'
+     texto     : new pas project codes tuesday october pm codes hi please log
+                 add kind regards engineer
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+  3. similaridade 0.368 | foi para a fila 'Internal Project'
+     texto     : project codes and wednesday july pm codes hello please
+                 assign kind regards wednesday july re codes hello pleas
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+  voto dos vizinhos : 'Internal Project'
+  modelo            : 'Internal Project'   -> CONCORDAM
+
+
+
+### CASO 2 — criterio: aprovacao (categoria sensivel)
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  create record net which points to thursday pm dear please create record
+  which points thanks regards engineer
+
+  [rotulo real: Access — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Access
+  confianca          : 0.831
+  segunda hipotese   : Miscellaneous (margem 0.764)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : APROVACAO   -> humano com poder de aprovar decide.
+  regra  : R1 — categoria sensivel (vence tudo, inclusive confianca alta)
+  limiar : tau=0.00 para 'Access', da curva medida do bloco 3
+  motivo :
+           categoria sensivel: 'Access' concede privilegio; exige aprovacao
+           humana [decisao de processo]
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  1. similaridade 0.726 | foi para a fila 'Access'
+     texto     : create a record net tuesday hi please create record which
+                 points record exists change destination thanks regar
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+  2. similaridade 0.405 | foi para a fila 'Access'
+     texto     : create new record for prod service friday pm create record
+                 prod hi create record prod questions please let bes
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+  voto dos vizinhos : 'Access'
+  modelo            : 'Access'   -> CONCORDAM
+
+
+
+### CASO 3 — criterio: humano (abstencao)
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  tablet issues wednesday october pm issues hi having issues pairing help
+  please let cheers best regards tester
+
+  [rotulo real: Administrative rights — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Hardware
+  confianca          : 0.485
+  segunda hipotese   : Administrative rights (margem 0.168)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : HUMANO      -> fila de triagem manual, com a sugestao anexada.
+  regra  : R3 — confianca abaixo do limiar medido da classe
+  limiar : tau=0.50 para 'Hardware', da curva medida do bloco 3
+  motivo :
+           confianca 0.485 abaixo do limiar medido tau=0.50 de 'Hardware'
+           (piso p*=83.3%)
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  1. similaridade 0.317 | foi para a fila 'Access'
+     texto     : password reset request july pm issues hi having issues won
+                 accept format even pass meets requirements please a
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+  voto dos vizinhos : 'Access'
+  modelo            : 'Hardware'   -> DISCORDAM
+  (discordancia nao muda a rota nesta politica; e um sinal para o
+   agente. Precisao medida: 0.928 quando concordam, 0.733 quando nao.)
+
+
+
+### CASO 4 — criterio: sem precedente (painel vazio)
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  blocked tuesday november pm additional has approved by has operated years
+  forwarded via currently receiving receiving failure notice therefore
+  believing has reached please blocking these thanks independent director
+
+  [rotulo real: Miscellaneous — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Hardware
+  confianca          : 0.569
+  segunda hipotese   : Miscellaneous (margem 0.295)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : AUTO        -> fila automatica. auto-ROTEADO, NAO resolvido.
+  regra  : R4 — auto-roteado (nenhuma regra anterior disparou)
+  limiar : tau=0.50 para 'Hardware', da curva medida do bloco 3
+  motivo :
+           auto-ROTEADO para a fila 'Hardware': confianca 0.569 >= tau=0.50,
+           margem 0.295 ok. Nao resolvido — agente atende normalmente.
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  (nenhum chamado comparavel na base acima do limiar de similaridade.
+   O painel devolve VAZIO em vez de inventar tres — acontece em 30.6%
+   do conjunto de teste, e e informacao: este chamado nao tem precedente.)
+
+
+
+### CASO 5 — criterio: o modelo errou
+
+==============================================================================
+CHAMADO RECEBIDO
+==============================================================================
+  mailbox user creation mailbox volume purchase plan apple apple profile
+  push apple please
+
+  [rotulo real: Purchase — mostrado so nesta demo, o sistema nao ve]
+
+------------------------------------------------------------------------------
+1. CLASSIFICACAO
+------------------------------------------------------------------------------
+  categoria prevista : Storage
+  confianca          : 0.555
+  segunda hipotese   : Access (margem 0.183)
+
+------------------------------------------------------------------------------
+2. DECISAO DE TRIAGEM
+------------------------------------------------------------------------------
+  rota   : AUTO        -> fila automatica. auto-ROTEADO, NAO resolvido.
+  regra  : R4 — auto-roteado (nenhuma regra anterior disparou)
+  limiar : tau=0.00 para 'Storage', da curva medida do bloco 3
+  motivo :
+           auto-ROTEADO para a fila 'Storage': confianca 0.555 >= tau=0.00,
+           margem 0.183 ok. Nao resolvido — agente atende normalmente.
+
+------------------------------------------------------------------------------
+3. CONTEXTO — CHAMADOS SIMILARES JA ROTEADOS
+------------------------------------------------------------------------------
+  CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.
+
+  1. similaridade 0.345 | foi para a fila 'Hardware'
+     texto     : set up and install latest apple and prepare for purchase hi
+                 please tickets assign two tickets each each differ
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+  2. similaridade 0.340 | foi para a fila 'Storage'
+     texto     : mailbox creation mailbox creation hello please create
+                 mailbox user permissions mailbox mails please thank
+     resolucao : [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+  voto dos vizinhos : 'Hardware'
+  modelo            : 'Storage'   -> DISCORDAM
+  (discordancia nao muda a rota nesta politica; e um sinal para o
+   agente. Precisao medida: 0.928 quando concordam, 0.733 quando nao.)
+
+
+==============================================================================
+FIM DA SESSAO
+==============================================================================
+
+Os cinco casos acima sao saida literal deste script. O caso 5 mostra o sistema
+errando, e o caso 4 mostra o painel devolvendo vazio: os dois ficaram porque o
+criterio os escolheu, nao apesar disso.
+
+sessao salva em: C:\Users\pablo\Documents\Projetos\ai-master-challenge\submissions\pablo-marques\solution\demo\sessao_demo.txt

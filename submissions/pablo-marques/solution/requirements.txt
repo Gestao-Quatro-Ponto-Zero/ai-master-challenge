@@ -1,0 +1,5 @@
+# Testado em Python 3.14 (Windows) — todas as wheels nativas, sem compilacao.
+pandas==3.0.3
+scipy==1.18.0
+scikit-learn==1.9.0
+matplotlib==3.11.1

@@ -1,0 +1,554 @@
+
+==============================================================================
+BLOCO 3 — CLASSIFICADOR E A CURVA QUE O BLOCO 1 ESPERA
+==============================================================================
+
+Base: all_tickets_processed_improved_v3.csv — 47,837 tickets, 8 classes [dados]
+Semente fixa: 42   |   fracao de teste: 20%   |   split estratificado
+
+Escopo desta rodada, por decisao de orcamento: baseline classico completo.
+TF-IDF + modelo linear. SEM embeddings, SEM LLM, SEM zero-shot. Se sobrar
+tempo depois, a comparacao entra como bloco proprio — nao como nota de rodape.
+
+
+==============================================================================
+PARTE 0 — REVISAO DA PREVISAO P3, ANTES DE QUALQUER TREINO
+==============================================================================
+
+O bloco 1 registrou o P3 ('Hardware passara de p* com folga') com forca de
+base MEDIA, e escreveu o motivo: 'vocabulario concreto e julgamento meu sobre
+o dominio, nao medicao — nao inspecionei o texto de Hardware'.
+
+Deixar uma previsao fraca de proposito quando dava pra resolver lendo 20
+amostras e desleixo, nao prudencia. Ler o texto nao e trapaca: a previsao e
+sobre o comportamento do CLASSIFICADOR, e ele ainda nao rodou. Entao a leitura
+aconteceu aqui, antes do treino, e o resultado esta abaixo.
+
+AMOSTRA LIDA: 20 documentos rotulados 'Hardware', random_state=42.
+CLASSIFICACAO SEMANTICA FEITA POR MIM, ANTES DE TREINAR:
+
+  [01] HARDWARE   (alocacao de monitor)   monitor request vulcan friday october pm hello please log each user monitor allocation u
+  [02] infra      (docker/server parado)  stopped when docker start was executed sent wednesday february hi we having same problem
+  [03] acesso     (instalacao/conexao, log de erro) issue re access through for hello still work attached log error received during installa
+  [04] HARDWARE   (laptop extra para treinamento) extra laptop for trainings october trainings importance high hello guys please advised t
+  [05] rede/seg   (scan de vulnerabilidade wireless) wireless networks scan belgrade re wireless vulnerability hi noticed closed wireless des
+  [06] acesso     (nao consegue acessar link/recursos) issue accessing new hello you use for accessing link layouts sectors libraries resources
+  [07] vago       (investigacao de conexao) with investigation needed sent wednesday november with investigation needed importance h
+  [08] compra     (fornecedor, calculo de VAT) supplier supplier hi please raise ticket for below request thank you kind regards sent t
+  [09] misc       (informacao de catalogo de enderecos) address book information address book information hello recently noticed have any inform
+  [10] HARDWARE   (adaptadores)           adapters needed for and friday march pm adapters myself trip please create assign eventu
+  [11] software   (nao consegue compartilhar relatorio) unable to share reports sn sent thursday december unable share reports sn hi please rais
+  [12] software   (habilitar funcao de visualizacao) view sent wednesday view dear ask you please enable data sheet view function location he
+  [13] HARDWARE   (troca de monitor e mouse) monitor and mouse changes thursday march pm monitor mouse changes hi please change monit
+  [14] vago       (erros em paginas)      issue with down boat dc bb view ad getting errors pages thanks
+  [15] acesso     (nao consegue acessar quiz de seguranca) cannot access the information security quiz sent monday october cannot access informatio
+  [16] acesso     (cracha de acesso nao funciona) access badge not working properly access badge working properly hello today working afte
+  [17] acesso     (direitos de acesso a pasta) access problems sent monday access problems hi could you please check access rights supp
+  [18] HARDWARE   (suporte de monitor)    support for monitor monitor hi guys monitor because low work monitor help thanks best re
+  [19] infra      (host de maquina virtual reiniciou) investigate root cause of december re multiple polls down hello please noted host where 
+  [20] acesso     (portal nega permissao) log log hi have provided ally with his log details per below unable access portal please
+
+CONTAGEM DA LEITURA
+  inequivocamente hardware (dispositivo fisico) :  5 de 20  (25%)
+  semanticamente sobre ACESSO/permissao         :  6 de 20  (30%)
+  outros (infra, software, compra, misc, vago)  :  9 de 20
+
+VEREDITO: P3 ORIGINAL RETIRADA. A base estava errada.
+
+  O P3 supunha que 'Hardware' fosse uma classe de vocabulario concreto —
+  nomes de dispositivo e verbos de falha fisica. A leitura mostra o oposto:
+  apenas 25% da amostra e sobre dispositivo. O rotulo 'Hardware' nesta base
+  nao e um dominio semantico coeso, e um rotulo CONTAMINADO — e a maior
+  fonte de contaminacao e justamente ACESSO (30% da amostra).
+
+  Registro a retirada em vez de apagar a previsao. O erro fica no arquivo.
+
+P3-REVISADO, registrado agora, ainda antes do treino:
+
+  P3R-a. Hardware NAO tera a maior precisao entre as 8 classes, apesar de ser
+         a maior em volume (28.5% [dados]).
+         BASE: rotulo contaminado, medido em 5/20 de coerencia semantica.
+         FALSIFICA: Hardware aparecer com a maior precisao das 8.
+
+  P3R-b. Access estara entre as DUAS maiores fontes de confusao de Hardware.
+         BASE: 6/20 da amostra de Hardware e semanticamente acesso.
+         FALSIFICA: Access fora das duas maiores linhas de confusao de Hardware.
+
+  forca da base: ALTA — agora e leitura, nao suposicao.
+
+NOTA: esta contaminacao tambem enfraquece o pressuposto implicito do P1 de que
+as outras sete classes sao 'definidas por conteudo'. Hardware, pelo menos, nao
+e. Isso NAO altera o enunciado do P1, que fala de Miscellaneous — mas fica
+registrado que a base do P1 e mais fraca do que eu escrevi no bloco 1.
+
+
+==============================================================================
+PARTE 1 — AUDITORIA DE VAZAMENTO (antes do split)
+==============================================================================
+
+Em base de chamado, vazamento raramente vem de split mal feito. Vem de
+documento repetido: mesmo chamado reaberto, template de abertura identico,
+thread de email colada varias vezes. Se o par cair dos dois lados do split,
+o modelo 'acerta' por ter decorado, e a acuracia sobe sem significar nada.
+Por isso a contagem vem ANTES de dividir, e nao depois de um numero bonito.
+
+1.1 DUPLICATA EXATA (apos normalizar caixa e espaco)
+    documentos envolvidos : 0 de 47,837 (0.00%)
+    grupos distintos      : 0
+
+1.2 QUASE-DUPLICATA (cosseno TF-IDF >= 0.90, varredura completa)
+    varrendo todos os pares... (nao amostrado)
+    documentos com gemeo >= 0.90 : 7,250 (15.16%)
+    documentos com gemeo >= 0.95 : 4,118 (8.61%)
+    documentos com gemeo >= 0.99 : 1,180 (2.47%)
+    entre os quase-duplicados, fracao cujo gemeo tem o MESMO rotulo: 94.4%
+    (o complemento, 5.6%, e ruido de rotulo: texto quase igual,
+     classe diferente — outro pedaco do teto de acuracia)
+
+1.3 DECISAO
+    Os quase-duplicados NAO sao removidos da base. Motivo: em operacao real
+    eles existem e o classificador vai encontra-los; remove-los inflaria a
+    dificuldade artificialmente. O que importa e SABER quanto tem, para ler
+    a acuracia com desconto — e para nao comemorar um numero alto que e
+    memorizacao. O split abaixo e feito sobre a base inteira, e a PARTE 4
+    reporta a acuracia tambem no subconjunto SEM gemeo, que e a leitura
+    honesta.
+
+
+==============================================================================
+PARTE 2 — SPLIT ESTRATIFICADO (anotado)
+==============================================================================
+
+  funcao        : sklearn.model_selection.train_test_split
+  random_state  : 42   (fixa; a rodada e reproduzivel)
+  test_size     : 0.2
+  stratify      : Topic_group  (proporcao de classe preservada nos dois lados)
+  treino        : 38,269 documentos
+  teste         : 9,568 documentos
+
+                       treino %  teste %  base %  desvio pp
+Hardware                  28.46    28.47   28.47       0.00
+HR Support                22.82    22.82   22.82       0.00
+Access                    14.89    14.89   14.89       0.00
+Miscellaneous             14.76    14.76   14.76       0.00
+Storage                    5.81     5.80    5.81      -0.01
+Purchase                   5.15     5.15    5.15       0.00
+Internal Project           4.43     4.43    4.43       0.00
+Administrative rights      3.68     3.68    3.68       0.00
+
+  VAZAMENTO EFETIVO APOS O SPLIT
+  documentos de TESTE cujo gemeo (>= 0.90) caiu no TREINO: 1,164
+  (12.17% do conjunto de teste)
+
+  Este e o numero que interessa: nao 'quantas duplicatas a base tem', mas
+  quantas atravessaram a fronteira do split. A PARTE 4 mede a acuracia com e
+  sem esses documentos.
+
+
+==============================================================================
+PARTE 3 — TREINO: TF-IDF + REGRESSAO LOGISTICA
+==============================================================================
+
+Escolha de modelo, e o motivo dela:
+
+  LogisticRegression, nao LinearSVC. Mesma familia linear, mas com
+  predict_proba nativo. O SVM linear cospe decision_function, que e margem
+  em unidade arbitraria e cuja escala varia por classe — cortar em 0.7
+  significaria coisas diferentes em Hardware e em Storage.
+
+  Sem CalibratedClassifierCV por cima. Com 1.760 exemplos na menor classe, a
+  calibracao seria estimada justamente onde ha menos dado. A PARTE 5 MEDE a
+  calibracao em vez de assumi-la, e a curva da PARTE 6 e indexada por
+  cobertura (uma fracao), que nao depende de a probabilidade ser fiel.
+
+  Sem class_weight='balanced', de proposito. O balanceamento apagaria o
+  efeito de prior que a previsao P2 do bloco 1 preve. Um baseline que
+  esconde o fenomeno que se quer testar nao serve. Fica sem balanceamento e
+  o efeito, se existir, aparece na matriz de confusao.
+
+  vocabulario   : 82,593 termos (unigrama + bigrama, min_df=3)
+  matriz treino : (38269, 82593)  densidade 0.06867%
+  treino        : 18.0s
+
+==============================================================================
+PARTE 4 — SANIDADE AGREGADA (nao e o entregavel)
+==============================================================================
+
+  acuracia (teste inteiro) : 0.8651
+  F1 macro                 : 0.8637
+
+Estes numeros estao aqui por sanidade e nao como resultado. O que decide
+automacao e precisao POR CLASSE contra o piso p*(k) — ver PARTE 6 e 7. Um F1
+macro alto pode conviver com uma classe inteira abaixo do piso.
+
+  acuracia excluindo os 1,164 documentos de teste com gemeo no treino:
+    0.8532   (delta -0.0119)
+
+  Leitura: se o delta fosse grande e negativo, a acuracia cheia estaria
+  inflada por memorizacao. Este e o teste que a PARTE 1 preparou.
+
+==============================================================================
+PARTE 5 — CALIBRACAO MEDIDA POR CLASSE (nao assumida)
+==============================================================================
+
+A probabilidade so pode ser mostrada a um agente humano se ela valer o que
+diz: entre os casos com 80% de confianca, cerca de 80% tem que estar certos.
+Aqui isso e medido, classe por classe, e nao assumido.
+
+ECE = erro de calibracao esperado (media ponderada do |confianca - acerto|
+por faixa de confianca). Quanto menor, mais fiel e o numero.
+
+               classe  previstos  confianca media  acerto real   vies   ECE
+Administrative rights        270            0.795        0.896 -0.102 0.104
+     Internal Project        380            0.843        0.913 -0.070 0.070
+              Storage        504            0.874        0.938 -0.065 0.066
+        Miscellaneous       1420            0.785        0.833 -0.049 0.049
+               Access       1396            0.863        0.908 -0.045 0.045
+           HR Support       2198            0.834        0.869 -0.035 0.037
+             Purchase        441            0.947        0.968 -0.021 0.026
+             Hardware       2959            0.796        0.820 -0.024 0.024
+
+  vies positivo = o modelo se diz mais confiante do que acerta (otimista).
+  A curva da PARTE 6 nao depende desta tabela: ela e indexada por cobertura,
+  que e fracao. A calibracao importa para a UI e para a regra de abstencao
+  da triagem, nao para o business case.
+
+
+==============================================================================
+PARTE 6 — ENTREGAVEL: CURVA COBERTURA x PRECISAO POR CLASSE
+==============================================================================
+
+DEFINICAO FIXADA (esta linha fecha a duvida que abriu o bloco):
+
+  Para cada classe c e cada limiar tau_c aplicado a confianca do modelo:
+
+    canal_c(tau)     = tickets que o modelo roteia automaticamente para c
+                       (isto e: pred == c E confianca >= tau_c)
+    cobertura_c(tau) = |canal_c(tau)| / |tickets cuja classe real e c|
+    precisao_c(tau)  = fracao de canal_c(tau) cuja classe real e c
+
+  cobertura_c e FRACAO DENTRO DA CLASSE. Por isso e comparavel entre classes
+  mesmo que a escala do score nao seja — que era o problema original. tau_c
+  vira detalhe de implementacao: escolhe-se o alvo de cobertura ou de
+  precisao e inverte-se a curva. O operador nunca escolhe um score cru.
+
+  w_c NAO entra aqui. Ele continua na formula do bloco 1, visivel e rotulado
+  como transplante declarado. Dissolve-lo dentro da cobertura transformaria
+  uma premissa num numero [medido] — que e exatamente o erro que este
+  arquivo inteiro existe para nao cometer.
+
+  taxa de automacao global = soma de w_c * cobertura_c
+
+  Nota: cobertura_c pode passar de 1.0 numa classe que atrai mais volume do
+  que possui (classe-ima). Isso nao e defeito da metrica, e informacao.
+
+
+  Access  —  volume real no teste: 1,425 | w_c = 0.149 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      0.980     0.908     1396
+0.30      0.976     0.909     1391
+0.40      0.948     0.925     1351
+0.50      0.906     0.936     1291
+0.60      0.844     0.956     1202
+0.70      0.778     0.968     1108
+0.80      0.718     0.980     1023
+0.90      0.633     0.990      902
+0.95      0.547     0.994      780
+
+  Administrative rights  —  volume real no teste: 352 | w_c = 0.037 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      0.767     0.896      270
+0.30      0.764     0.900      269
+0.40      0.730     0.914      257
+0.50      0.676     0.933      238
+0.60      0.602     0.943      212
+0.70      0.523     0.962      184
+0.80      0.469     0.970      165
+0.90      0.349     0.992      123
+0.95      0.267     0.989       94
+
+  HR Support  —  volume real no teste: 2,183 | w_c = 0.228 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      1.007     0.869     2198
+0.30      1.003     0.872     2189
+0.40      0.973     0.886     2125
+0.50      0.915     0.910     1997
+0.60      0.839     0.942     1831
+0.70      0.760     0.959     1660
+0.80      0.673     0.972     1469
+0.90      0.548     0.989     1197
+0.95      0.453     0.998      988
+
+  Hardware  —  volume real no teste: 2,724 | w_c = 0.285 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      1.086     0.820     2959
+0.30      1.082     0.822     2947
+0.40      1.051     0.833     2864
+0.50      0.964     0.866     2625
+0.60      0.867     0.897     2361
+0.70      0.766     0.927     2086
+0.80      0.644     0.951     1753
+0.90      0.469     0.975     1278
+0.95      0.336     0.989      915
+
+  Internal Project  —  volume real no teste: 424 | w_c = 0.044 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      0.896     0.913      380
+0.30      0.892     0.913      378
+0.40      0.858     0.926      364
+0.50      0.818     0.939      347
+0.60      0.731     0.958      310
+0.70      0.682     0.965      289
+0.80      0.627     0.974      266
+0.90      0.531     0.987      225
+0.95      0.465     1.000      197
+
+  Miscellaneous  —  volume real no teste: 1,412 | w_c = 0.148 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      1.006     0.833     1420
+0.30      1.002     0.835     1415
+0.40      0.962     0.856     1358
+0.50      0.868     0.889     1226
+0.60      0.777     0.912     1097
+0.70      0.677     0.946      956
+0.80      0.570     0.968      805
+0.90      0.438     0.981      618
+0.95      0.307     0.991      434
+
+  Purchase  —  volume real no teste: 493 | w_c = 0.052 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      0.895     0.968      441
+0.30      0.888     0.975      438
+0.40      0.882     0.977      435
+0.50      0.860     0.988      424
+0.60      0.848     0.990      418
+0.70      0.832     0.990      410
+0.80      0.807     0.992      398
+0.90      0.779     0.992      384
+0.95      0.738     0.997      364
+
+  Storage  —  volume real no teste: 555 | w_c = 0.058 [dados, transplante declarado]
+ tau  cobertura  precisao  n_canal
+0.00      0.908     0.938      504
+0.30      0.906     0.940      503
+0.40      0.885     0.945      491
+0.50      0.841     0.955      467
+0.60      0.786     0.972      436
+0.70      0.739     0.980      410
+0.80      0.688     0.987      382
+0.90      0.618     0.997      343
+0.95      0.533     1.000      296
+
+==============================================================================
+PARTE 7 — O QUE NAO AUTOMATIZAR: CORTE CONTRA p*(k)
+==============================================================================
+
+Regra, vinda direto da SECAO 2 do bloco 1:
+
+    automatizar a classe c so faz sentido se existir tau com
+        precisao_c(tau) >= p*(k) = (k-1)/k
+    e cobertura_c(tau) util (aqui: >= 10%).
+
+Abaixo de p*, o retrabalho gerado pelos erros supera o trabalho poupado
+pelos acertos: automatizar aquela classe DESTROI horas. Nao e ROI magro,
+e sinal negativo.
+
+
+  kappa = M/T = 5  ->  p* = 83.3%
+               classe   w_c    veredito  tau  cobertura  precisao  contrib w_c*cob
+               Access 0.149 AUTOMATIZAR  0.0      0.980     0.908           0.1459
+Administrative rights 0.037 AUTOMATIZAR  0.0      0.767     0.896           0.0282
+           HR Support 0.228 AUTOMATIZAR  0.0      1.007     0.869           0.2297
+             Hardware 0.285 AUTOMATIZAR  0.5      0.964     0.866           0.2743
+     Internal Project 0.044 AUTOMATIZAR  0.0      0.896     0.913           0.0397
+        Miscellaneous 0.148 AUTOMATIZAR  0.3      1.002     0.835           0.1479
+             Purchase 0.052 AUTOMATIZAR  0.0      0.895     0.968           0.0461
+              Storage 0.058 AUTOMATIZAR  0.0      0.908     0.938           0.0527
+    taxa de automacao global (soma de w_c*cobertura_c): 96.5%
+    classes fora: nenhuma
+
+  kappa = M/T = 10  ->  p* = 90.9%
+               classe   w_c    veredito  tau  cobertura  precisao  contrib w_c*cob
+               Access 0.149 AUTOMATIZAR  0.3      0.976     0.909           0.1454
+Administrative rights 0.037 AUTOMATIZAR  0.4      0.730     0.914           0.0269
+           HR Support 0.228 AUTOMATIZAR  0.5      0.915     0.910           0.2087
+             Hardware 0.285 AUTOMATIZAR  0.7      0.766     0.927           0.2180
+     Internal Project 0.044 AUTOMATIZAR  0.0      0.896     0.913           0.0397
+        Miscellaneous 0.148 AUTOMATIZAR  0.6      0.777     0.912           0.1147
+             Purchase 0.052 AUTOMATIZAR  0.0      0.895     0.968           0.0461
+              Storage 0.058 AUTOMATIZAR  0.0      0.908     0.938           0.0527
+    taxa de automacao global (soma de w_c*cobertura_c): 85.2%
+    classes fora: nenhuma
+
+  kappa = M/T = 20  ->  p* = 95.2%
+               classe   w_c    veredito  tau  cobertura  precisao  contrib w_c*cob
+               Access 0.149 AUTOMATIZAR  0.6      0.844     0.956           0.1256
+Administrative rights 0.037 AUTOMATIZAR  0.7      0.523     0.962           0.0192
+           HR Support 0.228 AUTOMATIZAR  0.7      0.760     0.959           0.1735
+             Hardware 0.285 AUTOMATIZAR  0.9      0.469     0.975           0.1335
+     Internal Project 0.044 AUTOMATIZAR  0.6      0.731     0.958           0.0324
+        Miscellaneous 0.148 AUTOMATIZAR  0.8      0.570     0.968           0.0841
+             Purchase 0.052 AUTOMATIZAR  0.0      0.895     0.968           0.0461
+              Storage 0.058 AUTOMATIZAR  0.5      0.841     0.955           0.0488
+    taxa de automacao global (soma de w_c*cobertura_c): 66.3%
+    classes fora: nenhuma
+
+COMO ESTA TABELA CHEGOU AQUI — registro de uma correcao, nao de um acerto
+
+  A primeira versao desta PARTE 7 dizia 'automatize 100%, nenhuma classe
+  fora', que e o red flag que o proprio enunciado cita. A causa nao era o
+  classificador: era uma confusao dentro do bloco 1, que so ficou visivel
+  depois que a medicao existiu.
+
+  g(p,k) tinha sido escrito supondo que um acerto significa 'a maquina
+  RESOLVE e o humano economiza um handle time inteiro'. Mas o que se mede
+  aqui e precisao de CLASSIFICACAO, e classificar bem prova que da para
+  ROTEAR, nao para resolver. As duas economias tem tamanhos diferentes:
+  rotear certo poupa a TRIAGEM (T); resolver sozinho pouparia o handle time.
+
+  Corrigido no bloco 1, SECAO 1B. O parametro deixou de ser 'k, custo do
+  erro em multiplos do handle time' e passou a ser kappa = M/T, o custo do
+  misrouting em multiplos da triagem — grandeza muito maior, porque a
+  triagem e curta e a transferencia e cara. Com isso p* sobe de 50-75%
+  para 83-95%, e o corte finalmente morde.
+
+  E o corte morde onde eu nao esperava: em COBERTURA, nao em exclusao de
+  classe. Nenhuma das oito sai da lista; o que encolhe e quanto de cada uma
+  pode ser auto-roteado. A resposta para 'o que NAO automatizar' nao e uma
+  lista de assuntos proibidos — e, dentro de cada assunto, a cauda de baixa
+  confianca. Por isso ela vira regra no triagem.py e nao regra de negocio.
+
+  O QUE CONTINUA FORA DE ALCANCE: auto-RESOLUCAO. Dimensionar isso exigiria
+  medir repeticao de solucao — o campo resolution_code, item 10 da PARTE 3
+  do bloco 0. O dataset 2 nao tem campo de resolucao; o dataset 1 tem e a
+  evidencia E6 provou que e faker. Nenhum numero de auto-resolucao aparece
+  nesta entrega, e o motivo e falta de instrumento, nao modestia.
+
+
+==============================================================================
+PARTE 8 — MATRIZ DE CONFUSAO
+==============================================================================
+
+Contagens absolutas (linha = classe real, coluna = predita):
+                       Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+Access                   1268                      2          37        74                 5             34         1        4
+Administrative rights       8                    242           9        81                 1             11         0        0
+HR Support                 28                      2        1910       158                11             62         3        9
+Hardware                   60                     15         110      2427                 8             87        10        7
+Internal Project            3                      1          26        27               347             20         0        0
+Miscellaneous              23                      3          71       116                 7           1183         0        9
+Purchase                    3                      3           8        39                 1             10       427        2
+Storage                     3                      2          27        37                 0             13         0      473
+
+  salvo: graficos\matriz_confusao.png
+  salvo: graficos\curva_cobertura_precisao.png
+
+==============================================================================
+PARTE 9 — CONFERENCIA DAS PREVISOES REGISTRADAS NO BLOCO 1
+==============================================================================
+
+As previsoes P1, P2 e P3 foram registradas no commit bef5c92, antes deste
+bloco existir. Cada uma vem com criterio de falsificacao escrito. Aqui cada
+criterio e aplicado, sem suavizar.
+
+P1 — 'Miscellaneous ficara abaixo de p* apesar de ser a 4a maior classe'
+  criterio de falsificacao : precisao >= 50% em algum tau com cobertura >= 10%
+  melhor precisao observada: 0.991  (com cobertura >= 10%)
+  w_c                      : 14.8%, 7,060 tickets
+  VEREDITO                 : FALSIFICADA
+
+P2 — 'Administrative rights sera absorvida por Access, e nao o contrario'
+  criterio de falsificacao : matriz simetrica, ou fluxo maior no sentido inverso
+  Administrative rights -> Access :    8 de  352 reais = 2.3%
+  Access -> Administrative rights :    2 de 1425 reais = 0.1%
+  razao de assimetria             : 16.2x
+  VEREDITO                        : CONFIRMADA
+
+P3R-a — 'Hardware NAO tera a maior precisao entre as 8 classes'
+  criterio de falsificacao : Hardware ser a de maior precisao
+  precisao de Hardware     : 0.820
+  maior precisao observada : 0.968  (Purchase)
+  VEREDITO                 : CONFIRMADA
+
+P3R-b — 'Access estara entre as duas maiores fontes de confusao de Hardware'
+  criterio de falsificacao : Access fora das duas maiores linhas de confusao
+  duas maiores confusoes de Hardware : HR Support (110), Miscellaneous (87)
+  VEREDITO                           : FALSIFICADA
+
+P3 ORIGINAL — retirada na PARTE 0, antes do treino, por leitura de 20 amostras.
+  Nao entra na contagem: nao foi medida, foi abandonada com motivo registrado.
+
+PLACAR BRUTO: 2 de 4 criterios confirmados.
+  {"P1": "FALSIFICADA", "P2": "CONFIRMADA", "P3R-a": "CONFIRMADA", "P3R-b": "FALSIFICADA"}
+
+O placar bruto favorece demais. A leitura honesta esta abaixo.
+
+
+------------------------------------------------------------------------------
+PARTE 9B — POST-MORTEM DAS QUATRO PREVISOES
+------------------------------------------------------------------------------
+
+P1 — FALSIFICADA, e no sentido oposto.
+  Previ Miscellaneous abaixo de p*. Ela faz 99.1% de precisao, e ainda
+  88.9% com 86.8% de cobertura. E MAIS separavel que Hardware.
+  POR QUE: eu li o NOME do rotulo em vez do dado. 'Miscellaneous' soa a
+  balde de exclusao; nesta base o rotulo tem dono. Medido agora:
+    documentos contendo {snow, approval, approver, owner, group, sow, queue}
+      dentro de Miscellaneous : 35.2%
+      no resto da base        : 7.5%   (lift 4.7x)
+    'approval' sozinho: 13.1% contra 1.5% — 8.7x.
+  Nao e residuo: e o dominio de workflow interno (ServiceNow, aprovacao,
+  troca de dono e de grupo, contrato). Vocabulario proprio, logo separavel.
+
+P2 — CONFIRMADA no criterio, ERRADA no fundo. Pior que falsificada.
+  Meu criterio testou a DIRECAO DE UM PAR (admin rights -> access maior que
+  o inverso?) em vez de perguntar QUEM ABSORVE. Mal especificado, e passou
+  por isso. Quem absorve Administrative rights, medido:
+    -> Hardware :  81 de 352  (23.0%)
+    -> Access   :   8 de 352  (2.3%)
+  A vizinha semantica que eu apontei absorve quase nada. Uma previsao
+  confirmada que esta errada no fundo e pior que uma falsificada, porque
+  sobrevive a conferencia. Fica registrada assim, sem alivio.
+
+P3R-b — FALSIFICADA, e pela MESMA causa do P2.
+  Previ Access entre as duas maiores confusoes de Hardware por leitura
+  semantica; deu HR Support (110) e Miscellaneous (87), Access em terceiro (60).
+
+P3R-a — CONFIRMADA, limpa. Hardware 0.820 contra 0.968 de Purchase.
+
+A LICAO, e ela e uma so nas quatro:
+  PRIOR VENCEU SEMANTICA. Hardware e o ralo da base — recebe 532 predicoes
+  erradas vindas das outras sete (Access 74, Administrative rights 81, HR Support 158, Internal Project 27, Miscellaneous 116, Purchase 39, Storage 37),
+  e seu canal fica com cobertura acima de 1.0. O erro nao anda para a
+  vizinha semantica, anda para a MAIOR classe.
+  Eu previ o mecanismo certo (absorcao por desbalanceamento) apontado para
+  o lugar errado (a vizinha de significado). E nas duas vezes que errei
+  feio — P1 e P3 original — a causa foi a mesma: raciocinei sobre o NOME do
+  rotulo em vez de ler amostra dele.
+
+  Placar honesto: 1 acerto limpo, 1 acerto que nao deveria ter passado,
+  2 falsificadas. As duas que marquei base ALTA no bloco 1 sao justamente
+  a que mais errou e a que passou por criterio frouxo.
+
+
+==============================================================================
+PARTE 10 — HANDOFF
+==============================================================================
+
+  curva medida escrita em: curva_medida.json
+  O 02_business_case.py passa a le-la no lugar de curva_placeholder().
+
+ANOTADO PARA O TRIAGEM.PY, NAO IMPLEMENTADO AQUI
+  Regra de abstencao por empate no topo: quando as duas classes de maior
+  probabilidade estao proximas, o ticket vai para humano mesmo que a maior
+  passe do limiar. Isso e regra de TRIAGEM, nao de classificacao — o
+  classificador so precisa expor as probabilidades. Fica registrado aqui e
+  entra no proximo bloco.
+
+  tempo total desta rodada: 84.2s
+
+
+==============================================================================
+FIM — BLOCO 3
+==============================================================================
+saida salva em: C:\Users\pablo\Documents\Projetos\ai-master-challenge\submissions\pablo-marques\solution\03_classificador_saida.txt

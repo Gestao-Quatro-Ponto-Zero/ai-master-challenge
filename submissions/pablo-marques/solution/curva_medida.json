@@ -1,0 +1,467 @@
+{
+  "origem": "03_classificador.py",
+  "semente": 42,
+  "n_teste": 9568,
+  "modelo": "TfidfVectorizer(min_df=3, 1-2gram, sublinear_tf) + LogisticRegression(C=4)",
+  "definicao_cobertura": "canal_c(tau) / volume real da classe c (fracao dentro da classe)",
+  "w_c": {
+    "Access": 0.14894328657733555,
+    "Administrative rights": 0.03679160482471727,
+    "HR Support": 0.22817066287601648,
+    "Hardware": 0.28465413801032674,
+    "Internal Project": 0.044296256036122666,
+    "Miscellaneous": 0.14758450571733178,
+    "Purchase": 0.05150824675460418,
+    "Storage": 0.058051299203545376
+  },
+  "curva": {
+    "Access": [
+      {
+        "tau": 0.0,
+        "cobertura": 0.9796491228070175,
+        "precisao": 0.9083094555873925,
+        "n_canal": 1396
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 0.976140350877193,
+        "precisao": 0.9094176851186196,
+        "n_canal": 1391
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.9480701754385965,
+        "precisao": 0.924500370096225,
+        "n_canal": 1351
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.9059649122807018,
+        "precisao": 0.935708752904725,
+        "n_canal": 1291
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.8435087719298245,
+        "precisao": 0.9559068219633944,
+        "n_canal": 1202
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.7775438596491228,
+        "precisao": 0.9675090252707581,
+        "n_canal": 1108
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.7178947368421053,
+        "precisao": 0.9804496578690127,
+        "n_canal": 1023
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.6329824561403509,
+        "precisao": 0.9900221729490022,
+        "n_canal": 902
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.5473684210526316,
+        "precisao": 0.9935897435897436,
+        "n_canal": 780
+      }
+    ],
+    "Administrative rights": [
+      {
+        "tau": 0.0,
+        "cobertura": 0.7670454545454546,
+        "precisao": 0.8962962962962963,
+        "n_canal": 270
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 0.7642045454545454,
+        "precisao": 0.8996282527881041,
+        "n_canal": 269
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.7301136363636364,
+        "precisao": 0.914396887159533,
+        "n_canal": 257
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.6761363636363636,
+        "precisao": 0.9327731092436975,
+        "n_canal": 238
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.6022727272727273,
+        "precisao": 0.9433962264150944,
+        "n_canal": 212
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.5227272727272727,
+        "precisao": 0.9619565217391305,
+        "n_canal": 184
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.46875,
+        "precisao": 0.9696969696969697,
+        "n_canal": 165
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.3494318181818182,
+        "precisao": 0.991869918699187,
+        "n_canal": 123
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.26704545454545453,
+        "precisao": 0.9893617021276596,
+        "n_canal": 94
+      }
+    ],
+    "HR Support": [
+      {
+        "tau": 0.0,
+        "cobertura": 1.0068712780577187,
+        "precisao": 0.8689717925386715,
+        "n_canal": 2198
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 1.0027485112230874,
+        "precisao": 0.8720877112836912,
+        "n_canal": 2189
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.9734310581768209,
+        "precisao": 0.8856470588235295,
+        "n_canal": 2125
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.9147961520842877,
+        "precisao": 0.9103655483224837,
+        "n_canal": 1997
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.8387540082455337,
+        "precisao": 0.9421081376297106,
+        "n_canal": 1831
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.7604214383875401,
+        "precisao": 0.9590361445783132,
+        "n_canal": 1660
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.6729271644525882,
+        "precisao": 0.9720898570456092,
+        "n_canal": 1469
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.5483279890059551,
+        "precisao": 0.9891395154553049,
+        "n_canal": 1197
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.45258818140174073,
+        "precisao": 0.9979757085020243,
+        "n_canal": 988
+      }
+    ],
+    "Hardware": [
+      {
+        "tau": 0.0,
+        "cobertura": 1.0862701908957415,
+        "precisao": 0.820209530246705,
+        "n_canal": 2959
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 1.0818649045521291,
+        "precisao": 0.8218527315914489,
+        "n_canal": 2947
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 1.0513950073421439,
+        "precisao": 0.8331005586592178,
+        "n_canal": 2864
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.9636563876651982,
+        "precisao": 0.8662857142857143,
+        "n_canal": 2625
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.8667400881057269,
+        "precisao": 0.8970775095298602,
+        "n_canal": 2361
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.7657856093979442,
+        "precisao": 0.9271332694151486,
+        "n_canal": 2086
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.6435389133627019,
+        "precisao": 0.9509412435824302,
+        "n_canal": 1753
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.46916299559471364,
+        "precisao": 0.974960876369327,
+        "n_canal": 1278
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.33590308370044053,
+        "precisao": 0.9890710382513661,
+        "n_canal": 915
+      }
+    ],
+    "Internal Project": [
+      {
+        "tau": 0.0,
+        "cobertura": 0.8962264150943396,
+        "precisao": 0.9131578947368421,
+        "n_canal": 380
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 0.8915094339622641,
+        "precisao": 0.9126984126984127,
+        "n_canal": 378
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.8584905660377359,
+        "precisao": 0.9258241758241759,
+        "n_canal": 364
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.8183962264150944,
+        "precisao": 0.9394812680115274,
+        "n_canal": 347
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.7311320754716981,
+        "precisao": 0.9580645161290322,
+        "n_canal": 310
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.6816037735849056,
+        "precisao": 0.9653979238754326,
+        "n_canal": 289
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.6273584905660378,
+        "precisao": 0.9736842105263158,
+        "n_canal": 266
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.5306603773584906,
+        "precisao": 0.9866666666666667,
+        "n_canal": 225
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.46462264150943394,
+        "precisao": 1.0,
+        "n_canal": 197
+      }
+    ],
+    "Miscellaneous": [
+      {
+        "tau": 0.0,
+        "cobertura": 1.0056657223796035,
+        "precisao": 0.8330985915492958,
+        "n_canal": 1420
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 1.0021246458923512,
+        "precisao": 0.8353356890459364,
+        "n_canal": 1415
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.9617563739376771,
+        "precisao": 0.8556701030927835,
+        "n_canal": 1358
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.8682719546742209,
+        "precisao": 0.8890701468189234,
+        "n_canal": 1226
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.7769121813031161,
+        "precisao": 0.9124886052871468,
+        "n_canal": 1097
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.6770538243626062,
+        "precisao": 0.9456066945606695,
+        "n_canal": 956
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.5701133144475921,
+        "precisao": 0.9677018633540373,
+        "n_canal": 805
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.4376770538243626,
+        "precisao": 0.9805825242718447,
+        "n_canal": 618
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.3073654390934844,
+        "precisao": 0.9907834101382489,
+        "n_canal": 434
+      }
+    ],
+    "Purchase": [
+      {
+        "tau": 0.0,
+        "cobertura": 0.8945233265720081,
+        "precisao": 0.9682539682539683,
+        "n_canal": 441
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 0.8884381338742393,
+        "precisao": 0.9748858447488584,
+        "n_canal": 438
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.8823529411764706,
+        "precisao": 0.9770114942528736,
+        "n_canal": 435
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.8600405679513184,
+        "precisao": 0.9882075471698113,
+        "n_canal": 424
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.847870182555781,
+        "precisao": 0.9904306220095693,
+        "n_canal": 418
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.8316430020283976,
+        "precisao": 0.9902439024390244,
+        "n_canal": 410
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.8073022312373225,
+        "precisao": 0.992462311557789,
+        "n_canal": 398
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.7789046653144016,
+        "precisao": 0.9921875,
+        "n_canal": 384
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.7383367139959433,
+        "precisao": 0.9972527472527473,
+        "n_canal": 364
+      }
+    ],
+    "Storage": [
+      {
+        "tau": 0.0,
+        "cobertura": 0.9081081081081082,
+        "precisao": 0.9384920634920635,
+        "n_canal": 504
+      },
+      {
+        "tau": 0.3,
+        "cobertura": 0.9063063063063063,
+        "precisao": 0.9403578528827038,
+        "n_canal": 503
+      },
+      {
+        "tau": 0.4,
+        "cobertura": 0.8846846846846846,
+        "precisao": 0.945010183299389,
+        "n_canal": 491
+      },
+      {
+        "tau": 0.5,
+        "cobertura": 0.8414414414414414,
+        "precisao": 0.9550321199143469,
+        "n_canal": 467
+      },
+      {
+        "tau": 0.6,
+        "cobertura": 0.7855855855855856,
+        "precisao": 0.9724770642201835,
+        "n_canal": 436
+      },
+      {
+        "tau": 0.7,
+        "cobertura": 0.7387387387387387,
+        "precisao": 0.9804878048780488,
+        "n_canal": 410
+      },
+      {
+        "tau": 0.8,
+        "cobertura": 0.6882882882882883,
+        "precisao": 0.9869109947643979,
+        "n_canal": 382
+      },
+      {
+        "tau": 0.9,
+        "cobertura": 0.618018018018018,
+        "precisao": 0.9970845481049563,
+        "n_canal": 343
+      },
+      {
+        "tau": 0.95,
+        "cobertura": 0.5333333333333333,
+        "precisao": 1.0,
+        "n_canal": 296
+      }
+    ]
+  }
+}

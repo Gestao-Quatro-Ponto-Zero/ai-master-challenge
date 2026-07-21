@@ -1,0 +1,118 @@
+
+==============================================================================
+BLOCO 4 — TRIAGEM: ROTEADOR COM POLITICA EXPLICITA
+==============================================================================
+
+rota "auto" = auto-ROTEADO. Nunca auto-resolvido. Ver SECAO 1B do bloco 1:
+a medicao do bloco 3 licencia roteamento e nada alem disso. Nenhuma rota
+deste arquivo fecha ticket ou responde cliente.
+
+Politica:
+  kappa = M/T          : 5          [premissa arbitrada, sem fonte]
+  piso p* = k/(1+k)    : 83.3%      derivado, forma fechada
+  margem minima        : 0.15       [convencao do analista]
+  categorias sensiveis : ['Access', 'Administrative rights']
+                         [decisao de processo, nao dos dados]
+
+
+------------------------------------------------------------------------------
+PARTE 1 — LIMIARES POR CLASSE, DERIVADOS DA CURVA MEDIDA
+------------------------------------------------------------------------------
+
+tau_c = menor limiar cuja precisao medida alcanca o piso. Menor e nao maior:
+dentro da regiao que respeita p*, queremos a maior cobertura possivel.
+Nenhum destes numeros foi escolhido a mao — todos saem de curva_medida.json.
+
+               classe  tau_c  cobertura em tau_c  precisao em tau_c auto-rotavel sensivel
+               Access    0.0               0.980              0.908          sim      SIM
+Administrative rights    0.0               0.767              0.896          sim      SIM
+           HR Support    0.0               1.007              0.869          sim         
+             Hardware    0.5               0.964              0.866          sim         
+     Internal Project    0.0               0.896              0.913          sim         
+        Miscellaneous    0.3               1.002              0.835          sim         
+             Purchase    0.0               0.895              0.968          sim         
+              Storage    0.0               0.908              0.938          sim         
+
+------------------------------------------------------------------------------
+PARTE 2 — AVALIACAO DA POLITICA NO CONJUNTO DE TESTE
+------------------------------------------------------------------------------
+
+chamados avaliados: 9,568
+
+           chamados  % do total  precisao
+rota                                     
+auto           7142        74.6     0.897
+aprovacao      1666        17.4     0.906
+humano          760         7.9     0.479
+
+LEITURA
+
+  auto-roteados     : 7,142 (74.6% do volume)
+  precisao no auto  : 89.7%   contra piso p* = 83.3%
+  margem de folga   : +6.3%
+
+  A taxa de automacao NAO e 100%, e nao foi forcada a nao ser: e o que sobra
+  depois de as quatro regras cortarem. As tres fatias de humano tem motivos
+  diferentes e mensuraveis, e e isso que a coluna 'motivo' registra em cada
+  decisao individual.
+
+DISTRIBUICAO DE MOTIVO PARA NAO AUTOMATIZAR
+                               chamados  % do total  precisao da sugestao
+tipo                                                                     
+R1 categoria sensivel              1666        17.4                 0.906
+R2 empate no topo                   627         6.6                 0.472
+R3 abaixo do limiar da classe       133         1.4                 0.511
+
+  'precisao da sugestao' e quanto a maquina teria acertado se tivesse
+  roteado sozinha esses casos. Comparar com o piso mostra se a regra esta
+  cortando o que devia:
+    - se ficar MUITO abaixo do piso, a regra esta salvando erro caro;
+    - se ficar acima do piso, a regra esta conservadora demais e custa
+      cobertura sem comprar seguranca.
+  Este e o mostrador para calibrar a politica sem tocar no modelo.
+
+
+------------------------------------------------------------------------------
+PARTE 3 — O CUSTO DA REGRA R1, MEDIDO E NAO ESTIMADO
+------------------------------------------------------------------------------
+
+  A regra R1 e a unica que NAO vem dos dados. Ela e decisao de processo, e
+  por isso o minimo e medir o que ela custa em vez de deixar implicito:
+
+    chamados desviados para aprovacao : 1,666 (17.4% do volume)
+    precisao que a maquina teria tido : 90.6%
+    acima do piso p*=83.3%?               : sim
+
+  Leitura honesta: a maquina classificaria estes casos bem. A regra
+  nao existe porque a precisao e ruim — existe apesar de a precisao ser boa.
+  Ela troca cobertura por controle de risco, deliberadamente. Quem discordar
+  dessa troca move CATEGORIAS_SENSIVEIS e reroda — o custo esta na mesa.
+
+
+------------------------------------------------------------------------------
+PARTE 4 — DEMONSTRACAO EM CHAMADOS REAIS DO TESTE
+------------------------------------------------------------------------------
+
+Um exemplo de cada rota, tirado do conjunto de teste:
+
+  ---- rota: auto ----
+  texto : project codes july pm codes hello please assign task thank kind regards july pm codes hi pm attached codes pm thanks
+  real  : Internal Project
+  AUTO      Internal Project       conf 0.997  margem 0.996  | auto-ROTEADO para a fila 'Internal Project': confianca 0.997 >= tau=0.00, margem 0.996 ok. Nao resolvido — agente atende normalmente.
+
+  ---- rota: humano ----
+  texto : tablet issues wednesday october pm issues hi having issues pairing help please let cheers best regards tester
+  real  : Administrative rights
+  HUMANO    Hardware               conf 0.485  margem 0.168  | confianca 0.485 abaixo do limiar medido tau=0.50 de 'Hardware' (piso p*=83.3%)
+
+  ---- rota: aprovacao ----
+  texto : create record net which points to thursday pm dear please create record which points thanks regards engineer
+  real  : Access
+  APROVACAO Access                 conf 0.831  margem 0.764  | categoria sensivel: 'Access' concede privilegio; exige aprovacao humana [decisao de processo]
+
+
+==============================================================================
+FIM — BLOCO 4
+==============================================================================
+politica salva em: politica_triagem.json
+saida salva em: C:\Users\pablo\Documents\Projetos\ai-master-challenge\submissions\pablo-marques\solution\04_triagem_saida.txt

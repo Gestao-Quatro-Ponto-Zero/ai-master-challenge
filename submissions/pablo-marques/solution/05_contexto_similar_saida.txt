@@ -1,0 +1,359 @@
+
+==============================================================================
+BLOCO 5 — CONTEXTO DE CHAMADOS SIMILARES (nao e resposta sugerida)
+==============================================================================
+
+O enunciado, linha 82, pede "um sistema de respostas sugeridas baseado em
+tickets similares". Este bloco entrega chamados similares como CONTEXTO e se
+recusa a chama-los de resposta. A PARTE 0 mede o motivo; as PARTES 2 a 4 medem
+o que sobra; a PARTE 6 nomeia o campo que faltaria.
+
+Parametros do painel:
+  k vizinhos exibidos    : 3      [convencao do analista]
+  similaridade minima    : 0.3   [convencao do analista] — abaixo disso o painel fica VAZIO
+  limiar de "gemeo"      : 0.9   [dados, bloco 3] mesmo limiar da auditoria de vazamento
+
+
+------------------------------------------------------------------------------
+PARTE 0 — POR QUE O DESENHO PEDIDO NAO EXISTE NESTES DADOS
+------------------------------------------------------------------------------
+
+DESENHO OBVIO, E POR QUE ELE MORRE
+
+  "para um chamado novo, ache os 3 mais parecidos e mostre o que foi feito
+   neles" exige duas colunas no mesmo arquivo: texto do problema e texto da
+   solucao. Nenhum dos dois arquivos tem as duas.
+
+  dataset 2 (all_tickets_processed_improved_v3.csv): texto genuino, 8 rotulos,
+    NENHUM campo de resolucao. E o arquivo com que o classificador foi medido.
+
+  dataset 1 (customer_support_tickets.csv): tem a coluna Resolution.
+    resolucoes nao-nulas : 2,769
+    valores unicos       : 2,769  (100.0% de unicidade)
+    comprimento medio    : 36 caracteres
+
+TESTE NOVO — A RESOLUCAO FALA DO PROPRIO TICKET?
+
+  Se a resolucao fosse real, ela dividiria vocabulario com o problema que
+  resolveu: quem responde sobre uma fatura escreve "fatura". Entao mede-se a
+  fracao de palavras da resolucao que aparecem na descricao DELA, e compara-se
+  com a mesma fracao contra a descricao de OUTRO cliente sorteado (semente
+  42). O controle e pareado: mesma resolucao, problema trocado. Como a
+  permutacao so embaralha os pares, os dois lados tem a MESMA distribuicao de
+  comprimento de descricao — a comparacao nao e contaminada por tamanho.
+
+    sobreposicao com o proprio problema      : 0.0102
+    sobreposicao com problema de outro       : 0.0076
+    diferenca                                : +0.0025
+    teste t pareado                          : t=2.49, p=0.013
+    tamanho de efeito (d de Cohen pareado)   : 0.047
+    resolucoes SEM UMA UNICA palavra em comum
+      com o proprio problema                 : 94.9%
+      com o problema de um estranho          : 96.0%
+
+  LEITURA, E ELA NAO E "DEU ZERO":
+
+    A diferenca e estatisticamente significante (p=0.013) e operacionalmente
+    irrelevante (d=0.047). Com 2,769 pares, um t-test detecta uma
+    diferenca de 0.25 ponto percentual sobre uma base de ~1%. Registro
+    o p mesmo sendo inconveniente para a tese: suprimi-lo seria escolher o
+    teste depois de ver o resultado.
+
+    O numero que decide nao e o p, e a linha de baixo: 94.9% das resolucoes
+    nao tem UMA palavra em comum com o problema que teriam resolvido. Contra
+    96.0% quando o problema e de outra pessoa. Nao ha o que recuperar em
+    nenhum dos dois casos — a resolucao correta e a resolucao de um estranho
+    sao igualmente inuteis para um agente.
+
+  Isto e uma medida DIFERENTE da E6, nao uma mais forte: a E6 mostrou que
+  nenhuma resolucao se repete (100% de unicidade); isto mostra que
+  nenhuma CORRESPONDE. Uma base pode ter resolucoes todas distintas e ainda
+  assim uteis — as duas medidas juntas e que fecham o caso.
+
+  amostra (pares lidos agora, semente 42):
+    [1] PROBLEMA : I'm having an issue with the {product_purchased}. Please assist. It's time for me to update the product list
+
+
+        RESOLUCAO: Else personal leg break book nearly.
+    [2] PROBLEMA : I'm having an issue with the {product_purchased}. Please assist. <sigh> Thanks. Now, I have to decide between 
+        RESOLUCAO: Catch front necessary rule toward student.
+    [3] PROBLEMA : I'm having an issue with the {product_purchased}. Please assist. 1 2 3 5 6 7 8 9 10 11 12 13 <?php // http://c
+        RESOLUCAO: If to degree little.
+
+  CONSEQUENCIA — e o achado, nao a desculpa:
+
+    a operacao que gerou este dado nao consegue reaproveitar solucao porque
+    nao registra solucao reaproveitavel. Um sistema de respostas sugeridas nao
+    e bloqueado por falta de modelo, de embedding ou de LLM. E bloqueado por
+    um campo. Construir a camada de resposta em cima de texto livre desta
+    qualidade produziria sugestoes como as tres impressas acima, entregues a
+    um agente como se fossem precedente. Isso e pior que nao ter o recurso.
+
+
+------------------------------------------------------------------------------
+PARTE 1 — O QUE SOBRA, E COMO ELE SE CHAMA
+------------------------------------------------------------------------------
+
+ARTEFATO: painel de contexto — chamados similares JA ROTEADOS.
+
+  entrega ao agente : os 3 chamados historicos mais parecidos, com a
+                      similaridade e a fila para onde cada um foi.
+  NAO entrega       : texto para mandar ao cliente, rascunho, macro, ou
+                      qualquer coisa que possa ser copiada e enviada.
+
+  O nome importa e foi escolhido para nao mentir. "Resposta sugerida" promete
+  que a maquina sabe o que responder; o que foi medido no bloco 3 e precisao
+  de CLASSIFICACAO, que licencia escolher a fila e nada alem (bloco 1, SECAO
+  1B). Um painel chamado "resposta sugerida" seria a mesma medicao com um
+  nome que ela nao sustenta — e o agente confiaria nele de acordo com o nome.
+
+  Por isso todo painel deste bloco sai com o carimbo:
+    "CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho,
+     nao fecha ticket."
+
+SEGUNDO USO, QUE E O QUE PAGA O CUSTO DO MODULO
+
+  Os vizinhos votam. E um voto de vizinhanca, computado sobre a mesma matriz
+  TF-IDF, mas independente dos coeficientes da regressao logistica: um erra
+  por prior, o outro erra por vocabulario local. Quando os dois concordam, ha
+  duas evidencias; quando discordam, o caso e ambiguo por dois motivos
+  diferentes. As PARTES 3 e 4 medem se essa discordancia vale alguma coisa.
+
+montando o painel (reaproveita o Triador do bloco 4; nada e treinado aqui)...
+  9,568 chamados de teste processados em 23.3s
+
+------------------------------------------------------------------------------
+PARTE 2 — DENSIDADE DE REPETICAO DE PROBLEMA
+------------------------------------------------------------------------------
+
+Antes de perguntar se o painel ajuda, a pergunta e se existe o que recuperar.
+Medido no conjunto de teste (9,568 chamados), contra os 38,269
+do treino: quao parecido e o vizinho mais proximo de cada chamado novo?
+
+  similaridade do vizinho mais proximo — distribuicao
+    mediana : 0.392
+    media   : 0.463
+    >= 0.90 :    606  ( 6.3%)
+    >= 0.70 :  1,855  (19.4%)
+    >= 0.50 :  3,362  (35.1%)
+    >= 0.30 :  6,643  (69.4%)
+    < 0.30 :  2,925  (30.6%)  -> painel VAZIO, por construcao
+
+O MESMO FATO DO BLOCO 3, COM O SINAL TROCADO — E COM UMA DISCREPANCIA A DECLARAR
+
+  A PARTE 1 do bloco 3 mediu quase-duplicata como RISCO: documento repetido
+  dos dois lados do split infla acuracia por memorizacao. La, 12.17% do
+  conjunto de teste tinha gemeo >= 0.90 no treino. Aqui o mesmo fato e ATIVO —
+  se o problema ja chegou antes, ha o que mostrar ao agente — mas o numero
+  medido e 6.3%, e nao 12.17%.
+
+  A DIFERENCA E DE METODO, NAO DE DADO, e fica registrada em vez de
+  arredondada para o numero mais conveniente:
+
+    bloco 3, auditoria : TfidfVectorizer(min_df=2, max_features=30000),
+                         unigrama, sem sublinear_tf, ajustado na BASE INTEIRA
+    bloco 5, painel    : o vetorizador DO CLASSIFICADOR — min_df=3, unigrama +
+                         bigrama, sublinear_tf, ajustado so no TREINO
+
+  Bigrama e sublinear_tf tornam a medida mais exigente: exigem que a ordem das
+  palavras coincida, e achatam o peso do termo repetido. O mesmo par de
+  documentos passa de 0.90 num espaco e nao passa no outro. Ou seja, 12.17% e
+  o teto pessimista para a auditoria de vazamento (que deve superestimar o
+  risco, e por isso o espaco frouxo era o certo la), e 6.3% e a leitura
+  conservadora para o painel (que nao deve prometer contexto que nao tem).
+
+  Cada bloco usou o espaco que erra para o lado seguro do seu proprio uso, e
+  os dois numeros estao publicados. O espaco daqui nao foi escolhido por isso,
+  no entanto: foi escolhido porque o vizinho exibido ao agente TEM de ser
+  vizinho no mesmo espaco em que a decisao ao lado dele foi tomada. Se fossem
+  espacos diferentes, o painel mostraria um contexto que nao explica a rota.
+
+  E aqui esta a linha exata onde esta entrega para, e ela e a tese inteira em
+  uma frase:
+
+    repeticao de PROBLEMA e medivel nestes dados — esta medida acima.
+    repeticao de SOLUCAO nao e — nao ha campo que a registre.
+
+  A distancia entre as duas nao e um modelo. E uma coluna. Ver PARTE 6.
+
+
+------------------------------------------------------------------------------
+PARTE 3 — O VOTO DOS VIZINHOS COMO SEGUNDA OPINIAO
+------------------------------------------------------------------------------
+
+Pergunta: quando o voto dos vizinhos discorda do modelo, o modelo erra mais?
+Se sim, o painel nao e so conforto visual — e um detector de erro que ja esta
+na tela, de graca, porque os vizinhos foram recuperados de qualquer forma.
+
+  precisao do modelo (regressao logistica) no teste inteiro : 0.865
+  precisao do voto de vizinhanca puro (3-NN, so onde ha voto)  : 0.782
+    (o k-NN sozinho e pior, e por isso ele nao substitui o modelo — ele
+     discorda dele, que e uma funcao diferente)
+
+              chamados  % do total  precisao_do_modelo
+grupo                                                 
+concordam         5398        56.4               0.928
+sem contexto      2925        30.6               0.804
+discordam         1245        13.0               0.733
+
+  SEPARACAO MEDIDA: 0.928 contra 0.733 = +0.196
+
+  Sem gemeo (excluindo os 606 chamados com vizinho >= 0.9, que sao
+  o caso facil e inflariam a leitura):
+    concordam : 4,814 chamados, precisao 0.924
+    discordam : 1,223 chamados, precisao 0.738
+    separacao : +0.186
+
+  Este e o mesmo movimento da PARTE 4 do bloco 3 (acuracia com e sem gemeo):
+  se o efeito so existisse no subconjunto memorizado, ele nao seria efeito.
+
+
+------------------------------------------------------------------------------
+PARTE 4 — CRUZAMENTO COM A POLITICA DO BLOCO 4
+------------------------------------------------------------------------------
+
+A politica do bloco 4 ja cortou o volume em tres rotas com quatro regras. A
+pergunta aqui e se a discordancia dos vizinhos acrescenta informacao DENTRO
+da rota auto — que e a unica onde nao ha humano olhando antes.
+
+               size                             mean                       
+grupo     concordam discordam sem contexto concordam discordam sem contexto
+rota                                                                       
+aprovacao      1077       198          391     0.956     0.788        0.829
+auto           4147       784         2211     0.942     0.801        0.844
+humano          174       263          323     0.425     0.487        0.502
+
+DENTRO DA ROTA AUTO (7,142 chamados, precisao 0.897, piso p*=83.3%)
+  concordam    : 4,147 (58.1%)  precisao 0.942
+  discordam    :   784 (11.0%)  precisao 0.801
+  sem contexto : 2,211 (31.0%)  precisao 0.844
+
+CONTRAFACTUAL — MEDIDO, NAO IMPLEMENTADO
+
+  Se existisse uma regra R5 ("vizinhos discordam -> humano"), aplicada apos as
+  quatro regras do bloco 4:
+
+    sairiam do auto      : 784 chamados (8.2% do volume total)
+    precisao do auto iria: 0.897 -> 0.908  (+0.012)
+    taxa de auto global  : 74.6% -> 66.5%
+    precisao do desviado : 0.801  (contra piso 83.3%)
+
+  A R5 NAO entra nesta entrega, e o motivo e declarado: a politica do bloco 4
+  ja foi medida e commitada com quatro regras, e promover a quinta mudaria a
+  taxa de automacao publicada sem que o custo do desvio tenha sido discutido
+  com quem paga por ele. O numero fica na mesa, do mesmo jeito que o custo da
+  R1 ficou na PARTE 3 do bloco 4: quem decide troca cobertura por precisao com
+  o preco a vista, e nao por gosto.
+
+  O que ja vale hoje, sem regra nenhuma: o agente que recebe um chamado
+  auto-roteado ve na propria tela se os vizinhos concordaram. Isso e revisao
+  amostral dirigida em vez de aleatoria — e nao custa uma linha de politica.
+
+
+------------------------------------------------------------------------------
+PARTE 5 — O PAINEL COMO O AGENTE VE, EM CHAMADOS REAIS DO TESTE
+------------------------------------------------------------------------------
+
+Um chamado de cada rota, os mesmos tres da PARTE 4 do bloco 4, agora com o
+contexto ao lado da decisao.
+
+  ---- rota: auto ----
+  chamado : project codes july pm codes hello please assign task thank kind regards july pm codes hi pm attached codes pm thanks
+  real    : Internal Project
+  AUTO      Internal Project       conf 0.997  margem 0.996  | auto-ROTEADO para a fila 'Internal Project': confianca 0.997 >= tau=0.00, margem 0.996 ok. Nao resolvido — agente atende normalmente.
+  [CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.]
+    sim 0.437 | fila 'Internal Project'
+      texto    : pm set up for project codes pm codes hi please thank kind regards thursday pm codes good morning please pm cod
+      resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+    sim 0.370 | fila 'Internal Project'
+      texto    : new pas project codes tuesday october pm codes hi please log add kind regards engineer
+      resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+    sim 0.368 | fila 'Internal Project'
+      texto    : project codes and wednesday july pm codes hello please assign kind regards wednesday july re codes hello pleas
+      resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+    -> voto dos vizinhos: 'Internal Project' | modelo: 'Internal Project' | concordam
+
+  ---- rota: humano ----
+  chamado : tablet issues wednesday october pm issues hi having issues pairing help please let cheers best regards tester
+  real    : Administrative rights
+  HUMANO    Hardware               conf 0.485  margem 0.168  | confianca 0.485 abaixo do limiar medido tau=0.50 de 'Hardware' (piso p*=83.3%)
+  [CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.]
+    sim 0.317 | fila 'Access'
+      texto    : password reset request july pm issues hi having issues won accept format even pass meets requirements please a
+      resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+    -> voto dos vizinhos: 'Access' | modelo: 'Hardware' | DISCORDAM
+
+  ---- rota: aprovacao ----
+  chamado : create record net which points to thursday pm dear please create record which points thanks regards engineer
+  real    : Access
+  APROVACAO Access                 conf 0.831  margem 0.764  | categoria sensivel: 'Access' concede privilegio; exige aprovacao humana [decisao de processo]
+  [CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.]
+    sim 0.726 | fila 'Access'
+      texto    : create a record net tuesday hi please create record which points record exists change destination thanks regar
+      resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+    sim 0.405 | fila 'Access'
+      texto    : create new record for prod service friday pm create record prod hi create record prod questions please let bes
+      resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+    -> voto dos vizinhos: 'Access' | modelo: 'Access' | concordam
+
+  ---- caso em que o painel devolve VAZIO (nao ha comparavel) ----
+  chamado : blocked tuesday november pm additional has approved by has operated years forwarded via currently receiving receiving failure notice therefo
+  real    : Miscellaneous
+  AUTO      Hardware               conf 0.569  margem 0.295  | auto-ROTEADO para a fila 'Hardware': confianca 0.569 >= tau=0.50, margem 0.295 ok. Nao resolvido — agente atende normalmente.
+  [CONTEXTO PARA O AGENTE — nao e resposta ao cliente, nao e rascunho, nao fecha ticket.]
+    (nenhum chamado comparavel na base acima de sim=0.3 — o painel devolve VAZIO em vez de inventar tres)
+
+
+------------------------------------------------------------------------------
+PARTE 6 — O SLOT VAZIO: resolution_code
+------------------------------------------------------------------------------
+
+Todo vizinho impresso acima carrega o campo:
+
+    resolucao: [INDISPONIVEL — o campo resolution_code nao existe nesta base]
+
+Ele esta na estrutura de dados, na dataclass Similar, e sai impresso vazio em
+todos os 16,550 vizinhos exibidos nesta rodada. Isso e deliberado. O
+argumento fecha em circulo, e o circulo e o ponto mais forte desta proposta:
+
+  1. o bloco 0 recomendou instrumentar resolution_code / kb_article_id
+     (item 10 da PARTE 3), por analise dos dados e nao por boa pratica;
+  2. o bloco 1 (SECAO 1B) mostrou que auto-RESOLUCAO nao e dimensionavel sem
+     ele, e por isso nenhum numero de auto-resolucao aparece nesta entrega;
+  3. o bloco 3 mediu classificacao e licenciou roteamento, so;
+  4. o bloco 5 — este — tenta construir a camada de resposta que o enunciado
+     pede e para no MESMO campo.
+
+  Quatro blocos, quatro caminhos independentes, um unico gargalo. A
+  recomendacao de instrumentacao nao e apendice de consultoria: e o que separa
+  esta entrega da proxima.
+
+O QUE MUDA NO DIA EM QUE O CAMPO EXISTIR — e nao e o modelo
+
+  - a dataclass Similar ja tem o slot; ele passa a ser preenchido com o codigo
+    de solucao do vizinho. Nenhuma mudanca de arquitetura.
+  - nasce a metrica que hoje nao existe: taxa de repeticao de SOLUCAO
+    (quantos chamados recebem o mesmo resolution_code). A PARTE 2 mediu
+    repeticao de PROBLEMA — 6.3% com gemeo >= 0.9 e 19.4% acima de 0.70,
+    no espaco de features do classificador — e essa e o teto
+    superior da outra: dois chamados com solucoes iguais nao precisam ter
+    problemas parecidos, mas problemas quase identicos que recebem solucoes
+    diferentes sao ou variacao de agente ou erro de registro, e as duas
+    coisas sao achado.
+  - so entao a camada de resposta pode ser proposta com numero, e so entao o
+    nome "resposta sugerida" para de ser promessa.
+
+ATE LA, A RECUSA E O ENTREGAVEL. O sistema pedido na linha 82 nao foi
+construido porque construi-lo com estes dados significaria mostrar ao agente
+frases como "Increase wife television along along need physical." rotuladas
+como precedente. O que foi construido no lugar entrega o que o dado sustenta —
+contexto de roteamento — e nomeia com precisao o que falta para entregar o
+resto.
+
+
+==============================================================================
+FIM — BLOCO 5
+==============================================================================
+medicao salva em: contexto_medido.json
+saida salva em: C:\Users\pablo\Documents\Projetos\ai-master-challenge\submissions\pablo-marques\solution\05_contexto_similar_saida.txt
+tempo total: 23.3s

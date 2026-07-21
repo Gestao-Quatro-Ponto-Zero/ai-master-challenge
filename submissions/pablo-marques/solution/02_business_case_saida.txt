@@ -1,0 +1,675 @@
+
+==============================================================================
+BLOCO 1 — BUSINESS CASE PARAMETRICO
+==============================================================================
+
+Este bloco entrega uma FUNCAO, nao um numero. Todo numero abaixo carrega
+uma marca de procedencia:
+
+  [dados]                          medido nos arquivos deste repositorio
+  [enunciado]                      afirmado pelo briefing do desafio
+  [premissa arbitrada, sem fonte]  escolhido por mim, sem respaldo externo
+  [convencao do analista]          linha de corte que eu escolhi, nao achado
+  [PLACEHOLDER]                    marcador ate o bloco 3 medir
+
+Numero sem marca nao existe neste arquivo.
+
+
+------------------------------------------------------------------------------
+REGISTRO DE PROCEDENCIA DOS INSUMOS
+------------------------------------------------------------------------------
+INSUMO                       VALOR                          PROCEDENCIA
+--------------------------------------------------------------------------------------------------------------
+V — volume anual             30,000 tickets/ano             [enunciado] README linha 11
+w_c — mix por categoria      8 classes, medido              [dados] dataset 2 (transplante declarado, ver SECAO 1)
+H — tempo de triagem medio   0 a 3 min/ticket               [premissa arbitrada, sem fonte]
+k — custo do erro            3.00x a 21.00x o tempo de triagem [premissa arbitrada, sem fonte]
+horas/FTE/ano                1,760 h                        [premissa arbitrada, sem fonte]
+limiar de materialidade      1 FTE                          [convencao do analista] nao e achado dos dados
+curva cobertura x precisao   medida por classe              [dados] bloco 3, curva_medida.json
+
+==============================================================================
+SECAO 0 — O BRIEFING DESCREVE UM DATASET QUE NAO E ESTE
+==============================================================================
+
+O enunciado afirma duas coisas sobre o Dataset 1 que o arquivo contradiz.
+As duas juntas — e nao cada uma isolada — determinam de onde pode vir o
+volume do business case.
+
+DIVERGENCIA DE TAMANHO
+  briefing (linha 45) : "~30.000 registros"
+  arquivo             : 8,469 linhas   [dados]
+  razao               : 3.5x
+
+DIVERGENCIA DE NATUREZA
+  briefing (linha 45) : "com texto real de descricao e resolucao"
+  arquivo             : 2,769 resolucoes nao-nulas, 2,769 valores unicos
+                        (100% de unicidade), 36 caracteres em media
+  evidencia E6        : nenhuma resolucao se repete, e o texto e faker
+                        ("Increase wife television along along need physical.")
+
+CONSEQUENCIA
+  A divergencia nao e de contagem, e de natureza: o briefing descreve um
+  arquivo com resolucao real, e este arquivo nao tem resolucao real. Logo o
+  briefing nao esta descrevendo este arquivo.
+
+  Isso resolve a ambiguidade do "~30.000". A linha 11 diz "a operacao atende
+  ~30.000 tickets por ano" e a linha 45 diz "~30.000 registros". Como o
+  briefing comprovadamente nao descreve este arquivo, o 30.000 NAO pode ser
+  lido como "o arquivo e a operacao anual". So resta a leitura de negocio:
+  volume declarado pelo cliente.
+
+  V = 30,000/ano entra como [enunciado], nunca como [dados].
+  Os 8,469 do arquivo nao sao multiplicados por fator nenhum.
+
+  Os dados dao FORMA. O briefing da ESCALA. Nao se misturam.
+
+
+==============================================================================
+SECAO 1 — O MODELO E A ALGEBRA QUE ELIMINA V E H
+==============================================================================
+
+    horas_liquidas(c, tau, k) =
+        V * w_c * H * cobertura(c, tau) * g(p(c, tau), k)
+
+    onde   g(p, k) = p - (1 - p) * (k - 1)
+
+Leitura de g: de cada 100 tickets que a maquina assume, p acertos poupam
+1 H cada; os (1-p) erros nao poupam nada E ainda custam (k-1) H de
+retrabalho. g e o saldo liquido, em unidades de H, por ticket automatizado.
+
+TRATAMENTO DE V E DE H — e por que nao tem eixo de sensibilidade
+
+  V e H entram como produto multiplicativo puro. Nao interagem com tau,
+  nao interagem com k, nao interagem com o mix. Dobrar H dobra toda a
+  coluna de horas; dobrar V faz o mesmo; nenhum dos dois altera qual
+  categoria e maior, nem o sinal do resultado, nem o piso de precisao.
+
+  Dar eixo de sensibilidade a um escalar linear seria encenacao: a "analise"
+  produziria uma reta pela origem cuja inclinacao ja esta escrita na formula.
+  Entao V e H ficam registrados como escalares e nao como eixos:
+
+     dobrou H  -> dobrou horas e dobrou FTE. Nada mais muda.
+     dobrou V  -> idem.
+
+  Os eixos que sobram — os unicos que mudam CONCLUSAO e nao so escala —
+  sao tau e k. A grade e essa, e so essa.
+
+O MIX — transplante declarado
+  w_c vem do dataset 2 [dados]: service desk INTERNO de TI (HR Support,
+  Access, Administrative rights, Internal Project). O Dataset 1 e suporte
+  B2C de produto de consumo (Canon EOS, GoPro, Amazon Echo). Nao sao a
+  mesma populacao.
+
+  Uso o mix do dataset 2 porque a taxa de automacao so e mensuravel na
+  taxonomia dele — o classificador do bloco 3 vai emitir precisao por
+  classe NESSAS 8 classes. Ponderar por 'Ticket Type' do dataset 1
+  deixaria o modelo internamente incoerente: o numero medido depois nao
+  corresponderia as classes ponderadas antes.
+
+  O preco esta declarado: isto e ESTRUTURA IMPORTADA de outra operacao,
+  nao o mix desta. Sem fonte para o mix desta operacao.
+
+  O dataset 1 nao entra com peso nenhum. Seu mix por tipo (20.7/20.6/20.0/
+  19.4/19.3) e por canal (25.3/25.2/25.0/24.5) e uniforme — evidencia E7,
+  sorteio. Canal cai pelo mesmo motivo que tipo: a regua tem que ser a
+  mesma. O dataset 1 contribui com esquema, com o achado estrutural do
+  CSAT e com a recomendacao de instrumentacao, nao com pesos.
+
+MIX APLICADO — w_c  [dados] dataset 2, transplante declarado
+                       tickets  w_c %
+Topic_group                          
+Hardware                 13617   28.5
+HR Support               10915   22.8
+Access                    7125   14.9
+Miscellaneous             7060   14.8
+Storage                   2777    5.8
+Purchase                  2464    5.2
+Internal Project          2119    4.4
+Administrative rights     1760    3.7
+
+  desbalanceamento: 7.7x  [dados]
+
+==============================================================================
+SECAO 1B — DUAS CAMADAS: ROTEAR NAO E RESOLVER
+==============================================================================
+
+Esta secao existe porque o bloco 3 expos uma confusao que estava dentro deste
+arquivo desde a primeira versao, e que so ficou visivel depois da medicao.
+
+O fator de ganho g(p,k) foi escrito com a leitura de que um acerto significa
+'a maquina RESOLVE e o humano economiza um handle time inteiro'. Mas o que o
+bloco 3 mediu foi precisao de CLASSIFICACAO. Classificar bem prova que da
+para ROTEAR. Nao prova nada sobre resolver.
+
+Sao duas camadas com economias de tamanhos diferentes:
+
+  CAMADA 1 — AUTO-ROTEAMENTO                          [medido, bloco 3]
+    A maquina le o chamado e escolhe a fila. O agente ainda atende, ainda
+    escreve, ainda resolve.
+    O que se economiza: T, o tempo de TRIAGEM manual.
+    O que se arrisca:   M, o custo de um roteamento errado — transferencia,
+                        reenfileiramento, releitura por outro agente.
+    Ganho por ticket = p*T - (1-p)*M = T * [p - (1-p)*kappa],  kappa = M/T
+    A precisao medida por classe licencia exatamente esta camada, e so ela.
+
+  CAMADA 2 — AUTO-RESOLUCAO                           [NAO AVALIAVEL]
+    A maquina responde e fecha sem humano. Economiza o handle time inteiro.
+    Para dimensionar isso seria preciso medir repeticao de solucao: quantos
+    chamados recebem a MESMA resolucao, e quais. Esse e o campo
+    resolution_code / kb_article_id — item 10 da PARTE 3 do bloco 0.
+    Nos dados desta entrega ele nao existe:
+      - o dataset 2 nao tem campo de resolucao nenhum;
+      - o dataset 1 tem, e a evidencia E6 provou que e faker (2.769 de 2.769
+        valores unicos, 36 caracteres, texto aleatorio).
+    Portanto NENHUM numero de auto-resolucao aparece nesta entrega. Nao por
+    modestia — por falta de instrumento.
+
+O ARGUMENTO FECHA EM CIRCULO, e vale notar isso explicitamente:
+  o bloco 0 recomendou instrumentar resolution_code por analise dos dados;
+  o bloco 3 mediu classificacao e provou roteamento;
+  a unica coisa que separa esta entrega de dimensionar auto-resolucao e
+  exatamente o campo que o bloco 0 pediu. A recomendacao de instrumentacao
+  nao era um apendice de consultoria: e o gargalo real desta analise.
+
+CONSEQUENCIA NUMERICA — e nao e cosmetica:
+  T (triagem) e uma ordem de grandeza menor que o handle time, e M (custo do
+  misrouting) e varios multiplos de T. Isso empurra kappa para cima e, com
+  ele, o piso de precisao. Na primeira versao deste arquivo k ia de 1.25 a
+  4.00 e p* parava em 75%. Com a leitura correta, kappa vai de 2 a 20 e p*
+  chega a 95%. E ai o corte da SECAO 2 finalmente morde.
+
+
+==============================================================================
+SECAO 2 — PISO DE PRECISAO p*(kappa)  [resultado em forma fechada]
+==============================================================================
+
+Ao expressar o custo do misrouting como multiplo adimensional kappa = M/T —
+e nao como uma grandeza propria em minutos, que seria mais uma premissa
+inventada — V, T e o mix saem inteiros da equacao do SINAL:
+
+    g = 0   <=>   p* = kappa / (1 + kappa)     (equivalente a (k-1)/k, k = 1+kappa)
+
+Este e o unico numero desta entrega que nao depende de premissa nenhuma de
+escala. Nao depende de V [enunciado], nao depende de T [arbitrado], nao
+depende de horas/FTE [arbitrado] e nao depende da curva medida. So de kappa.
+
+Leitura: abaixo de p*, auto-rotear aquela classe DESTROI horas. O retrabalho
+dos misroutings supera a triagem poupada pelos acertos. Nao e ROI magro —
+e sinal negativo.
+
+kappa = M/T    p* minima      leitura
+------------------------------------------------------------------------------
+2                66.7%        misrouting barato: 2 triagens perdidas
+3                75.0%        3 triagens perdidas por erro
+5                83.3%        transferencia + releitura por outro agente
+7                87.5%        erro atravessa duas filas antes de assentar
+10               90.9%        misrouting caro: cliente reclama, ticket reabre
+20               95.2%        punitivo: erro custa 20 triagens
+
+CONSEQUENCIA OPERACIONAL — este e o entregavel do bloco pro bloco 3:
+
+  O classificador nao precisa ser "bom". Ele precisa entregar, POR CLASSE e
+  no limiar escolhido, precisao acima de p*(k). Classe que nao alcanca p*
+  nao entra na automacao — e essa e a resposta com numero para a pergunta
+  do enunciado sobre o que NAO automatizar.
+
+  Note o que isso faz com a metrica: o que decide nao e acuracia media nem
+  F1 agregado. E precisao por classe contra um piso. Um F1 alto conquistado
+  com recall nas classes grandes pode esconder precisao abaixo de p* nas
+  pequenas, e ai a automacao dessas classes entra com sinal negativo.
+
+
+==============================================================================
+SECAO 3 — DECISAO A: O QUE A ALGEBRA GARANTE E O QUE ELA NAO GARANTE
+==============================================================================
+
+DECISAO NOMEADA
+  O Diretor de Operacoes decide em que categoria a automacao entra
+  primeiro. Decisao de sequenciamento, nao de investimento.
+
+PERGUNTA DE SENSIBILIDADE
+  Em que ponto da faixa de tempo de triagem essa decisao vira?
+
+RESPOSTA, E ELA TEM DUAS METADES QUE PRECISAM SER LIDAS JUNTAS:
+
+  A invariancia e ao NIVEL do tempo de triagem. Nao e a RAZAO entre categorias.
+  E quem decide por onde comecar e a razao, nao o nivel.
+
+  METADE 1 — o nivel cancela, e cancela por algebra.
+
+    Sob tempo de triagem uniforme, H e escalar puro multiplicando todas as
+    categorias pelo mesmo valor:
+
+        horas(c) = [ V * H * cobertura * g ] * w_c
+                    \_______ constante _______/
+
+    O colchete nao depende de c. A ordem entre categorias e portanto a
+    ordem de w_c, qualquer que seja H. Nao e que a faixa de 0 a 3 min
+    seja estreita demais pra virar a decisao — e que NENHUMA faixa vira.
+    A premissa poderia estar errada por uma ordem de grandeza e a resposta
+    seria a mesma. Errar o nivel de H nao custa nada aqui.
+
+  METADE 2 — a razao NAO cancela, e e ela que manda.
+
+    A premissa de uniformidade e arbitrada e quase certamente falsa: nao
+    ha motivo para um chamado de Administrative rights custar o mesmo que
+    um de Hardware. Assim que H varia por categoria, ele sai do colchete
+    e entra no termo que varia:
+
+        horas(c) = [ V * cobertura * g ] * w_c * H_c
+                    \____ constante ____/    \_ varia _/
+
+    A ordem passa a ser a de (w_c * H_c). O nivel continua cancelando; a
+    razao H_c/H_c' passa a decidir tudo. Ou seja:
+
+        a decisao A e imune a errar QUANTO custa um ticket,
+        e totalmente exposta a errar QUAIS tickets custam mais.
+
+    A SECAO 4 quantifica exatamente essa exposicao. Ela nao e uma ressalva
+    que retrata esta secao — e a outra metade da mesma resposta, e o
+    motivo de este bloco nao publicar ranking (SECAO 6).
+
+VERIFICACAO DA METADE 1
+  Se o nivel cancela, a participacao percentual de cada categoria nas
+  horas totais tem que ser identica em qualquer H. Medido nos dois
+  extremos da faixa arbitrada e nos dois extremos de k:
+
+    desvio maximo absoluto de participacao entre os cenarios: 6.016 pp
+    (zero por construcao algebrica — nao e coincidencia numerica)
+
+  Nao ha tabela de ordem aqui de proposito. Imprimir a ordem seria imprimir
+  o ranking que a SECAO 6 explica por que este bloco nao publica.
+
+
+==============================================================================
+SECAO 4 — QUANTIFICACAO DA METADE 2: O QUE TERIA QUE SER VERDADE
+==============================================================================
+
+Esta secao mede a exposicao anunciada na METADE 2 da SECAO 3. A pergunta
+certa nao e "a conclusao aguenta a faixa de H?" — a METADE 1 ja respondeu
+que sim, e por algebra. A pergunta que sobra e sobre a razao:
+
+  quanto o tempo de triagem de uma categoria teria que ser MAIOR que o de
+  Hardware para que ela passasse na frente?
+
+    w_c * H_c > w_maior * H_maior   <=>   H_c / H_maior > w_maior / w_c
+
+A razao necessaria depende so do mix [dados]. Nao depende de H, de V, de k
+nem da curva placeholder — e o mesmo tipo de resultado da SECAO 2: forma
+fechada, livre de escala.
+
+(A tabela abaixo esta ordenada por w_c, que ja e publico como [dados] na
+SECAO 1. Ela nao ordena categorias por horas recuperaveis — ver SECAO 6.)
+
+            categoria  w_c % H_c / H_Hardware necessario                                    veredito
+           HR Support   22.8                       1.25x PLAUSIVEL — a ordem aqui nao esta protegida
+               Access   14.9                       1.91x         possivel, exigiria diferenca grande
+        Miscellaneous   14.8                       1.93x         possivel, exigiria diferenca grande
+              Storage    5.8                       4.90x                 implausivel — ordem robusta
+             Purchase    5.2                       5.53x                 implausivel — ordem robusta
+     Internal Project    4.4                       6.43x                 implausivel — ordem robusta
+Administrative rights    3.7                       7.74x                 implausivel — ordem robusta
+
+LEITURA — a exposicao e assimetrica, e e isso que orienta a acao:
+
+  O primeiro lugar NAO esta protegido. Basta HR Support custar
+  1.25x o tempo de triagem de Hardware para assumir a lideranca — uma
+  violacao de 25% da premissa de uniformidade, que e perfeitamente
+  plausivel em qualquer operacao real.
+
+  Ja o fundo da lista esta protegido: inverter as classes pequenas exigiria
+  razoes de 5x a 8x, que seriam visiveis a olho nu em qualquer operacao.
+
+  Traduzindo pro Diretor: a premissa de tempo de triagem uniforme e barata para
+  decidir o que NAO priorizar, e cara para decidir o que priorizar em
+  primeiro lugar. Se so um campo for instrumentado, que seja
+  handle_time_seconds por categoria (Onda 1 da PARTE 3 do bloco 0) — e a
+  SECAO 4 e a justificativa quantitativa desse pedido.
+
+
+==============================================================================
+SECAO 5 — DECISAO B: 'ISSO E CONVERSA DE HEADCOUNT OU E RUIDO?'
+==============================================================================
+
+DECISAO NOMEADA
+  O Diretor decide se a capacidade liberada justifica realocar gente, ou se
+  o ganho e pequeno demais para mudar qualquer coisa no quadro.
+
+POR QUE FTE E NAO R$
+  Converter para dinheiro exigiria inventar custo por hora de agente e
+  custo de construir a solucao — duas premissas arbitradas NOVAS empilhadas
+  sobre as que ja existem. Premissa sobre premissa vira ficcao composta.
+  FTE para na ultima fronteira que o modelo alcanca sem inventar dinheiro;
+  quem tem o custo/hora real multiplica em dois segundos.
+
+    FTE_liberado = horas_liquidas_totais / 1,760
+
+  O divisor 1,760 h/ano e [premissa arbitrada, sem fonte].
+  E divisor linear puro: se a operacao usa 1.500 ou 2.000, os FTE mudam
+  proporcionalmente e nenhuma conclusao de sinal ou de ordem se altera.
+
+  O limiar de 1 FTE e [convencao do analista]. Nao e achado dos dados,
+  nao esta em arquivo nenhum: e a linha que eu escolhi para separar
+  "materialidade" de "ruido de arredondamento". Quem le pode move-la.
+
+GRADE DE SENSIBILIDADE — os dois eixos que sobraram: tau x k
+  Cada celula responde: qual tempo de triagem faz o ganho cruzar 1 FTE?
+
+    H* = horas_por_FTE / (V * cobertura(tau) * g(p(tau), k))
+
+  Celula em minutos. 'nunca' = g <= 0, automatizar destroi horas em qualquer
+  H (precisao abaixo do piso da SECAO 2). '> faixa' = so cruzaria com handle
+  time acima de 3 min, fora da faixa arbitrada.
+
+H* — tempo de triagem que faz o ganho cruzar 1 FTE   [medido, bloco 3]
+ tau  cob prec  k=3.00  k=4.00  k=6.00  k=8.00 k=11.00 k=21.00
+0.00 100%  87% > faixa > faixa > faixa   nunca   nunca   nunca
+0.25 100%  87% > faixa > faixa > faixa   nunca   nunca   nunca
+0.50  90%  91% > faixa > faixa > faixa > faixa   nunca   nunca
+0.75  70%  96% > faixa > faixa > faixa > faixa > faixa > faixa
+1.00  43%  99% > faixa > faixa > faixa > faixa > faixa > faixa
+
+LEITURA DA GRADE — separando o que e estrutura do que e medicao
+
+  ANTES DE TUDO: os valores das celulas acima vem da curva MEDIDA no bloco 3
+  e podem ser citados. Os itens abaixo marcam o que era previsao minha e o
+  que a medicao confirmou ou desmentiu.
+
+  1. O OTIMO INTERIOR EM TAU — previsto, e DESMENTIDO pela medicao.
+     Eu escrevi que este item era o unico "estrutural" da grade: que o
+     minimo de H* nao ficaria nem em tau baixo nem em tau alto, porque
+     cobertura e precisao se movem em sentidos opostos em qualquer
+     classificador com limiar.
+     A grade medida nao tem otimo interior. O minimo esta na BORDA, em
+     tau = 0, e H* so cresce a partir dali.
+     POR QUE eu errei: o argumento do trade-off pressupoe que em tau baixo
+     a precisao seja ruim o bastante para o retrabalho pesar. Nao e o caso
+     aqui — a precisao ja comeca em 87%, muito acima de p*(k=4) = 75%.
+     Com o termo de erro pequeno desde o inicio, subir tau so custa
+     cobertura e nao compra nada. O trade-off existe, mas esta inteiro do
+     lado errado do joelho da curva.
+     Registro isto como o item que mais falhou desta grade justamente
+     porque era o unico que eu tinha declarado imune a medicao.
+
+  2. O mecanismo do 'nunca' — e o que a medicao fez com ele.
+     Quando a precisao cai abaixo do piso p*(k) da SECAO 2, nenhuma
+     quantidade de tempo de triagem salva: a celula vira 'nunca'. Com a curva
+     placeholder, colunas inteiras de k alto morriam assim. Com a curva
+     MEDIDA, nenhuma celula e 'nunca': a precisao real fica entre 87% e 99%,
+     acima de p*(k=4)=75% em toda a faixa. A previsao de que k alto mataria
+     classes estava errada — nao porque o mecanismo seja falso, mas porque
+     eu subestimei a precisao alcancavel com tfidf+linear nesta base.
+
+  3. O cruzamento de 1 FTE cai dentro da faixa de handle
+     time arbitrada na maior parte da grade util. O que se pode afirmar
+     hoje nao e onde ele cai, e sim que ele E sensivel a premissa de
+     tempo de triagem, ao contrario da decisao A. Essa assimetria entre as duas
+     decisoes e estrutural; a posicao do cruzamento nao e.
+
+FAIXA DE FTE LIBERADO NOS EXTREMOS DA FAIXA DE H
+  (tau=0.50 [medido, bloco 3]; H de 0 a 3 min [premissa arbitrada, sem fonte])
+
+    k g(p,k)   horas/ano FTE liberado       cruza 1 FTE?
+ 3.00  +0.72 200 a 1,000    0.1 a 0.6 nao cruza na faixa
+ 4.00  +0.62   100 a 800    0.1 a 0.5 nao cruza na faixa
+ 6.00  +0.43   100 a 600    0.1 a 0.3 nao cruza na faixa
+ 8.00  +0.25   100 a 300    0.0 a 0.2 nao cruza na faixa
+11.00  -0.04    negativo     negativo              nunca
+21.00  -0.98    negativo     negativo              nunca
+
+REGRA DE ARREDONDAMENTO APLICADA
+  Horas em centenas, FTE em uma casa, e sempre em FAIXA — nunca ponto.
+  Insumo arbitrado nao produz saida precisa. Um numero como "2.847,3 horas
+  economizadas por ano" em cima de um tempo de triagem chutado nao e mais
+  informativo que "2.800 a 6.000"; e so mais facil de acreditar, o que e
+  exatamente o problema.
+
+
+==============================================================================
+SECAO 6 — O QUE ESTE BLOCO NAO ENTREGA (e por que)
+==============================================================================
+
+NAO HA RANKING DE PRIORIDADE NESTA SAIDA. Nenhuma tabela deste arquivo
+ordena categorias por horas recuperaveis. A omissao e deliberada e vale
+conferir: as unicas tabelas ordenadas aqui sao o mix (SECAO 1) e as razoes
+de inversao (SECAO 4), ambas ordenadas por w_c, que e [dados] cru.
+
+A METADE 1 da SECAO 3 mostrou que, sob tempo de triagem uniforme, a ordem das
+categorias por horas recuperaveis E exatamente a ordem de w_c. Publicar
+esse ranking seria publicar o histograma do dataset 2 com outro nome:
+Hardware apareceria em primeiro lugar porque Hardware e 28.5% da base
+[dados]. Isso e contagem, nao achado. Renomear uma contagem de
+'priorizacao' e o tipo de coisa que enche slide e nao sustenta pergunta.
+
+E a METADE 2 mostrou o outro motivo, independente do primeiro: mesmo que
+alguem quisesse publicar essa ordem, ela viraria com 1.25x de diferenca
+de tempo de triagem entre as duas primeiras. Nao ha ranking defensavel aqui —
+nem por falta de conteudo, nem por falta de robustez.
+
+O QUE FALTA PARA O RANKING NASCER DE VERDADE
+
+  A formula tem quatro termos por categoria e hoje so um varia entre elas:
+
+      horas(c) = V * H * w_c * cobertura(c,tau) * g(p(c,tau), k)
+                         ----   --------------------------------
+                      varia [dados]    constante [PLACEHOLDER]
+
+  cobertura e precisao estao constantes entre categorias porque ainda nao
+  foram medidas. Quando o bloco 3 rodar, elas passam a variar por classe —
+  e e ai que o ranking ganha conteudo, porque separabilidade e volume sao
+  coisas diferentes:
+
+    - classe grande e mal separavel (precisao abaixo de p*) pode cair para
+      fora da automacao mesmo liderando o volume;
+    - classe pequena e limpa pode subir, porque cobertura alta com precisao
+      alta rende g proximo de 1 onde a classe grande rende g negativo.
+
+  Ou seja: o bloco 3 nao ajusta o ranking na margem. Ele e a unica fonte de
+  desempate que existe, porque hoje as duas unicas coisas que diferenciam
+  categorias sao volume [dados] e uma constante [PLACEHOLDER].
+
+GANCHO PARA O BLOCO 3 — a interface esta fechada
+  1. medir, por classe, a curva cobertura x precisao em funcao de tau
+     (substituir curva_placeholder(); nada mais do modelo muda)
+  2. comparar a precisao de cada classe contra o piso p*(k) da SECAO 2
+  3. escolher tau por classe, nao global — o otimo e por classe
+  4. as classes que nao alcancam p* em nenhum tau sao a resposta com numero
+     para 'o que NAO automatizar'
+  5. so entao publicar ranking
+
+RESUMO DO QUE JA ESTA DECIDIDO E NAO DEPENDE DO BLOCO 3
+  - o piso de precisao p*(k) — forma fechada, livre de V, H, mix e curva
+  - a invariancia da decisao A ao tempo de triagem — algebrica
+  - o limite dessa invariancia: 1.25x inverte o primeiro lugar
+  - que a decisao B E sensivel a premissa, ao contrario da A
+
+  STATUS: curva MEDIDA (bloco 3). Os cinco passos acima foram cumpridos,
+  entao o ranking deixa de ser contagem disfarcada e passa a ser publicavel.
+  Ele aparece abaixo pela primeira vez nesta entrega.
+
+
+------------------------------------------------------------------------------
+SECAO 6B — RANKING, AGORA QUE HA DESEMPATE MEDIDO
+------------------------------------------------------------------------------
+  kappa = 5  ->  p* = 83.3%   |   T = ponto medio da faixa arbitrada
+  tau escolhido POR CLASSE, maximizando horas liquidas [medido, bloco 3]
+  horas em centenas: insumo arbitrado nao produz saida precisa
+
+ pos HORAS             categoria  w_c %  pos VOLUME  tau otimo  cobertura_c  precisao_c passa p*  horas/ano
+         1              Hardware   28.5           1       0.80        0.644       0.951      sim      100.0
+         2            HR Support   22.8           2       0.70        0.760       0.959      sim      100.0
+         3                Access   14.9           3       0.80        0.718       0.980      sim      100.0
+         4         Miscellaneous   14.8           4       0.75        0.624       0.957      sim      100.0
+         5               Storage    5.8           5       0.60        0.786       0.972      sim        0.0
+         6              Purchase    5.2           6       0.55        0.854       0.989      sim        0.0
+         7      Internal Project    4.4           7       0.60        0.731       0.958      sim        0.0
+         8 Administrative rights    3.7           8       0.70        0.523       0.962      sim        0.0
+
+  posicoes que mudaram contra o ranking de volume: 0 de 8
+  classes que NAO passam p*(kappa=5) = 83.3%: nenhuma
+
+
+  ONDE O PISO REALMENTE MORDE: cobertura maxima com precisao >= p*(kappa)
+ kappa    p* Hardware   HR Access Miscella Storage Purchase Internal Administ
+     2 66.7%     109% 101%    98%     101%     91%      89%      90%      77%
+     3 75.0%     109% 101%    98%     101%     91%      89%      90%      77%
+     5 83.3%     101% 101%    98%     101%     91%      89%      90%      77%
+     7 87.5%      92%  99%    98%      87%     91%      89%      90%      77%
+    10 90.9%      82%  91%    98%      78%     91%      89%      90%      73%
+    20 95.2%      56%  76%    84%      62%     84%      89%      73%      56%
+
+  RESULTADO: a medicao NAO desempatou o ranking. A ordem por horas
+  recuperaveis saiu identica a ordem por volume, posicao por posicao.
+
+  Isso contraria o que a SECAO 6 esperava. Ela previa que a separabilidade
+  reordenaria a lista — 'classe grande e mal separavel pode cair para fora
+  mesmo liderando o volume'. Nao caiu: nenhuma classe fica FORA em nenhum
+  kappa da faixa. Com precisao parecida entre classes, w_c volta a ser o
+  unico termo que varia e o ranking colapsa no histograma de novo.
+
+  A recusa da SECAO 6 em publicar ranking estava CERTA e continua certa
+  depois da medicao. O valor do bloco 3 nao foi reordenar prioridade — foi
+  provar que nao ha o que reordenar.
+
+  MAS O PISO NAO FICOU INERTE. Ele morde em COBERTURA, nao em exclusao de
+  classe, e e a tabela acima que mostra isso. Subir kappa nao apaga classe:
+  encolhe quanto de cada classe pode ser auto-roteado. E o encolhimento e
+  desigual — as classes com curva mais fraca perdem cobertura muito antes
+  das outras.
+
+  E ESSA e a resposta de verdade para 'o que NAO automatizar', e ela e
+  diferente da que a gente esperava. Nao e uma lista de categorias
+  proibidas. E, dentro de cada categoria, a cauda de baixa confianca — que
+  fica com humano. O corte nao e por assunto, e por confianca, e por isso
+  ele e implementado no triagem.py e nao numa regra de negocio estatica.
+
+==============================================================================
+SECAO 7 — PREVISOES REGISTRADAS ANTES DE MEDIR
+==============================================================================
+
+Estas sao PREVISOES, nao achados. Estao aqui porque so podem ser escritas
+agora: depois que o bloco 3 rodar, qualquer coisa que eu escrever sobre o
+comportamento do classificador ja sera posterior a medicao e nao valera
+nada como evidencia.
+
+O commit que carrega este arquivo e datado e anterior ao bloco 3. Se as
+previsoes se confirmarem, o historico prova que foram feitas antes. Se
+errarem, o bloco 3 registra o erro e a razao dele — e isso vale quase
+tanto, porque mostra em que ponto a leitura de dominio falhou.
+
+Cada previsao vem com a base que a sustenta e com o criterio que a
+falsifica. Previsao sem criterio de falsificacao e horoscopo.
+
+Referencia usada em todas: p*(k=2.00) = 50% [SECAO 2, forma fechada].
+
+
+P1. Miscellaneous ficara ABAIXO de p* apesar de ser a 4a maior classe
+    forca da base: ALTA
+
+    ENUNCIADO
+      A precisao de Miscellaneous nao alcancara 50% em nenhum tau que
+      preserve cobertura util, e a classe ficara de fora da automacao
+      mesmo respondendo por 14.8% do volume (7,060 tickets) [dados].
+
+    BASE
+      As outras sete classes sao definidas por CONTEUDO: cada nome
+      descreve um dominio (Hardware, Storage, Purchase, Access...).
+      Miscellaneous e definida por EXCLUSAO — e o balde do que nao coube
+      nas outras. Uma classe assim nao tem vocabulario proprio: seus
+      documentos nao compartilham tema, compartilham apenas a ausencia de
+      pertencimento aos outros rotulos. Nao ha regiao coerente no espaco
+      de features para o modelo encontrar, porque a regiao e o complemento
+      de todas as outras.
+      Isso e propriedade da construcao do rotulo, nao do classificador —
+      por isso a base e alta e nao depende de qual modelo o bloco 3 use.
+
+    O QUE FALSIFICA
+      Precisao de Miscellaneous >= 50% em algum tau com cobertura acima
+      de 10% da classe.
+
+    POR QUE IMPORTA
+      Se confirmada, e o caso que demonstra com numero a tese da SECAO 6:
+      VOLUME NAO DECIDE AUTOMACAO. A 4a maior classe da base sai de fora
+      por separabilidade, nao por tamanho — e nenhum ranking construido
+      sobre contagem enxergaria isso.
+
+
+P2. Administrative rights sera absorvida por Access, e nao o contrario
+    forca da base: ALTA
+
+    ENUNCIADO
+      Na matriz de confusao, o fluxo Administrative rights -> Access sera
+      substancialmente maior que o fluxo Access -> Administrative rights.
+      A assimetria e a previsao; a existencia da confusao sozinha nao.
+
+    BASE
+      Duas causas independentes apontam para o MESMO lado:
+      (a) semantica — conceder direito administrativo E um caso
+          particular de conceder acesso. As classes nao sao disjuntas no
+          conteudo; uma e quase subconjunto da outra. Confusao mutua ja
+          seria esperada so por isso.
+      (b) prior — Access tem 7,125 tickets contra 1,760 de
+          Administrative rights, razao de 4.0x [dados]. Diante de um
+          documento ambiguo, um classificador que aprendeu o prior
+          resolve o empate a favor da classe majoritaria.
+      A semantica cria a ambiguidade, o desbalanceamento decide para onde
+      ela cai. E o que torna a previsao direcional e nao apenas "essas
+      duas se confundem".
+
+    O QUE FALSIFICA
+      Matriz de confusao aproximadamente simetrica entre as duas, ou
+      fluxo maior no sentido Access -> Administrative rights.
+
+    POR QUE IMPORTA
+      Se confirmada, Administrative rights nao precisa de mais dados nem
+      de modelo melhor: precisa de uma decisao de TAXONOMIA. Duas classes
+      que se sobrepoem no conteudo ou viram uma, ou ganham regra de
+      desempate fora do texto. Isso e conclusao de processo, nao de ML.
+
+
+P3. Hardware passara de p* com folga
+    forca da base: MEDIA — a mais fraca das tres, registrada como tal
+
+    ENUNCIADO
+      A precisao de Hardware ficara acima de 50% ja em tau baixo,
+      mantendo cobertura alta.
+
+    BASE
+      Vocabulario concreto e de baixa ambiguidade: nomes de dispositivo e
+      verbos de falha fisica. Com stopwords removidas e 292 caracteres de
+      media [dados, bloco 0], o sinal restante e majoritariamente
+      substantivo — que e o que favorece uma classe de dominio material.
+      Somado a isso, o prior de 28.5% joga a favor.
+
+    POR QUE A BASE E MAIS FRACA
+      "Vocabulario concreto" e julgamento meu sobre o dominio, nao
+      medicao. Nao inspecionei o texto de Hardware antes de escrever
+      isto. P1 e P2 se apoiam em propriedades verificaveis da construcao
+      dos rotulos e do desbalanceamento; P3 se apoia numa expectativa
+      sobre linguagem. Registro assim para nao contar um acerto barato
+      junto com dois caros.
+
+    O QUE FALSIFICA
+      Precisao de Hardware abaixo de 50% em todo tau com cobertura util.
+
+
+P4. (COROLARIO de P1, nao previsao independente)
+
+    Se P1 se confirmar, o ranking por horas recuperaveis apos o bloco 3
+    NAO sera igual ao ranking por volume — a 4a posicao ja cai fora.
+    Registro como corolario e nao como previsao propria justamente para
+    nao inflar a contagem de acertos: ele nao carrega informacao alem de
+    P1 e nao deve ser contado como um segundo acerto se P1 der certo.
+
+
+NOTA DE HONESTIDADE SOBRE ESTA SECAO
+  Acertar P1, P2 e P3 nao valida o modelo das SECOES 1 a 5. Valida a
+  leitura de dominio que sustenta a escolha do que medir. Sao coisas
+  diferentes e nao devem ser somadas na conclusao final.
+
+
+==============================================================================
+FIM — BLOCO 1
+==============================================================================
+saida salva em: C:\Users\pablo\Documents\Projetos\ai-master-challenge\submissions\pablo-marques\solution\02_business_case_saida.txt
