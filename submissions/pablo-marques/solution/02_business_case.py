@@ -31,9 +31,11 @@ Saida: escreve em stdout e em 02_business_case_saida.txt (mesmo diretorio).
 """
 
 import io
+import json
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 # --------------------------------------------------------------------------
@@ -124,15 +126,56 @@ LIMIAR_FTE = 1.0
 TAU_GRADE = [0.00, 0.25, 0.50, 0.75, 1.00]
 
 
+CURVA_JSON = AQUI / "curva_medida.json"
+CURVA_MEDIDA = None
+if CURVA_JSON.exists():
+    CURVA_MEDIDA = json.loads(CURVA_JSON.read_text(encoding="utf-8"))
+
+
 def curva_placeholder(tau: float) -> tuple[float, float]:
     """[PLACEHOLDER] Retorna (cobertura, precisao) para um dado tau.
 
-    Substituir pela curva medida por classe no bloco 3. A interface e esta:
-    tau -> (cobertura, precisao). Nada mais do modelo precisa mudar.
+    Usada apenas quando curva_medida.json nao existe. Mantida no arquivo
+    para que a saida do bloco 1 continue reproduzivel sem o bloco 3.
     """
     cobertura = 1.00 - 0.85 * tau   # 1.00 -> 0.15
     precisao = 0.60 + 0.38 * tau    # 0.60 -> 0.98
     return cobertura, precisao
+
+
+def curva(tau: float, classe: str | None = None) -> tuple[float, float]:
+    """(cobertura, precisao) no limiar tau.
+
+    Se curva_medida.json existe, devolve a MEDICAO do bloco 3 [medido].
+    Sem classe, devolve o agregado ponderado por w_c — usado na grade da
+    SECAO 5, que e uma visao de operacao inteira. Com classe, devolve a
+    curva daquela classe, que e o que a SECAO 7 usa para decidir corte.
+
+    Definicao de cobertura (fixada no bloco 3):
+      cobertura_c = volume do canal automatico c / volume real da classe c.
+      Fracao DENTRO da classe — por isso comparavel entre classes mesmo com
+      score nao comparavel. w_c permanece fora, visivel e rotulado.
+    """
+    if CURVA_MEDIDA is None:
+        return curva_placeholder(tau)
+
+    def interp(pontos):
+        taus = [p["tau"] for p in pontos]
+        cob = [p["cobertura"] for p in pontos]
+        pre = [p["precisao"] if p["precisao"] == p["precisao"] else 0.0 for p in pontos]
+        return (float(np.interp(tau, taus, cob)), float(np.interp(tau, taus, pre)))
+
+    if classe is not None:
+        return interp(CURVA_MEDIDA["curva"][classe])
+
+    pesos = CURVA_MEDIDA["w_c"]
+    cob_ag = sum(pesos[c] * interp(CURVA_MEDIDA["curva"][c])[0] for c in pesos)
+    # precisao agregada ponderada pelo VOLUME AUTOMATIZADO de cada canal
+    massa = {c: pesos[c] * interp(CURVA_MEDIDA["curva"][c])[0] for c in pesos}
+    total = sum(massa.values())
+    pre_ag = (sum(massa[c] * interp(CURVA_MEDIDA["curva"][c])[1] for c in pesos) / total
+              if total else 0.0)
+    return cob_ag, pre_ag
 
 
 # ==========================================================================
@@ -222,8 +265,10 @@ registro = [
      "[premissa arbitrada, sem fonte]"),
     ("limiar de materialidade", f"{LIMIAR_FTE:.0f} FTE",
      "[convencao do analista] nao e achado dos dados"),
-    ("curva cobertura x precisao", "forma fechada monotona",
-     "[PLACEHOLDER] substituida pela medicao do bloco 3"),
+    ("curva cobertura x precisao",
+     "medida por classe" if CURVA_MEDIDA else "forma fechada monotona",
+     "[dados] bloco 3, curva_medida.json" if CURVA_MEDIDA
+     else "[PLACEHOLDER] substituida pela medicao do bloco 3"),
 ]
 print(f"{'INSUMO':<28} {'VALOR':<30} PROCEDENCIA")
 print("-" * 110)
@@ -444,14 +489,19 @@ VERIFICACAO DA METADE 1
   extremos da faixa arbitrada e nos dois extremos de k:
 """)
 
-cob_ref, prec_ref = curva_placeholder(0.50)
+cob_ref, prec_ref = curva(0.50)
 
 
 def participacoes(h_horas: float, k: float) -> pd.Series:
-    """Fracao de cada categoria nas horas liquidas totais."""
-    s = pd.Series(
-        {c: horas_liquidas_ano(mix[c], cob_ref, prec_ref, k, h_horas) for c in CATEGORIAS}
-    )
+    """Fracao de cada categoria nas horas liquidas totais.
+
+    Com a curva medida do bloco 3, cobertura e precisao deixam de ser
+    constantes entre categorias, entao a curva e consultada POR CLASSE.
+    """
+    def par(c):
+        cob_c, pre_c = curva(0.50, classe=c) if CURVA_MEDIDA else (cob_ref, prec_ref)
+        return horas_liquidas_ano(mix[c], cob_c, pre_c, k, h_horas)
+    s = pd.Series({c: par(c) for c in CATEGORIAS})
     return s / s.sum()
 
 
@@ -569,7 +619,7 @@ GRADE DE SENSIBILIDADE — os dois eixos que sobraram: tau x k
 
 grade = []
 for tau in TAU_GRADE:
-    cob, prec = curva_placeholder(tau)
+    cob, prec = curva(tau)
     linha = {"tau": f"{tau:.2f}", "cob": f"{cob * 100:.0f}%", "prec": f"{prec * 100:.0f}%"}
     for k in K_GRADE:
         g = fator_ganho(prec, k)
@@ -583,36 +633,51 @@ for tau in TAU_GRADE:
                 linha[f"k={k:.2f}"] = f"{h_estrela_min:.0f} min"
     grade.append(linha)
 
-print("H* — handle time que faz o ganho cruzar 1 FTE   [PLACEHOLDER na curva]")
+ETIQ = "[medido, bloco 3]" if CURVA_MEDIDA else "[PLACEHOLDER na curva]"
+print(f"H* — handle time que faz o ganho cruzar 1 FTE   {ETIQ}")
 print(pd.DataFrame(grade).to_string(index=False))
 
+ABERTURA_GRADE = (
+    "ANTES DE TUDO: os valores das celulas acima vem da curva MEDIDA no bloco 3\n"
+    "  e podem ser citados. Os itens abaixo marcam o que era previsao minha e o\n"
+    "  que a medicao confirmou ou desmentiu."
+) if CURVA_MEDIDA else (
+    "ANTES DE TUDO: os VALORES das celulas acima nao sao resultado. Eles saem da\n"
+    "  curva placeholder, que eu escolhi, e vao mudar quando o bloco 3 medir a\n"
+    "  curva real por classe."
+)
+
 print(f"""
-LEITURA DA GRADE — separando o que e estrutura do que e placeholder
+LEITURA DA GRADE — separando o que e estrutura do que e medicao
 
-  ANTES DE TUDO: os VALORES das celulas acima nao sao resultado. Eles saem
-  da curva placeholder, que eu escolhi, e vao mudar quando o bloco 3 medir
-  a curva real por classe. Nenhum "7 min", "18 min" ou "nunca" desta grade
-  deve ser citado como numero. O que a grade entrega e o FORMATO da
-  resposta: o tipo de tabela que o Diretor vai ler quando os numeros forem
-  medidos, e onde eles vao entrar.
+  {ABERTURA_GRADE}
 
-  1. ESTRUTURAL — existe otimo interior em tau. Nem tau baixo (cobertura
-     alta, precisao ruim, muito retrabalho) nem tau alto (precisao alta,
-     cobertura minima, poucos tickets tocados) minimizam H*. Isso nao vem
-     da forma da curva que eu inventei: vem de cobertura e precisao se
-     moverem em sentidos opostos, que e propriedade de qualquer
-     classificador com limiar. Sobrevive a medicao. A posicao do otimo e
-     que e placeholder — e acha-la por classe e o trabalho do bloco 3.
+  1. O OTIMO INTERIOR EM TAU — previsto, e DESMENTIDO pela medicao.
+     Eu escrevi que este item era o unico "estrutural" da grade: que o
+     minimo de H* nao ficaria nem em tau baixo nem em tau alto, porque
+     cobertura e precisao se movem em sentidos opostos em qualquer
+     classificador com limiar.
+     A grade medida nao tem otimo interior. O minimo esta na BORDA, em
+     tau = 0, e H* so cresce a partir dali.
+     POR QUE eu errei: o argumento do trade-off pressupoe que em tau baixo
+     a precisao seja ruim o bastante para o retrabalho pesar. Nao e o caso
+     aqui — a precisao ja comeca em 87%, muito acima de p*(k=4) = 75%.
+     Com o termo de erro pequeno desde o inicio, subir tau so custa
+     cobertura e nao compra nada. O trade-off existe, mas esta inteiro do
+     lado errado do joelho da curva.
+     Registro isto como o item que mais falhou desta grade justamente
+     porque era o unico que eu tinha declarado imune a medicao.
 
-  2. ESTRUTURAL na forma, PLACEHOLDER no valor — o mecanismo do 'nunca'.
+  2. O mecanismo do 'nunca' — e o que a medicao fez com ele.
      Quando a precisao cai abaixo do piso p*(k) da SECAO 2, nenhuma
-     quantidade de handle time salva: a celula vira 'nunca', nao um numero
-     grande. O mecanismo e real e vem da SECAO 2, que e forma fechada. Mas
-     ONDE a fronteira do 'nunca' cai nesta grade e consequencia direta da
-     precisao que a minha curva atribui a cada tau. Com a curva medida, a
-     fronteira se move — pode cobrir mais celulas ou quase nenhuma.
+     quantidade de handle time salva: a celula vira 'nunca'. Com a curva
+     placeholder, colunas inteiras de k alto morriam assim. Com a curva
+     MEDIDA, nenhuma celula e 'nunca': a precisao real fica entre 87% e 99%,
+     acima de p*(k=4)=75% em toda a faixa. A previsao de que k alto mataria
+     classes estava errada — nao porque o mecanismo seja falso, mas porque
+     eu subestimei a precisao alcancavel com tfidf+linear nesta base.
 
-  3. PLACEHOLDER — o cruzamento de {LIMIAR_FTE:.0f} FTE cai dentro da faixa de handle
+  3. O cruzamento de {LIMIAR_FTE:.0f} FTE cai dentro da faixa de handle
      time arbitrada na maior parte da grade util. O que se pode afirmar
      hoje nao e onde ele cai, e sim que ele E sensivel a premissa de
      handle time, ao contrario da decisao A. Essa assimetria entre as duas
@@ -620,10 +685,10 @@ LEITURA DA GRADE — separando o que e estrutura do que e placeholder
 """)
 
 print("FAIXA DE FTE LIBERADO NOS EXTREMOS DA FAIXA DE H")
-print(f"  (tau=0.50 [PLACEHOLDER]; H de {H_MIN_MINUTOS:.0f} a {H_MAX_MINUTOS:.0f} min "
+print(f"  (tau=0.50 {ETIQ}; H de {H_MIN_MINUTOS:.0f} a {H_MAX_MINUTOS:.0f} min "
       f"[premissa arbitrada, sem fonte])\n")
 
-cob50, prec50 = curva_placeholder(0.50)
+cob50, prec50 = curva(0.50)
 faixa = []
 for k in K_GRADE:
     g = fator_ganho(prec50, k)
@@ -716,6 +781,72 @@ RESUMO DO QUE JA ESTA DECIDIDO E NAO DEPENDE DO BLOCO 3
   - o limite dessa invariancia: {razao_segundo:.2f}x inverte o primeiro lugar
   - que a decisao B E sensivel a premissa, ao contrario da A
 """)
+
+if CURVA_MEDIDA is None:
+    print("  STATUS: curva ainda nao medida — ranking permanece nao publicado.")
+else:
+    print("""  STATUS: curva MEDIDA (bloco 3). Os cinco passos acima foram cumpridos,
+  entao o ranking deixa de ser contagem disfarcada e passa a ser publicavel.
+  Ele aparece abaixo pela primeira vez nesta entrega.
+""")
+    titulo("SECAO 6B — RANKING, AGORA QUE HA DESEMPATE MEDIDO", "-")
+    K_REF = 2.00
+    piso = precisao_de_equilibrio(K_REF)
+    H_MEIO = (H_LO + H_HI) / 2
+    linhas_rk = []
+    for c in CATEGORIAS:
+        melhor = None
+        for tau in [t / 100 for t in range(0, 100, 5)]:
+            cob_c, pre_c = curva(tau, classe=c)
+            if cob_c <= 0:
+                continue
+            h = horas_liquidas_ano(mix[c], cob_c, pre_c, K_REF, H_MEIO)
+            if melhor is None or h > melhor[0]:
+                melhor = (h, tau, cob_c, pre_c)
+        h, tau, cob_c, pre_c = melhor
+        linhas_rk.append({
+            "categoria": c,
+            "w_c %": round(mix[c] * 100, 1),
+            "pos VOLUME": CATEGORIAS.index(c) + 1,
+            "tau otimo": round(tau, 2),
+            "cobertura_c": round(cob_c, 3),
+            "precisao_c": round(pre_c, 3),
+            "passa p*": "sim" if pre_c >= piso else "NAO",
+            "horas/ano": round(h, -2),
+        })
+    rk = pd.DataFrame(linhas_rk).sort_values("horas/ano", ascending=False).reset_index(drop=True)
+    rk.insert(0, "pos HORAS", range(1, len(rk) + 1))
+    print(f"  k = {K_REF:.2f}  ->  p* = {piso:.0%}   |   H = ponto medio da faixa arbitrada")
+    print("  tau escolhido POR CLASSE, maximizando horas liquidas [medido, bloco 3]")
+    print("  horas em centenas: insumo arbitrado nao produz saida precisa\n")
+    print(rk.to_string(index=False))
+    inversoes = int((rk["pos HORAS"].values != rk["pos VOLUME"].values).sum())
+    fora = [l["categoria"] for l in linhas_rk if l["passa p*"] == "NAO"]
+    print(f"""
+  posicoes que mudaram contra o ranking de volume: {inversoes} de {len(rk)}
+  classes que NAO passam p*({K_REF:.2f}): {fora if fora else 'nenhuma'}
+""")
+    if inversoes == 0:
+        print("""  RESULTADO: a medicao NAO desempatou nada. O ranking por horas recuperaveis
+  saiu identico ao ranking por volume, posicao por posicao.
+
+  Isso contraria o que a SECAO 6 esperava. Ela previa que a separabilidade
+  variaria bastante entre classes e reordenaria a lista — 'classe grande e
+  mal separavel pode cair para fora mesmo liderando o volume'. Nao caiu:
+  todas as oito passam p*(k=2), e a cobertura otima fica entre 76% e 96% em
+  todas. Com precisao e cobertura parecidas entre classes, w_c volta a ser o
+  unico termo que varia, e o ranking colapsa de novo no histograma.
+
+  A consequencia e desconfortavel e fica registrada: a recusa da SECAO 6 em
+  publicar ranking estava CERTA, e continua certa depois da medicao. Este
+  ranking nao carrega informacao alem da contagem — ele so agora pode ser
+  exibido com essa afirmacao provada em vez de suposta. O valor da medicao
+  do bloco 3 nao esta em reordenar prioridade; esta em mostrar que nao ha
+  o que reordenar, e em fixar tau por classe, que a contagem nao daria.""")
+    else:
+        print(f"""  RESULTADO: a medicao reordenou {inversoes} das {len(rk)} posicoes. A diferenca
+  contra o ranking de volume e exatamente o que o bloco 3 acrescentou, e e o
+  motivo de este ranking existir e o anterior nao.""")
 
 # ==========================================================================
 # SECAO 7 — PREVISOES REGISTRADAS

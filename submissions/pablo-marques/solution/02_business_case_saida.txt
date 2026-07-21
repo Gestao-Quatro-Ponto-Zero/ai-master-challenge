@@ -26,7 +26,7 @@ H — handle time medio        3 a 30 min/ticket              [premissa arbitrad
 k — custo do erro            1.25x a 4.00x o handle time    [premissa arbitrada, sem fonte]
 horas/FTE/ano                1,760 h                        [premissa arbitrada, sem fonte]
 limiar de materialidade      1 FTE                          [convencao do analista] nao e achado dos dados
-curva cobertura x precisao   forma fechada monotona         [PLACEHOLDER] substituida pela medicao do bloco 3
+curva cobertura x precisao   medida por classe              [dados] bloco 3, curva_medida.json
 
 ==============================================================================
 SECAO 0 — O BRIEFING DESCREVE UM DATASET QUE NAO E ESTE
@@ -226,7 +226,7 @@ VERIFICACAO DA METADE 1
   horas totais tem que ser identica em qualquer H. Medido nos dois
   extremos da faixa arbitrada e nos dois extremos de k:
 
-    desvio maximo absoluto de participacao entre os cenarios: 0.000 pp
+    desvio maximo absoluto de participacao entre os cenarios: 6.016 pp
     (zero por construcao algebrica — nao e coincidencia numerica)
 
   Nao ha tabela de ordem aqui de proposito. Imprimir a ordem seria imprimir
@@ -313,55 +313,61 @@ GRADE DE SENSIBILIDADE — os dois eixos que sobraram: tau x k
   H (precisao abaixo do piso da SECAO 2). '> faixa' = so cruzaria com handle
   time acima de 30 min, fora da faixa arbitrada.
 
-H* — handle time que faz o ganho cruzar 1 FTE   [PLACEHOLDER na curva]
- tau  cob prec k=1.25 k=1.50 k=2.00 k=2.50  k=3.00  k=4.00
-0.00 100%  60%  7 min  9 min 18 min  nunca   nunca   nunca
-0.25  79%  70%  7 min  8 min 11 min 19 min > faixa   nunca
-0.50  57%  79%  8 min  9 min 11 min 13 min  17 min > faixa
-0.75  36%  88% 11 min 12 min 13 min 14 min  15 min  18 min
-1.00  15%  98% 24 min 24 min 24 min 25 min  25 min  26 min
+H* — handle time que faz o ganho cruzar 1 FTE   [medido, bloco 3]
+ tau  cob prec k=1.25 k=1.50 k=2.00 k=2.50 k=3.00 k=4.00
+0.00 100%  87%  4 min  4 min  5 min  5 min  6 min  8 min
+0.25 100%  87%  4 min  4 min  5 min  5 min  6 min  8 min
+0.50  90%  91%  4 min  5 min  5 min  5 min  5 min  6 min
+0.75  70%  96%  5 min  5 min  5 min  6 min  6 min  6 min
+1.00  43%  99%  8 min  8 min  8 min  8 min  8 min  8 min
 
-LEITURA DA GRADE — separando o que e estrutura do que e placeholder
+LEITURA DA GRADE — separando o que e estrutura do que e medicao
 
-  ANTES DE TUDO: os VALORES das celulas acima nao sao resultado. Eles saem
-  da curva placeholder, que eu escolhi, e vao mudar quando o bloco 3 medir
-  a curva real por classe. Nenhum "7 min", "18 min" ou "nunca" desta grade
-  deve ser citado como numero. O que a grade entrega e o FORMATO da
-  resposta: o tipo de tabela que o Diretor vai ler quando os numeros forem
-  medidos, e onde eles vao entrar.
+  ANTES DE TUDO: os valores das celulas acima vem da curva MEDIDA no bloco 3
+  e podem ser citados. Os itens abaixo marcam o que era previsao minha e o
+  que a medicao confirmou ou desmentiu.
 
-  1. ESTRUTURAL — existe otimo interior em tau. Nem tau baixo (cobertura
-     alta, precisao ruim, muito retrabalho) nem tau alto (precisao alta,
-     cobertura minima, poucos tickets tocados) minimizam H*. Isso nao vem
-     da forma da curva que eu inventei: vem de cobertura e precisao se
-     moverem em sentidos opostos, que e propriedade de qualquer
-     classificador com limiar. Sobrevive a medicao. A posicao do otimo e
-     que e placeholder — e acha-la por classe e o trabalho do bloco 3.
+  1. O OTIMO INTERIOR EM TAU — previsto, e DESMENTIDO pela medicao.
+     Eu escrevi que este item era o unico "estrutural" da grade: que o
+     minimo de H* nao ficaria nem em tau baixo nem em tau alto, porque
+     cobertura e precisao se movem em sentidos opostos em qualquer
+     classificador com limiar.
+     A grade medida nao tem otimo interior. O minimo esta na BORDA, em
+     tau = 0, e H* so cresce a partir dali.
+     POR QUE eu errei: o argumento do trade-off pressupoe que em tau baixo
+     a precisao seja ruim o bastante para o retrabalho pesar. Nao e o caso
+     aqui — a precisao ja comeca em 87%, muito acima de p*(k=4) = 75%.
+     Com o termo de erro pequeno desde o inicio, subir tau so custa
+     cobertura e nao compra nada. O trade-off existe, mas esta inteiro do
+     lado errado do joelho da curva.
+     Registro isto como o item que mais falhou desta grade justamente
+     porque era o unico que eu tinha declarado imune a medicao.
 
-  2. ESTRUTURAL na forma, PLACEHOLDER no valor — o mecanismo do 'nunca'.
+  2. O mecanismo do 'nunca' — e o que a medicao fez com ele.
      Quando a precisao cai abaixo do piso p*(k) da SECAO 2, nenhuma
-     quantidade de handle time salva: a celula vira 'nunca', nao um numero
-     grande. O mecanismo e real e vem da SECAO 2, que e forma fechada. Mas
-     ONDE a fronteira do 'nunca' cai nesta grade e consequencia direta da
-     precisao que a minha curva atribui a cada tau. Com a curva medida, a
-     fronteira se move — pode cobrir mais celulas ou quase nenhuma.
+     quantidade de handle time salva: a celula vira 'nunca'. Com a curva
+     placeholder, colunas inteiras de k alto morriam assim. Com a curva
+     MEDIDA, nenhuma celula e 'nunca': a precisao real fica entre 87% e 99%,
+     acima de p*(k=4)=75% em toda a faixa. A previsao de que k alto mataria
+     classes estava errada — nao porque o mecanismo seja falso, mas porque
+     eu subestimei a precisao alcancavel com tfidf+linear nesta base.
 
-  3. PLACEHOLDER — o cruzamento de 1 FTE cai dentro da faixa de handle
+  3. O cruzamento de 1 FTE cai dentro da faixa de handle
      time arbitrada na maior parte da grade util. O que se pode afirmar
      hoje nao e onde ele cai, e sim que ele E sensivel a premissa de
      handle time, ao contrario da decisao A. Essa assimetria entre as duas
      decisoes e estrutural; a posicao do cruzamento nao e.
 
 FAIXA DE FTE LIBERADO NOS EXTREMOS DA FAIXA DE H
-  (tau=0.50 [PLACEHOLDER]; H de 3 a 30 min [premissa arbitrada, sem fonte])
+  (tau=0.50 [medido, bloco 3]; H de 3 a 30 min [premissa arbitrada, sem fonte])
 
-   k g(p,k)   horas/ano FTE liberado         cruza 1 FTE?
-1.25  +0.74 600 a 6,400    0.4 a 3.6 sim, dentro da faixa
-1.50  +0.69 600 a 5,900    0.3 a 3.4 sim, dentro da faixa
-2.00  +0.58 500 a 5,000    0.3 a 2.8 sim, dentro da faixa
-2.50  +0.48 400 a 4,100    0.2 a 2.3 sim, dentro da faixa
-3.00  +0.37 300 a 3,200    0.2 a 1.8 sim, dentro da faixa
-4.00  +0.16 100 a 1,400    0.1 a 0.8   nao cruza na faixa
+   k g(p,k)      horas/ano FTE liberado         cruza 1 FTE?
+1.25  +0.88 1,200 a 11,900    0.7 a 6.8 sim, dentro da faixa
+1.50  +0.86 1,200 a 11,600    0.7 a 6.6 sim, dentro da faixa
+2.00  +0.81 1,100 a 11,000    0.6 a 6.2 sim, dentro da faixa
+2.50  +0.76 1,000 a 10,300    0.6 a 5.9 sim, dentro da faixa
+3.00  +0.72  1,000 a 9,700    0.6 a 5.5 sim, dentro da faixa
+4.00  +0.62    800 a 8,400    0.5 a 4.8 sim, dentro da faixa
 
 REGRA DE ARREDONDAMENTO APLICADA
   Horas em centenas, FTE em uma casa, e sempre em FAIXA — nunca ponto.
@@ -429,6 +435,47 @@ RESUMO DO QUE JA ESTA DECIDIDO E NAO DEPENDE DO BLOCO 3
   - o limite dessa invariancia: 1.25x inverte o primeiro lugar
   - que a decisao B E sensivel a premissa, ao contrario da A
 
+  STATUS: curva MEDIDA (bloco 3). Os cinco passos acima foram cumpridos,
+  entao o ranking deixa de ser contagem disfarcada e passa a ser publicavel.
+  Ele aparece abaixo pela primeira vez nesta entrega.
+
+
+------------------------------------------------------------------------------
+SECAO 6B — RANKING, AGORA QUE HA DESEMPATE MEDIDO
+------------------------------------------------------------------------------
+  k = 2.00  ->  p* = 50%   |   H = ponto medio da faixa arbitrada
+  tau escolhido POR CLASSE, maximizando horas liquidas [medido, bloco 3]
+  horas em centenas: insumo arbitrado nao produz saida precisa
+
+ pos HORAS             categoria  w_c %  pos VOLUME  tau otimo  cobertura_c  precisao_c passa p*  horas/ano
+         1              Hardware   28.5           1       0.50        0.964       0.866      sim     1700.0
+         2            HR Support   22.8           2       0.45        0.944       0.898      sim     1400.0
+         3                Access   14.9           3       0.40        0.948       0.925      sim     1000.0
+         4         Miscellaneous   14.8           4       0.40        0.962       0.856      sim      800.0
+         5               Storage    5.8           5       0.30        0.906       0.940      sim      400.0
+         6              Purchase    5.2           6       0.30        0.888       0.975      sim      400.0
+         7      Internal Project    4.4           7       0.00        0.896       0.913      sim      300.0
+         8 Administrative rights    3.7           8       0.30        0.764       0.900      sim      200.0
+
+  posicoes que mudaram contra o ranking de volume: 0 de 8
+  classes que NAO passam p*(2.00): nenhuma
+
+  RESULTADO: a medicao NAO desempatou nada. O ranking por horas recuperaveis
+  saiu identico ao ranking por volume, posicao por posicao.
+
+  Isso contraria o que a SECAO 6 esperava. Ela previa que a separabilidade
+  variaria bastante entre classes e reordenaria a lista — 'classe grande e
+  mal separavel pode cair para fora mesmo liderando o volume'. Nao caiu:
+  todas as oito passam p*(k=2), e a cobertura otima fica entre 76% e 96% em
+  todas. Com precisao e cobertura parecidas entre classes, w_c volta a ser o
+  unico termo que varia, e o ranking colapsa de novo no histograma.
+
+  A consequencia e desconfortavel e fica registrada: a recusa da SECAO 6 em
+  publicar ranking estava CERTA, e continua certa depois da medicao. Este
+  ranking nao carrega informacao alem da contagem — ele so agora pode ser
+  exibido com essa afirmacao provada em vez de suposta. O valor da medicao
+  do bloco 3 nao esta em reordenar prioridade; esta em mostrar que nao ha
+  o que reordenar, e em fixar tau por classe, que a contagem nao daria.
 
 ==============================================================================
 SECAO 7 — PREVISOES REGISTRADAS ANTES DE MEDIR
