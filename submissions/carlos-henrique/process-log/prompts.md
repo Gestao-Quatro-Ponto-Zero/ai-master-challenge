@@ -203,3 +203,30 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 **Entreg?veis:** dois Parquets, dez JSONs agregados, quatro relat?rios, seis figuras, seis m?dulos/runner, cinco su?tes de teste, documenta??o e log de decis?es D052?D063.
 
 **Commit autorizado:** `analysis: add governed journey and sequence mining`, local e seletivo.
+
+---
+
+## Fase 6 ? Constru??o, an?lise e valida??o do JourneyGraph
+
+**Objetivo recebido:** construir uma camada de conhecimento governada sobre jornadas, com grafos de inst?ncia e anal?tico, temporalidade, padr?es, outcomes, taxonomia, qualidade, m?tricas, caminhos e consultas.
+
+**Restri??es preservadas:** sem score individual, previs?o, causalidade, recomenda??o autom?tica, contato, interven??o, embeddings, GNN, link prediction, dashboard, app, push ou Pull Request.
+
+**Fontes autorizadas:** Parquets de jornadas, taxonomia, event log e features diagn?sticas; JSONs de padr?es, transi??es, findings, estabilidade, sensibilidade, pr?-churn, reativa??o e recorr?ncia. Nenhum CSV bruto foi carregado ou versionado.
+
+**Estrat?gia t?cnica:** NetworkX como refer?ncia local; exporta??o Neo4j opcional e sem servidor. Identificadores p?blicos determin?sticos, an?nimos e n?o revers?veis. Dois GraphML completos e CSV de EventInstance amostrado deterministicamente.
+
+**Gates de promo??o:** somente ROBUST/SENSITIVE, suporte m?nimo atendido, denominador positivo, `small_sample=false` e depend?ncia intradi?ria diferente de HIGH.
+
+**Entreg?veis:**
+
+- seis m?dulos e um runner;
+- seis su?tes de teste;
+- dois GraphML;
+- dez JSONs agregados;
+- cinco relat?rios;
+- seis figuras;
+- dez CSVs de n?s, doze de rela??es e quatro arquivos Cypher;
+- documenta??o e decis?es D064?D074.
+
+**Commit autorizado:** `graph: build governed JourneyGraph knowledge layer`, local e seletivo.

@@ -222,3 +222,33 @@ O event log ativo ? filtrado em popula??es principal e estrita, ordenado de modo
 ### Limite arquitetural
 
 Os padr?es s?o descri??es de recorr?ncia observada. Uma futura proje??o em grafo dever? preservar escopo, dire??o temporal t?cnica, suporte por conta, exposi??o, estabilidade e depend?ncia intradi?ria; n?o poder? converter associa??o em causalidade.
+
+---
+
+## Atualiza??o de implementa??o ? Fase 6
+
+> **Status:** JourneyGraph governado implementado com ressalvas; nenhuma previs?o, recomenda??o autom?tica ou interven??o foi constru?da.
+
+| Componente | Estado na Fase 6 | Evid?ncia |
+|---|---|---|
+| Instance graph | `IMPLEMENTED` | `journey_instance_graph.graphml`; contas, jornadas e eventos rastre?veis |
+| Analytical graph | `IMPLEMENTED_WITH_WARNINGS` | `journey_analytical_graph.graphml`; somente ROBUST/SENSITIVE promovidos |
+| Pattern graph | `IMPLEMENTED_WITH_WARNINGS` | Pattern como entidade com escopo, outcome, suporte e estabilidade |
+| Outcome graph | `IMPLEMENTED` | seis outcomes controlados e rela??es descritivas |
+| Taxonomy graph | `IMPLEMENTED` | dez classes da Fase 5 projetadas sem ranking individual |
+| Quality layer | `IMPLEMENTED` | QualityProfile expl?cito e reutiliz?vel |
+| Graph validation | `IMPLEMENTED` | schema, privacidade, temporalidade, reconcilia??o e sem?ntica |
+| Neo4j export | `IMPLEMENTED_NOT_EXTERNALLY_EXECUTED` | CSV/Cypher port?teis; servidor n?o integra o gate |
+| Prediction / GNN | `NOT_IMPLEMENTED` | fora do escopo autorizado |
+| Link prediction | `NOT_IMPLEMENTED` | fora do escopo autorizado |
+| Automated recommendation | `NOT_IMPLEMENTED` | investiga??es exigem revis?o humana |
+| Intervention engine | `NOT_IMPLEMENTED` | reservado a fase posterior governada |
+| App/dashboard | `NOT_IMPLEMENTED` | fora do escopo |
+
+### Fluxo arquitetural
+
+NetworkX ? a implementa??o de refer?ncia local. O `INSTANCE_GRAPH` preserva rastreabilidade por chaves an?nimas, limites de jornada e ocorr?ncias espec?ficas por escopo. O `ANALYTICAL_GRAPH` promove padr?es e transi??es somente ap?s gates de suporte, denominador, estabilidade, amostra e depend?ncia intradi?ria. Seis subgrafos controlam usos futuros: `ROBUST_GRAPH`, `PROMOTABLE_GRAPH`, `CHURN_GRAPH`, `REACTIVATION_GRAPH`, `QUALITY_REVIEW_GRAPH` e `HIGH_MRR_GRAPH`.
+
+### Limite arquitetural
+
+Centralidade ? propriedade estrutural apenas de EventType; Pattern recebe ranking agregado por suporte ou MRR associado. Account nunca recebe centralidade. Nenhuma aresta ou propriedade comunica causalidade, perda ou economia. A exporta??o Neo4j ? derivada e opcional; GraphML mant?m os grafos completos e o CSV de EventInstance usa amostra determin?stica.

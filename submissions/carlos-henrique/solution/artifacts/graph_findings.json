@@ -1,0 +1,146 @@
+{
+  "finding_count": 5,
+  "findings": [
+    {
+      "business_relevance": "Prioriza validação agregada de caminhos frequentes.",
+      "confidence_level": "MEDIUM",
+      "denominator": 181,
+      "estimate": 0.8895027624309392,
+      "finding_id": "GF01",
+      "graph_scope": "PROMOTABLE_GRAPH",
+      "limitations": [
+        "STRUCTURAL_NOT_CAUSAL"
+      ],
+      "metric": "account_support",
+      "node_types": [
+        "EventType"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "quality_profile": "ROBUST_NON_HIGH_ORDER",
+      "recommended_investigation": "VALIDATE_PATTERN_IN_NEW_COHORT",
+      "relationship_types": [
+        "TRANSITIONS_TO"
+      ],
+      "sample_size": 181,
+      "stability_status": "ROBUST",
+      "statement": "Uma transição promovível reúne suporte de 161 em 181 contas no escopo FULL_OBSERVED_JOURNEY.",
+      "support": 161,
+      "title": "Transição ROBUST com suporte elevado",
+      "weight_definition": "ACCOUNT_SUPPORT"
+    },
+    {
+      "business_relevance": "Prioriza validação agregada de caminhos frequentes.",
+      "confidence_level": "MEDIUM",
+      "denominator": 175,
+      "estimate": 0.8914285714285715,
+      "finding_id": "GF02",
+      "graph_scope": "PROMOTABLE_GRAPH",
+      "limitations": [
+        "STRUCTURAL_NOT_CAUSAL"
+      ],
+      "metric": "account_support",
+      "node_types": [
+        "EventType"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "quality_profile": "ROBUST_NON_HIGH_ORDER",
+      "recommended_investigation": "VALIDATE_PATTERN_IN_NEW_COHORT",
+      "relationship_types": [
+        "TRANSITIONS_TO"
+      ],
+      "sample_size": 175,
+      "stability_status": "ROBUST",
+      "statement": "Uma transição promovível reúne suporte de 156 em 175 contas no escopo FULL_OBSERVED_JOURNEY.",
+      "support": 156,
+      "title": "Transição ROBUST com suporte elevado",
+      "weight_definition": "ACCOUNT_SUPPORT"
+    },
+    {
+      "business_relevance": "Organiza investigação humana de jornada.",
+      "confidence_level": "LOW",
+      "denominator": 325,
+      "estimate": 0.52,
+      "finding_id": "GF03",
+      "graph_scope": "CHURN_GRAPH",
+      "limitations": [
+        "ASSOCIATION_NOT_CAUSATION",
+        "EXPOSURE_CONTROL_INHERITED_FROM_PHASE5"
+      ],
+      "metric": "relative_support",
+      "node_types": [
+        "Pattern",
+        "EventType",
+        "Outcome"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "quality_profile": "SENSITIVE_NON_HIGH_ORDER",
+      "recommended_investigation": "VALIDATE_PATTERN_IN_NEW_COHORT",
+      "relationship_types": [
+        "CONTAINS_EVENT_TYPE",
+        "OBSERVED_BEFORE"
+      ],
+      "sample_size": 325,
+      "stability_status": "SENSITIVE",
+      "statement": "O caminho agregado de maior suporte termina em CHURN e cobre 169/325 contas no contexto definido.",
+      "support": 169,
+      "title": "Caminho promovível observado antes de churn",
+      "weight_definition": "ACCOUNT_SUPPORT"
+    },
+    {
+      "business_relevance": "Resume conectividade do vocabulário de eventos.",
+      "confidence_level": "MEDIUM",
+      "denominator": 8,
+      "estimate": 0.4050273197093062,
+      "finding_id": "GF05",
+      "graph_scope": "PROMOTABLE_GRAPH",
+      "limitations": [
+        "CENTRALITY_IS_NOT_CAUSAL_IMPORTANCE"
+      ],
+      "metric": "pagerank",
+      "node_types": [
+        "EventType"
+      ],
+      "population": "AGGREGATED_PROMOTABLE",
+      "quality_profile": "CENTRALITY_WEIGHT_SENSITIVITY_PASSED",
+      "recommended_investigation": "VALIDATE_PATTERN_IN_NEW_COHORT",
+      "relationship_types": [
+        "TRANSITIONS_TO"
+      ],
+      "sample_size": 8,
+      "stability_status": "ROBUST",
+      "statement": "SUBSCRIPTION_START ocupa a primeira posição de PageRank com peso por suporte e o top-3 preserva sobreposição material entre pesos.",
+      "support": 8,
+      "title": "Centralidade estrutural estável entre pesos",
+      "weight_definition": "ACCOUNT_SUPPORT_WITH_SENSITIVITY"
+    },
+    {
+      "business_relevance": "Dimensiona a escala financeira associada ao caminho.",
+      "confidence_level": "LOW",
+      "denominator": 500,
+      "estimate": 2942293.0,
+      "finding_id": "GF06",
+      "graph_scope": "HIGH_MRR_GRAPH",
+      "limitations": [
+        "MRR_ASSOCIATED_NOT_LOST_OR_SAVED",
+        "NO_CAUSAL_ATTRIBUTION"
+      ],
+      "metric": "associated_mrr",
+      "node_types": [
+        "Pattern"
+      ],
+      "population": "MAIN",
+      "quality_profile": "ROBUST_NON_HIGH_ORDER",
+      "recommended_investigation": "REVIEW_HIGH_MRR_LOW_USAGE",
+      "relationship_types": [
+        "CONTAINS_EVENT_TYPE"
+      ],
+      "sample_size": 500,
+      "stability_status": "ROBUST",
+      "statement": "O caminho agregado lidera MRR associado entre candidatos com pelo menos 10 contas (500 contas).",
+      "support": 447,
+      "title": "Caminho com maior MRR associado",
+      "weight_definition": "SUM_MAX_MRR_OF_MATCHED_ACCOUNTS"
+    }
+  ],
+  "maximum_findings": 7
+}

@@ -1,0 +1,7 @@
+:ID,:LABEL,associated_mrr,mean_mrr,median_mrr,mrr_account_count,outcome
+outcome_churned_not_reactivated,Outcome,0.0,0.0,0.0,0,CHURNED_NOT_REACTIVATED
+outcome_no_churn_observed,Outcome,1324318.0,7567.5314285714285,6766.0,175,NO_CHURN_OBSERVED
+outcome_reactivated,Outcome,101269.0,4603.136363636364,2592.0,22,REACTIVATED
+outcome_reactivated_then_churned_again,Outcome,7591.0,1897.75,2189.0,4,REACTIVATED_THEN_CHURNED_AGAIN
+outcome_recurring_churn,Outcome,537615.0,4556.059322033899,3184.5,118,RECURRING_CHURN
+outcome_single_churn,Outcome,971500.0,5367.403314917127,4378.0,181,SINGLE_CHURN

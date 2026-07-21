@@ -550,3 +550,91 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - pruning, churn, recorr?ncia, reativa??o, estabilidade e taxonomia revisados;
 - findings, figuras, causalidade, PII, hashes, escopo e diff revisados;
 - grafo, centralidade, comunidades, interven??o e app confirmados como n?o implementados.
+
+## D064 ? NetworkX como implementa??o de refer?ncia
+
+- **Decis?o:** construir e validar localmente em NetworkX 3.6.1.
+- **Justificativa:** reprodu??o determin?stica sem servidor, credencial ou custo externo.
+- **Status:** APROVADA
+
+## D065 ? Separa??o instance graph e analytical graph
+
+- **Decis?o:** rastreabilidade fica no `INSTANCE_GRAPH`; evid?ncia agregada promov?vel fica no `ANALYTICAL_GRAPH`.
+- **Justificativa:** impede mistura silenciosa de m?tricas de inst?ncia e agregadas.
+- **Status:** APROVADA
+
+## D066 ? Identificadores an?nimos determin?sticos
+
+- **Decis?o:** SHA-256 truncado com prefixo e salt p?blico apenas de namespacing.
+- **Justificativa:** estabilidade e auditoria sem expor IDs operacionais ou mapa revers?vel.
+- **Status:** APROVADA
+
+## D067 ? Rela??es n?o causais
+
+- **Decis?o:** validar tipos e propriedades textuais contra vocabul?rio causal proibido.
+- **Justificativa:** sequ?ncia, associa??o e centralidade n?o demonstram causa.
+- **Status:** APROVADA
+
+## D068 ? Pattern como n? anal?tico
+
+- **Decis?o:** identidade combina padr?o normalizado, tipo, escopo, outcome e popula??o; `pattern_family_key` agrupa equivalentes.
+- **Justificativa:** preserva contexto sem fundir padr?es hom?nimos.
+- **Status:** APROVADA
+
+## D069 ? Quality Profile como entidade expl?cita
+
+- **Decis?o:** popula??o, estabilidade, ordem, amostra, warning, cobertura e confian?a formam perfis reutiliz?veis.
+- **Justificativa:** qualidade passa a integrar a topologia e n?o apenas metadados externos.
+- **Status:** APROVADA
+
+## D070 ? Centralidade somente em EventType e Pattern
+
+- **Decis?o:** PageRank, grau e betweenness s?o calculados na proje??o de EventType; Pattern ? ordenado apenas por suporte/MRR agregado; Account n?o recebe centralidade.
+- **Justificativa:** evita ranking individual e interpreta??o causal indevida.
+- **Status:** APROVADA COM RESSALVAS
+
+## D071 ? Subgrafos promov?veis
+
+- **Decis?o:** produzir `ROBUST`, `PROMOTABLE`, `CHURN`, `REACTIVATION`, `QUALITY_REVIEW` e `HIGH_MRR`.
+- **Justificativa:** limita consumidores futuros a recortes governados e expl?citos.
+- **Status:** APROVADA COM RESSALVAS
+
+## D072 ? Exporta??o Neo4j sem depend?ncia de servidor
+
+- **Decis?o:** gerar CSV/Cypher port?teis e amostrar EventInstance por 250 jornadas determin?sticas.
+- **Justificativa:** demonstra portabilidade sem ampliar infraestrutura; GraphML mant?m o grafo completo.
+- **Status:** APROVADA COM RESSALVAS
+
+## D073 ? Reconcilia??o grafo versus tabelas
+
+- **Decis?o:** exigir `difference_unexplained = 0` para contas, jornadas, taxonomia, padr?es, transi??es, findings e MRR.
+- **Justificativa:** o grafo ? uma camada governada, n?o uma fonte paralela sem controle.
+- **Status:** APROVADA
+
+## D074 ? Gate do JourneyGraph
+
+- **Decis?o:** `PASS_WITH_WARNINGS`.
+- **Justificativa:** grafos reconciliados, an?nimos, temporalmente consistentes e n?o causais est?o utiliz?veis; warnings herdados, cobertura de reativa??o, amostra Neo4j e aus?ncia de execu??o externa impedem PASS pleno.
+- **Consequ?ncia:** somente `PROMOTABLE_GRAPH` e subgrafos governados podem alimentar a Fase 7, preservando qualidade, suporte, estabilidade e revis?o humana.
+- **Status:** APROVADA COM RESSALVAS
+
+## Revis?o humana complementar da Fase 6
+
+- modelo conceitual, dez labels, rela??es e propriedades revisados;
+- anonimiza??o, salt, aus?ncia de mapa revers?vel, PII e texto livre revisados;
+- `NEXT_EVENT`, limites, ordem intradi?ria e endpoints revisados;
+- promo??o de padr?es/transi??es, denominadores, suporte e estabilidade revisados;
+- outcomes, taxonomia, QualityProfile, centralidade e caminhos revisados;
+- MRR confirmado exclusivamente como agregado associado;
+- dez consultas NetworkX e equivalentes Cypher revisadas;
+- GraphML completo, export Neo4j amostrado e manifest revisados;
+- seis figuras revisadas quanto a t?tulos, legibilidade, agrega??o e aus?ncia de IDs;
+- reconcilia??o, hashes, escopo e diff staged inclu?dos no gate final.
+
+## Erros e corre??es da Fase 6
+
+- **E048 ? NetworkX ausente:** verifica??o local falhou; NetworkX 3.6.1 foi instalado somente em `solution/.venv`, sem alterar o ambiente global.
+- **E049 ? chave duplicada de padr?o pr?-churn:** janelas diferentes compartilhavam identidade l?gica; `pattern_type` passou a incorporar janela e comprimento, preservando o contexto exigido.
+- **E050 ? falso positivo do gate financeiro:** o schema documentava `revenue_lost` como propriedade proibida e o scanner interpretava a lista preventiva como exposi??o; a valida??o passou a procurar chaves publicadas, mantendo a proibi??o.
+- **E051 ? consulta de MRR sem filtro terminal:** GQ05 usava o ranking global de MRR; a consulta passou a restringir explicitamente caminhos terminando em CHURN e com pelo menos dez contas.
+- **E052 ? cobertura sem?ntica em n?s:** o primeiro validador inspecionava texto apenas de arestas; o gate foi ampliado para propriedades textuais de n?s.

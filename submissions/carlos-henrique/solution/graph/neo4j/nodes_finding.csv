@@ -1,0 +1,7 @@
+:ID,:LABEL,business_relevance,confidence_level,finding_id,is_causal,recommended_investigation,stability_status,title
+finding_jf01,Finding,"Prioriza investigação agregada da jornada, sem inferir causa.",LOW,JF01,False,Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.,SENSITIVE,Sufixo pré-churn em janela de 90 dias
+finding_jf02,Finding,"Prioriza investigação agregada da jornada, sem inferir causa.",LOW,JF02,False,Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.,SENSITIVE,Sufixo pré-churn em janela de 60 dias
+finding_jf03,Finding,"Prioriza investigação agregada da jornada, sem inferir causa.",LOW,JF03,False,Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.,SENSITIVE,Sufixo pré-churn em janela de 30 dias
+finding_jf04,Finding,"Prioriza investigação agregada da jornada, sem inferir causa.",LOW,JF04,False,Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.,SENSITIVE,Sufixo pré-churn em janela de 90 dias
+finding_jf05,Finding,Mapeia uma passagem frequente para investigação operacional agregada.,MEDIUM,JF05,False,Reavaliar por landmark e desfecho na próxima coleta.,ROBUST,Transição recorrente e estável
+finding_jf06,Finding,Mapeia uma passagem frequente para investigação operacional agregada.,MEDIUM,JF06,False,Reavaliar por landmark e desfecho na próxima coleta.,ROBUST,Transição recorrente e estável

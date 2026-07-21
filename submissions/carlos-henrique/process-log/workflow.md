@@ -409,3 +409,57 @@ Não foram executados diagnóstico, análise de receita, survival, journey minin
 ### Revis?o humana
 
 Escopos, limites, ordena??o, exposi??o, transi??es, n-grams, pruning, churn, recorr?ncia, reativa??o, estabilidade, taxonomia, findings, figuras, causalidade, PII e diff foram inclu?dos no checklist. O gate permanece `PASS_WITH_WARNINGS` por warnings e sensibilidade material.
+
+---
+
+## Fase 6 ? JourneyGraph governado
+
+1. Gate Git, commit-base e hashes das Fases 2?5 validados; working tree e staging inicialmente limpos.
+2. NetworkX verificado e instalado exclusivamente no `.venv` local.
+3. Schema com dez labels, rela??es autorizadas, propriedades e sem?ntica proibida definido.
+4. Chaves p?blicas an?nimas e determin?sticas constru?das com SHA-256 truncado e namespace documentado.
+5. `INSTANCE_GRAPH` constru?do com 500 contas, 4.221 jornadas, 43.398 ocorr?ncias e ordem temporal por escopo.
+6. Padr?es de n-gram, sequ?ncia fechada e pr?-churn normalizados; identidade preserva tipo, janela, escopo, outcome e popula??o.
+7. `ANALYTICAL_GRAPH` constru?do somente com padr?es e transi??es ROBUST/SENSITIVE, suportados, n?o HIGH e n?o pequenos.
+8. Seis subgrafos governados, m?tricas estruturais, sensibilidade de pesos, caminhos m?ximos de seis eventos e dez consultas executados.
+9. Contas, jornadas, taxonomia, padr?es, transi??es, findings e MRR reconciliados com diferen?a inexplicada zero.
+10. Dois GraphML completos, pacote Neo4j port?til, dez JSONs, cinco relat?rios e seis figuras gerados.
+11. Gates de schema, duplica??o, temporalidade, promo??o, causalidade, PII, GraphML e escopo executados.
+12. Pytest, compileall, dupla execu??o e compara??o SHA-256 integram o gate final.
+
+### Revis?o orientada a decis?o
+
+- O relat?rio abre com resultado executivo, escala do grafo e condi??es de uso.
+- Toda m?trica preserva denominador, popula??o, peso e limita??o.
+- Centralidade ? descrita como estrutura, nunca como import?ncia causal.
+- MRR ? associado e reconciliado, nunca chamado de perda, economia ou receita evit?vel.
+- Neo4j permanece opcional e n?o executado externamente.
+
+### Valida??o e revis?o humana
+
+- labels, rela??es, identificadores, anonimiza??o, temporalidade e qualidade revisados;
+- padr?es, outcomes, taxonomia, centralidade, caminhos, MRR e consultas revisados;
+- subgrafos, GraphML, CSVs derivados, Cypher, relat?rios e figuras revisados;
+- PII, causalidade, IDs operacionais, ranking individual e escopo revisados;
+- staging seletivo e diff final revisados antes do commit.
+
+### Gate
+
+`PASS_WITH_WARNINGS`. O JourneyGraph est? reconciliado e apto a alimentar uma watchlist governada somente com os gates de qualidade, estabilidade, suporte, sem?ntica n?o causal e revis?o humana preservados. Reativa??o anal?tica limitada, warnings herdados, CSV amostrado e aus?ncia de execu??o Neo4j externa impedem PASS pleno.
+
+### Resultado final da validacao da Fase 6
+
+- testes novos: 15 aprovados;
+- pytest completo: 104 aprovados em 5,62 segundos na repeticao final;
+- compileall de src e scripts: aprovado;
+- pipeline final: duas execucoes completas consecutivas apos a ultima alteracao;
+- idempotencia: 49 outputs, zero divergencias SHA-256;
+- instance graph: 48.593 nos e 217.715 relacoes;
+- analytical graph: 488 nos e 1.821 relacoes;
+- promocao: 435 patterns e 43 transitions;
+- reconciliacao inexplicada: zero;
+- IDs operacionais, PII, quarentena, ranking individual e semantica causal: zero;
+- Neo4j: 26 arquivos derivados; EventInstance amostrado por 250 jornadas; execucao externa nao realizada;
+- figuras: seis PNGs revisados; o painel de reativacao passou a declarar explicitamente a ausencia de caminho promovido.
+
+- **E053 - painel de reativacao vazio:** nenhum pattern de reativacao atingiu os gates e a primeira figura mostrava apenas o titulo. O painel passou a comunicar a ausencia de resultado e os gates preservados, sem criar evidencia artificial.

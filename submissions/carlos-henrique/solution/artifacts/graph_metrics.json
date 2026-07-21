@@ -1,0 +1,104 @@
+{
+  "analytical_graph": {
+    "average_degree": 7.463114754098361,
+    "average_journey_raw_length": null,
+    "density": 0.007662335476487024,
+    "edge_count": 1821,
+    "edges_by_type": {
+      "ASSOCIATED_WITH": 111,
+      "CONTAINS_EVENT_TYPE": 1116,
+      "HAS_QUALITY_PROFILE": 435,
+      "OBSERVED_BEFORE": 63,
+      "RECOMMENDS_INVESTIGATION": 6,
+      "SUPPORTED_BY": 47,
+      "TRANSITIONS_TO": 43
+    },
+    "graph_mode": "ANALYTICAL",
+    "graph_name": "JOURNEY_ANALYTICAL_GRAPH",
+    "interpretation": "Structural graph properties only; degree and density do not imply causal importance.",
+    "journey_event_distribution": {
+      "max": null,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "n": 0,
+      "p90": null
+    },
+    "node_count": 488,
+    "nodes_by_type": {
+      "EventType": 8,
+      "Finding": 6,
+      "Investigation": 7,
+      "Outcome": 6,
+      "Pattern": 435,
+      "QualityProfile": 16,
+      "Taxonomy": 10
+    },
+    "weakly_connected_components": 19
+  },
+  "instance_graph": {
+    "average_degree": 8.960755664396107,
+    "average_journey_raw_length": 10.281449893390192,
+    "density": 9.220402190068434e-05,
+    "edge_count": 217715,
+    "edges_by_type": {
+      "ASSOCIATED_WITH_OUTCOME": 4221,
+      "CLASSIFIED_AS": 4221,
+      "HAS_EVENT": 43398,
+      "HAS_JOURNEY": 4221,
+      "HAS_QUALITY_PROFILE": 4221,
+      "MATCHES_PATTERN": 74858,
+      "NEXT_EVENT": 39177,
+      "OF_TYPE": 43398
+    },
+    "graph_mode": "INSTANCE",
+    "graph_name": "JOURNEY_INSTANCE_GRAPH",
+    "interpretation": "Structural graph properties only; degree and density do not imply causal importance.",
+    "journey_event_distribution": {
+      "max": 72,
+      "mean": 10.281449893390192,
+      "median": 6.0,
+      "min": 1,
+      "n": 4221,
+      "p90": 27.0
+    },
+    "node_count": 48593,
+    "nodes_by_type": {
+      "Account": 500,
+      "EventInstance": 43398,
+      "EventType": 8,
+      "Journey": 4221,
+      "Outcome": 6,
+      "Pattern": 435,
+      "QualityProfile": 15,
+      "Taxonomy": 10
+    },
+    "weakly_connected_components": 5
+  },
+  "subgraphs": {
+    "CHURN_GRAPH": {
+      "edges": 659,
+      "nodes": 147
+    },
+    "HIGH_MRR_GRAPH": {
+      "edges": 404,
+      "nodes": 125
+    },
+    "PROMOTABLE_GRAPH": {
+      "edges": 1821,
+      "nodes": 488
+    },
+    "QUALITY_REVIEW_GRAPH": {
+      "edges": 377,
+      "nodes": 390
+    },
+    "REACTIVATION_GRAPH": {
+      "edges": 0,
+      "nodes": 0
+    },
+    "ROBUST_GRAPH": {
+      "edges": 498,
+      "nodes": 137
+    }
+  }
+}

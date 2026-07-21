@@ -422,3 +422,53 @@ S?o obrigat?rios suporte por conta, janelas fixas, pseudo-cutoff no fim da obser
 ### Restri??es
 
 Quarentena, texto livre, PII, causalidade, score, previs?o, interven??o, grafo, centralidade, comunidades e app n?o integram os contratos desta fase.
+
+---
+
+## Contratos da Fase 6 ? JourneyGraph
+
+### Schemas de n?s
+
+Dez labels controlados: `Account`, `Journey`, `EventInstance`, `EventType`, `Pattern`, `Outcome`, `Taxonomy`, `QualityProfile`, `Finding` e `Investigation`. Cada n? cont?m apenas tipos GraphML simples. Listas e estruturas s?o JSON est?vel. Account exp?e somente `account_key` an?nimo, bandas/agregados, outcome, qualidade e contagens; n?o exp?e PII, texto livre ou ID operacional.
+
+### Schemas de rela??es
+
+Tipos controlados: `HAS_JOURNEY`, `HAS_EVENT`, `OF_TYPE`, `NEXT_EVENT`, `CLASSIFIED_AS`, `ASSOCIATED_WITH_OUTCOME`, `HAS_QUALITY_PROFILE`, `MATCHES_PATTERN`, `CONTAINS_EVENT_TYPE`, `OBSERVED_BEFORE`, `ASSOCIATED_WITH`, `SUPPORTED_BY`, `RECOMMENDS_INVESTIGATION` e `TRANSITIONS_TO`.
+
+`TRANSITIONS_TO` tem gr?o `source EventType + target EventType + journey_scope + outcome + quality population` e preserva suporte por conta, contagem, denominador, suporte relativo, probabilidade condicional, lift, suportes principal/estrito, estabilidade, ordem, amostra, promo??o e MRR associado.
+
+### Pol?tica de identificadores
+
+- SHA-256 truncado em 16 caracteres;
+- namespace/salt local est?tico e documentado: `ai-master-challenge::carlos-henrique::journeygraph::v1`;
+- prefixos por entidade (`acct_`, `journey_`, `event_`, `pattern_`, `quality_`);
+- nenhuma revers?o direta ou tabela de mapeamento versionada;
+- `event_instance_key` incorpora `journey_key`, evitando reuso entre escopos.
+
+### QualityProfile
+
+Gr?o: combina??o de popula??o, estabilidade, depend?ncia intradi?ria, amostra, banda de warning, cobertura e confian?a. Campos: `quality_profile_key`, `population`, `stability_status`, `same_day_dependency`, `small_sample`, `warning_dependency_ratio_band`, `coverage_band`, `confidence_level` e `limitations_count`.
+
+### Provenance
+
+N?s e rela??es conservam escopo, popula??o, source artifact/source table, filtros, denominadores, estabilidade e limita??es. O event log ativo ? a fonte temporal; artefatos da Fase 5 fornecem padr?es, transi??es, taxonomia, findings e sensibilidade. Quarentena n?o entra no grafo.
+
+### Contrato de promo??o
+
+Somente evid?ncia `ROBUST` ou `SENSITIVE`, com suporte m?nimo, denominador positivo, `small_sample=false` e `same_day_dependency != HIGH`, entra no grafo promov?vel. `UNSTABLE`, HIGH e grupos pequenos permanecem contabilizados, mas exclu?dos.
+
+### Contrato de reconcilia??o
+
+Devem reconciliar contas, jornadas, classes taxon?micas, padr?es promovidos, transi??es promovidas, findings e MRR agregado. O campo `difference_unexplained` deve ser zero. Toda diferen?a esperada exige `reason`, `source`, `count` e `expected_behavior`.
+
+### Contrato GraphML
+
+`journey_instance_graph.graphml` cont?m o grafo completo de rastreabilidade; `journey_analytical_graph.graphml` cont?m somente a camada promovida. Propriedades aceitas: string, integer, float e boolean. IDs brutos, PII, texto livre sens?vel e sem?ntica causal s?o proibidos.
+
+### Contrato Neo4j
+
+A exporta??o cont?m dez CSVs de n?s, doze CSVs de rela??es, constraints, ?ndices, import e dez consultas equivalentes. EventInstance ? uma amostra determin?stica das primeiras 250 `journey_key` ordenadas; o GraphML permanece completo. A exporta??o ? derivada, sem servidor, credenciais ou rede, e n?o cont?m `account_id` bruto ou source event id.
+
+### Uso permitido e proibido
+
+Permitido: investiga??o agregada, estrutura, caminhos observados, qualidade, suporte, estabilidade, taxonomia e MRR associado. Proibido: score individual, causalidade, previs?o, perda/economia atribu?da, ranking de conta, recomenda??o autom?tica, contato, interven??o, GNN, link prediction e app.

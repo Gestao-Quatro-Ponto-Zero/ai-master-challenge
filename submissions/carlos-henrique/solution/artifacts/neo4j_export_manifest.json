@@ -1,0 +1,221 @@
+{
+  "cypher_files": [
+    "constraints.cypher",
+    "example_queries.cypher",
+    "import.cypher",
+    "indexes.cypher"
+  ],
+  "event_instance_export": "DETERMINISTIC_JOURNEY_SAMPLE",
+  "event_journey_sample_size": 250,
+  "export_mode": "PORTABLE_CSV_NO_SERVER",
+  "file_hashes": {
+    "constraints.cypher": {
+      "bytes": 649,
+      "sha256": "bea9a2425dcb794308d9bfd82edf7590552be3ed742b01e79e723154a70d2cd9"
+    },
+    "example_queries.cypher": {
+      "bytes": 2411,
+      "sha256": "546cadec583285c73e0026c83a1ab2794b8db98e90a974e7502bcbb41776995f"
+    },
+    "import.cypher": {
+      "bytes": 1031,
+      "sha256": "070df5e016dfa212d110534a02c8d55d6a6fa4ac2550b55abeede48574296331"
+    },
+    "indexes.cypher": {
+      "bytes": 430,
+      "sha256": "17569c65425b6c60d6859fa3964203ecb92931ae245acf5e54179627fa78efc7"
+    },
+    "nodes_account.csv": {
+      "bytes": 74299,
+      "sha256": "819453cb23e8d7e93aa4e34414ffdaef355e0be838e790701eacce560da270b1"
+    },
+    "nodes_event_instance.csv": {
+      "bytes": 408789,
+      "sha256": "911c08da700a9aa30c16cc364cbdc98675dcd87476e1c1b6692f5401594c616e"
+    },
+    "nodes_event_type.csv": {
+      "bytes": 378,
+      "sha256": "b29c78b62c29737fdfb0931fbc33c8c95b3f35f99158d85a2d1753a25e5327d0"
+    },
+    "nodes_finding.csv": {
+      "bytes": 1485,
+      "sha256": "d147c2d5524df8053c575d5d1019397eb334a4105c8a4ef782a31c9d710211e4"
+    },
+    "nodes_investigation.csv": {
+      "bytes": 710,
+      "sha256": "1ddb9d9715867c0a4cc2447d03ca52f964a11dee2c5654e759a60dc435e56616"
+    },
+    "nodes_journey.csv": {
+      "bytes": 815234,
+      "sha256": "393cbf2afb6dbc2a900211f40c9a906440828929921d58ce38bdb89f40b3824b"
+    },
+    "nodes_outcome.csv": {
+      "bytes": 587,
+      "sha256": "d9f2dc430d9051fc6bbe0251516a91627d38d936eb61e3584e6f5f3a84b2179a"
+    },
+    "nodes_pattern.csv": {
+      "bytes": 162866,
+      "sha256": "d7e0f83746574f6a6070fec6bd4c7ca63f8fd18d347a0a91361df17edcac94db"
+    },
+    "nodes_quality_profile.csv": {
+      "bytes": 3845,
+      "sha256": "3c27b7bad36a72560a4ada0444792b6ef8e754fa6c57ec11512b92a6a13a3960"
+    },
+    "nodes_taxonomy.csv": {
+      "bytes": 1233,
+      "sha256": "d6701c98968bac6f64424fe73fa3419742ab95dcca285d55e6ece6d6a1fe8db7"
+    },
+    "relationships_associated_with_outcome.csv": {
+      "bytes": 486746,
+      "sha256": "fcb5bc6aa9c9f1320a88e44a5978d1a487eeb5ae52cfdfce38a000bf1a54f831"
+    },
+    "relationships_classified_as.csv": {
+      "bytes": 409500,
+      "sha256": "8f86982c66254d17500bc903d197d555d777a1ed4fd0289d4f107b333cb21a1d"
+    },
+    "relationships_contains_event_type.csv": {
+      "bytes": 102253,
+      "sha256": "c9b60aea7f64e08216a09aef16e9c1042646cf5375aa386872f498a6b6d11d49"
+    },
+    "relationships_has_event.csv": {
+      "bytes": 216731,
+      "sha256": "1a3d03e53c2f8679765ae71603963dd6e9e37a01820b4a2c8b284dcadab80acb"
+    },
+    "relationships_has_journey.csv": {
+      "bytes": 451122,
+      "sha256": "8a574dda618f965aa743ea991b72b12e3efe1a302efe5de12c5a86243c4e38d9"
+    },
+    "relationships_has_quality_profile.csv": {
+      "bytes": 423737,
+      "sha256": "a86047829e1b05ec24f2c89a68c5cd1a58434b2ab116aa320a65083d98c58fa2"
+    },
+    "relationships_matches_pattern.csv": {
+      "bytes": 8265011,
+      "sha256": "b52d28ef92e7009416f6cad944acd12255120c03235d6c27a7f16f7ab54261c6"
+    },
+    "relationships_next_event.csv": {
+      "bytes": 273021,
+      "sha256": "e2b40c773b02f9ee4ff49669d854ec3a41b72014ce137a8ebbe40dc6e647aadb"
+    },
+    "relationships_of_type.csv": {
+      "bytes": 202361,
+      "sha256": "dff3d34f2614fbf24b4616b11dcee978587f4f3da920d2c04289c3ebc52fc15c"
+    },
+    "relationships_recommends_investigation.csv": {
+      "bytes": 717,
+      "sha256": "2d2e4a7a53da522c6d1ef03cc7b6ce20813f6fd7498d99f4a586efe2f5c0f1c2"
+    },
+    "relationships_supported_by.csv": {
+      "bytes": 3812,
+      "sha256": "69eca215c3aba075e4f175c98b762892d32760f721340a9240439727f0b42628"
+    },
+    "relationships_transitions_to.csv": {
+      "bytes": 11134,
+      "sha256": "744a2dddfdb37996ac0066de9a3f9f7874e8a86094e0a3499092134dea47f181"
+    }
+  },
+  "full_instance_graph_preserved_in_graphml": true,
+  "limitations": [
+    "EVENT_INSTANCE_CSV_IS_A_DETERMINISTIC_SAMPLE",
+    "GRAPHML_RETAINS_FULL_INSTANCE_GRAPH",
+    "IMPORT_NOT_EXECUTED_AGAINST_EXTERNAL_NEO4J",
+    "ALL_IDENTIFIERS_ARE_PUBLIC_ANONYMOUS_KEYS"
+  ],
+  "nodes": {
+    "Account": {
+      "file": "nodes_account.csv",
+      "rows": 500
+    },
+    "EventInstance": {
+      "file": "nodes_event_instance.csv",
+      "rows": 2661
+    },
+    "EventType": {
+      "file": "nodes_event_type.csv",
+      "rows": 8
+    },
+    "Finding": {
+      "file": "nodes_finding.csv",
+      "rows": 6
+    },
+    "Investigation": {
+      "file": "nodes_investigation.csv",
+      "rows": 7
+    },
+    "Journey": {
+      "file": "nodes_journey.csv",
+      "rows": 4221
+    },
+    "Outcome": {
+      "file": "nodes_outcome.csv",
+      "rows": 6
+    },
+    "Pattern": {
+      "file": "nodes_pattern.csv",
+      "rows": 435
+    },
+    "QualityProfile": {
+      "file": "nodes_quality_profile.csv",
+      "rows": 29
+    },
+    "Taxonomy": {
+      "file": "nodes_taxonomy.csv",
+      "rows": 10
+    }
+  },
+  "privacy": {
+    "pii_exported": false,
+    "raw_account_id_exported": false,
+    "source_event_id_exported": false
+  },
+  "relationships": {
+    "ASSOCIATED_WITH_OUTCOME": {
+      "file": "relationships_associated_with_outcome.csv",
+      "rows": 4221
+    },
+    "CLASSIFIED_AS": {
+      "file": "relationships_classified_as.csv",
+      "rows": 4221
+    },
+    "CONTAINS_EVENT_TYPE": {
+      "file": "relationships_contains_event_type.csv",
+      "rows": 1116
+    },
+    "HAS_EVENT": {
+      "file": "relationships_has_event.csv",
+      "rows": 2661
+    },
+    "HAS_JOURNEY": {
+      "file": "relationships_has_journey.csv",
+      "rows": 4221
+    },
+    "HAS_QUALITY_PROFILE": {
+      "file": "relationships_has_quality_profile.csv",
+      "rows": 4656
+    },
+    "MATCHES_PATTERN": {
+      "file": "relationships_matches_pattern.csv",
+      "rows": 74858
+    },
+    "NEXT_EVENT": {
+      "file": "relationships_next_event.csv",
+      "rows": 2411
+    },
+    "OF_TYPE": {
+      "file": "relationships_of_type.csv",
+      "rows": 2661
+    },
+    "RECOMMENDS_INVESTIGATION": {
+      "file": "relationships_recommends_investigation.csv",
+      "rows": 6
+    },
+    "SUPPORTED_BY": {
+      "file": "relationships_supported_by.csv",
+      "rows": 47
+    },
+    "TRANSITIONS_TO": {
+      "file": "relationships_transitions_to.csv",
+      "rows": 43
+    }
+  }
+}

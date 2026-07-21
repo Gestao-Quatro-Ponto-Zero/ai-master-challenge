@@ -1,0 +1,64 @@
+{
+  "analytical_graph": {
+    "findings": 6,
+    "investigations": 7,
+    "operational_actions": 0,
+    "promoted_patterns": 435,
+    "promoted_transitions": 43,
+    "rejected_transitions": {
+      "SMALL_SAMPLE": 24,
+      "UNSTABLE": 545
+    }
+  },
+  "dependencies": {
+    "matplotlib": "3.11.1",
+    "networkx": "3.6.1",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "pyarrow": "25.0.0",
+    "pytest": "9.1.1"
+  },
+  "difference_unexplained": 0,
+  "gate_result": "PASS_WITH_WARNINGS",
+  "generation_timestamp": "2024-12-31T19:00:00",
+  "generation_timestamp_basis": "event_log_observation_end",
+  "graphml": {
+    "journey_analytical_graph.graphml": {
+      "bytes": 1100797,
+      "sha256": "84e20c30dd2e8674257b1dc737b37f88bccd17c80425bec4b7e58a3c3cbb6775"
+    },
+    "journey_instance_graph.graphml": {
+      "bytes": 84436552,
+      "sha256": "b9c645109097d589e15703e829eb28357dbf46194702d4b5b6d24ba90ae164dc"
+    }
+  },
+  "implementation": "NETWORKX_REFERENCE_WITH_OPTIONAL_NEO4J_EXPORT",
+  "input_validation": {
+    "all_hashes_match": true,
+    "expected_base_commit": "990c6fd6778d8a7b329e5ab70ccad841d0fd3327",
+    "input_hashes": {
+      "artifacts/journey_findings.json": "58f31818ec28049c334190c10c9405a82b7062d34b4cf0185de90b1ed2c02008",
+      "artifacts/sequential_patterns.json": "ac86a7dfa999061b7f06ff0da97292d7558c1df665057e45e17190dcba180390",
+      "artifacts/transition_matrix.json": "64d941d3b20a4532977043c90e69ff9de70ba22e86555881a612fd023ef346ce",
+      "data/processed/account_journey_taxonomy.parquet": "87f5d43bc4503e313084790fb25947c44b9f9362b556a2bf1fb9793edc0f348e",
+      "data/processed/account_journeys.parquet": "1d9dc6795a92f2389f315503a38263f24713290d2c74eb4e8823e0eb283faeed"
+    },
+    "reconciliation_unexplained_difference_phase2": 0,
+    "verified_inputs": 13
+  },
+  "instance_graph": {
+    "accounts": 500,
+    "event_instances": 43398,
+    "journeys": 4221,
+    "pattern_matches": 74858,
+    "quarantined_events_used": 0,
+    "raw_operational_ids_exposed": 0
+  },
+  "limitations": [
+    "SOURCE_WARNINGS_PERSIST",
+    "CENTRALITY_STRUCTURAL_NOT_CAUSAL",
+    "EVENT_INSTANCE_CSV_SAMPLED",
+    "NEO4J_NOT_EXECUTED_EXTERNALLY"
+  ],
+  "schema_version": "6.0.0"
+}
