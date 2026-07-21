@@ -92,19 +92,23 @@ def titulo(texto: str, char: str = "="):
 # "A operacao atende ~30.000 tickets por ano"
 V_ANO = 30_000
 
-# [premissa arbitrada, sem fonte] tempo medio de trabalho humano por ticket.
-# A faixa e deliberadamente larga PORQUE nao ha fonte. Escalar linear: ver
-# SECAO 1 — nao recebe eixo de sensibilidade, recebe uma linha de texto.
-H_MIN_MINUTOS = 3.0
-H_MAX_MINUTOS = 30.0
+# [premissa arbitrada, sem fonte] T = tempo de TRIAGEM manual por ticket:
+# ler o chamado e decidir para qual fila ele vai. NAO e o handle time do
+# ticket — ver SECAO 1B. A faixa e larga porque nao ha fonte, e e uma ordem
+# de grandeza menor que a faixa de handle time que este arquivo usava antes
+# de o bloco 3 revelar que a medicao so licencia roteamento.
+T_MIN_MINUTOS = 0.5
+T_MAX_MINUTOS = 3.0
 
-# [premissa arbitrada, sem fonte] custo do erro como MULTIPLO adimensional do
-# handle time. Um ticket automatizado errado custa k vezes o que custaria ter
-# sido feito certo na primeira vez (transferencia + retrabalho). k=1 significa
-# "errar sai de graca"; k=4 significa "errar custa 4 chamados".
-K_MIN = 1.25
-K_MAX = 4.00
-K_GRADE = [1.25, 1.50, 2.00, 2.50, 3.00, 4.00]
+# [premissa arbitrada, sem fonte] kappa = M/T = custo de um roteamento errado
+# medido em MULTIPLOS do tempo de triagem. Um misrouting custa transferencia,
+# reenfileiramento e releitura por outro agente — varios multiplos de uma
+# triagem. k = 1 + kappa mantem a algebra do arquivo inalterada:
+#     ganho liquido por ticket = p*T - (1-p)*M = T * [p - (1-p)*kappa]
+#     p*(kappa) = kappa / (1 + kappa) = (k-1)/k
+KAPPA_GRADE = [2, 3, 5, 7, 10, 20]
+K_GRADE = [1.0 + kap for kap in KAPPA_GRADE]
+K_MIN, K_MAX = min(K_GRADE), max(K_GRADE)
 
 # [premissa arbitrada, sem fonte] horas produtivas por FTE por ano.
 # Divisor linear puro: dobrou, metade do FTE. Nao muda nenhuma conclusao,
@@ -208,14 +212,14 @@ def precisao_de_equilibrio(k: float) -> float:
 
 
 def horas_liquidas_ano(peso: float, cobertura: float, precisao: float,
-                       k: float, h_horas: float, v_ano: int = V_ANO) -> float:
+                       k: float, t_horas: float, v_ano: int = V_ANO) -> float:
     """Horas humanas liquidas recuperadas por ano numa categoria.
 
         horas(c) = V * w_c * H * cobertura(c,tau) * g(p(c,tau), k)
 
     V e H aparecem como produto multiplicativo puro. Ver SECAO 1.
     """
-    return v_ano * peso * h_horas * cobertura * fator_ganho(precisao, k)
+    return v_ano * peso * t_horas * cobertura * fator_ganho(precisao, k)
 
 
 # --------------------------------------------------------------------------
@@ -233,8 +237,8 @@ mix = (contagem / contagem.sum())          # [dados] dataset 2
 CATEGORIAS = list(mix.index)
 MAIOR = CATEGORIAS[0]
 
-H_LO = H_MIN_MINUTOS / 60
-H_HI = H_MAX_MINUTOS / 60
+T_LO = T_MIN_MINUTOS / 60
+T_HI = T_MAX_MINUTOS / 60
 
 
 titulo("BLOCO 1 — BUSINESS CASE PARAMETRICO")
@@ -257,9 +261,9 @@ registro = [
      "[enunciado] README linha 11"),
     ("w_c — mix por categoria", "8 classes, medido",
      "[dados] dataset 2 (transplante declarado, ver SECAO 1)"),
-    ("H — handle time medio", f"{H_MIN_MINUTOS:.0f} a {H_MAX_MINUTOS:.0f} min/ticket",
+    ("H — tempo de triagem medio", f"{T_MIN_MINUTOS:.0f} a {T_MAX_MINUTOS:.0f} min/ticket",
      "[premissa arbitrada, sem fonte]"),
-    ("k — custo do erro", f"{K_MIN:.2f}x a {K_MAX:.2f}x o handle time",
+    ("k — custo do erro", f"{K_MIN:.2f}x a {K_MAX:.2f}x o tempo de triagem",
      "[premissa arbitrada, sem fonte]"),
     ("horas/FTE/ano", f"{HORAS_POR_FTE_ANO:,} h",
      "[premissa arbitrada, sem fonte]"),
@@ -381,40 +385,93 @@ print(f"\n  desbalanceamento: {contagem.max() / contagem.min():.1f}x  [dados]")
 
 
 # ==========================================================================
-# SECAO 2 — RESULTADO LIVRE DE PREMISSA: O PISO DE PRECISAO
+# SECAO 1B — AS DUAS CAMADAS DE AUTOMACAO
 # ==========================================================================
-titulo("SECAO 2 — PISO DE PRECISAO p*(k)  [resultado em forma fechada]")
+titulo("SECAO 1B — DUAS CAMADAS: ROTEAR NAO E RESOLVER")
 
 print("""
-Ao expressar o custo do erro como multiplo adimensional k do handle time —
-e nao como uma grandeza propria em minutos, que seria mais uma premissa
-inventada — V, H e o mix saem inteiros da equacao do SINAL:
+Esta secao existe porque o bloco 3 expos uma confusao que estava dentro deste
+arquivo desde a primeira versao, e que so ficou visivel depois da medicao.
 
-    g(p, k) = 0   <=>   p* = (k - 1) / k
+O fator de ganho g(p,k) foi escrito com a leitura de que um acerto significa
+'a maquina RESOLVE e o humano economiza um handle time inteiro'. Mas o que o
+bloco 3 mediu foi precisao de CLASSIFICACAO. Classificar bem prova que da
+para ROTEAR. Nao prova nada sobre resolver.
 
-Este e o unico numero desta entrega que nao depende de premissa nenhuma
-de escala. Nao depende de V [enunciado], nao depende de H [arbitrado], nao
-depende de horas/FTE [arbitrado] e nao depende da curva [PLACEHOLDER].
-Depende so de k.
+Sao duas camadas com economias de tamanhos diferentes:
 
-Leitura: abaixo de p*, automatizar aquela classe DESTROI horas. O retrabalho
-gerado pelos erros supera o trabalho poupado pelos acertos. Nao e questao de
-ROI magro — e sinal negativo.
+  CAMADA 1 — AUTO-ROTEAMENTO                          [medido, bloco 3]
+    A maquina le o chamado e escolhe a fila. O agente ainda atende, ainda
+    escreve, ainda resolve.
+    O que se economiza: T, o tempo de TRIAGEM manual.
+    O que se arrisca:   M, o custo de um roteamento errado — transferencia,
+                        reenfileiramento, releitura por outro agente.
+    Ganho por ticket = p*T - (1-p)*M = T * [p - (1-p)*kappa],  kappa = M/T
+    A precisao medida por classe licencia exatamente esta camada, e so ela.
+
+  CAMADA 2 — AUTO-RESOLUCAO                           [NAO AVALIAVEL]
+    A maquina responde e fecha sem humano. Economiza o handle time inteiro.
+    Para dimensionar isso seria preciso medir repeticao de solucao: quantos
+    chamados recebem a MESMA resolucao, e quais. Esse e o campo
+    resolution_code / kb_article_id — item 10 da PARTE 3 do bloco 0.
+    Nos dados desta entrega ele nao existe:
+      - o dataset 2 nao tem campo de resolucao nenhum;
+      - o dataset 1 tem, e a evidencia E6 provou que e faker (2.769 de 2.769
+        valores unicos, 36 caracteres, texto aleatorio).
+    Portanto NENHUM numero de auto-resolucao aparece nesta entrega. Nao por
+    modestia — por falta de instrumento.
+
+O ARGUMENTO FECHA EM CIRCULO, e vale notar isso explicitamente:
+  o bloco 0 recomendou instrumentar resolution_code por analise dos dados;
+  o bloco 3 mediu classificacao e provou roteamento;
+  a unica coisa que separa esta entrega de dimensionar auto-resolucao e
+  exatamente o campo que o bloco 0 pediu. A recomendacao de instrumentacao
+  nao era um apendice de consultoria: e o gargalo real desta analise.
+
+CONSEQUENCIA NUMERICA — e nao e cosmetica:
+  T (triagem) e uma ordem de grandeza menor que o handle time, e M (custo do
+  misrouting) e varios multiplos de T. Isso empurra kappa para cima e, com
+  ele, o piso de precisao. Na primeira versao deste arquivo k ia de 1.25 a
+  4.00 e p* parava em 75%. Com a leitura correta, kappa vai de 2 a 20 e p*
+  chega a 95%. E ai o corte da SECAO 2 finalmente morde.
 """)
 
-print(f"{'k (custo do erro)':<22} {'p* minima':<14} leitura")
+
+# ==========================================================================
+# SECAO 2 — RESULTADO LIVRE DE PREMISSA: O PISO DE PRECISAO
+# ==========================================================================
+titulo("SECAO 2 — PISO DE PRECISAO p*(kappa)  [resultado em forma fechada]")
+
+print("""
+Ao expressar o custo do misrouting como multiplo adimensional kappa = M/T —
+e nao como uma grandeza propria em minutos, que seria mais uma premissa
+inventada — V, T e o mix saem inteiros da equacao do SINAL:
+
+    g = 0   <=>   p* = kappa / (1 + kappa)     (equivalente a (k-1)/k, k = 1+kappa)
+
+Este e o unico numero desta entrega que nao depende de premissa nenhuma de
+escala. Nao depende de V [enunciado], nao depende de T [arbitrado], nao
+depende de horas/FTE [arbitrado] e nao depende da curva medida. So de kappa.
+
+Leitura: abaixo de p*, auto-rotear aquela classe DESTROI horas. O retrabalho
+dos misroutings supera a triagem poupada pelos acertos. Nao e ROI magro —
+e sinal negativo.
+""")
+
+print(f"{'kappa = M/T':<14} {'p* minima':<14} leitura")
 print("-" * 78)
-for k in K_GRADE:
+for kap in KAPPA_GRADE:
+    k = 1.0 + kap
     p_estrela = precisao_de_equilibrio(k)
     leitura = {
-        1.25: "erro quase de graca: quase toda classe passa",
-        1.50: "erro custa 50% a mais: piso ainda folgado",
-        2.00: "errar custa o dobro: precisao tem que passar de 50%",
-        2.50: "aperta: 60% de precisao ja e o minimo",
-        3.00: "errar custa 3 chamados: 2 em 3 tem que estar certo",
-        4.00: "punitivo: 3 em 4 certos so pra empatar",
-    }[k]
-    print(f"{k:<22.2f} {p_estrela * 100:>6.1f}%        {leitura}")
+        2: "misrouting barato: 2 triagens perdidas",
+        3: "3 triagens perdidas por erro",
+        5: "transferencia + releitura por outro agente",
+        7: "erro atravessa duas filas antes de assentar",
+        10: "misrouting caro: cliente reclama, ticket reabre",
+        20: "punitivo: erro custa 20 triagens",
+    }[kap]
+    print(f"{kap:<14} {p_estrela * 100:>6.1f}%        {leitura}")
 
 print("""
 CONSEQUENCIA OPERACIONAL — este e o entregavel do bloco pro bloco 3:
@@ -442,23 +499,23 @@ DECISAO NOMEADA
   primeiro. Decisao de sequenciamento, nao de investimento.
 
 PERGUNTA DE SENSIBILIDADE
-  Em que ponto da faixa de handle time essa decisao vira?
+  Em que ponto da faixa de tempo de triagem essa decisao vira?
 
 RESPOSTA, E ELA TEM DUAS METADES QUE PRECISAM SER LIDAS JUNTAS:
 
-  A invariancia e ao NIVEL do handle time. Nao e a RAZAO entre categorias.
+  A invariancia e ao NIVEL do tempo de triagem. Nao e a RAZAO entre categorias.
   E quem decide por onde comecar e a razao, nao o nivel.
 
   METADE 1 — o nivel cancela, e cancela por algebra.
 
-    Sob handle time uniforme, H e escalar puro multiplicando todas as
+    Sob tempo de triagem uniforme, H e escalar puro multiplicando todas as
     categorias pelo mesmo valor:
 
         horas(c) = [ V * H * cobertura * g ] * w_c
                     \\_______ constante _______/
 
     O colchete nao depende de c. A ordem entre categorias e portanto a
-    ordem de w_c, qualquer que seja H. Nao e que a faixa de {H_MIN_MINUTOS:.0f} a {H_MAX_MINUTOS:.0f} min
+    ordem de w_c, qualquer que seja H. Nao e que a faixa de {T_MIN_MINUTOS:.0f} a {T_MAX_MINUTOS:.0f} min
     seja estreita demais pra virar a decisao — e que NENHUMA faixa vira.
     A premissa poderia estar errada por uma ordem de grandeza e a resposta
     seria a mesma. Errar o nivel de H nao custa nada aqui.
@@ -492,7 +549,7 @@ VERIFICACAO DA METADE 1
 cob_ref, prec_ref = curva(0.50)
 
 
-def participacoes(h_horas: float, k: float) -> pd.Series:
+def participacoes(t_horas: float, k: float) -> pd.Series:
     """Fracao de cada categoria nas horas liquidas totais.
 
     Com a curva medida do bloco 3, cobertura e precisao deixam de ser
@@ -500,15 +557,15 @@ def participacoes(h_horas: float, k: float) -> pd.Series:
     """
     def par(c):
         cob_c, pre_c = curva(0.50, classe=c) if CURVA_MEDIDA else (cob_ref, prec_ref)
-        return horas_liquidas_ano(mix[c], cob_c, pre_c, k, h_horas)
+        return horas_liquidas_ano(mix[c], cob_c, pre_c, k, t_horas)
     s = pd.Series({c: par(c) for c in CATEGORIAS})
     return s / s.sum()
 
 
-base = participacoes(H_LO, 1.25)
+base = participacoes(T_LO, 1.25)
 desvio_max = max(
     (participacoes(h, k) - base).abs().max()
-    for h, k in [(H_HI, 1.25), (H_LO, 4.00), (H_HI, 4.00)]
+    for h, k in [(T_HI, 1.25), (T_LO, 4.00), (T_HI, 4.00)]
 )
 print(f"    desvio maximo absoluto de participacao entre os cenarios: "
       f"{desvio_max * 100:.3f} pp")
@@ -529,7 +586,7 @@ Esta secao mede a exposicao anunciada na METADE 2 da SECAO 3. A pergunta
 certa nao e "a conclusao aguenta a faixa de H?" — a METADE 1 ja respondeu
 que sim, e por algebra. A pergunta que sobra e sobre a razao:
 
-  quanto o handle time de uma categoria teria que ser MAIOR que o de
+  quanto o tempo de triagem de uma categoria teria que ser MAIOR que o de
   {MAIOR} para que ela passasse na frente?
 
     w_c * H_c > w_maior * H_maior   <=>   H_c / H_maior > w_maior / w_c
@@ -565,14 +622,14 @@ print(f"""
 LEITURA — a exposicao e assimetrica, e e isso que orienta a acao:
 
   O primeiro lugar NAO esta protegido. Basta {CATEGORIAS[1]} custar
-  {razao_segundo:.2f}x o handle time de {MAIOR} para assumir a lideranca — uma
+  {razao_segundo:.2f}x o tempo de triagem de {MAIOR} para assumir a lideranca — uma
   violacao de {(razao_segundo - 1) * 100:.0f}% da premissa de uniformidade, que e perfeitamente
   plausivel em qualquer operacao real.
 
   Ja o fundo da lista esta protegido: inverter as classes pequenas exigiria
   razoes de 5x a 8x, que seriam visiveis a olho nu em qualquer operacao.
 
-  Traduzindo pro Diretor: a premissa de handle time uniforme e barata para
+  Traduzindo pro Diretor: a premissa de tempo de triagem uniforme e barata para
   decidir o que NAO priorizar, e cara para decidir o que priorizar em
   primeiro lugar. Se so um campo for instrumentado, que seja
   handle_time_seconds por categoria (Onda 1 da PARTE 3 do bloco 0) — e a
@@ -608,13 +665,13 @@ POR QUE FTE E NAO R$
   "materialidade" de "ruido de arredondamento". Quem le pode move-la.
 
 GRADE DE SENSIBILIDADE — os dois eixos que sobraram: tau x k
-  Cada celula responde: qual handle time faz o ganho cruzar {LIMIAR_FTE:.0f} FTE?
+  Cada celula responde: qual tempo de triagem faz o ganho cruzar {LIMIAR_FTE:.0f} FTE?
 
     H* = horas_por_FTE / (V * cobertura(tau) * g(p(tau), k))
 
   Celula em minutos. 'nunca' = g <= 0, automatizar destroi horas em qualquer
   H (precisao abaixo do piso da SECAO 2). '> faixa' = so cruzaria com handle
-  time acima de {H_MAX_MINUTOS:.0f} min, fora da faixa arbitrada.
+  time acima de {T_MAX_MINUTOS:.0f} min, fora da faixa arbitrada.
 """)
 
 grade = []
@@ -627,14 +684,14 @@ for tau in TAU_GRADE:
             linha[f"k={k:.2f}"] = "nunca"
         else:
             h_estrela_min = HORAS_POR_FTE_ANO / (V_ANO * cob * g) * 60
-            if h_estrela_min > H_MAX_MINUTOS:
+            if h_estrela_min > T_MAX_MINUTOS:
                 linha[f"k={k:.2f}"] = "> faixa"
             else:
                 linha[f"k={k:.2f}"] = f"{h_estrela_min:.0f} min"
     grade.append(linha)
 
 ETIQ = "[medido, bloco 3]" if CURVA_MEDIDA else "[PLACEHOLDER na curva]"
-print(f"H* — handle time que faz o ganho cruzar 1 FTE   {ETIQ}")
+print(f"H* — tempo de triagem que faz o ganho cruzar 1 FTE   {ETIQ}")
 print(pd.DataFrame(grade).to_string(index=False))
 
 ABERTURA_GRADE = (
@@ -670,7 +727,7 @@ LEITURA DA GRADE — separando o que e estrutura do que e medicao
 
   2. O mecanismo do 'nunca' — e o que a medicao fez com ele.
      Quando a precisao cai abaixo do piso p*(k) da SECAO 2, nenhuma
-     quantidade de handle time salva: a celula vira 'nunca'. Com a curva
+     quantidade de tempo de triagem salva: a celula vira 'nunca'. Com a curva
      placeholder, colunas inteiras de k alto morriam assim. Com a curva
      MEDIDA, nenhuma celula e 'nunca': a precisao real fica entre 87% e 99%,
      acima de p*(k=4)=75% em toda a faixa. A previsao de que k alto mataria
@@ -680,22 +737,22 @@ LEITURA DA GRADE — separando o que e estrutura do que e medicao
   3. O cruzamento de {LIMIAR_FTE:.0f} FTE cai dentro da faixa de handle
      time arbitrada na maior parte da grade util. O que se pode afirmar
      hoje nao e onde ele cai, e sim que ele E sensivel a premissa de
-     handle time, ao contrario da decisao A. Essa assimetria entre as duas
+     tempo de triagem, ao contrario da decisao A. Essa assimetria entre as duas
      decisoes e estrutural; a posicao do cruzamento nao e.
 """)
 
 print("FAIXA DE FTE LIBERADO NOS EXTREMOS DA FAIXA DE H")
-print(f"  (tau=0.50 {ETIQ}; H de {H_MIN_MINUTOS:.0f} a {H_MAX_MINUTOS:.0f} min "
+print(f"  (tau=0.50 {ETIQ}; H de {T_MIN_MINUTOS:.0f} a {T_MAX_MINUTOS:.0f} min "
       f"[premissa arbitrada, sem fonte])\n")
 
 cob50, prec50 = curva(0.50)
 faixa = []
 for k in K_GRADE:
     g = fator_ganho(prec50, k)
-    fte_lo = V_ANO * H_LO * cob50 * g / HORAS_POR_FTE_ANO
-    fte_hi = V_ANO * H_HI * cob50 * g / HORAS_POR_FTE_ANO
-    horas_lo = V_ANO * H_LO * cob50 * g
-    horas_hi = V_ANO * H_HI * cob50 * g
+    fte_lo = V_ANO * T_LO * cob50 * g / HORAS_POR_FTE_ANO
+    fte_hi = V_ANO * T_HI * cob50 * g / HORAS_POR_FTE_ANO
+    horas_lo = V_ANO * T_LO * cob50 * g
+    horas_hi = V_ANO * T_HI * cob50 * g
     if g <= 0:
         faixa.append({"k": f"{k:.2f}", "g(p,k)": f"{g:+.2f}",
                       "horas/ano": "negativo", "FTE liberado": "negativo",
@@ -715,7 +772,7 @@ print("""
 REGRA DE ARREDONDAMENTO APLICADA
   Horas em centenas, FTE em uma casa, e sempre em FAIXA — nunca ponto.
   Insumo arbitrado nao produz saida precisa. Um numero como "2.847,3 horas
-  economizadas por ano" em cima de um handle time chutado nao e mais
+  economizadas por ano" em cima de um tempo de triagem chutado nao e mais
   informativo que "2.800 a 6.000"; e so mais facil de acreditar, o que e
   exatamente o problema.
 """)
@@ -732,7 +789,7 @@ ordena categorias por horas recuperaveis. A omissao e deliberada e vale
 conferir: as unicas tabelas ordenadas aqui sao o mix (SECAO 1) e as razoes
 de inversao (SECAO 4), ambas ordenadas por w_c, que e [dados] cru.
 
-A METADE 1 da SECAO 3 mostrou que, sob handle time uniforme, a ordem das
+A METADE 1 da SECAO 3 mostrou que, sob tempo de triagem uniforme, a ordem das
 categorias por horas recuperaveis E exatamente a ordem de w_c. Publicar
 esse ranking seria publicar o histograma do dataset 2 com outro nome:
 {MAIOR} apareceria em primeiro lugar porque {MAIOR} e {mix[MAIOR] * 100:.1f}% da base
@@ -741,7 +798,7 @@ esse ranking seria publicar o histograma do dataset 2 com outro nome:
 
 E a METADE 2 mostrou o outro motivo, independente do primeiro: mesmo que
 alguem quisesse publicar essa ordem, ela viraria com {razao_segundo:.2f}x de diferenca
-de handle time entre as duas primeiras. Nao ha ranking defensavel aqui —
+de tempo de triagem entre as duas primeiras. Nao ha ranking defensavel aqui —
 nem por falta de conteudo, nem por falta de robustez.
 
 O QUE FALTA PARA O RANKING NASCER DE VERDADE
@@ -777,7 +834,7 @@ GANCHO PARA O BLOCO 3 — a interface esta fechada
 
 RESUMO DO QUE JA ESTA DECIDIDO E NAO DEPENDE DO BLOCO 3
   - o piso de precisao p*(k) — forma fechada, livre de V, H, mix e curva
-  - a invariancia da decisao A ao handle time — algebrica
+  - a invariancia da decisao A ao tempo de triagem — algebrica
   - o limite dessa invariancia: {razao_segundo:.2f}x inverte o primeiro lugar
   - que a decisao B E sensivel a premissa, ao contrario da A
 """)
@@ -790,9 +847,10 @@ else:
   Ele aparece abaixo pela primeira vez nesta entrega.
 """)
     titulo("SECAO 6B — RANKING, AGORA QUE HA DESEMPATE MEDIDO", "-")
-    K_REF = 2.00
+    KAPPA_REF = 5
+    K_REF = 1.0 + KAPPA_REF
     piso = precisao_de_equilibrio(K_REF)
-    H_MEIO = (H_LO + H_HI) / 2
+    T_MEIO = (T_LO + T_HI) / 2
     linhas_rk = []
     for c in CATEGORIAS:
         melhor = None
@@ -800,7 +858,7 @@ else:
             cob_c, pre_c = curva(tau, classe=c)
             if cob_c <= 0:
                 continue
-            h = horas_liquidas_ano(mix[c], cob_c, pre_c, K_REF, H_MEIO)
+            h = horas_liquidas_ano(mix[c], cob_c, pre_c, K_REF, T_MEIO)
             if melhor is None or h > melhor[0]:
                 melhor = (h, tau, cob_c, pre_c)
         h, tau, cob_c, pre_c = melhor
@@ -816,7 +874,7 @@ else:
         })
     rk = pd.DataFrame(linhas_rk).sort_values("horas/ano", ascending=False).reset_index(drop=True)
     rk.insert(0, "pos HORAS", range(1, len(rk) + 1))
-    print(f"  k = {K_REF:.2f}  ->  p* = {piso:.0%}   |   H = ponto medio da faixa arbitrada")
+    print(f"  kappa = {KAPPA_REF}  ->  p* = {piso:.1%}   |   T = ponto medio da faixa arbitrada")
     print("  tau escolhido POR CLASSE, maximizando horas liquidas [medido, bloco 3]")
     print("  horas em centenas: insumo arbitrado nao produz saida precisa\n")
     print(rk.to_string(index=False))
@@ -824,25 +882,46 @@ else:
     fora = [l["categoria"] for l in linhas_rk if l["passa p*"] == "NAO"]
     print(f"""
   posicoes que mudaram contra o ranking de volume: {inversoes} de {len(rk)}
-  classes que NAO passam p*({K_REF:.2f}): {fora if fora else 'nenhuma'}
+  classes que NAO passam p*(kappa={KAPPA_REF}) = {piso:.1%}: {fora if fora else 'nenhuma'}
 """)
+    print("\n  ONDE O PISO REALMENTE MORDE: cobertura maxima com precisao >= p*(kappa)")
+    sweep = []
+    for kap in KAPPA_GRADE:
+        piso_k = precisao_de_equilibrio(1.0 + kap)
+        linha = {"kappa": kap, "p*": f"{piso_k:.1%}"}
+        for c in CATEGORIAS:
+            viav = [curva(t / 100, classe=c) for t in range(0, 100, 5)]
+            ok = [cb for cb, pr in viav if pr >= piso_k]
+            linha[c.split()[0][:8]] = f"{max(ok):.0%}" if ok else "FORA"
+        sweep.append(linha)
+    print(pd.DataFrame(sweep).to_string(index=False))
+
     if inversoes == 0:
-        print("""  RESULTADO: a medicao NAO desempatou nada. O ranking por horas recuperaveis
-  saiu identico ao ranking por volume, posicao por posicao.
+        print("""
+  RESULTADO: a medicao NAO desempatou o ranking. A ordem por horas
+  recuperaveis saiu identica a ordem por volume, posicao por posicao.
 
   Isso contraria o que a SECAO 6 esperava. Ela previa que a separabilidade
-  variaria bastante entre classes e reordenaria a lista — 'classe grande e
-  mal separavel pode cair para fora mesmo liderando o volume'. Nao caiu:
-  todas as oito passam p*(k=2), e a cobertura otima fica entre 76% e 96% em
-  todas. Com precisao e cobertura parecidas entre classes, w_c volta a ser o
-  unico termo que varia, e o ranking colapsa de novo no histograma.
+  reordenaria a lista — 'classe grande e mal separavel pode cair para fora
+  mesmo liderando o volume'. Nao caiu: nenhuma classe fica FORA em nenhum
+  kappa da faixa. Com precisao parecida entre classes, w_c volta a ser o
+  unico termo que varia e o ranking colapsa no histograma de novo.
 
-  A consequencia e desconfortavel e fica registrada: a recusa da SECAO 6 em
-  publicar ranking estava CERTA, e continua certa depois da medicao. Este
-  ranking nao carrega informacao alem da contagem — ele so agora pode ser
-  exibido com essa afirmacao provada em vez de suposta. O valor da medicao
-  do bloco 3 nao esta em reordenar prioridade; esta em mostrar que nao ha
-  o que reordenar, e em fixar tau por classe, que a contagem nao daria.""")
+  A recusa da SECAO 6 em publicar ranking estava CERTA e continua certa
+  depois da medicao. O valor do bloco 3 nao foi reordenar prioridade — foi
+  provar que nao ha o que reordenar.
+
+  MAS O PISO NAO FICOU INERTE. Ele morde em COBERTURA, nao em exclusao de
+  classe, e e a tabela acima que mostra isso. Subir kappa nao apaga classe:
+  encolhe quanto de cada classe pode ser auto-roteado. E o encolhimento e
+  desigual — as classes com curva mais fraca perdem cobertura muito antes
+  das outras.
+
+  E ESSA e a resposta de verdade para 'o que NAO automatizar', e ela e
+  diferente da que a gente esperava. Nao e uma lista de categorias
+  proibidas. E, dentro de cada categoria, a cauda de baixa confianca — que
+  fica com humano. O corte nao e por assunto, e por confianca, e por isso
+  ele e implementado no triagem.py e nao numa regra de negocio estatica.""")
     else:
         print(f"""  RESULTADO: a medicao reordenou {inversoes} das {len(rk)} posicoes. A diferenca
   contra o ranking de volume e exatamente o que o bloco 3 acrescentou, e e o

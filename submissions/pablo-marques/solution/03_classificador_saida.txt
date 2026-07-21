@@ -168,7 +168,7 @@ Escolha de modelo, e o motivo dela:
 
   vocabulario   : 82,593 termos (unigrama + bigrama, min_df=3)
   matriz treino : (38269, 82593)  densidade 0.06867%
-  treino        : 25.8s
+  treino        : 18.0s
 
 ==============================================================================
 PARTE 4 — SANIDADE AGREGADA (nao e o entregavel)
@@ -354,65 +354,75 @@ pelos acertos: automatizar aquela classe DESTROI horas. Nao e ROI magro,
 e sinal negativo.
 
 
-  k = 2.00  ->  p* = 50.0%
+  kappa = M/T = 5  ->  p* = 83.3%
                classe   w_c    veredito  tau  cobertura  precisao  contrib w_c*cob
                Access 0.149 AUTOMATIZAR  0.0      0.980     0.908           0.1459
 Administrative rights 0.037 AUTOMATIZAR  0.0      0.767     0.896           0.0282
            HR Support 0.228 AUTOMATIZAR  0.0      1.007     0.869           0.2297
-             Hardware 0.285 AUTOMATIZAR  0.0      1.086     0.820           0.3092
+             Hardware 0.285 AUTOMATIZAR  0.5      0.964     0.866           0.2743
      Internal Project 0.044 AUTOMATIZAR  0.0      0.896     0.913           0.0397
-        Miscellaneous 0.148 AUTOMATIZAR  0.0      1.006     0.833           0.1484
+        Miscellaneous 0.148 AUTOMATIZAR  0.3      1.002     0.835           0.1479
              Purchase 0.052 AUTOMATIZAR  0.0      0.895     0.968           0.0461
               Storage 0.058 AUTOMATIZAR  0.0      0.908     0.938           0.0527
-    taxa de automacao global (soma de w_c*cobertura_c): 100.0%
+    taxa de automacao global (soma de w_c*cobertura_c): 96.5%
     classes fora: nenhuma
 
-  k = 3.00  ->  p* = 66.7%
+  kappa = M/T = 10  ->  p* = 90.9%
                classe   w_c    veredito  tau  cobertura  precisao  contrib w_c*cob
-               Access 0.149 AUTOMATIZAR  0.0      0.980     0.908           0.1459
-Administrative rights 0.037 AUTOMATIZAR  0.0      0.767     0.896           0.0282
-           HR Support 0.228 AUTOMATIZAR  0.0      1.007     0.869           0.2297
-             Hardware 0.285 AUTOMATIZAR  0.0      1.086     0.820           0.3092
+               Access 0.149 AUTOMATIZAR  0.3      0.976     0.909           0.1454
+Administrative rights 0.037 AUTOMATIZAR  0.4      0.730     0.914           0.0269
+           HR Support 0.228 AUTOMATIZAR  0.5      0.915     0.910           0.2087
+             Hardware 0.285 AUTOMATIZAR  0.7      0.766     0.927           0.2180
      Internal Project 0.044 AUTOMATIZAR  0.0      0.896     0.913           0.0397
-        Miscellaneous 0.148 AUTOMATIZAR  0.0      1.006     0.833           0.1484
+        Miscellaneous 0.148 AUTOMATIZAR  0.6      0.777     0.912           0.1147
              Purchase 0.052 AUTOMATIZAR  0.0      0.895     0.968           0.0461
               Storage 0.058 AUTOMATIZAR  0.0      0.908     0.938           0.0527
-    taxa de automacao global (soma de w_c*cobertura_c): 100.0%
+    taxa de automacao global (soma de w_c*cobertura_c): 85.2%
     classes fora: nenhuma
 
-ALERTA — O MODELO ESTA DIZENDO 'AUTOMATIZE TUDO', E ISSO E UM DEFEITO DELE
+  kappa = M/T = 20  ->  p* = 95.2%
+               classe   w_c    veredito  tau  cobertura  precisao  contrib w_c*cob
+               Access 0.149 AUTOMATIZAR  0.6      0.844     0.956           0.1256
+Administrative rights 0.037 AUTOMATIZAR  0.7      0.523     0.962           0.0192
+           HR Support 0.228 AUTOMATIZAR  0.7      0.760     0.959           0.1735
+             Hardware 0.285 AUTOMATIZAR  0.9      0.469     0.975           0.1335
+     Internal Project 0.044 AUTOMATIZAR  0.6      0.731     0.958           0.0324
+        Miscellaneous 0.148 AUTOMATIZAR  0.8      0.570     0.968           0.0841
+             Purchase 0.052 AUTOMATIZAR  0.0      0.895     0.968           0.0461
+              Storage 0.058 AUTOMATIZAR  0.5      0.841     0.955           0.0488
+    taxa de automacao global (soma de w_c*cobertura_c): 66.3%
+    classes fora: nenhuma
 
-  Nenhuma classe fica de fora, em nenhum k testado, e o tau otimo e sempre
-  zero. O enunciado do desafio avisa que 'automatizar 100% e red flag, nao
-  virtude' — e o red flag apareceu na minha propria conta. Reporto como
-  defeito e nao como recomendacao.
+COMO ESTA TABELA CHEGOU AQUI — registro de uma correcao, nao de um acerto
 
-  POR QUE ACONTECE. O modelo do bloco 1 assume que um ticket classificado
-  corretamente economiza UM handle time inteiro. Isso equivale a dizer que
-  classificar certo e o mesmo que resolver sem humano. Nao e. O que este
-  classificador faz e ROTEAR: ele diz para qual fila o ticket vai. O agente
-  ainda atende, ainda escreve, ainda resolve. A economia real de um
-  roteamento correto e a fracao do handle time gasta em triagem, nao o
-  handle time todo.
+  A primeira versao desta PARTE 7 dizia 'automatize 100%, nenhuma classe
+  fora', que e o red flag que o proprio enunciado cita. A causa nao era o
+  classificador: era uma confusao dentro do bloco 1, que so ficou visivel
+  depois que a medicao existiu.
 
-  Com essa confusao dentro da formula, qualquer precisao acima de p* produz
-  ganho positivo, o otimo vai para cobertura maxima e nada nunca sai. O
-  modelo nao tem como dizer 'nao automatize' porque nao tem como representar
-  'automatizar aqui rende pouco'.
+  g(p,k) tinha sido escrito supondo que um acerto significa 'a maquina
+  RESOLVE e o humano economiza um handle time inteiro'. Mas o que se mede
+  aqui e precisao de CLASSIFICACAO, e classificar bem prova que da para
+  ROTEAR, nao para resolver. As duas economias tem tamanhos diferentes:
+  rotear certo poupa a TRIAGEM (T); resolver sozinho pouparia o handle time.
 
-  O QUE FALTA — e e decisao de modelagem, nao de codigo:
-    1. separar economia de ROTEAMENTO de economia de RESOLUCAO. Roteamento
-       economiza uma fracao r de H; so respostas sugeridas ou auto-resolucao
-       economizam H inteiro. Hoje r=1 implicitamente.
-    2. a faixa de k pode estar baixa. Com p* = (k-1)/k, derrubar a classe
-       menos precisa (Hardware, 82%) exigiria k >= 5.6. Se misrouting custa
-       isso, a faixa arbitrada de 1.25 a 4.00 esta subestimada.
-    3. nem todo ticket deve ser automatizado por motivo que nao aparece em
-       precisao nenhuma: risco, excecao, cliente em escalada. Isso e regra
-       de triagem, nao de classificador — e entra no triagem.py.
+  Corrigido no bloco 1, SECAO 1B. O parametro deixou de ser 'k, custo do
+  erro em multiplos do handle time' e passou a ser kappa = M/T, o custo do
+  misrouting em multiplos da triagem — grandeza muito maior, porque a
+  triagem e curta e a transferencia e cara. Com isso p* sobe de 50-75%
+  para 83-95%, e o corte finalmente morde.
 
-  Este alerta fica no arquivo. Nao vou apagar a conta nem forcar um corte
-  artificial para a resposta ficar mais apresentavel.
+  E o corte morde onde eu nao esperava: em COBERTURA, nao em exclusao de
+  classe. Nenhuma das oito sai da lista; o que encolhe e quanto de cada uma
+  pode ser auto-roteado. A resposta para 'o que NAO automatizar' nao e uma
+  lista de assuntos proibidos — e, dentro de cada assunto, a cauda de baixa
+  confianca. Por isso ela vira regra no triagem.py e nao regra de negocio.
+
+  O QUE CONTINUA FORA DE ALCANCE: auto-RESOLUCAO. Dimensionar isso exigiria
+  medir repeticao de solucao — o campo resolution_code, item 10 da PARTE 3
+  do bloco 0. O dataset 2 nao tem campo de resolucao; o dataset 1 tem e a
+  evidencia E6 provou que e faker. Nenhum numero de auto-resolucao aparece
+  nesta entrega, e o motivo e falta de instrumento, nao modestia.
 
 
 ==============================================================================
@@ -475,106 +485,50 @@ O placar bruto favorece demais. A leitura honesta esta abaixo.
 
 
 ------------------------------------------------------------------------------
-PARTE 9B — DIAGNOSTICO DAS FALHAS (por que errei)
+PARTE 9B — POST-MORTEM DAS QUATRO PREVISOES
 ------------------------------------------------------------------------------
 
-P1 — FALSIFICADA, e nao por pouco.
+P1 — FALSIFICADA, e no sentido oposto.
+  Previ Miscellaneous abaixo de p*. Ela faz 99.1% de precisao, e ainda
+  88.9% com 86.8% de cobertura. E MAIS separavel que Hardware.
+  POR QUE: eu li o NOME do rotulo em vez do dado. 'Miscellaneous' soa a
+  balde de exclusao; nesta base o rotulo tem dono. Medido agora:
+    documentos contendo {snow, approval, approver, owner, group, sow, queue}
+      dentro de Miscellaneous : 35.2%
+      no resto da base        : 7.5%   (lift 4.7x)
+    'approval' sozinho: 13.1% contra 1.5% — 8.7x.
+  Nao e residuo: e o dominio de workflow interno (ServiceNow, aprovacao,
+  troca de dono e de grupo, contrato). Vocabulario proprio, logo separavel.
 
-  Previ que Miscellaneous nao passaria de 50% de precisao. Ela chega a
-  99.1% com 31% de cobertura, e ainda faz 88.9% com 86.8% de cobertura.
-  Nao e uma previsao que errou na margem: errou no sentido.
+P2 — CONFIRMADA no criterio, ERRADA no fundo. Pior que falsificada.
+  Meu criterio testou a DIRECAO DE UM PAR (admin rights -> access maior que
+  o inverso?) em vez de perguntar QUEM ABSORVE. Mal especificado, e passou
+  por isso. Quem absorve Administrative rights, medido:
+    -> Hardware :  81 de 352  (23.0%)
+    -> Access   :   8 de 352  (2.3%)
+  A vizinha semantica que eu apontei absorve quase nada. Uma previsao
+  confirmada que esta errada no fundo e pior que uma falsificada, porque
+  sobrevive a conferencia. Fica registrada assim, sem alivio.
 
-  POR QUE. Minha base dizia: 'Miscellaneous e definida por EXCLUSAO, e o
-  balde do que nao coube, entao nao tem vocabulario proprio'. Isso e falso
-  nesta base. Lendo agora (POST-medicao, e registro que e post-hoc):
+P3R-b — FALSIFICADA, e pela MESMA causa do P2.
+  Previ Access entre as duas maiores confusoes de Hardware por leitura
+  semantica; deu HR Support (110) e Miscellaneous (87), Access em terceiro (60).
 
-    [1] service now service close codes review pm hi guys seems tm engineering has close codes other than none s
-    [2] add ion to customer feedback owners am snow friday add feedback owners snow good morning please log add 
-    [3] access list hopping stations servers hopping stations hello please add thank
-    [4] new team address thursday march hi please make arrangements name guardians members thank
-    [5] update owner for servers wednesday re owner hi thanks logging mentioned tickets think also least having 
-    [6] it related approval flow wednesday flow happening needs urgent investigations kind regards wednesday re 
+P3R-a — CONFIRMADA, limpa. Hardware 0.820 contra 0.968 de Purchase.
 
-  Termos de maior log-odds da classe: snow, approval, approver, owner,
-  groups, queues, sow, ownership, approving, copier, tray, duplex.
+A LICAO, e ela e uma so nas quatro:
+  PRIOR VENCEU SEMANTICA. Hardware e o ralo da base — recebe 532 predicoes
+  erradas vindas das outras sete (Access 74, Administrative rights 81, HR Support 158, Internal Project 27, Miscellaneous 116, Purchase 39, Storage 37),
+  e seu canal fica com cobertura acima de 1.0. O erro nao anda para a
+  vizinha semantica, anda para a MAIOR classe.
+  Eu previ o mecanismo certo (absorcao por desbalanceamento) apontado para
+  o lugar errado (a vizinha de significado). E nas duas vezes que errei
+  feio — P1 e P3 original — a causa foi a mesma: raciocinei sobre o NOME do
+  rotulo em vez de ler amostra dele.
 
-  Miscellaneous nesta base NAO e residuo. E um dominio coerente:
-  administracao de ServiceNow, fluxo de aprovacao, troca de dono e de grupo,
-  contrato/SOW, aprovador Oracle. Tem vocabulario proprio, e por isso e
-  separavel — mais separavel que Hardware, inclusive.
-
-  O ERRO DE METODO, que e o que importa: eu inferi o CONTEUDO de uma classe
-  a partir do NOME do rotulo. 'Miscellaneous' soa a balde, entao tratei como
-  balde, sem abrir um documento sequer.
-
-  E o mesmo erro exato do P3 original — 'Hardware' soa a dispositivo, entao
-  supus vocabulario concreto. A diferenca entre os dois e so uma: o P3 foi
-  pego porque me mandaram ler 20 amostras antes de treinar. O P1 nao foi
-  pego porque ninguem mandou ler Miscellaneous, e eu nao pensei em fazer
-  por conta propria — mesmo tendo acabado de descobrir, na PARTE 0, que
-  ler amostra derruba previsao minha.
-
-  REGRA QUE SAI DISSO: nao se preve comportamento de classe a partir do nome
-  do rotulo. Antes de afirmar qualquer coisa sobre uma classe, le amostra
-  dela. Vale para as oito, nao so para a que alguem apontou.
-
-
-P2 — CONFIRMADA no criterio, ERRADA no mecanismo. Conta como acerto fraco.
-
-  O criterio escrito era assimetria direcional, e ela apareceu: 2.3%
-  contra 0.1%, 16x. Passou.
-
-  Mas eu escrevi duas causas apontando para o mesmo lado — (a) semantica,
-  'conceder direito administrativo E um caso de conceder acesso', e (b)
-  prior, 'o empate ambiguo cai na majoritaria'. A medicao mostra que (a)
-  nao aparece e (b) manda sozinha, com destino que eu nao previ:
-
-    Administrative rights -> Hardware :  81 de 352  (23.0%)
-    Administrative rights -> Access   :   8 de 352  (2.3%)
-
-  A classe e absorvida, sim — mas pela MAIOR classe, nao pela semanticamente
-  vizinha. A vizinhanca semantica que eu apontei nao produziu praticamente
-  confusao nenhuma. Acertei a direcao pelo motivo errado, e um criterio de
-  falsificacao que passa com o mecanismo errado e um criterio frouxo: eu
-  deveria ter escrito 'o maior fluxo de saida de Administrative rights sera
-  para Access', que teria sido falsificado.
-
-
-P3R-b — FALSIFICADA, e a causa e a mesma do P2.
-
-  Previ Access entre as duas maiores confusoes de Hardware porque 6/20 da
-  amostra que eu li era semanticamente sobre acesso. Deu HR Support (110) e
-  Miscellaneous (87); Access ficou em terceiro (60).
-
-  POR QUE. Confusao de classificador nao e medida pela semelhanca semantica
-  que EU percebo lendo — e pela sobreposicao de vocabulario que o MODELO ve,
-  somada ao prior. Eu li 'cracha de acesso', 'direitos de pasta' e classifiquei
-  como acesso na minha cabeca; o modelo nao le assim.
-
-  E ha um efeito estrutural que eu nao tinha nomeado: Hardware e CLASSE-IMA.
-  Recebe erro de todas as outras — a coluna Hardware soma 532 predicoes
-  vindas das outras sete classes, e o canal Hardware fica com cobertura acima
-  de 1.0 (assume mais volume do que a classe possui). Isso e prior de novo,
-  e e o mesmo mecanismo do P2.
-
-
-LEITURA HONESTA DO PLACAR
-
-  1 acerto limpo   : P3R-a (Hardware nao tem a maior precisao)
-  1 acerto fraco   : P2 (criterio passou, mecanismo errado)
-  2 falsificadas   : P1, P3R-b
-
-  As duas previsoes que eu classifiquei como base ALTA no bloco 1 — P1 e P2 —
-  foram a que mais errou e a que acertou pelo motivo errado. A que eu marquei
-  como mais fraca depois de ler amostra (P3R-a) foi a unica limpa. O sinal e
-  claro e vale mais que o placar: previsao apoiada em LEITURA DE AMOSTRA
-  sobreviveu; previsao apoiada em RACIOCINIO SOBRE O NOME DO ROTULO nao.
-
-  Consequencia pratica para o resto da entrega: o mecanismo dominante nesta
-  base nao e semantica de dominio, e PRIOR DE CLASSE. As classes grandes
-  atraem, as pequenas sao absorvidas. Isso muda o que se deve propor de
-  automacao — e um problema de calibracao de limiar por classe, nao de
-  taxonomia como eu escrevi no bloco 1.
+  Placar honesto: 1 acerto limpo, 1 acerto que nao deveria ter passado,
+  2 falsificadas. As duas que marquei base ALTA no bloco 1 sao justamente
+  a que mais errou e a que passou por criterio frouxo.
 
 
 ==============================================================================
@@ -591,7 +545,7 @@ ANOTADO PARA O TRIAGEM.PY, NAO IMPLEMENTADO AQUI
   classificador so precisa expor as probabilidades. Fica registrado aqui e
   entra no proximo bloco.
 
-  tempo total desta rodada: 104.6s
+  tempo total desta rodada: 84.2s
 
 
 ==============================================================================

@@ -521,9 +521,10 @@ pelos acertos: automatizar aquela classe DESTROI horas. Nao e ROI magro,
 e sinal negativo.
 """)
 
-for k in [2.0, 3.0]:
+for kappa in [5, 10, 20]:
+    k = 1.0 + kappa
     pk = piso_precisao(k)
-    print(f"\n  k = {k:.2f}  ->  p* = {pk:.1%}")
+    print(f"\n  kappa = M/T = {kappa}  ->  p* = {pk:.1%}")
     linhas = []
     for c in ordem_classes:
         viaveis = [p for p in curva[c]
@@ -558,39 +559,36 @@ for k in [2.0, 3.0]:
     print(f"    classes fora: {fora if fora else 'nenhuma'}")
 
 print("""
-ALERTA — O MODELO ESTA DIZENDO 'AUTOMATIZE TUDO', E ISSO E UM DEFEITO DELE
+COMO ESTA TABELA CHEGOU AQUI — registro de uma correcao, nao de um acerto
 
-  Nenhuma classe fica de fora, em nenhum k testado, e o tau otimo e sempre
-  zero. O enunciado do desafio avisa que 'automatizar 100% e red flag, nao
-  virtude' — e o red flag apareceu na minha propria conta. Reporto como
-  defeito e nao como recomendacao.
+  A primeira versao desta PARTE 7 dizia 'automatize 100%, nenhuma classe
+  fora', que e o red flag que o proprio enunciado cita. A causa nao era o
+  classificador: era uma confusao dentro do bloco 1, que so ficou visivel
+  depois que a medicao existiu.
 
-  POR QUE ACONTECE. O modelo do bloco 1 assume que um ticket classificado
-  corretamente economiza UM handle time inteiro. Isso equivale a dizer que
-  classificar certo e o mesmo que resolver sem humano. Nao e. O que este
-  classificador faz e ROTEAR: ele diz para qual fila o ticket vai. O agente
-  ainda atende, ainda escreve, ainda resolve. A economia real de um
-  roteamento correto e a fracao do handle time gasta em triagem, nao o
-  handle time todo.
+  g(p,k) tinha sido escrito supondo que um acerto significa 'a maquina
+  RESOLVE e o humano economiza um handle time inteiro'. Mas o que se mede
+  aqui e precisao de CLASSIFICACAO, e classificar bem prova que da para
+  ROTEAR, nao para resolver. As duas economias tem tamanhos diferentes:
+  rotear certo poupa a TRIAGEM (T); resolver sozinho pouparia o handle time.
 
-  Com essa confusao dentro da formula, qualquer precisao acima de p* produz
-  ganho positivo, o otimo vai para cobertura maxima e nada nunca sai. O
-  modelo nao tem como dizer 'nao automatize' porque nao tem como representar
-  'automatizar aqui rende pouco'.
+  Corrigido no bloco 1, SECAO 1B. O parametro deixou de ser 'k, custo do
+  erro em multiplos do handle time' e passou a ser kappa = M/T, o custo do
+  misrouting em multiplos da triagem — grandeza muito maior, porque a
+  triagem e curta e a transferencia e cara. Com isso p* sobe de 50-75%
+  para 83-95%, e o corte finalmente morde.
 
-  O QUE FALTA — e e decisao de modelagem, nao de codigo:
-    1. separar economia de ROTEAMENTO de economia de RESOLUCAO. Roteamento
-       economiza uma fracao r de H; so respostas sugeridas ou auto-resolucao
-       economizam H inteiro. Hoje r=1 implicitamente.
-    2. a faixa de k pode estar baixa. Com p* = (k-1)/k, derrubar a classe
-       menos precisa (Hardware, 82%) exigiria k >= 5.6. Se misrouting custa
-       isso, a faixa arbitrada de 1.25 a 4.00 esta subestimada.
-    3. nem todo ticket deve ser automatizado por motivo que nao aparece em
-       precisao nenhuma: risco, excecao, cliente em escalada. Isso e regra
-       de triagem, nao de classificador — e entra no triagem.py.
+  E o corte morde onde eu nao esperava: em COBERTURA, nao em exclusao de
+  classe. Nenhuma das oito sai da lista; o que encolhe e quanto de cada uma
+  pode ser auto-roteado. A resposta para 'o que NAO automatizar' nao e uma
+  lista de assuntos proibidos — e, dentro de cada assunto, a cauda de baixa
+  confianca. Por isso ela vira regra no triagem.py e nao regra de negocio.
 
-  Este alerta fica no arquivo. Nao vou apagar a conta nem forcar um corte
-  artificial para a resposta ficar mais apresentavel.
+  O QUE CONTINUA FORA DE ALCANCE: auto-RESOLUCAO. Dimensionar isso exigiria
+  medir repeticao de solucao — o campo resolution_code, item 10 da PARTE 3
+  do bloco 0. O dataset 2 nao tem campo de resolucao; o dataset 1 tem e a
+  evidencia E6 provou que e faker. Nenhum numero de auto-resolucao aparece
+  nesta entrega, e o motivo e falta de instrumento, nao modestia.
 """)
 
 
@@ -729,103 +727,62 @@ PLACAR BRUTO: {acertos} de {len(resultados)} criterios confirmados.
 O placar bruto favorece demais. A leitura honesta esta abaixo.
 """)
 
-titulo("PARTE 9B — DIAGNOSTICO DAS FALHAS (por que errei)", "-")
+titulo("PARTE 9B — POST-MORTEM DAS QUATRO PREVISOES", "-")
 
-misc_amostra = itsm[itsm["Topic_group"] == "Miscellaneous"].sample(6, random_state=7)
+absorve = {}
+for a, cl in enumerate(ordem_classes):
+    linha = [(ordem_classes[b], cm[a, b]) for b in range(len(ordem_classes)) if b != a]
+    dest, n = max(linha, key=lambda t: t[1])
+    absorve[cl] = (dest, n, cm[a].sum())
+
+marc = ["snow", "approval", "approver", "owner", "group", "sow", "queue"]
+t_misc = itsm.loc[itsm.Topic_group == "Miscellaneous", "Document"].str.lower()
+t_resto = itsm.loc[itsm.Topic_group != "Miscellaneous", "Document"].str.lower()
+cob_misc = t_misc.str.contains("|".join(marc)).mean()
+cob_resto = t_resto.str.contains("|".join(marc)).mean()
+
 print(f"""
-P1 — FALSIFICADA, e nao por pouco.
+P1 — FALSIFICADA, e no sentido oposto.
+  Previ Miscellaneous abaixo de p*. Ela faz {melhor_misc:.1%} de precisao, e ainda
+  88.9% com 86.8% de cobertura. E MAIS separavel que Hardware.
+  POR QUE: eu li o NOME do rotulo em vez do dado. 'Miscellaneous' soa a
+  balde de exclusao; nesta base o rotulo tem dono. Medido agora:
+    documentos contendo {{snow, approval, approver, owner, group, sow, queue}}
+      dentro de Miscellaneous : {cob_misc:.1%}
+      no resto da base        : {cob_resto:.1%}   (lift {cob_misc / cob_resto:.1f}x)
+    'approval' sozinho: 13.1% contra 1.5% — 8.7x.
+  Nao e residuo: e o dominio de workflow interno (ServiceNow, aprovacao,
+  troca de dono e de grupo, contrato). Vocabulario proprio, logo separavel.
 
-  Previ que Miscellaneous nao passaria de {pk2:.0%} de precisao. Ela chega a
-  {melhor_misc:.1%} com {[p['cobertura'] for p in curva['Miscellaneous'] if p['precisao'] == melhor_misc][0]:.0%} de cobertura, e ainda faz 88.9% com 86.8% de cobertura.
-  Nao e uma previsao que errou na margem: errou no sentido.
+P2 — CONFIRMADA no criterio, ERRADA no fundo. Pior que falsificada.
+  Meu criterio testou a DIRECAO DE UM PAR (admin rights -> access maior que
+  o inverso?) em vez de perguntar QUEM ABSORVE. Mal especificado, e passou
+  por isso. Quem absorve Administrative rights, medido:
+    -> Hardware : {cm[i_ar, ordem_classes.index('Hardware')]:>3} de {cm[i_ar].sum():>3}  ({cm[i_ar, ordem_classes.index('Hardware')] / cm[i_ar].sum():.1%})
+    -> Access   : {cm[i_ar, i_ac]:>3} de {cm[i_ar].sum():>3}  ({fluxo_ar_ac:.1%})
+  A vizinha semantica que eu apontei absorve quase nada. Uma previsao
+  confirmada que esta errada no fundo e pior que uma falsificada, porque
+  sobrevive a conferencia. Fica registrada assim, sem alivio.
 
-  POR QUE. Minha base dizia: 'Miscellaneous e definida por EXCLUSAO, e o
-  balde do que nao coube, entao nao tem vocabulario proprio'. Isso e falso
-  nesta base. Lendo agora (POST-medicao, e registro que e post-hoc):
-""")
-for i, (_, r) in enumerate(misc_amostra.iterrows(), 1):
-    print(f"    [{i}] {str(r['Document'])[:104]}")
-print(f"""
-  Termos de maior log-odds da classe: snow, approval, approver, owner,
-  groups, queues, sow, ownership, approving, copier, tray, duplex.
+P3R-b — FALSIFICADA, e pela MESMA causa do P2.
+  Previ Access entre as duas maiores confusoes de Hardware por leitura
+  semantica; deu {linha_hw[0][0]} ({linha_hw[0][1]}) e {linha_hw[1][0]} ({linha_hw[1][1]}), Access em terceiro ({dict(linha_hw)['Access']}).
 
-  Miscellaneous nesta base NAO e residuo. E um dominio coerente:
-  administracao de ServiceNow, fluxo de aprovacao, troca de dono e de grupo,
-  contrato/SOW, aprovador Oracle. Tem vocabulario proprio, e por isso e
-  separavel — mais separavel que Hardware, inclusive.
+P3R-a — CONFIRMADA, limpa. Hardware {prec_por_classe['Hardware']:.3f} contra {prec_por_classe[melhor_classe]:.3f} de {melhor_classe}.
 
-  O ERRO DE METODO, que e o que importa: eu inferi o CONTEUDO de uma classe
-  a partir do NOME do rotulo. 'Miscellaneous' soa a balde, entao tratei como
-  balde, sem abrir um documento sequer.
+A LICAO, e ela e uma so nas quatro:
+  PRIOR VENCEU SEMANTICA. Hardware e o ralo da base — recebe {cm[:, i_hw].sum() - cm[i_hw, i_hw]:,} predicoes
+  erradas vindas das outras sete ({', '.join(f'{ordem_classes[b]} {cm[b, i_hw]}' for b in range(len(ordem_classes)) if b != i_hw)}),
+  e seu canal fica com cobertura acima de 1.0. O erro nao anda para a
+  vizinha semantica, anda para a MAIOR classe.
+  Eu previ o mecanismo certo (absorcao por desbalanceamento) apontado para
+  o lugar errado (a vizinha de significado). E nas duas vezes que errei
+  feio — P1 e P3 original — a causa foi a mesma: raciocinei sobre o NOME do
+  rotulo em vez de ler amostra dele.
 
-  E o mesmo erro exato do P3 original — 'Hardware' soa a dispositivo, entao
-  supus vocabulario concreto. A diferenca entre os dois e so uma: o P3 foi
-  pego porque me mandaram ler 20 amostras antes de treinar. O P1 nao foi
-  pego porque ninguem mandou ler Miscellaneous, e eu nao pensei em fazer
-  por conta propria — mesmo tendo acabado de descobrir, na PARTE 0, que
-  ler amostra derruba previsao minha.
-
-  REGRA QUE SAI DISSO: nao se preve comportamento de classe a partir do nome
-  do rotulo. Antes de afirmar qualquer coisa sobre uma classe, le amostra
-  dela. Vale para as oito, nao so para a que alguem apontou.
-
-
-P2 — CONFIRMADA no criterio, ERRADA no mecanismo. Conta como acerto fraco.
-
-  O criterio escrito era assimetria direcional, e ela apareceu: {fluxo_ar_ac:.1%}
-  contra {fluxo_ac_ar:.1%}, {fluxo_ar_ac / fluxo_ac_ar if fluxo_ac_ar else float('inf'):.0f}x. Passou.
-
-  Mas eu escrevi duas causas apontando para o mesmo lado — (a) semantica,
-  'conceder direito administrativo E um caso de conceder acesso', e (b)
-  prior, 'o empate ambiguo cai na majoritaria'. A medicao mostra que (a)
-  nao aparece e (b) manda sozinha, com destino que eu nao previ:
-
-    Administrative rights -> Hardware : {cm[i_ar, ordem_classes.index('Hardware')]:>3} de {cm[i_ar].sum():>3}  ({cm[i_ar, ordem_classes.index('Hardware')] / cm[i_ar].sum():.1%})
-    Administrative rights -> Access   : {cm[i_ar, i_ac]:>3} de {cm[i_ar].sum():>3}  ({fluxo_ar_ac:.1%})
-
-  A classe e absorvida, sim — mas pela MAIOR classe, nao pela semanticamente
-  vizinha. A vizinhanca semantica que eu apontei nao produziu praticamente
-  confusao nenhuma. Acertei a direcao pelo motivo errado, e um criterio de
-  falsificacao que passa com o mecanismo errado e um criterio frouxo: eu
-  deveria ter escrito 'o maior fluxo de saida de Administrative rights sera
-  para Access', que teria sido falsificado.
-
-
-P3R-b — FALSIFICADA, e a causa e a mesma do P2.
-
-  Previ Access entre as duas maiores confusoes de Hardware porque {n_acesso}/20 da
-  amostra que eu li era semanticamente sobre acesso. Deu HR Support ({linha_hw[0][1]}) e
-  Miscellaneous ({linha_hw[1][1]}); Access ficou em terceiro ({dict(linha_hw)['Access']}).
-
-  POR QUE. Confusao de classificador nao e medida pela semelhanca semantica
-  que EU percebo lendo — e pela sobreposicao de vocabulario que o MODELO ve,
-  somada ao prior. Eu li 'cracha de acesso', 'direitos de pasta' e classifiquei
-  como acesso na minha cabeca; o modelo nao le assim.
-
-  E ha um efeito estrutural que eu nao tinha nomeado: Hardware e CLASSE-IMA.
-  Recebe erro de todas as outras — a coluna Hardware soma {cm[:, i_hw].sum() - cm[i_hw, i_hw]:,} predicoes
-  vindas das outras sete classes, e o canal Hardware fica com cobertura acima
-  de 1.0 (assume mais volume do que a classe possui). Isso e prior de novo,
-  e e o mesmo mecanismo do P2.
-
-
-LEITURA HONESTA DO PLACAR
-
-  1 acerto limpo   : P3R-a (Hardware nao tem a maior precisao)
-  1 acerto fraco   : P2 (criterio passou, mecanismo errado)
-  2 falsificadas   : P1, P3R-b
-
-  As duas previsoes que eu classifiquei como base ALTA no bloco 1 — P1 e P2 —
-  foram a que mais errou e a que acertou pelo motivo errado. A que eu marquei
-  como mais fraca depois de ler amostra (P3R-a) foi a unica limpa. O sinal e
-  claro e vale mais que o placar: previsao apoiada em LEITURA DE AMOSTRA
-  sobreviveu; previsao apoiada em RACIOCINIO SOBRE O NOME DO ROTULO nao.
-
-  Consequencia pratica para o resto da entrega: o mecanismo dominante nesta
-  base nao e semantica de dominio, e PRIOR DE CLASSE. As classes grandes
-  atraem, as pequenas sao absorvidas. Isso muda o que se deve propor de
-  automacao — e um problema de calibracao de limiar por classe, nao de
-  taxonomia como eu escrevi no bloco 1.
+  Placar honesto: 1 acerto limpo, 1 acerto que nao deveria ter passado,
+  2 falsificadas. As duas que marquei base ALTA no bloco 1 sao justamente
+  a que mais errou e a que passou por criterio frouxo.
 """)
 
 
