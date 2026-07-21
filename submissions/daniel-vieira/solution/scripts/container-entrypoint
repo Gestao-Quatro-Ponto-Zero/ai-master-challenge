@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# container-entrypoint --- Ponto de entrada do servico de aplicacao no conteiner.
+#
+# Provisiona a persistencia de forma idempotente e, em seguida, substitui o
+# processo pelos servidores web das aplicacoes do agente e do gerente. A espera
+# pela subida do banco e coberta pela retentativa de conexao interna (ADR D4M3).
+# Nao recebe argumentos.
+
+set -euo pipefail
+
+# Imagem de core gerada no build ('Dockerfile'), com o sistema pre-carregado. O
+# arranque parte dela, e os scripts pulam o 'asdf:load-system' por guarda de
+# pacote, de modo que nenhuma compilacao ocorre no boot.
+readonly CORE_IMAGE="/app/leadscorer.core"
+
+# provision_database --- Aplica as migracoes e semeia o banco vazio, delegando a
+# idempotencia ao script de provisionamento. Aborta a subida em caso de falha
+# (fail-closed). Sem argumentos; sinaliza o desfecho pelo estado de saida.
+provision_database() {
+  qlot exec sbcl --core "${CORE_IMAGE}" --non-interactive \
+    --load scripts/container-provision.lisp
+}
+
+# serve_applications --- Substitui o processo corrente pelos servidores web das
+# duas aplicacoes, que permanecem em primeiro plano como processo principal do
+# conteiner. Sem argumentos; nao retorna.
+serve_applications() {
+  exec qlot exec sbcl --core "${CORE_IMAGE}" --non-interactive \
+    --load scripts/run-web.lisp
+}
+
+main() {
+  provision_database
+  serve_applications
+}
+
+main "$@"

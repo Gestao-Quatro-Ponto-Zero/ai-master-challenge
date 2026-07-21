@@ -1,0 +1,53 @@
+/*
+ * dark-theme-tokens.css
+ *
+ * Tokens canônicos do tema escuro do sistema de design principal.
+ * Arquivo companheiro de '.claude/rules/design.md'.
+ *
+ * Define os valores de cor específicos do tema escuro, alinhados ao tema
+ * IBM Carbon Gray 100. Os tokens independentes de tema (tipografia,
+ * espaçamento, raio) residem em tokens.css.
+ *
+ * As regras e princípios de aplicação residem em design.md; este arquivo
+ * contém os valores referenciados por essas regras.
+ */
+
+:root {
+
+  /* === Camadas de fundo === */
+  --bg-base:    #161616;    /* IBM Carbon Gray 100; página, capa de slide, base do app */
+  --bg-raised:  #262626;    /* IBM Carbon Gray 90; cartão, painel, superfície elevada */
+  --bg-overlay: #393939;    /* IBM Carbon Gray 80; modal, bloco de código */
+
+
+  /* === Espectro de primeiro plano === */
+  --fg-primary:   #f4f4f4;    /* IBM Carbon Gray 10 */
+  --fg-secondary: #c6c6c6;    /* IBM Carbon Gray 30 */
+  --fg-muted:     #8d8d8d;    /* IBM Carbon Gray 50 */
+  --fg-disabled:  #525252;    /* IBM Carbon Gray 70 */
+
+
+  /* === Espectro de borda === */
+  --border-subtle: #262626;    /* IBM Carbon Gray 90 */
+  --border-strong: #393939;    /* IBM Carbon Gray 80 */
+
+
+  /* === Destaque === */
+  --accent:        #ffffff;                      /* IBM Carbon White */
+  --accent-hover:  #f4f4f4;                      /* IBM Carbon Gray 10 */
+  --accent-muted:  rgba(255, 255, 255, 0.08);    /* IBM Carbon White, 8% de opacidade */
+
+
+  /* === Estados interativos === */
+  --link:          #f4f4f4;                      /* IBM Carbon Gray 10; sublinhado */
+  --link-hover:    #ffffff;                      /* IBM Carbon White */
+  --selection-bg:  rgba(255, 255, 255, 0.16);    /* IBM Carbon White, 16% de opacidade */
+
+
+  /* === Cores semânticas === */
+  --positive:  #42be65;    /* IBM Carbon Green 40; ganhos, sucesso, confirmado */
+  --negative:  #fa4d56;    /* IBM Carbon Red 50; perdas, erros, recusado */
+  --warning:   #f1c21b;    /* IBM Carbon Yellow 30; cautela, pendente */
+  --info:      #4589ff;    /* IBM Carbon Blue 50; informativo, neutro */
+
+}

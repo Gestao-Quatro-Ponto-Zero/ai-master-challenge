@@ -1,0 +1,271 @@
+#!/usr/bin/env bash
+#
+# export-session --- Exporta a transcricao higienizada de uma sessao de trabalho.
+#
+# Higieniza a transcricao bruta de uma sessao do Claude Code (JSONL) por meio do filtro
+# 'sanitize-transcript.jq', submete o resultado a uma varredura de segredos fail-closed e,
+# apenas quando a varredura passa, move a saida para '.claude/sessions/<session-ref>.jsonl'.
+# Diante de qualquer achado, encerra com estado nao-zero sem deixar arquivo no diretorio
+# versionado, de modo que um estado inseguro seja impossivel de alcancar, nao meramente
+# evitavel. As regras de varredura sao definidas neste proprio script, sua fonte canonica.
+#
+# Uso:
+#   scripts/export-session <cc-session-id|caminho-bruto> <session-ref>
+#
+# Argumentos:
+#   cc-session-id|caminho-bruto  Identificador da cc-session, resolvido em
+#                                ~/.claude/projects/<slug>/<id>.jsonl a partir do diretorio
+#                                de trabalho, ou um caminho de arquivo existente.
+#   session-ref                  Radical do worklog no formato {task-id}-{YYYY-MM-DD}-{n}.
+
+set -euo pipefail
+
+PROGRAM_NAME="$(basename -- "${BASH_SOURCE[0]}")"
+readonly PROGRAM_NAME
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+readonly REPO_ROOT
+readonly JQ_FILTER="${SCRIPT_DIR}/sanitize-transcript.jq"
+
+# Ruleset de varredura de segredos. Arranjos paralelos por indice: nome da regra, expressao
+# regular estendida e sensibilidade a caixa ('i' para insensivel, vazio para sensivel). Um
+# achado em qualquer regra aborta a exportacao.
+#
+# A cobertura e uma linha de base deliberadamente nao exaustiva, e nao um scanner de entropia
+# geral. Ela e a segunda barreira: a higienizacao deny-by-default remove antes as superficies de
+# maior risco (saidas de ferramenta, anexos, snapshots, tipos de registro desconhecidos). O
+# residuo mais relevante e o argumento de entrada de 'tool_use', preservado por rastreabilidade:
+# um segredo sem rotulo e de formato nao coberto colado num comando pode sobreviver. Ao adicionar
+# um novo provedor de credencial ao fluxo do projeto, acrescente aqui a sua forma de token.
+#
+# Os quantificadores de comprimento sao abertos ('{n,}', nao '{n}') mesmo quando o formato tem
+# comprimento fixo. Isto faz 'grep -o' emitir o token maximal: um token maior que apenas comece
+# por uma cadeia isentada gera um casamento maior, distinto da entrada do allowlist, de modo que a
+# isencao por igualdade exata nao possa ser burlada por truncacao de prefixo. Alargar o limite so
+# amplia o que e sinalizado, nunca o que escapa, e portanto e seguro (fail-closed).
+readonly -a RULE_NAMES=(
+  "private-key-header"
+  "aws-access-key-id"
+  "aws-temp-key-id"
+  "google-api-key"
+  "slack-token"
+  "github-token"
+  "stripe-key"
+  "openai-key"
+  "jwt"
+  "labeled-secret-assignment"
+  "kaggle-api-key"
+)
+readonly -a RULE_REGEXES=(
+  '-----BEGIN[ A-Z]*PRIVATE KEY-----'
+  'AKIA[0-9A-Z]{16,}'
+  'ASIA[0-9A-Z]{16,}'
+  'AIza[0-9A-Za-z_-]{35,}'
+  'xox[baprs]-[0-9A-Za-z-]{10,}'
+  '(gh[opsur]_[0-9A-Za-z]{36,}|github_pat_[0-9A-Za-z_]{22,})'
+  '[sr]k_(live|test)_[0-9A-Za-z]{16,}'
+  '(sk-proj-[0-9A-Za-z_-]{20,}|sk-[0-9A-Za-z]{40,})'
+  'eyJ[0-9A-Za-z_=-]{10,}\.[0-9A-Za-z_=-]{10,}\.[0-9A-Za-z_=-]{10,}'
+  '(api[_-]?key|apikey|secret|token|password|passwd|bearer|authorization)["'\'' ]*[:=][ "'\'']*[A-Za-z0-9/+_.=-]{16,}'
+  '"key"[ ]*:[ ]*"[0-9a-f]{32}"'
+)
+readonly -a RULE_FLAGS=(
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  ""
+  "i"
+  ""
+)
+
+# Allowlist de literais comprovadamente benignos. Cada entrada e o texto EXATO de um casamento
+# que a varredura deve isentar; a comparacao e por igualdade de cadeia, nunca por substring. Como
+# as regras produzem o casamento maximal (quantificadores abertos, ver acima), um token real que
+# apenas contenha uma entrada como prefixo gera um casamento maior, distinto da entrada, e nao e
+# isentado. A isencao e aplicada APOS a deteccao (a regra ainda casa; o achado so e limpo quando
+# todo o texto casado e uma entrada desta lista), preservando o gate fail-closed: qualquer
+# casamento nao isentado aborta.
+#
+# So devem constar aqui valores comprovadamente benignos: chaves de exemplo publicas
+# documentadas, cadeias sinteticas usadas nas fixtures de teste, placeholders de configuracao
+# (por exemplo, o valor de exemplo de '.env.example') e senhas sinteticas de ambientes de
+# desenvolvimento efemeros e descartaveis, que nao concedem acesso a qualquer sistema real. Uma
+# entrada e listada na forma exata em que a sua regra a captura: a regra
+# 'labeled-secret-assignment' captura rotulo mais operador mais valor, de modo que o rotulo faz
+# parte do casamento (por exemplo, 'PASSWORD=<valor>'). Ao introduzir um novo literal benigno,
+# acrescente aqui a forma exata do seu casamento.
+readonly -a ALLOWLIST=(
+  "AKIAIOSFODNN7EXAMPLE"
+  "token=AKIAIOSFODNN7EXAMPLE"
+  "sk-proj-ABCDEFGHIJKLMNOPQRSTUVWX"
+  "PASSWORD=troque-este-valor"
+  "PASSWORD=leadscorer_dev_local"
+)
+
+# Escreve um diagnostico prefixado no erro padrao.
+# Argumentos: a mensagem. Saida: erro padrao. Retorno: nenhum.
+warn() {
+  printf '%s: %s\n' "${PROGRAM_NAME}" "$*" >&2
+}
+
+# Escreve um diagnostico e encerra com estado nao-zero.
+# Argumentos: a mensagem. Saida: erro padrao. Retorno: nao retorna.
+die() {
+  warn "$*"
+  exit 1
+}
+
+# Imprime o texto de uso.
+# Argumentos: nenhum. Saida: conforme o fluxo do chamador. Retorno: 0.
+usage() {
+  cat <<EOF
+Uso: ${PROGRAM_NAME} <cc-session-id|caminho-bruto> <session-ref>
+
+Higieniza a transcricao bruta de uma sessao do Claude Code e a exporta para
+'.claude/sessions/<session-ref>.jsonl', apos uma varredura de segredos fail-closed.
+
+Argumentos:
+  cc-session-id|caminho-bruto  Identificador da cc-session ou caminho de arquivo existente.
+  session-ref                  Radical no formato {task-id}-{YYYY-MM-DD}-{n}.
+EOF
+}
+
+# Resolve o caminho da transcricao bruta a partir de um cc-session id ou caminho.
+# Argumentos: o identificador ou caminho. Saida: o caminho resolvido na saida padrao.
+# Retorno: 0 em sucesso, 1 quando a transcricao nao e encontrada.
+resolve_raw_path() {
+  local arg="$1"
+  if [[ -f "${arg}" ]]; then
+    printf '%s\n' "${arg}"
+    return 0
+  fi
+  local slug candidate
+  # O Claude Code nomeia o diretorio de projeto em '~/.claude/projects/' substituindo
+  # por '-' tanto '/' quanto '.'. Replicar ambas as substituicoes; do contrario, um PWD
+  # com '.' (por exemplo, '.claude/worktrees/' em um worktree) gera um slug divergente e
+  # a resolucao automatica falha.
+  slug="${PWD//\//-}"
+  slug="${slug//./-}"
+  candidate="${HOME}/.claude/projects/${slug}/${arg}.jsonl"
+  if [[ -f "${candidate}" ]]; then
+    printf '%s\n' "${candidate}"
+    return 0
+  fi
+  warn "Transcricao bruta nao encontrada para '${arg}' (tentado: ${candidate})."
+  return 1
+}
+
+# Higieniza a transcricao bruta aplicando o filtro jq linha a linha.
+# Argumentos: o caminho bruto e o caminho de saida. Saida: escreve o arquivo de saida.
+# Retorno: propaga o estado do jq.
+sanitize() {
+  local raw="$1" out="$2"
+  jq -c -f "${JQ_FILTER}" "${raw}" > "${out}"
+}
+
+# Valida que o arquivo e um fluxo JSONL bem-formado.
+# Argumentos: o caminho do arquivo. Saida: nenhuma. Retorno: 0 se valido; encerra se invalido.
+validate_jsonl() {
+  local file="$1"
+  if ! jq empty "${file}" 2>/dev/null; then
+    die "Saida higienizada nao e JSONL valido."
+  fi
+}
+
+# Determina se um texto casado e um literal isentado.
+# Argumentos: o texto casado. Saida: nenhuma. Retorno: 0 se o texto e exatamente uma entrada da
+#   ALLOWLIST, 1 caso contrario. A comparacao e por igualdade exata, nunca por substring.
+is_allowlisted() {
+  local candidate="$1" entry
+  for entry in "${ALLOWLIST[@]}"; do
+    [[ "${candidate}" == "${entry}" ]] && return 0
+  done
+  return 1
+}
+
+# Varre o arquivo em busca de segredos usando o ruleset embutido, isentando os literais benignos
+# da ALLOWLIST. Extrai o texto casado de cada ocorrencia (nao apenas a linha) para que a isencao
+# opere sobre o proprio valor: um achado so e limpo quando o seu texto casado e um literal
+# isentado; qualquer casamento nao isentado marca achado e mantem o gate fail-closed.
+# Argumentos: o caminho do arquivo. Saida: reporta no erro padrao a linha e a regra de cada
+#   achado nao isentado, sem jamais expor o segredo correspondente. Retorno: 0 quando limpo,
+#   1 com achados.
+scan_secrets() {
+  local file="$1"
+  local found=0
+  local i name regex flags matches status line lineno matchtext
+  for i in "${!RULE_NAMES[@]}"; do
+    name="${RULE_NAMES[$i]}"
+    regex="${RULE_REGEXES[$i]}"
+    flags="${RULE_FLAGS[$i]}"
+    # '-o' emite cada texto casado em sua propria linha, prefixado pelo numero de linha por '-n',
+    # de modo que multiplos casamentos numa mesma linha sejam avaliados individualmente.
+    local -a grep_opts=(-n -o -E)
+    [[ "${flags}" == "i" ]] && grep_opts+=(-i)
+    status=0
+    matches="$(grep "${grep_opts[@]}" -e "${regex}" -- "${file}")" || status=$?
+    if (( status > 1 )); then
+      die "Falha ao executar a varredura (regra ${name})."
+    fi
+    (( status == 0 )) || continue
+    while IFS= read -r line; do
+      # Formato 'LINENO:MATCH'; o numero de linha nao contem ':', de modo que o primeiro ':'
+      # separa o prefixo do texto casado, que pode ele proprio conter ':'.
+      lineno="${line%%:*}"
+      matchtext="${line#*:}"
+      is_allowlisted "${matchtext}" && continue
+      warn "segredo suspeito (regra ${name}) na linha ${lineno}"
+      found=1
+    done <<< "${matches}"
+  done
+  return "${found}"
+}
+
+# Orquestra a exportacao fail-closed de uma unica transcricao de sessao.
+# Argumentos: os argumentos de linha de comando. Saida: mensagem de sucesso na saida padrao.
+# Retorno: 0 em sucesso; nao-zero em erro de uso, transcricao ausente ou achado de segredo.
+main() {
+  if [[ $# -ne 2 ]]; then
+    usage >&2
+    exit 2
+  fi
+  local cc_or_path="$1" session_ref="$2"
+  if [[ ! "${session_ref}" =~ ^[0-9A-Z]{4}-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+$ ]]; then
+    die "Referencia de sessao invalida: '${session_ref}' (esperado {task-id}-{YYYY-MM-DD}-{n})."
+  fi
+
+  local raw_path
+  raw_path="$(resolve_raw_path "${cc_or_path}")" || exit 1
+
+  # O diretorio de saida e sobreponivel por SESSIONS_DIR para isolamento em testes;
+  # na operacao normal, resolve para '.claude/sessions/' na raiz do repositorio.
+  local out_dir="${SESSIONS_DIR:-${REPO_ROOT}/.claude/sessions}"
+  local out_file="${out_dir}/${session_ref}.jsonl"
+
+  local tmp
+  tmp="$(mktemp)"
+  # shellcheck disable=SC2064
+  trap "rm -f -- '${tmp}'" EXIT
+
+  if ! sanitize "${raw_path}" "${tmp}"; then
+    die "Falha ao higienizar: a transcricao bruta contem JSONL invalido ou malformado."
+  fi
+  validate_jsonl "${tmp}"
+  if ! scan_secrets "${tmp}"; then
+    die "Varredura de segredos acusou achados; exportacao abortada (fail-closed)."
+  fi
+
+  mkdir -p -- "${out_dir}"
+  mv -- "${tmp}" "${out_file}"
+  trap - EXIT
+  printf '%s: transcricao higienizada exportada para %s\n' "${PROGRAM_NAME}" "${out_file}"
+}
+
+main "$@"

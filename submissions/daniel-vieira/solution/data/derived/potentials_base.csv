@@ -1,0 +1,282 @@
+account,sector,product,series,list_price,last_close_value,cadence_days,pair_won_count,sector_won_avg,days_since_last_close
+Acme Corporation,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Betasoloin,medical,GTX Basic,GTX,550,563,16.0,7,10.0,5
+Betasoloin,medical,MG Advanced,MG,3393,3673,22.0,7,7.833,3
+Betatech,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Betatech,medical,GTX Basic,GTX,550,480,16.0,12,10.0,52
+Betatech,medical,GTX Plus Pro,GTX,5482,6156,27.0,7,5.917,81
+Bioholding,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Bioplex,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Bioplex,medical,GTX Plus Basic,GTX,1096,955,21.0,4,7.75,87
+Bioplex,medical,GTX Plus Pro,GTX,5482,6318,27.0,4,5.917,15
+Bioplex,medical,GTX Pro,GTX,4821,5186,20.0,5,7.417,42
+Bioplex,medical,MG Advanced,MG,3393,2682,22.0,4,7.833,131
+Blackzim,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Blackzim,retail,MG Advanced,MG,3393,3302,22.0,8,7.118,2
+Bluth Company,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Bluth Company,technology,GTX Pro,GTX,4821,4881,20.0,6,10.083,31
+Bubba Gump,software,GTK 500,GTK,26768,,33.0,0,1.0,
+Bubba Gump,software,GTX Plus Pro,GTX,5482,5778,27.0,2,7.143,109
+Bubba Gump,software,GTX Pro,GTX,4821,5466,20.0,11,12.429,21
+Cancity,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Cancity,retail,GTX Plus Pro,GTX,5482,5211,27.0,5,5.412,32
+Cancity,retail,MG Advanced,MG,3393,2931,22.0,6,7.118,1
+Cheers,entertainment,GTK 500,GTK,26768,27971,33.0,3,2.0,63
+Cheers,entertainment,GTX Pro,GTX,4821,4991,20.0,6,6.167,60
+Cheers,entertainment,MG Special,MG,55,53,17.0,5,7.167,18
+Codehow,software,GTK 500,GTK,26768,,33.0,0,1.0,
+Codehow,software,GTX Plus Basic,GTX,1096,1083,21.0,15,9.0,13
+Codehow,software,GTX Plus Pro,GTX,5482,5543,27.0,7,7.143,15
+Codehow,software,GTX Pro,GTX,4821,5110,20.0,8,12.429,27
+Codehow,software,MG Special,MG,55,52,17.0,16,11.857,7
+Condax,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Condax,medical,MG Special,MG,55,51,17.0,30,10.25,3
+Conecom,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Conecom,technology,MG Advanced,MG,3393,3203,22.0,6,8.417,25
+Conecom,technology,MG Special,MG,55,51,17.0,9,10.0,18
+Dalttechnology,software,GTK 500,GTK,26768,,33.0,0,1.0,
+Domzoom,entertainment,GTK 500,GTK,26768,,33.0,0,2.0,
+Domzoom,entertainment,GTX Plus Basic,GTX,1096,975,21.0,8,6.667,0
+Domzoom,entertainment,GTX Plus Pro,GTX,5482,5653,27.0,6,4.5,43
+Domzoom,entertainment,GTX Pro,GTX,4821,5052,20.0,4,6.167,12
+Domzoom,entertainment,MG Special,MG,55,58,17.0,14,7.167,27
+Doncon,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Doncon,technology,GTX Basic,GTX,550,584,16.0,4,12.5,147
+Doncon,technology,GTX Plus Basic,GTX,1096,1005,21.0,2,9.25,3
+Doncon,technology,GTX Plus Pro,GTX,5482,4910,27.0,5,5.667,8
+Doncon,technology,GTX Pro,GTX,4821,4953,20.0,7,10.083,5
+Doncon,technology,MG Special,MG,55,41,17.0,11,10.0,0
+Donquadtech,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Donquadtech,technology,MG Special,MG,55,65,17.0,9,10.0,35
+Dontechi,software,GTK 500,GTK,26768,,33.0,0,1.0,
+Dontechi,software,GTX Plus Pro,GTX,5482,4809,27.0,4,7.143,106
+Dontechi,software,MG Advanced,MG,3393,3703,22.0,13,10.0,47
+Donware,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+Donware,marketing,GTX Basic,GTX,550,698,16.0,7,10.75,8
+Donware,marketing,GTX Plus Pro,GTX,5482,6177,27.0,2,5.875,225
+Donware,marketing,GTX Pro,GTX,4821,4620,20.0,3,8.625,35
+Donware,marketing,MG Special,MG,55,58,17.0,6,10.375,16
+Fasehatice,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Fasehatice,retail,GTX Plus Basic,GTX,1096,1171,21.0,11,7.412,23
+Fasehatice,retail,GTX Plus Pro,GTX,5482,4527,27.0,6,5.412,26
+Fasehatice,retail,GTX Pro,GTX,4821,4577,20.0,13,8.059,12
+Fasehatice,retail,MG Advanced,MG,3393,3064,22.0,5,7.118,55
+Fasehatice,retail,MG Special,MG,55,50,17.0,6,7.941,58
+Faxquote,telecommunications,GTK 500,GTK,26768,,33.0,0,1.0,
+Faxquote,telecommunications,GTX Plus Basic,GTX,1096,1220,21.0,6,6.5,108
+Faxquote,telecommunications,GTX Plus Pro,GTX,5482,5624,27.0,7,6.167,5
+Faxquote,telecommunications,MG Special,MG,55,54,17.0,6,10.333,109
+Finhigh,finance,GTK 500,GTK,26768,,33.0,0,2.0,
+Finhigh,finance,GTX Pro,GTX,4821,4461,20.0,6,8.875,84
+Finhigh,finance,MG Advanced,MG,3393,3253,22.0,12,7.875,3
+Finjob,employment,GTK 500,GTK,26768,24745,33.0,1,1.0,139
+Finjob,employment,GTX Plus Basic,GTX,1096,1112,21.0,5,5.5,38
+Finjob,employment,GTX Plus Pro,GTX,5482,5306,27.0,1,4.0,190
+Finjob,employment,MG Advanced,MG,3393,3296,22.0,13,7.5,0
+Funholding,finance,GTK 500,GTK,26768,,33.0,0,2.0,
+Funholding,finance,MG Special,MG,55,51,17.0,12,8.375,58
+Ganjaflex,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Ganjaflex,retail,GTX Basic,GTX,550,576,16.0,15,10.941,0
+Ganjaflex,retail,GTX Plus Basic,GTX,1096,927,21.0,5,7.412,26
+Ganjaflex,retail,GTX Pro,GTX,4821,5052,20.0,9,8.059,10
+Gekko & Co,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Gekko & Co,retail,GTX Basic,GTX,550,678,16.0,11,10.941,41
+Gekko & Co,retail,GTX Plus Pro,GTX,5482,5143,27.0,5,5.412,14
+Gekko & Co,retail,GTX Pro,GTX,4821,4651,20.0,11,8.059,0
+Genco Pura Olive Oil Company,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Genco Pura Olive Oil Company,retail,GTX Pro,GTX,4821,4888,20.0,8,8.059,31
+Genco Pura Olive Oil Company,retail,MG Advanced,MG,3393,3494,22.0,9,7.118,1
+Globex Corporation,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Globex Corporation,technology,GTX Plus Basic,GTX,1096,1021,21.0,8,9.25,28
+Globex Corporation,technology,GTX Plus Pro,GTX,5482,5614,27.0,7,5.667,128
+Globex Corporation,technology,MG Special,MG,55,57,17.0,9,10.0,56
+Gogozoom,telecommunications,GTK 500,GTK,26768,,33.0,0,1.0,
+Gogozoom,telecommunications,GTX Basic,GTX,550,574,16.0,10,10.0,44
+Gogozoom,telecommunications,GTX Plus Pro,GTX,5482,5520,27.0,3,6.167,27
+Gogozoom,telecommunications,MG Special,MG,55,52,17.0,20,10.333,0
+Golddex,finance,GTK 500,GTK,26768,,33.0,0,2.0,
+Golddex,finance,GTX Plus Basic,GTX,1096,1168,21.0,9,7.75,2
+Golddex,finance,GTX Pro,GTX,4821,4573,20.0,2,8.875,114
+Goodsilron,marketing,GTK 500,GTK,26768,29617,33.0,1,1.0,187
+Goodsilron,marketing,MG Advanced,MG,3393,2941,22.0,7,6.625,15
+Goodsilron,marketing,MG Special,MG,55,54,17.0,8,10.375,74
+Green-Plus,services,GTK 500,GTK,26768,,33.0,0,0.0,
+Green-Plus,services,GTX Plus Pro,GTX,5482,5532,27.0,7,5.8,54
+Green-Plus,services,MG Advanced,MG,3393,3772,22.0,4,5.2,13
+Green-Plus,services,MG Special,MG,55,63,17.0,8,8.6,57
+Groovestreet,retail,GTK 500,GTK,26768,30288,33.0,1,1.0,207
+Groovestreet,retail,GTX Pro,GTX,4821,4695,20.0,5,8.059,92
+Hatfan,services,GTK 500,GTK,26768,,33.0,0,0.0,
+Hottechi,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Hottechi,technology,GTX Plus Pro,GTX,5482,5468,27.0,6,5.667,39
+Hottechi,technology,GTX Pro,GTX,4821,4433,20.0,15,10.083,2
+Hottechi,technology,MG Advanced,MG,3393,3064,22.0,14,8.417,0
+Initech,telecommunications,GTK 500,GTK,26768,,33.0,0,1.0,
+Initech,telecommunications,GTX Pro,GTX,4821,5627,20.0,6,7.0,7
+Initech,telecommunications,MG Advanced,MG,3393,3404,22.0,5,7.333,100
+Inity,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+Inity,marketing,GTX Plus Basic,GTX,1096,1052,21.0,14,8.125,1
+Inity,marketing,MG Advanced,MG,3393,3207,22.0,6,6.625,53
+Isdom,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Isdom,medical,GTX Basic,GTX,550,567,16.0,10,10.0,0
+Isdom,medical,MG Advanced,MG,3393,2763,22.0,15,7.833,11
+Iselectrics,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Iselectrics,technology,GTX Plus Basic,GTX,1096,1111,21.0,6,9.25,18
+Iselectrics,technology,GTX Plus Pro,GTX,5482,5640,27.0,6,5.667,183
+J-Texon,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+J-Texon,retail,GTX Basic,GTX,550,696,16.0,16,10.941,71
+J-Texon,retail,GTX Plus Pro,GTX,5482,4434,27.0,5,5.412,55
+J-Texon,retail,MG Advanced,MG,3393,3379,22.0,10,7.118,7
+J-Texon,retail,MG Special,MG,55,54,17.0,7,7.941,3
+Kan-code,software,GTK 500,GTK,26768,25791,33.0,1,1.0,124
+Kan-code,software,MG Advanced,MG,3393,3248,22.0,20,10.0,0
+Kinnamplus,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Konex,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Konex,technology,GTX Basic,GTX,550,510,16.0,24,12.5,13
+Konex,technology,GTX Plus Pro,GTX,5482,6767,27.0,13,5.667,54
+Konex,technology,MG Advanced,MG,3393,2695,22.0,22,8.417,21
+Konex,technology,MG Special,MG,55,55,17.0,12,10.0,7
+Konmatfix,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+Konmatfix,marketing,GTX Basic,GTX,550,485,16.0,7,10.75,44
+Konmatfix,marketing,GTX Pro,GTX,4821,5031,20.0,4,8.625,11
+Konmatfix,marketing,MG Advanced,MG,3393,3811,22.0,6,6.625,19
+Labdrill,medical,GTK 500,GTK,26768,27385,33.0,1,1.0,196
+Labdrill,medical,MG Special,MG,55,54,17.0,5,10.25,16
+Lexiqvolax,medical,GTX Plus Basic,GTX,1096,1192,21.0,8,7.75,6
+Lexiqvolax,medical,GTX Pro,GTX,4821,5230,20.0,4,7.417,24
+Massive Dynamic,entertainment,GTK 500,GTK,26768,,33.0,0,2.0,
+Massive Dynamic,entertainment,GTX Basic,GTX,550,649,16.0,7,9.5,108
+Massive Dynamic,entertainment,GTX Plus Basic,GTX,1096,960,21.0,5,6.667,15
+Massive Dynamic,entertainment,GTX Plus Pro,GTX,5482,5927,27.0,2,4.5,103
+Mathtouch,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+Mathtouch,marketing,GTX Plus Basic,GTX,1096,1035,21.0,6,8.125,37
+Mathtouch,marketing,GTX Plus Pro,GTX,5482,5528,27.0,7,5.875,13
+Mathtouch,marketing,GTX Pro,GTX,4821,5255,20.0,19,8.625,27
+Nam-zim,services,GTK 500,GTK,26768,,33.0,0,0.0,
+Nam-zim,services,GTX Plus Pro,GTX,5482,6656,27.0,2,5.8,113
+Nam-zim,services,MG Special,MG,55,64,17.0,9,8.6,16
+Newex,services,GTK 500,GTK,26768,,33.0,0,0.0,
+Newex,services,GTX Basic,GTX,550,597,16.0,10,9.4,9
+Newex,services,GTX Plus Basic,GTX,1096,1144,21.0,3,6.4,130
+Newex,services,GTX Plus Pro,GTX,5482,5095,27.0,2,5.8,6
+Newex,services,MG Special,MG,55,55,17.0,7,8.6,91
+Ontomedia,employment,GTK 500,GTK,26768,,33.0,0,1.0,
+Ontomedia,employment,GTX Basic,GTX,550,533,16.0,5,11.25,36
+Ontomedia,employment,GTX Pro,GTX,4821,4525,20.0,9,7.5,57
+Ontomedia,employment,MG Advanced,MG,3393,3331,22.0,5,7.5,14
+Ontomedia,employment,MG Special,MG,55,58,17.0,5,8.5,74
+Opentech,finance,GTK 500,GTK,26768,,33.0,0,2.0,
+Opentech,finance,GTX Basic,GTX,550,542,16.0,3,8.5,185
+Plexzap,retail,GTK 500,GTK,26768,24949,33.0,1,1.0,186
+Plexzap,retail,GTX Plus Basic,GTX,1096,920,21.0,6,7.412,9
+Plexzap,retail,GTX Pro,GTX,4821,4808,20.0,7,8.059,47
+Plexzap,retail,MG Advanced,MG,3393,3547,22.0,11,7.118,11
+Plusstrip,entertainment,GTK 500,GTK,26768,,33.0,0,2.0,
+Plusstrip,entertainment,GTX Basic,GTX,550,498,16.0,5,9.5,32
+Plusstrip,entertainment,GTX Plus Pro,GTX,5482,5091,27.0,7,4.5,0
+Plusstrip,entertainment,MG Advanced,MG,3393,3538,22.0,5,8.667,18
+Plussunin,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Plussunin,retail,GTX Basic,GTX,550,490,16.0,9,10.941,41
+Plussunin,retail,GTX Plus Pro,GTX,5482,5454,27.0,8,5.412,20
+Rangreen,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Rangreen,technology,GTX Pro,GTX,4821,4130,20.0,8,10.083,72
+Rantouch,telecommunications,GTK 500,GTK,26768,24899,33.0,1,1.0,125
+Rantouch,telecommunications,GTX Plus Pro,GTX,5482,5129,27.0,2,6.167,40
+Rantouch,telecommunications,GTX Pro,GTX,4821,5154,20.0,3,7.0,115
+Rantouch,telecommunications,MG Advanced,MG,3393,2833,22.0,6,7.333,9
+Rantouch,telecommunications,MG Special,MG,55,54,17.0,9,10.333,11
+Ron-tech,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Ron-tech,medical,GTX Plus Basic,GTX,1096,1249,21.0,15,7.75,19
+Ron-tech,medical,GTX Plus Pro,GTX,5482,5536,27.0,3,5.917,176
+Ron-tech,medical,GTX Pro,GTX,4821,5013,20.0,9,7.417,2
+Ron-tech,medical,MG Special,MG,55,65,17.0,16,10.25,24
+Rundofase,technology,GTX Plus Basic,GTX,1096,1087,21.0,7,9.25,2
+Rundofase,technology,GTX Plus Pro,GTX,5482,5269,27.0,3,5.667,24
+Rundofase,technology,GTX Pro,GTX,4821,4404,20.0,12,10.083,9
+Rundofase,technology,MG Advanced,MG,3393,3006,22.0,6,8.417,83
+Scotfind,software,GTK 500,GTK,26768,,33.0,0,1.0,
+Scotfind,software,GTX Plus Basic,GTX,1096,942,21.0,7,9.0,18
+Scottech,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+Scottech,marketing,GTX Pro,GTX,4821,6166,20.0,7,8.625,25
+Scottech,marketing,MG Advanced,MG,3393,3748,22.0,4,6.625,6
+Silis,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Silis,medical,GTX Plus Basic,GTX,1096,965,21.0,5,7.75,29
+Silis,medical,GTX Pro,GTX,4821,4345,20.0,6,7.417,65
+Silis,medical,MG Advanced,MG,3393,2986,22.0,7,7.833,38
+Singletechno,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Singletechno,retail,GTX Basic,GTX,550,464,16.0,16,10.941,1
+Singletechno,retail,GTX Pro,GTX,4821,4753,20.0,14,8.059,6
+Sonron,telecommunications,GTK 500,GTK,26768,,33.0,0,1.0,
+Sonron,telecommunications,GTX Basic,GTX,550,456,16.0,14,10.0,4
+Sonron,telecommunications,GTX Plus Basic,GTX,1096,1024,21.0,4,6.5,113
+Sonron,telecommunications,MG Advanced,MG,3393,3250,22.0,5,7.333,170
+Stanredtax,finance,GTK 500,GTK,26768,,33.0,0,2.0,
+Stanredtax,finance,GTX Plus Pro,GTX,5482,5756,27.0,7,5.25,22
+Stanredtax,finance,MG Advanced,MG,3393,3894,22.0,14,7.875,14
+Stanredtax,finance,MG Special,MG,55,50,17.0,18,8.375,3
+Statholdings,employment,GTK 500,GTK,26768,,33.0,0,1.0,
+Statholdings,employment,GTX Basic,GTX,550,555,16.0,3,11.25,129
+Statholdings,employment,MG Advanced,MG,3393,2749,22.0,6,7.5,72
+Streethex,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Streethex,retail,GTX Basic,GTX,550,513,16.0,14,10.941,18
+Streethex,retail,GTX Plus Pro,GTX,5482,6340,27.0,10,5.412,2
+Streethex,retail,GTX Pro,GTX,4821,4313,20.0,7,8.059,59
+Sumace,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Sumace,retail,GTX Plus Basic,GTX,1096,1008,21.0,3,7.412,6
+Sunnamplex,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+Sunnamplex,marketing,GTX Plus Basic,GTX,1096,1218,21.0,4,8.125,39
+Sunnamplex,marketing,GTX Plus Pro,GTX,5482,5031,27.0,3,5.875,51
+Sunnamplex,marketing,GTX Pro,GTX,4821,4999,20.0,10,8.625,40
+Sunnamplex,marketing,MG Special,MG,55,55,17.0,8,10.375,1
+The New York Inquirer,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+The New York Inquirer,medical,GTX Plus Basic,GTX,1096,948,21.0,3,7.75,101
+The New York Inquirer,medical,MG Special,MG,55,47,17.0,6,10.25,10
+Toughzap,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Toughzap,retail,GTX Basic,GTX,550,511,16.0,9,10.941,59
+Toughzap,retail,GTX Plus Pro,GTX,5482,7300,27.0,5,5.412,3
+Treequote,telecommunications,GTX Pro,GTX,4821,5141,20.0,12,7.0,1
+Umbrella Corporation,finance,GTK 500,GTK,26768,,33.0,0,2.0,
+Umbrella Corporation,finance,GTX Basic,GTX,550,471,16.0,8,8.5,38
+Umbrella Corporation,finance,GTX Plus Pro,GTX,5482,5209,27.0,7,5.25,23
+Umbrella Corporation,finance,MG Special,MG,55,63,17.0,4,8.375,9
+Vehement Capital Partners,finance,GTX Basic,GTX,550,491,16.0,4,8.5,228
+Vehement Capital Partners,finance,GTX Plus Pro,GTX,5482,5198,27.0,3,5.25,99
+Warephase,services,GTX Basic,GTX,550,550,16.0,11,9.4,7
+Warephase,services,GTX Plus Pro,GTX,5482,5669,27.0,9,5.8,22
+Warephase,services,GTX Pro,GTX,4821,5192,20.0,12,9.2,13
+Warephase,services,MG Advanced,MG,3393,3354,22.0,12,5.2,53
+Xx-holding,finance,GTK 500,GTK,26768,29220,33.0,2,2.0,27
+Xx-holding,finance,GTX Plus Pro,GTX,5482,5886,27.0,4,5.25,20
+Xx-holding,finance,GTX Pro,GTX,4821,4521,20.0,10,8.875,32
+Xx-zobam,entertainment,GTX Basic,GTX,550,517,16.0,10,9.5,18
+Xx-zobam,entertainment,MG Advanced,MG,3393,3595,22.0,14,8.667,17
+Y-corporation,employment,GTK 500,GTK,26768,25288,33.0,1,1.0,270
+Y-corporation,employment,GTX Pro,GTX,4821,4487,20.0,9,7.5,37
+Y-corporation,employment,MG Special,MG,55,55,17.0,7,8.5,6
+Yearin,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Yearin,retail,GTX Plus Basic,GTX,1096,977,21.0,6,7.412,59
+Yearin,retail,GTX Plus Pro,GTX,5482,5861,27.0,3,5.412,106
+Yearin,retail,GTX Pro,GTX,4821,4140,20.0,7,8.059,17
+Yearin,retail,MG Advanced,MG,3393,3644,22.0,4,7.118,32
+Zathunicon,retail,GTK 500,GTK,26768,,33.0,0,1.0,
+Zathunicon,retail,GTX Plus Pro,GTX,5482,4659,27.0,5,5.412,2
+Zathunicon,retail,MG Special,MG,55,50,17.0,6,7.941,5
+Zencorporation,technology,GTK 500,GTK,26768,,33.0,0,0.0,
+Zencorporation,technology,GTX Plus Pro,GTX,5482,5245,27.0,4,5.667,101
+Zencorporation,technology,MG Advanced,MG,3393,3203,22.0,2,8.417,85
+Zoomit,entertainment,GTK 500,GTK,26768,25897,33.0,1,2.0,297
+Zoomit,entertainment,GTX Basic,GTX,550,474,16.0,9,9.5,3
+Zotware,software,GTK 500,GTK,26768,,33.0,0,1.0,
+Zotware,software,GTX Plus Pro,GTX,5482,6469,27.0,7,7.143,1
+Zotware,software,MG Advanced,MG,3393,3155,22.0,9,10.0,7
+Zumgoity,medical,GTK 500,GTK,26768,,33.0,0,1.0,
+Zumgoity,medical,GTX Plus Basic,GTX,1096,1196,21.0,10,7.75,54
+Zumgoity,medical,GTX Plus Pro,GTX,5482,5017,27.0,3,5.917,205
+Zumgoity,medical,GTX Pro,GTX,4821,5212,20.0,5,7.417,83
+Zumgoity,medical,MG Advanced,MG,3393,3735,22.0,7,7.833,4
+dambase,marketing,GTK 500,GTK,26768,,33.0,0,1.0,
+dambase,marketing,GTX Basic,GTX,550,523,16.0,10,10.75,2
+dambase,marketing,GTX Plus Pro,GTX,5482,5595,27.0,10,5.875,39
+dambase,marketing,GTX Pro,GTX,4821,4990,20.0,5,8.625,24
+dambase,marketing,MG Advanced,MG,3393,3844,22.0,6,6.625,24
+dambase,marketing,MG Special,MG,55,61,17.0,16,10.375,19

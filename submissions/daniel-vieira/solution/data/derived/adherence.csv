@@ -1,0 +1,246 @@
+sales_agent,product,series,won_product,won_series
+Anna Snelling,GTK 500,GTK,0,0
+Anna Snelling,GTX Basic,GTX,32,85
+Anna Snelling,GTX Plus Basic,GTX,25,85
+Anna Snelling,GTX Plus Pro,GTX,28,85
+Anna Snelling,GTX Pro,GTX,0,85
+Anna Snelling,MG Advanced,MG,21,123
+Anna Snelling,MG Special,MG,102,123
+Boris Faz,GTK 500,GTK,0,0
+Boris Faz,GTX Basic,GTX,17,80
+Boris Faz,GTX Plus Basic,GTX,28,80
+Boris Faz,GTX Plus Pro,GTX,18,80
+Boris Faz,GTX Pro,GTX,17,80
+Boris Faz,MG Advanced,MG,12,21
+Boris Faz,MG Special,MG,9,21
+Carl Lin,GTK 500,GTK,0,0
+Carl Lin,GTX Basic,GTX,0,0
+Carl Lin,GTX Plus Basic,GTX,0,0
+Carl Lin,GTX Plus Pro,GTX,0,0
+Carl Lin,GTX Pro,GTX,0,0
+Carl Lin,MG Advanced,MG,0,0
+Carl Lin,MG Special,MG,0,0
+Carol Thompson,GTK 500,GTK,0,0
+Carol Thompson,GTX Basic,GTX,0,0
+Carol Thompson,GTX Plus Basic,GTX,0,0
+Carol Thompson,GTX Plus Pro,GTX,0,0
+Carol Thompson,GTX Pro,GTX,0,0
+Carol Thompson,MG Advanced,MG,0,0
+Carol Thompson,MG Special,MG,0,0
+Cassey Cress,GTK 500,GTK,0,0
+Cassey Cress,GTX Basic,GTX,35,117
+Cassey Cress,GTX Plus Basic,GTX,26,117
+Cassey Cress,GTX Plus Pro,GTX,18,117
+Cassey Cress,GTX Pro,GTX,38,117
+Cassey Cress,MG Advanced,MG,36,46
+Cassey Cress,MG Special,MG,10,46
+Cecily Lampkin,GTK 500,GTK,0,0
+Cecily Lampkin,GTX Basic,GTX,16,49
+Cecily Lampkin,GTX Plus Basic,GTX,16,49
+Cecily Lampkin,GTX Plus Pro,GTX,17,49
+Cecily Lampkin,GTX Pro,GTX,0,49
+Cecily Lampkin,MG Advanced,MG,33,58
+Cecily Lampkin,MG Special,MG,25,58
+Corliss Cosme,GTK 500,GTK,0,0
+Corliss Cosme,GTX Basic,GTX,36,130
+Corliss Cosme,GTX Plus Basic,GTX,27,130
+Corliss Cosme,GTX Plus Pro,GTX,30,130
+Corliss Cosme,GTX Pro,GTX,37,130
+Corliss Cosme,MG Advanced,MG,9,20
+Corliss Cosme,MG Special,MG,11,20
+Daniell Hammack,GTK 500,GTK,0,0
+Daniell Hammack,GTX Basic,GTX,11,100
+Daniell Hammack,GTX Plus Basic,GTX,31,100
+Daniell Hammack,GTX Plus Pro,GTX,18,100
+Daniell Hammack,GTX Pro,GTX,40,100
+Daniell Hammack,MG Advanced,MG,8,14
+Daniell Hammack,MG Special,MG,6,14
+Darcel Schlecht,GTK 500,GTK,0,0
+Darcel Schlecht,GTX Basic,GTX,36,285
+Darcel Schlecht,GTX Plus Basic,GTX,56,285
+Darcel Schlecht,GTX Plus Pro,GTX,33,285
+Darcel Schlecht,GTX Pro,GTX,160,285
+Darcel Schlecht,MG Advanced,MG,36,64
+Darcel Schlecht,MG Special,MG,28,64
+Donn Cantrell,GTK 500,GTK,0,0
+Donn Cantrell,GTX Basic,GTX,45,123
+Donn Cantrell,GTX Plus Basic,GTX,21,123
+Donn Cantrell,GTX Plus Pro,GTX,17,123
+Donn Cantrell,GTX Pro,GTX,40,123
+Donn Cantrell,MG Advanced,MG,32,35
+Donn Cantrell,MG Special,MG,3,35
+Elease Gluck,GTK 500,GTK,7,7
+Elease Gluck,GTX Basic,GTX,13,27
+Elease Gluck,GTX Plus Basic,GTX,5,27
+Elease Gluck,GTX Plus Pro,GTX,1,27
+Elease Gluck,GTX Pro,GTX,8,27
+Elease Gluck,MG Advanced,MG,13,46
+Elease Gluck,MG Special,MG,33,46
+Elizabeth Anderson,GTK 500,GTK,0,0
+Elizabeth Anderson,GTX Basic,GTX,0,0
+Elizabeth Anderson,GTX Plus Basic,GTX,0,0
+Elizabeth Anderson,GTX Plus Pro,GTX,0,0
+Elizabeth Anderson,GTX Pro,GTX,0,0
+Elizabeth Anderson,MG Advanced,MG,0,0
+Elizabeth Anderson,MG Special,MG,0,0
+Garret Kinder,GTK 500,GTK,0,0
+Garret Kinder,GTX Basic,GTX,16,49
+Garret Kinder,GTX Plus Basic,GTX,8,49
+Garret Kinder,GTX Plus Pro,GTX,12,49
+Garret Kinder,GTX Pro,GTX,13,49
+Garret Kinder,MG Advanced,MG,16,26
+Garret Kinder,MG Special,MG,10,26
+Gladys Colclough,GTK 500,GTK,0,0
+Gladys Colclough,GTX Basic,GTX,14,72
+Gladys Colclough,GTX Plus Basic,GTX,18,72
+Gladys Colclough,GTX Plus Pro,GTX,14,72
+Gladys Colclough,GTX Pro,GTX,26,72
+Gladys Colclough,MG Advanced,MG,33,63
+Gladys Colclough,MG Special,MG,30,63
+Hayden Neloms,GTK 500,GTK,0,0
+Hayden Neloms,GTX Basic,GTX,0,31
+Hayden Neloms,GTX Plus Basic,GTX,22,31
+Hayden Neloms,GTX Plus Pro,GTX,9,31
+Hayden Neloms,GTX Pro,GTX,0,31
+Hayden Neloms,MG Advanced,MG,59,76
+Hayden Neloms,MG Special,MG,17,76
+James Ascencio,GTK 500,GTK,0,0
+James Ascencio,GTX Basic,GTX,34,112
+James Ascencio,GTX Plus Basic,GTX,14,112
+James Ascencio,GTX Plus Pro,GTX,44,112
+James Ascencio,GTX Pro,GTX,20,112
+James Ascencio,MG Advanced,MG,12,23
+James Ascencio,MG Special,MG,11,23
+Jonathan Berthelot,GTK 500,GTK,0,0
+Jonathan Berthelot,GTX Basic,GTX,71,141
+Jonathan Berthelot,GTX Plus Basic,GTX,34,141
+Jonathan Berthelot,GTX Plus Pro,GTX,5,141
+Jonathan Berthelot,GTX Pro,GTX,31,141
+Jonathan Berthelot,MG Advanced,MG,9,30
+Jonathan Berthelot,MG Special,MG,21,30
+Kami Bicknell,GTK 500,GTK,0,0
+Kami Bicknell,GTX Basic,GTX,71,135
+Kami Bicknell,GTX Plus Basic,GTX,26,135
+Kami Bicknell,GTX Plus Pro,GTX,15,135
+Kami Bicknell,GTX Pro,GTX,23,135
+Kami Bicknell,MG Advanced,MG,18,39
+Kami Bicknell,MG Special,MG,21,39
+Kary Hendrixson,GTK 500,GTK,0,0
+Kary Hendrixson,GTX Basic,GTX,82,182
+Kary Hendrixson,GTX Plus Basic,GTX,30,182
+Kary Hendrixson,GTX Plus Pro,GTX,20,182
+Kary Hendrixson,GTX Pro,GTX,50,182
+Kary Hendrixson,MG Advanced,MG,8,27
+Kary Hendrixson,MG Special,MG,19,27
+Lajuana Vencill,GTK 500,GTK,0,0
+Lajuana Vencill,GTX Basic,GTX,56,81
+Lajuana Vencill,GTX Plus Basic,GTX,15,81
+Lajuana Vencill,GTX Plus Pro,GTX,10,81
+Lajuana Vencill,GTX Pro,GTX,0,81
+Lajuana Vencill,MG Advanced,MG,28,46
+Lajuana Vencill,MG Special,MG,18,46
+Markita Hansen,GTK 500,GTK,3,3
+Markita Hansen,GTX Basic,GTX,29,75
+Markita Hansen,GTX Plus Basic,GTX,21,75
+Markita Hansen,GTX Plus Pro,GTX,7,75
+Markita Hansen,GTX Pro,GTX,18,75
+Markita Hansen,MG Advanced,MG,24,52
+Markita Hansen,MG Special,MG,28,52
+Marty Freudenburg,GTK 500,GTK,0,0
+Marty Freudenburg,GTX Basic,GTX,17,85
+Marty Freudenburg,GTX Plus Basic,GTX,35,85
+Marty Freudenburg,GTX Plus Pro,GTX,23,85
+Marty Freudenburg,GTX Pro,GTX,10,85
+Marty Freudenburg,MG Advanced,MG,20,37
+Marty Freudenburg,MG Special,MG,17,37
+Maureen Marcano,GTK 500,GTK,0,0
+Maureen Marcano,GTX Basic,GTX,23,124
+Maureen Marcano,GTX Plus Basic,GTX,52,124
+Maureen Marcano,GTX Plus Pro,GTX,26,124
+Maureen Marcano,GTX Pro,GTX,23,124
+Maureen Marcano,MG Advanced,MG,10,25
+Maureen Marcano,MG Special,MG,15,25
+Mei-Mei Johns,GTK 500,GTK,0,0
+Mei-Mei Johns,GTX Basic,GTX,0,0
+Mei-Mei Johns,GTX Plus Basic,GTX,0,0
+Mei-Mei Johns,GTX Plus Pro,GTX,0,0
+Mei-Mei Johns,GTX Pro,GTX,0,0
+Mei-Mei Johns,MG Advanced,MG,0,0
+Mei-Mei Johns,MG Special,MG,0,0
+Moses Frase,GTK 500,GTK,0,0
+Moses Frase,GTX Basic,GTX,47,77
+Moses Frase,GTX Plus Basic,GTX,17,77
+Moses Frase,GTX Plus Pro,GTX,13,77
+Moses Frase,GTX Pro,GTX,0,77
+Moses Frase,MG Advanced,MG,26,52
+Moses Frase,MG Special,MG,26,52
+Natalya Ivanova,GTK 500,GTK,0,0
+Natalya Ivanova,GTX Basic,GTX,0,0
+Natalya Ivanova,GTX Plus Basic,GTX,0,0
+Natalya Ivanova,GTX Plus Pro,GTX,0,0
+Natalya Ivanova,GTX Pro,GTX,0,0
+Natalya Ivanova,MG Advanced,MG,0,0
+Natalya Ivanova,MG Special,MG,0,0
+Niesha Huffines,GTK 500,GTK,0,0
+Niesha Huffines,GTX Basic,GTX,32,81
+Niesha Huffines,GTX Plus Basic,GTX,35,81
+Niesha Huffines,GTX Plus Pro,GTX,12,81
+Niesha Huffines,GTX Pro,GTX,2,81
+Niesha Huffines,MG Advanced,MG,12,24
+Niesha Huffines,MG Special,MG,12,24
+Reed Clapper,GTK 500,GTK,0,0
+Reed Clapper,GTX Basic,GTX,24,112
+Reed Clapper,GTX Plus Basic,GTX,28,112
+Reed Clapper,GTX Plus Pro,GTX,18,112
+Reed Clapper,GTX Pro,GTX,42,112
+Reed Clapper,MG Advanced,MG,28,43
+Reed Clapper,MG Special,MG,15,43
+Rosalina Dieter,GTK 500,GTK,5,5
+Rosalina Dieter,GTX Basic,GTX,10,21
+Rosalina Dieter,GTX Plus Basic,GTX,4,21
+Rosalina Dieter,GTX Plus Pro,GTX,1,21
+Rosalina Dieter,GTX Pro,GTX,6,21
+Rosalina Dieter,MG Advanced,MG,16,46
+Rosalina Dieter,MG Special,MG,30,46
+Rosie Papadopoulos,GTK 500,GTK,0,0
+Rosie Papadopoulos,GTX Basic,GTX,7,45
+Rosie Papadopoulos,GTX Plus Basic,GTX,3,45
+Rosie Papadopoulos,GTX Plus Pro,GTX,10,45
+Rosie Papadopoulos,GTX Pro,GTX,25,45
+Rosie Papadopoulos,MG Advanced,MG,13,33
+Rosie Papadopoulos,MG Special,MG,20,33
+Versie Hillebrand,GTK 500,GTK,0,0
+Versie Hillebrand,GTX Basic,GTX,13,32
+Versie Hillebrand,GTX Plus Basic,GTX,4,32
+Versie Hillebrand,GTX Plus Pro,GTX,15,32
+Versie Hillebrand,GTX Pro,GTX,0,32
+Versie Hillebrand,MG Advanced,MG,27,144
+Versie Hillebrand,MG Special,MG,117,144
+Vicki Laflamme,GTK 500,GTK,0,0
+Vicki Laflamme,GTX Basic,GTX,56,125
+Vicki Laflamme,GTX Plus Basic,GTX,13,125
+Vicki Laflamme,GTX Plus Pro,GTX,16,125
+Vicki Laflamme,GTX Pro,GTX,40,125
+Vicki Laflamme,MG Advanced,MG,45,96
+Vicki Laflamme,MG Special,MG,51,96
+Violet Mclelland,GTK 500,GTK,0,0
+Violet Mclelland,GTX Basic,GTX,15,32
+Violet Mclelland,GTX Plus Basic,GTX,10,32
+Violet Mclelland,GTX Plus Pro,GTX,2,32
+Violet Mclelland,GTX Pro,GTX,5,32
+Violet Mclelland,MG Advanced,MG,19,90
+Violet Mclelland,MG Special,MG,71,90
+Wilburn Farren,GTK 500,GTK,0,0
+Wilburn Farren,GTX Basic,GTX,9,27
+Wilburn Farren,GTX Plus Basic,GTX,3,27
+Wilburn Farren,GTX Plus Pro,GTX,6,27
+Wilburn Farren,GTX Pro,GTX,9,27
+Wilburn Farren,MG Advanced,MG,21,28
+Wilburn Farren,MG Special,MG,7,28
+Zane Levy,GTK 500,GTK,0,0
+Zane Levy,GTX Basic,GTX,48,141
+Zane Levy,GTX Plus Basic,GTX,26,141
+Zane Levy,GTX Plus Pro,GTX,21,141
+Zane Levy,GTX Pro,GTX,46,141
+Zane Levy,MG Advanced,MG,10,20
+Zane Levy,MG Special,MG,10,20

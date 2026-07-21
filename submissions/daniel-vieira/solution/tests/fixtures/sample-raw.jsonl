@@ -1,0 +1,13 @@
+{"type":"mode","sessionId":"sess-1","mode":"default"}
+{"type":"ai-title","sessionId":"sess-1","aiTitle":"Sessao de teste"}
+{"type":"user","uuid":"u1","parentUuid":null,"sessionId":"sess-1","timestamp":"2026-07-19T00:00:00Z","message":{"role":"user","content":"Liste os arquivos do diretorio de scripts."}}
+{"type":"assistant","uuid":"a1","parentUuid":"u1","sessionId":"sess-1","timestamp":"2026-07-19T00:00:01Z","message":{"role":"assistant","content":[{"type":"thinking","thinking":"Vou usar o comando ls.","signature":"SIG-SECRETA-DEVE-SUMIR"},{"type":"text","text":"Executando a listagem."},{"type":"tool_use","id":"t1","name":"Bash","input":{"command":"ls scripts/"}}]}}
+{"type":"user","uuid":"u2","parentUuid":"a1","sessionId":"sess-1","timestamp":"2026-07-19T00:00:02Z","toolUseResult":{"stdout":"credencial=AKIAIOSFODNN7EXAMPLE"},"message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"t1","content":"eda.sql\nAWS_KEY=AKIAIOSFODNN7EXAMPLE"}]}}
+{"type":"attachment","uuid":"at1","parentUuid":"u2","sessionId":"sess-1","timestamp":"2026-07-19T00:00:03Z","attachment":{"content":"conteudo-de-arquivo-sensivel AKIAIOSFODNN7EXAMPLE"}}
+{"type":"file-history-snapshot","messageId":"m1","snapshot":{"files":{"a.txt":"token=AKIAIOSFODNN7EXAMPLE"}}}
+{"type":"system","uuid":"s1","parentUuid":"u2","sessionId":"sess-1","timestamp":"2026-07-19T00:00:04Z","subtype":"info","level":"info","content":"mensagem de sistema com AKIAIOSFODNN7EXAMPLE"}
+{"type":"agent-name","sessionId":"sess-1","agentName":"auditor-independente"}
+{"type":"permission-mode","sessionId":"sess-1","permissionMode":"plan"}
+{"type":"telemetry","uuid":"tel1","sessionId":"sess-1","payload":"UNCOVEREDSECRETzZ9qWq7x2marker"}
+{"type":"user","uuid":"u3","parentUuid":"s1","sessionId":"sess-1","timestamp":"2026-07-19T00:00:05Z","extraField":"EXTRAFIELDzZ9qWq7x2marker","message":{"role":"user","content":"Prosseguir com a analise."}}
+{"type":"user","uuid":"u4","parentUuid":"u3","sessionId":"sess-1","timestamp":"2026-07-19T00:00:06Z","message":{"role":"user","content":null}}

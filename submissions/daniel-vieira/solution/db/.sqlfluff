@@ -1,0 +1,22 @@
+[sqlfluff]
+# As migracoes sao PostgreSQL; a raiz do repositorio permanece no dialeto
+# duckdb (SQL analitico da fase de modelagem, ADR F3N8). Este arquivo por
+# diretorio aplica o dialeto postgres a 'db/migrations/'.
+dialect = postgres
+max_line_length = 96
+large_file_skip_byte_limit = 0
+
+# Espelha as exclusoes da raiz: impoem-se caixa, qualificacao e limite de linha
+# do std-sql.md; excluem-se o modelo de indentacao e quebra de linha opinativo
+# em favor da indentacao consistente da casa. RF05/RF04 dispensados por
+# coerencia com a raiz.
+exclude_rules = LT01, LT02, LT07, LT08, LT09, LT13, LT14, AM05, AM06, ST05, ST09, RF04, RF05, AL10
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = upper
