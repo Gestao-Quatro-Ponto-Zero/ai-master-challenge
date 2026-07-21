@@ -17,6 +17,7 @@ O que este script entrega:
   SECAO 4 — quantificacao do que a SECAO 3 nao garante
   SECAO 5 — decisao B (FTE) e o ponto de cruzamento na faixa
   SECAO 6 — o que este bloco NAO entrega, e o gancho pro bloco 3
+  SECAO 7 — previsoes registradas antes de medir
 
 O que este script NAO entrega, por decisao explicita: ranking de prioridade.
 Nenhuma tabela deste arquivo ordena categorias por horas recuperaveis. Ver
@@ -714,6 +715,136 @@ RESUMO DO QUE JA ESTA DECIDIDO E NAO DEPENDE DO BLOCO 3
   - a invariancia da decisao A ao handle time — algebrica
   - o limite dessa invariancia: {razao_segundo:.2f}x inverte o primeiro lugar
   - que a decisao B E sensivel a premissa, ao contrario da A
+""")
+
+# ==========================================================================
+# SECAO 7 — PREVISOES REGISTRADAS
+# ==========================================================================
+titulo("SECAO 7 — PREVISOES REGISTRADAS ANTES DE MEDIR")
+
+p_estrela_2 = precisao_de_equilibrio(2.00) * 100
+razao_acesso = contagem["Access"] / contagem["Administrative rights"]
+
+print(f"""
+Estas sao PREVISOES, nao achados. Estao aqui porque so podem ser escritas
+agora: depois que o bloco 3 rodar, qualquer coisa que eu escrever sobre o
+comportamento do classificador ja sera posterior a medicao e nao valera
+nada como evidencia.
+
+O commit que carrega este arquivo e datado e anterior ao bloco 3. Se as
+previsoes se confirmarem, o historico prova que foram feitas antes. Se
+errarem, o bloco 3 registra o erro e a razao dele — e isso vale quase
+tanto, porque mostra em que ponto a leitura de dominio falhou.
+
+Cada previsao vem com a base que a sustenta e com o criterio que a
+falsifica. Previsao sem criterio de falsificacao e horoscopo.
+
+Referencia usada em todas: p*(k=2.00) = {p_estrela_2:.0f}% [SECAO 2, forma fechada].
+
+
+P1. Miscellaneous ficara ABAIXO de p* apesar de ser a 4a maior classe
+    forca da base: ALTA
+
+    ENUNCIADO
+      A precisao de Miscellaneous nao alcancara {p_estrela_2:.0f}% em nenhum tau que
+      preserve cobertura util, e a classe ficara de fora da automacao
+      mesmo respondendo por {mix['Miscellaneous'] * 100:.1f}% do volume ({contagem['Miscellaneous']:,} tickets) [dados].
+
+    BASE
+      As outras sete classes sao definidas por CONTEUDO: cada nome
+      descreve um dominio (Hardware, Storage, Purchase, Access...).
+      Miscellaneous e definida por EXCLUSAO — e o balde do que nao coube
+      nas outras. Uma classe assim nao tem vocabulario proprio: seus
+      documentos nao compartilham tema, compartilham apenas a ausencia de
+      pertencimento aos outros rotulos. Nao ha regiao coerente no espaco
+      de features para o modelo encontrar, porque a regiao e o complemento
+      de todas as outras.
+      Isso e propriedade da construcao do rotulo, nao do classificador —
+      por isso a base e alta e nao depende de qual modelo o bloco 3 use.
+
+    O QUE FALSIFICA
+      Precisao de Miscellaneous >= {p_estrela_2:.0f}% em algum tau com cobertura acima
+      de 10% da classe.
+
+    POR QUE IMPORTA
+      Se confirmada, e o caso que demonstra com numero a tese da SECAO 6:
+      VOLUME NAO DECIDE AUTOMACAO. A 4a maior classe da base sai de fora
+      por separabilidade, nao por tamanho — e nenhum ranking construido
+      sobre contagem enxergaria isso.
+
+
+P2. Administrative rights sera absorvida por Access, e nao o contrario
+    forca da base: ALTA
+
+    ENUNCIADO
+      Na matriz de confusao, o fluxo Administrative rights -> Access sera
+      substancialmente maior que o fluxo Access -> Administrative rights.
+      A assimetria e a previsao; a existencia da confusao sozinha nao.
+
+    BASE
+      Duas causas independentes apontam para o MESMO lado:
+      (a) semantica — conceder direito administrativo E um caso
+          particular de conceder acesso. As classes nao sao disjuntas no
+          conteudo; uma e quase subconjunto da outra. Confusao mutua ja
+          seria esperada so por isso.
+      (b) prior — Access tem {contagem['Access']:,} tickets contra {contagem['Administrative rights']:,} de
+          Administrative rights, razao de {razao_acesso:.1f}x [dados]. Diante de um
+          documento ambiguo, um classificador que aprendeu o prior
+          resolve o empate a favor da classe majoritaria.
+      A semantica cria a ambiguidade, o desbalanceamento decide para onde
+      ela cai. E o que torna a previsao direcional e nao apenas "essas
+      duas se confundem".
+
+    O QUE FALSIFICA
+      Matriz de confusao aproximadamente simetrica entre as duas, ou
+      fluxo maior no sentido Access -> Administrative rights.
+
+    POR QUE IMPORTA
+      Se confirmada, Administrative rights nao precisa de mais dados nem
+      de modelo melhor: precisa de uma decisao de TAXONOMIA. Duas classes
+      que se sobrepoem no conteudo ou viram uma, ou ganham regra de
+      desempate fora do texto. Isso e conclusao de processo, nao de ML.
+
+
+P3. Hardware passara de p* com folga
+    forca da base: MEDIA — a mais fraca das tres, registrada como tal
+
+    ENUNCIADO
+      A precisao de Hardware ficara acima de {p_estrela_2:.0f}% ja em tau baixo,
+      mantendo cobertura alta.
+
+    BASE
+      Vocabulario concreto e de baixa ambiguidade: nomes de dispositivo e
+      verbos de falha fisica. Com stopwords removidas e 292 caracteres de
+      media [dados, bloco 0], o sinal restante e majoritariamente
+      substantivo — que e o que favorece uma classe de dominio material.
+      Somado a isso, o prior de {mix['Hardware'] * 100:.1f}% joga a favor.
+
+    POR QUE A BASE E MAIS FRACA
+      "Vocabulario concreto" e julgamento meu sobre o dominio, nao
+      medicao. Nao inspecionei o texto de Hardware antes de escrever
+      isto. P1 e P2 se apoiam em propriedades verificaveis da construcao
+      dos rotulos e do desbalanceamento; P3 se apoia numa expectativa
+      sobre linguagem. Registro assim para nao contar um acerto barato
+      junto com dois caros.
+
+    O QUE FALSIFICA
+      Precisao de Hardware abaixo de {p_estrela_2:.0f}% em todo tau com cobertura util.
+
+
+P4. (COROLARIO de P1, nao previsao independente)
+
+    Se P1 se confirmar, o ranking por horas recuperaveis apos o bloco 3
+    NAO sera igual ao ranking por volume — a 4a posicao ja cai fora.
+    Registro como corolario e nao como previsao propria justamente para
+    nao inflar a contagem de acertos: ele nao carrega informacao alem de
+    P1 e nao deve ser contado como um segundo acerto se P1 der certo.
+
+
+NOTA DE HONESTIDADE SOBRE ESTA SECAO
+  Acertar P1, P2 e P3 nao valida o modelo das SECOES 1 a 5. Valida a
+  leitura de dominio que sustenta a escolha do que medir. Sao coisas
+  diferentes e nao devem ser somadas na conclusao final.
 """)
 
 titulo("FIM — BLOCO 1")
