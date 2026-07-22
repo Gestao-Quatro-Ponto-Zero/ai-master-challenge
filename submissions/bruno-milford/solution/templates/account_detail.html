@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block page_title %}Detalhe da Conta{% endblock %}
+{% block page_description %}Visao de Customer Success com receita, uso, suporte, churn e linha do tempo.{% endblock %}
+
+{% block content %}
+{% set account = detail.account %}
+{% set risk = detail.risk %}
+<section class="account-hero">
+  <div class="account-hero-main">
+    <a class="back-link" href="/accounts">Voltar para contas</a>
+    <div class="account-title-row">
+      <div>
+        <p class="eyebrow">Conta</p>
+        <h2>{{ account.account_name }}</h2>
+        <p>{{ account.account_id }} | {{ account.industry }} | {{ account.country }}</p>
+      </div>
+      <span class="status-pill {{ 'danger' if account.churned_account else 'success' }}">{{ 'Churn' if account.churned_account else 'Ativa' }}</span>
+    </div>
+  </div>
+  <div class="account-score-grid">
+    <div class="score-card {{ risk.risk_classification if risk else 'baixo' }}">
+      <span>Score de risco</span>
+      <strong>{{ risk.risk_score if risk else 0 }}</strong>
+      <small>{{ risk.risk_classification if risk else 'baixo' }}</small>
+    </div>
+    <div class="score-card priority">
+      <span>Prioridade</span>
+      <strong>{{ risk.priority_score if risk else 0 }}</strong>
+      <small>risco + valor</small>
+    </div>
+  </div>
+</section>
+
+<section class="account-summary-cards" id="accountSummaryCards"></section>
+
+<section class="panel account-tabs-panel">
+  <div class="tabs" role="tablist" aria-label="Detalhes da conta">
+    <button class="tab active" type="button" role="tab" data-tab="summary">Resumo</button>
+    <button class="tab" type="button" role="tab" data-tab="subscriptions">Assinaturas</button>
+    <button class="tab" type="button" role="tab" data-tab="usage">Uso do produto</button>
+    <button class="tab" type="button" role="tab" data-tab="support">Suporte</button>
+    <button class="tab" type="button" role="tab" data-tab="churn">Churn e reativacao</button>
+    <button class="tab" type="button" role="tab" data-tab="timeline">Linha do tempo</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-summary">
+    <div class="detail-grid">
+      <article class="panel nested-panel"><h2>Cadastro e situacao</h2><dl id="accountFacts"></dl></article>
+      <article class="panel nested-panel"><h2>Fatores do score</h2><p>{{ risk.risk_signals if risk else 'sem sinais relevantes' }}</p></article>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-subscriptions">
+    <div class="table-wrap"><table class="data-table compact" id="subsTable"></table></div>
+  </div>
+  <div class="tab-panel" id="tab-usage">
+    <div id="accountUsageChart" class="chart-canvas"></div>
+  </div>
+  <div class="tab-panel" id="tab-support">
+    <div class="table-wrap"><table class="data-table compact" id="ticketsTable"></table></div>
+  </div>
+  <div class="tab-panel" id="tab-churn">
+    <div class="table-wrap"><table class="data-table compact" id="churnTable"></table></div>
+  </div>
+  <div class="tab-panel" id="tab-timeline">
+    <ol class="timeline" id="timeline"></ol>
+  </div>
+</section>
+
+<script id="detailData" type="application/json">{{ detail|tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/account_detail.js') }}?v=20260719-3"></script>
+{% endblock %}
