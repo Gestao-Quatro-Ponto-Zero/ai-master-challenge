@@ -148,6 +148,8 @@ jupyter lab
 
 > **Bloco obrigatório.** Sem ele, a submissão é desclassificada.
 
+Mapa completo das evidências, com o papel de cada ferramenta e onde a IA errou: [`process-log/README.md`](process-log/README.md).
+
 ### Ferramentas usadas
 
 | Ferramenta | Para que usei |
@@ -197,8 +199,10 @@ instrução, execução e correção. As decisões e o plano vivem versionados e
 - [x] Dev-logs por bloco em `process-log/dev-log/` (thread instrução, execução, correção)
 - [x] Git history: um commit por bloco, mensagens versionadas
 - [x] Vitrine de inspeção: [`pipeline_inspector.html`](pipeline_inspector.html) (baixar e abrir no navegador)
-- [ ] Screenshots das conversas com IA
+- [x] Sessões com IA exportadas em [`process-log/chat-exports/`](process-log/chat-exports/) (Claude e Perplexity)
+- [x] Protótipo executando: capturas em [`process-log/screenshots/`](process-log/screenshots/)
+- [x] Mapa completo das evidências: [`process-log/README.md`](process-log/README.md)
 
 ---
 
-_Submissão enviada em: [data]_
+_Submissão enviada em: 17/07/2026. Evidências de processo complementadas em 22/07/2026, em resposta ao review._
