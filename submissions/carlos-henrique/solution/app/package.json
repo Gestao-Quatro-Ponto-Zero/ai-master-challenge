@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:data": "../.venv/Scripts/python.exe ../scripts/build_dashboard_data.py",
+    "build:data": "node scripts/build-data.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
