@@ -891,3 +891,56 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **E087 — spawn EPERM no teste isolado:** a primeira execução Vitest do wrapper foi bloqueada pelo sandbox do Windows. A mesma suíte foi repetida fora do sandbox e passou; a suíte completa terminou com 19/19.
 - **E088 — cutoff não estava na raiz de demo_story.json:** o primeiro validador exigia cutoff direto em todos os 15 JSONs. O contrato real usa cutoff direto em 14 recursos e o cutoff global de `metadata.json` para a história da demo; matriz e validador foram corrigidos sem alterar snapshots.
 - **E089 — npm ci silencioso no sandbox:** a instalação limpa ficou bloqueada sem saída e foi interrompida. A repetição autorizada fora do sandbox concluiu; o audit completo reportou dois advisories de desenvolvimento já existentes, enquanto `npm audit --omit=dev` confirmou zero vulnerabilidades de produção.
+
+## Decisões da Fase 10B
+
+## D124 — Human judgment must be independently auditable
+
+- **Decisão:** cada julgamento material deve declarar contexto, alternativa considerada, preocupação humana, decisão final, evidência, impacto, trade-off e consequência evitada.
+- **Justificativa:** uma narrativa genérica de colaboração não permite distinguir aprovação humana de execução assistida.
+- **Status:** APROVADA
+
+## D125 — AI trace must distinguish suggestion from decision
+
+- **Decisão:** contribuições do assistente são registradas como propostas; decisão, aceitação de risco, validação e commit permanecem atribuídos ao responsável humano.
+- **Justificativa:** autoria operacional e responsabilidade metodológica não podem ser inferidas apenas pela geração inicial de um artefato.
+- **Status:** APROVADA
+
+## D126 — Errors must be attributed accurately
+
+- **Decisão:** classificar cada caso como condição de dados, risco de desenho, erro de implementação assistida por IA, descuido de implementação, lacuna documental ou evento de controle do repositório.
+- **Justificativa:** atribuir todo problema à IA seria impreciso e reduziria a utilidade da auditoria.
+- **Status:** APROVADA
+
+## D127 — Reconstructed prompts must not be presented as verbatim
+
+- **Decisão:** quando o texto exato não estiver preservado, usar a marca `reconstructed instruction summary`, sem aspas de transcrição.
+- **Justificativa:** o objetivo pode ser recuperado dos logs, mas a formulação literal não pode ser inventada.
+- **Status:** APROVADA
+
+## D128 — Rejected hypotheses are first-class evidence
+
+- **Decisão:** registrar alternativas plausíveis rejeitadas, evidência revista, motivo, decisão e condição de reavaliação.
+- **Justificativa:** escolhas descartadas demonstram limites e julgamento, não apenas resultado final.
+- **Status:** APROVADA
+
+## D129 — Every major judgment requires a linked artifact
+
+- **Decisão:** os 18 julgamentos principais devem apontar para relatórios, contratos, logs ou validações versionadas e para o commit aplicável.
+- **Justificativa:** decisões sem caminho de prova não são independentemente verificáveis.
+- **Status:** APROVADA
+
+## D130 — Final process evidence must be evaluator-navigable
+
+- **Decisão:** integrar os sete documentos ao README, ao índice documental, ao mapa de evidências e a um teste de avaliação de cinco minutos.
+- **Justificativa:** evidência dispersa é insuficiente quando o avaliador não consegue encontrá-la no tempo disponível.
+- **Status:** APROVADA
+
+## Erros e correções da Fase 10B
+
+- **E090 — referências cruzadas contadas como IDs duplicados:** a primeira execução do validador encontrou 18 ocorrências de AEC para 16 IDs porque referências internas a AEC-015 e AEC-016 entraram na contagem. A regra foi corrigida para contar somente headings canônicos; o conjunto final contém exatamente 16 IDs únicos.
+- **E091 — limite do mapa não estava rotulado explicitamente:** o mapa possuía `Validation Boundary`, mas o gate de limitações exigia o rótulo verificável em todos os documentos. Foi adicionada uma seção `Limitations` sem ampliar nenhum claim.
+- **E092 — lock do índice negado em comando composto:** o rerun pós-staging passou, mas a tentativa de reindexar os dois relatórios no mesmo comando composto retornou `index.lock: Permission denied` no sandbox. Os mesmos dois `git add -f` foram repetidos como chamadas isoladas e concluíram com sucesso.
+- **E093 — relatório variava com a contagem do staging:** a auditoria pós-commit mostrou que o detalhe `changed=<n>` seria 17 antes do commit e zero em checkout limpo. O validador passou a serializar somente violações de escopo; dois runs em estado limpo mantêm os relatórios byte a byte idênticos.
+
+A primeira execução encerrou com `BLOCKED`; após E090 e E091, o validador encerrou com `PASS`, 45 verificações aprovadas, zero warnings e zero bloqueios. E092 não alterou conteúdo nem resultado, e E093 tornou o relatório estável antes e depois do commit.

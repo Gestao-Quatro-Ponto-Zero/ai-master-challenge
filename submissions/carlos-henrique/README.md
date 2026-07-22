@@ -254,6 +254,12 @@ Run the analytical code gates from `submissions/carlos-henrique/solution`:
 
 The final validated baseline passed Python tests (130/130), Vitest (18/18), responsive Playwright smoke tests (36/36), dependency audit with zero production vulnerabilities, and a deterministic 15-file data rebuild with zero differences.
 
+## Human Judgment and AI Collaboration
+
+JourneyGraph used an AI coding assistant to help decompose phases, draft bounded implementation changes, propose tests, review documentation, and surface technical alternatives. Carlos Henrique retained responsibility for every methodological gate, product boundary, correction, validation acceptance, and commit. The process rejected unsafe or unsupported paths—including a row-multiplying mega-join, a churn probability shortcut, unstable graph evidence, automatic customer action, generic lexical translation, and a platform-specific Quick Start. Outputs became accepted evidence only after human review, deterministic checks, correction, and revalidation.
+
+The audit trail distinguishes suggestions from decisions and implementation defects from source-data conditions. It also records what remains uncertain: transient interactions were not all preserved, historical associations are not causal effects, and future operational use requires new approval. Evaluators can inspect [human decisions](process-log/HUMAN_JUDGMENT.md), [AI trace](process-log/AI_TRACE.md), [errors and corrections](process-log/AI_ERRORS_AND_CORRECTIONS.md), [rejected hypotheses](process-log/REJECTED_HYPOTHESES.md), [trade-offs](process-log/TRADE_OFFS.md), [intervention timeline](process-log/HUMAN_INTERVENTION_TIMELINE.md), and the [evidence map](process-log/EVIDENCE_MAP.md).
+
 ## Evidence and Documentation
 
 | Evaluation need | Primary evidence |

@@ -281,3 +281,18 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - **Contrato do wrapper:** paths por `import.meta.url`/`fileURLToPath`/`node:path`; `.venv` local e fallbacks comuns; `spawnSync`; `shell: false`; saída herdada; exit code propagado; um único builder.
 - **Gates:** dois rebuilds idênticos com 15 JSONs, lint, typecheck, Vitest, build, documentação, links, diff, staging seletivo, commits locais, working tree limpa e nenhum push.
 - **Commit strategy:** tooling cross-platform separado semanticamente da consolidação documental.
+
+## Recovery gate before Phase 10A
+
+- **Evidence type:** `reconstructed instruction summary`; a formulação literal e o diff transitório não foram preservados no repositório.
+- **Objetivo:** interromper a finalização quando o working tree continha estado local não reconciliado, auditar o escopo, restaurar o baseline autorizado e retomar somente após branch, status e staging passarem.
+- **Limite:** o registro prova a regra de recuperação e a sequência relatada; não permite atribuir o estado transitório à IA nem reconstruir nomes de arquivos ausentes do Git.
+
+## Fase 10B — evidências de julgamento humano e colaboração com IA
+
+- **Evidence type:** `reconstructed instruction summary` consolidado a partir do gate documental da fase; não é transcrição literal.
+- **Commit-base:** `bffa9a29b3b471f876d02e5fb784fc2bb5fa7c4d`.
+- **Objetivo:** criar uma trilha auditável que separe propostas assistidas, julgamento humano, erros, correções, hipóteses rejeitadas, trade-offs, intervenções, evidências e limitações.
+- **Entregáveis:** sete documentos de processo, integração no README e índice, validador com relatórios JSON/Markdown, revisão adversarial, teste do avaliador e atualização curada dos logs.
+- **Restrições preservadas:** nenhuma alteração analítica, funcional, visual, de dados, arquitetura, teste funcional ou ação externa; commit local seletivo e sem push.
+- **Gate esperado:** `PASS` somente com links, commits, atribuição, linguagem, adversarial review, teste do avaliador, diff e estado Git aprovados.

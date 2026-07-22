@@ -625,3 +625,40 @@ Regras, cutoff, janelas, qualidade, componentes, filas, duplicidade, evid?ncias,
 ### Gate
 
 `PASS`. O wrapper altera somente a forma de invocação do builder. Os snapshots, hashes, cutoff, métricas, linguagem da interface e resultados analíticos permanecem idênticos.
+
+## Fase 10B — evidências de julgamento humano e colaboração com IA
+
+1. Revalidadas branch `submission/carlos-henrique`, base `bffa9a29b3b471f876d02e5fb784fc2bb5fa7c4d`, working tree limpa, staging vazio, documentação da Fase 10A e commits anteriores.
+2. Mapeados relatórios, decisões e commits para 18 julgamentos humanos, 16 erros/riscos corrigidos, 13 hipóteses rejeitadas, 12 trade-offs e 15 claims de evidência.
+3. Criados sete documentos curados em `process-log`, separando proposta assistida, preocupação humana, decisão, evidência, impacto, custo e limitação.
+4. Registrado somente o AI coding assistant do ambiente Codex, sem inventar modelo ou versão; prompts não preservados literalmente foram marcados como `reconstructed instruction summary`.
+5. Limitados AEC-015 e AEC-016 ao suporte disponível: o diff transitório não foi reconstruído e nenhum overwrite final de screenshot foi alegado.
+6. Integrados README e índice documental com rotas curtas por finalidade e público.
+7. Criado validador determinístico, sem dependências externas, para estrutura, IDs, links, commits, suporte, linguagem, limitações, integração, revisão adversarial, teste do avaliador e escopo.
+8. A primeira execução bloqueou por E090 e E091; as regras e o rótulo documental foram corrigidos e todo o gate foi repetido.
+9. A revisão adversarial terminou sem finding CRITICAL ou HIGH aberto; o finding MEDIUM sobre evidência transitória foi resolvido por claim limitado.
+10. O teste simulado do avaliador respondeu sete perguntas em 3 minutos e 40 segundos, todas com artefato e status PASS.
+11. Nenhum app, JSON, screenshot, lógica analítica, teste funcional, package.json ou arquitetura implementada foi alterado.
+12. Nenhuma ação externa, push, deploy, upload, formulário ou Pull Request foi executado.
+
+### Resultado de validação
+
+- process evidence validator: PASS, 45/45 verificações, zero warnings e zero bloqueios;
+- decisões/erros/rejeições com suporte ligado: 47/47;
+- commits referenciados: 13 existentes, zero ausentes;
+- links internos: 228 verificados, zero quebrados;
+- README: seção com 136 palavras e links para os sete documentos;
+- documentation validator: PASS, quatro documentos-base, 63 links, 15 métricas e sete screenshots;
+- revisão adversarial: PASS, zero CRITICAL e zero HIGH abertos;
+- evaluator test: PASS, 7/7 perguntas;
+- linguagem indevida: zero ocorrências nos novos documentos e superfícies de entrada;
+- `git diff --check`: PASS;
+- arquivos funcionais alterados: zero.
+
+### Erros e correções
+
+E090–E093 estão registrados ao final de `decisions.md`. E090 e E091 foram encontrados pelo run fail-closed; E092 foi uma restrição de lock resolvida por chamadas isoladas; E093 removeu do relatório a contagem transitória do staging e comprovou estabilidade pós-commit.
+
+### Gate
+
+`PASS`. O pacote distingue julgamento humano, colaboração assistida, atribuição de erros, rejeições e limitações por meio de links e commits verificáveis, sem modificar o produto ou seus resultados.

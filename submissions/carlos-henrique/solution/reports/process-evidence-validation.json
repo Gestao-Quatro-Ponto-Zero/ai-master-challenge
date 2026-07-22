@@ -1,0 +1,243 @@
+{
+  "validator": "JourneyGraph process evidence validator",
+  "version": "1.0.0",
+  "status": "PASS",
+  "scope": "submissions/carlos-henrique",
+  "counts": {
+    "PASS": 45,
+    "PASS_WITH_WARNINGS": 0,
+    "BLOCKED": 0
+  },
+  "checks": [
+    {
+      "check_id": "document.HUMAN_JUDGMENT.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\HUMAN_JUDGMENT.md"
+    },
+    {
+      "check_id": "document.HUMAN_JUDGMENT.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "document.AI_TRACE.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\AI_TRACE.md"
+    },
+    {
+      "check_id": "document.AI_TRACE.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "document.AI_ERRORS_AND_CORRECTIONS.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\AI_ERRORS_AND_CORRECTIONS.md"
+    },
+    {
+      "check_id": "document.AI_ERRORS_AND_CORRECTIONS.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "document.REJECTED_HYPOTHESES.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\REJECTED_HYPOTHESES.md"
+    },
+    {
+      "check_id": "document.REJECTED_HYPOTHESES.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "document.TRADE_OFFS.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\TRADE_OFFS.md"
+    },
+    {
+      "check_id": "document.TRADE_OFFS.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "document.HUMAN_INTERVENTION_TIMELINE.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\HUMAN_INTERVENTION_TIMELINE.md"
+    },
+    {
+      "check_id": "document.HUMAN_INTERVENTION_TIMELINE.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "document.EVIDENCE_MAP.md.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\process-log\\EVIDENCE_MAP.md"
+    },
+    {
+      "check_id": "document.EVIDENCE_MAP.md.headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "ids.HUMAN_JUDGMENT.md.exact",
+      "status": "PASS",
+      "detail": "required=18 found=18"
+    },
+    {
+      "check_id": "ids.HUMAN_JUDGMENT.md.unique",
+      "status": "PASS",
+      "detail": "occurrences=18 unique=18"
+    },
+    {
+      "check_id": "ids.AI_ERRORS_AND_CORRECTIONS.md.exact",
+      "status": "PASS",
+      "detail": "required=16 found=16"
+    },
+    {
+      "check_id": "ids.AI_ERRORS_AND_CORRECTIONS.md.unique",
+      "status": "PASS",
+      "detail": "occurrences=16 unique=16"
+    },
+    {
+      "check_id": "ids.REJECTED_HYPOTHESES.md.exact",
+      "status": "PASS",
+      "detail": "required=13 found=13"
+    },
+    {
+      "check_id": "ids.REJECTED_HYPOTHESES.md.unique",
+      "status": "PASS",
+      "detail": "occurrences=13 unique=13"
+    },
+    {
+      "check_id": "ids.EVIDENCE_MAP.md.exact",
+      "status": "PASS",
+      "detail": "required=15 found=15"
+    },
+    {
+      "check_id": "ids.EVIDENCE_MAP.md.unique",
+      "status": "PASS",
+      "detail": "occurrences=15 unique=15"
+    },
+    {
+      "check_id": "content.human_decision_fields",
+      "status": "PASS",
+      "detail": "blocks=18; incomplete=[]"
+    },
+    {
+      "check_id": "content.error_validation_fields",
+      "status": "PASS",
+      "detail": "blocks=16; incomplete=[]"
+    },
+    {
+      "check_id": "content.rejection_fields",
+      "status": "PASS",
+      "detail": "blocks=13; incomplete=[]"
+    },
+    {
+      "check_id": "content.claim_support",
+      "status": "PASS",
+      "detail": "47 decision/error/rejection blocks contain linked support"
+    },
+    {
+      "check_id": "trace.phase_coverage",
+      "status": "PASS",
+      "detail": "12 required phases present"
+    },
+    {
+      "check_id": "trace.reconstructed_prompt_label",
+      "status": "PASS",
+      "detail": "label_occurrences=4"
+    },
+    {
+      "check_id": "trace.verification_cycle",
+      "status": "PASS",
+      "detail": "suggestion-to-commit cycle present"
+    },
+    {
+      "check_id": "content.limitations",
+      "status": "PASS",
+      "detail": "limitations present in all process documents"
+    },
+    {
+      "check_id": "content.evidence_map_rows",
+      "status": "PASS",
+      "detail": "rows=15; malformed=0"
+    },
+    {
+      "check_id": "content.tradeoffs",
+      "status": "PASS",
+      "detail": "rows=12; required=12"
+    },
+    {
+      "check_id": "integration.readme.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\README.md"
+    },
+    {
+      "check_id": "integration.index.exists",
+      "status": "PASS",
+      "detail": "submissions\\carlos-henrique\\docs\\README.md"
+    },
+    {
+      "check_id": "integration.readme.section",
+      "status": "PASS",
+      "detail": "section present"
+    },
+    {
+      "check_id": "integration.readme.word_count",
+      "status": "PASS",
+      "detail": "words=136; expected=120..180"
+    },
+    {
+      "check_id": "integration.readme.links",
+      "status": "PASS",
+      "detail": "all seven links present"
+    },
+    {
+      "check_id": "integration.index.process_evidence",
+      "status": "PASS",
+      "detail": "category, metadata columns, and seven links present"
+    },
+    {
+      "check_id": "review.adversarial",
+      "status": "PASS",
+      "detail": "report exists; open CRITICAL=0; open HIGH=0; gate=PASS"
+    },
+    {
+      "check_id": "review.evaluator",
+      "status": "PASS",
+      "detail": "report exists; question_passes=7; gate=PASS"
+    },
+    {
+      "check_id": "language.placeholders",
+      "status": "PASS",
+      "detail": "zero placeholders"
+    },
+    {
+      "check_id": "language.ai_autonomy",
+      "status": "PASS",
+      "detail": "zero prohibited occurrences"
+    },
+    {
+      "check_id": "links.internal",
+      "status": "PASS",
+      "detail": "checked=228; broken=0"
+    },
+    {
+      "check_id": "commits.references",
+      "status": "PASS",
+      "detail": "checked=13; missing=0"
+    },
+    {
+      "check_id": "scope.changed_files",
+      "status": "PASS",
+      "detail": "outside=0"
+    }
+  ],
+  "limitations": [
+    "The validator checks repository evidence structure and traceability, not private reasoning.",
+    "Semantic support remains bounded to the linked historical artifacts and commits.",
+    "Future operational use requires a separate human review and validation cycle."
+  ]
+}
