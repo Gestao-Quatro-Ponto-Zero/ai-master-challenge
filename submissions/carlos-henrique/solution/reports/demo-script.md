@@ -1,25 +1,25 @@
-# Guided Demo Script - 3:10
+# Roteiro da Demonstração Guiada — 3:10
 
-The app also contains an eight-step in-product Guided Demo at `/demo`. This presenter script is designed for a 2-4 minute evaluation.
+A aplicação contém uma Demonstração guiada em oito etapas na rota `/demo`. Este roteiro usa os mesmos rótulos em português do Brasil exibidos na interface e foi desenhado para uma avaliação de 2 a 4 minutos.
 
-| Time | Route | Click | Presenter line | Metric/evidence | Transition |
+| Tempo | Rota | Ação | Fala do apresentador | Métrica/evidência | Transição |
 |---|---|---|---|---|---|
-| 0:00-0:20 | `/` | Open Overview | "Retention intelligence starts by turning fragmented historical events into governed evidence, not by jumping to a prediction." | 500 accounts; 35,586 processed events | "First, let us see what survived the quality gates." |
-| 0:20-0:45 | `/quality` | Data & Quality in navigation | "Only 13,927 events are usable. The 21,659 excluded records remain a quality backlog and never become behavioral signal." | MAIN/STRICT populations; warning coverage; quarantine separation | "With the evidence boundary clear, we can inspect actual journeys." |
-| 0:45-1:15 | `/journeys` | Choose `DEMO_B`, then `DEMO_C` | "`DEMO_B` shows recurring observed churn; `DEMO_C` shows a reactivation with usage return. These are anonymous historical examples, not ranked accounts." | 4,221 governed journeys; three real demo accounts | "Repeated journey evidence can now be explored as a bounded knowledge graph." |
-| 1:15-1:45 | `/graph` | Change Graph mode to Pattern explorer; select a node | "Only promotable ROBUST or SENSITIVE evidence is present. The view is reduced, filtered, and explicitly descriptive." | 435 promoted patterns; 43 promoted transitions; max 35 nodes/80 edges | "The same governed evidence can support human review queues." |
-| 1:45-2:20 | `/watchlist` | Filter a queue; click View evidence | "Seven queues organize investigation. Priority is a transparent matrix of discrete components, never a score or probability. Every item requires a human decision." | Seven queues; anonymous 500-account source population; associated MRR only | "Potential actions are hypotheses, so the next step is experiment design." |
-| 2:20-2:50 | `/experiments` | Open the first experiment detail | "Eight designs specify eligibility, sample requirements, metrics, SAP, safeguards, and stopping rules. Every causal status is `UNTESTED`; nothing was executed." | Eight experiments; 119 Phase 8 tests before dashboard work | "We close by making the controls as visible as the opportunity." |
-| 2:50-3:10 | `/governance` | Open an Explain this disclosure | "The demo has zero raw PII, future leakage, scores, automated interventions, executed experiments, and causal claims. Each number keeps its source, denominator, cutoff, and limitation." | 15 deterministic JSONs; fixed cutoff 2024-12-31 19:00 | "The result is ready for documentation and submission, not live operations." |
+| 0:00–0:20 | `/` | Abrir Visão geral | “A inteligência de retenção começa transformando eventos históricos fragmentados em evidência governada, sem saltar para uma previsão.” | 500 contas; 35.586 eventos processados | “Primeiro, veremos o que passou pelos controles de qualidade.” |
+| 0:20–0:45 | `/quality` | Abrir Qualidade dos dados | “Somente 13.927 eventos são utilizáveis. Os 21.659 registros excluídos permanecem como pendência de qualidade e nunca se tornam sinal comportamental.” | Populações principal/estrita; alertas; quarentena separada | “Com o limite da evidência claro, podemos examinar jornadas reais.” |
+| 0:45–1:15 | `/journeys` | Selecionar Perfil B e depois Perfil C | “O Perfil B mostra churn recorrente observado; o Perfil C mostra reativação com retorno de uso. São exemplos históricos anônimos, não contas ranqueadas.” | 4.221 jornadas governadas; três perfis anônimos | “A evidência repetida das jornadas pode ser explorada em um grafo delimitado.” |
+| 1:15–1:45 | `/graph` | Alterar o modo para Explorador de padrões; selecionar um nó | “Somente evidência promovível, robusta ou sensível está presente. A visão é reduzida, filtrada e explicitamente descritiva.” | 435 padrões promovíveis; 43 transições; máximo de 35 nós/80 arestas | “A mesma evidência governada pode sustentar filas de revisão humana.” |
+| 1:45–2:20 | `/watchlist` | Filtrar uma fila; clicar em Ver evidência | “Sete filas organizam a investigação. A prioridade é uma matriz transparente de componentes discretos, nunca probabilidade individual. Todo item exige decisão humana.” | Sete filas; população anônima de 500 contas; somente MRR associado | “Ações potenciais são hipóteses; o próximo passo é desenhar um teste.” |
+| 2:20–2:50 | `/experiments` | Abrir o primeiro detalhe experimental | “Oito desenhos especificam elegibilidade, amostra, métricas, plano estatístico, salvaguardas e interrupção. Todos permanecem não testados; nada foi executado.” | Oito desenhos; status causal não testado | “Encerramos tornando os controles tão visíveis quanto a oportunidade.” |
+| 2:50–3:10 | `/governance` | Revisar os controles | “A demonstração não expõe PII ou chaves de conta, não usa dados futuros, pontuação preditiva, intervenção automática, experimento executado ou alegação causal.” | 15 JSONs determinísticos; data-limite fixa em 31/12/2024 19:00 | “O resultado está pronto para documentação e submissão, não para operação ao vivo.” |
 
-## Demo accounts
+## Perfis da demonstração
 
-- `DEMO_A` - low engagement, no observed churn.
-- `DEMO_B` - recurring observed churn.
-- `DEMO_C` - observed reactivation followed by usage return.
+- Perfil A — sem churn observado.
+- Perfil B — churn recorrente.
+- Perfil C — reativação e retorno de uso.
 
-These labels map to three real anonymous analytical accounts selected deterministically. Never reveal or narrate the underlying account keys.
+Os rótulos representam três contas analíticas anônimas selecionadas deterministicamente. As chaves internas nunca devem ser reveladas ou narradas.
 
-## Presenter safeguards
+## Salvaguardas do apresentador
 
-Say "observed", "associated", "historical", "descriptive", and "requires human review". Do not say "will churn", "caused", "revenue at risk", "saved revenue", "recommended action", or "successful experiment". If asked about production use, state that authentication, live data, observability, interventions, and experiment execution are intentionally outside Phase 9.
+Use “observado”, “associado”, “histórico”, “descritivo” e “exige revisão humana”. Não use “vai cancelar”, “causou”, “receita em risco”, “receita salva”, “melhor ação” ou “experimento bem-sucedido”. Se perguntarem sobre produção, informe que autenticação, dados ao vivo, observabilidade, intervenções e execução experimental permanecem fora do escopo.

@@ -4,20 +4,20 @@
 
 JourneyGraph Retention Intelligence is an answer-first demonstration for executives, retention operators, data teams, and governance reviewers. Its core narrative is: fragmented operational events become usable only after quality gates; usable events become governed journeys; promoted, stable evidence supports human investigation; hypotheses remain untested until a future governed experiment is approved.
 
-The interface is in English to maximize evaluator and enterprise-demo accessibility. Every primary view shows the fixed historical cutoff and demo status.
+The interface is fully localized in Brazilian Portuguese (`pt-BR`) with controlled complete messages, pt-BR number/date formatting, and Portuguese accessibility labels. Every primary view shows the fixed historical cutoff and demo status.
 
 ## Information architecture
 
 | Area | Route | Decision supported | Boundary |
 |---|---|---|---|
-| Executive Overview | `/` | Understand scale, evidence flow, and headline limitations | No causal or predictive conclusion |
-| Data & Quality | `/quality` | Separate usable evidence from quality backlog | Quarantine is not behavioral signal |
-| Journey Explorer | `/journeys` | Inspect three representative anonymous journeys | No raw IDs or account ranking |
+| Visão executiva | `/` | Understand scale, evidence flow, and headline limitations | No causal or predictive conclusion |
+| Qualidade dos dados | `/quality` | Separate usable evidence from quality backlog | Quarantine is not behavioral signal |
+| Explorador de jornadas | `/journeys` | Inspect three representative anonymous journeys | No raw IDs or account ranking |
 | JourneyGraph | `/graph` | Explore bounded event, pattern, and governance evidence | Reduced, filtered, descriptive view |
-| Watchlist | `/watchlist` | Review queues and evidence packets | Human review only |
-| Experiment Lab | `/experiments` | Compare future test designs and feasibility | All hypotheses remain `UNTESTED` |
-| Governance | `/governance` | Audit privacy, temporal, semantic, and operational controls | No live enforcement service |
-| Guided Demo | `/demo` | Deliver the product story in eight steps | Historical local snapshot |
+| Fila de revisão | `/watchlist` | Review queues and evidence packets | Human review only |
+| Laboratório de Experimentos | `/experiments` | Compare future test designs and feasibility | All hypotheses remain `UNTESTED` |
+| Governança | `/governance` | Audit privacy, temporal, semantic, and operational controls | No live enforcement service |
+| Demonstração guiada | `/demo` | Deliver the product story in eight steps | Historical local snapshot |
 
 ## Executive comprehension
 
@@ -27,12 +27,12 @@ Charts use neutral titles, visible populations, explicit denominators, and zero 
 
 ## Interaction design
 
-- Journey filters change demo account, scope, outcome, quality, and timeline evidence.
+- Journey filters change an anonymous profile, scope, outcome, quality, and timeline evidence; internal account and pattern keys are not rendered.
 - Graph controls change mode, minimum support, and top-N nodes. The initial event-flow view is limited to 16 of 35 prepared relationships to prevent a hairball.
 - Watchlist filters preserve queue and priority semantics; evidence opens in a governed detail panel.
 - Experiment cards open specifications with eligibility, sample planning, metrics, SAP, safeguards, and `UNTESTED` status.
-- `Explain this` disclosures use deterministic source data to expose observation, population, denominator, quality, stability, limitations, authorized next step, and prohibited interpretation.
-- Guided Demo provides eight keyboard-operable steps with back/next navigation and direct route links.
+- `Explicar esta evidência` disclosures use deterministic source data to expose observation, population, denominator, quality, stability, limitations, authorized next step, and prohibited interpretation.
+- Demonstração guiada provides eight keyboard-operable steps with back/next navigation and direct route links.
 
 ## Visual system and accessibility
 
@@ -42,7 +42,7 @@ The app includes semantic landmarks, visible focus states, labelled inputs, butt
 
 ## Reviewed screenshots
 
-The following files were captured by Playwright from the actual production build and visually reviewed:
+The following files were regenerated after complete pt-BR localization, captured by Playwright from the actual production build, and visually reviewed:
 
 1. `screenshots/01-executive-overview.png`
 2. `screenshots/02-data-quality.png`

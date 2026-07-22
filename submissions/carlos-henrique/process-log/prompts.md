@@ -256,3 +256,13 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - **Contrato de demonstracao:** tres contas reais anonimas sob rotulos DEMO, grafo reduzido/promovivel, filas separadas, experimentos `UNTESTED`, explicacoes deterministicas e cutoff fixo.
 - **Gate esperado e obtido:** `PASS`, apos build, validacao responsiva, revisao visual e reprodutibilidade.
 - **Commit autorizado:** `feat: add governed JourneyGraph demonstration dashboard`, local e seletivo.
+
+---
+
+## Rework autorizado - localização completa e anonimização do dashboard
+
+- **Entrada:** autorização de rework sobre o HEAD `fb6f09a34be2a77b3917b798ec22ed9fd56728ff`, preservando as alterações locais existentes.
+- **Escopo:** interface integralmente em pt-BR, formatação pt-BR, mensagens completas, mapas explícitos de status, anonimização de contas demo, atualização de 18 testes Vitest, 36 cenários Playwright, sete screenshots, documentação mínima e process log.
+- **Restrições:** somente `submissions/carlos-henrique/`; sem alteração analítica, CSV bruto, build artifact, push ou Pull Request.
+- **Commit autorizado:** `fix: complete pt-BR localization and demo anonymization`.
+- **Gate esperado:** `PASS` apenas com localização completa, anonimização, testes/build verdes, screenshots revisados, diff limpo e commit local seletivo.

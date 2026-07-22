@@ -830,3 +830,35 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **Decisao:** `PASS`.
 - **Justificativa:** build estatico, lint, typecheck, 18 testes UI, 36 smokes responsivos, 130 testes Python, 15 JSONs idempotentes e sete screenshots reais revisadas passaram; privacidade, causalidade e escopo reconciliaram em zero violacoes.
 - **Status:** APROVADA
+
+## Decisões do rework de localização e anonimização
+
+## D109 - Interface final localizada em pt-BR
+
+- **Decisão:** usar português do Brasil em todas as superfícies visíveis, metadata e acessibilidade; esta decisão substitui a D105 para a interface final.
+- **Status:** APROVADA
+
+## D110 - Tradução controlada por mensagens completas
+
+- **Decisão:** fornecer copy final por rota/componente e mapas explícitos somente para enums e status conhecidos.
+- **Status:** APROVADA
+
+## D111 - Proibição de tradução lexical genérica
+
+- **Decisão:** remover substituições parciais, dicionários palavra por palavra e inferência de tradução em runtime; valores desconhecidos são preservados integralmente.
+- **Status:** APROVADA
+
+## D112 - Identificadores demo mantidos apenas internamente
+
+- **Decisão:** manter `account_key` e chaves de padrões somente como valores internos; renderizar perfis e padrões com aliases controlados.
+- **Status:** APROVADA
+
+## D113 - Screenshots regenerados após localização completa
+
+- **Decisão:** recapturar os sete PNGs aprovados somente após lint, typecheck, Vitest e build verdes, com revisão visual posterior.
+- **Status:** APROVADA
+
+## D114 - Testes atualizados para semântica pt-BR
+
+- **Decisão:** validar textos, formatação, acessibilidade, fallback controlado e não exposição de chaves em 18 testes Vitest e 36 cenários Playwright.
+- **Status:** APROVADA

@@ -555,3 +555,27 @@ Regras, cutoff, janelas, qualidade, componentes, filas, duplicidade, evid?ncias,
 - **E071 - seletor estrito duplicado:** assercoes foram tornadas semanticas/exatas.
 - **E072 - hairball na primeira captura:** event-flow inicial passou de 35 para 16 relacoes visiveis e layout circular.
 - **E073 - visualizador local bloqueado no Windows:** contact sheet e previews temporarios foram inspecionados fora do repositorio; apenas screenshots finais revisadas permaneceram.
+
+## Rework de localização completa e anonimização do dashboard
+
+1. Revalidado o escopo autorizado sob `submissions/carlos-henrique/`, preservando a base analítica e os seis arquivos locais iniciais.
+2. Removida a tradução lexical genérica e criada formatação controlada para números, datas, percentuais e enums conhecidos.
+3. Localizadas as nove rotas, shell, metadata, componentes compartilhados, gráficos, estados e rótulos de acessibilidade em pt-BR.
+4. Substituídas chaves de contas e padrões por perfis/aliases anônimos; nenhuma chave `acct_*` ou `pattern_*` permaneceu visível.
+5. Atualizados os testes para semântica pt-BR, fallback controlado, acessibilidade, estados vazios e privacidade.
+6. Regenerados os sete screenshots após build verde e revisados idioma, acentuação, overflow, contraste, números, limites e legibilidade do grafo.
+7. Atualizada a documentação mínima e criado `solution/reports/localization-validation.md`.
+8. Validação final: lint PASS, typecheck PASS, 18/18 Vitest, build PASS, 36/36 Playwright, console sem erros e nove rotas sem overflow horizontal.
+
+### Erros e correções do rework
+
+- **E074 - tradução lexical inválida:** a substituição palavra por palavra produzia frases semanticamente incorretas; o mecanismo foi removido e substituído por mensagens completas e mapas fechados.
+- **E075 - interface bilíngue:** rotas e componentes ainda continham copy em inglês; as nove rotas e superfícies compartilhadas foram auditadas e localizadas.
+- **E076 - testes quebrados após mudança de idioma:** seis expectativas antigas falharam; os testes foram reescritos para comportamento, pt-BR, acessibilidade e anonimização.
+- **E077 - whitespace no diff inicial:** espaços finais e newline inconsistente foram eliminados e o gate `git diff --check` foi incorporado ao fechamento.
+- **E078 - screenshots divergentes:** capturas da interface anterior ficaram obsoletas; os sete PNGs foram regenerados somente após os gates de código verdes.
+- **E079 - colisão com variável reservada do PowerShell:** o uso acidental de `$home` em uma composição temporária atingiu conteúdo incorreto; o arquivo foi imediatamente reconstruído pela variável específica e verificado antes dos testes.
+- **E080 - asserção Vitest duplicada:** o mesmo perfil aparecia no seletor e no cabeçalho; a expectativa passou a aceitar as duas ocorrências sem enfraquecer a verificação de privacidade.
+- **E081 - seletor Playwright ambíguo:** duas mensagens começavam por “Nenhum experimento foi executado”; a asserção foi restringida à mensagem exata do limite de execução.
+- **E082 - visualizador de arquivos bloqueado no Windows:** a revisão visual foi concluída no navegador interno sobre o build de produção, sem criar artefatos temporários no repositório.
+- **E083 - identificadores e rótulos truncados detectados visualmente:** chaves `pattern_*` foram substituídas por aliases e o corte arbitrário de 16 caracteres foi removido em favor de labels compactos controlados.

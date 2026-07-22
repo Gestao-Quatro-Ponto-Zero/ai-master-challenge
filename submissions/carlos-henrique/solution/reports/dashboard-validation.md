@@ -2,7 +2,7 @@
 
 ## Result
 
-**Gate: PASS.** The local dashboard is functional, comprehensible, deterministic, privacy-safe within the declared anonymous demo contract, and suitable for documentation, video, and final submission. It is not approved for live operations.
+**Gate: PASS.** The reworked pt-BR local dashboard is functional, comprehensible, deterministic, privacy-safe within the declared anonymous demo contract, and suitable for documentation, video, and final submission. It is not approved for live operations.
 
 ## Build and dependency gates
 
@@ -44,7 +44,7 @@ The builder verified the frozen hashes of 25 authorized Phase 3-8 inputs against
 | Graph views above 35 nodes/80 edges | 0 |
 | Invalid watchlist priorities or queue mixing | 0 |
 
-Anonymous `acct_*` keys appear only in bounded local data records used to select real evidence. The rendered product substitutes `DEMO_A`, `DEMO_B`, and `DEMO_C`; smoke and source-contract tests prevent operational identifiers and PII from entering the interface.
+Anonymous `acct_*` keys appear only in bounded local data records used to select real evidence. The rendered product substitutes controlled profile labels in Portuguese; `acct_*` and pattern keys are never rendered. Unit, smoke, and source-contract tests prevent operational identifiers and PII from entering the interface.
 
 ## Metric reconciliation
 
@@ -62,11 +62,11 @@ These values reconcile to prior governed artifacts. Phase 9 did not modify analy
 
 ## Route and browser validation
 
-Every primary route loaded in desktop, tablet, and mobile Chromium profiles. Tests asserted a visible main landmark and demo badge, zero browser console errors, and zero failed local `/data/` requests. Interaction tests covered guided-demo advancement, watchlist evidence, experiment detail, and bounded Cytoscape rendering.
+All nine product routes loaded in desktop, tablet, and mobile Chromium profiles. Tests asserted a visible main landmark and demo badge, zero browser console errors, and zero failed local `/data/` requests. Interaction tests covered guided-demo advancement, watchlist evidence, experiment detail, and bounded Cytoscape rendering.
 
 ## Visual review
 
-Seven full-page screenshots were captured from the production app. Human visual review covered homepage, quality, journeys, graph, watchlist, experiments, governance, typography, labels, tooltips/disclosures, headline numbers, MRR language, limitations, PII, causal wording, and performance. A contact sheet and detailed overview/graph previews were inspected. The graph density found during review was corrected and the screenshots were recaptured.
+Seven full-page screenshots were regenerated from the localized production app. Human visual review covered homepage, quality, journeys, graph, watchlist, experiments, governance, pt-BR language and accents, typography, labels, tooltips/disclosures, headline number formatting, MRR language, limitations, anonymity, causal wording, overflow, and performance. A contact sheet and detailed overview/graph previews were inspected. The graph density found during review was corrected and the screenshots were recaptured.
 
 Loading, not-found, error, and reusable empty states are present. Empty/error components have unit coverage. Loading behavior was checked through the route structure; network failures are not simulated in the final production screenshot set.
 

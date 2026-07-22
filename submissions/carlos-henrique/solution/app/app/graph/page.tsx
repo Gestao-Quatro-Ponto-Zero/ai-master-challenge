@@ -8,5 +8,5 @@ interface EdgeData { cutoff: string; modes: Record<"event-flow" | "pattern-explo
 
 export default async function GraphPage() {
   const [nodes, edges] = await Promise.all([loadData<NodeData>("graph_nodes.json"), loadData<EdgeData>("graph_edges.json")]);
-  return <div><SectionHeader eyebrow="JourneyGraph" title="Impact without the hairball." description="Explore only promotable analytical relationships across event flow, patterns, and governance. Every mode is bounded, filtered, and descriptive." /><DataFreshness cutoff={nodes.cutoff} /><div className="mt-7"><GraphExplorer nodeData={nodes} edgeData={edges} /></div></div>;
+  return <div><SectionHeader eyebrow="JourneyGraph" title="Impacto sem o emaranhado visual." description="Explore somente relações analíticas promovíveis entre fluxo de eventos, padrões e governança. Cada modo é delimitado, filtrado e descritivo." /><DataFreshness cutoff={nodes.cutoff} /><div className="mt-7"><GraphExplorer nodeData={nodes} edgeData={edges} /></div></div>;
 }

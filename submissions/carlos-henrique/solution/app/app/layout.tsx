@@ -3,16 +3,11 @@ import "./globals.css";
 import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
-  title: "JourneyGraph · Governed Retention Intelligence",
-  description: "A local, privacy-safe demonstration of governed customer journey intelligence."
+  title: "JourneyGraph · Inteligência de retenção governada",
+  description: "Demonstração local e segura de inteligência de jornadas de clientes, com evidência descritiva e decisões humanas.",
+  applicationName: "JourneyGraph"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en">
-      <body>
-        <AppShell>{children}</AppShell>
-      </body>
-    </html>
-  );
+  return <html lang="pt-BR"><body><AppShell>{children}</AppShell></body></html>;
 }

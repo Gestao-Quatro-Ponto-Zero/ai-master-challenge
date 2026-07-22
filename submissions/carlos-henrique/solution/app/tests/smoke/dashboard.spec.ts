@@ -11,50 +11,48 @@ const screenshotNames: Record<string, string> = {
   "/governance": "07-governance.png"
 };
 
-const routes = ["/", "/quality", "/journeys", "/graph", "/watchlist", "/experiments", "/governance", "/demo"];
+const routes = ["/", "/quality", "/journeys", "/graph", "/watchlist", "/experiments", "/governance", "/demo", "/methodology"];
 
 for (const route of routes) {
-  test(`${route} loads without local data failures`, async ({ page }, testInfo) => {
+  test(`${route} carrega sem falhas de dados locais`, async ({ page }, testInfo) => {
     const consoleErrors: string[] = [];
     const failedRequests: string[] = [];
     page.on("console", (message) => { if (message.type() === "error") consoleErrors.push(message.text()); });
     page.on("requestfailed", (request) => failedRequests.push(request.url()));
     await page.goto(route);
     await expect(page.locator("main")).toBeVisible();
-    await expect(page.getByText("Demo · historical observational data")).toBeVisible();
+    await expect(page.getByText("Demonstração histórica local")).toBeVisible();
     expect(consoleErrors).toEqual([]);
     expect(failedRequests.filter((url) => url.includes("/data/"))).toEqual([]);
+    if (route === "/graph") {
+      await expect(page.getByRole("img", { name: /Visualização JourneyGraph/ })).toBeVisible({ timeout: 20_000 });
+      await expect(page.getByText(/explicitamente truncada/)).toBeVisible();
+    }
     if (testInfo.project.name === "desktop" && screenshotNames[route]) {
       await page.emulateMedia({ reducedMotion: "reduce" });
-      if (route === "/graph") await expect(page.getByRole("img", { name: /JourneyGraph view/ })).toBeVisible({ timeout: 20_000 });
       await page.screenshot({ path: path.resolve(process.cwd(), "../reports/screenshots", screenshotNames[route]), fullPage: true });
     }
   });
 }
 
-test("guided demo advances", async ({ page }) => {
+test("demonstração guiada avança", async ({ page }) => {
   await page.goto("/demo");
-  await expect(page.getByText("The problem")).toBeVisible();
-  await page.getByRole("button", { name: "Next" }).click();
-  await expect(page.getByText("Data quality before prediction")).toBeVisible();
+  await expect(page.getByText("O problema")).toBeVisible();
+  await page.getByRole("button", { name: "Próxima" }).click();
+  await expect(page.getByText("Qualidade antes da interpretação")).toBeVisible();
 });
 
-test("watchlist opens governed detail", async ({ page }) => {
+test("fila de revisão abre detalhe governado", async ({ page }) => {
   await page.goto("/watchlist");
-  await page.getByRole("button", { name: "View evidence" }).first().click();
-  await expect(page.getByText("Requires human review: Yes")).toBeVisible();
-  await expect(page.getByText("Automatic intervention: Not allowed")).toBeVisible();
+  await page.getByRole("button", { name: "Ver evidência" }).first().click();
+  await expect(page.getByText("Revisão humana obrigatória: Sim")).toBeVisible();
+  await expect(page.getByText("Intervenção automática: Não permitida")).toBeVisible();
+  await expect(page.getByRole("dialog")).not.toContainText(/acct_[0-9a-f]+/i);
 });
 
-test("experiment detail opens with untested status", async ({ page }) => {
+test("detalhe do experimento abre com status não testado", async ({ page }) => {
   await page.goto("/experiments");
-  await page.getByRole("button", { name: /Open experiment detail/ }).first().click();
-  await expect(page.getByText("Untested hypothesis", { exact: true })).toBeVisible();
-  await expect(page.getByText(/No experiment has been executed/)).toBeVisible();
-});
-
-test("graph loads a bounded view", async ({ page }) => {
-  await page.goto("/graph");
-  await expect(page.getByRole("img", { name: /JourneyGraph view/ })).toBeVisible({ timeout: 20_000 });
-  await expect(page.getByText(/explicitly truncated/)).toBeVisible();
+  await page.getByRole("button", { name: /Abrir detalhes do experimento/ }).first().click();
+  await expect(page.getByText("Hipótese não testada", { exact: true })).toBeVisible();
+  await expect(page.getByText("Nenhum experimento foi executado. Nenhum cliente foi contatado, atribuído a grupo ou exposto a uma intervenção.", { exact: true })).toBeVisible();
 });

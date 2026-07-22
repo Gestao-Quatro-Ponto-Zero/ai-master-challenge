@@ -87,3 +87,6 @@ Padrões, correlações e sequências temporais poderão orientar hipóteses, ma
 Não existem resultados analíticos nesta versão.
 
 > Esta versão contém apenas a fundação documental e estrutural. Nenhuma análise foi executada e nenhum resultado foi produzido.
+## Atualização da interface da demonstração
+
+A aplicação em `solution/app/` usa interface integralmente em português do Brasil (`pt-BR`), formatação numérica e de datas pt-BR e mensagens controladas por status. Os três exemplos de jornada e todos os itens da fila são exibidos somente por perfis anônimos; chaves internas permanecem restritas à seleção técnica e não são renderizadas. Os sete screenshots da Fase 9 foram regenerados após a localização e validados em desktop, tablet e mobile.

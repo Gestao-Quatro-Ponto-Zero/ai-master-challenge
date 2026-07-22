@@ -1,6 +1,6 @@
 # JourneyGraph Retention Intelligence
 
-A local, governed demonstration dashboard that turns the audited outputs from Phases 3-8 into an executive product narrative. It presents historical observations, quality limitations, anonymous journeys, bounded graph evidence, human-review queues, and untested experiment designs. It does not run interventions or make causal or predictive claims.
+A local, governed demonstration dashboard that turns the audited outputs from Phases 3-8 into an executive product narrative. It presents historical observations, quality limitations, anonymous journeys, bounded graph evidence, human-review queues, and untested experiment designs. It does not run interventions or make causal or predictive claims. The visible interface, navigation, accessibility labels, numeric formats, and demo copy are fully localized in Brazilian Portuguese (`pt-BR`).
 
 ## Requirements
 
@@ -48,15 +48,15 @@ Open `http://localhost:3000`. The product always shows a demo badge and the hist
 
 ## Routes
 
-- `/` - Executive Overview
-- `/quality` - Data & Quality
-- `/journeys` - Journey Explorer
+- `/` - Visão executiva
+- `/quality` - Qualidade dos dados
+- `/journeys` - Explorador de jornadas
 - `/graph` - JourneyGraph
-- `/watchlist` - Intervention Watchlist
-- `/experiments` - Experiment Lab
-- `/governance` - Governance
-- `/demo` - eight-step Guided Demo
-- `/methodology` - evidence and interpretation boundaries
+- `/watchlist` - Fila de revisão
+- `/experiments` - Laboratório de Experimentos
+- `/governance` - Governança
+- `/demo` - Demonstração guiada em oito etapas
+- `/methodology` - Metodologia e limites de interpretação
 
 ## Tests and validation
 
@@ -69,7 +69,7 @@ npm run test:smoke
 npm audit --omit=dev
 ```
 
-The smoke suite starts the production server and checks all eight primary routes in desktop, tablet, and mobile Chromium profiles. Desktop route checks also refresh the seven reviewed screenshots in `../reports/screenshots/`.
+The smoke suite starts the production server and checks all nine product routes in desktop, tablet, and mobile Chromium profiles. Desktop route checks also refresh the seven reviewed screenshots in `../reports/screenshots/`.
 
 From `solution`:
 
@@ -102,7 +102,7 @@ The application is statically prerendered. Data files are local, versioned snaps
 ## Privacy and interpretation boundaries
 
 - No raw `account_id`, account name, email, feedback text, or other PII is displayed.
-- Three real analytical accounts are represented only by `DEMO_A`, `DEMO_B`, and `DEMO_C` in the interface. Their internal `acct_*` keys are deterministic anonymous keys, not operational IDs.
+- Three real analytical accounts are displayed only as “Perfil A — sem churn observado”, “Perfil B — churn recorrente”, and “Perfil C — reativação e retorno de uso”. Internal `acct_*` keys remain selection values and are never rendered.
 - Watchlist rows are bounded demonstration evidence and require human review.
 - There is no score, probability, automated action, outbound integration, or live experiment.
 - Graph relationships and historical patterns are descriptive. They do not establish causality.
