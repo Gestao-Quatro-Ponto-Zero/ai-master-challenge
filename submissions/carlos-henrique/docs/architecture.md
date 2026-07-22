@@ -1,324 +1,169 @@
-# Arquitetura planejada do JourneyGraph
+# JourneyGraph Architecture
 
-> **Status na Fase 2:** auditoria, event log, qualidade temporal, quarentena e episódios de assinatura implementados. Camadas analíticas e de produto permanecem não implementadas.
+## Current State
 
-## Estado de implementação
+JourneyGraph is a reproducible local analytical system and demonstration interface built on a fixed historical snapshot through `2024-12-31T19:00:00`. The implemented path runs from source audit to a deterministic Next.js product surface. It does not depend on a live backend, external API, external LLM, graph server, or cloud service at runtime.
 
-| Componente | Estado | Evidência |
-|---|---|---|
-| Data audit | `IMPLEMENTED` | perfis, schemas, relações e relatórios da Fase 1 |
-| Event log | `IMPLEMENTED_WITH_WARNINGS` | `data/processed/event_log.parquet` |
-| Temporal quality | `IMPLEMENTED` | flags, statuses e `temporal_quality_summary.json` |
-| Quarantine | `IMPLEMENTED` | `data/processed/quarantined_events.parquet` |
-| Subscription episodes | `IMPLEMENTED_WITH_WARNINGS` | `data/processed/subscription_episodes.parquet` |
-| Diagnóstico, survival e journey mining | `NOT_IMPLEMENTED` | fora do escopo da Fase 2 |
-| Graph | `NOT_IMPLEMENTED` | depende do gate temporal |
-| Watchlist e app | `NOT_IMPLEMENTED` | dependem de análise e validação posteriores |
+The system is designed for governed retention investigation: observations can become reviewable evidence and experiment designs, but they do not become individual predictions, causal conclusions, or automated interventions.
 
+## End-to-End Flow
 
-## Objetivo do produto
+```mermaid
+flowchart TB
+    A["Source datasets"] --> B["Audit and schema validation"]
+    B --> C["Canonical event log"]
+    C --> D["Quarantine and quality split"]
+    D --> E["Episode reconstruction"]
+    E --> F["Churn and survival analysis"]
+    F --> G["Journey mining"]
+    G --> H["Graph construction"]
+    H --> I["Intervention watchlist"]
+    I --> J["Experiment registry"]
+    J --> K["Dashboard data builder"]
+    K --> L["Next.js demonstration"]
+```
 
-JourneyGraph deverá transformar cinco fontes operacionais da RavenStack em evidências temporais rastreáveis para diagnosticar retenção, priorizar receita em risco e apoiar intervenções mensuráveis. O produto deverá preservar a distinção entre sinais associados, hipóteses explicativas e efeitos causalmente demonstrados.
+Quarantine is a controlled exclusion path, not a source of behavioral evidence. The canonical log records a quality status for every event opportunity; quarantined rows are preserved for data-health reporting, while active events continue into episode reconstruction and downstream analysis.
 
-## Arquitetura em camadas
+## Component Map
 
-1. **Fontes brutas:** cinco CSVs oficiais, imutáveis e não versionados.
-2. **Auditoria e contrato:** perfil dos dados, chaves, tipos, granularidade, qualidade, privacidade e reconciliação.
-3. **Integração temporal:** event log canônico com identidade, evento, tempo, origem e linhagem validados.
-4. **Inteligência analítica:** diagnóstico descritivo, análise temporal, survival analysis e journey mining.
-5. **Grafo operacional:** projeção NetworkX criada somente após a validação do modelo relacional e do event log.
-6. **Decisão:** scoring ou regras validadas, priorização de receita em risco e watchlist explicável.
-7. **Experiência:** interface para exploração e ação, com revisão humana e registro de intervenções.
-8. **Experimentação e governança:** testes controlados, monitoramento, auditoria, segurança e feedback.
+| Stage | Reference implementation | Primary output | Governing boundary |
+|---|---|---|---|
+| Source datasets | Five immutable CSV inputs under `solution/data/raw/` | Local raw snapshot | Raw CSVs are not versioned or modified |
+| Audit and schema validation | `solution/scripts/inspect_data.py`; `solution/src/data_audit.py` | Profiles, schema map, relationship matrix, reconciliation evidence | Grain and cardinality are established before joins |
+| Canonical event log | `solution/scripts/build_event_log.py`; `solution/src/event_log.py`; `solution/src/event_rules.py` | `event_log.parquet`, event dictionary, manifest | Deterministic event identity, provenance, and temporal ordering |
+| Quarantine and episodes | `solution/src/temporal_quality.py` plus event-log builder | `quarantined_events.parquet`, `subscription_episodes.parquet` | Quarantine is excluded from behavior; ambiguous episode attribution stays visible |
+| Churn diagnostics | `solution/scripts/run_diagnostics.py` | Account/subscription features and descriptive diagnostic artifacts | Associations are descriptive; MRR is contextual |
+| Survival analysis | `solution/scripts/run_survival_analysis.py` | Survival datasets, curves, comparisons, and sensitivity artifacts | Right censoring, as-of features, support gates, and no individual prediction |
+| Journey mining | `solution/scripts/run_journey_mining.py` | Account journeys, transitions, sequential patterns, and taxonomy | MAIN/STRICT sensitivity, account support, exposure, and stability |
+| Graph construction | `solution/scripts/run_journey_graph.py` | Instance and analytical GraphML plus graph evidence | NetworkX-first; only promotable evidence enters the analytical graph |
+| Intervention watchlist | `solution/scripts/run_intervention_watchlist.py` | Rule-level watchlist, account summaries, evidence packets | Transparent P1–P4 review matrix; no score or automatic action |
+| Experiment registry | `solution/scripts/run_experiment_lab.py` | Eight specifications, registry, power and governance artifacts | Planning and simulation only; every causal status is `UNTESTED` |
+| Dashboard data builder | `solution/scripts/build_dashboard_data.py` | 15 deterministic JSON files in `solution/app/public/data/` | Frozen input hashes, schema, privacy, semantic, and volume gates |
+| Demonstration interface | `solution/app/` | Ten statically built Next.js routes including not-found | Local, read-only interaction with bounded historical evidence |
 
-## Fluxo planejado das cinco fontes
+## Analytical Layer
+
+### 1. Source audit and relational safety
+
+The audit layer profiles the five official datasets independently and records schema, grain, candidate keys, missingness, temporal fields, and relationship cardinality. Source-specific processing avoids a many-to-many mega-join: the audited relationship matrix shows that a naive cross-source join would inflate rows and could also inflate financial context.
+
+Raw files remain immutable and unversioned. Versioned manifests, profiles, reports, and tests provide the reproducible evidence path without embedding the raw datasets in Git.
+
+### 2. Canonical temporal model
+
+The event-log layer converts source records into controlled event types with deterministic identifiers, source lineage, event time, same-day technical ordering, quality status, and explicit temporal flags. It writes:
+
+- an active event log for `VALID` and `VALID_WITH_WARNING` evidence;
+- a quarantine dataset for records that cannot support behavioral analysis;
+- subscription episodes for temporal exposure and censoring;
+- manifests and dictionaries for reconciliation and audit.
+
+The same-day order is a technical tie-breaker, not proof of causal precedence. Events after an applicable as-of cutoff are prohibited from feature construction.
+
+### 3. Diagnostics and temporal risk
+
+Descriptive churn, reactivation, usage, support, cohort, journey, and MRR views are built at explicit account or episode grains. Survival analysis uses right censoring and fixed landmark windows; it keeps MAIN and STRICT populations separate and preserves small-sample and warning gates.
+
+The layer reports observed historical differences. It does not produce an individual churn probability, a generalized enterprise rate, or a causal treatment effect.
+
+### 4. Journey intelligence
+
+Journey mining orders active events deterministically and creates governed customer histories across declared scopes. Transition, n-gram, pre-churn, recurring-churn, reactivation, and sequential-pattern artifacts retain their denominator, account support, exposure, outcome context, population, and stability status.
+
+Patterns labeled `UNSTABLE`, based on small groups, or carrying prohibited dependency do not become promoted product evidence.
+
+## Knowledge Graph
+
+NetworkX is the reference graph implementation. Two projections serve different purposes:
+
+- `journey_instance_graph.graphml` preserves anonymous accounts, governed journeys, event instances, event types, outcomes, taxonomy, and quality profiles for traceability;
+- `journey_analytical_graph.graphml` contains promoted aggregate patterns and transitions suitable for bounded analytical exploration.
+
+The analytical graph admits ROBUST or SENSITIVE evidence and excludes HIGH same-day dependency, unsupported samples, and unstable patterns. Direction, centrality, paths, and associated MRR remain structural or descriptive properties; none has causal semantics.
+
+A derived Neo4j package is available under `solution/graph/neo4j/` for optional portability. Neo4j is not required, no external graph server participates in validation, and the Next.js app does not query it.
+
+## Human-Review Watchlist
+
+The watchlist uses cutoff-safe features, 16 versioned deterministic rules, quality gates, four interpretable priority components, and a discrete P1–P4 matrix. Its logical grain is account × cutoff × rule. Evidence packets retain observations, denominators, source paths, graph context, quality flags, limitations, authorized investigation, and prohibited interpretations.
+
+Seven queues contain 1,609 rule-level items covering 500 unique anonymous accounts. Accounts can overlap between rules and queues. Queue inclusion is not a risk probability, and the system contains no outbound action or customer-contact integration.
+
+## Experiment Registry
+
+The Experiment Lab converts governed observations into eight future test specifications. Each specification records a falsifiable hypothesis, eligibility, available and required sample, primary metric, analysis plan, guardrails, ethics, stopping rules, and feasibility status.
+
+Randomization artifacts are simulation-only checks of the proposed design. They do not assign a live treatment or create a synthetic outcome. The registry contains one design ready for review, one pilot-only design, four underpowered designs, and two designs that are not feasible; all remain `UNTESTED`.
+
+## Dashboard Data and Runtime
 
 ```mermaid
 flowchart LR
-    A["accounts.csv"] --> Q["Auditoria e contrato"]
-    S["subscriptions.csv"] --> Q
-    U["feature_usage.csv"] --> Q
-    T["support_tickets.csv"] --> Q
-    C["churn_events.csv"] --> Q
-    Q --> E["Event log temporal validado"]
-    E --> D["Diagnóstico descritivo"]
-    E --> X["Análise temporal e survival"]
-    E --> J["Journey mining"]
-    D --> G["Grafo MVP em NetworkX"]
-    X --> G
-    J --> G
-    G --> W["Watchlist explicável"]
-    W --> H["Revisão humana"]
-    H --> I["Intervenção e experimento"]
-    I --> M["Medição e feedback"]
+    A["Frozen Phase 3–8 artifacts"] --> B["SHA-256 input gate"]
+    B --> C["Schema, privacy, semantic, and volume validation"]
+    C --> D["15 local JSON snapshots"]
+    D --> E["Server-side Zod parsing"]
+    E --> F["Next.js static routes"]
+    F --> G["Recharts, Cytoscape, filters, and deterministic explanations"]
 ```
 
-Os nomes exibidos no diagrama são rótulos conceituais abreviados; os nomes oficiais esperados e o status de validação constam em `data-contract.md`.
+`build_dashboard_data.py` is the only authorized producer for application data. The cross-platform `solution/app/scripts/build-data.mjs` wrapper resolves the builder from `import.meta.url`, selects the project virtual environment or a controlled Python 3 fallback, uses `shell: false`, and propagates the builder exit code. The builder verifies 25 governed input hashes and fails closed on drift, PII-like fields, raw operational IDs, prohibited causal or revenue language, scores, probabilities, automated actions, executed experiments, invalid priorities, non-finite values, or graph-bound violations.
 
-## Event-log-first
+The Next.js application reads versioned JSON snapshots from `public/data/`. Server-side Zod schemas validate the payload boundary. Client components only filter, select, visualize, and explain existing evidence; they do not recalculate analytical findings or call external services.
 
-O event log é um gate arquitetural agora implementado com qualidade por evento, provenance, quarentena e reconciliação zero. Identidade substituta de uso, granularidade, timestamps, timezone, duplicidade, ordem temporal, churn recorrente, reativação e integridade foram formalizados. O grafo continua proibido de corrigir ou ocultar inconsistências do modelo relacional e não foi construído nesta fase.
+The interface is fully localized in Brazilian Portuguese and statically prerenders the executive overview, data quality, journeys, graph, watchlist, experiments, governance, guided demo, methodology, and not-found routes.
 
-## Modelo conceitual do grafo
+## Data Grains and Contracts
 
-O desenho preliminar considera entidades conceituais como conta, assinatura, evento de uso, interação de suporte e desfecho de retenção. Arestas poderão representar vínculos relacionais ou sucessões temporais. Tipos de nós, arestas, propriedades e projeção permanecem **NÃO IMPLEMENTADOS**; a Fase 2 entrega somente a camada temporal que poderá sustentá-los posteriormente.
-
-O MVP deverá usar NetworkX. Neo4j somente poderá ser avaliado depois de comprovados o modelo relacional, a necessidade operacional e o valor incremental do grafo.
-
-## Separação analítica
-
-- **Descritiva:** o que ocorreu e como se distribui entre segmentos, sem alegação causal.
-- **Temporal:** quando eventos ocorreram, em que ordem e com quais associações antes dos desfechos.
-- **Prescritiva:** quais intervenções merecem teste, sob restrições operacionais e econômicas.
-
-Uma associação temporal não será apresentada como causa. Recomendações prescritivas deverão explicitar evidências, limitações, custo, responsável, guardrails e método de avaliação.
-
-## Human-in-the-loop
-
-A watchlist deverá explicar os sinais que sustentam cada prioridade. Pessoas responsáveis por Customer Success deverão confirmar contexto, escolher ou recusar intervenções e registrar justificativas. Decisões de alto impacto não serão executadas autonomamente sem controles definidos.
-
-## Experimentação
-
-Intervenções deverão ser tratadas como hipóteses testáveis. Quando aplicável, a solução deverá prever grupos comparáveis, métricas primárias e guardrails, janela de observação, critérios de parada e registro de exposição. Inferência causal dependerá de desenho experimental ou estratégia de identificação válida.
-
-## Stack planejada
-
-- Python 3.11+;
-- pandas, NumPy, SciPy e PyArrow para processamento;
-- statsmodels, scikit-learn e lifelines para métodos estatísticos futuros;
-- NetworkX para o grafo MVP;
-- Plotly e Streamlit para visualização e interface futuras;
-- Pydantic para contratos de aplicação;
-- pytest para validação automatizada.
-
-Versões serão fixadas depois da validação do ambiente. APIs pagas não serão dependência do núcleo.
-
-## Componentes opcionais
-
-- armazenamento persistente para artefatos validados;
-- orquestração agendada se o caso de uso operacional exigir;
-- registro de experimentos e monitoramento;
-- banco de grafos somente após evidência de necessidade;
-- assistência por LLM somente em funções com grounding, avaliação e fallback, sem controlar os cálculos centrais.
-
-Componentes opcionais exigirão justificativa de valor, custo, segurança e manutenção antes de adoção.
-
-## Fora de escopo nesta fase
-
-- diagnóstico de causas de churn, receita em risco e findings executivos;
-- survival analysis, journey mining, grafo, watchlist e modelo preditivo;
-- dashboard, app, API, automação, cloud ou CI/CD;
-- Neo4j, GNNs, embeddings e agentes autônomos;
-- qualquer alegação causal, business case ou estimativa de impacto.
-
-## Riscos arquiteturais
-
-- chaves ou granularidades divergirem da documentação pública;
-- joins muitos-para-muitos inflarem contagens ou receita;
-- timestamps incompletos, inconsistentes ou sem timezone;
-- leakage ao usar informação posterior ao desfecho;
-- churn recorrente e reativação serem modelados incorretamente;
-- sinais de contas com maior volume dominarem a análise;
-- correlação ser comunicada como causalidade;
-- texto de feedback conter dados pessoais ou sensíveis;
-- complexidade de grafo ou infraestrutura não gerar valor incremental;
-- decisões automatizadas reduzirem supervisão e auditabilidade.
-
-## Decisões dependentes da auditoria
-
-Foram resolvidos nas Fases 1 e 2: schemas, chaves candidatas, cardinalidades, timezone `NAIVE_SOURCE_TIME`, modelo canônico do event log, identidade determinística, política de duplicatas, quarentena, churn recorrente, reativação explícita, atribuição conservadora a assinatura, episódios e política de texto livre.
-
-Permanecem pendentes para fases autorizadas posteriores:
-
-- definição analítica de coortes, janela de observação e censura;
-- regras de receita em risco, disponibilidade as-of de atributos mutáveis e projeção do grafo.
-
----
-
-## Atualização de implementação — Fase 3
-
-> **Status:** diagnóstico executivo implementado com ressalvas de cobertura e sensibilidade. Nenhum modelo temporal avançado ou produto operacional foi construído.
-
-| Componente | Estado na Fase 3 | Evidência |
+| Layer | Governing grain | Key contract |
 |---|---|---|
-| Diagnostic feature layer | `IMPLEMENTED_WITH_WARNINGS` | `account_diagnostic_features.parquet` e `subscription_diagnostic_features.parquet` |
-| Data health | `IMPLEMENTED` | `diagnostic_summary.json` e `data-health.md` |
-| Churn diagnostics | `IMPLEMENTED_WITH_WARNINGS` | `churn_diagnostics.json`; resultados centrais são sensíveis a warnings |
-| Reactivation diagnostics | `IMPLEMENTED_WITH_WARNINGS` | reativação explícita, separada e recalculada na população estrita |
-| Revenue diagnostics | `IMPLEMENTED_WITH_WARNINGS` | MRR associado, sem linguagem de perda ou recuperação comprovada |
-| Cohort diagnostics | `IMPLEMENTED` | seis critérios de coorte com `SMALL_SAMPLE` abaixo de 20 contas |
-| Descriptive journey analytics | `IMPLEMENTED_WITH_WARNINGS` | sequências reduzidas, agregadas e limitadas; sem mineração formal |
-| Survival analysis | `NOT_IMPLEMENTED` | reservado à Fase 4 |
-| Sequence mining | `NOT_IMPLEMENTED` | PrefixSpan, Markov e equivalentes fora do escopo |
-| Graph | `NOT_IMPLEMENTED` | nenhuma projeção ou banco de grafos criado |
-| Individual watchlist | `NOT_IMPLEMENTED` | segmentos são apenas agregados, sem IDs |
-| App/dashboard | `NOT_IMPLEMENTED` | interface fora do escopo |
+| Raw source | Source-defined row | Immutable local input |
+| Canonical event log | Event opportunity | Deterministic event key, source lineage, time, quality status |
+| Subscription episodes | Subscription episode | Start/end, censoring, overlap, conservative event attribution |
+| Diagnostic features | Account or subscription episode | Explicit cutoff and no post-outcome feature leakage |
+| Survival | One eligible account per analysis origin | Duration, observed/censored endpoint, population and assumptions |
+| Journey | Account × scope × governed endpoint | Ordered events, outcome, population, quality, exposure |
+| Graph pattern/transition | Pattern or directed transition × scope | Support, denominator, stability, dependency, provenance |
+| Watchlist | Account × cutoff × rule | Evidence packet, discrete priority components, human-review state |
+| Experiment | Experiment design | Eligibility, sample planning, metric, safeguards, `UNTESTED` status |
+| Dashboard snapshot | Contracted JSON resource | Fixed cutoff, controlled vocabulary, bounded records, no PII |
 
-### Fluxo implementado
+## Cross-Cutting Governance
 
-O event log ativo alimenta agregações independentes nos grãos de conta, episódio e evento. A conta usa cutoff no primeiro churn utilizável ou em `observation_end`; episódios abertos permanecem censurados; quarentena alimenta somente Data Health. Os agregados geram diagnósticos, análise de sensibilidade, findings com gate e no máximo cinco situações de atenção agregadas.
+- **Privacy:** the application excludes names, email, free text, raw account identifiers, and other PII-like fields. Anonymous keys support local joins but are not rendered.
+- **Temporal integrity:** all product evidence is bounded by `2024-12-31T19:00:00`; post-cutoff information is not used as a historical feature.
+- **Quality separation:** 21,659 quarantined records remain visible only as a quality backlog and do not enter behavioral metrics.
+- **Promotion:** only supported, non-unstable evidence passes from mining to the analytical graph and explanations.
+- **Human authority:** review queues organize investigation but cannot contact customers, change plans, issue discounts, or trigger interventions.
+- **Causal discipline:** associated patterns and MRR do not represent causes, revenue at risk, savings, or attributed impact.
+- **Experiment discipline:** readiness describes design feasibility, not success; no experiment was executed.
+- **Reproducibility:** fixed input hashes, deterministic scripts, versioned derived artifacts, and automated tests guard the evidence path.
 
-### Caminho de maior retorno e menor esforço
+## Runtime and Deployment Boundaries
 
-Antes de operacionalizar retenção individual, o maior retorno está em corrigir cronologias upstream e validar a semântica de assinaturas simultâneas. Isso reduz incerteza em churn, uso e MRR sem adicionar infraestrutura, modelo ou interface prematuramente.
+The validated runtime is local and read-only with respect to business operations. It requires Python for the deterministic data builder and Node.js for the interface. It does not require:
 
----
+- a live database or API;
+- a Neo4j server;
+- an external LLM;
+- authentication or authorization services;
+- production telemetry;
+- a scheduler or message queue;
+- an outbound integration;
+- experiment execution infrastructure.
 
-## Atualiza??o de implementa??o ? Fase 4
+These components are not silently simulated. Adding any of them would require a separate architecture, privacy, security, operational, and validation review.
 
-> **Status:** survival analysis de conta implementada com ressalvas; nenhuma previs?o, a??o operacional ou infer?ncia causal foi constru?da.
+## Verification Evidence
 
-| Componente | Estado na Fase 4 | Evid?ncia |
-|---|---|---|
-| Survival dataset de conta | `IMPLEMENTED` | `account_survival_dataset.parquet`; uma linha por conta |
-| Camada de censura | `IMPLEMENTED_WITH_LIMITATIONS` | censura administrativa ? direita em `2024-12-31T19:00:00` |
-| Kaplan?Meier | `IMPLEMENTED_WITH_WARNINGS` | curvas principal, estrita e grupos com IC, at-risk e suporte |
-| Nelson?Aalen | `IMPLEMENTED_WITH_WARNINGS` | risco acumulado descritivo com intervalos |
-| Landmark analysis | `IMPLEMENTED` | datasets e curvas em 30, 60 e 90 dias, sem features futuras |
-| Sensitivity analysis | `IMPLEMENTED_WITH_WARNINGS` | popula??o, origem, overlap e cobertura de qualidade |
-| Log-rank e BH | `IMPLEMENTED_WITH_WARNINGS` | somente grupos com n e eventos m?nimos |
-| RMST | `IMPLEMENTED_WITH_WARNINGS` | horizontes de 90, 180 e 365 dias |
-| Cox PH | `CONDITIONAL_NOT_EXECUTED` | endpoints sens?veis a warnings e proporcionalidade n?o testada |
-| Sequence mining | `NOT_IMPLEMENTED` | reservado ? Fase 5 |
-| Graph | `NOT_IMPLEMENTED` | nenhuma proje??o criada |
-| Intervention engine | `NOT_IMPLEMENTED` | fora do escopo |
-| App/dashboard | `NOT_IMPLEMENTED` | fora do escopo |
-
-### Fluxo temporal implementado
-
-O event log ativo ? filtrado em popula??es principal e estrita. A primeira assinatura utiliz?vel abre a exposi??o; o primeiro churn utiliz?vel em ou ap?s a origem encerra o tempo com evento; na aus?ncia dele, `observation_end` encerra a observa??o como censura ? direita. Kaplan?Meier e Nelson?Aalen recebem somente contas eleg?veis. Vari?veis de uso e suporte entram exclusivamente em janelas landmark fixas, ap?s exclus?o de churns anteriores ou no marco.
-
-### Decis?o de baixo custo e alto retorno
-
-A an?lise permanece n?o operacional. O maior retorno antes de qualquer score est? em corrigir cronologias com warning e validar a sem?ntica de assinaturas simult?neas. Isso reduz a diverg?ncia entre 325 eventos na popula??o principal e 46 na estrita sem adicionar modelo, banco de grafo ou dashboard.
-
-### Limite por assinatura
-
-Curvas por assinatura n?o foram executadas. Sobreposi??o em 99,84% dos epis?dios, correla??o intracliente e aus?ncia de equival?ncia entre encerramento e churn invalidam a hip?tese simples de epis?dios independentes.
-
----
-
-## Atualiza??o de implementa??o ? Fase 5
-
-> **Status:** journey mining implementado com ressalvas de warnings, exposi??o e ordena??o t?cnica; nenhum grafo ou mecanismo de interven??o foi criado.
-
-| Componente | Estado na Fase 5 | Evid?ncia |
-|---|---|---|
-| Sequence layer | `IMPLEMENTED_WITH_WARNINGS` | `account_journeys.parquet`; escopos e representa??es governados |
-| Transition analytics | `IMPLEMENTED_WITH_WARNINGS` | `transition_matrix.json`; suporte por conta e lift protegido |
-| N-gram mining | `IMPLEMENTED_WITH_WARNINGS` | 2- a 5-grams colapsados e bigram raw de sensibilidade |
-| Sequential pattern mining | `IMPLEMENTED_WITH_WARNINGS` | subsequ?ncias frequentes, gaps expl?citos e padr?es fechados |
-| Journey taxonomy | `IMPLEMENTED_WITH_WARNINGS` | `account_journey_taxonomy.parquet`; regras determin?sticas |
-| Stability analysis | `IMPLEMENTED` | reconcilia??o principal versus estrita |
-| Graph | `NOT_IMPLEMENTED` | reservado ? Fase 6; nenhuma aresta ou proje??o criada |
-| Centrality / communities | `NOT_IMPLEMENTED` | fora do escopo desta fase |
-| Intervention engine | `NOT_IMPLEMENTED` | nenhum score ou a??o individual |
-| App/dashboard | `NOT_IMPLEMENTED` | fora do escopo |
-
-### Fluxo implementado
-
-O event log ativo ? filtrado em popula??es principal e estrita, ordenado de modo determin?stico e projetado em escopos temporais expl?citos. Transi??es e n-grams precedem a minera??o de subsequ?ncias. Somente agregados estabilizados, com denominador e controle de exposi??o, chegam ao gate de findings.
-
-### Limite arquitetural
-
-Os padr?es s?o descri??es de recorr?ncia observada. Uma futura proje??o em grafo dever? preservar escopo, dire??o temporal t?cnica, suporte por conta, exposi??o, estabilidade e depend?ncia intradi?ria; n?o poder? converter associa??o em causalidade.
-
----
-
-## Atualiza??o de implementa??o ? Fase 6
-
-> **Status:** JourneyGraph governado implementado com ressalvas; nenhuma previs?o, recomenda??o autom?tica ou interven??o foi constru?da.
-
-| Componente | Estado na Fase 6 | Evid?ncia |
-|---|---|---|
-| Instance graph | `IMPLEMENTED` | `journey_instance_graph.graphml`; contas, jornadas e eventos rastre?veis |
-| Analytical graph | `IMPLEMENTED_WITH_WARNINGS` | `journey_analytical_graph.graphml`; somente ROBUST/SENSITIVE promovidos |
-| Pattern graph | `IMPLEMENTED_WITH_WARNINGS` | Pattern como entidade com escopo, outcome, suporte e estabilidade |
-| Outcome graph | `IMPLEMENTED` | seis outcomes controlados e rela??es descritivas |
-| Taxonomy graph | `IMPLEMENTED` | dez classes da Fase 5 projetadas sem ranking individual |
-| Quality layer | `IMPLEMENTED` | QualityProfile expl?cito e reutiliz?vel |
-| Graph validation | `IMPLEMENTED` | schema, privacidade, temporalidade, reconcilia??o e sem?ntica |
-| Neo4j export | `IMPLEMENTED_NOT_EXTERNALLY_EXECUTED` | CSV/Cypher port?teis; servidor n?o integra o gate |
-| Prediction / GNN | `NOT_IMPLEMENTED` | fora do escopo autorizado |
-| Link prediction | `NOT_IMPLEMENTED` | fora do escopo autorizado |
-| Automated recommendation | `NOT_IMPLEMENTED` | investiga??es exigem revis?o humana |
-| Intervention engine | `NOT_IMPLEMENTED` | reservado a fase posterior governada |
-| App/dashboard | `NOT_IMPLEMENTED` | fora do escopo |
-
-### Fluxo arquitetural
-
-NetworkX ? a implementa??o de refer?ncia local. O `INSTANCE_GRAPH` preserva rastreabilidade por chaves an?nimas, limites de jornada e ocorr?ncias espec?ficas por escopo. O `ANALYTICAL_GRAPH` promove padr?es e transi??es somente ap?s gates de suporte, denominador, estabilidade, amostra e depend?ncia intradi?ria. Seis subgrafos controlam usos futuros: `ROBUST_GRAPH`, `PROMOTABLE_GRAPH`, `CHURN_GRAPH`, `REACTIVATION_GRAPH`, `QUALITY_REVIEW_GRAPH` e `HIGH_MRR_GRAPH`.
-
-### Limite arquitetural
-
----
-
-## Atualiza??o de implementa??o ? Fase 7
-
-> **Status:** Intervention Watchlist governada implementada com ressalvas; revis?o humana obrigat?ria.
-
-| Componente | Estado | Limite |
-|---|---|---|
-| Watchlist rules engine | `IMPLEMENTED` | 16 regras determin?sticas versionadas |
-| Retrospective feature layer | `IMPLEMENTED` | cutoff expl?cito e janelas 7/30/60/90 dias |
-| Quality gate | `IMPLEMENTED_WITH_WARNINGS` | quarentena somente para qualidade; LOW bloqueia P1 comportamental |
-| Evidence packets | `IMPLEMENTED` | fontes, m?tricas, denominadores, cutoff e provenance |
-| Deterministic priority matrix | `IMPLEMENTED` | componentes discretos e matriz P1?P4, sem score ponderado |
-| Graph-based explanations | `IMPLEMENTED_WITH_WARNINGS` | somente padr?es promov?veis ROBUST/SENSITIVE, n?o causais |
-| Human-review workflow | `IMPLEMENTED` | nenhuma a??o operacional ? autorizada |
-| Prediction / automated intervention / experiment execution / dashboard / LLM recommendation / outbound actions | `NOT_IMPLEMENTED` | fora do escopo |
-
-Fluxo: features cutoff-safe ? gate de qualidade ? regras independentes ? quatro componentes discretos ? matriz P1?P4 ? evidence packet ? consolida??o por conta ? revis?o humana. A camada ? descritiva, an?nima e audit?vel.
-
-Centralidade ? propriedade estrutural apenas de EventType; Pattern recebe ranking agregado por suporte ou MRR associado. Account nunca recebe centralidade. Nenhuma aresta ou propriedade comunica causalidade, perda ou economia. A exporta??o Neo4j ? derivada e opcional; GraphML mant?m os grafos completos e o CSV de EventInstance usa amostra determin?stica.
-
----
-
-## Atualiza??o de implementa??o ? Fase 8
-
-> **Status:** Experiment Lab de desenho implementado com ressalvas; nenhum experimento foi executado.
-
-| Componente | Estado | Limite |
-|---|---|---|
-| Cat?logo de interven??es | `IMPLEMENTED` | dez interven??es versionadas, com riscos, aprova??es e usos proibidos |
-| Registro de hip?teses | `IMPLEMENTED` | oito hip?teses futuras; uma m?trica prim?ria e status causal `UNTESTED` |
-| Elegibilidade | `IMPLEMENTED` | cutoff fixo, confian?a m?nima, cobertura e exclus?es expl?citas |
-| Power e MDE | `IMPLEMENTED` | cen?rios de planejamento; baselines hist?ricos n?o s?o controles |
-| Randomiza??o | `SIMULATION_ONLY` | aloca??o bloqueada e determin?stica apenas para validar o desenho |
-| SAP e guardrails | `IMPLEMENTED_AS_SPECIFICATION` | ITT, missingness, multiplicidade, heterogeneidade e stopping rules |
-| ?tica e governan?a | `IMPLEMENTED` | revis?o humana, consentimento, fairness e uso neutro de MRR |
-| Execu??o, contato, produto, uplift, resultados causais, monitoramento e dashboard | `NOT_IMPLEMENTED` | fora do escopo autorizado |
-
-Fluxo: cat?logo governado ? hip?tese falsific?vel ? elegibilidade cutoff-safe ? baseline descritivo ? MDE/power ? simula??o de aloca??o ? SAP ? gates ?ticos e operacionais ? revis?o humana. A camada n?o aciona interven??es e n?o cont?m resultados futuros.
----
-
-## Atualizacao de implementacao - Fase 9
-
-> **Status:** dashboard local de demonstracao implementado e validado; nenhuma operacao, intervencao ou execucao experimental foi adicionada.
-
-| Componente | Estado | Limite |
-|---|---|---|
-| Dashboard executivo | `IMPLEMENTED` | snapshot historico local |
-| Guided Demo | `IMPLEMENTED` | oito etapas, roteiro de 3:10 |
-| Journey Explorer | `IMPLEMENTED` | tres contas reais anonimas sob rotulos DEMO |
-| Graph Explorer | `IMPLEMENTED_WITH_BOUNDS` | tres modos; no maximo 35 nos/80 arestas; visao inicial com 16 relacoes |
-| Watchlist UI | `IMPLEMENTED_HUMAN_REVIEW_ONLY` | sete filas; nenhuma acao automatica |
-| Experiment UI | `IMPLEMENTED_UNTESTED_ONLY` | oito desenhos; nenhum resultado ou execucao |
-| Governance UI | `IMPLEMENTED` | controles, limitacoes e linguagem proibida visiveis |
-| Deterministic explanation UI | `IMPLEMENTED` | explicacoes derivadas apenas dos JSONs locais |
-| Local demo data layer | `IMPLEMENTED` | 15 JSONs deterministicos com hash gate |
-| Live backend | `NOT_IMPLEMENTED` | fora do escopo |
-| Authentication / authorization | `NOT_IMPLEMENTED` | fora do escopo |
-| Automated intervention | `NOT_IMPLEMENTED` | proibida |
-| Live experiment execution | `NOT_IMPLEMENTED` | proibida |
-| External LLM | `NOT_IMPLEMENTED` | explicacao nao generativa |
-| Production observability | `NOT_IMPLEMENTED` | fora do escopo |
-| Outbound integrations | `NOT_IMPLEMENTED` | fora do escopo |
-
-### Fluxo arquitetural
-
-Artefatos governados das Fases 3-8 passam por verificacao SHA-256 e gates de schema, privacidade, semantica e volume no `build_dashboard_data.py`. Quinze snapshots JSON locais alimentam rotas estaticas do Next.js. Zod valida os payloads no limite do servidor; componentes cliente executam somente filtros, selecao, graficos e explicacoes deterministicas.
-
-### Limite arquitetural
-
-A aplicacao e uma superficie de demonstracao local, nao um console operacional. Chaves analiticas anonimas preservam joins internos, enquanto a interface expoe apenas `DEMO_A`, `DEMO_B` e `DEMO_C`. Relacoes do grafo, prioridades e MRR associado sao descritivos; nao autorizam previsao, causalidade, contato, intervencao ou efeito economico atribuido.
+- [Data contract](data-contract.md)
+- [Event-log validation](../solution/reports/event-log-validation.md)
+- [Survival methodology](../solution/reports/survival-methodology.md)
+- [Journey methodology](../solution/reports/journey-methodology.md)
+- [Graph methodology](../solution/reports/graph-methodology.md)
+- [Watchlist methodology](../solution/reports/watchlist-methodology.md)
+- [Experiment methodology](../solution/reports/experiment-methodology.md)
+- [Dashboard data contract](../solution/reports/dashboard-data-contract.md)
+- [Dashboard validation](../solution/reports/dashboard-validation.md)
+- [Localization validation](../solution/reports/localization-validation.md)

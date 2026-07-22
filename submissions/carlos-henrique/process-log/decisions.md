@@ -862,3 +862,32 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 
 - **Decisão:** validar textos, formatação, acessibilidade, fallback controlado e não exposição de chaves em 18 testes Vitest e 36 cenários Playwright.
 - **Status:** APROVADA
+
+## Decisões da Fase 10A.1
+
+## D121 — npm build:data must be cross-platform
+
+- **Decisão:** o fluxo oficial de avaliação deve usar `npm run build:data` com o mesmo comportamento em Windows, Linux e macOS.
+- **Justificativa:** o comando documentado precisa coincidir com o caminho realmente testado pelo avaliador, sem exigir adaptação manual por sistema operacional.
+- **Status:** APROVADA
+
+## D122 — Node wrapper over shell-specific package script
+
+- **Decisão:** substituir o comando shell-specific por `node scripts/build-data.mjs`, usando apenas `node:path`, `node:url`, `node:fs` e `node:child_process`.
+- **Justificativa:** o wrapper resolve paths a partir de `import.meta.url`, prioriza o `.venv` local, aplica fallbacks controlados, usa `shell: false`, herda stdout/stderr e propaga o exit code sem executar o builder mais de uma vez.
+- **Status:** APROVADA
+
+## D123 — Quick Start must match tested evaluator workflow
+
+- **Decisão:** os dois READMEs devem apresentar `npm ci`, `npm run build:data` e `npm run dev` como fluxo principal, com requisitos de Node.js e Python 3 e sem credenciais ou serviços externos.
+- **Justificativa:** documentação e automação divergentes criam risco de avaliação; o Quick Start passou a espelhar exatamente o comando validado.
+- **Status:** APROVADA
+
+## Erros e correções da Fase 10A.1
+
+- **E084 — npm build:data incompatível com Windows:** o comando `../.venv/Scripts/python.exe ../scripts/build_dashboard_data.py`, executado pelo `cmd.exe` padrão do npm, retornava exit code 1 e `"'..' não é reconhecido"`. Não havia encadeamento, redirecionamento ou comando bash; a falha vinha do path POSIX dentro de um alias que também hardcodava o layout Windows do venv. Corrigido pelo wrapper Node cross-platform.
+- **E085 — Quick Start dependia de workaround manual:** a Fase 10A precisou documentar a chamada direta ao Python. O caminho principal voltou a ser `npm run build:data` após validação real.
+- **E086 — launchers Python globais inconsistentes:** `py -3` apontava para uma instalação 3.13 ausente e `python` não possuía pandas. O wrapper passou a priorizar o `.venv` do projeto antes dos fallbacks comuns.
+- **E087 — spawn EPERM no teste isolado:** a primeira execução Vitest do wrapper foi bloqueada pelo sandbox do Windows. A mesma suíte foi repetida fora do sandbox e passou; a suíte completa terminou com 19/19.
+- **E088 — cutoff não estava na raiz de demo_story.json:** o primeiro validador exigia cutoff direto em todos os 15 JSONs. O contrato real usa cutoff direto em 14 recursos e o cutoff global de `metadata.json` para a história da demo; matriz e validador foram corrigidos sem alterar snapshots.
+- **E089 — npm ci silencioso no sandbox:** a instalação limpa ficou bloqueada sem saída e foi interrompida. A repetição autorizada fora do sandbox concluiu; o audit completo reportou dois advisories de desenvolvimento já existentes, enquanto `npm audit --omit=dev` confirmou zero vulnerabilidades de produção.

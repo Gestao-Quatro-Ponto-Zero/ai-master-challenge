@@ -579,3 +579,49 @@ Regras, cutoff, janelas, qualidade, componentes, filas, duplicidade, evid?ncias,
 - **E081 - seletor Playwright ambíguo:** duas mensagens começavam por “Nenhum experimento foi executado”; a asserção foi restringida à mensagem exata do limite de execução.
 - **E082 - visualizador de arquivos bloqueado no Windows:** a revisão visual foi concluída no navegador interno sobre o build de produção, sem criar artefatos temporários no repositório.
 - **E083 - identificadores e rótulos truncados detectados visualmente:** chaves `pattern_*` foram substituídas por aliases e o corte arbitrário de 16 caracteres foi removido em favor de labels compactos controlados.
+
+## Fase 10A e Fase 10A.1 — documentação final e build cross-platform
+
+1. Revalidadas branch `submission/carlos-henrique`, base `de4ca14c66d33319af15aae492d04caadb910ff1`, staging vazio e apenas três mudanças documentais da Fase 10A.
+2. Reescrito o README principal como superfície executiva de avaliação, com resumo, problema, solução, métricas governadas, sete screenshots, usuários, governança, arquitetura, Quick Start e índice de evidências.
+3. Consolidada a arquitetura atual do pipeline, removendo estados históricos obsoletos e preservando NetworkX-first, Neo4j opcional, snapshots JSON locais e ausência de APIs externas em runtime.
+4. Reproduzida a falha original de `npm run build:data`: exit code 1 no shell padrão do npm no Windows por path POSIX e executável de venv hardcoded.
+5. Criado `solution/app/scripts/build-data.mjs` sem dependências externas, com paths derivados de `import.meta.url`, venv cross-platform, fallbacks controlados, `spawnSync`, `shell: false`, stdout/stderr herdados e propagação do exit code.
+6. Alterado o alias para `node scripts/build-data.mjs` e adicionado um teste Vitest cobrindo path, candidatos por plataforma, execução bem-sucedida, ausência de shell e status de erro.
+7. Criados `validate_documentation.py` e `metric-consistency-matrix.md` para reconciliar 15 métricas, 15 JSONs, sete screenshots, cutoff, links e digest do inventário.
+8. Atualizados os dois Quick Starts para `npm ci`, `npm run build:data` e `npm run dev`, com compatibilidade Windows/Linux/macOS e troubleshooting controlado.
+9. Executado `npm --prefix submissions/carlos-henrique/solution/app run build:data` a partir da raiz com sucesso, comprovando independência do working directory externo.
+10. Executados dois rebuilds consecutivos e um rebuild adicional pós-build: 15 JSONs em todas as execuções, zero divergências de nome, tamanho, SHA-256, manifesto, cutoff ou métricas.
+
+### Diagnóstico do comando original
+
+- comando: `../.venv/Scripts/python.exe ../scripts/build_dashboard_data.py`;
+- shell assumido: `cmd.exe`, padrão do npm no Windows;
+- separadores: `/` de estilo POSIX no caminho executável;
+- paths: venv Windows hardcoded e builder relativo ao app;
+- encadeamentos: nenhum;
+- redirecionamentos: nenhum;
+- dependência implícita de bash: path interpretável em shell POSIX/Git Bash, mas não pelo shell padrão validado;
+- exit code: 1;
+- mensagem: `"'..' não é reconhecido como um comando interno ou externo"`.
+
+### Resultado de validação
+
+- `npm ci`: PASS, 531 pacotes instalados a partir do lockfile;
+- `npm run build:data`: PASS no app e via `npm --prefix`;
+- determinismo: PASS, dois rebuilds consecutivos mais verificação pós-build, 15/15 JSONs e zero divergências;
+- inventory SHA-256 canônico: `be5d2d2edcc6992de678b5ef0d7d18d16ce39f423421ec5f6805aaebc664b61b`;
+- cutoff: `2024-12-31T19:00:00` preservado;
+- métricas autorizadas: zero alterações;
+- lint: PASS;
+- typecheck: PASS;
+- Vitest: 19/19 PASS, incluindo o wrapper;
+- Next.js build: PASS, dez rotas estáticas incluindo not-found;
+- documentation validator: PASS, quatro documentos, 56 links, 15 métricas e sete screenshots;
+- `npm audit --omit=dev`: PASS, zero vulnerabilidades de produção;
+- Playwright: não repetido porque nenhuma superfície funcional ou conteúdo JSON renderizado mudou; baseline preservada em 36/36;
+- `git diff --check`: PASS.
+
+### Gate
+
+`PASS`. O wrapper altera somente a forma de invocação do builder. Os snapshots, hashes, cutoff, métricas, linguagem da interface e resultados analíticos permanecem idênticos.

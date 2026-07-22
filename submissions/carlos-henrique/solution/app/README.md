@@ -1,15 +1,27 @@
 # JourneyGraph Retention Intelligence
 
 A local, governed demonstration dashboard that turns the audited outputs from Phases 3-8 into an executive product narrative. It presents historical observations, quality limitations, anonymous journeys, bounded graph evidence, human-review queues, and untested experiment designs. It does not run interventions or make causal or predictive claims. The visible interface, navigation, accessibility labels, numeric formats, and demo copy are fully localized in Brazilian Portuguese (`pt-BR`).
+## Quick Start
+
+From the repository root:
+
+```bash
+cd submissions/carlos-henrique/solution/app
+npm ci
+npm run build:data
+npm run dev
+```
+
+Open `http://localhost:3000`.
 
 ## Requirements
 
 - Node.js 20.9 or newer (validated with Node.js 24.15)
 - npm 10 or newer (validated with npm 11.12)
-- Python virtual environment at `../.venv/` with pandas, NumPy, and pytest
+- Python 3 with pandas, NumPy, and pytest; a project environment at `../.venv/` is preferred
 - Phase 3-8 artifacts at their governed paths under `../artifacts/`, `../data/processed/`, and `../config/`
 
-No backend, database, cloud account, external API, external LLM, or network service is required at runtime.
+No credential, backend, database, cloud account, external API, external LLM, or network service is required at runtime. The evaluator workflow supports Windows, Linux, and macOS.
 
 ## Install
 
@@ -27,7 +39,7 @@ npm ci
 npm run build:data
 ```
 
-The builder verifies the SHA-256 hashes of 25 authorized Phase 3-8 inputs before writing exactly 15 deterministic JSON files to `public/data/`. It fails closed on input drift, PII-like fields, raw operational IDs, prohibited product language, non-finite numbers, graph-limit violations, invalid priorities, or executed-experiment states.
+A dependency-free Node.js wrapper resolves the project `.venv`, standard Python 3 fallbacks, and the builder path with platform-native path handling. It uses no shell, runs the Python builder once, inherits its output, and propagates its exit code. The builder verifies the SHA-256 hashes of 25 authorized Phase 3-8 inputs before writing exactly 15 deterministic JSON files to `public/data/`. It fails closed on input drift, PII-like fields, raw operational IDs, prohibited product language, non-finite numbers, graph-limit violations, invalid priorities, or executed-experiment states.
 
 ## Run
 

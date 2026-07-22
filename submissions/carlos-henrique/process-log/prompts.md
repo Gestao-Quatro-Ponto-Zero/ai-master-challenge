@@ -266,3 +266,18 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - **Restrições:** somente `submissions/carlos-henrique/`; sem alteração analítica, CSV bruto, build artifact, push ou Pull Request.
 - **Commit autorizado:** `fix: complete pt-BR localization and demo anonymization`.
 - **Gate esperado:** `PASS` apenas com localização completa, anonimização, testes/build verdes, screenshots revisados, diff limpo e commit local seletivo.
+
+## Fase 10A — documentação da submissão
+
+- **Entrada:** prompt de documentação sobre o commit-base `de4ca14c66d33319af15aae492d04caadb910ff1`.
+- **Escopo:** README executivo em inglês, arquitetura atual, sete screenshots, métricas autorizadas, governança, Quick Start e navegação para evidências técnicas.
+- **Restrições:** nenhuma alteração analítica, link inventado, ação externa, push, deploy ou Pull Request.
+- **Resultado:** documentação criada e validada; a auditoria do Quick Start revelou incompatibilidade do alias `build:data` com o shell padrão do Windows.
+
+## Fase 10A.1 — correção do build cross-platform e consolidação
+
+- **Entrada:** autorização para corrigir `npm run build:data`, validar determinismo, atualizar documentação/process logs e criar commit ou commits locais.
+- **Escopo:** wrapper Node padrão, package.json, teste relacionado, READMEs, arquitetura, validador documental, matriz de consistência e logs.
+- **Contrato do wrapper:** paths por `import.meta.url`/`fileURLToPath`/`node:path`; `.venv` local e fallbacks comuns; `spawnSync`; `shell: false`; saída herdada; exit code propagado; um único builder.
+- **Gates:** dois rebuilds idênticos com 15 JSONs, lint, typecheck, Vitest, build, documentação, links, diff, staging seletivo, commits locais, working tree limpa e nenhum push.
+- **Commit strategy:** tooling cross-platform separado semanticamente da consolidação documental.
