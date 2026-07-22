@@ -110,10 +110,16 @@ PLANNED_REPORTS = {
 }
 
 ALLOWED_CHANGED_PATHS = (
+    "submissions/carlos-henrique/.gitattributes",
     "submissions/carlos-henrique/process-log/",
     "submissions/carlos-henrique/README.md",
     "submissions/carlos-henrique/docs/README.md",
+    "submissions/carlos-henrique/solution/app/package.json",
+    "submissions/carlos-henrique/solution/app/package-lock.json",
+    "submissions/carlos-henrique/solution/scripts/build_dashboard_data.py",
+    "submissions/carlos-henrique/solution/scripts/validate_final_submission.py",
     "submissions/carlos-henrique/solution/scripts/validate_process_evidence.py",
+    "submissions/carlos-henrique/solution/reports/",
     "submissions/carlos-henrique/solution/reports/process-evidence-validation.json",
     "submissions/carlos-henrique/solution/reports/process-evidence-validation.md",
     "submissions/carlos-henrique/solution/reports/process-evidence-adversarial-review.md",

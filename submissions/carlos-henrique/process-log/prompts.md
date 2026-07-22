@@ -296,3 +296,12 @@ N?o foram constru?dos score individual, modelo preditivo operacional, ranking, c
 - **Entregáveis:** sete documentos de processo, integração no README e índice, validador com relatórios JSON/Markdown, revisão adversarial, teste do avaliador e atualização curada dos logs.
 - **Restrições preservadas:** nenhuma alteração analítica, funcional, visual, de dados, arquitetura, teste funcional ou ação externa; commit local seletivo e sem push.
 - **Gate esperado:** `PASS` somente com links, commits, atribuição, linguagem, adversarial review, teste do avaliador, diff e estado Git aprovados.
+
+## Fase 10C — pacote final de submissão, pitch e gate de publicação
+
+- **Entrada:** prompt integral da Fase 10C sobre o commit-base `77e51085916c04b538ff6bf9015426d07391aa93`.
+- **Escopo:** pitches, vídeo, formulário, PR draft, deployment, inventário, métricas, checklists, clean-room, revisão adversarial, consistência, validação final e process logs.
+- **Exceções autorizadas durante o clean-room e hardening final:** política EOL localizada, serialização JSON determinística, override de `sharp 0.35.3` e patch Next.js `16.2.11` após falhas reproduzíveis de hash ou auditoria.
+- **Restrições preservadas:** nenhum dataset baixado, nenhuma métrica ou conclusão analítica alterada, nenhum screenshot aceito com drift e nenhuma ação externa, push, deploy, upload, PR, formulário ou submissão executada.
+- **Commit autorizado:** `docs: prepare final JourneyGraph submission package`, local e seletivo.
+- **Gate esperado:** `PASS_WITH_WARNINGS` apenas por ações externas marcadas `PENDING_USER_ACTION`.

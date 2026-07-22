@@ -54,7 +54,7 @@
 | `review.evaluator` | PASS | report exists; question_passes=7; gate=PASS |
 | `language.placeholders` | PASS | zero placeholders |
 | `language.ai_autonomy` | PASS | zero prohibited occurrences |
-| `links.internal` | PASS | checked=228; broken=0 |
+| `links.internal` | PASS | checked=238; broken=0 |
 | `commits.references` | PASS | checked=13; missing=0 |
 | `scope.changed_files` | PASS | outside=0 |
 

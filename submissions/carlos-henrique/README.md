@@ -252,7 +252,7 @@ Run the analytical code gates from `submissions/carlos-henrique/solution`:
 .venv\Scripts\python.exe -m pytest -q
 ```
 
-The final validated baseline passed Python tests (130/130), Vitest (18/18), responsive Playwright smoke tests (36/36), dependency audit with zero production vulnerabilities, and a deterministic 15-file data rebuild with zero differences.
+The final validated baseline passed Python tests (130/130), Vitest (19/19), responsive Playwright smoke tests (36/36), dependency audit with zero production vulnerabilities, and a deterministic 15-file data rebuild with zero differences.
 
 ## Human Judgment and AI Collaboration
 
@@ -273,6 +273,7 @@ The audit trail distinguishes suggestions from decisions and implementation defe
 | Human review | [Intervention watchlist](solution/reports/intervention-watchlist.md) · [Watchlist methodology](solution/reports/watchlist-methodology.md) |
 | Experiment readiness | [Experiment Lab](solution/reports/experiment-lab.md) · [Experiment methodology](solution/reports/experiment-methodology.md) · [Experiment validation](solution/reports/experiment-validation.md) |
 | Product and localization QA | [Dashboard validation](solution/reports/dashboard-validation.md) · [Localization validation](solution/reports/localization-validation.md) · [Application guide](solution/app/README.md) |
+| Final submission package | [One-pager](solution/reports/journeygraph-one-pager.md) · [Reviewer guide](solution/reports/reviewer-guide.md) · [Final checklist](solution/reports/final-submission-checklist.md) · [Final validation](solution/reports/final-submission-validation.md) |
 
 ## Resumo em português
 

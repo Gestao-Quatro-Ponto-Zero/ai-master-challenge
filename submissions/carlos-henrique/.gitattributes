@@ -1,0 +1,18 @@
+# Canonical builder inputs use byte-level SHA-256 gates. Preserve the
+# validated line endings across Windows, macOS, and Linux checkouts.
+solution/artifacts/diagnostic_summary.json text eol=lf
+solution/artifacts/journey_findings.json text eol=crlf
+solution/artifacts/graph_summary.json text eol=crlf
+solution/artifacts/graph_findings.json text eol=crlf
+solution/artifacts/watchlist_summary.json text eol=crlf
+solution/artifacts/watchlist_rules.json text eol=crlf
+solution/artifacts/watchlist_findings.json text eol=crlf
+solution/artifacts/experiment_lab_summary.json text eol=crlf
+solution/artifacts/experiment_hypotheses.json text eol=crlf
+solution/artifacts/experiment_findings.json text eol=crlf
+solution/artifacts/experiment_sample_size.json text eol=crlf
+solution/artifacts/experiment_guardrails.json text eol=crlf
+solution/artifacts/experiment_ethics.json text eol=crlf
+solution/artifacts/experiment_balance.json text eol=crlf
+solution/artifacts/experiment_feasibility.json text eol=crlf
+solution/app/public/data/*.json text eol=crlf

@@ -662,3 +662,36 @@ E090–E093 estão registrados ao final de `decisions.md`. E090 e E091 foram enc
 ### Gate
 
 `PASS`. O pacote distingue julgamento humano, colaboração assistida, atribuição de erros, rejeições e limitações por meio de links e commits verificáveis, sem modificar o produto ou seus resultados.
+
+## Fase 10C — pacote final de submissão, pitch e gate de publicação
+
+1. Revalidadas branch, base `77e51085916c04b538ff6bf9015426d07391aa93`, remotes, escopo, screenshots, documentação, ausência de CSV versionado e staging inicial vazio.
+2. Criados one-pager, pitches bilíngues, roteiro e storyboard de vídeo, legendas draft, thumbnail, descrição, títulos, resumo, formulário, PR draft, reviewer guide e demo checklist.
+3. Preparados inventário, registry de links, snapshot métrico, readiness/runbook, checklist, revisão adversarial, teste de cinco minutos e matriz de consistência.
+4. Integrados README e índice documental com caminhos curtos para o pacote final.
+5. Criado validador determinístico para arquivos, headings, pitches, SRT, claims, URLs, métricas, gates, EOL, dependência, Git, CSVs e build artifacts.
+6. O primeiro gate bloqueou por artefatos provisórios, pitch pt-BR e escopo excessivo de claims; os problemas foram corrigidos antes do clean-room.
+7. Criado worktree detached em `C:\tmp`, sem `.venv`, `node_modules`, `.next` ou CSVs brutos, com remotes preservados e sem ação externa.
+8. O clean-room revelou hashes de input dependentes de EOL; regras localizadas reproduziram 25/25 hashes sem alterar conteúdo analítico.
+9. A serialização dos 15 snapshots foi fixada em CRLF explícito; `build:data` passou com zero drift no worktree e no workspace.
+10. Um advisory novo de produção foi corrigido com override de `sharp 0.35.3`; `npm ci` e auditoria confirmaram zero vulnerabilidades.
+11. Instalação limpa, imports, lint, typecheck, Vitest, build, Playwright, documentação e processo passaram no worktree.
+12. O clean-room passou 128 testes Python independentes; os dois gates de raw source foram preservados no workspace, onde a suíte completa passou 130/130.
+13. O workspace principal repetiu `npm ci`, build de dados, lint, typecheck, Vitest 19/19, build, Playwright 36/36, compileall, pytest 130/130 e auditoria zero.
+14. Três screenshots modificadas por execução de smoke foram restauradas ao HEAD; nenhum PNG entrou no staging.
+15. Nenhum deploy, vídeo, upload, push, Pull Request, formulário, submissão ou publicação social foi executado.
+16. Um advisory publicado durante o gate final exigiu Next.js `16.2.11`; manifesto e lockfile receberam somente o patch de segurança.
+17. Um install expirado que permaneceu órfão foi encerrado pelo PID verificado; o `npm ci` seguinte instalou 533 pacotes, a auditoria zerou e todos os gates frontend passaram novamente.
+
+### Resultado de validação
+
+- clean-room: PASS;
+- inputs do builder: 25/25 hashes;
+- snapshots: 15/15, cutoff preservado e zero drift;
+- Python: 130/130 no workspace e 128/128 independentes no clean-room;
+- frontend: lint PASS, typecheck PASS, Vitest 19/19, build PASS e Playwright 36/36;
+- segurança: Next.js `16.2.11`, `sharp 0.35.3` e `npm audit --omit=dev` com zero vulnerabilidades;
+- documentação: PASS, 67 links e sete screenshots;
+- processo: PASS, 45/45 verificações;
+
+### Limites preservados

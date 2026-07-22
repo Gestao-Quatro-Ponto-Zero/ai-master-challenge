@@ -28,6 +28,17 @@
 | Process Evidence Adversarial Review | Challenge attribution, support, navigation, concision, and autonomy language | Governance and quality reviewers | [process-evidence-adversarial-review.md](../solution/reports/process-evidence-adversarial-review.md) |
 | Evaluator Process Evidence Test | Confirm that seven core process questions can be answered within five minutes | Submission evaluators | [evaluator-process-evidence-test.md](../solution/reports/evaluator-process-evidence-test.md) |
 
+## Final Submission Package
+
+| Title | Purpose | Audience | Path |
+|---|---|---|---|
+| JourneyGraph One-Pager | Present the problem, governed solution, canonical evidence, business value, and next step | Executive and product evaluators | [journeygraph-one-pager.md](../solution/reports/journeygraph-one-pager.md) |
+| Reviewer Guide | Provide two-, five-, and fifteen-minute evidence paths | All evaluators | [reviewer-guide.md](../solution/reports/reviewer-guide.md) |
+| Final Submission Inventory | Map every required asset to status, ownership, and external dependency | Submission owner and auditors | [final-submission-inventory.md](../solution/reports/final-submission-inventory.md) |
+| Final Metric Snapshot | Freeze the canonical values and their evidence sources | Technical and data reviewers | [final-metric-snapshot.md](../solution/reports/final-metric-snapshot.md) |
+| Final Submission Checklist | Separate completed internal gates from user-controlled external actions | Submission owner | [final-submission-checklist.md](../solution/reports/final-submission-checklist.md) |
+| Final Submission Validation | Report deterministic package checks and the publication boundary | Technical evaluators | [final-submission-validation.md](../solution/reports/final-submission-validation.md) |
+
 ## Index Limitation
 
 This index points to versioned repository evidence. It does not replace the limitations inside each artifact, and it does not authorize external deployment, customer action, or experimental execution.

@@ -1,0 +1,144 @@
+1
+00:00:00,000 --> 00:00:06,000
+Equipes de retenção raramente têm poucos dados.
+Elas não têm uma sequência confiável.
+
+2
+00:00:06,000 --> 00:00:13,000
+Registros SaaS chegam em granularidades distintas,
+de contas até suporte e churn.
+
+3
+00:00:13,000 --> 00:00:20,000
+Joins simples inflam métricas, e um status final
+pode apagar a jornada do cliente.
+
+4
+00:00:20,000 --> 00:00:27,000
+O JourneyGraph testa relações
+e cronologia antes da análise.
+
+5
+00:00:27,000 --> 00:00:34,000
+O join inseguro expandiu 500 contas
+para quase 148 mil linhas.
+
+6
+00:00:34,000 --> 00:00:40,000
+Cronologias inválidas ficam em quarentena,
+sem correção silenciosa.
+
+7
+00:00:40,000 --> 00:00:47,000
+Esta visão mostra um snapshot
+histórico fixo.
+
+8
+00:00:47,000 --> 00:00:54,000
+Ele começa com 35.586
+eventos processados.
+
+9
+00:00:54,000 --> 00:01:00,000
+13.927 são utilizáveis e 21.659
+permanecem em quarentena.
+
+10
+00:01:00,000 --> 00:01:05,000
+A evidência utilizável forma
+4.221 jornadas governadas.
+
+11
+00:01:05,000 --> 00:01:12,000
+MAIN inclui eventos válidos
+e warnings documentados.
+
+12
+00:01:12,000 --> 00:01:19,000
+STRICT mantém apenas eventos válidos
+para análise de sensibilidade.
+
+13
+00:01:19,000 --> 00:01:25,000
+Quarentena é backlog de qualidade,
+nunca sinal comportamental.
+
+14
+00:01:25,000 --> 00:01:32,000
+O Explorador de Jornadas usa
+perfis anônimos controlados.
+
+15
+00:01:32,000 --> 00:01:39,000
+Ele preserva churn recorrente
+e reativação explícita.
+
+16
+00:01:39,000 --> 00:01:45,000
+Eventos ordenados mantêm escopo,
+desfecho e contexto de qualidade.
+
+17
+00:01:45,000 --> 00:01:50,000
+Identificadores operacionais de contas
+não são exibidos.
+
+18
+00:01:50,000 --> 00:01:57,000
+O grafo promove somente evidência
+ROBUST ou SENSITIVE com suporte.
+
+19
+00:01:57,000 --> 00:02:04,000
+Ele contém 435 padrões
+e 43 transições promovidas.
+
+20
+00:02:04,000 --> 00:02:10,000
+Cada item preserva suporte, população,
+estabilidade e proveniência.
+
+21
+00:02:10,000 --> 00:02:15,000
+A estrutura do grafo é descritiva,
+não uma explicação de causa.
+
+22
+00:02:15,000 --> 00:02:22,000
+Sete filas determinísticas organizam
+1.609 itens de evidência.
+
+23
+00:02:22,000 --> 00:02:29,000
+Regras e componentes de prioridade
+continuam inspecionáveis.
+
+24
+00:02:29,000 --> 00:02:35,000
+Não existe score preditivo de churn
+nem ação automática sobre clientes.
+
+25
+00:02:35,000 --> 00:02:42,000
+Oito desenhos experimentais transformam
+observações em hipóteses testáveis.
+
+26
+00:02:42,000 --> 00:02:50,000
+Eles não são experimentos concluídos.
+Todos permanecem UNTESTED.
+
+27
+00:02:50,000 --> 00:02:57,000
+O JourneyGraph é local e reproduzível,
+com evidência JSON fixa.
+
+28
+00:02:57,000 --> 00:03:02,000
+Limites de privacidade e interpretação
+permanecem visíveis.
+
+29
+00:03:02,000 --> 00:03:05,000
+O próximo passo continua sendo
+uma decisão humana.

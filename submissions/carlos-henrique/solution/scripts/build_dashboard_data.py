@@ -137,6 +137,7 @@ def write_json(path: Path, payload: Any) -> None:
     path.write_text(
         json.dumps(clean(payload), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+        newline="\r\n",
     )
 
 

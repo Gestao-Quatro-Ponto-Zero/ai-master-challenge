@@ -944,3 +944,73 @@ Nenhum erro de implementação foi observado, pois a fase foi exclusivamente est
 - **E093 — relatório variava com a contagem do staging:** a auditoria pós-commit mostrou que o detalhe `changed=<n>` seria 17 antes do commit e zero em checkout limpo. O validador passou a serializar somente violações de escopo; dois runs em estado limpo mantêm os relatórios byte a byte idênticos.
 
 A primeira execução encerrou com `BLOCKED`; após E090 e E091, o validador encerrou com `PASS`, 45 verificações aprovadas, zero warnings e zero bloqueios. E092 não alterou conteúdo nem resultado, e E093 tornou o relatório estável antes e depois do commit.
+
+## Decisões da Fase 10C
+
+## D131 — Submission assets must be internally consistent
+
+- **Decisão:** usar uma única identidade, snapshot métrico, classificação experimental, cutoff e fronteira de governança em todos os materiais.
+- **Justificativa:** divergências entre README, pitches, vídeo, formulário, PR e dashboard reduziriam confiança mesmo com o código correto.
+- **Status:** APROVADA
+
+## D132 — Video must demonstrate decisions, not only screens
+
+- **Decisão:** estruturar roteiro e storyboard por problema, evidência, decisão humana e próximo teste, em vez de apenas percorrer rotas.
+- **Justificativa:** o vídeo deve explicar por que cada controle existe e qual decisão ele suporta.
+- **Status:** APROVADA
+
+## D133 — External actions remain human-controlled
+
+- **Decisão:** manter gravação, deploy, upload, push, PR, formulário, submissão e publicação fora da execução automática.
+- **Justificativa:** essas ações alteram estado externo, visibilidade e responsabilidade do candidato.
+- **Status:** APROVADA
+
+## D134 — Missing external links must use explicit placeholders
+
+- **Decisão:** usar apenas marcadores aprovados e `PENDING_USER_ACTION` para URLs ainda inexistentes.
+- **Justificativa:** um valor plausível, porém não verificado, seria evidência fabricada.
+- **Status:** APROVADA
+
+## D135 — Deployment readiness is evaluated before deployment
+
+- **Decisão:** classificar a prontidão e preparar runbook sem configurar plataforma ou alegar disponibilidade pública.
+- **Justificativa:** prontidão interna e implantação externa têm riscos, donos e evidências diferentes.
+- **Status:** APROVADA
+
+## D136 — Final gate distinguishes internal readiness from external publication
+
+- **Decisão:** usar `PASS_WITH_WARNINGS` somente quando todos os gates internos passarem e restarem apenas ações externas explícitas.
+- **Justificativa:** pendência externa não deve ocultar falha técnica, nem um pacote verde deve alegar publicação inexistente.
+- **Status:** APROVADA
+
+## D137 — Final validation must include clean-room execution
+
+- **Decisão:** validar instalação, hashes, build de dados, aplicação, documentação, processo e segurança em worktree temporário sem copiar dependências locais.
+- **Justificativa:** o workspace preparado não prova sozinho que um avaliador consegue reproduzir o produto.
+- **Status:** APROVADA
+
+## D138 — All submission claims must map to canonical evidence
+
+- **Decisão:** limitar números e afirmações do pacote a relatórios, snapshots e gates versionados.
+- **Justificativa:** a narrativa final não pode ampliar o que a evidência histórica demonstra.
+- **Status:** APROVADA
+
+## Erros e correções da Fase 10C
+
+- **E094 — caminho relativo incorreto no primeiro pytest:** o comando partiu de `solution/` mas repetiu o prefixo do diretório; a suíte foi executada novamente pelo caminho correto.
+- **E095 — diretório temporário do pytest bloqueado pelo sandbox:** três tentativas restritas falharam por permissão; um `basetemp` explícito fora do sandbox concluiu 130/130.
+- **E096 — `npm ci` bloqueado por `spawn EPERM`:** a instalação foi repetida fora do sandbox e validada pelo lockfile.
+- **E097 — Vitest bloqueado por `spawn EPERM`:** a suíte foi repetida no ambiente autorizado e passou 19/19.
+- **E098 — Playwright bloqueado por `spawn EPERM`:** o smoke responsivo foi repetido fora do sandbox e passou 36/36.
+- **E099 — smoke tests alteraram screenshots versionadas:** três PNGs receberam conteúdo de execução; todos foram restaurados ao hash do HEAD e excluídos do staging.
+- **E100 — primeiro validador final produziu falsos positivos:** claims históricos e URL local no README entraram no escopo; a busca foi limitada aos materiais novos e o pitch pt-BR foi ajustado ao limite.
+- **E101 — checkout limpo não reproduzia hashes de inputs:** regras EOL mistas não estavam declaradas; uma `.gitattributes` localizada passou a materializar os 15 JSONs conforme os hashes canônicos.
+- **E102 — dois testes clean-room exigiam CSVs brutos:** os gates de presença/hash foram separados dos 128 testes independentes; a suíte completa permaneceu 130/130 no workspace autorizado, sem copiar ou baixar dados.
+- **E103 — builder gerava EOL dependente da plataforma:** a escrita passou a usar CRLF explícito e os 15 snapshots receberam regra EOL correspondente; dois rebuilds terminaram sem drift.
+- **E104 — instalação Python interrompida deixou venv parcial:** `pip check` isolado não bastou; imports falharam, a instalação foi retomada e `pip check` mais imports passaram.
+- **E105 — advisory novo tornou `sharp 0.34.5` inseguro:** o override lockfile-controlled para `0.35.3` foi testado no worktree e no workspace; auditoria de produção, build e testes passaram.
+- **E106 — endpoint de auditoria npm falhou transitoriamente:** a árvore já confirmava o override; o audit foi repetido e retornou zero vulnerabilidades.
+- **E107 — novos advisories HIGH atingiram Next.js 16.2.10 durante o gate final:** a versão mínima corrigida `16.2.11` foi confirmada, aplicada ao manifesto e lockfile e revalidada com auditoria zero e toda a suíte frontend.
+- **E108 — install expirado permaneceu órfão e bloqueou `node_modules`:** o PID foi identificado pela linha de comando, somente o processo órfão foi encerrado e `npm ci` concluiu a instalação limpa de 533 pacotes.
+
+As correções E101, E103 e E105 foram exceções mínimas autorizadas após falhas reproduzíveis. A [validação clean-room](../solution/reports/clean-room-validation.md) e a [validação final](../solution/reports/final-submission-validation.md) preservam os resultados, limites e ações externas pendentes.

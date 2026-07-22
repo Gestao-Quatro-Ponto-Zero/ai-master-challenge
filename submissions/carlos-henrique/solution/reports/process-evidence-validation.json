@@ -222,7 +222,7 @@
     {
       "check_id": "links.internal",
       "status": "PASS",
-      "detail": "checked=228; broken=0"
+      "detail": "checked=238; broken=0"
     },
     {
       "check_id": "commits.references",
