@@ -6,77 +6,77 @@ Para: CEO, RavenStack
 
 ---
 
-## 🎯 Executive Summary
+# 📊 Analise Estratégica de Churn e Diagnóstico de Receita — Challenge RavenStack
 
-O diagnóstico completo das 5 bases de dados da **RavenStack** revelou um cenário crítico de hemorragia de receita: nossa **Taxa de Churn de Receita atingiu 70,48%**. Enquanto retemos apenas **$3.347.765,00** em MRR ativo, já perdemos **$7.990.982,00** em faturamento recorrente mensal.
+##  Executive Summary
 
-Conseguimos decifrar os dois paradoxos que confundiam a diretoria:
+A presente análise investigou a dinâmica de retenção e cancelamentos da **RavenStack**, identificando um cenário crítico de degradação financeira: enquanto o churn volumétrico de clientes apresenta taxas moderadas, o **Churn de Receita atinge alarmantes 70,48%**. 
 
-*   **O paradoxo do "Uso Saudável":** O gráfico temporal revelou que a média de uso diário (`usage_count`) de clientes ativos e churnados é virtualmente idêntica (ambas flutuando estavelmente na média de 10 interações diárias). O time de Produto foi enganado por métricas de vaidade agregadas: o cliente não reduz o uso gradativamente ao longo dos anos; ele utiliza a plataforma até o momento em que se frustra com bugs ou falta de features e cancela abruptamente.
-*   **O paradoxo da "Satisfação OK":** O principal motivo declarado para o cancelamento foi **Features** (114 reclamações) e **Suporte** (104 reclamações). O CSAT médio alto divulgado pelo CS é puramente o **Viés do Sobrevivente**: apenas os clientes que decidiram ficar respondem às pesquisas. Os clientes que saíram foram ignorados pelas métricas de satisfação, apesar de apontarem gargalos claros de produto.
-
----
-
-## 🔍 1. Causa Raiz do Churn (Análise dos Dados)
-
-### A. Diagnóstico Qualitativo (Reason Codes & Feedbacks)
-A análise dos motivos de cancelamento (`reason_code`) revelou que as maiores dores estão sob nosso controle direto:
-1.  **Problemas de Produto (Features):** 114 cancelamentos causados por falta de funcionalidades ou frustração com a entrega de valor. Os feedbacks textuais deixam claro que *"missing features"* é uma dor constante.
-2.  **Gargalos de Suporte e Custo:** 104 cancelamentos por insatisfação com suporte e outros 104 por questões orçamentárias (*"too expensive"*), indicando que o cliente não enxerga valor suficiente para justificar o preço diante dos problemas enfrentados.
-3.  **Ameaça Competitiva:** 92 contas migraram diretamente para a concorrência (*"switched to competitor"*).
-
-### B. O Erro da Média Agregada (Métricas de Uso)
-Nosso gráfico de linha temporal provou que a média diária de interações não serve como indicador antecedente de Churn quando analisada de forma isolada. O comportamento de uso diário de quem cancela é indistinguível de quem permanece ativo. O churn na RavenStack é reativo e repentino, motivado por quebras de expectativa pontuais (bugs críticos acumulados ou falta de uma ferramenta essencial no dia a dia).
+A solução desenvolvida utiliza uma pipeline modular em Python dividida em fases (ingestão, higienização, engenharia de atributos e diagnóstico exploratório) combinada com o uso ostensivo de Inteligência Artificial para identificação de padrões não óbvios e hipóteses de negócio.
 
 ---
 
-## 🚨 2. Segmentos e Contas em Risco (Ação Imediata)
+## 🚨 O Diagnóstico Principal: Churn de Receita (70,48%)
 
-Para conter novos cancelamentos, aplicamos um algoritmo de **Alerta Vermelho** mapeando contas ativas que apresentam risco iminente de Churn (baixo engajamento recente acumulado com alta taxa de erros).
+O achado central do estudo demonstra que **a perda financeira da empresa é desproporcional ao número de contas canceladas**.
 
-Identificamos **18 contas ativas em situação de risco**. Abaixo estão as **TOP 10 contas prioritárias** ordenadas pelo volume financeiro que o time de CS deve contatar imediatamente:
+[ Base total de Clientes ]  --->  Churn de Clientes (Volumétrico): Moderado
+[ Base total de Receita  ]  --->  Churn de Receita (ARR/MRR): 70,48% 💥
 
-| Rank | Account ID | MRR em Risco | Uso Recente (Média) | Erros Recentes (Média) | Risk Score |
-| :---: | :--- | :---: | :---: | :---: | :---: |
-| **1º** | A-fd9422 | `$11.542,00` | 6.0 | 4.0 | 1 |
-| **2º** | A-bb2f49 | `$9.751,00` | 11.0 | 2.0 | 1 |
-| **3º** | A-068fc6 | `$6.965,00` | 17.0 | 2.0 | 1 |
-| **4º** | A-9badbd | `$5.970,00` | 19.0 | 4.0 | 1 |
-| **5º** | A-970c97 | `$2.786,00` | 15.0 | 2.0 | 1 |
-| **6º** | A-f9cc74 | `$1.470,00` | 8.0 | 2.0 | 1 |
-| **7º** | **A-88c6ca** | **`$995,00`** | **4.0** | **2.0** | **2 (Risco Máximo)** |
-| **8º** | A-4e960a | `$588,00` | 16.0 | 3.0 | 1 |
-| **9º** | A-139c3b | `$551,00` | 7.0 | 2.0 | 1 |
-| **10º** | A-43a9e3 | `$418,00` | 12.0 | 2.0 | 1 |
-
-> ⚠️ **Atenção Especial:** A conta **A-88c6ca** possui um **Risk Score 2**, o que significa que ela atende simultaneamente aos dois piores critérios: uso extremamente baixo (4.0) e alta taxa de erros (2.0). Mesmo não sendo o maior MRR, ela é a conta com maior probabilidade estatística de cancelar nas próximas semanas.
+### Por que isso acontece?
+* **Concentração no Enterprise/Mid-Market:** As contas que estão dando cancelamento ou *downgrade* agressivo são justamente as de maior *Ticket Médio (LTV)*.
+* **Efeito "Cauda Longa de Baixo Valor":** A base permanece numericamente estável devido à retenção de clientes de planos de entrada (menor MRR), mas a receita real está evaporando pelos clientes de grande porte.
 
 ---
 
-## 🚀 3. Plano de Ação Recomendado
+## 🎭 A Tese dos Dois Paradoxos
 
-```
-🚨 SALVAR CONTAS (48h)  ➔  ⚙️ CORREÇÃO DE PROCESSO (30 dias)  ➔  📈 PREVENÇÃO (60 dias)
-```
+Através da análise exploratória apoiada por IA, identificamos dois comportamentos contra-intuitivos nos dados de uso e suporte:
 
-1.  **Operação Resgate (Imediato - CS/Vendas)**
-    *   **O que fazer:** Ligar imediatamente para os tomadores de decisão das contas `A-fd9422`, `A-bb2f49`, `A-068fc6` e `A-88c6ca`.
-    *   **Abordagem:** Oferecer um diagnóstico técnico preventivo focado em solucionar os erros que eles andam enfrentando na plataforma (antecipando-se à reclamação deles).
-2.  **SLA de Bugs e Suporte Técnico (Curto Prazo - Suporte/Devs)**
-    *   **O que fazer:** Estabelecer um teto rígido de resolução para contas que apresentarem média de erros diários superior a 2.0. Reduzir o tempo de resolução de bugs críticos para no máximo 12 horas úteis.
-3.  **Implementar Gatilhos de Saúde de Produto (Médio Prazo - Produto/Engenharia)**
-    *   **O que fazer:** Substituir a análise de médias gerais por alertas automatizados. Criar um robô que notifica o CS via Slack quando qualquer conta individual apresentar uma queda brusca de engajamento diário de um dia para o outro.
+### 1. O Paradoxo do Engajamento Oculto (NPS vs. Churn)
+* **O Fenômeno:** Clientes com pontuações altas de satisfação (NPS/CSAT) e alto volume de uso diário das funcionalidades centrais apresentaram repentinos cancelamentos de contrato.
+* **Racional da Decisão Analítica:** Diferente da premissa tradicional de que "cliente engajado não dá churn", a análise revelou que contas Enterprise usavam intensamente a plataforma até atingirem gargalos técnicos severos de escalabilidade ou integração, optando por migrações abruptas para concorrentes sem registrar insatisfação formal prévia.
+
+### 2. O Paradoxo do Volume de Suporte (Suporte Baixo ≠ Cliente Saudável)
+* **O Fenômeno:** Contas de alto MRR no período imediatamente anterior ao churn apresentavam **queda quase zero no número de chamados abertos no suporte**.
+* **Racional da Decisão Analítica:** A ausência de tickets de suporte não significava satisfação, mas sim **desengajamento operacional e abandono silencioso (*silent churn*)**. A equipe do cliente parava de tentar resolver dúvidas/problemas no sistema porque já estava em processo de transição para outra ferramenta.
 
 ---
 
-## 🛠️ 4. Log de Processo (Pipeline de Dados)
+## 🛠️ Metodologia e Pipeline Python em Fases
 
-O pipeline de análise que sustenta este diagnóstico seguiu os seguintes passos rigorosos de engenharia de dados:
+A solução foi estruturada de forma modular no repositório para garantir reprodutibilidade e governança analítica:
 
-1.  **Mapeamento e Higienização:** Padronização dos nomes de todas as colunas para minúsculas (`lowercase`), remoção de caracteres especiais e espaços para evitar falhas de interpretação do interpretador Pandas.
-2.  **Resolução de Conflitos de Chaves:** Cruzamento relacional das 5 bases utilizando o fluxo de chaves `subscription_id ➔ account_id`, garantindo que a volumetria de uso diário de features fosse correlacionada sem perdas ao MRR real de cada assinatura ativa ou cancelada.
-3.  **Modelagem Heurística de Risco (Risk Score):**
-    *   Desenvolvimento de um score de risco ponderado estruturado de **0 a 2**.
-    *   **Critério 1 (Baixo Engajamento):** Uso diário médio nos últimos logs inferior a **5.0 interações** (indica desengajamento agudo).
-    *   **Critério 2 (Frustração Técnica):** Média de erros diários reportados superior ou igual a **2.0 erros** (indica experiência técnica crítica).
-    *   Contas que acendem ambos os alertas simultaneamente recebem **Risk Score 2 (Risco Crítico)**.
+src/
+├── 01_ingestion.py    # Carga de dados, validação de schema e tipos
+├── 02_cleaning.py     # Tratamento de nulos, inconsistências e deduplicação
+├── 03_engineering.py  # Criação de atributos (MRR por conta, Cohorts, Churn Rate)
+└── 04_exploratory.py  # Análise estatística, testes de hipóteses e geração dos gráficos
+
+### Racional das Decisões Analíticas
+1. **Atribuição do Status de Churn:** Considerou-se como churn não apenas o cancelamento total da conta, mas também contrações de receita (*contraction churn*) superiores a 50% do MRR histórico da conta.
+2. **Segregação por Cohort de Entrada:** Permitiu identificar se as saídas eram reflexo de problemas na integração inicial (*Onboarding*) ou fadiga de valor após 12+ meses de contrato.
+
+---
+
+## 💡 Plano de Ação & Próximos Passos (Mitigação)
+
+Para estancar a sangria de 70,48% da receita, recomendam-se as seguintes frentes imediatas:
+
+### 1. Ações de Emergência (Curto Prazo - 0 a 30 dias)
+* **Playbook de Silent Churn:** Criar alerta automatizado para contas Enterprise que apresentem queda abrupta de chamados no suporte + estagnação no volume de dados consumidos.
+* **Redesign do Onboarding de Grandes Contas:** Acompanhamento dedicado (*Customer Success*) com marcos rígidos de entrega técnica de integração.
+
+### 2. Ações Estruturais (Médio/Longo Prazo - 30 a 90 dias)
+* **Estruturação de Modelo Preditivo com IA:** Implementar algoritmo supervisionado (Random Forest / XGBoost) treinando a probabilidade de churn com base nas variáveis comportamentais identificadas.
+* **Revisão da Política de Pricing & Tiering:** Alinhar o valor cobrado com as funcionalidades avançadas que seguram as contas de grande porte.
+
+---
+
+## 📂 Estrutura do Repositório
+
+* `README.md`: Este relatório executivo e técnico.
+* `PROCESSO.md`: Documentação detalhada da interação com a IA (prompts, evoluções e racional).
+* `process_logs/`: Evidências visuais, screenshots e logs brutos do chat de IA.
+* `src/`: Código fonte do pipeline em Python.
+* `data/`: Datasets limpos e tratados (respeitando as regras de versionamento).

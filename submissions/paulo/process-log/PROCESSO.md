@@ -3,43 +3,53 @@
 **Candidato:** Paulo Sérgio Oliveira da Silva Júnior  
 **Desafio:** Diagnóstico de Churn da RavenStack  
 
----
+# 🤖 Process Log — Registro de Uso de Inteligência Artificial
 
-## 🎯 1. Ferramentas de IA Utilizadas e Por Quê
-
-*   **Gemini (Google):** Utilizado como parceiro principal de desenvolvimento (*pair programming* e *business sparring*). A escolha se deu pela capacidade do modelo de processar contexto de negócios complexo, validar formatação de dados e auxiliar na tomada de decisões estratégicas de produto/engenharia a partir de dados brutos.
+Este documento detalha o processo de co-criação, análise exploratória e apoio técnico utilizando Inteligência Artificial (Gemini) no desenvolvimento do **Challenge RavenStack Churn**.
 
 ---
 
-## 💡 2. Como o Problema foi Resolvido (Antes da IA)
+## 🛠️ 1. Ferramentas e Metodologia de Interação
 
-Antes de iniciar as interações com a IA, fiz uma análise estrutural preliminar das 5 bases de dados fornecidas (`ravenstack_...`). Identifiquei que:
-1. Havia uma grande perda de receita acumulada (faturamento recorrente mensal vazando).
-2. O time de produto estava olhando para métricas agregadas (médias de uso diário) que não indicavam queda de engajamento antes do cancelamento, o que parecia um paradoxo.
-3. Formulei a hipótese de que o Churn na RavenStack era **reativo** (motivado por frustrações pontuais, como bugs ou falta de ferramentas), e não progressivo.
-
-Com essas hipóteses de negócio desenhadas, utilizei a IA para refinar a análise técnica e validar essas suposições matematicamente.
+* **Assistente de IA:** Gemini (Google DeepMind)
+* **Objetivo:** Aceleração do diagnóstico de dados, validação de hipóteses de negócio, estruturação do pipeline em Python e refinamento da narrativa executiva.
+* **Abordagem de Prompting:** Interativa e iterativa (Prompting por Fases: Ingestão -> Hipóteses -> Resolução de Gargalos Git/Python -> Síntese Executiva).
 
 ---
 
-## 🔄 3. Iterações e Onde a IA Errou (Como Corrigi)
+## 🧠 2. Registro de Prompts & Evolução das Iterações
 
-O desenvolvimento não foi um processo de "um único prompt". Houve refinamento mútuo:
+### Fase 1: Diagnóstico de Receita e Identificação de Paradoxos
+* **Prompt de Entrada:** 
+  > *"Analise a distribuição de churn da base da RavenStack focando em MRR vs. volume de contas. Verifique se existe discrepância entre número de cancelamentos e impacto na receita."*
+* **Insight Gerado pela IA:**
+  * Identificação de que a perda volumétrica era moderada, mas o **Churn de Receita atingia 70,48%** devido ao cancelamento/downgrade de contas Enterprise.
+  * Formulação das hipóteses contra-intuitivas: o **Paradoxo do Engajamento Oculto** (alto NPS/uso antes da queda) e o **Paradoxo do Volume de Suporte** (*silent churn*).
 
-*   **Modelagem de Risco Simples vs. Ponderada:** Inicialmente, a IA sugeriu monitorar apenas a volumetria bruta de uso diário para prever o Churn. Eu intervim, pontuando que os dados de uso de clientes churnados eram visualmente idênticos aos de clientes ativos (o Paradoxo do "Uso Saudável"). 
-*   **A Correção:** Instruí a IA a cruzarmos os dados de uso com os dados de **erros logados** e **histórico de chamados de suporte**. Juntos, criamos a heurística do **Risk Score (0 a 2)**, que pontua como risco crítico (Score 2) apenas o cliente que tem uso decrescente *combinado* com uma alta taxa de erro diário recente (experiência técnica frustrante).
+### Fase 2: Construção da Pipeline e Resolução de Desafios Técnicos
+* **Prompt de Entrada:** 
+  > *"Ajude a estruturar uma pipeline modular em Python dividida em scripts de ingestão, tratamento, engenharia de atributos e análise exploratória. Como podemos contornar o conflito de merge no `.gitignore` e resolver divergências de remote no Git?"*
+* **Ação Executada:**
+  * Estruturação dos scripts na pasta `src/` (`01_ingestion.py` até `04_exploratory.py`).
+  * Execução dos comandos `git checkout --ours` e sincronização bem-sucedida do repositório/PR #93.
 
 ---
 
-## 🧠 4. O que eu adicionei (Que a IA sozinha não faria)
+## 📸 3. Evidências Visuais e Logs
 
-Embora a IA tenha ajudado a estruturar o pipeline em Pandas e a polir o código, o **direcionamento de negócios** partiu inteiramente do meu julgamento:
+Para garantir a transparência do processo de co-criação com a ferramenta, os artefatos brutos foram anexados ao repositório:
 
-*   **Viés do Sobrevivente no CSAT:** Identifiquei que o CSAT "saudável" apresentado pelo time de CS era enganoso porque ignorava os clientes que já haviam cancelado. Traduzi essa análise de dados fria em um conceito estratégico vital para o CEO.
-*   **Plano de Ação de Emergência (48h / 30 dias / 60 dias):** Desenhei a estratégia prática de contenção focando em ligar imediatamente para as contas de maior MRR que estavam com score crítico, criando um processo acionável que a empresa pode executar no dia seguinte.
+* **Screenshots das Sessões:** Localizadas em `process_logs/screenshots/`
+  * `01_analise_churn.png`: Registro do prompt e insight sobre os 70,48% de churn de receita.
+  * `02_paradoxos.png`: Registro do levantamento das hipóteses dos dois paradoxos.
+* **Exports de Conversa:** Arquivos na pasta `process_logs/chat_exports/`.
 
 ---
 
-## 🛠️ 5. Limitações Identificadas do Processo
+## ⚖️ 4. Racional Humano vs. Papel da IA
 
-*   A análise atual é puramente histórica e heurística. Para os próximos passos, mapeamos a necessidade de rodar modelos preditivos de Machine Learning (como XGBoost) para automatizar a classificação de risco à medida que novos dados de telemetria forem ingeridos.
+| Etapa | Papel da Inteligência Artificial | Validação e Racional Humano (Paulo) |
+| :--- | :--- | :--- |
+| **Geração de Hipóteses** | Identificação de padrões estatísticos e anomalias de uso | Conexão dos padrões com a realidade do negócio SaaS Enterprise |
+| **Código Python** | Escrita e otimização dos scripts modulares | Execução em ambiente local, tratamento de erros e validação do output |
+| **Resolução de Git** | Diagnóstico de mensagens de erro de terminal | Decisão e execução das estratégias de merge/checkout |
