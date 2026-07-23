@@ -1,0 +1,153 @@
+{
+  "validator": "JourneyGraph final submission validator",
+  "version": "1.0.0",
+  "status": "PASS_WITH_WARNINGS",
+  "scope": "submissions/carlos-henrique",
+  "counts": {
+    "PASS": 25,
+    "PASS_WITH_WARNINGS": 1,
+    "BLOCKED": 0
+  },
+  "checks": [
+    {
+      "check_id": "package.required_files",
+      "status": "PASS",
+      "detail": "required=38; missing=[]"
+    },
+    {
+      "check_id": "package.screenshots",
+      "status": "PASS",
+      "detail": "required=7; valid=7; missing=[]"
+    },
+    {
+      "check_id": "package.required_headings",
+      "status": "PASS",
+      "detail": "all required headings present"
+    },
+    {
+      "check_id": "pitch.30_seconds",
+      "status": "PASS",
+      "detail": "english_words=68; portuguese_words=74"
+    },
+    {
+      "check_id": "pitch.90_seconds",
+      "status": "PASS",
+      "detail": "english_words=230; portuguese_words=218"
+    },
+    {
+      "check_id": "video.srt.en",
+      "status": "PASS",
+      "detail": "cues=29; final_ms=185000; problems=[]"
+    },
+    {
+      "check_id": "video.srt.pt_br",
+      "status": "PASS",
+      "detail": "cues=29; final_ms=185000; problems=[]"
+    },
+    {
+      "check_id": "video.required_boundaries",
+      "status": "PASS",
+      "detail": "all six boundaries present"
+    },
+    {
+      "check_id": "summary.lengths",
+      "status": "PASS",
+      "detail": "50=50; 100=97; 200=197; short_chars=448"
+    },
+    {
+      "check_id": "links.local",
+      "status": "PASS",
+      "detail": "checked=233; broken=0"
+    },
+    {
+      "check_id": "claims.prohibited",
+      "status": "PASS",
+      "detail": "occurrences=0"
+    },
+    {
+      "check_id": "content.generic_placeholders",
+      "status": "PASS",
+      "detail": "occurrences=0"
+    },
+    {
+      "check_id": "links.no_invented_urls",
+      "status": "PASS",
+      "detail": "unexpected=0"
+    },
+    {
+      "check_id": "external.registry",
+      "status": "PASS",
+      "detail": "six link records present"
+    },
+    {
+      "check_id": "external.pending_actions",
+      "status": "PASS_WITH_WARNINGS",
+      "detail": "expected_pending_markers=7"
+    },
+    {
+      "check_id": "metrics.canonical_snapshot",
+      "status": "PASS",
+      "detail": "canonical values present"
+    },
+    {
+      "check_id": "tests.reference_consistency",
+      "status": "PASS",
+      "detail": "Python=130/130; Vitest=19/19; Playwright=36/36"
+    },
+    {
+      "check_id": "metrics.matrix",
+      "status": "PASS",
+      "detail": "metric consistency matrix gate present"
+    },
+    {
+      "check_id": "gate.clean_room",
+      "status": "PASS",
+      "detail": "clean-room PASS"
+    },
+    {
+      "check_id": "gate.adversarial",
+      "status": "PASS",
+      "detail": "CRITICAL=0; HIGH=0; gate=PASS"
+    },
+    {
+      "check_id": "gate.five_minute",
+      "status": "PASS",
+      "detail": "five-minute gate PASS"
+    },
+    {
+      "check_id": "gate.message_consistency",
+      "status": "PASS",
+      "detail": "message consistency PASS"
+    },
+    {
+      "check_id": "build.cross_platform_security",
+      "status": "PASS",
+      "detail": "eol_rules=16/16; builder_crlf=True; sharp_override=True; locked_sharp=0.35.3; next_requirement=^16.2.11; locked_next=16.2.11"
+    },
+    {
+      "check_id": "git.change_scope",
+      "status": "PASS",
+      "detail": "outside=0"
+    },
+    {
+      "check_id": "git.raw_csv",
+      "status": "PASS",
+      "detail": "tracked=0"
+    },
+    {
+      "check_id": "git.build_artifacts",
+      "status": "PASS",
+      "detail": "tracked=0"
+    }
+  ],
+  "publication_boundary": {
+    "internal_package": "validated",
+    "external_actions": "pending_user_action",
+    "actions_executed": []
+  },
+  "limitations": [
+    "External URLs and actions remain outside this validator.",
+    "The validator checks repository evidence, not hosting-platform behavior.",
+    "A new validation cycle is required after external links are added."
+  ]
+}

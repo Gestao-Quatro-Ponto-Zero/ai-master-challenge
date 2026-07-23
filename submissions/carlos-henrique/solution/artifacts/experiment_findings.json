@@ -1,0 +1,361 @@
+{
+  "finding_count": 7,
+  "findings": [
+    {
+      "baseline": [
+        {
+          "baseline_value": 0.04741379310344827,
+          "experiment_id": "EXP006"
+        }
+      ],
+      "confidence_level": "MEDIUM",
+      "eligible_accounts": 464,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP006"
+      ],
+      "feasibility_status": [
+        "READY_FOR_REVIEW"
+      ],
+      "finding_id": "EF01",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP006",
+          "minimum_detectable_effect": 0.1
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "SUBSCRIPTION_RECONCILIATION_RATE"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "DATA_QUALITY_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 305,
+      "statement": "A data-quality study has sufficient historical design population for methodological review.",
+      "title": "A data-quality study has sufficient historical design population for methodological review"
+    },
+    {
+      "baseline": [
+        {
+          "baseline_value": 0.0,
+          "experiment_id": "EXP001"
+        }
+      ],
+      "confidence_level": "LOW",
+      "eligible_accounts": 23,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP001"
+      ],
+      "feasibility_status": [
+        "UNDERPOWERED"
+      ],
+      "finding_id": "EF02",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP001",
+          "minimum_detectable_effect": 0.1
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "ADOPTION_RATE_30D"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 164,
+      "statement": "The high-MRR adoption RCT is underpowered for its pre-specified MDE with the current eligible population.",
+      "title": "The high-MRR adoption RCT is underpowered for its pre-specified MDE with the current eligible population"
+    },
+    {
+      "baseline": [
+        {
+          "baseline_value": 0.9710144927536232,
+          "experiment_id": "EXP002"
+        },
+        {
+          "baseline_value": NaN,
+          "experiment_id": "EXP007"
+        }
+      ],
+      "confidence_level": "LOW",
+      "eligible_accounts": 69,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP002",
+        "EXP007"
+      ],
+      "feasibility_status": [
+        "NOT_FEASIBLE",
+        "UNDERPOWERED"
+      ],
+      "finding_id": "EF03",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP002",
+          "minimum_detectable_effect": 0.5
+        },
+        {
+          "experiment_id": "EXP007",
+          "minimum_detectable_effect": 0.5
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "FEATURE_DIVERSITY_30D",
+        "FEATURE_DIVERSITY_90D"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "ADOPTION_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 280,
+      "statement": "Adoption designs require either more eligible accounts or the missing operational rollout cohort.",
+      "title": "Adoption designs require either more eligible accounts or the missing operational rollout cohort"
+    },
+    {
+      "baseline": [
+        {
+          "baseline_value": NaN,
+          "experiment_id": "EXP003"
+        }
+      ],
+      "confidence_level": "LOW",
+      "eligible_accounts": 0,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP003"
+      ],
+      "feasibility_status": [
+        "NOT_FEASIBLE"
+      ],
+      "finding_id": "EF04",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP003",
+          "minimum_detectable_effect": 0.1
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "SUPPORT_RECURRENCE_30D"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 0,
+      "statement": "Support follow-up cannot support cluster randomization until support-agent identifiers are collected.",
+      "title": "Support follow-up cannot support cluster randomization until support-agent identifiers are collected"
+    },
+    {
+      "baseline": [
+        {
+          "baseline_value": 0.0,
+          "experiment_id": "EXP004"
+        }
+      ],
+      "confidence_level": "LOW",
+      "eligible_accounts": 26,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP004"
+      ],
+      "feasibility_status": [
+        "UNDERPOWERED"
+      ],
+      "finding_id": "EF05",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP004",
+          "minimum_detectable_effect": 0.1
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "SUBSCRIPTION_CONTINUATION"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "RECURRING_CHURN_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 164,
+      "statement": "Recurring-churn review is constrained by subscription-overlap exclusions and sample size.",
+      "title": "Recurring-churn review is constrained by subscription-overlap exclusions and sample size"
+    },
+    {
+      "baseline": [
+        {
+          "baseline_value": 0.7894736842105263,
+          "experiment_id": "EXP005"
+        }
+      ],
+      "confidence_level": "LOW",
+      "eligible_accounts": 19,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP005"
+      ],
+      "feasibility_status": [
+        "PILOT_ONLY"
+      ],
+      "finding_id": "EF06",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP005",
+          "minimum_detectable_effect": 0.15
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "REACTIVATION_USAGE_RETURN"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "REACTIVATION_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 180,
+      "statement": "Reactivation supports a feasibility pilot only because the historical population is small.",
+      "title": "Reactivation supports a feasibility pilot only because the historical population is small"
+    },
+    {
+      "baseline": [
+        {
+          "baseline_value": 61.716981132075475,
+          "experiment_id": "EXP008"
+        }
+      ],
+      "confidence_level": "LOW",
+      "eligible_accounts": 53,
+      "ethical_constraints": [
+        "APPROVAL_REQUIRED",
+        "NO_MRR_SERVICE_DENIAL"
+      ],
+      "experiment_ids": [
+        "EXP008"
+      ],
+      "feasibility_status": [
+        "UNDERPOWERED"
+      ],
+      "finding_id": "EF07",
+      "limitations": [
+        "NO_CAUSAL_RESULT",
+        "NO_UPLIFT_AVAILABLE"
+      ],
+      "minimum_detectable_effect": [
+        {
+          "experiment_id": "EXP008",
+          "minimum_detectable_effect": 0.8
+        }
+      ],
+      "operational_constraints": [
+        "NO_INTERVENTION_IMPLEMENTED",
+        "EXPOSURE_LOGGING_REQUIRED"
+      ],
+      "primary_metric": [
+        "TIME_TO_OBSERVED_CHURN"
+      ],
+      "quality_constraints": [
+        "HISTORICAL_BASELINE_ONLY",
+        "FUTURE_FOLLOW_UP_REQUIRED"
+      ],
+      "queue": "RECENT_CHURN_REVIEW",
+      "recommended_next_step": "Human methodological review and required data collection before any execution.",
+      "required_sample": 708,
+      "statement": "Recent-churn quasi-experimental work requires additional comparable observations and confounding controls.",
+      "title": "Recent-churn quasi-experimental work requires additional comparable observations and confounding controls"
+    }
+  ],
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  }
+}

@@ -1,0 +1,584 @@
+{
+  "denominators": {
+    "accounts_with_churn_reactivation_pair": 26,
+    "accounts_with_first_churn": 325,
+    "accounts_with_post_reactivation_sequence": 26,
+    "complete_accounts": 500
+  },
+  "limitations": [
+    "Sequences are descriptive aggregates, not causal patterns.",
+    "Length truncation may hide later events in high-activity accounts.",
+    "Warning sensitivity is reported separately."
+  ],
+  "methodology": "Consecutive duplicates collapsed; stable event ordering; maximum length 12; no formal sequence mining.",
+  "population": "VALID + VALID_WITH_WARNING; quarantine excluded",
+  "same_day_limitation": "Technical ordering is deterministic but not causal or intraday evidence.",
+  "top_churn_to_reactivation_sequences": [
+    {
+      "account_support": 5,
+      "denominator_accounts": 26,
+      "relative_support": 0.19230769230769232,
+      "sequence": [
+        "CHURN_RECORDED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 2,
+      "denominator_accounts": 26,
+      "relative_support": 0.07692307692307693,
+      "sequence": [
+        "CHURN_RECORDED",
+        "FEATURE_USED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 2,
+      "denominator_accounts": 26,
+      "relative_support": 0.07692307692307693,
+      "sequence": [
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 2,
+      "denominator_accounts": 26,
+      "relative_support": 0.07692307692307693,
+      "sequence": [
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 2,
+      "denominator_accounts": 26,
+      "relative_support": 0.07692307692307693,
+      "sequence": [
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "CHURN_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_ENDED",
+        "FEATURE_USED",
+        "CHURN_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "CHURN_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "CHURN_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_ENDED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "CHURN_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "CHURN_RECORDED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "FEATURE_USED"
+      ]
+    }
+  ],
+  "top_complete_journeys": [
+    {
+      "account_support": 8,
+      "denominator_accounts": 500,
+      "relative_support": 0.016,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 5,
+      "denominator_accounts": 500,
+      "relative_support": 0.01,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 5,
+      "denominator_accounts": 500,
+      "relative_support": 0.01,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 500,
+      "relative_support": 0.008,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 500,
+      "relative_support": 0.008,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "SUBSCRIPTION_ENDED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 500,
+      "relative_support": 0.008,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 500,
+      "relative_support": 0.008,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 500,
+      "relative_support": 0.008,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 500,
+      "relative_support": 0.008,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 3,
+      "denominator_accounts": 500,
+      "relative_support": 0.006,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED"
+      ]
+    }
+  ],
+  "top_post_reactivation_sequences": [
+    {
+      "account_support": 2,
+      "denominator_accounts": 26,
+      "relative_support": 0.07692307692307693,
+      "sequence": [
+        "REACTIVATION_RECORDED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "FEATURE_USED",
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "FEATURE_USED",
+        "REACTIVATION_RECORDED",
+        "SUBSCRIPTION_ENDED",
+        "FEATURE_USED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_ENDED",
+        "FEATURE_USED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "SUBSCRIPTION_ENDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "SUBSCRIPTION_ENDED",
+        "FEATURE_USED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 1,
+      "denominator_accounts": 26,
+      "relative_support": 0.038461538461538464,
+      "sequence": [
+        "REACTIVATION_RECORDED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED"
+      ]
+    }
+  ],
+  "top_pre_first_churn_prefixes": [
+    {
+      "account_support": 81,
+      "denominator_accounts": 325,
+      "relative_support": 0.24923076923076923,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 24,
+      "denominator_accounts": 325,
+      "relative_support": 0.07384615384615385,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 17,
+      "denominator_accounts": 325,
+      "relative_support": 0.052307692307692305,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 10,
+      "denominator_accounts": 325,
+      "relative_support": 0.03076923076923077,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 9,
+      "denominator_accounts": 325,
+      "relative_support": 0.027692307692307693,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 9,
+      "denominator_accounts": 325,
+      "relative_support": 0.027692307692307693,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "SUBSCRIPTION_STARTED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 6,
+      "denominator_accounts": 325,
+      "relative_support": 0.018461538461538463,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 325,
+      "relative_support": 0.012307692307692308,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "CHURN_RECORDED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 325,
+      "relative_support": 0.012307692307692308,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "SUBSCRIPTION_STARTED"
+      ]
+    },
+    {
+      "account_support": 4,
+      "denominator_accounts": 325,
+      "relative_support": 0.012307692307692308,
+      "sequence": [
+        "ACCOUNT_CREATED",
+        "SUBSCRIPTION_STARTED",
+        "SUPPORT_TICKET_OPENED",
+        "SUPPORT_TICKET_CLOSED",
+        "SUBSCRIPTION_STARTED",
+        "FEATURE_USED",
+        "CHURN_RECORDED"
+      ]
+    }
+  ]
+}

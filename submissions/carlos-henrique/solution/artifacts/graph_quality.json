@@ -1,0 +1,231 @@
+{
+  "candidate_counts": {
+    "ngram": 7234,
+    "pre_churn": 419,
+    "sequential": 4996,
+    "transition": 612
+  },
+  "limitations": [
+    "WARNING_DEPENDENCY_PRESERVED",
+    "STRICT_REACTIVATION_COVERAGE_LIMITED",
+    "TECHNICAL_SAME_DAY_ORDER_NOT_CAUSAL"
+  ],
+  "populations": [
+    "MAIN",
+    "STRICT",
+    "MAIN_WITH_STRICT_SENSITIVITY"
+  ],
+  "promoted_pattern_stability": {
+    "ROBUST": 110,
+    "SENSITIVE": 325
+  },
+  "promotion_policy": [
+    "ROBUST_OR_SENSITIVE",
+    "MINIMUM_SUPPORT",
+    "VALID_DENOMINATOR",
+    "NOT_SMALL_SAMPLE",
+    "SAME_DAY_NOT_HIGH"
+  ],
+  "quality_profile_count": 16,
+  "quality_profiles": [
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "LOW_LT_70PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_393b251dda2f2019",
+      "same_day_dependency": "NONE",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "LOW_LT_70PCT",
+      "label": "QualityProfile",
+      "limitations_count": 0,
+      "population": "MAIN",
+      "quality_profile_key": "quality_6dd748e7fe145fdc",
+      "same_day_dependency": "NONE",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 0,
+      "population": "MAIN",
+      "quality_profile_key": "quality_2eedea41542c161d",
+      "same_day_dependency": "NONE",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "HIGH_GE_90PCT",
+      "label": "QualityProfile",
+      "limitations_count": 0,
+      "population": "MAIN",
+      "quality_profile_key": "quality_efeb3ea3d27d4679",
+      "same_day_dependency": "NONE",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_cc747264f82a92a5",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_f841c1f41c2bf1b4",
+      "same_day_dependency": "NONE",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 2,
+      "population": "MAIN",
+      "quality_profile_key": "quality_cb6c20fb565f38ae",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "UNKNOWN"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "LOW_LT_70PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_df78c6f4d448bbdb",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "MEDIUM_11_30PCT"
+    },
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "LOW_LT_70PCT",
+      "label": "QualityProfile",
+      "limitations_count": 2,
+      "population": "MAIN",
+      "quality_profile_key": "quality_6609faefc9ff7d9f",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "MEDIUM_11_30PCT"
+    },
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "LOW_LT_70PCT",
+      "label": "QualityProfile",
+      "limitations_count": 2,
+      "population": "MAIN",
+      "quality_profile_key": "quality_c6860aa75f2de99c",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "HIGH_GT_30PCT"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_f76fc380f15467a2",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "MEDIUM_11_30PCT"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_06a644957e675ceb",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "LOW_LE_10PCT"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "HIGH_GE_90PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_bdda6dba7b558dcc",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "LOW_LE_10PCT"
+    },
+    {
+      "confidence_level": "HIGH",
+      "coverage_band": "LOW_LT_70PCT",
+      "label": "QualityProfile",
+      "limitations_count": 1,
+      "population": "MAIN",
+      "quality_profile_key": "quality_00ac9296c3c83cd2",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "ROBUST",
+      "warning_dependency_ratio_band": "LOW_LE_10PCT"
+    },
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 2,
+      "population": "MAIN",
+      "quality_profile_key": "quality_1e46582fad2ded3a",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "MEDIUM_11_30PCT"
+    },
+    {
+      "confidence_level": "MEDIUM",
+      "coverage_band": "MEDIUM_70_89PCT",
+      "label": "QualityProfile",
+      "limitations_count": 2,
+      "population": "MAIN",
+      "quality_profile_key": "quality_1207492d91b9794e",
+      "same_day_dependency": "PARTIAL",
+      "small_sample": false,
+      "stability_status": "SENSITIVE",
+      "warning_dependency_ratio_band": "HIGH_GT_30PCT"
+    }
+  ],
+  "rejected_candidates": {
+    "GENERIC_PATTERN": 11,
+    "INSUFFICIENT_SUPPORT": 184,
+    "NGRAM_PRIMARY_FILTER": 6938,
+    "SMALL_SAMPLE": 24,
+    "UNSTABLE": 5626
+  }
+}

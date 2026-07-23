@@ -1,0 +1,32 @@
+{
+  "accounts": 500,
+  "accounts_requiring_data_review": 467,
+  "behavioral_events": 13927,
+  "events_after_cutoff_excluded": 0,
+  "events_at_or_before_cutoff": 13927,
+  "gate_result": "PASS_WITH_WARNINGS",
+  "historical_cutoff_support": true,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "mrr_band_thresholds": {
+    "basis_accounts": 488,
+    "q25": 2548.0,
+    "q50": 5174.0,
+    "q75": 8358.0
+  },
+  "quality_coverage_definition": "VALID_EVENTS_DIVIDED_BY_MAIN_USABLE_EVENTS",
+  "quality_first": true,
+  "quarantined_behavioral_signals": 0,
+  "quarantined_events_available_for_quality_only": 0,
+  "reference_date": "2024-12-31T19:00:00",
+  "strict_events": 10703
+}

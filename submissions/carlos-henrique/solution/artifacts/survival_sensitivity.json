@@ -1,0 +1,352 @@
+{
+  "classification_policy": {
+    "ROBUST": "relative difference <=10%",
+    "SENSITIVE": ">10% and <=30%",
+    "UNSTABLE": ">30%, missing support or changed ordering"
+  },
+  "metric_comparisons": [
+    {
+      "alternative": 0.9074446680080483,
+      "classification": "UNSTABLE",
+      "metric": "censoring_rate",
+      "reference": 0.35,
+      "scenario_id": "B_STRICT"
+    },
+    {
+      "alternative": 0.905281676291793,
+      "classification": "UNSTABLE",
+      "metric": "survival_90d",
+      "reference": 0.6261421954683256,
+      "scenario_id": "B_STRICT"
+    },
+    {
+      "alternative": 0.905281676291793,
+      "classification": "UNSTABLE",
+      "metric": "survival_180d",
+      "reference": 0.5128803120271309,
+      "scenario_id": "B_STRICT"
+    },
+    {
+      "alternative": 0.9015253207885076,
+      "classification": "UNSTABLE",
+      "metric": "survival_365d",
+      "reference": 0.33177574368361473,
+      "scenario_id": "B_STRICT"
+    },
+    {
+      "alternative": "Basic > Enterprise > Pro",
+      "classification": "UNSTABLE",
+      "metric": "first_plan_ordering_at_180d",
+      "reference": "Basic > Pro > Enterprise",
+      "scenario_id": "B_STRICT"
+    },
+    {
+      "alternative": 0.35,
+      "classification": "ROBUST",
+      "metric": "censoring_rate",
+      "reference": 0.35,
+      "scenario_id": "C_SIGNUP_ORIGIN"
+    },
+    {
+      "alternative": 0.694413622553771,
+      "classification": "SENSITIVE",
+      "metric": "survival_90d",
+      "reference": 0.6261421954683256,
+      "scenario_id": "C_SIGNUP_ORIGIN"
+    },
+    {
+      "alternative": 0.5574950885006018,
+      "classification": "ROBUST",
+      "metric": "survival_180d",
+      "reference": 0.5128803120271309,
+      "scenario_id": "C_SIGNUP_ORIGIN"
+    },
+    {
+      "alternative": 0.35731114339330977,
+      "classification": "ROBUST",
+      "metric": "survival_365d",
+      "reference": 0.33177574368361473,
+      "scenario_id": "C_SIGNUP_ORIGIN"
+    },
+    {
+      "alternative": "",
+      "classification": "UNSTABLE",
+      "metric": "first_plan_ordering_at_180d",
+      "reference": "Basic > Pro > Enterprise",
+      "scenario_id": "C_SIGNUP_ORIGIN"
+    },
+    {
+      "alternative": 0.35,
+      "classification": "ROBUST",
+      "metric": "censoring_rate",
+      "reference": 0.35,
+      "scenario_id": "D_SUBSCRIPTION_ORIGIN"
+    },
+    {
+      "alternative": 0.6261421954683256,
+      "classification": "ROBUST",
+      "metric": "survival_90d",
+      "reference": 0.6261421954683256,
+      "scenario_id": "D_SUBSCRIPTION_ORIGIN"
+    },
+    {
+      "alternative": 0.5128803120271309,
+      "classification": "ROBUST",
+      "metric": "survival_180d",
+      "reference": 0.5128803120271309,
+      "scenario_id": "D_SUBSCRIPTION_ORIGIN"
+    },
+    {
+      "alternative": 0.33177574368361473,
+      "classification": "ROBUST",
+      "metric": "survival_365d",
+      "reference": 0.33177574368361473,
+      "scenario_id": "D_SUBSCRIPTION_ORIGIN"
+    },
+    {
+      "alternative": "Basic > Pro > Enterprise",
+      "classification": "ROBUST",
+      "metric": "first_plan_ordering_at_180d",
+      "reference": "Basic > Pro > Enterprise",
+      "scenario_id": "D_SUBSCRIPTION_ORIGIN"
+    },
+    {
+      "alternative": 0.3539094650205762,
+      "classification": "ROBUST",
+      "metric": "censoring_rate",
+      "reference": 0.35,
+      "scenario_id": "E_NO_BASELINE_OVERLAP"
+    },
+    {
+      "alternative": 0.6393024857901182,
+      "classification": "ROBUST",
+      "metric": "survival_90d",
+      "reference": 0.6261421954683256,
+      "scenario_id": "E_NO_BASELINE_OVERLAP"
+    },
+    {
+      "alternative": 0.5232379006253964,
+      "classification": "ROBUST",
+      "metric": "survival_180d",
+      "reference": 0.5128803120271309,
+      "scenario_id": "E_NO_BASELINE_OVERLAP"
+    },
+    {
+      "alternative": 0.33743044672877104,
+      "classification": "ROBUST",
+      "metric": "survival_365d",
+      "reference": 0.33177574368361473,
+      "scenario_id": "E_NO_BASELINE_OVERLAP"
+    },
+    {
+      "alternative": "Basic > Pro > Enterprise",
+      "classification": "ROBUST",
+      "metric": "first_plan_ordering_at_180d",
+      "reference": "Basic > Pro > Enterprise",
+      "scenario_id": "E_NO_BASELINE_OVERLAP"
+    },
+    {
+      "alternative": 0.2936507936507936,
+      "classification": "SENSITIVE",
+      "metric": "censoring_rate",
+      "reference": 0.35,
+      "scenario_id": "F_QUALITY_GE_050"
+    },
+    {
+      "alternative": 0.785714285714286,
+      "classification": "SENSITIVE",
+      "metric": "survival_90d",
+      "reference": 0.6261421954683256,
+      "scenario_id": "F_QUALITY_GE_050"
+    },
+    {
+      "alternative": 0.6746031746031751,
+      "classification": "UNSTABLE",
+      "metric": "survival_180d",
+      "reference": 0.5128803120271309,
+      "scenario_id": "F_QUALITY_GE_050"
+    },
+    {
+      "alternative": 0.45878136200716885,
+      "classification": "UNSTABLE",
+      "metric": "survival_365d",
+      "reference": 0.33177574368361473,
+      "scenario_id": "F_QUALITY_GE_050"
+    },
+    {
+      "alternative": "Basic > Pro > Enterprise",
+      "classification": "ROBUST",
+      "metric": "first_plan_ordering_at_180d",
+      "reference": "Basic > Pro > Enterprise",
+      "scenario_id": "F_QUALITY_GE_050"
+    }
+  ],
+  "quality_coverage_threshold": 0.5,
+  "reference_scenario": "A_MAIN",
+  "scenarios": [
+    {
+      "censored_count": 175,
+      "censoring_rate": 0.35,
+      "description": "Principal: VALID + VALID_WITH_WARNING",
+      "event_count": 325,
+      "first_plan_ordering_at_180d": [
+        {
+          "group": "Basic",
+          "sample_size": 164,
+          "survival_180d": 0.5806584576998309
+        },
+        {
+          "group": "Pro",
+          "sample_size": 165,
+          "survival_180d": 0.49885551357605756
+        },
+        {
+          "group": "Enterprise",
+          "sample_size": 171,
+          "survival_180d": 0.4586431932124477
+        }
+      ],
+      "median_survival_days": 191.0,
+      "sample_size": 500,
+      "scenario_id": "A_MAIN",
+      "survival_180d": 0.5128803120271309,
+      "survival_365d": 0.33177574368361473,
+      "survival_90d": 0.6261421954683256,
+      "time_origin": "FIRST_SUBSCRIPTION_START"
+    },
+    {
+      "censored_count": 451,
+      "censoring_rate": 0.9074446680080483,
+      "description": "Estrita: somente VALID",
+      "event_count": 46,
+      "first_plan_ordering_at_180d": [
+        {
+          "group": "Basic",
+          "sample_size": 155,
+          "survival_180d": 0.9130712838480541
+        },
+        {
+          "group": "Enterprise",
+          "sample_size": 173,
+          "survival_180d": 0.9033072409756123
+        },
+        {
+          "group": "Pro",
+          "sample_size": 169,
+          "survival_180d": 0.900715277363368
+        }
+      ],
+      "median_survival_days": "NOT_REACHED",
+      "sample_size": 497,
+      "scenario_id": "B_STRICT",
+      "survival_180d": 0.905281676291793,
+      "survival_365d": 0.9015253207885076,
+      "survival_90d": 0.905281676291793,
+      "time_origin": "FIRST_SUBSCRIPTION_START"
+    },
+    {
+      "censored_count": 175,
+      "censoring_rate": 0.35,
+      "description": "Principal com origem no signup utilizável",
+      "event_count": 325,
+      "first_plan_ordering_at_180d": [],
+      "median_survival_days": 215.0,
+      "sample_size": 500,
+      "scenario_id": "C_SIGNUP_ORIGIN",
+      "survival_180d": 0.5574950885006018,
+      "survival_365d": 0.35731114339330977,
+      "survival_90d": 0.694413622553771,
+      "time_origin": "ACCOUNT_SIGNUP_TIME"
+    },
+    {
+      "censored_count": 175,
+      "censoring_rate": 0.35,
+      "description": "Repetição explícita da origem principal",
+      "event_count": 325,
+      "first_plan_ordering_at_180d": [
+        {
+          "group": "Basic",
+          "sample_size": 164,
+          "survival_180d": 0.5806584576998309
+        },
+        {
+          "group": "Pro",
+          "sample_size": 165,
+          "survival_180d": 0.49885551357605756
+        },
+        {
+          "group": "Enterprise",
+          "sample_size": 171,
+          "survival_180d": 0.4586431932124477
+        }
+      ],
+      "median_survival_days": 191.0,
+      "sample_size": 500,
+      "scenario_id": "D_SUBSCRIPTION_ORIGIN",
+      "survival_180d": 0.5128803120271309,
+      "survival_365d": 0.33177574368361473,
+      "survival_90d": 0.6261421954683256,
+      "time_origin": "FIRST_SUBSCRIPTION_START"
+    },
+    {
+      "censored_count": 172,
+      "censoring_rate": 0.3539094650205762,
+      "description": "Exclusão de contas com sobreposição no baseline",
+      "event_count": 314,
+      "first_plan_ordering_at_180d": [
+        {
+          "group": "Basic",
+          "sample_size": 159,
+          "survival_180d": 0.5924709340557003
+        },
+        {
+          "group": "Pro",
+          "sample_size": 161,
+          "survival_180d": 0.5041765707859253
+        },
+        {
+          "group": "Enterprise",
+          "sample_size": 166,
+          "survival_180d": 0.47259216791308634
+        }
+      ],
+      "median_survival_days": 197.0,
+      "sample_size": 486,
+      "scenario_id": "E_NO_BASELINE_OVERLAP",
+      "survival_180d": 0.5232379006253964,
+      "survival_365d": 0.33743044672877104,
+      "survival_90d": 0.6393024857901182,
+      "time_origin": "FIRST_SUBSCRIPTION_START"
+    },
+    {
+      "censored_count": 37,
+      "censoring_rate": 0.2936507936507936,
+      "description": "Cobertura de qualidade ≥ 0.50",
+      "event_count": 89,
+      "first_plan_ordering_at_180d": [
+        {
+          "group": "Basic",
+          "sample_size": 43,
+          "survival_180d": 0.7441860465116278
+        },
+        {
+          "group": "Pro",
+          "sample_size": 47,
+          "survival_180d": 0.6595744680851062
+        },
+        {
+          "group": "Enterprise",
+          "sample_size": 36,
+          "survival_180d": 0.611111111111111
+        }
+      ],
+      "median_survival_days": 305.0,
+      "sample_size": 126,
+      "scenario_id": "F_QUALITY_GE_050",
+      "survival_180d": 0.6746031746031751,
+      "survival_365d": 0.45878136200716885,
+      "survival_90d": 0.785714285714286,
+      "time_origin": "FIRST_SUBSCRIPTION_START"
+    }
+  ]
+}

@@ -1,0 +1,561 @@
+{
+  "assignment_is_simulation_only": true,
+  "checks": [
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "associated_mrr",
+      "experiment_id": "EXP001",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": -0.05269132345932301
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "usage_count_30d",
+      "experiment_id": "EXP001",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.0
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 12,
+      "covariate": "support_count_90d",
+      "experiment_id": "EXP001",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": -0.5201564866102993
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 12,
+      "covariate": "quality_coverage_ratio",
+      "experiment_id": "EXP001",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.5405554985285446
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "mrr_band",
+      "experiment_id": "EXP001",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.037878787878787956
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "taxonomy_class",
+      "experiment_id": "EXP001",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.0
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "primary_outcome",
+      "experiment_id": "EXP001",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.0
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "data_confidence",
+      "experiment_id": "EXP001",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.0
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 12,
+      "covariate": "priority",
+      "experiment_id": "EXP001",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.0
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "associated_mrr",
+      "experiment_id": "EXP002",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.07838430954520234
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 35,
+      "covariate": "usage_count_30d",
+      "experiment_id": "EXP002",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.17820260919583347
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 35,
+      "covariate": "support_count_90d",
+      "experiment_id": "EXP002",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": -0.1965521569392112
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "quality_coverage_ratio",
+      "experiment_id": "EXP002",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": -0.06349607810860447
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "mrr_band",
+      "experiment_id": "EXP002",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.02436974789915966
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "taxonomy_class",
+      "experiment_id": "EXP002",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.08991596638655464
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "primary_outcome",
+      "experiment_id": "EXP002",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.061344537815126055
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "data_confidence",
+      "experiment_id": "EXP002",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.0
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 35,
+      "covariate": "priority",
+      "experiment_id": "EXP002",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 34,
+      "value": 0.04033613445378148
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "associated_mrr",
+      "experiment_id": "EXP004",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": -0.11255738308891257
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "usage_count_30d",
+      "experiment_id": "EXP004",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.9138071548969888
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "support_count_90d",
+      "experiment_id": "EXP004",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.22019275302527203
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "quality_coverage_ratio",
+      "experiment_id": "EXP004",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.2979336902855505
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "mrr_band",
+      "experiment_id": "EXP004",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.1090909090909091
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "taxonomy_class",
+      "experiment_id": "EXP004",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.2666666666666667
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 15,
+      "covariate": "primary_outcome",
+      "experiment_id": "EXP004",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.06666666666666667
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "data_confidence",
+      "experiment_id": "EXP004",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.13333333333333333
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 15,
+      "covariate": "priority",
+      "experiment_id": "EXP004",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 11,
+      "value": 0.10909090909090902
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 10,
+      "covariate": "associated_mrr",
+      "experiment_id": "EXP005",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 0.21669889602546621
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 10,
+      "covariate": "usage_count_30d",
+      "experiment_id": "EXP005",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": -0.12101780416321026
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 10,
+      "covariate": "support_count_90d",
+      "experiment_id": "EXP005",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 1.009049958219026
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 10,
+      "covariate": "quality_coverage_ratio",
+      "experiment_id": "EXP005",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": -0.7772186674563635
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 10,
+      "covariate": "mrr_band",
+      "experiment_id": "EXP005",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 0.05555555555555558
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 10,
+      "covariate": "taxonomy_class",
+      "experiment_id": "EXP005",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 0.07777777777777783
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 10,
+      "covariate": "primary_outcome",
+      "experiment_id": "EXP005",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 0.18888888888888888
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 10,
+      "covariate": "data_confidence",
+      "experiment_id": "EXP005",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 0.0
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 10,
+      "covariate": "priority",
+      "experiment_id": "EXP005",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 9,
+      "value": 0.1111111111111111
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "associated_mrr",
+      "experiment_id": "EXP006",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": -0.06293785131828294
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "usage_count_30d",
+      "experiment_id": "EXP006",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": -0.07964642792628567
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 234,
+      "covariate": "support_count_90d",
+      "experiment_id": "EXP006",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": -0.1028092607619174
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "quality_coverage_ratio",
+      "experiment_id": "EXP006",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": -0.06537177596603191
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "mrr_band",
+      "experiment_id": "EXP006",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": 0.0043106651802303775
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "taxonomy_class",
+      "experiment_id": "EXP006",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": 0.05797101449275366
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "primary_outcome",
+      "experiment_id": "EXP006",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": 0.04912671869193608
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "data_confidence",
+      "experiment_id": "EXP006",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": 0.008175399479747325
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 234,
+      "covariate": "priority",
+      "experiment_id": "EXP006",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 230,
+      "value": 0.00014864362690447663
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "associated_mrr",
+      "experiment_id": "EXP008",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": -0.07156162608453473
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 27,
+      "covariate": "usage_count_30d",
+      "experiment_id": "EXP008",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.28862308218628435
+    },
+    {
+      "balance_status": "REVIEW_REQUIRED",
+      "control_n": 27,
+      "covariate": "support_count_90d",
+      "experiment_id": "EXP008",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": -0.1516328167789475
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "quality_coverage_ratio",
+      "experiment_id": "EXP008",
+      "metric": "STANDARDIZED_MEAN_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.06474732608738204
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "mrr_band",
+      "experiment_id": "EXP008",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.012820512820512775
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "taxonomy_class",
+      "experiment_id": "EXP008",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.056980056980056926
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "primary_outcome",
+      "experiment_id": "EXP008",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.09686609686609682
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "data_confidence",
+      "experiment_id": "EXP008",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.03276353276353275
+    },
+    {
+      "balance_status": "PASS",
+      "control_n": 27,
+      "covariate": "priority",
+      "experiment_id": "EXP008",
+      "metric": "MAX_PROPORTION_DIFFERENCE",
+      "threshold": 0.1,
+      "treatment_n": 26,
+      "value": 0.03988603988603989
+    }
+  ],
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  }
+}

@@ -1,0 +1,151 @@
+const structuredLabels: Record<string, string> = {
+  ALL: "Todos",
+  VALID: "Válido",
+  VALID_WITH_WARNING: "Válido com alerta",
+  QUARANTINED: "Em quarentena",
+  MAIN: "Principal",
+  STRICT: "Estrita",
+  HIGH: "Alto",
+  MEDIUM: "Médio",
+  LOW: "Baixo",
+  VERY_HIGH: "Muito alto",
+  ROBUST: "Robusto",
+  SENSITIVE: "Sensível",
+  UNSTABLE: "Instável",
+  READY_FOR_REVIEW: "Pronto para revisão",
+  PILOT_ONLY: "Somente piloto",
+  UNDERPOWERED: "Subdimensionado",
+  NOT_FEASIBLE: "Não viável",
+  UNTESTED: "Não testado",
+  P1: "P1",
+  P2: "P2",
+  P3: "P3",
+  P4: "P4",
+  ACCOUNT: "Conta",
+  SUBSCRIPTION_START: "Início da assinatura",
+  SUBSCRIPTION_END: "Fim da assinatura",
+  FEATURE: "Funcionalidade",
+  SUPPORT_OPEN: "Abertura de suporte",
+  SUPPORT_CLOSE: "Encerramento de suporte",
+  CHURN: "Churn",
+  REACTIVATION: "Reativação",
+  NO_CHURN_OBSERVED: "Sem churn observado",
+  SINGLE_CHURN: "Churn único",
+  RECURRING_CHURN: "Churn recorrente",
+  REACTIVATED: "Reativada",
+  REACTIVATED_THEN_CHURNED_AGAIN: "Reativada e com novo churn",
+  HIGH_VALUE_LOW_USAGE: "Alto valor e baixo uso",
+  RECURRING_CHURN_PATH: "Caminho de churn recorrente",
+  RECOVERY_JOURNEY: "Jornada de recuperação",
+  CHURN_PATH: "Caminho de churn",
+  BEHAVIORAL_INVESTIGATION: "Revisão comportamental",
+  DATA_QUALITY_BACKLOG: "Pendências de qualidade dos dados",
+  DATA_QUALITY_REVIEW: "Revisão de qualidade dos dados",
+  ADOPTION_REVIEW: "Revisão de adoção",
+  REACTIVATION_REVIEW: "Revisão de reativação",
+  RECENT_CHURN_REVIEW: "Revisão de churn recente",
+  RECURRING_CHURN_REVIEW: "Revisão de churn recorrente",
+  SUPPORT_JOURNEY_REVIEW: "Revisão da jornada de suporte",
+  HIGH_MRR_LOW_ENGAGEMENT_REVIEW: "Revisão de alto MRR e baixo engajamento",
+  HIGH_MRR_DATA_QUALITY_REVIEW: "Revisão de qualidade para alto MRR",
+  LOW_ENGAGEMENT_TAXONOMY: "Taxonomia de baixo engajamento",
+  LOW_USAGE_30D_HIGH_MRR: "Baixo uso em 30 dias e alto MRR",
+  MAIN_STRICT_DIVERGENCE: "Divergência entre populações principal e estrita",
+  MULTIPLE_CHURN_EVENTS: "Múltiplos eventos de churn",
+  PROMOTABLE_CHURN_PATH_MATCH: "Correspondência com caminho de churn promovível",
+  REACTIVATED_WITH_USAGE_RETURN: "Reativação com retorno de uso",
+  RECENT_RECURRING_CHURN: "Churn recorrente recente",
+  REPEATED_SUPPORT_LOW_SATISFACTION: "Suporte repetido e baixa satisfação",
+  SINGLE_FEATURE_ADOPTION: "Adoção de uma única funcionalidade",
+  SUBSCRIPTION_OVERLAP_REVIEW: "Revisão de sobreposição de assinaturas",
+  SUPPORT_NEAR_CHURN: "Suporte próximo ao churn",
+  HIGH_MRR_LOW_ENGAGEMENT_ADOPTION: "Adoção para alto MRR e baixo engajamento",
+  LOW_ENGAGEMENT_FEATURE_DISCOVERY: "Descoberta de funcionalidades com baixo engajamento",
+  ONBOARDING_ADOPTION_CHECKLIST: "Checklist de adoção no onboarding",
+  REACTIVATION_EXPERIENCE_PILOT: "Piloto de experiência de reativação",
+  RECENT_CHURN_CONTEXT_STUDY: "Estudo de contexto de churn recente",
+  RECURRING_CHURN_REVIEW_PROCESS: "Processo de revisão de churn recorrente",
+  SUBSCRIPTION_DATA_RECONCILIATION: "Reconciliação de dados de assinatura",
+  SUPPORT_FOLLOW_UP: "Acompanhamento de suporte",
+  ADOPTION_RATE_30D: "Taxa de adoção em 30 dias",
+  FEATURE_DIVERSITY_30D: "Diversidade de funcionalidades em 30 dias",
+  FEATURE_DIVERSITY_90D: "Diversidade de funcionalidades em 90 dias",
+  REACTIVATION_USAGE_RETURN: "Retorno de uso após reativação",
+  SUBSCRIPTION_CONTINUATION: "Continuidade da assinatura",
+  SUBSCRIPTION_RECONCILIATION_RATE: "Taxa de reconciliação de assinaturas",
+  SUPPORT_RECURRENCE_30D: "Recorrência de suporte em 30 dias",
+  TIME_TO_OBSERVED_CHURN: "Tempo até o churn observado",
+  EventType: "Tipo de evento",
+  Pattern: "Padrão",
+  Outcome: "Desfecho",
+  QualityProfile: "Perfil de qualidade",
+  Finding: "Achado",
+  Investigation: "Investigação",
+  CONTAINS_EVENT_TYPE: "Contém tipo de evento",
+  RECOMMENDS_INVESTIGATION: "Indica investigação",
+  SUPPORTED_BY: "Sustentado por",
+  TRANSITIONS_TO: "Transiciona para",
+  "event-flow": "Fluxo de eventos",
+  "pattern-explorer": "Explorador de padrões",
+  "governance-view": "Visão de governança",
+  account_support: "Suporte de contas",
+  denominator_accounts: "Contas no denominador",
+  quality_population: "População de qualidade",
+  stability_status: "Status de estabilidade",
+  evidence_strength: "Força da evidência",
+  associated_mrr: "MRR associado",
+  associated_mrr_band: "Faixa de MRR associado",
+  temporal_urgency: "Urgência temporal",
+  materiality: "Materialidade",
+  data_confidence: "Confiança dos dados",
+  account_count: "Contagem de contas",
+  event_count: "Contagem de eventos",
+  transition_count: "Contagem de transições",
+  rule_id: "ID da regra",
+  source_artifact: "Artefato de origem",
+  ACCOUNT_UNIT: "Conta",
+  COHORT: "Coorte",
+  SUPPORT_AGENT: "Agente de suporte",
+  RANDOMIZED_CONTROLLED_TRIAL: "Ensaio controlado randomizado",
+  CLUSTER_RANDOMIZED_TRIAL: "Ensaio randomizado por grupos",
+  PILOT_FEASIBILITY_STUDY: "Estudo-piloto de viabilidade",
+  DATA_QUALITY_STUDY: "Estudo de qualidade dos dados",
+  STEPPED_WEDGE: "Implementação escalonada",
+  QUASI_EXPERIMENT: "Quase-experimento",
+  PROPORTION: "Proporção",
+  PASS: "Aprovado",
+  PASS_WITH_CONSTRAINTS: "Aprovado com restrições",
+  PASS_WITH_APPROVAL: "Aprovado mediante autorização",
+  FAIL: "Reprovado",
+  "Customer Success + Billing + Data Governance": "Customer Success + Cobrança + Governança de Dados",
+  "Customer Success + Product Analytics": "Customer Success + Analytics de Produto",
+  "Customer Success + Support Analytics": "Customer Success + Analytics de Suporte",
+  "Data Governance + Analytics Engineering": "Governança de Dados + Engenharia Analítica",
+  "Product Analytics + Customer Success": "Analytics de Produto + Customer Success"
+};
+
+export function formatStructuredLabel(value: string): string {
+  return structuredLabels[value] ?? value;
+}
+
+export function formatIntegerPtBr(value: number): string {
+  return new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 }).format(value);
+}
+
+export function formatDecimalPtBr(value: number, maximumFractionDigits = 1): string {
+  return new Intl.NumberFormat("pt-BR", { maximumFractionDigits }).format(value);
+}
+
+export function formatPercentPtBr(value: number, maximumFractionDigits = 1): string {
+  return new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits }).format(value);
+}
+
+export function formatCurrencyPtBr(value: number): string {
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
+}
+
+export function formatDatePtBr(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(date);
+}

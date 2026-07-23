@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "queues": [
+    {
+      "accounts": 69,
+      "confidence": {
+        "MEDIUM": 75
+      },
+      "deduplicated_associated_mrr": 467213.0,
+      "items": 75,
+      "population_denominator": 500,
+      "population_share": 0.138,
+      "priorities": {
+        "P1": 17,
+        "P2": 27,
+        "P3": 31
+      },
+      "queue": "ADOPTION_REVIEW"
+    },
+    {
+      "accounts": 467,
+      "confidence": {
+        "LOW": 51,
+        "MEDIUM": 775
+      },
+      "deduplicated_associated_mrr": 2844385.0,
+      "items": 826,
+      "population_denominator": 500,
+      "population_share": 0.934,
+      "priorities": {
+        "P1": 504,
+        "P3": 322
+      },
+      "queue": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "accounts": 23,
+      "confidence": {
+        "MEDIUM": 23
+      },
+      "deduplicated_associated_mrr": 226661.0,
+      "items": 23,
+      "population_denominator": 500,
+      "population_share": 0.046,
+      "priorities": {
+        "P1": 23
+      },
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "accounts": 21,
+      "confidence": {
+        "LOW": 2,
+        "MEDIUM": 22
+      },
+      "deduplicated_associated_mrr": 66082.0,
+      "items": 24,
+      "population_denominator": 500,
+      "population_share": 0.042,
+      "priorities": {
+        "P2": 1,
+        "P3": 20,
+        "P4": 3
+      },
+      "queue": "REACTIVATION_REVIEW"
+    },
+    {
+      "accounts": 311,
+      "confidence": {
+        "HIGH": 8,
+        "LOW": 3,
+        "MEDIUM": 370
+      },
+      "deduplicated_associated_mrr": 1526215.0,
+      "items": 381,
+      "population_denominator": 500,
+      "population_share": 0.622,
+      "priorities": {
+        "P1": 1,
+        "P2": 110,
+        "P3": 270
+      },
+      "queue": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "accounts": 126,
+      "confidence": {
+        "HIGH": 4,
+        "LOW": 10,
+        "MEDIUM": 192
+      },
+      "deduplicated_associated_mrr": 561363.0,
+      "items": 206,
+      "population_denominator": 500,
+      "population_share": 0.252,
+      "priorities": {
+        "P1": 2,
+        "P2": 52,
+        "P3": 152
+      },
+      "queue": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "accounts": 69,
+      "confidence": {
+        "LOW": 5,
+        "MEDIUM": 69
+      },
+      "deduplicated_associated_mrr": 391015.0,
+      "items": 74,
+      "population_denominator": 500,
+      "population_share": 0.138,
+      "priorities": {
+        "P1": 1,
+        "P2": 23,
+        "P3": 50
+      },
+      "queue": "SUPPORT_JOURNEY_REVIEW"
+    }
+  ]
+}

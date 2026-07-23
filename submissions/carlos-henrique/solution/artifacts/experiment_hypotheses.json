@@ -1,0 +1,374 @@
+{
+  "hypotheses": [
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "LOW",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "RANDOMIZED_CONTROLLED_TRIAL",
+      "directionality": "INCREASE",
+      "ethical_risk": "MEDIUM",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 30,
+      "experiment_id": "EXP001",
+      "experiment_name": "HIGH_MRR_LOW_ENGAGEMENT_ADOPTION",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 30,
+      "guardrail_metrics": [
+        "SUPPORT_RECURRENCE_30D",
+        "SATISFACTION_RATE"
+      ],
+      "hypothesis_id": "H001",
+      "intervention_id": "I001",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "Structured product education may change observed 30-day adoption; the mechanism is untested.",
+      "minimum_detectable_effect": 0.1,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Higher associated-MRR accounts showed low recent usage at the historical cutoff.",
+      "operational_complexity": "MEDIUM",
+      "primary_metric": "ADOPTION_RATE_30D",
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "secondary_metrics": [
+        "ACTIVE_USAGE_DAYS_30D",
+        "FEATURE_DIVERSITY_30D",
+        "OBSERVED_CHURN_RATE"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "ACCOUNT",
+      "watchlist_rule_ids": [
+        "W001",
+        "W002"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "RANDOMIZED_CONTROLLED_TRIAL",
+      "directionality": "INCREASE",
+      "ethical_risk": "LOW",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 30,
+      "experiment_id": "EXP002",
+      "experiment_name": "LOW_ENGAGEMENT_FEATURE_DISCOVERY",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 30,
+      "guardrail_metrics": [
+        "SUPPORT_RECURRENCE_30D",
+        "SATISFACTION_RATE"
+      ],
+      "hypothesis_id": "H002",
+      "intervention_id": "I002",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "Non-coercive in-app discovery may change feature diversity; the mechanism is untested.",
+      "minimum_detectable_effect": 0.5,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Some accounts showed low or narrow feature adoption at the cutoff.",
+      "operational_complexity": "HIGH",
+      "primary_metric": "FEATURE_DIVERSITY_30D",
+      "queue": "ADOPTION_REVIEW",
+      "secondary_metrics": [
+        "ADOPTION_RATE_30D",
+        "ACTIVE_USAGE_DAYS_30D"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "ACCOUNT",
+      "watchlist_rule_ids": [
+        "W003",
+        "W016"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "HIGH",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "CLUSTER_RANDOMIZED_TRIAL",
+      "directionality": "DECREASE",
+      "ethical_risk": "MEDIUM",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 60,
+      "experiment_id": "EXP003",
+      "experiment_name": "SUPPORT_FOLLOW_UP",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 30,
+      "guardrail_metrics": [
+        "OBSERVED_CHURN_RATE",
+        "DATA_COMPLETENESS"
+      ],
+      "hypothesis_id": "H003",
+      "intervention_id": "I004",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "A consistent post-resolution process may change support recurrence or measured satisfaction; the mechanism is untested.",
+      "minimum_detectable_effect": 0.1,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Support events occurred near churn or repeatedly in some historical journeys.",
+      "operational_complexity": "HIGH",
+      "primary_metric": "SUPPORT_RECURRENCE_30D",
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "secondary_metrics": [
+        "SATISFACTION_RATE",
+        "ADOPTION_RATE_30D"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "SUPPORT_AGENT",
+      "watchlist_rule_ids": [
+        "W009",
+        "W010"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "RANDOMIZED_CONTROLLED_TRIAL",
+      "directionality": "INCREASE",
+      "ethical_risk": "HIGH",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 90,
+      "experiment_id": "EXP004",
+      "experiment_name": "RECURRING_CHURN_REVIEW_PROCESS",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 90,
+      "guardrail_metrics": [
+        "SATISFACTION_RATE",
+        "SUPPORT_RECURRENCE_30D"
+      ],
+      "hypothesis_id": "H004",
+      "intervention_id": "I003",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "A structured human review process may change subscription continuation; the mechanism is untested.",
+      "minimum_detectable_effect": 0.1,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Multiple observed churn events occurred for a subset of accounts.",
+      "operational_complexity": "HIGH",
+      "primary_metric": "SUBSCRIPTION_CONTINUATION",
+      "queue": "RECURRING_CHURN_REVIEW",
+      "secondary_metrics": [
+        "TIME_TO_OBSERVED_CHURN",
+        "ADOPTION_RATE_30D"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "ACCOUNT",
+      "watchlist_rule_ids": [
+        "W005",
+        "W006"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "PILOT_FEASIBILITY_STUDY",
+      "directionality": "INCREASE",
+      "ethical_risk": "MEDIUM",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 30,
+      "experiment_id": "EXP005",
+      "experiment_name": "REACTIVATION_EXPERIENCE_PILOT",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 30,
+      "guardrail_metrics": [
+        "SUPPORT_RECURRENCE_30D",
+        "OBSERVED_CHURN_RATE"
+      ],
+      "hypothesis_id": "H005",
+      "intervention_id": "I007",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "A structured post-reactivation experience may change observed usage return; the small population supports a pilot only.",
+      "minimum_detectable_effect": 0.15,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Explicit reactivation was observed for a small historical population.",
+      "operational_complexity": "MEDIUM",
+      "primary_metric": "REACTIVATION_USAGE_RETURN",
+      "queue": "REACTIVATION_REVIEW",
+      "secondary_metrics": [
+        "ACTIVE_USAGE_DAYS_30D",
+        "SUBSCRIPTION_CONTINUATION"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "ACCOUNT",
+      "watchlist_rule_ids": [
+        "W007",
+        "W008"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "HIGH",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "DATA_QUALITY_STUDY",
+      "directionality": "INCREASE",
+      "ethical_risk": "LOW",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 60,
+      "experiment_id": "EXP006",
+      "experiment_name": "SUBSCRIPTION_DATA_RECONCILIATION",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 30,
+      "guardrail_metrics": [
+        "DATA_COMPLETENESS"
+      ],
+      "hypothesis_id": "H006",
+      "intervention_id": "I009",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "A governed instrumentation and reconciliation change may improve measurable subscription consistency; this is a data-quality study.",
+      "minimum_detectable_effect": 0.1,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Subscription overlap and quality constraints limit historical interpretation for many accounts.",
+      "operational_complexity": "HIGH",
+      "primary_metric": "SUBSCRIPTION_RECONCILIATION_RATE",
+      "queue": "DATA_QUALITY_REVIEW",
+      "secondary_metrics": [
+        "DATA_COMPLETENESS",
+        "TIMESTAMP_VALIDITY_RATE"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "COHORT",
+      "watchlist_rule_ids": [
+        "W011",
+        "W012",
+        "W013",
+        "W014"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "HIGH",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "STEPPED_WEDGE",
+      "directionality": "INCREASE",
+      "ethical_risk": "LOW",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 90,
+      "experiment_id": "EXP007",
+      "experiment_name": "ONBOARDING_ADOPTION_CHECKLIST",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 90,
+      "guardrail_metrics": [
+        "SUPPORT_RECURRENCE_30D",
+        "SATISFACTION_RATE"
+      ],
+      "hypothesis_id": "H007",
+      "intervention_id": "I006",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "A versioned checklist may change 90-day feature diversity; the mechanism is untested.",
+      "minimum_detectable_effect": 0.5,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Low feature diversity was observed in the adoption-review population.",
+      "operational_complexity": "HIGH",
+      "primary_metric": "FEATURE_DIVERSITY_90D",
+      "queue": "ADOPTION_REVIEW",
+      "secondary_metrics": [
+        "TIME_TO_FIRST_FEATURE",
+        "ADOPTION_RATE_30D"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "COHORT",
+      "watchlist_rule_ids": [
+        "W003",
+        "W016"
+      ]
+    },
+    {
+      "alternative_hypothesis": "A difference exists in the pre-specified direction for the primary estimand.",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "data_confidence": "TO_BE_DERIVED",
+      "design_type": "QUASI_EXPERIMENT",
+      "directionality": "TWO_SIDED",
+      "ethical_risk": "LOW",
+      "evidence_strength": "HISTORICAL_DESCRIPTIVE_ONLY",
+      "expected_duration": 90,
+      "experiment_id": "EXP008",
+      "experiment_name": "RECENT_CHURN_CONTEXT_STUDY",
+      "feasibility_status": "TO_BE_EVALUATED",
+      "follow_up_window": 90,
+      "guardrail_metrics": [
+        "DATA_COMPLETENESS"
+      ],
+      "hypothesis_id": "H008",
+      "intervention_id": "I010",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_A_CONTROL"
+      ],
+      "mechanism_hypothesis": "No treatment mechanism is asserted; a matched observational design could validate measurement and confounding assumptions.",
+      "minimum_detectable_effect": 0.8,
+      "null_hypothesis": "No difference in the pre-specified primary estimand between future comparison groups.",
+      "observation": "Recent churn and promoted churn-path context were observed historically.",
+      "operational_complexity": "MEDIUM",
+      "primary_metric": "TIME_TO_OBSERVED_CHURN",
+      "queue": "RECENT_CHURN_REVIEW",
+      "secondary_metrics": [
+        "OBSERVED_CHURN_RATE",
+        "SUBSCRIPTION_CONTINUATION"
+      ],
+      "target_population": "WATCHLIST_QUEUE_WITH_GOVERNED_ELIGIBILITY",
+      "unit_of_analysis": "ACCOUNT",
+      "unit_of_randomization": "ACCOUNT",
+      "watchlist_rule_ids": [
+        "W004",
+        "W015"
+      ]
+    }
+  ],
+  "hypothesis_count": 8,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  }
+}

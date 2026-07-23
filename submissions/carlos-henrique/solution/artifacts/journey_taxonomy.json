@@ -1,0 +1,160 @@
+{
+  "classification_is_descriptive": true,
+  "definitions": [
+    {
+      "business_interpretation": "Observed product adoption path.",
+      "definition": "High 30-day use and multiple active days after subscription start.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL"
+      ],
+      "name": "ADOPTION_JOURNEY",
+      "required_conditions": [
+        "feature_event_count_30d >= population Q67",
+        "active_days_30d >= 2"
+      ],
+      "taxonomy_id": "J01",
+      "temporal_window": "30D"
+    },
+    {
+      "business_interpretation": "Observed low-engagement path.",
+      "definition": "Low activity in the fixed 30-day window.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "ABSENCE_OF_EVENT_IS_NOT_INTERVENTION"
+      ],
+      "name": "LOW_ENGAGEMENT_JOURNEY",
+      "required_conditions": [
+        "feature_event_count_30d <= population Q33"
+      ],
+      "taxonomy_id": "J02",
+      "temporal_window": "30D"
+    },
+    {
+      "business_interpretation": "Support-intensive observed path.",
+      "definition": "At least three support openings in the observed journey.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "TICKET_CONTENT_NOT_USED"
+      ],
+      "name": "SUPPORT_HEAVY_JOURNEY",
+      "required_conditions": [
+        "support_open_count >= 3"
+      ],
+      "taxonomy_id": "J03",
+      "temporal_window": "FULL"
+    },
+    {
+      "business_interpretation": "First-churn descriptive path.",
+      "definition": "Observed journey includes one churn and no later recovery class.",
+      "exclusion_conditions": [
+        "RECURRING_CHURN_PATH"
+      ],
+      "limitations": [
+        "NO_CAUSAL_ATTRIBUTION"
+      ],
+      "name": "CHURN_PATH",
+      "required_conditions": [
+        "churn_count = 1"
+      ],
+      "taxonomy_id": "J04",
+      "temporal_window": "FULL"
+    },
+    {
+      "business_interpretation": "Repeated churn path.",
+      "definition": "Observed journey contains at least two churn events.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE"
+      ],
+      "name": "RECURRING_CHURN_PATH",
+      "required_conditions": [
+        "churn_count >= 2"
+      ],
+      "taxonomy_id": "J05",
+      "temporal_window": "FULL"
+    },
+    {
+      "business_interpretation": "Observed reactivation path.",
+      "definition": "Churn is followed by an observed reactivation.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "CUSTOMER_SUCCESS_ACTION_NOT_INFERRED"
+      ],
+      "name": "REACTIVATION_PATH",
+      "required_conditions": [
+        "reactivation_count >= 1"
+      ],
+      "taxonomy_id": "J06",
+      "temporal_window": "POST_CHURN"
+    },
+    {
+      "business_interpretation": "Observed activity recovery.",
+      "definition": "Reactivation is followed by feature use or subscription start.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "ACTIVITY_DOES_NOT_IMPLY_CAUSATION"
+      ],
+      "name": "RECOVERY_JOURNEY",
+      "required_conditions": [
+        "post_reactivation_activity = true"
+      ],
+      "taxonomy_id": "J07",
+      "temporal_window": "POST_REACTIVATION"
+    },
+    {
+      "business_interpretation": "Long observed inactivity interval.",
+      "definition": "At least 90 days between adjacent usable events.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "OUTSIDE_SYSTEM_ACTIVITY_UNOBSERVED"
+      ],
+      "name": "DORMANT_JOURNEY",
+      "required_conditions": [
+        "maximum_event_gap_days >= 90"
+      ],
+      "taxonomy_id": "J08",
+      "temporal_window": "FULL"
+    },
+    {
+      "business_interpretation": "High-value low-use observed path.",
+      "definition": "High MRR and low activity in a fixed window.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "VALUE_BAND_IS_DESCRIPTIVE"
+      ],
+      "name": "HIGH_VALUE_LOW_USAGE",
+      "required_conditions": [
+        "max_mrr >= 2000",
+        "feature_event_count_30d <= population Q33"
+      ],
+      "taxonomy_id": "J09",
+      "temporal_window": "30D"
+    },
+    {
+      "business_interpretation": "Journey interpretation requires quality caution.",
+      "definition": "Warnings or limited quality coverage constrain classification.",
+      "exclusion_conditions": [],
+      "limitations": [
+        "QUALITY_STATUS_NOT_CUSTOMER_BEHAVIOR"
+      ],
+      "name": "DATA_QUALITY_CONSTRAINED",
+      "required_conditions": [
+        "quality_coverage_ratio < 0.80 or warning-dependent"
+      ],
+      "taxonomy_id": "J10",
+      "temporal_window": "FULL"
+    }
+  ],
+  "main_distribution": {
+    "ADOPTION_JOURNEY": 43,
+    "CHURN_PATH": 190,
+    "DATA_QUALITY_CONSTRAINED": 20,
+    "DORMANT_JOURNEY": 24,
+    "HIGH_VALUE_LOW_USAGE": 39,
+    "REACTIVATION_PATH": 2,
+    "RECOVERY_JOURNEY": 17,
+    "RECURRING_CHURN_PATH": 116,
+    "SUPPORT_HEAVY_JOURNEY": 49
+  }
+}

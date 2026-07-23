@@ -1,0 +1,116 @@
+{
+  "catalog_version": "8.0.0",
+  "execution_policy": "DESIGN_ONLY_NO_DELIVERY",
+  "interventions": [
+    {
+      "intervention_id": "I001", "name": "PRODUCT_EDUCATION_GUIDE", "target_queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "description": "Candidate educational content about existing product capabilities.",
+      "mechanism_hypothesis": "Clear guidance may change observed feature adoption; this remains untested.",
+      "delivery_channel": "FUTURE_GOVERNED_CONTENT", "operational_owner": "Product Education + Customer Success",
+      "required_capabilities": ["content approval", "consent policy", "exposure logging"], "required_data": ["delivery", "exposure", "feature usage"],
+      "eligibility_requirements": ["MEDIUM_OR_HIGH_DATA_CONFIDENCE", "OBSERVABLE_30D_FOLLOW_UP"], "exclusion_conditions": ["ACTIVE_CONFLICTING_EXPERIMENT", "MATERIAL_DATA_BLOCKER"],
+      "ethical_considerations": ["equal access", "non-coercive language", "data minimization"], "operational_risks": ["delivery failure", "excess communication"],
+      "contamination_risks": ["content sharing between accounts"], "cost_category": "LOW", "reversibility": "HIGH", "requires_approval": true,
+      "prohibited_uses": ["automatic outreach", "discount", "individual effect claim"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I002", "name": "IN_APP_FEATURE_DISCOVERY", "target_queue": "ADOPTION_REVIEW",
+      "description": "Candidate non-coercive in-product feature discovery guidance.",
+      "mechanism_hypothesis": "Discoverability guidance may change observed feature diversity; this remains untested.",
+      "delivery_channel": "FUTURE_IN_APP", "operational_owner": "Product + Analytics",
+      "required_capabilities": ["feature flag", "exposure logging", "consent review"], "required_data": ["exposure", "feature usage", "product release log"],
+      "eligibility_requirements": ["MEDIUM_OR_HIGH_DATA_CONFIDENCE", "OBSERVABLE_30D_FOLLOW_UP"], "exclusion_conditions": ["GLOBAL_ROLLOUT", "RECENT_PRODUCT_EXPOSURE"],
+      "ethical_considerations": ["accessible design", "equal treatment"], "operational_risks": ["product friction", "simultaneous release"],
+      "contamination_risks": ["global product behavior"], "cost_category": "MEDIUM", "reversibility": "HIGH", "requires_approval": true,
+      "prohibited_uses": ["dark pattern", "forced activation", "individual effect claim"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I003", "name": "CUSTOMER_SUCCESS_REVIEW", "target_queue": "RECURRING_CHURN_REVIEW",
+      "description": "Candidate structured human review of account context.",
+      "mechanism_hypothesis": "A consistent review process may improve process completeness; downstream outcomes remain untested.",
+      "delivery_channel": "FUTURE_HUMAN_WORKFLOW", "operational_owner": "Customer Success",
+      "required_capabilities": ["review protocol", "reviewer training", "audit log"], "required_data": ["assignment", "review completion", "subscription state"],
+      "eligibility_requirements": ["MEDIUM_OR_HIGH_DATA_CONFIDENCE", "RECURRING_CHURN_HISTORY"], "exclusion_conditions": ["NO_FOLLOW_UP_WINDOW", "MATERIAL_DATA_BLOCKER"],
+      "ethical_considerations": ["consistent access", "MRR-neutral service policy"], "operational_risks": ["reviewer capacity", "protocol drift"],
+      "contamination_risks": ["reviewer learning across arms"], "cost_category": "HIGH", "reversibility": "MEDIUM", "requires_approval": true,
+      "prohibited_uses": ["automatic contact", "service denial by MRR", "discount"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I004", "name": "SUPPORT_FOLLOW_UP_PROCESS", "target_queue": "SUPPORT_JOURNEY_REVIEW",
+      "description": "Candidate governed human follow-up process after support resolution.",
+      "mechanism_hypothesis": "A consistent follow-up process may change support recurrence or measured satisfaction; this remains untested.",
+      "delivery_channel": "FUTURE_SUPPORT_WORKFLOW", "operational_owner": "Support Operations",
+      "required_capabilities": ["agent clusters", "follow-up protocol", "exposure logging"], "required_data": ["support agent", "ticket resolution", "follow-up exposure"],
+      "eligibility_requirements": ["RESOLVED_SUPPORT_EVENT", "OBSERVABLE_30D_FOLLOW_UP"], "exclusion_conditions": ["MISSING_SUPPORT_AGENT", "OPEN_CRITICAL_TICKET"],
+      "ethical_considerations": ["consent", "communication frequency"], "operational_risks": ["agent workload", "unequal execution"],
+      "contamination_risks": ["same agent serves both arms"], "cost_category": "HIGH", "reversibility": "MEDIUM", "requires_approval": true,
+      "prohibited_uses": ["unsolicited campaign", "causal blame on support", "automatic outreach"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I005", "name": "ONBOARDING_SEQUENCE_REDESIGN", "target_queue": "ADOPTION_REVIEW",
+      "description": "Candidate future redesign of onboarding sequencing.",
+      "mechanism_hypothesis": "A different onboarding sequence may change time to first feature; this remains untested.",
+      "delivery_channel": "FUTURE_PRODUCT_ROLLOUT", "operational_owner": "Product Growth",
+      "required_capabilities": ["feature flags", "version logging", "rollback"], "required_data": ["onboarding version", "exposure", "first feature time"],
+      "eligibility_requirements": ["NEW_COHORT", "OBSERVABLE_90D_FOLLOW_UP"], "exclusion_conditions": ["EXISTING_MATURE_ACCOUNT", "SIMULTANEOUS_ONBOARDING_CHANGE"],
+      "ethical_considerations": ["accessible onboarding", "no capability withholding"], "operational_risks": ["global rollout", "version drift"],
+      "contamination_risks": ["shared onboarding assets"], "cost_category": "HIGH", "reversibility": "MEDIUM", "requires_approval": true,
+      "prohibited_uses": ["forced upgrade", "silent discrimination", "fabricated result"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I006", "name": "ADOPTION_CHECKLIST", "target_queue": "ADOPTION_REVIEW",
+      "description": "Candidate checklist for product configuration and adoption.",
+      "mechanism_hypothesis": "A checklist may change observed feature diversity; this remains untested.",
+      "delivery_channel": "FUTURE_IN_APP_OR_HUMAN", "operational_owner": "Product Education",
+      "required_capabilities": ["checklist versioning", "exposure logging"], "required_data": ["checklist exposure", "completion", "feature usage"],
+      "eligibility_requirements": ["LOW_FEATURE_DIVERSITY", "OBSERVABLE_30D_FOLLOW_UP"], "exclusion_conditions": ["RECENT_CHECKLIST_EXPOSURE", "MATERIAL_DATA_BLOCKER"],
+      "ethical_considerations": ["non-coercive completion", "equal access"], "operational_risks": ["checklist fatigue"],
+      "contamination_risks": ["shared documentation"], "cost_category": "LOW", "reversibility": "HIGH", "requires_approval": true,
+      "prohibited_uses": ["automatic treatment", "forced completion", "uplift claim"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I007", "name": "REACTIVATION_EXPERIENCE_REVIEW", "target_queue": "REACTIVATION_REVIEW",
+      "description": "Candidate pilot reviewing the future post-reactivation experience.",
+      "mechanism_hypothesis": "A structured experience may change observed usage return; the small historical population requires a pilot.",
+      "delivery_channel": "FUTURE_PILOT", "operational_owner": "Customer Success + Product",
+      "required_capabilities": ["pilot protocol", "exposure logging"], "required_data": ["reactivation", "exposure", "usage return"],
+      "eligibility_requirements": ["EXPLICIT_REACTIVATION", "OBSERVABLE_30D_FOLLOW_UP"], "exclusion_conditions": ["NO_REACTIVATION_EVENT", "NO_FOLLOW_UP_WINDOW"],
+      "ethical_considerations": ["consent", "avoid repeated solicitation"], "operational_risks": ["small sample", "delivery inconsistency"],
+      "contamination_risks": ["shared human owner"], "cost_category": "MEDIUM", "reversibility": "HIGH", "requires_approval": true,
+      "prohibited_uses": ["automatic win-back", "discount", "effectiveness claim"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I008", "name": "BILLING_JOURNEY_REVIEW", "target_queue": "DATA_QUALITY_REVIEW",
+      "description": "Candidate non-commercial review of subscription and billing records.",
+      "mechanism_hypothesis": "Structured reconciliation may improve measurable subscription consistency; this remains untested.",
+      "delivery_channel": "FUTURE_INTERNAL_REVIEW", "operational_owner": "Billing + Data Governance",
+      "required_capabilities": ["data lineage", "billing owner approval"], "required_data": ["subscription records", "billing records", "reconciliation log"],
+      "eligibility_requirements": ["SUBSCRIPTION_OVERLAP_OR_INCONSISTENCY"], "exclusion_conditions": ["NO_BILLING_RECORD"],
+      "ethical_considerations": ["data minimization", "access control"], "operational_risks": ["incorrect record mutation"],
+      "contamination_risks": ["shared source correction"], "cost_category": "MEDIUM", "reversibility": "MEDIUM", "requires_approval": true,
+      "prohibited_uses": ["commercial targeting", "plan change", "account cancellation"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I009", "name": "DATA_INSTRUMENTATION_FIX", "target_queue": "DATA_QUALITY_REVIEW",
+      "description": "Candidate correction of instrumentation and governed data contracts.",
+      "mechanism_hypothesis": "A governed instrumentation change may improve completeness or timestamp validity; this remains untested.",
+      "delivery_channel": "FUTURE_DATA_PIPELINE", "operational_owner": "Analytics Engineering + Data Governance",
+      "required_capabilities": ["schema versioning", "lineage", "rollback", "QA"], "required_data": ["event schema", "quality logs", "contract tests"],
+      "eligibility_requirements": ["DOCUMENTED_DATA_QUALITY_GAP"], "exclusion_conditions": ["UNOWNED_SOURCE", "NO_ROLLBACK_PLAN"],
+      "ethical_considerations": ["minimize personal data", "auditability"], "operational_risks": ["schema break", "historical discontinuity"],
+      "contamination_risks": ["global instrumentation change"], "cost_category": "MEDIUM", "reversibility": "MEDIUM", "requires_approval": true,
+      "prohibited_uses": ["fabricate historical events", "rewrite outcomes", "commercial targeting"], "version": "1.0.0"
+    },
+    {
+      "intervention_id": "I010", "name": "NO_INTERVENTION_OBSERVATION", "target_queue": "MULTIPLE",
+      "description": "Control condition or observational validation with no intervention delivery.",
+      "mechanism_hypothesis": "No mechanism is asserted; this defines a comparator or measurement-only design.",
+      "delivery_channel": "NONE", "operational_owner": "Experimentation + Analytics",
+      "required_capabilities": ["measurement plan", "registry"], "required_data": ["eligibility", "outcomes", "concurrent change log"],
+      "eligibility_requirements": ["OBSERVABLE_FOLLOW_UP"], "exclusion_conditions": ["CONFLICTING_EXPOSURE"],
+      "ethical_considerations": ["equipoise", "no harmful withholding"], "operational_risks": ["unmeasured concurrent change"],
+      "contamination_risks": ["external exposure"], "cost_category": "LOW", "reversibility": "HIGH", "requires_approval": true,
+      "prohibited_uses": ["treat historical baseline as randomized control", "claim causal effect"], "version": "1.0.0"
+    }
+  ]
+}

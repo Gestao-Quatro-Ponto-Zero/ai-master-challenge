@@ -1,0 +1,58 @@
+{
+  "checks": {
+    "account_associated_mrr": {
+      "graph": 2942293.0,
+      "tabular": 2942293.0
+    },
+    "accounts": {
+      "graph": 500,
+      "tabular": 500
+    },
+    "findings": {
+      "expected": 6,
+      "graph": 6
+    },
+    "journeys": {
+      "graph": 4221,
+      "tabular": 4221
+    },
+    "primary_taxonomy_rows": {
+      "tabular": 997,
+      "unique_grain": 997
+    },
+    "promoted_patterns": {
+      "expected": 435,
+      "graph": 435
+    },
+    "promoted_transitions": {
+      "expected": 43,
+      "graph": 43
+    },
+    "taxonomy_classifications": {
+      "expected_journey_projection": 4221,
+      "graph": 4221
+    }
+  },
+  "difference_unexplained": 0,
+  "explained_differences": [
+    {
+      "count": 43398,
+      "expected_behavior": "Each occurrence key includes journey_key for traceability.",
+      "reason": "EVENT_INSTANCE_DUPLICATED_BY_JOURNEY_SCOPE",
+      "source": "account_journeys + event_log"
+    },
+    {
+      "count": 435,
+      "expected_behavior": "Only ROBUST/SENSITIVE, supported, non-HIGH and non-small patterns enter the promoted graph.",
+      "reason": "PATTERN_PROMOTION_GATE",
+      "source": "Phase 5 pattern artifacts"
+    },
+    {
+      "count": 43,
+      "expected_behavior": "UNSTABLE, HIGH, small-sample, and insufficient-support transitions remain outside the graph.",
+      "reason": "TRANSITION_PROMOTION_GATE",
+      "source": "transition_matrix.json"
+    }
+  ],
+  "status": "RECONCILED"
+}

@@ -1,0 +1,93 @@
+{
+  "base_commit": "b9f341b92af080e4abf30282171994905cf0a780",
+  "event_types": [
+    "ACCOUNT_CREATED",
+    "CHURN_RECORDED",
+    "FEATURE_USED",
+    "REACTIVATION_RECORDED",
+    "SUBSCRIPTION_ENDED",
+    "SUBSCRIPTION_STARTED",
+    "SUPPORT_TICKET_CLOSED",
+    "SUPPORT_TICKET_OPENED"
+  ],
+  "generation_timestamp": "2026-07-20T18:18:04.126066+00:00",
+  "generation_timestamp_basis": "maximum source modified_at_utc from the Phase 1 raw manifest",
+  "output_hashes": {
+    "artifacts/event_type_dictionary.json": {
+      "bytes": 5109,
+      "sha256": "5d504faeb6944cf9a8fbdefc46ee13c1938c8212de4e4e5d02c8c994f61aaf10"
+    },
+    "artifacts/reconciliation_report.json": {
+      "bytes": 3015,
+      "sha256": "e22621ebfd9b069cb9d16616954dc35044fc1cae64d4f50d02f24a97b867837f"
+    },
+    "artifacts/temporal_quality_summary.json": {
+      "bytes": 2512,
+      "sha256": "4ae7be9a8616f98410607efb8e919df2876c73445673fe1ff303eec813393bed"
+    },
+    "data/processed/event_log.parquet": {
+      "bytes": 636593,
+      "sha256": "0e9e60d06ce6fbd62103924aab7beda6d0eab9ed5a87ea32cee786abcdb0373f"
+    },
+    "data/processed/quarantined_events.parquet": {
+      "bytes": 891342,
+      "sha256": "725957b624b151a793dd62f1844ee5b9157f212d630c768f000dcac2da72fbb9"
+    },
+    "data/processed/subscription_episodes.parquet": {
+      "bytes": 201650,
+      "sha256": "a78db5380cc6ffb422951fec98c2ecf4f06b068414e63dce1147d36117f8cf71"
+    },
+    "reports/event-log-validation.md": {
+      "bytes": 4024,
+      "sha256": "ba87f8d21b1ad56688fe2869dbc93bde3ae7dfc3d5eb62aa6e06ace333315948"
+    },
+    "reports/quarantine-report.md": {
+      "bytes": 1705,
+      "sha256": "f04d04198ae437c957665c25678997fa164bab96ad049372dd03fe918f238d96"
+    },
+    "reports/temporal-rules.md": {
+      "bytes": 3514,
+      "sha256": "0c8bb110c3c0f53596e05cdd49ef0416b16460b9dae6a17b7a427a6735008566"
+    }
+  },
+  "outputs": {
+    "event_log": {
+      "columns": 28,
+      "rows": 13927
+    },
+    "quarantined_events": {
+      "columns": 28,
+      "rows": 21659
+    },
+    "subscription_episodes": {
+      "columns": 16,
+      "rows": 5000
+    }
+  },
+  "quarantine_policy": "fatal temporal or identity flags are separated; records are never silently discarded",
+  "reconciliation_unexplained_difference": 0,
+  "rules_version": "phase2-v1",
+  "same_day_order_policy": {
+    "ACCOUNT_CREATED": 1,
+    "CHURN_RECORDED": 6,
+    "FEATURE_USED": 3,
+    "REACTIVATION_RECORDED": 7,
+    "SUBSCRIPTION_ENDED": 8,
+    "SUBSCRIPTION_STARTED": 2,
+    "SUPPORT_TICKET_CLOSED": 5,
+    "SUPPORT_TICKET_OPENED": 4
+  },
+  "schema_version": "2.0.0",
+  "source_hashes": {
+    "accounts": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+    "churn_events": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940",
+    "feature_usage": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e",
+    "subscriptions": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a",
+    "support_tickets": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220"
+  },
+  "temporal_period": {
+    "maximum": "2024-12-31T19:00:00",
+    "minimum": "2023-01-01T00:00:00"
+  },
+  "timezone_policy": "NAIVE_SOURCE_TIME"
+}

@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  },
+  "one_primary_metric_per_experiment": true,
+  "primary_metrics": [
+    {
+      "baseline_value": 0.0,
+      "experiment_id": "EXP001",
+      "minimum_detectable_effect": 0.1,
+      "primary_metric": "ADOPTION_RATE_30D"
+    },
+    {
+      "baseline_value": 0.9710144927536232,
+      "experiment_id": "EXP002",
+      "minimum_detectable_effect": 0.5,
+      "primary_metric": "FEATURE_DIVERSITY_30D"
+    },
+    {
+      "baseline_value": NaN,
+      "experiment_id": "EXP003",
+      "minimum_detectable_effect": 0.1,
+      "primary_metric": "SUPPORT_RECURRENCE_30D"
+    },
+    {
+      "baseline_value": 0.0,
+      "experiment_id": "EXP004",
+      "minimum_detectable_effect": 0.1,
+      "primary_metric": "SUBSCRIPTION_CONTINUATION"
+    },
+    {
+      "baseline_value": 0.7894736842105263,
+      "experiment_id": "EXP005",
+      "minimum_detectable_effect": 0.15,
+      "primary_metric": "REACTIVATION_USAGE_RETURN"
+    },
+    {
+      "baseline_value": 0.04741379310344827,
+      "experiment_id": "EXP006",
+      "minimum_detectable_effect": 0.1,
+      "primary_metric": "SUBSCRIPTION_RECONCILIATION_RATE"
+    },
+    {
+      "baseline_value": NaN,
+      "experiment_id": "EXP007",
+      "minimum_detectable_effect": 0.5,
+      "primary_metric": "FEATURE_DIVERSITY_90D"
+    },
+    {
+      "baseline_value": 61.716981132075475,
+      "experiment_id": "EXP008",
+      "minimum_detectable_effect": 0.8,
+      "primary_metric": "TIME_TO_OBSERVED_CHURN"
+    }
+  ]
+}

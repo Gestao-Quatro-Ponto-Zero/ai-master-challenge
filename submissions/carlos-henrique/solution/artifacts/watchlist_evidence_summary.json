@@ -1,0 +1,22 @@
+{
+  "evidence_packets": 1609,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "packets_with_graph_context": 1609,
+  "sources": [
+    "PHASE_3_DIAGNOSTIC",
+    "PHASE_4_SURVIVAL",
+    "PHASE_5_JOURNEY",
+    "PHASE_6_GRAPH",
+    "DATA_QUALITY"
+  ]
+}

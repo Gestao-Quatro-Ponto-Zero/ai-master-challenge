@@ -1,0 +1,799 @@
+{
+  "accounts_single_feature_lifetime": 60,
+  "accounts_without_usage_30d": 216,
+  "denominator_accounts": 500,
+  "feature_rank_before_first_churn": [
+    {
+      "accounts": 38,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_15",
+      "observed_share": 0.11692307692307692
+    },
+    {
+      "accounts": 37,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_24",
+      "observed_share": 0.11384615384615385
+    },
+    {
+      "accounts": 36,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_3",
+      "observed_share": 0.11076923076923077
+    },
+    {
+      "accounts": 36,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_38",
+      "observed_share": 0.11076923076923077
+    },
+    {
+      "accounts": 34,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_14",
+      "observed_share": 0.10461538461538461
+    },
+    {
+      "accounts": 31,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_12",
+      "observed_share": 0.09538461538461539
+    },
+    {
+      "accounts": 30,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_21",
+      "observed_share": 0.09230769230769231
+    },
+    {
+      "accounts": 30,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_34",
+      "observed_share": 0.09230769230769231
+    },
+    {
+      "accounts": 30,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_36",
+      "observed_share": 0.09230769230769231
+    },
+    {
+      "accounts": 29,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_1",
+      "observed_share": 0.08923076923076922
+    },
+    {
+      "accounts": 29,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_9",
+      "observed_share": 0.08923076923076922
+    },
+    {
+      "accounts": 28,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_20",
+      "observed_share": 0.08615384615384615
+    },
+    {
+      "accounts": 26,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_32",
+      "observed_share": 0.08
+    },
+    {
+      "accounts": 26,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_37",
+      "observed_share": 0.08
+    },
+    {
+      "accounts": 26,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_16",
+      "observed_share": 0.08
+    },
+    {
+      "accounts": 25,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_7",
+      "observed_share": 0.07692307692307693
+    },
+    {
+      "accounts": 25,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_17",
+      "observed_share": 0.07692307692307693
+    },
+    {
+      "accounts": 25,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_2",
+      "observed_share": 0.07692307692307693
+    },
+    {
+      "accounts": 25,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_6",
+      "observed_share": 0.07692307692307693
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_11",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_31",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_13",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_19",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_18",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_26",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_35",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 24,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_28",
+      "observed_share": 0.07384615384615385
+    },
+    {
+      "accounts": 23,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_22",
+      "observed_share": 0.07076923076923076
+    },
+    {
+      "accounts": 23,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_33",
+      "observed_share": 0.07076923076923076
+    },
+    {
+      "accounts": 23,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_29",
+      "observed_share": 0.07076923076923076
+    },
+    {
+      "accounts": 23,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_40",
+      "observed_share": 0.07076923076923076
+    },
+    {
+      "accounts": 22,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_4",
+      "observed_share": 0.06769230769230769
+    },
+    {
+      "accounts": 21,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_25",
+      "observed_share": 0.06461538461538462
+    },
+    {
+      "accounts": 20,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_30",
+      "observed_share": 0.06153846153846154
+    },
+    {
+      "accounts": 19,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_39",
+      "observed_share": 0.05846153846153846
+    },
+    {
+      "accounts": 18,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_10",
+      "observed_share": 0.055384615384615386
+    },
+    {
+      "accounts": 18,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_5",
+      "observed_share": 0.055384615384615386
+    },
+    {
+      "accounts": 18,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_27",
+      "observed_share": 0.055384615384615386
+    },
+    {
+      "accounts": 17,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_23",
+      "observed_share": 0.052307692307692305
+    },
+    {
+      "accounts": 16,
+      "denominator_churned_accounts": 325,
+      "feature": "feature_8",
+      "observed_share": 0.04923076923076923
+    }
+  ],
+  "feature_rank_by_account_presence": [
+    {
+      "accounts": 82,
+      "feature": "feature_38",
+      "observed_share": 0.164
+    },
+    {
+      "accounts": 79,
+      "feature": "feature_24",
+      "observed_share": 0.158
+    },
+    {
+      "accounts": 76,
+      "feature": "feature_14",
+      "observed_share": 0.152
+    },
+    {
+      "accounts": 75,
+      "feature": "feature_3",
+      "observed_share": 0.15
+    },
+    {
+      "accounts": 75,
+      "feature": "feature_21",
+      "observed_share": 0.15
+    },
+    {
+      "accounts": 75,
+      "feature": "feature_36",
+      "observed_share": 0.15
+    },
+    {
+      "accounts": 72,
+      "feature": "feature_1",
+      "observed_share": 0.144
+    },
+    {
+      "accounts": 71,
+      "feature": "feature_34",
+      "observed_share": 0.142
+    },
+    {
+      "accounts": 71,
+      "feature": "feature_20",
+      "observed_share": 0.142
+    },
+    {
+      "accounts": 70,
+      "feature": "feature_12",
+      "observed_share": 0.14
+    },
+    {
+      "accounts": 69,
+      "feature": "feature_11",
+      "observed_share": 0.138
+    },
+    {
+      "accounts": 69,
+      "feature": "feature_15",
+      "observed_share": 0.138
+    },
+    {
+      "accounts": 68,
+      "feature": "feature_32",
+      "observed_share": 0.136
+    },
+    {
+      "accounts": 68,
+      "feature": "feature_2",
+      "observed_share": 0.136
+    },
+    {
+      "accounts": 66,
+      "feature": "feature_7",
+      "observed_share": 0.132
+    },
+    {
+      "accounts": 66,
+      "feature": "feature_17",
+      "observed_share": 0.132
+    },
+    {
+      "accounts": 65,
+      "feature": "feature_18",
+      "observed_share": 0.13
+    },
+    {
+      "accounts": 65,
+      "feature": "feature_9",
+      "observed_share": 0.13
+    },
+    {
+      "accounts": 65,
+      "feature": "feature_16",
+      "observed_share": 0.13
+    },
+    {
+      "accounts": 62,
+      "feature": "feature_6",
+      "observed_share": 0.124
+    },
+    {
+      "accounts": 62,
+      "feature": "feature_39",
+      "observed_share": 0.124
+    },
+    {
+      "accounts": 62,
+      "feature": "feature_19",
+      "observed_share": 0.124
+    },
+    {
+      "accounts": 62,
+      "feature": "feature_25",
+      "observed_share": 0.124
+    },
+    {
+      "accounts": 61,
+      "feature": "feature_33",
+      "observed_share": 0.122
+    },
+    {
+      "accounts": 61,
+      "feature": "feature_35",
+      "observed_share": 0.122
+    },
+    {
+      "accounts": 60,
+      "feature": "feature_37",
+      "observed_share": 0.12
+    },
+    {
+      "accounts": 60,
+      "feature": "feature_22",
+      "observed_share": 0.12
+    },
+    {
+      "accounts": 60,
+      "feature": "feature_4",
+      "observed_share": 0.12
+    },
+    {
+      "accounts": 59,
+      "feature": "feature_40",
+      "observed_share": 0.118
+    },
+    {
+      "accounts": 59,
+      "feature": "feature_29",
+      "observed_share": 0.118
+    },
+    {
+      "accounts": 59,
+      "feature": "feature_27",
+      "observed_share": 0.118
+    },
+    {
+      "accounts": 59,
+      "feature": "feature_30",
+      "observed_share": 0.118
+    },
+    {
+      "accounts": 58,
+      "feature": "feature_26",
+      "observed_share": 0.116
+    },
+    {
+      "accounts": 55,
+      "feature": "feature_31",
+      "observed_share": 0.11
+    },
+    {
+      "accounts": 55,
+      "feature": "feature_28",
+      "observed_share": 0.11
+    },
+    {
+      "accounts": 55,
+      "feature": "feature_23",
+      "observed_share": 0.11
+    },
+    {
+      "accounts": 54,
+      "feature": "feature_5",
+      "observed_share": 0.108
+    },
+    {
+      "accounts": 54,
+      "feature": "feature_10",
+      "observed_share": 0.108
+    },
+    {
+      "accounts": 50,
+      "feature": "feature_13",
+      "observed_share": 0.1
+    },
+    {
+      "accounts": 48,
+      "feature": "feature_8",
+      "observed_share": 0.096
+    }
+  ],
+  "limitations": [
+    "Feature names are structured product categories; no free text is used.",
+    "Differences are associations and do not establish an outcome mechanism.",
+    "Quarantined usage substantially limits coverage."
+  ],
+  "methodology": "Usage is aggregated at account grain and limited to each account's first-churn cutoff or observation_end.",
+  "metrics_by_outcome": [
+    {
+      "accounts": 175,
+      "active_days_90d": {
+        "mean": 4.222857142857142,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "days_since_last_feature_use": {
+        "mean": 18.478527607361965,
+        "median": 11.0,
+        "missing_ratio": 0.06857142857142857,
+        "q1": 5.0,
+        "q3": 24.0
+      },
+      "denominator_accounts": 500,
+      "distinct_features_90d": {
+        "mean": 4.102857142857143,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "feature_event_count_30d": {
+        "mean": 1.7771428571428571,
+        "median": 2.0,
+        "missing_ratio": 0.0,
+        "q1": 1.0,
+        "q3": 3.0
+      },
+      "feature_event_count_90d": {
+        "mean": 4.382857142857143,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "feature_event_count_lifetime": {
+        "mean": 10.634285714285713,
+        "median": 9.0,
+        "missing_ratio": 0.0,
+        "q1": 4.0,
+        "q3": 16.0
+      },
+      "outcome": "NO_CHURN_OBSERVED",
+      "top_feature_share_lifetime": {
+        "mean": 0.2545918175276186,
+        "median": 0.16666666666666666,
+        "missing_ratio": 0.06857142857142857,
+        "q1": 0.125,
+        "q3": 0.2857142857142857
+      },
+      "usage_change_30d_vs_prior_60d": {
+        "mean": 0.4742857142857143,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": -0.5,
+        "q3": 1.5
+      },
+      "usage_intensity_per_active_day": {
+        "mean": 9.535279627787453,
+        "median": 9.933333333333334,
+        "missing_ratio": 0.0,
+        "q1": 9.03125,
+        "q3": 10.816666666666666
+      }
+    },
+    {
+      "accounts": 22,
+      "active_days_90d": {
+        "mean": 1.1818181818181819,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.75
+      },
+      "days_since_last_feature_use": {
+        "mean": 6.375,
+        "median": 2.5,
+        "missing_ratio": 0.6363636363636364,
+        "q1": 1.0,
+        "q3": 4.5
+      },
+      "denominator_accounts": 500,
+      "distinct_features_90d": {
+        "mean": 1.1818181818181819,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.0
+      },
+      "feature_event_count_30d": {
+        "mean": 0.8181818181818182,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.75
+      },
+      "feature_event_count_90d": {
+        "mean": 1.2272727272727273,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.75
+      },
+      "feature_event_count_lifetime": {
+        "mean": 2.227272727272727,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 3.0
+      },
+      "outcome": "REACTIVATED",
+      "top_feature_share_lifetime": {
+        "mean": 0.31856060606060604,
+        "median": 0.19090909090909092,
+        "missing_ratio": 0.6363636363636364,
+        "q1": 0.16666666666666666,
+        "q3": 0.41666666666666663
+      },
+      "usage_change_30d_vs_prior_60d": {
+        "mean": 0.6136363636363636,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.875
+      },
+      "usage_intensity_per_active_day": {
+        "mean": 3.495867768595041,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 8.3
+      }
+    },
+    {
+      "accounts": 4,
+      "active_days_90d": {
+        "mean": 0.5,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "days_since_last_feature_use": {
+        "mean": 15.5,
+        "median": 15.5,
+        "missing_ratio": 0.5,
+        "q1": 8.25,
+        "q3": 22.75
+      },
+      "denominator_accounts": 500,
+      "distinct_features_90d": {
+        "mean": 0.5,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "feature_event_count_30d": {
+        "mean": 0.25,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.25
+      },
+      "feature_event_count_90d": {
+        "mean": 0.5,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "feature_event_count_lifetime": {
+        "mean": 0.5,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "outcome": "REACTIVATED_THEN_CHURNED_AGAIN",
+      "top_feature_share_lifetime": {
+        "mean": 1.0,
+        "median": 1.0,
+        "missing_ratio": 0.5,
+        "q1": 1.0,
+        "q3": 1.0
+      },
+      "usage_change_30d_vs_prior_60d": {
+        "mean": 0.125,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": -0.125,
+        "q3": 0.25
+      },
+      "usage_intensity_per_active_day": {
+        "mean": 5.25,
+        "median": 5.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 10.25
+      }
+    },
+    {
+      "accounts": 118,
+      "active_days_90d": {
+        "mean": 1.5169491525423728,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.0
+      },
+      "days_since_last_feature_use": {
+        "mean": 23.058823529411764,
+        "median": 12.0,
+        "missing_ratio": 0.423728813559322,
+        "q1": 7.75,
+        "q3": 29.25
+      },
+      "denominator_accounts": 500,
+      "distinct_features_90d": {
+        "mean": 1.4576271186440677,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.0
+      },
+      "feature_event_count_30d": {
+        "mean": 0.6779661016949152,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "feature_event_count_90d": {
+        "mean": 1.5338983050847457,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.0
+      },
+      "feature_event_count_lifetime": {
+        "mean": 2.389830508474576,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 3.0
+      },
+      "outcome": "RECURRING_CHURN",
+      "top_feature_share_lifetime": {
+        "mean": 0.5390880627613365,
+        "median": 0.5,
+        "missing_ratio": 0.423728813559322,
+        "q1": 0.25,
+        "q3": 1.0
+      },
+      "usage_change_30d_vs_prior_60d": {
+        "mean": 0.25,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "usage_intensity_per_active_day": {
+        "mean": 5.845301073690904,
+        "median": 7.25,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 10.25
+      }
+    },
+    {
+      "accounts": 181,
+      "active_days_90d": {
+        "mean": 2.2596685082872927,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 4.0
+      },
+      "days_since_last_feature_use": {
+        "mean": 23.581967213114755,
+        "median": 11.0,
+        "missing_ratio": 0.3259668508287293,
+        "q1": 4.0,
+        "q3": 28.25
+      },
+      "denominator_accounts": 500,
+      "distinct_features_90d": {
+        "mean": 2.2099447513812156,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 4.0
+      },
+      "feature_event_count_30d": {
+        "mean": 0.9779005524861878,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "feature_event_count_90d": {
+        "mean": 2.320441988950276,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 4.0
+      },
+      "feature_event_count_lifetime": {
+        "mean": 4.49171270718232,
+        "median": 2.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 7.0
+      },
+      "outcome": "SINGLE_CHURN",
+      "top_feature_share_lifetime": {
+        "mean": 0.4125234546160294,
+        "median": 0.25,
+        "missing_ratio": 0.3259668508287293,
+        "q1": 0.16666666666666666,
+        "q3": 0.5
+      },
+      "usage_change_30d_vs_prior_60d": {
+        "mean": 0.30662983425414364,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "usage_intensity_per_active_day": {
+        "mean": 6.981593371721743,
+        "median": 9.333333333333334,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 10.590909090909092
+      }
+    }
+  ],
+  "observed_share_without_usage_30d": 0.432,
+  "population": "VALID + VALID_WITH_WARNING; quarantine excluded"
+}

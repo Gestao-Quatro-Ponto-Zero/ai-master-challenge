@@ -1,0 +1,9 @@
+:ID,:LABEL,event_type
+eventtype_account,EventType,ACCOUNT
+eventtype_churn,EventType,CHURN
+eventtype_feature,EventType,FEATURE
+eventtype_reactivation,EventType,REACTIVATION
+eventtype_subscription_end,EventType,SUBSCRIPTION_END
+eventtype_subscription_start,EventType,SUBSCRIPTION_START
+eventtype_support_close,EventType,SUPPORT_CLOSE
+eventtype_support_open,EventType,SUPPORT_OPEN

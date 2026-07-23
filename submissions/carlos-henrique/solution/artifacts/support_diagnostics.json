@@ -1,0 +1,292 @@
+{
+  "accounts_with_recurring_support": 162,
+  "closures_without_usable_open": 5,
+  "denominator_accounts": 500,
+  "limitations": [
+    "Support is account-grain and cannot be attributed uniquely to one subscription.",
+    "Resolution is looked up only for usable closure events available before cutoff.",
+    "Ticket proximity is descriptive and not causal."
+  ],
+  "methodology": "Pre-cutoff account features use only openings/closures available by cutoff; post-churn counts are separate descriptive evidence.",
+  "metrics_by_outcome": [
+    {
+      "accounts": 175,
+      "denominator_accounts": 500,
+      "mean_ticket_resolution_hours": {
+        "mean": 34.889932508436445,
+        "median": 35.0,
+        "missing_ratio": 0.2742857142857143,
+        "q1": 25.5,
+        "q3": 44.33333333333333
+      },
+      "median_ticket_resolution_hours": {
+        "mean": 35.2007874015748,
+        "median": 35.0,
+        "missing_ratio": 0.2742857142857143,
+        "q1": 23.0,
+        "q3": 47.0
+      },
+      "outcome": "NO_CHURN_OBSERVED",
+      "satisfaction_mean": {
+        "mean": 3.98,
+        "median": 4.0,
+        "missing_ratio": 0.4,
+        "q1": 3.5,
+        "q3": 4.5
+      },
+      "support_ticket_count_30d": {
+        "mean": 0.16,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_60d": {
+        "mean": 0.35428571428571426,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "support_ticket_count_90d": {
+        "mean": 0.5028571428571429,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "support_ticket_count_lifetime": {
+        "mean": 1.8514285714285714,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 3.0
+      }
+    },
+    {
+      "accounts": 22,
+      "denominator_accounts": 500,
+      "mean_ticket_resolution_hours": {
+        "mean": 30.14285714285714,
+        "median": 29.25,
+        "missing_ratio": 0.36363636363636365,
+        "q1": 18.25,
+        "q3": 48.416666666666664
+      },
+      "median_ticket_resolution_hours": {
+        "mean": 30.5,
+        "median": 28.0,
+        "missing_ratio": 0.36363636363636365,
+        "q1": 18.25,
+        "q3": 47.0
+      },
+      "outcome": "REACTIVATED",
+      "satisfaction_mean": {
+        "mean": 3.8,
+        "median": 3.75,
+        "missing_ratio": 0.5454545454545454,
+        "q1": 3.125,
+        "q3": 4.0
+      },
+      "support_ticket_count_30d": {
+        "mean": 0.18181818181818182,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_60d": {
+        "mean": 0.5,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "support_ticket_count_90d": {
+        "mean": 0.5909090909090909,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "support_ticket_count_lifetime": {
+        "mean": 0.9545454545454546,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "accounts": 4,
+      "denominator_accounts": 500,
+      "mean_ticket_resolution_hours": {
+        "mean": 8.0,
+        "median": 8.0,
+        "missing_ratio": 0.75,
+        "q1": 8.0,
+        "q3": 8.0
+      },
+      "median_ticket_resolution_hours": {
+        "mean": 8.0,
+        "median": 8.0,
+        "missing_ratio": 0.75,
+        "q1": 8.0,
+        "q3": 8.0
+      },
+      "outcome": "REACTIVATED_THEN_CHURNED_AGAIN",
+      "satisfaction_mean": {
+        "mean": null,
+        "median": null,
+        "missing_ratio": 1.0,
+        "q1": null,
+        "q3": null
+      },
+      "support_ticket_count_30d": {
+        "mean": 0.0,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_60d": {
+        "mean": 0.25,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.25
+      },
+      "support_ticket_count_90d": {
+        "mean": 0.25,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.25
+      },
+      "support_ticket_count_lifetime": {
+        "mean": 0.25,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.25
+      }
+    },
+    {
+      "accounts": 118,
+      "denominator_accounts": 500,
+      "mean_ticket_resolution_hours": {
+        "mean": 35.577485380116954,
+        "median": 36.75,
+        "missing_ratio": 0.5169491525423728,
+        "q1": 15.0,
+        "q3": 51.5
+      },
+      "median_ticket_resolution_hours": {
+        "mean": 35.421052631578945,
+        "median": 37.0,
+        "missing_ratio": 0.5169491525423728,
+        "q1": 15.0,
+        "q3": 51.5
+      },
+      "outcome": "RECURRING_CHURN",
+      "satisfaction_mean": {
+        "mean": 3.973684210526316,
+        "median": 4.0,
+        "missing_ratio": 0.6779661016949152,
+        "q1": 3.5416666666666665,
+        "q3": 4.458333333333333
+      },
+      "support_ticket_count_30d": {
+        "mean": 0.1440677966101695,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_60d": {
+        "mean": 0.2542372881355932,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_90d": {
+        "mean": 0.3728813559322034,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "support_ticket_count_lifetime": {
+        "mean": 0.7966101694915254,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "accounts": 181,
+      "denominator_accounts": 500,
+      "mean_ticket_resolution_hours": {
+        "mean": 37.261813186813185,
+        "median": 36.833333333333336,
+        "missing_ratio": 0.4972375690607735,
+        "q1": 24.25,
+        "q3": 51.75
+      },
+      "median_ticket_resolution_hours": {
+        "mean": 37.10989010989011,
+        "median": 36.0,
+        "missing_ratio": 0.4972375690607735,
+        "q1": 24.0,
+        "q3": 54.0
+      },
+      "outcome": "SINGLE_CHURN",
+      "satisfaction_mean": {
+        "mean": 4.053240740740741,
+        "median": 4.0,
+        "missing_ratio": 0.6022099447513812,
+        "q1": 3.5,
+        "q3": 5.0
+      },
+      "support_ticket_count_30d": {
+        "mean": 0.15469613259668508,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_60d": {
+        "mean": 0.26519337016574585,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 0.0
+      },
+      "support_ticket_count_90d": {
+        "mean": 0.3812154696132597,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "support_ticket_count_lifetime": {
+        "mean": 0.9723756906077348,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    }
+  ],
+  "observed_recurring_support_proportion": 0.324,
+  "population": "VALID + VALID_WITH_WARNING; quarantine excluded",
+  "satisfaction_available": 554,
+  "satisfaction_missing": 374,
+  "ticket_opened_after_first_churn": 307,
+  "ticket_opened_within_30d_before_first_churn": 53,
+  "tickets_without_usable_close": 0,
+  "usable_ticket_close_events": 928,
+  "usable_ticket_open_events": 923
+}

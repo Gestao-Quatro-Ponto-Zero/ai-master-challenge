@@ -1,0 +1,1837 @@
+{
+  "cutoff": "2024-12-31T19:00:00",
+  "experiments": [
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 155,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 23,
+          "baseline_value": 0.0,
+          "experiment_id": "EXP001",
+          "feasibility_ratio": 0.14838709677419354,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "ADOPTION_RATE_30D",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 147
+        },
+        {
+          "adjusted_required_sample": 164,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 23,
+          "baseline_value": 0.0,
+          "experiment_id": "EXP001",
+          "feasibility_ratio": 0.1402439024390244,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "ADOPTION_RATE_30D",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 147
+        },
+        {
+          "adjusted_required_sample": 184,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 23,
+          "baseline_value": 0.0,
+          "experiment_id": "EXP001",
+          "feasibility_ratio": 0.125,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "ADOPTION_RATE_30D",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 147
+        }
+      ],
+      "balance_warnings": 2,
+      "baseline": 0.0,
+      "candidate_intervention": "I001",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "LOW",
+      "design": "RANDOMIZED_CONTROLLED_TRIAL",
+      "eligible_accounts": 23,
+      "ethical_risk": "MEDIUM",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "MEDIUM",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP001",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "HIGH"
+      },
+      "experiment_id": "EXP001",
+      "follow_up_days": 30,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP001",
+          "guardrail_id": "EXP001_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP001",
+          "guardrail_id": "EXP001_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP001",
+          "guardrail_id": "EXP001_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "Structured product education may change observed 30-day adoption; the mechanism is untested.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.1,
+      "name": "HIGH_MRR_LOW_ENGAGEMENT_ADOPTION",
+      "observation": "Higher associated-MRR accounts showed low recent usage at the historical cutoff.",
+      "power": 0.8,
+      "primary_metric": "ADOPTION_RATE_30D",
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "required_sample": 164,
+      "sample_gap": 141,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP001",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Two-sided difference in proportions with confidence interval",
+        "primary_estimand": "Absolute difference in ADOPTION_RATE_30D between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "UNDERPOWERED",
+      "status_message": "Design constraints remain visible; no experiment has been executed.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP001",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP001",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP001",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP001",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP001",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP001",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "ACCOUNT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 266,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 69,
+          "baseline_value": 0.9710144927536232,
+          "experiment_id": "EXP002",
+          "feasibility_ratio": 0.2593984962406015,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "FEATURE_DIVERSITY_30D",
+          "metric_type": "MEAN",
+          "minimum_detectable_effect": 0.5,
+          "power": 0.8,
+          "required_total_sample": 252
+        },
+        {
+          "adjusted_required_sample": 280,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 69,
+          "baseline_value": 0.9710144927536232,
+          "experiment_id": "EXP002",
+          "feasibility_ratio": 0.24642857142857144,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "FEATURE_DIVERSITY_30D",
+          "metric_type": "MEAN",
+          "minimum_detectable_effect": 0.5,
+          "power": 0.8,
+          "required_total_sample": 252
+        },
+        {
+          "adjusted_required_sample": 315,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 69,
+          "baseline_value": 0.9710144927536232,
+          "experiment_id": "EXP002",
+          "feasibility_ratio": 0.21904761904761905,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "FEATURE_DIVERSITY_30D",
+          "metric_type": "MEAN",
+          "minimum_detectable_effect": 0.5,
+          "power": 0.8,
+          "required_total_sample": 252
+        }
+      ],
+      "balance_warnings": 2,
+      "baseline": 0.9710144927536232,
+      "candidate_intervention": "I002",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "design": "RANDOMIZED_CONTROLLED_TRIAL",
+      "eligible_accounts": 69,
+      "ethical_risk": "LOW",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "LOW",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP002",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "HIGH"
+      },
+      "experiment_id": "EXP002",
+      "follow_up_days": 30,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP002",
+          "guardrail_id": "EXP002_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP002",
+          "guardrail_id": "EXP002_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP002",
+          "guardrail_id": "EXP002_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "Non-coercive in-app discovery may change feature diversity; the mechanism is untested.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.5,
+      "name": "LOW_ENGAGEMENT_FEATURE_DISCOVERY",
+      "observation": "Some accounts showed low or narrow feature adoption at the cutoff.",
+      "power": 0.8,
+      "primary_metric": "FEATURE_DIVERSITY_30D",
+      "queue": "ADOPTION_REVIEW",
+      "required_sample": 280,
+      "sample_gap": 211,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP002",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Difference in means with robust confidence interval",
+        "primary_estimand": "Mean difference in FEATURE_DIVERSITY_30D between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "UNDERPOWERED",
+      "status_message": "Design constraints remain visible; no experiment has been executed.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP002",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP002",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP002",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP002",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP002",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP002",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "ACCOUNT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 0,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 0,
+          "baseline_value": null,
+          "experiment_id": "EXP003",
+          "feasibility_ratio": 0.0,
+          "feasibility_status": "NOT_ESTIMABLE",
+          "metric_name": "SUPPORT_RECURRENCE_30D",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 0
+        },
+        {
+          "adjusted_required_sample": 0,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 0,
+          "baseline_value": null,
+          "experiment_id": "EXP003",
+          "feasibility_ratio": 0.0,
+          "feasibility_status": "NOT_ESTIMABLE",
+          "metric_name": "SUPPORT_RECURRENCE_30D",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 0
+        },
+        {
+          "adjusted_required_sample": 0,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 0,
+          "baseline_value": null,
+          "experiment_id": "EXP003",
+          "feasibility_ratio": 0.0,
+          "feasibility_status": "NOT_ESTIMABLE",
+          "metric_name": "SUPPORT_RECURRENCE_30D",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 0
+        }
+      ],
+      "balance_warnings": 0,
+      "baseline": null,
+      "candidate_intervention": "I004",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "HIGH",
+      "design": "CLUSTER_RANDOMIZED_TRIAL",
+      "eligible_accounts": 0,
+      "ethical_risk": "MEDIUM",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "MEDIUM",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP003",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "MEDIUM"
+      },
+      "experiment_id": "EXP003",
+      "follow_up_days": 30,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+        "DATA_GATE": "FAIL",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "FAIL",
+        "OPERATIONAL_GATE": "FAIL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP003",
+          "guardrail_id": "EXP003_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP003",
+          "guardrail_id": "EXP003_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP003",
+          "guardrail_id": "EXP003_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "A consistent post-resolution process may change support recurrence or measured satisfaction; the mechanism is untested.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.1,
+      "name": "SUPPORT_FOLLOW_UP",
+      "observation": "Support events occurred near churn or repeatedly in some historical journeys.",
+      "power": 0.8,
+      "primary_metric": "SUPPORT_RECURRENCE_30D",
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "required_sample": 0,
+      "sample_gap": 0,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP003",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Cluster-aware generalized linear model",
+        "primary_estimand": "Absolute difference in SUPPORT_RECURRENCE_30D between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "NOT_FEASIBLE",
+      "status_message": "Design constraints remain visible; no experiment has been executed.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP003",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP003",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP003",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP003",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP003",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP003",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "SUPPORT_AGENT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 155,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 26,
+          "baseline_value": 0.0,
+          "experiment_id": "EXP004",
+          "feasibility_ratio": 0.16774193548387098,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "SUBSCRIPTION_CONTINUATION",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 147
+        },
+        {
+          "adjusted_required_sample": 164,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 26,
+          "baseline_value": 0.0,
+          "experiment_id": "EXP004",
+          "feasibility_ratio": 0.15853658536585366,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "SUBSCRIPTION_CONTINUATION",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 147
+        },
+        {
+          "adjusted_required_sample": 184,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 26,
+          "baseline_value": 0.0,
+          "experiment_id": "EXP004",
+          "feasibility_ratio": 0.14130434782608695,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "SUBSCRIPTION_CONTINUATION",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 147
+        }
+      ],
+      "balance_warnings": 8,
+      "baseline": 0.0,
+      "candidate_intervention": "I003",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "design": "RANDOMIZED_CONTROLLED_TRIAL",
+      "eligible_accounts": 26,
+      "ethical_risk": "HIGH",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "HIGH",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP004",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "MEDIUM"
+      },
+      "experiment_id": "EXP004",
+      "follow_up_days": 90,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP004",
+          "guardrail_id": "EXP004_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP004",
+          "guardrail_id": "EXP004_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP004",
+          "guardrail_id": "EXP004_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "A structured human review process may change subscription continuation; the mechanism is untested.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.1,
+      "name": "RECURRING_CHURN_REVIEW_PROCESS",
+      "observation": "Multiple observed churn events occurred for a subset of accounts.",
+      "power": 0.8,
+      "primary_metric": "SUBSCRIPTION_CONTINUATION",
+      "queue": "RECURRING_CHURN_REVIEW",
+      "required_sample": 164,
+      "sample_gap": 138,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP004",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Two-sided difference in proportions with confidence interval",
+        "primary_estimand": "Absolute difference in SUBSCRIPTION_CONTINUATION between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "UNDERPOWERED",
+      "status_message": "Design constraints remain visible; no experiment has been executed.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP004",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP004",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP004",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP004",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP004",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP004",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "ACCOUNT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 171,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 19,
+          "baseline_value": 0.7894736842105263,
+          "experiment_id": "EXP005",
+          "feasibility_ratio": 0.1111111111111111,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "REACTIVATION_USAGE_RETURN",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.15,
+          "power": 0.8,
+          "required_total_sample": 162
+        },
+        {
+          "adjusted_required_sample": 180,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 19,
+          "baseline_value": 0.7894736842105263,
+          "experiment_id": "EXP005",
+          "feasibility_ratio": 0.10555555555555556,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "REACTIVATION_USAGE_RETURN",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.15,
+          "power": 0.8,
+          "required_total_sample": 162
+        },
+        {
+          "adjusted_required_sample": 203,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 19,
+          "baseline_value": 0.7894736842105263,
+          "experiment_id": "EXP005",
+          "feasibility_ratio": 0.09359605911330049,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "REACTIVATION_USAGE_RETURN",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.15,
+          "power": 0.8,
+          "required_total_sample": 162
+        }
+      ],
+      "balance_warnings": 6,
+      "baseline": 0.7894736842105263,
+      "candidate_intervention": "I007",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "design": "PILOT_FEASIBILITY_STUDY",
+      "eligible_accounts": 19,
+      "ethical_risk": "MEDIUM",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "MEDIUM",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP005",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "HIGH"
+      },
+      "experiment_id": "EXP005",
+      "follow_up_days": 30,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "PILOT"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP005",
+          "guardrail_id": "EXP005_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP005",
+          "guardrail_id": "EXP005_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP005",
+          "guardrail_id": "EXP005_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "A structured post-reactivation experience may change observed usage return; the small population supports a pilot only.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.15,
+      "name": "REACTIVATION_EXPERIENCE_PILOT",
+      "observation": "Explicit reactivation was observed for a small historical population.",
+      "power": 0.8,
+      "primary_metric": "REACTIVATION_USAGE_RETURN",
+      "queue": "REACTIVATION_REVIEW",
+      "required_sample": 180,
+      "sample_gap": 161,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP005",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Two-sided difference in proportions with confidence interval",
+        "primary_estimand": "Absolute difference in REACTIVATION_USAGE_RETURN between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "PILOT_ONLY",
+      "status_message": "Pilot only due to limited historical reactivation sample.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP005",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP005",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP005",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP005",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP005",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP005",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "ACCOUNT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 289,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 464,
+          "baseline_value": 0.04741379310344827,
+          "experiment_id": "EXP006",
+          "feasibility_ratio": 1.6055363321799307,
+          "feasibility_status": "FEASIBLE",
+          "metric_name": "SUBSCRIPTION_RECONCILIATION_RATE",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 274
+        },
+        {
+          "adjusted_required_sample": 305,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 464,
+          "baseline_value": 0.04741379310344827,
+          "experiment_id": "EXP006",
+          "feasibility_ratio": 1.521311475409836,
+          "feasibility_status": "FEASIBLE",
+          "metric_name": "SUBSCRIPTION_RECONCILIATION_RATE",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 274
+        },
+        {
+          "adjusted_required_sample": 343,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 464,
+          "baseline_value": 0.04741379310344827,
+          "experiment_id": "EXP006",
+          "feasibility_ratio": 1.3527696793002915,
+          "feasibility_status": "FEASIBLE",
+          "metric_name": "SUBSCRIPTION_RECONCILIATION_RATE",
+          "metric_type": "PROPORTION",
+          "minimum_detectable_effect": 0.1,
+          "power": 0.8,
+          "required_total_sample": 274
+        }
+      ],
+      "balance_warnings": 1,
+      "baseline": 0.04741379310344827,
+      "candidate_intervention": "I009",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "HIGH",
+      "design": "DATA_QUALITY_STUDY",
+      "eligible_accounts": 464,
+      "ethical_risk": "LOW",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "LOW",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP006",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "MEDIUM"
+      },
+      "experiment_id": "EXP006",
+      "follow_up_days": 30,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "PASS"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP006",
+          "guardrail_id": "EXP006_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP006",
+          "guardrail_id": "EXP006_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP006",
+          "guardrail_id": "EXP006_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "A governed instrumentation and reconciliation change may improve measurable subscription consistency; this is a data-quality study.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.1,
+      "name": "SUBSCRIPTION_DATA_RECONCILIATION",
+      "observation": "Subscription overlap and quality constraints limit historical interpretation for many accounts.",
+      "power": 0.8,
+      "primary_metric": "SUBSCRIPTION_RECONCILIATION_RATE",
+      "queue": "DATA_QUALITY_REVIEW",
+      "required_sample": 305,
+      "sample_gap": 0,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP006",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Two-sided difference in proportions with confidence interval",
+        "primary_estimand": "Absolute difference in SUBSCRIPTION_RECONCILIATION_RATE between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "READY_FOR_REVIEW",
+      "status_message": "Ready for methodological and operational review, not for automatic execution.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP006",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP006",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP006",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP006",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP006",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP006",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "COHORT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 0,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 0,
+          "baseline_value": null,
+          "experiment_id": "EXP007",
+          "feasibility_ratio": 0.0,
+          "feasibility_status": "NOT_ESTIMABLE",
+          "metric_name": "FEATURE_DIVERSITY_90D",
+          "metric_type": "MEAN",
+          "minimum_detectable_effect": 0.5,
+          "power": 0.8,
+          "required_total_sample": 0
+        },
+        {
+          "adjusted_required_sample": 0,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 0,
+          "baseline_value": null,
+          "experiment_id": "EXP007",
+          "feasibility_ratio": 0.0,
+          "feasibility_status": "NOT_ESTIMABLE",
+          "metric_name": "FEATURE_DIVERSITY_90D",
+          "metric_type": "MEAN",
+          "minimum_detectable_effect": 0.5,
+          "power": 0.8,
+          "required_total_sample": 0
+        },
+        {
+          "adjusted_required_sample": 0,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 0,
+          "baseline_value": null,
+          "experiment_id": "EXP007",
+          "feasibility_ratio": 0.0,
+          "feasibility_status": "NOT_ESTIMABLE",
+          "metric_name": "FEATURE_DIVERSITY_90D",
+          "metric_type": "MEAN",
+          "minimum_detectable_effect": 0.5,
+          "power": 0.8,
+          "required_total_sample": 0
+        }
+      ],
+      "balance_warnings": 0,
+      "baseline": null,
+      "candidate_intervention": "I006",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "HIGH",
+      "design": "STEPPED_WEDGE",
+      "eligible_accounts": 0,
+      "ethical_risk": "LOW",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "LOW",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP007",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "HIGH"
+      },
+      "experiment_id": "EXP007",
+      "follow_up_days": 90,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS_WITH_DESIGN_CONTROL",
+        "DATA_GATE": "FAIL",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "FAIL",
+        "OPERATIONAL_GATE": "FAIL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP007",
+          "guardrail_id": "EXP007_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP007",
+          "guardrail_id": "EXP007_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP007",
+          "guardrail_id": "EXP007_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "A versioned checklist may change 90-day feature diversity; the mechanism is untested.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.5,
+      "name": "ONBOARDING_ADOPTION_CHECKLIST",
+      "observation": "Low feature diversity was observed in the adoption-review population.",
+      "power": 0.8,
+      "primary_metric": "FEATURE_DIVERSITY_90D",
+      "queue": "ADOPTION_REVIEW",
+      "required_sample": 0,
+      "sample_gap": 0,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP007",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Difference in means with robust confidence interval",
+        "primary_estimand": "Mean difference in FEATURE_DIVERSITY_90D between future assigned groups at the pre-specified follow-up.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "NOT_FEASIBLE",
+      "status_message": "Design constraints remain visible; no experiment has been executed.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP007",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP007",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP007",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP007",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP007",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP007",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "COHORT"
+    },
+    {
+      "attrition_scenarios": [
+        {
+          "adjusted_required_sample": 671,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.05,
+          "available_eligible_sample": 53,
+          "baseline_value": 61.716981132075475,
+          "experiment_id": "EXP008",
+          "feasibility_ratio": 0.07898658718330849,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "TIME_TO_OBSERVED_CHURN",
+          "metric_type": "SURVIVAL",
+          "minimum_detectable_effect": 0.8,
+          "power": 0.8,
+          "required_total_sample": 637
+        },
+        {
+          "adjusted_required_sample": 708,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.1,
+          "available_eligible_sample": 53,
+          "baseline_value": 61.716981132075475,
+          "experiment_id": "EXP008",
+          "feasibility_ratio": 0.0748587570621469,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "TIME_TO_OBSERVED_CHURN",
+          "metric_type": "SURVIVAL",
+          "minimum_detectable_effect": 0.8,
+          "power": 0.8,
+          "required_total_sample": 637
+        },
+        {
+          "adjusted_required_sample": 797,
+          "allocation_ratio": 1.0,
+          "alpha": 0.05,
+          "attrition_rate": 0.2,
+          "available_eligible_sample": 53,
+          "baseline_value": 61.716981132075475,
+          "experiment_id": "EXP008",
+          "feasibility_ratio": 0.06649937264742785,
+          "feasibility_status": "UNDERPOWERED",
+          "metric_name": "TIME_TO_OBSERVED_CHURN",
+          "metric_type": "SURVIVAL",
+          "minimum_detectable_effect": 0.8,
+          "power": 0.8,
+          "required_total_sample": 637
+        }
+      ],
+      "balance_warnings": 2,
+      "baseline": 61.716981132075475,
+      "candidate_intervention": "I010",
+      "causal_status": "UNTESTED",
+      "contamination_risk": "MEDIUM",
+      "design": "QUASI_EXPERIMENT",
+      "eligible_accounts": 53,
+      "ethical_risk": "LOW",
+      "ethics": {
+        "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+        "consent_review": "REQUIRED",
+        "constraints": [
+          "HUMAN_APPROVAL_REQUIRED",
+          "DATA_MINIMIZATION",
+          "NO_MRR_BASED_SERVICE_DENIAL",
+          "NO_AUTOMATED_OUTREACH",
+          "REVERSIBILITY_PLAN"
+        ],
+        "ethical_risk": "LOW",
+        "ethics_gate": "PASS_WITH_CONSTRAINTS",
+        "experiment_id": "EXP008",
+        "fairness_review": "REQUIRED",
+        "human_review": true,
+        "intervention_executed": false,
+        "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+        "reversibility": "HIGH"
+      },
+      "experiment_id": "EXP008",
+      "follow_up_days": 90,
+      "governance_gates": {
+        "CONTAMINATION_GATE": "PASS",
+        "DATA_GATE": "PASS",
+        "ETHICS_GATE": "PASS_WITH_CONSTRAINTS",
+        "MEASUREMENT_GATE": "PASS",
+        "OPERATIONAL_GATE": "PASS_WITH_APPROVAL",
+        "QUALITY_GATE": "PASS",
+        "SAMPLE_GATE": "FAIL"
+      },
+      "guardrails": [
+        {
+          "direction": "BELOW",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP008",
+          "guardrail_id": "EXP008_G01",
+          "guardrail_metric": "DATA_COMPLETENESS",
+          "owner": "Data Governance",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_DATA_REVIEW",
+          "threshold": 0.8
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "WEEKLY",
+          "experiment_id": "EXP008",
+          "guardrail_id": "EXP008_G02",
+          "guardrail_metric": "DELIVERY_FAILURE_RATE",
+          "owner": "Operational Owner",
+          "specification_only": true,
+          "stop_action": "PAUSE_FOR_OPERATIONAL_REVIEW",
+          "threshold": 0.1
+        },
+        {
+          "direction": "ABOVE",
+          "evaluation_frequency": "CONTINUOUS_IF_FUTURE_EXECUTION",
+          "experiment_id": "EXP008",
+          "guardrail_id": "EXP008_G03",
+          "guardrail_metric": "CONSENT_VIOLATION_COUNT",
+          "owner": "Privacy + Legal",
+          "specification_only": true,
+          "stop_action": "SAFETY_STOP",
+          "threshold": 0
+        }
+      ],
+      "hypothesis": "No treatment mechanism is asserted; a matched observational design could validate measurement and confounding assumptions.",
+      "limitations": [
+        "NO_EXPERIMENT_EXECUTED",
+        "NO_RESULT_AVAILABLE",
+        "HISTORICAL_BASELINE_NOT_CONTROL"
+      ],
+      "mde": 0.8,
+      "name": "RECENT_CHURN_CONTEXT_STUDY",
+      "observation": "Recent churn and promoted churn-path context were observed historically.",
+      "power": 0.8,
+      "primary_metric": "TIME_TO_OBSERVED_CHURN",
+      "queue": "RECENT_CHURN_REVIEW",
+      "required_sample": 708,
+      "sample_gap": 655,
+      "sap": {
+        "analysis_population": "ALL_FUTURE_RANDOMIZED_OR_ASSIGNED_ELIGIBLE_UNITS",
+        "covariate_adjustment": [
+          "baseline metric",
+          "MRR band",
+          "data confidence"
+        ],
+        "experiment_id": "EXP008",
+        "heterogeneity_analysis": "Exploratory only for pre-specified MRR band and taxonomy; no individual treatment-effect estimate.",
+        "intention_to_treat": "True",
+        "interim_analysis": "No efficacy interim analysis; operational, safety, and data-quality reviews only.",
+        "missing_data_policy": "Report missingness by arm; use conservative sensitivity analyses; never impute favorable outcomes.",
+        "multiple_testing_policy": "One primary metric per experiment; Holm correction across confirmatory secondary metrics.",
+        "outlier_policy": "Pre-specify winsorization sensitivity only; primary analysis retains valid observations.",
+        "per_protocol_policy": "SECONDARY_ONLY_IF_EXPOSURE_IS_MEASURABLE",
+        "primary_analysis": "Survival model with pre-specified matching and robust uncertainty",
+        "primary_estimand": "Difference in the future time-to-observed-churn distribution under the defined quasi-experimental comparison.",
+        "reporting_policy": "Report effect estimate and confidence interval regardless of direction; distinguish practical from statistical significance.",
+        "secondary_analyses": [
+          "pre-specified secondary metrics",
+          "exposure diagnostic without causal replacement of ITT"
+        ],
+        "sensitivity_analysis": [
+          "complete-case versus conservative missing-data scenario",
+          "covariate-adjusted versus unadjusted",
+          "contamination sensitivity"
+        ],
+        "stopping_rule": "Stop only under a pre-specified safety, futility, data-quality, operational, exhaustion, or completion condition.",
+        "version": "1.0.0"
+      },
+      "simulated_assignment": true,
+      "status": "UNDERPOWERED",
+      "status_message": "Design constraints remain visible; no experiment has been executed.",
+      "stopping_rules": [
+        {
+          "authorized_decision": "Pause future delivery and convene review",
+          "condition": "> 0 confirmed event",
+          "experiment_id": "EXP008",
+          "metric": "CONSENT_OR_HARM_EVENT",
+          "monitoring_implemented": false,
+          "owner": "Ethics Owner",
+          "stop_type": "SAFETY_STOP"
+        },
+        {
+          "authorized_decision": "Recommend methodological review",
+          "condition": "< 20% at pre-specified information fraction",
+          "experiment_id": "EXP008",
+          "metric": "CONDITIONAL_POWER",
+          "monitoring_implemented": false,
+          "owner": "Statistician",
+          "stop_type": "FUTILITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause measurement and repair data",
+          "condition": "< 80%",
+          "experiment_id": "EXP008",
+          "metric": "DATA_COMPLETENESS",
+          "monitoring_implemented": false,
+          "owner": "Data Governance",
+          "stop_type": "DATA_QUALITY_STOP"
+        },
+        {
+          "authorized_decision": "Pause future delivery",
+          "condition": "> 10%",
+          "experiment_id": "EXP008",
+          "metric": "DELIVERY_FAILURE_RATE",
+          "monitoring_implemented": false,
+          "owner": "Operational Owner",
+          "stop_type": "OPERATIONAL_STOP"
+        },
+        {
+          "authorized_decision": "Classify underpowered",
+          "condition": "Eligible pool exhausted before required sample",
+          "experiment_id": "EXP008",
+          "metric": "RECRUITMENT",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "SAMPLE_EXHAUSTION"
+        },
+        {
+          "authorized_decision": "Lock future analysis dataset",
+          "condition": "Required sample and follow-up complete",
+          "experiment_id": "EXP008",
+          "metric": "FOLLOW_UP",
+          "monitoring_implemented": false,
+          "owner": "Experiment Owner",
+          "stop_type": "PLANNED_COMPLETION"
+        }
+      ],
+      "unit_of_randomization": "ACCOUNT"
+    }
+  ]
+}

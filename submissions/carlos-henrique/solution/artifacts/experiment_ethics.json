@@ -1,0 +1,173 @@
+{
+  "approval_bypassed": 0,
+  "assessments": [
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "MEDIUM",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP001",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "HIGH"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "LOW",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP002",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "HIGH"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "MEDIUM",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP003",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "MEDIUM"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "HIGH",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP004",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "MEDIUM"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "MEDIUM",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP005",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "HIGH"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "LOW",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP006",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "MEDIUM"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "LOW",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP007",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "HIGH"
+    },
+    {
+      "behavioral_data_use": "MINIMIZED_AND_AUDITABLE",
+      "consent_review": "REQUIRED",
+      "constraints": [
+        "HUMAN_APPROVAL_REQUIRED",
+        "DATA_MINIMIZATION",
+        "NO_MRR_BASED_SERVICE_DENIAL",
+        "NO_AUTOMATED_OUTREACH",
+        "REVERSIBILITY_PLAN"
+      ],
+      "ethical_risk": "LOW",
+      "ethics_gate": "PASS_WITH_CONSTRAINTS",
+      "experiment_id": "EXP008",
+      "fairness_review": "REQUIRED",
+      "human_review": true,
+      "intervention_executed": false,
+      "mrr_use": "STRATIFICATION_OR_MATERIALITY_ONLY_NOT_SERVICE_DENIAL",
+      "reversibility": "HIGH"
+    }
+  ],
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  }
+}

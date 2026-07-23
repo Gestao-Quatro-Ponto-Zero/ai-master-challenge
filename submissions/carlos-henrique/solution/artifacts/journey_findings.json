@@ -1,0 +1,197 @@
+{
+  "finding_count": 6,
+  "findings": [
+    {
+      "account_support": 169,
+      "business_relevance": "Prioriza investigação agregada da jornada, sem inferir causa.",
+      "comparison_metric": "ABSOLUTE_SUPPORT_DIFFERENCE",
+      "confidence_level": "LOW",
+      "estimate": 0.52,
+      "exposure_control": "FIXED_90D_WINDOW_WITH_OBSERVATION_END_PSEUDO_CUTOFF",
+      "finding_id": "JF01",
+      "journey_scope": "PRE_FIRST_CHURN",
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL",
+        "PSEUDO_CUTOFF_FOR_CENSORED"
+      ],
+      "outcomes_compared": [
+        "CHURN_OBSERVED",
+        "NO_CHURN_OBSERVED"
+      ],
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_type": "FIXED_WINDOW_SUFFIX",
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "recommended_investigation": "Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.",
+      "relative_support": 0.52,
+      "same_day_dependency": "NONE",
+      "sample_size": 500,
+      "stability_status": "SENSITIVE",
+      "statement": "SUBSCRIPTION_START -> CHURN ocorreu em 169/325 contas com churn e 0/175 sem churn no pseudo-cutoff comparável.",
+      "title": "Sufixo pré-churn em janela de 90 dias"
+    },
+    {
+      "account_support": 161,
+      "business_relevance": "Prioriza investigação agregada da jornada, sem inferir causa.",
+      "comparison_metric": "ABSOLUTE_SUPPORT_DIFFERENCE",
+      "confidence_level": "LOW",
+      "estimate": 0.49538461538461537,
+      "exposure_control": "FIXED_60D_WINDOW_WITH_OBSERVATION_END_PSEUDO_CUTOFF",
+      "finding_id": "JF02",
+      "journey_scope": "PRE_FIRST_CHURN",
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL",
+        "PSEUDO_CUTOFF_FOR_CENSORED"
+      ],
+      "outcomes_compared": [
+        "CHURN_OBSERVED",
+        "NO_CHURN_OBSERVED"
+      ],
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_type": "FIXED_WINDOW_SUFFIX",
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "recommended_investigation": "Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.",
+      "relative_support": 0.49538461538461537,
+      "same_day_dependency": "NONE",
+      "sample_size": 500,
+      "stability_status": "SENSITIVE",
+      "statement": "SUBSCRIPTION_START -> CHURN ocorreu em 161/325 contas com churn e 0/175 sem churn no pseudo-cutoff comparável.",
+      "title": "Sufixo pré-churn em janela de 60 dias"
+    },
+    {
+      "account_support": 131,
+      "business_relevance": "Prioriza investigação agregada da jornada, sem inferir causa.",
+      "comparison_metric": "ABSOLUTE_SUPPORT_DIFFERENCE",
+      "confidence_level": "LOW",
+      "estimate": 0.40307692307692305,
+      "exposure_control": "FIXED_30D_WINDOW_WITH_OBSERVATION_END_PSEUDO_CUTOFF",
+      "finding_id": "JF03",
+      "journey_scope": "PRE_FIRST_CHURN",
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL",
+        "PSEUDO_CUTOFF_FOR_CENSORED"
+      ],
+      "outcomes_compared": [
+        "CHURN_OBSERVED",
+        "NO_CHURN_OBSERVED"
+      ],
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_type": "FIXED_WINDOW_SUFFIX",
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "recommended_investigation": "Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.",
+      "relative_support": 0.40307692307692305,
+      "same_day_dependency": "NONE",
+      "sample_size": 500,
+      "stability_status": "SENSITIVE",
+      "statement": "SUBSCRIPTION_START -> CHURN ocorreu em 131/325 contas com churn e 0/175 sem churn no pseudo-cutoff comparável.",
+      "title": "Sufixo pré-churn em janela de 30 dias"
+    },
+    {
+      "account_support": 107,
+      "business_relevance": "Prioriza investigação agregada da jornada, sem inferir causa.",
+      "comparison_metric": "ABSOLUTE_SUPPORT_DIFFERENCE",
+      "confidence_level": "LOW",
+      "estimate": 0.3292307692307692,
+      "exposure_control": "FIXED_90D_WINDOW_WITH_OBSERVATION_END_PSEUDO_CUTOFF",
+      "finding_id": "JF04",
+      "journey_scope": "PRE_FIRST_CHURN",
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL",
+        "PSEUDO_CUTOFF_FOR_CENSORED"
+      ],
+      "outcomes_compared": [
+        "CHURN_OBSERVED",
+        "NO_CHURN_OBSERVED"
+      ],
+      "pattern": [
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_type": "FIXED_WINDOW_SUFFIX",
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "recommended_investigation": "Validar o padrão em coorte futura e por banda de comprimento antes de qualquer ação.",
+      "relative_support": 0.3292307692307692,
+      "same_day_dependency": "NONE",
+      "sample_size": 500,
+      "stability_status": "SENSITIVE",
+      "statement": "FEATURE -> CHURN ocorreu em 107/325 contas com churn e 0/175 sem churn no pseudo-cutoff comparável.",
+      "title": "Sufixo pré-churn em janela de 90 dias"
+    },
+    {
+      "account_support": 14,
+      "business_relevance": "Mapeia uma passagem frequente para investigação operacional agregada.",
+      "comparison_metric": "LIFT_VS_POPULATION",
+      "confidence_level": "MEDIUM",
+      "estimate": 0.9491525423728814,
+      "exposure_control": "ACCOUNT_SUPPORT_AND_SCOPE_STRATIFICATION",
+      "finding_id": "JF05",
+      "journey_scope": "BETWEEN_RECURRING_CHURNS",
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL"
+      ],
+      "outcomes_compared": [
+        "RECURRING_CHURN",
+        "POPULATION_REFERENCE"
+      ],
+      "pattern": [
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_type": "TRANSITION",
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "recommended_investigation": "Reavaliar por landmark e desfecho na próxima coleta.",
+      "relative_support": 0.11864406779661017,
+      "same_day_dependency": "NONE",
+      "sample_size": 118,
+      "stability_status": "ROBUST",
+      "statement": "SUBSCRIPTION_END → SUBSCRIPTION_START ocorreu em 14/118 contas no escopo BETWEEN_RECURRING_CHURNS (RECURRING_CHURN).",
+      "title": "Transição recorrente e estável"
+    },
+    {
+      "account_support": 156,
+      "business_relevance": "Mapeia uma passagem frequente para investigação operacional agregada.",
+      "comparison_metric": "LIFT_VS_POPULATION",
+      "confidence_level": "MEDIUM",
+      "estimate": 1.0038610038610039,
+      "exposure_control": "ACCOUNT_SUPPORT_AND_SCOPE_STRATIFICATION",
+      "finding_id": "JF06",
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "limitations": [
+        "DESCRIPTIVE_NOT_CAUSAL"
+      ],
+      "outcomes_compared": [
+        "NO_CHURN_OBSERVED",
+        "POPULATION_REFERENCE"
+      ],
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_type": "TRANSITION",
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "recommended_investigation": "Reavaliar por landmark e desfecho na próxima coleta.",
+      "relative_support": 0.8914285714285715,
+      "same_day_dependency": "NONE",
+      "sample_size": 175,
+      "stability_status": "ROBUST",
+      "statement": "FEATURE → SUBSCRIPTION_START ocorreu em 156/175 contas no escopo FULL_OBSERVED_JOURNEY (NO_CHURN_OBSERVED).",
+      "title": "Transição recorrente e estável"
+    }
+  ],
+  "maximum_findings": 8,
+  "promotion_rules": [
+    "ROBUST_OR_EXCEPTIONAL_SENSITIVE",
+    "EXPLICIT_DENOMINATOR",
+    "EXPOSURE_CONTROL",
+    "NO_HIGH_ORDER_DEPENDENCY",
+    "NO_CAUSAL_LANGUAGE"
+  ]
+}

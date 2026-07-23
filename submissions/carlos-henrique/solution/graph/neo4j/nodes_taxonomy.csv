@@ -1,0 +1,11 @@
+:ID,:LABEL,associated_mrr,definition,mean_mrr,median_mrr,mrr_account_count,name,taxonomy_id
+taxonomy_j01,Taxonomy,0.0,High 30-day use and multiple active days after subscription start.,0.0,0.0,0,ADOPTION_JOURNEY,J01
+taxonomy_j02,Taxonomy,0.0,Low activity in the fixed 30-day window.,0.0,0.0,0,LOW_ENGAGEMENT_JOURNEY,J02
+taxonomy_j03,Taxonomy,0.0,At least three support openings in the observed journey.,0.0,0.0,0,SUPPORT_HEAVY_JOURNEY,J03
+taxonomy_j04,Taxonomy,0.0,Observed journey includes one churn and no later recovery class.,0.0,0.0,0,CHURN_PATH,J04
+taxonomy_j05,Taxonomy,0.0,Observed journey contains at least two churn events.,0.0,0.0,0,RECURRING_CHURN_PATH,J05
+taxonomy_j06,Taxonomy,0.0,Churn is followed by an observed reactivation.,0.0,0.0,0,REACTIVATION_PATH,J06
+taxonomy_j07,Taxonomy,0.0,Reactivation is followed by feature use or subscription start.,0.0,0.0,0,RECOVERY_JOURNEY,J07
+taxonomy_j08,Taxonomy,0.0,At least 90 days between adjacent usable events.,0.0,0.0,0,DORMANT_JOURNEY,J08
+taxonomy_j09,Taxonomy,0.0,High MRR and low activity in a fixed window.,0.0,0.0,0,HIGH_VALUE_LOW_USAGE,J09
+taxonomy_j10,Taxonomy,0.0,Warnings or limited quality coverage constrain classification.,0.0,0.0,0,DATA_QUALITY_CONSTRAINED,J10

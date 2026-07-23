@@ -1,0 +1,261 @@
+{
+  "accounts_in_multiple_queues": 374,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "queue_overlap": [
+    {
+      "account_overlap": 69,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 68,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 15,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 2,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 16,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 9,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 6,
+      "queue_left": "ADOPTION_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    },
+    {
+      "account_overlap": 68,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 467,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 23,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 19,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 278,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 113,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 62,
+      "queue_left": "DATA_QUALITY_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    },
+    {
+      "account_overlap": 15,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 23,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 23,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    },
+    {
+      "account_overlap": 2,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 19,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 21,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 20,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 7,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 4,
+      "queue_left": "REACTIVATION_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    },
+    {
+      "account_overlap": 16,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 278,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 20,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 311,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 123,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 56,
+      "queue_left": "RECENT_CHURN_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    },
+    {
+      "account_overlap": 9,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 113,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 7,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 123,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 126,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 22,
+      "queue_left": "RECURRING_CHURN_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    },
+    {
+      "account_overlap": 6,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "ADOPTION_REVIEW"
+    },
+    {
+      "account_overlap": 62,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "DATA_QUALITY_REVIEW"
+    },
+    {
+      "account_overlap": 0,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "account_overlap": 4,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "REACTIVATION_REVIEW"
+    },
+    {
+      "account_overlap": 56,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "RECENT_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 22,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "RECURRING_CHURN_REVIEW"
+    },
+    {
+      "account_overlap": 69,
+      "queue_left": "SUPPORT_JOURNEY_REVIEW",
+      "queue_right": "SUPPORT_JOURNEY_REVIEW"
+    }
+  ]
+}

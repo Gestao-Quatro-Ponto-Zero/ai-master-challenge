@@ -1,0 +1,144 @@
+1
+00:00:00,000 --> 00:00:06,000
+Retention teams rarely lack data.
+They lack a trustworthy sequence.
+
+2
+00:00:06,000 --> 00:00:13,000
+SaaS records arrive at different grains,
+from accounts to support and churn.
+
+3
+00:00:13,000 --> 00:00:20,000
+Simple joins inflate metrics, while a final flag
+can erase the customer journey.
+
+4
+00:00:20,000 --> 00:00:27,000
+JourneyGraph tests relationships
+and chronology before analysis.
+
+5
+00:00:27,000 --> 00:00:34,000
+The unsafe join expanded 500 accounts
+into almost 148 thousand rows.
+
+6
+00:00:34,000 --> 00:00:40,000
+Invalid chronology is preserved in quarantine,
+not silently repaired.
+
+7
+00:00:40,000 --> 00:00:47,000
+This overview shows a fixed
+historical snapshot.
+
+8
+00:00:47,000 --> 00:00:54,000
+It starts with 35,586
+processed events.
+
+9
+00:00:54,000 --> 00:01:00,000
+13,927 are usable, while 21,659
+remain quarantined.
+
+10
+00:01:00,000 --> 00:01:05,000
+The usable evidence forms
+4,221 governed journeys.
+
+11
+00:01:05,000 --> 00:01:12,000
+MAIN includes valid events
+plus documented warnings.
+
+12
+00:01:12,000 --> 00:01:19,000
+STRICT keeps only valid events
+for sensitivity.
+
+13
+00:01:19,000 --> 00:01:25,000
+Quarantine is a quality backlog,
+never a behavior signal.
+
+14
+00:01:25,000 --> 00:01:32,000
+The Journey Explorer uses
+controlled anonymous profiles.
+
+15
+00:01:32,000 --> 00:01:39,000
+It preserves recurrent churn
+and explicit reactivation.
+
+16
+00:01:39,000 --> 00:01:45,000
+Ordered events retain scope,
+outcome, and quality context.
+
+17
+00:01:45,000 --> 00:01:50,000
+Operational account identifiers
+are not displayed.
+
+18
+00:01:50,000 --> 00:01:57,000
+The graph promotes only supported
+ROBUST or SENSITIVE evidence.
+
+19
+00:01:57,000 --> 00:02:04,000
+It contains 435 patterns
+and 43 promoted transitions.
+
+20
+00:02:04,000 --> 00:02:10,000
+Each retains support, population,
+stability, and provenance.
+
+21
+00:02:10,000 --> 00:02:15,000
+Graph structure is descriptive,
+not an explanation of cause.
+
+22
+00:02:15,000 --> 00:02:22,000
+Seven deterministic queues organize
+1,609 evidence items.
+
+23
+00:02:22,000 --> 00:02:29,000
+Rules and priority components
+remain inspectable.
+
+24
+00:02:29,000 --> 00:02:35,000
+There is no predictive churn score
+and no automated customer action.
+
+25
+00:02:35,000 --> 00:02:42,000
+Eight experiment designs turn observations
+into testable hypotheses.
+
+26
+00:02:42,000 --> 00:02:50,000
+They are not completed experiments.
+Every design remains UNTESTED.
+
+27
+00:02:50,000 --> 00:02:57,000
+JourneyGraph is local and reproducible,
+with fixed JSON evidence.
+
+28
+00:02:57,000 --> 00:03:02,000
+Privacy and interpretation boundaries
+remain visible.
+
+29
+00:03:02,000 --> 00:03:05,000
+The next step remains
+a human decision.

@@ -1,0 +1,105 @@
+{
+  "associated_mrr_note": "Associated MRR is not revenue at risk.",
+  "cutoff": "2024-12-31T19:00:00",
+  "data_quality_backlog_accounts": 467,
+  "human_review_required": true,
+  "items": 1609,
+  "priority_by_unique_accounts": [
+    {
+      "accounts": 228,
+      "priority": "P1"
+    },
+    {
+      "accounts": 1,
+      "priority": "P2"
+    },
+    {
+      "accounts": 271,
+      "priority": "P3"
+    }
+  ],
+  "queues": [
+    {
+      "associated_mrr": 467213.0,
+      "category": "BEHAVIORAL_INVESTIGATION",
+      "items": 75,
+      "priorities": {
+        "P1": 17,
+        "P2": 27,
+        "P3": 31
+      },
+      "queue": "ADOPTION_REVIEW",
+      "unique_accounts": 69
+    },
+    {
+      "associated_mrr": 2844385.0,
+      "category": "DATA_QUALITY_BACKLOG",
+      "items": 826,
+      "priorities": {
+        "P1": 504,
+        "P3": 322
+      },
+      "queue": "DATA_QUALITY_REVIEW",
+      "unique_accounts": 467
+    },
+    {
+      "associated_mrr": 226661.0,
+      "category": "BEHAVIORAL_INVESTIGATION",
+      "items": 23,
+      "priorities": {
+        "P1": 23
+      },
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "unique_accounts": 23
+    },
+    {
+      "associated_mrr": 66082.0,
+      "category": "BEHAVIORAL_INVESTIGATION",
+      "items": 24,
+      "priorities": {
+        "P2": 1,
+        "P3": 20,
+        "P4": 3
+      },
+      "queue": "REACTIVATION_REVIEW",
+      "unique_accounts": 21
+    },
+    {
+      "associated_mrr": 1526215.0,
+      "category": "BEHAVIORAL_INVESTIGATION",
+      "items": 381,
+      "priorities": {
+        "P1": 1,
+        "P2": 110,
+        "P3": 270
+      },
+      "queue": "RECENT_CHURN_REVIEW",
+      "unique_accounts": 311
+    },
+    {
+      "associated_mrr": 561363.0,
+      "category": "BEHAVIORAL_INVESTIGATION",
+      "items": 206,
+      "priorities": {
+        "P1": 2,
+        "P2": 52,
+        "P3": 152
+      },
+      "queue": "RECURRING_CHURN_REVIEW",
+      "unique_accounts": 126
+    },
+    {
+      "associated_mrr": 391015.0,
+      "category": "BEHAVIORAL_INVESTIGATION",
+      "items": 74,
+      "priorities": {
+        "P1": 1,
+        "P2": 23,
+        "P3": 50
+      },
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "unique_accounts": 69
+    }
+  ],
+  "unique_accounts": 500
+}

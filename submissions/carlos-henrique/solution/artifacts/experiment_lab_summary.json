@@ -1,0 +1,28 @@
+{
+  "experiment_count": 8,
+  "interventions_executed": 0,
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESIGN_ONLY",
+      "NO_RESULT_AVAILABLE",
+      "HISTORICAL_BASELINE_NOT_CONTROL"
+    ],
+    "parameters": {
+      "allocation_ratio": 1.0,
+      "alpha": 0.05,
+      "assignment_seed": 20260721,
+      "power": 0.8
+    },
+    "population_denominator": 500,
+    "version": "8.0.0"
+  },
+  "queues": 7,
+  "results_available": false,
+  "status_counts": {
+    "NOT_FEASIBLE": 2,
+    "PILOT_ONLY": 1,
+    "READY_FOR_REVIEW": 1,
+    "UNDERPOWERED": 4
+  }
+}

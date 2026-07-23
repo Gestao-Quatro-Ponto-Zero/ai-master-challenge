@@ -1,0 +1,19 @@
+{
+  "accounts_with_eligible_patterns": 500,
+  "eligible_promoted_patterns": 435,
+  "finding_links": 47,
+  "interpretation": "STRUCTURAL_NOT_CAUSAL",
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "unstable_or_high_or_small_promoted": 0,
+  "watchlist_items_with_graph_evidence": 1609
+}

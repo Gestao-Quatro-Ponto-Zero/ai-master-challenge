@@ -1,0 +1,60 @@
+{
+  "assumptions": [
+    {
+      "assumption": "ACCOUNT_LEVEL_APPROXIMATE_INDEPENDENCE",
+      "evidence": "A unidade principal contém uma linha por conta; episódios correlacionados não são tratados como unidades independentes.",
+      "status": "ACCEPTABLE"
+    },
+    {
+      "assumption": "NON_INFORMATIVE_CENSORING",
+      "evidence": "A censura é administrativa e explícita, mas o mecanismo de saída da observação não pode ser testado com as fontes disponíveis.",
+      "status": "LIMITED"
+    },
+    {
+      "assumption": "PROPORTIONAL_HAZARDS",
+      "evidence": "Cox não foi executado; nenhuma suposição de proporcionalidade foi promovida.",
+      "status": "NOT_TESTED"
+    },
+    {
+      "assumption": "SAMPLE_SIZE",
+      "evidence": "População principal n=500 e 325 primeiros churns observados.",
+      "status": "ACCEPTABLE"
+    },
+    {
+      "assumption": "TAIL_SUPPORT",
+      "evidence": "Em 540 dias permanecem 31 contas em risco; mínimo configurado=20.",
+      "status": "ACCEPTABLE"
+    },
+    {
+      "assumption": "COLLINEARITY",
+      "evidence": "Nenhum modelo multivariado foi ajustado.",
+      "status": "NOT_TESTED"
+    },
+    {
+      "assumption": "SMALL_GROUPS",
+      "evidence": "Comparações exigem n≥20 e ao menos 5 eventos por grupo; demais grupos são registrados e omitidos dos testes.",
+      "status": "LIMITED"
+    },
+    {
+      "assumption": "MISSINGNESS",
+      "evidence": "Satisfação e resolução de suporte são esparsas; ausências permanecem nulas e não são imputadas.",
+      "status": "LIMITED"
+    },
+    {
+      "assumption": "SUBSCRIPTION_OVERLAP",
+      "evidence": "99,84% dos episódios se sobrepõem; curvas por assinatura não foram executadas.",
+      "status": "VIOLATED"
+    },
+    {
+      "assumption": "WARNING_INFLUENCE",
+      "evidence": "Sobrevivência em 180 dias entre principal e estrita foi classificada como UNSTABLE.",
+      "status": "VIOLATED"
+    }
+  ],
+  "classification_scale": [
+    "ACCEPTABLE",
+    "LIMITED",
+    "VIOLATED",
+    "NOT_TESTED"
+  ]
+}

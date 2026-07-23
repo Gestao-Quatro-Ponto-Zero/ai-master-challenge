@@ -1,0 +1,13 @@
+{
+  "population_comparison": "MAIN_VS_STRICT",
+  "rules": {
+    "ROBUST": "present with materially preserved support and no HIGH ordering",
+    "SENSITIVE": "present with material magnitude variation",
+    "UNSTABLE": "absent, reversed, small, or HIGH-dependent"
+  },
+  "status_counts": {
+    "ROBUST": 54,
+    "SENSITIVE": 258,
+    "UNSTABLE": 4684
+  }
+}

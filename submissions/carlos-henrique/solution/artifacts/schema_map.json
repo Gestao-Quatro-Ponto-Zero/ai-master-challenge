@@ -1,0 +1,514 @@
+{
+  "tables": {
+    "accounts": [
+      {
+        "candidate_key": "CANDIDATE",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "account_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEXT_OR_LABEL",
+        "column": "account_name",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": true,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "industry",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "country",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "signup_date",
+        "dtype_inferred": "str",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "referral_source",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "plan_tier",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "seats",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "is_trial",
+        "dtype_inferred": "bool",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "churn_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      }
+    ],
+    "churn_events": [
+      {
+        "candidate_key": "CANDIDATE",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "churn_event_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": "INVALID",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "account_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "churn_date",
+        "dtype_inferred": "str",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "reason_code",
+        "dtype_inferred": "str",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "refund_amount_usd",
+        "dtype_inferred": "float64",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "preceding_upgrade_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "preceding_downgrade_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "is_reactivation",
+        "dtype_inferred": "bool",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEXT_OR_LABEL",
+        "column": "feedback_text",
+        "dtype_inferred": "str",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": true,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      }
+    ],
+    "feature_usage": [
+      {
+        "candidate_key": "INVALID",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "usage_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": "INVALID",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "subscription_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "usage_date",
+        "dtype_inferred": "str",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "feature_name",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "usage_count",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "usage_duration_secs",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "error_count",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "is_beta_feature",
+        "dtype_inferred": "bool",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      }
+    ],
+    "subscriptions": [
+      {
+        "candidate_key": "CANDIDATE",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "subscription_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": "INVALID",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "account_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "start_date",
+        "dtype_inferred": "str",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "end_date",
+        "dtype_inferred": "str",
+        "leakage_risk": "PROXY",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "plan_tier",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "seats",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "mrr_amount",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "arr_amount",
+        "dtype_inferred": "int64",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "is_trial",
+        "dtype_inferred": "bool",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "upgrade_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "downgrade_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "churn_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "EXPLICIT",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "billing_frequency",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "auto_renew_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      }
+    ],
+    "support_tickets": [
+      {
+        "candidate_key": "CANDIDATE",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "ticket_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": "INVALID",
+        "candidate_role": "TECHNICAL_IDENTIFIER",
+        "column": "account_id",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "submitted_at",
+        "dtype_inferred": "str",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "TEMPORAL_FIELD",
+        "column": "closed_at",
+        "dtype_inferred": "str",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": true,
+        "text_field": false,
+        "validation_status": "CANDIDATE"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "resolution_time_hours",
+        "dtype_inferred": "float64",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "CATEGORICAL_ATTRIBUTE",
+        "column": "priority",
+        "dtype_inferred": "str",
+        "leakage_risk": "NONE_IDENTIFIED",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "first_response_time_minutes",
+        "dtype_inferred": "int64",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "satisfaction_score",
+        "dtype_inferred": "float64",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      },
+      {
+        "candidate_key": null,
+        "candidate_role": "NUMERIC_MEASURE",
+        "column": "escalation_flag",
+        "dtype_inferred": "bool",
+        "leakage_risk": "TEMPORAL",
+        "temporal_field": false,
+        "text_field": false,
+        "validation_status": "VALIDATED_WITH_WARNINGS"
+      }
+    ]
+  }
+}

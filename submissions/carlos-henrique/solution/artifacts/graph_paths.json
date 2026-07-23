@@ -1,0 +1,1772 @@
+{
+  "churn_to_reactivation": [],
+  "containing_reactivation": [],
+  "ending_in_churn": [
+    {
+      "account_support": 169,
+      "associated_mrr": 844153.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 172,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L2",
+      "relative_support": 0.52,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 161,
+      "associated_mrr": 844153.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 172,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L2",
+      "relative_support": 0.49538461538461537,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 131,
+      "associated_mrr": 844153.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 172,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_30D_L2",
+      "relative_support": 0.40307692307692305,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 107,
+      "associated_mrr": 586615.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 109,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L2",
+      "relative_support": 0.3292307692307692,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 100,
+      "associated_mrr": 586615.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 109,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L2",
+      "relative_support": 0.3076923076923077,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 79,
+      "associated_mrr": 465468.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 92,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L3",
+      "relative_support": 0.24307692307692308,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 78,
+      "associated_mrr": 586615.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 109,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_30D_L2",
+      "relative_support": 0.24,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 69,
+      "associated_mrr": 296880.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 81,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L3",
+      "relative_support": 0.2123076923076923,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 67,
+      "associated_mrr": 465468.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 92,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L3",
+      "relative_support": 0.20615384615384616,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 58,
+      "associated_mrr": 296880.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 81,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L3",
+      "relative_support": 0.17846153846153845,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 55,
+      "associated_mrr": 844153.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 172,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_7D_L2",
+      "relative_support": 0.16923076923076924,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 41,
+      "associated_mrr": 296880.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 81,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "CHURN"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_30D_L3",
+      "relative_support": 0.12615384615384614,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 26,
+      "associated_mrr": 76788.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 26,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L2",
+      "relative_support": 0.08,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 25,
+      "associated_mrr": 72012.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 25,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L3",
+      "relative_support": 0.07692307692307693,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 24,
+      "associated_mrr": 76788.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 26,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L2",
+      "relative_support": 0.07384615384615385,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 23,
+      "associated_mrr": 72012.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 25,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L3",
+      "relative_support": 0.07076923076923076,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 21,
+      "associated_mrr": 76788.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 26,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_30D_L2",
+      "relative_support": 0.06461538461538462,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 19,
+      "associated_mrr": 72012.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 25,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_30D_L3",
+      "relative_support": 0.05846153846153846,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 16,
+      "associated_mrr": 75488.0,
+      "denominator_accounts": 152,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 16,
+      "outcome_context": "SINGLE_CHURN",
+      "pattern": [
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> CHURN",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.10526315789473684,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 16,
+      "associated_mrr": 75488.0,
+      "denominator_accounts": 152,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 16,
+      "outcome_context": "SINGLE_CHURN",
+      "pattern": [
+        "FEATURE",
+        "CHURN"
+      ],
+      "pattern_label": "FEATURE -> CHURN",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.10526315789473684,
+      "stability_status": "ROBUST"
+    }
+  ],
+  "high_associated_mrr": [
+    {
+      "account_support": 447,
+      "associated_mrr": 2942293.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 500,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.894,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 317,
+      "associated_mrr": 2871445.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 490,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.634,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 463,
+      "associated_mrr": 2739222.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 469,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.926,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 341,
+      "associated_mrr": 2739222.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 469,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.682,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 255,
+      "associated_mrr": 2739222.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 469,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "FEATURE"
+      ],
+      "pattern_label": "ACCOUNT -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.51,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 458,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.916,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 449,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.898,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 317,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.634,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 244,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.488,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 237,
+      "associated_mrr": 2682558.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 456,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.474,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 429,
+      "associated_mrr": 2624398.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 448,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.858,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 264,
+      "associated_mrr": 2624398.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 448,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.528,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 381,
+      "associated_mrr": 2572261.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 433,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.762,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 235,
+      "associated_mrr": 2572261.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 433,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.47,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 383,
+      "associated_mrr": 2522592.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 416,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.766,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 370,
+      "associated_mrr": 2522592.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 416,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.74,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 239,
+      "associated_mrr": 2522592.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 416,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.478,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 180,
+      "associated_mrr": 2522592.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 416,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.36,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 407,
+      "associated_mrr": 2518601.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 421,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.814,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 244,
+      "associated_mrr": 2518601.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 421,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> FEATURE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.488,
+      "stability_status": "SENSITIVE"
+    }
+  ],
+  "limitations": [
+    "PATHS_ARE_OBSERVED_ASSOCIATIONS",
+    "MRR_IS_ASSOCIATED_NOT_LOST_OR_SAVED",
+    "MAXIMUM_LENGTH_6"
+  ],
+  "parameters": {
+    "maximum_pattern_length": 6,
+    "minimum_support_accounts": 10,
+    "promotable_only": true
+  },
+  "recurring_churn": [
+    {
+      "account_support": 102,
+      "associated_mrr": 464164.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 102,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.864406779661017,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 102,
+      "associated_mrr": 464164.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 102,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.864406779661017,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 91,
+      "associated_mrr": 381599.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 91,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.7711864406779662,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 91,
+      "associated_mrr": 381599.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 91,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.7711864406779662,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 64,
+      "associated_mrr": 279021.0,
+      "denominator_accounts": 99,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 64,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.6464646464646465,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 37,
+      "associated_mrr": 161413.0,
+      "denominator_accounts": 99,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 37,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.37373737373737376,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 37,
+      "associated_mrr": 161413.0,
+      "denominator_accounts": 99,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 37,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.37373737373737376,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 35,
+      "associated_mrr": 130704.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 35,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "NGRAM_5_COLLAPSED",
+      "relative_support": 0.2966101694915254,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 33,
+      "associated_mrr": 101178.0,
+      "denominator_accounts": 99,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 33,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.3333333333333333,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 33,
+      "associated_mrr": 101178.0,
+      "denominator_accounts": 99,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 33,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.3333333333333333,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 33,
+      "associated_mrr": 149668.0,
+      "denominator_accounts": 99,
+      "journey_scope": "LANDMARK_90D_JOURNEY",
+      "mrr_account_count": 33,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_3_COLLAPSED",
+      "relative_support": 0.3333333333333333,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 32,
+      "associated_mrr": 162215.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 32,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_END -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.2711864406779661,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 32,
+      "associated_mrr": 162215.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 32,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUBSCRIPTION_END",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_END -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.2711864406779661,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 31,
+      "associated_mrr": 98795.0,
+      "denominator_accounts": 106,
+      "journey_scope": "LANDMARK_60D_JOURNEY",
+      "mrr_account_count": 31,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.29245283018867924,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 31,
+      "associated_mrr": 98795.0,
+      "denominator_accounts": 106,
+      "journey_scope": "LANDMARK_60D_JOURNEY",
+      "mrr_account_count": 31,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "CHURN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "CHURN -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.29245283018867924,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 31,
+      "associated_mrr": 141015.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 31,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUBSCRIPTION_END",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_END -> FEATURE",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.2627118644067797,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 31,
+      "associated_mrr": 141015.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 31,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUBSCRIPTION_END",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_END -> FEATURE",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.2627118644067797,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 26,
+      "associated_mrr": 118174.0,
+      "denominator_accounts": 106,
+      "journey_scope": "LANDMARK_60D_JOURNEY",
+      "mrr_account_count": 26,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.24528301886792453,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 26,
+      "associated_mrr": 118174.0,
+      "denominator_accounts": 106,
+      "journey_scope": "LANDMARK_60D_JOURNEY",
+      "mrr_account_count": 26,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "NGRAM_2_RAW_BIGRAM_SENSITIVITY",
+      "relative_support": 0.24528301886792453,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 23,
+      "associated_mrr": 85623.0,
+      "denominator_accounts": 118,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 23,
+      "outcome_context": "RECURRING_CHURN",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "SUPPORT_OPEN"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> SUPPORT_OPEN",
+      "pattern_type": "NGRAM_2_COLLAPSED",
+      "relative_support": 0.19491525423728814,
+      "stability_status": "SENSITIVE"
+    }
+  ],
+  "robust": [
+    {
+      "account_support": 463,
+      "associated_mrr": 2739222.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 469,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.926,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 458,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.916,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 449,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.898,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 447,
+      "associated_mrr": 2942293.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 500,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.894,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 429,
+      "associated_mrr": 2624398.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 448,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.858,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 412,
+      "associated_mrr": 2512972.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 417,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.824,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 407,
+      "associated_mrr": 2518601.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 421,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.814,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 404,
+      "associated_mrr": 2512972.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 417,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.808,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 383,
+      "associated_mrr": 2522592.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 416,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.766,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 381,
+      "associated_mrr": 2572261.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 433,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.762,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 372,
+      "associated_mrr": 2435521.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 397,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.744,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 370,
+      "associated_mrr": 2461627.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 405,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.74,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 370,
+      "associated_mrr": 2522592.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 416,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.74,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 358,
+      "associated_mrr": 2306788.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 378,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> FEATURE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.716,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 358,
+      "associated_mrr": 2461627.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 405,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.716,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 357,
+      "associated_mrr": 2435521.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 397,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.714,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 345,
+      "associated_mrr": 2311923.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 381,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.69,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 344,
+      "associated_mrr": 2291508.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 378,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "FEATURE -> FEATURE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.688,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 344,
+      "associated_mrr": 2270214.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 372,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.688,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 342,
+      "associated_mrr": 2375711.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 396,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.684,
+      "stability_status": "ROBUST"
+    }
+  ],
+  "sensitive": [
+    {
+      "account_support": 374,
+      "associated_mrr": 2189075.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 374,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.748,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 351,
+      "associated_mrr": 2392710.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 402,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.702,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 346,
+      "associated_mrr": 2093240.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 357,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.692,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 345,
+      "associated_mrr": 2091449.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 357,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.69,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 345,
+      "associated_mrr": 2082494.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 356,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.69,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 341,
+      "associated_mrr": 2739222.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 469,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.682,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 339,
+      "associated_mrr": 2092693.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 355,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "FEATURE"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.678,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 338,
+      "associated_mrr": 2086325.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 355,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "FEATURE"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.676,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 338,
+      "associated_mrr": 2081947.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 354,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "FEATURE"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.676,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 322,
+      "associated_mrr": 2005921.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 340,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.644,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 321,
+      "associated_mrr": 1999354.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 339,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUBSCRIPTION_START",
+        "FEATURE"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUBSCRIPTION_START -> FEATURE",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.642,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 317,
+      "associated_mrr": 2707633.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 460,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.634,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 317,
+      "associated_mrr": 2871445.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 490,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "ACCOUNT",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "ACCOUNT -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.634,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 310,
+      "associated_mrr": 2003806.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 338,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_CLOSE",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUPPORT_CLOSE -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.62,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 309,
+      "associated_mrr": 1997438.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 338,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.618,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 296,
+      "associated_mrr": 2148828.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 345,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> FEATURE -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.592,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 292,
+      "associated_mrr": 2262152.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 370,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.584,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 289,
+      "associated_mrr": 2236403.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 359,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.578,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 284,
+      "associated_mrr": 2148828.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 345,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "FEATURE",
+        "FEATURE",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> FEATURE -> FEATURE -> FEATURE -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.568,
+      "stability_status": "SENSITIVE"
+    },
+    {
+      "account_support": 281,
+      "associated_mrr": 2298857.0,
+      "denominator_accounts": 500,
+      "journey_scope": "FULL_OBSERVED_JOURNEY",
+      "mrr_account_count": 379,
+      "outcome_context": "ALL_OUTCOMES",
+      "pattern": [
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START",
+        "FEATURE",
+        "SUBSCRIPTION_START",
+        "SUBSCRIPTION_START"
+      ],
+      "pattern_label": "SUBSCRIPTION_START -> SUBSCRIPTION_START -> FEATURE -> SUBSCRIPTION_START -> SUBSCRIPTION_START",
+      "pattern_type": "SEQUENTIAL_CLOSED",
+      "relative_support": 0.562,
+      "stability_status": "SENSITIVE"
+    }
+  ],
+  "support_open_to_churn": [
+    {
+      "account_support": 25,
+      "associated_mrr": 72012.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 25,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_90D_L3",
+      "relative_support": 0.07692307692307693,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 23,
+      "associated_mrr": 72012.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 25,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_60D_L3",
+      "relative_support": 0.07076923076923076,
+      "stability_status": "ROBUST"
+    },
+    {
+      "account_support": 19,
+      "associated_mrr": 72012.0,
+      "denominator_accounts": 325,
+      "journey_scope": "PRE_FIRST_CHURN",
+      "mrr_account_count": 25,
+      "outcome_context": "CHURN_OBSERVED",
+      "pattern": [
+        "SUPPORT_OPEN",
+        "SUPPORT_CLOSE",
+        "CHURN"
+      ],
+      "pattern_label": "SUPPORT_OPEN -> SUPPORT_CLOSE -> CHURN",
+      "pattern_type": "PRE_CHURN_SUFFIX_30D_L3",
+      "relative_support": 0.05846153846153846,
+      "stability_status": "ROBUST"
+    }
+  ]
+}

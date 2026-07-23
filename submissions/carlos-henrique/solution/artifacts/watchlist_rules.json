@@ -1,0 +1,207 @@
+{
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  },
+  "rule_executions": [
+    {
+      "candidate_accounts": 23,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.046,
+      "promoted_accounts": 23,
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "rule_id": "W001",
+      "rule_name": "LOW_USAGE_30D_HIGH_MRR",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 7,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.014,
+      "promoted_accounts": 0,
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "rule_id": "W002",
+      "rule_name": "LOW_USAGE_90D_HIGH_MRR",
+      "status": "INSUFFICIENT_GROUP_SUPPORT",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 25,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.05,
+      "promoted_accounts": 25,
+      "queue": "ADOPTION_REVIEW",
+      "rule_id": "W003",
+      "rule_name": "SINGLE_FEATURE_ADOPTION",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 75,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.15,
+      "promoted_accounts": 75,
+      "queue": "RECENT_CHURN_REVIEW",
+      "rule_id": "W004",
+      "rule_name": "RECENT_FIRST_CHURN",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 80,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.16,
+      "promoted_accounts": 80,
+      "queue": "RECURRING_CHURN_REVIEW",
+      "rule_id": "W005",
+      "rule_name": "RECENT_RECURRING_CHURN",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 126,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.252,
+      "promoted_accounts": 126,
+      "queue": "RECURRING_CHURN_REVIEW",
+      "rule_id": "W006",
+      "rule_name": "MULTIPLE_CHURN_EVENTS",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 20,
+      "minimum_group_size": 5,
+      "population_denominator": 500,
+      "population_share": 0.04,
+      "promoted_accounts": 20,
+      "queue": "REACTIVATION_REVIEW",
+      "rule_id": "W007",
+      "rule_name": "REACTIVATED_WITH_USAGE_RETURN",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 4,
+      "minimum_group_size": 1,
+      "population_denominator": 500,
+      "population_share": 0.008,
+      "promoted_accounts": 4,
+      "queue": "REACTIVATION_REVIEW",
+      "rule_id": "W008",
+      "rule_name": "REACTIVATED_THEN_CHURNED_AGAIN",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 49,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.098,
+      "promoted_accounts": 49,
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "rule_id": "W009",
+      "rule_name": "SUPPORT_NEAR_CHURN",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 25,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.05,
+      "promoted_accounts": 25,
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "rule_id": "W010",
+      "rule_name": "REPEATED_SUPPORT_LOW_SATISFACTION",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 445,
+      "minimum_group_size": 1,
+      "population_denominator": 500,
+      "population_share": 0.89,
+      "promoted_accounts": 445,
+      "queue": "DATA_QUALITY_REVIEW",
+      "rule_id": "W011",
+      "rule_name": "SUBSCRIPTION_OVERLAP_REVIEW",
+      "status": "BROAD_RULE_EXCEPTION_DATA_QUALITY",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 15,
+      "minimum_group_size": 1,
+      "population_denominator": 500,
+      "population_share": 0.03,
+      "promoted_accounts": 15,
+      "queue": "DATA_QUALITY_REVIEW",
+      "rule_id": "W012",
+      "rule_name": "LOW_QUALITY_COVERAGE",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 133,
+      "minimum_group_size": 1,
+      "population_denominator": 500,
+      "population_share": 0.266,
+      "promoted_accounts": 133,
+      "queue": "DATA_QUALITY_REVIEW",
+      "rule_id": "W013",
+      "rule_name": "MAIN_STRICT_DIVERGENCE",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 233,
+      "minimum_group_size": 1,
+      "population_denominator": 500,
+      "population_share": 0.466,
+      "promoted_accounts": 233,
+      "queue": "DATA_QUALITY_REVIEW",
+      "rule_id": "W014",
+      "rule_name": "HIGH_MRR_DATA_QUALITY_REVIEW",
+      "status": "BROAD_RULE_REVIEW_REQUIRED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 306,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.612,
+      "promoted_accounts": 306,
+      "queue": "RECENT_CHURN_REVIEW",
+      "rule_id": "W015",
+      "rule_name": "PROMOTABLE_CHURN_PATH_MATCH",
+      "status": "BROAD_RULE_REVIEW_REQUIRED",
+      "version": "1.0.0"
+    },
+    {
+      "candidate_accounts": 50,
+      "minimum_group_size": 10,
+      "population_denominator": 500,
+      "population_share": 0.1,
+      "promoted_accounts": 50,
+      "queue": "ADOPTION_REVIEW",
+      "rule_id": "W016",
+      "rule_name": "LOW_ENGAGEMENT_TAXONOMY",
+      "status": "PROMOTED",
+      "version": "1.0.0"
+    }
+  ]
+}

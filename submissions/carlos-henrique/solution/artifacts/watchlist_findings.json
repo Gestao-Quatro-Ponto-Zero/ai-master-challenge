@@ -1,0 +1,344 @@
+{
+  "finding_count": 7,
+  "findings": [
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "MEDIUM": 75
+      },
+      "deduplicated_associated_mrr": 467213.0,
+      "distinct_accounts": 69,
+      "evidence_strength_distribution": {
+        "HIGH": 59,
+        "MEDIUM": 16
+      },
+      "finding_id": "WF01",
+      "graph_evidence": {
+        "accounts": 69,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.138,
+      "priority_distribution": {
+        "P1": 17,
+        "P2": 27,
+        "P3": 31
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 68,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "ADOPTION_REVIEW",
+      "recommended_human_investigation": "Review adoption breadth and taxonomy evidence.",
+      "rule_ids": [
+        "W003",
+        "W016"
+      ],
+      "stability_distribution": {
+        "ROBUST": 59,
+        "SENSITIVE": 16
+      },
+      "statement": "69 of 500 accounts met at least one deterministic rule for ADOPTION_REVIEW at the cutoff.",
+      "title": "Governed review volume in ADOPTION_REVIEW"
+    },
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "LOW": 51,
+        "MEDIUM": 775
+      },
+      "deduplicated_associated_mrr": 2844385.0,
+      "distinct_accounts": 467,
+      "evidence_strength_distribution": {
+        "HIGH": 238,
+        "LOW": 25,
+        "MEDIUM": 563
+      },
+      "finding_id": "WF02",
+      "graph_evidence": {
+        "accounts": 467,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.934,
+      "priority_distribution": {
+        "P1": 504,
+        "P3": 322
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 467,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "DATA_QUALITY_REVIEW",
+      "recommended_human_investigation": "Validate subscription interval and overlap business rules.",
+      "rule_ids": [
+        "W011",
+        "W012",
+        "W013",
+        "W014"
+      ],
+      "stability_distribution": {
+        "ROBUST": 250,
+        "SENSITIVE": 564,
+        "UNSTABLE": 12
+      },
+      "statement": "467 of 500 accounts met at least one deterministic rule for DATA_QUALITY_REVIEW at the cutoff.",
+      "title": "Governed review volume in DATA_QUALITY_REVIEW"
+    },
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "MEDIUM": 23
+      },
+      "deduplicated_associated_mrr": 226661.0,
+      "distinct_accounts": 23,
+      "evidence_strength_distribution": {
+        "HIGH": 23
+      },
+      "finding_id": "WF03",
+      "graph_evidence": {
+        "accounts": 23,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.046,
+      "priority_distribution": {
+        "P1": 23
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 23,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "HIGH_MRR_LOW_ENGAGEMENT_REVIEW",
+      "recommended_human_investigation": "Review recent product activity and data coverage.",
+      "rule_ids": [
+        "W001"
+      ],
+      "stability_distribution": {
+        "ROBUST": 23
+      },
+      "statement": "23 of 500 accounts met at least one deterministic rule for HIGH_MRR_LOW_ENGAGEMENT_REVIEW at the cutoff.",
+      "title": "Governed review volume in HIGH_MRR_LOW_ENGAGEMENT_REVIEW"
+    },
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "LOW": 2,
+        "MEDIUM": 22
+      },
+      "deduplicated_associated_mrr": 66082.0,
+      "distinct_accounts": 21,
+      "evidence_strength_distribution": {
+        "HIGH": 1,
+        "LOW": 4,
+        "MEDIUM": 19
+      },
+      "finding_id": "WF04",
+      "graph_evidence": {
+        "accounts": 21,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.042,
+      "priority_distribution": {
+        "P2": 1,
+        "P3": 20,
+        "P4": 3
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 19,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "REACTIVATION_REVIEW",
+      "recommended_human_investigation": "Review observed usage return and subscription chronology.",
+      "rule_ids": [
+        "W007",
+        "W008"
+      ],
+      "stability_distribution": {
+        "ROBUST": 1,
+        "SENSITIVE": 23
+      },
+      "statement": "21 of 500 accounts met at least one deterministic rule for REACTIVATION_REVIEW at the cutoff.",
+      "title": "Governed review volume in REACTIVATION_REVIEW"
+    },
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "HIGH": 8,
+        "LOW": 3,
+        "MEDIUM": 370
+      },
+      "deduplicated_associated_mrr": 1526215.0,
+      "distinct_accounts": 311,
+      "evidence_strength_distribution": {
+        "HIGH": 27,
+        "MEDIUM": 354
+      },
+      "finding_id": "WF05",
+      "graph_evidence": {
+        "accounts": 311,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.622,
+      "priority_distribution": {
+        "P1": 1,
+        "P2": 110,
+        "P3": 270
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 278,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "RECENT_CHURN_REVIEW",
+      "recommended_human_investigation": "Review the observed journey against promoted aggregate paths.",
+      "rule_ids": [
+        "W004",
+        "W015"
+      ],
+      "stability_distribution": {
+        "ROBUST": 27,
+        "SENSITIVE": 354
+      },
+      "statement": "311 of 500 accounts met at least one deterministic rule for RECENT_CHURN_REVIEW at the cutoff.",
+      "title": "Governed review volume in RECENT_CHURN_REVIEW"
+    },
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "HIGH": 4,
+        "LOW": 10,
+        "MEDIUM": 192
+      },
+      "deduplicated_associated_mrr": 561363.0,
+      "distinct_accounts": 126,
+      "evidence_strength_distribution": {
+        "HIGH": 7,
+        "MEDIUM": 199
+      },
+      "finding_id": "WF06",
+      "graph_evidence": {
+        "accounts": 126,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.252,
+      "priority_distribution": {
+        "P1": 2,
+        "P2": 52,
+        "P3": 152
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 113,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "RECURRING_CHURN_REVIEW",
+      "recommended_human_investigation": "Review recurring churn intervals, reactivation, and subscription context.",
+      "rule_ids": [
+        "W005",
+        "W006"
+      ],
+      "stability_distribution": {
+        "ROBUST": 7,
+        "SENSITIVE": 199
+      },
+      "statement": "126 of 500 accounts met at least one deterministic rule for RECURRING_CHURN_REVIEW at the cutoff.",
+      "title": "Governed review volume in RECURRING_CHURN_REVIEW"
+    },
+    {
+      "business_relevance": "Organizes bounded human investigation without prescribing an intervention.",
+      "confidence_level": "MEDIUM",
+      "data_confidence_distribution": {
+        "LOW": 5,
+        "MEDIUM": 69
+      },
+      "deduplicated_associated_mrr": 391015.0,
+      "distinct_accounts": 69,
+      "evidence_strength_distribution": {
+        "HIGH": 10,
+        "MEDIUM": 64
+      },
+      "finding_id": "WF07",
+      "graph_evidence": {
+        "accounts": 69,
+        "interpretation": "STRUCTURAL_NOT_CAUSAL"
+      },
+      "limitations": [
+        "DESCRIPTIVE_NOT_PREDICTIVE",
+        "ASSOCIATION_NOT_CAUSATION",
+        "QUALITY_DEPENDENT"
+      ],
+      "population": "MAIN_WITH_STRICT_SENSITIVITY",
+      "population_share": 0.138,
+      "priority_distribution": {
+        "P1": 1,
+        "P2": 23,
+        "P3": 50
+      },
+      "quality_constraints": {
+        "accounts_requiring_review": 62,
+        "quarantine_behavioral_signals": 0
+      },
+      "queue": "SUPPORT_JOURNEY_REVIEW",
+      "recommended_human_investigation": "Review repeated support and satisfaction completeness.",
+      "rule_ids": [
+        "W009",
+        "W010"
+      ],
+      "stability_distribution": {
+        "ROBUST": 10,
+        "SENSITIVE": 64
+      },
+      "statement": "69 of 500 accounts met at least one deterministic rule for SUPPORT_JOURNEY_REVIEW at the cutoff.",
+      "title": "Governed review volume in SUPPORT_JOURNEY_REVIEW"
+    }
+  ],
+  "metadata": {
+    "cutoff": "2024-12-31T19:00:00",
+    "limitations": [
+      "DESCRIPTIVE_NOT_PREDICTIVE",
+      "ASSOCIATION_NOT_CAUSATION",
+      "HUMAN_REVIEW_REQUIRED"
+    ],
+    "population": "MAIN_WITH_STRICT_SENSITIVITY",
+    "population_denominator": 500,
+    "rules_version": "7.0.0"
+  }
+}

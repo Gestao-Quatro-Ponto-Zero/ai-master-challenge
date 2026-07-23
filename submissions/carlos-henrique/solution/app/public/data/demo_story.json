@@ -1,0 +1,82 @@
+{
+  "demo_accounts": [
+    "acct_e53e3b84c66ef702",
+    "acct_8ca1cca8f79be520",
+    "acct_0afb4f639d4c1ef4"
+  ],
+  "duration_minutes": "2–4",
+  "steps": [
+    {
+      "insight": "Raw sources require governance before interpretation.",
+      "limitation": "Historical snapshot only.",
+      "metric": "35,586 events processed",
+      "route": "/",
+      "sentence": "Fragmented events obscure the customer journey.",
+      "step": 1,
+      "title": "The problem"
+    },
+    {
+      "insight": "Warnings remain visible and quarantine stays excluded.",
+      "limitation": "MAIN includes warning-bearing events.",
+      "metric": "13,927 usable events",
+      "route": "/quality",
+      "sentence": "Quality is controlled, not hidden.",
+      "step": 2,
+      "title": "Data quality before prediction"
+    },
+    {
+      "insight": "Anonymous demo accounts show different observed outcomes.",
+      "limitation": "Account examples are not representative estimates.",
+      "metric": "4,221 journeys",
+      "route": "/journeys",
+      "sentence": "Events become bounded, explainable timelines.",
+      "step": 3,
+      "title": "Reconstruct the journey"
+    },
+    {
+      "insight": "Support and denominator travel together.",
+      "limitation": "Same-day ordering is not causal evidence.",
+      "metric": "435 promotable patterns",
+      "route": "/journeys",
+      "sentence": "Repeated sequences are counted by account.",
+      "step": 4,
+      "title": "Find recurring paths"
+    },
+    {
+      "insight": "Only governed analytical relationships are rendered.",
+      "limitation": "Graph relationships are descriptive.",
+      "metric": "43 promotable transitions",
+      "route": "/graph",
+      "sentence": "A reduced graph connects events, patterns, findings, and reviews.",
+      "step": 5,
+      "title": "Organize evidence in a graph"
+    },
+    {
+      "insight": "Behavior and data quality remain visually separate.",
+      "limitation": "Automatic intervention is not allowed.",
+      "metric": "7 review queues",
+      "route": "/watchlist",
+      "sentence": "Rules prioritize investigation without an individual score.",
+      "step": 6,
+      "title": "Build a human-review watchlist"
+    },
+    {
+      "insight": "Sample feasibility is shown before promotion.",
+      "limitation": "No experiment has been executed.",
+      "metric": "8 untested designs",
+      "route": "/experiments",
+      "sentence": "The Experiment Lab separates observation from causal testing.",
+      "step": 7,
+      "title": "Convert observations into testable hypotheses"
+    },
+    {
+      "insight": "Reproducibility and privacy are product features.",
+      "limitation": "Demo mode is not a production control plane.",
+      "metric": "97 recorded decisions",
+      "route": "/governance",
+      "sentence": "Every layer exposes constraints and authorized human decisions.",
+      "step": 8,
+      "title": "Preserve governance"
+    }
+  ]
+}

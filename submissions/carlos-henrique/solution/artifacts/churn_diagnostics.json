@@ -1,0 +1,1121 @@
+{
+  "auxiliary_group_comparisons": [
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 4.382857142857143,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "median_difference_right_minus_left": -3.0,
+      "median_ratio_right_over_left": 0.25,
+      "metric": "feature_event_count_90d",
+      "right": {
+        "mean": 1.5078125,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 128,
+        "non_missing": 128,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 4.222857142857142,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "median_difference_right_minus_left": -3.0,
+      "median_ratio_right_over_left": 0.25,
+      "metric": "active_days_90d",
+      "right": {
+        "mean": 1.4921875,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 128,
+        "non_missing": 128,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 0.5028571428571429,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "median_difference_right_minus_left": 0.0,
+      "median_ratio_right_over_left": null,
+      "metric": "support_ticket_count_90d",
+      "right": {
+        "mean": 0.375,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 128,
+        "non_missing": 128,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 3.98,
+        "median": 4.0,
+        "missing_ratio": 0.4,
+        "n": 175,
+        "non_missing": 105,
+        "q1": 3.5,
+        "q3": 4.5
+      },
+      "median_difference_right_minus_left": 0.0,
+      "median_ratio_right_over_left": 1.0,
+      "metric": "satisfaction_mean",
+      "right": {
+        "mean": 3.9390243902439024,
+        "median": 4.0,
+        "missing_ratio": 0.6796875,
+        "n": 128,
+        "non_missing": 41,
+        "q1": 3.5,
+        "q3": 4.333333333333333
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 19766.428571428572,
+        "median": 16256.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 9749.0,
+        "q3": 24203.0
+      },
+      "median_difference_right_minus_left": -10953.0,
+      "median_ratio_right_over_left": 0.3262180118110236,
+      "metric": "total_mrr_current",
+      "right": {
+        "mean": 7608.3046875,
+        "median": 5303.0,
+        "missing_ratio": 0.0,
+        "n": 128,
+        "non_missing": 128,
+        "q1": 1728.25,
+        "q3": 9945.75
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 9.82857142857143,
+        "median": 10.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 7.0,
+        "q3": 12.0
+      },
+      "median_difference_right_minus_left": -7.0,
+      "median_ratio_right_over_left": 0.3,
+      "metric": "subscription_count",
+      "right": {
+        "mean": 3.8125,
+        "median": 3.0,
+        "missing_ratio": 0.0,
+        "n": 128,
+        "non_missing": 128,
+        "q1": 2.0,
+        "q3": 5.0
+      }
+    },
+    {
+      "comparison": "CHURNED_NOT_REACTIVATED vs REACTIVATED",
+      "left": {
+        "mean": 2.0100334448160537,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 299,
+        "non_missing": 299,
+        "q1": 0.0,
+        "q3": 3.0
+      },
+      "median_difference_right_minus_left": -1.0,
+      "median_ratio_right_over_left": 0.0,
+      "metric": "feature_event_count_90d",
+      "right": {
+        "mean": 1.1153846153846154,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 26,
+        "non_missing": 26,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    },
+    {
+      "comparison": "CHURNED_NOT_REACTIVATED vs REACTIVATED",
+      "left": {
+        "mean": 1.9665551839464883,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 299,
+        "non_missing": 299,
+        "q1": 0.0,
+        "q3": 3.0
+      },
+      "median_difference_right_minus_left": -1.0,
+      "median_ratio_right_over_left": 0.0,
+      "metric": "active_days_90d",
+      "right": {
+        "mean": 1.0769230769230769,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 26,
+        "non_missing": 26,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    },
+    {
+      "comparison": "CHURNED_NOT_REACTIVATED vs REACTIVATED",
+      "left": {
+        "mean": 0.3779264214046823,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 299,
+        "non_missing": 299,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "median_difference_right_minus_left": 0.5,
+      "median_ratio_right_over_left": null,
+      "metric": "support_ticket_count_90d",
+      "right": {
+        "mean": 0.5384615384615384,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "n": 26,
+        "non_missing": 26,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "comparison": "CHURNED_NOT_REACTIVATED vs REACTIVATED",
+      "left": {
+        "mean": 4.025757575757576,
+        "median": 4.0,
+        "missing_ratio": 0.6321070234113713,
+        "n": 299,
+        "non_missing": 110,
+        "q1": 3.5,
+        "q3": 4.5
+      },
+      "median_difference_right_minus_left": -0.25,
+      "median_ratio_right_over_left": 0.9375,
+      "metric": "satisfaction_mean",
+      "right": {
+        "mean": 3.8,
+        "median": 3.75,
+        "missing_ratio": 0.6153846153846154,
+        "n": 26,
+        "non_missing": 10,
+        "q1": 3.125,
+        "q3": 4.0
+      }
+    },
+    {
+      "comparison": "CHURNED_NOT_REACTIVATED vs REACTIVATED",
+      "left": {
+        "mean": 10362.030100334448,
+        "median": 6562.0,
+        "missing_ratio": 0.0,
+        "n": 299,
+        "non_missing": 299,
+        "q1": 2477.0,
+        "q3": 13480.5
+      },
+      "median_difference_right_minus_left": -2577.0,
+      "median_ratio_right_over_left": 0.6072843645230113,
+      "metric": "total_mrr_current",
+      "right": {
+        "mean": 7586.538461538462,
+        "median": 3985.0,
+        "missing_ratio": 0.0,
+        "n": 26,
+        "non_missing": 26,
+        "q1": 1206.25,
+        "q3": 8742.5
+      }
+    },
+    {
+      "comparison": "CHURNED_NOT_REACTIVATED vs REACTIVATED",
+      "left": {
+        "mean": 4.8762541806020065,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 299,
+        "non_missing": 299,
+        "q1": 2.0,
+        "q3": 7.0
+      },
+      "median_difference_right_minus_left": -1.0,
+      "median_ratio_right_over_left": 0.75,
+      "metric": "subscription_count",
+      "right": {
+        "mean": 3.6153846153846154,
+        "median": 3.0,
+        "missing_ratio": 0.0,
+        "n": 26,
+        "non_missing": 26,
+        "q1": 2.0,
+        "q3": 4.75
+      }
+    }
+  ],
+  "auxiliary_states": {
+    "CHURNED_NOT_REACTIVATED": 303,
+    "REACTIVATED": 26,
+    "REACTIVATED_THEN_CHURNED_AGAIN": 4,
+    "RECURRING_CHURN": 128
+  },
+  "churn_count_distribution": {
+    "0": 175,
+    "1": 197,
+    "2": 96,
+    "3": 27,
+    "4": 3,
+    "5": 2
+  },
+  "churn_observed_accounts": 325,
+  "denominator_accounts": 500,
+  "group_comparisons": [
+    {
+      "comparison": "NO_CHURN_OBSERVED vs SINGLE_CHURN",
+      "left": {
+        "mean": 4.382857142857143,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "median_difference_right_minus_left": -3.0,
+      "median_ratio_right_over_left": 0.25,
+      "metric": "feature_event_count_90d",
+      "right": {
+        "mean": 2.320441988950276,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 181,
+        "non_missing": 181,
+        "q1": 0.0,
+        "q3": 4.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs SINGLE_CHURN",
+      "left": {
+        "mean": 4.222857142857142,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "median_difference_right_minus_left": -3.0,
+      "median_ratio_right_over_left": 0.25,
+      "metric": "active_days_90d",
+      "right": {
+        "mean": 2.2596685082872927,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 181,
+        "non_missing": 181,
+        "q1": 0.0,
+        "q3": 4.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs SINGLE_CHURN",
+      "left": {
+        "mean": 0.5028571428571429,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "median_difference_right_minus_left": 0.0,
+      "median_ratio_right_over_left": null,
+      "metric": "support_ticket_count_90d",
+      "right": {
+        "mean": 0.3812154696132597,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 181,
+        "non_missing": 181,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs SINGLE_CHURN",
+      "left": {
+        "mean": 3.98,
+        "median": 4.0,
+        "missing_ratio": 0.4,
+        "n": 175,
+        "non_missing": 105,
+        "q1": 3.5,
+        "q3": 4.5
+      },
+      "median_difference_right_minus_left": 0.0,
+      "median_ratio_right_over_left": 1.0,
+      "metric": "satisfaction_mean",
+      "right": {
+        "mean": 4.0532407407407405,
+        "median": 4.0,
+        "missing_ratio": 0.6022099447513812,
+        "n": 181,
+        "non_missing": 72,
+        "q1": 3.5,
+        "q3": 5.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs SINGLE_CHURN",
+      "left": {
+        "mean": 19766.428571428572,
+        "median": 16256.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 9749.0,
+        "q3": 24203.0
+      },
+      "median_difference_right_minus_left": -8765.0,
+      "median_ratio_right_over_left": 0.460814468503937,
+      "metric": "total_mrr_current",
+      "right": {
+        "mean": 12073.375690607734,
+        "median": 7491.0,
+        "missing_ratio": 0.0,
+        "n": 181,
+        "non_missing": 181,
+        "q1": 2940.0,
+        "q3": 16187.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs SINGLE_CHURN",
+      "left": {
+        "mean": 9.82857142857143,
+        "median": 10.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 7.0,
+        "q3": 12.0
+      },
+      "median_difference_right_minus_left": -5.0,
+      "median_ratio_right_over_left": 0.5,
+      "metric": "subscription_count",
+      "right": {
+        "mean": 5.558011049723757,
+        "median": 5.0,
+        "missing_ratio": 0.0,
+        "n": 181,
+        "non_missing": 181,
+        "q1": 2.0,
+        "q3": 8.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 4.382857142857143,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "median_difference_right_minus_left": -3.0,
+      "median_ratio_right_over_left": 0.25,
+      "metric": "feature_event_count_90d",
+      "right": {
+        "mean": 1.5338983050847457,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 118,
+        "non_missing": 118,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 4.222857142857142,
+        "median": 4.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 2.0,
+        "q3": 6.0
+      },
+      "median_difference_right_minus_left": -3.0,
+      "median_ratio_right_over_left": 0.25,
+      "metric": "active_days_90d",
+      "right": {
+        "mean": 1.5169491525423728,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 118,
+        "non_missing": 118,
+        "q1": 0.0,
+        "q3": 2.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 0.5028571428571429,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "median_difference_right_minus_left": 0.0,
+      "median_ratio_right_over_left": null,
+      "metric": "support_ticket_count_90d",
+      "right": {
+        "mean": 0.3728813559322034,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 118,
+        "non_missing": 118,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 3.98,
+        "median": 4.0,
+        "missing_ratio": 0.4,
+        "n": 175,
+        "non_missing": 105,
+        "q1": 3.5,
+        "q3": 4.5
+      },
+      "median_difference_right_minus_left": 0.0,
+      "median_ratio_right_over_left": 1.0,
+      "metric": "satisfaction_mean",
+      "right": {
+        "mean": 3.973684210526316,
+        "median": 4.0,
+        "missing_ratio": 0.6779661016949152,
+        "n": 118,
+        "non_missing": 38,
+        "q1": 3.5416666666666665,
+        "q3": 4.458333333333333
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 19766.428571428572,
+        "median": 16256.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 9749.0,
+        "q3": 24203.0
+      },
+      "median_difference_right_minus_left": -10518.5,
+      "median_ratio_right_over_left": 0.3529466043307087,
+      "metric": "total_mrr_current",
+      "right": {
+        "mean": 7737.0,
+        "median": 5737.5,
+        "missing_ratio": 0.0,
+        "n": 118,
+        "non_missing": 118,
+        "q1": 1796.5,
+        "q3": 10079.25
+      }
+    },
+    {
+      "comparison": "NO_CHURN_OBSERVED vs RECURRING_CHURN",
+      "left": {
+        "mean": 9.82857142857143,
+        "median": 10.0,
+        "missing_ratio": 0.0,
+        "n": 175,
+        "non_missing": 175,
+        "q1": 7.0,
+        "q3": 12.0
+      },
+      "median_difference_right_minus_left": -7.0,
+      "median_ratio_right_over_left": 0.3,
+      "metric": "subscription_count",
+      "right": {
+        "mean": 3.830508474576271,
+        "median": 3.0,
+        "missing_ratio": 0.0,
+        "n": 118,
+        "non_missing": 118,
+        "q1": 2.0,
+        "q3": 5.0
+      }
+    },
+    {
+      "comparison": "REACTIVATED vs REACTIVATED_THEN_CHURNED_AGAIN",
+      "left": {
+        "mean": 1.2272727272727273,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 22,
+        "non_missing": 22,
+        "q1": 0.0,
+        "q3": 2.75
+      },
+      "median_difference_right_minus_left": 0.5,
+      "median_ratio_right_over_left": null,
+      "metric": "feature_event_count_90d",
+      "right": {
+        "mean": 0.5,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "n": 4,
+        "non_missing": 4,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "comparison": "REACTIVATED vs REACTIVATED_THEN_CHURNED_AGAIN",
+      "left": {
+        "mean": 1.1818181818181819,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 22,
+        "non_missing": 22,
+        "q1": 0.0,
+        "q3": 2.75
+      },
+      "median_difference_right_minus_left": 0.5,
+      "median_ratio_right_over_left": null,
+      "metric": "active_days_90d",
+      "right": {
+        "mean": 0.5,
+        "median": 0.5,
+        "missing_ratio": 0.0,
+        "n": 4,
+        "non_missing": 4,
+        "q1": 0.0,
+        "q3": 1.0
+      }
+    },
+    {
+      "comparison": "REACTIVATED vs REACTIVATED_THEN_CHURNED_AGAIN",
+      "left": {
+        "mean": 0.5909090909090909,
+        "median": 1.0,
+        "missing_ratio": 0.0,
+        "n": 22,
+        "non_missing": 22,
+        "q1": 0.0,
+        "q3": 1.0
+      },
+      "median_difference_right_minus_left": -1.0,
+      "median_ratio_right_over_left": 0.0,
+      "metric": "support_ticket_count_90d",
+      "right": {
+        "mean": 0.25,
+        "median": 0.0,
+        "missing_ratio": 0.0,
+        "n": 4,
+        "non_missing": 4,
+        "q1": 0.0,
+        "q3": 0.25
+      }
+    },
+    {
+      "comparison": "REACTIVATED vs REACTIVATED_THEN_CHURNED_AGAIN",
+      "left": {
+        "mean": 3.8,
+        "median": 3.75,
+        "missing_ratio": 0.5454545454545454,
+        "n": 22,
+        "non_missing": 10,
+        "q1": 3.125,
+        "q3": 4.0
+      },
+      "median_difference_right_minus_left": null,
+      "median_ratio_right_over_left": null,
+      "metric": "satisfaction_mean",
+      "right": {
+        "mean": null,
+        "median": null,
+        "missing_ratio": 1.0,
+        "n": 4,
+        "non_missing": 0,
+        "q1": null,
+        "q3": null
+      }
+    },
+    {
+      "comparison": "REACTIVATED vs REACTIVATED_THEN_CHURNED_AGAIN",
+      "left": {
+        "mean": 8124.045454545455,
+        "median": 3985.0,
+        "missing_ratio": 0.0,
+        "n": 22,
+        "non_missing": 22,
+        "q1": 1206.25,
+        "q3": 8742.5
+      },
+      "median_difference_right_minus_left": -140.0,
+      "median_ratio_right_over_left": 0.9648682559598495,
+      "metric": "total_mrr_current",
+      "right": {
+        "mean": 4630.25,
+        "median": 3845.0,
+        "missing_ratio": 0.0,
+        "n": 4,
+        "non_missing": 4,
+        "q1": 1963.0,
+        "q3": 6512.25
+      }
+    },
+    {
+      "comparison": "REACTIVATED vs REACTIVATED_THEN_CHURNED_AGAIN",
+      "left": {
+        "mean": 3.590909090909091,
+        "median": 3.0,
+        "missing_ratio": 0.0,
+        "n": 22,
+        "non_missing": 22,
+        "q1": 2.0,
+        "q3": 4.75
+      },
+      "median_difference_right_minus_left": 0.5,
+      "median_ratio_right_over_left": 1.1666666666666667,
+      "metric": "subscription_count",
+      "right": {
+        "mean": 3.75,
+        "median": 3.5,
+        "missing_ratio": 0.0,
+        "n": 4,
+        "non_missing": 4,
+        "q1": 2.75,
+        "q3": 4.5
+      }
+    }
+  ],
+  "intervals": {
+    "between_churns": {
+      "mean_days": 88.89221556886227,
+      "median_days": 61.0,
+      "n": 167,
+      "q1_days": 19.5,
+      "q3_days": 136.0
+    },
+    "churn_to_reactivation": {
+      "mean_days": 102.9,
+      "median_days": 45.0,
+      "n": 30,
+      "q1_days": 22.5,
+      "q3_days": 147.5
+    },
+    "reactivation_to_new_churn": {
+      "mean_days": 59.5,
+      "median_days": 56.5,
+      "n": 4,
+      "q1_days": 33.75,
+      "q3_days": 82.25
+    },
+    "signup_to_first_churn": {
+      "mean_days": 158.64,
+      "median_days": 104.0,
+      "n": 325,
+      "q1_days": 38.0,
+      "q3_days": 239.0
+    }
+  },
+  "limitations": [
+    "Administrative censoring at observation_end; no churn observed does not mean permanent retention.",
+    "Daily timestamps and technical same-day ordering do not establish intraday precedence or causality.",
+    "Warning events materially expand churn coverage and require sensitivity analysis."
+  ],
+  "methodology": "Account-grain descriptive outcomes from usable events; proportions are observed shares, not temporal churn rates.",
+  "observed_churn_proportion": 0.65,
+  "observed_recurring_churn_proportion": 0.256,
+  "population": "VALID + VALID_WITH_WARNING; quarantine excluded",
+  "primary_outcomes": [
+    {
+      "accounts": 4,
+      "observed_proportion": 0.008,
+      "outcome": "REACTIVATED_THEN_CHURNED_AGAIN"
+    },
+    {
+      "accounts": 22,
+      "observed_proportion": 0.044,
+      "outcome": "REACTIVATED"
+    },
+    {
+      "accounts": 118,
+      "observed_proportion": 0.236,
+      "outcome": "RECURRING_CHURN"
+    },
+    {
+      "accounts": 181,
+      "observed_proportion": 0.362,
+      "outcome": "SINGLE_CHURN"
+    },
+    {
+      "accounts": 175,
+      "observed_proportion": 0.35,
+      "outcome": "NO_CHURN_OBSERVED"
+    }
+  ],
+  "recurring_churn_accounts": 128,
+  "stratified_observed_outcomes": [
+    {
+      "churn_observed_accounts": 36,
+      "denominator_accounts": 55,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.6545454545454545,
+      "reactivated_accounts": 3,
+      "recurring_churn_accounts": 12,
+      "sample_status": "OK",
+      "value": "2023Q1"
+    },
+    {
+      "churn_observed_accounts": 30,
+      "denominator_accounts": 54,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.5555555555555556,
+      "reactivated_accounts": 4,
+      "recurring_churn_accounts": 13,
+      "sample_status": "OK",
+      "value": "2023Q2"
+    },
+    {
+      "churn_observed_accounts": 38,
+      "denominator_accounts": 53,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.7169811320754716,
+      "reactivated_accounts": 2,
+      "recurring_churn_accounts": 14,
+      "sample_status": "OK",
+      "value": "2023Q3"
+    },
+    {
+      "churn_observed_accounts": 46,
+      "denominator_accounts": 65,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.7076923076923077,
+      "reactivated_accounts": 1,
+      "recurring_churn_accounts": 20,
+      "sample_status": "OK",
+      "value": "2023Q4"
+    },
+    {
+      "churn_observed_accounts": 34,
+      "denominator_accounts": 56,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.6071428571428571,
+      "reactivated_accounts": 4,
+      "recurring_churn_accounts": 14,
+      "sample_status": "OK",
+      "value": "2024Q1"
+    },
+    {
+      "churn_observed_accounts": 44,
+      "denominator_accounts": 65,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.676923076923077,
+      "reactivated_accounts": 3,
+      "recurring_churn_accounts": 16,
+      "sample_status": "OK",
+      "value": "2024Q2"
+    },
+    {
+      "churn_observed_accounts": 46,
+      "denominator_accounts": 72,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.6388888888888888,
+      "reactivated_accounts": 5,
+      "recurring_churn_accounts": 19,
+      "sample_status": "OK",
+      "value": "2024Q3"
+    },
+    {
+      "churn_observed_accounts": 51,
+      "denominator_accounts": 80,
+      "dimension": "signup_quarter",
+      "observed_churn_proportion": 0.6375,
+      "reactivated_accounts": 4,
+      "recurring_churn_accounts": 20,
+      "sample_status": "OK",
+      "value": "2024Q4"
+    },
+    {
+      "churn_observed_accounts": 102,
+      "denominator_accounts": 164,
+      "dimension": "first_plan",
+      "observed_churn_proportion": 0.6219512195121951,
+      "reactivated_accounts": 11,
+      "recurring_churn_accounts": 35,
+      "sample_status": "OK",
+      "value": "Basic"
+    },
+    {
+      "churn_observed_accounts": 111,
+      "denominator_accounts": 171,
+      "dimension": "first_plan",
+      "observed_churn_proportion": 0.6491228070175439,
+      "reactivated_accounts": 11,
+      "recurring_churn_accounts": 47,
+      "sample_status": "OK",
+      "value": "Enterprise"
+    },
+    {
+      "churn_observed_accounts": 112,
+      "denominator_accounts": 165,
+      "dimension": "first_plan",
+      "observed_churn_proportion": 0.6787878787878788,
+      "reactivated_accounts": 4,
+      "recurring_churn_accounts": 46,
+      "sample_status": "OK",
+      "value": "Pro"
+    },
+    {
+      "churn_observed_accounts": 115,
+      "denominator_accounts": 125,
+      "dimension": "mrr_band",
+      "observed_churn_proportion": 0.92,
+      "reactivated_accounts": 13,
+      "recurring_churn_accounts": 56,
+      "sample_status": "OK",
+      "value": "Q1_LOW"
+    },
+    {
+      "churn_observed_accounts": 95,
+      "denominator_accounts": 125,
+      "dimension": "mrr_band",
+      "observed_churn_proportion": 0.76,
+      "reactivated_accounts": 8,
+      "recurring_churn_accounts": 37,
+      "sample_status": "OK",
+      "value": "Q2"
+    },
+    {
+      "churn_observed_accounts": 63,
+      "denominator_accounts": 125,
+      "dimension": "mrr_band",
+      "observed_churn_proportion": 0.504,
+      "reactivated_accounts": 3,
+      "recurring_churn_accounts": 22,
+      "sample_status": "OK",
+      "value": "Q3"
+    },
+    {
+      "churn_observed_accounts": 52,
+      "denominator_accounts": 125,
+      "dimension": "mrr_band",
+      "observed_churn_proportion": 0.416,
+      "reactivated_accounts": 2,
+      "recurring_churn_accounts": 13,
+      "sample_status": "OK",
+      "value": "Q4_HIGH"
+    },
+    {
+      "churn_observed_accounts": 23,
+      "denominator_accounts": 91,
+      "dimension": "subscription_count_band",
+      "observed_churn_proportion": 0.25274725274725274,
+      "reactivated_accounts": 1,
+      "recurring_churn_accounts": 2,
+      "sample_status": "OK",
+      "value": "ELEVEN_PLUS"
+    },
+    {
+      "churn_observed_accounts": 55,
+      "denominator_accounts": 55,
+      "dimension": "subscription_count_band",
+      "observed_churn_proportion": 1.0,
+      "reactivated_accounts": 5,
+      "recurring_churn_accounts": 27,
+      "sample_status": "OK",
+      "value": "ONE"
+    },
+    {
+      "churn_observed_accounts": 93,
+      "denominator_accounts": 191,
+      "dimension": "subscription_count_band",
+      "observed_churn_proportion": 0.4869109947643979,
+      "reactivated_accounts": 4,
+      "recurring_churn_accounts": 29,
+      "sample_status": "OK",
+      "value": "SIX_TO_TEN"
+    },
+    {
+      "churn_observed_accounts": 154,
+      "denominator_accounts": 163,
+      "dimension": "subscription_count_band",
+      "observed_churn_proportion": 0.9447852760736196,
+      "reactivated_accounts": 16,
+      "recurring_churn_accounts": 70,
+      "sample_status": "OK",
+      "value": "TWO_TO_FIVE"
+    },
+    {
+      "churn_observed_accounts": 102,
+      "denominator_accounts": 227,
+      "dimension": "usage_intensity_90d",
+      "observed_churn_proportion": 0.44933920704845814,
+      "reactivated_accounts": 6,
+      "recurring_churn_accounts": 30,
+      "sample_status": "OK",
+      "value": "HIGH_3_PLUS"
+    },
+    {
+      "churn_observed_accounts": 91,
+      "denominator_accounts": 127,
+      "dimension": "usage_intensity_90d",
+      "observed_churn_proportion": 0.7165354330708661,
+      "reactivated_accounts": 4,
+      "recurring_churn_accounts": 41,
+      "sample_status": "OK",
+      "value": "LOW_1_2"
+    },
+    {
+      "churn_observed_accounts": 132,
+      "denominator_accounts": 146,
+      "dimension": "usage_intensity_90d",
+      "observed_churn_proportion": 0.9041095890410958,
+      "reactivated_accounts": 16,
+      "recurring_churn_accounts": 57,
+      "sample_status": "OK",
+      "value": "NONE"
+    },
+    {
+      "churn_observed_accounts": 222,
+      "denominator_accounts": 329,
+      "dimension": "support_frequency_90d",
+      "observed_churn_proportion": 0.6747720364741642,
+      "reactivated_accounts": 13,
+      "recurring_churn_accounts": 90,
+      "sample_status": "OK",
+      "value": "NONE"
+    },
+    {
+      "churn_observed_accounts": 81,
+      "denominator_accounts": 132,
+      "dimension": "support_frequency_90d",
+      "observed_churn_proportion": 0.6136363636363636,
+      "reactivated_accounts": 12,
+      "recurring_churn_accounts": 30,
+      "sample_status": "OK",
+      "value": "ONE"
+    },
+    {
+      "churn_observed_accounts": 22,
+      "denominator_accounts": 39,
+      "dimension": "support_frequency_90d",
+      "observed_churn_proportion": 0.5641025641025641,
+      "reactivated_accounts": 1,
+      "recurring_churn_accounts": 8,
+      "sample_status": "OK",
+      "value": "TWO_PLUS"
+    },
+    {
+      "churn_observed_accounts": 38,
+      "denominator_accounts": 72,
+      "dimension": "satisfaction_band",
+      "observed_churn_proportion": 0.5277777777777778,
+      "reactivated_accounts": 2,
+      "recurring_churn_accounts": 11,
+      "sample_status": "OK",
+      "value": "HIGH_ABOVE_4"
+    },
+    {
+      "churn_observed_accounts": 26,
+      "denominator_accounts": 45,
+      "dimension": "satisfaction_band",
+      "observed_churn_proportion": 0.5777777777777777,
+      "reactivated_accounts": 3,
+      "recurring_churn_accounts": 10,
+      "sample_status": "OK",
+      "value": "LOW_UP_TO_3"
+    },
+    {
+      "churn_observed_accounts": 56,
+      "denominator_accounts": 108,
+      "dimension": "satisfaction_band",
+      "observed_churn_proportion": 0.5185185185185185,
+      "reactivated_accounts": 5,
+      "recurring_churn_accounts": 20,
+      "sample_status": "OK",
+      "value": "MID_3_TO_4"
+    },
+    {
+      "churn_observed_accounts": 205,
+      "denominator_accounts": 275,
+      "dimension": "satisfaction_band",
+      "observed_churn_proportion": 0.7454545454545455,
+      "reactivated_accounts": 16,
+      "recurring_churn_accounts": 87,
+      "sample_status": "OK",
+      "value": "MISSING"
+    },
+    {
+      "churn_observed_accounts": 55,
+      "denominator_accounts": 55,
+      "dimension": "subscription_overlap",
+      "observed_churn_proportion": 1.0,
+      "reactivated_accounts": 5,
+      "recurring_churn_accounts": 27,
+      "sample_status": "OK",
+      "value": "NO_OVERLAP"
+    },
+    {
+      "churn_observed_accounts": 270,
+      "denominator_accounts": 445,
+      "dimension": "subscription_overlap",
+      "observed_churn_proportion": 0.6067415730337079,
+      "reactivated_accounts": 21,
+      "recurring_churn_accounts": 101,
+      "sample_status": "OK",
+      "value": "OVERLAP"
+    }
+  ]
+}

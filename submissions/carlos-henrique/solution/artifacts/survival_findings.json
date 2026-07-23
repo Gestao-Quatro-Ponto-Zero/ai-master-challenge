@@ -1,0 +1,51 @@
+{
+  "findings": [
+    {
+      "assumption_status": "VIOLATED",
+      "business_relevance": "Evita decisões e métricas infladas no grão incorreto.",
+      "censoring_rate": 0.9028,
+      "confidence_interval": null,
+      "confidence_level": "HIGH",
+      "endpoint": "SUBSCRIPTION_END_NOT_EQUIVALENT_TO_CHURN",
+      "estimate": 0.9984,
+      "event_count": 486,
+      "finding_id": "SF002",
+      "groups": [
+        "ALL_EPISODES"
+      ],
+      "limitations": "Término de assinatura não equivale necessariamente a churn e contas repetem episódios.",
+      "metric": "OVERLAPPING_EPISODE_RATIO",
+      "population": "SUBSCRIPTION_EPISODES_QUALITY_AUDIT",
+      "recommended_investigation": "Validar a semântica de assinaturas simultâneas upstream.",
+      "sample_size": 5000,
+      "sensitivity_status": "ROBUST",
+      "statement": "A sobreposição observada em 99,84% dos episódios e a dependência intracliente impedem uma estimativa independente limpa por assinatura.",
+      "time_origin": "EPISODE_START_NOT_MODELED",
+      "title": "Curvas por assinatura não são defensáveis"
+    },
+    {
+      "assumption_status": "LIMITED",
+      "business_relevance": "Permite investigar sinais iniciais sem usar eventos posteriores ao marco.",
+      "censoring_rate": 0.4206549118387909,
+      "confidence_interval": null,
+      "confidence_level": "MEDIUM",
+      "endpoint": "FIRST_VALID_CHURN_AFTER_LANDMARK",
+      "estimate": 397,
+      "event_count": 230,
+      "finding_id": "SF003",
+      "groups": [
+        "ELIGIBLE_AT_30D"
+      ],
+      "limitations": "A população é condicional à sobrevivência e observabilidade até 30 dias.",
+      "metric": "LANDMARK_INCLUDED_ACCOUNTS",
+      "population": "MAIN_30D_LANDMARK",
+      "recommended_investigation": "Preservar o mesmo gate temporal em journey mining.",
+      "sample_size": 397,
+      "sensitivity_status": "ROBUST",
+      "statement": "Após excluir churns até o marco e contas sem observação suficiente, 397 contas sustentam a análise condicional de 30 dias.",
+      "time_origin": "FIRST_SUBSCRIPTION_START_PLUS_30D",
+      "title": "Landmark de 30 dias preserva temporalidade"
+    }
+  ],
+  "maximum_findings": 7
+}

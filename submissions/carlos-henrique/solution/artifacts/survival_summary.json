@@ -1,0 +1,97 @@
+{
+  "authorized_use": "Aggregate descriptive survival evidence for governed journey research.",
+  "censoring": {
+    "main_censored": 175,
+    "main_censoring_rate": 0.35,
+    "main_events": 325,
+    "method": "ADMINISTRATIVE_RIGHT_CENSORING",
+    "observation_end": "2024-12-31T19:00:00",
+    "strict_censored": 451,
+    "strict_censoring_rate": 0.9074446680080483,
+    "strict_events": 46
+  },
+  "cox": {
+    "candidate_covariates": [
+      "first_plan",
+      "baseline_mrr",
+      "subscription_count_at_baseline",
+      "quality_population"
+    ],
+    "justification": "Warning-sensitive endpoints and untested proportional hazards prevent a stable, leakage-controlled descriptive model in this phase.",
+    "proportional_hazards": "NOT_TESTED",
+    "status": "NOT_EXECUTED"
+  },
+  "dependencies": {
+    "matplotlib": "3.11.1",
+    "numpy": "2.5.1",
+    "pandas": "3.0.3",
+    "pyarrow": "25.0.0",
+    "pytest": "9.1.1",
+    "scipy": "1.18.0"
+  },
+  "gate": "PASS_WITH_WARNINGS",
+  "generation_timestamp": "2024-12-31T19:00:00",
+  "generation_timestamp_basis": "Phase 3 administrative observation_end for deterministic output",
+  "input_validation": {
+    "account_rows": 500,
+    "all_hashes_match": true,
+    "episode_rows": 5000,
+    "event_rows": 13927,
+    "expected_phase4_base_commit": "dd1f013cc502d9e690a1790331397897729edfd3",
+    "input_hashes": {
+      "account_diagnostic_features.parquet": "cc3a4fb1c90f3bfd8110e35998421b7dd854a1841ac71a11df41b6c247cd7988",
+      "event_log.parquet": "0e9e60d06ce6fbd62103924aab7beda6d0eab9ed5a87ea32cee786abcdb0373f",
+      "subscription_episodes.parquet": "a78db5380cc6ffb422951fec98c2ecf4f06b068414e63dce1147d36117f8cf71"
+    },
+    "phase2_manifest_base_commit": "b9f341b92af080e4abf30282171994905cf0a780",
+    "reconciliation_unexplained_difference": 0,
+    "unique_accounts": 500,
+    "verified_files": 16
+  },
+  "output_validation": {
+    "duplicate_accounts": 0,
+    "eligible_accounts": 500,
+    "future_features_detected": 0,
+    "maximum_accounts": 500,
+    "negative_eligible_durations": 0,
+    "prohibited_columns_detected": 0,
+    "public_identifiers_detected": 0,
+    "quarantined_events_used": 0,
+    "unexplained_difference": 0
+  },
+  "policy": {
+    "minimum_at_risk": 20,
+    "minimum_group_events": 5,
+    "minimum_group_size": 20,
+    "quality_coverage_threshold": 0.5
+  },
+  "population": {
+    "endpoint": "FIRST_VALID_CHURN",
+    "main_eligible": 500,
+    "main_excluded": 0,
+    "main_exclusion_reasons": {
+      "ELIGIBLE": 500
+    },
+    "primary_time_origin": "FIRST_SUBSCRIPTION_START",
+    "source_accounts": 500,
+    "strict_eligible": 497,
+    "strict_excluded": 3,
+    "strict_exclusion_reasons": {
+      "ELIGIBLE": 497,
+      "NO_VALID_SUBSCRIPTION_START": 3
+    }
+  },
+  "prohibited_use": [
+    "individual score",
+    "prediction",
+    "causal claim",
+    "automated intervention",
+    "company churn rate"
+  ],
+  "schema_version": "4.0.0",
+  "subscription_survival": {
+    "justification": "Episode end is not equivalent to churn; overlap and within-account correlation violate simple independence.",
+    "overlapping_episode_ratio": 0.9984,
+    "status": "NOT_EXECUTED"
+  }
+}

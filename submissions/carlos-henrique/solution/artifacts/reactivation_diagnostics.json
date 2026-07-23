@@ -1,0 +1,111 @@
+{
+  "churn_events_followed_by_reactivation": 33,
+  "churn_to_reactivation_interval": {
+    "mean_days": 102.9,
+    "median_days": 45.0,
+    "n": 30,
+    "q1_days": 22.5,
+    "q3_days": 147.5
+  },
+  "denominator_accounts": 500,
+  "denominator_churn_events": 492,
+  "limitations": [
+    "Reactivation is explicit and is not inferred from a later subscription.",
+    "Observed intervals are censored and do not estimate a survival function."
+  ],
+  "methodology": "Explicit usable reactivation events only; post-reactivation measures are descriptive and are not predictive features.",
+  "observed_share_churn_followed_by_reactivation": 0.06707317073170732,
+  "population": "VALID + VALID_WITH_WARNING; quarantine excluded",
+  "reactivated_accounts": 26,
+  "reactivation_by_mrr_band": [
+    {
+      "denominator_churned_accounts": 82,
+      "mrr_band": "Q1_LOW",
+      "observed_reactivation_proportion": 0.10975609756097561,
+      "reactivated_accounts": 9,
+      "sample_status": "OK"
+    },
+    {
+      "denominator_churned_accounts": 81,
+      "mrr_band": "Q2",
+      "observed_reactivation_proportion": 0.07407407407407407,
+      "reactivated_accounts": 6,
+      "sample_status": "OK"
+    },
+    {
+      "denominator_churned_accounts": 81,
+      "mrr_band": "Q3",
+      "observed_reactivation_proportion": 0.09876543209876543,
+      "reactivated_accounts": 8,
+      "sample_status": "OK"
+    },
+    {
+      "denominator_churned_accounts": 81,
+      "mrr_band": "Q4_HIGH",
+      "observed_reactivation_proportion": 0.037037037037037035,
+      "reactivated_accounts": 3,
+      "sample_status": "OK"
+    }
+  ],
+  "reactivation_by_previous_plan": [
+    {
+      "denominator_churned_accounts": 93,
+      "observed_reactivation_proportion": 0.0967741935483871,
+      "previous_plan": "Basic",
+      "reactivated_accounts": 9,
+      "sample_status": "OK"
+    },
+    {
+      "denominator_churned_accounts": 119,
+      "observed_reactivation_proportion": 0.05042016806722689,
+      "previous_plan": "Enterprise",
+      "reactivated_accounts": 6,
+      "sample_status": "OK"
+    },
+    {
+      "denominator_churned_accounts": 113,
+      "observed_reactivation_proportion": 0.09734513274336283,
+      "previous_plan": "Pro",
+      "reactivated_accounts": 11,
+      "sample_status": "OK"
+    }
+  ],
+  "reactivation_events": 30,
+  "reactivation_to_new_churn_interval": {
+    "mean_days": 59.5,
+    "median_days": 56.5,
+    "n": 4,
+    "q1_days": 33.75,
+    "q3_days": 82.25
+  },
+  "reactivations_per_account_distribution": {
+    "0": 474,
+    "1": 22,
+    "2": 4
+  },
+  "recurrence_after_reactivation_accounts": 4,
+  "usage_support_before_after": {
+    "interpretation": "Post-reactivation values are descriptive and never used as prediction features.",
+    "paired_accounts": 26,
+    "support_after_reactivation_30d": {
+      "mean": 0.11538461538461539,
+      "median": 0.0,
+      "n": 26
+    },
+    "support_before_churn_30d": {
+      "mean": 0.19230769230769232,
+      "median": 0.0,
+      "n": 26
+    },
+    "usage_after_reactivation_30d": {
+      "mean": 1.1153846153846154,
+      "median": 1.0,
+      "n": 26
+    },
+    "usage_before_churn_30d": {
+      "mean": 0.8076923076923077,
+      "median": 0.0,
+      "n": 26
+    }
+  }
+}

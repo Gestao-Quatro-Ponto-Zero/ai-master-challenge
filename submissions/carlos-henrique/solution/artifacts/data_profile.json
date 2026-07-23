@@ -1,0 +1,1576 @@
+{
+  "structural_consistency": {
+    "checks": [
+      {
+        "check": "account_churn_flag_false_with_churn_event",
+        "evaluated_records": 500,
+        "interpretation": "The account-level snapshot flag conflicts with the churn event table.",
+        "occurrence_count": 277,
+        "occurrence_rate": 0.554,
+        "severity": "HIGH",
+        "status": "WARNING"
+      },
+      {
+        "check": "account_churn_flag_true_without_churn_event",
+        "evaluated_records": 500,
+        "interpretation": "The account-level target flag lacks a corresponding churn event.",
+        "occurrence_count": 35,
+        "occurrence_rate": 0.07,
+        "severity": "HIGH",
+        "status": "WARNING"
+      },
+      {
+        "check": "subscription_churn_true_without_end_date",
+        "evaluated_records": 5000,
+        "interpretation": "A churned subscription is expected to have a termination date.",
+        "occurrence_count": 0,
+        "occurrence_rate": 0.0,
+        "severity": "HIGH",
+        "status": "PASS"
+      },
+      {
+        "check": "subscription_churn_false_with_end_date",
+        "evaluated_records": 5000,
+        "interpretation": "An ended subscription conflicts with a false churn flag in this schema.",
+        "occurrence_count": 0,
+        "occurrence_rate": 0.0,
+        "severity": "HIGH",
+        "status": "PASS"
+      },
+      {
+        "check": "arr_not_equal_to_mrr_times_twelve",
+        "evaluated_records": 5000,
+        "interpretation": "ARR and MRR require a documented reconciliation rule before financial use.",
+        "occurrence_count": 0,
+        "occurrence_rate": 0.0,
+        "severity": "MEDIUM",
+        "status": "PASS"
+      },
+      {
+        "check": "ticket_resolution_hours_mismatch",
+        "evaluated_records": 2000,
+        "interpretation": "Stored resolution duration should reconcile with submitted and closed timestamps.",
+        "occurrence_count": 0,
+        "occurrence_rate": 0.0,
+        "severity": "MEDIUM",
+        "status": "PASS"
+      },
+      {
+        "check": "satisfaction_score_outside_1_to_5",
+        "evaluated_records": 1175,
+        "interpretation": "Non-null satisfaction scores must remain in the documented 1-to-5 domain.",
+        "occurrence_count": 0,
+        "occurrence_rate": 0.0,
+        "severity": "HIGH",
+        "status": "PASS"
+      },
+      {
+        "check": "usage_id_duplicate_excess_rows",
+        "evaluated_records": 25000,
+        "interpretation": "The supplied usage identifier is not a unique event key.",
+        "occurrence_count": 21,
+        "occurrence_rate": 0.00084,
+        "severity": "HIGH",
+        "status": "WARNING"
+      },
+      {
+        "check": "usage_business_composite_duplicate_excess_rows",
+        "evaluated_records": 25000,
+        "interpretation": "The tested subscription-date-feature composite is also not unique.",
+        "occurrence_count": 3,
+        "occurrence_rate": 0.00012,
+        "severity": "HIGH",
+        "status": "WARNING"
+      },
+      {
+        "check": "negative_numeric_values",
+        "evaluated_records": 97100,
+        "interpretation": "Negative values require domain-specific justification before analytical use.",
+        "occurrence_count": 0,
+        "occurrence_rate": 0.0,
+        "severity": "MEDIUM",
+        "status": "PASS"
+      }
+    ]
+  },
+  "tables": {
+    "accounts": {
+      "candidate_composite_keys": {},
+      "candidate_keys": {
+        "account_id": {
+          "columns": [
+            "account_id"
+          ],
+          "complete_and_unique_in_snapshot": true,
+          "duplicate_affected_rows": 0,
+          "duplicate_excess_rows": 0,
+          "null_rows": 0,
+          "rows": 500,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "CANDIDATE",
+          "unique_non_null_values": 500
+        }
+      },
+      "column_count": 10,
+      "column_profiles": {
+        "account_id": {
+          "cardinality": "UNIQUE",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 500,
+          "unique_rate": 1.0
+        },
+        "account_name": {
+          "cardinality": "UNIQUE",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[TEXT_REDACTED:length=9]",
+            "[TEXT_REDACTED:length=10]",
+            "[TEXT_REDACTED:length=11]"
+          ],
+          "unique_count": 500,
+          "unique_rate": 1.0
+        },
+        "churn_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.004
+        },
+        "country": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "US",
+            "IN",
+            "UK"
+          ],
+          "unique_count": 7,
+          "unique_rate": 0.014
+        },
+        "industry": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "EdTech",
+            "FinTech",
+            "DevTools"
+          ],
+          "unique_count": 5,
+          "unique_rate": 0.01
+        },
+        "is_trial": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.004
+        },
+        "plan_tier": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "Basic",
+            "Enterprise",
+            "Pro"
+          ],
+          "unique_count": 3,
+          "unique_rate": 0.006
+        },
+        "referral_source": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "partner",
+            "other",
+            "organic"
+          ],
+          "unique_count": 5,
+          "unique_rate": 0.01
+        },
+        "seats": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 163,
+          "minimum": 1,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            9,
+            18,
+            1
+          ],
+          "unique_count": 73,
+          "unique_rate": 0.146
+        },
+        "signup_date": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]"
+          ],
+          "unique_count": 370,
+          "unique_rate": 0.74
+        }
+      },
+      "columns": [
+        "account_id",
+        "account_name",
+        "industry",
+        "country",
+        "signup_date",
+        "referral_source",
+        "plan_tier",
+        "seats",
+        "is_trial",
+        "churn_flag"
+      ],
+      "constant_columns": [],
+      "dtypes_inferred": {
+        "account_id": "str",
+        "account_name": "str",
+        "churn_flag": "bool",
+        "country": "str",
+        "industry": "str",
+        "is_trial": "bool",
+        "plan_tier": "str",
+        "referral_source": "str",
+        "seats": "int64",
+        "signup_date": "str"
+      },
+      "exact_duplicate_rows": 0,
+      "file_metadata": {
+        "bytes": 36649,
+        "delimiter": ",",
+        "encoding": "utf-8",
+        "physical_lines": 501,
+        "sha256": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5"
+      },
+      "file_name": "ravenstack_accounts.csv",
+      "near_constant_columns": [],
+      "negative_numeric_values": {
+        "churn_flag": 0,
+        "is_trial": 0,
+        "seats": 0
+      },
+      "quality_observations": [],
+      "records": 500,
+      "table": "accounts",
+      "temporal_columns": {
+        "signup_date": {
+          "column": "signup_date",
+          "future_suspect_count": 0,
+          "granularity": "DATE",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T00:00:00+00:00",
+          "minimum": "2023-01-02T00:00:00+00:00",
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null": 500,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "YYYY-MM-DD",
+          "timezone": "NOT_DECLARED"
+        }
+      },
+      "text_privacy": {
+        "account_name": {
+          "average_length": 10.78,
+          "empty_or_whitespace_count": 0,
+          "maximum_length": 11,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 500,
+          "possible_email_count": 0,
+          "possible_phone_count": 0,
+          "possible_url_count": 0,
+          "raw_text_included": false
+        }
+      }
+    },
+    "churn_events": {
+      "candidate_composite_keys": {},
+      "candidate_keys": {
+        "account_id": {
+          "columns": [
+            "account_id"
+          ],
+          "complete_and_unique_in_snapshot": false,
+          "duplicate_affected_rows": 423,
+          "duplicate_excess_rows": 248,
+          "null_rows": 0,
+          "rows": 600,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "INVALID",
+          "unique_non_null_values": 352
+        },
+        "churn_event_id": {
+          "columns": [
+            "churn_event_id"
+          ],
+          "complete_and_unique_in_snapshot": true,
+          "duplicate_affected_rows": 0,
+          "duplicate_excess_rows": 0,
+          "null_rows": 0,
+          "rows": 600,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "CANDIDATE",
+          "unique_non_null_values": 600
+        }
+      },
+      "column_count": 9,
+      "column_profiles": {
+        "account_id": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 352,
+          "unique_rate": 0.586667
+        },
+        "churn_date": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]"
+          ],
+          "unique_count": 311,
+          "unique_rate": 0.518333
+        },
+        "churn_event_id": {
+          "cardinality": "UNIQUE",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 600,
+          "unique_rate": 1.0
+        },
+        "feedback_text": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 148,
+          "missing_rate": 0.246667,
+          "non_null_count": 452,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[TEXT_REDACTED:length=22]",
+            "[TEXT_REDACTED:length=16]",
+            "[TEXT_REDACTED:length=13]"
+          ],
+          "unique_count": 3,
+          "unique_rate": 0.005
+        },
+        "is_reactivation": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.003333
+        },
+        "preceding_downgrade_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.003333
+        },
+        "preceding_upgrade_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.003333
+        },
+        "reason_code": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 95,
+          "sanitized_samples": [
+            "pricing",
+            "support",
+            "budget"
+          ],
+          "unique_count": 6,
+          "unique_rate": 0.01
+        },
+        "refund_amount_usd": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "float64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 392.92,
+          "minimum": 0.0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 600,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            4.03,
+            96.45,
+            0.0
+          ],
+          "unique_count": 142,
+          "unique_rate": 0.236667
+        }
+      },
+      "columns": [
+        "churn_event_id",
+        "account_id",
+        "churn_date",
+        "reason_code",
+        "refund_amount_usd",
+        "preceding_upgrade_flag",
+        "preceding_downgrade_flag",
+        "is_reactivation",
+        "feedback_text"
+      ],
+      "constant_columns": [],
+      "dtypes_inferred": {
+        "account_id": "str",
+        "churn_date": "str",
+        "churn_event_id": "str",
+        "feedback_text": "str",
+        "is_reactivation": "bool",
+        "preceding_downgrade_flag": "bool",
+        "preceding_upgrade_flag": "bool",
+        "reason_code": "str",
+        "refund_amount_usd": "float64"
+      },
+      "exact_duplicate_rows": 0,
+      "file_metadata": {
+        "bytes": 44630,
+        "delimiter": ",",
+        "encoding": "utf-8",
+        "physical_lines": 601,
+        "sha256": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940"
+      },
+      "file_name": "ravenstack_churn_events.csv",
+      "near_constant_columns": [],
+      "negative_numeric_values": {
+        "is_reactivation": 0,
+        "preceding_downgrade_flag": 0,
+        "preceding_upgrade_flag": 0,
+        "refund_amount_usd": 0
+      },
+      "quality_observations": [
+        "Non-unique or incomplete technical identifiers: account_id"
+      ],
+      "records": 600,
+      "table": "churn_events",
+      "temporal_columns": {
+        "churn_date": {
+          "column": "churn_date",
+          "future_suspect_count": 0,
+          "granularity": "DATE",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T00:00:00+00:00",
+          "minimum": "2023-01-25T00:00:00+00:00",
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null": 600,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "YYYY-MM-DD",
+          "timezone": "NOT_DECLARED"
+        }
+      },
+      "text_privacy": {
+        "feedback_text": {
+          "average_length": 16.737,
+          "empty_or_whitespace_count": 0,
+          "maximum_length": 22,
+          "missing_count": 148,
+          "missing_rate": 0.246667,
+          "non_null_count": 452,
+          "possible_email_count": 0,
+          "possible_phone_count": 0,
+          "possible_url_count": 0,
+          "raw_text_included": false
+        }
+      }
+    },
+    "feature_usage": {
+      "candidate_composite_keys": {
+        "subscription_id+usage_date+feature_name": {
+          "columns": [
+            "subscription_id",
+            "usage_date",
+            "feature_name"
+          ],
+          "complete_and_unique_in_snapshot": false,
+          "duplicate_affected_rows": 6,
+          "duplicate_excess_rows": 3,
+          "null_rows": 0,
+          "rows": 25000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "INVALID",
+          "unique_non_null_values": 24997
+        }
+      },
+      "candidate_keys": {
+        "subscription_id": {
+          "columns": [
+            "subscription_id"
+          ],
+          "complete_and_unique_in_snapshot": false,
+          "duplicate_affected_rows": 24849,
+          "duplicate_excess_rows": 20033,
+          "null_rows": 0,
+          "rows": 25000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "INVALID",
+          "unique_non_null_values": 4967
+        },
+        "usage_id": {
+          "columns": [
+            "usage_id"
+          ],
+          "complete_and_unique_in_snapshot": false,
+          "duplicate_affected_rows": 42,
+          "duplicate_excess_rows": 21,
+          "null_rows": 0,
+          "rows": 25000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "INVALID",
+          "unique_non_null_values": 24979
+        }
+      },
+      "column_count": 8,
+      "column_profiles": {
+        "error_count": {
+          "cardinality": "LOW",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 8,
+          "minimum": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            0,
+            2,
+            1
+          ],
+          "unique_count": 9,
+          "unique_rate": 0.00036
+        },
+        "feature_name": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "feature_20",
+            "feature_5",
+            "feature_3"
+          ],
+          "unique_count": 40,
+          "unique_rate": 0.0016
+        },
+        "is_beta_feature": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 8e-05
+        },
+        "subscription_id": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 4967,
+          "unique_rate": 0.19868
+        },
+        "usage_count": {
+          "cardinality": "LOW",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 26,
+          "minimum": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            9,
+            5,
+            12
+          ],
+          "unique_count": 27,
+          "unique_rate": 0.00108
+        },
+        "usage_date": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]"
+          ],
+          "unique_count": 731,
+          "unique_rate": 0.02924
+        },
+        "usage_duration_secs": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 12696,
+          "minimum": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 6,
+          "sanitized_samples": [
+            5004,
+            369,
+            1458
+          ],
+          "unique_count": 4168,
+          "unique_rate": 0.16672
+        },
+        "usage_id": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 25000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 24979,
+          "unique_rate": 0.99916
+        }
+      },
+      "columns": [
+        "usage_id",
+        "subscription_id",
+        "usage_date",
+        "feature_name",
+        "usage_count",
+        "usage_duration_secs",
+        "error_count",
+        "is_beta_feature"
+      ],
+      "constant_columns": [],
+      "dtypes_inferred": {
+        "error_count": "int64",
+        "feature_name": "str",
+        "is_beta_feature": "bool",
+        "subscription_id": "str",
+        "usage_count": "int64",
+        "usage_date": "str",
+        "usage_duration_secs": "int64",
+        "usage_id": "str"
+      },
+      "exact_duplicate_rows": 0,
+      "file_metadata": {
+        "bytes": 1400898,
+        "delimiter": ",",
+        "encoding": "utf-8",
+        "physical_lines": 25001,
+        "sha256": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e"
+      },
+      "file_name": "ravenstack_feature_usage.csv",
+      "near_constant_columns": [],
+      "negative_numeric_values": {
+        "error_count": 0,
+        "is_beta_feature": 0,
+        "usage_count": 0,
+        "usage_duration_secs": 0
+      },
+      "quality_observations": [
+        "Non-unique or incomplete technical identifiers: usage_id, subscription_id"
+      ],
+      "records": 25000,
+      "table": "feature_usage",
+      "temporal_columns": {
+        "usage_date": {
+          "column": "usage_date",
+          "future_suspect_count": 0,
+          "granularity": "DATE",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T00:00:00+00:00",
+          "minimum": "2023-01-01T00:00:00+00:00",
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null": 25000,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "YYYY-MM-DD",
+          "timezone": "NOT_DECLARED"
+        }
+      },
+      "text_privacy": {}
+    },
+    "subscriptions": {
+      "candidate_composite_keys": {},
+      "candidate_keys": {
+        "account_id": {
+          "columns": [
+            "account_id"
+          ],
+          "complete_and_unique_in_snapshot": false,
+          "duplicate_affected_rows": 5000,
+          "duplicate_excess_rows": 4500,
+          "null_rows": 0,
+          "rows": 5000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "INVALID",
+          "unique_non_null_values": 500
+        },
+        "subscription_id": {
+          "columns": [
+            "subscription_id"
+          ],
+          "complete_and_unique_in_snapshot": true,
+          "duplicate_affected_rows": 0,
+          "duplicate_excess_rows": 0,
+          "null_rows": 0,
+          "rows": 5000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "CANDIDATE",
+          "unique_non_null_values": 5000
+        }
+      },
+      "column_count": 14,
+      "column_profiles": {
+        "account_id": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 500,
+          "unique_rate": 0.1
+        },
+        "arr_amount": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 405960,
+          "minimum": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            33432,
+            9996,
+            0
+          ],
+          "unique_count": 306,
+          "unique_rate": 0.0612
+        },
+        "auto_renew_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            true,
+            false
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.0004
+        },
+        "billing_frequency": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "monthly",
+            "annual"
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.0004
+        },
+        "churn_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            true,
+            false
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.0004
+        },
+        "downgrade_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.0004
+        },
+        "end_date": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 4514,
+          "missing_rate": 0.9028,
+          "non_null_count": 486,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]"
+          ],
+          "unique_count": 208,
+          "unique_rate": 0.0416
+        },
+        "is_trial": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.0004
+        },
+        "mrr_amount": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 33830,
+          "minimum": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            2786,
+            833,
+            0
+          ],
+          "unique_count": 306,
+          "unique_rate": 0.0612
+        },
+        "plan_tier": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "Enterprise",
+            "Pro",
+            "Basic"
+          ],
+          "unique_count": 3,
+          "unique_rate": 0.0006
+        },
+        "seats": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 189,
+          "minimum": 1,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            14,
+            17,
+            62
+          ],
+          "unique_count": 123,
+          "unique_rate": 0.0246
+        },
+        "start_date": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]"
+          ],
+          "unique_count": 625,
+          "unique_rate": 0.125
+        },
+        "subscription_id": {
+          "cardinality": "UNIQUE",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 5000,
+          "unique_rate": 1.0
+        },
+        "upgrade_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 5000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.0004
+        }
+      },
+      "columns": [
+        "subscription_id",
+        "account_id",
+        "start_date",
+        "end_date",
+        "plan_tier",
+        "seats",
+        "mrr_amount",
+        "arr_amount",
+        "is_trial",
+        "upgrade_flag",
+        "downgrade_flag",
+        "churn_flag",
+        "billing_frequency",
+        "auto_renew_flag"
+      ],
+      "constant_columns": [],
+      "dtypes_inferred": {
+        "account_id": "str",
+        "arr_amount": "int64",
+        "auto_renew_flag": "bool",
+        "billing_frequency": "str",
+        "churn_flag": "bool",
+        "downgrade_flag": "bool",
+        "end_date": "str",
+        "is_trial": "bool",
+        "mrr_amount": "int64",
+        "plan_tier": "str",
+        "seats": "int64",
+        "start_date": "str",
+        "subscription_id": "str",
+        "upgrade_flag": "bool"
+      },
+      "exact_duplicate_rows": 0,
+      "file_metadata": {
+        "bytes": 437566,
+        "delimiter": ",",
+        "encoding": "utf-8",
+        "physical_lines": 5001,
+        "sha256": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a"
+      },
+      "file_name": "ravenstack_subscriptions.csv",
+      "near_constant_columns": [
+        "downgrade_flag"
+      ],
+      "negative_numeric_values": {
+        "arr_amount": 0,
+        "auto_renew_flag": 0,
+        "churn_flag": 0,
+        "downgrade_flag": 0,
+        "is_trial": 0,
+        "mrr_amount": 0,
+        "seats": 0,
+        "upgrade_flag": 0
+      },
+      "quality_observations": [
+        "Non-unique or incomplete technical identifiers: account_id"
+      ],
+      "records": 5000,
+      "table": "subscriptions",
+      "temporal_columns": {
+        "end_date": {
+          "column": "end_date",
+          "future_suspect_count": 0,
+          "granularity": "DATE",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T00:00:00+00:00",
+          "minimum": "2023-04-05T00:00:00+00:00",
+          "missing_count": 4514,
+          "missing_rate": 0.9028,
+          "non_null": 486,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "YYYY-MM-DD",
+          "timezone": "NOT_DECLARED"
+        },
+        "start_date": {
+          "column": "start_date",
+          "future_suspect_count": 0,
+          "granularity": "DATE",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T00:00:00+00:00",
+          "minimum": "2023-01-09T00:00:00+00:00",
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null": 5000,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "YYYY-MM-DD",
+          "timezone": "NOT_DECLARED"
+        }
+      },
+      "text_privacy": {}
+    },
+    "support_tickets": {
+      "candidate_composite_keys": {},
+      "candidate_keys": {
+        "account_id": {
+          "columns": [
+            "account_id"
+          ],
+          "complete_and_unique_in_snapshot": false,
+          "duplicate_affected_rows": 1970,
+          "duplicate_excess_rows": 1508,
+          "null_rows": 0,
+          "rows": 2000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "INVALID",
+          "unique_non_null_values": 492
+        },
+        "ticket_id": {
+          "columns": [
+            "ticket_id"
+          ],
+          "complete_and_unique_in_snapshot": true,
+          "duplicate_affected_rows": 0,
+          "duplicate_excess_rows": 0,
+          "null_rows": 0,
+          "rows": 2000,
+          "stability_note": "Cross-snapshot stability requires source governance evidence.",
+          "status": "CANDIDATE",
+          "unique_non_null_values": 2000
+        }
+      },
+      "column_count": 9,
+      "column_profiles": {
+        "account_id": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 492,
+          "unique_rate": 0.246
+        },
+        "closed_at": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]:00:00"
+          ],
+          "unique_count": 1893,
+          "unique_rate": 0.9465
+        },
+        "escalation_flag": {
+          "cardinality": "LOW",
+          "dtype_inferred": "bool",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": null,
+          "minimum": null,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            false,
+            true
+          ],
+          "unique_count": 2,
+          "unique_rate": 0.001
+        },
+        "first_response_time_minutes": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "int64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 180,
+          "minimum": 1,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            74,
+            144,
+            93
+          ],
+          "unique_count": 180,
+          "unique_rate": 0.09
+        },
+        "priority": {
+          "cardinality": "LOW",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "high",
+            "urgent",
+            "medium"
+          ],
+          "unique_count": 4,
+          "unique_rate": 0.002
+        },
+        "resolution_time_hours": {
+          "cardinality": "MEDIUM",
+          "dtype_inferred": "float64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 72.0,
+          "minimum": 1.0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "negative_count": 0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            27.0,
+            19.0,
+            47.0
+          ],
+          "unique_count": 72,
+          "unique_rate": 0.036
+        },
+        "satisfaction_score": {
+          "cardinality": "LOW",
+          "dtype_inferred": "float64",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "maximum": 5.0,
+          "minimum": 3.0,
+          "missing_count": 825,
+          "missing_rate": 0.4125,
+          "negative_count": 0,
+          "non_null_count": 1175,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            4.0,
+            5.0,
+            3.0
+          ],
+          "unique_count": 3,
+          "unique_rate": 0.0015
+        },
+        "submitted_at": {
+          "cardinality": "HIGH",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "[PHONE_REDACTED]"
+          ],
+          "unique_count": 671,
+          "unique_rate": 0.3355
+        },
+        "ticket_id": {
+          "cardinality": "UNIQUE",
+          "dtype_inferred": "str",
+          "empty_string_count": 0,
+          "leading_or_trailing_space_count": 0,
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null_count": 2000,
+          "possible_inconsistent_id_count": 0,
+          "possible_sentinel_count": 0,
+          "sanitized_samples": [
+            "***"
+          ],
+          "unique_count": 2000,
+          "unique_rate": 1.0
+        }
+      },
+      "columns": [
+        "ticket_id",
+        "account_id",
+        "submitted_at",
+        "closed_at",
+        "resolution_time_hours",
+        "priority",
+        "first_response_time_minutes",
+        "satisfaction_score",
+        "escalation_flag"
+      ],
+      "constant_columns": [],
+      "dtypes_inferred": {
+        "account_id": "str",
+        "closed_at": "str",
+        "escalation_flag": "bool",
+        "first_response_time_minutes": "int64",
+        "priority": "str",
+        "resolution_time_hours": "float64",
+        "satisfaction_score": "float64",
+        "submitted_at": "str",
+        "ticket_id": "str"
+      },
+      "exact_duplicate_rows": 0,
+      "file_metadata": {
+        "bytes": 145598,
+        "delimiter": ",",
+        "encoding": "utf-8",
+        "physical_lines": 2001,
+        "sha256": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220"
+      },
+      "file_name": "ravenstack_support_tickets.csv",
+      "near_constant_columns": [
+        "escalation_flag"
+      ],
+      "negative_numeric_values": {
+        "escalation_flag": 0,
+        "first_response_time_minutes": 0,
+        "resolution_time_hours": 0,
+        "satisfaction_score": 0
+      },
+      "quality_observations": [
+        "Non-unique or incomplete technical identifiers: account_id"
+      ],
+      "records": 2000,
+      "table": "support_tickets",
+      "temporal_columns": {
+        "closed_at": {
+          "column": "closed_at",
+          "future_suspect_count": 0,
+          "granularity": "DATETIME",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T19:00:00+00:00",
+          "minimum": "2023-01-03T03:00:00+00:00",
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null": 2000,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "DATETIME_OR_MIXED",
+          "timezone": "NOT_DECLARED"
+        },
+        "submitted_at": {
+          "column": "submitted_at",
+          "future_suspect_count": 0,
+          "granularity": "DATE",
+          "invalid_count": 0,
+          "invalid_rate_non_null": 0.0,
+          "maximum": "2024-12-31T00:00:00+00:00",
+          "minimum": "2023-01-02T00:00:00+00:00",
+          "missing_count": 0,
+          "missing_rate": 0.0,
+          "non_null": 2000,
+          "pre_2000_suspect_count": 0,
+          "predominant_format": "YYYY-MM-DD",
+          "timezone": "NOT_DECLARED"
+        }
+      },
+      "text_privacy": {}
+    }
+  }
+}

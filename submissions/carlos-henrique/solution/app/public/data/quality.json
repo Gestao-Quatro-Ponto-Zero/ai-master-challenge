@@ -1,0 +1,87 @@
+{
+  "anomalies": [
+    {
+      "count": 19142,
+      "flag": "PRE_SUBSCRIPTION_USAGE"
+    },
+    {
+      "count": 15347,
+      "flag": "PRE_ACCOUNT_EVENT"
+    },
+    {
+      "count": 5011,
+      "flag": "SAME_DAY_ORDER_ASSIGNED"
+    },
+    {
+      "count": 619,
+      "flag": "POST_CHURN_EVENT"
+    },
+    {
+      "count": 478,
+      "flag": "AMBIGUOUS_CHURN_SUBSCRIPTION"
+    },
+    {
+      "count": 478,
+      "flag": "MULTIPLE_ACTIVE_SUBSCRIPTIONS"
+    },
+    {
+      "count": 290,
+      "flag": "POST_SUBSCRIPTION_USAGE"
+    },
+    {
+      "count": 55,
+      "flag": "CHURN_WITHOUT_ACTIVE_SUBSCRIPTION"
+    }
+  ],
+  "coverage": {
+    "main": 0.391362,
+    "quarantine_share": 0.608638,
+    "strict": 0.300764,
+    "warning_share_of_usable": 0.231493
+  },
+  "cutoff": "2024-12-31T19:00:00",
+  "distribution": [
+    {
+      "behavioral_use": true,
+      "events": 10703,
+      "status": "VALID"
+    },
+    {
+      "behavioral_use": true,
+      "events": 3224,
+      "status": "VALID_WITH_WARNING"
+    },
+    {
+      "behavioral_use": false,
+      "events": 21659,
+      "status": "QUARANTINED"
+    }
+  ],
+  "limitations": [
+    "Warning events materially affect outcome coverage.",
+    "Administrative censoring and daily timestamps constrain interpretation.",
+    "Quarantine is excluded from all behavior, revenue and journey evidence."
+  ],
+  "privacy": {
+    "future_leakage": 0,
+    "pii_exposed": 0
+  },
+  "quality_backlog": {
+    "accounts": 467,
+    "label": "467 accounts require one or more data-quality reviews before unrestricted behavioral interpretation."
+  },
+  "reconciliation": {
+    "unexplained_difference": 0
+  },
+  "subscription_overlap": {
+    "episodes": 5000,
+    "overlapping_episode_ratio": 0.9984,
+    "subscriptions_with_warning": 4992
+  },
+  "tooltips": [
+    "A warning can affect one event without invalidating the full journey.",
+    "Quarantined events never generate behavioral signals.",
+    "STRICT is a sensitivity population using VALID events only.",
+    "Low data confidence blocks strong behavioral interpretation."
+  ]
+}
