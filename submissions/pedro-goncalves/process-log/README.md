@@ -35,10 +35,15 @@ Três agentes foram criados no Maestri. Lume e Nexo podiam propor; Crivo não po
 | 24/07 | Download, hash e auditoria física dos arquivos | Dataset 1 divergiu do brief e teve campos temporais inválidos |
 | 24/07 | Matriz ponderada com veto crítico | Shadow mode venceu com 4,6 de 5 |
 | 24/07 | Treino e calibração do classificador | Macro-F1 0,868 no teste final do Dataset 2 |
-| 24/07 | Construção do protótipo e testes | 16 testes aprovados |
+| 24/07 | Construção do protótipo e testes | 16 testes aprovados no primeiro gate final |
 | 24/07 | Revisão de claims e documentação | ROI observado e automação produtiva foram vetados |
 | 24/07 | Gate final independente | FAIL inicial por precedência, seleção de threshold e fingerprint |
 | 24/07 | Correção adversarial | Política reordenada, split 70/15/15 e log sem fingerprint |
+| 24/07 | Revisão pela lente pública de Bruno Nardon | Decisão executiva, demo pronta e piloto de 30 dias incorporados |
+| 24/07 | Validação pós-revisão executiva | 18 testes aprovados e duas telas inspecionadas |
+| 24/07 | Gate Final 3 | FAIL por comandos, premissa econômica oculta e links |
+| 24/07 | Correção executiva final | Premissas completas, caminhos corrigidos e teste determinístico |
+| 24/07 | Reavaliação do Gate Final 3 | PASS, 18 testes e nenhum bloqueador material |
 
 ## Onde a IA errou
 
@@ -113,9 +118,33 @@ O Crivo reprovou a primeira versão final por três achados altos:
 
 A política foi reordenada, foram adicionados testes combinados, o experimento passou a usar treino 70%, validação de threshold 15% e teste final 15%, e todo fingerprint derivado do texto foi removido. A calculadora também passou a subtrair retrabalho no mesmo horizonte dos demais parâmetros.
 
+### Iteração 7
+
+A entrega tecnicamente aprovada foi relida pela lente pública de Bruno Nardon: eliminar o erro óbvio antes de otimizar, transformar plano em execução e entregar um MVP vertical funcional, valioso e utilizável. Nenhuma fala privada ou avaliação oficial do G4 foi presumida.
+
+O principal defeito era gerencial: um diretor precisava atravessar diagnóstico, método e controles para descobrir qual decisão tomar. A versão foi reorganizada para responder em cerca de 60 segundos:
+
+1. onde o tempo é perdido e o que ainda não pode ser medido;
+2. qual tarefa merece IA primeiro;
+3. o que já funciona e com qual evidência;
+4. quem faz o quê nos primeiros 30 dias;
+5. quais gates impedem autonomia prematura.
+
+O protótipo passou a abrir com um cenário de demonstração preenchido, sem exigir preparação do avaliador. Foi adicionada uma sensibilidade econômica com todas as premissas visíveis, editáveis e sem converter cenário em resultado observado. Dois screenshots foram inspecionados em 1440 x 1100. Os testes de cenário de demonstração e dos três cálculos de referência elevaram a suíte para 18 testes.
+
+### Iteração 8
+
+O Gate Final 3 reprovou a primeira versão executiva por três inconsistências: os comandos do README não entravam em `solution/`, a sensibilidade econômica escondia a taxa segura usada no cálculo e dois links de figuras apontavam para o nível errado.
+
+Os comandos e links foram corrigidos. A tabela passou a mostrar tickets no período, elegibilidade, adoção, taxa segura, minutos poupados, revisão, retrabalho e horas líquidas. Os três cenários foram centralizados no módulo de ROI e ganharam teste determinístico. A aba de cenários foi inspecionada em 1440 x 1100 antes do novo gate.
+
 ### Gate final
 
 O Crivo executou `uv sync --frozen` e os 16 testes em uma cópia temporária. O segundo veredito foi **PASS**, sem achado crítico ou alto. O risco residual de retenção do JSONL foi mantido como gate explícito antes de qualquer piloto real.
+
+Depois desse PASS, a Iteração 7 alterou apenas narrativa executiva, demonstração e teste de interface. Por isso, a suíte completa e um novo gate independente foram executados novamente antes do fechamento.
+
+Na reavaliação do Gate Final 3, o Crivo reproduziu o ambiente a partir do lockfile, executou os 18 testes e confirmou o fechamento dos comandos, premissas econômicas e links. O veredito final foi **PASS**, sem novo bloqueador material.
 
 ## Evidências
 
@@ -124,6 +153,8 @@ O Crivo executou `uv sync --frozen` e os 16 testes em uma cópia temporária. O 
 - `artifacts/classifier_metrics.json`: métricas da validação e do teste final
 - `artifacts/tables/`: tabelas intermediárias
 - `docs/gate-2/claim-ledger.md`: procedência dos claims
+- `artifacts/figures/app-executive.png`: decisão executiva inspecionada
+- `artifacts/figures/app-triage.png`: fluxo funcional inspecionado
 - `tests/`: comportamento da política e interface
 - histórico git da branch de submissão
 

@@ -31,6 +31,22 @@ class CapacityResult:
         return asdict(self)
 
 
+REFERENCE_SCENARIOS = (
+    (
+        "Conservador",
+        CapacityScenario(30_000, 0.10, 0.30, 3, 0.85, 1.5, 0.5),
+    ),
+    (
+        "Base",
+        CapacityScenario(30_000, 0.25, 0.50, 5, 0.90, 1.0, 0.5),
+    ),
+    (
+        "Expansão",
+        CapacityScenario(30_000, 0.40, 0.70, 7, 0.95, 0.5, 0.25),
+    ),
+)
+
+
 def calculate_capacity(scenario: CapacityScenario) -> CapacityResult:
     eligible = scenario.total_tickets * scenario.eligible_share
     adopted = eligible * scenario.adoption

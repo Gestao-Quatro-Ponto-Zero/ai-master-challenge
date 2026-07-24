@@ -16,18 +16,35 @@ from src.support_copilot.policy import (
     decide,
 )
 from src.support_copilot.privacy import mask_pii
-from src.support_copilot.roi import CapacityScenario, calculate_capacity
+from src.support_copilot.roi import (
+    REFERENCE_SCENARIOS,
+    CapacityScenario,
+    calculate_capacity,
+)
 
 
 ROOT = Path(__file__).resolve().parent
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.2.0"
 MODEL_PATH = ROOT / "artifacts/models/ticket_classifier.joblib"
 LOG_PATH = ROOT / "artifacts/logs/decisions.jsonl"
 METRICS_PATH = ROOT / "artifacts/classifier_metrics.json"
 THRESHOLDS_PATH = ROOT / "artifacts/tables/classifier_coverage_accuracy.csv"
+DEMO_TICKETS = {
+    "Escrever meu próprio ticket": "",
+    "Falha de equipamento": (
+        "The laptop assigned to the sales team overheats and shuts down "
+        "during customer calls."
+    ),
+    "Acesso sensível": (
+        "Please grant administrative access to the payroll folder for a new employee."
+    ),
+    "Solicitação pouco específica": (
+        "The service is not working as expected and I need help with my account."
+    ),
+}
 
 
-st.set_page_config(page_title="Support Copilot", page_icon="🧭", layout="wide")
+st.set_page_config(page_title="Copiloto de Suporte", page_icon="🧭", layout="wide")
 
 
 @st.cache_resource
@@ -46,8 +63,17 @@ classifier = load_classifier()
 metrics, thresholds = load_metrics()
 selected_threshold = float(metrics["threshold_selection"]["selected_threshold"])
 
-st.title("Support Copilot")
-st.caption("Triagem demonstrativa com confiança, abstenção e controle humano.")
+
+def load_demo_ticket() -> None:
+    st.session_state.ticket_text = DEMO_TICKETS[st.session_state.demo_ticket]
+
+
+st.title("Copiloto de Suporte")
+st.caption("Decisão operacional, prova técnica e controle humano no mesmo fluxo.")
+st.info(
+    "**Recomendação:** aprovar um piloto em shadow mode, condicionado à correção "
+    "da telemetria. O protótipo não responde clientes nem altera sistemas."
+)
 
 with st.sidebar:
     st.header("Controle")
@@ -62,15 +88,86 @@ with st.sidebar:
         "Shadow mode é o padrão. Automação simulada não envia mensagens nem altera sistemas."
     )
 
-triage_tab, evidence_tab, roi_tab, limits_tab = st.tabs(
-    ["Triagem", "Evidência", "Cenários", "Limites"]
+executive_tab, triage_tab, evidence_tab, roi_tab, limits_tab = st.tabs(
+    ["Decisão", "Triagem", "Evidência", "Cenários", "Limites"]
 )
 
+with executive_tab:
+    st.subheader("As três respostas para o Diretor de Operações")
+    first, second, third = st.columns(3)
+    with first:
+        st.metric("Onde perdemos tempo?", "Não mensurável")
+        st.write(
+            "**Gargalo comprovado:** telemetria operacional inválida. "
+            "49,3% dos pares temporais estão invertidos."
+        )
+    with second:
+        st.metric("O que automatizar?", "Triagem assistida")
+        st.write(
+            "**Primeiro uso:** classificação em shadow mode, com abstenção "
+            "e humano obrigatório nos casos sensíveis."
+        )
+    with third:
+        st.metric("O que já funciona?", "18 testes")
+        st.write(
+            f"**Prova técnica:** macro-F1 0,868. Threshold {selected_threshold:.2f}, "
+            "69,7% de cobertura e 96,6% de acurácia seletiva no teste final."
+        )
+
+    st.subheader("Plano de 30 dias")
+    rollout = pd.DataFrame(
+        [
+            {
+                "Janela": "Dias 1 a 5",
+                "DRI sugerido": "Ops + Dados",
+                "Entrega": "Eventos e taxonomia instrumentados",
+                "Gate": "Timestamps e touch time válidos",
+            },
+            {
+                "Janela": "Dias 6 a 15",
+                "DRI sugerido": "AI Master",
+                "Entrega": "Shadow mode no domínio real",
+                "Gate": "Erro por classe e calibração medidos",
+            },
+            {
+                "Janela": "Dias 16 a 25",
+                "DRI sugerido": "Líder de Suporte",
+                "Entrega": "Assistência para pequena equipe",
+                "Gate": "Override, retrabalho e reabertura estáveis",
+            },
+            {
+                "Janela": "Dias 26 a 30",
+                "DRI sugerido": "Diretor de Operações",
+                "Entrega": "Decisão de canário ou interrupção",
+                "Gate": "Qualidade preservada e capacidade comprovada",
+            },
+        ]
+    )
+    st.dataframe(rollout, hide_index=True, width="stretch")
+    st.warning(
+        "**Decisão de gestão:** não aprovar resposta autônoma. Aprovar apenas "
+        "instrumentação e shadow mode. Autonomia cresce depois da evidência."
+    )
+
 with triage_tab:
+    if "demo_ticket" not in st.session_state:
+        st.session_state.demo_ticket = "Falha de equipamento"
+    if "ticket_text" not in st.session_state:
+        st.session_state.ticket_text = DEMO_TICKETS[st.session_state.demo_ticket]
+    st.selectbox(
+        "Cenário de demonstração",
+        list(DEMO_TICKETS),
+        key="demo_ticket",
+        on_change=load_demo_ticket,
+    )
     ticket_text = st.text_area(
         "Texto do ticket",
         height=160,
+        key="ticket_text",
         placeholder="Cole um ticket de teste sem dados pessoais reais.",
+    )
+    st.caption(
+        "Os exemplos estão em inglês porque a prova técnica foi treinada no Dataset 2."
     )
     if st.button("Analisar ticket", type="primary", disabled=not ticket_text.strip()):
         masked_text, pii_counts = mask_pii(ticket_text)
@@ -106,6 +203,13 @@ with triage_tab:
             st.write(decision.reason)
             st.write("**Padrões de PII detectados e mascarados**")
             st.json(pii_counts)
+
+        if decision.action in {"HUMAN_REVIEW", "ABSTAIN"}:
+            st.warning("Encaminhar para decisão humana. Nenhuma ação foi executada.")
+        elif decision.action == "SHADOW_RECOMMENDATION":
+            st.info("Sugestão registrada em shadow mode. O fluxo humano permanece intacto.")
+        else:
+            st.success("Roteamento apenas simulado. Nenhuma ação externa foi executada.")
 
         probability_frame = pd.DataFrame(prediction["top_predictions"])
         st.plotly_chart(
@@ -155,6 +259,27 @@ with roi_tab:
     st.subheader("Capacidade potencial")
     st.caption(
         "Calculadora parametrizada. Os valores são entradas do usuário, não resultados observados."
+    )
+    reference_rows = []
+    for name, reference in REFERENCE_SCENARIOS:
+        reference_result = calculate_capacity(reference)
+        reference_rows.append(
+            {
+                "Cenário": name,
+                "Tickets no período": reference.total_tickets,
+                "Elegível": f"{reference.eligible_share:.0%}",
+                "Adoção": f"{reference.adoption:.0%}",
+                "Taxa segura": f"{reference.safe_success_rate:.0%}",
+                "Minutos poupados": reference.minutes_saved_per_eligible_ticket,
+                "Revisão (min)": reference.review_minutes_per_routed_ticket,
+                "Retrabalho (min)": reference.rework_minutes_per_adopted_ticket,
+                "Horas líquidas": round(reference_result.net_hours_released, 1),
+            }
+        )
+    st.dataframe(pd.DataFrame(reference_rows), hide_index=True, width="stretch")
+    st.caption(
+        "Sensibilidade ilustrativa usando os 30 mil tickets do contexto do brief. "
+        "Não é resultado observado no Dataset 1."
     )
     left, right = st.columns(2)
     with left:

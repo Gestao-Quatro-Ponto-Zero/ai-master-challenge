@@ -10,8 +10,19 @@ class AppTests(unittest.TestCase):
         self.assertFalse(self.app.exception)
 
     def test_default_is_shadow_mode(self):
-        self.assertEqual(self.app.selectbox[0].value, "Shadow mode")
+        mode = next(
+            item for item in self.app.selectbox if item.label == "Modo operacional"
+        )
+        self.assertEqual(mode.value, "Shadow mode")
         self.assertFalse(self.app.toggle[0].value)
+        self.assertEqual(self.app.tabs[0].label, "Decisão")
+
+    def test_demo_ticket_can_be_loaded(self):
+        demo = next(
+            item for item in self.app.selectbox if item.label == "Cenário de demonstração"
+        )
+        demo.select("Acesso sensível").run()
+        self.assertIn("administrative access", self.app.text_area[0].value.lower())
 
     def test_ticket_analysis_runs_without_exception(self):
         self.app.text_area[0].input(

@@ -8,7 +8,11 @@ from src.support_copilot.policy import (
     decide,
 )
 from src.support_copilot.privacy import mask_pii
-from src.support_copilot.roi import CapacityScenario, calculate_capacity
+from src.support_copilot.roi import (
+    REFERENCE_SCENARIOS,
+    CapacityScenario,
+    calculate_capacity,
+)
 
 
 class PolicyTests(unittest.TestCase):
@@ -122,6 +126,21 @@ class PolicyTests(unittest.TestCase):
         self.assertAlmostEqual(result.rework_hours_added, 4.1666666667)
         self.assertAlmostEqual(result.net_hours_released, 12.5)
         self.assertIsNone(result.net_value)
+
+    def test_reference_scenarios_expose_reproducible_outputs(self):
+        expected_hours = {
+            "Conservador": 8.25,
+            "Base": 187.5,
+            "Expansão": 826.0,
+        }
+        self.assertEqual(len(REFERENCE_SCENARIOS), 3)
+        for name, scenario in REFERENCE_SCENARIOS:
+            self.assertEqual(scenario.total_tickets, 30_000)
+            self.assertGreater(scenario.safe_success_rate, 0)
+            self.assertAlmostEqual(
+                calculate_capacity(scenario).net_hours_released,
+                expected_hours[name],
+            )
 
     def test_audit_record_stores_no_text_fingerprint_and_versions_artifacts(self):
         record = build_record(
