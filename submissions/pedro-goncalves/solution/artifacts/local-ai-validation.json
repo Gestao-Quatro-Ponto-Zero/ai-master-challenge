@@ -1,0 +1,28 @@
+{
+  "validated_at": "2026-07-25",
+  "runtime": "Ollama local",
+  "model": "ibm/granite4.1:8b",
+  "model_digest": "444af1c4b2fedd6b54041aca558e7300b0b3d5c0468c44619126240323ba2852",
+  "structure_review": {
+    "seconds": 10.75,
+    "available": true,
+    "verdict": "revisar_estrutura",
+    "human_check": "As datas nas fontes foram verificadas e são consistentes?"
+  },
+  "opinion_review": {
+    "seconds": 7.87,
+    "available": true,
+    "status": "revisao_humana",
+    "visible_limit": "ROI depende do tempo de toque medido"
+  },
+  "scope": [
+    "revisar metadados antes do gate humano",
+    "procurar contradicoes no parecer deterministico"
+  ],
+  "prohibited": [
+    "calcular indicadores",
+    "alterar prioridade",
+    "escrever o parecer",
+    "executar acao externa"
+  ]
+}

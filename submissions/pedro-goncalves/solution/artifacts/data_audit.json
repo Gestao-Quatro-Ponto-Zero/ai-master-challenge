@@ -1,0 +1,165 @@
+{
+  "sources": {
+    "dataset_1": {
+      "path": "data/raw/customer-support/customer_support_tickets.csv",
+      "sha256": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea"
+    },
+    "dataset_2": {
+      "path": "data/raw/it-service/all_tickets_processed_improved_v3.csv",
+      "sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4"
+    }
+  },
+  "dataset_1": {
+    "rows": 8469,
+    "columns": 17,
+    "ticket_id_unique": true,
+    "duplicate_ticket_id_rows": 0,
+    "exact_duplicate_rows": 0,
+    "null_counts": {
+      "Ticket ID": 0,
+      "Customer Name": 0,
+      "Customer Email": 0,
+      "Customer Age": 0,
+      "Customer Gender": 0,
+      "Product Purchased": 0,
+      "Date of Purchase": 0,
+      "Ticket Type": 0,
+      "Ticket Subject": 0,
+      "Ticket Description": 0,
+      "Ticket Status": 0,
+      "Resolution": 5700,
+      "Ticket Priority": 0,
+      "Ticket Channel": 0,
+      "First Response Time": 2819,
+      "Time to Resolution": 5700,
+      "Customer Satisfaction Rating": 5700
+    },
+    "ticket_types": {
+      "Refund request": 1752,
+      "Technical issue": 1747,
+      "Cancellation request": 1695,
+      "Product inquiry": 1641,
+      "Billing inquiry": 1634
+    },
+    "ticket_statuses": {
+      "Pending Customer Response": 2881,
+      "Open": 2819,
+      "Closed": 2769
+    },
+    "ticket_channels": {
+      "Email": 2143,
+      "Phone": 2132,
+      "Social media": 2121,
+      "Chat": 2073
+    },
+    "ticket_priorities": {
+      "Medium": 2192,
+      "Critical": 2129,
+      "High": 2085,
+      "Low": 2063
+    },
+    "first_response_dates": [
+      "2023-05-31",
+      "2023-06-01",
+      "2023-06-02"
+    ],
+    "resolution_dates": [
+      "2023-05-31",
+      "2023-06-01",
+      "2023-06-02"
+    ],
+    "paired_timestamp_rows": 2769,
+    "negative_response_to_resolution_rows": 1365,
+    "zero_response_to_resolution_rows": 2,
+    "positive_response_to_resolution_rows": 1402,
+    "negative_response_to_resolution_rate": 0.49295774647887325,
+    "description_exact_duplicate_rows": 251,
+    "description_normalized_duplicate_rows": 251,
+    "description_normalized_duplicate_groups": 56,
+    "description_normalized_rows_in_duplicate_groups": 462,
+    "description_normalized_excess_rows": 406,
+    "description_unique_rows": 8077,
+    "placeholder_description_rows": 8469,
+    "placeholder_resolution_rows": 0,
+    "pii_pattern_counts_in_description": {
+      "email": 77,
+      "phone_like": 165
+    },
+    "repeated_unresolved_rows": 460,
+    "repeated_unresolved_by_status": {
+      "Pending Customer Response": 156,
+      "Closed": 152,
+      "Open": 152
+    },
+    "subject_type_association": {
+      "row": "Ticket Subject",
+      "column": "Ticket Type",
+      "n": 8469,
+      "chi2": 39.571488602826506,
+      "p": 0.9807366560438833,
+      "cramers_v": 0.034177880883779564
+    },
+    "csat_associations_closed_only": [
+      {
+        "group": "Ticket Channel",
+        "n": 2769,
+        "h": 3.8471041113917335,
+        "p": 0.27845446914936406,
+        "epsilon_sq": 0.00030636676723028335
+      },
+      {
+        "group": "Ticket Priority",
+        "n": 2769,
+        "h": 1.7371831685690908,
+        "p": 0.6286990111454205,
+        "epsilon_sq": 0.0
+      },
+      {
+        "group": "Ticket Type",
+        "n": 2769,
+        "h": 2.198790774457706,
+        "p": 0.6992506657582733,
+        "epsilon_sq": 0.0
+      },
+      {
+        "group": "Ticket Subject",
+        "n": 2769,
+        "h": 10.205319179847276,
+        "p": 0.8066298085314396,
+        "epsilon_sq": 0.0
+      }
+    ]
+  },
+  "dataset_2": {
+    "rows": 47837,
+    "columns": 2,
+    "null_counts": {
+      "Document": 0,
+      "Topic_group": 0
+    },
+    "classes": {
+      "Hardware": 13617,
+      "HR Support": 10915,
+      "Access": 7125,
+      "Miscellaneous": 7060,
+      "Storage": 2777,
+      "Purchase": 2464,
+      "Internal Project": 2119,
+      "Administrative rights": 1760
+    },
+    "exact_duplicate_rows": 0,
+    "duplicate_document_rows": 0,
+    "unique_normalized_documents": 47837,
+    "documents_with_conflicting_labels": 0,
+    "empty_normalized_documents": 0,
+    "document_length_chars": {
+      "median": 175.0,
+      "p90": 612.0,
+      "max": 7015
+    },
+    "pii_pattern_counts_in_document": {
+      "email": 0,
+      "phone_like": 0
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "dataset_1_rows_scored": 8469,
+  "dataset_2_model_sha256": "1e543f7bc80492b591c7c66f53610b2ac686d41edae61f769c237c24e40a7340",
+  "threshold": 0.75,
+  "confidence": {
+    "median": 0.7469190628711164,
+    "p90": 0.9023371519239498,
+    "share_at_or_above_threshold": 0.4950997756523793
+  },
+  "predicted_categories": {
+    "Hardware": 7203,
+    "Miscellaneous": 207,
+    "Administrative rights": 149,
+    "Access": 788,
+    "HR Support": 75,
+    "Internal Project": 14,
+    "Storage": 29,
+    "Purchase": 4
+  },
+  "largest_category_share": 0.8505136379737868,
+  "customer_care": {
+    "rows": 1574,
+    "share": 0.18585429212421772,
+    "signal_counts": {
+      "UNRESOLVED_OR_REPEAT_CONTACT": 463,
+      "FINANCIAL_HARM": 693,
+      "CANCELLATION_OR_CHURN": 489,
+      "STRONG_DISSATISFACTION": 3,
+      "SAFETY_PRIVACY_OR_ABUSE": 2
+    }
+  },
+  "interpretation": "Exploratory out-of-domain application. Dataset 1 has no labels compatible with the Dataset 2 taxonomy, so accuracy is unknown."
+}

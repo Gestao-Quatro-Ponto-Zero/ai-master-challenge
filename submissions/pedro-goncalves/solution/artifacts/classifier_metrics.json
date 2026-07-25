@@ -1,0 +1,53 @@
+{
+  "data": {
+    "rows": 47837,
+    "train_rows": 33485,
+    "threshold_validation_rows": 7176,
+    "final_test_rows": 7176,
+    "classes": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "random_state": 42,
+    "split": "stratified 70/15/15; threshold selected only on validation; normalized documents are unique in the source audit"
+  },
+  "baseline_final_test": {
+    "strategy": "always predict Hardware",
+    "accuracy": 0.2846989966555184,
+    "macro_f1": 0.055401887406443216
+  },
+  "model_final_test": {
+    "name": "word 1-2 gram TF-IDF + class-balanced LinearSVC + sigmoid calibration",
+    "accuracy": 0.8666387959866221,
+    "balanced_accuracy": 0.8534492624563379,
+    "macro_f1": 0.8681460743761571,
+    "weighted_f1": 0.8667165133826494,
+    "ece_10_bins": 0.04863514036786656
+  },
+  "threshold_selection": {
+    "criterion": "maximize validation coverage subject to selective accuracy >= 95%",
+    "selected_threshold": 0.75,
+    "validation": {
+      "threshold": 0.75,
+      "coverage": 0.7005295429208472,
+      "covered_tickets": 5027,
+      "accuracy_when_covered": 0.9602148398647304,
+      "macro_f1_when_covered": 0.9612270327714507,
+      "errors_when_covered": 200
+    },
+    "final_test": {
+      "threshold": 0.75,
+      "coverage": 0.6971850613154961,
+      "covered_tickets": 5003,
+      "accuracy_when_covered": 0.9662202678392964,
+      "macro_f1_when_covered": 0.9656745465052925,
+      "errors_when_covered": 169
+    }
+  }
+}
