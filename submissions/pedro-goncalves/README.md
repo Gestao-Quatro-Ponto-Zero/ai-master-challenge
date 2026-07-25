@@ -1,21 +1,39 @@
-# Support Copilot: Challenge 002
+# Copiloto de Atendimento: Challenge 002
 
-> **Decisão recomendada:** aprovar instrumentação + piloto em shadow mode.  
+> **Decisão recomendada:** corrigir os registros e testar a IA em modo de observação.
 > **Decisão vetada:** resposta autônoma em produção.
+
+## Glossário rápido
+
+- **Solicitação (ticket):** pedido, dúvida ou problema enviado ao atendimento.
+- **Modo de observação (shadow mode):** a IA sugere, mas não responde nem altera sistemas.
+- **Registro de data e hora (timestamp):** marca quando cada etapa aconteceu.
+- **Confiança mínima (threshold):** limite abaixo do qual a IA pede ajuda.
+- **Tempo de trabalho ativo (touch time):** minutos realmente gastos pela equipe.
 
 ## Resumo executivo
 
-O diagnóstico encontrou um problema anterior à automação: o Dataset 1 possui **8.469 tickets**, não os aproximadamente 30 mil descritos no contexto, e seus campos temporais não permitem medir FRT, TTR ou touch time. Em **49,3% dos 2.769 pares temporais**, a resolução aparece antes da primeira resposta. Em vez de inventar ROI, construí um **copiloto de triagem em shadow mode**: classificador calibrado, abstenção, categorias human-only, máscara de PII, audit log e kill switch.
+O diagnóstico encontrou um problema anterior à automação: o primeiro arquivo possui
+**8.469 solicitações**, não as aproximadamente 30 mil descritas no contexto. Seus registros de
+data e hora também não permitem medir quanto o atendimento realmente demora. Em **49,3% dos
+2.769 pares disponíveis**, a conclusão aparece antes da primeira resposta.
 
-No Dataset 2, o classificador atingiu **macro-F1 0,868** no teste final de 7.176 tickets. O threshold 0,75 foi escolhido apenas na validação e, no teste final, cobriu 69,7% com 96,6% de acurácia nos cobertos. Isso é uma prova técnica no domínio de TI, não uma validação para a G4.
+Em vez de inventar economia, construí um copiloto: ele sugere o assunto, mostra sua confiança,
+pede revisão humana quando necessário e registra decisões sem guardar a mensagem original. A
+nova memória SQLite registra correções e recupera apenas lições aprovadas. Isso reduz a chance de
+repetir erros conhecidos, mas ainda precisa ser validado com dados reais da G4.
+
+No segundo arquivo, a prova técnica equilibrou **86,8% de desempenho entre os diferentes
+assuntos**. No teste final, a IA decidiu sobre 69,7% dos casos e acertou 96,6% deles. Esse
+resultado pertence a dados públicos de suporte de TI, não ao atendimento real da G4.
 
 ## As três respostas do diretor
 
 | Pergunta | Resposta executiva | Próxima decisão |
 |---|---|---|
-| Onde perdemos tempo? | O arquivo não permite medir. 49,3% dos pares temporais estão invertidos e não existe timestamp de abertura | Corrigir telemetria antes de prometer eficiência |
-| O que automatizar? | Classificação em shadow mode, com abstenção e humano obrigatório em casos sensíveis | Rodar piloto sem impacto no cliente |
-| Funciona? | 18 testes, macro-F1 0,868 e 96,6% de acurácia nos tickets cobertos no teste final | Validar novamente no domínio real |
+| Onde perdemos tempo? | O arquivo não permite medir. 49,3% dos registros de tempo estão invertidos | Corrigir os registros antes de prometer eficiência |
+| O que automatizar? | Sugestão de assunto em modo de observação, com decisão humana em casos incertos ou sensíveis | Testar sem impacto no cliente |
+| Funciona? | 26 testes aprovados e 96,6% de acerto nas sugestões aceitas no teste final | Validar novamente no atendimento real |
 
 ![Visão executiva do protótipo](solution/artifacts/figures/app-executive.png)
 
@@ -25,14 +43,17 @@ No Dataset 2, o classificador atingiu **macro-F1 0,868** no teste final de 7.176
 
 ## O diferencial
 
-O resultado mais importante não é o modelo. É o **gate de decisão**. A IA encontrou uma solução aparentemente convincente e chegou a inventar touch time, custo-hora e elegibilidade. Eu interrompi esse caminho, auditei os dados e redesenhei a proposta. O protótipo demonstra onde usar IA e, principalmente, onde ela ainda não merece autonomia.
+O resultado mais importante não é o modelo. É o **critério para decidir**. A primeira análise
+chegou a inventar tempo de trabalho, custo por hora e parcela automatizável. Esse caminho foi
+interrompido, os dados foram auditados e a proposta foi redesenhada. O protótipo demonstra onde
+usar IA e, principalmente, onde ela ainda não merece autonomia.
 
 ## Plano de 30 dias
 
 | Janela | DRI sugerido | Entrega | Gate |
 |---|---|---|---|
-| Dias 1 a 5 | Ops + Dados | Eventos e taxonomia instrumentados | Timestamps e touch time válidos |
-| Dias 6 a 15 | AI Master | Shadow mode no domínio real | Erro por classe e calibração medidos |
+| Dias 1 a 5 | Operações + Dados | Registrar entrada, primeira resposta, trabalho ativo e conclusão | Datas e tempos confiáveis |
+| Dias 6 a 15 | AI Master | Modo de observação no atendimento real | Acertos e erros por assunto medidos |
 | Dias 16 a 25 | Líder de Suporte | Assistência para pequena equipe | Override, retrabalho e reabertura estáveis |
 | Dias 26 a 30 | Diretor de Operações | Decisão de canário ou interrupção | Qualidade preservada e capacidade comprovada |
 
@@ -71,23 +92,25 @@ Escala de 1 a 5. A nota ponderada não supera veto crítico.
 |---|---:|---:|---:|---:|---:|---:|---|
 | Resposta autônoma | 1,0 | 4,0 | 1,0 | 2,0 | 3,0 | 2,1 | Sim |
 | Roteamento automático | 4,0 | 4,0 | 3,0 | 4,0 | 4,0 | 3,8 | Produção |
-| Copiloto em shadow mode | 5,0 | 3,5 | 5,0 | 5,0 | 4,5 | **4,6** | Não |
+| Copiloto em modo de observação | 5,0 | 3,5 | 5,0 | 5,0 | 4,5 | **4,6** | Não |
 | Dashboard isolado | 3,0 | 2,0 | 5,0 | 5,0 | 2,0 | 3,4 | Não |
 
 ## O que funciona
 
 O protótipo Streamlit:
 
-- recebe texto e mascara padrões de PII;
+- recebe a solicitação e oculta alguns padrões de dados pessoais;
 - classifica em oito categorias;
 - mostra confiança e alternativas;
-- abstém abaixo do threshold;
-- bloqueia categorias sensíveis;
-- força revisão com kill switch;
+- pede ajuda quando não tem confiança suficiente;
+- exige decisão humana em assuntos sensíveis;
+- permite forçar todas as decisões para uma pessoa;
 - registra decisão sem guardar texto bruto;
+- registra correções numa memória SQLite;
+- usa somente lições aprovadas e preserva seu histórico;
 - calcula capacidade apenas com premissas explícitas.
 
-![Triagem em shadow mode](solution/artifacts/figures/app-triage.png)
+![Triagem em modo de observação](solution/artifacts/figures/app-triage.png)
 
 ## Rodar
 
@@ -107,7 +130,7 @@ Abra `http://localhost:8501`.
 uv run python -m unittest discover -s tests -v
 ```
 
-Resultado validado: **18 testes aprovados**.
+Resultado validado: **26 testes aprovados**.
 
 ## Reproduzir a análise
 
@@ -132,7 +155,7 @@ O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados
 ## Recomendações
 
 1. **Instrumentar antes de automatizar:** criação, primeira resposta, touch time, resolução, reabertura e override.
-2. **Shadow mode:** comparar IA e humano no domínio real sem impacto no cliente.
+2. **Modo de observação:** comparar IA e humano no domínio real sem impacto no cliente.
 3. **Assistência controlada:** exibir sugestão, manter confirmação humana e medir retrabalho.
 4. **Canário restrito:** somente ações reversíveis depois dos gates de segurança.
 
@@ -144,14 +167,18 @@ O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados
 - Regex não detecta todo tipo de PII.
 - Threshold validado em dados públicos não autoriza produção.
 - ROI permanece cenário até touch time, custos, adoção e retrabalho serem medidos.
+- Autor e revisor da memória são identificados, mas ainda não autenticados.
+- A memória precisa ser comparada ligada e desligada com dados reais da G4.
+- Retenção e eliminação excepcional do SQLite precisam de regra antes de produção.
 
 ## Mapa da entrega
 
 - `docs/gate-1/`: auditoria, diagnóstico e decisão
 - `docs/gate-2/`: modelo, arquitetura, claims e medição
+- `docs/gate-3/`: memória de correções e caminho seguro para retreinamento
 - `artifacts/`: métricas, tabelas, figuras e modelo
 - `notebooks/`: análise executada
-- `src/`: política, inferência, privacidade, auditoria e ROI
+- `src/`: política, classificação, privacidade, auditoria, memória e cenários
 - `tests/`: testes da política e da interface
 - `process-log/`: uso de IA, erros e correções
 

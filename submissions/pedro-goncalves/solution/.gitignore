@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+artifacts/logs/*.jsonl
+artifacts/memory/*.sqlite3

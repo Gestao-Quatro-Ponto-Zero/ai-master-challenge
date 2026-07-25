@@ -1,6 +1,15 @@
 import unittest
+import sqlite3
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from src.support_copilot.audit import build_record
+from src.support_copilot.memory import (
+    find_approved_lessons,
+    list_lessons,
+    record_feedback,
+    set_lesson_status,
+)
 from src.support_copilot.policy import (
     POLICY_VERSION,
     TAXONOMY_VERSION,
@@ -78,6 +87,18 @@ class PolicyTests(unittest.TestCase):
         )
         self.assertEqual(result.action, "HUMAN_REVIEW")
         self.assertTrue(result.requires_human)
+
+    def test_approved_memory_match_forces_human_review(self):
+        result = decide(
+            category="Hardware",
+            confidence=0.99,
+            threshold=0.80,
+            mode=OperatingMode.SIMULATED_AUTOMATION,
+            kill_switch=False,
+            memory_match=True,
+        )
+        self.assertEqual(result.action, "HUMAN_REVIEW")
+        self.assertIn("memória", result.reason)
 
     def test_simulated_route_never_claims_real_execution(self):
         result = decide(
@@ -160,6 +181,199 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("input_sha256", record)
         self.assertEqual(record["versions"]["model_sha256"], "a" * 64)
         self.assertTrue(record["patterns_masked"])
+
+    def test_memory_uses_only_approved_lessons(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            feedback = record_feedback(
+                database,
+                decision_id="decision-1",
+                predicted_category="Hardware",
+                corrected_category="Access",
+                confidence=0.91,
+                model_version="model-1",
+                policy_version=POLICY_VERSION,
+                created_by="operador-1",
+                trigger_terms=["administrative", "access"],
+            )
+            self.assertEqual(
+                find_approved_lessons(
+                    database,
+                    text="Please grant administrative access.",
+                    predicted_category="Hardware",
+                ),
+                [],
+            )
+
+            set_lesson_status(
+                database,
+                lesson_id=feedback["lesson_id"],
+                status="approved",
+                actor_id="revisor-1",
+                reason="Regra conferida.",
+            )
+            matches = find_approved_lessons(
+                database,
+                text="Please grant administrative access.",
+                predicted_category="Hardware",
+            )
+            self.assertEqual(len(matches), 1)
+            self.assertEqual(matches[0]["recommended_category"], "Access")
+
+    def test_memory_consolidates_repeated_evidence(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            shared = {
+                "predicted_category": "Hardware",
+                "corrected_category": "Access",
+                "confidence": 0.91,
+                "model_version": "model-1",
+                "policy_version": POLICY_VERSION,
+                "created_by": "operador-1",
+                "trigger_terms": ["administrative", "access"],
+            }
+            first = record_feedback(database, decision_id="decision-1", **shared)
+            second = record_feedback(database, decision_id="decision-2", **shared)
+            lessons = list_lessons(database)
+            self.assertEqual(first["lesson_id"], second["lesson_id"])
+            self.assertEqual(len(lessons), 1)
+            self.assertEqual(lessons[0]["evidence_count"], 2)
+
+    def test_memory_rejects_sensitive_content(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            with self.assertRaises(ValueError):
+                record_feedback(
+                    database,
+                    decision_id="decision-1",
+                    predicted_category="Hardware",
+                    corrected_category="Access",
+                    confidence=0.91,
+                    model_version="model-1",
+                    policy_version=POLICY_VERSION,
+                    created_by="operador-1",
+                    trigger_terms=["ana@example.com"],
+                )
+
+    def test_lesson_author_cannot_approve_own_lesson(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            feedback = record_feedback(
+                database,
+                decision_id="decision-1",
+                predicted_category="Hardware",
+                corrected_category="Access",
+                confidence=0.91,
+                model_version="model-1",
+                policy_version=POLICY_VERSION,
+                created_by="operador-1",
+                trigger_terms=["administrative", "access"],
+            )
+            with self.assertRaises(PermissionError):
+                set_lesson_status(
+                    database,
+                    lesson_id=feedback["lesson_id"],
+                    status="approved",
+                    actor_id="operador-1",
+                    reason="Tentativa de autoaprovação.",
+                )
+
+    def test_feedback_events_are_append_only(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            record_feedback(
+                database,
+                decision_id="decision-1",
+                predicted_category="Hardware",
+                corrected_category="Hardware",
+                confidence=0.91,
+                model_version="model-1",
+                policy_version=POLICY_VERSION,
+                created_by="operador-1",
+            )
+            with sqlite3.connect(database) as connection:
+                with self.assertRaises(sqlite3.IntegrityError):
+                    connection.execute(
+                        "UPDATE feedback_events SET confidence = 0.1"
+                    )
+
+    def test_memory_requires_all_trigger_terms(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            feedback = record_feedback(
+                database,
+                decision_id="decision-1",
+                predicted_category="Hardware",
+                corrected_category="Access",
+                confidence=0.91,
+                model_version="model-1",
+                policy_version=POLICY_VERSION,
+                created_by="operador-1",
+                trigger_terms=["administrative", "access"],
+            )
+            set_lesson_status(
+                database,
+                lesson_id=feedback["lesson_id"],
+                status="approved",
+                actor_id="revisor-1",
+                reason="Regra conferida.",
+            )
+            self.assertEqual(
+                find_approved_lessons(
+                    database,
+                    text="Administrative request without the second term.",
+                    predicted_category="Hardware",
+                ),
+                [],
+            )
+
+    def test_memory_blocks_conflicting_approved_lessons(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            first = record_feedback(
+                database,
+                decision_id="decision-1",
+                predicted_category="Hardware",
+                corrected_category="Access",
+                confidence=0.91,
+                model_version="model-1",
+                policy_version=POLICY_VERSION,
+                created_by="operador-1",
+                trigger_terms=["administrative", "access"],
+            )
+            second = record_feedback(
+                database,
+                decision_id="decision-2",
+                predicted_category="Hardware",
+                corrected_category="Administrative rights",
+                confidence=0.89,
+                model_version="model-1",
+                policy_version=POLICY_VERSION,
+                created_by="operador-2",
+                trigger_terms=["administrative", "access"],
+            )
+            set_lesson_status(
+                database,
+                lesson_id=first["lesson_id"],
+                status="approved",
+                actor_id="revisor-1",
+                reason="Regra conferida.",
+            )
+            with self.assertRaises(ValueError):
+                set_lesson_status(
+                    database,
+                    lesson_id=second["lesson_id"],
+                    status="approved",
+                    actor_id="revisor-2",
+                    reason="Regra conflitante.",
+                )
+            approved = next(
+                lesson
+                for lesson in list_lessons(database)
+                if lesson["lesson_id"] == first["lesson_id"]
+            )
+            self.assertEqual(approved["approved_by"], "revisor-1")
+            self.assertIsNotNone(approved["approved_at"])
 
 
 if __name__ == "__main__":

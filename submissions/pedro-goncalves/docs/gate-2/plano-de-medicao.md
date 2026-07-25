@@ -13,6 +13,8 @@
 | Qualidade de serviço | Reabertura | Tickets reabertos / resolvidos | Kill criterion |
 | Cliente | CSAT elegível | Respostas / pesquisas enviadas | Reportar cobertura |
 | Privacidade | Incidentes de PII | Eventos confirmados | Tolerância zero |
+| Aprendizado | Repetição de erro conhecido | Erros repetidos / erros já documentados | Deve cair com memória ligada |
+| Memória | Precisão das lições recuperadas | Lições úteis / lições exibidas | Comparar ligada e desligada |
 
 ## Desenho do piloto
 
@@ -28,6 +30,8 @@
 - Congelar teste final e versão do modelo.
 - Definir critérios de interrupção.
 - Registrar mudança de distribuição e incidentes.
+- Congelar um conjunto de casos para comparar memória ligada e desligada.
+- Exigir aprovação humana antes de uma lição participar das decisões.
 
 ## ROI
 

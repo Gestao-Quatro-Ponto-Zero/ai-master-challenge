@@ -37,6 +37,7 @@ def decide(
     threshold: float,
     mode: OperatingMode,
     kill_switch: bool,
+    memory_match: bool = False,
 ) -> Decision:
     if kill_switch:
         return Decision(
@@ -50,6 +51,14 @@ def decide(
         return Decision(
             action="HUMAN_REVIEW",
             reason="Categoria sensível definida como human-only.",
+            requires_human=True,
+            simulated=False,
+        )
+
+    if memory_match:
+        return Decision(
+            action="HUMAN_REVIEW",
+            reason="A memória aprovada encontrou um erro anterior parecido.",
             requires_human=True,
             simulated=False,
         )

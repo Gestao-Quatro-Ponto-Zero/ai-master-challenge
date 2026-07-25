@@ -18,6 +18,8 @@ def build_record(
     policy_version: str,
     taxonomy_version: str,
     app_version: str,
+    memory_lesson_ids: list[str] | None = None,
+    memory_schema_version: str | None = None,
 ) -> dict:
     return {
         "decision_id": str(uuid4()),
@@ -39,6 +41,10 @@ def build_record(
             "kill_switch": kill_switch,
         },
         "decision": decision,
+        "memory": {
+            "matched_lesson_ids": memory_lesson_ids or [],
+            "schema_version": memory_schema_version,
+        },
         "retention": "Runtime owner must define and enforce retention before production.",
     }
 

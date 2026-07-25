@@ -8,11 +8,14 @@ O sistema é um **copiloto de triagem em shadow mode**, não um agente autônomo
 flowchart LR
     A[Ticket recebido] --> B[Máscara local de PII]
     B --> C[Classificador]
-    C --> D{Kill switch ativo?}
+    C --> M[Consulta lições aprovadas]
+    M --> D{Kill switch ativo?}
     D -->|Sim| H[Fila humana]
     D -->|Não| E{Categoria sensível?}
     E -->|Sim| H
-    E -->|Não| F{Confiança acima do threshold?}
+    E -->|Não| Q{Erro anterior parecido?}
+    Q -->|Sim| H
+    Q -->|Não| F{Confiança acima do threshold?}
     F -->|Não| H
     F -->|Sim| G{Modo operacional}
     G -->|Shadow| I[Registra recomendação]
@@ -32,6 +35,7 @@ flowchart LR
 | `inference.py` | Retorna categoria e probabilidades | Modelo versionado e teste final documentado |
 | `policy.py` | Aplica gates de risco | Kill switch, human-only, abstenção e modo |
 | `audit.py` | Gera registro rastreável | Sem texto e sem fingerprint do texto |
+| `memory.py` | Registra correções e recupera lições aprovadas | SQLite local, sem texto bruto e com aprovação humana |
 | `roi.py` | Simula capacidade e valor | Todas as premissas são entradas explícitas |
 | `app.py` | Interface demonstrável | Shadow mode como padrão |
 
@@ -44,6 +48,7 @@ flowchart LR
 - mostrar confiança e alternativas;
 - abster-se;
 - registrar a decisão e o estado da política;
+- registrar correções e consultar lições aprovadas;
 - simular capacidade com premissas fornecidas.
 
 ### IA não pode
@@ -54,7 +59,8 @@ flowchart LR
 - alterar acesso ou permissão;
 - tratar casos de RH autonomamente;
 - converter TTR em horas de trabalho;
-- declarar ROI sem touch time e custos medidos.
+- declarar ROI sem touch time e custos medidos;
+- aprovar uma lição ou retreinar o modelo silenciosamente.
 
 ## Estado do protótipo
 

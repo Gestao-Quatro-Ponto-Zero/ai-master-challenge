@@ -11,6 +11,8 @@
 | O modelo funciona para a G4 | Não provado | Sem dados G4 | Claim proibido |
 | O sistema reduz TTR ou custo | Não provado | Sem touch time, implantação ou experimento | Usar apenas calculadora de cenários |
 | Shadow mode reduz risco de implantação | Hipótese operacional | Política e protótipo demonstráveis | Deve ser validada em piloto |
+| A memória evita repetir erros aprovados | Hipótese testável | SQLite, recuperação por termos e gate humano | Ainda sem piloto no domínio real |
+| A memória usa retropropagação contínua | Não provado | Não há retreinamento online | Claim proibido na versão atual |
 
 ## Regra de comunicação
 

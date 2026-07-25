@@ -138,6 +138,41 @@ O Gate Final 3 reprovou a primeira versão executiva por três inconsistências:
 
 Os comandos e links foram corrigidos. A tabela passou a mostrar tickets no período, elegibilidade, adoção, taxa segura, minutos poupados, revisão, retrabalho e horas líquidas. Os três cenários foram centralizados no módulo de ROI e ganharam teste determinístico. A aba de cenários foi inspecionada em 1440 x 1100 antes do novo gate.
 
+### Iteração 9
+
+A solução foi revista pela tese do vídeo indicado por Pedro: ferramentas e automações tendem a
+virar infraestrutura comum; o valor permanece no diagnóstico do problema, no redesenho do
+processo e na medição do resultado. O pedido inicial era fazer a IA "aprender sempre com os
+erros usando retropropagação". A revisão separou três mecanismos diferentes:
+
+1. log registra o que aconteceu;
+2. memória por recuperação consulta lições anteriores;
+3. retropropagação altera pesos durante um retreinamento.
+
+Foi implementada uma memória SQLite local com eventos de feedback, lições e evidências. Uma
+correção humana pode criar uma lição candidata; somente uma aprovação explícita permite que ela
+participe de análises futuras. Quando uma lição aprovada encontra um padrão parecido, o sistema
+força revisão humana e mostra a recomendação, sem executar ação externa.
+
+O banco não guarda o texto bruto da solicitação. Lições repetidas aumentam a contagem de
+evidências em vez de criar duplicatas. Aprendizados podem ser aprovados ou desativados sem apagar
+o histórico. A documentação proíbe chamar esse mecanismo de retropropagação contínua. O eventual
+retreinamento permanece como fase posterior, com dados autorizados, teste final separado,
+comparação com a versão anterior e rollback.
+
+Três revisores independentes contribuíram em leitura: Lume analisou o problema operacional, Nexo
+propôs a estrutura auditável e Crivo definiu riscos de feedback ruim, envenenamento, privacidade
+e regressão. O primeiro gate da memória foi FAIL porque campos livres aceitavam dados pessoais e
+o mesmo operador podia criar e aprovar uma lição. A implementação passou a gerar a instrução
+automaticamente, rejeitar padrões pessoais e credenciais, limitar termos, exigir autor e revisor
+diferentes e registrar autoria, data e justificativa. Eventos de feedback ganharam proteção
+contra alteração e exclusão comum. A suíte passou de 18 para 26 testes.
+
+No segundo gate independente, o Crivo executou os 26 testes em cópia temporária e retornou
+**PASS**, sem bloqueador. Permaneceram como riscos pré-produção: identidades autodeclaradas,
+cobertura limitada dos filtros de dados sensíveis, política de retenção e comprovação do ganho
+com memória ligada versus desligada em dados reais da G4.
+
 ### Gate final
 
 O Crivo executou `uv sync --frozen` e os 16 testes em uma cópia temporária. O segundo veredito foi **PASS**, sem achado crítico ou alto. O risco residual de retenção do JSONL foi mantido como gate explícito antes de qualquer piloto real.
@@ -153,6 +188,7 @@ Na reavaliação do Gate Final 3, o Crivo reproduziu o ambiente a partir do lock
 - `artifacts/classifier_metrics.json`: métricas da validação e do teste final
 - `artifacts/tables/`: tabelas intermediárias
 - `docs/gate-2/claim-ledger.md`: procedência dos claims
+- `docs/gate-3/memoria-de-aprendizado.md`: desenho e gates da memória SQLite
 - `artifacts/figures/app-executive.png`: decisão executiva inspecionada
 - `artifacts/figures/app-triage.png`: fluxo funcional inspecionado
 - `tests/`: comportamento da política e interface
