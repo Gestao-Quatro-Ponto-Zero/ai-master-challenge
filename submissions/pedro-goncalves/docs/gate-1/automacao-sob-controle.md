@@ -4,18 +4,23 @@
 
 IA entra onde há **padrão reversível e evidência mensurável**. Humano permanece onde há consequência material, ambiguidade, dados sensíveis ou ação externa. No protótipo, nenhuma mensagem é enviada e nenhum sistema é alterado.
 
-## Matriz de autonomia
+## Onde colocamos IA, onde não colocamos e por quê
 
-| Etapa | Papel da IA | Papel humano | Regra |
+| Etapa | Escolha | Por quê | Como foi implementado |
 |---|---|---|---|
-| Mascarar PII por padrões | Executa localmente | Audita amostras | Antes de qualquer inferência |
-| Detectar sinal de reclamação | Aplica regras explícitas | Lê e decide o tratamento | Qualquer sinal força revisão humana |
-| Sugerir categoria | Recomenda | Confirma ou corrige | Shadow mode como padrão |
-| Priorizar fila | Não implementado | Decide | Dataset não sustenta prioridade |
-| Redigir resposta | Fora do escopo | Decide | Sem base de conhecimento validada |
-| Enviar resposta | Bloqueado | Executa | Ação externa e irreversível |
-| Reembolso, acesso e RH | Bloqueado | Executa | Alto risco |
-| Medir aceite e override | Registra | Supervisiona | Sem texto bruto nos logs |
+| Ler CSV/XLSX | Sem IA | Estrutura tabular exige precisão, não interpretação probabilística | Parser local e validação de formato |
+| Perfil e qualidade dos dados | Sem IA | Contagens, nulos, duplicatas e tipos precisam ser reproduzíveis | Cálculos determinísticos com memória de cálculo |
+| Escolher colunas e contexto | Humano decide | Mesmo nome de coluna não prova significado | Editor de schema e gate de aprovação |
+| Mascarar padrões de PII | Sem IA generativa | Controle local, previsível e testável | Regras para email, telefone, IP e IDs longos |
+| Detectar cliente em risco | Regras + humano | Dano financeiro, reincidência e insatisfação não podem depender só de probabilidade | Sinais explícitos forçam fila de cuidado e decisão humana |
+| Classificar suporte de TI | IA sugere | Há 47.837 textos rotulados em oito categorias | Classificador treinado, calibrado e testado no domínio de TI |
+| Lidar com baixa confiança | IA se abstém | Uma resposta incerta é pior que pedir revisão | Limite de 75% e ação `ABSTAIN` |
+| Priorizar a fila | Automação assistida | Volume pede ordenação, mas consequência pede supervisão | Cuidado com cliente primeiro; depois revisão e baixa confiança |
+| Buscar erro semelhante | Memória aprovada | Poucas lições críticas não justificam RAG nem retreino contínuo | SQLite recupera somente correções aprovadas por outra pessoa |
+| Aprender com feedback | Sem retropropagação automática | Um erro humano não pode virar verdade do modelo | Feedback imutável, revisão independente e lição versionada |
+| Redigir resposta | Não implementado | Falta base de conhecimento validada e teste de qualidade textual | Mantido fora do protótipo |
+| Enviar, reembolsar, liberar acesso ou tratar RH | Humano executa | São ações externas, sensíveis ou difíceis de reverter | Bloqueadas pela política e pelo modo de observação |
+| Calcular indicadores e cenários | Sem IA | O número precisa ser provado por fórmula e fonte | Cálculo determinístico; ROI permanece hipótese editável |
 
 ## Política de decisão
 

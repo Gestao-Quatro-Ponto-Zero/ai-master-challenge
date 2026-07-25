@@ -11,10 +11,92 @@ from uuid import uuid4
 from src.support_copilot.privacy import mask_pii
 
 
-MEMORY_SCHEMA_VERSION = "1.1.0"
+MEMORY_SCHEMA_VERSION = "2.0.0"
 VALID_LESSON_STATUSES = {"candidate", "approved", "retired"}
 SECRET_PATTERN = re.compile(
     r"(?i)(password|passwd|api[_ -]?key|secret|token|bearer|sk-[a-z0-9_-]+)"
+)
+CASE_LESSONS = (
+    {
+        "lesson_key": "customer-repeat-contact-v1",
+        "scope": "Atendimento ao cliente",
+        "statement": (
+            "Contato repetido sem solução exige cuidado humano, mesmo quando "
+            "o registro aparece como encerrado."
+        ),
+        "evidence": (
+            "460 relatos explícitos; 152 abertos, 156 pendentes e 152 encerrados."
+        ),
+        "control": "Forçar revisão humana e auditar encerramentos.",
+        "source": "docs/gate-1/data-audit.md",
+        "applied_in": "customer_care.py",
+    },
+    {
+        "lesson_key": "domain-taxonomy-boundary-v1",
+        "scope": "Fronteira entre bases",
+        "statement": (
+            "A taxonomia de TI não pode classificar a fila de clientes."
+        ),
+        "evidence": (
+            "No teste cruzado, 85,1% das mensagens de clientes viraram Hardware."
+        ),
+        "control": "Manter filas e decisões separadas por contexto.",
+        "source": "docs/gate-2/cross-dataset-validation.md",
+        "applied_in": "batch.py",
+    },
+    {
+        "lesson_key": "confidence-is-not-domain-fit-v1",
+        "scope": "Política de decisão",
+        "statement": (
+            "Confiança alta não prova que o modelo serve para o contexto."
+        ),
+        "evidence": (
+            "49,5% das previsões cruzadas superaram o limite, apesar da "
+            "taxonomia incompatível."
+        ),
+        "control": "Validar domínio antes de considerar confiança.",
+        "source": "docs/gate-2/cross-dataset-validation.md",
+        "applied_in": "app.py",
+    },
+    {
+        "lesson_key": "invalid-time-fields-v1",
+        "scope": "Qualidade dos dados",
+        "statement": (
+            "Os horários disponíveis não sustentam tempo de resposta, "
+            "resolução ou ROI observado."
+        ),
+        "evidence": (
+            "1.365 de 2.769 pares registram resolução antes da primeira resposta."
+        ),
+        "control": "Tratar ROI apenas como cenário até corrigir a instrumentação.",
+        "source": "docs/gate-1/data-audit.md",
+        "applied_in": "roi.py",
+    },
+    {
+        "lesson_key": "repetition-is-not-duplicate-v1",
+        "scope": "Qualidade dos dados",
+        "statement": (
+            "Texto repetido não significa automaticamente ticket duplicado."
+        ),
+        "evidence": (
+            "A base tem zero linhas idênticas, zero IDs repetidos e descrições "
+            "normalizadas repetidas em registros distintos."
+        ),
+        "control": "Preservar a base e marcar repetições antes de consolidar.",
+        "source": "docs/gate-1/data-audit.md",
+        "applied_in": "case_test_matrix.csv",
+    },
+    {
+        "lesson_key": "template-noise-v1",
+        "scope": "Qualidade do texto",
+        "statement": (
+            "Texto ruidoso e com placeholders limita automação autônoma."
+        ),
+        "evidence": "As 8.469 descrições do Dataset 1 contêm placeholders.",
+        "control": "Usar regras auditáveis e revisão humana no piloto.",
+        "source": "docs/gate-1/data-audit.md",
+        "applied_in": "customer_care.py",
+    },
 )
 
 
@@ -115,6 +197,20 @@ def initialize_memory(path: str | Path) -> None:
                 PRIMARY KEY (lesson_id, event_id)
             );
 
+            CREATE TABLE IF NOT EXISTS operational_lessons (
+                lesson_key TEXT PRIMARY KEY,
+                scope TEXT NOT NULL,
+                statement TEXT NOT NULL,
+                evidence TEXT NOT NULL,
+                control TEXT NOT NULL,
+                source TEXT NOT NULL,
+                applied_in TEXT NOT NULL,
+                status TEXT NOT NULL CHECK(status IN ('approved', 'retired')),
+                approved_by TEXT NOT NULL,
+                approved_at TEXT NOT NULL,
+                version INTEGER NOT NULL DEFAULT 1
+            );
+
             CREATE TRIGGER IF NOT EXISTS feedback_events_no_update
             BEFORE UPDATE ON feedback_events
             BEGIN
@@ -141,6 +237,109 @@ def initialize_memory(path: str | Path) -> None:
         for column, statement in migrations.items():
             if column not in lesson_columns:
                 connection.execute(statement)
+
+
+def seed_case_memory(
+    path: str | Path,
+    *,
+    model_version: str,
+    policy_version: str,
+) -> None:
+    initialize_memory(path)
+    approved_at = "2026-07-24T00:00:00+00:00"
+    with _connect(path) as connection:
+        for lesson in CASE_LESSONS:
+            connection.execute(
+                """
+                INSERT OR IGNORE INTO operational_lessons (
+                    lesson_key, scope, statement, evidence, control, source,
+                    applied_in, status, approved_by, approved_at, version
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, 'approved', ?, ?, 1)
+                """,
+                (
+                    lesson["lesson_key"],
+                    lesson["scope"],
+                    lesson["statement"],
+                    lesson["evidence"],
+                    lesson["control"],
+                    lesson["source"],
+                    lesson["applied_in"],
+                    "revisao-independente",
+                    approved_at,
+                ),
+            )
+
+        event_id = "seed-event-purchase-monitor-v1"
+        lesson_id = "seed-lesson-purchase-monitor-v1"
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO feedback_events (
+                event_id, decision_id, predicted_category,
+                corrected_category, confidence, was_correct, model_version,
+                policy_version, created_at
+            ) VALUES (?, ?, 'Hardware', 'Purchase', 0.854, 0, ?, ?, ?)
+            """,
+            (
+                event_id,
+                "case-matrix-it-purchase-v1",
+                model_version,
+                policy_version,
+                approved_at,
+            ),
+        )
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO lessons (
+                lesson_id, predicted_category, recommended_category,
+                trigger_terms_json, instruction, status, evidence_count,
+                version, created_by, approved_by, approved_at,
+                approval_reason, created_at, updated_at
+            ) VALUES (
+                ?, 'Hardware', 'Purchase', ?,
+                ?, 'approved', 1, 1, 'teste-controlado',
+                'revisao-independente', ?,
+                'Erro reproduzido na matriz de testes e mantido sob revisão humana.',
+                ?, ?
+            )
+            """,
+            (
+                lesson_id,
+                json.dumps(["monitor", "order"], ensure_ascii=True),
+                (
+                    "Quando aparecerem os termos monitor, order, revisar a "
+                    "sugestão Hardware e considerar Purchase."
+                ),
+                approved_at,
+                approved_at,
+                approved_at,
+            ),
+        )
+        connection.execute(
+            """
+            INSERT OR IGNORE INTO lesson_evidence (lesson_id, event_id)
+            VALUES (?, ?)
+            """,
+            (lesson_id, event_id),
+        )
+
+
+def list_operational_lessons(
+    path: str | Path,
+    *,
+    status: str = "approved",
+) -> list[dict]:
+    initialize_memory(path)
+    with _connect(path) as connection:
+        rows = connection.execute(
+            """
+            SELECT *
+            FROM operational_lessons
+            WHERE status = ?
+            ORDER BY scope, lesson_key
+            """,
+            (status,),
+        ).fetchall()
+    return [dict(row) for row in rows]
 
 
 def record_feedback(

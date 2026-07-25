@@ -1,6 +1,7 @@
 import unittest
 import sqlite3
 import json
+from io import BytesIO
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -13,11 +14,14 @@ from src.support_copilot.batch import (
     analyze_queue,
 )
 from src.support_copilot.customer_care import assess_customer_care
+from src.support_copilot.demo_matrix import CASE_MATRIX, evaluate_matrix
 from src.support_copilot.inference import TicketClassifier
 from src.support_copilot.memory import (
     find_approved_lessons,
     list_lessons,
+    list_operational_lessons,
     record_feedback,
+    seed_case_memory,
     set_lesson_status,
 )
 from src.support_copilot.policy import (
@@ -32,9 +36,82 @@ from src.support_copilot.roi import (
     CapacityScenario,
     calculate_capacity,
 )
+from src.support_copilot.operational_metrics import (
+    EfficiencyScenario,
+    calculate_efficiency,
+)
+from src.support_copilot.universal_analysis import (
+    apply_schema,
+    compare_summaries,
+    profile_dataframe,
+    read_spreadsheet,
+    summarize_table,
+    validate_schema,
+)
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SUBMISSION_ROOT = (
+    PROJECT_ROOT if (PROJECT_ROOT / "docs").exists() else PROJECT_ROOT.parent
+)
 
 
 class PolicyTests(unittest.TestCase):
+    def test_pareto_opinion_matches_audited_artifacts(self):
+        audit = json.loads(
+            Path("artifacts/data_audit.json").read_text(encoding="utf-8")
+        )
+        metrics = json.loads(
+            Path("artifacts/classifier_metrics.json").read_text(encoding="utf-8")
+        )
+        opinion = (SUBMISSION_ROOT / "docs/gate-3/parecer-80-20.md").read_text(
+            encoding="utf-8"
+        )
+        d1 = audit["dataset_1"]
+        final_test = metrics["threshold_selection"]["final_test"]
+        final_rows = metrics["data"]["final_test_rows"]
+        correct_covered = (
+            final_test["covered_tickets"] - final_test["errors_when_covered"]
+        )
+
+        expected = (
+            f"{d1['repeated_unresolved_rows']} casos, "
+            f"{d1['repeated_unresolved_rows'] / d1['rows']:.2%}".replace(".", ","),
+            (
+                f"{d1['negative_response_to_resolution_rows']:,} resoluções "
+                f"anteriores à primeira resposta ÷ "
+                f"{d1['paired_timestamp_rows']:,} pares"
+            ).replace(",", "."),
+            (
+                f"{final_test['covered_tickets']:,} mensagens acima do limite "
+                f"de 75% ÷ {final_rows:,} mensagens"
+            ).replace(",", "."),
+            (
+                f"{correct_covered:,} previsões corretas ÷ "
+                f"{final_test['covered_tickets']:,} previsões cobertas"
+            ).replace(",", "."),
+        )
+        for proof in expected:
+            with self.subTest(proof=proof):
+                self.assertIn(proof, opinion)
+
+    def test_efficiency_scenario_exposes_every_component(self):
+        result = calculate_efficiency(
+            EfficiencyScenario(
+                volume=1_000,
+                eligible_share=0.20,
+                adoption=0.50,
+                manual_minutes=10,
+                assisted_minutes=3,
+                safe_success_rate=0.90,
+            )
+        )
+        self.assertAlmostEqual(result.adopted_cases, 100)
+        self.assertAlmostEqual(result.manual_hours, 1000 / 60)
+        self.assertAlmostEqual(result.assisted_hours, 300 / 60)
+        self.assertAlmostEqual(result.rework_hours, 100 / 60)
+        self.assertAlmostEqual(result.net_hours_released, 10)
+        self.assertAlmostEqual(result.time_reduction_rate, 0.60)
+
     def test_customer_csv_uses_explicit_context_not_column_name(self):
         class ClassifierThatMustNotRun:
             def predict_many(self, texts):
@@ -133,6 +210,17 @@ class PolicyTests(unittest.TestCase):
                 "Closed": 152,
                 "Open": 152,
             },
+        )
+
+    def test_data_audit_does_not_delete_distinct_repeated_events(self):
+        audit = json.loads(
+            Path("artifacts/data_audit.json").read_text(encoding="utf-8")
+        )["dataset_1"]
+        self.assertEqual(audit["exact_duplicate_rows"], 0)
+        self.assertEqual(audit["duplicate_ticket_id_rows"], 0)
+        self.assertGreater(
+            audit["description_normalized_rows_in_duplicate_groups"],
+            0,
         )
 
     def test_batch_prediction_matches_individual_prediction(self):
@@ -530,6 +618,145 @@ class PolicyTests(unittest.TestCase):
             )
             self.assertEqual(approved["approved_by"], "revisor-1")
             self.assertIsNotNone(approved["approved_at"])
+
+    def test_case_memory_is_seeded_once_with_reviewed_evidence(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            for _ in range(2):
+                seed_case_memory(
+                    database,
+                    model_version="model-test",
+                    policy_version=POLICY_VERSION,
+                )
+
+            operational = list_operational_lessons(database)
+            classifier_lessons = [
+                lesson
+                for lesson in list_lessons(database)
+                if lesson["status"] == "approved"
+            ]
+            self.assertEqual(len(operational), 6)
+            self.assertEqual(len(classifier_lessons), 1)
+            self.assertTrue(
+                all(
+                    lesson["approved_by"] == "revisao-independente"
+                    for lesson in operational
+                )
+            )
+            self.assertEqual(
+                classifier_lessons[0]["recommended_category"],
+                "Purchase",
+            )
+
+    def test_case_matrix_passes_all_sixteen_scenarios(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            classifier = TicketClassifier(
+                Path("artifacts/models/ticket_classifier.joblib")
+            )
+            seed_case_memory(
+                database,
+                model_version=classifier.model_sha256,
+                policy_version=POLICY_VERSION,
+            )
+            results = evaluate_matrix(
+                classifier=classifier,
+                threshold=0.75,
+                memory_path=database,
+            )
+            self.assertEqual(len(results), 16)
+            self.assertEqual(results["Resultado"].value_counts().to_dict(), {"PASS": 16})
+
+    def test_case_matrix_preserves_repeated_text_as_distinct_events(self):
+        repeated = [
+            case
+            for case in CASE_MATRIX
+            if case["case_id"] in {"CLI-07A", "CLI-07B"}
+        ]
+        self.assertEqual(len(repeated), 2)
+        self.assertEqual(repeated[0]["message"], repeated[1]["message"])
+        self.assertNotEqual(repeated[0]["case_id"], repeated[1]["case_id"])
+
+    def test_universal_schema_requires_human_validated_order(self):
+        frame = pd.DataFrame(
+            {
+                "Ticket ID": [1, 2],
+                "Description": ["A", "B"],
+                "Status": ["Open", "Closed"],
+            }
+        )
+        schema = profile_dataframe(frame)
+        schema.loc[schema["Coluna"].eq("Status"), "Usar"] = False
+        schema.loc[schema["Coluna"].eq("Description"), "Ordem"] = 1
+        schema.loc[schema["Coluna"].eq("Ticket ID"), "Ordem"] = 2
+        prepared = apply_schema(frame, schema)
+        self.assertEqual(prepared.columns.tolist(), ["Description", "Ticket ID"])
+
+    def test_universal_schema_rejects_ambiguous_order(self):
+        frame = pd.DataFrame({"id": [1], "text": ["A"]})
+        schema = profile_dataframe(frame)
+        schema["Ordem"] = 1
+        with self.assertRaises(ValueError):
+            validate_schema(schema, list(frame.columns))
+
+    def test_universal_summary_preserves_repeated_events(self):
+        frame = pd.DataFrame(
+            {
+                "Ticket ID": [1, 2],
+                "Description": ["Mesmo problema", "Mesmo problema"],
+                "Status": ["Open", "Open"],
+            }
+        )
+        schema = profile_dataframe(frame)
+        summary = summarize_table(frame, schema, name="Fila")
+        self.assertEqual(summary.exact_duplicate_rows, 0)
+        self.assertEqual(summary.duplicate_identifier_rows, 0)
+        self.assertEqual(summary.rows, 2)
+        comparison = compare_summaries(summary, summary)
+        self.assertEqual(len(comparison), 2)
+
+    def test_universal_reader_accepts_csv_and_xlsx(self):
+        csv_frame = read_spreadsheet(
+            BytesIO(b"id,status\n1,Open\n"),
+            filename="fila.csv",
+        )
+        self.assertEqual(csv_frame.to_dict("records"), [{"id": 1, "status": "Open"}])
+
+        xlsx_buffer = BytesIO()
+        pd.DataFrame({"id": [2], "status": ["Closed"]}).to_excel(
+            xlsx_buffer,
+            index=False,
+        )
+        xlsx_frame = read_spreadsheet(
+            xlsx_buffer,
+            filename="fila.xlsx",
+        )
+        self.assertEqual(
+            xlsx_frame.to_dict("records"),
+            [{"id": 2, "status": "Closed"}],
+        )
+
+    def test_case_demo_samples_are_bounded_and_remove_direct_identifiers(self):
+        support = pd.read_csv(
+            PROJECT_ROOT / "artifacts/demo/customer_support_case_sample.csv"
+        )
+        it_service = pd.read_csv(
+            PROJECT_ROOT / "artifacts/demo/it_service_case_sample.csv"
+        )
+        self.assertEqual(len(support), 5000)
+        self.assertEqual(len(it_service), 5000)
+        self.assertTrue(
+            {
+                "Ticket ID",
+                "Customer Name",
+                "Customer Email",
+                "Customer Age",
+                "Customer Gender",
+            }.isdisjoint(support.columns)
+        )
+        self.assertEqual(support.iloc[0]["Date of Purchase"], "2021-03-22")
+        self.assertIn("Ticket Description", support.columns)
+        self.assertEqual(list(it_service.columns), ["Document", "Topic_group"])
 
 
 if __name__ == "__main__":

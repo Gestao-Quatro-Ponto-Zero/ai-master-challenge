@@ -25,7 +25,7 @@ Portanto, o Dataset 1 ajuda a revelar campos necessários, problemas de qualidad
 privacidade. Ele continua sendo a base operacional do exercício, mas seus rótulos não ensinam de
 forma confiável uma classificação automática de novos pedidos.
 
-O grupo de 460 reincidências é acionável agora: deve subir para revisão humana, com auditoria
+O grupo de 460 mensagens com sinal de reincidência é acionável agora: deve subir para revisão humana, com auditoria
 específica dos 152 casos que constam como encerrados apesar do relato de problema não resolvido.
 
 ## Gate de cuidado com o cliente

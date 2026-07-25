@@ -8,9 +8,11 @@ versionável e auditável. O banco SQLite guarda eventos de feedback e lições 
 lição nasce como candidata. Somente outro revisor identificado pode aprová-la para consultas
 futuras.
 
-Isso não é retropropagação. É aprendizado por recuperação: o sistema consulta experiências
-anteriores antes de decidir. Retropropagação exige retreinar o modelo com exemplos rotulados,
-medir o novo modelo num teste separado e liberar a nova versão apenas se ela superar a anterior.
+Isso não é retropropagação e também não é RAG. É uma memória estruturada de precedentes: o
+sistema consulta experiências aprovadas antes de decidir. Retropropagação exige retreinar o
+modelo com exemplos rotulados, medir o novo modelo num teste separado e liberar a nova versão
+apenas se ela superar a anterior. RAG exige uma coleção não estruturada, recuperação e geração,
+complexidade que ainda não resolve um gargalo observado neste case.
 
 ## Diagnóstico pela tese do vídeo
 
@@ -41,7 +43,32 @@ Pesos: aprendizado 30%, segurança 25%, auditoria 20%, simplicidade 15%, prontid
 | Sem memória | 1,0 | 5,0 | 5,0 | 5,0 | 5,0 | 3,8 |
 | Apenas guardar logs | 2,0 | 5,0 | 5,0 | 5,0 | 5,0 | 4,1 |
 | SQLite com lições aprovadas | 4,5 | 4,5 | 5,0 | 4,5 | 4,5 | **4,6** |
+| RAG sobre documentos e correções | 4,0 | 2,5 | 2,5 | 2,0 | 2,5 | 2,9 |
 | Retreinamento automático contínuo | 5,0 | 1,0 | 2,0 | 1,0 | 1,0 | 2,4 |
+
+## O diferencial: saber onde parar
+
+O desafio alerta que automatizar tudo é uma armadilha. Aqui isso aparece em três recusas
+deliberadas:
+
+1. a memória não transforma uma correção isolada em verdade;
+2. a aplicação não responde nem altera sistemas externos;
+3. RAG e retreinamento não entram antes de existir necessidade e evidência.
+
+O ganho não é “menos IA”. É **IA proporcional ao risco e à maturidade dos dados**. Como um
+piloto de avião, o sistema pode mostrar instrumentos e sugerir direção, mas não assume o comando
+quando os sensores são incompletos ou existe consequência crítica.
+
+## Aprendizado já demonstrado
+
+O protótipo inicia com seis lições operacionais sustentadas pelos artefatos do case: cuidado com
+contato repetido, separação das taxonomias, confiança não prova aderência ao domínio, horários
+inválidos, repetição não é duplicata e ruído de templates.
+
+Há também uma correção reproduzida: uma solicitação de compra de monitores foi prevista como
+`Hardware`. A lição aprovada associa os termos gerais `monitor` e `order` ao risco de erro. Na
+próxima ocorrência, o sistema não muda a categoria sozinho. Ele aciona a memória e força revisão
+humana.
 
 ## Como funciona
 
@@ -66,6 +93,7 @@ flowchart LR
 | `feedback_events` | Guarda cada confirmação ou correção | Um evento por decisão, sem texto bruto e protegido contra alteração |
 | `lessons` | Consolida a regra geral gerada pelo sistema | Candidata, aprovada por outro revisor ou desativada |
 | `lesson_evidence` | Liga lições aos eventos que as sustentam | Permite contar evidências e auditar origem |
+| `operational_lessons` | Guarda aprendizados derivados da análise do case | Somente lições aprovadas, com fonte e controle aplicado |
 
 O arquivo é único: `artifacts/memory/learning.sqlite3`. Eventos de feedback são protegidos contra
 alteração e exclusão comum. Uma lição desativada deixa de participar das análises, mas continua
@@ -103,6 +131,13 @@ A fase de retreinamento só começa quando houver exemplos autorizados e rotulad
 4. comparar memória ligada, memória desligada, modelo antigo e modelo novo;
 5. bloquear a versão se erro crítico, privacidade ou qualidade piorarem;
 6. liberar primeiro em modo de observação, com retorno rápido à versão anterior.
+
+## Quando entra RAG
+
+RAG só será considerado se surgirem muitos procedimentos, políticas e históricos validados que
+não caibam em regras estruturadas. Antes da adoção, será necessário provar qualidade da busca,
+procedência das fontes, proteção contra instruções maliciosas e ganho sobre a memória atual.
+Sem esse teste, RAG seria arquitetura adicional, não solução.
 
 ## Métricas
 

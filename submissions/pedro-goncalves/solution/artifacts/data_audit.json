@@ -13,6 +13,7 @@
     "rows": 8469,
     "columns": 17,
     "ticket_id_unique": true,
+    "duplicate_ticket_id_rows": 0,
     "exact_duplicate_rows": 0,
     "null_counts": {
       "Ticket ID": 0,
@@ -74,6 +75,9 @@
     "negative_response_to_resolution_rate": 0.49295774647887325,
     "description_exact_duplicate_rows": 251,
     "description_normalized_duplicate_rows": 251,
+    "description_normalized_duplicate_groups": 56,
+    "description_normalized_rows_in_duplicate_groups": 462,
+    "description_normalized_excess_rows": 406,
     "description_unique_rows": 8077,
     "placeholder_description_rows": 8469,
     "placeholder_resolution_rows": 0,

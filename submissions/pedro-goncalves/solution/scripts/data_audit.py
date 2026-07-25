@@ -87,6 +87,18 @@ def main() -> None:
         .str.replace(r"\s+", " ", regex=True)
         .str.strip()
     )
+    normalized_descriptions = (
+        support["Ticket Description"]
+        .fillna("")
+        .str.lower()
+        .str.replace(r"\{[^}]+\}", "{placeholder}", regex=True)
+        .str.replace(r"\s+", " ", regex=True)
+        .str.strip()
+    )
+    normalized_description_counts = normalized_descriptions.value_counts()
+    repeated_normalized_descriptions = normalized_description_counts[
+        normalized_description_counts > 1
+    ]
 
     it_normalized = (
         it_tickets["Document"].fillna("").str.lower().str.replace(r"\s+", " ", regex=True).str.strip()
@@ -154,6 +166,9 @@ def main() -> None:
             "rows": int(len(support)),
             "columns": int(support.shape[1]),
             "ticket_id_unique": bool(support["Ticket ID"].is_unique),
+            "duplicate_ticket_id_rows": int(
+                support["Ticket ID"].duplicated().sum()
+            ),
             "exact_duplicate_rows": int(support.duplicated().sum()),
             "null_counts": {column: int(value) for column, value in support.isna().sum().items()},
             "ticket_types": support["Ticket Type"].value_counts().to_dict(),
@@ -169,6 +184,15 @@ def main() -> None:
             "negative_response_to_resolution_rate": float((paired_times < 0).mean()),
             "description_exact_duplicate_rows": int(support_text.duplicated(keep=False).sum()),
             "description_normalized_duplicate_rows": int(normalized_support_text.duplicated(keep=False).sum()),
+            "description_normalized_duplicate_groups": int(
+                len(repeated_normalized_descriptions)
+            ),
+            "description_normalized_rows_in_duplicate_groups": int(
+                repeated_normalized_descriptions.sum()
+            ),
+            "description_normalized_excess_rows": int(
+                (repeated_normalized_descriptions - 1).sum()
+            ),
             "description_unique_rows": int(support["Ticket Description"].fillna("").nunique()),
             "placeholder_description_rows": int(
                 support["Ticket Description"].fillna("").str.contains(r"\{[^}]+\}", regex=True).sum()
@@ -226,6 +250,9 @@ O Dataset 2 contém **{d2['rows']:,} tickets** em oito classes e pode sustentar 
 - Linhas: **{d1['rows']:,}**
 - Colunas: **{d1['columns']}**
 - `Ticket ID` único: **{d1['ticket_id_unique']}**
+- Linhas exatamente duplicadas: **{d1['exact_duplicate_rows']:,}**
+- IDs repetidos: **{d1['duplicate_ticket_id_rows']:,}**
+- Grupos de descrições normalizadas repetidas: **{d1['description_normalized_duplicate_groups']:,}**, reunindo **{d1['description_normalized_rows_in_duplicate_groups']:,} registros**
 - Tipos observados: **{len(d1['ticket_types'])}**, incluindo categorias não resumidas no brief.
 - CSAT disponível em **{d1['rows'] - d1['null_counts']['Customer Satisfaction Rating']:,}** linhas, todas sujeitas ao filtro de elegibilidade por status.
 - Datas observadas em `First Response Time`: **{', '.join(d1['first_response_dates'])}**
@@ -238,7 +265,7 @@ O Dataset 2 contém **{d2['rows']:,} tickets** em oito classes e pode sustentar 
 
 ### Foco no cliente
 
-`Ticket Description` é o campo que preserva a voz do cliente e, por isso, deve ser lido antes de qualquer sugestão automática. As **{d1['placeholder_description_rows']:,} descrições** contêm placeholder de template e trechos ruidosos, mas ainda revelam situações operacionais do exercício. O principal sinal é o grupo de **{d1['repeated_unresolved_rows']:,} clientes** que relata contatos repetidos sem solução, inclusive {d1['repeated_unresolved_by_status']['Closed']:,} casos marcados como encerrados.
+`Ticket Description` é o campo que preserva a voz do cliente e, por isso, deve ser lido antes de qualquer sugestão automática. As **{d1['placeholder_description_rows']:,} descrições** contêm placeholder de template e trechos ruidosos, mas ainda revelam situações operacionais do exercício. O principal sinal são **{d1['repeated_unresolved_rows']:,} mensagens** com relato de contato repetido sem solução, inclusive {d1['repeated_unresolved_by_status']['Closed']:,} casos marcados como encerrados. A base não permite afirmar que sejam {d1['repeated_unresolved_rows']:,} pessoas únicas.
 
 O protótipo usa regras explícitas e conservadoras para reconhecer reincidência, dano financeiro, cancelamento, risco legal, segurança, privacidade ou forte insatisfação. Qualquer sinal encaminha o caso para uma pessoa. Na base fornecida, o gate sinaliza casos para inspeção humana; sua taxa de erro deve ser revisada durante o piloto da empresa fictícia.
 
@@ -249,6 +276,12 @@ O protótipo usa regras explícitas e conservadoras para reconhecer reincidênci
 3. Usar `Ticket Subject`, `Ticket Type` e `Ticket Priority` como campos operacionais existentes, sem deixar que anulem sinais encontrados na mensagem.
 4. Priorizar a revisão dos relatos de contato repetido sem solução, inclusive os marcados como encerrados.
 5. Tratar qualquer ROI como cenário parametrizado, nunca como economia observada.
+
+### Deduplicação segura
+
+A limpeza começa verificando identidade, não semelhança textual. A base possui **zero linhas exatamente duplicadas** e **zero IDs repetidos**, portanto não existe evidência para excluir registros. Há {d1['description_normalized_duplicate_groups']:,} grupos de descrições normalizadas repetidas, mas eles pertencem a eventos com IDs próprios.
+
+Excluir esses registros apagaria sinais de reincidência. A regra operacional é preservar a base bruta, padronizar campos em uma camada derivada e marcar repetições para análise. Uma linha só pode ser consolidada como duplicata técnica quando houver a mesma chave estável e o mesmo conteúdo relevante, com registro auditável da decisão.
 
 ## Dataset 2: classificação de tickets de TI
 

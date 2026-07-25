@@ -1,4 +1,4 @@
-# Copiloto de Atendimento: Challenge 002
+# OSS: Operating System for Support
 
 > **Decisão recomendada:** corrigir os registros e testar a IA em modo de observação.
 > **Decisão vetada:** resposta autônoma em produção.
@@ -24,7 +24,8 @@ O copiloto separa duas filas. No atendimento ao cliente, preserva o tipo informa
 sinais de reincidência, possível dano, cancelamento, escalonamento e insatisfação forte. Na fila
 de TI, sugere uma das oito categorias, mostra confiança e pede revisão quando necessário. Em
 ambas, registra decisões sem guardar a mensagem original. A memória SQLite recupera somente
-lições aprovadas.
+lições aprovadas. Um segundo modo recebe duas planilhas, exige validação humana das colunas e
+gera um painel gerencial sem alterar as fontes.
 
 No segundo arquivo, a prova técnica equilibrou **86,8% de desempenho entre os diferentes
 assuntos**. No teste final, a IA decidiu sobre 69,7% dos casos e acertou 96,6% deles. Esse
@@ -33,15 +34,15 @@ resultado pertence à fila de suporte interno de TI, não à fila de clientes.
 O cruzamento revelou a fronteira: quando o modelo do Dataset 2 foi aplicado às 8.469 mensagens
 do Dataset 1, **85,1% viraram “Hardware”**, embora 49,5% superassem o limite de confiança. Ou
 seja, confiança alta não corrige uma taxonomia incompatível. Por isso o piloto aceita filas
-reais em CSV, mas mantém toda decisão em observação.
+reais em CSV ou XLSX, mas mantém toda decisão em observação.
 
 ## As três respostas do diretor
 
 | Pergunta | Resposta executiva | Próxima decisão |
 |---|---|---|
-| Onde perdemos tempo? | 460 clientes relatam contatos repetidos sem solução; 152 casos ainda estão abertos | Revisar reincidências e auditar os 152 encerramentos |
+| Onde perdemos tempo? | 460 mensagens contêm sinal de contato repetido sem solução; 152 casos ainda estão abertos | Revisar reincidências e auditar os 152 encerramentos |
 | O que automatizar? | Detecção de cuidado na fila de clientes e sugestão de assunto na fila de TI | Testar em observação, sem responder ao cliente |
-| Funciona? | 35 testes, 47.837 textos no treino/teste e 8.469 mensagens no teste cruzado | Medir erros durante o piloto |
+| Funciona? | 58 testes, casos do case reproduzíveis, 47.837 textos no experimento e 8.469 mensagens no teste cruzado | Medir erros durante o piloto |
 
 ## A decisão em uma frase
 
@@ -53,6 +54,19 @@ O resultado mais importante não é o modelo. É o **critério para decidir**. A
 chegou a inventar tempo de trabalho, custo por hora e parcela automatizável. Esse caminho foi
 interrompido, os dados foram auditados e a proposta foi redesenhada. O protótipo demonstra onde
 usar IA e, principalmente, onde ela ainda não merece autonomia.
+
+### Saber onde parar
+
+Não usamos retropropagação a cada correção. Alterar pesos com poucos exemplos, sem conjunto final
+independente e sem revisão transforma um erro humano em comportamento recorrente. Também não
+usamos RAG: as lições atuais são poucas, estruturadas e críticas. Uma tabela SQLite aprovada por
+outra pessoa é mais simples de auditar e mais previsível que busca vetorial com geração.
+
+A memória guarda seis aprendizados operacionais comprovados no case e uma correção reproduzida do
+classificador. Quando encontra um erro parecido, ela não decide no lugar da equipe: bloqueia a
+automação, mostra a evidência e solicita revisão humana. Retropropagação só entra quando houver
+volume autorizado, dados rotulados e teste final separado. RAG só entra quando conhecimento
+validado e não estruturado crescer a ponto de regras explícitas deixarem de ser suficientes.
 
 ## Plano de 30 dias
 
@@ -73,6 +87,13 @@ Usando **30 mil tickets apenas como contexto narrativo do brief**, a sensibilida
 | Base | 30.000 | 25% | 50% | 90% | 5,0 | 1,0 min | 0,5 min | 187,5 h |
 | Expansão | 30.000 | 40% | 70% | 95% | 7,0 | 0,5 min | 0,25 min | 826,0 h |
 
+Cada linha usa a mesma fórmula:
+
+`horas líquidas = tickets × elegibilidade × adoção × minutos poupados × taxa segura ÷ 60 - tickets × elegibilidade × adoção × revisão ÷ 60 - tickets × elegibilidade × adoção × retrabalho ÷ 60`
+
+Os percentuais e minutos da tabela são **hipóteses**, não medições dos datasets. O cenário
+interativo do protótipo permite substituí-los pelos dados reais do piloto.
+
 O valor financeiro só deve ser calculado depois de medir touch time e aprovar custo-hora, integração, plataforma e manutenção.
 
 ## Achados
@@ -82,15 +103,16 @@ O valor financeiro só deve ser calculado depois de medir touch time e aprovar c
 | Volume real do Dataset 1 | 8.469 tickets | Não usar 30 mil como denominador |
 | Pares temporais inválidos | 1.365 de 2.769 | Vetar FRT, TTR e ROI observado |
 | Texto templado | 8.469 descrições com placeholder e trechos ruidosos | Preferir regras auditáveis e revisão humana |
+| Duplicidade técnica | 0 linhas idênticas e 0 IDs repetidos | Não apagar descrições repetidas, pois podem representar reincidência |
 | Cliente sem solução | 460 relatos de contatos repetidos; 152 abertos e 152 encerrados | Subir para revisão humana e auditar encerramentos |
 | Transferência entre datasets | 85,1% das previsões concentradas em “Hardware” | Não usar a taxonomia de TI para rotear clientes |
 | Sinal de CSAT | Efeitos nulos ou desprezíveis | Não priorizar segmento por causalidade |
 | Prova técnica | Macro-F1 0,868 | Classificação é tecnicamente viável no Dataset 2 |
 | Abstenção | 69,7% de cobertura a 96,6% de acurácia no teste final | Expor a troca entre escala e erro |
 
-![Ausência de dados por status](solution/artifacts/figures/support-missingness-by-status.png)
+![Ausência de dados por status](artifacts/figures/support-missingness-by-status.png)
 
-![Cobertura e acurácia](solution/artifacts/figures/coverage-vs-accuracy.png)
+![Cobertura e acurácia](artifacts/figures/coverage-vs-accuracy.png)
 
 ## Matriz de decisão
 
@@ -103,16 +125,27 @@ Escala de 1 a 5. A nota ponderada não supera veto crítico.
 | Copiloto em modo de observação | 5,0 | 3,5 | 5,0 | 5,0 | 4,5 | **4,6** | Não |
 | Dashboard isolado | 3,0 | 2,0 | 5,0 | 5,0 | 2,0 | 3,4 | Não |
 
+As notas são **julgamento gerencial explícito**, não métricas observadas. A conta é a soma de cada
+nota multiplicada pelo peso da coluna. Exemplo do copiloto:
+`5×30% + 3,5×25% + 5×20% + 5×15% + 4,5×10% = 4,575`, arredondado para `4,6`.
+
 ## O que funciona
 
-O protótipo Streamlit foi reduzido ao uso cotidiano. Diagnóstico, evidências, matriz de decisão,
-plano e cenários permanecem nos documentos da entrega. A aplicação contém somente `Triagem`,
-`Aprendizado` e `Ajuda`.
+O OSS funciona como ferramenta de operação e avaliação. Diagnóstico, evidências,
+matriz de decisão, plano e cenários permanecem nos documentos, mas são acessíveis em
+`Entregáveis`. A aplicação contém `Visão geral`, `Triagem diária`, `Análise da operação`,
+`Aprendizado`, `Entregáveis` e `Ajuda`.
 
 No piloto, o usuário consegue:
 
 - receber a solicitação com ocultação de alguns padrões de dados pessoais;
 - processar uma fila CSV com até 5.000 linhas por execução;
+- receber duas planilhas em CSV ou XLSX, com limite explícito de até 5.000 linhas por base;
+- mostrar estrutura, preenchimento, cardinalidade e papel sugerido de cada coluna;
+- exigir confirmação humana para manter, remover, ordenar e interpretar colunas;
+- impedir relação automática entre planilhas sem chave validada;
+- abrir um painel gerencial centralizado após a análise;
+- executar os casos reproduzíveis do case;
 - exportar ID, sugestão, confiança, cuidado prioritário e próximo passo sem copiar mensagens;
 - identificar sinais de cuidado prioritário com o cliente;
 - classificar em oito categorias;
@@ -124,6 +157,7 @@ No piloto, o usuário consegue:
 - registrar correções numa memória SQLite;
 - usar somente lições aprovadas e preservar seu histórico;
 - consultar uma aba de ajuda sem sair do fluxo.
+- abrir os documentos formatados na ordem recomendada dentro do próprio OSS.
 
 ## Rodar
 
@@ -143,7 +177,7 @@ Abra `http://localhost:8501`.
 uv run python -m unittest discover -s tests -v
 ```
 
-Resultado validado: **35 testes aprovados**.
+Resultado validado: **58 testes aprovados**.
 
 ## Reproduzir a análise
 
@@ -162,6 +196,8 @@ uv run python scripts/cross_dataset_audit.py
 uv run python scripts/train_classifier.py
 uv run python scripts/build_figures.py
 uv run python scripts/build_notebook.py
+uv run python scripts/build_demo_matrix.py
+uv run python scripts/build_case_demo_data.py
 ```
 
 O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados brutos não são versionados.
@@ -184,6 +220,10 @@ O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados
 - ROI permanece cenário até touch time, custos, adoção e retrabalho serem medidos.
 - Autor e revisor da memória são identificados, mas ainda não autenticados.
 - A memória precisa ser comparada ligada e desligada nas filas do piloto.
+- A matriz 16/16 prova o comportamento dos casos escolhidos, não cobertura de toda linguagem possível.
+- O fluxo universal organiza a análise, mas não conhece a semântica de qualquer empresa sem validação humana.
+- O painel só mostra indicadores sustentados pelos campos recebidos.
+- O score de qualidade mede estrutura, não desempenho da operação.
 - Retenção e eliminação excepcional do SQLite precisam de regra antes de produção.
 - O gate de cliente usa regras explícitas e pode não reconhecer toda forma de reclamação.
 
@@ -191,8 +231,9 @@ O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados
 
 - `docs/gate-1/`: auditoria, diagnóstico e decisão
 - `docs/gate-2/`: modelo, arquitetura, claims e medição
-- `docs/gate-3/`: foco no cliente, memória e caminho seguro para retreinamento
+- `docs/gate-3/`: foco no cliente, trajetória profissional, memória e caminho seguro para retreinamento
 - `artifacts/`: métricas, tabelas, figuras e modelo
+- `artifacts/demo/`: matriz demonstrativa de 16 casos, sem dados pessoais
 - `notebooks/`: análise executada
 - `src/`: política, classificação, privacidade, auditoria, memória e cenários
 - `tests/`: testes da política e da interface
@@ -209,4 +250,5 @@ Leia [`process-log/README.md`](process-log/README.md).
 - **Formação:** Engenharia de Produção, Unicamp
 - **Challenge:** 002, Redesign de Suporte
 
-Submissão preparada em 24/07/2026.
+Candidato de submissão preparado em 24/07/2026. A entrega só é liberada depois de duas rodadas
+humanas aprovadas conforme `docs/gate-3/protocolo-aprovacao.md`.
