@@ -20,6 +20,7 @@ def build_record(
     app_version: str,
     memory_lesson_ids: list[str] | None = None,
     memory_schema_version: str | None = None,
+    customer_care: dict | None = None,
 ) -> dict:
     return {
         "decision_id": str(uuid4()),
@@ -44,6 +45,11 @@ def build_record(
         "memory": {
             "matched_lesson_ids": memory_lesson_ids or [],
             "schema_version": memory_schema_version,
+        },
+        "customer_care": customer_care or {
+            "level": "not_assessed",
+            "requires_human": False,
+            "signal_codes": [],
         },
         "retention": "Runtime owner must define and enforce retention before production.",
     }

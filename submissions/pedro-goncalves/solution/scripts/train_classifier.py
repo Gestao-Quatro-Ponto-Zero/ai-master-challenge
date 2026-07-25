@@ -286,7 +286,7 @@ def main() -> None:
 
 ## Propósito
 
-Demonstrar, em dados públicos, uma etapa de triagem com classificação, confiança calibrada e abstenção. O modelo não foi validado para suporte ao cliente da G4 nem para o Dataset 1.
+Demonstrar, na fila de suporte interno de TI do exercício, uma etapa de triagem com classificação, confiança calibrada e abstenção. A taxonomia não equivale à fila de clientes do Dataset 1.
 
 ## Dados e protocolo
 
@@ -325,8 +325,8 @@ Esse threshold é uma referência técnica para shadow mode. Não autoriza execu
 
 1. A taxonomia é de suporte interno de TI e não equivale à taxonomia do Dataset 1.
 2. O texto já foi pré-processado pela origem.
-3. Calibração em dados públicos não representa risco de produção.
-4. Não há validação temporal, mudança de domínio nem rótulos da G4.
+3. Calibração na base do exercício não representa risco de produção.
+4. Não há validação temporal nem rótulos compatíveis entre as duas filas.
 5. O protótipo deve operar em shadow mode e permitir abstenção, override e kill switch.
 """
     (DOCS / "model-card.md").write_text(model_card, encoding="utf-8")

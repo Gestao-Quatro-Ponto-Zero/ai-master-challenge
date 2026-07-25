@@ -12,6 +12,8 @@
 | Operação | Touch time líquido | Tempo ativo antes e depois | Não usar TTR como proxy |
 | Qualidade de serviço | Reabertura | Tickets reabertos / resolvidos | Kill criterion |
 | Cliente | CSAT elegível | Respostas / pesquisas enviadas | Reportar cobertura |
+| Cuidado com o cliente | Reclamações críticas não detectadas | Críticas não sinalizadas / críticas rotuladas | Definir tolerância com Operações |
+| Cuidado com o cliente | Encaminhamento desnecessário | Comuns sinalizadas / comuns rotuladas | Não criar fila humana impraticável |
 | Privacidade | Incidentes de PII | Eventos confirmados | Tolerância zero |
 | Aprendizado | Repetição de erro conhecido | Erros repetidos / erros já documentados | Deve cair com memória ligada |
 | Memória | Precisão das lições recuperadas | Lições úteis / lições exibidas | Comparar ligada e desligada |

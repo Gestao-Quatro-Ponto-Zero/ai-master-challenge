@@ -2,12 +2,14 @@
 
 ## Decisão
 
-O sistema é um **copiloto de triagem em shadow mode**, não um agente autônomo. Ele demonstra classificação, confiança calibrada, abstenção e governança sem enviar respostas ou alterar sistemas externos.
+O sistema é um **copiloto de triagem em shadow mode**, não um agente autônomo. Ele demonstra classificação, confiança calibrada, abstenção e governança sem enviar respostas ou alterar sistemas externos. Aceita uma mensagem ou uma fila CSV e exporta apenas identificadores e resultados da triagem, sem copiar o texto.
 
 ```mermaid
 flowchart LR
     A[Ticket recebido] --> B[Máscara local de PII]
-    B --> C[Classificador]
+    B --> R{Sinal de cuidado com o cliente?}
+    R -->|Sim| H[Fila humana]
+    R -->|Não| C[Classificador]
     C --> M[Consulta lições aprovadas]
     M --> D{Kill switch ativo?}
     D -->|Sim| H[Fila humana]
@@ -33,23 +35,27 @@ flowchart LR
 |---|---|---|
 | `privacy.py` | Mascara padrões de PII | Executa localmente antes da inferência |
 | `inference.py` | Retorna categoria e probabilidades | Modelo versionado e teste final documentado |
-| `policy.py` | Aplica gates de risco | Kill switch, human-only, abstenção e modo |
+| `customer_care.py` | Identifica sinais explícitos de reclamação e possível dano | Qualquer sinal força decisão humana |
+| `batch.py` | Processa DataFrames sem guardar texto bruto | O contexto escolhido, não o nome da coluna, define a fila |
+| `policy.py` | Aplica gates de risco | Cliente, kill switch, human-only, memória e abstenção |
 | `audit.py` | Gera registro rastreável | Sem texto e sem fingerprint do texto |
 | `memory.py` | Registra correções e recupera lições aprovadas | SQLite local, sem texto bruto e com aprovação humana |
 | `roi.py` | Simula capacidade e valor | Todas as premissas são entradas explícitas |
-| `app.py` | Interface demonstrável | Shadow mode como padrão |
+| `app.py` | Piloto de uso cotidiano | Apenas Triagem, Aprendizado e Ajuda |
+| `cross_dataset_audit.py` | Aplica o modelo do Dataset 2 em todas as mensagens do Dataset 1 | Mede concentração e confiança sem alegar acurácia |
 
 ## Fronteira humano-IA
 
 ### IA pode
 
 - mascarar padrões conhecidos de PII;
+- identificar sinais explícitos de cuidado prioritário com o cliente;
 - sugerir uma categoria;
 - mostrar confiança e alternativas;
 - abster-se;
 - registrar a decisão e o estado da política;
 - registrar correções e consultar lições aprovadas;
-- simular capacidade com premissas fornecidas.
+- mostrar o motivo do encaminhamento humano.
 
 ### IA não pode
 
@@ -64,7 +70,9 @@ flowchart LR
 
 ## Estado do protótipo
 
-O protótipo é local e funcional. O modo de automação é deliberadamente simulado. A ausência de integração externa não é dívida escondida: é uma barreira de segurança coerente com a evidência disponível.
+O protótipo é local e funcional. Ele contém apenas o fluxo cotidiano de triagem, aprendizado e
+ajuda. Diagnóstico, evidências, matriz de decisão, plano e cenários permanecem nos documentos da
+entrega. Nenhuma integração externa é executada.
 
 ## Caminho para produção
 

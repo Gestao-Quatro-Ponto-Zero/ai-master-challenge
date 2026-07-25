@@ -74,11 +74,26 @@
     "negative_response_to_resolution_rate": 0.49295774647887325,
     "description_exact_duplicate_rows": 251,
     "description_normalized_duplicate_rows": 251,
+    "description_unique_rows": 8077,
     "placeholder_description_rows": 8469,
     "placeholder_resolution_rows": 0,
     "pii_pattern_counts_in_description": {
       "email": 77,
       "phone_like": 165
+    },
+    "repeated_unresolved_rows": 460,
+    "repeated_unresolved_by_status": {
+      "Pending Customer Response": 156,
+      "Closed": 152,
+      "Open": 152
+    },
+    "subject_type_association": {
+      "row": "Ticket Subject",
+      "column": "Ticket Type",
+      "n": 8469,
+      "chi2": 39.571488602826506,
+      "p": 0.9807366560438833,
+      "cramers_v": 0.034177880883779564
     },
     "csat_associations_closed_only": [
       {

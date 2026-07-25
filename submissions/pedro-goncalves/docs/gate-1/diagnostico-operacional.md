@@ -2,7 +2,7 @@
 
 ## Resumo executivo
 
-O primeiro achado não é um gargalo de atendimento. É um **gargalo de mensuração**. O Dataset 1 tem **8.469 tickets**, embora o brief mencione uma operação de aproximadamente 30 mil tickets por ano. Além disso, não existe timestamp de abertura e os campos de primeira resposta e resolução são datas, não durações.
+O Dataset 1 é a amostra operacional disponível da empresa fictícia, com **8.469 tickets**. O brief informa uma operação de aproximadamente 30 mil tickets por ano; esse valor contextual não substitui a contagem observada. A base permite analisar filas, textos e sinais de cuidado, mas não possui timestamp de abertura e os campos de primeira resposta e resolução são datas, não durações.
 
 Entre os **2.769 tickets** com ambos os timestamps, **1.365 (49,3%)** apresentam resolução anterior à primeira resposta. Portanto, o arquivo não permite calcular FRT, TTR, tempo ativo do agente, desperdício ou ROI observado.
 
@@ -13,7 +13,8 @@ Entre os **2.769 tickets** com ambos os timestamps, **1.365 (49,3%)** apresentam
 | Tickets no arquivo | 8.469 | Não tratar o volume narrativo do brief como volume medido |
 | Tickets fechados com CSAT | 2.769 | Restringir análises de satisfação a essa população |
 | Pares temporais inválidos | 1.365 de 2.769 | Vetar métricas de tempo |
-| Descrições com placeholder | 8.469 | Vetar mineração semântica como retrato de clientes reais |
+| Descrições com placeholder | 8.469 | Usar regras auditáveis e revisar falsos positivos |
+| Contatos repetidos sem solução | 460 | Priorizar revisão humana; 152 casos ainda estão abertos e 152 constam como encerrados |
 | Emails detectados em descrições | 77 | Aplicar máscara antes de inferência e nunca exportar texto bruto |
 | Telefones detectados em descrições | 165 | Aplicar máscara antes de inferência e nunca exportar texto bruto |
 
@@ -22,9 +23,9 @@ Entre os **2.769 tickets** com ambos os timestamps, **1.365 (49,3%)** apresentam
 Com estes dados, não é defensável afirmar qual canal, prioridade ou tipo perde mais tempo. O que se pode afirmar é:
 
 1. **A instrumentação temporal está quebrada ou semanticamente indefinida.**
-2. **Os textos são templados:** todas as descrições contêm `{product_purchased}`.
+2. **A voz do cliente revela reincidência:** 460 descrições dizem que o suporte já foi procurado várias vezes e o problema continua sem solução.
 3. **CSAT não diferencia os segmentos observados:** canal, prioridade, tipo e assunto apresentaram efeitos nulos ou desprezíveis na amostra fechada.
-4. **A automação operacional não deve partir do Dataset 1:** ele serve para demonstrar auditoria, não para calibrar uma decisão produtiva.
+4. **O Dataset 1 sustenta o gate de cuidado e a revisão da fila**, mas seus rótulos não sustentam um classificador automático: modelos exploratórios ficaram próximos do acaso.
 
 ## CSAT: associação, não causa
 

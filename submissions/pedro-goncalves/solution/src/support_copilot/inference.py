@@ -15,14 +15,25 @@ class TicketClassifier:
         self.classes = self.pipeline.named_steps["classifier"].classes_
 
     def predict(self, text: str) -> dict:
-        probabilities = self.pipeline.predict_proba([text])[0]
-        order = np.argsort(probabilities)[::-1]
-        top = [
-            {"category": str(self.classes[index]), "probability": float(probabilities[index])}
-            for index in order[:3]
-        ]
-        return {
-            "category": top[0]["category"],
-            "confidence": top[0]["probability"],
-            "top_predictions": top,
-        }
+        return self.predict_many([text])[0]
+
+    def predict_many(self, texts: list[str]) -> list[dict]:
+        probability_rows = self.pipeline.predict_proba(texts)
+        predictions = []
+        for probabilities in probability_rows:
+            order = np.argsort(probabilities)[::-1]
+            top = [
+                {
+                    "category": str(self.classes[index]),
+                    "probability": float(probabilities[index]),
+                }
+                for index in order[:3]
+            ]
+            predictions.append(
+                {
+                    "category": top[0]["category"],
+                    "confidence": top[0]["probability"],
+                    "top_predictions": top,
+                }
+            )
+        return predictions

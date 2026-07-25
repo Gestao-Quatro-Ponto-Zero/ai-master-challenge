@@ -15,7 +15,7 @@ HUMAN_ONLY_CATEGORIES = {
     "Administrative rights",
     "HR Support",
 }
-POLICY_VERSION = "1.1.0"
+POLICY_VERSION = "1.2.0"
 TAXONOMY_VERSION = "it-service-ticket-v1"
 
 
@@ -38,11 +38,20 @@ def decide(
     mode: OperatingMode,
     kill_switch: bool,
     memory_match: bool = False,
+    customer_care_required: bool = False,
 ) -> Decision:
     if kill_switch:
         return Decision(
             action="HUMAN_REVIEW",
             reason="Kill switch ativo.",
+            requires_human=True,
+            simulated=False,
+        )
+
+    if customer_care_required:
+        return Decision(
+            action="HUMAN_REVIEW",
+            reason="A mensagem contém um sinal de cuidado prioritário com o cliente.",
             requires_human=True,
             simulated=False,
         )

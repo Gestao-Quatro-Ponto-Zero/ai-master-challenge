@@ -13,29 +13,35 @@
 
 ## Resumo executivo
 
-O diagnóstico encontrou um problema anterior à automação: o primeiro arquivo possui
-**8.469 solicitações**, não as aproximadamente 30 mil descritas no contexto. Seus registros de
-data e hora também não permitem medir quanto o atendimento realmente demora. Em **49,3% dos
-2.769 pares disponíveis**, a conclusão aparece antes da primeira resposta.
+O primeiro arquivo é a amostra operacional da empresa fictícia, com **8.469 solicitações**; as
+aproximadamente 30 mil do brief representam o volume anual da operação. A voz do cliente revelou
+um problema concreto: **460 mensagens** dizem que o suporte já foi procurado várias vezes e o
+problema continua sem solução. Há 152 casos abertos, 156 pendentes e 152 marcados como encerrados.
+Os registros de data e hora também exigem correção: em **49,3% dos 2.769 pares disponíveis**, a
+conclusão aparece antes da primeira resposta.
 
-Em vez de inventar economia, construí um copiloto: ele sugere o assunto, mostra sua confiança,
-pede revisão humana quando necessário e registra decisões sem guardar a mensagem original. A
-nova memória SQLite registra correções e recupera apenas lições aprovadas. Isso reduz a chance de
-repetir erros conhecidos, mas ainda precisa ser validado com dados reais da G4.
+O copiloto separa duas filas. No atendimento ao cliente, preserva o tipo informado e procura
+sinais de reincidência, possível dano, cancelamento, escalonamento e insatisfação forte. Na fila
+de TI, sugere uma das oito categorias, mostra confiança e pede revisão quando necessário. Em
+ambas, registra decisões sem guardar a mensagem original. A memória SQLite recupera somente
+lições aprovadas.
 
 No segundo arquivo, a prova técnica equilibrou **86,8% de desempenho entre os diferentes
 assuntos**. No teste final, a IA decidiu sobre 69,7% dos casos e acertou 96,6% deles. Esse
-resultado pertence a dados públicos de suporte de TI, não ao atendimento real da G4.
+resultado pertence à fila de suporte interno de TI, não à fila de clientes.
+
+O cruzamento revelou a fronteira: quando o modelo do Dataset 2 foi aplicado às 8.469 mensagens
+do Dataset 1, **85,1% viraram “Hardware”**, embora 49,5% superassem o limite de confiança. Ou
+seja, confiança alta não corrige uma taxonomia incompatível. Por isso o piloto aceita filas
+reais em CSV, mas mantém toda decisão em observação.
 
 ## As três respostas do diretor
 
 | Pergunta | Resposta executiva | Próxima decisão |
 |---|---|---|
-| Onde perdemos tempo? | O arquivo não permite medir. 49,3% dos registros de tempo estão invertidos | Corrigir os registros antes de prometer eficiência |
-| O que automatizar? | Sugestão de assunto em modo de observação, com decisão humana em casos incertos ou sensíveis | Testar sem impacto no cliente |
-| Funciona? | 26 testes aprovados e 96,6% de acerto nas sugestões aceitas no teste final | Validar novamente no atendimento real |
-
-![Visão executiva do protótipo](solution/artifacts/figures/app-executive.png)
+| Onde perdemos tempo? | 460 clientes relatam contatos repetidos sem solução; 152 casos ainda estão abertos | Revisar reincidências e auditar os 152 encerramentos |
+| O que automatizar? | Detecção de cuidado na fila de clientes e sugestão de assunto na fila de TI | Testar em observação, sem responder ao cliente |
+| Funciona? | 35 testes, 47.837 textos no treino/teste e 8.469 mensagens no teste cruzado | Medir erros durante o piloto |
 
 ## A decisão em uma frase
 
@@ -75,7 +81,9 @@ O valor financeiro só deve ser calculado depois de medir touch time e aprovar c
 |---|---:|---|
 | Volume real do Dataset 1 | 8.469 tickets | Não usar 30 mil como denominador |
 | Pares temporais inválidos | 1.365 de 2.769 | Vetar FRT, TTR e ROI observado |
-| Texto templado | 8.469 descrições com placeholder | Vetar inferência semântica operacional |
+| Texto templado | 8.469 descrições com placeholder e trechos ruidosos | Preferir regras auditáveis e revisão humana |
+| Cliente sem solução | 460 relatos de contatos repetidos; 152 abertos e 152 encerrados | Subir para revisão humana e auditar encerramentos |
+| Transferência entre datasets | 85,1% das previsões concentradas em “Hardware” | Não usar a taxonomia de TI para rotear clientes |
 | Sinal de CSAT | Efeitos nulos ou desprezíveis | Não priorizar segmento por causalidade |
 | Prova técnica | Macro-F1 0,868 | Classificação é tecnicamente viável no Dataset 2 |
 | Abstenção | 69,7% de cobertura a 96,6% de acurácia no teste final | Expor a troca entre escala e erro |
@@ -97,20 +105,25 @@ Escala de 1 a 5. A nota ponderada não supera veto crítico.
 
 ## O que funciona
 
-O protótipo Streamlit:
+O protótipo Streamlit foi reduzido ao uso cotidiano. Diagnóstico, evidências, matriz de decisão,
+plano e cenários permanecem nos documentos da entrega. A aplicação contém somente `Triagem`,
+`Aprendizado` e `Ajuda`.
 
-- recebe a solicitação e oculta alguns padrões de dados pessoais;
-- classifica em oito categorias;
-- mostra confiança e alternativas;
-- pede ajuda quando não tem confiança suficiente;
-- exige decisão humana em assuntos sensíveis;
-- permite forçar todas as decisões para uma pessoa;
-- registra decisão sem guardar texto bruto;
-- registra correções numa memória SQLite;
-- usa somente lições aprovadas e preserva seu histórico;
-- calcula capacidade apenas com premissas explícitas.
+No piloto, o usuário consegue:
 
-![Triagem em modo de observação](solution/artifacts/figures/app-triage.png)
+- receber a solicitação com ocultação de alguns padrões de dados pessoais;
+- processar uma fila CSV com até 5.000 linhas por execução;
+- exportar ID, sugestão, confiança, cuidado prioritário e próximo passo sem copiar mensagens;
+- identificar sinais de cuidado prioritário com o cliente;
+- classificar em oito categorias;
+- ver confiança e alternativas;
+- pedir ajuda quando não há confiança suficiente;
+- exigir decisão humana em assuntos sensíveis;
+- forçar todas as decisões para uma pessoa;
+- registrar decisões sem guardar texto bruto;
+- registrar correções numa memória SQLite;
+- usar somente lições aprovadas e preservar seu histórico;
+- consultar uma aba de ajuda sem sair do fluxo.
 
 ## Rodar
 
@@ -130,7 +143,7 @@ Abra `http://localhost:8501`.
 uv run python -m unittest discover -s tests -v
 ```
 
-Resultado validado: **26 testes aprovados**.
+Resultado validado: **35 testes aprovados**.
 
 ## Reproduzir a análise
 
@@ -145,6 +158,7 @@ Depois:
 
 ```bash
 uv run python scripts/data_audit.py
+uv run python scripts/cross_dataset_audit.py
 uv run python scripts/train_classifier.py
 uv run python scripts/build_figures.py
 uv run python scripts/build_notebook.py
@@ -155,27 +169,29 @@ O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados
 ## Recomendações
 
 1. **Instrumentar antes de automatizar:** criação, primeira resposta, touch time, resolução, reabertura e override.
-2. **Modo de observação:** comparar IA e humano no domínio real sem impacto no cliente.
+2. **Modo de observação:** comparar IA e humano nas filas do case sem impacto no cliente.
 3. **Assistência controlada:** exibir sugestão, manter confirmação humana e medir retrabalho.
 4. **Canário restrito:** somente ações reversíveis depois dos gates de segurança.
 
 ## Limitações
 
 - O Dataset 1 não mede tempos operacionais de forma válida.
-- O Dataset 2 representa suporte interno de TI, não atendimento da G4.
-- Não há dados da G4, validação temporal ou experimento em produção.
+- O Dataset 2 representa suporte interno de TI e não compartilha a taxonomia da fila de clientes.
+- O teste cruzado mostrou concentração de 85,1% em “Hardware”; confiança não valida transferência entre taxonomias.
+- O exercício não inclui validação temporal nem experimento em produção.
 - Regex não detecta todo tipo de PII.
 - Threshold validado em dados públicos não autoriza produção.
 - ROI permanece cenário até touch time, custos, adoção e retrabalho serem medidos.
 - Autor e revisor da memória são identificados, mas ainda não autenticados.
-- A memória precisa ser comparada ligada e desligada com dados reais da G4.
+- A memória precisa ser comparada ligada e desligada nas filas do piloto.
 - Retenção e eliminação excepcional do SQLite precisam de regra antes de produção.
+- O gate de cliente usa regras explícitas e pode não reconhecer toda forma de reclamação.
 
 ## Mapa da entrega
 
 - `docs/gate-1/`: auditoria, diagnóstico e decisão
 - `docs/gate-2/`: modelo, arquitetura, claims e medição
-- `docs/gate-3/`: memória de correções e caminho seguro para retreinamento
+- `docs/gate-3/`: foco no cliente, memória e caminho seguro para retreinamento
 - `artifacts/`: métricas, tabelas, figuras e modelo
 - `notebooks/`: análise executada
 - `src/`: política, classificação, privacidade, auditoria, memória e cenários

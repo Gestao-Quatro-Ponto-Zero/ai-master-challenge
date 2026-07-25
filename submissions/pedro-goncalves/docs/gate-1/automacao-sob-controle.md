@@ -9,6 +9,7 @@ IA entra onde há **padrão reversível e evidência mensurável**. Humano perma
 | Etapa | Papel da IA | Papel humano | Regra |
 |---|---|---|---|
 | Mascarar PII por padrões | Executa localmente | Audita amostras | Antes de qualquer inferência |
+| Detectar sinal de reclamação | Aplica regras explícitas | Lê e decide o tratamento | Qualquer sinal força revisão humana |
 | Sugerir categoria | Recomenda | Confirma ou corrige | Shadow mode como padrão |
 | Priorizar fila | Não implementado | Decide | Dataset não sustenta prioridade |
 | Redigir resposta | Fora do escopo | Decide | Sem base de conhecimento validada |
@@ -19,13 +20,15 @@ IA entra onde há **padrão reversível e evidência mensurável**. Humano perma
 ## Política de decisão
 
 1. O texto passa por mascaramento local de email, telefone, IP e identificadores longos.
-2. O classificador retorna categoria e confiança calibrada.
+2. Regras explícitas procuram sinais de reincidência, dano financeiro, cancelamento, risco legal, segurança, privacidade ou forte insatisfação.
 3. O kill switch ativo força revisão humana.
-4. `Access`, `Administrative rights` e `HR Support` são sempre humanas.
-5. Confiança abaixo do threshold gera abstenção.
-6. Shadow mode registra a sugestão, mas não executa.
-7. O modo assistido permite recomendação explícita, ainda sem ação externa.
-8. Automação existe apenas como simulação para demonstrar a fronteira.
+4. Qualquer sinal de reclamação força revisão humana antes da classificação.
+5. `Access`, `Administrative rights` e `HR Support` são sempre humanas.
+6. O classificador retorna categoria e confiança calibrada.
+7. Confiança abaixo do threshold gera abstenção.
+8. Shadow mode registra a sugestão, mas não executa.
+9. O modo assistido permite recomendação explícita, ainda sem ação externa.
+10. Automação existe apenas como simulação para demonstrar a fronteira.
 
 ## Threshold
 
@@ -74,10 +77,10 @@ Somente tarefas reversíveis, de baixo risco e com confiança calibrada. Revisã
 - Aumento de erro crítico, reabertura ou reclamação.
 - Queda de calibração ou crescimento abrupto de abstenções.
 
-## ROI honesto
+## Cenários econômicos fora do protótipo
 
-O protótipo oferece calculadora de capacidade com entradas explícitas:
+Os documentos de decisão mantêm uma calculadora de capacidade com entradas explícitas:
 
 `tickets x parcela elegível x adoção x taxa segura x minutos ativos poupados`
 
-Depois subtrai minutos de revisão, retrabalho e custo da solução no mesmo período. Sem touch time medido e custo aprovado, o resultado é **cenário**, não economia comprovada.
+Depois subtrai minutos de revisão, retrabalho e custo da solução no mesmo período. Sem touch time medido e custo aprovado, o resultado é **cenário**, não economia comprovada. A calculadora não aparece no aplicativo de triagem, que permanece focado no trabalho diário.

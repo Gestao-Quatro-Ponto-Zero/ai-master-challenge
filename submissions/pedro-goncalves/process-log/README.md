@@ -44,6 +44,9 @@ Três agentes foram criados no Maestri. Lume e Nexo podiam propor; Crivo não po
 | 24/07 | Gate Final 3 | FAIL por comandos, premissa econômica oculta e links |
 | 24/07 | Correção executiva final | Premissas completas, caminhos corrigidos e teste determinístico |
 | 24/07 | Reavaliação do Gate Final 3 | PASS, 18 testes e nenhum bloqueador material |
+| 24/07 | Revisão pelos critérios canônicos | Entrada CSV e teste cruzado dos 8.469 textos incorporados |
+| 24/07 | Correção do enquadramento do case | Empresa fictícia tratada como cliente e 460 reincidências priorizadas |
+| 24/07 | Gate Final 4B | PASS no snapshot staged, 35 testes e nenhum bloqueador |
 
 ## Onde a IA errou
 
@@ -171,7 +174,77 @@ contra alteração e exclusão comum. A suíte passou de 18 para 26 testes.
 No segundo gate independente, o Crivo executou os 26 testes em cópia temporária e retornou
 **PASS**, sem bloqueador. Permaneceram como riscos pré-produção: identidades autodeclaradas,
 cobertura limitada dos filtros de dados sensíveis, política de retenção e comprovação do ganho
-com memória ligada versus desligada em dados reais da G4.
+com memória ligada versus desligada nas filas do piloto.
+
+### Iteração 10
+
+Pedro identificou um risco que as métricas de classificação não capturavam: `Ticket Description`
+contém a voz do cliente e uma reclamação não pode receber o mesmo tratamento de um pedido comum.
+A hipótese foi testada contra o Dataset 1 antes da implementação. Todas as 8.469 descrições têm
+placeholder de template, e a associação entre `Ticket Subject` e `Ticket Type` é praticamente
+nula. Portanto, o arquivo não sustenta treinar um detector semântico nem tratar os rótulos como
+verdade operacional.
+
+Foi criado um gate conservador de foco no cliente, anterior ao classificador. Regras explícitas
+procuram reincidência, dano financeiro, intenção de cancelamento, risco legal, segurança,
+privacidade e forte insatisfação. Qualquer sinal força revisão humana. O audit log guarda apenas
+os códigos dos sinais, sem o texto da solicitação. O mecanismo não atribui prioridade final nem
+responde ao cliente.
+
+O aplicativo também foi separado dos artefatos de avaliação. O protótipo agora contém somente
+`Triagem`, `Aprendizado` e `Ajuda`, como uma ferramenta para uso comum numa tarde de trabalho.
+Diagnóstico, evidências, matriz de decisão, cenários econômicos e plano de implantação permanecem
+nos documentos obrigatórios. A suíte passou de 26 para 30 testes, incluindo reclamação com alta
+confiança que ainda assim deve ser encaminhada a uma pessoa.
+
+### Iteração 11
+
+Os critérios literais do challenge foram relidos para testar uma falha de enquadramento: “usar
+ambos os datasets” não poderia significar apenas citar um no diagnóstico e treinar no outro. O
+modelo do Dataset 2 foi então aplicado às 8.469 mensagens do Dataset 1. Embora 49,5% das previsões
+superassem o threshold de 0,75, 85,1% foram concentradas em `Hardware`. Sem rótulos compatíveis,
+não há acurácia cruzada calculável.
+
+Esse resultado virou evidência, não inconveniente escondido. Ele demonstra que confiança alta
+não compensa incompatibilidade de taxonomia e impede roteamento automático entre domínios. O
+aplicativo passou a aceitar uma fila CSV com até 5.000 linhas, aplicar o mesmo fluxo de proteção e
+exportar somente ID e resultados. Assim, o avaliador pode usar os arquivos públicos ou outro lote
+autorizado, sem depender dos exemplos de demonstração. A suíte passou para 32 testes, incluindo
+consistência entre previsão individual e em lote e integridade da auditoria cruzada.
+
+### Iteração 12
+
+Pedro corrigiu uma premissa do integrador: o G4 é o avaliador do trabalho do AI Master, não a
+empresa cujo atendimento seria posteriormente validado. Os dois arquivos representam a operação
+da empresa fictícia dentro do exercício e precisam ser usados como o cotidiano disponível, mesmo
+quando apresentam ruído.
+
+A releitura mudou o diagnóstico e o produto. As mensagens deixaram de ser descritas apenas como
+limitação e passaram a orientar a fila: 460 solicitações dizem explicitamente que o cliente já
+procurou o suporte várias vezes e continua sem solução. Dessas, 152 estão abertas, 156 pendentes
+e 152 encerradas. O protótipo agora separa atendimento ao cliente e suporte interno de TI. Na
+primeira fila, preserva o tipo informado e aplica o gate de cuidado; na segunda, usa o
+classificador de oito categorias. Assim, nenhuma mensagem de cliente recebe a categoria
+`Hardware` apenas porque o modelo de TI demonstrou confiança. Um teste adicional fixa o achado
+dos 460 relatos e sua distribuição por status, elevando a suíte para 33 testes.
+
+### Iteração 13
+
+O Gate Final 4 retornou **FAIL** por dois bloqueadores. Primeiro, os novos arquivos ainda não
+estavam rastreados pelo Git. Segundo, o fluxo CSV inferia “cliente” quando a coluna se chamava
+`Ticket Description`; uma fila de clientes com outro nome de coluna poderia receber o modelo de
+TI. O teste existente apenas confirmava a presença visual do uploader.
+
+A lógica em lote foi movida para `batch.py`. Agora o contexto escolhido explicitamente é a única
+fonte de verdade, independentemente do nome das colunas. Foram adicionados dois testes de fluxo:
+um CSV de clientes chamado `body_text`, que proíbe qualquer chamada ao classificador de TI, e um
+CSV de TI chamado `customer_words`, que exige a classificação. Ambos verificam IDs, decisões e
+ausência do texto bruto na saída. A suíte passou para 35 testes.
+
+Na reavaliação 4B, o Crivo criou um snapshot somente do conteúdo staged, reproduziu o ambiente
+com Python 3.11 e executou os 35 testes. Confirmou que o diff contém apenas a pasta da submissão,
+todos os arquivos materiais estão rastreados e nenhum cache, log ou banco runtime permanece. O
+veredito foi **PASS**, sem bloqueador crítico, alto ou médio.
 
 ### Gate final
 
@@ -186,11 +259,14 @@ Na reavaliação do Gate Final 3, o Crivo reproduziu o ambiente a partir do lock
 - `notebooks/challenge-002-analysis.ipynb`: análise executada
 - `artifacts/data_audit.json`: auditoria estruturada
 - `artifacts/classifier_metrics.json`: métricas da validação e do teste final
+- `artifacts/cross_dataset_audit.json`: aplicação exploratória do modelo nos 8.469 textos do Dataset 1
 - `artifacts/tables/`: tabelas intermediárias
 - `docs/gate-2/claim-ledger.md`: procedência dos claims
+- `docs/gate-2/cross-dataset-validation.md`: interpretação e veto à transferência direta
 - `docs/gate-3/memoria-de-aprendizado.md`: desenho e gates da memória SQLite
-- `artifacts/figures/app-executive.png`: decisão executiva inspecionada
-- `artifacts/figures/app-triage.png`: fluxo funcional inspecionado
+- `docs/gate-3/foco-no-cliente.md`: regras, limitações e validação do gate de reclamação
+- `artifacts/figures/app-executive.png`: tela histórica da Iteração 7, não representa o protótipo final
+- `artifacts/figures/app-triage.png`: tela histórica da Iteração 7, não representa o protótipo final
 - `tests/`: comportamento da política e interface
 - histórico git da branch de submissão
 

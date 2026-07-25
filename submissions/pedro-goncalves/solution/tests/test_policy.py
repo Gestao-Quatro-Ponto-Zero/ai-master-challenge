@@ -1,9 +1,19 @@
 import unittest
 import sqlite3
+import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import pandas as pd
+
 from src.support_copilot.audit import build_record
+from src.support_copilot.batch import (
+    CUSTOMER_SUPPORT,
+    IT_SUPPORT,
+    analyze_queue,
+)
+from src.support_copilot.customer_care import assess_customer_care
+from src.support_copilot.inference import TicketClassifier
 from src.support_copilot.memory import (
     find_approved_lessons,
     list_lessons,
@@ -25,6 +35,118 @@ from src.support_copilot.roi import (
 
 
 class PolicyTests(unittest.TestCase):
+    def test_customer_csv_uses_explicit_context_not_column_name(self):
+        class ClassifierThatMustNotRun:
+            def predict_many(self, texts):
+                raise AssertionError(
+                    "O modelo de TI não pode ler a fila de clientes."
+                )
+
+        frame = pd.DataFrame(
+            {
+                "case_reference": ["C-1", "C-2"],
+                "body_text": [
+                    "Já entrei em contato várias vezes e continuo sem solução.",
+                    "Gostaria de configurar meu equipamento.",
+                ],
+                "Ticket Type": ["Billing inquiry", "Technical issue"],
+            }
+        )
+        results = analyze_queue(
+            frame,
+            text_column="body_text",
+            id_column="case_reference",
+            context=CUSTOMER_SUPPORT,
+            classifier=ClassifierThatMustNotRun(),
+            threshold=0.75,
+            kill_switch=False,
+            limit=10,
+        )
+        self.assertEqual(
+            [result["row_id"] for result in results],
+            ["C-1", "C-2"],
+        )
+        self.assertTrue(results[0]["customer_care"]["requires_human"])
+        self.assertIsNone(results[0]["prediction"]["category"])
+        self.assertNotIn("continuo sem solução", json.dumps(results))
+
+    def test_it_csv_uses_classifier_with_arbitrary_column_names(self):
+        class StubClassifier:
+            def __init__(self):
+                self.calls = 0
+
+            def predict_many(self, texts):
+                self.calls += 1
+                return [
+                    {
+                        "category": "Hardware",
+                        "confidence": 0.95,
+                        "top_predictions": [],
+                    }
+                    for _ in texts
+                ]
+
+        classifier = StubClassifier()
+        frame = pd.DataFrame(
+            {
+                "reference": ["IT-1"],
+                "customer_words": ["The company laptop is broken."],
+            }
+        )
+        results = analyze_queue(
+            frame,
+            text_column="customer_words",
+            id_column="reference",
+            context=IT_SUPPORT,
+            classifier=classifier,
+            threshold=0.75,
+            kill_switch=False,
+            limit=10,
+        )
+        self.assertEqual(classifier.calls, 1)
+        self.assertEqual(results[0]["prediction"]["category"], "Hardware")
+        self.assertEqual(
+            results[0]["decision"]["action"],
+            "SHADOW_RECOMMENDATION",
+        )
+        self.assertNotIn("company laptop", json.dumps(results))
+
+    def test_cross_dataset_audit_is_complete_and_explicitly_exploratory(self):
+        audit = json.loads(
+            Path("artifacts/cross_dataset_audit.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(audit["dataset_1_rows_scored"], 8469)
+        self.assertGreater(audit["largest_category_share"], 0.80)
+        self.assertIn("accuracy is unknown", audit["interpretation"])
+
+    def test_data_audit_preserves_repeated_unresolved_customer_signal(self):
+        audit = json.loads(
+            Path("artifacts/data_audit.json").read_text(encoding="utf-8")
+        )["dataset_1"]
+        self.assertEqual(audit["repeated_unresolved_rows"], 460)
+        self.assertEqual(
+            audit["repeated_unresolved_by_status"],
+            {
+                "Pending Customer Response": 156,
+                "Closed": 152,
+                "Open": 152,
+            },
+        )
+
+    def test_batch_prediction_matches_individual_prediction(self):
+        classifier = TicketClassifier(
+            Path("artifacts/models/ticket_classifier.joblib")
+        )
+        texts = [
+            "Please replace the broken laptop.",
+            "Please grant access to the payroll folder.",
+        ]
+        batch = classifier.predict_many(texts)
+        individual = [classifier.predict(text) for text in texts]
+        self.assertEqual(batch, individual)
+
     def test_shadow_mode_always_requires_human(self):
         result = decide(
             category="Hardware",
@@ -87,6 +209,34 @@ class PolicyTests(unittest.TestCase):
         )
         self.assertEqual(result.action, "HUMAN_REVIEW")
         self.assertTrue(result.requires_human)
+
+    def test_customer_care_precedes_high_confidence_automation(self):
+        result = decide(
+            category="Hardware",
+            confidence=0.99,
+            threshold=0.80,
+            mode=OperatingMode.SIMULATED_AUTOMATION,
+            kill_switch=False,
+            customer_care_required=True,
+        )
+        self.assertEqual(result.action, "HUMAN_REVIEW")
+        self.assertIn("cliente", result.reason)
+
+    def test_customer_care_detects_unresolved_financial_complaint(self):
+        assessment = assess_customer_care(
+            "Estou há dias sem solução e fui cobrado duas vezes."
+        )
+        self.assertTrue(assessment.requires_human)
+        self.assertEqual(assessment.level, "critical")
+        self.assertIn("UNRESOLVED_OR_REPEAT_CONTACT", assessment.signal_codes)
+        self.assertIn("FINANCIAL_HARM", assessment.signal_codes)
+
+    def test_customer_care_does_not_escalate_standard_request(self):
+        assessment = assess_customer_care(
+            "Gostaria de saber como configurar meu equipamento."
+        )
+        self.assertFalse(assessment.requires_human)
+        self.assertEqual(assessment.signal_codes, ())
 
     def test_approved_memory_match_forces_human_review(self):
         result = decide(
@@ -175,12 +325,18 @@ class PolicyTests(unittest.TestCase):
             policy_version=POLICY_VERSION,
             taxonomy_version=TAXONOMY_VERSION,
             app_version="1.1.0",
+            customer_care={
+                "level": "critical",
+                "requires_human": True,
+                "signal_codes": ["FINANCIAL_HARM"],
+            },
         )
         self.assertFalse(record["raw_text_stored"])
         self.assertFalse(record["text_fingerprint_stored"])
         self.assertNotIn("input_sha256", record)
         self.assertEqual(record["versions"]["model_sha256"], "a" * 64)
         self.assertTrue(record["patterns_masked"])
+        self.assertTrue(record["customer_care"]["requires_human"])
 
     def test_memory_uses_only_approved_lessons(self):
         with TemporaryDirectory() as directory:

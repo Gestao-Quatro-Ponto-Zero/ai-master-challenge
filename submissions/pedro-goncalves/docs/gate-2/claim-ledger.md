@@ -5,14 +5,19 @@
 | O Dataset 1 possui 8.469 tickets | Medido | `data_audit.json` e hash da fonte | Arquivo baixado em 23/07/2026 |
 | 49,3% dos pares temporais têm resolução anterior à primeira resposta | Medido | 1.365 de 2.769 pares | Indica inconsistência, não causa |
 | Todas as descrições do Dataset 1 contêm placeholder | Medido | 8.469 de 8.469 | Textos não representam linguagem natural íntegra |
+| 460 clientes relatam contatos repetidos sem solução | Medido | Busca literal reproduzível em `data_audit.json` | 152 abertos, 156 pendentes e 152 encerrados |
+| `Ticket Subject` e `Ticket Type` quase não se associam | Medido | Cramér V 0,034, p 0,981 | Não tratar nenhum dos dois como verdade isolada |
+| O modelo do Dataset 2 concentrou 85,1% das previsões do Dataset 1 em Hardware | Medido | `cross_dataset_audit.json`, 8.469 mensagens | Teste fora do domínio; acurácia desconhecida |
+| 49,5% das mensagens do Dataset 1 ficaram acima de 0,75 | Medido | `cross_dataset_audit.json` | Confiança aparente não autoriza transferência de taxonomia |
 | Canal, prioridade, tipo e assunto não apresentaram associação material com CSAT | Medido | Kruskal-Wallis nos 2.769 fechados | Não prova ausência de efeito real |
 | O classificador atingiu macro-F1 0,868 | Medido | Teste final estratificado de 7.176 linhas, seed 42 | Apenas Dataset 2 |
 | Threshold 0,75 cobre 69,7% com acurácia 96,6% nos cobertos | Medido | Threshold escolhido na validação e reportado uma vez no teste final | Referência de shadow mode |
-| O modelo funciona para a G4 | Não provado | Sem dados G4 | Claim proibido |
+| O modelo classifica a fila de clientes | Não provado | Taxonomia do Dataset 2 é de TI | Claim proibido |
 | O sistema reduz TTR ou custo | Não provado | Sem touch time, implantação ou experimento | Usar apenas calculadora de cenários |
 | Shadow mode reduz risco de implantação | Hipótese operacional | Política e protótipo demonstráveis | Deve ser validada em piloto |
 | A memória evita repetir erros aprovados | Hipótese testável | SQLite, recuperação por termos e gate humano | Ainda sem piloto no domínio real |
 | A memória usa retropropagação contínua | Não provado | Não há retreinamento online | Claim proibido na versão atual |
+| O gate identifica todo cliente que precisa de cuidado | Hipótese testável | Regras explícitas aplicadas ao Dataset 1 | Medir falsos negativos e encaminhamentos desnecessários no piloto |
 
 ## Regra de comunicação
 

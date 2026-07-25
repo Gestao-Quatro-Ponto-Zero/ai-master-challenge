@@ -48,6 +48,22 @@ def kruskal_summary(data: pd.DataFrame, group: str, value: str) -> dict:
     }
 
 
+def cramers_v_summary(data: pd.DataFrame, row: str, column: str) -> dict:
+    contingency = pd.crosstab(data[row], data[column])
+    chi2, p_value, _, _ = stats.chi2_contingency(contingency)
+    n = int(contingency.to_numpy().sum())
+    denominator = n * min(contingency.shape[0] - 1, contingency.shape[1] - 1)
+    cramers_v = np.sqrt(chi2 / denominator) if denominator else 0.0
+    return {
+        "row": row,
+        "column": column,
+        "n": n,
+        "chi2": float(chi2),
+        "p": float(p_value),
+        "cramers_v": float(cramers_v),
+    }
+
+
 def main() -> None:
     TABLES.mkdir(parents=True, exist_ok=True)
     DOCS.mkdir(parents=True, exist_ok=True)
@@ -85,6 +101,11 @@ def main() -> None:
         name: int(support["Ticket Description"].fillna("").str.contains(pattern).sum())
         for name, pattern in pii_patterns.items()
     }
+    repeated_unresolved = support["Ticket Description"].fillna("").str.contains(
+        "contacted customer support multiple times, but the issue remains unresolved",
+        case=False,
+        regex=False,
+    )
     it_pii = {
         name: int(it_tickets["Document"].fillna("").str.contains(pattern).sum())
         for name, pattern in pii_patterns.items()
@@ -148,6 +169,7 @@ def main() -> None:
             "negative_response_to_resolution_rate": float((paired_times < 0).mean()),
             "description_exact_duplicate_rows": int(support_text.duplicated(keep=False).sum()),
             "description_normalized_duplicate_rows": int(normalized_support_text.duplicated(keep=False).sum()),
+            "description_unique_rows": int(support["Ticket Description"].fillna("").nunique()),
             "placeholder_description_rows": int(
                 support["Ticket Description"].fillna("").str.contains(r"\{[^}]+\}", regex=True).sum()
             ),
@@ -155,6 +177,15 @@ def main() -> None:
                 support["Resolution"].fillna("").str.contains(r"\{[^}]+\}", regex=True).sum()
             ),
             "pii_pattern_counts_in_description": support_pii,
+            "repeated_unresolved_rows": int(repeated_unresolved.sum()),
+            "repeated_unresolved_by_status": (
+                support.loc[repeated_unresolved, "Ticket Status"]
+                .value_counts()
+                .to_dict()
+            ),
+            "subject_type_association": cramers_v_summary(
+                support, "Ticket Subject", "Ticket Type"
+            ),
             "csat_associations_closed_only": associations,
         },
         "dataset_2": {
@@ -186,7 +217,7 @@ def main() -> None:
 
 ## Resumo executivo
 
-Os dados não sustentam o diagnóstico operacional descrito literalmente no brief. O Dataset 1 contém **{d1['rows']:,} tickets**, não aproximadamente 30 mil, e não possui o horário de abertura do ticket. `First Response Time` e `Time to Resolution` são timestamps, não durações. Entre {d1['paired_timestamp_rows']:,} tickets com ambos os campos, **{pct(d1['negative_response_to_resolution_rate'])}** têm resolução anterior à primeira resposta. Portanto, FRT, TTR, desperdício de horas e ROI observado não podem ser calculados de forma válida a partir desse arquivo.
+O Dataset 1 é a base operacional disponível da empresa fictícia e contém **{d1['rows']:,} tickets**. O volume de aproximadamente 30 mil por ano permanece como contexto do brief, não como contagem do arquivo. A base permite analisar filas, status, textos e sinais de cuidado, mas não possui o horário de abertura. `First Response Time` e `Time to Resolution` são timestamps, não durações. Entre {d1['paired_timestamp_rows']:,} tickets com ambos os campos, **{pct(d1['negative_response_to_resolution_rate'])}** têm resolução anterior à primeira resposta. Portanto, FRT, TTR, desperdício de horas e ROI observado não podem ser calculados de forma válida.
 
 O Dataset 2 contém **{d2['rows']:,} tickets** em oito classes e pode sustentar uma prova técnica de classificação, desde que documentos duplicados sejam mantidos no mesmo split. Há {d2['duplicate_document_rows']:,} linhas pertencentes a textos duplicados e {d2['documents_with_conflicting_labels']:,} documentos normalizados com rótulos conflitantes.
 
@@ -201,13 +232,23 @@ O Dataset 2 contém **{d2['rows']:,} tickets** em oito classes e pode sustentar 
 - Datas observadas em `Time to Resolution`: **{', '.join(d1['resolution_dates'])}**
 - Pares temporalmente inválidos: **{d1['negative_response_to_resolution_rows']:,} de {d1['paired_timestamp_rows']:,}**
 - Descrições com placeholder de template: **{d1['placeholder_description_rows']:,}**
+- Descrições distintas: **{d1['description_unique_rows']:,}**
+- Associação entre `Ticket Subject` e `Ticket Type`: **V de Cramér = {d1['subject_type_association']['cramers_v']:.3f}** (`p = {d1['subject_type_association']['p']:.3f}`)
+- Relatos explícitos de contatos repetidos sem solução: **{d1['repeated_unresolved_rows']:,}**, sendo **{d1['repeated_unresolved_by_status']['Open']:,} abertos**, **{d1['repeated_unresolved_by_status']['Pending Customer Response']:,} pendentes** e **{d1['repeated_unresolved_by_status']['Closed']:,} encerrados**
+
+### Foco no cliente
+
+`Ticket Description` é o campo que preserva a voz do cliente e, por isso, deve ser lido antes de qualquer sugestão automática. As **{d1['placeholder_description_rows']:,} descrições** contêm placeholder de template e trechos ruidosos, mas ainda revelam situações operacionais do exercício. O principal sinal é o grupo de **{d1['repeated_unresolved_rows']:,} clientes** que relata contatos repetidos sem solução, inclusive {d1['repeated_unresolved_by_status']['Closed']:,} casos marcados como encerrados.
+
+O protótipo usa regras explícitas e conservadoras para reconhecer reincidência, dano financeiro, cancelamento, risco legal, segurança, privacidade ou forte insatisfação. Qualquer sinal encaminha o caso para uma pessoa. Na base fornecida, o gate sinaliza casos para inspeção humana; sua taxa de erro deve ser revisada durante o piloto da empresa fictícia.
 
 ### Consequência analítica
 
 1. Não calcular FRT, TTR ou touch time.
 2. Não chamar diferenças de CSAT de causais.
-3. Usar o Dataset 1 apenas para volumetria, cobertura, padrões textuais, status e associações descritivas claramente limitadas.
-4. Tratar qualquer ROI como cenário parametrizado, nunca como economia observada.
+3. Usar `Ticket Subject`, `Ticket Type` e `Ticket Priority` como campos operacionais existentes, sem deixar que anulem sinais encontrados na mensagem.
+4. Priorizar a revisão dos relatos de contato repetido sem solução, inclusive os marcados como encerrados.
+5. Tratar qualquer ROI como cenário parametrizado, nunca como economia observada.
 
 ## Dataset 2: classificação de tickets de TI
 
@@ -224,7 +265,7 @@ O Dataset 2 contém **{d2['rows']:,} tickets** em oito classes e pode sustentar 
 1. Separar grupos de textos normalizados entre treino e teste para evitar leakage.
 2. Reportar macro-F1, recall por classe, matriz de confusão e cobertura versus precisão.
 3. Não transferir a taxonomia de TI diretamente para o Dataset 1.
-4. Apresentar o classificador como prova técnica de triagem, não como modelo validado para a G4.
+4. Apresentar o classificador como prova técnica para a fila de TI, não como classificador da fila de clientes.
 
 ## Integridade e privacidade
 

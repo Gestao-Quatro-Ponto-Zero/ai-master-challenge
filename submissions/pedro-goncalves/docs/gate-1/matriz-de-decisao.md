@@ -34,7 +34,7 @@ Construir um **copiloto de triagem em shadow mode**, com:
 7. log de auditoria sem texto bruto;
 8. kill switch determinístico.
 
-O Dataset 2 sustenta a prova técnica. O Dataset 1 sustenta apenas data audit, volumetria e limitações. Nenhum resultado é apresentado como validação para a G4.
+O Dataset 2 sustenta a prova técnica da fila de TI. O Dataset 1 sustenta a operação de clientes: volumetria, status, campos informados e sinais de cuidado. O teste cruzado mostrou por que as taxonomias não devem ser misturadas.
 
 ## Critério de threshold
 
