@@ -10,7 +10,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class AppTests(unittest.TestCase):
     def setUp(self):
+        os.environ["OSS_ACCESS_PASSWORD"] = "temporary-test-password"
         self.app = AppTest.from_file("app.py", default_timeout=30)
+        self.app.session_state["temporary_access_granted"] = True
         self.app.run()
         self.assertFalse(self.app.exception)
 
@@ -26,12 +28,30 @@ class AppTests(unittest.TestCase):
     # Home
     # ------------------------------------------------------------------
 
-    def test_home_frames_problem_without_revealing_results(self):
-        """Home must sell the problem and reserve results for the simulation."""
+    def test_temporary_access_uses_runtime_password(self):
+        app = AppTest.from_file("app.py", default_timeout=30)
+        app.run()
+        self.assertFalse(app.exception)
+        self.assertEqual(app.text_input[0].label, "Senha")
+        app.text_input[0].input("temporary-test-password")
+        next(button for button in app.button if button.label == "Entrar").click().run()
+        self.assertFalse(app.exception)
+        self.assertTrue(app.session_state["temporary_access_granted"])
+        rendered = "\n".join(item.value for item in app.markdown)
+        self.assertIn("O problema de negócio", rendered)
+
+    def test_home_frames_problem_and_market_benchmark_honestly(self):
+        """Home must frame the problem and label the benchmark as non-observed."""
         rendered = "\n".join(item.value for item in self.app.markdown)
         self.assertIn("56.306 registros", rendered)
         self.assertIn("O problema de negócio", rendered)
         self.assertIn("O que esta avaliação verifica", rendered)
+        self.assertIn("REFERÊNCIA ECONÔMICA DE MERCADO", rendered)
+        self.assertIn("US$854", rendered)
+        self.assertIn("US$1.726", rendered)
+        self.assertIn("Não é ROI comprovado", rendered)
+        self.assertIn("OSS 100% autônomo: não recomendado", rendered)
+        self.assertIn("pessoa com IA genérica versus pessoa com OSS", rendered)
         self.assertEqual(len(self.app.metric), 0)
 
     def test_home_primary_cta_starts_case_operation(self):
@@ -69,6 +89,7 @@ class AppTests(unittest.TestCase):
         for destination in destinations:
             with self.subTest(destination=destination):
                 app = AppTest.from_file("app.py", default_timeout=30)
+                app.session_state["temporary_access_granted"] = True
                 app.query_params["page"] = destination
                 app.run()
                 self.assertFalse(app.exception)
@@ -340,14 +361,23 @@ class AppTests(unittest.TestCase):
         self.assertFalse(self.app.exception)
         rendered = "\n".join(item.value for item in self.app.markdown)
         written = "\n".join(str(item.value) for item in self.app.info)
+        self.assertIn("O que os atendimentos contam", rendered)
+        self.assertIn("E agora, o que eu faço?", rendered)
         self.assertIn("Veredito", rendered)
         self.assertIn("Operação apta para piloto assistido", rendered)
         self.assertIn("Limitação do ROI", rendered)
         self.assertIn("Agora:", written)
 
+        metrics = {metric.label: metric.value for metric in self.app.metric}
+        self.assertEqual(metrics["Casos analisados"], "2.000")
+        self.assertEqual(metrics["Cuidado com cliente"], "80")
+        self.assertEqual(metrics["Revisão na fila de TI"], "54.5%")
+        self.assertEqual(metrics["Sugestões em observação"], "455")
+        self.assertEqual(len(self.app.get("plotly_chart")), 2)
+
         labels = [button.label for button in self.app.button]
         self.assertIn("Abrir fila prioritária", labels)
-        self.assertIn("Ver evidências", labels)
+        self.assertNotIn("Ver evidências", labels)
         self.assertTrue(
             any(
                 button.label == "Baixar parecer"
@@ -359,11 +389,6 @@ class AppTests(unittest.TestCase):
         self.assertFalse(self.app.exception)
         rendered = "\n".join(item.value for item in self.app.markdown)
         self.assertIn("Fila prioritária", rendered)
-
-        self.button("Ver evidências").click().run()
-        self.assertFalse(self.app.exception)
-        rendered = "\n".join(item.value for item in self.app.markdown)
-        self.assertIn("Evidências da análise", rendered)
 
 
 if __name__ == "__main__":

@@ -103,8 +103,10 @@ CASE_LESSONS = (
 def _connect(path: str | Path) -> sqlite3.Connection:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(destination)
+    connection = sqlite3.connect(destination, timeout=10.0)
     connection.row_factory = sqlite3.Row
+    connection.execute("PRAGMA journal_mode = WAL")
+    connection.execute("PRAGMA busy_timeout = 10000")
     connection.execute("PRAGMA foreign_keys = ON")
     return connection
 
@@ -211,6 +213,18 @@ def initialize_memory(path: str | Path) -> None:
                 version INTEGER NOT NULL DEFAULT 1
             );
 
+            CREATE TABLE IF NOT EXISTS memory_revisions (
+                revision_id TEXT PRIMARY KEY,
+                memory_type TEXT NOT NULL,
+                memory_key TEXT NOT NULL,
+                version INTEGER NOT NULL,
+                action TEXT NOT NULL CHECK(action IN ('created', 'updated', 'retired')),
+                snapshot_json TEXT NOT NULL,
+                actor_id TEXT NOT NULL,
+                reason TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            );
+
             CREATE TRIGGER IF NOT EXISTS feedback_events_no_update
             BEFORE UPDATE ON feedback_events
             BEGIN
@@ -221,6 +235,42 @@ def initialize_memory(path: str | Path) -> None:
             BEFORE DELETE ON feedback_events
             BEGIN
                 SELECT RAISE(ABORT, 'feedback_events is append-only');
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS lessons_no_delete
+            BEFORE DELETE ON lessons
+            BEGIN
+                SELECT RAISE(ABORT, 'lessons cannot be deleted; retire instead');
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS lesson_evidence_no_update
+            BEFORE UPDATE ON lesson_evidence
+            BEGIN
+                SELECT RAISE(ABORT, 'lesson_evidence is append-only');
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS lesson_evidence_no_delete
+            BEFORE DELETE ON lesson_evidence
+            BEGIN
+                SELECT RAISE(ABORT, 'lesson_evidence is append-only');
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS operational_lessons_no_delete
+            BEFORE DELETE ON operational_lessons
+            BEGIN
+                SELECT RAISE(ABORT, 'operational_lessons cannot be deleted; retire instead');
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS memory_revisions_no_update
+            BEFORE UPDATE ON memory_revisions
+            BEGIN
+                SELECT RAISE(ABORT, 'memory_revisions is append-only');
+            END;
+
+            CREATE TRIGGER IF NOT EXISTS memory_revisions_no_delete
+            BEFORE DELETE ON memory_revisions
+            BEGIN
+                SELECT RAISE(ABORT, 'memory_revisions is append-only');
             END;
             """
         )
@@ -326,20 +376,258 @@ def seed_case_memory(
 def list_operational_lessons(
     path: str | Path,
     *,
-    status: str = "approved",
+    status: str | None = "approved",
 ) -> list[dict]:
+    initialize_memory(path)
+    with _connect(path) as connection:
+        if status is None:
+            rows = connection.execute(
+                """
+                SELECT *
+                FROM operational_lessons
+                ORDER BY scope, lesson_key
+                """
+            ).fetchall()
+        else:
+            rows = connection.execute(
+                """
+                SELECT *
+                FROM operational_lessons
+                WHERE status = ?
+                ORDER BY scope, lesson_key
+                """,
+                (status,),
+            ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def list_feedback_events(path: str | Path, *, limit: int = 500) -> list[dict]:
     initialize_memory(path)
     with _connect(path) as connection:
         rows = connection.execute(
             """
             SELECT *
-            FROM operational_lessons
-            WHERE status = ?
-            ORDER BY scope, lesson_key
+            FROM feedback_events
+            ORDER BY created_at DESC
+            LIMIT ?
             """,
-            (status,),
+            (limit,),
         ).fetchall()
     return [dict(row) for row in rows]
+
+
+def list_lesson_evidence(path: str | Path, *, limit: int = 500) -> list[dict]:
+    initialize_memory(path)
+    with _connect(path) as connection:
+        rows = connection.execute(
+            """
+            SELECT lesson_id, event_id
+            FROM lesson_evidence
+            ORDER BY lesson_id, event_id
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def list_memory_revisions(path: str | Path, *, limit: int = 500) -> list[dict]:
+    initialize_memory(path)
+    with _connect(path) as connection:
+        rows = connection.execute(
+            """
+            SELECT *
+            FROM memory_revisions
+            ORDER BY created_at DESC
+            LIMIT ?
+            """,
+            (limit,),
+        ).fetchall()
+    revisions = []
+    for row in rows:
+        revision = dict(row)
+        revision["snapshot"] = json.loads(revision.pop("snapshot_json"))
+        revisions.append(revision)
+    return revisions
+
+
+def create_operational_memory(
+    path: str | Path,
+    *,
+    scope: str,
+    statement: str,
+    evidence: str,
+    control: str,
+    source: str,
+    applied_in: str,
+    actor_id: str,
+    reason: str,
+) -> dict:
+    initialize_memory(path)
+    actor_id = _validate_safe_text(
+        actor_id, field="identificador do autor", max_length=60
+    )
+    reason = _validate_safe_text(reason, field="justificativa", max_length=240)
+    values = {
+        "scope": _validate_safe_text(scope, field="escopo", max_length=100),
+        "statement": _validate_safe_text(
+            statement, field="aprendizado", max_length=500
+        ),
+        "evidence": _validate_safe_text(
+            evidence, field="evidência", max_length=500
+        ),
+        "control": _validate_safe_text(
+            control, field="controle", max_length=500
+        ),
+        "source": _validate_safe_text(source, field="fonte", max_length=240),
+        "applied_in": _validate_safe_text(
+            applied_in, field="aplicação", max_length=240
+        ),
+    }
+    created_at = _now()
+    lesson_key = f"manual-{uuid4()}"
+    snapshot = {
+        "lesson_key": lesson_key,
+        **values,
+        "status": "approved",
+        "approved_by": actor_id,
+        "approved_at": created_at,
+        "version": 1,
+    }
+    with _connect(path) as connection:
+        connection.execute(
+            """
+            INSERT INTO operational_lessons (
+                lesson_key, scope, statement, evidence, control, source,
+                applied_in, status, approved_by, approved_at, version
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, 'approved', ?, ?, 1)
+            """,
+            (
+                lesson_key,
+                values["scope"],
+                values["statement"],
+                values["evidence"],
+                values["control"],
+                values["source"],
+                values["applied_in"],
+                actor_id,
+                created_at,
+            ),
+        )
+        connection.execute(
+            """
+            INSERT INTO memory_revisions (
+                revision_id, memory_type, memory_key, version, action,
+                snapshot_json, actor_id, reason, created_at
+            ) VALUES (?, 'operational_lesson', ?, 1, 'created', ?, ?, ?, ?)
+            """,
+            (
+                str(uuid4()),
+                lesson_key,
+                json.dumps(snapshot, ensure_ascii=False, sort_keys=True),
+                actor_id,
+                reason,
+                created_at,
+            ),
+        )
+    return snapshot
+
+
+def update_operational_memory(
+    path: str | Path,
+    *,
+    lesson_key: str,
+    scope: str,
+    statement: str,
+    evidence: str,
+    control: str,
+    source: str,
+    applied_in: str,
+    status: str,
+    actor_id: str,
+    reason: str,
+) -> dict:
+    if status not in {"approved", "retired"}:
+        raise ValueError("Status operacional inválido.")
+    initialize_memory(path)
+    actor_id = _validate_safe_text(
+        actor_id, field="identificador do editor", max_length=60
+    )
+    reason = _validate_safe_text(reason, field="justificativa", max_length=240)
+    values = {
+        "scope": _validate_safe_text(scope, field="escopo", max_length=100),
+        "statement": _validate_safe_text(
+            statement, field="aprendizado", max_length=500
+        ),
+        "evidence": _validate_safe_text(
+            evidence, field="evidência", max_length=500
+        ),
+        "control": _validate_safe_text(
+            control, field="controle", max_length=500
+        ),
+        "source": _validate_safe_text(source, field="fonte", max_length=240),
+        "applied_in": _validate_safe_text(
+            applied_in, field="aplicação", max_length=240
+        ),
+    }
+    updated_at = _now()
+    with _connect(path) as connection:
+        current = connection.execute(
+            "SELECT * FROM operational_lessons WHERE lesson_key = ?",
+            (lesson_key,),
+        ).fetchone()
+        if current is None:
+            raise KeyError(f"Memória não encontrada: {lesson_key}")
+        version = int(current["version"]) + 1
+        connection.execute(
+            """
+            UPDATE operational_lessons
+            SET scope = ?, statement = ?, evidence = ?, control = ?,
+                source = ?, applied_in = ?, status = ?, approved_by = ?,
+                approved_at = ?, version = ?
+            WHERE lesson_key = ?
+            """,
+            (
+                values["scope"],
+                values["statement"],
+                values["evidence"],
+                values["control"],
+                values["source"],
+                values["applied_in"],
+                status,
+                actor_id,
+                updated_at,
+                version,
+                lesson_key,
+            ),
+        )
+        snapshot = {
+            "lesson_key": lesson_key,
+            **values,
+            "status": status,
+            "approved_by": actor_id,
+            "approved_at": updated_at,
+            "version": version,
+        }
+        connection.execute(
+            """
+            INSERT INTO memory_revisions (
+                revision_id, memory_type, memory_key, version, action,
+                snapshot_json, actor_id, reason, created_at
+            ) VALUES (?, 'operational_lesson', ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                str(uuid4()),
+                lesson_key,
+                version,
+                "retired" if status == "retired" else "updated",
+                json.dumps(snapshot, ensure_ascii=False, sort_keys=True),
+                actor_id,
+                reason,
+                updated_at,
+            ),
+        )
+    return snapshot
 
 
 def record_feedback(

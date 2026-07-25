@@ -15,6 +15,7 @@
 | Threshold 0,75 cobre 69,7% com acurácia 96,6% nos cobertos | Medido | Threshold escolhido na validação e reportado uma vez no teste final | Referência de shadow mode |
 | O modelo classifica a fila de clientes | Não provado | Taxonomia do Dataset 2 é de TI | Claim proibido |
 | O sistema reduz TTR ou custo | Não provado | Sem touch time, implantação ou experimento | Usar apenas calculadora de cenários |
+| Plataformas comparáveis cobrariam entre US$854 e US$1.726 por mês no teto técnico do cenário | Benchmark externo | 30.000 × cobertura exata do teste ÷ 12 × US$0,49 a US$0,99 | Preços públicos de Freshdesk, Gorgias e Intercom; não inclui planos-base e não equivale a economia ou ROI observado |
 | Shadow mode reduz risco de implantação | Hipótese operacional | Política e protótipo demonstráveis | Deve ser validada em piloto |
 | A memória evita repetir erros aprovados | Hipótese testável | SQLite, recuperação por termos e gate humano | Ainda sem piloto no domínio real |
 | A memória contém seis lições operacionais aprovadas e uma correção reproduzida | Medido no protótipo | Semeadura idempotente e testes automatizados | Não equivale a retreinamento do modelo |

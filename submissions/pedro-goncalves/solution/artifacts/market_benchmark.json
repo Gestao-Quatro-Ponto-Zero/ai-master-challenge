@@ -1,0 +1,56 @@
+{
+  "as_of": "2026-07-25",
+  "status": "benchmark_externo_nao_roi_observado",
+  "inputs": {
+    "annual_volume": 30000,
+    "annual_volume_source": "Contexto narrativo do brief do Challenge 002",
+    "technical_coverage": 0.6971850613154961,
+    "technical_coverage_source": "classifier_metrics.json, teste final do Dataset 2"
+  },
+  "public_references": [
+    {
+      "vendor": "Freshdesk Freddy AI Agent",
+      "unit": "session",
+      "usd_per_unit": 0.49,
+      "source": "https://www.freshworks.com/freshdesk/pricing/"
+    },
+    {
+      "vendor": "Gorgias AI Agent",
+      "unit": "resolved_interaction",
+      "usd_per_unit": 0.9,
+      "source": "https://www.gorgias.com/blog/ai-agent-pricing"
+    },
+    {
+      "vendor": "Intercom Fin",
+      "unit": "outcome",
+      "usd_per_unit": 0.99,
+      "source": "https://www.intercom.com/help/en/articles/8205718-fin-ai-agent-outcomes"
+    },
+    {
+      "vendor": "Zendesk Suite Team plus Copilot",
+      "unit": "agent_month",
+      "usd_per_unit": 105.0,
+      "source": "https://www.zendesk.com/pricing/",
+      "excluded_from_range_reason": "Número de agentes não informado"
+    }
+  ],
+  "calculation": {
+    "covered_monthly": 1742.9626532887403,
+    "covered_weekly": 402.2221507589401,
+    "monthly_low_usd": 854.0517001114828,
+    "monthly_high_usd": 1725.533026755853,
+    "weekly_low_usd": 197.08885387188064,
+    "weekly_high_usd": 398.1999292513507
+  },
+  "formula": {
+    "covered_monthly": "annual_volume * technical_coverage / 12",
+    "covered_weekly": "annual_volume * technical_coverage / 52",
+    "market_range": "covered_volume * min_or_max_public_usage_price"
+  },
+  "limitations": [
+    "A cobertura foi medida na fila de TI e não prova resolução autônoma.",
+    "As unidades comerciais não são equivalentes entre fornecedores.",
+    "Planos-base, implantação, infraestrutura e suporte não foram incluídos.",
+    "ROI exige benefício medido e custo total do OSS medido no piloto."
+  ]
+}

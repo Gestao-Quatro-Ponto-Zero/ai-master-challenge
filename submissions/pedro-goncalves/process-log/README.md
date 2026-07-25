@@ -25,6 +25,27 @@ O problema foi separado em sete gates:
 
 Três agentes foram criados no Maestri. Lume e Nexo podiam propor; Crivo não podia editar nem avaliar sem evidência. O Codex permaneceu como quarto papel, responsável por integração e decisão.
 
+## Como usei IA como sistema de trabalho
+
+Não usei IA como geradora de uma resposta única. Dividi o trabalho em quatro responsabilidades:
+
+1. **Lume:** diagnóstico operacional e validação do uso local de IA.
+2. **Nexo:** fronteira humano-IA, memória e controles de operação.
+3. **Crivo:** revisão independente, adversarial e sem permissão para editar.
+4. **Codex:** integração, implementação, testes e decisão final sobre cada sugestão.
+
+Esse desenho produziu divergência útil. O primeiro gate final reprovou a própria solução por
+precedência incorreta da política, seleção indevida do limite de confiança e risco no log. O
+segundo aprovou as correções. Revisões posteriores encontraram comandos quebrados, premissas
+econômicas ocultas e problemas de experiência. Cada falha virou código, teste ou limitação
+explícita. A IA aumentou a capacidade de construir e revisar; a evidência continuou decidindo.
+
+![Fluxo real de construção e revisão no Maestri](images/maestri-workflow.png)
+
+Na imagem, as notas preservam contexto e critérios, os agentes mantêm papéis separados e o Codex
+integra somente o que passa pelos gates. A captura é evidência do processo real, não uma
+representação criada depois da entrega.
+
 ## Linha do tempo
 
 | Momento | Ação | Resultado |
@@ -39,7 +60,7 @@ Três agentes foram criados no Maestri. Lume e Nexo podiam propor; Crivo não po
 | 24/07 | Revisão de claims e documentação | ROI observado e automação produtiva foram vetados |
 | 24/07 | Gate final independente | FAIL inicial por precedência, seleção de threshold e fingerprint |
 | 24/07 | Correção adversarial | Política reordenada, split 70/15/15 e log sem fingerprint |
-| 24/07 | Revisão pela lente pública de Bruno Nardon | Decisão executiva, demo pronta e piloto de 30 dias incorporados |
+| 24/07 | Revisão pela lente de decisão executiva | Decisão executiva, demo pronta e piloto de 30 dias incorporados |
 | 24/07 | Validação pós-revisão executiva | 18 testes aprovados e duas telas inspecionadas |
 | 24/07 | Gate Final 3 | FAIL por comandos, premissa econômica oculta e links |
 | 24/07 | Correção executiva final | Premissas completas, caminhos corrigidos e teste determinístico |
@@ -123,7 +144,9 @@ A política foi reordenada, foram adicionados testes combinados, o experimento p
 
 ### Iteração 7
 
-A entrega tecnicamente aprovada foi relida pela lente pública de Bruno Nardon: eliminar o erro óbvio antes de otimizar, transformar plano em execução e entregar um MVP vertical funcional, valioso e utilizável. Nenhuma fala privada ou avaliação oficial do G4 foi presumida.
+A entrega tecnicamente aprovada foi relida pela lente de decisão executiva: eliminar o erro
+óbvio antes de otimizar, transformar plano em execução e entregar um MVP vertical funcional,
+valioso e utilizável. Nenhuma fala privada ou avaliação oficial foi presumida.
 
 O principal defeito era gerencial: um diretor precisava atravessar diagnóstico, método e controles para descobrir qual decisão tomar. A versão foi reorganizada para responder em cerca de 60 segundos:
 
@@ -505,6 +528,74 @@ mesma tela, um **Parecer técnico-gerencial** que começa pelo veredito e respon
 
 O parecer usa apenas números da execução: linhas analisadas, revisão humana, cuidado com cliente
 e sugestões em observação, todos com quantidade e percentual. O ROI permanece explicitamente
-limitado a hipótese até existirem tempo manual, custos e retrabalho medidos no piloto. Três ações
-foram validadas: abrir a fila prioritária, consultar evidências e baixar o parecer em Markdown.
-A suíte canônica passou para **58 de 58 testes**.
+limitado a hipótese até existirem tempo manual, custos e retrabalho medidos no piloto. As ações
+validadas foram abrir a fila prioritária e baixar o parecer em Markdown. A suíte canônica passou
+para **66 de 66 testes**.
+
+### Iteração 26
+
+O teste manual mostrou que abrir o parecer e depois pedir “Ver evidências” ainda separava duas
+perguntas que o líder faz ao mesmo tempo: “o que os atendimentos contam?” e “o que faço agora?”.
+O botão intermediário foi removido. A abertura do parecer passou a mostrar imediatamente quatro
+indicadores da execução, os principais assuntos das duas filas e os sinais que acionaram cuidado
+humano.
+
+Os rankings usam as linhas efetivamente analisadas, não o total carregado nem o volume narrativo
+do brief. No atendimento ao cliente, o gráfico usa `Ticket Type`; no suporte interno, usa
+`Topic_group`. As taxonomias permanecem separadas e os rótulos são traduzidos apenas para
+apresentação. O parecer não chama frequência de causa e não transforma confiança técnica em
+autorização operacional.
+
+A decisão aparece na sequência com prioridade, próxima ação, risco estrutural e limitação do ROI.
+Qualidade das bases e memória de cálculo permanecem em revelação progressiva. O teste de interface
+agora exige história visível, quatro KPIs, dois rankings, fila acionável e ausência do clique
+redundante. A suíte permaneceu em **66 de 66 testes**.
+
+### Iteração 27
+
+Foi incluído um modelo local `IBM Granite 4.1 8B` em dois pontos estreitos. Antes da aprovação
+humana, ele revisa metadados do recebimento e procura contradições. Depois da análise
+determinística, revisa o parecer em busca de inconsistências. Entre as duas chamadas existe um
+gate humano obrigatório. O modelo não calcula indicadores, não altera prioridade, não escreve o
+parecer e não executa ação externa. Se estiver indisponível ou produzir saída inválida, o fluxo
+continua com código determinístico e revisão humana.
+
+O teste real de 25/07 usou `ibm/granite4.1:8b` via Ollama. A revisão estrutural levou 10,75
+segundos e pediu checagem das datas. A revisão do parecer levou 7,87 segundos e manteve o ROI sob
+revisão humana por falta de touch time medido. Modelo, digest, tempos, escopo e limites estão em
+`artifacts/local-ai-validation.json`.
+
+### Iteração 28
+
+A memória SQLite passou a ser gerenciável pelo OSS. O líder pode consultar todas as tabelas,
+criar uma lição, editar seu estado ou aposentá-la. Exclusão foi deliberadamente bloqueada. Cada
+mudança gera uma revisão imutável e é confirmada imediatamente em transação. O banco usa WAL,
+timeout de concorrência, bloqueios contra alteração de eventos e validação contra dados pessoais.
+Isso preserva aprendizado operacional sem retreinar o modelo silenciosamente.
+
+### Iteração 29
+
+Foi criado um aplicativo macOS temporário para iniciar Ollama, Streamlit e um túnel Cloudflare.
+O serviço local fica restrito a `127.0.0.1`; o acesso público exige uma senha definida em tempo
+de execução, sem valor embutido no código ou na URL. Ao fechar o aplicativo, os processos
+iniciados por ele são encerrados. O Quick Tunnel não oferece SLA nem substitui hospedagem com
+controle de acesso, expiração e revogação. Essa é uma solução de demonstração por prazo curto,
+não uma arquitetura de produção. O código do launcher é auditável e o protótipo continua
+executável diretamente pelo terminal.
+
+### Iteração 30
+
+Gravei o fluxo completo do OSS desde o launcher, autenticação, análise das bases, aprovação
+humana, parecer gerencial e memória SQLite. O vídeo está em
+[`video/oss-e2e.mp4`](video/oss-e2e.mp4), com uma capa leve no README para acesso imediato.
+
+Também comparei o custo variável público de Freshdesk, Gorgias e Intercom, mantendo Zendesk
+como referência por assento. A faixa foi calculada de forma determinística e rotulada como
+benchmark externo. Não foi promovida a ROI observado porque o piloto ainda não mediu tempo
+humano antes e depois, adoção, retrabalho, custo-hora e custo operacional.
+
+O fechamento preservou duas evidências visuais do trabalho no Maestri:
+
+![Arquitetura de agentes e memória compartilhada](images/maestri-workflow.png)
+
+![Gate final, commit e publicação da submissão](images/finalization-and-push.png)

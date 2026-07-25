@@ -61,7 +61,7 @@ quando os sensores são incompletos ou existe consequência crítica.
 
 ## Aprendizado já demonstrado
 
-O protótipo inicia com seis lições operacionais sustentadas pelos artefatos do case: cuidado com
+O protótipo inicia com lições operacionais sustentadas pelos artefatos do case: cuidado com
 contato repetido, separação das taxonomias, confiança não prova aderência ao domínio, horários
 inválidos, repetição não é duplicata e ruído de templates.
 
@@ -93,15 +93,19 @@ flowchart LR
 | `feedback_events` | Guarda cada confirmação ou correção | Um evento por decisão, sem texto bruto e protegido contra alteração |
 | `lessons` | Consolida a regra geral gerada pelo sistema | Candidata, aprovada por outro revisor ou desativada |
 | `lesson_evidence` | Liga lições aos eventos que as sustentam | Permite contar evidências e auditar origem |
-| `operational_lessons` | Guarda aprendizados derivados da análise do case | Somente lições aprovadas, com fonte e controle aplicado |
+| `operational_lessons` | Guarda aprendizados derivados da análise do case | Criados, editados ou aposentados, nunca excluídos |
+| `memory_revisions` | Preserva cada versão de uma lição operacional | Histórico imutável com autor, data e motivo |
 
 O arquivo é único: `artifacts/memory/learning.sqlite3`. Eventos de feedback são protegidos contra
 alteração e exclusão comum. Uma lição desativada deixa de participar das análises, mas continua
 disponível para auditoria. Antes de produção, retenção e eliminação excepcional de registros
 indevidos precisam de procedimento administrativo separado.
 
-No protótipo, autor e revisor informam seus identificadores manualmente. Isso demonstra a
-separação de funções, mas não substitui autenticação e controle de acesso em produção.
+No protótipo, o líder consulta todas as tabelas, cria lições e edita o estado pelo próprio OSS.
+Cada alteração é salva imediatamente e gera uma revisão imutável. Não existe ação de exclusão:
+uma lição inadequada é aposentada e permanece auditável. Autor e revisor ainda informam seus
+identificadores manualmente, o que demonstra separação de funções sem substituir autenticação
+corporativa.
 
 ## Fronteira humano e IA
 

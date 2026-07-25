@@ -1,5 +1,9 @@
 # OSS: Operating System for Support
 
+[![Assistir à demonstração E2E do OSS](process-log/video/oss-e2e-cover.png)](process-log/video/oss-e2e.mp4)
+
+**[Assistir à demonstração completa em MP4](process-log/video/oss-e2e.mp4)**
+
 > **Decisão recomendada:** corrigir os registros e testar a IA em modo de observação.
 > **Decisão vetada:** resposta autônoma em produção.
 
@@ -42,11 +46,22 @@ reais em CSV ou XLSX, mas mantém toda decisão em observação.
 |---|---|---|
 | Onde perdemos tempo? | 460 mensagens contêm sinal de contato repetido sem solução; 152 casos ainda estão abertos | Revisar reincidências e auditar os 152 encerramentos |
 | O que automatizar? | Detecção de cuidado na fila de clientes e sugestão de assunto na fila de TI | Testar em observação, sem responder ao cliente |
-| Funciona? | 58 testes, casos do case reproduzíveis, 47.837 textos no experimento e 8.469 mensagens no teste cruzado | Medir erros durante o piloto |
+| Funciona? | 66 testes, casos do case reproduzíveis, 47.837 textos no experimento e 8.469 mensagens no teste cruzado | Medir erros durante o piloto |
 
 ## A decisão em uma frase
 
 **Medir o fluxo real, rodar a IA em paralelo ao humano e só ampliar autonomia depois que erro, risco e capacidade forem observados.**
+
+**OSS 100% autônomo não é recomendado.** A comparação correta não é contra uma pessoa
+lendo uma por uma. É **pessoa com IA genérica versus pessoa com OSS**, mantendo validação
+humana em 100% das decisões nesta versão.
+
+Como hipótese conservadora, o fluxo genérico consome 4 minutos por caso para preparar lotes,
+transferir contexto, conferir saídas e montar a decisão. O OSS usa 3 minutos para aprovar a
+estrutura, revisar exceções e decidir a próxima ação. Com 10% de retrabalho e o teto técnico
+de 69,7%, o cenário estima **209,2 horas anuais**, ou **17,4 horas mensais**, de capacidade
+liberada. Isso representa **15% de redução líquida no escopo coberto**. Os tempos são premissas
+editáveis e precisam ser cronometrados no piloto.
 
 ## O diferencial
 
@@ -62,11 +77,11 @@ independente e sem revisão transforma um erro humano em comportamento recorrent
 usamos RAG: as lições atuais são poucas, estruturadas e críticas. Uma tabela SQLite aprovada por
 outra pessoa é mais simples de auditar e mais previsível que busca vetorial com geração.
 
-A memória guarda seis aprendizados operacionais comprovados no case e uma correção reproduzida do
-classificador. Quando encontra um erro parecido, ela não decide no lugar da equipe: bloqueia a
-automação, mostra a evidência e solicita revisão humana. Retropropagação só entra quando houver
-volume autorizado, dados rotulados e teste final separado. RAG só entra quando conhecimento
-validado e não estruturado crescer a ponto de regras explícitas deixarem de ser suficientes.
+A memória começa com aprendizados operacionais comprovados no case e uma correção reproduzida do
+classificador. O líder pode criar, editar, aposentar e auditar versões pelo próprio OSS, mas não
+excluir registros. Cada alteração é salva imediatamente no SQLite. Quando encontra um erro
+parecido, a memória não decide no lugar da equipe: bloqueia a automação, mostra a evidência e
+solicita revisão humana.
 
 ## Plano de 30 dias
 
@@ -78,6 +93,33 @@ validado e não estruturado crescer a ponto de regras explícitas deixarem de se
 | Dias 26 a 30 | Diretor de Operações | Decisão de canário ou interrupção | Qualidade preservada e capacidade comprovada |
 
 ## Potencial econômico, sem falsa precisão
+
+### Benchmark de compra externa
+
+Preços públicos consultados em 25/07/2026 mostram unidades diferentes:
+
+| Referência | Preço público | Uso correto na comparação |
+|---|---:|---|
+| Freshdesk Freddy AI Agent | US$49 por 100 sessões | Piso variável de US$0,49 por sessão, além do plano |
+| Gorgias AI Agent | Cerca de US$0,90 por interação resolvida | Referência por resolução |
+| Intercom Fin | US$0,99 por resultado | Referência por resultado |
+| Zendesk Suite Team + Copilot | US$55 + US$50 por agente/mês | Referência por assento, fora da faixa por falta do tamanho da equipe |
+
+Aplicando somente como **teto técnico de comparação** os 30 mil tickets anuais do brief e a
+cobertura de 69,7% medida na fila de TI:
+
+`custo variável mensal comparável = 30.000 × 69,7% ÷ 12 × US$0,49 a US$0,99`
+
+Resultado com a cobertura exata do artefato: **US$854 a US$1.726 por mês**, ou
+**US$197 a US$398 por semana**. Essa faixa não
+é economia comprovada: as plataformas cobram por sessão ou resultado, enquanto o OSS ainda
+classifica, prioriza e recomenda sob revisão humana. Planos-base, implantação, infraestrutura
+e suporte também não estão incluídos.
+
+Fontes oficiais: [Freshdesk](https://www.freshworks.com/freshdesk/pricing/),
+[Gorgias](https://www.gorgias.com/blog/ai-agent-pricing),
+[Intercom](https://www.intercom.com/help/en/articles/8205718-fin-ai-agent-outcomes) e
+[Zendesk](https://www.zendesk.com/pricing/).
 
 Usando **30 mil tickets apenas como contexto narrativo do brief**, a sensibilidade abaixo mostra capacidade líquida anual. Não é resultado observado:
 
@@ -145,6 +187,7 @@ No piloto, o usuário consegue:
 - exigir confirmação humana para manter, remover, ordenar e interpretar colunas;
 - impedir relação automática entre planilhas sem chave validada;
 - abrir um painel gerencial centralizado após a análise;
+- ler, no parecer, os principais assuntos, sinais de cuidado e fila que exige decisão humana;
 - executar os casos reproduzíveis do case;
 - exportar ID, sugestão, confiança, cuidado prioritário e próximo passo sem copiar mensagens;
 - identificar sinais de cuidado prioritário com o cliente;
@@ -155,7 +198,10 @@ No piloto, o usuário consegue:
 - forçar todas as decisões para uma pessoa;
 - registrar decisões sem guardar texto bruto;
 - registrar correções numa memória SQLite;
-- usar somente lições aprovadas e preservar seu histórico;
+- criar, editar e aposentar lições sem apagar o histórico;
+- consultar todas as tabelas da memória e suas revisões;
+- usar somente lições aprovadas nas decisões;
+- revisar localmente o recebimento e o parecer determinístico com Granite, sem delegar a decisão;
 - consultar uma aba de ajuda sem sair do fluxo.
 - abrir os documentos formatados na ordem recomendada dentro do próprio OSS.
 
@@ -166,10 +212,28 @@ Requer Python 3.11 ou superior e [uv](https://docs.astral.sh/uv/).
 ```bash
 cd solution
 uv sync
+export OSS_ACCESS_PASSWORD="defina-uma-senha-temporaria"
 uv run streamlit run app.py
 ```
 
-Abra `http://localhost:8501`.
+Abra `http://localhost:8501` e informe a senha temporária definida em
+`OSS_ACCESS_PASSWORD`. No vídeo de demonstração, a sessão usou `g4educa`.
+O valor não fica embutido no código e deve ser trocado a cada publicação.
+
+### Revisão local opcional com Granite
+
+O fluxo determinístico funciona sem modelo generativo. Para ativar as duas revisões locais:
+
+```bash
+ollama pull ibm/granite4.1:8b
+ollama serve
+```
+
+O Granite revisa o recibo antes da aprovação humana e procura contradições no parecer depois da
+análise. Ele não calcula métricas, muda prioridades nem escreve o parecer.
+
+A validação real do modelo local, com digest, latência, vereditos e limites, está em
+[`artifacts/local-ai-validation.json`](artifacts/local-ai-validation.json).
 
 ## Testar
 
@@ -177,7 +241,7 @@ Abra `http://localhost:8501`.
 uv run python -m unittest discover -s tests -v
 ```
 
-Resultado validado: **58 testes aprovados**.
+Resultado validado: **66 testes aprovados**.
 
 ## Reproduzir a análise
 
@@ -238,6 +302,7 @@ O notebook executado está em `notebooks/challenge-002-analysis.ipynb`. Os dados
 - `src/`: política, classificação, privacidade, auditoria, memória e cenários
 - `tests/`: testes da política e da interface
 - `process-log/`: uso de IA, erros e correções
+- `process-log/images/maestri-workflow.png`: evidência visual da orquestração e dos gates
 
 ## Process log
 

@@ -17,12 +17,18 @@ from src.support_copilot.customer_care import assess_customer_care
 from src.support_copilot.demo_matrix import CASE_MATRIX, evaluate_matrix
 from src.support_copilot.inference import TicketClassifier
 from src.support_copilot.memory import (
+    create_operational_memory,
     find_approved_lessons,
+    initialize_memory,
+    list_feedback_events,
+    list_lesson_evidence,
     list_lessons,
+    list_memory_revisions,
     list_operational_lessons,
     record_feedback,
     seed_case_memory,
     set_lesson_status,
+    update_operational_memory,
 )
 from src.support_copilot.policy import (
     POLICY_VERSION,
@@ -647,6 +653,94 @@ class PolicyTests(unittest.TestCase):
                 classifier_lessons[0]["recommended_category"],
                 "Purchase",
             )
+
+    def test_operational_memory_saves_versions_and_never_deletes(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            created = create_operational_memory(
+                database,
+                scope="Fila de suporte",
+                statement="Revisar reincidência antes de sugerir automação.",
+                evidence="A mesma categoria voltou em três revisões humanas.",
+                control="Manter decisão humana para o caso reincidente.",
+                source="teste-operacional",
+                applied_in="triagem",
+                actor_id="lider-suporte",
+                reason="Lição validada no teste.",
+            )
+            updated = update_operational_memory(
+                database,
+                lesson_key=created["lesson_key"],
+                scope=created["scope"],
+                statement="Revisar reincidência antes de qualquer automação.",
+                evidence=created["evidence"],
+                control=created["control"],
+                source=created["source"],
+                applied_in=created["applied_in"],
+                status="approved",
+                actor_id="lider-suporte",
+                reason="Texto tornado mais preciso.",
+            )
+            self.assertEqual(updated["version"], 2)
+            revisions = list_memory_revisions(database)
+            self.assertEqual([item["version"] for item in revisions], [2, 1])
+
+            with sqlite3.connect(database) as connection:
+                with self.assertRaises(sqlite3.IntegrityError):
+                    connection.execute(
+                        "DELETE FROM operational_lessons WHERE lesson_key = ?",
+                        (created["lesson_key"],),
+                    )
+            self.assertEqual(len(list_operational_lessons(database, status=None)), 1)
+
+    def test_memory_rejects_pii_without_partial_update(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            created = create_operational_memory(
+                database,
+                scope="Fila",
+                statement="Priorizar casos repetidos.",
+                evidence="Revisão humana confirmou o padrão.",
+                control="Revisar antes de agir.",
+                source="teste",
+                applied_in="triagem",
+                actor_id="lider-suporte",
+                reason="Teste seguro.",
+            )
+            with self.assertRaises(ValueError):
+                update_operational_memory(
+                    database,
+                    lesson_key=created["lesson_key"],
+                    scope="Fila",
+                    statement="Contatar pessoa@example.com.",
+                    evidence=created["evidence"],
+                    control=created["control"],
+                    source=created["source"],
+                    applied_in=created["applied_in"],
+                    status="approved",
+                    actor_id="lider-suporte",
+                    reason="Tentativa com PII.",
+                )
+            current = list_operational_lessons(database, status=None)[0]
+            self.assertEqual(current["version"], 1)
+
+    def test_memory_evidence_and_events_are_append_only(self):
+        with TemporaryDirectory() as directory:
+            database = Path(directory) / "learning.sqlite3"
+            seed_case_memory(
+                database,
+                model_version="model-test",
+                policy_version=POLICY_VERSION,
+            )
+            events = list_feedback_events(database)
+            evidence = list_lesson_evidence(database)
+            self.assertGreaterEqual(len(events), 1)
+            self.assertGreaterEqual(len(evidence), 1)
+            with sqlite3.connect(database) as connection:
+                with self.assertRaises(sqlite3.IntegrityError):
+                    connection.execute("DELETE FROM feedback_events")
+                with self.assertRaises(sqlite3.IntegrityError):
+                    connection.execute("DELETE FROM lesson_evidence")
 
     def test_case_matrix_passes_all_sixteen_scenarios(self):
         with TemporaryDirectory() as directory:

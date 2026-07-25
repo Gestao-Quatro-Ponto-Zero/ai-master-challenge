@@ -4,6 +4,11 @@
 
 IA entra onde há **padrão reversível e evidência mensurável**. Humano permanece onde há consequência material, ambiguidade, dados sensíveis ou ação externa. No protótipo, nenhuma mensagem é enviada e nenhum sistema é alterado.
 
+**OSS 100% autônomo não é recomendado.** A referência correta é comparar uma pessoa usando
+IA genérica com uma pessoa usando o fluxo integrado do OSS. Nesta versão, 100% das decisões
+continuam sob validação humana. O sistema reduz preparação, troca de contexto e consolidação,
+mas não substitui julgamento em cliente irritado, baixa confiança, exceções ou temas sensíveis.
+
 ## Onde colocamos IA, onde não colocamos e por quê
 
 | Etapa | Escolha | Por quê | Como foi implementado |
@@ -18,6 +23,7 @@ IA entra onde há **padrão reversível e evidência mensurável**. Humano perma
 | Priorizar a fila | Automação assistida | Volume pede ordenação, mas consequência pede supervisão | Cuidado com cliente primeiro; depois revisão e baixa confiança |
 | Buscar erro semelhante | Memória aprovada | Poucas lições críticas não justificam RAG nem retreino contínuo | SQLite recupera somente correções aprovadas por outra pessoa |
 | Aprender com feedback | Sem retropropagação automática | Um erro humano não pode virar verdade do modelo | Feedback imutável, revisão independente e lição versionada |
+| Revisar coerência do fluxo | IA local revisa | Um segundo olhar probabilístico encontra contradições, mas não deve gerar os números | Granite local antes e depois do gate humano, com falha segura |
 | Redigir resposta | Não implementado | Falta base de conhecimento validada e teste de qualidade textual | Mantido fora do protótipo |
 | Enviar, reembolsar, liberar acesso ou tratar RH | Humano executa | São ações externas, sensíveis ou difíceis de reverter | Bloqueadas pela política e pelo modo de observação |
 | Calcular indicadores e cenários | Sem IA | O número precisa ser provado por fórmula e fonte | Cálculo determinístico; ROI permanece hipótese editável |
@@ -34,6 +40,14 @@ IA entra onde há **padrão reversível e evidência mensurável**. Humano perma
 8. Shadow mode registra a sugestão, mas não executa.
 9. O modo assistido permite recomendação explícita, ainda sem ação externa.
 10. Automação existe apenas como simulação para demonstrar a fronteira.
+
+## Como a IA foi usada na construção
+
+A solução também foi construída com separação de papéis. Dois agentes propuseram diagnóstico e
+controles, um revisor independente tentou reprovar a entrega e o Codex integrou somente mudanças
+com evidência e teste. Os gates encontraram falhas reais de política, validação, privacidade,
+reprodutibilidade e interface. A contribuição da IA está registrada no `process-log`; a decisão
+final continua sustentada por dados, testes e revisão humana.
 
 ## Threshold
 

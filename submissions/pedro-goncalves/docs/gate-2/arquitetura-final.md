@@ -30,6 +30,8 @@ flowchart LR
     J --> L
     K --> L
     H --> L
+    L --> V[Granite revisa coerência]
+    V --> Z[Humano recebe parecer determinístico]
 ```
 
 ## Componentes
@@ -43,6 +45,7 @@ flowchart LR
 | `policy.py` | Aplica gates de risco | Cliente, kill switch, human-only, memória e abstenção |
 | `audit.py` | Gera registro rastreável | Sem texto e sem fingerprint do texto |
 | `memory.py` | Registra correções e recupera lições aprovadas | SQLite local, sem texto bruto, sem RAG e com aprovação humana |
+| `local_ai.py` | Revisa coerência antes e depois do gate humano | Granite local, saída estruturada, falha segura e sem autoridade decisória |
 | `demo_matrix.py` | Executa 16 cenários representativos | Resultado esperado explícito e sem dados pessoais |
 | `universal_analysis.py` | Perfila e organiza duas planilhas | Sugestão de estrutura sempre confirmada por humano |
 | `roi.py` | Simula capacidade e valor | Todas as premissas são entradas explícitas |
@@ -61,6 +64,7 @@ flowchart LR
 - registrar a decisão e o estado da política;
 - registrar correções e consultar lições aprovadas;
 - mostrar o motivo do encaminhamento humano.
+- revisar metadados do recebimento e procurar contradições no parecer determinístico.
 
 ### IA não pode
 
@@ -72,6 +76,18 @@ flowchart LR
 - converter TTR em horas de trabalho;
 - declarar ROI sem touch time e custos medidos;
 - aprovar uma lição ou retreinar o modelo silenciosamente.
+- calcular indicadores, alterar prioridade ou substituir o parecer determinístico.
+
+## Duas chamadas locais, um gate humano
+
+O Granite local entra somente como revisor:
+
+1. recebe metadados estruturais, nunca a planilha inteira, e aponta inconsistências antes da
+   aprovação;
+2. após a aprovação humana e o cálculo determinístico, procura contradições no parecer.
+
+O gate humano fica entre as duas chamadas. Saída inválida, indisponibilidade ou demora do modelo
+não autoriza automação. O OSS mostra a limitação e mantém a análise determinística disponível.
 
 ## Por que a memória não altera os pesos
 

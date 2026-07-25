@@ -23,7 +23,7 @@ a aprovação.
 
 ## Correção entre rodadas
 
-Corrigir os bloqueadores observados e repetir os 58 testes automatizados. Não alterar claims ou
+Corrigir os bloqueadores observados e repetir os 66 testes automatizados. Não alterar claims ou
 comportamentos sem atualizar a evidência correspondente.
 
 ## Rodada 2: confirmação
@@ -32,7 +32,7 @@ Reiniciar o aplicativo e repetir o roteiro sem consultar as anotações da prime
 aprovação exige:
 
 - casos do case aprovados;
-- 58 de 58 testes automatizados aprovados;
+- 66 de 66 testes automatizados aprovados;
 - nenhum texto bruto em logs ou exportações;
 - nenhuma ação externa executada;
 - todos os documentos acessíveis;
