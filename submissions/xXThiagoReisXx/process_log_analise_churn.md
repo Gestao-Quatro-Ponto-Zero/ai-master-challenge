@@ -9,7 +9,7 @@
 * **Nome:** Thiago de Carvalho Reis
 
 
-* **LinkedIn:** [Inserir Link](https://www.linkedin.com/in/-thiago-reis/)
+* **LinkedIn:** [Thiago Reis](https://www.linkedin.com/in/-thiago-reis/)
 
 
 * **Challenge escolhido:** Challenge 001 — Diagnóstico de Churn
