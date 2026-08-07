@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Eduardo Hasson
-- **LinkedIn:** (adicionar)
+- **LinkedIn:** 
 - **Challenge escolhido:** 002 — Redesign de Suporte (Operações / CX)
 
 ---
