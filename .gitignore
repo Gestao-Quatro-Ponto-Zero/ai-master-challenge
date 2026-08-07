@@ -1,16 +1,1 @@
-# Private scoring (never commit)
-_internal/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Data downloads (candidates get from Kaggle)
-datasets/
-
-# IDE
-.vscode/
-.idea/
-
-# Submissions (if candidates fork)
-submissions/
+﻿.history/
