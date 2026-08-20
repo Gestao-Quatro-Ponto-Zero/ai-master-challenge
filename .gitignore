@@ -11,3 +11,6 @@ datasets/
 # IDE
 .vscode/
 .idea/
+
+.claude/
+openspec/
