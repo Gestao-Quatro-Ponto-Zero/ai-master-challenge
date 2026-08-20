@@ -28,7 +28,7 @@ Pré-requisitos: Python 3.10+, Node.js 18+. Sem banco de dados — os quatro CSV
 make test
 ```
 
-Roda, em sequência: os testes unitários do motor de scoring (`scoring/`, 59 testes — inclui os exemplos de referência dos specs), os testes unitários de resolução de escopo e os testes de contrato/e2e da API (`api/`, cobrindo o ciclo completo de RBAC: identificação → token → listagem restrita → 403 fora do escopo → 401 sem token → rollup restrito por papel → download restrito a Manager), os testes de determinismo e consistência do artefato de validação (`validation/`), e a checagem de tipos do frontend (`web/`).
+Roda, em sequência: os testes unitários do motor de scoring (`scoring/`, incluindo rótulo de confiança, plano de ação em passos e os exemplos de referência dos specs), os testes de contrato/e2e da API (`api/`, cobrindo listagem paginada e ordenada com desempate estável, filtros de organização sem escopo de sessão, endpoint de detalhe, opções de filtro e exportação de identificadores filtrados), os testes de determinismo e consistência do artefato de validação (`validation/`), e a checagem de tipos do frontend (`web/`).
 
 ### Validação estatística
 
@@ -56,24 +56,18 @@ PRIORIDADE e CONFIANÇA nunca se combinam num único número — um ordena a fil
 
 Toda oportunidade aberta recebe PRIORIDADE — inclusive as 1.425 sem conta vinculada (VALOR usa o prior neutro de porte) e as 500 em Prospecting (URGÊNCIA fixa em 0,47, sem idade imputada).
 
-## Papéis de acesso
+## Abertura direta no pipeline
 
-Sem senha — uma tela de seleção de identidade troca um nome (ou escritório) por um token de sessão assinado no servidor (`itsdangerous`), com papel e escopo derivados de `sales_teams.csv` no momento da identificação:
+A aplicação abre direto na aba Oportunidades, com o funil completo (2.089 oportunidades abertas) já visível — não há tela de seleção de identidade nem sessão a manter. Vendedor, gerente e escritório regional são **filtros ordinários** sobre o funil inteiro, iguais a produto e confiança: qualquer valor presente nos dados pode ser escolhido, e o recorte resultante é refletido na URL — compartilhável e recarregável, ao contrário da sessão que existia antes.
 
-| Papel | Origem | Escopo |
-|---|---|---|
-| **Sales Agent** | nome só em `sales_agent` | as próprias oportunidades |
-| **Supervisor** | nome em `manager` | oportunidades dos agentes que reportam a ele |
-| **Manager** | um dos 3 `regional_office` | todas as oportunidades do escritório |
-
-Todo endpoint de dados aplica esse escopo no servidor: um filtro do cliente só pode **restringir** dentro do escopo, nunca ampliá-lo — pedir algo fora do escopo responde 403; requisição sem token responde 401. Isso é **seleção de identidade, não autenticação real** — qualquer um pode se identificar com qualquer nome da lista. O que é real é o isolamento de escopo depois disso, aplicado e testado no servidor (`api/tests/test_e2e.py`), não só ocultado na interface.
+Todo endpoint de dados é aberto, sem cabeçalho `Authorization`. Essa é uma decisão consciente para um dataset público de demonstração, sem informação real de cliente — não uma omissão. O trade-off e o caminho de produção (SSO/OIDC real, escopo aplicado no servidor) estão registrados em [`../docs/decisions-log.md`](../docs/decisions-log.md) e em "Limitações declaradas" abaixo.
 
 ## Estrutura
 
 ```
 scoring/      pacote Python puro (sem FastAPI/React) — a fórmula, importada por api/ e validation/
-api/          FastAPI — identificação por papel, listagem/filtros/rollup/avulsa/export, tudo com RBAC
-web/          React + TypeScript + Tailwind — seleção de identidade, 5 abas de estado + Gestão
+api/          FastAPI — listagem paginada/ordenada, filtros comuns, detalhe de oportunidade, rollup, export
+web/          React + TypeScript + Tailwind — abas Oportunidades/Gestão, filtros, painel de detalhe
 validation/   evidência estatística executável — AUC, permutação, k, monotonicidade, concentração
 ```
 
@@ -81,7 +75,7 @@ Ver [`../docs/architecture.md`](../docs/architecture.md) para o mapa completo de
 
 ## Limitações declaradas
 
-- **Sem autenticação por senha.** Identificação com escopo aplicado no servidor, não SSO/OIDC. Documentado, não escondido — evolução de produção registrada em `../docs/architecture.md`.
+- **Sem autenticação.** Nenhum endpoint de dados exige identificação — qualquer cliente lê o funil inteiro. Aceitável apenas porque o dataset é público e de demonstração, sem informação real de cliente. Produção exigiria SSO/OIDC real e escopo por papel aplicado no servidor — nenhum dos dois existe hoje, nem parcialmente. Documentado, não escondido — evolução de produção registrada em `../docs/architecture.md`.
 - **Sem persistência.** Tudo em memória, recarregado do zero a cada inicialização. Caminho de produção: banco gerenciado (Supabase ou equivalente).
 - **Sem previsão categórica de win/loss.** `p̂` varia só entre 0,60 e 0,75 — a diferenciação real vem de valor e urgência, não de probabilidade. A evidência de que isso é uma escolha correta, não uma limitação técnica, está em `validation/`.
 - **A distribuição de referência de SCORE** (negócios ganhos) só se atualiza no ciclo trimestral de recalibração — um negócio fechado ontem não entra no percentil até a próxima recalibração. Decisão deliberada: é o que torna SCORE estável entre requisições.

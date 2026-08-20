@@ -7,22 +7,6 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
-class IdentitiesOut(BaseModel):
-    sales_agents: list[str]
-    supervisors: list[str]
-    managers: list[str]
-
-
-class IdentifyIn(BaseModel):
-    name: str = Field(..., min_length=1)
-
-
-class TokenOut(BaseModel):
-    token: str
-    role: str
-    identity: str
-
-
 class OportunidadeOut(BaseModel):
     opportunity_id: str
     sales_agent: str
@@ -40,10 +24,56 @@ class OportunidadeOut(BaseModel):
     prioridade: float
     score: float
     confianca: str
+    confianca_label: str
     razao_confianca: str
     estado: str
     estado_label: str
     plano_de_acao: str
+
+
+class DealsEnvelopeOut(BaseModel):
+    items: list[OportunidadeOut]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+    contagem_por_estado: dict[str, int]
+    excluidas_idade_desconhecida: int
+
+
+class ContaOut(BaseModel):
+    vinculada: bool
+    sector: Optional[str] = None
+    porte: Optional[str] = None
+    revenue: Optional[float] = None
+    employees: Optional[float] = None
+    year_established: Optional[int] = None
+    office_location: Optional[str] = None
+
+
+class DealDetailOut(OportunidadeOut):
+    conta: ContaOut
+    plano_de_acao_passos: list[str]
+
+
+class FiltroVendedorOut(BaseModel):
+    nome: str
+    manager: Optional[str] = None
+    regional_office: Optional[str] = None
+
+
+class FiltroGerenteOut(BaseModel):
+    nome: str
+    regional_office: Optional[str] = None
+
+
+class FilterOptionsOut(BaseModel):
+    vendedores: list[FiltroVendedorOut]
+    gerentes: list[FiltroGerenteOut]
+    escritorios: list[str]
+    produtos: list[str]
+    idade_min: Optional[float] = None
+    idade_max: Optional[float] = None
 
 
 class KpisOut(BaseModel):
@@ -55,13 +85,14 @@ class KpisOut(BaseModel):
     data_inicio: str
     data_fim: str
     idade_maxima_aberta: Optional[float] = None
-    identidade: str
-    papel: str
+    indicadores_historicos: list[str] = Field(
+        default_factory=lambda: ["receita_ganha", "maior_negocio_fechado"]
+    )
 
 
 class RollupLinhaOut(BaseModel):
     chave: str
-    nivel: str  # "sales_agent" | "supervisor" | "regional_office"
+    nivel: str  # "sales_agent" | "manager" | "regional_office"
     n_abertas: int
     valor_esperado: float
     por_estado: dict[str, int]
@@ -94,7 +125,9 @@ class ScoreAvulsaOut(BaseModel):
     prioridade: float
     score: float
     confianca: str
+    confianca_label: str
     razao_confianca: str
     estado: str
     estado_label: str
     plano_de_acao: str
+    plano_de_acao_passos: list[str]

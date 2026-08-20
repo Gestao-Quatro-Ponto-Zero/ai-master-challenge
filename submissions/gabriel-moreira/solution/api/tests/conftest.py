@@ -27,13 +27,3 @@ def client():
 
     with TestClient(app) as test_client:
         yield test_client
-
-
-def token_for(client, name: str) -> str:
-    resp = client.post("/identify", json={"name": name})
-    assert resp.status_code == 200, resp.text
-    return resp.json()["token"]
-
-
-def auth_headers(client, name: str) -> dict:
-    return {"Authorization": f"Bearer {token_for(client, name)}"}

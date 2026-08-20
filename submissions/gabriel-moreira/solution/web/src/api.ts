@@ -1,11 +1,11 @@
 import type {
+  DealDetail,
+  DealsEnvelope,
   Filtros,
-  Identities,
+  FilterOptions,
   Kpis,
-  Oportunidade,
   Rollup,
   ScoreAvulsaResult,
-  Session,
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
@@ -18,10 +18,9 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, opts: RequestInit = {}, token?: string): Promise<T> {
+async function request<T>(path: string, opts: RequestInit = {}): Promise<T> {
   const headers: Record<string, string> = { "Content-Type": "application/json" };
   if (opts.headers) Object.assign(headers, opts.headers as Record<string, string>);
-  if (token) headers.Authorization = `Bearer ${token}`;
 
   const res = await fetch(`${API_BASE}${path}`, { ...opts, headers });
   if (!res.ok) {
@@ -40,37 +39,56 @@ async function request<T>(path: string, opts: RequestInit = {}, token?: string):
 function qs(params: object): string {
   const usp = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) {
-    if (v !== undefined && v !== "") usp.set(k, String(v));
+    if (v === undefined || v === null || v === "") continue;
+    if (Array.isArray(v)) {
+      for (const item of v) usp.append(k, String(item));
+    } else {
+      usp.set(k, String(v));
+    }
   }
   const s = usp.toString();
   return s ? `?${s}` : "";
 }
 
+export interface DealsQuery extends Filtros {
+  estado?: string[];
+  as_of?: string;
+  page?: number;
+  page_size?: number;
+  sort?: string;
+  order?: string;
+}
+
 export const api = {
-  getIdentities: () => request<Identities>("/identities"),
+  getDeals: (query: DealsQuery, signal?: AbortSignal) =>
+    request<DealsEnvelope>(`/deals${qs(query)}`, { signal }),
 
-  identify: (name: string) =>
-    request<Session>("/identify", { method: "POST", body: JSON.stringify({ name }) }),
+  getDealDetail: (opportunityId: string, as_of?: string) =>
+    request<DealDetail>(`/deals/${encodeURIComponent(opportunityId)}${qs({ as_of })}`),
 
-  getDeals: (token: string, filtros: Filtros & { estado?: string; as_of?: string }) =>
-    request<Oportunidade[]>(`/deals${qs(filtros)}`, {}, token),
+  getFilterOptions: () => request<FilterOptions>("/filter-options"),
 
-  getKpis: (token: string, as_of?: string) =>
-    request<Kpis>(`/kpis${qs({ as_of })}`, {}, token),
+  getKpis: (query: DealsQuery, signal?: AbortSignal) =>
+    request<Kpis>(`/kpis${qs(query)}`, { signal }),
 
-  getRollup: (token: string, as_of?: string) =>
-    request<Rollup>(`/rollup${qs({ as_of })}`, {}, token),
+  getRollup: (
+    query: Pick<Filtros, "sales_agent" | "manager" | "regional_office" | "product"> & {
+      as_of?: string;
+    }
+  ) => request<Rollup>(`/rollup${qs(query)}`),
 
-  scoreAvulsa: (
-    token: string,
-    body: { product: string; age_days?: number; porte?: string }
-  ) => request<ScoreAvulsaResult>("/score", { method: "POST", body: JSON.stringify(body) }, token),
+  scoreAvulsa: (body: { product: string; age_days?: number; porte?: string }) =>
+    request<ScoreAvulsaResult>("/score", { method: "POST", body: JSON.stringify(body) }),
 
-  async downloadProcessedCsv(token: string): Promise<Blob> {
-    const res = await fetch(`${API_BASE}/export/csv`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async downloadProcessedCsv(): Promise<Blob> {
+    const res = await fetch(`${API_BASE}/export/csv`);
     if (!res.ok) throw new ApiError(res.status, "falha ao baixar o dataset processado");
+    return res.blob();
+  },
+
+  async exportDealIds(query: DealsQuery): Promise<Blob> {
+    const res = await fetch(`${API_BASE}/export/deal-ids${qs(query)}`);
+    if (!res.ok) throw new ApiError(res.status, "falha ao exportar identificadores filtrados");
     return res.blob();
   },
 };

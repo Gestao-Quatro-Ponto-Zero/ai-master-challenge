@@ -81,10 +81,12 @@ def score_row(
         "prioridade": componentes.prioridade,
         "score": score,
         "confianca": nivel_confianca,
+        "confianca_label": confianca_mod.confianca_label(nivel_confianca),
         "razao_confianca": confianca_mod.razao_confianca(stage, has_account, age_days),
         "estado": estado_key,
         "estado_label": estado_mod.estado_label(estado_key),
         "plano_de_acao": plano,
+        "plano_de_acao_passos": explicacao.plano_de_acao_passos(estado_key, has_account, age_days),
     }
 
 

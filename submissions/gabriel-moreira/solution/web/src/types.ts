@@ -1,5 +1,3 @@
-export type Role = "sales_agent" | "supervisor" | "manager";
-
 export type Estado = "foco_urgente" | "acompanhar" | "engajar" | "qualificar" | "desistir";
 
 export const ESTADOS: Estado[] = ["foco_urgente", "acompanhar", "engajar", "qualificar", "desistir"];
@@ -14,17 +12,8 @@ export const ESTADO_LABELS: Record<Estado, string> = {
 
 export type Confianca = "A" | "B" | "C" | "D";
 
-export interface Identities {
-  sales_agents: string[];
-  supervisors: string[];
-  managers: string[];
-}
-
-export interface Session {
-  token: string;
-  role: Role;
-  identity: string;
-}
+export type SortKey = "score" | "prioridade" | "age_days" | "estado";
+export type SortOrder = "asc" | "desc";
 
 export interface Oportunidade {
   opportunity_id: string;
@@ -43,10 +32,56 @@ export interface Oportunidade {
   prioridade: number;
   score: number;
   confianca: Confianca;
+  confianca_label: string;
   razao_confianca: string;
   estado: Estado;
   estado_label: string;
   plano_de_acao: string;
+}
+
+export interface DealsEnvelope {
+  items: Oportunidade[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  contagem_por_estado: Record<Estado, number>;
+  excluidas_idade_desconhecida: number;
+}
+
+export interface Conta {
+  vinculada: boolean;
+  sector: string | null;
+  porte: string | null;
+  revenue: number | null;
+  employees: number | null;
+  year_established: number | null;
+  office_location: string | null;
+}
+
+export interface DealDetail extends Oportunidade {
+  conta: Conta;
+  plano_de_acao_passos: string[];
+}
+
+export interface FiltroVendedor {
+  nome: string;
+  manager: string | null;
+  regional_office: string | null;
+}
+
+export interface FiltroGerente {
+  nome: string;
+  regional_office: string | null;
+}
+
+export interface FilterOptions {
+  vendedores: FiltroVendedor[];
+  gerentes: FiltroGerente[];
+  escritorios: string[];
+  produtos: string[];
+  idade_min: number | null;
+  idade_max: number | null;
 }
 
 export interface Kpis {
@@ -58,13 +93,12 @@ export interface Kpis {
   data_inicio: string;
   data_fim: string;
   idade_maxima_aberta: number | null;
-  identidade: string;
-  papel: Role;
+  indicadores_historicos: string[];
 }
 
 export interface RollupLinha {
   chave: string;
-  nivel: "sales_agent" | "supervisor" | "regional_office";
+  nivel: "sales_agent" | "manager" | "regional_office";
   n_abertas: number;
   valor_esperado: number;
   por_estado: Record<Estado, number>;
@@ -91,10 +125,12 @@ export interface ScoreAvulsaResult {
   prioridade: number;
   score: number;
   confianca: Confianca;
+  confianca_label: string;
   razao_confianca: string;
   estado: Estado;
   estado_label: string;
   plano_de_acao: string;
+  plano_de_acao_passos: string[];
 }
 
 export interface Filtros {

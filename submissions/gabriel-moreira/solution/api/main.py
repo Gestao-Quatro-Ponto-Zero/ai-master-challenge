@@ -8,7 +8,7 @@ from config import settings
 from errors import register_error_handlers
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import deals, export, identity, kpis, management, scoring
+from routes import deals, export, kpis, management, scoring
 from state import build_app_state
 
 
@@ -20,7 +20,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Lead Scorer API",
-    description="Pipeline priorizado por valor em risco, com isolamento de dados por papel de acesso.",
+    description=(
+        "Pipeline priorizado por valor em risco. Sem autenticação — dataset público de "
+        "demonstração, sem informação real de cliente (ver Requirement 'Postura de segurança')."
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
@@ -31,12 +34,11 @@ app.add_middleware(
     allow_origins=settings.cors_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_headers=["Content-Type"],
 )
 
 register_error_handlers(app)
 
-app.include_router(identity.router)
 app.include_router(deals.router)
 app.include_router(kpis.router)
 app.include_router(management.router)

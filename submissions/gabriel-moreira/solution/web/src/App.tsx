@@ -1,80 +1,64 @@
-import { useCallback, useEffect, useMemo } from "react";
-import { api } from "./api";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { api, ApiError, type DealsQuery, triggerBlobDownload } from "./api";
+import { AgeRangeSlider } from "./components/AgeRangeSlider";
+import { DealDetailPanel } from "./components/DealDetailPanel";
 import { DealTable } from "./components/DealTable";
+import { EstadoChips } from "./components/EstadoChips";
 import { FilterBar } from "./components/FilterBar";
-import { IdentityPicker } from "./components/IdentityPicker";
 import { KpiTiles } from "./components/KpiTiles";
 import { ManagementView } from "./components/ManagementView";
-import { StateTabs, type Aba } from "./components/StateTabs";
-import { triggerBlobDownload } from "./api";
+import { PaginationControls } from "./components/PaginationControls";
+import { ViewTabs, type Aba } from "./components/ViewTabs";
 import { useAsync } from "./hooks/useAsync";
-import { useSession } from "./hooks/useSession";
 import { useUrlState } from "./hooks/useUrlState";
-import type { Estado, Filtros, Session } from "./types";
+import type { DealsEnvelope, Estado, Filtros, Rollup, SortKey, SortOrder } from "./types";
+import { ESTADOS } from "./types";
 
-const URL_DEFAULTS: Filtros & { aba: string } = {
-  aba: "foco_urgente",
-  sales_agent: undefined,
-  manager: undefined,
-  regional_office: undefined,
-  product: undefined,
-  confianca: undefined,
-  idade_min: undefined,
-  idade_max: undefined,
+const PAGE_SIZE = 100;
+
+const URL_DEFAULTS = {
+  aba: "oportunidades",
+  estados: undefined as string | undefined,
+  sales_agent: undefined as string | undefined,
+  manager: undefined as string | undefined,
+  regional_office: undefined as string | undefined,
+  product: undefined as string | undefined,
+  confianca: undefined as string | undefined,
+  idade_min: undefined as string | undefined,
+  idade_max: undefined as string | undefined,
+  page: "1",
+  sort: "score",
+  order: "desc",
+  deal: undefined as string | undefined,
 };
 
-export default function App() {
-  const { session, setSession, clearSession } = useSession();
-
-  const trocarIdentidade = useCallback(() => {
-    // Filtros e aba são específicos da identidade anterior — não fazem
-    // sentido sobreviver à troca (Requirement "Seleção de identidade").
-    window.history.replaceState({}, "", window.location.pathname);
-    clearSession();
-  }, [clearSession]);
-
-  if (!session) {
-    return <IdentityPicker onIdentified={setSession} />;
-  }
-
-  return <Painel session={session} onTrocarIdentidade={trocarIdentidade} />;
+function parseEstados(raw: string | undefined): Estado[] {
+  if (!raw) return [];
+  return raw.split(",").filter((e): e is Estado => (ESTADOS as string[]).includes(e));
 }
 
-function Painel({
-  session,
-  onTrocarIdentidade,
-}: {
-  session: Session;
-  onTrocarIdentidade: () => void;
-}) {
-  const token = session.token;
+function describeFiltros(filtros: Filtros, estados: Estado[]): string {
+  const partes: string[] = [];
+  if (estados.length > 0) partes.push(`Estado: ${estados.join(", ")}`);
+  if (filtros.sales_agent) partes.push(`Vendedor: ${filtros.sales_agent}`);
+  if (filtros.manager) partes.push(`Gerente: ${filtros.manager}`);
+  if (filtros.regional_office) partes.push(`Escritório: ${filtros.regional_office}`);
+  if (filtros.product) partes.push(`Produto: ${filtros.product}`);
+  if (filtros.confianca) partes.push(`Confiança: ${filtros.confianca}`);
+  if (filtros.idade_min || filtros.idade_max) {
+    partes.push(`Idade: ${filtros.idade_min ?? "0"}–${filtros.idade_max ?? "∞"}d`);
+  }
+  return partes.length > 0 ? partes.join(" · ") : "Funil completo";
+}
+
+export default function App() {
   const [urlState, updateUrlState] = useUrlState(URL_DEFAULTS);
-  // "Gestão" não existe para Sales Agent — uma URL herdada de outra
-  // identidade (ou de trás/frente do navegador) não pode deixar a aba
-  // presa numa aba que não existe para o papel corrente.
-  const aba: Aba =
-    urlState.aba === "gestao" && session.role === "sales_agent"
-      ? "foco_urgente"
-      : (urlState.aba as Aba);
 
-  const {
-    data: todasOportunidades,
-    loading: carregandoDeals,
-    error: erroDeals,
-    status: statusDeals,
-  } = useAsync(() => api.getDeals(token, {}), [token]);
-  const { data: kpis, status: statusKpis } = useAsync(() => api.getKpis(token), [token]);
-  const { data: rollup, status: statusRollup } = useAsync(
-    () => (session.role !== "sales_agent" ? api.getRollup(token) : Promise.resolve(null)),
-    [token, session.role]
-  );
-
-  // Token inválido ou expirado em qualquer chamada -> volta ao seletor de
-  // identidade (Requirement "Token expirado": 401 exige nova identificação).
-  const sessaoInvalida = [statusDeals, statusKpis, statusRollup].includes(401);
-  useEffect(() => {
-    if (sessaoInvalida) onTrocarIdentidade();
-  }, [sessaoInvalida, onTrocarIdentidade]);
+  const aba = (urlState.aba as Aba) ?? "oportunidades";
+  const estados = useMemo(() => parseEstados(urlState.estados), [urlState.estados]);
+  const page = Number(urlState.page) || 1;
+  const sort = (urlState.sort as SortKey) || "score";
+  const order = (urlState.order as SortOrder) || "desc";
 
   const filtros: Filtros = {
     sales_agent: urlState.sales_agent,
@@ -86,109 +70,325 @@ function Painel({
     idade_max: urlState.idade_max,
   };
 
-  const filtradas = useMemo(() => {
-    if (!todasOportunidades) return [];
-    return todasOportunidades.filter((o) => {
-      if (aba !== "gestao" && o.estado !== aba) return false;
-      if (filtros.sales_agent && o.sales_agent !== filtros.sales_agent) return false;
-      if (filtros.manager && o.manager !== filtros.manager) return false;
-      if (filtros.regional_office && o.regional_office !== filtros.regional_office) return false;
-      if (filtros.product && o.product !== filtros.product) return false;
-      if (filtros.confianca && o.confianca !== filtros.confianca) return false;
-      if (filtros.idade_min && (o.age_days ?? -Infinity) < Number(filtros.idade_min)) return false;
-      if (filtros.idade_max && (o.age_days ?? Infinity) > Number(filtros.idade_max)) return false;
-      return true;
-    });
-  }, [todasOportunidades, aba, filtros]);
+  const { data: filterOptions } = useAsync(() => api.getFilterOptions(), []);
 
-  const contagensPorEstado = useMemo(() => {
-    const counts: Record<Estado, number> = {
-      foco_urgente: 0,
-      acompanhar: 0,
-      engajar: 0,
-      qualificar: 0,
-      desistir: 0,
+  const dealsQuery: DealsQuery = useMemo(
+    () => ({
+      estado: estados.length > 0 ? estados : undefined,
+      sales_agent: filtros.sales_agent,
+      manager: filtros.manager,
+      regional_office: filtros.regional_office,
+      product: filtros.product,
+      confianca: filtros.confianca,
+      idade_min: filtros.idade_min,
+      idade_max: filtros.idade_max,
+      page,
+      page_size: PAGE_SIZE,
+      sort,
+      order,
+    }),
+    [estados, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca, filtros.idade_min, filtros.idade_max, page, sort, order]
+  );
+
+  const kpisQuery: DealsQuery = useMemo(
+    () => ({
+      estado: dealsQuery.estado,
+      sales_agent: dealsQuery.sales_agent,
+      manager: dealsQuery.manager,
+      regional_office: dealsQuery.regional_office,
+      product: dealsQuery.product,
+      confianca: dealsQuery.confianca,
+      idade_min: dealsQuery.idade_min,
+      idade_max: dealsQuery.idade_max,
+    }),
+    [dealsQuery]
+  );
+
+  const [envelope, setEnvelope] = useState<DealsEnvelope | null>(null);
+  const [dealsLoading, setDealsLoading] = useState(true);
+  const [dealsError, setDealsError] = useState<string | null>(null);
+  const dealsControllerRef = useRef<AbortController | null>(null);
+  const dealsQueryKey = JSON.stringify(dealsQuery);
+
+  useEffect(() => {
+    if (aba !== "oportunidades") return;
+    dealsControllerRef.current?.abort();
+    const controller = new AbortController();
+    dealsControllerRef.current = controller;
+    setDealsLoading(true);
+    api
+      .getDeals(dealsQuery, controller.signal)
+      .then((data) => {
+        setEnvelope(data);
+        setDealsError(null);
+        setDealsLoading(false);
+      })
+      .catch((err: unknown) => {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        setDealsError(err instanceof ApiError ? err.message : "erro desconhecido");
+        setDealsLoading(false);
+      });
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dealsQueryKey, aba]);
+
+  const [rollup, setRollup] = useState<Rollup | null>(null);
+  useEffect(() => {
+    if (aba !== "gestao") return;
+    let cancelado = false;
+    api
+      .getRollup({
+        sales_agent: filtros.sales_agent,
+        manager: filtros.manager,
+        regional_office: filtros.regional_office,
+        product: filtros.product,
+      })
+      .then((data) => {
+        if (!cancelado) setRollup(data);
+      });
+    return () => {
+      cancelado = true;
     };
-    for (const o of todasOportunidades ?? []) {
-      counts[o.estado] += 1;
-    }
-    return counts;
-  }, [todasOportunidades]);
+  }, [aba, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product]);
 
-  function exportarIdsFiltrados() {
-    const linhas = ["opportunity_id", ...filtradas.map((o) => o.opportunity_id)];
-    const blob = new Blob([linhas.join("\n")], { type: "text/csv;charset=utf-8" });
-    triggerBlobDownload(blob, "desistir_filtrado.csv");
+  const onFilterChange = useCallback(
+    (patch: Partial<Filtros>) => {
+      updateUrlState({ ...(patch as Partial<typeof URL_DEFAULTS>), page: "1" });
+    },
+    [updateUrlState]
+  );
+
+  const onEstadoChange = useCallback(
+    (next: Estado[]) => {
+      updateUrlState({ estados: next.length > 0 ? next.join(",") : undefined, page: "1" });
+    },
+    [updateUrlState]
+  );
+
+  const onIdadeCommit = useCallback(
+    (min: number, max: number) => {
+      const bounds = filterOptions
+        ? [filterOptions.idade_min, filterOptions.idade_max]
+        : [null, null];
+      const minIsDefault = bounds[0] !== null && min === bounds[0];
+      const maxIsDefault = bounds[1] !== null && max === bounds[1];
+      updateUrlState({
+        idade_min: minIsDefault ? undefined : String(min),
+        idade_max: maxIsDefault ? undefined : String(max),
+        page: "1",
+      });
+    },
+    [filterOptions, updateUrlState]
+  );
+
+  const onSortChange = useCallback(
+    (key: SortKey) => {
+      if (key === sort) {
+        updateUrlState({ order: order === "desc" ? "asc" : "desc", page: "1" });
+      } else {
+        updateUrlState({ sort: key, order: "desc", page: "1" });
+      }
+    },
+    [sort, order, updateUrlState]
+  );
+
+  const onClearAll = useCallback(() => {
+    updateUrlState({
+      estados: undefined,
+      sales_agent: undefined,
+      manager: undefined,
+      regional_office: undefined,
+      product: undefined,
+      confianca: undefined,
+      idade_min: undefined,
+      idade_max: undefined,
+      page: "1",
+    });
+  }, [updateUrlState]);
+
+  const activeCount =
+    [filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca].filter(
+      Boolean
+    ).length +
+    (estados.length > 0 ? 1 : 0) +
+    (filtros.idade_min || filtros.idade_max ? 1 : 0);
+
+  async function exportarIdsFiltrados() {
+    const blob = await api.exportDealIds(dealsQuery);
+    triggerBlobDownload(blob, "oportunidades_filtradas.csv");
   }
+
+  // Painel: montado a partir de `openDeal`, não diretamente de
+  // `urlState.deal`. Um identificador inexistente limpa o parâmetro da
+  // URL imediatamente (para que recarregar/compartilhar não repita o
+  // estado quebrado), mas o painel continua montado exibindo o erro até
+  // o usuário fechar — se ele desmontasse junto com o parâmetro, a
+  // mensagem nunca chegaria a ser vista (design.md, decisão 7).
+  const [openDeal, setOpenDeal] = useState<string | undefined>(urlState.deal);
+  useEffect(() => {
+    if (urlState.deal) setOpenDeal(urlState.deal);
+  }, [urlState.deal]);
+
+  function openDetail(opportunityId: string) {
+    updateUrlState({ deal: opportunityId });
+  }
+
+  function closeDetail() {
+    updateUrlState({ deal: undefined });
+    setOpenDeal(undefined);
+  }
+
+  function handleDetailNotFound() {
+    updateUrlState({ deal: undefined });
+  }
+
+  async function navigateDetail(direction: "prev" | "next") {
+    if (!envelope || !openDeal) return;
+    const idx = envelope.items.findIndex((o) => o.opportunity_id === openDeal);
+    if (idx === -1) return;
+
+    if (direction === "prev") {
+      if (idx > 0) {
+        updateUrlState({ deal: envelope.items[idx - 1].opportunity_id });
+        return;
+      }
+      if (page <= 1) return;
+      const anterior = await api.getDeals({ ...dealsQuery, page: page - 1 });
+      const ultimo = anterior.items[anterior.items.length - 1];
+      if (ultimo) updateUrlState({ page: String(page - 1), deal: ultimo.opportunity_id });
+    } else {
+      if (idx < envelope.items.length - 1) {
+        updateUrlState({ deal: envelope.items[idx + 1].opportunity_id });
+        return;
+      }
+      if (page >= envelope.total_pages) return;
+      const proxima = await api.getDeals({ ...dealsQuery, page: page + 1 });
+      const primeiro = proxima.items[0];
+      if (primeiro) updateUrlState({ page: String(page + 1), deal: primeiro.opportunity_id });
+    }
+  }
+
+  const idxAtual = envelope && openDeal ? envelope.items.findIndex((o) => o.opportunity_id === openDeal) : -1;
+  const prevDisabled = idxAtual <= 0 && page <= 1;
+  const nextDisabled = !envelope || (idxAtual === envelope.items.length - 1 && page >= envelope.total_pages);
+
+  const idadeBounds: [number, number] | null =
+    filterOptions && filterOptions.idade_min !== null && filterOptions.idade_max !== null
+      ? [filterOptions.idade_min, filterOptions.idade_max]
+      : null;
+  const idadeValue: [number, number] = idadeBounds
+    ? [
+        filtros.idade_min ? Number(filtros.idade_min) : idadeBounds[0],
+        filtros.idade_max ? Number(filtros.idade_max) : idadeBounds[1],
+      ]
+    : [0, 0];
 
   return (
     <div className="min-h-screen bg-bg">
       <header className="bg-white border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-navy">Pipeline Priorizado</h1>
-          <button
-            type="button"
-            onClick={onTrocarIdentidade}
-            className="text-xs text-muted hover:text-navy underline"
-          >
-            Trocar identidade
-          </button>
+        <div className="max-w-6xl mx-auto px-4 py-4">
+          <h1 className="text-lg font-bold text-navy">Lead Scorer | G4 For Sales</h1>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-6">
-        {erroDeals && statusDeals !== 401 && (
-          <p className="text-alert text-sm bg-alert/5 border border-alert rounded-xs px-3 py-2">
-            Não foi possível carregar o pipeline: {erroDeals}
-          </p>
-        )}
+        <KpiTiles query={kpisQuery} descricaoRecorte={describeFiltros(filtros, estados)} />
 
-        {kpis && <KpiTiles kpis={kpis} session={session} />}
-
-        <StateTabs
-          aba={aba}
-          role={session.role}
-          counts={contagensPorEstado}
-          onChange={(next) => updateUrlState({ aba: next })}
-        />
+        <ViewTabs aba={aba} onChange={(next) => updateUrlState({ aba: next })} />
 
         {aba === "gestao" ? (
-          rollup ? (
-            <ManagementView rollup={rollup} session={session} />
-          ) : (
-            <p className="text-muted">Carregando rollup…</p>
-          )
+          <>
+            {filterOptions && (
+              <FilterBar
+                options={filterOptions}
+                filtros={filtros}
+                activeCount={activeCount}
+                onChange={onFilterChange}
+                onClearAll={onClearAll}
+              />
+            )}
+            {rollup ? <ManagementView rollup={rollup} /> : <p className="text-muted">Carregando rollup…</p>}
+          </>
         ) : (
           <>
-            {todasOportunidades && (
+            {filterOptions && (
               <FilterBar
-                todasOportunidades={todasOportunidades}
-                role={session.role}
+                options={filterOptions}
                 filtros={filtros}
-                onChange={(patch) => updateUrlState(patch as Partial<typeof URL_DEFAULTS>)}
+                activeCount={activeCount}
+                onChange={onFilterChange}
+                onClearAll={onClearAll}
               />
             )}
 
-            {aba === "desistir" && (
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={exportarIdsFiltrados}
-                  className="text-xs font-semibold text-alert border border-alert rounded-xs px-3 py-1.5 hover:bg-alert/5"
-                >
-                  Exportar IDs filtrados (CSV)
-                </button>
-              </div>
+            {envelope && (
+              <EstadoChips selecionados={estados} counts={envelope.contagem_por_estado} onChange={onEstadoChange} />
             )}
 
-            {carregandoDeals ? (
+            {idadeBounds && (
+              <AgeRangeSlider
+                bounds={idadeBounds}
+                value={idadeValue}
+                excluidasSemIdade={envelope?.excluidas_idade_desconhecida ?? 0}
+                onCommit={onIdadeCommit}
+              />
+            )}
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={exportarIdsFiltrados}
+                className="text-xs font-semibold text-navy border border-border rounded-xs px-3 py-1.5 hover:border-gold"
+              >
+                Exportar {envelope?.total ?? 0} oportunidade{envelope?.total === 1 ? "" : "s"} filtrada
+                {envelope?.total === 1 ? "" : "s"} (CSV)
+              </button>
+            </div>
+
+            {dealsError && (
+              <p className="text-alert text-sm bg-alert/5 border border-alert rounded-xs px-3 py-2">
+                Não foi possível carregar o pipeline: {dealsError}
+              </p>
+            )}
+
+            {dealsLoading && !envelope ? (
               <p className="text-muted">Carregando oportunidades…</p>
             ) : (
-              <DealTable oportunidades={filtradas} />
+              envelope && (
+                <>
+                  <DealTable
+                    oportunidades={envelope.items}
+                    sort={sort}
+                    order={order}
+                    total={envelope.total}
+                    page={envelope.page}
+                    totalPages={envelope.total_pages}
+                    onSortChange={onSortChange}
+                    onOpenDetail={openDetail}
+                  />
+                  <PaginationControls
+                    page={envelope.page}
+                    totalPages={envelope.total_pages}
+                    onChange={(next) => updateUrlState({ page: String(next) })}
+                  />
+                </>
+              )
             )}
           </>
         )}
       </main>
+
+      {openDeal && (
+        <DealDetailPanel
+          opportunityId={openDeal}
+          onClose={closeDetail}
+          onNotFound={handleDetailNotFound}
+          onPrev={() => navigateDetail("prev")}
+          onNext={() => navigateDetail("next")}
+          prevDisabled={prevDisabled}
+          nextDisabled={nextDisabled}
+        />
+      )}
     </div>
   );
 }

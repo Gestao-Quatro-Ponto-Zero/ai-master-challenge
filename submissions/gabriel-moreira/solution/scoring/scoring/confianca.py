@@ -50,3 +50,16 @@ def razao_confianca(stage: str, has_account: bool, age_days: float | None) -> st
     if has_account:
         return _RAZAO_TEMPLATES["B_conta"]
     return _RAZAO_TEMPLATES["B_engaging"]
+
+
+_LABELS: dict[str, str] = {
+    "A": "Dados completos",
+    "B": "Dados parciais",
+    "C": "Cadastro incompleto",
+    "D": "Fora do histórico",
+}
+
+
+def confianca_label(nivel: str) -> str:
+    """Rótulo legível do nível de CONFIANÇA — descreve informação, nunca probabilidade de fechamento."""
+    return _LABELS[nivel]

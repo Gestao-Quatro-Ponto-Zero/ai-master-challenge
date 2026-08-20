@@ -1,63 +1,67 @@
 import { useMemo } from "react";
-import type { Confianca, Filtros, Oportunidade, Role } from "../types";
+import type { Confianca, FilterOptions, Filtros } from "../types";
 
-function uniqueSorted(values: (string | null)[]): string[] {
-  return Array.from(new Set(values.filter((v): v is string => !!v))).sort((a, b) =>
-    a.localeCompare(b, "pt-BR")
-  );
-}
-
+/** Filtros de organização (vendedor, gerente, escritório), produto e
+ * confiança — ordinários sobre o funil inteiro, sem condicionamento a
+ * papel (Requirement "Filtros"). Opções vêm de `/filter-options`, nunca
+ * dos itens de uma página. Selecionar um gerente ou escritório encadeia
+ * (restringe) as opções de vendedor. */
 export function FilterBar({
-  todasOportunidades,
-  role,
+  options,
   filtros,
+  activeCount,
   onChange,
+  onClearAll,
 }: {
-  todasOportunidades: Oportunidade[];
-  role: Role;
+  options: FilterOptions;
   filtros: Filtros;
+  activeCount: number;
   onChange: (patch: Partial<Filtros>) => void;
+  onClearAll: () => void;
 }) {
-  const opcoes = useMemo(
-    () => ({
-      vendedores: uniqueSorted(todasOportunidades.map((o) => o.sales_agent)),
-      gerentes: uniqueSorted(todasOportunidades.map((o) => o.manager)),
-      escritorios: uniqueSorted(todasOportunidades.map((o) => o.regional_office)),
-      produtos: uniqueSorted(todasOportunidades.map((o) => o.product)),
-    }),
-    [todasOportunidades]
+  const vendedores = useMemo(
+    () =>
+      options.vendedores
+        .filter((v) => !filtros.manager || v.manager === filtros.manager)
+        .filter((v) => !filtros.regional_office || v.regional_office === filtros.regional_office)
+        .map((v) => v.nome)
+        .sort((a, b) => a.localeCompare(b, "pt-BR")),
+    [options.vendedores, filtros.manager, filtros.regional_office]
+  );
+
+  const gerentes = useMemo(
+    () =>
+      options.gerentes
+        .filter((g) => !filtros.regional_office || g.regional_office === filtros.regional_office)
+        .map((g) => g.nome)
+        .sort((a, b) => a.localeCompare(b, "pt-BR")),
+    [options.gerentes, filtros.regional_office]
   );
 
   return (
     <div className="flex flex-wrap gap-3 items-end bg-white border border-border rounded-sm p-3">
-      {role !== "sales_agent" && (
-        <Select
-          label="Vendedor"
-          value={filtros.sales_agent ?? ""}
-          options={opcoes.vendedores}
-          onChange={(v) => onChange({ sales_agent: v || undefined })}
-        />
-      )}
-      {role === "manager" && (
-        <Select
-          label="Gerente"
-          value={filtros.manager ?? ""}
-          options={opcoes.gerentes}
-          onChange={(v) => onChange({ manager: v || undefined })}
-        />
-      )}
-      {opcoes.escritorios.length > 1 && (
-        <Select
-          label="Escritório"
-          value={filtros.regional_office ?? ""}
-          options={opcoes.escritorios}
-          onChange={(v) => onChange({ regional_office: v || undefined })}
-        />
-      )}
+      <Select
+        label="Vendedor"
+        value={filtros.sales_agent ?? ""}
+        options={vendedores}
+        onChange={(v) => onChange({ sales_agent: v || undefined })}
+      />
+      <Select
+        label="Gerente"
+        value={filtros.manager ?? ""}
+        options={gerentes}
+        onChange={(v) => onChange({ manager: v || undefined })}
+      />
+      <Select
+        label="Escritório"
+        value={filtros.regional_office ?? ""}
+        options={options.escritorios}
+        onChange={(v) => onChange({ regional_office: v || undefined })}
+      />
       <Select
         label="Produto"
         value={filtros.product ?? ""}
-        options={opcoes.produtos}
+        options={options.produtos}
         onChange={(v) => onChange({ product: v || undefined })}
       />
       <Select
@@ -66,33 +70,22 @@ export function FilterBar({
         options={["A", "B", "C", "D"]}
         onChange={(v) => onChange({ confianca: (v as Confianca) || undefined })}
       />
-      <NumberField
-        label="Idade mín. (dias)"
-        value={filtros.idade_min ?? ""}
-        onChange={(v) => onChange({ idade_min: v || undefined })}
-      />
-      <NumberField
-        label="Idade máx. (dias)"
-        value={filtros.idade_max ?? ""}
-        onChange={(v) => onChange({ idade_max: v || undefined })}
-      />
-      <button
-        type="button"
-        onClick={() =>
-          onChange({
-            sales_agent: undefined,
-            manager: undefined,
-            regional_office: undefined,
-            product: undefined,
-            confianca: undefined,
-            idade_min: undefined,
-            idade_max: undefined,
-          })
-        }
-        className="text-xs text-muted hover:text-navy underline ml-auto"
-      >
-        Limpar filtros
-      </button>
+
+      <div className="ml-auto flex items-center gap-3">
+        {activeCount > 0 && (
+          <span className="text-xs text-muted">
+            {activeCount} filtro{activeCount === 1 ? "" : "s"} ativo{activeCount === 1 ? "" : "s"}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={onClearAll}
+          disabled={activeCount === 0}
+          className="text-xs text-muted hover:text-navy underline disabled:opacity-40 disabled:hover:text-muted disabled:no-underline"
+        >
+          Limpar filtros
+        </button>
+      </div>
     </div>
   );
 }
@@ -123,29 +116,6 @@ function Select({
           </option>
         ))}
       </select>
-    </label>
-  );
-}
-
-function NumberField({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  return (
-    <label className="text-xs text-muted flex flex-col gap-1">
-      {label}
-      <input
-        type="number"
-        min={0}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="border border-border rounded-xs px-2 py-1.5 text-sm text-navy bg-white w-28"
-      />
     </label>
   );
 }

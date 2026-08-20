@@ -4,7 +4,7 @@
 
 **Owner:** Gabriel Moreira
 
-**Date:** 2026-08-19 (formula revised same day — see decisions-log.md)
+**Date:** 2026-08-19 (formula revised same day — see decisions-log.md); RBAC removed 2026-08-20
 
 ---
 
@@ -79,7 +79,7 @@ The SCORE cutoff is 50 — the median of the reference distribution itself (won 
 
 Each opportunity gets a deterministic-template explanation + action plan, not just a number.
 
-**Access control:** Sales Agent / Supervisor / Manager, mapped 1:1 onto the real hierarchy already in `sales_teams.csv` (35 `sales_agent` → 6 `manager` → 3 `regional_office`). No password — an identity picker issues a server-signed token with scope already resolved; every data endpoint enforces that scope server-side (a client filter can only narrow it, never widen it — out-of-scope requests get 403). This is identity selection, not real authentication; documented as a limitation.
+**Access control:** none. Removed 2026-08-20 (see decisions-log.md) — every data endpoint is open, no `Authorization` header. Sales agent, manager and regional office (the real hierarchy in `sales_teams.csv`: 35 `sales_agent` → 6 `manager` → 3 `regional_office`) are ordinary filters over the whole funnel, not identities with scope. Acceptable only because the dataset is public demo data with no real customer information; documented as an assumed limitation, not hidden.
 
 **CSV export:** every data load writes a full processed dataset (all 2.089 open opportunities + every derived field) to disk for offline consultation. Separate from the existing "export filtered IDs" button on the Desistir tab.
 
@@ -89,16 +89,16 @@ Each opportunity gets a deterministic-template explanation + action plan, not ju
 
 ## Stack
 
-- **Backend:** FastAPI, Python 3.10+, lightweight token signing for sessions
+- **Backend:** FastAPI, Python 3.10+, no authentication
 - **Frontend:** React 18+, TypeScript
 - **Data:** Pandas in-memory, behind a clean repository module
 - **Scoring:** Pure Python package in `scoring/`, imported by API, export, and validation script
-- **No password auth** (documented limitation) — identity-based RBAC with server-enforced scope IS in scope
+- **No authentication at all** (documented limitation) — every endpoint is open; sales agent/manager/office are plain filters
 - **Theme:** G4 Business palette (navy #001F35, gold #B9915B, light bg #FAFBFC, alert #AF4332 exclusive to Desistir)
 
 **Testing (part of Definition of Done, not optional):**
-- Unit: scoring engine (shrinkage incl. `k=∞` collapse, aging curves, censoring, CONFIANÇA branches, ESTADO assignment, explanation generation) + scope resolution
-- E2E: full API cycle — identify → token → scoped listing → out-of-scope request (403) → no-token request (401) → role-restricted rollup → Manager-only CSV download
+- Unit: scoring engine (shrinkage incl. `k=∞` collapse, aging curves, censoring, CONFIANÇA branches, ESTADO assignment, explanation generation, action-plan steps)
+- API: contract tests for pagination (page union has no dup/gap, sort over the whole slice, stable tie-break), deal detail, filter options, filtered-id export — none of it gated behind identification
 
 ---
 
@@ -125,14 +125,14 @@ Still holding from the original session:
 1. Score on value/timing, not a win-probability classifier — AUC evidence killed the predictive path
 2. Rank open deals (not score new leads) — 2.089 open is the real problem
 3. Product coverage as account potential, not deal signal — 39.6% effort on 5.4% revenue
-4. FastAPI + React (not Streamlit) — now also required by RBAC: isolation must be server-side
+4. FastAPI + React (not Streamlit) — a clean API/UI split, needed regardless of auth
 5. Validate with permutation tests, ship the evidence
 
 **Revised 2026-08-19 (reversing earlier calls, with the new evidence that justified it):**
 - `MULT_PORTE` is **back in** VALOR — variance decomposition shows product+porte explains 98.7% vs. 98.3% product-alone, a real 0.4pp gain I hadn't measured before. Default 1.00 when account unknown is what makes "score even without account" literal.
 - Percentile normalization is **back** for the display SCORE — matching the new spec's `SCORE = percentil(PRIORIDADE) × 100` — but against the fixed historical population of won deals, not the live open funnel. That's strictly more stable than the original percentile-scoring rejection was worried about: the reference never depends on what's currently in the pipeline.
 - Tiers (Diamante/Ouro/Prata/Bronze) + lanes (Prioridades/Novos/Zumbis) collapsed into 5 ESTADO values — a 4×2 decision table crossing CONFIANÇA with SCORE (≥50 or not), not CONFIANÇA alone. First draft had SCORE only mattering within CONFIANÇA A; corrected same-day after review — CONFIANÇA is the trust in the score, ESTADO is the action, and the action genuinely depends on both.
-- Auth is no longer fully out of scope — identity-based RBAC with server-enforced isolation is now required (still no password).
+- Auth is no longer fully out of scope — identity-based RBAC with server-enforced isolation is now required (still no password). **Reversed 2026-08-20** — the RBAC built here was removed entirely (deletion, not a feature flag); see the 2026-08-20 entry in `decisions-log.md` for why.
 
 Still true / unchanged:
 - Win-rate by agent/product/sector: no signal (confirmed twice now — permutation tests AND the hierarchical `k=∞` collapse).
@@ -144,7 +144,7 @@ Still true / unchanged:
 
 **Doesn't do:**
 - Categorical win-probability forecasting (`p̂` varies only 0.60–0.75; real differentiation is value+timing).
-- Real password authentication — identity selection with server-enforced scope, not SSO.
+- Any authentication or authorization — every endpoint is open, not even the identity-selection scoping from the earlier design. Not SSO, not RBAC.
 - Behavioral intent (no email opens, call logs, page visits).
 - Automatic portfolio rebalancing — insight surfaces in Gestão, policy stays off-system.
 - Real persistence. All in-memory; CSV export is the closest thing to a durable artifact.
@@ -152,7 +152,7 @@ Still true / unchanged:
 
 **Evolution (MVP → production):**
 1. **Database** (Supabase) + auto-score + auto-regenerate the processed CSV on new deal
-2. **Real auth** (SSO/OIDC) on top of the same three roles
+2. **Real auth** (SSO/OIDC) plus server-enforced scope over sales agent/manager/office, both absent today
 3. **Behavioral signal** (CRM webhook + speed-to-lead model) to recalibrate `p̂`
 4. **A/B test:** half the reps on score, half on gut; track revenue
 5. **Mobile** (React Native)
@@ -177,7 +177,7 @@ python backtest.py
 
 # Tests
 cd solution/scoring && pytest            # unit
-cd solution/api && pytest tests/e2e      # e2e, incl. RBAC isolation
+cd solution/api && pytest                # contract/pagination/e2e — no auth to exercise
 ```
 
 Or via Docker:
@@ -194,7 +194,7 @@ docker compose up
 - **Then:** [`analise-lead-scoring.md`](analise-lead-scoring.md) for the evidence behind every number.
 - **Code:** `scoring/` is the core; `api/`, `web/`, `validation/`, and the CSV export are all consumers. Keep that separation — it's what makes "the number shown = the number validated = the number exported" true.
 - **Watch for:** PRIORIDADE is deterministic and auditable; SCORE (the percentile) is only stable between dataset generations, not between requests — that distinction is load-bearing, don't collapse it back into a single always-live percentile.
-- **RBAC:** scope enforcement lives server-side in the API, not the UI. If you're extending an endpoint, the scope check goes in first, before the query.
+- **No auth:** every endpoint is open by design (see the 2026-08-20 decisions-log entry). If you're extending an endpoint, don't reintroduce a scope check — sales agent/manager/office stay plain filters, same as product.
 
 ---
 
@@ -204,4 +204,4 @@ docker compose up
 - **Why does age *raise* `p̂` instead of lowering it?** That's what the data shows (`p_ganho(0)=0.632` → `p_ganho(120)=0.751`). What age actually costs is the decision window (`janela(t)`), which is what URGÊNCIA tracks.
 - **Why revert to the prior above 138 days instead of extrapolating?** Forward-filling would reward the most abandoned deal in the funnel with the curve's highest score. No closed deal in the data ever took that long — there's no precedent to extrapolate from.
 - **Why 5 estados instead of 4 tiers?** They're not a relabeling — they fold in both the old tiers and the old lanes, and they cross CONFIANÇA with SCORE in a 4×2 table, not CONFIANÇA alone. CONFIANÇA answers "how much should I trust this number"; ESTADO answers "what do I do about it" — and that answer genuinely depends on both how much the deal is worth and how solid that number is. A high score you don't fully trust gets "keep watching," not "drop everything."
-- **Why no real login?** Time budget for a 4–6h challenge. What's real is server-side scope enforcement once identity is picked — documented explicitly as a limitation, not hidden.
+- **Why no login at all?** The dataset is public demo data, no real customer information — so the friction of an identity gate cost more than the isolation demo was worth. An earlier version of this solution did have identity-based RBAC with server-enforced scope; it was removed by deletion, not a flag, on 2026-08-20 (see decisions-log.md). Documented explicitly as a limitation, not hidden.

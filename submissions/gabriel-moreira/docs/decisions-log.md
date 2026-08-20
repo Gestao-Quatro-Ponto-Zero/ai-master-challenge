@@ -181,6 +181,38 @@ Revalidei contra `challenges/build-003-lead-scorer/README.md`: a fórmula contin
 
 ---
 
+## 2026-08-20 — Refino de UX do pipeline: remoção do RBAC, paginação real, painel de detalhe
+
+**Contexto:** revisão da entrega já validada (formula, ESTADO, RBAC), motivada por cinco pontos de atrito no uso real da ferramenta — identidade como portão de entrada, aba inicial escondendo 80% do funil, idade filtrada por digitação, CONFIANÇA sem legenda, e a linha da tabela sobrecarregada. Proposta formal em `openspec/changes/refine-pipeline-ux/proposal.md`.
+
+### Remoção completa do RBAC — por deleção, não por desligamento
+
+**Decisão:** `api/auth/` inteiro, `routes/identity.py`, `get_scope`, os endpoints `/identify` e `/identities`, o token de sessão assinado (`itsdangerous`) e os testes de isolamento de dados (`api/tests/test_scope_unit.py`) foram apagados — não desativados por flag. Vendedor, gerente e escritório regional deixam de ser identidades com escopo e passam a ser filtros ordinários sobre o funil completo, iguais a produto e confiança. Todo endpoint de dados responde sem cabeçalho `Authorization`.
+
+**Por quê:** a entrada de 2026-08-19 já registrava a limitação de que isso era "seleção de identidade, não autenticação real" — mas o RBAC ainda assim colocava um portão de 44 opções antes de qualquer dado aparecer, e trocar de recorte custava derrubar a sessão inteira. Avaliando o uso real da ferramenta (comparar "o funil todo" com "o time do Melvin" em segundos), o custo de fricção da tela de identidade passou a pesar mais do que o valor de demonstrar isolamento server-side — especialmente porque o dataset é público e de demonstração, sem informação real de cliente, o que a entrada anterior já reconhecia. Mantida a maquinaria "desligável por config" foi descartada deliberadamente: duas superfícies de comportamento para manter e testar, quando a decisão real era remover a funcionalidade.
+
+**Limitação assumida (substitui a anterior):** não há mais nenhum controle de acesso, nem sequer o "isolamento de escopo real, identificação sem senha" que existia antes. Qualquer cliente lê o funil inteiro. Aceitável apenas porque o dataset é público. Produção exigiria SSO/OIDC real e escopo por papel aplicado no servidor — ambos hoje inexistentes, não apenas desligados.
+
+### Paginação no servidor, não no cliente — revertendo a primeira versão deste próprio design
+
+**Decisão:** `GET /deals` passa a paginar (100 por página), ordenar (SCORE/PRIORIDADE/idade, com desempate obrigatório por `opportunity_id`) e filtrar inteiramente no servidor, devolvendo um envelope (`items`, `total`, `page`, `total_pages`, contagem por estado, contagem de excluídas por idade desconhecida) em vez do funil completo. Um módulo de consulta compartilhado (`api/query.py`) resolve filtro/ordenação/paginação uma única vez, reusado por `/deals`, `/kpis`, `/rollup` e a nova exportação de identificadores filtrados.
+
+**Por quê:** a primeira versão deste design (dentro da mesma mudança, revisada antes de chegar à implementação) paginava no cliente — o servidor devolvia o recorte inteiro e o React fatiava em páginas de 100. Revisitada porque o problema real não era paginar, era continuar pagando o custo de trazer 2.089 linhas de JSON a cada filtro, mesmo mostrando só 100. Com o RBAC removido no mesmo passo — e as duas mudanças tocando as mesmas cinco rotas —, fazer as duas separadamente teria significado passar duas vezes pela mesma rota, o cenário exato em que um parâmetro esquecido sobrevive.
+
+### Plano de ação em passos, mantendo o resumo de uma linha
+
+**Decisão:** `scoring/scoring/explicacao.py` ganha `plano_de_acao_passos()` — 2 a 4 passos derivados de ESTADO, com o passo de enriquecimento de cadastro anexado no início quando falta conta e o de revisão em lote anexado no fim quando censurado. `plano_de_acao` (o texto de uma linha já existente, decisão de 2026-08-19) é mantido sem alteração — é o que a coluna atual do CSV consome, e quebrar isso quebraria quem já lê o arquivo.
+
+**Por quê:** o texto de uma linha explica o quê; não dizia o como, passo a passo. Continua determinístico e testado pelo mesmo motivo que a decisão original de 2026-08-19 registrou: auditabilidade — um LLM geraria planos diferentes para o mesmo negócio em execuções diferentes.
+
+### Documentação da entrega tratada como parte da mudança, não como acerto posterior
+
+**Decisão:** `README.md`, `docs/architecture.md` (este arquivo você já está lendo a versão corrigida) e `analise-lead-scoring.md` foram atualizados no mesmo passo que o código, removendo toda descrição de controle de acesso por papel, com verificação final por busca textual pelos termos "escopo", "token", "papel" e "isolamento" em todo `submissions/gabriel-moreira/`.
+
+**Por quê:** uma entrega que descreve um controle de acesso que não existe mais é pior do que uma que nunca teve — lê como omissão ou desonestidade, não como evolução documentada. O risco real desta mudança nunca foi técnico, foi de narrativa: apagar RBAC já testado e destacado no material do desafio exige que a documentação acompanhe a remoção linha por linha, não como tarefa de limpeza para depois.
+
+---
+
 ## Próximas decisões (se houver continuação)
 
 - [ ] A/B test: metade dos vendedores prioriza pelo score, metade não. Métrica: receita por vendedor por trimestre.

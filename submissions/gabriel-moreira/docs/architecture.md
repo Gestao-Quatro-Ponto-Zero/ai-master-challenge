@@ -27,9 +27,8 @@ Dois números, nunca combinados: PRIORIDADE ordena a fila (em dólares — "quan
 
 **Backend:**
 - Python 3.10+
-- FastAPI (REST API, identificação por papel, `/score` para oportunidade avulsa)
+- FastAPI (REST API aberta — sem autenticação; listagem paginada, detalhe de oportunidade, rollup, `/score` para oportunidade avulsa)
 - Pandas (ETL + data layer)
-- Biblioteca de assinatura de token leve (sessão sem senha, escopo assinado no servidor)
 
 **Frontend:**
 - React 18+
@@ -56,8 +55,8 @@ Dois números, nunca combinados: PRIORIDADE ordena a fila (em dólares — "quan
   - Concentração de PRIORIDADE (top 10%/30%) vs. ranking por preço puro
 
 **Testes:**
-- Unitários: motor de scoring (encolhimento, curvas, censura, confiança, estado) e resolução de escopo de acesso
-- E2E: ciclo completo da API — identificação, token, listagem respeitando escopo, tentativa fora do escopo, rollup restrito, download restrito a Manager
+- Unitários: motor de scoring (encolhimento, curvas, censura, confiança, estado, plano de ação em passos)
+- API: contrato dos endpoints sem autenticação, paginação (união de páginas sem repetição/lacuna, ordenação sobre o recorte inteiro, desempate estável), detalhe de oportunidade, opções de filtro, exportação de identificadores filtrados
 
 ---
 
@@ -125,20 +124,118 @@ SCORE      = percentil(PRIORIDADE) × 100                           ← contra o
 
 **Achado que inverte a intuição comum de lead scoring:** `p_ganho(t)` **sobe** com a idade (0,632 aos 0 dias → 0,751 aos 120 dias) — não desce. O que a idade consome é a **janela**: em 57 dias, metade das vitórias históricas já aconteceu; em 88 dias, restam 25%. Por isso URGÊNCIA usa `risco(t)`, a probabilidade real de resolução em 30 dias (suavizada por regressão isotônica), não um proxy de "quão velho é ruim".
 
+#### Cálculo detalhado de p̂
+
+A probabilidade de ganho é calculada em **três casos**, de forma determinística:
+
+**1. Prospecting (sem `engage_date`):**
+```
+p̂ = p̂_produto
+```
+Usa apenas a taxa de vitória do produto, com encolhimento hierárquico aplicado. Sem ajuste de idade porque não há idade a medir — o lead ainda nem entrou no funil de venda estruturado.
+
+**2. Engaging, idade > 138 dias (censura):**
+```
+p̂ = 0,632  (constante — o prior global)
+```
+Nenhum dos 6.711 negócios fechados históricos levou mais de 138 dias. Acima disso, revertemos ao prior em vez de extrapolar a curva — evita premiar abandono, que teria `p̂ = 0,751` se forward-fillássemos.
+
+**3. Engaging, idade ≤ 138 dias (dentro da janela observada):**
+```
+p̂ = p̂_produto × p_ganho(min(idade, 120)) / 0,632
+```
+Ajusta a taxa do produto pela curva de ganho empírica. Dividi-se por 0,632 para renormalizar — `p_ganho(t)` é calibrada em absoluto, não como multiplicador.
+
+**Exemplo:**
+- GTX Pro: 64,8% taxa de vitória histórica (p̂_produto = 0,648)
+- Oportunidade em Engaging, 57 dias de idade
+- p_ganho(57) = 0,684 (regressão isotônica nos dados)
+- p̂ = 0,648 × 0,684 / 0,632 = 0,702
+
+#### Cálculo detalhado de URGÊNCIA
+
+URGÊNCIA mede `P(o negócio se resolve nos próximos 30 dias | ainda aberto)` — é a probabilidade real de fechamento próximo, não um decaimento inventado. Também em **três casos**:
+
+**1. Prospecting:**
+```
+URGÊNCIA = 0,47  (constante observada)
+```
+Representa a velocidade média de resolução para leads que entram no funil sem uma oportunidade formalizada. Calibrada empiricamente na população histórica.
+
+**2. Engaging, idade > 138 dias (censura):**
+```
+URGÊNCIA = 0,15  (baixa — praticamente sem precedente)
+```
+Negocios com mais de 138 dias já perderam a janela normal de fechamento. A urgência cai drasticamente porque estadisticamente já não deveria estar aberto.
+
+**3. Engaging, idade ≤ 138 dias:**
+```
+URGÊNCIA = risco(idade)
+```
+Leitura em degraus (step function) da curva isotônica calibrada:
+
+| Idade (dias) | risco(t) | Interpretação |
+|---|---:|---|
+| 0–44 | 0,219 | Recém-aberto; apenas 21,9% resolvem nos próximos 30 dias |
+| 45–56 | 0,322 | Começou a acelerar |
+| 57–87 | 0,489 | Metade do ciclo; ~49% resolvem em 30 dias |
+| 88–109 | 0,832 | Bem avançado; 83% dos negócios resolvem em 30 dias |
+| ≥110 | 1,000 | Última reta; praticamente certo que resolve ou fecha |
+
+**Exemplo:** mesma GTX Pro com 57 dias:
+```
+risco(57) = 0,489
+```
+Significa que, entre negócios em Engaging com 57 dias de idade, 48,9% resolvem (ganham ou perdem) nos próximos 30 dias — a urgência de ação é moderada, não baixa nem crítica.
+
 ### Censura acima de 138 dias
 
 Nenhum dos 6.711 negócios fechados levou mais de 138 dias. Acima disso, o sistema **não extrapola** a curva — reverte ao prior (`p̂` = 0,632, URGÊNCIA = 0,15) em vez de aplicar forward-fill, que premiaria o abandono (daria `p̂` = 0,751 a um negócio de 377 dias, o mais alto da curva, exatamente ao mais parado do funil).
 
-### CONFIANÇA
+### CONFIANÇA — quanto se sabe sobre a oportunidade
 
-| Nível | Regra | % do funil aberto | % da prioridade total |
-|---|---|---:|---:|
-| **A** | conta conhecida **e** Engaging **e** idade ≤ 138 | 4,3% | 11,3% |
-| **B** | conta **ou** Engaging (um dos dois) | 17,8% | 39,2% |
-| **C** | sem conta e Prospecting | 16,1% | 20,2% |
-| **D** | idade > 138 — censurado | 61,8% | 29,3% |
+CONFIANÇA responde a uma pergunta diferente de PRIORIDADE: "**quanto do necessário para pontuar esta oportunidade eu de fato tenho?**" — independente de quanto ela vale. É atribuída por regra determinística em ordem de precedência (censura > conta+Engaging > conta ou Engaging > resto):
 
-Responde "quanto do necessário para pontuar esta oportunidade eu de fato tenho" — independente de quanto ela vale.
+#### Regras de atribuição
+
+**1. Nível D — Censurado (idade > 138 dias)**
+```
+if stage == "Engaging" and age_days > 138:
+    CONFIANÇA = D
+```
+Fora de qualquer precedente histórico. Nenhum negócio fechado levou mais de 138 dias — não há base factual para confiar em um score, mesmo que o número seja calculado.
+
+**2. Nível A — Dados completos (conta + Engaging + dentro da janela)**
+```
+if stage == "Engaging" and has_account and age_days ≤ 138:
+    CONFIANÇA = A
+```
+Conta conhecida, oportunidade formalizada, dentro da janela de ciclos observados. Máxima confiança — temos todos os ingredientes.
+
+**3. Nível B — Dados parciais (conta OU Engaging, mas não ambos)**
+```
+if (stage == "Engaging" or has_account) and not (stage == "Engaging" and has_account):
+    CONFIANÇA = B
+```
+Falta um dos dois: ou temos a conta mas o lead ainda é Prospecting (engajamento não confirmado), ou temos o negócio em Engaging mas sem conta vinculada (falta contexto). Moderada confiança.
+
+**4. Nível C — Cadastro incompleto (sem conta e Prospecting)**
+```
+if not has_account and stage == "Prospecting":
+    CONFIANÇA = C
+```
+Nem conta nem engajamento formalizado — é apenas um lead novo. O score é calculável, mas assenta em priors firmes (potencial de porte, taxa global).
+
+#### Distribuição nos dados abertos
+
+| Nível | Rótulo | Regra | % do funil | % da prioridade |
+|---|---|---|---:|---:|
+| **A** | Dados completos | conta ∩ Engaging ∩ idade ≤ 138 | 4,3% | 11,3% |
+| **B** | Dados parciais | (conta ∪ Engaging) \ (conta ∩ Engaging) | 17,8% | 39,2% |
+| **C** | Cadastro incompleto | ¬conta ∩ Prospecting | 16,1% | 20,2% |
+| **D** | Fora do histórico | idade > 138 | 61,8% | 29,3% |
+
+**Interpretação:** 61,8% do funil está em D — oportunidades paradas há mais de 138 dias, sem precedente no histórico. Mesmo assim, carrregam 29,3% da prioridade total (valor agregado alto, mas confiança baixa). A diagonal CONFIANÇA × SCORE é onde o operacional de verdade acontece — ver §ESTADO abaixo.
 
 ### ESTADO — cruza CONFIANÇA e SCORE, substitui faixas e lanes
 
@@ -178,50 +275,38 @@ Texto gerado por template determinístico a partir dos componentes — nunca por
 
 ---
 
-## Controle de acesso por papel
+## Postura de segurança — sem autenticação
 
-A hierarquia real de `sales_teams.csv` (35 agentes → 6 managers → 3 escritórios) mapeia diretamente nos três papéis pedidos:
+A API não exige identificação: todo endpoint de dados é aberto e opera sobre o funil completo, sem cabeçalho `Authorization`. Vendedor, gerente e escritório regional (a hierarquia real de `sales_teams.csv` — 35 agentes → 6 managers → 3 escritórios) são **filtros ordinários** sobre o funil inteiro, iguais a produto e confiança — nenhum deles restringe o que um cliente pode alcançar.
 
-| Papel | Origem do dado | Escopo |
-|---|---|---|
-| **Sales Agent** | nome só em `sales_agent` | as próprias oportunidades |
-| **Supervisor** | nome em `manager` | oportunidades dos agentes que reportam a ele |
-| **Manager** | um dos 3 `regional_office` | todas as oportunidades do escritório |
+Essa é uma decisão consciente para um dataset público de demonstração, sem informação real de cliente, e está documentada como limitação assumida — não omitida (ver `decisions-log.md`). Produção exigiria SSO/OIDC real e escopo por papel aplicado no servidor, ambos hoje inexistentes. O que a API garante é apenas postura de segurança básica: CORS com origens enumeradas (nunca `*`), respostas de erro sem stack trace nem caminho de arquivo, e nenhum endpoint aceitando caminho de arquivo como parâmetro.
 
-**Sem senha.** Uma tela de seleção de identidade troca o nome/escritório por um token assinado no servidor, com escopo já resolvido. Todo endpoint de dados aplica esse escopo no servidor — um filtro de cliente só pode **restringir** dentro do escopo, nunca ampliá-lo; pedir algo fora do escopo responde 403. Isso não é autenticação real (qualquer um pode se identificar com qualquer nome da lista) — é isolamento de escopo aplicado no servidor, documentado como limitação explícita. Produção exigiria SSO/OIDC.
-
-O rollup de gestão é restrito a Supervisor/Manager. O download do dataset processado completo é restrito a Manager.
+Rollup de gestão e download do dataset processado completo estão disponíveis a qualquer cliente, sem restrição de papel.
 
 ---
 
 ## Interface
 
-### Tiles de indicadores (restritos ao escopo da identidade ativa)
+A aplicação abre direto no pipeline — sem tela de identificação — na aba Oportunidades, com os cinco estados visíveis desde o primeiro carregamento.
+
+### Tiles de indicadores (refletem o recorte filtrado)
 
 ```
-[total] negócios · receita ganha · valor esperado em aberto (soma de PRIORIDADE) · [n] em Desistir [ALERTA] · maior deal
+[total] negócios · receita ganha [histórico] · valor esperado em aberto (soma de PRIORIDADE) · [n] em Desistir [ALERTA] · maior deal [histórico]
 
-intervalo de datas | idade da oportunidade mais antiga do escopo | identidade ativa
+intervalo de datas | idade da oportunidade mais antiga do recorte | descrição dos filtros ativos
 ```
 
-O tile de Desistir é o único elemento em cor de alerta (#AF4332) — reservada exclusivamente a ele, à aba Desistir e a ações destrutivas.
+Os dois tiles históricos (receita ganha, maior negócio fechado) respondem só a filtros de organização e produto — nunca a estado, confiança ou idade, que só existem para o funil aberto — e são rotulados como tal. O tile de Desistir é o único elemento em cor de alerta (#AF4332) — reservada exclusivamente a ele, ao estado Desistir e a ações destrutivas.
 
 ### Filtros
 
-Persistidos em URL params (exceto identidade, que exige nova seleção):
+Persistidos em URL params: vendedor, gerente, escritório, produto, confiança, estado (multi-seleção), faixa de idade (régua de dois cursores), página, ordenação e a oportunidade aberta no painel de detalhe. Vendedor/gerente/escritório são filtros comuns sobre o funil inteiro — nenhum é restrito por sessão. As opções vêm de `/filter-options`, não da página corrente da listagem.
 
-- **Vendedor, Supervisor, Escritório** — sempre restritos ao escopo do token
-- **Produto**
-- **Estado** (checkboxes, default todos)
+### Duas abas
 
-### Abas
-
-1. **Foco urgente** (inicial)
-2. **Acompanhar**
-3. **Engajar**
-4. **Qualificar**
-5. **Desistir** — com filtros de idade e exportação CSV dos IDs filtrados
-6. **Gestão** — oculta para Sales Agent; rollup por agente/supervisor/escritório + distribuição de esforço por produto; download do dataset processado completo (só Manager)
+1. **Oportunidades** (inicial) — os cinco estados como filtro de chips (com contagem), listagem paginada no servidor (100 por página, ordenável por SCORE/PRIORIDADE/idade), painel lateral de detalhe ao abrir uma linha, e exportação de identificadores do recorte filtrado inteiro (não só da página carregada)
+2. **Gestão** — disponível a qualquer cliente; rollup por vendedor/gerente/escritório + distribuição de esforço por produto; download do dataset processado completo
 
 ### Tema
 
@@ -315,33 +400,34 @@ scoring/
   tests/                              # unitário — 59 testes, inclui os exemplos de referência dos specs
 
 api/
-  requirements.txt          # -e ../scoring + fastapi/uvicorn/pydantic/itsdangerous/pandas, tudo pinned
+  requirements.txt          # -e ../scoring + fastapi/uvicorn/pydantic/pandas, tudo pinned
   main.py                     # monta a app, CORS, handlers de erro, inclui as rotas
   config.py                    # variáveis de ambiente com padrões seguros
   state.py                      # AppState: dataset+ctx+ref carregados uma vez na inicialização
-  auth/
-    identity.py                  # deriva papel a partir de sales_teams (Sales Agent/Supervisor/Manager)
-    scope.py                       # Scope, resolve_scoped_agents() — interseção filtro x escopo do token
-    tokens.py                       # itsdangerous.URLSafeTimedSerializer — emissão/validação assinada
+  query.py                        # módulo de consulta compartilhado: filtros, ordenação com desempate por
+                                   # opportunity_id, paginação — usado por /deals, /kpis, /rollup e /export/deal-ids
   routes/
-    identity.py    # GET /identities · POST /identify
-    deals.py         # GET /deals?estado=&sales_agent=&manager=&regional_office=&product=&confianca=&idade_min=&idade_max=
-    kpis.py             # GET /kpis
-    management.py         # GET /rollup (403 para Sales Agent)
+    deals.py         # GET /deals (paginado/ordenado) · GET /deals/{id} (detalhe) · GET /filter-options
+    kpis.py             # GET /kpis — filtros de organização/produto sempre; estado/confiança/idade só no funil aberto
+    management.py         # GET /rollup — sempre os três níveis (vendedor/gerente/escritório)
     scoring.py               # POST /score (avulsa)
-    export.py                   # GET /export/csv (Manager)
+    export.py                   # GET /export/csv (dataset completo) · GET /export/deal-ids (identificadores filtrados)
   schemas.py, deps.py, errors.py, serialize.py
-  tests/                          # unitário (resolução de escopo) + contrato + e2e (ciclo completo, RBAC)
+  tests/                          # contrato, paginação, detalhe, opções de filtro, indicadores — sem token/escopo
 
 web/
   vite.config.ts        # proxy /api -> localhost:8000 em dev
   tailwind.config.js       # tokens de tema (navy/gold/bg/border/alert, radii 8/12/16/20/24)
   src/
-    api.ts                     # cliente HTTP, injeta Authorization: Bearer <token>
+    api.ts                     # cliente HTTP, sem cabeçalho de autenticação
     types.ts
-    hooks/                        # useSession (sessionStorage), useUrlState (filtros/aba na URL), useAsync
-    components/                      # IdentityPicker, KpiTiles, StateTabs, FilterBar, DealTable, ManagementView
-    App.tsx                             # busca as oportunidades do escopo uma vez, filtra/ordena no cliente
+    format.ts                     # formatUsd/formatPct/formatIdade/formatData — única fonte de formatação
+    estadoColors.ts                  # mapa único de cor por ESTADO, usado em toda superfície
+    hooks/                              # useUrlState (aba/filtros/estados/página/ordenação/deal na URL), useAsync
+    components/                            # ViewTabs, EstadoChips, AgeRangeSlider, Tooltip, ConfidenceBadge,
+                                            # FilterBar, KpiTiles, DealTable, DealDetailPanel, PaginationControls,
+                                            # ManagementView
+    App.tsx                                   # monta direto no pipeline; busca /deals paginado por filtro/página/ordenação
 
 validation/
   requirements.txt          # -e ../scoring + pandas/scikit-learn (lightgbm trocado por
@@ -367,7 +453,7 @@ validation/
 
 ### Não faz
 
-- **Autenticação real.** Seleção de identidade sem senha, com escopo aplicado no servidor — não impede que alguém se identifique com o nome de outra pessoa. Produção exigiria SSO/OIDC.
+- **Autenticação.** Nenhum endpoint exige identificação — qualquer cliente lê o funil inteiro; vendedor/gerente/escritório são filtros, não escopo. Aceitável só porque o dataset é público e de demonstração. Produção exigiria SSO/OIDC real e escopo por papel aplicado no servidor.
 - **Persistência.** Tudo em memória. Banco gerenciado (Supabase ou equivalente) necessário acima de ~100 MB de dados ou múltiplos usuários simultâneos escrevendo.
 - **Previsão categórica de win/loss.** `p̂` varia só entre 0,60 e 0,75 — a diferenciação real é de valor e urgência, não de probabilidade. Instrumentar dados comportamentais primeiro (ver `analise-lead-scoring.md` §6).
 - **Rebalanceamento automático de portfólio.** "39,6% de esforço em 5,4% de receita" é um insight na aba Gestão; a prescrição é decisão de RevOps, fora do sistema.
@@ -376,7 +462,7 @@ validation/
 ### Evoluções óbvias (MVP → produção)
 
 1. **Database:** Supabase + schema de deals, com trigger de auto-score e regeneração do CSV processado
-2. **Auth real:** SSO/OIDC + os mesmos três papéis, agora com credencial de verdade
+2. **Auth real:** SSO/OIDC + escopo por papel aplicado no servidor sobre vendedor/gerente/escritório, hoje simples filtros sem restrição
 3. **Sinal comportamental:** webhook do CRM + log de atividade (email, call, mudança de estágio). Recalibrar `p̂` com speed-to-lead
 4. **A/B testing:** metade dos vendedores prioriza pelo score, metade não; medir receita/trimestre
 5. **Mobile:** React Native para fieldwork

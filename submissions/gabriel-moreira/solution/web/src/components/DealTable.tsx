@@ -1,70 +1,68 @@
-import { useMemo, useState } from "react";
-import type { Oportunidade } from "../types";
+import { ESTADO_BADGE } from "../estadoColors";
+import { formatIdade, formatUsd } from "../format";
+import type { Oportunidade, SortKey, SortOrder } from "../types";
+import { ConfidenceBadge } from "./ConfidenceBadge";
 
-type SortKey = "score" | "prioridade" | "age_days";
-
-const CONFIANCA_COLORS: Record<string, string> = {
-  A: "bg-navy text-white",
-  B: "bg-navy/70 text-white",
-  C: "bg-gray-300 text-navy",
-  D: "bg-alert text-white",
-};
-
-function formatUsd(value: number): string {
-  return value.toLocaleString("pt-BR", { style: "currency", currency: "USD" });
-}
-
-export function DealTable({ oportunidades }: { oportunidades: Oportunidade[] }) {
-  const [sortKey, setSortKey] = useState<SortKey>("score");
-  const [sortDesc, setSortDesc] = useState(true);
-
-  const ordenadas = useMemo(() => {
-    const copy = [...oportunidades];
-    copy.sort((a, b) => {
-      const av = a[sortKey] ?? -Infinity;
-      const bv = b[sortKey] ?? -Infinity;
-      return sortDesc ? bv - av : av - bv;
-    });
-    return copy;
-  }, [oportunidades, sortKey, sortDesc]);
-
-  function handleSort(key: SortKey) {
-    if (key === sortKey) {
-      setSortDesc((prev) => !prev);
-    } else {
-      setSortKey(key);
-      setSortDesc(true);
-    }
-  }
-
-  if (oportunidades.length === 0) {
-    return (
-      <p className="text-muted text-sm py-8 text-center">
-        Nenhuma oportunidade encontrada para os filtros atuais.
-      </p>
-    );
-  }
-
+/** Fila de trabalho — SCORE, ESTADO, produto, conta, vendedor, PRIORIDADE,
+ * idade e CONFIANÇA. A decomposição, a razão de confiança e o plano de
+ * ação ficam no painel de detalhe, não na linha (Requirement
+ * "Justificativa visível e plano de ação"). Ordenação é resolvida no
+ * servidor via `sort`/`order`, não mais no cliente. */
+export function DealTable({
+  oportunidades,
+  sort,
+  order,
+  total,
+  page,
+  totalPages,
+  onSortChange,
+  onOpenDetail,
+}: {
+  oportunidades: Oportunidade[];
+  sort: SortKey;
+  order: SortOrder;
+  total: number;
+  page: number;
+  totalPages: number;
+  onSortChange: (key: SortKey) => void;
+  onOpenDetail: (opportunityId: string) => void;
+}) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm border-collapse">
-        <thead>
-          <tr className="text-left text-xs text-muted uppercase tracking-wide border-b border-border">
-            <SortableHeader label="Score" active={sortKey === "score"} desc={sortDesc} onClick={() => handleSort("score")} />
-            <th className="py-2 px-2">Estado</th>
-            <th className="py-2 px-2">Produto</th>
-            <th className="py-2 px-2">Vendedor</th>
-            <SortableHeader label="Prioridade" active={sortKey === "prioridade"} desc={sortDesc} onClick={() => handleSort("prioridade")} />
-            <SortableHeader label="Idade" active={sortKey === "age_days"} desc={sortDesc} onClick={() => handleSort("age_days")} />
-            <th className="py-2 px-2">Confiança</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ordenadas.map((o) => (
-            <DealRow key={o.opportunity_id} oportunidade={o} />
-          ))}
-        </tbody>
-      </table>
+    <div className="flex flex-col gap-2">
+      <div className="text-xs text-muted">
+        {total.toLocaleString("pt-BR")} oportunidade{total === 1 ? "" : "s"} no recorte · página{" "}
+        {totalPages === 0 ? 0 : page} de {totalPages}
+      </div>
+
+      {oportunidades.length === 0 ? (
+        <p className="text-muted text-sm py-8 text-center">
+          Nenhuma oportunidade encontrada para os filtros atuais.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr className="text-left text-xs text-muted uppercase tracking-wide border-b border-border">
+                <th className="py-2 px-2">ID</th>
+                <SortableHeader label="Score" active={sort === "score"} order={order} onClick={() => onSortChange("score")} />
+                <SortableHeader label="Estado" active={sort === "estado"} order={order} onClick={() => onSortChange("estado")} />
+                <th className="py-2 px-2">Produto</th>
+                <th className="py-2 px-2">Conta</th>
+                <th className="py-2 px-2">Vendedor</th>
+                <SortableHeader label="Prioridade" active={sort === "prioridade"} order={order} onClick={() => onSortChange("prioridade")} />
+                <SortableHeader label="Idade" active={sort === "age_days"} order={order} onClick={() => onSortChange("age_days")} />
+                <th className="py-2 px-2">Confiança</th>
+                <th className="py-2 px-2 sr-only">Detalhe</th>
+              </tr>
+            </thead>
+            <tbody>
+              {oportunidades.map((o) => (
+                <DealRow key={o.opportunity_id} oportunidade={o} onOpenDetail={onOpenDetail} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
@@ -72,12 +70,12 @@ export function DealTable({ oportunidades }: { oportunidades: Oportunidade[] }) 
 function SortableHeader({
   label,
   active,
-  desc,
+  order,
   onClick,
 }: {
   label: string;
   active: boolean;
-  desc: boolean;
+  order: SortOrder;
   onClick: () => void;
 }) {
   return (
@@ -88,46 +86,51 @@ function SortableHeader({
         className={"flex items-center gap-1 " + (active ? "text-navy font-bold" : "hover:text-navy")}
       >
         {label}
-        {active && <span>{desc ? "↓" : "↑"}</span>}
+        {active && <span>{order === "desc" ? "↓" : "↑"}</span>}
       </button>
     </th>
   );
 }
 
-function DealRow({ oportunidade: o }: { oportunidade: Oportunidade }) {
+function DealRow({
+  oportunidade: o,
+  onOpenDetail,
+}: {
+  oportunidade: Oportunidade;
+  onOpenDetail: (opportunityId: string) => void;
+}) {
   return (
-    <tr className="border-b border-border align-top hover:bg-bg/60">
+    <tr
+      className="border-b border-border align-top hover:bg-bg cursor-pointer"
+      onClick={() => onOpenDetail(o.opportunity_id)}
+    >
+      <td className="py-3 px-2 text-muted font-mono text-xs">{o.opportunity_id}</td>
       <td className="py-3 px-2 font-bold text-navy">{o.score.toFixed(1)}</td>
       <td className="py-3 px-2">
-        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-navy border border-border">
+        <span className={"text-xs font-semibold px-2 py-0.5 rounded-full border " + ESTADO_BADGE[o.estado]}>
           {o.estado_label}
         </span>
       </td>
-      <td className="py-3 px-2">
-        <div className="font-medium">{o.product}</div>
-        {o.account && <div className="text-xs text-muted">{o.account}</div>}
-      </td>
+      <td className="py-3 px-2 font-medium">{o.product}</td>
+      <td className="py-3 px-2 text-muted">{o.account ?? "—"}</td>
       <td className="py-3 px-2 text-muted">{o.sales_agent}</td>
       <td className="py-3 px-2 font-medium">{formatUsd(o.prioridade)}</td>
-      <td className="py-3 px-2 text-muted">
-        {o.age_days !== null ? `${Math.round(o.age_days)}d` : "—"}
+      <td className="py-3 px-2 text-muted">{formatIdade(o.age_days)}</td>
+      <td className="py-3 px-2" onClick={(e) => e.stopPropagation()}>
+        <ConfidenceBadge nivel={o.confianca} label={o.confianca_label} razao={o.razao_confianca} />
       </td>
       <td className="py-3 px-2">
-        <span
-          title={o.razao_confianca}
-          className={
-            "inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold cursor-help " +
-            CONFIANCA_COLORS[o.confianca]
-          }
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenDetail(o.opportunity_id);
+          }}
+          aria-label={`Ver detalhe da oportunidade ${o.opportunity_id}`}
+          className="text-navy/50 hover:text-navy bg-transparent border-0 p-0"
         >
-          {o.confianca}
-        </span>
-      </td>
-      <td className="py-3 px-2 max-w-md">
-        <div className="text-xs text-muted mb-1">
-          p̂ {(o.p_hat * 100).toFixed(1)}% · Valor {formatUsd(o.valor)} · Urgência {(o.urgencia * 100).toFixed(0)}%
-        </div>
-        <div className="text-xs text-navy">{o.plano_de_acao}</div>
+          ›
+        </button>
       </td>
     </tr>
   );

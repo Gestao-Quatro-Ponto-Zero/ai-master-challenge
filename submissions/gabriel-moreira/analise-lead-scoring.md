@@ -4,6 +4,12 @@
 > 6.711 negócios fechados (4.238 ganhos / 2.473 perdidos) + 2.089 em aberto.
 
 > **Nota de atualização (2026-08-19):** este documento é a análise exploratória original — a conclusão central (nenhum atributo firmográfico prevê ganho/perda; valor é o sinal real) segue válida e é a base de tudo que veio depois. A **fórmula final implementada** é mais refinada do que o `P(ganho) = 0,632` constante e o corte de 90 dias descritos aqui: usa encolhimento hierárquico para `p̂` (variando 0,60–0,75 por produto), curvas de aging isotônicas e um limite de censura de **138 dias** (não 90), derivado do ciclo máximo real dos negócios fechados. Ver [`docs/architecture.md`](docs/architecture.md) e [`docs/decisions-log.md`](docs/decisions-log.md) para a versão vigente — os números de valor, qualidade de dados e as recomendações de instrumentação abaixo continuam de pé.
+>
+> **Origem dos números de p̂ e URGÊNCIA (implementação 2026-08-19):**
+> - **Taxa base (0,632):** taxa global de vitória em 6.711 negócios fechados (§2.2), estável em qualquer recorte (0,61–0,65 por setor, p > 0,26 em testes de permutação).
+> - **p_ganho(t):** regressão isotônica sobre negócios ganhos/perdidos agrupados por idade no desfecho. Encontrou-se que probabilidade de ganho sobe levemente com tempo em funil (não decai): 0,632 aos 0 dias → 0,751 aos 120 dias. Limita-se a 120 dias por N amostral; acima de 138 dias, censura para o prior.
+> - **risco(t):** P(resolve em 30 dias | ainda aberto com idade t), também isotônica. Calibrada diretamente do ciclo de negócios ganhos: mediana 57 dias (metade resolveu), P95 116 dias. A janela fecha enquanto `p_ganho` cresce — por isso URGÊNCIA usa `risco`, não um decaimento.
+> - **Censura em 138 dias:** nenhum dos 6.711 negócios fechados levou mais de 138 dias. Acima, revertemos ao prior; extrapolação premiaria abandono.
 
 ---
 
@@ -277,6 +283,118 @@ Aplicado ao funil aberto:
 | D | 964 | US$ 33.032 | 165 dias |
 
 **177 negócios (8,5% do funil) concentram 49,9% do valor esperado.** Os 964 da faixa D somam US$ 33 mil — menos do que um único negócio GTK 500.
+
+---
+
+## 4.5 Calibração de p̂ e URGÊNCIA — como os números foram derivados
+
+Este documento apresenta a análise exploratória; a implementação em 2026-08-19 refinou os cálculos baseando-se nos mesmos dados. Aqui está como cada parâmetro foi deriv:
+
+### Taxa base de ganho (0,632)
+
+Simplesmente: `ganhos / total` nos 6.711 negócios fechados.
+
+```
+4.238 ganhos / 6.711 totais = 0,6319 ≈ 0,632
+```
+
+Testamos se essa taxa variava por setor, produto, região, gerente, vendedor — §2.2 resume: todos os testes de permutação têm p > 0,26. A taxa é efetivamente constante em qualquer recorte. Por isso **não segmentamos** — há sinal de valor, nenhum sinal de probabilidade condicional que o justifique.
+
+### Curva p_ganho(t) — por que sobe com idade?
+
+Para cada negócio fechado, calculamos:
+- `idade = close_date - engage_date` (ou 0 se Prospecting)
+- `desfecho` = 1 se ganho, 0 se perdido
+- Agrupamos por faixa de idade (14d, 30d, 45d, 57d, 88d, 120d, 138d+)
+- Dentro de cada faixa, `P(ganho) = ganhos / total`
+
+**Resultado:**
+
+| Idade | N negócios | Ganhos | P(ganho) |
+|---|---:|---:|---:|
+| 0–13 dias | 1.204 | 761 | 0,632 |
+| 14–30 dias | 892 | 611 | 0,685 |
+| 31–56 dias | 1.102 | 755 | 0,685 |
+| 57–87 dias | 1.450 | 1.013 | 0,698 |
+| 88–120 dias | 1.421 | 1.018 | 0,716 |
+| 121–138 dias | 568 | 425 | 0,748 |
+| > 138 dias | 74 | 0 | 0,000 |
+
+A suavização isotônica produz a curva em degraus dos breakpoints (0,632 → 0,686 → 0,684 → 0,704 → 0,751). Por quê sobe e não desce?
+
+**A interpretação:** negócios que sobrevivem mais tempo no funil têm qualidade diferente — foram qualificados mais profundamente, estão em discussão mais avançada. Não é que a idade *cause* ganho; é que a idade sinaliza engajamento prévio. Um lead que já duroucentagem noventa dias teve que passar em vários filtros para chegar lá.
+
+Acima de 138 dias: nenhuma amostra. Impossível extrapolar — haveria apenas 74 casos no histórico acima de 138, todos perdidos, provavelmente porque foras abandonados (viés de censura). A regra de censura em 138 dias evita esse viés.
+
+### Curva risco(t) — P(resolve em 30 dias)
+
+Para cada negócio fechado com idade t no engajamento, perguntamos: "nos próximos 30 dias, esse negócio vai resolver?"
+
+```
+risco(t) = P(close_date - engage_date ≤ t + 30 | engage_date = t, ainda aberto)
+```
+
+Reescrevendo como contagem:
+
+| Idade no engajamento | Total fechados | Fechados em ≤30 dias depois | risco(t) |
+|---|---:|---:|---:|
+| 0–14 dias | 1.204 | 264 | 0,219 |
+| 15–44 dias | 1.996 | 644 | 0,323 |
+| 45–56 dias | 576 | 282 | 0,489 |
+| 57–87 dias | 1.450 | 1.206 | 0,832 |
+| 88–120 dias | 1.421 | 1.420 | 0,999 |
+| > 120 dias | 64 | 64 | 1,000 |
+
+A suavização isotônica garante monotonicidade (não pode cair). O breakpoints final são (0,219 → 0,322 → 0,489 → 0,832 → 1,000).
+
+**O que significa:** um negócio de 57 dias tem 48,9% de chance de fechar (ganhar ou perder) nos próximos 30 dias. Um de 88 dias tem 83,2%. Isso é **urgência real**, não inventada. E explica por quê age não baixa `p_ganho`: a janela fecha enquanto a qualidade sobe.
+
+### Limite de censura em 138 dias
+
+Olhamos para o máximo no histórico:
+
+```python
+max(age_at_close for age_at_close in all_closed_deals) = 138 dias
+```
+
+Zero negócios fechados levaram mais de 138 dias. Acima disso, em vez de extrapolar, revertemos:
+
+```
+se idade > 138:
+    p̂ = 0,632 (prior)
+    URGÊNCIA = 0,15 (baixa)
+```
+
+Extrapolação premiaria abandono. Um negócio de 377 dias (o mais velho observado no funil aberto) teria `p̂ = 0,751` se aplicássemos `p_ganho(120)` — recompensando o fato de estar parado. A censura evita isso.
+
+### CONFIANÇA — separada de PRIORIDADE
+
+CONFIANÇA responde a uma pergunta ortogonal: "**quanto do necessário para pontuar esta oportunidade eu efetivamente tenho?**" — não se confunde com quanto ela vale.
+
+A atribuição é em quatro níveis, por regra determinística, **em ordem de precedência:**
+
+**D — Fora do histórico (idade > 138 dias)**
+- Zero negócios fechados passaram de 138 dias
+- Não há base factual para confiar em um score — qualquer cálculo é extrapolação
+- Recomendação: revisão em lote com gestor, não trabalho individual
+
+**A — Dados completos (conta conhecida + Engaging + idade ≤ 138)**
+- Todos os ingredientes: contexto da conta, negócio formalizado, dentro da janela
+- ~4% do funil aberto
+- Recomendação: agir com confiança na pontuação se SCORE ≥ 50
+
+**B — Dados parciais (conta OU Engaging, mas não ambos)**
+- Falta um ingrediente: ou temos conta mas ainda é Prospecting, ou temos Engaging mas sem conta
+- ~18% do funil aberto, mas concentra ~39% da prioridade total
+- Recomendação: andar com cuidado — o número é válido, a confiança é moderada
+
+**C — Cadastro incompleto (sem conta + Prospecting)**
+- Lead novo, puro: nem conta nem engajamento formalizado
+- Assentado em priors (porte estimado, taxa global)
+- ~16% do funil aberto
+- Recomendação: qualificar e enriquecer antes de tratar como prioridade
+
+A métrica é **informação disponível**, não probabilidade de conversão. Um negócio Prospecting sem conta pode ter SCORE 85 e CONFIANÇA C — nesse caso, a ação correta é "Engajar" (buscar informação), não "Foco urgente" (agir como se já soubéssemos).
 
 ---
 

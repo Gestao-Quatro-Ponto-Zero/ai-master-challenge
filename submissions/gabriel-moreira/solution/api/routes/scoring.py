@@ -1,9 +1,8 @@
-"""Requirement "Pontuação de oportunidade avulsa" — qualquer papel autenticado."""
+"""Requirement "Pontuação de oportunidade avulsa" — acessível sem identificação prévia."""
 
 from __future__ import annotations
 
-from auth.scope import Scope
-from deps import get_app_state, get_scope
+from deps import get_app_state
 from fastapi import APIRouter, Depends, HTTPException
 from schemas import ScoreAvulsaIn, ScoreAvulsaOut
 from scoring import constants
@@ -16,7 +15,6 @@ router = APIRouter(tags=["pontuação avulsa"])
 @router.post("/score", response_model=ScoreAvulsaOut)
 def score_avulsa(
     body: ScoreAvulsaIn,
-    scope: Scope = Depends(get_scope),
     app_state: AppState = Depends(get_app_state),
 ):
     if body.product not in constants.PRECO_TABELA:

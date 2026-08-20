@@ -1,13 +1,13 @@
-"""Requirement "Rollup de gestão" — restrito a Supervisor/Manager."""
+"""Requirement "Rollup de gestão" — acessível a qualquer cliente."""
 
 from __future__ import annotations
 
 from typing import Optional
 
 import pandas as pd
-from auth.scope import Scope
-from deps import get_app_state, get_as_of, get_scope
-from fastapi import APIRouter, Depends, HTTPException
+from deps import get_app_state, get_as_of
+from fastapi import APIRouter, Depends
+from query import DealFilters, apply_org_filters
 from schemas import ProdutoEsforcoOut, RollupLinhaOut, RollupOut
 from scoring import constants
 from state import AppState
@@ -37,41 +37,42 @@ def _linhas_por_nivel(scored: pd.DataFrame, coluna: str, nivel: str) -> list[Rol
 
 @router.get("/rollup", response_model=RollupOut)
 def get_rollup(
+    sales_agent: Optional[str] = None,
+    manager: Optional[str] = None,
+    regional_office: Optional[str] = None,
+    product: Optional[str] = None,
     as_of: Optional[pd.Timestamp] = Depends(get_as_of),
-    scope: Scope = Depends(get_scope),
     app_state: AppState = Depends(get_app_state),
 ):
-    if scope.role == "sales_agent":
-        raise HTTPException(
-            403, detail="rollup comparativo não está disponível para Sales Agent"
-        )
+    filters = DealFilters(
+        sales_agent=sales_agent,
+        manager=manager,
+        regional_office=regional_office,
+        product=product,
+    )
 
-    scored = app_state.scored_as_of(as_of)
-    scored_in_scope = scored[scored["sales_agent"].isin(scope.sales_agents)]
+    scored = apply_org_filters(app_state.scored_as_of(as_of), filters)
 
-    linhas = _linhas_por_nivel(scored_in_scope, "sales_agent", "sales_agent")
-    if scope.role == "manager":
-        linhas += _linhas_por_nivel(scored_in_scope, "manager", "supervisor")
-        linhas += _linhas_por_nivel(scored_in_scope, "regional_office", "regional_office")
+    linhas = _linhas_por_nivel(scored, "sales_agent", "sales_agent")
+    linhas += _linhas_por_nivel(scored, "manager", "manager")
+    linhas += _linhas_por_nivel(scored, "regional_office", "regional_office")
 
+    pipeline_org = apply_org_filters(app_state.dataset.pipeline, filters)
     receita_total = float(
-        app_state.dataset.pipeline.loc[
-            app_state.dataset.pipeline["deal_stage"] == "Won", "close_value"
-        ].sum()
+        pipeline_org.loc[pipeline_org["deal_stage"] == "Won", "close_value"].sum()
     )
     esforco: list[ProdutoEsforcoOut] = []
-    for product, sub in scored_in_scope.groupby("product"):
+    for product_key, sub in scored.groupby("product"):
         receita_produto = float(
-            app_state.dataset.pipeline.loc[
-                (app_state.dataset.pipeline["deal_stage"] == "Won")
-                & (app_state.dataset.pipeline["product"] == product),
+            pipeline_org.loc[
+                (pipeline_org["deal_stage"] == "Won") & (pipeline_org["product"] == product_key),
                 "close_value",
             ].sum()
         )
         participacao = receita_produto / receita_total if receita_total else 0.0
         esforco.append(
             ProdutoEsforcoOut(
-                product=product,
+                product=product_key,
                 n_oportunidades=int(len(sub)),
                 participacao_receita_historica=round(participacao, 4),
             )

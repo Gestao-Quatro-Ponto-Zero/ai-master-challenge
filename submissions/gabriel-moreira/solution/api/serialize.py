@@ -5,7 +5,8 @@ from __future__ import annotations
 import pandas as pd
 
 
-def _clean(value):
+def clean_value(value):
+    """Converte NaN/NaT (pandas) para None — JSON e Pydantic não aceitam NaN."""
     if value is None:
         return None
     try:
@@ -17,4 +18,4 @@ def _clean(value):
 
 
 def df_to_records(df: pd.DataFrame) -> list[dict]:
-    return [{k: _clean(v) for k, v in row.items()} for row in df.to_dict(orient="records")]
+    return [{k: clean_value(v) for k, v in row.items()} for row in df.to_dict(orient="records")]
