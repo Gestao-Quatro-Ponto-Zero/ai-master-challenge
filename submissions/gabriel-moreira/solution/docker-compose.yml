@@ -1,0 +1,18 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: solution/api/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      LEAD_SCORER_CORS_ORIGINS: http://localhost:8080
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
