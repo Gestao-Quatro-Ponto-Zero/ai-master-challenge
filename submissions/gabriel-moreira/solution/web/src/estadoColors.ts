@@ -35,3 +35,9 @@ export const ESTADO_CHART_COLOR: Record<Estado, string> = {
   qualificar: "#9CA3AF",
   revisao_lote: "#AF4332",
 };
+
+/** Marcador de sobrecarga — dourado (`gold`, #B9915B), distinto do
+ * vermelho de alerta exclusivo de `revisao_lote` (design.md, D7: "dois
+ * alertas na mesma tela precisam ser distinguíveis"). */
+export const SOBRECARGA_COLOR = "#B9915B";
+export const SOBRECARGA_BADGE_CLASSES = "bg-red-400 text-navy border-gold";

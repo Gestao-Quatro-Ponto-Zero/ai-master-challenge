@@ -8,6 +8,7 @@ import { FilterBar } from "./components/FilterBar";
 import { KpiTiles } from "./components/KpiTiles";
 import { ManagementView } from "./components/ManagementView";
 import { PaginationControls } from "./components/PaginationControls";
+import { SobrecargaView } from "./components/SobrecargaView";
 import { ViewTabs, type Aba } from "./components/ViewTabs";
 import { useAsync } from "./hooks/useAsync";
 import { useUrlState } from "./hooks/useUrlState";
@@ -28,6 +29,7 @@ const URL_DEFAULTS = {
   confianca_max: undefined as string | undefined,
   idade_min: undefined as string | undefined,
   idade_max: undefined as string | undefined,
+  sobrecarga: undefined as string | undefined,
   page: "1",
   sort: "score",
   order: "desc",
@@ -53,6 +55,7 @@ function describeFiltros(filtros: Filtros, estados: Estado[], emRevisaoLote: boo
   if (filtros.idade_min || filtros.idade_max) {
     partes.push(`Idade: ${filtros.idade_min ?? "0"}–${filtros.idade_max ?? "∞"}d`);
   }
+  if (filtros.sobrecarga === "1") partes.push("Só sobrecarregadas");
   return partes.length > 0 ? partes.join(" · ") : "Fila trabalhável";
 }
 
@@ -75,6 +78,7 @@ export default function App() {
     confianca_max: urlState.confianca_max,
     idade_min: urlState.idade_min,
     idade_max: urlState.idade_max,
+    sobrecarga: urlState.sobrecarga,
   };
 
   const { data: filterOptions } = useAsync(() => api.getFilterOptions(), []);
@@ -100,12 +104,13 @@ export default function App() {
       confianca_max: filtros.confianca_max,
       idade_min: filtros.idade_min,
       idade_max: filtros.idade_max,
+      sobrecarga: filtros.sobrecarga,
       page,
       page_size: PAGE_SIZE,
       sort,
       order,
     }),
-    [estadoFiltro, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca_min, filtros.confianca_max, filtros.idade_min, filtros.idade_max, page, sort, order]
+    [estadoFiltro, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca_min, filtros.confianca_max, filtros.idade_min, filtros.idade_max, filtros.sobrecarga, page, sort, order]
   );
 
   // Indicadores refletem só os filtros de organização/produto/confiança/
@@ -153,6 +158,20 @@ export default function App() {
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dealsQueryKey, aba]);
+
+  const [sobrecarregadasCount, setSobrecarregadasCount] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    let cancelado = false;
+    api
+      .getSobrecarregados({ page_size: 1 })
+      .then((data) => {
+        if (!cancelado) setSobrecarregadasCount(data.total);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelado = true;
+    };
+  }, []);
 
   const [rollup, setRollup] = useState<Rollup | null>(null);
   useEffect(() => {
@@ -233,6 +252,7 @@ export default function App() {
       confianca_max: undefined,
       idade_min: undefined,
       idade_max: undefined,
+      sobrecarga: undefined,
       page: "1",
     });
   }, [updateUrlState]);
@@ -247,7 +267,8 @@ export default function App() {
       filtros.confianca_max,
     ].filter(Boolean).length +
     (estados.length > 0 ? 1 : 0) +
-    (filtros.idade_min || filtros.idade_max ? 1 : 0);
+    (filtros.idade_min || filtros.idade_max ? 1 : 0) +
+    (filtros.sobrecarga === "1" ? 1 : 0);
 
   async function exportarIdsFiltrados() {
     const blob = await api.exportDealIds(dealsQuery);
@@ -330,7 +351,11 @@ export default function App() {
       <main className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-6">
         <KpiTiles query={kpisQuery} descricaoRecorte={describeFiltros(filtros, estados, emRevisaoLote)} />
 
-        <ViewTabs aba={aba} onChange={(next) => updateUrlState({ aba: next })} />
+        <ViewTabs
+          aba={aba}
+          onChange={(next) => updateUrlState({ aba: next })}
+          sobrecarregadas={sobrecarregadasCount}
+        />
 
         {aba === "gestao" ? (
           <>
@@ -345,6 +370,8 @@ export default function App() {
             )}
             {rollup ? <ManagementView rollup={rollup} /> : <p className="text-muted">Carregando rollup…</p>}
           </>
+        ) : aba === "sobrecarga" ? (
+          <SobrecargaView onCarregado={setSobrecarregadasCount} />
         ) : (
           <>
             {filterOptions && (
@@ -435,6 +462,7 @@ export default function App() {
                     totalPages={envelope.total_pages}
                     onSortChange={onSortChange}
                     onOpenDetail={openDetail}
+                    onNavigateToSobrecarga={() => updateUrlState({ aba: "sobrecarga" })}
                   />
                   <PaginationControls
                     page={envelope.page}

@@ -1,4 +1,5 @@
 import type {
+  Carga,
   DealDetail,
   DealsEnvelope,
   Filtros,
@@ -6,6 +7,7 @@ import type {
   Kpis,
   Rollup,
   ScoreAvulsaResult,
+  SobrecarregadosEnvelope,
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
@@ -59,6 +61,18 @@ export interface DealsQuery extends Filtros {
   order?: string;
 }
 
+export interface CargaQuery {
+  regional_office?: string;
+  estado?: string;
+  as_of?: string;
+}
+
+export interface SobrecarregadosQuery {
+  page?: number;
+  page_size?: number;
+  as_of?: string;
+}
+
 export const api = {
   getDeals: (query: DealsQuery, signal?: AbortSignal) =>
     request<DealsEnvelope>(`/deals${qs(query)}`, { signal }),
@@ -79,6 +93,12 @@ export const api = {
 
   scoreAvulsa: (body: { product: string; age_days?: number; porte?: string }) =>
     request<ScoreAvulsaResult>("/score", { method: "POST", body: JSON.stringify(body) }),
+
+  getCarga: (query: CargaQuery = {}, signal?: AbortSignal) =>
+    request<Carga>(`/carga${qs(query)}`, { signal }),
+
+  getSobrecarregados: (query: SobrecarregadosQuery = {}, signal?: AbortSignal) =>
+    request<SobrecarregadosEnvelope>(`/deals/sobrecarregados${qs(query)}`, { signal }),
 
   async downloadProcessedCsv(): Promise<Blob> {
     const res = await fetch(`${API_BASE}/export/csv`);

@@ -8,7 +8,7 @@ from config import settings
 from errors import register_error_handlers
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import deals, export, kpis, management, scoring
+from routes import carga, deals, export, kpis, management, scoring
 from state import build_app_state
 
 
@@ -39,6 +39,10 @@ app.add_middleware(
 
 register_error_handlers(app)
 
+# `carga.router` DEVE ser incluído antes de `deals.router`: define
+# `/deals/sobrecarregados`, um caminho estático que precisa ser resolvido
+# antes de `/deals/{opportunity_id}` (dinâmico) tentar casar com ele.
+app.include_router(carga.router)
 app.include_router(deals.router)
 app.include_router(kpis.router)
 app.include_router(management.router)

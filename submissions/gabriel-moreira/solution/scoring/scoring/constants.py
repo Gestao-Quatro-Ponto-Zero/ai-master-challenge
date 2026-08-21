@@ -17,11 +17,21 @@ specs/lead-scoring/spec.md). Gatilhos de emergência:
 from __future__ import annotations
 
 # ---------------------------------------------------------------------------
-# Taxa de ganho global
+# Taxa de ganho global — duas populações (ver "Reclassificação de 200 dias"
+# abaixo e design.md, decisão D2).
 # ---------------------------------------------------------------------------
-# 4.238 Won / 6.711 fechados = 0,631650... — arredondada a 3 casas.
-# Fonte: sales_pipeline.csv, todas as linhas com deal_stage em {Won, Lost}.
-GLOBAL_WIN_RATE = 0.632
+# 4.238 Won / 6.711 fechados ORGANICAMENTE = 0,631650... — arredondada a 3
+# casas. Fonte: sales_pipeline.csv, linhas com deal_stage em {Won, Lost}
+# antes da reclassificação de 200 dias. Usada apenas onde a curva de idade
+# é o insumo: CENSURA_P_HAT e a normalização de p_ganho(0) em model.p_hat —
+# nunca como prior de encolhimento de produto.
+GLOBAL_WIN_RATE_ORGANICO = 0.632
+
+# 4.238 Won / 7.364 fechados de CALIBRAÇÃO (6.711 orgânicos + 653
+# reclassificados) = 0,575502... — arredondada a 4 casas. Fonte da taxa de
+# vitória por produto e do prior de encolhimento de p̂_produto — os únicos
+# consumidores da população de calibração (idade não é insumo).
+GLOBAL_WIN_RATE_CALIBRACAO = 0.5755
 
 # ---------------------------------------------------------------------------
 # Encolhimento hierárquico (p̂_produto)
@@ -75,17 +85,31 @@ RISCO_BREAKPOINTS: list[tuple[int, float]] = [
 # ---------------------------------------------------------------------------
 # Fronteiras de idade
 # ---------------------------------------------------------------------------
-# Nenhum dos 6.711 negócios fechados levou mais de 138 dias (verificado em
-# validation/isotonic_check.py a cada execução, não hardcoded sem checagem).
+# Nenhum dos 6.711 negócios fechados ORGANICAMENTE levou mais de 138 dias
+# (verificado em validation/isotonic_check.py a cada execução, não
+# hardcoded sem checagem). Fronteira OBSERVADA — distinta, por decisão de
+# design, de IDADE_RECLASSIFICACAO_DIAS (fronteira de POLÍTICA, abaixo).
 CENSURA_DIAS = 138
 # Última idade com amostra confiável (n >= 200 negócios ainda abertos) nas
 # curvas calibradas — acima disso, congela em p_ganho(120)/risco(120) até
 # o limite de censura de 138 dias.
 CURVA_LIMITE_CONFIAVEL_DIAS = 120
 
-# Reversão ao prior acima de 138 dias (censura, não extrapolação).
-CENSURA_P_HAT = GLOBAL_WIN_RATE
+# Reversão ao prior acima de 138 dias (censura, não extrapolação). Usa a
+# taxa ORGÂNICA — as curvas de idade nunca leem a população de calibração
+# (design.md, D2) — não a taxa de calibração usada para p̂_produto.
+CENSURA_P_HAT = GLOBAL_WIN_RATE_ORGANICO
 CENSURA_URGENCIA = 0.15
+
+# ---------------------------------------------------------------------------
+# Reclassificação de oportunidades abertas há 200 dias ou mais (lead-scoring
+# spec, Requirement "Reclassificação de oportunidades com 200 dias ou
+# mais"). Constante de POLÍTICA — quando o negócio desiste de um deal aberto
+# — distinta de CENSURA_DIAS (138), que é uma fronteira OBSERVADA (maior
+# ciclo de fechamento real). As duas nunca podem ser confundidas: colar uma
+# na outra faria uma escolha de negócio parecer um fato dos dados
+# (design.md, decisão D1).
+IDADE_RECLASSIFICACAO_DIAS = 200
 
 # ---------------------------------------------------------------------------
 # Prospecting — sem engage_date, sem idade a imputar.
@@ -214,3 +238,43 @@ ESTADO_LABELS: dict[str, str] = {
     "qualificar": "Qualificar",
     "revisao_lote": "Revisão em lote",
 }
+
+# ---------------------------------------------------------------------------
+# Carga por vendedor e ESTADO (workload-fit spec, Requirement "Detecção de
+# sobrecarga"). "Estado" aqui é o ESTADO do funil (prioritize/acompanhar/
+# qualificar), não geografia — revisao_lote é excluído por definição.
+# ---------------------------------------------------------------------------
+CARGA_RAZAO_SOBRECARGA = 1.5
+# Piso absoluto normativo: sem ele, uma única oportunidade num ESTADO cuja
+# média do escritório é próxima de zero apareceria como muitas vezes a
+# média (design.md, D4 — Central/prioritize, média 0,10).
+CARGA_PISO_SOBRECARGA = 5
+
+# ---------------------------------------------------------------------------
+# Fit vendedor x produto / vendedor x setor (workload-fit spec, Requirement
+# "Fit histórico do vendedor por produto e por setor"). Encolhimento em
+# dois níveis: vendedor -> escritório -> global, sobre fechados_calibracao.
+# k_fit é constante de POLÍTICA — a derivação por variância em excesso
+# (validation/) espera-se que colapse para k=∞, do mesmo modo que os
+# níveis conta×produto e produto×setor de K_PRODUTO (design.md, D3).
+# ---------------------------------------------------------------------------
+K_FIT = 25.0
+
+# Suporte mínimo (negócios fechados) para uma célula vendedor×produto ou
+# vendedor×setor ser considerada com base suficiente — usado só na
+# validação (task 8.5), nunca para suprimir a exibição do fit encolhido.
+FIT_SUPORTE_MINIMO = 10
+
+# ---------------------------------------------------------------------------
+# Sugestão de redistribuição (workload-fit spec, Requirement "Sugestão de
+# vendedor para redistribuição"). Pesos de política, não resultado
+# empírico — dado que o fit é indistinguível de ruído (ver ressalva
+# estatística), a folga é o que decide na prática (design.md, D5).
+# ---------------------------------------------------------------------------
+RANK_PESO_FOLGA = 0.5
+RANK_PESO_FIT = 0.5
+
+# Produto pesa mais que setor: célula mais densa (mediana 34 vs 20 negócios
+# fechados) e 5,9% dos fechados não têm setor (design.md, D5).
+FIT_PESO_PRODUTO = 0.6
+FIT_PESO_SETOR = 0.4

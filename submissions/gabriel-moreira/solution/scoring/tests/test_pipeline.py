@@ -7,13 +7,15 @@ from scoring.reference import build_reference_distribution
 
 
 def test_reference_scenario_gtx_plus_pro_upper_122_dias(scored_pipeline):
+    """PRIORIDADE muda com a recalibração de 200 dias (p̂_produto agora vem
+    de fechados_calibracao) — BREAKING, ver proposal.md."""
     sp = scored_pipeline
     r = score_row(
         sp.ctx, sp.ref, sp.ages_won_ordenadas,
         product="GTX Plus Pro", stage="Engaging", age_days=122,
         has_account=True, porte="Upper", has_sector=True, has_team=True,
     )
-    assert abs(r["prioridade"] - 4482.00) < 5.00
+    assert abs(r["prioridade"] - 4051.66) < 5.00
 
 
 def test_reference_scenario_idade_377_dias_sem_precedente(scored_pipeline):
@@ -92,15 +94,41 @@ def test_setor_entra_em_confianca_nao_em_p_hat(scored_pipeline):
     assert com_setor["completude"] > sem_setor["completude"]
 
 
-def test_open_pipeline_covers_all_2089_open_opportunities(scored_pipeline):
-    assert len(scored_pipeline.scored) == 2089
+def test_open_pipeline_covers_all_1436_open_opportunities(scored_pipeline):
+    """Funil aberto cai de 2.089 para 1.436 após a reclassificação de 200
+    dias (653 oportunidades saem para Lost) — lead-scoring spec."""
+    assert len(scored_pipeline.scored) == 1436
+
+
+def test_reclassified_count_exposed(scored_pipeline):
+    assert scored_pipeline.n_reclassificados == 653
 
 
 def test_open_pipeline_includes_opportunities_without_account(scored_pipeline):
     scored = scored_pipeline.scored
     sem_conta = scored[scored["account"].isna()]
-    assert len(sem_conta) == 1425
+    assert len(sem_conta) == 987
     assert sem_conta["prioridade"].notna().all()
+
+
+def test_curvas_nao_alimentadas_por_reclassificados(scored_pipeline):
+    """Task 1.6 — nenhum reclassificado entra na calibração das curvas de
+    idade: `fechados_organicos` nunca contém uma linha marcada
+    `reclassificado`, e sua idade máxima permanece 138 dias."""
+    from scoring.pipeline import fechados_organicos
+
+    organicos = fechados_organicos(scored_pipeline.dataset)
+    assert not organicos["reclassificado"].any()
+    idade_max = (organicos["close_date"] - organicos["engage_date"]).dt.days.max()
+    assert idade_max == 138
+
+
+def test_base_rate_calibracao_57_55(scored_pipeline):
+    from scoring.pipeline import fechados_calibracao
+
+    calibracao = fechados_calibracao(scored_pipeline.dataset)
+    base_rate = (calibracao["deal_stage"] == "Won").mean()
+    assert round(base_rate * 100, 2) == 57.55
 
 
 def test_prospecting_nunca_cai_em_revisao_lote(scored_pipeline):
@@ -119,8 +147,8 @@ def test_revisao_lote_e_o_passivo_real(scored_pipeline):
 
 def test_estado_distribution_matches_expected(scored_pipeline):
     counts = scored_pipeline.scored["estado"].value_counts().to_dict()
-    # Faixa de tolerância pequena: os números exatos vêm da calibração
-    # corrente (docs/decisions-log.md, entrada 2026-08-20) e podem mover
-    # levemente numa recalibração trimestral.
-    assert counts.get("revisao_lote", 0) > 900
+    # revisao_lote encolhe muito com a reclassificação de 200 dias: a maior
+    # parte do que antes era ">138d sem precedente" agora já saiu do funil
+    # aberto como Lost (add-analise-carga-fit).
+    assert counts.get("revisao_lote", 0) > 300
     assert counts.get("prioritize", 0) > 0

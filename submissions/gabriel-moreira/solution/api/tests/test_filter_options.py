@@ -70,7 +70,7 @@ def test_export_deal_ids_covers_whole_filtered_slice_not_just_a_page(client):
     assert len(ids_exportados) > listagem["page_size"]  # confirma que passa de uma página
 
 
-def test_export_deal_ids_without_filter_covers_all_2089(client):
+def test_export_deal_ids_without_filter_covers_all_1436(client):
     resp = client.get("/export/deal-ids")
     reader = csv.DictReader(io.StringIO(resp.text))
-    assert len(list(reader)) == 2089
+    assert len(list(reader)) == 1436

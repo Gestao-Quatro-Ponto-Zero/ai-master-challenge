@@ -26,7 +26,7 @@ class ScoringContext:
     product_closed_counts: dict[str, int] = field(default_factory=dict)
 
     def p_hat_produto(self, product: str) -> float:
-        return self.p_hat_by_product.get(product, constants.GLOBAL_WIN_RATE)
+        return self.p_hat_by_product.get(product, constants.GLOBAL_WIN_RATE_CALIBRACAO)
 
     def s_idade(self, age_days: float) -> float:
         """Fração saturada de negócios ganhos dentro de +/-SUPORTE_JANELA_IDADE_DIAS
@@ -66,7 +66,10 @@ def p_hat(
     if age_days > constants.CENSURA_DIAS:
         return constants.CENSURA_P_HAT
 
-    return produto_p_hat * curves.p_ganho(age_days) / constants.GLOBAL_WIN_RATE
+    # Normaliza pela taxa ORGÂNICA — p_ganho(0) foi calibrado sobre os
+    # negócios fechados organicamente, é essa a base da curva, não a taxa
+    # de calibração (que alimenta apenas p̂_produto em si).
+    return produto_p_hat * curves.p_ganho(age_days) / constants.GLOBAL_WIN_RATE_ORGANICO
 
 
 def urgencia(stage: str, age_days: float | None) -> float:

@@ -31,6 +31,9 @@ class OportunidadeOut(BaseModel):
     estado: str
     estado_label: str
     plano_de_acao: str
+    # Requirement "Sinalizador de sobrecarga na listagem de oportunidades"
+    # — booleano só; o vendedor sugerido nunca aparece nesta listagem.
+    sobrecarregado: bool
 
 
 class DealsEnvelopeOut(BaseModel):
@@ -53,11 +56,42 @@ class ContaOut(BaseModel):
     office_location: Optional[str] = None
 
 
+RESSALVA_FIT = (
+    "A diferença de desempenho entre vendedores não é estatisticamente "
+    "distinguível de acaso nesta base (testes de permutação, ver validation/)."
+)
+
+
+class FitOut(BaseModel):
+    """Fit histórico do vendedor numa dimensão (produto ou setor).
+    `disponivel=False` — nunca zero, nunca a média global, nunca o fit da
+    outra dimensão — quando a informação de base (setor) é desconhecida."""
+
+    disponivel: bool
+    valor: Optional[float] = None
+    n: Optional[int] = None
+
+
+class SugestaoOut(BaseModel):
+    """Sugestão de redistribuição — informativa; nada é reatribuído.
+    `disponivel=False` quando o pool de elegíveis do escritório esgota."""
+
+    disponivel: bool
+    sales_agent: Optional[str] = None
+    fit_produto: Optional[FitOut] = None
+    fit_setor: Optional[FitOut] = None
+
+
 class DealDetailOut(OportunidadeOut):
     conta: ContaOut
     prioridade: float
     plano_de_acao_passos: list[str]
     score_fatores: list[str]
+    # Requirement "Fit e sugestão no detalhe da oportunidade".
+    fit_produto: FitOut
+    fit_setor: FitOut
+    ressalva_fit: str = RESSALVA_FIT
+    sugestao: Optional[SugestaoOut] = None
 
 
 class FiltroVendedorOut(BaseModel):
@@ -140,3 +174,51 @@ class ScoreAvulsaOut(BaseModel):
     plano_de_acao: str
     plano_de_acao_passos: list[str]
     score_fatores: list[str]
+
+
+class CargaVendedorOut(BaseModel):
+    sales_agent: str
+    contagem: int
+    razao: Optional[float] = None
+    sobrecarregado: bool
+
+
+class CargaEstadoOut(BaseModel):
+    estado: str
+    media_escritorio: float
+    vendedores: list[CargaVendedorOut]
+
+
+class CargaEscritorioOut(BaseModel):
+    regional_office: str
+    estados: list[CargaEstadoOut]
+
+
+class CargaEnvelopeOut(BaseModel):
+    escritorios: list[CargaEscritorioOut]
+
+
+class OportunidadeSobrecarregadaOut(BaseModel):
+    opportunity_id: str
+    sales_agent: str
+    regional_office: Optional[str] = None
+    product: str
+    account: Optional[str] = None
+    sector: Optional[str] = None
+    estado: str
+    contagem: int
+    media_escritorio: float
+    razao: Optional[float] = None
+    # Fit do vendedor ATUAL — para comparação lado a lado com `sugestao`
+    # (pipeline-ui spec, Requirement "Aba de sobrecarga").
+    fit_produto: FitOut
+    fit_setor: FitOut
+    sugestao: SugestaoOut
+
+
+class SobrecarregadosEnvelopeOut(BaseModel):
+    items: list[OportunidadeSobrecarregadaOut]
+    total: int
+    page: int
+    page_size: int
+    total_pages: int

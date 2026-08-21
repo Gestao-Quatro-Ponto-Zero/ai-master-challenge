@@ -17,7 +17,7 @@ def test_deals_no_estado_returns_all(client):
     resp = client.get("/deals")
     assert resp.status_code == 200
     body = resp.json()
-    assert body["total"] == 2089
+    assert body["total"] == 1436
     estados = {row["estado"] for row in body["items"]}
     assert estados.issubset({"prioritize", "acompanhar", "qualificar", "revisao_lote"})
 

@@ -23,7 +23,7 @@ CONFIANÇA  = min(completude, suporte)                                          
 
 **SCORE é o único número de prioridade exposto** — não PRIORIDADE em dólares, que permanece calculada e exportada no CSV como valor intermediário auditável, mas não aparece na tela nem ordena a fila (ver §Redesenho 2026-08-20 abaixo para o porquê). CONFIANÇA e SCORE nunca se combinam num único número: CONFIANÇA mede quanto do necessário para pontuar está de fato observado; SCORE mede quanto a oportunidade vale agora. Um **ESTADO** deriva de uma árvore de decisão sobre os dois e vira a etiqueta de ação que o vendedor vê: **Priorizar, Acompanhar, Qualificar, Revisão em lote**.
 
-**Toda oportunidade aberta recebe PRIORIDADE — inclusive as 1.425 sem conta e as 500 em Prospecting.** A ausência de conta custa no máximo 8% de VALOR (prior neutro de porte), nunca a viabilidade do score.
+**Toda oportunidade aberta recebe PRIORIDADE — inclusive as 987 sem conta e as 500 em Prospecting.** A ausência de conta custa no máximo 8% de VALOR (prior neutro de porte), nunca a viabilidade do score.
 
 ---
 
@@ -95,7 +95,7 @@ MERGE:
 |---|---|
 | `technolgy` typo em sector | → `technology` |
 | `GTXPro` vs `GTX Pro` | → normalizar para `GTX Pro` (1.147 negócios) |
-| 1.425 deals sem `account` | pontuáveis normalmente — VALOR usa prior neutro de porte (mult=1,00), completude de CONFIANÇA cai (faltam conta/funcionários/setor) |
+| 987 deals abertos sem `account` (1.425 antes da reclassificação de 200 dias) | pontuáveis normalmente — VALOR usa prior neutro de porte (mult=1,00), completude de CONFIANÇA cai (faltam conta/funcionários/setor) |
 | 500 Prospecting sem `engage_date` | pontuáveis normalmente — `p̂` = `p̂_produto` sem ajuste de idade, URGÊNCIA fixa em 0,47 |
 | bimodal cycle (picos 0–19d e 60–90d) | motivou a leitura das curvas de aging como função em degraus, não decaimento contínuo |
 
@@ -243,17 +243,17 @@ O corte de SCORE (95) é o percentil 95 da própria distribuição de referênci
 | **Qualificar** | Obter a informação específica que falta (nomeada pela razão de CONFIANÇA) antes de tratar como tarefa priorizada |
 | **Revisão em lote** | Passivo de higiene de dados — sem precedente histórico de fechamento. Fora da fila ordenada de trabalho, tratado em lote com o gestor |
 
-Distribuição resultante sobre o funil atual (2.089 oportunidades abertas), contra a vigente antes do redesenho:
+Distribuição resultante sobre o funil atual (1.436 oportunidades abertas, após a reclassificação de 200 dias de 2026-08-21 — ver seção "Carga e fit por vendedor" abaixo), contra a vigente antes do redesenho de ESTADO:
 
 ```
-Priorizar         54     (antes: Foco urgente   50)
-Acompanhar       283     (antes: Acompanhar    243)
-Qualificar       656     (antes: Qualificar 197 + Engajar 308)
-Revisão em lote 1.096     (antes: Desistir    1.291)
+Priorizar         54     (antes do redesenho: Foco urgente   50)
+Acompanhar       283     (antes do redesenho: Acompanhar    243)
+Qualificar       656     (antes do redesenho: Qualificar 197 + Engajar 308)
+Revisão em lote  443     (antes da reclassificação de 200d: 1.096; antes do redesenho: Desistir 1.291)
 Fila trabalhável 993
 ```
 
-`Revisão em lote` tem idade mínima de 154 dias — é o passivo real (todos acima da fronteira de 138 dias), não um depósito; nenhuma das 500 oportunidades em Prospecting cai nele, porque idade desconhecida nunca é lida como "sem precedente".
+A fila trabalhável (993) não mudou com a reclassificação de 200 dias — as 653 oportunidades reclassificadas já estavam todas em `Revisão em lote` (idade ≥ 200 > 138 dias), então só esse balde encolheu. `Revisão em lote` tem agora idade entre 154 e 199 dias — é o passivo real (acima da fronteira de 138 dias, abaixo do corte de política de 200 dias que agora vira `Lost`), não um depósito; nenhuma das 500 oportunidades em Prospecting cai nele, porque idade desconhecida nunca é lida como "sem precedente".
 
 ### Explicabilidade e plano de ação
 
@@ -261,7 +261,7 @@ Cada oportunidade expõe:
 
 ```
 Priorizar · GTX Plus Pro · confiança 100 (completude e suporte equivalentes)
-p̂ 0,764 · Valor US$ 5.865,74 · Urgência 1,00 → PRIORIDADE ≈ US$ 4.482,00 (auditável; SCORE é o número de prioridade)
+p̂ 0,691 · Valor US$ 5.865,74 · Urgência 1,00 → PRIORIDADE ≈ US$ 4.051,66 (auditável; SCORE é o número de prioridade — valor recalculado em 2026-08-21, p̂_produto agora vem de `fechados_calibracao`)
 "98,8% das vitórias históricas já ocorreram nesta idade — priorize contato esta semana."
 ```
 
@@ -285,7 +285,7 @@ Três hipóteses de melhoria do motor foram testadas e **as três falharam** —
 
 A fórmula em si (`p̂ × VALOR × URGÊNCIA`, curvas globais, `p̂_produto` por encolhimento) **não mudou** — o redesenho muda como o resultado é exposto e roteado, não como é calculado.
 
-**Correção incidental encontrada durante a implementação:** `classificar_porte` só verificava `employees is None`, mas o merge com `accounts.csv` preenche funcionários ausentes com `NaN`, não `None` — e `NaN < limiar` é sempre `False` em Python. Toda oportunidade sem conta (1.425 das 2.089) caía silenciosamente em "Enterprise" (mult_porte 1,06) em vez do prior neutro (1,00) que o requisito de VALOR já prometia. Corrigido junto com o redesenho (`employees != employees` cobre NaN além de `None`).
+**Correção incidental encontrada durante a implementação:** `classificar_porte` só verificava `employees is None`, mas o merge com `accounts.csv` preenche funcionários ausentes com `NaN`, não `None` — e `NaN < limiar` é sempre `False` em Python. Toda oportunidade sem conta (987 das 1.436 no funil atual; 1.425 das 2.089 antes da reclassificação de 200 dias) caía silenciosamente em "Enterprise" (mult_porte 1,06) em vez do prior neutro (1,00) que o requisito de VALOR já prometia. Corrigido junto com o redesenho (`employees != employees` cobre NaN além de `None`).
 
 ---
 
@@ -317,10 +317,11 @@ Os dois tiles históricos (receita ganha, maior negócio fechado) respondem só 
 
 Persistidos em URL params: vendedor, gerente, escritório, produto, faixa de CONFIANÇA (0-100, não mais letra), estado (multi-seleção, restrito aos três trabalháveis), faixa de idade (régua de dois cursores), página, ordenação e a oportunidade aberta no painel de detalhe. Vendedor/gerente/escritório são filtros comuns sobre o funil inteiro — nenhum é restrito por sessão. As opções vêm de `/filter-options`, não da página corrente da listagem.
 
-### Duas abas
+### Três abas (terceira — Sobrecarga — adicionada 2026-08-21)
 
-1. **Oportunidades** (inicial) — os três estados trabalháveis como filtro de chips (com contagem), listagem paginada no servidor (100 por página, ordenável por SCORE/CONFIANÇA/idade — PRIORIDADE em dólares não é opção de ordenação nem coluna), painel lateral de detalhe ao abrir uma linha (VALOR e a decomposição completa continuam visíveis ali; PRIORIDADE aparece como valor auditável, não como número de prioridade), visão própria de Revisão em lote com exportação do recorte inteiro, e exportação de identificadores do recorte filtrado (não só da página carregada)
-2. **Gestão** — disponível a qualquer cliente; rollup por vendedor/gerente/escritório (contagem pelos quatro estados + CONFIANÇA mediana do grupo, rotulada como qualidade de cadastro, não desempenho) + distribuição de esforço por produto; download do dataset processado completo
+1. **Oportunidades** (inicial) — os três estados trabalháveis como filtro de chips (com contagem), listagem paginada no servidor (100 por página, ordenável por SCORE/CONFIANÇA/idade — PRIORIDADE em dólares não é opção de ordenação nem coluna), painel lateral de detalhe ao abrir uma linha (VALOR e a decomposição completa continuam visíveis ali; PRIORIDADE aparece como valor auditável, não como número de prioridade), visão própria de Revisão em lote com exportação do recorte inteiro, exportação de identificadores do recorte filtrado (não só da página carregada), sinalizador de sobrecarga (dourado, sem vendedor sugerido) e filtro correspondente
+2. **Sobrecarga** — oportunidades de pares (vendedor, ESTADO) sobrecarregados, agrupadas por vendedor, com fit do vendedor atual e do candidato sugerido lado a lado; estado vazio explícito quando a distribuição está equilibrada. Ver "Carga e fit por vendedor" abaixo.
+3. **Gestão** — disponível a qualquer cliente; rollup por vendedor/gerente/escritório (contagem pelos quatro estados + CONFIANÇA mediana do grupo, rotulada como qualidade de cadastro, não desempenho) + distribuição de esforço por produto; download do dataset processado completo
 
 ### Tema
 
@@ -489,19 +490,39 @@ validation/
 
 ## Validação
 
-`solution/validation/backtest.py` reproduz, em 9 seções:
+`solution/validation/backtest.py` reproduz, em 13 seções (seções 10-13 adicionadas 2026-08-21):
 
 1. AUC ≈ 0,50 por atributo firmográfico isolado, em holdout temporal
 2. Testes de permutação (p entre 0,26 e 0,98) para vendedor/produto/setor/conta
-3. Colapso de `k` para conta×produto, produto×setor **e produto** (variância em excesso ≤ 0 nos três — `K_PRODUTO=4` é aproximação retida por política, não resultado do cálculo)
-4. Monotonicidade de `risco(t)` e fronteira de 138 dias confirmada nos dados carregados
-5. Concentração de PRIORIDADE: top 10% da fila concentra ~49% do valor em risco total — comparado lado a lado com ranking por preço puro, rotulado como concentração, não como validação preditiva
-6. **Condicionar `p̂` por produto×setor** (CV 5-fold): `logloss` 0,66016 vs. 0,65828 do prior global achatado — pior, resultado negativo documentado
-7. **Curvas de aging por produto** (CV 5-fold): `logloss` 0,65525 (0,65275 com encolhimento) vs. 0,64936 da curva global — pior; ao menos um produto (`GTK 500`, 25 negócios fechados) não tem amostra para curva própria
-8. **URGÊNCIA por produto** (permutação): dispersão de medianas de ciclo entre produtos 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 — produtos mais parecidos entre si do que o acaso produziria
+3. Colapso de `k` para conta×produto e produto×setor (variância em excesso ≤ 0 nos dois). O nível de **produto** deixou de colapsar após a reclassificação de 200 dias — `k≈0,70` (finito), dominado por `GTK 500` — `K_PRODUTO=4` continua sendo aproximação retida por política, agora reportada como AVISO, não como NOTA (ver decisions-log.md, 2026-08-21)
+4. Monotonicidade de `risco(t)` e fronteira de 138 dias confirmada nos dados carregados — sobre `fechados_organicos`, nunca sobre reclassificados
+5. Concentração de PRIORIDADE: top 10% da fila concentra ~45% do valor em risco total (vs. ~28% ordenando só por preço de tabela puro) — comparado lado a lado, rotulado como concentração, não como validação preditiva
+6. **Condicionar `p̂` por produto×setor** (CV 5-fold): pior que o prior global achatado — resultado negativo documentado
+7. **Curvas de aging por produto** (CV 5-fold), sobre `fechados_organicos`: pior que a curva global; ao menos um produto não tem amostra para curva própria
+8. **URGÊNCIA por produto** (permutação), sobre `fechados_organicos`: produtos mais parecidos entre si do que o acaso produziria
 9. Distribuição de CONFIANÇA e das duas metades (completude/suporte), para que uma recalibração que torne a janela de idade ou a saturação de suporte inadequadas fique visível
+10. **Antes/depois da reclassificação de 200 dias:** 653 reclassificados, funil 2.089→1.436, base rate 63,15%→57,55%, taxa por produto antes/depois com `GTK 500` marcado como amostra pequena (n=35)
+11. **Auditoria de circularidade:** idade máxima orgânica (138d) contra idade mínima reclassificada (200d) — populações não se sobrepõem; falha se algum reclassificado entrar na calibração das curvas
+12. **Fit por vendedor** — permutação (rótulos de vendedor embaralhados, produto/setor fixos) e derivação de `k_fit`: vendedor×setor indistinguível de acaso (p≈0,20), vendedor×produto limítrofe (p≈0,047, sem correção para múltiplas comparações) — `K_FIT=25` permanece congelado por política, mais conservador que qualquer `k` derivado; reporta também as células com suporte insuficiente (<10 negócios fechados)
+13. **Auditoria de denominador** dos artefatos `analysis_by_product_detailed.csv`/`analysis_by_sector_detailed.csv`: falha se alguma linha publicar taxa cujo denominador inclua oportunidade em aberto
 
-Conclusão: **justifica ordenar por valor em risco (SCORE), não por um classificador de probabilidade, nem por hierarquias de condicionamento adicionais (setor, aging por produto).** As oportunidades sem precedente histórico (`Revisão em lote`, 1.096 de 2.089) ficam roteadas para revisão em lote, fora da fila ordenada — não zeradas, não misturadas com a fila trabalhável.
+Conclusão: **justifica ordenar por valor em risco (SCORE), não por um classificador de probabilidade, nem por hierarquias de condicionamento adicionais (setor, aging por produto).** As oportunidades sem precedente histórico (`Revisão em lote`, 443 de 1.436) ficam roteadas para revisão em lote, fora da fila ordenada — não zeradas, não misturadas com a fila trabalhável.
+
+---
+
+## Carga e fit por vendedor (adicionado 2026-08-21)
+
+Ver `openspec/changes/add-analise-carga-fit/` para a proposta/design completos. Resumo técnico:
+
+**`scoring/carga.py`** — para cada par (vendedor, ESTADO), com `revisao_lote` excluído, compara a contagem do vendedor com a média do próprio escritório regional (`Central`/`East`/`West`) naquele ESTADO — a média é calculada sobre todos os vendedores do escritório com ao menos uma oportunidade aberta em qualquer ESTADO, incluindo os que têm zero no ESTADO avaliado. Sobrecarga = `contagem ≥ 1,5× a média` **e** `contagem ≥ 5` (piso absoluto). Sobre o funil atual: 12 pares, 8 vendedores, 227 oportunidades.
+
+**`scoring/fit.py`** — taxa de vitória do vendedor por produto e por setor, sobre `fechados_calibracao` (nunca sobre oportunidades abertas), encolhida em dois níveis (vendedor → escritório → global, `k_fit=25` congelado por política). Também ranqueia candidatos à redistribuição (`rank = 0,5×folga + 0,5×fit_normalizado`, produto pesando 0,6 e setor 0,4), restrito ao mesmo escritório, excluindo os 5 vendedores de `sales_teams` sem nenhuma oportunidade registrada e qualquer vendedor sobrecarregado no ESTADO.
+
+**API (`api/routes/carga.py`)** — `GET /carga` (carga por escritório/ESTADO, filtros opcionais, aceita `as_of`) e `GET /deals/sobrecarregados` (paginado, cada item com fit do vendedor atual e do candidato sugerido). `GET /deals` ganha o campo `sobrecarregado` (booleano, nunca o vendedor sugerido) e o filtro `sobrecarga`. `GET /deals/{id}` ganha `fit_produto`/`fit_setor` do vendedor atual e, quando sobrecarregado, `sugestao` com o candidato.
+
+**Fronteira de exibição, normativa:** o vendedor sugerido aparece **apenas** na aba Sobrecarga e no painel de detalhe — nunca na listagem geral de Oportunidades (que recebe só o booleano). Fit nunca vira coluna de listagem, nunca entra em `p̂`, VALOR, URGÊNCIA, PRIORIDADE, SCORE, CONFIANÇA ou ESTADO, e é sempre exibido com a ressalva de que a diferença entre vendedores não é estatisticamente distinguível de acaso nesta base (`validation/backtest.py` seção 12). Cor: sobrecarga usa o dourado `#B9915B`; `#AF4332` continua exclusivo de `revisao_lote`.
+
+**Exportação:** a mesma carga que grava `processed_pipeline.csv` também grava `analysis_by_product_detailed.csv` e `analysis_by_sector_detailed.csv` (`scoring/export.py::build_analysis_table`, consumindo `FitContext.vendor_product`/`vendor_sector`) — substituindo os artefatos anteriores, que calculavam `Taxa Vitória % = Won / Total` com `Total` incluindo oportunidades abertas (159 de 179 e 219 de 292 linhas incorretas). Denominador travado por teste (`validation/denominator_check.py`).
 
 ---
 

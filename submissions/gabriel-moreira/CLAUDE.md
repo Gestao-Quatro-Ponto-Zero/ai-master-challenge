@@ -4,7 +4,7 @@
 
 **Owner:** Gabriel Moreira
 
-**Date:** 2026-08-19 (formula revised same day — see decisions-log.md); RBAC removed 2026-08-20; SCORE/CONFIANÇA/ESTADO redesigned 2026-08-20 (same day, second pass — see decisions-log.md); `score_fatores` + ESTÁGIO in listing added 2026-08-20 (same day, third pass)
+**Date:** 2026-08-19 (formula revised same day — see decisions-log.md); RBAC removed 2026-08-20; SCORE/CONFIANÇA/ESTADO redesigned 2026-08-20 (same day, second pass — see decisions-log.md); `score_fatores` + ESTÁGIO in listing added 2026-08-20 (same day, third pass); 200-day reclassification + workload/fit analysis added 2026-08-21 (see decisions-log.md)
 
 ---
 
@@ -30,15 +30,15 @@ This is still the entire design decision tree — the formula got more rigorous,
 
 ## Solution shape
 
-**2.089 open deals, every one scoreable — including the 1.425 without an account and the 500 in Prospecting.**
+**1.436 open deals, every one scoreable — including the 987 without an account and the 500 in Prospecting.** (Was 2.089 before 2026-08-21: 653 opportunities open ≥200 days were reclassified to `Lost` — see "200-day reclassification" below.)
 
 **Formula (revised 2026-08-19, see decisions-log.md for the full reasoning):**
 
 ```
-p̂ = (n_produto × taxa_produto + k × 0,632) / (n_produto + k)     ← hierarchical shrinkage, k derived not chosen
+p̂ = (n_produto × taxa_produto + k × 0,5755) / (n_produto + k)    ← hierarchical shrinkage, k frozen by policy (0,5755 = calibration-population base rate, since 2026-08-21)
 
   se Prospecting:  p̂ = p̂_produto (no age adjustment)
-  se idade > 138:   p̂ = 0,632                                     ← censoring: revert to prior, never extrapolate
+  se idade > 138:   p̂ = 0,632                                     ← censoring: revert to the ORGANIC prior (curves never see reclassified deals), never extrapolate
   senão:            p̂ = p̂_produto × p_ganho(min(idade,120)) / 0,632
 
 VALOR = preço_tabela(produto) × mult_porte(porte, default 1,00)   ← default 1.00 makes no-account scoreable
@@ -53,7 +53,7 @@ SCORE      = percentil(PRIORIDADE) × 100                           ← percenti
 
 **SCORE's reference population is the 4,238 historically won deals** (PRIORIDADE computed for each using its real age-at-close), not the current open funnel. That population is fixed/historical — it only updates on the quarterly recalibration cycle. So SCORE = 82 literally means "this opportunity is worth more, at stake right now, than 82% of deals that historically became revenue" — and unlike a percentile against the open funnel, it never moves because some other deal entered or left the pipeline.
 
-**Redesigned 2026-08-20 (second pass, same day as the RBAC removal): PRIORIDADE in dollars is no longer displayed or used to sort the queue.** The variance decomposition of `log(PRIORIDADE)` attributes 87.3% to VALOR and 0.1% to `p̂` — sorting by it was, in practice, sorting by table price (products range 486.7× vs. `p̂_produto`'s 1.074×). **SCORE (0-100) is now the only priority number exposed** — in the UI, as the API's default sort, and as ESTADO's input. PRIORIDADE stays calculated and CSV-exported as an auditable intermediate value. See the CONFIANÇA/ESTADO redesign below and `docs/decisions-log.md` (2026-08-20 entry) for the full reasoning, including three refinement hypotheses that were tested and rejected: conditioning `p̂` on product×sector, per-product aging curves, and per-product URGÊNCIA — all three made out-of-sample prediction *worse* (5-fold cross-validation, reproducible in `validation/backtest.py` sections 6-8).
+**Redesigned 2026-08-20 (second pass, same day as the RBAC removal): PRIORIDADE in dollars is no longer displayed or used to sort the queue.** The variance decomposition of `log(PRIORIDADE)` attributed 87.3% to VALOR and 0.1% to `p̂` in that calibration — sorting by it was, in practice, sorting by table price (products range 486.7× vs. `p̂_produto`'s old 1.074×). Note: the 2026-08-21 recalibration widened `p̂_produto`'s range considerably (GTK 500 alone moved ~17pp) — this decomposition has not been rerun since, and the exact split is due for a refresh at the next quarterly recalibration; VALOR still dominates by a wide margin regardless. **SCORE (0-100) is now the only priority number exposed** — in the UI, as the API's default sort, and as ESTADO's input. PRIORIDADE stays calculated and CSV-exported as an auditable intermediate value. See the CONFIANÇA/ESTADO redesign below and `docs/decisions-log.md` (2026-08-20 entry) for the full reasoning, including three refinement hypotheses that were tested and rejected: conditioning `p̂` on product×sector, per-product aging curves, and per-product URGÊNCIA — all three made out-of-sample prediction *worse* (5-fold cross-validation, reproducible in `validation/backtest.py` sections 6-8).
 
 **Counter-intuitive finding baked into the formula:** `p_ganho(t)` **rises** with age (0.632 at day 0 → 0.751 at day 120) — it does not decay. What age consumes is the **window**: by day 57, half of all historical wins have already happened; by day 88, only 25% remain. That's why URGÊNCIA uses `risco(t)` (P of resolving in 30 days, isotonic-smoothed) instead of an age-decay proxy.
 
@@ -78,15 +78,29 @@ SCORE      = percentil(PRIORIDADE) × 100                           ← percenti
 
 `Qualificar` absorbs the old `Engajar` — the two states converged on the same action ("keep following up" / "go get information"), and the distinction that would separate them (missing information vs. missing maturity) is exactly what the completude half already measures as an exposed number, not a state. `Desistir` becomes `Revisão em lote`: same population (no historical precedent), but explicitly named as a data-hygiene backlog routed *out* of the ranked queue — not a per-deal recommendation to give up, which is what "Desistir" implied and what made 61.8%+ of the funnel read as "abandon this."
 
-Distribution on the current funnel (2,089 open deals): `Priorizar` 54, `Acompanhar` 283, `Qualificar` 656, `Revisão em lote` 1,096 (workable queue: 993). `Revisão em lote`'s minimum age is 154 days — genuinely past the 138-day historical boundary, never containing a Prospecting deal (unknown age is never read as "no precedent").
+Distribution on the current funnel (1,436 open deals): `Priorizar` 54, `Acompanhar` 283, `Qualificar` 656, `Revisão em lote` 443 (workable queue: 993 — unchanged, because all 653 reclassified deals were already ≥200 days old and therefore already inside `Revisão em lote` before reclassification removed them from the open funnel entirely). `Revisão em lote`'s age range is now 154–199 days — the ≥200-day tail moved to `Lost` — never containing a Prospecting deal (unknown age is never read as "no precedent").
 
 Each opportunity gets a deterministic-template explanation + action plan, not just a number. The CONFIANÇA reason names which half (completude or suporte) governed the minimum and, when it's completude, which specific fields are missing. The detail panel's "Por que este score" section also shows `score_fatores` — 4 template-generated, jargon-free sentences that decompose `p̂`/VALOR/URGÊNCIA and the account porte effect into plain business language (e.g. "Dados da conta indicam porte Enterprise — isso eleva o valor considerado"), including the counter-intuitive aging finding when it applies. Same auditability guarantee as the action plan — never an LLM summary. Detail-only, same as `plano_de_acao_passos` and `prioridade`. ESTÁGIO (`deal_stage`) is now also a listing column, not detail-only.
 
 **Access control:** none. Removed 2026-08-20 (see decisions-log.md) — every data endpoint is open, no `Authorization` header. Sales agent, manager and regional office (the real hierarchy in `sales_teams.csv`: 35 `sales_agent` → 6 `manager` → 3 `regional_office`) are ordinary filters over the whole funnel, not identities with scope. Acceptable only because the dataset is public demo data with no real customer information; documented as an assumed limitation, not hidden.
 
-**CSV export:** every data load writes a full processed dataset (all 2,089 open opportunities + every derived field, including PRIORIDADE as an auditable value even though it is not displayed) to disk for offline consultation. Separate from the "export filtered IDs" mechanism, which also drives the Revisão em lote view's batch export.
+**CSV export:** every data load writes a full processed dataset (all 1,436 open opportunities + every derived field, including PRIORIDADE as an auditable value even though it is not displayed) to disk for offline consultation. Separate from the "export filtered IDs" mechanism, which also drives the Revisão em lote view's batch export. The same load also (re)writes `analysis_by_product_detailed.csv` and `analysis_by_sector_detailed.csv` (vendor×product / vendor×setor win rate, `Won / (Won + Lost)`) from the identical code path the API uses — see "200-day reclassification" below for why the earlier hand-built versions of those two files were wrong.
 
-**Validation:** standalone Python script (9 sections) runs on the 6,711 closed deals — permutation tests, reproduces the `k` derivation and the account×product/product×sector/product collapse, checks `risco(t)` monotonicity, confirms no closed deal exceeds 138 days, reports PRIORIDADE concentration (top 10% ≈ 49% of total), and 5-fold cross-validates three rejected refinements (product×sector conditioning, per-product aging, per-product URGÊNCIA) plus the CONFIANÇA/completude/suporte distribution.
+**Validation:** standalone Python script (13 sections) runs on the closed deals — permutation tests, reproduces the `k` derivation and the account×product/product×sector collapse (product itself no longer collapses post-reclassification, see below), checks `risco(t)` monotonicity, confirms no organically-closed deal exceeds 138 days, reports PRIORIDADE concentration, 5-fold cross-validates three rejected refinements (product×sector conditioning, per-product aging, per-product URGÊNCIA) plus the CONFIANÇA/completude/suporte distribution, the before/after impact of the 200-day reclassification, the 138-day circularity audit, the vendor-fit permutation test, and the analysis-CSV denominator audit.
+
+### 200-day reclassification + workload/fit analysis (added 2026-08-21)
+
+**Data hygiene finding:** 653 open opportunities (31.3% of the old 2,089-deal funnel) had been sitting in `Engaging` for ≥200 days, while the oldest *organically closed* deal ever took 138 days. Counting those 653 as live workload inflated whoever owned them and made any carteira-vs-carteira comparison meaningless. They are now reclassified to `Lost` at load time, in memory (`scoring/repository.py`) — the raw `sales_pipeline.csv` is never touched.
+
+**Two calibration populations, not one** (`scoring/pipeline.py`): `fechados_organicos` (6,711, unchanged) feeds the age curves (`p_ganho`, `risco`) and the 138-day censoring boundary — age is the input there, so the 653 age-based reclassifications can never enter it without circularity. `fechados_calibracao` (7,364 = 6,711 + 653) feeds the per-product win rate and `p̂`'s global shrinkage prior — those don't take age as input, so learning from the reclassified deals there is legitimate. Consequence: base rate `0.632` (`GLOBAL_WIN_RATE_ORGANICO`, used for censoring) and `0.5755` (`GLOBAL_WIN_RATE_CALIBRACAO`, the new p̂-shrinkage prior) are now two different constants, not one. Funnel: 2,089 → 1,436 open. Base rate: 63.15% → 57.55%. **BREAKING** — p̂_produto, PRIORIDADE and SCORE all shifted; the backtest was regenerated in full.
+
+**Honest surprise:** the product-level shrinkage (`K_PRODUTO = 4.0`, frozen by policy) was previously believed to collapse (`k=∞`) under strict recomputation, same as account×product/product×sector. It no longer does — `GTK 500` alone swings from 60.0% (n=25) to 42.86% (n=35), and a fresh derivation now gives `k≈0.70` (finite). `K_PRODUTO` stays frozen (no runtime change), but `validation/backtest.py` now reports this as a warning instead of a note — flagged for the next quarterly recalibration to actually look at.
+
+**Workload (`scoring/carga.py`):** for each (vendor, ESTADO) pair — `revisao_lote` excluded — compares the vendor's open count against their own regional office's average in that ESTADO. Overloaded = `count ≥ 1.5× office average` **and** `count ≥ 5` (the floor kills false alarms in low-average states). Currently: 12 overloaded pairs, 8 vendors, 227 opportunities.
+
+**Fit (`scoring/fit.py`):** vendor's historical win rate by product and by sector, over `fechados_calibracao` only (`Won + Lost` denominator), two-level shrinkage (vendor → office → global, `K_FIT = 25`, frozen by policy). A permutation test that shuffles vendor labels while holding product/sector fixed per row finds vendor×sector indistinguishable from chance (p≈0.20) but vendor×product borderline (p≈0.047 across 178 uncorrected cells) — weak, not robust evidence of real vendor skill. Every fit number ships with its supporting sample size and a statistical caveat glued to it in the same UI section; fit never enters `p̂`, VALOR, URGÊNCIA, PRIORIDADE, SCORE, CONFIANÇA or ESTADO.
+
+**Redistribution suggestion:** for an overloaded vendor's deal, rank same-office non-overloaded colleagues with history (`rank = 0.5×slack + 0.5×normalized_fit`) and surface the top one. Informative only — nothing is reassigned, and the suggested vendor is shown **only** in the Sobrecarga tab and the detail panel, never in the general Oportunidades listing (which gets just a boolean flag, gold `#B9915B`, distinct from `revisao_lote`'s alert red).
 
 ---
 
@@ -100,21 +114,22 @@ Each opportunity gets a deterministic-template explanation + action plan, not ju
 - **Theme:** G4 Business palette (navy #001F35, gold #B9915B, light bg #FAFBFC, alert #AF4332 exclusive to Revisão em lote)
 
 **Testing (part of Definition of Done, not optional):**
-- Unit: scoring engine (shrinkage incl. `k=∞` collapse, aging curves, censoring, CONFIANÇA branches, ESTADO assignment, explanation generation, action-plan steps)
-- API: contract tests for pagination (page union has no dup/gap, sort over the whole slice, stable tie-break), deal detail, filter options, filtered-id export — none of it gated behind identification
+- Unit: scoring engine (shrinkage incl. `k=∞` collapse, aging curves, censoring, CONFIANÇA branches, ESTADO assignment, explanation generation, action-plan steps, workload detection, fit shrinkage, redistribution ranking)
+- API: contract tests for pagination (page union has no dup/gap, sort over the whole slice, stable tie-break), deal detail, filter options, filtered-id export, carga/sobrecarga endpoints — none of it gated behind identification
 
 ---
 
 ## Files and their roles
 
 **Key decision documents:**
-- [`docs/decisions-log.md`](docs/decisions-log.md) — all decisions and the reasoning, including the 2026-08-19 formula revision. See this first.
+- [`docs/decisions-log.md`](docs/decisions-log.md) — all decisions and the reasoning, including the 2026-08-19 formula revision and the 2026-08-21 reclassification/workload/fit entry. See this first.
 - [`docs/architecture.md`](docs/architecture.md) — technical blueprint, data flow, component layout.
-- [`analise-lead-scoring.md`](analise-lead-scoring.md) — full statistical analysis. Answers "why is AUC 0.50?" with evidence.
-- [`../../openspec/changes/add-lead-scorer/`](../../openspec/changes/add-lead-scorer/) — formal proposal/design/specs; source of truth for exact requirement wording.
+- [`analise-lead-scoring.md`](analise-lead-scoring.md) — full statistical analysis. Answers "why is AUC 0.50?" with evidence, plus the 2026-08-21 reclassification numbers and the analysis-CSV audit.
+- [`../../openspec/changes/add-lead-scorer/`](../../openspec/changes/add-lead-scorer/) — formal proposal/design/specs for the original scoring engine.
+- [`../../openspec/changes/add-analise-carga-fit/`](../../openspec/changes/add-analise-carga-fit/) — formal proposal/design/specs for the 200-day reclassification, workload analysis and fit.
 
 **Submission structure:**
-- `solution/` — code (will have `scoring/`, `api/`, `web/`, `validation/`)
+- `solution/` — code: `scoring/` (core, now includes `carga.py` and `fit.py`), `api/` (now includes `routes/carga.py`), `web/` (now includes `SobrecargaView.tsx`), `validation/`
 - `process-log/` — chat exports and screenshots showing Claude Code usage
 - `data/` — CSVs (accounts, products, sales_pipeline, sales_teams, metadata)
 
@@ -126,7 +141,7 @@ Each opportunity gets a deterministic-template explanation + action plan, not ju
 
 Still holding from the original session:
 1. Score on value/timing, not a win-probability classifier — AUC evidence killed the predictive path
-2. Rank open deals (not score new leads) — 2.089 open is the real problem
+2. Rank open deals (not score new leads) — 1.436 open (2.089 before the 2026-08-21 reclassification) is the real problem
 3. Product coverage as account potential, not deal signal — 39.6% effort on 5.4% revenue
 4. FastAPI + React (not Streamlit) — a clean API/UI split, needed regardless of auth
 5. Validate with permutation tests, ship the evidence

@@ -303,3 +303,35 @@ Cada frase cobre um componente:
 **Por quê:** ESTÁGIO explica por que `age_days` é `—` para parte da fila (Prospecting nunca tem idade conhecida) sem exigir abrir o painel de detalhe para cada linha — a mesma leitura que já valia dentro do painel, agora disponível de relance na fila inteira.
 
 ---
+
+## 2026-08-21 — Reclassificação de 200 dias, análise de carga e fit por vendedor
+
+**Contexto:** `openspec/changes/add-analise-carga-fit` — proposta completa (proposal/design/specs) revisada antes da implementação. Duas dívidas identificadas: 653 oportunidades (31,3% do funil) abertas há 200+ dias distorciam qualquer análise de carga por vendedor, e não havia nenhuma comparação de carteira entre vendedores nem histórico de desempenho por produto/setor na interface.
+
+### Reclassificação de 200d+ como `Lost`, com recalibração parcial
+
+**Decisão:** oportunidade aberta com idade ≥ 200 dias (constante de política, `IDADE_RECLASSIFICACAO_DIAS`, distinta do limite **observado** de 138 dias) é tratada como `Lost` na carga, em memória — `sales_pipeline.csv` nunca é reescrito. Funil aberto cai de 2.089 para 1.436.
+
+**Duas populações, não uma:** os 653 reclassificados entram em `fechados_calibracao` (alimenta taxa por produto e prior global de p̂ — 7.364 negócios, base rate 63,15% → 57,55%), mas **nunca** em `fechados_organicos` (alimenta as curvas de idade `p_ganho`/`risco` e a censura em 138d — permanece nos 6.711 originais). Alimentar as curvas com os reclassificados ensinaria "negócio velho perde" a partir de rótulos que nós mesmos atribuímos por serem velhos — circularidade pura. `validation/circularity_check.py` audita isso a cada execução: idade máxima orgânica (138) contra idade mínima reclassificada (200) nunca se sobrepõem, e nenhuma linha `reclassificado=True` pode aparecer em `fechados_organicos`.
+
+**Consequência sobre `GLOBAL_WIN_RATE`:** a constante única virou duas — `GLOBAL_WIN_RATE_ORGANICO = 0,632` (censura, normalização de `p_ganho(0)`) e `GLOBAL_WIN_RATE_CALIBRACAO = 0,5755` (prior de encolhimento de p̂_produto). Confundir as duas faria a censura em 138d reverter para o prior errado.
+
+**Achado não previsto pelo design original — nível de PRODUTO deixa de colapsar:** o encolhimento de p̂_produto (`K_PRODUTO = 4,0`, retido por política desde 2026-08-19) supunha que uma recomputação estrita colapsaria o nível de produto (`k = ∞`), como conta×produto e produto×setor. Com a população de calibração recalculada, `GTK 500` cai de n=25/60,0% para n=35/42,86% (−17,14pp, o dobro de qualquer outro produto) e passa a dominar a variância entre produtos: `validation/backtest.py` seção 3 agora deriva `k = 0,697` (finito) para o nível de produto — a amplitude entre produtos sobe de 4,84pp para 16,95pp. `K_PRODUTO = 4,0` continua congelado por política (não muda com esta entrada), mas o backtest agora reporta `AVISO` em vez de `NOTA` nessa seção, e `docs/decisions-log.md` (aqui) registra o motivo para a próxima recalibração trimestral decidir se `K_PRODUTO` deve ser revisto.
+
+### Duas superfícies novas: carga por escritório e fit vendedor×produto/setor
+
+**Decisão:** `scoring/carga.py` compara a contagem de cada vendedor, por ESTADO (`prioritize`/`acompanhar`/`qualificar` — nunca `revisao_lote`), com a média do próprio escritório regional naquele ESTADO. Sobrecarga = `contagem >= 1,5 × média` **e** `contagem >= 5` (piso absoluto — sem ele, `Central/prioritize` com média 0,10 sinalizaria 1 deal como 10× a média). Sobre o funil atual: 12 pares, 8 vendedores, 227 oportunidades.
+
+`scoring/fit.py` calcula a taxa de vitória do vendedor por produto e por setor sobre `fechados_calibracao` (denominador sempre `Won + Lost`), com encolhimento em dois níveis (vendedor → escritório → global, `k_fit = 25`, constante de política). A sugestão de redistribuição (`rank = 0,5×folga + 0,5×fit_normalizado`) exclui os 5 vendedores de `sales_teams` sem nenhuma oportunidade registrada e nunca cruza escritório.
+
+**Achado honesto sobre o fit — `validation/fit_permutation.py`:** o design previa que a mesma derivação de `k` colapsaria (k=∞) para vendedor×produto e vendedor×setor, e que testes de permutação reproduziriam ausência de sinal em ambos. A reprodução real mostra: vendedor×setor indistinguível de acaso (p≈0,20, k derivado=5,45), mas vendedor×produto fica **limítrofe** (p≈0,047, k derivado=3,87) — sinal fraco sobre 178 células testadas, sem correção para múltiplas comparações. `K_FIT = 25` (muito mais conservador que qualquer k derivado) permanece a constante de política; a ressalva estatística acoplada a todo fit exibido continua obrigatória — um p-valor limítrofe e não corrigido não é evidência robusta de mérito individual de vendedor. Registrado aqui em vez de forçar a redação do design a dizer "colapso" quando a reprodução honesta encontrou algo mais nuançado.
+
+**Fronteira de exibição:** o vendedor sugerido aparece só na aba Sobrecarga e no painel de detalhe — nunca na listagem geral de Oportunidades, que recebe apenas o booleano `sobrecarregado` (dourado `#B9915B`, distinto do vermelho `#AF4332` exclusivo de `revisao_lote`). Fit nunca entra em `p̂`, VALOR, URGÊNCIA, PRIORIDADE, SCORE, CONFIANÇA ou ESTADO.
+
+### Correção dos CSVs de análise entregues
+
+**Achado:** os dois CSVs (`analysis_by_product_detailed.csv`, `analysis_by_sector_detailed.csv`) publicados antes desta mudança calculavam `Taxa Vitória % = Won / Total`, com `Total` incluindo `Engaging`+`Prospecting` — 159 de 179 linhas e 219 de 292 linhas incorretas, erro médio 14,89pp (máximo 62,50pp, `Wilburn Farren`/`GTX Plus Basic`: 37,5% publicado vs. 100% real).
+
+**Decisão:** os artefatos passam a ser gerados por `scoring/export.py::build_analysis_table`, a mesma função usada pela API (via `scoring/fit.py::FitContext`) — taxa sempre `Won / (Won + Lost)`, sem coluna `Total`. `validation/denominator_check.py` audita isso a cada execução do backtest (seção 13).
+
+---

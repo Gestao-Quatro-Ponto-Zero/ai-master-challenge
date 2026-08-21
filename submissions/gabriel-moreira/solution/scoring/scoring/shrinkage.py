@@ -124,7 +124,7 @@ def account_product_group_counts(closed: pd.DataFrame) -> dict[tuple[str, str], 
 def p_hat_produto(
     product: str,
     product_counts: dict[str, GroupCounts],
-    global_win_rate: float = constants.GLOBAL_WIN_RATE,
+    global_win_rate: float = constants.GLOBAL_WIN_RATE_CALIBRACAO,
     k: float = constants.K_PRODUTO,
 ) -> float:
     """p̂_produto = (n*taxa_produto + k*taxa_global) / (n + k).

@@ -1,4 +1,4 @@
-import { ESTADO_BADGE } from "../estadoColors";
+import { ESTADO_BADGE, SOBRECARGA_BADGE_CLASSES } from "../estadoColors";
 import { formatIdade, formatUsd } from "../format";
 import type { Oportunidade, SortKey, SortOrder } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
@@ -20,6 +20,7 @@ export function DealTable({
   totalPages,
   onSortChange,
   onOpenDetail,
+  onNavigateToSobrecarga,
 }: {
   oportunidades: Oportunidade[];
   sort: SortKey;
@@ -29,6 +30,10 @@ export function DealTable({
   totalPages: number;
   onSortChange: (key: SortKey) => void;
   onOpenDetail: (opportunityId: string) => void;
+  /** Conduz o usuário à aba Sobrecarga — o marcador nunca exibe o
+   * vendedor sugerido aqui (Requirement "Alerta de sobrecarga na
+   * listagem de oportunidades"). */
+  onNavigateToSobrecarga?: () => void;
 }) {
   return (
     <div className="flex flex-col gap-2">
@@ -61,7 +66,12 @@ export function DealTable({
             </thead>
             <tbody>
               {oportunidades.map((o) => (
-                <DealRow key={o.opportunity_id} oportunidade={o} onOpenDetail={onOpenDetail} />
+                <DealRow
+                  key={o.opportunity_id}
+                  oportunidade={o}
+                  onOpenDetail={onOpenDetail}
+                  onNavigateToSobrecarga={onNavigateToSobrecarga}
+                />
               ))}
             </tbody>
           </table>
@@ -99,9 +109,11 @@ function SortableHeader({
 function DealRow({
   oportunidade: o,
   onOpenDetail,
+  onNavigateToSobrecarga,
 }: {
   oportunidade: Oportunidade;
   onOpenDetail: (opportunityId: string) => void;
+  onNavigateToSobrecarga?: () => void;
 }) {
   return (
     <tr
@@ -111,9 +123,26 @@ function DealRow({
       <td className="py-3 px-2 text-muted font-mono text-xs">{o.opportunity_id}</td>
       <td className="py-3 px-2 font-bold text-navy">{o.score.toFixed(1)}</td>
       <td className="py-3 px-2">
-        <span className={"text-xs font-semibold px-2 py-0.5 rounded-full border " + ESTADO_BADGE[o.estado]}>
-          {o.estado_label}
-        </span>
+        <div className="flex flex-col gap-1 items-start">
+          <span className={"text-xs font-semibold px-2 py-0.5 rounded-full border " + ESTADO_BADGE[o.estado]}>
+            {o.estado_label}
+          </span>
+          {o.sobrecarregado && (
+            <button
+              type="button"
+              title="Vendedor sobrecarregado neste estado — ver aba Sobrecarga"
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigateToSobrecarga?.();
+              }}
+              className={
+                "text-xs font-semibold px-2 py-0.5 rounded-full border " + SOBRECARGA_BADGE_CLASSES
+              }
+            >
+              Sobrecarga
+            </button>
+          )}
+        </div>
       </td>
       <td className="py-3 px-2 font-medium">{o.product}</td>
       <td className="py-3 px-2 text-muted">{o.account ?? "—"}</td>

@@ -23,11 +23,38 @@ class ScoredPipeline:
     ages_won_ordenadas: list[float]
     scored: pd.DataFrame
 
+    @property
+    def n_reclassificados(self) -> int:
+        return self.dataset.n_reclassificados
+
+
+def fechados_organicos(dataset: Dataset) -> pd.DataFrame:
+    """Negócios fechados com desfecho observado — 6.711, nunca inclui os
+    653 reclassificados de 200 dias. Única população que pode alimentar as
+    curvas de idade (`p_ganho`, `risco`) e a censura em 138 dias
+    (lead-scoring spec, Requirement "Censura acima de 138 dias"; design.md,
+    D2). As curvas em si são constantes calibradas offline
+    (`constants.P_GANHO_BREAKPOINTS`/`RISCO_BREAKPOINTS`), então esta
+    função existe para a auditoria de circularidade da validação, não para
+    recalculá-las em runtime.
+    """
+    pipeline = dataset.pipeline
+    fechado = pipeline["deal_stage"].isin(constants.DEAL_STAGES_FECHADOS)
+    return pipeline[fechado & ~pipeline["reclassificado"]]
+
+
+def fechados_calibracao(dataset: Dataset) -> pd.DataFrame:
+    """Negócios fechados de calibração — 7.364 = 6.711 orgânicos + 653
+    reclassificados de 200 dias. Alimenta a taxa de vitória por produto, o
+    prior global de p̂_produto e os priors de fit (design.md, D2). Como a
+    reclassificação já ocorreu na carga (`repository._reclassify_aged_
+    deals`), esta é simplesmente toda linha `Won`/`Lost` do dataset.
+    """
+    return dataset.pipeline[dataset.pipeline["deal_stage"].isin(constants.DEAL_STAGES_FECHADOS)]
+
 
 def build_scoring_context(dataset: Dataset) -> model.ScoringContext:
-    closed = dataset.pipeline[
-        dataset.pipeline["deal_stage"].isin(constants.DEAL_STAGES_FECHADOS)
-    ]
+    closed = fechados_calibracao(dataset)
     counts = shrinkage.product_group_counts(closed)
     p_hat_by_product = {
         produto: shrinkage.p_hat_produto(produto, counts)

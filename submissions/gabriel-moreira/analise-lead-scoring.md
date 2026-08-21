@@ -498,3 +498,142 @@ Enquanto o modelo é implementado:
 2. **Realocar capacidade de MG Special e GTX Basic.** 39,6% do esforço para 5,4% da receita. Mover esses produtos para autosserviço ou um time de menor custo liberaria ~14 vendedores-equivalentes para produtos que rendem entre 10x e 400x mais por dia de esforço.
 
 3. **Parar de ranquear vendedores por taxa de conversão.** A variação entre eles é indistinguível de acaso (dp observado 0,0366 vs 0,0339 esperado por sorte). Ranquear por receita gerada e por mix de produto trabalhado — que é onde há diferença real e controlável.
+
+---
+
+## 9. Atualização 2026-08-21 — reclassificação de 200 dias, carga e fit por vendedor
+
+Esta seção documenta a mudança formalizada em `openspec/changes/add-analise-carga-fit/`. Não substitui as seções 1-8 acima (a análise de sinal firmográfico sobre os 6.711 negócios fechados organicamente continua válida e intocada) — registra o que mudou a partir dela.
+
+### 9.1 A recomendação da §2.5/§8 (item 1) virou regra
+
+A §2.5 apontou 1.479 negócios parados há mais de 90 dias, e a §8 recomendou "desafogar o funil parado". A regra concreta adotada: **oportunidade aberta há ≥ 200 dias é reclassificada como `Lost` na carga**, em memória (`scoring/repository.py`) — `sales_pipeline.csv` nunca é reescrito. São **653 oportunidades**; o funil aberto cai de **2.089 para 1.436**.
+
+200 dias é uma constante de **política** (quando o negócio desiste), deliberadamente distinta dos **138 dias observados** (maior ciclo de fechamento real da §4.5) — confundir as duas faria uma escolha de negócio parecer um fato dos dados.
+
+### 9.2 Consequência sobre a taxa base e por produto
+
+Os 653 reclassificados entram na população de calibração da taxa de vitória por produto (nunca na calibração das curvas de idade — ver "circularidade" abaixo):
+
+| Métrica | Antes | Depois | Variação |
+|---|---|---|---|
+| Base rate global | 63,15% | 57,55% | −5,60pp |
+| Amplitude entre produtos (taxa bruta) | 4,84pp | 16,95pp | — |
+| `GTK 500` (n=25→35) | 60,00% | 42,86% | **−17,14pp** |
+
+`GTK 500` é responsável por quase toda a mudança de amplitude — os demais produtos variam entre −5,04pp e −6,16pp. O relatório de validação (`validation/backtest.py`, seção 10) marca `GTK 500` explicitamente como amostra pequena, para que a maior variação da tabela não seja lida como o maior efeito real.
+
+**Circularidade evitada:** as curvas de idade (`p_ganho`, `risco`) e a censura em 138 dias continuam calibradas apenas sobre os 6.711 negócios fechados organicamente — nunca sobre os 653 reclassificados, cuja idade (200-423 dias) é exatamente o critério que os rotulou. Alimentar as curvas com eles ensinaria "negócio velho perde" a partir de um rótulo que o próprio sistema atribuiu por ser velho. `validation/backtest.py` seção 11 audita isso a cada execução (idade máxima orgânica 138d vs. idade mínima reclassificada 200d — nunca se sobrepõem).
+
+### 9.3 Item 3 da §8, revisitado: o fit por vendedor foi pedido mesmo assim
+
+A §8 recomendou explicitamente parar de ranquear vendedores por taxa de conversão, citando o teste de permutação original (dispersão observada 0,0366 vs. 0,0339 esperada por acaso — sem sinal). O produto pediu essa análise mesmo assim, para orientar redistribuição de carga, não para avaliar desempenho. Ela foi entregue (`scoring/fit.py`) com três salvaguardas:
+
+1. **Nunca entra no score.** Fit não alimenta `p̂`, VALOR, URGÊNCIA, PRIORIDADE, SCORE, CONFIANÇA nem ESTADO — é exibido, não usado para decidir prioridade.
+2. **Ressalva estatística acoplada ao número**, em toda superfície que exibe fit — não só em documentação.
+3. **Reprodução honesta, não forçada:** repetimos o teste de permutação, agora por célula vendedor×produto e vendedor×setor (controlando o mix de produto/setor de cada vendedor, não a taxa marginal). Vendedor×setor confirma a ausência de sinal da §8 (p≈0,20). Vendedor×produto fica **limítrofe** (p≈0,047, sobre 178 células, sem correção para múltiplas comparações) — um sinal fraco, não uma reversão da conclusão da §8. `K_FIT=25` (a constante de encolhimento usada em produção) é bem mais conservador que qualquer `k` derivado desses dados, então o fit exibido já é puxado com força extra em direção ao prior do escritório.
+
+### 9.4 Auditoria dos CSVs `analysis_by_product_detailed.csv` / `analysis_by_sector_detailed.csv`
+
+Os dois artefatos publicados antes desta mudança tinham um defeito de cálculo: `Taxa Vitória % = Won / Total`, com `Total` incluindo oportunidades em `Engaging` e `Prospecting` (sem desfecho conhecido). O denominador correto é `Won / (Won + Lost)`.
+
+| Artefato | Linhas incorretas | Erro médio | Erro máximo |
+|---|---|---|---|
+| `analysis_by_product_detailed.csv` | 159 de 179 | 14,89pp | 62,50pp |
+| `analysis_by_sector_detailed.csv` | 219 de 292 | 14,89pp | 62,50pp |
+
+Exemplo do pior caso: `Wilburn Farren` / `GTX Plus Basic` — 37,5% publicado (Won/Total) vs. 100% real (Won/(Won+Lost)), porque todos os negócios em aberto daquela célula foram contados como se já tivessem perdido.
+
+Os dois artefatos foram regravados a partir de `scoring/export.py::build_analysis_table`, a mesma função que alimenta o fit exibido na API (`scoring/fit.py::FitContext`) — não uma agregação paralela. `validation/backtest.py` seção 13 falha se qualquer linha de qualquer artefato publicar taxa cujo denominador inclua oportunidade em aberto.
+
+---
+
+## 10. Análise produto × setor — volume e taxa de vitória
+
+Esta seção documenta o cruzamento completo de todos os negócios fechados (histórico Won/Lost) somado aos negócios em aberto há 200+ dias reclassificados como Lost — exatamente a mesma base de calibração (`fechados_calibracao`, 7.364 negócios) usada pelo motor de score: 4.238 ganhos + 3.126 perdidos, distribuídos entre 7 produtos e 10 setores.
+
+### 10.1 Volume por produto e setor
+
+O mapa de concentração da carteira é estreito: **GTX Basic + retail** é a maior combinação isolada com 274 negócios (3,7% da amostra). Os demais pares espalhados por volta de 70–100 negócios.
+
+**Setores por volume total (decrescente):**
+- retail: 1.306 negócios (17,7%)
+- technology: 1.092 (14,8%)
+- medical: 977 (13,3%)
+- software: 719 (9,8%)
+- marketing: 640 (8,7%)
+- finance: 640 (8,7%)
+- telecommunications: 469 (6,4%)
+- services: 368 (5,0%)
+- entertainment: 419 (5,7%)
+- employment: 296 (4,0%)
+- Sem setor: 438 (5,9%) — negócios sem conta vinculada, não distribuídos
+
+**Produtos por volume total (decrescente):**
+- GTX Basic: 1.587 (21,6%)
+- MG Special: 1.326 (18,0%)
+- GTX Pro: 1.247 (16,9%)
+- MG Advanced: 1.192 (16,2%)
+- GTX Plus Basic: 1.153 (15,7%)
+- GTX Plus Pro: 824 (11,2%)
+- GTK 500: 35 (0,5%) — amostra muito pequena
+
+### 10.2 Taxa de vitória por combinação
+
+A variação produto × setor é **real mas estreita** — consistente com o achado geral de que firmografia não prevê ganho/perda, mas valor (que é determinado principalmente por produto) sim.
+
+**Taxas de vitória observadas (Won ÷ Won+Lost), excluindo "Sem setor":**
+- Intervalo: 50% a 73%
+- Mediana: ~62%
+- Nenhuma combinação com amostra n≥15 fica abaixo de 50%
+
+**Destaques positivos (acima da base global de 57,5%):**
+
+| Combinação | Taxa | N | Desvio |
+|---|---:|---:|---:|
+| MG Special + telecommunications | 72,9% | 85 | +15,4pp |
+| MG Special + technology | 67,8% | 177 | +10,3pp |
+| GTX Plus Pro + medical | 68,3% | 104 | +10,8pp |
+| GTX Basic + retail | 67,9% | 274 | +10,4pp |
+| GTX Plus Pro + services | 64,4% | 45 | +6,9pp |
+
+**Destaques negativos (abaixo da base):**
+
+| Combinação | Taxa | N | Desvio |
+|---|---:|---:|---:|
+| MG Advanced + finance | 53,8% | 117 | −3,7pp |
+| GTX Plus Basic + services | 53,3% | 60 | −4,2pp |
+| GTX Plus Basic + employment | 57,9% | 38 | +0,4pp |
+
+Nenhuma célula com amostra relevante (n≥15) cai além de −5pp da base — a dispersão é modesta e explícita que produto×setor, como atributo preditivo de ganho/perda, é ruído, não sinal.
+
+### 10.3 Amostras pequenas: GTK 500
+
+O produto **GTK 500** (preço de tabela US$ 26.768, o maior catálogo) tem apenas 35 negócios fechados totais — nenhuma célula produto×setor dele ultrapassa 8 negócios. Qualquer taxa de vitória neste cruzamento é estatisticamente não-interpretável. Exemplo: **GTK 500 + employment** com n=2 mostra 100%, enquanto **GTK 500 + technology** com n=2 mostra 0%. Nenhum dos dois números deveria orientar decisão.
+
+A amplitude de 42,86% a 100% em GTK 500 reflete ruído amostral, não padrão de mercado.
+
+### 10.4 O "Sem setor" — a cauda de 438 negócios
+
+Os 438 negócios sem setor vêm inteiramente da reclassificação ≥200 dias (nenhum tinha conta vinculada na origem). Distribuí-los artificialmente através dos setores geraria dado que a carteira não possui — cada distribuição seria pura ficção. Por isso, a análise os exclui do cálculo de taxa de vitória por setor. **O impacto na base global (4.238 ganhos em 7.364 fechados = 57,55%) é significativo:** sem essa população "Sem setor", a taxa seria `4.238 / (7.364 - 438) = 62,16%`, mais de 4 pontos percentuais acima.
+
+Isso ilustra por que a reclassificação importa: negócios abandonados (200+ dias, sem conta) têm taxa zero, e fazem a métrica global descer. O sinal subjacente (negócios com conta vinculada) fica mais claro quando eles são contabilizados separadamente.
+
+### 10.5 Interpretação
+
+**Nenhum padrão de sortimento por setor é suportado pelos dados:**
+- Setores com maiores taxas (marketing 63,1%, software 62,6%) não têm diferença estatisticamente significativa de setores com menores taxas (finance 58,6%, services 60,6%)
+- A variação é menor que 5pp (finance a marketing) entre extremos, contra 0,25pp entre os intervalos de confiança de 95% dos testes da §2.2
+- Nenhum produto tem padrão claro de força/fraqueza por setor — cada linha da tabela de taxa oscila aleatoriamente em torno da média do produto
+
+**Produto é o real driver de valor**, não setor:
+- GTK 500 tem EV de US$ 16.061 por negócio (§2.3), 400× acima de MG Special
+- A diferença de ticket entre produtos é de 487×
+- A diferença de taxa entre setores é de 4,5pp
+
+**GTX Basic + retail merece atenção operacional, mas não por sinal preditivo:**
+- É a maior célula (274 negócios = 3,7% do volume total)
+- Tem taxa ligeiramente acima da base (67,9% vs 57,5%)
+- Merece atenção porque representa 3,7% do funil em um lugar — *concentração*, não superioridade — reduz risco de amostragem em relatórios
+
+---

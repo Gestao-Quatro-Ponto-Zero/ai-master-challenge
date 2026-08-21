@@ -7,7 +7,7 @@ def test_page_beyond_last_returns_empty_not_404(client):
     assert resp.status_code == 200
     body = resp.json()
     assert body["items"] == []
-    assert body["total"] == 2089
+    assert body["total"] == 1436
 
 
 def test_union_of_all_pages_has_exactly_total_distinct_ids_no_dup_no_gap(client):

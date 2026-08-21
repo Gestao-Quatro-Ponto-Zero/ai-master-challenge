@@ -6,16 +6,18 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { api, ApiError } from "../api";
-import { ESTADO_BADGE } from "../estadoColors";
+import { ESTADO_BADGE, SOBRECARGA_BADGE_CLASSES } from "../estadoColors";
 import { formatIdade, formatPct, formatUsd } from "../format";
 import type { DealDetail } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
+import { FitCell, FitRessalva } from "./FitDisplay";
 
-/** Painel lateral de detalhe — sete seções em linguagem de negócio,
- * identificador refletido na URL, navegação anterior/próxima sobre a
- * fila corrente (mesmo atravessando página), fechamento com `Esc`,
- * retenção e devolução de foco (Requirement "Painel de detalhe da
- * oportunidade"). */
+/** Painel lateral de detalhe — sete blocos de negócio agrupados em cartões
+ * visualmente distintos (mesmo padrão `bg-white border border-border
+ * rounded-sm` usado no restante do app), identificador refletido na URL,
+ * navegação anterior/próxima sobre a fila corrente (mesmo atravessando
+ * página), fechamento com `Esc`, retenção e devolução de foco (Requirement
+ * "Painel de detalhe da oportunidade"). */
 export function DealDetailPanel({
   opportunityId,
   asOf,
@@ -106,9 +108,9 @@ export function DealDetailPanel({
         aria-label="Detalhe da oportunidade"
         tabIndex={-1}
         onKeyDown={trapFocus}
-        className="relative w-full max-w-xl h-full bg-white shadow-xl overflow-y-auto p-6 flex flex-col gap-6 focus:outline-none"
+        className="relative w-full max-w-xl h-full bg-bg shadow-xl overflow-y-auto flex flex-col focus:outline-none"
       >
-        <div className="flex items-center justify-between">
+        <div className="sticky top-0 z-10 flex items-center justify-between bg-white border-b border-border px-6 py-3">
           <div className="flex gap-2">
             <button
               type="button"
@@ -137,15 +139,17 @@ export function DealDetailPanel({
           </button>
         </div>
 
-        {erro && (
-          <p className="text-alert text-sm bg-alert/5 border border-alert rounded-xs px-3 py-2">
-            Não foi possível carregar a oportunidade: {erro}
-          </p>
-        )}
+        <div className="flex-1 px-6 py-5 flex flex-col gap-4">
+          {erro && (
+            <p className="text-alert text-sm bg-alert/5 border border-alert rounded-xs px-3 py-2">
+              Não foi possível carregar a oportunidade: {erro}
+            </p>
+          )}
 
-        {!erro && !detail && <p className="text-muted text-sm">Carregando…</p>}
+          {!erro && !detail && <p className="text-muted text-sm">Carregando…</p>}
 
-        {detail && <DetailContent detail={detail} />}
+          {detail && <DetailContent detail={detail} />}
+        </div>
       </div>
     </div>
   );
@@ -153,14 +157,27 @@ export function DealDetailPanel({
 
 function DetailContent({ detail: o }: { detail: DealDetail }) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <section>
-        <h2 className="text-lg font-bold text-navy">{o.product}</h2>
-        <p className="text-xs text-muted font-mono">{o.opportunity_id}</p>
-        <p className="text-sm text-muted">
+        <h2 className="text-xl font-bold text-navy">{o.product}</h2>
+        <p className="text-sm text-muted mt-0.5">
           {o.account ?? "Sem conta vinculada"} · {o.sales_agent}
         </p>
-        <div className="flex items-center gap-3 mt-2">
+        <span className="inline-block font-mono text-[11px] text-muted bg-white border border-border rounded-xs px-1.5 py-0.5 mt-1.5">
+          {o.opportunity_id}
+        </span>
+      </section>
+
+      <div className="rounded-sm border border-navy/15 bg-navy/5 p-4 flex items-center justify-between gap-4">
+        <div>
+          <div className="text-[11px] font-bold text-gold uppercase tracking-wide">
+            Score
+          </div>
+          <div className="text-4xl font-extrabold text-navy leading-none mt-1">
+            {o.score.toFixed(1)}
+          </div>
+        </div>
+        <div className="flex flex-col items-end gap-2">
           <span
             className={
               "text-xs font-semibold px-2 py-0.5 rounded-full border " +
@@ -169,15 +186,24 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
           >
             {o.estado_label}
           </span>
-          <span className="text-2xl font-bold text-navy">
-            {o.score.toFixed(1)}
-          </span>
-          <span className="text-xs text-muted">SCORE</span>
+          {o.sobrecarregado && (
+            <span
+              className={
+                "text-xs font-semibold px-2 py-0.5 rounded-full border " +
+                SOBRECARGA_BADGE_CLASSES
+              }
+            >
+              Vendedor sobrecarregado
+            </span>
+          )}
         </div>
-      </section>
+      </div>
 
       <section>
-        <dl className="grid grid-cols-3 gap-3 text-sm mt-4 pt-4 border-t border-border">
+        <h3 className="text-[11px] font-bold text-navy uppercase tracking-wide mb-2">
+          Componentes do score
+        </h3>
+        <dl className="grid grid-cols-3 gap-3">
           <Componente
             label="Probabilidade"
             valor={formatPct(o.p_hat)}
@@ -196,29 +222,34 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
         </dl>
       </section>
 
-      <Section title="O que se sabe">
-        <ConfidenceBadge
-          confianca={o.confianca}
-          completude={o.completude}
-          suporte={o.suporte}
-          razao={o.razao_confianca}
-        />
-        <p className="text-sm text-muted mt-2">{o.razao_confianca}</p>
-      </Section>
+      <Card title="Confiança & contexto">
+        <div>
+          <ConfidenceBadge
+            confianca={o.confianca}
+            completude={o.completude}
+            suporte={o.suporte}
+            razao={o.razao_confianca}
+          />
+          <p className="text-sm text-muted mt-2">{o.razao_confianca}</p>
+        </div>
 
-      <Section title="Contexto de idade">
-        <p className="text-sm text-navy">
-          Estágio: {o.deal_stage} · Idade: {formatIdade(o.age_days)}
-        </p>
-        {o.sem_precedente && (
-          <p className="text-sm text-alert mt-1">
-            Fora de qualquer precedente histórico de fechamento — nenhum negócio
-            ganho fechou nesta faixa de idade.
+        <div className="border-t border-border pt-3">
+          <p className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-1.5">
+            Idade do negócio
           </p>
-        )}
-      </Section>
+          <p className="text-sm text-navy">
+            Estágio: {o.deal_stage} · Idade: {formatIdade(o.age_days)}
+          </p>
+          {o.sem_precedente && (
+            <p className="text-xs text-alert bg-alert/5 border border-alert rounded-xs px-3 py-2 mt-2">
+              Fora de qualquer precedente histórico de fechamento — nenhum
+              negócio ganho fechou nesta faixa de idade.
+            </p>
+          )}
+        </div>
+      </Card>
 
-      <Section title="Conta">
+      <Card title="Conta & time">
         {o.conta.vinculada ? (
           <dl className="grid grid-cols-2 gap-3 text-sm text-navy">
             <Campo label="Setor" valor={o.conta.sector ?? "—"} />
@@ -246,15 +277,52 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
         ) : (
           <p className="text-sm text-muted">Sem conta vinculada</p>
         )}
-      </Section>
 
-      <Section title="Time">
-        <p className="text-sm text-navy">
-          {o.sales_agent} · {o.manager ?? "—"} · {o.regional_office ?? "—"}
-        </p>
-      </Section>
+        <div className="border-t border-border pt-3">
+          <p className="text-[11px] font-semibold text-muted uppercase tracking-wide mb-1.5">
+            Time responsável
+          </p>
+          <dl className="grid grid-cols-3 gap-3">
+            <Campo label="Vendedor" valor={o.sales_agent} />
+            <Campo label="Gerente" valor={o.manager ?? "—"} />
+            <Campo label="Escritório" valor={o.regional_office ?? "—"} />
+          </dl>
+        </div>
+      </Card>
 
-      <Section title="Por que este score">
+      <Card title="Fit histórico do vendedor">
+        <dl className="grid grid-cols-2 gap-3">
+          <FitCell label="Produto" fit={o.fit_produto} />
+          <FitCell label="Setor" fit={o.fit_setor} />
+        </dl>
+        <FitRessalva texto={o.ressalva_fit} />
+
+        {o.sobrecarregado && o.sugestao && (
+          <div className="rounded-sm border border-gold/40 bg-gold/10 p-3">
+            {o.sugestao.disponivel ? (
+              <>
+                <p className="text-xs font-bold text-navy uppercase tracking-wide mb-2">
+                  Candidato sugerido — {o.sugestao.sales_agent}
+                </p>
+                <dl className="grid grid-cols-2 gap-3">
+                  <FitCell label="Produto" fit={o.sugestao.fit_produto!} />
+                  <FitCell label="Setor" fit={o.sugestao.fit_setor!} />
+                </dl>
+                <p className="text-xs text-muted mt-2">
+                  Sugestão informativa — nada é reatribuído automaticamente
+                  pelo sistema.
+                </p>
+              </>
+            ) : (
+              <p className="text-sm text-muted">
+                Nenhum candidato elegível no escritório para redistribuição.
+              </p>
+            )}
+          </div>
+        )}
+      </Card>
+
+      <Card title="Por que este score">
         <ul className="flex flex-col gap-2 text-sm text-navy">
           {o.score_fatores.map((fator, i) => (
             <li key={i} className="flex gap-2">
@@ -265,22 +333,28 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
             </li>
           ))}
         </ul>
-      </Section>
-      <Section title="Plano de ação">
-        <ol className="list-decimal list-inside text-sm text-navy flex flex-col gap-1.5">
+      </Card>
+
+      <Card title="Plano de ação">
+        <ol className="flex flex-col gap-2.5">
           {o.plano_de_acao_passos.map((passo, i) => (
-            <li key={i}>{passo}</li>
+            <li key={i} className="flex gap-3 text-sm text-navy">
+              <span className="shrink-0 flex items-center justify-center w-5 h-5 rounded-full bg-gold text-white text-[11px] font-bold">
+                {i + 1}
+              </span>
+              <span className="pt-0.5">{passo}</span>
+            </li>
           ))}
         </ol>
-      </Section>
+      </Card>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
+function Card({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section>
-      <h3 className="text-xs font-bold text-navy uppercase tracking-wide mb-2">
+    <section className="rounded-sm border border-border bg-white p-4 flex flex-col gap-3">
+      <h3 className="text-[11px] font-bold text-navy uppercase tracking-wide">
         {title}
       </h3>
       {children}
@@ -298,10 +372,12 @@ function Componente({
   explicacao: string;
 }) {
   return (
-    <div>
-      <dt className="text-xs text-muted">{label}</dt>
-      <dd className="font-semibold text-navy">{valor}</dd>
-      <dd className="text-xs text-muted mt-0.5">{explicacao}</dd>
+    <div className="rounded-sm border border-border bg-white p-3">
+      <dt className="text-[11px] uppercase tracking-wide text-muted mb-1">
+        {label}
+      </dt>
+      <dd className="text-lg font-bold text-navy">{valor}</dd>
+      <dd className="text-xs text-muted mt-1 leading-snug">{explicacao}</dd>
     </div>
   );
 }

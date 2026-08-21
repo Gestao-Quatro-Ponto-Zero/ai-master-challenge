@@ -7,7 +7,9 @@ priorização. Comando único, sem ambiente gráfico:
 EM TERMOS SIMPLES: este script pega os negócios já FECHADOS (ganhos ou
 perdidos) e usa métodos estatísticos pra checar se as decisões de design
 da fórmula de priorização realmente se sustentam nos dados — em vez de
-confiar em "achismo". Ele responde a 5 perguntas, uma por seção:
+confiar em "achismo". Ele responde a 5 perguntas centrais sobre a fórmula
+de priorização (seções 1-8), e mais 4 sobre a reclassificação de 200 dias
+e a análise de carga e fit (seções 10-13):
 
   1. Dá pra prever quem vai GANHAR ou PERDER só olhando dados de cadastro
      (vendedor, produto, setor, conta)? (achado: não — não há sinal útil)
@@ -24,8 +26,11 @@ confiar em "achismo". Ele responde a 5 perguntas, uma por seção:
 Reproduz: a ausência de sinal preditivo firmográfico (AUC + testes de
 permutação), a derivação de k por nível hierárquico (e o colapso de
 conta×produto/produto×setor), a monotonicidade de risco(t), a fronteira de
-censura de 138 dias, e a concentração de PRIORIDADE no topo da fila —
-sempre importando `scoring/`, nunca reimplementando a fórmula.
+censura de 138 dias, a concentração de PRIORIDADE no topo da fila, o
+impacto da reclassificação de 200 dias (antes/depois e circularidade), a
+ausência de sinal do fit por vendedor, e o denominador correto dos
+artefatos de análise — sempre importando `scoring/`, nunca reimplementando
+a fórmula.
 """
 
 from __future__ import annotations
@@ -35,17 +40,23 @@ import sys
 from pathlib import Path
 
 from aging_by_product_check import build_report as build_aging_by_product_report
+from circularity_check import build_report as build_circularity_report
 from concentration import build_report as build_concentration_report
 from confianca_distribution import build_report as build_confianca_distribution_report
 from cycle_duration_permutation import (
     resolution_rate_by_product_and_age,
     run as run_cycle_duration_permutation,
 )
+from denominator_check import audit as audit_denominator
+from fit_permutation import run_produto as run_fit_permutation_produto, run_setor as run_fit_permutation_setor
 from isotonic_check import recompute_curves
 from model_training import chronological_split, combined_auc, isolated_aucs
 from permutation_tests import run_all as run_permutation_tests
+from reclassification_check import build_report as build_reclassification_report
 from scoring import constants
-from scoring.pipeline import load_and_score
+from scoring.export import build_analysis_table
+from scoring.fit import build_fit_context, derive_k_fit
+from scoring.pipeline import fechados_calibracao, fechados_organicos, load_and_score
 from sector_conditioning_check import build_report as build_sector_conditioning_report
 from shrinkage_check import build_report as build_shrinkage_report
 
@@ -64,7 +75,13 @@ def run_report(data_dir: Path) -> bool:
     estrutural falhar (ex.: censura de 138 dias deixou de valer)."""
     scored_pipeline = load_and_score(str(data_dir))
     dataset = scored_pipeline.dataset
-    closed = dataset.pipeline[dataset.pipeline["deal_stage"].isin(constants.DEAL_STAGES_FECHADOS)]
+    # `closed` é a população de CALIBRAÇÃO (fechados orgânicos + 653
+    # reclassificados de 200 dias) — alimenta as seções sobre produto,
+    # setor e vendedor, onde idade não é insumo. `closed_organico` alimenta
+    # exclusivamente as seções que dependem de idade/duração (4, 7, 8) —
+    # nunca pode conter um reclassificado (design.md, D2).
+    closed = fechados_calibracao(dataset)
+    closed_organico = fechados_organicos(dataset)
 
     ok = True
 
@@ -142,7 +159,8 @@ def run_report(data_dir: Path) -> bool:
     )
     print(
         "Método: 'encolhimento hierárquico' puxa a taxa de cada grupo em\n"
-        "direção à média geral (0,632), com força k. k é calculado a partir\n"
+        f"direção à média geral ({constants.GLOBAL_WIN_RATE_CALIBRACAO}), com força k. "
+        "k é calculado a partir\n"
         "dos próprios dados: quanto menor a diferença real entre os grupos\n"
         "comparada à diferença esperada só por acaso, maior o k — mais o\n"
         "grupo é puxado pra média. Quando k = ∞, o grupo 'colapsa': recebe\n"
@@ -194,14 +212,11 @@ def run_report(data_dir: Path) -> bool:
             "encontra excesso de variância NEGATIVO também no nível de produto "
             "(mais fraco do que qualquer um dos quatro atributos testados por "
             "permutação acima, todos com p > 0,05). Sob recomputação estrita, isso "
-            "colapsaria p̂_produto para a constante global (0,632) em todos os "
-            "produtos.\n"
+            "colapsaria p̂_produto para a constante de calibração "
+            f"({constants.GLOBAL_WIN_RATE_CALIBRACAO}) em todos os produtos.\n"
             "K_PRODUTO = 4 é retido mesmo assim como constante CONGELADA desta "
             "calibração — uma APROXIMAÇÃO RETIDA POR POLÍTICA, não o resultado do "
-            "cálculo (documentada em docs/decisions-log.md), preservando os "
-            "~4,5 pontos de diferenciação entre produtos descritos no desenho, com "
-            "efeito desprezível sobre a ordenação (p̂ responde por 0,1% da "
-            "variância de log(PRIORIDADE) no funil aberto) — não é uma escolha "
+            "cálculo (documentada em docs/decisions-log.md) — não é uma escolha "
             "arbitrária nova, é a calibração já em produção. Fica registrado aqui "
             "para a próxima recalibração trimestral avaliar se essa diferenciação "
             "deve ser reduzida ou mantida."
@@ -236,7 +251,7 @@ def run_report(data_dir: Path) -> bool:
         "valor médio histórico (prior) em vez de inventar um número."
     )
     print()
-    curves = recompute_curves(closed)
+    curves = recompute_curves(closed_organico)
     print(f"Duração máxima observada entre negócios fechados: {curves.max_duracao_dias} dias")
     print(f"Limite de censura configurado: {constants.CENSURA_DIAS} dias")
     if curves.censura_confirmada:
@@ -287,13 +302,16 @@ def run_report(data_dir: Path) -> bool:
     print(f"Top 30% da fila por PRIORIDADE captura {concentration.top30_prioridade * 100:.1f}% do total")
     print(f"Top 10% por preço de tabela puro captura {concentration.top10_preco_bruto * 100:.1f}% do total")
     print(f"Top 30% por preço de tabela puro captura {concentration.top30_preco_bruto * 100:.1f}% do total")
+    p_hat_min = scored_pipeline.scored["p_hat"].min()
+    p_hat_max = scored_pipeline.scored["p_hat"].max()
     print(
-        "-> concentração de valor, não poder preditivo: p̂ varia só 0,60-0,75 contra "
-        "487x de amplitude em VALOR. A diferenciação vem de valor e urgência."
+        f"-> concentração de valor, não poder preditivo: p̂ varia só {p_hat_min:.2f}-{p_hat_max:.2f} "
+        "contra 487x de amplitude em VALOR. A diferenciação vem de valor e urgência."
     )
     print(
-        "Achado: PRIORIDADE concentra MAIS valor em risco no topo da fila do\n"
-        "que simplesmente ordenar por preço de tabela (49,2% vs. 29,5% no\n"
+        "Achado: PRIORIDADE concentra MAIS valor em risco no topo da fila do "
+        f"que simplesmente ordenar por preço de tabela "
+        f"({concentration.top10_prioridade * 100:.1f}% vs. {concentration.top10_preco_bruto * 100:.1f}% no "
         "top 10%) — o ganho vem de combinar VALOR com URGÊNCIA (idade do\n"
         "negócio), não de uma previsão fina de quem vai ganhar (que já vimos,\n"
         "nas seções 1 e 2, que não existe)."
@@ -336,7 +354,7 @@ def run_report(data_dir: Path) -> bool:
     )
     print("Método: mesma validação cruzada 5-fold da seção 6, aplicada às faixas de idade.")
     print()
-    aging_report = build_aging_by_product_report(closed)
+    aging_report = build_aging_by_product_report(closed_organico)
     for nome in ("prior_global", "curva_global", "curva_por_produto_bruta", "curva_por_produto_encolhida"):
         s = aging_report.score(nome)
         print(f"  {nome:26s} logloss={s.logloss:.5f}  brier={s.brier:.5f}")
@@ -364,7 +382,7 @@ def run_report(data_dir: Path) -> bool:
         "medianas de duração de ciclo por produto."
     )
     print()
-    ciclo = run_cycle_duration_permutation(closed)
+    ciclo = run_cycle_duration_permutation(closed_organico)
     print(
         f"Dispersão observada entre medianas: {ciclo.dispersao_observada:.1f} dias  "
         f"·  dispersão nula média: {ciclo.dispersao_nula_media:.1f} dias  ·  p={ciclo.p_valor:.3f}"
@@ -376,7 +394,7 @@ def run_report(data_dir: Path) -> bool:
     )
     print()
     print("Taxa de resolução em 30 dias por produto e faixa de idade (linha GLOBAL para comparação):")
-    taxas = resolution_rate_by_product_and_age(closed)
+    taxas = resolution_rate_by_product_and_age(closed_organico)
     for faixa, sub in taxas.groupby("faixa", sort=False):
         linha_global = sub[sub["product"] == "GLOBAL"].iloc[0]
         print(f"  faixa {faixa}: GLOBAL={linha_global['taxa_resolucao_30d']:.3f} (n={linha_global['n_em_risco']})")
@@ -400,9 +418,146 @@ def run_report(data_dir: Path) -> bool:
     print(f"Fração sem precedente histórico: {confianca_dist.fracao_sem_precedente * 100:.1f}%")
     print(f"Fração governada por completude (vs. suporte): {confianca_dist.fracao_completude_governante * 100:.1f}%")
 
+    _section("10. Antes/depois da reclassificação de 200 dias")
+    print(
+        "Pergunta: qual o efeito de tratar as 653 oportunidades abertas há\n"
+        "200 dias ou mais como Lost — no tamanho do funil, na taxa de vitória\n"
+        "global e na taxa por produto?"
+    )
+    print()
+    reclass = build_reclassification_report(dataset)
+    print(f"Oportunidades reclassificadas: {reclass.n_reclassificados}")
+    print(f"Funil aberto: {reclass.funil_antes} -> {reclass.funil_depois}")
+    print(
+        f"Base rate global: {reclass.base_rate_antes * 100:.2f}% -> "
+        f"{reclass.base_rate_depois * 100:.2f}% "
+        f"({(reclass.base_rate_depois - reclass.base_rate_antes) * 100:+.2f}pp)"
+    )
+    print()
+    print("Taxa de vitória por produto, antes -> depois (pp = pontos percentuais):")
+    for p in sorted(reclass.produtos, key=lambda p: p.variacao_pp):
+        marca = " [AMOSTRA PEQUENA]" if p.amostra_pequena else ""
+        print(
+            f"  {p.produto:16s} n={p.n_antes:4d}->{p.n_depois:4d}  "
+            f"{p.taxa_antes * 100:5.2f}% -> {p.taxa_depois * 100:5.2f}%  "
+            f"({p.variacao_pp:+6.2f}pp){marca}"
+        )
+    pequenas = [p.produto for p in reclass.produtos if p.amostra_pequena]
+    print(
+        f"\nAchado: {reclass.n_reclassificados} reclassificados fazem o funil aberto cair de "
+        f"{reclass.funil_antes} para {reclass.funil_depois} e o base rate global cair "
+        f"{(reclass.base_rate_antes - reclass.base_rate_depois) * 100:.2f}pp. A maior variação de taxa "
+        f"por produto é dominada por amostra pequena ({', '.join(pequenas)}) — não é o maior efeito real, "
+        "é o mais ruidoso."
+    )
+
+    _section("11. Auditoria da circularidade acima de 138 dias")
+    print(
+        "Pergunta: a faixa de idade acima de 138 dias na população de\n"
+        "calibração é feita de desfechos observados, ou inteiramente de\n"
+        "rótulos que nós mesmos atribuímos por serem velhos?"
+    )
+    print()
+    circularidade = build_circularity_report(dataset)
+    print(f"Idade máxima entre fechados organicamente: {circularidade.idade_maxima_organica} dias")
+    print(f"Idade mínima entre reclassificados: {circularidade.idade_minima_reclassificada} dias")
+    if circularidade.populacoes_nao_se_sobrepoem and circularidade.curvas_protegidas:
+        print("-> confirmado: as duas populações não se sobrepõem, e nenhum reclassificado entrou nas curvas.")
+    else:
+        print(
+            "FALHA: as populações se sobrepõem ou um reclassificado entrou na calibração das "
+            "curvas de idade — a faixa >138d deixou de ser auditável, revisar antes de prosseguir."
+        )
+        ok = False
+
+    _section("12. Fit por vendedor — permutação e suporte")
+    print(
+        "Pergunta: a taxa de vitória de um vendedor num produto ou setor é\n"
+        "distinguível de acaso, uma vez controlado o mix de produtos/setores\n"
+        "que cada vendedor efetivamente atende?"
+    )
+    print(
+        "Método: embaralhamos os rótulos de vendedor (mantendo produto/setor\n"
+        "fixos por negócio) e comparamos a dispersão real da taxa por célula\n"
+        "vendedor×dimensão com a dispersão sob rótulos aleatórios."
+    )
+    print()
+    fit_ctx = build_fit_context(dataset, closed)
+    perm_produto = run_fit_permutation_produto(closed)
+    perm_setor = run_fit_permutation_setor(closed)
+    for r in (perm_produto, perm_setor):
+        print(
+            f"  vendedor×{r.dimensao:8s} células={r.n_celulas:3d} dispersão obs.={r.dispersao_observada:.4f} "
+            f"dispersão nula média={r.dispersao_nula_media:.4f} p={r.p_valor:.4f}"
+        )
+    print()
+    k_produto_fit = derive_k_fit(fit_ctx, "produto")
+    k_setor_fit = derive_k_fit(fit_ctx, "setor")
+    print(
+        f"Derivação de k_fit por variância em excesso: vendedor×produto k="
+        f"{'∞ (colapsa)' if k_produto_fit.colapsa else f'{k_produto_fit.k:.3f}'}; "
+        f"vendedor×setor k={'∞ (colapsa)' if k_setor_fit.colapsa else f'{k_setor_fit.k:.3f}'}. "
+        f"K_FIT congelado em produção = {constants.K_FIT} (constante de política — sempre mais "
+        "conservador que qualquer k derivado abaixo dele, encolhendo o fit com mais força do que "
+        "os dados por si só exigiriam)."
+    )
+    minimo = constants.FIT_SUPORTE_MINIMO
+    insuficientes_produto = sum(1 for g in fit_ctx.vendor_product.values() if g.n < minimo)
+    insuficientes_setor = sum(1 for g in fit_ctx.vendor_sector.values() if g.n < minimo)
+    print(
+        f"Células com suporte insuficiente (< {minimo} negócios fechados): "
+        f"{insuficientes_produto} de {len(fit_ctx.vendor_product)} (vendedor×produto), "
+        f"{insuficientes_setor} de {len(fit_ctx.vendor_sector)} (vendedor×setor)."
+    )
+    print()
+    conclusoes = []
+    for r in (perm_produto, perm_setor):
+        veredito = "distinguível de acaso (p < 0,05)" if r.distinguivel_de_acaso else "indistinguível de acaso"
+        conclusoes.append(f"vendedor×{r.dimensao} {veredito} (p={r.p_valor:.4f})")
+    print(
+        "Achado: " + "; ".join(conclusoes) + ". Mesmo onde o p-valor fica perto do corte convencional "
+        "de 0,05, é um sinal fraco sobre "
+        f"{len(fit_ctx.vendor_product)} células testadas sem correção para múltiplas comparações — "
+        "não é evidência robusta de mérito individual. O fit é entregue com a ressalva estatística "
+        "acoplada ao número em toda superfície, exatamente por isso (Requirement \"Declaração de "
+        "ausência de significância estatística do fit\")."
+    )
+    if perm_produto.distinguivel_de_acaso or perm_setor.distinguivel_de_acaso:
+        print(
+            "NOTA: design.md previa colapso (k=∞) para ambas as dimensões, espelhando "
+            "conta×produto/produto×setor. A reprodução honesta encontra sinal fraco e limítrofe em "
+            "vendedor×produto — registrado aqui para a próxima recalibração revisar a redação do "
+            "design, sem mudar K_FIT (constante de política, mais conservador que o k derivado)."
+        )
+
+    _section("13. Auditoria do denominador dos artefatos de análise")
+    print(
+        "Pergunta: os artefatos analysis_by_product_detailed.csv e\n"
+        "analysis_by_sector_detailed.csv calculam a taxa de vitória sobre\n"
+        "Won + Lost, sem deixar Engaging/Prospecting vazarem para o\n"
+        "denominador — o defeito que os artefatos anteriores tinham?"
+    )
+    print()
+    tabela_produto = build_analysis_table(fit_ctx.vendor_product, dataset, "product", "Produto")
+    tabela_setor = build_analysis_table(fit_ctx.vendor_sector, dataset, "sector", "Setor")
+    for nome, tabela in (
+        ("analysis_by_product_detailed.csv", tabela_produto),
+        ("analysis_by_sector_detailed.csv", tabela_setor),
+    ):
+        resultado = audit_denominator(tabela, nome)
+        status = "APROVADO" if resultado.aprovado else "FALHA"
+        print(f"  {nome:32s} {resultado.n_linhas:4d} linhas -> {status}")
+        if not resultado.aprovado:
+            ok = False
+    print(
+        "\nAchado: denominador travado por auditoria — nenhuma linha destes artefatos publica taxa "
+        "cujo denominador inclua oportunidade em aberto (proposal.md: os artefatos anteriores tinham "
+        "159 de 179 e 219 de 292 linhas incorretas por esse exato defeito)."
+    )
+
     _section("Conclusão")
     print(
-        "Juntando as 9 seções: não há como prever com confiança QUEM vai\n"
+        "Juntando as 13 seções: não há como prever com confiança QUEM vai\n"
         "ganhar (seções 1 e 2), então não faz sentido construir um\n"
         "classificador de probabilidade categórica. O que os dados sustentam\n"
         "é ordenar o funil por SCORE (percentil de PRIORIDADE, o valor em risco) —\n"
@@ -413,15 +568,19 @@ def run_report(data_dir: Path) -> bool:
         "previsão fora da amostra: p̂ por produto×setor (seção 6), curvas de aging\n"
         "por produto (seção 7) e URGÊNCIA por produto (seção 8) — os três\n"
         "resultados negativos ficam documentados, não implementados. A seção 9\n"
-        "acompanha CONFIANÇA (completude/suporte) para a próxima recalibração."
+        "acompanha CONFIANÇA (completude/suporte) para a próxima recalibração. As\n"
+        "seções 10-11 reproduzem o impacto e a circularidade da reclassificação de\n"
+        "200 dias; as seções 12-13 reproduzem a ausência de sinal robusto do fit por\n"
+        "vendedor e travam o denominador dos artefatos de análise por teste."
     )
     print()
     print(
         "Os dados justificam ordenar o funil por SCORE (percentil de valor em risco), não\n"
         "por um classificador de probabilidade categórica nem por hierarquias de\n"
         "condicionamento adicionais: nenhum atributo firmográfico isolado carrega sinal\n"
-        "acima do ruído amostral, a hierarquia de encolhimento confirma isso de outra\n"
-        "forma (colapso de conta×produto, produto×setor e produto), e condicionar por\n"
+        "acima do ruído amostral, a hierarquia de encolhimento confirma isso para\n"
+        "conta×produto e produto×setor (produto em si deixou de colapsar após a\n"
+        "recalibração de 200 dias — ver seção 3, dominado por GTK 500), e condicionar por\n"
         "setor ou por produto (aging, URGÊNCIA) piora a previsão fora da amostra em vez\n"
         "de melhorá-la."
     )

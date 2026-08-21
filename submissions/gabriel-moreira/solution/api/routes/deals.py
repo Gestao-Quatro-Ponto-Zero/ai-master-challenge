@@ -20,6 +20,7 @@ from query import (
     validar_order,
     validar_sort,
 )
+from fit_view import fit_para_vendedor, sugestao_para_oportunidade
 from serialize import clean_value, df_to_records
 from schemas import (
     ContaOut,
@@ -31,6 +32,7 @@ from schemas import (
     OportunidadeOut,
 )
 from scoring import constants
+from scoring.carga import deal_pertence_a_sobrecarregado
 from scoring.pipeline import score_row
 from state import AppState
 
@@ -48,6 +50,7 @@ def list_deals(
     confianca_max: Optional[float] = None,
     idade_min: Optional[float] = None,
     idade_max: Optional[float] = None,
+    sobrecarga: Optional[bool] = None,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=100, ge=1, le=500),
     sort: str = Query(default="score"),
@@ -71,9 +74,12 @@ def list_deals(
         confianca_max=confianca_max,
         idade_min=idade_min,
         idade_max=idade_max,
+        sobrecarga=sobrecarga,
     )
 
-    df_aberto = app_state.scored_as_of(as_of)
+    # Requirement "Sinalizador de sobrecarga na listagem de oportunidades"
+    # — a listagem geral traz o booleano, nunca o vendedor sugerido.
+    df_aberto = app_state.scored_com_carga_as_of(as_of)
     recorte = apply_open_filters(df_aberto, filters)
     recorte_ordenado = sort_df(recorte, sort, order)
     pagina = paginate(recorte_ordenado, page, page_size)
@@ -177,6 +183,28 @@ def get_deal_detail(
         office_location=clean_value(row.get("office_location")) if has_account else None,
     )
 
+    # Requirement "Fit e sugestão no detalhe da oportunidade".
+    carga_index = app_state.carga_index_as_of(as_of)
+    estado_key = result["estado"]
+    sector = clean_value(row.get("sector")) if has_account else None
+    fit_produto_out, fit_setor_out = fit_para_vendedor(
+        app_state.fit_ctx, row["sales_agent"], row["product"], sector
+    )
+    sobrecarregado = deal_pertence_a_sobrecarregado(carga_index, row["sales_agent"], estado_key)
+    sugestao = (
+        sugestao_para_oportunidade(
+            app_state.fit_ctx,
+            carga_index,
+            row["sales_agent"],
+            clean_value(row.get("regional_office")),
+            estado_key,
+            row["product"],
+            sector,
+        )
+        if sobrecarregado
+        else None
+    )
+
     return DealDetailOut(
         opportunity_id=row["opportunity_id"],
         sales_agent=row["sales_agent"],
@@ -184,10 +212,14 @@ def get_deal_detail(
         regional_office=clean_value(row.get("regional_office")),
         product=row["product"],
         account=clean_value(row.get("account")) if has_account else None,
-        sector=clean_value(row.get("sector")) if has_account else None,
+        sector=sector,
         porte=porte,
         deal_stage=row["deal_stage"],
         age_days=age_days,
+        sobrecarregado=sobrecarregado,
         conta=conta,
+        fit_produto=fit_produto_out,
+        fit_setor=fit_setor_out,
+        sugestao=sugestao,
         **result,
     )

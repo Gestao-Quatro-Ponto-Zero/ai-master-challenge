@@ -39,14 +39,14 @@ def build_report(closed: pd.DataFrame) -> ShrinkageReport:
     ps_counts = product_sector_group_counts(closed)
     ap_counts = account_product_group_counts(closed)
 
-    conta_produto_stats = level_stats(ap_counts, constants.GLOBAL_WIN_RATE)
-    produto_setor_stats = level_stats(ps_counts, constants.GLOBAL_WIN_RATE)
-    produto_stats = level_stats(prod_counts, constants.GLOBAL_WIN_RATE)
+    conta_produto_stats = level_stats(ap_counts, constants.GLOBAL_WIN_RATE_CALIBRACAO)
+    produto_setor_stats = level_stats(ps_counts, constants.GLOBAL_WIN_RATE_CALIBRACAO)
+    produto_stats = level_stats(prod_counts, constants.GLOBAL_WIN_RATE_CALIBRACAO)
 
     p_hat_recalc = {
         produto: p_hat_produto(produto, prod_counts, k=produto_stats.k)
         if produto_stats.k != float("inf")
-        else constants.GLOBAL_WIN_RATE
+        else constants.GLOBAL_WIN_RATE_CALIBRACAO
         for produto in constants.PRECO_TABELA
     }
     p_hat_congelado = {

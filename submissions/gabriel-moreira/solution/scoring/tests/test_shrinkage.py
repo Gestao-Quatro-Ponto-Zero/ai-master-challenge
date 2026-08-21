@@ -17,23 +17,25 @@ def _closed(dataset):
 
 
 def test_gtk_500_shrinks_toward_global(dataset):
+    """`_closed` agora é a população de calibração (7.364 = 6.711 + 653
+    reclassificados) — GTK 500 sobe de n=25 para n=35 (design.md, D2)."""
     counts = product_group_counts(_closed(dataset))
-    assert counts["GTK 500"].n == 25
+    assert counts["GTK 500"].n == 35
     p_hat = p_hat_produto("GTK 500", counts)
-    assert round(p_hat, 3) == 0.604
+    assert round(p_hat, 4) == 0.4436
 
 
 def test_mg_special_barely_adjusted_high_volume(dataset):
     counts = product_group_counts(_closed(dataset))
-    assert counts["MG Special"].n == 1223
+    assert counts["MG Special"].n == 1326
     p_hat = p_hat_produto("MG Special", counts)
-    assert round(p_hat, 3) == 0.648
+    assert round(p_hat, 4) == 0.5980
 
 
 def test_account_product_level_collapses(dataset):
     closed = _closed(dataset)
     groups = account_product_group_counts(closed)
-    stats = level_stats(groups, constants.GLOBAL_WIN_RATE)
+    stats = level_stats(groups, constants.GLOBAL_WIN_RATE_CALIBRACAO)
     assert stats.var_em_excesso <= 0
     assert math.isinf(stats.k)
 
@@ -41,7 +43,7 @@ def test_account_product_level_collapses(dataset):
 def test_product_sector_level_collapses(dataset):
     closed = _closed(dataset)
     groups = product_sector_group_counts(closed)
-    stats = level_stats(groups, constants.GLOBAL_WIN_RATE)
+    stats = level_stats(groups, constants.GLOBAL_WIN_RATE_CALIBRACAO)
     assert stats.var_em_excesso <= 0
     assert math.isinf(stats.k)
 

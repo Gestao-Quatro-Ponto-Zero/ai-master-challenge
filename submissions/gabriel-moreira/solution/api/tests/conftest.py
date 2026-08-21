@@ -8,6 +8,8 @@ DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 
 os.environ.setdefault("LEAD_SCORER_DATA_DIR", str(DATA_DIR))
 os.environ.setdefault("LEAD_SCORER_EXPORT_PATH", "/tmp/lead_scorer_test_export.csv")
+os.environ.setdefault("LEAD_SCORER_ANALYSIS_BY_PRODUCT_PATH", "/tmp/lead_scorer_test_analysis_product.csv")
+os.environ.setdefault("LEAD_SCORER_ANALYSIS_BY_SECTOR_PATH", "/tmp/lead_scorer_test_analysis_sector.csv")
 
 
 @pytest.fixture(scope="session")

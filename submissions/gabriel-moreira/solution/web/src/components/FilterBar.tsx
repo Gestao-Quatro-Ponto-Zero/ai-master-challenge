@@ -89,6 +89,16 @@ export function FilterBar({
         </div>
       </div>
 
+      <label className="text-xs text-muted flex items-center gap-1.5 select-none">
+        <input
+          type="checkbox"
+          checked={filtros.sobrecarga === "1"}
+          onChange={(e) => onChange({ sobrecarga: e.target.checked ? "1" : undefined })}
+          className="accent-gold"
+        />
+        Só sobrecarregadas
+      </label>
+
       <div className="ml-auto flex items-center gap-3">
         {activeCount > 0 && (
           <span className="text-xs text-muted">

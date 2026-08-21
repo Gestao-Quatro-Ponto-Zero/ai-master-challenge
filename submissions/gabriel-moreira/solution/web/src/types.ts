@@ -42,6 +42,10 @@ export interface Oportunidade {
   estado: Estado;
   estado_label: string;
   plano_de_acao: string;
+  /** Pertence a par (vendedor, estado) sobrecarregado — nunca traz o
+   * vendedor sugerido nesta superfície (Requirement "Sinalizador de
+   * sobrecarga na listagem de oportunidades"). */
+  sobrecarregado: boolean;
 }
 
 export interface DealsEnvelope {
@@ -64,6 +68,26 @@ export interface Conta {
   office_location: string | null;
 }
 
+/** Fit histórico do vendedor numa dimensão (produto ou setor).
+ * `disponivel === false` — nunca zero, nunca a média global, nunca o fit
+ * da outra dimensão — quando a informação de base é desconhecida
+ * (Requirement "Fit histórico do vendedor por produto e por setor"). */
+export interface Fit {
+  disponivel: boolean;
+  valor: number | null;
+  n: number | null;
+}
+
+/** Sugestão de redistribuição — informativa, nada é reatribuído.
+ * `disponivel === false` quando o pool de elegíveis do escritório
+ * esgota (Requirement "Sugestão de vendedor para redistribuição"). */
+export interface Sugestao {
+  disponivel: boolean;
+  sales_agent: string | null;
+  fit_produto: Fit | null;
+  fit_setor: Fit | null;
+}
+
 export interface DealDetail extends Oportunidade {
   conta: Conta;
   /** PRIORIDADE em dólares — valor intermediário auditável, exposto só no
@@ -73,6 +97,59 @@ export interface DealDetail extends Oportunidade {
   /** Por que este SCORE — decomposição de p̂/VALOR/URGÊNCIA e do porte da
    * conta em frases de negócio, sem jargão técnico. Só no detalhe. */
   score_fatores: string[];
+  fit_produto: Fit;
+  fit_setor: Fit;
+  /** Ressalva de ausência de significância estatística — deve acompanhar
+   * o número na mesma seção, nunca só em documentação (Requirement
+   * "Declaração de ausência de significância estatística do fit"). */
+  ressalva_fit: string;
+  sugestao: Sugestao | null;
+}
+
+export interface CargaVendedor {
+  sales_agent: string;
+  contagem: number;
+  razao: number | null;
+  sobrecarregado: boolean;
+}
+
+export interface CargaEstado {
+  estado: Estado;
+  media_escritorio: number;
+  vendedores: CargaVendedor[];
+}
+
+export interface CargaEscritorio {
+  regional_office: string;
+  estados: CargaEstado[];
+}
+
+export interface Carga {
+  escritorios: CargaEscritorio[];
+}
+
+export interface OportunidadeSobrecarregada {
+  opportunity_id: string;
+  sales_agent: string;
+  regional_office: string | null;
+  product: string;
+  account: string | null;
+  sector: string | null;
+  estado: Estado;
+  contagem: number;
+  media_escritorio: number;
+  razao: number | null;
+  fit_produto: Fit;
+  fit_setor: Fit;
+  sugestao: Sugestao;
+}
+
+export interface SobrecarregadosEnvelope {
+  items: OportunidadeSobrecarregada[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
 }
 
 export interface FiltroVendedor {
@@ -159,4 +236,5 @@ export interface Filtros {
   confianca_max?: string;
   idade_min?: string;
   idade_max?: string;
+  sobrecarga?: string;
 }

@@ -76,6 +76,7 @@ class DealFilters:
     confianca_max: float | None = None
     idade_min: float | None = None
     idade_max: float | None = None
+    sobrecarga: bool | None = None
 
     @property
     def idade_ativo(self) -> bool:
@@ -127,12 +128,14 @@ def apply_open_filters(
 ) -> pd.DataFrame:
     """Filtros que só existem para o funil aberto: organização/produto,
     estado (opcional, omitido para calcular a contagem que ignora o
-    próprio filtro), confiança e idade."""
+    próprio filtro), confiança, idade e sobrecarga."""
     df = apply_org_filters(df_aberto, filters)
     if include_estado and filters.estados:
         df = df[df["estado"].isin(filters.estados)]
     df = _apply_confianca_filter(df, filters)
     df = _apply_idade_filter(df, filters)
+    if filters.sobrecarga:
+        df = df[df["sobrecarregado"]]
     return df
 
 
