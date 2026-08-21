@@ -11,6 +11,7 @@ from deps import get_app_state, get_as_of
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import FileResponse, StreamingResponse
 from query import DealFilters, apply_open_filters, validar_confianca, validar_estados
+from scoring.export import EXPORT_COLUMNS, PASSOS_SEPARADOR
 from state import AppState
 
 router = APIRouter(tags=["exportação"])
@@ -39,10 +40,13 @@ def export_filtered_deal_ids(
     as_of: Optional[pd.Timestamp] = Depends(get_as_of),
     app_state: AppState = Depends(get_app_state),
 ):
-    """Identificadores do recorte filtrado inteiro, sem paginação — usado
+    """Dados completos do recorte filtrado inteiro, sem paginação — usado
     pela exportação em massa da interface, que não pode ficar limitada à
     página carregada. É também o mecanismo de exportação da visão de
-    revisão em lote (filtrando por estado=revisao_lote)."""
+    revisão em lote (filtrando por estado=revisao_lote). Mesmas colunas do
+    CSV consolidado (`scoring.export.EXPORT_COLUMNS`), não só o
+    `opportunity_id` — o recorte filtrado precisa ser usável fora da
+    ferramenta sem exigir um segundo download do dataset inteiro."""
     estados = validar_estados(estado)
     confianca_min = validar_confianca(confianca_min)
     confianca_max = validar_confianca(confianca_max)
@@ -61,8 +65,12 @@ def export_filtered_deal_ids(
 
     recorte = apply_open_filters(app_state.scored_as_of(as_of), filters)
 
+    export_df = recorte[EXPORT_COLUMNS].copy()
+    export_df["plano_de_acao_passos"] = export_df["plano_de_acao_passos"].apply(PASSOS_SEPARADOR.join)
+    export_df["score_fatores"] = export_df["score_fatores"].apply(PASSOS_SEPARADOR.join)
+
     buffer = io.StringIO()
-    recorte[["opportunity_id"]].to_csv(buffer, index=False)
+    export_df.to_csv(buffer, index=False)
     return StreamingResponse(
         iter([buffer.getvalue()]),
         media_type="text/csv",

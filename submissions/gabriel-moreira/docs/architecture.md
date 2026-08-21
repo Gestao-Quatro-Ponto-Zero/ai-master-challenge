@@ -1,6 +1,6 @@
 # Arquitetura da Solução
 
-Blueprint técnico da implementação: como cada peça funciona e como é validada. Para a lógica das decisões que levaram a este desenho, ver [decisions-log.md](./decisions-log.md); para a derivação estatística por trás da fórmula, ver [analise-lead-scoring.md](./analise-lead-scoring.md). Espelha os requisitos formais em [`openspec/changes/add-lead-scorer/`](../../../openspec/changes/add-lead-scorer/) (motor original) e [`openspec/changes/redesign-score-confianca-estado/`](../../../openspec/changes/redesign-score-confianca-estado/) (SCORE/CONFIANÇA/ESTADO, 2026-08-20).
+Blueprint técnico da implementação: como cada peça funciona e como é validada. Para a lógica das decisões que levaram a este desenho, ver [decisions-log.md](./decisions-log.md); para a derivação estatística por trás da fórmula, ver [analise-lead-scoring.md](./analise-lead-scoring.md).
 
 ---
 
@@ -106,13 +106,13 @@ MERGE:
 ### PRIORIDADE
 
 ```
-p̂_produto = (n_produto × taxa_produto + k × 0,632) / (n_produto + k)     ← encolhimento hierárquico, k DERIVADO (nenhum nível usa constante congelada — ver "K_PRODUTO removido" abaixo)
+p̂_produto = (n_produto × taxa_produto + k × 0,5755) / (n_produto + k)   ← encolhimento hierárquico, k derivado em tempo de carga para cada nível
 
   se Prospecting:      p̂(idade) = p̂_produto (sem ajuste de idade)
-  se idade > 138:       p̂(idade) = 0,632                                  ← censura: reverte ao prior
-  senão:                p̂(idade) = p̂_produto × p_ganho(min(idade,120)) / 0,632
+  se idade > 138:       p̂(idade) = 0,5755                                ← censura: reverte ao prior dos negócios orgânicos
+  senão:                p̂(idade) = p̂_produto × p_ganho(min(idade,120)) / 0,5755
 
-p̂ = p̂(idade) × mult_setor(produto, setor)                                ← ajuste de desempenho produto×setor, ±15%, neutro (1,0) sem setor conhecido (adicionado 2026-08-21 — ver "mult_setor" abaixo)
+p̂ = p̂(idade) × mult_setor(produto, setor)                               ← ajuste de desempenho produto×setor, ±15%, neutro (1,0) sem setor conhecido
 
 VALOR = preço_tabela(produto) × mult_porte(porte, default 1,00)
 
@@ -120,13 +120,13 @@ VALOR = preço_tabela(produto) × mult_porte(porte, default 1,00)
   se idade > 138:       URGÊNCIA = 0,15
   senão:                URGÊNCIA = risco_isotônico(min(idade,120))
 
-PRIORIDADE = p̂ × VALOR × URGÊNCIA                                  ← em dólares
-SCORE      = percentil(PRIORIDADE) × 100                           ← contra o histórico de negócios GANHOS, não contra o funil aberto
+PRIORIDADE = p̂ × VALOR × URGÊNCIA                                  ← em dólares, valor auditável
+SCORE      = percentil(PRIORIDADE) × 100                           ← contra os 4.238 negócios historicamente ganhos
 ```
 
-**SCORE não é relativo ao funil aberto corrente** — é o percentil de PRIORIDADE contra a distribuição de PRIORIDADE calculada sobre os 4.238 negócios historicamente **ganhos** (usando a idade real de cada um no fechamento). Essa referência é histórica e fixa; só muda no ciclo trimestral de recalibração. Consequência prática: SCORE = 82 significa literalmente "esta oportunidade vale mais, em risco agora, do que 82% dos negócios que historicamente viraram receita" — e, ao contrário de um percentil contra o funil aberto, não se move porque outra oportunidade entrou ou saiu do pipeline.
+**SCORE não é relativo ao funil aberto corrente** — é o percentil de PRIORIDADE contra a distribuição de PRIORIDADE calculada sobre os 4.238 negócios historicamente **ganhos** (usando a idade real de cada um no fechamento). Essa referência é histórica e fixa; só muda no ciclo trimestral de recalibração.
 
-`k` não é escolhido: `k = variância_esperada_por_acaso / variância_em_excesso`, para os **quatro** níveis da hierarquia (conta×produto, produto×setor, produto, global) — nenhum, incluindo produto, tem uma constante de política congelada sobrepondo essa fórmula (`K_PRODUTO` foi removido em 2026-08-21). Nos dados calibrados, conta×produto e produto×setor têm variância em excesso ≤ 0 e colapsam (`k = ∞`) para o nível de produto; o nível de produto tem variância em excesso positiva nesta calibração (`k ≈ 0,6966`, derivado em tempo de carga por `shrinkage.level_stats`).
+`k` é derivado em tempo de carga: `k = variância_esperada_por_acaso / variância_em_excesso`, para os **quatro** níveis da hierarquia (conta×produto, produto×setor, produto, global). Nos dados atuais, conta×produto e produto×setor têm variância em excesso ≤ 0 e colapsam (`k = ∞`); o nível de produto tem `k ≈ 0,70` (finito).
 
 **Achado que inverte a intuição comum de lead scoring:** `p_ganho(t)` **sobe** com a idade (0,632 aos 0 dias → 0,751 aos 120 dias) — não desce. O que a idade consome é a **janela**: em 57 dias, metade das vitórias históricas já aconteceu; em 88 dias, restam 25%. Por isso URGÊNCIA usa `risco(t)`, a probabilidade real de resolução em 30 dias (suavizada por regressão isotônica), não um proxy de "quão velho é ruim".
 
@@ -212,9 +212,9 @@ setor desconhecido ou célula sem negócio fechado -> mult_setor = 1,0   ← neu
 
 **Medido sobre o funil real** (1.436 oportunidades abertas, 4.238 negócios Won): SCORE desloca mediana 0,30pp / máximo 4,40pp; CONFIANÇA desloca mediana 0,00 / máximo 12,60. Zero cruzamentos dos cortes SCORE≥95 e CONFIANÇA<50; distribuição de ESTADO idêntica. Efeito colateral aceito: a mediana de PRIORIDADE da população de referência sobe 6,75% (351,52 → 375,26) — efeito estrutural (células de taxa mais alta contribuem mais linhas Won à própria referência), não uma mudança de mercado; não corrigido porque PRIORIDADE em dólares não é exibida e o efeito sobre SCORE já é desprezível (ver `docs/decisions-log.md`, entrada 2026-08-21).
 
-### CONFIANÇA — quanto se sabe sobre a oportunidade (redesenhada 2026-08-20)
+### CONFIANÇA — quanto se sabe sobre a oportunidade
 
-CONFIANÇA responde: "**quanto do que este score afirma está apoiado em dado observado e em precedente histórico?**" — uma escala numérica 0-100, `min(completude, suporte)`, não mais uma letra A-D. A versão original media isso majoritariamente por idade (censura acima de 138 dias definia o nível D, que por sua vez forçava o estado Desistir) — o que confundia CONFIANÇA com URGÊNCIA e fazia 61,8% do funil aberto herdar a recomendação "desistir". A versão redesenhada separa as duas coisas por completo: idade não entra em CONFIANÇA, só no termo de suporte via densidade de precedente.
+CONFIANÇA responde: "**quanto do que este score afirma está apoiado em dado observado e em precedente histórico?**" — uma escala numérica 0-100, `min(completude, suporte)`. Idade não entra em CONFIANÇA diretamente, apenas no termo de suporte via densidade de precedente histórico.
 
 #### completude — os cinco campos de cadastro
 
@@ -240,7 +240,7 @@ Cada termo condicional (`s_idade` sem idade conhecida — Prospecting; `s_célul
 
 **Marcador de ausência de precedente:** `sem_precedente = (s_idade == 0 com idade conhecida)` — nenhum negócio ganho fechou na faixa de idade desta oportunidade. É esse marcador, não um corte sobre CONFIANÇA, que decide o roteamento de ESTADO — porque oportunidades novas sem cadastro e oportunidades antigas sem precedente se aglomeram em valores adjacentes de CONFIANÇA (20 e 25), em ordem invertida: nenhum corte único separa as duas populações.
 
-### ESTADO — árvore de decisão sobre SCORE e CONFIANÇA (redesenhada 2026-08-20)
+### ESTADO — árvore de decisão sobre SCORE e CONFIANÇA
 
 ```
 1. sem precedente histórico   -> Revisão em lote
@@ -249,16 +249,90 @@ Cada termo condicional (`s_idade` sem idade conhecida — Prospecting; `s_célul
 4. caso contrário             -> Acompanhar
 ```
 
-```mermaid
-flowchart TD
-    A["Deal aberto"] --> B{"Sem precedente<br/>historico?"}
-    B -- sim --> R["Revisao em lote<br/>443"]
-    B -- nao --> C{"SCORE maior 95?"}
-    C -- sim --> P["Priorizar<br/>54"]
-    C -- nao --> D{"CONFIANCA menor 50?"}
-    D -- sim --> Q["Qualificar<br/>656"]
-    D -- nao --> AC["Acompanhar<br/>283"]
-```
+<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid var(--text-secondary); border-radius: 4px;">
+  <defs>
+    <style>
+      .node-decision { fill: #fef3c7; stroke: #d97706; stroke-width: 2; }
+      .node-result { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; }
+      .node-alert { fill: #fed7aa; stroke: #f97316; stroke-width: 2; }
+      .node-text { font-size: 12px; fill: var(--text-primary); font-weight: 500; text-anchor: middle; }
+      .node-count { font-size: 11px; fill: var(--text-secondary); }
+      .arrow { stroke: var(--text-secondary); stroke-width: 1.5; fill: none; }
+      .arrow-head { fill: var(--text-secondary); }
+      .label-text { font-size: 11px; fill: var(--text-secondary); }
+    </style>
+  </defs>
+  
+  <!-- Start node -->
+  <rect x="175" y="10" width="150" height="40" rx="4" class="node-decision"/>
+  <text x="250" y="35" class="node-text">Deal aberto</text>
+  
+  <!-- Arrow down -->
+  <line x1="250" y1="50" x2="250" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Decision 1: Sem precedente? -->
+  <polygon points="250,80 310,120 250,160 190,120" class="node-decision"/>
+  <text x="250" y="115" class="node-text">Sem precedente</text>
+  <text x="250" y="130" class="node-text">historico?</text>
+  
+  <!-- Arrow left to Revisão em lote -->
+  <line x1="190" y1="120" x2="100" y2="120" class="arrow"/>
+  <text x="145" y="115" class="label-text">sim</text>
+  
+  <rect x="20" y="100" width="80" height="40" rx="4" class="node-alert"/>
+  <text x="60" y="120" class="node-text">Revisão</text>
+  <text x="60" y="135" class="node-text">em lote</text>
+  <text x="60" y="152" class="node-count">443</text>
+  
+  <!-- Arrow down to Decision 2 -->
+  <line x1="250" y1="160" x2="250" y2="190" class="arrow"/>
+  <text x="265" y="175" class="label-text">não</text>
+  
+  <!-- Decision 2: SCORE >= 95? -->
+  <polygon points="250,190 310,230 250,270 190,230" class="node-decision"/>
+  <text x="250" y="225" class="node-text">SCORE</text>
+  <text x="250" y="240" class="node-text">≥ 95?</text>
+  
+  <!-- Arrow right to Priorizar -->
+  <line x1="310" y1="230" x2="390" y2="230" class="arrow"/>
+  <text x="350" y="225" class="label-text">sim</text>
+  
+  <rect x="390" y="210" width="80" height="40" rx="4" class="node-result"/>
+  <text x="430" y="230" class="node-text">Priorizar</text>
+  <text x="430" y="247" class="node-count">54</text>
+  
+  <!-- Arrow down to Decision 3 -->
+  <line x1="250" y1="270" x2="250" y2="300" class="arrow"/>
+  <text x="265" y="285" class="label-text">não</text>
+  
+  <!-- Decision 3: CONFIANÇA < 50? -->
+  <polygon points="250,300 310,340 250,380 190,340" class="node-decision"/>
+  <text x="250" y="335" class="node-text">CONFIANÇA</text>
+  <text x="250" y="350" class="node-text">&lt; 50?</text>
+  
+  <!-- Arrow right to Qualificar -->
+  <line x1="310" y1="340" x2="390" y2="340" class="arrow"/>
+  <text x="350" y="335" class="label-text">sim</text>
+  
+  <rect x="390" y="320" width="80" height="40" rx="4" class="node-result"/>
+  <text x="430" y="340" class="node-text">Qualificar</text>
+  <text x="430" y="357" class="node-count">656</text>
+  
+  <!-- Arrow down to Acompanhar -->
+  <line x1="250" y1="380" x2="250" y2="405" class="arrow"/>
+  <text x="265" y="395" class="label-text">não</text>
+  
+  <rect x="180" y="405" width="140" height="40" rx="4" class="node-result"/>
+  <text x="250" y="425" class="node-text">Acompanhar</text>
+  <text x="250" y="442" class="node-count">283</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" class="arrow-head"/>
+    </marker>
+  </defs>
+</svg>
 
 CONFIANÇA e ESTADO não são a mesma coisa: **CONFIANÇA é o quanto acreditar no score**; **ESTADO é a ação recomendada**. A tabela 4×2 original (A-D × SCORE≥50) deu lugar a uma árvore, porque CONFIANÇA contínua em 0-100 não tem quebras naturais para uma tabela cruzada, e a ordem explícita da árvore corrige o defeito real da versão anterior: "CONFIANÇA D → Desistir" era uma regra de mão única escondida numa célula, aplicada a 61,8% do funil.
 
@@ -273,17 +347,17 @@ O corte de SCORE (95) é o percentil 95 da própria distribuição de referênci
 | **Qualificar** | Obter a informação específica que falta (nomeada pela razão de CONFIANÇA) antes de tratar como tarefa priorizada |
 | **Revisão em lote** | Passivo de higiene de dados — sem precedente histórico de fechamento. Fora da fila ordenada de trabalho, tratado em lote com o gestor |
 
-Distribuição resultante sobre o funil atual (1.436 oportunidades abertas, após a reclassificação de 200 dias de 2026-08-21 — ver seção "Carga e fit por vendedor" abaixo), contra a vigente antes do redesenho de ESTADO:
+Distribuição sobre o funil atual (1.436 oportunidades abertas):
 
 ```
-Priorizar         54     (antes do redesenho: Foco urgente   50)
-Acompanhar       283     (antes do redesenho: Acompanhar    243)
-Qualificar       656     (antes do redesenho: Qualificar 197 + Engajar 308)
-Revisão em lote  443     (antes da reclassificação de 200d: 1.096; antes do redesenho: Desistir 1.291)
+Priorizar         54
+Acompanhar       283
+Qualificar       656
+Revisão em lote  443
 Fila trabalhável 993
 ```
 
-A fila trabalhável (993) não mudou com a reclassificação de 200 dias — as 653 oportunidades reclassificadas já estavam todas em `Revisão em lote` (idade ≥ 200 > 138 dias), então só esse balde encolheu. `Revisão em lote` tem agora idade entre 154 e 199 dias — é o passivo real (acima da fronteira de 138 dias, abaixo do corte de política de 200 dias que agora vira `Lost`), não um depósito; nenhuma das 500 oportunidades em Prospecting cai nele, porque idade desconhecida nunca é lida como "sem precedente".
+`Revisão em lote` contém oportunidades sem precedente histórico de fechamento (idade 154–199 dias, acima de 138 observados mas abaixo de 200 de política). Nenhuma oportunidade em Prospecting cai nela, pois idade desconhecida nunca é lida como "sem precedente".
 
 ### Explicabilidade e plano de ação
 
@@ -297,17 +371,8 @@ p̂ 0,691 · Valor US$ 5.865,74 · Urgência 1,00 → PRIORIDADE ≈ US$ 4.051,6
 
 Texto gerado por template determinístico a partir dos componentes — nunca por um modelo não determinístico ou serviço externo, para preservar auditabilidade. A razão de CONFIANÇA nomeia qual metade (completude ou suporte) governou o mínimo e, quando é completude, quais campos especificamente faltam — nunca apenas repete o número.
 
-### Redesenho 2026-08-20 — por que PRIORIDADE saiu da tela
+**PRIORIDADE é calculada mas não exibida.** O número de prioridade mostrado ao vendedor é **SCORE** (0-100), não PRIORIDADE em dólares. A razão: a decomposição da variância de `log(PRIORIDADE)` atribui 87,3% a VALOR e 0,1% a `p̂`. SCORE normaliza essa distribuição contra a população histórica, evitando que o sorting seja dominado por preço de tabela.
 
-Três problemas medidos motivaram o redesenho — raciocínio completo em `decisions-log.md`, as três hipóteses de refinamento testadas e rejeitadas (condicionar `p̂` por produto×setor, curvas de aging por produto, URGÊNCIA por produto) em [analise-lead-scoring.md §4.5](./analise-lead-scoring.md#45-calibração-de-p̂-e-urgência--como-os-números-foram-derivados) e reproduzíveis em `validation/backtest.py` seções 6-8:
-
-1. **PRIORIDADE em dólares era, na prática, ordenação por preço de tabela.** A decomposição da variância de `log(PRIORIDADE)` atribui 87,3% a VALOR e 0,1% a `p̂` — `spearman(PRIORIDADE, preço_tabela) = 0,909`. O preço varia 486,7× entre produtos; `p̂_produto` varia 1,074×. SCORE (percentil contra os negócios ganhos) não sofre dessa distorção porque normaliza contra uma população fixa, mas exibir PRIORIDADE ao lado dele convidava a ler o dólar como a prioridade real.
-2. **CONFIANÇA D forçava Desistir para 61,8% do funil.** Uma ferramenta cuja tela inicial recomenda abandonar dois terços da carteira não é usada duas vezes.
-3. **Acompanhar e Engajar entregavam o mesmo plano de ação.**
-
-A fórmula em si (`p̂ × VALOR × URGÊNCIA`, curvas globais, `p̂_produto` por encolhimento) **não mudou** — o redesenho muda como o resultado é exposto e roteado, não como é calculado.
-
-**Correção incidental encontrada durante a implementação:** `classificar_porte` só verificava `employees is None`, mas o merge com `accounts.csv` preenche funcionários ausentes com `NaN`, não `None` — e `NaN < limiar` é sempre `False` em Python. Toda oportunidade sem conta (987 das 1.436 no funil atual; 1.425 das 2.089 antes da reclassificação de 200 dias) caía silenciosamente em "Enterprise" (mult_porte 1,06) em vez do prior neutro (1,00) que o requisito de VALOR já prometia. Corrigido junto com o redesenho (`employees != employees` cobre NaN além de `None`).
 
 ---
 
@@ -416,19 +481,116 @@ make test
 
 ## Como os componentes se falam
 
-```mermaid
-flowchart LR
-    CSV[("CSVs<br/>accounts, products<br/>pipeline, teams")] --> REPO["repository.py<br/>load+merge<br/>reclassificacao"]
-    REPO --> CTX["pipeline.py<br/>ScoringContext<br/>k, curves, mult_setor"]
-    CTX --> MODEL["model.py<br/>p_hat x VALOR x URGENCIA<br/>= PRIORIDADE"]
-    MODEL --> REF["reference.py<br/>percentile vs Won<br/>= SCORE"]
-    MODEL --> CONF["confianca.py<br/>CONFIANCA, ESTADO"]
-    REF --> API["API FastAPI<br/>/deals, /kpis<br/>/rollup, /score"]
-    CONF --> API
-    API --> WEB["React<br/>Oportunidades<br/>Sobrecarga, Gestao"]
-    CTX --> EXPORT["export.py<br/>CSV processado<br/>analysis_by_*.csv"]
-    CTX --> VALID["backtest.py<br/>AUC, k derivado<br/>validacao"]
-```
+<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid var(--text-secondary); border-radius: 4px;">
+  <defs>
+    <style>
+      .box { fill: var(--bg-secondary); stroke: var(--border-default); stroke-width: 1.5; rx: 4; }
+      .box-data { fill: #dbeafe; stroke: #3b82f6; stroke-width: 1.5; }
+      .box-text { font-size: 11px; fill: var(--text-primary); text-anchor: middle; font-weight: 500; }
+      .box-subtext { font-size: 10px; fill: var(--text-secondary); text-anchor: middle; }
+      .arrow { stroke: var(--text-secondary); stroke-width: 1.5; fill: none; }
+      .arrow-head { fill: var(--text-secondary); }
+    </style>
+  </defs>
+  
+  <!-- Data source -->
+  <circle cx="50" cy="80" r="35" class="box-data"/>
+  <text x="50" y="70" class="box-text">CSVs</text>
+  <text x="50" y="85" class="box-subtext">accounts</text>
+  <text x="50" y="97" class="box-subtext">products</text>
+  <text x="50" y="109" class="box-subtext">pipeline</text>
+  <text x="50" y="121" class="box-subtext">teams</text>
+  
+  <!-- Arrow -->
+  <line x1="85" y1="80" x2="125" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Repository -->
+  <rect x="125" y="50" width="100" height="60" class="box"/>
+  <text x="175" y="70" class="box-text">repository.py</text>
+  <text x="175" y="85" class="box-subtext">load+merge</text>
+  <text x="175" y="97" class="box-subtext">reclassificação</text>
+  
+  <!-- Arrow -->
+  <line x1="225" y1="80" x2="265" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Context -->
+  <rect x="265" y="50" width="110" height="60" class="box"/>
+  <text x="320" y="70" class="box-text">pipeline.py</text>
+  <text x="320" y="85" class="box-subtext">ScoringContext</text>
+  <text x="320" y="97" class="box-subtext">k, curves, mult_setor</text>
+  
+  <!-- Arrow down to Export -->
+  <line x1="320" y1="110" x2="320" y2="140" class="arrow" marker-end="url(#arrowhead)"/>
+  <text x="330" y="128" class="box-subtext" style="text-anchor: start;">Export</text>
+  
+  <rect x="260" y="140" width="120" height="60" class="box"/>
+  <text x="320" y="160" class="box-text">export.py</text>
+  <text x="320" y="175" class="box-subtext">CSV processado</text>
+  <text x="320" y="187" class="box-subtext">analysis_by_*.csv</text>
+  
+  <!-- Arrow down to Validation -->
+  <line x1="440" y1="110" x2="440" y2="140" class="arrow" marker-end="url(#arrowhead)"/>
+  <text x="450" y="128" class="box-subtext" style="text-anchor: start;">Validation</text>
+  
+  <rect x="380" y="140" width="120" height="60" class="box"/>
+  <text x="440" y="160" class="box-text">backtest.py</text>
+  <text x="440" y="175" class="box-subtext">AUC, k derivado</text>
+  <text x="440" y="187" class="box-subtext">validação</text>
+  
+  <!-- Arrow to Model -->
+  <line x1="375" y1="80" x2="415" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Model -->
+  <rect x="415" y="50" width="110" height="60" class="box"/>
+  <text x="470" y="70" class="box-text">model.py</text>
+  <text x="470" y="85" class="box-subtext">p̂ × VALOR</text>
+  <text x="470" y="97" class="box-subtext">× URGÊNCIA</text>
+  
+  <!-- Arrow to Reference -->
+  <line x1="525" y1="75" x2="565" y2="75" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <rect x="565" y="45" width="110" height="60" class="box"/>
+  <text x="620" y="65" class="box-text">reference.py</text>
+  <text x="620" y="80" class="box-subtext">percentile vs Won</text>
+  <text x="620" y="92" class="box-subtext">= SCORE</text>
+  
+  <!-- Arrow to Confidence (down from model) -->
+  <line x1="470" y1="110" x2="470" y2="140" class="arrow" marker-end="url(#arrowhead)"/>
+  <text x="480" y="128" class="box-subtext" style="text-anchor: start;">Confidence</text>
+  
+  <rect x="415" y="140" width="110" height="60" class="box"/>
+  <text x="470" y="160" class="box-text">confianca.py</text>
+  <text x="470" y="175" class="box-subtext">CONFIANÇA</text>
+  <text x="470" y="187" class="box-subtext">ESTADO</text>
+  
+  <!-- Arrow to API from Reference -->
+  <line x1="675" y1="75" x2="715" y2="75" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow to API from Confidence -->
+  <line x1="525" y1="170" x2="715" y2="85" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- API -->
+  <rect x="715" y="45" width="110" height="60" class="box"/>
+  <text x="770" y="65" class="box-text">API FastAPI</text>
+  <text x="770" y="80" class="box-subtext">/deals, /kpis</text>
+  <text x="770" y="92" class="box-subtext">/rollup, /score</text>
+  
+  <!-- Arrow to Web -->
+  <line x1="825" y1="75" x2="865" y2="75" class="arrow" marker-end="url(#arrowhead)"/>
+  
+  <!-- Web -->
+  <rect x="865" y="45" width="120" height="60" class="box"/>
+  <text x="925" y="65" class="box-text">React</text>
+  <text x="925" y="80" class="box-subtext">Oportunidades</text>
+  <text x="925" y="92" class="box-subtext">Sobrecarga, Gestão</text>
+  
+  <!-- Arrow definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" class="arrow-head"/>
+    </marker>
+  </defs>
+</svg>
 
 `scoring/` é o único lugar onde a fórmula existe — API, exportação e validação a importam via `pip install -e`, nunca reimplementam. Estrutura de pastas efetivamente implementada (substitui a estrutura prevista da versão anterior deste documento):
 
@@ -500,10 +662,6 @@ validation/
 
 **O crítico:** `scoring/` é uma dependência limpa, sem FastAPI ou React. API, exportação CSV e validação a importam via `pip install -e` — o número exibido, o número exportado e o número validado são sempre o mesmo cálculo (ver testes de consistência em `api/tests/test_e2e.py` e `validation/tests/test_validation.py`).
 
-**Achado original (2026-08-19), revisto em 2026-08-21:** `validation/shrinkage_check.py` recalcula k pelo mesmo método em todos os níveis da hierarquia; nesta calibração original, o nível de produto também colapsava (`k = ∞`), e `constants.K_PRODUTO = 4` era mantido como constante **congelada** para preservar uma diferenciação que o cálculo estrito zeraria. A reclassificação de 200 dias (2026-08-21, ver "Carga e fit por vendedor" abaixo) mudou esse quadro: sobre a população de calibração recalculada, o nível de produto passou a ter variância em excesso positiva (`k ≈ 0,6966`, finito) — deixou de colapsar. Em vez de recongelar `K_PRODUTO` num novo valor escolhido à mão, a mudança `add-mult-setor` (mesmo dia, sessão seguinte) **removeu `K_PRODUTO` por completo**: o nível de produto agora chama `shrinkage.level_stats` em tempo de carga, exatamente como os outros três níveis — nenhuma constante congelada resta para ficar desatualizada numa recalibração futura.
-
-**lightgbm -> scikit-learn:** o desenho original previa lightgbm para o modelo combinado de AUC. Na implementação, `pip install lightgbm` falhou neste ambiente por exigir `libomp` nativo via Homebrew — o que quebraria "partida por comando único, sem passos manuais" em qualquer máquina sem a lib pré-instalada. `HistGradientBoostingClassifier` do próprio scikit-learn cobre o mesmo papel (gradient boosting) sem dependência nativa extra.
-
 ---
 
 ## Limitações conhecidas
@@ -548,7 +706,7 @@ Conclusão: **justifica ordenar por valor em risco (SCORE), não por um classifi
 
 ---
 
-## Carga e fit por vendedor (adicionado 2026-08-21)
+## Carga e fit por vendedor
 
 Ver `openspec/changes/add-analise-carga-fit/` para a proposta/design completos. Resumo técnico:
 
