@@ -10,7 +10,7 @@ from dataclasses import dataclass
 import pandas as pd
 
 from . import confianca as confianca_mod
-from . import constants, estado as estado_mod, explicacao, model, reference, shrinkage
+from . import constants, estado as estado_mod, explicacao, model, reference, setor, shrinkage
 from .repository import Dataset, load_dataset
 
 
@@ -56,17 +56,20 @@ def fechados_calibracao(dataset: Dataset) -> pd.DataFrame:
 def build_scoring_context(dataset: Dataset) -> model.ScoringContext:
     closed = fechados_calibracao(dataset)
     counts = shrinkage.product_group_counts(closed)
+    produto_stats = shrinkage.level_stats(counts, constants.GLOBAL_WIN_RATE_CALIBRACAO)
     p_hat_by_product = {
-        produto: shrinkage.p_hat_produto(produto, counts)
+        produto: shrinkage.p_hat_produto(produto, counts, k=produto_stats.k)
         for produto in constants.PRECO_TABELA
     }
     product_closed_counts = {
         produto: group.n for produto, group in counts.items()
     }
+    setor_ctx = setor.build_context(closed, p_hat_by_product)
     return model.ScoringContext(
         p_hat_by_product=p_hat_by_product,
         ages_won_ordenadas=_won_ages(dataset),
         product_closed_counts=product_closed_counts,
+        setor_ctx=setor_ctx,
     )
 
 
@@ -94,15 +97,18 @@ def score_row(
     porte: str | None,
     has_sector: bool = False,
     has_team: bool = False,
+    sector: str | None = None,
 ) -> dict:
     """Pontua uma única oportunidade — usado tanto no lote quanto na
     pontuação avulsa (endpoint /score).
 
-    `has_sector`/`has_team` alimentam apenas a completude de CONFIANÇA — a
-    pontuação avulsa não tem conta nem vendedor reais, então usa o padrão
-    (ausentes), o que é a leitura honesta de um "e se" sem cadastro.
+    `has_sector`/`has_team` alimentam apenas a completude de CONFIANÇA —
+    `sector` (o valor em si, não só se é conhecido) alimenta `mult_setor`
+    em p̂ e o termo `s_célula` de suporte. A pontuação avulsa não tem conta
+    nem vendedor reais, então usa o padrão (ausentes/None), o que é a
+    leitura honesta de um "e se" sem cadastro.
     """
-    componentes = model.score_componentes(ctx, product, stage, age_days, porte)
+    componentes = model.score_componentes(ctx, product, stage, age_days, porte, sector)
     score = ref.percentil(componentes.prioridade)
 
     completude_valor, campos_ausentes = confianca_mod.completude(
@@ -112,7 +118,7 @@ def score_row(
         has_sector=has_sector,
         has_team=has_team,
     )
-    suporte_valor = confianca_mod.suporte(ctx, product, age_days)
+    suporte_valor = confianca_mod.suporte(ctx, product, age_days, sector)
     confianca_valor = confianca_mod.confianca(completude_valor, suporte_valor)
     sem_precedente_flag = confianca_mod.sem_precedente(ctx, age_days)
     razao = confianca_mod.razao_confianca(
@@ -124,7 +130,9 @@ def score_row(
         estado_key, razao, age_days, componentes, campos_ausentes, ages_won_ordenadas
     )
     passos = explicacao.plano_de_acao_passos(estado_key, has_account, campos_ausentes)
-    fatores = explicacao.fatores_score(componentes, product, porte, has_account, stage, age_days)
+    fatores = explicacao.fatores_score(
+        componentes, product, porte, has_account, stage, age_days, ctx=ctx, sector=sector
+    )
 
     return {
         "p_hat": componentes.p_hat,
@@ -165,6 +173,7 @@ def score_open_pipeline(
         porte = constants.classificar_porte(row.get("employees"))
         has_sector = has_account and not pd.isna(row.get("sector"))
         has_team = not pd.isna(row.get("manager"))
+        sector = row.get("sector") if has_sector else None
 
         result = score_row(
             ctx, ref, ages_won_ordenadas,
@@ -175,6 +184,7 @@ def score_open_pipeline(
             porte=porte,
             has_sector=has_sector,
             has_team=has_team,
+            sector=sector,
         )
 
         records.append(

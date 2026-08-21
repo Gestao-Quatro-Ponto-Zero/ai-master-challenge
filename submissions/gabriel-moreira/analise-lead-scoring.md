@@ -7,6 +7,8 @@
 >
 > **Nota de atualização (2026-08-20):** CONFIANÇA e ESTADO foram redesenhados no mesmo dia da remoção do RBAC — CONFIANÇA deixou de ser uma escala A-D dominada por idade e passou a ser `min(completude, suporte)`, 0-100; ESTADO deixou de ser uma tabela 4×2 e passou a ser uma árvore de decisão de 4 valores (Priorizar/Acompanhar/Qualificar/Revisão em lote). PRIORIDADE em dólares deixou de ser exibida (SCORE é o número de prioridade). Três hipóteses de refinamento do motor foram testadas nesse redesenho e as três pioraram a previsão fora da amostra — ver §4.5 abaixo.
 >
+> **Nota de atualização (2026-08-21):** `mult_setor`, um ajuste de desempenho produto×setor sobre `p̂` (peso ±15%), foi implementado apesar de uma quarta hipótese de refinamento — condicionar `p̂` diretamente por produto×setor — permanecer confirmada como pior que não condicionar. A diferença: `mult_setor` não é esse condicionamento direto, é encolhido em direção a `p̂_produto` (não à taxa global) com uma constante de política e limitado a ±15%, implementado por decisão do produto apesar do resultado negativo, não por ele ter deixado de ser verdadeiro — ver a nova subseção em §4.5 abaixo. `K_PRODUTO` (constante congelada citada nas notas de calibração abaixo) também foi removido no mesmo dia — o nível de produto agora deriva seu próprio `k`.
+>
 > **Origem dos números de p̂ e URGÊNCIA (implementação 2026-08-19):**
 > - **Taxa base (0,632):** taxa global de vitória em 6.711 negócios fechados (§2.2), estável em qualquer recorte (0,61–0,65 por setor, p > 0,26 em testes de permutação).
 > - **p_ganho(t):** regressão isotônica sobre negócios ganhos/perdidos agrupados por idade no desfecho. Encontrou-se que probabilidade de ganho sobe levemente com tempo em funil (não decai): 0,632 aos 0 dias → 0,751 aos 120 dias. Limita-se a 120 dias por N amostral; acima de 138 dias, censura para o prior.
@@ -396,15 +398,27 @@ A métrica continua sendo **veracidade do dado**, não probabilidade de convers�
 
 ### Três hipóteses de refinamento testadas e rejeitadas (2026-08-20)
 
-Ao redesenhar CONFIANÇA/ESTADO, três formas de tornar o motor mais granular foram testadas por validação cruzada 5-fold ou teste de permutação sobre os 6.711 negócios fechados — **as três pioraram a previsão fora da amostra** e foram descartadas (reproduzível em `solution/validation/backtest.py`, seções 6–8):
+Ao redesenhar CONFIANÇA/ESTADO, três formas de tornar o motor mais granular foram testadas por validação cruzada 5-fold ou teste de permutação sobre os negócios fechados — **as três pioraram a previsão fora da amostra** e foram descartadas (reproduzível em `solution/validation/backtest.py`, seções 6–8):
 
 | Hipótese | Método | Resultado |
 |---|---|---|
-| Condicionar `p̂` por produto×setor (em vez de só produto) | CV 5-fold, `logloss`/`brier` | `logloss` 0,66016 vs. **0,65828** do prior global achatado — pior. As 69 células produto×setor têm mediana de 85 negócios fechados, amostra pequena demais para sustentar a diferenciação |
+| Condicionar `p̂` por produto×setor (em vez de só produto) | CV 5-fold, `logloss`/`brier` | `logloss` 0,66974 vs. **0,66795** do prior global achatado — pior. As 70 células produto×setor têm mediana de 86 negócios fechados de calibração, amostra pequena demais para sustentar a diferenciação (números atualizados em 2026-08-21 pela recalibração da população de calibração — ver nota abaixo) |
 | Curva de aging (`risco(t)`) própria por produto | CV 5-fold, `logloss`/`brier` | `logloss` 0,65525 (0,65275 com encolhimento) vs. **0,64936** da curva global — pior. `GTK 500` (25 negócios fechados) sequer tem amostra: 7 faixas de idade produzem faixas com n=1 |
 | URGÊNCIA (duração de ciclo) por produto | Permutação, dispersão de medianas | Dispersão observada 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 — os produtos são **mais parecidos** entre si do que uma atribuição aleatória produziria |
 
 A curva de aging global é o único modelo, em qualquer teste, que superou o prior achatado (`logloss` 0,64936 vs. 0,65828) — aging é o sinal real desta base, e reparti-lo por produto destrói o sinal em vez de refiná-lo. A fórmula (`p̂ × VALOR × URGÊNCIA`, curvas globais, `p̂_produto` por encolhimento) permanece exatamente como calibrada — o valor destas três hipóteses está em serem documentadas como resultado negativo reprodutível, não em serem implementadas.
+
+### Uma quarta hipótese: testada, rejeitada pela validação cruzada, **implementada mesmo assim** por decisão do produto (2026-08-21)
+
+A primeira linha da tabela acima — condicionar `p̂` diretamente por produto×setor — continua **pior** que não condicionar, reconfirmado sobre a população de calibração recalculada (7.364 negócios, 6.711 orgânicos + 653 reclassificados de 200 dias): `logloss` 0,66974 contra 0,66795 do prior de produto achatado, sobre 70 células com mediana de 86 negócios fechados cada. Esse resultado não mudou de sinal — continua sendo reproduzido e impresso a cada execução de `backtest.py` (seção 6), que agora imprime um **aviso permanente** em vez de falhar a suíte caso ele algum dia se inverta.
+
+O que diferencia esta hipótese das três acima: o produto pediu a variável de desempenho produto×setor mesmo depois de ver este resultado negativo, com peso limitado a 10-15% para SCORE e CONFIANÇA. A saída, negociada e implementada em `openspec/changes/add-mult-setor`: `mult_setor(produto, setor)` **não é** o condicionamento direto que a tabela acima rejeita — é um mecanismo distinto, no mesmo molde já usado para o fit de vendedor (`scoring/fit.py`, `K_FIT=25`): encolhimento pesado em direção a `p̂_produto` (não à taxa global, `K_SETOR=25`) e teto de ±15%, neutro (1,0) quando o setor é desconhecido (68,7% do funil aberto). `scoring/setor.py` documenta essa distinção explicitamente.
+
+**Impacto medido sobre o funil real** (1.436 oportunidades abertas, 4.238 negócios Won, comparado diretamente contra o sistema anterior via `git stash`, não estimado): SCORE desloca mediana 0,30pp / máximo 4,40pp; CONFIANÇA desloca mediana 0,00 / máximo 12,60pp. **Zero** oportunidades cruzam os cortes SCORE≥95 ou CONFIANÇA<50; a distribuição de ESTADO é idêntica à anterior (Priorizar 54, Acompanhar 283, Qualificar 656, Revisão em lote 443).
+
+**Nota sobre a inflação cosmética de +6,75% na mediana da população de referência:** aplicar `mult_setor` também à reconstrução da distribuição de referência (os 4.238 negócios Won — necessário para não deslocar SCORE de forma assimétrica entre numerador e denominador do percentil, ver decisão em `design.md`) faz a mediana de PRIORIDADE dessa população subir de 351,52 para 375,26 (+6,75%). A causa é estrutural, não uma mudança de mercado: células produto×setor com taxa de vitória mais alta contribuem, por definição, mais linhas `Won` à própria referência contra a qual `mult_setor` é medido — um efeito circular que infla o valor absoluto de PRIORIDADE sem distorcer a *ordenação* do funil (os deltas de SCORE acima já mostram zero cruzamentos de corte). Não corrigido porque PRIORIDADE em dólares não é exibida a nenhum vendedor desde o redesenho de 2026-08-20, e o efeito sobre SCORE já foi medido como desprezível — corrigir exigiria um segundo mecanismo de cálculo (multiplicador *held-out*) só para consertar um número que ninguém vê.
+
+Junto com esta mudança, `K_PRODUTO = 4,0` (a constante de política congelada citada nas notas de calibração acima) foi **removido**: o nível de produto passa a derivar seu próprio `k` (≈0,6966 nesta calibração) exatamente como os outros níveis da hierarquia, em vez de uma constante manualmente mantida.
 
 ---
 

@@ -295,31 +295,6 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
           <FitCell label="Produto" fit={o.fit_produto} />
           <FitCell label="Setor" fit={o.fit_setor} />
         </dl>
-        <FitRessalva texto={o.ressalva_fit} />
-
-        {o.sobrecarregado && o.sugestao && (
-          <div className="rounded-sm border border-gold/40 bg-gold/10 p-3">
-            {o.sugestao.disponivel ? (
-              <>
-                <p className="text-xs font-bold text-navy uppercase tracking-wide mb-2">
-                  Candidato sugerido — {o.sugestao.sales_agent}
-                </p>
-                <dl className="grid grid-cols-2 gap-3">
-                  <FitCell label="Produto" fit={o.sugestao.fit_produto!} />
-                  <FitCell label="Setor" fit={o.sugestao.fit_setor!} />
-                </dl>
-                <p className="text-xs text-muted mt-2">
-                  Sugestão informativa — nada é reatribuído automaticamente
-                  pelo sistema.
-                </p>
-              </>
-            ) : (
-              <p className="text-sm text-muted">
-                Nenhum candidato elegível no escritório para redistribuição.
-              </p>
-            )}
-          </div>
-        )}
       </Card>
 
       <Card title="Por que este score">

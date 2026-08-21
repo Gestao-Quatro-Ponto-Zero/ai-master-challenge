@@ -1,13 +1,16 @@
 """Encolhimento hierárquico (empirical Bayes) para p̂_produto.
 
 `compute_k` e `level_stats` são a fórmula genérica ("k = variância_esperada_
-por_acaso / variância_em_excesso"), reutilizada por `validation/
-shrinkage_check.py` para reproduzir o cálculo nos quatro níveis da
-hierarquia (conta×produto, produto×setor, produto, global) e demonstrar o
-colapso automático. O motor de scoring em si usa apenas o resultado
-congelado (constants.K_PRODUTO) para o nível de produto — os níveis
-conta×produto e produto×setor colapsam nos dados calibrados e não
-contribuem, então nunca são lidos aqui.
+por_acaso / variância_em_excesso"), usada pelo próprio motor de scoring
+(`scoring/pipeline.py::build_scoring_context`) para derivar o `k` do nível
+de produto em tempo de carga — nenhum nível, incluindo produto, usa uma
+constante de política congelada. `validation/shrinkage_check.py` reutiliza
+a mesma função para reproduzir o cálculo nos quatro níveis da hierarquia
+(conta×produto, produto×setor, produto, global) e demonstrar o colapso
+automático. Os níveis conta×produto e produto×setor colapsam nos dados
+calibrados e não contribuem a `p̂_produto` (mas produto×setor alimenta
+`scoring/setor.py::mult_setor`, um mecanismo distinto, com sua própria
+constante de política `K_SETOR`).
 """
 
 from __future__ import annotations
@@ -125,15 +128,23 @@ def p_hat_produto(
     product: str,
     product_counts: dict[str, GroupCounts],
     global_win_rate: float = constants.GLOBAL_WIN_RATE_CALIBRACAO,
-    k: float = constants.K_PRODUTO,
+    k: float = math.inf,
 ) -> float:
     """p̂_produto = (n*taxa_produto + k*taxa_global) / (n + k).
 
+    `k` é DERIVADO pelo chamador (`level_stats` sobre o nível de produto,
+    ver `pipeline.build_scoring_context`) — não há mais uma constante de
+    política congelada aqui. O padrão `k=inf` colapsa para a taxa global,
+    o comportamento seguro quando nenhum `k` é informado.
+
     Produto sem negócios fechados na base (nunca deveria acontecer com o
     catálogo de 7 produtos, mas defensivo para pontuação avulsa de produto
-    fora do histórico) encolhe inteiramente para a taxa global.
+    fora do histórico) encolhe inteiramente para a taxa global — o mesmo
+    caminho usado quando `k` é infinito, tratado explicitamente porque
+    `(n*taxa + inf*global) / (n+inf)` é uma indeterminação `inf/inf` em
+    ponto flutuante (resultaria em NaN, não no colapso correto).
     """
     counts = product_counts.get(product)
-    if counts is None or counts.n == 0:
+    if counts is None or counts.n == 0 or math.isinf(k):
         return global_win_rate
     return (counts.n * counts.rate + k * global_win_rate) / (counts.n + k)

@@ -36,20 +36,32 @@ def completude(
     return valor, ausentes
 
 
-def suporte(ctx: model.ScoringContext, product: str, age_days: float | None) -> float:
-    """Quanto histórico sustenta os números efetivamente usados.
+def suporte(
+    ctx: model.ScoringContext,
+    product: str,
+    age_days: float | None,
+    sector: str | None = None,
+) -> float:
+    """Quanto histórico sustenta os números efetivamente usados —
+    combinação ponderada de até três termos (idade, produto, célula
+    produto×setor):
 
-    Com idade conhecida: combinação ponderada de s_idade (evidência direta
-    na idade) e s_produto (evidência de fundo do produto). Sem idade
-    conhecida (Prospecting), o termo de idade é OMITIDO, nunca zerado — a
-    ausência de engage_date já reduz completude, e zerar aqui também
-    cobraria a mesma ausência duas vezes.
+        suporte = 100 × Σ(peso_i × termo_i, presentes) / Σ(peso_i, presentes)
+
+    s_produto está sempre presente. s_idade é OMITIDO (nunca zerado) sem
+    idade conhecida (Prospecting); s_célula é OMITIDO sem setor conhecido
+    — em ambos os casos a ausência já reduz completude, e zerar aqui
+    cobraria a mesma ausência duas vezes. Os pesos dos termos presentes são
+    renormalizados para somar 1.
     """
-    s_prod = ctx.s_produto(product)
-    if age_days is None:
-        return round(100 * s_prod, 1)
-    s_idade = ctx.s_idade(age_days)
-    valor = constants.SUPORTE_PESO_IDADE * s_idade + constants.SUPORTE_PESO_PRODUTO * s_prod
+    termos = [(constants.SUPORTE_PESO_PRODUTO, ctx.s_produto(product))]
+    if age_days is not None:
+        termos.append((constants.SUPORTE_PESO_IDADE, ctx.s_idade(age_days)))
+    if sector is not None and not (isinstance(sector, float) and sector != sector):
+        termos.append((constants.SUPORTE_PESO_CELULA, ctx.s_celula(product, sector)))
+
+    peso_total = sum(peso for peso, _ in termos)
+    valor = sum(peso * termo for peso, termo in termos) / peso_total
     return round(100 * valor, 1)
 
 

@@ -69,9 +69,11 @@ class SectorConditioningReport:
         return next(s for s in self.scores if s.nome == nome)
 
 
-def build_report(
-    closed: pd.DataFrame, k_produto: float = constants.K_PRODUTO
-) -> SectorConditioningReport:
+def build_report(closed: pd.DataFrame) -> SectorConditioningReport:
+    """`k` do nível de produto é DERIVADO por fold (`level_stats`), como o
+    motor de scoring já faz em produção — sem constante de política
+    congelada. Cada fold recalcula seu próprio `k`, exatamente como uma
+    recalibração real recalcularia."""
     df = closed.dropna(subset=["sector"]).reset_index(drop=True)
     y_all = (df["deal_stage"] == "Won").astype(float).to_numpy()
 
@@ -90,12 +92,16 @@ def build_report(
         prior = float((train["deal_stage"] == "Won").mean())
 
         prod_counts = product_group_counts(train)
+        prod_stats = level_stats(prod_counts, prior)
         ps_counts = product_sector_group_counts(train)
         ps_stats = level_stats(ps_counts, prior)
 
         p_global = np.full(len(test), prior)
         p_produto = np.array(
-            [p_hat_produto(row.product, prod_counts, prior, k_produto) for row in test.itertuples()]
+            [
+                p_hat_produto(row.product, prod_counts, prior, prod_stats.k)
+                for row in test.itertuples()
+            ]
         )
         p_ps_encolhido = np.array(
             [

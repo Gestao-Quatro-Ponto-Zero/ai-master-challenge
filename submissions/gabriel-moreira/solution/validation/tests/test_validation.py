@@ -51,7 +51,7 @@ def test_determinism_shrinkage_report(dataset):
     assert report1.produto.k == report2.produto.k
     assert report1.conta_produto.k == report2.conta_produto.k
     assert report1.produto_setor.k == report2.produto_setor.k
-    assert report1.p_hat_por_produto_congelado == report2.p_hat_por_produto_congelado
+    assert report1.p_hat_por_produto == report2.p_hat_por_produto
 
 
 def test_shrinkage_conta_produto_and_produto_setor_collapse_k_infinite(dataset):
@@ -68,13 +68,14 @@ def test_shrinkage_produto_level_no_longer_collapses_after_reclassification(data
     """Achado real da recalibração (add-analise-carga-fit, validation
     seção 3): diferente da calibração anterior, o nível de PRODUTO deixa
     de colapsar — GTK 500 cai de n=25/60% para n=35/42,86% e passa a
-    dominar a variância entre produtos, produzindo k finito. K_PRODUTO=4
-    permanece retido por política (docs/decisions-log.md); este teste
-    documenta o novo estado real, não o antigo."""
+    dominar a variância entre produtos, produzindo k finito. Desde
+    add-mult-setor, esse `k` é DERIVADO (não mais uma constante congelada
+    K_PRODUTO) — este teste documenta que a variância em excesso do nível
+    de produto continua positiva, não que colapsa."""
     closed = _closed(dataset)
     report = build_shrinkage_report(closed)
     assert not report.produto.colapsa
-    assert report.produto.k < constants.K_PRODUTO
+    assert 0 < report.produto.k < 4.0
 
 
 def test_determinism_sector_conditioning_report(dataset):

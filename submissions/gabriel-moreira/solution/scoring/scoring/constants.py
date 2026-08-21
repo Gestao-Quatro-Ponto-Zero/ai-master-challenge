@@ -3,7 +3,7 @@
 Todos os números aqui vêm de uma única calibração sobre os 6.711 negócios
 fechados de `sales_pipeline.csv` (out/2016-dez/2017): 4.238 Won + 2.473 Lost.
 Cada constante cita sua origem. Nenhuma é escolhida à mão — mesmo quando o
-valor é uma aproximação retida por política (ver nota em K_PRODUTO), a
+valor é uma aproximação retida por política (ver nota em K_SETOR/K_FIT), a
 reprodução do cálculo vive em `validation/shrinkage_check.py` e
 `validation/isotonic_check.py`, não aqui.
 
@@ -36,25 +36,46 @@ GLOBAL_WIN_RATE_CALIBRACAO = 0.5755
 # ---------------------------------------------------------------------------
 # Encolhimento hierárquico (p̂_produto)
 # ---------------------------------------------------------------------------
-# k = variância_esperada_por_acaso / variância_em_excesso, nível "produto"
-# (7 produtos, n de 25 a 1.436 negócios fechados por produto).
-# Reprodução honesta em validation/shrinkage_check.py: a variância em excesso
-# do nível de produto é NEGATIVA (-0,001199) — os sete produtos são mais
-# parecidos entre si do que o ruído amostral por si só explicaria — logo o
-# `k` recalculado é infinito, exatamente como nos níveis conta×produto e
-# produto×setor. K_PRODUTO = 4,0 é uma aproximação retida por política, não
-# o resultado do cálculo: com `k` infinito, p̂_produto colapsaria para 0,632
-# em todos os produtos, e a constante congelada preserva uma diferenciação
-# (0,6034 a 0,6484) cujo efeito é desprezível — p̂ responde por 0,1% da
-# variância de log(PRIORIDADE) no funil aberto (ver docs/decisions-log.md,
-# entrada 2026-08-20, e o relatório de validação para a reprodução).
-K_PRODUTO = 4.0
+# k = variância_esperada_por_acaso / variância_em_excesso, DERIVADO em tempo
+# de carga (`scoring/pipeline.py::build_scoring_context`, via
+# `shrinkage.level_stats`) para os quatro níveis da hierarquia (conta×
+# produto, produto×setor, produto, global) — nenhum nível, incluindo
+# produto, usa uma constante de política congelada substituindo esse
+# cálculo. Reprodução honesta em validation/shrinkage_check.py.
+#
+# Nos dados calibrados, os níveis conta×produto e produto×setor têm
+# variância em excesso ≤ 0 (os grupos são mais parecidos entre si do que o
+# ruído amostral por si só explicaria) — `k` de cada um é infinito e ambos
+# colapsam para o nível de produto, contribuindo zero por definição; o
+# motor de scoring nunca lê conta ou setor para calcular p̂_produto. O
+# nível de produto, nesta calibração, tem variância em excesso POSITIVA
+# (k ≈ 0,6966) — um `k` pequeno frente ao `n` de seis dos sete produtos
+# (centenas a milhares de negócios fechados), de modo que a taxa bruta de
+# cada produto domina o resultado quase sem ajuste. Se uma recalibração
+# futura tornar a variância em excesso do nível de produto ≤ 0, ele colapsa
+# automaticamente para a taxa global de calibração, sem exigir revisão
+# manual de constante alguma (docs/decisions-log.md, entrada sobre a
+# remoção de `K_PRODUTO`).
 
-# Os níveis conta×produto e produto×setor têm variância em excesso ≤ 0 nos
-# dados calibrados (k = ∞) e colapsam para o nível de produto — por isso não
-# aparecem como uma constante de peso aqui: contribuem zero, por definição,
-# e o motor de scoring nunca lê conta ou setor para calcular p̂_produto.
-# A verificação do colapso está em validation/shrinkage_check.py.
+# ---------------------------------------------------------------------------
+# Ajuste de desempenho produto×setor sobre p̂ (`mult_setor`, lead-scoring
+# spec, Requirement "Ajuste de desempenho produto×setor sobre p̂").
+# ---------------------------------------------------------------------------
+# O nível produto×setor tem variância em excesso ≤ 0 nos dados calibrados
+# (k = ∞, ver acima) — a resposta estatisticamente correta seria
+# mult_setor ≡ 1,000 para todas as células. K_SETOR = 25 é uma constante de
+# POLÍTICA que sobrepõe esse colapso, exatamente como K_FIT já faz para
+# vendedor×produto/vendedor×setor (mesmo papel — sobrepor um colapso, de
+# forma conservadora — mesma força, por consistência, não um valor novo
+# escolhido à parte). Medido: com k=25, a faixa de mult_setor nas 70
+# células produto×setor é [0,900, 1,125] — o teto de ±15% abaixo quase
+# nunca é acionado; é o encolhimento, não o teto, que faz o trabalho de
+# calar ruído de amostra pequena (design.md).
+K_SETOR = 25.0
+
+# Teto de variação de mult_setor — no máximo ±15% sobre p̂_produto.
+MULT_SETOR_MIN = 0.85
+MULT_SETOR_MAX = 1.15
 
 # ---------------------------------------------------------------------------
 # Curva p_ganho(t) — probabilidade de ganho condicionada a "ainda aberto na
@@ -204,14 +225,19 @@ SUPORTE_JANELA_IDADE_DIAS = 15
 # entrada 2026-08-20, para a comparação entre variantes testadas.
 SUPORTE_SATURACAO_N = 50
 
-# Pesos do suporte quando a idade é conhecida: a densidade de precedente na
-# idade específica pesa mais que o volume histórico do produto, porque é a
-# evidência direta sobre esta oportunidade — o volume de produto é evidência
-# de fundo. Quando a idade é desconhecida (Prospecting), o termo de idade é
-# OMITIDO (nunca zerado) e o suporte usa só o termo de produto — a ausência
-# de engage_date já é cobrada em completude, não pode ser cobrada duas vezes.
-SUPORTE_PESO_IDADE = 0.75
-SUPORTE_PESO_PRODUTO = 0.25
+# Pesos do suporte quando idade e célula produto×setor são conhecidas: a
+# densidade de precedente na idade específica pesa mais que o volume
+# histórico do produto, porque é a evidência direta sobre esta
+# oportunidade — o volume de produto é evidência de fundo, e a célula
+# produto×setor pesa menos ainda ("não deveria ter um impacto grande",
+# pedido do dono do produto). Cada termo condicional (idade, célula) é
+# OMITIDO (nunca zerado) quando seu insumo é desconhecido — Prospecting
+# para idade, setor desconhecido para célula — com os pesos restantes
+# renormalizados proporcionalmente: a ausência já é cobrada uma vez em
+# completude, não pode ser cobrada duas vezes.
+SUPORTE_PESO_IDADE = 0.65
+SUPORTE_PESO_PRODUTO = 0.20
+SUPORTE_PESO_CELULA = 0.15
 
 # ---------------------------------------------------------------------------
 # Cortes da árvore de decisão de ESTADO (Requirement "Atribuição de estado").
@@ -256,7 +282,7 @@ CARGA_PISO_SOBRECARGA = 5
 # dois níveis: vendedor -> escritório -> global, sobre fechados_calibracao.
 # k_fit é constante de POLÍTICA — a derivação por variância em excesso
 # (validation/) espera-se que colapse para k=∞, do mesmo modo que os
-# níveis conta×produto e produto×setor de K_PRODUTO (design.md, D3).
+# níveis conta×produto e produto×setor de p̂_produto (design.md, D3).
 # ---------------------------------------------------------------------------
 K_FIT = 25.0
 

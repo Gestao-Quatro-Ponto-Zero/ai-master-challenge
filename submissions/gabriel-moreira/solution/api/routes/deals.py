@@ -157,6 +157,7 @@ def get_deal_detail(
     porte = constants.classificar_porte(row.get("employees"))
     has_sector = has_account and not pd.isna(row.get("sector"))
     has_team = not pd.isna(row.get("manager"))
+    sector = row.get("sector") if has_sector else None
 
     result = score_row(
         app_state.ctx,
@@ -169,6 +170,7 @@ def get_deal_detail(
         porte=porte,
         has_sector=has_sector,
         has_team=has_team,
+        sector=sector,
     )
 
     conta = ContaOut(
@@ -186,7 +188,7 @@ def get_deal_detail(
     # Requirement "Fit e sugestão no detalhe da oportunidade".
     carga_index = app_state.carga_index_as_of(as_of)
     estado_key = result["estado"]
-    sector = clean_value(row.get("sector")) if has_account else None
+    sector = clean_value(sector)
     fit_produto_out, fit_setor_out = fit_para_vendedor(
         app_state.fit_ctx, row["sales_agent"], row["product"], sector
     )

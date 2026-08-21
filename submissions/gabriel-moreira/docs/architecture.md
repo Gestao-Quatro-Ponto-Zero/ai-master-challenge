@@ -106,11 +106,13 @@ MERGE:
 ### PRIORIDADE
 
 ```
-p̂ = (n_produto × taxa_produto + k × 0,632) / (n_produto + k)     ← encolhimento hierárquico, k derivado
+p̂_produto = (n_produto × taxa_produto + k × 0,632) / (n_produto + k)     ← encolhimento hierárquico, k DERIVADO (nenhum nível usa constante congelada — ver "K_PRODUTO removido" abaixo)
 
-  se Prospecting:      p̂ = p̂_produto (sem ajuste de idade)
-  se idade > 138:       p̂ = 0,632                                  ← censura: reverte ao prior
-  senão:                p̂ = p̂_produto × p_ganho(min(idade,120)) / 0,632
+  se Prospecting:      p̂(idade) = p̂_produto (sem ajuste de idade)
+  se idade > 138:       p̂(idade) = 0,632                                  ← censura: reverte ao prior
+  senão:                p̂(idade) = p̂_produto × p_ganho(min(idade,120)) / 0,632
+
+p̂ = p̂(idade) × mult_setor(produto, setor)                                ← ajuste de desempenho produto×setor, ±15%, neutro (1,0) sem setor conhecido (adicionado 2026-08-21 — ver "mult_setor" abaixo)
 
 VALOR = preço_tabela(produto) × mult_porte(porte, default 1,00)
 
@@ -124,7 +126,7 @@ SCORE      = percentil(PRIORIDADE) × 100                           ← contra o
 
 **SCORE não é relativo ao funil aberto corrente** — é o percentil de PRIORIDADE contra a distribuição de PRIORIDADE calculada sobre os 4.238 negócios historicamente **ganhos** (usando a idade real de cada um no fechamento). Essa referência é histórica e fixa; só muda no ciclo trimestral de recalibração. Consequência prática: SCORE = 82 significa literalmente "esta oportunidade vale mais, em risco agora, do que 82% dos negócios que historicamente viraram receita" — e, ao contrário de um percentil contra o funil aberto, não se move porque outra oportunidade entrou ou saiu do pipeline.
 
-`k` não é escolhido: `k = variância_esperada_por_acaso / variância_em_excesso`. Nos dados calibrados, conta×produto e produto×setor têm variância em excesso zero e colapsam (`k = ∞`) para o nível de produto (`k = 4`).
+`k` não é escolhido: `k = variância_esperada_por_acaso / variância_em_excesso`, para os **quatro** níveis da hierarquia (conta×produto, produto×setor, produto, global) — nenhum, incluindo produto, tem uma constante de política congelada sobrepondo essa fórmula (`K_PRODUTO` foi removido em 2026-08-21). Nos dados calibrados, conta×produto e produto×setor têm variância em excesso ≤ 0 e colapsam (`k = ∞`) para o nível de produto; o nível de produto tem variância em excesso positiva nesta calibração (`k ≈ 0,6966`, derivado em tempo de carga por `shrinkage.level_stats`).
 
 **Achado que inverte a intuição comum de lead scoring:** `p_ganho(t)` **sobe** com a idade (0,632 aos 0 dias → 0,751 aos 120 dias) — não desce. O que a idade consome é a **janela**: em 57 dias, metade das vitórias históricas já aconteceu; em 88 dias, restam 25%. Por isso URGÊNCIA usa `risco(t)`, a probabilidade real de resolução em 30 dias (suavizada por regressão isotônica), não um proxy de "quão velho é ruim".
 
@@ -196,6 +198,20 @@ Significa que, entre negócios em Engaging com 57 dias de idade, 48,9% resolvem 
 
 Nenhum dos 6.711 negócios fechados levou mais de 138 dias. Acima disso, o sistema **não extrapola** a curva — reverte ao prior (`p̂` = 0,632, URGÊNCIA = 0,15) em vez de aplicar forward-fill, que premiaria o abandono (daria `p̂` = 0,751 a um negócio de 377 dias, o mais alto da curva, exatamente ao mais parado do funil).
 
+### `mult_setor` — ajuste de desempenho produto×setor sobre p̂ (adicionado 2026-08-21)
+
+```
+taxa_bruta_célula = vitórias_célula / total_célula
+taxa_encolhida    = (n_célula × taxa_bruta_célula + K_SETOR × p̂_produto) / (n_célula + K_SETOR)   ← encolhe em direção a p̂_produto, NÃO à taxa global
+mult_setor        = clip(taxa_encolhida / p̂_produto, 0,85, 1,15)                                    ← K_SETOR = 25 (reaproveitado de K_FIT), teto ±15%
+
+setor desconhecido ou célula sem negócio fechado -> mult_setor = 1,0   ← neutro, nunca inventado
+```
+
+**Fluxo de dados:** `pipeline.build_scoring_context` monta `p_hat_by_product` (com `k` derivado do nível de produto) e passa para `setor.build_context(fechados_calibracao, p_hat_by_product)`, que agrupa por (produto, setor) e guarda no `ScoringContext.setor_ctx`. Esse mesmo `ScoringContext` é compartilhado por `pipeline.score_open_pipeline` (funil aberto) e `reference.build_reference_distribution` (negócios Won) — `model.p_hat()` chama `ctx.mult_setor(product, sector)` como última etapa, depois do ajuste de idade, em ambos os casos. `confianca.suporte` lê a mesma célula via `ctx.s_celula(product, sector)` para o terceiro termo de suporte. `explicacao.fatores_score` lê `ctx.mult_setor`/`ctx.n_celula` para a frase de explicação, só quando o setor é conhecido.
+
+**Medido sobre o funil real** (1.436 oportunidades abertas, 4.238 negócios Won): SCORE desloca mediana 0,30pp / máximo 4,40pp; CONFIANÇA desloca mediana 0,00 / máximo 12,60. Zero cruzamentos dos cortes SCORE≥95 e CONFIANÇA<50; distribuição de ESTADO idêntica. Efeito colateral aceito: a mediana de PRIORIDADE da população de referência sobe 6,75% (351,52 → 375,26) — efeito estrutural (células de taxa mais alta contribuem mais linhas Won à própria referência), não uma mudança de mercado; não corrigido porque PRIORIDADE em dólares não é exibida e o efeito sobre SCORE já é desprezível (ver `docs/decisions-log.md`, entrada 2026-08-21).
+
 ### CONFIANÇA — quanto se sabe sobre a oportunidade (redesenhada 2026-08-20)
 
 CONFIANÇA responde: "**quanto do que este score afirma está apoiado em dado observado e em precedente histórico?**" — uma escala numérica 0-100, `min(completude, suporte)`, não mais uma letra A-D. A versão original media isso majoritariamente por idade (censura acima de 138 dias definia o nível D, que por sua vez forçava o estado Desistir) — o que confundia CONFIANÇA com URGÊNCIA e fazia 61,8% do funil aberto herdar a recomendação "desistir". A versão redesenhada separa as duas coisas por completo: idade não entra em CONFIANÇA, só no termo de suporte via densidade de precedente.
@@ -212,12 +228,15 @@ campos: engage_date (estágio Engaging) · conta vinculada · funcionários da c
 ```
 s_idade   = min(1, negócios_ganhos_na_janela_de_±15_dias / 50)
 s_produto = min(1, negócios_fechados_do_produto / 50)
+s_célula  = min(1, negócios_fechados_de_calibração_na_célula_produto×setor / 50)   ← adicionado 2026-08-21, junto com mult_setor
 
-com idade conhecida:  suporte = 100 × (0,75 × s_idade + 0,25 × s_produto)
-sem idade (Prospecting): suporte = 100 × s_produto   ← nunca zera o termo de idade, só o omite
+suporte = 100 × Σ(peso_i × termo_i, termos presentes) / Σ(peso_i, termos presentes)
+pesos: idade 0,65 · produto 0,20 · célula 0,15
 ```
 
-`min`, não média: saber todos os campos de uma oportunidade sem precedente histórico não a torna confiável — a metade mais fraca governa. Omitir (não zerar) o termo de idade quando ela é desconhecida evita cobrar a mesma ausência duas vezes (já cobrada em completude) — sem essa correção, as 500 oportunidades em Prospecting, as mais novas do funil, caíam no mesmo tratamento das mais abandonadas.
+Cada termo condicional (`s_idade` sem idade conhecida — Prospecting; `s_célula` sem setor conhecido) é OMITIDO, nunca zerado, e os pesos dos termos restantes são renormalizados. Com os três termos presentes, a fórmula geral se reduz a `100 × (0,65×s_idade + 0,20×s_produto + 0,15×s_célula)`; com só `s_produto` presente (Prospecting sem conta), reduz a `100 × s_produto`.
+
+`min`, não média: saber todos os campos de uma oportunidade sem precedente histórico não a torna confiável — a metade mais fraca governa. Omitir (não zerar) um termo ausente evita cobrar a mesma ausência duas vezes (já cobrada em completude) — sem essa correção, as 500 oportunidades em Prospecting, as mais novas do funil, caíam no mesmo tratamento das mais abandonadas, e o mesmo valeria para as 987 sem setor conhecido.
 
 **Marcador de ausência de precedente:** `sem_precedente = (s_idade == 0 com idade conhecida)` — nenhum negócio ganho fechou na faixa de idade desta oportunidade. É esse marcador, não um corte sobre CONFIANÇA, que decide o roteamento de ESTADO — porque oportunidades novas sem cadastro e oportunidades antigas sem precedente se aglomeram em valores adjacentes de CONFIANÇA (20 e 25), em ordem invertida: nenhum corte único separa as duas populações.
 
@@ -407,6 +426,7 @@ scoring/
     curves.py                 # p_ganho(t), risco(t) — leitura em degraus dos breakpoints calibrados
     model.py                   # p_hat(), valor(), urgencia(), prioridade() — a fórmula
     reference.py                 # distribuição de referência (PRIORIDADE dos negócios Won) e percentil -> SCORE
+    setor.py                       # mult_setor(produto, setor) — ajuste ±15%, K_SETOR=25 (adicionado 2026-08-21)
     confianca.py                  # CONFIANÇA = min(completude, suporte), 0-100
     estado.py                      # árvore de decisão -> Priorizar/Acompanhar/Qualificar/Revisão em lote
     explicacao.py                   # decomposição + texto de plano de ação (determinístico)
@@ -454,6 +474,7 @@ validation/
   isotonic_check.py                        # recalcula p_ganho(t)/risco(t), verifica monotonicidade e 138 dias
   concentration.py                            # top 10%/30% de PRIORIDADE vs preço bruto
   sector_conditioning_check.py                   # CV 5-fold: p̂ por produto×setor é pior que o prior global
+  mult_setor_check.py                               # reprodução de mult_setor (teto, célula ínfima) + consistência funil/referência
   aging_by_product_check.py                         # CV 5-fold: curva de aging por produto é pior que a global
   cycle_duration_permutation.py                        # permutação: produto não explica duração de ciclo
   confianca_distribution.py                               # percentis de CONFIANÇA/completude/suporte
@@ -462,7 +483,7 @@ validation/
 
 **O crítico:** `scoring/` é uma dependência limpa, sem FastAPI ou React. API, exportação CSV e validação a importam via `pip install -e` — o número exibido, o número exportado e o número validado são sempre o mesmo cálculo (ver testes de consistência em `api/tests/test_e2e.py` e `validation/tests/test_validation.py`).
 
-**Achado registrado durante a implementação:** `validation/shrinkage_check.py` recalcula k pelo mesmo método em todos os níveis da hierarquia e, sobre estes dados, encontra colapso (`k = ∞`) não só em conta×produto e produto×setor, mas também no nível de produto — mais fraco que qualquer um dos quatro atributos testados por permutação. `constants.K_PRODUTO = 4` é mantido como constante **congelada** desta calibração (não uma escolha nova), preservando a diferenciação de ~4,5 pontos entre produtos que o desenho já descrevia; o relatório do artefato imprime essa nota explicitamente a cada execução, para a próxima recalibração trimestral avaliar.
+**Achado original (2026-08-19), revisto em 2026-08-21:** `validation/shrinkage_check.py` recalcula k pelo mesmo método em todos os níveis da hierarquia; nesta calibração original, o nível de produto também colapsava (`k = ∞`), e `constants.K_PRODUTO = 4` era mantido como constante **congelada** para preservar uma diferenciação que o cálculo estrito zeraria. A reclassificação de 200 dias (2026-08-21, ver "Carga e fit por vendedor" abaixo) mudou esse quadro: sobre a população de calibração recalculada, o nível de produto passou a ter variância em excesso positiva (`k ≈ 0,6966`, finito) — deixou de colapsar. Em vez de recongelar `K_PRODUTO` num novo valor escolhido à mão, a mudança `add-mult-setor` (mesmo dia, sessão seguinte) **removeu `K_PRODUTO` por completo**: o nível de produto agora chama `shrinkage.level_stats` em tempo de carga, exatamente como os outros três níveis — nenhuma constante congelada resta para ficar desatualizada numa recalibração futura.
 
 **lightgbm -> scikit-learn:** o desenho original previa lightgbm para o modelo combinado de AUC. Na implementação, `pip install lightgbm` falhou neste ambiente por exigir `libomp` nativo via Homebrew — o que quebraria "partida por comando único, sem passos manuais" em qualquer máquina sem a lib pré-instalada. `HistGradientBoostingClassifier` do próprio scikit-learn cobre o mesmo papel (gradient boosting) sem dependência nativa extra.
 
@@ -497,8 +518,8 @@ validation/
 3. Colapso de `k` para conta×produto e produto×setor (variância em excesso ≤ 0 nos dois). O nível de **produto** deixou de colapsar após a reclassificação de 200 dias — `k≈0,70` (finito), dominado por `GTK 500` — `K_PRODUTO=4` continua sendo aproximação retida por política, agora reportada como AVISO, não como NOTA (ver decisions-log.md, 2026-08-21)
 4. Monotonicidade de `risco(t)` e fronteira de 138 dias confirmada nos dados carregados — sobre `fechados_organicos`, nunca sobre reclassificados
 5. Concentração de PRIORIDADE: top 10% da fila concentra ~45% do valor em risco total (vs. ~28% ordenando só por preço de tabela puro) — comparado lado a lado, rotulado como concentração, não como validação preditiva
-6. **Condicionar `p̂` por produto×setor** (CV 5-fold): pior que o prior global achatado — resultado negativo documentado
-7. **Curvas de aging por produto** (CV 5-fold), sobre `fechados_organicos`: pior que a curva global; ao menos um produto não tem amostra para curva própria
+6. **Condicionar `p̂` por produto×setor** (CV 5-fold):
+7. **Curvas de aging por produto** (CV 5-fold), sobre `fechados_organicos`
 8. **URGÊNCIA por produto** (permutação), sobre `fechados_organicos`: produtos mais parecidos entre si do que o acaso produziria
 9. Distribuição de CONFIANÇA e das duas metades (completude/suporte), para que uma recalibração que torne a janela de idade ou a saturação de suporte inadequadas fique visível
 10. **Antes/depois da reclassificação de 200 dias:** 653 reclassificados, funil 2.089→1.436, base rate 63,15%→57,55%, taxa por produto antes/depois com `GTK 500` marcado como amostra pequena (n=35)

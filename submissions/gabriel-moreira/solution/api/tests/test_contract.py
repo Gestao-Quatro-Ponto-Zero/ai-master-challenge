@@ -41,10 +41,14 @@ def test_deals_estagio_present_in_listing(client):
 
 
 def test_deal_detail_exposes_score_fatores(client):
+    """4 frases sempre presentes (valor, chance, urgência, conta) + 1
+    frase adicional de `mult_setor` quando o setor da oportunidade é
+    conhecido (add-mult-setor, lead-scoring spec, Requirement
+    "Explicabilidade do score e plano de ação")."""
     resp = client.get("/deals")
     opportunity_id = resp.json()["items"][0]["opportunity_id"]
     detalhe = client.get(f"/deals/{opportunity_id}").json()
-    assert 2 <= len(detalhe["score_fatores"]) <= 4
+    assert 4 <= len(detalhe["score_fatores"]) <= 5
     assert all(isinstance(f, str) and f for f in detalhe["score_fatores"])
 
 

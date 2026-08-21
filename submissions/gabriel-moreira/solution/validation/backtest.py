@@ -51,6 +51,10 @@ from denominator_check import audit as audit_denominator
 from fit_permutation import run_produto as run_fit_permutation_produto, run_setor as run_fit_permutation_setor
 from isotonic_check import recompute_curves
 from model_training import chronological_split, combined_auc, isolated_aucs
+from mult_setor_check import (
+    audit_reference_and_open_funnel_consistency,
+    build_reproduction as build_mult_setor_reproduction,
+)
 from permutation_tests import run_all as run_permutation_tests
 from reclassification_check import build_report as build_reclassification_report
 from scoring import constants
@@ -165,7 +169,10 @@ def run_report(data_dir: Path) -> bool:
         "comparada à diferença esperada só por acaso, maior o k — mais o\n"
         "grupo é puxado pra média. Quando k = ∞, o grupo 'colapsa': recebe\n"
         "peso zero e usa direto a média geral. É o que esperamos ver quando\n"
-        "um atributo, como já vimos nas seções 1 e 2, não carrega sinal real."
+        "um atributo, como já vimos nas seções 1 e 2, não carrega sinal real.\n"
+        "Nenhum nível, incluindo produto, usa uma constante de política\n"
+        "congelada sobrepondo esse cálculo — o motor de scoring lê exatamente\n"
+        "o k derivado abaixo (add-mult-setor: K_PRODUTO foi removido)."
     )
     print()
     shrinkage = build_shrinkage_report(closed)
@@ -174,24 +181,15 @@ def run_report(data_dir: Path) -> bool:
         ("produto×setor", shrinkage.produto_setor),
         ("produto", shrinkage.produto),
     ]:
-        k_str = "∞ (colapsa)" if stats.colapsa else f"{stats.k:.3f}"
+        k_str = "∞ (colapsa)" if stats.colapsa else f"{stats.k:.4f}"
         print(
             f"  {nome:16s} grupos={stats.n_groups:4d} var_obs={stats.var_observada:.6f} "
             f"var_esperada_por_acaso={stats.var_esperada_por_acaso:.6f} k={k_str}"
         )
     print()
-    print(
-        "'k congelado' abaixo é o valor usado em produção (fixado numa\n"
-        "calibração anterior); 'p̂_produto recalculado' é a taxa que sairia se\n"
-        "recalculássemos do zero com os dados desta execução — comparamos os\n"
-        "dois pra ver se ainda fazem sentido juntos."
-    )
-    print(f"k congelado em produção (constants.K_PRODUTO) = {constants.K_PRODUTO}")
-    print("p̂_produto (congelado) vs (recalculado nesta execução):")
+    print("p̂_produto (usando o k derivado do nível de produto acima, sem constante congelada):")
     for produto in constants.PRECO_TABELA:
-        congelado = shrinkage.p_hat_por_produto_congelado[produto]
-        recalc = shrinkage.p_hat_por_produto_recalculado[produto]
-        print(f"  {produto:16s} congelado={congelado:.4f}  recalculado={recalc:.4f}")
+        print(f"  {produto:16s} p_hat={shrinkage.p_hat_por_produto[produto]:.4f}")
 
     if not (shrinkage.conta_produto.colapsa and shrinkage.produto_setor.colapsa):
         print(
@@ -202,37 +200,26 @@ def run_report(data_dir: Path) -> bool:
 
     if shrinkage.produto.colapsa:
         print(
-            "\nNOTA — em termos simples: se aplicássemos a mesma régua de\n"
-            "'colapsar se não há sinal' também ao nível de PRODUTO (não só\n"
-            "conta×produto e produto×setor), o resultado diria pra zerar essa\n"
-            "diferenciação também. Decidimos manter mesmo assim — o motivo\n"
-            "completo está registrado abaixo e em docs/decisions-log.md.\n\n"
-            "NOTA — achado desta execução: o mesmo método (variância esperada por "
-            "acaso / variância em excesso), recalculado do zero sobre estes dados, "
-            "encontra excesso de variância NEGATIVO também no nível de produto "
-            "(mais fraco do que qualquer um dos quatro atributos testados por "
-            "permutação acima, todos com p > 0,05). Sob recomputação estrita, isso "
-            "colapsaria p̂_produto para a constante de calibração "
-            f"({constants.GLOBAL_WIN_RATE_CALIBRACAO}) em todos os produtos.\n"
-            "K_PRODUTO = 4 é retido mesmo assim como constante CONGELADA desta "
-            "calibração — uma APROXIMAÇÃO RETIDA POR POLÍTICA, não o resultado do "
-            "cálculo (documentada em docs/decisions-log.md) — não é uma escolha "
-            "arbitrária nova, é a calibração já em produção. Fica registrado aqui "
-            "para a próxima recalibração trimestral avaliar se essa diferenciação "
-            "deve ser reduzida ou mantida."
+            "\nNOTA — o nível de PRODUTO colapsou nesta execução (variância em "
+            "excesso ≤ 0, mais fraco do que qualquer um dos quatro atributos "
+            "testados por permutação acima, todos com p > 0,05): sem constante de "
+            "política a sobrepor o colapso, p̂_produto usa diretamente a taxa "
+            f"global de calibração ({constants.GLOBAL_WIN_RATE_CALIBRACAO}) para "
+            "todos os produtos — o comportamento correto, sem exigir mudança de "
+            "código nem revisão manual de constante alguma (docs/decisions-log.md, "
+            "entrada sobre a remoção de K_PRODUTO)."
         )
     else:
         print(
-            "\nAVISO — o nível de PRODUTO deixou de colapsar nesta execução: a "
-            f"variância em excesso recalculada agora é positiva e produz k = "
-            f"{shrinkage.produto.k:.3f}, diferente do K_PRODUTO = "
-            f"{constants.K_PRODUTO} congelado em produção. Isso significa que a "
-            "aproximação retida por política pode não ser mais conservadora — "
-            "sinal real pode ter aparecido no nível de produto desde a última "
-            "calibração. Revisar K_PRODUTO nesta recalibração antes de prosseguir, "
-            "em vez de carregar o valor antigo adiante silenciosamente."
+            "\nNOTA — o nível de PRODUTO não colapsou nesta execução: variância em "
+            f"excesso positiva produz k = {shrinkage.produto.k:.4f}, usado "
+            "diretamente pelo motor de scoring para calcular p̂_produto acima — não "
+            "há mais uma constante congelada para comparar. Um k pequeno frente ao "
+            "n de cada produto significa pouco encolhimento (a taxa bruta domina); "
+            "um k grande puxaria mais forte em direção à taxa global. Qualquer "
+            "mudança de regime entre execuções fica visível aqui, sem precisar de "
+            "um cenário de falha dedicado."
         )
-        ok = False
 
     _section("4. Curvas de aging — monotonicidade e fronteira de censura")
     print(
@@ -345,6 +332,73 @@ def run_report(data_dir: Path) -> bool:
         "— a amostra por célula é pequena demais para sustentar a diferenciação."
     )
     if not pior_que_global:
+        print(
+            "AVISO PERMANENTE (não falha a suíte): o condicionamento direto por "
+            "produto×setor deixou de ser pior que o prior achatado nesta execução. "
+            "Este resultado é reproduzido e impresso a cada execução, "
+            "independentemente do motor de scoring aplicar `mult_setor` — "
+            "`mult_setor` (add-mult-setor) é um mecanismo distinto, com "
+            "encolhimento adicional em direção a p̂_produto (não à taxa global) e "
+            "teto de ±15%, implementado por decisão de produto apesar deste "
+            "resultado permanecer negativo, não porque ele deixou de ser "
+            "verdadeiro (scoring-validation spec, Requirement 'Reprodução da "
+            "ausência de sinal do condicionamento por setor')."
+        )
+    else:
+        print(
+            "Este resultado negativo é reproduzido e impresso a cada execução, "
+            "independentemente do motor de scoring aplicar `mult_setor` — ver a "
+            "subseção 6.1 abaixo para a reprodução do mult_setor em si, um "
+            "mecanismo distinto (encolhimento em direção a p̂_produto, não à taxa "
+            "global, e teto de ±15%), implementado por decisão de produto apesar "
+            "deste resultado (scoring-validation spec, Requirement 'Reprodução da "
+            "ausência de sinal do condicionamento por setor')."
+        )
+
+    _section("6.1. mult_setor — reprodução e auditoria de consistência")
+    print(
+        "Pergunta: o mult_setor efetivamente usado pelo motor de scoring se "
+        "comporta como a política pretende — encolhimento pesado (K_SETOR=25) "
+        "calando amostra pequena, teto de ±15% como salvaguarda, e a mesma função "
+        "aplicada de forma consistente ao funil aberto e à distribuição de "
+        "referência (negócios Won)?"
+    )
+    print()
+    repro = build_mult_setor_reproduction(closed)
+    print(
+        f"Célula de maior amostra: {repro.celula_grande_produto} × "
+        f"{repro.celula_grande_setor} (n={repro.celula_grande_n}) -> "
+        f"mult_setor={repro.celula_grande_mult:.4f} "
+        f"({'teto acionado' if repro.celula_grande_clip_acionado else 'teto NÃO acionado'})"
+    )
+    print(
+        f"Célula de menor amostra: {repro.celula_pequena_produto} × "
+        f"{repro.celula_pequena_setor} (n={repro.celula_pequena_n}) -> "
+        f"mult_setor={repro.celula_pequena_mult:.4f} (esperado próximo de 1,0)"
+    )
+    print(
+        f"Faixa de mult_setor nas {len(setor_report.tamanhos_celula)} células: "
+        f"[{repro.faixa_min:.4f}, {repro.faixa_max:.4f}] — dentro de "
+        f"[{constants.MULT_SETOR_MIN}, {constants.MULT_SETOR_MAX}] em todas as "
+        f"células: {'sim' if repro.todos_dentro_do_teto else 'NÃO — revisar'}. Como "
+        "todo mult_setor está garantidamente no intervalo do clip, "
+        "p̂_produto×mult_setor nunca sai de "
+        "[0,85×p̂_produto, 1,15×p̂_produto] para nenhum produto."
+    )
+    if not repro.todos_dentro_do_teto:
+        print("AVISO: mult_setor fora do intervalo do clip — revisar scoring/setor.py.")
+        ok = False
+
+    consistencia = audit_reference_and_open_funnel_consistency(dataset, scored_pipeline.ctx)
+    print(
+        f"\nAuditoria de consistência funil aberto x referência: "
+        f"{consistencia.n_combinacoes_verificadas} combinações produto×setor "
+        "recalculadas de forma independente e comparadas ao ScoringContext de "
+        "produção (o mesmo objeto compartilhado pelas duas populações) -> "
+        f"{'consistentes' if consistencia.todas_consistentes else 'DIVERGÊNCIA ENCONTRADA'}."
+    )
+    if not consistencia.todas_consistentes:
+        print("AVISO: mult_setor diverge entre o recálculo e o ScoringContext de produção.")
         ok = False
 
     _section("7. Curvas de aging por produto — validação cruzada")
@@ -566,12 +620,18 @@ def run_report(data_dir: Path) -> bool:
         "concentra valor no topo da fila (seção 5). Três tentativas de refinar o\n"
         "motor com condicionamento adicional foram testadas e as três pioraram a\n"
         "previsão fora da amostra: p̂ por produto×setor (seção 6), curvas de aging\n"
-        "por produto (seção 7) e URGÊNCIA por produto (seção 8) — os três\n"
-        "resultados negativos ficam documentados, não implementados. A seção 9\n"
-        "acompanha CONFIANÇA (completude/suporte) para a próxima recalibração. As\n"
-        "seções 10-11 reproduzem o impacto e a circularidade da reclassificação de\n"
-        "200 dias; as seções 12-13 reproduzem a ausência de sinal robusto do fit por\n"
-        "vendedor e travam o denominador dos artefatos de análise por teste."
+        "por produto (seção 7) e URGÊNCIA por produto (seção 8) — os dois últimos\n"
+        "ficam documentados, não implementados. O primeiro (produto×setor) segue\n"
+        "confirmado como pior (seção 6) e continua NÃO implementado nessa forma\n"
+        "direta — mas `mult_setor` (seção 6.1), um mecanismo distinto com\n"
+        "encolhimento pesado em direção a p̂_produto e teto de ±15%, foi\n"
+        "implementado por decisão de produto apesar desse resultado, não porque\n"
+        "ele deixou de ser verdadeiro (ver docs/decisions-log.md, 2026-08-21). A\n"
+        "seção 9 acompanha CONFIANÇA (completude/suporte) para a próxima\n"
+        "recalibração. As seções 10-11 reproduzem o impacto e a circularidade da\n"
+        "reclassificação de 200 dias; as seções 12-13 reproduzem a ausência de\n"
+        "sinal robusto do fit por vendedor e travam o denominador dos artefatos\n"
+        "de análise por teste."
     )
     print()
     print(

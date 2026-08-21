@@ -6,22 +6,6 @@ Regra deste arquivo: nenhuma entrada é escrita sem a decisão ter vindo de mim 
 
 ---
 
-## 2026-08-18 — Escolha do challenge
-
-**Decisão:** Challenge 003 — Lead Scorer.
-
-**Por quê:** _TODO — registrar o motivo real da escolha (perfil técnico, interesse na área de vendas/RevOps, etc.)._
-
----
-
-## 2026-08-18 — Estrutura da submissão
-
-**Decisão:** seguir à risca a estrutura de pastas do `CONTRIBUTING.md` (`solution/`, `process-log/`, `docs/`), sem desvios, e manter um log de decisões separado do log de processo de IA.
-
-**Por quê:** o guia de submissão penaliza explicitamente "process log mostra 1 prompt → 1 resposta → submissão" e valoriza "iteração e julgamento". Separar *decisão* de *uso de IA* deixa isso auditável — dá pra ver exatamente onde o julgamento humano entrou.
-
----
-
 ## 2026-08-19 — Decisões de design da solução (consolidadas na sessão de grilling)
 
 **Contexto:** análise exploratória (validação de AUC, testes de permutação, análise de dados) convergiram para uma conclusão: não há sinal firmográfico em win/loss (AUC 0.50 em todos os modelos testados, p=0.31–0.97 nos testes de permutação para agent/product/sector/account). Mas há sinal forte em **valor** (R²=0.98) — a diferença entre um negócio bom e um ruim é de até **400×**.
@@ -333,5 +317,39 @@ Cada frase cobre um componente:
 **Achado:** os dois CSVs (`analysis_by_product_detailed.csv`, `analysis_by_sector_detailed.csv`) publicados antes desta mudança calculavam `Taxa Vitória % = Won / Total`, com `Total` incluindo `Engaging`+`Prospecting` — 159 de 179 linhas e 219 de 292 linhas incorretas, erro médio 14,89pp (máximo 62,50pp, `Wilburn Farren`/`GTX Plus Basic`: 37,5% publicado vs. 100% real).
 
 **Decisão:** os artefatos passam a ser gerados por `scoring/export.py::build_analysis_table`, a mesma função usada pela API (via `scoring/fit.py::FitContext`) — taxa sempre `Won / (Won + Lost)`, sem coluna `Total`. `validation/denominator_check.py` audita isso a cada execução do backtest (seção 13).
+
+---
+
+## 2026-08-21 — `mult_setor` (ajuste produto×setor sobre p̂) e remoção de `K_PRODUTO`
+
+**Contexto:** `openspec/changes/add-mult-setor` — proposta completa (proposal/design/specs) revisada numa sessão de grilling adversarial (13+ perguntas, 3 rounds) antes da implementação. O produto pediu uma variável de desempenho produto×setor para SCORE e CONFIANÇA, peso limitado a 10-15%. Antes de aceitar, reproduzimos a pergunta: `validation/backtest.py` seção 6 mede condicionar `p̂` por produto×setor via validação cruzada 5-fold sobre os 7.364 negócios de calibração — `logloss` 0,66974 contra 0,66795 do prior achatado por produto (70 células, mediana 86 negócios/célula) — **pior**, de forma monotônica, e o nível colapsa (`k=∞`) sob recomputação estrita. Construir a variável como "aumente `p̂` pela taxa de vitória da célula" embarcaria exatamente o que a validação já provou que piora a previsão.
+
+### `mult_setor`: mesmo molde de `fit.py`, não o condicionamento direto
+
+**Decisão:** `mult_setor(produto, setor)` encolhe a taxa bruta de cada célula produto×setor em direção a `p̂_produto` (não à taxa global) com uma constante de política `K_SETOR = 25` — reaproveitada de `K_FIT`, mesmo papel (sobrepor um colapso, de forma conservadora) — e limita o resultado a **[0,85, 1,15]**. Setor desconhecido (68,7% do funil aberto) → `mult_setor = 1,0`, neutro. `p̂ final = p̂(idade) × mult_setor`, aplicado tanto ao funil aberto quanto à reconstrução da distribuição de referência (testado empiricamente antes de decidir: aplicar só ao funil deslocaria SCORE de forma assimétrica entre numerador e denominador do percentil).
+
+**Por quê não é uma contradição da seção 6 do backtest:** o condicionamento direto testado e rejeitado não tem encolhimento em direção a `p̂_produto` nem teto — é a taxa bruta da célula (ou encolhida em direção à taxa global). `mult_setor` é um mecanismo distinto: encolhimento pesado + teto apertado, o mesmo molde que `fit.py` já usa para vendedor×produto/vendedor×setor (sinal igualmente fraco, p≈0,047 no caso de vendedor×produto). A seção 6 do backtest **não foi apagada** — continua reproduzindo e imprimindo o resultado negativo a cada execução (agora um aviso permanente, não um portão de aceite — ver abaixo), e uma nova seção 6.1 reproduz `mult_setor` em si (comportamento do teto, célula grande vs. ínfima, consistência entre funil e referência).
+
+**Medido sobre as 1.436 oportunidades abertas e os 4.238 negócios Won reais** (comparação direta entre o sistema antigo — `K_PRODUTO=4,0` congelado, sem `mult_setor` — e o novo, medida com `git stash`/`git stash pop` sobre o código, não estimada): SCORE desloca mediana 0,30pp, máximo 4,40pp; CONFIANÇA desloca mediana 0,00, p90 7,80, máximo 12,60. **Zero** oportunidades cruzam o corte SCORE≥95 ou CONFIANÇA<50 em qualquer direção; a distribuição de ESTADO é idêntica (Priorizar 54, Acompanhar 283, Qualificar 656, Revisão em lote 443).
+
+**Achado colateral aceito, não corrigido — inflação cosmética da referência:** a mediana de PRIORIDADE da população de referência (4.238 negócios Won) sobe 6,75% (351,52 → 375,26) — efeito estrutural: células com taxa de vitória mais alta contribuem mais linhas Won à referência (por definição), então a própria população contra a qual `mult_setor` é medido absorve parte do mesmo sinal circularmente. Não distorce a *ordenação* do funil (SCORE não cruza cortes, ver acima), mas infla o valor absoluto de PRIORIDADE por um motivo que não é economia real. Corrigir exigiria um segundo mecanismo de cálculo (multiplicador *held-out* só para a referência) para consertar um número que nunca aparece a um vendedor — PRIORIDADE em dólares não é exibida desde o redesenho de 2026-08-20 — e cujo efeito sobre SCORE já é desprezível. Aceito conscientemente, documentado aqui para quem comparar PRIORIDADE entre gerações do CSV não confundir com mudança de mercado.
+
+**CONFIANÇA ganha um terceiro termo de suporte:** `s_célula = min(1, n_célula/50)`, mesma saturação de `s_idade`/`s_produto`, omitido (nunca zerado) quando o setor é desconhecido, com pesos revisados `0,65 idade / 0,20 produto / 0,15 célula` (generaliza a regra de omissão que já existia só para idade ausente). Pesos escolhidos para manter a proporção original (0,75/0,25) quase intacta quando célula está ausente — renormalizado dá 0,765/0,235, 1,5pp de diferença, sem efeito prático no caso majoritário (68,7% do funil sem setor conhecido).
+
+**`score_fatores` ganha uma frase nova**, no mesmo tom factual das demais ("histórico do produto neste setor: acima/dentro/abaixo da média, N negócios fechados nesta combinação") — sem linguagem de ressalva ("sinal fraco", "ruído amostral") por decisão explícita do dono do produto, mesmo com o nível colapsando (`k=∞`) sob recomputação estrita: declarar o fato e deixar quem lê julgar, o mesmo tom que `constants.py` já usa para `K_SETOR`/`K_FIT`.
+
+### `K_PRODUTO` removido, não recalibrado para um novo valor congelado
+
+**Decisão:** decidida a meio da sessão de grilling, não parte do escopo original — o dono do produto reverteu, depois de ver o design completo, a chamada inicial de deixar o aviso de `K_PRODUTO` desatualizado (registrado na entrada de 2026-08-21 acima, "Achado não previsto pelo design original") como pendência para a recalibração trimestral, e pediu "shrinkage graduado por tamanho amostral" no lugar da constante congelada. O nível de produto passa a chamar `shrinkage.level_stats` em tempo de carga (`pipeline.build_scoring_context`), exatamente como os níveis conta×produto e produto×setor já fazem — o `k` resultante (0,6966 nesta calibração) é usado diretamente, sem comparação contra constante alguma.
+
+**Efeito medido:** sobre os 7.364 negócios de calibração, o `k` derivado (0,6966) produz `p̂_produto` idêntico ao congelado (diferença ≤0,01pp) para os seis produtos de maior volume, e um deslocamento de −1,22pp só para GTK 500 (n=35, o produto de menor amostra: 0,4436 → 0,4314). Combinado com `mult_setor`, o efeito agregado sobre o funil aberto — medido diretamente, não em separado — preserva os mesmos zero cruzamentos do corte SCORE≥95.
+
+**Por quê agora:** resolve o aviso que o backtest já emitia (`k` derivado ≠ `K_PRODUTO` congelado) em vez de empurrá-lo para a próxima recalibração, e uniformiza a regra "k DEVE ser derivado, não escolhido à mão" para os quatro níveis da hierarquia, sem exceção — a única exceção manual que o requisito de encolhimento hierárquico já declarava.
+
+### Seção 6 do backtest: de portão de aceite a aviso permanente
+
+**Decisão:** `validation/backtest.py` seção 6 deixa de marcar a suíte como falha (`ok = False`) quando o condicionamento direto por produto×setor não for pior que o prior achatado — vira um aviso impresso, sempre presente, mas a execução nunca falha por causa dele. O resultado continua sendo reproduzido e reportado em toda execução, com ou sem essa mudança de comportamento — a suíte para de travar por causa dele, mas nunca para de contar a verdade sobre ele.
+
+**Por quê:** o resultado negativo é real e permanece verdadeiro independentemente de `mult_setor` existir — `mult_setor` não é o condicionamento direto que esta seção testa e rejeita, é um mecanismo distinto (ver acima). Fazer a suíte falhar por um resultado que o próprio produto decidiu ignorar (por um motivo documentado, não por desconhecê-lo) confundia "a suíte está quebrada" com "a decisão de produto diverge da validação estatística" — dois eventos diferentes que pedem reações diferentes.
 
 ---
