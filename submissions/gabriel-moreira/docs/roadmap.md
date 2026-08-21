@@ -30,19 +30,15 @@ arquivos de origem. É a lacuna que os itens abaixo endereçam.
 
 ## Próximos passos selecionados
 
-### 1. Saneamento em lote do funil congelado
+### 1. Saneamento em lote do funil congelado — ✅ feito (2026-08-21)
 
-A mediana de idade dos 2.089 negócios abertos é 165 dias — mais velha que o negócio mais longo
-que já fechou na história (138 dias). 52,5% do funil (1.096 negócios) está fora de qualquer
-precedente histórico, roteado para o estado **Revisão em lote** — fora da fila ordenada de
-trabalho, não misturado com as oportunidades trabalháveis.
-
-- **Ação:** mutirão de revisão em lote (fechar ou descartar) guiado pela visão própria de
-  Revisão em lote, com exportação CSV do recorte inteiro já pronta na ferramenta.
-- **Esforço:** baixo — não exige nova engenharia, só operação.
-- **Impacto de negócio:** o forecast reportado hoje inclui receita fantasma. Limpar o funil
-  restaura a credibilidade do número que o board vê e libera atenção do vendedor para o que
-  ainda tem chance real.
+A mediana de idade dos 2.089 negócios abertos era 165 dias — mais velha que o negócio mais longo
+que já fechou na história (138 dias). Executado: oportunidades abertas há ≥200 dias (política,
+distinta dos 138 dias observados) são reclassificadas como `Lost` na carga — 653 negócios,
+funil aberto caindo de 2.089 para 1.436. O que resta em **Revisão em lote** (443, idade 154–199
+dias) é passivo real de higiene de dados, não mais um depósito de quase dois terços do funil.
+Detalhes em [docs/architecture.md](./docs/architecture.md) e
+[docs/decisions-log.md](./docs/decisions-log.md) (entrada 2026-08-21).
 
 ### 2. Persistir histórico de score
 
@@ -86,6 +82,26 @@ falta tratar censura formalmente (hoje é um corte fixo em 138 dias) e responder
   sobrevivência real (ex.: Cox, Kaplan-Meier com covariáveis) e nova validação.
 - **Impacto de negócio:** responde a pergunta que gestor de vendas mais faz — alocação de esforço
   dentro do trimestre corrente — com mais precisão do que o corte binário de hoje, e melhora a
-  acurácia do próprio forecast do item 8.
+  acurácia do próprio forecast do item 4.
+
+### 6. Job de sinal externo: notícias da conta
+
+Nenhum dos 5 CSVs de origem carrega sinal comportamental ou de contexto de mercado (ver
+[docs/analise-lead-scoring.md §6](./docs/analise-lead-scoring.md)) — hoje a ferramenta só reage
+ao que já está no CRM. Um gatilho de mercado (rodada de investimento, expansão, troca de
+liderança, notícia negativa) é o tipo de evento que justifica contato imediato e que nenhuma
+curva de aging consegue prever.
+
+- **Ação:** job agendado (diário) que busca notícias recentes por conta vinculada (nome da conta
+  + domínio/setor, via API de notícias ou busca), filtra por relevância comercial (funding,
+  expansão, aquisição, mudança de C-level, sinais negativos) e, quando encontra algo relevante,
+  notifica o vendedor responsável pela conta — no canal que já usa (e-mail/Slack), não numa aba
+  nova a ser checada.
+- **Esforço:** médio — a parte nova é o pipeline de ingestão/filtro de notícias e a integração de
+  notificação; o roteamento "conta → vendedor responsável" já existe via `sales_teams.csv`.
+- **Impacto de negócio:** é o primeiro sinal de **intenção externa** que a ferramenta passaria a
+  ter — hoje ela só prioriza por valor e urgência de funil, nunca por "por que agora". Fecha parte
+  da lacuna comportamental apontada em `analise-lead-scoring.md` §6 sem exigir instrumentação do
+  CRM, que depende de terceiros para começar a coletar.
 
 ---

@@ -1,6 +1,6 @@
 # Arquitetura da Solução
 
-Visão geral da implementação. Para a lógica de decisões que levou aqui, ver [decisions-log.md](./decisions-log.md). Espelha os requisitos formais em [`openspec/changes/add-lead-scorer/`](../../../openspec/changes/add-lead-scorer/) (motor original) e [`openspec/changes/redesign-score-confianca-estado/`](../../../openspec/changes/redesign-score-confianca-estado/) (SCORE/CONFIANÇA/ESTADO, 2026-08-20).
+Blueprint técnico da implementação: como cada peça funciona e como é validada. Para a lógica das decisões que levaram a este desenho, ver [decisions-log.md](./decisions-log.md); para a derivação estatística por trás da fórmula, ver [analise-lead-scoring.md](./analise-lead-scoring.md). Espelha os requisitos formais em [`openspec/changes/add-lead-scorer/`](../../../openspec/changes/add-lead-scorer/) (motor original) e [`openspec/changes/redesign-score-confianca-estado/`](../../../openspec/changes/redesign-score-confianca-estado/) (SCORE/CONFIANÇA/ESTADO, 2026-08-20).
 
 ---
 
@@ -249,6 +249,17 @@ Cada termo condicional (`s_idade` sem idade conhecida — Prospecting; `s_célul
 4. caso contrário             -> Acompanhar
 ```
 
+```mermaid
+flowchart TD
+    A["Deal aberto"] --> B{"Sem precedente<br/>historico?"}
+    B -- sim --> R["Revisao em lote<br/>443"]
+    B -- nao --> C{"SCORE maior 95?"}
+    C -- sim --> P["Priorizar<br/>54"]
+    C -- nao --> D{"CONFIANCA menor 50?"}
+    D -- sim --> Q["Qualificar<br/>656"]
+    D -- nao --> AC["Acompanhar<br/>283"]
+```
+
 CONFIANÇA e ESTADO não são a mesma coisa: **CONFIANÇA é o quanto acreditar no score**; **ESTADO é a ação recomendada**. A tabela 4×2 original (A-D × SCORE≥50) deu lugar a uma árvore, porque CONFIANÇA contínua em 0-100 não tem quebras naturais para uma tabela cruzada, e a ordem explícita da árvore corrige o defeito real da versão anterior: "CONFIANÇA D → Desistir" era uma regra de mão única escondida numa célula, aplicada a 61,8% do funil.
 
 O corte de SCORE (95) é o percentil 95 da própria distribuição de referência — acompanha a recalibração trimestral sem constante própria. O corte de CONFIANÇA (50) significa "menos da metade do que este score afirma está apoiado em dado observado e precedente" — ambos ancorados, não ajustados por tentativa e erro.
@@ -288,19 +299,11 @@ Texto gerado por template determinístico a partir dos componentes — nunca por
 
 ### Redesenho 2026-08-20 — por que PRIORIDADE saiu da tela
 
-Três problemas medidos motivaram o redesenho, documentados por inteiro em `decisions-log.md`:
+Três problemas medidos motivaram o redesenho — raciocínio completo em `decisions-log.md`, as três hipóteses de refinamento testadas e rejeitadas (condicionar `p̂` por produto×setor, curvas de aging por produto, URGÊNCIA por produto) em [analise-lead-scoring.md §4.5](./analise-lead-scoring.md#45-calibração-de-p̂-e-urgência--como-os-números-foram-derivados) e reproduzíveis em `validation/backtest.py` seções 6-8:
 
 1. **PRIORIDADE em dólares era, na prática, ordenação por preço de tabela.** A decomposição da variância de `log(PRIORIDADE)` atribui 87,3% a VALOR e 0,1% a `p̂` — `spearman(PRIORIDADE, preço_tabela) = 0,909`. O preço varia 486,7× entre produtos; `p̂_produto` varia 1,074×. SCORE (percentil contra os negócios ganhos) não sofre dessa distorção porque normaliza contra uma população fixa, mas exibir PRIORIDADE ao lado dele convidava a ler o dólar como a prioridade real.
 2. **CONFIANÇA D forçava Desistir para 61,8% do funil.** Uma ferramenta cuja tela inicial recomenda abandonar dois terços da carteira não é usada duas vezes.
 3. **Acompanhar e Engajar entregavam o mesmo plano de ação.**
-
-Três hipóteses de melhoria do motor foram testadas e **as três falharam** — reprodutíveis em `validation/backtest.py`, seções 6-8:
-
-| Hipótese testada | Resultado |
-|---|---|
-| Condicionar `p̂` por produto×setor | `logloss` 0,66016 vs. 0,65828 do prior global achatado — pior |
-| Curvas de aging por produto | `logloss` 0,65525 (0,65275 com encolhimento) vs. 0,64936 da curva global — pior |
-| URGÊNCIA por produto | dispersão de medianas de ciclo entre produtos 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 |
 
 A fórmula em si (`p̂ × VALOR × URGÊNCIA`, curvas globais, `p̂_produto` por encolhimento) **não mudou** — o redesenho muda como o resultado é exposto e roteado, não como é calculado.
 
@@ -413,7 +416,21 @@ make test
 
 ## Como os componentes se falam
 
-Estrutura efetivamente implementada (substitui a estrutura prevista da versão anterior deste documento):
+```mermaid
+flowchart LR
+    CSV[("CSVs<br/>accounts, products<br/>pipeline, teams")] --> REPO["repository.py<br/>load+merge<br/>reclassificacao"]
+    REPO --> CTX["pipeline.py<br/>ScoringContext<br/>k, curves, mult_setor"]
+    CTX --> MODEL["model.py<br/>p_hat x VALOR x URGENCIA<br/>= PRIORIDADE"]
+    MODEL --> REF["reference.py<br/>percentile vs Won<br/>= SCORE"]
+    MODEL --> CONF["confianca.py<br/>CONFIANCA, ESTADO"]
+    REF --> API["API FastAPI<br/>/deals, /kpis<br/>/rollup, /score"]
+    CONF --> API
+    API --> WEB["React<br/>Oportunidades<br/>Sobrecarga, Gestao"]
+    CTX --> EXPORT["export.py<br/>CSV processado<br/>analysis_by_*.csv"]
+    CTX --> VALID["backtest.py<br/>AUC, k derivado<br/>validacao"]
+```
+
+`scoring/` é o único lugar onde a fórmula existe — API, exportação e validação a importam via `pip install -e`, nunca reimplementam. Estrutura de pastas efetivamente implementada (substitui a estrutura prevista da versão anterior deste documento):
 
 ```
 scoring/
@@ -549,6 +566,7 @@ Ver `openspec/changes/add-analise-carga-fit/` para a proposta/design completos. 
 
 ## Referências
 
-- [analise-lead-scoring.md](../analise-lead-scoring.md) — análise exploratória completa
+- [analise-lead-scoring.md](./analise-lead-scoring.md) — processo analítico completo: como a fórmula e CONFIANÇA foram derivadas, passo a passo
 - [decisions-log.md](./decisions-log.md) — decisões e por quês, passo a passo
+- [../solution/report.md](../solution/report.md) — saída do backtest de validação, comentada
 - [openspec/changes/add-lead-scorer/](../../../openspec/changes/add-lead-scorer/) — proposta, design e specs formais

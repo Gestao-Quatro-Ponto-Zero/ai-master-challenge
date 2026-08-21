@@ -1,3 +1,25 @@
+# Relatório de Backtest — Lead Scorer
+
+Saída literal de `make validate` (`validation/backtest.py`), a suíte que reproduz — sobre os dados reais, não uma amostra — toda premissa estrutural por trás da fórmula descrita em [`../docs/architecture.md`](../docs/architecture.md) e derivada em [`../docs/analise-lead-scoring.md`](../docs/analise-lead-scoring.md). Cada seção abaixo é gerada por comando único, sem edição manual.
+
+**Resumo das 9 seções:**
+
+| # | Pergunta | Resultado |
+|---|---|---|
+| 1 | Atributo firmografico preve ganho/perda? | FALSO (AUC 0.50) |
+| 2 | E coincidencia de amostra? | FALSO (p 0.26-0.97, confirma #1) |
+| 3 | Encolhimento hierarchico colapsa niveis sem sinal? | VERDADEIRO (conta x produto, produto x setor) |
+| 4 | Curva de risco e monotonica e censura de 138d se sustenta? | VERDADEIRO |
+| 5 | PRIORIDADE concentra valor melhor que ordenar por preco puro? | VERDADEIRO (49.1% vs 29.5% no top 10%) |
+| 6 | Condicionar p_hat por produto x setor melhora a predicao? | FALSO (pior que prior global) |
+| 7 | Curva de aging por produto melhora a predicao? | FALSO (pior que curva global) |
+| 8 | URGENCIA deveria variar por produto? | FALSO (dispersao real menor que ruido) |
+| 9 | CONFIANCA esta distribuida de forma saudavel para monitorar? | AVISO (Concentrada: 52.5% sem precedente) |
+
+Leitura: as seções 1-2 matam a classificação categórica; a 3-5 sustentam o modelo de valor em risco; a 6-8 são três tentativas de refinar o motor, todas descartadas por piorarem a previsão fora da amostra; a 9 é o painel de monitoramento para a próxima recalibração trimestral. Detalhe completo de cada seção abaixo.
+
+---
+
 ## 1. Ausência de sinal preditivo por atributo firmográfico
 
 Pergunta: dá pra adivinhar se um negócio vai ser GANHO ou PERDIDO só

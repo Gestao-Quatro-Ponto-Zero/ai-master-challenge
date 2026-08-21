@@ -3,7 +3,7 @@
 > Base: `sales_pipeline` (8.800 oportunidades, out/2016–dez/2017), 85 contas, 7 produtos, 35 vendedores.
 > 6.711 negócios fechados (4.238 ganhos / 2.473 perdidos) + 2.089 em aberto.
 
-> **Nota de atualização (2026-08-19):** este documento é a análise exploratória original — a conclusão central (nenhum atributo firmográfico prevê ganho/perda; valor é o sinal real) segue válida e é a base de tudo que veio depois. A **fórmula final implementada** é mais refinada do que o `P(ganho) = 0,632` constante e o corte de 90 dias descritos aqui: usa encolhimento hierárquico para `p̂` (variando 0,60–0,75 por produto), curvas de aging isotônicas e um limite de censura de **138 dias** (não 90), derivado do ciclo máximo real dos negócios fechados. Ver [`docs/architecture.md`](docs/architecture.md) e [`docs/decisions-log.md`](docs/decisions-log.md) para a versão vigente — os números de valor, qualidade de dados e as recomendações de instrumentação abaixo continuam de pé.
+> **Nota de atualização (2026-08-19):** este documento é a análise exploratória original — a conclusão central (nenhum atributo firmográfico prevê ganho/perda; valor é o sinal real) segue válida e é a base de tudo que veio depois. A **fórmula final implementada** é mais refinada do que o `P(ganho) = 0,632` constante e o corte de 90 dias descritos aqui: usa encolhimento hierárquico para `p̂` (variando 0,60–0,75 por produto), curvas de aging isotônicas e um limite de censura de **138 dias** (não 90), derivado do ciclo máximo real dos negócios fechados. Ver [`architecture.md`](./architecture.md) e [`decisions-log.md`](./decisions-log.md) para a versão vigente — os números de valor, qualidade de dados e as recomendações de instrumentação abaixo continuam de pé.
 >
 > **Nota de atualização (2026-08-20):** CONFIANÇA e ESTADO foram redesenhados no mesmo dia da remoção do RBAC — CONFIANÇA deixou de ser uma escala A-D dominada por idade e passou a ser `min(completude, suporte)`, 0-100; ESTADO deixou de ser uma tabela 4×2 e passou a ser uma árvore de decisão de 4 valores (Priorizar/Acompanhar/Qualificar/Revisão em lote). PRIORIDADE em dólares deixou de ser exibida (SCORE é o número de prioridade). Três hipóteses de refinamento do motor foram testadas nesse redesenho e as três pioraram a previsão fora da amostra — ver §4.5 abaixo.
 >
@@ -292,7 +292,7 @@ Aplicado ao funil aberto:
 
 ## 4.5 Calibração de p̂ e URGÊNCIA — como os números foram derivados
 
-Este documento apresenta a análise exploratória; a implementação em 2026-08-19 refinou os cálculos baseando-se nos mesmos dados. Aqui está como cada parâmetro foi deriv:
+Este documento apresenta a análise exploratória; a implementação em 2026-08-19 refinou os cálculos baseando-se nos mesmos dados. Aqui está como cada parâmetro foi derivado:
 
 ### Taxa base de ganho (0,632)
 
@@ -326,7 +326,7 @@ Para cada negócio fechado, calculamos:
 
 A suavização isotônica produz a curva em degraus dos breakpoints (0,632 → 0,686 → 0,684 → 0,704 → 0,751). Por quê sobe e não desce?
 
-**A interpretação:** negócios que sobrevivem mais tempo no funil têm qualidade diferente — foram qualificados mais profundamente, estão em discussão mais avançada. Não é que a idade *cause* ganho; é que a idade sinaliza engajamento prévio. Um lead que já duroucentagem noventa dias teve que passar em vários filtros para chegar lá.
+**A interpretação:** negócios que sobrevivem mais tempo no funil têm qualidade diferente — foram qualificados mais profundamente, estão em discussão mais avançada. Não é que a idade *cause* ganho; é que a idade sinaliza engajamento prévio. Um lead que já durou noventa dias teve que passar em vários filtros para chegar lá.
 
 Acima de 138 dias: nenhuma amostra. Impossível extrapolar — haveria apenas 74 casos no histórico acima de 138, todos perdidos, provavelmente porque foras abandonados (viés de censura). A regra de censura em 138 dias evita esse viés.
 
