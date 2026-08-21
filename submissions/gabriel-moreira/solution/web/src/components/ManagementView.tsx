@@ -121,11 +121,16 @@ export function ManagementView({ rollup }: { rollup: Rollup }) {
                     <th className="py-2 px-3">{NIVEL_LABELS[nivel] ?? nivel}</th>
                     <th className="py-2 px-3">Abertas</th>
                     <th className="py-2 px-3">Valor esperado</th>
-                    <th className="py-2 px-3">Foco urgente</th>
+                    <th className="py-2 px-3">
+                      Confiança mediana
+                      <span className="block normal-case font-normal text-[10px] text-muted">
+                        qualidade de cadastro, não desempenho
+                      </span>
+                    </th>
+                    <th className="py-2 px-3">Priorizar</th>
                     <th className="py-2 px-3">Acompanhar</th>
-                    <th className="py-2 px-3">Engajar</th>
                     <th className="py-2 px-3">Qualificar</th>
-                    <th className="py-2 px-3">Desistir</th>
+                    <th className="py-2 px-3">Revisão em lote</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -134,11 +139,11 @@ export function ManagementView({ rollup }: { rollup: Rollup }) {
                       <td className="py-2 px-3 font-medium">{linha.chave}</td>
                       <td className="py-2 px-3">{linha.n_abertas}</td>
                       <td className="py-2 px-3">{formatUsd(linha.valor_esperado)}</td>
-                      <td className="py-2 px-3">{linha.por_estado.foco_urgente}</td>
+                      <td className="py-2 px-3">{linha.confianca_mediana.toFixed(0)}</td>
+                      <td className="py-2 px-3">{linha.por_estado.prioritize}</td>
                       <td className="py-2 px-3">{linha.por_estado.acompanhar}</td>
-                      <td className="py-2 px-3">{linha.por_estado.engajar}</td>
                       <td className="py-2 px-3">{linha.por_estado.qualificar}</td>
-                      <td className="py-2 px-3 text-alert font-semibold">{linha.por_estado.desistir}</td>
+                      <td className="py-2 px-3 text-alert font-semibold">{linha.por_estado.revisao_lote}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -180,7 +185,7 @@ export function ManagementView({ rollup }: { rollup: Rollup }) {
                 yAxisId="esforco"
                 dataKey="pct_receita"
                 name="% da receita histórica"
-                fill={ESTADO_CHART_COLOR.foco_urgente}
+                fill={ESTADO_CHART_COLOR.prioritize}
               />
             </BarChart>
           </ResponsiveContainer>

@@ -30,6 +30,7 @@ def _linhas_por_nivel(scored: pd.DataFrame, coluna: str, nivel: str) -> list[Rol
                 n_abertas=int(len(sub)),
                 valor_esperado=float(sub["prioridade"].sum()),
                 por_estado=_por_estado(sub),
+                confianca_mediana=float(sub["confianca"].median()),
             )
         )
     return linhas

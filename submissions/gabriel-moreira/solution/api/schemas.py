@@ -19,12 +19,14 @@ class OportunidadeOut(BaseModel):
     deal_stage: str
     age_days: Optional[float] = None
     p_hat: float
+    preco_tabela: float
     valor: float
     urgencia: float
-    prioridade: float
     score: float
-    confianca: str
-    confianca_label: str
+    confianca: float
+    completude: float
+    suporte: float
+    sem_precedente: bool
     razao_confianca: str
     estado: str
     estado_label: str
@@ -53,7 +55,9 @@ class ContaOut(BaseModel):
 
 class DealDetailOut(OportunidadeOut):
     conta: ContaOut
+    prioridade: float
     plano_de_acao_passos: list[str]
+    score_fatores: list[str]
 
 
 class FiltroVendedorOut(BaseModel):
@@ -80,7 +84,7 @@ class KpisOut(BaseModel):
     total_oportunidades: int
     receita_ganha: float
     valor_esperado_aberto: float
-    total_desistir: int
+    total_revisao_lote: int
     maior_negocio_fechado: float
     data_inicio: str
     data_fim: str
@@ -96,6 +100,7 @@ class RollupLinhaOut(BaseModel):
     n_abertas: int
     valor_esperado: float
     por_estado: dict[str, int]
+    confianca_mediana: float
 
 
 class ProdutoEsforcoOut(BaseModel):
@@ -120,14 +125,18 @@ class ScoreAvulsaOut(BaseModel):
     porte: Optional[str] = None
     age_days: Optional[float] = None
     p_hat: float
+    preco_tabela: float
     valor: float
     urgencia: float
     prioridade: float
     score: float
-    confianca: str
-    confianca_label: str
+    confianca: float
+    completude: float
+    suporte: float
+    sem_precedente: bool
     razao_confianca: str
     estado: str
     estado_label: str
     plano_de_acao: str
     plano_de_acao_passos: list[str]
+    score_fatores: list[str]

@@ -12,18 +12,20 @@ import { ViewTabs, type Aba } from "./components/ViewTabs";
 import { useAsync } from "./hooks/useAsync";
 import { useUrlState } from "./hooks/useUrlState";
 import type { DealsEnvelope, Estado, Filtros, Rollup, SortKey, SortOrder } from "./types";
-import { ESTADOS } from "./types";
+import { ESTADOS_TRABALHAVEIS } from "./types";
 
 const PAGE_SIZE = 100;
 
 const URL_DEFAULTS = {
   aba: "oportunidades",
   estados: undefined as string | undefined,
+  revisao_lote: undefined as string | undefined,
   sales_agent: undefined as string | undefined,
   manager: undefined as string | undefined,
   regional_office: undefined as string | undefined,
   product: undefined as string | undefined,
-  confianca: undefined as string | undefined,
+  confianca_min: undefined as string | undefined,
+  confianca_max: undefined as string | undefined,
   idade_min: undefined as string | undefined,
   idade_max: undefined as string | undefined,
   page: "1",
@@ -34,21 +36,24 @@ const URL_DEFAULTS = {
 
 function parseEstados(raw: string | undefined): Estado[] {
   if (!raw) return [];
-  return raw.split(",").filter((e): e is Estado => (ESTADOS as string[]).includes(e));
+  return raw.split(",").filter((e): e is Estado => (ESTADOS_TRABALHAVEIS as string[]).includes(e));
 }
 
-function describeFiltros(filtros: Filtros, estados: Estado[]): string {
+function describeFiltros(filtros: Filtros, estados: Estado[], emRevisaoLote: boolean): string {
   const partes: string[] = [];
-  if (estados.length > 0) partes.push(`Estado: ${estados.join(", ")}`);
+  if (emRevisaoLote) partes.push("Revisão em lote");
+  else if (estados.length > 0) partes.push(`Estado: ${estados.join(", ")}`);
   if (filtros.sales_agent) partes.push(`Vendedor: ${filtros.sales_agent}`);
   if (filtros.manager) partes.push(`Gerente: ${filtros.manager}`);
   if (filtros.regional_office) partes.push(`Escritório: ${filtros.regional_office}`);
   if (filtros.product) partes.push(`Produto: ${filtros.product}`);
-  if (filtros.confianca) partes.push(`Confiança: ${filtros.confianca}`);
+  if (filtros.confianca_min || filtros.confianca_max) {
+    partes.push(`Confiança: ${filtros.confianca_min ?? "0"}–${filtros.confianca_max ?? "100"}`);
+  }
   if (filtros.idade_min || filtros.idade_max) {
     partes.push(`Idade: ${filtros.idade_min ?? "0"}–${filtros.idade_max ?? "∞"}d`);
   }
-  return partes.length > 0 ? partes.join(" · ") : "Funil completo";
+  return partes.length > 0 ? partes.join(" · ") : "Fila trabalhável";
 }
 
 export default function App() {
@@ -56,6 +61,7 @@ export default function App() {
 
   const aba = (urlState.aba as Aba) ?? "oportunidades";
   const estados = useMemo(() => parseEstados(urlState.estados), [urlState.estados]);
+  const emRevisaoLote = urlState.revisao_lote === "1";
   const page = Number(urlState.page) || 1;
   const sort = (urlState.sort as SortKey) || "score";
   const order = (urlState.order as SortOrder) || "desc";
@@ -65,21 +71,33 @@ export default function App() {
     manager: urlState.manager,
     regional_office: urlState.regional_office,
     product: urlState.product,
-    confianca: urlState.confianca as Filtros["confianca"],
+    confianca_min: urlState.confianca_min,
+    confianca_max: urlState.confianca_max,
     idade_min: urlState.idade_min,
     idade_max: urlState.idade_max,
   };
 
   const { data: filterOptions } = useAsync(() => api.getFilterOptions(), []);
 
+  // `revisao_lote` nunca compõe com os três estados trabalháveis — é uma
+  // visão própria (Requirement "Revisão em lote fora da fila ordenada").
+  // Sem seleção explícita, a fila padrão é sempre os três trabalháveis,
+  // nunca "todos os quatro" (o que reintroduziria revisao_lote por omissão).
+  const estadoFiltro = emRevisaoLote
+    ? (["revisao_lote"] as Estado[])
+    : estados.length > 0
+      ? estados
+      : ESTADOS_TRABALHAVEIS;
+
   const dealsQuery: DealsQuery = useMemo(
     () => ({
-      estado: estados.length > 0 ? estados : undefined,
+      estado: estadoFiltro,
       sales_agent: filtros.sales_agent,
       manager: filtros.manager,
       regional_office: filtros.regional_office,
       product: filtros.product,
-      confianca: filtros.confianca,
+      confianca_min: filtros.confianca_min,
+      confianca_max: filtros.confianca_max,
       idade_min: filtros.idade_min,
       idade_max: filtros.idade_max,
       page,
@@ -87,21 +105,25 @@ export default function App() {
       sort,
       order,
     }),
-    [estados, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca, filtros.idade_min, filtros.idade_max, page, sort, order]
+    [estadoFiltro, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca_min, filtros.confianca_max, filtros.idade_min, filtros.idade_max, page, sort, order]
   );
 
+  // Indicadores refletem só os filtros de organização/produto/confiança/
+  // idade — nunca a visão de revisão em lote, que é uma navegação, não um
+  // recorte que o usuário escolheu para os tiles.
   const kpisQuery: DealsQuery = useMemo(
     () => ({
-      estado: dealsQuery.estado,
-      sales_agent: dealsQuery.sales_agent,
-      manager: dealsQuery.manager,
-      regional_office: dealsQuery.regional_office,
-      product: dealsQuery.product,
-      confianca: dealsQuery.confianca,
-      idade_min: dealsQuery.idade_min,
-      idade_max: dealsQuery.idade_max,
+      estado: estados.length > 0 ? estados : undefined,
+      sales_agent: filtros.sales_agent,
+      manager: filtros.manager,
+      regional_office: filtros.regional_office,
+      product: filtros.product,
+      confianca_min: filtros.confianca_min,
+      confianca_max: filtros.confianca_max,
+      idade_min: filtros.idade_min,
+      idade_max: filtros.idade_max,
     }),
-    [dealsQuery]
+    [estados, filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca_min, filtros.confianca_max, filtros.idade_min, filtros.idade_max]
   );
 
   const [envelope, setEnvelope] = useState<DealsEnvelope | null>(null);
@@ -165,6 +187,14 @@ export default function App() {
     [updateUrlState]
   );
 
+  const abrirRevisaoLote = useCallback(() => {
+    updateUrlState({ revisao_lote: "1", estados: undefined, page: "1" });
+  }, [updateUrlState]);
+
+  const fecharRevisaoLote = useCallback(() => {
+    updateUrlState({ revisao_lote: undefined, page: "1" });
+  }, [updateUrlState]);
+
   const onIdadeCommit = useCallback(
     (min: number, max: number) => {
       const bounds = filterOptions
@@ -199,7 +229,8 @@ export default function App() {
       manager: undefined,
       regional_office: undefined,
       product: undefined,
-      confianca: undefined,
+      confianca_min: undefined,
+      confianca_max: undefined,
       idade_min: undefined,
       idade_max: undefined,
       page: "1",
@@ -207,9 +238,14 @@ export default function App() {
   }, [updateUrlState]);
 
   const activeCount =
-    [filtros.sales_agent, filtros.manager, filtros.regional_office, filtros.product, filtros.confianca].filter(
-      Boolean
-    ).length +
+    [
+      filtros.sales_agent,
+      filtros.manager,
+      filtros.regional_office,
+      filtros.product,
+      filtros.confianca_min,
+      filtros.confianca_max,
+    ].filter(Boolean).length +
     (estados.length > 0 ? 1 : 0) +
     (filtros.idade_min || filtros.idade_max ? 1 : 0);
 
@@ -292,7 +328,7 @@ export default function App() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6 flex flex-col gap-6">
-        <KpiTiles query={kpisQuery} descricaoRecorte={describeFiltros(filtros, estados)} />
+        <KpiTiles query={kpisQuery} descricaoRecorte={describeFiltros(filtros, estados, emRevisaoLote)} />
 
         <ViewTabs aba={aba} onChange={(next) => updateUrlState({ aba: next })} />
 
@@ -321,10 +357,6 @@ export default function App() {
               />
             )}
 
-            {envelope && (
-              <EstadoChips selecionados={estados} counts={envelope.contagem_por_estado} onChange={onEstadoChange} />
-            )}
-
             {idadeBounds && (
               <AgeRangeSlider
                 bounds={idadeBounds}
@@ -332,6 +364,44 @@ export default function App() {
                 excluidasSemIdade={envelope?.excluidas_idade_desconhecida ?? 0}
                 onCommit={onIdadeCommit}
               />
+            )}
+
+            {emRevisaoLote ? (
+              <div className="flex items-center justify-between bg-alert/5 border border-alert rounded-sm px-3 py-2">
+                <p className="text-sm text-alert">
+                  Revisão em lote — passivo de higiene de dados (sem precedente histórico de
+                  fechamento), não uma fila de trabalho individual.
+                </p>
+                <button
+                  type="button"
+                  onClick={fecharRevisaoLote}
+                  className="text-xs font-semibold text-navy border border-border rounded-xs px-3 py-1.5 hover:border-gold whitespace-nowrap ml-3"
+                >
+                  ← Voltar à fila
+                </button>
+              </div>
+            ) : (
+              <>
+                {envelope && (
+                  <EstadoChips
+                    estados={ESTADOS_TRABALHAVEIS}
+                    selecionados={estados}
+                    counts={envelope.contagem_por_estado}
+                    onChange={onEstadoChange}
+                  />
+                )}
+
+                {envelope && envelope.contagem_por_estado.revisao_lote > 0 && (
+                  <button
+                    type="button"
+                    onClick={abrirRevisaoLote}
+                    className="text-left text-xs text-muted hover:text-navy underline"
+                  >
+                    {envelope.contagem_por_estado.revisao_lote} oportunidade
+                    {envelope.contagem_por_estado.revisao_lote === 1 ? "" : "s"} em revisão em lote
+                  </button>
+                )}
+              </>
             )}
 
             <div className="flex justify-end">

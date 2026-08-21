@@ -28,7 +28,7 @@ Pré-requisitos: Python 3.10+, Node.js 18+. Sem banco de dados — os quatro CSV
 make test
 ```
 
-Roda, em sequência: os testes unitários do motor de scoring (`scoring/`, incluindo rótulo de confiança, plano de ação em passos e os exemplos de referência dos specs), os testes de contrato/e2e da API (`api/`, cobrindo listagem paginada e ordenada com desempate estável, filtros de organização sem escopo de sessão, endpoint de detalhe, opções de filtro e exportação de identificadores filtrados), os testes de determinismo e consistência do artefato de validação (`validation/`), e a checagem de tipos do frontend (`web/`).
+Roda, em sequência: os testes unitários do motor de scoring (`scoring/`, incluindo as duas metades de CONFIANÇA, a árvore de ESTADO, plano de ação em passos e os exemplos de referência dos specs), os testes de contrato/e2e da API (`api/`, cobrindo listagem paginada e ordenada com desempate estável, filtros de organização sem escopo de sessão, endpoint de detalhe, opções de filtro e exportação de identificadores filtrados), os testes de determinismo e consistência do artefato de validação (`validation/`, incluindo os três resultados negativos de condicionamento por setor/aging por produto/URGÊNCIA por produto), e a checagem de tipos do frontend (`web/`).
 
 ### Validação estatística
 
@@ -46,19 +46,19 @@ Imprime o relatório completo em texto: ausência de sinal preditivo firmográfi
 p̂          = encolhimento hierárquico (empirical Bayes) da taxa de ganho do produto, k derivado dos dados
 VALOR      = preço de tabela × multiplicador de porte (prior neutro 1,00 se a conta é desconhecida)
 URGÊNCIA   = risco(idade) — probabilidade de resolver nos próximos 30 dias, curva isotônica
-PRIORIDADE = p̂ × VALOR × URGÊNCIA                    (dólares, estável — nunca muda por causa do funil)
-SCORE      = percentil(PRIORIDADE) × 100              (contra os 4.238 negócios historicamente ganhos)
-CONFIANÇA  = A–D                                       (quanto se sabe sobre a oportunidade)
-ESTADO     = f(CONFIANÇA, SCORE≥50)                    (Foco urgente / Acompanhar / Engajar / Qualificar / Desistir)
+PRIORIDADE = p̂ × VALOR × URGÊNCIA                    (dólares — valor intermediário auditável, não exibido)
+SCORE      = percentil(PRIORIDADE) × 100              (contra os 4.238 negócios historicamente ganhos — número de prioridade exposto)
+CONFIANÇA  = min(completude, suporte)                  (0–100 — veracidade do dado, não probabilidade)
+ESTADO     = árvore(sem_precedente, SCORE≥95, CONFIANÇA<50)   (Priorizar / Acompanhar / Qualificar / Revisão em lote)
 ```
 
-PRIORIDADE e CONFIANÇA nunca se combinam num único número — um ordena a fila, o outro diz o quanto acreditar na posição. A decomposição completa, com os exemplos de referência e o porquê de cada peça, está em [`../docs/architecture.md`](../docs/architecture.md) e nos specs formais em [`../../../openspec/changes/add-lead-scorer/specs/`](../../../openspec/changes/add-lead-scorer/specs/).
+SCORE e CONFIANÇA nunca se combinam num único número — um ordena a fila, o outro diz o quanto acreditar na posição. PRIORIDADE em dólares deixou de ser exibida ou de ordenar a fila (redesenho 2026-08-20): a decomposição de `log(PRIORIDADE)` atribui 87,3% da variância a VALOR e 0,1% a `p̂` — ordenar por ela era, na prática, ordenar por preço de tabela. Permanece calculada e exportada no CSV como valor auditável. A decomposição completa, com os exemplos de referência e o porquê de cada peça, está em [`../docs/architecture.md`](../docs/architecture.md) e nos specs formais em [`../../../openspec/changes/redesign-score-confianca-estado/`](../../../openspec/changes/redesign-score-confianca-estado/).
 
-Toda oportunidade aberta recebe PRIORIDADE — inclusive as 1.425 sem conta vinculada (VALOR usa o prior neutro de porte) e as 500 em Prospecting (URGÊNCIA fixa em 0,47, sem idade imputada).
+Toda oportunidade aberta recebe SCORE — inclusive as 1.425 sem conta vinculada (VALOR usa o prior neutro de porte) e as 500 em Prospecting (URGÊNCIA fixa em 0,47, sem idade imputada).
 
 ## Abertura direta no pipeline
 
-A aplicação abre direto na aba Oportunidades, com o funil completo (2.089 oportunidades abertas) já visível — não há tela de seleção de identidade nem sessão a manter. Vendedor, gerente e escritório regional são **filtros ordinários** sobre o funil inteiro, iguais a produto e confiança: qualquer valor presente nos dados pode ser escolhido, e o recorte resultante é refletido na URL — compartilhável e recarregável, ao contrário da sessão que existia antes.
+A aplicação abre direto na aba Oportunidades, com a fila trabalhável (993 oportunidades — os três estados `Priorizar`/`Acompanhar`/`Qualificar`) já visível — não há tela de seleção de identidade nem sessão a manter. `Revisão em lote` (1.096 oportunidades sem precedente histórico) fica numa visão própria, fora da fila padrão. Vendedor, gerente e escritório regional são **filtros ordinários** sobre o funil inteiro, iguais a produto e confiança: qualquer valor presente nos dados pode ser escolhido, e o recorte resultante é refletido na URL — compartilhável e recarregável, ao contrário da sessão que existia antes.
 
 Todo endpoint de dados é aberto, sem cabeçalho `Authorization`. Essa é uma decisão consciente para um dataset público de demonstração, sem informação real de cliente — não uma omissão. O trade-off e o caminho de produção (SSO/OIDC real, escopo aplicado no servidor) estão registrados em [`../docs/decisions-log.md`](../docs/decisions-log.md) e em "Limitações declaradas" abaixo.
 

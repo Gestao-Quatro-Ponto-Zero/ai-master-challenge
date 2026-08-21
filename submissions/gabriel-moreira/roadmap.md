@@ -9,14 +9,16 @@ de permutação com p entre 0,26 e 0,98 (ver [solution/report.md](./solution/rep
 [docs/architecture.md](./docs/architecture.md)).
 
 ```
-PRIORIDADE = P̂ganho(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)
-CONFIANÇA  = f(conta conhecida?, etapa, idade dentro da janela observada?)   →  A | B | C | D
-ESTADO     = tabela 4×2 (CONFIANÇA × SCORE)  →  Foco urgente / Acompanhar / Engajar / Qualificar / Desistir
+PRIORIDADE = P̂ganho(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)   [dólares, auditável]
+SCORE      = percentil(PRIORIDADE contra os 4.238 negócios historicamente ganhos)   [0-100, número exposto]
+CONFIANÇA  = min(completude, suporte)                                            [0-100, veracidade do dado]
+ESTADO     = árvore(sem_precedente, SCORE≥95, CONFIANÇA<50)  →  Priorizar / Acompanhar / Qualificar / Revisão em lote
 ```
 
-Entregue: API FastAPI + frontend React com controle de acesso por papel (Sales Agent / Supervisor /
-Manager, escopo real derivado de `sales_teams.csv`), validação reprodutível (`make validate`) e
-suíte de testes (unitário + e2e). Stack e detalhes completos em
+Entregue: API FastAPI + frontend React, sem autenticação (dataset público de demonstração — vendedor,
+gerente e escritório são filtros ordinários, não escopo de sessão), validação reprodutível
+(`make validate`, 9 seções incluindo três resultados negativos de refinamento testados e descartados)
+e suíte de testes (unitário + e2e). Stack e detalhes completos em
 [docs/architecture.md](./docs/architecture.md); decisões e porquês em
 [docs/decisions-log.md](./docs/decisions-log.md).
 
@@ -31,11 +33,12 @@ arquivos de origem. É a lacuna que os itens abaixo endereçam.
 ### 1. Saneamento em lote do funil congelado
 
 A mediana de idade dos 2.089 negócios abertos é 165 dias — mais velha que o negócio mais longo
-que já fechou na história (138 dias). 61,8% do funil (1.291 negócios) está fora de qualquer
-precedente histórico, hoje classificado como **Desistir**.
+que já fechou na história (138 dias). 52,5% do funil (1.096 negócios) está fora de qualquer
+precedente histórico, roteado para o estado **Revisão em lote** — fora da fila ordenada de
+trabalho, não misturado com as oportunidades trabalháveis.
 
-- **Ação:** mutirão de revisão em lote (fechar ou descartar) guiado pela aba Desistir, com
-  exportação CSV já pronta na ferramenta.
+- **Ação:** mutirão de revisão em lote (fechar ou descartar) guiado pela visão própria de
+  Revisão em lote, com exportação CSV do recorte inteiro já pronta na ferramenta.
 - **Esforço:** baixo — não exige nova engenharia, só operação.
 - **Impacto de negócio:** o forecast reportado hoje inclui receita fantasma. Limpar o funil
   restaura a credibilidade do número que o board vê e libera atenção do vendedor para o que

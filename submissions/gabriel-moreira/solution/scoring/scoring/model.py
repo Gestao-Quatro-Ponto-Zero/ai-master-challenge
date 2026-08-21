@@ -7,19 +7,40 @@ usa as mesmas funções para calcular a distribuição de referência de SCORE.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import bisect
+from dataclasses import dataclass, field
 
 from . import constants, curves
 
 
 @dataclass(frozen=True)
 class ScoringContext:
-    """p̂_produto pré-calculado por produto (encolhimento hierárquico)."""
+    """Pré-calculado uma vez sobre os negócios FECHADOS: p̂_produto
+    (encolhimento hierárquico) e os dois insumos de SUPORTE de CONFIANÇA —
+    idades de negócios ganhos (ordenadas, para busca binária) e contagem de
+    negócios fechados por produto.
+    """
 
     p_hat_by_product: dict[str, float]
+    ages_won_ordenadas: list[float] = field(default_factory=list)
+    product_closed_counts: dict[str, int] = field(default_factory=dict)
 
     def p_hat_produto(self, product: str) -> float:
         return self.p_hat_by_product.get(product, constants.GLOBAL_WIN_RATE)
+
+    def s_idade(self, age_days: float) -> float:
+        """Fração saturada de negócios ganhos dentro de +/-SUPORTE_JANELA_IDADE_DIAS
+        da idade informada — a evidência de precedente histórico para esta idade."""
+        janela = constants.SUPORTE_JANELA_IDADE_DIAS
+        lo = bisect.bisect_left(self.ages_won_ordenadas, age_days - janela)
+        hi = bisect.bisect_right(self.ages_won_ordenadas, age_days + janela)
+        n = hi - lo
+        return min(1.0, n / constants.SUPORTE_SATURACAO_N)
+
+    def s_produto(self, product: str) -> float:
+        """Fração saturada de negócios fechados do produto — evidência de fundo."""
+        n = self.product_closed_counts.get(product, 0)
+        return min(1.0, n / constants.SUPORTE_SATURACAO_N)
 
 
 def p_hat(
@@ -68,11 +89,17 @@ def mult_porte(porte: str | None) -> float:
     return constants.MULT_PORTE.get(porte, constants.MULT_PORTE_DESCONHECIDO)
 
 
+def preco_tabela(product: str) -> float:
+    """Preço de tabela do produto, sem multiplicador de porte."""
+    p = constants.PRECO_TABELA.get(product)
+    if p is None:
+        raise KeyError(f"produto fora do catálogo: {product!r}")
+    return p
+
+
 def valor(product: str, porte: str | None) -> float:
     """VALOR = preço_tabela(produto) x mult_porte(porte)."""
-    preco = constants.PRECO_TABELA.get(product)
-    if preco is None:
-        raise KeyError(f"produto fora do catálogo: {product!r}")
+    preco = preco_tabela(product)
     return round(preco * mult_porte(porte), 2)
 
 
@@ -84,6 +111,7 @@ def prioridade(p_hat_value: float, valor_value: float, urgencia_value: float) ->
 @dataclass(frozen=True)
 class Componentes:
     p_hat: float
+    preco_tabela: float
     valor: float
     urgencia: float
     prioridade: float
@@ -98,6 +126,7 @@ def score_componentes(
 ) -> Componentes:
     """Calcula os três componentes e PRIORIDADE para uma oportunidade."""
     p = p_hat(ctx, product, stage, age_days)
+    pt = preco_tabela(product)
     v = valor(product, porte)
     u = urgencia(stage, age_days)
-    return Componentes(p_hat=p, valor=v, urgencia=u, prioridade=prioridade(p, v, u))
+    return Componentes(p_hat=p, preco_tabela=pt, valor=v, urgencia=u, prioridade=prioridade(p, v, u))

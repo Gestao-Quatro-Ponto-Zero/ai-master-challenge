@@ -2,7 +2,7 @@
 de referência dos specs."""
 
 from scoring import constants
-from scoring.model import mult_porte, prioridade, urgencia, valor
+from scoring.model import mult_porte, prioridade, urgencia, valor, preco_tabela
 from scoring.model import p_hat as p_hat_fn
 
 

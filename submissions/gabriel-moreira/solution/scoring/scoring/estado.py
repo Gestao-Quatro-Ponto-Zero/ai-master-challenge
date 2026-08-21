@@ -1,32 +1,31 @@
-"""Atribuição de ESTADO — tabela de decisão 4x2, CONFIANÇA x SCORE.
+"""Atribuição de ESTADO — árvore de decisão sobre SCORE e CONFIANÇA.
 
-| CONFIANÇA | SCORE >= 50   | SCORE < 50  |
-|-----------|---------------|-------------|
-| A         | Foco urgente  | Acompanhar  |
-| B         | Acompanhar    | Engajar     |
-| C         | Engajar       | Qualificar  |
-| D         | Desistir      | Desistir    |
+Avaliada nesta ordem exata:
+1. sem precedente histórico  -> revisao_lote
+2. SCORE >= corte            -> prioritize
+3. CONFIANÇA < corte         -> qualificar
+4. caso contrário            -> acompanhar
 
-CONFIANÇA D força Desistir independentemente de SCORE.
+Ausência de precedente é lida diretamente (não derivada de um corte sobre
+CONFIANÇA): oportunidades novas sem cadastro e antigas sem precedente se
+aglomeram em valores adjacentes de CONFIANÇA, em ordem invertida — nenhum
+corte único separa as duas populações (design.md, decisão "roteamento por
+condição nomeada").
 """
 
 from __future__ import annotations
 
 from . import constants
 
-_TABELA: dict[str, dict[bool, str]] = {
-    "A": {True: "foco_urgente", False: "acompanhar"},
-    "B": {True: "acompanhar", False: "engajar"},
-    "C": {True: "engajar", False: "qualificar"},
-    "D": {True: "desistir", False: "desistir"},
-}
 
-
-def estado(confianca_nivel: str, score: float) -> str:
-    if confianca_nivel not in _TABELA:
-        raise ValueError(f"nível de confiança inválido: {confianca_nivel!r}")
-    acima_do_corte = score >= constants.SCORE_CORTE_ESTADO
-    return _TABELA[confianca_nivel][acima_do_corte]
+def estado(score: float, confianca_valor: float, sem_precedente: bool) -> str:
+    if sem_precedente:
+        return "revisao_lote"
+    if score >= constants.SCORE_CORTE_PRIORITIZE:
+        return "prioritize"
+    if confianca_valor < constants.CONFIANCA_CORTE_QUALIFICAR:
+        return "qualificar"
+    return "acompanhar"
 
 
 def estado_label(estado_key: str) -> str:

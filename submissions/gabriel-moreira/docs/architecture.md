@@ -1,6 +1,6 @@
 # Arquitetura da Solução
 
-Visão geral da implementação. Para a lógica de decisões que levou aqui, ver [decisions-log.md](./decisions-log.md). Espelha os requisitos formais em [`openspec/changes/add-lead-scorer/`](../../../openspec/changes/add-lead-scorer/).
+Visão geral da implementação. Para a lógica de decisões que levou aqui, ver [decisions-log.md](./decisions-log.md). Espelha os requisitos formais em [`openspec/changes/add-lead-scorer/`](../../../openspec/changes/add-lead-scorer/) (motor original) e [`openspec/changes/redesign-score-confianca-estado/`](../../../openspec/changes/redesign-score-confianca-estado/) (SCORE/CONFIANÇA/ESTADO, 2026-08-20).
 
 ---
 
@@ -13,11 +13,15 @@ O que diferencia uma oportunidade da outra é **valor** (produtos de US$ 55 a US
 **A fórmula:**
 
 ```
-PRIORIDADE = P̂ganho(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)
-CONFIANÇA  = f(conta conhecida?, etapa, idade dentro da janela observada?)   →  A | B | C | D
+PRIORIDADE = P̂ganho(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)   [dólares, valor auditável]
+SCORE      = percentil(PRIORIDADE contra os 4.238 negócios historicamente ganhos) × 100
+
+CONFIANÇA  = min(completude, suporte)                                            [0-100]
+  completude = % dos 5 campos de cadastro observados (engajamento, conta, funcionários, setor, time)
+  suporte    = 0,75 × precedente_na_idade + 0,25 × volume_do_produto, cada termo saturando em n/50
 ```
 
-Dois números, nunca combinados: PRIORIDADE ordena a fila (em dólares — "quanto está em jogo agora"), CONFIANÇA diz o quanto acreditar na posição (A a D). Um **ESTADO** deriva dos dois e vira a etiqueta de ação que o vendedor vê: **Foco urgente, Acompanhar, Engajar, Qualificar, Desistir**.
+**SCORE é o único número de prioridade exposto** — não PRIORIDADE em dólares, que permanece calculada e exportada no CSV como valor intermediário auditável, mas não aparece na tela nem ordena a fila (ver §Redesenho 2026-08-20 abaixo para o porquê). CONFIANÇA e SCORE nunca se combinam num único número: CONFIANÇA mede quanto do necessário para pontuar está de fato observado; SCORE mede quanto a oportunidade vale agora. Um **ESTADO** deriva de uma árvore de decisão sobre os dois e vira a etiqueta de ação que o vendedor vê: **Priorizar, Acompanhar, Qualificar, Revisão em lote**.
 
 **Toda oportunidade aberta recebe PRIORIDADE — inclusive as 1.425 sem conta e as 500 em Prospecting.** A ausência de conta custa no máximo 8% de VALOR (prior neutro de porte), nunca a viabilidade do score.
 
@@ -91,7 +95,7 @@ MERGE:
 |---|---|
 | `technolgy` typo em sector | → `technology` |
 | `GTXPro` vs `GTX Pro` | → normalizar para `GTX Pro` (1.147 negócios) |
-| 1.425 deals sem `account` | pontuáveis normalmente — VALOR usa prior neutro de porte (mult=1,00), CONFIANÇA cai para B ou C |
+| 1.425 deals sem `account` | pontuáveis normalmente — VALOR usa prior neutro de porte (mult=1,00), completude de CONFIANÇA cai (faltam conta/funcionários/setor) |
 | 500 Prospecting sem `engage_date` | pontuáveis normalmente — `p̂` = `p̂_produto` sem ajuste de idade, URGÊNCIA fixa em 0,47 |
 | bimodal cycle (picos 0–19d e 60–90d) | motivou a leitura das curvas de aging como função em degraus, não decaimento contínuo |
 
@@ -192,86 +196,96 @@ Significa que, entre negócios em Engaging com 57 dias de idade, 48,9% resolvem 
 
 Nenhum dos 6.711 negócios fechados levou mais de 138 dias. Acima disso, o sistema **não extrapola** a curva — reverte ao prior (`p̂` = 0,632, URGÊNCIA = 0,15) em vez de aplicar forward-fill, que premiaria o abandono (daria `p̂` = 0,751 a um negócio de 377 dias, o mais alto da curva, exatamente ao mais parado do funil).
 
-### CONFIANÇA — quanto se sabe sobre a oportunidade
+### CONFIANÇA — quanto se sabe sobre a oportunidade (redesenhada 2026-08-20)
 
-CONFIANÇA responde a uma pergunta diferente de PRIORIDADE: "**quanto do necessário para pontuar esta oportunidade eu de fato tenho?**" — independente de quanto ela vale. É atribuída por regra determinística em ordem de precedência (censura > conta+Engaging > conta ou Engaging > resto):
+CONFIANÇA responde: "**quanto do que este score afirma está apoiado em dado observado e em precedente histórico?**" — uma escala numérica 0-100, `min(completude, suporte)`, não mais uma letra A-D. A versão original media isso majoritariamente por idade (censura acima de 138 dias definia o nível D, que por sua vez forçava o estado Desistir) — o que confundia CONFIANÇA com URGÊNCIA e fazia 61,8% do funil aberto herdar a recomendação "desistir". A versão redesenhada separa as duas coisas por completo: idade não entra em CONFIANÇA, só no termo de suporte via densidade de precedente.
 
-#### Regras de atribuição
+#### completude — os cinco campos de cadastro
 
-**1. Nível D — Censurado (idade > 138 dias)**
 ```
-if stage == "Engaging" and age_days > 138:
-    CONFIANÇA = D
+completude = 100 × (campos observados) / 5
+campos: engage_date (estágio Engaging) · conta vinculada · funcionários da conta · setor · time atribuído
 ```
-Fora de qualquer precedente histórico. Nenhum negócio fechado levou mais de 138 dias — não há base factual para confiar em um score, mesmo que o número seja calculado.
 
-**2. Nível A — Dados completos (conta + Engaging + dentro da janela)**
+#### suporte — quanto histórico sustenta os números usados
+
 ```
-if stage == "Engaging" and has_account and age_days ≤ 138:
-    CONFIANÇA = A
+s_idade   = min(1, negócios_ganhos_na_janela_de_±15_dias / 50)
+s_produto = min(1, negócios_fechados_do_produto / 50)
+
+com idade conhecida:  suporte = 100 × (0,75 × s_idade + 0,25 × s_produto)
+sem idade (Prospecting): suporte = 100 × s_produto   ← nunca zera o termo de idade, só o omite
 ```
-Conta conhecida, oportunidade formalizada, dentro da janela de ciclos observados. Máxima confiança — temos todos os ingredientes.
 
-**3. Nível B — Dados parciais (conta OU Engaging, mas não ambos)**
+`min`, não média: saber todos os campos de uma oportunidade sem precedente histórico não a torna confiável — a metade mais fraca governa. Omitir (não zerar) o termo de idade quando ela é desconhecida evita cobrar a mesma ausência duas vezes (já cobrada em completude) — sem essa correção, as 500 oportunidades em Prospecting, as mais novas do funil, caíam no mesmo tratamento das mais abandonadas.
+
+**Marcador de ausência de precedente:** `sem_precedente = (s_idade == 0 com idade conhecida)` — nenhum negócio ganho fechou na faixa de idade desta oportunidade. É esse marcador, não um corte sobre CONFIANÇA, que decide o roteamento de ESTADO — porque oportunidades novas sem cadastro e oportunidades antigas sem precedente se aglomeram em valores adjacentes de CONFIANÇA (20 e 25), em ordem invertida: nenhum corte único separa as duas populações.
+
+### ESTADO — árvore de decisão sobre SCORE e CONFIANÇA (redesenhada 2026-08-20)
+
 ```
-if (stage == "Engaging" or has_account) and not (stage == "Engaging" and has_account):
-    CONFIANÇA = B
+1. sem precedente histórico   -> Revisão em lote
+2. SCORE >= 95                -> Priorizar
+3. CONFIANÇA < 50             -> Qualificar
+4. caso contrário             -> Acompanhar
 ```
-Falta um dos dois: ou temos a conta mas o lead ainda é Prospecting (engajamento não confirmado), ou temos o negócio em Engaging mas sem conta vinculada (falta contexto). Moderada confiança.
 
-**4. Nível C — Cadastro incompleto (sem conta e Prospecting)**
-```
-if not has_account and stage == "Prospecting":
-    CONFIANÇA = C
-```
-Nem conta nem engajamento formalizado — é apenas um lead novo. O score é calculável, mas assenta em priors firmes (potencial de porte, taxa global).
+CONFIANÇA e ESTADO não são a mesma coisa: **CONFIANÇA é o quanto acreditar no score**; **ESTADO é a ação recomendada**. A tabela 4×2 original (A-D × SCORE≥50) deu lugar a uma árvore, porque CONFIANÇA contínua em 0-100 não tem quebras naturais para uma tabela cruzada, e a ordem explícita da árvore corrige o defeito real da versão anterior: "CONFIANÇA D → Desistir" era uma regra de mão única escondida numa célula, aplicada a 61,8% do funil.
 
-#### Distribuição nos dados abertos
+O corte de SCORE (95) é o percentil 95 da própria distribuição de referência — acompanha a recalibração trimestral sem constante própria. O corte de CONFIANÇA (50) significa "menos da metade do que este score afirma está apoiado em dado observado e precedente" — ambos ancorados, não ajustados por tentativa e erro.
 
-| Nível | Rótulo | Regra | % do funil | % da prioridade |
-|---|---|---|---:|---:|
-| **A** | Dados completos | conta ∩ Engaging ∩ idade ≤ 138 | 4,3% | 11,3% |
-| **B** | Dados parciais | (conta ∪ Engaging) \ (conta ∩ Engaging) | 17,8% | 39,2% |
-| **C** | Cadastro incompleto | ¬conta ∩ Prospecting | 16,1% | 20,2% |
-| **D** | Fora do histórico | idade > 138 | 61,8% | 29,3% |
-
-**Interpretação:** 61,8% do funil está em D — oportunidades paradas há mais de 138 dias, sem precedente no histórico. Mesmo assim, carrregam 29,3% da prioridade total (valor agregado alto, mas confiança baixa). A diagonal CONFIANÇA × SCORE é onde o operacional de verdade acontece — ver §ESTADO abaixo.
-
-### ESTADO — cruza CONFIANÇA e SCORE, substitui faixas e lanes
-
-CONFIANÇA e ESTADO não são a mesma coisa: **CONFIANÇA é o quanto acreditar no score** (o fundamento — quanto se sabe sobre a oportunidade); **ESTADO é a ação recomendada**, e a ação certa depende tanto de quanto a oportunidade vale (SCORE) quanto de quão sólido é esse número (CONFIANÇA). Diamante/Ouro/Prata/Bronze e as três lanes antigas (Prioridades/Novos/Zumbis) deram lugar a uma única tabela de decisão 4×2:
-
-| CONFIANÇA | SCORE ≥ 50 | SCORE < 50 |
-|---|---|---|
-| **A** | Foco urgente | Acompanhar |
-| **B** | Acompanhar | Engajar |
-| **C** | Engajar | Qualificar |
-| **D** | Desistir | Desistir |
-
-O corte de SCORE é 50 — a mediana da própria distribuição de referência (negócios ganhos), não uma constante extra a derivar e congelar.
-
-A diagonal é o ponto: um SCORE alto com CONFIANÇA fraca (ex.: B) não vira Foco urgente — vira Acompanhar, porque agir com urgência sobre um número em que não se confia totalmente é o próprio risco que CONFIANÇA sinaliza. Um SCORE baixo com CONFIANÇA C não é Desistir — é Qualificar, porque falta informação, não necessariamente falta valor. CONFIANÇA D é a única regra de mão única: abaixo do suporte histórico dos dados (idade > 138 dias), nenhum SCORE calculado é confiável o bastante para justificar outra ação que não revisão em lote.
+`Qualificar` absorve o antigo `Engajar` — os dois estados convergiam para o mesmo plano de ação ("mantenha follow-up"/"busque informação"), e a distinção que os separaria (falta informação vs. falta maturidade) é exatamente o que a metade de completude já mede como número exposto, não precisa ser um estado à parte.
 
 | Estado | Ação |
 |---|---|
-| **Foco urgente** | Priorizar contato agora — dado confiável, alto valor em jogo na janela |
-| **Acompanhar** | Follow-up regular — ou o valor não é alto o bastante, ou a confiança não sustenta agir com urgência ainda |
-| **Engajar** | Buscar a informação que falta (conta ou engajamento pleno) — o valor potencial já justifica o esforço |
-| **Qualificar** | Enriquecer cadastro antes de tratar como tarefa priorizada — falta informação e o valor aparente é baixo |
-| **Desistir** | Revisão em lote com o gestor — fechar ou descartar, não trabalhar individualmente |
+| **Priorizar** | Contato esta semana — SCORE no percentil 95+ da distribuição histórica de vitórias |
+| **Acompanhar** | Follow-up regular — nada falta saber e o valor ainda não justifica agir com urgência agora |
+| **Qualificar** | Obter a informação específica que falta (nomeada pela razão de CONFIANÇA) antes de tratar como tarefa priorizada |
+| **Revisão em lote** | Passivo de higiene de dados — sem precedente histórico de fechamento. Fora da fila ordenada de trabalho, tratado em lote com o gestor |
+
+Distribuição resultante sobre o funil atual (2.089 oportunidades abertas), contra a vigente antes do redesenho:
+
+```
+Priorizar         54     (antes: Foco urgente   50)
+Acompanhar       283     (antes: Acompanhar    243)
+Qualificar       656     (antes: Qualificar 197 + Engajar 308)
+Revisão em lote 1.096     (antes: Desistir    1.291)
+Fila trabalhável 993
+```
+
+`Revisão em lote` tem idade mínima de 154 dias — é o passivo real (todos acima da fronteira de 138 dias), não um depósito; nenhuma das 500 oportunidades em Prospecting cai nele, porque idade desconhecida nunca é lida como "sem precedente".
 
 ### Explicabilidade e plano de ação
 
 Cada oportunidade expõe:
 
 ```
-Foco urgente · GTX Plus Pro · US$ 5.865,74 · confiança A
-p̂ +0,764 · Valor US$ 5.865,74 · Urgência 1,00 → PRIORIDADE ≈ US$ 4.482,00
-"Conta conhecida, negócio em Engaging, dentro da janela histórica.
- 88% das vitórias já aconteceram nesta idade — priorize contato esta semana."
+Priorizar · GTX Plus Pro · confiança 100 (completude e suporte equivalentes)
+p̂ 0,764 · Valor US$ 5.865,74 · Urgência 1,00 → PRIORIDADE ≈ US$ 4.482,00 (auditável; SCORE é o número de prioridade)
+"98,8% das vitórias históricas já ocorreram nesta idade — priorize contato esta semana."
 ```
 
-Texto gerado por template determinístico a partir dos componentes — nunca por um modelo não determinístico ou serviço externo, para preservar auditabilidade.
+Texto gerado por template determinístico a partir dos componentes — nunca por um modelo não determinístico ou serviço externo, para preservar auditabilidade. A razão de CONFIANÇA nomeia qual metade (completude ou suporte) governou o mínimo e, quando é completude, quais campos especificamente faltam — nunca apenas repete o número.
+
+### Redesenho 2026-08-20 — por que PRIORIDADE saiu da tela
+
+Três problemas medidos motivaram o redesenho, documentados por inteiro em `decisions-log.md`:
+
+1. **PRIORIDADE em dólares era, na prática, ordenação por preço de tabela.** A decomposição da variância de `log(PRIORIDADE)` atribui 87,3% a VALOR e 0,1% a `p̂` — `spearman(PRIORIDADE, preço_tabela) = 0,909`. O preço varia 486,7× entre produtos; `p̂_produto` varia 1,074×. SCORE (percentil contra os negócios ganhos) não sofre dessa distorção porque normaliza contra uma população fixa, mas exibir PRIORIDADE ao lado dele convidava a ler o dólar como a prioridade real.
+2. **CONFIANÇA D forçava Desistir para 61,8% do funil.** Uma ferramenta cuja tela inicial recomenda abandonar dois terços da carteira não é usada duas vezes.
+3. **Acompanhar e Engajar entregavam o mesmo plano de ação.**
+
+Três hipóteses de melhoria do motor foram testadas e **as três falharam** — reprodutíveis em `validation/backtest.py`, seções 6-8:
+
+| Hipótese testada | Resultado |
+|---|---|
+| Condicionar `p̂` por produto×setor | `logloss` 0,66016 vs. 0,65828 do prior global achatado — pior |
+| Curvas de aging por produto | `logloss` 0,65525 (0,65275 com encolhimento) vs. 0,64936 da curva global — pior |
+| URGÊNCIA por produto | dispersão de medianas de ciclo entre produtos 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 |
+
+A fórmula em si (`p̂ × VALOR × URGÊNCIA`, curvas globais, `p̂_produto` por encolhimento) **não mudou** — o redesenho muda como o resultado é exposto e roteado, não como é calculado.
+
+**Correção incidental encontrada durante a implementação:** `classificar_porte` só verificava `employees is None`, mas o merge com `accounts.csv` preenche funcionários ausentes com `NaN`, não `None` — e `NaN < limiar` é sempre `False` em Python. Toda oportunidade sem conta (1.425 das 2.089) caía silenciosamente em "Enterprise" (mult_porte 1,06) em vez do prior neutro (1,00) que o requisito de VALOR já prometia. Corrigido junto com o redesenho (`employees != employees` cobre NaN além de `None`).
 
 ---
 
@@ -287,26 +301,26 @@ Rollup de gestão e download do dataset processado completo estão disponíveis 
 
 ## Interface
 
-A aplicação abre direto no pipeline — sem tela de identificação — na aba Oportunidades, com os cinco estados visíveis desde o primeiro carregamento.
+A aplicação abre direto no pipeline — sem tela de identificação — na aba Oportunidades. Por padrão exibe a **fila trabalhável**: os três estados `Priorizar`/`Acompanhar`/`Qualificar` (993 oportunidades). `Revisão em lote` não intercala com a fila padrão — é alcançada por uma visão própria, com um link "N oportunidades em revisão em lote — ver →" e contagem sempre visível.
 
 ### Tiles de indicadores (refletem o recorte filtrado)
 
 ```
-[total] negócios · receita ganha [histórico] · valor esperado em aberto (soma de PRIORIDADE) · [n] em Desistir [ALERTA] · maior deal [histórico]
+[total] negócios · receita ganha [histórico] · valor esperado em aberto (soma de PRIORIDADE) · [n] em Revisão em lote [ALERTA] · maior deal [histórico]
 
 intervalo de datas | idade da oportunidade mais antiga do recorte | descrição dos filtros ativos
 ```
 
-Os dois tiles históricos (receita ganha, maior negócio fechado) respondem só a filtros de organização e produto — nunca a estado, confiança ou idade, que só existem para o funil aberto — e são rotulados como tal. O tile de Desistir é o único elemento em cor de alerta (#AF4332) — reservada exclusivamente a ele, ao estado Desistir e a ações destrutivas.
+Os dois tiles históricos (receita ganha, maior negócio fechado) respondem só a filtros de organização e produto — nunca a estado, confiança ou idade, que só existem para o funil aberto — e são rotulados como tal. O tile de Revisão em lote é o único elemento em cor de alerta (#AF4332) — reservada exclusivamente a ele, ao estado Revisão em lote e a ações destrutivas; o texto nomeia ausência de precedente histórico, nunca "perdido" ou "desistir" — não é a mesma coisa que um negócio perdido.
 
 ### Filtros
 
-Persistidos em URL params: vendedor, gerente, escritório, produto, confiança, estado (multi-seleção), faixa de idade (régua de dois cursores), página, ordenação e a oportunidade aberta no painel de detalhe. Vendedor/gerente/escritório são filtros comuns sobre o funil inteiro — nenhum é restrito por sessão. As opções vêm de `/filter-options`, não da página corrente da listagem.
+Persistidos em URL params: vendedor, gerente, escritório, produto, faixa de CONFIANÇA (0-100, não mais letra), estado (multi-seleção, restrito aos três trabalháveis), faixa de idade (régua de dois cursores), página, ordenação e a oportunidade aberta no painel de detalhe. Vendedor/gerente/escritório são filtros comuns sobre o funil inteiro — nenhum é restrito por sessão. As opções vêm de `/filter-options`, não da página corrente da listagem.
 
 ### Duas abas
 
-1. **Oportunidades** (inicial) — os cinco estados como filtro de chips (com contagem), listagem paginada no servidor (100 por página, ordenável por SCORE/PRIORIDADE/idade), painel lateral de detalhe ao abrir uma linha, e exportação de identificadores do recorte filtrado inteiro (não só da página carregada)
-2. **Gestão** — disponível a qualquer cliente; rollup por vendedor/gerente/escritório + distribuição de esforço por produto; download do dataset processado completo
+1. **Oportunidades** (inicial) — os três estados trabalháveis como filtro de chips (com contagem), listagem paginada no servidor (100 por página, ordenável por SCORE/CONFIANÇA/idade — PRIORIDADE em dólares não é opção de ordenação nem coluna), painel lateral de detalhe ao abrir uma linha (VALOR e a decomposição completa continuam visíveis ali; PRIORIDADE aparece como valor auditável, não como número de prioridade), visão própria de Revisão em lote com exportação do recorte inteiro, e exportação de identificadores do recorte filtrado (não só da página carregada)
+2. **Gestão** — disponível a qualquer cliente; rollup por vendedor/gerente/escritório (contagem pelos quatro estados + CONFIANÇA mediana do grupo, rotulada como qualidade de cadastro, não desempenho) + distribuição de esforço por produto; download do dataset processado completo
 
 ### Tema
 
@@ -319,13 +333,13 @@ Paleta [G4 Business](https://g4business.com/):
 --border: #E5E7EB
 --text-main: #001F35
 --text-muted: #64748B
---alert: #AF4332          /* exclusivo de Desistir e ações destrutivas */
+--alert: #AF4332          /* exclusivo de Revisão em lote e ações destrutivas */
 
 Font: Manrope (body, headings)
 Radii: 8, 12, 16, 20, 24px
 ```
 
-Foco urgente usa o acento dourado (positivo/urgente), não a cor de alerta (reservada a Desistir).
+Priorizar usa o acento dourado (positivo/urgente), não a cor de alerta (reservada a Revisão em lote).
 
 ---
 
@@ -392,8 +406,8 @@ scoring/
     curves.py                 # p_ganho(t), risco(t) — leitura em degraus dos breakpoints calibrados
     model.py                   # p_hat(), valor(), urgencia(), prioridade() — a fórmula
     reference.py                 # distribuição de referência (PRIORIDADE dos negócios Won) e percentil -> SCORE
-    confianca.py                  # atribuição de A/B/C/D
-    estado.py                      # tabela de decisão 4x2 -> Foco urgente/Acompanhar/Engajar/Qualificar/Desistir
+    confianca.py                  # CONFIANÇA = min(completude, suporte), 0-100
+    estado.py                      # árvore de decisão -> Priorizar/Acompanhar/Qualificar/Revisão em lote
     explicacao.py                   # decomposição + texto de plano de ação (determinístico)
     export.py                        # CSV consolidado do dataset processado
     pipeline.py                       # load_and_score(): orquestra tudo acima
@@ -438,7 +452,11 @@ validation/
   shrinkage_check.py                    # reproduz k por nível, honesto sobre o achado do nível "produto"
   isotonic_check.py                        # recalcula p_ganho(t)/risco(t), verifica monotonicidade e 138 dias
   concentration.py                            # top 10%/30% de PRIORIDADE vs preço bruto
-  tests/                                         # determinismo + consistência artefato/CSV/API
+  sector_conditioning_check.py                   # CV 5-fold: p̂ por produto×setor é pior que o prior global
+  aging_by_product_check.py                         # CV 5-fold: curva de aging por produto é pior que a global
+  cycle_duration_permutation.py                        # permutação: produto não explica duração de ciclo
+  confianca_distribution.py                               # percentis de CONFIANÇA/completude/suporte
+  tests/                                                     # determinismo + consistência artefato/CSV/API
 ```
 
 **O crítico:** `scoring/` é uma dependência limpa, sem FastAPI ou React. API, exportação CSV e validação a importam via `pip install -e` — o número exibido, o número exportado e o número validado são sempre o mesmo cálculo (ver testes de consistência em `api/tests/test_e2e.py` e `validation/tests/test_validation.py`).
@@ -457,7 +475,7 @@ validation/
 - **Persistência.** Tudo em memória. Banco gerenciado (Supabase ou equivalente) necessário acima de ~100 MB de dados ou múltiplos usuários simultâneos escrevendo.
 - **Previsão categórica de win/loss.** `p̂` varia só entre 0,60 e 0,75 — a diferenciação real é de valor e urgência, não de probabilidade. Instrumentar dados comportamentais primeiro (ver `analise-lead-scoring.md` §6).
 - **Rebalanceamento automático de portfólio.** "39,6% de esforço em 5,4% de receita" é um insight na aba Gestão; a prescrição é decisão de RevOps, fora do sistema.
-- **Write-back para CRM.** Desistir exporta CSV; sem connector de CRM.
+- **Write-back para CRM.** A visão de Revisão em lote exporta CSV; sem connector de CRM.
 
 ### Evoluções óbvias (MVP → produção)
 
@@ -471,15 +489,19 @@ validation/
 
 ## Validação
 
-`solution/validation/backtest.py` reproduz:
+`solution/validation/backtest.py` reproduz, em 9 seções:
 
-- AUC ≈ 0,50 por atributo firmográfico isolado, em holdout temporal
-- Testes de permutação (p entre 0,26 e 0,98) para vendedor/produto/setor/conta
-- Colapso de `k` para conta×produto e produto×setor (variância em excesso ≤ 0)
-- Monotonicidade de `risco(t)` e fronteira de 138 dias confirmada nos dados carregados
-- Concentração de PRIORIDADE: top 10% da fila concentra ~50% do valor em risco total — comparado lado a lado com ranking por preço puro, rotulado como concentração, não como validação preditiva
+1. AUC ≈ 0,50 por atributo firmográfico isolado, em holdout temporal
+2. Testes de permutação (p entre 0,26 e 0,98) para vendedor/produto/setor/conta
+3. Colapso de `k` para conta×produto, produto×setor **e produto** (variância em excesso ≤ 0 nos três — `K_PRODUTO=4` é aproximação retida por política, não resultado do cálculo)
+4. Monotonicidade de `risco(t)` e fronteira de 138 dias confirmada nos dados carregados
+5. Concentração de PRIORIDADE: top 10% da fila concentra ~49% do valor em risco total — comparado lado a lado com ranking por preço puro, rotulado como concentração, não como validação preditiva
+6. **Condicionar `p̂` por produto×setor** (CV 5-fold): `logloss` 0,66016 vs. 0,65828 do prior global achatado — pior, resultado negativo documentado
+7. **Curvas de aging por produto** (CV 5-fold): `logloss` 0,65525 (0,65275 com encolhimento) vs. 0,64936 da curva global — pior; ao menos um produto (`GTK 500`, 25 negócios fechados) não tem amostra para curva própria
+8. **URGÊNCIA por produto** (permutação): dispersão de medianas de ciclo entre produtos 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 — produtos mais parecidos entre si do que o acaso produziria
+9. Distribuição de CONFIANÇA e das duas metades (completude/suporte), para que uma recalibração que torne a janela de idade ou a saturação de suporte inadequadas fique visível
 
-Conclusão: **justifica ordenar por valor em risco, não por um classificador de probabilidade.** Os 62% do funil sem precedente histórico (Desistir) ficam deprioritizados, não zerados — carregam 29,3% da prioridade total, não 0%.
+Conclusão: **justifica ordenar por valor em risco (SCORE), não por um classificador de probabilidade, nem por hierarquias de condicionamento adicionais (setor, aging por produto).** As oportunidades sem precedente histórico (`Revisão em lote`, 1.096 de 2.089) ficam roteadas para revisão em lote, fora da fila ordenada — não zeradas, não misturadas com a fila trabalhável.
 
 ---
 

@@ -213,9 +213,93 @@ Revalidei contra `challenges/build-003-lead-scorer/README.md`: a fórmula contin
 
 ---
 
-## Próximas decisões (se houver continuação)
+## 2026-08-20 — Redesenho de SCORE/CONFIANÇA/ESTADO, via sessão de grilling (33 perguntas)
 
-- [ ] A/B test: metade dos vendedores prioriza pelo score, metade não. Métrica: receita por vendedor por trimestre.
-- [ ] Recalibração trimestral: `k`, curvas de aging e limiares de idade gravados como percentis recalculados dos últimos 4 trimestres, não como as constantes fixas derivadas de 2016–2017.
-- [ ] Coletar dados comportamentais (§6 do analise): speed-to-lead mata qualquer modelo de probability.
-- [ ] Validar, assim que a implementação rodar sobre os dados carregados, se o corte de SCORE=50 na tabela de ESTADO produz uma distribuição operacionalmente razoável entre os cinco estados (ex.: Foco urgente não pode virar uma fila vazia nem uma fila do tamanho do funil inteiro) — o corte é principiado (mediana da referência), mas vale conferir na prática antes de considerar definitivo.
+**Contexto:** ao revisar a entrega já validada, apontei três problemas de uso: PRIORIDADE em dólares lia como "venda o produto caro", CONFIANÇA D forçava Desistir para 61,8% do funil (dominada por idade, que já é o insumo de URGÊNCIA), e Acompanhar/Engajar davam o mesmo conselho. Pedi uma sessão de grilling ao Claude Code — 33 perguntas em rodadas, cada uma fundamentada em números medidos sobre os dados reais, não em opinião — para redesenhar as três peças sem tocar a fórmula em si.
+
+### PRIORIDADE sai da tela; SCORE vira o único número de prioridade
+
+**Decisão:** PRIORIDADE em dólares deixa de ser exibida e de ordenar a fila. SCORE (percentil 0–100 contra os 4.238 negócios ganhos) passa a ser o único número de prioridade — em tela, como ordenação padrão da API, e como insumo de ESTADO. PRIORIDADE continua calculada e exportada no CSV como valor auditável.
+
+**Por quê:** medido, não suposto — a decomposição da variância de `log(PRIORIDADE)` atribui 87,3% a VALOR e 0,1% a `p̂`; `spearman(PRIORIDADE, preço_tabela) = 0,909`. O preço varia 486,7× entre produtos contra 1,074× de `p̂_produto`. O top 100 da fila antiga não continha uma única oportunidade de GTX Basic, MG Special ou GTX Plus Basic — três produtos que somam 1.190 das 2.089 oportunidades abertas.
+
+### Três hipóteses de refinar o motor, testadas e rejeitadas
+
+Ao investigar se PRIORIDADE deveria condicionar por mais variáveis (setor, produto), pedi para testar cada hipótese por validação cruzada antes de implementar qualquer uma. **As três pioraram a previsão fora da amostra** — reproduzível em `validation/backtest.py`, seções 6–8:
+
+| Hipótese | Resultado (CV 5-fold ou permutação) |
+|---|---|
+| `p̂` por produto×setor | `logloss` 0,66016 vs. 0,65828 do prior global achatado — pior |
+| Curva de aging por produto | `logloss` 0,65525 (0,65275 com encolhimento) vs. 0,64936 da curva global — pior |
+| URGÊNCIA por produto | dispersão de medianas 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 |
+
+**Por quê manter a fórmula como está:** a curva de aging global é o único modelo que supera o prior achatado em qualquer teste — é o sinal real desta base, e reparti-lo por produto destrói o sinal em vez de refiná-lo. `GTK 500` (25 negócios fechados) nem teria amostra para uma curva própria. Valor do achado está em documentá-lo como resultado negativo reprodutível, não em implementar a hipótese.
+
+### CONFIANÇA vira `min(completude, suporte)`, 0–100 — idade sai por completo
+
+**Decisão:** CONFIANÇA deixa de ser A–D e passa a ser um número 0–100, `min(completude, suporte)`. **completude** é a fração de 5 campos de cadastro observados (engajamento, conta, funcionários, setor, time). **suporte** é `0,75 × s_idade + 0,25 × s_produto`, cada termo saturando em `min(1, n/50)` — sem idade conhecida, usa só o termo de produto (nunca zera o de idade, para não cobrar a mesma ausência duas vezes que completude já cobra).
+
+**Por quê `min` e não média:** testado durante a sessão — 353 oportunidades com completude 100 e suporte 0 pontuariam 50 sob média (empatando com uma oportunidade parcialmente conhecida mas com precedente real), e 25 sob `min`. Conhecer todos os campos de uma oportunidade sem precedente histórico não a torna confiável — a metade mais fraca deve governar.
+
+**Por quê idade sai por completo:** CONFIANÇA media majoritariamente há quanto tempo a oportunidade estava aberta, que já é o insumo de URGÊNCIA — misturar as duas fazia 61,8% do funil (tudo acima de 138 dias) herdar CONFIANÇA D e, por tabela, o estado Desistir.
+
+**Ajuste de completude, mesmo dia:** a primeira versão usava só 2 campos (engajamento, funcionários), o que deixava a escala com só 3 valores possíveis. Pedi para expandir para os 5 campos que descrevem veracidade do cadastro, não só os que a fórmula consome diretamente — setor e time entram em completude mesmo não entrando em `p̂`.
+
+### `revisao_lote` roteado por condição nomeada, não por corte de CONFIANÇA
+
+**Decisão:** a árvore de ESTADO checa `sem_precedente` (nenhum negócio ganho fechou na faixa de idade) **antes** de olhar SCORE ou CONFIANÇA — não como um corte no valor combinado.
+
+**Por quê:** medido durante a sessão — oportunidades novas sem cadastro (Prospecting sem conta) e oportunidades antigas sem precedente se aglomeram em valores adjacentes de CONFIANÇA (20 e 25), em **ordem invertida**. Nenhum corte único de CONFIANÇA separa as duas populações sem misturar oportunidades novas e saudáveis no mesmo balde das realmente abandonadas — testado explicitamente: um corte em 25 capturava 337 oportunidades em Prospecting junto com as antigas.
+
+### ESTADO: árvore de 4 valores, substitui a tabela 4×2 de 5
+
+**Decisão:**
+```
+1. sem_precedente        -> Revisão em lote
+2. SCORE >= 95            -> Priorizar
+3. CONFIANÇA < 50          -> Qualificar
+4. caso contrário          -> Acompanhar
+```
+`Engajar` é absorvido por `Acompanhar` (mesmo plano de ação); `Desistir` é substituído por `Revisão em lote` (mesma população, mas roteada por precedente, não por CONFIANÇA, e nomeada como passivo de dados, não como recomendação de abandonar).
+
+**Por quê os cortes:** SCORE ≥ 95 é o percentil 95 da própria distribuição de referência — 63 oportunidades nos dados de teste durante a sessão, contra 28 em p99 (fino demais para uma fila de time). CONFIANÇA < 50 significa "menos da metade do que o score afirma está apoiado em dado observado e precedente" — ancorado no significado, não ajustado por tentativa e erro.
+
+**Distribuição final** sobre as 2.089 oportunidades abertas: Priorizar 54, Acompanhar 283, Qualificar 656, Revisão em lote 1.096 (fila trabalhável: 993).
+
+### Achado incidental durante a implementação: bug em `classificar_porte`
+
+**Achado:** `classificar_porte` só verificava `employees is None`, mas o merge com `accounts.csv` preenche funcionários ausentes com `NaN`, não `None` — e `NaN < limiar` é sempre `False` em Python. Toda oportunidade sem conta (1.425 de 2.089) caía silenciosamente em "Enterprise" (mult_porte 1,06) em vez do prior neutro (1,00) que o requisito de VALOR já prometia desde 2026-08-19.
+
+**Decisão:** corrigido junto com o redesenho (`employees != employees` cobre NaN além de `None`), por afetar diretamente VALOR, PRIORIDADE e a completude de CONFIANÇA das 1.425 oportunidades sem conta. A correção moveu `Priorizar` de 63 para 54 oportunidades — menos oportunidades ultrapassam o percentil 95 sem o multiplicador indevido.
+
+### Correção do cenário incorreto sobre `K_PRODUTO` na spec
+
+**Decisão:** a spec de `scoring-validation` afirmava que o nível de produto reporta `k = 4`. Corrigido para afirmar o que o artefato de fato calcula: variância em excesso `-0,001199`, `k` infinito — o nível de produto colapsa junto com conta×produto e produto×setor. `K_PRODUTO = 4,0` passa a estar documentado explicitamente como aproximação retida por política (a mesma decisão já registrada em 2026-08-19, item 1 dos "achados técnicos"), nunca mais como resultado do cálculo.
+
+**Por quê agora:** o teste existente (`report1.k == report2.k`) só verificava determinismo, nunca finitude — a divergência nunca falhou. `validation/backtest.py` ganhou uma falha visível caso o `k` do nível de produto se torne finito numa recalibração futura, para que a aproximação deixe de ser silenciosamente carregada adiante se a premissa que a sustenta mudar.
+
+---
+
+## 2026-08-20 — Fatores do score em linguagem de negócio + ESTÁGIO na listagem
+
+### `score_fatores`: por que este SCORE, decomposto em frases sem jargão
+
+**Decisão:** o painel de detalhe passa a exibir, na seção "Por que este score", uma lista de 4 frases geradas por template a partir dos mesmos componentes já calculados (`p̂`, VALOR, URGÊNCIA, porte da conta) — sem citar `p̂`, PRIORIDADE ou qualquer nome de variável. Novo campo `score_fatores: list[str]` em `scoring/scoring/explicacao.py::fatores_score()`, consumido por `DealDetailOut` e `ScoreAvulsaOut` (nunca por `OportunidadeOut` — mesma separação já aplicada a `plano_de_acao_passos` e `prioridade`: decomposição e razão ficam no painel de detalhe, não na linha da listagem).
+
+Cada frase cobre um componente:
+- **Valor do produto** — tercil do preço de tabela do produto dentro do catálogo de 7 produtos ("maior valor" / "mediano" / "menor valor").
+- **Chance de fechamento** — nível de `p̂` (alta / dentro da média / abaixo da média) e, quando Engaging dentro da janela de censura (14–138 dias), menciona o achado contraintuitivo já documentado em 2026-08-19: negócios mais velhos têm chance histórica igual ou maior de fechar, não menor.
+- **Urgência** — nível de `risco(t)` traduzido em "tende a se resolver em 30 dias" / "sem pressa extrema" / "tempo não é o fator crítico".
+- **Dados da conta** — efeito do porte no multiplicador de VALOR ("eleva" / "reduz um pouco" / "sem conta vinculada, valor médio de mercado").
+
+**Por quê template determinístico, não um resumo por IA:** mesma garantia de auditabilidade do plano de ação (Requirement "Explicabilidade do score e plano de ação") — cada frase é reproduzível a partir do mesmo componente exposto no grid numérico abaixo dela, nunca uma paráfrase não determinística.
+
+**Exportação:** `score_fatores` entra em `EXPORT_COLUMNS` do CSV consolidado, serializado com o mesmo separador `" | "` já usado em `plano_de_acao_passos` — mantém "o número mostrado = o número validado = o número exportado" também para a explicação, não só para os componentes numéricos.
+
+### ESTÁGIO (`deal_stage`) volta a aparecer na listagem
+
+**Decisão:** a fila de trabalho (`DealTable`) ganha uma coluna "Estágio" (`Prospecting`/`Engaging`), entre VALOR e Idade — o campo já existia em `Oportunidade` e no painel de detalhe, só não era renderizado na linha.
+
+**Por quê:** ESTÁGIO explica por que `age_days` é `—` para parte da fila (Prospecting nunca tem idade conhecida) sem exigir abrir o painel de detalhe para cada linha — a mesma leitura que já valia dentro do painel, agora disponível de relance na fila inteira.
+
+---

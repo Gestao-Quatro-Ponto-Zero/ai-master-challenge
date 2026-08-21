@@ -21,14 +21,16 @@ def get_kpis(
     manager: Optional[str] = None,
     regional_office: Optional[str] = None,
     product: Optional[str] = None,
-    confianca: Optional[str] = None,
+    confianca_min: Optional[float] = None,
+    confianca_max: Optional[float] = None,
     idade_min: Optional[float] = None,
     idade_max: Optional[float] = None,
     as_of: Optional[pd.Timestamp] = Depends(get_as_of),
     app_state: AppState = Depends(get_app_state),
 ):
     estados = validar_estados(estado)
-    confianca = validar_confianca(confianca)
+    confianca_min = validar_confianca(confianca_min)
+    confianca_max = validar_confianca(confianca_max)
 
     filters = DealFilters(
         estados=estados,
@@ -36,7 +38,8 @@ def get_kpis(
         manager=manager,
         regional_office=regional_office,
         product=product,
-        confianca=confianca,
+        confianca_min=confianca_min,
+        confianca_max=confianca_max,
         idade_min=idade_min,
         idade_max=idade_max,
     )
@@ -62,7 +65,7 @@ def get_kpis(
         total_oportunidades=int(len(aberto)),
         receita_ganha=float(won["close_value"].sum()),
         valor_esperado_aberto=float(aberto["prioridade"].sum()),
-        total_desistir=int((aberto["estado"] == "desistir").sum()),
+        total_revisao_lote=int((aberto["estado"] == "revisao_lote").sum()),
         maior_negocio_fechado=float(won["close_value"].max()) if not won.empty else 0.0,
         data_inicio=str(data_inicio.date()) if data_inicio is not None else "",
         data_fim=str(data_fim.date()) if data_fim is not None else "",

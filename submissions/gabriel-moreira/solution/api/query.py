@@ -19,14 +19,14 @@ from scoring import constants
 
 SORT_CAMPOS: dict[str, str] = {
     "score": "score",
-    "prioridade": "prioridade",
+    "confianca": "confianca",
     "age_days": "age_days",
     "estado": "estado",
 }
-SORT_VALIDOS = ("score", "prioridade", "age_days", "estado")
+SORT_VALIDOS = ("score", "confianca", "age_days", "estado")
 
 # Ordem de urgência do ESTADO (constants.ESTADOS), não alfabética — "estado"
-# ascendente começa em foco_urgente, o mais urgente.
+# ascendente começa em prioritize, o mais urgente.
 _ESTADO_ORDEM: dict[str, int] = {estado: i for i, estado in enumerate(constants.ESTADOS)}
 ORDER_VALIDOS = ("asc", "desc")
 
@@ -42,13 +42,15 @@ def validar_estados(estado: Optional[list[str]]) -> tuple[str, ...]:
     return tuple(estado)
 
 
-def validar_confianca(confianca: Optional[str]) -> Optional[str]:
-    if confianca is not None and confianca not in constants.CONFIANCA_NIVEIS:
+def validar_confianca(valor: Optional[float]) -> Optional[float]:
+    """CONFIANÇA é uma escala numérica 0-100 — a escala por letra (A-D)
+    deixou de existir. Um valor fora da faixa é rejeitado explicitamente,
+    em vez de ser silenciosamente aceito e nunca casar com nada."""
+    if valor is not None and not (0 <= valor <= 100):
         raise HTTPException(
-            422,
-            detail=f"confiança inválida; valores válidos: {list(constants.CONFIANCA_NIVEIS)}",
+            422, detail="confiança inválida; a escala é numérica de 0 a 100"
         )
-    return confianca
+    return valor
 
 
 def validar_sort(sort: str) -> str:
@@ -70,13 +72,18 @@ class DealFilters:
     manager: str | None = None
     regional_office: str | None = None
     product: str | None = None
-    confianca: str | None = None
+    confianca_min: float | None = None
+    confianca_max: float | None = None
     idade_min: float | None = None
     idade_max: float | None = None
 
     @property
     def idade_ativo(self) -> bool:
         return self.idade_min is not None or self.idade_max is not None
+
+    @property
+    def confianca_ativo(self) -> bool:
+        return self.confianca_min is not None or self.confianca_max is not None
 
 
 def apply_org_filters(df: pd.DataFrame, filters: DealFilters) -> pd.DataFrame:
@@ -104,6 +111,17 @@ def _apply_idade_filter(df: pd.DataFrame, filters: DealFilters) -> pd.DataFrame:
     return df[mask]
 
 
+def _apply_confianca_filter(df: pd.DataFrame, filters: DealFilters) -> pd.DataFrame:
+    if not filters.confianca_ativo:
+        return df
+    mask = pd.Series(True, index=df.index)
+    if filters.confianca_min is not None:
+        mask &= df["confianca"] >= filters.confianca_min
+    if filters.confianca_max is not None:
+        mask &= df["confianca"] <= filters.confianca_max
+    return df[mask]
+
+
 def apply_open_filters(
     df_aberto: pd.DataFrame, filters: DealFilters, *, include_estado: bool = True
 ) -> pd.DataFrame:
@@ -113,8 +131,7 @@ def apply_open_filters(
     df = apply_org_filters(df_aberto, filters)
     if include_estado and filters.estados:
         df = df[df["estado"].isin(filters.estados)]
-    if filters.confianca is not None:
-        df = df[df["confianca"] == filters.confianca]
+    df = _apply_confianca_filter(df, filters)
     df = _apply_idade_filter(df, filters)
     return df
 
@@ -135,16 +152,15 @@ def contagem_sem_idade_excluidas(df_aberto: pd.DataFrame, filters: DealFilters) 
     base = apply_org_filters(df_aberto, filters)
     if filters.estados:
         base = base[base["estado"].isin(filters.estados)]
-    if filters.confianca is not None:
-        base = base[base["confianca"] == filters.confianca]
+    base = _apply_confianca_filter(base, filters)
     return int(base["age_days"].isna().sum())
 
 
 def sort_df(df: pd.DataFrame, sort: str, order: str) -> pd.DataFrame:
-    """Ordena por SCORE, PRIORIDADE, idade ou ESTADO, com desempate obrigatório
+    """Ordena por SCORE, CONFIANÇA, idade ou ESTADO, com desempate obrigatório
     por `opportunity_id` — sem ele, páginas sucessivas de um recorte com
     empates podem repetir ou pular oportunidades (design.md, decisão 8).
-    ESTADO ordena pela urgência de `constants.ESTADOS` (foco_urgente primeiro
+    ESTADO ordena pela urgência de `constants.ESTADOS` (prioritize primeiro
     em ordem ascendente), não alfabeticamente."""
     campo = SORT_CAMPOS.get(sort, "score")
     ascending = order == "asc"

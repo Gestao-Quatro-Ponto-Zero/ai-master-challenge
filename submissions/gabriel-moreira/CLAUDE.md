@@ -4,7 +4,7 @@
 
 **Owner:** Gabriel Moreira
 
-**Date:** 2026-08-19 (formula revised same day — see decisions-log.md); RBAC removed 2026-08-20
+**Date:** 2026-08-19 (formula revised same day — see decisions-log.md); RBAC removed 2026-08-20; SCORE/CONFIANÇA/ESTADO redesigned 2026-08-20 (same day, second pass — see decisions-log.md); `score_fatores` + ESTÁGIO in listing added 2026-08-20 (same day, third pass)
 
 ---
 
@@ -53,37 +53,40 @@ SCORE      = percentil(PRIORIDADE) × 100                           ← percenti
 
 **SCORE's reference population is the 4,238 historically won deals** (PRIORIDADE computed for each using its real age-at-close), not the current open funnel. That population is fixed/historical — it only updates on the quarterly recalibration cycle. So SCORE = 82 literally means "this opportunity is worth more, at stake right now, than 82% of deals that historically became revenue" — and unlike a percentile against the open funnel, it never moves because some other deal entered or left the pipeline.
 
+**Redesigned 2026-08-20 (second pass, same day as the RBAC removal): PRIORIDADE in dollars is no longer displayed or used to sort the queue.** The variance decomposition of `log(PRIORIDADE)` attributes 87.3% to VALOR and 0.1% to `p̂` — sorting by it was, in practice, sorting by table price (products range 486.7× vs. `p̂_produto`'s 1.074×). **SCORE (0-100) is now the only priority number exposed** — in the UI, as the API's default sort, and as ESTADO's input. PRIORIDADE stays calculated and CSV-exported as an auditable intermediate value. See the CONFIANÇA/ESTADO redesign below and `docs/decisions-log.md` (2026-08-20 entry) for the full reasoning, including three refinement hypotheses that were tested and rejected: conditioning `p̂` on product×sector, per-product aging curves, and per-product URGÊNCIA — all three made out-of-sample prediction *worse* (5-fold cross-validation, reproducible in `validation/backtest.py` sections 6-8).
+
 **Counter-intuitive finding baked into the formula:** `p_ganho(t)` **rises** with age (0.632 at day 0 → 0.751 at day 120) — it does not decay. What age consumes is the **window**: by day 57, half of all historical wins have already happened; by day 88, only 25% remain. That's why URGÊNCIA uses `risco(t)` (P of resolving in 30 days, isotonic-smoothed) instead of an age-decay proxy.
 
 **Censoring:** nothing in the 6.711 closed deals took more than 138 days. Above that, revert to the prior instead of extrapolating — forward-filling would give `p̂ = 0.751` (the curve's highest value) to a 377-day-old deal, rewarding abandonment.
 
-**CONFIANÇA (A–D)** — separate from PRIORIDADE, never combined into one number: how much is actually known about the deal.
+**CONFIANÇA (0-100, redesigned 2026-08-20)** — separate from SCORE, never combined into one number: how much of what the score claims rests on observed data and historical precedent, not how much is known "about the deal" loosely. `CONFIANÇA = min(completude, suporte)`:
 
-| Nível | Regra | % funil | % prioridade |
-|---|---|---:|---:|
-| A | conta conhecida + Engaging + idade ≤138 | 4.3% | 11.3% |
-| B | conta OU Engaging (um dos dois) | 17.8% | 39.2% |
-| C | sem conta e Prospecting | 16.1% | 20.2% |
-| D | idade > 138 (censurado) | 61.8% | 29.3% |
+- **completude** — % of 5 registration fields observed (`engage_date`, account, employees, sector, assigned team) vs. defaulted to a prior.
+- **suporte** — how much history backs the numbers actually used: `0.75 × s_idade + 0.25 × s_produto`, each saturating at `min(1, n/50)`. Without a known age (Prospecting), only the product term is used — the missing `engage_date` is already charged once in completude and can't be charged twice.
+- `min`, not average: knowing every field about a deal with no historical precedent doesn't make it trustworthy.
+- **Age dropped out of CONFIANÇA entirely.** The original A–D scale used age>138 days as level D, which then force-routed 61.8% of the funnel to "give up" — confusing CONFIANÇA (how much is known) with URGÊNCIA (how stale is it). Age now only enters through the density of historical precedent in `suporte`.
+- **`sem_precedente` marker** (`s_idade == 0` with known age) is what routes ESTADO to batch review — never a cutoff on the combined CONFIANÇA number, because fresh-but-unregistered deals and old-but-unprecedented deals cluster at adjacent CONFIANÇA values (20 and 25) in *inverted* order; no single threshold separates the two populations.
 
-**ESTADO** — 5 values, replacing Diamante/Ouro/Prata/Bronze *and* absorbing the old 3 lanes (Prioridades/Novos/Zumbis). **CONFIANÇA ≠ ESTADO**: CONFIANÇA is how much to trust the score (the foundation); ESTADO is the recommended action, and the right action depends on *both* SCORE and CONFIANÇA crossed — not CONFIANÇA alone with SCORE only as a tiebreaker within the top bucket (that was the first draft, and it was wrong — corrected 2026-08-19).
+**ESTADO** — 4 values (down from 5), a decision tree instead of a 4×2 table:
 
-| CONFIANÇA | SCORE ≥ 50 | SCORE < 50 |
-|---|---|---|
-| A | Foco urgente | Acompanhar |
-| B | Acompanhar | Engajar |
-| C | Engajar | Qualificar |
-| D | Desistir | Desistir |
+```
+1. sem_precedente        -> Revisão em lote
+2. SCORE >= 95            -> Priorizar
+3. CONFIANÇA < 50          -> Qualificar
+4. otherwise               -> Acompanhar
+```
 
-The SCORE cutoff is 50 — the median of the reference distribution itself (won deals), not a separate constant to derive and freeze. The diagonal is the point: a high SCORE with weak CONFIANÇA (B) doesn't become Foco urgente — it becomes Acompanhar, because acting with urgency on a number you don't fully trust is the exact risk CONFIANÇA exists to flag. A low SCORE with CONFIANÇA C isn't Desistir — it's Qualificar, because what's missing is information, not necessarily value. CONFIANÇA D is the one one-way rule: outside the data's historical support, no SCORE is trustworthy enough to justify anything but batch review.
+`Qualificar` absorbs the old `Engajar` — the two states converged on the same action ("keep following up" / "go get information"), and the distinction that would separate them (missing information vs. missing maturity) is exactly what the completude half already measures as an exposed number, not a state. `Desistir` becomes `Revisão em lote`: same population (no historical precedent), but explicitly named as a data-hygiene backlog routed *out* of the ranked queue — not a per-deal recommendation to give up, which is what "Desistir" implied and what made 61.8%+ of the funnel read as "abandon this."
 
-Each opportunity gets a deterministic-template explanation + action plan, not just a number.
+Distribution on the current funnel (2,089 open deals): `Priorizar` 54, `Acompanhar` 283, `Qualificar` 656, `Revisão em lote` 1,096 (workable queue: 993). `Revisão em lote`'s minimum age is 154 days — genuinely past the 138-day historical boundary, never containing a Prospecting deal (unknown age is never read as "no precedent").
+
+Each opportunity gets a deterministic-template explanation + action plan, not just a number. The CONFIANÇA reason names which half (completude or suporte) governed the minimum and, when it's completude, which specific fields are missing. The detail panel's "Por que este score" section also shows `score_fatores` — 4 template-generated, jargon-free sentences that decompose `p̂`/VALOR/URGÊNCIA and the account porte effect into plain business language (e.g. "Dados da conta indicam porte Enterprise — isso eleva o valor considerado"), including the counter-intuitive aging finding when it applies. Same auditability guarantee as the action plan — never an LLM summary. Detail-only, same as `plano_de_acao_passos` and `prioridade`. ESTÁGIO (`deal_stage`) is now also a listing column, not detail-only.
 
 **Access control:** none. Removed 2026-08-20 (see decisions-log.md) — every data endpoint is open, no `Authorization` header. Sales agent, manager and regional office (the real hierarchy in `sales_teams.csv`: 35 `sales_agent` → 6 `manager` → 3 `regional_office`) are ordinary filters over the whole funnel, not identities with scope. Acceptable only because the dataset is public demo data with no real customer information; documented as an assumed limitation, not hidden.
 
-**CSV export:** every data load writes a full processed dataset (all 2.089 open opportunities + every derived field) to disk for offline consultation. Separate from the existing "export filtered IDs" button on the Desistir tab.
+**CSV export:** every data load writes a full processed dataset (all 2,089 open opportunities + every derived field, including PRIORIDADE as an auditable value even though it is not displayed) to disk for offline consultation. Separate from the "export filtered IDs" mechanism, which also drives the Revisão em lote view's batch export.
 
-**Validation:** standalone Python script runs on the 6.711 closed deals — permutation tests, reproduces the `k` derivation and the account×product/product×sector collapse, checks `risco(t)` monotonicity, confirms no closed deal exceeds 138 days, reports PRIORIDADE concentration (top 10% ≈ 50% of total).
+**Validation:** standalone Python script (9 sections) runs on the 6,711 closed deals — permutation tests, reproduces the `k` derivation and the account×product/product×sector/product collapse, checks `risco(t)` monotonicity, confirms no closed deal exceeds 138 days, reports PRIORIDADE concentration (top 10% ≈ 49% of total), and 5-fold cross-validates three rejected refinements (product×sector conditioning, per-product aging, per-product URGÊNCIA) plus the CONFIANÇA/completude/suporte distribution.
 
 ---
 
@@ -94,7 +97,7 @@ Each opportunity gets a deterministic-template explanation + action plan, not ju
 - **Data:** Pandas in-memory, behind a clean repository module
 - **Scoring:** Pure Python package in `scoring/`, imported by API, export, and validation script
 - **No authentication at all** (documented limitation) — every endpoint is open; sales agent/manager/office are plain filters
-- **Theme:** G4 Business palette (navy #001F35, gold #B9915B, light bg #FAFBFC, alert #AF4332 exclusive to Desistir)
+- **Theme:** G4 Business palette (navy #001F35, gold #B9915B, light bg #FAFBFC, alert #AF4332 exclusive to Revisão em lote)
 
 **Testing (part of Definition of Done, not optional):**
 - Unit: scoring engine (shrinkage incl. `k=∞` collapse, aging curves, censoring, CONFIANÇA branches, ESTADO assignment, explanation generation, action-plan steps)
@@ -131,7 +134,7 @@ Still holding from the original session:
 **Revised 2026-08-19 (reversing earlier calls, with the new evidence that justified it):**
 - `MULT_PORTE` is **back in** VALOR — variance decomposition shows product+porte explains 98.7% vs. 98.3% product-alone, a real 0.4pp gain I hadn't measured before. Default 1.00 when account unknown is what makes "score even without account" literal.
 - Percentile normalization is **back** for the display SCORE — matching the new spec's `SCORE = percentil(PRIORIDADE) × 100` — but against the fixed historical population of won deals, not the live open funnel. That's strictly more stable than the original percentile-scoring rejection was worried about: the reference never depends on what's currently in the pipeline.
-- Tiers (Diamante/Ouro/Prata/Bronze) + lanes (Prioridades/Novos/Zumbis) collapsed into 5 ESTADO values — a 4×2 decision table crossing CONFIANÇA with SCORE (≥50 or not), not CONFIANÇA alone. First draft had SCORE only mattering within CONFIANÇA A; corrected same-day after review — CONFIANÇA is the trust in the score, ESTADO is the action, and the action genuinely depends on both.
+- Tiers (Diamante/Ouro/Prata/Bronze) + lanes (Prioridades/Novos/Zumbis) collapsed into 5 ESTADO values on 2026-08-19 — a 4×2 decision table crossing CONFIANÇA (A-D) with SCORE (≥50 or not). **Redesigned again 2026-08-20**: CONFIANÇA became a 0-100 `min(completude, suporte)` measurement (age dropped out entirely), and the 4×2 table became a 4-value decision tree — see the CONFIANÇA/ESTADO section above.
 - Auth is no longer fully out of scope — identity-based RBAC with server-enforced isolation is now required (still no password). **Reversed 2026-08-20** — the RBAC built here was removed entirely (deletion, not a feature flag); see the 2026-08-20 entry in `decisions-log.md` for why.
 
 Still true / unchanged:
@@ -203,5 +206,5 @@ docker compose up
 - **Why not ML?** AUC ≈ 0.50 on the best available attributes. Permutation tests and the hierarchical `k=∞` collapse both say the same thing two different ways.
 - **Why does age *raise* `p̂` instead of lowering it?** That's what the data shows (`p_ganho(0)=0.632` → `p_ganho(120)=0.751`). What age actually costs is the decision window (`janela(t)`), which is what URGÊNCIA tracks.
 - **Why revert to the prior above 138 days instead of extrapolating?** Forward-filling would reward the most abandoned deal in the funnel with the curve's highest score. No closed deal in the data ever took that long — there's no precedent to extrapolate from.
-- **Why 5 estados instead of 4 tiers?** They're not a relabeling — they fold in both the old tiers and the old lanes, and they cross CONFIANÇA with SCORE in a 4×2 table, not CONFIANÇA alone. CONFIANÇA answers "how much should I trust this number"; ESTADO answers "what do I do about it" — and that answer genuinely depends on both how much the deal is worth and how solid that number is. A high score you don't fully trust gets "keep watching," not "drop everything."
+- **Why 4 estados (Priorizar/Acompanhar/Qualificar/Revisão em lote) instead of tiers or the original 5?** They aren't a relabeling — ESTADO is a decision tree over SCORE and CONFIANÇA, not a lookup table. CONFIANÇA answers "how much should I trust this number"; ESTADO answers "what do I do about it." The original 5-value table crossed CONFIANÇA (A-D, driven mostly by age) with SCORE, which meant a single rule — CONFIANÇA D — force-routed 61.8% of the funnel to "give up." The redesign separates measurement (CONFIANÇA, now completude/suporte) from routing (a named `sem_precedente` condition checked first in the tree), and merges `Engajar` into `Acompanhar` because they gave the same advice.
 - **Why no login at all?** The dataset is public demo data, no real customer information — so the friction of an identity gate cost more than the isolation demo was worth. An earlier version of this solution did have identity-based RBAC with server-enforced scope; it was removed by deletion, not a flag, on 2026-08-20 (see decisions-log.md). Documented explicitly as a limitation, not hidden.

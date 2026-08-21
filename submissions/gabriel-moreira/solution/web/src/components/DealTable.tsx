@@ -3,9 +3,12 @@ import { formatIdade, formatUsd } from "../format";
 import type { Oportunidade, SortKey, SortOrder } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 
-/** Fila de trabalho — SCORE, ESTADO, produto, conta, vendedor, PRIORIDADE,
- * idade e CONFIANÇA. A decomposição, a razão de confiança e o plano de
- * ação ficam no painel de detalhe, não na linha (Requirement
+/** Fila de trabalho — SCORE, ESTADO, produto, conta, vendedor, VALOR,
+ * estágio, idade e CONFIANÇA. PRIORIDADE em dólares não aparece aqui nem como
+ * critério de ordenação — é um valor intermediário auditável, visível só
+ * no painel de detalhe (Requirement "Ausência de PRIORIDADE em dólares
+ * nas superfícies de leitura"). A decomposição, a razão de confiança e o
+ * plano de ação ficam no painel de detalhe, não na linha (Requirement
  * "Justificativa visível e plano de ação"). Ordenação é resolvida no
  * servidor via `sort`/`order`, não mais no cliente. */
 export function DealTable({
@@ -49,9 +52,10 @@ export function DealTable({
                 <th className="py-2 px-2">Produto</th>
                 <th className="py-2 px-2">Conta</th>
                 <th className="py-2 px-2">Vendedor</th>
-                <SortableHeader label="Prioridade" active={sort === "prioridade"} order={order} onClick={() => onSortChange("prioridade")} />
+                <th className="py-2 px-2">Valor</th>
+                <th className="py-2 px-2">Estágio</th>
                 <SortableHeader label="Idade" active={sort === "age_days"} order={order} onClick={() => onSortChange("age_days")} />
-                <th className="py-2 px-2">Confiança</th>
+                <SortableHeader label="Confiança" active={sort === "confianca"} order={order} onClick={() => onSortChange("confianca")} />
                 <th className="py-2 px-2 sr-only">Detalhe</th>
               </tr>
             </thead>
@@ -114,10 +118,16 @@ function DealRow({
       <td className="py-3 px-2 font-medium">{o.product}</td>
       <td className="py-3 px-2 text-muted">{o.account ?? "—"}</td>
       <td className="py-3 px-2 text-muted">{o.sales_agent}</td>
-      <td className="py-3 px-2 font-medium">{formatUsd(o.prioridade)}</td>
+      <td className="py-3 px-2 font-medium">{formatUsd(o.preco_tabela)}</td>
+      <td className="py-3 px-2 text-muted">{o.deal_stage}</td>
       <td className="py-3 px-2 text-muted">{formatIdade(o.age_days)}</td>
       <td className="py-3 px-2" onClick={(e) => e.stopPropagation()}>
-        <ConfidenceBadge nivel={o.confianca} label={o.confianca_label} razao={o.razao_confianca} />
+        <ConfidenceBadge
+          confianca={o.confianca}
+          completude={o.completude}
+          suporte={o.suporte}
+          razao={o.razao_confianca}
+        />
       </td>
       <td className="py-3 px-2">
         <button

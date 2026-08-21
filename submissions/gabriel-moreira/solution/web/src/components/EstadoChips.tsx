@@ -1,15 +1,18 @@
 import { ESTADO_CHIP_ATIVO } from "../estadoColors";
-import { ESTADO_LABELS, ESTADOS, type Estado } from "../types";
+import { ESTADO_LABELS, type Estado } from "../types";
 
-/** Filtro de ESTADO por seleção múltipla — nenhum selecionado significa
- * todos. A contagem por chip vem do envelope de `/deals` (nunca
- * calculada no cliente), refletindo os demais filtros ativos
- * (Requirement "Filtro de estado"). */
+/** Filtro de ESTADO por seleção múltipla, restrito aos estados
+ * trabalháveis (`revisao_lote` tem visão própria e não aparece aqui) —
+ * nenhum selecionado significa os três trabalháveis. A contagem por chip
+ * vem do envelope de `/deals` (nunca calculada no cliente), refletindo os
+ * demais filtros ativos (Requirement "Filtro de estado"). */
 export function EstadoChips({
+  estados,
   selecionados,
   counts,
   onChange,
 }: {
+  estados: Estado[];
   selecionados: Estado[];
   counts: Partial<Record<Estado, number>>;
   onChange: (next: Estado[]) => void;
@@ -24,7 +27,7 @@ export function EstadoChips({
 
   return (
     <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por estado">
-      {ESTADOS.map((estado) => {
+      {estados.map((estado) => {
         const ativo = selecionados.includes(estado);
         return (
           <button

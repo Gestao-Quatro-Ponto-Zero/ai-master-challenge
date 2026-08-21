@@ -32,7 +32,8 @@ def export_filtered_deal_ids(
     manager: Optional[str] = None,
     regional_office: Optional[str] = None,
     product: Optional[str] = None,
-    confianca: Optional[str] = None,
+    confianca_min: Optional[float] = None,
+    confianca_max: Optional[float] = None,
     idade_min: Optional[float] = None,
     idade_max: Optional[float] = None,
     as_of: Optional[pd.Timestamp] = Depends(get_as_of),
@@ -40,9 +41,11 @@ def export_filtered_deal_ids(
 ):
     """Identificadores do recorte filtrado inteiro, sem paginação — usado
     pela exportação em massa da interface, que não pode ficar limitada à
-    página carregada."""
+    página carregada. É também o mecanismo de exportação da visão de
+    revisão em lote (filtrando por estado=revisao_lote)."""
     estados = validar_estados(estado)
-    confianca = validar_confianca(confianca)
+    confianca_min = validar_confianca(confianca_min)
+    confianca_max = validar_confianca(confianca_max)
 
     filters = DealFilters(
         estados=estados,
@@ -50,7 +53,8 @@ def export_filtered_deal_ids(
         manager=manager,
         regional_office=regional_office,
         product=product,
-        confianca=confianca,
+        confianca_min=confianca_min,
+        confianca_max=confianca_max,
         idade_min=idade_min,
         idade_max=idade_max,
     )

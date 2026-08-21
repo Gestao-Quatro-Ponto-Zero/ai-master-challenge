@@ -164,3 +164,33 @@ A diagonal prova que o cruzamento é real: um SCORE alto com CONFIANÇA B não v
    - Um token inválido ou expirado (por exemplo, a API reiniciando com um novo segredo de assinatura em memória) deixava a tela em branco para sempre, sem nenhuma mensagem — o usuário não tinha como saber que precisava clicar em "Trocar identidade". Corrigido: qualquer resposta 401 de qualquer chamada agora limpa a sessão automaticamente e volta para o seletor de identidade.
 
 ---
+
+## 2026-08-20 — Sessão de grilling (33 perguntas) + OpenSpec + implementação do redesenho de SCORE/CONFIANÇA/ESTADO
+
+**Contexto:** com o RBAC já removido (entrada anterior deste mesmo dia), apontei três problemas de uso na entrega validada: PRIORIDADE em dólares lia como "venda o produto caro" (não "trabalhe isto primeiro"), CONFIANÇA D forçava o estado Desistir para a maioria do funil, e Acompanhar/Engajar davam o mesmo conselho. Pedi a skill `grilling` para stress-testar o redesenho antes de qualquer código.
+
+**Decisão: Gabriel** — usar `/grill-me` com três instruções de partida: PRIORIDADE virar um score, não um valor em dólares; melhorar a fórmula de CONFIANÇA; renomear o estado `qualificar` para "Prioritize".
+
+### Execução: Claude — sessão de grilling em rodadas, cada pergunta fundamentada em número medido
+
+Diferente da sessão de 2026-08-19 (que também usou perguntas em rodadas, mas sobre decisões de design ainda não implementadas), esta rodou sobre um sistema já em produção — cada resposta do Claude vinha acompanhada de um script Python rodado contra os dados reais (`bash`/`.venv/bin/python` inline), não de estimativa. Isso mudou o rumo da conversa mais de uma vez:
+
+1. **Q1 corrigiu uma premissa do próprio Gabriel** — a alegação de que `qualificar` estava vazio não se confirmou (197 oportunidades reais); a pergunta certa era se o estado carregava informação útil, não se existia.
+2. **Q2–Q9 mediram, não supuseram, se a hierarquia de encolhimento (produto×setor, conta×produto) carrega sinal** — validação cruzada 5-fold mostrou que um prior global achatado batia qualquer condicionamento adicional, o oposto do que "melhorar a fórmula de CONFIANÇA" presumia inicialmente.
+3. **Q15–Q19 testaram a proposta de Gabriel de calcular URGÊNCIA/`p̂` por produto** (não só o CONFIANÇA original) — também pior fora da amostra, incluindo um teste de permutação específico para duração de ciclo por produto.
+4. **Q20–Q28 iteraram a fórmula de CONFIANÇA várias vezes dentro da própria sessão**, cada iteração medida antes de prosseguir: `min` vs. média (decisivo: 353 oportunidades com completude 100/suporte 0 pontuariam 50 sob média, 25 sob `min`), suporte multiplicativo vs. aditivo (multiplicativo deixava 76% do funil em zero), e o vazamento onde support penalizava Prospecting duas vezes pela mesma ausência de `engage_date`.
+5. **Q29–Q32 encontraram e corrigiram, dentro da própria grilagem, uma regressão que a rodada anterior introduzira** — expandir completude de 2 para 5 campos (pedido do próprio Gabriel, para dar granularidade real à escala) fez a completude sozinha penalizar oportunidades em Prospecting sem conta 4 vezes pela mesma causa, derrubando de novo a correção da rodada anterior. Resolvido roteando `revisao_lote` por uma condição nomeada (`s_idade == 0`) em vez de um corte sobre o número combinado — a fórmula ficou robusta à forma exata de completude.
+
+**Decisão: Gabriel** — confirmar CONFIANÇA=`min(completude, suporte)` com suporte aditivo ponderado (0,75/0,25) e completude de 5 campos; ESTADO como árvore de decisão de 4 valores; manter "Priorizar" como rótulo em português (a chave interna do estado fica em inglês, mas a interface é sempre PT-BR).
+
+### Execução: Claude — OpenSpec (`redesign-score-confianca-estado`) e implementação completa via `/opsx:apply`
+
+1. **`openspec-propose`**: criou `proposal.md`, deltas de 4 specs (`lead-scoring`, `scoring-validation`, `pipeline-api`, `pipeline-ui`), `design.md` e `tasks.md` (73 tarefas). Ao escrever as deltas, descobriu que `refine-pipeline-ux` (a mudança anterior deste mesmo dia) havia sido arquivada **sem que suas deltas fossem aplicadas à spec principal** — `openspec/specs/` ainda descrevia identificação por papel e tokens, que o código já não tinha. Sinalizado a Gabriel em vez de ignorado; Gabriel pediu para fechar a lacuna junto ("escreva as deltas") em vez de deixar para depois.
+2. **`openspec validate --strict`** encontrou 3 rodadas de erros reais — cenários de comportamento existentes na spec principal que as deltas MODIFIED omitiam (perda de cenário é rejeitada pelo validador, não só um lint) — cada um corrigido carregando o cenário original para o corpo novo.
+3. **`/opsx:apply`**: implementou as 73 tarefas em ordem — `scoring/` (motor puro), regeneração do CSV, `api/` (schemas/query/rotas), `web/` (React), `validation/` (3 artefatos novos de reprodução + correção do relatório de encolhimento), documentação.
+4. **Achado real durante a implementação, não previsto no design**: `constants.classificar_porte` só verificava `employees is None`, mas o merge com `accounts.csv` preenche funcionários ausentes com `NaN` — e `NaN < limiar` é sempre `False` em Python. As 1.425 oportunidades sem conta caíam silenciosamente em "Enterprise" em vez do prior neutro que o requisito de VALOR já prometia desde 2026-08-19. Corrigido (`employees != employees` cobre NaN); a correção moveu a distribuição final de ESTADO (`Priorizar` de 63 para 54) e reconciliou os números medidos durante a grilagem com os números do sistema já corrigido — a diferença entre os dois foi investigada e documentada, não descartada como ruído.
+5. **Verificação visual no navegador** (não só testes automatizados): fila trabalhável default, chips de estado, régua de idade, link e visão de revisão em lote, ordenação por CONFIANÇA, tooltip da nova exibição de CONFIANÇA, painel de detalhe, aba Gestão com a coluna de CONFIANÇA mediana — confirmando que a "descoberta real" de que a mediana de CONFIANÇA por vendedor é quase sempre 25 (distribuição muito concentrada, não um bug) não invalidava o requisito, só limitava seu poder discriminativo — registrado como achado, não corrigido às pressas.
+
+**Testes:** 84 unitários em `scoring/` (todos reescritos), 46 em `api/` (13 novos), 13 em `validation/` (9 novos), `tsc -b` limpo em `web/`.
+
+---

@@ -34,12 +34,19 @@ import argparse
 import sys
 from pathlib import Path
 
+from aging_by_product_check import build_report as build_aging_by_product_report
 from concentration import build_report as build_concentration_report
+from confianca_distribution import build_report as build_confianca_distribution_report
+from cycle_duration_permutation import (
+    resolution_rate_by_product_and_age,
+    run as run_cycle_duration_permutation,
+)
 from isotonic_check import recompute_curves
 from model_training import chronological_split, combined_auc, isolated_aucs
 from permutation_tests import run_all as run_permutation_tests
 from scoring import constants
 from scoring.pipeline import load_and_score
+from sector_conditioning_check import build_report as build_sector_conditioning_report
 from shrinkage_check import build_report as build_shrinkage_report
 
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -184,17 +191,33 @@ def run_report(data_dir: Path) -> bool:
             "completo está registrado abaixo e em docs/decisions-log.md.\n\n"
             "NOTA — achado desta execução: o mesmo método (variância esperada por "
             "acaso / variância em excesso), recalculado do zero sobre estes dados, "
-            "encontra excesso de variância marginal também no nível de produto — "
-            "mais fraco do que qualquer um dos quatro atributos testados por permutação "
-            "acima (todos com p > 0,05). Sob recomputação estrita, isso colapsaria "
-            "p̂_produto para a constante global (0,632) em todos os produtos.\n"
+            "encontra excesso de variância NEGATIVO também no nível de produto "
+            "(mais fraco do que qualquer um dos quatro atributos testados por "
+            "permutação acima, todos com p > 0,05). Sob recomputação estrita, isso "
+            "colapsaria p̂_produto para a constante global (0,632) em todos os "
+            "produtos.\n"
             "K_PRODUTO = 4 é retido mesmo assim como constante CONGELADA desta "
-            "calibração (documentada em docs/decisions-log.md), preservando os "
-            "~4,5 pontos de diferenciação entre produtos descritos no desenho — "
-            "não é uma escolha arbitrária nova, é a calibração já em produção. "
-            "Fica registrado aqui para a próxima recalibração trimestral avaliar "
-            "se essa diferenciação deve ser reduzida ou mantida."
+            "calibração — uma APROXIMAÇÃO RETIDA POR POLÍTICA, não o resultado do "
+            "cálculo (documentada em docs/decisions-log.md), preservando os "
+            "~4,5 pontos de diferenciação entre produtos descritos no desenho, com "
+            "efeito desprezível sobre a ordenação (p̂ responde por 0,1% da "
+            "variância de log(PRIORIDADE) no funil aberto) — não é uma escolha "
+            "arbitrária nova, é a calibração já em produção. Fica registrado aqui "
+            "para a próxima recalibração trimestral avaliar se essa diferenciação "
+            "deve ser reduzida ou mantida."
         )
+    else:
+        print(
+            "\nAVISO — o nível de PRODUTO deixou de colapsar nesta execução: a "
+            f"variância em excesso recalculada agora é positiva e produz k = "
+            f"{shrinkage.produto.k:.3f}, diferente do K_PRODUTO = "
+            f"{constants.K_PRODUTO} congelado em produção. Isso significa que a "
+            "aproximação retida por política pode não ser mais conservadora — "
+            "sinal real pode ter aparecido no nível de produto desde a última "
+            "calibração. Revisar K_PRODUTO nesta recalibração antes de prosseguir, "
+            "em vez de carregar o valor antigo adiante silenciosamente."
+        )
+        ok = False
 
     _section("4. Curvas de aging — monotonicidade e fronteira de censura")
     print(
@@ -276,22 +299,131 @@ def run_report(data_dir: Path) -> bool:
         "nas seções 1 e 2, que não existe)."
     )
 
+    _section("6. Condicionamento de p̂ por produto×setor — validação cruzada")
+    print(
+        "Pergunta: condicionar a probabilidade de ganho por produto E setor,\n"
+        "em vez de só por produto, melhora a previsão fora da amostra?"
+    )
+    print(
+        "Método: validação cruzada 5-fold com semente fixa. Em cada rodada,\n"
+        "80% dos negócios fechados calibram cada alternativa e os 20%\n"
+        "restantes medem o erro fora da amostra (logloss e brier — quanto\n"
+        "menor, melhor)."
+    )
+    print()
+    setor_report = build_sector_conditioning_report(closed)
+    for nome in ("prior_global", "produto_encolhido", "produto_setor_encolhido", "produto_setor_bruto"):
+        s = setor_report.score(nome)
+        print(f"  {nome:26s} logloss={s.logloss:.5f}  brier={s.brier:.5f}")
+    print()
+    print(
+        f"Células produto×setor: {setor_report.n_celulas_produto_setor} — "
+        f"mediana de {setor_report.mediana_tamanho_celula:.0f} negócios fechados por célula."
+    )
+    pior_que_global = setor_report.score("produto_setor_encolhido").logloss > setor_report.score("prior_global").logloss
+    print(
+        "Achado: condicionar por produto×setor é PIOR que o prior global achatado "
+        f"({'confirmado' if pior_que_global else 'NÃO CONFIRMADO nesta execução — revisar'}) "
+        "— a amostra por célula é pequena demais para sustentar a diferenciação."
+    )
+    if not pior_que_global:
+        ok = False
+
+    _section("7. Curvas de aging por produto — validação cruzada")
+    print(
+        "Pergunta: uma curva de aging (risco de resolver em 30 dias) própria\n"
+        "por produto prevê melhor que a curva GLOBAL usada em produção?"
+    )
+    print("Método: mesma validação cruzada 5-fold da seção 6, aplicada às faixas de idade.")
+    print()
+    aging_report = build_aging_by_product_report(closed)
+    for nome in ("prior_global", "curva_global", "curva_por_produto_bruta", "curva_por_produto_encolhida"):
+        s = aging_report.score(nome)
+        print(f"  {nome:26s} logloss={s.logloss:.5f}  brier={s.brier:.5f}")
+    print()
+    curva_global_vence = aging_report.score("curva_global").logloss == min(
+        s.logloss for s in aging_report.scores
+    )
+    print(
+        "Achado: a curva de aging GLOBAL tem o menor logloss entre todas as "
+        f"alternativas ({'confirmado' if curva_global_vence else 'NÃO CONFIRMADO nesta execução — revisar'}) "
+        "— aging é o único sinal real desta base, e reparti-lo por produto piora a previsão."
+    )
+    if aging_report.existe_celula_com_uma_observacao:
+        print("Ao menos um produto tem uma faixa de idade com uma única observação — sem amostra para curva própria.")
+    if not curva_global_vence:
+        ok = False
+
+    _section("8. Efeito de produto sobre a duração do ciclo")
+    print(
+        "Pergunta: produtos diferentes têm ciclos de venda sistematicamente\n"
+        "mais longos ou mais curtos, ou a variação entre eles é só ruído?"
+    )
+    print(
+        "Método: teste de permutação (semente fixa) sobre a dispersão das\n"
+        "medianas de duração de ciclo por produto."
+    )
+    print()
+    ciclo = run_cycle_duration_permutation(closed)
+    print(
+        f"Dispersão observada entre medianas: {ciclo.dispersao_observada:.1f} dias  "
+        f"·  dispersão nula média: {ciclo.dispersao_nula_media:.1f} dias  ·  p={ciclo.p_valor:.3f}"
+    )
+    print(
+        "Achado: a dispersão observada entre produtos é MENOR que a dispersão sob "
+        "rótulos embaralhados — os produtos são mais parecidos entre si em duração de "
+        "ciclo do que uma atribuição aleatória produziria. Sustenta manter URGÊNCIA global."
+    )
+    print()
+    print("Taxa de resolução em 30 dias por produto e faixa de idade (linha GLOBAL para comparação):")
+    taxas = resolution_rate_by_product_and_age(closed)
+    for faixa, sub in taxas.groupby("faixa", sort=False):
+        linha_global = sub[sub["product"] == "GLOBAL"].iloc[0]
+        print(f"  faixa {faixa}: GLOBAL={linha_global['taxa_resolucao_30d']:.3f} (n={linha_global['n_em_risco']})")
+
+    _section("9. Distribuição de CONFIANÇA e das duas metades")
+    print(
+        "Acompanha a calibração de SUPORTE_JANELA_IDADE_DIAS e SUPORTE_SATURACAO_N — "
+        "se uma recalibração futura tornar essas constantes inadequadas, a distribuição "
+        "abaixo muda de forma visível, em vez de silenciosa."
+    )
+    print()
+    confianca_dist = build_confianca_distribution_report(scored_pipeline.scored)
+    print(f"n = {confianca_dist.n}")
+    for p in (10, 25, 50, 75, 90, 95, 99):
+        print(
+            f"  p{p:2d}  CONFIANÇA={confianca_dist.percentis_confianca[p]:6.1f}  "
+            f"completude={confianca_dist.percentis_completude[p]:6.1f}  "
+            f"suporte={confianca_dist.percentis_suporte[p]:6.1f}"
+        )
+    print()
+    print(f"Fração sem precedente histórico: {confianca_dist.fracao_sem_precedente * 100:.1f}%")
+    print(f"Fração governada por completude (vs. suporte): {confianca_dist.fracao_completude_governante * 100:.1f}%")
+
     _section("Conclusão")
     print(
-        "Juntando as 5 seções: não há como prever com confiança QUEM vai\n"
+        "Juntando as 9 seções: não há como prever com confiança QUEM vai\n"
         "ganhar (seções 1 e 2), então não faz sentido construir um\n"
         "classificador de probabilidade categórica. O que os dados sustentam\n"
-        "é ordenar o funil por VALOR EM RISCO (PRIORIDADE) — quanto vale o\n"
-        "negócio, ajustado pela chance histórica do produto (seção 3) e pela\n"
-        "urgência de agir agora (seção 4) — e essa priorização de fato\n"
-        "concentra valor no topo da fila (seção 5)."
+        "é ordenar o funil por SCORE (percentil de PRIORIDADE, o valor em risco) —\n"
+        "quanto vale o negócio, ajustado pela chance histórica do produto (seção 3)\n"
+        "e pela urgência de agir agora (seção 4) — e essa priorização de fato\n"
+        "concentra valor no topo da fila (seção 5). Três tentativas de refinar o\n"
+        "motor com condicionamento adicional foram testadas e as três pioraram a\n"
+        "previsão fora da amostra: p̂ por produto×setor (seção 6), curvas de aging\n"
+        "por produto (seção 7) e URGÊNCIA por produto (seção 8) — os três\n"
+        "resultados negativos ficam documentados, não implementados. A seção 9\n"
+        "acompanha CONFIANÇA (completude/suporte) para a próxima recalibração."
     )
     print()
     print(
-        "Os dados justificam ordenar o funil por valor em risco (PRIORIDADE), não por um\n"
-        "classificador de probabilidade categórica: nenhum atributo firmográfico isolado\n"
-        "carrega sinal acima do ruído amostral, e a hierarquia de encolhimento confirma\n"
-        "isso de outra forma (colapso de conta×produto e produto×setor)."
+        "Os dados justificam ordenar o funil por SCORE (percentil de valor em risco), não\n"
+        "por um classificador de probabilidade categórica nem por hierarquias de\n"
+        "condicionamento adicionais: nenhum atributo firmográfico isolado carrega sinal\n"
+        "acima do ruído amostral, a hierarquia de encolhimento confirma isso de outra\n"
+        "forma (colapso de conta×produto, produto×setor e produto), e condicionar por\n"
+        "setor ou por produto (aging, URGÊNCIA) piora a previsão fora da amostra em vez\n"
+        "de melhorá-la."
     )
     print()
     print("STATUS: " + ("OK — todas as premissas estruturais confirmadas." if ok else "ATENÇÃO — ver avisos acima."))

@@ -28,12 +28,16 @@ GLOBAL_WIN_RATE = 0.632
 # ---------------------------------------------------------------------------
 # k = variância_esperada_por_acaso / variância_em_excesso, nível "produto"
 # (7 produtos, n de 25 a 1.436 negócios fechados por produto).
-# Reprodução honesta em validation/shrinkage_check.py: o excesso de variância
-# observado no nível de produto é pequeno (mais fraco que os demais níveis
-# testados), mas positivo o bastante para não colapsar — ao contrário dos
-# níveis abaixo dele. k=4 é o valor desta calibração; ver
-# docs/decisions-log.md (entrada 2026-08-19) e o relatório de validação para
-# a reprodução e a magnitude do excesso encontrado.
+# Reprodução honesta em validation/shrinkage_check.py: a variância em excesso
+# do nível de produto é NEGATIVA (-0,001199) — os sete produtos são mais
+# parecidos entre si do que o ruído amostral por si só explicaria — logo o
+# `k` recalculado é infinito, exatamente como nos níveis conta×produto e
+# produto×setor. K_PRODUTO = 4,0 é uma aproximação retida por política, não
+# o resultado do cálculo: com `k` infinito, p̂_produto colapsaria para 0,632
+# em todos os produtos, e a constante congelada preserva uma diferenciação
+# (0,6034 a 0,6484) cujo efeito é desprezível — p̂ responde por 0,1% da
+# variância de log(PRIORIDADE) no funil aberto (ver docs/decisions-log.md,
+# entrada 2026-08-20, e o relatório de validação para a reprodução).
 K_PRODUTO = 4.0
 
 # Os níveis conta×produto e produto×setor têm variância em excesso ≤ 0 nos
@@ -129,8 +133,14 @@ def classificar_porte(employees: float | None) -> str | None:
 
     Retorna None quando o número de funcionários é desconhecido (conta
     ausente) — o chamador deve tratar isso como MULT_PORTE_DESCONHECIDO.
+
+    `employees != employees` cobre NaN (idioma IEEE754) além de `None`: o
+    merge de `accounts.csv` preenche `employees` com NaN, não None, quando
+    não há conta vinculada — sem essa checagem, `NaN < limiar` é sempre
+    False e a conta caía silenciosamente em "Enterprise" em vez do prior
+    neutro que este requisito promete.
     """
-    if employees is None:
+    if employees is None or employees != employees:
         return None
     if employees < PORTE_SMB_MAX:
         return "SMB"
@@ -153,22 +163,54 @@ PRODUCT_CORRECTIONS: dict[str, str] = {
 }
 
 # ---------------------------------------------------------------------------
-# Corte de SCORE para a tabela de decisão de ESTADO — a mediana da própria
-# distribuição de referência (percentil 50), não uma constante extra.
+# CONFIANÇA — completude x suporte, ambas 0-100 (Requirement "Atribuição de
+# confiança"). Nenhuma das duas usa idade como regra de censura própria:
+# idade só entra através da densidade de precedente em SUPORTE_JANELA_IDADE_DIAS.
 # ---------------------------------------------------------------------------
-SCORE_CORTE_ESTADO = 50.0
+# Janela de idade (dias, +/-) usada para contar negócios ganhos "próximos"
+# da idade da oportunidade — a evidência direta de precedente para aquela
+# idade específica. Sensibilidade (docs/decisions-log.md, entrada
+# 2026-08-20): mais estreita perderia amostra em faixas já finas; mais larga
+# confundiria idades com dinâmicas de janela diferentes (ver curves.py).
+SUPORTE_JANELA_IDADE_DIAS = 15
+
+# Saturação de cada termo de suporte: min(1, n / SUPORTE_SATURACAO_N).
+# n/50 foi escolhido sobre n/200 porque n/200 deixava 76% do funil aberto em
+# suporte zero (inutilizável para ordenar) — ver docs/decisions-log.md,
+# entrada 2026-08-20, para a comparação entre variantes testadas.
+SUPORTE_SATURACAO_N = 50
+
+# Pesos do suporte quando a idade é conhecida: a densidade de precedente na
+# idade específica pesa mais que o volume histórico do produto, porque é a
+# evidência direta sobre esta oportunidade — o volume de produto é evidência
+# de fundo. Quando a idade é desconhecida (Prospecting), o termo de idade é
+# OMITIDO (nunca zerado) e o suporte usa só o termo de produto — a ausência
+# de engage_date já é cobrada em completude, não pode ser cobrada duas vezes.
+SUPORTE_PESO_IDADE = 0.75
+SUPORTE_PESO_PRODUTO = 0.25
+
+# ---------------------------------------------------------------------------
+# Cortes da árvore de decisão de ESTADO (Requirement "Atribuição de estado").
+# ---------------------------------------------------------------------------
+# SCORE >= 95: percentil 95 da própria distribuição de referência — "vale
+# mais, em risco agora, do que 95% dos negócios que historicamente
+# converteram em receita". Acompanha a recalibração trimestral da
+# distribuição de referência, sem constante própria a recalibrar.
+SCORE_CORTE_PRIORITIZE = 95.0
+
+# CONFIANÇA < 50: "menos da metade do que este score afirma está apoiada em
+# dado observado e precedente". CONFIANÇA se aglomera nesta base — 50 contra
+# 60 move só 8 das 2.089 oportunidades (docs/decisions-log.md, 2026-08-20).
+CONFIANCA_CORTE_QUALIFICAR = 50.0
 
 DEAL_STAGES_ABERTOS = ("Prospecting", "Engaging")
 DEAL_STAGES_FECHADOS = ("Won", "Lost")
 
-ESTADOS = ("foco_urgente", "acompanhar", "engajar", "qualificar", "desistir")
+ESTADOS = ("prioritize", "acompanhar", "qualificar", "revisao_lote")
 
 ESTADO_LABELS: dict[str, str] = {
-    "foco_urgente": "Foco urgente",
+    "prioritize": "Priorizar",
     "acompanhar": "Acompanhar",
-    "engajar": "Engajar",
     "qualificar": "Qualificar",
-    "desistir": "Desistir",
+    "revisao_lote": "Revisão em lote",
 }
-
-CONFIANCA_NIVEIS = ("A", "B", "C", "D")

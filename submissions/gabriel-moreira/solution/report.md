@@ -1,5 +1,3 @@
-
-
 ## 1. Ausência de sinal preditivo por atributo firmográfico
 
 Pergunta: dá pra adivinhar se um negócio vai ser GANHO ou PERDIDO só
@@ -89,8 +87,8 @@ conta×produto e produto×setor), o resultado diria pra zerar essa
 diferenciação também. Decidimos manter mesmo assim — o motivo
 completo está registrado abaixo e em docs/decisions-log.md.
 
-NOTA — achado desta execução: o mesmo método (variância esperada por acaso / variância em excesso), recalculado do zero sobre estes dados, encontra excesso de variância marginal também no nível de produto — mais fraco do que qualquer um dos quatro atributos testados por permutação acima (todos com p > 0,05). Sob recomputação estrita, isso colapsaria p̂_produto para a constante global (0,632) em todos os produtos.
-K_PRODUTO = 4 é retido mesmo assim como constante CONGELADA desta calibração (documentada em docs/decisions-log.md), preservando os ~4,5 pontos de diferenciação entre produtos descritos no desenho — não é uma escolha arbitrária nova, é a calibração já em produção. Fica registrado aqui para a próxima recalibração trimestral avaliar se essa diferenciação deve ser reduzida ou mantida.
+NOTA — achado desta execução: o mesmo método (variância esperada por acaso / variância em excesso), recalculado do zero sobre estes dados, encontra excesso de variância NEGATIVO também no nível de produto (mais fraco do que qualquer um dos quatro atributos testados por permutação acima, todos com p > 0,05). Sob recomputação estrita, isso colapsaria p̂_produto para a constante global (0,632) em todos os produtos.
+K_PRODUTO = 4 é retido mesmo assim como constante CONGELADA desta calibração — uma APROXIMAÇÃO RETIDA POR POLÍTICA, não o resultado do cálculo (documentada em docs/decisions-log.md), preservando os ~4,5 pontos de diferenciação entre produtos descritos no desenho, com efeito desprezível sobre a ordenação (p̂ responde por 0,1% da variância de log(PRIORIDADE) no funil aberto) — não é uma escolha arbitrária nova, é a calibração já em produção. Fica registrado aqui para a próxima recalibração trimestral avaliar se essa diferenciação deve ser reduzida ou mantida.
 
 
 ## 4. Curvas de aging — monotonicidade e fronteira de censura
@@ -132,14 +130,10 @@ sem PRIORIDADE. Esta seção NÃO testa se a fórmula prevê quem vai
 ganhar (isso já foi respondido — negativamente — nas seções 1 e 2);
 ela testa só se a priorização concentra valor no topo.
 
-Top 10% da fila por PRIORIDADE captura 49.2% do total
-
+Top 10% da fila por PRIORIDADE captura 49.1% do total
 Top 30% da fila por PRIORIDADE captura 78.8% do total
-
 Top 10% por preço de tabela puro captura 29.5% do total
-
 Top 30% por preço de tabela puro captura 68.9% do total
-
 -> concentração de valor, não poder preditivo: p̂ varia só 0,60-0,75 contra 487x de amplitude em VALOR. A diferenciação vem de valor e urgência.
 Achado: PRIORIDADE concentra MAIS valor em risco no topo da fila do
 que simplesmente ordenar por preço de tabela (49,2% vs. 29,5% no
@@ -148,19 +142,93 @@ negócio), não de uma previsão fina de quem vai ganhar (que já vimos,
 nas seções 1 e 2, que não existe).
 
 
+## 6. Condicionamento de p̂ por produto×setor — validação cruzada
+
+Pergunta: condicionar a probabilidade de ganho por produto E setor,
+em vez de só por produto, melhora a previsão fora da amostra?
+Método: validação cruzada 5-fold com semente fixa. Em cada rodada,
+80% dos negócios fechados calibram cada alternativa e os 20%
+restantes medem o erro fora da amostra (logloss e brier — quanto
+menor, melhor).
+
+  prior_global               logloss=0.65828  brier=0.23277
+  produto_encolhido          logloss=0.65896  brier=0.23308
+  produto_setor_encolhido    logloss=0.66016  brier=0.23364
+  produto_setor_bruto        logloss=0.68042  brier=0.23664
+
+Células produto×setor: 69 — mediana de 85 negócios fechados por célula.
+Achado: condicionar por produto×setor é PIOR que o prior global achatado (confirmado) — a amostra por célula é pequena demais para sustentar a diferenciação.
+
+
+## 7. Curvas de aging por produto — validação cruzada
+
+Pergunta: uma curva de aging (risco de resolver em 30 dias) própria
+por produto prevê melhor que a curva GLOBAL usada em produção?
+Método: mesma validação cruzada 5-fold da seção 6, aplicada às faixas de idade.
+
+  prior_global               logloss=0.65828  brier=0.23277
+  curva_global               logloss=0.64936  brier=0.22859
+  curva_por_produto_bruta    logloss=0.65525  brier=0.23044
+  curva_por_produto_encolhida logloss=0.65275  brier=0.23008
+
+Achado: a curva de aging GLOBAL tem o menor logloss entre todas as alternativas (confirmado) — aging é o único sinal real desta base, e reparti-lo por produto piora a previsão.
+Ao menos um produto tem uma faixa de idade com uma única observação — sem amostra para curva própria.
+
+
+## 8. Efeito de produto sobre a duração do ciclo
+
+Pergunta: produtos diferentes têm ciclos de venda sistematicamente
+mais longos ou mais curtos, ou a variação entre eles é só ruído?
+Método: teste de permutação (semente fixa) sobre a dispersão das
+medianas de duração de ciclo por produto.
+
+Dispersão observada entre medianas: 22.0 dias  ·  dispersão nula média: 28.9 dias  ·  p=0.638
+Achado: a dispersão observada entre produtos é MENOR que a dispersão sob rótulos embaralhados — os produtos são mais parecidos entre si em duração de ciclo do que uma atribuição aleatória produziria. Sustenta manter URGÊNCIA global.
+
+Taxa de resolução em 30 dias por produto e faixa de idade (linha GLOBAL para comparação):
+  faixa 0-45: GLOBAL=0.470 (n=6711)
+  faixa 45-88: GLOBAL=0.322 (n=3377)
+  faixa 88-138: GLOBAL=0.832 (n=1538)
+
+
+## 9. Distribuição de CONFIANÇA e das duas metades
+
+Acompanha a calibração de SUPORTE_JANELA_IDADE_DIAS e SUPORTE_SATURACAO_N — se uma recalibração futura tornar essas constantes inadequadas, a distribuição abaixo muda de forma visível, em vez de silenciosa.
+
+n = 2089
+  p10  CONFIANÇA=  20.0  completude=  20.0  suporte=  25.0
+  p25  CONFIANÇA=  25.0  completude=  40.0  suporte=  25.0
+  p50  CONFIANÇA=  25.0  completude=  40.0  suporte=  25.0
+  p75  CONFIANÇA=  40.0  completude=  80.0  suporte= 100.0
+  p90  CONFIANÇA=  80.0  completude= 100.0  suporte= 100.0
+  p95  CONFIANÇA=  95.5  completude= 100.0  suporte= 100.0
+  p99  CONFIANÇA= 100.0  completude= 100.0  suporte= 100.0
+
+Fração sem precedente histórico: 52.5%
+Fração governada por completude (vs. suporte): 44.6%
+
+
 ## Conclusão
 
-Juntando as 5 seções: não há como prever com confiança QUEM vai
+Juntando as 9 seções: não há como prever com confiança QUEM vai
 ganhar (seções 1 e 2), então não faz sentido construir um
 classificador de probabilidade categórica. O que os dados sustentam
-é ordenar o funil por VALOR EM RISCO (PRIORIDADE) — quanto vale o
-negócio, ajustado pela chance histórica do produto (seção 3) e pela
-urgência de agir agora (seção 4) — e essa priorização de fato
-concentra valor no topo da fila (seção 5).
+é ordenar o funil por SCORE (percentil de PRIORIDADE, o valor em risco) —
+quanto vale o negócio, ajustado pela chance histórica do produto (seção 3)
+e pela urgência de agir agora (seção 4) — e essa priorização de fato
+concentra valor no topo da fila (seção 5). Três tentativas de refinar o
+motor com condicionamento adicional foram testadas e as três pioraram a
+previsão fora da amostra: p̂ por produto×setor (seção 6), curvas de aging
+por produto (seção 7) e URGÊNCIA por produto (seção 8) — os três
+resultados negativos ficam documentados, não implementados. A seção 9
+acompanha CONFIANÇA (completude/suporte) para a próxima recalibração.
 
-Os dados justificam ordenar o funil por valor em risco (PRIORIDADE), não por um
-classificador de probabilidade categórica: nenhum atributo firmográfico isolado
-carrega sinal acima do ruído amostral, e a hierarquia de encolhimento confirma
-isso de outra forma (colapso de conta×produto e produto×setor).
+Os dados justificam ordenar o funil por SCORE (percentil de valor em risco), não
+por um classificador de probabilidade categórica nem por hierarquias de
+condicionamento adicionais: nenhum atributo firmográfico isolado carrega sinal
+acima do ruído amostral, a hierarquia de encolhimento confirma isso de outra
+forma (colapso de conta×produto, produto×setor e produto), e condicionar por
+setor ou por produto (aging, URGÊNCIA) piora a previsão fora da amostra em vez
+de melhorá-la.
 
 STATUS: OK — todas as premissas estruturais confirmadas.

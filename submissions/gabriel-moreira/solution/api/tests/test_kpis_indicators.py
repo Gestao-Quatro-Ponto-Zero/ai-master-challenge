@@ -5,7 +5,7 @@ ambas as famílias de indicador."""
 
 def test_derived_filter_estado_changes_open_funnel_tiles_not_historical(client):
     sem_filtro = client.get("/kpis").json()
-    com_filtro = client.get("/kpis", params={"estado": "foco_urgente"}).json()
+    com_filtro = client.get("/kpis", params={"estado": "prioritize"}).json()
 
     assert com_filtro["total_oportunidades"] != sem_filtro["total_oportunidades"]
     assert com_filtro["receita_ganha"] == sem_filtro["receita_ganha"]

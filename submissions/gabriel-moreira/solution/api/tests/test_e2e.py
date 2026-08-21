@@ -60,14 +60,16 @@ def test_priority_identical_across_api_and_exported_csv(client):
     assert deals
 
     amostra = deals[0]
+    detalhe = client.get(f"/deals/{amostra['opportunity_id']}").json()
 
     csv_resp = client.get("/export/csv")
     reader = csv.DictReader(io.StringIO(csv_resp.text))
     linhas_csv = {row["opportunity_id"]: row for row in reader}
 
     linha_csv = linhas_csv[amostra["opportunity_id"]]
-    assert round(float(linha_csv["prioridade"]), 2) == round(amostra["prioridade"], 2)
+    assert round(float(linha_csv["prioridade"]), 2) == round(detalhe["prioridade"], 2)
     assert round(float(linha_csv["score"]), 1) == round(amostra["score"], 1)
     assert linha_csv["estado"] == amostra["estado"]
-    assert linha_csv["confianca"] == amostra["confianca"]
-    assert linha_csv["confianca_label"] == amostra["confianca_label"]
+    assert float(linha_csv["confianca"]) == amostra["confianca"]
+    assert float(linha_csv["completude"]) == amostra["completude"]
+    assert float(linha_csv["suporte"]) == amostra["suporte"]

@@ -5,6 +5,8 @@
 
 > **Nota de atualização (2026-08-19):** este documento é a análise exploratória original — a conclusão central (nenhum atributo firmográfico prevê ganho/perda; valor é o sinal real) segue válida e é a base de tudo que veio depois. A **fórmula final implementada** é mais refinada do que o `P(ganho) = 0,632` constante e o corte de 90 dias descritos aqui: usa encolhimento hierárquico para `p̂` (variando 0,60–0,75 por produto), curvas de aging isotônicas e um limite de censura de **138 dias** (não 90), derivado do ciclo máximo real dos negócios fechados. Ver [`docs/architecture.md`](docs/architecture.md) e [`docs/decisions-log.md`](docs/decisions-log.md) para a versão vigente — os números de valor, qualidade de dados e as recomendações de instrumentação abaixo continuam de pé.
 >
+> **Nota de atualização (2026-08-20):** CONFIANÇA e ESTADO foram redesenhados no mesmo dia da remoção do RBAC — CONFIANÇA deixou de ser uma escala A-D dominada por idade e passou a ser `min(completude, suporte)`, 0-100; ESTADO deixou de ser uma tabela 4×2 e passou a ser uma árvore de decisão de 4 valores (Priorizar/Acompanhar/Qualificar/Revisão em lote). PRIORIDADE em dólares deixou de ser exibida (SCORE é o número de prioridade). Três hipóteses de refinamento do motor foram testadas nesse redesenho e as três pioraram a previsão fora da amostra — ver §4.5 abaixo.
+>
 > **Origem dos números de p̂ e URGÊNCIA (implementação 2026-08-19):**
 > - **Taxa base (0,632):** taxa global de vitória em 6.711 negócios fechados (§2.2), estável em qualquer recorte (0,61–0,65 por setor, p > 0,26 em testes de permutação).
 > - **p_ganho(t):** regressão isotônica sobre negócios ganhos/perdidos agrupados por idade no desfecho. Encontrou-se que probabilidade de ganho sobe levemente com tempo em funil (não decai): 0,632 aos 0 dias → 0,751 aos 120 dias. Limita-se a 120 dias por N amostral; acima de 138 dias, censura para o prior.
@@ -367,34 +369,42 @@ se idade > 138:
 
 Extrapolação premiaria abandono. Um negócio de 377 dias (o mais velho observado no funil aberto) teria `p̂ = 0,751` se aplicássemos `p_ganho(120)` — recompensando o fato de estar parado. A censura evita isso.
 
-### CONFIANÇA — separada de PRIORIDADE
+### CONFIANÇA — separada de SCORE (redesenhada 2026-08-20)
 
-CONFIANÇA responde a uma pergunta ortogonal: "**quanto do necessário para pontuar esta oportunidade eu efetivamente tenho?**" — não se confunde com quanto ela vale.
+CONFIANÇA responde a uma pergunta ortogonal: "**quanto do que este score afirma está apoiado em dado observado e em precedente histórico?**" — não se confunde com quanto a oportunidade vale.
 
-A atribuição é em quatro níveis, por regra determinística, **em ordem de precedência:**
+A versão original (acima) usava quatro níveis por regra de precedência, com idade > 138 dias definindo o nível mais baixo (D) — que por sua vez forçava o estado "Desistir" para qualquer SCORE. Isso tinha um problema estrutural: **61,8% do funil aberto estava acima de 138 dias**, então quase dois terços da carteira herdavam a recomendação de abandono no primeiro carregamento da ferramenta. Pior, misturava duas perguntas diferentes — "quanto sei sobre esta oportunidade" (cadastro) e "há quanto tempo está aberta" (idade, que já é o insumo de URGÊNCIA).
 
-**D — Fora do histórico (idade > 138 dias)**
-- Zero negócios fechados passaram de 138 dias
-- Não há base factual para confiar em um score — qualquer cálculo é extrapolação
-- Recomendação: revisão em lote com gestor, não trabalho individual
+**A versão redesenhada é uma escala 0–100, `CONFIANÇA = min(completude, suporte)`, sem idade como regra própria:**
 
-**A — Dados completos (conta conhecida + Engaging + idade ≤ 138)**
-- Todos os ingredientes: contexto da conta, negócio formalizado, dentro da janela
-- ~4% do funil aberto
-- Recomendação: agir com confiança na pontuação se SCORE ≥ 50
+```
+completude = 100 × (campos observados) / 5
+  campos: engage_date · conta vinculada · funcionários · setor · time atribuído
 
-**B — Dados parciais (conta OU Engaging, mas não ambos)**
-- Falta um ingrediente: ou temos conta mas ainda é Prospecting, ou temos Engaging mas sem conta
-- ~18% do funil aberto, mas concentra ~39% da prioridade total
-- Recomendação: andar com cuidado — o número é válido, a confiança é moderada
+suporte:
+  s_idade   = min(1, negócios_ganhos_na_janela_±15_dias / 50)
+  s_produto = min(1, negócios_fechados_do_produto / 50)
+  com idade conhecida:  suporte = 100 × (0,75 × s_idade + 0,25 × s_produto)
+  sem idade (Prospecting): suporte = 100 × s_produto
+```
 
-**C — Cadastro incompleto (sem conta + Prospecting)**
-- Lead novo, puro: nem conta nem engajamento formalizado
-- Assentado em priors (porte estimado, taxa global)
-- ~16% do funil aberto
-- Recomendação: qualificar e enriquecer antes de tratar como prioridade
+`min`, não média: uma oportunidade com cadastro 100% completo mas sem nenhum negócio ganho na sua faixa de idade não é confiável só porque o cadastro está completo — a metade mais fraca governa. O termo de idade é **omitido** (nunca zerado) quando a idade é desconhecida, porque a ausência de `engage_date` já reduz completude — zerá-lo de novo cobraria a mesma lacuna duas vezes e penalizaria as 500 oportunidades em Prospecting (as mais novas do funil) como se fossem as mais abandonadas.
 
-A métrica é **informação disponível**, não probabilidade de conversão. Um negócio Prospecting sem conta pode ter SCORE 85 e CONFIANÇA C — nesse caso, a ação correta é "Engajar" (buscar informação), não "Foco urgente" (agir como se já soubéssemos).
+**Ausência de precedente** (`s_idade == 0` com idade conhecida — nenhum negócio ganho fechou nessa faixa) é o que roteia para revisão em lote, não um corte sobre o número combinado de CONFIANÇA: oportunidades novas sem cadastro e oportunidades antigas sem precedente se aglomeram em valores adjacentes de CONFIANÇA (20 e 25), em ordem invertida — nenhum corte único separa as duas populações.
+
+A métrica continua sendo **veracidade do dado**, não probabilidade de conversão — mas agora sem o efeito colateral de forçar "desista" pela idade sozinha.
+
+### Três hipóteses de refinamento testadas e rejeitadas (2026-08-20)
+
+Ao redesenhar CONFIANÇA/ESTADO, três formas de tornar o motor mais granular foram testadas por validação cruzada 5-fold ou teste de permutação sobre os 6.711 negócios fechados — **as três pioraram a previsão fora da amostra** e foram descartadas (reproduzível em `solution/validation/backtest.py`, seções 6–8):
+
+| Hipótese | Método | Resultado |
+|---|---|---|
+| Condicionar `p̂` por produto×setor (em vez de só produto) | CV 5-fold, `logloss`/`brier` | `logloss` 0,66016 vs. **0,65828** do prior global achatado — pior. As 69 células produto×setor têm mediana de 85 negócios fechados, amostra pequena demais para sustentar a diferenciação |
+| Curva de aging (`risco(t)`) própria por produto | CV 5-fold, `logloss`/`brier` | `logloss` 0,65525 (0,65275 com encolhimento) vs. **0,64936** da curva global — pior. `GTK 500` (25 negócios fechados) sequer tem amostra: 7 faixas de idade produzem faixas com n=1 |
+| URGÊNCIA (duração de ciclo) por produto | Permutação, dispersão de medianas | Dispersão observada 22,0 dias vs. 28,9 dias sob rótulos embaralhados, valor-p 0,64 — os produtos são **mais parecidos** entre si do que uma atribuição aleatória produziria |
+
+A curva de aging global é o único modelo, em qualquer teste, que superou o prior achatado (`logloss` 0,64936 vs. 0,65828) — aging é o sinal real desta base, e reparti-lo por produto destrói o sinal em vez de refiná-lo. A fórmula (`p̂ × VALOR × URGÊNCIA`, curvas globais, `p̂_produto` por encolhimento) permanece exatamente como calibrada — o valor destas três hipóteses está em serem documentadas como resultado negativo reprodutível, não em serem implementadas.
 
 ---
 

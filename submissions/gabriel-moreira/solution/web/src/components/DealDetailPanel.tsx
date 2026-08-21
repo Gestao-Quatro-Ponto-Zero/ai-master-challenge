@@ -1,11 +1,15 @@
-import { useEffect, useRef, useState, type ReactNode, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react";
 import { api, ApiError } from "../api";
 import { ESTADO_BADGE } from "../estadoColors";
 import { formatIdade, formatPct, formatUsd } from "../format";
 import type { DealDetail } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
-
-const CENSURA_DIAS = 138;
 
 /** Painel lateral de detalhe — sete seções em linguagem de negócio,
  * identificador refletido na URL, navegação anterior/próxima sobre a
@@ -43,7 +47,8 @@ export function DealDetailPanel({
       .getDealDetail(opportunityId, asOf)
       .then(setDetail)
       .catch((err: unknown) => {
-        const message = err instanceof ApiError ? err.message : "falha ao carregar detalhe";
+        const message =
+          err instanceof ApiError ? err.message : "falha ao carregar detalhe";
         setErro(message);
         if (err instanceof ApiError && err.status === 404) onNotFound();
       });
@@ -72,7 +77,7 @@ export function DealDetailPanel({
     // item) não recebe foco via .focus(), o que travaria o ciclo do trap
     // silenciosamente se ele fosse tratado como extremo do ciclo.
     const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-      'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])'
+      'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])',
     );
     if (focusable.length === 0) return;
     const first = focusable[0];
@@ -156,39 +161,48 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
           {o.account ?? "Sem conta vinculada"} · {o.sales_agent}
         </p>
         <div className="flex items-center gap-3 mt-2">
-          <span className={"text-xs font-semibold px-2 py-0.5 rounded-full border " + ESTADO_BADGE[o.estado]}>
+          <span
+            className={
+              "text-xs font-semibold px-2 py-0.5 rounded-full border " +
+              ESTADO_BADGE[o.estado]
+            }
+          >
             {o.estado_label}
           </span>
-          <span className="text-2xl font-bold text-navy">{o.score.toFixed(1)}</span>
+          <span className="text-2xl font-bold text-navy">
+            {o.score.toFixed(1)}
+          </span>
           <span className="text-xs text-muted">SCORE</span>
         </div>
       </section>
 
-      <Section title="Por que este score">
-        <dl className="grid grid-cols-3 gap-3 text-sm">
+      <section>
+        <dl className="grid grid-cols-3 gap-3 text-sm mt-4 pt-4 border-t border-border">
           <Componente
-            label="p̂ — probabilidade"
+            label="Probabilidade"
             valor={formatPct(o.p_hat)}
             explicacao="Chance de fechamento, calibrada pelo histórico do produto e pela janela de tempo."
           />
           <Componente
-            label="Valor"
-            valor={formatUsd(o.valor)}
-            explicacao="Preço de tabela do produto ajustado pelo porte da conta."
+            label="Preço tabela"
+            valor={formatUsd(o.preco_tabela)}
+            explicacao="Preço de catálogo do produto."
           />
           <Componente
             label="Urgência"
             valor={formatPct(o.urgencia)}
-            explicacao="Probabilidade de o negócio se resolver nos próximos 30 dias."
+            explicacao="Urgência de o negócio se resolver nos próximos 30 dias."
           />
         </dl>
-        <p className="text-sm mt-3 text-navy">
-          p̂ × VALOR × URGÊNCIA = <strong>{formatUsd(o.prioridade)}</strong> (PRIORIDADE)
-        </p>
-      </Section>
+      </section>
 
       <Section title="O que se sabe">
-        <ConfidenceBadge nivel={o.confianca} label={o.confianca_label} razao={o.razao_confianca} />
+        <ConfidenceBadge
+          confianca={o.confianca}
+          completude={o.completude}
+          suporte={o.suporte}
+          razao={o.razao_confianca}
+        />
         <p className="text-sm text-muted mt-2">{o.razao_confianca}</p>
       </Section>
 
@@ -196,10 +210,10 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
         <p className="text-sm text-navy">
           Estágio: {o.deal_stage} · Idade: {formatIdade(o.age_days)}
         </p>
-        {o.age_days !== null && o.age_days > CENSURA_DIAS && (
+        {o.sem_precedente && (
           <p className="text-sm text-alert mt-1">
-            Fora de qualquer precedente histórico de fechamento — nenhum negócio da base levou mais
-            de {CENSURA_DIAS} dias.
+            Fora de qualquer precedente histórico de fechamento — nenhum negócio
+            ganho fechou nesta faixa de idade.
           </p>
         )}
       </Section>
@@ -209,19 +223,28 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
           <dl className="grid grid-cols-2 gap-3 text-sm text-navy">
             <Campo label="Setor" valor={o.conta.sector ?? "—"} />
             <Campo label="Porte" valor={o.conta.porte ?? "—"} />
-            <Campo label="Receita anual" valor={o.conta.revenue !== null ? formatUsd(o.conta.revenue) : "—"} />
+            <Campo
+              label="Receita anual"
+              valor={
+                o.conta.revenue !== null ? formatUsd(o.conta.revenue) : "—"
+              }
+            />
             <Campo
               label="Funcionários"
-              valor={o.conta.employees !== null ? o.conta.employees.toLocaleString("pt-BR") : "—"}
+              valor={
+                o.conta.employees !== null
+                  ? o.conta.employees.toLocaleString("pt-BR")
+                  : "—"
+              }
             />
-            <Campo label="Ano de fundação" valor={o.conta.year_established?.toString() ?? "—"} />
+            <Campo
+              label="Ano de fundação"
+              valor={o.conta.year_established?.toString() ?? "—"}
+            />
             <Campo label="Localização" valor={o.conta.office_location ?? "—"} />
           </dl>
         ) : (
-          <p className="text-sm text-muted">
-            Sem conta vinculada — o VALOR desta oportunidade usa o prior neutro de porte
-            (multiplicador 1,00) em vez do multiplicador real da conta.
-          </p>
+          <p className="text-sm text-muted">Sem conta vinculada</p>
         )}
       </Section>
 
@@ -231,6 +254,18 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
         </p>
       </Section>
 
+      <Section title="Por que este score">
+        <ul className="flex flex-col gap-2 text-sm text-navy">
+          {o.score_fatores.map((fator, i) => (
+            <li key={i} className="flex gap-2">
+              <span className="text-gold" aria-hidden="true">
+                •
+              </span>
+              <span>{fator}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
       <Section title="Plano de ação">
         <ol className="list-decimal list-inside text-sm text-navy flex flex-col gap-1.5">
           {o.plano_de_acao_passos.map((passo, i) => (
@@ -245,13 +280,23 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section>
-      <h3 className="text-xs font-bold text-navy uppercase tracking-wide mb-2">{title}</h3>
+      <h3 className="text-xs font-bold text-navy uppercase tracking-wide mb-2">
+        {title}
+      </h3>
       {children}
     </section>
   );
 }
 
-function Componente({ label, valor, explicacao }: { label: string; valor: string; explicacao: string }) {
+function Componente({
+  label,
+  valor,
+  explicacao,
+}: {
+  label: string;
+  valor: string;
+  explicacao: string;
+}) {
   return (
     <div>
       <dt className="text-xs text-muted">{label}</dt>
@@ -269,4 +314,3 @@ function Campo({ label, valor }: { label: string; valor: string }) {
     </div>
   );
 }
-

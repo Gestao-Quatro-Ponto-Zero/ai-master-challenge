@@ -10,7 +10,7 @@ def test_deals_no_auth_required(client):
 def test_deals_invalid_estado_returns_422(client):
     resp = client.get("/deals", params={"estado": "inexistente"})
     assert resp.status_code == 422
-    assert "foco_urgente" in resp.text
+    assert "prioritize" in resp.text
 
 
 def test_deals_no_estado_returns_all(client):
@@ -19,9 +19,38 @@ def test_deals_no_estado_returns_all(client):
     body = resp.json()
     assert body["total"] == 2089
     estados = {row["estado"] for row in body["items"]}
-    assert estados.issubset(
-        {"foco_urgente", "acompanhar", "engajar", "qualificar", "desistir"}
-    )
+    assert estados.issubset({"prioritize", "acompanhar", "qualificar", "revisao_lote"})
+
+
+def test_deals_prioridade_absent_from_listing(client):
+    resp = client.get("/deals")
+    for row in resp.json()["items"]:
+        assert "prioridade" not in row
+
+
+def test_deals_score_fatores_absent_from_listing(client):
+    resp = client.get("/deals")
+    for row in resp.json()["items"]:
+        assert "score_fatores" not in row
+
+
+def test_deals_estagio_present_in_listing(client):
+    resp = client.get("/deals")
+    for row in resp.json()["items"]:
+        assert row["deal_stage"] in ("Prospecting", "Engaging")
+
+
+def test_deal_detail_exposes_score_fatores(client):
+    resp = client.get("/deals")
+    opportunity_id = resp.json()["items"][0]["opportunity_id"]
+    detalhe = client.get(f"/deals/{opportunity_id}").json()
+    assert 2 <= len(detalhe["score_fatores"]) <= 4
+    assert all(isinstance(f, str) and f for f in detalhe["score_fatores"])
+
+
+def test_deals_sort_by_prioridade_returns_422(client):
+    resp = client.get("/deals", params={"sort": "prioridade"})
+    assert resp.status_code == 422
 
 
 def test_deals_unknown_product_filter_returns_empty_not_error(client):
@@ -69,14 +98,46 @@ def test_rollup_filtered_by_manager(client):
     assert len(linhas_agente) == 5  # 5 agentes no time
 
 
+def test_rollup_exposes_confianca_mediana(client):
+    resp = client.get("/rollup")
+    assert resp.status_code == 200
+    for linha in resp.json()["linhas"]:
+        assert 0 <= linha["confianca_mediana"] <= 100
+
+
+def test_kpis_exposes_total_revisao_lote(client):
+    resp = client.get("/kpis")
+    assert resp.status_code == 200
+    assert resp.json()["total_revisao_lote"] > 0
+
+
+def test_deals_filter_by_confianca_range(client):
+    resp = client.get("/deals", params={"confianca_min": 50, "page_size": 500})
+    assert resp.status_code == 200
+    for row in resp.json()["items"]:
+        assert row["confianca"] >= 50
+
+
+def test_deals_confianca_letter_rejected(client):
+    resp = client.get("/deals", params={"confianca_min": "A"})
+    assert resp.status_code == 422
+
+
+def test_deals_confianca_out_of_range_rejected(client):
+    resp = client.get("/deals", params={"confianca_min": 150})
+    assert resp.status_code == 422
+
+
 def test_score_avulsa_prospecting_without_age(client):
     resp = client.post("/score", json={"product": "GTX Basic"})
     assert resp.status_code == 200
     body = resp.json()
     assert body["urgencia"] == 0.47
     assert body["age_days"] is None
-    assert body["confianca_label"]
+    assert body["sem_precedente"] is False
+    assert 0 <= body["confianca"] <= 100
     assert 2 <= len(body["plano_de_acao_passos"]) <= 4
+    assert 2 <= len(body["score_fatores"]) <= 4
 
 
 def test_score_avulsa_negative_age_returns_422(client):

@@ -44,7 +44,8 @@ def list_deals(
     manager: Optional[str] = None,
     regional_office: Optional[str] = None,
     product: Optional[str] = None,
-    confianca: Optional[str] = None,
+    confianca_min: Optional[float] = None,
+    confianca_max: Optional[float] = None,
     idade_min: Optional[float] = None,
     idade_max: Optional[float] = None,
     page: int = Query(default=1, ge=1),
@@ -55,7 +56,8 @@ def list_deals(
     app_state: AppState = Depends(get_app_state),
 ):
     estados = validar_estados(estado)
-    confianca = validar_confianca(confianca)
+    confianca_min = validar_confianca(confianca_min)
+    confianca_max = validar_confianca(confianca_max)
     sort = validar_sort(sort)
     order = validar_order(order)
 
@@ -65,7 +67,8 @@ def list_deals(
         manager=manager,
         regional_office=regional_office,
         product=product,
-        confianca=confianca,
+        confianca_min=confianca_min,
+        confianca_max=confianca_max,
         idade_min=idade_min,
         idade_max=idade_max,
     )
@@ -146,6 +149,8 @@ def get_deal_detail(
     age_days = _age_days(row, resolved_as_of)
     has_account = bool(row.get("account")) and not pd.isna(row.get("account"))
     porte = constants.classificar_porte(row.get("employees"))
+    has_sector = has_account and not pd.isna(row.get("sector"))
+    has_team = not pd.isna(row.get("manager"))
 
     result = score_row(
         app_state.ctx,
@@ -156,6 +161,8 @@ def get_deal_detail(
         age_days=age_days,
         has_account=has_account,
         porte=porte,
+        has_sector=has_sector,
+        has_team=has_team,
     )
 
     conta = ContaOut(

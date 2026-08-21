@@ -1,18 +1,20 @@
-export type Estado = "foco_urgente" | "acompanhar" | "engajar" | "qualificar" | "desistir";
+export type Estado = "prioritize" | "acompanhar" | "qualificar" | "revisao_lote";
 
-export const ESTADOS: Estado[] = ["foco_urgente", "acompanhar", "engajar", "qualificar", "desistir"];
+export const ESTADOS: Estado[] = ["prioritize", "acompanhar", "qualificar", "revisao_lote"];
+
+/** Os três estados trabalháveis, exibidos como filtro na aba Oportunidades
+ * — `revisao_lote` não é um filtro dessa fila, é alcançado por uma visão
+ * própria (Requirement "Filtro de estado"). */
+export const ESTADOS_TRABALHAVEIS: Estado[] = ["prioritize", "acompanhar", "qualificar"];
 
 export const ESTADO_LABELS: Record<Estado, string> = {
-  foco_urgente: "Foco urgente",
+  prioritize: "Priorizar",
   acompanhar: "Acompanhar",
-  engajar: "Engajar",
   qualificar: "Qualificar",
-  desistir: "Desistir",
+  revisao_lote: "Revisão em lote",
 };
 
-export type Confianca = "A" | "B" | "C" | "D";
-
-export type SortKey = "score" | "prioridade" | "age_days" | "estado";
+export type SortKey = "score" | "confianca" | "age_days" | "estado";
 export type SortOrder = "asc" | "desc";
 
 export interface Oportunidade {
@@ -27,12 +29,15 @@ export interface Oportunidade {
   deal_stage: "Prospecting" | "Engaging";
   age_days: number | null;
   p_hat: number;
+  preco_tabela: number;
   valor: number;
   urgencia: number;
-  prioridade: number;
   score: number;
-  confianca: Confianca;
-  confianca_label: string;
+  /** 0-100 — min(completude, suporte). A escala por letra (A-D) não existe mais. */
+  confianca: number;
+  completude: number;
+  suporte: number;
+  sem_precedente: boolean;
   razao_confianca: string;
   estado: Estado;
   estado_label: string;
@@ -61,7 +66,13 @@ export interface Conta {
 
 export interface DealDetail extends Oportunidade {
   conta: Conta;
+  /** PRIORIDADE em dólares — valor intermediário auditável, exposto só no
+   * detalhe (nunca na listagem nem como critério de ordenação). */
+  prioridade: number;
   plano_de_acao_passos: string[];
+  /** Por que este SCORE — decomposição de p̂/VALOR/URGÊNCIA e do porte da
+   * conta em frases de negócio, sem jargão técnico. Só no detalhe. */
+  score_fatores: string[];
 }
 
 export interface FiltroVendedor {
@@ -88,7 +99,7 @@ export interface Kpis {
   total_oportunidades: number;
   receita_ganha: number;
   valor_esperado_aberto: number;
-  total_desistir: number;
+  total_revisao_lote: number;
   maior_negocio_fechado: number;
   data_inicio: string;
   data_fim: string;
@@ -102,6 +113,9 @@ export interface RollupLinha {
   n_abertas: number;
   valor_esperado: number;
   por_estado: Record<Estado, number>;
+  /** CONFIANÇA mediana do grupo — indicador de qualidade de cadastro, não
+   * de desempenho de vendas (Requirement "Rollup de gestão"). */
+  confianca_mediana: number;
 }
 
 export interface ProdutoEsforco {
@@ -124,13 +138,16 @@ export interface ScoreAvulsaResult {
   urgencia: number;
   prioridade: number;
   score: number;
-  confianca: Confianca;
-  confianca_label: string;
+  confianca: number;
+  completude: number;
+  suporte: number;
+  sem_precedente: boolean;
   razao_confianca: string;
   estado: Estado;
   estado_label: string;
   plano_de_acao: string;
   plano_de_acao_passos: string[];
+  score_fatores: string[];
 }
 
 export interface Filtros {
@@ -138,7 +155,8 @@ export interface Filtros {
   manager?: string;
   regional_office?: string;
   product?: string;
-  confianca?: Confianca;
+  confianca_min?: string;
+  confianca_max?: string;
   idade_min?: string;
   idade_max?: string;
 }

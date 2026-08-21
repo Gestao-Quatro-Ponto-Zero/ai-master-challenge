@@ -65,11 +65,17 @@ export function KpiTiles({
   }
 
   const historicos = new Set(kpis.indicadores_historicos);
-  const tiles: { key: string; label: string; value: string; alert?: boolean }[] = [
+  const tiles: { key: string; label: string; value: string; alert?: boolean; help?: string }[] = [
     { key: "total_oportunidades", label: "Oportunidades", value: kpis.total_oportunidades.toLocaleString("pt-BR") },
     { key: "receita_ganha", label: "Receita ganha", value: formatUsd(kpis.receita_ganha) },
     { key: "valor_esperado_aberto", label: "Valor esperado em aberto", value: formatUsd(kpis.valor_esperado_aberto) },
-    { key: "total_desistir", label: "Em Desistir", value: kpis.total_desistir.toLocaleString("pt-BR"), alert: true },
+    {
+      key: "total_revisao_lote",
+      label: "Revisão em lote",
+      value: kpis.total_revisao_lote.toLocaleString("pt-BR"),
+      alert: true,
+      help: "Passivo de higiene de dados — oportunidades sem precedente histórico de fechamento, não negócios perdidos.",
+    },
     { key: "maior_negocio_fechado", label: "Maior negócio fechado", value: formatUsd(kpis.maior_negocio_fechado) },
   ];
 
@@ -86,11 +92,18 @@ export function KpiTiles({
           >
             <div className="text-xs uppercase tracking-wide text-muted mb-1 flex items-center gap-1">
               {tile.label}
-              {historicos.has(tile.key) && (
-                <Tooltip content="Indicador histórico: reflete apenas os filtros de organização e produto — não segue estado, confiança ou idade, que só existem para o funil aberto.">
+              {(historicos.has(tile.key) || tile.help) && (
+                <Tooltip
+                  content={
+                    tile.help ??
+                    "Indicador histórico: reflete apenas os filtros de organização e produto — não segue estado, confiança ou idade, que só existem para o funil aberto."
+                  }
+                >
                   <button
                     type="button"
-                    aria-label="Por que este número não segue o filtro de estado"
+                    aria-label={
+                      tile.help ? "O que significa este indicador" : "Por que este número não segue o filtro de estado"
+                    }
                     className="inline-flex items-center justify-center text-[9px] font-bold border border-current rounded-full w-3.5 h-3.5 leading-none bg-transparent p-0 cursor-help"
                   >
                     i

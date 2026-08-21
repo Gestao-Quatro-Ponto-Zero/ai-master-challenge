@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Confianca, FilterOptions, Filtros } from "../types";
+import type { FilterOptions, Filtros } from "../types";
 
 /** Filtros de organização (vendedor, gerente, escritório), produto e
  * confiança — ordinários sobre o funil inteiro, sem condicionamento a
@@ -64,12 +64,30 @@ export function FilterBar({
         options={options.produtos}
         onChange={(v) => onChange({ product: v || undefined })}
       />
-      <Select
-        label="Confiança"
-        value={filtros.confianca ?? ""}
-        options={["A", "B", "C", "D"]}
-        onChange={(v) => onChange({ confianca: (v as Confianca) || undefined })}
-      />
+      <div className="text-xs text-muted flex flex-col gap-1">
+        Confiança (0–100)
+        <div className="flex items-center gap-1">
+          <input
+            type="number"
+            min={0}
+            max={100}
+            placeholder="mín"
+            value={filtros.confianca_min ?? ""}
+            onChange={(e) => onChange({ confianca_min: e.target.value || undefined })}
+            className="border border-border rounded-xs px-2 py-1.5 text-sm text-navy bg-white w-20"
+          />
+          <span>–</span>
+          <input
+            type="number"
+            min={0}
+            max={100}
+            placeholder="máx"
+            value={filtros.confianca_max ?? ""}
+            onChange={(e) => onChange({ confianca_max: e.target.value || undefined })}
+            className="border border-border rounded-xs px-2 py-1.5 text-sm text-navy bg-white w-20"
+          />
+        </div>
+      </div>
 
       <div className="ml-auto flex items-center gap-3">
         {activeCount > 0 && (
