@@ -7,7 +7,7 @@
 
 **O achado que muda tudo:**
 
-- **Nenhum atributo firmográfico prevê win/loss** — setor, porte, vendedor, gerente, região, país, tudo testado, nenhum p < 0,26 (significativo).
+- **Setor, porte, gerente, região e país não preveem win/loss** — tudo testado, nenhum estatisticamente significativo. **Vendedor é a exceção**: sinal fraco mas significativo na calibração de 2026-08-21 (p=0,000 sobre a população recalculada; ver [docs/report.md](./report.md) §2 e §12) — nunca usado em `p̂`, mas a base do mecanismo separado de fit por vendedor (sugestão de redistribuição de sobrecarga).
 - **Produto sozinho explica ~98% da variação de valor** — diferença de 487× entre preço mínimo e máximo.
 - **Conclusão:** lead score baseado em "probabilidade de conversão" seria puro ruído. Score precisa ser de **valor esperado** — priorizar pelo tamanho do prêmio, não pela chance de ganhar, porque a chance é a mesma para todo mundo e o prêmio não é.
 
@@ -17,19 +17,22 @@
 
 ## 1. Dados: o que não funciona, o que funciona
 
-### 1.1 Win rate é constante (p > 0,26 em todos os testes)
+### 1.1 Win rate é constante para produto/setor/conta — vendedor é a exceção (calibração de 2026-08-21)
 
 | Atributo | P-valor | Conclusão |
 |---|---|---|
-| Setor | 0,971 | não significativo |
-| Produto | 0,372 | — |
-| Gerente | 0,786 | — |
-| Vendedor | 0,264 | — |
-| Todos os outros (região, país, porte, receita, idade empresa) | > 0,26 | nenhum muda ganho/perda |
+| Setor | 0,917 | não significativo |
+| Produto | 0,116 | não significativo |
+| Conta | 0,935 | não significativo |
+| Gerente | 0,786 | não significativo (análise anterior, não reproduzida pelo backtest atual) |
+| **Vendedor** | **0,000** | **significativo** — sinal fraco, nunca usado em `p̂`; base do fit por vendedor |
+| Todos os outros (região, país, porte, receita, idade empresa) | > 0,12 | nenhum muda ganho/perda |
 
-Modelos preditivos testados (regressão logística, gradient boosting, com/sem holdout temporal): **AUC 0,49–0,51** (equivalente a chute aleatório).
+Números de Setor/Produto/Conta/Vendedor reproduzidos por `validation/backtest.py` §2 (ver [docs/report.md](./report.md)); atualizados em 2026-08-21 após a reclassificação de 200 dias, que fez `Vendedor` passar de p=0,264 (não significativo) para p=0,000.
 
-**Conclusão:** firmografia não discrimina conversão. Há sinal de *valor*, nenhum de *probabilidade condicional*.
+Modelos preditivos testados (regressão logística, gradient boosting, com/sem holdout temporal): **AUC 0,47–0,51** por atributo isolado (equivalente a chute aleatório).
+
+**Conclusão:** produto, setor e conta não discriminam conversão. Vendedor carrega um sinal fraco e estatisticamente significativo, tratado à parte no mecanismo de fit por vendedor ([docs/architecture.md §Carga e fit por vendedor](./architecture.md)), nunca em `p̂`/SCORE. Há sinal de *valor*, nenhum de *probabilidade condicional* ligado a onde a oportunidade cai na hierarquia produto/setor/conta.
 
 ### 1.2 Valor é altamente previsível (R² = 0,98)
 
@@ -72,7 +75,7 @@ CONFIANÇA = min(completude, suporte)  [dados? precedente?]
 ESTADO = Priorizar | Acompanhar | Qualificar | Revisão em lote
 ```
 
-**O que NÃO está na fórmula:** setor (p=0,971), gerente (p=0,786), vendedor (p=0,264), região, país, receita, idade empresa. Todos testados, nenhum significativo. Incluir seria codificar ruído como rigor.
+**O que NÃO está na fórmula:** setor (p=0,917), gerente (p=0,786), região, país, receita, idade empresa — todos testados, nenhum significativo, incluir seria codificar ruído como rigor. Vendedor **é** testado e mostra sinal fraco mas significativo (p=0,000) — por isso entra num mecanismo à parte (fit por vendedor), nunca em `p̂`/SCORE.
 
 ### 2.2 Componentes
 
@@ -112,7 +115,7 @@ Histórico: 6.711 fechados organicamente = 4.238 ganhos / 6.711 = 63,15%.
 
 Quando 653 oportunidades abertas ≥200 dias são reclassificadas como Lost (política de abandono), a taxa se reposiciona: 4.238 / (4.238 + 3.126 reclassificados) = 57,55%.
 
-Todos os testes de diferença (setor, produto, região, gerente, vendedor) indicam p > 0,26 — taxa efetivamente constante em qualquer recorte.
+Os testes de diferença por setor, produto, conta, região, gerente indicam p > 0,12 — taxa efetivamente constante nesses recortes. Vendedor é a exceção (p=0,000) — ver §1.1.
 
 ### 3.2 Urgência por idade (mediana 57d, P95 116d)
 
@@ -130,7 +133,7 @@ idade > 138 dias     → prior global (0,575)
 
 ### 3.3 p̂ por produto: encolhimento, não discriminação
 
-Cada produto tem taxa própria (0,58–0,65), calculada como ganhos/(ganhos+perdidos), encolhida em direção ao prior global com constante `K_PRODUTO` (agora derivada dinamicamente).
+Cada produto tem taxa própria (0,58–0,65), calculada como ganhos/(ganhos+perdidos), encolhida em direção ao prior global com força `k` derivada dos dados via `shrinkage.level_stats` (a constante congelada `K_PRODUTO` foi removida em 2026-08-21).
 
 **O encolhimento não é discriminação real** — é proteção contra overfitting. Produtos com amostras pequenas (`GTK 500`, 35 fechados) devem ser puxados em direção ao prior, não tratados como padrão estabelecido.
 

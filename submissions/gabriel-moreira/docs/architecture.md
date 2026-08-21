@@ -6,9 +6,9 @@ Blueprint técnico da implementação: como cada peça funciona e como é valida
 
 ## Visão geral
 
-Ferramenta de triagem de pipeline por **valor em risco**, não por probabilidade de conversão categórica. A evidência: em 6.711 negócios fechados (out/2016–dez/2017), nenhum atributo firmográfico isolado (vendedor, conta, setor, gerente, escritório) prevê ganho/perda — AUC ≈ 0,50, testes de permutação com p entre 0,26 e 0,98. A calibração hierárquica confirma isso de outra forma: os níveis conta×produto e produto×setor têm variância em excesso zero e colapsam para peso zero automaticamente.
+Ferramenta de triagem de pipeline por **valor em risco**, não por probabilidade de conversão categórica. A evidência: em negócios fechados (out/2016–dez/2017), conta, setor, gerente e escritório não preveem ganho/perda — AUC ≈ 0,47-0,51, testes de permutação com p entre 0,12 e 0,94. Vendedor é a exceção mensurada na calibração de 2026-08-21 (p=0,000, ver [docs/report.md](./report.md) §2 e §12) — um sinal fraco, que nunca entra em `p̂`, mas sustenta o mecanismo separado de fit por vendedor (sugestão de redistribuição de sobrecarga). A calibração hierárquica confirma a ausência de sinal de conta e setor de outra forma: os níveis conta×produto e produto×setor têm variância em excesso zero e colapsam para peso zero automaticamente.
 
-O que diferencia uma oportunidade da outra é **valor** (produtos de US$ 55 a US$ 26.768, 487×) e **tempo até a resolução** — não quem vende, para quem, ou em que setor.
+O que diferencia uma oportunidade da outra é, sobretudo, **valor** (produtos de US$ 55 a US$ 26.768, 487×) e **tempo até a resolução** — não para quem se vende ou em que setor.
 
 **A fórmula:**
 
@@ -517,9 +517,9 @@ validation/
 
 `solution/validation/backtest.py` reproduz, em 13 seções (seções 10-13 adicionadas 2026-08-21):
 
-1. AUC ≈ 0,50 por atributo firmográfico isolado, em holdout temporal
-2. Testes de permutação (p entre 0,26 e 0,98) para vendedor/produto/setor/conta
-3. Colapso de `k` para conta×produto e produto×setor (variância em excesso ≤ 0 nos dois). O nível de **produto** deixou de colapsar após a reclassificação de 200 dias — `k≈0,70` (finito), dominado por `GTK 500` — `K_PRODUTO=4` continua sendo aproximação retida por política, agora reportada como AVISO, não como NOTA (ver decisions-log.md, 2026-08-21)
+1. AUC ≈ 0,47-0,51 por atributo firmográfico isolado, em holdout temporal
+2. Testes de permutação: p entre 0,12 e 0,94 para produto/setor/conta (compatível com ruído); `sales_agent` é a exceção, p=0,000 na calibração de 2026-08-21 (sinal fraco, não usado em `p̂`, base do fit por vendedor — ver seção 12 do backtest)
+3. Colapso de `k` para conta×produto e produto×setor (variância em excesso ≤ 0 nos dois). O nível de **produto** deixou de colapsar após a reclassificação de 200 dias — `k≈0,70` (finito), dominado por `GTK 500`. `K_PRODUTO` foi removido em 2026-08-21: o nível de produto agora chama `shrinkage.level_stats` em tempo de carga, como conta×produto e produto×setor, e usa o `k` derivado diretamente, sem constante congelada nem comparação (ver decisions-log.md, 2026-08-21)
 4. Monotonicidade de `risco(t)` e fronteira de 138 dias confirmada nos dados carregados — sobre `fechados_organicos`, nunca sobre reclassificados
 5. Concentração de PRIORIDADE: top 10% da fila concentra ~45% do valor em risco total (vs. ~28% ordenando só por preço de tabela puro) — comparado lado a lado, rotulado como concentração, não como validação preditiva
 6. **Condicionar `p̂` por produto×setor** (CV 5-fold):

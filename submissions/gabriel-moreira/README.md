@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-Antes de propor qualquer score, testei se o cadastro sustenta uma previsão de conversão (qui-quadrado, Mann-Whitney, AUC com holdout temporal, testes de permutação) sobre os 6.711 negócios fechados: **nenhum atributo firmográfico prevê ganho ou perda** (AUC 0,49–0,51, p entre 0,26 e 0,97 em vendedor/setor/gerente/conta). A ferramenta não classifica probabilidade de conversão — ela ordena o funil por **valor em risco**: `SCORE = percentil(p̂ × VALOR × URGÊNCIA)`, acompanhado de `CONFIANÇA` (quanto o número está apoiado em dado real) e `ESTADO` (a ação recomendada), com `p̂` calibrado por encolhimento hierárquico (`k` derivado dos dados, sem constantes congeladas) e ajuste por setor (`mult_setor`, ±15%). Entreguei uma API FastAPI + frontend React rodando de ponta a ponta — priorização, filtros, revisão em lote, exportação CSV e alerta de sobrecarga por vendedor com sugestão de redistribuição —, tudo validado por um backtest reprodutível (`make validate`) que também documenta três tentativas de deixar o modelo mais granular que **pioraram** a previsão fora da amostra e foram descartadas, não escondidas.
+Antes de propor qualquer score, testei se o cadastro sustenta uma previsão de conversão (qui-quadrado, Mann-Whitney, AUC com holdout temporal, testes de permutação) sobre os negócios fechados: **produto, setor e conta não preveem ganho ou perda** (AUC 0,47–0,51, p entre 0,12 e 0,94). O vendedor é a exceção mensurada na calibração de 2026-08-21 (p=0,000 sobre a população recalculada) — um sinal fraco, nunca usado em `p̂`/SCORE, e que já sustenta o mecanismo separado de **fit por vendedor** usado só na sugestão de redistribuição de sobrecarga (ver [docs/report.md §2 e §12](./docs/report.md)). A ferramenta não classifica probabilidade de conversão — ela ordena o funil por **valor em risco**: `SCORE = percentil(p̂ × VALOR × URGÊNCIA)`, acompanhado de `CONFIANÇA` (quanto o número está apoiado em dado real) e `ESTADO` (a ação recomendada), com `p̂` calibrado por encolhimento hierárquico (`k` derivado dos dados, sem constantes congeladas) e ajuste por setor (`mult_setor`, ±15%). Entreguei uma API FastAPI + frontend React rodando de ponta a ponta — priorização, filtros, revisão em lote, exportação CSV e alerta de sobrecarga por vendedor com sugestão de redistribuição —, tudo validado por um backtest reprodutível (`make validate`) que também documenta três tentativas de deixar o modelo mais granular que **pioraram** a previsão fora da amostra e foram descartadas, não escondidas.
 
 ---
 
@@ -19,7 +19,7 @@ Antes de propor qualquer score, testei se o cadastro sustenta uma previsão de c
 
 ### Abordagem
 
-Comecei pela pergunta que a maioria dos guias de lead scoring pula: **os dados sustentam um score de probabilidade de conversão?** Rodei testes estatísticos (qui-quadrado, Mann-Whitney, AUC de modelos preditivos com holdout temporal, testes de permutação) sobre os 6.711 negócios fechados — a resposta foi não, para todo atributo firmográfico testado. Só depois desenhei a alternativa que os dados sustentam: um score de **valor em risco**, calibrado com encolhimento hierárquico (empirical Bayes) e curvas de aging isotônicas.
+Comecei pela pergunta que a maioria dos guias de lead scoring pula: **os dados sustentam um score de probabilidade de conversão?** Rodei testes estatísticos (qui-quadrado, Mann-Whitney, AUC de modelos preditivos com holdout temporal, testes de permutação) sobre os negócios fechados — a resposta foi não para produto, setor e conta; vendedor mostrou sinal fraco mas estatisticamente significativo na calibração de 2026-08-21 (detalhe em [docs/report.md §2 e §12](./docs/report.md)), sem entrar em `p̂`. Só depois desenhei a alternativa que os dados sustentam: um score de **valor em risco**, calibrado com encolhimento hierárquico (empirical Bayes) e curvas de aging isotônicas.
 
 O trabalho seguiu em ciclos de decisão → implementação → validação → correção:
 1. Análise exploratória completa, documentada em [docs/analise-lead-scoring.md](./docs/analise-lead-scoring.md)
@@ -76,12 +76,12 @@ Para cada oportunidade de vendedor sobrecarregado, o sistema sugere um colega **
 
 O vendedor sugerido só aparece na aba **Sobrecarga** e no painel de detalhe da oportunidade — a listagem geral de Oportunidades recebe apenas um booleano `sobrecarregado`, nunca o nome do candidato. Detalhe técnico completo (fórmulas, encolhimento, endpoints) em [docs/architecture.md §Carga e fit por vendedor](./docs/architecture.md) e na spec formal [openspec/specs/workload-fit/spec.md](./openspec/specs/workload-fit/spec.md). Screenshots do fluxo em [process-log/screenshots/06-sobrecarga.png](./process-log/screenshots/06-sobrecarga.png) e [06b-sobrecarga-detalhe.png](./process-log/screenshots/06b-sobrecarga-detalhe.png).
 
-**Validação:** `make validate` reproduz 9 achados estruturais (ausência de sinal firmográfico, colapso do encolhimento hierárquico, monotonicidade das curvas de aging, concentração de valor no topo da fila) e testa por validação cruzada três hipóteses de tornar o modelo mais granular — as três pioraram a previsão fora da amostra e foram descartadas, não escondidas. Saída completa comentada em [docs/report.md](./docs/report.md).
+**Validação:** `make validate` reproduz 13 achados estruturais (ausência de sinal em produto/setor/conta, colapso do encolhimento hierárquico, monotonicidade das curvas de aging, concentração de valor no topo da fila, impacto e integridade da reclassificação de 200 dias, fit por vendedor) e testa por validação cruzada três hipóteses de tornar o modelo mais granular — as três pioraram a previsão fora da amostra e foram descartadas, não escondidas. Saída completa comentada em [docs/report.md](./docs/report.md).
 
 ### Recomendações
 
 1. **Realocar capacidade de MG Special/GTX Basic** para autosserviço ou um time de menor custo — libera ~14 vendedores-equivalentes para produtos que rendem de 10× a 400× mais por dia de esforço.
-2. **Instrumentar dado comportamental** (timestamp de mudança de etapa, speed-to-lead, motivo de perda estruturado) — é a lacuna que explica a AUC de 0,50 e o próximo passo de maior retorno. Lista priorizada em [docs/analise-lead-scoring.md §6 "O que não foi implementado"](./docs/analise-lead-scoring.md).
+2. **Instrumentar dado comportamental** (timestamp de mudança de etapa, speed-to-lead, motivo de perda estruturado) — é a lacuna que explica a AUC próxima de 0,50 em produto/setor/conta e o próximo passo de maior retorno. Lista priorizada em [docs/analise-lead-scoring.md §6 "O que não foi implementado"](./docs/analise-lead-scoring.md).
 3. Roadmap completo, com esforço e impacto estimados por item, em [docs/roadmap.md](./docs/roadmap.md) — inclui um job de monitoramento de notícias de conta como próximo passo de sinal externo.
 
 ### Limitações
@@ -132,6 +132,7 @@ Passo a passo detalhado, com data e o que foi decidido por mim vs. executado pel
 - Pedir a segunda rodada de "grilling" depois de ver o sistema em uso real — os problemas de UX (CONFIANÇA forçando "desistir" para 61,8% do funil) só ficaram óbvios rodando a ferramenta, não lendo a spec.
 - A decisão de negócio de implementar `mult_setor` mesmo com o resultado de validação cruzada negativo — julgamento de produto, não um resultado que os dados sozinhos indicavam.
 - Um score de confiança sobre os dados, assim o time de vendas consegue analisar quais scores são realmente de qualidade.
+- Expurgar os dados de deals antigos que tinham +200d, passando do limite historico de 138d para vencer um deal.
 
 ---
 

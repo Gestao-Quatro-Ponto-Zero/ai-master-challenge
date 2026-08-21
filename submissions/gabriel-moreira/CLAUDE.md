@@ -20,7 +20,7 @@ This file is an orientation card for whoever (human or AI) picks this repo up ne
 
 ## The one finding that shapes everything
 
-On 6,711 closed deals, **no firmographic attribute predicts win/loss** (AUC ≈ 0.50, permutation p between 0.26-0.98 across agent/product/sector/account). **Product alone explains ~98% of deal value** (range $55-$26,768, 487×). So the tool doesn't classify win probability — it ranks **value at risk**:
+On the closed deals, **product, sector, and account don't predict win/loss** (AUC ≈ 0.47-0.51, permutation p between 0.12-0.94). `sales_agent` is the exception measured in the 2026-08-21 calibration (p=0.000 on the recalculated population; see [docs/report.md](docs/report.md) §2 and §12) — a weak signal, never used in `p̂`/SCORE, but the statistical basis for the separate **fit-by-agent** mechanism (workload redistribution suggestion only). **Product alone explains ~98% of deal value** (range $55-$26,768, 487×). So the tool doesn't classify win probability — it ranks **value at risk**:
 
 ```
 PRIORIDADE = p̂(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)   [dollars, auditable]
@@ -35,7 +35,7 @@ SCORE and CONFIANÇA never combine into one number — SCORE says what it's wort
 
 ## What's NOT in the model, and why
 
-Sales agent, manager, office, sector, account revenue, employee count, company age — all tested, none significant (p > 0.26 on every permutation test). Adding them would be noise dressed as rigor.
+Manager, office, sector, account revenue, employee count, company age — all tested, none significant (p > 0.12 on every permutation test). Sales agent is tested and does show a weak, significant signal (p=0.000 on the 2026-08-21 calibration) — it feeds the separate fit-by-agent overload mechanism, not `p̂`/SCORE. Adding these to `p̂` would be noise dressed as rigor.
 
 ## Stack
 

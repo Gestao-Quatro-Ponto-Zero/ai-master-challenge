@@ -3,10 +3,11 @@
 ## O que foi construído
 
 Ferramenta de triagem de pipeline por **valor em risco**, não por probabilidade categórica de
-conversão. A evidência que sustenta essa escolha: em 6.711 negócios fechados, nenhum atributo
-firmográfico isolado (vendedor, conta, setor, escritório) prevê ganho/perda — AUC ≈ 0,50, testes
-de permutação com p entre 0,26 e 0,98 (ver [solution/report.md](./solution/report.md) e
-[docs/architecture.md](./docs/architecture.md)).
+conversão. A evidência que sustenta essa escolha: em negócios fechados, conta, setor e escritório
+não preveem ganho/perda — AUC ≈ 0,47-0,51, testes de permutação com p entre 0,12 e 0,94. Vendedor
+é a exceção mensurada na calibração de 2026-08-21 (p=0,000) — sinal fraco, nunca usado em `p̂`,
+base do mecanismo separado de fit por vendedor (ver [docs/report.md](./report.md) §2 e §12 e
+[docs/architecture.md](./architecture.md)).
 
 ```
 PRIORIDADE = P̂ganho(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)   [dólares, auditável]
