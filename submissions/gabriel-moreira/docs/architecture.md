@@ -249,90 +249,16 @@ Cada termo condicional (`s_idade` sem idade conhecida — Prospecting; `s_célul
 4. caso contrário             -> Acompanhar
 ```
 
-<svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid var(--text-secondary); border-radius: 4px;">
-  <defs>
-    <style>
-      .node-decision { fill: #fef3c7; stroke: #d97706; stroke-width: 2; }
-      .node-result { fill: #dbeafe; stroke: #3b82f6; stroke-width: 2; }
-      .node-alert { fill: #fed7aa; stroke: #f97316; stroke-width: 2; }
-      .node-text { font-size: 12px; fill: var(--text-primary); font-weight: 500; text-anchor: middle; }
-      .node-count { font-size: 11px; fill: var(--text-secondary); }
-      .arrow { stroke: var(--text-secondary); stroke-width: 1.5; fill: none; }
-      .arrow-head { fill: var(--text-secondary); }
-      .label-text { font-size: 11px; fill: var(--text-secondary); }
-    </style>
-  </defs>
-  
-  <!-- Start node -->
-  <rect x="175" y="10" width="150" height="40" rx="4" class="node-decision"/>
-  <text x="250" y="35" class="node-text">Deal aberto</text>
-  
-  <!-- Arrow down -->
-  <line x1="250" y1="50" x2="250" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- Decision 1: Sem precedente? -->
-  <polygon points="250,80 310,120 250,160 190,120" class="node-decision"/>
-  <text x="250" y="115" class="node-text">Sem precedente</text>
-  <text x="250" y="130" class="node-text">historico?</text>
-  
-  <!-- Arrow left to Revisão em lote -->
-  <line x1="190" y1="120" x2="100" y2="120" class="arrow"/>
-  <text x="145" y="115" class="label-text">sim</text>
-  
-  <rect x="20" y="100" width="80" height="40" rx="4" class="node-alert"/>
-  <text x="60" y="120" class="node-text">Revisão</text>
-  <text x="60" y="135" class="node-text">em lote</text>
-  <text x="60" y="152" class="node-count">443</text>
-  
-  <!-- Arrow down to Decision 2 -->
-  <line x1="250" y1="160" x2="250" y2="190" class="arrow"/>
-  <text x="265" y="175" class="label-text">não</text>
-  
-  <!-- Decision 2: SCORE >= 95? -->
-  <polygon points="250,190 310,230 250,270 190,230" class="node-decision"/>
-  <text x="250" y="225" class="node-text">SCORE</text>
-  <text x="250" y="240" class="node-text">≥ 95?</text>
-  
-  <!-- Arrow right to Priorizar -->
-  <line x1="310" y1="230" x2="390" y2="230" class="arrow"/>
-  <text x="350" y="225" class="label-text">sim</text>
-  
-  <rect x="390" y="210" width="80" height="40" rx="4" class="node-result"/>
-  <text x="430" y="230" class="node-text">Priorizar</text>
-  <text x="430" y="247" class="node-count">54</text>
-  
-  <!-- Arrow down to Decision 3 -->
-  <line x1="250" y1="270" x2="250" y2="300" class="arrow"/>
-  <text x="265" y="285" class="label-text">não</text>
-  
-  <!-- Decision 3: CONFIANÇA < 50? -->
-  <polygon points="250,300 310,340 250,380 190,340" class="node-decision"/>
-  <text x="250" y="335" class="node-text">CONFIANÇA</text>
-  <text x="250" y="350" class="node-text">&lt; 50?</text>
-  
-  <!-- Arrow right to Qualificar -->
-  <line x1="310" y1="340" x2="390" y2="340" class="arrow"/>
-  <text x="350" y="335" class="label-text">sim</text>
-  
-  <rect x="390" y="320" width="80" height="40" rx="4" class="node-result"/>
-  <text x="430" y="340" class="node-text">Qualificar</text>
-  <text x="430" y="357" class="node-count">656</text>
-  
-  <!-- Arrow down to Acompanhar -->
-  <line x1="250" y1="380" x2="250" y2="405" class="arrow"/>
-  <text x="265" y="395" class="label-text">não</text>
-  
-  <rect x="180" y="405" width="140" height="40" rx="4" class="node-result"/>
-  <text x="250" y="425" class="node-text">Acompanhar</text>
-  <text x="250" y="442" class="node-count">283</text>
-  
-  <!-- Arrow definitions -->
-  <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <polygon points="0 0, 10 3, 0 6" class="arrow-head"/>
-    </marker>
-  </defs>
-</svg>
+```mermaid
+flowchart TD
+    A[Deal aberto] --> B{Sem precedente<br/>histórico?}
+    B -->|sim| C[Revisão em lote<br/>443]
+    B -->|não| D{SCORE ≥ 95?}
+    D -->|sim| E[Priorizar<br/>54]
+    D -->|não| F{CONFIANÇA < 50?}
+    F -->|sim| G[Qualificar<br/>656]
+    F -->|não| H[Acompanhar<br/>283]
+```
 
 CONFIANÇA e ESTADO não são a mesma coisa: **CONFIANÇA é o quanto acreditar no score**; **ESTADO é a ação recomendada**. A tabela 4×2 original (A-D × SCORE≥50) deu lugar a uma árvore, porque CONFIANÇA contínua em 0-100 não tem quebras naturais para uma tabela cruzada, e a ordem explícita da árvore corrige o defeito real da versão anterior: "CONFIANÇA D → Desistir" era uma regra de mão única escondida numa célula, aplicada a 61,8% do funil.
 
@@ -481,116 +407,19 @@ make test
 
 ## Como os componentes se falam
 
-<svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid var(--text-secondary); border-radius: 4px;">
-  <defs>
-    <style>
-      .box { fill: var(--bg-secondary); stroke: var(--border-default); stroke-width: 1.5; rx: 4; }
-      .box-data { fill: #dbeafe; stroke: #3b82f6; stroke-width: 1.5; }
-      .box-text { font-size: 11px; fill: var(--text-primary); text-anchor: middle; font-weight: 500; }
-      .box-subtext { font-size: 10px; fill: var(--text-secondary); text-anchor: middle; }
-      .arrow { stroke: var(--text-secondary); stroke-width: 1.5; fill: none; }
-      .arrow-head { fill: var(--text-secondary); }
-    </style>
-  </defs>
-  
-  <!-- Data source -->
-  <circle cx="50" cy="80" r="35" class="box-data"/>
-  <text x="50" y="70" class="box-text">CSVs</text>
-  <text x="50" y="85" class="box-subtext">accounts</text>
-  <text x="50" y="97" class="box-subtext">products</text>
-  <text x="50" y="109" class="box-subtext">pipeline</text>
-  <text x="50" y="121" class="box-subtext">teams</text>
-  
-  <!-- Arrow -->
-  <line x1="85" y1="80" x2="125" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- Repository -->
-  <rect x="125" y="50" width="100" height="60" class="box"/>
-  <text x="175" y="70" class="box-text">repository.py</text>
-  <text x="175" y="85" class="box-subtext">load+merge</text>
-  <text x="175" y="97" class="box-subtext">reclassificação</text>
-  
-  <!-- Arrow -->
-  <line x1="225" y1="80" x2="265" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- Context -->
-  <rect x="265" y="50" width="110" height="60" class="box"/>
-  <text x="320" y="70" class="box-text">pipeline.py</text>
-  <text x="320" y="85" class="box-subtext">ScoringContext</text>
-  <text x="320" y="97" class="box-subtext">k, curves, mult_setor</text>
-  
-  <!-- Arrow down to Export -->
-  <line x1="320" y1="110" x2="320" y2="140" class="arrow" marker-end="url(#arrowhead)"/>
-  <text x="330" y="128" class="box-subtext" style="text-anchor: start;">Export</text>
-  
-  <rect x="260" y="140" width="120" height="60" class="box"/>
-  <text x="320" y="160" class="box-text">export.py</text>
-  <text x="320" y="175" class="box-subtext">CSV processado</text>
-  <text x="320" y="187" class="box-subtext">analysis_by_*.csv</text>
-  
-  <!-- Arrow down to Validation -->
-  <line x1="440" y1="110" x2="440" y2="140" class="arrow" marker-end="url(#arrowhead)"/>
-  <text x="450" y="128" class="box-subtext" style="text-anchor: start;">Validation</text>
-  
-  <rect x="380" y="140" width="120" height="60" class="box"/>
-  <text x="440" y="160" class="box-text">backtest.py</text>
-  <text x="440" y="175" class="box-subtext">AUC, k derivado</text>
-  <text x="440" y="187" class="box-subtext">validação</text>
-  
-  <!-- Arrow to Model -->
-  <line x1="375" y1="80" x2="415" y2="80" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- Model -->
-  <rect x="415" y="50" width="110" height="60" class="box"/>
-  <text x="470" y="70" class="box-text">model.py</text>
-  <text x="470" y="85" class="box-subtext">p̂ × VALOR</text>
-  <text x="470" y="97" class="box-subtext">× URGÊNCIA</text>
-  
-  <!-- Arrow to Reference -->
-  <line x1="525" y1="75" x2="565" y2="75" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <rect x="565" y="45" width="110" height="60" class="box"/>
-  <text x="620" y="65" class="box-text">reference.py</text>
-  <text x="620" y="80" class="box-subtext">percentile vs Won</text>
-  <text x="620" y="92" class="box-subtext">= SCORE</text>
-  
-  <!-- Arrow to Confidence (down from model) -->
-  <line x1="470" y1="110" x2="470" y2="140" class="arrow" marker-end="url(#arrowhead)"/>
-  <text x="480" y="128" class="box-subtext" style="text-anchor: start;">Confidence</text>
-  
-  <rect x="415" y="140" width="110" height="60" class="box"/>
-  <text x="470" y="160" class="box-text">confianca.py</text>
-  <text x="470" y="175" class="box-subtext">CONFIANÇA</text>
-  <text x="470" y="187" class="box-subtext">ESTADO</text>
-  
-  <!-- Arrow to API from Reference -->
-  <line x1="675" y1="75" x2="715" y2="75" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- Arrow to API from Confidence -->
-  <line x1="525" y1="170" x2="715" y2="85" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- API -->
-  <rect x="715" y="45" width="110" height="60" class="box"/>
-  <text x="770" y="65" class="box-text">API FastAPI</text>
-  <text x="770" y="80" class="box-subtext">/deals, /kpis</text>
-  <text x="770" y="92" class="box-subtext">/rollup, /score</text>
-  
-  <!-- Arrow to Web -->
-  <line x1="825" y1="75" x2="865" y2="75" class="arrow" marker-end="url(#arrowhead)"/>
-  
-  <!-- Web -->
-  <rect x="865" y="45" width="120" height="60" class="box"/>
-  <text x="925" y="65" class="box-text">React</text>
-  <text x="925" y="80" class="box-subtext">Oportunidades</text>
-  <text x="925" y="92" class="box-subtext">Sobrecarga, Gestão</text>
-  
-  <!-- Arrow definitions -->
-  <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <polygon points="0 0, 10 3, 0 6" class="arrow-head"/>
-    </marker>
-  </defs>
-</svg>
+```mermaid
+flowchart LR
+    CSV(("CSVs<br/>accounts, products,<br/>pipeline, teams")) --> REPO["repository.py<br/>load+merge<br/>reclassificação"]
+    REPO --> CTX["pipeline.py<br/>ScoringContext<br/>k, curves, mult_setor"]
+    CTX --> MODEL["model.py<br/>p̂ × VALOR × URGÊNCIA"]
+    CTX --> EXPORT["export.py<br/>CSV processado<br/>analysis_by_*.csv"]
+    CTX --> BACKTEST["backtest.py<br/>AUC, k derivado<br/>validação"]
+    MODEL --> REF["reference.py<br/>percentile vs Won<br/>= SCORE"]
+    MODEL --> CONF["confianca.py<br/>CONFIANÇA<br/>ESTADO"]
+    REF --> API["API FastAPI<br/>/deals, /kpis<br/>/rollup, /score"]
+    CONF --> API
+    API --> WEB["React<br/>Oportunidades<br/>Sobrecarga, Gestão"]
+```
 
 `scoring/` é o único lugar onde a fórmula existe — API, exportação e validação a importam via `pip install -e`, nunca reimplementam. Estrutura de pastas efetivamente implementada (substitui a estrutura prevista da versão anterior deste documento):
 

@@ -43,142 +43,28 @@ Derivação completa de cada termo em [docs/analise-lead-scoring.md](./docs/anal
 
 **Onde está a receita, contra onde está o esforço do time** — a distorção mais cara encontrada na análise:
 
-<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid var(--text-secondary); border-radius: 4px;">
-  <defs>
-    <style>
-      .chart-title { font-size: 16px; font-weight: bold; fill: var(--text-primary); }
-      .chart-label { font-size: 12px; fill: var(--text-secondary); }
-      .chart-value { font-size: 11px; fill: var(--text-tertiary); }
-      .grid-line { stroke: var(--border-default); stroke-width: 0.5; }
-      .axis-line { stroke: var(--text-secondary); stroke-width: 1.5; }
-      .line-esforco { stroke: #4f46e5; stroke-width: 2.5; fill: none; }
-      .line-receita { stroke: #059669; stroke-width: 2.5; fill: none; }
-      .dot-esforco { fill: #4f46e5; }
-      .dot-receita { fill: #059669; }
-      .legend-text { font-size: 12px; fill: var(--text-primary); }
-    </style>
-  </defs>
-  
-  <!-- Title -->
-  <text x="450" y="25" class="chart-title" text-anchor="middle">Esforço do Time vs Receita por Produto</text>
-  
-  <!-- Grid lines -->
-  <line x1="80" y1="60" x2="80" y2="320" class="axis-line"/>
-  <line x1="80" y1="320" x2="870" y2="320" class="axis-line"/>
-  
-  <!-- Horizontal grid -->
-  <line x1="75" y1="220" x2="870" y2="220" class="grid-line"/>
-  <line x1="75" y1="170" x2="870" y2="170" class="grid-line"/>
-  <line x1="75" y1="120" x2="870" y2="120" class="grid-line"/>
-  <line x1="75" y1="70" x2="870" y2="70" class="grid-line"/>
-  
-  <!-- Y-axis labels and values -->
-  <text x="70" y="325" class="chart-label" text-anchor="end">0</text>
-  <text x="70" y="225" class="chart-label" text-anchor="end">10</text>
-  <text x="70" y="175" class="chart-label" text-anchor="end">20</text>
-  <text x="70" y="125" class="chart-label" text-anchor="end">30</text>
-  <text x="70" y="75" class="chart-label" text-anchor="end">40</text>
-  
-  <!-- Y-axis label -->
-  <text x="20" y="190" class="chart-label" text-anchor="middle" transform="rotate(-90 20 190)">Percentual (%)</text>
-  
-  <!-- X-axis labels -->
-  <text x="105" y="345" class="chart-label" text-anchor="middle">GTK500</text>
-  <text x="195" y="345" class="chart-label" text-anchor="middle">GTXPlus</text>
-  <text x="285" y="345" class="chart-label" text-anchor="middle">GTXPro</text>
-  <text x="375" y="345" class="chart-label" text-anchor="middle">MG-Adv</text>
-  <text x="465" y="345" class="chart-label" text-anchor="middle">GTXBasic+</text>
-  <text x="555" y="345" class="chart-label" text-anchor="middle">GTXBasic</text>
-  <text x="645" y="345" class="chart-label" text-anchor="middle">MG-Spec</text>
-  
-  <!-- Data points and lines -->
-  <!-- Esforço %: [0.4, 10.7, 16.3, 15.9, 16.1, 22.3, 18.4] -->
-  <!-- Receita %: [4.0, 26.3, 35.1, 22.2, 7.1, 5.0, 0.4] -->
-  
-  <!-- Esforço line -->
-  <polyline points="105,317 195,287 285,263 375,265 465,263 555,247 645,259" class="line-esforco"/>
-  
-  <!-- Receita line -->
-  <polyline points="105,304 195,224 285,139 375,211 465,294 555,300 645,318" class="line-receita"/>
-  
-  <!-- Data points - Esforço -->
-  <circle cx="105" cy="317" r="3" class="dot-esforco"/>
-  <circle cx="195" cy="287" r="3" class="dot-esforco"/>
-  <circle cx="285" cy="263" r="3" class="dot-esforco"/>
-  <circle cx="375" cy="265" r="3" class="dot-esforco"/>
-  <circle cx="465" cy="263" r="3" class="dot-esforco"/>
-  <circle cx="555" cy="247" r="3" class="dot-esforco"/>
-  <circle cx="645" cy="259" r="3" class="dot-esforco"/>
-  
-  <!-- Data points - Receita -->
-  <circle cx="105" cy="304" r="3" class="dot-receita"/>
-  <circle cx="195" cy="224" r="3" class="dot-receita"/>
-  <circle cx="285" cy="139" r="3" class="dot-receita"/>
-  <circle cx="375" cy="211" r="3" class="dot-receita"/>
-  <circle cx="465" cy="294" r="3" class="dot-receita"/>
-  <circle cx="555" cy="300" r="3" class="dot-receita"/>
-  <circle cx="645" cy="318" r="3" class="dot-receita"/>
-  
-  <!-- Legend -->
-  <line x1="700" y1="50" x2="730" y2="50" class="line-esforco"/>
-  <text x="740" y="55" class="legend-text">Esforço %</text>
-  
-  <line x1="700" y1="75" x2="730" y2="75" class="line-receita"/>
-  <text x="740" y="80" class="legend-text">Receita %</text>
-</svg>
+```mermaid
+xychart-beta
+    title "Esforço do Time vs Receita por Produto"
+    x-axis [GTK500, GTXPlus, GTXPro, "MG-Adv", "GTXBasic+", GTXBasic, "MG-Spec"]
+    y-axis "Percentual (%)" 0 --> 40
+    line "Esforço %" [0.4, 10.7, 16.3, 15.9, 16.1, 22.3, 18.4]
+    line "Receita %" [4.0, 26.3, 35.1, 22.2, 7.1, 5.0, 0.4]
+```
 
 MG Special + GTX Basic somam **39,6% dos negócios e 40,6% do esforço do time, para 5,4% da receita** — e MG Special tem a *maior* taxa de conversão da carteira (65%), a armadilha exata que um score de probabilidade de conversão premiaria. Detalhe em [docs/analise-lead-scoring.md §1.2 "Valor é altamente previsível"](./docs/analise-lead-scoring.md).
 
 **Como o funil aberto atual (1.436 oportunidades) se distribui pela recomendação de ação:**
 
-<svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" style="border: 1px solid var(--text-secondary); border-radius: 4px;">
-  <defs>
-    <style>
-      .pie-title { font-size: 14px; font-weight: bold; fill: var(--text-primary); }
-      .pie-label { font-size: 11px; fill: var(--text-primary); font-weight: 500; }
-      .pie-value { font-size: 10px; fill: var(--text-secondary); }
-      .legend-text { font-size: 11px; fill: var(--text-primary); }
-    </style>
-  </defs>
-  
-  <!-- Title -->
-  <text x="250" y="20" class="pie-title" text-anchor="middle">ESTADO - Funil Aberto (1.436 deals)</text>
-  
-  <!-- Pie chart slices with proper angles -->
-  <!-- Qualificar (656) = 45.6% = 0-164.16° -->
-  <path d="M 250,180 L 250,80 A 100,100 0 0,1 383.58,134.73 Z" fill="#ef4444" opacity="0.8"/>
-  
-  <!-- Revisão lote (443) = 30.8% = 164.16-275.04° -->
-  <path d="M 250,180 L 383.58,134.73 A 100,100 0 0,1 191.42,124.27 Z" fill="#f97316" opacity="0.8"/>
-  
-  <!-- Acompanhar (283) = 19.7% = 275.04-345.12° -->
-  <path d="M 250,180 L 191.42,124.27 A 100,100 0 0,1 308.06,68.18 Z" fill="#eab308" opacity="0.8"/>
-  
-  <!-- Priorizar (54) = 3.8% = 345.12-360° -->
-  <path d="M 250,180 L 308.06,68.18 A 100,100 0 0,1 250,80 Z" fill="#22c55e" opacity="0.8"/>
-  
-  <!-- Legend -->
-  <g transform="translate(320, 100)">
-    <!-- Qualificar -->
-    <rect x="0" y="0" width="12" height="12" fill="#ef4444" opacity="0.8"/>
-    <text x="18" y="10" class="legend-text">Qualificar (656) 45.6%</text>
-    
-    <!-- Revisão lote -->
-    <rect x="0" y="20" width="12" height="12" fill="#f97316" opacity="0.8"/>
-    <text x="18" y="30" class="legend-text">Revisão lote (443) 30.8%</text>
-    
-    <!-- Acompanhar -->
-    <rect x="0" y="40" width="12" height="12" fill="#eab308" opacity="0.8"/>
-    <text x="18" y="50" class="legend-text">Acompanhar (283) 19.7%</text>
-    
-    <!-- Priorizar -->
-    <rect x="0" y="60" width="12" height="12" fill="#22c55e" opacity="0.8"/>
-    <text x="18" y="70" class="legend-text">Priorizar (54) 3.8%</text>
-  </g>
-  
-  <!-- Note -->
-  <text x="250" y="320" class="pie-value" text-anchor="middle">Fila trabalhável: 993 oportunidades (Qualificar + Acompanhar + Priorizar)</text>
-</svg>
+```mermaid
+pie showData title ESTADO - Funil Aberto (1.436 deals)
+    "Qualificar (656) 45.6%" : 656
+    "Revisão lote (443) 30.8%" : 443
+    "Acompanhar (283) 19.7%" : 283
+    "Priorizar (54) 3.8%" : 54
+```
+
+_Fila trabalhável: 993 oportunidades (Qualificar + Acompanhar + Priorizar)_
 
 `Revisão em lote` (sem precedente histórico de fechamento) fica fora da fila ordenada de trabalho — não é "negócio perdido", é passivo de higiene de dados a resolver em lote com o gestor. A fila trabalhável tem 993 oportunidades.
 
@@ -188,7 +74,7 @@ Além de priorizar cada oportunidade, a ferramenta compara a carteira de cada ve
 
 Para cada oportunidade de vendedor sobrecarregado, o sistema sugere um colega **do mesmo escritório**, não sobrecarregado naquele ESTADO, com histórico de negócios fechados — combinando folga de carga com o fit histórico do candidato no produto e no setor da oportunidade (`rank = 0,5×folga + 0,5×fit`, produto pesando 0,6 e setor 0,4). Quando não existe candidato elegível, o sistema reporta isso explicitamente em vez de forçar uma sugestão. **A sugestão é só informativa: nunca reatribui a oportunidade nem altera o dono registrado** — quem decide continua sendo o gestor.
 
-Duas ressalvas importantes, aplicadas por design: (1) o fit por vendedor é **estatisticamente indistinguível de ruído** nesta base (mesmo teste de permutação da Seção 1/2 do backtest) — por isso toda superfície que exibe fit também exibe essa ressalva, e o fit nunca entra em `p̂`, VALOR, URGÊNCIA, SCORE, CONFIANÇA ou ESTADO; (2) o vendedor sugerido só aparece na aba **Sobrecarga** e no painel de detalhe da oportunidade — a listagem geral de Oportunidades recebe apenas um booleano `sobrecarregado`, nunca o nome do candidato. Detalhe técnico completo (fórmulas, encolhimento, endpoints) em [docs/architecture.md §Carga e fit por vendedor](./docs/architecture.md) e na spec formal [openspec/specs/workload-fit/spec.md](./openspec/specs/workload-fit/spec.md). Screenshots do fluxo em [process-log/screenshots/06-sobrecarga.png](./process-log/screenshots/06-sobrecarga.png) e [06b-sobrecarga-detalhe.png](./process-log/screenshots/06b-sobrecarga-detalhe.png).
+O vendedor sugerido só aparece na aba **Sobrecarga** e no painel de detalhe da oportunidade — a listagem geral de Oportunidades recebe apenas um booleano `sobrecarregado`, nunca o nome do candidato. Detalhe técnico completo (fórmulas, encolhimento, endpoints) em [docs/architecture.md §Carga e fit por vendedor](./docs/architecture.md) e na spec formal [openspec/specs/workload-fit/spec.md](./openspec/specs/workload-fit/spec.md). Screenshots do fluxo em [process-log/screenshots/06-sobrecarga.png](./process-log/screenshots/06-sobrecarga.png) e [06b-sobrecarga-detalhe.png](./process-log/screenshots/06b-sobrecarga-detalhe.png).
 
 **Validação:** `make validate` reproduz 9 achados estruturais (ausência de sinal firmográfico, colapso do encolhimento hierárquico, monotonicidade das curvas de aging, concentração de valor no topo da fila) e testa por validação cruzada três hipóteses de tornar o modelo mais granular — as três pioraram a previsão fora da amostra e foram descartadas, não escondidas. Saída completa comentada em [docs/report.md](./docs/report.md).
 
