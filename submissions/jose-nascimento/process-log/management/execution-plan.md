@@ -4,8 +4,8 @@
 - **Branch:** `submission/jose-nascimento`
 - **Pasta exclusiva:** `submissions/jose-nascimento/`
 - **Ferramenta real:** opencode como orquestrador + subagentes `deepseek-max` (via OpenCode Go), um por etapa, em sequência
-- **Última atualização:** 2026-08-28 (fim da Iteração 01; validação do executor concluída — review gate 3x da Iteração 01 pendente de disparo)
-- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (validação do executor; gate 3x a disparar); Iterações 02–10 `PENDING`
+- **Última atualização:** 2026-08-28 (fim da Iteração 01; review gate 3x da Iteração 01 concluído em 2026-08-28 — ver `process-log/reviews/iteration-01-review-summary.md`)
+- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-01-review-summary.md`); Iterações 02–10 `PENDING`
 
 ---
 
@@ -75,13 +75,13 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 
 ### Iteração 01 — Ingestão e auditoria dos 5 datasets
 
-- **Status:** `CONCLUDED` (2026-08-28) — implementação validada pelo executor (exit 0; 72 PASS / 18 WARN / 0 FAIL; idempotência byte-a-byte; 3 verificações manuais; commit `feat: ingest and audit RavenStack datasets`). Review gate 3x: a disparar pelo orquestrador (rastreado à parte, regra 4).
+- **Status:** `CONCLUDED` (2026-08-28) — implementação validada pelo executor (exit 0; 72 PASS / 18 WARN / 0 FAIL; idempotência byte-a-byte; 3 verificações manuais; commit `feat: ingest and audit RavenStack datasets`). Review gate 3x realizado em 2026-08-28 (3 veredictos `PASS_WITH_FIXES`): finding MEDIUM M1 (schema quebrado crashava com `KeyError` e não regravava o relatório — relatório stale) corrigido por agente sequencial com guards de coluna (commit `fix: handle schema failures in data audit`); LOWs convergentes corrigidos (gates C01/C02/C09 condicionais; `usage_id` como chave candidata; reuso de features 19/21; descrição C05; commit esperado sincronizado). Registro em `process-log/reviews/iteration-01-review-summary.md`.
 - **Objetivo:** ingerir os 5 CSVs de forma reproduzível e auditar cada tabela contra o brief: contagens, schema, chaves, nulos, duplicatas, janelas de data válidas, consistência de tipos e unidades; declarar com evidência a natureza sintética/gerada dos dados; gravar relatório de auditoria com gates.
 - **Entradas:** CSVs em `/tmp/opencode/ravendata/`; brief do challenge (tabelas esperadas); checksums capturados na Iteração 00.
 - **Artefatos esperados:** `data/raw/` (5 CSVs commitados, licença MIT); `src/01_ingest_audit.py`; `evidence/01_audit_report.md`; entrada no process log.
 - **Critérios objetivos de aceitação:** contagem real vs brief documentada por tabela; schema/nulos/duplicatas/chaves reportados; janelas de data inválidas identificadas; parecer de sinteticidade com evidência concreta (ex.: distribuições, duplicatas, valores); gates FAIL/PASS; relatório em markdown com números reproduzíveis.
 - **Validações:** re-execução do script; conferência manual de 3 achados; `git diff --check`.
-- **Commit esperado:** `feat: ingest and audit the five RavenStack datasets`
+- **Commit esperado:** `feat: ingest and audit RavenStack datasets` (realizado em `a40e129`; a versão prevista no rascunho do plano, "…the five RavenStack datasets", foi substituída pela mensagem exigida no prompt da Iteração 01 — esta linha reflete o commit real)
 - **Dependências:** Iteração 00.
 
 ### Iteração 02 — Reconciliação das definições/grãos de churn e contrato analítico

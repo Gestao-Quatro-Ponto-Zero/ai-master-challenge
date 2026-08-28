@@ -128,6 +128,44 @@ def fmt(n: int | float) -> str:
 def pct(part: int, total: int) -> str:
     return f"{100.0 * part / total:.1f}%"
 
+
+def missing_cols(df: pd.DataFrame, cols: list[str], fname: str | None = None) -> list[str]:
+    """Colunas de ``cols`` ausentes do DataFrame (guarda contra schema quebrado).
+
+    Com ``fname``, os nomes são anotados com o arquivo para diagnóstico legível.
+    """
+    if fname is None:
+        return [c for c in cols if c not in df.columns]
+    return [f"{c} ({fname})" for c in cols if c not in df.columns]
+
+
+def guard_columns(df: pd.DataFrame, cols: list[str], check_id: str, scope: str,
+                  description: str) -> bool:
+    """Registra FAIL estrutural se alguma coluna necessária estiver ausente.
+
+    Retorna True quando todas as colunas existem (o check pode executar).
+    Não é catch-all: apenas guarda acesso a colunas — bugs reais continuam
+    propagando com traceback (exit != 0) em vez de virarem FAIL silencioso.
+    """
+    missing = missing_cols(df, cols)
+    if missing:
+        check(check_id, scope, description, "FAIL",
+              f"não executado (schema): colunas ausentes: {missing}")
+        return False
+    return True
+
+
+def cross_blocked(dfs: dict[str, pd.DataFrame], needs: dict[str, list[str]]) -> list[str]:
+    """Problemas de schema para um check entre tabelas (arquivo/coluna ausente)."""
+    problems: list[str] = []
+    for fname, cols in needs.items():
+        df = dfs.get(fname)
+        if df is None:
+            problems.append(f"{fname} (arquivo ausente)")
+        else:
+            problems.extend(f"{c} ({fname})" for c in cols if c not in df.columns)
+    return problems
+
 # ----------------------------------------------------------------------------
 # Leitura dos arquivos
 # ----------------------------------------------------------------------------
@@ -180,19 +218,26 @@ def check_schema(fname: str, df: pd.DataFrame, spec: dict) -> None:
               "PASS", f"{len(actual_cols)} colunas, ordem idêntica ao brief")
 
     key = spec["key"]
-    n_nulls_key = int(df[key].isna().sum())
-    if n_nulls_key:
-        check(f"S02-{fname}", fname, f"chave primária {key} sem nulos",
-              "FAIL", f"{n_nulls_key} nulos na chave")
-    else:
-        check(f"S02-{fname}", fname, f"chave primária {key} sem nulos", "PASS", "0 nulos")
+    if key in df.columns:
+        n_nulls_key = int(df[key].isna().sum())
+        if n_nulls_key:
+            check(f"S02-{fname}", fname, f"chave candidata {key} sem nulos",
+                  "FAIL", f"{n_nulls_key} nulos na chave")
+        else:
+            check(f"S02-{fname}", fname, f"chave candidata {key} sem nulos", "PASS", "0 nulos")
 
-    n_dup_key = int(df[key].duplicated().sum())
-    if n_dup_key:
-        check(f"S03-{fname}", fname, f"chave primária {key} sem duplicatas",
-              "WARN", f"{n_dup_key} ids duplicados (anomalia de qualidade; join não afetado)")
+        n_dup_key = int(df[key].duplicated().sum())
+        if n_dup_key:
+            check(f"S03-{fname}", fname, f"chave candidata {key} sem duplicatas",
+                  "WARN", f"{n_dup_key} ids duplicados (anomalia de qualidade; join não afetado)")
+        else:
+            check(f"S03-{fname}", fname, f"chave candidata {key} sem duplicatas", "PASS", "0 duplicatas")
     else:
-        check(f"S03-{fname}", fname, f"chave primária {key} sem duplicatas", "PASS", "0 duplicatas")
+        # Chave ausente: S02/S03 não executáveis — FAIL estrutural explícito (não esconder)
+        check(f"S02-{fname}", fname, f"chave candidata {key} sem nulos",
+              "FAIL", f"não executado (schema): coluna {key} ausente")
+        check(f"S03-{fname}", fname, f"chave candidata {key} sem duplicatas",
+              "FAIL", f"não executado (schema): coluna {key} ausente")
 
     n_dup_row = int(df.duplicated().sum())
     if n_dup_row:
@@ -228,81 +273,102 @@ def check_schema(fname: str, df: pd.DataFrame, spec: dict) -> None:
 def check_types_ranges(fname: str, df: pd.DataFrame) -> None:
     """Valida ranges numéricos e domínios categóricos por arquivo."""
     if fname == "ravenstack_accounts.csv":
-        bad_seats = int((df["seats"] <= 0).sum())
-        check(f"T01-{fname}", fname, "seats > 0",
-              "FAIL" if bad_seats else "PASS", f"{bad_seats} violações")
+        if guard_columns(df, ["seats"], f"T01-{fname}", fname, "seats > 0"):
+            bad_seats = int((df["seats"] <= 0).sum())
+            check(f"T01-{fname}", fname, "seats > 0",
+                  "FAIL" if bad_seats else "PASS", f"{bad_seats} violações")
         for col, dom in [("industry", DOMAINS["accounts.industry"]),
                          ("country", DOMAINS["accounts.country"]),
                          ("referral_source", DOMAINS["accounts.referral_source"]),
                          ("plan_tier", DOMAINS["plan_tier"])]:
-            bad = sorted(set(df[col]) - dom)
-            check(f"T02-{fname}", fname, f"domínio de {col}",
-                  "PASS" if not bad else "WARN",
-                  f"{len(df[col].unique())} valores válidos" if not bad else f"valores fora do domínio: {bad}")
+            if guard_columns(df, [col], f"T02-{fname}", fname, f"domínio de {col}"):
+                bad = sorted(set(df[col]) - dom)
+                check(f"T02-{fname}", fname, f"domínio de {col}",
+                      "PASS" if not bad else "WARN",
+                      f"{len(df[col].unique())} valores válidos" if not bad else f"valores fora do domínio: {bad}")
 
     elif fname == "ravenstack_subscriptions.csv":
-        bad_seats = int((df["seats"] <= 0).sum())
-        bad_mrr = int((df["mrr_amount"] < 0).sum())
-        bad_arr = int((df["arr_amount"] < 0).sum())
-        check(f"T01-{fname}", fname, "seats > 0, mrr >= 0, arr >= 0",
-              "FAIL" if (bad_seats + bad_mrr + bad_arr) else "PASS",
-              f"violações: seats<=0={bad_seats}, mrr<0={bad_mrr}, arr<0={bad_arr}")
+        if guard_columns(df, ["seats", "mrr_amount", "arr_amount"], f"T01-{fname}", fname,
+                         "seats > 0, mrr >= 0, arr >= 0"):
+            bad_seats = int((df["seats"] <= 0).sum())
+            bad_mrr = int((df["mrr_amount"] < 0).sum())
+            bad_arr = int((df["arr_amount"] < 0).sum())
+            check(f"T01-{fname}", fname, "seats > 0, mrr >= 0, arr >= 0",
+                  "FAIL" if (bad_seats + bad_mrr + bad_arr) else "PASS",
+                  f"violações: seats<=0={bad_seats}, mrr<0={bad_mrr}, arr<0={bad_arr}")
         # Unidade: ARR = 12 x MRR (relação observada como invariante da base)
-        nz = df[df["mrr_amount"] > 0]
-        bad_ratio = int((nz["arr_amount"] != nz["mrr_amount"] * 12).sum())
-        check(f"T03-{fname}", fname, "ARR = 12 x MRR (invariante de unidade)",
-              "PASS" if bad_ratio == 0 else "WARN",
-              f"{bad_ratio} violações em {len(nz)} linhas com MRR>0")
+        if guard_columns(df, ["mrr_amount", "arr_amount"], f"T03-{fname}", fname,
+                         "ARR = 12 x MRR (invariante de unidade)"):
+            nz = df[df["mrr_amount"] > 0]
+            bad_ratio = int((nz["arr_amount"] != nz["mrr_amount"] * 12).sum())
+            check(f"T03-{fname}", fname, "ARR = 12 x MRR (invariante de unidade)",
+                  "PASS" if bad_ratio == 0 else "WARN",
+                  f"{bad_ratio} violações em {len(nz)} linhas com MRR>0")
         # Semântica de trial: trial => MRR 0 (avaliado em C02)
-        bad_plan = sorted(set(df["plan_tier"]) - DOMAINS["plan_tier"])
-        bad_freq = sorted(set(df["billing_frequency"]) - DOMAINS["subscriptions.billing_frequency"])
-        check(f"T02-{fname}", fname, "domínios plan_tier e billing_frequency",
-              "PASS" if not (bad_plan or bad_freq) else "WARN",
-              f"plan_tier fora: {bad_plan}; billing_frequency fora: {bad_freq}")
+        if guard_columns(df, ["plan_tier", "billing_frequency"], f"T02-{fname}", fname,
+                         "domínios plan_tier e billing_frequency"):
+            bad_plan = sorted(set(df["plan_tier"]) - DOMAINS["plan_tier"])
+            bad_freq = sorted(set(df["billing_frequency"]) - DOMAINS["subscriptions.billing_frequency"])
+            check(f"T02-{fname}", fname, "domínios plan_tier e billing_frequency",
+                  "PASS" if not (bad_plan or bad_freq) else "WARN",
+                  f"plan_tier fora: {bad_plan}; billing_frequency fora: {bad_freq}")
 
     elif fname == "ravenstack_feature_usage.csv":
-        bad_cnt = int((df["usage_count"] < 0).sum())
-        bad_dur = int((df["usage_duration_secs"] < 0).sum())
-        bad_err = int((df["error_count"] < 0).sum())
-        check(f"T01-{fname}", fname, "usage_count/duration/error >= 0",
-              "FAIL" if (bad_cnt + bad_dur + bad_err) else "PASS",
-              f"violações: count<0={bad_cnt}, duration<0={bad_dur}, error<0={bad_err}")
-        err_gt_cnt = int((df["error_count"] > df["usage_count"]).sum())
-        check(f"T04-{fname}", fname, "error_count <= usage_count (consistência lógica)",
-              "PASS" if err_gt_cnt == 0 else "WARN",
-              f"{err_gt_cnt} linhas com erro_count > usage_count")
-        zero_cnt = int((df["usage_count"] == 0).sum())
-        check(f"T05-{fname}", fname, "usage_count > 0 (linha de uso com contagem)",
-              "PASS" if zero_cnt == 0 else "WARN",
-              f"{zero_cnt} linhas com usage_count = 0")
+        if guard_columns(df, ["usage_count", "usage_duration_secs", "error_count"], f"T01-{fname}", fname,
+                         "usage_count/duration/error >= 0"):
+            bad_cnt = int((df["usage_count"] < 0).sum())
+            bad_dur = int((df["usage_duration_secs"] < 0).sum())
+            bad_err = int((df["error_count"] < 0).sum())
+            check(f"T01-{fname}", fname, "usage_count/duration/error >= 0",
+                  "FAIL" if (bad_cnt + bad_dur + bad_err) else "PASS",
+                  f"violações: count<0={bad_cnt}, duration<0={bad_dur}, error<0={bad_err}")
+        if guard_columns(df, ["error_count", "usage_count"], f"T04-{fname}", fname,
+                         "error_count <= usage_count (consistência lógica)"):
+            err_gt_cnt = int((df["error_count"] > df["usage_count"]).sum())
+            check(f"T04-{fname}", fname, "error_count <= usage_count (consistência lógica)",
+                  "PASS" if err_gt_cnt == 0 else "WARN",
+                  f"{err_gt_cnt} linhas com erro_count > usage_count")
+        if guard_columns(df, ["usage_count"], f"T05-{fname}", fname,
+                         "usage_count > 0 (linha de uso com contagem)"):
+            zero_cnt = int((df["usage_count"] == 0).sum())
+            check(f"T05-{fname}", fname, "usage_count > 0 (linha de uso com contagem)",
+                  "PASS" if zero_cnt == 0 else "WARN",
+                  f"{zero_cnt} linhas com usage_count = 0")
 
     elif fname == "ravenstack_support_tickets.csv":
-        bad_res = int((df["resolution_time_hours"] < 0).sum())
-        bad_frt = int((df["first_response_time_minutes"] < 0).sum())
-        check(f"T01-{fname}", fname, "resolution_time_hours/first_response >= 0",
-              "FAIL" if (bad_res + bad_frt) else "PASS",
-              f"violações: res<0={bad_res}, frt<0={bad_frt}")
-        csat = df["satisfaction_score"].dropna()
-        n_null = int(df["satisfaction_score"].isna().sum())
-        out_range = int(((csat < 1) | (csat > 5)).sum())
-        level = "FAIL" if out_range else "WARN" if n_null else "PASS"
-        detail = (f"nulos={n_null} ({pct(n_null, len(df))}); valores fora de [1,5]={out_range}; "
-                  f"valores observados={sorted(csat.unique())}")
-        check(f"T06-{fname}", fname, "CSAT nulo ou fora do domínio 1-5",
-              level, detail)
-        bad_prio = sorted(set(df["priority"]) - DOMAINS["tickets.priority"])
-        check(f"T02-{fname}", fname, "domínio de priority",
-              "PASS" if not bad_prio else "WARN",
-              f"{len(df['priority'].unique())} valores válidos" if not bad_prio else f"fora do domínio: {bad_prio}")
+        if guard_columns(df, ["resolution_time_hours", "first_response_time_minutes"], f"T01-{fname}", fname,
+                         "resolution_time_hours/first_response >= 0"):
+            bad_res = int((df["resolution_time_hours"] < 0).sum())
+            bad_frt = int((df["first_response_time_minutes"] < 0).sum())
+            check(f"T01-{fname}", fname, "resolution_time_hours/first_response >= 0",
+                  "FAIL" if (bad_res + bad_frt) else "PASS",
+                  f"violações: res<0={bad_res}, frt<0={bad_frt}")
+        if guard_columns(df, ["satisfaction_score"], f"T06-{fname}", fname,
+                         "CSAT nulo ou fora do domínio 1-5"):
+            csat = df["satisfaction_score"].dropna()
+            n_null = int(df["satisfaction_score"].isna().sum())
+            out_range = int(((csat < 1) | (csat > 5)).sum())
+            level = "FAIL" if out_range else "WARN" if n_null else "PASS"
+            detail = (f"nulos={n_null} ({pct(n_null, len(df))}); valores fora de [1,5]={out_range}; "
+                      f"valores observados={sorted(csat.unique())}")
+            check(f"T06-{fname}", fname, "CSAT nulo ou fora do domínio 1-5",
+                  level, detail)
+        if guard_columns(df, ["priority"], f"T02-{fname}", fname, "domínio de priority"):
+            bad_prio = sorted(set(df["priority"]) - DOMAINS["tickets.priority"])
+            check(f"T02-{fname}", fname, "domínio de priority",
+                  "PASS" if not bad_prio else "WARN",
+                  f"{len(df['priority'].unique())} valores válidos" if not bad_prio else f"fora do domínio: {bad_prio}")
 
     elif fname == "ravenstack_churn_events.csv":
-        bad_ref = int((df["refund_amount_usd"] < 0).sum())
-        check(f"T01-{fname}", fname, "refund_amount_usd >= 0",
-              "FAIL" if bad_ref else "PASS", f"{bad_ref} violações")
-        bad_reason = sorted(set(df["reason_code"]) - DOMAINS["churn.reason_code"])
-        check(f"T02-{fname}", fname, "domínio de reason_code",
-              "PASS" if not bad_reason else "WARN",
-              f"{len(df['reason_code'].unique())} valores válidos" if not bad_reason else f"fora do domínio: {bad_reason}")
+        if guard_columns(df, ["refund_amount_usd"], f"T01-{fname}", fname, "refund_amount_usd >= 0"):
+            bad_ref = int((df["refund_amount_usd"] < 0).sum())
+            check(f"T01-{fname}", fname, "refund_amount_usd >= 0",
+                  "FAIL" if bad_ref else "PASS", f"{bad_ref} violações")
+        if guard_columns(df, ["reason_code"], f"T02-{fname}", fname, "domínio de reason_code"):
+            bad_reason = sorted(set(df["reason_code"]) - DOMAINS["churn.reason_code"])
+            check(f"T02-{fname}", fname, "domínio de reason_code",
+                  "PASS" if not bad_reason else "WARN",
+                  f"{len(df['reason_code'].unique())} valores válidos" if not bad_reason else f"fora do domínio: {bad_reason}")
 
 
 def check_ids(fname: str, df: pd.DataFrame) -> None:
@@ -314,12 +380,13 @@ def check_ids(fname: str, df: pd.DataFrame) -> None:
         "ravenstack_support_tickets.csv": ["ticket_id", "account_id"],
         "ravenstack_churn_events.csv": ["churn_event_id", "account_id"],
     }[fname]
-    violations = 0
-    for col in id_cols:
-        violations += int((~df[col].astype(str).str.match(r"^[A-Z]-[0-9a-f]{6}$")).sum())
-    check(f"I01-{fname}", fname, "IDs no padrão <PREFIXO>-<6 hex>",
-          "PASS" if violations == 0 else "WARN",
-          f"{violations} violações em {len(id_cols)} coluna(s) de ID")
+    if guard_columns(df, id_cols, f"I01-{fname}", fname, "IDs no padrão <PREFIXO>-<6 hex>"):
+        violations = 0
+        for col in id_cols:
+            violations += int((~df[col].astype(str).str.match(r"^[A-Z]-[0-9a-f]{6}$")).sum())
+        check(f"I01-{fname}", fname, "IDs no padrão <PREFIXO>-<6 hex>",
+              "PASS" if violations == 0 else "WARN",
+              f"{violations} violações em {len(id_cols)} coluna(s) de ID")
 
 
 def check_global_window(fname: str, df: pd.DataFrame) -> None:
@@ -331,83 +398,105 @@ def check_global_window(fname: str, df: pd.DataFrame) -> None:
         "ravenstack_support_tickets.csv": ["submitted_at", "closed_at"],
         "ravenstack_churn_events.csv": ["churn_date"],
     }[fname]
-    out_of_window = 0
-    ranges = []
-    for col in date_cols:
-        parsed = pd.to_datetime(df[col], errors="coerce")
-        present = parsed.dropna()
-        if len(present) == 0:
-            continue
-        # Janela é definida em granularidade de DATA (calendário); o horário do dia
-        # dentro da data-limite é válido (ex.: fechamento às 19:00 de 2024-12-31).
-        day = present.dt.normalize()
-        out_of_window += int((day < pd.Timestamp(GLOBAL_DATE_MIN)).sum())
-        out_of_window += int((day > pd.Timestamp(GLOBAL_DATE_MAX)).sum())
-        ranges.append(f"{col}: {present.min().date()}..{present.max().date()}")
-    check(f"D02-{fname}", fname, "janela global de datas dentro de 2023-01-01..2024-12-31",
-          "PASS" if out_of_window == 0 else "FAIL",
-          f"{out_of_window} valores fora da janela; " + "; ".join(ranges))
+    if guard_columns(df, date_cols, f"D02-{fname}", fname,
+                     "janela global de datas dentro de 2023-01-01..2024-12-31"):
+        out_of_window = 0
+        ranges = []
+        for col in date_cols:
+            parsed = pd.to_datetime(df[col], errors="coerce")
+            present = parsed.dropna()
+            if len(present) == 0:
+                continue
+            # Janela é definida em granularidade de DATA (calendário); o horário do dia
+            # dentro da data-limite é válido (ex.: fechamento às 19:00 de 2024-12-31).
+            day = present.dt.normalize()
+            out_of_window += int((day < pd.Timestamp(GLOBAL_DATE_MIN)).sum())
+            out_of_window += int((day > pd.Timestamp(GLOBAL_DATE_MAX)).sum())
+            ranges.append(f"{col}: {present.min().date()}..{present.max().date()}")
+        check(f"D02-{fname}", fname, "janela global de datas dentro de 2023-01-01..2024-12-31",
+              "PASS" if out_of_window == 0 else "FAIL",
+              f"{out_of_window} valores fora da janela; " + "; ".join(ranges))
 
 
 def check_dates(fname: str, df: pd.DataFrame, accounts: pd.DataFrame | None,
                 subscriptions: pd.DataFrame | None) -> None:
     """Valida parse de datas, janela global e ordens temporais internas."""
     if fname == "ravenstack_accounts.csv":
-        parsed = pd.to_datetime(df["signup_date"], errors="coerce")
-        n_bad = int(parsed.isna().sum())
-        level = "FAIL" if n_bad else "PASS"
-        check(f"D01-{fname}", fname, "signup_date parseável (YYYY-MM-DD)", level,
-              f"{n_bad} valores não parseáveis")
+        if guard_columns(df, ["signup_date"], f"D01-{fname}", fname, "signup_date parseável (YYYY-MM-DD)"):
+            parsed = pd.to_datetime(df["signup_date"], errors="coerce")
+            n_bad = int(parsed.isna().sum())
+            check(f"D01-{fname}", fname, "signup_date parseável (YYYY-MM-DD)",
+                  "FAIL" if n_bad else "PASS", f"{n_bad} valores não parseáveis")
 
     elif fname == "ravenstack_subscriptions.csv":
-        start = pd.to_datetime(df["start_date"], errors="coerce")
-        end = pd.to_datetime(df["end_date"], errors="coerce")
-        # end_date nulo é semântica de assinatura ativa; só conta como erro
-        # se um valor presente não parsear.
-        n_bad_start = int(start.isna().sum())
-        n_bad_end = int((df["end_date"].notna() & end.isna()).sum())
-        n_bad = n_bad_start + n_bad_end
-        check(f"D01-{fname}", fname, "start_date/end_date parseáveis", "FAIL" if n_bad else "PASS",
-              f"{n_bad} valores não parseáveis "
-              f"(end_date nulo é semântica de assinatura ativa: {int(df['end_date'].isna().sum())})")
-        ended = df[df["end_date"].notna()]
-        n_bad_order = int((ended["end_date"] < ended["start_date"]).sum())
-        check(f"D03-{fname}", fname, "end_date >= start_date (quando presente)",
-              "FAIL" if n_bad_order else "PASS", f"{n_bad_order} violações")
-        n_consistent = int(
-            (df["churn_flag"] & df["end_date"].isna()).sum()
-            + (df["end_date"].notna() & ~df["churn_flag"]).sum()
-        )
-        check(f"D04-{fname}", fname, "flags vs datas: churn_flag consistente com end_date",
-              "PASS" if n_consistent == 0 else "WARN",
-              f"{n_consistent} linhas inconsistentes "
-              f"(churn sem end_date ou end_date sem churn); ativas={int(df['end_date'].isna().sum())}")
+        if guard_columns(df, ["start_date", "end_date"], f"D01-{fname}", fname,
+                         "start_date/end_date parseáveis"):
+            start = pd.to_datetime(df["start_date"], errors="coerce")
+            end = pd.to_datetime(df["end_date"], errors="coerce")
+            # end_date nulo é semântica de assinatura ativa; só conta como erro
+            # se um valor presente não parsear.
+            n_bad_start = int(start.isna().sum())
+            n_bad_end = int((df["end_date"].notna() & end.isna()).sum())
+            n_bad = n_bad_start + n_bad_end
+            check(f"D01-{fname}", fname, "start_date/end_date parseáveis", "FAIL" if n_bad else "PASS",
+                  f"{n_bad} valores não parseáveis "
+                  f"(end_date nulo é semântica de assinatura ativa: {int(df['end_date'].isna().sum())})")
+        if guard_columns(df, ["start_date", "end_date"], f"D03-{fname}", fname,
+                         "end_date >= start_date (quando presente)"):
+            start = pd.to_datetime(df["start_date"], errors="coerce")
+            end = pd.to_datetime(df["end_date"], errors="coerce")
+            ended = df[df["end_date"].notna()]
+            n_bad_order = int((ended["end_date"] < ended["start_date"]).sum())
+            check(f"D03-{fname}", fname, "end_date >= start_date (quando presente)",
+                  "FAIL" if n_bad_order else "PASS", f"{n_bad_order} violações")
+        if guard_columns(df, ["churn_flag", "end_date"], f"D04-{fname}", fname,
+                         "flags vs datas: churn_flag consistente com end_date"):
+            n_consistent = int(
+                (df["churn_flag"] & df["end_date"].isna()).sum()
+                + (df["end_date"].notna() & ~df["churn_flag"]).sum()
+            )
+            check(f"D04-{fname}", fname, "flags vs datas: churn_flag consistente com end_date",
+                  "PASS" if n_consistent == 0 else "WARN",
+                  f"{n_consistent} linhas inconsistentes "
+                  f"(churn sem end_date ou end_date sem churn); ativas={int(df['end_date'].isna().sum())}")
 
     elif fname == "ravenstack_feature_usage.csv":
-        parsed = pd.to_datetime(df["usage_date"], errors="coerce")
-        n_bad = int(parsed.isna().sum())
-        check(f"D01-{fname}", fname, "usage_date parseável", "FAIL" if n_bad else "PASS",
-              f"{n_bad} valores não parseáveis")
+        if guard_columns(df, ["usage_date"], f"D01-{fname}", fname, "usage_date parseável"):
+            parsed = pd.to_datetime(df["usage_date"], errors="coerce")
+            n_bad = int(parsed.isna().sum())
+            check(f"D01-{fname}", fname, "usage_date parseável", "FAIL" if n_bad else "PASS",
+                  f"{n_bad} valores não parseáveis")
 
     elif fname == "ravenstack_support_tickets.csv":
-        sub = pd.to_datetime(df["submitted_at"], errors="coerce")
-        clo = pd.to_datetime(df["closed_at"], errors="coerce")
-        n_bad = int(sub.isna().sum()) + int(clo.isna().sum())
-        check(f"D01-{fname}", fname, "submitted_at/closed_at parseáveis",
-              "FAIL" if n_bad else "PASS", f"{n_bad} valores não parseáveis")
-        n_ord = int((clo < sub).sum())
-        check(f"D03-{fname}", fname, "closed_at >= submitted_at",
-              "FAIL" if n_ord else "PASS", f"{n_ord} violações")
-        elapsed_h = (clo - sub).dt.total_seconds() / 3600.0
-        n_res = int((df["resolution_time_hours"] > elapsed_h + 1e-9).sum())
-        check(f"D05-{fname}", fname, "resolution_time_hours <= tempo decorrido real",
-              "PASS" if n_res == 0 else "WARN", f"{n_res} violações")
+        if guard_columns(df, ["submitted_at", "closed_at"], f"D01-{fname}", fname,
+                         "submitted_at/closed_at parseáveis"):
+            sub = pd.to_datetime(df["submitted_at"], errors="coerce")
+            clo = pd.to_datetime(df["closed_at"], errors="coerce")
+            n_bad = int(sub.isna().sum()) + int(clo.isna().sum())
+            check(f"D01-{fname}", fname, "submitted_at/closed_at parseáveis",
+                  "FAIL" if n_bad else "PASS", f"{n_bad} valores não parseáveis")
+        if guard_columns(df, ["submitted_at", "closed_at"], f"D03-{fname}", fname,
+                         "closed_at >= submitted_at"):
+            sub = pd.to_datetime(df["submitted_at"], errors="coerce")
+            clo = pd.to_datetime(df["closed_at"], errors="coerce")
+            n_ord = int((clo < sub).sum())
+            check(f"D03-{fname}", fname, "closed_at >= submitted_at",
+                  "FAIL" if n_ord else "PASS", f"{n_ord} violações")
+        if guard_columns(df, ["submitted_at", "closed_at", "resolution_time_hours"], f"D05-{fname}", fname,
+                         "resolution_time_hours <= tempo decorrido real"):
+            sub = pd.to_datetime(df["submitted_at"], errors="coerce")
+            clo = pd.to_datetime(df["closed_at"], errors="coerce")
+            elapsed_h = (clo - sub).dt.total_seconds() / 3600.0
+            n_res = int((df["resolution_time_hours"] > elapsed_h + 1e-9).sum())
+            check(f"D05-{fname}", fname, "resolution_time_hours <= tempo decorrido real",
+                  "PASS" if n_res == 0 else "WARN", f"{n_res} violações")
 
     elif fname == "ravenstack_churn_events.csv":
-        parsed = pd.to_datetime(df["churn_date"], errors="coerce")
-        n_bad = int(parsed.isna().sum())
-        check(f"D01-{fname}", fname, "churn_date parseável", "FAIL" if n_bad else "PASS",
-              f"{n_bad} valores não parseáveis")
+        if guard_columns(df, ["churn_date"], f"D01-{fname}", fname, "churn_date parseável"):
+            parsed = pd.to_datetime(df["churn_date"], errors="coerce")
+            n_bad = int(parsed.isna().sum())
+            check(f"D01-{fname}", fname, "churn_date parseável", "FAIL" if n_bad else "PASS",
+                  f"{n_bad} valores não parseáveis")
 
 
 def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
@@ -419,146 +508,315 @@ def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
     churn = dfs.get("ravenstack_churn_events.csv")
 
     if acc is not None and sub is not None:
-        orphans = sorted(set(sub["account_id"]) - set(acc["account_id"]))
-        check("K01-subscriptions", "subscriptions -> accounts",
-              "FK account_id sem órfãos", "FAIL" if orphans else "PASS",
-              f"{len(orphans)} órfãos" if orphans else "0 órfãos")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id"],
+            "ravenstack_subscriptions.csv": ["account_id"],
+        })
+        if blocked:
+            check("K01-subscriptions", "subscriptions -> accounts",
+                  "FK account_id sem órfãos", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            orphans = sorted(set(sub["account_id"]) - set(acc["account_id"]))
+            check("K01-subscriptions", "subscriptions -> accounts",
+                  "FK account_id sem órfãos", "FAIL" if orphans else "PASS",
+                  f"{len(orphans)} órfãos" if orphans else "0 órfãos")
     if acc is not None and tic is not None:
-        orphans = sorted(set(tic["account_id"]) - set(acc["account_id"]))
-        check("K02-tickets", "tickets -> accounts",
-              "FK account_id sem órfãos", "FAIL" if orphans else "PASS",
-              f"{len(orphans)} órfãos" if orphans else "0 órfãos")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id"],
+            "ravenstack_support_tickets.csv": ["account_id"],
+        })
+        if blocked:
+            check("K02-tickets", "tickets -> accounts",
+                  "FK account_id sem órfãos", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            orphans = sorted(set(tic["account_id"]) - set(acc["account_id"]))
+            check("K02-tickets", "tickets -> accounts",
+                  "FK account_id sem órfãos", "FAIL" if orphans else "PASS",
+                  f"{len(orphans)} órfãos" if orphans else "0 órfãos")
     if acc is not None and churn is not None:
-        orphans = sorted(set(churn["account_id"]) - set(acc["account_id"]))
-        check("K03-churn", "churn_events -> accounts",
-              "FK account_id sem órfãos", "FAIL" if orphans else "PASS",
-              f"{len(orphans)} órfãos" if orphans else "0 órfãos")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id"],
+            "ravenstack_churn_events.csv": ["account_id"],
+        })
+        if blocked:
+            check("K03-churn", "churn_events -> accounts",
+                  "FK account_id sem órfãos", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            orphans = sorted(set(churn["account_id"]) - set(acc["account_id"]))
+            check("K03-churn", "churn_events -> accounts",
+                  "FK account_id sem órfãos", "FAIL" if orphans else "PASS",
+                  f"{len(orphans)} órfãos" if orphans else "0 órfãos")
     if sub is not None and use is not None:
-        orphans = sorted(set(use["subscription_id"]) - set(sub["subscription_id"]))
-        check("K04-usage", "feature_usage -> subscriptions",
-              "FK subscription_id sem órfãos", "FAIL" if orphans else "PASS",
-              f"{len(orphans)} órfãos" if orphans else "0 órfãos")
-        unused = sorted(set(sub["subscription_id"]) - set(use["subscription_id"]))
-        check("K05-usage", "subscriptions -> feature_usage",
-              "assinaturas com registro de uso (sem 'assinatura sem uso')",
-              "PASS" if not unused else "WARN",
-              f"{len(unused)} assinaturas sem nenhuma linha de uso")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["subscription_id"],
+            "ravenstack_feature_usage.csv": ["subscription_id"],
+        })
+        if blocked:
+            check("K04-usage", "feature_usage -> subscriptions",
+                  "FK subscription_id sem órfãos", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+            check("K05-usage", "subscriptions -> feature_usage",
+                  "assinaturas com registro de uso (sem 'assinatura sem uso')", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            orphans = sorted(set(use["subscription_id"]) - set(sub["subscription_id"]))
+            check("K04-usage", "feature_usage -> subscriptions",
+                  "FK subscription_id sem órfãos", "FAIL" if orphans else "PASS",
+                  f"{len(orphans)} órfãos" if orphans else "0 órfãos")
+            unused = sorted(set(sub["subscription_id"]) - set(use["subscription_id"]))
+            check("K05-usage", "subscriptions -> feature_usage",
+                  "assinaturas com registro de uso (sem 'assinatura sem uso')",
+                  "PASS" if not unused else "WARN",
+                  f"{len(unused)} assinaturas sem nenhuma linha de uso")
 
     # --- Ordens temporais entre tabelas ---
     if acc is not None and churn is not None:
-        m = churn.merge(acc[["account_id", "signup_date"]], on="account_id")
-        n = int((m["churn_date"] < m["signup_date"]).sum())
-        check("D06-churn", "churn_events vs accounts",
-              "churn_date >= signup_date da conta", "WARN" if n else "PASS",
-              f"{n} eventos de churn anteriores ao signup")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id", "signup_date"],
+            "ravenstack_churn_events.csv": ["account_id", "churn_date"],
+        })
+        if blocked:
+            check("D06-churn", "churn_events vs accounts",
+                  "churn_date >= signup_date da conta", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            m = churn.merge(acc[["account_id", "signup_date"]], on="account_id")
+            n = int((m["churn_date"] < m["signup_date"]).sum())
+            check("D06-churn", "churn_events vs accounts",
+                  "churn_date >= signup_date da conta", "WARN" if n else "PASS",
+                  f"{n} eventos de churn anteriores ao signup")
     if acc is not None and tic is not None:
-        m = tic.merge(acc[["account_id", "signup_date"]], on="account_id")
-        n = int((m["submitted_at"].str[:10] < m["signup_date"]).sum())
-        check("D07-tickets", "tickets vs accounts",
-              "submitted_at >= signup_date da conta", "WARN" if n else "PASS",
-              f"{n} tickets abertos antes do signup")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id", "signup_date"],
+            "ravenstack_support_tickets.csv": ["account_id", "submitted_at"],
+        })
+        if blocked:
+            check("D07-tickets", "tickets vs accounts",
+                  "submitted_at >= signup_date da conta", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            m = tic.merge(acc[["account_id", "signup_date"]], on="account_id")
+            n = int((m["submitted_at"].str[:10] < m["signup_date"]).sum())
+            check("D07-tickets", "tickets vs accounts",
+                  "submitted_at >= signup_date da conta", "WARN" if n else "PASS",
+                  f"{n} tickets abertos antes do signup")
     if acc is not None and use is not None and sub is not None:
-        m = use.merge(sub[["subscription_id", "account_id"]], on="subscription_id")
-        m = m.merge(acc[["account_id", "signup_date"]], on="account_id")
-        n = int((m["usage_date"] < m["signup_date"]).sum())
-        check("D08-usage", "feature_usage vs accounts",
-              "usage_date >= signup_date da conta", "WARN" if n else "PASS",
-              f"{n} linhas de uso anteriores ao signup da conta")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id", "signup_date"],
+            "ravenstack_subscriptions.csv": ["subscription_id", "account_id"],
+            "ravenstack_feature_usage.csv": ["subscription_id", "usage_date"],
+        })
+        if blocked:
+            check("D08-usage", "feature_usage vs accounts",
+                  "usage_date >= signup_date da conta", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            m = use.merge(sub[["subscription_id", "account_id"]], on="subscription_id")
+            m = m.merge(acc[["account_id", "signup_date"]], on="account_id")
+            n = int((m["usage_date"] < m["signup_date"]).sum())
+            check("D08-usage", "feature_usage vs accounts",
+                  "usage_date >= signup_date da conta", "WARN" if n else "PASS",
+                  f"{n} linhas de uso anteriores ao signup da conta")
     if sub is not None and use is not None:
-        m = use.merge(sub[["subscription_id", "start_date", "end_date"]], on="subscription_id")
-        before = int((m["usage_date"] < m["start_date"]).sum())
-        ended = m[m["end_date"].notna()]
-        after = int((ended["usage_date"] > ended["end_date"]).sum())
-        inwin = int(((m["usage_date"] >= m["start_date"]) & (m["end_date"].isna() | (m["usage_date"] <= m["end_date"]))).sum())
-        check("D09-usage", "feature_usage vs subscriptions",
-              "usage_date dentro da janela da assinatura",
-              "WARN" if (before + after) else "PASS",
-              f"antes do início={before} ({pct(before, len(m))}), depois do fim={after}, "
-              f"dentro da janela={inwin} ({pct(inwin, len(m))})")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["subscription_id", "start_date", "end_date"],
+            "ravenstack_feature_usage.csv": ["subscription_id", "usage_date"],
+        })
+        if blocked:
+            check("D09-usage", "feature_usage vs subscriptions",
+                  "usage_date dentro da janela da assinatura", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            m = use.merge(sub[["subscription_id", "start_date", "end_date"]], on="subscription_id")
+            before = int((m["usage_date"] < m["start_date"]).sum())
+            ended = m[m["end_date"].notna()]
+            after = int((ended["usage_date"] > ended["end_date"]).sum())
+            inwin = int(((m["usage_date"] >= m["start_date"]) & (m["end_date"].isna() | (m["usage_date"] <= m["end_date"]))).sum())
+            check("D09-usage", "feature_usage vs subscriptions",
+                  "usage_date dentro da janela da assinatura",
+                  "WARN" if (before + after) else "PASS",
+                  f"antes do início={before} ({pct(before, len(m))}), depois do fim={after}, "
+                  f"dentro da janela={inwin} ({pct(inwin, len(m))})")
     if sub is not None and churn is not None:
-        first = sub.groupby("account_id")["start_date"].min().rename("first_start")
-        m = churn.merge(first, on="account_id")
-        n = int((m["churn_date"] < m["first_start"]).sum())
-        check("D10-churn", "churn_events vs subscriptions",
-              "churn_date >= primeira start_date da conta", "WARN" if n else "PASS",
-              f"{n} eventos de churn anteriores à primeira assinatura")
-        last = sub[sub["end_date"].notna()].groupby("account_id")["end_date"].max().rename("last_end")
-        m2 = churn.merge(last, on="account_id")
-        n2 = int((m2["churn_date"] > m2["last_end"]).sum())
-        check("D11-churn", "churn_events vs subscriptions",
-              "churn_date <= última end_date (contas com assinatura encerrada)",
-              "WARN" if n2 else "PASS",
-              f"{n2} eventos de churn posteriores à última end_date")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["account_id", "start_date"],
+            "ravenstack_churn_events.csv": ["account_id", "churn_date"],
+        })
+        if blocked:
+            check("D10-churn", "churn_events vs subscriptions",
+                  "churn_date >= primeira start_date da conta", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            first = sub.groupby("account_id")["start_date"].min().rename("first_start")
+            m = churn.merge(first, on="account_id")
+            n = int((m["churn_date"] < m["first_start"]).sum())
+            check("D10-churn", "churn_events vs subscriptions",
+                  "churn_date >= primeira start_date da conta", "WARN" if n else "PASS",
+                  f"{n} eventos de churn anteriores à primeira assinatura")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["account_id", "end_date"],
+            "ravenstack_churn_events.csv": ["account_id", "churn_date"],
+        })
+        if blocked:
+            check("D11-churn", "churn_events vs subscriptions",
+                  "churn_date <= última end_date (contas com assinatura encerrada)", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            last = sub[sub["end_date"].notna()].groupby("account_id")["end_date"].max().rename("last_end")
+            m2 = churn.merge(last, on="account_id")
+            n2 = int((m2["churn_date"] > m2["last_end"]).sum())
+            check("D11-churn", "churn_events vs subscriptions",
+                  "churn_date <= última end_date (contas com assinatura encerrada)",
+                  "WARN" if n2 else "PASS",
+                  f"{n2} eventos de churn posteriores à última end_date")
 
     # --- Flags e consistências entre fontes (registro objetivo; reconciliação é da Iteração 02) ---
     if acc is not None and churn is not None:
-        flagged = set(acc.loc[acc["churn_flag"], "account_id"])
-        events = set(churn["account_id"])
-        only_flag = sorted(flagged - events)
-        only_event = sorted(events - flagged)
-        check("C01-churn", "accounts.churn_flag vs churn_events",
-              "flag de churn da conta consistente com eventos de churn",
-              "WARN",
-              f"contas com flag sem evento={len(only_flag)}; contas com evento sem flag={len(only_event)} "
-              f"(flag=True={len(flagged)}, contas com evento={len(events)}, eventos={len(churn)})")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id", "churn_flag"],
+            "ravenstack_churn_events.csv": ["account_id"],
+        })
+        if blocked:
+            check("C01-churn", "accounts.churn_flag vs churn_events",
+                  "flag de churn da conta consistente com eventos de churn", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            flagged = set(acc.loc[acc["churn_flag"], "account_id"])
+            events = set(churn["account_id"])
+            only_flag = sorted(flagged - events)
+            only_event = sorted(events - flagged)
+            check("C01-churn", "accounts.churn_flag vs churn_events",
+                  "flag de churn da conta consistente com eventos de churn",
+                  "WARN" if (only_flag or only_event) else "PASS",
+                  f"contas com flag sem evento={len(only_flag)}; contas com evento sem flag={len(only_event)} "
+                  f"(flag=True={len(flagged)}, contas com evento={len(events)}, eventos={len(churn)})")
     if sub is not None and churn is not None:
-        flagged_subs = set(sub.loc[sub["churn_flag"], "account_id"])
-        events = set(churn["account_id"])
-        diff = sorted(events - flagged_subs)
-        check("C02-churn", "subscriptions.churn_flag vs churn_events",
-              "contas com evento de churn têm assinatura churn_flag",
-              "WARN",
-              f"{len(diff)} contas com evento sem assinatura churn_flag "
-              f"(assinaturas churn_flag={len(flagged_subs)})")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["account_id", "churn_flag"],
+            "ravenstack_churn_events.csv": ["account_id"],
+        })
+        if blocked:
+            check("C02-churn", "subscriptions.churn_flag vs churn_events",
+                  "contas com evento de churn têm assinatura churn_flag", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            flagged_subs = set(sub.loc[sub["churn_flag"], "account_id"])
+            events = set(churn["account_id"])
+            diff = sorted(events - flagged_subs)
+            check("C02-churn", "subscriptions.churn_flag vs churn_events",
+                  "contas com evento de churn têm assinatura churn_flag",
+                  "WARN" if diff else "PASS",
+                  f"{len(diff)} contas com evento sem assinatura churn_flag "
+                  f"(assinaturas churn_flag={len(flagged_subs)})")
     if churn is not None:
-        n_react = int(churn["is_reactivation"].sum())
-        n_acc_react = int(churn.loc[churn["is_reactivation"], "account_id"].nunique())
-        cc = churn.groupby("account_id").size()
-        check("C03-churn", "churn_events",
-              "múltiplos eventos por conta (ciclos de reativação)",
-              "PASS",
-              f"{int((cc > 1).sum())} contas com >1 evento (máx {int(cc.max())}); "
-              f"eventos is_reactivation={n_react} ({n_acc_react} contas) — insumo da Iteração 02")
-        n_same = int(churn.duplicated(subset=["account_id", "churn_date"]).sum())
-        check("C04-churn", "churn_events",
-              "sem eventos duplicados por conta+data",
-              "WARN" if n_same else "PASS", f"{n_same} pares conta+data duplicados")
-        unknown_null = int(((churn["reason_code"] == "unknown") & churn["feedback_text"].isna()).sum())
-        check("C05-churn", "churn_events",
-              "reason_code 'unknown' com feedback preenchido",
-              "WARN" if unknown_null else "PASS",
-              f"{unknown_null} eventos 'unknown' sem feedback (feedback nulo total={int(churn['feedback_text'].isna().sum())})")
-        n_refund = int((churn["refund_amount_usd"] > 0).sum())
-        check("C06-churn", "churn_events",
-              "refund_amount_usd > 0 apenas onde há reembolso",
-              "PASS", f"{n_refund} eventos com refund > 0; {int((churn['refund_amount_usd'] == 0).sum())} com 0")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_churn_events.csv": ["account_id", "is_reactivation"],
+        })
+        if blocked:
+            check("C03-churn", "churn_events",
+                  "múltiplos eventos por conta (ciclos de reativação)", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            n_react = int(churn["is_reactivation"].sum())
+            n_acc_react = int(churn.loc[churn["is_reactivation"], "account_id"].nunique())
+            cc = churn.groupby("account_id").size()
+            check("C03-churn", "churn_events",
+                  "múltiplos eventos por conta (ciclos de reativação)",
+                  "PASS",
+                  f"{int((cc > 1).sum())} contas com >1 evento (máx {int(cc.max())}); "
+                  f"eventos is_reactivation={n_react} ({n_acc_react} contas) — insumo da Iteração 02")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_churn_events.csv": ["account_id", "churn_date"],
+        })
+        if blocked:
+            check("C04-churn", "churn_events",
+                  "sem eventos duplicados por conta+data", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            n_same = int(churn.duplicated(subset=["account_id", "churn_date"]).sum())
+            check("C04-churn", "churn_events",
+                  "sem eventos duplicados por conta+data",
+                  "WARN" if n_same else "PASS", f"{n_same} pares conta+data duplicados")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_churn_events.csv": ["reason_code", "feedback_text"],
+        })
+        if blocked:
+            check("C05-churn", "churn_events",
+                  "reason_code 'unknown' sem feedback preenchido", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            unknown_null = int(((churn["reason_code"] == "unknown") & churn["feedback_text"].isna()).sum())
+            check("C05-churn", "churn_events",
+                  "reason_code 'unknown' sem feedback preenchido",
+                  "WARN" if unknown_null else "PASS",
+                  f"{unknown_null} eventos 'unknown' sem feedback (feedback nulo total={int(churn['feedback_text'].isna().sum())})")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_churn_events.csv": ["refund_amount_usd"],
+        })
+        if blocked:
+            check("C06-churn", "churn_events",
+                  "refund_amount_usd > 0 apenas onde há reembolso", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            n_refund = int((churn["refund_amount_usd"] > 0).sum())
+            check("C06-churn", "churn_events",
+                  "refund_amount_usd > 0 apenas onde há reembolso",
+                  "PASS", f"{n_refund} eventos com refund > 0; {int((churn['refund_amount_usd'] == 0).sum())} com 0")
     if sub is not None:
-        n_trial_mrr = int((sub["is_trial"] & (sub["mrr_amount"] > 0)).sum())
-        n_notrial_zero = int((~sub["is_trial"] & (sub["mrr_amount"] == 0)).sum())
-        check("C07-subs", "subscriptions",
-              "trial => MRR 0; não-trial => MRR > 0",
-              "PASS" if (n_trial_mrr + n_notrial_zero) == 0 else "WARN",
-              f"trial com MRR>0={n_trial_mrr}; não-trial com MRR=0={n_notrial_zero} "
-              f"(trial={int(sub['is_trial'].sum())})")
-        both = int((sub["upgrade_flag"] & sub["downgrade_flag"]).sum())
-        check("C08-subs", "subscriptions",
-              "upgrade_flag e downgrade_flag mutuamente exclusivos",
-              "WARN" if both else "PASS",
-              f"{both} linhas com ambas as flags (upgrade={int(sub['upgrade_flag'].sum())}, "
-              f"downgrade={int(sub['downgrade_flag'].sum())})")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["is_trial", "mrr_amount"],
+        })
+        if blocked:
+            check("C07-subs", "subscriptions",
+                  "trial => MRR 0; não-trial => MRR > 0", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            n_trial_mrr = int((sub["is_trial"] & (sub["mrr_amount"] > 0)).sum())
+            n_notrial_zero = int((~sub["is_trial"] & (sub["mrr_amount"] == 0)).sum())
+            check("C07-subs", "subscriptions",
+                  "trial => MRR 0; não-trial => MRR > 0",
+                  "PASS" if (n_trial_mrr + n_notrial_zero) == 0 else "WARN",
+                  f"trial com MRR>0={n_trial_mrr}; não-trial com MRR=0={n_notrial_zero} "
+                  f"(trial={int(sub['is_trial'].sum())})")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_subscriptions.csv": ["upgrade_flag", "downgrade_flag"],
+        })
+        if blocked:
+            check("C08-subs", "subscriptions",
+                  "upgrade_flag e downgrade_flag mutuamente exclusivos", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            both = int((sub["upgrade_flag"] & sub["downgrade_flag"]).sum())
+            check("C08-subs", "subscriptions",
+                  "upgrade_flag e downgrade_flag mutuamente exclusivos",
+                  "WARN" if both else "PASS",
+                  f"{both} linhas com ambas as flags (upgrade={int(sub['upgrade_flag'].sum())}, "
+                  f"downgrade={int(sub['downgrade_flag'].sum())})")
     if acc is not None and sub is not None:
-        max_seats = sub.groupby("account_id")["seats"].max().rename("seats_sub")
-        m = acc.merge(max_seats, on="account_id")
-        n_seats = int((m["seats"] != m["seats_sub"]).sum())
-        mode_plan = sub.groupby("account_id")["plan_tier"].agg(lambda s: s.mode().iloc[0]).rename("plan_sub")
-        m2 = acc.merge(mode_plan, on="account_id")
-        n_plan = int((m2["plan_tier"] != m2["plan_sub"]).sum())
-        check("C09-subs", "accounts vs subscriptions",
-              "atributos de conta (seats/plano) coerentes com histórico de assinaturas",
-              "WARN",
-              f"seats da conta != máx. seats de assinatura: {n_seats}; "
-              f"plano da conta != moda de plano de assinatura: {n_plan} "
-              f"(accounts é snapshot atual; assinaturas são histórico — registrar, não concluir)")
+        blocked = cross_blocked(dfs, {
+            "ravenstack_accounts.csv": ["account_id", "seats", "plan_tier"],
+            "ravenstack_subscriptions.csv": ["account_id", "seats", "plan_tier"],
+        })
+        if blocked:
+            check("C09-subs", "accounts vs subscriptions",
+                  "atributos de conta (seats/plano) coerentes com histórico de assinaturas", "FAIL",
+                  "não executado (schema): " + "; ".join(blocked))
+        else:
+            max_seats = sub.groupby("account_id")["seats"].max().rename("seats_sub")
+            m = acc.merge(max_seats, on="account_id")
+            n_seats = int((m["seats"] != m["seats_sub"]).sum())
+            mode_plan = sub.groupby("account_id")["plan_tier"].agg(lambda s: s.mode().iloc[0]).rename("plan_sub")
+            m2 = acc.merge(mode_plan, on="account_id")
+            n_plan = int((m2["plan_tier"] != m2["plan_sub"]).sum())
+            check("C09-subs", "accounts vs subscriptions",
+                  "atributos de conta (seats/plano) coerentes com histórico de assinaturas",
+                  "WARN" if (n_seats + n_plan) else "PASS",
+                  f"seats da conta != máx. seats de assinatura: {n_seats}; "
+                  f"plano da conta != moda de plano de assinatura: {n_plan} "
+                  f"(accounts é snapshot atual; assinaturas são histórico — registrar, não concluir)")
 
 
 def collect_syntheticity_evidence(dfs: dict[str, pd.DataFrame]) -> list[tuple[str, str, str]]:
@@ -572,47 +830,108 @@ def collect_syntheticity_evidence(dfs: dict[str, pd.DataFrame]) -> list[tuple[st
 
     if acc is not None:
         for col in ["industry", "country", "referral_source", "plan_tier"]:
-            vc = acc[col].value_counts().sort_index()
-            ev.append((f"accounts.{col}", "distribuição (contagem)",
-                       "; ".join(f"{k}={v}" for k, v in vc.items())))
+            if col in acc.columns:
+                vc = acc[col].value_counts().sort_index()
+                ev.append((f"accounts.{col}", "distribuição (contagem)",
+                           "; ".join(f"{k}={v}" for k, v in vc.items())))
+            else:
+                ev.append((f"accounts.{col}", "distribuição (contagem)",
+                           "não executado (schema): coluna ausente"))
     if sub is not None:
-        ev.append(("subscriptions.plan_tier", "distribuição (contagem)",
-                   "; ".join(f"{k}={v}" for k, v in sub["plan_tier"].value_counts().sort_index().items())))
-        ev.append(("subscriptions.billing_frequency", "distribuição (contagem)",
-                   "; ".join(f"{k}={v}" for k, v in sub["billing_frequency"].value_counts().sort_index().items())))
-        ev.append(("subscriptions.mrr", "estrutura", f"mrr=0 => trial ({int(sub['is_trial'].sum())}); ARR=12xMRR em 100% das linhas com MRR>0"))
+        if "plan_tier" in sub.columns:
+            ev.append(("subscriptions.plan_tier", "distribuição (contagem)",
+                       "; ".join(f"{k}={v}" for k, v in sub["plan_tier"].value_counts().sort_index().items())))
+        else:
+            ev.append(("subscriptions.plan_tier", "distribuição (contagem)",
+                       "não executado (schema): coluna ausente"))
+        if "billing_frequency" in sub.columns:
+            ev.append(("subscriptions.billing_frequency", "distribuição (contagem)",
+                       "; ".join(f"{k}={v}" for k, v in sub["billing_frequency"].value_counts().sort_index().items())))
+        else:
+            ev.append(("subscriptions.billing_frequency", "distribuição (contagem)",
+                       "não executado (schema): coluna ausente"))
+        if {"is_trial", "mrr_amount"} <= set(sub.columns):
+            ev.append(("subscriptions.mrr", "estrutura", f"mrr=0 => trial ({int(sub['is_trial'].sum())}); ARR=12xMRR em 100% das linhas com MRR>0"))
+        else:
+            ev.append(("subscriptions.mrr", "estrutura", "não executado (schema): colunas ausentes"))
     if use is not None:
-        by_year = use["usage_date"].str[:4].value_counts().sort_index()
-        ev.append(("feature_usage.usage_date", "distribuição por ano",
-                   "; ".join(f"{k}={v}" for k, v in by_year.items())))
-        monthly = use["usage_date"].str[:7].value_counts()
-        ev.append(("feature_usage.usage_date", "uniformidade mensal (24 meses)",
-                   f"min por mês={int(monthly.min())}, máx={int(monthly.max())}, "
-                   f"média={fmt(monthly.mean())}"))
-        ev.append(("feature_usage.usage_id", "ids duplicados",
-                   f"{int(use['usage_id'].duplicated().sum())} ids reutilizados em linhas distintas "
-                   f"(mesmo id, assinatura/feature diferentes)"))
+        if "usage_date" in use.columns:
+            by_year = use["usage_date"].str[:4].value_counts().sort_index()
+            ev.append(("feature_usage.usage_date", "distribuição por ano",
+                       "; ".join(f"{k}={v}" for k, v in by_year.items())))
+            monthly = use["usage_date"].str[:7].value_counts()
+            ev.append(("feature_usage.usage_date", "uniformidade mensal (24 meses)",
+                       f"min por mês={int(monthly.min())}, máx={int(monthly.max())}, "
+                       f"média={fmt(monthly.mean())}"))
+        else:
+            ev.append(("feature_usage.usage_date", "distribuição por ano",
+                       "não executado (schema): coluna ausente"))
+            ev.append(("feature_usage.usage_date", "uniformidade mensal (24 meses)",
+                       "não executado (schema): coluna ausente"))
+        if "usage_id" in use.columns:
+            dup_ids = use.loc[use["usage_id"].duplicated(keep=False), "usage_id"].unique()
+            n_dup = len(dup_ids)
+            if n_dup:
+                rows = use.loc[use["usage_id"].isin(dup_ids)]
+                n_sub = int(rows.groupby("usage_id")["subscription_id"].nunique().gt(1).sum())
+                n_feat = int(rows.groupby("usage_id")["feature_name"].nunique().gt(1).sum())
+                ev.append(("feature_usage.usage_id", "ids duplicados",
+                           f"{n_dup} ids reutilizados em linhas distintas (mesmo id; "
+                           f"assinaturas diferentes em {n_sub}/{n_dup}; features diferentes em {n_feat}/{n_dup})"))
+            else:
+                ev.append(("feature_usage.usage_id", "ids duplicados", "0 ids reutilizados"))
+        else:
+            ev.append(("feature_usage.usage_id", "ids duplicados",
+                       "não executado (schema): coluna ausente"))
     if tic is not None:
-        ev.append(("tickets.satisfaction_score", "distribuição",
-                   f"nulos={int(tic['satisfaction_score'].isna().sum())} ({pct(int(tic['satisfaction_score'].isna().sum()), len(tic))}); "
-                   f"valores={sorted(tic['satisfaction_score'].dropna().unique())}"))
-        ev.append(("tickets.priority", "distribuição (contagem)",
-                   "; ".join(f"{k}={v}" for k, v in tic["priority"].value_counts().sort_index().items())))
+        if "satisfaction_score" in tic.columns:
+            ev.append(("tickets.satisfaction_score", "distribuição",
+                       f"nulos={int(tic['satisfaction_score'].isna().sum())} ({pct(int(tic['satisfaction_score'].isna().sum()), len(tic))}); "
+                       f"valores={sorted(tic['satisfaction_score'].dropna().unique())}"))
+        else:
+            ev.append(("tickets.satisfaction_score", "distribuição",
+                       "não executado (schema): coluna ausente"))
+        if "priority" in tic.columns:
+            ev.append(("tickets.priority", "distribuição (contagem)",
+                       "; ".join(f"{k}={v}" for k, v in tic["priority"].value_counts().sort_index().items())))
+        else:
+            ev.append(("tickets.priority", "distribuição (contagem)",
+                       "não executado (schema): coluna ausente"))
     if churn is not None:
-        ev.append(("churn_events.reason_code", "distribuição (contagem)",
-                   "; ".join(f"{k}={v}" for k, v in churn["reason_code"].value_counts().sort_index().items())))
-        by_month = churn["churn_date"].str[:7].value_counts()
-        ev.append(("churn_events.churn_date", "distribuição mensal",
-                   f"meses={len(by_month)}, min por mês={int(by_month.min())}, máx={int(by_month.max())}"))
-        ev.append(("churn_events por conta", "multiplicidade",
-                   f"contas={churn['account_id'].nunique()}, eventos={len(churn)}, "
-                   f"contas com >1 evento={int((churn.groupby('account_id').size() > 1).sum())}, máx={int(churn.groupby('account_id').size().max())}"))
+        if "reason_code" in churn.columns:
+            ev.append(("churn_events.reason_code", "distribuição (contagem)",
+                       "; ".join(f"{k}={v}" for k, v in churn["reason_code"].value_counts().sort_index().items())))
+        else:
+            ev.append(("churn_events.reason_code", "distribuição (contagem)",
+                       "não executado (schema): coluna ausente"))
+        if "churn_date" in churn.columns:
+            by_month = churn["churn_date"].str[:7].value_counts()
+            ev.append(("churn_events.churn_date", "distribuição mensal",
+                       f"meses={len(by_month)}, min por mês={int(by_month.min())}, máx={int(by_month.max())}"))
+        else:
+            ev.append(("churn_events.churn_date", "distribuição mensal",
+                       "não executado (schema): coluna ausente"))
+        if "account_id" in churn.columns:
+            ev.append(("churn_events por conta", "multiplicidade",
+                       f"contas={churn['account_id'].nunique()}, eventos={len(churn)}, "
+                       f"contas com >1 evento={int((churn.groupby('account_id').size() > 1).sum())}, máx={int(churn.groupby('account_id').size().max())}"))
+        else:
+            ev.append(("churn_events por conta", "multiplicidade",
+                       "não executado (schema): coluna ausente"))
     if acc is not None and sub is not None and use is not None:
-        m = use.merge(sub[["subscription_id", "start_date"]], on="subscription_id")
-        before = int((m["usage_date"] < m["start_date"]).sum())
-        ev.append(("feature_usage vs subscriptions", "uso fora da janela da assinatura",
-                   f"{before} de {len(m)} linhas ({pct(before, len(m))}) com usage_date anterior ao start_date "
-                   f"(assinaturas com início em 2024: {int((sub['start_date'] >= '2024-01-01').sum())} de {len(sub)})"))
+        blocked = cross_blocked(dfs, {
+            "ravenstack_feature_usage.csv": ["subscription_id", "usage_date"],
+            "ravenstack_subscriptions.csv": ["subscription_id", "start_date"],
+        })
+        if blocked:
+            ev.append(("feature_usage vs subscriptions", "uso fora da janela da assinatura",
+                       "não executado (schema): " + "; ".join(blocked)))
+        else:
+            m = use.merge(sub[["subscription_id", "start_date"]], on="subscription_id")
+            before = int((m["usage_date"] < m["start_date"]).sum())
+            ev.append(("feature_usage vs subscriptions", "uso fora da janela da assinatura",
+                       f"{before} de {len(m)} linhas ({pct(before, len(m))}) com usage_date anterior ao start_date "
+                       f"(assinaturas com início em 2024: {int((sub['start_date'] >= '2024-01-01').sum())} de {len(sub)})"))
     return ev
 
 

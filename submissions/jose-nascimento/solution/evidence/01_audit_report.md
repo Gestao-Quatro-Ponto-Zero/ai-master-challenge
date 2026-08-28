@@ -130,8 +130,8 @@ Gerado por `solution/src/01_ingest_audit.py` (execução offline e determinísti
 | F01-ravenstack_churn_events.csv | ravenstack_churn_events.csv | arquivo presente e carregável | **PASS** | 44029 bytes, CSV parseado |
 | F02-ravenstack_churn_events.csv | ravenstack_churn_events.csv | contagem de registros = valor do brief | **PASS** | 600 registros (brief: ~600) |
 | S01-ravenstack_accounts.csv | ravenstack_accounts.csv | schema mínimo (colunas do brief) | **PASS** | 10 colunas, ordem idêntica ao brief |
-| S02-ravenstack_accounts.csv | ravenstack_accounts.csv | chave primária account_id sem nulos | **PASS** | 0 nulos |
-| S03-ravenstack_accounts.csv | ravenstack_accounts.csv | chave primária account_id sem duplicatas | **PASS** | 0 duplicatas |
+| S02-ravenstack_accounts.csv | ravenstack_accounts.csv | chave candidata account_id sem nulos | **PASS** | 0 nulos |
+| S03-ravenstack_accounts.csv | ravenstack_accounts.csv | chave candidata account_id sem duplicatas | **PASS** | 0 duplicatas |
 | S04-ravenstack_accounts.csv | ravenstack_accounts.csv | linhas exatamente duplicadas | **PASS** | 0 linhas duplicadas |
 | S05-ravenstack_accounts.csv | ravenstack_accounts.csv | nulos por coluna (não-chave) | **PASS** | 0 nulos em todas as colunas |
 | T01-ravenstack_accounts.csv | ravenstack_accounts.csv | seats > 0 | **PASS** | 0 violações |
@@ -143,8 +143,8 @@ Gerado por `solution/src/01_ingest_audit.py` (execução offline e determinísti
 | D01-ravenstack_accounts.csv | ravenstack_accounts.csv | signup_date parseável (YYYY-MM-DD) | **PASS** | 0 valores não parseáveis |
 | D02-ravenstack_accounts.csv | ravenstack_accounts.csv | janela global de datas dentro de 2023-01-01..2024-12-31 | **PASS** | 0 valores fora da janela; signup_date: 2023-01-02..2024-12-31 |
 | S01-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | schema mínimo (colunas do brief) | **PASS** | 14 colunas, ordem idêntica ao brief |
-| S02-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | chave primária subscription_id sem nulos | **PASS** | 0 nulos |
-| S03-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | chave primária subscription_id sem duplicatas | **PASS** | 0 duplicatas |
+| S02-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | chave candidata subscription_id sem nulos | **PASS** | 0 nulos |
+| S03-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | chave candidata subscription_id sem duplicatas | **PASS** | 0 duplicatas |
 | S04-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | linhas exatamente duplicadas | **PASS** | 0 linhas duplicadas |
 | S05-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | nulos por coluna (não-chave) | **PASS** | end_date=4514 (90.3%) [esperado (semântica: assinatura ativa)] |
 | T01-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | seats > 0, mrr >= 0, arr >= 0 | **PASS** | violações: seats<=0=0, mrr<0=0, arr<0=0 |
@@ -156,8 +156,8 @@ Gerado por `solution/src/01_ingest_audit.py` (execução offline e determinísti
 | D04-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | flags vs datas: churn_flag consistente com end_date | **PASS** | 0 linhas inconsistentes (churn sem end_date ou end_date sem churn); ativas=4514 |
 | D02-ravenstack_subscriptions.csv | ravenstack_subscriptions.csv | janela global de datas dentro de 2023-01-01..2024-12-31 | **PASS** | 0 valores fora da janela; start_date: 2023-01-09..2024-12-31; end_date: 2023-04-05..2024-12-31 |
 | S01-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | schema mínimo (colunas do brief) | **PASS** | 8 colunas, ordem idêntica ao brief |
-| S02-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | chave primária usage_id sem nulos | **PASS** | 0 nulos |
-| S03-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | chave primária usage_id sem duplicatas | **WARN** | 21 ids duplicados (anomalia de qualidade; join não afetado) |
+| S02-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | chave candidata usage_id sem nulos | **PASS** | 0 nulos |
+| S03-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | chave candidata usage_id sem duplicatas | **WARN** | 21 ids duplicados (anomalia de qualidade; join não afetado) |
 | S04-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | linhas exatamente duplicadas | **PASS** | 0 linhas duplicadas |
 | S05-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | nulos por coluna (não-chave) | **PASS** | 0 nulos em todas as colunas |
 | T01-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | usage_count/duration/error >= 0 | **PASS** | violações: count<0=0, duration<0=0, error<0=0 |
@@ -167,8 +167,8 @@ Gerado por `solution/src/01_ingest_audit.py` (execução offline e determinísti
 | D01-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | usage_date parseável | **PASS** | 0 valores não parseáveis |
 | D02-ravenstack_feature_usage.csv | ravenstack_feature_usage.csv | janela global de datas dentro de 2023-01-01..2024-12-31 | **PASS** | 0 valores fora da janela; usage_date: 2023-01-01..2024-12-31 |
 | S01-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | schema mínimo (colunas do brief) | **PASS** | 9 colunas, ordem idêntica ao brief |
-| S02-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | chave primária ticket_id sem nulos | **PASS** | 0 nulos |
-| S03-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | chave primária ticket_id sem duplicatas | **PASS** | 0 duplicatas |
+| S02-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | chave candidata ticket_id sem nulos | **PASS** | 0 nulos |
+| S03-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | chave candidata ticket_id sem duplicatas | **PASS** | 0 duplicatas |
 | S04-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | linhas exatamente duplicadas | **PASS** | 0 linhas duplicadas |
 | S05-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | nulos por coluna (não-chave) | **WARN** | satisfaction_score=825 (41.2%) [WARN] |
 | T01-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | resolution_time_hours/first_response >= 0 | **PASS** | violações: res<0=0, frt<0=0 |
@@ -180,8 +180,8 @@ Gerado por `solution/src/01_ingest_audit.py` (execução offline e determinísti
 | D05-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | resolution_time_hours <= tempo decorrido real | **PASS** | 0 violações |
 | D02-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | janela global de datas dentro de 2023-01-01..2024-12-31 | **PASS** | 0 valores fora da janela; submitted_at: 2023-01-02..2024-12-31; closed_at: 2023-01-03..2024-12-31 |
 | S01-ravenstack_churn_events.csv | ravenstack_churn_events.csv | schema mínimo (colunas do brief) | **PASS** | 9 colunas, ordem idêntica ao brief |
-| S02-ravenstack_churn_events.csv | ravenstack_churn_events.csv | chave primária churn_event_id sem nulos | **PASS** | 0 nulos |
-| S03-ravenstack_churn_events.csv | ravenstack_churn_events.csv | chave primária churn_event_id sem duplicatas | **PASS** | 0 duplicatas |
+| S02-ravenstack_churn_events.csv | ravenstack_churn_events.csv | chave candidata churn_event_id sem nulos | **PASS** | 0 nulos |
+| S03-ravenstack_churn_events.csv | ravenstack_churn_events.csv | chave candidata churn_event_id sem duplicatas | **PASS** | 0 duplicatas |
 | S04-ravenstack_churn_events.csv | ravenstack_churn_events.csv | linhas exatamente duplicadas | **PASS** | 0 linhas duplicadas |
 | S05-ravenstack_churn_events.csv | ravenstack_churn_events.csv | nulos por coluna (não-chave) | **WARN** | feedback_text=148 (24.7%) [WARN] |
 | T01-ravenstack_churn_events.csv | ravenstack_churn_events.csv | refund_amount_usd >= 0 | **PASS** | 0 violações |
@@ -204,7 +204,7 @@ Gerado por `solution/src/01_ingest_audit.py` (execução offline e determinísti
 | C02-churn | subscriptions.churn_flag vs churn_events | contas com evento de churn têm assinatura churn_flag | **WARN** | 125 contas com evento sem assinatura churn_flag (assinaturas churn_flag=312) |
 | C03-churn | churn_events | múltiplos eventos por conta (ciclos de reativação) | **PASS** | 175 contas com >1 evento (máx 5); eventos is_reactivation=61 (55 contas) — insumo da Iteração 02 |
 | C04-churn | churn_events | sem eventos duplicados por conta+data | **WARN** | 1 pares conta+data duplicados |
-| C05-churn | churn_events | reason_code 'unknown' com feedback preenchido | **WARN** | 22 eventos 'unknown' sem feedback (feedback nulo total=148) |
+| C05-churn | churn_events | reason_code 'unknown' sem feedback preenchido | **WARN** | 22 eventos 'unknown' sem feedback (feedback nulo total=148) |
 | C06-churn | churn_events | refund_amount_usd > 0 apenas onde há reembolso | **PASS** | 142 eventos com refund > 0; 458 com 0 |
 | C07-subs | subscriptions | trial => MRR 0; não-trial => MRR > 0 | **PASS** | trial com MRR>0=0; não-trial com MRR=0=0 (trial=778) |
 | C08-subs | subscriptions | upgrade_flag e downgrade_flag mutuamente exclusivos | **WARN** | 23 linhas com ambas as flags (upgrade=529, downgrade=218) |
@@ -225,7 +225,7 @@ Os padrões abaixo são observações de estrutura/distribuição dos arquivos �
 | subscriptions.mrr — estrutura | mrr=0 => trial (778); ARR=12xMRR em 100% das linhas com MRR>0 |
 | feature_usage.usage_date — distribuição por ano | 2023=12430; 2024=12570 |
 | feature_usage.usage_date — uniformidade mensal (24 meses) | min por mês=944, máx=1137, média=1041.67 |
-| feature_usage.usage_id — ids duplicados | 21 ids reutilizados em linhas distintas (mesmo id, assinatura/feature diferentes) |
+| feature_usage.usage_id — ids duplicados | 21 ids reutilizados em linhas distintas (mesmo id; assinaturas diferentes em 21/21; features diferentes em 19/21) |
 | tickets.satisfaction_score — distribuição | nulos=825 (41.2%); valores=[3.0, 4.0, 5.0] |
 | tickets.priority — distribuição (contagem) | high=510; low=485; medium=491; urgent=514 |
 | churn_events.reason_code — distribuição (contagem) | budget=104; competitor=92; features=114; pricing=91; support=104; unknown=95 |

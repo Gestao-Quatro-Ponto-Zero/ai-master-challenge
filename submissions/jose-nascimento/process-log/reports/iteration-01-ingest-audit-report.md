@@ -62,7 +62,7 @@ Nenhum arquivo fora da pasta do candidato foi alterado.
 - **Exit code:** 0 (estrutura essencial íntegra; nenhum FAIL).
 - **Resumo:** 72 PASS · 18 WARN · 0 FAIL (relatório: `solution/evidence/01_audit_report.md`).
 - **Registros vs brief:** 500/5.000/25.000/2.000/600 — todos exatamente iguais ao valor anunciado (~) — PASS.
-- **Schema/chaves:** colunas idênticas ao brief nos 5 arquivos; chaves primárias sem nulos; sem linhas duplicadas; `usage_id` com **21 IDs duplicados** (reuso em linhas distintas — WARN, joins não afetados).
+- **Schema/chaves:** colunas idênticas ao brief nos 5 arquivos; chaves candidatas sem nulos; sem linhas duplicadas; `usage_id` com **21 IDs duplicados** (reuso em linhas distintas — WARN, joins não afetados).
 - **FKs:** 0 órfãos em `subscriptions→accounts`, `tickets→accounts`, `churn_events→accounts`, `feature_usage→subscriptions` (PASS); **33 assinaturas sem nenhuma linha de uso** (WARN).
 - **Datas:** todas parseáveis; janela global 2023-01-01..2024-12-31 respeitada em todos os arquivos; `closed_at >= submitted_at` (0 violações); `resolution_time_hours <=` tempo decorrido (0 violações).
 - **Anomalias temporais (WARN, sem interpretação causal):**
@@ -79,7 +79,7 @@ O relatório (§5) lista padrões observados, consistentes com base **gerada sin
 2. Distribuições quase uniformes em categorias (prioridades 485–514; reason codes 91–114; canais 89–114; planos 1602/1675/1723) e uso mensal uniforme em 24 meses (944–1.137 por mês) — padrão típico de amostragem aleatória, não de demanda real.
 3. **Desacoplamento temporal**: 76,6% do uso fora da janela da assinatura (uso uniforme 2023–2024 vs 87% das assinaturas iniciando em 2024) — o gerador atribuiu datas de uso independentes do ciclo de vida da assinatura.
 4. Estruturas exatas: `ARR = 12×MRR` em 100% das linhas; trial ⇒ MRR=0 em 100%.
-5. CSAT restrito a {3,4,5}; 21 IDs de uso reutilizados em linhas distintas (mesmo ID, assinaturas/features diferentes).
+5. CSAT restrito a {3,4,5}; 21 IDs de uso reutilizados em linhas distintas (mesmo ID; assinaturas diferentes em 21/21; features diferentes em 19/21).
 
 Essas observações **não** extrapolam causa de negócio e **não** escolhem definição de churn; apenas caracterizam o processo de geração da base.
 

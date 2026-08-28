@@ -2,7 +2,7 @@
 
 **Finalidade:** checklist interno, exaustivo porém operacional, usado pelo orquestrador (opencode) para governar a submissão de Jose Nascimento. Estados válidos: `PENDING` (não realizado), `OPEN` (em andamento), `CONCLUDED` (realizado com evidência). **Nenhum item pode afirmar algo ainda não realizado.** Atualizado ao fim de cada iteração.
 
-**Última atualização:** 2026-08-28 (fim da Iteração 01 — validação do executor concluída; review gate 3x da Iteração 01 a disparar pelo orquestrador)
+**Última atualização:** 2026-08-28 (fim da Iteração 01 — review gate 3x concluído e correções aplicadas por agente sequencial; ver `process-log/reviews/iteration-01-review-summary.md`)
 
 ---
 
@@ -29,14 +29,14 @@
 |---|---|---|---|
 | B1 | Ferramenta real documentada com honestidade (opencode como orquestrador + subagentes `deepseek-max` via OpenCode Go; NÃO "Claude Code", NÃO "deepseek-v4-flash" como ferramenta) | CONCLUDED | Correção aplicada no README scaffold (Iteração 00); docs de governança usam a mesma descrição |
 | B2 | Uma etapa = um agente `deepseek-max` sequencial | CONCLUDED | Iteração 00 executada por exatamente um subagente `deepseek-max` (via OpenCode Go), sob orquestração do opencode (que não implementa); regra vigente para as Iterações 01–10 (verificação ao fim de cada etapa) |
-| B3 | Revisão 3x read-only após cada etapa (3 agentes `deepseek-max` em paralelo) | CONCLUDED | Iteração 00: 3 revisores `deepseek-max` read-only em paralelo (2026-08-28), veredictos `PASS_WITH_FIXES` ×3; correções aplicadas por agente sequencial (commit `docs: address iteration 00 review findings`); registro em `process-log/reviews/iteration-00-review-summary.md`. Revisões das Iterações 01–10: a disparar ao fim de cada etapa |
+| B3 | Revisão 3x read-only após cada etapa (3 agentes `deepseek-max` em paralelo) | CONCLUDED | Iteração 00: 3 revisores `deepseek-max` read-only em paralelo (2026-08-28), veredictos `PASS_WITH_FIXES` ×3; correções aplicadas por agente sequencial (commit `docs: address iteration 00 review findings`); registro em `process-log/reviews/iteration-00-review-summary.md`. Iteração 01: 3 revisores `deepseek-max` read-only em paralelo (2026-08-28), veredictos `PASS_WITH_FIXES` ×3; finding MEDIUM M1 (schema quebrado → `KeyError` + relatório stale) corrigido por agente sequencial (commit `fix: handle schema failures in data audit`); registro em `process-log/reviews/iteration-01-review-summary.md`. Revisões das Iterações 02–10: a disparar ao fim de cada etapa |
 | B4 | Correções por agente sequencial quando revisores apontarem problemas materiais | CONCLUDED | Iteração 00: correções materiais aplicadas pelo agente corretor sequencial `deepseek-max` (ver B3); demais iterações: disparo conforme necessidade após cada revisão 3x |
 | B5 | Toda etapa produz report estruturado em `process-log/reports/` | CONCLUDED | Report da Iteração 00 criado; padrão de naming `iteration-XX-*.md` |
 | B6 | Prompt integral de cada iteração arquivado em `process-log/prompts/` | CONCLUDED | Prompt da Iteração 00 arquivado; prompt de correção do review gate arquivado; demais iterações seguem o padrão |
 | B7 | Estados do execution-plan atualizados ao fim de cada etapa, somente `PENDING/OPEN/CONCLUDED` | CONCLUDED | Iteração 00: 00 `CONCLUDED`, 01–10 `PENDING`; validado por script |
 | B8 | Orquestrador não implementa código (apenas gerencia agentes) | PENDING | Regra contínua; verificação ao fim de cada iteração |
 | B9 | Ferramentas de IA listadas no process log com o que fizeram | PENDING | Iteração 08 |
-| B10 | Review gate 3x registrado em ledger versionado `process-log/reviews/iteration-XX-review-summary.md` | CONCLUDED | Iteração 00: `iteration-00-review-summary.md` criado (veredictos, findings, decisão de governança, matriz finding→ação, riscos, gate); demais iterações seguem o padrão |
+| B10 | Review gate 3x registrado em ledger versionado `process-log/reviews/iteration-XX-review-summary.md` | CONCLUDED | Iteração 00: `iteration-00-review-summary.md` criado (veredictos, findings, decisão de governança, matriz finding→ação, riscos, gate); Iteração 01: `iteration-01-review-summary.md` criado (3 veredictos `PASS_WITH_FIXES`, finding convergente M1, matriz finding→ação→arquivo:linha, recálculos, testes pós-fix, riscos, gate); demais iterações seguem o padrão |
 
 ## C. Dados e licenciamento
 
