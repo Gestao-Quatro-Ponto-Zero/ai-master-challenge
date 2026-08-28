@@ -1,0 +1,6 @@
+segment_a,segment_b,overlap_n
+S1,S2,26
+S1,S4,54
+S2,S4,110
+S3,S4,25
+S2,S3,19
