@@ -51,7 +51,7 @@
   4. Intervalo [start, end] inclusive.
 - **Evidência:** a auditoria It01 (D03/D04) não define semântica; durante o desenvolvimento, uma exploração com comparação ao início do mês contou 3 linhas account-mês a mais (5.257 vs 5.254) e MRR total maior (63,3M vs 62,2M) — erro real do executor, corrigido ao fixar "ativo no fim do mês" com `end_date ≥ último dia do mês`.
 - **Decisão:** opções 2+4 — estado no FIM do mês (sem look-ahead intra-mês) e [start_date, end_date] inclusive. Ativa em `m` ⟺ start ≤ último dia de `m` e (end nulo ou end ≥ último dia de `m`).
-- **Trade-off:** regra simples e determinística; assinatura que termina no meio do mês deixa de contar a partir do mês seguinte (conservadora).
+- **Trade-off:** regra simples e determinística; assinatura que termina em `d` deixa de contar no mês cujo último dia > d (ex.: fim em 12-15 → inativa em dezembro — estado medido no fim do mês; conservadora).
 
 ## D5 — Registros temporalmente inválidos (uso pré-start 76,6%; uso/tickets pré-signup)
 
@@ -83,6 +83,28 @@
 - **Evidência:** auditoria It01 (T06, C05, §5) documenta as limitações; nenhuma relação causal pode ser derivada destas colunas com essa completude.
 - **Decisão:** opção 2 — contrato §10: evidência sugestiva de qualidade da experiência; relações observadas são correlações e serão rotuladas como tal (It03–05).
 - **Trade-off:** conclusões causais proibidas; em troca, nenhuma afirmação não suportada.
+
+## D9 — Duas lentes de receita (correção M1 do review gate 3x)
+
+- **Problema:** a fórmula única de "revenue churn" do contrato §5 baseada no winner (Σ winner_mrr(m−1) de contas que ficam inativas) é quase degenerada nesta base: soma **18.507** na janela (2 transições), enquanto a exposição contratual bruta (Σ MRR das assinaturas encerradas, lente B) é **1.179.139** (486 assinaturas) e as saídas de assinaturas **não-dominantes** com a conta permanecendo ativa somam **422.691** em 274 assinaturas (episódios conta-mês: 254; 226 com winner_mrr inalterado, 0 com redução) — razão ≈22,8× vs o capturado. Exemplo: A-5a215a em 2024-12 — duas assinaturas de 17.313 (34.626) encerram com winner inalterado em 17.313 (perda invisível).
+- **Opções:**
+  1. Manter a fórmula única do winner como "revenue churn";
+  2. Definir duas lentes nomeadas (exposição bruta vs perda líquida de estado) e proibir o uso isolado do winner;
+  3. Trocar a métrica primária para a lente B sem distinção de troca/replacement.
+- **Evidência:** recálculo independente (ver report de correção do gate): 1.179.139 / 18.507 / 422.691 / 150.817 (contraction ativa em 36 transições) / 2.287.279 (expansão ativa em 590 transições — a maior parte das saídas é compensada dentro da conta).
+- **Decisão:** opção 2 — **R1 gross subscription ending MRR** (exposição contratual bruta; NÃO chamada de "receita perdida" automaticamente — pode ser troca/replacement/sobreposição) e **R2 net account-state MRR loss** (churn-to-inactive + active contraction entre snapshots), com cobertura/trade-off explícitos; winner preservado como **estado/risco** e **PROIBIDO** como total de churn contratual isolado (contrato §5/§6; report §7).
+- **Trade-off:** análises de receita (It03+) precisam declarar a lente e reportar o gap entre R1 e R2; em troca, nenhum número enganoso de "receita perdida".
+
+## D10 — Política de `closed_at` (correção do review gate 3x)
+
+- **Problema:** a It01 adiou a semântica de `closed_at` (assimetria de nulos vs `end_date`) para o contrato analítico; sem política explícita, métricas de resolução/CSAT posteriores poderiam vazar (imputar fechamento futuro ou incluir tickets abertos na data índice).
+- **Opções:**
+  1. Imputar fechamento futuro quando ausente;
+  2. Documentar a política sem alterar a base atual;
+  3. Ignorar o campo.
+- **Evidência:** na base atual 0 nulos em `closed_at` (2.000/2.000 tickets fechados); satisfação tem 825 nulos (41,2%) → denominador explícito de 1.175 tickets com nota (gate G15).
+- **Decisão:** opção 2 — tickets existem por `submitted_at`; métricas de resolução/CSAT usam APENAS tickets fechados com informação observável até a data índice; `closed_at` nulo exclui o ticket com denominador explícito; **nunca imputar fechamento futuro** (contrato §7/§10; `closed_at` promovida a coluna mínima do REQUIRED e parseada — D01).
+- **Trade-off:** métricas de resolução ficam dependentes da completude de `closed_at` (hoje 0 nulos); em troca, zero risco de leakage por imputação.
 
 ---
 

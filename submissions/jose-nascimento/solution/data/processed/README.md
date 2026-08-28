@@ -6,7 +6,7 @@ Gerado por `solution/src/02_reconcile_churn.py` (Iteração 02; offline e determ
 
 - Linhas: 5807 (uma por account_id × mês; 500 contas; janela do mês do signup até 2024-12).
 - Estado no FIM do mês; regra do winner conforme contrato `solution/docs/analytical-contract.md` §6.
-- Checksum MD5 (esta versão): `38ae8772e46edf0215a938c6dc2999eb`
+- Checksum MD5 (esta versão): `b718c4f842609ee14eb56d5d4edcf012`
 
 ## Colunas
 
@@ -22,6 +22,8 @@ Gerado por `solution/src/02_reconcile_churn.py` (Iteração 02; offline e determ
 | `winner_mrr` | MRR do winner (0 se inativa) |
 | `winner_plan_tier`, `winner_seats`, `winner_is_trial`, `winner_billing_frequency` | atributos do winner |
 | `mrr_sum_naive` | soma ingênua do MRR das ativas (auditoria; NÃO usar como métrica) |
+| `mrr_ended_in_month` | soma do MRR das assinaturas com `end_date` no mês (lente R1 — gross ending MRR; reconciliada à fonte por G14); DESFECHO do mês, PROIBIDA como feature do próprio mês (contrato §8) |
+| `n_ended_in_month` | nº de assinaturas com `end_date` no mês (trials têm MRR 0, por isso a contagem é separada); DESFECHO do mês, PROIBIDA como feature do próprio mês (contrato §8) |
 | `churn_event_in_month` | 1 se ≥1 evento de churn no mês (lente de eventos) |
 | `n_events_in_month` | nº de eventos no mês |
 | `usage_rows_month` | linhas de uso no mês (bruto, sem filtro de janela) |
@@ -33,4 +35,4 @@ Gerado por `solution/src/02_reconcile_churn.py` (Iteração 02; offline e determ
 ## Uso
 
 - Esta base é regenerável: `python3 solution/src/02_reconcile_churn.py`.
-- Nunca editar manualmente; alterações quebram o checksum e os invariantes G1–G13.
+- Nunca editar manualmente; alterações quebram o checksum e os invariantes G1–G15.

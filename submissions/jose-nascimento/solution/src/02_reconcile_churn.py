@@ -68,7 +68,10 @@ REQUIRED = {
     ],
     "ravenstack_churn_events.csv": ["churn_event_id", "account_id", "churn_date", "is_reactivation"],
     "ravenstack_feature_usage.csv": ["subscription_id", "usage_date"],
-    "ravenstack_support_tickets.csv": ["account_id", "submitted_at", "satisfaction_score"],
+    # `closed_at` é coluna mínima desde esta correção: a política do contrato §10
+    # (CSAT/resolução só com tickets fechados) depende dela estruturalmente.
+    "ravenstack_support_tickets.csv": ["account_id", "submitted_at", "closed_at",
+                                       "satisfaction_score"],
 }
 
 # ----------------------------------------------------------------------------
@@ -313,6 +316,14 @@ def build_account_month(acc: pd.DataFrame, sub: pd.DataFrame, churn: pd.DataFram
     churn2["cm"] = churn2["cd"].dt.to_period("M").astype(str)
     ev_by_acct_month = churn2.groupby(["account_id", "cm"]).size()
 
+    # MRR das assinaturas com end_date no mês (lente de receita bruta por mês):
+    # coluna auditável do painel, reconciliada à fonte pelo invariante G14.
+    # Contagem separada: trials encerrados têm MRR 0 e precisam de coluna própria.
+    ended_by = sub2.loc[sub2["end"].notna()].copy()
+    ended_by["em"] = ended_by["end"].dt.to_period("M").astype(str)
+    mrr_ended_by_acct_month = ended_by.groupby(["account_id", "em"])["mrr_amount"].sum()
+    n_ended_by_acct_month = ended_by.groupby(["account_id", "em"]).size()
+
     use2 = use.merge(sub[["subscription_id", "account_id"]], on="subscription_id")
     use2["ud"] = pd.to_datetime(use2["usage_date"])
     use2["um"] = use2["ud"].dt.to_period("M").astype(str)
@@ -377,6 +388,8 @@ def build_account_month(acc: pd.DataFrame, sub: pd.DataFrame, churn: pd.DataFram
             rec["tickets_month"] = int(tic_counts.get((aid, m), 0))
             cs = csat.get((aid, m))
             rec["csat_mean_month"] = "" if pd.isna(cs) else f"{float(cs):.2f}"
+            rec["mrr_ended_in_month"] = int(mrr_ended_by_acct_month.get((aid, m), 0))
+            rec["n_ended_in_month"] = int(n_ended_by_acct_month.get((aid, m), 0))
             rec["churn_flag_snapshot_2024_12_31"] = 1 if bool(arow["churn_flag"]) else 0
             records.append(rec)
 
@@ -384,6 +397,7 @@ def build_account_month(acc: pd.DataFrame, sub: pd.DataFrame, churn: pd.DataFram
         "account_id", "month", "month_end", "months_since_signup", "status",
         "n_active_subs", "winner_subscription_id", "winner_mrr", "winner_plan_tier",
         "winner_seats", "winner_is_trial", "winner_billing_frequency", "mrr_sum_naive",
+        "mrr_ended_in_month", "n_ended_in_month",
         "churn_event_in_month", "n_events_in_month", "usage_rows_month",
         "usage_rows_in_window_month", "tickets_month", "csat_mean_month",
         "churn_flag_snapshot_2024_12_31",
@@ -427,6 +441,236 @@ def overlap_impact(panel: pd.DataFrame) -> dict:
     # variante sensibilidade: winner por start mais recente (não-trial primeiro)
     r["mrr_winner_latest_start"] = None  # preenchido fora (precisa das subs)
     return r
+
+
+# ----------------------------------------------------------------------------
+# Lentes de receita (correção do review gate: fórmula única de revenue churn
+# baseada no winner era degenerada — ver contract §5 e decisions D9)
+# ----------------------------------------------------------------------------
+
+def revenue_lenses(sub: pd.DataFrame, panel: pd.DataFrame) -> dict:
+    """Duas lentes de receita inequivocamente nomeadas + gap entre elas.
+
+    R1 — gross subscription ending MRR: soma do MRR das assinaturas com
+         end_date no período (exposição contratual bruta). NÃO é chamada de
+         "receita perdida" automaticamente: a saída pode ser troca/replacement/
+         sobreposição (89,2% das linhas do painel têm >1 assinatura ativa).
+
+    R2 — net account-state MRR loss: perda de MRR do estado/winner entre
+         snapshots de fim de mês, separada em:
+           * churn-to-inactive : Σ winner_mrr(m−1) de contas ativas em m−1 que
+             ficam inativas em m;
+           * active contraction: Σ [winner_mrr(m−1) − winner_mrr(m)] de contas
+             ativas em m−1 e m com winner_mrr decrescente.
+         Cobertura/trade-off: a lente de estado só observa a assinatura
+         dominante; saídas não-dominantes são invisíveis (ver hidden abaixo).
+
+    Hidden (gap R1 vs R2) — episódios ocultos não-dominantes: assinatura s com
+    end_date no mês m tal que (1) a conta está ativa no fim de m; (2) s NÃO era
+    o winner no fim de m−1; (3) s estava ativa no fim de m−1 (saída de
+    assinatura em curso, não sub que iniciou e terminou no mesmo mês);
+    (4) winner_mrr(m) ≥ winner_mrr(m−1) — a saída não reduziu o estado da conta
+    (invisível à lente winner). Contagem por assinatura e por episódio
+    conta-mês (dedup) são reportadas; o reviewer do gate reportou 255/398.462
+    numa variante próxima — a diferença é de granularidade de agregação e é
+    documentada no report §7 e no review summary (as 226 saídas com
+    winner_mrr inalterado coincidem exatamente na visão conta-mês).
+    """
+    r: dict = {}
+
+    # --- R1: gross subscription ending MRR (janela inteira) ---
+    sub2 = sub.copy()
+    sub2["end"] = pd.to_datetime(sub2["end_date"])
+    sub2["start"] = pd.to_datetime(sub2["start_date"])
+    ended = sub2.loc[sub2["end"].notna()]
+    r["gross_ending_mrr"] = int(ended["mrr_amount"].sum())
+    r["gross_ending_subs"] = len(ended)
+
+    # --- R2: net account-state MRR loss (transições de snapshot) ---
+    months_list = months_range(FIRST_MONTH, LAST_MONTH)
+    st_map = panel.set_index(["account_id", "month"])["status"]
+    wm_map = panel.set_index(["account_id", "month"])["winner_mrr"]
+    churn_to_inactive = 0
+    n_churn_trans = 0
+    churn_trans_detail: list[str] = []
+    active_contr = 0
+    n_contr_trans = 0
+    active_exp = 0
+    n_exp_trans = 0
+    for i, m in enumerate(months_list):
+        if i == 0:
+            continue
+        pm = months_list[i - 1]
+        s = pd.concat([st_map.xs(pm, level="month").rename("p"),
+                       st_map.xs(m, level="month").rename("c")], axis=1).fillna("inactive")
+        w = pd.concat([wm_map.xs(pm, level="month").rename("p"),
+                       wm_map.xs(m, level="month").rename("c")], axis=1).fillna(0)
+        tr = (s["p"] == "active") & (s["c"] == "inactive")
+        n_churn_trans += int(tr.sum())
+        amt = int(w.loc[tr, "p"].sum())
+        churn_to_inactive += amt
+        if amt:
+            churn_trans_detail.append(f"{pm}->{m} ({amt})")
+        both = (s["p"] == "active") & (s["c"] == "active")
+        cont = both & (w["p"] > w["c"])
+        n_contr_trans += int(cont.sum())
+        active_contr += int(w.loc[cont, "p"].sub(w.loc[cont, "c"]).sum())
+        exp = both & (w["c"] > w["p"])
+        n_exp_trans += int(exp.sum())
+        active_exp += int(w.loc[exp, "c"].sub(w.loc[exp, "p"]).sum())
+    r["churn_to_inactive_mrr"] = churn_to_inactive
+    r["churn_to_inactive_trans"] = n_churn_trans
+    r["churn_trans_detail"] = "; ".join(churn_trans_detail)
+    r["active_contraction_mrr"] = active_contr
+    r["active_contraction_trans"] = n_contr_trans
+    r["active_expansion_mrr"] = active_exp
+    r["active_expansion_trans"] = n_exp_trans
+    r["net_account_state_loss"] = churn_to_inactive + active_contr
+
+    # --- Hidden: episódios ocultos não-dominantes ---
+    months_idx = {m: i for i, m in enumerate(months_list)}
+    wsub_map = panel.set_index(["account_id", "month"])["winner_subscription_id"]
+
+    def _lookup(idx, a, m):
+        try:
+            return idx.xs(m, level="month").get(a)
+        except KeyError:
+            return None
+
+    ended2 = ended.copy()
+    ended2["em"] = ended2["end"].dt.to_period("M").astype(str)
+    hidden_rows: list[tuple] = []
+    for _, srow in ended2.iterrows():
+        a, m, sid = srow["account_id"], srow["em"], srow["subscription_id"]
+        mi = months_idx.get(m)
+        if mi is None or mi == 0:
+            continue  # mês fora da janela ou sem m−1 na janela
+        pm = months_list[mi - 1]
+        if _lookup(st_map, a, m) != "active":
+            continue  # (1) conta não permanece ativa
+        wprev = _lookup(wsub_map, a, pm)
+        if wprev == sid:
+            continue  # (2) saída dominante (era o winner em m−1) — visível
+        mend_pm = month_end_date(pm)
+        active_pm = (srow["start"] <= mend_pm and
+                     (pd.isna(srow["end"]) or srow["end"] >= mend_pm))
+        if not active_pm:
+            continue  # (3) sub iniciou e terminou dentro de m (sem snapshot em m−1)
+        wm_prev = _lookup(wm_map, a, pm)
+        wm_m = _lookup(wm_map, a, m)
+        if wm_prev is None or wm_m is None:
+            continue
+        if wm_m < wm_prev:
+            continue  # (4) saída reduziu o estado — visível como contraction
+        hidden_rows.append((a, m, sid, int(srow["mrr_amount"]), int(wm_m - wm_prev)))
+    hidden = pd.DataFrame(hidden_rows, columns=["account_id", "month",
+                                                "subscription_id", "mrr", "delta_winner_mrr"])
+    r["hidden_subs"] = len(hidden)
+    r["hidden_mrr"] = int(hidden["mrr"].sum())
+    r["hidden_unchanged"] = int((hidden["delta_winner_mrr"] == 0).sum())
+    r["hidden_reduced"] = int((hidden["delta_winner_mrr"] < 0).sum())
+    r["hidden_increased"] = int((hidden["delta_winner_mrr"] > 0).sum())
+    # visão episódio conta-mês (dedup): MRR = soma das saídas ocultas do mês
+    ep = hidden.groupby(["account_id", "month"])["mrr"].sum().reset_index()
+    ep_delta = hidden.groupby(["account_id", "month"])["delta_winner_mrr"].first()
+    r["hidden_episodes"] = len(ep)
+    r["hidden_episodes_mrr"] = int(ep["mrr"].sum())
+    r["hidden_ep_unchanged"] = int((ep_delta == 0).sum())
+    r["hidden_ep_increased"] = int((ep_delta > 0).sum())
+    # razão do gap vs churn-to-inactive (lente de conta capturada)
+    r["hidden_ratio_vs_churn"] = round(r["hidden_mrr"] / churn_to_inactive, 1) \
+        if churn_to_inactive else 0
+    r["gross_ratio_vs_churn"] = round(r["gross_ending_mrr"] / churn_to_inactive, 1) \
+        if churn_to_inactive else 0
+    # exemplo material: maior episódio oculto (verificado: A-5a215a 2024-12)
+    if len(ep):
+        top = ep.sort_values("mrr", ascending=False).iloc[0]
+        r["hidden_top_account"] = top["account_id"]
+        r["hidden_top_month"] = top["month"]
+        r["hidden_top_mrr"] = int(top["mrr"])
+        r["hidden_top_subs"] = int(hidden[(hidden["account_id"] == top["account_id"]) &
+                                          (hidden["month"] == top["month"])].shape[0])
+        r["hidden_top_subs_word"] = ("assinaturas" if r["hidden_top_subs"] > 1
+                                     else "assinatura")
+        r["hidden_top_ended_word"] = ("encerram" if r["hidden_top_subs"] > 1
+                                      else "encerra")
+        pm = months_list[months_idx[top["month"]] - 1]
+        r["hidden_top_winner_prev"] = str(_lookup(wsub_map, top["account_id"], pm))
+        r["hidden_top_winner_prev_mrr"] = int(_lookup(wm_map, top["account_id"], pm) or 0)
+        r["hidden_top_winner_m"] = str(_lookup(wsub_map, top["account_id"], top["month"]))
+        r["hidden_top_winner_m_mrr"] = int(_lookup(wm_map, top["account_id"], top["month"]) or 0)
+    else:
+        r["hidden_top_account"] = r["hidden_top_month"] = r["hidden_top_mrr"] = None
+        r["hidden_top_subs"] = r["hidden_top_winner_prev_mrr"] = 0
+        r["hidden_top_winner_prev"] = r["hidden_top_winner_m"] = r["hidden_top_winner_m_mrr"] = None
+    return r
+
+
+def quality_metrics(use: pd.DataFrame, tic: pd.DataFrame, churn: pd.DataFrame,
+                    sub: pd.DataFrame, acc: pd.DataFrame) -> dict:
+    """Métricas de qualidade derivadas em runtime (nada de números hardcoded).
+
+    Substitui os literais que antes viviam no render do relatório/contrato
+    (13.198/1.077/53/90/143/825/41,2%/148 etc.) — correção M2 do review gate.
+    """
+    q: dict = {}
+
+    # --- uso fora da janela da assinatura ---
+    u = use.merge(sub[["subscription_id", "account_id", "start_date", "end_date"]],
+                  on="subscription_id")
+    u["ud"] = pd.to_datetime(u["usage_date"])
+    u["start"] = pd.to_datetime(u["start_date"])
+    u["end"] = pd.to_datetime(u["end_date"])
+    q["usage_total"] = len(u)
+    q["usage_before_start"] = int((u["ud"] < u["start"]).sum())
+    q["usage_after_end"] = int((u["ud"] > u["end"]).sum())
+    q["usage_in_window"] = int(((u["ud"] >= u["start"]) &
+                                (u["end"].isna() | (u["ud"] <= u["end"]))).sum())
+    q["usage_before_start_pct"] = pct(q["usage_before_start"], q["usage_total"])
+    q["usage_in_window_pct"] = pct(q["usage_in_window"], q["usage_total"])
+
+    # --- uso/tickets anteriores ao signup (grão diário/linha) ---
+    signup_map = dict(zip(acc["account_id"], pd.to_datetime(acc["signup_date"])))
+    u["signup"] = u["account_id"].map(signup_map)
+    q["usage_pre_signup"] = int((u["ud"] < u["signup"]).sum())
+    t2 = tic.copy()
+    t2["ts"] = pd.to_datetime(t2["submitted_at"])
+    t2["signup"] = t2["account_id"].map(signup_map)
+    q["tickets_pre_signup"] = int((t2["ts"] < t2["signup"]).sum())
+
+    # --- eventos fora da vida de assinaturas ---
+    first_start = sub.groupby("account_id")["start_date"].min()
+    last_end = sub.groupby("account_id")["end_date"].max()
+    ev = churn.copy()
+    ev["cd"] = pd.to_datetime(ev["churn_date"])
+    ev["first_start"] = ev["account_id"].map(first_start)
+    ev["last_end"] = ev["account_id"].map(last_end)
+    q["events_before_first_sub"] = int((ev["cd"] < ev["first_start"]).sum())
+    q["events_after_last_end"] = int((ev["cd"] > ev["last_end"]).sum())
+    q["events_outside_sub_life"] = q["events_before_first_sub"] + q["events_after_last_end"]
+
+    # --- tickets / CSAT / reason / feedback ---
+    q["tickets_total"] = len(tic)
+    q["closed_at_nulls"] = int(tic["closed_at"].isna().sum())
+    q["csat_nulls"] = int(tic["satisfaction_score"].isna().sum())
+    q["csat_nulls_pct"] = pct(q["csat_nulls"], q["tickets_total"])
+    q["csat_denominator"] = q["tickets_total"] - q["csat_nulls"]
+    q["csat_domain"] = ", ".join(str(int(v)) for v in
+                                 sorted(tic["satisfaction_score"].dropna().unique()))
+    q["reason_unknown"] = int((churn["reason_code"] == "unknown").sum())
+    q["feedback_nulls"] = int(churn["feedback_text"].isna().sum())
+
+    # --- assinaturas por conta (contexto do winner) ---
+    per = sub.groupby("account_id").size()
+    q["subs_per_acct_min"] = int(per.min())
+    q["subs_per_acct_max"] = int(per.max())
+    q["subs_per_acct_median"] = int(per.median())
+
+    # --- consistência end_date ↔ churn_flag (D04 da Iteração 01, recalculada) ---
+    sub2 = sub.copy()
+    sub2["end"] = pd.to_datetime(sub2["end_date"])
+    q["end_flag_mismatch"] = int((sub2["end"].notna() != sub2["churn_flag"]).sum())
+    return q
 
 
 # ----------------------------------------------------------------------------
@@ -474,7 +718,6 @@ def run_gates(panel: pd.DataFrame, acc: pd.DataFrame, sub: pd.DataFrame,
     detail_parts = []
     prev_active = 0
     for m in months_range(FIRST_MONTH, LAST_MONTH):
-        cur = int((panel["month"] == m).sum() and status_map.xs(m, level="month").eq("active").sum())
         # usa a série derivada do próprio painel
         s = status_map.xs(m, level="month")
         cur_active = int(s.eq("active").sum())
@@ -547,7 +790,9 @@ def run_gates(panel: pd.DataFrame, acc: pd.DataFrame, sub: pd.DataFrame,
            and sub_flag_total == r["subs_churn_flag"] and acc_sub_flag_total == r["acc_sub_churn_flag"]
            and flag_total == r["flag_acc"])
     check("G7-panel", "lentes vs fonte",
-          "totais de cada lente reconciliam à fonte (eventos 600/352; subs 486/312; flag 110)",
+          f"totais de cada lente reconciliam à fonte (eventos {len(churn)}/"
+          f"{churn['account_id'].nunique()}; subs {r['subs_churn_flag']}/"
+          f"{r['acc_sub_churn_flag']}; flag {r['flag_acc']})",
           "PASS" if ok7 else "FAIL",
           f"eventos no painel={tot_events_panel} (fonte {len(churn)}); contas c/ evento no painel={acc_events_panel} "
           f"(fonte {churn['account_id'].nunique()}); subs churn_flag={sub_flag_total} (fonte {r['subs_churn_flag']}); "
@@ -654,13 +899,47 @@ def run_gates(panel: pd.DataFrame, acc: pd.DataFrame, sub: pd.DataFrame,
                   f"({r['n_inactive_accounts']} contas; {r['n_cycle_accounts']} com ciclo "
                   f"ativo→inativo→(re)ativo)")
 
+    # G14 — gross ending MRR do painel reconcilia à fonte de assinaturas
+    # (sem target leakage: mrr_ended_in_month/n_ended_in_month(m) usam apenas
+    # end_date ≤ fim de m; colunas rotuladas como desfecho da lente de receita —
+    # contrato §8)
+    panel_ended_sum = int(panel["mrr_ended_in_month"].sum())
+    panel_ended_count = int(panel["n_ended_in_month"].sum())
+    panel_ended_rows = int((panel["n_ended_in_month"] > 0).sum())
+    ended_src = sub.loc[sub["end_date"].notna()].copy()
+    ended_src["_em"] = pd.to_datetime(ended_src["end_date"]).dt.to_period("M").astype(str)
+    src_ended_sum = int(ended_src["mrr_amount"].sum())
+    src_ended_count = len(ended_src)
+    src_ended_groups = ended_src.groupby(["account_id", "_em"]).ngroups
+    ok14 = (panel_ended_sum == src_ended_sum and panel_ended_count == src_ended_count
+            and panel_ended_rows == src_ended_groups)
+    check("G14-panel", "lente de receita bruta",
+          "gross subscription ending MRR do painel reconcilia à fonte (soma, contagem e conta×mês)",
+          "PASS" if ok14 else "FAIL",
+          f"Σ mrr_ended_in_month={panel_ended_sum} (fonte {src_ended_sum}); "
+          f"Σ n_ended_in_month={panel_ended_count} (fonte {src_ended_count}); "
+          f"linhas com encerramento={panel_ended_rows} (fonte {src_ended_groups} conta×mês)")
+
+    # G15 — política de closed_at (contrato §10): tickets existem por submitted_at;
+    # métricas de resolução/CSAT usam apenas tickets fechados; nulos de satisfação
+    # excluídos com denominador explícito; nunca imputar fechamento futuro.
+    closed_nulls = int(tic["closed_at"].isna().sum())
+    check("G15-tickets", "support_tickets",
+          "closed_at íntegro para política de resolução/CSAT (contrato §10)",
+          "PASS" if closed_nulls == 0 else "WARN",
+          f"tickets sem closed_at={closed_nulls} de {len(tic)}; satisfação nula="
+          f"{int(tic['satisfaction_score'].isna().sum())} "
+          f"(denominador explícito {len(tic) - int(tic['satisfaction_score'].isna().sum())}); "
+          f"nenhum fechamento imputado")
+
 
 # ----------------------------------------------------------------------------
 # Renderização do relatório (determinística)
 # ----------------------------------------------------------------------------
 
 def render_report(loaded: dict[str, pd.DataFrame], panel: pd.DataFrame | None,
-                  r: dict, impact: dict, bm: pd.DataFrame | None) -> str:
+                  r: dict, impact: dict, bm: pd.DataFrame | None,
+                  rev: dict | None = None, q: dict | None = None) -> str:
     lines: list[str] = []
     add = lines.append
     add("# Relatório de Consistência — Reconciliação de Churn e Base Account-Month (Iteração 02)")
@@ -739,6 +1018,12 @@ def render_report(loaded: dict[str, pd.DataFrame], panel: pd.DataFrame | None,
     add(f"- **Impacto da regra do winner:** soma ingênua = {fmt(impact['mrr_naive'])} vs "
         f"winner = {fmt(impact['mrr_winner'])} (razão {impact['mrr_ratio']}×; diferença "
         f"{fmt(impact['mrr_delta'])} = {impact['mrr_delta_pct_of_naive']} da soma ingênua).")
+    add(f"- **Lentes de receita (§7):** gross ending MRR = {fmt(rev['gross_ending_mrr'])} "
+        f"({rev['gross_ending_subs']} assinaturas encerradas) vs net account-state MRR loss = "
+        f"{fmt(rev['net_account_state_loss'])} (churn-to-inactive {fmt(rev['churn_to_inactive_mrr'])} "
+        f"+ active contraction {fmt(rev['active_contraction_mrr'])}); saídas não-dominantes "
+        f"ocultas = {fmt(rev['hidden_mrr'])} ({rev['hidden_subs']} assinaturas) — a lente de "
+        f"estado/winner NÃO pode ser usada isoladamente como churn contratual (contrato §5).")
     add("")
     add("## 3. Lentes de churn e interseções")
     add("")
@@ -791,29 +1076,33 @@ def render_report(loaded: dict[str, pd.DataFrame], panel: pd.DataFrame | None,
     add("")
     add("Para cada evento, a `end_date` mais próxima entre as assinaturas ENCERRADAS da mesma "
         "conta (menor |churn_date − end_date|). Alinhamento é documentado como imperfeito — as "
-        "lentes são decopladas na base (ver contrato §9).")
+        "lentes são decopladas na base (ver contrato §9). Tie-break determinístico: em caso de "
+        "empate de |lag|, vence a primeira ocorrência na ordem estável do CSV (`idxmin`) — "
+        f"{len(bm) - int(bm['nearest_end'].notna().sum())} eventos sem assinatura encerrada na "
+        "conta não têm match.")
     add("")
     n_matched = int(bm["nearest_end"].notna().sum())
     add(f"- Eventos com assinatura encerrada na conta: **{n_matched}** de {len(bm)} "
         f"({pct(n_matched, len(bm))}); sem nenhuma assinatura encerrada na conta: "
         f"**{len(bm) - n_matched}**.")
     add("")
-    add("| Janela (|lag| em dias) | Eventos com match | Acumulado |")
-    add("|---|---|---|")
-    cum = 0
+    add("| Janela (|lag| em dias) | Eventos com match |")
+    add("|---|---|")
     for w in ALIGNMENT_WINDOWS_DAYS:
         n = int((bm["min_lag_d"] <= w).sum())
-        cum = n
-        add(f"| ≤ {w} | {n} ({pct(n, len(bm))}) | {pct(cum, len(bm))} |")
+        add(f"| ≤ {w} | {n} ({pct(n, len(bm))}) |")
     add("")
     signed = bm.loc[bm["nearest_end"].notna(), "signed_lag"].dropna()
     if len(signed):
-        q = signed.quantile([0.1, 0.25, 0.5, 0.75, 0.9])
+        q_ = signed.quantile([0.1, 0.25, 0.5, 0.75, 0.9])
         add(f"- Lag sinalizado (churn_date − end_date, dias), eventos com match: "
             f"exatos=**{int((signed == 0).sum())}**; antes do fim=**{int((signed < 0).sum())}**; "
             f"depois do fim=**{int((signed > 0).sum())}**; "
             f"quantis [10,25,50,75,90]% = "
-            f"[{q.iloc[0]:.0f}, {q.iloc[1]:.0f}, {q.iloc[2]:.0f}, {q.iloc[3]:.0f}, {q.iloc[4]:.0f}].")
+            f"[{q_.iloc[0]:.0f}, {q_.iloc[1]:.0f}, {q_.iloc[2]:.0f}, {q_.iloc[3]:.0f}, "
+            f"{q_.iloc[4]:.0f}] (valores exibidos arredondados com `:.0f`; subjacentes "
+            f"[{q_.iloc[0]:g}, {q_.iloc[1]:g}, {q_.iloc[2]:g}, {q_.iloc[3]:g}, "
+            f"{q_.iloc[4]:g}]).")
     add("")
     add("Sensibilidade: a tabela acima mostra o efeito da janela de tolerância (0 a 365 dias). "
         "Nenhuma janela razoável alinha a maioria dos eventos — reforça que `churn_events` e "
@@ -854,29 +1143,104 @@ def render_report(loaded: dict[str, pd.DataFrame], panel: pd.DataFrame | None,
         "mais novas, inclusive trials (MRR 0), subestimando a receita dominante — por isso a "
         "variante por maior MRR (não-trial) é a regra primária.")
     add("")
-    add("## 7. Registros temporalmente inválidos (quantificação; política no contrato §9)")
+    add("## 7. Lentes de receita: gross ending MRR vs net account-state MRR loss")
+    add("")
+    add("O contrato §5 define **duas lentes de receita inequivocamente nomeadas** (decisão D9). "
+        "A fórmula única de revenue churn baseada apenas no winner foi retirada do uso isolado: "
+        "ela captura somente churn no nível de estado da conta e subestima a exposição "
+        "contratual.")
+    add("")
+    add("| Lente | Definição | Janela inteira |")
+    add("|---|---|---|")
+    add(f"| **R1 — gross subscription ending MRR** | soma do MRR das assinaturas com "
+        f"`end_date` no período; exposição contratual bruta. NÃO é automaticamente "
+        f"\"receita perdida\": a saída pode ser troca/replacement/sobreposição | "
+        f"**{fmt(rev['gross_ending_mrr'])}** ({rev['gross_ending_subs']} assinaturas) |")
+    add(f"| **R2 — net account-state MRR loss** | perda de MRR do estado/winner entre "
+        f"snapshots de fim de mês: (a) **churn-to-inactive** = Σ winner_mrr(m−1) de contas "
+        f"ativas em m−1 que ficam inativas em m; (b) **active contraction** = Σ "
+        f"[winner_mrr(m−1) − winner_mrr(m)] de contas ativas com winner_mrr decrescente | "
+        f"**{fmt(rev['net_account_state_loss'])}** = {fmt(rev['churn_to_inactive_mrr'])} "
+        f"({rev['churn_to_inactive_trans']} transições: {rev['churn_trans_detail']}) + "
+        f"{fmt(rev['active_contraction_mrr'])} ({rev['active_contraction_trans']} transições) |")
+    add("")
+    add("**Gap R1 vs R2 — saídas ocultas não-dominantes:** assinaturas com `end_date` no mês "
+        "`m` cuja conta permanece ativa no fim de `m`, que NÃO eram o winner no fim de `m−1`, "
+        "estavam ativas no fim de `m−1` e cuja saída não reduziu `winner_mrr` (invisíveis à "
+        "lente de estado).")
+    add("")
+    add("| Métrica (janela inteira) | Valor |")
+    add("|---|---|")
+    add(f"| Saídas ocultas — assinaturas | **{rev['hidden_subs']}** assinaturas / "
+        f"**{fmt(rev['hidden_mrr'])}** de MRR |")
+    add(f"| Saídas ocultas — episódios conta-mês | **{rev['hidden_episodes']}** episódios / "
+        f"**{fmt(rev['hidden_episodes_mrr'])}** de MRR |")
+    add(f"| Efeito no winner_mrr (assinaturas) | inalterado={rev['hidden_unchanged']}; "
+        f"reduzido={rev['hidden_reduced']}; aumentado={rev['hidden_increased']} |")
+    add(f"| Efeito no winner_mrr (episódios) | inalterado={rev['hidden_ep_unchanged']}; "
+        f"reduzido=0; aumentado={rev['hidden_ep_increased']} |")
+    add(f"| Razão oculto / churn-to-inactive | **{rev['hidden_ratio_vs_churn']}×** "
+        f"({fmt(rev['hidden_mrr'])} vs {fmt(rev['churn_to_inactive_mrr'])}) |")
+    add(f"| Razão gross ending / churn-to-inactive | **{rev['gross_ratio_vs_churn']}×** "
+        f"({fmt(rev['gross_ending_mrr'])} vs {fmt(rev['churn_to_inactive_mrr'])}) |")
+    add(f"| Expansão ativa no período (contexto) | +{fmt(rev['active_expansion_mrr'])} "
+        f"({rev['active_expansion_trans']} transições) — a maior parte das saídas é "
+        f"compensada por trocas/expansões dentro da conta |")
+    add("")
+    add(f"**Exemplo material:** {rev['hidden_top_account']} em {rev['hidden_top_month']} — "
+        f"{rev['hidden_top_subs']} {rev['hidden_top_subs_word']} totalizando "
+        f"**{fmt(rev['hidden_top_mrr'])}** de MRR {rev['hidden_top_ended_word']} com a conta "
+        f"ativa; winner permanece "
+        f"{rev['hidden_top_winner_prev']} → {rev['hidden_top_winner_m']} "
+        f"({fmt(rev['hidden_top_winner_prev_mrr'])} → {fmt(rev['hidden_top_winner_m_mrr'])}). "
+        "A perda é 100% invisível à lente de estado/winner.")
+    add("")
+    add("**Cobertura e trade-off (explícitos no contrato §5):** a lente R1 mede a exposição "
+        "contratual bruta (teto da receita em risco no período); a lente R2 mede a perda "
+        "**líquida** do estado dominante entre snapshots. R2 não vê saídas não-dominantes "
+        "(acima), não vê trocas valor-neutras de winner (empates de MRR) e é compensada por "
+        "expansões na mesma conta; R1 não distingue perda real de replacement. "
+        "**Proibido:** usar `winner_mrr`/status isoladamente como total de churn contratual "
+        "ou apresentar R1 como \"receita perdida\" sem declarar a lente.")
+    add("")
+    add("## 8. Registros temporalmente inválidos (quantificação; política no contrato §9)")
     add("")
     add("| Fenômeno | Quantidade | Política |")
     add("|---|---|---|")
-    add(f"| Uso antes do `start_date` da assinatura | 19.142 de 25.000 ({pct(19142, 25000)}) | excluído de janela alinhada; contado à parte |")
-    add(f"| Uso depois do `end_date` | 290 | excluído de janela alinhada; contado à parte |")
-    add(f"| Uso dentro da janela da assinatura | 5.568 ({pct(5568, 25000)}) | base dos sinais de atividade alinhados |")
-    add(f"| Uso anterior ao signup da conta | 13.198 | fora da janela observacional da conta |")
-    add(f"| Tickets abertos antes do signup | 1.077 | fora da janela observacional da conta |")
-    add(f"| Eventos antes da primeira assinatura | 53 | mantidos na lente de eventos (não dependem de assinatura) |")
-    add(f"| Eventos após a última `end_date` | 90 | mantidos na lente de eventos; alinhamento documentado (§4) |")
+    add(f"| Uso antes do `start_date` da assinatura | {fmt(q['usage_before_start'])} de "
+        f"{fmt(q['usage_total'])} ({q['usage_before_start_pct']}) | excluído de janela "
+        f"alinhada; contado à parte |")
+    add(f"| Uso depois do `end_date` | {fmt(q['usage_after_end'])} | excluído de janela "
+        f"alinhada; contado à parte |")
+    add(f"| Uso dentro da janela da assinatura | {fmt(q['usage_in_window'])} "
+        f"({q['usage_in_window_pct']}) | base dos sinais de atividade alinhados |")
+    add(f"| Uso anterior ao signup da conta (grão diário/linha) | {fmt(q['usage_pre_signup'])} "
+        f"| fora da janela observacional da conta |")
+    add(f"| Tickets abertos antes do signup (grão diário/linha) | {fmt(q['tickets_pre_signup'])} "
+        f"| fora da janela observacional da conta |")
+    add(f"| Eventos antes da primeira assinatura | {fmt(q['events_before_first_sub'])} | "
+        f"mantidos na lente de eventos (não dependem de assinatura) |")
+    add(f"| Eventos após a última `end_date` | {fmt(q['events_after_last_end'])} | mantidos na "
+        f"lente de eventos; alinhamento documentado (§4) |")
     add("")
-    add("Nada é descartado silenciosamente: os números acima são reproduzíveis e o contrato §9 "
-        "define o uso de cada conjunto.")
+    add("Nota de grão (diário vs mensal): as contagens de uso/tickets pré-signup acima são de "
+        "**linhas-fonte** (grão diário). No painel mensal, linhas de uso/tickets do mês de "
+        "signup **posteriores à data de signup** entram em `usage_rows_month`/`tickets_month` "
+        "desse mês; apenas as anteriores à data de signup ficam fora do painel por construção. "
+        "A variante alinhada `usage_rows_in_window_month` nunca inclui linha pré-signup "
+        "(verificado: 0).")
     add("")
-    add("## 8. Checks e invariantes")
+    add("Nada é descartado silenciosamente: os números acima são derivados em runtime dos CSVs "
+        "e o contrato §9 define o uso de cada conjunto.")
+    add("")
+    add("## 9. Checks e invariantes")
     add("")
     add("| ID | Escopo | Check | Veredito | Detalhe |")
     add("|---|---|---|---|---|")
     for c in CHECKS:
         add(f"| {c['id']} | {c['scope']} | {c['description']} | **{c['level']}** | {c['detail']} |")
     add("")
-    add("## 9. Proveniência")
+    add("## 10. Proveniência")
     add("")
     add("- Script: `solution/src/02_reconcile_churn.py` (executado de `submissions/jose-nascimento/`).")
     add("- Dados de entrada: `solution/data/raw/ravenstack_*.csv` (MD5 no `data/raw/README.md`).")
@@ -891,7 +1255,8 @@ def render_report(loaded: dict[str, pd.DataFrame], panel: pd.DataFrame | None,
 # Renderização do contrato analítico (determinística)
 # ----------------------------------------------------------------------------
 
-def render_contract(r: dict, impact: dict, panel_len: int) -> str:
+def render_contract(r: dict, impact: dict, panel_len: int,
+                    rev: dict | None = None, q: dict | None = None) -> str:
     lines: list[str] = []
     add = lines.append
     add("# Contrato Analítico — Challenge 001 (RavenStack)")
@@ -913,7 +1278,8 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("## 2. Snapshot, data-limite e janela observacional")
     add("")
     add("- **Data-limite (corte):** 2024-12-31. Nenhuma observação posterior existe na base.")
-    add("- **Janela observacional:** 2023-01-01..2024-12-31 (24 meses), idêntica à janela global "
+    add(f"- **Janela observacional:** 2023-01-01..2024-12-31 "
+        f"({len(months_range(FIRST_MONTH, LAST_MONTH))} meses), idêntica à janela global "
         "da auditoria (Iteração 01).")
     add("- **Painel account-month:** para cada conta, meses do **mês do signup** até 2024-12 "
         "inclusive. Meses anteriores ao signup não existem para a conta (não entram em coortes "
@@ -928,7 +1294,8 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("| Eventos de churn (diagnóstico) | event | `churn_events` | carrega reason_code/refund/feedback; 1 linha por evento |")
     add("| Conta com evento | account | `churn_events` (distinct) | primeira ocorrência = primeiro churn por eventos |")
     add("| Churn de assinatura | subscription | `subscriptions.end_date`/`churn_flag` | receita em risco por assinatura |")
-    add("| Conta com assinatura encerrada | account | `subscriptions` (distinct) | 312 contas na base |")
+    add("| Conta com assinatura encerrada | account | `subscriptions` (distinct) | "
+        f"{r['acc_ended']} contas na base |")
     add("| Status de conta (snapshot) | account | `accounts.churn_flag` | SOMENTE estado no corte; não é série temporal |")
     add("| Base-mestre | account × mês | `solution/data/processed/account_month.csv` | 1 linha por account×mês (5.807 linhas) |")
     add("")
@@ -937,14 +1304,20 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("| Pergunta | Definição primária | Lente |")
     add("|---|---|---|")
     add("| Diagnóstico/causa raiz (por que os clientes saem?) | eventos de `churn_events` (reason/feedback); primeiro evento por conta para tempo-ao-churn | C (eventos) |")
-    add("| Churn de assinatura/receita (quanto MRR se perde?) | assinaturas com `end_date`; no painel, conta `inactive` quando nenhuma assinatura ativa no fim do mês; MRR perdido = winner MRR do mês anterior das contas que ficam inativas | B (assinaturas) |")
-    add("| Status atual da conta (quem está churnado hoje?) | `accounts.churn_flag` no corte (110 contas) — apenas rótulo final | A (snapshot) |")
+    add("| Churn de assinatura/receita (quanto MRR se perde?) | duas lentes nomeadas (§5): "
+        "R1 — gross subscription ending MRR (exposição contratual bruta; `end_date`) e "
+        "R2 — net account-state MRR loss (churn-to-inactive + active contraction no "
+        "estado/winner do painel) | B (assinaturas) / painel |")
+    add("| Status atual da conta (quem está churnado hoje?) | `accounts.churn_flag` no corte "
+        f"({r['flag_acc']} contas) — apenas rótulo final | A (snapshot) |")
     add("| Risco (quem está em risco?) | features do painel disponíveis ANTES da data índice (winner MRR, uso alinhado, tickets, eventos anteriores); ver §8 | painel account-month |")
     add("")
-    add("**Quando NÃO comparar:** as contagens 110 (flag) / 312 (assinatura) / 352 (eventos) não "
+    add(f"**Quando NÃO comparar:** as contagens {r['flag_acc']} (flag) / {r['acc_ended']} "
+        f"(assinatura) / {r['ev_acc']} (eventos) não "
         "são três medições do mesmo fenômeno e não podem ser somadas, subtraídas ou usadas como "
         "alvo alternativo entre si (ex.: \"taxa de churn\" calculada com eventos não é comparável "
-        "a uma calculada com `end_date`; a diferença 35/277/125 é estrutura da base, não "
+        f"a uma calculada com `end_date`; a diferença {r['flag_no_ev']}/{r['ev_no_flag']}/"
+        f"{r['ev_no_subflag']} é estrutura da base, não "
         "imprecisão de uma fonte). Cada análise escolhe UMA lente e declara qual.")
     add("")
     add("## 5. Fórmulas e denominadores")
@@ -952,10 +1325,32 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("- **Logo churn (eventos):** contas com ≥1 evento no mês `m` (primeiro evento para "
         "coortes); denominador = contas em risco no início de `m` (signup ≤ m, sem primeiro "
         "evento anterior, não censuradas). Censura no corte para contas sem evento.")
-    add("- **Revenue churn (MRR):** MRR perdido em `m` = Σ winner_mrr(m−1) das contas ativas em "
-        "m−1 e inativas em `m`; taxa = MRR perdido / MRR total do fim de m−1 (denominador de "
-        "abertura). MRR de assinatura encerrada (lente B) = soma do MRR das assinaturas com "
-        "`end_date` (valor de referência para receita em risco).")
+    add(f"- **R1 — gross subscription ending MRR (exposição contratual bruta):** soma do MRR "
+        f"das assinaturas com `end_date` no período (na janela inteira: "
+        f"{fmt(rev['gross_ending_mrr'])} de {rev['gross_ending_subs']} assinaturas; no painel, "
+        "por conta×mês nas colunas `mrr_ended_in_month`/`n_ended_in_month`, reconciliadas à "
+        "fonte pelo invariante G14). NÃO rotular como \"receita perdida\" automaticamente: a "
+        "saída pode ser troca/replacement/sobreposição (89,2% das linhas do painel têm >1 "
+        "assinatura ativa) — é o **teto** da receita em risco no período, não a perda.")
+    add(f"- **R2 — net account-state MRR loss (perda líquida do estado/winner):** variação de "
+        f"`winner_mrr` entre snapshots de fim de mês, decomposta em: (a) **churn-to-inactive** "
+        f"= Σ winner_mrr(m−1) das contas ativas em m−1 e inativas em `m` (na janela: "
+        f"{fmt(rev['churn_to_inactive_mrr'])} em {rev['churn_to_inactive_trans']} transições: "
+        f"{rev['churn_trans_detail']}); (b) **active contraction** = Σ [winner_mrr(m−1) − "
+        f"winner_mrr(m)] das contas ativas em m−1 e `m` com winner_mrr decrescente (na janela: "
+        f"{fmt(rev['active_contraction_mrr'])} em {rev['active_contraction_trans']} "
+        f"transições). Total líquido na janela: {fmt(rev['net_account_state_loss'])}. "
+        "Cobertura/trade-off: a lente de estado só observa a assinatura dominante; saídas "
+        f"não-dominantes são invisíveis ({rev['hidden_subs']} assinaturas / "
+        f"{fmt(rev['hidden_mrr'])} na janela — razão {rev['hidden_ratio_vs_churn']}× vs "
+        f"churn-to-inactive; episódios conta-mês: {rev['hidden_episodes']} / "
+        f"{fmt(rev['hidden_episodes_mrr'])}), e expansões ativas na mesma conta "
+        f"(+{fmt(rev['active_expansion_mrr'])} na janela) compensam perdas — o estado é "
+        "líquido, não contratual.")
+    add("- **PROIBIDO (decisão D9):** usar a saída da lente winner/estado **isoladamente** como "
+        "total de churn contratual/receita perdida; apresentar R1 como perda sem declarar a "
+        "lente; ou misturar R1/R2 na mesma fórmula. Análises de receita (It03+) DEVEM declarar "
+        "a lente (R1 = exposição; R2 = estado líquido) e reportar o gap entre elas.")
     add("- **Activity signal:** uso ALINHADO = linhas de `feature_usage` com `usage_date` dentro "
         "de [start_date, end_date] da assinatura (inclusive). Sinais por mês: "
         "`usage_rows_month` (bruto) e `usage_rows_in_window_month` (alinhado); a política §9 "
@@ -965,7 +1360,8 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("")
     add("## 6. Múltiplas assinaturas e regra do winner (determinística)")
     add("")
-    add("A base tem 2–19 assinaturas por conta (mediana 10) com sobreposição massiva no tempo "
+    add(f"A base tem {q['subs_per_acct_min']}–{q['subs_per_acct_max']} assinaturas por conta "
+        f"(mediana {q['subs_per_acct_median']}) com sobreposição massiva no tempo "
         f"({impact['am_rows_multi']} de {impact['am_rows_with_sub']} linhas account-mês com >1 "
         f"ativa). Somar MRR de assinaturas sobrepostas produz double-counting "
         f"({fmt(impact['mrr_naive'])} vs {fmt(impact['mrr_winner'])} na janela — razão "
@@ -975,6 +1371,15 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
         "usam o winner. `mrr_sum_naive` é preservado para auditoria e comparação, nunca como "
         "métrica de receita. Alternativas rejeitadas: soma ingênua (double-counting); winner por "
         "start mais recente (menos estável em upgrades; usado apenas como sensibilidade).")
+    add("")
+    add("**Escopo do winner:** o winner é **estado/risco da conta** (status e nível de MRR "
+        "dominante). Ele NÃO é, isoladamente, uma métrica de churn contratual de receita: "
+        "saídas de assinaturas não-dominantes com a conta ativa são invisíveis à série do "
+        f"winner ({rev['hidden_subs']} assinaturas / {fmt(rev['hidden_mrr'])} na janela; ex.: "
+        f"{rev['hidden_top_account']} em {rev['hidden_top_month']} com "
+        f"{fmt(rev['hidden_top_mrr'])} de MRR de assinaturas encerradas e winner inalterado em "
+        f"{fmt(rev['hidden_top_winner_m_mrr'])}). Para receita, usar R1/R2 do §5; o winner "
+        "serve para features de risco e estado (ver também D9).")
     add("")
     add("## 7. Semântica de intervalos, cancelamento, reativação e sobreposição")
     add("")
@@ -992,6 +1397,10 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("- Eventos múltiplos no mesmo mês: `n_events_in_month` conta todos; "
         "`churn_event_in_month` é binário (≥1). Nenhum episódio vira conta perdida sozinho — "
         "status vem da lente de assinatura.")
+    add("- Tickets: existem por `submitted_at` (abertura); `closed_at` documenta o fechamento. "
+        "Métricas de resolução e CSAT usam APENAS tickets fechados com informação observável "
+        "até a data índice; `closed_at` nulo exclui o ticket com denominador explícito; "
+        "**nunca imputar fechamento futuro** (política detalhada no §10).")
     add("")
     add("## 8. Política anti-leakage")
     add("")
@@ -1002,8 +1411,14 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
         "informação com data < início de `m`); `churn_event_in_month(m)`, `n_events_in_month(m)` "
         "e `status(m)` são o desfecho, nunca features do próprio mês.")
     add("- **Colunas variantes no tempo** do painel (`status`, `winner_mrr`, `n_active_subs`, "
-        "`churn_event_in_month`, `n_events_in_month`, uso, tickets, CSAT) são derivadas somente "
-        "de linhas-fonte com data ≤ fim de `m` (invariante G10).")
+        "`churn_event_in_month`, `n_events_in_month`, `mrr_ended_in_month`, "
+        "`n_ended_in_month`, uso, tickets, CSAT) são derivadas somente de linhas-fonte com "
+        "data ≤ fim de `m` (invariante G10).")
+    add("- **Colunas de desfecho rotuladas (nunca features do próprio mês):** "
+        "`churn_event_in_month(m)`, `n_events_in_month(m)`, `status(m)`, "
+        "`mrr_ended_in_month(m)` e `n_ended_in_month(m)` (assinaturas com `end_date` em `m` — "
+        "lente R1) são eventos/estado do mês `m`: quando o desfecho é \"churn/receita em "
+        "`m`\", features DEVEM vir de linhas com mês ≤ m−1.")
     add("- **Proibido em features de risco:** `churn_flag_snapshot_2024_12_31` (rótulo do corte, "
         "não série temporal); eventos/uso/tickets posteriores à data índice; `accounts.churn_flag` "
         "como variável explicativa de meses anteriores ao corte.")
@@ -1017,30 +1432,54 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("")
     add("| Registro | Quantidade | Uso permitido |")
     add("|---|---|---|")
-    add("| Uso antes do `start_date` (76,6% das linhas) | 19.142 | fora de janelas alinhadas; contagem separada (`usage_rows_month`) |")
-    add("| Uso depois do `end_date` | 290 | idem |")
-    add("| Uso dentro da janela (22,3%) | 5.568 | sinais de atividade alinhados (`usage_rows_in_window_month`) |")
-    add("| Uso/tickets anteriores ao signup | 13.198 / 1.077 | fora da janela observacional da conta |")
-    add("| Eventos fora da vida de assinaturas (53 antes da 1ª assinatura; 90 após a última `end_date`) | 143 | mantidos na lente de eventos; alinhamento documentado (§4 do report) |")
+    add(f"| Uso antes do `start_date` ({q['usage_before_start_pct']} das linhas) | "
+        f"{fmt(q['usage_before_start'])} | fora de janelas alinhadas; contagem separada "
+        f"(`usage_rows_month`) |")
+    add(f"| Uso depois do `end_date` | {fmt(q['usage_after_end'])} | idem |")
+    add(f"| Uso dentro da janela ({q['usage_in_window_pct']}) | {fmt(q['usage_in_window'])} | "
+        f"sinais de atividade alinhados (`usage_rows_in_window_month`) |")
+    add(f"| Uso/tickets anteriores ao signup (grão de linha) | {fmt(q['usage_pre_signup'])} / "
+        f"{fmt(q['tickets_pre_signup'])} | fora da janela observacional da conta; no painel "
+        f"mensal entram apenas linhas do mês de signup posteriores à data de signup |")
+    add(f"| Eventos fora da vida de assinaturas ({fmt(q['events_before_first_sub'])} antes da "
+        f"1ª assinatura; {fmt(q['events_after_last_end'])} após a última `end_date`) | "
+        f"{fmt(q['events_outside_sub_life'])} | mantidos na lente de eventos; alinhamento "
+        f"documentado (§4 do report) |")
     add("")
-    add("Sensibilidade: análises que usam atividade DEVEM declarar a variante (bruta vs alinhada) "
-        "e reportar a diferença; análises de coorte temporal DEVEM usar apenas linhas alinhadas "
-        "ou declarar o viés. CSAT (825 nulos, 41,2%) e reason/feedback (148 nulos) são tratados "
-        "conforme §10.")
+    add(f"Sensibilidade: análises que usam atividade DEVEM declarar a variante (bruta vs "
+        f"alinhada) e reportar a diferença; análises de coorte temporal DEVEM usar apenas "
+        f"linhas alinhadas ou declarar o viés. CSAT ({fmt(q['csat_nulls'])} nulos, "
+        f"{q['csat_nulls_pct']}) e reason/feedback ({fmt(q['reason_unknown'])} 'unknown'; "
+        f"{fmt(q['feedback_nulls'])} nulos de feedback) são tratados conforme §10.")
     add("")
-    add("## 10. CSAT, reason codes e feedback: evidência sugestiva, nunca prova")
+    add("## 10. CSAT, reason codes, feedback e política de `closed_at`")
     add("")
-    add("`satisfaction_score` (domínio {3,4,5}, 41,2% nulos), `reason_code` e `feedback_text` são "
-        "evidência **sugestiva** de qualidade da experiência — não prova causal de churn. "
-        "Relações entre essas variáveis e churn, quando observadas, são correlações e serão "
-        "rotuladas como tal nas Iterações 03–05.")
+    add(f"`satisfaction_score` (domínio {{{q['csat_domain']}}}, {fmt(q['csat_nulls'])} nulos "
+        f"({q['csat_nulls_pct']})), `reason_code` ({fmt(q['reason_unknown'])} 'unknown') e "
+        f"`feedback_text` ({fmt(q['feedback_nulls'])} nulos) são evidência **sugestiva** de "
+        "qualidade da experiência — não prova causal de churn. Relações entre essas variáveis e "
+        "churn, quando observadas, são correlações e serão rotuladas como tal nas Iterações "
+        "03–05.")
+    add("")
+    add("**Política de `closed_at` (decisão D10):** os tickets existem por `submitted_at` "
+        "(abertura); `closed_at` documenta o fechamento. (1) Métricas de resolução (ex.: "
+        "tempo até `closed_at`) e de CSAT usam APENAS tickets fechados — na base atual, "
+        f"{fmt(q['tickets_total'] - q['closed_at_nulls'])} de {fmt(q['tickets_total'])} "
+        f"tickets têm `closed_at` (0 nulos; verificado pelo gate G15); (2) tickets com "
+        "`satisfaction_score` nulo são excluídos da média com **denominador explícito** "
+        f"({fmt(q['csat_denominator'])} tickets com nota na base); (3) **nunca imputar "
+        "fechamento futuro**: se um ticket está aberto na data índice, nenhuma métrica de "
+        "resolução/CSAT do período o inclui como fechado; (4) `csat_mean_month` do painel "
+        "agrega por mês de `submitted_at` — a política (1)–(3) aplica-se a qualquer uso "
+        "posterior.")
     add("")
     add("## 11. Invariantes e gates (executáveis)")
     add("")
-    add("A cada execução do `02_reconcile_churn.py`, os invariantes G1–G13 (ver report §8) são "
+    add("A cada execução do `02_reconcile_churn.py`, os invariantes G1–G15 (ver report §9) são "
         "verificados: unicidade account×mês; MRR ≥ 0; datas válidas; contas ativas ≤ 500; "
         "transições fecham (contagem e MRR, tolerância 0, inteiros); totais de cada lente "
-        "reconciliam à fonte; cobertura de assinaturas; anti-leakage estrutural. Qualquer "
+        "reconciliam à fonte; cobertura de assinaturas; anti-leakage estrutural; gross ending "
+        "MRR do painel reconciliado à fonte (G14); política de `closed_at` (G15). Qualquer "
         "violação é FAIL e o pipeline para (exit 1) com relatório atualizado.")
     add("")
     add("## 12. Decisões registradas (problema → opções → evidência → decisão → trade-off)")
@@ -1050,13 +1489,17 @@ def render_contract(r: dict, impact: dict, panel_len: int) -> str:
     add("")
     add("| Decisão | Problema | Opções | Decisão | Trade-off |")
     add("|---|---|---|---|---|")
-    add("| D1 — Lente primária por pergunta | 3 fontes de churn divergentes (110/312/352) | fonte única vs lente por pergunta | lente por pergunta (contrato §4) | exige disciplina: nunca misturar |")
+    add(f"| D1 — Lente primária por pergunta | 3 fontes de churn divergentes "
+        f"({r['flag_acc']}/{r['acc_ended']}/{r['ev_acc']}) | fonte única vs lente por pergunta "
+        "| lente por pergunta (contrato §4) | exige disciplina: nunca misturar |")
     add("| D2 — Grão-mestre | contagens por grão diferentes | account / subscription / account×mês | account×mês (painel do signup ao corte) | painel maior; suporta coortes e séries |")
     add("| D3 — Regra do winner | sobreposição de assinaturas dobra MRR | soma ingênua vs winner (max MRR) vs winner (start recente) | winner não-trial, max MRR, start recente, id | MRR da conta = assinatura dominante; soma preservada p/ auditoria |")
-    add("| D4 — Semântica temporal | bordas de mês/intervalo ambíguas | início vs fim do mês; exclusive vs inclusive | estado no FIM do mês; [start, end] inclusive | regra determinística, sem look-ahead intra-mês |")
+    add("| D4 — Semântica temporal | bordas de mês/intervalo ambíguas | início vs fim do mês; exclusive vs inclusive | estado no FIM do mês; [start, end] inclusive | assinatura que termina em `d` deixa de contar no mês cujo último dia > d (ex.: fim em 12-15 → inativa em dezembro); regra determinística, sem look-ahead intra-mês |")
     add("| D5 — Registros inválidos | 76,6% do uso fora da janela | descartar vs reter com política | reter com política dupla (bruto/alinhado) e quantificação | análises precisam declarar variante |")
     add("| D6 — Rótulo snapshot no painel | flag do corte como série vazaria | omitir vs incluir com proibição | incluir como `churn_flag_snapshot_2024_12_31` proibido em features | conveniência vs risco de mau uso (G10 cobre) |")
     add("| D7 — CSAT/reason/feedback | qualidade e completude limitadas | tratar como prova vs sugestiva | evidência sugestiva rotulada | conclusões causais proibidas (It03–05) |")
+    add("| D9 — Duas lentes de receita | fórmula única de revenue churn (winner) era degenerada (18.507 capturados vs 422.691/274 saídas ocultas; 1.179.139 de exposição) | uma fórmula vs duas lentes nomeadas | R1 gross ending MRR (exposição) + R2 net account-state MRR loss (churn-to-inactive + contraction); winner preservado como estado/risco, PROIBIDO como churn contratual isolado | análises de receita precisam declarar a lente e o gap (contrato §5; report §7) |")
+    add("| D10 — Política de `closed_at` | semântica de tickets adiada da It01 (assimetria de nulos vs `end_date`) | imputar vs documentar | tickets existem por `submitted_at`; resolução/CSAT só com tickets fechados; nulos excluídos com denominador explícito; nunca imputar fechamento futuro | métricas de resolução dependem da completude de `closed_at` (0 nulos na base; gate G15) |")
     add("")
     return "\n".join(lines)
 
@@ -1091,6 +1534,8 @@ def render_processed_readme(panel: pd.DataFrame, impact: dict) -> str:
     add("| `winner_mrr` | MRR do winner (0 se inativa) |")
     add("| `winner_plan_tier`, `winner_seats`, `winner_is_trial`, `winner_billing_frequency` | atributos do winner |")
     add("| `mrr_sum_naive` | soma ingênua do MRR das ativas (auditoria; NÃO usar como métrica) |")
+    add("| `mrr_ended_in_month` | soma do MRR das assinaturas com `end_date` no mês (lente R1 — gross ending MRR; reconciliada à fonte por G14); DESFECHO do mês, PROIBIDA como feature do próprio mês (contrato §8) |")
+    add("| `n_ended_in_month` | nº de assinaturas com `end_date` no mês (trials têm MRR 0, por isso a contagem é separada); DESFECHO do mês, PROIBIDA como feature do próprio mês (contrato §8) |")
     add("| `churn_event_in_month` | 1 se ≥1 evento de churn no mês (lente de eventos) |")
     add("| `n_events_in_month` | nº de eventos no mês |")
     add("| `usage_rows_month` | linhas de uso no mês (bruto, sem filtro de janela) |")
@@ -1102,7 +1547,7 @@ def render_processed_readme(panel: pd.DataFrame, impact: dict) -> str:
     add("## Uso")
     add("")
     add("- Esta base é regenerável: `python3 solution/src/02_reconcile_churn.py`.")
-    add("- Nunca editar manualmente; alterações quebram o checksum e os invariantes G1–G13.")
+    add("- Nunca editar manualmente; alterações quebram o checksum e os invariantes G1–G15.")
     add("")
     return "\n".join(lines)
 
@@ -1140,6 +1585,8 @@ def main() -> int:
     r: dict = {}
     impact: dict = {}
     bm: pd.DataFrame | None = None
+    rev: dict | None = None
+    q: dict | None = None
 
     if blocked_files:
         # Modo falha estrutural: pipeline bloqueado com diagnóstico preciso.
@@ -1157,12 +1604,14 @@ def main() -> int:
         parse_dates(sub, ["start_date", "end_date"], "ravenstack_subscriptions.csv")
         parse_dates(churn, ["churn_date"], "ravenstack_churn_events.csv")
         parse_dates(use, ["usage_date"], "ravenstack_feature_usage.csv")
-        parse_dates(tic, ["submitted_at"], "ravenstack_support_tickets.csv")
+        parse_dates(tic, ["submitted_at", "closed_at"], "ravenstack_support_tickets.csv")
 
         r = reconcile_lenses(acc, sub, churn)
         bm = align_events_to_end_dates(churn, sub)
         panel = build_account_month(acc, sub, churn, use, tic)
         impact = overlap_impact(panel)
+        rev = revenue_lenses(sub, panel)
+        q = quality_metrics(use, tic, churn, sub, acc)
 
         # estado no corte por lente de eventos (para o relatório §3.2/§5)
         ev_acc = set(churn["account_id"])
@@ -1213,13 +1662,13 @@ def main() -> int:
 
         run_gates(panel, acc, sub, churn, use, tic, r)
 
-    report = render_report(loaded, panel, r, impact, bm)
+    report = render_report(loaded, panel, r, impact, bm, rev, q)
     REPORT_PATH.write_text(report, encoding="utf-8")
 
     if panel is not None:
         panel.to_csv(ACCOUNT_MONTH_PATH, index=False)
         PROCESSED_README_PATH.write_text(render_processed_readme(panel, impact), encoding="utf-8")
-        CONTRACT_PATH.write_text(render_contract(r, impact, len(panel)), encoding="utf-8")
+        CONTRACT_PATH.write_text(render_contract(r, impact, len(panel), rev, q), encoding="utf-8")
 
     counts = {"PASS": 0, "WARN": 0, "FAIL": 0}
     for c in CHECKS:
