@@ -82,3 +82,59 @@ expected_exposure_affected = Σ winner_mrr(elegíveis) × incidence_90d × redu�
 4. Score preditivo de churn (nenhuma regra além de onboarding valida; watchlist é operational priority/exposure).
 5. Reativação mais barata que retenção / ROI de winback (sem ligação demonstrável com receita).
 6. Anualização apresentada como forecast.
+
+---
+
+## Adendo datado — 2026-08-28 (pós review gate 3x da It05; parte pré-registrada acima INTACTA)
+
+Registro das correções do gate (3 veredictos `PASS_WITH_FIXES`; reports em
+`/tmp/opencode/ai-master-review-reports/iteration-05/`: review-9a2752e1 /
+review-838ab021 / review-c17f9a4e). Nenhuma premissa pré-registrada foi
+reescrita; este adendo documenta as decisões de correção e os ajustes de
+redação aplicados na evidência/script (commit `fix: align impact scenarios
+with experiment power`):
+
+1. **Regra de decisão ACT-01 em 3 estados (§5 pré-registrado, linha ACT-01).**
+   O GO por ponto estimado ≥ 10% era um threshold operacional assimétrico:
+   com N=136/braço e p1=0,4301, P(ponto estimado ≥ 10% | efeito nulo) ≈ 24%
+   e o poder estatístico para efeitos reais de 10/20/30% é ≈ 11/31/61%
+   (MDE ≈ 37% a 80% power). Decisão: **o piso operacional de 10% é
+   preservado** (não trocado retroativamente por 37%), mas escala
+   (**SCALE/GO**) exige ponto ≥ 10% **E** IC95 do efeito excluindo 0 na
+   direção favorável, sem guardrail violado; **CONTINUE/LEARN** quando o
+   ponto/leading melhoram mas IC95 cruza 0 (sem alegar eficácia; ampliar
+   amostra/janela); **STOP/HARM** com efeito adverso significativo ou
+   guardrail crítico falhado. Poder e falso-GO são **derivados em runtime**
+   (gates G13-power-scenarios / G13-false-go), nunca literais. Horizonte
+   alinhado: 1ª decisão (STOP/reescopo) em 2 trimestres; decisão de escala em
+   4 trimestres de rollout **+ 90d de follow-up** (a maturidade real do
+   experimento inclui o follow-up das últimas coortes).
+2. **Linha `annualized` REMOVIDA da t19/evidence.** A premissa §2/§3 ("se
+   anualizar…") foi decidida como **não incluir**: 4×estoque do corte (320)
+   divergia do fluxo real 2024 (273/ano) e o próprio prompt recomendava
+   "melhor evitar se confuso". Nenhum forecast anual substitui a linha.
+3. **Faixa 0,3393–0,5417 nomeada `observed cutoff range`** (min-max de
+   precision das 3 coortes disjuntas), **NÃO intervalo de confiança**; CI de
+   Wilson 95% do pooled ≈ 0,362–0,501 é derivado separadamente e rotulado
+   como CI. A independência do pooling é usada com **overlap = 0 verificado**
+   (gate G13-disjoint: 193 contas únicas em t14b, nenhuma em >1 cutoff).
+4. **Sequenciamento:** ACT-03 (instrumentação mínima) passa a **Now /
+   pré-requisito** com **SLA ≤ 30d** (milestone de ativação em produção antes
+   do início do rollout); **ACT-01 inicia rollout somente após
+   instrumentation readiness** (tabela t18 reordenada: ACT-03, ACT-01,
+   ACT-02, ACT-04). ACT-04 permanece **Later** (baixa confiança).
+5. **Wording 76,6%** (linha ACT-03 acima): a citação "uso fora da janela
+   76,6%" é imprecisa — o contrato §9 define 76,6% = uso **antes do
+   `start_date`** (19.142/25.000); em janela = 22,3% (5.568/25.000); fora da
+   janela total = 77,7%. Leitura correta da premissa: "uso antes do
+   `start_date`: 76,6%; em janela: 22,3%".
+6. **"eventos evitados" → "eventos afetados no cenário"** (redução assumida):
+   zero claim causal; impacto é planejado, não medido (t18 impact_metric;
+   gate G13-wording / G13-wording-md).
+7. **Precisão de exibição (L4 dos revisores):** componentes exibidos
+   arredondados (incidência a 4 casas); re-cálculo do leitor a partir dos
+   valores exibidos pode divergir ≤ 0,01% (~25 US$) — tolerância documentada
+   na evidência §4 (números calculados em precisão plena preservados).
+8. **Literais de narrativa (L6):** lifts (regras A/B/D/E e D 180d) e âncoras
+   KM (0,653/187d; âncoras 34,7%/52,4%) agora derivados em runtime da
+   t14/t12 — drift de labels impossível.

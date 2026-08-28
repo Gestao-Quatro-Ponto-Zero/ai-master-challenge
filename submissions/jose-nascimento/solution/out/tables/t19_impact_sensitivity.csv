@@ -1,9 +1,8 @@
 action_id,scenario,incidence_90d,eligible_n,expected_events_90d,rel_reduction_pct,events_affected_90d,exposure_base_mrr,expected_exposure_affected_mrr,note
-ACT-01,conservador,0.3393,80.0,27.1,10.0,2.7,621981,21104,premissa de planejamento (10/20/30% de redução relativa); NÃO derivada do lift; a ser testada pelo experimento ACT-01
-ACT-01,base,0.4301,80.0,34.4,20.0,6.9,621981,53497,premissa de planejamento (10/20/30% de redução relativa); NÃO derivada do lift; a ser testada pelo experimento ACT-01
-ACT-01,ambicioso,0.5417,80.0,43.3,30.0,13.0,621981,101078,premissa de planejamento (10/20/30% de redução relativa); NÃO derivada do lift; a ser testada pelo experimento ACT-01
-ACT-01,sens-inc-lo,0.3393,80.0,27.1,20.0,5.4,621981,42208,"sensibilidade de incidência (precision regra D, cutoffs 90d)"
-ACT-01,sens-inc-base,0.4301,80.0,34.4,20.0,6.9,621981,53497,"sensibilidade de incidência (precision regra D, cutoffs 90d)"
-ACT-01,sens-inc-hi,0.5417,80.0,43.3,20.0,8.7,621981,67385,"sensibilidade de incidência (precision regra D, cutoffs 90d)"
+ACT-01,conservador,0.3393,80.0,27.1,10.0,2.7,621981,21104,premissa de planejamento (10% de redução relativa); NÃO derivada do lift; a ser testada pelo experimento ACT-01
+ACT-01,base,0.4301,80.0,34.4,20.0,6.9,621981,53497,premissa de planejamento (20% de redução relativa); NÃO derivada do lift; a ser testada pelo experimento ACT-01
+ACT-01,ambicioso,0.5417,80.0,43.3,30.0,13.0,621981,101078,premissa de planejamento (30% de redução relativa); NÃO derivada do lift; a ser testada pelo experimento ACT-01; incidência = precisão do cutoff 2024-09-30 (janela do pico sintético — cautela It04)
+ACT-01,sens-inc-lo,0.3393,80.0,27.1,20.0,5.4,621981,42208,sensibilidade de incidência (precision regra D 90d por cutoff; faixa observada entre cutoffs — NÃO é intervalo de confiança)
+ACT-01,sens-inc-base,0.4301,80.0,34.4,20.0,6.9,621981,53497,sensibilidade de incidência (precision regra D 90d por cutoff; faixa observada entre cutoffs — NÃO é intervalo de confiança)
+ACT-01,sens-inc-hi,0.5417,80.0,43.3,20.0,8.7,621981,67385,sensibilidade de incidência (precision regra D 90d por cutoff; faixa observada entre cutoffs — NÃO é intervalo de confiança)
 ACT-01,sens-pop-flow,0.4301,68.25,29.4,20.0,5.9,530628,45639,sensibilidade de população: fluxo médio trimestral 2024 de signups
-ACT-01,annualized,0.4301,320.0,137.6,20.0,27.5,2487924,213987,annualized MRR-equivalent exposure — aritmética (4 coortes trimestrais do estoque atual); NÃO é forecast

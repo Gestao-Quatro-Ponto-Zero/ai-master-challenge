@@ -82,5 +82,17 @@ A cronologia git prova a separação premissas→código (prática It03 retomada
 
 ## 9. Estados (atualizados no plano/checklist)
 
-- It05 `CONCLUDED` (implementação validada pelo executor: 32 PASS / 0 WARN / 0 FAIL; 3 MVs; idempotência 3× + CWD; 2 cenários de FAIL estrutural; git ok). **Review gate 3x da It05 `PENDING`** (dispara em seguida). It06–It10 `PENDING`.
+- It05 `CONCLUDED` (implementação validada pelo executor: 32 PASS / 0 WARN / 0 FAIL; 3 MVs; idempotência 3× + CWD; 2 cenários de FAIL estrutural; git ok). **Review gate 3x da It05 `CONCLUDED`** (dispara em seguida). It06–It10 `PENDING`.
 - Checklist: D9/D10/D11 `CONCLUDED`; F11 atualizado (tempo ~2h00; acumulado ~14h35, acima do gatilho — custo registrado, trims formais já vigentes).
+
+## 10. Adendo pós-gate (2026-08-28) — correções do review gate 3x
+
+O gate 3x retornou 3 veredictos `PASS_WITH_FIXES` (review-9a2752e1 / review-838ab021 / review-c17f9a4e). Correções aplicadas pelo agente corretor sequencial (commit `fix: align impact scenarios with experiment power`; ver `process-log/reports/iteration-05-review-fix-report.md` e `process-log/reviews/iteration-05-review-summary.md`):
+
+1. **Regra de decisão ACT-01 em 3 estados** — escala (SCALE/GO) exige ponto estimado ≥ 10% **E** IC95 excluindo 0 na direção favorável, sem guardrail violado; CONTINUE/LEARN quando IC cruza 0 (sem alegar eficácia); STOP/HARM com efeito adverso significativo ou guardrail crítico falhado. Poder por cenário (≈ 11/31/61% com N=136/braço) e P(falso GO por ponto ≥ 10% sob nulo) ≈ 24% passaram a ser **derivados em runtime** (gates G13-power-scenarios / G13-false-go / G13-decision-rule); piso operacional de 10% preservado; decisão de escala em 4 trimestres + 90d de follow-up.
+2. **Linha `annualized` removida** da t19/evidence (usava 4×estoque = 320 ≠ fluxo 273/ano; "melhor evitar se confuso"); gate G13-annualized-absent.
+3. **0,3393–0,5417 rotulada `observed cutoff range`** (min-max de 3 coortes disjuntas), NÃO CI; Wilson 95% do pooled ≈ 0,362–0,501 derivado separadamente e rotulado; overlap = 0 verificado (gate G13-disjoint).
+4. **Sequenciamento:** ACT-03 → Now/pré-requisito com SLA ≤ 30d; ACT-01 inicia rollout somente após instrumentation readiness; ACT-04 permanece Later (gate G13-sequencing).
+5. **Wording:** "eventos evitados" → "eventos afetados no cenário" (zero claim causal; G13-wording/G13-wording-md); "76,6%" corrigido para "uso antes do start_date" no adendo de premissas.
+6. **Cosméticos:** negrito do share corrigido; horizonte alinhado (1ª decisão em 2 trimestres; escala em 4 + 90d); tolerância de precisão documentada (≤ 0,01%); literais de narrativa (lifts A/B/D/E e D 180d; KM/âncoras) derivados em runtime da t14/t12.
+7. **Validação pós-fix:** 45 PASS / 0 WARN / 0 FAIL (32 + F11/F12 [t14b, t12] + 8 gates G13 + G13-wording-md); idempotência 2× + CWD; FAIL estrutural 2 cenários; 3 MVs; recálculo independente (power 10,8/30,9/60,6%; falso-GO 23,7%; Wilson 0,362–0,501; disjoint 193/0); 6 PNGs byte-idênticos; git ok (commit `fix: align impact scenarios with experiment power`; local == remote).

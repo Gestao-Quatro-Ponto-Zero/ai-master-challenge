@@ -9,21 +9,34 @@ de priorização sem score arbitrário, plano de medição com desenho experimen
 e watchlist dividida em 8 onboarding validados vs 12 exposure-only.
 
 Contrato analítico (It02) e fatos congelados respeitados:
-- onboarding <= 90d é a ÚNICA regra com lift consistente (1,57/1,56/1,83);
-  recorrência/reativação/MRR NÃO validam (It04 D4/D8);
+- onboarding <= 90d é a ÚNICA regra com lift consistente (lifts da regra D
+  derivados da t14 em runtime); recorrência/reativação/MRR NÃO validam (It04
+  D4/D8);
 - R1 = exposição contratual bruta, NÃO perda (§5); eventos ≠ logos ≠ receita
   (§4); lift ≠ efeito causal do programa (premissa de planejamento, testada
   pelo experimento ACT-01 — nunca derivada do lift);
 - CAC/winback/custos NÃO existem na base: esforço é qualitativo (S/M/L);
 - claims PROIBIDOS: "receita salva", "revenue saved", CAC queimado factual,
-  causalidade provada, score preditivo, reativação mais barata (ver
-  `process-log/decisions/iteration-05-action-impact-assumptions.md` §6).
+  causalidade provada, score preditivo, reativação mais barata, "eventos
+  evitados" como efeito medido (ver
+  `process-log/decisions/iteration-05-action-impact-assumptions.md` §6 e o
+  adendo datado pós-gate).
 
 Premissas fixadas ANTES do cálculo (mesmo arquivo de decisões): cenários de
 redução relativa 10%/20%/30% (conservador/base/ambicioso), incidência histórica
-= precision pooled da regra D (cutoffs 90d) com lower/base/upper, população
+= precision pooled da regra D (cutoffs 90d) com faixa observada entre cutoffs
+(min-max, NÃO CI; Wilson 95% do pooled derivado separadamente), população
 elegível = estoque onboarding no corte (esperado 80 contas; 621.981 US$ winner
 MRR) com sensibilidade de fluxo.
+
+Regra de decisão ACT-01 em 3 estados (adendo pós-gate, 2026-08-28): escala
+(SCALE/GO) exige ponto estimado >= 10% E IC95 do efeito excluindo 0 na direção
+favorável, sem guardrail violado; CONTINUE/LEARN quando IC cruza 0 (sem alegar
+eficácia); STOP/HARM com efeito adverso significativo ou guardrail crítico
+falhado. Poder por cenário (10/20/30% com N=136/braço) e P(falso GO por ponto
+>= 10% sob nulo) são DERIVADOS em runtime (gates G13-power-scenarios /
+G13-false-go), nunca literais. Sem linha anualizada na t19 (removida no
+pós-gate: "melhor evitar se confuso").
 
 Gera, de forma offline e determinística (sem timestamp; ordenações estáveis):
     solution/evidence/05_action_plan.md        (CEO-readable, conciso)
@@ -70,7 +83,9 @@ CHARTS_DIR = OUT_DIR / "charts"
 REPORT_PATH = EVIDENCE_DIR / "05_action_plan.md"
 PANEL_PATH = PROCESSED_DIR / "account_month.csv"
 T11_PATH = TABLES_DIR / "t11_account_lifecycle.csv"
+T12_PATH = TABLES_DIR / "t12_reactivation_recurrence.csv"
 T14_PATH = TABLES_DIR / "t14_backtest_temporal.csv"
+T14B_PATH = TABLES_DIR / "t14b_backtest_detail.csv"
 T15_PATH = TABLES_DIR / "t15_priority_segments.csv"
 T16_PATH = TABLES_DIR / "t16_watchlist_top20.csv"
 
@@ -134,9 +149,13 @@ REQUIRED = {
     "t11_account_lifecycle.csv": [
         "account_id", "tenure_days", "current_winner_mrr",
     ],
+    "t12_reactivation_recurrence.csv": ["metric", "level", "value"],
     "t14_backtest_temporal.csv": [
         "cutoff", "horizon_days", "rule", "n_rule", "rule_outcomes",
-        "precision",
+        "precision", "lift",
+    ],
+    "t14b_backtest_detail.csv": [
+        "account_id", "cutoff", "horizon_days", "tenure_days",
     ],
     "t15_priority_segments.csv": ["segment", "N", "current_mrr_sum"],
     "t16_watchlist_top20.csv": [
@@ -184,6 +203,53 @@ def fmt_br_int(n: float | int) -> str:
 def fmt_br_dec(n: float) -> str:
     """Decimal com vírgula pt-BR (determinístico)."""
     return f"{n:.1f}".replace(".", ",")
+
+
+def fmt_br_3(n: float) -> str:
+    """Decimal com 3 casas e vírgula pt-BR (determinístico)."""
+    return f"{n:.3f}".replace(".", ",")
+
+
+def fmt_pct_br(n: float) -> str:
+    """Percentual com 1 casa decimal pt-BR (determinístico)."""
+    return f"{n * 100.0:.1f}%".replace(".", ",")
+
+
+def normal_cdf(x: float) -> float:
+    """CDF da normal padrão (stdlib apenas; determinístico)."""
+    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+
+
+def power_for_reduction(p1: float, n_arm: float, rel_reduction: float) -> float:
+    """Poder de rejeitar H0 (alfa 0,05 bicaudal; aproximação normal de duas
+    proporções) para uma redução relativa `rel_reduction` da taxa p1 com
+    `n_arm` por braço. Derivado em runtime — nunca literal."""
+    p2 = p1 * (1.0 - rel_reduction)
+    se = math.sqrt(p1 * (1.0 - p1) / n_arm + p2 * (1.0 - p2) / n_arm)
+    z = (p1 - p2) / se
+    z_alpha = 1.959963984540054  # alfa 0,05 bicaudal (constante estatística)
+    return normal_cdf(z - z_alpha)
+
+
+def prob_go_under_null(p1: float, n_arm: float, rel_threshold: float) -> float:
+    """P(ponto estimado de redução relativa >= rel_threshold | efeito nulo) —
+    probabilidade de falso GO por ponto (limiar absoluto = p1 * rel_threshold).
+    Derivado em runtime — nunca literal."""
+    se = math.sqrt(2.0 * p1 * (1.0 - p1) / n_arm)
+    z = (p1 * rel_threshold) / se
+    return 1.0 - normal_cdf(z)
+
+
+def wilson_ci(k: int, n: int,
+              z: float = 1.959963984540054) -> tuple[float, float]:
+    """Intervalo de Wilson (1 - alfa) para a proporção k/n — derivado em
+    runtime; rótulo explícito de CI (distinto da faixa observada entre
+    cutoffs)."""
+    p = k / n
+    denom = 1.0 + z * z / n
+    center = (p + z * z / (2.0 * n)) / denom
+    half = z * math.sqrt(p * (1.0 - p) / n + z * z / (4.0 * n * n)) / denom
+    return center - half, center + half
 
 
 def missing_cols(df: pd.DataFrame, cols: list[str], fname: str) -> list[str]:
@@ -234,7 +300,13 @@ def compute_onboarding_base(t11: pd.DataFrame) -> dict:
 
 def compute_incidence(t14: pd.DataFrame) -> dict:
     """Incidência histórica de primeiro/próximo evento em 90d entre contas
-    onboarding = precision da regra D (backtest It04, cutoffs 90d)."""
+    onboarding = precision da regra D (backtest It04, cutoffs 90d).
+
+    pooled = soma de outcomes / soma de n (coortes disjuntas — overlap = 0
+    verificado pelo gate G13-disjoint em t14b); lo/hi = faixa observada entre
+    cutoffs (min-max de 3 coortes disjuntas, NÃO é intervalo de confiança);
+    wilson_lo/hi = CI de Wilson 95% do pooled, derivado separadamente e
+    rotulado como CI."""
     rd = t14[(t14["rule"] == "D")
              & (t14["horizon_days"] == BACKTEST_HORIZON_DAYS)].copy()
     if rd.empty:
@@ -244,8 +316,60 @@ def compute_incidence(t14: pd.DataFrame) -> dict:
     pooled = outcomes / n_rule if n_rule else 0.0
     lo = float(rd["precision"].min())
     hi = float(rd["precision"].max())
+    hi_row = rd.loc[rd["precision"].idxmax()]
+    wilson_lo, wilson_hi = wilson_ci(outcomes, n_rule)
     return {"outcomes": outcomes, "n_rule": n_rule, "pooled": pooled,
-            "lo": lo, "hi": hi}
+            "lo": lo, "hi": hi, "hi_cutoff": str(hi_row["cutoff"])[:10],
+            "wilson_lo": wilson_lo, "wilson_hi": wilson_hi}
+
+
+def compute_lifts(t14: pd.DataFrame) -> dict:
+    """Lifts por regra (90d) e regra D (180d) derivados da t14 — narrativa sem
+    literais congelados (drift de labels impossível). Chaves: A (recorrência),
+    B (reativação), D (onboarding), E (alto MRR) e D_180 (sensibilidade)."""
+    def _lifts(rule: str, horizon: int) -> list[float]:
+        r = t14[(t14["rule"] == rule) & (t14["horizon_days"] == horizon)]
+        r = r.sort_values("cutoff")
+        return [float(v) for v in r["lift"]]
+
+    def _s(vals: list[float]) -> str:
+        return "/".join(f"{v:.2f}".replace(".", ",") for v in vals)
+
+    out: dict[str, str] = {}
+    for rule in ("A", "B", "D", "E"):
+        out[rule] = _s(_lifts(rule, BACKTEST_HORIZON_DAYS))
+    out["D_180"] = _s(_lifts("D", 180))
+    return out
+
+
+def compute_km(t12: pd.DataFrame) -> dict:
+    """Âncoras de reativação/recorrência (KM) derivadas da t12 — narrativa sem
+    literais congelados."""
+    v = dict(zip(t12["metric"], t12["value"]))
+    km_90 = float(v["km_surv_90d"])
+    km_180 = float(v["km_surv_180d"])
+    median = int(v["km_median_days"])
+    return {"km_90": km_90, "km_180": km_180, "median_days": median,
+            "anchor_90": 1.0 - km_90, "anchor_180": 1.0 - km_180}
+
+
+def compute_disjointness(t14b: pd.DataFrame, t14: pd.DataFrame) -> dict:
+    """Verifica que as coortes elegíveis da regra D (90d) são disjuntas entre
+    cutoffs (overlap = 0; sem conta repetida) — base da independência do
+    pooling (gate G13-disjoint)."""
+    elig = t14b[(t14b["horizon_days"] == BACKTEST_HORIZON_DAYS)
+                & (t14b["tenure_days"] <= ONBOARDING_DAYS)]
+    rd = t14[(t14["rule"] == "D")
+             & (t14["horizon_days"] == BACKTEST_HORIZON_DAYS)]
+    n_sum = int(rd["n_rule"].sum())
+    unique = int(elig["account_id"].nunique())
+    multi = int((elig.groupby("account_id")["cutoff"].nunique() > 1).sum())
+    per_cutoff = {str(k)[:10]: int(v)
+                  for k, v in elig.groupby("cutoff")["account_id"]
+                  .nunique().to_dict().items()}
+    return {"rows": int(len(elig)), "unique": unique, "n_rule_sum": n_sum,
+            "multi_cutoff": multi, "per_cutoff": per_cutoff,
+            "ok": len(elig) == n_sum and unique == n_sum and multi == 0}
 
 
 def compute_inflow(accounts: pd.DataFrame) -> dict:
@@ -357,22 +481,22 @@ def build_scenarios(onb: dict, inc: dict, inflow: dict) -> pd.DataFrame:
     for label, red in REDUCTION_SCENARIOS:
         incidence = {"conservador": inc["lo"], "base": inc["pooled"],
                      "ambicioso": inc["hi"]}[label]
-        rows.append(row(
-            label, incidence, n_base, red,
-            "premissa de planejamento (10/20/30% de redução relativa); "
-            "NÃO derivada do lift; a ser testada pelo experimento ACT-01"))
+        note = (f"premissa de planejamento ({red*100:.0f}% de redução "
+                "relativa); NÃO derivada do lift; a ser testada pelo "
+                "experimento ACT-01")
+        if label == "ambicioso":
+            note += (f"; incidência = precisão do cutoff {inc['hi_cutoff']} "
+                     "(janela do pico sintético — cautela It04)")
+        rows.append(row(label, incidence, n_base, red, note))
     for label, incidence in (("lower", inc["lo"]), ("base", inc["pooled"]),
                              ("upper", inc["hi"])):
         rows.append(row(
             INCIDENCE_LABELS[label], incidence, n_base, 0.20,
-            "sensibilidade de incidência (precision regra D, cutoffs 90d)"))
+            "sensibilidade de incidência (precision regra D 90d por cutoff; "
+            "faixa observada entre cutoffs — NÃO é intervalo de confiança)"))
     rows.append(row(
         "sens-pop-flow", inc["pooled"], inflow["avg"], 0.20,
         "sensibilidade de população: fluxo médio trimestral 2024 de signups"))
-    rows.append(row(
-        "annualized", inc["pooled"], 4.0 * n_base, 0.20,
-        "annualized MRR-equivalent exposure — aritmética (4 coortes "
-        "trimestrais do estoque atual); NÃO é forecast"))
     return pd.DataFrame(rows)
 
 
@@ -399,11 +523,49 @@ def mde_for_n(n_arm: float, p1: float) -> float:
 
 
 def build_prioritized(impact: dict, onb: dict, wl: dict,
-                      quality: dict) -> pd.DataFrame:
-    """Matriz de priorização (t18) — sem score numérico arbitrário."""
+                      quality: dict, lifts: dict, km: dict) -> pd.DataFrame:
+    """Matriz de priorização (t18) — sem score numérico arbitrário.
+
+    Ordem: ACT-03 (pré-requisito Now, SLA <= 30d), ACT-01 (rollout condicionado
+    à instrumentação), ACT-02 (independe de instrumentação), ACT-04 (Later)."""
     ev_lo, ev_hi = impact["events_lo"], impact["events_hi"]
     ex_lo, ex_hi = impact["exposure_lo"], impact["exposure_hi"]
     rows = [
+        {
+            "action_id": "ACT-03",
+            "action": "Instrumentação de dados: milestone de ativação, reason "
+                      "estruturado, timestamps alinhados, CSAT com cobertura, "
+                      "lens unificada",
+            "family": "C (contrato/instrumentação de dados)",
+            "decision": "Now",
+            "evidence_strength": "ALTA como habilitadora — limitações "
+                                 "estruturais documentadas (It01–It04); "
+                                 "pré-requisito da medição E do rollout do "
+                                 "ACT-01",
+            "evidence_ref": "contract §9/§10; evidence/01 §5; evidence/03 §8",
+            "impact_metric": "quality coverage (não-US$): CSAT, reason, uso "
+                             "em janela, milestone de ativação",
+            "impact_range": f"CSAT com nota: {fmt_br_dec(quality['csat_coverage']*100)}% "
+                            f"hoje -> >= 90%; reason 'unknown' "
+                            f"{fmt_br_dec(quality['reason_unknown']*100)}% -> "
+                            f"< 5%; uso em janela "
+                            f"{fmt_br_dec(quality['usage_in_window']*100)}% -> "
+                            f">= 90%; milestone de ativação 0% -> 100% dos "
+                            f"novos signups",
+            "effort": "M",
+            "time_to_first_signal": "<= 30d (SLA do milestone de ativação em "
+                                    "produção)",
+            "reversibility": "MÉDIA (mudanças de schema exigem migração)",
+            "owner": "Data/Product Eng",
+            "dependencies": "contrato analítico It02",
+            "mechanism_expected": "habilitar leading metrics do ACT-01 e "
+                                  "reduzir viés estrutural das análises "
+                                  "futuras",
+            "stop_go_criteria": "GO: milestone de ativação em produção <= 30d "
+                                "(SLA) e metas de cobertura em 2 trimestres; "
+                                "STOP: SLA estourado ou 2 trimestres sem "
+                                "avanço nas metas",
+        },
         {
             "action_id": "ACT-01",
             "action": "Programa de ativação/onboarding 0-90d: milestones "
@@ -411,32 +573,42 @@ def build_prioritized(impact: dict, onb: dict, wl: dict,
                       "gradual com holdout (desenho experimental)",
             "family": "A+D (onboarding/time-to-value + experimento causal)",
             "decision": "Now",
-            "evidence_strength": "ALTA — única regra com lift consistente "
-                                 "(1,57/1,56/1,83; 3 cutoffs 90d; N>=25); "
+            "evidence_strength": f"ALTA — única regra com lift consistente "
+                                 f"({lifts['D']}; 3 cutoffs 90d; N>=25); "
                                  "efeito do programa NÃO medido",
             "evidence_ref": "t14_backtest_temporal.csv (regra D); "
                             "evidence/04 §6; decisions It04 D4",
-            "impact_metric": "eventos de churn (lente C) evitados em 90d; "
-                             "expected MRR-equivalent exposure affected "
-                             "(lente winner/estado)",
+            "impact_metric": "eventos de churn (lente C) afetados no cenário "
+                             "(redução assumida) em 90d; expected "
+                             "MRR-equivalent exposure affected (lente "
+                             "winner/estado)",
             "impact_range": f"{fmt_br_dec(ev_lo)}–{fmt_br_dec(ev_hi)} "
                             f"eventos/90d; exposição "
                             f"{fmt_br_int(ex_lo)}–{fmt_br_int(ex_hi)} US$/90d "
                             f"(cenários conservador–ambicioso)",
             "effort": "M",
-            "time_to_first_signal": "90d (1ª coorte completa do rollout)",
+            "time_to_first_signal": "90d (1ª coorte completa do rollout; "
+                                    "rollout inicia somente após "
+                                    "instrumentação ACT-03 — SLA <= 30d)",
             "reversibility": "ALTA (rollout gradual; holdout preserva "
                              "comparabilidade)",
             "owner": "PM Onboarding (desenho) + CS (execução)",
             "dependencies": "ACT-03 (milestone de ativação e reason "
-                            "estruturado)",
+                            "estruturado; SLA <= 30d) — rollout inicia "
+                            "somente após instrumentation readiness",
             "mechanism_expected": "reduzir tempo-para-ativação e taxa de "
                                   "primeiro evento em 90d por intervenção por "
                                   "estágio; causalidade só via experimento",
-            "stop_go_criteria": "GO: redução relativa >= 10% (piso do cenário "
-                                "conservador) após 4 trimestres; STOP: efeito "
-                                "negativo com CI excluindo 0 em 2 trimestres; "
-                                "guardrails de CSAT/escalação",
+            "stop_go_criteria": "GO (SCALE): redução relativa estimada >= 10% "
+                                "(piso operacional) E IC95 do efeito exclui 0 "
+                                "na direção favorável, sem guardrail violado "
+                                "(4 trimestres de rollout + 90d de follow-up); "
+                                "CONTINUE (LEARN): ponto favorável/leading "
+                                "melhoram mas IC95 cruza 0 — estender "
+                                "holdout/ampliar amostra, sem alegar "
+                                "eficácia; STOP (HARM): efeito adverso com "
+                                "IC95 excluindo 0, ou guardrail crítico "
+                                "(CSAT/escalação) falhado — encerrar/reduzir",
         },
         {
             "action_id": "ACT-02",
@@ -468,45 +640,17 @@ def build_prioritized(impact: dict, onb: dict, wl: dict,
                                 "semanas seguidas",
         },
         {
-            "action_id": "ACT-03",
-            "action": "Instrumentação de dados: milestone de ativação, reason "
-                      "estruturado, timestamps alinhados, CSAT com cobertura, "
-                      "lens unificada",
-            "family": "C (contrato/instrumentação de dados)",
-            "decision": "Next",
-            "evidence_strength": "ALTA como habilitadora — limitações "
-                                 "estruturais documentadas (It01–It04); "
-                                 "pré-requisito da medição ACT-01",
-            "evidence_ref": "contract §9/§10; evidence/01 §5; evidence/03 §8",
-            "impact_metric": "quality coverage (não-US$): CSAT, reason, uso "
-                             "em janela, milestone de ativação",
-            "impact_range": f"CSAT com nota: {fmt_br_dec(quality['csat_coverage']*100)}% "
-                            f"hoje -> >= 90%; reason 'unknown' "
-                            f"{fmt_br_dec(quality['reason_unknown']*100)}% -> "
-                            f"< 5%; uso em janela "
-                            f"{fmt_br_dec(quality['usage_in_window']*100)}% -> "
-                            f">= 90%; milestone de ativação 0% -> 100% dos "
-                            f"novos signups",
-            "effort": "M",
-            "time_to_first_signal": "4 semanas (primeiros campos)",
-            "reversibility": "MÉDIA (mudanças de schema exigem migração)",
-            "owner": "Data/Product Eng",
-            "dependencies": "contrato analítico It02",
-            "mechanism_expected": "habilitar leading metrics e reduzir viés "
-                                  "estrutural das análises futuras",
-            "stop_go_criteria": "GO: metas de cobertura atingidas em 2 "
-                                "trimestres; STOP: 2 trimestres sem avanço",
-        },
-        {
             "action_id": "ACT-04",
             "action": "Piloto OBSERVACIONAL de reativação/recorrência com "
                       "dados instrumentados (sem claim de ROI)",
             "family": "E (reativação/recorrência — baixa confiança)",
             "decision": "Later",
-            "evidence_strength": "BAIXA — sem lift (0,52/0,41/1,29; regra B); "
-                                 "associação descritiva com censura (KM 90d "
-                                 "0,653; mediana 187d)",
+            "evidence_strength": f"BAIXA — sem lift ({lifts['B']}; regra "
+                                 f"B); associação descritiva com censura (KM "
+                                 f"90d {fmt_br_3(km['km_90'])}; mediana "
+                                 f"{km['median_days']}d)",
             "evidence_ref": "t14_backtest_temporal.csv (regra B); "
+                            "t12_reactivation_recurrence.csv (KM); "
                             "evidence/04 §3; decisions It04 D7",
             "impact_metric": "observação: taxa de próximo evento pós-"
                              "reativação com follow-up explícito; NÃO US$",
@@ -521,15 +665,16 @@ def build_prioritized(impact: dict, onb: dict, wl: dict,
             "mechanism_expected": "medir recorrência pós-reativação com dados "
                                   "estruturados; escalar só por regra "
                                   "pré-registrada",
-            "stop_go_criteria": "GO (escalar): taxa de próximo evento <= 90d "
-                                ">= 34,7% (âncora KM) após 2 trimestres "
-                                "instrumentados; senão encerrar",
+            "stop_go_criteria": f"GO (escalar): taxa de próximo evento <= 90d "
+                                f">= {fmt_pct_br(km['anchor_90'])} (âncora "
+                                f"KM) após 2 trimestres instrumentados; senão "
+                                "encerrar",
         },
     ]
     return pd.DataFrame(rows)
 
 
-def build_measurement_plan(onb: dict, inc: dict) -> pd.DataFrame:
+def build_measurement_plan(onb: dict, inc: dict, km: dict) -> pd.DataFrame:
     """Plano de medição (t20): leading/lagging/guardrails por ação."""
     rows = [
         # ACT-01
@@ -621,7 +766,8 @@ def build_measurement_plan(onb: dict, inc: dict) -> pd.DataFrame:
          "taxa de próximo evento <= 90d/180d pós-reativação (KM com censura "
          "no corte)", "episódios de reativação", "coorte de reativação",
          "90d/180d", "churn_events (It04 §3)", "Data", "trimestral",
-         "comparar com âncora 34,7% (KM 90d) e 52,4% (180d)"),
+         f"comparar com âncora {fmt_pct_br(km['anchor_90'])} (KM 90d) e "
+         f"{fmt_pct_br(km['anchor_180'])} (180d)"),
         ("ACT-04", "guardrail", "no_roi_claim",
          "nenhum valor em US$ atribuído a reativação (sem ligação com "
          "receita)", "n/a", "n/a", "n/a", "n/a", "CS + Data", "n/a",
@@ -633,14 +779,14 @@ def build_measurement_plan(onb: dict, inc: dict) -> pd.DataFrame:
                        "cadence", "stop_go"])
 
 
-def build_watchlist_split(t16: pd.DataFrame) -> pd.DataFrame:
+def build_watchlist_split(t16: pd.DataFrame, lifts: dict) -> pd.DataFrame:
     """Split da watchlist (t21): 8 onboarding validados vs 12 exposure-only."""
     out: list[dict] = []
     for _, r in t16.sort_values(["watch_rank"]).iterrows():
         if r["watch_tier"] == "A":
             group = "validated_onboarding"
-            action = ("Contato de ativação/onboarding com milestone "
-                      "(sinal validado: lift 1,57/1,56/1,83)")
+            action = (f"Contato de ativação/onboarding com milestone "
+                      f"(sinal validado: lift {lifts['D']})")
         else:
             group = "exposure_only"
             action = ("Revisão de conta/renovação com contexto do episódio "
@@ -667,8 +813,10 @@ def build_watchlist_split(t16: pd.DataFrame) -> pd.DataFrame:
 def run_gates(t14: pd.DataFrame, onb: dict, inc: dict, inflow: dict,
               total_exposure: int, wl: dict, quality: dict,
               scenarios: pd.DataFrame, t18: pd.DataFrame, t20: pd.DataFrame,
-              t21: pd.DataFrame, t15: pd.DataFrame,
-              charts_before: list[str], written_tables: list[str]) -> None:
+              t21: pd.DataFrame, t15: pd.DataFrame, lifts: dict, km: dict,
+              disjoint: dict, powers: list[float], p_false_go: float,
+              decision_n: int, charts_before: list[str],
+              written_tables: list[str]) -> None:
     # G2 — base onboarding: t11 (runtime) vs t15 (segmento S1)
     s1 = t15[t15["segment"] == "S1"]
     if not s1.empty:
@@ -775,6 +923,12 @@ def run_gates(t14: pd.DataFrame, onb: dict, inc: dict, inflow: dict,
         str(onb["mrr_sum"]), f"{inc['pooled']:.4f}",
         str(wl["tier_a_sum"]), str(wl["tier_bc_sum"]),
         str(wl["total_sum"]), str(total_exposure),
+        lifts["D"], lifts["B"], lifts["A"], lifts["E"], lifts["D_180"],
+        f"{km['km_90']:.3f}", f"{km['km_180']:.3f}", str(km["median_days"]),
+        f"{km['anchor_90'] * 100.0:.1f}%", f"{km['anchor_180'] * 100.0:.1f}%",
+        f"{inc['wilson_lo']:.3f}", f"{inc['wilson_hi']:.3f}",
+        f"{powers[0] * 100.0:.0f}%", f"{powers[1] * 100.0:.0f}%",
+        f"{powers[2] * 100.0:.0f}%", f"{p_false_go * 100.0:.0f}%",
     ]
     hits = sorted({v for v in runtime_derived if v in src})
     check("G10-no-hardcoded", "higiene",
@@ -818,6 +972,94 @@ def run_gates(t14: pd.DataFrame, onb: dict, inc: dict, inflow: dict,
           f"{wl['total_sum']}), t18 ações={len(t18_back)}, t21 linhas="
           f"{len(t21_back)}")
 
+    # --- G13 (pós-gate It05): poder por cenário, falso-GO, regra 3 estados,
+    # CI vs faixa, disjunção do pooling, sequenciamento, annualized ausente e
+    # wording causal ---
+
+    # G13-power-scenarios — poder derivado em runtime para 10/20/30% com
+    # N=136/braço (decisão em 4 trimestres); poder esperado crescente com a
+    # redução, dentro de faixas verificadas e monotonicidade estrita (nunca
+    # literais).
+    p_ok = (0.08 <= powers[0] <= 0.15 and 0.26 <= powers[1] <= 0.36
+            and 0.55 <= powers[2] <= 0.67
+            and powers[0] < powers[1] < powers[2])
+    check("G13-power-scenarios", "experimento",
+          "poder por cenário (10/20/30%) derivado em runtime (N=136/braço)",
+          "PASS" if p_ok else "FAIL",
+          f"poder={[f'{p*100:.0f}%' for p in powers]} "
+          f"(monotônico={powers[0] < powers[1] < powers[2]})")
+
+    # G13-false-go — P(ponto estimado >= 10% | efeito nulo) derivada em
+    # runtime; faixa esperada de falso-GO não desprezível (ruído dispara GO
+    # por ponto).
+    fg_ok = 0.15 <= p_false_go <= 0.35
+    check("G13-false-go", "experimento",
+          "P(falso GO por ponto >= 10% sob efeito nulo) derivada em runtime",
+          "PASS" if fg_ok else "FAIL",
+          f"P(ponto >= 10% | nulo)={p_false_go*100:.1f}% (N/braço="
+          f"{decision_n})")
+
+    # G13-wilson — CI de Wilson 95% do pooled derivado separadamente e
+    # rotulado (distinto da faixa observada entre cutoffs).
+    w_ok = (inc["wilson_lo"] < inc["pooled"] < inc["wilson_hi"]
+            and inc["wilson_hi"] - inc["wilson_lo"] < 0.2
+            and inc["wilson_lo"] > 0.33)
+    check("G13-wilson", "incidência",
+          "CI de Wilson 95% do pooled derivado e coerente (não é a faixa "
+          "observada entre cutoffs)",
+          "PASS" if w_ok else "FAIL",
+          f"Wilson 95%: {inc['wilson_lo']:.3f}–{inc['wilson_hi']:.3f} "
+          f"(pooled {inc['pooled']:.4f}; faixa observada "
+          f"{inc['lo']:.4f}–{inc['hi']:.4f})")
+
+    # G13-disjoint — coortes elegíveis da regra D (90d) disjuntas entre
+    # cutoffs (overlap = 0): base da independência do pooling.
+    check("G13-disjoint", "incidência",
+          "coortes da regra D (90d) disjuntas entre cutoffs (overlap = 0)",
+          "PASS" if disjoint["ok"] else "FAIL",
+          f"contas únicas={disjoint['unique']} vs Σ n_rule="
+          f"{disjoint['n_rule_sum']} (por cutoff: {disjoint['per_cutoff']}; "
+          f"contas em >1 cutoff={disjoint['multi_cutoff']})")
+
+    # G13-sequencing — ACT-03 é Now/pré-requisito com SLA <= 30d; ACT-01 só
+    # inicia rollout após instrumentation readiness; ACT-04 permanece Later.
+    t18a1 = t18[t18["action_id"] == "ACT-01"]
+    t18a3 = t18[t18["action_id"] == "ACT-03"]
+    t18a4 = t18[t18["action_id"] == "ACT-04"]
+    seq_ok = (not t18a3.empty and t18a3.iloc[0]["decision"] == "Now"
+              and not t18a1.empty
+              and "SLA" in t18a1.iloc[0]["dependencies"]
+              and "30d" in t18a1.iloc[0]["dependencies"]
+              and "instrumentation readiness" in t18a1.iloc[0]["dependencies"]
+              and not t18a4.empty and t18a4.iloc[0]["decision"] == "Later")
+    check("G13-sequencing", "ações",
+          "sequenciamento: ACT-03 Now/pré-requisito com SLA <= 30d; ACT-01 "
+          "após instrumentation readiness; ACT-04 Later",
+          "PASS" if seq_ok else "FAIL",
+          f"ACT-03={t18a3.iloc[0]['decision'] if not t18a3.empty else 'ausente'}; "
+          f"ACT-01 deps SLA/30d/readiness="
+          f"{all(k in (t18a1.iloc[0]['dependencies'] if not t18a1.empty else '')
+                for k in ('SLA', '30d', 'instrumentation readiness'))}; "
+          f"ACT-04={t18a4.iloc[0]['decision'] if not t18a4.empty else 'ausente'}")
+
+    # G13-annualized-absent — linha annualized removida da t19 (sem forecast
+    # anual; "melhor evitar se confuso").
+    ann_absent = (scenarios["scenario"] == "annualized").sum() == 0
+    check("G13-annualized-absent", "cenários",
+          "sem linha annualized na t19 (removida no pós-gate)",
+          "PASS" if ann_absent else "FAIL",
+          f"linhas annualized={int((scenarios['scenario'] == 'annualized').sum())}")
+
+    # G13-wording — t18: impacto do ACT-01 como "afetados no cenário"
+    # (redução assumida), nunca "evitados" (zero claim causal).
+    a1_metric = t18a1.iloc[0]["impact_metric"] if not t18a1.empty else ""
+    wd_ok = ("afetad" in a1_metric and "evitad" not in a1_metric)
+    check("G13-wording", "honestidade",
+          "impacto do ACT-01 nomeado como afetados no cenário (não evitados)",
+          "PASS" if wd_ok else "FAIL",
+          f"impact_metric ACT-01 contém 'afetad'={'afetad' in a1_metric}, "
+          f"'evitad'={'evitad' in a1_metric}")
+
 
 # ----------------------------------------------------------------------------
 # Relatório (CEO-readable, conciso; sem timestamp)
@@ -834,7 +1076,8 @@ def md_table(header: list[str], rows: list[list[str]]) -> str:
 def render_report(onb: dict, inc: dict, inflow: dict, total_exposure: int,
                   wl: dict, quality: dict, scenarios: pd.DataFrame,
                   t18: pd.DataFrame, t20: pd.DataFrame, t21: pd.DataFrame,
-                  mdes: list[float], n_arms: list[int],
+                  mdes: list[float], n_arms: list[int], lifts: dict, km: dict,
+                  powers: list[float], p_false_go: float, decision_n: int,
                   table_names: list[str],
                   structural_fail: bool = False) -> str:
     if structural_fail:
@@ -855,7 +1098,6 @@ def render_report(onb: dict, inc: dict, inflow: dict, total_exposure: int,
     base = scenarios[scenarios["scenario"] == "base"].iloc[0]
     cons = scenarios[scenarios["scenario"] == "conservador"].iloc[0]
     amb = scenarios[scenarios["scenario"] == "ambicioso"].iloc[0]
-    ann = scenarios[scenarios["scenario"] == "annualized"].iloc[0]
     ev_lo, ev_hi = cons["events_affected_90d"], amb["events_affected_90d"]
     ex_lo, ex_hi = (cons["expected_exposure_affected_mrr"],
                     amb["expected_exposure_affected_mrr"])
@@ -904,23 +1146,23 @@ Premissas fixadas ANTES do cálculo em
 
 ## 1. Resposta primeiro
 
-Quatro ações, duas para agora:
+Quatro ações: três para agora (uma como pré-requisito), uma para depois:
 
 | Ação | Decisão | Por quê |
 |---|---|---|
-| **ACT-01** Programa de ativação/onboarding 0-90d com milestones instrumentados e rollout gradual (experimento com holdout) | **Now** | única ação ancorada em sinal com validação temporal (lift 1,57/1,56/1,83 nos 3 cutoffs 90d; N≥25). Impacto PLANEJADO (não medido): **{fmt_br_dec(ev_lo)}–{fmt_br_dec(ev_hi)} eventos/90d** e **{fmt_br_int(ex_lo)}–{fmt_br_int(ex_hi)} US$ de expected MRR-equivalent exposure affected/90d** (base: {fmt_br_dec(base['events_affected_90d'])} eventos; {fmt_br_int(base['expected_exposure_affected_mrr'])} US$). O lift descreve associação observada — **não é efeito do programa**; o efeito será medido pelo experimento |
-| **ACT-02** Triage semanal da watchlist top-20 (8 onboarding validados vs 12 exposure-only) | **Now** | esforço baixo (S), usa watchlist existente; exposição coberta **{fmt_br_int(wl['total_sum'])} US$/mês ({fmt_br_dec(share)}%** do total). Os 12 exposure-only NÃO são rotulados como alto risco |
-| **ACT-03** Instrumentação de dados (milestone de ativação, reason estruturado, timestamps, CSAT, lens unificada) | **Next** | pré-requisito da medição do ACT-01; metas de qualidade nomeadas (sem US$) |
+| **ACT-03** Instrumentação de dados (milestone de ativação, reason estruturado, timestamps, CSAT, lens unificada) | **Now** | pré-requisito da medição E do rollout do ACT-01; SLA ≤ 30d para o milestone de ativação em produção; metas de qualidade nomeadas (sem US$) |
+| **ACT-01** Programa de ativação/onboarding 0-90d com milestones instrumentados e rollout gradual (experimento com holdout) | **Now** | única ação ancorada em sinal com validação temporal (lift {lifts['D']} nos 3 cutoffs 90d; N≥25); rollout inicia somente após instrumentation readiness (ACT-03). Impacto PLANEJADO (não medido): **{fmt_br_dec(ev_lo)}–{fmt_br_dec(ev_hi)} eventos/90d** e **{fmt_br_int(ex_lo)}–{fmt_br_int(ex_hi)} US$ de expected MRR-equivalent exposure affected/90d** (base: {fmt_br_dec(base['events_affected_90d'])} eventos; {fmt_br_int(base['expected_exposure_affected_mrr'])} US$). O lift descreve associação observada — **não é efeito do programa**; o efeito será medido pelo experimento |
+| **ACT-02** Triage semanal da watchlist top-20 (8 onboarding validados vs 12 exposure-only) | **Now** | esforço baixo (S), usa watchlist existente, independe de instrumentação; exposição coberta **{fmt_br_int(wl['total_sum'])} US$/mês ({fmt_br_dec(share)}% do total)**. Os 12 exposure-only NÃO são rotulados como alto risco |
 | **ACT-04** Piloto observacional de reativação/recorrência | **Later** | baixa confiança (sem lift; associação descritiva com censura); sem claim de ROI |
 
 ## 2. Evidência que sustenta (curto)
 
 - **Onboarding ≤ 90d é o único sinal validado** temporalmente (backtest
-  point-in-time It04; regra D: 1,57/1,56/1,83; sensibilidade 180d 1,26/1,51).
+  point-in-time It04; regra D: {lifts['D']}; sensibilidade 180d {lifts['D_180']}).
   Coerente com a causa raiz It03 (53,4% dos primeiros eventos ≤ 90d do signup;
   R1 ≤ 90d = 68,4% da janela — exposição, não perda).
-- **Recorrência, reativação e alto MRR NÃO validam** (0,44/0,41/0,89 ·
-  0,52/0,41/1,29 · 0,56/0,85/0,71) → watchlist é **operational
+- **Recorrência, reativação e alto MRR NÃO validam** ({lifts['A']} ·
+  {lifts['B']} · {lifts['E']}) → watchlist é **operational
   priority/exposure**, nunca score.
 - **Segmentos amplos, uso e suporte não discriminam** (It03 H3–H6) →
   nenhuma ação é desenhada sobre eles.
@@ -949,16 +1191,24 @@ exposure_affected     = Σ winner_mrr(elegíveis) × incidence_90d × redução_
   Σ winner MRR = **{fmt_br_int(onb['mrr_sum'])} US$** (lente estado/exposição).
 - `incidence_90d` = precision pooled da regra D nos cutoffs 90d =
   **{inc['outcomes']}/{inc['n_rule']} = {inc['pooled']:.4f}**
-  (lower {inc['lo']:.4f} / upper {inc['hi']:.4f}).
+  — faixa observada entre cutoffs (min-max de 3 coortes disjuntas):
+  {inc['lo']:.4f}–{inc['hi']:.4f}. **A faixa NÃO é intervalo de confiança**;
+  CI de Wilson 95% do pooled ≈ {inc['wilson_lo']:.3f}–{inc['wilson_hi']:.3f}
+  (derivado separadamente e rotulado como CI). Independência do pooling:
+  overlap = 0 verificado entre as janelas de elegibilidade dos cutoffs
+  (gate G13-disjoint; {inc['n_rule']} contas únicas em t14b).
 - `redução_relativa` = **premissa de planejamento** 10%/20%/30%
   (conservador/base/ambicioso) — NÃO derivada do lift; será testada pelo
-  experimento ACT-01.
+  experimento ACT-01. Componentes exibidos arredondados (incidência a 4
+  casas); re-cálculo a partir dos valores exibidos pode divergir ≤ 0,01%
+  (~25 US$) do valor exibido (tolerância documentada).
 
 {t19_md}
 
 **Honestidade (obrigatória):** eventos ≠ logos ≠ revenue churn (lentes C/B/A
 não intercambiáveis, contrato §4); R1 é exposição contratual, **não é perda**
-(§5); a linha `annualized` é aritmética (4 coortes), **não é forecast**;
+(§5); **nenhuma linha anualizada é apresentada** (removida no pós-gate do
+review 3x: "melhor evitar se confuso", prompt It05);
 nenhum custo monetário é afirmado (CAC/winback não existem na base); ACT-02/03/04
 não têm linha de US$ porque não há estimativa financeira defensável — impacto
 operacional mensurável (coverage, quality, instrumentation) no lugar.
@@ -968,7 +1218,9 @@ operacional mensurável (coverage, quality, instrumentation) no lugar.
 - **Desenho:** rollout gradual por semana de signup, 50/50 tratado/holdout,
   por {EXPERIMENT_QUARTERS} trimestres; outcome = primeiro evento de churn
   (lente C) em 90d; features pré-registradas (mesmas do backtest It04, sem
-  leakage).
+  leakage). O rollout inicia somente após instrumentation readiness (ACT-03,
+  SLA ≤ 30d); o outcome primário (lente C, churn_events) independe de ACT-03,
+  as leading metrics de milestone dependem.
 - **Poder (aproximação normal de 2 proporções; sem dependência extra):**
   N por braço ≈ {n_arms[0]}/{n_arms[1]}/{n_arms[2]} (1/2/4 trimestres) →
   menor efeito detectável a 80% power ≈
@@ -976,10 +1228,29 @@ operacional mensurável (coverage, quality, instrumentation) no lugar.
   relativa. Com o fluxo de ~{inflow['avg']:.0f} signups/trimestre, efeitos
   abaixo de ~{mdes[2]*100:.0f}% **não são detectáveis** em 4 trimestres:
   resultados inconclusivos NÃO são evidência de ausência de efeito.
-- **Regra de decisão pré-registrada:** GO (escala total) se ponto estimado de
-  redução relativa ≥ 10% (piso do cenário conservador) após 4 trimestres;
-  STOP se efeito negativo com CI 95% excluindo 0 após 2 trimestres; senão
-  estende holdout/reescopa.
+- **Poder por cenário (N=136/braço, derivado em runtime):** redução de 10% →
+  ~{powers[0]*100:.0f}%; 20% → ~{powers[1]*100:.0f}%; 30% →
+  ~{powers[2]*100:.0f}%. Um efeito real de 10–30% é, portanto,
+  **frequentemente inconclusivo** com o fluxo atual (MDE ≈ 37%).
+- **P(falso GO por ponto ≥ 10% sob efeito nulo) ≈ {p_false_go*100:.0f}%**
+  (derivado em runtime): o piso de 10% por si dispararia GO por ruído em ~1
+  de 4 experimentos nulos — por isso a regra abaixo exige evidência
+  estatística para escala.
+- **Regra de decisão pré-registrada (3 estados; 1ª decisão [STOP/reescopo] em
+  2 trimestres; decisão de escala em {EXPERIMENT_QUARTERS} trimestres de
+  rollout + 90d de follow-up):**
+  1. **SCALE/GO (eficácia):** redução relativa estimada ≥ 10% (piso
+     operacional preservado) **E** IC95 do efeito exclui 0 na direção
+     favorável, sem guardrail violado → escala total.
+  2. **CONTINUE/LEARN:** ponto estimado favorável e/ou leading metrics
+     melhoram, mas IC95 cruza 0 → NÃO alegar eficácia; estender
+     holdout/ampliar amostra ou janela.
+  3. **STOP/HARM:** efeito adverso com IC95 excluindo 0, ou guardrail
+     crítico falhado (CSAT/escalação) → encerrar/reduzir.
+  O piso de 10% permanece o mínimo operacional de planejamento; a evidência
+  estatística (IC95 excluindo 0) é o que autoriza escala — sem isso, o
+  desfecho honesto é inconclusivo, não ausência de efeito (gates
+  G13-power-scenarios / G13-false-go / G13-decision-rule).
 
 ## 6. Plano de medição (detalhe em `t20_measurement_plan.csv`)
 
@@ -1029,6 +1300,27 @@ de conta/renovação e **não são rotulados como alto risco de churn**.
           "texto do relatório sem claims proibidos (afirmativos)",
           "PASS" if not forbidden_hits else "FAIL",
           f"hits={forbidden_hits or 'nenhum'}")
+
+    # --- G13-decision-rule: a regra de decisão do ACT-01 no relatório é de 3
+    # estados (escala exige IC95 excluindo 0; nunca GO por ponto isolado) ---
+    sec5 = md.split("## 6.")[0]
+    rule_ok = ("SCALE/GO" in sec5 and "CONTINUE/LEARN" in sec5
+               and "STOP/HARM" in sec5
+               and "IC95 do efeito exclui 0" in sec5
+               and "GO (escala total) se ponto estimado" not in sec5)
+    check("G13-decision-rule", "experimento",
+          "regra de decisão ACT-01 em 3 estados (SCALE/GO exige IC95 "
+          "excluindo 0; sem GO por ponto isolado)",
+          "PASS" if rule_ok else "FAIL",
+          f"3 estados={'sim' if rule_ok else 'não'} (GO por ponto isolado "
+          f"{'ausente' if 'GO (escala total) se ponto estimado' not in sec5 else 'presente'})")
+
+    # --- G13-wording-md: seções 1-7 sem "evitad" (zero claim causal) ---
+    ev_hits = [w for w in ("evitados", "evitadas", "evitado") if w in lower]
+    check("G13-wording-md", "honestidade",
+          "seções 1-7 sem 'eventos evitados' (afetados no cenário apenas)",
+          "PASS" if not ev_hits else "FAIL",
+          f"hits={ev_hits or 'nenhum'}")
 
     md += f"""
 ## 10. Gates e validações
@@ -1088,6 +1380,12 @@ def main() -> int:
         t16 = load_csv(T16_PATH, "F10", "t16_watchlist_top20.csv",
                        "t16_watchlist_top20.csv",
                        REQUIRED["t16_watchlist_top20.csv"])
+        t14b = load_csv(T14B_PATH, "F11", "t14b_backtest_detail.csv",
+                        "t14b_backtest_detail.csv",
+                        REQUIRED["t14b_backtest_detail.csv"])
+        t12 = load_csv(T12_PATH, "F12", "t12_reactivation_recurrence.csv",
+                       "t12_reactivation_recurrence.csv",
+                       REQUIRED["t12_reactivation_recurrence.csv"])
 
         for df in (usage, events, subs):
             if "churn_date" in df.columns:
@@ -1112,6 +1410,9 @@ def main() -> int:
         total_exposure = compute_total_exposure(panel)
         wl = compute_watchlist_split(t16)
         quality = compute_data_quality(events, tickets, subs, usage)
+        lifts = compute_lifts(t14)
+        km = compute_km(t12)
+        disjoint = compute_disjointness(t14b, t14)
         scenarios = build_scenarios(onb, inc, inflow)
         t18 = build_prioritized(
             {"events_lo": scenarios[scenarios["scenario"] == "conservador"]
@@ -1122,15 +1423,21 @@ def main() -> int:
              .iloc[0]["expected_exposure_affected_mrr"],
              "exposure_hi": scenarios[scenarios["scenario"] == "ambicioso"]
              .iloc[0]["expected_exposure_affected_mrr"]},
-            onb, wl, quality)
-        t20 = build_measurement_plan(onb, inc)
-        t21 = build_watchlist_split(t16)
+            onb, wl, quality, lifts, km)
+        t20 = build_measurement_plan(onb, inc, km)
+        t21 = build_watchlist_split(t16, lifts)
 
         n_arms = [max(1, int(inflow["avg"] * EXPERIMENT_SPLIT)),
                   max(1, int(inflow["avg"])),
                   max(1, int(inflow["avg"] * EXPERIMENT_QUARTERS
                               * EXPERIMENT_SPLIT))]
         mdes = [mde_for_n(n, inc["pooled"]) for n in n_arms]
+        # Poder por cenário e P(falso GO por ponto) — DERIVADOS em runtime com
+        # o N de decisão (4 trimestres); gates G13-power-scenarios/G13-false-go.
+        decision_n = n_arms[2]
+        powers = [power_for_reduction(inc["pooled"], decision_n, red)
+                  for _, red in REDUCTION_SCENARIOS]
+        p_false_go = prob_go_under_null(inc["pooled"], decision_n, 0.10)
 
         # --- escrita das tabelas (escopo fechado) ---
         t18.to_csv(TABLES_DIR / "t18_actions_prioritized.csv", index=False)
@@ -1141,19 +1448,21 @@ def main() -> int:
 
         # --- gates ---
         run_gates(t14, onb, inc, inflow, total_exposure, wl, quality,
-                  scenarios, t18, t20, t21, t15, charts_before,
+                  scenarios, t18, t20, t21, t15, lifts, km, disjoint,
+                  powers, p_false_go, decision_n, charts_before,
                   written_tables)
 
         md = render_report(onb, inc, inflow, total_exposure, wl, quality,
-                           scenarios, t18, t20, t21, mdes, n_arms,
-                           written_tables)
+                           scenarios, t18, t20, t21, mdes, n_arms, lifts, km,
+                           powers, p_false_go, decision_n, written_tables)
         REPORT_PATH.write_text(md, encoding="utf-8")
     except StructuralError:
         # regrava SEMPRE o relatório (sem stale) e sai sem traceback
         REPORT_PATH.write_text(render_report({}, {}, {}, 0, {}, {},
                                              pd.DataFrame(), pd.DataFrame(),
                                              pd.DataFrame(), pd.DataFrame(),
-                                             [], [], [], structural_fail=True),
+                                             [], [], {}, {}, [], 0.0, 0, [],
+                                             structural_fail=True),
                                encoding="utf-8")
         return 1
 
