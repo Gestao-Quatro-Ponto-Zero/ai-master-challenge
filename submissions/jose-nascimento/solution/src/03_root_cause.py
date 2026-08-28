@@ -15,7 +15,9 @@ Gera, de forma offline e determinística (sem timestamp; ordenações estáveis;
 PNG byte-a-byte estáveis):
     solution/evidence/03_root_cause_report.md
     solution/out/tables/t01..t11*.csv            (auditabilidade)
-    solution/out/charts/a..f_*.png               (4-6 gráficos com significado)
+    solution/out/charts/a..d_*.png            (4 gráficos essenciais; e/f
+                                               substituídos pelas tabelas
+                                               t06/t07/t09 — pruning do gate It04)
 
 Semântica de resultado (mesma família das iterações 01-02):
     - PASS  : check íntegro.
@@ -1339,216 +1341,195 @@ def causality_rows(v: list[dict], a_data: dict, c_data: dict, e_data: dict,
 
 
 # ----------------------------------------------------------------------------
-# Gráficos (4-6, com título/unidade/fonte; PNG byte-a-byte estáveis)
+# Gráficos (4 essenciais; e_support/f_segment substituídos pelas tabelas
+# t06/t07/t09 — pruning do gate It04; PNG byte-a-byte estáveis)
 # ----------------------------------------------------------------------------
+_OKABE = ["#0072B2", "#E69F00", "#009E73", "#D55E00", "#CC79A7",
+          "#56B4E9", "#F0E442", "#000000"]
+
 
 def _style() -> None:
-    plt.rcParams["figure.dpi"] = 110
+    plt.rcParams["figure.dpi"] = 150
+    plt.rcParams["figure.facecolor"] = "white"
+    plt.rcParams["savefig.facecolor"] = "white"
+    plt.rcParams["axes.facecolor"] = "white"
     plt.rcParams["axes.spines.top"] = False
     plt.rcParams["axes.spines.right"] = False
-    plt.rcParams["axes.titlesize"] = 11
-    plt.rcParams["axes.labelsize"] = 9
-    plt.rcParams["legend.fontsize"] = 8
-    plt.rcParams["xtick.labelsize"] = 8
-    plt.rcParams["ytick.labelsize"] = 8
+    plt.rcParams["axes.titlesize"] = 10
+    plt.rcParams["axes.labelsize"] = 8.5
+    plt.rcParams["legend.fontsize"] = 7.5
+    plt.rcParams["xtick.labelsize"] = 7.5
+    plt.rcParams["ytick.labelsize"] = 7.5
+
+
+def _footer(fig, line1: str, line2: str) -> None:
+    """Rodapé em coordenadas de FIGURA (dentro do canvas; 2 linhas). Margens
+    explícitas via subplots_adjust; NUNCA bbox_inches='tight' (que esticava o
+    canvas com texto fora da figura e esmagava o eixo — causa raiz dos
+    findings visuais dos revisores do gate It04)."""
+    fig.text(0.01, 0.02, line1, fontsize=6.5, color="#555555",
+             ha="left", va="bottom")
+    fig.text(0.01, 0.005, line2, fontsize=6.5, color="#555555",
+             ha="left", va="bottom")
 
 
 def chart_a(series: pd.DataFrame, spike: dict) -> str:
-    """Série mensal: primeiros eventos (barras) e taxa por conta elegível (linha)."""
+    """Série mensal: primeiros eventos (barras) e taxa por conta elegível
+    (linha). Headroom de ylim para a anotação do pico ficar DENTRO dos eixos
+    (não cola no título); ticks mensais rotacionados e legíveis."""
     _style()
-    fig, ax1 = plt.subplots(figsize=(8.5, 3.8))
+    fig, ax1 = plt.subplots(figsize=(7.8, 4.4))
+    fig.subplots_adjust(top=0.87, bottom=0.16, left=0.105, right=0.88)
     x = list(range(len(series)))
-    ax1.bar(x, series["first_events"], color="#4c72b0", label="primeiros eventos",
+    ax1.bar(x, series["first_events"], color="#0072B2", label="primeiros eventos",
             width=0.62)
-    ax1.set_xticks(x, series["month"], rotation=60)
+    ax1.set_xticks(x, series["month"], rotation=90, fontsize=6.5, ha="center")
     ax1.set_ylabel("primeiros eventos (n)")
     ax1.set_xlabel("mês")
+    peak = int(series["first_events"].max())
+    ax1.set_ylim(0, peak * 1.18)
+    ax1.set_yticks(range(0, int(peak * 1.18) + 1, 10))  # sem overhang do AutoLocator
     ax2 = ax1.twinx()
-    ax2.plot(x, series["rate_first_events_pct"], color="#c44e52", marker="o",
+    ax2.tick_params(axis="x", labelbottom=False)  # twinx não duplica labels x
+    ax2.plot(x, series["rate_first_events_pct"], color="#D55E00", marker="o",
              ms=3, label="taxa por conta elegível (%)")
     ax2.set_ylabel("taxa (% de contas elegíveis no início do mês)")
     ax2.set_ylim(bottom=0)
+    ax2.set_yticks([0, 5, 10, 15, 20, 25])  # sem overhang do AutoLocator
     if spike["peak_month"] in list(series["month"]):
         i = list(series["month"]).index(spike["peak_month"])
-        ax1.annotate(f"pico {spike['peak_month']}", xy=(i, series["first_events"].iloc[i]),
-                     xytext=(i - 1.4, series["first_events"].iloc[i] + 5),
-                     fontsize=8, color="#c44e52",
-                     arrowprops=dict(arrowstyle="->", color="#c44e52", lw=0.8))
+        v = int(series["first_events"].iloc[i])
+        ax1.annotate(f"pico {spike['peak_month']} ({v})", xy=(i, v),
+                     xytext=(i, v + 0.06 * peak),
+                     fontsize=7.5, color="#D55E00", ha="center",
+                     arrowprops=dict(arrowstyle="->", color="#D55E00", lw=0.7))
     h1, l1 = ax1.get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
-    ax1.legend(h1 + h2, l1 + l2, loc="upper left")
-    ax1.set_title("Eventos de churn por mês e taxa por conta elegível (2023-2024)")
-    ax1.text(0.0, -0.28,
-             "Fonte: data/raw/ravenstack_churn_events.csv + ravenstack_accounts.csv; "
-             "denominador = contas elegíveis no início do mês (contrato §5). "
-             "Gerado por src/03_root_cause.py.", transform=ax1.transAxes,
-             fontsize=7, color="#555555")
-    fig.tight_layout()
+    ax1.legend(h1 + h2, l1 + l2, loc="upper left", framealpha=0.92)
+    ax1.set_title("Eventos de churn por mês e taxa por conta elegível (2023-2024)",
+                  pad=6)
+    _footer(fig,
+            "Fonte: data/raw/ravenstack_churn_events.csv + ravenstack_accounts.csv; "
+            "denominador = contas elegíveis no início do mês (contrato §5).",
+            "Gerado por src/03_root_cause.py.")
     path = CHARTS_DIR / "a_monthly_events_and_rate.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
+    fig.savefig(path, dpi=150)
     plt.close(fig)
     return path.name
 
 
 def chart_b(km_quarter: pd.DataFrame, at_risk: pd.DataFrame) -> str:
-    """Kaplan-Meier por trimestre de signup (censura no corte; Q4-2024 notada)."""
+    """Kaplan-Meier por trimestre de signup (censura no corte; Q4-2024 notada).
+    Figura ~10x6 com eixo íntegro 0-1; legenda compacta (2 colunas) em faixa
+    própria ABAIXO dos eixos — sem sobrepor título, curvas ou rodapé."""
     _style()
-    fig, ax = plt.subplots(figsize=(8.5, 4.4))
-    colors = ["#4c72b0", "#dd8452", "#55a868", "#c44e52", "#8172b3",
-              "#937860", "#da8bc3", "#8c8c8c"]
     cohorts = sorted(km_quarter["cohort"].unique())
+    fig, ax = plt.subplots(figsize=(10.0, 6.0))
+    fig.subplots_adjust(top=0.90, bottom=0.30, left=0.075, right=0.975)
     for i, q in enumerate(cohorts):
         g = at_risk[at_risk["cohort"] == q].sort_values("t")
-        ax.step(g["t"], g["survival"], where="post", color=colors[i % len(colors)],
+        ax.step(g["t"], g["survival"], where="post",
+                color=_OKABE[i % len(_OKABE)], lw=1.4,
                 label=f"{q} (n={int(km_quarter.loc[km_quarter['cohort'] == q, 'n_accounts'].iloc[0])})")
         last = g.iloc[-1]
-        ax.plot([last["t"]], [last["survival"]], "o", color=colors[i % len(colors)], ms=3)
+        ax.plot([last["t"]], [last["survival"]], "o",
+                color=_OKABE[i % len(_OKABE)], ms=3)
     ax.set_xlabel("meses desde o signup (0 = mês do signup)")
     ax.set_ylabel("sobrevivência (sem primeiro evento) — KM")
-    # eixo íntegro 0-1: nenhuma curva é cortada (2024Q2 chega a 0,3077 em t=6)
-    ax.set_ylim(0.0, 1.02)
+    ax.set_ylim(0.0, 1.02)          # eixo íntegro 0-1: nenhuma curva cortada
     ax.set_xlim(-0.5, 24.5)
-    # legenda acima dos eixos: com eixo 0-1, a curva 2024Q2 (0,31) cruzaria a
-    # legenda inferior esquerda — posição fora da área de plotagem
-    ax.legend(title="coorte (trimestre)", loc="lower center",
-              bbox_to_anchor=(0.5, 1.01), ncol=4, fontsize=7, title_fontsize=8)
-    ax.set_title("Tempo até o primeiro evento por coorte de signup (Kaplan-Meier, "
-                 "censura em 2024-12-31)")
-    ax.text(0.0, -0.30,
+    ax.set_xticks([0, 6, 12, 18, 24])  # marcos semestrais (evita overhang -5/25)
+    ax.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])  # sem overhang do AutoLocator
+    ax.set_title("Tempo até o primeiro evento por coorte de signup "
+                 "(Kaplan-Meier, censura em 2024-12-31)", pad=8)
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.235),
+               ncol=2, fontsize=7.5, title="coorte (trimestre)",
+               title_fontsize=8, frameon=True, handlelength=1.4,
+               columnspacing=1.4)
+    _footer(fig,
             "Fonte: data/raw/ravenstack_churn_events.csv + ravenstack_accounts.csv. "
             "Censura: contas sem evento observadas até 2024-12-31; Q4-2024 tem <= 3 "
-            "meses observáveis — não comparar com janela completa. "
-            "Gerado por src/03_root_cause.py.", transform=ax.transAxes,
-            fontsize=7, color="#555555")
-    fig.tight_layout()
+            "meses observáveis — não comparar com janela completa.",
+            "Gerado por src/03_root_cause.py.")
     path = CHARTS_DIR / "b_km_by_signup_quarter.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
+    fig.savefig(path, dpi=150)
     plt.close(fig)
     return path.name
 
 
 def chart_c(exposure: pd.DataFrame, buckets: pd.DataFrame) -> str:
-    """Exposição bruta R1 por faixa de duração de assinatura (share %)."""
+    """Exposição bruta R1 por faixa de duração — barras HORIZONTAIS em ordem de
+    duração (0d, 1-30d, 31-60d, 61-90d, 91-180d, 181-365d, >365d), com % e US$
+    legíveis ao lado de cada barra; nada sobreposto."""
     _style()
-    fig, ax = plt.subplots(figsize=(8.5, 3.8))
-    b = buckets.sort_values("bucket")
-    ax.bar(b["bucket"], b["mrr_sum"], color="#55a868")
+    order = ["0d", "1-30d", "31-60d", "61-90d", "91-180d", "181-365d", ">365d"]
+    b = buckets.set_index("bucket").loc[order].reset_index()
+    fig, ax = plt.subplots(figsize=(7.8, 4.2))
+    fig.subplots_adjust(top=0.87, bottom=0.15, left=0.14, right=0.965)
+    y = list(range(len(b)))
+    ax.barh(y, b["mrr_sum"], color="#009E73", height=0.62)
     for i, (_, r) in enumerate(b.iterrows()):
-        ax.text(i, r["mrr_sum"] + 12000, f"{r['share_of_r1_pct']:.1f}%",
-                ha="center", fontsize=8)
-    ax.set_xlabel("duração da assinatura encerrada (dias)")
-    ax.set_ylabel("gross ending MRR (R1, US$)")
-    ax.set_title("Exposição contratual bruta precoce (R1) por duração de assinatura")
-    ax.text(0.0, -0.28,
+        ax.text(r["mrr_sum"] + 9000, i,
+                f"{r['share_of_r1_pct']:.1f}% · {r['mrr_sum']:,}".replace(",", "."),
+                va="center", fontsize=7.5)
+    ax.set_yticks(y, b["bucket"].tolist(), fontsize=8)
+    ax.set_xlim(0, b["mrr_sum"].max() * 1.30)
+    ax.set_xticks([0, 100000, 200000, 300000, 400000, 500000, 600000])
+    ax.set_xlabel("gross ending MRR (R1, US$)")
+    ax.set_ylabel("duração da assinatura encerrada (dias)")
+    ax.set_title("Exposição contratual bruta precoce (R1) por duração de "
+                 "assinatura", pad=6)
+    ax.grid(axis="x", linestyle="-", linewidth=0.4, alpha=0.35, color="#b0b0b0")
+    ax.set_axisbelow(True)
+    _footer(fig,
             "Fonte: data/raw/ravenstack_subscriptions.csv (end_date presente). "
             "R1 = exposição, NÃO receita perdida (contrato §5); cenários "
-            "CAC-equivalent na tabela t03c_cac_equivalent.csv. "
-            "Gerado por src/03_root_cause.py.",
-            transform=ax.transAxes, fontsize=7, color="#555555")
-    fig.tight_layout()
+            "CAC-equivalent na tabela t03c_cac_equivalent.csv.",
+            "Gerado por src/03_root_cause.py.")
     path = CHARTS_DIR / "c_onboarding_exposure_by_duration.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
+    fig.savefig(path, dpi=150)
     plt.close(fig)
     return path.name
 
 
 def chart_d(usage_monthly: pd.DataFrame) -> str:
-    """Volume total vs intensidade por conta ativa (painel duplo)."""
+    """Volume total vs intensidade por conta ativa (painel duplo; escalas
+    claras; rodapé compacto em 2 linhas dentro do canvas)."""
     _style()
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.5, 3.8))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10.4, 4.1))
+    fig.subplots_adjust(top=0.85, bottom=0.17, left=0.07, right=0.985,
+                        wspace=0.24)
     d = usage_monthly
-    ax1.bar(list(range(len(d))), d["rows_raw_primary"], color="#4c72b0",
+    ax1.bar(list(range(len(d))), d["rows_raw_primary"], color="#0072B2",
             label="bruto (sem pré-signup)")
-    ax1.bar(list(range(len(d))), d["rows_aligned_primary"], color="#dd8452",
+    ax1.bar(list(range(len(d))), d["rows_aligned_primary"], color="#E69F00",
             label="alinhado [start,end]")
-    ax1.set_xticks(list(range(len(d))), d["month"], rotation=60, fontsize=7)
+    ax1.set_xticks(list(range(len(d))), d["month"], rotation=90, fontsize=6.5,
+                   ha="center")
     ax1.set_ylabel("linhas de uso (n)")
     ax1.set_title("Volume total mensal de uso")
-    ax1.legend()
+    ax1.legend(fontsize=7)
     ax2.plot(list(range(len(d))), d["rows_raw_primary_per_active"], marker="o",
-             ms=3, color="#4c72b0", label="bruto / conta ativa")
+             ms=3, color="#0072B2", label="bruto / conta ativa")
     ax2.plot(list(range(len(d))), d["rows_aligned_primary_per_active"], marker="o",
-             ms=3, color="#dd8452", label="alinhado / conta ativa")
-    ax2.set_xticks(list(range(len(d))), d["month"], rotation=60, fontsize=7)
+             ms=3, color="#E69F00", label="alinhado / conta ativa")
+    ax2.set_xticks(list(range(len(d))), d["month"], rotation=90, fontsize=6.5,
+                   ha="center")
     ax2.set_ylabel("linhas por conta ativa (n)")
     ax2.set_title("Intensidade mensal por conta ativa")
-    ax2.legend()
-    fig.suptitle("Uso: volume cresce vs intensidade por conta (2023-2024)")
-    fig.text(0.01, -0.02,
-             "Fonte: data/raw/ravenstack_feature_usage.csv + subscriptions + accounts; "
-             "primário exclui uso anterior ao signup; conta ativa = painel account_month "
-             "(Iteração 02). Gerado por src/03_root_cause.py.",
-             fontsize=7, color="#555555")
-    fig.tight_layout()
+    ax2.legend(fontsize=7)
+    fig.suptitle("Uso: volume cresce vs intensidade por conta (2023-2024)",
+                 fontsize=11, y=0.97)
+    _footer(fig,
+            "Fonte: data/raw/ravenstack_feature_usage.csv + subscriptions + "
+            "accounts; primário exclui uso anterior ao signup; conta ativa = "
+            "painel account_month (Iteração 02).",
+            "Gerado por src/03_root_cause.py.")
     path = CHARTS_DIR / "d_usage_volume_vs_intensity.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
+    fig.savefig(path, dpi=150)
     plt.close(fig)
     return path.name
-
-
-def chart_e(pooled: dict) -> str:
-    """Sinais de suporte pré-evento: churn vs controle (pooled por mês)."""
-    _style()
-    c_ = pooled["churn"]
-    ct_ = pooled["control"]
-    labels = ["tickets / conta", "escalação (%)", "CSAT médio"]
-    churn_vals = [c_["tickets_per_account_month"], c_["esc_rate_pct"], c_["csat_mean"]]
-    ctrl_vals = [ct_["tickets_per_account_month"], ct_["esc_rate_pct"], ct_["csat_mean"]]
-    x = list(range(len(labels)))
-    w = 0.34
-    fig, ax = plt.subplots(figsize=(8.5, 3.8))
-    ax.bar([i - w / 2 for i in x], churn_vals, width=w, color="#c44e52",
-           label=f"churn (primeiro evento no mês; n={c_['n_account_month']} contas-pool)")
-    ax.bar([i + w / 2 for i in x], ctrl_vals, width=w, color="#4c72b0",
-           label=f"controle elegível (n={ct_['n_account_month']} contas-pool)")
-    ax.set_xticks(x, labels)
-    ax.set_ylabel("valor médio (janela de 90 dias antes da data índice)")
-    ax.set_title("Sinais de suporte pré-evento: churn vs controle (2023-04..2024-12)")
-    ax.legend()
-    ax.text(0.0, -0.28,
-            "Fonte: data/raw/ravenstack_support_tickets.csv; janela W(m) = [dia 1 de m "
-            "- 90d, dia 1 de m); CSAT só de tickets fechados com nota (contrato §10); "
-            "tickets pré-signup excluídos. Gerado por src/03_root_cause.py.",
-            transform=ax.transAxes, fontsize=7, color="#555555")
-    fig.tight_layout()
-    path = CHARTS_DIR / "e_support_churn_vs_control.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
-    plt.close(fig)
-    return path.name
-
-
-def chart_f(segments: pd.DataFrame, global_rate: float) -> str:
-    """Taxa de primeiro evento por segmento vs taxa global (4 painéis)."""
-    _style()
-    types = [("industry", "indústria"), ("referral_source", "canal de aquisição"),
-             ("plan_tier", "plano"), ("is_trial_s", "trial")]
-    fig, axes = plt.subplots(2, 2, figsize=(9.5, 6.0))
-    for ax, (col, label) in zip(axes.flat, types):
-        g = segments[segments["segment_type"] == col].sort_values("rate_pct",
-                                                                  ascending=False)
-        ax.bar(g["segment_value"], g["rate_pct"], color="#8172b3")
-        ax.axhline(global_rate, color="#c44e52", ls="--", lw=1,
-                   label=f"global {global_rate:.1f}%")
-        for i, (_, r) in enumerate(g.iterrows()):
-            ax.text(i, r["rate_pct"] + 1.5, f"n={r['n_accounts']}",
-                    ha="center", fontsize=7)
-        ax.set_title(f"Taxa de primeiro evento por {label}")
-        ax.set_ylabel("taxa (% de contas)")
-        ax.set_ylim(0, max(float(g["rate_pct"].max()) * 1.35, 100))
-        ax.legend(fontsize=7)
-        ax.tick_params(axis="x", rotation=20, labelsize=7)
-    fig.suptitle("Churn por segmento com denominador (N de contas) e taxa global")
-    fig.text(0.01, -0.02,
-             "Fonte: data/raw/ravenstack_accounts.csv + churn_events; taxa = contas com "
-             "primeiro evento / contas do segmento; flags N_BAIXO/RATE_FLAG/MRR_FLAG na "
-             "tabela t07. Gerado por src/03_root_cause.py.",
-             fontsize=7, color="#555555")
-    fig.tight_layout()
-    path = CHARTS_DIR / "f_segment_first_event_rates.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
-    plt.close(fig)
-    return path.name
-
 
 # ----------------------------------------------------------------------------
 # Render do relatório (determinístico)
@@ -2055,24 +2036,48 @@ def main() -> int:
     reasons["reasons"].to_csv(TABLES_DIR / "t08_reasons.csv", index=False)
     causal.to_csv(TABLES_DIR / "t09_causality.csv", index=False)
     pd.DataFrame(v).to_csv(TABLES_DIR / "t10_hypothesis_verdicts.csv", index=False)
-    tables = sorted(TABLES_DIR.glob("t*.csv"))
+    # tabelas DESTA iteração (manifesto explícito — não mistura com t11..t17 do
+    # It04 no mesmo diretório; mesmo padrão do 04_lifecycle_watchlist.py)
+    it03_table_names = [
+        "t01_monthly_series.csv", "t02_cohort_km.csv", "t02a_cohort_km_month.csv",
+        "t02b_cohort_km_at_risk.csv", "t03_onboarding_buckets.csv",
+        "t03b_onboarding_accounts.csv", "t03c_cac_equivalent.csv",
+        "t05_usage_monthly.csv", "t06_support_monthly.csv", "t07_segments.csv",
+        "t08_reasons.csv", "t09_causality.csv", "t10_hypothesis_verdicts.csv",
+    ]
+    tables = [TABLES_DIR / n for n in it03_table_names]
 
-    # --- gráficos ---
+    # --- gráficos (4 essenciais; manifesto explícito — e_support/f_segment
+    # substituídos pelas tabelas t06/t07/t09, pruning do gate It04; qualquer
+    # PNG pruned que reaparecer falha o check) ---
+    it03_chart_names = [
+        "a_monthly_events_and_rate.png",
+        "b_km_by_signup_quarter.png",
+        "c_onboarding_exposure_by_duration.png",
+        "d_usage_volume_vs_intensity.png",
+    ]
     chart_names = [
         chart_a(series, spike),
         chart_b(cohort["quarter"], cohort["at_risk"]),
         chart_c(onboard["exposure"], onboard["buckets"]),
         chart_d(usage["monthly"]),
-        chart_e(support["pooled"]),
-        chart_f(segments["table"], segments["global_rate"]),
     ]
-    charts = sorted(CHARTS_DIR.glob("*.png"))
-    if len(charts) != len(chart_names):
+    charts = [CHARTS_DIR / n for n in it03_chart_names]
+    missing_c = [c.name for c in charts if not c.exists() or c.stat().st_size == 0]
+    stale_c = sorted(
+        p.name for p in CHARTS_DIR.glob("*.png")
+        if p.name in ("e_support_churn_vs_control.png",
+                      "f_segment_first_event_rates.png"))
+    if missing_c or stale_c:
         check("C01-charts", "gráficos", "número de gráficos gerado",
-              "FAIL", f"esperado {len(chart_names)}, gerado {len(charts)}")
+              "FAIL",
+              f"esperado {len(it03_chart_names)}, "
+              f"ausentes/vazios={missing_c or 'nenhuma'}; "
+              f"pruned reapareceram={stale_c or 'nenhuma'}")
     else:
         check("C01-charts", "gráficos", "número de gráficos gerado",
-              "PASS", f"{len(charts)} PNGs")
+              "PASS",
+              f"{len(charts)} PNGs (manifesto: {', '.join(it03_chart_names)})")
 
     # --- gates + relatório ---
     run_gates(a_data, cohort, onboard, usage, support, segments, reasons,

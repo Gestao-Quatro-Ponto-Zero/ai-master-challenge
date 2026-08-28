@@ -7,7 +7,7 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 - **Hipóteses pré-registradas ANTES da análise:** `process-log/hypotheses/iteration-03-root-cause-hypotheses.md` (H1–H10, com thresholds fixados antes de ver os resultados; vereditos aplicados mecanicamente na seção 10).
 - **Contrato analítico (Iteração 02):** `solution/docs/analytical-contract.md` — lente de eventos (C) para diagnóstico; lente de assinaturas para receita (R1 gross ending MRR = exposição; R2 net account-state MRR loss); painel account-month (`data/processed/account_month.csv`) como estado/risco; anti-leakage (features <= data índice; CSAT/resolução só com tickets fechados); variantes bruta vs alinhada de uso; censura no corte 2024-12-31.
 - **Escopo:** NENHUMA recomendação (Iteração 05), NENHUMA watchlist (Iteração 04), NENHUM modelo preditivo/ML.
-- **Saídas:** este relatório; tabelas em `solution/out/tables/` (13 arquivos); gráficos em `solution/out/charts/` (6 arquivos).
+- **Saídas:** este relatório; tabelas em `solution/out/tables/` (13 arquivos); gráficos em `solution/out/charts/` (4 arquivos).
 
 ## 2. Série mensal 2023-2024 e decomposição do pico
 
@@ -132,7 +132,7 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 | F01-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | arquivo presente e carregável | **PASS** | 143597 bytes, CSV parseado (2000 registros) |
 | S01-ravenstack_support_tickets.csv | ravenstack_support_tickets.csv | colunas mínimas desta iteração presentes | **PASS** | 7 colunas exigidas presentes |
 | S02-panel | account_month.csv | colunas mínimas do painel presentes | **PASS** | 13 colunas exigidas presentes (5807 linhas) |
-| C01-charts | gráficos | número de gráficos gerado | **PASS** | 6 PNGs |
+| C01-charts | gráficos | número de gráficos gerado | **PASS** | 4 PNGs (manifesto: a_monthly_events_and_rate.png, b_km_by_signup_quarter.png, c_onboarding_exposure_by_duration.png, d_usage_volume_vs_intensity.png) |
 | G1-events | série mensal | eventos totais/primeiros reconciliam a churn_events e ao painel | **PASS** | eventos=600 (fonte 600); primeiros=352 (contas com evento 352); painel=600 |
 | G2-r1 | lente de receita bruta | R1 gross ending MRR e contagem reconciliam ao painel/contrato | **PASS** | R1=1179139 (contrato: 1.179.139); assinaturas=486 (contrato: 486) |
 | G3-r2 | lente de estado (R2) | R2 churn-to-inactive + active contraction reconciliam ao contrato | **PASS** | churn-to-inactive=18507 (contrato 18.507); contraction=150817 (contrato 150.817); net=169324 (contrato 169.324) |

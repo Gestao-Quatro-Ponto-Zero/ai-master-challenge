@@ -6,5 +6,5 @@ eventos,reactivation_flag_accounts,contas com flag de reativação,55
 estado (painel),activation_gaps,transições inactive->active = gap de ativação,279
 estado (painel),returns,transições inactive->active = retorno real,2
 estado (painel),full_cycles,ciclos reais active->inactive->active,2
-estado (painel),active_to_inactive,A-0baac2 em 2024-09,winner_mrr 0
-estado (painel),active_to_inactive,A-180abf em 2023-11,winner_mrr 0
+estado (painel),active_to_inactive,A-0baac2 em 2024-09,winner_mrr 0 (mês anterior: 5771 — R2)
+estado (painel),active_to_inactive,A-180abf em 2023-11,winner_mrr 0 (mês anterior: 12736 — R2)

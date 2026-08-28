@@ -5,24 +5,24 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 ## 1. Metodologia
 
 - **Contrato analítico (It02):** `solution/docs/analytical-contract.md` — eventos ≠ subscriptions ≠ snapshot (lentes C/B/A); winner = estado/exposição (§6); gross ending MRR = exposição, não receita perdida (§5); anti-leakage: features <= data índice, targets nunca em features (§8); censura no corte 2024-12-31.
-- **Regras pré-especificadas ANTES dos resultados:** `process-log/decisions/iteration-04-watchlist-decisions.md` (D4: regras do backtest com thresholds fixos; D6: composição da watchlist; D8: nomenclatura proporcional ao lift). Nenhum threshold foi ajustado após ver os números.
+- **Regras pré-especificadas ANTES dos resultados:** `process-log/decisions/iteration-04-watchlist-decisions.md` (D4: regras do backtest com thresholds fixos; D6: composição da watchlist; D8: nomenclatura proporcional ao lift). Nenhum threshold foi ajustado após ver os números. **Nota de transparência (registro honesto):** o arquivo de decisões foi commitado no MESMO commit do código e dos outputs (`adbbad7`) — a cronologia git não prova a separação temporal; a pré-especificação é atestada pelo conteúdo interno (números de exploração que divergem dos finais, ex.: KM 0,72/0,64 vs 0,653/0,476) e por auto-relato do executor (a prática It03 de commitar decisões antes do código é retomada nas It05+).
 - **Escopo:** NENHUMA recomendação/ROI (It05), NENHUM modelo preditivo/ML, nenhum score somando pesos sem validação.
-- **Saídas:** este relatório; tabelas em `solution/out/tables/` (9 arquivos); gráficos em `solution/out/charts/` (4 arquivos).
+- **Saídas:** este relatório; tabelas em `solution/out/tables/` (9 arquivos); gráficos em `solution/out/charts/` (2 arquivos).
 
 ## 2. Recorrência de eventos (lente C — histórico, NÃO predição)
 
 - Eventos totais: **600**; contas com >= 1 evento: **352** de 500.
 - Distribuição por conta (0/1/2/3/4/5 eventos): 0 / 177 / 116 / 47 / 10 / 2 contas. Máximo: **5** eventos.
-- **Recorrência:** 175 contas com >= 2 eventos; 59 com >= 3. Concentração: **423 de 600 eventos (70.5%)** vêm das contas com >= 2 eventos — 175 contas concentram 70,5% dos episódios.
+- **Recorrência:** 175 contas com >= 2 eventos; 59 com >= 3. Concentração: **423 de 600 eventos (70.5%)** vêm das contas com >= 2 eventos — 175 contas concentram 70.5% dos episódios.
 - Gaps entre eventos consecutivos da mesma conta: n=248, mediana **58 dias**, média 102.06; 148 gaps (59.7%) <= 90d. Este é o espaçamento observado ENTRE eventos — não é uma predição do próximo evento (ver backtest, seção 6: a regra de recorrência NÃO tem lift).
-- **Exposição dessas contas (lentes separadas, contrato §5):** R1 gross ending MRR das 175 contas multi-evento = **383038** (32.5% do R1 da janela 1.179.139) — exposição contratual, NÃO receita perdida; winner atual (estado) dessas contas = **1245634**/mês. As duas lentes medem coisas diferentes e não se somam.
+- **Exposição dessas contas (lentes separadas, contrato §5):** R1 gross ending MRR das 175 contas multi-evento = **383038** (32.5% do R1 da janela 1179139) — exposição contratual, NÃO receita perdida; winner atual (estado) dessas contas = **1245634**/mês. As duas lentes medem coisas diferentes e não se somam.
 
 ## 3. Reativação marcada (`is_reactivation`) — sequência temporal com censura
 
 - Flags: **61** em **55** contas (confirmado: 61 flags / 55 contas).
 - **26** flags são o PRIMEIRO evento da conta (sem evento anterior na janela 2023-2024): a flag marca 'retorno' no dataset sem evento anterior observável — nuance estrutural, não silenciada.
 - Episódios com evento anterior: 35 (gap mediano 45 dias).
-- Próximo evento após a reativação: observado em 24 episódios (gap mediano 53 dias; média 88); **37 episódios sem próximo evento observado** — NÃO são 'sucesso de reativação': a maioria das reativações é recente (26 flags em out-dez/2024) e a janela termina no corte (censura).
+- Próximo evento após a reativação: observado em 24 episódios (gap mediano 53 dias; média 88); **37 episódios sem próximo evento observado** — NÃO são 'sucesso de reativação': 26 de 61 flags (42.6%) ocorrem em out-dez/2024 (parcela substancial, NÃO maioria) e a janela termina no corte (censura). Entre as censuradas (37 episódios), a maioria é recente (20 de 37 = 54.1%) em out-dez/2024 — a censura concentra-se nos episódios mais recentes.
 - **Follow-up explícito (denominador declarado):**
 
 | Janela | Episódios com follow-up >= janela | Próximo evento dentro da janela | Taxa |
@@ -31,12 +31,12 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | <= 90d | 35 | 10 | 28.6% |
 | <= 180d | 20 | 7 | 35.0% |
 
-- **Kaplan-Meier (tempo até o próximo evento após reativação; censura no corte):** sobrevivência em 90d = **0.653** (ou seja, ≈ 35% dos episódios têm próximo evento <= 90d); em 180d = 0.476; mediana = **187 dias** (alcançada na janela). A taxa observada (24/61 = 39,3%) SUBestima o retorno por censura — e nenhuma taxa aqui é 'receita recuperada': reativação é episódio de evento, sem ligação demonstrável com receita (contrato §5).
+- **Kaplan-Meier (tempo até o próximo evento após reativação; censura no corte):** sobrevivência em 90d = **0.653** (ou seja, ≈ 35% dos episódios têm próximo evento <= 90d); em 180d = 0.476; mediana = **187 dias** (alcançada na janela). A taxa observada (24/61 = 39.3%) SUBestima o retorno por censura — e nenhuma taxa aqui é 'receita recuperada': reativação é episódio de evento, sem ligação demonstrável com receita (contrato §5).
 - **Exposição das contas reativadas (lentes separadas):** R1 das 55 contas com flag = **124461** (10.6% do R1) — exposição contratual, NÃO receita recuperada pela reativação; winner atual = **349577**/mês (estado).
 
 ## 4. Ciclos reais de estado (painel account-month; lente B)
 
-- Transições `active→inactive` no painel: **2** (contrato R2: churn-to-inactive = 18.507 em exatamente essas 2 transições).
+- Transições `active→inactive` no painel: **2** (contrato R2: churn-to-inactive = 18507 em exatamente essas 2 transições).
 - Transições `inactive→active`: **281**, das quais **279** são o gap inicial signup→primeira assinatura ativa (ex.: A-019782 signup 2023-04, primeira assinatura ativa 2023-06) e **2** são retornos reais após inatividade.
 - **Ciclos completos active→inactive→active: 2 contas** (A-0baac2, A-180abf). Detalhe: A-180abf (inativa nov/2023, ativa desde jan/2024; 5 eventos, nenhum flag de reativação) e A-0baac2 (inativa set/2024 — sub encerrada 2024-09-13 —, ativa desde out/2024; 4 eventos, nenhum flag de reativação).
 - **Comparação honesta das lentes:** 175 contas com >= 2 eventos (recorrência) ≠ 55 contas com flag de reativação (evento) ≠ 2 contas com ciclo real de estado (assinatura). Nenhuma dessas contagens é intercambiável: 175 multi-evento NÃO são 175 contas que morreram/reviveram — o estado de assinatura mudou de ativo→inativo apenas 2 vezes em toda a janela.
@@ -45,7 +45,7 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 ## 5. Jornada/valor: `lifecycle_value_proxy` e exposição atual
 
 - **Definição (D2):** `lifecycle_value_proxy` = soma do `winner_mrr` mensal do painel account-month até o cutoff (1 valor por account×mês; sem dupla contagem de assinaturas sobrepostas). **PROXY operacional, não receita GAAP** e não receita recuperada.
-- Totais: Σ proxy (janela) = **28.766.224** (= Σ winner do painel, contrato It02); current winner MRR no corte (2024-12) = **3.668.852** (500 contas ativas por estado — ver limitações, seção 10).
+- Totais: Σ proxy (janela) = **28766224** (= Σ winner do painel, contrato It02); current winner MRR no corte (2024-12) = **3668852** (500 contas ativas por estado — ver limitações, seção 10).
 - **Top-20 por current MRR vs top-20 por lifecycle proxy:** overlap = **7 contas** (Jaccard 0.21); correlação de Spearman entre as dimensões = **0.575**. Rank shifts >= 3 posições entre as duas listas (contas compartilhadas):
 
 | Conta | Rank current | Rank lifecycle | Shift |
@@ -56,7 +56,7 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | A-977ca0 | 15 | 2 | +13 |
 | A-aa9511 | 9 | 6 | +3 |
 
-- **Viés declarado:** o proxy acumula ao longo do tenure → favorece contas antigas (ex.: A-a8d89d, 15.522/mês atuais, 201.786 de jornada, tenure 389d — top-20 da jornada, fora do top-20 atual); o MRR atual favorece contas novas de alto valor (ex.: A-c70870, 33.830/mês, jornada 34.419, tenure 70d). **As duas dimensões se complementam; nenhuma substitui a outra.**
+- **Viés declarado:** o proxy acumula ao longo do tenure → favorece contas antigas (ex.: A-a8d89d, 15522/mês atuais, 201786 de jornada, tenure 389d — top-20 da jornada, fora do top-20 atual); o MRR atual favorece contas novas de alto valor (ex.: A-c70870, 33830/mês, jornada 34419, tenure 70d). **As duas dimensões se complementam; nenhuma substitui a outra.**
 
 ## 6. Backtest point-in-time (sem ML; regras pré-especificadas em D4)
 
@@ -91,7 +91,7 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | R_I E e (A|B|C) | 0.31 | 0.72 | 0.62 | 15; 28; 38 | NAO |
 
 *Critério pré-registrado (D4): lift > 1,15 nos TRÊS cutoffs de 90d com N >= 25.
-- **Leitura:** a única regra com lift consistente é **R_D (onboarding, tenure <= 90d)**: 1,57 / 1,56 / 1,83 (precision 0,34–0,54; a base inteira tem taxa de evento em 90d de 0,22–0,30). **Recorrência (R_A: 0,44/0,41/0,89), reativação (R_B: 0,52/0,41/1,29 — lift apenas no período do spike, inconsistente) e alto MRR (R_E: 0,56/0,85/0,71) NÃO validam**; evento recente (R_C: 0,74/0,63/1,01) também não. A sensibilidade de 180d confirma: somente R_D tem lift (1,26/1,51); as demais ficam <= 1,05.
+- **Leitura:** a única regra com lift consistente é **R_D (onboarding, tenure <= 90d)**: 1,57/1,56/1,83 (precision 0.34–0.54; a base inteira tem taxa de evento em 90d de 0.22–0.30). **Recorrência (R_A: 0,44/0,41/0,89), reativação (R_B: 0,52/0,41/1,29 — lift apenas no período do spike, inconsistente) e alto MRR (R_E: 0,56/0,85/0,71) NÃO validam**; evento recente (R_C: 0,74/0,63/1,01) também não. A sensibilidade de 180d confirma: somente R_D tem lift consistente (1,26/1,51); as demais ficam <= 1,05 **com o filtro pré-registrado N >= 25 (D4)** — sem esse filtro há exceções aparentes e instáveis (N < 25, cutoff 2024-06-30): R_B 1,05 (N=20); R_G 1,36 (N=12); R_H 1,61 (N=16) — abaixo do N mínimo da regra D4, portanto não validam.
 - **Consequência (D8):** NÃO existe score de risco de churn com validação temporal nesta base. A watchlist abaixo é nomeada **operational priority/exposure**: ordenação por exposição (winner MRR) + evidência (onboarding validado; recência para ação de CS), com cada linha rotulada pelo seu sinal. Recorrência e reativação permanecem como associações históricas descritas nas seções 2–3, nunca como preditores.
 
 ## 7. Segmentos de atenção (estados/jornadas; N e US$)
@@ -99,8 +99,8 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | Segmento | N | Current MRR (US$) | Lifecycle proxy (US$) | Taxa evento (hist.) | Taxa evento recente | Evidência de backtest | Incerteza | Rationale |
 |---|---|---|---|---|---|---|---|---|
 | S1 Onboarding (tenure<=90d) | 80 | 621981 | 1026824 | 0.675 | 0.675 | sinal VALIDADO no backtest (regra D: lift 1,57/1,56/1,83 nos cutoffs 90d) | intervalos largos (N pequeno); censura no corte | estado de jornada; mecanismo It03 H1/H8 (churn precoce de coortes novas) |
-| S2 Repeat-event (>=2 eventos) | 175 | 1245634 | 9821516 | 1.000 | 0.629 | regra A: lift 0,44/0,41/0,89 — SEM lift consistente; associação histórica | intervalos largos (N pequeno); censura no corte | concentração de eventos (70,5% dos eventos vêm de 175 contas); recorrência descreve histórico, não prediz próximo evento |
-| S3 Reativacao recente (flag out-dez/2024) | 25 | 179256 | 1321045 | 1.000 | 1.000 | regras B/G: lift 0,52/0,40/1,30 — inconsistente; KM 90d = 0,653 (35% dos episódios com próximo evento <=90d), mediana 187d, censura declarada | intervalos largos (N pequeno); censura no corte; 26 das 61 flags são o 1º evento da conta | episódio de evento marcado is_reactivation; NÃO é ciclo de estado; subconjunto de S4 (declarado) |
+| S2 Repeat-event (>=2 eventos) | 175 | 1245634 | 9821516 | 1.000 | 0.629 | regra A: lift 0,44/0,41/0,89 — SEM lift consistente; associação histórica | intervalos largos (N pequeno); censura no corte | concentração de eventos (70.5% dos eventos vêm de 175 contas); recorrência descreve histórico, não prediz próximo evento |
+| S3 Reativacao recente (flag out-dez/2024) | 25 | 179256 | 1321045 | 1.000 | 1.000 | regra B: lift 0,52/0,41/1,29 — inconsistente (lift apenas no spike); KM 90d = 0.653 (35% dos episódios com próximo evento <=90d), mediana 187d, censura declarada | intervalos largos (N pequeno); censura no corte; 26 das 61 flags são o 1º evento da conta | episódio de evento marcado is_reactivation; NÃO é ciclo de estado; subconjunto de S4 (declarado) |
 | S4 Evento recente (ultimo evento<=90d) | 178 | 1299245 | 7524526 | 1.000 | 1.000 | regra C: lift 0,74/0,63/1,01 — SEM lift; janela acionável de CS | intervalos largos (N pequeno); censura no corte | último episódio de churn em out-dez/2024; acionabilidade operacional, não predição |
 | S5 Alto valor (winner>=P75) | 130 | 1780851 | 13105611 | 0.692 | 0.346 | regra E: lift 0,56/0,85/0,71 — SEM lift; segmento de exposição, não risco | intervalos largos (N pequeno); censura no corte | exposição atual (winner MRR >= P75); proteção de receita; 130 contas (empates no quantil; 125 esperadas) |
 
@@ -191,7 +191,7 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | G6b-leak-2024-09-30-90 | anti-leakage | features do cutoff 2024-09-30 (horizonte 90d) usam apenas dados <= cutoff | PASS | máx churn_date em features=2024-09-30 00:00:00; máx end_date=2024-09-30 00:00:00; cutoff=2024-09-30 |
 | G6b-leak-2024-03-31-180 | anti-leakage | features do cutoff 2024-03-31 (horizonte 180d) usam apenas dados <= cutoff | PASS | máx churn_date em features=2024-03-31 00:00:00; máx end_date=2024-03-29 00:00:00; cutoff=2024-03-31 |
 | G6b-leak-2024-06-30-180 | anti-leakage | features do cutoff 2024-06-30 (horizonte 180d) usam apenas dados <= cutoff | PASS | máx churn_date em features=2024-06-30 00:00:00; máx end_date=2024-06-29 00:00:00; cutoff=2024-06-30 |
-| C01-charts | gráficos | número de gráficos gerado | PASS | esperado 4, gerado 4 |
+| C01-charts | gráficos | número de gráficos gerado | PASS | esperado 2, ausentes/vazios=nenhuma; fora do manifesto=nenhuma |
 | G1-events | recorrência | totais de eventos e contas reconciliam com churn_events | PASS | eventos=600 (fonte 600); contas=352 (fonte 352) |
 | G1b-events | recorrência | contagens 2+/3+/máx corretas | PASS | 2+=175 (esperado 175); 3+=59 (esperado 59); máx=5 (esperado 5) |
 | G2-reactivation | reativação | flags e contas de reativação (61/55) confirmadas | PASS | flags=61 (esperado 61); contas=55 (esperado 55) |
@@ -204,13 +204,18 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | G7-rules | backtest | veredito de validação mecânico (lift > 1,15 nos 3 cutoffs, N >= 25) | PASS | regras validadas=['D'] (esperado {D}) — thresholds pré-especificados em D4, sem tunagem |
 | G8-watchlist | watchlist | 20 contas únicas; composição 8/8/4 (tiers A/B/C) | PASS | linhas=20; únicas=20; tiers={'A': 8, 'B': 8, 'C': 4} |
 | G9-segments | segmentos | segmentos com N>0 e overlap declarado | PASS | segmentos=5; pares de overlap=5 |
-| G10-outputs | outputs | tabelas e gráficos desta iteração gerados e não-vazios | PASS | tabelas=9; gráficos=4 |
+| G10-outputs | outputs | tabelas e gráficos desta iteração gerados e não-vazios | PASS | tabelas=9; gráficos=2 |
 | G11-rank | rank comparison | overlap top-20 current vs lifecycle e Spearman (âncora de regressão) | PASS | overlap=7 (âncora 7); Spearman=0.575 (âncora 0,575) |
 | G12-zerodiv | denominadores | sem NaN em precision com n_rule > 0 | PASS | linhas com NaN indevido=0 |
+| G13-km | narrativa | âncoras KM do relatório (90d 0,653; 180d 0,476; mediana 187d) | PASS | km90=0.653 (âncora 0,653); km180=0.476 (âncora 0,476); mediana=187 (âncora 187) |
+| G13-reactivation | narrativa | âncoras de reativação (26 flags out-dez; 20 das 37 censuradas recentes; 26 flags 1º evento) | PASS | recent_flags=26 (âncora 26); recent_censored=20 (âncora 20); first_event_flags=26 (âncora 26) |
+| G13-backtest-exact | narrativa | lifts exatos de R_B e R_D (90d) — base das strings derivadas dos segmentos | PASS | R_B=[0.515, 0.405, 1.295] (âncora [0.515, 0.405, 1.295]); R_D=[1.574, 1.556, 1.835] (âncora [1.574, 1.556, 1.835]) |
+| G13-sens180 | narrativa | exceções aparentes da sensibilidade 180d (R_G 1,36 N=12; R_H 1,61 N=16, cutoff 06-30 — instáveis, N < 25) | PASS | R_G 180d 06-30 lift=1.362 (âncora 1.362), N=12 (âncora 12); R_H 180d 06-30 lift=1.606 (âncora 1.606), N=16 (âncora 16) |
+| G13-narrative | narrativa | âncoras dos exemplos narrativos (A-a8d89d na jornada/fora do atual; A-c70870 no atual; snapshot 110; R2 churn-to-inactive 18.507) | PASS | A-a8d89d: top_lifecycle=True, top_current=False; A-c70870: top_current=True; snapshot=110 (âncora 110); R2 churn-to-inactive=18507 (âncora 18.507) |
 
 ## 12. Arquivos gerados
 
 - Tabelas: `t11_account_lifecycle.csv`, `t12_reactivation_recurrence.csv`, `t13_state_cycles.csv`, `t14_backtest_temporal.csv`, `t14b_backtest_detail.csv`, `t15_priority_segments.csv`, `t15b_segment_overlap.csv`, `t16_watchlist_top20.csv`, `t17_rank_comparison.csv`.
-- Gráficos: `It04_a_recurrence_reactivation.png`, `It04_b_cycle_lenses.png`, `It04_c_lifecycle_vs_current_mrr.png`, `It04_d_backtest_lift.png`.
+- Gráficos: `It04_c_lifecycle_vs_current_mrr.png`, `It04_d_backtest_lift.png`.
 
 Leitura das tabelas: `t11_account_lifecycle.csv` (jornada completa de 500 contas), `t12_reactivation_recurrence.csv` (distribuições de eventos e episódios de reativação), `t13_state_cycles.csv` (ciclos reais vs lentes), `t14_backtest_temporal.csv` (regras × cutoffs) e `t14b_backtest_detail.csv` (flags por conta × cutoff para auditoria), `t15_priority_segments.csv` (segmentos N/US$) e `t15b_segment_overlap.csv` (overlap), `t16_watchlist_top20.csv` (watchlist), `t17_rank_comparison.csv` (top-20 current vs lifecycle).

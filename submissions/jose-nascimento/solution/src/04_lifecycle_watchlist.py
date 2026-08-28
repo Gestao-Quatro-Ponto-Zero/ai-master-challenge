@@ -27,7 +27,9 @@ score". Sem ML, sem recomendações (It05), sem ROI.
 Gera, de forma offline e determinística (sem timestamp; ordenações estáveis):
     solution/evidence/04_lifecycle_watchlist_report.md
     solution/out/tables/t11..t17*.csv          (auditabilidade)
-    solution/out/charts/It04_*.png             (4 gráficos)
+    solution/out/charts/It04_c/d_*.png         (2 gráficos essenciais; It04_a/b
+                                                substituídos pelas tabelas
+                                                t12/t13 — pruning do gate It04)
 
 Semântica de resultado (mesma família das iterações 01-03):
     - PASS : check íntegro.
@@ -272,6 +274,12 @@ def reactivation_episodes(churn: pd.DataFrame) -> dict:
         "episodes": eps,
         "monthly": flags.groupby(flags["churn_date"].dt.to_period("M").astype(str)).size(),
     }
+    # flags recentes (out-dez/2024 = > corte-90d) e censuradas recentes — base das
+    # frases de censura do relatório (derivadas em runtime, nunca hardcoded)
+    recent_mask = eps["react_date"] > DATA_CUT - pd.Timedelta(days=RECENT_DAYS)
+    out["recent_flags"] = int(recent_mask.sum())
+    out["recent_censored"] = int(
+        (recent_mask & (eps["has_next"] == False)).sum())  # noqa: E712
     # follow-up explícito: taxa com denominador de episódios com follow-up >= w
     fu: list[dict] = []
     for w in (30, 90, 180):
@@ -332,7 +340,11 @@ def state_cycles(panel: pd.DataFrame, sub: pd.DataFrame) -> dict:
     # inc é "gap de ativação" se a conta nunca teve mês ativo antes; senão retorno
     pm["_ever_active_before"] = pm.groupby("account_id")["status"].transform(
         lambda s: (s == "active").cumsum().shift(1).fillna(0))
-    dec_rows = pm[dec]
+    # R2 (churn-to-inactive) usa o winner do mês ANTERIOR à saída — o mês inativo
+    # tem winner 0 no painel (INFO-2 dos revisores; coluna winner_mrr_prev)
+    prev_winner = pm.groupby("account_id")["winner_mrr"].shift(1)
+    dec_rows = pm[dec].copy()
+    dec_rows["winner_mrr_prev"] = prev_winner[dec].astype(int)
     inc_rows = pm[inc].copy()
     inc_rows["_is_activation_gap"] = inc_rows["_ever_active_before"] == 0
     n_gap = int(inc_rows["_is_activation_gap"].sum())
@@ -348,7 +360,9 @@ def state_cycles(panel: pd.DataFrame, sub: pd.DataFrame) -> dict:
         "n_returns": n_return,
         "cycle_accounts": cycle_accounts,
         "n_full_cycles": len(cycle_accounts),
-        "dec_rows": dec_rows[["account_id", "month", "winner_mrr"]].copy(),
+        "dec_r2_sum": int(dec_rows["winner_mrr_prev"].sum()),
+        "dec_rows": dec_rows[["account_id", "month", "winner_mrr",
+                              "winner_mrr_prev"]].copy(),
         "inc_returns": inc_rows.loc[~inc_rows["_is_activation_gap"],
                                     ["account_id", "month"]].copy(),
     }
@@ -578,27 +592,38 @@ def backtest_summary(bt: pd.DataFrame) -> dict:
 # Segmentos de atenção (estados/jornadas; overlap declarado)
 # ----------------------------------------------------------------------------
 def priority_segments(lf: pd.DataFrame, bt_summary: pd.DataFrame) -> dict:
+    def lifts(rid: str) -> str:
+        """Lifts 90d da regra no formato '0,44/0,41/0,89' — mesma fonte do
+        resumo (bt_summary), evitando números narrativos hardcoded."""
+        row = bt_summary[bt_summary["rule"] == rid]
+        if row.empty:
+            return "NA"
+        return row.iloc[0]["lifts_90d"].replace("; ", "/").replace(".", ",")
+
+    multi = lf["n_events"] >= REACT_THRESHOLD
+    n_multi = int(multi.sum())
+    share_multi = pct(int(lf.loc[multi, "n_events"].sum()), int(lf["n_events"].sum()))
+    n_s5 = int(lf["is_high_value"].sum())
     segs: list[dict] = []
     defs = [
         ("S1", "Onboarding (tenure<=90d)", "is_onboarding",
-         "sinal VALIDADO no backtest (regra D: lift 1,57/1,56/1,83 nos cutoffs 90d)",
+         f"sinal VALIDADO no backtest (regra D: lift {lifts('D')} nos cutoffs 90d)",
          "estado de jornada; mecanismo It03 H1/H8 (churn precoce de coortes novas)"),
         ("S2", "Repeat-event (>=2 eventos)", "is_recurrence",
-         "regra A: lift 0,44/0,41/0,89 — SEM lift consistente; associação histórica",
-         "concentração de eventos (70,5% dos eventos vêm de 175 contas); recorrência "
-         "descreve histórico, não prediz próximo evento"),
+         f"regra A: lift {lifts('A')} — SEM lift consistente; associação histórica",
+         f"concentração de eventos ({share_multi} dos eventos vêm de {n_multi} "
+         "contas); recorrência descreve histórico, não prediz próximo evento"),
         ("S3", "Reativacao recente (flag out-dez/2024)", "s3_recent_react",
-         "regras B/G: lift 0,52/0,40/1,30 — inconsistente; KM 90d = 0,653 (35% "
-         "episódios com próximo evento <=90d), mediana 187d, censura declarada",
+         None,  # preenchido pelo caller (usa KM de reactivation_episodes)
          "episódio de evento marcado is_reactivation; NÃO é ciclo de estado; "
          "subconjunto de S4 (declarado)"),
         ("S4", "Evento recente (ultimo evento<=90d)", "is_recent_event",
-         "regra C: lift 0,74/0,63/1,01 — SEM lift; janela acionável de CS",
+         f"regra C: lift {lifts('C')} — SEM lift; janela acionável de CS",
          "último episódio de churn em out-dez/2024; acionabilidade operacional, "
          "não predição"),
         ("S5", "Alto valor (winner>=P75)", "is_high_value",
-         "regra E: lift 0,56/0,85/0,71 — SEM lift; segmento de exposição, não risco",
-         "exposição atual (winner MRR >= P75); proteção de receita; 130 contas "
+         f"regra E: lift {lifts('E')} — SEM lift; segmento de exposição, não risco",
+         f"exposição atual (winner MRR >= P75); proteção de receita; {n_s5} contas "
          "(empates no quantil; 125 esperadas)"),
     ]
     react_recent = None  # S3 preenchido pelo caller (datas reais de reativação)
@@ -752,194 +777,153 @@ def rank_comparison(lf: pd.DataFrame) -> dict:
 
 
 # ----------------------------------------------------------------------------
-# Gráficos (4; prefixo It04; não repetem It03)
+# Gráficos (2 essenciais; prefixo It04 — It04_a/b substituídos pelas tabelas
+# t12/t13, pruning do gate It04; não repetem It03)
 # ----------------------------------------------------------------------------
 def _style() -> None:
-    plt.rcParams["figure.dpi"] = 110
+    plt.rcParams["figure.dpi"] = 150
+    plt.rcParams["figure.facecolor"] = "white"
+    plt.rcParams["savefig.facecolor"] = "white"
+    plt.rcParams["axes.facecolor"] = "white"
     plt.rcParams["axes.spines.top"] = False
     plt.rcParams["axes.spines.right"] = False
-    plt.rcParams["axes.titlesize"] = 11
-    plt.rcParams["axes.labelsize"] = 9
-    plt.rcParams["legend.fontsize"] = 8
-    plt.rcParams["xtick.labelsize"] = 8
-    plt.rcParams["ytick.labelsize"] = 8
+    plt.rcParams["axes.titlesize"] = 10
+    plt.rcParams["axes.labelsize"] = 8.5
+    plt.rcParams["legend.fontsize"] = 7.5
+    plt.rcParams["xtick.labelsize"] = 7.5
+    plt.rcParams["ytick.labelsize"] = 7.5
 
 
-def chart_a(rec: dict, react: dict) -> str:
-    """Recorrência (distribuição de eventos por conta) e reativações mensais."""
-    _style()
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.5, 3.6))
-    dist = rec["dist"]
-    keys = sorted(dist)
-    ax1.bar(keys, [dist[k] for k in keys], color="#4c72b0", width=0.62)
-    for k in keys:
-        ax1.text(k, dist[k] + 3, str(dist[k]), ha="center", fontsize=8)
-    ax1.set_xticks(keys)
-    ax1.set_xlabel("eventos por conta")
-    ax1.set_ylabel("contas")
-    ax1.set_title(f"Recorrência: {rec['accounts_with_event']} contas com evento; "
-                  f"{rec['accounts_2plus']} com >=2")
-    months = [str(m) for m in react["monthly"].index]
-    vals = [int(react["monthly"].get(m, 0)) for m in months]
-    ax2.bar(range(len(months)), vals, color="#dd8452", width=0.7)
-    ax2.set_xticks(range(len(months)), months, rotation=60, fontsize=7)
-    ax2.set_xlabel("mês")
-    ax2.set_ylabel("flags is_reactivation")
-    ax2.set_title(f"Reativações marcadas: {react['n_flags']} flags em "
-                  f"{react['n_accounts']} contas")
-    fig.suptitle("Recorrência de eventos vs reativação marcada (lente de eventos)",
-                 fontsize=11)
-    fig.text(0.0, -0.02,
-             "Fonte: data/raw/ravenstack_churn_events.csv. Gerado por "
-             "src/04_lifecycle_watchlist.py.", fontsize=7, color="#555555")
-    fig.tight_layout()
-    path = CHARTS_DIR / "It04_a_recurrence_reactivation.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
-    plt.close(fig)
-    return path.name
-
-
-def chart_b(cyc: dict, rec: dict) -> str:
-    """Lentes de ciclo: eventos vs assinaturas vs estado (comparação honesta)."""
-    _style()
-    labels = [
-        "contas com >=2 eventos (recorrência)",
-        "contas com assinatura encerrada",
-        "contas com re-assinatura (sub encerrada + nova sub)",
-        "contas com flag de reativação",
-        "transições inactive->active = gap de ativação (signup)",
-        "transições inactive->active = retorno real",
-        "ciclos reais active->inactive->active",
-    ]
-    values = [
-        rec["accounts_2plus"],
-        cyc["ended_sub_accounts"],
-        cyc["re_sign_accounts"],
-        rec["n_react_accounts"] if "n_react_accounts" in rec else 55,
-        cyc["n_activation_gaps"],
-        cyc["n_returns"],
-        cyc["n_full_cycles"],
-    ]
-    colors = ["#4c72b0", "#4c72b0", "#4c72b0", "#4c72b0",
-              "#dd8452", "#c44e52", "#c44e52"]
-    fig, ax = plt.subplots(figsize=(8.6, 3.8))
-    y = range(len(labels))
-    ax.barh(list(y), values, color=colors)
-    for i, v in enumerate(values):
-        ax.text(v + 2, i, str(v), va="center", fontsize=8)
-    ax.set_yticks(list(y), labels, fontsize=8)
-    ax.set_xlabel("contas / transições")
-    ax.set_title("\"Ciclo\" é episódio de evento vs mudança real de estado: "
-                 "as lentes não medem a mesma coisa")
-    ax.text(0.0, -0.22,
-            "Fonte: data/raw/ravenstack_churn_events.csv, ravenstack_subscriptions.csv "
-            "e data/processed/account_month.csv. Lentes C (eventos), B (assinaturas) "
-            "e painel (estado) — contrato §4. Gerado por src/04_lifecycle_watchlist.py.",
-            transform=ax.transAxes, fontsize=7, color="#555555")
-    fig.tight_layout()
-    path = CHARTS_DIR / "It04_b_cycle_lenses.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
-    plt.close(fig)
-    return path.name
+def _footer(fig, line1: str, line2: str) -> None:
+    """Rodapé em coordenadas de FIGURA (dentro do canvas; 2 linhas). Margens
+    explícitas via subplots_adjust; NUNCA bbox_inches='tight' (que esticava o
+    canvas com texto fora da figura e esmagava o eixo — causa raiz dos
+    findings visuais dos revisores)."""
+    fig.text(0.01, 0.02, line1, fontsize=6.5, color="#555555",
+             ha="left", va="bottom")
+    fig.text(0.01, 0.005, line2, fontsize=6.5, color="#555555",
+             ha="left", va="bottom")
 
 
 def chart_c(lf: pd.DataFrame, rc: dict) -> str:
     """Exposição atual (winner MRR) vs valor de jornada (lifecycle proxy),
-    com top-20 de cada dimensão destacados."""
+    com top-20 de cada dimensão destacados. Legenda em faixa própria ACIMA
+    dos eixos (não cobre pontos); rótulos com offset em pontos (sem colisão
+    com o título)."""
     _style()
     topc = set(rc["top_current"])
     topl = set(rc["top_lifecycle"])
     both = topc & topl
-    fig, ax = plt.subplots(figsize=(8.6, 4.4))
+    fig, ax = plt.subplots(figsize=(8.6, 5.2))
+    fig.subplots_adjust(top=0.80, bottom=0.13, left=0.105, right=0.97)
     for _, r in lf.iterrows():
         if r["account_id"] in both:
-            c, ms, z = "#8172b3", 26, 26
+            c, ms, z = "#CC79A7", 30, 26
         elif r["account_id"] in topc:
-            c, ms, z = "#c44e52", 18, 18
+            c, ms, z = "#D55E00", 20, 18
         elif r["account_id"] in topl:
-            c, ms, z = "#55a868", 18, 18
+            c, ms, z = "#009E73", 20, 18
         else:
-            c, ms, z = "#4c72b0", 10, 10
+            c, ms, z = "#0072B2", 10, 10
         ax.scatter(r["current_winner_mrr"], r["lifecycle_value_proxy"],
-                   color=c, s=ms, zorder=z, alpha=0.75)
+                   color=c, s=ms, zorder=z, alpha=0.8)
     for aid in ("A-68f37c", "A-a8d89d", "A-c70870"):
         r = lf[lf["account_id"] == aid].iloc[0]
         ax.annotate(aid, (r["current_winner_mrr"], r["lifecycle_value_proxy"]),
-                    xytext=(6, 6), textcoords="offset points", fontsize=7)
+                    xytext=(7, 7), textcoords="offset points", fontsize=7,
+                    color="#333333")
     ax.set_xscale("log")
     ax.set_yscale("log")
+    ax.set_xticks([10**2, 10**3, 10**4])  # sem overhang 10^5 do AutoLocator
+    ax.set_yticks([10**3, 10**4, 10**5])  # sem overhang 10^2/10^6
     ax.set_xlabel("current winner MRR (US$/mês; exposição atual)")
     ax.set_ylabel("lifecycle_value_proxy (US$; Σ winner MRR mensal)")
-    ax.set_title("Exposição atual vs valor de jornada acumulado (proxy) — "
-                 "duas dimensões, não substituíveis")
+    ax.set_title("Exposição atual vs valor de jornada (proxy log-log)", pad=6)
     from matplotlib.lines import Line2D
     handles = [
-        Line2D([0], [0], marker="o", color="none", markerfacecolor="#4c72b0",
+        Line2D([0], [0], marker="o", color="none", markerfacecolor="#0072B2",
                markersize=6, label="demais contas (500)"),
-        Line2D([0], [0], marker="o", color="none", markerfacecolor="#c44e52",
+        Line2D([0], [0], marker="o", color="none", markerfacecolor="#D55E00",
                markersize=6, label="top-20 current MRR"),
-        Line2D([0], [0], marker="o", color="none", markerfacecolor="#55a868",
+        Line2D([0], [0], marker="o", color="none", markerfacecolor="#009E73",
                markersize=6, label="top-20 lifecycle proxy"),
-        Line2D([0], [0], marker="o", color="none", markerfacecolor="#8172b3",
+        Line2D([0], [0], marker="o", color="none", markerfacecolor="#CC79A7",
                markersize=7, label="nas duas listas"),
     ]
-    ax.legend(handles=handles, loc="lower right")
-    ax.text(0.0, -0.22,
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.885),
+               ncol=4, fontsize=7.5, frameon=True)
+    _footer(fig,
             "Fonte: data/processed/account_month.csv (winner MRR mensal; soma sem "
-            "dupla contagem). Proxy operacional, não receita GAAP. "
-            "Gerado por src/04_lifecycle_watchlist.py.",
-            transform=ax.transAxes, fontsize=7, color="#555555")
-    fig.tight_layout()
+            "dupla contagem). Proxy operacional, não receita GAAP.",
+            "Gerado por src/04_lifecycle_watchlist.py.")
     path = CHARTS_DIR / "It04_c_lifecycle_vs_current_mrr.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
+    fig.savefig(path, dpi=150)
     plt.close(fig)
     return path.name
 
 
 def chart_d(bt: pd.DataFrame) -> str:
-    """Lift por regra × cutoff (90d) com intervalo de Wilson na precision."""
+    """Lift por regra × cutoff (90d) — dot plot HORIZONTAL com CI de Wilson:
+    regras no eixo y, lift no x; 3 cutoffs por cor/offset; linhas verticais em
+    1,0 e no limiar 1,15; legenda fora dos dados; R_D destacado por faixa leve
+    + marcadores maiores (sem poluição de anotações internas)."""
     _style()
-    sub = bt[(bt["horizon_days"] == BACKTEST_HORIZON_DAYS)]
+    sub = bt[(bt["horizon_days"] == BACKTEST_HORIZON_DAYS)].copy()
     rules = [r[0] for r in RULES]
     cutoffs = sorted(sub["cutoff"].unique())
-    fig, ax = plt.subplots(figsize=(9.2, 4.2))
-    width = 0.26
-    colors = ["#4c72b0", "#dd8452", "#55a868"]
+    colors = ["#0072B2", "#E69F00", "#009E73"]
+    offsets = [-0.22, 0.0, 0.22]
+    from matplotlib.lines import Line2D
+    fig, ax = plt.subplots(figsize=(8.4, 5.6))
+    fig.subplots_adjust(top=0.85, bottom=0.155, left=0.27, right=0.965)
+    # faixa de destaque de R_D (índice 3 de A..I) — leve, sem textos no interior
+    ax.axhspan(len(rules) - 1 - 3 - 0.5, len(rules) - 1 - 3 + 0.5,
+               color="#f2f2f2", zorder=0)
     for i, c in enumerate(cutoffs):
         g = sub[sub["cutoff"] == c].set_index("rule").reindex(rules)
-        x = [j + (i - 1) * width for j in range(len(rules))]
-        lifts = [g.loc[r, "lift"] if isinstance(g.loc[r, "lift"], float) else 0
-                 for r in rules]
-        lo = [g.loc[r, "ci_lo"] if isinstance(g.loc[r, "ci_lo"], float) else 0
-              for r in rules]
-        hi = [g.loc[r, "ci_hi"] if isinstance(g.loc[r, "ci_hi"], float) else 0
-              for r in rules]
-        base = g["baseline_rate"].iloc[0]
-        err = [[max(0.0, l - loo / base) for l, loo in zip(lifts, lo)],
-               [h / base - l for l, h in zip(lifts, hi)]]
-        ax.bar(x, lifts, width=width, color=colors[i], label=f"cutoff {c}",
-               yerr=err, capsize=2, error_kw={"lw": 0.7})
-    ax.axhline(1.0, color="#333333", lw=1.0, linestyle="--")
-    ax.text(len(rules) - 0.4, 1.02, "baseline (lift = 1)", fontsize=7,
-            color="#333333", ha="right")
-    ax.axhline(LIFT_VALIDATION, color="#c44e52", lw=0.8, linestyle=":")
-    ax.text(0.02, LIFT_VALIDATION + 0.04, f"limiar de validação ({LIFT_VALIDATION})",
-            fontsize=7, color="#c44e52")
-    ax.set_xticks(range(len(rules)))
-    ax.set_xticklabels([f"{r[0]}·{r[1]}" for r in RULES], rotation=35, ha="right",
-                        fontsize=7)
-    ax.set_ylabel("lift (precision / baseline) — horizonte 90d")
+        for j, r in enumerate(rules):
+            lift = g.loc[r, "lift"]
+            if not isinstance(lift, float):
+                continue
+            lo = g.loc[r, "ci_lo"]
+            hi = g.loc[r, "ci_hi"]
+            base = g["baseline_rate"].iloc[0]
+            y = len(rules) - 1 - j + offsets[i]
+            err = [[lift - max(0.0, float(lo) / base)],
+                   [float(hi) / base - lift]]
+            big = r == "D"
+            ax.errorbar(lift, y, xerr=err, fmt="o", color=colors[i],
+                        ms=(9 if big else 6.5),
+                        mec="#333333" if big else "none", mew=0.8 if big else 0,
+                        ecolor=colors[i], elinewidth=1.0, capsize=0,
+                        alpha=0.95, zorder=3)
+    ax.axvline(1.0, color="#555555", lw=1.0, linestyle="--", zorder=1)
+    ax.text(1.0, len(rules) - 0.38, "baseline (lift = 1)", fontsize=7,
+            color="#555555", ha="center")
+    ax.axvline(LIFT_VALIDATION, color="#D55E00", lw=0.9, linestyle=":", zorder=1)
+    ax.text(LIFT_VALIDATION + 0.02, len(rules) - 0.38,
+            f"limiar {LIFT_VALIDATION}", fontsize=7, color="#D55E00", ha="left")
+    ax.set_yticks(list(range(len(rules))))
+    ax.set_yticklabels([f"R_{r[0]} {r[1]}" for r in RULES], fontsize=7.5)
+    ax.set_xlabel("lift (precision / baseline) — horizonte 90d; "
+                  "barras = CI de Wilson 95% da precision")
     ax.set_title("Backtest point-in-time: lift por regra × cutoff (sem ML; "
-                 "regras pré-especificadas)")
-    ax.legend(fontsize=7, loc="upper left")
-    ax.text(0.0, -0.30,
-            "Fonte: data/raw/*.csv + data/processed/account_month.csv; features <= cutoff; "
-            "outcome = 1º/próximo evento em (cutoff, cutoff+90d]. Barras de erro = "
-            "intervalo de Wilson 95% da precision. Gerado por src/04_lifecycle_watchlist.py.",
-            transform=ax.transAxes, fontsize=7, color="#555555")
-    fig.tight_layout()
+                 "regras pré-especificadas)", pad=8)
+    ax.set_xlim(0, 2.9)
+    handles = [
+        Line2D([0], [0], marker="o", color="none", markerfacecolor=colors[i],
+               markersize=7, label=f"cutoff {c}") for i, c in enumerate(cutoffs)
+    ]
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.955),
+               ncol=3, fontsize=7.5, frameon=True)
+    _footer(fig,
+            "Fonte: data/raw/*.csv + data/processed/account_month.csv; features <= "
+            "cutoff; outcome = 1º/próximo evento em (cutoff, cutoff+90d].",
+            "CI = intervalo de Wilson 95% da precision escalado pela baseline; "
+            "R_D destacado (única regra validada — D4). Gerado por "
+            "src/04_lifecycle_watchlist.py.")
     path = CHARTS_DIR / "It04_d_backtest_lift.png"
-    fig.savefig(path, dpi=110, bbox_inches="tight")
+    fig.savefig(path, dpi=150)
     plt.close(fig)
     return path.name
 
@@ -966,6 +950,53 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
                 f"{c['detail']} |" for c in CHECKS) + "\n"
         )
 
+    # ---- números narrativos derivados em runtime (nada hardcoded; âncoras
+    # verificadas nos gates G13) ----
+    bt_df = bt["per_cutoff"]
+    bt180 = bt_df[bt_df["horizon_days"] == SENSITIVITY_HORIZON]
+
+    def lifts_txt(rid: str, horizon: int) -> str:
+        sub = bt_df[(bt_df["rule"] == rid) & (bt_df["horizon_days"] == horizon)] \
+            .sort_values("cutoff")
+        return "/".join(f"{l:.2f}".replace(".", ",") for l in sub["lift"]
+                        if isinstance(l, float))
+
+    rd90 = bt_df[(bt_df["rule"] == "D")
+                 & (bt_df["horizon_days"] == BACKTEST_HORIZON_DAYS)]
+    prec_min, prec_max = float(rd90["precision"].min()), float(rd90["precision"].max())
+    base_min, base_max = float(rd90["baseline_rate"].min()), \
+        float(rd90["baseline_rate"].max())
+    exc_parts: list[str] = []
+    exc_cutoffs: list[str] = []
+    for rid, _, _ in RULES:
+        sub = bt180[(bt180["rule"] == rid) & (bt180["lift"] > 1.05)
+                    & (bt180["n_rule"] < MIN_RULE_N)].sort_values("cutoff")
+        for _, row in sub.iterrows():
+            exc_parts.append(f"R_{rid} {row['lift']:.2f} (N={int(row['n_rule'])})"
+                             .replace(".", ","))
+            exc_cutoffs.append(str(row["cutoff"]))
+    exc_txt = "; ".join(exc_parts) if exc_parts else "nenhuma"
+    exc_cuts_txt = ", ".join(sorted(set(exc_cutoffs))) if exc_cutoffs else "—"
+    cens_txt = (
+        f"a maioria é recente ({react['recent_censored']} de "
+        f"{react['n_censored']} = {pct(react['recent_censored'], react['n_censored'])})"
+        if react["recent_censored"] > react["n_censored"] / 2 else
+        f"{react['recent_censored']} de {react['n_censored']} "
+        f"({pct(react['recent_censored'], react['n_censored'])}) são recentes")
+    a8 = lf[lf["account_id"] == "A-a8d89d"]
+    c7 = lf[lf["account_id"] == "A-c70870"]
+    a8_row = a8.iloc[0] if len(a8) else None
+    c7_row = c7.iloc[0] if len(c7) else None
+    a8_note = None
+    if a8_row is not None:
+        in_life = a8_row["account_id"] in rc["top_lifecycle"]
+        in_curr = a8_row["account_id"] in rc["top_current"]
+        a8_note = ("top-20 da jornada, fora do top-20 atual"
+                   if (in_life and not in_curr)
+                   else "exemplo de conta antiga com jornada longa")
+    n_snapshot = int(lf["churn_flag_snapshot_2024_12_31"].sum())
+    r2_ci = int(cyc.get("dec_r2_sum", 0))
+
     s = [
         "# Relatório de Ciclos de Reativação, Jornada da Conta e Watchlist — "
         "Iteração 04 (RavenStack)",
@@ -984,7 +1015,13 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         "- **Regras pré-especificadas ANTES dos resultados:** `process-log/decisions/"
         "iteration-04-watchlist-decisions.md` (D4: regras do backtest com thresholds "
         "fixos; D6: composição da watchlist; D8: nomenclatura proporcional ao lift). "
-        "Nenhum threshold foi ajustado após ver os números.",
+        "Nenhum threshold foi ajustado após ver os números. **Nota de transparência "
+        "(registro honesto):** o arquivo de decisões foi commitado no MESMO commit do "
+        "código e dos outputs (`adbbad7`) — a cronologia git não prova a separação "
+        "temporal; a pré-especificação é atestada pelo conteúdo interno (números de "
+        "exploração que divergem dos finais, ex.: KM 0,72/0,64 vs 0,653/0,476) e por "
+        "auto-relato do executor (a prática It03 de commitar decisões antes do código "
+        "é retomada nas It05+).",
         "- **Escopo:** NENHUMA recomendação/ROI (It05), NENHUM modelo preditivo/ML, "
         "nenhum score somando pesos sem validação.",
         "- **Saídas:** este relatório; tabelas em `solution/out/tables/` "
@@ -1002,7 +1039,8 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         f"- **Recorrência:** {rec['accounts_2plus']} contas com >= 2 eventos; "
         f"{rec['accounts_3plus']} com >= 3. Concentração: **{rec['events_from_multi']} "
         f"de {rec['total_events']} eventos ({pct(rec['events_from_multi'], rec['total_events'])})** "
-        "vêm das contas com >= 2 eventos — 175 contas concentram 70,5% dos episódios.",
+        f"vêm das contas com >= 2 eventos — {rec['accounts_2plus']} contas concentram "
+        f"{pct(rec['events_from_multi'], rec['total_events'])} dos episódios.",
         f"- Gaps entre eventos consecutivos da mesma conta: n={rec['n_gaps']}, "
         f"mediana **{fmt(rec['gap_median'])} dias**, média {fmt(rec['gap_mean'])}; "
         f"{rec['gaps_le90']} gaps ({pct(rec['gaps_le90'], rec['n_gaps'])}) <= 90d. "
@@ -1012,14 +1050,14 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         f"ending MRR das {expo['multi']['n']} contas multi-evento = "
         f"**{fmt(expo['multi']['r1_total'])}** "
         f"({pct(expo['multi']['r1_total'], expo['r1_total_all'])} do R1 da janela "
-        f"1.179.139) — exposição contratual, NÃO receita perdida; winner atual "
-        f"(estado) dessas contas = **{fmt(expo['multi']['current_mrr'])}**/mês. "
+        f"{fmt(expo['r1_total_all'])}) — exposição contratual, NÃO receita perdida; "
+        f"winner atual (estado) dessas contas = **{fmt(expo['multi']['current_mrr'])}**/mês. "
         "As duas lentes medem coisas diferentes e não se somam.",
         "",
         "## 3. Reativação marcada (`is_reactivation`) — sequência temporal com censura",
         "",
         f"- Flags: **{react['n_flags']}** em **{react['n_accounts']}** contas "
-        "(confirmado: 61 flags / 55 contas).",
+        f"(confirmado: {react['n_flags']} flags / {react['n_accounts']} contas).",
         f"- **{react['first_event_flags']}** flags são o PRIMEIRO evento da conta "
         "(sem evento anterior na janela 2023-2024): a flag marca 'retorno' no dataset "
         "sem evento anterior observável — nuance estrutural, não silenciada.",
@@ -1028,9 +1066,12 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         f"- Próximo evento após a reativação: observado em {react['n_with_next']} "
         f"episódios (gap mediano {fmt(react['gap_to_next_median'])} dias; média "
         f"{fmt(react['gap_to_next_mean'])}); **{react['n_censored']} episódios sem "
-        "próximo evento observado** — NÃO são 'sucesso de reativação': a maioria "
-        "das reativações é recente (26 flags em out-dez/2024) e a janela termina "
-        "no corte (censura).",
+        "próximo evento observado** — NÃO são 'sucesso de reativação': "
+        f"{react['recent_flags']} de {react['n_flags']} flags "
+        f"({pct(react['recent_flags'], react['n_flags'])}) ocorrem em out-dez/2024 "
+        "(parcela substancial, NÃO maioria) e a janela termina no corte (censura). "
+        f"Entre as censuradas ({react['n_censored']} episódios), {cens_txt} em "
+        "out-dez/2024 — a censura concentra-se nos episódios mais recentes.",
         "- **Follow-up explícito (denominador declarado):**",
         "",
         "| Janela | Episódios com follow-up >= janela | Próximo evento dentro da janela | Taxa |",
@@ -1047,9 +1088,10 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         f"(ou seja, ≈ {100 * (1 - react['km_surv_90d']):.0f}% dos episódios têm "
         f"próximo evento <= 90d); em 180d = {react['km_surv_180d']:.3f}; mediana = "
         f"**{react['km_median']} dias** (alcançada na janela). A taxa observada "
-        f"(24/61 = 39,3%) SUBestima o retorno por censura — e nenhuma taxa aqui é "
-        "'receita recuperada': reativação é episódio de evento, sem ligação "
-        "demonstrável com receita (contrato §5).",
+        f"({react['n_with_next']}/{react['n_flags']} = "
+        f"{pct(react['n_with_next'], react['n_flags'])}) SUBestima o retorno por "
+        "censura — e nenhuma taxa aqui é 'receita recuperada': reativação é "
+        "episódio de evento, sem ligação demonstrável com receita (contrato §5).",
         f"- **Exposição das contas reativadas (lentes separadas):** R1 das "
         f"{expo['react']['n']} contas com flag = **{fmt(expo['react']['r1_total'])}** "
         f"({pct(expo['react']['r1_total'], expo['r1_total_all'])} do R1) — exposição "
@@ -1059,7 +1101,8 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         "## 4. Ciclos reais de estado (painel account-month; lente B)",
         "",
         f"- Transições `active→inactive` no painel: **{cyc['n_dec']}** (contrato R2: "
-        f"churn-to-inactive = 18.507 em exatamente essas 2 transições).",
+        f"churn-to-inactive = {fmt(r2_ci)} em exatamente essas {cyc['n_dec']} "
+        "transições).",
         f"- Transições `inactive→active`: **{cyc['n_inc']}**, das quais "
         f"**{cyc['n_activation_gaps']}** são o gap inicial signup→primeira assinatura "
         f"ativa (ex.: A-019782 signup 2023-04, primeira assinatura ativa 2023-06) e "
@@ -1086,8 +1129,9 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         "do painel account-month até o cutoff (1 valor por account×mês; sem dupla "
         "contagem de assinaturas sobrepostas). **PROXY operacional, não receita GAAP** "
         "e não receita recuperada.",
-        f"- Totais: Σ proxy (janela) = **28.766.224** (= Σ winner do painel, contrato "
-        "It02); current winner MRR no corte (2024-12) = **3.668.852** (500 contas "
+        f"- Totais: Σ proxy (janela) = **{fmt(lf['lifecycle_value_proxy'].sum())}** "
+        "(= Σ winner do painel, contrato It02); current winner MRR no corte "
+        f"(2024-12) = **{fmt(lf['current_winner_mrr'].sum())}** ({len(lf)} contas "
         "ativas por estado — ver limitações, seção 10).",
         f"- **Top-20 por current MRR vs top-20 por lifecycle proxy:** overlap = "
         f"**{rc['overlap']} contas** (Jaccard {rc['jaccard']:.2f}); correlação de "
@@ -1103,10 +1147,15 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
     s += [
         "",
         "- **Viés declarado:** o proxy acumula ao longo do tenure → favorece contas "
-        "antigas (ex.: A-a8d89d, 15.522/mês atuais, 201.786 de jornada, tenure 389d — "
-        "top-20 da jornada, fora do top-20 atual); o MRR atual favorece contas novas "
-        "de alto valor (ex.: A-c70870, 33.830/mês, jornada 34.419, tenure 70d). "
-        "**As duas dimensões se complementam; nenhuma substitui a outra.**",
+        "antigas "
+        + (f"(ex.: A-a8d89d, {fmt(a8_row['current_winner_mrr'])}/mês atuais, "
+           f"{fmt(a8_row['lifecycle_value_proxy'])} de jornada, tenure "
+           f"{int(a8_row['tenure_days'])}d — {a8_note})" if a8_row is not None else "")
+        + "; o MRR atual favorece contas novas de alto valor "
+        + (f"(ex.: A-c70870, {fmt(c7_row['current_winner_mrr'])}/mês, jornada "
+           f"{fmt(c7_row['lifecycle_value_proxy'])}, tenure "
+           f"{int(c7_row['tenure_days'])}d)" if c7_row is not None else "")
+        + ". **As duas dimensões se complementam; nenhuma substitui a outra.**",
         "",
         "## 6. Backtest point-in-time (sem ML; regras pré-especificadas em D4)",
         "",
@@ -1148,12 +1197,18 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         "*Critério pré-registrado (D4): lift > 1,15 nos TRÊS cutoffs de 90d com "
         f"N >= {MIN_RULE_N}.",
         "- **Leitura:** a única regra com lift consistente é **R_D (onboarding, "
-        "tenure <= 90d)**: 1,57 / 1,56 / 1,83 (precision 0,34–0,54; a base inteira "
-        "tem taxa de evento em 90d de 0,22–0,30). **Recorrência (R_A: "
-        "0,44/0,41/0,89), reativação (R_B: 0,52/0,41/1,29 — lift apenas no período "
-        "do spike, inconsistente) e alto MRR (R_E: 0,56/0,85/0,71) NÃO validam**; "
-        "evento recente (R_C: 0,74/0,63/1,01) também não. A sensibilidade de 180d "
-        "confirma: somente R_D tem lift (1,26/1,51); as demais ficam <= 1,05.",
+        f"tenure <= 90d)**: {lifts_txt('D', BACKTEST_HORIZON_DAYS)} (precision "
+        f"{prec_min:.2f}–{prec_max:.2f}; a base inteira tem taxa de evento em 90d "
+        f"de {base_min:.2f}–{base_max:.2f}). **Recorrência (R_A: "
+        f"{lifts_txt('A', BACKTEST_HORIZON_DAYS)}), reativação (R_B: "
+        f"{lifts_txt('B', BACKTEST_HORIZON_DAYS)} — lift apenas no período do "
+        f"spike, inconsistente) e alto MRR (R_E: {lifts_txt('E', BACKTEST_HORIZON_DAYS)}) "
+        f"NÃO validam**; evento recente (R_C: {lifts_txt('C', BACKTEST_HORIZON_DAYS)}) "
+        f"também não. A sensibilidade de 180d confirma: somente R_D tem lift "
+        f"consistente ({lifts_txt('D', SENSITIVITY_HORIZON)}); as demais ficam <= 1,05 "
+        f"**com o filtro pré-registrado N >= {MIN_RULE_N} (D4)** — sem esse filtro há "
+        f"exceções aparentes e instáveis (N < {MIN_RULE_N}, cutoff {exc_cuts_txt}): "
+        f"{exc_txt} — abaixo do N mínimo da regra D4, portanto não validam.",
         "- **Consequência (D8):** NÃO existe score de risco de churn com validação "
         "temporal nesta base. A watchlist abaixo é nomeada **operational "
         "priority/exposure**: ordenação por exposição (winner MRR) + evidência "
@@ -1215,9 +1270,9 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         "  1. Esta lista NÃO prevê churn futuro: NENHUM alvo futuro é incluído e "
         "nenhuma conta é 'declarada em risco de sair'. É uma priorização operacional "
         "de atenção (onboarding validado; episódios recentes; exposição).",
-        "  2. `churn_flag_snapshot_2024_12_31` é o rótulo snapshot do dataset "
-        "(110 contas no corte) — contexto de qualidade, PROIBIDO como feature "
-        "preditora (contrato §8); sua presença na tabela não altera a prioridade.",
+        f"  2. `churn_flag_snapshot_2024_12_31` é o rótulo snapshot do dataset "
+        f"({n_snapshot} contas no corte) — contexto de qualidade, PROIBIDO como "
+        "feature preditora (contrato §8); sua presença na tabela não altera a prioridade.",
         "  3. `winner_mrr` = exposição atual (estado, contrato §6); "
         "`lifecycle_value_proxy` = jornada acumulada (proxy, D2).",
         "  4. CS pode usar a lista para: contato de ativação/onboarding (Tier A), "
@@ -1404,6 +1459,73 @@ def run_gates(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame, bt: dict,
           "sem NaN em precision com n_rule > 0",
           "PASS" if len(bad) == 0 else "FAIL",
           f"linhas com NaN indevido={len(bad)}")
+    # G13 — âncoras de regressão dos claims executivos materiais (todas as
+    # frases narrativas do relatório são DERIVADAS em runtime destes objetos;
+    # se os dados mudarem e os textos descolarem, o gate falha)
+    ok_km = (abs(react["km_surv_90d"] - 0.653) <= 0.001
+             and abs(react["km_surv_180d"] - 0.476) <= 0.001
+             and react["km_median"] == 187)
+    check("G13-km", "narrativa",
+          "âncoras KM do relatório (90d 0,653; 180d 0,476; mediana 187d)",
+          "PASS" if ok_km else "FAIL",
+          f"km90={react['km_surv_90d']:.3f} (âncora 0,653); "
+          f"km180={react['km_surv_180d']:.3f} (âncora 0,476); "
+          f"mediana={react['km_median']} (âncora 187)")
+    ok_react = (react["recent_flags"] == 26 and react["recent_censored"] == 20
+                and react["first_event_flags"] == 26)
+    check("G13-reactivation", "narrativa",
+          "âncoras de reativação (26 flags out-dez; 20 das 37 censuradas recentes; "
+          "26 flags 1º evento)",
+          "PASS" if ok_react else "FAIL",
+          f"recent_flags={react['recent_flags']} (âncora 26); "
+          f"recent_censored={react['recent_censored']} (âncora 20); "
+          f"first_event_flags={react['first_event_flags']} (âncora 26)")
+    b90 = [float(x) for x in bt["per_cutoff"]
+           [(bt["per_cutoff"]["rule"] == "B")
+            & (bt["per_cutoff"]["horizon_days"] == BACKTEST_HORIZON_DAYS)]
+           .sort_values("cutoff")["lift"]]
+    d90 = [float(x) for x in bt["per_cutoff"]
+           [(bt["per_cutoff"]["rule"] == "D")
+            & (bt["per_cutoff"]["horizon_days"] == BACKTEST_HORIZON_DAYS)]
+           .sort_values("cutoff")["lift"]]
+    ok_exact = (len(b90) == 3 and len(d90) == 3
+                and all(abs(a - b) <= 0.001 for a, b in zip(b90, [0.515, 0.405, 1.295]))
+                and all(abs(a - b) <= 0.001 for a, b in zip(d90, [1.574, 1.556, 1.835])))
+    check("G13-backtest-exact", "narrativa",
+          "lifts exatos de R_B e R_D (90d) — base das strings derivadas dos segmentos",
+          "PASS" if ok_exact else "FAIL",
+          f"R_B={b90} (âncora [0.515, 0.405, 1.295]); "
+          f"R_D={d90} (âncora [1.574, 1.556, 1.835])")
+    g180 = bt["per_cutoff"][(bt["per_cutoff"]["rule"] == "G")
+                            & (bt["per_cutoff"]["horizon_days"] == SENSITIVITY_HORIZON)
+                            & (bt["per_cutoff"]["cutoff"] == "2024-06-30")].iloc[0]
+    h180 = bt["per_cutoff"][(bt["per_cutoff"]["rule"] == "H")
+                            & (bt["per_cutoff"]["horizon_days"] == SENSITIVITY_HORIZON)
+                            & (bt["per_cutoff"]["cutoff"] == "2024-06-30")].iloc[0]
+    ok_sens = (abs(float(g180["lift"]) - 1.362) <= 0.006 and int(g180["n_rule"]) == 12
+               and abs(float(h180["lift"]) - 1.606) <= 0.006 and int(h180["n_rule"]) == 16)
+    check("G13-sens180", "narrativa",
+          "exceções aparentes da sensibilidade 180d (R_G 1,36 N=12; R_H 1,61 N=16, "
+          "cutoff 06-30 — instáveis, N < 25)",
+          "PASS" if ok_sens else "FAIL",
+          f"R_G 180d 06-30 lift={g180['lift']} (âncora 1.362), N={g180['n_rule']} "
+          f"(âncora 12); R_H 180d 06-30 lift={h180['lift']} (âncora 1.606), "
+          f"N={h180['n_rule']} (âncora 16)")
+    a8_id, c7_id = "A-a8d89d", "A-c70870"
+    ok_narr = (a8_id in rc["top_lifecycle"] and a8_id not in rc["top_current"]
+               and c7_id in rc["top_current"]
+               and int(lf["churn_flag_snapshot_2024_12_31"].sum()) == 110
+               and int(cyc.get("dec_r2_sum", 0)) == 18507)
+    check("G13-narrative", "narrativa",
+          "âncoras dos exemplos narrativos (A-a8d89d na jornada/fora do atual; "
+          "A-c70870 no atual; snapshot 110; R2 churn-to-inactive 18.507)",
+          "PASS" if ok_narr else "FAIL",
+          f"A-a8d89d: top_lifecycle={a8_id in rc['top_lifecycle']}, "
+          f"top_current={a8_id in rc['top_current']}; "
+          f"A-c70870: top_current={c7_id in rc['top_current']}; "
+          f"snapshot={int(lf['churn_flag_snapshot_2024_12_31'].sum())} (âncora 110); "
+          f"R2 churn-to-inactive={int(cyc.get('dec_r2_sum', 0))} "
+          "(âncora 18.507)")
 
 
 # ----------------------------------------------------------------------------
@@ -1453,6 +1575,8 @@ def main() -> int:
     bt_sum = backtest_summary(bt["per_cutoff"])
     seg = priority_segments(lf, bt_sum)
     seg_rows = seg["segments"].to_dict("records")
+    rb_lifts = bt_sum[bt_sum["rule"] == "B"].iloc[0]["lifts_90d"] \
+        .replace("; ", "/").replace(".", ",")
     s3_row = {
         "segment": "S3", "name": "Reativacao recente (flag out-dez/2024)",
         "N": int(lf["s3_recent_react"].sum()),
@@ -1463,11 +1587,15 @@ def main() -> int:
         "ever_event_rate": round(float(lf.loc[lf["s3_recent_react"],
                                               "n_events"].ge(1).mean()), 4),
         "recent_event_rate": 1.0,
-        "backtest_evidence": "regras B/G: lift 0,52/0,40/1,30 — inconsistente; "
-                             "KM 90d = 0,653 (35% dos episódios com próximo evento "
-                             "<=90d), mediana 187d, censura declarada",
-        "uncertainty": "intervalos largos (N pequeno); censura no corte; 26 das 61 "
-                       "flags são o 1º evento da conta",
+        "backtest_evidence": (
+            f"regra B: lift {rb_lifts} — inconsistente (lift apenas no spike); "
+            f"KM 90d = {react['km_surv_90d']:.3f} "
+            f"({100 * (1 - react['km_surv_90d']):.0f}% dos episódios com próximo "
+            f"evento <=90d), mediana {react['km_median']}d, censura declarada"),
+        "uncertainty": (
+            f"intervalos largos (N pequeno); censura no corte; "
+            f"{react['first_event_flags']} das {react['n_flags']} flags são o "
+            "1º evento da conta"),
         "rationale": "episódio de evento marcado is_reactivation; NÃO é ciclo de "
                      "estado; subconjunto de S4 (declarado)",
     }
@@ -1538,7 +1666,8 @@ def main() -> int:
     for _, r in cyc["dec_rows"].iterrows():
         t13.append({"lens": "estado (painel)", "metric": "active_to_inactive",
                     "name": f"{r['account_id']} em {r['month']}",
-                    "value": f"winner_mrr {fmt(r['winner_mrr'])}"})
+                    "value": f"winner_mrr {fmt(r['winner_mrr'])} "
+                             f"(mês anterior: {fmt(r['winner_mrr_prev'])} — R2)"})
     pd.DataFrame(t13).to_csv(TABLES_DIR / "t13_state_cycles.csv", index=False)
     bt["per_cutoff"].to_csv(TABLES_DIR / "t14_backtest_temporal.csv", index=False)
     bt["detail"].to_csv(TABLES_DIR / "t14b_backtest_detail.csv", index=False)
@@ -1556,17 +1685,27 @@ def main() -> int:
     ]
     tables = [TABLES_DIR / t for t in it04_tables]
 
-    # --- gráficos ---
+    # --- gráficos (2 essenciais; It04_a/b → tabelas t12/t13, pruning do gate
+    # It04; manifesto explícito — qualquer It04_*.png fora do manifesto falha) ---
+    it04_chart_names = [
+        "It04_c_lifecycle_vs_current_mrr.png",
+        "It04_d_backtest_lift.png",
+    ]
     chart_names = [
-        chart_a(rec, react),
-        chart_b(cyc, rec),
         chart_c(lf, rc),
         chart_d(bt["per_cutoff"]),
     ]
-    charts = sorted(CHARTS_DIR.glob("It04_*.png"))
+    charts = [CHARTS_DIR / n for n in it04_chart_names]
+    missing_charts = [c.name for c in charts
+                      if not c.exists() or c.stat().st_size == 0]
+    stale_charts = sorted(
+        p.name for p in CHARTS_DIR.glob("It04_*.png")
+        if p.name not in it04_chart_names)
     check("C01-charts", "gráficos", "número de gráficos gerado",
-          "PASS" if len(charts) == len(chart_names) else "FAIL",
-          f"esperado {len(chart_names)}, gerado {len(charts)}")
+          "PASS" if not missing_charts and not stale_charts else "FAIL",
+          f"esperado {len(it04_chart_names)}, "
+          f"ausentes/vazios={missing_charts or 'nenhuma'}; "
+          f"fora do manifesto={stale_charts or 'nenhuma'}")
 
     # --- gates + relatório ---
     run_gates(rec, react, cyc, lf, bt, bt_sum, seg, wl, rc, churn, tables, charts)

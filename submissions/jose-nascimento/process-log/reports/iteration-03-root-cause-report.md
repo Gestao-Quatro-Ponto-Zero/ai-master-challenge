@@ -32,7 +32,7 @@ Identificar e quantificar o(s) fenômeno(s) central(is) de churn da RavenStack c
 1. **Inspeção do repo**: `git status` limpo; branch `submission/jose-nascimento` tracking `origin` up to date; HEAD `6e7be698…` = esperado; `git remote -v`.
 2. **Leitura integral**: instruções oficiais (já lidas nas It00–02, re-verificadas), execution-plan, orchestrator-checklist, prompts/reports/reviews It00–02, `solution/docs/analytical-contract.md` (contrato congelado), `solution/evidence/01_audit_report.md` e `02_consistency_report.md`, scripts 01–02 (convenções: stdlib+pandas; paths relativos; checks PASS/WARN/FAIL; determinismo).
 3. **Fase A (hipóteses)**: H1–H10 escritas com threshold pré-registrado, teste falsificável, confundidores e resultado se refutada; prompt arquivado; **commit/push antes de qualquer query** (timeline §2).
-4. **Fase B (análise)**: `solution/src/03_root_cause.py` implementado (stdlib + pandas + matplotlib; sem rede; PNG byte-a-byte estáveis) gerando `evidence/03_root_cause_report.md`, 13 tabelas em `out/tables/` e 6 gráficos em `out/charts/`.
+4. **Fase B (análise)**: `solution/src/03_root_cause.py` implementado (stdlib + pandas + matplotlib; sem rede; PNG byte-a-byte estáveis) gerando `evidence/03_root_cause_report.md`, 13 tabelas em `out/tables/` e 6 gráficos em `out/charts/`. **Pós-gate It04 (pruning, 2026-08-28):** os 6 gráficos originais foram reduzidos aos 4 essenciais (`a_monthly`, `b_km`, `c_onboarding`, `d_usage`); `e_support_churn_vs_control.png` e `f_segment_first_event_rates.png` foram removidos do repositório e do gerador (números preservados nas tabelas `t06_support_monthly.csv`/`t07_segments.csv`/`t09_causality.csv`) — decisão do gate 3x da It04, ver `process-log/reviews/iteration-04-review-summary.md`.
 5. **Execução + correções reais** (6, §7) até exit 0 (23 PASS / 0 WARN / 0 FAIL).
 6. **Idempotência**: 2 execuções → todos os outputs byte-a-byte idênticos (MD5).
 7. **3 verificações manuais independentes** (MV-1/MV-2/MV-3, §6) — implementação própria fora do repo (`/tmp/opencode/it03_manual_checks.py`), lendo apenas os CSVs raw.
@@ -106,7 +106,7 @@ Resumo; detalhe completo (problema → opções → evidência → decisão → 
 | Sandbox — arquivo `churn_events.csv` ausente | remoção do arquivo no sandbox | exit 1; FAIL registrado; sem traceback |
 | Verificações manuais | 3 sessões independentes (MV-1/MV-2/MV-3, §6) | 3/3 PASS |
 | Consistência report↔CSV | script independente (asserts sobre t01/t02/t03/t07/t10 vs texto do report) | todos os asserts PASS |
-| Gráficos | dimensões PNG (394–685 px de altura, 1050–1713 px de largura); não-brancos (258–783 cores únicas) | 6/6 íntegros |
+| Gráficos | dimensões PNG (394–685 px de altura, 1050–1713 px de largura); não-brancos (258–783 cores únicas) | 6/6 íntegros na época; **pós-gate It04: 4/4 essenciais re-renderizados** (ver nota na Fase B e o review-fix do gate It04) |
 | Hygiene | `git diff --check` (após staging) | limpo |
 | Escopo | `git status`/`git diff` | somente arquivos de `submissions/jose-nascimento/` |
 | Paths pessoais/segredos | grep por `/tmp`, `/home`, `ubuntu` nos artefatos da solução | zero ocorrências fora do prompt arquivado (exceção documentada, regra 8 do plano) |
@@ -120,7 +120,7 @@ Resumo; detalhe completo (problema → opções → evidência → decisão → 
 | Recálculo independente | implementação própria fora do repo (`/tmp/opencode/fix-sandbox-02/independent_recalc.py`), lendo apenas os CSVs raw + painel | **49/49 PASS** — pico (43/191/22,51%), KM t6 + carry-forward t12/t18, onboarding (≤30d 513.586 = 43,6%; bucket 1-30d 39,6%), H4 corrigido (61,7 vs 52,7; Δ 9,0), suporte seedado (3.162; 0,349/5,1/93,5/35,0), H6 (105,6% inalcançável; gap máx 6,9 p.p.; spread 60,2–75,3%) |
 | MVs pós-fix | MV-1 (pico dez/24), MV-2 (A-039727), MV-3 (Cybersecurity) | 3/3 PASS (verificados no recálculo independente) |
 | FAIL estrutural pós-fix | sandbox: coluna `churn_date` renomeada; arquivo `support_tickets.csv` removido | exit 1 ×2; relatório regravado com "Falha estrutural"; zero tracebacks; outputs de dados NÃO regenerados (MD5 preservados) |
-| PNGs pós-fix | PIL verify + cores/dimensões | 6/6 válidos (1050–1713 × 392–685 px; 258–783 cores únicas; não-brancos 3,7–30,8%); gráfico B com eixo 0–1 (nenhuma curva cortada) |
+| PNGs pós-fix | PIL verify + cores/dimensões | 6/6 válidos na época (1050–1713 × 392–685 px; 258–783 cores únicas; não-brancos 3,7–30,8%); gráfico B com eixo 0–1 (nenhuma curva cortada). **Pós-gate It04: 4/4 essenciais re-renderizados com layout corrigido (150dpi; 1170–1500 × 615–900 px) — métricas no review-fix do gate It04** |
 
 ## 9. Sensibilidades executadas
 
@@ -147,7 +147,7 @@ Resumo; detalhe completo (problema → opções → evidência → decisão → 
 
 **Ao orquestrador (opencode):** a Iteração 03 está `CONCLUDED` (validação do executor concluída; **review gate 3x CONCLUÍDO** — ver §10.1 e o ledger de revisões). Disparar o próximo agente executor `deepseek-max` para a **Iteração 04 — Ciclos de reativação, jornada completa da conta e watchlist**, com:
 
-1. **Entradas:** `solution/evidence/03_root_cause_report.md` (achados e vereditos), `solution/out/tables/` (t01–t10), `solution/out/charts/` (6 PNGs), contrato analítico, `process-log/hypotheses/iteration-03-root-cause-hypotheses.md`, decisions file da It03.
+1. **Entradas:** `solution/evidence/03_root_cause_report.md` (achados e vereditos), `solution/out/tables/` (t01–t10), `solution/out/charts/` (4 PNGs essenciais após pruning do gate It04; antes 6), contrato analítico, `process-log/hypotheses/iteration-03-root-cause-hypotheses.md`, decisions file da It03.
 2. **Achados que a It04 deve respeitar (não re-derivar nem contradizer):** churn é precoce (75,3% ≤ 6m; mediana 3m); pico 2024-12 com mecanismo bucket 0-3m; exposição R1 precoce material (68,4% ≤ 90d; 43,6% ≤ 30d incl. same-day); uso/suporte/reasons não distinguem churn (NO-GO documentado — H4 zero-uso pré-evento 61,7% vs 52,7% = Δ 9,0 p.p. < 25 p.p. pré-registrado, janela pós-signup; H5 sem sinal com controle seedado; não usar como features de watchlist sem rótulo); nenhum segmento com taxa ≥1,5× global (limiar estruturalmente inalcançável; SURV_FLAG também não cruza — maior gap 6,9 p.p.); 0 contas inativas no corte pela lente de assinatura (a watchlist não pode ser só "contas com evento" — precisa de jornada completa e estado no corte).
 3. **Restrições:** nada fora de `submissions/jose-nascimento/`; sem recomendações (It05); sem modelo preditivo; lente declarada por pergunta; `churn_flag_snapshot_2024_12_31` proibido como feature (contrato §8); CSAT/reasons sugestivos.
 4. **Critérios de aceitação objetivos (execution-plan §Iteração 04):** watchlist com contas reais (ID, MRR, sinal, ação); regra de agregação/cap explícita; viés contra contas novas declarado; reativações quantificadas; números reproduzíveis.

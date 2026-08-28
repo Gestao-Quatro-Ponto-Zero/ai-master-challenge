@@ -3,7 +3,7 @@
 - **Executor:** agente único `deepseek-max` (via OpenCode Go), conforme plano de execução (regra 1).
 - **HEAD base:** `12ff47c9bcc29f1dbd81aba186985c1191a8f10b` (esperado no prompt) — confirmado no início (working tree limpo, branch `submission/jose-nascimento`).
 - **Prompt integral:** `process-log/prompts/iteration-04-prompt.md` (arquivado antes da implementação).
-- **Decisões com regras pré-especificadas ANTES dos resultados:** `process-log/decisions/iteration-04-watchlist-decisions.md` (D1–D9; backtest e watchlist fixados a priori, sem tunagem).
+- **Decisões com regras pré-especificadas ANTES dos resultados:** `process-log/decisions/iteration-04-watchlist-decisions.md` (D1–D9; backtest e watchlist fixados a priori, sem tunagem). **Registro honesto (pós-gate):** D1–D9 foram commitadas no MESMO commit do código e dos outputs (`adbbad7`) — a cronologia git não prova separação temporal; a pré-especificação é atestada pelo conteúdo interno (números de exploração divergentes dos finais) e por auto-relato (ver nota de transparência no arquivo de decisões).
 - **Tempo de relógio:** ~2h10min (leitura de contexto + exploração de dados + script + 6 correções + validações + documentos).
 
 ---
@@ -23,7 +23,7 @@
 
 - `solution/evidence/04_lifecycle_watchlist_report.md` (12 seções; 29 PASS / 0 WARN / 0 FAIL).
 - `solution/out/tables/`: `t11_account_lifecycle.csv` (500 contas), `t12_reactivation_recurrence.csv`, `t13_state_cycles.csv`, `t14_backtest_temporal.csv` (regras×cutoffs 90d/180d), `t14b_backtest_detail.csv` (auditoria por conta×cutoff), `t15_priority_segments.csv`, `t15b_segment_overlap.csv`, `t16_watchlist_top20.csv`, `t17_rank_comparison.csv`.
-- `solution/out/charts/`: `It04_a_recurrence_reactivation.png`, `It04_b_cycle_lenses.png`, `It04_c_lifecycle_vs_current_mrr.png`, `It04_d_backtest_lift.png` (não repetem It03).
+- `solution/out/charts/`: `It04_c_lifecycle_vs_current_mrr.png`, `It04_d_backtest_lift.png` (2 essenciais; `It04_a`/`It04_b` substituídos pelas tabelas t12/t13 — pruning do gate 3x, ver `process-log/reviews/iteration-04-review-summary.md`).
 
 ## 3. Hipótese/regra → backtest → decisão (arco honesto)
 
@@ -70,7 +70,7 @@
 - **Ciclos reais:** 2 transições active→inactive; 281 inactive→active (279 = gap de ativação signup; 2 = retornos reais); **2 ciclos completos** (A-180abf, A-0baac2) — vs 175 multi-evento e 55 reativações: lentes distintas, não intercambiáveis.
 - **Jornada/valor:** Σ lifecycle proxy = 28.766.224; current winner MRR = 3.668.852; overlap top-20 current vs lifecycle = 7 (Jaccard 0,21); Spearman 0,575; rank shifts A-977ca0 +13, A-80eeb6 +11, A-1f0636 −9; viés contra contas novas declarado.
 - **Backtest (90d):** baselines 0,216/0,247/0,295; só R_D valida (1,57/1,56/1,83); sensibilidade 180d confirma (1,26/1,51).
-- **Watchlist:** 20 contas específicas (8/8/4); top-3: A-c70870 (33.830), A-18793f (29.452), A-56962b (32.437, Tier C); Σ winner do top-20 = 392.030 (10,7% da exposição total).
+- **Watchlist:** 20 contas específicas (8/8/4); maiores MRR da watchlist (top-3 por `winner_mrr` desc): A-c70870 (33.830, Tier A), A-56962b (32.437, Tier C), A-18793f (29.452, Tier A); Σ winner do top-20 = 392.030 (10,7% da exposição total).
 - **Segmentos:** S1 onboarding 80 contas / 621.981; S2 repeat-event 175 / 1.245.634; S3 reativação recente 25 / 179.256; S4 evento recente 178 / 1.299.245; S5 alto valor 130 / 1.780.851 (overlap declarado).
 
 ## 7. Limitações e handoff para a Iteração 05
@@ -83,4 +83,10 @@
 
 ## 8. Estados (atualizados no plano/checklist)
 
-- It04 `CONCLUDED` (implementação validada pelo executor; 29 PASS; 3 MVs; recálculo independente; git ok). Review gate 3x da It04 `PENDING` (ledger B3). It05–It10 `PENDING`.
+- It04 `CONCLUDED` (implementação validada pelo executor; 29 PASS; 3 MVs; recálculo independente; git ok). Review gate 3x da It04 `CONCLUDED` em 2026-08-28 (3 veredictos `PASS_WITH_FIXES`; correções analíticas/dokumentais + refinamento visual + pruning aplicados por agente sequencial — ver `process-log/reviews/iteration-04-review-summary.md` e `process-log/reports/iteration-04-review-fix-report.md`). It05–It10 `PENDING`.
+
+## 9. Pós-gate (pruning e refinamento visual — resumo)
+
+- **Pruning:** gráficos `It04_a_recurrence_reactivation.png` e `It04_b_cycle_lenses.png` removidos do repositório e do gerador (números preservados nas tabelas t12/t13); o mesmo para os It03 `e_support_churn_vs_control.png` e `f_segment_first_event_rates.png` (números em t06/t07/t09). Manifestos explícitos nos scripts garantem que não reapareçam em execução limpa (check C01-charts falha se reaparecerem).
+- **Refinamento visual:** os 6 PNGs essenciais re-renderizados (150dpi; fundo branco; paleta Okabe-Ito colorblind-safe; rodapés em `fig.text` em 2 linhas; margens explícitas; sem `bbox_inches="tight"`); `It04_d` convertido de barras agrupadas para dot/errorbar horizontal (regras no eixo y, lift no x, CI de Wilson, linhas em 1,0/1,15, R_D destacado).
+- **Narrativa:** frases do relatório derivadas em runtime das tabelas/variáveis (KM, censura, exceções 180d, exposições, exemplos de viés, strings dos segmentos), com gates de âncora G13 para os claims executivos materiais; sensibilidade 180d qualificada (R_G 1,36 N=12 e R_H 1,61 N=16 — N < 25, instáveis); rounding de R_B unificado (0,52/0,41/1,29).
