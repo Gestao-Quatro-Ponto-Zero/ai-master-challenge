@@ -636,6 +636,41 @@ def priority_segments(lf: pd.DataFrame, bt_summary: pd.DataFrame) -> dict:
 
 
 # ----------------------------------------------------------------------------
+# Exposição por lente separada (R1 gross ending MRR e winner atual)
+# ----------------------------------------------------------------------------
+def exposure_lenses(sub: pd.DataFrame, churn: pd.DataFrame, lf: pd.DataFrame) -> dict:
+    """R1 (gross ending MRR, exposição contratual) e winner atual (exposição de
+    estado) das contas multi-evento e reativadas — LENTES SEPARADAS (contrato
+    §5): nenhum número é 'receita perdida' nem 'dinheiro recuperado'."""
+    s2 = sub.copy()
+    s2["end_date"] = pd.to_datetime(s2["end_date"])
+    ended = s2[s2["end_date"].notna()]
+    r1 = ended.groupby("account_id")["mrr_amount"].sum()
+    ev = churn.copy()
+    ev["churn_date"] = pd.to_datetime(ev["churn_date"])
+    cnt = ev.groupby("account_id").size()
+    multi = set(cnt[cnt >= REACT_THRESHOLD].index)
+    react = set(ev[ev["is_reactivation"] == True]["account_id"])  # noqa: E712
+    lf_idx = lf.set_index("account_id")
+    out = {
+        "multi": {
+            "n": len(multi),
+            "r1_total": int(r1.reindex(multi).sum()),
+            "r1_share": float(r1.reindex(multi).sum() / r1.sum()) if r1.sum() else 0.0,
+            "current_mrr": int(lf_idx.loc[list(multi), "current_winner_mrr"].sum()),
+        },
+        "react": {
+            "n": len(react),
+            "r1_total": int(r1.reindex(react).sum()),
+            "r1_share": float(r1.reindex(react).sum() / r1.sum()) if r1.sum() else 0.0,
+            "current_mrr": int(lf_idx.loc[list(react), "current_winner_mrr"].sum()),
+        },
+        "r1_total_all": int(r1.sum()),
+    }
+    return out
+
+
+# ----------------------------------------------------------------------------
 # Watchlist (tiers + caps declarados; D6)
 # ----------------------------------------------------------------------------
 def build_watchlist(lf: pd.DataFrame, cycle_accounts: list[str]) -> pd.DataFrame:
@@ -914,8 +949,8 @@ def chart_d(bt: pd.DataFrame) -> str:
 # ----------------------------------------------------------------------------
 def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
                   bt: dict, bt_sum: pd.DataFrame, seg: dict, wl: pd.DataFrame,
-                  rc: dict, chart_names: list[str], table_names: list[str],
-                  structural_fail: bool = False) -> str:
+                  rc: dict, expo: dict, chart_names: list[str],
+                  table_names: list[str], structural_fail: bool = False) -> str:
     if structural_fail:
         return (
             "# Relatório de Ciclos, Jornada e Watchlist — Iteração 04 (RavenStack)\n\n"
@@ -973,6 +1008,13 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         f"{rec['gaps_le90']} gaps ({pct(rec['gaps_le90'], rec['n_gaps'])}) <= 90d. "
         "Este é o espaçamento observado ENTRE eventos — não é uma predição do próximo "
         "evento (ver backtest, seção 6: a regra de recorrência NÃO tem lift).",
+        f"- **Exposição dessas contas (lentes separadas, contrato §5):** R1 gross "
+        f"ending MRR das {expo['multi']['n']} contas multi-evento = "
+        f"**{fmt(expo['multi']['r1_total'])}** "
+        f"({pct(expo['multi']['r1_total'], expo['r1_total_all'])} do R1 da janela "
+        f"1.179.139) — exposição contratual, NÃO receita perdida; winner atual "
+        f"(estado) dessas contas = **{fmt(expo['multi']['current_mrr'])}**/mês. "
+        "As duas lentes medem coisas diferentes e não se somam.",
         "",
         "## 3. Reativação marcada (`is_reactivation`) — sequência temporal com censura",
         "",
@@ -1008,6 +1050,11 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         f"(24/61 = 39,3%) SUBestima o retorno por censura — e nenhuma taxa aqui é "
         "'receita recuperada': reativação é episódio de evento, sem ligação "
         "demonstrável com receita (contrato §5).",
+        f"- **Exposição das contas reativadas (lentes separadas):** R1 das "
+        f"{expo['react']['n']} contas com flag = **{fmt(expo['react']['r1_total'])}** "
+        f"({pct(expo['react']['r1_total'], expo['r1_total_all'])} do R1) — exposição "
+        f"contratual, NÃO receita recuperada pela reativação; winner atual = "
+        f"**{fmt(expo['react']['current_mrr'])}**/mês (estado).",
         "",
         "## 4. Ciclos reais de estado (painel account-month; lente B)",
         "",
@@ -1376,7 +1423,7 @@ def main() -> int:
             or "ravenstack_churn_events.csv" not in loaded:
         REPORT_PATH.write_text(render_report({}, {}, {}, pd.DataFrame(), {},
                                              pd.DataFrame(), {}, pd.DataFrame(),
-                                             {}, [], [], structural_fail=True),
+                                             {}, {}, [], [], structural_fail=True),
                                encoding="utf-8")
         print("[04_lifecycle_watchlist] Falha estrutural — relatório regravado; "
               "exit 1 (sem traceback)")
@@ -1427,6 +1474,7 @@ def main() -> int:
     seg["segments"] = pd.DataFrame(seg_rows[:2] + [s3_row] + seg_rows[2:])
     wl = build_watchlist(lf, cyc["cycle_accounts"])
     rc = rank_comparison(lf)
+    expo = exposure_lenses(sub, churn, lf)
 
     # --- tabelas CSV ---
     lf.to_csv(TABLES_DIR / "t11_account_lifecycle.csv", index=False)
@@ -1448,7 +1496,15 @@ def main() -> int:
                  ("gap_to_next_median_days", react["gap_to_next_median"]),
                  ("km_surv_90d", react["km_surv_90d"]),
                  ("km_surv_180d", react["km_surv_180d"]),
-                 ("km_median_days", react["km_median"] or "NA")]:
+                 ("km_median_days", react["km_median"] or "NA"),
+                 ("r1_multi_event_accounts", expo["multi"]["r1_total"]),
+                 ("r1_share_multi_event_accounts",
+                  f"{expo['multi']['r1_share']:.3f}"),
+                 ("current_mrr_multi_event_accounts", expo["multi"]["current_mrr"]),
+                 ("r1_reactivated_accounts", expo["react"]["r1_total"]),
+                 ("r1_share_reactivated_accounts", f"{expo['react']['r1_share']:.3f}"),
+                 ("current_mrr_reactivated_accounts", expo["react"]["current_mrr"]),
+                 ("r1_total_window", expo["r1_total_all"])]:
         t12.append({"metric": k, "level": "", "value": v})
     for f in react["followup"]:
         t12.append({"metric": f"next_event_within_{f['window_days']}d",
@@ -1515,7 +1571,7 @@ def main() -> int:
     # --- gates + relatório ---
     run_gates(rec, react, cyc, lf, bt, bt_sum, seg, wl, rc, churn, tables, charts)
     REPORT_PATH.write_text(render_report(
-        rec, react, cyc, lf, bt, bt_sum, seg, wl, rc,
+        rec, react, cyc, lf, bt, bt_sum, seg, wl, rc, expo,
         chart_names, [t.name for t in tables]), encoding="utf-8")
 
     n_fail = sum(1 for c in CHECKS if c["level"] == "FAIL")

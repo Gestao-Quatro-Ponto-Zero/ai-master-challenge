@@ -65,8 +65,8 @@
 
 ## 6. Números-chave (origem: `evidence/04_lifecycle_watchlist_report.md` + tabelas)
 
-- **Recorrência:** 175 contas ≥2 eventos (59 ≥3, máx 5); 423/600 eventos (70,5%) concentrados nessas 175 contas; gaps medianos 58d (59,7% ≤90d).
-- **Reativação:** 61 flags / 55 contas; 26 flags são o 1º evento da conta; 24 episódios com próximo evento observado (mediana 53d), 37 censurados; KM sobrevivência 90d = 0,653 (≈35% com próximo evento ≤90d), mediana 187d; follow-up explícito (10/35 ≤90d = 28,6%).
+- **Recorrência:** 175 contas ≥2 eventos (59 ≥3, máx 5); 423/600 eventos (70,5%) concentrados nessas 175 contas; gaps medianos 58d (59,7% ≤90d). Exposição por lente separada: R1 dessas contas = 383.038 (32,5% do R1 1.179.139 — exposição, não perda); winner atual = 1.245.634/mês.
+- **Reativação:** 61 flags / 55 contas; 26 flags são o 1º evento da conta; 24 episódios com próximo evento observado (mediana 53d), 37 censurados; KM sobrevivência 90d = 0,653 (≈35% com próximo evento ≤90d), mediana 187d; follow-up explícito (10/35 ≤90d = 28,6%). Exposição por lente separada: R1 das 55 contas = 124.461 (10,6% — exposição, não receita recuperada); winner atual = 349.577/mês.
 - **Ciclos reais:** 2 transições active→inactive; 281 inactive→active (279 = gap de ativação signup; 2 = retornos reais); **2 ciclos completos** (A-180abf, A-0baac2) — vs 175 multi-evento e 55 reativações: lentes distintas, não intercambiáveis.
 - **Jornada/valor:** Σ lifecycle proxy = 28.766.224; current winner MRR = 3.668.852; overlap top-20 current vs lifecycle = 7 (Jaccard 0,21); Spearman 0,575; rank shifts A-977ca0 +13, A-80eeb6 +11, A-1f0636 −9; viés contra contas novas declarado.
 - **Backtest (90d):** baselines 0,216/0,247/0,295; só R_D valida (1,57/1,56/1,83); sensibilidade 180d confirma (1,26/1,51).

@@ -15,6 +15,7 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 - Distribuição por conta (0/1/2/3/4/5 eventos): 0 / 177 / 116 / 47 / 10 / 2 contas. Máximo: **5** eventos.
 - **Recorrência:** 175 contas com >= 2 eventos; 59 com >= 3. Concentração: **423 de 600 eventos (70.5%)** vêm das contas com >= 2 eventos — 175 contas concentram 70,5% dos episódios.
 - Gaps entre eventos consecutivos da mesma conta: n=248, mediana **58 dias**, média 102.06; 148 gaps (59.7%) <= 90d. Este é o espaçamento observado ENTRE eventos — não é uma predição do próximo evento (ver backtest, seção 6: a regra de recorrência NÃO tem lift).
+- **Exposição dessas contas (lentes separadas, contrato §5):** R1 gross ending MRR das 175 contas multi-evento = **383038** (32.5% do R1 da janela 1.179.139) — exposição contratual, NÃO receita perdida; winner atual (estado) dessas contas = **1245634**/mês. As duas lentes medem coisas diferentes e não se somam.
 
 ## 3. Reativação marcada (`is_reactivation`) — sequência temporal com censura
 
@@ -31,6 +32,7 @@ Gerado por `solution/src/04_lifecycle_watchlist.py` (execução offline e determ
 | <= 180d | 20 | 7 | 35.0% |
 
 - **Kaplan-Meier (tempo até o próximo evento após reativação; censura no corte):** sobrevivência em 90d = **0.653** (ou seja, ≈ 35% dos episódios têm próximo evento <= 90d); em 180d = 0.476; mediana = **187 dias** (alcançada na janela). A taxa observada (24/61 = 39,3%) SUBestima o retorno por censura — e nenhuma taxa aqui é 'receita recuperada': reativação é episódio de evento, sem ligação demonstrável com receita (contrato §5).
+- **Exposição das contas reativadas (lentes separadas):** R1 das 55 contas com flag = **124461** (10.6% do R1) — exposição contratual, NÃO receita recuperada pela reativação; winner atual = **349577**/mês (estado).
 
 ## 4. Ciclos reais de estado (painel account-month; lente B)
 

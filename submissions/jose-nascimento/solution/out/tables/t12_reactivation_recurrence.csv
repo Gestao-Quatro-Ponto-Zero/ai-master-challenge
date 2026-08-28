@@ -20,6 +20,13 @@ gap_to_next_median_days,,53.0
 km_surv_90d,,0.6530671089279136
 km_surv_180d,,0.47552876025957347
 km_median_days,,187
+r1_multi_event_accounts,,383038
+r1_share_multi_event_accounts,,0.325
+current_mrr_multi_event_accounts,,1245634
+r1_reactivated_accounts,,124461
+r1_share_reactivated_accounts,,0.106
+current_mrr_reactivated_accounts,,349577
+r1_total_window,,1179139
 next_event_within_30d,episodes_with_followup=50,6 (12.0%)
 next_event_within_90d,episodes_with_followup=35,10 (28.6%)
 next_event_within_180d,episodes_with_followup=20,7 (35.0%)
