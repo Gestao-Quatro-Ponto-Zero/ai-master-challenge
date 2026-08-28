@@ -116,5 +116,5 @@ Quantis com nota de arredondamento + valores subjacentes (report §4); tie-break
 ## 12. Git
 
 - Antes da correção: HEAD `9305e2edcdea7506feab0af75e0f29401becf6b7` confirmado; working tree limpo; branch `submission/jose-nascimento` tracking `origin` up to date.
-- Commit: `fix: strengthen revenue churn contract` (hash completo no review summary §8 / validação pós-push).
-- Push para `origin/submission/jose-nascimento` realizado; HEAD local == remoto; working tree limpo após o push; `git diff --check` limpo; `git add -f` apenas nos paths pretendidos; sem amend/force/config/destrutivo.
+- Commit: `fix: strengthen revenue churn contract` — hash completo **`9378a86e5697dbeb2aaa1fdc96ed7d418155aa05`**.
+- Push para `origin/submission/jose-nascimento` realizado; HEAD local == remoto (`9378a86`); working tree limpo após o push (re-execução do pipeline pós-commit reproduz os 4 outputs byte-a-byte); `git diff --check` limpo; `git add -f` apenas nos paths pretendidos; sem amend/force/config/destrutivo.
