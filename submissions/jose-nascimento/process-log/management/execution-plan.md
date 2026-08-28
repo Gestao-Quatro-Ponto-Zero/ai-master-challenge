@@ -4,8 +4,8 @@
 - **Branch:** `submission/jose-nascimento`
 - **Pasta exclusiva:** `submissions/jose-nascimento/`
 - **Ferramenta real:** opencode como orquestrador + subagentes `deepseek-max` (via OpenCode Go), um por etapa, em sequência
-- **Última atualização:** 2026-08-28 (fim da Iteração 00; review gate 3x e correções concluídos)
-- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iterações 01–10 `PENDING`
+- **Última atualização:** 2026-08-28 (fim da Iteração 01; validação do executor concluída — review gate 3x da Iteração 01 pendente de disparo)
+- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (validação do executor; gate 3x a disparar); Iterações 02–10 `PENDING`
 
 ---
 
@@ -75,7 +75,7 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 
 ### Iteração 01 — Ingestão e auditoria dos 5 datasets
 
-- **Status:** `PENDING`
+- **Status:** `CONCLUDED` (2026-08-28) — implementação validada pelo executor (exit 0; 72 PASS / 18 WARN / 0 FAIL; idempotência byte-a-byte; 3 verificações manuais; commit `feat: ingest and audit RavenStack datasets`). Review gate 3x: a disparar pelo orquestrador (rastreado à parte, regra 4).
 - **Objetivo:** ingerir os 5 CSVs de forma reproduzível e auditar cada tabela contra o brief: contagens, schema, chaves, nulos, duplicatas, janelas de data válidas, consistência de tipos e unidades; declarar com evidência a natureza sintética/gerada dos dados; gravar relatório de auditoria com gates.
 - **Entradas:** CSVs em `/tmp/opencode/ravendata/`; brief do challenge (tabelas esperadas); checksums capturados na Iteração 00.
 - **Artefatos esperados:** `data/raw/` (5 CSVs commitados, licença MIT); `src/01_ingest_audit.py`; `evidence/01_audit_report.md`; entrada no process log.

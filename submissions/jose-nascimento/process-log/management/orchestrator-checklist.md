@@ -2,7 +2,7 @@
 
 **Finalidade:** checklist interno, exaustivo porém operacional, usado pelo orquestrador (opencode) para governar a submissão de Jose Nascimento. Estados válidos: `PENDING` (não realizado), `OPEN` (em andamento), `CONCLUDED` (realizado com evidência). **Nenhum item pode afirmar algo ainda não realizado.** Atualizado ao fim de cada iteração.
 
-**Última atualização:** 2026-08-28 (fim da Iteração 00 + review gate 3x e correções concluídos)
+**Última atualização:** 2026-08-28 (fim da Iteração 01 — validação do executor concluída; review gate 3x da Iteração 01 a disparar pelo orquestrador)
 
 ---
 
@@ -43,17 +43,17 @@
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
 | C1 | Dataset oficial identificado: Kaggle "SaaS Subscription & Churn Analytics", licença MIT | CONCLUDED | Declarado no brief do challenge (lido na Iteração 00) |
-| C2 | 5 CSVs reais commitados em `data/raw/` para reprodutibilidade offline | PENDING | Iteração 01 |
-| C3 | Zero dependência de rede (wget/kagglehub/download) no pipeline | PENDING | Iteração 01 e 06 |
-| C4 | Natureza sintética/gerada dos dados declarada com evidência (não apenas afirmada) | PENDING | Iteração 01 |
-| C5 | Atribuição/licença do dataset mencionada no README final | PENDING | Iteração 07 |
+| C2 | 5 CSVs reais commitados em `data/raw/` para reprodutibilidade offline | CONCLUDED | Iteração 01: `solution/data/raw/ravenstack_*.csv` commitados (cópia byte-for-byte; MD5 iguais à origem e aos checksums da Iteração 00; contagens 500/5.000/25.000/2.000/600; `data/raw/README.md` com origem/licença/checksums) |
+| C3 | Zero dependência de rede (wget/kagglehub/download) no pipeline | CONCLUDED | Iteração 01: script `src/01_ingest_audit.py` usa apenas stdlib+pandas, lê de `data/raw/` por path relativo; nenhuma chamada de rede (inspeção de imports). Re-verificar na Iteração 06 |
+| C4 | Natureza sintética/gerada dos dados declarada com evidência (não apenas afirmada) | CONCLUDED | Iteração 01: parecer com evidência objetiva no `evidence/01_audit_report.md` §5 (esquema de IDs, distribuições quase uniformes, uso mensal uniforme 24 meses, 76,6% do uso fora da janela da assinatura, ARR=12×MRR em 100%, CSAT {3,4,5}); sem extrapolação de causa de negócio |
+| C5 | Atribuição/licença do dataset mencionada no README final | PENDING | Iteração 07 (já registrada em `data/raw/README.md`) |
 | C6 | Nenhum artefato binário de dados commitado (`.duckdb`, `.db`, `.sqlite`) | PENDING | Verificação contínua; Iteração 06 e 09 |
 
 ## D. Auditoria e análise
 
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
-| D1 | Auditoria das 5 tabelas vs brief: contagens, schema, chaves, nulos, duplicatas, janelas de data | PENDING | Iteração 01 |
+| D1 | Auditoria das 5 tabelas vs brief: contagens, schema, chaves, nulos, duplicatas, janelas de data | CONCLUDED | Iteração 01: `solution/evidence/01_audit_report.md` — 72 PASS / 18 WARN / 0 FAIL, exit 0; contagens 500/5.000/25.000/2.000/600 iguais ao brief; FKs sem órfãos; 3 verificações manuais independentes (MV1/MV2/MV3 no report da iteração) |
 | D2 | Reconciliação das definições de churn entre tabelas; definição única point-in-time justificada | PENDING | Iteração 02 |
 | D3 | Grão-mestre account-month com regra de assinatura vencedora; sem contagens dobradas | PENDING | Iteração 02 |
 | D4 | Checks de invariante (contagem e MRR) com gates FAIL/PASS | PENDING | Iteração 02 e 06 |
@@ -82,16 +82,16 @@
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
 | F1 | `.gitignore` adequado desde o início (sem node_modules/venv/pycache/binários) | CONCLUDED | `.gitignore` da pasta commitado no commit inicial do scaffold (1f3017a) |
-| F2 | Zero segredos e chaves commitados; paths pessoais monitorados (exceção documentada) | PENDING | Verificação por iteração. Até a Iteração 00: zero segredos/chaves. Exceção documentada: o prompt arquivado (`process-log/prompts/iteration-00-prompt.md:19-24`) contém paths locais dos materiais de pesquisa interna por transparência — não são segredos, mas são paths de máquina; decisão de governança registrada no review summary; re-verificar em toda iteração |
-| F3 | Commits semânticos incrementais (vários, não 1 único gigante) | PENDING | Em curso: scaffold + esta iteração já semânticos; 8–10+ commits esperados até o fim |
+| F2 | Zero segredos e chaves commitados; paths pessoais monitorados (exceção documentada) | PENDING | Verificação por iteração. Iteração 01: grep nos artefatos da solução por `/tmp`, `/home`, `ubuntu` → zero ocorrências fora do prompt arquivado (exceção documentada da Iteração 00). Re-verificar em toda iteração |
+| F3 | Commits semânticos incrementais (vários, não 1 único gigante) | PENDING | Em curso: scaffold + governança + esta iteração já semânticos; 8–10+ commits esperados até o fim |
 | F4 | Autor do candidato em todos os commits (sem alterar git config) | CONCLUDED | Verificado: scaffold `Jose Nascimento <322186960+josenascimento1@users.noreply.github.com>`; identidade reutilizada nesta iteração |
 | F5 | Setup com 1 comando (`./run.sh` ou `make all`), offline, do clone limpo | PENDING | Iteração 06 |
 | F6 | Notebook/saídas com outputs renderizados como evidência visual | PENDING | Iteração 06/07 |
 | F7 | Evidências em texto puro (markdown/CSV/JSONL); zero PDF/DOCX/JPEG como fonte primária de evidência | PENDING | Iteração 08 e 09 |
 | F8 | Checklist do README marcado somente com arquivos commitados (zero checkbox fantasma) | PENDING | Iteração 08/09 |
 | F9 | QA final integral contra todas as instruções oficiais | PENDING | Iteração 09 |
-| F10 | Reprovação por hygiene evitável: `git diff --check` limpo em todo commit | CONCLUDED | Executado no commit da Iteração 00; re-executar em toda iteração |
-| F11 | Controle de time budget (4–6h): acumulado registrado por iteração; cortes conforme política do execution-plan §2 | PENDING | Registro a partir da Iteração 01 (Iteração 00: planejamento/governança + review gate, sem fatia analítica) |
+| F10 | Reprovação por hygiene evitável: `git diff --check` limpo em todo commit | CONCLUDED | Executado no commit da Iteração 00 e re-executado na Iteração 01; re-executar em toda iteração |
+| F11 | Controle de time budget (4–6h): acumulado registrado por iteração; cortes conforme política do execution-plan §2 | PENDING | Iteração 01: ~55 min registrados no report da iteração (exploração + script + correções + validações); orquestrador mantém o acumulado e decide cortes |
 
 ---
 
