@@ -36,7 +36,8 @@ _Sua análise, protótipo, redesign ou o que o challenge pedir._
 
 | Ferramenta | Para que usou |
 |------------|--------------|
-| opencode (Claude Code / deepseek-v4-flash) | Orquestração da análise, subagentes por etapa, geração de scripts e evidências |
+| opencode (orquestrador) | Orquestração das etapas, gestão de subagentes, git e geração de evidências |
+| deepseek-max (subagente via OpenCode Go) | Execução de cada etapa da análise e revisão read-only entre iterações |
 
 ### Workflow
 
