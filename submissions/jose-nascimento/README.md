@@ -59,4 +59,4 @@ _Sua análise, protótipo, redesign ou o que o challenge pedir._
 
 ---
 
-_Submissão enviada em: 2026-08-28_
+_Submissão enviada em: [data — a preencher somente quando o PR for efetivamente aberto, na Iteração 10]_

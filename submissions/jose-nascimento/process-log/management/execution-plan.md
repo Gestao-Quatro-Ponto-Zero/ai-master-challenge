@@ -4,8 +4,8 @@
 - **Branch:** `submission/jose-nascimento`
 - **Pasta exclusiva:** `submissions/jose-nascimento/`
 - **Ferramenta real:** opencode como orquestrador + subagentes `deepseek-max` (via OpenCode Go), um por etapa, em sequência
-- **Última atualização:** 2026-08-28 (fim da Iteração 00)
-- **Status desta versão:** Iteração 00 `CONCLUDED`; Iterações 01–10 `PENDING`
+- **Última atualização:** 2026-08-28 (fim da Iteração 00; review gate 3x e correções concluídos)
+- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iterações 01–10 `PENDING`
 
 ---
 
@@ -14,14 +14,28 @@
 1. **Um agente por etapa:** cada iteração é executada por exatamente um agente `deepseek-max`, sequencialmente. O orquestrador (opencode) não implementa código; apenas gerencia agentes.
 2. **Revisão 3x após cada etapa:** ao terminar uma etapa, 3 agentes `deepseek-max` revisam o resultado em paralelo e em modo read-only. Se encontrarem problemas materiais, um agente sequencial faz as correções.
 3. **Reports em disco:** toda etapa produz report estruturado em `process-log/reports/`, com diretórios e filenames disciplinados.
-4. **Estados do plano:** este arquivo é atualizado ao fim de cada etapa usando exclusivamente os estados `PENDING`, `OPEN` e `CONCLUDED`.
+4. **Estados do plano (semântica):** `PENDING` = iteração/item ainda não iniciado; `OPEN` = executor trabalhando na iteração/item; `CONCLUDED` = implementação da iteração concluída **e validada pelo executor** (critérios objetivos de aceitação atendidos com evidência). O review gate 3x é acompanhado **separadamente** no `orchestrator-checklist.md` (item B3) e no ledger de revisões (`process-log/reviews/iteration-XX-review-summary.md`); um finding material pode reabrir a iteração (`OPEN`) ou gerar correção sequencial antes da próxima etapa. Este arquivo usa exclusivamente os estados `PENDING`, `OPEN` e `CONCLUDED`; `CONCLUDED` de iteração **não** implica review gate concluído — o gate é registrado à parte (Iteração 00: gate e correções concluídos em 2026-08-28).
 5. **Escopo git:** somente arquivos dentro de `submissions/jose-nascimento/` podem ser alterados ou commitados. O `.gitignore` raiz ignora `submissions/`; commits usam `git add -f` apenas nos paths pretendidos.
 6. **Autor dos commits:** identidade do candidato (verificada: `Jose Nascimento <322186960+josenascimento1@users.noreply.github.com>`), sem alterar `git config`.
 7. **Evidência real:** nada é afirmado sem arquivo ou número verificável no repo; nenhuma conclusão de análise pública ou de material de pesquisa é citada — tudo é re-derivado do processo e dos dados.
+8. **Disclosure de pesquisa interna (benchmark vs fonte da solução):** pesquisa interna de benchmark foi usada apenas para **mapear riscos e regras** do processo (ex.: critérios de reprovação, time budget, armadilhas comuns). Nenhum número, código, fraseado ou conclusão dessa pesquisa é copiado para a solução — toda conclusão é rederivada e reproduzível a partir dos 5 CSVs pelo pipeline próprio (Iterações 01–06). O prompt de gestão arquivado (`process-log/prompts/iteration-00-prompt.md`) referencia os paths dessa pesquisa **por transparência** (histórico preservado, evidência honesta); a solução não cita essas fontes. Distinção clara: **pesquisa de benchmark** (contexto de processo, nunca citada nas entregas) ≠ **análise pública do dataset** (fonte proibida de conclusões — regra 7).
 
 ---
 
-## 2. Estrutura de governança (arquivos de controle)
+## 2. Política de contenção (time budget oficial 4–6h)
+
+O README oficial projeta o desafio para **4–6 horas** e não premia soluções longas. Esta política é vigente da Iteração 01 à 10, aplicada pelo orquestrador e reavaliada ao fim de cada etapa:
+
+1. **Escopo mínimo por iteração:** cada iteração entrega somente o que seus critérios objetivos de aceitação exigem; nada além (feature creep é cortado imediatamente).
+2. **Diferencial opcional só com evidência:** o diferencial (ex.: modelo preditivo, dashboard) é opcional e só entra se (a) o time budget permitir e (b) houver evidência real de sinal nos dados — a Iteração 05 testa o baseline antes de qualquer alegação. Sem evidência, o diferencial **não** é construído e o "o que NÃO fazer" documenta a decisão.
+3. **Revisores em paralelo:** a revisão 3x read-only após cada iteração é **obrigatória** (exigência do candidato, regra 2 acima) e roda em paralelo — 3 agentes de uma vez, custo de 1 passada de relógio, nunca em série.
+4. **Correções apenas materiais:** o agente de correção sequencial trata findings materiais (erros factuais, violações de regra, claims falsas, risco de reprovação). Findings LOW/de redação podem ser aceitos com justificativa no review summary ou corrigidos no mesmo passe — sem passadas extras por iteração além do necessário.
+5. **Stop conditions:** (a) iteração estourando sua fatia de tempo → orquestrador reduz escopo (validações opcionais) e segue; (b) acumulado ultrapassando ~5h antes da Iteração 09 → orquestrador funde/trim escopo (ex.: Iterações 06–07) — **nunca** sacrificando: 1 comando reproduzível (It06), relatório executivo (It07), process log (It08), QA final (It09); (c) artefatos concisos: reports de iteração curtos e objetivos, 4–6 visualizações com significado, sem documentos longos.
+6. **Registro de tempo:** cada report de iteração registra o tempo de relógio da etapa; o orquestrador mantém o acumulado no checklist (item F11) e decide cortes com base nele.
+
+---
+
+## 3. Estrutura de governança (arquivos de controle)
 
 | Arquivo | Papel |
 |---|---|
@@ -32,13 +46,13 @@
 
 ---
 
-## 3. Iterações
+## 4. Iterações
 
 > Cada iteração registra: objetivo, entradas, artefatos esperados, critérios objetivos de aceitação, validações, commit esperado, dependências e status.
 
 ### Iteração 00 — Planejamento e governança
 
-- **Status:** `CONCLUDED` (2026-08-28)
+- **Status:** `CONCLUDED` (2026-08-28) — review gate 3x realizado (3 veredictos `PASS_WITH_FIXES`, read-only) e correções aplicadas por agente sequencial; registro em `process-log/reviews/iteration-00-review-summary.md`
 - **Objetivo:** estabelecer a arquitetura mínima de gestão da submissão (plano de execução, checklist do orquestrador, report da iteração), corrigir informação incorreta no README scaffold (ferramenta alegada) e versionar/pushar a base de governança.
 - **Entradas:** instruções oficiais (README.md, CONTRIBUTING.md, submission-guide.md, challenges/data-001-churn/README.md, templates/submission-template.md); scaffold existente da pasta do candidato; estado do repo (branch, remotes, log); presença dos 5 CSVs em `/tmp/opencode/ravendata/` (inspeção de presença/contagem/checksum, sem análise).
 - **Artefatos esperados:**
@@ -55,7 +69,7 @@
   - README scaffold não alega mais ferramenta incorreta ("Claude Code/deepseek-v4-flash" removido; processo real descrito: opencode + subagentes deepseek-max).
   - Nenhum arquivo fora de `submissions/jose-nascimento/` alterado.
   - `git diff --check` limpo; commit semântico; push para `origin/submission/jose-nascimento`.
-- **Validações:** leitura integral das 5 instruções oficiais; inspeção de branch/remotes/status/log; checagem de estados válidos (`PENDING|OPEN|CONCLUDED`) por script; `git diff --check`; verificação de zero menções a análises públicas na pasta (grep); `git status` final e tracking do remote.
+- **Validações:** leitura integral das 5 instruções oficiais; inspeção de branch/remotes/status/log; checagem de estados válidos (`PENDING|OPEN|CONCLUDED`) por script; `git diff --check`; grep de nomes de análises públicas do dataset e termos de baseline na pasta (zero ocorrências; exceção documentada: prompt arquivado referencia paths de pesquisa interna por transparência — ver regra 8); `git status` final e tracking do remote.
 - **Commit esperado:** `docs: establish execution plan and governance`
 - **Dependências:** nenhuma (ponto de partida).
 
@@ -171,7 +185,7 @@
 
 ---
 
-## 4. Definição de pronto da submissão
+## 5. Definição de pronto da submissão
 
 1. Relatório de diagnóstico responde às 3 perguntas do challenge (causa raiz, segmentos com contas específicas, ações priorizadas com impacto estimado).
 2. Dados cruzados entre as 5 tabelas; números verificáveis; correlação vs causalidade distinguida.

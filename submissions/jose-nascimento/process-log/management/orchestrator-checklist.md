@@ -2,7 +2,7 @@
 
 **Finalidade:** checklist interno, exaustivo porém operacional, usado pelo orquestrador (opencode) para governar a submissão de Jose Nascimento. Estados válidos: `PENDING` (não realizado), `OPEN` (em andamento), `CONCLUDED` (realizado com evidência). **Nenhum item pode afirmar algo ainda não realizado.** Atualizado ao fim de cada iteração.
 
-**Última atualização:** 2026-08-28 (fim da Iteração 00)
+**Última atualização:** 2026-08-28 (fim da Iteração 00 + review gate 3x e correções concluídos)
 
 ---
 
@@ -28,14 +28,15 @@
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
 | B1 | Ferramenta real documentada com honestidade (opencode como orquestrador + subagentes `deepseek-max` via OpenCode Go; NÃO "Claude Code", NÃO "deepseek-v4-flash" como ferramenta) | CONCLUDED | Correção aplicada no README scaffold (Iteração 00); docs de governança usam a mesma descrição |
-| B2 | Uma etapa = um agente `deepseek-max` sequencial | PENDING | A partir da Iteração 01 (Iteração 00 executada pelo agente executor designado) |
-| B3 | Revisão 3x read-only após cada etapa (3 agentes `deepseek-max` em paralelo) | PENDING | Pendente inclusive para a Iteração 00 — a ser disparada pelo orquestrador após este report |
-| B4 | Correções por agente sequencial quando revisores apontarem problemas materiais | PENDING | Disparado conforme necessidade após cada revisão 3x |
+| B2 | Uma etapa = um agente `deepseek-max` sequencial | CONCLUDED | Iteração 00 executada por exatamente um subagente `deepseek-max` (via OpenCode Go), sob orquestração do opencode (que não implementa); regra vigente para as Iterações 01–10 (verificação ao fim de cada etapa) |
+| B3 | Revisão 3x read-only após cada etapa (3 agentes `deepseek-max` em paralelo) | CONCLUDED | Iteração 00: 3 revisores `deepseek-max` read-only em paralelo (2026-08-28), veredictos `PASS_WITH_FIXES` ×3; correções aplicadas por agente sequencial (commit `docs: address iteration 00 review findings`); registro em `process-log/reviews/iteration-00-review-summary.md`. Revisões das Iterações 01–10: a disparar ao fim de cada etapa |
+| B4 | Correções por agente sequencial quando revisores apontarem problemas materiais | CONCLUDED | Iteração 00: correções materiais aplicadas pelo agente corretor sequencial `deepseek-max` (ver B3); demais iterações: disparo conforme necessidade após cada revisão 3x |
 | B5 | Toda etapa produz report estruturado em `process-log/reports/` | CONCLUDED | Report da Iteração 00 criado; padrão de naming `iteration-XX-*.md` |
-| B6 | Prompt integral de cada iteração arquivado em `process-log/prompts/` | CONCLUDED | Prompt da Iteração 00 arquivado; demais iterações seguem o padrão |
+| B6 | Prompt integral de cada iteração arquivado em `process-log/prompts/` | CONCLUDED | Prompt da Iteração 00 arquivado; prompt de correção do review gate arquivado; demais iterações seguem o padrão |
 | B7 | Estados do execution-plan atualizados ao fim de cada etapa, somente `PENDING/OPEN/CONCLUDED` | CONCLUDED | Iteração 00: 00 `CONCLUDED`, 01–10 `PENDING`; validado por script |
 | B8 | Orquestrador não implementa código (apenas gerencia agentes) | PENDING | Regra contínua; verificação ao fim de cada iteração |
 | B9 | Ferramentas de IA listadas no process log com o que fizeram | PENDING | Iteração 08 |
+| B10 | Review gate 3x registrado em ledger versionado `process-log/reviews/iteration-XX-review-summary.md` | CONCLUDED | Iteração 00: `iteration-00-review-summary.md` criado (veredictos, findings, decisão de governança, matriz finding→ação, riscos, gate); demais iterações seguem o padrão |
 
 ## C. Dados e licenciamento
 
@@ -71,7 +72,7 @@
 
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
-| E1 | Zero referências/citações a análises públicas do mesmo dataset ou a outras submissões | CONCLUDED | Grep de nomes/termos conhecidos na pasta na Iteração 00: zero ocorrências; re-verificar no QA final |
+| E1 | Zero referências/citações a análises públicas do mesmo dataset ou a outras submissões **nas entregas da solução** | CONCLUDED | Grep na Iteração 00 (term-list: nomes de análises públicas do dataset e termos de baseline): zero ocorrências; zero cópia/citação de conclusões nos artefatos. Exceção documentada: o prompt de gestão arquivado (`process-log/prompts/iteration-00-prompt.md:19-24`) referencia por path os materiais de pesquisa interna — evidência de processo/transparência, não citação de conclusão (ver decisão de governança no review summary). Re-verificar no QA final (Iteração 09) |
 | E2 | Números re-executados pelo próprio pipeline (nada copiado de fonte externa) | PENDING | Iterações 01–06, verificado na 09 |
 | E3 | Narrativa, estrutura e visualizações com voz própria (não replicam baseline) | PENDING | Iterações 03–07 |
 | E4 | Achados apresentados como descoberta do processo (hipótese → teste → resultado) | PENDING | Iterações 03–05 e 08 |
@@ -81,7 +82,7 @@
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
 | F1 | `.gitignore` adequado desde o início (sem node_modules/venv/pycache/binários) | CONCLUDED | `.gitignore` da pasta commitado no commit inicial do scaffold (1f3017a) |
-| F2 | Zero segredos, chaves ou paths pessoais commitados | PENDING | Verificação por iteração; nenhum detectado até a Iteração 00 |
+| F2 | Zero segredos e chaves commitados; paths pessoais monitorados (exceção documentada) | PENDING | Verificação por iteração. Até a Iteração 00: zero segredos/chaves. Exceção documentada: o prompt arquivado (`process-log/prompts/iteration-00-prompt.md:19-24`) contém paths locais dos materiais de pesquisa interna por transparência — não são segredos, mas são paths de máquina; decisão de governança registrada no review summary; re-verificar em toda iteração |
 | F3 | Commits semânticos incrementais (vários, não 1 único gigante) | PENDING | Em curso: scaffold + esta iteração já semânticos; 8–10+ commits esperados até o fim |
 | F4 | Autor do candidato em todos os commits (sem alterar git config) | CONCLUDED | Verificado: scaffold `Jose Nascimento <322186960+josenascimento1@users.noreply.github.com>`; identidade reutilizada nesta iteração |
 | F5 | Setup com 1 comando (`./run.sh` ou `make all`), offline, do clone limpo | PENDING | Iteração 06 |
@@ -90,6 +91,7 @@
 | F8 | Checklist do README marcado somente com arquivos commitados (zero checkbox fantasma) | PENDING | Iteração 08/09 |
 | F9 | QA final integral contra todas as instruções oficiais | PENDING | Iteração 09 |
 | F10 | Reprovação por hygiene evitável: `git diff --check` limpo em todo commit | CONCLUDED | Executado no commit da Iteração 00; re-executar em toda iteração |
+| F11 | Controle de time budget (4–6h): acumulado registrado por iteração; cortes conforme política do execution-plan §2 | PENDING | Registro a partir da Iteração 01 (Iteração 00: planejamento/governança + review gate, sem fatia analítica) |
 
 ---
 
@@ -97,4 +99,4 @@
 
 - Este checklist é atualizado pelo orquestrador ao fim de **cada iteração**, antes da revisão 3x.
 - Itens com estado `CONCLUDED` podem voltar a `OPEN`/`PENDING` se uma revisão encontrar problema material.
-- A revisão 3x da Iteração 00 (item B3) está pendente e é responsabilidade do orquestrador após o retorno do agente executor.
+- A revisão 3x da Iteração 00 foi concluída em 2026-08-28 (3 veredictos `PASS_WITH_FIXES`, correções aplicadas por agente sequencial) — ver `process-log/reviews/iteration-00-review-summary.md`; o estado de B3 acima reflete isso, e a semântica de `CONCLUDED` (execução validada pelo executor) vs review gate (rastreado à parte) está definida no execution-plan, regra 4.
