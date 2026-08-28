@@ -36,8 +36,13 @@ _Sua análise, protótipo, redesign ou o que o challenge pedir._
 
 | Ferramenta | Para que usou |
 |------------|--------------|
-| opencode (orquestrador) | Orquestração das etapas, gestão de subagentes, git e geração de evidências |
-| deepseek-max (subagente via OpenCode Go) | Execução de cada etapa da análise e revisão read-only entre iterações |
+| OpenCode (harness compartilhado) | Harness único para orquestrador e subagentes: gestão de sessões e agentes, permissões, contexto isolado por subagente, git e geração de evidências |
+| GPT 5.6 Sol (`openai/gpt-5.6-sol`, orquestrador — perfil de máxima capacidade da sessão, "GPT 5.6 Sol Max") | Manter o contexto global/estado do projeto; decompor etapas; escrever prompts e contratos; arbitrar divergências dos revisores; decidir rework; controlar gates e risco. Não executa scripts nem edita a solução — delega a subagentes |
+| DeepSeek V4 Flash (`deepseek-max`, executor — via OpenCode Go, max reasoning) | Executar cada etapa da análise: exatamente um executor por iteração, com contexto novo/limpo e escopo fechado; implementa, testa, documenta e faz commit/push |
+| DeepSeek V4 Flash (`deepseek-max`, 3 revisores independentes — via OpenCode Go) | Revisar cada etapa em paralelo e em modo read-only (mesmo prompt, contextos separados), produzindo reports externos únicos com veredicto e findings |
+| DeepSeek V4 Flash (`deepseek-max`, corretor sequencial — via OpenCode Go) | Ler os 3 reports de revisão, resolver findings materiais, testar, registrar o review summary e fazer commit/push |
+
+> A descrição inicial desta tabela era curta e incompleta. A arquitetura completa (papéis, modelos, contexto, permissões, rationale, limitações e fontes) está em [`process-log/management/orchestration-architecture.md`](process-log/management/orchestration-architecture.md), adendo que é a fonte atual de verdade de ferramenta/processo.
 
 ### Workflow
 
