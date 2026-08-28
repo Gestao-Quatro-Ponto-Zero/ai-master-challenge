@@ -2,7 +2,7 @@
 
 **Finalidade:** checklist interno, exaustivo porém operacional, usado pelo orquestrador (opencode) para governar a submissão de Jose Nascimento. Estados válidos: `PENDING` (não realizado), `OPEN` (em andamento), `CONCLUDED` (realizado com evidência). **Nenhum item pode afirmar algo ainda não realizado.** Atualizado ao fim de cada iteração.
 
-**Última atualização:** 2026-08-28 (fim da Iteração 01 — review gate 3x concluído e correções aplicadas por agente sequencial; ver `process-log/reviews/iteration-01-review-summary.md`)
+**Última atualização:** 2026-08-28 (fim da Iteração 02 — implementação validada pelo executor; review gate 3x da Iteração 02 ainda a disparar; ver `process-log/reports/iteration-02-reconciliation-report.md`)
 
 ---
 
@@ -54,10 +54,10 @@
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
 | D1 | Auditoria das 5 tabelas vs brief: contagens, schema, chaves, nulos, duplicatas, janelas de data | CONCLUDED | Iteração 01: `solution/evidence/01_audit_report.md` — 72 PASS / 18 WARN / 0 FAIL, exit 0; contagens 500/5.000/25.000/2.000/600 iguais ao brief; FKs sem órfãos; 3 verificações manuais independentes (MV1/MV2/MV3 no report da iteração) |
-| D2 | Reconciliação das definições de churn entre tabelas; definição única point-in-time justificada | PENDING | Iteração 02 |
-| D3 | Grão-mestre account-month com regra de assinatura vencedora; sem contagens dobradas | PENDING | Iteração 02 |
-| D4 | Checks de invariante (contagem e MRR) com gates FAIL/PASS | PENDING | Iteração 02 e 06 |
-| D5 | CSAT/reason codes tratados como evidência sugestiva, nunca prova | PENDING | Iteração 02 (contrato) e 03 |
+| D2 | Reconciliação das definições de churn entre tabelas; definição única point-in-time justificada | CONCLUDED | Iteração 02: lente primária POR pergunta no contrato (`solution/docs/analytical-contract.md` §4); divergências 35/277/125 recalculadas (75/227/50 Venn) em `solution/evidence/02_consistency_report.md` §3; decisões D1–D8 em `process-log/decisions/iteration-02-analytical-contract-decisions.md` |
+| D3 | Grão-mestre account-month com regra de assinatura vencedora; sem contagens dobradas | CONCLUDED | Iteração 02: `solution/data/processed/account_month.csv` (5.807 linhas, 1 por account×mês); winner determinístico (não-trial, max MRR, start recente, id); soma ingênua vs winner = 2,16× (report §6); invariantes G1–G13 |
+| D4 | Checks de invariante (contagem e MRR) com gates FAIL/PASS | CONCLUDED | Iteração 02: G1–G13 em `solution/evidence/02_consistency_report.md` §8 (13 PASS / 1 WARN esperado / 0 FAIL); transições fecham com tolerância 0 (contagem e MRR); falha estrutural → exit 1 + relatório regravado (3 cenários sandbox) |
+| D5 | CSAT/reason codes tratados como evidência sugestiva, nunca prova | CONCLUDED | Iteração 02: contrato §10 (domínio {3,4,5}, 41,2% nulos; reason 'unknown' 95; feedback 148 nulos); relações futuras rotuladas como correlação (It03–05) |
 | D6 | Números verificáveis com origem rastreável (arquivo:linha no apêndice) | PENDING | Iterações 03–05, consolidado na 07 |
 | D7 | Correlação vs causalidade rotulada em cada afirmação | PENDING | Iterações 03 e 05 |
 | D8 | Contas específicas em risco (watchlist com ID real, MRR, sinal, ação) | PENDING | Iteração 04 |
@@ -82,16 +82,16 @@
 | # | Item | Estado | Evidência / nota |
 |---|---|---|---|
 | F1 | `.gitignore` adequado desde o início (sem node_modules/venv/pycache/binários) | CONCLUDED | `.gitignore` da pasta commitado no commit inicial do scaffold (1f3017a) |
-| F2 | Zero segredos e chaves commitados; paths pessoais monitorados (exceção documentada) | PENDING | Verificação por iteração. Iteração 01: grep nos artefatos da solução por `/tmp`, `/home`, `ubuntu` → zero ocorrências fora do prompt arquivado (exceção documentada da Iteração 00). Re-verificar em toda iteração |
-| F3 | Commits semânticos incrementais (vários, não 1 único gigante) | PENDING | Em curso: scaffold + governança + esta iteração já semânticos; 8–10+ commits esperados até o fim |
+| F2 | Zero segredos e chaves commitados; paths pessoais monitorados (exceção documentada) | CONCLUDED | Verificação por iteração. Iteração 01: grep nos artefatos da solução por `/tmp`, `/home`, `ubuntu` → zero ocorrências fora do prompt arquivado (exceção documentada da Iteração 00). Iteração 02: re-verificado — idem (ocorrências apenas no prompt arquivado). Re-verificar em toda iteração |
+| F3 | Commits semânticos incrementais (vários, não 1 único gigante) | PENDING | Em curso: scaffold + governança + It01 (2 commits) + It02 (1 commit) já semânticos; 8–10+ commits esperados até o fim |
 | F4 | Autor do candidato em todos os commits (sem alterar git config) | CONCLUDED | Verificado: scaffold `Jose Nascimento <322186960+josenascimento1@users.noreply.github.com>`; identidade reutilizada nesta iteração |
 | F5 | Setup com 1 comando (`./run.sh` ou `make all`), offline, do clone limpo | PENDING | Iteração 06 |
 | F6 | Notebook/saídas com outputs renderizados como evidência visual | PENDING | Iteração 06/07 |
 | F7 | Evidências em texto puro (markdown/CSV/JSONL); zero PDF/DOCX/JPEG como fonte primária de evidência | PENDING | Iteração 08 e 09 |
 | F8 | Checklist do README marcado somente com arquivos commitados (zero checkbox fantasma) | PENDING | Iteração 08/09 |
 | F9 | QA final integral contra todas as instruções oficiais | PENDING | Iteração 09 |
-| F10 | Reprovação por hygiene evitável: `git diff --check` limpo em todo commit | CONCLUDED | Executado no commit da Iteração 00 e re-executado na Iteração 01; re-executar em toda iteração |
-| F11 | Controle de time budget (4–6h): acumulado registrado por iteração; cortes conforme política do execution-plan §2 | PENDING | Iteração 01: ~55 min registrados no report da iteração (exploração + script + correções + validações); orquestrador mantém o acumulado e decide cortes |
+| F10 | Reprovação por hygiene evitável: `git diff --check` limpo em todo commit | CONCLUDED | Executado no commit da Iteração 00 e re-executado nas Iterações 01 e 02; re-executar em toda iteração |
+| F11 | Controle de time budget (4–6h): acumulado registrado por iteração; cortes conforme política do execution-plan §2 | PENDING | Iteração 01: ~55 min. Iteração 02: ~1h55min (leitura + exploração + script + 7 correções + 3 verificações manuais + sandbox + validações). Acumulado analítico ~2h50min; orquestrador mantém o controle e decide cortes |
 
 ---
 

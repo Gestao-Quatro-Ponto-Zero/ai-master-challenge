@@ -4,8 +4,8 @@
 - **Branch:** `submission/jose-nascimento`
 - **Pasta exclusiva:** `submissions/jose-nascimento/`
 - **Ferramenta real:** opencode como orquestrador + subagentes `deepseek-max` (via OpenCode Go), um por etapa, em sequência
-- **Última atualização:** 2026-08-28 (fim da Iteração 01; review gate 3x da Iteração 01 concluído em 2026-08-28 — ver `process-log/reviews/iteration-01-review-summary.md`)
-- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-01-review-summary.md`); Iterações 02–10 `PENDING`
+- **Última atualização:** 2026-08-28 (fim da Iteração 02; review gate 3x da Iteração 02 ainda a disparar pelo orquestrador — ver `orchestrator-checklist.md` item B3)
+- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-01-review-summary.md`); Iteração 02 `CONCLUDED` (implementação validada pelo executor; review gate 3x ainda `PENDING`); Iterações 03–10 `PENDING`
 
 ---
 
@@ -86,13 +86,13 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 
 ### Iteração 02 — Reconciliação das definições/grãos de churn e contrato analítico
 
-- **Status:** `PENDING`
+- **Status:** `CONCLUDED` (2026-08-28) — implementação validada pelo executor (exit 0; 28 PASS / 1 WARN / 0 FAIL; idempotência byte-a-byte dos 4 outputs; 3 verificações manuais MV-A/B/C; sandbox com 3 cenários de falha estrutural sem traceback; commit `feat: reconcile churn definitions and analytical grain`). Review gate 3x ainda a disparar pelo orquestrador (ledger `process-log/reviews/iteration-02-review-summary.md` a criar).
 - **Objetivo:** reconciliar as diferentes fontes de "churn" entre tabelas (flag de conta, flag/fim de assinatura, eventos de churn), quantificar as divergências, definir **uma** definição de churn point-in-time com justificativa, fixar o grão-mestre (account-month com regra de assinatura vencedora), e congelar o contrato analítico (métricas, janelas, invariantes de contagem e MRR, scoreboard mensal) que todas as iterações seguintes usam.
 - **Entradas:** outputs da Iteração 01; brief; contrato analítico proposto nesta iteração.
-- **Artefatos esperados:** `src/02_consistency.py` (reconciliação + checks de invariante); `evidence/02_consistency_report.md`; `docs/analytical-contract.md` (definição de churn, grão, métricas, janelas, decisões "minha vs consenso vs IA").
-- **Critérios objetivos de aceitação:** divergências entre fontes quantificadas com números; definição única adotada e justificada; grão account-month definido; checks de invariante (contagem e MRR) passando; CSAT/reason codes marcados como evidência sugestiva (não prova) no contrato; nenhuma conclusão posterior contradiz o contrato.
-- **Validações:** re-execução; conferência manual de 3 achados; `git diff --check`.
-- **Commit esperado:** `feat: reconcile churn definitions and freeze analytical contract`
+- **Artefatos esperados:** `src/02_reconcile_churn.py` (reconciliação + checks de invariante; nome real — o plano previa `02_consistency.py`; o prompt desta iteração indicou `02_reconcile_churn.py` e prevaleceu); `evidence/02_consistency_report.md`; `docs/analytical-contract.md` (definição de churn, grão, métricas, janelas, decisões "minha vs consenso vs IA"); `data/processed/account_month.csv` + `data/processed/README.md` (base-mestre; utilidade justifica o tamanho — 5.807 linhas, auditável e regenerável).
+- **Critérios objetivos de aceitação:** divergências entre fontes quantificadas com números; definição única adotada e justificada (por pergunta de negócio, contrato §4); grão account-month definido; checks de invariante (contagem e MRR) passando; CSAT/reason codes marcados como evidência sugestiva (não prova) no contrato; nenhuma conclusão posterior contradiz o contrato.
+- **Validações:** re-execução idempotente; conferência manual de 3 achados (MV-A/B/C no report da iteração); sandbox de falha estrutural (3 cenários); `git diff --check`.
+- **Commit esperado:** `feat: reconcile churn definitions and analytical grain` (realizado; a mensagem prevista no rascunho do plano, "…freeze analytical contract", foi substituída pela exigida no prompt da Iteração 02 — esta linha reflete o commit real)
 - **Dependências:** Iteração 01.
 
 ### Iteração 03 — Causa raiz, coortes e onboarding economics
