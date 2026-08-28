@@ -12,7 +12,7 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 ## 2. Série mensal 2023-2024 e decomposição do pico
 
 - **Eventos totais:** 600 (fonte `churn_events`); **primeiros eventos:** 352 (contas únicas com evento: 352 de 500).
-- **Período elevado (regra pré-registrada: first_events >= 1,5 x mediana 12/mês):** 2024-03, 2024-05, 2024-06, 2024-07, 2024-08, 2024-09, 2024-10, 2024-11, 2024-12 — o 'churn subiu nos últimos meses' aparece como NÍVEL elevado sustentado de 2024-03 em diante, não um mês isolado.
+- **Período elevado (regra pré-registrada: first_events >= 1,5 x mediana 12/mês = 17.2):** 2024-03, 2024-05, 2024-06, 2024-07, 2024-08, 2024-09, 2024-10, 2024-11, 2024-12 (9 meses); vale em 2024-04 (abaixo da regra) — o 'churn subiu nos últimos meses' aparece como NÍVEL elevado sustentado (com pico em 2024-12), não um mês isolado.
 - **Pico (mês de maior contagem):** **2024-12** com 43 primeiros eventos (taxa por conta elegível 22.51%; mês de maior taxa: 2024-12).
 - **Receita (declarando a lente):** R1 gross ending MRR por mês (tabela t01) soma 1179139 (486 assinaturas) — exposição, NÃO perda (contrato §5). Concentração no fim de 2024: set-dez responde por 80.5% do R1 da janela e dezembro isolado por 48.7% (descritivo; pode ser artefato de geração da base — não interpretado como causa). R2 net account-state MRR loss soma 18507 (churn-to-inactive, 2 transições) + 150817 (active contraction) = 169324.
 - **Decomposição do pico 2024-12** (baseline: 6 meses anteriores):
@@ -24,7 +24,7 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 ## 3. Coortes e tempo-ao-churn (Kaplan-Meier descritivo com censura)
 
 - **Censura no corte 2024-12-31:** contas sem primeiro evento são observadas até o último mês do painel (at-risk) e censuradas — a taxa observada (eventos/n) SUBestima o churn de coortes recentes; a estimativa KM corrige isso. Tabela completa por trimestre e por mês: `t02_cohort_km.csv`; at-risk por trimestre: `t02b_cohort_km_at_risk.csv`.
-- **IMPORTANTE (censura):** coortes de Q4-2024 têm <= 3 meses observáveis; NÃO comparar Q4 com janela completa. `km_surv_t6` vazio = mês 6 ainda não observado para a coorte.
+- **IMPORTANTE (censura):** coortes de Q4-2024 têm <= 3 meses observáveis; NÃO comparar Q4 com janela completa. `km_surv_t6/t12/t18` vazio = horizonte NÃO observável (follow-up < horizonte, censura no corte). Quando observável, o valor é o da FUNÇÃO DEGRAU no maior tempo <= horizonte (carry-forward — não exige evento/censura exatamente em t = horizonte).
 
 | Coorte (trimestre) | N contas | Eventos | Censuradas | Taxa observada | Sobrev. KM t=6 | Churn KM t=6 |
 |---|---|---|---|---|---|---|
@@ -41,6 +41,7 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 
 - **R1 total (janela):** 1179139 em assinaturas encerradas.
 - **Exposição por duração da assinatura** (tabela `t03_onboarding_buckets.csv`): 0d: 13 assinaturas, 46324 (3.9% do R1); 1-30d: 195 assinaturas, 467262 (39.6% do R1); 31-60d: 79 assinaturas, 188974 (16.0% do R1); 61-90d: 43 assinaturas, 103859 (8.8% do R1); 91-180d: 77 assinaturas, 177390 (15.0% do R1); 181-365d: 58 assinaturas, 171732 (14.6% do R1); >365d: 21 assinaturas, 23598 (2.0% do R1). O bucket `0d` = assinaturas com start = end (mesma data; 13 na base) — exposição instantânea, incluída para o share fechar 100%.
+- **Exposição acumulada por duração (incluindo same-day `0d`;** tabela `t03c_cac_equivalent.csv`): <= 30d: 513586 (43.6% do R1; o bucket 1-30d isolado é 467262 = 39.6% do R1); <= 60d: 702560 (59.6% do R1); <= 90d: 806419 (68.4% do R1).
 - **Primeiro evento por conta** (tabela `t03b_onboarding_accounts.csv`): <= 30d: 91 contas (25.9% das contas com evento); <= 60d: 150 contas (42.6% das contas com evento); <= 90d: 188 contas (53.4% das contas com evento).
 - **Cenários CAC-equivalent exposure** (tabela `t03c_cac_equivalent.csv`): o dataset NÃO contém custo de aquisição; os cenários são múltiplos de MRR (1x, 3x, 6x, 12x) sobre a exposição bruta precoce, explicitamente nomeados — nunca 'CAC queimado' nem 'receita perdida' (R1 é exposição contratual, contrato §5).
 
@@ -48,13 +49,14 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 
 - **Volume total (primário, sem pré-signup):** 2775 -> 9027 linhas (225.3%); alinhado [start,end]: 883.3%.
 - **Intensidade (mediana de linhas por conta-mês):** 2.0 -> 2.0 brutas (0.0%); alinhadas: 1.0 -> 1.0 (0.0%).
+- **Definição da mediana:** mediana das medianas mensais sobre conta-meses com >= 1 linha de uso (não pareada por conta; mesmo desenho das iter. anteriores). Variante pooled (mediana sobre TODOS os account-months do ano, sem agregar por mês): alinhado 1.0 -> 2.0 (100.0%) — mais sensível à composição; o veredito H3 é dirigido pela variante raw (2.0 -> 2.0), robusta em ambas as definições.
 - **Sensibilidade com pré-signup incluído:** total bruto 1.1% (tabela `t05_usage_monthly.csv` tem as duas variantes mês a mês).
 
 ## 6. Suporte pré-evento (desenho honesto; anti-leakage)
 
 - **Desenho:** para cada mês m (2023-04..2024-12), grupo-churn = contas com primeiro evento em m; controle = contas elegíveis no início de m sem evento em m; janela W(m) = [dia 1 de m - 90d, dia 1 de m); tickets pré-signup excluídos; CSAT/resolução apenas de tickets fechados (contrato §10). Tabela mensal: `t06_support_monthly.csv`.
-- **Pooled (média por conta-mês):** tickets/conta churn 0.309 vs controle 0.352; escalação 2.8% vs 5.3%; CSAT 4.0 vs 3.97 (denominador: tickets fechados com nota); FRT mediana 89.0 vs 92.0 min; resolução mediana 37.0 vs 34.5 h. Controle restrito a nunca-churn: tickets/conta 0.378.
-- **Estratificado por tenure (sensibilidade):** 0-6m: churn 0.255 vs controle 0.269 tickets/conta; 7-12m: 0.567 vs 0.482; 13+m: 0.259 vs 0.471.
+- **Pooled (média por conta-mês):** tickets/conta churn 0.309 vs controle 0.349; escalação 2.8% vs 5.1%; CSAT 4.0 vs 3.97 (denominador: tickets fechados com nota); FRT mediana 89.0 vs 93.5 min; resolução mediana 37.0 vs 35.0 h. Controle restrito a nunca-churn: tickets/conta 0.378.
+- **Estratificado por tenure (sensibilidade):** 0-6m: churn 0.255 vs controle 0.263 tickets/conta; 7-12m: 0.567 vs 0.493; 13+m: 0.259 vs 0.478.
 
 ## 7. Segmentos (industry / canal / plano / trial)
 
@@ -107,9 +109,9 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 | H1 | **SUSTENTADA** | primeiros eventos com tenure <= 6m: 75.3% (N=352); mediana = 3m; threshold: >=50% e mediana <=6 | ver threshold no arquivo de hipóteses |
 | H2 | **SUSTENTADA (aumento real de taxa)** | pico 2024-12: taxa 22.51% vs mediana da janela 7.42% (razão 3.03); vs mediana 6m anteriores 13.01% (razão 1.73); controle de composição de tenure: esperado 24.82 eventos, observado 43 (ratio 1.73) — aumento persiste após controle de tenure | thresholds: composição se razão 0,75-1,25 vs mediana; taxa se >=1,5x 6m anteriores |
 | H3 | **SUSTENTADA** | total bruto (sem pré-signup): 2775 -> 9027 (225.3%); mediana por conta: 2.0 -> 2.0 (0.0%); alinhado: 883.3% total, 0.0% mediana; sensibilidade tudo: 1.1% | threshold: total >= +20% E mediana por conta < +10% |
-| H4 | **REFUTADA** | mediana linhas alinhadas/mês pré-evento: churn 0.0 vs controle 0.0 (razão NA); zero-uso: churn 73.9% vs controle 60.2% (Δ 13.7 p.p.) | threshold: razão < 0,5 OU Δ zero-uso >= 25 p.p. |
-| H5 | **REFUTADA** | tickets/conta 0.309 vs 0.352 (Δ -0.04); escalação 2.8% vs 5.3%; CSAT 4.0 vs 3.97; FRT 89.0 vs 92.0 min; resolução 37.0 vs 34.5 h | threshold: Δ tickets >= 1 OU escalação >= 1,5x OU CSAT <=3,5 vs >4,0 OU FRT/resolução >= 1,5x |
-| H6 | **REFUTADA** | nenhum segmento com taxa >= 1,5x a global e N >= 25 | threshold: N >= 25 E taxa >= 1,5x global; MRR_FLAG reportado à parte |
+| H4 | **REFUTADA** | mediana linhas alinhadas/mês pré-evento: churn 0.0 vs controle 0.0 (razão NA); zero-uso: churn 61.7% vs controle 52.7% (Δ 9.0 p.p.) | threshold: razão < 0,5 OU Δ zero-uso >= 25 p.p.; janela restrita a meses pós-signup (contrato §2) — o Δ 13,7 p.p. reportado antes era artefato de exposição (meses pré-signup contados como zero) e foi corrigido |
+| H5 | **REFUTADA** | tickets/conta 0.309 vs 0.349 (Δ -0.04); escalação 2.8% vs 5.1%; CSAT 4.0 vs 3.97; FRT 89.0 vs 93.5 min; resolução 37.0 vs 35.0 h | threshold: Δ tickets >= 1 OU escalação >= 1,5x OU CSAT <=3,5 vs >4,0 OU FRT/resolução >= 1,5x |
+| H6 | **REFUTADA** | nenhum segmento com taxa >= 1,5x a global e N >= 25. NOTA: o limiar RATE_FLAG é estruturalmente inalcançável (1,5 x 70.4% = 105.6% > 100%) — teste de taxa não informativo por desenho (erro de threshold pré-registrado, documentado; não renegociado). Conclusão pelo critério alternativo pré-registrado SURV_FLAG (KM t=6 >= 10 p.p. abaixo da global 0.4428): nenhum segmento cruza (maior gap 6.9 p.p.); spread de taxas observado 60.2-75.3% | threshold: N >= 25 E taxa >= 1,5x global (inalcançável por desenho com taxa global > 66,7% — documentado); critério alternativo pré-registrado válido: SURV_FLAG (KM t=6 >= 10 p.p. abaixo da global); MRR_FLAG reportado à parte |
 | H7 | **SUSTENTADA** | CSAT nulos 41.2%; reason 'unknown' 15.8%; feedback nulos 24.7%; associação refund por reason: presente; eventos com sub encerrada ±30d: 21.0% | threshold: missingness > 25% OU unknown > 10% OU sem associação com refund/upgrade/downgrade |
 | H8 | **SUSTENTADA** | R1 de assinaturas com <=90d de vida: 68.4% do total; primeiros eventos <=90d do signup: 53.4% das contas com evento | threshold: R1 <=90d >= 25% OU eventos <=90d >= 30% |
 | H9 | **SUSTENTADA** | pico 2024-12 (43 primeiros eventos): mecanismo = bucket 0-3m (share 83.7%, ratio 2.37) | threshold: bucket com maior share E ratio >= 1,5x a própria linha de base |
@@ -137,7 +139,7 @@ Gerado por `solution/src/03_root_cause.py` (execução offline e determinística
 | G4-eligible | denominador elegível | cadeia elegível(m) = signups <= m - primeiros eventos anteriores | **PASS** | 0 meses com quebra de cadeia; último eligible=191 |
 | G5-km | Kaplan-Meier | at_risk(0) = N da coorte; sobrevivência em [0,1] e monotônica | **PASS** | 0 violações em 8 coortes |
 | G6-usage | uso | linhas totais reconciliam à fonte (25.000) e pré-signup separado | **PASS** | Σ linhas por mês (com pré-signup)=25000 (fonte 25.000); variante sensibilidade=25000 |
-| G7-support | suporte | pool de suporte com N >= 30 conta-mês por lado; política closed_at respeitada | **PASS** | churn=346 contas-pool; controle=3288; CSAT só fechados com nota; pré-signup excluído no primário |
+| G7-support | suporte | pool de suporte com N >= 30 conta-mês por lado; política closed_at respeitada | **PASS** | churn=346 contas-pool; controle=3162; CSAT só fechados com nota; pré-signup excluído no primário |
 | G8-segments | segmentos | contagens de segmentos fecham (500 contas / 352 eventos / R1 1.179.139) | **PASS** | contas=500; eventos=352; R1=1179139 |
 | G9-zerodiv | denominadores | sem NaN em taxas com denominador > 0 | **PASS** | 0 colunas com NaN indevido |
 | G10-outputs | outputs | tabelas e gráficos gerados e não-vazios | **PASS** | tabelas ausentes/vazias=nenhuma; gráficos ausentes/vazios=nenhuma |

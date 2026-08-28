@@ -479,6 +479,21 @@ def km_estimate(times: list[tuple[float, bool]]) -> list[dict]:
     return rows
 
 
+def surv_at_horizon(surv_at: dict, horizon: int):
+    """Sobrevivência KM em horizonte fixo pela FUNÇÃO DEGRAU (carry-forward):
+    valor no maior t <= horizon com estimativa, SOMENTE se o horizonte for
+    observável (max t >= horizon — follow-up/censura cobrem o horizonte).
+    Caso contrário, vazio (correção pós-review: não exigir evento/censura
+    exatamente em t = horizonte; a função degrau é constante entre tempos).
+    """
+    if not surv_at:
+        return ""
+    if max(surv_at) < horizon:
+        return ""
+    ts = sorted(t for t in surv_at if t <= horizon)
+    return surv_at[ts[-1]]
+
+
 def cohort_tables(fe: pd.DataFrame) -> dict:
     """Tabelas de coorte (trimestre e mês de signup) com KM censurado."""
     # tempo: meses desde o signup (0 = mês do signup); censura no corte
@@ -500,16 +515,18 @@ def cohort_tables(fe: pd.DataFrame) -> dict:
             ev = int(g["is_event"].sum())
             cens = n - ev
             surv_at = {row["t"]: row["survival"] for row in km}
+            surv6 = surv_at_horizon(surv_at, 6)
+            surv12 = surv_at_horizon(surv_at, 12)
+            surv18 = surv_at_horizon(surv_at, 18)
             rec = {
                 "cohort": str(cohort), "n_accounts": n, "events": ev,
                 "censored": cens,
                 "observed_rate_pct": round(100.0 * ev / n, 1) if n else float("nan"),
-                "km_surv_t6": surv_at.get(6, ""),
-                "km_surv_t12": surv_at.get(12, ""),
-                "km_surv_t18": surv_at.get(18, ""),
+                "km_surv_t6": surv6,
+                "km_surv_t12": surv12,
+                "km_surv_t18": surv18,
                 "max_t_observed": max(t for t, _ in times),
-                "km_churn_t6_pct": round(100.0 * (1 - surv_at.get(6, 1.0)), 1)
-                if 6 in surv_at else "",
+                "km_churn_t6_pct": round(100.0 * (1 - surv6), 1) if surv6 != "" else "",
             }
             if grp_col == "signup_quarter":
                 q_rows.append(rec)
@@ -668,6 +685,11 @@ def usage_analysis(use: pd.DataFrame, acc: pd.DataFrame, sub: pd.DataFrame,
             "total_aligned_primary": int(df.loc[df["month"].isin(ms), "rows_aligned_primary"].sum()),
             "median_per_acct_raw": float(med_raw[ms].median()),
             "median_per_acct_aligned": float(med_align[ms].median()),
+            # variante pooled: mediana sobre TODOS os account-months com uso do ano
+            # (sem agregar por mês antes da mediana) — mais sensível à composição;
+            # reportada como nota de definição (não dirige o veredito H3)
+            "median_per_acct_aligned_pooled": float(
+                per_acct_align.loc[per_acct_align["um"].isin(ms), "n"].median()),
             "n_months": len(ms),
         }
 
@@ -686,6 +708,9 @@ def usage_analysis(use: pd.DataFrame, acc: pd.DataFrame, sub: pd.DataFrame,
                                                  y2024["median_per_acct_raw"]), 1),
         "median_per_acct_aligned_pct": round(_growth(y2023["median_per_acct_aligned"],
                                                      y2024["median_per_acct_aligned"]), 1),
+        "median_per_acct_aligned_pooled_pct": round(
+            _growth(y2023["median_per_acct_aligned_pooled"],
+                    y2024["median_per_acct_aligned_pooled"]), 1),
         "y2023": y2023, "y2024": y2024,
     }
 
@@ -738,6 +763,14 @@ def support_analysis(tic: pd.DataFrame, acc: pd.DataFrame, churn: pd.DataFrame,
 
     months = months_range(FIRST_MONTH, LAST_MONTH)
     use_months = [m for m in months[3:]]  # janela de 90 dias completa a partir de 2023-04
+    # CORREÇÃO PÓS-REVIEW (finding #3): o controle exige "elegíveis sem primeiro
+    # evento ANTERIOR" (contrato §5). Antes, prev_ev partia de set() em 2023-04,
+    # então contas com primeiro evento em 2023-01..03 (6 contas) entravam no
+    # controle de TODOS os meses (n_control 3.288 vs 3.162 pelo contrato). Seed
+    # corrigido com os primeiros eventos anteriores ao primeiro mês usado:
+    prev_ev: set[str] = set()
+    for sm_seed in months[:3]:
+        prev_ev |= fe_first_by_month.get(sm_seed, set())
 
     def _empty_sig() -> dict:
         return {"n_tickets": 0, "n_escalated": 0, "csat_sum": 0.0, "csat_n": 0,
@@ -777,7 +810,6 @@ def support_analysis(tic: pd.DataFrame, acc: pd.DataFrame, churn: pd.DataFrame,
     ctrl_nc_pool: list[dict] = []
     strat_churn: dict[str, list[dict]] = {"0-6m": [], "7-12m": [], "13+m": []}
     strat_ctrl: dict[str, list[dict]] = {"0-6m": [], "7-12m": [], "13+m": []}
-    prev_ev: set[str] = set()
     for m in use_months:
         w_start = month_first_date(m) - pd.Timedelta(days=SUPPORT_WINDOW_DAYS)
         w_end = month_first_date(m)
@@ -863,7 +895,8 @@ def segment_analysis(acc: pd.DataFrame, sub: pd.DataFrame, fe: pd.DataFrame) -> 
                   else period_diff_months(r["signup_month"], LAST_MONTH),
                   bool(r["has_event"])) for _, r in fe2.iterrows()]
     km_all = km_estimate(times_all)
-    global_surv6 = next((row["survival"] for row in km_all if row["t"] == 6), "")
+    surv_all = {row["t"]: row["survival"] for row in km_all}
+    global_surv6 = surv_at_horizon(surv_all, 6)
 
     attr_cols = ["industry", "referral_source", "plan_tier", "is_trial_s"]
     rows: list[dict] = []
@@ -880,7 +913,8 @@ def segment_analysis(acc: pd.DataFrame, sub: pd.DataFrame, fe: pd.DataFrame) -> 
                       else period_diff_months(r["signup_month"], LAST_MONTH),
                       bool(r["has_event"])) for _, r in g2.iterrows()]
             km = km_estimate(times)
-            surv6 = next((row["survival"] for row in km if row["t"] == 6), "")
+            surv_at = {row["t"]: row["survival"] for row in km}
+            surv6 = surv_at_horizon(surv_at, 6)
             flags: list[str] = []
             if len(g) < 25:
                 flags.append("N_BAIXO")
@@ -1050,6 +1084,13 @@ def verdicts(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
     # usa o pooled do suporte? Não — usa uso. Simplificação honesta: comparar a
     # intensidade mensal mediana das contas com evento nos 3 meses antes do
     # primeiro evento vs controle sem evento (mesmo calendário).
+    # CORREÇÃO PÓS-REVIEW (M1): apenas TEMPO EM RISCO/OBSERVÁVEL — meses >= signup
+    # (o mês do signup existe para a conta; meses ANTERIORES não existem, contrato
+    # §2: "meses anteriores ao signup não existem para a conta"). Antes, o lado
+    # churn incluía meses pré-signup como zero por construção (333 de 1.048 = 31,8%
+    # dos valores; Δ zero-uso 13,7 p.p. era artefato de exposição) e o lado controle
+    # idem no caso m == signup_month (810 de 5.093 = 15,9%). A mesma regra
+    # (pm >= signup) vale para os dois lados — período inexistente nunca vira zero.
     fe_ev2 = fe_ev.copy()
     fe_ev2["ev_ts"] = pd.to_datetime(fe_ev2["first_event_date"])
     use = a_data["usage_by_acct_month"]  # linhas alinhadas por conta×mês (primário)
@@ -1059,11 +1100,15 @@ def verdicts(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
     months = months_range(FIRST_MONTH, LAST_MONTH)
     for _, r in fe_ev2.iterrows():
         ev_m = r["first_event_month"]
+        sm = r["signup_month"]
         mi = months.index(ev_m)
-        for pm in months[max(0, mi - 3):mi]:  # até 3 meses antes (exclusive)
+        for pm in months[max(0, mi - 3):mi]:  # até 3 meses antes do evento (exclusive)
+            if pm < sm:                        # pós-signup: tempo em risco/observável
+                continue
             churn_vals.append(float(use.get((r["account_id"], pm), 0)))
     # controle: contas nunca-churn; para cada mês m, amostra o mesmo conjunto de
-    # meses-calendário (m-3..m-1) de cada conta nunca-churn elegível
+    # meses-calendário (m-3..m-1) de cada conta nunca-churn elegível (mesma regra
+    # de exposição: somente meses >= signup)
     for a in never:
         sm = fe.loc[fe["account_id"] == a, "signup_month"].iloc[0]
         for m in months:
@@ -1071,6 +1116,8 @@ def verdicts(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
                 continue
             mi = months.index(m)
             for pm in months[max(0, mi - 3):mi]:
+                if pm < sm:
+                    continue
                 ctrl_vals.append(float(use.get((a, pm), 0)))
     med_churn = float(pd.Series(churn_vals).median())
     med_ctrl = float(pd.Series(ctrl_vals).median())
@@ -1088,7 +1135,9 @@ def verdicts(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
         f"{med_ctrl:.1f} (razão {fmt(ratio_med) if ratio_med == ratio_med else 'NA'}); "
         f"zero-uso: churn {zero_churn:.1f}% vs controle {zero_ctrl:.1f}% "
         f"(Δ {zero_churn - zero_ctrl:.1f} p.p.)",
-        "threshold: razão < 0,5 OU Δ zero-uso >= 25 p.p.")
+        "threshold: razão < 0,5 OU Δ zero-uso >= 25 p.p.; janela restrita a meses "
+        "pós-signup (contrato §2) — o Δ 13,7 p.p. reportado antes era artefato de "
+        "exposição (meses pré-signup contados como zero) e foi corrigido")
 
     # H5 — suporte pré-evento
     p = e_data["pooled"]
@@ -1129,6 +1178,19 @@ def verdicts(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
 
     # H6 — segmentos
     seg = f_data["table"]
+    global_rate_h6 = f_data["global_rate"]
+    rate_threshold_h6 = 1.5 * global_rate_h6
+    surv_global = f_data["global_surv6"]
+    # CORREÇÃO PÓS-REVIEW (erro de desenho documentado, não justificativa
+    # retroativa): com taxa global 70,4%, o limiar RATE_FLAG (1,5x global =
+    # 105,6%) é ESTRUTURALMENTE inalcançável para uma taxa (máx. 100%) — o
+    # teste de taxa pré-registrado nunca poderia ser informativo. A conclusão
+    # usa o critério ALTERNATIVO pré-registrado válido (SURV_FLAG: sobrevivência
+    # KM t=6 >= 10 p.p. abaixo da global, N >= 25) + o spread observado.
+    surv_gap_max = 0.0
+    for _, r in seg.iterrows():
+        if r["km_surv_t6"] != "" and surv_global != "":
+            surv_gap_max = max(surv_gap_max, surv_global - float(r["km_surv_t6"]))
     seg_ok = seg[(seg["flags"].str.contains("RATE_FLAG")) &
                  (~seg["flags"].str.contains("N_BAIXO"))]
     if len(seg_ok):
@@ -1141,8 +1203,20 @@ def verdicts(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
         h6n = "todos os segmentos com N < 25 (mínimo de amostra)"
     else:
         h6 = "REFUTADA"
-        h6n = "nenhum segmento com taxa >= 1,5x a global e N >= 25"
-    add("H6", h6, h6n, "threshold: N >= 25 E taxa >= 1,5x global; MRR_FLAG reportado à parte")
+        h6n = (f"nenhum segmento com taxa >= 1,5x a global e N >= 25. NOTA: o "
+               f"limiar RATE_FLAG é estruturalmente inalcançável (1,5 x "
+               f"{global_rate_h6:.1f}% = {rate_threshold_h6:.1f}% > 100%) — teste "
+               f"de taxa não informativo por desenho (erro de threshold "
+               f"pré-registrado, documentado; não renegociado). Conclusão pelo "
+               f"critério alternativo pré-registrado SURV_FLAG (KM t=6 >= 10 p.p. "
+               f"abaixo da global {surv_global}): nenhum segmento cruza (maior gap "
+               f"{surv_gap_max * 100.0:.1f} p.p.); spread de taxas observado "
+               f"{float(seg['rate_pct'].min()):.1f}-{float(seg['rate_pct'].max()):.1f}%")
+    add("H6", h6, h6n,
+        "threshold: N >= 25 E taxa >= 1,5x global (inalcançável por desenho com "
+        "taxa global > 66,7% — documentado); critério alternativo pré-registrado "
+        "válido: SURV_FLAG (KM t=6 >= 10 p.p. abaixo da global); MRR_FLAG reportado "
+        "à parte")
 
     # H7 — reasons/CSAT frágeis
     mis = g_data["missing"]
@@ -1331,9 +1405,13 @@ def chart_b(km_quarter: pd.DataFrame, at_risk: pd.DataFrame) -> str:
         ax.plot([last["t"]], [last["survival"]], "o", color=colors[i % len(colors)], ms=3)
     ax.set_xlabel("meses desde o signup (0 = mês do signup)")
     ax.set_ylabel("sobrevivência (sem primeiro evento) — KM")
-    ax.set_ylim(0.55, 1.01)
+    # eixo íntegro 0-1: nenhuma curva é cortada (2024Q2 chega a 0,3077 em t=6)
+    ax.set_ylim(0.0, 1.02)
     ax.set_xlim(-0.5, 24.5)
-    ax.legend(title="coorte (trimestre)", loc="lower left", ncol=2)
+    # legenda acima dos eixos: com eixo 0-1, a curva 2024Q2 (0,31) cruzaria a
+    # legenda inferior esquerda — posição fora da área de plotagem
+    ax.legend(title="coorte (trimestre)", loc="lower center",
+              bbox_to_anchor=(0.5, 1.01), ncol=4, fontsize=7, title_fontsize=8)
     ax.set_title("Tempo até o primeiro evento por coorte de signup (Kaplan-Meier, "
                  "censura em 2024-12-31)")
     ax.text(0.0, -0.30,
@@ -1364,7 +1442,8 @@ def chart_c(exposure: pd.DataFrame, buckets: pd.DataFrame) -> str:
     ax.text(0.0, -0.28,
             "Fonte: data/raw/ravenstack_subscriptions.csv (end_date presente). "
             "R1 = exposição, NÃO receita perdida (contrato §5); cenários "
-            "CAC-equivalent na tabela t04. Gerado por src/03_root_cause.py.",
+            "CAC-equivalent na tabela t03c_cac_equivalent.csv. "
+            "Gerado por src/03_root_cause.py.",
             transform=ax.transAxes, fontsize=7, color="#555555")
     fig.tight_layout()
     path = CHARTS_DIR / "c_onboarding_exposure_by_duration.png"
@@ -1525,6 +1604,7 @@ def render_report(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
     s = a_data["series"]
     fe = a_data["fe"]
     d0 = spike["detail"][0]
+    months_all = list(s["month"])
     r1_total = int(s["r1_mrr_ended_in_month"].sum())
     r1_last4 = int(s.loc[s["month"].isin(["2024-09", "2024-10", "2024-11", "2024-12"]),
                         "r1_mrr_ended_in_month"].sum())
@@ -1534,11 +1614,20 @@ def render_report(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
     add(f"- **Eventos totais:** {int(s['events_total'].sum())} (fonte `churn_events`); "
         f"**primeiros eventos:** {int(s['first_events'].sum())} (contas únicas com evento: "
         f"{int(fe['has_event'].sum())} de {len(fe)}).")
-    add(f"- **Período elevado (regra pré-registrada: first_events >= 1,5 x mediana "
-        f"{spike['median']:.0f}/mês):** "
-        f"{', '.join(spike['elevated_months']) if spike['elevated_months'] else 'nenhum'} "
-        f"— o 'churn subiu nos últimos meses' aparece como NÍVEL elevado sustentado de "
-        f"2024-03 em diante, não um mês isolado.")
+    elev = spike["elevated_months"]
+    if elev:
+        gap = [m for m in months_all[months_all.index(elev[0]):months_all.index(elev[-1]) + 1]
+               if m not in elev]
+        gap_txt = (f"; vale em {', '.join(gap)} (abaixo da regra)"
+                   if gap else "")
+        add(f"- **Período elevado (regra pré-registrada: first_events >= 1,5 x mediana "
+            f"{spike['median']:.0f}/mês = {1.5 * spike['median']:.1f}):** "
+            f"{', '.join(elev)} ({len(elev)} meses){gap_txt} — o 'churn subiu nos "
+            f"últimos meses' aparece como NÍVEL elevado sustentado (com pico em "
+            f"{d0['month']}), não um mês isolado.")
+    else:
+        add(f"- **Período elevado (regra pré-registrada: first_events >= 1,5 x mediana "
+            f"{spike['median']:.0f}/mês):** nenhum.")
     add(f"- **Pico (mês de maior contagem):** **{d0['month']}** com {d0['total']} primeiros "
         f"eventos (taxa por conta elegível {s.loc[s['month'] == d0['month'], 'rate_first_events_pct'].iloc[0]:.2f}%; "
         f"mês de maior taxa: {spike['peak_rate_month']}).")
@@ -1577,8 +1666,11 @@ def render_report(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
         f"isso. Tabela completa por trimestre e por mês: `t02_cohort_km.csv`; at-risk "
         f"por trimestre: `t02b_cohort_km_at_risk.csv`.")
     add(f"- **IMPORTANTE (censura):** coortes de Q4-2024 têm <= 3 meses observáveis; "
-        f"NÃO comparar Q4 com janela completa. `km_surv_t6` vazio = mês 6 ainda não "
-        f"observado para a coorte.")
+        f"NÃO comparar Q4 com janela completa. `km_surv_t6/t12/t18` vazio = "
+        f"horizonte NÃO observável (follow-up < horizonte, censura no corte). "
+        f"Quando observável, o valor é o da FUNÇÃO DEGRAU no maior tempo <= "
+        f"horizonte (carry-forward — não exige evento/censura exatamente em t = "
+        f"horizonte).")
     add("")
     add("| Coorte (trimestre) | N contas | Eventos | Censuradas | Taxa observada | "
         "Sobrev. KM t=6 | Churn KM t=6 |")
@@ -1597,6 +1689,19 @@ def render_report(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
                     f"({r['share_of_r1_pct']}% do R1)" for _, r in c_data["buckets"].iterrows()) + ". "
         "O bucket `0d` = assinaturas com start = end (mesma data; 13 na base) — "
         "exposição instantânea, incluída para o share fechar 100%.")
+    add(f"- **Exposição acumulada por duração (incluindo same-day `0d`;** tabela "
+        f"`t03c_cac_equivalent.csv`): <= 30d: "
+        f"{int(c_data['exposure'].loc[c_data['exposure']['window_days'] == 30, 'mrr_exposure'].iloc[0])} "
+        f"({c_data['exposure'].loc[c_data['exposure']['window_days'] == 30, 'share_of_r1_pct'].iloc[0]}% do R1; "
+        f"o bucket 1-30d isolado é "
+        f"{int(c_data['buckets'].loc[c_data['buckets']['bucket'] == '1-30d', 'mrr_sum'].iloc[0])} = "
+        f"{c_data['buckets'].loc[c_data['buckets']['bucket'] == '1-30d', 'share_of_r1_pct'].iloc[0]}% do R1); "
+        f"<= 60d: "
+        f"{int(c_data['exposure'].loc[c_data['exposure']['window_days'] == 60, 'mrr_exposure'].iloc[0])} "
+        f"({c_data['exposure'].loc[c_data['exposure']['window_days'] == 60, 'share_of_r1_pct'].iloc[0]}% do R1); "
+        f"<= 90d: "
+        f"{int(c_data['exposure'].loc[c_data['exposure']['window_days'] == 90, 'mrr_exposure'].iloc[0])} "
+        f"({c_data['exposure'].loc[c_data['exposure']['window_days'] == 90, 'share_of_r1_pct'].iloc[0]}% do R1).")
     add(f"- **Primeiro evento por conta** (tabela `t03b_onboarding_accounts.csv`): "
         + "; ".join(f"<= {int(r['window_days'])}d: {int(r['n_first_events_le'])} contas "
                     f"({r['share_of_event_accounts_pct']}% das contas com evento)"
@@ -1618,6 +1723,15 @@ def render_report(a_data: dict, b_data: dict, c_data: dict, d_data: dict,
         f"-> {g['y2024']['median_per_acct_raw']} brutas ({g['median_per_acct_raw_pct']}%); "
         f"alinhadas: {g['y2023']['median_per_acct_aligned']} -> "
         f"{g['y2024']['median_per_acct_aligned']} ({g['median_per_acct_aligned_pct']}%).")
+    add(f"- **Definição da mediana:** mediana das medianas mensais sobre conta-meses "
+        f"com >= 1 linha de uso (não pareada por conta; mesmo desenho das iter. "
+        f"anteriores). Variante pooled (mediana sobre TODOS os account-months do ano, "
+        f"sem agregar por mês): alinhado "
+        f"{g['y2023']['median_per_acct_aligned_pooled']} -> "
+        f"{g['y2024']['median_per_acct_aligned_pooled']} "
+        f"({g['median_per_acct_aligned_pooled_pct']}%) — mais sensível à composição; "
+        f"o veredito H3 é dirigido pela variante raw (2.0 -> 2.0), robusta em ambas "
+        f"as definições.")
     add(f"- **Sensibilidade com pré-signup incluído:** total bruto "
         f"{g['sensitivity_total_raw_all_pct']}% (tabela `t05_usage_monthly.csv` tem as "
         f"duas variantes mês a mês).")
