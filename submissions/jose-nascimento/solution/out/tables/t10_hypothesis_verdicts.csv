@@ -1,0 +1,11 @@
+hypothesis,verdict,numbers,note
+H1,SUSTENTADA,primeiros eventos com tenure <= 6m: 75.3% (N=352); mediana = 3m; threshold: >=50% e mediana <=6,ver threshold no arquivo de hipóteses
+H2,SUSTENTADA (aumento real de taxa),"pico 2024-12: taxa 22.51% vs mediana da janela 7.42% (razão 3.03); vs mediana 6m anteriores 13.01% (razão 1.73); controle de composição de tenure: esperado 24.82 eventos, observado 43 (ratio 1.73) — aumento persiste após controle de tenure","thresholds: composição se razão 0,75-1,25 vs mediana; taxa se >=1,5x 6m anteriores"
+H3,SUSTENTADA,"total bruto (sem pré-signup): 2775 -> 9027 (225.3%); mediana por conta: 2.0 -> 2.0 (0.0%); alinhado: 883.3% total, 0.0% mediana; sensibilidade tudo: 1.1%",threshold: total >= +20% E mediana por conta < +10%
+H4,REFUTADA,mediana linhas alinhadas/mês pré-evento: churn 0.0 vs controle 0.0 (razão NA); zero-uso: churn 73.9% vs controle 60.2% (Δ 13.7 p.p.),"threshold: razão < 0,5 OU Δ zero-uso >= 25 p.p."
+H5,REFUTADA,tickets/conta 0.309 vs 0.352 (Δ -0.04); escalação 2.8% vs 5.3%; CSAT 4.0 vs 3.97; FRT 89.0 vs 92.0 min; resolução 37.0 vs 34.5 h,"threshold: Δ tickets >= 1 OU escalação >= 1,5x OU CSAT <=3,5 vs >4,0 OU FRT/resolução >= 1,5x"
+H6,REFUTADA,"nenhum segmento com taxa >= 1,5x a global e N >= 25","threshold: N >= 25 E taxa >= 1,5x global; MRR_FLAG reportado à parte"
+H7,SUSTENTADA,CSAT nulos 41.2%; reason 'unknown' 15.8%; feedback nulos 24.7%; associação refund por reason: presente; eventos com sub encerrada ±30d: 21.0%,threshold: missingness > 25% OU unknown > 10% OU sem associação com refund/upgrade/downgrade
+H8,SUSTENTADA,R1 de assinaturas com <=90d de vida: 68.4% do total; primeiros eventos <=90d do signup: 53.4% das contas com evento,threshold: R1 <=90d >= 25% OU eventos <=90d >= 30%
+H9,SUSTENTADA,"pico 2024-12 (43 primeiros eventos): mecanismo = bucket 0-3m (share 83.7%, ratio 2.37)","threshold: bucket com maior share E ratio >= 1,5x a própria linha de base"
+H10,APLICADA,tabela de causalidade com status por achado (descritivo | hipótese causal plausível | não identificável) e confundidores,"compromisso de processo, não hipótese de negócio"

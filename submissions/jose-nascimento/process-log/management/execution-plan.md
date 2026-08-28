@@ -4,8 +4,8 @@
 - **Branch:** `submission/jose-nascimento`
 - **Pasta exclusiva:** `submissions/jose-nascimento/`
 - **Ferramenta real:** opencode como orquestrador + subagentes `deepseek-max` (via OpenCode Go), um por etapa, em sequência
-- **Última atualização:** 2026-08-28 (fim da Iteração 02, incluindo review gate 3x e correções — ver `process-log/reviews/iteration-02-review-summary.md`)
-- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-01-review-summary.md`); Iteração 02 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-02-review-summary.md` e `process-log/reports/iteration-02-review-fix-report.md`); Iterações 03–10 `PENDING`
+- **Última atualização:** 2026-08-28 (fim da Iteração 03 — hipóteses commitadas antes da análise; implementação validada pelo executor; review gate 3x a disparar — ver `process-log/reports/iteration-03-root-cause-report.md`)
+- **Status desta versão:** Iteração 00 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-00-review-summary.md`); Iteração 01 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-01-review-summary.md`); Iteração 02 `CONCLUDED` (incl. review gate 3x e correções — ver `process-log/reviews/iteration-02-review-summary.md` e `process-log/reports/iteration-02-review-fix-report.md`); Iteração 03 `CONCLUDED` (validação do executor concluída — hipóteses H1–H10 em `process-log/hypotheses/iteration-03-root-cause-hypotheses.md` commitadas ANTES da análise no commit `8cb93c3`; report em `process-log/reports/iteration-03-root-cause-report.md`; review gate 3x a disparar); Iterações 04–10 `PENDING`
 
 ---
 
@@ -97,13 +97,13 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 
 ### Iteração 03 — Causa raiz, coortes e onboarding economics
 
-- **Status:** `PENDING`
+- **Status:** `CONCLUDED` (2026-08-28) — hipóteses H1–H10 pré-registradas em `process-log/hypotheses/iteration-03-root-cause-hypotheses.md` e commitadas ANTES de qualquer análise (commit `docs: define churn hypotheses before analysis`, hash `8cb93c3`, 2026-08-28T20:28:42Z); implementação validada pelo executor (exit 0; 23 PASS / 0 WARN / 0 FAIL; idempotência byte-a-byte de 20 outputs; CWD diferente; 3 verificações manuais MV-1/2/3; sandbox de falha estrutural com 2 cenários; consistência report↔CSV; commit `feat: diagnose churn root cause and cohort dynamics`). Review gate 3x a disparar pelo orquestrador (ledger `process-log/reviews/iteration-03-review-summary.md` a criar).
 - **Objetivo:** registrar hipóteses **antes** da análise; testar cada hipótese com números (coortes por período de signup, tempo-para-churn com censoring, comparações alinhadas no tempo); identificar e quantificar o(s) fenômeno(s) central(is) de churn — inclusive padrões temporais e o custo do churn precoce (onboarding economics) com premissas explícitas e em faixa; distinguir correlação de causalidade em cada afirmação.
-- **Entradas:** contrato analítico (Iteração 02); auditoria (Iteração 01).
-- **Artefatos esperados:** `src/03_eda.py`; `evidence/03_hypotheses.md` (registradas antes da execução); `evidence/03_insights.md`; `out/charts/` (4–6 visualizações com significado); entrada no process log com rótulos de correlação/causalidade.
-- **Critérios objetivos de aceitação:** hipóteses versionadas antes da análise; cada hipótese com veredito (sustentada/refutada) e número; análises com censoring e alinhamento temporal (sem viés de sobrevivência); premissas do onboarding economics nomeadas e em faixa; nenhuma afirmação causal sem rótulo.
-- **Validações:** re-execução; conferência manual de 3 achados; `git diff --check`.
-- **Commit esperado:** `feat: root-cause, cohort and onboarding economics analysis`
+- **Entradas:** contrato analítico (Iteração 02); auditoria (Iteração 01); hipóteses pré-registradas.
+- **Artefatos esperados (nome real entre parênteses quando diverge do plano):** `src/03_root_cause.py` (o plano previa `03_eda.py`; o prompt desta iteração indicou `03_root_cause.py` e prevaleceu); hipóteses em `process-log/hypotheses/iteration-03-root-cause-hypotheses.md` (o plano previa `evidence/03_hypotheses.md`; o prompt determinou o path de processo); `evidence/03_root_cause_report.md` (o plano previa `03_insights.md`; o prompt determinou o nome do report); `out/charts/` (6 visualizações com significado); `out/tables/` (13 tabelas CSV de auditabilidade); entrada no process log com rótulos de correlação/causalidade.
+- **Critérios objetivos de aceitação:** hipóteses versionadas antes da análise (cumprido — commit `8cb93c3` precede o código); cada hipótese com veredito (sustentada/refutada/inconclusiva) e número; análises com censoring e alinhamento temporal (KM descritivo com censura no corte; Q4-2024 notada); premissas do onboarding economics nomeadas e em faixa (exposição R1 30/60/90d; cenários CAC-equivalent 1×/3×/6×/12× de MRR, nunca CAC factual); nenhuma afirmação causal sem rótulo (tabela H no report).
+- **Validações:** re-execução idempotente; CWD diferente; conferência manual de 3 achados (MV-1 pico 2024-12; MV-2 conta early-event A-039727; MV-3 segmento Cybersecurity); sandbox de falha estrutural (2 cenários); consistência report↔CSV; `git diff --check`.
+- **Commit esperado:** `docs: define churn hypotheses before analysis` (realizado em `8cb93c3`, antes do código) e `feat: diagnose churn root cause and cohort dynamics` (realizado ao fim da fase B)
 - **Dependências:** Iterações 01–02.
 
 ### Iteração 04 — Ciclos de reativação, jornada completa da conta e watchlist
