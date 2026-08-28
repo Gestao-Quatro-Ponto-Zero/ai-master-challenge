@@ -100,3 +100,10 @@ Validação programática (script `/tmp/opencode/it04-fix-sandbox/visual_validat
 ## 9. Gate It04
 
 **CONCLUDED** — 3 veredictos `PASS_WITH_FIXES`; nenhum finding analítico material; correções de documentação/consistência (F1–F7, L1, LOW-1..4) e qualidade visual (F8 + pruning) aplicadas com revalidação completa (scripts, idempotência, CWD, FAIL estrutural, MVs, leakage, visual programático). Adendo de arquitetura: revisado e `CONCLUDED`. Iteração 05 permanece **PENDING** (não iniciada; sem recomendações/ROI — escopo respeitado).
+
+## 10. Adendo — correção visual pós-inspeção ocular do orquestrador (2026-08-28)
+
+- **Review programático passou**, mas a inspeção ocular do orquestrador detectou um **erro material de mapping no It04_d** não captado pelos validadores de bbox/ink: a linha rotulada `R_D onboarding<=90d` exibia os lifts de R_F (~0,66/0,40/0,92) e a linha `R_F A e C` (sombreada) exibia os lifts de R_D (1,57/1,56/1,83) — causa raiz: `y = len(rules)-1-j` (ordem invertida vs yticklabels).
+- **Correção** (`fix: align chart labels and final visual spacing`, commit `1517a73…` → hash no report de correção): associação explícita `rule → y` keyed em `chart_d`, faixa de destaque keyed em R_D, gate programático (27 pares rule×cutoff == t14; R_D exato 1,574/1,556/1,835; y destacado resolve para label R_D) + rodapés curtos/2 linhas e margens bottom em `a/b/c/d` (It04_c intocado).
+- **Hash:** ver `process-log/reports/orchestrator-visual-correction-report.md` (md5 pré/pós por PNG; 26/26 CSV/MD byte-idênticos; idempotência 2x; 27/27 keyed; margens −22→+32,3 / 7,7→+30,1 / 4,4→+22,9 px; clip à direita eliminado em b/c).
+- **Não alterado:** gates/estado analítico (It04 `CONCLUDED`, It05 `PENDING`), análises, tabelas, watchlist, decisões e recomendações. Reinspeção ocular dos 6 PNGs solicitada ao orquestrador.

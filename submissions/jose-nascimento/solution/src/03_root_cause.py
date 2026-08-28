@@ -1363,13 +1363,19 @@ def _style() -> None:
 
 
 def _footer(fig, line1: str, line2: str) -> None:
-    """Rodapé em coordenadas de FIGURA (dentro do canvas; 2 linhas). Margens
-    explícitas via subplots_adjust; NUNCA bbox_inches='tight' (que esticava o
-    canvas com texto fora da figura e esmagava o eixo — causa raiz dos
-    findings visuais dos revisores do gate It04)."""
-    fig.text(0.01, 0.02, line1, fontsize=6.5, color="#555555",
+    """Rodapé em coordenadas de FIGURA (dentro do canvas; 2 linhas curtas).
+    Espaçamento entre linhas DERIVADO da altura da figura (altura de linha em
+    fração = 6.5pt/72/altura) — as duas linhas nunca se sobrepõem entre si nem
+    saem do canvas. Margens explícitas via subplots_adjust; NUNCA
+    bbox_inches='tight' (que esticava o canvas com texto fora da figura e
+    esmagava o eixo — causa raiz dos findings visuais dos revisores do gate
+    It04)."""
+    lh = 6.5 / 72.0 / fig.get_figheight()   # altura de linha (fração da figura)
+    y2 = 0.008                              # segunda linha perto da borda
+    y1 = y2 + 1.45 * lh                     # primeira linha, sem overlap
+    fig.text(0.01, y1, line1, fontsize=6.5, color="#555555",
              ha="left", va="bottom")
-    fig.text(0.01, 0.005, line2, fontsize=6.5, color="#555555",
+    fig.text(0.01, y2, line2, fontsize=6.5, color="#555555",
              ha="left", va="bottom")
 
 
@@ -1379,7 +1385,7 @@ def chart_a(series: pd.DataFrame, spike: dict) -> str:
     (não cola no título); ticks mensais rotacionados e legíveis."""
     _style()
     fig, ax1 = plt.subplots(figsize=(7.8, 4.4))
-    fig.subplots_adjust(top=0.87, bottom=0.16, left=0.105, right=0.88)
+    fig.subplots_adjust(top=0.87, bottom=0.26, left=0.105, right=0.88)
     x = list(range(len(series)))
     ax1.bar(x, series["first_events"], color="#0072B2", label="primeiros eventos",
             width=0.62)
@@ -1409,9 +1415,9 @@ def chart_a(series: pd.DataFrame, spike: dict) -> str:
     ax1.set_title("Eventos de churn por mês e taxa por conta elegível (2023-2024)",
                   pad=6)
     _footer(fig,
-            "Fonte: data/raw/ravenstack_churn_events.csv + ravenstack_accounts.csv; "
-            "denominador = contas elegíveis no início do mês (contrato §5).",
-            "Gerado por src/03_root_cause.py.")
+            "Fonte: data/raw/ravenstack_churn_events.csv + "
+            "ravenstack_accounts.csv;",
+            "denominador = contas elegíveis no início do mês (contrato §5).")
     path = CHARTS_DIR / "a_monthly_events_and_rate.png"
     fig.savefig(path, dpi=150)
     plt.close(fig)
@@ -1448,10 +1454,10 @@ def chart_b(km_quarter: pd.DataFrame, at_risk: pd.DataFrame) -> str:
                title_fontsize=8, frameon=True, handlelength=1.4,
                columnspacing=1.4)
     _footer(fig,
-            "Fonte: data/raw/ravenstack_churn_events.csv + ravenstack_accounts.csv. "
-            "Censura: contas sem evento observadas até 2024-12-31; Q4-2024 tem <= 3 "
-            "meses observáveis — não comparar com janela completa.",
-            "Gerado por src/03_root_cause.py.")
+            "Fonte: data/raw/ravenstack_churn_events.csv + "
+            "ravenstack_accounts.csv.",
+            "Censura: contas sem evento até 2024-12-31; Q4-2024 tem <= 3 meses "
+            "observáveis — não comparar com janela completa.")
     path = CHARTS_DIR / "b_km_by_signup_quarter.png"
     fig.savefig(path, dpi=150)
     plt.close(fig)
@@ -1466,7 +1472,7 @@ def chart_c(exposure: pd.DataFrame, buckets: pd.DataFrame) -> str:
     order = ["0d", "1-30d", "31-60d", "61-90d", "91-180d", "181-365d", ">365d"]
     b = buckets.set_index("bucket").loc[order].reset_index()
     fig, ax = plt.subplots(figsize=(7.8, 4.2))
-    fig.subplots_adjust(top=0.87, bottom=0.15, left=0.14, right=0.965)
+    fig.subplots_adjust(top=0.87, bottom=0.20, left=0.14, right=0.965)
     y = list(range(len(b)))
     ax.barh(y, b["mrr_sum"], color="#009E73", height=0.62)
     for i, (_, r) in enumerate(b.iterrows()):
@@ -1483,10 +1489,9 @@ def chart_c(exposure: pd.DataFrame, buckets: pd.DataFrame) -> str:
     ax.grid(axis="x", linestyle="-", linewidth=0.4, alpha=0.35, color="#b0b0b0")
     ax.set_axisbelow(True)
     _footer(fig,
-            "Fonte: data/raw/ravenstack_subscriptions.csv (end_date presente). "
+            "Fonte: data/raw/ravenstack_subscriptions.csv (end_date presente).",
             "R1 = exposição, NÃO receita perdida (contrato §5); cenários "
-            "CAC-equivalent na tabela t03c_cac_equivalent.csv.",
-            "Gerado por src/03_root_cause.py.")
+            "CAC-equivalent em t03c_cac_equivalent.csv.")
     path = CHARTS_DIR / "c_onboarding_exposure_by_duration.png"
     fig.savefig(path, dpi=150)
     plt.close(fig)
@@ -1498,7 +1503,7 @@ def chart_d(usage_monthly: pd.DataFrame) -> str:
     claras; rodapé compacto em 2 linhas dentro do canvas)."""
     _style()
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10.4, 4.1))
-    fig.subplots_adjust(top=0.85, bottom=0.17, left=0.07, right=0.985,
+    fig.subplots_adjust(top=0.85, bottom=0.22, left=0.07, right=0.985,
                         wspace=0.24)
     d = usage_monthly
     ax1.bar(list(range(len(d))), d["rows_raw_primary"], color="#0072B2",
@@ -1523,9 +1528,9 @@ def chart_d(usage_monthly: pd.DataFrame) -> str:
                  fontsize=11, y=0.97)
     _footer(fig,
             "Fonte: data/raw/ravenstack_feature_usage.csv + subscriptions + "
-            "accounts; primário exclui uso anterior ao signup; conta ativa = "
-            "painel account_month (Iteração 02).",
-            "Gerado por src/03_root_cause.py.")
+            "accounts;",
+            "primário exclui uso pré-signup; conta ativa = painel account_month "
+            "(Iteração 02).")
     path = CHARTS_DIR / "d_usage_volume_vs_intensity.png"
     fig.savefig(path, dpi=150)
     plt.close(fig)

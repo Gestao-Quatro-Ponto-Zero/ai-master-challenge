@@ -874,21 +874,28 @@ def chart_d(bt: pd.DataFrame) -> str:
     colors = ["#0072B2", "#E69F00", "#009E73"]
     offsets = [-0.22, 0.0, 0.22]
     from matplotlib.lines import Line2D
+    # ASSOCIAÇÃO EXPLÍCITA rule -> y (keyed; R_A em y=0 .. R_I em y=8, na MESMA
+    # ordem dos yticklabels). NUNCA derivar y como len(rules)-1-j: isso invertia
+    # a ordem (R_D caía no y do label R_F e vice-versa) — achado ocular do
+    # orquestrador no commit 1517a73.
+    y_by_rule = {r: i for i, r in enumerate(rules)}
     fig, ax = plt.subplots(figsize=(8.4, 5.6))
     fig.subplots_adjust(top=0.85, bottom=0.155, left=0.27, right=0.965)
-    # faixa de destaque de R_D (índice 3 de A..I) — leve, sem textos no interior
-    ax.axhspan(len(rules) - 1 - 3 - 0.5, len(rules) - 1 - 3 + 0.5,
-               color="#f2f2f2", zorder=0)
+    # faixa de destaque de R_D (keyed pelo y da regra D) — leve, sem textos no
+    # interior; cobre o y cujo yticklabel é "R_D ..."
+    y_d = y_by_rule["D"]
+    ax.axhspan(y_d - 0.5, y_d + 0.5, color="#f2f2f2", zorder=0)
+    plotted: dict[tuple[str, str], float] = {}
     for i, c in enumerate(cutoffs):
         g = sub[sub["cutoff"] == c].set_index("rule").reindex(rules)
-        for j, r in enumerate(rules):
+        for r in rules:
             lift = g.loc[r, "lift"]
             if not isinstance(lift, float):
                 continue
             lo = g.loc[r, "ci_lo"]
             hi = g.loc[r, "ci_hi"]
             base = g["baseline_rate"].iloc[0]
-            y = len(rules) - 1 - j + offsets[i]
+            y = y_by_rule[r] + offsets[i]
             err = [[lift - max(0.0, float(lo) / base)],
                    [float(hi) / base - lift]]
             big = r == "D"
@@ -897,6 +904,7 @@ def chart_d(bt: pd.DataFrame) -> str:
                         mec="#333333" if big else "none", mew=0.8 if big else 0,
                         ecolor=colors[i], elinewidth=1.0, capsize=0,
                         alpha=0.95, zorder=3)
+            plotted[(r, c)] = float(lift)
     ax.axvline(1.0, color="#555555", lw=1.0, linestyle="--", zorder=1)
     ax.text(1.0, len(rules) - 0.38, "baseline (lift = 1)", fontsize=7,
             color="#555555", ha="center")
@@ -905,6 +913,30 @@ def chart_d(bt: pd.DataFrame) -> str:
             f"limiar {LIFT_VALIDATION}", fontsize=7, color="#D55E00", ha="left")
     ax.set_yticks(list(range(len(rules))))
     ax.set_yticklabels([f"R_{r[0]} {r[1]}" for r in RULES], fontsize=7.5)
+    # GATE PROGRAMÁTICO do mapping (keyed contra t14 em disco): cada x plotado
+    # == t14.lift para o par (rule, cutoff) — 9 regras × 3 cutoffs = 27; R_D
+    # exato nos 3 cutoffs; o y destacado resolve para o label R_D. Falha a
+    # execução (RuntimeError) se o mapping divergir do report/t14.
+    t14k = pd.read_csv(TABLES_DIR / "t14_backtest_temporal.csv")
+    t14k = t14k[t14k["horizon_days"] == BACKTEST_HORIZON_DAYS] \
+        .set_index(["rule", "cutoff"])["lift"].astype(float)
+
+    def _gate(cond: bool, msg: str) -> None:
+        if not cond:
+            raise RuntimeError(f"[chart_d] gate de mapping falhou: {msg}")
+
+    for (r, c), v in sorted(plotted.items()):
+        _gate(abs(v - float(t14k.loc[(r, c)])) < 1e-9,
+              f"R_{r} {c}: x plotado {v} != t14.lift {t14k.loc[(r, c)]}")
+    rd = [plotted[("D", c)] for c in cutoffs]
+    _gate([round(v, 3) for v in rd] == [1.574, 1.556, 1.835],
+          f"R_D lifts {rd} != [1.574, 1.556, 1.835]")
+    _gate(len(plotted) == 9 * len(cutoffs),
+          f"esperados {9 * len(cutoffs)} pares (rule, cutoff), "
+          f"plotados {len(plotted)}")
+    tick_txt = [t.get_text() for t in ax.get_yticklabels()]
+    _gate(tick_txt[y_d].startswith("R_D "),
+          f"y destacado {y_d} rotulado '{tick_txt[y_d]}' != R_D")
     ax.set_xlabel("lift (precision / baseline) — horizonte 90d; "
                   "barras = CI de Wilson 95% da precision")
     ax.set_title("Backtest point-in-time: lift por regra × cutoff (sem ML; "
