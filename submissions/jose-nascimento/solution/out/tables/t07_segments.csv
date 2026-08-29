@@ -1,0 +1,16 @@
+segment_type,segment_value,n_accounts,n_first_event,rate_pct,km_surv_t6,r1_gross_mrr,r1_share_pct,flags
+industry,Cybersecurity,100,72,72.0,0.4079,279062,23.7,MRR_FLAG
+industry,DevTools,113,83,73.5,0.4242,238611,20.2,MRR_FLAG
+industry,EdTech,79,57,72.2,0.3834,198743,16.9,MRR_FLAG
+industry,FinTech,112,76,67.9,0.48,253446,21.5,MRR_FLAG
+industry,HealthTech,96,64,66.7,0.5073,209277,17.7,MRR_FLAG
+referral_source,ads,98,59,60.2,0.5453,194077,16.5,MRR_FLAG
+referral_source,event,96,68,70.8,0.4209,260954,22.1,MRR_FLAG
+referral_source,organic,114,85,74.6,0.3734,265637,22.5,MRR_FLAG
+referral_source,other,103,73,70.9,0.4447,273644,23.2,MRR_FLAG
+referral_source,partner,89,67,75.3,0.4396,184827,15.7,MRR_FLAG
+plan_tier,Basic,168,115,68.5,0.4441,328588,27.9,MRR_FLAG
+plan_tier,Enterprise,154,108,70.1,0.4512,427710,36.3,MRR_FLAG
+plan_tier,Pro,178,129,72.5,0.434,422841,35.9,MRR_FLAG
+is_trial_s,False,403,285,70.7,0.4253,986195,83.6,MRR_FLAG
+is_trial_s,True,97,67,69.1,0.5152,192944,16.4,MRR_FLAG

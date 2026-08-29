@@ -1,0 +1,10 @@
+finding,association,confounders,status,additional_data
+Tenure curto e churn (H1),SUSTENTADA,mix de coortes (mais signups 2024); censura; eventos múltiplos,hipótese causal plausível,"dados de onboarding real (ativação, integrações), não disponíveis na base"
+Spike mensal e coortes (H2/H9),"pico 2024-12: SUSTENTADA (aumento real de taxa); mecanismo: bucket 0-3m (share 83.7%, ratio 2.37)",sazonalidade; censura no corte; definição de pico; composição de tenure dos elegíveis (controlada no H2),hipótese causal plausível,datas de ativação/uso pós-signup; campanhas de marketing
+"Uso cresceu em volume, não por conta (H3)",SUSTENTADA,"76,6% de uso fora da janela; pré-signup; mais contas em 2024",descritivo,telemetria real de produto por conta
+Uso pré-evento não precede churn (H4),REFUTADA,uso pré-signup; janelas curtas; base sintética com uso independente do ciclo de vida,não identificável,série de uso real dentro do ciclo de assinatura
+Sinais de suporte pré-evento (H5),REFUTADA,tickets pré-signup; mix de tenure; nulos de CSAT,não identificável,conteúdo de tickets; CSAT com cobertura maior
+Segmentos em risco (H6),REFUTADA,mix de tenure/coorte por segmento; winner do mês; trials,descritivo,firmografia/uso por segmento
+Reasons/CSAT/feedback (H7),SUSTENTADA,missingness; nulos não-aleatórios; decoplamento das lentes,não identificável,entrevistas de churn; reasons com cobertura completa
+Economia do onboarding (H8),SUSTENTADA,"R1 é exposição, não perda (troca/sobreposição); trials MRR 0",descritivo (parametrizado em cenários CAC-equivalent),custo real de aquisição; caminho de ativação
+Decoplamento evento vs assinatura (estrutural da base),21.0% dos eventos com assinatura encerrada ±30d,base sintética; lentes de churn independentes,descritivo,fonte de eventos com vínculo contratual

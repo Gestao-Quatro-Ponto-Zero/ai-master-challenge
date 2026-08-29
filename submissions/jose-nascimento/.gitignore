@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+venv/
+.venv/
+env/
+
+# Data intermediates (raw data IS committed; derived artifacts regenerable)
+*.duckdb
+*.db
+*.sqlite
+out/intermediate/
+
+# OS/IDE
+.DS_Store

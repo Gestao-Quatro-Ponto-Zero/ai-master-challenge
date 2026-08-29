@@ -1,0 +1,17 @@
+# Iteração 06 — dependências MÍNIMAS reais do pipeline (inspeção de imports dos scripts 01–05).
+#
+# Usadas de fato:
+#   - pandas:     motor de dados de todos os scripts (01–05 e o verificador 06).
+#   - matplotlib: gráficos dos scripts 03 e 04 (backend Agg, sem interação).
+#
+# Removidas nesta iteração (NÃO importadas por nenhum script):
+#   - duckdb, seaborn, jupyterlab (nunca importados);
+#   - numpy explícito (é dependência transitiva de pandas/matplotlib; pip resolve).
+#
+# Pins exatos: determinismo byte-a-byte dos outputs (CSV/PNG) entre máquinas.
+# Trade-off pin exato vs faixa: ver
+# process-log/decisions/iteration-06-reproducibility-decisions.md (D1).
+#
+# Testado em: Python 3.12.3 (Linux, aarch64), pandas 3.0.5, matplotlib 3.11.1.
+pandas==3.0.5
+matplotlib==3.11.1

@@ -1,0 +1,7 @@
+reason_code,n_events,share_pct,refund_pct,preceding_upgrade_pct,preceding_downgrade_pct
+budget,104,17.3,23.1,23.1,5.8
+competitor,92,15.3,19.6,18.5,13.0
+features,114,19.0,21.1,14.9,7.9
+pricing,91,15.2,24.2,19.8,4.4
+support,104,17.3,26.9,26.9,12.5
+unknown,95,15.8,27.4,20.0,9.5
