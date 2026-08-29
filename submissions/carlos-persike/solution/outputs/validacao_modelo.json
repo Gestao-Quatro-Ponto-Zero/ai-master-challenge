@@ -1,0 +1,50 @@
+{
+  "n_treino": 5368,
+  "n_teste": 1343,
+  "auc_holdout": 0.592,
+  "acuracia_holdout": 0.631,
+  "acuracia_baseline_classe_majoritaria": 0.631,
+  "tabela_sobrevivencia_dias_para_producao": [
+    [
+      4.0,
+      0.5240641711229946
+    ],
+    [
+      7.0,
+      0.5473684210526316
+    ],
+    [
+      9.0,
+      0.5811688311688312
+    ],
+    [
+      13.0,
+      0.5553935860058309
+    ],
+    [
+      45.0,
+      0.6982892690513219
+    ],
+    [
+      67.0,
+      0.6586402266288952
+    ],
+    [
+      79.0,
+      0.6687306501547987
+    ],
+    [
+      91.0,
+      0.6752503576537912
+    ],
+    [
+      104.0,
+      0.7168949771689498
+    ],
+    [
+      138.0,
+      0.703875968992248
+    ]
+  ],
+  "observacao": "AUC 0.59 = sinal real e estatisticamente significativo (ver auditoria.txt), porém modesto. A acuracia do holdout nao supera o baseline porque nenhuma faixa de dias cruza 50% de chance de vitoria isolada — o sinal move a probabilidade, nao decide o resultado sozinho. Por isso o score final combina probabilidade x valor do negocio, em vez de uma decisao binaria ganha/perde."
+}

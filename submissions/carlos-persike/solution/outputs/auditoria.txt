@@ -1,0 +1,25 @@
+Deals fechados (Won+Lost): 6711
+Taxa de vitória geral: 0.632
+
+Produto x resultado — chi2 p-valor: 0.3719
+  Faixa de taxa de vitória por produto: 0.600 a 0.648
+  Conclusão: SEM sinal (independente do produto)
+
+Vendedor x resultado — chi2 p-valor: 0.2639
+  Conclusão: SEM sinal (variação entre vendedores é ruído, não habilidade)
+
+Receita da conta x resultado — r=-0.0123, p-valor: 0.3149
+Nº funcionários da conta x resultado — r=-0.0084, p-valor: 0.4919
+  Conclusão: SEM sinal (porte da conta não prevê se o negócio fecha)
+
+Dias até fechar (Won) x (Lost) — Mann-Whitney p-valor: 1.23e-26
+  Mediana dias (Won): 57 | Mediana dias (Lost): 14
+  Conclusão: SINAL REAL — negócios perdidos morrem rápido, negócios ganhos demoram mais.
+  Isso inverte a intuição de 'tempo parado = deal esfriando': aqui, sobreviver mais tempo é sinal positivo.
+
+Oportunidades sem conta vinculada, por estágio:
+  Engaging: 68.5%
+  Lost: 0.0%
+  Prospecting: 67.4%
+  Won: 0.0%
+  Achado operacional: quase todo Won/Lost tem conta (0%), mas ~68% do pipeline aberto (Engaging+Prospecting) não tem — não é acaso, é processo: o vendedor só preenche a conta perto do fechamento. Isso impede usar porte da conta como feature hoje e é uma recomendação de processo por si só (ver README).
