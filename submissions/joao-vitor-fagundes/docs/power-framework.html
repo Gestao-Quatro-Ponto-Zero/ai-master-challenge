@@ -1,0 +1,3160 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Documentação técnica do POWER, framework de priorização de oportunidades."
+    />
+    <title>POWER · Framework de priorização</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f3f0e8;
+        --paper-deep: #e9e4d8;
+        --ink: #132b2e;
+        --ink-soft: #536365;
+        --line: rgba(19, 43, 46, 0.17);
+        --panel: rgba(255, 255, 255, 0.58);
+        --accent: #d7ff43;
+        --accent-deep: #9fbd22;
+        --blue: #2467db;
+        --won: #167a57;
+        --lost: #b84e3f;
+        --shadow: 0 22px 60px rgba(30, 46, 45, 0.1);
+        --radius: 18px;
+        --display: "Avenir Next Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+        --body: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(19, 43, 46, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(19, 43, 46, 0.035) 1px, transparent 1px),
+          var(--paper);
+        background-size: 32px 32px;
+        font-family: var(--body);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        z-index: 100;
+        padding: 10px 14px;
+        color: white;
+        background: var(--ink);
+        border-radius: 8px;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 58px;
+        padding: 0 4vw;
+        border-bottom: 1px solid var(--line);
+        background: rgba(243, 240, 232, 0.9);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--display);
+        font-size: 0.83rem;
+        font-weight: 800;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--ink);
+        border-radius: 50%;
+        background: var(--accent);
+        font-size: 0.75rem;
+        letter-spacing: 0;
+      }
+
+      .document-status {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent-deep);
+        box-shadow: 0 0 0 4px rgba(159, 189, 34, 0.15);
+      }
+
+      .page-shell {
+        display: grid;
+        grid-template-columns: minmax(180px, 240px) minmax(0, 920px);
+        gap: clamp(32px, 6vw, 88px);
+        width: min(1240px, 92vw);
+        margin: 0 auto;
+        padding: 56px 0 96px;
+      }
+
+      .side-nav {
+        position: sticky;
+        top: 94px;
+        align-self: start;
+      }
+
+      .side-nav-label {
+        margin: 0 0 16px;
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .power-index {
+        display: grid;
+        gap: 8px;
+        margin: 0 0 34px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .power-index li {
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        color: var(--ink-soft);
+        border: 1px solid transparent;
+        border-radius: 10px;
+        font-size: 0.78rem;
+      }
+
+      .power-index .letter {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        font-family: var(--display);
+        font-weight: 900;
+      }
+
+      .power-index li.active {
+        color: var(--ink);
+        border-color: var(--ink);
+        background: var(--accent);
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+
+      .power-index li.active .letter {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: white;
+      }
+
+      .power-index li.defined {
+        color: var(--ink);
+        border-color: rgba(19, 43, 46, 0.45);
+        background: rgba(215, 255, 67, 0.34);
+      }
+
+      .power-index li.defined .letter {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: white;
+      }
+
+      .power-index small {
+        display: block;
+        opacity: 0.7;
+      }
+
+      .in-page-nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .in-page-nav a {
+        padding-left: 12px;
+        color: var(--ink-soft);
+        border-left: 1px solid var(--line);
+        font-size: 0.78rem;
+        text-decoration: none;
+      }
+
+      .in-page-nav a:hover,
+      .in-page-nav a:focus-visible {
+        color: var(--ink);
+        border-color: var(--accent-deep);
+      }
+
+      main {
+        min-width: 0;
+      }
+
+      .hero {
+        position: relative;
+        padding: clamp(28px, 5vw, 54px);
+        overflow: hidden;
+        color: white;
+        background: var(--ink);
+        border-radius: 26px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero::after {
+        content: "P";
+        position: absolute;
+        right: -22px;
+        bottom: -86px;
+        color: rgba(215, 255, 67, 0.09);
+        font-family: var(--display);
+        font-size: clamp(14rem, 30vw, 23rem);
+        font-weight: 900;
+        line-height: 0.9;
+      }
+
+      .eyebrow {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 18px;
+        color: var(--accent);
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: var(--display);
+        line-height: 1.02;
+        letter-spacing: -0.025em;
+      }
+
+      h1 {
+        position: relative;
+        z-index: 1;
+        max-width: 660px;
+        margin: 0;
+        font-size: clamp(3rem, 8vw, 6.8rem);
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .hero-intro {
+        position: relative;
+        z-index: 1;
+        max-width: 590px;
+        margin: 24px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: clamp(1rem, 2vw, 1.15rem);
+      }
+
+      .question-card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 18px;
+        align-items: start;
+        margin: 24px 0 0;
+        padding: 20px 22px;
+        border: 1px solid rgba(215, 255, 67, 0.4);
+        border-radius: 14px;
+        background: rgba(215, 255, 67, 0.08);
+      }
+
+      .question-card span {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        color: var(--ink);
+        background: var(--accent);
+        border-radius: 50%;
+        font-family: var(--display);
+        font-weight: 900;
+      }
+
+      .question-card p {
+        margin: 2px 0 0;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .content-section {
+        padding-top: 72px;
+        scroll-margin-top: 72px;
+      }
+
+      .section-kicker {
+        margin: 0 0 10px;
+        color: var(--blue);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 0 0 16px;
+        font-size: clamp(2rem, 5vw, 3.7rem);
+        font-weight: 850;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 1.32rem;
+      }
+
+      .lead {
+        max-width: 700px;
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 1.02rem;
+      }
+
+      .lens-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .lens {
+        position: relative;
+        min-height: 132px;
+        padding: 20px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+      }
+
+      .lens-number {
+        position: absolute;
+        right: 12px;
+        top: 3px;
+        color: rgba(19, 43, 46, 0.07);
+        font-family: var(--display);
+        font-size: 5.6rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .lens-tag {
+        display: inline-flex;
+        margin-bottom: 17px;
+        padding: 4px 7px;
+        color: white;
+        background: var(--ink);
+        border-radius: 5px;
+        font-family: var(--mono);
+        font-size: 0.67rem;
+        font-weight: 700;
+      }
+
+      .lens p {
+        position: relative;
+        margin: 8px 0 0;
+        color: var(--ink-soft);
+        font-size: 0.86rem;
+      }
+
+      .formula-card {
+        margin-top: 28px;
+        border: 1px solid var(--ink);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 7px 7px 0 rgba(19, 43, 46, 0.1);
+      }
+
+      .formula-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 17px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .formula-heading small {
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        text-transform: uppercase;
+      }
+
+      .equation-wrap {
+        padding: clamp(28px, 6vw, 52px) 20px;
+        overflow-x: auto;
+        text-align: center;
+      }
+
+      .equation {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 13px;
+        min-width: max-content;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.45rem, 4vw, 2.35rem);
+        font-style: italic;
+        line-height: 1.15;
+      }
+
+      .equation sub {
+        font-size: 0.55em;
+      }
+
+      .equation .word {
+        font-family: var(--body);
+        font-size: 0.52em;
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .frac {
+        display: inline-grid;
+        grid-template-rows: auto auto;
+        align-items: center;
+        text-align: center;
+      }
+
+      .frac > span:first-child {
+        padding: 0 10px 7px;
+        border-bottom: 1.7px solid currentColor;
+      }
+
+      .frac > span:last-child {
+        padding: 7px 10px 0;
+      }
+
+      .variable {
+        display: inline-flex;
+        align-items: baseline;
+        padding: 0 3px;
+        color: var(--blue);
+        border-bottom: 2px solid rgba(36, 103, 219, 0.25);
+      }
+
+      .variable.won {
+        color: var(--won);
+        border-color: rgba(22, 122, 87, 0.25);
+      }
+
+      .variable.lost {
+        color: var(--lost);
+        border-color: rgba(184, 78, 63, 0.25);
+      }
+
+      .legend {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1px;
+        border-top: 1px solid var(--line);
+        background: var(--line);
+      }
+
+      .legend-item {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+        gap: 12px;
+        padding: 17px 18px;
+        background: var(--paper);
+      }
+
+      .legend-symbol {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.08rem;
+        font-style: italic;
+        font-weight: 700;
+      }
+
+      .legend-item p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.78rem;
+        line-height: 1.45;
+      }
+
+      .legend-item strong {
+        display: block;
+        margin-bottom: 2px;
+        color: var(--ink);
+      }
+
+      .formula-example {
+        display: grid;
+        grid-template-columns: minmax(128px, auto) 1fr;
+        gap: 18px;
+        align-items: start;
+        padding: 18px 20px;
+        border-top: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.52);
+      }
+
+      .formula-example-label {
+        display: block;
+        width: auto;
+        padding: 2px 0 0;
+        color: var(--ink-soft);
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .formula-example p {
+        margin: 0;
+      }
+
+      .formula-example .calculation {
+        overflow-x: auto;
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: 0.79rem;
+        font-weight: 700;
+        line-height: 1.65;
+        white-space: nowrap;
+      }
+
+      .formula-example small {
+        display: block;
+        margin-top: 5px;
+        color: var(--ink-soft);
+        font-size: 0.75rem;
+        line-height: 1.45;
+      }
+
+      .tier-calculation-list {
+        display: grid;
+        gap: 7px;
+      }
+
+      .tier-calculation-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 0.8fr) minmax(230px, 1.5fr) minmax(76px, 0.55fr);
+        gap: 12px;
+        align-items: baseline;
+        padding-bottom: 7px;
+        border-bottom: 1px dashed rgba(19, 43, 46, 0.15);
+        font-size: 0.76rem;
+      }
+
+      .tier-calculation-row:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .tier-equation {
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        white-space: nowrap;
+      }
+
+      .tier-calculation-row strong {
+        text-align: right;
+      }
+
+      .plain-language {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin: 20px 0 0;
+        padding: 16px 18px;
+        border-left: 4px solid var(--accent-deep);
+        background: rgba(215, 255, 67, 0.14);
+        font-size: 0.88rem;
+      }
+
+      .plain-language strong {
+        white-space: nowrap;
+      }
+
+      .piecewise {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: stretch;
+        min-width: 360px;
+      }
+
+      .brace {
+        display: grid;
+        place-items: center;
+        font-family: Georgia, serif;
+        font-size: 5.4rem;
+        font-style: normal;
+        font-weight: 200;
+        line-height: 1;
+        transform: scaleX(0.65);
+      }
+
+      .cases {
+        display: grid;
+        gap: 14px;
+        text-align: left;
+      }
+
+      .case-row {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 14px;
+        align-items: center;
+        font-size: 0.72em;
+      }
+
+      .case-row span:last-child {
+        font-family: var(--body);
+        font-size: 0.6em;
+        font-style: normal;
+        font-weight: 600;
+      }
+
+      .strength-scale {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        margin-top: 22px;
+      }
+
+      .strength-step {
+        padding: 13px 8px;
+        text-align: center;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: linear-gradient(
+          to top,
+          rgba(215, 255, 67, var(--fill)) 0 var(--height),
+          rgba(255, 255, 255, 0.48) var(--height)
+        );
+      }
+
+      .strength-step strong,
+      .strength-step span {
+        display: block;
+      }
+
+      .strength-step strong {
+        font-family: var(--display);
+        font-size: 1.1rem;
+      }
+
+      .strength-step span {
+        margin-top: 3px;
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 0.62rem;
+      }
+
+      .score-equation {
+        font-size: clamp(1.08rem, 2.7vw, 1.62rem);
+      }
+
+      .score-equation .frac > span:first-child,
+      .score-equation .frac > span:last-child {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
+      .example-table-wrap {
+        margin-top: 28px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.52);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.84rem;
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      th:first-child,
+      td:first-child {
+        text-align: left;
+      }
+
+      th {
+        color: var(--ink-soft);
+        background: var(--paper-deep);
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      tbody tr:hover td {
+        background: rgba(215, 255, 67, 0.12);
+      }
+
+      .result-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 18px;
+        align-items: end;
+        margin-top: 16px;
+        padding: 22px;
+        color: white;
+        background: var(--ink);
+        border-radius: 14px;
+      }
+
+      .result-card p,
+      .result-card strong,
+      .result-card small {
+        display: block;
+        margin: 0;
+      }
+
+      .result-card p {
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 0.75rem;
+      }
+
+      .result-card strong {
+        margin-top: 4px;
+        font-family: var(--display);
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        line-height: 1;
+      }
+
+      .result-card small {
+        max-width: 270px;
+        color: rgba(255, 255, 255, 0.66);
+        font-size: 0.7rem;
+        text-align: right;
+      }
+
+      .score-pill {
+        color: var(--ink);
+        background: var(--accent);
+        padding: 3px 10px;
+        border-radius: 999px;
+      }
+
+      .rule-card {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 22px;
+        align-items: center;
+        margin-top: 26px;
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel);
+      }
+
+      .zero-match {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1;
+        color: var(--ink);
+        border: 1px dashed var(--ink);
+        border-radius: 50%;
+        background: var(--accent);
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+        font-style: italic;
+      }
+
+      .rule-card p {
+        margin: 7px 0 0;
+        color: var(--ink-soft);
+        font-size: 0.87rem;
+      }
+
+      .guardrail-grid {
+        display: grid;
+        gap: 9px;
+        margin-top: 28px;
+        counter-reset: guardrail;
+      }
+
+      .guardrail {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 14px;
+        align-items: start;
+        padding: 15px 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.46);
+        counter-increment: guardrail;
+      }
+
+      .guardrail::before {
+        content: counter(guardrail, decimal-leading-zero);
+        padding-top: 2px;
+        color: var(--blue);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      .guardrail p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+      }
+
+      .pending {
+        margin-top: 28px;
+        padding: 24px;
+        border: 1px solid var(--ink);
+        border-radius: 14px;
+        background: var(--paper-deep);
+      }
+
+      .pending ul {
+        display: grid;
+        gap: 10px;
+        margin: 18px 0 0;
+        padding-left: 20px;
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+      }
+
+      .dimension-chapter {
+        display: grid;
+        grid-template-columns: 118px 1fr;
+        gap: clamp(22px, 5vw, 48px);
+        align-items: center;
+        margin-top: 84px;
+        padding: clamp(28px, 5vw, 48px);
+        color: white;
+        background: var(--ink);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        scroll-margin-top: 78px;
+      }
+
+      .dimension-letter {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1;
+        color: var(--ink);
+        background: var(--accent);
+        border-radius: 24px 24px 52px 24px;
+        font-family: var(--display);
+        font-size: clamp(4rem, 10vw, 6.6rem);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .dimension-chapter .section-kicker {
+        color: var(--accent);
+      }
+
+      .dimension-chapter h2 {
+        margin-bottom: 10px;
+      }
+
+      .dimension-chapter p:last-child {
+        max-width: 620px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .dataset-note {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 16px;
+        align-items: start;
+        margin-top: 24px;
+        padding: 18px 20px;
+        border: 1px solid rgba(36, 103, 219, 0.3);
+        border-radius: 13px;
+        background: rgba(36, 103, 219, 0.07);
+      }
+
+      .dataset-note .badge {
+        padding: 4px 8px;
+        color: white;
+        background: var(--blue);
+        border-radius: 5px;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .dataset-note p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.84rem;
+      }
+
+      .tier-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 20px;
+      }
+
+      .tier {
+        min-height: 150px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .tier-level {
+        display: block;
+        margin-bottom: 22px;
+        font-family: var(--mono);
+        font-size: 0.63rem;
+        font-weight: 800;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .tier strong,
+      .tier small {
+        display: block;
+      }
+
+      .tier strong {
+        font-family: var(--display);
+        font-size: 1.08rem;
+        line-height: 1.15;
+      }
+
+      .tier small {
+        margin-top: 6px;
+        color: var(--ink-soft);
+        font-size: 0.68rem;
+        line-height: 1.4;
+      }
+
+      .tier.diamond {
+        color: white;
+        background: var(--ink);
+      }
+
+      .tier.diamond small {
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .tier.gold {
+        background: #e6c858;
+      }
+
+      .tier.silver {
+        background: #d9dfe0;
+      }
+
+      .tier.bronze {
+        background: #d9a074;
+      }
+
+      .separation-note {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: 16px;
+        align-items: center;
+        margin-top: 24px;
+        padding: 22px;
+        color: white;
+        background: var(--ink);
+        border-radius: 14px;
+      }
+
+      .separation-note strong,
+      .separation-note span {
+        display: block;
+      }
+
+      .separation-note strong {
+        color: var(--accent);
+        font-family: var(--display);
+        font-size: 1.12rem;
+      }
+
+      .separation-note span {
+        color: rgba(255, 255, 255, 0.66);
+        font-size: 0.73rem;
+      }
+
+      .separation-note .operator {
+        color: var(--accent);
+        font-family: Georgia, serif;
+        font-size: 2rem;
+      }
+
+      .temperature-grid {
+        display: grid;
+        gap: 8px;
+        margin-top: 26px;
+      }
+
+      .temperature-row {
+        display: grid;
+        grid-template-columns: 110px 1fr 90px 90px;
+        gap: 14px;
+        align-items: center;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .temperature-row strong {
+        font-family: var(--display);
+        font-size: 1rem;
+      }
+
+      .temperature-bar {
+        height: 9px;
+        overflow: hidden;
+        background: rgba(19, 43, 46, 0.1);
+        border-radius: 999px;
+      }
+
+      .temperature-bar::after {
+        content: "";
+        display: block;
+        width: var(--temperature);
+        height: 100%;
+        background: var(--temperature-color);
+        border-radius: inherit;
+      }
+
+      .temperature-row span,
+      .temperature-row small {
+        color: var(--ink-soft);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+      }
+
+      .temperature-row small {
+        text-align: right;
+      }
+
+      .action-split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .action-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .action-card strong,
+      .action-card span {
+        display: block;
+      }
+
+      .action-card strong {
+        font-family: var(--display);
+        font-size: 1.18rem;
+      }
+
+      .action-card span {
+        margin-top: 6px;
+        color: var(--ink-soft);
+        font-size: 0.76rem;
+      }
+
+      .action-card .action-label {
+        display: inline-flex;
+        margin-bottom: 18px;
+        padding: 4px 8px;
+        color: white;
+        background: var(--ink);
+        border-radius: 5px;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        text-transform: uppercase;
+      }
+
+      .recommendation-flow {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.08fr) auto minmax(0, 1fr);
+        gap: 12px;
+        align-items: stretch;
+        margin-top: 28px;
+      }
+
+      .flow-node {
+        min-height: 174px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.52);
+      }
+
+      .flow-node.prompt-node {
+        color: white;
+        border-color: var(--ink);
+        background: var(--ink);
+      }
+
+      .flow-node.output-node {
+        border-color: var(--ink);
+        background: var(--accent);
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      .flow-label {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--blue);
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .prompt-node .flow-label {
+        color: var(--accent);
+      }
+
+      .output-node .flow-label {
+        color: var(--ink);
+      }
+
+      .flow-node strong,
+      .flow-node small {
+        display: block;
+      }
+
+      .flow-node strong {
+        font-family: var(--display);
+        font-size: 1.16rem;
+        line-height: 1.16;
+      }
+
+      .flow-node small {
+        margin-top: 9px;
+        color: var(--ink-soft);
+        font-size: 0.71rem;
+        line-height: 1.45;
+      }
+
+      .prompt-node small {
+        color: rgba(255, 255, 255, 0.64);
+      }
+
+      .signal-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-top: 14px;
+      }
+
+      .signal-list span {
+        padding: 7px 9px;
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        font-weight: 800;
+      }
+
+      .flow-arrow {
+        display: grid;
+        place-items: center;
+        color: var(--accent-deep);
+        font-family: var(--display);
+        font-size: 1.8rem;
+        font-weight: 900;
+      }
+
+      .power-profile {
+        margin-top: 28px;
+        padding: 22px;
+        color: white;
+        background: var(--ink);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .profile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .profile-header span:last-child {
+        color: rgba(255, 255, 255, 0.56);
+      }
+
+      .profile-metrics {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .profile-metric {
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .profile-metric span,
+      .profile-metric strong,
+      .profile-metric small {
+        display: block;
+      }
+
+      .profile-metric span {
+        color: var(--accent);
+        font-family: var(--display);
+        font-size: 1.45rem;
+        font-weight: 900;
+      }
+
+      .profile-metric strong {
+        margin-top: 8px;
+        font-family: var(--display);
+        font-size: 1.08rem;
+      }
+
+      .profile-metric small {
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 0.64rem;
+      }
+
+      .profile-recommendation {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 16px;
+        margin-top: 10px;
+        padding: 18px;
+        color: var(--ink);
+        background: var(--accent);
+        border-radius: 13px;
+      }
+
+      .profile-r {
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        color: white;
+        background: var(--ink);
+        border-radius: 12px 12px 24px 12px;
+        font-family: var(--display);
+        font-size: 2rem;
+        font-weight: 900;
+      }
+
+      .profile-recommendation strong,
+      .profile-recommendation p,
+      .profile-recommendation small {
+        display: block;
+        margin: 0;
+      }
+
+      .profile-recommendation strong {
+        font-family: var(--display);
+        font-size: 1.35rem;
+        line-height: 1.15;
+      }
+
+      .profile-recommendation p {
+        margin-top: 6px;
+        font-size: 0.8rem;
+      }
+
+      .profile-recommendation small {
+        margin-top: 10px;
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        font-weight: 700;
+      }
+
+      .prompt-card {
+        margin-top: 28px;
+        overflow: hidden;
+        border: 1px solid var(--ink);
+        border-radius: 15px;
+        background: #102326;
+      }
+
+      .prompt-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 12px 16px;
+        color: var(--ink);
+        background: var(--accent);
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .prompt-header span:last-child {
+        opacity: 0.62;
+      }
+
+      .prompt-card pre {
+        margin: 0;
+        padding: 22px;
+        overflow-x: auto;
+        color: rgba(255, 255, 255, 0.82);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        line-height: 1.65;
+        white-space: pre-wrap;
+      }
+
+      .prompt-card .prompt-variable {
+        color: var(--accent);
+      }
+
+      .output-contract {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .output-field {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .output-field code,
+      .output-field span {
+        display: block;
+      }
+
+      .output-field code {
+        color: var(--blue);
+        font-size: 0.68rem;
+        font-weight: 800;
+      }
+
+      .output-field span {
+        margin-top: 7px;
+        color: var(--ink-soft);
+        font-size: 0.72rem;
+        line-height: 1.45;
+      }
+
+      .document-footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 76px;
+        padding-top: 24px;
+        color: var(--ink-soft);
+        border-top: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 820px) {
+        .page-shell {
+          grid-template-columns: 1fr;
+          width: min(92vw, 720px);
+          padding-top: 28px;
+        }
+
+        .side-nav {
+          position: static;
+        }
+
+        .power-index {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          margin-bottom: 0;
+        }
+
+        .power-index li {
+          display: flex;
+          justify-content: center;
+          padding: 7px;
+        }
+
+        .power-index li > span:last-child,
+        .side-nav-label,
+        .in-page-nav {
+          display: none;
+        }
+
+        .recommendation-flow {
+          grid-template-columns: 1fr;
+        }
+
+        .flow-arrow {
+          transform: rotate(90deg);
+        }
+
+        .output-contract {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 580px) {
+        .topbar {
+          padding: 0 18px;
+        }
+
+        .brand span:last-child,
+        .document-status span:last-child {
+          display: none;
+        }
+
+        .page-shell {
+          width: min(94vw, 520px);
+          padding-bottom: 56px;
+        }
+
+        .hero {
+          padding: 28px 22px;
+          border-radius: 18px;
+        }
+
+        h1 {
+          font-size: clamp(2.6rem, 16vw, 4.6rem);
+        }
+
+        .question-card {
+          grid-template-columns: 1fr;
+        }
+
+        .content-section {
+          padding-top: 56px;
+        }
+
+        .lens-grid,
+        .legend {
+          grid-template-columns: 1fr;
+        }
+
+        .formula-heading {
+          align-items: start;
+          flex-direction: column;
+        }
+
+        .formula-example {
+          grid-template-columns: 1fr;
+        }
+
+        .tier-calculation-row {
+          grid-template-columns: 1fr;
+          gap: 3px;
+        }
+
+        .tier-calculation-row strong {
+          text-align: left;
+        }
+
+        .equation-wrap {
+          padding: 28px 16px;
+          text-align: left;
+        }
+
+        .plain-language,
+        .rule-card {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .plain-language strong {
+          white-space: normal;
+        }
+
+        .zero-match {
+          width: 100px;
+        }
+
+        .strength-scale {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .result-card {
+          grid-template-columns: 1fr;
+        }
+
+        .result-card small {
+          text-align: left;
+        }
+
+        .dimension-chapter {
+          grid-template-columns: 1fr;
+        }
+
+        .dimension-letter {
+          width: 92px;
+        }
+
+        .dataset-note,
+        .separation-note {
+          grid-template-columns: 1fr;
+        }
+
+        .tier-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .temperature-row {
+          grid-template-columns: 92px 1fr;
+        }
+
+        .temperature-row small {
+          text-align: left;
+        }
+
+        .action-split {
+          grid-template-columns: 1fr;
+        }
+
+        .recommendation-flow {
+          grid-template-columns: 1fr;
+        }
+
+        .flow-arrow {
+          transform: rotate(90deg);
+        }
+
+        .profile-metrics,
+        .output-contract {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .separation-note .operator {
+          transform: rotate(90deg);
+          transform-origin: left center;
+        }
+
+        .document-footer {
+          flex-direction: column;
+        }
+      }
+
+      @media print {
+        @page {
+          size: letter;
+          margin: 11mm;
+        }
+
+        html,
+        body {
+          min-width: 0;
+        }
+
+        body {
+          font-size: 13px;
+          line-height: 1.5;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .skip-link,
+        .side-nav,
+        .document-footer {
+          display: none !important;
+        }
+
+        .topbar {
+          position: static;
+          min-height: 46px;
+          padding: 0 8px;
+          backdrop-filter: none;
+        }
+
+        .page-shell {
+          display: block;
+          width: 100%;
+          margin: 0;
+          padding: 22px 0 0;
+        }
+
+        .hero,
+        .formula-card,
+        .dataset-note,
+        .strength-scale,
+        .lens-grid,
+        .example-table-wrap,
+        .result-card,
+        .rule-card,
+        .guardrail-grid,
+        .pending,
+        .tier-grid,
+        .separation-note,
+        .temperature-grid,
+        .action-split,
+        .recommendation-flow,
+        .power-profile,
+        .prompt-card,
+        .output-contract,
+        .plain-language,
+        table {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+        .content-section {
+          margin-top: 0;
+          padding-top: 40px;
+        }
+
+        .content-section > .section-kicker,
+        .content-section > h2,
+        .content-section > .lead {
+          break-inside: avoid;
+          break-after: avoid;
+          page-break-inside: avoid;
+          page-break-after: avoid;
+        }
+
+        .dimension-chapter {
+          margin-top: 0;
+          padding: 28px;
+          break-before: page;
+          break-inside: avoid;
+          page-break-before: always;
+          page-break-inside: avoid;
+        }
+
+        .hero + .content-section {
+          padding-top: 40px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="./design-system.css?v=20260828-warmth-tokens-1" />
+    <link rel="stylesheet" href="./power-framework.css?v=20260828-warmth-sync-1" />
+  </head>
+  <body class="framework-document">
+    <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+    <svg class="svg-library" aria-hidden="true">
+      <symbol id="icon-board" viewBox="0 0 20 20"><rect x="2.8" y="3" width="5.8" height="14" rx="1.2"/><rect x="11.4" y="3" width="5.8" height="9" rx="1.2"/></symbol>
+      <symbol id="icon-power" viewBox="0 0 20 20"><path d="M3 15.8V11M7.7 15.8V6.5M12.3 15.8V9M17 15.8V3.8"/></symbol>
+      <symbol id="icon-database" viewBox="0 0 20 20"><ellipse cx="10" cy="4.8" rx="6.5" ry="2.5"/><path d="M3.5 4.8v5.1c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6V4.8M3.5 9.9V15c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6V9.9"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15"/></symbol>
+      <symbol id="icon-arrow-down" viewBox="0 0 20 20"><path d="M10 3v13M5.5 11.5 10 16l4.5-4.5"/></symbol>
+    </svg>
+
+    <div class="app-shell framework-app-shell">
+      <aside class="sidebar" id="app-sidebar" aria-label="Navegação principal">
+        <div class="sidebar-head">
+          <a class="wordmark" href="./" aria-label="POWER CRM">
+            <span class="power-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <strong>POWER</strong>
+          </a>
+          <button id="close-mobile-nav" class="close-mobile-nav" type="button" aria-label="Fechar navegação"><svg class="icon"><use href="#icon-close"/></svg></button>
+        </div>
+
+        <div class="workspace-context" aria-label="Workspace atual">
+          <span class="workspace-avatar">G4</span>
+          <span><strong>G4 Educação</strong><small>Revenue workspace</small></span>
+          <span class="context-tag">Dataset</span>
+        </div>
+
+        <nav class="primary-nav" aria-label="Navegação do CRM">
+          <p>Workspace</p>
+          <a href="./"><svg class="icon"><use href="#icon-board"/></svg>Pipeline</a>
+          <a href="./directory.html"><svg class="icon"><use href="#icon-database"/></svg>Directory</a>
+          <p>Inteligência</p>
+          <a class="is-active" href="./power-framework.html" aria-current="page"><svg class="icon"><use href="#icon-power"/></svg>POWER framework<span class="nav-badge">Method</span></a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="challenge-owner"><span class="avatar avatar-dark">JV</span><span><strong>João Vitor</strong><small>AI Master Challenge</small></span></div>
+        </div>
+      </aside>
+
+      <button id="mobile-nav-backdrop" class="mobile-nav-backdrop" type="button" aria-label="Fechar navegação lateral" hidden></button>
+
+      <main class="workspace framework-page" id="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs">
+            <button id="mobile-nav" class="mobile-nav" type="button" aria-label="Abrir navegação" aria-controls="app-sidebar" aria-expanded="false">☰</button>
+            <span>Inteligência comercial</span><i>/</i><strong>POWER framework</strong>
+          </div>
+          <div class="topbar-actions">
+            <span class="document-status"><span class="status-dot" aria-hidden="true"></span>Método · v0.6</span>
+          </div>
+        </header>
+
+        <section class="page-heading framework-heading">
+          <div>
+            <p class="eyebrow">Inteligência comercial</p>
+            <h1 id="page-title">POWER Framework <span>v0.6</span></h1>
+            <p class="framework-heading-meta">Metodologia de priorização comercial baseada em evidências do histórico de vendas.</p>
+          </div>
+        </section>
+
+        <div class="view-bar framework-tabs">
+          <nav aria-label="Dimensões POWER">
+            <a class="is-active" href="#power-priority" data-dimension="pp" aria-current="location"><b>PP</b>POWER Priority</a>
+            <a href="#propensity" data-dimension="p"><b>P</b>Propensity</a>
+            <a href="#opportunity-value" data-dimension="o"><b>O</b>Opportunity Value</a>
+            <a href="#warmth" data-dimension="w"><b>W</b>Warmth</a>
+            <a href="#execution-fit" data-dimension="e"><b>E</b>Execution Fit</a>
+            <a href="#recommendation" data-dimension="r"><b>R</b>Recommendation</a>
+          </nav>
+        </div>
+
+        <section class="framework-workspace" id="conteudo" tabindex="-1">
+          <div class="framework-content">
+        <section class="hero" aria-labelledby="framework-overview-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Inteligência comercial</p>
+            <p class="hero-thesis">Uma régua explicável para decidir onde o vendedor deve agir agora.</p>
+          </div>
+
+          <h2 class="hero-title" id="framework-overview-title" aria-label="POWER">
+            <span aria-hidden="true">P</span><span aria-hidden="true">O</span><span aria-hidden="true">W</span><span aria-hidden="true">E</span><span aria-hidden="true">R</span>
+          </h2>
+
+          <p class="hero-intro">
+            POWER organiza cinco sinais: histórico, valor, momento comercial, fit de execução
+            e próxima ação.
+          </p>
+
+          <nav class="power-ribbon" aria-label="Visão geral das dimensões POWER">
+            <a href="#propensity" data-pillar="p">
+              <span class="ribbon-index">01</span><strong>P</strong>
+              <span class="ribbon-copy"><b>Propensity</b><small>O que o histórico indica.</small></span>
+            </a>
+            <a href="#opportunity-value" data-pillar="o">
+              <span class="ribbon-index">02</span><strong>O</strong>
+              <span class="ribbon-copy"><b>Opportunity Value</b><small>Quanto valor está em jogo.</small></span>
+            </a>
+            <a href="#warmth" data-pillar="w">
+              <span class="ribbon-index">03</span><strong>W</strong>
+              <span class="ribbon-copy"><b>Warmth</b><small>Há quanto tempo está em Engaging.</small></span>
+            </a>
+            <a href="#execution-fit" data-pillar="e">
+              <span class="ribbon-index">04</span><strong>E</strong>
+              <span class="ribbon-copy"><b>Execution Fit</b><small>Quão preparado está o vendedor.</small></span>
+            </a>
+            <a href="#recommendation" data-pillar="r">
+              <span class="ribbon-index">05</span><strong>R</strong>
+              <span class="ribbon-copy"><b>Recommendation</b><small>Qual deve ser a próxima ação.</small></span>
+            </a>
+          </nav>
+
+          <div class="hero-footer hero-footer-compact">
+            <a class="hero-scroll-cue" href="#power-priority">
+              <span>Entenda como o método decide</span>
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-down"/></svg>
+            </a>
+          </div>
+        </section>
+
+        <section class="content-section priority-section" id="power-priority">
+          <p class="section-kicker">PP · Prioridade final</p>
+          <h2>POWER Priority.</h2>
+          <p class="lead">
+            O PP é a nota usada para ordenar o pipeline. Ele combina P, O, W e E em uma escala
+            de 0 a 100. R não entra no cálculo: ele transforma os resultados em orientação.
+          </p>
+
+          <div class="lens-grid" aria-label="Leitura POWER e fatores do POWER Priority">
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">1</span>
+              <span class="lens-tag">12/25</span>
+              <h3>P · Propensity</h3>
+              <p>Taxa histórica de vitória em oportunidades comparáveis.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">2</span>
+              <span class="lens-tag">3/25</span>
+              <h3>O · Opportunity Value</h3>
+              <p>Valor do produto comparado ao maior ticket do catálogo.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">3</span>
+              <span class="lens-tag">4/25</span>
+              <h3>W · Warmth</h3>
+              <p>Idade da oportunidade comparada aos ciclos históricos.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">4</span>
+              <span class="lens-tag">6/25</span>
+              <h3>E · Execution Fit</h3>
+              <p>Histórico do vendedor com produto, setor e ticket semelhantes.</p>
+            </article>
+          </div>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Equação do POWER Priority</h3>
+              <small>Influência P &gt; E &gt; W &gt; O</small>
+            </header>
+            <div class="equation-wrap" aria-label="POWER Priority é igual a doze P mais três O mais quatro W mais seis E, dividido por vinte e cinco">
+              <div class="equation">
+                <span>PP</span>
+                <span>=</span>
+                <span class="frac">
+                  <span>12P + 3O + 4W + 6E</span>
+                  <span>25</span>
+                </span>
+              </div>
+            </div>
+            <div class="legend">
+              <div class="legend-item">
+                <span class="legend-symbol">12P</span>
+                <p><strong>Propensity · 48%</strong>Principal sinal histórico de conversão.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">3O</span>
+                <p><strong>Opportunity Value · 12%</strong>Representa o impacto econômico potencial.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">4W</span>
+                <p><strong>Warmth · 16%</strong>Representa o frescor temporal da oportunidade.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">6E</span>
+                <p><strong>Execution Fit · 24%</strong>Representa a experiência histórica do vendedor.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático · FZWU2I30</span>
+              <div>
+                <p class="calculation">(12 × 64,85 + 3 × 20,48 + 4 × 53,88 + 6 × 64,50) ÷ 25 = 57,69</p>
+                <small>The New York Inquirer · GTX Plus Pro · P 64,85 · O 20,48 · W 53,88 · E 64,50.</small>
+              </div>
+            </div>
+          </article>
+
+          <p class="plain-language">
+            <strong>Origem dos pesos:</strong>
+            <span>
+              Os pesos refletem a prioridade P &gt; E &gt; W &gt; O. O inverso das posições gera os
+              fatores 12, 6, 4 e 3, cuja soma forma o denominador 25. São regras de negócio,
+              não coeficientes aprendidos.
+            </span>
+          </p>
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>PP 57,69 é uma nota relativa de prioridade, não 57,69% de chance de vitória. No pipeline, cada etapa é ordenada do maior PP para o menor; P ou E indisponível resulta em PP indisponível no fim da etapa, nunca zero.</span>
+          </p>
+        </section>
+
+        <div class="framework-chapter" data-chapter="p" aria-labelledby="propensity-title">
+        <section class="dimension-chapter" id="propensity" data-steps="6 etapas">
+          <div class="dimension-letter" aria-hidden="true">P</div>
+          <div>
+            <p class="section-kicker">Primeira dimensão · evidência histórica</p>
+            <h2 id="propensity-title">Propensity</h2>
+            <p>
+              Com que frequência oportunidades comparáveis foram ganhas e quanta evidência
+              sustenta essa leitura?
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="perspectivas">
+          <p class="section-kicker">P1 · Conceito</p>
+          <h2>Quatro perspectivas.</h2>
+          <p class="lead">
+            O cálculo usa apenas oportunidades encerradas como <strong>Won</strong> ou
+            <strong>Lost</strong>. Cada perspectiva produz uma taxa e informa quantos negócios
+            sustentam essa leitura.
+          </p>
+
+          <div class="lens-grid">
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">1</span>
+              <span class="lens-tag">S</span>
+              <h3>Mesmo setor</h3>
+              <p>Como oportunidades de empresas do mesmo segmento costumam converter.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">2</span>
+              <span class="lens-tag">PR</span>
+              <h3>Mesmo produto</h3>
+              <p>Como o produto da oportunidade performou no histórico fechado.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">3</span>
+              <span class="lens-tag">TK</span>
+              <h3>Mesmo ticket</h3>
+              <p>Como negócios dentro de uma faixa de valor semelhante converteram.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">4</span>
+              <span class="lens-tag">M</span>
+              <h3>Match completo</h3>
+              <p>A interseção entre setor, produto e faixa de ticket.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="content-section" id="taxa">
+          <p class="section-kicker">P2 · Taxa de vitória</p>
+          <h2>Taxa de vitória.</h2>
+          <p class="lead">
+            Para cada perspectiva, dividimos a quantidade de negócios ganhos pelo total de
+            negócios encerrados daquele grupo.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Taxa histórica</h3>
+              <small>Aplicado a cada perspectiva x</small>
+            </header>
+            <div class="equation-wrap" aria-label="T x é igual a W x dividido por W x mais L x">
+              <div class="equation">
+                <span class="variable">T<sub>x</sub></span>
+                <span>=</span>
+                <span class="frac">
+                  <span class="variable won">W<sub>x</sub></span>
+                  <span>
+                    <span class="variable won">W<sub>x</sub></span>
+                    +
+                    <span class="variable lost">L<sub>x</sub></span>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">T<sub>x</sub></span>
+                <p><strong>Taxa de vitória</strong>Resultado histórico da perspectiva analisada.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--won)">W<sub>x</sub></span>
+                <p><strong>Won</strong>Quantidade de oportunidades ganhas. Nesta fórmula, W não significa Warmth.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--lost)">L<sub>x</sub></span>
+                <p><strong>Lost</strong>Quantidade de oportunidades perdidas.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">x</span>
+                <p><strong>Perspectiva</strong>Setor, produto, ticket ou match completo.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">T<sub>PR</sub> = 479 ÷ (479 + 266) = 0,6430 = 64,30%</p>
+                <small>Para FZWU2I30, 479 das 745 oportunidades encerradas com o mesmo produto foram ganhas.</small>
+              </div>
+            </div>
+          </article>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>64,30% significa que aproximadamente 64 de cada 100 oportunidades encerradas daquele produto foram ganhas.</span>
+          </p>
+        </section>
+
+        <section class="content-section" id="forca">
+          <p class="section-kicker">P3 · Força da evidência</p>
+          <h2>Força do histórico.</h2>
+          <p class="lead">
+            Uma taxa baseada em três negócios não pode ter a mesma influência de outra baseada
+            em cem. A força cresce proporcionalmente até alcançar o limite de segurança.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Força de cada taxa</h3>
+              <small>Parâmetro K = 30 casos</small>
+            </header>
+            <div
+              class="equation-wrap"
+              aria-label="C x é igual a N x dividido por K quando N x é menor que K; caso contrário, C x é igual a um"
+            >
+              <div class="equation">
+                <span class="variable">C<sub>x</sub></span>
+                <span>=</span>
+                <span class="piecewise">
+                  <span class="brace" aria-hidden="true">{</span>
+                  <span class="cases">
+                    <span class="case-row">
+                      <span class="frac">
+                        <span>N<sub>x</sub></span>
+                        <span>K</span>
+                      </span>
+                      <span>quando N<sub>x</sub> &lt; K</span>
+                    </span>
+                    <span class="case-row">
+                      <span>1</span>
+                      <span>quando N<sub>x</sub> ≥ K</span>
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">C<sub>x</sub></span>
+                <p><strong>Força</strong>Confiança do histórico, de 0 a 1.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">N<sub>x</sub></span>
+                <p><strong>Número de casos</strong>Total de Won mais Lost daquela perspectiva.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">K</span>
+                <p><strong>Limite de segurança</strong>Quantidade para considerar o histórico forte.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">1</span>
+                <p><strong>Força máxima</strong>Equivale a 100% da influência permitida.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">C<sub>PR</sub> = 1, pois N<sub>PR</sub> = 745 ≥ 30</p>
+                <small>O histórico do mesmo produto de FZWU2I30 alcança a força máxima.</small>
+              </div>
+            </div>
+          </article>
+
+          <div class="strength-scale" aria-label="Exemplos da força do histórico">
+            <div class="strength-step" style="--fill: 0.12; --height: 0%">
+              <strong>0%</strong><span>0 casos</span>
+            </div>
+            <div class="strength-step" style="--fill: 0.18; --height: 10%">
+              <strong>10%</strong><span>3 casos</span>
+            </div>
+            <div class="strength-step" style="--fill: 0.34; --height: 50%">
+              <strong>50%</strong><span>15 casos</span>
+            </div>
+            <div class="strength-step" style="--fill: 0.5; --height: 80%">
+              <strong>80%</strong><span>24 casos</span>
+            </div>
+            <div class="strength-step" style="--fill: 0.72; --height: 100%">
+              <strong>100%</strong><span>30+ casos</span>
+            </div>
+          </div>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              15 casos representam metade da força máxima; 30 casos ou mais representam força 1.
+              K = 30 é um parâmetro explícito e configurável deste protótipo.
+            </span>
+          </p>
+        </section>
+
+        <section class="content-section" id="score">
+          <p class="section-kicker">P4 · Consolidação</p>
+          <h2>Propensity Score.</h2>
+          <p class="lead">
+            A taxa de cada perspectiva é multiplicada pela força do seu histórico. Depois,
+            dividimos a soma desses resultados pela soma das forças disponíveis.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Score consolidado</h3>
+              <small>Resultado de 0 a 100</small>
+            </header>
+            <div class="equation-wrap" aria-label="Fórmula do Propensity Score">
+              <div class="equation score-equation">
+                <span class="variable">PS</span>
+                <span>=</span>
+                <span>100 ×</span>
+                <span class="frac">
+                  <span>
+                    (T<sub>S</sub>C<sub>S</sub>) + (T<sub>PR</sub>C<sub>PR</sub>) +
+                    (T<sub>TK</sub>C<sub>TK</sub>) + (T<sub>M</sub>C<sub>M</sub>)
+                  </span>
+                  <span>
+                    C<sub>S</sub> + C<sub>PR</sub> + C<sub>TK</sub> + C<sub>M</sub>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">PS</span>
+                <p><strong>Propensity Score</strong>Índice final de 0 a 100.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">S</span>
+                <p><strong>Setor</strong>Histórico do mesmo segmento.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">PR</span>
+                <p><strong>Produto</strong>Histórico do mesmo produto.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">TK</span>
+                <p><strong>Ticket</strong>Histórico da mesma faixa de valor.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">M</span>
+                <p><strong>Match</strong>Setor, produto e ticket combinados.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">T · C</span>
+                <p><strong>Taxa × força</strong>A evidência ponderada pelo tamanho do histórico.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">PS = 100 × [(0,6232×1) + (0,6430×1) + (0,6385×1) + (0,6893×1)] ÷ 4 = 64,85</p>
+                <small>Para FZWU2I30, as quatro perspectivas possuem força máxima.</small>
+              </div>
+            </div>
+          </article>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>Quanto maior o resultado, mais favorável é o histórico dos grupos comparáveis. O valor ainda é um índice, não uma probabilidade calibrada.</span>
+          </p>
+        </section>
+
+        <section class="content-section" id="exemplo">
+          <p class="section-kicker">P5 · Exemplo completo</p>
+          <h2>Do histórico ao Propensity.</h2>
+          <p class="lead">
+            O exemplo usa a oportunidade FZWU2I30, da The New York Inquirer, para conectar as
+            quatro perspectivas ao resultado final.
+          </p>
+
+          <div class="example-table-wrap" data-label="Exemplo prático completo · FZWU2I30">
+            <table>
+              <thead>
+                <tr>
+                  <th>Perspectiva</th>
+                  <th>Taxa de vitória</th>
+                  <th>Casos</th>
+                  <th>Força</th>
+                  <th>Taxa × força</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Mesmo setor</td>
+                  <td>62,32%</td>
+                  <td>950</td>
+                  <td>1,0</td>
+                  <td>62,32</td>
+                </tr>
+                <tr>
+                  <td>Mesmo produto</td>
+                  <td>64,30%</td>
+                  <td>745</td>
+                  <td>1,0</td>
+                  <td>64,30</td>
+                </tr>
+                <tr>
+                  <td>Mesma faixa de ticket</td>
+                  <td>63,85%</td>
+                  <td>1.892</td>
+                  <td>1,0</td>
+                  <td>63,85</td>
+                </tr>
+                <tr>
+                  <td>Match completo</td>
+                  <td>68,93%</td>
+                  <td>103</td>
+                  <td>1,0</td>
+                  <td>68,93</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="result-card">
+            <div>
+              <p>(62,32 + 64,30 + 63,85 + 68,93) ÷ 4</p>
+              <strong><span class="score-pill">64,85</span> / 100</strong>
+            </div>
+            <small>Resultado calculado para FZWU2I30 no snapshot do dataset.</small>
+          </div>
+
+        </section>
+
+        <section class="content-section" id="integridade">
+          <p class="section-kicker">P6 · Limitações</p>
+          <h2>O que o Propensity afirma e o que não afirma.</h2>
+          <p class="lead">
+            Nesta versão, o resultado é um <strong>índice de propensão</strong>. Só poderá ser
+            chamado de probabilidade depois de validado e calibrado em oportunidades que não
+            participaram do cálculo de suas próprias taxas.
+          </p>
+
+          <div class="guardrail-grid">
+            <article class="guardrail">
+              <p>Somente oportunidades <strong>Won</strong> e <strong>Lost</strong> entram no histórico.</p>
+            </article>
+            <article class="guardrail">
+              <p>Uma oportunidade não pode ajudar a calcular as taxas usadas para prever seu próprio resultado.</p>
+            </article>
+            <article class="guardrail">
+              <p>Na validação, cada cálculo usa apenas informações disponíveis antes da oportunidade avaliada.</p>
+            </article>
+            <article class="guardrail">
+              <p><code>close_date</code> e <code>close_value</code> não são informações conhecidas de uma oportunidade aberta.</p>
+            </article>
+            <article class="guardrail">
+              <p>Toda taxa deve aparecer acompanhada da quantidade de negócios que a sustenta.</p>
+            </article>
+          </div>
+
+          <aside class="pending">
+            <h3>Hipóteses explícitas do protótipo</h3>
+            <ul>
+              <li>K = 30 define quando o histórico alcança força máxima;</li>
+              <li>as faixas de ticket são derivadas do catálogo analisado;</li>
+              <li>produto e ticket podem carregar informação semelhante;</li>
+              <li>a capacidade preditiva precisa ser validada fora da amostra antes de o índice ser chamado de probabilidade.</li>
+            </ul>
+          </aside>
+        </section>
+
+        </div>
+
+        <div class="framework-chapter" data-chapter="o" aria-labelledby="opportunity-value-title">
+        <section class="dimension-chapter" id="opportunity-value" data-steps="5 etapas">
+          <div class="dimension-letter" aria-hidden="true">O</div>
+          <div>
+            <p class="section-kicker">Segunda dimensão · valor potencial</p>
+            <h2 id="opportunity-value-title">Opportunity Value</h2>
+            <p>
+              Quanto esta oportunidade pode representar economicamente para o negócio se for
+              ganha?
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="opportunity-value-data">
+          <p class="section-kicker">O1 · Valor disponível antes do fechamento</p>
+          <h2>Valor potencial.</h2>
+          <p class="lead">
+            O componente usa o preço de catálogo do produto, porque ele está disponível nas
+            oportunidades abertas e representa o ticket potencial conhecido antes do resultado.
+          </p>
+
+          <div class="dataset-note">
+            <span class="badge">Evidência do dataset</span>
+            <p>
+              Nas vendas ganhas, a mediana do valor realizado fica entre 96,8% e 100,4% do
+              preço de catálogo, dependendo do produto. Isso torna o preço uma aproximação
+              adequada do valor potencial nesta base.
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="opportunity-value-score">
+          <p class="section-kicker">O2 · Normalização econômica</p>
+          <h2>Opportunity Value Score.</h2>
+          <p class="lead">
+            O valor da oportunidade é comparado ao maior ticket disponível no catálogo. Assim,
+            diferenças reais de impacto financeiro permanecem visíveis no score.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Valor relativo</h3>
+              <small>Maior ticket = US$ 26.768</small>
+            </header>
+            <div class="equation-wrap" aria-label="Opportunity Value é igual a cem vezes o valor da oportunidade dividido pelo maior valor do catálogo">
+              <div class="equation">
+                <span class="variable">OV</span>
+                <span>=</span>
+                <span>100 ×</span>
+                <span class="frac">
+                  <span class="variable won">V<sub>i</sub></span>
+                  <span>V<sub>max</sub></span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">OV</span>
+                <p><strong>Opportunity Value</strong>Score econômico final, de 0 a 100.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--won)">V<sub>i</sub></span>
+                <p><strong>Valor da oportunidade</strong>Preço de catálogo do produto atual.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">V<sub>max</sub></span>
+                <p><strong>Maior valor</strong>Maior preço existente no catálogo analisado.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">100</span>
+                <p><strong>Escala</strong>Converte a proporção para um score de 0 a 100.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">OV<sub>GTX Plus Pro</sub> = 100 × (US$ 5.482 ÷ US$ 26.768) = 20,48</p>
+                <small>FZWU2I30 possui o produto GTX Plus Pro, que representa 20,48% do maior ticket do catálogo.</small>
+              </div>
+            </div>
+          </article>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              O 20,48 significa que o ticket de FZWU2I30 equivale a 20,48% do maior ticket do
+              catálogo. Não significa 20,48% de chance de venda.
+            </span>
+          </p>
+        </section>
+
+        <section class="content-section" id="opportunity-value-products">
+          <p class="section-kicker">O3 · Aplicação no catálogo</p>
+          <h2>Aplicação no catálogo atual.</h2>
+          <p class="lead">
+            Como o score preserva a proporção entre os preços, produtos muito mais caros recebem
+            notas proporcionalmente maiores. O GTK 500 vale quase cinco vezes o segundo maior ticket.
+          </p>
+
+          <div class="example-table-wrap" data-label="Catálogo atual · valores observados">
+            <table>
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Preço de catálogo</th>
+                  <th>OV Score</th>
+                  <th>Tier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>MG Special</td><td>US$ 55</td><td>0,2</td><td>Bronze</td></tr>
+                <tr><td>GTX Basic</td><td>US$ 550</td><td>2,1</td><td>Bronze</td></tr>
+                <tr><td>GTX Plus Basic</td><td>US$ 1.096</td><td>4,1</td><td>Prata</td></tr>
+                <tr><td>MG Advanced</td><td>US$ 3.393</td><td>12,7</td><td>Prata</td></tr>
+                <tr><td>GTX Pro</td><td>US$ 4.821</td><td>18,0</td><td>Ouro</td></tr>
+                <tr><td>GTX Plus Pro</td><td>US$ 5.482</td><td>20,5</td><td>Ouro</td></tr>
+                <tr><td>GTK 500</td><td>US$ 26.768</td><td>100,0</td><td>Diamante</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tier-grid" aria-label="Classificação comercial por valor">
+            <article class="tier diamond">
+              <div class="tier-heading">
+                <img class="tier-badge" src="./assets/power-ranks/diamond.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                <span class="tier-level">Diamante</span>
+              </div>
+              <strong>Grupo 4 de 4 · topo do catálogo</strong>
+              <small>GTK 500 · maior faixa relativa de ticket.</small>
+            </article>
+            <article class="tier gold">
+              <div class="tier-heading">
+                <img class="tier-badge" src="./assets/power-ranks/gold.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                <span class="tier-level">Ouro</span>
+              </div>
+              <strong>Grupo 3 de 4 · valor alto</strong>
+              <small>GTX Pro e GTX Plus Pro.</small>
+            </article>
+            <article class="tier silver">
+              <div class="tier-heading">
+                <img class="tier-badge" src="./assets/power-ranks/silver.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                <span class="tier-level">Prata</span>
+              </div>
+              <strong>Grupo 2 de 4 · valor intermediário</strong>
+              <small>GTX Plus Basic e MG Advanced.</small>
+            </article>
+            <article class="tier bronze">
+              <div class="tier-heading">
+                <img class="tier-badge" src="./assets/power-ranks/bronze.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                <span class="tier-level">Bronze</span>
+              </div>
+              <strong>Grupo 1 de 4 · entrada do catálogo</strong>
+              <small>MG Special e GTX Basic.</small>
+            </article>
+          </div>
+
+        </section>
+
+        <section class="content-section" id="opportunity-value-tiers">
+          <p class="section-kicker">O4 · Regra de classificação</p>
+          <h2>Tiers relativos ao catálogo.</h2>
+          <p class="lead">
+            Os tiers são derivados da posição dos tickets dentro do catálogo da empresa. Assim,
+            a classificação se adapta a operações com faixas de preço diferentes.
+          </p>
+
+          <div class="dataset-note">
+            <span class="badge">Regra automática de tier · v0.6</span>
+            <p>
+              Os tickets distintos são ordenados do menor para o maior e distribuídos em quatro
+              grupos de tamanho tão equilibrado quanto possível. Bronze, Prata, Ouro e Diamante
+              representam a posição econômica do produto dentro do catálogo analisado; nunca
+              limites universais em dólares. Produtos com o mesmo preço permanecem no mesmo tier.
+            </p>
+          </div>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Tier relativo ao catálogo</h3>
+              <small>Adaptado a cada catálogo</small>
+            </header>
+            <div class="equation-wrap" aria-label="Tier é igual a um mais a parte inteira de quatro vezes a posição menos um, dividida pela quantidade de tickets distintos">
+              <div class="equation">
+                <span class="variable">Tier</span>
+                <span>=</span>
+                <span>1 + piso</span>
+                <span class="paren">(</span>
+                <span class="frac">
+                  <span>4 × (posição - 1)</span>
+                  <span>tickets distintos</span>
+                </span>
+                <span class="paren">)</span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula de tier">
+              <div class="legend-item">
+                <span class="legend-symbol">posição</span>
+                <p><strong>Ordem do ticket</strong>1 para o menor preço, seguindo até o maior.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">4</span>
+                <p><strong>Quantidade de tiers</strong>Bronze, Prata, Ouro e Diamante.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">piso</span>
+                <p><strong>Parte inteira</strong>Mantém cada produto em um dos quatro grupos.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">1-4</span>
+                <p><strong>Resultado</strong>1 = Bronze, 2 = Prata, 3 = Ouro e 4 = Diamante.</p>
+              </div>
+            </div>
+          </article>
+
+          <div class="example-table-wrap" data-label="Exemplo prático · 7 preços">
+            <table aria-label="Aplicação da fórmula de tier ao catálogo atual">
+              <thead>
+                <tr>
+                  <th>Posição</th>
+                  <th>Ticket</th>
+                  <th>Cálculo</th>
+                  <th>Tier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>r = 1</td><td>US$ 55</td><td class="tier-equation">1 + piso(4×0÷7) = 1</td><td>Bronze</td></tr>
+                <tr><td>r = 2</td><td>US$ 550</td><td class="tier-equation">1 + piso(4×1÷7) = 1</td><td>Bronze</td></tr>
+                <tr><td>r = 3</td><td>US$ 1.096</td><td class="tier-equation">1 + piso(4×2÷7) = 2</td><td>Prata</td></tr>
+                <tr><td>r = 4</td><td>US$ 3.393</td><td class="tier-equation">1 + piso(4×3÷7) = 2</td><td>Prata</td></tr>
+                <tr><td>r = 5</td><td>US$ 4.821</td><td class="tier-equation">1 + piso(4×4÷7) = 3</td><td>Ouro</td></tr>
+                <tr><td>r = 6</td><td>US$ 5.482</td><td class="tier-equation">1 + piso(4×5÷7) = 3</td><td>Ouro</td></tr>
+                <tr><td>r = 7</td><td>US$ 26.768</td><td class="tier-equation">1 + piso(4×6÷7) = 4</td><td>Diamante</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              em um catálogo de US$ 50, US$ 100, US$ 200, US$ 300 e US$ 400, os próprios
+              valores seriam redistribuídos entre os quatro tiers. Os cortes seriam US$ 150,
+              US$ 250 e US$ 350; nenhum produto dependeria de alcançar US$ 10.000.
+            </span>
+          </p>
+
+        </section>
+
+        <section class="content-section" id="opportunity-value-boundaries">
+          <p class="section-kicker">O5 · Fronteiras dos tiers</p>
+          <h2>Cortes derivados dos próprios tickets.</h2>
+          <p class="lead">
+            Depois de distribuir os produtos, cada fronteira é posicionada no ponto médio entre
+            o maior ticket do tier inferior e o menor ticket do tier seguinte.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Fronteira entre tiers</h3>
+              <small>Após a divisão do catálogo</small>
+            </header>
+            <div class="equation-wrap" aria-label="Corte k é igual à média entre o maior valor do tier k e o menor valor do tier seguinte">
+              <div class="equation score-equation">
+                <span class="variable">C<sub>k</sub></span>
+                <span>=</span>
+                <span class="frac">
+                  <span>V<sub>máx,k</sub> + V<sub>mín,k+1</sub></span>
+                  <span>2</span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula de fronteira">
+              <div class="legend-item">
+                <span class="legend-symbol">C<sub>k</sub></span>
+                <p><strong>Corte do tier</strong>Fronteira monetária depois do tier k.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">V<sub>máx,k</sub></span>
+                <p><strong>Maior valor inferior</strong>Ticket mais alto ainda pertencente ao tier k.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">V<sub>mín,k+1</sub></span>
+                <p><strong>Menor valor superior</strong>Primeiro ticket pertencente ao tier seguinte.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">2</span>
+                <p><strong>Ponto médio</strong>Posiciona o corte exatamente entre os dois tickets.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">C<sub>1</sub> = (US$ 550 + US$ 1.096) ÷ 2 = US$ 823</p>
+                <small>O primeiro corte fica entre o maior ticket Bronze e o menor ticket Prata.</small>
+              </div>
+            </div>
+          </article>
+
+          <div class="example-table-wrap" data-label="Fronteiras resultantes · catálogo atual">
+            <table>
+              <thead>
+                <tr>
+                  <th>Corte derivado</th>
+                  <th>Cálculo no catálogo atual</th>
+                  <th>Fronteira resultante</th>
+                  <th>Tier acima do corte</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1º corte</td><td>(US$ 550 + US$ 1.096) ÷ 2</td><td>US$ 823</td><td>Prata</td></tr>
+                <tr><td>2º corte</td><td>(US$ 3.393 + US$ 4.821) ÷ 2</td><td>US$ 4.107</td><td>Ouro</td></tr>
+                <tr><td>3º corte</td><td>(US$ 5.482 + US$ 26.768) ÷ 2</td><td>US$ 16.125</td><td>Diamante</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              Bronze até US$ 823; Prata acima de US$ 823 até US$ 4.107; Ouro acima de
+              US$ 4.107 até US$ 16.125; Diamante acima de US$ 16.125. Esses números não são
+              parâmetros fixos: eles são recalculados quando o catálogo muda.
+            </span>
+          </p>
+
+          <div class="separation-note">
+            <div>
+              <strong>O mede impacto econômico</strong>
+              <span>Não estima chance de vitória.</span>
+            </div>
+            <span class="operator" aria-hidden="true">→</span>
+            <div>
+              <strong>O entra no POWER Priority</strong>
+              <span>Contribui com 12% da nota final do protótipo.</span>
+            </div>
+          </div>
+        </section>
+
+        </div>
+
+        <div class="framework-chapter" data-chapter="w" aria-labelledby="warmth-title">
+        <section class="dimension-chapter" id="warmth" data-steps="3 etapas">
+          <div class="dimension-letter" aria-hidden="true">W</div>
+          <div>
+            <p class="section-kicker">Terceira dimensão · idade relativa</p>
+            <h2 id="warmth-title">Warmth</h2>
+            <p>
+              Há quanto tempo esta oportunidade está em andamento e quão comum é um negócio
+              histórico continuar aberto por esse período?
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="warmth-basis">
+          <p class="section-kicker">W1 · Régua histórica</p>
+          <h2>Frescor do pipeline.</h2>
+          <p class="lead">
+            O dataset não possui chamadas, reuniões ou data da última atividade. Por isso,
+            Warmth mede o tempo desde a entrada em <code>Engaging</code>, e não a intenção real
+            do comprador. Para oportunidades abertas, a idade é calculada até o snapshot de
+            31/12/2017.
+          </p>
+
+          <div class="dataset-note">
+            <span class="badge">Base histórica</span>
+            <p>
+              Entre os 6.711 negócios fechados, o ciclo médio foi de 48 dias. Os quartis foram
+              8, 45 e 85 dias: eles formam as fronteiras naturais da escala de temperatura.
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="warmth-score">
+          <p class="section-kicker">W2 · Sobrevivência do ciclo</p>
+          <h2>Warmth Score.</h2>
+          <p class="lead">
+            O score representa o percentual dos ciclos históricos que duraram pelo menos a
+            idade atual da oportunidade. Quanto mais incomum permanecer aberta por aquele tempo,
+            menor a temperatura.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Temperatura empírica</h3>
+              <small>Distribuição histórica</small>
+            </header>
+            <div class="equation-wrap" aria-label="Warmth Score é igual a cem vezes H A dividido por N">
+              <div class="equation">
+                <span class="variable">WS</span>
+                <span>=</span>
+                <span>100 ×</span>
+                <span class="frac">
+                  <span class="variable won">H<sub>A</sub></span>
+                  <span>N</span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">WS</span>
+                <p><strong>Warmth Score</strong>Índice de frescor, de 0 a 100.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--won)">H<sub>A</sub></span>
+                <p><strong>Históricos comparáveis</strong>Negócios cujo ciclo durou pelo menos A dias.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">A</span>
+                <p><strong>Idade atual</strong>Dias desde a entrada da oportunidade em Engaging.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">N</span>
+                <p><strong>Histórico total</strong>Os 6.711 ciclos encerrados como Won ou Lost.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">WS<sub>A=21</sub> = 100 × (3.616 ÷ 6.711) = 53,88</p>
+                <small>FZWU2I30 tinha 21 dias no snapshot; 3.616 ciclos históricos duraram pelo menos esse período.</small>
+              </div>
+            </div>
+          </article>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              W 53,88 coloca FZWU2I30 na faixa Morna: sua idade ainda ocorre em pouco mais da
+              metade dos ciclos históricos.
+            </span>
+          </p>
+        </section>
+
+        <section class="content-section" id="warmth-scale">
+          <p class="section-kicker">W3 · Escala operacional</p>
+          <h2>Do score à temperatura.</h2>
+          <p class="lead">
+            Os rótulos acompanham a posição da oportunidade na distribuição real dos ciclos.
+            A contagem mostra a situação das 1.589 oportunidades em <code>Engaging</code> no
+            snapshot de 31/12/2017.
+          </p>
+
+          <div class="temperature-grid" aria-label="Escala de temperatura do Warmth Score">
+            <div class="temperature-row temperature-hot" style="--temperature: 100%">
+              <strong>Quente</strong>
+              <div class="temperature-bar" aria-hidden="true"></div>
+              <span>WS 75-100 · 0-8 dias</span>
+              <small>0 ativas</small>
+            </div>
+            <div class="temperature-row temperature-warm" style="--temperature: 72%">
+              <strong>Morna</strong>
+              <div class="temperature-bar" aria-hidden="true"></div>
+              <span>WS 50-74 · 9-45 dias</span>
+              <small>31 ativas</small>
+            </div>
+            <div class="temperature-row temperature-cold" style="--temperature: 44%">
+              <strong>Fria</strong>
+              <div class="temperature-bar" aria-hidden="true"></div>
+              <span>WS 25-49 · 46-85 dias</span>
+              <small>69 ativas</small>
+            </div>
+            <div class="temperature-row temperature-stagnant" style="--temperature: 18%">
+              <strong>Estagnada</strong>
+              <div class="temperature-bar" aria-hidden="true"></div>
+              <span>WS 0-24 · 86+ dias</span>
+              <small>1.489 ativas</small>
+            </div>
+          </div>
+
+          <div class="action-split">
+            <article class="action-card">
+              <span class="action-label">Prospecting · sem engage_date</span>
+              <strong>Sem contato</strong>
+              <span>Warmth não é calculado como ciclo ativo. A próxima ação é iniciar a abordagem.</span>
+            </article>
+            <article class="action-card">
+              <span class="action-label">Engaging · WS 0-24</span>
+              <strong>Estagnada</strong>
+              <span>Próxima ação: requalificar, definir avanço concreto ou encerrar.</span>
+            </article>
+          </div>
+        </section>
+
+        </div>
+
+        <div class="framework-chapter" data-chapter="e" aria-labelledby="execution-fit-title">
+        <section class="dimension-chapter" id="execution-fit" data-steps="3 etapas">
+          <div class="dimension-letter" aria-hidden="true">E</div>
+          <div>
+            <p class="section-kicker">Quarta dimensão · histórico do vendedor</p>
+            <h2 id="execution-fit-title">Execution Fit</h2>
+            <p>
+              Qual é o histórico do vendedor responsável com oportunidades de produto, setor
+              e ticket semelhantes?
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="execution-fit-criteria">
+          <p class="section-kicker">E1 · Histórico do vendedor</p>
+          <h2>Critérios usados no Execution Fit.</h2>
+          <p class="lead">
+            Cada critério observa somente quantas oportunidades semelhantes o vendedor já
+            trabalhou e quantas foram ganhas. Não existe comparação com outros vendedores.
+          </p>
+
+          <div class="lens-grid">
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">1</span>
+              <span class="lens-tag">PR</span>
+              <h3>Product Fit</h3>
+              <p>Histórico do vendedor com o mesmo produto.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">2</span>
+              <span class="lens-tag">S</span>
+              <h3>Sector Fit</h3>
+              <p>Histórico do vendedor com empresas do mesmo setor.</p>
+            </article>
+            <article class="lens">
+              <span class="lens-number" aria-hidden="true">3</span>
+              <span class="lens-tag">TK</span>
+              <h3>Ticket Fit</h3>
+              <p>Histórico em oportunidades da mesma faixa de valor.</p>
+            </article>
+          </div>
+
+          <div class="dataset-note">
+            <span class="badge">Limitação do protótipo</span>
+            <p>
+              Company Fit não entra nesta versão porque os critérios firmográficos ainda não
+              foram definidos. Quando um critério está indisponível, ele é ignorado, nunca
+              convertido em zero.
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="execution-fit-score">
+          <p class="section-kicker">E2 · Taxa por critério</p>
+          <h2>Taxa de vitória por critério.</h2>
+          <p class="lead">
+            O fit de cada critério é a taxa de vitória do próprio vendedor naquele recorte.
+            Somente oportunidades historicamente encerradas entram no cálculo.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Fit do vendedor</h3>
+              <small>Aplicado a cada critério x</small>
+            </header>
+            <div class="equation-wrap" aria-label="F x é igual a cem vezes G x dividido por A x">
+              <div class="equation">
+                <span class="variable">F<sub>x</sub></span>
+                <span>=</span>
+                <span>100 ×</span>
+                <span class="frac">
+                  <span class="variable won">G<sub>x</sub></span>
+                  <span>A<sub>x</sub></span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">F<sub>x</sub></span>
+                <p><strong>Fit do critério</strong>Taxa histórica do vendedor, de 0 a 100.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--won)">G<sub>x</sub></span>
+                <p><strong>Ganhos</strong>Quantidade de oportunidades semelhantes ganhas.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">A<sub>x</sub></span>
+                <p><strong>Atuações</strong>Total de Won mais Lost trabalhadas pelo vendedor.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">x</span>
+                <p><strong>Critério</strong>Produto, setor ou faixa de ticket.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">F<sub>PR</sub> = 100 × (21 ÷ 32) = 65,62</p>
+                <small>O vendedor de FZWU2I30 ganhou 21 das 32 oportunidades encerradas com o mesmo produto.</small>
+              </div>
+            </div>
+          </article>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              Product Fit 65,62 descreve o histórico do vendedor com aquele produto. Não é uma
+              avaliação geral de sua competência.
+            </span>
+          </p>
+        </section>
+
+        <section class="content-section" id="execution-fit-final">
+          <p class="section-kicker">E3 · Consolidação</p>
+          <h2>Consolidação dos critérios disponíveis.</h2>
+          <p class="lead">
+            O Execution Fit final é a média simples dos critérios calculáveis. Critérios sem
+            informação aparecem como indisponíveis e não são transformados em zero.
+          </p>
+
+          <article class="formula-card">
+            <header class="formula-heading">
+              <h3>Execution Fit final</h3>
+              <small>Média simples</small>
+            </header>
+            <div class="equation-wrap" aria-label="Execution Fit é igual à soma dos fits dividida pela quantidade de critérios disponíveis">
+              <div class="equation score-equation">
+                <span class="variable">EF</span>
+                <span>=</span>
+                <span class="frac">
+                  <span>F<sub>PR</sub> + F<sub>S</sub> + F<sub>TK</sub></span>
+                  <span>Q</span>
+                </span>
+              </div>
+            </div>
+            <div class="legend" aria-label="Legenda da fórmula">
+              <div class="legend-item">
+                <span class="legend-symbol" style="color: var(--blue)">EF</span>
+                <p><strong>Execution Fit</strong>Score final de experiência, de 0 a 100.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">F<sub>PR</sub></span>
+                <p><strong>Product Fit</strong>Taxa histórica no mesmo produto.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">F<sub>S</sub></span>
+                <p><strong>Sector Fit</strong>Taxa histórica no mesmo setor.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">F<sub>TK</sub></span>
+                <p><strong>Ticket Fit</strong>Taxa histórica na mesma faixa de valor.</p>
+              </div>
+              <div class="legend-item">
+                <span class="legend-symbol">Q</span>
+                <p><strong>Critérios disponíveis</strong>Quantidade de fits que puderam ser calculados.</p>
+              </div>
+            </div>
+            <div class="formula-example">
+              <span class="formula-example-label">Exemplo prático</span>
+              <div>
+                <p class="calculation">EF = (65,62 + 61,54 + 66,34) ÷ 3 = 64,50</p>
+                <small>Os três critérios disponíveis de FZWU2I30 entram com a mesma influência.</small>
+              </div>
+            </div>
+          </article>
+
+          <div class="example-table-wrap" data-label="Exemplo prático completo · FZWU2I30">
+            <table>
+              <thead>
+                <tr>
+                  <th>Critério</th>
+                  <th>Ganhos</th>
+                  <th>Atuações</th>
+                  <th>Fit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Produto</td><td>21</td><td>32</td><td>65,62</td></tr>
+                <tr><td>Setor</td><td>16</td><td>26</td><td>61,54</td></tr>
+                <tr><td>Ticket</td><td>67</td><td>101</td><td>66,34</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="result-card">
+            <div>
+              <p>(65,62 + 61,54 + 66,34) ÷ 3</p>
+              <strong><span class="score-pill">64,50</span> / 100</strong>
+            </div>
+            <small>As quantidades permanecem visíveis para contextualizar cada taxa.</small>
+          </div>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              EF 64,50 indica experiência histórica favorável nos três recortes disponíveis.
+              O resultado descreve aderência ao perfil da oportunidade, não competência geral do vendedor.
+            </span>
+          </p>
+
+          <p class="plain-language">
+            <strong>Limitação:</strong>
+            <span>
+              produto e ticket são correlacionados neste dataset. Nesta versão, ambos entram na
+              média simples; essa redundância deve ser medida antes de uma aplicação em produção.
+            </span>
+          </p>
+        </section>
+
+        </div>
+
+        <div class="framework-chapter" data-chapter="r" aria-labelledby="recommendation-title">
+        <section class="dimension-chapter" id="recommendation" data-steps="3 etapas">
+          <div class="dimension-letter" aria-hidden="true">R</div>
+          <div>
+            <p class="section-kicker">Quinta dimensão · camada de decisão</p>
+            <h2 id="recommendation-title">Recommendation</h2>
+            <p>
+              Com base no POWER Profile, qual é a melhor próxima ação para o vendedor?
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section" id="recommendation-design">
+          <p class="section-kicker">R1 · Funcionamento</p>
+          <h2>Uma ordem curta, não outro score.</h2>
+          <p class="lead">
+            Recommendation não usa uma fórmula numérica. Um prompt estruturado recebe os
+            resultados de P, O, W e E, combina essas evidências com o contexto disponível da
+            oportunidade e devolve exatamente duas informações: uma ação e uma frase imperativa.
+          </p>
+
+          <div class="recommendation-flow" aria-label="Fluxo da recomendação">
+            <article class="flow-node">
+              <span class="flow-label">01 · Entradas</span>
+              <strong>POWER Profile + contexto</strong>
+              <div class="signal-list" aria-label="Pilares de entrada">
+                <span>P · Propensity</span>
+                <span>O · Opportunity Value</span>
+                <span>W · Warmth</span>
+                <span>E · Execution Fit</span>
+              </div>
+            </article>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <article class="flow-node prompt-node">
+              <span class="flow-label">02 · Motor</span>
+              <strong>Prompt estruturado</strong>
+              <small>Regras, evidências, estado da oportunidade e contrato fixo de saída.</small>
+            </article>
+            <span class="flow-arrow" aria-hidden="true">→</span>
+            <article class="flow-node output-node">
+              <span class="flow-label">03 · Saída</span>
+              <strong>Uma palavra + uma frase</strong>
+              <small>A ação que deve ser executada agora e a principal evidência que a sustenta.</small>
+            </article>
+          </div>
+
+          <div class="power-profile" aria-label="Exemplo ilustrativo de apresentação do POWER Profile">
+            <div class="profile-header">
+              <span>Exemplo prático · FZWU2I30</span>
+              <span>PP 57,69 · texto de R ilustrativo</span>
+            </div>
+            <div class="profile-metrics">
+              <article class="profile-metric">
+                <span>P</span><strong>64,85</strong><small>Propensity</small>
+              </article>
+              <article class="profile-metric">
+                <span>O</span><strong>20,48</strong><small>Ouro</small>
+              </article>
+              <article class="profile-metric">
+                <span>W</span><strong>53,88</strong><small>Morna</small>
+              </article>
+              <article class="profile-metric">
+                <span>E</span><strong>64,50</strong><small>Execution Fit</small>
+              </article>
+            </div>
+            <article class="profile-recommendation">
+              <span class="profile-r" aria-hidden="true">R</span>
+              <div>
+                <strong>Agendar</strong>
+                <p>Agende o próximo compromisso comercial para avançar o GTX Plus Pro; propensão e fit de execução sustentam essa ação.</p>
+                <small>Exemplo ilustrativo</small>
+              </div>
+            </article>
+          </div>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>R não aumenta nem reduz o PP. Ele transforma os sinais disponíveis em uma ordem comercial curta para o vendedor executar.</span>
+          </p>
+        </section>
+
+        <section class="content-section" id="recommendation-prompt">
+          <p class="section-kicker">R2 · Prompt base</p>
+          <h2>O que o modelo recebe.</h2>
+          <p class="lead">
+            O modelo não recebe o dataset inteiro. Ele recebe somente o POWER Profile já
+            calculado, as evidências que sustentam cada métrica e os campos disponíveis da
+            oportunidade analisada.
+          </p>
+
+          <article class="prompt-card">
+            <div class="prompt-header">
+              <span>Prompt do Recommendation Engine</span>
+              <span>template v0.2</span>
+            </div>
+            <pre><strong>PAPEL</strong>
+Você é um copiloto comercial. Sua resposta orienta o vendedor, que mantém a decisão final.
+
+<strong>ENTRADAS</strong>
+Propensity: <span class="prompt-variable">{{P_SCORE, evidências e volume histórico}}</span>
+Opportunity Value: <span class="prompt-variable">{{O_SCORE, valor e tier}}</span>
+Warmth: <span class="prompt-variable">{{W_SCORE, temperatura, estágio e idade}}</span>
+Execution Fit: <span class="prompt-variable">{{E_SCORE, critérios e amostras}}</span>
+Contexto da oportunidade: <span class="prompt-variable">{{empresa, produto, vendedor, estágio e campos ausentes}}</span>
+
+<strong>TAREFA</strong>
+Escolha uma única ação e escreva uma frase imperativa, com no máximo 24 palavras, dizendo o que o vendedor deve fazer agora.
+
+<strong>REGRAS</strong>
+1. Use somente os dados recebidos; não invente fatos, intenção ou motivo de perda.
+2. Comece a frase com um verbo no imperativo e conecte a ordem ao sinal mais útil de P, O, W ou E.
+3. Não use orientações vagas como “avalie”, “considere”, “acompanhe”, “verifique” ou “analise as informações”.
+4. Para Won, indique expansão. Para Lost, reativação ou encerramento. Para oportunidades abertas, indique o próximo movimento comercial.
+5. Não escreva introdução, lista, ressalva ou segunda recomendação.</pre>
+          </article>
+
+        </section>
+
+        <section class="content-section" id="recommendation-output">
+          <p class="section-kicker">R3 · Contrato de saída</p>
+          <h2>Contrato de saída.</h2>
+          <p class="lead">
+            O contrato limita a resposta ao que o vendedor precisa para agir: um rótulo de ação
+            e uma frase imperativa.
+          </p>
+
+          <div class="output-contract">
+            <article class="output-field">
+              <code>action_label</code>
+              <span>Uma palavra: contatar, agendar, requalificar, nutrir, reposicionar, expandir, reativar ou encerrar.</span>
+            </article>
+            <article class="output-field">
+              <code>recommendation</code>
+              <span>Uma frase imperativa, com até 24 palavras, dizendo o que fazer agora e qual sinal sustenta a ordem.</span>
+            </article>
+          </div>
+
+          <div class="guardrail-grid">
+            <article class="guardrail">
+              <p><strong>Sem circularidade:</strong> R interpreta P, O, W e E; por isso não volta para uma fórmula numérica que utilize a própria recomendação.</p>
+            </article>
+            <article class="guardrail">
+              <p><strong>Rastreabilidade:</strong> a frase deve conectar a ordem ao sinal mais útil de P, O, W ou E.</p>
+            </article>
+            <article class="guardrail">
+              <p><strong>Decisão humana:</strong> o sistema recomenda. O vendedor pode seguir, ignorar ou avaliar a utilidade da orientação.</p>
+            </article>
+          </div>
+
+          <p class="plain-language">
+            <strong>Como interpretar:</strong>
+            <span>
+              o vendedor recebe quatro leituras numéricas, uma nota de prioridade e uma
+              ação curta acompanhada de uma frase prática. A decisão final permanece humana.
+            </span>
+          </p>
+        </section>
+
+        </div>
+
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="./power-framework.js?v=20260828-ux-polish-2"></script>
+  </body>
+</html>

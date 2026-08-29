@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="POWER CRM: pipeline comercial e inteligência de oportunidades." />
+    <title>POWER | CRM</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='8' height='40' fill='%23665bd8'/%3E%3Crect x='8' width='8' height='40' fill='%23d28a3d'/%3E%3Crect x='16' width='8' height='40' fill='%233f8fa6'/%3E%3Crect x='24' width='8' height='40' fill='%233d9b72'/%3E%3Crect x='32' width='8' height='40' fill='%23303239'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://wbysjververrnohnoezb.supabase.co" crossorigin />
+    <link rel="stylesheet" href="./design-system.css?v=20260828-warmth-tokens-1" />
+    <link rel="stylesheet" href="./styles.css?v=20260828-priority-stage-color-3" />
+  </head>
+  <body>
+    <a class="skip-link" href="#pipeline">Ir para o conteúdo</a>
+    <svg class="svg-library" aria-hidden="true">
+      <symbol id="icon-home" viewBox="0 0 20 20"><path d="m3.5 8.4 6.5-5.2 6.5 5.2v7.1a1.3 1.3 0 0 1-1.3 1.3H4.8a1.3 1.3 0 0 1-1.3-1.3V8.4Z"/><path d="M7.6 16.8v-5.5h4.8v5.5"/></symbol>
+      <symbol id="icon-board" viewBox="0 0 20 20"><rect x="2.8" y="3" width="5.8" height="14" rx="1.2"/><rect x="11.4" y="3" width="5.8" height="9" rx="1.2"/></symbol>
+      <symbol id="icon-list" viewBox="0 0 20 20"><path d="M7 5h10M7 10h10M7 15h10"/><circle cx="3.5" cy="5" r=".8"/><circle cx="3.5" cy="10" r=".8"/><circle cx="3.5" cy="15" r=".8"/></symbol>
+      <symbol id="icon-company" viewBox="0 0 20 20"><path d="M4 17V5.2L10 3v14M10 7h6v10M2.5 17h15"/><path d="M6.4 7.2h1M6.4 10.2h1M6.4 13.2h1M12.6 10.2h1M12.6 13.2h1"/></symbol>
+      <symbol id="icon-people" viewBox="0 0 20 20"><circle cx="8" cy="7" r="3"/><path d="M2.8 16.7c.4-3 2.1-4.5 5.2-4.5s4.8 1.5 5.2 4.5M13 4.7a2.7 2.7 0 0 1 0 5.2M14.2 12.2c1.9.3 2.9 1.8 3.1 4.5"/></symbol>
+      <symbol id="icon-power" viewBox="0 0 20 20"><path d="M3 15.8V11M7.7 15.8V6.5M12.3 15.8V9M17 15.8V3.8"/></symbol>
+      <symbol id="icon-database" viewBox="0 0 20 20"><ellipse cx="10" cy="4.8" rx="6.5" ry="2.5"/><path d="M3.5 4.8v5.1c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6V4.8M3.5 9.9V15c0 1.4 2.9 2.6 6.5 2.6s6.5-1.2 6.5-2.6V9.9"/></symbol>
+      <symbol id="icon-search" viewBox="0 0 20 20"><circle cx="8.8" cy="8.8" r="5.2"/><path d="m12.6 12.6 4 4"/></symbol>
+      <symbol id="icon-filter" viewBox="0 0 20 20"><path d="M3 5h14M5.5 10h9M8 15h4"/></symbol>
+      <symbol id="icon-sort" viewBox="0 0 20 20"><path d="M6 3.5v13M3.5 6 6 3.5 8.5 6M14 16.5v-13M11.5 14l2.5 2.5 2.5-2.5"/></symbol>
+      <symbol id="icon-plus" viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></symbol>
+      <symbol id="icon-more" viewBox="0 0 20 20"><circle cx="4.2" cy="10" r="1"/><circle cx="10" cy="10" r="1"/><circle cx="15.8" cy="10" r="1"/></symbol>
+      <symbol id="icon-calendar" viewBox="0 0 20 20"><rect x="3" y="4.5" width="14" height="12.5" rx="1.6"/><path d="M6.5 2.8v3.4M13.5 2.8v3.4M3 8.2h14"/></symbol>
+      <symbol id="icon-money" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M12.6 7.5c-.6-.6-1.4-.9-2.4-.9-1.3 0-2.2.6-2.2 1.6 0 2.6 4.5 1.2 4.5 3.8 0 1-.9 1.7-2.4 1.7-1 0-1.9-.3-2.7-1M10 5.3v9.4"/></symbol>
+      <symbol id="icon-note" viewBox="0 0 20 20"><path d="M5 3h7.2L16 6.8V17H5z"/><path d="M12 3v4h4M7.5 10h6M7.5 13h4.5"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="13" height="13" rx="2"/><path d="m6.8 10 2.1 2.1 4.5-4.6"/></symbol>
+      <symbol id="icon-message" viewBox="0 0 20 20"><path d="M4 4.2h12v9H9l-4.3 3v-3H4z"/></symbol>
+      <symbol id="icon-clock" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.8"/><path d="M10 6v4.4l3 1.7"/></symbol>
+      <symbol id="icon-close" viewBox="0 0 20 20"><path d="m5 5 10 10M15 5 5 15"/></symbol>
+      <symbol id="icon-chevron" viewBox="0 0 20 20"><path d="m7 8 3 3 3-3"/></symbol>
+      <symbol id="icon-expand" viewBox="0 0 20 20"><path d="M7.5 3.5h-4v4M12.5 3.5h4v4M3.5 12.5v4h4M16.5 12.5v4h-4"/></symbol>
+      <symbol id="icon-alert" viewBox="0 0 20 20"><path d="M10 3 17 16H3L10 3Z"/><path d="M10 7.5v4M10 14v.2"/></symbol>
+    </svg>
+
+    <div class="app-shell">
+      <aside class="sidebar" id="app-sidebar">
+        <div class="sidebar-head">
+          <a class="wordmark" href="./" aria-label="POWER CRM"><span class="power-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><strong>POWER</strong></a>
+          <button id="close-mobile-nav" class="close-mobile-nav" type="button" aria-label="Fechar navegação"><svg class="icon"><use href="#icon-close"/></svg></button>
+        </div>
+        <div class="workspace-context" aria-label="Workspace atual"><span class="workspace-avatar">G4</span><span><strong>G4 Educação</strong><small>Revenue workspace</small></span><span class="context-tag">Dataset</span></div>
+        <nav class="primary-nav" aria-label="Navegação principal">
+          <p>Workspace</p>
+          <a class="is-active" href="#pipeline" aria-current="page"><svg class="icon"><use href="#icon-board"/></svg>Pipeline<span id="sidebar-active-count" class="nav-count" aria-label="Carregando"></span></a>
+          <a href="./directory.html"><svg class="icon"><use href="#icon-database"/></svg>Directory</a>
+          <p>Intelligence</p>
+          <a href="./power-framework.html"><svg class="icon"><use href="#icon-power"/></svg>POWER framework<span class="nav-badge">Method</span></a>
+        </nav>
+        <div class="sidebar-footer">
+          <div id="system-state" class="system-state is-loading" aria-live="polite"><i></i><span><strong id="score-version">Connecting</strong><small><span id="total-record-count" aria-label="Carregando"></span> records in read model</small></span></div>
+          <div class="challenge-owner"><span class="avatar avatar-dark">JV</span><span><strong>João Vitor</strong><small>AI Master Challenge</small></span></div>
+        </div>
+      </aside>
+      <button id="mobile-nav-backdrop" class="mobile-nav-backdrop" type="button" aria-label="Fechar navegação lateral" hidden></button>
+
+      <main class="workspace" id="pipeline">
+        <header class="topbar">
+          <div class="breadcrumbs"><button id="mobile-nav" class="mobile-nav" type="button" aria-label="Abrir navegação" aria-controls="app-sidebar" aria-expanded="false">☰</button><span>Sales intelligence</span><i>/</i><strong>Pipeline</strong></div>
+          <div class="topbar-actions"><a class="framework-link" href="./power-framework.html"><span class="mini-mark">P</span>POWER methodology <span aria-hidden="true">→</span></a></div>
+        </header>
+
+        <section class="page-heading">
+          <div><p class="eyebrow">Revenue operations</p><h1>Pipeline <span id="active-count" class="metric-placeholder" aria-label="Carregando"></span></h1><p class="heading-meta"><strong id="pipeline-value" class="metric-placeholder" aria-label="Carregando"></strong> em valor de lista <i>·</i> <span id="stale-count" class="metric-placeholder" aria-label="Carregando"></span> oportunidades abertas estagnadas <i>·</i> <span id="missing-account-count" class="metric-placeholder" aria-label="Carregando"></span> sem conta</p></div>
+          <div class="snapshot-pill"><svg class="icon"><use href="#icon-database"/></svg><span><strong>Historical snapshot</strong><small>Read-only opportunity data</small></span></div>
+        </section>
+
+        <div class="view-bar">
+          <div class="pipeline-scope" aria-label="Pipeline completo com quatro etapas"><strong>Full pipeline</strong><span>Prospecting · Engaging · Won · Lost</span></div>
+          <div class="view-switcher" aria-label="Formato de visualização">
+            <button class="is-active" type="button" data-view="board" aria-pressed="true"><svg class="icon"><use href="#icon-board"/></svg>Board</button>
+            <button type="button" data-view="list" aria-pressed="false"><svg class="icon"><use href="#icon-list"/></svg>List</button>
+          </div>
+        </div>
+
+        <form id="filters" class="filters" role="search">
+          <div class="control-bar">
+            <label class="search-control"><svg class="icon"><use href="#icon-search"/></svg><input id="search" type="search" aria-label="Buscar oportunidades" placeholder="Search company, seller, product or ID" autocomplete="off"/><kbd>⌘ K</kbd></label>
+            <div class="control-actions">
+              <button id="filter-toggle" type="button" aria-expanded="false"><svg class="icon"><use href="#icon-filter"/></svg>Filter<span id="filter-count" class="filter-count">0</span></button>
+              <label class="sort-control"><svg class="icon"><use href="#icon-sort"/></svg><select id="sort-order" aria-label="Ordenar oportunidades"><option value="power-priority">POWER Priority</option><option value="value-desc">Highest list value</option><option value="age-desc">Oldest first</option><option value="age-asc">Newest first</option><option value="account">Company A–Z</option></select></label>
+              <button id="density-toggle" type="button" aria-pressed="false">Compact</button>
+            </div>
+            <p id="result-description">Carregando oportunidades…</p>
+          </div>
+
+          <div id="filter-panel" class="filter-panel" hidden>
+            <label><span>Seller</span><select id="seller-filter"><option value="">All sellers</option></select></label>
+            <label><span>Region</span><select id="region-filter"><option value="">All regions</option></select></label>
+            <label><span>Product</span><select id="product-filter"><option value="">All products</option></select></label>
+            <label><span>Warmth</span><select id="attention-filter"><option value="">Any temperature</option><option>Sem contato</option><option>Quente</option><option>Morna</option><option>Fria</option><option>Estagnada</option><option>Com pendência</option></select></label>
+            <button id="reset-filters-panel" type="button">Reset filters</button>
+          </div>
+        </form>
+
+        <div id="active-filters" class="active-filters" aria-live="polite"></div>
+
+        <section id="pipeline-workspace" class="pipeline-workspace" aria-busy="true">
+          <div id="loading-state" class="loading-state" aria-live="polite">
+            <div class="loading-board" aria-hidden="true">
+              <section class="loading-column">
+                <header class="loading-column-header">
+                  <div><i class="stage-dot prospecting"></i><strong>Prospecting</strong><span class="skeleton-block skeleton-count"></span></div>
+                  <span class="skeleton-block skeleton-value"></span>
+                </header>
+                <div class="loading-cards">
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                </div>
+              </section>
+              <section class="loading-column">
+                <header class="loading-column-header">
+                  <div><i class="stage-dot engaging"></i><strong>Engaging</strong><span class="skeleton-block skeleton-count"></span></div>
+                  <span class="skeleton-block skeleton-value"></span>
+                </header>
+                <div class="loading-cards">
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                </div>
+              </section>
+              <section class="loading-column">
+                <header class="loading-column-header">
+                  <div><i class="stage-dot won"></i><strong>Won</strong><span class="skeleton-block skeleton-count"></span></div>
+                  <span class="skeleton-block skeleton-value"></span>
+                </header>
+                <div class="loading-cards">
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                </div>
+              </section>
+              <section class="loading-column">
+                <header class="loading-column-header">
+                  <div><i class="stage-dot lost"></i><strong>Lost</strong><span class="skeleton-block skeleton-count"></span></div>
+                  <span class="skeleton-block skeleton-value"></span>
+                </header>
+                <div class="loading-cards">
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                  <article class="loading-card">
+                    <div class="loading-card-head"><span class="skeleton-block skeleton-avatar"></span><span><i class="skeleton-block"></i><i class="skeleton-block"></i></span></div>
+                    <i class="skeleton-block skeleton-product"></i>
+                    <div class="loading-facts"><i class="skeleton-block"></i><i class="skeleton-block"></i></div>
+                    <footer><i class="skeleton-block"></i><i class="skeleton-block"></i></footer>
+                  </article>
+                </div>
+              </section>
+            </div>
+            <p id="loading-progress" role="status">Connecting to the Supabase read model…</p>
+          </div>
+
+          <div id="error-state" class="universal-state error-state" hidden>
+            <span><svg class="icon"><use href="#icon-alert"/></svg></span><h2>Unable to load the pipeline</h2><p>The Supabase read model could not be reached. Check the connection and try again.</p><button id="retry-load" type="button">Try again</button>
+          </div>
+
+          <div id="board-view" class="board-view" hidden><div id="pipeline-board" class="pipeline-board"></div></div>
+
+          <div id="list-view" class="list-view" hidden>
+            <div class="list-header"><span>Opportunity</span><span>Company</span><span>Owner</span><span>Product</span><span>Value</span><span>Age</span><span>Status</span><span></span></div>
+            <div id="opportunity-rows" class="opportunity-rows"></div>
+            <footer class="pagination"><span id="pagination-summary">0–0 de 0</span><div><button id="previous-page" type="button">Previous</button><span id="page-indicator">1 / 1</span><button id="next-page" type="button">Next</button></div></footer>
+          </div>
+
+          <div id="empty-state" class="universal-state empty-state" hidden><span><svg class="icon"><use href="#icon-search"/></svg></span><h3>No opportunities in this view</h3><p>Change the search or remove one of the active filters.</p><button id="reset-filters" type="button">Clear filters</button></div>
+        </section>
+
+        <footer class="board-status"><span><i></i>Dataset snapshot · <b id="snapshot-date">Carregando</b></span><span>Opportunity data is read-only · Recommendation runs on first open and reuses saved results</span></footer>
+      </main>
+    </div>
+
+    <div id="drawer-backdrop" class="modal-backdrop" hidden></div>
+    <section id="detail-drawer" class="opportunity-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title" aria-hidden="true">
+      <header class="modal-toolbar">
+        <div><button id="close-drawer" class="icon-button" type="button" aria-label="Fechar detalhes"><svg class="icon"><use href="#icon-close"/></svg></button><span>Registro da oportunidade</span></div>
+        <div class="modal-record-navigation"><button id="previous-record" type="button" aria-label="Oportunidade anterior">←</button><button id="next-record" type="button" aria-label="Próxima oportunidade">→</button></div>
+      </header>
+      <section class="dynamic-identity modal-identity">
+        <span id="drawer-company-symbol" class="company-symbol company-symbol-large">?</span>
+        <div class="modal-title-block"><span id="detail-subtitle" class="identity-meta">Opportunity</span><h2 id="detail-title">Opportunity</h2><p id="modal-product-line">Não disponível</p><p id="modal-account-line" class="modal-account-line">Não disponível</p></div>
+        <aside id="modal-priority" class="modal-priority" aria-label="POWER Priority indisponível">
+          <span><b>PP</b></span>
+          <strong><b id="modal-priority-score">Indisponível</b><small id="modal-priority-scale" hidden>/100</small></strong>
+        </aside>
+        <dl class="modal-key-facts">
+          <div><dt>Valor de lista</dt><dd id="modal-value">Não disponível</dd></div>
+          <div><dt>Vendedor</dt><dd id="modal-owner">Não disponível</dd></div>
+          <div><dt>Warmth</dt><dd id="modal-attention">Não disponível</dd></div>
+          <div><dt>Gestor</dt><dd id="modal-manager">Não disponível</dd></div>
+          <div><dt>Região</dt><dd id="modal-region">Não disponível</dd></div>
+          <div><dt>Engajamento</dt><dd id="modal-engagement">Não disponível</dd></div>
+        </dl>
+        <ol id="modal-stage-track" class="modal-stage-track" aria-label="Pipeline stage"></ol>
+      </section>
+      <div id="drawer-content" class="modal-content"></div>
+    </section>
+
+    <script src="./backend.js?v=20260828-security-1"></script>
+    <script src="./app.js?v=20260829-no-emdash-1"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "score_version": "power-v0.6",
+  "snapshot_date": "2017-12-31",
+  "rows": {
+    "accounts": 85,
+    "products": 7,
+    "sales_teams": 35,
+    "opportunities": 8800,
+    "power_scores": 8800
+  },
+  "coverage": {
+    "propensity": 7795,
+    "opportunity_value": 8800,
+    "warmth": 8800,
+    "execution_fit": 7742
+  },
+  "assumptions": [
+    "Distinct catalog prices are distributed across four relative value tiers by rank.",
+    "The same catalog-derived value tiers are reused as ticket bands in P and E.",
+    "Company Fit is omitted until firmographic similarity bands are defined.",
+    "Closed opportunities use only history closed before their engage date for P and E.",
+    "Active opportunities use all Won/Lost history available at the dataset snapshot.",
+    "Warmth uses the empirical distribution and quartiles of all 6,711 closed cycles."
+  ]
+}

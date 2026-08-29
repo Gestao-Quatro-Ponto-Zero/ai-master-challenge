@@ -1,0 +1,2 @@
+# Preserve the source snapshot byte-for-byte; scripts read these files as CSV.
+solution/data/raw/*.csv binary
