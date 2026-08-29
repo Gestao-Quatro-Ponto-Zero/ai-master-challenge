@@ -107,7 +107,7 @@ Consolidação final (Iteração 08; QA final integral na Iteração 09) com evi
 3. **Iteração 06** — pipeline de 1 comando (`run.sh`/`Makefile`) + verificador: [`solution/README.md`](solution/README.md).
 4. **Iteração 07** — narrativa pré-registrada ([outline](process-log/decisions/iteration-07-executive-report-outline.md)) antes do gerador do relatório executivo; gates G1–G8 no gerador e F1–F8 no verificador.
 5. **Iteração 08** — process log final e evidências (4 artefatos acima) + verificador ampliado com gates de processo G1–G11.
-6. **Iteração 09** — QA final integral (`CONCLUDED`; auditoria git/escopo, re-execução em clone fresco 88 PASS/0 FAIL, re-derivação numérica independente 59/59, originalidade, links/markdown, readiness checklist; gate 3x `PENDING`): [`process-log/reports/iteration-09-final-qa-report.md`](process-log/reports/iteration-09-final-qa-report.md) · [`process-log/management/submission-readiness-checklist.md`](process-log/management/submission-readiness-checklist.md).
+6. **Iteração 09** — QA final integral (`CONCLUDED`; auditoria git/escopo, re-execução em clone fresco 88 PASS/0 FAIL, re-derivação numérica independente 59/59, originalidade, links/markdown, readiness checklist; gate 3x `CONCLUDED`): [`process-log/reports/iteration-09-final-qa-report.md`](process-log/reports/iteration-09-final-qa-report.md) · [`process-log/management/submission-readiness-checklist.md`](process-log/management/submission-readiness-checklist.md).
 7. **Iteração 10** — data final, commit final de submissão e PR (pendente).
 
 ### Onde a IA errou e como corrigi

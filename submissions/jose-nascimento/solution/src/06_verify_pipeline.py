@@ -27,7 +27,7 @@ E. Sanidade — compile() e import de todos os scripts (01–07).
       erros no ledger, links internos resolvem (zero link para diretório
       temporário), zero paths de máquina/segredos nos docs novos,
 modelos/harness corretos, README com checkboxes honestos, review
-       summaries It00–08, inventário de prompts/reports/decisões/hipóteses
+       summaries It00–09, inventário de prompts/reports/decisões/hipóteses
        (globs, sem contagens hardcoded), hashes de commit citados resolvem,
        estados do plano e nenhum placeholder falso.
 
@@ -97,6 +97,12 @@ NEW_PL_DOCS = [
     PROCESS_LOG_DIR / "prompts" / "iteration-09-prompt.md",
     PROCESS_LOG_DIR / "reports" / "iteration-09-final-qa-report.md",
     PROCESS_LOG_DIR / "management" / "submission-readiness-checklist.md",
+    # Fechamento do gate 3x da It09 (fixer): ledger, prompt e report do fixer
+    # entram no escopo das varreduras de paths de máquina (G4), hashes (G9) e
+    # placeholders (G11) — mesma política F2/It08 dos demais docs novos.
+    PROCESS_LOG_DIR / "reviews" / "iteration-09-review-summary.md",
+    PROCESS_LOG_DIR / "prompts" / "iteration-09-review-fix-prompt.md",
+    PROCESS_LOG_DIR / "reports" / "iteration-09-review-fix-report.md",
 ]
 
 # ----------------------------------------------------------------------------
@@ -842,7 +848,8 @@ PL_PROMPTS = ([f"iteration-{i:02d}-prompt.md" for i in range(8)]
                  "orchestrator-visual-correction-prompt.md",
                  "iteration-08-prompt.md",
                  "iteration-08-review-fix-prompt.md",
-                 "iteration-09-prompt.md"])
+                 "iteration-09-prompt.md",
+                 "iteration-09-review-fix-prompt.md"])
 PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
                   "planning-report", "ingest-audit-report", "reconciliation-report",
                   "root-cause-report", "lifecycle-watchlist-report",
@@ -853,7 +860,8 @@ PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
                  "orchestrator-visual-correction-report.md",
                  "iteration-08-process-log-report.md",
                  "iteration-08-review-fix-report.md",
-                 "iteration-09-final-qa-report.md"])
+                 "iteration-09-final-qa-report.md",
+                 "iteration-09-review-fix-report.md"])
 PL_DECISIONS = ["decision-ledger.md"] + [
     f"iteration-{i:02d}-{name}.md" for i, name in [
         (2, "analytical-contract-decisions"), (3, "root-cause-decisions"),
@@ -1002,11 +1010,11 @@ def g_process_log() -> None:
 
     def _review_summaries() -> tuple[bool, str]:
         actual = sorted(p.name for p in (PROCESS_LOG_DIR / "reviews").glob("iteration-*-review-summary.md"))
-        expected = sorted(f"iteration-{i:02d}-review-summary.md" for i in range(9))
-        return (actual == expected), (f"{len(actual)} summaries (It00–08); "
+        expected = sorted(f"iteration-{i:02d}-review-summary.md" for i in range(10))
+        return (actual == expected), (f"{len(actual)} summaries (It00–09); "
                                       f"esperados={expected} reais={actual}")
     safe("G7-review-summaries", "process log",
-         "9 review summaries versionados (It00–08)", _review_summaries)
+         "10 review summaries versionados (It00–09)", _review_summaries)
 
     def _inventory() -> tuple[bool, str]:
         problems = []
@@ -1065,8 +1073,8 @@ def g_process_log() -> None:
             problems.append("checklist sem gate 3x da It08 CONCLUDED")
         if "It09 `CONCLUDED`" not in checklist:
             problems.append("checklist sem It09 CONCLUDED")
-        if "gate 3x da It09 `PENDING`" not in checklist:
-            problems.append("checklist sem gate 3x da It09 PENDING")
+        if "gate 3x da It09 `CONCLUDED`" not in checklist:
+            problems.append("checklist sem gate 3x da It09 CONCLUDED")
         readme = (SUBMISSION_DIR / "README.md").read_text(encoding="utf-8")
         if "pendente" not in readme:
             problems.append("README sem data 'pendente'")
@@ -1074,8 +1082,8 @@ def g_process_log() -> None:
                                 f"It10={found.get(10)}; problemas="
                                 f"{problems or 'nenhum'}")
     safe("G10-states", "process log",
-         "estados do plano (It08/09 CONCLUDED; It10 PENDING; gate It08 "
-         "CONCLUDED; gate It09 PENDING)",
+         "estados do plano (It08/09 CONCLUDED; It10 PENDING; gate It08/09 "
+         "CONCLUDED)",
          _states)
 
     def _no_placeholders() -> tuple[bool, str]:

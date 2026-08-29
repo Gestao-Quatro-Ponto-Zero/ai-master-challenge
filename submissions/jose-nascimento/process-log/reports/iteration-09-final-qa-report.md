@@ -1,6 +1,6 @@
 # Report da Iteração 09 — QA final integral e prontidão de submissão
 
-- **Iteração:** 09 · **Data:** 2026-08-29 · **Executor:** 1 subagente `deepseek-max` (DeepSeek V4 Flash, max reasoning, via OpenCode Go) · **Gate 3x da It09:** `PENDING` (a disparar após este commit)
+- **Iteração:** 09 · **Data:** 2026-08-29 · **Executor:** 1 subagente `deepseek-max` (DeepSeek V4 Flash, max reasoning, via OpenCode Go) · **Gate 3x da It09:** `CONCLUDED` (fechado pelo corretor sequencial em 2026-08-29 — 3 veredictos `PASS_WITH_FIXES`; correções L1–L3; ver [`process-log/reviews/iteration-09-review-summary.md`](../reviews/iteration-09-review-summary.md))
 - **Escopo:** auditoria integral da submissão contra instruções oficiais, checklist do orquestrador (A–F), contrato analítico e claims do relatório executivo — com re-execução limpa e re-derivação numérica independente.
 - **Veredito:** **PASS** — nenhum defeito material; 4 fixos de hygiene/stale comprovados (ver §6); pendências exclusivamente de It10 (data final, commit final, PR).
 
@@ -29,7 +29,7 @@ Auditar/fixar apenas defeitos comprovados e deixar o repo em estado iminente de 
 
 ## 3. QA regras oficiais
 
-Mapeamento item a item em [`process-log/management/submission-readiness-checklist.md`](../management/submission-readiness-checklist.md) (30 regras + 3 pendências formais): fork/branch/pasta/título; 1 challenge; solution + process log; setup; zero alteração fora da pasta; template; time/budget disclosure honesto (~22–27h vs 4–6h oficiais, excedido por decisão consciente — F11); baseline/originalidade. **PASS** — pendências apenas: data final, commit final, PR (It10).
+Mapeamento item a item em [`process-log/management/submission-readiness-checklist.md`](../management/submission-readiness-checklist.md) (30 regras + 3 pendências formais): fork/branch/pasta/título; 1 challenge; solution + process log; setup; zero alteração fora da pasta; template; time/budget disclosure honesto (~24–28h vs 4–6h oficiais, excedido por decisão consciente — F11); baseline/originalidade. **PASS** — pendências apenas: data final, commit final, PR (It10).
 
 ## 4. QA Challenge 001 (entrega)
 
@@ -67,8 +67,8 @@ Implementação própria (fora do repo, lendo somente os 5 CSVs brutos; sem impo
 | # | Defeito comprovado | Fix |
 |---|---|---|
 | F1 | `execution-plan.md` linha de status (It06): verificador "67 PASS" e outputs "46/46" stale vs evidência It06 (68 PASS após o fixer do gate; 45/45 = 40 derivados + 5 raw) | Corrigido para 68 PASS/45/45 com nota de que 67 era o estado pré-gate; status da versão estendido com It07/It08/It09 |
-| F2 | `execution-plan.md`/checklist desatualizados para o fechamento It09 (It09 `PENDING`; sem readiness checklist; F11 sem a fatia It09) | It09 `CONCLUDED` com evidência; It10 `PENDING`; gate 3x It09 `PENDING`; F11 com fatia It09 e faixa honesta ~22–27h (soma bruta ≈ 26h10) |
-| F3 | Verificador `06_verify_pipeline.py` esperava It09 `PENDING` (G10) e não conhecia os docs novos da It09 | G10 atualizado (It08/09 `CONCLUDED`; It10 `PENDING`; checklist com "It09 `CONCLUDED`" e "gate 3x da It09 `PENDING`"); `PL_PROMPTS`/`PL_REPORTS`/`NEW_PL_DOCS` estendidos (prompt It09, report It09, readiness checklist) — 88 checks, mesmo conjunto |
+| F2 | `execution-plan.md`/checklist desatualizados para o fechamento It09 (It09 `PENDING`; sem readiness checklist; F11 sem a fatia It09) | It09 `CONCLUDED` com evidência; It10 `PENDING`; gate 3x It09 `CONCLUDED`; F11 com fatia It09 e faixa honesta ~24–28h (soma bruta das 16 fatias ≈ 27h40) |
+| F3 | Verificador `06_verify_pipeline.py` esperava It09 `PENDING` (G10) e não conhecia os docs novos da It09 | G10 atualizado (It08/09 `CONCLUDED`; It10 `PENDING`; checklist com "It09 `CONCLUDED`" e "gate 3x da It09 `PENDING`"); `PL_PROMPTS`/`PL_REPORTS`/`NEW_PL_DOCS` estendidos (prompt It09, report It09, readiness checklist) — 88 checks, mesmo conjunto. *Pós-gate: o fixer atualizou G10 para "gate 3x da It09 `CONCLUDED`" e G7 para 10 summaries (ver fix report do gate).* |
 | F4 | Snapshots de contagem de docs públicos (README do process log §7, evidence-index, README da submissão) parados no fechamento It08 | Atualizados para o fechamento It09 (10 iterações, 21 prompts, 21 reports, 9 summaries, 32 commits, 126 arquivos, verifier 88 PASS) com instrução de re-derivação na It10 |
 
 Sem mudanças em scripts de análise, tabelas, PNGs, report executivo ou qualquer claim numérico (md5 do report executivo inalterado — ver §8).
@@ -97,42 +97,42 @@ Varredura por tokens de pesquisa interna/benchmark (nomes de arquivos de pesquis
 
 ## 9. QA processo, markdown, security
 
-- **Processo (QA9):** ferramentas/roles corretos (orquestrador `openai/gpt-5.6-sol` não implementa; executor/revisores/corretor `deepseek-max` via OpenCode Go); exatamente 8 erros E1–E8 com causa raiz/correção/commit (gate G2); decision ledger com 18 decisões atribuídas (nada de subagente atribuído ao candidato); 21 prompts/21 reports/9 summaries/1 hipóteses/6 decisões por iteração; snapshots datados ("fechamento da It08/It09"); raw reviews externos documentados como working artifacts não versionados; zero falso chat-export/screenshot (checkboxes honestos — G6); budget ~22–27h declarado honestamente; gate 3x da It08 `CONCLUDED` (G10). **PASS.**
-- **Markdown/UX (QA8):** 244 links relativos em 27 arquivos .md — **0 quebrados** (incl. âncoras GitHub-style); fences balanceadas em todos os arquivos; tabelas do report íntegras (sem célula truncada); zero absolute path em docs novos; zero placeholder falso (gate G11 do verificador); 6 PNGs validados (não-brancos; dimensões 1170–1560 × 615–900 px; cores 258–848); word counts: README 1.583, report executivo 2.275 (budget 1.400–2.400), process log README 2.373; README primeira tela conforme template; LinkedIn `não informado` e data `pendente` mantidos por instrução. **PASS.**
+- **Processo (QA9):** ferramentas/roles corretos (orquestrador `openai/gpt-5.6-sol` não implementa; executor/revisores/corretor `deepseek-max` via OpenCode Go); exatamente 8 erros E1–E8 com causa raiz/correção/commit (gate G2); decision ledger com 18 decisões atribuídas (nada de subagente atribuído ao candidato); 22 prompts/22 reports/10 summaries/1 hipóteses/6 decisões por iteração (contagens pós-gate); snapshots datados ("fechamento da It08/It09"); raw reviews externos documentados como working artifacts não versionados; zero falso chat-export/screenshot (checkboxes honestos — G6); budget ~24–28h declarado honestamente; gates 3x It08/09 `CONCLUDED` (G10). **PASS.**
+- **Markdown/UX (QA8):** **260 referências relativas, 0 quebradas** (definição estável/derivada: links relativos do escopo G3 do verificador — `process-log/**` + README da submissão, 219 — somados aos do F2 do relatório executivo, 41; nº de arquivos .md **não citado** — métrica frágil e não reproduzível; contagem re-derivada no fechamento do gate da It09 — 252 no HEAD revisado; re-derivar na It10); fences balanceadas em todos os arquivos; tabelas do report íntegras (sem célula truncada); zero absolute path em docs novos; zero placeholder falso (gate G11 do verificador); 6 PNGs validados (não-brancos; dimensões 1170–1560 × 615–900 px; cores 258–848); word counts (método: tokens por split de whitespace — `wc -w`; snapshot pós-It09; re-derivar na It10): README 1.623, report executivo 2.275 (budget 1.400–2.400), process log README 2.477, summary executivo 322; README primeira tela conforme template; LinkedIn `não informado` e data `pendente` mantidos por instrução. **PASS.**
 - **Security/licença/repro (QA10):** Kaggle oficial + MIT atribuídos (solution README §11, data/raw README, README da submissão); MD5 dos 5 raw == manifesto commitado (gate C2); zero PII/credenciais; zero imports de rede (D4); pins públicos `pandas==3.0.5`/`matplotlib==3.11.1`; tamanhos razoáveis. **PASS.**
 
 ## 10. QA causal/semântico (sweep)
 
 Todas as distinções contratadas presentes e consistentes entre README/report/evidence/tables: 43 primeiros eventos ≠ 117 episódios (hazard de 1º evento vs total; relatório §2); R1 exposição ≠ perda ("exposição, não perda" em §1/§2/§7/§9); eventos ≠ logos ≠ revenue churn (lentes §2; "afetados ≠ evitados"); faixa observada ≠ CI (Wilson 0,362–0,501 separado; disjoint verificado G13); lift ≠ efeito causal (backtest point-in-time; "lift é associação, não efeito"); watchlist = priorização operacional, nunca score/predição; exposure-only ≠ risco (t21: "NÃO rotular alto risco"); all-active no corte declarado (§9); base sintética/censura/poder declarados (§9, §3, §7). **PASS.**
 
-## 11. Snapshot no fechamento da It09 (contagens derivadas por glob/git)
+## 11. Snapshot no fechamento da It09 — pós-gate 3x (contagens derivadas por glob/git)
 
-| Métrica | Valor (fechamento It09) |
+| Métrica | Valor (fechamento It09, pós-gate) |
 |---|---|
 | Iterações executadas | **10** (It00–09) — It09 com prompt/report arquivados |
-| Review gates 3x concluídos | **9** (It00–08) — gate da It09 `PENDING` |
-| Revisores (instâncias) | **27** (9 gates × 3) |
-| Correções sequenciais commitadas | **10** (8 fixers de gate + correção visual It04 + fixer do gate It08) |
+| Review gates 3x concluídos | **10** (It00–09) — gate da It09 `CONCLUDED` |
+| Revisores (instâncias) | **30** (10 gates × 3) |
+| Correções sequenciais commitadas | **11** (8 fixers de gate + correção visual It04 + fixer do gate It08 + fixer do gate It09) |
 | Erros materiais registrados | **8** (E1–E8) |
-| Prompts arquivados | **21** (20 It00–08 + `iteration-09-prompt.md`) |
-| Reports versionados | **21** (20 It00–08 + `iteration-09-final-qa-report.md`) |
-| Review summaries | **9** (It00–08) |
+| Prompts arquivados | **22** (20 It00–08 + `iteration-09-prompt.md` + `iteration-09-review-fix-prompt.md`) |
+| Reports versionados | **22** (20 It00–08 + `iteration-09-final-qa-report.md` + `iteration-09-review-fix-report.md`) |
+| Review summaries | **10** (It00–09) |
 | Decisões / hipóteses | 6 arquivos + ledger / 1 arquivo (H1–H10) |
-| Commits do candidato | **32** (31 no fechamento It08 + `chore: complete pre-submission quality assurance`) |
-| Arquivos versionados na pasta | **126** (123 no fechamento It08 + 3 novos: prompt, report, readiness checklist) |
-| Verificador | **88 PASS / 0 FAIL** (mesmo conjunto de checks; G10/inventário alinhados à It09) |
+| Commits do candidato | **33** (32 no fechamento It08+It09 + `chore: close pre-submission QA gate`) |
+| Arquivos versionados na pasta | **129** (123 no fechamento It08 + 3 da It09 + 3 do fixer do gate: summary, fix prompt, fix report) |
+| Verificador | **88 PASS / 0 FAIL** (mesmo conjunto de checks; G10/inventário alinhados ao fechamento It09 pós-gate) |
 | Runtime do pipeline | ~64–66 s nesta máquina (faixa documentada ~65–75 s) |
 
 > Re-derivar na It10 (globs/git são a fonte; nenhum total final estático deve ser mantido).
 
 ## 12. Riscos remanescentes e handoff
 
-1. **Gate 3x da It09 `PENDING`:** disparar 3 revisores `deepseek-max` read-only em paralelo (mesmo prompt, contextos separados, sandboxes fora do repo) sobre este commit; fixer sequencial se findings materiais; ledger em `process-log/reviews/iteration-09-review-summary.md` (a criar no gate).
+1. **Gate 3x da It09 `CONCLUDED`:** 3 revisores `deepseek-max` read-only em paralelo (mesmo prompt, contextos separados, sandboxes fora do repo) revisaram este commit; 3 veredictos `PASS_WITH_FIXES`; o fixer sequencial aplicou as correções factuais L1–L3 (links 260/0 quebrados; word counts 1.623/2.477; soma F11 ≈ 27h40 e faixa ~24–28h) — ledger em `process-log/reviews/iteration-09-review-summary.md`; prompt e report do fixer em `prompts/`/`reports/`.
 2. **Auditoria final 5x (It10):** re-auditoria integral antes do PR — re-derivar contagens; preencher data; commit final; abrir PR com título exato e base `upstream main`.
-3. **Verificador acoplado aos estados:** o gate G10 exige "It09 `CONCLUDED`" + "gate 3x da It09 `PENDING`" no checklist e no plano — ao concluir o gate da It09, atualizar G10 para o novo estado esperado (mesmo padrão das iterações anteriores).
+3. **Verificador acoplado aos estados:** o gate G10 exige "It09 `CONCLUDED`" + "gate 3x da It09 `CONCLUDED`" no checklist e no plano — atualizado pelo fixer do gate (mesmo padrão das iterações anteriores).
 4. **Convenções de docs novos:** manter (a) zero paths de máquina (G4), (b) backtick+hex = hash de commit apenas (G9; MD5 nunca em backticks), (c) zero placeholders falsos (convenção do gate G11 do verificador), (d) sem o nome de usuário do candidato sem hífen como literal (token de path pessoal do G4).
 5. **Word count do report executivo com margem ~125:** qualquer adição futura exige re-medição (G6/F4).
-6. **Time budget:** faixa honesta ~22–27h no fechamento It09 (fatias `~` não aditivas; soma bruta ≈ 26h10) — excedido por decisão consciente; trims formais vigentes; re-derivar na It10.
+6. **Time budget:** faixa honesta ~24–28h no fechamento It09 (16 fatias `~` de sessão não aditivas — sobreposições de relógio e sessões sem fatia própria; soma bruta ≈ 27h40; teto acima da soma bruta por definição) — excedido por decisão consciente; trims formais vigentes; re-derivar na It10.
 7. **PR body:** rascunho de descrição do PR (resumo executivo + navegação dos artefatos) fica documentado neste report (apêndice A); será usado na It10 sem alterações de escopo.
 
 ## Apêndice A — Rascunho de descrição do PR (a usar na It10)
@@ -162,7 +162,7 @@ candidato vs modelos, hipóteses/prémissas/narrativa pré-registradas antes do 
 ## Apêndice B — Validações finais desta etapa (pós-fix)
 
 - `./run.sh` + verificador pós-fix em clone fresco: **88 PASS / 0 FAIL**, byte-idêntico ao commitado (relatório executivo md5 inalterado — MD5 não citado em backticks por convenção G9);
-- link checker independente: 244 links, 0 quebrados; fences/tabelas íntegras;
+- link checker independente: 260 links relativos (G3 219 + F2 41), 0 quebrados — contagem de arquivos não citada (métrica frágil); fences/tabelas íntegras;
 - `git diff --check` limpo; `git status` limpo; `origin/submission/jose-nascimento` == local;
 - placeholders: somente os dois permitidos (`pendente` para data, `não informado` para LinkedIn);
 - PR **não** aberto; fork/branch públicas (acesso anônimo confirmado); branch pronta para PR na It10.
