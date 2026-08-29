@@ -48,18 +48,19 @@ st.caption("Seus negócios em aberto, ordenados por onde vale mais a pena focar 
 
 with st.expander("Como o placar é calculado"):
     st.markdown(
-        "**Valor esperado = chance histórica de fechar × valor do produto.**\n\n"
-        "A chance vem de negócios parecidos que já fecharam no passado — quanto mais tempo "
-        "um negócio sobrevive, historicamente maior a chance dele fechar. Produto, vendedor "
-        "e tamanho da conta **não entram na conta**: testamos e nenhum deles realmente prevê "
-        "se o negócio fecha ou não nesse histórico."
+        "**Valor esperado = probabilidade histórica de fechar × valor do produto.**\n\n"
+        "A probabilidade é calculada a partir do histórico de negócios já fechados: quanto "
+        "mais tempo um negócio permanece ativo, maior a chance histórica de fechamento. "
+        "Produto, vendedor e porte da conta não influenciam o cálculo — essas variáveis não "
+        "apresentaram relação estatística com o resultado."
     )
     if metricas:
         auc = metricas.get("auc_holdout")
         auc_fmt = f"{auc:.2f}".replace(".", ",") if auc is not None else "—"
         st.caption(
-            f"Confiabilidade do sinal: acerto de {auc_fmt} em teste cego "
-            "(0,50 seria chute puro) — real, mas não é bola de cristal."
+            f"Confiabilidade estatística do sinal: {auc_fmt} em teste cego, numa escala onde "
+            "0,50 equivale a uma escolha aleatória e 1,00 a acerto perfeito. Indicador "
+            "estatístico, não garantia individual por negócio."
         )
 
 with st.sidebar:
