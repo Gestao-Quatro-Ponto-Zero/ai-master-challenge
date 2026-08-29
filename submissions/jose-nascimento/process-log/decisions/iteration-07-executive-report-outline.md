@@ -158,11 +158,14 @@ semanal da watchlist em paralelo.**
 2. **Tabela de segmentos (7ª tabela):** a seção "Segmentos e contas" exige
    lifecycle states (S1–S5); a forma mais compacta é uma tabela de 5 linhas
    (segmento, N, current MRR, sinal de backtest), derivada de `t15_priority_segments.csv`.
-3. **MDE/poder/P(falso GO):** derivados no evidence 05 §5 com convenções de
-   arredondamento próprias (68/51/37%; 11/31/61%; ≈24%); re-derivação
-   independente no gerador difere em 0–2 p.p. (70/52/37; 11/31/60; 15,6%) —
-   o report cita os valores do evidence 05 com gate de substring (fonte validada),
-   e o Wilson CI 95% (0,362–0,501) é re-derivado em runtime de 83/193 (bate exato).
+3. **MDE/poder/P(falso GO):** derivados no evidence 05 §5 com convenções
+   próprias (68/51/37%; 11/31/61%; ≈24%); a re-derivação independente no
+   gerador difere **0–2 p.p. para MDE e poder** (70/52/37; 11/31/60 —
+   arredondamento) e **~8 p.p. para P(falso GO)** (15,6% vs 23,7%/≈24% —
+   convenção distinta de cálculo do falso GO, NÃO arredondamento; precisado
+   no adendo §15 do gate 3x) — o report cita os valores do evidence 05 com
+   gate de substring (fonte validada), e o Wilson CI 95% (0,362–0,501) é
+   re-derivado em runtime de 83/193 (bate exato).
 
 ## 14. Critérios de aceitação da It07 (repetidos do prompt)
 
@@ -171,3 +174,35 @@ age; 6 gráficos legíveis; report reproduzível (1 comando); README completo;
 honestidade estatística (faixa≠CI; hipótese≠prova; exposição≠perda); process/git
 completos. BLOCKED se qualquer número divergir das tabelas ou houver claim de
 receita/causalidade indevida.
+
+## 15. Adendo do gate de revisão 3x (It07-fix, 2026-08-29)
+
+Registro da correção sequencial após os 3 veredictos do gate
+(`PASS_WITH_FIXES`/`PASS_WITH_FIXES`/`PASS`); o outline base (§§1–12) e os
+adendos §§13–14 NÃO foram reescritos retroativamente — este adendo documenta:
+
+1. **§13.3 precisado (correção de redação do próprio adendo):** a frase
+   "difere em 0–2 p.p." vale apenas para MDE e poder (70/52/37; 11/31/60 —
+   arredondamento). Para **P(falso GO)** a re-derivação independente produz
+   ~15,6% vs ≈24% (23,7%) do evidence 05 — divergência de ~8 p.p. por
+   **convenção distinta de cálculo** (definição do falso GO e N por braço dos
+   cenários), não por arredondamento. O report permanece correto: cita o
+   evidence 05 com gate de substring e "≈" (fonte validada).
+2. **Tabela de ações compactada (5 campos: ID/quando/owner/entrega/gate):**
+   células curtas e completas, sem corte no meio de palavra; truncamento só
+   em fronteira de palavra com '…' explícito; prazo, 1º sinal leading e
+   stop/go completos permanecem em t18/t20 (linkados) e na prosa §6. Novo
+   gate G3b no gerador detecta células penduradas e regressões de render.
+3. **`lift` definido na primeira ocorrência (§5):** "lift (precisão da regra
+   ÷ taxa base de incidência)" — fecha o critério §9.2 ("cada número tem
+   definição").
+4. **Margem de word budget restaurada:** report 2.389 → 2.275 palavras
+   (gate 1.400–2.400; summary inalterado 322, dentro de 250–350); cortes
+   apenas de redundância/prosa já coberta por tabelas/links — nenhuma âncora
+   numérica removida (auditoria: zero números ausentes vs versão anterior).
+5. **Modo 0644 na regeneração:** gerador aplica `os.chmod(tmp, 0o644)` antes
+   do `os.replace` (mkstemp criava 0600; git não rastreia a diferença).
+6. **Docs de processo sincronizados com valores reais** (77 PASS/0 FAIL; 6
+   tabelas; word count medido em runtime pelo gate G6); README da submissão
+   sem contagem stale de commits ("histórico git incremental e semântico" +
+   comando `git log --author="Jose Nascimento"`).

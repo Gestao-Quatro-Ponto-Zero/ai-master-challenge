@@ -37,8 +37,12 @@ claims permitidos/proibidos, 6 gráficos escolhidos, word budget (report
    observada entre cutoffs; CI de Wilson 95% (0,362–0,501) re-derivado em
    runtime e gateado contra o evidence 05.
 5. **MDE/poder (68/51/37%; 11/31/61%; ≈24%)** citados do evidence 05 §5 com
-   regex de âncora (re-derivação independente diverge 0–2 p.p. — convenções de
-   arredondamento; adendo §13.3).
+   regex de âncora. Re-derivação independente diverge **0–2 p.p. para MDE e
+   poder** (70/52/37; 11/31/60 — convenções de arredondamento) e **~8 p.p.
+   para P(falso GO)** (~15,6% vs 23,7%/≈24% do evidence 05 — convenções
+   distintas de cálculo do falso GO, não arredondamento; adendo §13.3 e §15
+   do outline). O report cita o evidence 05 com gate de substring e "≈"
+   (fonte validada).
 6. **KM global t6 removida** (adendo §13.1): pooled de t02b diverge da
    convenção do estágio 03 (0,462 vs 0,4428); usadas âncoras deriváveis (taxa
    global 70,4% e KM por coorte).
@@ -48,11 +52,12 @@ claims permitidos/proibidos, 6 gráficos escolhidos, word budget (report
 
 ## 3. Word count e conteúdo
 
-- `solution/report-executivo.md`: **2.389 palavras** (budget 1.400–2.400;
-  alvo 1.500–2.000 no outline; dentro do gate); **executive summary: 322
-  palavras** (gate 250–350); 6 imagens embutidas (1× cada); 41 links
-  relativos (todos existentes); 7 tabelas compactas (lentes, segmentos,
-  contas, ações, impacto, causal status/evidence map).
+- `solution/report-executivo.md`: **2.275 palavras** (pós-correção do gate 3x
+  — entrega original 2.389; budget 1.400–2.400; alvo 1.500–2.000 no outline;
+  margem restaurada); **executive summary: 322 palavras** (gate 250–350); 6
+  imagens embutidas (1× cada); 41 links relativos (todos existentes); **6
+  tabelas compactas** (lentes, segmentos, contas, ações, impacto, causal
+  status/evidence map).
 - `README.md` da submissão: índice executivo curto (~450 palavras de conteúdo
   próprio), template oficial preservado; tabela de ferramentas/orquestração
   INTACTA; data de submissão `pendente` (It10).
@@ -88,7 +93,11 @@ Verifier: checks F1–F8 PASS (23 âncoras re-derivadas independentemente).
    reescrito como contexto-afirmativo (negação no entorno ±90 chars permite).
 6. **Word count 3.103 → 2.389:** três rodadas de enxugamento de prosa
    (seções 1–10) com re-medição por seção; tabelas compactadas (contas 13→10
-   linhas; células de ações truncadas com rstrip de pontuação pendurada).
+   linhas; células de ações truncadas com rstrip de pontuação pendurada —
+   padrão **substituído no gate 3x (It07-fix)**: tabela de ações compacta de
+   5 campos (ID/quando/owner/entrega/gate) com células completas, corte só em
+   fronteira de palavra com '…' explícito e gate G3b no gerador; word count
+   2.389 → 2.275).
 7. **KM global 0,4428 não derivável** sem reimplementar a convenção do estágio
    03 (pooled t02b = 0,462): adendo técnico no outline; âncora substituída.
 8. **`h4_churn`/`lifts_txt`** — erros de escopo/ordem de definição e de
@@ -124,8 +133,10 @@ Verifier: checks F1–F8 PASS (23 âncoras re-derivadas independentemente).
 
 ## 7. Riscos remanescentes e handoff (Iteração 08)
 
-1. **Word count próximo do teto (2.391/2.400):** margem estrutural pequena;
-   revisões de It08/09 devem medir antes de adicionar texto (gate G6/F4).
+1. **Word count 2.275/2.400 pós-correção do gate 3x (margem ~125 palavras,**
+   **antes 11):** revisões de It08/09 devem medir antes de adicionar texto
+   (gate G6/F4); a contagem é derivada em runtime pelo gate (não é valor
+   estático).
 2. **Gate G4 por janela de negação (±90 chars):** falso positivo possível se
    um termo proibido aparecer longe de sua negação; re-verificar no QA It09.
 3. **Âncoras F8 acopladas ao template do gerador:** mudanças de fraseado no
@@ -144,6 +155,36 @@ Verifier: checks F1–F8 PASS (23 âncoras re-derivadas independentemente).
   aceitação atendidos: causa raiz/segmentos/ações/impacto respondidos com
   números derivados; CEO lê e age; 6 gráficos embutidos; report reproduzível;
   README completo; honestidade estatística; process/git completos).
-- **Review gate 3x da It07: `PENDING`** (dispara em seguida; ledger em
-  `process-log/reviews/` quando concluído).
-- It08–It10: `PENDING`.
+- **Review gate 3x da It07: `CONCLUDED`** (2026-08-29; 3 veredictos
+  `PASS_WITH_FIXES`/`PASS_WITH_FIXES`/`PASS`; correção sequencial `docs:
+  polish executive report for decision clarity`; ledger em
+  `process-log/reviews/iteration-07-review-summary.md` e detalhe em
+  `process-log/reports/iteration-07-review-fix-report.md`).
+- It08–It10: `PENDING` (It08 não iniciada).
+
+## 9. Adendo do gate de revisão 3x (It07-fix, 2026-08-29)
+
+Correções aplicadas pelo agente corretor sequencial após os 3 veredictos
+(este report descreve a entrega original da It07; as correções estão
+detalhadas em `process-log/reports/iteration-07-review-fix-report.md`):
+
+1. **Tabela de ações sem truncamento silencioso:** tabela compacta de 5
+   campos (ID/quando/owner/entrega/gate) com células completas; corte só em
+   fronteira de palavra com '…' explícito; prazo/leading/stop-go completos
+   permanecem em t18/t20 (linkados) e na prosa §6; novo gate G3b no gerador
+   detecta células penduradas/regressões (ver item 6 do §5).
+2. **Margem de word budget restaurada:** 2.389 → **2.275 palavras** (gate
+   G6/F4 1.400–2.400; summary inalterado em 322, dentro de 250–350) —
+   cortes de redundância sem remover âncora/requisito (auditoria numérica:
+   zero números removidos).
+3. **`lift` definido na primeira ocorrência** (§5): "lift (precisão da regra ÷
+   taxa base de incidência)".
+4. **Modo 0644 na regeneração:** `os.chmod(tmp, 0o644)` antes do
+   `os.replace` no gerador (mkstemp cria 0600).
+5. **Docs sincronizados:** execution-plan e este report com valores reais
+   (77 PASS/0 FAIL; 6 tabelas; word count medido em runtime); README sem
+   contagem stale de commits ("histórico git incremental e semântico" +
+   comando de verificação).
+6. **Adendo §13.3 do outline precisado:** "0–2 p.p." aplica-se a MDE/poder;
+   P(falso GO) diverge ~8 p.p. (convenções distintas de cálculo, não
+   arredondamento) — ver §15 do outline.

@@ -58,14 +58,14 @@ lente declarada (contrato: [analytical-contract.md](docs/analytical-contract.md)
 | Estado atual da conta (winner MRR; risco) | painel account-month | `data/processed` | 500 contas (all-active no corte) |
 
 **Regra de ouro:** 110 ≠ 486 ≠
-600 não são três medições do mesmo fenômeno — não podem ser
-somadas, subtraídas ou usadas como alvo alternativo. Exemplo: dezembro/2024
+600 não medem o mesmo fenômeno — não podem ser
+somadas, subtraídas ou trocadas. Exemplo: dezembro/2024
 teve **117 episódios**, dos quais **43 são
 primeiros eventos** de contas distintas — o relatório usa primeiro evento para
 hazard e coortes. Para receita há duas lentes: **R1** (gross ending MRR,
 exposição contratual bruta de 1.179.139 US$ na janela — teto, não perda)
 e **R2** (estado líquido: 18.507 + 150.817 = 169.324
-US$); o relatório usa R1 e winner MRR, com nomes declarados.
+US$); o relatório usa R1 e winner MRR.
 
 ## 3. O que mudou — causa raiz (hipótese causal plausível)
 
@@ -80,28 +80,26 @@ e 7,42% na janela; o aumento persiste com tenure controlado
 
 **O mecanismo é o onboarding.** Do pico, 83,7% (36 de
 43) são contas com 0–3 meses de vida (razão 2,37 vs
-linha de base do bucket). Na janela: **53,4%** dos primeiros eventos
+linha de base). Na janela: **53,4%** dos primeiros eventos
 (188 de 352) ocorrem até 90 dias do signup (30d:
 25,9%; 60d: 42,6%); e **68,4%** da exposição
 contratual da janela (806.419 de 1.179.139 US$) vem de
 assinaturas com até 90 dias de vida — exposição precoce, não perda.
 
 ![Exposição contratual precoce (R1) por duração da assinatura](out/charts/c_onboarding_exposure_by_duration.png)
-*Leitura: 68,4% da exposição bruta está em assinaturas ≤ 90d —
-perder cliente novo é o problema dominante.*
+*Leitura: exposição precoce ≤ 90d é o problema dominante.*
 
 **Coortes recentes churnam mais cedo (com censura).** Kaplan-Meier (censura
 no corte): churn no mês 6 de 58,9% (2024Q1) e 69,2%
-(2024Q2); coortes 2024Q3/Q4 têm follow-up curto (≤ 3 meses) e não devem ser
-comparadas à janela completa — a taxa observada subestima o churn recente.
+(2024Q2); coortes 2024Q3/Q4 (follow-up ≤ 3 meses) não se comparam à janela
+completa — a taxa subestima o churn recente.
 Taxa global na janela: 70,4% das contas.
 
 ![Tempo até o primeiro evento por coorte de signup (KM)](out/charts/b_km_by_signup_quarter.png)
 *Leitura: coortes mais recentes churnam mais cedo.*
 
-**Status de causalidade:** o conjunto (pico de contas novas + exposição
-precoce + única regra validada) sustenta a **hipótese causal plausível** de
-churn precoce — **não é prova**. Causalidade exigiria dados de
+**Status de causalidade:** o conjunto sustenta a **hipótese causal plausível**
+de churn precoce — **não é prova**. Causalidade exigiria dados de
 ativação (ACT-03) e experimento (ACT-01). Tabela:
 [out/tables/t09_causality.csv](out/tables/t09_causality.csv).
 
@@ -109,8 +107,7 @@ ativação (ACT-03) e experimento (ACT-01). Tabela:
 
 **"O uso cresceu" é verdade em volume, não por conta.** Linhas de uso (sem
 pré-signup): 2.775 → 9.027 (+225,3%);
-intensidade mediana por conta-mês: 0,0%. O crescimento vem de
-mais contas ativas, não de contas mais engajadas.
+intensidade mediana por conta-mês: 0,0%.
 
 ![Uso: volume cresce vs intensidade por conta](out/charts/d_usage_volume_vs_intensity.png)
 *Leitura: volume cresce; intensidade por conta não.*
@@ -118,12 +115,12 @@ mais contas ativas, não de contas mais engajadas.
 **Suporte e CSAT não discriminam.** Antes do evento (janela de 90 dias,
 anti-leakage): tickets/conta 0,309 (churn) vs 0,349
 (controle); escalação 2,8% vs 5,1%; CSAT 4,0
-vs 3,97 — sem diferença material. Hipótese H4 (uso pré-evento
+vs 3,97. Hipótese H4 (uso pré-evento
 precede churn) foi **refutada após correção**: zero-uso 61,7% vs 52,7%
 (versão anterior contava meses pré-signup como zero).
 
 **Segmentos amplos não discriminam** (industry/canal/plano/trial): nenhum com
-taxa ≥ 1,5× a global (limiar inalcançável com taxa global de 70,4%);
+taxa ≥ 1,5× a global (limiar inalcançável por desenho);
 maior gap de KM: 6,9 p.p. **Reasons e CSAT não são confiáveis como
 causa:** 41,2% de CSAT nulos, 15,8% de reasons
 'unknown', e 21,0% dos eventos não têm assinatura encerrada ±30d
@@ -133,7 +130,8 @@ causa:** 41,2% de CSAT nulos, 15,8% de reasons
 
 Os segmentos que importam são **estados de jornada**, não indústria (overlap
 em [out/tables/t15b_segment_overlap.csv](out/tables/t15b_segment_overlap.csv));
-nenhum é score de risco — sinal de backtest em cada linha.
+nenhum é score de risco — **lift** (precisão da regra ÷ taxa base de
+incidência) em cada linha.
 
 | Segmento | N | Current MRR | Sinal de backtest |
 |---|---|---|---|
@@ -143,8 +141,8 @@ nenhum é score de risco — sinal de backtest em cada linha.
 | S4 Evento recente (último evento ≤ 90d) | 178 | 1.299.245 | sem lift (regra C: 0,74/0,63/1,01) |
 | S5 Alto valor (winner ≥ P75) | 130 | 1.780.851 | sem lift (regra E: 0,56/0,85/0,71) |
 
-- **S1 Onboarding:** mecanismo do pico (0–3m: 83,7%, razão 2,37) e exposição precoce (R1 ≤ 90d: 68,4% da janela) — hipótese causal plausível.
-- **S2 Repeat-event:** 175 contas, 70,5% dos episódios; não prediz o próximo.
+- **S1 Onboarding:** mecanismo do pico e exposição precoce (seção 3) — hipótese causal plausível.
+- **S2 Repeat-event:** 70,5% dos episódios; não prediz o próximo.
 - **S3 Reativação recente:** KM 90d = 0,653 (censura declarada); não é ciclo de estado.
 - **S4 Evento recente:** janela acionável de CS, não predição.
 - **S5 Alto valor:** exposição, não risco.
@@ -177,25 +175,24 @@ jornada: [out/tables/t11_account_lifecycle.csv](out/tables/t11_account_lifecycle
 
 ## 6. Ações priorizadas
 
-**Sequência:** ACT-03 (Now) → ACT-01 (Now, após readiness) · ACT-02 (Now,
-paralelo) · ACT-04 (Later). Sem score: evidência + impacto + esforço; stop/go
-por linha ([t18](out/tables/t18_actions_prioritized.csv) ·
-[t20](out/tables/t20_measurement_plan.csv)).
+**Sequência:** ACT-03 → ACT-01 (após readiness) · ACT-02 (paralelo) ·
+ACT-04 (Later). Sem score: evidência + impacto + esforço; prazos, leading e
+stop/go completos em [t18](out/tables/t18_actions_prioritized.csv) ·
+[t20](out/tables/t20_measurement_plan.csv).
 
-| ID | Ação (resumo) | Decisão | Owner | Prazo | 1º sinal (leading) | Stop/Go (resumo) |
-|---|---|---|---|---|---|---|
-| ACT-01 | Programa de ativação/onboarding 0-90d: m | Now | PM Onboarding (desenho | 90d (1ª coorte completa do rollout | milestone_completion_rate (s | GO (SCALE): redução relativa estimada >= 10% |
-| ACT-02 | Triage operacional semanal da watchlist | Now | CS Lead + agente CS | 1 semana | triage_coverage_weekly (sema | GO: >= 90% do top-20 triaged/semana por 4 se |
-| ACT-03 | Instrumentação de dados: milestone de at | Now | Data/Product Eng | <= 30d (SLA do milestone de ativação | field_coverage (semanal) · u | GO: milestone de ativação em produção <= 30d |
-| ACT-04 | Piloto OBSERVACIONAL de reativação/recor | Later | CS + Data | 1 trimestre (primeiras reativações c | reactivation_followup (mensa | GO (escalar): taxa de próximo evento <= 90d |
+| ID | Quando | Owner | Entrega (resumo) | Stop/Go (resumo) |
+|---|---|---|---|---|
+| ACT-01 | Now · 90d | PM Onboarding + CS | Programa de ativação/onboarding 0-90d | GO (SCALE): redução relativa estimada >= 10% (piso operacional)… |
+| ACT-02 | Now · 1 semana | CS Lead + agente CS | Triage operacional semanal da watchlist top-20 | GO: >= 90% do top-20 triaged/semana por 4 semanas |
+| ACT-03 | Now · <= 30d | Data/Product Eng | Instrumentação de dados | GO: milestone de ativação em produção <= 30d (SLA) e metas… |
+| ACT-04 | Later · 1 trimestre | CS + Data | Piloto OBSERVACIONAL de reativação/recorrência | GO (escalar): taxa de próximo evento <= 90d >= 34,7%… |
 
 **Regra de decisão do ACT-01 (3 estados;
 [evidence/05_action_plan.md](evidence/05_action_plan.md) §5):** SCALE/GO =
 redução ≥ 10% **e** IC95 exclui 0; CONTINUE/LEARN = ponto favorável, IC95 cruza
 0; STOP/HARM = efeito adverso ou guardrail falhado. 1ª decisão em 2
 trimestres; escala em 4 trimestres + 90d. O único sinal que justifica o
-programa é o lift do backtest: **1,57 · 1,56 · 1,83** (3 cutoffs de 90d, N ≥ 25)
-— a única regra consistente:
+programa é o lift do backtest — **1,57 · 1,56 · 1,83** (3 cutoffs de 90d, N ≥ 25):
 
 ![Backtest point-in-time: lift por regra × cutoff](out/charts/It04_d_backtest_lift.png)
 *Leitura: só onboarding (R_D) passa do limiar 1,15.*
@@ -227,8 +224,7 @@ redução (componentes em
   é previsão; eventos ≠ logos ≠ revenue churn (lentes);
 - **Poder estatístico:** fluxo ~68 signups/trimestre; MDE a 80% de poder =
   **68% / 51% / 37%**; poder por cenário: **11% / 31% / 61%** (10/20/30%) —
-  inconclusivo NÃO é ausência de efeito; P(falso GO) ≈ **24%**;
-  escala exige IC95 excluindo 0.
+  inconclusivo NÃO é ausência de efeito; P(falso GO) ≈ **24%**.
 
 ## 8. O que não fazer agora
 
@@ -237,7 +233,7 @@ redução (componentes em
 2. **Desconto generalizado** — sem custos na base, seria preço inventado;
    nenhuma evidência de que preço dirige o churn precoce.
 3. **Decisão por reason/CSAT** — evidência sugestiva com missingness alta
-   (41,2% de CSAT nulos; 15,8% de reasons 'unknown').
+   (seção 4).
 4. **Automação de churn** — sem validação causal; começa pela experimentação
    (ACT-01), nunca sem holdout.
 5. **ROI pontual / revenue saved / "reativação mais barata"** — proibido nesta
@@ -250,11 +246,10 @@ redução (componentes em
 - **Lentes decopladas:** 21,0% dos eventos têm assinatura encerrada
   ±30d; o snapshot marca 110 contas churnadas, mas o estado
   por assinatura mantém as 500 ativas no corte (**all-active**) —
-  "perda real de estado" não é validável no presente; o backtest usa eventos
-  históricos como desfecho.
+  "perda real de estado" não é validável.
 - **Proxies:** winner MRR é estado/exposição, não receita contábil;
   lifecycle_value_proxy é soma mensal de winner (não GAAP).
-- **Poder baixo:** MDE 68% / 51% / 37%; N pequenos limitam conclusões finas.
+- **Poder baixo:** N pequenos limitam conclusões finas (MDE na seção 7).
 - **Próximos dados (ACT-03):** milestone de ativação (não capturado), reason
   estruturado ('unknown' < 5%), timestamps alinhados (uso em janela:
   22,3%), CSAT ≥ 90% (hoje 58,8%) — o caminho
@@ -264,7 +259,7 @@ redução (componentes em
 
 **Reprodução (1 comando, offline, determinístico):** `./run.sh` (ou `make all`)
 regenera os artefatos das Iterações 01–07, incluindo este relatório, em
-~65–75 s (aproximação medida) — [README da solução](README.md) §6;
+~65–75 s — [README da solução](README.md) §6;
 `06_verify_pipeline.py` valida estrutura, links, imagens e claims.
 
 **Mapa de evidência (auditável):**

@@ -70,6 +70,50 @@ def fmt_lift2(value: float) -> str:
 
 
 # ----------------------------------------------------------------------------
+# Células curtas e COMPLETAS (nunca cortadas no meio de palavra)
+# ----------------------------------------------------------------------------
+def _clip(text: str, limit: int) -> str:
+    """Corta em fronteira de palavra, com '…' explícito quando truncado.
+
+    Nunca termina no meio de palavra/frase: recua de tokens pendurados
+    (1 char, dígito, iniciado por '(', ou preposição isolada) e sinaliza
+    o corte com '…' — truncamento silencioso é proibido (gate G3b).
+    """
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    sp = cut.rfind(" ")
+    if sp > 0:
+        cut = cut[:sp]
+    cut = cut.rstrip()
+    toks = cut.split()
+    while toks and (len(toks[-1]) <= 1 or toks[-1].isdigit()
+                    or toks[-1].startswith("(")
+                    or toks[-1] in ("de", "do", "da", "em", "e", "ou")):
+        toks = toks[:-1]
+    return " ".join(toks).rstrip(" (;|,·:-/") + "…"
+
+
+def _head(text: str, limit: int = 64) -> str:
+    """Cláusula principal da ação (antes de ': ', ' (', ' — ' ou ' com '),
+    com corte de palavra + '…' se ainda longa."""
+    seg = re.split(r":\s| \(|\s—\s|\scom\s", text, maxsplit=1)[0].strip()
+    return _clip(seg, limit)
+
+
+def _strip_parens(text: str) -> str:
+    """Remove grupos entre parênteses (owner/prazo ficam curtos e completos)."""
+    return re.sub(r"\s*\([^)]*\)", "", text).strip()
+
+
+def _gate_short(stopgo: str, limit: int = 64) -> str:
+    """Resumo do stop/go: 1ª cláusula (GO) até o primeiro ';', cortada com
+    '…' explícito se longa (regra completa por extenso na prosa §6 e t18)."""
+    clause = re.split(r";\s", stopgo, maxsplit=1)[0].strip()
+    return _clip(clause, limit)
+
+
+# ----------------------------------------------------------------------------
 # Extração de células com texto completo (to_string() truncaria colunas)
 # ----------------------------------------------------------------------------
 def cell(df: pd.DataFrame, value_col: str, key_col: str, key: str) -> str:
@@ -391,13 +435,11 @@ def render(n: dict) -> str:
     labels = {
         "S1": ("Onboarding (tenure ≤ 90d)",
                f"**validado** (lift {n['lifts_d']})",
-               f"mecanismo do pico (0–3m: {n['h9_share']}%, razão "
-               f"{n['h9_ratio']}) e exposição precoce (R1 ≤ 90d: "
-               f"{n['r1_le90_pct']} da janela) — hipótese causal plausível"),
+               f"mecanismo do pico e exposição precoce (seção 3) — "
+               f"hipótese causal plausível"),
         "S2": ("Repeat-event (≥2 eventos)",
                f"sem lift (regra A: {n['lift_a']})",
-               f"{n['n_multi_acc']} contas, {n['pct_events_multi']} dos "
-               f"episódios; não prediz o próximo"),
+               f"{n['pct_events_multi']} dos episódios; não prediz o próximo"),
         "S3": ("Reativação recente (flag out-dez/2024)",
                f"sem lift (regra B: {n['lift_b']})",
                f"KM 90d = {n['km_s3']} (censura declarada); não é ciclo de estado"),
@@ -418,11 +460,14 @@ def render(n: dict) -> str:
     acc_tbl = "\n".join(
         f"| {a['aid']} | {a['grp']} | {fmt_int(a['mrr'])} | {a['ev']} | "
         f"{a['lim']} |" for a in n["account_rows"])
+    # Tabela compacta de ações: campos curtos e COMPLETOS (ID/quando/owner/
+    # entrega/gate); prazo e leading metrics completos ficam em t18/t20
+    # (linkados) e na prosa §6 — nenhuma célula é cortada no meio de palavra
+    # (sem truncamento silencioso; _clip só corta em palavra + '…' explícito).
     act_tbl = "\n".join(
-        f"| {a['id']} | {a['act'][:40].rstrip(' (;|,·')} | {a['dec']} | "
-        f"{a['owner'][:22].rstrip(' (;|,·')} | {a['prazo'][:36].rstrip(' (;|,·')} | "
-        f"{a['sinal'][:28].rstrip(' (;|,·')} | {a['stopgo'][:44].rstrip(' (;|,·')} |"
-        for a in n["act_rows"])
+        f"| {a['id']} | {a['dec']} · {_strip_parens(a['prazo'])} | "
+        f"{_strip_parens(a['owner'])} | {_head(a['act'])} | "
+        f"{_gate_short(a['stopgo'])} |" for a in n["act_rows"])
     caus_tbl = "\n".join(
         f"| {f} | {s} |" for f, s in n["caus_rows"])
 
@@ -486,14 +531,14 @@ lente declarada (contrato: [analytical-contract.md](docs/analytical-contract.md)
 | Estado atual da conta (winner MRR; risco) | painel account-month | `data/processed` | {n['n_accounts']} contas (all-active no corte) |
 
 **Regra de ouro:** {n['n_snapshot_fmt']} ≠ {n['n_subs_fmt']} ≠
-{n['n_events_fmt']} não são três medições do mesmo fenômeno — não podem ser
-somadas, subtraídas ou usadas como alvo alternativo. Exemplo: dezembro/2024
+{n['n_events_fmt']} não medem o mesmo fenômeno — não podem ser
+somadas, subtraídas ou trocadas. Exemplo: dezembro/2024
 teve **{n['dec_events']} episódios**, dos quais **{n['dec_first']} são
 primeiros eventos** de contas distintas — o relatório usa primeiro evento para
 hazard e coortes. Para receita há duas lentes: **R1** (gross ending MRR,
 exposição contratual bruta de {n['r1_total']} US$ na janela — teto, não perda)
 e **R2** (estado líquido: {n['r2_churn']} + {n['r2_contr']} = {n['r2_net']}
-US$); o relatório usa R1 e winner MRR, com nomes declarados.
+US$); o relatório usa R1 e winner MRR.
 
 ## 3. O que mudou — causa raiz (hipótese causal plausível)
 
@@ -508,28 +553,26 @@ e {n['med_win']} na janela; o aumento persiste com tenure controlado
 
 **O mecanismo é o onboarding.** Do pico, {n['h9_share']}% ({n['n_03m']} de
 {n['dec_first']}) são contas com 0–3 meses de vida (razão {n['h9_ratio']} vs
-linha de base do bucket). Na janela: **{n['fe90_pct']}** dos primeiros eventos
+linha de base). Na janela: **{n['fe90_pct']}** dos primeiros eventos
 ({n['fe90_n']} de {n['n_event_acc_fmt']}) ocorrem até 90 dias do signup (30d:
 {n['fe30_pct']}; 60d: {n['fe60_pct']}); e **{n['r1_le90_pct']}** da exposição
 contratual da janela ({n['r1_le90']} de {n['r1_total']} US$) vem de
 assinaturas com até 90 dias de vida — exposição precoce, não perda.
 
 ![Exposição contratual precoce (R1) por duração da assinatura](out/charts/c_onboarding_exposure_by_duration.png)
-*Leitura: {n['r1_le90_pct']} da exposição bruta está em assinaturas ≤ 90d —
-perder cliente novo é o problema dominante.*
+*Leitura: exposição precoce ≤ 90d é o problema dominante.*
 
 **Coortes recentes churnam mais cedo (com censura).** Kaplan-Meier (censura
 no corte): churn no mês 6 de {n['km_q1_24']} (2024Q1) e {n['km_q2_24']}
-(2024Q2); coortes 2024Q3/Q4 têm follow-up curto (≤ 3 meses) e não devem ser
-comparadas à janela completa — a taxa observada subestima o churn recente.
+(2024Q2); coortes 2024Q3/Q4 (follow-up ≤ 3 meses) não se comparam à janela
+completa — a taxa subestima o churn recente.
 Taxa global na janela: {n['global_rate']} das contas.
 
 ![Tempo até o primeiro evento por coorte de signup (KM)](out/charts/b_km_by_signup_quarter.png)
 *Leitura: coortes mais recentes churnam mais cedo.*
 
-**Status de causalidade:** o conjunto (pico de contas novas + exposição
-precoce + única regra validada) sustenta a **hipótese causal plausível** de
-churn precoce — **não é prova**. Causalidade exigiria dados de
+**Status de causalidade:** o conjunto sustenta a **hipótese causal plausível**
+de churn precoce — **não é prova**. Causalidade exigiria dados de
 ativação (ACT-03) e experimento (ACT-01). Tabela:
 [out/tables/t09_causality.csv](out/tables/t09_causality.csv).
 
@@ -537,8 +580,7 @@ ativação (ACT-03) e experimento (ACT-01). Tabela:
 
 **"O uso cresceu" é verdade em volume, não por conta.** Linhas de uso (sem
 pré-signup): {n['usage_2023']} → {n['usage_2024']} (+{n['usage_pct']});
-intensidade mediana por conta-mês: {n['med_intens']}. O crescimento vem de
-mais contas ativas, não de contas mais engajadas.
+intensidade mediana por conta-mês: {n['med_intens']}.
 
 ![Uso: volume cresce vs intensidade por conta](out/charts/d_usage_volume_vs_intensity.png)
 *Leitura: volume cresce; intensidade por conta não.*
@@ -546,12 +588,12 @@ mais contas ativas, não de contas mais engajadas.
 **Suporte e CSAT não discriminam.** Antes do evento (janela de 90 dias,
 anti-leakage): tickets/conta {n['h5_tick_c']} (churn) vs {n['h5_tick_ct']}
 (controle); escalação {n['h5_esc_c']} vs {n['h5_esc_ct']}; CSAT {n['h5_csat_c']}
-vs {n['h5_csat_ct']} — sem diferença material. Hipótese H4 (uso pré-evento
+vs {n['h5_csat_ct']}. Hipótese H4 (uso pré-evento
 precede churn) foi **refutada após correção**: zero-uso {n['h4_churn']} vs {n['h4_ctrl']}
 (versão anterior contava meses pré-signup como zero).
 
 **Segmentos amplos não discriminam** (industry/canal/plano/trial): nenhum com
-taxa ≥ 1,5× a global (limiar inalcançável com taxa global de {n['global_rate']});
+taxa ≥ 1,5× a global (limiar inalcançável por desenho);
 maior gap de KM: {n['h6_gap']} p.p. **Reasons e CSAT não são confiáveis como
 causa:** {n['csat_null']} de CSAT nulos, {n['reason_unk']} de reasons
 'unknown', e {n['h7_link']} dos eventos não têm assinatura encerrada ±30d
@@ -561,7 +603,8 @@ causa:** {n['csat_null']} de CSAT nulos, {n['reason_unk']} de reasons
 
 Os segmentos que importam são **estados de jornada**, não indústria (overlap
 em [out/tables/t15b_segment_overlap.csv](out/tables/t15b_segment_overlap.csv));
-nenhum é score de risco — sinal de backtest em cada linha.
+nenhum é score de risco — **lift** (precisão da regra ÷ taxa base de
+incidência) em cada linha.
 
 | Segmento | N | Current MRR | Sinal de backtest |
 |---|---|---|---|
@@ -588,13 +631,13 @@ jornada: [out/tables/t11_account_lifecycle.csv](out/tables/t11_account_lifecycle
 
 ## 6. Ações priorizadas
 
-**Sequência:** ACT-03 (Now) → ACT-01 (Now, após readiness) · ACT-02 (Now,
-paralelo) · ACT-04 (Later). Sem score: evidência + impacto + esforço; stop/go
-por linha ([t18](out/tables/t18_actions_prioritized.csv) ·
-[t20](out/tables/t20_measurement_plan.csv)).
+**Sequência:** ACT-03 → ACT-01 (após readiness) · ACT-02 (paralelo) ·
+ACT-04 (Later). Sem score: evidência + impacto + esforço; prazos, leading e
+stop/go completos em [t18](out/tables/t18_actions_prioritized.csv) ·
+[t20](out/tables/t20_measurement_plan.csv).
 
-| ID | Ação (resumo) | Decisão | Owner | Prazo | 1º sinal (leading) | Stop/Go (resumo) |
-|---|---|---|---|---|---|---|
+| ID | Quando | Owner | Entrega (resumo) | Stop/Go (resumo) |
+|---|---|---|---|---|
 {act_tbl}
 
 **Regra de decisão do ACT-01 (3 estados;
@@ -602,8 +645,7 @@ por linha ([t18](out/tables/t18_actions_prioritized.csv) ·
 redução ≥ 10% **e** IC95 exclui 0; CONTINUE/LEARN = ponto favorável, IC95 cruza
 0; STOP/HARM = efeito adverso ou guardrail falhado. 1ª decisão em 2
 trimestres; escala em 4 trimestres + 90d. O único sinal que justifica o
-programa é o lift do backtest: **{n['lifts_d']}** (3 cutoffs de 90d, N ≥ 25)
-— a única regra consistente:
+programa é o lift do backtest — **{n['lifts_d']}** (3 cutoffs de 90d, N ≥ 25):
 
 ![Backtest point-in-time: lift por regra × cutoff](out/charts/It04_d_backtest_lift.png)
 *Leitura: só onboarding (R_D) passa do limiar 1,15.*
@@ -635,8 +677,7 @@ redução (componentes em
   é previsão; eventos ≠ logos ≠ revenue churn (lentes);
 - **Poder estatístico:** fluxo ~68 signups/trimestre; MDE a 80% de poder =
   **{n['mde']}**; poder por cenário: **{n['power']}** (10/20/30%) —
-  inconclusivo NÃO é ausência de efeito; P(falso GO) ≈ **{n['false_go']}%**;
-  escala exige IC95 excluindo 0.
+  inconclusivo NÃO é ausência de efeito; P(falso GO) ≈ **{n['false_go']}%**.
 
 ## 8. O que não fazer agora
 
@@ -645,7 +686,7 @@ redução (componentes em
 2. **Desconto generalizado** — sem custos na base, seria preço inventado;
    nenhuma evidência de que preço dirige o churn precoce.
 3. **Decisão por reason/CSAT** — evidência sugestiva com missingness alta
-   ({n['csat_null']} de CSAT nulos; {n['reason_unk']} de reasons 'unknown').
+   (seção 4).
 4. **Automação de churn** — sem validação causal; começa pela experimentação
    (ACT-01), nunca sem holdout.
 5. **ROI pontual / revenue saved / "reativação mais barata"** — proibido nesta
@@ -658,11 +699,10 @@ redução (componentes em
 - **Lentes decopladas:** {n['h7_link']} dos eventos têm assinatura encerrada
   ±30d; o snapshot marca {n['n_snapshot_fmt']} contas churnadas, mas o estado
   por assinatura mantém as {n['n_accounts']} ativas no corte (**all-active**) —
-  "perda real de estado" não é validável no presente; o backtest usa eventos
-  históricos como desfecho.
+  "perda real de estado" não é validável.
 - **Proxies:** winner MRR é estado/exposição, não receita contábil;
   lifecycle_value_proxy é soma mensal de winner (não GAAP).
-- **Poder baixo:** MDE {n['mde']}; N pequenos limitam conclusões finas.
+- **Poder baixo:** N pequenos limitam conclusões finas (MDE na seção 7).
 - **Próximos dados (ACT-03):** milestone de ativação (não capturado), reason
   estruturado ('unknown' < 5%), timestamps alinhados (uso em janela:
   {n['usage_in_window_pct']}), CSAT ≥ 90% (hoje {n['csat_cov']}) — o caminho
@@ -672,7 +712,7 @@ redução (componentes em
 
 **Reprodução (1 comando, offline, determinístico):** `./run.sh` (ou `make all`)
 regenera os artefatos das Iterações 01–07, incluindo este relatório, em
-~65–75 s (aproximação medida) — [README da solução](README.md) §6;
+~65–75 s — [README da solução](README.md) §6;
 `06_verify_pipeline.py` valida estrutura, links, imagens e claims.
 
 **Mapa de evidência (auditável):**
@@ -784,6 +824,35 @@ def run_gates(n: dict, text: str) -> list[str]:
         if aid in cited_acts and dec not in text:
             problems.append(f"G3 decisão de {aid} ausente no texto")
 
+    # G3b — tabela de ações: células curtas e COMPLETAS. Zero truncamento
+    # silencioso: nenhuma célula pode terminar no meio de palavra/frase;
+    # corte só em fronteira de palavra com '…' explícito. Detecta regressões
+    # (slice sem '…', célula pendurada) comparando cada célula renderizada
+    # com a derivação esperada pelas mesmas funções de corte.
+    m_tbl = re.search(
+        r"\| ID \| Quando \| Owner \| Entrega \(resumo\) \| Stop/Go \(resumo\) \|\n"
+        r"\|[-| ]+\|\n((?:\|[^\n]+\n)+)", text)
+    if not m_tbl:
+        problems.append("G3b tabela de ações não encontrada no render")
+    else:
+        expected = [[a["id"], f"{a['dec']} · {_strip_parens(a['prazo'])}",
+                     _strip_parens(a["owner"]), _head(a["act"]),
+                     _gate_short(a["stopgo"])] for a in n["act_rows"]]
+        rows = [ln for ln in m_tbl.group(1).splitlines()
+                if ln.strip().startswith("|")]
+        if len(rows) != len(expected):
+            problems.append(f"G3b tabela de ações: {len(rows)} linhas, "
+                            f"esperadas {len(expected)}")
+        for i, (ln, exp) in enumerate(zip(rows, expected)):
+            cells = [c.strip() for c in ln.strip().strip("|").split("|")]
+            if cells != exp:
+                problems.append(f"G3b linha {i + 1} fora do padrão: {cells}")
+            for c in cells:
+                if c.endswith((" ", "(", ";", "|", ",", "·", ":", "-", "/")):
+                    problems.append(f"G3b célula termina pendurada: '{c}'")
+                if len(c) > 64 and not c.endswith("…"):
+                    problems.append(f"G3b célula longa sem marcador '…': '{c}'")
+
     # G4 — claims proibidos em contexto AFIRMATIVO (negação explícita é
     # permitida: o relatório cita termos apenas para negá-los/proibi-los)
     for tok in FORBIDDEN_CLAIMS:
@@ -857,6 +926,10 @@ def main() -> int:
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as fh:
             fh.write(text)
+        # mkstemp cria o arquivo com modo 0600; o report commitado é 0644 —
+        # normaliza ANTES do replace para que a regeneração termine 0644
+        # (legível por outros usuários; git não rastreia esta diferença).
+        os.chmod(tmp, 0o644)
         os.replace(tmp, REPORT_PATH)
     finally:
         if os.path.exists(tmp):

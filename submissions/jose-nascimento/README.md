@@ -125,7 +125,7 @@ escopo e contenção de tempo conforme [`process-log/management/execution-plan.m
 
 ## Evidências
 
-- [x] Git history (11 commits semânticos na branch `submission/jose-nascimento`, autor do candidato)
+- [x] Git history (histórico git incremental e semântico na branch `submission/jose-nascimento`, autor do candidato — confira com `git log --author="Jose Nascimento"`)
 - [x] Chat exports: prompts literais de todas as iterações em [`process-log/prompts/`](process-log/prompts/)
 - [x] Outro: 5 reports de evidence + 26 tabelas CSV + 6 gráficos PNG regeneráveis com 1 comando ([`solution/evidence/`](solution/evidence/), [`solution/out/`](solution/out/))
 - [ ] Screenshots das conversas com IA (fluxo integral documentado em texto no process log)
