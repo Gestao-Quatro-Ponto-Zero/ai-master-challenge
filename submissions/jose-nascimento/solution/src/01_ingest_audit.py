@@ -97,6 +97,57 @@ DOMAINS = {
 GLOBAL_DATE_MIN = "2023-01-01"
 GLOBAL_DATE_MAX = "2024-12-31"
 
+# Colunas booleanas por arquivo (domínio: True/False, 0/1 ou variantes de
+# string canônicas). Guard mínimo de VALOR (não de schema): um valor fora do
+# domínio (ex.: churn_flag = "TruX") faz pandas deixar de inferir bool e os
+# checks que fazem masking booleano explodiriam com KeyError/TypeError —
+# registramos FAIL estruturado ANTES do masking. Não é catch-all: bugs reais
+# de código continuam propagando com traceback.
+BOOL_COLUMNS = {
+    "ravenstack_accounts.csv": ["is_trial", "churn_flag"],
+    "ravenstack_subscriptions.csv": ["is_trial", "upgrade_flag", "downgrade_flag",
+                                     "churn_flag", "auto_renew_flag"],
+    "ravenstack_feature_usage.csv": ["is_beta_feature"],
+    "ravenstack_support_tickets.csv": ["escalation_flag"],
+    "ravenstack_churn_events.csv": ["preceding_upgrade_flag", "preceding_downgrade_flag",
+                                    "is_reactivation"],
+}
+_BOOL_CANONICAL = {"True", "False", "true", "false", "TRUE", "FALSE", "0", "1"}
+
+
+def bool_problems(df: pd.DataFrame, cols: list[str]) -> list[str]:
+    """Valores não-canônicos em colunas booleanas (validação mínima de valor).
+
+    Retorna lista de "coluna=[valores inválidos]" (vazia = domínio íntegro).
+    """
+    problems: list[str] = []
+    for col in cols:
+        if col not in df.columns:
+            continue
+        if df[col].dtype == bool:
+            continue
+        bad = sorted({str(v) for v in df[col].dropna().unique()
+                      if str(v) not in _BOOL_CANONICAL})
+        if bad:
+            problems.append(f"{col}={bad}")
+    return problems
+
+
+def guard_bools(df: pd.DataFrame, cols: list[str], check_id: str, scope: str,
+                description: str) -> bool:
+    """Registra FAIL estruturado se alguma coluna booleana tiver valor inválido.
+
+    Retorna True quando todos os valores são canônicos (o check pode executar
+    o masking). Não é catch-all: apenas valida o domínio booleano ANTES do
+    masking — bugs reais continuam propagando com traceback (exit != 0).
+    """
+    problems = bool_problems(df, cols)
+    if problems:
+        check(check_id, scope, description, "FAIL",
+              f"não executado (validação): valores não-booleanos: {problems}")
+        return False
+    return True
+
 # ----------------------------------------------------------------------------
 # Registro de checks (ordem determinística de emissão)
 # ----------------------------------------------------------------------------
@@ -451,14 +502,16 @@ def check_dates(fname: str, df: pd.DataFrame, accounts: pd.DataFrame | None,
                   "FAIL" if n_bad_order else "PASS", f"{n_bad_order} violações")
         if guard_columns(df, ["churn_flag", "end_date"], f"D04-{fname}", fname,
                          "flags vs datas: churn_flag consistente com end_date"):
-            n_consistent = int(
-                (df["churn_flag"] & df["end_date"].isna()).sum()
-                + (df["end_date"].notna() & ~df["churn_flag"]).sum()
-            )
-            check(f"D04-{fname}", fname, "flags vs datas: churn_flag consistente com end_date",
-                  "PASS" if n_consistent == 0 else "WARN",
-                  f"{n_consistent} linhas inconsistentes "
-                  f"(churn sem end_date ou end_date sem churn); ativas={int(df['end_date'].isna().sum())}")
+            if guard_bools(df, ["churn_flag"], f"D04-{fname}", fname,
+                           "flags vs datas: churn_flag consistente com end_date"):
+                n_consistent = int(
+                    (df["churn_flag"] & df["end_date"].isna()).sum()
+                    + (df["end_date"].notna() & ~df["churn_flag"]).sum()
+                )
+                check(f"D04-{fname}", fname, "flags vs datas: churn_flag consistente com end_date",
+                      "PASS" if n_consistent == 0 else "WARN",
+                      f"{n_consistent} linhas inconsistentes "
+                      f"(churn sem end_date ou end_date sem churn); ativas={int(df['end_date'].isna().sum())}")
 
     elif fname == "ravenstack_feature_usage.csv":
         if guard_columns(df, ["usage_date"], f"D01-{fname}", fname, "usage_date parseável"):
@@ -683,6 +736,10 @@ def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
             check("C01-churn", "accounts.churn_flag vs churn_events",
                   "flag de churn da conta consistente com eventos de churn", "FAIL",
                   "não executado (schema): " + "; ".join(blocked))
+        elif not guard_bools(acc, ["churn_flag"], "C01-churn",
+                             "accounts.churn_flag vs churn_events",
+                             "flag de churn da conta consistente com eventos de churn"):
+            pass
         else:
             flagged = set(acc.loc[acc["churn_flag"], "account_id"])
             events = set(churn["account_id"])
@@ -702,6 +759,10 @@ def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
             check("C02-churn", "subscriptions.churn_flag vs churn_events",
                   "contas com evento de churn têm assinatura churn_flag", "FAIL",
                   "não executado (schema): " + "; ".join(blocked))
+        elif not guard_bools(sub, ["churn_flag"], "C02-churn",
+                             "subscriptions.churn_flag vs churn_events",
+                             "contas com evento de churn têm assinatura churn_flag"):
+            pass
         else:
             flagged_subs = set(sub.loc[sub["churn_flag"], "account_id"])
             events = set(churn["account_id"])
@@ -719,6 +780,9 @@ def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
             check("C03-churn", "churn_events",
                   "múltiplos eventos por conta (ciclos de reativação)", "FAIL",
                   "não executado (schema): " + "; ".join(blocked))
+        elif not guard_bools(churn, ["is_reactivation"], "C03-churn", "churn_events",
+                             "múltiplos eventos por conta (ciclos de reativação)"):
+            pass
         else:
             n_react = int(churn["is_reactivation"].sum())
             n_acc_react = int(churn.loc[churn["is_reactivation"], "account_id"].nunique())
@@ -773,6 +837,9 @@ def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
             check("C07-subs", "subscriptions",
                   "trial => MRR 0; não-trial => MRR > 0", "FAIL",
                   "não executado (schema): " + "; ".join(blocked))
+        elif not guard_bools(sub, ["is_trial"], "C07-subs", "subscriptions",
+                             "trial => MRR 0; não-trial => MRR > 0"):
+            pass
         else:
             n_trial_mrr = int((sub["is_trial"] & (sub["mrr_amount"] > 0)).sum())
             n_notrial_zero = int((~sub["is_trial"] & (sub["mrr_amount"] == 0)).sum())
@@ -788,6 +855,10 @@ def check_cross_tables(dfs: dict[str, pd.DataFrame]) -> None:
             check("C08-subs", "subscriptions",
                   "upgrade_flag e downgrade_flag mutuamente exclusivos", "FAIL",
                   "não executado (schema): " + "; ".join(blocked))
+        elif not guard_bools(sub, ["upgrade_flag", "downgrade_flag"], "C08-subs",
+                             "subscriptions",
+                             "upgrade_flag e downgrade_flag mutuamente exclusivos"):
+            pass
         else:
             both = int((sub["upgrade_flag"] & sub["downgrade_flag"]).sum())
             check("C08-subs", "subscriptions",
@@ -851,7 +922,11 @@ def collect_syntheticity_evidence(dfs: dict[str, pd.DataFrame]) -> list[tuple[st
             ev.append(("subscriptions.billing_frequency", "distribuição (contagem)",
                        "não executado (schema): coluna ausente"))
         if {"is_trial", "mrr_amount"} <= set(sub.columns):
-            ev.append(("subscriptions.mrr", "estrutura", f"mrr=0 => trial ({int(sub['is_trial'].sum())}); ARR=12xMRR em 100% das linhas com MRR>0"))
+            if bool_problems(sub, ["is_trial"]):
+                ev.append(("subscriptions.mrr", "estrutura",
+                           "não executado (validação): is_trial com valores não-booleanos"))
+            else:
+                ev.append(("subscriptions.mrr", "estrutura", f"mrr=0 => trial ({int(sub['is_trial'].sum())}); ARR=12xMRR em 100% das linhas com MRR>0"))
         else:
             ev.append(("subscriptions.mrr", "estrutura", "não executado (schema): colunas ausentes"))
     if use is not None:

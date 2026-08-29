@@ -15,7 +15,8 @@ Verifica, SEM reimplementar nenhuma análise das Iterações 01–05:
      estruturais entre tabelas (subconjuntos documentados);
   D. Higiene — zero binários proibidos (.db/.duckdb/.sqlite/.pyc), zero
      venv/cache, zero paths pessoais/segredos em solution/, zero imports de
-     rede nos scripts, requirements mínimos, run.sh executável e sem CRLF;
+     rede nos scripts, requirements mínimos, run.sh executável e sem CRLF,
+     ids de check únicos (gate D7);
   E. Sanidade — compile() e import de todos os scripts (01–06).
 
 Saída: uma linha por check ("[PASS]" / "[FAIL]" + id + detalhe), resumo e
@@ -34,6 +35,13 @@ import os
 import re
 import sys
 from pathlib import Path
+
+# Invocação direta documentada (`python3 solution/src/06_verify_pipeline.py`)
+# NÃO pode gerar `solution/src/__pycache__/` (o check E2 importa os scripts via
+# importlib; sem isto, a execução direta poluiria a árvore e o próprio D1
+# falharia na execução seguinte). A flag vale para todo o processo, incluindo
+# o SourceFileLoader usado por E2.
+sys.dont_write_bytecode = True
 
 import pandas as pd
 
@@ -267,12 +275,15 @@ def b_parseable() -> None:
     for md_path in [EVIDENCE_DIR / e for e in EVIDENCE] + [
             PROCESSED_DIR / "README.md", RAW_DIR / "README.md",
             DOCS_DIR / "analytical-contract.md"]:
+        # uid único por PATH relativo (evita colisão "README.md" raw/processado;
+        # o gate D7-uids falha se qualquer uid se repetir)
+        uid = f"B4-md-{md_path.relative_to(SOLUTION_DIR)}"
         def _one(p: Path = md_path) -> tuple[bool, str]:
             if not p.is_file() or p.stat().st_size == 0:
                 return False, "ausente ou vazio"
             txt = p.read_text(encoding="utf-8")
             return ("## " in txt), f"{p.stat().st_size} bytes; seção '## ' presente"
-        safe(f"B4-md-{md_path.name}", "parse", f"Markdown presente: {md_path.name}", _one)
+        safe(uid, "parse", f"Markdown presente: {md_path.relative_to(SOLUTION_DIR)}", _one)
 
     for cname in CHARTS:
         path = CHARTS_DIR / cname
@@ -530,7 +541,8 @@ def d_hygiene() -> None:
         pkgs = sorted(ln.split("==")[0] for ln in lines)
         both = {"pandas", "matplotlib"} <= set(pkgs)
         return (ok and both), (f"dependências declaradas: {pkgs} "
-                               f"(mínimas: pandas+matplotlib; extras={sorted(set(pkgs) - {'pandas', 'matplotlib'}) or 'nenhum'})")
+                               f"(mínimas: pandas+matplotlib; "
+                               f"extras={sorted(set(pkgs) - {'pandas', 'matplotlib'}) or 'nenhum'} — informativos, não bloqueiam)")
     safe("D5-requirements", "higiene", "requirements.txt mínimo (pandas+matplotlib)", _requirements)
 
     def _run_artifacts() -> tuple[bool, str]:
@@ -595,6 +607,20 @@ def e_sanity() -> None:
 
 
 # ----------------------------------------------------------------------------
+# D7. Gate de integridade do próprio verificador: ids de check únicos
+# ----------------------------------------------------------------------------
+def check_uid_uniqueness() -> None:
+    """Registra D7-uids por ÚLTIMO: ids de check duplicados quebrariam o
+    diagnóstico (ex.: B4-md-README.md emitido 2× na versão anterior) — um
+    duplicado vira FAIL explícito em vez de ambiguidade silenciosa."""
+    seen: set[str] = set()
+    dups = sorted({uid for uid in (c["uid"] for c in CHECKS)
+                   if uid in seen or seen.add(uid)})
+    check("D7-uids", "higiene", "ids de check únicos (sem colisão de diagnóstico)",
+          not dups, f"ids duplicados={dups or 'nenhum'}")
+
+
+# ----------------------------------------------------------------------------
 # Main
 # ----------------------------------------------------------------------------
 def main() -> int:
@@ -603,6 +629,7 @@ def main() -> int:
     c_consistency()
     d_hygiene()
     e_sanity()
+    check_uid_uniqueness()  # último: valida inclusive os ids emitidos acima
 
     for c in CHECKS:
         flag = "PASS" if c["ok"] else "FAIL"

@@ -5,7 +5,8 @@ roda do zero com **um comando**, offline (os 5 CSVs são commitados em `data/raw
 deterministicamente (outputs byte-idênticos entre execuções) e sem Docker/CI.
 
 - **Um comando:** `./run.sh` (ou `make all` — mesma fonte única).
-- **Verificação:** `make verify` (ou `python3 solution/src/06_verify_pipeline.py`).
+- **Verificação:** `make verify` (ou `python3 solution/src/06_verify_pipeline.py`;
+  a invocação direta NÃO gera `__pycache__` — o verificador desabilita bytecode).
 - **Regeneração de derivados:** `make clean-derived` (nunca toca `data/raw/` nem `process-log/`).
 
 ---
@@ -14,10 +15,10 @@ deterministicamente (outputs byte-idênticos entre execuções) e sem Docker/CI.
 
 | Item | Exigência | Testado em |
 |---|---|---|
-| Python | **>= 3.11** | 3.12.3 (Linux, x86_64) |
+| Python | **>= 3.11** | 3.12.3 (Linux, aarch64) |
 | pandas | `==3.0.5` (pin exato) | 3.0.5 |
 | matplotlib | `==3.11.1` (pin exato) | 3.11.1 |
-| Sistema | Linux ou macOS; bash; `make` | Linux |
+| Sistema | Linux ou macOS; bash; `make` | Linux (aarch64) |
 
 - **Sem rede:** nenhum script baixa nada; os dados já estão commitados.
 - **Sem Docker/CI/notebook/dashboard.**
@@ -44,16 +45,24 @@ dos scripts 01–05; `duckdb`/`seaborn`/`jupyterlab`/`numpy` explícito foram re
 ./run.sh          # ou: make all
 ```
 
+**Override de interpretador:** o pipeline e os targets de debug honram
+`PYTHON ?= python3` — use `PYTHON=/caminho/python3 ./run.sh` ou
+`make PYTHON=/caminho/python3 verify` (mesma convenção nos dois).
+
 O que acontece (em ordem):
 
 1. **Preflight** — `python3` presente e >= 3.11; `pandas`/`matplotlib` importáveis;
    os 5 raw CSVs commitados presentes. Falha útil (exit != 0) se algo faltar.
 2. **Estágios 01→05** — `01_ingest_audit.py`, `02_reconcile_churn.py`,
    `03_root_cause.py`, `04_lifecycle_watchlist.py`, `05_actions_impact.py`.
-   Cada estágio propaga exit code; falha estrutural regrava o relatório com FAILs
-   (sem traceback) e o pipeline para.
-3. **Verificação final** — `06_verify_pipeline.py` (67 checks); qualquer FAIL
-   torna o `run.sh` falho (exit 1).
+   Cada estágio propaga exit code; falha tratada (schema ausente ou valor
+   categórico/booleano inválido) regrava o relatório com FAILs estruturados e o
+   pipeline para — sem traceback. Falha inesperada (bug real) mostra o
+   diagnóstico do estágio (possivelmente com traceback) e o relatório pode ficar
+   desatualizado: corrija a causa e reexecute.
+3. **Verificação final** — `06_verify_pipeline.py` (checks A–E + gate de ids
+   únicos; contagem exata impressa em runtime); qualquer FAIL torna o `run.sh`
+   falho (exit 1).
 
 ## 4. Outputs por estágio
 
@@ -66,7 +75,9 @@ O que acontece (em ordem):
 | 05 — ações/impacto | `solution/evidence/05_action_plan.md`, tabelas `t18–t21` (4) |
 | 06 — verificação | nenhum output (read-only); exit 0/1 |
 
-Total: **5 evidence reports, 26 tabelas CSV, 6 PNGs, 1 base account-month, 1 contrato**.
+Total: **5 evidence reports, 26 tabelas CSV, 6 PNGs, 1 base account-month, 1 contrato**
+(40 artefatos derivados regeneráveis; + 5 raw CSVs commitados = 45 outputs do
+pipeline; este `README.md` é estático e não é regenerado).
 
 ## 5. Estrutura
 
@@ -87,9 +98,10 @@ submissions/jose-nascimento/
 └── process-log/                # plano, checklist, prompts, reports, decisions (não regenerado)
 ```
 
-## 6. Tempo e memória (medidos nesta máquina; aproximação honesta)
+## 6. Tempo e memória (medidos nesta máquina; aproximação honesta, não benchmark)
 
-Pipeline completo: **~64–66 s** de relógio (2× `./run.sh` + `make all` + CWD diferente).
+Pipeline completo: **~65–75 s** de relógio (faixa observada em execuções
+repetidas; varia com a máquina/carga — rótulo de aproximação, não benchmark).
 
 | Estágio | Tempo (aprox.) | Pico de memória (ru_maxrss, aprox.) |
 |---|---|---|
@@ -119,18 +131,22 @@ Pipeline completo: **~64–66 s** de relógio (2× `./run.sh` + `make all` + CWD
   reports sem gate FAIL e com gate PASS; relações estruturais entre tabelas
   (t16 ⊆ t11, t21 ⊆ t16, t14b ⊆ t14, t19/t20 ⊆ t18);
 - **Higiene** — zero `.db/.duckdb/.sqlite/.pyc` e venv/cache em `solution/`;
-  zero paths pessoais/segredos; zero imports de rede; `requirements.txt` mínimo;
-  `run.sh` executável e sem CRLF;
+  zero paths pessoais/segredos; zero imports de rede; `requirements.txt` mínimo
+  (extras são informativos, não bloqueiam); `run.sh` executável e sem CRLF;
+  ids de check únicos (gate D7);
 - **Sanidade** — `compile()` e import de todos os scripts.
 
 Exit 0 = tudo OK; exit 1 = diagnóstico estruturado por check (sem traceback).
+Nota: `make verify` com falha retorna **exit 2** (o GNU make encapsula o exit 1
+do script — convenção do make); o script direto retorna exit 1.
 
 ## 8. `make clean-derived`
 
-Remove **somente** os artefatos derivados regeneráveis (lista explícita:
-evidence 01–05, account_month + README processado, contrato, 26 tabelas, 6 PNGs).
-**Nunca** apaga `data/raw/` (dados commitados) nem `process-log/`.
-Regeneração: `./run.sh` (ou `make all`).
+Remove **somente** os artefatos derivados regeneráveis (lista explícita no
+Makefile: evidence 01–05, account_month + README processado, contrato, 26
+tabelas, 6 PNGs — **40 arquivos**; o target imprime a contagem derivada de
+`$(words $(DERIVED))`). **Nunca** apaga `data/raw/` (dados commitados) nem
+`process-log/`. Regeneração: `./run.sh` (ou `make all`).
 
 ## 9. Troubleshooting
 
@@ -139,8 +155,10 @@ Regeneração: `./run.sh` (ou `make all`).
 | `python3 não encontrado` / `Python >= 3.11 exigido` | interpretador ausente/antigo | instalar Python >= 3.11 |
 | `dependências Python ausentes` | `pip install` não executado | `pip install -r requirements.txt` |
 | `dado bruto ausente ou vazio` | `data/raw/` incompleto | restaurar os 5 CSVs commitados (não há download) |
-| estágio falha com `checks: N PASS / M FAIL` | dado/schema alterado | ler o relatório do estágio (regravado com FAILs); restaurar os arquivos originais |
+| estágio falha com `checks: N PASS / M FAIL` | dado/schema alterado ou valor categórico/booleano inválido (ex.: `churn_flag=TruX`) | ler o relatório do estágio (regravado com FAILs estruturados "não executado (schema/validação)"); restaurar os arquivos originais |
 | `make verify` com FAILs | outputs derivados ausentes/alterados | `./run.sh` regenera tudo byte-a-byte |
+| `make verify` retorna exit 2 | GNU make encapsula o exit 1 do script (convenção) | comportamento esperado; script direto retorna exit 1 |
+| Warnings no stderr de pandas (`numexpr`/`bottleneck` abaixo do mínimo) e matplotlib (`Unable to import Axes3D`) | dependências **opcionais** antigas/ausentes do ambiente (site-packages) | benignos: não afetam outputs nem determinismo; não são suprimidos (nenhum warning analítico é escondido) |
 | outputs mudaram após trocar versões | pin mudado | pins exatos em `requirements.txt`; investigue o diff antes de aceitar (não normalize silenciosamente) |
 
 ## 10. Definições e lentes (contrato analítico)

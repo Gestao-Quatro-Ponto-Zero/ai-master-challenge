@@ -81,7 +81,7 @@ PYEOF
     rc=$?
     set -e
     if [ "$rc" -ne 0 ]; then
-        printf '[pipeline] ERRO: estágio %s falhou (exit %s). Estágios subsequentes NÃO foram executados; outputs deste estágio podem estar em modo de falha estrutural (relatório regravado, exit 1, sem traceback).\n' "$name" "$rc" >&2
+        printf '[pipeline] ERRO: estágio %s falhou (exit %s). Estágios subsequentes NÃO foram executados. Em falhas tratadas (schema/validação) o relatório do estágio é regravado com FAILs estruturados; em falha inesperada o diagnóstico acima pode conter traceback e o relatório pode ficar desatualizado — corrija a causa e reexecute.\n' "$name" "$rc" >&2
         exit "$rc"
     fi
     log "estágio $name: OK em $((SECONDS - t0))s"

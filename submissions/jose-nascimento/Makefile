@@ -4,6 +4,11 @@
 # Ver: solution/README.md e process-log/decisions/iteration-06-reproducibility-decisions.md
 # ============================================================================
 SHELL := /bin/bash
+# Interpretador do pipeline: override via `make PYTHON=...` ou `PYTHON=... make`
+# (mesma convenção do run.sh: `PY="${PYTHON:-python3}"`). Exportado para os
+# recipes (inclusive `./run.sh` em `all`).
+PYTHON ?= python3
+export PYTHON
 export PYTHONDONTWRITEBYTECODE := 1
 
 .PHONY: all verify stage-01 stage-02 stage-03 stage-04 stage-05 clean-derived
@@ -13,24 +18,26 @@ all:
 	./run.sh
 
 # Executa apenas o verificador estrutural (não regenera nada).
+# Nota: com falha, o GNU make encapsula o exit 1 do script como exit 2
+# (convenção do make); o script direto retorna exit 1.
 verify:
-	python3 solution/src/06_verify_pipeline.py
+	$(PYTHON) solution/src/06_verify_pipeline.py
 
 # Estágios individuais (úteis para debug; `all` é a fonte única da entrega).
 stage-01:
-	python3 solution/src/01_ingest_audit.py
+	$(PYTHON) solution/src/01_ingest_audit.py
 
 stage-02:
-	python3 solution/src/02_reconcile_churn.py
+	$(PYTHON) solution/src/02_reconcile_churn.py
 
 stage-03:
-	python3 solution/src/03_root_cause.py
+	$(PYTHON) solution/src/03_root_cause.py
 
 stage-04:
-	python3 solution/src/04_lifecycle_watchlist.py
+	$(PYTHON) solution/src/04_lifecycle_watchlist.py
 
 stage-05:
-	python3 solution/src/05_actions_impact.py
+	$(PYTHON) solution/src/05_actions_impact.py
 
 # ---------------------------------------------------------------------------
 # clean-derived — remove SOMENTE artefatos derivados regeneráveis (lista
@@ -82,7 +89,7 @@ DERIVED := \
 clean-derived:
 	@test -f solution/src/01_ingest_audit.py || { echo "ERRO: rode do diretório da submissão (submissions/jose-nascimento/)." >&2; exit 1; }
 	@test -f solution/data/raw/ravenstack_accounts.csv || { echo "ERRO: data/raw/ ausente — recusando apagar qualquer coisa." >&2; exit 1; }
-	@echo "Aviso: apagando APENAS os artefatos derivados regeneráveis da lista explícita abaixo."
+	@echo "Aviso: apagando APENAS os artefatos derivados regeneráveis da lista explícita abaixo ($(words $(DERIVED)) arquivos — contagem derivada da lista, não hardcoded)."
 	@echo "       data/raw/ e process-log/ NUNCA são apagados. Regenere com ./run.sh (ou make all)."
 	@rm -f $(DERIVED)
-	@echo "OK: artefatos derivados removidos (ver lista acima)."
+	@echo "OK: artefatos derivados removidos ($(words $(DERIVED)) arquivos; ver lista acima)."

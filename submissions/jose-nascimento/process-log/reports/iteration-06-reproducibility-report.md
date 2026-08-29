@@ -25,15 +25,15 @@
 |---|---|
 | `requirements.txt` | minimizado: `pandas==3.0.5`, `matplotlib==3.11.1` (pins exatos; comentário com justificativa) |
 | `run.sh` | pipeline em 1 comando: `set -euo pipefail`, resolve path próprio (qualquer CWD), preflight Python/deps/data, estágios 01→05 com propagação de exit code, medição tempo (SECONDS) + pico de memória (ru_maxrss), verificador ao final, resumo curto; `PYTHONDONTWRITEBYTECODE=1` |
-| `Makefile` | `all` = `./run.sh` (fonte única, sem lógica duplicada); `verify` = só o verificador; `stage-01..05`; `clean-derived` com lista explícita (41 arquivos) + guards; exporta `PYTHONDONTWRITEBYTECODE` |
-| `solution/src/06_verify_pipeline.py` | verificador read-only (stdlib + pandas; 67 checks): manifesto (A), parseabilidade (B), consistência com contratos commitados (C), higiene (D), sanidade compile/import (E); exit 0/1 com diagnóstico estruturado, zero traceback |
+| `Makefile` | `all` = `./run.sh` (fonte única, sem lógica duplicada); `verify` = só o verificador; `stage-01..05`; `clean-derived` com lista explícita (40 arquivos — contagem derivada de `$(words $(DERIVED))`, não hardcoded) + guards; exporta `PYTHONDONTWRITEBYTECODE`; `PYTHON ?= python3` em todos os targets |
+| `solution/src/06_verify_pipeline.py` | verificador read-only (stdlib + pandas; 68 checks): manifesto (A), parseabilidade (B), consistência com contratos commitados (C), higiene (D), sanidade compile/import (E), gate de ids de check únicos (D7); exit 0/1 com diagnóstico estruturado, zero traceback; `sys.dont_write_bytecode` para invocação direta não gerar `__pycache__` |
 | `solution/README.md` | setup Linux/macOS, venv opcional, pip install, 1 comando, outputs, estrutura, tempo/memória medidos, troubleshooting, definições/lenses, licença/dados inclusos |
 
 ## 3. Ambiente e versões (documentadas)
 
 | Item | Valor |
 |---|---|
-| OS | Linux (Ubuntu, x86_64) |
+| OS | Linux (Ubuntu 24.04, **aarch64**) |
 | Python | 3.12.3 (testado; exigência mínima documentada: >= 3.11) |
 | pandas | 3.0.5 (pin exato) |
 | matplotlib | 3.11.1 (pin exato) |
@@ -46,15 +46,15 @@
 
 | Validação | Comando | Resultado |
 |---|---|---|
-| 1ª execução | `./run.sh` | exit 0; estágios 72 PASS/18 WARN/0 FAIL · 31/1/0 · 23/0/0 · 34/0/0 · 45/0/0; verificador 67 PASS/0 FAIL; **46/46 outputs byte-idênticos** ao commitado |
-| 2ª execução (determinismo) | `./run.sh` | exit 0; outputs MD5 idênticos à 1ª (46/46) |
-| `make all` (fonte única) | `make all` | exit 0; outputs MD5 idênticos (46/46) |
-| CWD diferente | `run.sh` a partir de `/tmp` (path absoluto) | exit 0; outputs MD5 idênticos (46/46) |
-| `make verify` | de outro CWD | exit 0; 67 PASS/0 FAIL |
+| 1ª execução | `./run.sh` | exit 0; estágios 72 PASS/18 WARN/0 FAIL · 31/1/0 · 23/0/0 · 34/0/0 · 45/0/0; verificador 68 PASS/0 FAIL; **45/45 outputs byte-idênticos** ao commitado (40 derivados + 5 raw; README estático à parte) |
+| 2ª execução (determinismo) | `./run.sh` | exit 0; outputs MD5 idênticos à 1ª (45/45) |
+| `make all` (fonte única) | `make all` | exit 0; outputs MD5 idênticos (45/45) |
+| CWD diferente | `run.sh` a partir de `/tmp` (path absoluto) | exit 0; outputs MD5 idênticos (45/45) |
+| `make verify` | de outro CWD | exit 0; 68 PASS/0 FAIL |
 | Tree pós-regeneração | `git status --porcelain` | somente `requirements.txt` (modificado de propósito); zero untracked (sem `__pycache__`) |
 | `bash -n` + `git diff --check` | — | OK |
 | compile/imports | verificador E1/E2 | 6/6 scripts compilam e importam |
-| `make clean-derived` + regeneração | sandbox | apaga só a lista explícita; `data/raw/` (6 arquivos) e `process-log/` intactos; `./run.sh` regenera 46/46 byte-idênticos |
+| `make clean-derived` + regeneração | sandbox | apaga só a lista explícita (40 arquivos); `data/raw/` (6 arquivos) e `process-log/` intactos; `./run.sh` regenera 45/45 byte-idênticos |
 | FAIL — dado ausente | sandbox (`ravenstack_accounts.csv` removido) | exit 1; mensagem útil ("dado bruto ausente ou vazio" + lista); **0 tracebacks**; nada executado (stale-free) |
 | FAIL — schema quebrado | sandbox (coluna `usage_date` renomeada) | exit 1; estágio 01 com 5 FAILs estruturados e relatório regravado ("não executado (schema)"); pipeline parou; **0 tracebacks** |
 | FAIL — python/deps ausentes | sandbox (python3 fake exit 127) | exit 1; mensagem útil ("Python >= 3.11 exigido..."); 0 tracebacks |
@@ -64,16 +64,18 @@
 ## 5. Determinismo (hashes e tree)
 
 - MD5 capturados antes da 1ª execução vs depois de: 1ª execução, 2ª execução,
-  `make all`, CWD diferente e regeneração pós-`clean-derived` — **46/46 idênticos
-  em todas as comparações** (evidence 01–05, account_month + README processado,
-  contrato, 26 tabelas, 6 PNGs, 5 raw).
+  `make all`, CWD diferente e regeneração pós-`clean-derived` — **45/45
+  idênticos em todas as comparações** (evidence 01–05, account_month + README
+  processado, contrato, 26 tabelas, 6 PNGs, 5 raw). O `solution/README.md` é
+  estático (não regenerado) e fica fora da contagem de outputs.
 - `git status` após regenerações: limpo exceto o `requirements.txt` pretendido.
 - PNGs: exatamente 6, byte-idênticos; os 4 pruned (gate It04) ausentes (checados
   pelo verificador A5/A6).
 
-## 6. Tempo e memória (medidos; aproximação declarada)
+## 6. Tempo e memória (medidos; aproximação declarada, não benchmark)
 
-Pipeline completo: ~64–66 s de relógio (3 medições: 64/66/66 s).
+Pipeline completo: **~65–75 s** de relógio (faixa observada em execuções
+repetidas nesta máquina e em revisões independentes; varia com máquina/carga).
 
 | Estágio | Tempo | Pico (ru_maxrss) |
 |---|---|---|
@@ -105,7 +107,7 @@ Pipeline completo: ~64–66 s de relógio (3 medições: 64/66/66 s).
    não `**PASS**`. **Correção:** `PASS_MARKER` aceita ambos os formatos.
 4. **`diff` de MD5 com path relativo confundiu comparação** (erro de verificação,
    não do pipeline) — hashes idênticos, paths relativos vs absolutos. **Correção:**
-   comparação re-executada com paths absolutos: 46/46 idênticos.
+   comparação re-executada com paths absolutos: 45/45 idênticos.
 5. **`__pycache__` pré-existente no working tree** (ignorado, nunca commitado) —
    a checagem D1 do verificador o reportava. **Correção:** removido localmente;
    `run.sh`/`Makefile` exportam `PYTHONDONTWRITEBYTECODE=1` para nunca recriar
@@ -121,8 +123,45 @@ Pipeline completo: ~64–66 s de relógio (3 medições: 64/66/66 s).
   (resposta do executor) e no review gate 3x da It06.
 - **Handoff It07:** `solution/README.md` e `run.sh` são a base da entrega; o
   relatório executivo (It07) pode citar os artefatos regeneráveis e o verificador
-  como gate de QA; nenhum output analítico mudou (46/46 byte-idênticos), então os
+  como gate de QA; nenhum output analítico mudou (45/45 byte-idênticos), então os
   números das Iterações 03–05 permanecem válidos.
+
+## 10. Adendo — correções do review gate 3x (2026-08-29)
+
+- **Reviewers:** 3 revisores read-only (review-f1fa7caa, review-4179846c,
+  review-18199ddc); veredictos `PASS_WITH_FIXES` / `PASS` / `PASS_WITH_FIXES`;
+  ledger em `process-log/reviews/iteration-06-review-summary.md`; detalhe das
+  correções em `process-log/reports/iteration-06-review-fix-report.md` e nas
+  decisões D11–D17.
+- **Correções aplicadas (sem alterar nenhum output analítico):**
+  1. **Categórico inválido** (review-18199ddc F1, MEDIUM): `01_ingest_audit.py`
+     ganhou `BOOL_COLUMNS`/`guard_bools` — valor não-booleano (ex.: `churn_flag=
+     TruX`) vira FAIL estruturado "não executado (validação)" nos checks que
+     mascaram booleano (D04/C01/C02/C03/C07/C08), relatório regravado, exit 1,
+     sem traceback e sem catch-all (testado em accounts e subscriptions).
+  2. **`__pycache__` na invocação direta** (review-f1fa7caa F1, MÉDIO):
+     `sys.dont_write_bytecode = True` no verificador — invocação direta 2× em
+     clone limpo comprovada sem pyc e sem D1 auto-falhar.
+  3. **Ambiente** (review-18199ddc F2, MEDIUM): `aarch64` (não x86_64) nas
+     docs/report/requirements; runtime como faixa observada ~65–75 s
+     ("aproximação, não benchmark").
+  4. **Contagens** (F2/F3): `DERIVED`=40 derivado de `$(words $(DERIVED))`;
+     outputs regeneráveis=45 (40 derivados + 5 raw); README estático separado;
+     claims 41/46 removidas.
+  5. **uids do verificador** (review-18199ddc F4): B4 por path relativo + gate
+     D7-uids (duplicata vira FAIL) — verificador agora com 68 checks.
+  6. **Makefile/PYTHON** (F5/F3/F7): `PYTHON ?= python3` em `verify`/`stage-*`;
+     override documentado; exit 2 do `make verify` documentado (semântica make).
+  7. **Warnings de pandas/matplotlib** (review-18199ddc F6): não vêm de cache —
+     documentados como benignos no troubleshooting; nada suprimido.
+  8. **Mensagem de falha do run.sh** (review-18199ddc F1/review-4179846c F4):
+     qualificada — relatório é regravado apenas em falhas tratadas; falha
+     inesperada pode ter traceback e relatório stale (declarado com honestidade).
+- **Revalidação pós-correção:** clone fresco (sem ravendata) 2× `./run.sh` +
+  `make all` + CWD externo + verificador direto 2× + `clean-derived`: 45/45
+  byte-idênticos, tree limpa, zero `__pycache__`, 68 PASS/0 FAIL; cenários de
+  falha (arquivo/schema/categórico/python/deps/verifier corrompido) sem
+  traceback e sem stale; detalhe no review-fix report.
 
 ## 9. Estados (atualizados no plano/checklist)
 
