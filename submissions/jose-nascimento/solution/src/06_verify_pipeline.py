@@ -23,7 +23,7 @@ E. Sanidade — compile() e import de todos os scripts (01–07).
    F. Relatório executivo (It07) — presença, links relativos, exatamente 6
       imagens (1x cada), word count, claims proibidos em contexto afirmativo,
       contas ⊆ t16, ações ⊆ t18 e âncoras numéricas re-derivadas das tabelas.
-   G. Process log (It08) — presença dos artefatos obrigatórios, exatamente 8
+   G. Process log (It08–09) — presença dos artefatos obrigatórios, exatamente 8
       erros no ledger, links internos resolvem (zero link para diretório
       temporário), zero paths de máquina/segredos nos docs novos,
 modelos/harness corretos, README com checkboxes honestos, review
@@ -73,7 +73,7 @@ CHARTS_DIR = SOLUTION_DIR / "out" / "charts"
 SRC_DIR = SOLUTION_DIR / "src"
 REPORT_PATH = SOLUTION_DIR / "report-executivo.md"
 
-# Docs novos da Iteração 08 (política F2/It08): sem paths de máquina, sem
+# Docs novos (política F2/It08, estendida à It09): sem paths de máquina, sem
 # segredos, sem placeholders falsos; hashes de commit citados resolvem.
 # TMP_TOKEN é composto em runtime (partes) para que ESTE arquivo não case
 # consigo mesmo na varredura D2 (nenhum token completo no texto-fonte).
@@ -91,6 +91,12 @@ NEW_PL_DOCS = [
     PROCESS_LOG_DIR / "reviews" / "iteration-08-review-summary.md",
     PROCESS_LOG_DIR / "prompts" / "iteration-08-review-fix-prompt.md",
     PROCESS_LOG_DIR / "reports" / "iteration-08-review-fix-report.md",
+    # It09 (QA final integral): prompt/report arquivados + readiness checklist
+    # entram no escopo das varreduras de paths de máquina (G4), hashes (G9) e
+    # placeholders (G11) — mesma política F2/It08 dos demais docs novos.
+    PROCESS_LOG_DIR / "prompts" / "iteration-09-prompt.md",
+    PROCESS_LOG_DIR / "reports" / "iteration-09-final-qa-report.md",
+    PROCESS_LOG_DIR / "management" / "submission-readiness-checklist.md",
 ]
 
 # ----------------------------------------------------------------------------
@@ -835,7 +841,8 @@ PL_PROMPTS = ([f"iteration-{i:02d}-prompt.md" for i in range(8)]
               + ["orchestration-architecture-addendum-prompt.md",
                  "orchestrator-visual-correction-prompt.md",
                  "iteration-08-prompt.md",
-                 "iteration-08-review-fix-prompt.md"])
+                 "iteration-08-review-fix-prompt.md",
+                 "iteration-09-prompt.md"])
 PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
                   "planning-report", "ingest-audit-report", "reconciliation-report",
                   "root-cause-report", "lifecycle-watchlist-report",
@@ -845,7 +852,8 @@ PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
               + ["orchestration-architecture-addendum-report.md",
                  "orchestrator-visual-correction-report.md",
                  "iteration-08-process-log-report.md",
-                 "iteration-08-review-fix-report.md"])
+                 "iteration-08-review-fix-report.md",
+                 "iteration-09-final-qa-report.md"])
 PL_DECISIONS = ["decision-ledger.md"] + [
     f"iteration-{i:02d}-{name}.md" for i, name in [
         (2, "analytical-contract-decisions"), (3, "root-cause-decisions"),
@@ -933,7 +941,7 @@ def g_process_log() -> None:
             for tok in tokens:
                 if tok in txt:
                     hits.append(f"{doc.relative_to(PROCESS_LOG_DIR)} <- '{tok}'")
-        return (not hits), (f"paths de máquina em docs novos (It08): "
+        return (not hits), (f"paths de máquina em docs novos (It08–09): "
                             f"{hits or 'nenhum'}")
     safe("G4-no-machine-paths", "process log",
          "docs novos sem paths de máquina (dir temporário, home, usuário…)",
@@ -1046,14 +1054,19 @@ def g_process_log() -> None:
         problems = []
         if found.get(8) != "CONCLUDED":
             problems.append(f"It08 estado {found.get(8)} != CONCLUDED")
-        for it in (9, 10):
-            if found.get(it) != "PENDING":
-                problems.append(f"It{it} estado {found.get(it)} != PENDING")
+        if found.get(9) != "CONCLUDED":
+            problems.append(f"It09 estado {found.get(9)} != CONCLUDED")
+        if found.get(10) != "PENDING":
+            problems.append(f"It10 estado {found.get(10)} != PENDING")
         checklist = (PROCESS_LOG_DIR / "management" / "orchestrator-checklist.md").read_text(encoding="utf-8")
         if "It08 `CONCLUDED`" not in checklist:
             problems.append("checklist sem It08 CONCLUDED")
         if "gate 3x da It08 `CONCLUDED`" not in checklist:
             problems.append("checklist sem gate 3x da It08 CONCLUDED")
+        if "It09 `CONCLUDED`" not in checklist:
+            problems.append("checklist sem It09 CONCLUDED")
+        if "gate 3x da It09 `PENDING`" not in checklist:
+            problems.append("checklist sem gate 3x da It09 PENDING")
         readme = (SUBMISSION_DIR / "README.md").read_text(encoding="utf-8")
         if "pendente" not in readme:
             problems.append("README sem data 'pendente'")
@@ -1061,7 +1074,8 @@ def g_process_log() -> None:
                                 f"It10={found.get(10)}; problemas="
                                 f"{problems or 'nenhum'}")
     safe("G10-states", "process log",
-         "estados do plano (It08 CONCLUDED; It09/10 PENDING; gate It08 CONCLUDED)",
+         "estados do plano (It08/09 CONCLUDED; It10 PENDING; gate It08 "
+         "CONCLUDED; gate It09 PENDING)",
          _states)
 
     def _no_placeholders() -> tuple[bool, str]:
