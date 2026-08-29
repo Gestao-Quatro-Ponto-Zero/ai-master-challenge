@@ -136,7 +136,7 @@ tabela_exibicao = tabela_exibicao.rename(
 ).drop(columns=["valor_esperado"])
 st.dataframe(
     tabela_exibicao,
-    use_container_width=True,
+    width="stretch",
     hide_index=True,
     column_config={
         "Probabilidade": st.column_config.ProgressColumn(format="%.0f%%", min_value=0, max_value=100),
