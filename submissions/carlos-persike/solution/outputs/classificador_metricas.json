@@ -1,0 +1,18 @@
+{
+  "baseline_classe_majoritaria_acc": 0.2847,
+  "modelo_tfidf_linearsvc_acc": 0.861,
+  "modelo_tfidf_linearsvc_f1_macro": 0.8616,
+  "ganho_sobre_baseline_pp": 57.63,
+  "n_treino": 38269,
+  "n_teste": 9568,
+  "classes": [
+    "Access",
+    "Administrative rights",
+    "HR Support",
+    "Hardware",
+    "Internal Project",
+    "Miscellaneous",
+    "Purchase",
+    "Storage"
+  ]
+}

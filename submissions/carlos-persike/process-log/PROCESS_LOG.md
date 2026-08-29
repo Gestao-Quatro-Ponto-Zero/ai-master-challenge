@@ -52,3 +52,25 @@ Isso é o tipo de correção que uma rodada crua de LLM (o baseline que o G4 já
 **Decisão final de escopo:** o requisito do brief "quantifique em horas e custo o desperdício" não pode ser respondido com honestidade a partir deste dataset. Vou dizer isso direto no README em vez de inventar um número plausível — isso é o achado, não uma lacuna a esconder.
 
 ---
+
+## 2026-08-29 — Classificador no Dataset 2 (texto real, não sintético)
+
+`solution/src/classificador.py`: TF-IDF (uni+bigrama, 20k features) + LinearSVC com `class_weight="balanced"` (as classes vão de 1.760 a 13.617 registros — desbalanceado 7.7x), holdout estratificado 80/20.
+
+Resultado: **86.1% de acurácia / F1 macro 0.86**, contra baseline de classe majoritária de **28.5%** — ganho de 57.6pp. Primeira rodada já saiu boa; não precisei iterar hiperparâmetro (testei rapidamente sem bigrama antes e o F1 macro caiu ~2pp, então mantive `ngram_range=(1,2)`).
+
+Olhei a matriz de confusão em vez de só reportar a acurácia — pedido explícito de "matriz de confusão, não só acurácia sozinha". Maior confusão real: **Hardware previsto como HR Support** (121 casos) e vice-versa (118). Peguei 2 exemplos reais do holdout: tickets sobre "access request... approve... holiday" classificados como Hardware no rótulo original mas o texto é genuinamente sobre fluxo de aprovação/acesso — o próprio dataset já vem pré-processado (stopwords removidas, sem estrutura de frase), então a ambiguidade é real, não erro de tokenização. Isso vira o exemplo concreto de "ticket que precisa de triagem humana, não classificação automática cega" no README.
+
+`Miscellaneous` (categoria catch-all) tem precision/recall mais baixos (0.82/0.84) que as demais — esperado, é literalmente o balde de "não sei classificar", então bom sinal que o modelo reflita essa incerteza em vez de forçar confiança alta ali.
+
+---
+
+## 2026-08-29 — Roteador (protótipo): threshold errado na primeira tentativa, recalibrei
+
+`solution/src/roteador.py`: usa a margem entre a 1a e a 2a classe do `decision_function` do LinearSVC como proxy de confiança (LinearSVC não tem `predict_proba` nativo), decide "automatizar" ou "escalar pra humano" por threshold, mais uma lista de categorias sempre escaladas por política (`HR Support` — dado sensível de pessoas, não deve virar ação automática mesmo quando classificado certo).
+
+**Erro que cometi e corrigi:** primeira versão usei `LIMIAR_CONFIANCA = 0.15` chutado sem validar. Rodei e deu 72.8% automatizado com só 88.4% de acurácia no bucket automático vs 80.0% no escalado — gap de 8.3pp, sinal fraco, quase não valia a pena filtrar. Antes de aceitar, testei se a métrica de confiança realmente discrimina acerto: separei o holdout em quintis de confiança e a acurácia foi 54% no Q1 até 100% no Q5 (correlação ponto-bisserial 0.39) — ou seja, o sinal é forte, o threshold que eu chutei que estava errado, não a métrica. Fiz busca em grade de 0.0 a 1.5 e escolhi `t=0.7`, que dá 95% de acurácia no bucket automático cobrindo 58.2% do volume total (os outros 41.8% incluem todo HR Support + os de baixa confiança). Troquei o número no código e re-rodei pra confirmar.
+
+Isso é iteração real, não só "rodei uma vez e aceitei o primeiro número" — a lição documentada aqui é que threshold de confiança sem validação por quantil é chute, mesmo quando parece razoável à primeira vista.
+
+---

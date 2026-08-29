@@ -1,0 +1,27 @@
+Matriz de confusao (linhas=real, colunas=previsto)
+Classes: Access, Administrative rights, HR Support, Hardware, Internal Project, Miscellaneous, Purchase, Storage
+
+                       Access  Administrative rights  HR Support  Hardware  Internal Project  Miscellaneous  Purchase  Storage
+Access                   1288                     10          24        55                11             31         1        5
+Administrative rights       3                    281           6        52                 1              8         0        1
+HR Support                 41                      8        1880       121                26             81         6       20
+Hardware                   84                     55         118      2275                21            125        25       21
+Internal Project            4                      0          15        17               382              5         0        1
+Miscellaneous              27                      6          68        91                16           1184         4       16
+Purchase                    3                      5           6        23                 2              7       444        3
+Storage                     2                      3          16        20                 1              9         0      504
+
+                       precision    recall  f1-score   support
+
+               Access       0.89      0.90      0.90      1425
+Administrative rights       0.76      0.80      0.78       352
+           HR Support       0.88      0.86      0.87      2183
+             Hardware       0.86      0.84      0.85      2724
+     Internal Project       0.83      0.90      0.86       424
+        Miscellaneous       0.82      0.84      0.83      1412
+             Purchase       0.93      0.90      0.91       493
+              Storage       0.88      0.91      0.90       555
+
+             accuracy                           0.86      9568
+            macro avg       0.86      0.87      0.86      9568
+         weighted avg       0.86      0.86      0.86      9568
