@@ -1109,14 +1109,15 @@ def g_process_log() -> None:
         outro_checked = any(k.startswith("outro") and v for k, v in state.items())
         if not outro_checked:
             problems.append("Nenhum 'Outro' marcado")
-        if "pendente" not in txt:
-            problems.append("data de submissão não é 'pendente'")
-        if "não informado" not in txt:
-            problems.append("LinkedIn não é 'não informado'")
+        if not re.search(r"Submissão enviada em:\s*\*\*\d{4}-\d{2}-\d{2}\*\*", txt):
+            problems.append("data de submissão não está no formato ISO YYYY-MM-DD")
+        linkedin_status = "Informado no formulario de inscricao"
+        if linkedin_status not in txt:
+            problems.append(f"LinkedIn não é '{linkedin_status}'")
         return (not problems), (f"checkboxes do README honestos; "
                                 f"problemas={problems or 'nenhum'}")
     safe("G6-readme-checkboxes", "process log",
-         "README: checkboxes honestos, data pendente, LinkedIn não informado",
+         "README: checkboxes honestos, data ISO final, LinkedIn informado no formulario de inscricao",
          _readme_checkboxes)
 
     def _review_summaries() -> tuple[bool, str]:

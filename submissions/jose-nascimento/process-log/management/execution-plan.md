@@ -1,6 +1,6 @@
 # Plano de Execução — Challenge 001 (Diagnóstico de Churn · RavenStack)
 
-- **Candidato:** Jose Nascimento
+- **Candidato:** Jose Nascimento Moreira
 - **Branch:** `submission/jose-nascimento`
 - **Pasta exclusiva:** `submissions/jose-nascimento/`
 - **Ferramenta real:** opencode como orquestrador + subagentes `deepseek-max` (via OpenCode Go), um por etapa, em sequência
@@ -183,7 +183,7 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 - **Status:** `PENDING`
 - **Objetivo:** garantir commits semânticos e autor do candidato em todo o histórico, push final e abertura do Pull Request conforme CONTRIBUTING.md.
 - **Entradas:** submissão QA-aprovada (Iteração 09).
-- **Artefatos esperados:** Pull Request para `main` com título `[Submission] Jose Nascimento — Challenge 001`; descrição com resumo e navegação dos artefatos.
+- **Artefatos esperados:** Pull Request para `main` com título `[Submission] Jose Nascimento Moreira — Challenge 001`; descrição com resumo e navegação dos artefatos.
 - **Critérios objetivos de aceitação:** PR contém apenas arquivos de `submissions/jose-nascimento/`; título no formato oficial; commits semânticos com autor do candidato; histórico auditável (vários commits, não 1 único gigante).
 - **Validações:** `git log`; `git diff main...branch --stat` (escopo); conferência do título/descrição.
 - **Commit esperado:** `docs: finalize submission` (push final e abertura do PR)

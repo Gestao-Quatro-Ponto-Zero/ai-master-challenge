@@ -1,9 +1,9 @@
-# Submissão — Jose Nascimento — Challenge 001
+# Submissão — Jose Nascimento Moreira — Challenge 001
 
 ## Sobre mim
 
-- **Nome:** Jose Nascimento
-- **LinkedIn:** não informado
+- **Nome:** Jose Nascimento Moreira
+- **LinkedIn:** Informado no formulario de inscricao
 - **Challenge escolhido:** 001 — Diagnóstico de Churn
 
 ---
@@ -145,4 +145,4 @@ Síntese; ledger completo com atribuição por decisão em [`process-log/decisio
 
 ---
 
-_Submissão enviada em: **pendente** (data preenchida na Iteração 10, quando o PR for aberto)_
+_Submissão enviada em: **2026-08-29**_

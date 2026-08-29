@@ -1,6 +1,9 @@
 # Process Log — Challenge 001 (Diagnóstico de Churn · RavenStack)
 
-**Entrada principal do process log** (Iteração 08; atualizado no fechamento da It09 — QA final integral e fechamento do gate 3x; remediação da auditoria crítica final antes da It10). Documenta, com evidência versionada, **como** a submissão de Jose Nascimento foi produzida: ferramentas, pipeline de agentes, decomposição cronológica It00–09, erros reais da IA com correção, decisões humanas vs de modelo, limitações, auditoria final e mapa de evidência. Este arquivo é curto de propósito — cada seção aponta para o artefato detalhado.
+**Entrada principal do process log** (Iteração 08; atualizado no fechamento da It09 — QA final integral e fechamento do gate 3x; remediação da auditoria crítica final antes da It10). Documenta, com evidência versionada, **como** a submissão de Jose Nascimento Moreira foi produzida: ferramentas, pipeline de agentes, decomposição cronológica It00–09, erros reais da IA com correção, decisões humanas vs de modelo, limitações, auditoria final e mapa de evidência. Este arquivo é curto de propósito — cada seção aponta para o artefato detalhado.
+
+**Candidato:** Jose Nascimento Moreira
+**LinkedIn:** Informado no formulario de inscricao
 
 ---
 
@@ -147,4 +150,4 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 
 ---
 
-**Estado atual:** auditoria crítica final remediada (HIGH-001/HIGH-002; ver [summary](reviews/final-critical-audit-summary.md) e [report](reports/final-critical-audit-fix-report.md)); Iteração 09 permanece `CONCLUDED` e Iteração 10 (`PENDING`) conserva as pendências formais: data final, commit final e PR `[Submission] Jose Nascimento — Challenge 001`.
+**Estado atual:** auditoria crítica final remediada (HIGH-001/HIGH-002; ver [summary](reviews/final-critical-audit-summary.md) e [report](reports/final-critical-audit-fix-report.md)); Iteração 09 permanece `CONCLUDED` e Iteração 10 (`PENDING`) conserva as pendências formais: commit final e PR `[Submission] Jose Nascimento Moreira — Challenge 001`.

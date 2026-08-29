@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================================
 # run.sh — pipeline reprodutível em UM comando (Iterações 06–07)
-# Challenge 001 (Diagnóstico de Churn) · Jose Nascimento
+# Challenge 001 (Diagnóstico de Churn) · Jose Nascimento Moreira
 #
 # Executa os estágios 01→05, o gerador do relatório executivo (07) e, ao
 # final, o verificador (solution/src/06_verify_pipeline.py). Determinístico,
