@@ -16,7 +16,7 @@
 | review-8a66fb81 | **PASS_WITH_FIXES** | Nenhum finding material; 5 correções de precisão/consistência (F1 detecção E4, F2 nota de conciliação F11, F3 wording do prompt no report, F4 G1–G11 no evidence-index, F5 hash §10 It04) + 3 observações (F6 raw reviews não versionados, F7 paths históricos, F8 staleness) |
 | review-a306a10d | **PASS_WITH_FIXES** | Nenhuma refutação material; 3 fixes LOW (F-01 aritmética F11, F-02 wording "integral", F-03 hash §10 It04) + 2 observações (F-04 prompt de revisão não arquivado, F-05 snapshot de contagens, F-06 risco de percepção de originalidade declarado) |
 
-**Veredicto consolidado do gate: PASS_WITH_FIXES** — nenhum claim falso; nada bloqueia a autenticidade; todas as correções exigidas são de precisão documental (LOW) e foram aplicadas pelo corretor sequencial (commit `docs: reconcile process log review evidence`).
+**Veredicto consolidado do gate: PASS_WITH_FIXES** — nenhum claim falso; nada bloqueia a autenticidade; todas as correções exigidas são de precisão documental (LOW) e foram aplicadas pelo corretor sequencial (fixer do gate It08 em 2 commits: `docs: reconcile process log review evidence` `78933e6` + ajuste do ledger `docs: correct link count in iteration 08 gate ledger` `a93178b`).
 
 ---
 

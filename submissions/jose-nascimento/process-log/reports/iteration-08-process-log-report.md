@@ -72,13 +72,13 @@ lição de processo (definição no ledger de erros).
 | Iterações executadas | 9 (It00–08) |
 | Review gates 3x concluídos | 9 (It00–08) |
 | Revisores (instâncias) | 27 (9 gates × 3; reports externos working artifacts) |
-| Correções sequenciais commitadas | 10 (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb` + visual `617e4ac` + fixer do gate It08) |
+| Correções sequenciais commitadas | 11 (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb` + visual `617e4ac` + fixer do gate It08 em 2 commits: `78933e6`, `a93178b`) |
 | Erros materiais registrados | 8 (E1–E8) — E3/E4 no mesmo commit `12ff47c`; E7 cobre categórico-inválido + pycache (mesmo gate `fa6572f`) |
 | Prompts arquivados | 20 | Reports versionados | 20 |
 | Review summaries | 9 (It00–08) |
 | Decisões (ledger consolidado) | 18 (D-01..D-18) |
 | Arquivos versionados na pasta | 114 → 120 (`9e60315`) → 123 (fechamento da It08) |
-| Commits do candidato | 25 (HEAD `a1e99cb`) → 26 (process log) → 27 (fixer do gate It08) |
+| Commits do candidato | 25 (HEAD `a1e99cb`) → 26 (process log) → 27 (fixer do gate It08) → 28 (ajuste do ledger do gate) |
 | Verificador | 77 PASS → **88 PASS / 0 FAIL** (G1–G11) |
 | Detecção dos 8 erros | 7/8 pelos revisores — E1 3/3; E2 1/3 material (R3, review-8b41e9c2); E3 1/3 material (review-4c090c69); E4 parcial (KM 3/3 — L5/INFO-1/#6; gráfico B 1/3 — #5); E6 3/3; E7 2/3 (review-18199ddc + review-f1fa7caa); E8 3/3 · 1/8 inspeção ocular do orquestrador (E5) |
 

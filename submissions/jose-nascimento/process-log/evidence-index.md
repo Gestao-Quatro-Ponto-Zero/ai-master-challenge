@@ -4,7 +4,7 @@
 - **Escopo:** índice completo dos arquivos versionados em `submissions/jose-nascimento/` (branch `submission/jose-nascimento`), com links relativos. Links relativos resolvem a partir **deste arquivo** (`process-log/`); o verificador (`../solution/src/06_verify_pipeline.py`, gates G1–G11) confere presença e resolução a cada execução.
 - **Sobre os reports brutos de revisão (não copiados):** cada gate 3x (It00–08) produziu 3 reports externos read-only dos revisores (27 no total) em working artifacts **fora do repo** — eles não são versionados de propósito (evidência fora da pasta permitida e fora do controle de versão). A evidência persistente é: (a) os **9 review summaries** versionados em `reviews/` (veredictos, matriz finding→ação→arquivo:linha, recálculos, gate); (b) os **fix reports**; (c) os **prompts transcritos**; (d) o **git history**. Os 27 reports brutos são material de trabalho citável apenas por referência aos summaries.
 - **Paths de máquina históricos:** summaries antigos (It00–07) podem conter, em células de tabela, metadados literais de diretórios temporários onde viveram os reports externos dos revisores — são registros históricos pré-política F2 (a política exige zero **links** para diretórios temporários e zero paths de máquina em **docs novos**; ver gates G3/G4).
-- **Git history:** 26 commits do candidato no HEAD `9e60315` (commit do process log); **27 no fechamento da It08** (após o commit do fixer do gate) + 5 commits de base do repo oficial; todos os hashes citados abaixo resolvem (`git rev-parse`).
+- **Git history:** 26 commits do candidato no HEAD `9e60315` (commit do process log); **28 no fechamento da It08** (27 fixer do gate + 1 ajuste do ledger) + 5 commits de base do repo oficial; todos os hashes citados abaixo resolvem (`git rev-parse`).
 
 ---
 
@@ -107,7 +107,7 @@ Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos f
 
 ## 9. Git history (branch `submission/jose-nascimento`)
 
-26 commits do candidato no HEAD do process log (`9e60315`); **27 no fechamento da It08** (commit do fixer do gate 3x); + 5 de base do repo oficial. Hashes resolvem via `git rev-parse` (verificador G9). Mapeamento por iteração (commit de etapa → commit de correção do gate):
+26 commits do candidato no HEAD do process log (`9e60315`); **28 no fechamento da It08** (27 fixer do gate + 1 ajuste do ledger); + 5 de base do repo oficial. Hashes resolvem via `git rev-parse` (verificador G9). Mapeamento por iteração (commit de etapa → commit de correção do gate):
 
 | Iteração | Commits (curtos) |
 |---|---|
@@ -120,7 +120,7 @@ Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos f
 | It05 | `dc5748f` (premissas) · `a8a6ca6` → fix `e0c6b7e` |
 | It06 | `9357c20` → fix `fa6572f` |
 | It07 | `1bbec67` (outline) · `a726cb4` (relatório) → fix `a1e99cb` |
-| It08 | `docs: consolidate AI process log and evidence` (`9e60315`) → fix do gate `docs: reconcile process log review evidence` |
+| It08 | `docs: consolidate AI process log and evidence` (`9e60315`) → fix do gate `docs: reconcile process log review evidence` (`78933e6`) + ajuste do ledger `docs: correct link count in iteration 08 gate ledger` (`a93178b`) |
 
 ## 10. Cobertura do índice
 
