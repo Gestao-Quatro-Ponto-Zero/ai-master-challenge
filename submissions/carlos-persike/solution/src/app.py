@@ -8,6 +8,7 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from estilo import CSS
 from formatacao import moeda_brl, moeda_brl_milhoes
 from ingestao import carregar_pipeline_enriquecido
 from priorizacao import priorizar_pipeline_aberto
@@ -18,6 +19,7 @@ OUTPUTS_DIR = Path(__file__).resolve().parents[1] / "outputs"
 COR_ESTAGIO = {"Engaging": "blue", "Prospecting": "gray"}
 
 st.set_page_config(page_title="Lead Scorer — Prioridade de Pipeline", layout="wide")
+st.markdown(CSS, unsafe_allow_html=True)
 
 
 @st.cache_data
@@ -44,7 +46,7 @@ metricas = carregar_metricas_validacao()
 st.title("📋 Prioridade de Pipeline")
 st.caption("Seus negócios em aberto, ordenados por onde vale mais a pena focar agora.")
 
-with st.expander("❓ Como o placar é calculado"):
+with st.expander("Como o placar é calculado"):
     st.markdown(
         "**Valor esperado = chance histórica de fechar × valor do produto.**\n\n"
         "A chance vem de negócios parecidos que já fecharam no passado — quanto mais tempo "

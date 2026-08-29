@@ -172,3 +172,19 @@ a interface:
   tem CRM real por trás desse dataset, então não construí, só documentei que `ingestao.py` já
   isola a leitura de dado bruto pra trocar depois sem afetar o resto do sistema.
 
+## 2026-08-29 — Quarta rodada: CSS trabalhado
+
+Usuário rejeitou o visual do expander (ícone ❓ vermelho, caixa genérica) e apontou um print
+com "R 26,768 → valor esperado R 19,190" — texto de uma versão anterior ao fix de moeda
+pt-BR (já não existe no código atual, confirmado via grep). Pediu CSS mais trabalhado em vez
+de só o tema nativo.
+
+- `estilo.py` novo: bloco CSS injetado via `st.markdown(..., unsafe_allow_html=True)`,
+  mirando os `data-testid` do Streamlit (`stVerticalBlockBorderWrapper`, `stExpander`,
+  `stMetric*`, `stProgress`, `stDataFrame`) — cantos arredondados, borda sutil que acende ao
+  passar o mouse, hierarquia tipográfica nas métricas, barra de progresso mais fina. Anotei no
+  próprio arquivo que esses `data-testid` podem mudar em versão futura do Streamlit — é o
+  primeiro lugar a checar se o visual quebrar num upgrade.
+- Troquei "❓ Como o placar é calculado" por só o texto — o ícone ganha cor pelo estilo CSS do
+  expander, não precisa de emoji.
+
