@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # ============================================================================
-# run.sh — pipeline reprodutível em UM comando (Iteração 06)
+# run.sh — pipeline reprodutível em UM comando (Iterações 06–07)
 # Challenge 001 (Diagnóstico de Churn) · Jose Nascimento
 #
-# Executa os estágios 01→05 em ordem e, ao final, o verificador
-# (solution/src/06_verify_pipeline.py). Determinístico, offline (zero rede),
-# sem paths pessoais; exit code 0 = sucesso, nonzero = falha com mensagem.
+# Executa os estágios 01→05, o gerador do relatório executivo (07) e, ao
+# final, o verificador (solution/src/06_verify_pipeline.py). Determinístico,
+# offline (zero rede), sem paths pessoais; exit code 0 = sucesso, nonzero =
+# falha com mensagem.
 #
 # Uso:  ./run.sh          (qualquer CWD; paths resolvidos pelo próprio script)
 #       make all          (mesmo pipeline — fonte única, sem lógica duplicada)
@@ -58,9 +59,10 @@ if [ "$MISSING" -ne 0 ]; then
 fi
 
 # ---------------------------------------------------------------------------
-# Estágios 01→05 — execução sequencial com propagação de exit code.
-# Cada estágio roda num processo python isolado; medimos tempo de relógio
-# (SECONDS) e pico de memória aproximado via ru_maxrss (ver D5 das decisões).
+# Estágios 01→05 + gerador 07 — execução sequencial com propagação de exit
+# code. Cada estágio roda num processo python isolado; medimos tempo de
+# relógio (SECONDS) e pico de memória aproximado via ru_maxrss (ver D5 das
+# decisões).
 # ---------------------------------------------------------------------------
 run_stage() {
     local name="$1"
@@ -93,6 +95,7 @@ run_stage 02_reconcile_churn
 run_stage 03_root_cause
 run_stage 04_lifecycle_watchlist
 run_stage 05_actions_impact
+run_stage 07_generate_executive_report
 
 # ---------------------------------------------------------------------------
 # Verificação final — mesmo verificador de `make verify`
@@ -107,4 +110,4 @@ if [ "$vrc" -ne 0 ]; then
     exit "$vrc"
 fi
 
-log "pipeline concluído: 5 estágios + verificação OK em $((SECONDS - t0_total))s (offline; determinístico)."
+log "pipeline concluído: 6 estágios (01–05, 07) + verificação OK em $((SECONDS - t0_total))s (offline; determinístico)."

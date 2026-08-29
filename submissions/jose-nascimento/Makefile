@@ -1,5 +1,5 @@
 # ============================================================================
-# Makefile — pipeline reprodutível em UM comando (Iteração 06)
+# Makefile — pipeline reprodutível em UM comando (Iterações 06–07)
 # `make all` == `./run.sh` (fonte única de verdade; SEM lógica duplicada).
 # Ver: solution/README.md e process-log/decisions/iteration-06-reproducibility-decisions.md
 # ============================================================================
@@ -11,7 +11,7 @@ PYTHON ?= python3
 export PYTHON
 export PYTHONDONTWRITEBYTECODE := 1
 
-.PHONY: all verify stage-01 stage-02 stage-03 stage-04 stage-05 clean-derived
+.PHONY: all verify stage-01 stage-02 stage-03 stage-04 stage-05 stage-07 clean-derived
 
 # `make` (default) e `make all` executam o MESMO pipeline do run.sh.
 all:
@@ -39,6 +39,9 @@ stage-04:
 stage-05:
 	$(PYTHON) solution/src/05_actions_impact.py
 
+stage-07:
+	$(PYTHON) solution/src/07_generate_executive_report.py
+
 # ---------------------------------------------------------------------------
 # clean-derived — remove SOMENTE artefatos derivados regeneráveis (lista
 # explícita). NUNCA apaga data/raw/ (dados commitados) nem process-log/.
@@ -50,6 +53,7 @@ DERIVED := \
 	solution/evidence/03_root_cause_report.md \
 	solution/evidence/04_lifecycle_watchlist_report.md \
 	solution/evidence/05_action_plan.md \
+	solution/report-executivo.md \
 	solution/data/processed/account_month.csv \
 	solution/data/processed/README.md \
 	solution/docs/analytical-contract.md \

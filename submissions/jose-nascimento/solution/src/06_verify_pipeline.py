@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """
-06_verify_pipeline.py — Verificador estrutural e de consistência do pipeline (Iteração 06).
+06_verify_pipeline.py — Verificador estrutural e de consistência do pipeline (Iterações 06–07).
 
 Verifica, SEM reimplementar nenhuma análise das Iterações 01–05:
 
-  A. Manifesto de arquivos — 5 raw CSVs, scripts 01–05, evidence 01–05,
-     account_month + processado, 26 tabelas t01–t21 e EXATAMENTE 6 PNGs;
+  A. Manifesto de arquivos — 5 raw CSVs, scripts 01–07, evidence 01–05,
+     account_month + processado, 26 tabelas t01–t21 e EXATAMENTE 6 PNGs,
+     relatório executivo (It07);
   B. Parseabilidade e não-vazio — CSVs legíveis com cabeçalho e linhas,
-     Markdown presente, PNGs com magic bytes e tamanho > 0;
+     Markdown presente (incl. report-executivo.md), PNGs com magic bytes e
+     tamanho > 0;
   C. Consistência com contratos existentes — MD5/contagens declarados nos
      README commitados de data/raw e data/processed; invariantes estruturais
      do painel account-month DERIVADOS dos dados (nenhum número de dados
@@ -17,7 +19,10 @@ Verifica, SEM reimplementar nenhuma análise das Iterações 01–05:
      venv/cache, zero paths pessoais/segredos em solution/, zero imports de
      rede nos scripts, requirements mínimos, run.sh executável e sem CRLF,
      ids de check únicos (gate D7);
-  E. Sanidade — compile() e import de todos os scripts (01–06).
+  E. Sanidade — compile() e import de todos os scripts (01–07).
+  F. Relatório executivo (It07) — presença, links relativos, exatamente 6
+     imagens (1x cada), word count, claims proibidos em contexto afirmativo,
+     contas ⊆ t16, ações ⊆ t18 e âncoras numéricas re-derivadas das tabelas.
 
 Saída: uma linha por check ("[PASS]" / "[FAIL]" + id + detalhe), resumo e
 exit 0 se nenhum FAIL, exit 1 caso contrário (diagnóstico estruturado, sem
@@ -57,6 +62,7 @@ DOCS_DIR = SOLUTION_DIR / "docs"
 TABLES_DIR = SOLUTION_DIR / "out" / "tables"
 CHARTS_DIR = SOLUTION_DIR / "out" / "charts"
 SRC_DIR = SOLUTION_DIR / "src"
+REPORT_PATH = SOLUTION_DIR / "report-executivo.md"
 
 # ----------------------------------------------------------------------------
 # Manifests (estrutura documentada nas Iterações 01–05; NÃO números de dados)
@@ -70,7 +76,8 @@ RAW_FILES = [
 ]
 SCRIPTS = [f"{n:02d}_{name}.py" for n, name in [
     (1, "ingest_audit"), (2, "reconcile_churn"), (3, "root_cause"),
-    (4, "lifecycle_watchlist"), (5, "actions_impact"), (6, "verify_pipeline")]]
+    (4, "lifecycle_watchlist"), (5, "actions_impact"),
+    (7, "generate_executive_report"), (6, "verify_pipeline")]]
 EVIDENCE = [
     "01_audit_report.md",
     "02_consistency_report.md",
@@ -195,7 +202,7 @@ def a_manifest() -> None:
     def _scripts() -> tuple[bool, str]:
         missing = [s for s in SCRIPTS if not (SRC_DIR / s).is_file()]
         return (not missing), (f"scripts presentes; ausentes={missing or 'nenhum'}")
-    safe("A2-src", "manifesto", "scripts 01–06 presentes em solution/src/", _scripts)
+    safe("A2-src", "manifesto", "scripts 01–07 presentes em solution/src/", _scripts)
 
     def _evidence() -> tuple[bool, str]:
         missing = [e for e in EVIDENCE if not (EVIDENCE_DIR / e).is_file()]
@@ -274,7 +281,7 @@ def b_parseable() -> None:
 
     for md_path in [EVIDENCE_DIR / e for e in EVIDENCE] + [
             PROCESSED_DIR / "README.md", RAW_DIR / "README.md",
-            DOCS_DIR / "analytical-contract.md"]:
+            DOCS_DIR / "analytical-contract.md", REPORT_PATH]:
         # uid único por PATH relativo (evita colisão "README.md" raw/processado;
         # o gate D7-uids falha se qualquer uid se repetir)
         uid = f"B4-md-{md_path.relative_to(SOLUTION_DIR)}"
@@ -607,6 +614,179 @@ def e_sanity() -> None:
 
 
 # ----------------------------------------------------------------------------
+# F. Relatório executivo (Iteração 07) — estrutura, links, claims e âncoras
+# ----------------------------------------------------------------------------
+# Claims proibidos em contexto afirmativo (mesma semântica do gerador 07:
+# menção com negação explícita é permitida — o relatório cita termos apenas
+# para negá-los/proibi-los).
+FORBIDDEN_CLAIMS = [
+    "receita perdida", "receita salva", "receita recuperada", "revenue saved",
+    "revenue lost", "forecast", "ROI", "eventos evitados", "evitados",
+    "prova causal", "causa provada", "é causado", "causa do churn é",
+    "churn é causado", "receita em risco",
+]
+_NEG_MARKERS = ["não", "sem", "nunca", "proibido", "evita", "evite",
+                "evitar", "fora", "≠", "ausência", "nenhum"]
+
+
+def _affirmative_use(tok: str, text: str) -> bool:
+    for m in re.finditer(re.escape(tok), text):
+        ctx = text[max(0, m.start() - 90):m.end() + 90]
+        if not any(nm in ctx for nm in _NEG_MARKERS):
+            return True
+    return False
+
+
+def _cell_str(df: pd.DataFrame, value_col: str, key_col: str, key: str) -> str:
+    return str(df[df[key_col] == key][value_col].iloc[0])
+
+
+def _report_anchors() -> list[tuple[str, str]]:
+    """Números-chave re-derivados das tabelas (sem reimplementar análise)."""
+    t01 = pd.read_csv(TABLES_DIR / "t01_monthly_series.csv")
+    t03 = pd.read_csv(TABLES_DIR / "t03_onboarding_buckets.csv")
+    t03b = pd.read_csv(TABLES_DIR / "t03b_onboarding_accounts.csv")
+    t05 = pd.read_csv(TABLES_DIR / "t05_usage_monthly.csv")
+    t10 = pd.read_csv(TABLES_DIR / "t10_hypothesis_verdicts.csv")
+    t15 = pd.read_csv(TABLES_DIR / "t15_priority_segments.csv")
+    t16 = pd.read_csv(TABLES_DIR / "t16_watchlist_top20.csv")
+    t19 = pd.read_csv(TABLES_DIR / "t19_impact_sensitivity.csv")
+    acc = pd.read_csv(RAW_DIR / "ravenstack_accounts.csv")
+    events = pd.read_csv(RAW_DIR / "ravenstack_churn_events.csv")
+    panel = pd.read_csv(PROCESSED_DIR / "account_month.csv")
+
+    def br(v: float, nd: int = 2) -> str:
+        return f"{v:.{nd}f}".replace(".", ",")
+
+    def pint(v: int) -> str:
+        return f"{v:,}".replace(",", ".")
+
+    dec = t01[t01["month"] == "2024-12"].iloc[0]
+    prev6 = t01[t01["month"].isin(
+        ["2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11"])]
+    r1_total = int(t03["mrr_sum"].sum())
+    r1_le90 = int(t03[t03["bucket"].isin(
+        ["0d", "1-30d", "31-60d", "61-90d"])]["mrr_sum"].sum())
+    fe90 = t03b[t03b["window_days"] == 90].iloc[0]
+    cur = int(panel[panel["month"] == "2024-12"]["winner_mrr"].sum())
+    top20 = int(t16["current_winner_mrr"].sum())
+    s1 = t15[t15["segment"] == "S1"].iloc[0]
+    imp_base = t19[t19["scenario"] == "base"].iloc[0]
+    u2023 = int(t05[t05["month"].str.startswith("2023")]["rows_raw_primary"].sum())
+    u2024 = int(t05[t05["month"].str.startswith("2024")]["rows_raw_primary"].sum())
+    h3 = _cell_str(t10, "numbers", "hypothesis", "H3")
+    h4 = _cell_str(t10, "numbers", "hypothesis", "H4")
+    h9 = _cell_str(t10, "numbers", "hypothesis", "H9")
+    med_int = re.search(r"mediana por conta: [\d.]+ -> [\d.]+ \(([\d.]+)%\)",
+                        h3).group(1).replace(".", ",") + "%"
+    h4m = re.search(r"zero-uso: churn ([\d.]+)% vs controle ([\d.]+)%",
+                    h4)
+    h9s = re.search(r"share ([\d.]+)%, ratio ([\d.]+)", h9)
+    return [
+        ("taxa dez/24", br(dec["rate_first_events_pct"]) + "%"),
+        ("mediana 6m", br(prev6["rate_first_events_pct"].median()) + "%"),
+        ("episódios dez", f"{int(dec['events_total'])} episódios"),
+        ("primeiros dez", f"{int(dec['first_events'])} são"),
+        ("R1 total", pint(r1_total)), ("R1 ≤90d", pint(r1_le90)),
+        ("R1 ≤90d %", br(r1_le90 / r1_total * 100, 1) + "%"),
+        ("fe90 %", br(fe90["share_of_event_accounts_pct"], 1) + "%"),
+        ("uso %", "+" + br((u2024 - u2023) / u2023 * 100, 1) + "%"),
+        ("intensidade mediana", med_int),
+        ("zero-uso churn", h4m.group(1).replace(".", ",") + "%"),
+        ("zero-uso controle", h4m.group(2).replace(".", ",") + "%"),
+        ("h9 share", h9s.group(1).replace(".", ",") + "%"),
+        ("S1 n", str(int(s1["N"]))),
+        ("S1 mrr", pint(int(s1["current_mrr_sum"]))),
+        ("top20 mrr", pint(top20)), ("top20 share", br(top20 / cur * 100, 1) + "%"),
+        ("cur mrr", pint(cur)),
+        ("incidência base", br(imp_base["incidence_90d"], 4)),
+        ("eventos afetados base", br(imp_base["events_affected_90d"], 1)),
+        ("exposição base", pint(int(imp_base["expected_exposure_affected_mrr"]))),
+        ("snapshot", pint(int(acc["churn_flag"].sum()))),
+        ("eventos total", pint(len(events))),
+    ]
+
+
+def f_report() -> None:
+    def _present() -> tuple[bool, str]:
+        p = REPORT_PATH
+        if not p.is_file() or p.stat().st_size == 0:
+            return False, "ausente ou vazio"
+        return True, f"{p.stat().st_size} bytes"
+    safe("F1-report", "relatório executivo",
+         "report-executivo.md presente e não vazio", _present)
+
+    def _links() -> tuple[bool, str]:
+        if not REPORT_PATH.is_file():
+            return False, "report ausente"
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        links = [l.strip() for l in
+                 re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", txt)]
+        broken = [l for l in links
+                  if not l.startswith("http")
+                  and not (SOLUTION_DIR / l).resolve().is_file()]
+        return (not broken), (f"links relativos={len(links)}; "
+                              f"quebrados={broken or 'nenhum'}")
+    safe("F2-report-links", "relatório executivo",
+         "links relativos do report existem", _links)
+
+    def _images() -> tuple[bool, str]:
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        links = [l.strip() for l in
+                 re.findall(r"\]\(([^)#]+)(?:#[^)]*)?\)", txt)]
+        imgs = [l for l in links if l.endswith(".png")]
+        dups = sorted({i for i in imgs if imgs.count(i) > 1})
+        return (len(imgs) == 6 and not dups), (
+            f"imagens={len(imgs)}; repetidas={dups or 'nenhuma'}")
+    safe("F3-report-images", "relatório executivo",
+         "exatamente 6 imagens, cada uma usada 1x", _images)
+
+    def _wordcount() -> tuple[bool, str]:
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        wc = len(txt.split())
+        return (1400 <= wc <= 2400), f"palavras={wc} (budget 1.400–2.400)"
+    safe("F4-report-wordcount", "relatório executivo",
+         "word count dentro do budget", _wordcount)
+
+    def _claims() -> tuple[bool, str]:
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        hits = [tok for tok in FORBIDDEN_CLAIMS
+                if tok in txt and _affirmative_use(tok, txt)]
+        return (not hits), (f"claims afirmativos={hits or 'nenhum'}")
+    safe("F5-report-claims", "relatório executivo",
+         "zero claims proibidos em contexto afirmativo", _claims)
+
+    def _accounts() -> tuple[bool, str]:
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        cited = set(re.findall(r"A-[0-9a-f]{6}", txt))
+        t16 = set(pd.read_csv(TABLES_DIR / "t16_watchlist_top20.csv")["account_id"])
+        outside = sorted(cited - t16)
+        return (not outside), (f"contas citadas={len(cited)}; "
+                               f"fora da t16={outside or 'nenhum'}")
+    safe("F6-report-accounts", "relatório executivo",
+         "contas do report são subconjunto da t16", _accounts)
+
+    def _actions() -> tuple[bool, str]:
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        cited = set(re.findall(r"ACT-\d\d", txt))
+        t18 = set(pd.read_csv(TABLES_DIR / "t18_actions_prioritized.csv")["action_id"])
+        outside = sorted(cited - t18)
+        return (not outside), (f"ações citadas={len(cited)}; "
+                               f"fora da t18={outside or 'nenhum'}")
+    safe("F7-report-actions", "relatório executivo",
+         "ações do report são subconjunto da t18", _actions)
+
+    def _anchors() -> tuple[bool, str]:
+        txt = REPORT_PATH.read_text(encoding="utf-8")
+        missing = [label for label, val in _report_anchors() if val not in txt]
+        return (not missing), (f"âncoras re-derivadas={len(_report_anchors())}; "
+                               f"ausentes={missing or 'nenhum'}")
+    safe("F8-report-anchors", "relatório executivo",
+         "números-chave do report == tabelas (re-derivados em runtime)",
+         _anchors)
+
+
+# ----------------------------------------------------------------------------
 # D7. Gate de integridade do próprio verificador: ids de check únicos
 # ----------------------------------------------------------------------------
 def check_uid_uniqueness() -> None:
@@ -629,6 +809,7 @@ def main() -> int:
     c_consistency()
     d_hygiene()
     e_sanity()
+    f_report()
     check_uid_uniqueness()  # último: valida inclusive os ids emitidos acima
 
     for c in CHECKS:

@@ -1,6 +1,6 @@
-# Solução — Pipeline reprodutível em um comando (Iteração 06)
+# Solução — Pipeline reprodutível em um comando (Iterações 06–07)
 
-Toda a análise do Challenge 001 (Diagnóstico de Churn · RavenStack) — Iterações 01–05 —
+Toda a análise do Challenge 001 (Diagnóstico de Churn · RavenStack) — Iterações 01–07 —
 roda do zero com **um comando**, offline (os 5 CSVs são commitados em `data/raw/`),
 deterministicamente (outputs byte-idênticos entre execuções) e sem Docker/CI.
 
@@ -60,7 +60,11 @@ O que acontece (em ordem):
    pipeline para — sem traceback. Falha inesperada (bug real) mostra o
    diagnóstico do estágio (possivelmente com traceback) e o relatório pode ficar
    desatualizado: corrija a causa e reexecute.
-3. **Verificação final** — `06_verify_pipeline.py` (checks A–E + gate de ids
+3. **Estágio 07** — `07_generate_executive_report.py` gera
+   `solution/report-executivo.md` com todos os números derivados das tabelas em
+   runtime (gates G1–G8; escrita all-or-nothing: nunca deixa relatório
+   parcial/stale).
+4. **Verificação final** — `06_verify_pipeline.py` (checks A–F + gate de ids
    únicos; contagem exata impressa em runtime); qualquer FAIL torna o `run.sh`
    falho (exit 1).
 
@@ -73,11 +77,13 @@ O que acontece (em ordem):
 | 03 — causa raiz/coortes | `solution/evidence/03_root_cause_report.md`, tabelas `t01–t10` (13), gráficos `a/b/c/d` (4 PNGs) |
 | 04 — jornada/watchlist | `solution/evidence/04_lifecycle_watchlist_report.md`, tabelas `t11–t17` (9), gráficos `It04_c/It04_d` (2 PNGs) |
 | 05 — ações/impacto | `solution/evidence/05_action_plan.md`, tabelas `t18–t21` (4) |
+| 07 — relatório executivo | `solution/report-executivo.md` (CEO-ready; 6 gráficos embutidos) |
 | 06 — verificação | nenhum output (read-only); exit 0/1 |
 
-Total: **5 evidence reports, 26 tabelas CSV, 6 PNGs, 1 base account-month, 1 contrato**
-(40 artefatos derivados regeneráveis; + 5 raw CSVs commitados = 45 outputs do
-pipeline; este `README.md` é estático e não é regenerado).
+Total: **5 evidence reports, 26 tabelas CSV, 6 PNGs, 1 base account-month, 1 contrato,
+1 relatório executivo** (41 artefatos derivados regeneráveis; + 5 raw CSVs
+commitados = 46 outputs do pipeline; este `README.md` é estático e não é
+regenerado).
 
 ## 5. Estrutura
 
@@ -92,9 +98,10 @@ submissions/jose-nascimento/
 │   ├── data/processed/         # account_month.csv (regenerado por 02)
 │   ├── docs/analytical-contract.md
 │   ├── evidence/               # reports 01–05 (regenerados)
+│   ├── report-executivo.md     # relatório executivo (regenerado por 07)
 │   ├── out/tables/             # t01–t21 (regenerados por 03–05)
 │   ├── out/charts/             # 6 PNGs (regenerados por 03–04)
-│   └── src/                    # scripts 01–06
+│   └── src/                    # scripts 01–07
 └── process-log/                # plano, checklist, prompts, reports, decisions (não regenerado)
 ```
 
@@ -110,6 +117,7 @@ repetidas; varia com a máquina/carga — rótulo de aproximação, não benchma
 | 03_root_cause | ~6 s | ~176 MB |
 | 04_lifecycle_watchlist | ~4 s | ~167 MB |
 | 05_actions_impact | ~1–2 s | ~126 MB |
+| 07_generate_executive_report | ~1 s | — |
 | 06_verify_pipeline | ~1 s | — |
 
 > Memória medida via `resource.getrusage(RUSAGE_CHILDREN).ru_maxrss` (pico por
@@ -120,8 +128,9 @@ repetidas; varia com a máquina/carga — rótulo de aproximação, não benchma
 
 `06_verify_pipeline.py` (stdlib + pandas; sem reimplementar análises) verifica:
 
-- **Manifesto** — 5 raw CSVs exatos, scripts 01–06, evidence 01–05, account_month,
-  26 tabelas, exatamente 6 PNGs; 4 PNGs pruned (gate It04) ausentes;
+- **Manifesto** — 5 raw CSVs exatos, scripts 01–07, evidence 01–05, account_month,
+  26 tabelas, exatamente 6 PNGs, relatório executivo; 4 PNGs pruned (gate It04)
+  ausentes;
 - **Parseabilidade** — CSVs legíveis com cabeçalho e linhas; Markdown presente;
   PNGs com magic bytes e tamanho > 0;
 - **Consistência com contratos commitados** — contagens e MD5 dos raw CSVs ==
@@ -134,7 +143,11 @@ repetidas; varia com a máquina/carga — rótulo de aproximação, não benchma
   zero paths pessoais/segredos; zero imports de rede; `requirements.txt` mínimo
   (extras são informativos, não bloqueiam); `run.sh` executável e sem CRLF;
   ids de check únicos (gate D7);
-- **Sanidade** — `compile()` e import de todos os scripts.
+- **Sanidade** — `compile()` e import de todos os scripts;
+- **Relatório executivo (It07)** — presente e não vazio; links relativos
+  existem; exatamente 6 imagens (cada uma 1x); word count 1.400–2.400; zero
+  claims proibidos em contexto afirmativo; contas ⊆ `t16`; ações ⊆ `t18`;
+  números-chave re-derivados das tabelas presentes no texto (âncoras).
 
 Exit 0 = tudo OK; exit 1 = diagnóstico estruturado por check (sem traceback).
 Nota: `make verify` com falha retorna **exit 2** (o GNU make encapsula o exit 1
@@ -144,9 +157,9 @@ do script — convenção do make); o script direto retorna exit 1.
 
 Remove **somente** os artefatos derivados regeneráveis (lista explícita no
 Makefile: evidence 01–05, account_month + README processado, contrato, 26
-tabelas, 6 PNGs — **40 arquivos**; o target imprime a contagem derivada de
-`$(words $(DERIVED))`). **Nunca** apaga `data/raw/` (dados commitados) nem
-`process-log/`. Regeneração: `./run.sh` (ou `make all`).
+tabelas, 6 PNGs, relatório executivo — **41 arquivos**; o target imprime a
+contagem derivada de `$(words $(DERIVED))`). **Nunca** apaga `data/raw/`
+(dados commitados) nem `process-log/`. Regeneração: `./run.sh` (ou `make all`).
 
 ## 9. Troubleshooting
 

@@ -145,7 +145,26 @@ semanal da watchlist em paralelo.**
   ferramentas/orquestração preservadas; data de submissão `pendente` (It10);
   sem marcar itens de It08/09 como concluídos.
 
-## 13. Critérios de aceitação da It07 (repetidos do prompt)
+## 13. Adendo técnico (2026-08-29, registrado na implementação — outline base não reescrito)
+
+1. **KM global t6 (0,4428) removida do report:** a re-derivação pooled a partir de
+   `t02b_cohort_km_at_risk.csv` (soma de at_risk/events por t entre coortes) produz
+   0,462 — convenção de censura divergente da do `evidence/03 §7` (0,4428);
+   reimplementar a convenção exata do estágio 03 seria duplicação analítica. No
+   lugar, o report usa números deriváveis: taxa global de primeiro evento
+   **70,4% (352/500)** e churn KM t6 **por coorte** (t02; Q1-24 58,9%; Q2-24
+   69,2%; Q3/Q4-24 não observados — censura no corte), que sustentam a mesma
+   mensagem (coortes recentes churnam mais cedo).
+2. **Tabela de segmentos (7ª tabela):** a seção "Segmentos e contas" exige
+   lifecycle states (S1–S5); a forma mais compacta é uma tabela de 5 linhas
+   (segmento, N, current MRR, sinal de backtest), derivada de `t15_priority_segments.csv`.
+3. **MDE/poder/P(falso GO):** derivados no evidence 05 §5 com convenções de
+   arredondamento próprias (68/51/37%; 11/31/61%; ≈24%); re-derivação
+   independente no gerador difere em 0–2 p.p. (70/52/37; 11/31/60; 15,6%) —
+   o report cita os valores do evidence 05 com gate de substring (fonte validada),
+   e o Wilson CI 95% (0,362–0,501) é re-derivado em runtime de 83/193 (bate exato).
+
+## 14. Critérios de aceitação da It07 (repetidos do prompt)
 
 Causa raiz, segmentos/contas, ações/impacto respondidos integralmente; CEO lê e
 age; 6 gráficos legíveis; report reproduzível (1 comando); README completo;
