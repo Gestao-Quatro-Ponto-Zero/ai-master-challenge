@@ -106,14 +106,14 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 | Iterações executadas | **9** (It00–08) | Etapa orquestrada com prompt arquivado, executor único e report; derivado de `prompts/` + `reports/` (globs) |
 | Review gates 3x concluídos | **9** (It00–08) | Ledgers em `reviews/` (9 summaries versionados) |
 | Revisores (instâncias) | **27** | 9 gates × 3 revisores read-only (reports externos working artifacts; summaries versionados) |
-| Correções sequenciais commitadas | **10** | 8 fixers de gate (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb`) + 1 correção visual pós-gate It04 (`617e4ac`) + 1 fixer do gate It08 (3 commits: `78933e6`, `a93178b`, `4c48713`) — `git log` |
+| Correções sequenciais commitadas | **10** | Definição: 1 fixer (correção sequencial de um gate) = 1 correção. 8 fixers de gate (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb`) + 1 correção visual pós-gate It04 (`617e4ac`) + 1 fixer do gate It08 (executado em 5 commits: `78933e6`, `a93178b`, `4c48713`, `0cb8375` + consolidação do snapshot) — `git log` |
 | Erros materiais registrados | **8** (E1–E8) | [`errors/ai-errors-and-corrections.md`](errors/ai-errors-and-corrections.md) |
 | Prompts arquivados | **20** | 16 de iteração/review-fix (It00–07) + adendo de arquitetura + correção visual + prompt It08 + fix prompt do gate It08 — glob de `prompts/` |
 | Reports versionados | **20** | 18 (It00–07 + 2 especiais) + report It08 + fix report do gate It08 — glob de `reports/` |
 | Review summaries | **9** (It00–08) | glob de `reviews/` |
 | Decisões registradas | **6 arquivos** (It02–07) + ledger consolidado | glob de `decisions/` |
 | Hipóteses pré-registradas | **1 arquivo** (H1–H10) | `hypotheses/` |
-| Commits do candidato | **29** (25 no HEAD `a1e99cb` → 26 no commit do process log → 29 após os 3 commits do fixer do gate It08) | `git log --author="Jose Nascimento"` |
+| Commits do candidato | **31** (25 no HEAD `a1e99cb` → 26 no commit do process log `9e60315` → **31 no fechamento da It08**, incluindo os 5 commits do fixer do gate e este commit de consolidação) | `git log --author="Jose Nascimento"` |
 | Verificador | **77 PASS** → **88 PASS** (gates G1–G11 da seção G adicionados — escopo distinto dos gates G1–G8 do gerador da It07; no fechamento da It08: G7 cobre 9 summaries e G10 espera o gate da It08 `CONCLUDED`) | `../solution/src/06_verify_pipeline.py` |
 
 ## 8. Limitações do processo (declaradas)

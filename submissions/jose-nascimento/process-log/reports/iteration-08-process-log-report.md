@@ -72,13 +72,13 @@ lição de processo (definição no ledger de erros).
 | Iterações executadas | 9 (It00–08) |
 | Review gates 3x concluídos | 9 (It00–08) |
 | Revisores (instâncias) | 27 (9 gates × 3; reports externos working artifacts) |
-| Correções sequenciais commitadas | 10 (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb` + visual `617e4ac` + fixer do gate It08 em 3 commits: `78933e6`, `a93178b`, `4c48713`) |
+| Correções sequenciais commitadas | 10 (8 fixers de gate `9907024`–`a1e99cb` + visual `617e4ac` + fixer do gate It08 executado em 5 commits: `78933e6`, `a93178b`, `4c48713`, `0cb8375` + consolidação) |
 | Erros materiais registrados | 8 (E1–E8) — E3/E4 no mesmo commit `12ff47c`; E7 cobre categórico-inválido + pycache (mesmo gate `fa6572f`) |
 | Prompts arquivados | 20 | Reports versionados | 20 |
 | Review summaries | 9 (It00–08) |
 | Decisões (ledger consolidado) | 18 (D-01..D-18) |
 | Arquivos versionados na pasta | 114 → 120 (`9e60315`) → 123 (fechamento da It08) |
-| Commits do candidato | 25 (HEAD `a1e99cb`) → 26 (process log) → 29 (3 commits do fixer do gate It08) |
+| Commits do candidato | 25 (HEAD `a1e99cb`) → 26 (process log `9e60315`) → 31 (fechamento da It08: 5 commits do fixer do gate + consolidação do snapshot) |
 | Verificador | 77 PASS → **88 PASS / 0 FAIL** (G1–G11) |
 | Detecção dos 8 erros | 7/8 pelos revisores — E1 3/3; E2 1/3 material (R3, review-8b41e9c2); E3 1/3 material (review-4c090c69); E4 parcial (KM 3/3 — L5/INFO-1/#6; gráfico B 1/3 — #5); E6 3/3; E7 2/3 (review-18199ddc + review-f1fa7caa); E8 3/3 · 1/8 inspeção ocular do orquestrador (E5) |
 
@@ -213,8 +213,9 @@ ledger em [`../reviews/iteration-08-review-summary.md`](../reviews/iteration-08-
 3. **Contagens:** todas qualificadas como **snapshot no fechamento da It08**
    (README §7, evidence-index, este report §4, checklist) com instrução de
    re-derivação na It09/10; este fechamento acrescenta: 9º gate, 27 revisores,
-   10ª correção, 20 prompts, 20 reports, 9 summaries, 123 arquivos, 27
-   commits.
+   10ª correção (fixer do gate It08 executado em 5 commits), 20 prompts, 20
+   reports, 9 summaries, 123 arquivos, 31 commits (incl. este commit de
+   consolidação).
 4. **Detecção dos erros:** o agregado "1/3 em E2–E4" foi substituído pela
    derivação por erro (E2 1/3 material; E3 1/3 material; E4: KM 3/3 + gráfico
    B 1/3) — README do process log §5, este report §4, README da submissão.
