@@ -188,3 +188,10 @@ de só o tema nativo.
 - Troquei "❓ Como o placar é calculado" por só o texto — o ícone ganha cor pelo estilo CSS do
   expander, não precisa de emoji.
 
+Usuário reportou de novo o texto antigo "R 26,768 → valor esperado R 19,190" mesmo depois do
+fix. Não era bug de código — era um processo `streamlit run` que o próprio usuário tinha
+deixado rodando desde antes das correções (`ps aux` achou o PID), servindo a versão em cache
+sem detectar as edições porque o pacote `watchdog` não estava instalado. Matei o processo
+antigo, reinstalei com `watchdog` (só conveniência de dev, não é dependência da solução) e
+confirmei visualmente no navegador que o texto correto aparece num processo novo.
+
