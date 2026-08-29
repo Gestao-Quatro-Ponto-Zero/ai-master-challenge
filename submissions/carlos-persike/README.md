@@ -19,7 +19,8 @@ engajamento: negócios perdidos morrem rápido (mediana 14 dias), negócios ganh
 intuição de "deal parado = deal esfriando". Construí uma ferramenta (Streamlit, roda local)
 que prioriza os 2.089 negócios abertos por **Valor Esperado = probabilidade histórica de
 fechar (pelo tempo de vida do deal) × valor do produto**, com filtro por vendedor/manager/
-região e explicação linha a linha do score. Achado operacional extra: 68% do pipeline aberto
+região, destaque de "Top 5 pra focar hoje" e explicação por negócio em linguagem simples.
+Achado operacional extra: 68% do pipeline aberto
 não tem conta vinculada no CRM — isso não é acaso, é processo, e impede usar porte da conta
 como sinal até ser corrigido.
 
@@ -45,7 +46,13 @@ como sinal até ser corrigido.
    preço falha silenciosamente pra 1.147 negócios).
 5. **Interface:** Streamlit, porque é o primeiro exemplo do próprio brief e roda numa página
    só — o vendedor abre, filtra pelo nome dele e vê a fila. Sem essa camada o score não serve
-   pra nada além de um script que ninguém vai rodar.
+   pra nada além de um script que ninguém vai rodar. Tem destaque "Top 5 pra focar hoje",
+   visão de detalhe por negócio (conta, produto, probabilidade) e um expander opcional "Como
+   o placar é calculado" — quem só quer trabalhar não precisa ler método estatístico pra usar
+   a ferramenta.
+6. **Testei a lógica de domínio**, não só o app rodando na tela: `solution/src/test_dominio.py`
+   cobre a tabela de sobrevivência, a probabilidade por faixa de dias, a ordenação por Valor
+   Esperado e a formatação de moeda — 7 testes, `python3 test_dominio.py`.
 
 ### Resultado
 
@@ -83,19 +90,23 @@ cd submissions/carlos-persike/solution
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# os 4 CSVs do dataset "CRM Sales Predictive Analytics" (Kaggle, CC0) vão em ../data/
-# accounts.csv, products.csv, sales_teams.csv, sales_pipeline.csv
+# baixe o dataset "CRM Sales Predictive Analytics" (Kaggle, CC0):
+# https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics
+# e coloque os 4 CSVs em ../data/ (accounts.csv, products.csv, sales_teams.csv, sales_pipeline.csv)
 
 streamlit run src/app.py
 ```
 
-Reproduzir os números citados neste README:
+Reproduzir os números citados neste README e rodar os testes:
 
 ```bash
 cd solution/src
+python3 test_dominio.py    # 7 testes de domínio
 python3 auditoria.py       # gera outputs/auditoria.txt
 python3 validar_modelo.py  # gera outputs/validacao_modelo.json
 ```
+
+Testado em máquina limpa (venv novo, só `requirements.txt`) antes de considerar pronto.
 
 ### Recomendações
 
@@ -146,6 +157,7 @@ isso forçou.
 
 - [x] Process log com decomposição, auditoria de sinal e decisões registradas
 - [x] Git history (branch `submission/carlos-persike`) — commits granulares por decisão
+- [x] Testes automatizados da lógica de domínio (`solution/src/test_dominio.py`)
 - [ ] Screenshots / chat exports adicionais: _adicionar se desejar antes do PR_
 
 ---
