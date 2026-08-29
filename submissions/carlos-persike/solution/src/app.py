@@ -76,7 +76,20 @@ col1.metric("Negócios abertos", f"{len(filtrado):,}")
 col2.metric("Valor esperado total", f"R$ {filtrado['valor_esperado'].sum():,.0f}")
 col3.metric("Sem conta vinculada", f"{filtrado['conta_desconhecida'].mean():.0%}")
 
-st.subheader("Fila priorizada")
+st.subheader("🎯 Top 5 pra focar hoje")
+if filtrado.empty:
+    st.info("Nenhum negócio nesse filtro.")
+else:
+    top5 = filtrado.head(5)
+    for _, linha in top5.iterrows():
+        conta = linha["account"] if not linha["conta_desconhecida"] else "conta não preenchida no CRM"
+        with st.container(border=True):
+            c1, c2 = st.columns([3, 1])
+            c1.markdown(f"**{linha['product']}** — {conta} · `{linha['opportunity_id']}`")
+            c1.caption(linha["explicacao"])
+            c2.metric("Valor esperado", f"R$ {linha['valor_esperado']:,.0f}")
+
+st.subheader("Fila completa")
 tabela_exibicao = filtrado[
     [
         "opportunity_id",
@@ -106,3 +119,27 @@ st.dataframe(
     hide_index=True,
     column_config={"Valor esperado (R$)": st.column_config.NumberColumn(format="R$ %.0f")},
 )
+
+st.subheader("🔍 Detalhe de um negócio")
+if not filtrado.empty:
+    escolhido_id = st.selectbox("Oportunidade", filtrado["opportunity_id"])
+    negocio = filtrado[filtrado["opportunity_id"] == escolhido_id].iloc[0]
+
+    dc1, dc2 = st.columns(2)
+    with dc1:
+        st.markdown("**Negócio**")
+        st.write(f"Vendedor: {negocio['sales_agent']} ({negocio['manager']}, {negocio['regional_office']})")
+        st.write(f"Estágio: {negocio['deal_stage']}")
+        st.write(f"Produto: {negocio['product']} — R$ {negocio['valor_produto']:,.0f}")
+        st.write(f"Probabilidade histórica: {negocio['probabilidade_historica']:.0%}")
+        st.write(f"**Valor esperado: R$ {negocio['valor_esperado']:,.0f}**")
+    with dc2:
+        st.markdown("**Conta**")
+        if negocio["conta_desconhecida"]:
+            st.write("Conta não preenchida no CRM — sem dados de setor/porte disponíveis.")
+        else:
+            st.write(f"Nome: {negocio['account']}")
+            st.write(f"Setor: {negocio.get('sector', '—')}")
+            st.write(f"Receita anual: R$ {negocio.get('revenue', 0):,.1f}M")
+            st.write(f"Funcionários: {int(negocio.get('employees', 0))}")
+    st.caption(negocio["explicacao"])
