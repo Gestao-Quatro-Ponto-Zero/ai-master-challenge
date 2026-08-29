@@ -19,10 +19,17 @@ Verifica, SEM reimplementar nenhuma análise das Iterações 01–05:
      venv/cache, zero paths pessoais/segredos em solution/, zero imports de
      rede nos scripts, requirements mínimos, run.sh executável e sem CRLF,
      ids de check únicos (gate D7);
-  E. Sanidade — compile() e import de todos os scripts (01–07).
-  F. Relatório executivo (It07) — presença, links relativos, exatamente 6
-     imagens (1x cada), word count, claims proibidos em contexto afirmativo,
-     contas ⊆ t16, ações ⊆ t18 e âncoras numéricas re-derivadas das tabelas.
+E. Sanidade — compile() e import de todos os scripts (01–07).
+   F. Relatório executivo (It07) — presença, links relativos, exatamente 6
+      imagens (1x cada), word count, claims proibidos em contexto afirmativo,
+      contas ⊆ t16, ações ⊆ t18 e âncoras numéricas re-derivadas das tabelas.
+   G. Process log (It08) — presença dos artefatos obrigatórios, exatamente 8
+      erros no ledger, links internos resolvem (zero link para diretório
+      temporário), zero paths de máquina/segredos nos docs novos,
+      modelos/harness corretos, README com checkboxes honestos, review
+      summaries It00–07, inventário de prompts/reports/decisões/hipóteses
+      (globs, sem contagens hardcoded), hashes de commit citados resolvem,
+      estados do plano e nenhum placeholder falso.
 
 Saída: uma linha por check ("[PASS]" / "[FAIL]" + id + detalhe), resumo e
 exit 0 se nenhum FAIL, exit 1 caso contrário (diagnóstico estruturado, sem
@@ -38,6 +45,7 @@ import hashlib
 import importlib.util
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -55,6 +63,7 @@ import pandas as pd
 # ----------------------------------------------------------------------------
 SOLUTION_DIR = Path(__file__).resolve().parent.parent
 SUBMISSION_DIR = SOLUTION_DIR.parent
+PROCESS_LOG_DIR = SUBMISSION_DIR / "process-log"
 RAW_DIR = SOLUTION_DIR / "data" / "raw"
 PROCESSED_DIR = SOLUTION_DIR / "data" / "processed"
 EVIDENCE_DIR = SOLUTION_DIR / "evidence"
@@ -63,6 +72,20 @@ TABLES_DIR = SOLUTION_DIR / "out" / "tables"
 CHARTS_DIR = SOLUTION_DIR / "out" / "charts"
 SRC_DIR = SOLUTION_DIR / "src"
 REPORT_PATH = SOLUTION_DIR / "report-executivo.md"
+
+# Docs novos da Iteração 08 (política F2/It08): sem paths de máquina, sem
+# segredos, sem placeholders falsos; hashes de commit citados resolvem.
+# TMP_TOKEN é composto em runtime (partes) para que ESTE arquivo não case
+# consigo mesmo na varredura D2 (nenhum token completo no texto-fonte).
+TMP_TOKEN = "".join(("/", "tmp"))
+NEW_PL_DOCS = [
+    PROCESS_LOG_DIR / "README.md",
+    PROCESS_LOG_DIR / "errors" / "ai-errors-and-corrections.md",
+    PROCESS_LOG_DIR / "decisions" / "decision-ledger.md",
+    PROCESS_LOG_DIR / "evidence-index.md",
+    PROCESS_LOG_DIR / "prompts" / "iteration-08-prompt.md",
+    PROCESS_LOG_DIR / "reports" / "iteration-08-process-log-report.md",
+]
 
 # ----------------------------------------------------------------------------
 # Manifests (estrutura documentada nas Iterações 01–05; NÃO números de dados)
@@ -787,6 +810,271 @@ def f_report() -> None:
 
 
 # ----------------------------------------------------------------------------
+# G. Process log (Iteração 08) — presença, erros, links, hygiene, estados
+# ----------------------------------------------------------------------------
+PL_MANDATORY = [
+    PROCESS_LOG_DIR / "README.md",
+    PROCESS_LOG_DIR / "errors" / "ai-errors-and-corrections.md",
+    PROCESS_LOG_DIR / "decisions" / "decision-ledger.md",
+    PROCESS_LOG_DIR / "evidence-index.md",
+]
+PL_MANAGEMENT = [
+    PROCESS_LOG_DIR / "management" / "execution-plan.md",
+    PROCESS_LOG_DIR / "management" / "orchestrator-checklist.md",
+    PROCESS_LOG_DIR / "management" / "orchestration-architecture.md",
+]
+# Inventários (nomes exigidos; contagens derivadas por glob — não hardcoded).
+PL_PROMPTS = ([f"iteration-{i:02d}-prompt.md" for i in range(8)]
+              + [f"iteration-{i:02d}-review-fix-prompt.md" for i in range(8)]
+              + ["orchestration-architecture-addendum-prompt.md",
+                 "orchestrator-visual-correction-prompt.md",
+                 "iteration-08-prompt.md"])
+PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
+                  "planning-report", "ingest-audit-report", "reconciliation-report",
+                  "root-cause-report", "lifecycle-watchlist-report",
+                  "actions-impact-report", "reproducibility-report",
+                  "executive-report"])]
+              + [f"iteration-{i:02d}-review-fix-report.md" for i in range(8)]
+              + ["orchestration-architecture-addendum-report.md",
+                 "orchestrator-visual-correction-report.md",
+                 "iteration-08-process-log-report.md"])
+PL_DECISIONS = ["decision-ledger.md"] + [
+    f"iteration-{i:02d}-{name}.md" for i, name in [
+        (2, "analytical-contract-decisions"), (3, "root-cause-decisions"),
+        (4, "watchlist-decisions"), (5, "action-impact-assumptions"),
+        (6, "reproducibility-decisions"), (7, "executive-report-outline")]]
+PL_HYPOTHESES = ["iteration-03-root-cause-hypotheses.md"]
+
+
+def _repo_root() -> Path:
+    d = SUBMISSION_DIR
+    while d != d.parent:
+        if (d / ".git").exists():
+            return d
+        d = d.parent
+    return SUBMISSION_DIR
+
+
+def g_process_log() -> None:
+    def _presence() -> tuple[bool, str]:
+        missing = [p.relative_to(SUBMISSION_DIR) for p in PL_MANDATORY + PL_MANAGEMENT
+                   if not p.is_file() or p.stat().st_size == 0]
+        return (not missing), (f"artefatos obrigatórios + governança presentes; "
+                               f"ausentes/vazios={missing or 'nenhum'}")
+    safe("G1-pl-presence", "process log",
+         "4 artefatos obrigatórios + 3 docs de governança presentes e não vazios", _presence)
+
+    def _errors_count() -> tuple[bool, str]:
+        path = PROCESS_LOG_DIR / "errors" / "ai-errors-and-corrections.md"
+        if not path.is_file():
+            return False, "ledger de erros ausente"
+        txt = path.read_text(encoding="utf-8")
+        entries = re.findall(r"^## (E\d+) — ", txt, re.MULTILINE)
+        if len(entries) != 8:
+            return False, (f"entradas de erro = {len(entries)} "
+                           f"(esperado exatamente 8): {entries}")
+        blocks = re.split(r"^## E\d+ — ", txt, flags=re.MULTILINE)[1:]
+        incomplete = [f"E{i+1}" for i, b in enumerate(blocks)
+                      if not all(k in b for k in
+                                 ("**Etapa:**", "**Detectado por:**",
+                                  "**Causa raiz:**", "**Commit:**"))]
+        return (not incomplete), (f"exatamente 8 erros (E1–E8), cada um com "
+                                  f"etapa/detecção/causa/commit; incompletos="
+                                  f"{incomplete or 'nenhum'}")
+    safe("G2-errors-count", "process log",
+         "ledger com exatamente 8 erros materiais e campos obrigatórios", _errors_count)
+
+    def _links() -> tuple[bool, str]:
+        docs = sorted(PROCESS_LOG_DIR.rglob("*.md")) + [SUBMISSION_DIR / "README.md"]
+        broken: list[str] = []
+        tmp_links: list[str] = []
+        total = 0
+        for doc in docs:
+            if not doc.is_file():
+                continue
+            txt = doc.read_text(encoding="utf-8", errors="replace")
+            for m in re.finditer(r"\]\(([^)#\s]+)(?:#[^)]*)?\)", txt):
+                target = m.group(1).strip()
+                if target.startswith(("http://", "https://", "mailto:")):
+                    continue
+                total += 1
+                if TMP_TOKEN in target or target.startswith("/"):
+                    tmp_links.append(f"{doc.relative_to(SUBMISSION_DIR)} -> {target}")
+                    continue
+                if not (doc.parent / target).exists():
+                    broken.append(f"{doc.relative_to(SUBMISSION_DIR)} -> {target}")
+        return (not broken and not tmp_links), (
+            f"links relativos={total}; quebrados={broken or 'nenhum'}; "
+            f"links temp/absolutos={tmp_links or 'nenhum'}")
+    safe("G3-pl-links", "process log",
+         "links internos resolvem; zero link para diretório temporário ou absoluto",
+         _links)
+
+    def _no_machine_paths() -> tuple[bool, str]:
+        # Tokens compostos em runtime (partes) para ESTE arquivo não casar
+        # consigo mesmo na varredura D2 (mesma prática do D2 original).
+        tokens = [TMP_TOKEN, "".join(("/", "home")),
+                  "".join(("/", "Users", "/")), "ubun" + "tu",
+                  "josenas" + "cimento"]
+        hits = []
+        for doc in NEW_PL_DOCS:
+            if not doc.is_file():
+                hits.append(f"{doc.name}: ausente")
+                continue
+            txt = doc.read_text(encoding="utf-8", errors="replace")
+            for tok in tokens:
+                if tok in txt:
+                    hits.append(f"{doc.relative_to(PROCESS_LOG_DIR)} <- '{tok}'")
+        return (not hits), (f"paths de máquina em docs novos (It08): "
+                            f"{hits or 'nenhum'}")
+    safe("G4-no-machine-paths", "process log",
+         "docs novos sem paths de máquina (dir temporário, home, usuário…)",
+         _no_machine_paths)
+
+    def _models() -> tuple[bool, str]:
+        pl_readme = (PROCESS_LOG_DIR / "README.md").read_text(encoding="utf-8")
+        need = ["openai/gpt-5.6-sol", "deepseek-max", "DeepSeek V4 Flash", "OpenCode Go"]
+        missing = [t for t in need if t not in pl_readme]
+        # Ferramentas erradas são verificadas apenas nos READMEs de entrada
+        # (docs de processo internos podem citá-las como alternativas ou em
+        # contexto de verificação — ex.: decision ledger, este verificador).
+        wrong = []
+        for doc in [PROCESS_LOG_DIR / "README.md", SUBMISSION_DIR / "README.md"]:
+            txt = doc.read_text(encoding="utf-8", errors="replace")
+            for bad in ["Claude Code", "deepseek-v4-flash"]:
+                if bad in txt:
+                    wrong.append(f"{doc.relative_to(SUBMISSION_DIR)} <- '{bad}'")
+        return (not missing and not wrong), (
+            f"modelos/harness corretos no process log README; ausentes="
+            f"{missing or 'nenhum'}; ferramentas erradas nos READMEs="
+            f"{wrong or 'nenhum'}")
+    safe("G5-models", "process log",
+         "modelos/harness corretos; ferramentas erradas ausentes dos READMEs",
+         _models)
+
+    def _readme_checkboxes() -> tuple[bool, str]:
+        txt = (SUBMISSION_DIR / "README.md").read_text(encoding="utf-8")
+        lines = [ln.strip() for ln in txt.splitlines()
+                 if re.match(r"^- \[[ x]\] ", ln.strip())]
+        state = {}
+        for ln in lines:
+            key = ln[6:].split("(", 1)[0].strip().lower()
+            state[key] = ln[3] == "x"
+        def has(term: str) -> bool:
+            return any(term in k for k in state)
+        problems = []
+        if not has("git history") or not state.get(next(k for k in state if "git history" in k)):
+            problems.append("Git history desmarcado")
+        if has("chat export") and state.get(next(k for k in state if "chat export" in k)):
+            problems.append("Chat exports marcado (não existe)")
+        if has("screenshot") and state.get(next(k for k in state if "screenshot" in k)):
+            problems.append("Screenshots marcado (não existe)")
+        if has("screen recording") and state.get(next(k for k in state if "screen recording" in k)):
+            problems.append("Screen recording marcado (não existe)")
+        outro_checked = any(k.startswith("outro") and v for k, v in state.items())
+        if not outro_checked:
+            problems.append("Nenhum 'Outro' marcado")
+        if "pendente" not in txt:
+            problems.append("data de submissão não é 'pendente'")
+        if "não informado" not in txt:
+            problems.append("LinkedIn não é 'não informado'")
+        return (not problems), (f"checkboxes do README honestos; "
+                                f"problemas={problems or 'nenhum'}")
+    safe("G6-readme-checkboxes", "process log",
+         "README: checkboxes honestos, data pendente, LinkedIn não informado",
+         _readme_checkboxes)
+
+    def _review_summaries() -> tuple[bool, str]:
+        actual = sorted(p.name for p in (PROCESS_LOG_DIR / "reviews").glob("iteration-*-review-summary.md"))
+        expected = sorted(f"iteration-{i:02d}-review-summary.md" for i in range(8))
+        return (actual == expected), (f"{len(actual)} summaries (It00–07); "
+                                      f"esperados={expected} reais={actual}")
+    safe("G7-review-summaries", "process log",
+         "8 review summaries versionados (It00–07)", _review_summaries)
+
+    def _inventory() -> tuple[bool, str]:
+        problems = []
+        for sub, names in [("prompts", PL_PROMPTS), ("reports", PL_REPORTS),
+                           ("decisions", PL_DECISIONS), ("hypotheses", PL_HYPOTHESES)]:
+            d = PROCESS_LOG_DIR / sub
+            missing = [n for n in names if not (d / n).is_file()]
+            n_actual = len(list(d.glob("*.md")))
+            if missing:
+                problems.append(f"{sub}: ausentes={missing}")
+        counts = {s: len(list((PROCESS_LOG_DIR / s).glob("*.md")))
+                  for s in ("prompts", "reports", "reviews",
+                            "decisions", "hypotheses", "errors")}
+        return (not problems), (f"inventário completo (contagens derivadas por "
+                                f"glob: {counts}); problemas={problems or 'nenhum'}")
+    safe("G8-inventory", "process log",
+         "inventário de prompts/reports/decisões/hipóteses presente (globs)", _inventory)
+
+    def _commit_hashes() -> tuple[bool, str]:
+        repo = _repo_root()
+        tokens: set[str] = set()
+        for doc in NEW_PL_DOCS:
+            if not doc.is_file():
+                continue
+            txt = doc.read_text(encoding="utf-8", errors="replace")
+            for m in re.finditer(r"`([0-9a-f]{7,40})`", txt):
+                tokens.add(m.group(1))
+        invalid: list[str] = []
+        for tok in sorted(tokens):
+            r = subprocess.run(["git", "rev-parse", "--verify", "--quiet",
+                                f"{tok}^{{commit}}"],
+                               cwd=repo, capture_output=True, text=True)
+            if r.returncode != 0:
+                invalid.append(tok)
+        return (not invalid), (f"hashes citados em docs novos resolvem "
+                               f"({len(tokens)} verificados); inválidos="
+                               f"{invalid or 'nenhum'}")
+    safe("G9-commit-hashes", "process log",
+         "hashes de commit citados nos docs novos existem no git", _commit_hashes)
+
+    def _states() -> tuple[bool, str]:
+        plan = (PROCESS_LOG_DIR / "management" / "execution-plan.md").read_text(encoding="utf-8")
+        found = {int(i): s for i, s in re.findall(
+            r"### Iteração (\d+)[^\n]*\n(?:[^\n]*\n)*?- \*\*Status:\*\* `([A-Z]+)`", plan)}
+        problems = []
+        if found.get(8) != "CONCLUDED":
+            problems.append(f"It08 estado {found.get(8)} != CONCLUDED")
+        for it in (9, 10):
+            if found.get(it) != "PENDING":
+                problems.append(f"It{it} estado {found.get(it)} != PENDING")
+        checklist = (PROCESS_LOG_DIR / "management" / "orchestrator-checklist.md").read_text(encoding="utf-8")
+        if "It08 `CONCLUDED`" not in checklist:
+            problems.append("checklist sem It08 CONCLUDED")
+        if "gate 3x da It08 `PENDING`" not in checklist:
+            problems.append("checklist sem gate 3x da It08 PENDING")
+        readme = (SUBMISSION_DIR / "README.md").read_text(encoding="utf-8")
+        if "pendente" not in readme:
+            problems.append("README sem data 'pendente'")
+        return (not problems), (f"estados: It08={found.get(8)} It09={found.get(9)} "
+                                f"It10={found.get(10)}; problemas="
+                                f"{problems or 'nenhum'}")
+    safe("G10-states", "process log",
+         "estados do plano (It08 CONCLUDED; It09/10 PENDING; gate It08 PENDING)",
+         _states)
+
+    def _no_placeholders() -> tuple[bool, str]:
+        # Tokens inequívocos de placeholder: "todo" (português: "cada") e
+        # "todos" são palavras válidas e NÃO entram na lista; \b evita
+        # casamento parcial (ex.: "lorem" dentro de outra palavra).
+        pat = re.compile(r"\b(TBD|lorem|FIXME|XXX)\b", re.IGNORECASE)
+        hits = []
+        for doc in NEW_PL_DOCS:
+            if not doc.is_file():
+                continue
+            txt = doc.read_text(encoding="utf-8", errors="replace")
+            for m in pat.finditer(txt):
+                hits.append(f"{doc.name} <- '{m.group(0)}'")
+        return (not hits), (f"placeholders falsos em docs novos: {hits or 'nenhum'}")
+    safe("G11-no-placeholders", "process log",
+         "docs novos sem placeholders falsos (TBD/lorem/FIXME/XXX)",
+         _no_placeholders)
+
+
+# ----------------------------------------------------------------------------
 # D7. Gate de integridade do próprio verificador: ids de check únicos
 # ----------------------------------------------------------------------------
 def check_uid_uniqueness() -> None:
@@ -810,6 +1098,7 @@ def main() -> int:
     d_hygiene()
     e_sanity()
     f_report()
+    g_process_log()
     check_uid_uniqueness()  # último: valida inclusive os ids emitidos acima
 
     for c in CHECKS:

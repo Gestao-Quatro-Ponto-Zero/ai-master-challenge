@@ -42,7 +42,8 @@ hipóteses pré-registradas (It03), jornada da conta/watchlist com backtest
 point-in-time (It04), ações/impacto em faixa com premissas nomeadas (It05),
 pipeline de 1 comando (It06) e relatório executivo (It07). Cada número do
 relatório é derivado em runtime das tabelas, com gates (G1–G8 no gerador;
-F1–F8 no verificador).
+F1–F8 no verificador; e G1–G11 = seção G do verificador para o process log da
+It08 — escopos distintos, prefixos documentados por seção).
 
 ### Resultados / Findings
 
@@ -84,6 +85,9 @@ em 1/2/4 trimestres) — tudo declarado no relatório §9 e no
 
 > **Este bloco é obrigatório.** Sem ele, a submissão é desclassificada.
 
+Consolidação final (Iteração 08) com evidência versionada, navegável por 4 artefatos:
+[`process-log/README.md`](process-log/README.md) (entrada principal: escopo, ferramentas, pipeline, decomposição It00–08, contagens) · [`process-log/errors/ai-errors-and-corrections.md`](process-log/errors/ai-errors-and-corrections.md) (8 erros reais da IA com causa raiz e correção) · [`process-log/decisions/decision-ledger.md`](process-log/decisions/decision-ledger.md) (quem decidiu o quê — candidato vs orquestrador vs executor vs revisores) · [`process-log/evidence-index.md`](process-log/evidence-index.md) (índice completo de paths versionados).
+
 ### Ferramentas usadas
 
 | Ferramenta | Para que usou |
@@ -102,33 +106,39 @@ em 1/2/4 trimestres) — tudo declarado no relatório §9 e no
 2. **Iterações 01–05** — uma etapa por agente executor (auditoria → contrato → causa raiz → jornada/watchlist → ações/impacto), cada uma com revisão 3x read-only e correção sequencial; prompts literais em [`process-log/prompts/`](process-log/prompts/).
 3. **Iteração 06** — pipeline de 1 comando (`run.sh`/`Makefile`) + verificador: [`solution/README.md`](solution/README.md).
 4. **Iteração 07** — narrativa pré-registrada ([outline](process-log/decisions/iteration-07-executive-report-outline.md)) antes do gerador do relatório executivo; gates G1–G8 no gerador e F1–F8 no verificador.
-5. **Iterações 08–10** — process log final, QA integral e PR (em andamento).
+5. **Iteração 08** — process log final e evidências (4 artefatos acima) + verificador ampliado com gates de processo G1–G11.
+6. **Iterações 09–10** — QA final integral e PR (pendentes).
 
 ### Onde a IA errou e como corrigi
 
-Erros reais com causa raiz e correção, registrados por iteração em
-[`process-log/reports/`](process-log/reports/) — ex.: H4 contava meses
-pré-signup como zero (corrigido na It03); lente de receita degenerada com
-winner (duas lentes R1/R2, It02); relatório executivo com claims em contexto
-negativo e word count fora do budget (gate contextual + 3 rodadas de
-enxugamento, It07 §5). Nenhuma iteração relatou "não houve erros".
+**8 erros materiais reais**, cada um com etapa, output errado, porquê/perigo, quem detectou, causa raiz, correção, validação e commit — ledger completo em [`process-log/errors/ai-errors-and-corrections.md`](process-log/errors/ai-errors-and-corrections.md). Síntese:
+
+- **It01** — schema ausente/renomeado causava `KeyError` e relatório de auditoria stale (corrigido com guards de coluna; detectado 3/3 pelos revisores).
+- **It02** — lente de revenue churn por winner escondia encerramentos não dominantes (18.507 capturados vs 422.691 ocultos; razão ≈22,8×) → duas lentes nomeadas R1/R2 e winner proibido como total contratual.
+- **It03** — meses pré-signup contados como zero (H4; Δ 13,7 p.p. era artefato → recalculado 9,0 p.p.); KM por tempo exato com células vazias e gráfico B cortado → função degrau + ylim 0–1.
+- **It04** — mapeamento visual R_D↔R_F invertido no gráfico de backtest (26/27 pares divergiam de t14), detectado pela **inspeção ocular do orquestrador** apesar de os validadores programáticos passarem → mapping keyed + gate embutido.
+- **It05** — regra GO ≥10% por ponto sem considerar poder/IC (falso-GO ≈24%; poder 11/31/61%) → regra de decisão em 3 estados com poder/falso-GO derivados em runtime; faixa rotulada ≠ CI; `annualized` removido.
+- **It06** — valor categórico inválido crashava com `KeyError` + stale; invocação direta do verificador gerava `__pycache__` que quebrava o próprio check D1 → guard de valor booleano + `sys.dont_write_bytecode`.
+- **It07** — drift de contagens nos docs, células de tabela truncadas no meio da palavra e word count no teto → contagens derivadas em runtime, tabela com '…' explícito + gate G3b, margem restaurada.
+
+Nenhuma iteração relatou "não houve erros". Detecção: 7/8 pelos revisores (convergência 3/3 em E1, E6, E8; 2/3 em E7; 1/3 em E2–E4), 1/8 pela inspeção ocular do orquestrador (E5).
 
 ### O que eu adicionei que a IA sozinha não faria
 
-Pré-registro de hipóteses, decisões e narrativa ANTES de qualquer análise
-(commits separados); lente por pergunta e regra do winner (sem misturar
-110/312/352/600); gates de honestidade (faixa ≠ CI; exposição ≠ perda;
-hipótese ≠ prova); watchlist nomeada "operational priority" em vez de score;
-escopo e contenção de tempo conforme [`process-log/management/execution-plan.md`](process-log/management/execution-plan.md).
+Síntese; ledger completo com atribuição por decisão em [`process-log/decisions/decision-ledger.md`](process-log/decisions/decision-ledger.md):
+
+- **Decisões humanas do candidato:** escolha do Challenge 001 e da ferramenta; exigência de 1 executor serial + revisão 3x read-only por etapa; originalidade (zero fontes concorrentes como solução); ângulos (lente por pergunta e regra do winner, sem misturar 110/312/352/600); exigência de inspeção visual e auditoria final. O candidato **não** escreveu nem rodou o código manualmente — a execução foi dos subagentes.
+- **O que o processo adicionou além de um prompt único:** pré-registro de hipóteses (It03), premissas (It05) e narrativa (It07) commitados antes do código; contrato analítico congelado com invariantes G1–G15; gates de honestidade (faixa ≠ CI; exposição ≠ perda; hipótese ≠ prova); watchlist nomeada "operational priority" em vez de score; regra de decisão em 3 estados; correções de gate com recálculo independente; contenção de tempo conforme [`process-log/management/execution-plan.md`](process-log/management/execution-plan.md).
 
 ---
 
 ## Evidências
 
 - [x] Git history (histórico git incremental e semântico na branch `submission/jose-nascimento`, autor do candidato — confira com `git log --author="Jose Nascimento"`)
-- [x] Chat exports: prompts literais de todas as iterações em [`process-log/prompts/`](process-log/prompts/)
+- [ ] Chat exports (não produzidos: nenhum export de chat da ferramenta foi salvo; os prompts literais de todas as iterações estão arquivados em [`process-log/prompts/`](process-log/prompts/) — são transcrições de prompts, não exports de chat)
+- [x] Outro: prompts literais, reports de iteração/correção, decisões, hipóteses, review summaries dos gates 3x — process log completo em [`process-log/`](process-log/README.md) (4 artefatos navegáveis)
 - [x] Outro: 5 reports de evidence + 26 tabelas CSV + 6 gráficos PNG regeneráveis com 1 comando ([`solution/evidence/`](solution/evidence/), [`solution/out/`](solution/out/))
-- [ ] Screenshots das conversas com IA (fluxo integral documentado em texto no process log)
+- [ ] Screenshots das conversas com IA (não produzidos; fluxo integral documentado em texto no process log)
 - [ ] Screen recording do workflow (não produzido; pipeline reproduzível cobre a verificação)
 
 ---
