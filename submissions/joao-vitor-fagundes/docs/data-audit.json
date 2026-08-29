@@ -1,0 +1,542 @@
+{
+  "source": {
+    "dataset": "CRM Sales Predictive Analytics",
+    "url": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+    "license": "CC0"
+  },
+  "tables": {
+    "accounts": {
+      "file": "accounts.csv",
+      "sha256": "e5242324768a563fc632cddfed49a29acbbf2892b8a3c6453cc9650de9ae0358",
+      "rows": 85,
+      "columns": 7,
+      "column_names": [
+        "account",
+        "sector",
+        "year_established",
+        "revenue",
+        "employees",
+        "office_location",
+        "subsidiary_of"
+      ],
+      "duplicate_rows": 0,
+      "nulls": {
+        "account": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "sector": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "year_established": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "revenue": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "employees": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "office_location": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "subsidiary_of": {
+          "count": 70,
+          "rate": 0.823529
+        }
+      },
+      "unique_values": {
+        "account": 85,
+        "sector": 10,
+        "year_established": 35,
+        "revenue": 85,
+        "employees": 85,
+        "office_location": 15,
+        "subsidiary_of": 7
+      },
+      "primary_key": {
+        "column": "account",
+        "nulls": 0,
+        "duplicates": 0
+      },
+      "numeric_summary": {
+        "year_established": {
+          "min": 1979,
+          "median": 1996.0,
+          "max": 2017
+        },
+        "revenue": {
+          "min": 4.54,
+          "median": 1223.72,
+          "max": 11698.03
+        },
+        "employees": {
+          "min": 9,
+          "median": 2769.0,
+          "max": 34288
+        }
+      }
+    },
+    "products": {
+      "file": "products.csv",
+      "sha256": "7c1c8cbbdb6d4c286902e1985eeb529a36366d6a43f43cd4a93c4b1da2a6eb84",
+      "rows": 7,
+      "columns": 3,
+      "column_names": [
+        "product",
+        "series",
+        "sales_price"
+      ],
+      "duplicate_rows": 0,
+      "nulls": {
+        "product": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "series": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "sales_price": {
+          "count": 0,
+          "rate": 0.0
+        }
+      },
+      "unique_values": {
+        "product": 7,
+        "series": 3,
+        "sales_price": 7
+      },
+      "primary_key": {
+        "column": "product",
+        "nulls": 0,
+        "duplicates": 0
+      },
+      "numeric_summary": {
+        "sales_price": {
+          "min": 55,
+          "median": 3393.0,
+          "max": 26768
+        }
+      }
+    },
+    "sales_teams": {
+      "file": "sales_teams.csv",
+      "sha256": "aeff1272ebe196f5a27e3fc0578aa27abf48ed9ae461aa344fb95990e5ad8bd1",
+      "rows": 35,
+      "columns": 3,
+      "column_names": [
+        "sales_agent",
+        "manager",
+        "regional_office"
+      ],
+      "duplicate_rows": 0,
+      "nulls": {
+        "sales_agent": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "manager": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "regional_office": {
+          "count": 0,
+          "rate": 0.0
+        }
+      },
+      "unique_values": {
+        "sales_agent": 35,
+        "manager": 6,
+        "regional_office": 3
+      },
+      "primary_key": {
+        "column": "sales_agent",
+        "nulls": 0,
+        "duplicates": 0
+      },
+      "numeric_summary": {}
+    },
+    "sales_pipeline": {
+      "file": "sales_pipeline.csv",
+      "sha256": "825ce8f6c32d4009548b468df3173d55a46fd73f2531f532c5459371dc52adf2",
+      "rows": 8800,
+      "columns": 8,
+      "column_names": [
+        "opportunity_id",
+        "sales_agent",
+        "product",
+        "account",
+        "deal_stage",
+        "engage_date",
+        "close_date",
+        "close_value"
+      ],
+      "duplicate_rows": 0,
+      "nulls": {
+        "opportunity_id": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "sales_agent": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "product": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "account": {
+          "count": 1425,
+          "rate": 0.161932
+        },
+        "deal_stage": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "engage_date": {
+          "count": 500,
+          "rate": 0.056818
+        },
+        "close_date": {
+          "count": 2089,
+          "rate": 0.237386
+        },
+        "close_value": {
+          "count": 2089,
+          "rate": 0.237386
+        }
+      },
+      "unique_values": {
+        "opportunity_id": 8800,
+        "sales_agent": 30,
+        "product": 7,
+        "account": 85,
+        "deal_stage": 4,
+        "engage_date": 421,
+        "close_date": 306,
+        "close_value": 2051
+      },
+      "primary_key": {
+        "column": "opportunity_id",
+        "nulls": 0,
+        "duplicates": 0
+      },
+      "numeric_summary": {
+        "close_value": {
+          "min": 0.0,
+          "median": 472.0,
+          "max": 30288.0
+        }
+      }
+    },
+    "metadata": {
+      "file": "metadata.csv",
+      "sha256": "22b34e498d07e3d7f322afdbf81d70a5dc0a389792944e50ca2af86a3597f0af",
+      "rows": 21,
+      "columns": 3,
+      "column_names": [
+        "Table",
+        "Field",
+        "Description"
+      ],
+      "duplicate_rows": 0,
+      "nulls": {
+        "Table": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "Field": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "Description": {
+          "count": 0,
+          "rate": 0.0
+        }
+      },
+      "unique_values": {
+        "Table": 4,
+        "Field": 18,
+        "Description": 19
+      },
+      "numeric_summary": {}
+    }
+  },
+  "relationships": {
+    "pipeline_to_accounts": {
+      "rows_with_null_reference": 1425,
+      "rows_with_unknown_exact_reference": 0,
+      "unknown_exact_values": []
+    },
+    "pipeline_to_products": {
+      "rows_with_null_reference": 0,
+      "rows_with_unknown_exact_reference": 1480,
+      "unknown_exact_values": [
+        "GTXPro"
+      ],
+      "unknown_values_resolvable_by_normalization": [
+        "GTXPro"
+      ],
+      "rows_resolvable_by_normalization": 1480
+    },
+    "pipeline_to_sales_teams": {
+      "rows_with_null_reference": 0,
+      "rows_with_unknown_exact_reference": 0,
+      "unknown_exact_values": []
+    },
+    "sales_team_agents_without_pipeline_rows": [
+      "Carl Lin",
+      "Carol Thompson",
+      "Elizabeth Anderson",
+      "Mei-Mei Johns",
+      "Natalya Ivanova"
+    ],
+    "accounts_to_parent_accounts": {
+      "rows_with_null_reference": 70,
+      "rows_with_unknown_exact_reference": 0,
+      "unknown_exact_values": []
+    }
+  },
+  "pipeline": {
+    "stage_counts": {
+      "Won": 4238,
+      "Lost": 2473,
+      "Engaging": 1589,
+      "Prospecting": 500
+    },
+    "stage_quality": {
+      "Engaging": {
+        "rows": 1589,
+        "share": 0.180568,
+        "missing_account": 1088,
+        "missing_engage_date": 0,
+        "missing_close_date": 1589,
+        "missing_close_value": 1589,
+        "zero_close_value": 0
+      },
+      "Lost": {
+        "rows": 2473,
+        "share": 0.281023,
+        "missing_account": 0,
+        "missing_engage_date": 0,
+        "missing_close_date": 0,
+        "missing_close_value": 0,
+        "zero_close_value": 2473
+      },
+      "Prospecting": {
+        "rows": 500,
+        "share": 0.056818,
+        "missing_account": 337,
+        "missing_engage_date": 500,
+        "missing_close_date": 500,
+        "missing_close_value": 500,
+        "zero_close_value": 0
+      },
+      "Won": {
+        "rows": 4238,
+        "share": 0.481591,
+        "missing_account": 0,
+        "missing_engage_date": 0,
+        "missing_close_date": 0,
+        "missing_close_value": 0,
+        "zero_close_value": 0
+      }
+    },
+    "closed_rows": 6711,
+    "active_rows": 2089,
+    "historical_win_rate": 0.631501,
+    "max_known_date": "2017-12-31T00:00:00",
+    "engage_date_range": {
+      "min": "2016-10-20T00:00:00",
+      "max": "2017-12-27T00:00:00"
+    },
+    "close_date_range": {
+      "min": "2017-03-01T00:00:00",
+      "max": "2017-12-31T00:00:00"
+    },
+    "invalid_close_before_engage": 0,
+    "closed_missing_engage_date": 0,
+    "closed_missing_close_date": 0,
+    "won_nonpositive_close_value": 0,
+    "lost_nonzero_close_value": 0,
+    "sales_cycle_days": {
+      "Lost": {
+        "count": 2473,
+        "min": 1,
+        "median": 14.0,
+        "p90": 100.0,
+        "max": 138
+      },
+      "Won": {
+        "count": 4238,
+        "min": 1,
+        "median": 57.0,
+        "p90": 106.0,
+        "max": 138
+      }
+    },
+    "active_by_stage": {
+      "Engaging": 1589,
+      "Prospecting": 500
+    },
+    "active_feature_coverage": {
+      "account_known": 664,
+      "account_known_rate": 0.317855,
+      "engage_date_known": 1589,
+      "engage_date_known_rate": 0.760651,
+      "catalog_price_known_after_product_normalization": 2089,
+      "catalog_price_known_rate": 1.0,
+      "sales_agents_present": 27,
+      "sales_agents_without_closed_history": [],
+      "deals_owned_by_agents_without_closed_history": 0
+    },
+    "active_catalog_value": 4966215.0,
+    "active_engaging_age_days": {
+      "count": 1589,
+      "min": 9.0,
+      "median": 165.0,
+      "p90": 319.0,
+      "max": 423.0
+    },
+    "right_censoring_check": {
+      "max_observed_closed_cycle_days": 138,
+      "maturity_cutoff_if_using_max_cycle": "2017-08-15T00:00:00",
+      "active_engaging_older_than_cutoff": 1301
+    },
+    "won_close_to_catalog_price_ratio": {
+      "count": 4238,
+      "p10": 0.869528064565458,
+      "median": 0.9981818181818182,
+      "p90": 1.1238752605729703
+    },
+    "historical_outcome_variation": {
+      "sales_agent": {
+        "groups": 30,
+        "deals_per_group": {
+          "min": 79,
+          "median": 220.0,
+          "max": 553
+        },
+        "win_rate_range": {
+          "min": 0.549784,
+          "median": 0.635904,
+          "max": 0.703947
+        },
+        "highest_win_rate": {
+          "value": "Hayden Neloms",
+          "deals": 152,
+          "win_rate": 0.703947
+        },
+        "lowest_win_rate": {
+          "value": "Lajuana Vencill",
+          "deals": 231,
+          "win_rate": 0.549784
+        }
+      },
+      "product": {
+        "groups": 7,
+        "deals_per_group": {
+          "min": 25,
+          "median": 1084.0,
+          "max": 1436
+        },
+        "win_rate_range": {
+          "min": 0.6,
+          "median": 0.635571,
+          "max": 0.648406
+        },
+        "highest_win_rate": {
+          "value": "MG Special",
+          "deals": 1223,
+          "win_rate": 0.648406
+        },
+        "lowest_win_rate": {
+          "value": "GTK 500",
+          "deals": 25,
+          "win_rate": 0.6
+        }
+      },
+      "account": {
+        "groups": 85,
+        "deals_per_group": {
+          "min": 38,
+          "median": 75.0,
+          "max": 193
+        },
+        "win_rate_range": {
+          "min": 0.53125,
+          "median": 0.62963,
+          "max": 0.75
+        },
+        "highest_win_rate": {
+          "value": "Rangreen",
+          "deals": 100,
+          "win_rate": 0.75
+        },
+        "lowest_win_rate": {
+          "value": "Statholdings",
+          "deals": 64,
+          "win_rate": 0.53125
+        }
+      }
+    }
+  },
+  "categorical_quality": {
+    "account_sectors": {
+      "retail": 17,
+      "technolgy": 12,
+      "medical": 12,
+      "marketing": 8,
+      "finance": 8,
+      "software": 7,
+      "entertainment": 6,
+      "telecommunications": 6,
+      "services": 5,
+      "employment": 4
+    },
+    "account_locations": {
+      "United States": 71,
+      "Kenya": 1,
+      "Philipines": 1,
+      "Japan": 1,
+      "Italy": 1,
+      "Norway": 1,
+      "Korea": 1,
+      "Jordan": 1,
+      "Brazil": 1,
+      "Germany": 1,
+      "Panama": 1,
+      "Belgium": 1,
+      "Romania": 1,
+      "Poland": 1,
+      "China": 1
+    },
+    "regional_offices": {
+      "East": 12,
+      "West": 12,
+      "Central": 11
+    },
+    "managers": {
+      "Melvin Marxen": 6,
+      "Cara Losch": 6,
+      "Rocco Neubert": 6,
+      "Celia Rouche": 6,
+      "Summer Sewald": 6,
+      "Dustin Brinkmann": 5
+    }
+  },
+  "modeling_guardrails": [
+    "Use only Won/Lost rows as historical outcomes; active Prospecting/Engaging rows have no observed target.",
+    "Do not use close_date or close_value as predictive features because they are only known after outcome.",
+    "Treat deal_stage as workflow state for active prioritization, not as the prediction target and feature at the same time.",
+    "Compute seller/account/product historical features inside each training fold or using time-aware history to avoid target leakage.",
+    "Use product sales_price or another pre-outcome estimate for active deal value; close_value is unavailable before closing.",
+    "Preserve missing account and engage_date as meaningful workflow states instead of silently dropping active deals."
+  ]
+}
