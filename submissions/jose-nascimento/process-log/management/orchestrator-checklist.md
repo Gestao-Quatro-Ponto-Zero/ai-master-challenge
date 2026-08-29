@@ -28,8 +28,8 @@ também passou pós-push.
 | A8 | Nenhum arquivo fora da pasta alterado — verificação em TODAS as iterações | CONCLUDED | It09 (QA final): auditoria do histórico completo via `git log --name-only main..HEAD` — 31 commits do candidato, 100% `submissions/jose-nascimento/`; diff upstream `main` vs fork `main` vazio; working tree limpo; ver `process-log/reports/iteration-09-final-qa-report.md` §2 |
 | A9 | README da submissão segue o template oficial | CONCLUDED | Scaffold baseado em `templates/submission-template.md` (verificado na Iteração 00) |
 | A10 | README da submissão preenchido com conteúdo final | CONCLUDED | Iteração 07: `README.md` no template oficial com índice executivo (Sobre mim, Executive Summary + decisão, Solução/Abordagem/Resultados/Recomendações/Limitações, Process Log preservado/integrado, Evidências); It10: data final `2026-08-29` preenchida |
-| A11 | Título do PR no formato oficial `[Submission] Jose Nascimento Moreira — Challenge 001` | PENDING | Iteração 10 |
-| A12 | Descrição do PR com resumo e navegação dos artefatos | PENDING | Iteração 10 |
+| A11 | Título do PR no formato oficial `[Submission] Jose Nascimento Moreira — Challenge 001` | CONCLUDED | It10: [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111) aberto com título e base corretos |
+| A12 | Descrição do PR com resumo e navegação dos artefatos | CONCLUDED | It10: body do [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111) contém resumo, navegação e processo |
 
 ## B. Processo e ferramenta
 

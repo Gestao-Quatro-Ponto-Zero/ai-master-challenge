@@ -63,7 +63,7 @@ Estados: `PENDING` (não iniciado) / `OPEN` (executor trabalhando) / `CONCLUDED`
 | **07** | Relatório executivo CEO — narrativa **antes** da redação + verifier F1–F8 | executor + gate 3x | Erro E8 corrigido (drift/truncamento/word count); markdown único; gates de honestidade | `07_generate_executive_report.py`, `report-executivo.md`, README preenchido | `1bbec67` (outline) · `a726cb4` → fix `a1e99cb`; [review](reviews/iteration-07-review-summary.md), [outline](decisions/iteration-07-executive-report-outline.md) |
 | **08** | **Process log final e evidências** (esta iteração) | executor + gate 3x `CONCLUDED` | 4 artefatos navegáveis; 8 erros com causa raiz; decisões candidato vs IA; verifier com gates de processo; fixer do gate reconciliou wording/aritmética F11/snapshots/detecção | este README, [erros](errors/ai-errors-and-corrections.md), [decisões](decisions/decision-ledger.md), [índice](evidence-index.md), [report](reports/iteration-08-process-log-report.md), [gate](reviews/iteration-08-review-summary.md) | `docs: consolidate AI process log and evidence` → fix `docs: reconcile process log review evidence` |
 | **09** | **QA final integral e prontidão de submissão** | executor + gate 3x `CONCLUDED` | Auditoria git/escopo vs upstream/fork; re-execução em clone fresco (88 PASS/0 FAIL); re-derivação independente 59/59; originalidade/links/markdown/hygiene; readiness checklist criado; 4 fixos de hygiene/stale; gate fechado com correções L1–L3 (links, word counts, aritmética F11) | [prompt](prompts/iteration-09-prompt.md), [report](reports/iteration-09-final-qa-report.md), [readiness checklist](management/submission-readiness-checklist.md), [gate](reviews/iteration-09-review-summary.md), [fix report](reports/iteration-09-review-fix-report.md) | `chore: complete pre-submission quality assurance` → fixer `chore: close pre-submission QA gate` (gate 3x da It09 `CONCLUDED`) |
-| **Auditoria final** | **Remediação pré-It10 dos dois findings HIGH** | execução corretiva + verificação independente | HIGH-001 (polaridade linkage) e HIGH-002 (KM posterior ao horizonte) corrigidos; consumidores regenerados; It00–09 e E1–E8 preservados | [prompt](prompts/final-critical-audit-fix-prompt.md), [report](reports/final-critical-audit-fix-report.md), [summary](reviews/final-critical-audit-summary.md) | remediação separada; It10 formal continua `PENDING` |
+| **Auditoria final** | **Remediação pré-It10 dos dois findings HIGH** | execução corretiva + verificação independente | HIGH-001 (polaridade linkage) e HIGH-002 (KM posterior ao horizonte) corrigidos; consumidores regenerados; It00–09 e E1–E8 preservados | [prompt](prompts/final-critical-audit-fix-prompt.md), [report](reports/final-critical-audit-fix-report.md), [summary](reviews/final-critical-audit-summary.md) | remediação separada; It10 concluída com o PR #111 |
 
 ## 4. Como o problema foi entendido ANTES de promptar
 
@@ -119,7 +119,7 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 | Decisões registradas | **6 arquivos** (It02–07) + ledger consolidado | glob de `decisions/` |
 | Hipóteses pré-registradas | **1 arquivo** (H1–H10) | `hypotheses/` |
 | Commits do candidato | **33** (31 no fechamento da It08 → 32 no fechamento da It09 → **33 após o fixer do gate It09**, incl. `chore: close pre-submission QA gate`) | `git log --author="Jose Nascimento"` |
-| Verificador | **88 PASS / 0 FAIL** após a remediação (checks A–G; F8 inclui linkage/KM; G10/inventário preservam It08/09 `CONCLUDED` e It10 `PENDING`) | `../solution/src/06_verify_pipeline.py` |
+| Verificador | **88 PASS / 0 FAIL** após a finalização (checks A–G; F8 inclui linkage/KM; G10/inventário preservam It08–10 `CONCLUDED`) | `../solution/src/06_verify_pipeline.py` |
 
 ## 8. Limitações do processo (declaradas)
 
@@ -150,4 +150,4 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 
 ---
 
-**Estado atual:** auditoria crítica final remediada (HIGH-001/HIGH-002; ver [summary](reviews/final-critical-audit-summary.md) e [report](reports/final-critical-audit-fix-report.md)); Iteração 09 permanece `CONCLUDED` e Iteração 10 (`PENDING`) conserva as pendências formais: commit final e PR `[Submission] Jose Nascimento Moreira — Challenge 001`.
+**Estado atual:** auditoria crítica final remediada (HIGH-001/HIGH-002); Iterações 09 e 10 estão `CONCLUDED`. O commit final é `88e33b5` e o PR oficial é [#111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111), com título `[Submission] Jose Nascimento Moreira — Challenge 001`.

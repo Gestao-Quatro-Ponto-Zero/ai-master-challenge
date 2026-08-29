@@ -180,13 +180,13 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 
 ### Iteração 10 — Git e PR final
 
-- **Status:** `PENDING`
+- **Status:** `CONCLUDED` (2026-08-29)
 - **Objetivo:** garantir commits semânticos e autor do candidato em todo o histórico, push final e abertura do Pull Request conforme CONTRIBUTING.md.
 - **Entradas:** submissão QA-aprovada (Iteração 09).
 - **Artefatos esperados:** Pull Request para `main` com título `[Submission] Jose Nascimento Moreira — Challenge 001`; descrição com resumo e navegação dos artefatos.
 - **Critérios objetivos de aceitação:** PR contém apenas arquivos de `submissions/jose-nascimento/`; título no formato oficial; commits semânticos com autor do candidato; histórico auditável (vários commits, não 1 único gigante).
-- **Validações:** `git log`; `git diff main...branch --stat` (escopo); conferência do título/descrição.
-- **Commit esperado:** `docs: finalize submission` (push final e abertura do PR)
+- **Validações:** `git log`; `git diff upstream/main...branch --stat` (escopo); verifier `88 PASS / 0 FAIL`; conferência do título/descrição do [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111).
+- **Commit realizado:** `88e33b5 docs: finalize submission`; push para `origin/submission/jose-nascimento` e abertura do [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111).
 - **Dependências:** Iteração 09.
 
 ---

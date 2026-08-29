@@ -3,9 +3,9 @@
 - **Tipo:** artefato do QA final integral (Iteração 09) — mapeia **cada regra oficial** do G4 AI Master Challenge ao status e à evidência da submissão de Jose Nascimento Moreira (branch `submission/jose-nascimento`, pasta única `submissions/jose-nascimento/`).
 - **Estados válidos:** `PASS` (regra atendida com evidência) / `PENDING` (pendente — somente It10). Nenhum item afirma algo ainda não realizado.
 - **Fonte das regras oficiais:** `README.md` (raiz), `CONTRIBUTING.md`, `submission-guide.md`, `challenges/data-001-churn/README.md`, `templates/submission-template.md` — lidos integralmente (Iteração 00 e re-lidos na Iteração 09).
-- **Pendências atuais (It10):** (1) commit final de submissão; (2) abertura do PR. A data final foi preenchida no README como `2026-08-29`; nada mais está pendente nesta auditoria (gate 3x da It09 `CONCLUDED` em 2026-08-29).
+- **Pendências atuais:** nenhuma. A data final foi preenchida no README como `2026-08-29`; o commit final e o PR foram concluídos na It10 (gate 3x da It09 `CONCLUDED` em 2026-08-29).
 - **Snapshot:** fechamento da Iteração 09 (2026-08-29, pós-gate 3x), com remediação posterior dos dois findings HIGH da auditoria crítica final. Re-derivar contagens na It10.
-- **Remediação crítica:** HIGH-001 (polaridade linkage) e HIGH-002 (horizontes KM) estão corrigidos e registrados em [`process-log/reviews/final-critical-audit-summary.md`](../reviews/final-critical-audit-summary.md); as pendências formais continuam restritas à It10.
+- **Remediação crítica:** HIGH-001 (polaridade linkage) e HIGH-002 (horizontes KM) estão corrigidos e registrados em [`process-log/reviews/final-critical-audit-summary.md`](../reviews/final-critical-audit-summary.md); a It10 foi concluída com o commit `88e33b5` e o [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111).
 
 ---
 
@@ -21,8 +21,8 @@
 | 6 | Process log obrigatório com evidências de uso de IA (README raiz; submission-guide §2; template) | PASS | `process-log/` completo: 22 prompts transcritos, 22 reports, 10 review summaries, 8 erros E1–E8 com causa raiz, decision ledger (18 decisões com atribuição), hipóteses H1–H10 pré-registradas, evidence index; README principal navegável |
 | 7 | README da submissão segue o template oficial (CONTRIBUTING; template) | PASS | `README.md` da submissão: Sobre mim (Nome; LinkedIn `Informado no formulario de inscricao`; Challenge escolhido), Executive Summary, Solução (Abordagem/Resultados/Recomendações/Limitações), Process Log (ferramentas/workflow/erros/contribuição), Evidências com checkboxes honestos, data `2026-08-29` |
 | 8 | Não modificar arquivos fora da pasta (CONTRIBUTING: "PRs que alteram outros arquivos serão rejeitados") | PASS | Histórico integral auditado (It09): zero arquivos fora de `submissions/jose-nascimento/` em 33 commits; `.gitignore` raiz ignora `submissions/` e commits usam `git add -f` só nos paths pretendidos |
-| 9 | Título do PR no formato oficial `[Submission] Nome — Challenge NNN` (CONTRIBUTING; o template usa o número do challenge) | PASS (planejado) | Título planejado exato: `[Submission] Jose Nascimento Moreira — Challenge 001`; base `upstream main`; **PR NÃO aberto** (It10, após aviso ao candidato e auditoria 5x) |
-| 10 | Um PR por pessoa; atualizações por push na mesma branch (CONTRIBUTING) | PASS | Branch única; nenhum PR aberto até aqui; push incremental na mesma branch |
+| 9 | Título do PR no formato oficial `[Submission] Nome — Challenge NNN` (CONTRIBUTING; o template usa o número do challenge) | PASS | Título exato: `[Submission] Jose Nascimento Moreira — Challenge 001`; base `upstream main`; [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111) |
+| 10 | Um PR por pessoa; atualizações por push na mesma branch (CONTRIBUTING) | PASS | Branch única; [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111) aberto com push final na mesma branch |
 | 11 | Sem chat export/screenshot inventado; evidências reais (submission-guide: formatos aceitos; "sem evidência de processo = desclassificado") | PASS | Evidência 100% real e versionada: prompts transcritos, reports, summaries, git history, pipeline reproduzível; checkboxes de chat exports/screenshots/screen recording **desmarcados** (não existem) — gate G6 do verificador |
 
 ## B. Regras do challenge 001 (challenges/data-001-churn/README.md)
@@ -66,8 +66,8 @@
 | # | Item | Estado | Ação na It10 |
 |---|---|---|---|
 | P1 | Data final de submissão no README | CONCLUDED | `2026-08-29` preenchida no README (It10) |
-| P2 | Commit final de submissão | PENDING | `docs: finalize submission` (It10) |
-| P3 | Pull Request oficial | PENDING | Título `[Submission] Jose Nascimento Moreira — Challenge 001`; base upstream `main`; descrição com resumo e navegação; somente arquivos da pasta |
+| P2 | Commit final de submissão | CONCLUDED | `88e33b5 docs: finalize submission` (It10) |
+| P3 | Pull Request oficial | CONCLUDED | [PR #111](https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/111), título `[Submission] Jose Nascimento Moreira — Challenge 001`; base upstream `main`; descrição com resumo e navegação; somente arquivos da pasta |
 
 ---
 

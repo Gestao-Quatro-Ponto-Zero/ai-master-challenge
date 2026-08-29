@@ -1176,8 +1176,8 @@ def g_process_log() -> None:
             problems.append(f"It08 estado {found.get(8)} != CONCLUDED")
         if found.get(9) != "CONCLUDED":
             problems.append(f"It09 estado {found.get(9)} != CONCLUDED")
-        if found.get(10) != "PENDING":
-            problems.append(f"It10 estado {found.get(10)} != PENDING")
+        if found.get(10) != "CONCLUDED":
+            problems.append(f"It10 estado {found.get(10)} != CONCLUDED")
         checklist = (PROCESS_LOG_DIR / "management" / "orchestrator-checklist.md").read_text(encoding="utf-8")
         if "It08 `CONCLUDED`" not in checklist:
             problems.append("checklist sem It08 CONCLUDED")
@@ -1188,13 +1188,13 @@ def g_process_log() -> None:
         if "gate 3x da It09 `CONCLUDED`" not in checklist:
             problems.append("checklist sem gate 3x da It09 CONCLUDED")
         readme = (SUBMISSION_DIR / "README.md").read_text(encoding="utf-8")
-        if "pendente" not in readme:
-            problems.append("README sem data 'pendente'")
+        if not re.search(r"Submissão enviada em:\s*\*\*\d{4}-\d{2}-\d{2}\*\*", readme):
+            problems.append("README sem data final ISO YYYY-MM-DD")
         return (not problems), (f"estados: It08={found.get(8)} It09={found.get(9)} "
                                 f"It10={found.get(10)}; problemas="
                                 f"{problems or 'nenhum'}")
     safe("G10-states", "process log",
-         "estados do plano (It08/09 CONCLUDED; It10 PENDING; gate It08/09 "
+         "estados do plano (It08/09/10 CONCLUDED; gate It08/09 "
          "CONCLUDED)",
          _states)
 
