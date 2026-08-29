@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Carlos Persike
-- **LinkedIn:** _[preencher antes de abrir o PR]_
+- **LinkedIn:** https://www.linkedin.com/in/carlos-persike-0ab9a3356/
 - **Challenge escolhido:** 003 — Lead Scorer
 
 ---
