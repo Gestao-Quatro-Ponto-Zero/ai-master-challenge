@@ -176,7 +176,7 @@ O README oficial projeta o desafio para **4–6 horas** e não premia soluções
 
 - **Status:** `CONCLUDED` — HIGH-001 (polaridade do vínculo evento–assinatura) e HIGH-002 (horizontes KM) corrigidos; t12/t15/t18/t20, evidence 04 e relatório executivo regenerados; gates G9, G13 e F8 ampliados para testar a semântica; detalhes em `process-log/reviews/final-critical-audit-summary.md` e `process-log/reports/final-critical-audit-fix-report.md`.
 - **Escopo:** correção do deliverable final, sem alterar o histórico das It00–09 e sem adicionar erro E9 ao ledger E1–E8.
-- **Validações:** compilação, estágios 04/05/07, `./run.sh` em CWD externo, `make all` byte-idêntico, `make verify` (`88 PASS / 0 FAIL`) e quatro testes negativos estruturados passaram; clone fresco será executado após o push, quando houver commit para clonar. Detalhes no report de remediação.
+- **Validações:** compilação, estágios 04/05/07, `./run.sh` em CWD externo, `make all` byte-idêntico, `make verify` (`88 PASS / 0 FAIL`), quatro testes negativos estruturados e clone fresco da branch publicada em `af970a3` passaram. Detalhes no report de remediação.
 
 ### Iteração 10 — Git e PR final
 

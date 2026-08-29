@@ -56,16 +56,16 @@ Após a execução integral, os artefatos materiais ficaram com:
 - Testes negativos em cópias descartáveis: arquivo raw ausente, booleano
   inválido, tabela derivada ausente e link quebrado retornaram exit não-zero,
   diagnóstico estruturado e nenhum traceback.
-- Clone fresco: executar imediatamente após o commit/push, pois depende de um
-  commit que contenha os três documentos novos ignorados pelo `.gitignore`.
+- Clone fresco da branch publicada em `af970a3`: PASS; `./run.sh`, `make all` e
+  `make verify` passaram, os arquivos permaneceram byte-idênticos, o worktree
+  ficou limpo e nenhum `__pycache__` foi criado.
 
 ## 4. Handoff
 
 - Não alterar o histórico de It04–It09 nem transformar esta remediação em E9.
 - Atualizar os snapshots e referências documentais somente após rederivar as
   contagens com glob/git.
-- Antes do commit, revisar `git diff --check`, escopo, arquivos gerados e
-  ausência de cache; após o push, executar o clone fresco e rodar `make verify`
-  nele.
+- Antes do commit, foram revisados `git diff --check`, escopo, arquivos gerados
+  e ausência de cache; após o push, o clone fresco foi validado com `make verify`.
 - O commit final, push e PR oficial permanecem como pendências formais da
   It10.

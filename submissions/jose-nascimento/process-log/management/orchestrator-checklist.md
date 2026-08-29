@@ -7,8 +7,8 @@ It10; ver [`final-critical-audit-summary.md`](../reviews/final-critical-audit-su
 
 **Atualização da remediação (2026-08-29):** `./run.sh` em CWD externo, `make all`
 determinístico, `make verify` (`88 PASS / 0 FAIL`), compilação e quatro testes
-negativos estruturados passaram; clone fresco permanece como validação
-pós-push.
+negativos estruturados passaram; clone fresco da branch publicada em `af970a3`
+também passou pós-push.
 
 **Última atualização histórica da It09:** 2026-08-29 (fechamento da Iteração 09 — QA final integral: auditoria git/escopo vs upstream `main` e fork `main` (idênticos a `4aed364`); re-execução em clone fresco do origin — 2× `./run.sh` + `make all` + CWD externo + verificador direto: **88 PASS / 0 FAIL**, byte-idêntico, ~64–66 s, zero `__pycache__`; FAIL tests (schema/categórico/raw ausente/derivado ausente/link corrompido) com exit 1 estruturado, zero traceback, zero stale; re-derivação numérica independente **59/59 âncoras conferem**; varreduras e readiness checklist; commit `chore: complete pre-submission quality assurance`; **It09 `CONCLUDED`**; **review gate 3x da It09 `CONCLUDED`**; It10 `PENDING`; escopo 100% `submissions/jose-nascimento/`). Histórico anterior: gates It00–08 conforme registrado nas seções abaixo.**
 
