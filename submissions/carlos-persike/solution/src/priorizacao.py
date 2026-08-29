@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import pandas as pd
 
+from formatacao import moeda_brl
 from probabilidade import probabilidade_por_dias
 
 # Data de referência: o dataset termina em 2017-12-31, então "hoje" é a última data
@@ -43,6 +44,6 @@ def _montar_explicacao(linha: pd.Series) -> str:
         situacao = f"engajado há {int(linha['dias_desde_engajamento'])} dias"
     return (
         f"{situacao} · {linha['probabilidade_historica']:.0%} de chance histórica de fechar "
-        f"nessa faixa de tempo · produto vale R$ {linha['valor_produto']:,.0f} "
-        f"→ valor esperado R$ {linha['valor_esperado']:,.0f}"
+        f"nessa faixa de tempo · produto vale {moeda_brl(linha['valor_produto'])} "
+        f"→ valor esperado {moeda_brl(linha['valor_esperado'])}"
     )

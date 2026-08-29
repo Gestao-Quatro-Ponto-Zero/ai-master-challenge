@@ -8,11 +8,14 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
+from formatacao import moeda_brl, moeda_brl_milhoes
 from ingestao import carregar_pipeline_enriquecido
 from priorizacao import priorizar_pipeline_aberto
 from probabilidade import calcular_tabela_sobrevivencia
 
 OUTPUTS_DIR = Path(__file__).resolve().parents[1] / "outputs"
+
+COR_ESTAGIO = {"Engaging": "blue", "Prospecting": "gray"}
 
 st.set_page_config(page_title="Lead Scorer — Prioridade de Pipeline", layout="wide")
 
@@ -40,8 +43,8 @@ metricas = carregar_metricas_validacao()
 
 st.title("📋 Prioridade de Pipeline")
 st.caption(
-    "Ordena os negócios abertos por Valor Esperado (probabilidade histórica de fechar × "
-    "valor do produto), não por valor bruto ou feeling."
+    "Ordenado por **Valor Esperado** = probabilidade histórica de fechar (pelo tempo desde "
+    "o engajamento) × valor do produto — não por valor bruto, não por feeling."
 )
 
 with st.sidebar:
@@ -60,7 +63,7 @@ with st.sidebar:
         st.metric("AUC", metricas.get("auc_holdout", "—"))
         st.caption(
             f"Baseline (classe majoritária): {metricas.get('acuracia_baseline_classe_majoritaria', '—')} · "
-            "sinal real mas modesto — ver Limitações."
+            "sinal real, porém modesto — ver Limitações no README."
         )
 
 filtrado = pipeline.copy()
@@ -72,22 +75,28 @@ if filtro_vendedor:
     filtrado = filtrado[filtrado["sales_agent"].isin(filtro_vendedor)]
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Negócios abertos", f"{len(filtrado):,}")
-col2.metric("Valor esperado total", f"R$ {filtrado['valor_esperado'].sum():,.0f}")
+col1.metric("Negócios abertos", f"{len(filtrado):,}".replace(",", "."))
+col2.metric("Valor esperado total", moeda_brl(filtrado["valor_esperado"].sum()))
 col3.metric("Sem conta vinculada", f"{filtrado['conta_desconhecida'].mean():.0%}")
 
 st.subheader("🎯 Top 5 pra focar hoje")
 if filtrado.empty:
     st.info("Nenhum negócio nesse filtro.")
 else:
-    top5 = filtrado.head(5)
-    for _, linha in top5.iterrows():
+    for _, linha in filtrado.head(5).iterrows():
         conta = linha["account"] if not linha["conta_desconhecida"] else "conta não preenchida no CRM"
         with st.container(border=True):
-            c1, c2 = st.columns([3, 1])
-            c1.markdown(f"**{linha['product']}** — {conta} · `{linha['opportunity_id']}`")
-            c1.caption(linha["explicacao"])
-            c2.metric("Valor esperado", f"R$ {linha['valor_esperado']:,.0f}")
+            c1, c2, c3 = st.columns([3, 1.4, 1.2])
+            with c1:
+                st.markdown(f"**{linha['product']}** — {conta}")
+                st.caption(f"`{linha['opportunity_id']}` · {linha['sales_agent']}")
+            with c2:
+                st.badge(linha["deal_stage"], color=COR_ESTAGIO.get(linha["deal_stage"], "gray"))
+                st.progress(
+                    linha["probabilidade_historica"],
+                    text=f"{linha['probabilidade_historica']:.0%} chance histórica",
+                )
+            c3.metric("Valor esperado", moeda_brl(linha["valor_esperado"]))
 
 st.subheader("Fila completa")
 tabela_exibicao = filtrado[
@@ -98,10 +107,17 @@ tabela_exibicao = filtrado[
         "regional_office",
         "deal_stage",
         "product",
+        "dias_desde_engajamento",
+        "probabilidade_historica",
+        "valor_produto",
         "valor_esperado",
-        "explicacao",
     ]
-].rename(
+].copy()
+tabela_exibicao["dias_desde_engajamento"] = tabela_exibicao["dias_desde_engajamento"].astype(int)
+tabela_exibicao["probabilidade_historica"] = tabela_exibicao["probabilidade_historica"] * 100
+tabela_exibicao["valor_produto"] = tabela_exibicao["valor_produto"].apply(moeda_brl)
+tabela_exibicao["valor_esperado_fmt"] = tabela_exibicao["valor_esperado"].apply(moeda_brl)
+tabela_exibicao = tabela_exibicao.rename(
     columns={
         "opportunity_id": "Oportunidade",
         "sales_agent": "Vendedor",
@@ -109,16 +125,22 @@ tabela_exibicao = filtrado[
         "regional_office": "Região",
         "deal_stage": "Estágio",
         "product": "Produto",
-        "valor_esperado": "Valor esperado (R$)",
-        "explicacao": "Por que esse score",
+        "dias_desde_engajamento": "Dias",
+        "probabilidade_historica": "Probabilidade",
+        "valor_produto": "Valor do produto",
+        "valor_esperado_fmt": "Valor esperado",
     }
-)
+).drop(columns=["valor_esperado"])
 st.dataframe(
     tabela_exibicao,
     use_container_width=True,
     hide_index=True,
-    column_config={"Valor esperado (R$)": st.column_config.NumberColumn(format="R$ %.0f")},
+    column_config={
+        "Probabilidade": st.column_config.ProgressColumn(format="%.0f%%", min_value=0, max_value=100),
+        "Valor esperado": st.column_config.TextColumn(pinned=True),
+    },
 )
+st.caption("Clique em uma oportunidade abaixo pra ver o detalhe completo, incluindo dados da conta.")
 
 st.subheader("🔍 Detalhe de um negócio")
 if not filtrado.empty:
@@ -128,18 +150,21 @@ if not filtrado.empty:
     dc1, dc2 = st.columns(2)
     with dc1:
         st.markdown("**Negócio**")
+        st.badge(negocio["deal_stage"], color=COR_ESTAGIO.get(negocio["deal_stage"], "gray"))
         st.write(f"Vendedor: {negocio['sales_agent']} ({negocio['manager']}, {negocio['regional_office']})")
-        st.write(f"Estágio: {negocio['deal_stage']}")
-        st.write(f"Produto: {negocio['product']} — R$ {negocio['valor_produto']:,.0f}")
-        st.write(f"Probabilidade histórica: {negocio['probabilidade_historica']:.0%}")
-        st.write(f"**Valor esperado: R$ {negocio['valor_esperado']:,.0f}**")
+        st.write(f"Produto: {negocio['product']} — {moeda_brl(negocio['valor_produto'])}")
+        st.progress(
+            negocio["probabilidade_historica"],
+            text=f"{negocio['probabilidade_historica']:.0%} de chance histórica de fechar",
+        )
+        st.metric("Valor esperado", moeda_brl(negocio["valor_esperado"]))
     with dc2:
         st.markdown("**Conta**")
         if negocio["conta_desconhecida"]:
-            st.write("Conta não preenchida no CRM — sem dados de setor/porte disponíveis.")
+            st.info("Conta não preenchida no CRM — sem dados de setor/porte disponíveis.")
         else:
             st.write(f"Nome: {negocio['account']}")
             st.write(f"Setor: {negocio.get('sector', '—')}")
-            st.write(f"Receita anual: R$ {negocio.get('revenue', 0):,.1f}M")
-            st.write(f"Funcionários: {int(negocio.get('employees', 0))}")
+            st.write(f"Receita anual: {moeda_brl_milhoes(negocio.get('revenue', 0))}")
+            st.write(f"Funcionários: {int(negocio.get('employees', 0)):,}".replace(",", "."))
     st.caption(negocio["explicacao"])

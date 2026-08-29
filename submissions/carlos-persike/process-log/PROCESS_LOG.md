@@ -126,4 +126,28 @@ produto/vendedor que os dados provam que não existe.
 - Corrigir o rótulo errado do `auditoria.py` em vez de aceitar "0% sem conta" — bater o
   número contra a checagem bruta anterior foi decisão minha, não algo que o script teria
   detectado sozinho.
+- Primeira versão do `st.column_config.ProgressColumn` usava `format="%.0f%%"` com
+  `min_value=0, max_value=1` — renderizou "1%" pra uma probabilidade de 72%, porque o
+  formato printf-style não multiplica por 100 sozinho (só o preset `"percent"` faz isso, e
+  esse preset trouxe casas decimais indesejadas, "71.69%"). Só percebi no teste visual no
+  navegador, não no código. Corrigido: multipliquei a probabilidade por 100 antes de passar
+  pra coluna e usei `min_value=0, max_value=100` com o printf-style, que dá controle exato
+  de casas decimais.
+
+## 2026-08-29 — Segunda rodada: UX/UI e formatação
+
+Usuário reportou UI "muito feia" e formatação de R$ errada (estilo americano, vírgula como
+milhar). Correções:
+
+- `formatacao.py` novo: `moeda_brl()` e `moeda_brl_milhoes()` — o Streamlit não tem um
+  formato de coluna pt-BR confiável (o preset `"localized"` depende do locale do navegador
+  de quem está vendo, não é determinístico), então formatei como string em Python, testável.
+- Tabela "Fila completa" deixou de ter uma coluna de texto corrido (`explicacao`) truncada e
+  ilegível — virou colunas separadas (Dias, Probabilidade com barra visual, Valor do
+  produto, Valor esperado), mais fácil de escanear e ordenar.
+- Cards do "Top 5" e o "Detalhe de um negócio" ganharam badge de estágio (`st.badge`) e
+  barra de progresso (`st.progress`) em vez de só texto.
+- Adicionei testes pra `moeda_brl`/`moeda_brl_milhoes` em `test_dominio.py` — formatação de
+  dinheiro pra um stakeholder de negócio é exatamente o tipo de coisa que não pode quebrar
+  silenciosamente.
 

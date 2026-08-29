@@ -3,8 +3,19 @@ Roda: python3 test_dominio.py (a partir de solution/src/)
 """
 import pandas as pd
 
+from formatacao import moeda_brl, moeda_brl_milhoes
 from priorizacao import calcular_dias_desde_engajamento, priorizar_pipeline_aberto
 from probabilidade import calcular_tabela_sobrevivencia, probabilidade_por_dias
+
+
+def test_moeda_brl_usa_ponto_como_milhar():
+    assert moeda_brl(26768) == "R$ 26.768"
+    assert moeda_brl(1234567) == "R$ 1.234.567"
+    assert moeda_brl(55) == "R$ 55"
+
+
+def test_moeda_brl_milhoes_usa_virgula_decimal():
+    assert moeda_brl_milhoes(251.41) == "R$ 251,4 milhões"
 
 
 def test_probabilidade_por_dias_usa_faixa_certa():
