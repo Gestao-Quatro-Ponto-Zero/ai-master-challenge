@@ -47,4 +47,8 @@ Rodei `solution/src/auditoria.py` (script meu, sem IA gerando os números — s�
 
 Isso é o tipo de correção que uma rodada crua de LLM (o baseline que o G4 já tem) dificilmente faz — é mais fácil aceitar as colunas como estão e calcular a média de "Time to Resolution - First Response Time" sem testar se a diferença faz sentido.
 
+**Confirmação final:** olhei a coluna `Resolution` (texto que o agente teria escrito). Amostra: *"Case maybe show recently my computer follow."*, *"West decision evidence bit."* — frases gramaticalmente soltas, sem relação com o ticket, 2.769/2.769 completamente únicas (zero repetição, zero template reconhecível). É saída de gerador tipo Faker/lorem ipsum, não texto de agente humano. Junto com o achado da `Ticket Description` (item 2 acima) e a independência estatística de todas as colunas (item 4), a conclusão é definitiva: **o Dataset 1 é 100% sintético e não carrega nenhum sinal operacional real** — nem em texto, nem em tempo, nem em categoria. A única coisa real nele é a taxonomia (nomes de Type/Channel/Priority/Status/Product) e as contagens de volume por categoria, que uso só como contexto estrutural pro desenho do fluxo de automação — nunca como base de cálculo de horas/custo.
+
+**Decisão final de escopo:** o requisito do brief "quantifique em horas e custo o desperdício" não pode ser respondido com honestidade a partir deste dataset. Vou dizer isso direto no README em vez de inventar um número plausível — isso é o achado, não uma lacuna a esconder.
+
 ---
