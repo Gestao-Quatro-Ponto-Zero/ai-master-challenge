@@ -149,6 +149,20 @@ def pct(part: float, total: float) -> str:
     return f"{100.0 * part / total:.1f}%"
 
 
+def fmt_km(value: object) -> str:
+    """Format an observable KM value, preserving an unobservable horizon."""
+    if value == "":
+        return "não observável"
+    return f"{float(value):.3f}"
+
+
+def km_churn_pct(value: object) -> str:
+    """Format one minus KM survival as the event share."""
+    if value == "":
+        return "não observável"
+    return f"{100.0 * (1.0 - float(value)):.1f}%".replace(".", ",")
+
+
 def missing_cols(df: pd.DataFrame, cols: list[str], fname: str) -> list[str]:
     return [c for c in cols if c not in df.columns]
 
@@ -237,6 +251,19 @@ def recurrence_stats(churn: pd.DataFrame) -> dict:
     return out
 
 
+def km_survival_at_horizon(km: list[dict], max_observed: int, horizon: int):
+    """Return the right-continuous KM estimate at a fixed horizon.
+
+    The estimate is constant between observed times, so use the last KM event
+    at or before the horizon.  A horizon with insufficient follow-up is not
+    observable and is represented by an empty value.
+    """
+    if max_observed < horizon:
+        return ""
+    prior = [item["survival"] for item in km if item["t"] <= horizon]
+    return prior[-1] if prior else 1.0
+
+
 def reactivation_episodes(churn: pd.DataFrame) -> dict:
     """Episódios de reativação (flag is_reactivation): sequência temporal,
     gaps e Kaplan-Meier do tempo até o próximo evento com censura no corte.
@@ -315,12 +342,12 @@ def reactivation_episodes(churn: pd.DataFrame) -> dict:
         idx += d + c
     out["km"] = km
     out["km_median"] = median
-    out["km_surv_90d"] = next(
-        (item["survival"] for item in km if item["t"] >= RECENT_DAYS),
-        km[-1]["survival"] if km else float("nan"))
-    out["km_surv_180d"] = next(
-        (item["survival"] for item in km if item["t"] >= SENSITIVITY_HORIZON),
-        km[-1]["survival"] if km else float("nan"))
+    max_observed = max((t for t, _ in ts), default=0)
+    out["km_max_observed_days"] = max_observed
+    out["km_surv_90d"] = km_survival_at_horizon(
+        km, max_observed, RECENT_DAYS)
+    out["km_surv_180d"] = km_survival_at_horizon(
+        km, max_observed, SENSITIVITY_HORIZON)
     return out
 
 
@@ -1028,6 +1055,11 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
                    else "exemplo de conta antiga com jornada longa")
     n_snapshot = int(lf["churn_flag_snapshot_2024_12_31"].sum())
     r2_ci = int(cyc.get("dec_r2_sum", 0))
+    km90_txt = fmt_km(react["km_surv_90d"])
+    km180_txt = fmt_km(react["km_surv_180d"])
+    km90_churn_txt = km_churn_pct(react["km_surv_90d"])
+    km_median_note = ("alcançada na janela" if react["km_median"] is not None
+                      else "não alcançada na janela")
 
     s = [
         "# Relatório de Ciclos de Reativação, Jornada da Conta e Watchlist — "
@@ -1051,7 +1083,8 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
         "(registro honesto):** o arquivo de decisões foi commitado no MESMO commit do "
         "código e dos outputs (`adbbad7`) — a cronologia git não prova a separação "
         "temporal; a pré-especificação é atestada pelo conteúdo interno (números de "
-        "exploração que divergem dos finais, ex.: KM 0,72/0,64 vs 0,653/0,476) e por "
+        f"exploração que divergem dos finais, ex.: KM 0,72/0,64 vs "
+        f"{km90_txt.replace('.', ',')}/{km180_txt.replace('.', ',')}) e por "
         "auto-relato do executor (a prática It03 de commitar decisões antes do código "
         "é retomada nas It05+).",
         "- **Escopo:** NENHUMA recomendação/ROI (It05), NENHUM modelo preditivo/ML, "
@@ -1115,11 +1148,12 @@ def render_report(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame,
             f"{f['next_event_within']} | {pct(f['next_event_within'], f['episodes_with_followup'])} |")
     s += [
         "",
-        f"- **Kaplan-Meier (tempo até o próximo evento após reativação; censura no "
-        f"corte):** sobrevivência em 90d = **{react['km_surv_90d']:.3f}** "
-        f"(ou seja, ≈ {100 * (1 - react['km_surv_90d']):.0f}% dos episódios têm "
-        f"próximo evento <= 90d); em 180d = {react['km_surv_180d']:.3f}; mediana = "
-        f"**{react['km_median']} dias** (alcançada na janela). A taxa observada "
+        "- **Kaplan-Meier (tempo até o próximo evento após reativação; censura no "
+        "corte):** a função degrau é avaliada como `S(h) = S(max(t <= h))`; "
+        f"sobrevivência em 90d = **{km90_txt}** "
+        f"(ou seja, ≈ {km90_churn_txt} dos episódios têm próximo evento <= 90d); "
+        f"em 180d = {km180_txt}; mediana = **{react['km_median']} dias** "
+        f"({km_median_note}). A taxa observada "
         f"({react['n_with_next']}/{react['n_flags']} = "
         f"{pct(react['n_with_next'], react['n_flags'])}) SUBestima o retorno por "
         "censura — e nenhuma taxa aqui é 'receita recuperada': reativação é "
@@ -1494,14 +1528,30 @@ def run_gates(rec: dict, react: dict, cyc: dict, lf: pd.DataFrame, bt: dict,
     # G13 — âncoras de regressão dos claims executivos materiais (todas as
     # frases narrativas do relatório são DERIVADAS em runtime destes objetos;
     # se os dados mudarem e os textos descolarem, o gate falha)
-    ok_km = (abs(react["km_surv_90d"] - 0.653) <= 0.001
-             and abs(react["km_surv_180d"] - 0.476) <= 0.001
+    def expected_km(horizon: int):
+        if react["km_max_observed_days"] < horizon:
+            return ""
+        prior = [item["survival"] for item in react["km"]
+                 if item["t"] <= horizon]
+        return prior[-1] if prior else 1.0
+
+    expected_90 = expected_km(RECENT_DAYS)
+    expected_180 = expected_km(SENSITIVITY_HORIZON)
+    ok_km = (expected_90 != "" and expected_180 != ""
+             and abs(react["km_surv_90d"] - expected_90) <= 1e-12
+             and abs(react["km_surv_180d"] - expected_180) <= 1e-12
+             and abs(react["km_surv_90d"] - 0.681461) <= 0.001
+             and abs(react["km_surv_180d"] - 0.515156) <= 0.001
              and react["km_median"] == 187)
     check("G13-km", "narrativa",
-          "âncoras KM do relatório (90d 0,653; 180d 0,476; mediana 187d)",
+          "KM usa S(max(t <= horizonte)) quando o horizonte é observável "
+          "(90d 0,681; 180d 0,515; mediana 187d)",
           "PASS" if ok_km else "FAIL",
-          f"km90={react['km_surv_90d']:.3f} (âncora 0,653); "
-          f"km180={react['km_surv_180d']:.3f} (âncora 0,476); "
+          f"km90={fmt_km(react['km_surv_90d'])} (esperado degrau="
+          f"{fmt_km(expected_90)}, âncora 0,681); "
+          f"km180={fmt_km(react['km_surv_180d'])} (esperado degrau="
+          f"{fmt_km(expected_180)}, âncora 0,515); "
+          f"máx observado={react['km_max_observed_days']}d; "
           f"mediana={react['km_median']} (âncora 187)")
     ok_react = (react["recent_flags"] == 26 and react["recent_censored"] == 20
                 and react["first_event_flags"] == 26)
@@ -1621,8 +1671,8 @@ def main() -> int:
         "recent_event_rate": 1.0,
         "backtest_evidence": (
             f"regra B: lift {rb_lifts} — inconsistente (lift apenas no spike); "
-            f"KM 90d = {react['km_surv_90d']:.3f} "
-            f"({100 * (1 - react['km_surv_90d']):.0f}% dos episódios com próximo "
+            f"KM 90d = {fmt_km(react['km_surv_90d'])} "
+            f"({km_churn_pct(react['km_surv_90d'])} dos episódios com próximo "
             f"evento <=90d), mediana {react['km_median']}d, censura declarada"),
         "uncertainty": (
             f"intervalos largos (N pequeno); censura no corte; "
@@ -1654,6 +1704,7 @@ def main() -> int:
                  ("episodes_censored", react["n_censored"]),
                  ("gap_median_days", rec["gap_median"]),
                  ("gap_to_next_median_days", react["gap_to_next_median"]),
+                 ("km_max_observed_days", react["km_max_observed_days"]),
                  ("km_surv_90d", react["km_surv_90d"]),
                  ("km_surv_180d", react["km_surv_180d"]),
                  ("km_median_days", react["km_median"] or "NA"),

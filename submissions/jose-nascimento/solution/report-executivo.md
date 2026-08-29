@@ -123,7 +123,7 @@ precede churn) foi **refutada após correção**: zero-uso 61,7% vs 52,7%
 taxa ≥ 1,5× a global (limiar inalcançável por desenho);
 maior gap de KM: 6,9 p.p. **Reasons e CSAT não são confiáveis como
 causa:** 41,2% de CSAT nulos, 15,8% de reasons
-'unknown', e 21,0% dos eventos não têm assinatura encerrada ±30d
+'unknown', e 79,0% dos eventos não têm assinatura encerrada ±30d
 (lentes decopladas).
 
 ## 5. Segmentos e contas em atenção (estados de jornada, não industry)
@@ -143,7 +143,7 @@ incidência) em cada linha.
 
 - **S1 Onboarding:** mecanismo do pico e exposição precoce (seção 3) — hipótese causal plausível.
 - **S2 Repeat-event:** 70,5% dos episódios; não prediz o próximo.
-- **S3 Reativação recente:** KM 90d = 0,653 (censura declarada); não é ciclo de estado.
+- **S3 Reativação recente:** KM 90d = 0,681 (censura declarada); não é ciclo de estado.
 - **S4 Evento recente:** janela acionável de CS, não predição.
 - **S5 Alto valor:** exposição, não risco.
 
@@ -185,7 +185,7 @@ stop/go completos em [t18](out/tables/t18_actions_prioritized.csv) ·
 | ACT-01 | Now · 90d | PM Onboarding + CS | Programa de ativação/onboarding 0-90d | GO (SCALE): redução relativa estimada >= 10% (piso operacional)… |
 | ACT-02 | Now · 1 semana | CS Lead + agente CS | Triage operacional semanal da watchlist top-20 | GO: >= 90% do top-20 triaged/semana por 4 semanas |
 | ACT-03 | Now · <= 30d | Data/Product Eng | Instrumentação de dados | GO: milestone de ativação em produção <= 30d (SLA) e metas… |
-| ACT-04 | Later · 1 trimestre | CS + Data | Piloto OBSERVACIONAL de reativação/recorrência | GO (escalar): taxa de próximo evento <= 90d >= 34,7%… |
+| ACT-04 | Later · 1 trimestre | CS + Data | Piloto OBSERVACIONAL de reativação/recorrência | GO (escalar): taxa de próximo evento <= 90d >= 31,9%… |
 
 **Regra de decisão do ACT-01 (3 estados;
 [evidence/05_action_plan.md](evidence/05_action_plan.md) §5):** SCALE/GO =

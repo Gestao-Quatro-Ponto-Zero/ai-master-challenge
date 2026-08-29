@@ -4,7 +4,8 @@
 - **Estados válidos:** `PASS` (regra atendida com evidência) / `PENDING` (pendente — somente It10). Nenhum item afirma algo ainda não realizado.
 - **Fonte das regras oficiais:** `README.md` (raiz), `CONTRIBUTING.md`, `submission-guide.md`, `challenges/data-001-churn/README.md`, `templates/submission-template.md` — lidos integralmente (Iteração 00 e re-lidos na Iteração 09).
 - **Pendências exclusivas (todas It10):** (1) data final no README (`pendente` por instrução até o PR); (2) commit final de submissão; (3) abertura do PR. Nada mais está pendente nesta auditoria (gate 3x da It09 `CONCLUDED` em 2026-08-29).
-- **Snapshot:** fechamento da Iteração 09 (2026-08-29, pós-gate 3x). Re-derivar contagens na It10.
+- **Snapshot:** fechamento da Iteração 09 (2026-08-29, pós-gate 3x), com remediação posterior dos dois findings HIGH da auditoria crítica final. Re-derivar contagens na It10.
+- **Remediação crítica:** HIGH-001 (polaridade linkage) e HIGH-002 (horizontes KM) estão corrigidos e registrados em [`process-log/reviews/final-critical-audit-summary.md`](../reviews/final-critical-audit-summary.md); as pendências formais continuam restritas à It10.
 
 ---
 

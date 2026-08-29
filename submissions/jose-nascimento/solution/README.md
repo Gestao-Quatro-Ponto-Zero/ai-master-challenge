@@ -1,4 +1,4 @@
-# Solução — Pipeline reprodutível em um comando (Iterações 06–07)
+# Solução — Pipeline reprodutível em um comando (Iterações 06–07 + remediação de auditoria)
 
 Toda a análise do Challenge 001 (Diagnóstico de Churn · RavenStack) — Iterações 01–07 —
 roda do zero com **um comando**, offline (os 5 CSVs são commitados em `data/raw/`),
@@ -62,10 +62,10 @@ O que acontece (em ordem):
    desatualizado: corrija a causa e reexecute.
 3. **Estágio 07** — `07_generate_executive_report.py` gera
    `solution/report-executivo.md` com todos os números derivados das tabelas em
-   runtime (gates G1–G8; escrita all-or-nothing: nunca deixa relatório
+    runtime (gates G1–G9; escrita all-or-nothing: nunca deixa relatório
    parcial/stale).
-4. **Verificação final** — `06_verify_pipeline.py` (checks A–F + gate de ids
-   únicos; contagem exata impressa em runtime); qualquer FAIL torna o `run.sh`
+4. **Verificação final** — `06_verify_pipeline.py` (checks A–G + gate de ids
+    únicos; inclui polaridade linkage e KM rederivado; contagem exata impressa em runtime); qualquer FAIL torna o `run.sh`
    falho (exit 1).
 
 ## 4. Outputs por estágio
@@ -147,7 +147,8 @@ repetidas; varia com a máquina/carga — rótulo de aproximação, não benchma
 - **Relatório executivo (It07)** — presente e não vazio; links relativos
   existem; exatamente 6 imagens (cada uma 1x); word count 1.400–2.400; zero
   claims proibidos em contexto afirmativo; contas ⊆ `t16`; ações ⊆ `t18`;
-  números-chave re-derivados das tabelas presentes no texto (âncoras).
+  números-chave re-derivados das tabelas presentes no texto (âncoras), incluindo
+  polaridade do vínculo evento–assinatura e KM em horizonte fixo.
 
 Exit 0 = tudo OK; exit 1 = diagnóstico estruturado por check (sem traceback).
 Nota: `make verify` com falha retorna **exit 2** (o GNU make encapsula o exit 1

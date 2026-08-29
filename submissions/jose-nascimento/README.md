@@ -41,7 +41,7 @@ reconciliação das lentes de churn e contrato analítico (It02), causa raiz com
 hipóteses pré-registradas (It03), jornada da conta/watchlist com backtest
 point-in-time (It04), ações/impacto em faixa com premissas nomeadas (It05),
 pipeline de 1 comando (It06) e relatório executivo (It07). Cada número do
-relatório é derivado em runtime das tabelas, com gates (G1–G8 no gerador;
+relatório é derivado em runtime das tabelas, com gates (G1–G9 no gerador;
 F1–F8 no verificador; e G1–G11 = seção G do verificador para o process log da
 It08 — escopos distintos, prefixos documentados por seção).
 
@@ -73,8 +73,8 @@ Ver [relatório executivo](solution/report-executivo.md) §§6–7 e o
 
 ### Limitações
 
-Base sintética; lentes de churn decopladas (21,0% dos eventos com assinatura
-encerrada ±30d); all-active no corte (estado por assinatura vs snapshot);
+Base sintética; lentes de churn decopladas (21,0% dos eventos têm assinatura
+encerrada ±30d; 79,0% não têm); all-active no corte (estado por assinatura vs snapshot);
 proxies (winner MRR ≠ receita contábil); poder estatístico baixo (MDE 68/51/37%
 em 1/2/4 trimestres) — tudo declarado no relatório §9 e no
 [contrato analítico](solution/docs/analytical-contract.md).
@@ -85,7 +85,7 @@ em 1/2/4 trimestres) — tudo declarado no relatório §9 e no
 
 > **Este bloco é obrigatório.** Sem ele, a submissão é desclassificada.
 
-Consolidação final (Iteração 08; QA final integral na Iteração 09) com evidência versionada, navegável por 4 artefatos:
+Consolidação final (Iteração 08; QA final integral na Iteração 09; remediação da auditoria crítica final antes da It10) com evidência versionada, navegável pelos 4 artefatos-base e pelo registro de remediação:
 [`process-log/README.md`](process-log/README.md) (entrada principal: escopo, ferramentas, pipeline, decomposição It00–09, contagens) · [`process-log/errors/ai-errors-and-corrections.md`](process-log/errors/ai-errors-and-corrections.md) (8 erros reais da IA com causa raiz e correção) · [`process-log/decisions/decision-ledger.md`](process-log/decisions/decision-ledger.md) (quem decidiu o quê — candidato vs orquestrador vs executor vs revisores) · [`process-log/evidence-index.md`](process-log/evidence-index.md) (índice completo de paths versionados).
 
 ### Ferramentas usadas
@@ -105,10 +105,11 @@ Consolidação final (Iteração 08; QA final integral na Iteração 09) com evi
 1. **Iteração 00** — planejamento e governança (plano, checklist, prompt arquivado): [`process-log/reports/iteration-00-planning-report.md`](process-log/reports/iteration-00-planning-report.md).
 2. **Iterações 01–05** — uma etapa por agente executor (auditoria → contrato → causa raiz → jornada/watchlist → ações/impacto), cada uma com revisão 3x read-only e correção sequencial; prompts literais em [`process-log/prompts/`](process-log/prompts/).
 3. **Iteração 06** — pipeline de 1 comando (`run.sh`/`Makefile`) + verificador: [`solution/README.md`](solution/README.md).
-4. **Iteração 07** — narrativa pré-registrada ([outline](process-log/decisions/iteration-07-executive-report-outline.md)) antes do gerador do relatório executivo; gates G1–G8 no gerador e F1–F8 no verificador.
+4. **Iteração 07** — narrativa pré-registrada ([outline](process-log/decisions/iteration-07-executive-report-outline.md)) antes do gerador do relatório executivo; gates G1–G9 no gerador e F1–F8 no verificador.
 5. **Iteração 08** — process log final e evidências (4 artefatos acima) + verificador ampliado com gates de processo G1–G11.
 6. **Iteração 09** — QA final integral (`CONCLUDED`; auditoria git/escopo, re-execução em clone fresco 88 PASS/0 FAIL, re-derivação numérica independente 59/59, originalidade, links/markdown, readiness checklist; gate 3x `CONCLUDED`): [`process-log/reports/iteration-09-final-qa-report.md`](process-log/reports/iteration-09-final-qa-report.md) · [`process-log/management/submission-readiness-checklist.md`](process-log/management/submission-readiness-checklist.md).
-7. **Iteração 10** — data final, commit final de submissão e PR (pendente).
+7. **Remediação da auditoria crítica final** — HIGH-001/HIGH-002 corrigidos com gates e regeneração dos consumidores; registro separado preserva It00–09 e E1–E8: [`process-log/reviews/final-critical-audit-summary.md`](process-log/reviews/final-critical-audit-summary.md).
+8. **Iteração 10** — data final, commit final de submissão e PR (pendente).
 
 ### Onde a IA errou e como corrigi
 

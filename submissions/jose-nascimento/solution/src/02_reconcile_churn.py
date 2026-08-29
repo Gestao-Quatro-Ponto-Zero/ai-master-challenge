@@ -1501,6 +1501,10 @@ def render_contract(r: dict, impact: dict, panel_len: int,
     add("| D9 — Duas lentes de receita | fórmula única de revenue churn (winner) era degenerada (18.507 capturados vs 422.691/274 saídas ocultas; 1.179.139 de exposição) | uma fórmula vs duas lentes nomeadas | R1 gross ending MRR (exposição) + R2 net account-state MRR loss (churn-to-inactive + contraction); winner preservado como estado/risco, PROIBIDO como churn contratual isolado | análises de receita precisam declarar a lente e o gap (contrato §5; report §7) |")
     add("| D10 — Política de `closed_at` | semântica de tickets adiada da It01 (assimetria de nulos vs `end_date`) | imputar vs documentar | tickets existem por `submitted_at`; resolução/CSAT só com tickets fechados; nulos excluídos com denominador explícito; nunca imputar fechamento futuro | métricas de resolução dependem da completude de `closed_at` (0 nulos na base; gate G15) |")
     add("")
+    add("## 13. Errata da auditoria crítica final (2026-08-29)")
+    add("")
+    add("A auditoria crítica final identificou dois defeitos nos consumidores da Iteração 04/07; esta errata não altera o grão, as lentes ou as definições deste contrato. O vínculo evento–assinatura é reportado com polaridade explícita: 21,0% dos eventos têm assinatura encerrada em ±30d e 79,0% não têm. Para o tempo até o próximo evento após reativação, a estimativa KM em horizonte h usa a função degrau `S(h) = S(max(t <= h))` quando há follow-up suficiente; horizonte não observável retorna vazio. Os valores corrigidos são S(90d) = 0,681461 e S(180d) = 0,515156, com mediana de 187 dias. Ver a remediação em `process-log/reviews/final-critical-audit-summary.md` e os gates independentes no `solution/src/06_verify_pipeline.py`.")
+    add("")
     return "\n".join(lines)
 
 

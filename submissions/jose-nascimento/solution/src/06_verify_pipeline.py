@@ -103,6 +103,11 @@ NEW_PL_DOCS = [
     PROCESS_LOG_DIR / "reviews" / "iteration-09-review-summary.md",
     PROCESS_LOG_DIR / "prompts" / "iteration-09-review-fix-prompt.md",
     PROCESS_LOG_DIR / "reports" / "iteration-09-review-fix-report.md",
+    # Remediação da auditoria crítica final; permanece separada do ledger E1–E8
+    # e não abre uma nova iteração histórica.
+    PROCESS_LOG_DIR / "reviews" / "final-critical-audit-summary.md",
+    PROCESS_LOG_DIR / "prompts" / "final-critical-audit-fix-prompt.md",
+    PROCESS_LOG_DIR / "reports" / "final-critical-audit-fix-report.md",
 ]
 
 # ----------------------------------------------------------------------------
@@ -693,6 +698,7 @@ def _report_anchors() -> list[tuple[str, str]]:
     t16 = pd.read_csv(TABLES_DIR / "t16_watchlist_top20.csv")
     t19 = pd.read_csv(TABLES_DIR / "t19_impact_sensitivity.csv")
     acc = pd.read_csv(RAW_DIR / "ravenstack_accounts.csv")
+    subs = pd.read_csv(RAW_DIR / "ravenstack_subscriptions.csv")
     events = pd.read_csv(RAW_DIR / "ravenstack_churn_events.csv")
     panel = pd.read_csv(PROCESSED_DIR / "account_month.csv")
 
@@ -723,6 +729,7 @@ def _report_anchors() -> list[tuple[str, str]]:
     h4m = re.search(r"zero-uso: churn ([\d.]+)% vs controle ([\d.]+)%",
                     h4)
     h9s = re.search(r"share ([\d.]+)%, ratio ([\d.]+)", h9)
+    linked, unlinked = _event_subscription_linkage(events, subs)
     return [
         ("taxa dez/24", br(dec["rate_first_events_pct"]) + "%"),
         ("mediana 6m", br(prev6["rate_first_events_pct"].median()) + "%"),
@@ -736,6 +743,8 @@ def _report_anchors() -> list[tuple[str, str]]:
         ("zero-uso churn", h4m.group(1).replace(".", ",") + "%"),
         ("zero-uso controle", h4m.group(2).replace(".", ",") + "%"),
         ("h9 share", h9s.group(1).replace(".", ",") + "%"),
+        ("events linked", f"{100.0 * linked / len(events):.1f}".replace(".", ",") + "%"),
+        ("events unlinked", f"{100.0 * unlinked / len(events):.1f}".replace(".", ",") + "%"),
         ("S1 n", str(int(s1["N"]))),
         ("S1 mrr", pint(int(s1["current_mrr_sum"]))),
         ("top20 mrr", pint(top20)), ("top20 share", br(top20 / cur * 100, 1) + "%"),
@@ -746,6 +755,61 @@ def _report_anchors() -> list[tuple[str, str]]:
         ("snapshot", pint(int(acc["churn_flag"].sum()))),
         ("eventos total", pint(len(events))),
     ]
+
+
+def _event_subscription_linkage(events: pd.DataFrame,
+                                subs: pd.DataFrame) -> tuple[int, int]:
+    """Re-derive linked and unlinked event counts from raw inputs."""
+    ev = events.copy()
+    ev["churn_date"] = pd.to_datetime(ev["churn_date"])
+    ended = subs.loc[subs["end_date"].notna(), ["account_id", "end_date"]].copy()
+    ended["end_date"] = pd.to_datetime(ended["end_date"])
+    ends_by_account = {
+        aid: group["end_date"]
+        for aid, group in ended.groupby("account_id", sort=True)
+    }
+    linked = 0
+    for _, row in ev.iterrows():
+        ends = ends_by_account.get(row["account_id"])
+        if ends is not None and ((row["churn_date"] - ends).abs()
+                                 <= pd.Timedelta(days=30)).any():
+            linked += 1
+    return linked, len(ev) - linked
+
+
+def _reactivation_km_from_raw(events: pd.DataFrame,
+                              horizon: int) -> float | None:
+    """Independently derive right-continuous reactivation KM at a horizon."""
+    data_cut = pd.Timestamp("2024-12-31")
+    ev = events.copy()
+    ev["churn_date"] = pd.to_datetime(ev["churn_date"])
+    rows: list[tuple[int, bool]] = []
+    for _, row in ev[ev["is_reactivation"] == True].iterrows():  # noqa: E712
+        account_events = ev[ev["account_id"] == row["account_id"]]
+        next_dates = account_events.loc[
+            account_events["churn_date"] > row["churn_date"], "churn_date"]
+        if len(next_dates):
+            rows.append((int((next_dates.min() - row["churn_date"]).days), True))
+        else:
+            rows.append((int((data_cut - row["churn_date"]).days), False))
+
+    observed_max = max((t for t, _ in rows), default=0)
+    if observed_max < horizon:
+        return None
+    points: list[tuple[int, float]] = []
+    at_risk = len(rows)
+    survival = 1.0
+    for t in sorted({t for t, _ in rows}):
+        events_at_t = sum(1 for tt, is_event in rows
+                          if tt == t and is_event)
+        censored_at_t = sum(1 for tt, is_event in rows
+                            if tt == t and not is_event)
+        if events_at_t and at_risk:
+            survival *= 1.0 - events_at_t / at_risk
+            points.append((t, survival))
+        at_risk -= events_at_t + censored_at_t
+    prior = [survival for t, survival in points if t <= horizon]
+    return prior[-1] if prior else 1.0
 
 
 def f_report() -> None:
@@ -819,9 +883,47 @@ def f_report() -> None:
 
     def _anchors() -> tuple[bool, str]:
         txt = REPORT_PATH.read_text(encoding="utf-8")
-        missing = [label for label, val in _report_anchors() if val not in txt]
-        return (not missing), (f"âncoras re-derivadas={len(_report_anchors())}; "
-                               f"ausentes={missing or 'nenhum'}")
+        anchors = _report_anchors()
+        missing = [label for label, val in anchors if val not in txt]
+
+        events = pd.read_csv(RAW_DIR / "ravenstack_churn_events.csv")
+        subs = pd.read_csv(RAW_DIR / "ravenstack_subscriptions.csv")
+        linked, unlinked = _event_subscription_linkage(events, subs)
+        linked_pct = 100.0 * linked / len(events)
+        unlinked_pct = 100.0 * unlinked / len(events)
+        # The report uses pt-BR decimals; match the rendered values explicitly.
+        linked_br = f"{linked_pct:.1f}".replace(".", ",") + "%"
+        unlinked_br = f"{unlinked_pct:.1f}".replace(".", ",") + "%"
+        linkage_ok = (
+            linked + unlinked == len(events)
+            and re.search(rf"{re.escape(linked_br)}\s+dos eventos têm "
+                          r"assinatura encerrada\s+±30d", txt) is not None
+            and re.search(rf"{re.escape(unlinked_br)}\s+dos eventos não têm "
+                          r"assinatura encerrada\s+±30d", txt) is not None
+            and re.search(rf"{re.escape(linked_br)}\s+dos eventos não têm "
+                          r"assinatura encerrada\s+±30d", txt) is None
+        )
+
+        t12 = pd.read_csv(TABLES_DIR / "t12_reactivation_recurrence.csv")
+        km_values = dict(zip(t12["metric"], t12["value"]))
+        expected_90 = _reactivation_km_from_raw(events, 90)
+        expected_180 = _reactivation_km_from_raw(events, 180)
+        km90_br = f"{float(km_values['km_surv_90d']):.3f}".replace(".", ",")
+        km_ok = (
+            expected_90 is not None and expected_180 is not None
+            and abs(float(km_values["km_surv_90d"]) - expected_90) <= 1e-12
+            and abs(float(km_values["km_surv_180d"]) - expected_180) <= 1e-12
+            and re.search(rf"KM 90d = {re.escape(km90_br)}", txt)
+            is not None
+        )
+        if not linkage_ok:
+            missing.append("semântica linkage com/sem vínculo")
+        if not km_ok:
+            missing.append("semântica KM S(max(t <= horizonte))")
+        return (not missing), (f"âncoras re-derivadas={len(anchors)}; "
+                                f"ausentes={missing or 'nenhum'}; "
+                                f"linkage={'OK' if linkage_ok else 'FAIL'}; "
+                                f"KM-horizonte={'OK' if km_ok else 'FAIL'}")
     safe("F8-report-anchors", "relatório executivo",
          "números-chave do report == tabelas (re-derivados em runtime)",
          _anchors)
@@ -841,6 +943,11 @@ PL_MANAGEMENT = [
     PROCESS_LOG_DIR / "management" / "orchestrator-checklist.md",
     PROCESS_LOG_DIR / "management" / "orchestration-architecture.md",
 ]
+PL_AUDIT_REMEDIATION = [
+    PROCESS_LOG_DIR / "reviews" / "final-critical-audit-summary.md",
+    PROCESS_LOG_DIR / "prompts" / "final-critical-audit-fix-prompt.md",
+    PROCESS_LOG_DIR / "reports" / "final-critical-audit-fix-report.md",
+]
 # Inventários (nomes exigidos; contagens derivadas por glob — não hardcoded).
 PL_PROMPTS = ([f"iteration-{i:02d}-prompt.md" for i in range(8)]
               + [f"iteration-{i:02d}-review-fix-prompt.md" for i in range(8)]
@@ -848,8 +955,9 @@ PL_PROMPTS = ([f"iteration-{i:02d}-prompt.md" for i in range(8)]
                  "orchestrator-visual-correction-prompt.md",
                  "iteration-08-prompt.md",
                  "iteration-08-review-fix-prompt.md",
-                 "iteration-09-prompt.md",
-                 "iteration-09-review-fix-prompt.md"])
+                  "iteration-09-prompt.md",
+                  "iteration-09-review-fix-prompt.md",
+                  "final-critical-audit-fix-prompt.md"])
 PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
                   "planning-report", "ingest-audit-report", "reconciliation-report",
                   "root-cause-report", "lifecycle-watchlist-report",
@@ -860,8 +968,9 @@ PL_REPORTS = ([f"iteration-{i:02d}-{name}.md" for i, name in enumerate([
                  "orchestrator-visual-correction-report.md",
                  "iteration-08-process-log-report.md",
                  "iteration-08-review-fix-report.md",
-                 "iteration-09-final-qa-report.md",
-                 "iteration-09-review-fix-report.md"])
+                  "iteration-09-final-qa-report.md",
+                  "iteration-09-review-fix-report.md",
+                  "final-critical-audit-fix-report.md"])
 PL_DECISIONS = ["decision-ledger.md"] + [
     f"iteration-{i:02d}-{name}.md" for i, name in [
         (2, "analytical-contract-decisions"), (3, "root-cause-decisions"),
@@ -881,10 +990,12 @@ def _repo_root() -> Path:
 
 def g_process_log() -> None:
     def _presence() -> tuple[bool, str]:
-        missing = [p.relative_to(SUBMISSION_DIR) for p in PL_MANDATORY + PL_MANAGEMENT
+        missing = [p.relative_to(SUBMISSION_DIR)
+                   for p in PL_MANDATORY + PL_MANAGEMENT + PL_AUDIT_REMEDIATION
                    if not p.is_file() or p.stat().st_size == 0]
         return (not missing), (f"artefatos obrigatórios + governança presentes; "
-                               f"ausentes/vazios={missing or 'nenhum'}")
+                               f"auditoria final incluída; ausentes/vazios="
+                               f"{missing or 'nenhum'}")
     safe("G1-pl-presence", "process log",
          "4 artefatos obrigatórios + 3 docs de governança presentes e não vazios", _presence)
 

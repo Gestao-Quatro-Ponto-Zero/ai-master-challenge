@@ -4,6 +4,10 @@
 - **Regra de honestidade:** decisões são atribuídas ao autor real do processo. O **candidato (humano)** decidiu escopo/ferramenta/regras de processo/ângulos e exigiu inspeção visual e auditoria final — mas **não escreveu nem rodou código manualmente**. Decisões analíticas, de arbitragem e de correção foram tomadas pelos modelos com os papéis abaixo. Nenhuma decisão de subagente é atribuída ao candidato.
 - **Autores (definição):** `candidato` = Jose Nascimento (decisão humana de processo/escopo); `orquestrador` = `openai/gpt-5.6-sol` ("GPT 5.6 Sol Max", OpenCode) — decomposição, prompts/contratos, arbitragem, gates, risco; `executor` = agente único `deepseek-max` por iteração (DeepSeek V4 Flash, max reasoning, OpenCode Go) — decisões analíticas com evidência; `consenso reviewers` = 3 revisores `deepseek-max` read-only convergindo (e corretor sequencial aplicando).
 - **Fontes:** `../management/execution-plan.md` (regras 1–8), `../management/orchestration-architecture.md` (§4–§7), arquivos de decisões por iteração (`../decisions/`), review summaries (`../reviews/`), git log.
+- **Errata pós-auditoria:** os dois findings HIGH da auditoria final (polaridade
+  evento–assinatura e horizonte KM) foram corrigidos sem reescrever as decisões
+  históricas; a decisão operacional e a validação estão em
+  [`../reviews/final-critical-audit-summary.md`](../reviews/final-critical-audit-summary.md).
 
 | # | Decisão | Alternativas consideradas | Evidência | Autor | Trade-off | Commit / evidência |
 |---|---|---|---|---|---|---|

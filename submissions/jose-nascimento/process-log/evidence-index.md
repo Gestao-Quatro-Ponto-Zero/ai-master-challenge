@@ -1,6 +1,6 @@
 # Evidence Index — paths versionados da submissão (todos os links relativos resolvem)
 
-- **Tipo:** artefato obrigatório do process log (Iteração 08)
+- **Tipo:** artefato obrigatório do process log (Iteração 08), atualizado com a remediação da auditoria crítica final
 - **Escopo:** índice completo dos arquivos versionados em `submissions/jose-nascimento/` (branch `submission/jose-nascimento`), com links relativos. Links relativos resolvem a partir **deste arquivo** (`process-log/`); o verificador (`../solution/src/06_verify_pipeline.py`, gates G1–G11) confere presença e resolução a cada execução.
 - **Sobre os reports brutos de revisão (não copiados):** cada gate 3x (It00–09) produziu 3 reports externos read-only dos revisores (30 no total) em working artifacts **fora do repo** — eles não são versionados de propósito (evidência fora da pasta permitida e fora do controle de versão). A evidência persistente é: (a) os **10 review summaries** versionados em `reviews/` (veredictos, matriz finding→ação→arquivo:linha, recálculos, gate); (b) os **fix reports**; (c) os **prompts transcritos**; (d) o **git history**. Os 30 reports brutos são material de trabalho citável apenas por referência aos summaries.
 - **Paths de máquina históricos:** summaries antigos (It00–07) podem conter, em células de tabela, metadados literais de diretórios temporários onde viveram os reports externos dos revisores — são registros históricos pré-política F2 (a política exige zero **links** para diretórios temporários e zero paths de máquina em **docs novos**; ver gates G3/G4).
@@ -27,7 +27,7 @@
 | [`management/orchestrator-checklist.md`](management/orchestrator-checklist.md) | Checklist interno do orquestrador (A–F; estados `PENDING/OPEN/CONCLUDED`) |
 | [`management/orchestration-architecture.md`](management/orchestration-architecture.md) | **Fonte atual de verdade de ferramenta/processo**: papéis, modelos runtime, contexto, permissões, limitações, fontes |
 
-## 3. Prompts transcritos fielmente (`prompts/`) — 22 arquivos (snapshot no fechamento da It09, pós-gate)</
+## 3. Prompts transcritos fielmente (`prompts/`) — 23 arquivos (snapshot pós-remediação, antes da It10)
 
 Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos fielmente; a partir da It08 com **paths operacionais normalizados** (política F2/It08, estendida à It09 — categorias e motivo na nota do próprio `iteration-08-prompt.md`; prompts de It00–07 são transcrições integrais com exceção histórica documentada no checklist F2). Contagem = snapshot no fechamento da It09; re-derivar na It10.
 
@@ -44,8 +44,9 @@ Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos f
 | It08 | [`prompts/iteration-08-prompt.md`](prompts/iteration-08-prompt.md) | [`prompts/iteration-08-review-fix-prompt.md`](prompts/iteration-08-review-fix-prompt.md) (gate 3x `CONCLUDED` — findings LOW documentais) |
 | It09 | [`prompts/iteration-09-prompt.md`](prompts/iteration-09-prompt.md) | [`prompts/iteration-09-review-fix-prompt.md`](prompts/iteration-09-review-fix-prompt.md) (gate 3x `CONCLUDED` — findings LOW L1–L3) |
 | Especiais | [`prompts/orchestration-architecture-addendum-prompt.md`](prompts/orchestration-architecture-addendum-prompt.md) · [`prompts/orchestrator-visual-correction-prompt.md`](prompts/orchestrator-visual-correction-prompt.md) | — |
+| Auditoria final | [`prompts/final-critical-audit-fix-prompt.md`](prompts/final-critical-audit-fix-prompt.md) | — |
 
-## 4. Reports (`reports/`) — 22 arquivos (snapshot no fechamento da It09, pós-gate)
+## 4. Reports (`reports/`) — 23 arquivos (snapshot pós-remediação, antes da It10)
 
 | Path | Papel |
 |---|---|
@@ -60,8 +61,9 @@ Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos f
 | [`reports/iteration-08-process-log-report.md`](reports/iteration-08-process-log-report.md) · [`reports/iteration-08-review-fix-report.md`](reports/iteration-08-review-fix-report.md) | Process log final (método de inventário, decisões, números, validações, handoff It09) + fixer do gate 3x (findings→ações, reconciliação F11, snapshots) |
 | [`reports/iteration-09-final-qa-report.md`](reports/iteration-09-final-qa-report.md) · [`reports/iteration-09-review-fix-report.md`](reports/iteration-09-review-fix-report.md) | **QA final integral (esta iteração)**: comandos/results/findings/fixes/snapshot/risks/handoff gate 3x e auditoria 5x + fixer do gate (correções L1–L3, snapshot pós-gate) |
 | [`reports/orchestration-architecture-addendum-report.md`](reports/orchestration-architecture-addendum-report.md) · [`reports/orchestrator-visual-correction-report.md`](reports/orchestrator-visual-correction-report.md) | Adendo de arquitetura + correção visual pós-gate It04 |
+| [`reports/final-critical-audit-fix-report.md`](reports/final-critical-audit-fix-report.md) | Remediação dos findings HIGH-001/HIGH-002 e validação dos consumidores |
 
-## 5. Review summaries (`reviews/`) — 10 ledgers versionados (evidência persistente dos gates 3x; snapshot no fechamento da It09, pós-gate)
+## 5. Review summaries (`reviews/`) — 11 ledgers versionados (10 gates 3x + remediação da auditoria)
 
 | Gate | Veredictos | Ledger |
 |---|---|---|
@@ -75,6 +77,7 @@ Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos f
 | It07 | PASS_WITH_FIXES ×2 + PASS | [`reviews/iteration-07-review-summary.md`](reviews/iteration-07-review-summary.md) |
 | It08 | PASS_WITH_FIXES ×3 (fixer aplicado; gate `CONCLUDED`) | [`reviews/iteration-08-review-summary.md`](reviews/iteration-08-review-summary.md) |
 | It09 | PASS_WITH_FIXES ×3 (fixer aplicado — L1–L3; gate `CONCLUDED`) | [`reviews/iteration-09-review-summary.md`](reviews/iteration-09-review-summary.md) |
+| Auditoria final | HIGH-001/HIGH-002 corrigidos | [`reviews/final-critical-audit-summary.md`](reviews/final-critical-audit-summary.md) |
 
 ## 6. Decisões (`decisions/`) e hipóteses (`hypotheses/`)
 
@@ -128,6 +131,6 @@ Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos f
 
 ## 10. Cobertura do índice
 
-- **Total de arquivos versionados na pasta (snapshot no fechamento da It09, pós-gate):** 123 no fechamento da It08 → **126** (prompt It09, report It09 e readiness checklist) → **129** após o fixer do gate It09 (review summary, fix prompt e fix report).
+- **Total de arquivos versionados na pasta (snapshot pós-remediação, antes da It10):** 123 no fechamento da It08 → **126** (prompt It09, report It09 e readiness checklist) → **129** após o fixer do gate It09 (review summary, fix prompt e fix report) → **132** com os três artefatos da remediação da auditoria crítica final.
 - **Glob de cobertura:** todo path listado acima existe em `git ls-files` (verificador G1/G7/G8 re-checa a cada execução); todo link relativo deste arquivo e dos demais docs novos resolve (G3).
-- **Não incluídos (working artifacts):** os 30 reports brutos de revisão externos (fora do repo, read-only) — evidência persistente nos 10 summaries (§5); sandboxes e logs de validação fora do repo.
+- **Não incluídos (working artifacts):** os 30 reports brutos de revisão externos (fora do repo, read-only) — evidência persistente nos 10 summaries (§5); sandboxes e logs de validação fora do repo. A auditoria crítica final foi registrada em um summary próprio (§5), sem copiar reports externos.

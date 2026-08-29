@@ -1,6 +1,6 @@
 # Process Log — Challenge 001 (Diagnóstico de Churn · RavenStack)
 
-**Entrada principal do process log** (Iteração 08; atualizado no fechamento da It09 — QA final integral e fechamento do gate 3x). Documenta, com evidência versionada, **como** a submissão de Jose Nascimento foi produzida: ferramentas, pipeline de agentes, decomposição cronológica It00–09, erros reais da IA com correção, decisões humanas vs de modelo, limitações e mapa de evidência. Este arquivo é curto de propósito — cada seção aponta para o artefato detalhado.
+**Entrada principal do process log** (Iteração 08; atualizado no fechamento da It09 — QA final integral e fechamento do gate 3x; remediação da auditoria crítica final antes da It10). Documenta, com evidência versionada, **como** a submissão de Jose Nascimento foi produzida: ferramentas, pipeline de agentes, decomposição cronológica It00–09, erros reais da IA com correção, decisões humanas vs de modelo, limitações, auditoria final e mapa de evidência. Este arquivo é curto de propósito — cada seção aponta para o artefato detalhado.
 
 ---
 
@@ -60,6 +60,7 @@ Estados: `PENDING` (não iniciado) / `OPEN` (executor trabalhando) / `CONCLUDED`
 | **07** | Relatório executivo CEO — narrativa **antes** da redação + verifier F1–F8 | executor + gate 3x | Erro E8 corrigido (drift/truncamento/word count); markdown único; gates de honestidade | `07_generate_executive_report.py`, `report-executivo.md`, README preenchido | `1bbec67` (outline) · `a726cb4` → fix `a1e99cb`; [review](reviews/iteration-07-review-summary.md), [outline](decisions/iteration-07-executive-report-outline.md) |
 | **08** | **Process log final e evidências** (esta iteração) | executor + gate 3x `CONCLUDED` | 4 artefatos navegáveis; 8 erros com causa raiz; decisões candidato vs IA; verifier com gates de processo; fixer do gate reconciliou wording/aritmética F11/snapshots/detecção | este README, [erros](errors/ai-errors-and-corrections.md), [decisões](decisions/decision-ledger.md), [índice](evidence-index.md), [report](reports/iteration-08-process-log-report.md), [gate](reviews/iteration-08-review-summary.md) | `docs: consolidate AI process log and evidence` → fix `docs: reconcile process log review evidence` |
 | **09** | **QA final integral e prontidão de submissão** | executor + gate 3x `CONCLUDED` | Auditoria git/escopo vs upstream/fork; re-execução em clone fresco (88 PASS/0 FAIL); re-derivação independente 59/59; originalidade/links/markdown/hygiene; readiness checklist criado; 4 fixos de hygiene/stale; gate fechado com correções L1–L3 (links, word counts, aritmética F11) | [prompt](prompts/iteration-09-prompt.md), [report](reports/iteration-09-final-qa-report.md), [readiness checklist](management/submission-readiness-checklist.md), [gate](reviews/iteration-09-review-summary.md), [fix report](reports/iteration-09-review-fix-report.md) | `chore: complete pre-submission quality assurance` → fixer `chore: close pre-submission QA gate` (gate 3x da It09 `CONCLUDED`) |
+| **Auditoria final** | **Remediação pré-It10 dos dois findings HIGH** | execução corretiva + verificação independente | HIGH-001 (polaridade linkage) e HIGH-002 (KM posterior ao horizonte) corrigidos; consumidores regenerados; It00–09 e E1–E8 preservados | [prompt](prompts/final-critical-audit-fix-prompt.md), [report](reports/final-critical-audit-fix-report.md), [summary](reviews/final-critical-audit-summary.md) | remediação separada; It10 formal continua `PENDING` |
 
 ## 4. Como o problema foi entendido ANTES de promptar
 
@@ -100,7 +101,7 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 
 ## 7. Contagens derivadas — **snapshot no fechamento da It09** (definições e fontes)
 
-> Todos os valores abaixo são um snapshot versionado no fechamento da It09 (após o QA final integral e o fechamento do gate 3x da It09). **It10: re-derivar antes de citar** (globs/git são a fonte; nenhum total final estático deve ser mantido).
+> Os valores de processo abaixo são o snapshot versionado no fechamento da It09. A remediação da auditoria crítica final adiciona 1 prompt, 1 report e 1 summary; **It10: re-derivar antes de citar** (globs/git são a fonte; nenhum total final estático deve ser mantido).
 
 | Métrica | Valor | Definição e fonte |
 |---|---|---|
@@ -109,13 +110,13 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 | Revisores (instâncias) | **30** | 10 gates × 3 revisores read-only (reports externos working artifacts; summaries versionados) |
 | Correções sequenciais commitadas | **11** | Definição: 1 fixer (correção sequencial de um gate) = 1 correção. 8 fixers de gate (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb`) + 1 correção visual pós-gate It04 (`617e4ac`) + 1 fixer do gate It08 (executado em 5 commits) + 1 fixer do gate It09 (fechamento 2026-08-29) — `git log` |
 | Erros materiais registrados | **8** (E1–E8) | [`errors/ai-errors-and-corrections.md`](errors/ai-errors-and-corrections.md) |
-| Prompts arquivados | **22** | 20 (It00–08 + 2 especiais) + `iteration-09-prompt.md` + `iteration-09-review-fix-prompt.md` — glob de `prompts/` |
-| Reports versionados | **22** | 20 (It00–08 + 2 especiais) + `iteration-09-final-qa-report.md` + `iteration-09-review-fix-report.md` — glob de `reports/` |
-| Review summaries | **10** (It00–09) | glob de `reviews/` |
+| Prompts arquivados | **23** | 22 do snapshot It09 + `final-critical-audit-fix-prompt.md` — glob de `prompts/` |
+| Reports versionados | **23** | 22 do snapshot It09 + `final-critical-audit-fix-report.md` — glob de `reports/` |
+| Review summaries | **11** | 10 (It00–09) + `final-critical-audit-summary.md` — glob de `reviews/` |
 | Decisões registradas | **6 arquivos** (It02–07) + ledger consolidado | glob de `decisions/` |
 | Hipóteses pré-registradas | **1 arquivo** (H1–H10) | `hypotheses/` |
 | Commits do candidato | **33** (31 no fechamento da It08 → 32 no fechamento da It09 → **33 após o fixer do gate It09**, incl. `chore: close pre-submission QA gate`) | `git log --author="Jose Nascimento"` |
-| Verificador | **88 PASS / 0 FAIL** (mesmo conjunto de checks; G10/inventário alinhados ao fechamento da It09: It08/09 `CONCLUDED`, It10 `PENDING`, gate It08/09 `CONCLUDED`) | `../solution/src/06_verify_pipeline.py` |
+| Verificador | **88 PASS / 0 FAIL** após a remediação (checks A–G; F8 inclui linkage/KM; G10/inventário preservam It08/09 `CONCLUDED` e It10 `PENDING`) | `../solution/src/06_verify_pipeline.py` |
 
 ## 8. Limitações do processo (declaradas)
 
@@ -141,8 +142,9 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 | Índice completo de paths versionados | [`evidence-index.md`](evidence-index.md) |
 | Relatório executivo (CEO) | [`../solution/report-executivo.md`](../solution/report-executivo.md) |
 | Solução completa (código, dados, outputs) | [`../solution/`](../solution/README.md) |
+| Remediação da auditoria crítica final | [`reviews/final-critical-audit-summary.md`](reviews/final-critical-audit-summary.md) · [`reports/final-critical-audit-fix-report.md`](reports/final-critical-audit-fix-report.md) |
 | Git history (commits semânticos, autor do candidato) | `git log --author="Jose Nascimento"` na branch `submission/jose-nascimento` |
 
 ---
 
-**Próximo passo:** Iteração 09 `CONCLUDED` (QA final integral + **review gate 3x da It09 `CONCLUDED`** — ver [report](reports/iteration-09-final-qa-report.md), [readiness checklist](management/submission-readiness-checklist.md) e [gate](reviews/iteration-09-review-summary.md)); Iteração 10 (`PENDING`): data final, commit final e PR `[Submission] Jose Nascimento — Challenge 001`.
+**Estado atual:** auditoria crítica final remediada (HIGH-001/HIGH-002; ver [summary](reviews/final-critical-audit-summary.md) e [report](reports/final-critical-audit-fix-report.md)); Iteração 09 permanece `CONCLUDED` e Iteração 10 (`PENDING`) conserva as pendências formais: data final, commit final e PR `[Submission] Jose Nascimento — Challenge 001`.

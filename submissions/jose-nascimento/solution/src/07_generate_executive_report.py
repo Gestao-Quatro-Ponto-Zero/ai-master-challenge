@@ -5,7 +5,7 @@
 Gera `solution/report-executivo.md` a partir APENAS dos artefatos validados
 (tabelas t01-t21, evidence 01-05, painel account-month e raw commitados),
 com TODOS os números materiais derivados em runtime (nada de literais de
-dados no texto), gates G1-G8 e escrita all-or-nothing (arquivo temporário +
+dados no texto), gates G1-G9 e escrita all-or-nothing (arquivo temporário +
 rename: o report nunca fica com conteúdo inválido/stale).
 
 Determinismo: sem timestamp/now/random; formatação pt-BR explícita (nunca
@@ -137,6 +137,26 @@ def _extract_multi(pattern: str, text: str, what: str) -> list[str]:
     return list(m.groups())
 
 
+def _event_subscription_linkage(events: pd.DataFrame,
+                                subs: pd.DataFrame) -> tuple[int, int]:
+    """Count events linked/unlinked to an ended subscription within 30 days."""
+    ev = events.copy()
+    ev["churn_date"] = pd.to_datetime(ev["churn_date"])
+    ended = subs.loc[subs["end_date"].notna(), ["account_id", "end_date"]].copy()
+    ended["end_date"] = pd.to_datetime(ended["end_date"])
+    ends_by_account = {
+        aid: group["end_date"]
+        for aid, group in ended.groupby("account_id", sort=True)
+    }
+    linked = 0
+    for _, row in ev.iterrows():
+        ends = ends_by_account.get(row["account_id"])
+        if ends is not None and ((row["churn_date"] - ends).abs()
+                                 <= pd.Timedelta(days=30)).any():
+            linked += 1
+    return linked, len(ev) - linked
+
+
 # ----------------------------------------------------------------------------
 # Carregamento dos inputs validados
 # ----------------------------------------------------------------------------
@@ -228,8 +248,8 @@ def derive_numbers(inp: dict) -> dict:
     h5 = _extract_multi(r"tickets/conta ([\d.]+) vs ([\d.]+) [(]Δ -?[\d.]+[)]; "
                         r"escalação ([\d.]+)% vs ([\d.]+)%; CSAT ([\d.]+) vs ([\d.]+)",
                         h5_txt, "H5 suporte")
-    h7_link = _extract(r"eventos com sub encerrada ±30d: ([\d.]+)%",
-                       h7_txt, "H7 decoupling")
+    h7_link_source = _extract(r"eventos com sub encerrada ±30d: ([\d.]+)%",
+                              h7_txt, "H7 decoupling")
     h9 = _extract_multi(r"share ([\d.]+)%, ratio ([\d.]+)", h9_txt,
                         "H9 pico 0-3m")
     h2_ctrl = _extract_multi(r"esperado ([\d.]+) eventos, observado (\d+)",
@@ -238,6 +258,12 @@ def derive_numbers(inp: dict) -> dict:
     h9_share, h9_ratio = h9[0], h9[1]
     n_03m = round(dec_first * float(h9_share) / 100)
     global_rate = n_event_acc / n_accounts * 100
+    linked_n, unlinked_n = _event_subscription_linkage(events, subs)
+    linked_pct = 100.0 * linked_n / n_events if n_events else 0.0
+    unlinked_pct = 100.0 * unlinked_n / n_events if n_events else 0.0
+    if abs(float(h7_link_source) - linked_pct) > 0.05:
+        raise SystemExit("[07] FAIL G-linkage-source: H7 diverge do recálculo "
+                         "evento-assinatura.")
 
     # --- suporte / qualidade (derivado dos raw) ------------------------------
     csat_null = tickets["satisfaction_score"].isna().mean() * 100
@@ -362,7 +388,9 @@ def derive_numbers(inp: dict) -> dict:
         h5_esc_c=h5[2].replace(".", ",") + "%",
         h5_esc_ct=h5[3].replace(".", ",") + "%",
         h5_csat_c=h5[4].replace(".", ","), h5_csat_ct=h5[5].replace(".", ","),
-        h7_link=h7_link.replace(".", ",") + "%",
+        h7_link=fmt_pct(linked_pct, 1),
+        h7_unlinked=fmt_pct(unlinked_pct, 1),
+        h7_link_n=linked_n, h7_unlinked_n=unlinked_n,
         h6_gap=h6_gap.replace(".", ","),
         h9_share=h9_share.replace(".", ","), h9_ratio=h9_ratio.replace(".", ","),
         n_03m=n_03m,
@@ -596,7 +624,7 @@ precede churn) foi **refutada após correção**: zero-uso {n['h4_churn']} vs {n
 taxa ≥ 1,5× a global (limiar inalcançável por desenho);
 maior gap de KM: {n['h6_gap']} p.p. **Reasons e CSAT não são confiáveis como
 causa:** {n['csat_null']} de CSAT nulos, {n['reason_unk']} de reasons
-'unknown', e {n['h7_link']} dos eventos não têm assinatura encerrada ±30d
+'unknown', e {n['h7_unlinked']} dos eventos não têm assinatura encerrada ±30d
 (lentes decopladas).
 
 ## 5. Segmentos e contas em atenção (estados de jornada, não industry)
@@ -745,7 +773,7 @@ regenera os artefatos das Iterações 01–07, incluindo este relatório, em
 
 
 # ----------------------------------------------------------------------------
-# Gates G1-G8 (self-check pós-render; falha => exit 1 sem escrever o report)
+# Gates G1-G9 (self-check pós-render; falha => exit 1 sem escrever o report)
 # ----------------------------------------------------------------------------
 def _affirmative_use(tok: str, text: str) -> bool:
     """True se o termo aparece em contexto afirmativo (sem negação próxima)."""
@@ -783,6 +811,7 @@ def run_gates(n: dict, text: str) -> list[str]:
         ("intensidade mediana", n["med_intens"]), ("h4 churn", n["h4_churn"]),
         ("h4 controle", n["h4_ctrl"]), ("h9 share", f"{n['h9_share']}%"),
         ("h9 ratio", n["h9_ratio"]), ("h7 decoupling", n["h7_link"]),
+        ("h7 unlinked", n["h7_unlinked"]),
         ("global rate", n["global_rate"]), ("km q1", n["km_q1_24"]),
         ("km q2", n["km_q2_24"]), ("s1 n", str(n["seg"]["S1"]["n"])),
         ("s1 mrr", fmt_int(n["seg"]["S1"]["mrr"])),
@@ -894,6 +923,22 @@ def run_gates(n: dict, text: str) -> list[str]:
     # G8 — determinismo estrutural (sem marca de geração/now/random)
     if re.search(r"[Gg]erado (em|on) 20\d\d", text):
         problems.append("G8 marca de geração temporal no texto")
+
+    # G9 — polaridade do vínculo evento-assinatura (com vs sem match)
+    linked_pattern = (rf"{re.escape(n['h7_link'])}\s+dos eventos têm "
+                      r"assinatura encerrada\s+±30d")
+    unlinked_pattern = (rf"{re.escape(n['h7_unlinked'])}\s+dos eventos não têm "
+                        r"assinatura encerrada\s+±30d")
+    inverted_pattern = (rf"{re.escape(n['h7_link'])}\s+dos eventos não têm "
+                        r"assinatura encerrada\s+±30d")
+    linkage_ok = (n["h7_link_n"] + n["h7_unlinked_n"] == n["n_events"]
+                  and re.search(linked_pattern, text) is not None
+                  and re.search(unlinked_pattern, text) is not None
+                  and re.search(inverted_pattern, text) is None)
+    if not linkage_ok:
+        problems.append(
+            "G9 polaridade de linkage: claims com/sem assinatura não conferem "
+            "com os denominadores derivados")
     return problems
 
 
@@ -936,7 +981,7 @@ def main() -> int:
             os.unlink(tmp)
 
     print(f"[07] OK: solution/report-executivo.md escrito "
-          f"({len(text.split())} palavras; gates G1-G8 PASS; determinístico).")
+          f"({len(text.split())} palavras; gates G1-G9 PASS; determinístico).")
     return 0
 
 

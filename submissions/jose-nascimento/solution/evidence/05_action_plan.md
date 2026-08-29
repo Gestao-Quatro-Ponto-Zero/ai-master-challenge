@@ -228,7 +228,7 @@ de conta/renovação e **não são rotulados como alto risco de churn**.
 | SC-F10 | t16_watchlist_top20.csv | colunas mínimas presentes | PASS | t16_watchlist_top20.csv: 3 colunas exigidas presentes |
 | F11 | t14b_backtest_detail.csv | arquivo presente e carregável | PASS | t14b_backtest_detail.csv: CSV parseado (1682 registros) |
 | SC-F11 | t14b_backtest_detail.csv | colunas mínimas presentes | PASS | t14b_backtest_detail.csv: 4 colunas exigidas presentes |
-| F12 | t12_reactivation_recurrence.csv | arquivo presente e carregável | PASS | t12_reactivation_recurrence.csv: CSV parseado (31 registros) |
+| F12 | t12_reactivation_recurrence.csv | arquivo presente e carregável | PASS | t12_reactivation_recurrence.csv: CSV parseado (32 registros) |
 | SC-F12 | t12_reactivation_recurrence.csv | colunas mínimas presentes | PASS | t12_reactivation_recurrence.csv: 3 colunas exigidas presentes |
 | G2-onboarding-base | base elegível | base onboarding (t11) consistente com segmento S1 (t15) | PASS | t11: n=80, MRR=621981; t15 S1: n=80, MRR=621981 |
 | G3-incidence | incidência | precision pooled/min/max da regra D (90d) consistentes | PASS | pooled=0.4301 (2 vias), lo=0.3393, hi=0.5417 |

@@ -17,8 +17,9 @@ episodes_with_next_event,,24
 episodes_censored,,37
 gap_median_days,,58.0
 gap_to_next_median_days,,53.0
-km_surv_90d,,0.6530671089279136
-km_surv_180d,,0.47552876025957347
+km_max_observed_days,,529
+km_surv_90d,,0.6814613310552142
+km_surv_180d,,0.5151561569478712
 km_median_days,,187
 r1_multi_event_accounts,,383038
 r1_share_multi_event_accounts,,0.325
