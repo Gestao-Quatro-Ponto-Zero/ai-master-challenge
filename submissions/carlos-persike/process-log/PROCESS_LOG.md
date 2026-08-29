@@ -151,3 +151,24 @@ milhar). Correções:
   dinheiro pra um stakeholder de negócio é exatamente o tipo de coisa que não pode quebrar
   silenciosamente.
 
+## 2026-08-29 — Terceira rodada: tema visual e textos mais simples
+
+Usuário pediu textos mais simples e perguntou de onde vêm os dados / o que cada número
+significa — respondi na conversa (dataset Kaggle CC0, 4 CSVs, `valor do produto` = preço de
+tabela porque `close_value` real só existe pra negócio já fechado) e usei isso pra simplificar
+a interface:
+
+- `.streamlit/config.toml` — tema nativo do Streamlit (cor primária, fundo, fonte), em vez de
+  CSS solto. Não existe "agente de designer" separado nas minhas ferramentas pra Streamlit
+  rodando — expliquei isso ao usuário e fiz a passada de design eu mesmo.
+- Texto técnico (`AUC`, `baseline classe majoritária`, fórmula do Valor Esperado) saiu da tela
+  principal e virou um expander opcional "❓ Como o placar é calculado" — quem quer entender o
+  método clica, quem só quer trabalhar não precisa ler.
+- `_montar_explicacao()` em `priorizacao.py` ficou mais curta e conversacional: "Está aberto há
+  95 dias. Negócios parecidos historicamente fecham em 72% dos casos." em vez de uma linha só
+  de dados concatenados com `·`.
+- Também respondi (sem construir, por enquanto) sobre puxar dado de Google Sheets/CRM via API
+  em vez de CSV manual: tecnicamente simples pra Sheets, depende do CRM real pra CRM — mas não
+  tem CRM real por trás desse dataset, então não construí, só documentei que `ingestao.py` já
+  isola a leitura de dado bruto pra trocar depois sem afetar o resto do sistema.
+

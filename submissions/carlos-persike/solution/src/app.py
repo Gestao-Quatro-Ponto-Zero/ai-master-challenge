@@ -42,10 +42,23 @@ pipeline = carregar_pipeline_priorizado()
 metricas = carregar_metricas_validacao()
 
 st.title("📋 Prioridade de Pipeline")
-st.caption(
-    "Ordenado por **Valor Esperado** = probabilidade histórica de fechar (pelo tempo desde "
-    "o engajamento) × valor do produto — não por valor bruto, não por feeling."
-)
+st.caption("Seus negócios em aberto, ordenados por onde vale mais a pena focar agora.")
+
+with st.expander("❓ Como o placar é calculado"):
+    st.markdown(
+        "**Valor esperado = chance histórica de fechar × valor do produto.**\n\n"
+        "A chance vem de negócios parecidos que já fecharam no passado — quanto mais tempo "
+        "um negócio sobrevive, historicamente maior a chance dele fechar. Produto, vendedor "
+        "e tamanho da conta **não entram na conta**: testamos e nenhum deles realmente prevê "
+        "se o negócio fecha ou não nesse histórico."
+    )
+    if metricas:
+        auc = metricas.get("auc_holdout")
+        auc_fmt = f"{auc:.2f}".replace(".", ",") if auc is not None else "—"
+        st.caption(
+            f"Confiabilidade do sinal: acerto de {auc_fmt} em teste cego "
+            "(0,50 seria chute puro) — real, mas não é bola de cristal."
+        )
 
 with st.sidebar:
     st.header("Filtros")
@@ -56,15 +69,6 @@ with st.sidebar:
     filtro_regiao = st.multiselect("Escritório regional", regioes)
     filtro_manager = st.multiselect("Manager", managers)
     filtro_vendedor = st.multiselect("Vendedor", vendedores)
-
-    if metricas:
-        st.divider()
-        st.caption("Validação do sinal (holdout 20%)")
-        st.metric("AUC", metricas.get("auc_holdout", "—"))
-        st.caption(
-            f"Baseline (classe majoritária): {metricas.get('acuracia_baseline_classe_majoritaria', '—')} · "
-            "sinal real, porém modesto — ver Limitações no README."
-        )
 
 filtrado = pipeline.copy()
 if filtro_regiao:
@@ -89,13 +93,10 @@ else:
             c1, c2, c3 = st.columns([3, 1.4, 1.2])
             with c1:
                 st.markdown(f"**{linha['product']}** — {conta}")
-                st.caption(f"`{linha['opportunity_id']}` · {linha['sales_agent']}")
+                st.caption(f"{linha['sales_agent']} · {linha['explicacao']}")
             with c2:
                 st.badge(linha["deal_stage"], color=COR_ESTAGIO.get(linha["deal_stage"], "gray"))
-                st.progress(
-                    linha["probabilidade_historica"],
-                    text=f"{linha['probabilidade_historica']:.0%} chance histórica",
-                )
+                st.progress(linha["probabilidade_historica"], text=f"{linha['probabilidade_historica']:.0%} de chance")
             c3.metric("Valor esperado", moeda_brl(linha["valor_esperado"]))
 
 st.subheader("Fila completa")
@@ -140,9 +141,9 @@ st.dataframe(
         "Valor esperado": st.column_config.TextColumn(pinned=True),
     },
 )
-st.caption("Clique em uma oportunidade abaixo pra ver o detalhe completo, incluindo dados da conta.")
+st.caption("Clique numa oportunidade abaixo pra ver os detalhes.")
 
-st.subheader("🔍 Detalhe de um negócio")
+st.subheader("🔍 Detalhe do negócio")
 if not filtrado.empty:
     escolhido_id = st.selectbox("Oportunidade", filtrado["opportunity_id"])
     negocio = filtrado[filtrado["opportunity_id"] == escolhido_id].iloc[0]
@@ -151,20 +152,16 @@ if not filtrado.empty:
     with dc1:
         st.markdown("**Negócio**")
         st.badge(negocio["deal_stage"], color=COR_ESTAGIO.get(negocio["deal_stage"], "gray"))
-        st.write(f"Vendedor: {negocio['sales_agent']} ({negocio['manager']}, {negocio['regional_office']})")
-        st.write(f"Produto: {negocio['product']} — {moeda_brl(negocio['valor_produto'])}")
-        st.progress(
-            negocio["probabilidade_historica"],
-            text=f"{negocio['probabilidade_historica']:.0%} de chance histórica de fechar",
-        )
+        st.write(f"{negocio['sales_agent']} · {negocio['manager']} · {negocio['regional_office']}")
+        st.write(f"{negocio['product']} — {moeda_brl(negocio['valor_produto'])}")
+        st.progress(negocio["probabilidade_historica"], text=f"{negocio['probabilidade_historica']:.0%} de chance de fechar")
         st.metric("Valor esperado", moeda_brl(negocio["valor_esperado"]))
     with dc2:
         st.markdown("**Conta**")
         if negocio["conta_desconhecida"]:
-            st.info("Conta não preenchida no CRM — sem dados de setor/porte disponíveis.")
+            st.info("Conta ainda não preenchida no CRM.")
         else:
-            st.write(f"Nome: {negocio['account']}")
-            st.write(f"Setor: {negocio.get('sector', '—')}")
+            st.write(f"{negocio['account']} · setor {negocio.get('sector', '—')}")
             st.write(f"Receita anual: {moeda_brl_milhoes(negocio.get('revenue', 0))}")
             st.write(f"Funcionários: {int(negocio.get('employees', 0)):,}".replace(",", "."))
-    st.caption(negocio["explicacao"])
+    st.caption(f"💡 {negocio['explicacao']}")
