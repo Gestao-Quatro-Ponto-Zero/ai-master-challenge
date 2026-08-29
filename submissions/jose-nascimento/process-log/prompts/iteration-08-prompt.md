@@ -3,8 +3,8 @@
 - **Iteração:** 08 (consolidação do process log e evidências reais de uso de IA)
 - **Data:** 2026-08-29
 - **Executor:** exatamente um subagente `deepseek-max` (DeepSeek V4 Flash, max reasoning, via OpenCode Go), sob orquestração do opencode (`openai/gpt-5.6-sol` — "GPT 5.6 Sol Max")
-- **Prompt integral arquivado:** este arquivo (transcrição fiel do prompt recebido do orquestrador)
-- **Nota de normalização (política F2/It08):** os dois únicos paths absolutos de máquina do prompt original foram substituídos por placeholders (`<repo-workdir>` e `<review-reports-dir>`), para que nenhum documento novo da pasta contenha paths de máquina. O conteúdo integral — escopo, verdades do processo, artefatos obrigatórios, validações, contenção, git, aceitação, final — é preservado.
+- **Transcrição fiel com paths operacionais normalizados:** este arquivo (transcrição fiel do prompt recebido do orquestrador; não é o texto byte-a-byte do original — os únicos paths absolutos de máquina foram normalizados, nota abaixo)
+- **Nota de normalização (política F2/It08):** **categorias normalizadas (2):** (1) `<repo-workdir>` — path absoluto do repositório de trabalho, onde vive a branch `submission/jose-nascimento` e a pasta da submissão; (2) `<review-reports-dir>` — path absoluto do diretório externo com os reports brutos de revisão (working artifacts fora do repo). **Por quê:** a política F2/It08 exige zero paths de máquina em documentos novos da pasta — o avaliador deve conseguir re-ler o prompt sem conhecer o ambiente do candidato, e nenhuma estrutura de diretórios pessoal deve vazar para o versionado. Os placeholders substituem **somente** esses paths; todo o restante — escopo, verdades do processo, artefatos obrigatórios, validações, contenção, git, aceitação, final — é transcrito fielmente.
 
 ---
 

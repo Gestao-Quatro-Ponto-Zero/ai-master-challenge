@@ -1,9 +1,10 @@
 # Evidence Index — paths versionados da submissão (todos os links relativos resolvem)
 
 - **Tipo:** artefato obrigatório do process log (Iteração 08)
-- **Escopo:** índice completo dos arquivos versionados em `submissions/jose-nascimento/` (branch `submission/jose-nascimento`), com links relativos. Links relativos resolvem a partir **deste arquivo** (`process-log/`); o verificador (`../solution/src/06_verify_pipeline.py`, gates G1–G9) confere presença e resolução a cada execução.
-- **Sobre os reports brutos de revisão (não copiados):** cada gate 3x (It00–07) produziu 3 reports externos read-only dos revisores (24 no total) em working artifacts **fora do repo** — eles não são versionados de propósito (evidência fora da pasta permitida e fora do controle de versão). A evidência persistente é: (a) os **8 review summaries** versionados em `reviews/` (veredictos, matriz finding→ação→arquivo:linha, recálculos, gate); (b) os **fix reports**; (c) os **prompts literais**; (d) o **git history**. Os 24 reports brutos são material de trabalho citável apenas por referência aos summaries.
-- **Git history:** 25 commits do candidato até o HEAD `a1e99cb` desta iteração (26 após o commit do process log) + 5 commits de base do repo oficial; todos os hashes citados abaixo resolvem (`git rev-parse`).
+- **Escopo:** índice completo dos arquivos versionados em `submissions/jose-nascimento/` (branch `submission/jose-nascimento`), com links relativos. Links relativos resolvem a partir **deste arquivo** (`process-log/`); o verificador (`../solution/src/06_verify_pipeline.py`, gates G1–G11) confere presença e resolução a cada execução.
+- **Sobre os reports brutos de revisão (não copiados):** cada gate 3x (It00–08) produziu 3 reports externos read-only dos revisores (27 no total) em working artifacts **fora do repo** — eles não são versionados de propósito (evidência fora da pasta permitida e fora do controle de versão). A evidência persistente é: (a) os **9 review summaries** versionados em `reviews/` (veredictos, matriz finding→ação→arquivo:linha, recálculos, gate); (b) os **fix reports**; (c) os **prompts transcritos**; (d) o **git history**. Os 27 reports brutos são material de trabalho citável apenas por referência aos summaries.
+- **Paths de máquina históricos:** summaries antigos (It00–07) podem conter, em células de tabela, metadados literais de diretórios temporários onde viveram os reports externos dos revisores — são registros históricos pré-política F2 (a política exige zero **links** para diretórios temporários e zero paths de máquina em **docs novos**; ver gates G3/G4).
+- **Git history:** 26 commits do candidato no HEAD `9e60315` (commit do process log); **27 no fechamento da It08** (após o commit do fixer do gate) + 5 commits de base do repo oficial; todos os hashes citados abaixo resolvem (`git rev-parse`).
 
 ---
 
@@ -26,9 +27,9 @@
 | [`management/orchestrator-checklist.md`](management/orchestrator-checklist.md) | Checklist interno do orquestrador (A–F; estados `PENDING/OPEN/CONCLUDED`) |
 | [`management/orchestration-architecture.md`](management/orchestration-architecture.md) | **Fonte atual de verdade de ferramenta/processo**: papéis, modelos runtime, contexto, permissões, limitações, fontes |
 
-## 3. Prompts literais (`prompts/`) — 19 arquivos
+## 3. Prompts transcritos fielmente (`prompts/`) — 20 arquivos (snapshot no fechamento da It08)
 
-Prompts integrais recebidos pelos agentes (executor/corretor) e pelo adendo; transcritos na íntegra, com paths de máquina normalizados na It08 (política F2).
+Prompts recebidos pelos agentes (executor/corretor) e pelo adendo, transcritos fielmente; a partir da It08 com **paths operacionais normalizados** (política F2/It08 — categorias e motivo na nota do próprio `iteration-08-prompt.md`; prompts de It00–07 são transcrições integrais com exceção histórica documentada no checklist F2). Contagem = snapshot no fechamento da It08; re-derivar na It09/10.
 
 | Iteração | Prompt da etapa | Prompt da correção (fixer) |
 |---|---|---|
@@ -40,10 +41,10 @@ Prompts integrais recebidos pelos agentes (executor/corretor) e pelo adendo; tra
 | It05 | [`prompts/iteration-05-prompt.md`](prompts/iteration-05-prompt.md) | [`prompts/iteration-05-review-fix-prompt.md`](prompts/iteration-05-review-fix-prompt.md) |
 | It06 | [`prompts/iteration-06-prompt.md`](prompts/iteration-06-prompt.md) | [`prompts/iteration-06-review-fix-prompt.md`](prompts/iteration-06-review-fix-prompt.md) |
 | It07 | [`prompts/iteration-07-prompt.md`](prompts/iteration-07-prompt.md) | [`prompts/iteration-07-review-fix-prompt.md`](prompts/iteration-07-review-fix-prompt.md) |
-| It08 | [`prompts/iteration-08-prompt.md`](prompts/iteration-08-prompt.md) | (gate 3x da It08: pendente — prompt de correção será arquivado se houver findings materiais) |
+| It08 | [`prompts/iteration-08-prompt.md`](prompts/iteration-08-prompt.md) | [`prompts/iteration-08-review-fix-prompt.md`](prompts/iteration-08-review-fix-prompt.md) (gate 3x `CONCLUDED` — findings LOW documentais) |
 | Especiais | [`prompts/orchestration-architecture-addendum-prompt.md`](prompts/orchestration-architecture-addendum-prompt.md) · [`prompts/orchestrator-visual-correction-prompt.md`](prompts/orchestrator-visual-correction-prompt.md) | — |
 
-## 4. Reports (`reports/`) — 19 arquivos
+## 4. Reports (`reports/`) — 20 arquivos (snapshot no fechamento da It08)
 
 | Path | Papel |
 |---|---|
@@ -55,10 +56,10 @@ Prompts integrais recebidos pelos agentes (executor/corretor) e pelo adendo; tra
 | [`reports/iteration-05-actions-impact-report.md`](reports/iteration-05-actions-impact-report.md) · [`reports/iteration-05-review-fix-report.md`](reports/iteration-05-review-fix-report.md) | Ações/impacto + correção do gate It05 |
 | [`reports/iteration-06-reproducibility-report.md`](reports/iteration-06-reproducibility-report.md) · [`reports/iteration-06-review-fix-report.md`](reports/iteration-06-review-fix-report.md) | Pipeline reproduzível + correção do gate It06 |
 | [`reports/iteration-07-executive-report.md`](reports/iteration-07-executive-report.md) · [`reports/iteration-07-review-fix-report.md`](reports/iteration-07-review-fix-report.md) | Relatório executivo + correção do gate It07 |
-| [`reports/iteration-08-process-log-report.md`](reports/iteration-08-process-log-report.md) | **Esta iteração** (método de inventário, decisões, números, validações, handoff It09) |
+| [`reports/iteration-08-process-log-report.md`](reports/iteration-08-process-log-report.md) · [`reports/iteration-08-review-fix-report.md`](reports/iteration-08-review-fix-report.md) | **Esta iteração** (método de inventário, decisões, números, validações, handoff It09) + fixer do gate 3x (findings→ações, reconciliação F11, snapshots) |
 | [`reports/orchestration-architecture-addendum-report.md`](reports/orchestration-architecture-addendum-report.md) · [`reports/orchestrator-visual-correction-report.md`](reports/orchestrator-visual-correction-report.md) | Adendo de arquitetura + correção visual pós-gate It04 |
 
-## 5. Review summaries (`reviews/`) — 8 ledgers versionados (evidência persistente dos gates 3x)
+## 5. Review summaries (`reviews/`) — 9 ledgers versionados (evidência persistente dos gates 3x; snapshot no fechamento da It08)
 
 | Gate | Veredictos | Ledger |
 |---|---|---|
@@ -70,7 +71,7 @@ Prompts integrais recebidos pelos agentes (executor/corretor) e pelo adendo; tra
 | It05 | PASS_WITH_FIXES ×3 | [`reviews/iteration-05-review-summary.md`](reviews/iteration-05-review-summary.md) |
 | It06 | PASS_WITH_FIXES / PASS / PASS_WITH_FIXES | [`reviews/iteration-06-review-summary.md`](reviews/iteration-06-review-summary.md) |
 | It07 | PASS_WITH_FIXES ×2 + PASS | [`reviews/iteration-07-review-summary.md`](reviews/iteration-07-review-summary.md) |
-| It08 | **PENDING** (será executado após o commit desta iteração) | — |
+| It08 | PASS_WITH_FIXES ×3 (fixer aplicado; gate `CONCLUDED`) | [`reviews/iteration-08-review-summary.md`](reviews/iteration-08-review-summary.md) |
 
 ## 6. Decisões (`decisions/`) e hipóteses (`hypotheses/`)
 
@@ -106,7 +107,7 @@ Prompts integrais recebidos pelos agentes (executor/corretor) e pelo adendo; tra
 
 ## 9. Git history (branch `submission/jose-nascimento`)
 
-25 commits do candidato até o HEAD desta iteração; o commit do process log será o 26º. Hashes resolvem via `git rev-parse`. Mapeamento por iteração (commit de etapa → commit de correção do gate):
+26 commits do candidato no HEAD do process log (`9e60315`); **27 no fechamento da It08** (commit do fixer do gate 3x); + 5 de base do repo oficial. Hashes resolvem via `git rev-parse` (verificador G9). Mapeamento por iteração (commit de etapa → commit de correção do gate):
 
 | Iteração | Commits (curtos) |
 |---|---|
@@ -119,10 +120,10 @@ Prompts integrais recebidos pelos agentes (executor/corretor) e pelo adendo; tra
 | It05 | `dc5748f` (premissas) · `a8a6ca6` → fix `e0c6b7e` |
 | It06 | `9357c20` → fix `fa6572f` |
 | It07 | `1bbec67` (outline) · `a726cb4` (relatório) → fix `a1e99cb` |
-| It08 | `docs: consolidate AI process log and evidence` (este commit) |
+| It08 | `docs: consolidate AI process log and evidence` (`9e60315`) → fix do gate `docs: reconcile process log review evidence` |
 
 ## 10. Cobertura do índice
 
-- **Total de arquivos versionados na pasta:** 114 antes desta iteração; +6 após (process-log README, errors ledger, decision ledger, evidence index, prompt It08, report It08) = 120.
+- **Total de arquivos versionados na pasta (snapshot no fechamento da It08):** 114 antes da It08 → 120 no commit do process log (`9e60315`) → **123** após o fixer do gate 3x (review summary, fix prompt, fix report).
 - **Glob de cobertura:** todo path listado acima existe em `git ls-files` (verificador G1/G7/G8 re-checa a cada execução); todo link relativo deste arquivo e dos demais docs novos resolve (G3).
-- **Não incluídos (working artifacts):** os 24 reports brutos de revisão externos (fora do repo, read-only) — evidência persistente nos 8 summaries (§5); sandboxes e logs de validação fora do repo.
+- **Não incluídos (working artifacts):** os 27 reports brutos de revisão externos (fora do repo, read-only) — evidência persistente nos 9 summaries (§5); sandboxes e logs de validação fora do repo.

@@ -121,7 +121,7 @@ Consolidação final (Iteração 08) com evidência versionada, navegável por 4
 - **It06** — valor categórico inválido crashava com `KeyError` + stale; invocação direta do verificador gerava `__pycache__` que quebrava o próprio check D1 → guard de valor booleano + `sys.dont_write_bytecode`.
 - **It07** — drift de contagens nos docs, células de tabela truncadas no meio da palavra e word count no teto → contagens derivadas em runtime, tabela com '…' explícito + gate G3b, margem restaurada.
 
-Nenhuma iteração relatou "não houve erros". Detecção: 7/8 pelos revisores (convergência 3/3 em E1, E6, E8; 2/3 em E7; 1/3 em E2–E4), 1/8 pela inspeção ocular do orquestrador (E5).
+Nenhuma iteração relatou "não houve erros". Detecção (derivada dos summaries/gates): 7/8 pelos revisores — E1 3/3; E2 1/3 material (revisor R3, review-8b41e9c2, com os 3 concordando na correção); E3 1/3 material (review-4c090c69, confirmado no recálculo); E4 parcial (KM por tempo exato 3/3 — L5/INFO-1/#6; gráfico B 1/3 — #5); E6 3/3; E7 2/3 (review-18199ddc + review-f1fa7caa); E8 3/3 (LOWs convergentes) — e 1/8 pela inspeção ocular do orquestrador (E5).
 
 ### O que eu adicionei que a IA sozinha não faria
 

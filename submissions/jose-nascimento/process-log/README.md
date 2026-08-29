@@ -23,7 +23,7 @@
 │ contexto global · decompõe · escreve prompt/contrato · arbitra · gates    │
 │ NÃO executa scripts · NÃO edita a solução (exceção: inspeção ocular PNGs) │
 └──────────────────────────────────────────────────────────────────────────┘
-        │  prompt integral (escopo fechado, critérios, commit esperado)
+        │  prompt da etapa (escopo fechado, critérios, commit esperado)
         ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ EXECUTOR — exatamente 1 subagente deepseek-max por iteração (serial)      │
@@ -58,7 +58,7 @@ Estados: `PENDING` (não iniciado) / `OPEN` (executor trabalhando) / `CONCLUDED`
 | **05** | Ações priorizadas, impacto em faixa, plano de medição — premissas **antes** do cálculo | executor + gate 3x | Erro E6 corrigido (GO 3 estados com poder/IC); annualized removido; faixa ≠ CI; SLA ACT-03 | `05_actions_impact.py`, t18–t21, evidence 05 | `dc5748f` (premissas) · `a8a6ca6` → fix `e0c6b7e`; [review](reviews/iteration-05-review-summary.md), [premissas](decisions/iteration-05-action-impact-assumptions.md) |
 | **06** | Pipeline reproduzível em 1 comando (`run.sh`/`make all`) + verificador | executor + gate 3x | Erro E7 corrigido (categórico inválido → crash+stale; pycache do verificador); 45/45 byte-idênticos; 68 PASS | `run.sh`, `Makefile`, `06_verify_pipeline.py`, solution README | `9357c20` → fix `fa6572f`; [review](reviews/iteration-06-review-summary.md) |
 | **07** | Relatório executivo CEO — narrativa **antes** da redação + verifier F1–F8 | executor + gate 3x | Erro E8 corrigido (drift/truncamento/word count); markdown único; gates de honestidade | `07_generate_executive_report.py`, `report-executivo.md`, README preenchido | `1bbec67` (outline) · `a726cb4` → fix `a1e99cb`; [review](reviews/iteration-07-review-summary.md), [outline](decisions/iteration-07-executive-report-outline.md) |
-| **08** | **Process log final e evidências** (esta iteração) | executor + gate 3x **PENDING** | 4 artefatos navegáveis; 8 erros com causa raiz; decisões candidato vs IA; verifier com gates de processo | este README, [erros](errors/ai-errors-and-corrections.md), [decisões](decisions/decision-ledger.md), [índice](evidence-index.md), [report](reports/iteration-08-process-log-report.md) | `docs: consolidate AI process log and evidence` (este commit) |
+| **08** | **Process log final e evidências** (esta iteração) | executor + gate 3x `CONCLUDED` | 4 artefatos navegáveis; 8 erros com causa raiz; decisões candidato vs IA; verifier com gates de processo; fixer do gate reconciliou wording/aritmética F11/snapshots/detecção | este README, [erros](errors/ai-errors-and-corrections.md), [decisões](decisions/decision-ledger.md), [índice](evidence-index.md), [report](reports/iteration-08-process-log-report.md), [gate](reviews/iteration-08-review-summary.md) | `docs: consolidate AI process log and evidence` → fix `docs: reconcile process log review evidence` |
 
 ## 4. Como o problema foi entendido ANTES de promptar
 
@@ -83,7 +83,7 @@ Pré-registro é a prática central: **decisões e narrativa commitadas antes de
 - **E7** It06 — valor categórico inválido → crash + stale; pycache gerado pelo próprio verificador · `fa6572f`
 - **E8** It07 — drift de contagens, truncamento de tabela, word count no teto · `a1e99cb`
 
-Nenhuma iteração relatou "não houve erros". Detecção: 7/8 pelos revisores (convergência 3/3 em E1, E6, E8; 2/3 em E7; 1/3 em E2–E4), 1/8 pela inspeção ocular do orquestrador (E5).
+Nenhuma iteração relatou "não houve erros". Detecção (derivada dos summaries/gates): 7/8 pelos revisores — **E1** 3/3 (It01 summary §2); **E2** 1/3 material (revisor R3, review-8b41e9c2; os 3 concordaram na correção); **E3** 1/3 material (review-4c090c69; confirmado no recálculo pelos demais); **E4** parcial — KM por tempo exato 3/3 (L5/INFO-1/#6) e gráfico B 1/3 (#5); **E6** 3/3; **E7** 2/3 (review-18199ddc + review-f1fa7caa); **E8** 3/3 (LOWs convergentes) — 1/8 pela inspeção ocular do orquestrador (E5).
 
 ## 6. O que candidato/orquestrador adicionaram que um prompt único não faria
 
@@ -97,21 +97,24 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 - **Inspeção visual e auditoria final** como regras de processo (exigência do candidato); a inspeção ocular executada pelo orquestrador pegou E5, que validadores programáticos deixaram passar.
 - **Contenção de tempo** com stop conditions e trims formais (F11).
 
-## 7. Contagens derivadas (definições e fontes)
+## 7. Contagens derivadas — **snapshot no fechamento da It08** (definições e fontes)
+
+> Todos os valores abaixo são um snapshot versionado no fechamento da It08 (após o gate 3x + fixer). **It09/10: re-derivar antes de citar** (globs/git são a fonte; nenhum total final estático deve ser mantido).
 
 | Métrica | Valor | Definição e fonte |
 |---|---|---|
 | Iterações executadas | **9** (It00–08) | Etapa orquestrada com prompt arquivado, executor único e report; derivado de `prompts/` + `reports/` (globs) |
-| Review gates 3x concluídos | **8** (It00–07) | Ledgers em `reviews/`; gate da It08 `PENDING` |
-| Revisores (instâncias) | **24** | 8 gates × 3 revisores read-only (reports externos working artifacts; summaries versionados) |
-| Correções sequenciais commitadas | **9** | 8 fixers de gate (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb`) + 1 correção visual pós-gate It04 (`617e4ac`) — `git log` |
+| Review gates 3x concluídos | **9** (It00–08) | Ledgers em `reviews/` (9 summaries versionados) |
+| Revisores (instâncias) | **27** | 9 gates × 3 revisores read-only (reports externos working artifacts; summaries versionados) |
+| Correções sequenciais commitadas | **10** | 8 fixers de gate (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb`) + 1 correção visual pós-gate It04 (`617e4ac`) + 1 fixer do gate It08 (`docs: reconcile process log review evidence`) — `git log` |
 | Erros materiais registrados | **8** (E1–E8) | [`errors/ai-errors-and-corrections.md`](errors/ai-errors-and-corrections.md) |
-| Prompts arquivados | **19** | 16 de iteração/review-fix (It00–07) + adendo de arquitetura + correção visual + It08 — glob de `prompts/` |
-| Reports versionados | **19** | 18 (It00–07 + 2 especiais) + It08 — glob de `reports/` |
+| Prompts arquivados | **20** | 16 de iteração/review-fix (It00–07) + adendo de arquitetura + correção visual + prompt It08 + fix prompt do gate It08 — glob de `prompts/` |
+| Reports versionados | **20** | 18 (It00–07 + 2 especiais) + report It08 + fix report do gate It08 — glob de `reports/` |
+| Review summaries | **9** (It00–08) | glob de `reviews/` |
 | Decisões registradas | **6 arquivos** (It02–07) + ledger consolidado | glob de `decisions/` |
 | Hipóteses pré-registradas | **1 arquivo** (H1–H10) | `hypotheses/` |
-| Commits do candidato | **25** (HEAD `a1e99cb`) → **26** após este commit | `git log --author="Jose Nascimento"` |
-| Verificador | **77 PASS** → **88 PASS** (gates G1–G11 da seção G adicionados — escopo distinto dos gates G1–G8 do gerador da It07) | `../solution/src/06_verify_pipeline.py` |
+| Commits do candidato | **27** (25 no HEAD `a1e99cb` → 26 no commit do process log → 27 no fixer do gate It08) | `git log --author="Jose Nascimento"` |
+| Verificador | **77 PASS** → **88 PASS** (gates G1–G11 da seção G adicionados — escopo distinto dos gates G1–G8 do gerador da It07; no fechamento da It08: G7 cobre 9 summaries e G10 espera o gate da It08 `CONCLUDED`) | `../solution/src/06_verify_pipeline.py` |
 
 ## 8. Limitações do processo (declaradas)
 
@@ -119,8 +122,8 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 2. **Revisão não substitui validação executável** — veredicto de revisor é leitura crítica; por isso cada iteração mantém re-execuções, sandboxes de FAIL estrutural e recálculos independentes.
 3. **O orquestrador também erra** — prompts/arbitragem/gates são de modelo; mitigado pela revisão 3x do resultado de cada etapa.
 4. **IDs não verificáveis publicamente** — `openai/gpt-5.6-sol` e "max reasoning" são metadata do harness da sessão (distinção runtime vs external em `management/orchestration-architecture.md` §8).
-5. **Time budget excedido, honestamente:** o oficial é 4–6h; o acumulado registrado em F11 ultrapassou o gatilho de contenção desde a It04 (~10h) — decisão consciente por gates obrigatórios, trims formais a partir da It05, e o orquestrador manteve os cortes de escopo (pruning de PNGs, markdown único, sem dashboard). A It08 adiciona ~2h30 (execução + validações).
-6. **Working artifacts fora do repo** — os 24 reports brutos de revisão e sandboxes não são versionados; a evidência persistente é a versão consolidada (`reviews/`, `reports/`, `prompts/`, git).
+5. **Time budget excedido, honestamente:** o oficial é 4–6h; a execução documentada totaliza uma **faixa de ~20–24h** (F11 no checklist — as fatias por iteração são estimativas de sessão `~`, **não aditivas**: há sobreposições de relógio e sessões sem fatia própria; a soma bruta das fatias listadas ≈ 23h40; os marcos pontuais anteriores foram removidos por inconsistência aritmética). O gatilho de contenção (§2.5b) foi ultrapassado na It04 — **decisão consciente de revisão** (gates 3x obrigatórios, adendo de arquitetura, escopo completo das It04/05 e o item eliminatório do process log), com trims formais a partir da It05 (pruning de PNGs, markdown único, sem dashboard). A It08 registra ~2h30 próprios (execução + validações) e ~1h30 de correção do gate (ver [fix report](reports/iteration-08-review-fix-report.md)). Nenhum claim de conformidade ao orçamento é feito.
+6. **Working artifacts fora do repo** — os 27 reports brutos de revisão (9 gates × 3) e sandboxes não são versionados; a evidência persistente é a versão consolidada (`reviews/`, `reports/`, `prompts/`, git).
 
 ## 9. Evidence map (navegação)
 
@@ -129,9 +132,9 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 | Ferramentas/arquitetura (papéis, modelos, rationale) | [`management/orchestration-architecture.md`](management/orchestration-architecture.md) |
 | Plano, regras, política de tempo | [`management/execution-plan.md`](management/execution-plan.md) |
 | Checklist do orquestrador (estados por item) | [`management/orchestrator-checklist.md`](management/orchestrator-checklist.md) |
-| Prompts literais de todas as etapas/correções | [`prompts/`](prompts/) (19 arquivos) |
-| Reports de cada iteração | [`reports/`](reports/) (19 arquivos) |
-| Review summaries (gates 3x, matrizes finding→ação) | [`reviews/`](reviews/) (8 ledgers) |
+| Prompts transcritos fielmente de todas as etapas/correções | [`prompts/`](prompts/) (20 arquivos — snapshot It08) |
+| Reports de cada iteração | [`reports/`](reports/) (20 arquivos — snapshot It08) |
+| Review summaries (gates 3x, matrizes finding→ação) | [`reviews/`](reviews/) (9 ledgers — snapshot It08) |
 | Decisões e hipóteses pré-registradas | [`decisions/`](decisions/) · [`hypotheses/iteration-03-root-cause-hypotheses.md`](hypotheses/iteration-03-root-cause-hypotheses.md) |
 | Erros reais da IA com correção | [`errors/ai-errors-and-corrections.md`](errors/ai-errors-and-corrections.md) |
 | Índice completo de paths versionados | [`evidence-index.md`](evidence-index.md) |
@@ -141,4 +144,4 @@ Um prompt único geraria uma análise plausível, mas sem as seguintes camadas (
 
 ---
 
-**Próximo passo:** gate 3x da It08 (PENDING) e Iteração 09 (QA final integral) — ver handoff no [report da It08](reports/iteration-08-process-log-report.md).
+**Próximo passo:** Iteração 09 (QA final integral) — gate 3x da It08 `CONCLUDED` ([summary](reviews/iteration-08-review-summary.md)); ver handoff no [report da It08](reports/iteration-08-process-log-report.md).

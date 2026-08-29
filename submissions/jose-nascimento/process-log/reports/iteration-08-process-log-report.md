@@ -3,7 +3,7 @@
 - **Iteração:** 08 (consolidação do process log — item eliminatório)
 - **Data:** 2026-08-29
 - **Executor:** exatamente um subagente `deepseek-max` (DeepSeek V4 Flash, max reasoning, via OpenCode Go), sob orquestração do opencode (`openai/gpt-5.6-sol` — "GPT 5.6 Sol Max")
-- **Prompt integral:** [`process-log/prompts/iteration-08-prompt.md`](../prompts/iteration-08-prompt.md) (arquivado; paths de máquina normalizados — política F2/It08)
+- **Prompt (transcrição fiel com paths operacionais normalizados):** [`process-log/prompts/iteration-08-prompt.md`](../prompts/iteration-08-prompt.md) (arquivado; os 2 únicos paths absolutos de máquina do original foram substituídos por `<repo-workdir>` e `<review-reports-dir>` — política F2/It08; categorias e motivo na nota do próprio arquivo)
 - **HEAD base:** `a1e99cb8493b0c21e7470cc20c669ee97de1ce68` (confirmado; working tree limpo; branch `submission/jose-nascimento`)
 - **Tempo de relógio (F11):** ~2h30 (leitura integral de artefatos + 4 documentos + prompt/report + verificador G1–G11 + validações 2×/CWD/clone fresco/FAIL test + git)
 
@@ -63,21 +63,24 @@ lição de processo (definição no ledger de erros).
 5. **Gate 3x da It08 deixado `PENDING`** (a executar pelo orquestrador após
    este commit) — separação implementação/revisão preservada, como nas It00–07.
 
-## 4. Números (derivados — ver §2)
+## 4. Números (derivados — ver §2; **snapshot no fechamento da It08**)
+
+> Valores atualizados no fechamento da It08 (após gate 3x + fixer — ver adendo §10). It09/10: re-derivar antes de citar.
 
 | Métrica | Valor |
 |---|---|
 | Iterações executadas | 9 (It00–08) |
-| Review gates 3x concluídos | 8 (It00–07) — It08 `PENDING` |
-| Revisores (instâncias) | 24 (8 gates × 3; reports externos working artifacts) |
-| Correções sequenciais commitadas | 9 (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb` + visual `617e4ac`) |
+| Review gates 3x concluídos | 9 (It00–08) |
+| Revisores (instâncias) | 27 (9 gates × 3; reports externos working artifacts) |
+| Correções sequenciais commitadas | 10 (`9907024`, `b9823da`, `9378a86`, `12ff47c`, `1517a73`, `e0c6b7e`, `fa6572f`, `a1e99cb` + visual `617e4ac` + fixer do gate It08) |
 | Erros materiais registrados | 8 (E1–E8) — E3/E4 no mesmo commit `12ff47c`; E7 cobre categórico-inválido + pycache (mesmo gate `fa6572f`) |
-| Prompts arquivados | 19 | Reports versionados | 19 |
+| Prompts arquivados | 20 | Reports versionados | 20 |
+| Review summaries | 9 (It00–08) |
 | Decisões (ledger consolidado) | 18 (D-01..D-18) |
-| Arquivos versionados na pasta | 114 → 120 |
-| Commits do candidato | 25 (HEAD `a1e99cb`) → 26 (este commit) |
+| Arquivos versionados na pasta | 114 → 120 (`9e60315`) → 123 (fechamento da It08) |
+| Commits do candidato | 25 (HEAD `a1e99cb`) → 26 (process log) → 27 (fixer do gate It08) |
 | Verificador | 77 PASS → **88 PASS / 0 FAIL** (G1–G11) |
-| Detecção dos 8 erros | 7/8 pelos revisores (convergência 3/3: E1, E6, E8; 2/3: E7; 1/3: E2–E4) · 1/8 inspeção ocular do orquestrador (E5) |
+| Detecção dos 8 erros | 7/8 pelos revisores — E1 3/3; E2 1/3 material (R3, review-8b41e9c2); E3 1/3 material (review-4c090c69); E4 parcial (KM 3/3 — L5/INFO-1/#6; gráfico B 1/3 — #5); E6 3/3; E7 2/3 (review-18199ddc + review-f1fa7caa); E8 3/3 · 1/8 inspeção ocular do orquestrador (E5) |
 
 ## 5. Evidência (links)
 
@@ -157,9 +160,11 @@ foram nos docs/verificador novos e foram corrigidos antes do commit.
 
 ## 9. Riscos remanescentes / handoff It09
 
-1. **Review gate 3x da It08 `PENDING`** — executar após este commit; ledger em
-   `process-log/reviews/iteration-08-review-summary.md`; se houver findings
-   materiais, correção sequencial + commit próprio.
+1. **Review gate 3x da It08 `CONCLUDED`** — 3 veredictos `PASS_WITH_FIXES`
+   (revisão externa read-only); correção sequencial aplicada (commit
+   `docs: reconcile process log review evidence`) — ver adendo §10, ledger em
+   `process-log/reviews/iteration-08-review-summary.md` e o
+   [fix report](../reports/iteration-08-review-fix-report.md).
 2. **It09 (QA final integral):** re-execução limpa (2× + CWD + clone fresco),
    greps de originalidade (term-list E1), auditoria arquivo-a-arquivo,
    checklist A–F integral, `git log` completo (autor/escopo), conferência de
@@ -172,8 +177,55 @@ foram nos docs/verificador novos e foram corrigidos antes do commit.
    documentada no verificador.
 5. **Word count do report executivo com margem ~125:** nenhuma alteração foi
    feita em It08; qualquer adição futura exige re-medição (G6/F4).
-6. **Time budget:** acumulado ~19h35 vs 4–6h oficiais — **acima do gatilho de
-   contenção**, registrado no F11 com a decisão consciente (item eliminatório
-   obrigatório; trims formais vigentes desde a It05).
+6. **Time budget:** faixa de execução documentada **~20–24h** (F11 no
+   checklist — fatias por iteração são estimativas de sessão **não aditivas**;
+   soma bruta das fatias listadas ≈ 23h40; marcos pontuais anteriores
+   ~18h20/~19h35+ removidos por inconsistência aritmética) vs **4–6h oficiais**
+   — **acima do gatilho de contenção por decisão consciente de revisão**
+   (gates 3x obrigatórios + adendo + item eliminatório do process log; trims
+   formais vigentes desde a It05). Ver adendo §10 e o
+   [fix report](../reports/iteration-08-review-fix-report.md).
 7. **It10:** data de submissão no README (`pendente` até lá) + PR oficial
    `[Submission] Jose Nascimento — Challenge 001`.
+
+## 10. Adendo — correção do review gate 3x da It08 (2026-08-29)
+
+Após o commit desta iteração, o orquestrador executou o **gate 3x read-only**
+da It08 (3 revisores `deepseek-max`, mesmo prompt, contextos separados,
+read-only, reports externos em working artifacts fora do repo). Os 3
+veredictos foram `PASS_WITH_FIXES` — nenhum finding material; 4 correções de
+precisão documental (LOW) aplicadas pelo **corretor sequencial** em
+`docs: reconcile process log review evidence` (este adendo + fix report em
+[`../reports/iteration-08-review-fix-report.md`](../reports/iteration-08-review-fix-report.md) e
+ledger em [`../reviews/iteration-08-review-summary.md`](../reviews/iteration-08-review-summary.md)):
+
+1. **Wording do prompt:** "Prompt integral" → **"transcrição fiel com paths
+   operacionais normalizados"** (2 paths normalizados; categorias e motivo
+   documentados no próprio prompt e no report It08 §3.2) — alinhados
+   `iteration-08-prompt.md`, este report (§0), evidence-index §3 e o diagrama
+   do README do process log.
+2. **F11 / time budget:** marcos pontuais inconsistentes (~18h20 / ~19h35+)
+   **removidos**; metodologia declarada (fatias `~` por sessão, **não
+   aditivas**; soma bruta ≈ 23h40; sessões sem fatia própria, ex.: It00 e a
+   correção do gate It06, embutidas nas vizinhas) e **faixa honesta
+   ~20–24h**; conclusão inequívoca mantida: **excedeu 4–6h por decisão
+   consciente de revisão** — ver checklist F11 e fix report §2.2.
+3. **Contagens:** todas qualificadas como **snapshot no fechamento da It08**
+   (README §7, evidence-index, este report §4, checklist) com instrução de
+   re-derivação na It09/10; este fechamento acrescenta: 9º gate, 27 revisores,
+   10ª correção, 20 prompts, 20 reports, 9 summaries, 123 arquivos, 27
+   commits.
+4. **Detecção dos erros:** o agregado "1/3 em E2–E4" foi substituído pela
+   derivação por erro (E2 1/3 material; E3 1/3 material; E4: KM 3/3 + gráfico
+   B 1/3) — README do process log §5, este report §4, README da submissão.
+5. **Demais precisões:** evidence-index G1–G9 → **G1–G11**; hash do §10 do
+   summary It04 precisado (`617e4ac` correção visual sobre a base `1517a73`);
+   verifier alinhado ao fechamento (G7: 9 summaries; G10: gate It08
+   `CONCLUDED`; inventário G8 + docs novos no escopo G4/G9/G11).
+
+**Validação do adendo:** verifier **88 PASS / 0 FAIL** ×2 no working repo +
+clone fresco `./run.sh` ×2 byte-idênticos; report executivo/6 PNGs/26 tabelas
+intocados (md5 inalterado); FAIL tests em sandbox (link corrompido → G3 exit 1;
+entrada de erro removida → G2 exit 1); greps de hygiene (zero paths de
+máquina/segredos nos docs novos); `git diff --check` limpo; escopo 100%
+`submissions/jose-nascimento/`. **Gate It08: `CONCLUDED`.**
