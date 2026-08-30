@@ -6,17 +6,16 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data"
-DEFAULT_EXPORT_PATH = Path(__file__).resolve().parent / "data" / "processed_pipeline.csv"
+_HERE = Path(__file__).resolve()
+_ROOT = _HERE.parents[2] if len(_HERE.parents) > 2 else _HERE.parent
+
+DEFAULT_DATA_DIR = _ROOT / "data"
+DEFAULT_EXPORT_PATH = _HERE.parent / "data" / "processed_pipeline.csv"
 # Artefatos de análise vendedor x produto / vendedor x setor — mesmo local
 # do deliverable histórico da submissão (pipeline-api spec, Requirement
 # "Exportação da análise de carga e fit"), regravados a cada carga.
-DEFAULT_ANALYSIS_BY_PRODUCT_PATH = (
-    Path(__file__).resolve().parents[2] / "analysis_by_product_detailed.csv"
-)
-DEFAULT_ANALYSIS_BY_SECTOR_PATH = (
-    Path(__file__).resolve().parents[2] / "analysis_by_sector_detailed.csv"
-)
+DEFAULT_ANALYSIS_BY_PRODUCT_PATH = _ROOT / "analysis_by_product_detailed.csv"
+DEFAULT_ANALYSIS_BY_SECTOR_PATH = _ROOT / "analysis_by_sector_detailed.csv"
 
 
 def _get_data_dir() -> Path:

@@ -20,7 +20,52 @@ make dev-api   # terminal 1 — http://localhost:8000
 make dev-web   # terminal 2 — http://localhost:5173 (proxy /api -> :8000)
 ```
 
-Pré-requisitos: Python 3.10+, Node.js 18+. Sem banco de dados — os quatro CSVs em `../data/` carregam inteiros em memória na inicialização da API.
+Pré-requisitos: Python 3.10+, Node.js 18+ e `make`. Sem banco de dados — os quatro CSVs em `../data/` carregam inteiros em memória na inicialização da API.
+
+#### Instalando o `make`
+
+Confira antes se ele já não está presente — acompanha boa parte das instalações de sistema:
+
+```bash
+make --version
+```
+
+Se o comando não for encontrado:
+
+| Sistema | Comando |
+|---|---|
+| macOS | `xcode-select --install` (vem junto das Command Line Tools) ou `brew install make` |
+| Debian / Ubuntu | `sudo apt update && sudo apt install make` |
+| Fedora / RHEL | `sudo dnf install make` |
+| Arch | `sudo pacman -S make` |
+| Alpine | `apk add make` |
+| Windows | WSL e depois a linha do Debian/Ubuntu; sem WSL, `choco install make` ou `scoop install make` |
+
+No Windows o caminho do WSL é o recomendado: os alvos deste Makefile encadeiam `cd`, chamam `python3` e usam caminhos com `/`, que o `cmd.exe` não interpreta.
+
+#### Sem `make`
+
+Os alvos são atalhos finos sobre comandos comuns — dá para rodar tudo à mão a partir de `solution/`. Cada linha do Makefile roda no próprio shell, por isso os `cd ..` abaixo, que lá não são necessários:
+
+```bash
+# make install
+python3 -m venv scoring/.venv && cd scoring && .venv/bin/pip install -e . -e ".[dev]" && cd ..
+python3 -m venv api/.venv && cd api && .venv/bin/pip install -r requirements.txt && cd ..
+python3 -m venv validation/.venv && cd validation && .venv/bin/pip install -r requirements.txt && cd ..
+cd web && npm install && cd ..
+
+# make dev-api (terminal 1) / make dev-web (terminal 2)
+cd api && .venv/bin/python -m uvicorn main:app --reload --port 8000
+cd web && npm run dev
+
+# make test
+cd scoring && .venv/bin/pytest && cd ../api && .venv/bin/pytest && cd ../validation && .venv/bin/pytest && cd ../web && npx tsc -b
+
+# make validate
+cd validation && .venv/bin/python backtest.py --data-dir ../../data
+```
+
+Pelo Docker o `make` é dispensável de saída: `make up` e `make down` são apenas `docker compose up --build` e `docker compose down`.
 
 ### Testes
 
