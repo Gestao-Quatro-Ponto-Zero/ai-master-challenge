@@ -1,0 +1,20 @@
+[project]
+name = "scoring"
+version = "0.1.0"
+description = "Motor de priorização de pipeline — PRIORIDADE, CONFIANÇA e ESTADO. Pacote Python puro, sem dependência de web."
+requires-python = ">=3.10"
+dependencies = [
+    "pandas==2.2.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.2.2",
+]
+
+[tool.setuptools.packages.find]
+include = ["scoring*"]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"

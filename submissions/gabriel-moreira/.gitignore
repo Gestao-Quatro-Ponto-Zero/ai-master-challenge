@@ -1,0 +1,12 @@
+# Artefatos locais/gerados desta submissão — recriados por `make install` /
+# `make dev-api` / `npm install`, nunca versionados.
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+node_modules/
+dist/
+*.tsbuildinfo
+solution/web/vite.config.js
+solution/web/vite.config.d.ts

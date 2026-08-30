@@ -1,0 +1,19 @@
+# Dependências fixadas em versão. `scoring` é instalado em modo editável —
+# o artefato de validação importa o motor de scoring, nunca reimplementa a
+# fórmula, as curvas ou o cálculo de k.
+#
+# Nota: o design original previa lightgbm para o modelo combinado de AUC.
+# Trocado por scikit-learn (HistGradientBoostingClassifier, também gradient
+# boosting) durante a implementação — lightgbm exige libomp nativo via
+# Homebrew no macOS, o que violaria "partida por comando único, sem passos
+# manuais adicionais" (task 7.2) em qualquer máquina sem a lib já instalada.
+-e ../scoring
+
+pandas==2.2.2
+scikit-learn==1.5.0
+# statsmodels: nulo ADITIVO da seção 12 — o GLM binomial com efeitos
+# principais de vendedor e produto/setor, cujo bootstrap paramétrico é o
+# único nulo que testa afinidade (interação) em vez de "vendedor importa".
+statsmodels==0.15.0
+
+pytest==8.2.2
