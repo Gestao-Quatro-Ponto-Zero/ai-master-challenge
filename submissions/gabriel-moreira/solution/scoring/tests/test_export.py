@@ -11,18 +11,18 @@ from scoring.export import (
     export_processed_dataset,
 )
 from scoring.fit import build_fit_context
-from scoring.pipeline import fechados_calibracao
+from scoring.pipeline import fechados
 
 
 @pytest.fixture(scope="session")
 def fit_ctx(dataset):
-    return build_fit_context(dataset, fechados_calibracao(dataset))
+    return build_fit_context(dataset, fechados(dataset))
 
 
-def test_export_writes_all_1436_open_opportunities(scored_pipeline, tmp_path):
+def test_export_writes_all_2089_open_opportunities(scored_pipeline, tmp_path):
     output_path = export_processed_dataset(scored_pipeline, tmp_path / "processed.csv")
     written = pd.read_csv(output_path)
-    assert len(written) == 1436
+    assert len(written) == 2089
     for col in EXPORT_COLUMNS:
         assert col in written.columns
 
@@ -31,7 +31,7 @@ def test_export_includes_opportunities_without_account(scored_pipeline, tmp_path
     output_path = export_processed_dataset(scored_pipeline, tmp_path / "processed.csv")
     written = pd.read_csv(output_path)
     sem_conta = written[written["account"].isna()]
-    assert len(sem_conta) == 987
+    assert len(sem_conta) == 1425
     assert sem_conta["prioridade"].notna().all()
     assert sem_conta["estado"].notna().all()
 

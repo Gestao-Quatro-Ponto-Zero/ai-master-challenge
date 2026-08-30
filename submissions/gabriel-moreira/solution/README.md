@@ -36,9 +36,9 @@ Roda, em sequência: os testes unitários do motor de scoring (`scoring/`, inclu
 make validate
 ```
 
-Imprime o relatório completo em texto: ausência de sinal preditivo firmográfico (AUC + testes de permutação), derivação de `k` por nível hierárquico, monotonicidade de `risco(t)`, fronteira de censura de 138 dias, e concentração de PRIORIDADE no topo da fila. Ver [`validation/backtest.py`](./validation/backtest.py).
+Imprime o relatório completo em texto — 14 seções: ausência de sinal preditivo firmográfico (AUC + testes de permutação, com correção para múltiplas comparações), derivação de `k` por nível hierárquico, monotonicidade de `risco(t)`, fronteira de censura de 138 dias, concentração de PRIORIDADE no topo da fila, três hipóteses de refinamento rejeitadas por validação cruzada, distribuição de CONFIANÇA, as duas auditorias que garantem que nenhum desfecho é atribuído por nós, os dois nulos do fit por vendedor, o denominador dos CSVs de análise e o poder dos testes de vendedor (τ̂ por variância em excesso e MDE — o que separa "não há diferença" de "a amostra não enxerga a diferença"). Ver [`validation/backtest.py`](./validation/backtest.py).
 
-[`Relatório Gerado`](./report.md)
+[`Relatório Gerado`](../docs/report.md)
 
 ## A fórmula, resumida
 
@@ -52,13 +52,13 @@ CONFIANÇA  = min(completude, suporte)                  (0–100 — veracidade 
 ESTADO     = árvore(sem_precedente, SCORE≥95, CONFIANÇA<50)   (Priorizar / Acompanhar / Qualificar / Revisão em lote)
 ```
 
-SCORE e CONFIANÇA nunca se combinam num único número — um ordena a fila, o outro diz o quanto acreditar na posição. PRIORIDADE em dólares deixou de ser exibida ou de ordenar a fila (redesenho 2026-08-20): a decomposição de `log(PRIORIDADE)` atribui 87,3% da variância a VALOR e 0,1% a `p̂` — ordenar por ela era, na prática, ordenar por preço de tabela. Permanece calculada e exportada no CSV como valor auditável. A decomposição completa, com os exemplos de referência e o porquê de cada peça, está em [`../docs/architecture.md`](../docs/architecture.md) e nos specs formais.
+SCORE e CONFIANÇA nunca se combinam num único número — um ordena a fila, o outro diz o quanto acreditar na posição. PRIORIDADE em dólares não é exibida nem ordena a fila: a decomposição de `log(PRIORIDADE)` atribui 87,3% da variância a VALOR e 0,1% a `p̂` — ordenar por ela seria, na prática, ordenar por preço de tabela. Permanece calculada e exportada no CSV como valor auditável. A decomposição completa, com os exemplos de referência e o porquê de cada peça, está em [`../docs/architecture.md`](../docs/architecture.md).
 
 Toda oportunidade aberta recebe SCORE — inclusive as 1.425 sem conta vinculada (VALOR usa o prior neutro de porte) e as 500 em Prospecting (URGÊNCIA fixa em 0,47, sem idade imputada).
 
 ## Abertura direta no pipeline
 
-A aplicação abre direto na aba Oportunidades, com a fila trabalhável (993 oportunidades — os três estados `Priorizar`/`Acompanhar`/`Qualificar`) já visível — não há tela de seleção de identidade nem sessão a manter. `Revisão em lote` (1.096 oportunidades sem precedente histórico) fica numa visão própria, fora da fila padrão. Vendedor, gerente e escritório regional são **filtros ordinários** sobre o funil inteiro, iguais a produto e confiança: qualquer valor presente nos dados pode ser escolhido, e o recorte resultante é refletido na URL — compartilhável e recarregável, ao contrário da sessão que existia antes.
+A aplicação abre direto na aba Oportunidades, com a fila trabalhável (993 oportunidades — os três estados `Priorizar`/`Acompanhar`/`Qualificar`) já visível — não há tela de seleção de identidade nem sessão a manter. `Revisão em lote` (1.096 oportunidades sem precedente histórico) fica numa visão própria, fora da fila padrão. Vendedor, gerente e escritório regional são **filtros ordinários** sobre o funil inteiro, iguais a produto e confiança: qualquer valor presente nos dados pode ser escolhido, e o recorte resultante é refletido na URL — compartilhável e recarregável.
 
 Todo endpoint de dados é aberto, sem cabeçalho `Authorization`. Essa é uma decisão consciente para um dataset público de demonstração, sem informação real de cliente — não uma omissão. O trade-off e o caminho de produção (SSO/OIDC real, escopo aplicado no servidor) estão registrados em [`../process-log/decisions-log.md`](../process-log/decisions-log.md) e em "Limitações declaradas" abaixo.
 
@@ -68,17 +68,17 @@ Uma terceira aba, **Sobrecarga**, compara a carteira de cada vendedor com a méd
 
 Para cada oportunidade de vendedor sobrecarregado, o sistema sugere um colega do mesmo escritório — não sobrecarregado naquele ESTADO, com histórico de negócios fechados — combinando folga de carga com o fit histórico do candidato no produto e no setor da oportunidade. **A sugestão é só informativa**: nunca reatribui a oportunidade nem altera o dono registrado no dado processado ou em qualquer exportação; quem decide é o gestor. O vendedor sugerido só aparece na aba Sobrecarga e no painel de detalhe — a listagem geral de Oportunidades recebe apenas o booleano `sobrecarregado` (com filtro correspondente), nunca o nome do candidato.
 
-O fit por vendedor é calculado apenas sobre negócios fechados (nunca sobre abertos) e encolhido para o prior do escritório — mas os mesmos testes de permutação que sustentam a fórmula principal (AUC ≈ 0,50, seções 1-2 de [`report.md`](./report.md)) não encontram sinal em vendedor como preditor. Por isso toda superfície que exibe fit também exibe essa ressalva, e o fit **nunca** entra em `p̂`, VALOR, URGÊNCIA, PRIORIDADE, SCORE, CONFIANÇA ou ESTADO — é uma camada operacional separada da priorização, não um ajuste dela.
+O fit por vendedor é calculado apenas sobre os 6.711 negócios com desfecho registrado (nunca sobre abertos) e encolhido para o prior do escritório — mas os mesmos testes de permutação que sustentam a fórmula principal (AUC ≈ 0,50, seções 1-2 de [`report.md`](../docs/report.md)) não encontram sinal em vendedor como preditor: p = 0,262 sem controle, 0,588 em vendedor×produto e 0,545 em vendedor×setor — e, contra o nulo aditivo que isola afinidade (o que a palavra *fit* afirma), 0,874 e 0,877. Por isso toda superfície que exibe fit também exibe essa ressalva, e o fit **nunca** entra em `p̂`, VALOR, URGÊNCIA, PRIORIDADE, SCORE, CONFIANÇA ou ESTADO — é uma camada operacional separada da priorização, não um ajuste dela.
 
-Fórmulas, encolhimento e endpoints (`GET /carga`, `GET /deals/sobrecarregados`) detalhados em [`../docs/architecture.md`](../docs/architecture.md) e na spec formal [`../openspec/specs/workload-fit/spec.md`](../openspec/specs/workload-fit/spec.md).
+Fórmulas, encolhimento e endpoints (`GET /carga`, `GET /deals/sobrecarregados`) detalhados em [`../docs/architecture.md`](../docs/architecture.md) — especificado via OpenSpec antes da implementação, mas `openspec/` é gerado localmente e não faz parte deste checkout.
 
 ## Estrutura
 
 ```
 scoring/      pacote Python puro (sem FastAPI/React) — a fórmula, importada por api/ e validation/
-api/          FastAPI — listagem paginada/ordenada, filtros comuns, detalhe de oportunidade, rollup, export
-web/          React + TypeScript + Tailwind — abas Oportunidades/Gestão, filtros, painel de detalhe
-validation/   evidência estatística executável — AUC, permutação, k, monotonicidade, concentração
+api/          FastAPI — listagem paginada/ordenada, filtros comuns, detalhe, rollup, carga, export
+web/          React + TypeScript + Tailwind — abas Oportunidades/Sobrecarga/Gestão, filtros, painel de detalhe
+validation/   evidência estatística executável — AUC, permutação, k, monotonicidade, concentração, auditorias
 ```
 
 Ver [`../docs/architecture.md`](../docs/architecture.md) para o mapa completo de cada módulo.
@@ -87,5 +87,5 @@ Ver [`../docs/architecture.md`](../docs/architecture.md) para o mapa completo de
 
 - **Sem autenticação.** Nenhum endpoint de dados exige identificação — qualquer cliente lê o funil inteiro. Aceitável apenas porque o dataset é público e de demonstração, sem informação real de cliente. Produção exigiria SSO/OIDC real e escopo por papel aplicado no servidor — nenhum dos dois existe hoje, nem parcialmente. Documentado, não escondido — evolução de produção registrada em `../docs/architecture.md`.
 - **Sem persistência.** Tudo em memória, recarregado do zero a cada inicialização. Caminho de produção: banco gerenciado (Supabase ou equivalente).
-- **Sem previsão categórica de win/loss.** `p̂` varia só entre 0,60 e 0,75 — a diferenciação real vem de valor e urgência, não de probabilidade. A evidência de que isso é uma escolha correta, não uma limitação técnica, está em `validation/`.
+- **Sem previsão categórica de win/loss.** `p̂` varia só entre 0,63 e 0,75 — a diferenciação real vem de valor e urgência, não de probabilidade. A evidência de que isso é uma escolha correta, não uma limitação técnica, está em `validation/`.
 - **A distribuição de referência de SCORE** (negócios ganhos) só se atualiza no ciclo trimestral de recalibração — um negócio fechado ontem não entra no percentil até a próxima recalibração. Decisão deliberada: é o que torna SCORE estável entre requisições.

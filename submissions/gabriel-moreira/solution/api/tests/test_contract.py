@@ -17,7 +17,7 @@ def test_deals_no_estado_returns_all(client):
     resp = client.get("/deals")
     assert resp.status_code == 200
     body = resp.json()
-    assert body["total"] == 1436
+    assert body["total"] == 2089
     estados = {row["estado"] for row in body["items"]}
     assert estados.issubset({"prioritize", "acompanhar", "qualificar", "revisao_lote"})
 
@@ -41,15 +41,16 @@ def test_deals_estagio_present_in_listing(client):
 
 
 def test_deal_detail_exposes_score_fatores(client):
-    """4 frases sempre presentes (valor, chance, urgência, conta) + 1
-    frase adicional de `mult_setor` quando o setor da oportunidade é
-    conhecido (add-mult-setor, lead-scoring spec, Requirement
-    "Explicabilidade do score e plano de ação")."""
+    """Exatamente 4 frases (valor, chance, urgência, conta), com ou sem
+    setor no cadastro — a quinta frase, sobre `mult_setor`, saiu com a
+    remoção do setor do score em 2026-08-29 (lead-scoring spec,
+    Requirement "Explicabilidade do score e plano de ação")."""
     resp = client.get("/deals")
-    opportunity_id = resp.json()["items"][0]["opportunity_id"]
-    detalhe = client.get(f"/deals/{opportunity_id}").json()
-    assert 4 <= len(detalhe["score_fatores"]) <= 5
-    assert all(isinstance(f, str) and f for f in detalhe["score_fatores"])
+    for row in resp.json()["items"][:20]:
+        detalhe = client.get(f"/deals/{row['opportunity_id']}").json()
+        assert len(detalhe["score_fatores"]) == 4
+        assert all(isinstance(f, str) and f for f in detalhe["score_fatores"])
+        assert not any("setor" in f.lower() for f in detalhe["score_fatores"])
 
 
 def test_deals_sort_by_prioridade_returns_422(client):

@@ -6,13 +6,13 @@ import pandas as pd
 import pytest
 
 from scoring.fit import FitContext, build_fit_context, fit_produto, fit_setor
-from scoring.pipeline import fechados_calibracao
+from scoring.pipeline import fechados
 from scoring.shrinkage import GroupCounts
 
 
 @pytest.fixture(scope="session")
 def fit_ctx(dataset) -> FitContext:
-    return build_fit_context(dataset, fechados_calibracao(dataset))
+    return build_fit_context(dataset, fechados(dataset))
 
 
 def test_anna_snelling_gtx_basic_denominador_exclui_abertos(fit_ctx):
@@ -68,5 +68,5 @@ def test_178_celulas_vendedor_produto(fit_ctx):
     assert len(fit_ctx.vendor_product) == 178
 
 
-def test_292_celulas_vendedor_setor(fit_ctx):
-    assert len(fit_ctx.vendor_sector) == 292
+def test_288_celulas_vendedor_setor(fit_ctx):
+    assert len(fit_ctx.vendor_sector) == 288

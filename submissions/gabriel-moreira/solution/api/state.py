@@ -90,8 +90,8 @@ def build_app_state(settings: Settings) -> AppState:
     export_mod.export_processed_dataset(scored_pipeline, settings.export_path)
 
     dataset = scored_pipeline.dataset
-    closed_calibracao = pipeline_mod.fechados_calibracao(dataset)
-    fit_ctx = build_fit_context(dataset, closed_calibracao)
+    closed = pipeline_mod.fechados(dataset)
+    fit_ctx = build_fit_context(dataset, closed)
     export_mod.export_analysis_by_product(dataset, fit_ctx, settings.analysis_by_product_path)
     export_mod.export_analysis_by_sector(dataset, fit_ctx, settings.analysis_by_sector_path)
 

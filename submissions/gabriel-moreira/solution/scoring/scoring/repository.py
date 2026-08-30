@@ -1,5 +1,8 @@
 """Carga e junção dos quatro CSVs em memória, atrás de um módulo repositório.
 
+A carga é uma leitura fiel: normaliza grafias de origem e junta as tabelas,
+mas nunca altera o desfecho de uma oportunidade.
+
 Correções de origem aplicadas no carregamento (não nos dados em disco):
 `technolgy` -> `technology` em accounts.sector, e variantes de "GTXPro" ->
 "GTX Pro" em sales_pipeline.product. Ver constants.SECTOR_CORRECTIONS /
@@ -20,12 +23,13 @@ from . import constants
 class Dataset:
     """Snapshot imutável dos dados carregados e já unidos.
 
-    `pipeline["reclassificado"]` marca as oportunidades que estavam em
-    `Engaging` com idade >= `constants.IDADE_RECLASSIFICACAO_DIAS` em
-    `as_of_default` e foram convertidas para `deal_stage = "Lost"` em
-    memória (Requirement "Reclassificação de oportunidades com 200 dias ou
-    mais"). `sales_pipeline.csv` no disco não é tocado — a coluna existe
-    apenas neste DataFrame carregado.
+    `deal_stage` é lido do CSV e nunca reescrito: uma oportunidade só está
+    `Won` ou `Lost` aqui se o CSV disser que ela fechou. Entre 2026-08-21 e
+    2026-08-29 a carga convertia para `Lost` toda oportunidade `Engaging`
+    aberta há ≥200 dias (653 delas), e essas linhas alimentavam a
+    calibração junto com os desfechos reais. Removido — ver
+    docs/decisions-log.md, entrada 2026-08-29, e a seção 10 do backtest,
+    que segue medindo o efeito daquele expurgo sem aplicá-lo.
     """
 
     pipeline: pd.DataFrame  # 8.800 linhas, uma por oportunidade
@@ -33,10 +37,6 @@ class Dataset:
     products: pd.DataFrame
     sales_teams: pd.DataFrame
     as_of_default: pd.Timestamp
-
-    @property
-    def n_reclassificados(self) -> int:
-        return int(self.pipeline["reclassificado"].sum())
 
 
 def _clean_sector(sector: object) -> object:
@@ -86,7 +86,6 @@ def load_dataset(data_dir: str | Path) -> Dataset:
     )
 
     as_of_default = pd.Timestamp(merged["close_date"].max())
-    merged = _reclassify_aged_deals(merged, as_of_default)
 
     return Dataset(
         pipeline=merged,
@@ -95,26 +94,6 @@ def load_dataset(data_dir: str | Path) -> Dataset:
         sales_teams=sales_teams,
         as_of_default=as_of_default,
     )
-
-
-def _reclassify_aged_deals(pipeline: pd.DataFrame, as_of_default: pd.Timestamp) -> pd.DataFrame:
-    """Reclassifica como `Lost`, em memória, toda oportunidade `Engaging`
-    com idade >= `constants.IDADE_RECLASSIFICACAO_DIAS` em `as_of_default`.
-
-    A idade de reclassificação é fixada em `as_of_default` (a mesma data de
-    referência usada para o funil aberto padrão) — não é recalculada por
-    requisição, do mesmo modo que `as_of_default` em si não é. Oportunidade
-    sem `engage_date` conhecida (Prospecting) nunca é reclassificada: idade
-    desconhecida não é evidência de idade alta.
-    """
-    pipeline = pipeline.copy()
-    idade_dias = (as_of_default - pipeline["engage_date"]).dt.days
-    elegivel = pipeline["deal_stage"] == "Engaging"
-    reclassificar = elegivel & idade_dias.notna() & (idade_dias >= constants.IDADE_RECLASSIFICACAO_DIAS)
-
-    pipeline["reclassificado"] = reclassificar
-    pipeline.loc[reclassificar, "deal_stage"] = "Lost"
-    return pipeline
 
 
 def unmatched_products(dataset: Dataset) -> list[str]:

@@ -57,6 +57,7 @@ Convenção: cada entrada tem quem decidiu o quê. "Decisão: Gabriel" = veio de
 
 **Descobertas e correções durante a validação:**
 - Permutation test de agent spread (p=0,307) matou definitivamente qualquer tentativa de usar win rate de vendedor como preditor
+  - *[correção de 2026-08-29]* a conclusão se sustenta, o número não: aquele 0,307 vinha de uma amostragem anterior, e o estimador de então podia devolver `0,000`, que é impossível como probabilidade. Com a correção add-one e sobre os 6.711 negócios com desfecho registrado, o valor é **p = 0,262** — e o fit vendedor×produto, testado contra um nulo que preserva os efeitos principais, dá p = 0,874. Ver `docs/analise-lead-scoring.md` §1.1 e §1.1.1.
 - Bimodal cycle distribution (0–19d peak, 60–90d peak, vale 20–39d) evidencia preenchimento em lote, rejeitou decaimento linear suave
 - `MULT_PORTE` investigation: ticket médio por porte variava, mas close_value/list_price era flat 1,00 em todos — o efeito era product mix (premium share 40%→48%), não margem
 - Baseline de preço puro capturou 67,8% de receita nos top 30%, vs 67,3% do modelo — não invalida, mas habilita a leitura honesta de que o score é uma transformação monotônica do preço quando P(win) é constante

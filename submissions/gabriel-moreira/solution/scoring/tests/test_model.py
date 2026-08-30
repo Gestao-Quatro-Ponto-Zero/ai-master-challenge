@@ -23,7 +23,7 @@ def test_censorship_reverts_to_prior_not_extrapolation(ctx):
     # Censura reverte à taxa ORGÂNICA (0,632) — não à taxa de calibração
     # (0,5755), que só alimenta p̂_produto (lead-scoring spec, Requirement
     # "Censura acima de 138 dias").
-    assert p_hat_value == constants.GLOBAL_WIN_RATE_ORGANICO
+    assert p_hat_value == constants.GLOBAL_WIN_RATE
     assert urgencia_value == 0.15
     # nunca o valor mais alto da curva (0,751), que premiaria o abandono.
     assert p_hat_value != 0.751
@@ -32,7 +32,7 @@ def test_censorship_reverts_to_prior_not_extrapolation(ctx):
 def test_prospecting_gets_full_priority_without_imputed_age(ctx):
     p_hat_value = p_hat_fn(ctx, "GTX Basic", "Prospecting", age_days=None)
     urgencia_value = urgencia("Prospecting", age_days=None)
-    assert round(p_hat_value, 3) == 0.577
+    assert round(p_hat_value, 3) == 0.632
     assert urgencia_value == constants.PROSPECTING_URGENCIA
 
 

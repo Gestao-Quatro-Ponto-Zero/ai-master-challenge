@@ -68,6 +68,21 @@ export interface Conta {
   office_location: string | null;
 }
 
+/** Componente do score afetado por uma limitação — chave canônica vinda
+ * do pacote `scoring/`, usada para marcar o número em si na interface. */
+export type ComponenteScore = "p_hat" | "valor" | "urgencia" | "score" | "confianca";
+
+/** Uma limitação metodológica que incide sobre o score de uma
+ * oportunidade específica. `impacto` diz o que ela faz com o número —
+ * limitação sem impacto concreto vira decoração. */
+export interface LimitacaoScore {
+  id: string;
+  componentes: ComponenteScore[];
+  rotulo_curto: string;
+  titulo: string;
+  impacto: string;
+}
+
 /** Fit histórico do vendedor numa dimensão (produto ou setor).
  * `disponivel === false` — nunca zero, nunca a média global, nunca o fit
  * da outra dimensão — quando a informação de base é desconhecida
@@ -103,6 +118,9 @@ export interface DealDetail extends Oportunidade {
    * o número na mesma seção, nunca só em documentação (Requirement
    * "Declaração de ausência de significância estatística do fit"). */
   ressalva_fit: string;
+  /** Limitações metodológicas que incidem sobre o score DESTA
+   * oportunidade — só o que se aplica, nunca uma lista fixa. */
+  limitacoes: LimitacaoScore[];
   sugestao: Sugestao | null;
 }
 

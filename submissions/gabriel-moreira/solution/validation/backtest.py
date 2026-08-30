@@ -8,8 +8,9 @@ EM TERMOS SIMPLES: este script pega os negócios já FECHADOS (ganhos ou
 perdidos) e usa métodos estatísticos pra checar se as decisões de design
 da fórmula de priorização realmente se sustentam nos dados — em vez de
 confiar em "achismo". Ele responde a 5 perguntas centrais sobre a fórmula
-de priorização (seções 1-8), e mais 4 sobre a reclassificação de 200 dias
-e a análise de carga e fit (seções 10-13):
+de priorização (seções 1-8), e mais 5 sobre a sensibilidade ao expurgo de
+200 dias, a análise de carga e fit, e o poder dos próprios testes
+(seções 10-14):
 
   1. Dá pra prever quem vai GANHAR ou PERDER só olhando dados de cadastro
      (vendedor, produto, setor, conta)? (achado: não — não há sinal útil)
@@ -26,10 +27,13 @@ e a análise de carga e fit (seções 10-13):
 Reproduz: a ausência de sinal preditivo firmográfico (AUC + testes de
 permutação), a derivação de k por nível hierárquico (e o colapso de
 conta×produto/produto×setor), a monotonicidade de risco(t), a fronteira de
-censura de 138 dias, a concentração de PRIORIDADE no topo da fila, o
-impacto da reclassificação de 200 dias (antes/depois e circularidade), a
-ausência de sinal do fit por vendedor, e o denominador correto dos
-artefatos de análise — sempre importando `scoring/`, nunca reimplementando
+censura de 138 dias, a concentração de PRIORIDADE no topo da fila, a
+distorção que o expurgo de 200 dias introduziria (medida, nunca aplicada)
+e a ausência de desfecho atribuído na calibração, a ausência de sinal do
+fit por vendedor, o denominador correto dos
+artefatos de análise e o poder dos testes de vendedor — o menor efeito
+que este histórico enxergaria, sem o qual "não rejeitou" não distingue
+"não há diferença" de "a amostra é pequena demais" — sempre importando `scoring/`, nunca reimplementando
 a fórmula.
 """
 
@@ -51,16 +55,14 @@ from denominator_check import audit as audit_denominator
 from fit_permutation import run_produto as run_fit_permutation_produto, run_setor as run_fit_permutation_setor
 from isotonic_check import recompute_curves
 from model_training import chronological_split, combined_auc, isolated_aucs
-from mult_setor_check import (
-    audit_reference_and_open_funnel_consistency,
-    build_reproduction as build_mult_setor_reproduction,
-)
-from permutation_tests import run_all as run_permutation_tests
+from multiplicidade import corrigir as corrigir_multiplicidade
+from permutation_tests import N_PERMUTATIONS, formata_p, run_all as run_permutation_tests
+from power_check import PODER_ALVO, build_report as build_power_report
 from reclassification_check import build_report as build_reclassification_report
 from scoring import constants
 from scoring.export import build_analysis_table
 from scoring.fit import build_fit_context, derive_k_fit
-from scoring.pipeline import fechados_calibracao, fechados_organicos, load_and_score
+from scoring.pipeline import fechados, load_and_score
 from sector_conditioning_check import build_report as build_sector_conditioning_report
 from shrinkage_check import build_report as build_shrinkage_report
 
@@ -79,13 +81,17 @@ def run_report(data_dir: Path) -> bool:
     estrutural falhar (ex.: censura de 138 dias deixou de valer)."""
     scored_pipeline = load_and_score(str(data_dir))
     dataset = scored_pipeline.dataset
-    # `closed` é a população de CALIBRAÇÃO (fechados orgânicos + 653
-    # reclassificados de 200 dias) — alimenta as seções sobre produto,
-    # setor e vendedor, onde idade não é insumo. `closed_organico` alimenta
-    # exclusivamente as seções que dependem de idade/duração (4, 7, 8) —
-    # nunca pode conter um reclassificado (design.md, D2).
-    closed = fechados_calibracao(dataset)
-    closed_organico = fechados_organicos(dataset)
+    # População única: os negócios com desfecho observado. Era duas
+    # (calibração e orgânica) enquanto o expurgo de 200 dias injetava
+    # rótulos atribuídos por idade — as seções de idade tinham de ser
+    # protegidas deles. Sem expurgo, não há de que proteger.
+    closed = fechados(dataset)
+
+    # A seção 12 roda aqui em cima porque a seção 2 precisa dos 6 p-valores
+    # da família para aplicar Holm/Benjamini-Hochberg. Os resultados são
+    # reusados lá embaixo — nada é recalculado.
+    perm_produto = run_fit_permutation_produto(closed)
+    perm_setor = run_fit_permutation_setor(closed)
 
     ok = True
 
@@ -136,22 +142,68 @@ def run_report(data_dir: Path) -> bool:
         "resultado é reproduzível)."
     )
     print()
-    for result in run_permutation_tests(closed):
+    resultados_perm = run_permutation_tests(closed)
+    for result in resultados_perm:
         print(
             f"  {result.atributo:16s} dispersão obs.={result.dispersao_observada:.4f} "
-            f"dispersão nula média={result.dispersao_nula_media:.4f} p={result.p_valor:.3f}"
+            f"dispersão nula média={result.dispersao_nula_media:.4f} p={formata_p(result.p_valor)}"
         )
     print()
     print(
         "p-valor = a chance de ver, só por acaso (embaralhado), uma diferença\n"
-        "tão grande quanto a real observada. p-valor alto (>0,05, tipicamente\n"
-        "bem mais) = a diferença real é do tamanho que apareceria só por acaso\n"
-        "— ou seja, não há padrão real."
+        "PELO MENOS tão grande quanto a real observada. p-valor alto (>0,05,\n"
+        "tipicamente bem mais) = a diferença real é do tamanho que apareceria\n"
+        "só por acaso — ou seja, ESTES dados não sustentam afirmar um efeito."
+    )
+    print(
+        f"O p-valor mínimo que {N_PERMUTATIONS} permutações conseguem afirmar é "
+        f"1/({N_PERMUTATIONS}+1) = {1 / (N_PERMUTATIONS + 1):.5f} — por isso esta suíte reporta "
+        "'p < 0,001' e nunca 'p = 0,000'. Zero é impossível como probabilidade: com um número "
+        "finito de reamostragens não se distingue 'nunca acontece' de 'acontece menos de uma vez "
+        f"em {N_PERMUTATIONS}' (correção add-one, `permutation_tests._p_valor`)."
+    )
+    print(
+        "Duas leituras erradas que este número NÃO autoriza:\n"
+        "  1. p alto NÃO prova que o efeito não existe. Ausência de evidência não é\n"
+        f"     evidência de ausência: um efeito real, mas pequeno demais para {len(closed)}\n"
+        "     negócios, devolveria o mesmo p alto. A conclusão deste trabalho precisa\n"
+        "     apenas do enunciado mais fraco — não há base para pôr o atributo no score.\n"
+        "  2. p NÃO é a probabilidade de o efeito existir (nem de não existir). É a\n"
+        "     frequência com que o acaso, sozinho, produziria o que os dados mostram."
     )
     print("-> p alto (>0,05, tipicamente bem mais) = dispersão observada compatível com ruído.")
     print(
         "Achado: todos os atributos testados têm p-valor alto — confirma, de\n"
         "um segundo jeito independente, o resultado da Seção 1."
+    )
+    print()
+    print(
+        "Correção para múltiplas comparações — 6 testes de permutação rodam nesta suíte (os 4\n"
+        "acima e os 2 da seção 12). Seis testes contra o corte de 0,05 sem correção levariam a\n"
+        "chance de ao menos um falso positivo de 5% para 1-(1-0,05)^6 = 26,5%:"
+    )
+    familia = [(r.atributo, "§2", r.p_valor) for r in resultados_perm] + [
+        (f"vendedor×{r.dimensao}", "§12", r.p_valor) for r in (perm_produto, perm_setor)
+    ]
+    print(f"  {'teste':18s} {'origem':7s} {'p':>7s}  {'Holm (FWER)':>22s}  {'B-H (FDR)':>20s}")
+    for t in corrigir_multiplicidade(familia):
+        holm = f"{'rejeita' if t.rejeita_holm else 'não rejeita'} (α={t.limite_holm:.4f})"
+        bh = f"{'rejeita' if t.rejeita_bh else 'não rejeita'} (≤{t.limite_bh:.4f})"
+        print(f"  {t.nome:18s} {t.origem:7s} {formata_p(t.p_valor, 4):>7s}  {holm:>22s}  {bh:>20s}")
+    print(
+        "Nenhum dos seis sobrevive a qualquer das duas correções — e nenhum precisaria: nenhum\n"
+        "chega perto do corte nem sem correção. A correção fica registrada porque a família de\n"
+        "testes é o que dá sentido ao corte, não porque algum resultado dependa dela."
+    )
+    print(
+        "Composição da família, explicitada porque a escolha é auditável: a seção 12 roda DOIS\n"
+        "nulos por dimensão e entra aqui com o p do nulo GLOBAL, o MENOR dos dois\n"
+        f"({formata_p(perm_produto.p_valor, 4)} contra {formata_p(perm_produto.p_valor_aditivo, 4)}"
+        " em vendedor×produto).\n"
+        "São 6 entradas e não 8 pelo mesmo motivo: quanto mais testes na família, mais apertados\n"
+        "ficam os cortes de Holm e B-H e MAIS fácil fica não rejeitar. As duas escolhas jogam\n"
+        "contra a tese deste trabalho — família curta e p mais baixo são o cenário em que 'não há\n"
+        "sinal' teria a maior chance de cair. Não caiu."
     )
 
     _section("3. Encolhimento hierárquico — derivação de k")
@@ -163,7 +215,7 @@ def run_report(data_dir: Path) -> bool:
     )
     print(
         "Método: 'encolhimento hierárquico' puxa a taxa de cada grupo em\n"
-        f"direção à média geral ({constants.GLOBAL_WIN_RATE_CALIBRACAO}), com força k. "
+        f"direção à média geral ({constants.GLOBAL_WIN_RATE}), com força k. "
         "k é calculado a partir\n"
         "dos próprios dados: quanto menor a diferença real entre os grupos\n"
         "comparada à diferença esperada só por acaso, maior o k — mais o\n"
@@ -172,7 +224,7 @@ def run_report(data_dir: Path) -> bool:
         "um atributo, como já vimos nas seções 1 e 2, não carrega sinal real.\n"
         "Nenhum nível, incluindo produto, usa uma constante de política\n"
         "congelada sobrepondo esse cálculo — o motor de scoring lê exatamente\n"
-        "o k derivado abaixo (add-mult-setor: K_PRODUTO foi removido)."
+        "o k derivado abaixo."
     )
     print()
     shrinkage = build_shrinkage_report(closed)
@@ -204,10 +256,9 @@ def run_report(data_dir: Path) -> bool:
             "excesso ≤ 0, mais fraco do que qualquer um dos quatro atributos "
             "testados por permutação acima, todos com p > 0,05): sem constante de "
             "política a sobrepor o colapso, p̂_produto usa diretamente a taxa "
-            f"global de calibração ({constants.GLOBAL_WIN_RATE_CALIBRACAO}) para "
+            f"global de calibração ({constants.GLOBAL_WIN_RATE}) para "
             "todos os produtos — o comportamento correto, sem exigir mudança de "
-            "código nem revisão manual de constante alguma (docs/decisions-log.md, "
-            "entrada sobre a remoção de K_PRODUTO)."
+            "código nem revisão manual de constante alguma."
         )
     else:
         print(
@@ -238,7 +289,7 @@ def run_report(data_dir: Path) -> bool:
         "valor médio histórico (prior) em vez de inventar um número."
     )
     print()
-    curves = recompute_curves(closed_organico)
+    curves = recompute_curves(closed)
     print(f"Duração máxima observada entre negócios fechados: {curves.max_duracao_dias} dias")
     print(f"Limite de censura configurado: {constants.CENSURA_DIAS} dias")
     if curves.censura_confirmada:
@@ -331,75 +382,23 @@ def run_report(data_dir: Path) -> bool:
         f"({'confirmado' if pior_que_global else 'NÃO CONFIRMADO nesta execução — revisar'}) "
         "— a amostra por célula é pequena demais para sustentar a diferenciação."
     )
+    print(
+        "Consequência no motor: setor NÃO entra em p̂ nem em SCORE, em nenhuma "
+        "forma — nem como condicionamento direto, nem como multiplicador "
+        "encolhido sobre p̂. Setor continua sendo lido para a completude de "
+        "CONFIANÇA e para o fit vendedor×setor da redistribuição de carga "
+        "(seção 12) — nunca para o score."
+    )
     if not pior_que_global:
         print(
             "AVISO PERMANENTE (não falha a suíte): o condicionamento direto por "
             "produto×setor deixou de ser pior que o prior achatado nesta execução. "
-            "Este resultado é reproduzido e impresso a cada execução, "
-            "independentemente do motor de scoring aplicar `mult_setor` — "
-            "`mult_setor` (add-mult-setor) é um mecanismo distinto, com "
-            "encolhimento adicional em direção a p̂_produto (não à taxa global) e "
-            "teto de ±15%, implementado por decisão de produto apesar deste "
-            "resultado permanecer negativo, não porque ele deixou de ser "
-            "verdadeiro (scoring-validation spec, Requirement 'Reprodução da "
-            "ausência de sinal do condicionamento por setor')."
+            "Isso não reabre `mult_setor` automaticamente — é o gatilho para "
+            "reavaliar a decisão com dado novo, incluindo a variância em excesso "
+            "do nível produto×setor na seção 3 (scoring-validation spec, "
+            "Requirement 'Reprodução da ausência de sinal do condicionamento por "
+            "setor')."
         )
-    else:
-        print(
-            "Este resultado negativo é reproduzido e impresso a cada execução, "
-            "independentemente do motor de scoring aplicar `mult_setor` — ver a "
-            "subseção 6.1 abaixo para a reprodução do mult_setor em si, um "
-            "mecanismo distinto (encolhimento em direção a p̂_produto, não à taxa "
-            "global, e teto de ±15%), implementado por decisão de produto apesar "
-            "deste resultado (scoring-validation spec, Requirement 'Reprodução da "
-            "ausência de sinal do condicionamento por setor')."
-        )
-
-    _section("6.1. mult_setor — reprodução e auditoria de consistência")
-    print(
-        "Pergunta: o mult_setor efetivamente usado pelo motor de scoring se "
-        "comporta como a política pretende — encolhimento pesado (K_SETOR=25) "
-        "calando amostra pequena, teto de ±15% como salvaguarda, e a mesma função "
-        "aplicada de forma consistente ao funil aberto e à distribuição de "
-        "referência (negócios Won)?"
-    )
-    print()
-    repro = build_mult_setor_reproduction(closed)
-    print(
-        f"Célula de maior amostra: {repro.celula_grande_produto} × "
-        f"{repro.celula_grande_setor} (n={repro.celula_grande_n}) -> "
-        f"mult_setor={repro.celula_grande_mult:.4f} "
-        f"({'teto acionado' if repro.celula_grande_clip_acionado else 'teto NÃO acionado'})"
-    )
-    print(
-        f"Célula de menor amostra: {repro.celula_pequena_produto} × "
-        f"{repro.celula_pequena_setor} (n={repro.celula_pequena_n}) -> "
-        f"mult_setor={repro.celula_pequena_mult:.4f} (esperado próximo de 1,0)"
-    )
-    print(
-        f"Faixa de mult_setor nas {len(setor_report.tamanhos_celula)} células: "
-        f"[{repro.faixa_min:.4f}, {repro.faixa_max:.4f}] — dentro de "
-        f"[{constants.MULT_SETOR_MIN}, {constants.MULT_SETOR_MAX}] em todas as "
-        f"células: {'sim' if repro.todos_dentro_do_teto else 'NÃO — revisar'}. Como "
-        "todo mult_setor está garantidamente no intervalo do clip, "
-        "p̂_produto×mult_setor nunca sai de "
-        "[0,85×p̂_produto, 1,15×p̂_produto] para nenhum produto."
-    )
-    if not repro.todos_dentro_do_teto:
-        print("AVISO: mult_setor fora do intervalo do clip — revisar scoring/setor.py.")
-        ok = False
-
-    consistencia = audit_reference_and_open_funnel_consistency(dataset, scored_pipeline.ctx)
-    print(
-        f"\nAuditoria de consistência funil aberto x referência: "
-        f"{consistencia.n_combinacoes_verificadas} combinações produto×setor "
-        "recalculadas de forma independente e comparadas ao ScoringContext de "
-        "produção (o mesmo objeto compartilhado pelas duas populações) -> "
-        f"{'consistentes' if consistencia.todas_consistentes else 'DIVERGÊNCIA ENCONTRADA'}."
-    )
-    if not consistencia.todas_consistentes:
-        print("AVISO: mult_setor diverge entre o recálculo e o ScoringContext de produção.")
-        ok = False
 
     _section("7. Curvas de aging por produto — validação cruzada")
     print(
@@ -408,7 +407,7 @@ def run_report(data_dir: Path) -> bool:
     )
     print("Método: mesma validação cruzada 5-fold da seção 6, aplicada às faixas de idade.")
     print()
-    aging_report = build_aging_by_product_report(closed_organico)
+    aging_report = build_aging_by_product_report(closed)
     for nome in ("prior_global", "curva_global", "curva_por_produto_bruta", "curva_por_produto_encolhida"):
         s = aging_report.score(nome)
         print(f"  {nome:26s} logloss={s.logloss:.5f}  brier={s.brier:.5f}")
@@ -436,7 +435,7 @@ def run_report(data_dir: Path) -> bool:
         "medianas de duração de ciclo por produto."
     )
     print()
-    ciclo = run_cycle_duration_permutation(closed_organico)
+    ciclo = run_cycle_duration_permutation(closed)
     print(
         f"Dispersão observada entre medianas: {ciclo.dispersao_observada:.1f} dias  "
         f"·  dispersão nula média: {ciclo.dispersao_nula_media:.1f} dias  ·  p={ciclo.p_valor:.3f}"
@@ -448,7 +447,7 @@ def run_report(data_dir: Path) -> bool:
     )
     print()
     print("Taxa de resolução em 30 dias por produto e faixa de idade (linha GLOBAL para comparação):")
-    taxas = resolution_rate_by_product_and_age(closed_organico)
+    taxas = resolution_rate_by_product_and_age(closed)
     for faixa, sub in taxas.groupby("faixa", sort=False):
         linha_global = sub[sub["product"] == "GLOBAL"].iloc[0]
         print(f"  faixa {faixa}: GLOBAL={linha_global['taxa_resolucao_30d']:.3f} (n={linha_global['n_em_risco']})")
@@ -472,77 +471,165 @@ def run_report(data_dir: Path) -> bool:
     print(f"Fração sem precedente histórico: {confianca_dist.fracao_sem_precedente * 100:.1f}%")
     print(f"Fração governada por completude (vs. suporte): {confianca_dist.fracao_completude_governante * 100:.1f}%")
 
-    _section("10. Antes/depois da reclassificação de 200 dias")
+    _section("10. Sensibilidade ao expurgo de 200 dias (medido, NÃO aplicado)")
     print(
-        "Pergunta: qual o efeito de tratar as 653 oportunidades abertas há\n"
-        "200 dias ou mais como Lost — no tamanho do funil, na taxa de vitória\n"
-        "global e na taxa por produto?"
+        "Pergunta: e se as oportunidades abertas há 200 dias ou mais fossem\n"
+        "tratadas como Lost e entrassem na calibração? Esta seção mede esse\n"
+        "cenário sem aplicá-lo — o motor calibra só sobre desfecho observado."
     )
     print()
     reclass = build_reclassification_report(dataset)
-    print(f"Oportunidades reclassificadas: {reclass.n_reclassificados}")
-    print(f"Funil aberto: {reclass.funil_antes} -> {reclass.funil_depois}")
+    if reclass.aplicado_em_producao:
+        print(
+            "FALHA: há oportunidade candidata ao expurgo que já não está em Engaging — "
+            "alguma regra de rotulagem automática voltou à carga. Revisar antes de prosseguir."
+        )
+        ok = False
+    else:
+        print("Expurgo aplicado em produção: NÃO (a carga não reescreve deal_stage).")
     print(
-        f"Base rate global: {reclass.base_rate_antes * 100:.2f}% -> "
-        f"{reclass.base_rate_depois * 100:.2f}% "
-        f"({(reclass.base_rate_depois - reclass.base_rate_antes) * 100:+.2f}pp)"
+        f"Candidatas: {reclass.n_candidatos} oportunidades abertas há "
+        f"{reclass.idade_minima}-{reclass.idade_maxima} dias"
+    )
+    print(f"Funil aberto: {reclass.funil_real} real (seria {reclass.funil_hipotetico})")
+    print(
+        f"Base rate global: {reclass.base_rate_real * 100:.2f}% real "
+        f"(seria {reclass.base_rate_hipotetica * 100:.2f}%, "
+        f"{(reclass.base_rate_hipotetica - reclass.base_rate_real) * 100:+.2f}pp)"
     )
     print()
-    print("Taxa de vitória por produto, antes -> depois (pp = pontos percentuais):")
-    for p in sorted(reclass.produtos, key=lambda p: p.variacao_pp):
-        marca = " [AMOSTRA PEQUENA]" if p.amostra_pequena else ""
+    print("Taxa de vitória por produto, real -> hipotética (pp = pontos percentuais):")
+    for prod in sorted(reclass.produtos, key=lambda p: p.variacao_pp):
+        marca = " [AMOSTRA PEQUENA]" if prod.amostra_pequena else ""
         print(
-            f"  {p.produto:16s} n={p.n_antes:4d}->{p.n_depois:4d}  "
-            f"{p.taxa_antes * 100:5.2f}% -> {p.taxa_depois * 100:5.2f}%  "
-            f"({p.variacao_pp:+6.2f}pp){marca}"
+            f"  {prod.produto:16s} n={prod.n_real:4d}->{prod.n_hipotetico:4d}  "
+            f"{prod.taxa_real * 100:5.2f}% -> {prod.taxa_hipotetica * 100:5.2f}%  "
+            f"({prod.variacao_pp:+6.2f}pp){marca}"
         )
+    np_ = reclass.nivel_produto
+    print()
+    print("Efeito sobre o encolhimento do nível de produto:")
+    print(
+        f"  variância em excesso: {np_.var_em_excesso_real:+.8f} real -> "
+        f"{np_.var_em_excesso_hipotetica:+.8f} hipotética"
+    )
+    print(f"  k derivado:           {np_.k_real} real -> {np_.k_hipotetico:.4f} hipotético")
+    print(
+        f"  amplitude de p̂ entre produtos: {np_.amplitude_p_hat_real_pp:.2f}pp real -> "
+        f"{np_.amplitude_p_hat_hipotetica_pp:.2f}pp hipotética"
+    )
+    print()
+    print("Efeito sobre os testes de permutação (p-valor real -> hipotético):")
+    for sinal in reclass.sinais:
+        virada = (
+            "  <- VIRARIA significativo neste cenário hipotético"
+            if sinal.p_real >= 0.05 > sinal.p_hipotetico
+            else ""
+        )
+        print(
+            f"  {sinal.atributo:12s} {formata_p(sinal.p_real):>7s} -> "
+            f"{formata_p(sinal.p_hipotetico):>7s}{virada}"
+        )
+    print()
+    print(
+        f"Dispersão da taxa de vitória entre vendedores: "
+        f"{reclass.amplitude_vendedor_real_pp:.2f}pp real -> "
+        f"{reclass.amplitude_vendedor_hipotetica_pp:.2f}pp hipotética "
+        f"({reclass.n_vendedores_sem_candidato} vendedores não receberiam nenhuma perda atribuída)"
+    )
+    print()
+    print("Por que o expurgo fabrica sinal de vendedor — o mecanismo, medido:")
+    print(
+        f"  concentração das candidatas por vendedor: qui-quadrado={reclass.concentracao_chi2:.1f} "
+        f"(gl={reclass.concentracao_gl}, p{'<0,0001' if reclass.concentracao_p < 0.0001 else f'={reclass.concentracao_p:.4f}'}) "
+        "— as oportunidades paradas NÃO se distribuem por igual entre carteiras"
+    )
+    print(
+        f"  correlação entre fração da carteira expurgada e taxa de vitória hipotética: "
+        f"{reclass.corr_fracao_expurgada_taxa:+.3f}"
+    )
+    print(
+        "  O expurgo só adiciona DERROTA, nunca vitória. Como ele cai concentrado, a taxa\n"
+        "  hipotética de cada vendedor vira, em boa parte, uma função de quanto funil parado\n"
+        "  ele tinha — idade de pipeline relida como habilidade de fechar. O 'sinal de vendedor'\n"
+        "  do cenário hipotético é a régua se medindo, não o vendedor."
+    )
     pequenas = [p.produto for p in reclass.produtos if p.amostra_pequena]
     print(
-        f"\nAchado: {reclass.n_reclassificados} reclassificados fazem o funil aberto cair de "
-        f"{reclass.funil_antes} para {reclass.funil_depois} e o base rate global cair "
-        f"{(reclass.base_rate_antes - reclass.base_rate_depois) * 100:.2f}pp. A maior variação de taxa "
-        f"por produto é dominada por amostra pequena ({', '.join(pequenas)}) — não é o maior efeito real, "
-        "é o mais ruidoso."
+        f"\nAchado: o expurgo não é neutro. Ele encolhe o funil em {reclass.n_candidatos} "
+        f"oportunidades, derruba o base rate "
+        f"{(reclass.base_rate_real - reclass.base_rate_hipotetica) * 100:.2f}pp e — o que importa — "
+        f"cria discriminação onde o dado observado não tem nenhuma: a amplitude de p̂ entre produtos "
+        f"sai de {np_.amplitude_p_hat_real_pp:.2f}pp para {np_.amplitude_p_hat_hipotetica_pp:.2f}pp, "
+        f"puxada por {', '.join(pequenas)} (amostra pequena), e a identidade do vendedor passa a ser "
+        "lida como sinal porque as oportunidades paradas se concentram em algumas carteiras. "
+        "É por isso que a carga nunca o aplica — ver process-log/decisions-log.md."
     )
 
-    _section("11. Auditoria da circularidade acima de 138 dias")
+    _section("11. Auditoria de circularidade — nenhum desfecho atribuído por nós")
     print(
-        "Pergunta: a faixa de idade acima de 138 dias na população de\n"
-        "calibração é feita de desfechos observados, ou inteiramente de\n"
-        "rótulos que nós mesmos atribuímos por serem velhos?"
+        "Pergunta: existe na população de calibração algum desfecho que não\n"
+        "veio do CRM — um rótulo que o próprio sistema atribuiu?"
     )
     print()
     circularidade = build_circularity_report(dataset)
-    print(f"Idade máxima entre fechados organicamente: {circularidade.idade_maxima_organica} dias")
-    print(f"Idade mínima entre reclassificados: {circularidade.idade_minima_reclassificada} dias")
-    if circularidade.populacoes_nao_se_sobrepoem and circularidade.curvas_protegidas:
-        print("-> confirmado: as duas populações não se sobrepõem, e nenhum reclassificado entrou nas curvas.")
+    print(f"População de calibração: {circularidade.n_calibracao} negócios fechados")
+    print(f"Fechados sem close_date (rótulo sem evento): {circularidade.n_sem_close_date}")
+    print(
+        f"Idade máxima observada até o fechamento: {circularidade.idade_maxima_observada} dias "
+        f"(fronteira de censura: {circularidade.fronteira_censura})"
+    )
+    print(
+        f"Idade máxima no funil ABERTO: {circularidade.idade_maxima_aberta} dias — "
+        "acima da censura, pontuada com p̂ revertido ao prior, nunca convertida em Lost."
+    )
+    if circularidade.todos_desfechos_observados and circularidade.censura_cobre_a_calibracao:
+        print(
+            "-> confirmado: todo negócio da calibração tem desfecho registrado, e a censura "
+            "cobre toda a faixa de idade que a calibração viu."
+        )
     else:
         print(
-            "FALHA: as populações se sobrepõem ou um reclassificado entrou na calibração das "
-            "curvas de idade — a faixa >138d deixou de ser auditável, revisar antes de prosseguir."
+            "FALHA: há desfecho sem evento na calibração, ou a calibração viu idade além da "
+            "fronteira de censura — alguma regra de rotulagem automática voltou. Revisar antes "
+            "de prosseguir."
         )
         ok = False
 
     _section("12. Fit por vendedor — permutação e suporte")
     print(
-        "Pergunta: a taxa de vitória de um vendedor num produto ou setor é\n"
-        "distinguível de acaso, uma vez controlado o mix de produtos/setores\n"
-        "que cada vendedor efetivamente atende?"
+        "Pergunta: existe AFINIDADE vendedor×produto (ou vendedor×setor) —\n"
+        "este vendedor indo bem NESTE produto, acima do que o desempenho geral\n"
+        "dele e a dificuldade geral do produto já explicam? É essa e só essa\n"
+        "a pergunta que a palavra 'fit' faz."
     )
     print(
-        "Método: embaralhamos os rótulos de vendedor (mantendo produto/setor\n"
-        "fixos por negócio) e comparamos a dispersão real da taxa por célula\n"
-        "vendedor×dimensão com a dispersão sob rótulos aleatórios."
+        "Método: dois nulos, porque são duas perguntas diferentes.\n"
+        "  GLOBAL  — embaralha os rótulos de vendedor sobre todas as linhas,\n"
+        "            com produto/setor fixos por negócio. Responde 'vendedor\n"
+        "            importa em algum grau?'. NÃO isola afinidade: embaralhar\n"
+        "            destrói junto o efeito principal do vendedor, que entra\n"
+        "            inteiro na estatística.\n"
+        "  ADITIVO — ajusta logit(ganho) = α + β_vendedor + γ_dimensão e\n"
+        "            sorteia desfechos desse modelo (bootstrap paramétrico).\n"
+        "            Cada réplica é um mundo em que vendedores diferem entre\n"
+        "            si, produtos diferem entre si e ninguém tem afinidade\n"
+        "            com nada. O que sobra acima dessa nula é interação — e\n"
+        "            só isso é fit."
     )
     print()
     fit_ctx = build_fit_context(dataset, closed)
-    perm_produto = run_fit_permutation_produto(closed)
-    perm_setor = run_fit_permutation_setor(closed)
     for r in (perm_produto, perm_setor):
         print(
-            f"  vendedor×{r.dimensao:8s} células={r.n_celulas:3d} dispersão obs.={r.dispersao_observada:.4f} "
-            f"dispersão nula média={r.dispersao_nula_media:.4f} p={r.p_valor:.4f}"
+            f"  vendedor×{r.dimensao:8s} células={r.n_celulas:3d} dispersão obs.={r.dispersao_observada:.4f}"
+        )
+        print(
+            f"      nulo GLOBAL  (vendedor importa?) nula={r.dispersao_nula_media:.4f} "
+            f"p={formata_p(r.p_valor, 4)}"
+        )
+        print(
+            f"      nulo ADITIVO (existe fit?)       nula={r.dispersao_nula_aditiva_media:.4f} "
+            f"p={formata_p(r.p_valor_aditivo, 4)}"
         )
     print()
     k_produto_fit = derive_k_fit(fit_ctx, "produto")
@@ -566,23 +653,31 @@ def run_report(data_dir: Path) -> bool:
     print()
     conclusoes = []
     for r in (perm_produto, perm_setor):
-        veredito = "distinguível de acaso (p < 0,05)" if r.distinguivel_de_acaso else "indistinguível de acaso"
-        conclusoes.append(f"vendedor×{r.dimensao} {veredito} (p={r.p_valor:.4f})")
-    print(
-        "Achado: " + "; ".join(conclusoes) + ". Mesmo onde o p-valor fica perto do corte convencional "
-        "de 0,05, é um sinal fraco sobre "
-        f"{len(fit_ctx.vendor_product)} células testadas sem correção para múltiplas comparações — "
-        "não é evidência robusta de mérito individual. O fit é entregue com a ressalva estatística "
-        "acoplada ao número em toda superfície, exatamente por isso (Requirement \"Declaração de "
-        "ausência de significância estatística do fit\")."
-    )
-    if perm_produto.distinguivel_de_acaso or perm_setor.distinguivel_de_acaso:
-        print(
-            "NOTA: design.md previa colapso (k=∞) para ambas as dimensões, espelhando "
-            "conta×produto/produto×setor. A reprodução honesta encontra sinal fraco e limítrofe em "
-            "vendedor×produto — registrado aqui para a próxima recalibração revisar a redação do "
-            "design, sem mudar K_FIT (constante de política, mais conservador que o k derivado)."
+        veredito = "distinguível de acaso" if r.distinguivel_de_acaso else "indistinguível de acaso"
+        vered_fit = "HÁ fit" if r.fit_distinguivel_de_acaso else "não há fit"
+        conclusoes.append(
+            f"vendedor×{r.dimensao} {veredito} no nulo global (p={formata_p(r.p_valor, 4)}) e "
+            f"{vered_fit} no nulo aditivo (p={formata_p(r.p_valor_aditivo, 4)})"
         )
+    print("Achado: " + "; ".join(conclusoes) + ".")
+    if not (perm_produto.fit_distinguivel_de_acaso or perm_setor.fit_distinguivel_de_acaso):
+        print(
+            "Sob o nulo aditivo a dispersão observada fica ABAIXO da média simulada em ambas as "
+            "dimensões: as células vendedor×produto são mais parecidas entre si do que um mundo "
+            "sem afinidade nenhuma já produziria. Não há interação a encontrar, e não há correção "
+            "para múltiplas comparações a aplicar — não existe sinal a corrigir. O fit ordena "
+            "candidatos numa sugestão de redistribuição de CARGA; ele não mede mérito individual "
+            "nem afinidade, e é entregue com a ressalva estatística acoplada ao número em toda "
+            "superfície, exatamente por isso (Requirement \"Declaração de ausência de "
+            "significância estatística do fit\")."
+        )
+    print(
+        f"Nota de leitura: as {len(fit_ctx.vendor_product)} células não são "
+        f"{len(fit_ctx.vendor_product)} testes. A dispersão é uma estatística OMNIBUS — um único "
+        "teste que agrega todas as células —, então não existe multiplicidade em nível de célula a "
+        "corrigir aqui. A multiplicidade real desta suíte são os 6 testes de permutação (4 na "
+        "seção 2, 2 nesta), e a seção 2 já reporta o resultado sob Holm e Benjamini-Hochberg."
+    )
 
     _section("13. Auditoria do denominador dos artefatos de análise")
     print(
@@ -609,9 +704,109 @@ def run_report(data_dir: Path) -> bool:
         "159 de 179 e 219 de 292 linhas incorretas por esse exato defeito)."
     )
 
+    _section("14. Poder do teste de vendedor — o que este histórico enxergaria")
+    print(
+        "Pergunta: as seções 2 e 12 não rejeitam. Isso significa que os\n"
+        "vendedores são iguais, ou que a diferença entre eles é menor do que\n"
+        "esta amostra consegue ver? São afirmações diferentes, e só a segunda\n"
+        "é sustentável — um teste que não rejeita só informa junto com o seu\n"
+        "poder."
+    )
+    print(
+        "Método: (a) compara a amplitude real entre carteiras com a que o\n"
+        "        acaso já produz com os mesmos tamanhos de carteira;\n"
+        "        (b) estima a dispersão VERDADEIRA por variância em excesso;\n"
+        "        (c) simula mundos em que a habilidade realmente varia e mede\n"
+        "        com que frequência o teste da seção 2 os pegaria (MDE);\n"
+        "        (d) repete no cenário mais favorável possível — um vendedor\n"
+        "        escolhido ANTES de olhar o dado."
+    )
+    print()
+    poder = build_power_report(closed)
+    print(
+        f"  amplitude observada (melhor - pior de {poder.n_vendedores} vendedores) = "
+        f"{poder.spread_observado_pp:.2f}pp"
+    )
+    print(
+        f"  a mesma amplitude sob acaso puro: mediana {poder.spread_nulo_mediano_pp:.2f}pp, "
+        f"IC95 [{poder.spread_nulo_p2_5_pp:.2f}, {poder.spread_nulo_p97_5_pp:.2f}]pp "
+        f"-> a amplitude real {'CABE' if poder.spread_observado_dentro_do_nulo else 'NÃO cabe'} "
+        "no que o acaso entrega de graça"
+    )
+    print(
+        f"  dispersão observada {poder.dispersao_observada_pp:.2f}pp = ruído binomial esperado "
+        f"{poder.dispersao_nula_esperada_pp:.2f}pp + excesso -> τ̂ = {poder.tau_excesso_pp:.2f}pp "
+        f"(amplitude implicada entre melhor e pior: {poder.amplitude_implicada_por_tau_pp:.2f}pp)"
+    )
+    print()
+    print(f"  Poder do teste omnibus da seção 2 (α={0.05:.2f}, corte de dispersão "
+          f"{poder.dispersao_critica_pp:.2f}pp):")
+    primeiro_com_poder = next((x for x in poder.curva_poder if x.poder >= PODER_ALVO), None)
+    for ponto in poder.curva_poder:
+        marca = f" <- corte de {PODER_ALVO * 100:.0f}% (MDE interpolado: {poder.mde_pp:.2f}pp)" if ponto is primeiro_com_poder else ""
+        print(
+            f"    τ verdadeiro={ponto.tau_pp:4.1f}pp (amplitude real ~{ponto.amplitude_media_pp:5.1f}pp)"
+            f" -> poder {ponto.poder * 100:5.1f}%{marca}"
+        )
+    print(
+        f"  Um vendedor de carteira mediana (n={poder.n_mediano_carteira}) escolhido ANTES de olhar "
+        "o dado, realmente acima dos demais:"
+    )
+    for ponto in poder.poder_vendedor_unico:
+        print(f"    +{ponto.delta_pp:4.1f}pp -> poder {ponto.poder * 100:5.1f}%")
+    print(
+        f"  Quanto histórico faltaria para τ̂={poder.tau_excesso_pp:.2f}pp sair da zona cega "
+        f"(hoje: {poder.n_mediano_carteira} fechados por vendedor):"
+    )
+    for ponto in poder.dimensionamento:
+        print(
+            f"    n={ponto.n_por_vendedor:5d} fechados por vendedor -> poder {ponto.poder * 100:5.1f}%"
+        )
+    print()
+    if poder.mde_pp is not None:
+        print(
+            f"Achado: as duas leituras extremas estão erradas. A amplitude de "
+            f"{poder.spread_observado_pp:.2f}pp entre o melhor e o pior vendedor NÃO é achado — "
+            f"o acaso entrega {poder.spread_nulo_mediano_pp:.2f}pp de mediana com estas carteiras, "
+            f"e é por isso que a seção 2 não rejeita. Mas 'não rejeita' também não é 'são iguais': "
+            f"a estimativa pontual da dispersão verdadeira é τ̂={poder.tau_excesso_pp:.2f}pp — "
+            f"positiva, e equivalente a ~{poder.amplitude_implicada_por_tau_pp:.2f}pp entre o melhor "
+            f"e o pior, um quarto do que a tabela crua sugere. O menor τ que este histórico "
+            f"detectaria em {PODER_ALVO * 100:.0f}% das amostras é {poder.mde_pp:.2f}pp, "
+            f"{'ACIMA' if poder.tau_abaixo_do_detectavel else 'ABAIXO'} de τ̂: a diferença "
+            "plausível entre vendedores cai inteira na zona cega do teste."
+        )
+        print(
+            "Consequência no motor: nenhuma mudança. Um efeito que não se distingue de zero não "
+            "entra em p̂ nem em SCORE — publicar τ̂ como se fosse mensurado seria vender ruído "
+            "como habilidade, e é exatamente o erro que a seção 10 mostra o expurgo cometendo. "
+            "O que muda é a redação: a ferramenta afirma que não CONSEGUE VER diferença entre "
+            "vendedores neste histórico, não que ela não exista. A diferença importa para a "
+            "decisão de produto — τ̂ pequeno ainda vale receita sobre uma carteira inteira, e o "
+            "caminho para medi-lo não é este dado observacional e sim alocação aleatorizada de "
+            "leads comparáveis (ver roadmap.md)."
+        )
+        if poder.n_para_enxergar_tau is not None:
+            print(
+                f"Dimensionamento desse experimento: aleatorizar a alocação remove o "
+                f"confundimento — a taxa de vitória deixa de misturar habilidade com qualidade da "
+                f"carteira recebida — mas NÃO compra poder. Para enxergar τ̂="
+                f"{poder.tau_excesso_pp:.2f}pp seriam necessários ~{poder.n_para_enxergar_tau} "
+                f"negócios fechados por vendedor, contra os {poder.n_mediano_carteira} de hoje "
+                f"({poder.n_para_enxergar_tau / poder.n_mediano_carteira:.0f}× o histórico atual). "
+                "O experimento se justifica pelo desenho, não por um atalho estatístico: ele torna "
+                "a resposta interpretável como habilidade e permite acumular amostra de propósito "
+                "— e, no meio-tempo, detecta um efeito grande caso exista."
+            )
+    else:
+        print(
+            "Achado: nem o maior τ da grade atinge o poder alvo — esta amostra não sustenta "
+            "afirmação nenhuma sobre diferença entre vendedores."
+        )
+
     _section("Conclusão")
     print(
-        "Juntando as 13 seções: não há como prever com confiança QUEM vai\n"
+        "Juntando as 14 seções: não há como prever com confiança QUEM vai\n"
         "ganhar (seções 1 e 2), então não faz sentido construir um\n"
         "classificador de probabilidade categórica. O que os dados sustentam\n"
         "é ordenar o funil por SCORE (percentil de PRIORIDADE, o valor em risco) —\n"
@@ -620,29 +815,27 @@ def run_report(data_dir: Path) -> bool:
         "concentra valor no topo da fila (seção 5). Três tentativas de refinar o\n"
         "motor com condicionamento adicional foram testadas e as três pioraram a\n"
         "previsão fora da amostra: p̂ por produto×setor (seção 6), curvas de aging\n"
-        "por produto (seção 7) e URGÊNCIA por produto (seção 8) — os dois últimos\n"
-        "ficam documentados, não implementados. O primeiro (produto×setor) segue\n"
-        "confirmado como pior (seção 6) e continua NÃO implementado nessa forma\n"
-        "direta — mas `mult_setor` (seção 6.1), um mecanismo distinto com\n"
-        "encolhimento pesado em direção a p̂_produto e teto de ±15%, foi\n"
-        "implementado por decisão de produto apesar desse resultado, não porque\n"
-        "ele deixou de ser verdadeiro (ver docs/decisions-log.md, 2026-08-21). A\n"
-        "seção 9 acompanha CONFIANÇA (completude/suporte) para a próxima\n"
-        "recalibração. As seções 10-11 reproduzem o impacto e a circularidade da\n"
-        "reclassificação de 200 dias; as seções 12-13 reproduzem a ausência de\n"
+        "por produto (seção 7) e URGÊNCIA por produto (seção 8) — nenhuma das três\n"
+        "está implementada. A seção 9 acompanha CONFIANÇA\n"
+        "(completude/suporte) para a próxima\n"
+        "recalibração. A seção 10 mede a distorção que o expurgo de 200 dias\n"
+        "introduziria e a 11 confirma que nenhum desfecho da calibração foi\n"
+        "atribuído por nós; as seções 12-13 reproduzem a ausência de\n"
         "sinal robusto do fit por vendedor e travam o denominador dos artefatos\n"
-        "de análise por teste."
+        "de análise por teste. A seção 14 fecha a leitura das seções 2 e 12: o\n"
+        "que elas afirmam não é que os vendedores sejam iguais, e sim que\n"
+        "qualquer diferença real entre eles é menor do que este histórico\n"
+        "conseguiria enxergar."
     )
     print()
     print(
         "Os dados justificam ordenar o funil por SCORE (percentil de valor em risco), não\n"
         "por um classificador de probabilidade categórica nem por hierarquias de\n"
         "condicionamento adicionais: nenhum atributo firmográfico isolado carrega sinal\n"
-        "acima do ruído amostral, a hierarquia de encolhimento confirma isso para\n"
-        "conta×produto e produto×setor (produto em si deixou de colapsar após a\n"
-        "recalibração de 200 dias — ver seção 3, dominado por GTK 500), e condicionar por\n"
-        "setor ou por produto (aging, URGÊNCIA) piora a previsão fora da amostra em vez\n"
-        "de melhorá-la."
+        "acima do ruído amostral, a hierarquia de encolhimento confirma isso nos três\n"
+        "níveis abaixo do global — conta×produto, produto×setor e produto — que colapsam\n"
+        "todos (seção 3), e condicionar por setor ou por produto (aging, URGÊNCIA) piora\n"
+        "a previsão fora da amostra em vez de melhorá-la."
     )
     print()
     print("STATUS: " + ("OK — todas as premissas estruturais confirmadas." if ok else "ATENÇÃO — ver avisos acima."))

@@ -23,7 +23,12 @@ def completude(
     has_team: bool,
 ) -> tuple[float, list[str]]:
     """Fração (0-100) dos cinco campos de cadastro observados, e a lista
-    dos campos ausentes (para a razão de CONFIANÇA e o plano de ação)."""
+    dos campos ausentes (para a razão de CONFIANÇA e o plano de ação).
+
+    `setor` continua entre os cinco campos mesmo depois de sair do score:
+    completude mede a qualidade do CADASTRO, e setor ainda é lido pelo
+    fit vendedor×setor (sugestão de redistribuição) e pelos filtros da
+    interface."""
     campos = [
         (stage == "Engaging", "engajamento"),
         (has_account, "conta"),
@@ -40,25 +45,25 @@ def suporte(
     ctx: model.ScoringContext,
     product: str,
     age_days: float | None,
-    sector: str | None = None,
 ) -> float:
     """Quanto histórico sustenta os números efetivamente usados —
-    combinação ponderada de até três termos (idade, produto, célula
-    produto×setor):
+    combinação ponderada de até dois termos (idade, produto):
 
         suporte = 100 × Σ(peso_i × termo_i, presentes) / Σ(peso_i, presentes)
 
     s_produto está sempre presente. s_idade é OMITIDO (nunca zerado) sem
-    idade conhecida (Prospecting); s_célula é OMITIDO sem setor conhecido
-    — em ambos os casos a ausência já reduz completude, e zerar aqui
-    cobraria a mesma ausência duas vezes. Os pesos dos termos presentes são
-    renormalizados para somar 1.
+    idade conhecida (Prospecting) — a ausência já reduz completude, e
+    zerar aqui cobraria a mesma ausência duas vezes. Os pesos dos termos
+    presentes são renormalizados para somar 1.
+
+    Havia um terceiro termo, s_célula (célula produto×setor), que media o
+    suporte do `mult_setor`; saiu junto com ele em 2026-08-29 — suporte
+    mede o histórico por trás dos números que o score realmente usa, e
+    setor deixou de ser um deles (`constants.py`).
     """
     termos = [(constants.SUPORTE_PESO_PRODUTO, ctx.s_produto(product))]
     if age_days is not None:
         termos.append((constants.SUPORTE_PESO_IDADE, ctx.s_idade(age_days)))
-    if sector is not None and not (isinstance(sector, float) and sector != sector):
-        termos.append((constants.SUPORTE_PESO_CELULA, ctx.s_celula(product, sector)))
 
     peso_total = sum(peso for peso, _ in termos)
     valor = sum(peso * termo for peso, termo in termos) / peso_total

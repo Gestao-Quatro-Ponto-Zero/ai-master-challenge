@@ -53,7 +53,10 @@ def run(closed: pd.DataFrame, n_permutations: int = N_PERMUTATIONS) -> CycleDura
 
     null_mean = float(null_dispersions.mean())
     distancia_observada = abs(observed - null_mean)
-    p_valor = float(np.mean(np.abs(null_dispersions - null_mean) >= distancia_observada))
+    p_valor = float(
+        (1 + np.sum(np.abs(null_dispersions - null_mean) >= distancia_observada))
+        / (len(null_dispersions) + 1)
+    )  # add-one: ver `permutation_tests._p_valor`
 
     return CycleDurationPermutationResult(
         dispersao_observada=observed,

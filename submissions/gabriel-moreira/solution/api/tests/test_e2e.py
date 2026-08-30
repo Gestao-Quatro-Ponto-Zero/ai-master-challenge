@@ -12,7 +12,7 @@ def test_deals_responds_without_authorization_header(client):
     resp = client.get("/deals")
     assert resp.status_code == 200
     body = resp.json()
-    assert body["total"] == 1436
+    assert body["total"] == 2089
     assert len(body["items"]) == 100  # page_size padrão
 
 

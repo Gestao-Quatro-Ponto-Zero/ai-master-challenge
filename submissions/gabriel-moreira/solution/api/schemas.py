@@ -57,8 +57,12 @@ class ContaOut(BaseModel):
 
 
 RESSALVA_FIT = (
-    "A diferença de desempenho entre vendedores não é estatisticamente "
-    "distinguível de acaso nesta base (testes de permutação, ver validation/)."
+    "Nesta base não se encontra afinidade vendedor×produto: a diferença observada "
+    "entre vendedores não se distingue de acaso, e o que resta depois de descontar "
+    "o desempenho geral de cada vendedor e a dificuldade de cada produto também não. "
+    "É ausência de sinal, não prova de que a afinidade não exista — de todo modo, o "
+    "fit ordena candidatos à redistribuição de carga e não mede mérito "
+    "(testes de permutação, ver validation/)."
 )
 
 
@@ -82,6 +86,22 @@ class SugestaoOut(BaseModel):
     fit_setor: Optional[FitOut] = None
 
 
+class LimitacaoScoreOut(BaseModel):
+    """Uma limitação metodológica que incide sobre o score DESTA
+    oportunidade. `componentes` traz as chaves canônicas dos números
+    afetados (`p_hat`/`valor`/`urgencia`/`score`/`confianca`), para que a
+    interface marque o número em si; `impacto` diz o que muda nele —
+    limitação sem impacto concreto vira decoração (Requirement
+    "Limitações metodológicas do score da oportunidade").
+    """
+
+    id: str
+    componentes: list[str]
+    rotulo_curto: str
+    titulo: str
+    impacto: str
+
+
 class DealDetailOut(OportunidadeOut):
     conta: ContaOut
     prioridade: float
@@ -91,6 +111,9 @@ class DealDetailOut(OportunidadeOut):
     fit_produto: FitOut
     fit_setor: FitOut
     ressalva_fit: str = RESSALVA_FIT
+    # Só o que incide sobre esta oportunidade — uma lista que nunca muda
+    # deixa de ser lida.
+    limitacoes: list[LimitacaoScoreOut]
     sugestao: Optional[SugestaoOut] = None
 
 

@@ -7,10 +7,13 @@ de produto em tempo de carga — nenhum nível, incluindo produto, usa uma
 constante de política congelada. `validation/shrinkage_check.py` reutiliza
 a mesma função para reproduzir o cálculo nos quatro níveis da hierarquia
 (conta×produto, produto×setor, produto, global) e demonstrar o colapso
-automático. Os níveis conta×produto e produto×setor colapsam nos dados
-calibrados e não contribuem a `p̂_produto` (mas produto×setor alimenta
-`scoring/setor.py::mult_setor`, um mecanismo distinto, com sua própria
-constante de política `K_SETOR`).
+automático. Sobre os negócios com desfecho observado, os três níveis
+abaixo do global colapsam (`k = ∞`) e `p̂_produto` vale a taxa global para
+todo produto — inclusive o nível de produto, que só deixou de colapsar
+enquanto o expurgo de 200 dias injetava desfechos atribuídos na calibração
+(2026-08-21 a 2026-08-29, ver `constants.py`). `product_sector_group_counts`
+permanece porque a validação ainda precisa medir o nível produto×setor
+para reproduzir o colapso e a validação cruzada que o rejeita.
 """
 
 from __future__ import annotations
@@ -127,7 +130,7 @@ def account_product_group_counts(closed: pd.DataFrame) -> dict[tuple[str, str], 
 def p_hat_produto(
     product: str,
     product_counts: dict[str, GroupCounts],
-    global_win_rate: float = constants.GLOBAL_WIN_RATE_CALIBRACAO,
+    global_win_rate: float = constants.GLOBAL_WIN_RATE,
     k: float = math.inf,
 ) -> float:
     """p̂_produto = (n*taxa_produto + k*taxa_global) / (n + k).

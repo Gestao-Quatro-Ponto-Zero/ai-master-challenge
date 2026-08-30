@@ -3,7 +3,7 @@
 Todos os números aqui vêm de uma única calibração sobre os 6.711 negócios
 fechados de `sales_pipeline.csv` (out/2016-dez/2017): 4.238 Won + 2.473 Lost.
 Cada constante cita sua origem. Nenhuma é escolhida à mão — mesmo quando o
-valor é uma aproximação retida por política (ver nota em K_SETOR/K_FIT), a
+valor é uma aproximação retida por política (ver nota em K_FIT), a
 reprodução do cálculo vive em `validation/shrinkage_check.py` e
 `validation/isotonic_check.py`, não aqui.
 
@@ -17,21 +17,20 @@ specs/lead-scoring/spec.md). Gatilhos de emergência:
 from __future__ import annotations
 
 # ---------------------------------------------------------------------------
-# Taxa de ganho global — duas populações (ver "Reclassificação de 200 dias"
-# abaixo e design.md, decisão D2).
+# Taxa de ganho global — uma população só.
 # ---------------------------------------------------------------------------
-# 4.238 Won / 6.711 fechados ORGANICAMENTE = 0,631650... — arredondada a 3
-# casas. Fonte: sales_pipeline.csv, linhas com deal_stage em {Won, Lost}
-# antes da reclassificação de 200 dias. Usada apenas onde a curva de idade
-# é o insumo: CENSURA_P_HAT e a normalização de p_ganho(0) em model.p_hat —
-# nunca como prior de encolhimento de produto.
-GLOBAL_WIN_RATE_ORGANICO = 0.632
-
-# 4.238 Won / 7.364 fechados de CALIBRAÇÃO (6.711 orgânicos + 653
-# reclassificados) = 0,575502... — arredondada a 4 casas. Fonte da taxa de
-# vitória por produto e do prior de encolhimento de p̂_produto — os únicos
-# consumidores da população de calibração (idade não é insumo).
-GLOBAL_WIN_RATE_CALIBRACAO = 0.5755
+# 4.238 Won / 6.711 fechados = 0,631650... — arredondada a 3 casas. Fonte:
+# sales_pipeline.csv, toda linha com deal_stage em {Won, Lost}. É a única
+# população de calibração do motor: todo negócio aqui tem desfecho
+# OBSERVADO, nenhum rótulo foi atribuído por nós.
+#
+# Houve duas taxas entre 2026-08-21 e 2026-08-29, quando 653 oportunidades
+# abertas há ≥200 dias eram convertidas para `Lost` na carga e entravam na
+# calibração (0,5755 sobre 7.364). O expurgo foi removido em 2026-08-29 por
+# fabricar sinal onde o dado observado não tem nenhum — reproduzido a cada
+# execução por `validation/reclassification_check.py` e pela seção 10 do
+# backtest. Ver docs/decisions-log.md, entrada 2026-08-29.
+GLOBAL_WIN_RATE = 0.632
 
 # ---------------------------------------------------------------------------
 # Encolhimento hierárquico (p̂_produto)
@@ -39,43 +38,46 @@ GLOBAL_WIN_RATE_CALIBRACAO = 0.5755
 # k = variância_esperada_por_acaso / variância_em_excesso, DERIVADO em tempo
 # de carga (`scoring/pipeline.py::build_scoring_context`, via
 # `shrinkage.level_stats`) para os quatro níveis da hierarquia (conta×
-# produto, produto×setor, produto, global) — nenhum nível, incluindo
-# produto, usa uma constante de política congelada substituindo esse
-# cálculo. Reprodução honesta em validation/shrinkage_check.py.
+# produto, produto×setor, produto, global) — nenhum nível usa uma constante
+# de política congelada substituindo esse cálculo. Reprodução honesta em
+# validation/shrinkage_check.py.
 #
-# Nos dados calibrados, os níveis conta×produto e produto×setor têm
-# variância em excesso ≤ 0 (os grupos são mais parecidos entre si do que o
-# ruído amostral por si só explicaria) — `k` de cada um é infinito e ambos
-# colapsam para o nível de produto, contribuindo zero por definição; o
-# motor de scoring nunca lê conta ou setor para calcular p̂_produto. O
-# nível de produto, nesta calibração, tem variância em excesso POSITIVA
-# (k ≈ 0,6966) — um `k` pequeno frente ao `n` de seis dos sete produtos
-# (centenas a milhares de negócios fechados), de modo que a taxa bruta de
-# cada produto domina o resultado quase sem ajuste. Se uma recalibração
-# futura tornar a variância em excesso do nível de produto ≤ 0, ele colapsa
-# automaticamente para a taxa global de calibração, sem exigir revisão
-# manual de constante alguma (docs/decisions-log.md, entrada sobre a
-# remoção de `K_PRODUTO`).
+# Sobre os 6.711 negócios com desfecho observado, os TRÊS níveis abaixo do
+# global têm variância em excesso ≤ 0 (os grupos são mais parecidos entre
+# si do que o ruído amostral por si só explicaria) — `k` de cada um é
+# infinito e todos colapsam para a taxa global. Consequência direta e
+# desejada: `p̂_produto` vale GLOBAL_WIN_RATE para os sete produtos, a
+# amplitude entre produtos é 0,00pp, e o motor nunca lê conta nem setor
+# para calcular p̂. Isso é o mesmo achado que a análise sempre reportou
+# ("produto não prevê ganho/perda", permutação p=0,373) — agora coerente
+# também no código, sem uma constante que o contradiga.
+#
+# O nível de produto chegou a NÃO colapsar (k ≈ 0,6966, amplitude 16,66pp)
+# entre 2026-08-21 e 2026-08-29. Não foi mudança de mercado: era efeito do
+# expurgo de 200 dias, que jogava 10 perdas atribuídas por nós sobre os 25
+# negócios fechados de GTK 500 (60,0% → 42,86%) e sozinho virava a
+# variância em excesso do nível de negativa para positiva. Removido o
+# expurgo, o nível volta a colapsar sem intervenção manual — que é
+# exatamente o comportamento que `compute_k` promete.
 
 # ---------------------------------------------------------------------------
-# Ajuste de desempenho produto×setor sobre p̂ (`mult_setor`, lead-scoring
-# spec, Requirement "Ajuste de desempenho produto×setor sobre p̂").
+# Setor NÃO entra em p̂ (mult_setor removido em 2026-08-29).
 # ---------------------------------------------------------------------------
-# O nível produto×setor tem variância em excesso ≤ 0 nos dados calibrados
-# (k = ∞, ver acima) — a resposta estatisticamente correta seria
-# mult_setor ≡ 1,000 para todas as células. K_SETOR = 25 é uma constante de
-# POLÍTICA que sobrepõe esse colapso, exatamente como K_FIT já faz para
-# vendedor×produto/vendedor×setor (mesmo papel — sobrepor um colapso, de
-# forma conservadora — mesma força, por consistência, não um valor novo
-# escolhido à parte). Medido: com k=25, a faixa de mult_setor nas 70
-# células produto×setor é [0,900, 1,125] — o teto de ±15% abaixo quase
-# nunca é acionado; é o encolhimento, não o teto, que faz o trabalho de
-# calar ruído de amostra pequena (design.md).
-K_SETOR = 25.0
-
-# Teto de variação de mult_setor — no máximo ±15% sobre p̂_produto.
-MULT_SETOR_MIN = 0.85
-MULT_SETOR_MAX = 1.15
+# `mult_setor` era um ajuste produto×setor aplicado sobre p̂, com
+# encolhimento por K_SETOR=25 e teto de ±15%, mantido por decisão de
+# produto APESAR de a validação apontar contra. As duas evidências,
+# reproduzidas a cada execução do backtest, sempre foram negativas:
+# o nível produto×setor tem variância em excesso ≤ 0 (k = ∞ — colapsa,
+# ver acima), e a validação cruzada 5-fold mostra que condicionar por
+# produto×setor prevê PIOR fora da amostra que não condicionar
+# (`validation/sector_conditioning_check.py`, seção 6 do backtest).
+# Manter um multiplicador sobre um nível que a própria validação rejeita
+# é codificar ruído como rigor — o mesmo critério que já mantinha
+# gerente, região, receita e idade da empresa fora da fórmula. Removido:
+# não sobrou constante de política aqui. Setor continua sendo lido para
+# a completude de CONFIANÇA, para o fit vendedor×setor (mecanismo de
+# redistribuição de carga, nunca p̂/SCORE) e como filtro de UI.
+# Ver docs/decisions-log.md, entrada 2026-08-29.
 
 # ---------------------------------------------------------------------------
 # Curva p_ganho(t) — probabilidade de ganho condicionada a "ainda aberto na
@@ -106,31 +108,19 @@ RISCO_BREAKPOINTS: list[tuple[int, float]] = [
 # ---------------------------------------------------------------------------
 # Fronteiras de idade
 # ---------------------------------------------------------------------------
-# Nenhum dos 6.711 negócios fechados ORGANICAMENTE levou mais de 138 dias
-# (verificado em validation/isotonic_check.py a cada execução, não
-# hardcoded sem checagem). Fronteira OBSERVADA — distinta, por decisão de
-# design, de IDADE_RECLASSIFICACAO_DIAS (fronteira de POLÍTICA, abaixo).
+# Nenhum dos 6.711 negócios fechados levou mais de 138 dias (verificado em
+# validation/isotonic_check.py a cada execução, não hardcoded sem
+# checagem). Fronteira OBSERVADA: acima dela não há desfecho para
+# extrapolar, então p̂ reverte ao prior em vez de continuar a curva.
 CENSURA_DIAS = 138
 # Última idade com amostra confiável (n >= 200 negócios ainda abertos) nas
 # curvas calibradas — acima disso, congela em p_ganho(120)/risco(120) até
 # o limite de censura de 138 dias.
 CURVA_LIMITE_CONFIAVEL_DIAS = 120
 
-# Reversão ao prior acima de 138 dias (censura, não extrapolação). Usa a
-# taxa ORGÂNICA — as curvas de idade nunca leem a população de calibração
-# (design.md, D2) — não a taxa de calibração usada para p̂_produto.
-CENSURA_P_HAT = GLOBAL_WIN_RATE_ORGANICO
+# Reversão ao prior acima de 138 dias (censura, não extrapolação).
+CENSURA_P_HAT = GLOBAL_WIN_RATE
 CENSURA_URGENCIA = 0.15
-
-# ---------------------------------------------------------------------------
-# Reclassificação de oportunidades abertas há 200 dias ou mais (lead-scoring
-# spec, Requirement "Reclassificação de oportunidades com 200 dias ou
-# mais"). Constante de POLÍTICA — quando o negócio desiste de um deal aberto
-# — distinta de CENSURA_DIAS (138), que é uma fronteira OBSERVADA (maior
-# ciclo de fechamento real). As duas nunca podem ser confundidas: colar uma
-# na outra faria uma escolha de negócio parecer um fato dos dados
-# (design.md, decisão D1).
-IDADE_RECLASSIFICACAO_DIAS = 200
 
 # ---------------------------------------------------------------------------
 # Prospecting — sem engage_date, sem idade a imputar.
@@ -225,19 +215,21 @@ SUPORTE_JANELA_IDADE_DIAS = 15
 # entrada 2026-08-20, para a comparação entre variantes testadas.
 SUPORTE_SATURACAO_N = 50
 
-# Pesos do suporte quando idade e célula produto×setor são conhecidas: a
-# densidade de precedente na idade específica pesa mais que o volume
-# histórico do produto, porque é a evidência direta sobre esta
-# oportunidade — o volume de produto é evidência de fundo, e a célula
-# produto×setor pesa menos ainda ("não deveria ter um impacto grande",
-# pedido do dono do produto). Cada termo condicional (idade, célula) é
-# OMITIDO (nunca zerado) quando seu insumo é desconhecido — Prospecting
-# para idade, setor desconhecido para célula — com os pesos restantes
-# renormalizados proporcionalmente: a ausência já é cobrada uma vez em
-# completude, não pode ser cobrada duas vezes.
+# Pesos do suporte: a densidade de precedente na idade específica pesa
+# mais que o volume histórico do produto, porque é a evidência direta
+# sobre esta oportunidade — o volume de produto é evidência de fundo. O
+# termo de idade é OMITIDO (nunca zerado) quando não há idade conhecida
+# (Prospecting), com os pesos restantes renormalizados
+# proporcionalmente: a ausência já é cobrada uma vez em completude, não
+# pode ser cobrada duas vezes.
+#
+# Havia um terceiro termo, s_célula (peso 0,15), medindo o tamanho
+# amostral da célula produto×setor. Ele existia para medir o suporte do
+# `mult_setor`; removido junto com ele em 2026-08-29 — suporte responde
+# "quanto histórico sustenta os números efetivamente usados", e a célula
+# produto×setor deixou de alimentar número algum do score.
 SUPORTE_PESO_IDADE = 0.65
 SUPORTE_PESO_PRODUTO = 0.20
-SUPORTE_PESO_CELULA = 0.15
 
 # ---------------------------------------------------------------------------
 # Cortes da árvore de decisão de ESTADO (Requirement "Atribuição de estado").
@@ -279,7 +271,7 @@ CARGA_PISO_SOBRECARGA = 5
 # ---------------------------------------------------------------------------
 # Fit vendedor x produto / vendedor x setor (workload-fit spec, Requirement
 # "Fit histórico do vendedor por produto e por setor"). Encolhimento em
-# dois níveis: vendedor -> escritório -> global, sobre fechados_calibracao.
+# dois níveis: vendedor -> escritório -> global, sobre `pipeline.fechados`.
 # k_fit é constante de POLÍTICA — a derivação por variância em excesso
 # (validation/) espera-se que colapse para k=∞, do mesmo modo que os
 # níveis conta×produto e produto×setor de p̂_produto (design.md, D3).

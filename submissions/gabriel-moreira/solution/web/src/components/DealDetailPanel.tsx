@@ -8,9 +8,10 @@ import {
 import { api, ApiError } from "../api";
 import { ESTADO_BADGE, SOBRECARGA_BADGE_CLASSES } from "../estadoColors";
 import { formatIdade, formatPct, formatUsd } from "../format";
-import type { DealDetail } from "../types";
+import type { ComponenteScore, DealDetail, LimitacaoScore } from "../types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { FitCell, FitRessalva } from "./FitDisplay";
+import { LimitacoesScore, MarcadorLimitacao, limitacoesDe } from "./LimitacoesScore";
 
 /** Painel lateral de detalhe — sete blocos de negócio agrupados em cartões
  * visualmente distintos (mesmo padrão `bg-white border border-border
@@ -176,6 +177,12 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
           <div className="text-4xl font-extrabold text-navy leading-none mt-1">
             {o.score.toFixed(1)}
           </div>
+          {/* Colado ao número, não numa página de metodologia: "SCORE 98"
+              lido sem esta linha vira "98% de chance de fechar". */}
+          <p className="text-[11px] text-muted mt-1.5 max-w-[16rem] leading-snug">
+            Percentil de valor em risco contra os negócios já ganhos — não é
+            a chance de este fechar.
+          </p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <span
@@ -208,19 +215,29 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
             label="Probabilidade"
             valor={formatPct(o.p_hat)}
             explicacao="Chance de fechamento, calibrada pelo histórico do produto e pela janela de tempo."
+            limitacoes={o.limitacoes}
+            componente="p_hat"
           />
           <Componente
             label="Preço tabela"
             valor={formatUsd(o.preco_tabela)}
             explicacao="Preço de catálogo do produto."
+            limitacoes={o.limitacoes}
+            componente="valor"
           />
           <Componente
             label="Urgência"
             valor={formatPct(o.urgencia)}
             explicacao="Urgência de o negócio se resolver nos próximos 30 dias."
+            limitacoes={o.limitacoes}
+            componente="urgencia"
           />
         </dl>
       </section>
+
+      <Card title="O que limita este score">
+        <LimitacoesScore limitacoes={o.limitacoes} />
+      </Card>
 
       <Card title="Confiança & contexto">
         <div>
@@ -231,6 +248,30 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
             razao={o.razao_confianca}
           />
           <p className="text-sm text-muted mt-2">{o.razao_confianca}</p>
+
+          {/* As duas metades lado a lado, com a que governa o mínimo
+              marcada: completude baixa pede cadastro, suporte baixo é
+              ausência de precedente — as duas ações são opostas, e o
+              número sozinho não distingue qual é o caso. */}
+          <dl className="grid grid-cols-2 gap-3 mt-3">
+            <MetadeConfianca
+              label="Completude do cadastro"
+              valor={o.completude}
+              governa={o.completude < o.suporte}
+              descricao="Quanto dos cinco campos de cadastro existe."
+            />
+            <MetadeConfianca
+              label="Suporte histórico"
+              valor={o.suporte}
+              governa={o.suporte < o.completude}
+              descricao="Quantos negócios fechados respaldam esta idade e este produto."
+            />
+          </dl>
+          <p className="text-[11px] text-muted mt-2">
+            CONFIANÇA é o menor dos dois — {o.confianca.toFixed(0)} — e mede a
+            veracidade do dado, nunca a chance de fechar.
+          </p>
+          <MarcadorLimitacao limitacoes={o.limitacoes} componente="confianca" />
         </div>
 
         <div className="border-t border-border pt-3">
@@ -295,6 +336,7 @@ function DetailContent({ detail: o }: { detail: DealDetail }) {
           <FitCell label="Produto" fit={o.fit_produto} />
           <FitCell label="Setor" fit={o.fit_setor} />
         </dl>
+        <FitRessalva texto={o.ressalva_fit} />
       </Card>
 
       <Card title="Por que este score">
@@ -337,22 +379,74 @@ function Card({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+/** Um componente do score. Quando alguma limitação incide sobre ele, o
+ * cartão ganha a borda de destaque e o marcador curto — a ressalva fica no
+ * mesmo lugar em que o leitor estranha o número, e a explicação inteira
+ * aparece uma vez só, na ficha "O que limita este score". */
 function Componente({
   label,
   valor,
   explicacao,
+  limitacoes,
+  componente,
 }: {
   label: string;
   valor: string;
   explicacao: string;
+  limitacoes: LimitacaoScore[];
+  componente: ComponenteScore;
 }) {
+  const limitado = limitacoesDe(limitacoes, componente).length > 0;
+
   return (
-    <div className="rounded-sm border border-border bg-white p-3">
+    <div
+      className={
+        "rounded-sm border p-3 " +
+        (limitado ? "border-gold bg-gold/5" : "border-border bg-white")
+      }
+    >
       <dt className="text-[11px] uppercase tracking-wide text-muted mb-1">
         {label}
       </dt>
       <dd className="text-lg font-bold text-navy">{valor}</dd>
       <dd className="text-xs text-muted mt-1 leading-snug">{explicacao}</dd>
+      <dd>
+        <MarcadorLimitacao limitacoes={limitacoes} componente={componente} />
+      </dd>
+    </div>
+  );
+}
+
+function MetadeConfianca({
+  label,
+  valor,
+  governa,
+  descricao,
+}: {
+  label: string;
+  valor: number;
+  governa: boolean;
+  descricao: string;
+}) {
+  return (
+    <div
+      className={
+        "rounded-xs border p-2.5 " +
+        (governa ? "border-navy bg-navy/5" : "border-border bg-white")
+      }
+    >
+      <dt className="text-[11px] uppercase tracking-wide text-muted flex items-center gap-1.5">
+        {label}
+        {governa && (
+          <span className="text-[9px] font-bold text-white bg-navy rounded-full px-1.5 py-0.5 leading-none">
+            GOVERNA
+          </span>
+        )}
+      </dt>
+      <dd className="text-lg font-bold text-navy leading-none mt-1">
+        {valor.toFixed(0)}
+      </dd>
+      <dd className="text-[11px] text-muted mt-1 leading-snug">{descricao}</dd>
     </div>
   );
 }

@@ -8,7 +8,7 @@ com `k_fit` de política (design.md, D3):
     prior_esc_p        = (n_ep x taxa_ep + k_fit x taxa_global_p) / (n_ep + k_fit)
 
 Idem para setor, trocando produto por setor. Sempre sobre
-`fechados_calibracao` (denominador `Won + Lost`) — nunca sobre oportunidades
+`pipeline.fechados` (denominador `Won + Lost`) — nunca sobre oportunidades
 abertas. Fit de setor é reportado como indisponível (`None`), nunca
 substituído por zero, média global ou fit de produto, quando a oportunidade
 não tem conta vinculada.
@@ -43,7 +43,7 @@ def _sector_counts(df: pd.DataFrame, key_cols: list[str]) -> dict:
 
 @dataclass(frozen=True)
 class FitContext:
-    """Pré-computado uma vez sobre `fechados_calibracao` — reutilizado
+    """Pré-computado uma vez sobre `pipeline.fechados` — reutilizado
     para todo par (vendedor, oportunidade)."""
 
     vendor_office: dict[str, str]
@@ -56,7 +56,7 @@ class FitContext:
 
 
 def build_fit_context(dataset: Dataset, closed: pd.DataFrame) -> FitContext:
-    """`closed` é `pipeline.fechados_calibracao(dataset)` — passado pelo
+    """`closed` é `pipeline.fechados(dataset)` — passado pelo
     chamador para evitar recomputar o filtro em todo lugar que precisa dele."""
     vendor_office = (
         dataset.pipeline[["sales_agent", "regional_office"]]
@@ -108,7 +108,7 @@ def _fit_generico(
         return None
 
     taxa_global = global_counts.get(dim_key)
-    taxa_global_valor = taxa_global.rate if taxa_global is not None else constants.GLOBAL_WIN_RATE_CALIBRACAO
+    taxa_global_valor = taxa_global.rate if taxa_global is not None else constants.GLOBAL_WIN_RATE
 
     oe = office_counts.get((office, dim_key))
     n_oe = oe.n if oe is not None else 0
@@ -144,7 +144,7 @@ def fit_setor(
 
 
 def derive_k_fit(
-    ctx: FitContext, level: str, global_win_rate: float = constants.GLOBAL_WIN_RATE_CALIBRACAO
+    ctx: FitContext, level: str, global_win_rate: float = constants.GLOBAL_WIN_RATE
 ) -> LevelStats:
     """Reproduz a derivação de k por variância em excesso para o
     encolhimento do fit (mesma técnica de `shrinkage.level_stats`,

@@ -10,25 +10,26 @@ from __future__ import annotations
 import bisect
 from dataclasses import dataclass, field
 
-from . import constants, curves, setor as setor_mod
+from . import constants, curves
 
 
 @dataclass(frozen=True)
 class ScoringContext:
     """Pré-calculado uma vez sobre os negócios FECHADOS: p̂_produto
-    (encolhimento hierárquico), o contexto de `mult_setor` (encolhimento
-    produto×setor) e os três insumos de SUPORTE de CONFIANÇA — idades de
-    negócios ganhos (ordenadas, para busca binária), contagem de negócios
-    fechados por produto e o lookup de célula produto×setor.
+    (encolhimento hierárquico) e os dois insumos de SUPORTE de CONFIANÇA —
+    idades de negócios ganhos (ordenadas, para busca binária) e contagem
+    de negócios fechados por produto.
+
+    Setor não entra aqui: nem em p̂ (o nível produto×setor colapsa e a
+    validação cruzada o rejeita — ver `constants.py`), nem em suporte.
     """
 
     p_hat_by_product: dict[str, float]
     ages_won_ordenadas: list[float] = field(default_factory=list)
     product_closed_counts: dict[str, int] = field(default_factory=dict)
-    setor_ctx: setor_mod.MultSetorContext | None = None
 
     def p_hat_produto(self, product: str) -> float:
-        return self.p_hat_by_product.get(product, constants.GLOBAL_WIN_RATE_CALIBRACAO)
+        return self.p_hat_by_product.get(product, constants.GLOBAL_WIN_RATE)
 
     def s_idade(self, age_days: float) -> float:
         """Fração saturada de negócios ganhos dentro de +/-SUPORTE_JANELA_IDADE_DIAS
@@ -44,47 +45,21 @@ class ScoringContext:
         n = self.product_closed_counts.get(product, 0)
         return min(1.0, n / constants.SUPORTE_SATURACAO_N)
 
-    def s_celula(self, product: str, sector: str | None) -> float:
-        """Fração saturada de negócios fechados de calibração na célula
-        produto×setor — 0 quando o setor é desconhecido ou a célula não
-        tem histórico."""
-        if self.setor_ctx is None:
-            return 0.0
-        n = setor_mod.n_celula(self.setor_ctx, product, sector)
-        return min(1.0, n / constants.SUPORTE_SATURACAO_N)
-
-    def mult_setor(self, product: str, sector: str | None) -> float:
-        """1,0 (neutro) quando o setor é desconhecido ou o contexto de
-        setor ainda não foi construído — nunca inventa ajuste a partir de
-        dado ausente."""
-        if self.setor_ctx is None:
-            return 1.0
-        return setor_mod.mult_setor(self.setor_ctx, product, sector)
-
-    def n_celula(self, product: str, sector: str | None) -> int:
-        """Tamanho amostral (negócios fechados de calibração) da célula
-        produto×setor — consumido pela frase de `mult_setor` em
-        `explicacao.fatores_score`."""
-        if self.setor_ctx is None:
-            return 0
-        return setor_mod.n_celula(self.setor_ctx, product, sector)
-
 
 def p_hat(
     ctx: ScoringContext,
     product: str,
     stage: str,
     age_days: float | None,
-    sector: str | None = None,
 ) -> float:
-    """p̂ ajustado pela idade, conforme o estágio, com `mult_setor` aplicado
-    por último sobre o resultado já composto.
+    """p̂ ajustado pela idade, conforme o estágio.
 
     - Prospecting: p̂_produto sem ajuste de idade (sem `engage_date`).
     - Engaging, idade > 138: reverte ao prior global (censura).
     - Engaging, idade <= 138: p̂_produto ajustado por p_ganho(min(idade,120)).
-    - Em todos os casos: multiplicado por `mult_setor(product, sector)` —
-      1,0 (neutro) quando o setor é desconhecido.
+
+    Produto e idade são os únicos insumos: setor foi testado e removido
+    (ver `constants.py`).
     """
     produto_p_hat = ctx.p_hat_produto(product)
 
@@ -97,12 +72,12 @@ def p_hat(
         if age_days > constants.CENSURA_DIAS:
             base = constants.CENSURA_P_HAT
         else:
-            # Normaliza pela taxa ORGÂNICA — p_ganho(0) foi calibrado sobre
-            # os negócios fechados organicamente, é essa a base da curva,
-            # não a taxa de calibração (que alimenta apenas p̂_produto).
-            base = produto_p_hat * curves.p_ganho(age_days) / constants.GLOBAL_WIN_RATE_ORGANICO
+            # Normaliza por GLOBAL_WIN_RATE porque p_ganho(0) é essa mesma
+            # taxa: a curva diz quanto a idade desloca a chance a partir da
+            # base, então dividir devolve um multiplicador centrado em 1,0.
+            base = produto_p_hat * curves.p_ganho(age_days) / constants.GLOBAL_WIN_RATE
 
-    return base * ctx.mult_setor(product, sector)
+    return base
 
 
 def urgencia(stage: str, age_days: float | None) -> float:
@@ -159,10 +134,9 @@ def score_componentes(
     stage: str,
     age_days: float | None,
     porte: str | None,
-    sector: str | None = None,
 ) -> Componentes:
     """Calcula os três componentes e PRIORIDADE para uma oportunidade."""
-    p = p_hat(ctx, product, stage, age_days, sector)
+    p = p_hat(ctx, product, stage, age_days)
     pt = preco_tabela(product)
     v = valor(product, porte)
     u = urgencia(stage, age_days)

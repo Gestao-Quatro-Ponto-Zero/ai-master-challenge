@@ -10,7 +10,7 @@ from dataclasses import dataclass
 import pandas as pd
 
 from . import confianca as confianca_mod
-from . import constants, estado as estado_mod, explicacao, model, reference, setor, shrinkage
+from . import constants, estado as estado_mod, explicacao, model, reference, shrinkage
 from .repository import Dataset, load_dataset
 
 
@@ -23,40 +23,27 @@ class ScoredPipeline:
     ages_won_ordenadas: list[float]
     scored: pd.DataFrame
 
-    @property
-    def n_reclassificados(self) -> int:
-        return self.dataset.n_reclassificados
 
+def fechados(dataset: Dataset) -> pd.DataFrame:
+    """Os 6.711 negócios com desfecho OBSERVADO — toda linha `Won`/`Lost`
+    do CSV. População única de calibração: alimenta a taxa de vitória por
+    produto, o prior de encolhimento de p̂_produto, os priors de fit, as
+    curvas de idade (`p_ganho`, `risco`) e a censura em 138 dias.
 
-def fechados_organicos(dataset: Dataset) -> pd.DataFrame:
-    """Negócios fechados com desfecho observado — 6.711, nunca inclui os
-    653 reclassificados de 200 dias. Única população que pode alimentar as
-    curvas de idade (`p_ganho`, `risco`) e a censura em 138 dias
-    (lead-scoring spec, Requirement "Censura acima de 138 dias"; design.md,
-    D2). As curvas em si são constantes calibradas offline
-    (`constants.P_GANHO_BREAKPOINTS`/`RISCO_BREAKPOINTS`), então esta
-    função existe para a auditoria de circularidade da validação, não para
-    recalculá-las em runtime.
-    """
-    pipeline = dataset.pipeline
-    fechado = pipeline["deal_stage"].isin(constants.DEAL_STAGES_FECHADOS)
-    return pipeline[fechado & ~pipeline["reclassificado"]]
-
-
-def fechados_calibracao(dataset: Dataset) -> pd.DataFrame:
-    """Negócios fechados de calibração — 7.364 = 6.711 orgânicos + 653
-    reclassificados de 200 dias. Alimenta a taxa de vitória por produto, o
-    prior global de p̂_produto e os priors de fit (design.md, D2). Como a
-    reclassificação já ocorreu na carga (`repository._reclassify_aged_
-    deals`), esta é simplesmente toda linha `Won`/`Lost` do dataset.
+    Era duas funções (`fechados_organicos` / `fechados_calibracao`) enquanto
+    o expurgo de 200 dias existia: as curvas de idade tinham de ser
+    protegidas dos 653 rótulos que nós mesmos atribuíamos por idade, sob
+    pena de o sistema aprender "negócio velho perde" da própria régua. Sem
+    desfecho inventado, a separação perde a razão de existir — não há
+    subconjunto a proteger de nada (docs/decisions-log.md, 2026-08-29).
     """
     return dataset.pipeline[dataset.pipeline["deal_stage"].isin(constants.DEAL_STAGES_FECHADOS)]
 
 
 def build_scoring_context(dataset: Dataset) -> model.ScoringContext:
-    closed = fechados_calibracao(dataset)
+    closed = fechados(dataset)
     counts = shrinkage.product_group_counts(closed)
-    produto_stats = shrinkage.level_stats(counts, constants.GLOBAL_WIN_RATE_CALIBRACAO)
+    produto_stats = shrinkage.level_stats(counts, constants.GLOBAL_WIN_RATE)
     p_hat_by_product = {
         produto: shrinkage.p_hat_produto(produto, counts, k=produto_stats.k)
         for produto in constants.PRECO_TABELA
@@ -64,12 +51,10 @@ def build_scoring_context(dataset: Dataset) -> model.ScoringContext:
     product_closed_counts = {
         produto: group.n for produto, group in counts.items()
     }
-    setor_ctx = setor.build_context(closed, p_hat_by_product)
     return model.ScoringContext(
         p_hat_by_product=p_hat_by_product,
         ages_won_ordenadas=_won_ages(dataset),
         product_closed_counts=product_closed_counts,
-        setor_ctx=setor_ctx,
     )
 
 
@@ -97,18 +82,17 @@ def score_row(
     porte: str | None,
     has_sector: bool = False,
     has_team: bool = False,
-    sector: str | None = None,
 ) -> dict:
     """Pontua uma única oportunidade — usado tanto no lote quanto na
     pontuação avulsa (endpoint /score).
 
     `has_sector`/`has_team` alimentam apenas a completude de CONFIANÇA —
-    `sector` (o valor em si, não só se é conhecido) alimenta `mult_setor`
-    em p̂ e o termo `s_célula` de suporte. A pontuação avulsa não tem conta
-    nem vendedor reais, então usa o padrão (ausentes/None), o que é a
-    leitura honesta de um "e se" sem cadastro.
+    o VALOR do setor não entra em lugar nenhum do score desde a remoção de
+    `mult_setor` (2026-08-29, ver `constants.py`). A pontuação avulsa não
+    tem conta nem vendedor reais, então usa o padrão (ausentes/None), o
+    que é a leitura honesta de um "e se" sem cadastro.
     """
-    componentes = model.score_componentes(ctx, product, stage, age_days, porte, sector)
+    componentes = model.score_componentes(ctx, product, stage, age_days, porte)
     score = ref.percentil(componentes.prioridade)
 
     completude_valor, campos_ausentes = confianca_mod.completude(
@@ -118,7 +102,7 @@ def score_row(
         has_sector=has_sector,
         has_team=has_team,
     )
-    suporte_valor = confianca_mod.suporte(ctx, product, age_days, sector)
+    suporte_valor = confianca_mod.suporte(ctx, product, age_days)
     confianca_valor = confianca_mod.confianca(completude_valor, suporte_valor)
     sem_precedente_flag = confianca_mod.sem_precedente(ctx, age_days)
     razao = confianca_mod.razao_confianca(
@@ -131,7 +115,7 @@ def score_row(
     )
     passos = explicacao.plano_de_acao_passos(estado_key, has_account, campos_ausentes)
     fatores = explicacao.fatores_score(
-        componentes, product, porte, has_account, stage, age_days, ctx=ctx, sector=sector
+        componentes, product, porte, has_account, stage, age_days
     )
 
     return {
@@ -173,7 +157,6 @@ def score_open_pipeline(
         porte = constants.classificar_porte(row.get("employees"))
         has_sector = has_account and not pd.isna(row.get("sector"))
         has_team = not pd.isna(row.get("manager"))
-        sector = row.get("sector") if has_sector else None
 
         result = score_row(
             ctx, ref, ages_won_ordenadas,
@@ -184,7 +167,6 @@ def score_open_pipeline(
             porte=porte,
             has_sector=has_sector,
             has_team=has_team,
-            sector=sector,
         )
 
         records.append(

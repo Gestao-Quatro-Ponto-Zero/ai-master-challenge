@@ -29,10 +29,12 @@ from schemas import (
     FilterOptionsOut,
     FiltroGerenteOut,
     FiltroVendedorOut,
+    LimitacaoScoreOut,
     OportunidadeOut,
 )
 from scoring import constants
 from scoring.carga import deal_pertence_a_sobrecarregado
+from scoring.limitacoes import limitacoes_do_score
 from scoring.pipeline import score_row
 from state import AppState
 
@@ -157,7 +159,6 @@ def get_deal_detail(
     porte = constants.classificar_porte(row.get("employees"))
     has_sector = has_account and not pd.isna(row.get("sector"))
     has_team = not pd.isna(row.get("manager"))
-    sector = row.get("sector") if has_sector else None
 
     result = score_row(
         app_state.ctx,
@@ -170,7 +171,6 @@ def get_deal_detail(
         porte=porte,
         has_sector=has_sector,
         has_team=has_team,
-        sector=sector,
     )
 
     conta = ContaOut(
@@ -188,7 +188,10 @@ def get_deal_detail(
     # Requirement "Fit e sugestão no detalhe da oportunidade".
     carga_index = app_state.carga_index_as_of(as_of)
     estado_key = result["estado"]
-    sector = clean_value(sector)
+    # Setor não alimenta mais o score (`mult_setor` removido em 2026-08-29),
+    # mas continua sendo o insumo do fit vendedor×setor — mecanismo de
+    # redistribuição de carga, nunca p̂/SCORE.
+    sector = clean_value(row.get("sector")) if has_sector else None
     fit_produto_out, fit_setor_out = fit_para_vendedor(
         app_state.fit_ctx, row["sales_agent"], row["product"], sector
     )
@@ -207,6 +210,27 @@ def get_deal_detail(
         else None
     )
 
+    # Requirement "Limitações metodológicas do score da oportunidade" —
+    # derivadas dos mesmos insumos que o score, no pacote `scoring/`: o que
+    # a tela ressalva não pode divergir do que a fórmula fez.
+    limitacoes = [
+        LimitacaoScoreOut(
+            id=limitacao.id,
+            componentes=list(limitacao.componentes),
+            rotulo_curto=limitacao.rotulo_curto,
+            titulo=limitacao.titulo,
+            impacto=limitacao.impacto,
+        )
+        for limitacao in limitacoes_do_score(
+            app_state.ctx,
+            product=row["product"],
+            stage=row["deal_stage"],
+            age_days=age_days,
+            has_account=has_account,
+            porte=porte,
+        )
+    ]
+
     return DealDetailOut(
         opportunity_id=row["opportunity_id"],
         sales_agent=row["sales_agent"],
@@ -223,5 +247,6 @@ def get_deal_detail(
         fit_produto=fit_produto_out,
         fit_setor=fit_setor_out,
         sugestao=sugestao,
+        limitacoes=limitacoes,
         **result,
     )

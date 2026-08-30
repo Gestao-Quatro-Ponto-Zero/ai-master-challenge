@@ -15,7 +15,7 @@ export function ViewTabs({
   sobrecarregadas?: number;
 }) {
   return (
-    <div className="flex gap-2 border-b border-border pb-3">
+    <div className="flex flex-wrap gap-2 border-b border-border pb-3">
       <TabButton label="Oportunidades" active={aba === "oportunidades"} onClick={() => onChange("oportunidades")} />
       <TabButton
         label="Sobrecarga"

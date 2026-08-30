@@ -34,6 +34,32 @@ def _dispersion(labels: np.ndarray, groups: np.ndarray) -> float:
     return float(np.sqrt(np.average((rates - weighted_mean) ** 2, weights=counts)))
 
 
+def _p_valor(null_dispersions: np.ndarray, observed: float) -> float:
+    """p = (1 + #{nula >= observada}) / (B + 1) — correção add-one.
+
+    `média(nula >= observada)` devolveria 0,000 quando nenhuma das B
+    permutações alcança a dispersão real, e 0 é impossível como
+    probabilidade: com B reamostragens não se distingue "nunca acontece" de
+    "acontece menos de 1 vez em B". A correção add-one (Davison & Hinkley;
+    Phipson & Smyth 2010) trata a amostra observada como uma das
+    permutações possíveis e devolve um p sempre positivo, com piso
+    1/(B+1) — o que este teste consegue afirmar, e nada além disso.
+    """
+    return float((1 + np.sum(null_dispersions >= observed)) / (len(null_dispersions) + 1))
+
+
+def formata_p(p_valor: float, casas: int = 3) -> str:
+    """Formata um p-valor sem nunca imprimir '0,000'.
+
+    Arredondar 0,0005 para três casas produz '0.000', que é exatamente a
+    leitura que a correção add-one existe para impedir: quem lê '0,000'
+    entende "probabilidade zero", e o teste nunca afirmou isso. Abaixo do
+    que as casas pedidas conseguem representar, devolve '<0,001'.
+    """
+    piso = 10 ** (-casas)
+    return f"<{piso:.{casas}f}" if p_valor < piso else f"{p_valor:.{casas}f}"
+
+
 def permutation_test(closed: pd.DataFrame, attribute: str, n_permutations: int = N_PERMUTATIONS) -> PermutationResult:
     subset = closed.dropna(subset=[attribute])
     labels = (subset["deal_stage"] == "Won").to_numpy(dtype=float)
@@ -47,7 +73,7 @@ def permutation_test(closed: pd.DataFrame, attribute: str, n_permutations: int =
         shuffled = rng.permutation(labels)
         null_dispersions[i] = _dispersion(shuffled, groups)
 
-    p_valor = float(np.mean(null_dispersions >= observed))
+    p_valor = _p_valor(null_dispersions, observed)
 
     return PermutationResult(
         atributo=attribute,

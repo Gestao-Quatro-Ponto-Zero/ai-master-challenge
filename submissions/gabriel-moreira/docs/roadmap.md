@@ -3,11 +3,14 @@
 ## O que foi construído
 
 Ferramenta de triagem de pipeline por **valor em risco**, não por probabilidade categórica de
-conversão. A evidência que sustenta essa escolha: em negócios fechados, conta, setor e escritório
-não preveem ganho/perda — AUC ≈ 0,47-0,51, testes de permutação com p entre 0,12 e 0,94. Vendedor
-é a exceção mensurada na calibração de 2026-08-21 (p=0,000) — sinal fraco, nunca usado em `p̂`,
-base do mecanismo separado de fit por vendedor (ver [docs/report.md](./report.md) §2 e §12 e
-[docs/architecture.md](./architecture.md)).
+conversão. A evidência que sustenta essa escolha: nos 6.711 negócios com desfecho registrado,
+conta, setor, escritório, produto e vendedor não preveem ganho/perda — AUC 0,475-0,523 isolada,
+testes de permutação com p entre 0,262 e 0,965. Nenhum atributo é exceção. O fit por vendedor é
+mecanismo separado de redistribuição de carga, nunca `p̂` (ver [docs/report.md](./report.md) §1,
+§2 e §12 e [docs/architecture.md](./architecture.md)). O que esses testes afirmam é que este
+histórico **não enxerga** diferença entre vendedores — não que ela seja zero: a dispersão
+verdadeira estimada é τ̂=1,08pp e o menor efeito detectável com 80% de poder é τ=3,04pp
+([§14](./report.md)). É essa lacuna que o item 3 abaixo existe para fechar.
 
 ```
 PRIORIDADE = P̂ganho(produto, idade) × VALOR(produto, porte) × URGÊNCIA(idade)   [dólares, auditável]
@@ -18,28 +21,38 @@ ESTADO     = árvore(sem_precedente, SCORE≥95, CONFIANÇA<50)  →  Priorizar 
 
 Entregue: API FastAPI + frontend React, sem autenticação (dataset público de demonstração — vendedor,
 gerente e escritório são filtros ordinários, não escopo de sessão), validação reprodutível
-(`make validate`, 9 seções incluindo três resultados negativos de refinamento testados e descartados)
+(`make validate`, 14 seções incluindo três resultados negativos de refinamento testados e descartados)
 e suíte de testes (unitário + e2e). Stack e detalhes completos em
-[docs/architecture.md](./docs/architecture.md); decisões e porquês em
-[docs/decisions-log.md](./docs/decisions-log.md).
+[docs/architecture.md](./architecture.md); decisões e porquês em
+[decisions-log.md](../process-log/decisions-log.md).
 
 **Limitação central, já documentada:** o modelo diferencia por valor e urgência, não por
-probabilidade real — `p̂` varia só entre 0,60 e 0,75 porque não existe dado comportamental nos 5
-arquivos de origem. É a lacuna que os itens abaixo endereçam.
+probabilidade real — `p̂` varia só entre 0,63 e 0,75, e **apenas por idade**: por produto ele é
+constante (o nível colapsa, ver `docs/analise-lead-scoring.md` §3.3), porque não existe dado
+comportamental nos 4 CSVs de origem. É a lacuna que os itens abaixo endereçam.
 
 ---
 
 ## Próximos passos selecionados
 
-### 1. Saneamento em lote do funil congelado — ✅ feito (2026-08-21)
+### 1. Campo de abandono no CRM
 
-A mediana de idade dos 2.089 negócios abertos era 165 dias — mais velha que o negócio mais longo
-que já fechou na história (138 dias). Executado: oportunidades abertas há ≥200 dias (política,
-distinta dos 138 dias observados) são reclassificadas como `Lost` na carga — 653 negócios,
-funil aberto caindo de 2.089 para 1.436. O que resta em **Revisão em lote** (443, idade 154–199
-dias) é passivo real de higiene de dados, não mais um depósito de quase dois terços do funil.
-Detalhes em [docs/architecture.md](./docs/architecture.md) e
-[docs/decisions-log.md](./docs/decisions-log.md) (entrada 2026-08-21).
+A mediana de idade dos 2.089 negócios abertos é 165 dias — mais velha que o negócio mais longo
+que já fechou na história (138 dias). 653 estão abertos há ≥200 dias, alguns há 423. Quase
+certamente há negócio morto aí dentro.
+
+Fechar esse negócio por régua de idade — reclassificar em lote como `Lost` quem passou de um
+limiar — contaminaria a calibração: seriam desfechos atribuídos por nós, não observados, e eles
+não caem por igual entre carteiras. O caminho é registrar o evento, não inferi-lo.
+
+- **Ação:** um campo de desfecho `Abandonado`, com data e motivo, preenchido por quem trabalha o
+  negócio — evento registrado, não inferido por idade. O saneamento em lote então vira uma
+  operação de CRM auditável, e a calibração pode usar esses desfechos porque alguém os declarou.
+- **Esforço:** baixo no código (o motor já trata `Won`/`Lost` genericamente), médio no processo.
+- **Impacto de negócio:** desbloqueia a única leitura honesta de "taxa de perda real" — hoje a
+  taxa de 63,15% é otimista por construção, porque mede quem fechou e quem nunca fechou não
+  conta como perda. Enquanto o campo não existe, a régua de idade **não** é um substituto: ela
+  transfere o palpite para dentro do número, onde ninguém mais o vê.
 
 ### 2. Persistir histórico de score
 
@@ -49,19 +62,36 @@ Tudo roda in-memory hoje, recalculado a cada carga — não existe série tempor
   execução do pipeline.
 - **Esforço:** baixo-médio — schema simples, sem mudança na lógica de scoring.
 - **Impacto de negócio:** habilita trajetória ("este negócio está piorando há 3 semanas", que a
-  foto do dia não mostra), auditoria de decisão, e é pré-requisito técnico direto dos itens 6, 8
-  e 9 abaixo — sem histórico, nenhum deles pode ser medido ou construído.
+  foto do dia não mostra), auditoria de decisão, e é pré-requisito técnico direto do A/B do item 3
+  e do forecast do item 4 — sem série temporal, nenhum dos dois pode ser medido ao longo do tempo.
 
-### 3. A/B do próprio score
+### 3. A/B do próprio score — e a alocação aleatorizada que mede o vendedor
 
 Metade dos vendedores prioriza pela ferramenta, metade continua no processo atual; medir receita
 por trimestre entre os dois grupos.
+
+O mesmo desenho ataca a pergunta que o backtest §14 diz que este histórico não consegue
+responder — mas é preciso ser exato sobre o que ele resolve. Hoje cada vendedor trabalha a
+carteira que a operação lhe deu, então taxa de vitória e qualidade de carteira chegam
+confundidas. Sortear leads comparáveis entre vendedores quebra essa confusão na origem: a
+diferença que sobrar é atribuível a habilidade, não à carteira recebida.
+
+O que a aleatorização **não** faz é comprar poder estatístico. Com τ̂=1,08pp, o backtest §14
+dimensiona o custo: seriam necessários ~2.000 negócios fechados por vendedor para detectá-lo com
+80% de poder, contra os 220 de hoje — 9× o histórico atual. Logo o experimento se justifica pelo
+desenho e pelo acúmulo deliberado de amostra ao longo do tempo, não por um atalho: no curto prazo
+ele detecta um efeito grande caso exista (τ≥3,04pp) e produz uma estimativa não-viesada; a
+resolução para 1pp chega com os trimestres.
 
 - **Esforço:** baixo em engenharia, médio em processo (requer coordenação com liderança de
   vendas e período de espera para significância estatística).
 - **Impacto de negócio:** é a evidência que compra orçamento para a fase seguinte (instrumentação
   comportamental, modelo real) e defende a ferramenta com dado quando alguém perguntar se ela
-  vale o custo. Sem isso, o valor de tudo o resto fica em opinião, não em número.
+  vale o custo. Sem isso, o valor de tudo o resto fica em opinião, não em número. O braço de
+  alocação aleatorizada tem valor próprio: 1pp de conversão sobre uma carteira de ~220 negócios
+  fechados por período é receita real, e é a única via honesta para decidir treinamento,
+  distribuição de carga ou remuneração por desempenho — nenhuma das três se sustenta no histórico
+  observacional, e a ferramenta não finge o contrário.
 
 ### 4. Forecast probabilístico (commit vs. upside)
 
@@ -87,8 +117,8 @@ falta tratar censura formalmente (hoje é um corte fixo em 138 dias) e responder
 
 ### 6. Job de sinal externo: notícias da conta
 
-Nenhum dos 5 CSVs de origem carrega sinal comportamental ou de contexto de mercado (ver
-[docs/analise-lead-scoring.md §6](./docs/analise-lead-scoring.md)) — hoje a ferramenta só reage
+Nenhum dos 4 CSVs de origem carrega sinal comportamental ou de contexto de mercado (ver
+[docs/analise-lead-scoring.md §6](./analise-lead-scoring.md)) — hoje a ferramenta só reage
 ao que já está no CRM. Um gatilho de mercado (rodada de investimento, expansão, troca de
 liderança, notícia negativa) é o tipo de evento que justifica contato imediato e que nenhuma
 curva de aging consegue prever.

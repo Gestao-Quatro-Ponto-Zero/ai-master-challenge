@@ -11,5 +11,9 @@
 
 pandas==2.2.2
 scikit-learn==1.5.0
+# statsmodels: nulo ADITIVO da seção 12 — o GLM binomial com efeitos
+# principais de vendedor e produto/setor, cujo bootstrap paramétrico é o
+# único nulo que testa afinidade (interação) em vez de "vendedor importa".
+statsmodels==0.15.0
 
 pytest==8.2.2

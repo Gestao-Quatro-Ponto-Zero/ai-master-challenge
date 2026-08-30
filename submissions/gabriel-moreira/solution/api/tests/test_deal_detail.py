@@ -59,3 +59,63 @@ def test_detail_with_as_of_recalculates_age_and_state(client):
     assert resp_early.status_code == 200
 
     assert resp_default.json()["age_days"] != resp_early.json()["age_days"]
+
+
+# --- Requirement "Limitações metodológicas do score da oportunidade" ------
+
+
+def _detalhe_com(client, **filtros):
+    """Primeira oportunidade do funil que casa com os filtros informados."""
+    envelope = client.get("/deals", params={"page_size": 500, "estado": list(_ESTADOS)}).json()
+    for item in envelope["items"]:
+        if all(item[chave] == valor for chave, valor in filtros.items()):
+            return client.get(f"/deals/{item['opportunity_id']}").json()
+    raise AssertionError(f"nenhuma oportunidade no funil casa com {filtros}")
+
+
+_ESTADOS = ("prioritize", "acompanhar", "qualificar", "revisao_lote")
+
+
+def test_detalhe_sempre_declara_o_que_o_score_e(client):
+    envelope = client.get("/deals", params={"page_size": 5}).json()
+    for item in envelope["items"]:
+        detalhe = client.get(f"/deals/{item['opportunity_id']}").json()
+        ids = [limitacao["id"] for limitacao in detalhe["limitacoes"]]
+        assert "score_nao_e_probabilidade" in ids
+
+
+def test_prospecting_declara_urgencia_fixa(client):
+    detalhe = _detalhe_com(client, deal_stage="Prospecting")
+    ids = [limitacao["id"] for limitacao in detalhe["limitacoes"]]
+
+    assert "sem_idade" in ids
+    assert "sem_precedente" not in ids
+
+
+def test_sem_conta_declara_porte_neutro(client):
+    detalhe = _detalhe_com(client, account=None)
+    ids = [limitacao["id"] for limitacao in detalhe["limitacoes"]]
+
+    assert "porte_desconhecido" in ids
+
+
+def test_limitacoes_apontam_componentes_que_o_detalhe_exibe(client):
+    """`componentes` é o que a interface usa para marcar o número afetado —
+    uma chave fora do payload marcaria um campo inexistente."""
+    envelope = client.get("/deals", params={"page_size": 20, "estado": list(_ESTADOS)}).json()
+    exibidos = {"p_hat", "valor", "urgencia", "score", "confianca"}
+
+    for item in envelope["items"]:
+        detalhe = client.get(f"/deals/{item['opportunity_id']}").json()
+        for limitacao in detalhe["limitacoes"]:
+            assert limitacao["componentes"]
+            assert set(limitacao["componentes"]) <= exibidos
+            assert set(limitacao["componentes"]) <= set(detalhe)
+            assert limitacao["impacto"].strip()
+
+
+def test_oportunidade_em_revisao_em_lote_declara_a_ausencia_de_precedente(client):
+    detalhe = _detalhe_com(client, estado="revisao_lote")
+    ids = [limitacao["id"] for limitacao in detalhe["limitacoes"]]
+
+    assert "sem_precedente" in ids

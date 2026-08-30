@@ -86,7 +86,7 @@ export function KpiTiles({
           <div
             key={tile.key}
             className={
-              "rounded-sm border p-4 " +
+              "rounded-sm border p-4 min-w-0 " +
               (tile.alert ? "border-alert bg-alert/5 text-alert" : "border-border bg-white text-navy")
             }
           >
@@ -111,7 +111,7 @@ export function KpiTiles({
                 </Tooltip>
               )}
             </div>
-            <div className="text-xl font-bold">{tile.value}</div>
+            <div className="text-lg sm:text-xl font-bold break-words">{tile.value}</div>
           </div>
         ))}
       </div>

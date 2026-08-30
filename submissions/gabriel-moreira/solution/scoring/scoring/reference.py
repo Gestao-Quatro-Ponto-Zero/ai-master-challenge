@@ -69,12 +69,10 @@ def build_reference_distribution(
     fechado; nenhum excede 138 dias (verificado em validation/), então a
     regra de censura nunca é acionada nesta população.
 
-    Repassa `sector` a `p̂` (via `model.score_componentes`) exatamente como
-    o funil aberto — cada negócio Won com setor conhecido tem seu `p̂`
-    multiplicado por `mult_setor`, os sem setor ficam neutros (1,0).
-    Aplicar o ajuste a um lado só deslocaria SCORE de forma assimétrica
-    entre numerador e denominador do percentil (lead-scoring spec,
-    Requirement "Ajuste de desempenho produto×setor sobre p̂").
+    Usa exatamente as mesmas funções do funil aberto, com os mesmos
+    insumos (produto, idade, porte) — qualquer termo aplicado a um lado só
+    deslocaria SCORE de forma assimétrica entre numerador e denominador do
+    percentil.
     """
     won = dataset.pipeline[dataset.pipeline["deal_stage"] == "Won"].copy()
     won["age_at_close"] = won.apply(_age_at_close_days, axis=1)
@@ -88,7 +86,6 @@ def build_reference_distribution(
             stage="Engaging",
             age_days=row["age_at_close"],
             porte=porte,
-            sector=row.get("sector"),
         )
         prioridades.append(componentes.prioridade)
 

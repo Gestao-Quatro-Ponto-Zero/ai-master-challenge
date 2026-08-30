@@ -2,14 +2,14 @@
 
 from scoring.carga import compute_carga, index_by_agent_estado, overloaded_pairs
 from scoring.fit import build_fit_context, eligible_pool, suggest_candidate, vendors_with_history
-from scoring.pipeline import fechados_calibracao
+from scoring.pipeline import fechados
 
 
 def _setup(scored_pipeline):
     sp = scored_pipeline
     carga = compute_carga(sp.scored)
     carga_idx = index_by_agent_estado(carga)
-    fit_ctx = build_fit_context(sp.dataset, fechados_calibracao(sp.dataset))
+    fit_ctx = build_fit_context(sp.dataset, fechados(sp.dataset))
     return sp, carga, carga_idx, fit_ctx
 
 

@@ -7,9 +7,7 @@ from scoring.explicacao import (
     plano_de_acao,
     plano_de_acao_passos,
 )
-from scoring.model import Componentes, ScoringContext
-from scoring.setor import MultSetorContext
-from scoring.shrinkage import GroupCounts
+from scoring.model import Componentes
 
 
 def test_fracao_vitorias_ate_is_percentage():
@@ -191,70 +189,38 @@ def test_fatores_score_determinismo():
 
 
 # ---------------------------------------------------------------------------
-# mult_setor — Requirement "Explicabilidade do score e plano de ação",
-# Scenarios "Ajuste de setor explicado sem linguagem de ressalva" e "Setor
-# desconhecido não gera frase de ajuste".
+# Setor fora da explicação — `mult_setor` removido em 2026-08-29
+# (`constants.py`). A quinta frase, que descrevia o ajuste de setor, saiu
+# junto: explicar um fator que o score não usa seria explicar o número
+# errado.
 # ---------------------------------------------------------------------------
 
 
-def _ctx_com_celula(product: str, sector: str, n: int, wins: int, p_hat_produto: float) -> ScoringContext:
-    setor_ctx = MultSetorContext(
-        cell_counts={(product, sector): GroupCounts(n=n, wins=wins)},
-        p_hat_by_product={product: p_hat_produto},
+def test_fatores_score_tem_sempre_quatro_frases_e_nenhuma_de_setor():
+    componentes = Componentes(
+        p_hat=0.66, preco_tabela=4821.0, valor=4821.0, urgencia=0.5, prioridade=1591.0
     )
-    return ScoringContext(p_hat_by_product={product: p_hat_produto}, setor_ctx=setor_ctx)
+    for porte, has_account, stage, age_days in (
+        ("Mid", True, "Engaging", 60),
+        (None, False, "Prospecting", None),
+    ):
+        fatores = fatores_score(
+            componentes,
+            product="GTX Pro",
+            porte=porte,
+            has_account=has_account,
+            stage=stage,
+            age_days=age_days,
+        )
+        assert len(fatores) == 4
+        assert not any("setor" in f.lower() for f in fatores)
 
 
-def test_fatores_score_setor_conhecido_acima_da_media_sem_ressalva():
-    """Célula com 120 negócios fechados, acima da média do produto —
-    mult_setor > 1 (design.md; spec scenario "Célula com desempenho acima
-    da média do produto": n=120, taxa=0,68, p̂_produto=0,60 -> mult≈1,106)."""
-    ctx = _ctx_com_celula("GTX Pro", "technology", n=120, wins=82, p_hat_produto=0.60)
-    componentes = Componentes(p_hat=0.66, preco_tabela=4821.0, valor=4821.0, urgencia=0.5, prioridade=1591.0)
-    fatores = fatores_score(
-        componentes, product="GTX Pro", porte="Mid", has_account=True,
-        stage="Engaging", age_days=60, ctx=ctx, sector="technology",
-    )
-    assert len(fatores) == 5
-    fator_setor = fatores[-1]
-    assert "histórico do produto neste setor" in fator_setor
-    assert "acima da média do produto" in fator_setor
-    assert "120 negócios fechados nesta combinação" in fator_setor
-    for termo_ressalva in ("sinal fraco", "ruído", "não confie"):
-        assert termo_ressalva not in fator_setor.lower()
+def test_fatores_score_nao_aceita_mais_setor_como_insumo():
+    """Regressão: a assinatura não expõe `ctx`/`sector` — nenhum chamador
+    consegue reintroduzir a frase de setor sem reabrir a decisão."""
+    import inspect
 
-
-def test_fatores_score_setor_conhecido_abaixo_da_media():
-    ctx = _ctx_com_celula("GTX Pro", "retail", n=100, wins=30, p_hat_produto=0.60)
-    componentes = Componentes(p_hat=0.5, preco_tabela=4821.0, valor=4821.0, urgencia=0.5, prioridade=1205.0)
-    fatores = fatores_score(
-        componentes, product="GTX Pro", porte="Mid", has_account=True,
-        stage="Engaging", age_days=60, ctx=ctx, sector="retail",
-    )
-    fator_setor = fatores[-1]
-    assert "abaixo da média do produto" in fator_setor
-    assert "100 negócios fechados nesta combinação" in fator_setor
-
-
-def test_fatores_score_setor_desconhecido_nao_gera_frase_de_ajuste():
-    """Requirement "Explicabilidade do score e plano de ação", Scenario
-    "Setor desconhecido não gera frase de ajuste"."""
-    ctx = _ctx_com_celula("GTX Pro", "technology", n=120, wins=82, p_hat_produto=0.60)
-    componentes = Componentes(p_hat=0.6, preco_tabela=4821.0, valor=4821.0, urgencia=0.5, prioridade=1446.3)
-    fatores = fatores_score(
-        componentes, product="GTX Pro", porte=None, has_account=False,
-        stage="Prospecting", age_days=None, ctx=ctx, sector=None,
-    )
-    assert len(fatores) == 4
-    assert not any("histórico do produto neste setor" in f for f in fatores)
-
-
-def test_fatores_score_sem_ctx_nao_gera_frase_de_ajuste():
-    """Chamador que não repassa `ctx` (ex.: código legado ou teste isolado)
-    nunca produz a quinta frase — omissão segura, não um erro."""
-    componentes = Componentes(p_hat=0.6, preco_tabela=4821.0, valor=4821.0, urgencia=0.5, prioridade=1446.3)
-    fatores = fatores_score(
-        componentes, product="GTX Pro", porte="Mid", has_account=True,
-        stage="Engaging", age_days=60, sector="technology",
-    )
-    assert len(fatores) == 4
+    parametros = inspect.signature(fatores_score).parameters
+    assert "sector" not in parametros
+    assert "ctx" not in parametros

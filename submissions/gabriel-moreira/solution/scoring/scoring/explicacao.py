@@ -12,7 +12,7 @@ import bisect
 from dataclasses import dataclass
 
 from . import constants
-from .model import Componentes, ScoringContext
+from .model import Componentes
 
 
 @dataclass(frozen=True)
@@ -202,37 +202,6 @@ def _fator_conta(has_account: bool, porte: str | None) -> str:
     return f"Dados da conta indicam porte {porte} — efeito neutro no valor considerado."
 
 
-def _direcao_mult_setor(mult: float) -> str:
-    if mult > 1.0:
-        return "acima"
-    if mult < 1.0:
-        return "abaixo"
-    return "dentro"
-
-
-def _setor_desconhecido(sector: str | None) -> bool:
-    return sector is None or (isinstance(sector, float) and sector != sector)
-
-
-def _fator_setor(
-    ctx: ScoringContext | None, product: str, sector: str | None
-) -> str | None:
-    """Frase do ajuste `mult_setor` — só quando o setor é conhecido
-    (Requirement "Explicabilidade do score e plano de ação"). Fato neutro,
-    sem linguagem de ressalva ("sinal fraco", "ruído amostral") — decisão
-    explícita do dono do produto (design.md, "score_fatores: fato neutro,
-    sem linguagem de ressalva")."""
-    if ctx is None or _setor_desconhecido(sector):
-        return None
-    mult = ctx.mult_setor(product, sector)
-    n = ctx.n_celula(product, sector)
-    direcao = _direcao_mult_setor(mult)
-    return (
-        f"histórico do produto neste setor: {direcao} da média do produto "
-        f"({n} negócios fechados nesta combinação)."
-    )
-
-
 def fatores_score(
     componentes: Componentes,
     product: str,
@@ -240,26 +209,22 @@ def fatores_score(
     has_account: bool,
     stage: str,
     age_days: float | None,
-    ctx: ScoringContext | None = None,
-    sector: str | None = None,
 ) -> list[str]:
     """Decompõe PRIORIDADE (p̂, VALOR, URGÊNCIA) e o efeito do porte da conta
-    em frases de negócio, sem jargão técnico — geradas por template a partir
-    dos mesmos componentes já calculados, com a mesma garantia de
+    em quatro frases de negócio, sem jargão técnico — geradas por template a
+    partir dos mesmos componentes já calculados, com a mesma garantia de
     auditabilidade do plano de ação (Requirement "Explicabilidade do score e
-    plano de ação"). Quando o setor é conhecido (`ctx` e `sector`
-    informados), ganha uma quinta frase sobre `mult_setor`; setor
-    desconhecido não gera frase nenhuma sobre o ajuste."""
-    fatores = [
+    plano de ação").
+
+    Havia uma quinta frase, sobre o ajuste `mult_setor`; saiu com ele em
+    2026-08-29 (`constants.py`). Explicar um fator que o score não usa
+    seria explicar o número errado."""
+    return [
         _fator_valor(product),
         _fator_chance(componentes.p_hat, stage, age_days),
         _fator_urgencia(componentes.urgencia),
         _fator_conta(has_account, porte),
     ]
-    fator_setor = _fator_setor(ctx, product, sector)
-    if fator_setor is not None:
-        fatores.append(fator_setor)
-    return fatores
 
 
 def plano_de_acao_passos(
