@@ -1,0 +1,155 @@
+{
+  "snapshotDate": "2017-12-31",
+  "source": {
+    "name": "CRM Sales Predictive Analytics",
+    "license": "CC0-1.0",
+    "url": "https://www.kaggle.com/datasets/agungpambudi/crm-sales-predictive-analytics",
+    "files": {
+      "accounts.csv": {
+        "rows": 85,
+        "sha256": "e5242324768a563fc632cddfed49a29acbbf2892b8a3c6453cc9650de9ae0358"
+      },
+      "metadata.csv": {
+        "rows": 21,
+        "sha256": "22b34e498d07e3d7f322afdbf81d70a5dc0a389792944e50ca2af86a3597f0af"
+      },
+      "products.csv": {
+        "rows": 7,
+        "sha256": "7c1c8cbbdb6d4c286902e1985eeb529a36366d6a43f43cd4a93c4b1da2a6eb84"
+      },
+      "sales_pipeline.csv": {
+        "rows": 8800,
+        "sha256": "825ce8f6c32d4009548b468df3173d55a46fd73f2531f532c5459371dc52adf2"
+      },
+      "sales_teams.csv": {
+        "rows": 35,
+        "sha256": "aeff1272ebe196f5a27e3fc0578aa27abf48ed9ae461aa344fb95990e5ad8bd1"
+      }
+    }
+  },
+  "validationPassed": true,
+  "errors": [],
+  "warnings": [
+    "1425 oportunidades sem conta; ausencia aceita e sinalizada",
+    "GTK 500 tem apenas 40 oportunidades; previsoes recebem baixa confianca"
+  ],
+  "rowCounts": {
+    "accounts.csv": 85,
+    "metadata.csv": 21,
+    "products.csv": 7,
+    "sales_pipeline.csv": 8800,
+    "sales_teams.csv": 35
+  },
+  "stageCounts": {
+    "Engaging": 1589,
+    "Lost": 2473,
+    "Prospecting": 500,
+    "Won": 4238
+  },
+  "schemas": {
+    "accounts.csv": [
+      "account",
+      "sector",
+      "year_established",
+      "revenue",
+      "employees",
+      "office_location",
+      "subsidiary_of"
+    ],
+    "metadata.csv": [
+      "Table",
+      "Field",
+      "Description"
+    ],
+    "products.csv": [
+      "product",
+      "series",
+      "sales_price"
+    ],
+    "sales_pipeline.csv": [
+      "opportunity_id",
+      "sales_agent",
+      "product",
+      "account",
+      "deal_stage",
+      "engage_date",
+      "close_date",
+      "close_value"
+    ],
+    "sales_teams.csv": [
+      "sales_agent",
+      "manager",
+      "regional_office"
+    ]
+  },
+  "uniqueness": {
+    "account": {
+      "file": "accounts.csv",
+      "blankCount": 0,
+      "duplicateCount": 0,
+      "valid": true
+    },
+    "product": {
+      "file": "products.csv",
+      "blankCount": 0,
+      "duplicateCount": 0,
+      "valid": true
+    },
+    "opportunity_id": {
+      "file": "sales_pipeline.csv",
+      "blankCount": 0,
+      "duplicateCount": 0,
+      "valid": true
+    },
+    "sales_agent": {
+      "file": "sales_teams.csv",
+      "blankCount": 0,
+      "duplicateCount": 0,
+      "valid": true
+    }
+  },
+  "referentialIntegrity": {
+    "unknownSalesAgents": 0,
+    "unknownProductsAfterNormalization": 0,
+    "unknownNonblankAccounts": 0,
+    "missingAccountsAccepted": 1425
+  },
+  "timelineRules": {
+    "violations": {},
+    "closedDealsUseCloseFieldsOnly": true
+  },
+  "transformations": [
+    {
+      "file": "sales_pipeline.csv",
+      "field": "product",
+      "from": "GTXPro",
+      "to": "GTX Pro",
+      "count": 1480,
+      "purpose": "canonical_join_repair"
+    },
+    {
+      "file": "accounts.csv",
+      "field": "sector",
+      "from": "technolgy",
+      "to": "technology",
+      "count": 12,
+      "purpose": "display_only"
+    },
+    {
+      "file": "accounts.csv",
+      "field": "office_location",
+      "from": "Philipines",
+      "to": "Philippines",
+      "count": 1,
+      "purpose": "display_only"
+    }
+  ],
+  "modelReadiness": {
+    "closedDeals": 6711,
+    "openEngagingDeals": 1589,
+    "openProspectingDeals": 500,
+    "lowSupportProducts": [
+      "GTK 500"
+    ]
+  }
+}

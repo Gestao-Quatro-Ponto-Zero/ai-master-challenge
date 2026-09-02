@@ -1,0 +1,2 @@
+# O pipeline de producao usa somente a biblioteca padrao do Python 3.11+.
+

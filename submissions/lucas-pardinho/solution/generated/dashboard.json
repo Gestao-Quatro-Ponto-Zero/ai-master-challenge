@@ -1,0 +1,588 @@
+{
+  "snapshotDate": "2017-12-31",
+  "generatedFor": "G4 Focus",
+  "summary": {
+    "openOpportunities": 2089,
+    "engaging": 1589,
+    "prospecting": 500,
+    "focusNow": 166,
+    "stale": 1291,
+    "pipelineValue": 4966215,
+    "engagingPipelineValue": 3892229,
+    "weightedPipelineValue": 245264,
+    "estimatedConversionsNext60Days": 105.1,
+    "estimatedConversionsExcludeOutOfSupport": true,
+    "outOfClosedCycleSupport": 1291,
+    "missingAccount": 1425
+  },
+  "queues": [
+    {
+      "queue": "Foco agora",
+      "count": 166,
+      "pipelineValue": 451596,
+      "estimatedConversions": 70.6
+    },
+    {
+      "queue": "Acelerar",
+      "count": 127,
+      "pipelineValue": 239663,
+      "estimatedConversions": 32.2
+    },
+    {
+      "queue": "Nutrir",
+      "count": 5,
+      "pipelineValue": 2306,
+      "estimatedConversions": 2.2
+    },
+    {
+      "queue": "Resgatar ou desqualificar",
+      "count": 1291,
+      "pipelineValue": 3198664,
+      "estimatedConversions": 0.0
+    },
+    {
+      "queue": "Qualificar",
+      "count": 500,
+      "pipelineValue": 1073986,
+      "estimatedConversions": 0.0
+    }
+  ],
+  "byRegion": [
+    {
+      "name": "Central",
+      "openOpportunities": 908,
+      "engaging": 408,
+      "prospecting": 500,
+      "focusNow": 5,
+      "stale": 403,
+      "estimatedConversions": 0.8,
+      "pipelineValue": 1898408
+    },
+    {
+      "name": "East",
+      "openOpportunities": 433,
+      "engaging": 433,
+      "prospecting": 0,
+      "focusNow": 65,
+      "stale": 326,
+      "estimatedConversions": 37.3,
+      "pipelineValue": 1069586
+    },
+    {
+      "name": "West",
+      "openOpportunities": 748,
+      "engaging": 748,
+      "prospecting": 0,
+      "focusNow": 96,
+      "stale": 562,
+      "estimatedConversions": 67.0,
+      "pipelineValue": 1998221
+    }
+  ],
+  "byManager": [
+    {
+      "name": "Cara Losch",
+      "openOpportunities": 219,
+      "engaging": 219,
+      "prospecting": 0,
+      "focusNow": 35,
+      "stale": 169,
+      "estimatedConversions": 18.7,
+      "pipelineValue": 495950
+    },
+    {
+      "name": "Celia Rouche",
+      "openOpportunities": 334,
+      "engaging": 334,
+      "prospecting": 0,
+      "focusNow": 46,
+      "stale": 257,
+      "estimatedConversions": 27.9,
+      "pipelineValue": 1004925
+    },
+    {
+      "name": "Dustin Brinkmann",
+      "openOpportunities": 397,
+      "engaging": 193,
+      "prospecting": 204,
+      "focusNow": 3,
+      "stale": 190,
+      "estimatedConversions": 0.5,
+      "pipelineValue": 585616
+    },
+    {
+      "name": "Melvin Marxen",
+      "openOpportunities": 511,
+      "engaging": 215,
+      "prospecting": 296,
+      "focusNow": 2,
+      "stale": 213,
+      "estimatedConversions": 0.3,
+      "pipelineValue": 1312792
+    },
+    {
+      "name": "Rocco Neubert",
+      "openOpportunities": 214,
+      "engaging": 214,
+      "prospecting": 0,
+      "focusNow": 30,
+      "stale": 157,
+      "estimatedConversions": 18.6,
+      "pipelineValue": 573636
+    },
+    {
+      "name": "Summer Sewald",
+      "openOpportunities": 414,
+      "engaging": 414,
+      "prospecting": 0,
+      "focusNow": 50,
+      "stale": 305,
+      "estimatedConversions": 39.1,
+      "pipelineValue": 993296
+    }
+  ],
+  "byAgent": [
+    {
+      "name": "Anna Snelling",
+      "openOpportunities": 112,
+      "engaging": 57,
+      "prospecting": 55,
+      "focusNow": 1,
+      "stale": 56,
+      "estimatedConversions": 0.2,
+      "pipelineValue": 173259
+    },
+    {
+      "name": "Boris Faz",
+      "openOpportunities": 57,
+      "engaging": 57,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 44,
+      "estimatedConversions": 4.5,
+      "pipelineValue": 143456
+    },
+    {
+      "name": "Cassey Cress",
+      "openOpportunities": 85,
+      "engaging": 85,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 62,
+      "estimatedConversions": 7.3,
+      "pipelineValue": 220860
+    },
+    {
+      "name": "Cecily Lampkin",
+      "openOpportunities": 43,
+      "engaging": 19,
+      "prospecting": 24,
+      "focusNow": 0,
+      "stale": 19,
+      "estimatedConversions": 0.0,
+      "pipelineValue": 86748
+    },
+    {
+      "name": "Corliss Cosme",
+      "openOpportunities": 81,
+      "engaging": 81,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 63,
+      "estimatedConversions": 6.8,
+      "pipelineValue": 216840
+    },
+    {
+      "name": "Daniell Hammack",
+      "openOpportunities": 72,
+      "engaging": 72,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 51,
+      "estimatedConversions": 6.8,
+      "pipelineValue": 209320
+    },
+    {
+      "name": "Darcel Schlecht",
+      "openOpportunities": 194,
+      "engaging": 83,
+      "prospecting": 111,
+      "focusNow": 0,
+      "stale": 83,
+      "estimatedConversions": 0.0,
+      "pipelineValue": 656040
+    },
+    {
+      "name": "Elease Gluck",
+      "openOpportunities": 51,
+      "engaging": 51,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 39,
+      "estimatedConversions": 4.6,
+      "pipelineValue": 251649
+    },
+    {
+      "name": "Gladys Colclough",
+      "openOpportunities": 85,
+      "engaging": 36,
+      "prospecting": 49,
+      "focusNow": 0,
+      "stale": 36,
+      "estimatedConversions": 0.0,
+      "pipelineValue": 192142
+    },
+    {
+      "name": "Hayden Neloms",
+      "openOpportunities": 50,
+      "engaging": 50,
+      "prospecting": 0,
+      "focusNow": 6,
+      "stale": 44,
+      "estimatedConversions": 2.5,
+      "pipelineValue": 123530
+    },
+    {
+      "name": "James Ascencio",
+      "openOpportunities": 61,
+      "engaging": 61,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 47,
+      "estimatedConversions": 5.2,
+      "pipelineValue": 192216
+    },
+    {
+      "name": "Jonathan Berthelot",
+      "openOpportunities": 81,
+      "engaging": 33,
+      "prospecting": 48,
+      "focusNow": 0,
+      "stale": 33,
+      "estimatedConversions": 0.0,
+      "pipelineValue": 127420
+    },
+    {
+      "name": "Kami Bicknell",
+      "openOpportunities": 90,
+      "engaging": 90,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 65,
+      "estimatedConversions": 8.8,
+      "pipelineValue": 190990
+    },
+    {
+      "name": "Kary Hendrixson",
+      "openOpportunities": 103,
+      "engaging": 103,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 82,
+      "estimatedConversions": 8.2,
+      "pipelineValue": 276517
+    },
+    {
+      "name": "Lajuana Vencill",
+      "openOpportunities": 80,
+      "engaging": 40,
+      "prospecting": 40,
+      "focusNow": 1,
+      "stale": 39,
+      "estimatedConversions": 0.2,
+      "pipelineValue": 116039
+    },
+    {
+      "name": "Markita Hansen",
+      "openOpportunities": 79,
+      "engaging": 79,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 60,
+      "estimatedConversions": 7.0,
+      "pipelineValue": 282756
+    },
+    {
+      "name": "Marty Freudenburg",
+      "openOpportunities": 87,
+      "engaging": 33,
+      "prospecting": 54,
+      "focusNow": 0,
+      "stale": 33,
+      "estimatedConversions": 0.0,
+      "pipelineValue": 229445
+    },
+    {
+      "name": "Maureen Marcano",
+      "openOpportunities": 72,
+      "engaging": 72,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 54,
+      "estimatedConversions": 6.4,
+      "pipelineValue": 140225
+    },
+    {
+      "name": "Moses Frase",
+      "openOpportunities": 65,
+      "engaging": 34,
+      "prospecting": 31,
+      "focusNow": 0,
+      "stale": 34,
+      "estimatedConversions": 0.0,
+      "pipelineValue": 108161
+    },
+    {
+      "name": "Niesha Huffines",
+      "openOpportunities": 64,
+      "engaging": 30,
+      "prospecting": 34,
+      "focusNow": 2,
+      "stale": 28,
+      "estimatedConversions": 0.3,
+      "pipelineValue": 107745
+    },
+    {
+      "name": "Rosalina Dieter",
+      "openOpportunities": 50,
+      "engaging": 50,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 34,
+      "estimatedConversions": 5.6,
+      "pipelineValue": 119664
+    },
+    {
+      "name": "Rosie Papadopoulos",
+      "openOpportunities": 39,
+      "engaging": 39,
+      "prospecting": 0,
+      "focusNow": 6,
+      "stale": 33,
+      "estimatedConversions": 2.2,
+      "pipelineValue": 116685
+    },
+    {
+      "name": "Versie Hillebrand",
+      "openOpportunities": 97,
+      "engaging": 43,
+      "prospecting": 54,
+      "focusNow": 1,
+      "stale": 42,
+      "estimatedConversions": 0.2,
+      "pipelineValue": 101409
+    },
+    {
+      "name": "Vicki Laflamme",
+      "openOpportunities": 104,
+      "engaging": 104,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 80,
+      "estimatedConversions": 8.1,
+      "pipelineValue": 227326
+    },
+    {
+      "name": "Violet Mclelland",
+      "openOpportunities": 68,
+      "engaging": 68,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 51,
+      "estimatedConversions": 6.0,
+      "pipelineValue": 80150
+    },
+    {
+      "name": "Wilburn Farren",
+      "openOpportunities": 31,
+      "engaging": 31,
+      "prospecting": 0,
+      "focusNow": 9,
+      "stale": 22,
+      "estimatedConversions": 3.7,
+      "pipelineValue": 82275
+    },
+    {
+      "name": "Zane Levy",
+      "openOpportunities": 88,
+      "engaging": 88,
+      "prospecting": 0,
+      "focusNow": 10,
+      "stale": 57,
+      "estimatedConversions": 10.5,
+      "pipelineValue": 193348
+    }
+  ],
+  "topOpportunities": [
+    {
+      "opportunityId": "DYYJW46L",
+      "salesAgent": "Vicki Laflamme",
+      "manager": "Celia Rouche",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 78,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 66.7,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "HN6TZPAF",
+      "salesAgent": "Wilburn Farren",
+      "manager": "Cara Losch",
+      "regionalOffice": "East",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 61,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 66.7,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "JJGRAQ2K",
+      "salesAgent": "Kary Hendrixson",
+      "manager": "Summer Sewald",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": "Rangreen",
+      "dealStage": "Engaging",
+      "ageDays": 69,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 66.7,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "P5C842B5",
+      "salesAgent": "Kami Bicknell",
+      "manager": "Summer Sewald",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 64,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 66.7,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "X7MN9ROG",
+      "salesAgent": "Vicki Laflamme",
+      "manager": "Celia Rouche",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 69,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 66.7,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "YQJGEI71",
+      "salesAgent": "James Ascencio",
+      "manager": "Summer Sewald",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 73,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 66.7,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "E2CJIO85",
+      "salesAgent": "Vicki Laflamme",
+      "manager": "Celia Rouche",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 89,
+      "estimatedValue": 5482,
+      "probability": 0.5257,
+      "priorityScore": 65.5,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "GQDS81G1",
+      "salesAgent": "Corliss Cosme",
+      "manager": "Cara Losch",
+      "regionalOffice": "East",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 31,
+      "estimatedValue": 5482,
+      "probability": 0.4763,
+      "priorityScore": 63.5,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "I5VHXAWW",
+      "salesAgent": "Boris Faz",
+      "manager": "Rocco Neubert",
+      "regionalOffice": "East",
+      "product": "GTX Plus Pro",
+      "account": "Bluth Company",
+      "dealStage": "Engaging",
+      "ageDays": 55,
+      "estimatedValue": 5482,
+      "probability": 0.4763,
+      "priorityScore": 63.5,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    },
+    {
+      "opportunityId": "NNNEMOZ5",
+      "salesAgent": "James Ascencio",
+      "manager": "Summer Sewald",
+      "regionalOffice": "West",
+      "product": "GTX Plus Pro",
+      "account": null,
+      "dealStage": "Engaging",
+      "ageDays": 56,
+      "estimatedValue": 5482,
+      "probability": 0.4763,
+      "priorityScore": 63.5,
+      "qualificationScore": null,
+      "queue": "Foco agora",
+      "confidence": "high",
+      "nextAction": "Contatar hoje, confirmar necessidade e registrar o proximo passo com data."
+    }
+  ]
+}
