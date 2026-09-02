@@ -1,0 +1,26 @@
+.git
+.gitignore
+.DS_Store
+
+**/.env
+**/.env.*
+!**/.env.example
+
+web/node_modules
+web/.next
+web/coverage
+web/.turbo
+
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.coverage
+
+# O build sempre regenera estas camadas a partir de data/raw.
+data/normalized
+generated
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

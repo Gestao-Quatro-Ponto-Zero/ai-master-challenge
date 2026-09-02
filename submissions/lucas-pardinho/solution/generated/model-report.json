@@ -1,0 +1,394 @@
+{
+  "snapshotDate": "2017-12-31",
+  "modelVersion": "1.0.0",
+  "status": "operational_conservative_model",
+  "predictionTarget": "P(Won nos proximos 60 dias | oportunidade ainda em Engaging)",
+  "selectedProbabilityModel": "bayesian_smoothed_product_age",
+  "runtimeDecision": {
+    "scikitLearnAvailable": false,
+    "approach": "evaluated_smoothed_empirical_with_baseline_guardrail",
+    "reason": "O runtime validado nao oferece scikit-learn. Foi adotado um estimador empirico deterministico, auditavel e sem dependencias externas."
+  },
+  "training": {
+    "closedOpportunities": 6711,
+    "censoredOpenOpportunitiesWithObservedHorizon": 1533,
+    "weeklySnapshots": 81634,
+    "censoredOpenSnapshots": 32554,
+    "temporalSplit": {
+      "trainEngageDateThrough": "2017-09-12",
+      "trainOpportunities": 6669,
+      "holdoutOpportunities": 1631,
+      "opportunityIsolation": true
+    },
+    "snapshotWeighting": "cada oportunidade soma peso 1, independentemente da duracao",
+    "ageBucketsDays": [
+      "0-30",
+      "31-60",
+      "61-90",
+      "91-120",
+      "121-138",
+      "139+"
+    ],
+    "smoothing": {
+      "agePriorStrength": 30.0,
+      "productAgePriorStrength": 15.0,
+      "noArbitraryStaleConstant": true
+    }
+  },
+  "features": {
+    "candidateUsed": [
+      "product_normalized",
+      "pipeline_age_bucket_at_prediction_time"
+    ],
+    "selectedProbabilityFeatures": [
+      "product_normalized",
+      "pipeline_age_bucket_at_prediction_time"
+    ],
+    "excludedToPreventLeakage": [
+      "deal_stage_final",
+      "close_date",
+      "close_value",
+      "opportunity_id",
+      "account_and_firmographics",
+      "sales_agent_manager_region"
+    ],
+    "policy": "Nenhum campo conhecido apenas depois do desfecho entra na predicao. Identidade de conta e equipe e exibida, mas nao altera a probabilidade."
+  },
+  "evaluation": {
+    "evaluationUnit": "one_snapshot_per_holdout_opportunity_nearest_day_30",
+    "holdoutObservations": 1575,
+    "positiveRate": 0.53333,
+    "baseline": {
+      "name": "constant_training_rate",
+      "brier": 0.26472,
+      "averagePrecision": 0.537,
+      "precisionAt20": 0.55
+    },
+    "empiricalModel": {
+      "name": "bayesian_smoothed_product_age",
+      "brier": 0.26182,
+      "averagePrecision": 0.55116,
+      "precisionAt20": 0.55
+    },
+    "selected": "bayesian_smoothed_product_age",
+    "selectionRule": "Escolher o modelo segmentado somente quando preserva calibracao e ranking do baseline no holdout temporal. O score operacional conserva idade e valor mesmo se a probabilidade constante vencer."
+  },
+  "outcomeDrift": {
+    "before2017Q4": {
+      "closedDeals": 4726,
+      "won": 3042,
+      "winRate": 0.6437
+    },
+    "from2017Q4": {
+      "closedDeals": 1985,
+      "won": 1196,
+      "winRate": 0.6025
+    },
+    "interpretation": "A taxa de Won caiu no Q4. A probabilidade e um apoio conservador, nao uma verdade permanente; requer recalibracao em producao."
+  },
+  "finalModel": {
+    "overallRate": 0.43088498,
+    "effectiveTrainingDeals": 8244.0,
+    "ageRates": {
+      "0-30": {
+        "rate": 0.44198688,
+        "effectiveSupport": 5214.34
+      },
+      "121-138": {
+        "rate": 0.20980922,
+        "effectiveSupport": 52.7831
+      },
+      "139+": {
+        "rate": 0.04963497,
+        "effectiveSupport": 230.4323
+      },
+      "31-60": {
+        "rate": 0.44902787,
+        "effectiveSupport": 1430.6542
+      },
+      "61-90": {
+        "rate": 0.48338712,
+        "effectiveSupport": 928.7308
+      },
+      "91-120": {
+        "rate": 0.38900387,
+        "effectiveSupport": 387.0596
+      }
+    },
+    "cells": {
+      "GTK 500|0-30": {
+        "rate": 0.36284475,
+        "effectiveSupport": 20.6575
+      },
+      "GTK 500|121-138": {
+        "rate": 0.20066228,
+        "effectiveSupport": 0.6838
+      },
+      "GTK 500|139+": {
+        "rate": 0.04099256,
+        "effectiveSupport": 3.1624
+      },
+      "GTK 500|31-60": {
+        "rate": 0.40467748,
+        "effectiveSupport": 7.401
+      },
+      "GTK 500|61-90": {
+        "rate": 0.45886179,
+        "effectiveSupport": 4.9649
+      },
+      "GTK 500|91-120": {
+        "rate": 0.38104299,
+        "effectiveSupport": 3.1304
+      },
+      "GTX Basic|0-30": {
+        "rate": 0.43302356,
+        "effectiveSupport": 1093.4168
+      },
+      "GTX Basic|121-138": {
+        "rate": 0.17406718,
+        "effectiveSupport": 12.1509
+      },
+      "GTX Basic|139+": {
+        "rate": 0.01058574,
+        "effectiveSupport": 55.3328
+      },
+      "GTX Basic|31-60": {
+        "rate": 0.45957109,
+        "effectiveSupport": 313.3084
+      },
+      "GTX Basic|61-90": {
+        "rate": 0.50218649,
+        "effectiveSupport": 202.0597
+      },
+      "GTX Basic|91-120": {
+        "rate": 0.40989881,
+        "effectiveSupport": 86.7314
+      },
+      "GTX Plus Basic|0-30": {
+        "rate": 0.43977869,
+        "effectiveSupport": 809.9058
+      },
+      "GTX Plus Basic|121-138": {
+        "rate": 0.17055299,
+        "effectiveSupport": 8.5752
+      },
+      "GTX Plus Basic|139+": {
+        "rate": 0.0146939,
+        "effectiveSupport": 35.669
+      },
+      "GTX Plus Basic|31-60": {
+        "rate": 0.42388106,
+        "effectiveSupport": 226.6782
+      },
+      "GTX Plus Basic|61-90": {
+        "rate": 0.4642131,
+        "effectiveSupport": 150.5682
+      },
+      "GTX Plus Basic|91-120": {
+        "rate": 0.37615198,
+        "effectiveSupport": 63.6036
+      },
+      "GTX Plus Pro|0-30": {
+        "rate": 0.440981,
+        "effectiveSupport": 592.1001
+      },
+      "GTX Plus Pro|121-138": {
+        "rate": 0.16845593,
+        "effectiveSupport": 6.1193
+      },
+      "GTX Plus Pro|139+": {
+        "rate": 0.01771922,
+        "effectiveSupport": 27.0179
+      },
+      "GTX Plus Pro|31-60": {
+        "rate": 0.47633216,
+        "effectiveSupport": 154.0265
+      },
+      "GTX Plus Pro|61-90": {
+        "rate": 0.52567871,
+        "effectiveSupport": 95.5755
+      },
+      "GTX Plus Pro|91-120": {
+        "rate": 0.39289929,
+        "effectiveSupport": 40.1608
+      },
+      "GTX Pro|0-30": {
+        "rate": 0.46522919,
+        "effectiveSupport": 903.7369
+      },
+      "GTX Pro|121-138": {
+        "rate": 0.15925004,
+        "effectiveSupport": 8.2986
+      },
+      "GTX Pro|139+": {
+        "rate": 0.01493334,
+        "effectiveSupport": 34.8565
+      },
+      "GTX Pro|31-60": {
+        "rate": 0.45710301,
+        "effectiveSupport": 234.0895
+      },
+      "GTX Pro|61-90": {
+        "rate": 0.48273955,
+        "effectiveSupport": 147.7103
+      },
+      "GTX Pro|91-120": {
+        "rate": 0.37027283,
+        "effectiveSupport": 61.3082
+      },
+      "MG Advanced|0-30": {
+        "rate": 0.42447365,
+        "effectiveSupport": 839.098
+      },
+      "MG Advanced|121-138": {
+        "rate": 0.15471239,
+        "effectiveSupport": 8.6077
+      },
+      "MG Advanced|139+": {
+        "rate": 0.01402618,
+        "effectiveSupport": 38.081
+      },
+      "MG Advanced|31-60": {
+        "rate": 0.44772185,
+        "effectiveSupport": 224.3284
+      },
+      "MG Advanced|61-90": {
+        "rate": 0.46186388,
+        "effectiveSupport": 150.0733
+      },
+      "MG Advanced|91-120": {
+        "rate": 0.3745959,
+        "effectiveSupport": 62.8115
+      },
+      "MG Special|0-30": {
+        "rate": 0.45139186,
+        "effectiveSupport": 955.4249
+      },
+      "MG Special|121-138": {
+        "rate": 0.15666068,
+        "effectiveSupport": 8.3477
+      },
+      "MG Special|139+": {
+        "rate": 0.01450959,
+        "effectiveSupport": 36.3126
+      },
+      "MG Special|31-60": {
+        "rate": 0.44146994,
+        "effectiveSupport": 270.8221
+      },
+      "MG Special|61-90": {
+        "rate": 0.48411645,
+        "effectiveSupport": 177.779
+      },
+      "MG Special|91-120": {
+        "rate": 0.39028478,
+        "effectiveSupport": 69.3137
+      }
+    },
+    "selectedStrategy": "bayesian_smoothed_product_age"
+  },
+  "historicalCycleDays": {
+    "p25": 8.0,
+    "median": 45.0,
+    "p75": 85.0,
+    "p90": 104.0,
+    "p95": 114.5,
+    "max": 138.0,
+    "wonMedian": 57.0
+  },
+  "historicalProductOutcomes": [
+    {
+      "product": "GTK 500",
+      "closedDeals": 25,
+      "won": 15,
+      "lost": 10,
+      "historicalWinRate": 0.6
+    },
+    {
+      "product": "GTX Basic",
+      "closedDeals": 1436,
+      "won": 915,
+      "lost": 521,
+      "historicalWinRate": 0.6372
+    },
+    {
+      "product": "GTX Plus Basic",
+      "closedDeals": 1051,
+      "won": 653,
+      "lost": 398,
+      "historicalWinRate": 0.6213
+    },
+    {
+      "product": "GTX Plus Pro",
+      "closedDeals": 745,
+      "won": 479,
+      "lost": 266,
+      "historicalWinRate": 0.643
+    },
+    {
+      "product": "GTX Pro",
+      "closedDeals": 1147,
+      "won": 729,
+      "lost": 418,
+      "historicalWinRate": 0.6356
+    },
+    {
+      "product": "MG Advanced",
+      "closedDeals": 1084,
+      "won": 654,
+      "lost": 430,
+      "historicalWinRate": 0.6033
+    },
+    {
+      "product": "MG Special",
+      "closedDeals": 1223,
+      "won": 793,
+      "lost": 430,
+      "historicalWinRate": 0.6484
+    }
+  ],
+  "priorityScore": {
+    "appliesTo": "Engaging",
+    "formula": "100 * (0.65 * probability + 0.20 * actionability + 0.15 * value_percentile)",
+    "components": {
+      "probability": "estimativa empirica suavizada por produto e idade",
+      "actionability": "janela derivada dos quartis do ciclo historico",
+      "valuePercentile": "percentil do preco de catalogo; nunca close_value"
+    }
+  },
+  "qualificationScore": {
+    "appliesTo": "Prospecting",
+    "formula": "100 * (0.60 * account_identified + 0.40 * catalog_value_percentile)",
+    "probabilitySuppressed": true
+  },
+  "queueRules": [
+    {
+      "queue": "Foco agora",
+      "rule": "Top 10 por vendedor entre Engaging com idade ate o maximo historico"
+    },
+    {
+      "queue": "Acelerar",
+      "rule": "Demais Engaging acima do p75 e ate o maximo historico"
+    },
+    {
+      "queue": "Nutrir",
+      "rule": "Demais Engaging ate o p75 historico"
+    },
+    {
+      "queue": "Resgatar ou desqualificar",
+      "rule": "Engaging acima do maximo historico de ciclo encerrado"
+    },
+    {
+      "queue": "Qualificar",
+      "rule": "Todas as oportunidades Prospecting"
+    }
+  ],
+  "limitations": [
+    "O dataset e um snapshot historico sem eventos de atividade, canal, contato ou proximo passo.",
+    "O target e reconstruido a partir de snapshots semanais, nao observado nativamente no CRM.",
+    "A probabilidade de deals acima de 138 dias e conservadora e tem baixa confianca.",
+    "Idade alta nao e interpretada como causa de perda: a fila de resgate e uma regra operacional de actionability.",
+    "O preco de catalogo aproxima potencial; desconto e quantidade nao estao disponiveis.",
+    "Antes de uso real, o modelo deve ser recalibrado com dados atuais e monitorado por coorte."
+  ]
+}

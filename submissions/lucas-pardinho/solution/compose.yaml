@@ -1,0 +1,24 @@
+services:
+  g4-focus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+      GENERATED_DATA_DIR: /app/generated
+      ALLOW_SAMPLE_DATA: "false"
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+    init: true
+    restart: unless-stopped

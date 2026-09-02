@@ -1,0 +1,14 @@
+# Runtime and build artifacts
+solution/web/node_modules/
+solution/web/.next/
+solution/web/coverage/
+solution/web/.turbo/
+solution/**/__pycache__/
+solution/**/*.py[cod]
+
+# Local-only configuration and logs
+solution/**/.env
+solution/**/.env.*
+!solution/**/.env.example
+solution/**/*.log
+.DS_Store
