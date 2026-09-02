@@ -3,10 +3,10 @@
 ## Sobre mim
 
 - **Nome:** Lucas dos Santos Pardinho
-- **LinkedIn:** não informado
+- **LinkedIn:** https://www.linkedin.com/in/pardinhodev/
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 - **Solução:** G4 Focus
-- **Demo online:** a preencher depois da validação do deploy
+- **Demo online:** https://ai-master-challenge-production.up.railway.app/
 
 ## Executive Summary
 
@@ -147,4 +147,4 @@ O principal julgamento de produto foi não otimizar apenas um ranking. Eu conver
 
 ---
 
-**Submissão enviada em:** a preencher no fechamento
+**Submissão enviada em:** 01/09/2026
