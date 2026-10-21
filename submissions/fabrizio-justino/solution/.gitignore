@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+.next/
+*.tsbuildinfo
+
+# Segredos e dados de contato — só os exemplos vão para o repositório
+.env
+.env.local
+!.env.example
+backend/config/destinatarios.json
+
+# Gerados em tempo de execução
+backend/.cache_ia/
+backend/logs/
+backend/saida_emails/

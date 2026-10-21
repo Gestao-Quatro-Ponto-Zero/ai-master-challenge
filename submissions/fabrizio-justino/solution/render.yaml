@@ -1,0 +1,16 @@
+# Blueprint do Render para o backend (Render → New → Blueprint → este repositório).
+# Plano free dorme sem uso: o 1º acesso leva ~30–60s (acordar + backtest de ~6s).
+services:
+  - type: web
+    name: lead-scorer-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /saude
+    envVars:
+      # IA desligada no link público — modo template (sem custo, sem dado saindo)
+      - key: LEAD_SCORER_EMAIL_MODO
+        value: arquivo
+      - key: LEAD_SCORER_URL_APP
+        sync: false   # preencher com a URL do frontend no Vercel
