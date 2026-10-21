@@ -1,0 +1,8 @@
+.env
+__pycache__/
+.pytest_cache/
+.cache_ia/
+logs/
+saida_emails/
+tests/
+config/destinatarios.json

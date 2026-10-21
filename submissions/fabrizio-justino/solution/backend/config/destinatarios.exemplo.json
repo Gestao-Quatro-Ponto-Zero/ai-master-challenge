@@ -1,0 +1,51 @@
+{
+  "_leia": "Copie para destinatarios.json e troque pelos e-mails reais. Este arquivo nunca é usado para envio real.",
+  "vendedores": {
+    "Anna Snelling": "anna.snelling@example.com",
+    "Boris Faz": "boris.faz@example.com",
+    "Carl Lin": "carl.lin@example.com",
+    "Carol Thompson": "carol.thompson@example.com",
+    "Cassey Cress": "cassey.cress@example.com",
+    "Cecily Lampkin": "cecily.lampkin@example.com",
+    "Corliss Cosme": "corliss.cosme@example.com",
+    "Daniell Hammack": "daniell.hammack@example.com",
+    "Darcel Schlecht": "darcel.schlecht@example.com",
+    "Donn Cantrell": "donn.cantrell@example.com",
+    "Elease Gluck": "elease.gluck@example.com",
+    "Elizabeth Anderson": "elizabeth.anderson@example.com",
+    "Garret Kinder": "garret.kinder@example.com",
+    "Gladys Colclough": "gladys.colclough@example.com",
+    "Hayden Neloms": "hayden.neloms@example.com",
+    "James Ascencio": "james.ascencio@example.com",
+    "Jonathan Berthelot": "jonathan.berthelot@example.com",
+    "Kami Bicknell": "kami.bicknell@example.com",
+    "Kary Hendrixson": "kary.hendrixson@example.com",
+    "Lajuana Vencill": "lajuana.vencill@example.com",
+    "Markita Hansen": "markita.hansen@example.com",
+    "Marty Freudenburg": "marty.freudenburg@example.com",
+    "Maureen Marcano": "maureen.marcano@example.com",
+    "Mei-Mei Johns": "meimei.johns@example.com",
+    "Moses Frase": "moses.frase@example.com",
+    "Natalya Ivanova": "natalya.ivanova@example.com",
+    "Niesha Huffines": "niesha.huffines@example.com",
+    "Reed Clapper": "reed.clapper@example.com",
+    "Rosalina Dieter": "rosalina.dieter@example.com",
+    "Rosie Papadopoulos": "rosie.papadopoulos@example.com",
+    "Versie Hillebrand": "versie.hillebrand@example.com",
+    "Vicki Laflamme": "vicki.laflamme@example.com",
+    "Violet Mclelland": "violet.mclelland@example.com",
+    "Wilburn Farren": "wilburn.farren@example.com",
+    "Zane Levy": "zane.levy@example.com"
+  },
+  "managers": {
+    "Cara Losch": "cara.losch@example.com",
+    "Celia Rouche": "celia.rouche@example.com",
+    "Dustin Brinkmann": "dustin.brinkmann@example.com",
+    "Melvin Marxen": "melvin.marxen@example.com",
+    "Rocco Neubert": "rocco.neubert@example.com",
+    "Summer Sewald": "summer.sewald@example.com"
+  },
+  "revops": [
+    "head.revops@example.com"
+  ]
+}

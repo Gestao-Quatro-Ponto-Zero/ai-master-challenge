@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Paleta do Lead Scorer: azul petróleo + âmbar. Tokens no padrão shadcn/ui. */
+:root {
+  --background: #FFFFFF;
+  --foreground: #0B1A20;
+  --card: #FFFFFF;
+  --card-foreground: #0B1A20;
+  --popover: #FFFFFF;
+  --popover-foreground: #0B1A20;
+  --primary: #0F5E73;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1B7A8F;
+  --secondary-foreground: #FFFFFF;
+  --muted: #F4F6F7;
+  --muted-foreground: #5F6B72;
+  --accent: #F2B544;
+  --accent-foreground: #0B1A20;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #E2E8EB;
+  --input: #F1F4F5;
+  --ring: #5FB3C7;
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: #0B1A20;
+  --foreground: #E6EEF1;
+  --card: #13222A;
+  --card-foreground: #E6EEF1;
+  --popover: #13222A;
+  --popover-foreground: #E6EEF1;
+  --primary: #5FB3C7;
+  --primary-foreground: #0B1A20;
+  --secondary: #1B7A8F;
+  --secondary-foreground: #E6EEF1;
+  --muted: #1E3039;
+  --muted-foreground: #9AAEB6;
+  --accent: #F2B544;
+  --accent-foreground: #0B1A20;
+  --destructive: #F87171;
+  --destructive-foreground: #0B1A20;
+  --border: #1E3039;
+  --input: #13222A;
+  --ring: #5FB3C7;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Fundo da página: um degradê leve da cor primária no topo */
+  .app-bg {
+    background-color: var(--background);
+    background-image: linear-gradient(180deg, color-mix(in srgb, var(--primary) 8%, transparent) 0, transparent 320px);
+  }
+
+  /* Card de destaque (briefing) */
+  .glass-card {
+    @apply border border-primary/20 bg-card shadow-md;
+  }
+}
+
+/* Impressão: fundo branco e cores preservadas */
+@media print {
+  * {
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+  html, body, .app-bg {
+    background: #ffffff !important;
+  }
+}
