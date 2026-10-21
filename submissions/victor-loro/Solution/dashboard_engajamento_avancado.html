@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Engajamento – Social Media</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#e2e8f0;--muted:#94a3b8;--green:#22c55e;--yellow:#eab308;--orange:#f97316;--red:#ef4444;--blue:#3b82f6;--accent:#38bdf8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+.container{max-width:1300px;margin:0 auto;padding:18px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+h1{font-size:1.45rem;color:var(--accent)}
+.subtitle{color:var(--muted);font-size:.86rem;max-width:640px}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:22px;text-align:center;background:var(--card);cursor:pointer;transition:.2s}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:#1e3a5f}
+.upload-zone input{display:none}
+.upload-zone p{color:var(--muted);margin-top:6px;font-size:.86rem}
+.btn{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-weight:600;cursor:pointer;font-size:.88rem}
+.btn:hover{filter:brightness(1.1)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.status{margin-top:8px;font-size:.86rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+.card h2{font-size:.98rem;margin-bottom:8px;color:var(--accent);border-bottom:1px solid var(--border);padding-bottom:6px}
+.kpi{font-size:1.55rem;font-weight:700}
+.kpi-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.tab{padding:7px 11px;border-radius:8px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:.82rem;color:var(--muted)}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{display:none}.panel.active{display:block}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{background:#0f172a;color:var(--accent);padding:7px;text-align:left;position:sticky;top:0}
+td{padding:6px 7px;border-bottom:1px solid var(--border)}
+tr:hover td{background:#1e3a5f}
+.badge{display:inline-block;padding:2px 7px;border-radius:99px;font-size:.7rem;font-weight:600}
+.badge-green{background:#14532d;color:#86efac}.badge-yellow{background:#713f12;color:#fde047}
+.badge-red{background:#7f1d1d;color:#fca5a5}.badge-blue{background:#1e3a5f;color:#93c5fd}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin-bottom:12px}
+label{display:block;font-size:.76rem;color:var(--muted);margin-bottom:2px}
+select,input[type=text],input[type=number],input[type=date]{width:100%;padding:7px 9px;border-radius:6px;border:1px solid var(--border);background:#0f172a;color:var(--text);font-size:.86rem}
+.pred-result{margin-top:12px;padding:14px;border-radius:10px;text-align:center;font-size:1.1rem;font-weight:700}
+.chart-wrap{position:relative;height:230px;margin-top:6px}
+.tag{display:inline-block;background:#1e3a5f;color:#93c5fd;padding:2px 7px;border-radius:4px;margin:2px;font-size:.76rem}
+.rec-box{background:#0f172a;border-left:4px solid var(--green);padding:10px;margin:6px 0;border-radius:0 8px 8px 0;font-size:.88rem}
+.do-box{background:#052e16;border-left:4px solid var(--green);padding:9px 11px;margin:4px 0;border-radius:0 8px 8px 0;font-size:.86rem}
+.dont-box{background:#450a0a;border-left:4px solid var(--red);padding:9px 11px;margin:4px 0;border-radius:0 8px 8px 0;font-size:.86rem}
+.warning{background:#422006;border-left:4px solid var(--orange);padding:10px 12px;border-radius:0 8px 8px 0;font-size:.86rem;margin:10px 0}
+.info{background:#0c4a6e;border-left:4px solid var(--blue);padding:10px 12px;border-radius:0 8px 8px 0;font-size:.86rem;margin:10px 0}
+.scroll{max-height:300px;overflow-y:auto}
+.hidden{display:none!important}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.two-col{grid-template-columns:1fr}}
+.fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:10px}
+.fin-kpi{background:#0f172a;padding:11px;border-radius:8px;text-align:center}
+.fin-kpi .val{font-size:1.2rem;font-weight:700;color:var(--accent)}
+.fin-kpi .lbl{font-size:.72rem;color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end;margin-bottom:12px}
+.toolbar .field{min-width:130px}
+footer{text-align:center;color:var(--muted);font-size:.76rem;margin-top:24px;padding-top:12px;border-top:1px solid var(--border)}
+@media print{
+  body{background:#fff;color:#111}
+  .upload-zone,.tabs,.btn,.toolbar{display:none!important}
+  .card{break-inside:avoid;border:1px solid #ccc;background:#fff}
+  .panel{display:block!important}
+  .tab{display:none}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <div>
+    <h1>Dashboard de Engajamento – Social Media</h1>
+    <p class="subtitle">Carregue um CSV. Insights, preditivo, hashtags, clusters, pirâmide de influência, horários, financeiro e recomendações se adaptam aos dados. Funciona mesmo com colunas faltando.</p>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btn-outline" onclick="window.print()" title="Use Salvar como PDF no diálogo de impressão">Exportar PDF</button>
+  </div>
+</header>
+
+<div class="card" id="uploadCard">
+  <div class="upload-zone" id="dropZone">
+    <strong>Arraste um CSV aqui ou clique para escolher</strong>
+    <p>Colunas ideais: platform, content_type, content_category, views, likes, shares, comments_count, hashtags, is_sponsored, follower_count, audience_age_distribution, creator_name, post_date. Colunas ausentes são ignoradas com segurança.</p>
+    <input type="file" id="fileInput" accept=".csv,text/csv">
+  </div>
+  <div class="status" id="status">Nenhum arquivo carregado.</div>
+</div>
+
+<div class="toolbar hidden" id="filterBar">
+  <div class="field"><label>Data início</label><input type="date" id="dateFrom"></div>
+  <div class="field"><label>Data fim</label><input type="date" id="dateTo"></div>
+  <div class="field"><label>Mín. posts (creators)</label><input type="number" id="minPosts" value="3" min="1" max="50" step="1"></div>
+  <button class="btn" onclick="applyFilters()">Aplicar filtros</button>
+  <button class="btn btn-outline" onclick="clearFilters()">Limpar período</button>
+</div>
+
+<div class="grid hidden" id="kpiGrid">
+  <div class="card"><div class="kpi-label">Total de posts</div><div class="kpi" id="kpiPosts">—</div></div>
+  <div class="card"><div class="kpi-label">ER médio</div><div class="kpi" id="kpiER">—</div></div>
+  <div class="card"><div class="kpi-label">Total eng. médio</div><div class="kpi" id="kpiTE">—</div></div>
+  <div class="card"><div class="kpi-label">Creators únicos</div><div class="kpi" id="kpiCreators">—</div></div>
+</div>
+
+<div class="tabs hidden" id="tabs">
+  <div class="tab active" data-panel="panel-overview">Visão geral</div>
+  <div class="tab" data-panel="panel-recommend">Recomendações + Do/Don't</div>
+  <div class="tab" data-panel="panel-predict">Modelo preditivo</div>
+  <div class="tab" data-panel="panel-influence">Pirâmide de influência</div>
+  <div class="tab" data-panel="panel-timing">Horários e dias</div>
+  <div class="tab" data-panel="panel-hashtags">Hashtags</div>
+  <div class="tab" data-panel="panel-cluster">Clusters</div>
+  <div class="tab" data-panel="panel-finance">Financeiro</div>
+  <div class="tab" data-panel="panel-rules">Regras aprendidas</div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="panel active" id="panel-overview">
+  <div class="info" id="criteriaNote"></div>
+  <div class="grid">
+    <div class="card"><h2>Por plataforma (ER %)</h2><div class="chart-wrap"><canvas id="chartPlatform"></canvas></div></div>
+    <div class="card"><h2>Por categoria (ER %)</h2><div class="chart-wrap"><canvas id="chartCategory"></canvas></div></div>
+    <div class="card"><h2>Por faixa etária (ER %)</h2><div class="chart-wrap"><canvas id="chartAge"></canvas></div></div>
+    <div class="card"><h2>Por tipo de conteúdo (ER %)</h2><div class="chart-wrap"><canvas id="chartType"></canvas></div></div>
+  </div>
+  <div class="card">
+    <h2>Creators em destaque (score = ER × log10(posts+1))</h2>
+    <p style="color:var(--muted);font-size:.84rem;margin-bottom:8px">Critério: mínimo de posts configurável (padrão 3). O score equilibra taxa de engajamento e volume — evita crowoar quem tem 1–2 posts com ER alto por acaso.</p>
+    <div class="scroll"><table id="tableCreators"><thead><tr><th>#</th><th>Creator</th><th>Posts</th><th>ER médio</th><th>Total eng. médio</th><th>Score</th><th>Plataforma</th><th>Tier</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</div>
+
+<!-- RECOMMEND -->
+<div class="panel" id="panel-recommend">
+  <div class="card">
+    <h2>Recomendações automáticas</h2>
+    <div id="recommendations"></div>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h2>5 melhores combinações (plataforma × categoria × idade)</h2>
+    <div class="scroll"><table id="tableTopCombos"><thead><tr><th>#</th><th>Combinação</th><th>Posts</th><th>ER médio</th><th>Total eng. médio</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  <div class="two-col" style="margin-top:12px">
+    <div class="card"><h2>O que fazer</h2><div id="doList"></div></div>
+    <div class="card"><h2>O que não fazer</h2><div id="dontList"></div></div>
+  </div>
+</div>
+
+<!-- PREDICT -->
+<div class="panel" id="panel-predict">
+  <div class="card">
+    <h2>Modelo preditivo de engajamento</h2>
+    <p style="color:var(--muted);font-size:.86rem;margin-bottom:10px">Deltas relativos em relação à média do dataset filtrado. Adapta-se a novos dados.</p>
+    <div class="form-row">
+      <div><label>Plataforma</label><select id="predPlatform"></select></div>
+      <div><label>Categoria</label><select id="predCategory"></select></div>
+      <div><label>Tipo de conteúdo</label><select id="predType"></select></div>
+      <div><label>Faixa etária</label><select id="predAge"></select></div>
+      <div><label>Patrocinado?</label><select id="predSponsored"><option value="false">Não</option><option value="true">Sim</option></select></div>
+      <div><label>Nº de hashtags</label><select id="predHash"><option value="0">0</option><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4+</option></select></div>
+      <div><label>Tier do influenciador</label><select id="predTier"><option value="">Qualquer</option><option value="Nano (&lt;10k)">Nano</option><option value="Micro (10-50k)">Micro</option><option value="Mid (50-500k)">Mid</option><option value="Macro (500k-1M)">Macro</option><option value="Mega (1M+)">Mega</option></select></div>
+    </div>
+    <button class="btn" onclick="runPrediction()">Calcular engajamento estimado</button>
+    <div id="predResult" class="pred-result" style="display:none"></div>
+    <div id="predExplain" style="margin-top:8px;font-size:.86rem;color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- INFLUENCE -->
+<div class="panel" id="panel-influence">
+  <div class="card">
+    <h2>Pirâmide de influência (nano → mega)</h2>
+    <p style="color:var(--muted);font-size:.86rem;margin-bottom:8px">Nano &lt;10k · Micro 10–50k · Mid 50–500k · Macro 500k–1M · Mega 1M+</p>
+    <div class="chart-wrap" style="height:260px"><canvas id="chartTier"></canvas></div>
+    <div class="scroll" style="margin-top:10px">
+      <table id="tableTier"><thead><tr><th>Tier</th><th>Posts</th><th>% total</th><th>ER médio</th><th>Total eng. médio</th><th>Eng./follower (×1000)</th><th>Eficiência</th></tr></thead><tbody></tbody></table>
+    </div>
+    <div class="warning" id="tierInsight" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- TIMING -->
+<div class="panel" id="panel-timing">
+  <div class="card">
+    <h2>Melhores horários e dias</h2>
+    <p style="color:var(--muted);font-size:.86rem;margin-bottom:8px">Requer coluna post_date. Se ausente, esta aba fica limitada.</p>
+    <div class="grid">
+      <div class="card" style="background:#0f172a"><h2>Por hora (ER %)</h2><div class="chart-wrap"><canvas id="chartHour"></canvas></div></div>
+      <div class="card" style="background:#0f172a"><h2>Por dia da semana (ER %)</h2><div class="chart-wrap"><canvas id="chartDow"></canvas></div></div>
+    </div>
+    <div id="timingRecs" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- HASHTAGS -->
+<div class="panel" id="panel-hashtags">
+  <div class="card">
+    <h2>Análise de hashtags</h2>
+    <div class="two-col">
+      <div><h3 style="font-size:.88rem;color:var(--green);margin-bottom:6px">Alto engajamento (top 25%)</h3><div id="hashHigh"></div></div>
+      <div><h3 style="font-size:.88rem;color:var(--red);margin-bottom:6px">Baixo engajamento (bottom 25%)</h3><div id="hashLow"></div></div>
+    </div>
+    <div class="warning" id="hashNote" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<!-- CLUSTERS -->
+<div class="panel" id="panel-cluster">
+  <div class="card">
+    <h2>Clusters (plataforma × categoria × idade)</h2>
+    <div class="scroll"><table id="tableClusters"><thead><tr><th>Cluster</th><th>Posts</th><th>ER médio</th><th>Total eng. médio</th><th>Classificação</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</div>
+
+<!-- FINANCE -->
+<div class="panel" id="panel-finance">
+  <div class="card">
+    <h2>Módulo financeiro (projeção)</h2>
+    <p style="color:var(--muted);font-size:.86rem;margin-bottom:10px">O CSV não traz custo, cliques nem VTR. Informe seus números; o dashboard projeta CPE, CPA, CPL, ROAS, CPV etc. com base no ER observado.</p>
+    <div class="form-row">
+      <div><label>Investimento total (R$)</label><input type="number" id="finInvest" value="10000" min="0" step="100"></div>
+      <div><label>CPM negociado (R$)</label><input type="number" id="finCPM" value="15" min="0" step="0.5"></div>
+      <div><label>CPC estimado (R$)</label><input type="number" id="finCPC" value="1.2" min="0" step="0.1"></div>
+      <div><label>CTR estimado (%)</label><input type="number" id="finCTR" value="1.5" min="0" step="0.1"></div>
+      <div><label>Taxa de conversão / lead (%)</label><input type="number" id="finConv" value="2" min="0" step="0.1"></div>
+      <div><label>Receita por conversão (R$)</label><input type="number" id="finRevenue" value="80" min="0" step="1"></div>
+      <div><label>% do budget em vídeo</label><input type="number" id="finVideoShare" value="60" min="0" max="100" step="5"></div>
+    </div>
+    <div class="form-row">
+      <div><label>VTR 25% (%)</label><input type="number" id="finVTR25" value="70" min="0" max="100"></div>
+      <div><label>VTR 50% (%)</label><input type="number" id="finVTR50" value="45" min="0" max="100"></div>
+      <div><label>VTR 75% (%)</label><input type="number" id="finVTR75" value="28" min="0" max="100"></div>
+      <div><label>VTR 100% (%)</label><input type="number" id="finVTR100" value="15" min="0" max="100"></div>
+      <div><label>Invest. por plataforma (opcional)</label><input type="text" id="finByPlat" placeholder="Ex: TikTok:4000, RedNote:3000"></div>
+      <div><label>Invest. por criativo (opcional)</label><input type="text" id="finByCreative" placeholder="Ex: VideoA:5000, Carrossel:2000"></div>
+    </div>
+    <button class="btn" onclick="runFinance()">Calcular métricas financeiras</button>
+    <div class="fin-grid" id="finResults" style="display:none"></div>
+    <div id="finSplit" style="margin-top:12px"></div>
+    <div id="finExplain" style="margin-top:10px;font-size:.86rem;color:var(--muted)"></div>
+  </div>
+</div>
+
+<!-- RULES -->
+<div class="panel" id="panel-rules">
+  <div class="card">
+    <h2>Regras aprendidas dos dados atuais</h2>
+    <div id="learnedRules"></div>
+  </div>
+</div>
+
+<footer>
+  Processamento no navegador · Exportar PDF via impressão do navegador (Salvar como PDF)<br>
+  Critério de creators: score = ER × log10(posts+1), com mínimo de posts configurável (padrão 3).
+</footer>
+</div>
+
+<script>
+let rawAll=[], rawData=[], charts={}, featureScores={};
+
+const dropZone=document.getElementById('dropZone'), fileInput=document.getElementById('fileInput'), statusEl=document.getElementById('status');
+dropZone.addEventListener('click',()=>fileInput.click());
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover')});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('dragover');if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0])});
+fileInput.addEventListener('change',()=>{if(fileInput.files.length)handleFile(fileInput.files[0])});
+
+function handleFile(file){
+  statusEl.textContent=`Carregando ${file.name} (${(file.size/1024/1024).toFixed(1)} MB)...`;
+  Papa.parse(file,{header:true,dynamicTyping:true,skipEmptyLines:true,complete:(results)=>{
+    rawAll=results.data.filter(r=>r.views!=null||r.likes!=null);
+    if(rawAll.length<5){statusEl.textContent='Arquivo inválido ou com poucos registros.';return}
+    rawAll.forEach(normalizeRow);
+    rawData=rawAll.slice();
+    statusEl.textContent=`${rawData.length.toLocaleString('pt-BR')} posts carregados de ${file.name}`;
+    document.getElementById('kpiGrid').classList.remove('hidden');
+    document.getElementById('tabs').classList.remove('hidden');
+    document.getElementById('filterBar').classList.remove('hidden');
+    runAll();
+  },error:err=>{statusEl.textContent='Erro: '+err.message}});
+}
+
+function normalizeRow(r){
+  r.likes=+r.likes||0; r.shares=+r.shares||0; r.comments_count=+r.comments_count||0;
+  r.views=Math.max(+r.views||1,1); r.follower_count=+r.follower_count||0;
+  r.total_eng=r.likes+r.shares+r.comments_count; r.er=r.total_eng/r.views;
+  r.is_sponsored=(r.is_sponsored===true||r.is_sponsored==='TRUE'||r.is_sponsored==='true'||r.is_sponsored===1);
+  r.hashtag_count=r.hashtags?String(r.hashtags).split(',').filter(Boolean).length:0;
+  r.platform=r.platform||'Desconhecida';
+  r.age=r.audience_age_distribution||'Desconhecida';
+  r.category=r.content_category||'Desconhecida';
+  r.type=r.content_type||'Desconhecido';
+  r.creator_name=r.creator_name||'Sem nome';
+  r.tier=tierOf(r.follower_count);
+  const dt=parseDate(r.post_date); r.hour=dt?dt.getHours():null; r.dow=dt?dt.getDay():null; r.dateObj=dt;
+}
+function tierOf(f){if(f<10000)return'Nano (<10k)';if(f<50000)return'Micro (10-50k)';if(f<500000)return'Mid (50-500k)';if(f<1000000)return'Macro (500k-1M)';return'Mega (1M+)'}
+function parseDate(s){if(!s)return null;const d=new Date(s);return isNaN(d.getTime())?null:d}
+
+function applyFilters(){
+  const from=document.getElementById('dateFrom').value?new Date(document.getElementById('dateFrom').value):null;
+  const to=document.getElementById('dateTo').value?new Date(document.getElementById('dateTo').value+'T23:59:59'):null;
+  rawData=rawAll.filter(r=>{
+    if(!r.dateObj) return !from && !to; // keep undated if no filter
+    if(from && r.dateObj<from) return false;
+    if(to && r.dateObj>to) return false;
+    return true;
+  });
+  if(!from && !to) rawData=rawAll.slice();
+  statusEl.textContent=`Filtro ativo: ${rawData.length.toLocaleString('pt-BR')} posts`;
+  runAll();
+}
+function clearFilters(){
+  document.getElementById('dateFrom').value='';
+  document.getElementById('dateTo').value='';
+  rawData=rawAll.slice();
+  statusEl.textContent=`${rawData.length.toLocaleString('pt-BR')} posts (sem filtro de período)`;
+  runAll();
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active'); document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+
+function groupBy(arr,fn){const m={};arr.forEach(x=>{const k=fn(x);(m[k]=m[k]||[]).push(x)});return m}
+function avg(arr,fn){return arr.length?arr.reduce((s,x)=>s+fn(x),0)/arr.length:0}
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id]}}
+function makeBar(id,labels,data,color='#3b82f6'){
+  destroyChart(id);
+  charts[id]=new Chart(document.getElementById(id).getContext('2d'),{
+    type:'bar',data:{labels,datasets:[{data,backgroundColor:color,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{ticks:{color:'#94a3b8'},grid:{color:'#334155'}},x:{ticks:{color:'#94a3b8',maxRotation:40},grid:{display:false}}}}
+  });
+}
+
+function runAll(){
+  if(!rawData.length)return;
+  updateKPIs(); updateOverview(); updateCreators(); populatePredict();
+  buildRecommendationsAndDoDont(); analyzeInfluence(); analyzeTiming();
+  analyzeHashtags(); buildClusters(); learnRules();
+}
+
+function updateKPIs(){
+  document.getElementById('kpiPosts').textContent=rawData.length.toLocaleString('pt-BR');
+  document.getElementById('kpiER').textContent=(avg(rawData,r=>r.er)*100).toFixed(2)+'%';
+  document.getElementById('kpiTE').textContent=Math.round(avg(rawData,r=>r.total_eng)).toLocaleString('pt-BR');
+  document.getElementById('kpiCreators').textContent=new Set(rawData.map(r=>r.creator_name)).size.toLocaleString('pt-BR');
+}
+function updateOverview(){
+  [['chartPlatform',r=>r.platform],['chartCategory',r=>r.category],['chartAge',r=>r.age],['chartType',r=>r.type]].forEach(([id,fn])=>{
+    const g=groupBy(rawData,fn); const labels=Object.keys(g).sort();
+    makeBar(id,labels,labels.map(l=>avg(g[l],r=>r.er)*100));
+  });
+}
+
+function creatorScore(er,n){return er*Math.log10(n+1)}
+
+function updateCreators(){
+  const minP=+document.getElementById('minPosts').value||3;
+  document.getElementById('criteriaNote').innerHTML=`<strong>Critério dos creators em destaque:</strong> mínimo de <strong>${minP} posts</strong> no período filtrado. Ordenação por <strong>score = ER × log10(posts+1)</strong>, que premia taxa alta sem deixar de exigir volume. Quem tem poucos posts e ER extremo (ex.: andrew69 com 3 posts e ~21%) sobe na lista quando o mínimo for ≤3; com mínimo 5 ficava de fora por estabilidade estatística.`;
+  const byC=groupBy(rawData,r=>r.creator_name);
+  const ranked=Object.entries(byC).map(([name,posts])=>{
+    const er=avg(posts,r=>r.er), n=posts.length;
+    return{name,n,er,te:avg(posts,r=>r.total_eng),score:creatorScore(er,n),
+      platform:Object.entries(groupBy(posts,r=>r.platform)).sort((a,b)=>b[1].length-a[1].length)[0][0],
+      tier:tierOf(avg(posts,r=>r.follower_count))};
+  }).filter(c=>c.n>=minP).sort((a,b)=>b.score-a.score).slice(0,20);
+  document.querySelector('#tableCreators tbody').innerHTML=ranked.map((c,i)=>
+    `<tr><td>${i+1}</td><td>${c.name}</td><td>${c.n}</td><td>${(c.er*100).toFixed(3)}%</td><td>${Math.round(c.te)}</td><td>${c.score.toFixed(4)}</td><td>${c.platform}</td><td>${c.tier}</td></tr>`).join('');
+}
+
+function learnFeatureScores(){
+  const g=avg(rawData,r=>r.er); featureScores={platform:{},category:{},type:{},age:{},sponsored:{},hash:{},tier:{}};
+  const add=(dim,fn)=>{Object.entries(groupBy(rawData,fn)).forEach(([k,posts])=>{featureScores[dim][k]=avg(posts,r=>r.er)-g})};
+  add('platform',r=>r.platform); add('category',r=>r.category); add('type',r=>r.type); add('age',r=>r.age); add('tier',r=>r.tier);
+  const spon=rawData.filter(r=>r.is_sponsored), org=rawData.filter(r=>!r.is_sponsored);
+  featureScores.sponsored['true']=(spon.length?avg(spon,r=>r.er):g)-g;
+  featureScores.sponsored['false']=(org.length?avg(org,r=>r.er):g)-g;
+  [0,1,2,3,4].forEach(h=>{const sub=rawData.filter(r=>h<4?r.hashtag_count===h:r.hashtag_count>=4); featureScores.hash[h]=(sub.length?avg(sub,r=>r.er):g)-g});
+}
+function populatePredict(){
+  learnFeatureScores();
+  const fill=(id,vals)=>{const el=document.getElementById(id); if(!el)return; el.innerHTML=vals.map(v=>`<option value="${v}">${v}</option>`).join('')};
+  fill('predPlatform',[...new Set(rawData.map(r=>r.platform))].sort());
+  fill('predCategory',[...new Set(rawData.map(r=>r.category))].sort());
+  fill('predType',[...new Set(rawData.map(r=>r.type))].sort());
+  fill('predAge',[...new Set(rawData.map(r=>r.age))].sort());
+}
+function runPrediction(){
+  const p=document.getElementById('predPlatform').value,c=document.getElementById('predCategory').value,t=document.getElementById('predType').value;
+  const a=document.getElementById('predAge').value,s=document.getElementById('predSponsored').value,h=+document.getElementById('predHash').value;
+  const tier=document.getElementById('predTier').value;
+  const g=avg(rawData,r=>r.er);
+  let delta=(featureScores.platform[p]||0)+(featureScores.category[c]||0)+(featureScores.type[t]||0)+(featureScores.age[a]||0)+(featureScores.sponsored[s]||0)+(featureScores.hash[h]||0);
+  if(tier) delta+=(featureScores.tier[tier]||0);
+  const predER=Math.max(0,g+delta), predTE=predER*avg(rawData,r=>r.views);
+  const all=rawData.map(r=>r.er).sort((a,b)=>a-b), p25=all[Math.floor(all.length*.25)], p75=all[Math.floor(all.length*.75)];
+  let badge,cls,color;
+  if(predER>=p75){badge='ALTO';cls='badge-green';color='var(--green)'}else if(predER>=p25){badge='MÉDIO';cls='badge-yellow';color='var(--yellow)'}else{badge='BAIXO';cls='badge-red';color='var(--red)'}
+  const box=document.getElementById('predResult'); box.style.display='block'; box.style.border=`2px solid ${color}`; box.style.background='#0f172a';
+  box.innerHTML=`ER estimado: <span style="color:${color}">${(predER*100).toFixed(3)}%</span> <span class="badge ${cls}">${badge}</span><br><span style="font-size:.86rem;font-weight:400;color:var(--muted)">Total eng. estimado ≈ ${Math.round(predTE).toLocaleString('pt-BR')}</span>`;
+  document.getElementById('predExplain').innerHTML=`Deltas vs média (${(g*100).toFixed(3)}%): plataforma ${((featureScores.platform[p]||0)*100).toFixed(4)} pp · categoria ${((featureScores.category[c]||0)*100).toFixed(4)} pp · tipo ${((featureScores.type[t]||0)*100).toFixed(4)} pp · idade ${((featureScores.age[a]||0)*100).toFixed(4)} pp · patrocínio ${((featureScores.sponsored[s]||0)*100).toFixed(4)} pp · hashtags ${((featureScores.hash[h]||0)*100).toFixed(4)} pp${tier?` · tier ${((featureScores.tier[tier]||0)*100).toFixed(4)} pp`:''}`;
+}
+
+function analyzeInfluence(){
+  const byT=groupBy(rawData,r=>r.tier);
+  const order=['Nano (<10k)','Micro (10-50k)','Mid (50-500k)','Macro (500k-1M)','Mega (1M+)'];
+  const labels=order.filter(t=>byT[t]&&byT[t].length);
+  if(!labels.length){document.getElementById('tierInsight').textContent='Coluna follower_count ausente ou sem dados.';return}
+  makeBar('chartTier',labels,labels.map(t=>avg(byT[t],r=>r.er)*100),'#a855f7');
+  const total=rawData.length, gER=avg(rawData,r=>r.er);
+  const rows=labels.map(t=>{
+    const posts=byT[t], er=avg(posts,r=>r.er), te=avg(posts,r=>r.total_eng);
+    const engPerFoll=avg(posts,r=>r.follower_count>0?(r.total_eng/r.follower_count)*1000:0);
+    const eff=er>=gER?'<span class="badge badge-green">Na média ou acima</span>':'<span class="badge badge-yellow">Levemente abaixo</span>';
+    return{t,n:posts.length,pct:posts.length/total,er,te,engPerFoll,eff};
+  });
+  document.querySelector('#tableTier tbody').innerHTML=rows.map(r=>
+    `<tr><td>${r.t}</td><td>${r.n}</td><td>${(r.pct*100).toFixed(1)}%</td><td>${(r.er*100).toFixed(4)}%</td><td>${Math.round(r.te)}</td><td>${r.engPerFoll.toFixed(3)}</td><td>${r.eff}</td></tr>`).join('');
+  const erRange=Math.max(...rows.map(r=>r.er))-Math.min(...rows.map(r=>r.er));
+  const bestEff=[...rows].sort((a,b)=>b.engPerFoll-a.engPerFoll)[0];
+  document.getElementById('tierInsight').innerHTML=erRange<0.0005
+    ?`<strong>Leitura de gerente:</strong> ER quase idêntico entre tiers. Não pague prêmio só por ser macro/mega esperando taxa maior. <strong>Engajamento por follower</strong> costuma favorecer nano/micro — use-os para eficiência; macro para alcance e autoridade. Mix sugerido em campanhas de eficiência: ~60% mid/micro + ~40% macro.`
+    :`Há diferença relevante. Melhor eficiência (eng/follower): <strong>${bestEff.t}</strong>.`;
+}
+
+function analyzeTiming(){
+  const withHour=rawData.filter(r=>r.hour!=null), withDow=rawData.filter(r=>r.dow!=null);
+  if(!withHour.length){document.getElementById('timingRecs').innerHTML='<div class="warning">Sem post_date válido — horários indisponíveis.</div>';return}
+  const byH=groupBy(withHour,r=>r.hour), hours=[...Array(24).keys()];
+  makeBar('chartHour',hours.map(h=>h+'h'),hours.map(h=>byH[h]?avg(byH[h],r=>r.er)*100:0));
+  const dowNames=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'], byD=groupBy(withDow,r=>r.dow);
+  makeBar('chartDow',dowNames,[0,1,2,3,4,5,6].map(d=>byD[d]?avg(byD[d],r=>r.er)*100:0),'#22c55e');
+  const hourRanked=hours.filter(h=>byH[h]&&byH[h].length>=30).map(h=>({h,er:avg(byH[h],r=>r.er)})).sort((a,b)=>b.er-a.er);
+  const dowRanked=[0,1,2,3,4,5,6].filter(d=>byD[d]&&byD[d].length>=30).map(d=>({name:dowNames[d],er:avg(byD[d],r=>r.er)})).sort((a,b)=>b.er-a.er);
+  document.getElementById('timingRecs').innerHTML=`
+    <div class="rec-box"><strong>Melhores horários:</strong> ${hourRanked.slice(0,3).map(x=>x.h+'h').join(', ')||'—'}</div>
+    <div class="rec-box" style="border-left-color:var(--orange)"><strong>Evitar:</strong> ${hourRanked.slice(-2).map(x=>x.h+'h').join(', ')||'—'}</div>
+    <div class="rec-box"><strong>Melhores dias:</strong> ${dowRanked.slice(0,2).map(x=>x.name).join(', ')||'—'}</div>
+    <div class="rec-box" style="border-left-color:var(--orange)"><strong>Dia mais fraco:</strong> ${dowRanked.slice(-1).map(x=>x.name).join('')||'—'}</div>`;
+}
+
+function analyzeHashtags(){
+  if(!rawData.some(r=>r.hashtags)){document.getElementById('hashNote').textContent='Coluna hashtags ausente.';return}
+  const ers=rawData.map(r=>r.er).sort((a,b)=>a-b), p25=ers[Math.floor(ers.length*.25)], p75=ers[Math.floor(ers.length*.75)];
+  const high=rawData.filter(r=>r.er>=p75), low=rawData.filter(r=>r.er<=p25);
+  function topTags(posts,n=18){const f={};posts.forEach(r=>{if(!r.hashtags)return;String(r.hashtags).split(',').map(t=>t.trim().toLowerCase()).filter(Boolean).forEach(t=>{f[t]=(f[t]||0)+1})});return Object.entries(f).sort((a,b)=>b[1]-a[1]).slice(0,n)}
+  const ht=topTags(high), lt=topTags(low);
+  document.getElementById('hashHigh').innerHTML=ht.length?ht.map(([t,c])=>`<span class="tag">#${t} (${c})</span>`).join(''):'—';
+  document.getElementById('hashLow').innerHTML=lt.length?lt.map(([t,c])=>`<span class="tag">#${t} (${c})</span>`).join(''):'—';
+  const hs=new Set(ht.map(t=>t[0])), ls=new Set(lt.map(t=>t[0]));
+  const uniq=[...hs].filter(t=>!ls.has(t)).slice(0,6);
+  document.getElementById('hashNote').innerHTML=uniq.length?`Hashtags mais ligadas ao top 25%: <strong>${uniq.map(t=>'#'+t).join(', ')}</strong>. Valide com testes A/B.`:'Sinal fraco de hashtags neste dataset. Regra prática: cerca de 2 hashtags.';
+}
+
+function buildClusters(){
+  const groups=groupBy(rawData,r=>`${r.platform} | ${r.category} | ${r.age}`), gER=avg(rawData,r=>r.er);
+  const ranked=Object.entries(groups).map(([key,posts])=>({key,n:posts.length,er:avg(posts,r=>r.er),te:avg(posts,r=>r.total_eng)})).filter(c=>c.n>=15).sort((a,b)=>b.er-a.er);
+  document.querySelector('#tableClusters tbody').innerHTML=ranked.slice(0,40).map(c=>{
+    const badge=c.er>=gER*1.0005?'<span class="badge badge-green">Acima da média</span>':c.er<=gER*0.9995?'<span class="badge badge-red">Abaixo da média</span>':'<span class="badge badge-yellow">Na média</span>';
+    return`<tr><td>${c.key}</td><td>${c.n}</td><td>${(c.er*100).toFixed(4)}%</td><td>${Math.round(c.te)}</td><td>${badge}</td></tr>`;
+  }).join('');
+}
+
+function buildRecommendationsAndDoDont(){
+  const best=g=>Object.entries(g).map(([k,p])=>({k,er:avg(p,r=>r.er),n:p.length})).filter(x=>x.n>=20).sort((a,b)=>b.er-a.er);
+  const bestPlat=best(groupBy(rawData,r=>r.platform))[0], worstPlat=best(groupBy(rawData,r=>r.platform)).slice(-1)[0];
+  const bestCat=best(groupBy(rawData,r=>r.category))[0], worstCat=best(groupBy(rawData,r=>r.category)).slice(-1)[0];
+  const bestAge=best(groupBy(rawData,r=>r.age))[0], bestType=best(groupBy(rawData,r=>r.type))[0];
+  const minP=+document.getElementById('minPosts').value||3;
+  const byCreator=groupBy(rawData,r=>r.creator_name);
+  const topCreators=Object.entries(byCreator).map(([name,posts])=>({name,n:posts.length,er:avg(posts,r=>r.er),score:creatorScore(avg(posts,r=>r.er),posts.length),tier:tierOf(avg(posts,r=>r.follower_count))})).filter(c=>c.n>=minP).sort((a,b)=>b.score-a.score).slice(0,8);
+  const withHour=rawData.filter(r=>r.hour!=null), byH=groupBy(withHour,r=>r.hour);
+  const topHours=Object.entries(byH).filter(([,p])=>p.length>=30).map(([h,p])=>({h:+h,er:avg(p,r=>r.er)})).sort((a,b)=>b.er-a.er).slice(0,3).map(x=>x.h+'h');
+  const spon=rawData.filter(r=>r.is_sponsored), org=rawData.filter(r=>!r.is_sponsored);
+  const sER=spon.length?avg(spon,r=>r.er):0, oER=org.length?avg(org,r=>r.er):0;
+
+  // Top 5 combos
+  const combos=groupBy(rawData,r=>`${r.platform} + ${r.category} + ${r.age}`);
+  const top5=Object.entries(combos).map(([k,p])=>({k,n:p.length,er:avg(p,r=>r.er),te:avg(p,r=>r.total_eng)})).filter(x=>x.n>=15).sort((a,b)=>b.er-a.er).slice(0,5);
+  document.querySelector('#tableTopCombos tbody').innerHTML=top5.map((c,i)=>
+    `<tr><td>${i+1}</td><td>${c.k}</td><td>${c.n}</td><td>${(c.er*100).toFixed(4)}%</td><td>${Math.round(c.te)}</td></tr>`).join('')||'<tr><td colspan="5">Dados insuficientes</td></tr>';
+
+  document.getElementById('recommendations').innerHTML=`
+    <div class="rec-box"><strong>1. Combinação prioritária</strong><br><span class="tag">${bestPlat?.k||'—'}</span> + <span class="tag">${bestCat?.k||'—'}</span> + público <span class="tag">${bestAge?.k||'—'}</span> + formato <span class="tag">${bestType?.k||'—'}</span></div>
+    <div class="rec-box"><strong>2. Creators para séries (por score)</strong><br>${topCreators.map(c=>`<span class="tag">${c.name} (${(c.er*100).toFixed(2)}% · ${c.n} posts · ${c.tier})</span>`).join(' ')||'—'}</div>
+    <div class="rec-box"><strong>3. Horários</strong><br>Priorize: <strong>${topHours.join(', ')||'carregue post_date ou use 17h–19h e 21h'}</strong></div>
+    <div class="rec-box"><strong>4. Patrocinado vs orgânico</strong><br>${Math.abs(sER-oER)<0.0005?'Performance quase idêntica — o ROI depende do custo de mídia.':(sER>oER?'Patrocinado com leve vantagem de ER.':'Orgânico com leve vantagem; use paid de forma seletiva.')}</div>
+    <div class="rec-box" style="border-left-color:var(--orange)"><strong>5. Onde reduzir</strong><br>Plataforma: <span class="tag">${worstPlat?.k||'—'}</span> · Categoria: <span class="tag">${worstCat?.k||'—'}</span></div>
+    <div class="rec-box"><strong>6. Pirâmide</strong><br>ER similar entre tiers. Micro/nano para eficiência (eng/follower); macro para alcance. Evite pagar prêmio só pelo tamanho da base.</div>`;
+
+  document.getElementById('doList').innerHTML=`
+    <div class="do-box">Priorizar ${bestPlat?.k||'—'} + ${bestCat?.k||'—'} + público ${bestAge?.k||'—'}</div>
+    <div class="do-box">Formatos ${bestType?.k||'texto/misto'}; manter vídeo como volume</div>
+    <div class="do-box">Negociar séries com creators de alto score (ER + volume)</div>
+    <div class="do-box">Publicar nos melhores horários (${topHours.slice(0,2).join(' e ')||'17h–19h / 21h'})</div>
+    <div class="do-box">Cerca de 2 hashtags; disclosure explícita em patrocínios</div>
+    <div class="do-box">Misturar mid/micro (eficiência) com macro (alcance)</div>
+    <div class="do-box">Revisar semanalmente top 30 creators e top 50 posts</div>`;
+  document.getElementById('dontList').innerHTML=`
+    <div class="dont-box">Não priorizar a plataforma mais fraca (${worstPlat?.k||'—'})</div>
+    <div class="dont-box">Evitar a categoria com pior ER (${worstCat?.k||'—'})</div>
+    <div class="dont-box">Não concentrar budget só em macro/mega esperando ER maior</div>
+    <div class="dont-box">Evitar horários e dias de pior performance</div>
+    <div class="dont-box">Não usar só disclosure em legenda ou implícita</div>
+    <div class="dont-box">Não tratar 1–2 posts com ER alto como “prova” sem volume mínimo</div>
+    <div class="dont-box">Não ignorar público 50+ se o ER estiver entre os melhores</div>`;
+}
+
+function runFinance(){
+  const invest=+document.getElementById('finInvest').value||0, cpm=+document.getElementById('finCPM').value||0;
+  const cpc=+document.getElementById('finCPC').value||0, ctr=(+document.getElementById('finCTR').value||0)/100;
+  const conv=(+document.getElementById('finConv').value||0)/100, rev=+document.getElementById('finRevenue').value||0;
+  const videoShare=(+document.getElementById('finVideoShare').value||0)/100;
+  const vtr25=(+document.getElementById('finVTR25').value||0)/100, vtr50=(+document.getElementById('finVTR50').value||0)/100;
+  const vtr75=(+document.getElementById('finVTR75').value||0)/100, vtr100=(+document.getElementById('finVTR100').value||0)/100;
+  const avgER=avg(rawData,r=>r.er);
+  const impressions=cpm>0?(invest/cpm)*1000:0, clicks=impressions*ctr;
+  const engagements=impressions*avgER, cpe=engagements>0?invest/engagements:0;
+  const conversions=clicks*conv, cpa=conversions>0?invest/conversions:0, cpl=cpa;
+  const revenue=conversions*rev, roas=invest>0?revenue/invest:0;
+  const videoImp=impressions*videoShare;
+  const v25=videoImp*vtr25, v50=videoImp*vtr50, v75=videoImp*vtr75, v100=videoImp*vtr100;
+  const cpv25=v25>0?(invest*videoShare)/v25:0, cpv100=v100>0?(invest*videoShare)/v100:0;
+
+  const el=document.getElementById('finResults'); el.style.display='grid';
+  el.innerHTML=`
+    <div class="fin-kpi"><div class="val">${impressions.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Impressões / alcance est.</div></div>
+    <div class="fin-kpi"><div class="val">R$ ${cpe.toFixed(3)}</div><div class="lbl">CPE (custo por engajamento)</div></div>
+    <div class="fin-kpi"><div class="val">R$ ${cpa.toFixed(2)}</div><div class="lbl">CPA / CPL (custo por conversão/lead)</div></div>
+    <div class="fin-kpi"><div class="val">${roas.toFixed(2)}x</div><div class="lbl">ROAS (receita / investimento)</div></div>
+    <div class="fin-kpi"><div class="val">${clicks.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Cliques est.</div></div>
+    <div class="fin-kpi"><div class="val">${conversions.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Conversões / leads est.</div></div>
+    <div class="fin-kpi"><div class="val">R$ ${cpv25.toFixed(3)}</div><div class="lbl">CPV @ 25% view</div></div>
+    <div class="fin-kpi"><div class="val">R$ ${cpv100.toFixed(3)}</div><div class="lbl">CPV @ 100% view</div></div>
+    <div class="fin-kpi"><div class="val">${v25.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Views 25%</div></div>
+    <div class="fin-kpi"><div class="val">${v50.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Views 50%</div></div>
+    <div class="fin-kpi"><div class="val">${v75.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Views 75%</div></div>
+    <div class="fin-kpi"><div class="val">${v100.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div><div class="lbl">Views 100%</div></div>`;
+
+  // Split by platform / creative
+  function parseSplit(str){
+    const out=[]; if(!str||!str.trim()) return out;
+    str.split(',').forEach(part=>{
+      const [k,v]=part.split(':').map(s=>s.trim());
+      if(k&&v&&!isNaN(+v)) out.push({k,v:+v});
+    });
+    return out;
+  }
+  const byPlat=parseSplit(document.getElementById('finByPlat').value);
+  const byCre=parseSplit(document.getElementById('finByCreative').value);
+  let splitHtml='';
+  if(byPlat.length){
+    splitHtml+='<h3 style="font-size:.9rem;margin:8px 0 4px;color:var(--accent)">Por plataforma</h3><table><thead><tr><th>Plataforma</th><th>Investimento</th><th>% budget</th><th>Impressões est.</th><th>CPE est.</th></tr></thead><tbody>';
+    byPlat.forEach(x=>{
+      const imp=cpm>0?(x.v/cpm)*1000:0, eng=imp*avgER, cpeP=eng>0?x.v/eng:0;
+      splitHtml+=`<tr><td>${x.k}</td><td>R$ ${x.v.toLocaleString('pt-BR')}</td><td>${invest?((x.v/invest)*100).toFixed(1):0}%</td><td>${imp.toLocaleString('pt-BR',{maximumFractionDigits:0})}</td><td>R$ ${cpeP.toFixed(3)}</td></tr>`;
+    });
+    splitHtml+='</tbody></table>';
+  }
+  if(byCre.length){
+    splitHtml+='<h3 style="font-size:.9rem;margin:12px 0 4px;color:var(--accent)">Por criativo</h3><table><thead><tr><th>Criativo</th><th>Investimento</th><th>% budget</th><th>Impressões est.</th><th>CPE est.</th></tr></thead><tbody>';
+    byCre.forEach(x=>{
+      const imp=cpm>0?(x.v/cpm)*1000:0, eng=imp*avgER, cpeP=eng>0?x.v/eng:0;
+      splitHtml+=`<tr><td>${x.k}</td><td>R$ ${x.v.toLocaleString('pt-BR')}</td><td>${invest?((x.v/invest)*100).toFixed(1):0}%</td><td>${imp.toLocaleString('pt-BR',{maximumFractionDigits:0})}</td><td>R$ ${cpeP.toFixed(3)}</td></tr>`;
+    });
+    splitHtml+='</tbody></table>';
+  }
+  document.getElementById('finSplit').innerHTML=splitHtml;
+
+  document.getElementById('finExplain').innerHTML=`<strong>Como ler (visão de gerente):</strong><br>
+    • <strong>CPE</strong> — melhor proxy de eficiência de engajamento quando o objetivo é interação (usa o ER do dataset).<br>
+    • <strong>CPA / CPL</strong> — custo por conversão ou lead; depende da taxa de conversão que você informar.<br>
+    • <strong>ROAS</strong> — receita estimada ÷ investimento. Acima de 1x cobre o gasto; meta de negócio define o mínimo aceitável.<br>
+    • <strong>CPV</strong> — só na parcela de vídeo; views não substituem engajamento se a meta for conversa/relacionamento.<br>
+    • Compare CPE entre plataformas e tiers antes de realocar budget.`;
+}
+
+function learnRules(){
+  const gER=avg(rawData,r=>r.er), rules=[];
+  function add(dim,fn){
+    const ranked=Object.entries(groupBy(rawData,fn)).map(([k,p])=>({k,er:avg(p,r=>r.er),n:p.length})).filter(x=>x.n>=20).sort((a,b)=>b.er-a.er);
+    if(ranked.length>=2) rules.push({text:`Em <strong>${dim}</strong>: melhor = <span class="tag">${ranked[0].k}</span> (${(ranked[0].er*100).toFixed(3)}%), pior = <span class="tag">${ranked[ranked.length-1].k}</span> (${(ranked[ranked.length-1].er*100).toFixed(3)}%).`,delta:ranked[0].er-ranked[ranked.length-1].er});
+  }
+  add('Plataforma',r=>r.platform); add('Categoria',r=>r.category); add('Tipo de conteúdo',r=>r.type);
+  add('Faixa etária',r=>r.age); add('Tier de influência',r=>r.tier); add('Patrocinado',r=>r.is_sponsored?'Sim':'Não');
+  add('Qtd. de hashtags',r=>r.hashtag_count<=1?'0-1':r.hashtag_count===2?'2':r.hashtag_count===3?'3':'4+');
+  const combos=groupBy(rawData,r=>`${r.platform}+${r.category}+${r.age}`);
+  const top=Object.entries(combos).map(([k,p])=>({k,er:avg(p,r=>r.er),n:p.length})).filter(x=>x.n>=20).sort((a,b)=>b.er-a.er)[0];
+  if(top) rules.push({text:`Melhor combinação: <span class="tag">${top.k}</span> (ER ${(top.er*100).toFixed(3)}%, n=${top.n}).`,delta:top.er-gER});
+  rules.sort((a,b)=>b.delta-a.delta);
+  document.getElementById('learnedRules').innerHTML=rules.length?rules.map((r,i)=>`<div style="padding:8px 0;border-bottom:1px solid var(--border)"><strong>${i+1}.</strong> ${r.text}</div>`).join(''):'<p style="color:var(--muted)">Dados insuficientes.</p>';
+}
+</script>
+</body>
+</html>
