@@ -1,0 +1,6 @@
+canal,contas,churn_pct,mrr_ativo,pct_mrr_churn,sobrevivencia_365d_pct,teste_vs_demais
+ads,98,60.2,1952542,61.5,41.0,log-rank p=0.005; permutação p=0.006; Bonferroni (5 canais) p=0.024
+event,96,70.8,1660496,72.1,27.6,
+organic,114,74.6,2533070,78.8,24.6,
+other,103,70.9,2104084,65.1,25.9,
+partner,89,75.3,1909416,72.0,25.8,

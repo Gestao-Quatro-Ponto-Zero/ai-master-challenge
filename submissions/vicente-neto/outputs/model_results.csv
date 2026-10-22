@@ -1,0 +1,6 @@
+modelo,auc_teste,auc_ic95,pr_auc,taxa_base,precisao_top20,lift_top20,brier
+Referência: só idade da conta,0.645,0.592–0.697,0.426,0.294,0.457,1.55,0.222
+Regressão logística (todas as variáveis),0.538,0.482–0.587,0.32,0.294,0.301,1.02,0.229
+Gradient boosting (todas as variáveis),0.583,0.534–0.633,0.354,0.294,0.367,1.25,0.238
+Gradient boosting sem idade da conta,0.552,0.504–0.603,0.339,0.294,0.332,1.13,0.238
+Modelo final: log da idade da conta,0.645,0.594–0.695,0.426,0.294,0.457,1.55,0.219

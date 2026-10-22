@@ -1,0 +1,13 @@
+periodo,faixa_idade_dias,fotos,churn_90d
+treino (abr/23-mar/24),0-30,206,0.214
+treino (abr/23-mar/24),31-60,199,0.201
+treino (abr/23-mar/24),61-90,194,0.206
+treino (abr/23-mar/24),91-180,414,0.162
+treino (abr/23-mar/24),181-365,385,0.148
+treino (abr/23-mar/24),366+,23,0.0
+teste (abr/24-out/24),0-30,144,0.5
+teste (abr/24-out/24),31-60,114,0.395
+teste (abr/24-out/24),61-90,92,0.402
+teste (abr/24-out/24),91-180,223,0.314
+teste (abr/24-out/24),181-365,376,0.253
+teste (abr/24-out/24),366+,335,0.176

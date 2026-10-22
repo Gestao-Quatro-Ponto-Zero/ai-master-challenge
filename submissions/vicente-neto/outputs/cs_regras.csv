@@ -1,0 +1,10 @@
+id,gatilho,acao,base,preditor,contas_acionadas
+R1,Conta nova (até 90 dias),Fazer contato de acompanhamento do início de uso,"Contas com até 30 dias tiveram 50% de churn em 90 dias no período de teste, contra 18% nas com mais de um ano",sim,26
+R2,Ticket escalado nos últimos 90 dias,Revisar com o cliente o ticket escalado e confirmar a solução,"Fato da conta. Sozinho, não antecedeu churn: escalação 5,1% vs 4,0% (p = 0,33)",não,4
+R3,Ticket urgente ou alto nos últimos 90 dias,Confirmar que o problema urgente foi resolvido,"Fato da conta. Sozinho, não antecedeu churn: tickets em 90 dias 0,53 vs 0,52 (p = 0,76)",não,37
+R4,Resolução acima do percentil 75 (54 h) ou 1ª resposta acima do percentil 75 (131 min),Retomar o caso que demorou e perguntar se ficou pendência,"Fato da conta. Tempo de resolução não diferiu entre quem saiu e quem ficou (p = 0,70)",não,28
+R5,Ticket dos últimos 90 dias sem nota de satisfação,Pedir a avaliação do atendimento,"41,2% dos tickets não têm nota: cada nota coletada reduz essa lacuna",não,26
+R6,Nota de satisfação 3 (a menor que aparece nos dados),Perguntar o que faltou no atendimento,"Fato da conta. CSAT não diferiu entre quem saiu e quem ficou (p = 0,83)",não,14
+R7,Downgrade em assinatura iniciada nos últimos 90 dias,Entender o motivo da redução de plano,"Fato da conta. Sozinho, não antecedeu churn: 73,4% vs 68,7% (p = 0,32)",não,21
+R8,Parcela do MRR vigente sem renovação automática acima do percentil 75 das contas ativas (28%),Confirmar a intenção de renovar,"Fato da conta. Auto-renovação não diferiu entre assinaturas encerradas e ativas (p = 0,98)",não,37
+R9,"Uso válido 40% menor que nos 90 dias anteriores, ou sem uso há mais de 21 dias (percentil 75)",Verificar a adoção do produto com o cliente,"Fato da conta. Sozinho, não antecedeu churn: 50,0% vs 56,8% (p = 0,56)",não,49

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RavenStack: diagnóstico de churn para o CEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#14202b;--mute:#5b6875;--line:#dde2e8;--blue:#1f5fbf;--yes:#17704f;--yes-bg:#e4f2ec;--no:#a8392b;--no-bg:#f8e7e4;--chk:#8a5a00;--chk-bg:#f9efd9;--track:#e8ecf1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161d;--card:#18222c;--ink:#e8edf2;--mute:#9aa8b6;--line:#2a3743;--blue:#6ea3f0;--yes:#5fcf9f;--yes-bg:#14332a;--no:#f0897a;--no-bg:#3a1f1b;--chk:#e8b95a;--chk-bg:#352a12;--track:#26323d}}
+:root[data-theme="dark"]{--bg:#0f161d;--card:#18222c;--ink:#e8edf2;--mute:#9aa8b6;--line:#2a3743;--blue:#6ea3f0;--yes:#5fcf9f;--yes-bg:#14332a;--no:#f0897a;--no-bg:#3a1f1b;--chk:#e8b95a;--chk-bg:#352a12;--track:#26323d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "IBM Plex Sans",system-ui,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:28px 18px 56px}
+h1,h2{font-family:"Source Serif 4",Georgia,serif;line-height:1.15;margin:0}
+h1{font-size:clamp(28px,5vw,44px);max-width:20ch}
+h2{font-size:24px;margin-bottom:6px}
+p{margin:0}.sub{color:var(--mute);max-width:68ch}
+section{margin-top:44px}
+.hero .sub{margin-top:14px;font-size:17px;color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:24px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi b{display:block;font:700 28px/1.1 "Source Serif 4",Georgia,serif}
+.kpi span{font-size:14px;color:var(--mute)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-top:16px}
+.col{border-radius:10px;padding:16px 18px;border:1px solid var(--line);background:var(--card);border-top:4px solid var(--c)}
+.col h3{margin:0 0 8px;font-size:17px;color:var(--c)}
+.col ul{margin:0;padding-left:18px}.col li{margin:0 0 8px;font-size:15px}
+.code{color:var(--mute);font-size:12px;white-space:nowrap}
+.yes{--c:var(--yes)}.no{--c:var(--no)}.chk{--c:var(--chk)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:14px;margin-top:16px}
+@media(max-width:480px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card h3{margin:0 0 2px;font-size:17px}.card .sub{font-size:14px;margin-bottom:12px}
+.cols-chart{display:flex;align-items:flex-end;gap:6px;height:150px;margin-top:6px}
+.cc{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:12px}
+.cc i{display:block;width:100%;background:var(--blue);border-radius:4px 4px 0 0;min-height:2px}
+.cc em{font-style:normal;color:var(--mute);margin-top:4px}.cc u{text-decoration:none;font-weight:600;margin-bottom:2px}
+.hb{display:grid;grid-template-columns:132px 1fr 62px;align-items:center;gap:8px;margin:7px 0;font-size:14px}
+.tr{height:14px;background:var(--track);border-radius:7px;position:relative}
+.tr i{position:absolute;top:0;bottom:0;border-radius:7px;background:var(--blue)}
+.tr .m{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--no)}
+.tr .z{position:absolute;top:-3px;bottom:-3px;width:1px;left:50%;background:var(--mute)}
+.hb b{text-align:right;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--mute);font-size:13px}
+td.n,th.n{text-align:right;white-space:nowrap}
+.scroll{overflow-x:auto}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap}
+.chip.d{background:var(--no-bg);color:var(--no)}.chip.c{background:var(--yes-bg);color:var(--yes)}.chip.t{background:var(--chk-bg);color:var(--chk)}
+.note{margin-top:14px;font-size:14px;color:var(--mute);max-width:80ch}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<h1>O churn subiu, mas os dados não dizem por quê</h1>
+<p class="sub">A taxa trimestral de primeiro churn passou de 18,5% para 32,2% em um ano, em todos os segmentos, e o MRR perdido no momento do churn soma US$ 2,91 mi. Nenhum comportamento medido nas 5 tabelas separa quem sai de quem fica. Antes de investir em retenção, é preciso fechar o que “churn” significa e auditar os dados de uso.</p>
+<div class="kpis">
+<div class="kpi"><b>18,5% → 32,2%</b><span>Taxa trimestral de primeiro churn, 4T23 → 4T24, sobre contas ativas no início de cada trimestre (E02)</span></div>
+<div class="kpi"><b>22% · 62% · 70%</b><span>Contas “churnadas” conforme a fonte: flag, assinaturas, eventos (E04)</span></div>
+<div class="kpi"><b>3,98 vs 3,98</b><span>Satisfação média de churnadas e retidas (E08)</span></div>
+<div class="kpi"><b>52,9%</b><span>Do uso registrado é anterior ao cadastro da conta; o “uso cresceu” vem desse total (E13)</span></div>
+<div class="kpi"><b>AUC 0,645</b><span>Modelo de churn em 90 dias: só a idade da conta prevê; comportamentos ficam no acaso (0,47)</span></div>
+</div>
+</header>
+
+<section>
+<h2>O que os dados sustentam e o que não sustentam</h2>
+<p class="sub">Cada item traz o código da evidência na planilha <code>evidence.csv</code>.</p>
+<div class="cols">
+<div class="col yes"><h3>Podemos afirmar</h3><ul>
+<li>Os eventos de churn foram de 6 para 251 por trimestre <span class="code">E01</span></li>
+<li>A alta aparece nos 17 segmentos: de 25% a 39% em 4T24 <span class="code">E03</span></li>
+<li>Flag, assinaturas e eventos discordam: 110, 312 e 352 contas <span class="code">E04–E05</span></li>
+<li>Nenhuma conta perdeu todas as assinaturas; as 352 com churn mantêm US$ 7,14 mi de MRR ativo <span class="code">E06</span></li>
+<li>28% do uso e 27,7% dos tickets das contas churnadas ocorrem depois da data de churn <span class="code">E07</span></li>
+<li>41,2% dos tickets não têm nota e só existem notas 3, 4 e 5 <span class="code">E09</span></li>
+<li>52,9% do uso registrado tem data anterior ao cadastro da conta <span class="code">E13</span></li>
+<li>Com o uso válido, o uso por conta ativa subiu só 2,3% em 2024 <span class="code">E14</span></li>
+<li>Clientes de ads ficam mais tempo: 41% sem churn em 365 dias, contra 26% nos demais canais (log-rank p = 0,005)</li>
+</ul></div>
+<div class="col no"><h3>Não podemos afirmar</h3><ul>
+<li>Que a retenção piorou de fato: a alta pode vir da definição de churn e do crescimento da base <span class="code">E04, E25</span></li>
+<li>Que “churn” seja cliente perdido: 100% das contas ainda têm assinatura ativa <span class="code">E06</span></li>
+<li>Que clientes estejam satisfeitos: a métrica é truncada e 41% está vazia <span class="code">E09</span></li>
+<li>Que o uso tenha crescido: o total está contaminado e, por conta, está estável <span class="code">E13–E18</span></li>
+<li>Que queda de uso, erros, downgrade ou ticket escalado anteceda o churn <span class="code">E10, E19, E21, E28</span></li>
+<li>Que um plano, indústria, porte ou país seja pior: todos p &gt; 0,14 <span class="code">E22–E23</span></li>
+<li>Que ads cause retenção: sem custo por canal, não dá para avaliar o retorno do investimento</li>
+<li>Que os motivos declarados sejam reais: não batem com o feedback (p = 0,99) <span class="code">E27</span></li>
+<li>Que não exista causa raiz: só que estes dados não a mostram</li>
+</ul></div>
+<div class="col chk"><h3>O que falta nos dados</h3><ul>
+<li>Uma definição única de churn: hoje três fontes discordam <span class="code">E04</span></li>
+<li>Registros de uso confiáveis: 52,9% é anterior ao cadastro <span class="code">E13</span></li>
+<li>Assinaturas que se encerram: contas com churn seguem pagando <span class="code">E06</span></li>
+<li>Uma nota de satisfação completa: 41,2% dos tickets sem nota <span class="code">E09</span></li>
+<li>Um motivo de churn coerente com o comentário do cliente <span class="code">E27</span></li>
+<li>Custo de aquisição por canal, para avaliar ads</li>
+</ul></div>
+</div>
+</section>
+
+<section>
+<h2>O que aconteceu com o churn</h2>
+<div class="grid2">
+<div class="card"><h3>Eventos de churn por trimestre</h3><p class="sub">Contagem bruta, que cresce junto com a base (E01, E25)</p><div class="cols-chart" id="ev"></div></div>
+<div class="card"><h3>Taxa de primeiro churn entre contas ainda sem churn</h3><p class="sub">% por trimestre (E02)</p><div class="cols-chart" id="hz"></div></div>
+<div class="card"><h3>Quantas contas churnaram depende da fonte</h3><p class="sub">% das 500 contas (E04)</p><div id="df"></div></div>
+<div class="card"><h3>Uso por conta ativa por segmento, 1T24 → 4T24</h3><p class="sub">Variação % do uso válido por conta ativa (E15, E16). Diferenças não significativas: Kruskal p de 0,13 a 0,91 (E18)</p><div id="us"></div></div>
+</div>
+</section>
+
+<section>
+<h2>Churnadas e retidas são quase idênticas</h2>
+<div class="grid2">
+<div class="card"><h3>Comparação cruzando as 5 tabelas</h3><p class="sub">p &gt; 0,05 significa que a diferença pode ser acaso</p>
+<div class="scroll"><table><thead><tr><th>Medida</th><th class="n">Churnadas</th><th class="n">Retidas</th><th class="n">p</th></tr></thead><tbody>
+<tr><td>Satisfação (CSAT) <span class="code">E08</span></td><td class="n">3,98</td><td class="n">3,98</td><td class="n">0,83</td></tr>
+<tr><td>Tickets nos 90 dias antes <span class="code">E10</span></td><td class="n">0,53</td><td class="n">0,52</td><td class="n">0,76</td></tr>
+<tr><td>Tickets escalados <span class="code">E11</span></td><td class="n">5,1%</td><td class="n">4,0%</td><td class="n">0,33</td></tr>
+<tr><td>Tempo de resolução <span class="code">E11</span></td><td class="n">35,7 h</td><td class="n">36,1 h</td><td class="n">0,70</td></tr>
+<tr><td>Erros por 100 usos, 90 dias antes (mediana, uso válido) <span class="code">E19</span></td><td class="n">4,29</td><td class="n">4,44</td><td class="n">0,80</td></tr>
+<tr><td>Usos por 30 dias desde o cadastro (mediana, uso válido) <span class="code">E20</span></td><td class="n">18,2</td><td class="n">20,4</td><td class="n">0,02*</td></tr>
+<tr><td>Com queda de uso válido &gt;40%: % que churna <span class="code">E21</span></td><td class="n">50,0%</td><td class="n">56,8%</td><td class="n">0,56</td></tr>
+<tr><td>Com downgrade: % que churna <span class="code">E28</span></td><td class="n">73,4%</td><td class="n">68,7%</td><td class="n">0,32</td></tr>
+</tbody></table></div><p class="note">Nas duas últimas linhas, “churnadas” é o grupo com o sinal e “retidas” o grupo sem ele. *Some ao comparar contas com o mesmo tempo de vida (p de 0,19 a 0,74).</p></div>
+<div class="card"><h3>Nenhum atributo da conta explica o churn</h3><p class="sub">p-valor por atributo (E22). A linha vermelha marca 0,05; abaixo dela haveria evidência.</p><div id="pv"></div></div>
+</div>
+<p class="note">Um falso alarme: o uso por 30 dias é menor nas churnadas (18,2 vs 20,4, p = 0,02), mas elas são contas mais jovens. Comparando contas com o mesmo tempo de vida, a diferença desaparece (E20). O canal de aquisição aparece aqui com p = 0,14 porque a comparação simples de taxa ignora o tempo de permanência; a análise de sobrevivência mostra que ads retém mais.</p>
+</section>
+
+<section>
+<h2>Hipóteses testadas</h2>
+<div class="card" style="margin-top:14px"><div class="scroll"><table><thead><tr><th>Hipótese</th><th>Resultado</th><th>Veredito</th></tr></thead><tbody>
+<tr><td>Mais tickets e escalações antes de sair</td><td>0,53 vs 0,52 tickets (p = 0,76) <span class="code">E10</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Queda de uso antecede o churn</td><td>50,0% vs 56,8% (p = 0,56), com uso válido <span class="code">E21</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Contas que usam menos saem mais</td><td>Some ao comparar contas com o mesmo tempo de vida <span class="code">E20</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Erros e features beta explicam</td><td>4,29 vs 4,44 erros por 100 usos (p = 0,80); beta 10,7% vs 10,3% <span class="code">E19, E21</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Alguma feature piorou com o tempo</td><td>Erro da feature_9 dobrou (3,6 → 7,1 por 100 usos válidos, q = 0,03), mas não difere entre quem saiu e quem ficou</td><td><span class="chip t">Achado de produto</span></td></tr>
+<tr><td>“O uso cresceu”</td><td>Total contaminado por uso anterior ao cadastro; por conta ativa, +2,3% em 2024 <span class="code">E13–E14</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Um plano, indústria ou porte concentra o churn</td><td>Todos p &gt; 0,14 <span class="code">E22</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Aquisição paga traz clientes piores</td><td>Ao contrário: ads 41% vs 26% sem churn em 365 dias (log-rank p = 0,005)</td><td><span class="chip c">Ads retém mais</span></td></tr>
+<tr><td>Downgrade antecede o churn</td><td>73,4% vs 68,7% (p = 0,32); só 8 de 53 marcações confirmadas <span class="code">E28</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Perder contas grandes pesa mais</td><td>70,3% do MRR vs 70,4% das contas <span class="code">E29</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>O motivo declarado reflete o comportamento</td><td>Nenhuma variável difere por motivo; motivo × feedback p = 0,99 <span class="code">E26–E27</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>Cliente “silencioso” churna</td><td>Só 8 contas sem ticket <span class="code">E12</span></td><td><span class="chip t">Não testável</span></td></tr>
+<tr><td>Comportamentos preveem quem sai</td><td>AUC 0,467 e 0,479 <span class="code">E31</span></td><td><span class="chip d">Descartada</span></td></tr>
+<tr><td>A idade da conta prevê quem sai</td><td>AUC 0,645 no período seguinte; 20% de maior risco com 45,7% de churn em 90 dias, contra 29,4% na média</td><td><span class="chip c">Confirmada</span></td></tr>
+<tr><td>O churn medido é inconsistente entre fontes</td><td>110 vs 312 vs 352 contas; 28% de atividade após o churn <span class="code">E04–E07</span></td><td><span class="chip c">Confirmada</span></td></tr>
+</tbody></table></div></div>
+</section>
+
+
+<section>
+<h2>Modelo preditivo: contas novas saem mais</h2>
+<p class="sub">Uma foto por mês de cada conta ativa, só com o que se sabia naquela data. Treino de abr/2023 a mar/2024, teste de abr a out/2024 (<code>churn_model.py</code>).</p>
+<div class="grid2">
+<div class="card"><h3>Só a idade da conta prevê</h3><p class="sub">Desempenho no período de teste; taxa média de churn em 90 dias de 29,4%</p>
+<div class="scroll"><table><thead><tr><th>Modelo</th><th class="n">AUC</th><th class="n">Churn top 20%</th></tr></thead><tbody>
+<tr><td><b>Só idade da conta</b></td><td class="n"><b>0,645</b></td><td class="n"><b>45,7%</b></td></tr>
+<tr><td>Gradient boosting, todas as variáveis</td><td class="n">0,583</td><td class="n">36,7%</td></tr>
+<tr><td>Gradient boosting sem a idade</td><td class="n">0,552</td><td class="n">33,2%</td></tr>
+<tr><td>Logística, todas as variáveis</td><td class="n">0,538</td><td class="n">30,1%</td></tr>
+</tbody></table></div><p class="note">Nenhuma variável acrescenta à idade: a melhor muda o AUC em 0,001.</p></div>
+<div class="card"><h3>Previsão para 1º/01/2025</h3><p class="sub">148 contas ativas, probabilidade recalibrada para a taxa dos últimos seis meses</p>
+<div class="kpis" style="margin-top:0"><div class="kpi"><b>~42</b><span>Churns esperados em 90 dias</span></div><div class="kpi"><b>US$ 850 mil</b><span>MRR esperado em risco</span></div><div class="kpi"><b>16</b><span>Contas na faixa de maior risco</span></div></div>
+<p class="note">Lista completa em <code>model_scores_2025-01-01.csv</code>. A idade indica quem tem mais risco, não por quê.</p></div>
+</div>
+</section>
+
+<section>
+<h2>O que os dados indicam fazer</h2>
+<p class="sub">Só ações que decorrem de um achado. Donos, prazos e metas não estão nos dados.</p>
+<div class="card" style="margin-top:14px"><div class="scroll"><table><thead><tr><th>Ação</th><th>Base nos dados</th></tr></thead><tbody>
+<tr><td>1. Definir uma regra única de churn e recalcular o histórico</td><td>110, 312 e 352 contas churnadas conforme a fonte <span class="code">E04</span></td></tr>
+<tr><td>2. Corrigir os registros de uso antes de medir crescimento</td><td>52,9% do uso registrado é anterior ao cadastro <span class="code">E13</span></td></tr>
+<tr><td>3. Corrigir o ciclo das assinaturas</td><td>352 contas com churn seguem com US$ 7,14 mi de MRR ativo <span class="code">E06</span></td></tr>
+<tr><td>4. Corrigir a coleta da nota de satisfação</td><td>41,2% dos tickets sem nota; só notas 3 a 5 <span class="code">E09</span></td></tr>
+<tr><td>5. Corrigir o registro do motivo de churn</td><td>Motivo e comentário não batem (p = 0,99) <span class="code">E27</span></td></tr>
+<tr><td>6. Investigar organic e partner, não ads</td><td>Sem churn em 365 dias: ads 41%, organic 25%, partner 26%</td></tr>
+<tr><td>7. Estimar o risco pela idade da conta, não por comportamentos ou sinais de alerta</td><td>Só a idade prevê (AUC 0,645); comportamentos AUC 0,47–0,48 <span class="code">E21, E31</span></td></tr>
+</tbody></table></div>
+<p class="note">Cenário (cálculo, não previsão): se a taxa do 4T24 se mantiver, cerca de 48 das 148 contas retidas e US$ 0,97 mi de MRR entram em churn por trimestre.</p></div>
+<div class="card" style="margin-top:14px"><h3>Maiores contas com 2 ou mais sinais de alerta</h3><p class="sub">Ainda sem churn_event. Os sinais não previram churn nos dados: a lista mostra onde eles se concentram, não quem vai sair. Queda de uso calculada só com uso válido. Lista completa de 79 contas em <code>at_risk_accounts.csv</code>.</p>
+<div class="scroll"><table><thead><tr><th>Conta</th><th>Indústria</th><th>Plano</th><th class="n">MRR (US$)</th><th class="n">Uso 90d</th><th class="n">Downgrades</th></tr></thead><tbody>
+<tr><td>A-e60f9d</td><td>FinTech</td><td>Basic</td><td class="n">50.095</td><td class="n">+51%</td><td class="n">2</td></tr>
+<tr><td>A-1f7acb</td><td>FinTech</td><td>Basic</td><td class="n">46.912</td><td class="n">−68%</td><td class="n">3</td></tr>
+<tr><td>A-50f3f7</td><td>HealthTech</td><td>Basic</td><td class="n">44.077</td><td class="n">+84%</td><td class="n">2</td></tr>
+<tr><td>A-d5a319</td><td>FinTech</td><td>Enterprise</td><td class="n">37.847</td><td class="n">+68%</td><td class="n">2</td></tr>
+<tr><td>A-92a3af</td><td>Cybersecurity</td><td>Enterprise</td><td class="n">34.538</td><td class="n">+58%</td><td class="n">2</td></tr>
+</tbody></table></div></div>
+</section>
+
+<footer>Dados: RavenStack, dataset sintético de River @ Rivalytics, jan/2023 a dez/2024. Por ser gerado por sorteios, a ausência de padrões pode ser artefato do gerador. O MRR da conta soma assinaturas sobrepostas (média de US$ 20 mil por conta); use como peso relativo. Análises de uso consideram só o uso registrado a partir do cadastro da conta. Testes: qui-quadrado, Mann-Whitney, Kruskal-Wallis, log-rank com permutação e validação cruzada 5-fold, sem correção para múltiplos testes.</footer>
+</main>
+<script>
+const f1=v=>String(v).replace('.',',');
+function cols(id,d,suf){const mx=Math.max(...d.map(x=>x[1]));document.getElementById(id).innerHTML=d.map(([l,v])=>`<div class="cc"><u>${f1(v)}${suf||''}</u><i style="height:${Math.max(2,v/mx*100*.78)}%"></i><em>${l}</em></div>`).join('')}
+cols('ev',[['1T23',6],['2T23',11],['3T23',19],['4T23',37],['1T24',54],['2T24',92],['3T24',130],['4T24',251]]);
+cols('hz',[['4T23',18.5],['1T24',19.6],['2T24',22.3],['3T24',31.4],['4T24',32.2]],'%');
+function hbars(id,d,fmt,max){document.getElementById(id).innerHTML=d.map(([l,v])=>`<div class="hb"><span>${l}</span><div class="tr"><i style="left:0;width:${v/max*100}%"></i></div><b>${fmt(v)}</b></div>`).join('')}
+hbars('df',[['Flag em accounts',22.0],['≥1 assinatura encerrada',62.4],['≥1 churn_event',70.4],['Todas encerradas',0]],v=>f1(v)+'%',100);
+document.getElementById('us').innerHTML=[['Cybersecurity',16.5],['EdTech',11.4],['Enterprise',7.4],['HealthTech',6.2],['Pro',4.9],['FinTech',1.5],['Basic',-4.9],['DevTools',-18.8]].map(([l,v])=>{const w=Math.abs(v)/20*50;const st=v>=0?`left:50%;width:${w}%`:`left:${50-w}%;width:${w}%`;return `<div class="hb"><span>${l}</span><div class="tr"><div class="z"></div><i style="${st};${v<0?'background:var(--no)':''}"></i></div><b>${v>0?'+':''}${f1(v)}%</b></div>`}).join('');
+document.getElementById('pv').innerHTML=[['Canal de aquisição',.143],['Indústria',.785],['Plano',.713],['País',.64],['Porte (seats)',.573],['Cobrança mensal/anual',.882],['Conta em trial',.845],['Faixa de MRR',.365]].map(([l,v])=>`<div class="hb"><span>${l}</span><div class="tr"><i style="left:0;width:${v*100}%"></i><div class="m" style="left:5%"></div></div><b>${f1(v)}</b></div>`).join('');
+</script>
+</body>
+</html>

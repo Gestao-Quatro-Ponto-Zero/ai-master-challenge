@@ -1,0 +1,33 @@
+id,insight,valor,tabelas_cruzadas,teste
+E01,Eventos de churn 1T23 -> 4T24,6 -> 251 por trimestre,churn_events,
+E02,Taxa trimestral de 1o churn (base = contas já ativas no início do trimestre),"18.5% (4T23, base 130) -> 32.2% (4T24, base 180)",accounts + churn_events,
+E03,"A alta é generalizada: taxa 4T24 em todos os 17 segmentos (canal, plano, indústria, porte)",min 25.0% (referral_source=ads) | max 38.7% (plan_tier_account=Enterprise),accounts + churn_events,
+E04,Três definições de churn dão números diferentes,flag em accounts=110 (22.0%) | >=1 assinatura encerrada=312 (62.4%) | >=1 churn_event=352 (70.4%) | contas com TODAS as assinaturas encerradas=0,accounts + subscriptions + churn_events,
+E05,Interseção flag x eventos,75 contas nos dois; chi2 p=0.65,accounts + churn_events,chi2
+E06,Contas com churn_event que ainda têm assinaturas pagantes ativas e MRR,"352 de 352 contas; MRR US$ 7,139,868 de 10,159,608 (70.3%)",subscriptions + churn_events + accounts,
+E07,Atividade DEPOIS da data de churn (contas churnadas),28.0% das linhas de uso (4962/17690) e 27.7% dos tickets (386/1395),feature_usage + subscriptions + churn_events; support_tickets + churn_events,
+E08,CSAT: churnadas vs retidas,3.98 vs 3.98 (nível ticket); conta: p=0.83,support_tickets + churn_events + accounts,Mann-Whitney
+E09,Qualidade da métrica de satisfação,"41.2% dos tickets sem nota; notas existentes só [3, 4, 5]; mín=3",support_tickets,
+E10,Tickets nos 90 dias antes do churn (retidas: 90 dias antes de 31/12/24),0.53 vs 0.52 por conta; p=0.76,support_tickets + churn_events + accounts,Mann-Whitney
+E11,Escalação e resolução: churnadas vs retidas,escalação 5.1% vs 4.0%; resolução 35.7h vs 36.1h; 1a resposta 89 vs 88 min,support_tickets + churn_events,
+E12,"Churn ""silencioso"" (conta sem ticket)","8 contas sem ticket, 5 com churn; hipótese de silêncio não testável (n=8)",accounts + support_tickets + churn_events,
+E13,Uso registrado x uso válido (após o cadastro),"52.9% do volume registrado é anterior ao cadastro da conta (94.6% no 1T23, 6.0% no 4T24); o total registrado (+2.6% em 8 trimestres) não mede crescimento",feature_usage + subscriptions + accounts,
+E14,Uso válido por conta ativa 1T24 -> 4T24,54.3 -> 55.5 usos por conta por trimestre (+2.3%),feature_usage + subscriptions + accounts + churn_events,
+E15,Uso válido por conta ativa 1T24 -> 4T24 por indústria (%),"{'Cybersecurity': 16.5, 'DevTools': -18.8, 'EdTech': 11.4, 'FinTech': 1.5, 'HealthTech': 6.2}",feature_usage + subscriptions + accounts,Kruskal p=0.13
+E16,Uso válido por conta ativa 1T24 -> 4T24 por plano (%),"{'Basic': -4.9, 'Enterprise': 7.4, 'Pro': 4.9}",feature_usage + subscriptions + accounts,Kruskal p=0.91
+E17,Uso válido por conta ativa 1T24 -> 4T24 por porte e canal (%),"porte {'1-5': -2.9, '21-50': -7.1, '50+': -13.2, '6-20': 15.7}; canal {'ads': 2.7, 'event': 2.4, 'organic': 0.8, 'other': 11.1, 'partner': -4.3}",feature_usage + subscriptions + accounts,"Kruskal p porte=0.87, canal=0.47"
+E18,A variação de uso por conta difere entre segmentos?,"Kruskal p: {'industry': 0.13, 'plan_tier_account': 0.91, 'size_band': 0.87, 'referral_source': 0.47}",feature_usage + subscriptions + accounts,Kruskal
+E19,Erros por 100 usos nos 90 dias antes do corte (uso válido),mediana 4.29 churnadas vs 4.44 retidas; p=0.80; taxa de erro geral 5.38 (1T24) -> 5.17 (4T24),feature_usage + subscriptions + accounts + churn_events,Mann-Whitney
+E20,Usos por 30 dias desde o cadastro (uso válido): diferença é efeito do tempo de vida,"mediana 18.2 vs 20.4 (p=0.021); dentro de quartis de tempo de vida, p=[0.59, 0.65, 0.74, 0.19]",feature_usage + subscriptions + accounts + churn_events,Mann-Whitney estratificado
+E21,Queda de uso válido >40% (90d vs 90d anteriores) como sinal de churn,churn 50.0% (n=36) vs 56.8% (n=229); p=0.56; beta 0.107 vs 0.103,feature_usage + subscriptions + churn_events,chi2
+E22,Nenhum atributo estático separa quem churna (p-valores chi2),"{'referral_source': 0.143, 'industry': 0.785, 'plan_tier_account': 0.713, 'country': 0.64, 'size_band': 0.573, 'billing_mix': 0.882, 'is_trial_account': 0.845, 'mrr_band': 0.365}",accounts + subscriptions + churn_events,chi2
+E23,Churn por canal (maior spread) e país,"canal {'ads': 60.2, 'event': 70.8, 'organic': 74.6, 'other': 70.9, 'partner': 75.3}; país min DE 56.0% (n=25) max UK 77.6%",accounts + churn_events,
+E24,Nível assinatura: nada separa as 486 encerradas (p-valores),"{'billing_frequency': 0.486, 'auto_renew_flag': 0.98, 'plan_tier': 0.888, 'downgrade_flag': 0.439, 'upgrade_flag': 0.445}; encerradas 486/5000=9.7%",subscriptions,chi2
+E25,Assinaturas iniciadas por trimestre explodem (base cresce); % encerradas por trimestre de início,"inícios 31->2069; end% {'2023Q1': 0.194, '2023Q2': 0.104, '2023Q3': 0.158, '2023Q4': 0.11, '2024Q1': 0.093, '2024Q2': 0.086, '2024Q3': 0.081, '2024Q4': 0.101}",subscriptions,
+E26,Motivo declarado x comportamento real (Kruskal p),"{'n_tickets_pre': 0.68, 'n_tickets_escalated_pre': 0.56, 'mrr_active_sum': 0.85, 'error_per_100_uses_pre': 0.65, 'avg_csat_pre': 0.1}",churn_events + support_tickets + feature_usage + subscriptions,Kruskal
+E27,Motivo declarado x texto de feedback,chi2 p=0.99; reason='support' tem 2.78 tickets pré-churn vs 2.80 nos demais,churn_events + support_tickets,
+E28,Downgrade antes do churn: flag do evento vs assinaturas,"53 eventos marcados; só 8 confirmados por assinatura downgrade<=90d. Contas com downgrade: churn 73.4% vs 68.7%, p=0.32",churn_events + subscriptions,chi2
+E29,Peso em MRR = peso em contas,70.3% do MRR vs 70.4% das contas; top 50 contas por MRR: churn 68% vs 70.7% no resto,subscriptions + churn_events + accounts,
+E30,Refunds,"US$ 8,652.25 em 600 eventos (23.7% com refund) = 0.121% do MRR de contas com churn",churn_events + subscriptions,
+E31,"Modelo preditivo com as 5 tabelas, uso válido e sem variáveis ligadas ao tempo de vida (AUC em 5-fold CV; 0,5 = acaso)","{'logistica': 0.467, 'gradient_boosting': 0.479}",as 5 tabelas via accounts_master,CV AUC
+E32,Contas retidas (sem churn_event): total e com >=1 sinal de alerta,"148 contas, MRR US$ 3,019,740; com >=1 sinal: 79 (MRR US$ 1,537,023); com >=2 sinais: 17 (MRR US$ 394,405); queda de uso válido >40%: 18 contas (MRR US$ 317,264)",accounts + subscriptions + feature_usage + support_tickets + churn_events,

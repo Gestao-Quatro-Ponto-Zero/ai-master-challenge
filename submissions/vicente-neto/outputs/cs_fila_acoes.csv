@@ -1,0 +1,149 @@
+prioridade,account_id,industry,referral_source,plan_tier,idade_dias,mrr_vivo,prob_churn_90d,faixa_risco,mrr_esperado_em_risco,n_gatilhos,gatilhos,acoes_sugeridas,tickets_90d,ultimo_ticket,data_referencia
+1,A-d4e0d4,FinTech,other,Basic,75,114777,0.343,médio,39369.0,3,"R1, R7, R9",Fazer contato de acompanhamento do início de uso | Entender o motivo da redução de plano | Verificar a adoção do produto com o cliente,0,2024-08-18,2025-01-01
+2,A-5c046d,EdTech,partner,Basic,179,83886,0.294,médio,24662.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-03-08,2025-01-01
+3,A-1f0636,EdTech,partner,Pro,366,94710,0.257,médio,24340.0,1,R8,Confirmar a intenção de renovar,0,2024-08-22,2025-01-01
+4,A-9174e0,Cybersecurity,partner,Basic,28,46613,0.401,maior,18692.0,3,"R1, R3, R4",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência,1,2024-10-30,2025-01-01
+5,A-5a215a,EdTech,other,Enterprise,362,69687,0.258,médio,17979.0,1,R3,Confirmar que o problema urgente foi resolvido,1,2024-12-06,2025-01-01
+6,A-40906c,EdTech,ads,Basic,280,64400,0.271,médio,17452.0,5,"R3, R4, R5, R6, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Perguntar o que faltou no atendimento | Verificar a adoção do produto com o cliente,3,2024-11-01,2025-01-01
+7,A-66224b,HealthTech,other,Pro,75,50876,0.343,médio,17450.0,4,"R1, R3, R6, R9",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido | Perguntar o que faltou no atendimento | Verificar a adoção do produto com o cliente,2,2024-11-20,2025-01-01
+8,A-d40bf7,FinTech,organic,Basic,54,43247,0.362,maior,15655.0,4,"R1, R3, R8, R9",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido | Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,1,2024-11-03,2025-01-01
+9,A-e60f9d,FinTech,other,Basic,128,50095,0.312,médio,15630.0,2,"R7, R9",Entender o motivo da redução de plano | Verificar a adoção do produto com o cliente,0,2024-02-09,2025-01-01
+10,A-7920cc,Cybersecurity,ads,Pro,405,52089,0.252,médio,13126.0,1,R5,Pedir a avaliação do atendimento,2,2024-10-21,2025-01-01
+11,A-e4144b,EdTech,other,Pro,71,35424,0.346,médio,12257.0,1,R1,Fazer contato de acompanhamento do início de uso,0,2024-03-29,2025-01-01
+12,A-054577,EdTech,ads,Basic,248,44145,0.277,médio,12228.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2023-09-01,2025-01-01
+13,A-4c38bc,HealthTech,event,Basic,298,45612,0.268,médio,12224.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-07-27,2025-01-01
+14,A-bd4708,FinTech,ads,Pro,164,38975,0.299,médio,11654.0,4,"R3, R4, R5, R6",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Perguntar o que faltou no atendimento,2,2024-12-13,2025-01-01
+15,A-671f31,DevTools,ads,Basic,38,30385,0.382,maior,11607.0,3,"R1, R7, R8",Fazer contato de acompanhamento do início de uso | Entender o motivo da redução de plano | Confirmar a intenção de renovar,0,2024-07-24,2025-01-01
+16,A-1f7acb,FinTech,ads,Basic,514,46912,0.241,menor,11306.0,4,"R3, R4, R5, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,1,2024-12-05,2025-01-01
+17,A-50f3f7,HealthTech,partner,Basic,376,44077,0.256,médio,11284.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-01,2025-01-01
+18,A-b48f73,EdTech,event,Pro,49,28320,0.367,maior,10393.0,3,"R1, R8, R9",Fazer contato de acompanhamento do início de uso | Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2023-11-06,2025-01-01
+19,A-560d27,DevTools,organic,Pro,241,37064,0.279,médio,10341.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-02-28,2025-01-01
+20,A-92a3af,Cybersecurity,organic,Enterprise,178,34538,0.294,médio,10154.0,2,"R7, R8",Entender o motivo da redução de plano | Confirmar a intenção de renovar,0,2024-06-13,2025-01-01
+21,A-7f8241,EdTech,organic,Pro,659,39516,0.229,menor,9049.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-04-19,2025-01-01
+22,A-d5a319,FinTech,other,Enterprise,608,37847,0.233,menor,8818.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-17,2025-01-01
+23,A-b7b7b7,FinTech,event,Basic,185,28558,0.292,médio,8339.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-08-31,2025-01-01
+24,A-5b4ebb,Cybersecurity,other,Basic,175,27404,0.295,médio,8084.0,1,R9,Verificar a adoção do produto com o cliente,1,2024-11-07,2025-01-01
+25,A-2789e3,FinTech,partner,Enterprise,109,24489,0.321,médio,7861.0,3,"R4, R5, R7",Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Entender o motivo da redução de plano,3,2024-12-22,2025-01-01
+26,A-883b7d,Cybersecurity,other,Basic,279,28515,0.271,médio,7728.0,2,"R3, R6",Confirmar que o problema urgente foi resolvido | Perguntar o que faltou no atendimento,2,2024-12-01,2025-01-01
+27,A-d27f50,Cybersecurity,ads,Enterprise,165,25671,0.299,médio,7676.0,1,R8,Confirmar a intenção de renovar,0,2024-05-01,2025-01-01
+28,A-4a4c2d,DevTools,event,Enterprise,610,32940,0.233,menor,7675.0,3,"R3, R8, R9",Confirmar que o problema urgente foi resolvido | Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,1,2024-11-15,2025-01-01
+29,A-443b7c,Cybersecurity,other,Enterprise,117,23739,0.317,médio,7525.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-07-19,2025-01-01
+30,A-d4ac0e,DevTools,ads,Basic,256,27215,0.275,médio,7484.0,1,R6,Perguntar o que faltou no atendimento,1,2024-10-23,2025-01-01
+31,A-6f8ad2,EdTech,organic,Basic,176,25046,0.295,médio,7389.0,4,"R4, R5, R7, R9",Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Entender o motivo da redução de plano | Verificar a adoção do produto com o cliente,2,2024-11-30,2025-01-01
+32,A-fd9422,Cybersecurity,organic,Pro,272,27028,0.272,médio,7352.0,2,"R3, R7",Confirmar que o problema urgente foi resolvido | Entender o motivo da redução de plano,1,2024-12-22,2025-01-01
+33,A-35083d,HealthTech,partner,Basic,614,31502,0.233,menor,7340.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-27,2025-01-01
+34,A-3a5ad8,HealthTech,organic,Enterprise,393,28701,0.254,médio,7290.0,1,R3,Confirmar que o problema urgente foi resolvido,1,2024-12-26,2025-01-01
+35,A-49b828,FinTech,ads,Pro,607,31108,0.233,menor,7248.0,2,"R2, R6",Revisar com o cliente o ticket escalado e confirmar a solução | Perguntar o que faltou no atendimento,1,2024-10-04,2025-01-01
+36,A-6843f2,HealthTech,ads,Enterprise,22,16520,0.415,maior,6856.0,2,"R1, R7",Fazer contato de acompanhamento do início de uso | Entender o motivo da redução de plano,0,2024-04-27,2025-01-01
+37,A-b3fe05,Cybersecurity,partner,Pro,218,24102,0.284,médio,6845.0,4,"R3, R4, R5, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,1,2024-12-06,2025-01-01
+38,A-89ee83,Cybersecurity,organic,Pro,89,20140,0.333,médio,6707.0,2,"R1, R2",Fazer contato de acompanhamento do início de uso | Revisar com o cliente o ticket escalado e confirmar a solução,1,2024-10-05,2025-01-01
+39,A-977ca0,HealthTech,partner,Basic,681,29255,0.228,menor,6670.0,2,"R3, R4",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência,1,2024-11-21,2025-01-01
+40,A-d62e02,Cybersecurity,partner,Pro,134,21324,0.31,médio,6610.0,1,R8,Confirmar a intenção de renovar,0,2024-05-04,2025-01-01
+41,A-0aaf6e,FinTech,organic,Enterprise,235,23496,0.28,médio,6579.0,1,R4,Retomar o caso que demorou e perguntar se ficou pendência,1,2024-10-13,2025-01-01
+42,A-4e631b,FinTech,other,Enterprise,291,24398,0.269,médio,6563.0,2,"R7, R8",Entender o motivo da redução de plano | Confirmar a intenção de renovar,0,2024-09-23,2025-01-01
+43,A-ff79f2,DevTools,ads,Basic,251,23408,0.276,médio,6461.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-09-04,2025-01-01
+44,A-de24d5,DevTools,other,Enterprise,57,17554,0.359,maior,6302.0,4,"R1, R3, R5, R9",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,1,2024-11-16,2025-01-01
+45,A-cbd1a3,DevTools,other,Basic,37,16351,0.384,maior,6279.0,1,R1,Fazer contato de acompanhamento do início de uso,0,2024-09-08,2025-01-01
+46,A-1986ca,HealthTech,ads,Pro,702,27661,0.227,menor,6279.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2024-09-07,2025-01-01
+47,A-1ac5e0,DevTools,event,Basic,73,18249,0.344,médio,6278.0,1,R1,Fazer contato de acompanhamento do início de uso,0,2024-09-03,2025-01-01
+48,A-4e960a,FinTech,other,Enterprise,350,23942,0.26,médio,6225.0,2,"R3, R5",Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento,1,2024-12-08,2025-01-01
+49,A-95b24a,FinTech,event,Pro,575,25034,0.236,menor,5908.0,1,R8,Confirmar a intenção de renovar,0,2024-03-14,2025-01-01
+50,A-9badbd,Cybersecurity,ads,Enterprise,196,20299,0.289,médio,5866.0,3,"R5, R8, R9",Pedir a avaliação do atendimento | Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,1,2024-10-12,2025-01-01
+51,A-f97b9a,FinTech,event,Pro,542,23833,0.238,menor,5672.0,1,R5,Pedir a avaliação do atendimento,1,2024-11-14,2025-01-01
+52,A-65a46c,HealthTech,event,Pro,424,22675,0.25,menor,5669.0,2,"R3, R4",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência,2,2024-12-23,2025-01-01
+53,A-427b69,FinTech,other,Basic,131,18194,0.311,médio,5658.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-05-06,2025-01-01
+54,A-bb2f49,Cybersecurity,other,Pro,584,23990,0.235,menor,5638.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-03-29,2025-01-01
+55,A-524364,DevTools,partner,Enterprise,1,9552,0.572,maior,5464.0,2,"R1, R3",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido,1,2024-10-25,2025-01-01
+56,A-068fc6,EdTech,event,Enterprise,534,22120,0.239,menor,5287.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-04-25,2025-01-01
+57,A-ad296b,DevTools,event,Pro,170,17708,0.297,médio,5259.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-09,2025-01-01
+58,A-42b791,FinTech,event,Pro,226,18547,0.282,médio,5230.0,1,R8,Confirmar a intenção de renovar,0,2023-12-12,2025-01-01
+59,A-432483,Cybersecurity,ads,Pro,695,22941,0.227,menor,5208.0,1,R8,Confirmar a intenção de renovar,0,2024-09-20,2025-01-01
+60,A-de58ca,HealthTech,organic,Enterprise,629,22277,0.232,menor,5168.0,2,"R4, R8",Retomar o caso que demorou e perguntar se ficou pendência | Confirmar a intenção de renovar,1,2024-11-05,2025-01-01
+61,A-443f6f,Cybersecurity,organic,Basic,25,12663,0.408,maior,5167.0,5,"R1, R3, R4, R5, R8",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Confirmar a intenção de renovar,1,2024-10-29,2025-01-01
+62,A-e6afc1,DevTools,ads,Pro,677,22582,0.228,menor,5149.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,,2025-01-01
+63,A-544d0a,DevTools,organic,Basic,244,18492,0.278,médio,5141.0,1,R7,Entender o motivo da redução de plano,0,2024-04-19,2025-01-01
+64,A-40de06,Cybersecurity,event,Enterprise,604,21918,0.233,menor,5107.0,1,R7,Entender o motivo da redução de plano,0,2024-02-18,2025-01-01
+65,A-adc1f3,Cybersecurity,organic,Pro,149,16658,0.304,médio,5064.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2023-06-12,2025-01-01
+66,A-756192,FinTech,other,Basic,570,21400,0.236,menor,5050.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-06-16,2025-01-01
+67,A-186a44,HealthTech,ads,Enterprise,513,20609,0.241,menor,4967.0,3,"R3, R4, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Verificar a adoção do produto com o cliente,1,2024-12-30,2025-01-01
+68,A-91e948,EdTech,partner,Basic,703,21894,0.226,menor,4948.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,,2025-01-01
+69,A-f9cc74,DevTools,partner,Enterprise,81,14550,0.338,médio,4918.0,3,"R1, R4, R6",Fazer contato de acompanhamento do início de uso | Retomar o caso que demorou e perguntar se ficou pendência | Perguntar o que faltou no atendimento,2,2024-12-09,2025-01-01
+70,A-700ade,Cybersecurity,organic,Enterprise,62,13859,0.354,maior,4906.0,3,"R1, R3, R5",Fazer contato de acompanhamento do início de uso | Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento,1,2024-11-03,2025-01-01
+71,A-e89151,FinTech,organic,Pro,475,19762,0.245,menor,4842.0,1,R5,Pedir a avaliação do atendimento,1,2024-10-10,2025-01-01
+72,A-cc98bc,DevTools,ads,Basic,588,19999,0.235,menor,4700.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2023-06-13,2025-01-01
+73,A-779e4e,HealthTech,organic,Basic,730,19986,0.225,menor,4497.0,2,"R3, R4",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência,1,2024-11-03,2025-01-01
+74,A-fdfc91,Cybersecurity,ads,Basic,606,19191,0.233,menor,4472.0,3,"R3, R6, R9",Confirmar que o problema urgente foi resolvido | Perguntar o que faltou no atendimento | Verificar a adoção do produto com o cliente,1,2024-11-17,2025-01-01
+75,A-503d5a,FinTech,other,Enterprise,438,17884,0.249,menor,4453.0,3,"R4, R5, R8",Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Confirmar a intenção de renovar,2,2024-11-20,2025-01-01
+76,A-a0ca4e,Cybersecurity,ads,Pro,299,16633,0.267,médio,4441.0,3,"R3, R4, R5",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento,1,2024-12-02,2025-01-01
+77,A-600734,DevTools,organic,Pro,414,16711,0.251,médio,4194.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-09,2025-01-01
+78,A-7d514c,HealthTech,organic,Enterprise,333,15717,0.262,médio,4118.0,2,"R3, R5",Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento,1,2024-12-07,2025-01-01
+79,A-410e86,FinTech,organic,Basic,52,11184,0.364,maior,4071.0,2,"R1, R8",Fazer contato de acompanhamento do início de uso | Confirmar a intenção de renovar,0,2024-04-28,2025-01-01
+80,A-e4bf56,HealthTech,ads,Pro,65,11563,0.351,maior,4059.0,2,"R1, R7",Fazer contato de acompanhamento do início de uso | Entender o motivo da redução de plano,0,2024-08-27,2025-01-01
+81,A-bcf87c,FinTech,event,Pro,188,13611,0.292,médio,3974.0,1,R7,Entender o motivo da redução de plano,0,2024-01-09,2025-01-01
+82,A-970c97,HealthTech,other,Enterprise,306,14868,0.266,médio,3955.0,1,R8,Confirmar a intenção de renovar,0,2023-01-29,2025-01-01
+83,A-17939a,HealthTech,organic,Basic,6,8035,0.491,maior,3945.0,1,R1,Fazer contato de acompanhamento do início de uso,0,2024-08-14,2025-01-01
+84,A-52dd88,Cybersecurity,ads,Pro,680,16592,0.228,menor,3783.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2023-12-14,2025-01-01
+85,A-8adedc,EdTech,event,Basic,325,13801,0.263,médio,3630.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-08-19,2025-01-01
+86,A-6c093d,DevTools,partner,Basic,628,15556,0.232,menor,3609.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-07-11,2025-01-01
+87,A-bc4d48,EdTech,ads,Pro,203,12390,0.288,médio,3568.0,4,"R2, R3, R4, R8",Revisar com o cliente o ticket escalado e confirmar a solução | Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Confirmar a intenção de renovar,1,2024-11-18,2025-01-01
+88,A-0e966d,FinTech,ads,Basic,190,12236,0.291,médio,3561.0,0,,Sem gatilho: acompanhar pela faixa de risco,1,2024-12-01,2025-01-01
+89,A-fabe19,DevTools,ads,Enterprise,51,9552,0.365,maior,3486.0,1,R1,Fazer contato de acompanhamento do início de uso,0,2024-01-06,2025-01-01
+90,A-bc87bc,FinTech,event,Pro,168,11690,0.298,médio,3484.0,1,R4,Retomar o caso que demorou e perguntar se ficou pendência,1,2024-12-29,2025-01-01
+91,A-3932db,HealthTech,other,Pro,455,14087,0.247,menor,3479.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-22,2025-01-01
+92,A-69b156,EdTech,other,Pro,407,13798,0.252,médio,3477.0,1,R7,Entender o motivo da redução de plano,0,2024-09-01,2025-01-01
+93,A-00cac8,HealthTech,organic,Enterprise,474,14121,0.245,menor,3460.0,1,R7,Entender o motivo da redução de plano,0,2023-09-15,2025-01-01
+94,A-8b25f2,Cybersecurity,ads,Pro,319,12965,0.264,médio,3423.0,1,R7,Entender o motivo da redução de plano,0,2024-02-04,2025-01-01
+95,A-c4ea60,FinTech,other,Enterprise,664,14646,0.229,menor,3354.0,1,R8,Confirmar a intenção de renovar,0,2024-05-23,2025-01-01
+96,A-297a2d,HealthTech,event,Pro,607,14373,0.233,menor,3349.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2024-05-14,2025-01-01
+97,A-cea1f0,FinTech,event,Pro,269,12244,0.273,médio,3343.0,3,"R3, R4, R8",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Confirmar a intenção de renovar,1,2024-10-11,2025-01-01
+98,A-9c18c4,HealthTech,ads,Pro,524,13814,0.24,menor,3315.0,2,"R4, R6",Retomar o caso que demorou e perguntar se ficou pendência | Perguntar o que faltou no atendimento,1,2024-12-08,2025-01-01
+99,A-e2cd1b,DevTools,other,Enterprise,332,12548,0.262,médio,3288.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-07-03,2025-01-01
+100,A-a1bbb6,DevTools,organic,Basic,637,14157,0.231,menor,3270.0,1,R8,Confirmar a intenção de renovar,0,2024-01-18,2025-01-01
+101,A-9a532a,HealthTech,partner,Enterprise,179,10945,0.294,médio,3218.0,1,R9,Verificar a adoção do produto com o cliente,0,2023-09-12,2025-01-01
+102,A-328bd0,HealthTech,partner,Enterprise,596,13726,0.234,menor,3212.0,2,"R7, R8",Entender o motivo da redução de plano | Confirmar a intenção de renovar,0,2024-09-06,2025-01-01
+103,A-22f2df,DevTools,ads,Basic,18,7451,0.427,maior,3182.0,2,"R1, R7",Fazer contato de acompanhamento do início de uso | Entender o motivo da redução de plano,0,2024-06-14,2025-01-01
+104,A-96215d,FinTech,event,Enterprise,146,10312,0.305,médio,3145.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2023-08-04,2025-01-01
+105,A-625d0b,EdTech,ads,Basic,121,9903,0.316,médio,3129.0,2,"R5, R9",Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,1,2024-11-19,2025-01-01
+106,A-9bfc9f,DevTools,ads,Pro,475,12745,0.245,menor,3123.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-09-23,2025-01-01
+107,A-fe79a5,HealthTech,ads,Basic,315,11741,0.265,médio,3111.0,3,"R3, R5, R9",Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,1,2024-12-25,2025-01-01
+108,A-55f257,FinTech,organic,Basic,377,12137,0.256,médio,3107.0,1,R8,Confirmar a intenção de renovar,0,2024-07-12,2025-01-01
+109,A-e36807,EdTech,other,Pro,229,10707,0.281,médio,3009.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-09-20,2025-01-01
+110,A-1b7577,Cybersecurity,other,Pro,66,8505,0.35,médio,2977.0,2,"R1, R7",Fazer contato de acompanhamento do início de uso | Entender o motivo da redução de plano,0,2024-05-31,2025-01-01
+111,A-54d94a,Cybersecurity,event,Basic,611,12557,0.233,menor,2926.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-07-25,2025-01-01
+112,A-ce66f8,EdTech,event,Pro,497,11858,0.243,menor,2881.0,0,,Sem gatilho: acompanhar pela faixa de risco,1,2024-12-06,2025-01-01
+113,A-cbbe12,Cybersecurity,partner,Enterprise,651,12321,0.23,menor,2834.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-09-18,2025-01-01
+114,A-3c1a3f,DevTools,event,Pro,494,11192,0.243,menor,2720.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-03-09,2025-01-01
+115,A-c62e55,EdTech,partner,Basic,693,11902,0.227,menor,2702.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-03-21,2025-01-01
+116,A-a2485e,FinTech,event,Pro,150,8775,0.304,médio,2668.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,,2025-01-01
+117,A-474ad4,EdTech,organic,Basic,400,10533,0.253,médio,2665.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2024-05-03,2025-01-01
+118,A-940b8b,HealthTech,organic,Basic,288,9640,0.269,médio,2593.0,3,"R3, R5, R9",Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,1,2024-10-25,2025-01-01
+119,A-139c3b,HealthTech,organic,Enterprise,41,6822,0.378,maior,2579.0,2,"R1, R8",Fazer contato de acompanhamento do início de uso | Confirmar a intenção de renovar,2,2024-12-18,2025-01-01
+120,A-e98302,EdTech,ads,Enterprise,372,9725,0.257,médio,2499.0,2,"R3, R9",Confirmar que o problema urgente foi resolvido | Verificar a adoção do produto com o cliente,1,2024-11-25,2025-01-01
+121,A-92a333,FinTech,event,Enterprise,649,10659,0.23,menor,2452.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-06-05,2025-01-01
+122,A-59f724,HealthTech,other,Enterprise,425,9773,0.25,menor,2443.0,3,"R3, R4, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Verificar a adoção do produto com o cliente,1,2024-12-15,2025-01-01
+123,A-43a9e3,FinTech,other,Basic,503,10004,0.242,menor,2421.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-06-26,2025-01-01
+124,A-7da956,Cybersecurity,event,Pro,213,7930,0.285,médio,2260.0,1,R7,Entender o motivo da redução de plano,0,2024-07-12,2025-01-01
+125,A-88c6ca,FinTech,ads,Basic,68,6449,0.348,médio,2244.0,1,R1,Fazer contato de acompanhamento do início de uso,0,2023-02-26,2025-01-01
+126,A-94c3cd,FinTech,other,Enterprise,469,9036,0.245,menor,2214.0,1,R8,Confirmar a intenção de renovar,0,2024-08-17,2025-01-01
+127,A-508199,FinTech,event,Basic,339,8436,0.261,médio,2202.0,2,"R8, R9",Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,0,2024-08-17,2025-01-01
+128,A-f446b6,DevTools,ads,Pro,600,8805,0.234,menor,2060.0,4,"R2, R3, R5, R8",Revisar com o cliente o ticket escalado e confirmar a solução | Confirmar que o problema urgente foi resolvido | Pedir a avaliação do atendimento | Confirmar a intenção de renovar,1,2024-11-25,2025-01-01
+129,A-fb186e,EdTech,organic,Basic,66,5771,0.35,médio,2020.0,2,"R1, R9",Fazer contato de acompanhamento do início de uso | Verificar a adoção do produto com o cliente,0,2024-07-28,2025-01-01
+130,A-2f6a32,HealthTech,organic,Basic,128,6221,0.312,médio,1941.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-05-06,2025-01-01
+131,A-45ce7a,FinTech,ads,Enterprise,528,7432,0.24,menor,1784.0,1,R5,Pedir a avaliação do atendimento,1,2024-12-14,2025-01-01
+132,A-856b1e,FinTech,partner,Basic,428,6321,0.25,menor,1580.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-09-15,2025-01-01
+133,A-ced9aa,DevTools,other,Enterprise,88,4697,0.333,médio,1564.0,2,"R1, R9",Fazer contato de acompanhamento do início de uso | Verificar a adoção do produto com o cliente,0,2024-05-14,2025-01-01
+134,A-c42f1f,HealthTech,other,Pro,157,4636,0.301,médio,1395.0,2,"R7, R9",Entender o motivo da redução de plano | Verificar a adoção do produto com o cliente,0,2024-09-28,2025-01-01
+135,A-bbe56f,HealthTech,ads,Enterprise,685,6025,0.228,menor,1374.0,4,"R3, R4, R5, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Verificar a adoção do produto com o cliente,2,2024-11-30,2025-01-01
+136,A-c7e58b,HealthTech,other,Pro,556,5384,0.237,menor,1276.0,5,"R3, R4, R5, R8, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Confirmar a intenção de renovar | Verificar a adoção do produto com o cliente,2,2024-12-16,2025-01-01
+137,A-10b8da,DevTools,partner,Enterprise,604,5404,0.233,menor,1259.0,1,R8,Confirmar a intenção de renovar,0,2023-09-23,2025-01-01
+138,A-2b9d3e,EdTech,partner,Enterprise,577,5142,0.236,menor,1214.0,0,,Sem gatilho: acompanhar pela faixa de risco,0,2024-06-24,2025-01-01
+139,A-019782,DevTools,event,Enterprise,623,5169,0.232,menor,1199.0,3,"R3, R6, R9",Confirmar que o problema urgente foi resolvido | Perguntar o que faltou no atendimento | Verificar a adoção do produto com o cliente,1,2024-12-01,2025-01-01
+140,A-0158bb,FinTech,partner,Basic,224,4070,0.282,médio,1148.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-01-11,2025-01-01
+141,A-86cdb4,DevTools,partner,Basic,101,3006,0.326,médio,980.0,5,"R3, R4, R5, R6, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Pedir a avaliação do atendimento | Perguntar o que faltou no atendimento | Verificar a adoção do produto com o cliente,2,2024-12-02,2025-01-01
+142,A-b11cd0,DevTools,ads,Pro,712,4312,0.226,menor,975.0,2,"R4, R6",Retomar o caso que demorou e perguntar se ficou pendência | Perguntar o que faltou no atendimento,1,2024-10-08,2025-01-01
+143,A-7c5768,HealthTech,event,Enterprise,305,3389,0.266,médio,901.0,4,"R3, R4, R6, R9",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Perguntar o que faltou no atendimento | Verificar a adoção do produto com o cliente,2,2024-11-21,2025-01-01
+144,A-7c4956,DevTools,ads,Enterprise,606,3314,0.233,menor,772.0,1,R5,Pedir a avaliação do atendimento,1,2024-12-22,2025-01-01
+145,A-cb6cc6,DevTools,ads,Basic,639,2622,0.231,menor,606.0,4,"R3, R4, R6, R8",Confirmar que o problema urgente foi resolvido | Retomar o caso que demorou e perguntar se ficou pendência | Perguntar o que faltou no atendimento | Confirmar a intenção de renovar,1,2024-11-25,2025-01-01
+146,A-5b051a,Cybersecurity,event,Enterprise,149,1914,0.304,médio,582.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-03-24,2025-01-01
+147,A-f19b24,Cybersecurity,organic,Pro,722,2523,0.225,menor,568.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-01-22,2025-01-01
+148,A-9077b0,HealthTech,ads,Basic,129,779,0.312,médio,243.0,1,R9,Verificar a adoção do produto com o cliente,0,2024-09-07,2025-01-01
