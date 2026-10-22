@@ -1,0 +1,501 @@
+account_id,account_name,industry,country,plan_tier,prioridade,mrr_ativo,mrr_na_janela,assinaturas_na_janela,assinatura_mais_nova_dias,perda_esperada_90d,cancelamentos_precoces_180d,tickets_90d,uso_por_assento_90d,acao_sugerida
+A-d4e0d4,Company_403,FinTech,US,Basic,P1,114777,60255,5,17,4424.0,1,0,0.01,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-5b1bcd,Company_166,DevTools,US,Pro,P2,131911,3577,1,0,4408.0,0,1,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5c046d,Company_130,EdTech,FR,Basic,P1,83886,59055,5,11,3388.0,0,0,0.06,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-1f0636,Company_368,EdTech,AU,Pro,P1,94710,20895,1,44,3354.0,0,0,0.11,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-18793f,Company_488,EdTech,US,Basic,P1,75776,75776,10,1,3291.0,1,0,0.0,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-4814a3,Company_337,Cybersecurity,IN,Basic,P1,70644,47415,6,1,2829.0,1,0,0.09,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-09316c,Company_341,FinTech,AU,Enterprise,P1,70000,40810,7,2,2740.0,0,2,0.07,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-c58f49,Company_480,EdTech,US,Enterprise,P1,70980,27860,3,37,2639.0,0,0,0.09,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-30b4ca,Company_23,EdTech,IN,Basic,P3,75938,0,0,89,2517.0,0,0,0.05,Rotina normal de CS
+A-e08cd3,Company_475,FinTech,US,Pro,P1,67737,21172,5,6,2463.0,0,2,0.11,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-40906c,Company_235,EdTech,US,Basic,P1,64400,31832,4,30,2462.0,0,3,0.07,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-fa3095,Company_174,FinTech,US,Basic,P2,69230,7420,4,1,2371.0,0,2,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5a215a,Company_358,EdTech,FR,Enterprise,P2,69687,5916,2,21,2370.0,4,1,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0cc442,Company_198,EdTech,US,Basic,P1,60092,26865,3,13,2268.0,2,0,0.17,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-afa505,Company_157,DevTools,US,Basic,P2,62580,13930,1,42,2217.0,0,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-56962b,Company_177,EdTech,UK,Enterprise,P1,54605,32437,1,16,2144.0,1,0,0.06,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-bd4513,Company_205,DevTools,AU,Enterprise,P1,48804,48804,10,1,2120.0,2,1,0.07,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-76fa4d,Company_226,HealthTech,US,Pro,P1,47955,47955,5,7,2083.0,2,1,0.04,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-9174e0,Company_73,Cybersecurity,US,Basic,P1,46613,46613,14,3,2025.0,1,0,0.03,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-66224b,Company_87,HealthTech,US,Pro,P1,50876,32568,10,1,2021.0,1,1,0.05,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-e60f9d,Company_178,FinTech,US,Basic,P1,50095,30221,9,8,1971.0,2,0,0.13,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-80eeb6,Company_402,Cybersecurity,UK,Enterprise,P2,58291,418,1,60,1936.0,1,0,0.26,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-aa9511,Company_203,DevTools,US,Pro,P2,55995,6407,2,19,1922.0,1,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7920cc,Company_412,Cybersecurity,FR,Pro,P1,52089,15642,2,25,1887.0,0,2,0.14,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-d40bf7,Company_11,FinTech,IN,Basic,P1,43247,43247,10,2,1878.0,0,0,0.06,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-0651a4,Company_255,HealthTech,FR,Pro,P1,44564,32624,13,6,1813.0,1,0,0.27,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-9779ad,Company_171,Cybersecurity,AU,Pro,P2,51680,7960,1,15,1795.0,0,2,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-05f0e5,Company_40,FinTech,US,Basic,P2,51109,2842,1,38,1723.0,0,1,0.28,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c70870,Company_253,Cybersecurity,US,Basic,P1,39614,39614,7,2,1721.0,0,0,0.13,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-902ef7,Company_270,HealthTech,US,Enterprise,P1,44322,23738,6,6,1713.0,0,0,0.07,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-054577,Company_455,EdTech,UK,Basic,P1,44145,20568,5,22,1675.0,1,0,0.21,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-50f3f7,Company_140,HealthTech,US,Basic,P1,44077,20730,4,14,1674.0,0,0,0.22,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-d77f4c,Company_470,DevTools,US,Pro,P2,48378,5771,1,41,1663.0,1,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e43bf7,Company_215,Cybersecurity,AU,Pro,P2,46666,8756,1,2,1637.0,0,2,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1e1b80,Company_416,FinTech,CA,Enterprise,P2,48647,950,1,57,1622.0,0,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4c38bc,Company_55,HealthTech,UK,Basic,P2,45612,8928,2,21,1603.0,1,0,0.21,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2d1036,Company_399,FinTech,US,Pro,P2,46230,4692,2,15,1580.0,2,1,0.13,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ac85cd,Company_485,EdTech,US,Enterprise,P1,37663,31462,6,5,1572.0,2,0,0.2,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-158f4e,Company_180,FinTech,IN,Enterprise,P1,42700,15128,2,38,1571.0,0,0,0.05,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-cd458b,Company_430,DevTools,US,Basic,P1,42740,14803,4,5,1569.0,1,1,0.32,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-1f7acb,Company_281,FinTech,UK,Basic,P3,46912,0,0,100,1555.0,0,1,0.06,Rotina normal de CS
+A-e4144b,Company_316,EdTech,UK,Pro,P1,35424,35424,10,9,1539.0,0,0,0.1,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-7e0a10,Company_64,FinTech,US,Enterprise,P2,41116,13930,1,1,1506.0,0,1,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-71615e,Company_167,EdTech,US,Basic,P2,40713,12675,3,25,1480.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-39ddf4,Company_435,EdTech,US,Enterprise,P1,33876,33876,8,1,1471.0,1,0,0.02,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-bd4708,Company_257,FinTech,US,Pro,P1,38975,16539,5,13,1462.0,0,2,0.17,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-20736a,Company_271,EdTech,IN,Enterprise,P2,40525,9950,1,38,1445.0,0,2,0.06,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-faa28c,Company_91,HealthTech,US,Enterprise,P2,39300,11904,2,6,1425.0,0,1,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3a7284,Company_93,FinTech,US,Enterprise,P1,32515,32515,9,3,1412.0,3,0,0.15,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-8bde0c,Company_287,DevTools,US,Basic,P1,32385,32385,16,3,1407.0,2,1,0.04,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-712f1c,Company_331,DevTools,US,Basic,P2,39616,8196,2,20,1397.0,0,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-eb7fac,Company_28,DevTools,US,Enterprise,P3,41753,0,0,70,1384.0,0,0,0.17,Rotina normal de CS
+A-2e3bad,Company_108,FinTech,CA,Pro,P3,41724,0,0,65,1383.0,1,0,0.06,Rotina normal de CS
+A-7f8241,Company_42,EdTech,US,Pro,P2,39516,6766,1,7,1379.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-d5a319,Company_158,FinTech,US,Enterprise,P2,37847,11940,2,42,1377.0,0,0,0.39,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-039727,Company_107,EdTech,AU,Pro,P1,31445,31445,14,13,1366.0,1,0,0.13,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-b07346,Company_269,HealthTech,US,Pro,P1,31416,31416,5,3,1365.0,0,1,0.03,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-993085,Company_258,HealthTech,US,Basic,P3,40098,0,0,99,1329.0,1,1,0.11,Rotina normal de CS
+A-0b0d6d,Company_267,DevTools,US,Pro,P1,30429,30429,11,0,1322.0,2,0,0.0,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-671f31,Company_137,DevTools,US,Basic,P1,30385,30385,6,3,1320.0,0,0,0.02,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-a09355,Company_459,FinTech,US,Basic,P1,33454,20225,8,2,1317.0,1,0,0.43,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-726cfa,Company_82,DevTools,US,Pro,P2,34243,13997,3,15,1279.0,0,0,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-956988,Company_14,EdTech,UK,Enterprise,P1,29407,29407,12,1,1277.0,1,0,0.05,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-86902e,Company_169,HealthTech,IN,Enterprise,P2,36041,7412,2,20,1271.0,0,0,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-560d27,Company_266,DevTools,US,Pro,P2,37064,874,5,14,1237.0,1,0,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b48f73,Company_225,EdTech,AU,Pro,P1,28320,28320,7,4,1230.0,0,0,0.02,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-92a3af,Company_259,Cybersecurity,IN,Enterprise,P2,34538,8190,2,37,1229.0,0,0,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-94f8c9,Company_51,HealthTech,US,Basic,P1,31989,15968,5,0,1224.0,0,0,0.26,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-98a59a,Company_80,FinTech,UK,Enterprise,P3,36456,0,0,65,1208.0,0,1,0.08,Rotina normal de CS
+A-f5641b,Company_382,EdTech,US,Pro,P2,32951,11063,3,2,1206.0,0,0,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c7ffc2,Company_392,Cybersecurity,US,Pro,P2,36112,931,1,4,1206.0,0,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6965e1,Company_379,DevTools,US,Basic,P1,27765,27765,12,1,1206.0,0,0,0.1,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-82d8a6,Company_444,Cybersecurity,UK,Basic,P1,27626,27626,13,2,1200.0,4,1,0.03,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-ed510f,Company_361,Cybersecurity,IN,Basic,P2,35364,2058,1,10,1193.0,0,0,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e3bd71,Company_347,Cybersecurity,US,Basic,P2,35461,1519,1,24,1191.0,0,0,0.26,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b44e3e,Company_383,Cybersecurity,UK,Basic,P3,35561,0,0,161,1178.0,1,0,0.17,Rotina normal de CS
+A-bbc346,Company_138,FinTech,US,Enterprise,P2,32142,10894,5,7,1177.0,2,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-309e54,Company_371,DevTools,US,Pro,P1,26932,26932,10,0,1170.0,1,0,0.03,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-82861f,Company_350,DevTools,UK,Basic,P2,32686,8159,1,42,1167.0,2,1,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-812c5b,Company_395,DevTools,CA,Basic,P1,29884,16034,5,4,1155.0,0,0,0.09,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-96bbc6,Company_342,Cybersecurity,US,Enterprise,P2,30426,13796,3,6,1150.0,0,0,0.37,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9f9299,Company_133,FinTech,US,Enterprise,P2,34087,1904,2,43,1149.0,1,2,0.41,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a1b80b,Company_184,HealthTech,US,Basic,P3,34589,0,1,54,1146.0,0,0,0.52,Rotina normal de CS
+A-35083d,Company_27,HealthTech,IN,Basic,P2,31502,9751,1,16,1144.0,0,0,0.27,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3a5ad8,Company_94,HealthTech,US,Enterprise,P1,28701,17485,4,6,1131.0,0,1,0.15,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-e693b6,Company_240,FinTech,AU,Enterprise,P2,30415,10945,1,42,1121.0,1,0,0.08,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4a4c2d,Company_473,DevTools,US,Enterprise,P2,32940,2646,1,20,1119.0,0,1,0.08,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-00bed1,Company_306,Cybersecurity,US,Basic,P3,33506,0,0,121,1110.0,0,0,0.15,Rotina normal de CS
+A-eb2fdc,Company_216,DevTools,AU,Enterprise,P2,30351,9796,4,12,1107.0,0,0,0.22,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2d4502,Company_45,FinTech,IN,Basic,P2,29071,13590,4,19,1103.0,0,0,0.06,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fda07f,Company_230,Cybersecurity,FR,Basic,P1,28418,15124,4,1,1097.0,0,0,0.24,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-d3c88e,Company_490,DevTools,US,Pro,P1,26183,22215,10,2,1096.0,0,0,0.2,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-acb7f7,Company_330,EdTech,US,Basic,P2,32574,1216,2,3,1092.0,0,0,0.34,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2bc93d,Company_43,HealthTech,US,Basic,P2,32128,1715,1,11,1082.0,1,1,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4d1e75,Company_58,DevTools,US,Basic,P2,31390,3810,4,14,1079.0,0,0,0.12,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-49b828,Company_391,FinTech,IN,Pro,P2,31108,4227,2,39,1074.0,0,1,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-118f1c,Company_492,Cybersecurity,US,Pro,P1,26080,19712,5,3,1067.0,2,0,0.0,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-716841,Company_437,FinTech,US,Pro,P1,26234,17910,2,18,1054.0,0,0,0.05,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-5b4ebb,Company_69,Cybersecurity,UK,Basic,P2,27404,14007,3,15,1052.0,1,1,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fd9422,Company_263,Cybersecurity,US,Pro,P1,27028,14384,4,11,1044.0,1,1,0.17,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-02cd81,Company_76,HealthTech,IN,Basic,P2,30800,2156,1,2,1043.0,1,0,0.08,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-68f37c,Company_202,HealthTech,US,Basic,P3,31474,0,0,87,1043.0,0,1,0.16,Rotina normal de CS
+A-10b8f2,Company_151,HealthTech,DE,Basic,P2,30719,2352,1,15,1042.0,0,0,0.12,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1d5444,Company_427,Cybersecurity,US,Basic,P2,30958,1176,2,35,1038.0,0,1,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0f6450,Company_400,FinTech,US,Pro,P1,23800,23800,11,0,1034.0,0,0,0.0,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-a8d89d,Company_326,EdTech,US,Pro,P2,29320,5895,2,26,1032.0,0,0,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ce550d,Company_4,HealthTech,US,Enterprise,P1,25355,18390,6,15,1030.0,2,0,0.26,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-2789e3,Company_268,FinTech,US,Enterprise,P1,24489,20837,5,17,1026.0,0,3,0.57,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-526d93,Company_66,HealthTech,FR,Basic,P3,30644,0,0,91,1016.0,1,1,0.3,Rotina normal de CS
+A-ba6516,Company_154,FinTech,US,Pro,P2,28379,6696,2,37,1009.0,0,1,0.1,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-855a48,Company_389,EdTech,US,Pro,P3,30376,0,0,154,1007.0,0,0,0.06,Rotina normal de CS
+A-0aaf6e,Company_114,FinTech,US,Enterprise,P1,23496,21227,4,5,997.0,1,1,0.48,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-592832,Company_10,Cybersecurity,US,Basic,P2,26833,9949,9,0,992.0,2,1,0.23,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b7ef83,Company_474,Cybersecurity,UK,Pro,P2,26913,9496,3,1,990.0,1,1,0.35,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-84ebe4,Company_68,FinTech,US,Pro,P2,27652,7164,1,43,990.0,0,2,0.35,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f19409,Company_105,DevTools,US,Basic,P2,29559,665,1,11,986.0,0,1,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-8b0451,Company_245,FinTech,UK,Enterprise,P1,23550,19885,5,9,985.0,1,2,0.16,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-b7b7b7,Company_338,FinTech,US,Basic,P2,28558,3381,3,2,981.0,0,0,0.13,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-dfbd31,Company_190,DevTools,UK,Enterprise,P2,25079,14319,3,22,979.0,0,1,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4f18f0,Company_145,DevTools,CA,Pro,P2,29333,456,1,11,977.0,2,0,0.16,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b78bf8,Company_148,DevTools,US,Pro,P1,22423,22423,8,3,974.0,0,2,0.12,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-d27f50,Company_163,Cybersecurity,UK,Enterprise,P2,25671,11748,5,12,972.0,2,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2ebb4b,Company_334,HealthTech,US,Basic,P2,28679,2009,1,21,971.0,1,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-977ca0,Company_232,HealthTech,IN,Basic,P3,29255,0,0,151,970.0,1,1,0.42,Rotina normal de CS
+A-ac9111,Company_487,HealthTech,US,Pro,P2,25828,10946,3,10,969.0,0,0,0.26,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5fe118,Company_374,Cybersecurity,US,Enterprise,P1,22290,22290,5,2,968.0,0,0,0.05,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-7df7a7,Company_125,DevTools,US,Basic,P2,26568,8093,3,3,964.0,0,0,0.49,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0dbdc6,Company_366,Cybersecurity,DE,Pro,P2,28273,2303,1,16,961.0,0,1,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6f50ae,Company_466,FinTech,US,Pro,P2,26608,7562,2,0,960.0,0,3,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7dacce,Company_8,Cybersecurity,CA,Enterprise,P1,23057,18082,7,27,950.0,0,0,0.26,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-9f0b68,Company_489,EdTech,US,Basic,P2,28518,266,2,31,948.0,0,1,0.19,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-883b7d,Company_313,Cybersecurity,IN,Basic,P3,28515,0,0,131,945.0,0,2,0.28,Rotina normal de CS
+A-d4ac0e,Company_364,DevTools,UK,Basic,P2,27215,3381,3,17,937.0,1,1,0.19,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-90a8c8,Company_249,FinTech,AU,Pro,P2,26514,4112,2,28,921.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3b5cd1,Company_49,FinTech,US,Basic,P2,23676,13134,3,7,920.0,0,1,0.36,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1986ca,Company_197,HealthTech,IN,Pro,P3,27661,0,0,98,917.0,0,0,0.23,Rotina normal de CS
+A-e1b9cd,Company_484,DevTools,US,Pro,P2,26362,3920,2,7,914.0,0,0,0.06,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-180abf,Company_122,DevTools,US,Pro,P2,24576,7488,4,11,892.0,0,0,0.1,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-19b2c8,Company_476,DevTools,IN,Pro,P3,26703,0,0,67,885.0,0,0,0.28,Rotina normal de CS
+A-a33200,Company_352,HealthTech,US,Basic,P2,23142,11136,5,11,882.0,1,0,0.16,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-533452,Company_279,DevTools,AU,Pro,P1,20223,20223,10,6,878.0,1,0,0.11,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-4e631b,Company_298,FinTech,US,Enterprise,P2,24398,6428,5,21,875.0,0,0,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-02fac6,Company_52,FinTech,US,Pro,P3,26410,0,0,74,875.0,0,0,0.4,Rotina normal de CS
+A-4e44e8,Company_22,DevTools,US,Enterprise,P1,20531,18859,4,12,875.0,2,0,0.19,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-6f8ad2,Company_57,EdTech,IN,Basic,P2,25046,3131,3,0,862.0,2,2,0.34,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-d62e02,Company_420,Cybersecurity,US,Pro,P1,21324,14956,7,1,861.0,0,0,0.63,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-dbc825,Company_252,EdTech,FR,Enterprise,P2,25702,722,2,36,859.0,1,0,0.46,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2446e3,Company_241,EdTech,IN,Pro,P2,24138,5373,1,22,855.0,0,1,0.46,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bb2f49,Company_356,Cybersecurity,US,Pro,P2,23990,5689,3,5,854.0,0,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-692f18,Company_195,EdTech,US,Basic,P2,24978,1990,1,17,848.0,1,1,0.39,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cb5333,Company_370,DevTools,US,Pro,P2,24639,2244,2,16,840.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-08e34e,Company_32,EdTech,US,Basic,P2,21821,11399,4,0,840.0,0,0,0.28,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c1dfe1,Company_53,DevTools,DE,Pro,P3,25296,0,0,100,838.0,0,0,0.16,Rotina normal de CS
+A-95b24a,Company_117,FinTech,US,Pro,P3,25034,0,0,81,830.0,0,0,0.21,Rotina normal de CS
+A-f97b9a,Company_159,FinTech,US,Pro,P2,23833,3430,3,23,825.0,0,1,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-186a44,Company_101,HealthTech,US,Enterprise,P2,20609,13333,5,14,820.0,1,1,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e51ec7,Company_113,FinTech,CA,Enterprise,P2,24076,1990,1,12,818.0,1,1,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c1e51e,Company_173,FinTech,US,Basic,P1,18772,18639,6,7,814.0,3,1,0.34,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-09540c,Company_239,Cybersecurity,CA,Basic,P2,22445,6566,2,9,811.0,0,0,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-91e948,Company_88,EdTech,AU,Basic,P2,21894,8159,1,52,810.0,0,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5c9849,Company_362,EdTech,IN,Basic,P1,18646,18646,8,1,810.0,1,0,0.07,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-443b7c,Company_280,Cybersecurity,US,Enterprise,P2,23739,2223,5,2,810.0,2,0,0.28,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-87aa7b,Company_433,HealthTech,US,Pro,P2,22881,4587,4,8,805.0,0,1,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3793ee,Company_332,Cybersecurity,CA,Enterprise,P3,24304,0,0,69,805.0,0,0,0.15,Rotina normal de CS
+A-b3fe05,Company_238,Cybersecurity,CA,Pro,P2,24102,570,3,11,805.0,1,1,0.13,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4e960a,Company_277,FinTech,US,Enterprise,P2,23942,816,2,23,802.0,0,1,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1ac5e0,Company_126,DevTools,US,Basic,P1,18249,17622,9,1,786.0,0,0,0.11,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-ff79f2,Company_165,DevTools,US,Basic,P2,23408,589,1,6,782.0,2,0,0.22,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9b9fe9,Company_71,EdTech,AU,Basic,P2,19480,13282,2,33,782.0,0,1,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bcbe98,Company_452,Cybersecurity,US,Enterprise,P2,21666,6256,4,1,782.0,0,0,0.27,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-89ee83,Company_312,Cybersecurity,US,Pro,P2,20140,10945,6,4,780.0,2,1,0.42,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b179bf,Company_348,Cybersecurity,IN,Basic,P1,17931,17931,4,6,779.0,0,1,0.07,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-432483,Company_78,Cybersecurity,US,Pro,P2,22941,1519,1,32,776.0,1,0,0.51,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c16b88,Company_431,HealthTech,US,Enterprise,P2,20338,9591,3,5,773.0,1,0,0.05,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-118d55,Company_65,Cybersecurity,US,Basic,P1,18148,16556,10,4,772.0,1,2,0.24,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-65a46c,Company_95,HealthTech,US,Pro,P2,22675,1715,1,7,769.0,1,2,0.36,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-8e47ca,Company_191,HealthTech,US,Pro,P3,23145,0,0,130,767.0,1,0,0.18,Rotina normal de CS
+A-de24d5,Company_231,DevTools,US,Enterprise,P1,17554,17554,12,3,762.0,1,1,0.16,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-e89151,Company_234,FinTech,UK,Pro,P2,19762,10275,2,14,761.0,0,1,0.53,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-37f969,Company_150,HealthTech,IN,Enterprise,P3,22959,0,0,110,761.0,0,0,0.08,Rotina normal de CS
+A-d792a6,Company_486,DevTools,US,Enterprise,P3,22954,0,0,75,761.0,0,2,0.33,Rotina normal de CS
+A-c37601,Company_48,EdTech,US,Basic,P1,17490,17490,10,1,760.0,2,0,0.17,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-58b9ff,Company_425,DevTools,IN,Enterprise,P2,22244,1617,1,58,754.0,1,0,0.33,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5790f4,Company_446,FinTech,UK,Pro,P1,17334,17334,5,5,753.0,1,0,0.0,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-068fc6,Company_465,EdTech,US,Enterprise,P2,22120,1715,1,28,751.0,1,0,0.23,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e6afc1,Company_346,DevTools,US,Pro,P3,22582,0,1,13,748.0,0,0,0.12,Rotina normal de CS
+A-65c341,Company_308,FinTech,US,Pro,P3,22466,0,0,87,745.0,1,0,0.09,Rotina normal de CS
+A-271f46,Company_84,DevTools,US,Pro,P2,19604,9154,1,39,744.0,0,0,0.21,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4a267b,Company_451,FinTech,US,Pro,P3,22458,0,1,55,744.0,1,0,0.32,Rotina normal de CS
+A-7f4db3,Company_441,FinTech,US,Pro,P2,21304,3582,1,55,743.0,2,0,0.58,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-157070,Company_85,FinTech,US,Pro,P3,22395,0,0,87,742.0,2,1,0.24,Rotina normal de CS
+A-1619f8,Company_183,DevTools,US,Pro,P2,19790,8294,4,33,741.0,0,1,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f6b2fb,Company_418,DevTools,AU,Basic,P2,22232,437,1,43,741.0,0,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e7a1e2,Company_295,Cybersecurity,US,Enterprise,P2,19047,10620,4,2,741.0,1,0,0.66,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b07b56,Company_292,DevTools,US,Pro,P1,16984,16984,14,10,738.0,1,0,0.16,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-de58ca,Company_212,HealthTech,DE,Enterprise,P3,22277,0,0,121,738.0,0,1,0.12,Rotina normal de CS
+A-ccabf0,Company_471,HealthTech,IN,Pro,P3,22281,0,0,113,738.0,1,0,0.48,Rotina normal de CS
+A-756192,Company_390,FinTech,IN,Basic,P2,21400,2660,3,19,737.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-eb1312,Company_322,FinTech,US,Pro,P1,17672,14623,8,3,736.0,1,0,0.35,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-d42431,Company_378,FinTech,FR,Enterprise,P2,20742,4378,1,23,732.0,1,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-40de06,Company_369,Cybersecurity,US,Enterprise,P2,21918,532,1,44,732.0,0,0,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ccb686,Company_491,DevTools,US,Basic,P2,21351,2199,2,20,730.0,0,0,0.55,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-427b69,Company_453,FinTech,US,Basic,P2,18194,11305,5,15,719.0,1,0,0.44,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-503d5a,Company_99,FinTech,US,Enterprise,P2,17884,12130,3,12,718.0,0,2,0.56,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6843f2,Company_335,HealthTech,CA,Enterprise,P1,16520,16520,9,0,718.0,0,0,0.0,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-751c58,Company_393,FinTech,UK,Basic,P2,19597,6523,3,10,717.0,0,1,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-40a557,Company_86,Cybersecurity,AU,Pro,P2,20140,4752,3,17,716.0,0,2,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-659280,Company_417,FinTech,IN,Enterprise,P2,21450,323,3,5,714.0,0,0,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cbd1a3,Company_325,DevTools,US,Basic,P1,16351,16351,10,2,710.0,0,0,0.18,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-9badbd,Company_63,Cybersecurity,DE,Enterprise,P2,20299,3167,3,24,705.0,2,1,0.22,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f03140,Company_209,DevTools,IN,Pro,P3,21075,0,1,55,698.0,0,0,0.27,Rotina normal de CS
+A-a865bd,Company_297,Cybersecurity,US,Pro,P3,21022,0,0,103,697.0,0,1,0.26,Rotina normal de CS
+A-adc1f3,Company_98,Cybersecurity,US,Pro,P2,16658,13872,5,10,695.0,1,0,0.5,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-712533,Company_498,EdTech,US,Pro,P2,19382,4920,3,26,693.0,0,2,0.27,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fa2041,Company_211,HealthTech,US,Pro,P3,20915,0,1,26,693.0,0,0,0.37,Rotina normal de CS
+A-94d3da,Company_61,HealthTech,US,Basic,P3,20664,0,0,64,685.0,0,2,0.11,Rotina normal de CS
+A-d26ab4,Company_497,DevTools,UK,Basic,P1,15731,15731,8,4,683.0,1,0,0.2,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-5a3eb9,Company_283,DevTools,CA,Enterprise,P2,19411,3582,1,52,680.0,1,0,0.11,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c222ab,Company_206,Cybersecurity,US,Pro,P2,18048,7936,2,4,680.0,1,3,0.44,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ac14bb,Company_15,FinTech,US,Enterprise,P3,20382,0,0,181,675.0,0,0,0.25,Rotina normal de CS
+A-bb1486,Company_265,HealthTech,US,Basic,P1,15528,15528,7,6,674.0,1,0,0.06,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-34d880,Company_207,Cybersecurity,AU,Enterprise,P3,20185,0,0,71,669.0,1,2,0.48,Rotina normal de CS
+A-a45270,Company_37,HealthTech,US,Enterprise,P2,19984,597,2,8,668.0,1,2,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b2225d,Company_50,FinTech,US,Basic,P2,19088,3343,2,21,667.0,0,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-dec005,Company_445,HealthTech,US,Pro,P2,19998,399,1,51,667.0,1,0,0.48,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6dee43,Company_478,FinTech,UK,Basic,P3,20075,0,0,76,665.0,0,1,0.11,Rotina normal de CS
+A-6e08f3,Company_220,Cybersecurity,US,Basic,P2,18190,5819,2,4,663.0,0,0,0.6,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5a184f,Company_124,DevTools,DE,Enterprise,P3,19999,0,0,72,663.0,1,0,0.5,Rotina normal de CS
+A-cc98bc,Company_469,DevTools,US,Basic,P3,19999,0,0,102,663.0,1,0,0.25,Rotina normal de CS
+A-779e4e,Company_193,HealthTech,US,Basic,P3,19986,0,0,104,662.0,0,1,0.12,Rotina normal de CS
+A-3f9cc0,Company_359,HealthTech,US,Basic,P3,19940,0,0,149,661.0,0,1,0.11,Rotina normal de CS
+A-65aeb5,Company_120,DevTools,US,Pro,P3,19893,0,0,92,659.0,2,0,0.42,Rotina normal de CS
+A-78f02b,Company_329,HealthTech,US,Enterprise,P1,15081,15081,4,23,655.0,0,0,0.03,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-313be3,Company_136,EdTech,US,Enterprise,P2,19006,2303,3,15,654.0,0,1,0.16,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cab532,Company_218,DevTools,FR,Pro,P2,18569,3656,3,15,653.0,0,0,0.37,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f3ff05,Company_44,FinTech,IN,Enterprise,P2,19427,864,4,29,653.0,1,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0354fe,Company_380,Cybersecurity,US,Basic,P1,14824,14824,6,21,644.0,1,2,0.28,Ligação do CSM em 48h + plano de adoção das novas assinaturas
+A-337bc1,Company_424,Cybersecurity,US,Pro,P3,19379,0,0,94,642.0,0,2,0.21,Rotina normal de CS
+A-bece89,Company_128,Cybersecurity,IN,Pro,P3,19250,0,0,74,638.0,0,0,0.26,Rotina normal de CS
+A-462d45,Company_13,Cybersecurity,US,Enterprise,P2,18752,1470,1,21,637.0,1,1,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-42b791,Company_464,FinTech,AU,Pro,P2,18547,2201,4,1,637.0,1,0,0.21,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fdfc91,Company_414,Cybersecurity,US,Basic,P3,19191,0,0,108,636.0,0,1,0.05,Rotina normal de CS
+A-f92792,Company_67,FinTech,US,Pro,P2,18807,810,5,16,632.0,0,1,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-075038,Company_397,HealthTech,UK,Basic,P3,18909,0,0,66,627.0,0,1,0.2,Rotina normal de CS
+A-854864,Company_38,FinTech,IN,Enterprise,P2,14379,14379,5,0,625.0,1,0,0.1,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-417d2f,Company_285,Cybersecurity,IN,Pro,P2,17759,2891,2,3,618.0,0,2,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-544d0a,Company_153,DevTools,US,Basic,P2,18492,436,3,12,617.0,0,0,0.55,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ffc04f,Company_307,EdTech,US,Pro,P2,17393,3536,3,3,613.0,2,0,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-31ab9a,Company_460,FinTech,DE,Pro,P2,15802,8557,2,21,612.0,0,1,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cc8c8f,Company_482,DevTools,US,Enterprise,P2,15600,9154,3,12,611.0,1,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-81edc3,Company_236,Cybersecurity,IN,Basic,P2,17524,2598,3,15,607.0,0,0,0.79,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ad296b,Company_112,DevTools,AU,Pro,P2,17708,1862,1,22,606.0,1,0,0.19,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a0ca4e,Company_6,Cybersecurity,US,Pro,P2,16633,5174,2,30,604.0,0,1,0.35,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f45426,Company_172,HealthTech,US,Basic,P2,14959,10428,4,2,603.0,2,0,0.62,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4c56c9,Company_449,FinTech,US,Enterprise,P2,16256,6106,4,2,602.0,1,1,0.43,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-700ade,Company_472,Cybersecurity,UK,Enterprise,P2,13859,13859,6,2,602.0,2,1,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4437e4,Company_192,Cybersecurity,US,Enterprise,P2,17831,768,2,8,599.0,0,2,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a6d261,Company_303,FinTech,CA,Pro,P2,17694,247,1,42,589.0,0,2,0.16,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0532a9,Company_170,FinTech,IN,Pro,P2,15161,8135,6,5,586.0,0,1,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-eb7c38,Company_47,DevTools,AU,Enterprise,P2,17144,1313,2,27,582.0,1,0,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7f6b86,Company_299,HealthTech,US,Basic,P2,17197,855,1,25,579.0,0,2,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-463db0,Company_16,HealthTech,US,Basic,P2,13266,13266,7,0,576.0,0,1,0.06,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bcf87c,Company_288,FinTech,US,Pro,P2,13611,11775,5,18,572.0,1,0,0.43,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-600734,Company_327,DevTools,US,Pro,P2,16711,1764,1,55,572.0,1,0,0.21,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-52dd88,Company_127,Cybersecurity,US,Pro,P2,16592,2002,2,27,570.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-dcc2f0,Company_309,FinTech,UK,Basic,P2,16758,1026,2,31,566.0,1,0,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7d514c,Company_119,HealthTech,DE,Enterprise,P2,15717,4412,2,26,566.0,0,1,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-72799b,Company_394,DevTools,FR,Enterprise,P3,16935,0,0,71,561.0,0,0,0.24,Rotina normal de CS
+A-c4ea60,Company_18,FinTech,DE,Enterprise,P2,14646,7164,2,14,559.0,0,0,0.26,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b9eed8,Company_189,Cybersecurity,US,Basic,P2,16577,881,2,31,558.0,0,0,0.48,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-50bb9f,Company_373,Cybersecurity,US,Pro,P2,15499,4116,2,4,556.0,1,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3ce5b8,Company_256,FinTech,IN,Basic,P3,16650,0,0,89,552.0,0,2,0.16,Rotina normal de CS
+A-1b9609,Company_5,EdTech,IN,Enterprise,P3,16614,0,0,89,551.0,1,1,0.32,Rotina normal de CS
+A-5ed98d,Company_479,DevTools,US,Basic,P2,15478,3574,4,10,550.0,0,0,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-443f6f,Company_304,Cybersecurity,US,Basic,P2,12663,12663,8,5,550.0,1,0,0.21,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6da850,Company_293,FinTech,IN,Pro,P3,16534,0,1,3,548.0,3,2,0.14,Rotina normal de CS
+A-f25509,Company_92,EdTech,US,Enterprise,P2,16122,1083,1,5,545.0,0,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-86fc1d,Company_328,DevTools,UK,Basic,P2,14687,5174,3,0,540.0,2,1,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3b37d9,Company_384,FinTech,US,Enterprise,P2,14858,4577,1,44,540.0,0,0,0.45,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3932db,Company_144,HealthTech,CA,Pro,P2,14087,6965,2,0,539.0,1,0,0.47,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-eafc6e,Company_149,DevTools,US,Pro,P3,16229,0,0,62,538.0,0,0,0.08,Rotina normal de CS
+A-484819,Company_109,HealthTech,US,Pro,P2,15088,3582,1,48,537.0,0,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2e4581,Company_0,EdTech,US,Basic,P2,12603,11525,7,9,536.0,0,1,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-54ecc2,Company_289,Cybersecurity,US,Enterprise,P3,16168,0,0,62,536.0,0,1,0.39,Rotina normal de CS
+A-297a2d,Company_448,HealthTech,UK,Pro,P2,14373,5373,1,56,532.0,0,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ffdfd5,Company_365,EdTech,US,Basic,P2,14175,5970,2,37,531.0,1,0,0.36,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-202b67,Company_305,HealthTech,US,Pro,P3,15979,0,0,83,530.0,0,0,0.51,Rotina normal de CS
+A-6a7c9d,Company_324,Cybersecurity,US,Enterprise,P2,12135,12135,4,5,527.0,1,0,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ad64c6,Company_175,DevTools,UK,Pro,P2,14120,5572,1,41,525.0,0,2,0.1,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-970c97,Company_477,HealthTech,DE,Enterprise,P2,14868,3038,3,15,524.0,1,0,0.59,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-249769,Company_214,Cybersecurity,US,Enterprise,P2,15717,304,2,40,524.0,0,1,0.71,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6c093d,Company_12,DevTools,US,Basic,P3,15556,0,1,19,516.0,1,0,0.68,Rotina normal de CS
+A-3be56b,Company_200,HealthTech,IN,Pro,P2,15325,380,1,30,512.0,0,0,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-22d9d2,Company_188,DevTools,FR,Pro,P2,14336,3184,1,53,508.0,1,1,0.52,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bc87bc,Company_456,FinTech,US,Pro,P2,11690,11690,6,16,508.0,2,1,0.86,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-96e141,Company_134,DevTools,UK,Basic,P3,15183,0,0,132,503.0,1,0,0.29,Rotina normal de CS
+A-f17767,Company_123,DevTools,US,Enterprise,P2,14914,735,1,21,502.0,0,0,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e4bf56,Company_272,HealthTech,IN,Pro,P2,11563,11563,6,6,502.0,1,0,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-67be94,Company_276,EdTech,US,Enterprise,P2,14567,1274,1,13,496.0,0,2,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-781cc0,Company_499,EdTech,US,Pro,P2,14555,1208,4,23,495.0,1,1,0.64,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f9cc74,Company_360,DevTools,FR,Enterprise,P2,14550,1140,6,9,494.0,1,2,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cbbe12,Company_450,Cybersecurity,DE,Enterprise,P2,12321,7960,1,15,490.0,0,0,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9123ac,Company_219,Cybersecurity,DE,Pro,P3,14751,0,0,71,489.0,0,2,0.73,Rotina normal de CS
+A-bc4d48,Company_343,EdTech,US,Pro,P2,12390,7630,2,4,489.0,0,1,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-d922bf,Company_221,HealthTech,US,Basic,P2,14129,1791,1,21,487.0,1,0,0.34,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-410e86,Company_210,FinTech,US,Basic,P2,11184,11184,5,6,486.0,2,0,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0a282f,Company_2,DevTools,US,Basic,P2,13311,3982,4,4,482.0,2,1,0.42,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-00cac8,Company_26,HealthTech,AU,Enterprise,P2,14121,931,1,29,478.0,0,0,0.34,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-310452,Company_321,DevTools,FR,Enterprise,P2,11003,11003,5,2,478.0,0,1,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e2cd1b,Company_121,DevTools,US,Enterprise,P2,12548,5787,3,5,475.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c43359,Company_83,FinTech,US,Pro,P2,10868,10868,6,9,472.0,2,0,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-151c9a,Company_260,FinTech,US,Enterprise,P3,14250,0,0,188,472.0,0,0,0.41,Rotina normal de CS
+A-8b25f2,Company_96,Cybersecurity,US,Pro,P2,12965,4008,2,16,471.0,1,0,0.5,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7cfe77,Company_367,DevTools,US,Pro,P2,12765,4692,2,26,471.0,0,1,0.05,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-922109,Company_243,Cybersecurity,US,Pro,P2,13677,1602,4,30,470.0,0,0,0.48,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a1bbb6,Company_74,DevTools,CA,Basic,P3,14157,0,0,88,469.0,0,0,0.54,Rotina normal de CS
+A-4ef964,Company_262,HealthTech,US,Pro,P2,13557,1695,2,46,467.0,1,1,0.76,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-029f69,Company_129,Cybersecurity,CA,Basic,P2,13324,2369,7,0,466.0,3,0,0.21,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cea1f0,Company_273,FinTech,US,Pro,P2,12244,5771,3,4,465.0,0,1,0.64,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-328bd0,Company_237,HealthTech,AU,Enterprise,P2,13726,882,1,13,464.0,0,0,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ad3abd,Company_410,FinTech,US,Pro,P3,13904,0,0,78,461.0,0,1,0.22,Rotina normal de CS
+A-c16101,Company_139,EdTech,IN,Basic,P2,12422,4721,2,6,460.0,0,1,0.66,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9c18c4,Company_481,HealthTech,US,Pro,P3,13814,0,0,79,458.0,0,1,0.9,Rotina normal de CS
+A-69b156,Company_396,EdTech,US,Pro,P3,13798,0,1,45,457.0,1,0,0.22,Rotina normal de CS
+A-8adedc,Company_300,EdTech,US,Basic,P3,13801,0,0,115,457.0,0,0,0.12,Rotina normal de CS
+A-d82ef9,Company_355,EdTech,UK,Basic,P2,13320,988,3,31,452.0,0,2,0.22,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-d49cc5,Company_275,Cybersecurity,FR,Basic,P2,13325,950,1,21,451.0,0,1,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c9bb3e,Company_336,EdTech,US,Pro,P2,13502,190,1,59,449.0,0,2,0.07,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-798a3f,Company_463,DevTools,FR,Enterprise,P3,13563,0,0,81,449.0,0,1,0.25,Rotina normal de CS
+A-e61e98,Company_115,FinTech,US,Enterprise,P3,13484,0,0,121,447.0,0,1,0.08,Rotina normal de CS
+A-5f2961,Company_284,HealthTech,US,Basic,P2,10299,10299,7,8,447.0,0,0,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9289f6,Company_104,EdTech,US,Enterprise,P2,12868,1521,4,14,442.0,0,2,0.35,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1e50e0,Company_415,Cybersecurity,DE,Pro,P3,13295,0,0,117,441.0,0,1,0.12,Rotina normal de CS
+A-f51f16,Company_282,HealthTech,US,Enterprise,P3,13261,0,0,126,439.0,0,0,0.27,Rotina normal de CS
+A-0e966d,Company_493,FinTech,IN,Basic,P2,12236,2854,2,46,435.0,1,1,0.41,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-54d94a,Company_385,Cybersecurity,IN,Basic,P2,12557,1836,2,10,435.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2922b6,Company_70,HealthTech,US,Basic,P2,9934,9934,5,6,431.0,1,0,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e5d6ab,Company_7,EdTech,US,Pro,P2,12383,1568,1,51,427.0,0,0,0.54,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-dcc3f1,Company_314,HealthTech,US,Pro,P2,12747,399,1,41,427.0,0,0,0.41,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fe79a5,Company_81,HealthTech,IN,Basic,P2,11741,3582,3,5,426.0,1,1,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-034368,Company_353,EdTech,US,Enterprise,P2,11194,5128,2,19,424.0,0,0,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-016043,Company_405,EdTech,CA,Basic,P2,11740,3290,3,29,423.0,1,1,0.26,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ab438f,Company_233,Cybersecurity,US,Enterprise,P2,11144,5174,3,4,423.0,3,0,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9bfc9f,Company_228,DevTools,CA,Pro,P3,12745,0,0,154,422.0,0,0,0.04,Rotina normal de CS
+A-378b99,Company_60,EdTech,UK,Pro,P2,10524,6880,5,26,420.0,1,0,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-53f4e3,Company_194,Cybersecurity,UK,Enterprise,P2,11092,4844,5,9,417.0,1,0,0.19,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c62e55,Company_315,EdTech,US,Basic,P2,11902,2156,2,0,417.0,0,0,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-524364,Company_388,DevTools,FR,Enterprise,P2,9552,9552,6,0,415.0,0,0,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fabe19,Company_97,DevTools,UK,Enterprise,P2,9552,9552,5,5,415.0,2,0,0.66,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bcf664,Company_248,DevTools,US,Pro,P2,11340,3696,2,19,414.0,0,1,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e36807,Company_164,EdTech,AU,Pro,P2,10707,5774,3,8,414.0,1,0,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7641d3,Company_429,EdTech,US,Pro,P2,12060,974,2,40,410.0,0,1,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-8145a0,Company_33,Cybersecurity,AU,Basic,P2,12285,285,1,14,410.0,0,1,0.46,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b20d99,Company_29,HealthTech,IN,Basic,P2,11069,3980,1,58,408.0,0,0,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5a92e7,Company_413,HealthTech,US,Pro,P2,11666,2003,5,14,407.0,1,1,0.39,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5247b3,Company_375,FinTech,UK,Pro,P2,11791,1406,1,36,405.0,0,0,0.22,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-05d3b3,Company_213,DevTools,AU,Basic,P3,12154,0,0,91,403.0,1,1,0.23,Rotina normal de CS
+A-e1462e,Company_217,FinTech,UK,Basic,P2,12030,285,1,41,402.0,0,0,0.16,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-55f257,Company_496,FinTech,US,Basic,P3,12137,0,0,134,402.0,0,0,0.6,Rotina normal de CS
+A-8ed5dd,Company_222,EdTech,UK,Enterprise,P2,11861,530,2,34,399.0,0,1,0.37,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-098560,Company_349,DevTools,UK,Enterprise,P2,11775,796,1,44,398.0,0,1,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-474ad4,Company_261,EdTech,US,Basic,P2,10533,4776,2,2,398.0,2,0,0.38,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-39b19f,Company_176,FinTech,US,Enterprise,P2,11902,247,1,54,397.0,0,1,0.03,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-2edab2,Company_301,HealthTech,US,Enterprise,P2,10557,4216,2,16,393.0,0,0,0.39,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ce66f8,Company_17,EdTech,CA,Pro,P3,11858,0,0,157,393.0,0,1,0.33,Rotina normal de CS
+A-ee42db,Company_77,EdTech,DE,Enterprise,P2,11567,570,1,9,389.0,0,0,0.38,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cc1d8d,Company_440,FinTech,US,Pro,P2,8947,8947,13,1,389.0,0,0,0.05,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-34ea2f,Company_436,HealthTech,US,Enterprise,P2,10404,3963,3,6,386.0,1,1,0.36,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-625d0b,Company_290,EdTech,AU,Basic,P2,9903,5613,5,2,386.0,1,1,0.54,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7a0d69,Company_187,DevTools,DE,Enterprise,P2,10362,3858,3,21,383.0,0,0,0.52,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a8b49c,Company_72,Cybersecurity,UK,Basic,P3,11567,0,0,75,383.0,0,0,0.28,Rotina normal de CS
+A-df10db,Company_143,DevTools,US,Enterprise,P3,11464,0,0,71,380.0,0,0,0.49,Rotina normal de CS
+A-e40f45,Company_317,HealthTech,US,Pro,P3,11426,0,0,128,379.0,1,0,0.54,Rotina normal de CS
+A-712426,Company_155,HealthTech,US,Enterprise,P2,8671,8671,13,0,377.0,2,1,0.06,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3c1a3f,Company_224,DevTools,UK,Pro,P3,11192,0,0,66,371.0,0,0,0.36,Rotina normal de CS
+A-7c83a1,Company_447,Cybersecurity,US,Pro,P2,10741,1404,3,1,370.0,1,0,0.49,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-df1e44,Company_323,Cybersecurity,UK,Enterprise,P2,10719,1253,2,13,368.0,0,1,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7f29a7,Company_386,Cybersecurity,UK,Basic,P2,9143,6355,5,10,368.0,3,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-94c3cd,Company_351,FinTech,CA,Enterprise,P2,9036,6368,2,16,365.0,0,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-396e5f,Company_30,Cybersecurity,CA,Enterprise,P2,10236,2407,3,12,364.0,0,1,0.57,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9a532a,Company_333,HealthTech,US,Enterprise,P3,10945,0,0,74,363.0,0,0,0.26,Rotina normal de CS
+A-e888d1,Company_102,Cybersecurity,US,Pro,P2,10462,1519,2,12,362.0,0,0,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0baac2,Company_264,FinTech,DE,Enterprise,P2,9943,3147,2,20,362.0,1,0,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-684255,Company_20,FinTech,US,Enterprise,P3,10864,0,0,63,360.0,3,0,0.51,Rotina normal de CS
+A-bb1eaa,Company_468,Cybersecurity,US,Basic,P2,10381,1225,1,19,357.0,0,0,0.27,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-425e76,Company_110,DevTools,UK,Enterprise,P3,10743,0,0,140,356.0,0,0,0.14,Rotina normal de CS
+A-832ec2,Company_19,FinTech,UK,Enterprise,P2,9299,4378,1,34,353.0,0,0,0.65,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-92a333,Company_116,FinTech,US,Enterprise,P3,10659,0,0,180,353.0,0,0,0.56,Rotina normal de CS
+A-1b7577,Company_39,Cybersecurity,US,Pro,P2,8505,6714,8,1,351.0,2,0,0.39,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-5f7781,Company_483,DevTools,US,Pro,P2,10252,1078,1,24,351.0,0,0,0.08,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-794a0b,Company_168,HealthTech,DE,Basic,P3,10575,0,0,179,350.0,0,0,0.51,Rotina normal de CS
+A-149a69,Company_302,DevTools,US,Basic,P2,8058,8058,3,12,350.0,0,1,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-17939a,Company_162,HealthTech,US,Basic,P2,8035,8035,9,0,349.0,2,0,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9affe6,Company_401,Cybersecurity,US,Pro,P2,10142,1127,1,47,348.0,0,0,0.36,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-96215d,Company_318,FinTech,US,Enterprise,P2,10312,490,1,57,347.0,0,0,0.47,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-8ae05d,Company_147,FinTech,IN,Enterprise,P2,9116,4214,2,18,345.0,1,0,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-32fb14,Company_25,DevTools,US,Enterprise,P2,8775,5174,1,52,344.0,0,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1f559b,Company_357,HealthTech,US,Enterprise,P3,10350,0,0,75,343.0,0,1,0.44,Rotina normal de CS
+A-c37cab,Company_278,Cybersecurity,UK,Pro,P2,9931,1321,3,14,343.0,1,0,0.51,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a2485e,Company_467,FinTech,US,Pro,P2,8775,4405,3,26,336.0,0,0,0.37,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7988d1,Company_90,Cybersecurity,US,Basic,P3,10065,0,1,28,334.0,1,1,0.28,Rotina normal de CS
+A-117171,Company_135,HealthTech,FR,Basic,P2,9810,855,2,34,334.0,1,1,0.08,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-43a9e3,Company_1,FinTech,IN,Basic,P3,10004,0,0,176,332.0,0,0,0.22,Rotina normal de CS
+A-59f724,Company_432,HealthTech,US,Enterprise,P2,9773,342,1,23,327.0,0,1,0.32,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1f0ac7,Company_3,HealthTech,UK,Basic,P2,9275,1784,2,11,326.0,0,0,0.22,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e98302,Company_286,EdTech,US,Enterprise,P2,9725,304,1,39,325.0,1,1,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-22f2df,Company_106,DevTools,US,Basic,P2,7451,7451,9,1,324.0,0,0,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cdf020,Company_345,DevTools,AU,Pro,P3,9771,0,0,83,324.0,0,0,0.3,Rotina normal de CS
+A-51ec1b,Company_247,DevTools,US,Enterprise,P2,8567,3383,1,49,319.0,2,0,0.19,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-940b8b,Company_398,HealthTech,DE,Basic,P3,9640,0,1,50,319.0,0,1,0.06,Rotina normal de CS
+A-6a4e2d,Company_46,EdTech,UK,Pro,P3,9537,0,0,109,316.0,1,0,0.44,Rotina normal de CS
+A-1b707d,Company_56,Cybersecurity,US,Enterprise,P2,9180,456,2,4,309.0,0,1,0.65,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cc102e,Company_443,HealthTech,US,Enterprise,P2,8005,4287,5,8,309.0,0,1,0.48,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f44180,Company_376,Cybersecurity,UK,Pro,P3,9286,0,2,18,308.0,0,0,0.63,Rotina normal de CS
+A-9ee962,Company_59,HealthTech,US,Basic,P3,9249,0,0,166,307.0,0,0,0.19,Rotina normal de CS
+A-7da956,Company_141,Cybersecurity,US,Pro,P2,7930,4212,3,45,306.0,1,0,0.47,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3cc791,Company_423,EdTech,US,Enterprise,P2,8522,1764,1,12,301.0,0,1,0.33,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-3d957b,Company_311,HealthTech,UK,Pro,P3,9066,0,0,76,300.0,0,0,0.1,Rotina normal de CS
+A-139c3b,Company_185,HealthTech,US,Enterprise,P2,6822,6822,6,1,296.0,2,2,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c16cf7,Company_377,EdTech,US,Pro,P2,7498,4628,6,8,296.0,1,1,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-354f12,Company_201,FinTech,US,Pro,P2,8889,133,1,53,296.0,0,0,1.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-d535f6,Company_421,DevTools,US,Basic,P2,7415,4799,5,16,295.0,0,0,0.15,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f446b6,Company_36,DevTools,DE,Pro,P3,8805,0,0,114,292.0,0,1,0.4,Rotina normal de CS
+A-508199,Company_208,FinTech,AU,Basic,P3,8436,0,1,20,280.0,0,0,0.47,Rotina normal de CS
+A-88c6ca,Company_179,FinTech,DE,Basic,P2,6449,6449,7,8,280.0,0,0,0.45,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-45ce7a,Company_31,FinTech,US,Enterprise,P2,7432,3184,1,48,279.0,0,1,0.31,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e83938,Company_111,DevTools,UK,Pro,P2,7503,2419,2,25,274.0,0,1,0.18,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bad8c1,Company_34,FinTech,AU,Basic,P3,7797,0,0,211,258.0,0,0,0.24,Rotina normal de CS
+A-db5e9e,Company_442,DevTools,US,Basic,P2,5868,5868,7,3,255.0,1,0,0.27,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-104f1a,Company_89,Cybersecurity,US,Pro,P2,6590,3454,4,11,254.0,0,1,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-fb186e,Company_131,EdTech,IN,Basic,P2,5771,5771,3,3,251.0,0,0,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bb3bd4,Company_340,HealthTech,US,Basic,P2,7452,437,2,14,251.0,0,2,0.09,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4c6f11,Company_146,FinTech,CA,Pro,P3,7586,0,0,152,251.0,0,0,0.36,Rotina normal de CS
+A-702032,Company_186,HealthTech,US,Pro,P2,7168,1064,2,21,249.0,1,0,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-089363,Company_387,FinTech,AU,Basic,P3,7373,0,1,19,244.0,2,0,0.45,Rotina normal de CS
+A-ef84cf,Company_274,EdTech,US,Enterprise,P3,7355,0,0,145,244.0,0,2,0.68,Rotina normal de CS
+A-c608c8,Company_199,DevTools,DE,Pro,P3,7325,0,0,80,243.0,0,0,0.48,Rotina normal de CS
+A-2f6a32,Company_160,HealthTech,US,Basic,P2,6221,3116,5,23,238.0,2,0,0.3,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b9f5b1,Company_494,Cybersecurity,US,Pro,P3,7072,0,0,77,234.0,0,1,0.32,Rotina normal de CS
+A-fce879,Company_291,EdTech,UK,Pro,P2,6797,399,1,18,229.0,0,0,0.38,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-558c72,Company_438,FinTech,US,Basic,P3,6783,0,0,82,225.0,0,0,0.34,Rotina normal de CS
+A-4bfa33,Company_251,Cybersecurity,US,Basic,P2,5165,5165,6,6,224.0,1,0,0.39,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-331424,Company_246,DevTools,US,Basic,P3,6567,0,1,57,218.0,0,0,0.36,Rotina normal de CS
+A-856b1e,Company_161,FinTech,US,Basic,P3,6321,0,0,75,209.0,0,0,0.34,Rotina normal de CS
+A-e7beab,Company_458,EdTech,DE,Enterprise,P2,5913,931,1,23,206.0,1,0,0.12,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-6e7827,Company_372,DevTools,US,Basic,P2,5894,833,1,12,204.0,1,1,0.47,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bbe56f,Company_406,HealthTech,US,Enterprise,P3,6025,0,0,77,200.0,0,2,0.21,Rotina normal de CS
+A-2b9d3e,Company_319,EdTech,US,Enterprise,P2,5142,2505,3,5,196.0,0,0,0.46,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ced9aa,Company_310,DevTools,US,Enterprise,P2,4697,3503,8,0,192.0,2,0,0.77,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-af0cd2,Company_204,Cybersecurity,IN,Enterprise,P3,5529,0,0,87,183.0,0,0,0.48,Rotina normal de CS
+A-b30291,Company_344,HealthTech,US,Basic,P2,5375,245,1,9,181.0,1,0,0.45,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-10b8da,Company_9,DevTools,US,Enterprise,P3,5404,0,0,108,179.0,0,0,0.57,Rotina normal de CS
+A-0f3e88,Company_428,HealthTech,US,Basic,P2,5281,323,2,37,178.0,1,1,0.85,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c7e58b,Company_404,HealthTech,IN,Pro,P3,5384,0,0,115,178.0,0,2,0.26,Rotina normal de CS
+A-019782,Company_142,DevTools,FR,Enterprise,P3,5169,0,1,27,171.0,0,1,0.6,Rotina normal de CS
+A-0a62f5,Company_381,FinTech,UK,Pro,P2,4861,893,2,10,170.0,0,1,0.14,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-a7bd4b,Company_363,Cybersecurity,US,Enterprise,P3,5102,0,0,97,169.0,1,1,0.44,Rotina normal de CS
+A-42e5e1,Company_118,DevTools,US,Pro,P2,4936,490,1,33,169.0,1,0,0.53,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c42f1f,Company_21,HealthTech,US,Pro,P2,4636,1424,4,2,168.0,1,0,0.17,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0158bb,Company_461,FinTech,DE,Basic,P2,4070,3234,2,0,168.0,0,0,0.16,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-e19ff6,Company_411,Cybersecurity,UK,Enterprise,P3,4910,0,0,69,163.0,0,0,0.24,Rotina normal de CS
+A-9f2731,Company_24,FinTech,IN,Enterprise,P2,3613,3613,5,39,157.0,0,0,0.38,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-8ae3fc,Company_495,DevTools,CA,Pro,P2,4447,551,2,15,153.0,0,0,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-4e0e85,Company_409,DevTools,US,Enterprise,P3,4544,0,1,17,151.0,0,0,0.25,Rotina normal de CS
+A-ff3c73,Company_244,HealthTech,AU,Pro,P3,4335,0,0,72,144.0,0,0,0.28,Rotina normal de CS
+A-b11cd0,Company_439,DevTools,US,Pro,P3,4312,0,0,164,143.0,0,1,0.17,Rotina normal de CS
+A-7c6b6b,Company_223,FinTech,US,Basic,P2,3250,3250,5,3,141.0,2,0,0.1,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-39868b,Company_422,FinTech,AU,Pro,P3,4194,0,1,33,139.0,0,0,1.09,Rotina normal de CS
+A-32728c,Company_54,DevTools,US,Pro,P3,4118,0,0,105,136.0,0,0,0.17,Rotina normal de CS
+A-4ae22a,Company_229,EdTech,US,Pro,P2,3860,646,2,8,135.0,0,0,0.76,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ae052e,Company_132,FinTech,CA,Basic,P3,3822,0,1,14,127.0,2,0,0.17,Rotina normal de CS
+A-86cdb4,Company_250,DevTools,DE,Basic,P2,3006,2585,5,0,126.0,1,2,1.03,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-ccc747,Company_339,HealthTech,FR,Pro,P2,3685,304,1,57,125.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7c5768,Company_407,HealthTech,UK,Enterprise,P2,3389,950,2,29,122.0,0,2,0.29,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-69fad4,Company_103,FinTech,UK,Basic,P3,3678,0,0,282,122.0,0,0,1.42,Rotina normal de CS
+A-241e75,Company_242,EdTech,US,Enterprise,P3,3594,0,0,73,119.0,0,0,0.41,Rotina normal de CS
+A-b54c01,Company_354,DevTools,US,Enterprise,P2,3393,551,1,8,118.0,0,0,0.06,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-7c4956,Company_254,DevTools,US,Enterprise,P2,3314,513,1,11,115.0,0,1,1.34,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-b2af2e,Company_227,Cybersecurity,UK,Enterprise,P2,3112,1026,1,0,114.0,0,0,0.34,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-c45b23,Company_75,FinTech,UK,Basic,P2,3330,343,1,45,114.0,1,1,0.42,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9208f0,Company_79,EdTech,US,Pro,P3,3413,0,0,144,113.0,0,1,0.33,Rotina normal de CS
+A-b7724f,Company_320,HealthTech,UK,Basic,P2,2774,1900,2,4,111.0,2,1,0.24,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0f7d77,Company_457,FinTech,IN,Pro,P2,2326,2326,5,0,101.0,1,0,1.5,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-f1f639,Company_296,EdTech,US,Basic,P3,2919,0,0,103,97.0,0,1,1.48,Rotina normal de CS
+A-e351e1,Company_62,EdTech,US,Enterprise,P3,2871,0,1,50,95.0,1,2,0.44,Rotina normal de CS
+A-f19b24,Company_462,Cybersecurity,US,Pro,P2,2523,551,1,30,89.0,0,0,0.43,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-cb6cc6,Company_419,DevTools,US,Basic,P3,2622,0,0,91,87.0,0,1,0.38,Rotina normal de CS
+A-5b051a,Company_181,Cybersecurity,US,Enterprise,P2,1914,1496,2,2,79.0,0,0,0.74,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-439b2f,Company_152,DevTools,US,Enterprise,P2,1796,1274,1,4,73.0,0,1,0.41,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-296d7c,Company_182,DevTools,DE,Enterprise,P2,1989,692,2,35,73.0,0,0,0.33,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-038089,Company_156,DevTools,FR,Pro,P2,2104,95,1,1,71.0,0,0,0.2,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-342303,Company_294,EdTech,US,Pro,P3,1695,0,1,31,56.0,0,0,0.25,Rotina normal de CS
+A-fd7ad3,Company_100,Cybersecurity,US,Enterprise,P2,904,904,8,5,39.0,2,0,0.4,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-bf7919,Company_426,HealthTech,US,Pro,P2,825,825,5,0,36.0,1,0,0.0,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-9077b0,Company_41,HealthTech,US,Basic,P2,779,741,4,11,33.0,2,0,0.77,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-0be015,Company_454,FinTech,US,Pro,P2,817,456,3,0,32.0,1,2,0.25,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-1e6fc3,Company_434,EdTech,FR,Pro,P2,444,199,1,14,17.0,0,0,0.71,Sequência de onboarding (e-mail + webinar) e checagem no dia 30
+A-44dc83,Company_35,EdTech,FR,Basic,P3,456,0,1,35,15.0,0,0,0.13,Rotina normal de CS
+A-751bd4,Company_408,Cybersecurity,UK,Pro,P3,190,0,0,63,6.0,0,2,0.67,Rotina normal de CS
+A-13466a,Company_196,DevTools,AU,Basic,P3,171,0,0,102,6.0,0,1,0.51,Rotina normal de CS
