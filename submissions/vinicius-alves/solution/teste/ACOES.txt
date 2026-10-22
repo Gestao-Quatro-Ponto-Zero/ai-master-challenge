@@ -1,0 +1,5 @@
+A = Responder sozinha (informa ou orienta, sem decidir nada pela empresa)
+B = Resolver e encaminhar (caso claro com critério objetivo: abre o processo pra equipe responsável)
+C = Resumir e passar pro atendente (ambíguo: a IA qualifica, a pessoa decide)
+D = Passar pra pessoa na hora, com prioridade (irritado, vulnerável, risco legal ou de segurança)
+E = Pedir a informação que falta antes de seguir

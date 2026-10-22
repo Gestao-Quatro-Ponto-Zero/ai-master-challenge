@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triagem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fundo: #f6f6f3;
+    --cartao: #ffffff;
+    --borda: #e6e5df;
+    --borda-2: #d6d4cc;
+    --texto: #1b1b19;
+    --texto-2: #55544f;
+    --apagado: #8d8b84;
+    --hover: #fafaf7;
+    --sel: #f1f0ec;
+
+    --d: #d23b2a;  --d-bg: #fdeceb;
+    --c: #b4730f;  --c-bg: #fbf2e1;
+    --e: #2f5fd0;  --e-bg: #eaf0fd;
+    --ok: #2c7a4b; --ok-bg: #e7f3ec;
+
+    --raio: 10px;
+    --topo: 60px;
+    --fonte: "Onest", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--fundo); color: var(--texto); }
+  body { font: 14px/1.45 var(--fonte); -webkit-font-smoothing: antialiased; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  .num { font-variant-numeric: tabular-nums; }
+  [hidden] { display: none !important; }
+
+  /* ---------- Barra superior ---------- */
+  .topo { background: var(--cartao); border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 5; }
+  .topo-in { max-width: 1320px; margin: 0 auto; padding: 0 24px; height: var(--topo); display: flex; align-items: center; gap: 32px; }
+  .marca { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 10px; }
+  .marca i { width: 22px; height: 22px; border-radius: 6px; background: var(--texto); display: inline-block; position: relative; }
+  .marca i::after { content: ""; position: absolute; inset: 6px; border-radius: 2px; background: var(--fundo); }
+  .abas { display: flex; gap: 4px; height: 100%; }
+  .aba { all: unset; cursor: pointer; padding: 0 14px; display: flex; align-items: center; gap: 8px; color: var(--texto-2); font-weight: 500; border-bottom: 2px solid transparent; }
+  .aba.ativa { color: var(--texto); border-bottom-color: var(--texto); }
+  .aba .qtd { font-size: 12px; font-weight: 600; color: #fff; background: var(--d); border-radius: 999px; padding: 0 7px; line-height: 18px; }
+  .aba:focus-visible { outline: 2px solid var(--texto); outline-offset: -6px; border-radius: 6px; }
+  .usuario { margin-left: auto; display: flex; align-items: center; gap: 10px; color: var(--texto-2); }
+
+  .avatar { width: 32px; height: 32px; border-radius: 50%; color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; flex: none; }
+  .avatar.g { width: 40px; height: 40px; font-size: 13px; }
+  .avatar.p { width: 22px; height: 22px; font-size: 10px; }
+
+  main { max-width: 1320px; margin: 0 auto; padding: 24px 24px 48px; }
+  .titulo { margin-bottom: 18px; }
+  .titulo h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .titulo p { margin: 2px 0 0; color: var(--texto-2); }
+
+  /* ---------- Pílulas e pontos ---------- */
+  .ponto { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .ponto.d { background: var(--d); } .ponto.c { background: var(--c); } .ponto.e { background: var(--e); } .ponto.ok { background: var(--ok); }
+  .pilula { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .pilula.d { color: var(--d); background: var(--d-bg); }
+  .pilula.c { color: var(--c); background: var(--c-bg); }
+  .pilula.e { color: var(--e); background: var(--e-bg); }
+  .pilula.ok { color: var(--ok); background: var(--ok-bg); }
+
+  .botao { all: unset; cursor: pointer; padding: 8px 14px; border-radius: 8px; font-weight: 600; border: 1px solid var(--borda-2); background: #fff; font-size: 13px; white-space: nowrap; }
+  .botao:hover { background: var(--fundo); }
+  .botao.primario { background: var(--texto); color: #fff; border-color: var(--texto); }
+  .botao.primario:hover { background: #33332f; }
+  .botao:focus-visible { outline: 2px solid var(--texto); outline-offset: 2px; }
+
+  /* ---------- Aba Fila ---------- */
+  .metricas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .metrica { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); padding: 16px 18px; }
+  .metrica span { color: var(--texto-2); font-size: 13px; }
+  .metrica strong { display: block; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; margin-top: 4px; }
+  .metrica small { color: var(--apagado); font-size: 12px; }
+  .metrica.urgente strong { color: var(--d); }
+  .quadro { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); overflow: hidden; }
+  .controles { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--borda); }
+  .filtros { display: flex; flex-wrap: wrap; gap: 6px; }
+  .filtro { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--borda); color: var(--texto-2); font-weight: 500; font-size: 13px; }
+  .filtro .qtd { color: var(--apagado); }
+  .filtro.ativo { background: var(--texto); border-color: var(--texto); color: #fff; }
+  .filtro.ativo .qtd { color: #bdbcb6; }
+  .busca { position: relative; display: block; }
+  .busca input { width: 100%; padding: 8px 12px 8px 32px; border: 1px solid var(--borda); border-radius: 8px; background: var(--fundo); }
+  .busca input:focus { outline: 2px solid var(--texto); outline-offset: 0; background: #fff; }
+  .busca svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--apagado); }
+  .controles .busca { margin-left: auto; width: 260px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 12px; font-weight: 500; color: var(--apagado); padding: 10px 16px; border-bottom: 1px solid var(--borda); background: var(--hover); }
+  td { padding: 14px 16px; border-bottom: 1px solid var(--borda); vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover td { background: var(--hover); }
+  .cli b { display: block; font-weight: 600; }
+  .cli span { color: var(--apagado); font-size: 13px; }
+  .assunto b { display: block; font-weight: 500; }
+  .assunto span { color: var(--texto-2); font-size: 13px; display: block; max-width: 420px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .regra-mini { color: var(--apagado); font-size: 12px; margin-top: 4px; }
+  .espera { font-weight: 600; white-space: nowrap; }
+  .espera.longa { color: var(--d); }
+  .dono { display: flex; align-items: center; gap: 8px; color: var(--texto-2); font-size: 13px; white-space: nowrap; }
+
+  /* ---------- Aba Conversas (inbox) ---------- */
+  #aba-conversas { padding-top: 16px; }
+  .inbox-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .inbox-topo .rot { font-weight: 600; color: var(--texto-2); margin-right: 2px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border: 1px solid var(--borda); border-radius: 999px; background: #fff; font-weight: 500; }
+  .chip .n { font-size: 11px; font-weight: 700; background: var(--texto); color: #fff; border-radius: 999px; padding: 0 6px; line-height: 17px; }
+  .inbox-topo .direita { margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px; }
+  .estat { padding: 5px 12px; border: 1px solid var(--borda); border-radius: 999px; background: #fff; font-size: 13px; color: var(--texto-2); display: inline-flex; align-items: center; gap: 7px; }
+  .estat b { color: var(--texto); font-weight: 600; }
+  .estat.alerta { border-color: #f3c9c3; background: var(--d-bg); color: var(--d); }
+  .estat.alerta b { color: var(--d); }
+
+  .inbox { display: grid; grid-template-columns: 360px 1fr; gap: 16px; height: calc(100vh - var(--topo) - 106px); min-height: 520px; }
+  .lista { background: #fff; border: 1px solid var(--borda); border-radius: var(--raio); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  .lista-busca { padding: 12px 12px 0; }
+  .lista-abas { display: flex; border-bottom: 1px solid var(--borda); padding: 0 6px; margin-top: 8px; }
+  .lista-aba { all: unset; cursor: pointer; flex: 1; text-align: center; padding: 11px 6px; font-weight: 500; color: var(--texto-2); border-bottom: 2px solid transparent; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .lista-aba .n { font-size: 11px; font-weight: 700; border-radius: 999px; padding: 0 6px; line-height: 17px; background: var(--fundo); color: var(--texto-2); }
+  .lista-aba.ativa { color: var(--texto); border-bottom-color: var(--texto); }
+  .lista-aba.ativa .n { background: var(--texto); color: #fff; }
+  .lista-aba:focus-visible { outline: 2px solid var(--texto); outline-offset: -4px; border-radius: 6px; }
+  .conversas { flex: 1; overflow-y: auto; }
+  .conversa { display: grid; grid-template-columns: 40px 1fr; gap: 12px; padding: 13px 14px; border-bottom: 1px solid var(--borda); cursor: pointer; position: relative; }
+  .conversa:hover { background: var(--hover); }
+  .conversa.sel { background: var(--sel); }
+  .conversa.sel::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--texto); }
+  .conversa .l1 { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .conversa .l1 b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conversa .l1 time { font-size: 12px; color: var(--apagado); white-space: nowrap; }
+  .conversa .l1 time.longa { color: var(--d); font-weight: 600; }
+  .conversa .prev { color: var(--texto-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 1px 0 6px; }
+  .conversa .l3 { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--apagado); min-width: 0; }
+  .conversa .l3 .pilula { padding: 2px 8px; font-size: 11px; }
+  .conversa .l3 span.tx { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vazio { padding: 40px 20px; text-align: center; color: var(--apagado); }
+
+  .thread { background: #fff; border: 1px solid var(--borda); border-radius: var(--raio); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  .thread-vazia { flex: 1; display: grid; place-items: center; color: var(--apagado); text-align: center; }
+  .thread-vazia svg { display: block; margin: 0 auto 10px; opacity: .6; }
+  .thread-cab { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--borda); flex-wrap: wrap; }
+  .voltar { all: unset; cursor: pointer; display: none; width: 32px; height: 32px; border-radius: 8px; place-items: center; }
+  .quem { display: flex; align-items: center; gap: 11px; min-width: 0; flex: 1; }
+  .quem strong { display: block; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .quem .info span { display: block; font-size: 12px; color: var(--apagado); }
+  .thread-acoes { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .thread-acoes select { padding: 7px 28px 7px 10px; border: 1px solid var(--borda-2); border-radius: 8px; background: #fff; font-size: 13px; }
+  .thread-acoes .estado { font-size: 13px; color: var(--texto-2); }
+
+  .contexto { border-bottom: 1px solid var(--borda); background: var(--hover); }
+  .contexto summary { list-style: none; cursor: pointer; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+  .contexto summary::-webkit-details-marker { display: none; }
+  .contexto summary .rot { font-size: 12px; color: var(--apagado); white-space: nowrap; }
+  .contexto summary b { font-weight: 600; white-space: nowrap; }
+  .contexto summary span.tx { color: var(--texto-2); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .contexto summary svg { color: var(--apagado); transition: transform .2s; flex: none; }
+  .contexto[open] summary svg { transform: rotate(180deg); }
+  .contexto-corpo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 4px 16px 16px; max-height: 34vh; overflow: auto; }
+  .contexto-corpo h3 { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: var(--apagado); text-transform: uppercase; letter-spacing: 0.06em; }
+  .contexto-corpo p { margin: 0 0 6px; color: var(--texto-2); }
+  .contexto-corpo .proc { font-size: 12px; color: var(--apagado); }
+  .resumo { margin: 0; padding-left: 18px; }
+  .resumo li { margin-bottom: 3px; }
+  .dados { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--borda); border: 1px solid var(--borda); border-radius: 8px; overflow: hidden; }
+  .dados div { background: #fff; padding: 8px 10px; }
+  .dados span { display: block; font-size: 11px; color: var(--apagado); }
+  .dados b { font-weight: 600; font-size: 13px; }
+
+  /* Mensagens, no formato do inbox de atendimento */
+  .msgs {
+    --textura: rgba(0, 0, 0, .045);
+    flex: 1; min-height: 0; overflow-y: auto; padding: 14px 20px 18px; display: flex; flex-direction: column;
+    background-color: var(--hover);
+    background-image: radial-gradient(var(--textura) 1px, transparent 1px), radial-gradient(var(--textura) 1px, transparent 1px);
+    background-size: 22px 22px; background-position: 0 0, 11px 11px;
+  }
+  .dia { align-self: center; margin: 4px 0 8px; padding: 4px 12px; border-radius: 999px; background: #fff; border: 1px solid var(--borda); font-size: 11px; font-weight: 600; color: var(--texto-2); text-transform: uppercase; letter-spacing: .03em; }
+  .aviso-sis { align-self: center; margin: 10px 0 2px; padding: 5px 12px; border-radius: 8px; background: #fff; border: 1px solid var(--borda); font-size: 12px; color: var(--texto-2); text-align: center; max-width: 90%; }
+  .bolha { position: relative; overflow-wrap: anywhere; max-width: 68%; padding: 6px 10px 6px 11px; border-radius: 8px; font-size: 13.5px; line-height: 1.42; box-shadow: 0 1px 1px rgba(0, 0, 0, .12); margin-top: 2px; }
+  .bolha.cauda { margin-top: 10px; }
+  .bolha--in { align-self: flex-start; background: #fff; }
+  .bolha--out { align-self: flex-end; background: #e4f1e8; }
+  .bolha--ia { align-self: flex-end; background: #eceef3; }
+  .bolha--in.cauda { border-top-left-radius: 2px; }
+  .bolha--out.cauda, .bolha--ia.cauda { border-top-right-radius: 2px; }
+  .bolha.cauda::before { content: ""; position: absolute; top: 0; width: 9px; height: 13px; background: inherit; }
+  .bolha--in.cauda::before { left: -8px; clip-path: polygon(100% 0, 0 0, 100% 55%); }
+  .bolha--out.cauda::before, .bolha--ia.cauda::before { right: -8px; clip-path: polygon(0 0, 100% 0, 0 55%); }
+  .bolha__autor { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+  .bolha--ia .bolha__autor { color: #5a5f73; }
+  .bolha--out .bolha__autor { color: var(--ok); }
+  .bolha__txt { white-space: pre-wrap; }
+  .bolha__meta { float: right; display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; color: var(--apagado); white-space: nowrap; margin: 5px -3px -2px 8px; }
+  .tiques { width: 15px; height: 11px; display: block; }
+
+  .responder { border-top: 1px solid var(--borda); padding: 10px 16px 12px; background: #fff; display: flex; flex-direction: column; gap: 8px; }
+  .responder__dica { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--texto-2); }
+  .responder__dica:empty { display: none; }
+  .responder__dica b { font-weight: 600; color: var(--texto); }
+  .responder__dica button { all: unset; cursor: pointer; margin-left: auto; color: var(--apagado); text-decoration: underline; text-underline-offset: 2px; }
+  .responder__linha { display: flex; gap: 8px; align-items: flex-end; }
+  .responder textarea { flex: 1; resize: none; min-height: 40px; max-height: 160px; height: 40px; padding: 9px 12px; line-height: 20px; font-size: 13.5px; border: 1px solid var(--borda-2); border-radius: 10px; }
+  .responder textarea:focus { outline: 2px solid var(--texto); outline-offset: 0; }
+  .responder textarea:disabled { background: var(--fundo); }
+  .enviar { all: unset; cursor: pointer; width: 40px; height: 40px; border-radius: 10px; background: var(--texto); color: #fff; display: grid; place-items: center; flex: none; }
+  .enviar:hover { background: #33332f; }
+  .enviar:focus-visible { outline: 2px solid var(--texto); outline-offset: 2px; }
+  .alerta-trava { border-radius: 8px; padding: 9px 12px; font-size: 13px; background: var(--d-bg); color: var(--d); }
+  .alerta-trava.leve { background: var(--fundo); color: var(--texto-2); }
+  .alerta-trava s { color: var(--texto-2); }
+  .alerta-trava button { all: unset; cursor: pointer; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; margin-left: 4px; }
+
+  /* ---------- Aba Painel ---------- */
+  .grade { display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; }
+  .grade .quadro { padding: 18px 20px; }
+  .grade h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+  .grade .sub { margin: 0 0 16px; color: var(--apagado); font-size: 13px; }
+  .barra-total { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; margin-bottom: 14px; }
+  .legenda { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 20px; }
+  .legenda div { display: flex; align-items: center; gap: 8px; }
+  .legenda b { margin-left: auto; }
+  .lista-barra > div { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 28px 30px; gap: 12px; align-items: center; padding: 9px 0; border-top: 1px solid var(--fundo); }
+  .lista-barra .motivo { display: block; }
+  .lista-barra .exemplo { display: block; color: var(--apagado); font-size: 12px; margin-top: 2px; }
+  .lista-barra .cod { color: var(--apagado); font-size: 11px; }
+  .grade .nota { margin: 12px 0 0; color: var(--apagado); font-size: 12px; }
+  .lista-barra .trilho { height: 8px; background: var(--fundo); border-radius: 4px; overflow: hidden; }
+  .lista-barra .trilho i { display: block; height: 100%; background: var(--texto); border-radius: 4px; }
+  .lista-barra b { text-align: right; }
+  .barradas { margin: 0; padding: 0; list-style: none; }
+  .barradas li { padding: 10px 0; border-bottom: 1px solid var(--borda); display: flex; justify-content: space-between; gap: 12px; }
+  .barradas li:last-child { border-bottom: 0; }
+  .barradas s { color: var(--texto-2); }
+  .barradas span { color: var(--apagado); font-size: 12px; white-space: nowrap; }
+
+  .aviso { margin-top: 14px; color: var(--apagado); font-size: 12px; }
+
+  @media (max-width: 1000px) {
+    .metricas { grid-template-columns: repeat(2, 1fr); }
+    .grade { grid-template-columns: 1fr; }
+    .col-canal, .col-dono { display: none; }
+    .controles .busca { margin-left: 0; width: 100%; }
+    .inbox { grid-template-columns: 300px 1fr; }
+    .contexto-corpo { grid-template-columns: 1fr; }
+    .dados { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .topo-in { padding: 0 16px; gap: 14px; }
+    .usuario span { display: none; }
+    main { padding: 16px 16px 40px; }
+    .col-assunto { display: none; }
+    td, th { padding: 12px 10px; }
+    .inbox { grid-template-columns: 1fr; height: calc(100vh - var(--topo) - 150px); }
+    .inbox .thread { display: none; }
+    .inbox.com-conversa .lista { display: none; }
+    .inbox.com-conversa .thread { display: flex; }
+    .voltar { display: grid; }
+    .bolha { max-width: 85%; }
+    .lista-barra > div { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) 24px 26px; }
+  }
+</style>
+</head>
+<body>
+<header class="topo">
+  <div class="topo-in">
+    <div class="marca"><i></i>Triagem</div>
+    <nav class="abas">
+      <button class="aba ativa" data-aba="fila">Fila</button>
+      <button class="aba" data-aba="conversas">Conversas <span class="qtd num" id="aba-n"></span></button>
+      <button class="aba" data-aba="painel">Painel</button>
+    </nav>
+    <div class="usuario"><span>Paulo Vinicius</span><b class="avatar" style="background:#1b1b19">PV</b></div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= FILA ================= -->
+  <section id="aba-fila">
+    <div class="titulo">
+      <h1>Fila de atendimento</h1>
+      <p>A IA leu cada ticket e decidiu o próximo passo. Você cuida do que precisa de pessoa.</p>
+    </div>
+    <div class="metricas">
+      <div class="metrica urgente"><span>Precisam de pessoa agora</span><strong class="num" id="m-d"></strong><small>maior espera: <span id="m-d-espera"></span></small></div>
+      <div class="metrica"><span>Resumos prontos pro time</span><strong class="num" id="m-c"></strong><small>a IA já organizou o caso</small></div>
+      <div class="metrica"><span>A IA resolveu sozinha</span><strong class="num" id="m-ia"></strong><small id="m-ia-pct"></small></div>
+      <div class="metrica"><span>Rascunhos conferidos pela trava</span><strong class="num" id="m-trava"></strong><small>nenhum com promessa proibida</small></div>
+    </div>
+    <div class="quadro">
+      <div class="controles">
+        <div class="filtros" id="filtros"></div>
+        <label class="busca">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="busca-fila" type="search" placeholder="Buscar cliente ou produto" aria-label="Buscar cliente ou produto">
+        </label>
+      </div>
+      <table>
+        <thead><tr><th>Cliente</th><th class="col-assunto">Assunto</th><th>Decisão da IA</th><th class="col-dono">Com quem</th><th>Espera</th><th class="col-canal">Canal</th></tr></thead>
+        <tbody id="tabela"></tbody>
+      </table>
+    </div>
+    <p class="aviso">Os 80 tickets do teste, decididos pelo motor (solution/motor). O tempo de espera é simulado: o Dataset 1 não registra quando o ticket foi aberto.</p>
+  </section>
+
+  <!-- ================= CONVERSAS ================= -->
+  <section id="aba-conversas" hidden>
+    <div class="inbox-topo">
+      <span class="rot" id="atendendo-rot"></span>
+      <span id="atendendo"></span>
+      <div class="direita" id="estats"></div>
+    </div>
+    <div class="inbox" id="inbox">
+      <div class="lista">
+        <div class="lista-busca">
+          <label class="busca">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="busca-inbox" type="search" placeholder="Buscar contato" aria-label="Buscar contato">
+          </label>
+        </div>
+        <div class="lista-abas" id="lista-abas"></div>
+        <div class="conversas" id="conversas"></div>
+      </div>
+      <div class="thread" id="thread"></div>
+    </div>
+  </section>
+
+  <!-- ================= PAINEL ================= -->
+  <section id="aba-painel" hidden>
+    <div class="titulo">
+      <h1>Painel do dia</h1>
+      <p>Como a IA dividiu o trabalho e onde a trava segurou.</p>
+    </div>
+    <div class="grade">
+      <div class="quadro"><h2>Quem cuida de cada ticket</h2><p class="sub">Tickets de hoje, pela decisão da IA</p><div class="barra-total" id="barra-total"></div><div class="legenda" id="legenda"></div></div>
+      <div class="quadro"><h2 id="regras-titulo">Por que os tickets foram pra uma pessoa</h2><p class="sub">A IA não decide nesses casos. Ela resume e passa pro time.</p><div class="lista-barra" id="regras"></div><p class="nota">O código no fim de cada linha é a regra da política (solution/05-politica.md).</p></div>
+      <div class="quadro" style="grid-column: 1 / -1"><h2>O que a trava não deixa sair</h2><p class="sub">Frases do teste da trava (solution/motor/testar_trava.py). Escreva qualquer uma numa conversa pra ver ela barrar.</p><ul class="barradas" id="barradas"></ul></div>
+    </div>
+    <p class="aviso">Números dos 80 tickets do teste, decididos pelo motor.</p>
+  </section>
+</main>
+
+<script src="dados.js"></script>
+<script>
+const EU = "Paulo Vinicius";
+const MOTIVOS = {
+  R1: ["Cliente irritado ou pediu uma pessoa", "Voltou várias vezes, escreveu em caixa alta"],
+  R2: ["Momento pessoal difícil", "Luto, desemprego"],
+  R5: ["Caso complexo ou com risco", "Valor estranho, saúde, golpe, dois problemas juntos"],
+  R6: ["Depende de abrir uma exceção", "Desconto, cobrir preço, devolver diferença"],
+  R7: ["Ameaçou ou pediu confirmação por escrito", "Reclame Aqui, chargeback"],
+  R9: ["Risco físico", "Bateria estufada, cheiro de queimado"],
+  R10: ["Urgente e sem processo escrito", "Compra não reconhecida no cartão"],
+  R11: ["Precisa apurar o que aconteceu", "Produto chegou trocado"],
+  "": ["Nenhum processo cobre o caso", ""],
+};
+const TICKETS = window.TICKETS;
+const ACOES = {
+  D: { nome: "Pessoa agora", classe: "d", ordem: 0 },
+  C: { nome: "Resumo pronto", classe: "c", ordem: 1 },
+  E: { nome: "Pergunta ao cliente", classe: "e", ordem: 2 },
+  B: { nome: "IA resolveu", classe: "ok", ordem: 3 },
+  A: { nome: "IA respondeu", classe: "ok", ordem: 4 },
+};
+const CORES = ["#2f5fd0", "#2c7a4b", "#b4730f", "#7a4fd1", "#c2410c", "#0f766e", "#be185d", "#4d7c0f"];
+
+// IA resolveu = sem dono humano. O resto nasce sem dono, a não ser que alguém já tenha assumido.
+TICKETS.forEach(t => {
+  t.resolvidoPelaIA = t.acao === "A" || t.acao === "B";
+  t.dono = t.dono || null;
+  t.fechado = false;
+});
+
+const el = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const tempo = m => (m < 60 ? `${m} min` : `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, "0")}`);
+const iniciais = n => n.split(" ").filter(Boolean).slice(0, 2).map(p => p[0]).join("").toUpperCase();
+const corDe = n => CORES[[...n].reduce((a, c) => a + c.charCodeAt(0), 0) % CORES.length];
+const avatar = (n, tam = "") => `<span class="avatar ${tam}" style="background:${corDe(n)}">${iniciais(n)}</span>`;
+const pilula = a => `<span class="pilula ${ACOES[a].classe}"><span class="ponto ${ACOES[a].classe}"></span>${ACOES[a].nome}</span>`;
+const longa = t => (t.acao === "D" && t.espera >= 20) || t.espera >= 45;
+const seg = t => (t.regra.startsWith("R9") ? 0 : 1);
+const ordenar = l => l.sort((a, b) => seg(a) - seg(b) || ACOES[a.acao].ordem - ACOES[b.acao].ordem || b.espera - a.espera);
+const hora = minutosAtras => {
+  const d = new Date(Date.now() - minutosAtras * 60000);
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+};
+const abertos = () => TICKETS.filter(t => !t.fechado);
+
+// ---------------- Trava ----------------
+// O que nem a IA nem o atendente podem prometer. Pra IA é bloqueio. Pra pessoa
+// é aviso: ela pode enviar mesmo assim, e a responsabilidade passa a ser dela.
+// Mesma lista do motor (solution/motor/redacao.py). Compara sem acento, e
+// frase negada logo antes ("não é normal") passa.
+const TRAVA = [
+  [/\b(cai|caiu|cair|volta|voltar|chega|chegar|sai|sair)\b[^.?!]{0,40}\b(ate|antes|amanha|hoje|sexta|segunda|terca|quarta|quinta|sabado|domingo|\d+\s*dias?)\b/, "promete prazo"],
+  [/\b\d+\s*dias?\s*uteis\b/, "promete prazo"],
+  [/\baprovad[oa]\b/, "confirma aprovação"],
+  [/\bgarantid[oa]\b/, "garante resultado"],
+  [/\bem dobro\b/, "promete devolução em dobro"],
+  [/\bindeniza/, "fala em indenização"],
+  [/\b(desconto|cupom)\b[^.?!]{0,30}\b(aplic|liber|consig|dar\b|dou\b)/, "concede desconto"],
+  [/\b(dar|dou|aplicar|aplico|liberar|libero|consigo|posso)\b[^.?!]{0,20}\b(desconto|cupom)\b/, "concede desconto"],
+  [/\b(e normal|pode continuar usando|pode usar normalmente)\b/, "minimiza risco"],
+  [/\b(culpa nossa|nossa culpa|culpa e nossa|erro nosso|erro e nosso|foi erro da loja)\b/, "assume culpa"],
+];
+const normaliza = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function confereTrava(texto) {
+  const t = normaliza(texto);
+  const achados = [];
+  for (const [re, motivo] of TRAVA) {
+    const m = t.match(re);
+    if (!m) continue;
+    const antes = t.slice(Math.max(0, m.index - 14), m.index);
+    if (/\bnao\b/.test(antes) || /^nao\b/.test(m[0])) continue;
+    achados.push({ motivo, trecho: texto.slice(m.index, m.index + m[0].length) });
+  }
+  return achados;
+}
+
+// ---------------- Abas principais ----------------
+let abaAtual = "fila";
+function irPara(aba) {
+  abaAtual = aba;
+  document.querySelectorAll(".aba").forEach(x => x.classList.toggle("ativa", x.dataset.aba === aba));
+  ["fila", "conversas", "painel"].forEach(a => (el("aba-" + a).hidden = a !== aba));
+  if (aba === "conversas") renderInbox();
+  if (aba === "painel") painel();
+  if (aba === "fila") renderFila();
+}
+document.querySelectorAll(".aba").forEach(a => (a.onclick = () => irPara(a.dataset.aba)));
+
+function contadores() {
+  const precisam = abertos().filter(t => !t.resolvidoPelaIA && !t.dono);
+  el("aba-n").textContent = precisam.length;
+  el("aba-n").hidden = !precisam.length;
+}
+
+// ---------------- Fila (tabela) ----------------
+const FILTROS = [
+  { id: "todos", nome: "Todos", f: () => true },
+  { id: "d", nome: "Pessoa agora", ponto: "d", f: t => t.acao === "D" },
+  { id: "c", nome: "Resumo pronto", ponto: "c", f: t => t.acao === "C" },
+  { id: "e", nome: "Pergunta ao cliente", ponto: "e", f: t => t.acao === "E" },
+  { id: "ok", nome: "IA resolveu", ponto: "ok", f: t => t.resolvidoPelaIA },
+];
+let filtroFila = "todos", buscaFila = "";
+
+function renderFila() {
+  const d = abertos().filter(t => t.acao === "D");
+  el("m-d").textContent = d.length;
+  el("m-d-espera").textContent = d.length ? tempo(Math.max(...d.map(t => t.espera))) : "nenhuma";
+  el("m-c").textContent = abertos().filter(t => t.acao === "C").length;
+  const ia = TICKETS.filter(t => t.acao === "A" || t.acao === "B").length;
+  el("m-ia").textContent = ia;
+  el("m-ia-pct").textContent = `${Math.round((ia / TICKETS.length) * 100)}% dos ${TICKETS.length} tickets`;
+  el("m-trava").textContent = TICKETS.filter(t => t.rascunho).length;
+
+  el("filtros").innerHTML = "";
+  FILTROS.forEach(f => {
+    const b = document.createElement("button");
+    b.className = "filtro" + (f.id === filtroFila ? " ativo" : "");
+    b.innerHTML = `${f.ponto ? `<span class="ponto ${f.ponto}"></span>` : ""}${f.nome}<span class="qtd num">${abertos().filter(f.f).length}</span>`;
+    b.onclick = () => { filtroFila = f.id; renderFila(); };
+    el("filtros").appendChild(b);
+  });
+
+  const f = FILTROS.find(x => x.id === filtroFila);
+  const q = buscaFila.trim().toLowerCase();
+  const lista = ordenar(abertos().filter(f.f).filter(t => !q || (t.cliente + " " + t.produto).toLowerCase().includes(q)));
+  el("tabela").innerHTML = "";
+  lista.forEach(t => {
+    const tr = document.createElement("tr");
+    tr.tabIndex = 0;
+    const dono = t.resolvidoPelaIA ? `<span class="dono">IA</span>` : t.dono ? `<span class="dono">${avatar(t.dono, "p")}${esc(t.dono)}</span>` : `<span class="dono" style="color:var(--d)">Ninguém ainda</span>`;
+    tr.innerHTML = `
+      <td class="cli"><b>${esc(t.cliente)}</b><span>${esc(t.produto)}</span></td>
+      <td class="assunto col-assunto"><b>${esc(t.assunto)}</b><span>${esc(t.msg)}</span></td>
+      <td>${pilula(t.acao)}<div class="regra-mini">${esc(t.regra)}</div></td>
+      <td class="col-dono">${dono}</td>
+      <td class="espera num ${longa(t) ? "longa" : ""}">${tempo(t.espera)}</td>
+      <td class="col-canal" style="color:var(--texto-2);font-size:13px">${esc(t.canal)}</td>`;
+    const abre = () => { abaInbox = t.dono === EU ? "comigo" : t.dono || t.resolvidoPelaIA ? "todos" : "fila"; aberto = t.id; irPara("conversas"); };
+    tr.onclick = abre;
+    tr.onkeydown = e => { if (e.key === "Enter") abre(); };
+    el("tabela").appendChild(tr);
+  });
+  contadores();
+}
+el("busca-fila").oninput = e => { buscaFila = e.target.value; renderFila(); };
+
+// ---------------- Conversas (inbox) ----------------
+const ABAS_INBOX = [
+  { id: "comigo", nome: "Comigo", f: t => t.dono === EU, vazio: "Nenhuma conversa com você. Veja a Fila ao lado." },
+  { id: "fila", nome: "Fila", f: t => !t.dono && !t.resolvidoPelaIA, vazio: "Ninguém esperando sem atendente." },
+  { id: "todos", nome: "Todos", f: () => true, vazio: "Nenhuma conversa." },
+];
+let abaInbox = "fila", buscaInbox = "", aberto = null;
+
+function renderTopoInbox() {
+  const ab = abertos();
+  const pessoas = {};
+  ab.filter(t => t.dono).forEach(t => (pessoas[t.dono] = (pessoas[t.dono] || 0) + 1));
+  const nomes = Object.keys(pessoas);
+  el("atendendo-rot").textContent = nomes.length ? `${nomes.length} atendendo agora` : "Ninguém atendendo agora";
+  el("atendendo").innerHTML = nomes.map(n => `<span class="chip">${avatar(n, "p")}${esc(n)}<span class="n num">${pessoas[n]}</span></span>`).join(" ");
+  const semDono = ab.filter(t => !t.dono && !t.resolvidoPelaIA);
+  const urg = semDono.filter(t => t.acao === "D").length;
+  el("estats").innerHTML = `
+    <span class="estat ${urg ? "alerta" : ""}"><b class="num">${urg}</b> pessoa agora</span>
+    <span class="estat"><b class="num">${semDono.length}</b> sem atendente</span>
+    <span class="estat"><b class="num">${ab.filter(t => t.resolvidoPelaIA).length}</b> resolvidas pela IA</span>
+    <span class="estat">Envio simulado</span>`;
+}
+
+function ultimaMsg(t) {
+  const c = conversaDe(t).filter(m => m.tipo !== "sis");
+  const u = c[c.length - 1];
+  const quem = u.tipo === "ia" ? "IA: " : u.tipo === "out" ? "Você: " : "";
+  return { texto: quem + u.texto, hora: u.hora };
+}
+
+function renderLista() {
+  const ab = abertos();
+  el("lista-abas").innerHTML = ABAS_INBOX.map(a =>
+    `<button class="lista-aba ${a.id === abaInbox ? "ativa" : ""}" data-id="${a.id}">${a.nome}${a.id !== "todos" ? `<span class="n num">${ab.filter(a.f).length}</span>` : ""}</button>`).join("");
+  el("lista-abas").querySelectorAll("button").forEach(b => (b.onclick = () => { abaInbox = b.dataset.id; renderLista(); }));
+
+  const a = ABAS_INBOX.find(x => x.id === abaInbox);
+  const q = buscaInbox.trim().toLowerCase();
+  const lista = ordenar(ab.filter(a.f).filter(t => !q || (t.cliente + " " + t.produto).toLowerCase().includes(q)));
+  el("conversas").innerHTML = lista.length ? "" : `<div class="vazio">${a.vazio}</div>`;
+  lista.forEach(t => {
+    const u = ultimaMsg(t);
+    const div = document.createElement("div");
+    div.className = "conversa" + (aberto === t.id ? " sel" : "");
+    div.tabIndex = 0;
+    const quem = t.resolvidoPelaIA ? "IA" : t.dono ? t.dono : "sem atendente";
+    div.innerHTML = `
+      ${avatar(t.cliente, "g")}
+      <div style="min-width:0">
+        <div class="l1"><b>${esc(t.cliente)}</b><time class="num ${!t.dono && longa(t) ? "longa" : ""}">${t.dono || t.resolvidoPelaIA ? u.hora : tempo(t.espera)}</time></div>
+        <div class="prev">${esc(u.texto)}</div>
+        <div class="l3">${pilula(t.acao)}<span class="tx">${esc(t.produto)} · ${esc(quem)}</span></div>
+      </div>`;
+    div.onclick = () => selecionar(t);
+    div.onkeydown = e => { if (e.key === "Enter") selecionar(t); };
+    el("conversas").appendChild(div);
+  });
+}
+el("busca-inbox").oninput = e => { buscaInbox = e.target.value; renderLista(); };
+
+function renderInbox() {
+  renderTopoInbox();
+  renderLista();
+  const t = TICKETS.find(x => x.id === aberto && !x.fechado);
+  if (t) renderThread(t);
+  else {
+    el("inbox").classList.remove("com-conversa");
+    el("thread").innerHTML = `<div class="thread-vazia"><div>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>
+      Selecione uma conversa pra começar.</div></div>`;
+  }
+  contadores();
+}
+
+function selecionar(t) {
+  aberto = t.id;
+  renderLista();
+  renderThread(t);
+  const caixa = el("thread").querySelector("[data-texto]");
+  if (!caixa.disabled) caixa.focus();
+}
+
+// Histórico de cada ticket, montado na primeira vez que ele aparece.
+function conversaDe(t) {
+  if (t.conversa) return t.conversa;
+  const c = [{ tipo: "in", texto: t.msg, hora: hora(t.espera) }];
+  if (t.resolvidoPelaIA) c.push({ tipo: "ia", texto: t.rascunho, hora: hora(Math.max(t.espera - 1, 0)) });
+  else {
+    if (t.jaEnviado) c.push({ tipo: "ia", texto: t.rascunho, hora: hora(Math.max(t.espera - 1, 0)) });
+    c.push({ tipo: "sis", texto: `A IA passou pro time · ${t.regra}` });
+    if (t.dono) c.push({ tipo: "sis", texto: `${t.dono} assumiu` });
+  }
+  t.conversa = c;
+  t.composer = t.resolvidoPelaIA || t.jaEnviado ? "" : t.rascunho;
+  return c;
+}
+
+const ICONE_TIQUES = `<svg class="tiques" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 7.5 5 11l6.5-8"/><path d="M8 7.5 11.5 11 18 3"/></svg>`;
+
+function htmlMensagens(t) {
+  let anterior = null;
+  return `<div class="dia">Hoje</div>` + conversaDe(t).map(m => {
+    if (m.tipo === "sis") { anterior = null; return `<div class="aviso-sis">${esc(m.texto)}</div>`; }
+    const cauda = anterior !== m.tipo;
+    anterior = m.tipo;
+    const autor = !cauda ? "" : m.tipo === "ia" ? `<div class="bolha__autor">IA</div>` : m.tipo === "out" ? `<div class="bolha__autor">${esc(m.autor || EU)}</div>` : "";
+    return `<div class="bolha bolha--${m.tipo} ${cauda ? "cauda" : ""}">${autor}<div class="bolha__txt"><span class="bolha__meta">${m.hora}${m.tipo === "in" ? "" : ICONE_TIQUES}</span>${esc(m.texto)}</div></div>`;
+  }).join("");
+}
+
+function renderThread(t) {
+  conversaDe(t);
+  el("inbox").classList.add("com-conversa");
+  const meu = t.dono === EU;
+  const deOutro = t.dono && !meu;
+  let acoes;
+  if (meu) acoes = `<span class="estado">Você está atendendo</span><button class="botao" data-devolver>Devolver pra fila</button><button class="botao primario" data-fechar-ticket>Fechar ticket</button>`;
+  else if (deOutro) acoes = `<span class="estado">${esc(t.dono)} está atendendo</span><button class="botao" data-assumir>Pegar pra mim</button>`;
+  else if (t.resolvidoPelaIA) acoes = `<span class="estado">Resolvido pela IA</span><button class="botao" data-assumir>Reabrir pra mim</button>`;
+  else acoes = `<button class="botao primario" data-assumir>Assumir</button>`;
+
+  el("thread").innerHTML = `
+    <header class="thread-cab">
+      <button class="voltar" data-voltar aria-label="Voltar pra lista"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="quem">${avatar(t.cliente, "g")}<div class="info" style="min-width:0"><strong>${esc(t.cliente)}</strong><span>${esc(t.produto)} · ${esc(t.canal)} · ${t.id}</span></div></div>
+      <div class="thread-acoes">${pilula(t.acao)}${acoes}</div>
+    </header>
+    <details class="contexto">
+      <summary><span class="rot">Por que a IA decidiu</span><b>${esc(t.regra)}</b><span class="tx">${esc(t.porque)}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="contexto-corpo">
+        <div><h3>Decisão</h3><p>${esc(t.porque)}</p><div class="proc">Processo consultado: ${esc(t.processo)}</div></div>
+        <div><h3>Resumo pra quem atende</h3><ul class="resumo">${t.resumo.map(r => `<li>${esc(r)}</li>`).join("")}</ul></div>
+        <div class="dados">${[["Valor", t.valor], ["Desde a compra", t.dias], ["Status", t.status], ["Contato", t.contatos], ["Espera", tempo(t.espera)], ["Canal", t.canal]]
+          .map(([k, v]) => `<div><span>${k}</span><b>${esc(v)}</b></div>`).join("")}</div>
+      </div>
+    </details>
+    <div class="msgs" data-msgs>${htmlMensagens(t)}</div>
+    <form class="responder" data-form>
+      <div class="responder__dica" data-dica></div>
+      <div data-alerta></div>
+      <div class="responder__linha">
+        <textarea data-texto rows="1" placeholder="Escreva uma resposta…" maxlength="4000"></textarea>
+        <button class="enviar" type="submit" title="Enviar" aria-label="Enviar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2.5 11 13"/><path d="M21.5 2.5 15 21.5l-4-8.5-8.5-4z"/></svg>
+        </button>
+      </div>
+    </form>`;
+
+  const th = el("thread");
+  const msgs = th.querySelector("[data-msgs]");
+  msgs.scrollTop = msgs.scrollHeight;
+  const caixa = th.querySelector("[data-texto]");
+  const dica = th.querySelector("[data-dica]");
+  const alerta = th.querySelector("[data-alerta]");
+  const ajusta = () => { caixa.style.height = "40px"; caixa.style.height = Math.min(caixa.scrollHeight + 2, 160) + "px"; };
+
+  caixa.value = t.composer || "";
+  ajusta();
+  if (deOutro) {
+    caixa.disabled = true;
+    caixa.placeholder = `${t.dono} está nesta conversa. Pegue pra você pra responder.`;
+  }
+  if (t.composer && !deOutro) {
+    dica.innerHTML = `<span>Rascunho da IA, já passou na trava. <b>Revise antes de enviar.</b></span><button type="button" data-limpar>Apagar rascunho</button>`;
+    if (t.barrado.length) alerta.innerHTML = `<div class="alerta-trava leve">Antes deste rascunho, a trava barrou: ${t.barrado.map(b => `<s>${esc(b)}</s>`).join(" ")}</div>`;
+  } else if (t.resolvidoPelaIA) dica.innerHTML = `<span>A IA já respondeu. Se você escrever, assume a conversa.</span>`;
+  else if (t.jaEnviado && !meu) dica.innerHTML = `<span>A IA já mandou a orientação de segurança. <b>Agora é com uma pessoa.</b></span>`;
+
+  caixa.oninput = () => {
+    t.composer = caixa.value;
+    if (t.composer !== t.rascunho) { dica.innerHTML = `<span>A trava confere quando você enviar.</span>`; alerta.innerHTML = ""; }
+    ajusta();
+  };
+  caixa.onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); th.querySelector("[data-form]").requestSubmit(); } };
+
+  const enviar = forcar => {
+    const texto = caixa.value.trim();
+    if (!texto) return;
+    const achados = confereTrava(texto);
+    if (achados.length && !forcar) {
+      alerta.innerHTML = `<div class="alerta-trava">A trava encontrou: ${achados.map(a => `<s>${esc(a.trecho)}</s> (${a.motivo})`).join(", ")}. Reescreva ou <button type="button" data-forcar>enviar mesmo assim</button></div>`;
+      return;
+    }
+    if (t.dono !== EU) assumir(t, false);
+    t.conversa.push({ tipo: "out", texto, hora: hora(0) });
+    t.composer = "";
+    renderInbox();
+  };
+  th.querySelector("[data-form]").onsubmit = e => { e.preventDefault(); enviar(false); };
+  th.onclick = e => {
+    if (e.target.closest("[data-forcar]")) enviar(true);
+    if (e.target.closest("[data-limpar]")) { t.composer = ""; caixa.value = ""; dica.innerHTML = ""; alerta.innerHTML = ""; ajusta(); caixa.focus(); }
+    if (e.target.closest("[data-assumir]")) { assumir(t, true); renderInbox(); el("thread").querySelector("[data-texto]").focus(); }
+    if (e.target.closest("[data-devolver]")) { t.dono = null; t.conversa.push({ tipo: "sis", texto: `${EU} devolveu pra fila` }); abaInbox = "fila"; renderInbox(); }
+    if (e.target.closest("[data-fechar-ticket]")) { t.fechado = true; aberto = null; renderInbox(); }
+    if (e.target.closest("[data-voltar]")) { aberto = null; renderInbox(); }
+  };
+}
+
+function assumir(t, trocarAba) {
+  t.dono = EU;
+  t.resolvidoPelaIA = false;
+  t.conversa.push({ tipo: "sis", texto: `${EU} assumiu` });
+  if (trocarAba) abaInbox = "comigo";
+}
+
+// ---------------- Painel ----------------
+function painel() {
+  const cores = { D: "var(--d)", C: "var(--c)", E: "var(--e)", AB: "var(--ok)" };
+  const grupos = [["D", "Pessoa agora"], ["C", "Resumo pro atendente"], ["E", "Pergunta ao cliente"], ["AB", "IA resolveu sozinha"]];
+  const n = g => TICKETS.filter(t => g.includes(t.acao)).length;
+  el("barra-total").innerHTML = grupos.map(([g]) => `<i style="flex:${n(g)};background:${cores[g]}"></i>`).join("");
+  el("legenda").innerHTML = grupos.map(([g, nome]) => `<div><span class="ponto" style="background:${cores[g]}"></span>${nome}<b class="num">${n(g)}</b></div>`).join("");
+  // Só os que foram pra uma pessoa (C e D), agrupados pelo número da regra e escritos pra quem não conhece a política.
+  const pessoa = TICKETS.filter(t => "CD".includes(t.acao));
+  const regras = {};
+  pessoa.forEach(t => { const cod = /^R\d+/.test(t.regra) ? t.regra.split(" ")[0] : ""; regras[cod] = (regras[cod] || 0) + 1; });
+  const max = Math.max(...Object.values(regras));
+  el("regras-titulo").textContent = `Por que ${pessoa.length} tickets foram pra uma pessoa`;
+  el("regras").innerHTML = Object.entries(regras).sort((a, b) => b[1] - a[1] || !a[0] - !b[0]).map(([cod, q]) => {
+    const [motivo, exemplo] = MOTIVOS[cod] || MOTIVOS[""];
+    return `<div><span><span class="motivo">${esc(motivo)}</span>${exemplo ? `<span class="exemplo">${esc(exemplo)}</span>` : ""}</span><span class="trilho"><i style="width:${(q / max) * 100}%"></i></span><b class="num">${q}</b><span class="cod">${cod}</span></div>`;
+  }).join("");
+  el("barradas").innerHTML = (window.TRAVA_EXEMPLOS || []).map(x => `<li><s>${esc(x.frase)}</s><span>${esc(x.motivo)}</span></li>`).join("");
+}
+
+// Link direto pra uma tela: #fila, #painel, #conversas ou #conversas/R05.
+// ?texto=... preenche a caixa de resposta e tenta enviar (usado nos prints da trava).
+function rota() {
+  const [aba, id] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (aba === "conversas") {
+    const t = TICKETS.find(x => x.id === id);
+    if (t) { aberto = t.id; abaInbox = t.dono === EU ? "comigo" : t.dono || t.resolvidoPelaIA ? "todos" : "fila"; }
+    irPara("conversas");
+    const texto = new URLSearchParams(location.search).get("texto");
+    if (t && texto) {
+      const caixa = el("thread").querySelector("[data-texto]");
+      caixa.value = texto;
+      caixa.dispatchEvent(new Event("input"));
+      el("thread").querySelector("[data-form]").requestSubmit();
+    }
+  } else irPara(aba === "painel" ? "painel" : "fila");
+}
+window.onhashchange = rota;
+rota();
+</script>
+</body>
+</html>

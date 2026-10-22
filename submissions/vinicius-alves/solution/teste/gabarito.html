@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gabarito do teste</title>
+<style>
+  :root {
+    --fundo: #f6f5f2; --cartao: #fff; --texto: #1d1d1b; --suave: #6b6a66; --borda: #e4e2dc;
+    --destaque: #1d1d1b; --ok: #2f7d4f; --a: #3b6fd8; --b: #2f7d4f; --c: #b7791f; --d: #c2412d; --e: #7a5af8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fundo); color: var(--texto); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  header { position: sticky; top: 0; z-index: 2; background: var(--fundo); border-bottom: 1px solid var(--borda); padding: 14px 16px; }
+  .topo { max-width: 860px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+  h1 { font-size: 17px; margin: 0; flex: 1 1 auto; }
+  .progresso { font-variant-numeric: tabular-nums; color: var(--suave); }
+  .barra { height: 4px; background: var(--borda); border-radius: 2px; width: 100%; overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .2s; }
+  .filtros { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+  .filtros button { border: 1px solid var(--borda); background: var(--cartao); border-radius: 999px; padding: 4px 12px; cursor: pointer; font: inherit; font-size: 13px; }
+  .filtros button.ativo { background: var(--destaque); color: #fff; border-color: var(--destaque); }
+  main { max-width: 860px; margin: 0 auto; padding: 16px; }
+  details.legenda { background: var(--cartao); border: 1px solid var(--borda); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 14px; }
+  details.legenda summary { cursor: pointer; font-weight: 600; }
+  details.legenda p { margin: 6px 0; }
+  .cartao { background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  .cartao.feito { border-left: 4px solid var(--ok); }
+  .cab { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; margin-bottom: 8px; }
+  .id { font-weight: 700; }
+  .tipo { color: var(--suave); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip { font-size: 12px; background: var(--fundo); border: 1px solid var(--borda); border-radius: 6px; padding: 2px 8px; color: var(--suave); }
+  .msg { background: var(--fundo); border-radius: 8px; padding: 12px 14px; margin: 0 0 14px; white-space: pre-wrap; }
+  .rotulo { font-size: 13px; font-weight: 600; margin: 10px 0 6px; }
+  .acoes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .acoes button { border: 1px solid var(--borda); background: var(--cartao); border-radius: 8px; padding: 8px 6px; cursor: pointer; font: inherit; font-size: 13px; text-align: left; line-height: 1.25; }
+  .acoes button b { display: block; font-size: 16px; }
+  .acoes button.sel { color: #fff; }
+  .acoes button.sel[data-v=A] { background: var(--a); border-color: var(--a); }
+  .acoes button.sel[data-v=B] { background: var(--b); border-color: var(--b); }
+  .acoes button.sel[data-v=C] { background: var(--c); border-color: var(--c); }
+  .acoes button.sel[data-v=D] { background: var(--d); border-color: var(--d); }
+  .acoes button.sel[data-v=E] { background: var(--e); border-color: var(--e); }
+  textarea { width: 100%; min-height: 54px; border: 1px solid var(--borda); border-radius: 8px; padding: 8px 10px; font: inherit; resize: vertical; background: var(--cartao); color: var(--texto); }
+  .salvo { font-size: 12px; color: var(--ok); height: 16px; margin-top: 6px; }
+  @media (max-width: 600px) { .acoes { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<header>
+  <div class="topo">
+    <h1>Gabarito do teste · 80 tickets</h1>
+    <span class="progresso" id="progresso"></span>
+    <div class="barra"><i id="barra"></i></div>
+    <div class="filtros" id="filtros"></div>
+  </div>
+</header>
+<main>
+  <details class="legenda" open>
+    <summary>O que cada ação quer dizer</summary>
+    <p><b>A · Responde sozinha.</b> Informa ou orienta, sem decidir nada pela empresa.</p>
+    <p><b>B · Resolve e encaminha.</b> Caso claro com critério objetivo. Abre o processo pra equipe responsável.</p>
+    <p><b>C · Resume e passa pro atendente.</b> Ambíguo. A IA qualifica, a pessoa decide.</p>
+    <p><b>D · Passa pra pessoa na hora, com prioridade.</b> Irritado, vulnerável, risco legal ou de segurança.</p>
+    <p><b>E · Pede a informação que falta</b> antes de seguir.</p>
+    <p>Tudo salva sozinho. Pode fechar e voltar depois.</p>
+  </details>
+  <div id="lista"></div>
+</main>
+<script>
+const NOMES = { A: "Responde sozinha", B: "Resolve e encaminha", C: "Resume e passa", D: "Pessoa na hora", E: "Pede o que falta" };
+let casos = [], respostas = {}, filtro = "Todos";
+
+function feito(id) { return !!(respostas[id] && respostas[id].acao); }
+
+function atualizaProgresso() {
+  const n = casos.filter(c => feito(c.id)).length;
+  document.getElementById("progresso").textContent = `${n} de ${casos.length} respondidos`;
+  document.getElementById("barra").style.width = `${(n / casos.length) * 100}%`;
+}
+
+function filtros() {
+  const tipos = ["Todos", ...new Set(casos.map(c => c.tipo)), "Faltando"];
+  const el = document.getElementById("filtros");
+  el.innerHTML = "";
+  tipos.forEach(t => {
+    const b = document.createElement("button");
+    b.textContent = t;
+    b.className = t === filtro ? "ativo" : "";
+    b.onclick = () => { filtro = t; filtros(); render(); };
+    el.appendChild(b);
+  });
+}
+
+let timers = {};
+function salva(id, cartao) {
+  clearTimeout(timers[id]);
+  timers[id] = setTimeout(async () => {
+    await fetch("/salvar", { method: "POST", body: JSON.stringify({ id, ...respostas[id] }) });
+    const s = cartao.querySelector(".salvo");
+    s.textContent = "Salvo";
+    setTimeout(() => (s.textContent = ""), 1500);
+    cartao.classList.toggle("feito", feito(id));
+    atualizaProgresso();
+  }, 400);
+}
+
+function chip(texto) { return texto === "" || texto == null ? "" : `<span class="chip">${texto}</span>`; }
+
+function render() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+  casos
+    .filter(c => filtro === "Todos" || (filtro === "Faltando" ? !feito(c.id) : c.tipo === filtro))
+    .forEach(c => {
+      respostas[c.id] = respostas[c.id] || { acao: "", nunca_dizer: "", observacao: "" };
+      const r = respostas[c.id];
+      const el = document.createElement("section");
+      el.className = "cartao" + (feito(c.id) ? " feito" : "");
+      const valor = c.valor_rs ? `R$ ${Number(c.valor_rs).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}` : "";
+      const dias = c.dias_desde_compra !== "" ? `${c.dias_desde_compra} dias desde a compra` : "";
+      const contatos = Number(c.contatos_anteriores) > 0 ? `${c.contatos_anteriores} contatos anteriores` : "primeiro contato";
+      el.innerHTML = `
+        <div class="cab"><span class="id">${c.id}</span><span class="tipo">${c.tipo} · ${c.canal}</span></div>
+        <div class="chips">${chip(c.produto)}${chip(valor)}${chip(dias)}${chip(c.status_pedido)}${chip(contatos)}</div>
+        <p class="msg"></p>
+        <div class="rotulo">Ação certa</div>
+        <div class="acoes">${Object.entries(NOMES).map(([v, n]) => `<button data-v="${v}" class="${r.acao === v ? "sel" : ""}"><b>${v}</b>${n}</button>`).join("")}</div>
+        <div class="rotulo">O que a IA nunca pode dizer aqui</div>
+        <textarea data-campo="nunca_dizer"></textarea>
+        <div class="rotulo">Observação</div>
+        <textarea data-campo="observacao"></textarea>
+        <div class="salvo"></div>`;
+      el.querySelector(".msg").textContent = c.mensagem_do_cliente;
+      el.querySelectorAll("textarea").forEach(t => {
+        t.value = r[t.dataset.campo] || "";
+        t.oninput = () => { r[t.dataset.campo] = t.value; salva(c.id, el); };
+      });
+      el.querySelectorAll(".acoes button").forEach(b => {
+        b.onclick = () => {
+          r.acao = r.acao === b.dataset.v ? "" : b.dataset.v;
+          el.querySelectorAll(".acoes button").forEach(x => x.classList.toggle("sel", x.dataset.v === r.acao));
+          salva(c.id, el);
+        };
+      });
+      lista.appendChild(el);
+    });
+}
+
+fetch("/dados").then(r => r.json()).then(d => {
+  casos = d.casos;
+  respostas = d.respostas;
+  filtros();
+  render();
+  atualizaProgresso();
+});
+</script>
+</body>
+</html>

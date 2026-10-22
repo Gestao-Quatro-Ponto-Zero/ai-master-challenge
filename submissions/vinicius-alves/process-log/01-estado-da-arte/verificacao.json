@@ -1,0 +1,160 @@
+{
+ "d1_registros": 8469,
+ "d1_status": {
+  "Pending Customer Response": 2881,
+  "Open": 2819,
+  "Closed": 2769
+ },
+ "d1_open_sem_resposta": 2819,
+ "d1_janela_horas": 27.0,
+ "d1_compras": [
+  "2020-01-01",
+  "2021-12-30"
+ ],
+ "d1_coluna_abertura": false,
+ "d1_invertido": 0.493,
+ "d1_dif_media_h": -0.06,
+ "d1_placeholder": 1.0,
+ "d1_frases_abertura": 16,
+ "d1_resolucoes_exemplo": [
+  "Such option result friend able director.",
+  "Pick Republican offer world actually road during.",
+  "Deal step team east pressure.",
+  "Save operation blue call her pull.",
+  "Early gas else have measure surface."
+ ],
+ "d1_dominios": {
+  "example.com": 2904,
+  "example.org": 2796,
+  "example.net": 2769
+ },
+ "d1_uniformidade": {
+  "Ticket Type": {
+   "opcoes": 5,
+   "maior": 0.2069,
+   "menor": 0.1929,
+   "p": 0.115
+  },
+  "Ticket Subject": {
+   "opcoes": 16,
+   "maior": 0.068,
+   "menor": 0.0564,
+   "p": 0.022
+  },
+  "Ticket Priority": {
+   "opcoes": 4,
+   "maior": 0.2588,
+   "menor": 0.2436,
+   "p": 0.205
+  },
+  "Ticket Channel": {
+   "opcoes": 4,
+   "maior": 0.253,
+   "menor": 0.2448,
+   "p": 0.718
+  },
+  "Customer Gender": {
+   "opcoes": 3,
+   "maior": 0.342,
+   "menor": 0.3172,
+   "p": 0.007
+  },
+  "Product Purchased": {
+   "opcoes": 42,
+   "maior": 0.0283,
+   "menor": 0.021,
+   "p": 0.478
+  },
+  "Customer Satisfaction Rating": {
+   "opcoes": 5,
+   "maior": 0.2095,
+   "menor": 0.1961,
+   "p": 0.797
+  }
+ },
+ "d1_idade": [
+  18,
+  70
+ ],
+ "d1_prioridade_status_p": 0.227,
+ "d1_tempo_por_prioridade": {
+  "Critical": -0.2,
+  "High": -0.07,
+  "Low": 0.39,
+  "Medium": -0.31
+ },
+ "d1_csat_contagem": {
+  "1.0": 553,
+  "2.0": 549,
+  "3.0": 580,
+  "4.0": 543,
+  "5.0": 544
+ },
+ "d1_csat_vs_tempo": {
+  "r": 0.022,
+  "p": 0.254
+ },
+ "d1_csat_associacoes_p": {
+  "Ticket Channel": 0.467,
+  "Ticket Priority": 0.4,
+  "Ticket Type": 0.257,
+  "Customer Gender": 0.148,
+  "Ticket Subject": 0.876
+ },
+ "d1_csat_modelo": {
+  "acerto": 0.205,
+  "acaso": 0.209
+ },
+ "d1_texto_preve_tipo": 0.195,
+ "d2_registros": 47837,
+ "d2_classes": {
+  "Hardware": 13617,
+  "HR Support": 10915,
+  "Access": 7125,
+  "Miscellaneous": 7060,
+  "Storage": 2777,
+  "Purchase": 2464,
+  "Internal Project": 2119,
+  "Administrative rights": 1760
+ },
+ "d2_duplicados": 0,
+ "d2_palavras": {
+  "mediana": 26
+ },
+ "d2_classificador": {
+  "acerto": 0.8661,
+  "f1_macro": 0.8649
+ },
+ "d2_top2": 0.965,
+ "d2_trava": {
+  "0.5": {
+   "cobertura": 0.906,
+   "acerto": 0.904
+  },
+  "0.6": {
+   "cobertura": 0.832,
+   "acerto": 0.929
+  },
+  "0.7": {
+   "cobertura": 0.754,
+   "acerto": 0.951
+  },
+  "0.8": {
+   "cobertura": 0.668,
+   "acerto": 0.968
+  },
+  "0.9": {
+   "cobertura": 0.544,
+   "acerto": 0.984
+  }
+ },
+ "d2_modelo_no_d1": {
+  "Hardware": 0.905,
+  "Access": 0.057,
+  "Miscellaneous": 0.019,
+  "Administrative rights": 0.01,
+  "HR Support": 0.006,
+  "Storage": 0.002,
+  "Internal Project": 0.001
+ }
+}

@@ -1,0 +1,31 @@
+﻿id,tipo,tipo_d1,assunto_d1,canal,produto,valor_rs,dias_desde_compra,status_pedido,contatos_anteriores,mensagem_do_cliente
+N01,Reembolso,Refund request,Delivery problem,Chat,Google Pixel,4299,3,Entregue,0,Pedi o Pixel preto e veio branco. Quero devolver e receber o dinheiro.
+N02,Reembolso,Refund request,Refund request,Email,Sony 4K HDR TV,3999,6,Entregue,0,Bom dia. A TV é maior do que eu imaginava e não coube na parede. Ainda dá tempo de devolver?
+N03,Reembolso,Refund request,Refund request,Social media,Nintendo Switch,2199,25,Devolvido ao estoque,2,Vocês são uma piada. Devolvi faz três semanas e nada. Absurdo.
+N04,Reembolso,Refund request,Refund request,Chat,Dell XPS,8999,12,Entregue,0,"Minha mãe está internada e eu preciso do dinheiro do notebook pra pagar o hospital. Comprei há 12 dias, dá pra devolver?"
+N05,Reembolso,Refund request,Delivery problem,Email,Canon EOS,5499,2,Entregue,0,A caixa chegou amassada e a lente veio rachada. Tenho foto. Quero meu dinheiro.
+N06,Reembolso,Refund request,Refund request,Chat,Apple AirPods,1899,15,Devolvido ao estoque,1,Já devolvi os fones. Quanto tempo leva pro estorno aparecer?
+N07,Problema técnico,Technical issue,Hardware issue,Chat,Samsung Galaxy,1199,120,Entregue,0,O carregador do celular ficou muito quente e derreteu a ponta. Tá com um cheiro estranho.
+N08,Problema técnico,Technical issue,Hardware issue,Email,HP Pavilion,3299,4,Entregue,0,"O notebook não reconhece o carregador, a luz nem acende. Chegou segunda."
+N09,Problema técnico,Technical issue,Product setup,Chat,Philips Hue Lights,699,20,Entregue,0,Como eu faço pra configurar as lâmpadas pelo aplicativo?
+N10,Problema técnico,Technical issue,Data loss,Phone,Amazon Kindle,549,60,Entregue,0,"Meu Kindle apagou todos os livros que eu tinha baixado. Perdi tudo, tô muito chateada."
+N11,Problema técnico,Technical issue,Display issue,Chat,Microsoft Surface,6999,30,Entregue,3,De novo isso. Terceiro chamado e a tela continua piscando. Me passa pra alguém que resolva.
+N12,Problema técnico,Technical issue,Software bug,Email,Garmin Forerunner,1899,200,Entregue,0,Meu relógio está mostrando batimento de 40 durante a corrida. Isso tá certo?
+N13,Cancelamento,Cancellation request,Cancellation request,Chat,Bose SoundLink Speaker,1299,0,"Pagamento aprovado, não enviado",0,"Comprei errado, era pra ser a azul. Cancela pra mim que eu compro de novo?"
+N14,Cancelamento,Cancellation request,Cancellation request,Email,MacBook Pro,15999,3,Enviado,0,Desisti da compra. Como faço pra cancelar?
+N15,Cancelamento,Cancellation request,Cancellation request,Chat,Adobe Photoshop,109,90,Assinatura mensal ativa,0,"Quero cancelar o Photoshop, não uso mais."
+N16,Cancelamento,Cancellation request,Delivery problem,Social media,iPhone,2999,15,Atrasado (prazo vencido há 5 dias),2,"Cancela essa compra agora, tô cansado de esperar e ninguém resolve nada."
+N17,Cancelamento,Cancellation request,Account access,Email,,,,Conta ativa,0,Quero excluir meu cadastro e que vocês parem de me mandar e-mail.
+N18,Cancelamento,Cancellation request,Cancellation request,Chat,Xbox,3999,1,"Pagamento aprovado, não enviado",0,Pode cancelar? Minha esposa disse que se eu comprar esse videogame ela me mata kkkk
+N19,Cobrança,Billing inquiry,Payment issue,Chat,,,,Sem pedido identificado,0,Tem uma compra de 899 reais no meu cartão que não fui eu que fiz.
+N20,Cobrança,Billing inquiry,Payment issue,Email,Samsung Soundbar,1999,10,Entregue,0,"Preciso da nota fiscal no CNPJ da minha empresa, saiu no meu CPF."
+N21,Cobrança,Billing inquiry,Payment issue,Chat,Amazon Echo,499,0,Carrinho,0,Esse cupom de 10% que vocês mandaram por e-mail não está funcionando.
+N22,Cobrança,Billing inquiry,Payment issue,Social media,Microsoft Office,45.9,40,Assinatura mensal ativa,1,Me cobraram duas vezes a assinatura esse mês. Já mandei o print ontem e nada.
+N23,Cobrança,Billing inquiry,Payment issue,Email,Lenovo ThinkPad,6599,20,Entregue,0,Vou no Procon se não resolverem a cobrança do frete que não era pra ter.
+N24,Cobrança,Billing inquiry,Payment issue,Chat,Sony PlayStation,3499,5,Entregue,0,"Paguei no Pix e ainda aparece como pendente, mas o produto já chegou. Tá tudo certo?"
+N25,Dúvida de produto,Product inquiry,Product compatibility,Chat,LG OLED,7999,,Pré-venda,0,Essa TV tem entrada pra antena digital?
+N26,Dúvida de produto,Product inquiry,Product compatibility,Chat,Nintendo Switch Pro Controller,449,,Pré-venda,0,Funciona no PC?
+N27,Dúvida de produto,Product inquiry,Product recommendation,Email,Roomba Robot Vacuum,2899,,Pré-venda,0,"Tenho dois gatos. O robô aspira pelo de gato direitinho? Se não aspirar, vocês aceitam devolver?"
+N28,Dúvida de produto,Product inquiry,Product recommendation,Chat,Fitbit Charge,899,,Pré-venda,0,Meu médico pediu pra eu controlar a pressão. Esse relógio mede pressão?
+N29,Dúvida de produto,Product inquiry,Product recommendation,Chat,Samsung Galaxy,4999,,Pré-venda,0,Vocês parcelam em 24x? Se fizer em 24x eu fecho agora.
+N30,Dúvida de produto,Product inquiry,Product recommendation,Social media,GoPro Hero,2599,,Pré-venda,1,Mandei mensagem ontem perguntando se tem estoque e ninguém respondeu. Assim fica difícil comprar de vocês.

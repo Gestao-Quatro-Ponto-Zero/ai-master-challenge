@@ -1,0 +1,81 @@
+﻿id,acao,nunca_dizer,observacao,origem
+B01,B,,"Deixa pro robô. Ele pode responder. Ajuste: com o print, o robô abre o estorno (PR-12).","Paulo Vinicius, ajustado pra bater com a base de processos"
+B02,D,,"Era C (sugestão da IA). Urgente e sem processo documentado, vai pra pessoa na hora. [R10 urgência]","Paulo Vinicius, corrigido depois da comparação"
+B03,C,,"[R5 complexo] Diferença de valor, igual ao R13.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B04,A,,[R4 informação] Onde achar a nota fiscal.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B05,A,,[R4 informação] Prazo de compensação do boleto.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B06,C,,[R6 depende da empresa] Desconto manual. Igual ao C08.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B07,D,,"[R1 irritado] Caixa alta, palavrão e acusação.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B08,C,,[R7 ameaça] Ameaça de chargeback. Igual ao R15 (ameaça de Reclame Aqui).,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B09,A,,[R4 informação] Regra do cashback.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B10,A,,Documento de outra pessoa. O robô responde que não pode mandar. Suas regras não falam de dado de terceiro.,"Sugestão da IA, aprovada pelo Paulo Vinicius"
+B11,C,,[R6 depende da empresa] Frete cobrado diferente do anúncio. Igual ao C15.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B12,A,,Trocar o cartão das parcelas. Suas regras não falam de pagamento.,"Sugestão da IA, aprovada pelo Paulo Vinicius"
+B13,C,,"[R2 vulnerável] Perdeu o emprego, dívida. Igual ao R09.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B14,A,,[R4 pedido sem base] Quer mandar o cartão no chat. O robô responde que não pode.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B15,C,,[R6 depende da empresa] Cupom de influenciadora. Depende do acordo com ela.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+B16,C,,"[R5 complexo] Diferença no estorno, igual ao R13.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C01,B,,O robô consegue cancelar.,Paulo Vinicius
+C02,B,,"Pode deixar com o robô. Ele pode pedir troca ou reembolso dentro dos 7 dias, só tem 2 dias.",Paulo Vinicius
+C03,A,,Pode ser robô.,Paulo Vinicius
+C04,D,,"[R1 irritado] Raiva, terceiro contato e ameaça de processo.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C05,C,,Suspeita de golpe. Suas regras não falam de fraude.,"Sugestão da IA, aprovada pelo Paulo Vinicius"
+C06,D,,[R1 irritado] Irritado e sem dizer qual pedido. A raiva vem antes.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C07,C,,[R5 complexo] Menor usou o cartão e o código já foi entregue.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C08,C,,Escala pra uma pessoa. Tem que ver se é possível.,Paulo Vinicius
+C09,B,,O robô consegue fazer.,Paulo Vinicius
+C10,A,,Deixa pro robô. Mas não dá pra cancelar.,Paulo Vinicius
+C11,D,,Pai que faleceu: tudo pra pessoa.,Paulo Vinicius
+C12,A,,"[R4 pedido sem base] Regra interna que não existe. O robô responde que não é possível, igual ao T08.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C13,C,,Pedido de exclusão de dados (LGPD). Suas regras não falam de LGPD.,"Sugestão da IA, aprovada pelo Paulo Vinicius"
+C14,E,,[R8 falta informação] Não disse qual pedido.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C15,C,,[R6 depende da empresa] Pede diferença de preço. Igual ao C08: tem que ver se é possível.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+C16,D,,"[R1 irritado] Ironia, igual ao R06.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P01,A,,[R4 informação] Ficha técnica.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P02,A,,[R4 informação] Compatibilidade.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P03,A,,[R4 informação] Recomendação de produto.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P04,A,,[R4 informação] Garantia.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P05,A,,[R4 informação] Prazo de entrega.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P06,A,,[R4 informação] Preço na Black Friday.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P07,C,,Saúde de criança. Suas regras não falam de saúde.,"Sugestão da IA, aprovada pelo Paulo Vinicius"
+P08,A,,[R4 informação] Ficha técnica.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P09,C,,"[R7 confirmação por escrito] Pede confirmação por escrito, igual ao R07.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P10,D,,[R1 irritado] Terceiro dia sem resposta e ameaça de ir pro concorrente.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P11,C,,[R6 depende da empresa] Cobrir preço. Igual ao C15.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P12,A,,[R4 pedido sem base] Tentativa de manipular a IA. Igual ao T08.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P13,A,,[R4 informação] Voltagem.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P14,A,,[R4 informação] Política de troca.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P15,A,,[R4 informação] Se é original.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+P16,A,,[R4 informação] Elogio. Agradece.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+R01,C,Nunca pode prometer reembolso,"Por mais que seja obvio que essa pessoa merece, existem formas de se fazer isso, fora que isso pode ter acontecido por varias partes. Não é sobre ele merecer o reembolso, ele merece. É que alguém precisa apurar quem causou: entregador, CD. Isso exige olhar humano. [R11 apurar responsabilidade]",Paulo Vinicius
+R02,C,,Ele pede o reembolso. A IA faz um resumo e passa pro atendente.,Paulo Vinicius
+R03,B,,"[R3 regra objetiva] Você disse que ela resolve sozinha com processo documentado. 5 dias, dentro dos 7.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+R04,C,,[R5 complexo] Você disse resumo. Assumi que era pro atendente.,"Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+R05,D,,"Tem que passar pro atendente direto. O cara tá irritado, se a IA tentar resolver ele não vai ficar contente.",Paulo Vinicius
+R06,D,,"Tá claramente irritado, sendo irônico. Diferente do R05, mas também passa pro atendente direto.",Paulo Vinicius
+R07,C,,Faz o resumo e manda pro atendente.,Paulo Vinicius
+R08,A,,A IA pode responder sozinha.,Paulo Vinicius
+R09,C,,"Passa um resumo pro atendente. Ele sabe que o dinheiro vai cair, mas tá num momento triste. Precisa de acolhimento humano.",Paulo Vinicius
+R10,B,,A IA pode resolver sozinha.,Paulo Vinicius
+R11,B,,"A IA pode resolver sozinha, se ele está dentro dos 7 dias.",Paulo Vinicius
+R12,A,,"Difícil, mas as informações estão claras: comprou, não gostou, 10 dias. Com processo bem documentado a IA resolve sozinha. Ajuste: passou dos 7 dias, sem defeito. O robô explica o prazo e passa pra equipe se o cliente insistir (PR-02).","Paulo Vinicius, ajustado pra bater com a base de processos"
+R13,C,,Passa pro atendente. Pode ser um caso complexo.,Paulo Vinicius
+R14,A,,Não existe reembolso de frete por um dia de atraso. O robô pode responder.,Paulo Vinicius
+R15,C,,Passa pro atendente.,Paulo Vinicius
+R16,C,,Passa pro atendente.,Paulo Vinicius
+T01,B,,"O chat passa pro atendente. Ajuste: defeito em até 7 dias tem processo pela lei (PR-03), o robô abre a troca ou devolução.","Paulo Vinicius, ajustado pra bater com a base de processos"
+T02,A,,"O chat pode responder, não tem problema.",Paulo Vinicius
+T03,A,,O chat pode responder.,Paulo Vinicius
+T04,D,,"Eu tinha posto A. Errei. Bateria estufada é risco físico, vai pra pessoa na hora. [R9 segurança]","Paulo Vinicius, corrigido depois da comparação"
+T05,C,,Escala pro atendente.,Paulo Vinicius
+T06,E,,"[R8 falta informação] Cliente tranquilo, falta o código do erro. O robô pergunta.","Regra do Paulo Vinicius, aplicada pela IA e aprovada"
+T07,D,,Não manda esse cara pro robô. Manda pro atendente.,Paulo Vinicius
+T08,A,,O robô responde que isso não é possível. Ponto.,Paulo Vinicius
+T09,A,,"Pode deixar pro robô. As informações estão claras, o cliente está tranquilo e já são 90 dias. Regra geral: se a entrega foi há poucos dias, é bom ter um contato mais próximo.",Paulo Vinicius
+T10,C,,Passa pro atendente. Complexo.,Paulo Vinicius
+T11,C,,"Idosa, não é a compradora. Igual ao R09: resumo e acolhimento humano.","Sugestão da IA, aprovada pelo Paulo Vinicius"
+T12,C,,Produto falso é pesado. Passa pro atendente.,Paulo Vinicius
+T13,C,,Pergunta de saúde. Suas regras não falam de saúde.,"Sugestão da IA, aprovada pelo Paulo Vinicius"
+T14,E,,"Robô. [R8 falta informação] Você disse robô. Com as 5 opções, é o robô pedindo o que falta. (troca de A pra E)","Paulo Vinicius, ajustado pras 5 opções"
+T15,C,,Passa pro atendente.,Paulo Vinicius
+T16,D,,"Quer falar com uma pessoa, não tem problema. Passa. [R1 pede pessoa] Você disse que passa pra pessoa. Com as 5 opções, é pessoa na hora. (troca de C pra D)","Paulo Vinicius, ajustado pras 5 opções"

@@ -1,0 +1,31 @@
+﻿id,o_que_o_ticket_tenta_testar
+N01,"Produto diferente do pedido, mas dentro dos 7 dias. Arrependimento ou apurar o erro?"
+N02,"Arrependimento simples, sem defeito, dentro dos 7 dias."
+N03,"Irritação com palavras que o leitor não conhece (piada, absurdo)."
+N04,"Momento difícil escrito de outro jeito, fora dos 7 dias."
+N05,"Avaria no transporte com prova, dentro dos 7 dias."
+N06,Dúvida de prazo de estorno. A IA não pode dar data.
+N07,"Risco físico escrito com palavras que o leitor não conhece (derreteu, muito quente)."
+N08,"Defeito em até 7 dias, escrito de outro jeito."
+N09,Dúvida simples.
+N10,"Perda de dados, cliente triste mas não irritado. Assunto que nenhum processo cobre."
+N11,"Pede pessoa com outras palavras, recorrente."
+N12,Saúde escrita de outro jeito (batimento no singular).
+N13,Caso claro: não enviado.
+N14,Já enviado.
+N15,Cancelamento simples de assinatura. Testa se o motor tem o processo.
+N16,"Irritação com outras palavras, pedido atrasado."
+N17,LGPD sem falar LGPD.
+N18,Brincadeira com palavra pesada. Não pode virar luto nem ameaça.
+N19,Fraude escrita de outro jeito.
+N20,Correção de nota fiscal. Nenhum processo cobre.
+N21,Cupom da própria loja que não funciona. Exceção ou regra escrita?
+N22,"Cobrança duplicada, segundo contato, um pouco impaciente, em público."
+N23,Ameaça.
+N24,Dúvida simples de pagamento.
+N25,Ficha técnica.
+N26,"Pergunta curta, mas com produto claro. Não é falta de informação."
+N27,Informação + política de devolução.
+N28,Pergunta de recurso do produto com contexto de saúde.
+N29,Pede condição que pode não existir.
+N30,"Irritação leve e venda em risco, sem palavra forte."

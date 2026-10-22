@@ -1,0 +1,48 @@
+id,acao_proposta,regra_usada,motivo,precisa_decidir
+R03,B,R3 regra objetiva,"Você disse que ela resolve sozinha com processo documentado. 5 dias, dentro dos 7.",
+R04,C,R5 complexo,"Você disse resumo. Assumi que era pro atendente.",
+T06,E,R8 falta informação,"Cliente tranquilo, falta o código do erro. O robô pergunta.",
+T11,C,R2 vulnerável,"Idosa, não é a compradora. Igual ao R09: resumo e acolhimento humano.",sim
+T13,C,R5 risco,"Pergunta de saúde. Suas regras não falam de saúde.",sim
+C04,D,R1 irritado,"Raiva, terceiro contato e ameaça de processo.",
+C05,C,R5 risco,"Suspeita de golpe. Suas regras não falam de fraude.",sim
+C06,D,R1 irritado,"Irritado e sem dizer qual pedido. A raiva vem antes.",
+C07,C,R5 complexo,"Menor usou o cartão e o código já foi entregue.",
+C12,A,R4 pedido sem base,"Regra interna que não existe. O robô responde que não é possível, igual ao T08.",
+C13,C,R5 complexo,"Pedido de exclusão de dados (LGPD). Suas regras não falam de LGPD.",sim
+C14,E,R8 falta informação,"Não disse qual pedido.",
+C15,C,R6 depende da empresa,"Pede diferença de preço. Igual ao C08: tem que ver se é possível.",
+C16,D,R1 irritado,"Ironia, igual ao R06.",
+B02,C,R5 risco,"Compra não reconhecida no cartão. Suas regras não falam de fraude.",sim
+B03,C,R5 complexo,"Diferença de valor, igual ao R13.",
+B04,A,R4 informação,"Onde achar a nota fiscal.",
+B05,A,R4 informação,"Prazo de compensação do boleto.",
+B06,C,R6 depende da empresa,"Desconto manual. Igual ao C08.",
+B07,D,R1 irritado,"Caixa alta, palavrão e acusação.",
+B08,C,R7 ameaça,"Ameaça de chargeback. Igual ao R15 (ameaça de Reclame Aqui).",
+B09,A,R4 informação,"Regra do cashback.",
+B10,A,R4 pedido sem base,"Documento de outra pessoa. O robô responde que não pode mandar. Suas regras não falam de dado de terceiro.",sim
+B11,C,R6 depende da empresa,"Frete cobrado diferente do anúncio. Igual ao C15.",
+B12,A,R4 informação,"Trocar o cartão das parcelas. Suas regras não falam de pagamento.",sim
+B13,C,R2 vulnerável,"Perdeu o emprego, dívida. Igual ao R09.",
+B14,A,R4 pedido sem base,"Quer mandar o cartão no chat. O robô responde que não pode.",
+B15,C,R6 depende da empresa,"Cupom de influenciadora. Depende do acordo com ela.",
+B16,C,R5 complexo,"Diferença no estorno, igual ao R13.",
+P01,A,R4 informação,"Ficha técnica.",
+P02,A,R4 informação,"Compatibilidade.",
+P03,A,R4 informação,"Recomendação de produto.",
+P04,A,R4 informação,"Garantia.",
+P05,A,R4 informação,"Prazo de entrega.",
+P06,A,R4 informação,"Preço na Black Friday.",
+P07,C,R5 risco,"Saúde de criança. Suas regras não falam de saúde.",sim
+P08,A,R4 informação,"Ficha técnica.",
+P09,C,R7 confirmação por escrito,"Pede confirmação por escrito, igual ao R07.",
+P10,D,R1 irritado,"Terceiro dia sem resposta e ameaça de ir pro concorrente.",
+P11,C,R6 depende da empresa,"Cobrir preço. Igual ao C15.",
+P12,A,R4 pedido sem base,"Tentativa de manipular a IA. Igual ao T08.",
+P13,A,R4 informação,"Voltagem.",
+P14,A,R4 informação,"Política de troca.",
+P15,A,R4 informação,"Se é original.",
+P16,A,R4 informação,"Elogio. Agradece.",
+T14,E,R8 falta informação,"Você disse robô. Com as 5 opções, é o robô pedindo o que falta. (troca de A pra E)",
+T16,D,R1 pede pessoa,"Você disse que passa pra pessoa. Com as 5 opções, é pessoa na hora. (troca de C pra D)",

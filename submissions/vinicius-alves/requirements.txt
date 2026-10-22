@@ -1,0 +1,6 @@
+# Só pros scripts de verificação dos dados e da planilha do gabarito.
+# O motor, a tela, a trava e a conta rodam sem nada disto.
+pandas==2.3.3
+scikit-learn==1.6.1
+scipy==1.13.1
+openpyxl==3.1.5
