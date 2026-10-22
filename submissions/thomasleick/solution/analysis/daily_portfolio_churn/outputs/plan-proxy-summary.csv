@@ -1,0 +1,4 @@
+plan_tier,source_subscription_rows,distinct_accounts,loss_events,new_relations,reactivations,opening_2024_relations,opening_2024_relations_lost_any_time,opening_2024_relations_lost_at_close,closing_2024_relations,opening_2024_cohort_loss_pct
+Basic,1602,480,22,480,14,132,2,1,472,1.5151515151515151
+Enterprise,1723,479,25,479,20,120,5,2,474,4.166666666666666
+Pro,1675,474,15,474,9,122,0,0,468,0.0

@@ -1,0 +1,901 @@
+{
+  "ravenstack_accounts.csv": {
+    "sha256": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+    "rows": 500,
+    "columns": [
+      "account_id",
+      "account_name",
+      "industry",
+      "country",
+      "signup_date",
+      "referral_source",
+      "plan_tier",
+      "seats",
+      "is_trial",
+      "churn_flag"
+    ],
+    "field_profiles": {
+      "account_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 500,
+        "examples": [
+          "A-2e4581",
+          "A-43a9e3",
+          "A-0a282f",
+          "A-1f0ac7"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "account_name": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 500,
+        "examples": [
+          "Company_0",
+          "Company_1",
+          "Company_2",
+          "Company_3"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "industry": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 5,
+        "examples": [
+          "EdTech",
+          "FinTech",
+          "DevTools",
+          "HealthTech"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "country": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 7,
+        "examples": [
+          "US",
+          "IN",
+          "UK",
+          "CA"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "signup_date": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 370,
+        "examples": [
+          "2024-10-16",
+          "2023-08-17",
+          "2024-08-27",
+          "2023-08-27"
+        ],
+        "date_min": "2023-01-02T00:00:00",
+        "date_max": "2024-12-31T00:00:00"
+      },
+      "referral_source": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 5,
+        "examples": [
+          "partner",
+          "other",
+          "organic",
+          "event"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "plan_tier": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 3,
+        "examples": [
+          "Basic",
+          "Enterprise",
+          "Pro"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "seats": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 73,
+        "examples": [
+          "9",
+          "18",
+          "1",
+          "24"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "is_trial": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "churn_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      }
+    },
+    "id_checks": {
+      "account_id": {
+        "nonnull": 500,
+        "distinct": 500,
+        "duplicate_rows": 0
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "ravenstack_churn_events.csv": {
+    "sha256": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940",
+    "rows": 600,
+    "columns": [
+      "churn_event_id",
+      "account_id",
+      "churn_date",
+      "reason_code",
+      "refund_amount_usd",
+      "preceding_upgrade_flag",
+      "preceding_downgrade_flag",
+      "is_reactivation",
+      "feedback_text"
+    ],
+    "field_profiles": {
+      "churn_event_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 600,
+        "examples": [
+          "C-816288",
+          "C-5a81e7",
+          "C-a174be",
+          "C-accb39"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "account_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 352,
+        "examples": [
+          "A-c37cab",
+          "A-37f969",
+          "A-b07346",
+          "A-1e50e0"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "churn_date": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 311,
+        "examples": [
+          "2024-10-27",
+          "2024-06-25",
+          "2024-11-12",
+          "2023-11-01"
+        ],
+        "date_min": "2023-01-25T00:00:00",
+        "date_max": "2024-12-31T00:00:00"
+      },
+      "reason_code": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 6,
+        "examples": [
+          "pricing",
+          "support",
+          "budget",
+          "unknown"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "refund_amount_usd": {
+        "inferred_type": "numeric-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 142,
+        "examples": [
+          "4.03",
+          "96.45",
+          "0.0",
+          "54.94"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "preceding_upgrade_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "preceding_downgrade_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "is_reactivation": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "feedback_text": {
+        "inferred_type": "string",
+        "null_count": 148,
+        "null_rate": 0.246667,
+        "distinct_non_null": 3,
+        "examples": [
+          "switched to competitor",
+          "missing features",
+          "too expensive"
+        ],
+        "date_min": null,
+        "date_max": null
+      }
+    },
+    "id_checks": {
+      "churn_event_id": {
+        "nonnull": 600,
+        "distinct": 600,
+        "duplicate_rows": 0
+      },
+      "account_id": {
+        "nonnull": 600,
+        "distinct": 352,
+        "duplicate_rows": 248
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "ravenstack_feature_usage.csv": {
+    "sha256": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e",
+    "rows": 25000,
+    "columns": [
+      "usage_id",
+      "subscription_id",
+      "usage_date",
+      "feature_name",
+      "usage_count",
+      "usage_duration_secs",
+      "error_count",
+      "is_beta_feature"
+    ],
+    "field_profiles": {
+      "usage_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 24979,
+        "examples": [
+          "U-1c6c24",
+          "U-f07cb8",
+          "U-096807",
+          "U-6b1580"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "subscription_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 4967,
+        "examples": [
+          "S-0fcf7d",
+          "S-c25263",
+          "S-f29e7f",
+          "S-be655e"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "usage_date": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 731,
+        "examples": [
+          "2023-07-27",
+          "2023-08-07",
+          "2023-12-07",
+          "2024-07-28"
+        ],
+        "date_min": "2023-01-01T00:00:00",
+        "date_max": "2024-12-31T00:00:00"
+      },
+      "feature_name": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 40,
+        "examples": [
+          "feature_20",
+          "feature_5",
+          "feature_3",
+          "feature_40"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "usage_count": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 27,
+        "examples": [
+          "9",
+          "5",
+          "12",
+          "11"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "usage_duration_secs": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 4168,
+        "examples": [
+          "5004",
+          "369",
+          "1458",
+          "2085"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "error_count": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 9,
+        "examples": [
+          "0",
+          "2",
+          "1",
+          "3"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "is_beta_feature": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      }
+    },
+    "id_checks": {
+      "usage_id": {
+        "nonnull": 25000,
+        "distinct": 24979,
+        "duplicate_rows": 21
+      },
+      "subscription_id": {
+        "nonnull": 25000,
+        "distinct": 4967,
+        "duplicate_rows": 20033
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "ravenstack_subscriptions.csv": {
+    "sha256": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a",
+    "rows": 5000,
+    "columns": [
+      "subscription_id",
+      "account_id",
+      "start_date",
+      "end_date",
+      "plan_tier",
+      "seats",
+      "mrr_amount",
+      "arr_amount",
+      "is_trial",
+      "upgrade_flag",
+      "downgrade_flag",
+      "churn_flag",
+      "billing_frequency",
+      "auto_renew_flag"
+    ],
+    "field_profiles": {
+      "subscription_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 5000,
+        "examples": [
+          "S-8cec59",
+          "S-0f6f44",
+          "S-51c0d1",
+          "S-f81687"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "account_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 500,
+        "examples": [
+          "A-3c1a3f",
+          "A-9b9fe9",
+          "A-659280",
+          "A-e7a1e2"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "start_date": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 625,
+        "examples": [
+          "2023-12-23",
+          "2024-06-11",
+          "2024-11-25",
+          "2024-11-23"
+        ],
+        "date_min": "2023-01-09T00:00:00",
+        "date_max": "2024-12-31T00:00:00"
+      },
+      "end_date": {
+        "inferred_type": "string",
+        "null_count": 4514,
+        "null_rate": 0.9028,
+        "distinct_non_null": 208,
+        "examples": [
+          "2024-04-12",
+          "2024-12-13",
+          "2024-08-03",
+          "2024-08-13"
+        ],
+        "date_min": "2023-04-05T00:00:00",
+        "date_max": "2024-12-31T00:00:00"
+      },
+      "plan_tier": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 3,
+        "examples": [
+          "Enterprise",
+          "Pro",
+          "Basic"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "seats": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 123,
+        "examples": [
+          "14",
+          "17",
+          "62",
+          "5"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "mrr_amount": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 306,
+        "examples": [
+          "2786",
+          "833",
+          "0",
+          "995"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "arr_amount": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 306,
+        "examples": [
+          "33432",
+          "9996",
+          "0",
+          "11940"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "is_trial": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "upgrade_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "downgrade_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "churn_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "True",
+          "False"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "billing_frequency": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "monthly",
+          "annual"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "auto_renew_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "True",
+          "False"
+        ],
+        "date_min": null,
+        "date_max": null
+      }
+    },
+    "id_checks": {
+      "subscription_id": {
+        "nonnull": 5000,
+        "distinct": 5000,
+        "duplicate_rows": 0
+      },
+      "account_id": {
+        "nonnull": 5000,
+        "distinct": 500,
+        "duplicate_rows": 4500
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "ravenstack_support_tickets.csv": {
+    "sha256": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220",
+    "rows": 2000,
+    "columns": [
+      "ticket_id",
+      "account_id",
+      "submitted_at",
+      "closed_at",
+      "resolution_time_hours",
+      "priority",
+      "first_response_time_minutes",
+      "satisfaction_score",
+      "escalation_flag"
+    ],
+    "field_profiles": {
+      "ticket_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2000,
+        "examples": [
+          "T-0024de",
+          "T-4d04b9",
+          "T-d5e12f",
+          "T-dfce9a"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "account_id": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 492,
+        "examples": [
+          "A-712f1c",
+          "A-e43bf7",
+          "A-0f3e88",
+          "A-4c56c9"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "submitted_at": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 671,
+        "examples": [
+          "2023-07-27",
+          "2024-07-08",
+          "2024-10-17",
+          "2024-09-08"
+        ],
+        "date_min": "2023-01-02T00:00:00",
+        "date_max": "2024-12-31T00:00:00"
+      },
+      "closed_at": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 1893,
+        "examples": [
+          "2023-07-28 03:00:00",
+          "2024-07-09 03:00:00",
+          "2024-10-17 19:00:00",
+          "2024-09-09 23:00:00"
+        ],
+        "date_min": "2023-01-03T03:00:00",
+        "date_max": "2024-12-31T19:00:00"
+      },
+      "resolution_time_hours": {
+        "inferred_type": "numeric-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 72,
+        "examples": [
+          "27.0",
+          "19.0",
+          "47.0",
+          "26.0"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "priority": {
+        "inferred_type": "string",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 4,
+        "examples": [
+          "high",
+          "urgent",
+          "medium",
+          "low"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "first_response_time_minutes": {
+        "inferred_type": "integer-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 180,
+        "examples": [
+          "74",
+          "144",
+          "93",
+          "126"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "satisfaction_score": {
+        "inferred_type": "numeric-like",
+        "null_count": 825,
+        "null_rate": 0.4125,
+        "distinct_non_null": 3,
+        "examples": [
+          "4.0",
+          "5.0",
+          "3.0"
+        ],
+        "date_min": null,
+        "date_max": null
+      },
+      "escalation_flag": {
+        "inferred_type": "bool-like",
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "examples": [
+          "False",
+          "True"
+        ],
+        "date_min": null,
+        "date_max": null
+      }
+    },
+    "id_checks": {
+      "ticket_id": {
+        "nonnull": 2000,
+        "distinct": 2000,
+        "duplicate_rows": 0
+      },
+      "account_id": {
+        "nonnull": 2000,
+        "distinct": 492,
+        "duplicate_rows": 1508
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "relationships": {
+    "subscriptions.account_id": {
+      "rows": 5000,
+      "distinct_keys": 500,
+      "orphan_rows": 0,
+      "rows_per_key_counts": {
+        "2": 1,
+        "3": 5,
+        "4": 10,
+        "5": 24,
+        "6": 31,
+        "7": 57,
+        "8": 47,
+        "9": 50,
+        "10": 56,
+        "11": 54,
+        "12": 62,
+        "13": 31,
+        "14": 18,
+        "15": 24,
+        "16": 21,
+        "17": 3,
+        "18": 2,
+        "19": 4
+      }
+    },
+    "support_tickets.account_id": {
+      "rows": 2000,
+      "distinct_keys": 492,
+      "orphan_rows": 0,
+      "rows_per_key_counts": {
+        "1": 30,
+        "2": 74,
+        "3": 102,
+        "4": 93,
+        "5": 97,
+        "6": 45,
+        "7": 31,
+        "8": 11,
+        "9": 7,
+        "10": 1,
+        "11": 1
+      }
+    },
+    "churn_events.account_id": {
+      "rows": 600,
+      "distinct_keys": 352,
+      "orphan_rows": 0,
+      "rows_per_key_counts": {
+        "1": 177,
+        "2": 116,
+        "3": 47,
+        "4": 10,
+        "5": 2
+      }
+    },
+    "feature_usage.subscription_id": {
+      "rows": 25000,
+      "distinct_keys": 4967,
+      "orphan_rows": 0,
+      "rows_per_key_counts": {
+        "1": 151,
+        "2": 445,
+        "3": 715,
+        "4": 856,
+        "5": 854,
+        "6": 721,
+        "7": 552,
+        "8": 360,
+        "9": 175,
+        "10": 87,
+        "11": 25,
+        "12": 14,
+        "13": 8,
+        "14": 3,
+        "16": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,501 @@
+account_id,account_name,industry,country,account_plan,account_churn_flag,any_event_rows,nonreactivation_event_rows,reactivation_event_rows,reason_counts_nonreactivation,tickets,mean_ticket_satisfaction,scored_tickets,usage_rows_all_dates,usage_count_all_dates,subscription_rows,subscription_flag_rows,explanation,event_volume_rank
+A-0a62f5,Company_381,FinTech,UK,Pro,False,5,5,0,"{""budget"": 2, ""features"": 1, ""pricing"": 1, ""support"": 1}",2,,0,25,244,4,0,descriptive historical records only; event volume is not future churn risk,1
+A-180abf,Company_122,DevTools,US,Pro,True,5,5,0,"{""competitor"": 1, ""support"": 4}",3,3.0,1,48,499,9,2,descriptive historical records only; event volume is not future churn risk,2
+A-0baac2,Company_264,FinTech,DE,Enterprise,True,4,4,0,"{""features"": 1, ""pricing"": 1, ""unknown"": 2}",6,4.333333333333333,3,21,202,6,2,descriptive historical records only; event volume is not future churn risk,3
+A-37f969,Company_150,HealthTech,IN,Enterprise,False,4,4,0,"{""competitor"": 1, ""pricing"": 2, ""support"": 1}",5,3.6666666666666665,3,32,312,8,0,descriptive historical records only; event volume is not future churn risk,4
+A-ae052e,Company_132,FinTech,CA,Basic,False,4,4,0,"{""budget"": 1, ""competitor"": 1, ""support"": 1, ""unknown"": 1}",4,4.0,2,29,300,6,3,descriptive historical records only; event volume is not future churn risk,5
+A-ee42db,Company_77,EdTech,DE,Enterprise,False,4,4,0,"{""pricing"": 2, ""support"": 1, ""unknown"": 1}",4,3.0,1,54,511,12,0,descriptive historical records only; event volume is not future churn risk,6
+A-425e76,Company_110,DevTools,UK,Enterprise,True,4,3,1,"{""competitor"": 3}",5,3.3333333333333335,3,48,438,11,1,descriptive historical records only; event volume is not future churn risk,7
+A-533452,Company_279,DevTools,AU,Pro,False,4,3,1,"{""features"": 1, ""pricing"": 1, ""support"": 1}",4,4.0,2,63,595,11,1,descriptive historical records only; event volume is not future churn risk,8
+A-fd7ad3,Company_100,Cybersecurity,US,Enterprise,False,4,3,1,"{""pricing"": 1, ""support"": 1, ""unknown"": 1}",8,4.166666666666667,6,56,567,10,2,descriptive historical records only; event volume is not future churn risk,9
+A-029f69,Company_129,Cybersecurity,CA,Basic,False,3,3,0,"{""budget"": 1, ""competitor"": 2}",2,3.0,1,84,789,16,3,descriptive historical records only; event volume is not future churn risk,10
+A-104f1a,Company_89,Cybersecurity,US,Pro,False,3,3,0,"{""features"": 1, ""support"": 1, ""unknown"": 1}",5,3.75,4,44,438,8,1,descriptive historical records only; event volume is not future churn risk,11
+A-117171,Company_135,HealthTech,FR,Basic,True,3,3,0,"{""budget"": 1, ""features"": 1, ""pricing"": 1}",6,3.6666666666666665,3,21,208,5,1,descriptive historical records only; event volume is not future churn risk,12
+A-1619f8,Company_183,DevTools,US,Pro,False,3,3,0,"{""budget"": 1, ""competitor"": 2}",3,5.0,1,42,432,7,0,descriptive historical records only; event volume is not future churn risk,13
+A-1b9609,Company_5,EdTech,IN,Enterprise,False,3,3,0,"{""pricing"": 1, ""unknown"": 2}",4,3.0,1,47,457,11,1,descriptive historical records only; event volume is not future churn risk,14
+A-1e1b80,Company_416,FinTech,CA,Enterprise,False,3,3,0,"{""competitor"": 2, ""features"": 1}",6,3.2,5,68,682,12,0,descriptive historical records only; event volume is not future churn risk,15
+A-32fb14,Company_25,DevTools,US,Enterprise,True,3,3,0,"{""budget"": 1, ""competitor"": 1, ""features"": 1}",5,4.5,2,47,488,9,2,descriptive historical records only; event volume is not future churn risk,16
+A-3b5cd1,Company_49,FinTech,US,Basic,False,3,3,0,"{""pricing"": 1, ""support"": 1, ""unknown"": 1}",5,4.0,2,52,523,13,0,descriptive historical records only; event volume is not future churn risk,17
+A-4bfa33,Company_251,Cybersecurity,US,Basic,False,3,3,0,"{""budget"": 1, ""unknown"": 2}",4,3.6666666666666665,3,36,329,7,1,descriptive historical records only; event volume is not future churn risk,18
+A-526d93,Company_66,HealthTech,FR,Basic,False,3,3,0,"{""features"": 1, ""support"": 2}",5,3.5,2,56,565,9,1,descriptive historical records only; event volume is not future churn risk,19
+A-54ecc2,Company_289,Cybersecurity,US,Enterprise,False,3,3,0,"{""pricing"": 1, ""support"": 1, ""unknown"": 1}",5,5.0,2,56,607,11,0,descriptive historical records only; event volume is not future churn risk,20
+A-5790f4,Company_446,FinTech,UK,Pro,False,3,3,0,"{""competitor"": 1, ""features"": 1, ""support"": 1}",4,4.0,1,35,321,6,1,descriptive historical records only; event volume is not future churn risk,21
+A-5a184f,Company_124,DevTools,DE,Enterprise,True,3,3,0,"{""features"": 1, ""support"": 2}",3,4.333333333333333,3,57,587,10,1,descriptive historical records only; event volume is not future churn risk,22
+A-5a3eb9,Company_283,DevTools,CA,Enterprise,False,3,3,0,"{""competitor"": 1, ""features"": 1, ""pricing"": 1}",3,,0,69,722,13,1,descriptive historical records only; event volume is not future churn risk,23
+A-6965e1,Company_379,DevTools,US,Basic,False,3,3,0,"{""budget"": 1, ""features"": 1, ""unknown"": 1}",3,3.0,1,59,627,12,0,descriptive historical records only; event volume is not future churn risk,24
+A-6da850,Company_293,FinTech,IN,Pro,False,3,3,0,"{""budget"": 1, ""competitor"": 1, ""pricing"": 1}",5,4.0,1,70,714,16,3,descriptive historical records only; event volume is not future churn risk,25
+A-7988d1,Company_90,Cybersecurity,US,Basic,False,3,3,0,"{""budget"": 1, ""competitor"": 1, ""unknown"": 1}",3,4.333333333333333,3,46,449,9,1,descriptive historical records only; event volume is not future churn risk,26
+A-7a0d69,Company_187,DevTools,DE,Enterprise,True,3,3,0,"{""budget"": 1, ""competitor"": 1, ""features"": 1}",2,5.0,1,61,606,11,0,descriptive historical records only; event volume is not future churn risk,27
+A-7dacce,Company_8,Cybersecurity,CA,Enterprise,True,3,3,0,"{""budget"": 1, ""features"": 1, ""unknown"": 1}",4,3.6666666666666665,3,48,472,10,0,descriptive historical records only; event volume is not future churn risk,28
+A-81edc3,Company_236,Cybersecurity,IN,Basic,False,3,3,0,"{""pricing"": 1, ""support"": 1, ""unknown"": 1}",3,4.0,2,74,765,12,0,descriptive historical records only; event volume is not future churn risk,29
+A-87aa7b,Company_433,HealthTech,US,Pro,False,3,3,0,"{""budget"": 2, ""pricing"": 1}",3,,0,72,742,16,0,descriptive historical records only; event volume is not future churn risk,30
+A-8e47ca,Company_191,HealthTech,US,Pro,False,3,3,0,"{""competitor"": 2, ""support"": 1}",5,4.0,2,46,441,9,1,descriptive historical records only; event volume is not future churn risk,31
+A-9779ad,Company_171,Cybersecurity,AU,Pro,True,3,3,0,"{""competitor"": 1, ""features"": 1, ""unknown"": 1}",3,5.0,1,43,413,10,0,descriptive historical records only; event volume is not future churn risk,32
+A-b179bf,Company_348,Cybersecurity,IN,Basic,False,3,3,0,"{""features"": 2, ""support"": 1}",6,4.0,1,39,398,5,0,descriptive historical records only; event volume is not future churn risk,33
+A-c222ab,Company_206,Cybersecurity,US,Pro,True,3,3,0,"{""budget"": 1, ""features"": 1, ""support"": 1}",4,5.0,1,45,435,7,1,descriptive historical records only; event volume is not future churn risk,34
+A-c58f49,Company_480,EdTech,US,Enterprise,False,3,3,0,"{""competitor"": 1, ""support"": 1, ""unknown"": 1}",3,5.0,1,38,363,7,0,descriptive historical records only; event volume is not future churn risk,35
+A-cc102e,Company_443,HealthTech,US,Enterprise,False,3,3,0,"{""pricing"": 2, ""unknown"": 1}",4,4.333333333333333,3,43,394,10,1,descriptive historical records only; event volume is not future churn risk,36
+A-ccb686,Company_491,DevTools,US,Basic,False,3,3,0,"{""budget"": 1, ""competitor"": 1, ""unknown"": 1}",1,4.0,1,70,721,12,1,descriptive historical records only; event volume is not future churn risk,37
+A-ccc747,Company_339,HealthTech,FR,Pro,True,3,3,0,"{""budget"": 2, ""competitor"": 1}",4,5.0,1,30,284,6,1,descriptive historical records only; event volume is not future churn risk,38
+A-d77f4c,Company_470,DevTools,US,Pro,False,3,3,0,"{""budget"": 1, ""unknown"": 2}",2,4.0,2,62,617,14,2,descriptive historical records only; event volume is not future churn risk,39
+A-e19ff6,Company_411,Cybersecurity,UK,Enterprise,False,3,3,0,"{""competitor"": 1, ""pricing"": 1, ""unknown"": 1}",3,4.666666666666667,3,45,456,12,0,descriptive historical records only; event volume is not future churn risk,40
+A-e51ec7,Company_113,FinTech,CA,Enterprise,False,3,3,0,"{""budget"": 2, ""support"": 1}",3,5.0,1,40,417,8,1,descriptive historical records only; event volume is not future churn risk,41
+A-e83938,Company_111,DevTools,UK,Pro,True,3,3,0,"{""budget"": 1, ""features"": 1, ""pricing"": 1}",4,3.0,1,31,266,8,0,descriptive historical records only; event volume is not future churn risk,42
+A-e888d1,Company_102,Cybersecurity,US,Pro,False,3,3,0,"{""budget"": 1, ""features"": 1, ""support"": 1}",5,4.0,3,52,552,11,2,descriptive historical records only; event volume is not future churn risk,43
+A-0cc442,Company_198,EdTech,US,Basic,False,4,2,2,"{""budget"": 1, ""pricing"": 1}",3,3.0,1,77,765,13,2,descriptive historical records only; event volume is not future churn risk,44
+A-68f37c,Company_202,HealthTech,US,Basic,False,4,2,2,"{""competitor"": 1, ""support"": 1}",5,4.0,1,65,624,12,2,descriptive historical records only; event volume is not future churn risk,45
+A-9208f0,Company_79,EdTech,US,Pro,True,4,2,2,"{""budget"": 1, ""features"": 1}",8,3.3333333333333335,3,53,538,8,1,descriptive historical records only; event volume is not future churn risk,46
+A-2ebb4b,Company_334,HealthTech,US,Basic,False,3,2,1,"{""pricing"": 2}",2,3.0,2,50,488,10,1,descriptive historical records only; event volume is not future churn risk,47
+A-32728c,Company_54,DevTools,US,Pro,True,3,2,1,"{""pricing"": 1, ""support"": 1}",2,3.5,2,41,418,8,1,descriptive historical records only; event volume is not future churn risk,48
+A-3f9cc0,Company_359,HealthTech,US,Basic,False,3,2,1,"{""features"": 1, ""pricing"": 1}",5,4.5,2,42,407,7,0,descriptive historical records only; event volume is not future churn risk,49
+A-751c58,Company_393,FinTech,UK,Basic,False,3,2,1,"{""budget"": 2}",5,4.333333333333333,3,53,574,11,0,descriptive historical records only; event volume is not future churn risk,50
+A-96bbc6,Company_342,Cybersecurity,US,Enterprise,False,3,2,1,"{""budget"": 1, ""competitor"": 1}",3,3.3333333333333335,3,49,482,8,0,descriptive historical records only; event volume is not future churn risk,51
+A-b2225d,Company_50,FinTech,US,Basic,True,3,2,1,"{""pricing"": 1, ""support"": 1}",2,3.0,1,73,696,12,0,descriptive historical records only; event volume is not future churn risk,52
+A-b7724f,Company_320,HealthTech,UK,Basic,False,3,2,1,"{""support"": 1, ""unknown"": 1}",3,3.0,2,38,380,8,3,descriptive historical records only; event volume is not future churn risk,53
+A-e351e1,Company_62,EdTech,US,Enterprise,False,3,2,1,"{""budget"": 1, ""unknown"": 1}",4,3.75,4,29,295,5,1,descriptive historical records only; event volume is not future churn risk,54
+A-e7a1e2,Company_295,Cybersecurity,US,Enterprise,False,3,2,1,"{""features"": 1, ""support"": 1}",1,4.0,1,68,703,12,1,descriptive historical records only; event volume is not future churn risk,55
+A-f25509,Company_92,EdTech,US,Enterprise,False,3,2,1,"{""features"": 1, ""pricing"": 1}",6,4.666666666666667,3,23,229,5,0,descriptive historical records only; event volume is not future churn risk,56
+A-0354fe,Company_380,Cybersecurity,US,Basic,False,2,2,0,"{""support"": 1, ""unknown"": 1}",4,4.0,2,45,463,7,1,descriptive historical records only; event volume is not future churn risk,57
+A-038089,Company_156,DevTools,FR,Pro,True,2,2,0,"{""competitor"": 1, ""features"": 1}",6,3.6666666666666665,3,20,210,3,0,descriptive historical records only; event volume is not future churn risk,58
+A-05d3b3,Company_213,DevTools,AU,Basic,False,2,2,0,"{""unknown"": 2}",6,4.333333333333333,3,64,642,13,1,descriptive historical records only; event volume is not future churn risk,59
+A-05f0e5,Company_40,FinTech,US,Basic,False,2,2,0,"{""features"": 1, ""unknown"": 1}",4,4.0,3,67,706,12,0,descriptive historical records only; event volume is not future churn risk,60
+A-0651a4,Company_255,HealthTech,FR,Pro,False,2,2,0,"{""features"": 1, ""support"": 1}",4,4.0,2,69,705,15,1,descriptive historical records only; event volume is not future churn risk,61
+A-08e34e,Company_32,EdTech,US,Basic,True,2,2,0,"{""competitor"": 1, ""features"": 1}",3,3.0,2,63,651,11,0,descriptive historical records only; event volume is not future churn risk,62
+A-098560,Company_349,DevTools,UK,Enterprise,True,2,2,0,"{""pricing"": 1, ""support"": 1}",2,3.0,2,55,567,11,1,descriptive historical records only; event volume is not future churn risk,63
+A-0a282f,Company_2,DevTools,US,Basic,False,2,2,0,"{""features"": 1, ""support"": 1}",3,4.666666666666667,3,83,821,15,3,descriptive historical records only; event volume is not future churn risk,64
+A-0dbdc6,Company_366,Cybersecurity,DE,Pro,True,2,2,0,"{""pricing"": 1, ""support"": 1}",4,5.0,1,52,512,9,0,descriptive historical records only; event volume is not future churn risk,65
+A-0f6450,Company_400,FinTech,US,Pro,True,2,2,0,"{""competitor"": 2}",8,3.8333333333333335,6,54,539,11,0,descriptive historical records only; event volume is not future churn risk,66
+A-118d55,Company_65,Cybersecurity,US,Basic,False,2,2,0,"{""pricing"": 1, ""unknown"": 1}",5,4.333333333333333,3,60,599,12,1,descriptive historical records only; event volume is not future churn risk,67
+A-157070,Company_85,FinTech,US,Pro,False,2,2,0,"{""features"": 2}",3,3.0,1,71,696,16,4,descriptive historical records only; event volume is not future churn risk,68
+A-158f4e,Company_180,FinTech,IN,Enterprise,False,2,2,0,"{""budget"": 1, ""features"": 1}",5,4.333333333333333,3,49,453,12,1,descriptive historical records only; event volume is not future churn risk,69
+A-1e50e0,Company_415,Cybersecurity,DE,Pro,True,2,2,0,"{""budget"": 1, ""pricing"": 1}",2,5.0,1,20,194,5,1,descriptive historical records only; event volume is not future churn risk,70
+A-202b67,Company_305,HealthTech,US,Pro,False,2,2,0,"{""features"": 1, ""pricing"": 1}",4,4.666666666666667,3,46,447,9,1,descriptive historical records only; event volume is not future churn risk,71
+A-241e75,Company_242,EdTech,US,Enterprise,False,2,2,0,"{""features"": 1, ""unknown"": 1}",4,4.5,2,28,266,5,0,descriptive historical records only; event volume is not future churn risk,72
+A-2e4581,Company_0,EdTech,US,Basic,False,2,2,0,"{""budget"": 1, ""competitor"": 1}",2,3.0,1,55,535,10,0,descriptive historical records only; event volume is not future churn risk,73
+A-2edab2,Company_301,HealthTech,US,Enterprise,False,2,2,0,"{""features"": 1, ""unknown"": 1}",4,3.0,1,47,487,10,1,descriptive historical records only; event volume is not future churn risk,74
+A-310452,Company_321,DevTools,FR,Enterprise,False,2,2,0,"{""budget"": 2}",5,3.6,5,25,268,5,0,descriptive historical records only; event volume is not future churn risk,75
+A-313be3,Company_136,EdTech,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""features"": 1}",4,5.0,1,57,560,11,0,descriptive historical records only; event volume is not future churn risk,76
+A-337bc1,Company_424,Cybersecurity,US,Pro,False,2,2,0,"{""support"": 1, ""unknown"": 1}",4,4.0,3,43,425,7,0,descriptive historical records only; event volume is not future churn risk,77
+A-34ea2f,Company_436,HealthTech,US,Enterprise,True,2,2,0,"{""unknown"": 2}",8,3.8,5,57,550,12,2,descriptive historical records only; event volume is not future churn risk,78
+A-3b37d9,Company_384,FinTech,US,Enterprise,False,2,2,0,"{""budget"": 1, ""support"": 1}",5,4.5,2,43,451,7,1,descriptive historical records only; event volume is not future churn risk,79
+A-3be56b,Company_200,HealthTech,IN,Pro,True,2,2,0,"{""competitor"": 1, ""pricing"": 1}",4,3.5,4,55,528,12,2,descriptive historical records only; event volume is not future churn risk,80
+A-484819,Company_109,HealthTech,US,Pro,False,2,2,0,"{""support"": 2}",5,4.5,2,33,336,8,2,descriptive historical records only; event volume is not future churn risk,81
+A-4c6f11,Company_146,FinTech,CA,Pro,True,2,2,0,"{""competitor"": 2}",3,4.333333333333333,3,24,268,5,0,descriptive historical records only; event volume is not future churn risk,82
+A-4e0e85,Company_409,DevTools,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""pricing"": 1}",2,5.0,1,31,288,8,0,descriptive historical records only; event volume is not future churn risk,83
+A-4f18f0,Company_145,DevTools,CA,Pro,False,2,2,0,"{""features"": 2}",5,4.0,4,57,544,12,3,descriptive historical records only; event volume is not future churn risk,84
+A-5247b3,Company_375,FinTech,UK,Pro,False,2,2,0,"{""pricing"": 1, ""support"": 1}",5,4.0,3,60,610,11,1,descriptive historical records only; event volume is not future churn risk,85
+A-56962b,Company_177,EdTech,UK,Enterprise,False,2,2,0,"{""pricing"": 1, ""unknown"": 1}",4,3.0,1,29,271,7,1,descriptive historical records only; event volume is not future churn risk,86
+A-5a92e7,Company_413,HealthTech,US,Pro,False,2,2,0,"{""budget"": 1, ""features"": 1}",7,4.4,5,85,885,19,2,descriptive historical records only; event volume is not future churn risk,87
+A-5ed98d,Company_479,DevTools,US,Basic,False,2,2,0,"{""competitor"": 1, ""features"": 1}",5,5.0,1,32,312,8,0,descriptive historical records only; event volume is not future churn risk,88
+A-659280,Company_417,FinTech,IN,Enterprise,True,2,2,0,"{""features"": 1, ""pricing"": 1}",4,4.333333333333333,3,60,613,12,0,descriptive historical records only; event volume is not future churn risk,89
+A-65c341,Company_308,FinTech,US,Pro,False,2,2,0,"{""support"": 1, ""unknown"": 1}",5,4.0,1,38,410,8,2,descriptive historical records only; event volume is not future churn risk,90
+A-67be94,Company_276,EdTech,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""support"": 1}",5,4.0,2,42,416,7,1,descriptive historical records only; event volume is not future churn risk,91
+A-6a7c9d,Company_324,Cybersecurity,US,Enterprise,True,2,2,0,"{""features"": 1, ""support"": 1}",3,4.0,2,19,189,5,1,descriptive historical records only; event volume is not future churn risk,92
+A-6e7827,Company_372,DevTools,US,Basic,False,2,2,0,"{""features"": 1, ""support"": 1}",2,3.5,2,41,419,9,1,descriptive historical records only; event volume is not future churn risk,93
+A-702032,Company_186,HealthTech,US,Pro,False,2,2,0,"{""competitor"": 1, ""features"": 1}",4,3.0,2,26,285,6,2,descriptive historical records only; event volume is not future churn risk,94
+A-7641d3,Company_429,EdTech,US,Pro,True,2,2,0,"{""support"": 1, ""unknown"": 1}",5,4.333333333333333,3,50,519,11,0,descriptive historical records only; event volume is not future churn risk,95
+A-76fa4d,Company_226,HealthTech,US,Pro,False,2,2,0,"{""pricing"": 1, ""unknown"": 1}",5,4.5,4,36,357,7,2,descriptive historical records only; event volume is not future churn risk,96
+A-781cc0,Company_499,EdTech,US,Pro,False,2,2,0,"{""budget"": 1, ""support"": 1}",4,3.6666666666666665,3,87,864,16,2,descriptive historical records only; event volume is not future churn risk,97
+A-78f02b,Company_329,HealthTech,US,Enterprise,False,2,2,0,"{""budget"": 1, ""unknown"": 1}",4,4.0,3,20,211,4,0,descriptive historical records only; event volume is not future churn risk,98
+A-7cfe77,Company_367,DevTools,US,Pro,False,2,2,0,"{""features"": 1, ""unknown"": 1}",7,3.5,4,19,205,5,0,descriptive historical records only; event volume is not future churn risk,99
+A-80eeb6,Company_402,Cybersecurity,UK,Enterprise,False,2,2,0,"{""budget"": 1, ""features"": 1}",4,3.6666666666666665,3,76,725,16,3,descriptive historical records only; event volume is not future churn risk,100
+A-832ec2,Company_19,FinTech,UK,Enterprise,False,2,2,0,"{""pricing"": 1, ""unknown"": 1}",3,4.0,2,49,511,8,0,descriptive historical records only; event volume is not future churn risk,101
+A-84ebe4,Company_68,FinTech,US,Pro,True,2,2,0,"{""budget"": 1, ""support"": 1}",4,4.0,2,42,396,11,2,descriptive historical records only; event volume is not future churn risk,102
+A-8bde0c,Company_287,DevTools,US,Basic,False,2,2,0,"{""features"": 1, ""pricing"": 1}",3,4.0,2,80,773,18,2,descriptive historical records only; event volume is not future churn risk,103
+A-8ed5dd,Company_222,EdTech,UK,Enterprise,True,2,2,0,"{""support"": 1, ""unknown"": 1}",6,3.75,4,55,545,12,1,descriptive historical records only; event volume is not future churn risk,104
+A-922109,Company_243,Cybersecurity,US,Pro,False,2,2,0,"{""support"": 2}",3,3.0,1,79,819,13,1,descriptive historical records only; event volume is not future churn risk,105
+A-96e141,Company_134,DevTools,UK,Basic,False,2,2,0,"{""budget"": 2}",5,4.333333333333333,3,36,346,7,1,descriptive historical records only; event volume is not future churn risk,106
+A-993085,Company_258,HealthTech,US,Basic,False,2,2,0,"{""features"": 2}",4,3.5,2,70,665,15,1,descriptive historical records only; event volume is not future churn risk,107
+A-9b9fe9,Company_71,EdTech,AU,Basic,False,2,2,0,"{""features"": 2}",4,4.0,3,58,597,12,1,descriptive historical records only; event volume is not future churn risk,108
+A-9f0b68,Company_489,EdTech,US,Basic,False,2,2,0,"{""features"": 1, ""pricing"": 1}",3,3.0,1,70,709,12,0,descriptive historical records only; event volume is not future churn risk,109
+A-9f2731,Company_24,FinTech,IN,Enterprise,False,2,2,0,"{""features"": 1, ""unknown"": 1}",0,,0,32,324,7,0,descriptive historical records only; event volume is not future churn risk,110
+A-9f9299,Company_133,FinTech,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""features"": 1}",5,5.0,1,85,830,15,3,descriptive historical records only; event volume is not future churn risk,111
+A-a09355,Company_459,FinTech,US,Basic,False,2,2,0,"{""support"": 2}",5,4.0,3,78,788,16,1,descriptive historical records only; event volume is not future churn risk,112
+A-a865bd,Company_297,Cybersecurity,US,Pro,False,2,2,0,"{""unknown"": 2}",2,3.0,1,24,230,5,0,descriptive historical records only; event volume is not future churn risk,113
+A-a8d89d,Company_326,EdTech,US,Pro,False,2,2,0,"{""features"": 1, ""pricing"": 1}",2,5.0,1,54,551,12,0,descriptive historical records only; event volume is not future churn risk,114
+A-ac14bb,Company_15,FinTech,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""pricing"": 1}",2,4.0,1,54,531,8,2,descriptive historical records only; event volume is not future churn risk,115
+A-ad64c6,Company_175,DevTools,UK,Pro,False,2,2,0,"{""support"": 1, ""unknown"": 1}",4,5.0,1,20,215,6,1,descriptive historical records only; event volume is not future churn risk,116
+A-bb3bd4,Company_340,HealthTech,US,Basic,False,2,2,0,"{""pricing"": 1, ""unknown"": 1}",11,4.142857142857143,7,30,315,7,0,descriptive historical records only; event volume is not future churn risk,117
+A-bbc346,Company_138,FinTech,US,Enterprise,False,2,2,0,"{""competitor"": 2}",3,4.5,2,62,650,13,2,descriptive historical records only; event volume is not future churn risk,118
+A-bd4513,Company_205,DevTools,AU,Enterprise,False,2,2,0,"{""budget"": 1, ""features"": 1}",3,4.666666666666667,3,51,507,12,2,descriptive historical records only; event volume is not future churn risk,119
+A-bece89,Company_128,Cybersecurity,IN,Pro,False,2,2,0,"{""budget"": 1, ""unknown"": 1}",4,4.0,3,19,176,6,0,descriptive historical records only; event volume is not future churn risk,120
+A-bf7919,Company_426,HealthTech,US,Pro,False,2,2,0,"{""features"": 1, ""support"": 1}",2,5.0,1,26,262,6,1,descriptive historical records only; event volume is not future churn risk,121
+A-c16cf7,Company_377,EdTech,US,Pro,False,2,2,0,"{""budget"": 1, ""support"": 1}",3,3.5,2,58,577,10,1,descriptive historical records only; event volume is not future churn risk,122
+A-c1dfe1,Company_53,DevTools,DE,Pro,False,2,2,0,"{""features"": 1, ""pricing"": 1}",3,4.0,1,39,375,8,1,descriptive historical records only; event volume is not future churn risk,123
+A-c1e51e,Company_173,FinTech,US,Basic,False,2,2,0,"{""pricing"": 1, ""support"": 1}",5,3.2,5,50,518,10,3,descriptive historical records only; event volume is not future churn risk,124
+A-c37cab,Company_278,Cybersecurity,UK,Pro,False,2,2,0,"{""competitor"": 1, ""pricing"": 1}",4,3.75,4,70,708,12,2,descriptive historical records only; event volume is not future churn risk,125
+A-c43359,Company_83,FinTech,US,Pro,False,2,2,0,"{""support"": 1, ""unknown"": 1}",3,4.0,1,47,461,8,2,descriptive historical records only; event volume is not future churn risk,126
+A-c7ffc2,Company_392,Cybersecurity,US,Pro,False,2,2,0,"{""budget"": 1, ""features"": 1}",2,3.0,1,62,640,12,0,descriptive historical records only; event volume is not future churn risk,127
+A-c9bb3e,Company_336,EdTech,US,Pro,False,2,2,0,"{""pricing"": 1, ""unknown"": 1}",7,4.2,5,46,474,10,1,descriptive historical records only; event volume is not future churn risk,128
+A-cc1d8d,Company_440,FinTech,US,Pro,False,2,2,0,"{""features"": 1, ""unknown"": 1}",5,4.5,2,63,618,13,0,descriptive historical records only; event volume is not future churn risk,129
+A-ccabf0,Company_471,HealthTech,IN,Pro,False,2,2,0,"{""competitor"": 1, ""features"": 1}",4,3.6666666666666665,3,50,506,10,2,descriptive historical records only; event volume is not future churn risk,130
+A-d42431,Company_378,FinTech,FR,Enterprise,False,2,2,0,"{""budget"": 1, ""pricing"": 1}",4,4.0,2,47,457,9,1,descriptive historical records only; event volume is not future churn risk,131
+A-d535f6,Company_421,DevTools,US,Basic,True,2,2,0,"{""features"": 1, ""unknown"": 1}",0,,0,47,477,9,0,descriptive historical records only; event volume is not future churn risk,132
+A-d792a6,Company_486,DevTools,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""support"": 1}",5,4.0,2,68,690,15,1,descriptive historical records only; event volume is not future churn risk,133
+A-dbc825,Company_252,EdTech,FR,Enterprise,False,2,2,0,"{""budget"": 1, ""features"": 1}",6,4.0,2,72,730,16,4,descriptive historical records only; event volume is not future churn risk,134
+A-dcc3f1,Company_314,HealthTech,US,Pro,False,2,2,0,"{""features"": 1, ""support"": 1}",9,3.8,5,48,500,8,0,descriptive historical records only; event volume is not future churn risk,135
+A-df10db,Company_143,DevTools,US,Enterprise,False,2,2,0,"{""competitor"": 2}",2,3.0,2,64,697,11,1,descriptive historical records only; event volume is not future churn risk,136
+A-df1e44,Company_323,Cybersecurity,UK,Enterprise,False,2,2,0,"{""budget"": 2}",2,5.0,1,42,420,11,1,descriptive historical records only; event volume is not future churn risk,137
+A-dfbd31,Company_190,DevTools,UK,Enterprise,False,2,2,0,"{""features"": 1, ""unknown"": 1}",6,4.25,4,54,599,14,0,descriptive historical records only; event volume is not future churn risk,138
+A-e08cd3,Company_475,FinTech,US,Pro,False,2,2,0,"{""competitor"": 1, ""features"": 1}",8,4.0,4,43,432,11,1,descriptive historical records only; event volume is not future churn risk,139
+A-e5d6ab,Company_7,EdTech,US,Pro,False,2,2,0,"{""competitor"": 1, ""features"": 1}",3,,0,41,382,10,1,descriptive historical records only; event volume is not future churn risk,140
+A-eafc6e,Company_149,DevTools,US,Pro,True,2,2,0,"{""pricing"": 1, ""unknown"": 1}",1,,0,32,300,7,0,descriptive historical records only; event volume is not future churn risk,141
+A-eb1312,Company_322,FinTech,US,Pro,False,2,2,0,"{""unknown"": 2}",1,5.0,1,65,663,12,1,descriptive historical records only; event volume is not future churn risk,142
+A-f19409,Company_105,DevTools,US,Basic,True,2,2,0,"{""competitor"": 1, ""features"": 1}",3,4.0,1,62,659,12,1,descriptive historical records only; event volume is not future churn risk,143
+A-f45426,Company_172,HealthTech,US,Basic,False,2,2,0,"{""competitor"": 1, ""pricing"": 1}",3,4.0,1,61,624,11,2,descriptive historical records only; event volume is not future churn risk,144
+A-f51f16,Company_282,HealthTech,US,Enterprise,False,2,2,0,"{""competitor"": 1, ""features"": 1}",4,3.0,2,37,384,8,1,descriptive historical records only; event volume is not future churn risk,145
+A-f5641b,Company_382,EdTech,US,Pro,False,2,2,0,"{""features"": 1, ""pricing"": 1}",4,3.0,2,39,438,10,1,descriptive historical records only; event volume is not future churn risk,146
+A-faa28c,Company_91,HealthTech,US,Enterprise,False,2,2,0,"{""features"": 2}",4,4.666666666666667,3,59,585,14,2,descriptive historical records only; event volume is not future churn risk,147
+A-fce879,Company_291,EdTech,UK,Pro,True,2,2,0,"{""features"": 1, ""support"": 1}",2,4.0,2,27,299,5,0,descriptive historical records only; event volume is not future churn risk,148
+A-ff3c73,Company_244,HealthTech,AU,Pro,False,2,2,0,"{""competitor"": 2}",2,3.5,2,40,408,9,1,descriptive historical records only; event volume is not future churn risk,149
+A-712426,Company_155,HealthTech,US,Enterprise,False,3,1,2,"{""pricing"": 1}",6,4.4,5,70,696,15,2,descriptive historical records only; event volume is not future churn risk,150
+A-bcf664,Company_248,DevTools,US,Pro,False,3,1,2,"{""competitor"": 1}",5,4.0,3,56,575,13,1,descriptive historical records only; event volume is not future churn risk,151
+A-ef84cf,Company_274,EdTech,US,Enterprise,False,3,1,2,"{""support"": 1}",5,4.333333333333333,3,28,309,5,1,descriptive historical records only; event volume is not future churn risk,152
+A-13466a,Company_196,DevTools,AU,Basic,True,2,1,1,"{""support"": 1}",3,4.333333333333333,3,22,205,6,4,descriptive historical records only; event volume is not future churn risk,153
+A-2446e3,Company_241,EdTech,IN,Pro,False,2,1,1,"{""unknown"": 1}",3,4.0,3,48,496,7,0,descriptive historical records only; event volume is not future churn risk,154
+A-249769,Company_214,Cybersecurity,US,Enterprise,True,2,1,1,"{""budget"": 1}",2,4.0,2,68,678,13,0,descriptive historical records only; event volume is not future churn risk,155
+A-271f46,Company_84,DevTools,US,Pro,True,2,1,1,"{""support"": 1}",1,,0,38,373,8,0,descriptive historical records only; event volume is not future churn risk,156
+A-2bc93d,Company_43,HealthTech,US,Basic,False,2,1,1,"{""pricing"": 1}",2,4.5,2,67,666,13,1,descriptive historical records only; event volume is not future churn risk,157
+A-2d1036,Company_399,FinTech,US,Pro,True,2,1,1,"{""budget"": 1}",5,4.6,5,69,692,13,3,descriptive historical records only; event volume is not future churn risk,158
+A-31ab9a,Company_460,FinTech,DE,Pro,False,2,1,1,"{""budget"": 1}",7,3.5,4,34,340,7,0,descriptive historical records only; event volume is not future churn risk,159
+A-39868b,Company_422,FinTech,AU,Pro,False,2,1,1,"{""unknown"": 1}",6,4.25,4,28,305,5,0,descriptive historical records only; event volume is not future churn risk,160
+A-439b2f,Company_152,DevTools,US,Enterprise,True,2,1,1,"{""features"": 1}",3,,0,20,171,6,1,descriptive historical records only; event volume is not future churn risk,161
+A-4e44e8,Company_22,DevTools,US,Enterprise,True,2,1,1,"{""features"": 1}",3,3.3333333333333335,3,69,687,14,2,descriptive historical records only; event volume is not future churn risk,162
+A-50bb9f,Company_373,Cybersecurity,US,Pro,False,2,1,1,"{""unknown"": 1}",7,4.0,3,24,276,8,1,descriptive historical records only; event volume is not future churn risk,163
+A-65aeb5,Company_120,DevTools,US,Pro,False,2,1,1,"{""pricing"": 1}",2,5.0,1,55,533,12,3,descriptive historical records only; event volume is not future churn risk,164
+A-684255,Company_20,FinTech,US,Enterprise,False,2,1,1,"{""unknown"": 1}",4,4.666666666666667,3,66,653,14,3,descriptive historical records only; event volume is not future churn risk,165
+A-6f50ae,Company_466,FinTech,US,Pro,True,2,1,1,"{""unknown"": 1}",5,4.5,4,83,811,14,0,descriptive historical records only; event volume is not future churn risk,166
+A-9123ac,Company_219,Cybersecurity,DE,Pro,False,2,1,1,"{""competitor"": 1}",6,4.2,5,37,386,7,0,descriptive historical records only; event volume is not future churn risk,167
+A-956988,Company_14,EdTech,UK,Enterprise,False,2,1,1,"{""budget"": 1}",2,3.0,1,70,658,13,1,descriptive historical records only; event volume is not future churn risk,168
+A-ac85cd,Company_485,EdTech,US,Enterprise,False,2,1,1,"{""features"": 1}",3,3.5,2,63,634,12,3,descriptive historical records only; event volume is not future churn risk,169
+A-b7ef83,Company_474,Cybersecurity,UK,Pro,False,2,1,1,"{""budget"": 1}",2,4.0,1,72,738,15,1,descriptive historical records only; event volume is not future churn risk,170
+A-bb1486,Company_265,HealthTech,US,Basic,False,2,1,1,"{""budget"": 1}",3,3.0,1,42,405,8,1,descriptive historical records only; event volume is not future churn risk,171
+A-c16101,Company_139,EdTech,IN,Basic,False,2,1,1,"{""features"": 1}",4,5.0,1,55,561,10,0,descriptive historical records only; event volume is not future churn risk,172
+A-cdf020,Company_345,DevTools,AU,Pro,False,2,1,1,"{""budget"": 1}",4,4.0,3,40,379,8,3,descriptive historical records only; event volume is not future churn risk,173
+A-e1462e,Company_217,FinTech,UK,Basic,False,2,1,1,"{""competitor"": 1}",2,3.5,2,35,347,7,0,descriptive historical records only; event volume is not future churn risk,174
+A-f1f639,Company_296,EdTech,US,Basic,False,2,1,1,"{""budget"": 1}",7,4.8,5,14,139,4,0,descriptive historical records only; event volume is not future churn risk,175
+A-00bed1,Company_306,Cybersecurity,US,Basic,False,1,1,0,"{""unknown"": 1}",4,4.0,1,51,514,10,0,descriptive historical records only; event volume is not future churn risk,176
+A-016043,Company_405,EdTech,CA,Basic,False,1,1,0,"{""competitor"": 1}",3,4.0,1,47,490,11,1,descriptive historical records only; event volume is not future churn risk,177
+A-02cd81,Company_76,HealthTech,IN,Basic,False,1,1,0,"{""pricing"": 1}",3,4.5,2,72,684,14,1,descriptive historical records only; event volume is not future churn risk,178
+A-02fac6,Company_52,FinTech,US,Pro,False,1,1,0,"{""support"": 1}",6,4.0,2,53,514,11,0,descriptive historical records only; event volume is not future churn risk,179
+A-034368,Company_353,EdTech,US,Enterprise,False,1,1,0,"{""features"": 1}",5,4.0,2,28,265,5,0,descriptive historical records only; event volume is not future churn risk,180
+A-039727,Company_107,EdTech,AU,Pro,False,1,1,0,"{""pricing"": 1}",0,,0,74,768,15,1,descriptive historical records only; event volume is not future churn risk,181
+A-0532a9,Company_170,FinTech,IN,Pro,False,1,1,0,"{""pricing"": 1}",8,3.0,1,54,519,10,0,descriptive historical records only; event volume is not future churn risk,182
+A-075038,Company_397,HealthTech,UK,Basic,False,1,1,0,"{""features"": 1}",2,3.0,2,70,743,14,0,descriptive historical records only; event volume is not future churn risk,183
+A-089363,Company_387,FinTech,AU,Basic,False,1,1,0,"{""pricing"": 1}",3,3.6666666666666665,3,61,628,14,2,descriptive historical records only; event volume is not future churn risk,184
+A-09316c,Company_341,FinTech,AU,Enterprise,False,1,1,0,"{""unknown"": 1}",4,3.75,4,54,566,11,0,descriptive historical records only; event volume is not future churn risk,185
+A-09540c,Company_239,Cybersecurity,CA,Basic,False,1,1,0,"{""unknown"": 1}",2,4.5,2,28,297,6,1,descriptive historical records only; event volume is not future churn risk,186
+A-0b0d6d,Company_267,DevTools,US,Pro,False,1,1,0,"{""competitor"": 1}",5,4.0,2,62,582,13,2,descriptive historical records only; event volume is not future churn risk,187
+A-0be015,Company_454,FinTech,US,Pro,False,1,1,0,"{""unknown"": 1}",7,4.2,5,28,297,5,1,descriptive historical records only; event volume is not future churn risk,188
+A-0f3e88,Company_428,HealthTech,US,Basic,True,1,1,0,"{""budget"": 1}",3,4.5,2,59,598,11,1,descriptive historical records only; event volume is not future churn risk,189
+A-10b8f2,Company_151,HealthTech,DE,Basic,False,1,1,0,"{""support"": 1}",3,4.333333333333333,3,56,560,12,0,descriptive historical records only; event volume is not future churn risk,190
+A-118f1c,Company_492,Cybersecurity,US,Pro,False,1,1,0,"{""budget"": 1}",1,3.0,1,38,369,8,2,descriptive historical records only; event volume is not future churn risk,191
+A-149a69,Company_302,DevTools,US,Basic,False,1,1,0,"{""pricing"": 1}",8,4.2,5,18,208,3,0,descriptive historical records only; event volume is not future churn risk,192
+A-151c9a,Company_260,FinTech,US,Enterprise,False,1,1,0,"{""support"": 1}",2,3.5,2,34,366,5,0,descriptive historical records only; event volume is not future churn risk,193
+A-18793f,Company_488,EdTech,US,Basic,False,1,1,0,"{""support"": 1}",5,3.8,5,48,486,11,1,descriptive historical records only; event volume is not future churn risk,194
+A-19b2c8,Company_476,DevTools,IN,Pro,False,1,1,0,"{""pricing"": 1}",3,4.666666666666667,3,63,601,13,0,descriptive historical records only; event volume is not future churn risk,195
+A-1d5444,Company_427,Cybersecurity,US,Basic,True,1,1,0,"{""support"": 1}",2,4.0,1,59,592,14,0,descriptive historical records only; event volume is not future churn risk,196
+A-1e6fc3,Company_434,EdTech,FR,Pro,False,1,1,0,"{""pricing"": 1}",5,3.6666666666666665,3,26,244,4,1,descriptive historical records only; event volume is not future churn risk,197
+A-1f0ac7,Company_3,HealthTech,UK,Basic,False,1,1,0,"{""support"": 1}",2,,0,41,382,7,0,descriptive historical records only; event volume is not future churn risk,198
+A-1f559b,Company_357,HealthTech,US,Enterprise,True,1,1,0,"{""features"": 1}",5,4.2,5,40,400,10,2,descriptive historical records only; event volume is not future churn risk,199
+A-20736a,Company_271,EdTech,IN,Enterprise,False,1,1,0,"{""competitor"": 1}",4,3.75,4,42,430,7,0,descriptive historical records only; event volume is not future churn risk,200
+A-22d9d2,Company_188,DevTools,FR,Pro,False,1,1,0,"{""pricing"": 1}",6,4.0,4,75,782,14,3,descriptive historical records only; event volume is not future churn risk,201
+A-2922b6,Company_70,HealthTech,US,Basic,False,1,1,0,"{""competitor"": 1}",2,4.0,1,37,393,6,1,descriptive historical records only; event volume is not future churn risk,202
+A-296d7c,Company_182,DevTools,DE,Enterprise,False,1,1,0,"{""budget"": 1}",5,3.75,4,33,357,7,0,descriptive historical records only; event volume is not future churn risk,203
+A-2d4502,Company_45,FinTech,IN,Basic,False,1,1,0,"{""pricing"": 1}",3,5.0,2,47,465,10,0,descriptive historical records only; event volume is not future churn risk,204
+A-2e3bad,Company_108,FinTech,CA,Pro,False,1,1,0,"{""features"": 1}",5,3.5,2,45,435,10,2,descriptive historical records only; event volume is not future churn risk,205
+A-309e54,Company_371,DevTools,US,Pro,False,1,1,0,"{""support"": 1}",5,3.0,1,52,509,11,1,descriptive historical records only; event volume is not future churn risk,206
+A-30b4ca,Company_23,EdTech,IN,Basic,True,1,1,0,"{""features"": 1}",3,4.0,1,42,402,8,0,descriptive historical records only; event volume is not future churn risk,207
+A-331424,Company_246,DevTools,US,Basic,False,1,1,0,"{""competitor"": 1}",2,,0,20,214,6,1,descriptive historical records only; event volume is not future churn risk,208
+A-342303,Company_294,EdTech,US,Pro,False,1,1,0,"{""features"": 1}",3,4.5,2,15,141,3,0,descriptive historical records only; event volume is not future churn risk,209
+A-34d880,Company_207,Cybersecurity,AU,Enterprise,False,1,1,0,"{""unknown"": 1}",5,3.0,5,47,474,9,1,descriptive historical records only; event volume is not future churn risk,210
+A-354f12,Company_201,FinTech,US,Pro,False,1,1,0,"{""competitor"": 1}",2,,0,15,158,4,0,descriptive historical records only; event volume is not future churn risk,211
+A-378b99,Company_60,EdTech,UK,Pro,False,1,1,0,"{""pricing"": 1}",6,4.5,4,58,565,12,1,descriptive historical records only; event volume is not future churn risk,212
+A-3793ee,Company_332,Cybersecurity,CA,Enterprise,False,1,1,0,"{""unknown"": 1}",4,4.0,1,38,352,7,1,descriptive historical records only; event volume is not future churn risk,213
+A-396e5f,Company_30,Cybersecurity,CA,Enterprise,False,1,1,0,"{""features"": 1}",5,4.0,1,55,540,10,0,descriptive historical records only; event volume is not future churn risk,214
+A-39b19f,Company_176,FinTech,US,Enterprise,False,1,1,0,"{""unknown"": 1}",6,4.25,4,55,530,11,2,descriptive historical records only; event volume is not future churn risk,215
+A-39ddf4,Company_435,EdTech,US,Enterprise,False,1,1,0,"{""support"": 1}",5,4.25,4,46,455,9,1,descriptive historical records only; event volume is not future churn risk,216
+A-3a7284,Company_93,FinTech,US,Enterprise,False,1,1,0,"{""unknown"": 1}",3,3.5,2,60,609,12,3,descriptive historical records only; event volume is not future churn risk,217
+A-3ce5b8,Company_256,FinTech,IN,Basic,True,1,1,0,"{""features"": 1}",10,3.7142857142857144,7,50,509,9,0,descriptive historical records only; event volume is not future churn risk,218
+A-3d957b,Company_311,HealthTech,UK,Pro,False,1,1,0,"{""budget"": 1}",3,3.0,1,15,143,6,1,descriptive historical records only; event volume is not future churn risk,219
+A-40a557,Company_86,Cybersecurity,AU,Pro,False,1,1,0,"{""budget"": 1}",7,3.6666666666666665,3,39,402,9,1,descriptive historical records only; event volume is not future churn risk,220
+A-417d2f,Company_285,Cybersecurity,IN,Pro,False,1,1,0,"{""budget"": 1}",6,4.333333333333333,3,71,722,16,1,descriptive historical records only; event volume is not future churn risk,221
+A-4437e4,Company_192,Cybersecurity,US,Enterprise,False,1,1,0,"{""features"": 1}",6,3.0,2,83,806,16,1,descriptive historical records only; event volume is not future churn risk,222
+A-44dc83,Company_35,EdTech,FR,Basic,False,1,1,0,"{""unknown"": 1}",7,4.6,5,24,248,4,0,descriptive historical records only; event volume is not future churn risk,223
+A-462d45,Company_13,Cybersecurity,US,Enterprise,False,1,1,0,"{""competitor"": 1}",4,4.0,1,69,642,12,2,descriptive historical records only; event volume is not future churn risk,224
+A-4814a3,Company_337,Cybersecurity,IN,Basic,True,1,1,0,"{""pricing"": 1}",4,4.0,1,60,587,11,1,descriptive historical records only; event volume is not future churn risk,225
+A-4a267b,Company_451,FinTech,US,Pro,False,1,1,0,"{""support"": 1}",4,4.333333333333333,3,50,498,10,2,descriptive historical records only; event volume is not future churn risk,226
+A-4ae22a,Company_229,EdTech,US,Pro,True,1,1,0,"{""pricing"": 1}",3,3.0,1,35,369,7,1,descriptive historical records only; event volume is not future churn risk,227
+A-4c56c9,Company_449,FinTech,US,Enterprise,True,1,1,0,"{""budget"": 1}",5,3.75,4,64,623,13,3,descriptive historical records only; event volume is not future churn risk,228
+A-4d1e75,Company_58,DevTools,US,Basic,False,1,1,0,"{""budget"": 1}",2,4.0,2,51,477,13,0,descriptive historical records only; event volume is not future churn risk,229
+A-4ef964,Company_262,HealthTech,US,Pro,False,1,1,0,"{""budget"": 1}",3,4.0,2,49,487,9,1,descriptive historical records only; event volume is not future churn risk,230
+A-558c72,Company_438,FinTech,US,Basic,False,1,1,0,"{""support"": 1}",4,4.5,2,30,296,7,1,descriptive historical records only; event volume is not future churn risk,231
+A-58b9ff,Company_425,DevTools,IN,Enterprise,False,1,1,0,"{""pricing"": 1}",2,4.0,1,65,667,13,1,descriptive historical records only; event volume is not future churn risk,232
+A-592832,Company_10,Cybersecurity,US,Basic,True,1,1,0,"{""support"": 1}",3,5.0,1,101,1053,19,3,descriptive historical records only; event volume is not future churn risk,233
+A-5b1bcd,Company_166,DevTools,US,Pro,False,1,1,0,"{""competitor"": 1}",4,4.5,2,86,869,15,1,descriptive historical records only; event volume is not future churn risk,234
+A-5c9849,Company_362,EdTech,IN,Basic,False,1,1,0,"{""unknown"": 1}",4,,0,46,473,9,1,descriptive historical records only; event volume is not future churn risk,235
+A-5f2961,Company_284,HealthTech,US,Basic,False,1,1,0,"{""pricing"": 1}",1,,0,36,348,7,0,descriptive historical records only; event volume is not future churn risk,236
+A-5f7781,Company_483,DevTools,US,Pro,False,1,1,0,"{""pricing"": 1}",2,4.0,1,18,183,5,0,descriptive historical records only; event volume is not future churn risk,237
+A-5fe118,Company_374,Cybersecurity,US,Enterprise,False,1,1,0,"{""features"": 1}",1,4.0,1,21,233,5,0,descriptive historical records only; event volume is not future churn risk,238
+A-692f18,Company_195,EdTech,US,Basic,True,1,1,0,"{""support"": 1}",2,5.0,1,87,871,17,1,descriptive historical records only; event volume is not future churn risk,239
+A-69fad4,Company_103,FinTech,UK,Basic,True,1,1,0,"{""support"": 1}",4,3.6666666666666665,3,39,412,7,2,descriptive historical records only; event volume is not future churn risk,240
+A-6a4e2d,Company_46,EdTech,UK,Pro,False,1,1,0,"{""budget"": 1}",2,4.5,2,59,597,11,3,descriptive historical records only; event volume is not future churn risk,241
+A-6dee43,Company_478,FinTech,UK,Basic,False,1,1,0,"{""pricing"": 1}",5,4.333333333333333,3,48,461,11,1,descriptive historical records only; event volume is not future churn risk,242
+A-712533,Company_498,EdTech,US,Pro,False,1,1,0,"{""unknown"": 1}",5,3.75,4,55,571,12,0,descriptive historical records only; event volume is not future churn risk,243
+A-712f1c,Company_331,DevTools,US,Basic,True,1,1,0,"{""budget"": 1}",6,4.0,4,68,631,12,1,descriptive historical records only; event volume is not future churn risk,244
+A-71615e,Company_167,EdTech,US,Basic,False,1,1,0,"{""pricing"": 1}",1,,0,62,620,13,0,descriptive historical records only; event volume is not future churn risk,245
+A-716841,Company_437,FinTech,US,Pro,False,1,1,0,"{""unknown"": 1}",5,4.0,3,34,344,8,0,descriptive historical records only; event volume is not future churn risk,246
+A-726cfa,Company_82,DevTools,US,Pro,False,1,1,0,"{""support"": 1}",3,4.0,2,98,993,19,2,descriptive historical records only; event volume is not future churn risk,247
+A-72799b,Company_394,DevTools,FR,Enterprise,True,1,1,0,"{""pricing"": 1}",2,4.5,2,56,550,10,1,descriptive historical records only; event volume is not future churn risk,248
+A-751bd4,Company_408,Cybersecurity,UK,Pro,False,1,1,0,"{""budget"": 1}",6,4.25,4,10,92,2,0,descriptive historical records only; event volume is not future churn risk,249
+A-794a0b,Company_168,HealthTech,DE,Basic,False,1,1,0,"{""budget"": 1}",0,,0,38,347,7,0,descriptive historical records only; event volume is not future churn risk,250
+A-798a3f,Company_463,DevTools,FR,Enterprise,True,1,1,0,"{""support"": 1}",5,4.0,3,37,352,9,2,descriptive historical records only; event volume is not future churn risk,251
+A-7c6b6b,Company_223,FinTech,US,Basic,False,1,1,0,"{""budget"": 1}",5,4.333333333333333,3,35,311,7,2,descriptive historical records only; event volume is not future churn risk,252
+A-7c83a1,Company_447,Cybersecurity,US,Pro,False,1,1,0,"{""unknown"": 1}",4,4.0,4,62,632,12,3,descriptive historical records only; event volume is not future churn risk,253
+A-7df7a7,Company_125,DevTools,US,Basic,True,1,1,0,"{""budget"": 1}",3,4.0,3,91,922,15,1,descriptive historical records only; event volume is not future churn risk,254
+A-7e0a10,Company_64,FinTech,US,Enterprise,False,1,1,0,"{""budget"": 1}",5,4.0,2,50,511,10,0,descriptive historical records only; event volume is not future churn risk,255
+A-7f29a7,Company_386,Cybersecurity,UK,Basic,False,1,1,0,"{""unknown"": 1}",1,4.0,1,62,619,11,3,descriptive historical records only; event volume is not future churn risk,256
+A-7f4db3,Company_441,FinTech,US,Pro,False,1,1,0,"{""support"": 1}",5,3.25,4,90,844,15,3,descriptive historical records only; event volume is not future churn risk,257
+A-7f6b86,Company_299,HealthTech,US,Basic,True,1,1,0,"{""pricing"": 1}",7,3.6666666666666665,3,41,420,9,1,descriptive historical records only; event volume is not future churn risk,258
+A-812c5b,Company_395,DevTools,CA,Basic,True,1,1,0,"{""support"": 1}",4,4.0,2,88,866,13,0,descriptive historical records only; event volume is not future churn risk,259
+A-8145a0,Company_33,Cybersecurity,AU,Basic,False,1,1,0,"{""features"": 1}",6,4.0,3,64,693,12,1,descriptive historical records only; event volume is not future churn risk,260
+A-82861f,Company_350,DevTools,UK,Basic,False,1,1,0,"{""support"": 1}",5,3.2,5,50,462,10,3,descriptive historical records only; event volume is not future churn risk,261
+A-82d8a6,Company_444,Cybersecurity,UK,Basic,False,1,1,0,"{""features"": 1}",5,3.5,2,70,661,17,4,descriptive historical records only; event volume is not future churn risk,262
+A-854864,Company_38,FinTech,IN,Enterprise,False,1,1,0,"{""support"": 1}",5,4.8,5,24,248,6,1,descriptive historical records only; event volume is not future churn risk,263
+A-855a48,Company_389,EdTech,US,Pro,False,1,1,0,"{""unknown"": 1}",5,3.6666666666666665,3,44,448,8,0,descriptive historical records only; event volume is not future churn risk,264
+A-86902e,Company_169,HealthTech,IN,Enterprise,False,1,1,0,"{""features"": 1}",9,3.5,4,63,628,10,1,descriptive historical records only; event volume is not future churn risk,265
+A-86fc1d,Company_328,DevTools,UK,Basic,False,1,1,0,"{""support"": 1}",5,4.0,2,37,363,9,2,descriptive historical records only; event volume is not future churn risk,266
+A-8ae05d,Company_147,FinTech,IN,Enterprise,False,1,1,0,"{""unknown"": 1}",1,4.0,1,20,203,7,1,descriptive historical records only; event volume is not future churn risk,267
+A-8ae3fc,Company_495,DevTools,CA,Pro,False,1,1,0,"{""budget"": 1}",4,3.5,2,39,402,8,0,descriptive historical records only; event volume is not future churn risk,268
+A-8b0451,Company_245,FinTech,UK,Enterprise,False,1,1,0,"{""budget"": 1}",7,3.5,4,60,606,10,1,descriptive historical records only; event volume is not future churn risk,269
+A-902ef7,Company_270,HealthTech,US,Enterprise,True,1,1,0,"{""pricing"": 1}",2,4.0,1,40,414,8,0,descriptive historical records only; event volume is not future churn risk,270
+A-90a8c8,Company_249,FinTech,AU,Pro,False,1,1,0,"{""support"": 1}",4,3.25,4,41,404,7,0,descriptive historical records only; event volume is not future churn risk,271
+A-9289f6,Company_104,EdTech,US,Enterprise,False,1,1,0,"{""support"": 1}",6,4.333333333333333,3,68,642,12,1,descriptive historical records only; event volume is not future churn risk,272
+A-94d3da,Company_61,HealthTech,US,Basic,False,1,1,0,"{""competitor"": 1}",6,3.5,4,48,464,12,1,descriptive historical records only; event volume is not future churn risk,273
+A-94f8c9,Company_51,HealthTech,US,Basic,False,1,1,0,"{""budget"": 1}",3,5.0,2,77,746,16,1,descriptive historical records only; event volume is not future churn risk,274
+A-98a59a,Company_80,FinTech,UK,Enterprise,False,1,1,0,"{""support"": 1}",3,4.5,2,44,455,10,0,descriptive historical records only; event volume is not future churn risk,275
+A-9affe6,Company_401,Cybersecurity,US,Pro,False,1,1,0,"{""features"": 1}",3,3.0,1,47,473,11,2,descriptive historical records only; event volume is not future churn risk,276
+A-9ee962,Company_59,HealthTech,US,Basic,True,1,1,0,"{""support"": 1}",3,4.0,1,39,439,9,2,descriptive historical records only; event volume is not future churn risk,277
+A-a33200,Company_352,HealthTech,US,Basic,False,1,1,0,"{""features"": 1}",3,4.5,2,55,517,12,1,descriptive historical records only; event volume is not future churn risk,278
+A-a45270,Company_37,HealthTech,US,Enterprise,False,1,1,0,"{""pricing"": 1}",4,4.0,2,71,733,12,1,descriptive historical records only; event volume is not future churn risk,279
+A-a6d261,Company_303,FinTech,CA,Pro,False,1,1,0,"{""unknown"": 1}",4,4.666666666666667,3,63,627,14,1,descriptive historical records only; event volume is not future churn risk,280
+A-a7bd4b,Company_363,Cybersecurity,US,Enterprise,False,1,1,0,"{""features"": 1}",6,3.25,4,55,576,11,3,descriptive historical records only; event volume is not future churn risk,281
+A-a8b49c,Company_72,Cybersecurity,UK,Basic,False,1,1,0,"{""features"": 1}",1,4.0,1,54,545,12,0,descriptive historical records only; event volume is not future churn risk,282
+A-aa9511,Company_203,DevTools,US,Pro,False,1,1,0,"{""competitor"": 1}",2,4.0,1,65,625,15,2,descriptive historical records only; event volume is not future churn risk,283
+A-ab438f,Company_233,Cybersecurity,US,Enterprise,True,1,1,0,"{""budget"": 1}",2,3.5,2,36,369,8,3,descriptive historical records only; event volume is not future churn risk,284
+A-ac9111,Company_487,HealthTech,US,Pro,False,1,1,0,"{""budget"": 1}",3,5.0,1,83,808,16,2,descriptive historical records only; event volume is not future churn risk,285
+A-acb7f7,Company_330,EdTech,US,Basic,False,1,1,0,"{""competitor"": 1}",3,3.5,2,62,612,12,0,descriptive historical records only; event volume is not future churn risk,286
+A-ad3abd,Company_410,FinTech,US,Pro,False,1,1,0,"{""competitor"": 1}",3,3.0,2,29,296,7,3,descriptive historical records only; event volume is not future churn risk,287
+A-af0cd2,Company_204,Cybersecurity,IN,Enterprise,False,1,1,0,"{""unknown"": 1}",3,,0,70,687,11,2,descriptive historical records only; event volume is not future churn risk,288
+A-afa505,Company_157,DevTools,US,Basic,False,1,1,0,"{""support"": 1}",4,3.0,2,51,507,9,1,descriptive historical records only; event volume is not future churn risk,289
+A-b07346,Company_269,HealthTech,US,Pro,True,1,1,0,"{""budget"": 1}",3,3.5,2,33,326,5,0,descriptive historical records only; event volume is not future churn risk,290
+A-b07b56,Company_292,DevTools,US,Pro,True,1,1,0,"{""budget"": 1}",4,3.0,1,64,633,15,1,descriptive historical records only; event volume is not future churn risk,291
+A-b20d99,Company_29,HealthTech,IN,Basic,False,1,1,0,"{""features"": 1}",2,3.5,2,33,329,7,0,descriptive historical records only; event volume is not future churn risk,292
+A-b2af2e,Company_227,Cybersecurity,UK,Enterprise,False,1,1,0,"{""pricing"": 1}",2,4.0,2,18,174,4,0,descriptive historical records only; event volume is not future churn risk,293
+A-b30291,Company_344,HealthTech,US,Basic,True,1,1,0,"{""competitor"": 1}",1,,0,48,519,10,1,descriptive historical records only; event volume is not future churn risk,294
+A-b44e3e,Company_383,Cybersecurity,UK,Basic,False,1,1,0,"{""unknown"": 1}",3,4.333333333333333,3,38,387,7,1,descriptive historical records only; event volume is not future churn risk,295
+A-b54c01,Company_354,DevTools,US,Enterprise,False,1,1,0,"{""budget"": 1}",5,3.0,2,23,226,4,0,descriptive historical records only; event volume is not future churn risk,296
+A-b78bf8,Company_148,DevTools,US,Pro,False,1,1,0,"{""unknown"": 1}",5,4.2,5,42,421,8,0,descriptive historical records only; event volume is not future churn risk,297
+A-b9f5b1,Company_494,Cybersecurity,US,Pro,False,1,1,0,"{""features"": 1}",6,3.3333333333333335,6,30,307,7,1,descriptive historical records only; event volume is not future churn risk,298
+A-ba6516,Company_154,FinTech,US,Pro,False,1,1,0,"{""budget"": 1}",6,4.0,4,60,642,13,0,descriptive historical records only; event volume is not future churn risk,299
+A-bb1eaa,Company_468,Cybersecurity,US,Basic,False,1,1,0,"{""pricing"": 1}",6,4.5,2,17,164,5,0,descriptive historical records only; event volume is not future churn risk,300
+A-bcbe98,Company_452,Cybersecurity,US,Enterprise,False,1,1,0,"{""competitor"": 1}",7,4.0,3,65,635,11,0,descriptive historical records only; event volume is not future churn risk,301
+A-c16b88,Company_431,HealthTech,US,Enterprise,False,1,1,0,"{""competitor"": 1}",3,3.0,1,48,457,9,1,descriptive historical records only; event volume is not future churn risk,302
+A-c37601,Company_48,EdTech,US,Basic,False,1,1,0,"{""support"": 1}",4,3.6666666666666665,3,48,489,12,2,descriptive historical records only; event volume is not future churn risk,303
+A-c608c8,Company_199,DevTools,DE,Pro,True,1,1,0,"{""support"": 1}",2,3.0,1,43,445,8,1,descriptive historical records only; event volume is not future churn risk,304
+A-c70870,Company_253,Cybersecurity,US,Basic,False,1,1,0,"{""competitor"": 1}",5,4.0,3,34,334,7,0,descriptive historical records only; event volume is not future churn risk,305
+A-cab532,Company_218,DevTools,FR,Pro,False,1,1,0,"{""support"": 1}",1,4.0,1,101,1005,15,1,descriptive historical records only; event volume is not future churn risk,306
+A-cb5333,Company_370,DevTools,US,Pro,False,1,1,0,"{""features"": 1}",4,3.0,1,82,796,16,1,descriptive historical records only; event volume is not future churn risk,307
+A-cc8c8f,Company_482,DevTools,US,Enterprise,False,1,1,0,"{""budget"": 1}",2,3.5,2,28,268,7,1,descriptive historical records only; event volume is not future churn risk,308
+A-cd458b,Company_430,DevTools,US,Basic,False,1,1,0,"{""budget"": 1}",5,4.6,5,84,864,15,1,descriptive historical records only; event volume is not future churn risk,309
+A-ce550d,Company_4,HealthTech,US,Enterprise,True,1,1,0,"{""budget"": 1}",7,3.8,5,58,579,9,2,descriptive historical records only; event volume is not future churn risk,310
+A-d26ab4,Company_497,DevTools,UK,Basic,True,1,1,0,"{""pricing"": 1}",2,4.0,1,46,458,9,1,descriptive historical records only; event volume is not future churn risk,311
+A-d3c88e,Company_490,DevTools,US,Pro,False,1,1,0,"{""support"": 1}",3,4.0,1,64,644,13,0,descriptive historical records only; event volume is not future churn risk,312
+A-d49cc5,Company_275,Cybersecurity,FR,Basic,False,1,1,0,"{""competitor"": 1}",4,4.5,2,41,436,8,0,descriptive historical records only; event volume is not future churn risk,313
+A-d82ef9,Company_355,EdTech,UK,Basic,True,1,1,0,"{""budget"": 1}",5,4.25,4,68,679,14,1,descriptive historical records only; event volume is not future churn risk,314
+A-d922bf,Company_221,HealthTech,US,Basic,True,1,1,0,"{""support"": 1}",7,3.3333333333333335,3,41,419,7,1,descriptive historical records only; event volume is not future churn risk,315
+A-db5e9e,Company_442,DevTools,US,Basic,False,1,1,0,"{""pricing"": 1}",2,5.0,2,57,586,8,1,descriptive historical records only; event volume is not future churn risk,316
+A-dcc2f0,Company_309,FinTech,UK,Basic,False,1,1,0,"{""features"": 1}",2,,0,76,833,15,1,descriptive historical records only; event volume is not future churn risk,317
+A-dec005,Company_445,HealthTech,US,Pro,False,1,1,0,"{""support"": 1}",2,3.0,1,51,475,10,1,descriptive historical records only; event volume is not future churn risk,318
+A-e1b9cd,Company_484,DevTools,US,Pro,True,1,1,0,"{""unknown"": 1}",1,3.0,1,80,840,15,3,descriptive historical records only; event volume is not future churn risk,319
+A-e3bd71,Company_347,Cybersecurity,US,Basic,False,1,1,0,"{""support"": 1}",4,4.0,2,61,638,11,1,descriptive historical records only; event volume is not future churn risk,320
+A-e40f45,Company_317,HealthTech,US,Pro,False,1,1,0,"{""budget"": 1}",7,4.333333333333333,3,45,401,7,1,descriptive historical records only; event volume is not future churn risk,321
+A-e43bf7,Company_215,Cybersecurity,AU,Pro,False,1,1,0,"{""pricing"": 1}",5,4.0,3,40,371,7,0,descriptive historical records only; event volume is not future churn risk,322
+A-e61e98,Company_115,FinTech,US,Enterprise,True,1,1,0,"{""features"": 1}",6,4.6,5,56,527,9,0,descriptive historical records only; event volume is not future churn risk,323
+A-e693b6,Company_240,FinTech,AU,Enterprise,True,1,1,0,"{""budget"": 1}",1,3.0,1,61,681,12,2,descriptive historical records only; event volume is not future churn risk,324
+A-e7beab,Company_458,EdTech,DE,Enterprise,False,1,1,0,"{""features"": 1}",6,4.0,4,36,373,7,3,descriptive historical records only; event volume is not future churn risk,325
+A-eb2fdc,Company_216,DevTools,AU,Enterprise,True,1,1,0,"{""competitor"": 1}",5,4.5,4,54,547,12,1,descriptive historical records only; event volume is not future churn risk,326
+A-eb7c38,Company_47,DevTools,AU,Enterprise,False,1,1,0,"{""budget"": 1}",5,4.333333333333333,3,70,693,15,4,descriptive historical records only; event volume is not future churn risk,327
+A-eb7fac,Company_28,DevTools,US,Enterprise,False,1,1,0,"{""unknown"": 1}",4,4.0,1,53,538,10,1,descriptive historical records only; event volume is not future churn risk,328
+A-ed510f,Company_361,Cybersecurity,IN,Basic,False,1,1,0,"{""budget"": 1}",9,4.0,4,49,493,10,1,descriptive historical records only; event volume is not future churn risk,329
+A-f03140,Company_209,DevTools,IN,Pro,False,1,1,0,"{""competitor"": 1}",7,3.6666666666666665,3,57,595,10,0,descriptive historical records only; event volume is not future churn risk,330
+A-f17767,Company_123,DevTools,US,Enterprise,True,1,1,0,"{""pricing"": 1}",3,4.0,2,69,713,14,2,descriptive historical records only; event volume is not future churn risk,331
+A-f3ff05,Company_44,FinTech,IN,Enterprise,False,1,1,0,"{""unknown"": 1}",3,3.5,2,66,672,13,1,descriptive historical records only; event volume is not future churn risk,332
+A-f44180,Company_376,Cybersecurity,UK,Pro,False,1,1,0,"{""competitor"": 1}",2,5.0,2,52,520,11,2,descriptive historical records only; event volume is not future churn risk,333
+A-f6b2fb,Company_418,DevTools,AU,Basic,False,1,1,0,"{""support"": 1}",5,4.0,3,55,524,10,2,descriptive historical records only; event volume is not future churn risk,334
+A-fa2041,Company_211,HealthTech,US,Pro,False,1,1,0,"{""competitor"": 1}",1,3.0,1,61,552,12,0,descriptive historical records only; event volume is not future churn risk,335
+A-fa3095,Company_174,FinTech,US,Basic,False,1,1,0,"{""support"": 1}",5,5.0,2,59,600,12,0,descriptive historical records only; event volume is not future churn risk,336
+A-fda07f,Company_230,Cybersecurity,FR,Basic,False,1,1,0,"{""support"": 1}",5,4.0,3,65,681,12,0,descriptive historical records only; event volume is not future churn risk,337
+A-ffc04f,Company_307,EdTech,US,Pro,False,1,1,0,"{""unknown"": 1}",7,4.5,4,86,857,15,2,descriptive historical records only; event volume is not future churn risk,338
+A-ffdfd5,Company_365,EdTech,US,Basic,True,1,1,0,"{""features"": 1}",0,,0,52,529,10,1,descriptive historical records only; event volume is not future churn risk,339
+A-0f7d77,Company_457,FinTech,IN,Pro,False,1,0,1,{},5,5.0,2,30,298,6,1,descriptive historical records only; event volume is not future churn risk,340
+A-1b707d,Company_56,Cybersecurity,US,Enterprise,False,1,0,1,{},3,,0,38,399,8,1,descriptive historical records only; event volume is not future churn risk,341
+A-3cc791,Company_423,EdTech,US,Enterprise,False,1,0,1,{},6,4.25,4,46,447,8,0,descriptive historical records only; event volume is not future churn risk,342
+A-42e5e1,Company_118,DevTools,US,Pro,True,1,0,1,{},3,4.0,3,41,411,7,1,descriptive historical records only; event volume is not future churn risk,343
+A-463db0,Company_16,HealthTech,US,Basic,False,1,0,1,{},6,4.25,4,37,367,7,0,descriptive historical records only; event volume is not future churn risk,344
+A-51ec1b,Company_247,DevTools,US,Enterprise,False,1,0,1,{},3,5.0,2,28,283,6,2,descriptive historical records only; event volume is not future churn risk,345
+A-53f4e3,Company_194,Cybersecurity,UK,Enterprise,False,1,0,1,{},5,4.0,3,44,410,10,1,descriptive historical records only; event volume is not future churn risk,346
+A-6e08f3,Company_220,Cybersecurity,US,Basic,False,1,0,1,{},2,3.5,2,50,492,10,0,descriptive historical records only; event volume is not future churn risk,347
+A-a1b80b,Company_184,HealthTech,US,Basic,False,1,0,1,{},4,4.0,3,72,749,16,1,descriptive historical records only; event volume is not future churn risk,348
+A-b9eed8,Company_189,Cybersecurity,US,Basic,False,1,0,1,{},5,3.75,4,61,623,11,0,descriptive historical records only; event volume is not future churn risk,349
+A-bad8c1,Company_34,FinTech,AU,Basic,False,1,0,1,{},1,4.0,1,37,385,7,0,descriptive historical records only; event volume is not future churn risk,350
+A-c45b23,Company_75,FinTech,UK,Basic,False,1,0,1,{},3,3.0,1,59,581,12,1,descriptive historical records only; event volume is not future churn risk,351
+A-f92792,Company_67,FinTech,US,Pro,False,1,0,1,{},2,4.0,1,53,528,14,0,descriptive historical records only; event volume is not future churn risk,352
+A-00cac8,Company_26,HealthTech,AU,Enterprise,False,0,0,0,{},2,,0,58,602,9,0,descriptive historical records only; event volume is not future churn risk,353
+A-0158bb,Company_461,FinTech,DE,Basic,False,0,0,0,{},1,3.0,1,36,364,6,0,descriptive historical records only; event volume is not future churn risk,354
+A-019782,Company_142,DevTools,FR,Enterprise,False,0,0,0,{},2,3.0,1,55,562,9,1,descriptive historical records only; event volume is not future churn risk,355
+A-054577,Company_455,EdTech,UK,Basic,False,0,0,0,{},1,4.0,1,85,833,16,1,descriptive historical records only; event volume is not future churn risk,356
+A-068fc6,Company_465,EdTech,US,Enterprise,False,0,0,0,{},5,4.333333333333333,3,59,598,10,1,descriptive historical records only; event volume is not future churn risk,357
+A-0aaf6e,Company_114,FinTech,US,Enterprise,False,0,0,0,{},5,4.0,2,57,599,9,1,descriptive historical records only; event volume is not future churn risk,358
+A-0e966d,Company_493,FinTech,IN,Basic,True,0,0,0,{},3,4.5,2,64,636,11,1,descriptive historical records only; event volume is not future churn risk,359
+A-10b8da,Company_9,DevTools,US,Enterprise,True,0,0,0,{},3,3.5,2,27,257,6,1,descriptive historical records only; event volume is not future churn risk,360
+A-139c3b,Company_185,HealthTech,US,Enterprise,True,0,0,0,{},9,4.5,4,44,478,8,2,descriptive historical records only; event volume is not future churn risk,361
+A-17939a,Company_162,HealthTech,US,Basic,False,0,0,0,{},7,4.5,4,47,440,11,2,descriptive historical records only; event volume is not future churn risk,362
+A-186a44,Company_101,HealthTech,US,Enterprise,False,0,0,0,{},7,3.5,4,61,614,14,1,descriptive historical records only; event volume is not future churn risk,363
+A-1986ca,Company_197,HealthTech,IN,Pro,False,0,0,0,{},7,3.4,5,37,362,7,0,descriptive historical records only; event volume is not future churn risk,364
+A-1ac5e0,Company_126,DevTools,US,Basic,True,0,0,0,{},7,3.8,5,56,558,10,0,descriptive historical records only; event volume is not future churn risk,365
+A-1b7577,Company_39,Cybersecurity,US,Pro,False,0,0,0,{},5,4.0,4,62,647,11,2,descriptive historical records only; event volume is not future churn risk,366
+A-1f0636,Company_368,EdTech,AU,Pro,False,0,0,0,{},2,3.5,2,68,685,11,1,descriptive historical records only; event volume is not future churn risk,367
+A-1f7acb,Company_281,FinTech,UK,Basic,False,0,0,0,{},7,4.4,5,53,510,8,0,descriptive historical records only; event volume is not future churn risk,368
+A-22f2df,Company_106,DevTools,US,Basic,False,0,0,0,{},5,5.0,1,42,429,9,0,descriptive historical records only; event volume is not future churn risk,369
+A-2789e3,Company_268,FinTech,US,Enterprise,False,0,0,0,{},4,4.0,3,65,680,12,0,descriptive historical records only; event volume is not future churn risk,370
+A-297a2d,Company_448,HealthTech,UK,Pro,False,0,0,0,{},2,3.0,1,25,244,5,0,descriptive historical records only; event volume is not future churn risk,371
+A-2b9d3e,Company_319,EdTech,US,Enterprise,False,0,0,0,{},3,5.0,1,45,444,9,0,descriptive historical records only; event volume is not future churn risk,372
+A-2f6a32,Company_160,HealthTech,US,Basic,False,0,0,0,{},2,3.5,2,66,654,11,2,descriptive historical records only; event volume is not future churn risk,373
+A-328bd0,Company_237,HealthTech,AU,Enterprise,False,0,0,0,{},5,3.6666666666666665,3,61,568,13,2,descriptive historical records only; event volume is not future churn risk,374
+A-35083d,Company_27,HealthTech,IN,Basic,True,0,0,0,{},4,5.0,3,72,791,16,1,descriptive historical records only; event volume is not future churn risk,375
+A-3932db,Company_144,HealthTech,CA,Pro,True,0,0,0,{},6,4.333333333333333,3,46,434,9,1,descriptive historical records only; event volume is not future churn risk,376
+A-3a5ad8,Company_94,HealthTech,US,Enterprise,False,0,0,0,{},4,4.5,2,52,506,13,0,descriptive historical records only; event volume is not future churn risk,377
+A-3c1a3f,Company_224,DevTools,UK,Pro,False,0,0,0,{},4,3.5,2,51,497,12,2,descriptive historical records only; event volume is not future churn risk,378
+A-40906c,Company_235,EdTech,US,Basic,False,0,0,0,{},5,3.75,4,63,685,12,0,descriptive historical records only; event volume is not future churn risk,379
+A-40de06,Company_369,Cybersecurity,US,Enterprise,True,0,0,0,{},3,4.0,1,91,902,16,2,descriptive historical records only; event volume is not future churn risk,380
+A-410e86,Company_210,FinTech,US,Basic,False,0,0,0,{},5,3.5,2,30,292,7,2,descriptive historical records only; event volume is not future churn risk,381
+A-427b69,Company_453,FinTech,US,Basic,False,0,0,0,{},2,3.0,1,70,698,10,1,descriptive historical records only; event volume is not future churn risk,382
+A-42b791,Company_464,FinTech,AU,Pro,False,0,0,0,{},3,4.0,2,32,312,7,1,descriptive historical records only; event volume is not future churn risk,383
+A-432483,Company_78,Cybersecurity,US,Pro,False,0,0,0,{},1,,0,45,451,9,3,descriptive historical records only; event volume is not future churn risk,384
+A-43a9e3,Company_1,FinTech,IN,Basic,True,0,0,0,{},3,4.0,3,35,355,8,0,descriptive historical records only; event volume is not future churn risk,385
+A-443b7c,Company_280,Cybersecurity,US,Enterprise,True,0,0,0,{},8,4.4,5,63,618,16,2,descriptive historical records only; event volume is not future churn risk,386
+A-443f6f,Company_304,Cybersecurity,US,Basic,False,0,0,0,{},4,4.666666666666667,3,56,527,9,1,descriptive historical records only; event volume is not future churn risk,387
+A-45ce7a,Company_31,FinTech,US,Enterprise,False,0,0,0,{},5,3.6666666666666665,3,39,424,7,1,descriptive historical records only; event volume is not future churn risk,388
+A-474ad4,Company_261,EdTech,US,Basic,False,0,0,0,{},3,5.0,1,64,605,15,2,descriptive historical records only; event volume is not future churn risk,389
+A-49b828,Company_391,FinTech,IN,Pro,False,0,0,0,{},3,3.5,2,65,687,14,0,descriptive historical records only; event volume is not future churn risk,390
+A-4a4c2d,Company_473,DevTools,US,Enterprise,False,0,0,0,{},5,4.25,4,59,587,13,1,descriptive historical records only; event volume is not future churn risk,391
+A-4c38bc,Company_55,HealthTech,UK,Basic,True,0,0,0,{},3,3.5,2,81,818,16,2,descriptive historical records only; event volume is not future churn risk,392
+A-4e631b,Company_298,FinTech,US,Enterprise,False,0,0,0,{},2,4.0,1,49,502,11,0,descriptive historical records only; event volume is not future churn risk,393
+A-4e960a,Company_277,FinTech,US,Enterprise,True,0,0,0,{},6,4.0,3,49,512,12,0,descriptive historical records only; event volume is not future churn risk,394
+A-503d5a,Company_99,FinTech,US,Enterprise,True,0,0,0,{},9,4.0,3,59,605,12,0,descriptive historical records only; event volume is not future churn risk,395
+A-508199,Company_208,FinTech,AU,Basic,False,0,0,0,{},3,3.0,1,24,231,5,0,descriptive historical records only; event volume is not future churn risk,396
+A-50f3f7,Company_140,HealthTech,US,Basic,True,0,0,0,{},6,5.0,3,72,685,15,0,descriptive historical records only; event volume is not future churn risk,397
+A-524364,Company_388,DevTools,FR,Enterprise,False,0,0,0,{},3,4.333333333333333,3,26,237,6,0,descriptive historical records only; event volume is not future churn risk,398
+A-52dd88,Company_127,Cybersecurity,US,Pro,False,0,0,0,{},1,,0,50,516,11,0,descriptive historical records only; event volume is not future churn risk,399
+A-544d0a,Company_153,DevTools,US,Basic,False,0,0,0,{},2,4.0,2,47,510,10,0,descriptive historical records only; event volume is not future churn risk,400
+A-54d94a,Company_385,Cybersecurity,IN,Basic,False,0,0,0,{},4,3.5,2,59,582,11,1,descriptive historical records only; event volume is not future churn risk,401
+A-55f257,Company_496,FinTech,US,Basic,False,0,0,0,{},6,5.0,4,53,476,10,0,descriptive historical records only; event volume is not future churn risk,402
+A-560d27,Company_266,DevTools,US,Pro,False,0,0,0,{},4,3.6666666666666665,3,59,587,12,1,descriptive historical records only; event volume is not future churn risk,403
+A-59f724,Company_432,HealthTech,US,Enterprise,False,0,0,0,{},4,4.25,4,68,696,12,0,descriptive historical records only; event volume is not future churn risk,404
+A-5a215a,Company_358,EdTech,FR,Enterprise,False,0,0,0,{},4,4.0,3,80,807,18,6,descriptive historical records only; event volume is not future churn risk,405
+A-5b051a,Company_181,Cybersecurity,US,Enterprise,False,0,0,0,{},1,3.0,1,16,171,4,1,descriptive historical records only; event volume is not future churn risk,406
+A-5b4ebb,Company_69,Cybersecurity,UK,Basic,True,0,0,0,{},5,4.75,4,70,692,13,1,descriptive historical records only; event volume is not future churn risk,407
+A-5c046d,Company_130,EdTech,FR,Basic,False,0,0,0,{},1,3.0,1,46,475,8,0,descriptive historical records only; event volume is not future churn risk,408
+A-600734,Company_327,DevTools,US,Pro,True,0,0,0,{},7,3.6666666666666665,3,69,660,13,2,descriptive historical records only; event volume is not future churn risk,409
+A-625d0b,Company_290,EdTech,AU,Basic,False,0,0,0,{},5,3.0,1,54,529,11,1,descriptive historical records only; event volume is not future churn risk,410
+A-65a46c,Company_95,HealthTech,US,Pro,False,0,0,0,{},8,4.0,5,38,370,8,1,descriptive historical records only; event volume is not future churn risk,411
+A-66224b,Company_87,HealthTech,US,Pro,False,0,0,0,{},6,3.5,6,61,626,12,1,descriptive historical records only; event volume is not future churn risk,412
+A-671f31,Company_137,DevTools,US,Basic,False,0,0,0,{},7,4.2,5,17,167,6,0,descriptive historical records only; event volume is not future churn risk,413
+A-6843f2,Company_335,HealthTech,CA,Enterprise,False,0,0,0,{},2,3.0,2,46,481,9,0,descriptive historical records only; event volume is not future churn risk,414
+A-69b156,Company_396,EdTech,US,Pro,True,0,0,0,{},7,4.0,4,36,360,9,2,descriptive historical records only; event volume is not future churn risk,415
+A-6c093d,Company_12,DevTools,US,Basic,False,0,0,0,{},3,5.0,1,64,670,12,3,descriptive historical records only; event volume is not future churn risk,416
+A-6f8ad2,Company_57,EdTech,IN,Basic,False,0,0,0,{},4,4.333333333333333,3,88,924,17,2,descriptive historical records only; event volume is not future churn risk,417
+A-700ade,Company_472,Cybersecurity,UK,Enterprise,False,0,0,0,{},4,4.666666666666667,3,29,284,8,2,descriptive historical records only; event volume is not future churn risk,418
+A-756192,Company_390,FinTech,IN,Basic,False,0,0,0,{},3,4.0,2,64,617,10,0,descriptive historical records only; event volume is not future churn risk,419
+A-779e4e,Company_193,HealthTech,US,Basic,False,0,0,0,{},5,4.0,4,44,393,10,2,descriptive historical records only; event volume is not future churn risk,420
+A-7920cc,Company_412,Cybersecurity,FR,Pro,False,0,0,0,{},7,4.333333333333333,3,62,601,16,0,descriptive historical records only; event volume is not future churn risk,421
+A-7c4956,Company_254,DevTools,US,Enterprise,True,0,0,0,{},3,4.0,1,45,475,8,3,descriptive historical records only; event volume is not future churn risk,422
+A-7c5768,Company_407,HealthTech,UK,Enterprise,False,0,0,0,{},5,4.0,3,46,461,9,0,descriptive historical records only; event volume is not future churn risk,423
+A-7d514c,Company_119,HealthTech,DE,Enterprise,False,0,0,0,{},3,5.0,1,48,502,9,1,descriptive historical records only; event volume is not future churn risk,424
+A-7da956,Company_141,Cybersecurity,US,Pro,False,0,0,0,{},3,5.0,1,51,543,12,2,descriptive historical records only; event volume is not future churn risk,425
+A-7f8241,Company_42,EdTech,US,Pro,True,0,0,0,{},1,3.0,1,77,734,15,0,descriptive historical records only; event volume is not future churn risk,426
+A-856b1e,Company_161,FinTech,US,Basic,False,0,0,0,{},5,,0,23,230,6,0,descriptive historical records only; event volume is not future churn risk,427
+A-86cdb4,Company_250,DevTools,DE,Basic,False,0,0,0,{},5,4.333333333333333,3,49,492,9,2,descriptive historical records only; event volume is not future churn risk,428
+A-883b7d,Company_313,Cybersecurity,IN,Basic,False,0,0,0,{},7,3.6,5,66,644,12,1,descriptive historical records only; event volume is not future churn risk,429
+A-88c6ca,Company_179,FinTech,DE,Basic,True,0,0,0,{},1,,0,43,446,7,0,descriptive historical records only; event volume is not future churn risk,430
+A-89ee83,Company_312,Cybersecurity,US,Pro,True,0,0,0,{},5,4.0,3,59,565,11,2,descriptive historical records only; event volume is not future churn risk,431
+A-8adedc,Company_300,EdTech,US,Basic,True,0,0,0,{},4,4.0,1,61,583,14,2,descriptive historical records only; event volume is not future churn risk,432
+A-8b25f2,Company_96,Cybersecurity,US,Pro,True,0,0,0,{},2,4.0,2,54,565,13,2,descriptive historical records only; event volume is not future churn risk,433
+A-9077b0,Company_41,HealthTech,US,Basic,False,0,0,0,{},3,4.333333333333333,3,46,493,7,2,descriptive historical records only; event volume is not future churn risk,434
+A-9174e0,Company_73,Cybersecurity,US,Basic,False,0,0,0,{},2,5.0,1,69,689,15,1,descriptive historical records only; event volume is not future churn risk,435
+A-91e948,Company_88,EdTech,AU,Basic,False,0,0,0,{},0,,0,40,404,7,0,descriptive historical records only; event volume is not future churn risk,436
+A-92a333,Company_116,FinTech,US,Enterprise,False,0,0,0,{},4,,0,36,364,6,0,descriptive historical records only; event volume is not future churn risk,437
+A-92a3af,Company_259,Cybersecurity,IN,Enterprise,False,0,0,0,{},4,4.0,2,67,714,11,0,descriptive historical records only; event volume is not future churn risk,438
+A-940b8b,Company_398,HealthTech,DE,Basic,False,0,0,0,{},3,4.0,2,35,362,8,0,descriptive historical records only; event volume is not future churn risk,439
+A-94c3cd,Company_351,FinTech,CA,Enterprise,False,0,0,0,{},4,3.5,2,31,306,6,0,descriptive historical records only; event volume is not future churn risk,440
+A-95b24a,Company_117,FinTech,US,Pro,True,0,0,0,{},5,4.25,4,62,611,11,0,descriptive historical records only; event volume is not future churn risk,441
+A-96215d,Company_318,FinTech,US,Enterprise,False,0,0,0,{},1,3.0,1,32,347,6,0,descriptive historical records only; event volume is not future churn risk,442
+A-970c97,Company_477,HealthTech,DE,Enterprise,False,0,0,0,{},1,5.0,1,44,444,8,1,descriptive historical records only; event volume is not future churn risk,443
+A-977ca0,Company_232,HealthTech,IN,Basic,True,0,0,0,{},3,4.0,1,85,893,16,2,descriptive historical records only; event volume is not future churn risk,444
+A-9a532a,Company_333,HealthTech,US,Enterprise,False,0,0,0,{},2,,0,18,185,4,0,descriptive historical records only; event volume is not future churn risk,445
+A-9badbd,Company_63,Cybersecurity,DE,Enterprise,False,0,0,0,{},5,5.0,2,70,729,13,2,descriptive historical records only; event volume is not future churn risk,446
+A-9bfc9f,Company_228,DevTools,CA,Pro,False,0,0,0,{},6,3.3333333333333335,3,37,376,9,1,descriptive historical records only; event volume is not future churn risk,447
+A-9c18c4,Company_481,HealthTech,US,Pro,True,0,0,0,{},4,4.0,2,56,556,10,2,descriptive historical records only; event volume is not future churn risk,448
+A-a0ca4e,Company_6,Cybersecurity,US,Pro,False,0,0,0,{},6,3.8,5,39,373,9,0,descriptive historical records only; event volume is not future churn risk,449
+A-a1bbb6,Company_74,DevTools,CA,Basic,False,0,0,0,{},3,4.0,1,37,366,8,1,descriptive historical records only; event volume is not future churn risk,450
+A-a2485e,Company_467,FinTech,US,Pro,False,0,0,0,{},0,,0,28,317,6,0,descriptive historical records only; event volume is not future churn risk,451
+A-ad296b,Company_112,DevTools,AU,Pro,False,0,0,0,{},3,3.6666666666666665,3,31,294,6,1,descriptive historical records only; event volume is not future churn risk,452
+A-adc1f3,Company_98,Cybersecurity,US,Pro,False,0,0,0,{},3,3.5,2,36,334,9,1,descriptive historical records only; event volume is not future churn risk,453
+A-b11cd0,Company_439,DevTools,US,Pro,True,0,0,0,{},4,4.0,2,29,278,6,2,descriptive historical records only; event volume is not future churn risk,454
+A-b3fe05,Company_238,Cybersecurity,CA,Pro,False,0,0,0,{},4,3.0,2,43,438,9,1,descriptive historical records only; event volume is not future churn risk,455
+A-b48f73,Company_225,EdTech,AU,Pro,False,0,0,0,{},3,4.0,2,44,412,7,0,descriptive historical records only; event volume is not future churn risk,456
+A-b7b7b7,Company_338,FinTech,US,Basic,True,0,0,0,{},3,5.0,2,55,571,12,0,descriptive historical records only; event volume is not future churn risk,457
+A-bb2f49,Company_356,Cybersecurity,US,Pro,False,0,0,0,{},3,4.0,2,60,618,11,1,descriptive historical records only; event volume is not future churn risk,458
+A-bbe56f,Company_406,HealthTech,US,Enterprise,False,0,0,0,{},4,4.0,3,22,232,5,0,descriptive historical records only; event volume is not future churn risk,459
+A-bc4d48,Company_343,EdTech,US,Pro,False,0,0,0,{},6,4.2,5,32,321,7,0,descriptive historical records only; event volume is not future churn risk,460
+A-bc87bc,Company_456,FinTech,US,Pro,False,0,0,0,{},7,3.75,4,36,394,8,2,descriptive historical records only; event volume is not future churn risk,461
+A-bcf87c,Company_288,FinTech,US,Pro,True,0,0,0,{},2,4.0,2,54,503,11,2,descriptive historical records only; event volume is not future churn risk,462
+A-bd4708,Company_257,FinTech,US,Pro,False,0,0,0,{},4,3.5,2,64,653,13,0,descriptive historical records only; event volume is not future churn risk,463
+A-c42f1f,Company_21,HealthTech,US,Pro,False,0,0,0,{},9,4.0,5,35,337,8,1,descriptive historical records only; event volume is not future churn risk,464
+A-c4ea60,Company_18,FinTech,DE,Enterprise,True,0,0,0,{},5,3.6,5,43,427,9,0,descriptive historical records only; event volume is not future churn risk,465
+A-c62e55,Company_315,EdTech,US,Basic,False,0,0,0,{},4,4.0,3,32,337,9,0,descriptive historical records only; event volume is not future churn risk,466
+A-c7e58b,Company_404,HealthTech,IN,Pro,False,0,0,0,{},5,3.5,4,34,343,7,0,descriptive historical records only; event volume is not future churn risk,467
+A-cb6cc6,Company_419,DevTools,US,Basic,False,0,0,0,{},3,3.5,2,35,314,7,0,descriptive historical records only; event volume is not future churn risk,468
+A-cbbe12,Company_450,Cybersecurity,DE,Enterprise,False,0,0,0,{},6,4.25,4,22,178,6,2,descriptive historical records only; event volume is not future churn risk,469
+A-cbd1a3,Company_325,DevTools,US,Basic,True,0,0,0,{},4,4.0,2,45,465,10,0,descriptive historical records only; event volume is not future churn risk,470
+A-cc98bc,Company_469,DevTools,US,Basic,False,0,0,0,{},3,4.0,1,53,551,10,1,descriptive historical records only; event volume is not future churn risk,471
+A-ce66f8,Company_17,EdTech,CA,Pro,False,0,0,0,{},6,3.5,2,46,494,6,0,descriptive historical records only; event volume is not future churn risk,472
+A-cea1f0,Company_273,FinTech,US,Pro,True,0,0,0,{},5,4.333333333333333,3,56,586,10,0,descriptive historical records only; event volume is not future churn risk,473
+A-ced9aa,Company_310,DevTools,US,Enterprise,False,0,0,0,{},7,3.0,1,55,531,11,2,descriptive historical records only; event volume is not future churn risk,474
+A-d27f50,Company_163,Cybersecurity,UK,Enterprise,False,0,0,0,{},4,3.75,4,50,481,12,3,descriptive historical records only; event volume is not future churn risk,475
+A-d40bf7,Company_11,FinTech,IN,Basic,False,0,0,0,{},2,5.0,2,55,562,10,0,descriptive historical records only; event volume is not future churn risk,476
+A-d4ac0e,Company_364,DevTools,UK,Basic,False,0,0,0,{},4,3.5,2,80,793,19,1,descriptive historical records only; event volume is not future churn risk,477
+A-d4e0d4,Company_403,FinTech,US,Basic,False,0,0,0,{},4,4.0,2,49,488,10,1,descriptive historical records only; event volume is not future churn risk,478
+A-d5a319,Company_158,FinTech,US,Enterprise,True,0,0,0,{},1,4.0,1,59,604,12,0,descriptive historical records only; event volume is not future churn risk,479
+A-d62e02,Company_420,Cybersecurity,US,Pro,False,0,0,0,{},1,4.0,1,34,344,10,0,descriptive historical records only; event volume is not future churn risk,480
+A-de24d5,Company_231,DevTools,US,Enterprise,False,0,0,0,{},7,3.0,2,53,537,13,1,descriptive historical records only; event volume is not future churn risk,481
+A-de58ca,Company_212,HealthTech,DE,Enterprise,False,0,0,0,{},5,3.3333333333333335,3,49,505,11,2,descriptive historical records only; event volume is not future churn risk,482
+A-e2cd1b,Company_121,DevTools,US,Enterprise,False,0,0,0,{},5,4.0,4,49,465,9,0,descriptive historical records only; event volume is not future churn risk,483
+A-e36807,Company_164,EdTech,AU,Pro,False,0,0,0,{},2,4.5,2,49,446,10,1,descriptive historical records only; event volume is not future churn risk,484
+A-e4144b,Company_316,EdTech,UK,Pro,False,0,0,0,{},3,4.0,2,43,439,10,0,descriptive historical records only; event volume is not future churn risk,485
+A-e4bf56,Company_272,HealthTech,IN,Pro,True,0,0,0,{},8,3.6666666666666665,6,33,339,7,1,descriptive historical records only; event volume is not future churn risk,486
+A-e60f9d,Company_178,FinTech,US,Basic,False,0,0,0,{},2,,0,62,629,15,2,descriptive historical records only; event volume is not future churn risk,487
+A-e6afc1,Company_346,DevTools,US,Pro,False,0,0,0,{},0,,0,71,679,11,0,descriptive historical records only; event volume is not future churn risk,488
+A-e89151,Company_234,FinTech,UK,Pro,True,0,0,0,{},2,5.0,1,58,601,9,2,descriptive historical records only; event volume is not future churn risk,489
+A-e98302,Company_286,EdTech,US,Enterprise,False,0,0,0,{},9,4.142857142857143,7,30,273,6,1,descriptive historical records only; event volume is not future churn risk,490
+A-f19b24,Company_462,Cybersecurity,US,Pro,False,0,0,0,{},2,4.0,1,12,119,3,0,descriptive historical records only; event volume is not future churn risk,491
+A-f446b6,Company_36,DevTools,DE,Pro,False,0,0,0,{},8,4.25,4,39,376,9,1,descriptive historical records only; event volume is not future churn risk,492
+A-f97b9a,Company_159,FinTech,US,Pro,False,0,0,0,{},7,3.6666666666666665,3,56,561,11,0,descriptive historical records only; event volume is not future churn risk,493
+A-f9cc74,Company_360,DevTools,FR,Enterprise,False,0,0,0,{},6,4.0,5,50,484,10,1,descriptive historical records only; event volume is not future churn risk,494
+A-fabe19,Company_97,DevTools,UK,Enterprise,False,0,0,0,{},3,4.0,1,33,337,7,2,descriptive historical records only; event volume is not future churn risk,495
+A-fb186e,Company_131,EdTech,IN,Basic,False,0,0,0,{},6,3.6666666666666665,3,20,207,3,0,descriptive historical records only; event volume is not future churn risk,496
+A-fd9422,Company_263,Cybersecurity,US,Pro,False,0,0,0,{},6,3.5,6,44,456,9,1,descriptive historical records only; event volume is not future churn risk,497
+A-fdfc91,Company_414,Cybersecurity,US,Basic,False,0,0,0,{},5,3.6666666666666665,3,56,564,10,1,descriptive historical records only; event volume is not future churn risk,498
+A-fe79a5,Company_81,HealthTech,IN,Basic,False,0,0,0,{},4,5.0,2,33,335,10,2,descriptive historical records only; event volume is not future churn risk,499
+A-ff79f2,Company_165,DevTools,US,Basic,True,0,0,0,{},2,,0,41,393,9,2,descriptive historical records only; event volume is not future churn risk,500

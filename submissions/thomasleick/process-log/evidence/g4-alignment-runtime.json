@@ -1,0 +1,190 @@
+{
+  "generated_at_local": "2026-10-22T07:50:29-03:00",
+  "workspace": "/home/thomasleick/the_churn_paradox/submissions/thomasleick",
+  "source_hashes_sha256": {
+    "ravenstack_accounts.csv": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+    "ravenstack_subscriptions.csv": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a",
+    "ravenstack_feature_usage.csv": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e",
+    "ravenstack_support_tickets.csv": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220",
+    "ravenstack_churn_events.csv": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940"
+  },
+  "daily_ledger": {
+    "start": "2023-01-01",
+    "end": "2024-12-31",
+    "days": 731,
+    "monthly_rows": 24,
+    "plan_loss_events": 62,
+    "new_plan_relationships": 1433,
+    "plan_reactivations": 43,
+    "full_customer_coverage_loss_events": 8,
+    "daily_plan_bridge_failures": 0,
+    "daily_customer_bridge_failures": 0,
+    "annual_monthly_summary": {
+      "2023": {
+        "months": 12,
+        "opening_customers_first_month": 0,
+        "closing_customers_last_month": 190,
+        "opening_account_months": 845,
+        "new_customers": 191,
+        "customer_reactivations": 1,
+        "complete_customer_loss_events": 2,
+        "opening_plan_relations_first_month": 0,
+        "closing_plan_relations_last_month": 374,
+        "opening_plan_relation_months": 1406,
+        "new_plan_relationships": 378,
+        "plan_reactivations": 2,
+        "gross_plan_loss_events": 6,
+        "opening_cohort_plan_losses_sum": 5,
+        "recorded_event_rows": 73,
+        "recorded_event_rows_per_100_opening_account_months": 8.63905325443787,
+        "customer_coverage_loss_events_per_100_opening_account_months": 0.2366863905325444,
+        "plan_loss_events_per_100_opening_relation_months": 0.42674253200568996,
+        "classification": "Conditional exposure-normalized descriptions from date-reconstructed monthly openings; not certified churn rates."
+      },
+      "2024": {
+        "months": 12,
+        "opening_customers_first_month": 190,
+        "closing_customers_last_month": 500,
+        "opening_account_months": 3909,
+        "new_customers": 309,
+        "customer_reactivations": 7,
+        "complete_customer_loss_events": 6,
+        "opening_plan_relations_first_month": 374,
+        "closing_plan_relations_last_month": 1414,
+        "opening_plan_relation_months": 9414,
+        "new_plan_relationships": 1055,
+        "plan_reactivations": 41,
+        "gross_plan_loss_events": 56,
+        "opening_cohort_plan_losses_sum": 42,
+        "recorded_event_rows": 527,
+        "recorded_event_rows_per_100_opening_account_months": 13.481708876950627,
+        "customer_coverage_loss_events_per_100_opening_account_months": 0.15349194167306215,
+        "plan_loss_events_per_100_opening_relation_months": 0.5948587210537497,
+        "classification": "Conditional exposure-normalized descriptions from date-reconstructed monthly openings; not certified churn rates."
+      }
+    }
+  },
+  "business_driver_counts": {
+    "accounts": 500,
+    "subscriptions": 5000,
+    "usage_rows": 25000,
+    "support_tickets": 2000,
+    "event_rows": 600
+  },
+  "business_labels": {
+    "account_flag": 110,
+    "any_event": 352,
+    "nonreactivation_event": 339,
+    "subscription_flag_account": 312
+  },
+  "usage_annual": [
+    {
+      "year": 2023,
+      "source_rows": 12430,
+      "distinct_accounts_observed": 500,
+      "observed_account_months": 5092,
+      "recorded_usage_count": 124561.0,
+      "usage_count_per_observed_account_month": 24.4621,
+      "mean_recorded_usage_count_per_account": 249.122,
+      "median_recorded_usage_count_per_account": 249.5,
+      "source_rows_after_first_duplicate_occurrence": 12420,
+      "usage_count_after_first_duplicate_occurrence": 124474.0,
+      "valid_interval_rows": 514,
+      "valid_interval_distinct_accounts": 152,
+      "valid_interval_usage_count": 5066.0,
+      "classification": "DESCRIPTIVE_SOURCE_VOLUME; interval-bounded subset is a sensitivity, not a verified retention window."
+    },
+    {
+      "year": 2024,
+      "source_rows": 12570,
+      "distinct_accounts_observed": 500,
+      "observed_account_months": 5090,
+      "recorded_usage_count": 125964.0,
+      "usage_count_per_observed_account_month": 24.7473,
+      "mean_recorded_usage_count_per_account": 251.928,
+      "median_recorded_usage_count_per_account": 244.0,
+      "source_rows_after_first_duplicate_occurrence": 12559,
+      "usage_count_after_first_duplicate_occurrence": 125848.0,
+      "valid_interval_rows": 5054,
+      "valid_interval_distinct_accounts": 469,
+      "valid_interval_usage_count": 50658.0,
+      "classification": "DESCRIPTIVE_SOURCE_VOLUME; interval-bounded subset is a sensitivity, not a verified retention window."
+    }
+  ],
+  "support_any_event": [
+    {
+      "label": "any_event",
+      "group": "positive",
+      "account_count": 352,
+      "accounts_with_tickets": 347,
+      "ticket_rows": 1395,
+      "satisfaction_mean_ticket": 3.9804,
+      "satisfaction_scored_tickets": 815,
+      "satisfaction_missing_tickets": 580,
+      "satisfaction_mean_account_average": 3.9616,
+      "accounts_with_satisfaction": 330,
+      "first_response_median_minutes": 89.0,
+      "first_response_n": 1395,
+      "resolution_median_hours": 35.0,
+      "resolution_n": 1395,
+      "escalated_ticket_rows": 71,
+      "escalation_ticket_rows_n": 1395,
+      "mean_account_escalation_rate": 0.0493,
+      "accounts_with_escalation_data": 347
+    },
+    {
+      "label": "any_event",
+      "group": "negative",
+      "account_count": 148,
+      "accounts_with_tickets": 145,
+      "ticket_rows": 605,
+      "satisfaction_mean_ticket": 3.9833,
+      "satisfaction_scored_tickets": 360,
+      "satisfaction_missing_tickets": 245,
+      "satisfaction_mean_account_average": 3.9703,
+      "accounts_with_satisfaction": 136,
+      "first_response_median_minutes": 87.0,
+      "first_response_n": 605,
+      "resolution_median_hours": 35.0,
+      "resolution_n": 605,
+      "escalated_ticket_rows": 24,
+      "escalation_ticket_rows_n": 605,
+      "mean_account_escalation_rate": 0.0449,
+      "accounts_with_escalation_data": 145
+    }
+  ],
+  "tests": {
+    "business_driver_unittest": "6 passed",
+    "api_and_daily_ledger_docker_pytest": "34 passed, 1 upstream Starlette/AnyIO deprecation warning; Python 3.12 Docker test target",
+    "frontend_vitest": "6 passed",
+    "typescript_vite_build": "passed; app 282.35 kB, charts 420.58 kB, icons 16.29 kB; total JS 719.22 kB uncompressed, 198.79 kB gzip",
+    "ruff": "passed with --no-cache inside the test image",
+    "compose_config": "passed",
+    "docker_images": "API and web images rebuilt successfully"
+  },
+  "docker_runtime": {
+    "compose_project": "ravenstack-g4-align",
+    "api_url": "http://localhost:18202",
+    "web_url": "http://localhost:15177",
+    "api_health": "HTTP 200; API container healthy",
+    "daily_api": "HTTP 200; 24 monthly periods; industry/country/referral segment fields present",
+    "monthly_segment_reconciliation": "PASS; each dimension opening/closing customer and plan totals reconcile for all 24 months",
+    "web_root": "HTTP 200; web container healthy",
+    "web_api_proxy": "HTTP 200; JSON exactly matched direct API response",
+    "valid_scenario": "HTTP 200; base case net -600 generic units under explicit assumptions",
+    "invalid_scenario": "HTTP 422 for uptake 1.5",
+    "browser_visual": "UNKNOWN; no browser access or screenshot claimed"
+  },
+  "effects": {
+    "git_init": "NO",
+    "commit": "NO",
+    "push": "NO",
+    "pull_request": "NO",
+    "deploy": "NO"
+  },
+  "validation_attempts": {
+    "host_pytest": "Could not run: host Python 3.10 has no pytest; test suite ran successfully in pinned Python 3.12 Docker target.",
+    "compose_default_port": "Initial API bind at 8000 failed because port was occupied; no unrelated service was changed. Project restarted at API_PORT=18202 and WEB_PORT=15177.",
+    "ruff_cache": "Initial cache write denied for non-root container; rerun with --no-cache passed."
+  }
+}

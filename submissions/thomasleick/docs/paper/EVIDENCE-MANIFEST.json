@@ -1,0 +1,247 @@
+{
+  "manifest_version": "2.0",
+  "generated_at": "2026-10-22",
+  "paper": {
+    "pdf": "docs/paper/RAVENSTACK-THE-CHURN-PARADOX.pdf",
+    "pdf_sha256": "aa812c97358fce560168594e6777bb0da66f623af3a237931fe92f55cb3c36c0",
+    "pdf_pages": 7,
+    "page_size": "A4",
+    "markdown": "docs/paper/RAVENSTACK-THE-CHURN-PARADOX.md",
+    "markdown_sha256": "c5765b1a21a939a678e079dd58757ac0fd958e67e50e2308ab77f025c5f81342",
+    "generator": "docs/paper/generate_paper.py",
+    "generator_sha256": "d19bca63975b54841b2c2cf4fbc510ad66e9492272cfdce3eb98089dc9ec5f0c"
+  },
+  "source_csv": {
+    "ravenstack_accounts.csv": {
+      "sha256": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5"
+    },
+    "ravenstack_subscriptions.csv": {
+      "sha256": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a"
+    },
+    "ravenstack_feature_usage.csv": {
+      "sha256": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e"
+    },
+    "ravenstack_support_tickets.csv": {
+      "sha256": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220"
+    },
+    "ravenstack_churn_events.csv": {
+      "sha256": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940"
+    }
+  },
+  "analysis_artifacts": {
+    "daily_ledger": {
+      "path": "solution/analysis/daily_portfolio_churn/outputs/g4-alignment/daily-portfolio-churn.json",
+      "sha256": "edbc361f85eb4dc5dc266246c2df599e05e5dc01f5513140b5477d978cfb18f3"
+    },
+    "five_table_analysis": {
+      "path": "solution/analysis/business_drivers/outputs/g4-alignment/business-investigation.json",
+      "sha256": "0252fb11e13d3e5188e041060e543142cd74732ef96d51d137efd3fa18a55933"
+    },
+    "transition_audit": {
+      "path": "solution/analysis/transition_audit/outputs/transition-audit.json",
+      "sha256": "bb264bfe51adca7b7fcf8dec7cf8403125f5d454479bef983f60e61f6aaacf09"
+    },
+    "monthly_rows": 24
+  },
+  "source_row_counts": {
+    "accounts": 500,
+    "subscriptions": 5000,
+    "usage_rows": 25000,
+    "support_tickets": 2000,
+    "event_rows": 600
+  },
+  "claims": {
+    "event_rows_by_year": {
+      "2023": 73,
+      "2024": 527
+    },
+    "exposure_event_intensity_per_100": {
+      "2023": 8.639053,
+      "2024": 13.481709
+    },
+    "plan_proxy_loss_intensity_per_100_relation_months": {
+      "2023": 0.426743,
+      "2024": 0.594859
+    },
+    "complete_account_coverage_loss_intensity_per_100_account_months": {
+      "2023": 0.236686,
+      "2024": 0.153492
+    },
+    "opening_2024_cohort": {
+      "opening_relations": 374,
+      "lost_any_time": 7,
+      "lost_at_close": 3,
+      "opening_customers": 190,
+      "customers_lost_at_close": 0
+    },
+    "plan_segments_2024": [
+      {
+        "tier": "Basic",
+        "opening": 132,
+        "lost_any_time": 2,
+        "rate_pct": 1.5152,
+        "wilson_95_pct": [
+          0.4165,
+          5.3561
+        ]
+      },
+      {
+        "tier": "Enterprise",
+        "opening": 120,
+        "lost_any_time": 5,
+        "rate_pct": 4.1667,
+        "wilson_95_pct": [
+          1.7926,
+          9.3842
+        ]
+      },
+      {
+        "tier": "Pro",
+        "opening": 122,
+        "lost_any_time": 0,
+        "rate_pct": 0.0,
+        "wilson_95_pct": [
+          0.0,
+          3.0527
+        ]
+      }
+    ],
+    "reason_rows": {
+      "pricing": 91,
+      "support": 104,
+      "budget": 104,
+      "unknown": 95,
+      "features": 114,
+      "competitor": 92
+    },
+    "account_cases": [
+      {
+        "account_id": "A-432483",
+        "industry": "Cybersecurity",
+        "country": "US",
+        "referral_source": "ads",
+        "loss_date": "2023-04-05",
+        "return_date": "2023-04-11",
+        "loss_tier": "Pro",
+        "return_tier": "Basic"
+      },
+      {
+        "account_id": "A-180abf",
+        "industry": "DevTools",
+        "country": "US",
+        "referral_source": "event",
+        "loss_date": "2023-11-06",
+        "return_date": "2024-01-17",
+        "loss_tier": "Enterprise",
+        "return_tier": "Basic"
+      },
+      {
+        "account_id": "A-40a557",
+        "industry": "Cybersecurity",
+        "country": "AU",
+        "referral_source": "partner",
+        "loss_date": "2024-01-16",
+        "return_date": "2024-02-12",
+        "loss_tier": "Enterprise",
+        "return_tier": "Enterprise"
+      },
+      {
+        "account_id": "A-8adedc",
+        "industry": "EdTech",
+        "country": "US",
+        "referral_source": "event",
+        "loss_date": "2024-03-09",
+        "return_date": "2024-03-16",
+        "loss_tier": "Enterprise",
+        "return_tier": "Basic"
+      },
+      {
+        "account_id": "A-c9bb3e",
+        "industry": "EdTech",
+        "country": "US",
+        "referral_source": "ads",
+        "loss_date": "2024-04-02",
+        "return_date": "2024-04-25",
+        "loss_tier": "Pro",
+        "return_tier": "Pro"
+      },
+      {
+        "account_id": "A-0baac2",
+        "industry": "FinTech",
+        "country": "DE",
+        "referral_source": "organic",
+        "loss_date": "2024-09-13",
+        "return_date": "2024-10-14",
+        "loss_tier": "Enterprise",
+        "return_tier": "Basic"
+      },
+      {
+        "account_id": "A-0a282f",
+        "industry": "DevTools",
+        "country": "US",
+        "referral_source": "organic",
+        "loss_date": "2024-09-25",
+        "return_date": "2024-09-28",
+        "loss_tier": "Enterprise",
+        "return_tier": "Enterprise"
+      },
+      {
+        "account_id": "A-410e86",
+        "industry": "FinTech",
+        "country": "US",
+        "referral_source": "organic",
+        "loss_date": "2024-11-22",
+        "return_date": "2024-11-29",
+        "loss_tier": "Enterprise",
+        "return_tier": "Enterprise"
+      }
+    ],
+    "scenario_assumptions_and_results": [
+      {
+        "name": "Conservative",
+        "uptake": 0.4,
+        "lift": 0.02,
+        "monthly_value": 100.0,
+        "months": 3,
+        "eligible": 60,
+        "cost": 1200.0,
+        "retained": 0.48,
+        "gross": 144.0,
+        "net": -1056.0,
+        "breakeven": 833.3333333333334
+      },
+      {
+        "name": "Base",
+        "uptake": 0.6,
+        "lift": 0.05,
+        "monthly_value": 200.0,
+        "months": 6,
+        "eligible": 60,
+        "cost": 1200.0,
+        "retained": 1.8,
+        "gross": 2160.0,
+        "net": 960.0,
+        "breakeven": 111.1111111111111
+      },
+      {
+        "name": "Optimistic",
+        "uptake": 0.8,
+        "lift": 0.1,
+        "monthly_value": 400.0,
+        "months": 9,
+        "eligible": 60,
+        "cost": 1200.0,
+        "retained": 4.800000000000001,
+        "gross": 17280.000000000004,
+        "net": 16080.000000000004,
+        "breakeven": 27.777777777777775
+      }
+    ],
+    "classification": "Customer churn is commercially UNKNOWN; plan-tier is a conditional proxy reconstructed from dates."
+  },
+  "visual_validation": {
+    "rendered_pages": 7,
+    "render_prefix": "docs/paper/qa-render-v11/page-*.png",
+    "inspection": "All seven rendered pages inspected; final visual pass after corrections."
+  }
+}

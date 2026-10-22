@@ -1,0 +1,371 @@
+{
+  "definitions": {
+    "event_accounts": "unique account_id with >=1 churn event, regardless of reactivation or date",
+    "account_flag": "accounts.churn_flag as provided",
+    "monthly_event_counts": "event rows by churn_date month; not a rate",
+    "usage_account_total": "sum usage_count across all linked subscriptions and all dates per account; not time-normalized"
+  },
+  "counts": {
+    "accounts": 500,
+    "account_flag_true": 110,
+    "event_rows": 600,
+    "event_unique_accounts": 352,
+    "event_reactivation_rows": 61,
+    "event_nonreactivation_rows": 539,
+    "subscription_rows": 5000,
+    "subscription_ended_rows": 486,
+    "account_with_any_active_subscription": 500,
+    "usage_duplicate_id_rows": 21,
+    "usage_before_subscription_start": 19142,
+    "usage_after_subscription_end": 290,
+    "tickets": 2000,
+    "tickets_missing_satisfaction": 825
+  },
+  "flag_event_crosstab": {
+    "flag_true_event_yes": 75,
+    "flag_true_event_no": 35,
+    "flag_false_event_yes": 277,
+    "flag_false_event_no": 113
+  },
+  "event_reason_counts": {
+    "pricing": 91,
+    "support": 104,
+    "budget": 104,
+    "unknown": 95,
+    "features": 114,
+    "competitor": 92
+  },
+  "refund_amount_usd_sum": 8652.25,
+  "refund_nonzero_rows": 142,
+  "event_rows_by_year": {
+    "2023": 73,
+    "2024": 527
+  },
+  "unique_event_accounts_by_year": {
+    "2023": 64,
+    "2024": 327
+  },
+  "industry_churn_flags_and_event_accounts": {
+    "Cybersecurity": {
+      "accounts": 100,
+      "flag_true": 16,
+      "flag_rate": 0.16,
+      "any_event": 72,
+      "event_account_rate": 0.72
+    },
+    "DevTools": {
+      "accounts": 113,
+      "flag_true": 35,
+      "flag_rate": 0.309735,
+      "any_event": 83,
+      "event_account_rate": 0.734513
+    },
+    "EdTech": {
+      "accounts": 79,
+      "flag_true": 13,
+      "flag_rate": 0.164557,
+      "any_event": 57,
+      "event_account_rate": 0.721519
+    },
+    "FinTech": {
+      "accounts": 112,
+      "flag_true": 25,
+      "flag_rate": 0.223214,
+      "any_event": 76,
+      "event_account_rate": 0.678571
+    },
+    "HealthTech": {
+      "accounts": 96,
+      "flag_true": 21,
+      "flag_rate": 0.21875,
+      "any_event": 64,
+      "event_account_rate": 0.666667
+    }
+  },
+  "all_time_usage_by_event_membership": {
+    "any_event": {
+      "accounts": 352,
+      "mean_account_usage_count": 503.434659,
+      "median_account_usage_count": 499.5
+    },
+    "no_event": {
+      "accounts": 148,
+      "mean_account_usage_count": 495.378378,
+      "median_account_usage_count": 495.5
+    }
+  },
+  "support": {
+    "event_account_tickets": 1395,
+    "event_account_satisfaction_n": 815,
+    "event_account_satisfaction_mean": 3.980368,
+    "no_event_tickets": 605,
+    "no_event_satisfaction_n": 360,
+    "no_event_satisfaction_mean": 3.983333
+  },
+  "monthly": {
+    "2023-01": {
+      "event_rows": 1,
+      "event_accounts": 1,
+      "nonreactivation_rows": 1,
+      "usage_rows": 1069,
+      "usage_count_sum": 10877,
+      "usage_accounts": 440,
+      "tickets": 83,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 4.020833
+    },
+    "2023-02": {
+      "event_rows": 0,
+      "event_accounts": 0,
+      "nonreactivation_rows": 0,
+      "usage_rows": 970,
+      "usage_count_sum": 9492,
+      "usage_accounts": 412,
+      "tickets": 59,
+      "satisfaction_n": 36,
+      "satisfaction_mean": 4.027778
+    },
+    "2023-03": {
+      "event_rows": 5,
+      "event_accounts": 5,
+      "nonreactivation_rows": 5,
+      "usage_rows": 1103,
+      "usage_count_sum": 11031,
+      "usage_accounts": 431,
+      "tickets": 86,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 3.958333
+    },
+    "2023-04": {
+      "event_rows": 3,
+      "event_accounts": 3,
+      "nonreactivation_rows": 3,
+      "usage_rows": 1032,
+      "usage_count_sum": 10369,
+      "usage_accounts": 432,
+      "tickets": 91,
+      "satisfaction_n": 52,
+      "satisfaction_mean": 3.807692
+    },
+    "2023-05": {
+      "event_rows": 3,
+      "event_accounts": 3,
+      "nonreactivation_rows": 3,
+      "usage_rows": 1077,
+      "usage_count_sum": 10757,
+      "usage_accounts": 438,
+      "tickets": 78,
+      "satisfaction_n": 37,
+      "satisfaction_mean": 4.027027
+    },
+    "2023-06": {
+      "event_rows": 5,
+      "event_accounts": 5,
+      "nonreactivation_rows": 5,
+      "usage_rows": 1013,
+      "usage_count_sum": 10002,
+      "usage_accounts": 420,
+      "tickets": 82,
+      "satisfaction_n": 49,
+      "satisfaction_mean": 4.183673
+    },
+    "2023-07": {
+      "event_rows": 6,
+      "event_accounts": 6,
+      "nonreactivation_rows": 5,
+      "usage_rows": 1075,
+      "usage_count_sum": 11083,
+      "usage_accounts": 415,
+      "tickets": 83,
+      "satisfaction_n": 46,
+      "satisfaction_mean": 3.913043
+    },
+    "2023-08": {
+      "event_rows": 7,
+      "event_accounts": 6,
+      "nonreactivation_rows": 7,
+      "usage_rows": 1040,
+      "usage_count_sum": 10335,
+      "usage_accounts": 426,
+      "tickets": 96,
+      "satisfaction_n": 56,
+      "satisfaction_mean": 3.928571
+    },
+    "2023-09": {
+      "event_rows": 6,
+      "event_accounts": 6,
+      "nonreactivation_rows": 5,
+      "usage_rows": 969,
+      "usage_count_sum": 9737,
+      "usage_accounts": 409,
+      "tickets": 93,
+      "satisfaction_n": 55,
+      "satisfaction_mean": 4.072727
+    },
+    "2023-10": {
+      "event_rows": 10,
+      "event_accounts": 10,
+      "nonreactivation_rows": 7,
+      "usage_rows": 1095,
+      "usage_count_sum": 10968,
+      "usage_accounts": 426,
+      "tickets": 75,
+      "satisfaction_n": 41,
+      "satisfaction_mean": 3.780488
+    },
+    "2023-11": {
+      "event_rows": 11,
+      "event_accounts": 11,
+      "nonreactivation_rows": 11,
+      "usage_rows": 944,
+      "usage_count_sum": 9475,
+      "usage_accounts": 412,
+      "tickets": 74,
+      "satisfaction_n": 49,
+      "satisfaction_mean": 4.22449
+    },
+    "2023-12": {
+      "event_rows": 16,
+      "event_accounts": 16,
+      "nonreactivation_rows": 15,
+      "usage_rows": 1043,
+      "usage_count_sum": 10435,
+      "usage_accounts": 431,
+      "tickets": 91,
+      "satisfaction_n": 46,
+      "satisfaction_mean": 3.934783
+    },
+    "2024-01": {
+      "event_rows": 20,
+      "event_accounts": 18,
+      "nonreactivation_rows": 20,
+      "usage_rows": 1060,
+      "usage_count_sum": 10621,
+      "usage_accounts": 426,
+      "tickets": 84,
+      "satisfaction_n": 46,
+      "satisfaction_mean": 3.891304
+    },
+    "2024-02": {
+      "event_rows": 10,
+      "event_accounts": 10,
+      "nonreactivation_rows": 8,
+      "usage_rows": 1016,
+      "usage_count_sum": 10247,
+      "usage_accounts": 422,
+      "tickets": 75,
+      "satisfaction_n": 47,
+      "satisfaction_mean": 4.021277
+    },
+    "2024-03": {
+      "event_rows": 24,
+      "event_accounts": 24,
+      "nonreactivation_rows": 23,
+      "usage_rows": 1069,
+      "usage_count_sum": 10725,
+      "usage_accounts": 430,
+      "tickets": 92,
+      "satisfaction_n": 51,
+      "satisfaction_mean": 3.72549
+    },
+    "2024-04": {
+      "event_rows": 25,
+      "event_accounts": 23,
+      "nonreactivation_rows": 22,
+      "usage_rows": 1020,
+      "usage_count_sum": 10131,
+      "usage_accounts": 428,
+      "tickets": 81,
+      "satisfaction_n": 52,
+      "satisfaction_mean": 3.807692
+    },
+    "2024-05": {
+      "event_rows": 27,
+      "event_accounts": 25,
+      "nonreactivation_rows": 24,
+      "usage_rows": 1040,
+      "usage_count_sum": 10552,
+      "usage_accounts": 427,
+      "tickets": 81,
+      "satisfaction_n": 52,
+      "satisfaction_mean": 4.153846
+    },
+    "2024-06": {
+      "event_rows": 40,
+      "event_accounts": 38,
+      "nonreactivation_rows": 35,
+      "usage_rows": 1013,
+      "usage_count_sum": 10106,
+      "usage_accounts": 416,
+      "tickets": 78,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 4.0
+    },
+    "2024-07": {
+      "event_rows": 35,
+      "event_accounts": 33,
+      "nonreactivation_rows": 32,
+      "usage_rows": 1068,
+      "usage_count_sum": 10601,
+      "usage_accounts": 431,
+      "tickets": 70,
+      "satisfaction_n": 38,
+      "satisfaction_mean": 4.0
+    },
+    "2024-08": {
+      "event_rows": 42,
+      "event_accounts": 40,
+      "nonreactivation_rows": 37,
+      "usage_rows": 1060,
+      "usage_count_sum": 10559,
+      "usage_accounts": 422,
+      "tickets": 82,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 3.958333
+    },
+    "2024-09": {
+      "event_rows": 53,
+      "event_accounts": 48,
+      "nonreactivation_rows": 46,
+      "usage_rows": 1020,
+      "usage_count_sum": 10195,
+      "usage_accounts": 415,
+      "tickets": 96,
+      "satisfaction_n": 64,
+      "satisfaction_mean": 4.359375
+    },
+    "2024-10": {
+      "event_rows": 66,
+      "event_accounts": 60,
+      "nonreactivation_rows": 60,
+      "usage_rows": 1137,
+      "usage_count_sum": 11450,
+      "usage_accounts": 435,
+      "tickets": 88,
+      "satisfaction_n": 55,
+      "satisfaction_mean": 4.018182
+    },
+    "2024-11": {
+      "event_rows": 68,
+      "event_accounts": 60,
+      "nonreactivation_rows": 59,
+      "usage_rows": 991,
+      "usage_count_sum": 10039,
+      "usage_accounts": 410,
+      "tickets": 84,
+      "satisfaction_n": 49,
+      "satisfaction_mean": 3.816327
+    },
+    "2024-12": {
+      "event_rows": 117,
+      "event_accounts": 96,
+      "nonreactivation_rows": 106,
+      "usage_rows": 1076,
+      "usage_count_sum": 10738,
+      "usage_accounts": 428,
+      "tickets": 98,
+      "satisfaction_n": 62,
+      "satisfaction_mean": 3.83871
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="360" viewBox="0 0 860 360">
+<rect width="100%" height="100%" fill="#171714"/>
+<text x="32" y="34" fill="#f4efe3" font-family="Arial" font-size="20">Account positives differ by churn label</text>
+<text x="32" y="86" fill="#eee7d9" font-family="Arial" font-size="14">account_churn_flag</text>
+<rect x="260" y="62" width="520" height="30" rx="4" fill="#33322d"/>
+<rect x="260" y="62" width="162.5" height="30" rx="4" fill="#c39a43"/>
+<text x="792" y="83" fill="#f4efe3" font-family="Arial" font-size="14">110 / 500 (22.0%)</text>
+<text x="32" y="154" fill="#eee7d9" font-family="Arial" font-size="14">any_event_account</text>
+<rect x="260" y="130" width="520" height="30" rx="4" fill="#33322d"/>
+<rect x="260" y="130" width="520.0" height="30" rx="4" fill="#53462d"/>
+<text x="792" y="151" fill="#f4efe3" font-family="Arial" font-size="14">352 / 500 (70.4%)</text>
+<text x="32" y="222" fill="#eee7d9" font-family="Arial" font-size="14">has_nonreactivation_event</text>
+<rect x="260" y="198" width="520" height="30" rx="4" fill="#33322d"/>
+<rect x="260" y="198" width="500.8" height="30" rx="4" fill="#8f7440"/>
+<text x="792" y="219" fill="#f4efe3" font-family="Arial" font-size="14">339 / 500 (67.8%)</text>
+<text x="32" y="290" fill="#eee7d9" font-family="Arial" font-size="14">subscription_churn_flag_account</text>
+<rect x="260" y="266" width="520" height="30" rx="4" fill="#33322d"/>
+<rect x="260" y="266" width="460.9" height="30" rx="4" fill="#bdb4a2"/>
+<text x="792" y="287" fill="#f4efe3" font-family="Arial" font-size="14">312 / 500 (62.4%)</text>
+</svg>

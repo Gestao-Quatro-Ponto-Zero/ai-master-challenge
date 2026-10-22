@@ -1,0 +1,9 @@
+cohort,accounts,event_window_days_from_cohort_start_to_last_event,interpretation,account_flag_accounts,account_flag_share,any_event_accounts,any_event_share,nonreactivation_event_accounts,nonreactivation_event_share,subscription_flag_account_accounts,subscription_flag_account_share
+2023-Q1,55,730,retrospective label mix only; not cohort retention,16,0.2909,40,0.7273,38,0.6909,34,0.6182
+2023-Q2,54,640,retrospective label mix only; not cohort retention,13,0.2407,31,0.5741,31,0.5741,38,0.7037
+2023-Q3,53,549,retrospective label mix only; not cohort retention,11,0.2075,40,0.7547,39,0.7358,32,0.6038
+2023-Q4,65,457,retrospective label mix only; not cohort retention,18,0.2769,52,0.8,49,0.7538,37,0.5692
+2024-Q1,56,365,retrospective label mix only; not cohort retention,11,0.1964,39,0.6964,37,0.6607,34,0.6071
+2024-Q2,65,274,retrospective label mix only; not cohort retention,15,0.2308,47,0.7231,46,0.7077,42,0.6462
+2024-Q3,72,183,retrospective label mix only; not cohort retention,14,0.1944,49,0.6806,47,0.6528,43,0.5972
+2024-Q4,80,91,retrospective label mix only; not cohort retention,12,0.15,54,0.675,52,0.65,52,0.65

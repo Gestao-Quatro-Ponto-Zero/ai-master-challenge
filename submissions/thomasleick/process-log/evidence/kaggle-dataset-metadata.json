@@ -1,0 +1,8 @@
+{
+  "source": "https://www.kaggle.com/api/v1/datasets/view/rivalytics/saas-subscription-and-churn-analytics-dataset",
+  "retrieval": "Read-only HTTP request during current execution; 2026-10-21",
+  "title": "SaaS Subscription & Churn Analytics Dataset",
+  "ownerName": "Riv",
+  "licenseName": "MIT",
+  "subtitle": "Simulated data for SaaS user behavior analysis"
+}

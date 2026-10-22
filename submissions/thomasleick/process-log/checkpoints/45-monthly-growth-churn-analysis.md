@@ -1,0 +1,15 @@
+CHECKPOINT: 45 — Monthly growth, churn and exposure analysis
+STATUS: PASS
+OBJECTIVE: Add the monthly business lens requested by the user while retaining the daily account × plan × day ledger.
+WORK COMPLETED: Re-ran the five-table business driver and daily portfolio analyses into isolated `g4-alignment/` output folders. Verified all 24 monthly periods and opening denominators; compared absolute event/loss counts, exposure, normalized conditional rates, usage, support and plan composition; produced a full 24-month report and updated the Chapter 01 scale-vs-rate card.
+FILES CREATED: `docs/findings/G4-MONTHLY-CHURN-ANALYSIS.md`; `process-log/prompts/008-monthly-churn-addendum.md`; `process-log/evidence/g4-alignment-runtime.json`; regenerated outputs under `solution/analysis/daily_portfolio_churn/outputs/g4-alignment/` and `solution/analysis/business_drivers/outputs/g4-alignment/`.
+FILES MODIFIED: `solution/apps/web/src/App.tsx`; `solution/apps/web/src/contracts.ts` (already contained monthly result type); `solution/README.md`; `README.md`; `process-log/iterations.md`; `solution/apps/web/src/App.test.tsx`; `solution/apps/api/tests/test_api.py`.
+COMMANDS EXECUTED: Daily ledger generator, business-driver generator, Docker test-target build/run, Ruff in test image, `npm test`, `npm run build`, `docker compose config --quiet`, isolated project Compose build/start, API/web HTTP smoke checks.
+TESTS EXECUTED: Business-driver unittest 6/6; API plus daily ledger pytest in Python 3.12 container 33/33; frontend Vitest 6/6; TypeScript/Vite build passed; Ruff passed.
+TEST RESULTS: PASS after correcting stale test fixtures and scenario sensitivity expectation. One initial Python unittest command discovered zero pytest-style tests and is not counted; the Docker pytest target executed the actual tests. One initial Ruff call used wrong container-relative paths and was rerun successfully. One API scenario test initially expected prior sensitivity math; expectation updated to the currently implemented three-case formula.
+EVIDENCE LEVEL: UNIT / INTEGRATION / LOCAL_RUNTIME.
+BUSINESS FINDINGS: 73→527 event rows; 845→3,909 reconstructed customer-month exposure; 8.64→13.48 event rows per 100 customer-months. Plan-proxy losses 6→56 and 0.427→0.595 per 100 relation-months. Full coverage-loss episodes 2→6 but 0.237→0.153 per 100 customer-months. Raw use 124,561→125,964 (+1.13%); per observed account-month +1.17%. These mixed results are conditional/descriptive, not proof of commercial retention change. Monthly base/plan flow residuals are zero.
+UNKNOWN: Certified commercial customer churn; whether event row intensity changed due logging; causal drivers; valid temporal use/support effect; revenue churn; calibrated future risk.
+BLOCKERS: Browser visual inspection remains UNKNOWN due earlier browser safety denial; no bypass attempted.
+RISKS: Plan tier is only a proxy; subscription date semantics unresolved; usage temporal mismatch is high; low monthly loss counts make trend estimates noisy.
+NEXT STEP: Complete official requirements matrix and delivery audit, then review package status and preserve no Git/remote effects.

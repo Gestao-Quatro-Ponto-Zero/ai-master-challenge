@@ -1,0 +1,10 @@
+label,dimension,segment,subscriptions,positive_subscriptions,prevalence,wilson_95_low,wilson_95_high,small_sample_flag
+subscription_churn_flag_row,plan_tier,Basic,1602,152,0.09488139825218476,0.0814846916016799,0.11021633662234434,False
+subscription_churn_flag_row,plan_tier,Enterprise,1723,172,0.09982588508415555,0.08654948850449722,0.11488270264653312,False
+subscription_churn_flag_row,plan_tier,Pro,1675,162,0.09671641791044776,0.08347054672366316,0.11180784427520282,False
+subscription_churn_flag_row,billing_frequency,annual,2461,247,0.1003657049979683,0.08910961328583977,0.11286745791243796,False
+subscription_churn_flag_row,billing_frequency,monthly,2539,239,0.09413154785348563,0.08337833111239501,0.10611105177825522,False
+subscription_churn_flag_row,is_trial,False,4222,408,0.09663666508763619,0.08808751886514532,0.10591915810315894,False
+subscription_churn_flag_row,is_trial,True,778,78,0.10025706940874037,0.08107713895731244,0.12336515176207988,False
+subscription_churn_flag_row,auto_renew_flag,False,995,96,0.0964824120603015,0.07965849554882057,0.11641011683328761,False
+subscription_churn_flag_row,auto_renew_flag,True,4005,390,0.09737827715355805,0.08857852032287797,0.10694965580292012,False

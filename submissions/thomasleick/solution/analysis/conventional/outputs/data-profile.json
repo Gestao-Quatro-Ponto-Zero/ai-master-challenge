@@ -1,0 +1,1844 @@
+{
+  "accounts": {
+    "source": "ravenstack_accounts.csv",
+    "sha256": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+    "rows": 500,
+    "columns": [
+      "account_id",
+      "account_name",
+      "industry",
+      "country",
+      "signup_date",
+      "referral_source",
+      "plan_tier",
+      "seats",
+      "is_trial",
+      "churn_flag"
+    ],
+    "fields": {
+      "account_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 500,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "A-2e4581",
+            1
+          ],
+          [
+            "A-43a9e3",
+            1
+          ],
+          [
+            "A-0a282f",
+            1
+          ],
+          [
+            "A-1f0ac7",
+            1
+          ],
+          [
+            "A-ce550d",
+            1
+          ],
+          [
+            "A-1b9609",
+            1
+          ],
+          [
+            "A-a0ca4e",
+            1
+          ],
+          [
+            "A-e5d6ab",
+            1
+          ]
+        ]
+      },
+      "account_name": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 500,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "Company_0",
+            1
+          ],
+          [
+            "Company_1",
+            1
+          ],
+          [
+            "Company_2",
+            1
+          ],
+          [
+            "Company_3",
+            1
+          ],
+          [
+            "Company_4",
+            1
+          ],
+          [
+            "Company_5",
+            1
+          ],
+          [
+            "Company_6",
+            1
+          ],
+          [
+            "Company_7",
+            1
+          ]
+        ]
+      },
+      "industry": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 5,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "DevTools",
+            113
+          ],
+          [
+            "FinTech",
+            112
+          ],
+          [
+            "Cybersecurity",
+            100
+          ],
+          [
+            "HealthTech",
+            96
+          ],
+          [
+            "EdTech",
+            79
+          ]
+        ]
+      },
+      "country": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 7,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "US",
+            291
+          ],
+          [
+            "UK",
+            58
+          ],
+          [
+            "IN",
+            49
+          ],
+          [
+            "AU",
+            32
+          ],
+          [
+            "DE",
+            25
+          ],
+          [
+            "CA",
+            23
+          ],
+          [
+            "FR",
+            22
+          ]
+        ]
+      },
+      "signup_date": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 370,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-10-27",
+            4
+          ],
+          [
+            "2024-10-22",
+            4
+          ],
+          [
+            "2024-10-16",
+            3
+          ],
+          [
+            "2023-09-08",
+            3
+          ],
+          [
+            "2024-08-20",
+            3
+          ],
+          [
+            "2024-05-20",
+            3
+          ],
+          [
+            "2024-12-07",
+            3
+          ],
+          [
+            "2024-07-06",
+            3
+          ]
+        ],
+        "date_min": "2023-01-02",
+        "date_max": "2024-12-31"
+      },
+      "referral_source": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 5,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "organic",
+            114
+          ],
+          [
+            "other",
+            103
+          ],
+          [
+            "ads",
+            98
+          ],
+          [
+            "event",
+            96
+          ],
+          [
+            "partner",
+            89
+          ]
+        ]
+      },
+      "plan_tier": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 3,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "Pro",
+            178
+          ],
+          [
+            "Basic",
+            168
+          ],
+          [
+            "Enterprise",
+            154
+          ]
+        ]
+      },
+      "seats": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 73,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "1",
+            37
+          ],
+          [
+            "3",
+            27
+          ],
+          [
+            "5",
+            26
+          ],
+          [
+            "9",
+            22
+          ],
+          [
+            "4",
+            19
+          ],
+          [
+            "8",
+            18
+          ],
+          [
+            "19",
+            18
+          ],
+          [
+            "2",
+            17
+          ]
+        ],
+        "numeric_summary": {
+          "n": 500,
+          "mean": 20.56,
+          "median": 15.0,
+          "min": 1.0,
+          "max": 163.0,
+          "p25": 5.0,
+          "p75": 28.0
+        }
+      },
+      "is_trial": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            403
+          ],
+          [
+            "True",
+            97
+          ]
+        ]
+      },
+      "churn_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            390
+          ],
+          [
+            "True",
+            110
+          ]
+        ]
+      }
+    },
+    "id_checks": {
+      "account_id": {
+        "non_null": 500,
+        "distinct": 500,
+        "duplicate_ids": 0,
+        "rows_in_duplicate_groups": 0,
+        "excess_rows": 0
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "subscriptions": {
+    "source": "ravenstack_subscriptions.csv",
+    "sha256": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a",
+    "rows": 5000,
+    "columns": [
+      "subscription_id",
+      "account_id",
+      "start_date",
+      "end_date",
+      "plan_tier",
+      "seats",
+      "mrr_amount",
+      "arr_amount",
+      "is_trial",
+      "upgrade_flag",
+      "downgrade_flag",
+      "churn_flag",
+      "billing_frequency",
+      "auto_renew_flag"
+    ],
+    "fields": {
+      "subscription_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 5000,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "S-8cec59",
+            1
+          ],
+          [
+            "S-0f6f44",
+            1
+          ],
+          [
+            "S-51c0d1",
+            1
+          ],
+          [
+            "S-f81687",
+            1
+          ],
+          [
+            "S-cff5a2",
+            1
+          ],
+          [
+            "S-4b9b13",
+            1
+          ],
+          [
+            "S-dceac6",
+            1
+          ],
+          [
+            "S-8cad7b",
+            1
+          ]
+        ]
+      },
+      "account_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 500,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "A-d4ac0e",
+            19
+          ],
+          [
+            "A-5a92e7",
+            19
+          ],
+          [
+            "A-592832",
+            19
+          ],
+          [
+            "A-726cfa",
+            19
+          ],
+          [
+            "A-5a215a",
+            18
+          ],
+          [
+            "A-8bde0c",
+            18
+          ],
+          [
+            "A-6f8ad2",
+            17
+          ],
+          [
+            "A-692f18",
+            17
+          ]
+        ]
+      },
+      "start_date": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 625,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-12-31",
+            45
+          ],
+          [
+            "2024-12-10",
+            45
+          ],
+          [
+            "2024-12-26",
+            40
+          ],
+          [
+            "2024-12-21",
+            39
+          ],
+          [
+            "2024-12-30",
+            37
+          ],
+          [
+            "2024-12-29",
+            37
+          ],
+          [
+            "2024-12-24",
+            36
+          ],
+          [
+            "2024-12-20",
+            36
+          ]
+        ],
+        "date_min": "2023-01-09",
+        "date_max": "2024-12-31"
+      },
+      "end_date": {
+        "null_count": 4514,
+        "null_rate": 0.9028,
+        "distinct_non_null": 208,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-12-31",
+            24
+          ],
+          [
+            "2024-12-29",
+            19
+          ],
+          [
+            "2024-12-30",
+            18
+          ],
+          [
+            "2024-12-28",
+            10
+          ],
+          [
+            "2024-12-26",
+            8
+          ],
+          [
+            "2024-12-18",
+            7
+          ],
+          [
+            "2024-12-03",
+            7
+          ],
+          [
+            "2024-12-21",
+            7
+          ]
+        ],
+        "date_min": "2023-04-05",
+        "date_max": "2024-12-31"
+      },
+      "plan_tier": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 3,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "Enterprise",
+            1723
+          ],
+          [
+            "Pro",
+            1675
+          ],
+          [
+            "Basic",
+            1602
+          ]
+        ]
+      },
+      "seats": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 123,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "19",
+            165
+          ],
+          [
+            "9",
+            154
+          ],
+          [
+            "13",
+            152
+          ],
+          [
+            "18",
+            139
+          ],
+          [
+            "16",
+            130
+          ],
+          [
+            "12",
+            129
+          ],
+          [
+            "11",
+            124
+          ],
+          [
+            "23",
+            123
+          ]
+        ],
+        "numeric_summary": {
+          "n": 5000,
+          "mean": 29.852,
+          "median": 24.0,
+          "min": 1.0,
+          "max": 189.0,
+          "p25": 14.0,
+          "p75": 40.0
+        }
+      },
+      "mrr_amount": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 306,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "0",
+            778
+          ],
+          [
+            "3184",
+            56
+          ],
+          [
+            "931",
+            51
+          ],
+          [
+            "2587",
+            50
+          ],
+          [
+            "882",
+            44
+          ],
+          [
+            "2786",
+            43
+          ],
+          [
+            "3781",
+            43
+          ],
+          [
+            "1791",
+            43
+          ]
+        ],
+        "numeric_summary": {
+          "n": 5000,
+          "mean": 2267.7494,
+          "median": 931.0,
+          "min": 0.0,
+          "max": 33830.0,
+          "p25": 285.0,
+          "p75": 2786.0
+        }
+      },
+      "arr_amount": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 306,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "0",
+            778
+          ],
+          [
+            "38208",
+            56
+          ],
+          [
+            "11172",
+            51
+          ],
+          [
+            "31044",
+            50
+          ],
+          [
+            "10584",
+            44
+          ],
+          [
+            "33432",
+            43
+          ],
+          [
+            "45372",
+            43
+          ],
+          [
+            "21492",
+            43
+          ]
+        ],
+        "numeric_summary": {
+          "n": 5000,
+          "mean": 27212.9928,
+          "median": 11172.0,
+          "min": 0.0,
+          "max": 405960.0,
+          "p25": 3420.0,
+          "p75": 33432.0
+        }
+      },
+      "is_trial": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            4222
+          ],
+          [
+            "True",
+            778
+          ]
+        ]
+      },
+      "upgrade_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            4471
+          ],
+          [
+            "True",
+            529
+          ]
+        ]
+      },
+      "downgrade_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            4782
+          ],
+          [
+            "True",
+            218
+          ]
+        ]
+      },
+      "churn_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            4514
+          ],
+          [
+            "True",
+            486
+          ]
+        ]
+      },
+      "billing_frequency": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "monthly",
+            2539
+          ],
+          [
+            "annual",
+            2461
+          ]
+        ]
+      },
+      "auto_renew_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "True",
+            4005
+          ],
+          [
+            "False",
+            995
+          ]
+        ]
+      }
+    },
+    "id_checks": {
+      "subscription_id": {
+        "non_null": 5000,
+        "distinct": 5000,
+        "duplicate_ids": 0,
+        "rows_in_duplicate_groups": 0,
+        "excess_rows": 0
+      },
+      "account_id": {
+        "non_null": 5000,
+        "distinct": 500,
+        "duplicate_ids": 500,
+        "rows_in_duplicate_groups": 5000,
+        "excess_rows": 4500
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "feature_usage": {
+    "source": "ravenstack_feature_usage.csv",
+    "sha256": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e",
+    "rows": 25000,
+    "columns": [
+      "usage_id",
+      "subscription_id",
+      "usage_date",
+      "feature_name",
+      "usage_count",
+      "usage_duration_secs",
+      "error_count",
+      "is_beta_feature"
+    ],
+    "fields": {
+      "usage_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 24979,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "U-25b56c",
+            2
+          ],
+          [
+            "U-662254",
+            2
+          ],
+          [
+            "U-c878da",
+            2
+          ],
+          [
+            "U-f42b0a",
+            2
+          ],
+          [
+            "U-8128da",
+            2
+          ],
+          [
+            "U-48a4aa",
+            2
+          ],
+          [
+            "U-7a87ed",
+            2
+          ],
+          [
+            "U-6970d1",
+            2
+          ]
+        ]
+      },
+      "subscription_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 4967,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "S-0896f4",
+            16
+          ],
+          [
+            "S-52385a",
+            14
+          ],
+          [
+            "S-115823",
+            14
+          ],
+          [
+            "S-02b754",
+            14
+          ],
+          [
+            "S-e7e4bd",
+            13
+          ],
+          [
+            "S-66bae1",
+            13
+          ],
+          [
+            "S-dd220e",
+            13
+          ],
+          [
+            "S-196c1e",
+            13
+          ]
+        ]
+      },
+      "usage_date": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 731,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-10-11",
+            53
+          ],
+          [
+            "2023-04-18",
+            50
+          ],
+          [
+            "2024-07-11",
+            50
+          ],
+          [
+            "2023-03-07",
+            49
+          ],
+          [
+            "2023-02-26",
+            49
+          ],
+          [
+            "2024-06-09",
+            48
+          ],
+          [
+            "2024-07-10",
+            48
+          ],
+          [
+            "2023-01-08",
+            48
+          ]
+        ],
+        "date_min": "2023-01-01",
+        "date_max": "2024-12-31"
+      },
+      "feature_name": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 40,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "feature_12",
+            659
+          ],
+          [
+            "feature_32",
+            659
+          ],
+          [
+            "feature_6",
+            655
+          ],
+          [
+            "feature_17",
+            651
+          ],
+          [
+            "feature_34",
+            650
+          ],
+          [
+            "feature_26",
+            649
+          ],
+          [
+            "feature_36",
+            648
+          ],
+          [
+            "feature_31",
+            644
+          ]
+        ]
+      },
+      "usage_count": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 27,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "10",
+            3184
+          ],
+          [
+            "9",
+            3079
+          ],
+          [
+            "8",
+            2856
+          ],
+          [
+            "11",
+            2779
+          ],
+          [
+            "12",
+            2372
+          ],
+          [
+            "7",
+            2202
+          ],
+          [
+            "13",
+            1920
+          ],
+          [
+            "6",
+            1629
+          ]
+        ],
+        "numeric_summary": {
+          "n": 25000,
+          "mean": 10.021,
+          "median": 10.0,
+          "min": 0.0,
+          "max": 26.0,
+          "p25": 8.0,
+          "p75": 12.0
+        }
+      },
+      "usage_duration_secs": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 4168,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "3276",
+            37
+          ],
+          [
+            "2160",
+            36
+          ],
+          [
+            "1080",
+            33
+          ],
+          [
+            "2520",
+            31
+          ],
+          [
+            "1920",
+            31
+          ],
+          [
+            "1680",
+            31
+          ],
+          [
+            "1440",
+            29
+          ],
+          [
+            "1584",
+            29
+          ]
+        ],
+        "numeric_summary": {
+          "n": 25000,
+          "mean": 3042.20288,
+          "median": 2760.0,
+          "min": 0.0,
+          "max": 12696.0,
+          "p25": 1350.0,
+          "p75": 4400.0
+        }
+      },
+      "error_count": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 9,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "0",
+            17269
+          ],
+          [
+            "1",
+            3759
+          ],
+          [
+            "2",
+            2312
+          ],
+          [
+            "3",
+            1096
+          ],
+          [
+            "4",
+            419
+          ],
+          [
+            "5",
+            113
+          ],
+          [
+            "6",
+            30
+          ],
+          [
+            "7",
+            1
+          ]
+        ],
+        "numeric_summary": {
+          "n": 25000,
+          "mean": 0.56428,
+          "median": 0.0,
+          "min": 0.0,
+          "max": 8.0,
+          "p25": 0.0,
+          "p75": 1.0
+        }
+      },
+      "is_beta_feature": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            22456
+          ],
+          [
+            "True",
+            2544
+          ]
+        ]
+      }
+    },
+    "id_checks": {
+      "usage_id": {
+        "non_null": 25000,
+        "distinct": 24979,
+        "duplicate_ids": 21,
+        "rows_in_duplicate_groups": 42,
+        "excess_rows": 21
+      },
+      "subscription_id": {
+        "non_null": 25000,
+        "distinct": 4967,
+        "duplicate_ids": 4816,
+        "rows_in_duplicate_groups": 24849,
+        "excess_rows": 20033
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "support_tickets": {
+    "source": "ravenstack_support_tickets.csv",
+    "sha256": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220",
+    "rows": 2000,
+    "columns": [
+      "ticket_id",
+      "account_id",
+      "submitted_at",
+      "closed_at",
+      "resolution_time_hours",
+      "priority",
+      "first_response_time_minutes",
+      "satisfaction_score",
+      "escalation_flag"
+    ],
+    "fields": {
+      "ticket_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2000,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "T-0024de",
+            1
+          ],
+          [
+            "T-4d04b9",
+            1
+          ],
+          [
+            "T-d5e12f",
+            1
+          ],
+          [
+            "T-dfce9a",
+            1
+          ],
+          [
+            "T-c59f77",
+            1
+          ],
+          [
+            "T-90f06d",
+            1
+          ],
+          [
+            "T-30b537",
+            1
+          ],
+          [
+            "T-60242d",
+            1
+          ]
+        ]
+      },
+      "account_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 492,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "A-bb3bd4",
+            11
+          ],
+          [
+            "A-3ce5b8",
+            10
+          ],
+          [
+            "A-e98302",
+            9
+          ],
+          [
+            "A-503d5a",
+            9
+          ],
+          [
+            "A-139c3b",
+            9
+          ],
+          [
+            "A-ed510f",
+            9
+          ],
+          [
+            "A-c42f1f",
+            9
+          ],
+          [
+            "A-86902e",
+            9
+          ]
+        ]
+      },
+      "submitted_at": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 671,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-12-01",
+            10
+          ],
+          [
+            "2024-10-29",
+            9
+          ],
+          [
+            "2024-05-14",
+            8
+          ],
+          [
+            "2024-04-27",
+            8
+          ],
+          [
+            "2023-03-24",
+            8
+          ],
+          [
+            "2024-11-03",
+            8
+          ],
+          [
+            "2023-01-27",
+            8
+          ],
+          [
+            "2023-03-30",
+            8
+          ]
+        ],
+        "date_min": "2023-01-02",
+        "date_max": "2024-12-31"
+      },
+      "closed_at": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 1893,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-04-28 03:00:00",
+            3
+          ],
+          [
+            "2024-03-01 17:00:00",
+            3
+          ],
+          [
+            "2023-12-21 18:00:00",
+            2
+          ],
+          [
+            "2024-02-10 18:00:00",
+            2
+          ],
+          [
+            "2024-08-05 08:00:00",
+            2
+          ],
+          [
+            "2023-09-17 18:00:00",
+            2
+          ],
+          [
+            "2023-08-08 09:00:00",
+            2
+          ],
+          [
+            "2023-07-23 05:00:00",
+            2
+          ]
+        ],
+        "date_min": "2023-01-03",
+        "date_max": "2024-12-31"
+      },
+      "resolution_time_hours": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 72,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "5.0",
+            41
+          ],
+          [
+            "19.0",
+            38
+          ],
+          [
+            "12.0",
+            38
+          ],
+          [
+            "50.0",
+            36
+          ],
+          [
+            "1.0",
+            36
+          ],
+          [
+            "70.0",
+            35
+          ],
+          [
+            "65.0",
+            35
+          ],
+          [
+            "9.0",
+            34
+          ]
+        ],
+        "numeric_summary": {
+          "n": 2000,
+          "mean": 35.861,
+          "median": 35.0,
+          "min": 1.0,
+          "max": 72.0,
+          "p25": 17.0,
+          "p75": 54.0
+        }
+      },
+      "priority": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 4,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "urgent",
+            514
+          ],
+          [
+            "high",
+            510
+          ],
+          [
+            "medium",
+            491
+          ],
+          [
+            "low",
+            485
+          ]
+        ]
+      },
+      "first_response_time_minutes": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 180,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "127",
+            20
+          ],
+          [
+            "46",
+            19
+          ],
+          [
+            "125",
+            18
+          ],
+          [
+            "144",
+            17
+          ],
+          [
+            "176",
+            17
+          ],
+          [
+            "59",
+            17
+          ],
+          [
+            "30",
+            17
+          ],
+          [
+            "32",
+            17
+          ]
+        ],
+        "numeric_summary": {
+          "n": 2000,
+          "mean": 88.48,
+          "median": 88.0,
+          "min": 1.0,
+          "max": 180.0,
+          "p25": 43.0,
+          "p75": 131.0
+        }
+      },
+      "satisfaction_score": {
+        "null_count": 825,
+        "null_rate": 0.4125,
+        "distinct_non_null": 3,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "4.0",
+            405
+          ],
+          [
+            "3.0",
+            396
+          ],
+          [
+            "5.0",
+            374
+          ]
+        ],
+        "numeric_summary": {
+          "n": 1175,
+          "mean": 3.981276595744681,
+          "median": 4.0,
+          "min": 3.0,
+          "max": 5.0,
+          "p25": 3.0,
+          "p75": 5.0
+        }
+      },
+      "escalation_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            1905
+          ],
+          [
+            "True",
+            95
+          ]
+        ]
+      }
+    },
+    "id_checks": {
+      "ticket_id": {
+        "non_null": 2000,
+        "distinct": 2000,
+        "duplicate_ids": 0,
+        "rows_in_duplicate_groups": 0,
+        "excess_rows": 0
+      },
+      "account_id": {
+        "non_null": 2000,
+        "distinct": 492,
+        "duplicate_ids": 462,
+        "rows_in_duplicate_groups": 1970,
+        "excess_rows": 1508
+      }
+    },
+    "full_duplicate_rows": 0
+  },
+  "churn_events": {
+    "source": "ravenstack_churn_events.csv",
+    "sha256": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940",
+    "rows": 600,
+    "columns": [
+      "churn_event_id",
+      "account_id",
+      "churn_date",
+      "reason_code",
+      "refund_amount_usd",
+      "preceding_upgrade_flag",
+      "preceding_downgrade_flag",
+      "is_reactivation",
+      "feedback_text"
+    ],
+    "fields": {
+      "churn_event_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 600,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "C-816288",
+            1
+          ],
+          [
+            "C-5a81e7",
+            1
+          ],
+          [
+            "C-a174be",
+            1
+          ],
+          [
+            "C-accb39",
+            1
+          ],
+          [
+            "C-92f889",
+            1
+          ],
+          [
+            "C-a8ac26",
+            1
+          ],
+          [
+            "C-2e2966",
+            1
+          ],
+          [
+            "C-ee531b",
+            1
+          ]
+        ]
+      },
+      "account_id": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 352,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "A-0a62f5",
+            5
+          ],
+          [
+            "A-180abf",
+            5
+          ],
+          [
+            "A-37f969",
+            4
+          ],
+          [
+            "A-0baac2",
+            4
+          ],
+          [
+            "A-9208f0",
+            4
+          ],
+          [
+            "A-425e76",
+            4
+          ],
+          [
+            "A-533452",
+            4
+          ],
+          [
+            "A-68f37c",
+            4
+          ]
+        ]
+      },
+      "churn_date": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 311,
+        "inferred_type": "date/datetime",
+        "top_values": [
+          [
+            "2024-12-29",
+            7
+          ],
+          [
+            "2024-12-19",
+            7
+          ],
+          [
+            "2024-12-30",
+            6
+          ],
+          [
+            "2024-11-13",
+            6
+          ],
+          [
+            "2024-12-16",
+            6
+          ],
+          [
+            "2024-12-25",
+            6
+          ],
+          [
+            "2024-12-17",
+            6
+          ],
+          [
+            "2024-12-09",
+            6
+          ]
+        ],
+        "date_min": "2023-01-25",
+        "date_max": "2024-12-31"
+      },
+      "reason_code": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 6,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "features",
+            114
+          ],
+          [
+            "support",
+            104
+          ],
+          [
+            "budget",
+            104
+          ],
+          [
+            "unknown",
+            95
+          ],
+          [
+            "competitor",
+            92
+          ],
+          [
+            "pricing",
+            91
+          ]
+        ]
+      },
+      "refund_amount_usd": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 142,
+        "inferred_type": "numeric",
+        "top_values": [
+          [
+            "0.0",
+            458
+          ],
+          [
+            "6.38",
+            2
+          ],
+          [
+            "4.03",
+            1
+          ],
+          [
+            "96.45",
+            1
+          ],
+          [
+            "54.94",
+            1
+          ],
+          [
+            "34.4",
+            1
+          ],
+          [
+            "261.49",
+            1
+          ],
+          [
+            "77.87",
+            1
+          ]
+        ],
+        "numeric_summary": {
+          "n": 600,
+          "mean": 14.420416666666666,
+          "median": 0.0,
+          "min": 0.0,
+          "max": 392.92,
+          "p25": 0.0,
+          "p75": 0.0
+        }
+      },
+      "preceding_upgrade_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            477
+          ],
+          [
+            "True",
+            123
+          ]
+        ]
+      },
+      "preceding_downgrade_flag": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            547
+          ],
+          [
+            "True",
+            53
+          ]
+        ]
+      },
+      "is_reactivation": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "distinct_non_null": 2,
+        "inferred_type": "boolean-like",
+        "top_values": [
+          [
+            "False",
+            539
+          ],
+          [
+            "True",
+            61
+          ]
+        ]
+      },
+      "feedback_text": {
+        "null_count": 148,
+        "null_rate": 0.24666666666666667,
+        "distinct_non_null": 3,
+        "inferred_type": "string/category",
+        "top_values": [
+          [
+            "too expensive",
+            161
+          ],
+          [
+            "missing features",
+            155
+          ],
+          [
+            "switched to competitor",
+            136
+          ]
+        ]
+      }
+    },
+    "id_checks": {
+      "churn_event_id": {
+        "non_null": 600,
+        "distinct": 600,
+        "duplicate_ids": 0,
+        "rows_in_duplicate_groups": 0,
+        "excess_rows": 0
+      },
+      "account_id": {
+        "non_null": 600,
+        "distinct": 352,
+        "duplicate_ids": 175,
+        "rows_in_duplicate_groups": 423,
+        "excess_rows": 248
+      }
+    },
+    "full_duplicate_rows": 0
+  }
+}

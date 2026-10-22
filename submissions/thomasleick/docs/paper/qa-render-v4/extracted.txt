@@ -1,0 +1,594 @@
+G4 AI MASTER CHALLENGE 001 / BUSINESS DIAGNOSIS
+
+
+
+
+RavenStack -
+Beyond the Churn
+Headline
+A monthly, evidence-driven diagnosis of growth, retention and
+commercial movement
+
+
+
+    CONDITIONAL DATE RECONSTRUCTION
+
+
+
+
+More events do not automatically mean more customers lost. In the data, event
+and plan-loss intensity rise while complete account-coverage-loss intensity
+falls.
+
+
+Measure the movement. Then decide what to fix.
+
+
+
+
+Prepared by Thomas Leick
+Independent submission. No G4 affiliation or endorsement implied.
+
+
+
+
+           OBSERVE                            DECOMPOSE             PERSIST       </> BUILD
+
+
+COFFEE / CUBE / DISCIPLINE / CODE                                             EVIDENCE BEFORE CERTAINTY
+RAVENSTACK / THE CHURN PARADOX                                                      EXECUTIVE ANSWER
+
+
+
+
+The record is mixed - and actionable
+Events and plan losses intensified; complete-account coverage-loss intensity did not. That distinction changes the
+decision.
+
+
+    THE BUSINESS FINDING
+
+
+    In 2024 the event log and conditional plan-proxy loss rate rose, but the normalized rate of complete
+    account coverage-loss episodes fell. Fifty-four of 62 plan losses left another plan active; all eight
+    complete-loss episodes later returned. This is not a verified customer-churn trend.
+
+
+
+
+    Q1 / WHY?
+
+    No causal root cause is established. Feature (114/600), support (104/600) and budget (104/600) are the
+    leading declared reasons to test. Lifecycle indicators conflict across 312/500 accounts. Confidence: high
+    on counts; low on causality.
+
+
+
+
+    Q2 / WHO?
+
+    Enterprise has 5/120 conditional 2024 opening relations lost (4.17%); Basic 2/132 (1.52%); Pro 0/122.
+    Eight complete-loss/return histories merit reconciliation, not risk scoring. Confidence: moderate on
+    date-reconstructed history; low on future risk.
+
+
+
+
+    Q3 / WHAT NEXT?
+
+    Fix lifecycle/event links; reconcile 60 historical affected accounts; audit tier flags; then randomize eligible
+    accounts into outreach and holdout. Scenario net value ranges from -$1,056 to +$16,080 under stated
+    assumptions. Confidence: high on arithmetic; low on assumptions.
+
+
+
+
+DECISION
+
+Fund measurement and focused case review now. Do not fund broad discounting on the strength of
+event counts alone.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission | THOMAS LEICK                                                 02 / 07
+RAVENSTACK / THE CHURN PARADOX                                                                                                  MONTHLY CHURN MATHEMATICS
+
+
+
+
+Scale, rate and unit tell different stories
+Monthly values aggregate the canonical daily account x plan-tier ledger. Opening-cohort rates are not averages of
+daily rates.
+
+ Measure                                            2023                            2024                                Change / read
+
+ Recorded event rows                                73                              527                                 +454 rows; events, not lost customers
+
+ Opening account exposure                           845 acct-months                 3,909 acct-months                   4.63x exposure
+
+ Events / 100 account-months                        8.64                            13.48                               +56.1% recorded intensity
+
+ Plan-proxy losses / relation-months                6 / 1,406                       56 / 9,414                          0.427 to 0.595 per 100
+
+ Complete coverage-loss episodes                    2                               6                                   0.237 to 0.153 per 100 account-months
+
+Opening-cohort monthly loss rates (%) - 24 months
+
+
+              Plan relation - lost during month                           Plan relation - still lost at close                           Customer - complete coverage loss
+  1.00%
+
+
+
+
+  0.75%
+
+
+
+
+  0.50%
+
+
+
+
+  0.25%
+                1
+
+
+
+
+                             3
+
+
+
+
+                                           5
+
+
+
+
+                                                        7
+
+
+
+
+                                                                      9
+
+
+
+
+                                                                                        1
+
+
+
+
+                                                                                                       1
+
+
+
+
+                                                                                                                        3
+
+
+
+
+                                                                                                                                    5
+
+
+
+
+                                                                                                                                                  7
+
+
+
+
+                                                                                                                                                               9
+
+
+
+
+                                                                                                                                                                            1
+              -0
+
+
+
+
+                           -0
+
+
+
+
+                                         -0
+
+
+
+
+                                                      -0
+
+
+
+
+                                                                    -0
+
+
+
+
+                                                                                      -1
+
+
+
+
+                                                                                                     -0
+
+
+
+
+                                                                                                                      -0
+
+
+
+
+                                                                                                                                  -0
+
+
+
+
+                                                                                                                                                -0
+
+
+
+
+                                                                                                                                                             -0
+
+
+
+
+                                                                                                                                                                          -1
+  0.00%
+            23
+
+
+
+
+                         23
+
+
+
+
+                                       23
+
+
+
+
+                                                    23
+
+
+
+
+                                                                  23
+
+
+
+
+                                                                                    23
+
+
+
+
+                                                                                                   24
+
+
+
+
+                                                                                                                    24
+
+
+
+
+                                                                                                                                24
+
+
+
+
+                                                                                                                                              24
+
+
+
+
+                                                                                                                                                           24
+
+
+
+
+                                                                                                                                                                        24
+          20
+
+
+
+
+                       20
+
+
+
+
+                                     20
+
+
+
+
+                                                  20
+
+
+
+
+                                                                20
+
+
+
+
+                                                                                  20
+
+
+
+
+                                                                                                 20
+
+
+
+
+                                                                                                                  20
+
+
+
+
+                                                                                                                              20
+
+
+
+
+                                                                                                                                            20
+
+
+
+
+                                                                                                                                                         20
+
+
+
+
+                                                                                                                                                                      20
+Monthly flows (counts) - losses vs. additions
+
+            plan coverage losses                            new plan relations
+
+
+
+
+          23-01        23-03        23-05         23-07      23-09              23-11         24-01             24-03       24-05        24-07        24-09        24-11
+
+
+            new customers                                   customer reactivations
+
+
+
+
+          23-01        23-03        23-05         23-07      23-09              23-11         24-01             24-03       24-05        24-07        24-09        24-11
+
+
+The +454 event-row increase decomposes symmetrically into 338.9 rows from greater exposure and 115.1 from higher event intensity. This is
+arithmetic, not causal attribution; logging change and composition effects remain unidentifiable.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission | THOMAS LEICK                                                                                                           03 / 07
+RAVENSTACK / THE CHURN PARADOX                                                                   DRIVERS & EVIDENCE
+
+
+
+
+Reasons are clues; lifecycle data are the ga
+Five tables describe different parts of the customer journey. Their joins and time fields limit causal interpretation.
+
+
+   DECLARED EVENT REASONS / N=600                                        USAGE / SOURCE VOLUME
+
+
+    Reason                    Rows          Share                        Usage count: 124,561 to 125,964 (+1.13%). Per
+                                                                         observed account-month: 24.462 to 24.747 (+1.17%).
+    Features                  114           19.0%
+
+    Support                   104           17.3%
+
+    Budget                    104           17.3%
+                                                                         But 19,142/25,000 usage rows predate linked subscription
+    Unknown                   95            15.8%                        start, and 290 follow recorded end. Only 5,568 rows are
+                                                                         interval-valid; not a verified pre-loss window.
+    Competitor                92            15.3%
+
+    Pricing                   91            15.2%
+   Feature/value, service and affordability deserve separate
+   validation. The reason code is not a verified cause or a unique
+   customer count.
+
+
+
+   SUPPORT / ANY EVENT VS NONE                                           LIFECYCLE / STRONGEST ACTIONABLE FINDING
+
+
+    Measure                        Event                 No event        500 accounts; 5,000 subscriptions; 600 event rows
+                                                                         across 352 accounts. Account churn flags mark 110
+    Mean satisfaction              3.9804 (815 scored)   3.9833 (360)
+                                                                         accounts; subscription flags touch 312. Account flag vs.
+    Missing scores                 580/1395              245/605         any-event history differs for 312/500 accounts.
+
+    Median first response          89.0 min              87.0 min
+
+    Median resolution              35.0 h                35.0 h
+                                                                         The subscription table contains 529 upgrade and 218
+    Account mean escalation        4.93%                 4.49%           downgrade flags (23 both), but no dated from/to linkage.
+                                                                         Instrument the lifecycle before treating these as migrations.
+   Small retrospective differences; tickets cluster by account and
+   are not aligned to loss dates. Satisfaction is missing on 825/2,000
+   tickets.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission | THOMAS LEICK                                                                    04 / 07
+RAVENSTACK / THE CHURN PARADOX                                                                               SEGMENTS & ACCOUNTS
+
+
+
+
+Prioritize investigation, not prediction
+Small, conditional opening-cohort losses identify where to look first - not who is likely to leave next.
+
+ Plan-tier proxy              Opening               Lost any time               Rate (95% Wilson)                        Still lost
+
+ Enterprise                   120                   5                           4.17% (1.79-9.38)                        2
+
+ Basic                        132                   2                           1.52% (0.42-5.36)                        1
+
+ Pro                          122                   0                           0.00% (0.00-3.05)                        0
+
+
+Enterprise is 2.65 percentage points above Basic (4.17% vs. 1.52%), but the Wilson intervals overlap widely. No stable tier
+ranking or calibrated risk follows from 5, 2 and 0 events.
+EIGHT COMPLETE-COVERAGE-LOSS EPISODES THAT LATER RETURNED
+
+
+ Account             Segment / source                    First loss -> return              Coverage around event
+
+ A-432483            Cybersecurity / US / ads            2023-04-05 -> 2023-04-11          Pro lost; Basic
+
+ A-180abf            DevTools / US / event               2023-11-06 -> 2024-01-17          Enterprise lost; Basic
+
+ A-40a557            Cybersecurity / AU / partner        2024-01-16 -> 2024-02-12          Enterprise lost; Enterprise
+
+ A-8adedc            EdTech / US / event                 2024-03-09 -> 2024-03-16          Enterprise lost; Basic
+
+ A-c9bb3e            EdTech / US / ads                   2024-04-02 -> 2024-04-25          Pro lost; Pro
+
+ A-0baac2            FinTech / DE / organic              2024-09-13 -> 2024-10-14          Enterprise lost; Basic
+
+ A-0a282f            DevTools / US / organic             2024-09-25 -> 2024-09-28          Enterprise lost; Enterprise
+
+ A-410e86            FinTech / US / organic              2024-11-22 -> 2024-11-29          Enterprise lost; Enterprise
+
+
+
+Why these cases: each has an observed date-derived interval with no plan-tier coverage, followed by a recorded return. Review the
+eight first, then the broader 60-account loss population. Validate current status before outreach; account-only event reasons cannot
+be attached to a particular plan.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission | THOMAS LEICK                                                                      05 / 07
+RAVENSTACK / THE CHURN PARADOX                                                                              DECISION & QUANTIFIED IMPACT
+
+
+
+
+Measure first. Then test targeted retention
+Five actions translate the strongest evidence into reversible decisions. Only the scenario values are hypothetical.
+
+
+              Instrument lifecycle identity                                                                                Data / RevOps · days 0-30
+  01 Link cancellation, reactivation and plan-change events to account + subscription + effective date. KPI: linked and reconciled event
+              share.
+
+
+
+              Reconcile affected histories                                                                     CS Operations / RevOps · days 0-30
+  02 Review 60 historical accounts, starting with 8 complete-loss/return cases. Planning effort: 19 analyst/CS-ops hours (assumed).
+
+
+              Audit Enterprise and tier flags                                                                                   RevOps · days 30-60
+  03 Test 5/120 Enterprise versus 2/132 Basic and 0/122 Pro against contracts; verify the 529/218 row flags.
+
+
+              Validate stated reasons                                                                                      CS / Product · days 30-60
+  04 Follow up feature, support and budget reasons separately; link customer-confirmed reason to a lifecycle outcome.
+
+
+              Randomized retention pilot                                                                                CS / Analytics · days 60-90
+  05 After eligibility is reliable, randomize at account level; 90-day verified coverage primary, downgrade and support guardrails.
+
+PILOT SENSITIVITY / NOT OBSERVED REVENUE OR CAUSAL ROI
+
+
+ Case                  Uptake x lift    Retained eq.        Value x months         Gross             Cost            Net                Break-even / mo
+
+ Conservative          40% x 2 pp       0.48                $100 x 3               $144              $1,200          -$1,056            $833.33
+
+ Base                  60% x 5 pp       1.80                $200 x 6               $2,160            $1,200          $960               $111.11
+
+ Optimistic            80% x 10 pp      4.80                $400 x 9               $17,280           $1,200          $16,080            $27.78
+
+
+Model inputs: 60 hypothetical eligible accounts; $20 contact cost each ($1,200 total); scenario uptake 40/60/80%; assumed incremental retention lift
+2/5/10 percentage points; monthly value $100/$200/$400; benefit horizon 3/6/9 months. Net = modeled value minus outreach cost only. Conservative
+case is -$1,056. All inputs require validation; no present-day eligibility, margin, labor, discounting or accounting revenue is observed.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission | THOMAS LEICK                                                                                  06 / 07
+RAVENSTACK / THE CHURN PARADOX                                                                        EXECUTION ROADMAP & METHOD
+
+
+
+
+A decision sequence with explicit gates
+The paper is the primary deliverable; the local monthly laboratory is a companion for inspecting evidence and
+assumptions.
+
+ WHEN                 DELIVER                                                               EXIT GATE
+
+                      Lifecycle data contract; review eight full-loss/return cases and 60   Effective dates and a customer-level
+ 0-30 days
+                      plan-loss histories.                                                  active/lost definition approved by RevOps/CS.
+
+                      Audit Enterprise cohort and plan flags; validate stated               Outcome/event linkage and current eligible
+ 31-60 days
+                      feature/support/budget reasons; instrument activation.                population are measurable.
+
+                      Account-randomized outreach/holdout pilot; publish 90-day effect      Scale only if customer outcome improves and
+ 61-90 days
+                      and guardrails with uncertainty.                                      downside guardrails hold.
+
+
+WHAT THE NUMBERS MEAN
+
+Customer churn rate = unique eligible customers lost in the period / unique active customers at its opening. A commercially
+verified customer churn KPI is not identifiable here. The conditional 2024 account x plan-tier opening cohort gives 7/374
+(1.87%) losing coverage at any time, 3/374 (0.80%) still uncovered at year-end, and 0/190 opening accounts with complete
+coverage loss. Use this only as a PLAN-LEVEL PROXY under date intervals [start_date, end_date). There is no product_id; dates
+do not establish effective commercial end; account-only events have no subscription link. Recorded-event intensity is rows per
+opening account-month, not a churn rate. Recurring revenue changes, causal drivers and calibrated future risk remain
+UNKNOWN.
+
+
+
+
+   REPRODUCE / EXPLORE
+
+
+   Paper source, generator and numerical evidence manifest live in docs/paper/. From solution/: run the documented analysis
+   commands, then `docker compose up --build` for the companion monthly lab. Source hashes and formulas are in the manifest.
+   Dataset credit: River @ Rivalytics (synthetic, MIT-like terms). This is independent of G4; no endorsement is implied.
+
+
+
+AUTHORIAL MARK
+
+Coffee - observe. Cube - decompose. Training - persist. Code - test and build. A personal working signature, not a credential claim.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission | THOMAS LEICK                                                                            07 / 07
+

@@ -1,0 +1,17 @@
+[project]
+name = "ravenstack-churn-investigation-api"
+version = "0.1.0"
+description = "Evidence-first analytics API for the RavenStack churn investigation"
+requires-python = ">=3.12,<3.13"
+dependencies = ["fastapi==0.115.12", "uvicorn[standard]==0.34.2", "pandas==2.2.3", "pydantic==2.11.4"]
+
+[project.optional-dependencies]
+test = ["httpx==0.28.1", "pytest==8.3.5"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

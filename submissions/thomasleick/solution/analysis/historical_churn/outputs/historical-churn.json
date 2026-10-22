@@ -1,0 +1,3114 @@
+{
+  "annual": {
+    "2023": {
+      "accounts_first_subscription_started_during_year": 191,
+      "accounts_starting_exactly_at_closing_boundary": 1,
+      "assumptions": [
+        "end_date is treated as effective relationship termination, per source README; this is not independently verified.",
+        "A logo is active when any linked subscription row is active; 1:N rows are collapsed to distinct account_id.",
+        "Invalid non-positive subscription intervals are excluded from interval continuity; they remain counted in source QA.",
+        "This is not a verified finance or customer-success churn KPI because event and flag definitions materially disagree."
+      ],
+      "classical_logo_churn_rate_gross_exit": null,
+      "classical_logo_churn_rate_year_end_lost": null,
+      "closing_accounts": 191,
+      "closing_subscription_rows": 655,
+      "date_inferred_reactivations_active_at_year_end": 0,
+      "date_rule": "start_date <= snapshot_date and (end_date is null or end_date > snapshot_date)",
+      "event_accounts_any": 64,
+      "event_rows": 73,
+      "evidence_status": "UNDEFINED_ZERO_OPENING_BASE",
+      "first_observed_acquisitions_active_at_year_end": 190,
+      "first_subscription_cohort_active_at_year_end": 190,
+      "first_subscription_cohort_inactive_at_year_end": 1,
+      "gross_opening_account_exits_any_gap": 0,
+      "interval_semantics": "[start_date, end_date); blank end_date treated as open-ended per source README",
+      "movement_equation": {
+        "boundary_starts_at_close": 1,
+        "calculated_closing": 191,
+        "first_observed_new": 190,
+        "lost_at_year_end": 0,
+        "note": "Flow identity includes distinct first-observed additions active at close, prior-history returns active at close, date-boundary starts, and opening accounts inactive at close. It does not count within-period transient flows.",
+        "observed_closing": 191,
+        "opening": 0,
+        "reactivated_previously_seen": 0,
+        "residual": 0
+      },
+      "nonreactivation_event_accounts": 59,
+      "opening_accounts": 0,
+      "opening_accounts_inactive_at_year_end": 0,
+      "opening_accounts_with_account_churn_flag": 0,
+      "opening_accounts_with_nonreactivation_event": 0,
+      "opening_accounts_with_reactivation_marked_event": 0,
+      "opening_subscription_ids": 0,
+      "opening_subscription_rows": 0,
+      "opening_subscriptions_not_active_at_year_end": 0,
+      "opening_subscriptions_with_churn_flag": 0,
+      "reactivated_opening_accounts_after_gap": 0,
+      "reactivation_marked_event_accounts": 6,
+      "reactivation_marked_event_rows": 6,
+      "subscription_churn_rate_opening_cohort": null,
+      "subscription_end_rows_during_year": 18,
+      "year": 2023
+    },
+    "2024": {
+      "accounts_first_subscription_started_during_year": 309,
+      "accounts_starting_exactly_at_closing_boundary": 0,
+      "assumptions": [
+        "end_date is treated as effective relationship termination, per source README; this is not independently verified.",
+        "A logo is active when any linked subscription row is active; 1:N rows are collapsed to distinct account_id.",
+        "Invalid non-positive subscription intervals are excluded from interval continuity; they remain counted in source QA.",
+        "This is not a verified finance or customer-success churn KPI because event and flag definitions materially disagree."
+      ],
+      "classical_logo_churn_rate_gross_exit": 0.0,
+      "classical_logo_churn_rate_year_end_lost": 0.0,
+      "closing_accounts": 500,
+      "closing_subscription_rows": 4514,
+      "date_inferred_reactivations_active_at_year_end": 1,
+      "date_rule": "start_date <= snapshot_date and (end_date is null or end_date > snapshot_date)",
+      "event_accounts_any": 327,
+      "event_rows": 527,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "first_observed_acquisitions_active_at_year_end": 308,
+      "first_subscription_cohort_active_at_year_end": 309,
+      "first_subscription_cohort_inactive_at_year_end": 0,
+      "gross_opening_account_exits_any_gap": 0,
+      "interval_semantics": "[start_date, end_date); blank end_date treated as open-ended per source README",
+      "movement_equation": {
+        "boundary_starts_at_close": 0,
+        "calculated_closing": 500,
+        "first_observed_new": 308,
+        "lost_at_year_end": 0,
+        "note": "Flow identity includes distinct first-observed additions active at close, prior-history returns active at close, date-boundary starts, and opening accounts inactive at close. It does not count within-period transient flows.",
+        "observed_closing": 500,
+        "opening": 191,
+        "reactivated_previously_seen": 1,
+        "residual": 0
+      },
+      "nonreactivation_event_accounts": 311,
+      "opening_accounts": 191,
+      "opening_accounts_inactive_at_year_end": 0,
+      "opening_accounts_with_account_churn_flag": 49,
+      "opening_accounts_with_nonreactivation_event": 103,
+      "opening_accounts_with_reactivation_marked_event": 14,
+      "opening_subscription_ids": 655,
+      "opening_subscription_rows": 655,
+      "opening_subscriptions_not_active_at_year_end": 66,
+      "opening_subscriptions_with_churn_flag": 66,
+      "reactivated_opening_accounts_after_gap": 0,
+      "reactivation_marked_event_accounts": 49,
+      "reactivation_marked_event_rows": 55,
+      "subscription_churn_rate_opening_cohort": 0.10076335877862595,
+      "subscription_end_rows_during_year": 468,
+      "year": 2024
+    }
+  },
+  "cohorts": {
+    "definition": "First valid subscription start month; active if any linked subscription spans the month-end boundary; conditional on recorded date semantics.",
+    "diagnostic": {
+      "cohort_count": 24,
+      "cohort_month_points": 300,
+      "interim_gaps": [
+        {
+          "active_accounts": 14,
+          "cohort": "2023-09",
+          "elapsed_month": 2,
+          "initial_accounts": 15,
+          "retention_rate": 0.9333333333333333,
+          "snapshot_date": "2023-12-01"
+        },
+        {
+          "active_accounts": 14,
+          "cohort": "2023-09",
+          "elapsed_month": 3,
+          "initial_accounts": 15,
+          "retention_rate": 0.9333333333333333,
+          "snapshot_date": "2024-01-01"
+        },
+        {
+          "active_accounts": 25,
+          "cohort": "2024-01",
+          "elapsed_month": 0,
+          "initial_accounts": 26,
+          "retention_rate": 0.9615384615384616,
+          "snapshot_date": "2024-02-01"
+        },
+        {
+          "active_accounts": 26,
+          "cohort": "2024-06",
+          "elapsed_month": 3,
+          "initial_accounts": 27,
+          "retention_rate": 0.9629629629629629,
+          "snapshot_date": "2024-10-01"
+        }
+      ],
+      "latest_boundary_all_cohorts_active": true,
+      "minimum_date_rule_retention": 0.9333333333333333,
+      "points_below_100_percent": 4
+    },
+    "latest_by_cohort": [
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 23,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 22,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 21,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 20,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 19,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 18,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 17,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 16,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 15,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 14,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 13,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 12,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 11,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 10,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 9,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 8,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 7,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 6,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 5,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2024-08",
+        "elapsed_month": 4,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 31,
+        "cohort": "2024-09",
+        "elapsed_month": 3,
+        "initial_accounts": 31,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 23,
+        "cohort": "2024-10",
+        "elapsed_month": 2,
+        "initial_accounts": 23,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 36,
+        "cohort": "2024-11",
+        "elapsed_month": 1,
+        "initial_accounts": 36,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-12",
+        "elapsed_month": 0,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      }
+    ],
+    "rows": [
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 0,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-02-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 1,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-03-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 2,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-04-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 3,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-05-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 4,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-06-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 5,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-07-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 6,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 7,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 8,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 9,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 10,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 11,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 12,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 13,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 14,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 15,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 16,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 17,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 18,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 19,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 20,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 21,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 22,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 2,
+        "cohort": "2023-01",
+        "elapsed_month": 23,
+        "initial_accounts": 2,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 0,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-03-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 1,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-04-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 2,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-05-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 3,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-06-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 4,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-07-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 5,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 6,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 7,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 8,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 9,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 10,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 11,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 12,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 13,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 14,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 15,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 16,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 17,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 18,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 19,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 20,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 21,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 8,
+        "cohort": "2023-02",
+        "elapsed_month": 22,
+        "initial_accounts": 8,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 0,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-04-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 1,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-05-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 2,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-06-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 3,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-07-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 4,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 5,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 6,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 7,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 8,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 9,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 10,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 11,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 12,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 13,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 14,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 15,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 16,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 17,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 18,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 19,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 20,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 11,
+        "cohort": "2023-03",
+        "elapsed_month": 21,
+        "initial_accounts": 11,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 0,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-05-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 1,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-06-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 2,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-07-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 3,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 4,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 5,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 6,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 7,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 8,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 9,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 10,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 11,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 12,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 13,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 14,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 15,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 16,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 17,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 18,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 19,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-04",
+        "elapsed_month": 20,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 0,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-06-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 1,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-07-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 2,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 3,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 4,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 5,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 6,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 7,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 8,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 9,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 10,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 11,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 12,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 13,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 14,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 15,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 16,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 17,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 18,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-05",
+        "elapsed_month": 19,
+        "initial_accounts": 14,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 0,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-07-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 1,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 2,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 3,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 4,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 5,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 6,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 7,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 8,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 9,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 10,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 11,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 12,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 13,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 14,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 15,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 16,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 17,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 21,
+        "cohort": "2023-06",
+        "elapsed_month": 18,
+        "initial_accounts": 21,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 0,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-08-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 1,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 2,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 3,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 4,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 5,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 6,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 7,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 8,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 9,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 10,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 11,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 12,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 13,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 14,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 15,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 16,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-07",
+        "elapsed_month": 17,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 0,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-09-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 1,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 2,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 3,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 4,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 5,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 6,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 7,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 8,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 9,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 10,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 11,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 12,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 13,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 14,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 15,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2023-08",
+        "elapsed_month": 16,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 0,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-10-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 1,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-09",
+        "elapsed_month": 2,
+        "initial_accounts": 15,
+        "retention_rate": 0.9333333333333333,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 14,
+        "cohort": "2023-09",
+        "elapsed_month": 3,
+        "initial_accounts": 15,
+        "retention_rate": 0.9333333333333333,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 4,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 5,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 6,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 7,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 8,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 9,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 10,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 11,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 12,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 13,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 14,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 15,
+        "cohort": "2023-09",
+        "elapsed_month": 15,
+        "initial_accounts": 15,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 0,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-11-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 1,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 2,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 3,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 4,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 5,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 6,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 7,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 8,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 9,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 10,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 11,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 12,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 13,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2023-10",
+        "elapsed_month": 14,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 0,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2023-12-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 1,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 2,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 3,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 4,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 5,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 6,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 7,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 8,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 9,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 10,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 11,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 12,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2023-11",
+        "elapsed_month": 13,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 0,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-01-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 1,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 2,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 3,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 4,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 5,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 6,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 7,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 8,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 9,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 10,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 11,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2023-12",
+        "elapsed_month": 12,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-01",
+        "elapsed_month": 0,
+        "initial_accounts": 26,
+        "retention_rate": 0.9615384615384616,
+        "snapshot_date": "2024-02-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 1,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 2,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 3,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 4,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 5,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 6,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 7,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 8,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 9,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 10,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-01",
+        "elapsed_month": 11,
+        "initial_accounts": 26,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 0,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-03-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 1,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 2,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 3,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 4,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 5,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 6,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 7,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 8,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 9,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 18,
+        "cohort": "2024-02",
+        "elapsed_month": 10,
+        "initial_accounts": 18,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 0,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-04-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 1,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 2,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 3,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 4,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 5,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 6,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 7,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 8,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-03",
+        "elapsed_month": 9,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 0,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-05-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 1,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 2,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 3,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 4,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 5,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 6,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 7,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 22,
+        "cohort": "2024-04",
+        "elapsed_month": 8,
+        "initial_accounts": 22,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 0,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-06-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 1,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 2,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 3,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 4,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 5,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 6,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-05",
+        "elapsed_month": 7,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 0,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-07-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 1,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 2,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 26,
+        "cohort": "2024-06",
+        "elapsed_month": 3,
+        "initial_accounts": 27,
+        "retention_rate": 0.9629629629629629,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 4,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 5,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 27,
+        "cohort": "2024-06",
+        "elapsed_month": 6,
+        "initial_accounts": 27,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 0,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-08-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 1,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 2,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 3,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 4,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 28,
+        "cohort": "2024-07",
+        "elapsed_month": 5,
+        "initial_accounts": 28,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2024-08",
+        "elapsed_month": 0,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-09-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2024-08",
+        "elapsed_month": 1,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2024-08",
+        "elapsed_month": 2,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2024-08",
+        "elapsed_month": 3,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 20,
+        "cohort": "2024-08",
+        "elapsed_month": 4,
+        "initial_accounts": 20,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 31,
+        "cohort": "2024-09",
+        "elapsed_month": 0,
+        "initial_accounts": 31,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-10-01"
+      },
+      {
+        "active_accounts": 31,
+        "cohort": "2024-09",
+        "elapsed_month": 1,
+        "initial_accounts": 31,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 31,
+        "cohort": "2024-09",
+        "elapsed_month": 2,
+        "initial_accounts": 31,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 31,
+        "cohort": "2024-09",
+        "elapsed_month": 3,
+        "initial_accounts": 31,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 23,
+        "cohort": "2024-10",
+        "elapsed_month": 0,
+        "initial_accounts": 23,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-11-01"
+      },
+      {
+        "active_accounts": 23,
+        "cohort": "2024-10",
+        "elapsed_month": 1,
+        "initial_accounts": 23,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 23,
+        "cohort": "2024-10",
+        "elapsed_month": 2,
+        "initial_accounts": 23,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 36,
+        "cohort": "2024-11",
+        "elapsed_month": 0,
+        "initial_accounts": 36,
+        "retention_rate": 1.0,
+        "snapshot_date": "2024-12-01"
+      },
+      {
+        "active_accounts": 36,
+        "cohort": "2024-11",
+        "elapsed_month": 1,
+        "initial_accounts": 36,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      },
+      {
+        "active_accounts": 25,
+        "cohort": "2024-12",
+        "elapsed_month": 0,
+        "initial_accounts": 25,
+        "retention_rate": 1.0,
+        "snapshot_date": "2025-01-01"
+      }
+    ],
+    "status": "CONDITIONAL_DATE_RECONSTRUCTION"
+  },
+  "data_quality": {
+    "account_flags_true": 110,
+    "accounts_missing_account_row": [],
+    "accounts_with_any_event": 352,
+    "accounts_with_multiple_subscription_rows": 500,
+    "accounts_with_nonreactivation_event": 339,
+    "accounts_with_subscription_churn_flag": 312,
+    "duplicate_subscription_id_excess_rows": 0,
+    "duplicate_subscription_id_group_rows": 0,
+    "duplicate_subscription_id_groups": 0,
+    "invalid_interval_account_ids": [
+      "A-0b0d6d",
+      "A-1b7577",
+      "A-50bb9f",
+      "A-6da850",
+      "A-82d8a6",
+      "A-977ca0",
+      "A-b44e3e",
+      "A-bd4513",
+      "A-ce550d",
+      "A-d27f50",
+      "A-db5e9e",
+      "A-ff79f2",
+      "A-ffc04f"
+    ],
+    "invalid_nonpositive_subscription_intervals": 13,
+    "source_semantics": "Source README: blank end_date means active; subscription churn_flag means ended; account churn_flag means churned at any point; event churn_date described as when account left.",
+    "unique_subscription_ids": 5000
+  },
+  "event_date_conflicts": {
+    "2023": {
+      "nonreactivation_event_rows": 67,
+      "rows_during_any_date_active_subscription": 47,
+      "rows_without_any_date_active_subscription": 20
+    },
+    "2024": {
+      "nonreactivation_event_rows": 472,
+      "rows_during_any_date_active_subscription": 443,
+      "rows_without_any_date_active_subscription": 29
+    }
+  },
+  "metadata": {
+    "generated_by": "analysis/historical_churn/reconstruct.py",
+    "latest_source_dates": {
+      "churn_event": "2024-12-31",
+      "subscription_end": "2024-12-31",
+      "subscription_start": "2024-12-31"
+    },
+    "source_dir": "data/raw",
+    "source_hashes_sha256": {
+      "accounts": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+      "events": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940",
+      "subscriptions": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a"
+    }
+  },
+  "monthly": [
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 2,
+      "evidence_status": "UNDEFINED_ZERO_OPENING_BASE",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": null,
+      "month": "2023-01",
+      "opening_accounts": 0,
+      "opening_subscriptions": 0,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": null
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 10,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-02",
+      "opening_accounts": 2,
+      "opening_subscriptions": 3,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": 0.0
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 21,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-03",
+      "opening_accounts": 10,
+      "opening_subscriptions": 14,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": 0.0
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 37,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-04",
+      "opening_accounts": 21,
+      "opening_subscriptions": 32,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": 0.0
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 50,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-05",
+      "opening_accounts": 37,
+      "opening_subscriptions": 62,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": 0.0
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 71,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-06",
+      "opening_accounts": 50,
+      "opening_subscriptions": 90,
+      "opening_subscriptions_not_active_at_next_boundary": 1,
+      "subscription_churn_rate": 0.011111111111111112
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 90,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-07",
+      "opening_accounts": 71,
+      "opening_subscriptions": 137,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": 0.0
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 117,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-08",
+      "opening_accounts": 90,
+      "opening_subscriptions": 196,
+      "opening_subscriptions_not_active_at_next_boundary": 1,
+      "subscription_churn_rate": 0.00510204081632653
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 131,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-09",
+      "opening_accounts": 117,
+      "opening_subscriptions": 275,
+      "opening_subscriptions_not_active_at_next_boundary": 0,
+      "subscription_churn_rate": 0.0
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 149,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-10",
+      "opening_accounts": 131,
+      "opening_subscriptions": 336,
+      "opening_subscriptions_not_active_at_next_boundary": 4,
+      "subscription_churn_rate": 0.011904761904761904
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 172,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 1,
+      "logo_churn_rate": 0.006711409395973154,
+      "month": "2023-11",
+      "opening_accounts": 149,
+      "opening_subscriptions": 421,
+      "opening_subscriptions_not_active_at_next_boundary": 7,
+      "subscription_churn_rate": 0.0166270783847981
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 191,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2023-12",
+      "opening_accounts": 172,
+      "opening_subscriptions": 536,
+      "opening_subscriptions_not_active_at_next_boundary": 4,
+      "subscription_churn_rate": 0.007462686567164179
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 216,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-01",
+      "opening_accounts": 191,
+      "opening_subscriptions": 655,
+      "opening_subscriptions_not_active_at_next_boundary": 8,
+      "subscription_churn_rate": 0.012213740458015267
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 235,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-02",
+      "opening_accounts": 216,
+      "opening_subscriptions": 776,
+      "opening_subscriptions_not_active_at_next_boundary": 9,
+      "subscription_churn_rate": 0.011597938144329897
+    },
+    {
+      "accounts_reactivated_after_gap": 1,
+      "closing_accounts": 264,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 1,
+      "logo_churn_rate": 0.00425531914893617,
+      "month": "2024-03",
+      "opening_accounts": 235,
+      "opening_subscriptions": 914,
+      "opening_subscriptions_not_active_at_next_boundary": 7,
+      "subscription_churn_rate": 0.007658643326039387
+    },
+    {
+      "accounts_reactivated_after_gap": 1,
+      "closing_accounts": 282,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 1,
+      "logo_churn_rate": 0.003787878787878788,
+      "month": "2024-04",
+      "opening_accounts": 264,
+      "opening_subscriptions": 1105,
+      "opening_subscriptions_not_active_at_next_boundary": 13,
+      "subscription_churn_rate": 0.011764705882352941
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 313,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-05",
+      "opening_accounts": 282,
+      "opening_subscriptions": 1284,
+      "opening_subscriptions_not_active_at_next_boundary": 11,
+      "subscription_churn_rate": 0.008566978193146417
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 338,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-06",
+      "opening_accounts": 313,
+      "opening_subscriptions": 1520,
+      "opening_subscriptions_not_active_at_next_boundary": 11,
+      "subscription_churn_rate": 0.007236842105263158
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 366,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-07",
+      "opening_accounts": 338,
+      "opening_subscriptions": 1752,
+      "opening_subscriptions_not_active_at_next_boundary": 18,
+      "subscription_churn_rate": 0.010273972602739725
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 385,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-08",
+      "opening_accounts": 366,
+      "opening_subscriptions": 2067,
+      "opening_subscriptions_not_active_at_next_boundary": 24,
+      "subscription_churn_rate": 0.011611030478955007
+    },
+    {
+      "accounts_reactivated_after_gap": 1,
+      "closing_accounts": 415,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 2,
+      "logo_churn_rate": 0.005194805194805195,
+      "month": "2024-09",
+      "opening_accounts": 385,
+      "opening_subscriptions": 2378,
+      "opening_subscriptions_not_active_at_next_boundary": 26,
+      "subscription_churn_rate": 0.010933557611438183
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 441,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-10",
+      "opening_accounts": 415,
+      "opening_subscriptions": 2782,
+      "opening_subscriptions_not_active_at_next_boundary": 51,
+      "subscription_churn_rate": 0.01833213515456506
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 476,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-11",
+      "opening_accounts": 441,
+      "opening_subscriptions": 3229,
+      "opening_subscriptions_not_active_at_next_boundary": 51,
+      "subscription_churn_rate": 0.015794363580055745
+    },
+    {
+      "accounts_reactivated_after_gap": 0,
+      "closing_accounts": 500,
+      "evidence_status": "CONDITIONAL_DATE_RECONSTRUCTION",
+      "gross_logo_exits_any_interval_gap": 0,
+      "logo_churn_rate": 0.0,
+      "month": "2024-12",
+      "opening_accounts": 476,
+      "opening_subscriptions": 3773,
+      "opening_subscriptions_not_active_at_next_boundary": 93,
+      "subscription_churn_rate": 0.024648820567187913
+    }
+  ],
+  "snapshots": {
+    "2023-01-01": {
+      "accounts_with_multiple_active_subscription_rows": 0,
+      "active_accounts": 0,
+      "active_subscription_rows": 0
+    },
+    "2024-01-01": {
+      "accounts_with_multiple_active_subscription_rows": 164,
+      "active_accounts": 191,
+      "active_subscription_rows": 655
+    },
+    "2025-01-01": {
+      "accounts_with_multiple_active_subscription_rows": 500,
+      "active_accounts": 500,
+      "active_subscription_rows": 4514
+    }
+  },
+  "source_counts": {
+    "accounts": 500,
+    "churn_events": 600,
+    "subscriptions": 5000
+  }
+}

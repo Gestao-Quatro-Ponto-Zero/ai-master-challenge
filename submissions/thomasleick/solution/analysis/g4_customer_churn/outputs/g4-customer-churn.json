@@ -1,0 +1,3597 @@
+{
+  "account_review_candidates": [
+    {
+      "account_churn_flag": false,
+      "account_id": "A-37f969",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "IN",
+      "industry": "HealthTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 4,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "partner"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-ee42db",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "DE",
+      "industry": "EdTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 4,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "ads"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-1b9609",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "IN",
+      "industry": "EdTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "ads"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-1e1b80",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "CA",
+      "industry": "FinTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "other"
+    },
+    {
+      "account_churn_flag": true,
+      "account_id": "A-32fb14",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "US",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "event"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-3b5cd1",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "US",
+      "industry": "FinTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Basic",
+      "referral_source": "event"
+    },
+    {
+      "account_churn_flag": true,
+      "account_id": "A-425e76",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "UK",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "other"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-54ecc2",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "US",
+      "industry": "Cybersecurity",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "partner"
+    },
+    {
+      "account_churn_flag": true,
+      "account_id": "A-5a184f",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "DE",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "other"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-5a3eb9",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "CA",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "other"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-6da850",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "IN",
+      "industry": "FinTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Pro",
+      "referral_source": "organic"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-81edc3",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "IN",
+      "industry": "Cybersecurity",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Basic",
+      "referral_source": "ads"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-d77f4c",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "US",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Pro",
+      "referral_source": "partner"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-e19ff6",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "UK",
+      "industry": "Cybersecurity",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "partner"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-e51ec7",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "CA",
+      "industry": "FinTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "partner"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-e888d1",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "US",
+      "industry": "Cybersecurity",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 3,
+      "opening_2024_date_active": true,
+      "plan_tier": "Pro",
+      "referral_source": "other"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-05d3b3",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "AU",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 2,
+      "opening_2024_date_active": true,
+      "plan_tier": "Basic",
+      "referral_source": "ads"
+    },
+    {
+      "account_churn_flag": false,
+      "account_id": "A-05f0e5",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "US",
+      "industry": "FinTech",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 2,
+      "opening_2024_date_active": true,
+      "plan_tier": "Basic",
+      "referral_source": "partner"
+    },
+    {
+      "account_churn_flag": true,
+      "account_id": "A-098560",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "UK",
+      "industry": "DevTools",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 2,
+      "opening_2024_date_active": true,
+      "plan_tier": "Enterprise",
+      "referral_source": "ads"
+    },
+    {
+      "account_churn_flag": true,
+      "account_id": "A-0dbdc6",
+      "classification": "RECONCILIATION_PRIORITY_NOT_PREDICTIVE_RISK",
+      "country": "DE",
+      "industry": "Cybersecurity",
+      "nonreactivation_event_in_2024": true,
+      "nonreactivation_event_rows_all_history": 2,
+      "opening_2024_date_active": true,
+      "plan_tier": "Pro",
+      "referral_source": "other"
+    }
+  ],
+  "annual": {
+    "2023": {
+      "closing_active_accounts": 191,
+      "conditional_closing_date_loss_rate": null,
+      "conditional_gross_date_churn_rate": null,
+      "conditional_subscription_churn_rate": null,
+      "date_rule": "start_date <= boundary and (end_date blank or end_date > boundary); account active if any linked subscription is active",
+      "event_rows_all": 73,
+      "event_rows_nonreactivation": 67,
+      "evidence_classification": "NOT_IDENTIFIABLE_PRIMARY_KPI; CONDITIONAL_DATE_DIAGNOSTIC",
+      "first_subscription_acquisitions_during_period": 191,
+      "nonreactivation_event_rows_with_active_subscription": 47,
+      "opening_accounts_with_account_churn_flag": 0,
+      "opening_accounts_with_any_date_coverage_gap": 0,
+      "opening_accounts_with_nonreactivation_event": 0,
+      "opening_accounts_without_coverage_at_close": 0,
+      "opening_active_accounts": 0,
+      "opening_active_subscription_rows": 0,
+      "opening_subscriptions_not_active_at_close": 0,
+      "subscription_ends_during_period": 18,
+      "unique_accounts_with_nonreactivation_event": 59,
+      "year": 2023
+    },
+    "2024": {
+      "closing_active_accounts": 500,
+      "conditional_closing_date_loss_rate": 0.0,
+      "conditional_gross_date_churn_rate": 0.0,
+      "conditional_subscription_churn_rate": 0.10076335877862595,
+      "date_rule": "start_date <= boundary and (end_date blank or end_date > boundary); account active if any linked subscription is active",
+      "event_rows_all": 527,
+      "event_rows_nonreactivation": 472,
+      "evidence_classification": "NOT_IDENTIFIABLE_PRIMARY_KPI; CONDITIONAL_DATE_DIAGNOSTIC",
+      "first_subscription_acquisitions_during_period": 308,
+      "nonreactivation_event_rows_with_active_subscription": 443,
+      "opening_accounts_with_account_churn_flag": 49,
+      "opening_accounts_with_any_date_coverage_gap": 0,
+      "opening_accounts_with_nonreactivation_event": 103,
+      "opening_accounts_without_coverage_at_close": 0,
+      "opening_active_accounts": 191,
+      "opening_active_subscription_rows": 655,
+      "opening_subscriptions_not_active_at_close": 66,
+      "subscription_ends_during_period": 468,
+      "unique_accounts_with_nonreactivation_event": 311,
+      "year": 2024
+    }
+  },
+  "cohorts": {
+    "definition": "Earliest positive-length subscription start month; active if any linked subscription is open under source date rule at the next month boundary.",
+    "limitation": "End dates, missing end dates, and event labels conflict; this is a conditional date-state matrix and must not be interpreted as verified customer retention.",
+    "rows": [
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-02-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-03-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-04-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-05-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-06-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-07-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 18,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 19,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 20,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 21,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 22,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 2,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 23,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 2
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-03-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-04-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-05-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-06-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-07-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 18,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 19,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 20,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 21,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 8,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 22,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 8
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-04-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-05-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-06-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-07-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 18,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 19,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 20,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 11,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 21,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 11
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-05-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-06-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-07-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 18,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 19,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 20,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-06-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-07-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 18,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 19,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 14
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2023-07-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 21,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 18,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 21
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-08-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 17,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2023-09-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 16,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-10-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-09",
+        "conditional_retention": 0.9333333333333333,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 14,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-09",
+        "conditional_retention": 0.9333333333333333,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 15,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 15,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 15
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-11-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 14,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2023-12-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 13,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-01-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-02-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-03-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-04-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-05-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-06-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-07-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-08-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-09-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-10-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-11-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-12-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2025-01-01",
+        "cohort": "2023-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 12,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-02-01",
+        "cohort": "2024-01",
+        "conditional_retention": 0.9615384615384616,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-03-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-04-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-05-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-06-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-07-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-01",
+        "conditional_retention": 1.0,
+        "elapsed_month": 11,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 26
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-03-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-04-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-05-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-06-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-07-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 18,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-02",
+        "conditional_retention": 1.0,
+        "elapsed_month": 10,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 18
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-04-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-05-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-06-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-07-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-03",
+        "conditional_retention": 1.0,
+        "elapsed_month": 9,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-05-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-06-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-07-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 22,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-04",
+        "conditional_retention": 1.0,
+        "elapsed_month": 8,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 22
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-06-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-07-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-05",
+        "conditional_retention": 1.0,
+        "elapsed_month": 7,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-07-01",
+        "cohort": "2024-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 26,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-06",
+        "conditional_retention": 0.9629629629629629,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 27,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-06",
+        "conditional_retention": 1.0,
+        "elapsed_month": 6,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 27
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-08-01",
+        "cohort": "2024-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 28,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-07",
+        "conditional_retention": 1.0,
+        "elapsed_month": 5,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 28
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-09-01",
+        "cohort": "2024-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 20,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-08",
+        "conditional_retention": 1.0,
+        "elapsed_month": 4,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 20
+      },
+      {
+        "active_by_recorded_dates": 31,
+        "boundary_date": "2024-10-01",
+        "cohort": "2024-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 31
+      },
+      {
+        "active_by_recorded_dates": 31,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 31
+      },
+      {
+        "active_by_recorded_dates": 31,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 31
+      },
+      {
+        "active_by_recorded_dates": 31,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-09",
+        "conditional_retention": 1.0,
+        "elapsed_month": 3,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 31
+      },
+      {
+        "active_by_recorded_dates": 23,
+        "boundary_date": "2024-11-01",
+        "cohort": "2024-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 23
+      },
+      {
+        "active_by_recorded_dates": 23,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 23
+      },
+      {
+        "active_by_recorded_dates": 23,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-10",
+        "conditional_retention": 1.0,
+        "elapsed_month": 2,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 23
+      },
+      {
+        "active_by_recorded_dates": 36,
+        "boundary_date": "2024-12-01",
+        "cohort": "2024-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 36
+      },
+      {
+        "active_by_recorded_dates": 36,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-11",
+        "conditional_retention": 1.0,
+        "elapsed_month": 1,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 36
+      },
+      {
+        "active_by_recorded_dates": 25,
+        "boundary_date": "2025-01-01",
+        "cohort": "2024-12",
+        "conditional_retention": 1.0,
+        "elapsed_month": 0,
+        "evidence_classification": "CONDITIONAL_ONLY_LIFECYCLE_SEMANTICS_UNVERIFIED",
+        "initial_accounts": 25
+      }
+    ],
+    "status": "DIAGNOSTIC_ONLY_NOT_VALIDATED_RETENTION"
+  },
+  "metadata": {
+    "generated_by": "analysis/g4_customer_churn/analyze.py",
+    "source_hashes_sha256": {
+      "accounts": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+      "events": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940",
+      "subscriptions": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a"
+    },
+    "source_window": "2023-01-01 through 2025-01-01 date boundary; source rows end 2024-12-31"
+  },
+  "methodology": [
+    "Customer = distinct account_id, with simultaneous subscription rows collapsed to one account.",
+    "Opening active status is any subscription row satisfying start_date <= boundary and (end_date blank or end_date > boundary).",
+    "An account-date coverage gap is conditional on end_date being an effective end and no unrecorded subscription coverage.",
+    "Account churn flags are all-time labels; event rows are account-grain only and are not accepted as customer-loss outcomes when contradicted by active subscriptions.",
+    "The primary KPI remains UNKNOWN; conditional date calculations are disclosed separately."
+  ],
+  "monthly": [
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": null,
+      "date_gap_accounts": 0,
+      "evidence_classification": "UNDEFINED_ZERO_DENOMINATOR",
+      "opening_accounts": 0,
+      "period": "2023-01"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 2,
+      "period": "2023-02"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 10,
+      "period": "2023-03"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 21,
+      "period": "2023-04"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 37,
+      "period": "2023-05"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 50,
+      "period": "2023-06"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 71,
+      "period": "2023-07"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 90,
+      "period": "2023-08"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 117,
+      "period": "2023-09"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 131,
+      "period": "2023-10"
+    },
+    {
+      "accounts_without_coverage_at_close": 1,
+      "conditional_date_gap_rate": 0.006711409395973154,
+      "date_gap_accounts": 1,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 149,
+      "period": "2023-11"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 172,
+      "period": "2023-12"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 191,
+      "period": "2024-01"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 216,
+      "period": "2024-02"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.00425531914893617,
+      "date_gap_accounts": 1,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 235,
+      "period": "2024-03"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.003787878787878788,
+      "date_gap_accounts": 1,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 264,
+      "period": "2024-04"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 282,
+      "period": "2024-05"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 313,
+      "period": "2024-06"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 338,
+      "period": "2024-07"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 366,
+      "period": "2024-08"
+    },
+    {
+      "accounts_without_coverage_at_close": 1,
+      "conditional_date_gap_rate": 0.005194805194805195,
+      "date_gap_accounts": 2,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 385,
+      "period": "2024-09"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 415,
+      "period": "2024-10"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 441,
+      "period": "2024-11"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 476,
+      "period": "2024-12"
+    }
+  ],
+  "primary_customer_churn": {
+    "classification": "C \u2014 CUSTOMER CHURN NOT IDENTIFIABLE",
+    "conditional_date_result_2023": null,
+    "conditional_date_result_2024": 0.0,
+    "conditional_denominator_2024": 191,
+    "conditional_numerator_2024": 0,
+    "denominator": null,
+    "formula": "Unique eligible customers lost during period / unique active customers at period start \u00d7 100",
+    "numerator": null,
+    "period": "2023 and 2024",
+    "reason": "Subscription dates report no complete account-coverage losses for the 2024 opening base, while account-level departure events conflict with subscriptions still active on those dates; source semantics do not resolve the conflict.",
+    "value": null
+  },
+  "quarterly": [
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": null,
+      "date_gap_accounts": 0,
+      "evidence_classification": "UNDEFINED_ZERO_DENOMINATOR",
+      "opening_accounts": 0,
+      "period": "2023-Q1"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 21,
+      "period": "2023-Q2"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 71,
+      "period": "2023-Q3"
+    },
+    {
+      "accounts_without_coverage_at_close": 1,
+      "conditional_date_gap_rate": 0.007633587786259542,
+      "date_gap_accounts": 1,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 131,
+      "period": "2023-Q4"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 191,
+      "period": "2024-Q1"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.003787878787878788,
+      "date_gap_accounts": 1,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 264,
+      "period": "2024-Q2"
+    },
+    {
+      "accounts_without_coverage_at_close": 1,
+      "conditional_date_gap_rate": 0.0029585798816568047,
+      "date_gap_accounts": 1,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 338,
+      "period": "2024-Q3"
+    },
+    {
+      "accounts_without_coverage_at_close": 0,
+      "conditional_date_gap_rate": 0.0,
+      "date_gap_accounts": 0,
+      "evidence_classification": "CONDITIONAL_DATE_DIAGNOSTIC",
+      "opening_accounts": 415,
+      "period": "2024-Q4"
+    }
+  ],
+  "reconciliation": {
+    "accounts_missing_from_account_table": [],
+    "invalid_nonpositive_subscription_intervals": 13,
+    "movement_bridge": {
+      "calculated_closing_accounts": 500,
+      "first_subscription_starts_active_at_close": 308,
+      "note": "Boundary-set reconciliation under the subscription-date rule; not gross within-period customer movements.",
+      "observed_closing_accounts": 500,
+      "opening_accounts": 191,
+      "opening_accounts_lost_by_date_rule_at_close": 0,
+      "previously_seen_accounts_returning_active_at_close": 1,
+      "residual": 0
+    },
+    "nonreactivation_event_accounts_2024": 311,
+    "nonreactivation_event_rows_2024": 472,
+    "nonreactivation_event_rows_2024_with_active_subscription": 443,
+    "opening_2024_accounts_with_any_2024_event": 111,
+    "opening_2024_accounts_with_flag": 49,
+    "opening_2024_accounts_with_nonreactivation_event": 130,
+    "opening_base_event_prevalence_not_churn_rate": 0.680628272251309,
+    "opening_base_flag_prevalence_not_churn_rate": 0.25654450261780104,
+    "subscription_ids_unique": 5000,
+    "unique_account_flag_true_all_history": 110,
+    "unique_accounts_with_any_event_all_history": 352,
+    "unique_accounts_with_nonreactivation_event_all_history": 339
+  },
+  "segments": [
+    {
+      "2024_event_prevalence": 0.57,
+      "account_flag_prevalence": 0.16,
+      "account_flag_true": 16,
+      "accounts": 100,
+      "accounts_with_2024_nonreactivation_event": 57,
+      "accounts_with_nonreactivation_event_all_history": 68,
+      "all_history_event_prevalence": 0.68,
+      "dimension": "industry",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "Cybersecurity"
+    },
+    {
+      "2024_event_prevalence": 0.6637168141592921,
+      "account_flag_prevalence": 0.30973451327433627,
+      "account_flag_true": 35,
+      "accounts": 113,
+      "accounts_with_2024_nonreactivation_event": 75,
+      "accounts_with_nonreactivation_event_all_history": 81,
+      "all_history_event_prevalence": 0.7168141592920354,
+      "dimension": "industry",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "DevTools"
+    },
+    {
+      "2024_event_prevalence": 0.6962025316455697,
+      "account_flag_prevalence": 0.16455696202531644,
+      "account_flag_true": 13,
+      "accounts": 79,
+      "accounts_with_2024_nonreactivation_event": 55,
+      "accounts_with_nonreactivation_event_all_history": 56,
+      "all_history_event_prevalence": 0.7088607594936709,
+      "dimension": "industry",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "EdTech"
+    },
+    {
+      "2024_event_prevalence": 0.5803571428571429,
+      "account_flag_prevalence": 0.22321428571428573,
+      "account_flag_true": 25,
+      "accounts": 112,
+      "accounts_with_2024_nonreactivation_event": 65,
+      "accounts_with_nonreactivation_event_all_history": 72,
+      "all_history_event_prevalence": 0.6428571428571429,
+      "dimension": "industry",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "FinTech"
+    },
+    {
+      "2024_event_prevalence": 0.6145833333333334,
+      "account_flag_prevalence": 0.21875,
+      "account_flag_true": 21,
+      "accounts": 96,
+      "accounts_with_2024_nonreactivation_event": 59,
+      "accounts_with_nonreactivation_event_all_history": 62,
+      "all_history_event_prevalence": 0.6458333333333334,
+      "dimension": "industry",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "HealthTech"
+    },
+    {
+      "2024_event_prevalence": 0.46875,
+      "account_flag_prevalence": 0.125,
+      "account_flag_true": 4,
+      "accounts": 32,
+      "accounts_with_2024_nonreactivation_event": 15,
+      "accounts_with_nonreactivation_event_all_history": 21,
+      "all_history_event_prevalence": 0.65625,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "AU"
+    },
+    {
+      "2024_event_prevalence": 0.6521739130434783,
+      "account_flag_prevalence": 0.17391304347826086,
+      "account_flag_true": 4,
+      "accounts": 23,
+      "accounts_with_2024_nonreactivation_event": 15,
+      "accounts_with_nonreactivation_event_all_history": 16,
+      "all_history_event_prevalence": 0.6956521739130435,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "CA"
+    },
+    {
+      "2024_event_prevalence": 0.56,
+      "account_flag_prevalence": 0.32,
+      "account_flag_true": 8,
+      "accounts": 25,
+      "accounts_with_2024_nonreactivation_event": 14,
+      "accounts_with_nonreactivation_event_all_history": 14,
+      "all_history_event_prevalence": 0.56,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "DE"
+    },
+    {
+      "2024_event_prevalence": 0.7272727272727273,
+      "account_flag_prevalence": 0.22727272727272727,
+      "account_flag_true": 5,
+      "accounts": 22,
+      "accounts_with_2024_nonreactivation_event": 16,
+      "accounts_with_nonreactivation_event_all_history": 16,
+      "all_history_event_prevalence": 0.7272727272727273,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "FR"
+    },
+    {
+      "2024_event_prevalence": 0.6122448979591837,
+      "account_flag_prevalence": 0.20408163265306123,
+      "account_flag_true": 10,
+      "accounts": 49,
+      "accounts_with_2024_nonreactivation_event": 30,
+      "accounts_with_nonreactivation_event_all_history": 32,
+      "all_history_event_prevalence": 0.6530612244897959,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "IN"
+    },
+    {
+      "2024_event_prevalence": 0.7241379310344828,
+      "account_flag_prevalence": 0.1896551724137931,
+      "account_flag_true": 11,
+      "accounts": 58,
+      "accounts_with_2024_nonreactivation_event": 42,
+      "accounts_with_nonreactivation_event_all_history": 43,
+      "all_history_event_prevalence": 0.7413793103448276,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "UK"
+    },
+    {
+      "2024_event_prevalence": 0.6151202749140894,
+      "account_flag_prevalence": 0.23367697594501718,
+      "account_flag_true": 68,
+      "accounts": 291,
+      "accounts_with_2024_nonreactivation_event": 179,
+      "accounts_with_nonreactivation_event_all_history": 197,
+      "all_history_event_prevalence": 0.6769759450171822,
+      "dimension": "country",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "US"
+    },
+    {
+      "2024_event_prevalence": 0.5408163265306123,
+      "account_flag_prevalence": 0.23469387755102042,
+      "account_flag_true": 23,
+      "accounts": 98,
+      "accounts_with_2024_nonreactivation_event": 53,
+      "accounts_with_nonreactivation_event_all_history": 56,
+      "all_history_event_prevalence": 0.5714285714285714,
+      "dimension": "referral_source",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "ads"
+    },
+    {
+      "2024_event_prevalence": 0.6041666666666666,
+      "account_flag_prevalence": 0.3020833333333333,
+      "account_flag_true": 29,
+      "accounts": 96,
+      "accounts_with_2024_nonreactivation_event": 58,
+      "accounts_with_nonreactivation_event_all_history": 66,
+      "all_history_event_prevalence": 0.6875,
+      "dimension": "referral_source",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "event"
+    },
+    {
+      "2024_event_prevalence": 0.6754385964912281,
+      "account_flag_prevalence": 0.17543859649122806,
+      "account_flag_true": 20,
+      "accounts": 114,
+      "accounts_with_2024_nonreactivation_event": 77,
+      "accounts_with_nonreactivation_event_all_history": 81,
+      "all_history_event_prevalence": 0.7105263157894737,
+      "dimension": "referral_source",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "organic"
+    },
+    {
+      "2024_event_prevalence": 0.6407766990291263,
+      "account_flag_prevalence": 0.24271844660194175,
+      "account_flag_true": 25,
+      "accounts": 103,
+      "accounts_with_2024_nonreactivation_event": 66,
+      "accounts_with_nonreactivation_event_all_history": 72,
+      "all_history_event_prevalence": 0.6990291262135923,
+      "dimension": "referral_source",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "other"
+    },
+    {
+      "2024_event_prevalence": 0.6404494382022472,
+      "account_flag_prevalence": 0.14606741573033707,
+      "account_flag_true": 13,
+      "accounts": 89,
+      "accounts_with_2024_nonreactivation_event": 57,
+      "accounts_with_nonreactivation_event_all_history": 64,
+      "all_history_event_prevalence": 0.7191011235955056,
+      "dimension": "referral_source",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "partner"
+    },
+    {
+      "2024_event_prevalence": 0.5952380952380952,
+      "account_flag_prevalence": 0.22023809523809523,
+      "account_flag_true": 37,
+      "accounts": 168,
+      "accounts_with_2024_nonreactivation_event": 100,
+      "accounts_with_nonreactivation_event_all_history": 109,
+      "all_history_event_prevalence": 0.6488095238095238,
+      "dimension": "plan_tier",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "Basic"
+    },
+    {
+      "2024_event_prevalence": 0.6363636363636364,
+      "account_flag_prevalence": 0.22077922077922077,
+      "account_flag_true": 34,
+      "accounts": 154,
+      "accounts_with_2024_nonreactivation_event": 98,
+      "accounts_with_nonreactivation_event_all_history": 104,
+      "all_history_event_prevalence": 0.6753246753246753,
+      "dimension": "plan_tier",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "Enterprise"
+    },
+    {
+      "2024_event_prevalence": 0.6348314606741573,
+      "account_flag_prevalence": 0.21910112359550563,
+      "account_flag_true": 39,
+      "accounts": 178,
+      "accounts_with_2024_nonreactivation_event": 113,
+      "accounts_with_nonreactivation_event_all_history": 126,
+      "all_history_event_prevalence": 0.7078651685393258,
+      "dimension": "plan_tier",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "Pro"
+    },
+    {
+      "2024_event_prevalence": 0.6277915632754343,
+      "account_flag_prevalence": 0.2109181141439206,
+      "account_flag_true": 85,
+      "accounts": 403,
+      "accounts_with_2024_nonreactivation_event": 253,
+      "accounts_with_nonreactivation_event_all_history": 272,
+      "all_history_event_prevalence": 0.674937965260546,
+      "dimension": "is_trial",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "False"
+    },
+    {
+      "2024_event_prevalence": 0.5979381443298969,
+      "account_flag_prevalence": 0.25773195876288657,
+      "account_flag_true": 25,
+      "accounts": 97,
+      "accounts_with_2024_nonreactivation_event": 58,
+      "accounts_with_nonreactivation_event_all_history": 67,
+      "all_history_event_prevalence": 0.6907216494845361,
+      "dimension": "is_trial",
+      "label_note": "Descriptive label prevalence only; not historical churn or predictive risk.",
+      "segment": "True"
+    }
+  ],
+  "snapshots": {
+    "2023-01-01": {
+      "active_subscription_rows": 0,
+      "unique_active_accounts": 0
+    },
+    "2024-01-01": {
+      "active_subscription_rows": 655,
+      "unique_active_accounts": 191
+    },
+    "2025-01-01": {
+      "active_subscription_rows": 4514,
+      "unique_active_accounts": 500
+    }
+  },
+  "source_counts": {
+    "accounts": 500,
+    "churn_events": 600,
+    "subscriptions": 5000
+  }
+}

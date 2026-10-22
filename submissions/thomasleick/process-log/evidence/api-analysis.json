@@ -1,0 +1,617 @@
+{
+  "dataset": {
+    "source": "Kaggle: rivalytics/saas-subscription-and-churn-analytics-dataset",
+    "synthetic": true,
+    "window": "2023-01 to 2024-12",
+    "license_note": "Challenge README states MIT; dataset README says MIT-like and requests credit to River @ Rivalytics."
+  },
+  "record_counts": {
+    "accounts": 500,
+    "subscriptions": 5000,
+    "usage": 25000,
+    "tickets": 2000,
+    "churn_events": 600
+  },
+  "metrics": {
+    "logo_churn_rate": {
+      "value": null,
+      "status": "UNKNOWN",
+      "definition": "Distinct paying accounts lost during period / eligible paying accounts at period start.",
+      "denominator": "Not reconstructable: event/account flags conflict and eligibility history is absent."
+    },
+    "subscription_end_row_share": {
+      "value": 0.0972,
+      "status": "DESCRIPTIVE_ONLY",
+      "definition": "Rows with non-null end_date / all subscription rows; not a period churn rate.",
+      "denominator": "486/5000 subscription rows."
+    },
+    "gross_revenue_churn": {
+      "value": null,
+      "status": "UNKNOWN",
+      "definition": "Starting recurring revenue lost to cancellations and contraction / starting recurring revenue.",
+      "denominator": "No reliable account-period MRR bridge or clean event-to-subscription mapping."
+    },
+    "gross_revenue_retention": {
+      "value": null,
+      "status": "UNKNOWN",
+      "definition": "Starting recurring revenue retained excluding expansion / starting recurring revenue.",
+      "denominator": "No defensible opening and closing recurring revenue snapshots."
+    },
+    "net_revenue_retention": {
+      "value": null,
+      "status": "UNKNOWN",
+      "definition": "Starting recurring revenue retained including expansion / starting recurring revenue.",
+      "denominator": "No defensible opening and closing recurring revenue snapshots."
+    },
+    "recorded_refunds_usd": {
+      "value": 8652.25,
+      "status": "OBSERVED_FIELD_SUM",
+      "definition": "Sum of refund_amount_usd over churn event rows.",
+      "denominator": "600/600 rows; not recurring revenue lost."
+    },
+    "recorded_ticket_satisfaction_mean": {
+      "value": 3.9813,
+      "status": "OBSERVED_NONMISSING_TICKETS",
+      "definition": "Mean non-null satisfaction_score over all ticket rows.",
+      "denominator": "1175/2000 ticket rows."
+    }
+  },
+  "data_quality": {
+    "account_churn_flags_true": 110,
+    "event_accounts": 352,
+    "event_reactivation_rows": 61,
+    "account_flag_event_crosstab": {
+      "flag_true_event_yes": 75,
+      "flag_true_event_no": 35,
+      "flag_false_event_yes": 277,
+      "flag_false_event_no": 113
+    },
+    "subscription_active_rows_null_end_date": 4514,
+    "accounts_with_any_active_subscription_row": 500,
+    "active_record_mrr_sum_currency_unconfirmed": 10159608.0,
+    "active_record_mrr_note": "Record sum only; not a revenue exposure measure or verified current MRR.",
+    "usage_duplicate_id_rows": 42,
+    "usage_rows_before_subscription_start": 19142,
+    "usage_rows_after_subscription_end": 290,
+    "events_exactly_matching_subscription_end_date": 6,
+    "events_outside_account_subscription_span_where_end_exists": 123,
+    "ticket_satisfaction_missing": 825
+  },
+  "monthly": [
+    {
+      "month": "2023-01",
+      "churn_event_rows": 1,
+      "unique_event_accounts": 1,
+      "usage_rows": 1069,
+      "usage_count": 10877,
+      "ticket_count": 83,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 4.0208
+    },
+    {
+      "month": "2023-02",
+      "churn_event_rows": 0,
+      "unique_event_accounts": 0,
+      "usage_rows": 970,
+      "usage_count": 9492,
+      "ticket_count": 59,
+      "satisfaction_n": 36,
+      "satisfaction_mean": 4.0278
+    },
+    {
+      "month": "2023-03",
+      "churn_event_rows": 5,
+      "unique_event_accounts": 5,
+      "usage_rows": 1103,
+      "usage_count": 11031,
+      "ticket_count": 86,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 3.9583
+    },
+    {
+      "month": "2023-04",
+      "churn_event_rows": 3,
+      "unique_event_accounts": 3,
+      "usage_rows": 1032,
+      "usage_count": 10369,
+      "ticket_count": 91,
+      "satisfaction_n": 52,
+      "satisfaction_mean": 3.8077
+    },
+    {
+      "month": "2023-05",
+      "churn_event_rows": 3,
+      "unique_event_accounts": 3,
+      "usage_rows": 1077,
+      "usage_count": 10757,
+      "ticket_count": 78,
+      "satisfaction_n": 37,
+      "satisfaction_mean": 4.027
+    },
+    {
+      "month": "2023-06",
+      "churn_event_rows": 5,
+      "unique_event_accounts": 5,
+      "usage_rows": 1013,
+      "usage_count": 10002,
+      "ticket_count": 82,
+      "satisfaction_n": 49,
+      "satisfaction_mean": 4.1837
+    },
+    {
+      "month": "2023-07",
+      "churn_event_rows": 6,
+      "unique_event_accounts": 6,
+      "usage_rows": 1075,
+      "usage_count": 11083,
+      "ticket_count": 83,
+      "satisfaction_n": 46,
+      "satisfaction_mean": 3.913
+    },
+    {
+      "month": "2023-08",
+      "churn_event_rows": 7,
+      "unique_event_accounts": 6,
+      "usage_rows": 1040,
+      "usage_count": 10335,
+      "ticket_count": 96,
+      "satisfaction_n": 56,
+      "satisfaction_mean": 3.9286
+    },
+    {
+      "month": "2023-09",
+      "churn_event_rows": 6,
+      "unique_event_accounts": 6,
+      "usage_rows": 969,
+      "usage_count": 9737,
+      "ticket_count": 93,
+      "satisfaction_n": 55,
+      "satisfaction_mean": 4.0727
+    },
+    {
+      "month": "2023-10",
+      "churn_event_rows": 10,
+      "unique_event_accounts": 10,
+      "usage_rows": 1095,
+      "usage_count": 10968,
+      "ticket_count": 75,
+      "satisfaction_n": 41,
+      "satisfaction_mean": 3.7805
+    },
+    {
+      "month": "2023-11",
+      "churn_event_rows": 11,
+      "unique_event_accounts": 11,
+      "usage_rows": 944,
+      "usage_count": 9475,
+      "ticket_count": 74,
+      "satisfaction_n": 49,
+      "satisfaction_mean": 4.2245
+    },
+    {
+      "month": "2023-12",
+      "churn_event_rows": 16,
+      "unique_event_accounts": 16,
+      "usage_rows": 1043,
+      "usage_count": 10435,
+      "ticket_count": 91,
+      "satisfaction_n": 46,
+      "satisfaction_mean": 3.9348
+    },
+    {
+      "month": "2024-01",
+      "churn_event_rows": 20,
+      "unique_event_accounts": 18,
+      "usage_rows": 1060,
+      "usage_count": 10621,
+      "ticket_count": 84,
+      "satisfaction_n": 46,
+      "satisfaction_mean": 3.8913
+    },
+    {
+      "month": "2024-02",
+      "churn_event_rows": 10,
+      "unique_event_accounts": 10,
+      "usage_rows": 1016,
+      "usage_count": 10247,
+      "ticket_count": 75,
+      "satisfaction_n": 47,
+      "satisfaction_mean": 4.0213
+    },
+    {
+      "month": "2024-03",
+      "churn_event_rows": 24,
+      "unique_event_accounts": 24,
+      "usage_rows": 1069,
+      "usage_count": 10725,
+      "ticket_count": 92,
+      "satisfaction_n": 51,
+      "satisfaction_mean": 3.7255
+    },
+    {
+      "month": "2024-04",
+      "churn_event_rows": 25,
+      "unique_event_accounts": 23,
+      "usage_rows": 1020,
+      "usage_count": 10131,
+      "ticket_count": 81,
+      "satisfaction_n": 52,
+      "satisfaction_mean": 3.8077
+    },
+    {
+      "month": "2024-05",
+      "churn_event_rows": 27,
+      "unique_event_accounts": 25,
+      "usage_rows": 1040,
+      "usage_count": 10552,
+      "ticket_count": 81,
+      "satisfaction_n": 52,
+      "satisfaction_mean": 4.1538
+    },
+    {
+      "month": "2024-06",
+      "churn_event_rows": 40,
+      "unique_event_accounts": 38,
+      "usage_rows": 1013,
+      "usage_count": 10106,
+      "ticket_count": 78,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 4.0
+    },
+    {
+      "month": "2024-07",
+      "churn_event_rows": 35,
+      "unique_event_accounts": 33,
+      "usage_rows": 1068,
+      "usage_count": 10601,
+      "ticket_count": 70,
+      "satisfaction_n": 38,
+      "satisfaction_mean": 4.0
+    },
+    {
+      "month": "2024-08",
+      "churn_event_rows": 42,
+      "unique_event_accounts": 40,
+      "usage_rows": 1060,
+      "usage_count": 10559,
+      "ticket_count": 82,
+      "satisfaction_n": 48,
+      "satisfaction_mean": 3.9583
+    },
+    {
+      "month": "2024-09",
+      "churn_event_rows": 53,
+      "unique_event_accounts": 48,
+      "usage_rows": 1020,
+      "usage_count": 10195,
+      "ticket_count": 96,
+      "satisfaction_n": 64,
+      "satisfaction_mean": 4.3594
+    },
+    {
+      "month": "2024-10",
+      "churn_event_rows": 66,
+      "unique_event_accounts": 60,
+      "usage_rows": 1137,
+      "usage_count": 11450,
+      "ticket_count": 88,
+      "satisfaction_n": 55,
+      "satisfaction_mean": 4.0182
+    },
+    {
+      "month": "2024-11",
+      "churn_event_rows": 68,
+      "unique_event_accounts": 60,
+      "usage_rows": 991,
+      "usage_count": 10039,
+      "ticket_count": 84,
+      "satisfaction_n": 49,
+      "satisfaction_mean": 3.8163
+    },
+    {
+      "month": "2024-12",
+      "churn_event_rows": 117,
+      "unique_event_accounts": 96,
+      "usage_rows": 1076,
+      "usage_count": 10738,
+      "ticket_count": 98,
+      "satisfaction_n": 62,
+      "satisfaction_mean": 3.8387
+    }
+  ],
+  "reasons": [
+    {
+      "reason": "budget",
+      "event_rows": 104,
+      "unique_accounts": 94,
+      "recorded_refunds_usd": 1247.54,
+      "interpretation": "Descriptive code only; not a verified causal explanation."
+    },
+    {
+      "reason": "competitor",
+      "event_rows": 92,
+      "unique_accounts": 79,
+      "recorded_refunds_usd": 1203.53,
+      "interpretation": "Descriptive code only; not a verified causal explanation."
+    },
+    {
+      "reason": "features",
+      "event_rows": 114,
+      "unique_accounts": 104,
+      "recorded_refunds_usd": 1905.9,
+      "interpretation": "Descriptive code only; not a verified causal explanation."
+    },
+    {
+      "reason": "pricing",
+      "event_rows": 91,
+      "unique_accounts": 86,
+      "recorded_refunds_usd": 1333.25,
+      "interpretation": "Descriptive code only; not a verified causal explanation."
+    },
+    {
+      "reason": "support",
+      "event_rows": 104,
+      "unique_accounts": 95,
+      "recorded_refunds_usd": 1219.64,
+      "interpretation": "Descriptive code only; not a verified causal explanation."
+    },
+    {
+      "reason": "unknown",
+      "event_rows": 95,
+      "unique_accounts": 86,
+      "recorded_refunds_usd": 1742.39,
+      "interpretation": "Descriptive code only; not a verified causal explanation."
+    }
+  ],
+  "support_comparison": [
+    {
+      "group": "accounts_with_any_event",
+      "accounts": 347,
+      "ticket_rows": 1395,
+      "first_response_n": 1395,
+      "first_response_median_minutes": 89.0,
+      "resolution_n": 1395,
+      "resolution_median_hours": 35.0,
+      "escalation_n": 1395,
+      "escalated_tickets": 71,
+      "escalation_rate": 0.0509
+    },
+    {
+      "group": "accounts_without_event",
+      "accounts": 145,
+      "ticket_rows": 605,
+      "first_response_n": 605,
+      "first_response_median_minutes": 87.0,
+      "resolution_n": 605,
+      "resolution_median_hours": 35.0,
+      "escalation_n": 605,
+      "escalated_tickets": 24,
+      "escalation_rate": 0.0397
+    }
+  ],
+  "segments": {
+    "industry": [
+      {
+        "name": "Cybersecurity",
+        "accounts": 100,
+        "churn_flag_true": 16,
+        "churn_flag_rate": 0.16,
+        "event_accounts": 72,
+        "event_account_rate": 0.72
+      },
+      {
+        "name": "DevTools",
+        "accounts": 113,
+        "churn_flag_true": 35,
+        "churn_flag_rate": 0.309735,
+        "event_accounts": 83,
+        "event_account_rate": 0.734513
+      },
+      {
+        "name": "EdTech",
+        "accounts": 79,
+        "churn_flag_true": 13,
+        "churn_flag_rate": 0.164557,
+        "event_accounts": 57,
+        "event_account_rate": 0.721519
+      },
+      {
+        "name": "FinTech",
+        "accounts": 112,
+        "churn_flag_true": 25,
+        "churn_flag_rate": 0.223214,
+        "event_accounts": 76,
+        "event_account_rate": 0.678571
+      },
+      {
+        "name": "HealthTech",
+        "accounts": 96,
+        "churn_flag_true": 21,
+        "churn_flag_rate": 0.21875,
+        "event_accounts": 64,
+        "event_account_rate": 0.666667
+      }
+    ],
+    "country": [
+      {
+        "name": "AU",
+        "accounts": 32,
+        "churn_flag_true": 4,
+        "churn_flag_rate": 0.125,
+        "event_accounts": 22,
+        "event_account_rate": 0.6875
+      },
+      {
+        "name": "CA",
+        "accounts": 23,
+        "churn_flag_true": 4,
+        "churn_flag_rate": 0.173913,
+        "event_accounts": 16,
+        "event_account_rate": 0.695652
+      },
+      {
+        "name": "DE",
+        "accounts": 25,
+        "churn_flag_true": 8,
+        "churn_flag_rate": 0.32,
+        "event_accounts": 14,
+        "event_account_rate": 0.56
+      },
+      {
+        "name": "FR",
+        "accounts": 22,
+        "churn_flag_true": 5,
+        "churn_flag_rate": 0.227273,
+        "event_accounts": 16,
+        "event_account_rate": 0.727273
+      },
+      {
+        "name": "IN",
+        "accounts": 49,
+        "churn_flag_true": 10,
+        "churn_flag_rate": 0.204082,
+        "event_accounts": 33,
+        "event_account_rate": 0.673469
+      },
+      {
+        "name": "UK",
+        "accounts": 58,
+        "churn_flag_true": 11,
+        "churn_flag_rate": 0.189655,
+        "event_accounts": 45,
+        "event_account_rate": 0.775862
+      },
+      {
+        "name": "US",
+        "accounts": 291,
+        "churn_flag_true": 68,
+        "churn_flag_rate": 0.233677,
+        "event_accounts": 206,
+        "event_account_rate": 0.707904
+      }
+    ],
+    "referral_source": [
+      {
+        "name": "ads",
+        "accounts": 98,
+        "churn_flag_true": 23,
+        "churn_flag_rate": 0.234694,
+        "event_accounts": 59,
+        "event_account_rate": 0.602041
+      },
+      {
+        "name": "event",
+        "accounts": 96,
+        "churn_flag_true": 29,
+        "churn_flag_rate": 0.302083,
+        "event_accounts": 68,
+        "event_account_rate": 0.708333
+      },
+      {
+        "name": "organic",
+        "accounts": 114,
+        "churn_flag_true": 20,
+        "churn_flag_rate": 0.175439,
+        "event_accounts": 85,
+        "event_account_rate": 0.745614
+      },
+      {
+        "name": "other",
+        "accounts": 103,
+        "churn_flag_true": 25,
+        "churn_flag_rate": 0.242718,
+        "event_accounts": 73,
+        "event_account_rate": 0.708738
+      },
+      {
+        "name": "partner",
+        "accounts": 89,
+        "churn_flag_true": 13,
+        "churn_flag_rate": 0.146067,
+        "event_accounts": 67,
+        "event_account_rate": 0.752809
+      }
+    ],
+    "plan_tier": [
+      {
+        "name": "Basic",
+        "accounts": 168,
+        "churn_flag_true": 37,
+        "churn_flag_rate": 0.220238,
+        "event_accounts": 115,
+        "event_account_rate": 0.684524
+      },
+      {
+        "name": "Enterprise",
+        "accounts": 154,
+        "churn_flag_true": 34,
+        "churn_flag_rate": 0.220779,
+        "event_accounts": 108,
+        "event_account_rate": 0.701299
+      },
+      {
+        "name": "Pro",
+        "accounts": 178,
+        "churn_flag_true": 39,
+        "churn_flag_rate": 0.219101,
+        "event_accounts": 129,
+        "event_account_rate": 0.724719
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "label_conflict",
+      "title": "Churn labels do not reconcile",
+      "statement": "Event history and account status produce materially different customer counts.",
+      "evidence": [
+        "600 event rows across 352 accounts",
+        "110 account churn flags",
+        "277 event accounts have churn_flag=False"
+      ],
+      "interpretation": "Do not use either label as validated logo churn until the lifecycle contract is clarified.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "raw_event_growth",
+      "title": "Recorded event volume rises sharply",
+      "statement": "The CSV has 73 event rows in 2023 and 527 in 2024.",
+      "evidence": [
+        "Counts are event rows, not eligible-account churn rates",
+        "Unique accounts by year: 64 and 327"
+      ],
+      "interpretation": "This supports growth in recorded events only; denominator, censoring and reactivation handling are unresolved.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "usage_not_matching",
+      "title": "Raw usage totals do not rise at the same pace",
+      "statement": "Monthly usage rows and usage_count remain in a similar range across the observed window.",
+      "evidence": [
+        "250525 total usage count across 25000 rows",
+        "19142 usage rows precede subscription start"
+      ],
+      "interpretation": "Invalidly timed records prevent a reliable per-active-account engagement trend.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "satisfaction_missing",
+      "title": "Ticket satisfaction is flat in an all-time split",
+      "statement": "Mean recorded scores are nearly the same for accounts with and without any churn event.",
+      "evidence": [
+        "Any-event accounts: n=815, mean=3.9804",
+        "No-event accounts: n=360, mean=3.9833",
+        "Missing ticket scores: 825/2000"
+      ],
+      "interpretation": "This is not a pre-churn comparison and does not establish a trend or causal protection.",
+      "confidence": "MEDIUM"
+    }
+  ],
+  "methodology": [
+    "Event rows, unique event accounts, account churn flags, and ended subscription rows are reported separately.",
+    "Usage and ticket tables are aggregated at their entity level; one-to-many joins are validated.",
+    "Monthly event counts are not called churn rates without eligible-account denominators and clean lifecycle history.",
+    "Refund sums are not treated as recurring revenue loss.",
+    "No predictive model or causal intervention estimate is emitted."
+  ]
+}

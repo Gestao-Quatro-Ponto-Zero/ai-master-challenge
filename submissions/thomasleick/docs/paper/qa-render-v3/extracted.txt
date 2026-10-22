@@ -1,0 +1,457 @@
+G4 AI MASTER CHALLENGE 001 / BUSINESS DIAGNOSIS
+
+
+
+
+RavenStack - Beyond
+the Churn Headline
+
+
+A monthly, evidence-driven diagnosis of growth,
+retention and commercial movement
+
+
+The count rose. The customer-retention answer is more
+complicated.
+A decision paper grounded in five source tables, a daily account-plan reconstruction
+and a monthly executive view.
+
+
+
+
+  CONDITIONAL LIFECYCLE RECONSTRUCTION
+
+
+
+
+Prepared by Thomas Leick
+Independent submission · 22 October 2026 · No G4 affiliation implied
+
+
+
+
+                                                                                          </>
+      OBSERVE                       DECOMPOSE                          PERSIST             BUILD
+
+
+
+
+COFFEE / CUBE / DISCIPLINE / CODE                                                      EVIDENCE BEFORE CERTAINTY
+RAVENSTACK / THE CHURN PARADOX                                                                           EXECUTIVE VERDICT
+
+
+
+
+Q1 / ROOT CAUSE
+
+
+
+The headline is not yet a churn rate.
+No causal root cause is established. The strongest verified finding is a conflict among outcome indicators and
+lifecycle records.
+
+   COMMERCIAL CUSTOMER CHURN                                    2024 PLAN-PROXY GROSS LOSS
+
+
+
+   UNKNOWN                                                      1.87%
+   No reconciled customer outcome / eligible opening            7 / 374 opening account x plan-tier relations lost coverage
+   population. Conditional ledger result is shown separately.   at least once.
+
+
+
+
+   PLAN PROXY STILL LOST AT CLOSE                               2024 OPENING CUSTOMERS LOST
+
+
+
+   0.80%                                                        0 / 190
+   3 / 374 opening relations remained without that plan-tier    No opening-cohort account lost all reconstructed plan
+   coverage at year close.                                      coverage; this is not certified commercial churn.
+
+
+
+
+THE FINDING
+
+A customer may lose one plan-tier relationship and remain active through another. Across 2023-2024, 54 of
+62 date-derived plan losses occurred while another plan remained active. Eight episodes reached zero
+plan-proxy coverage; all eight later returned within the observed horizon.
+
+
+
+    LEADERSHIP DECISION
+
+    Reconcile lifecycle and event linkage before funding a broad retention campaign. Review the 60 accounts
+    with reconstructed plan loss, starting with the 8 full-coverage-loss/return cases. Run a controlled test
+    after defining eligible customers and a verified 90-day outcome.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission                                                       THOMAS LEICK     /    02
+RAVENSTACK / THE CHURN PARADOX                                                                                                                                   GROWTH MATHEMATICS
+
+
+
+
+02 / EXPOSURE, FLOWS AND RATE
+
+
+
+More losses can accompany a larger
+base.
+The monthly ledger is the executive series. Counts, exposure and normalized indicators answer different
+questions.
+MONTHLY OPENING-COHORT LOSS RATES · 24 MONTHS
+
+
+
+    1.0%
+
+
+
+    0.8%
+
+
+
+    0.6%
+
+
+
+    0.4%
+
+
+
+    0.2%
+
+
+                          1                            4                 7                          0              1                       4                      7                           0
+    0.0%             -0                              -0               -0                       -1            -0                       -0                      -0                            -1
+                23                              23               23                          23            24                       24                      24                         24
+           20                              20               20                             20            20                       20                      20                         20
+
+                              Plan proxy - gross                             Plan proxy - still lost                   Customer - gross                                Customer - still lost
+
+
+Solid = opening-cohort relations/customers losing coverage during month. Dashed = still lost at month close. Rates use the matching opening
+plan proxy or unique-account base; Jan 2023 is undefined because opening denominators are zero.
+
+
+MONTHLY MOVEMENTS · COUNTS, NOT RATES
+
+
+
+  150
+
+
+
+
+  100
+
+
+
+
+   50
+
+
+
+
+                    1                                   4                7                       0             1                       4                      7                           0
+    0             -0                                 -0               -0                       -1            -0                      -0                     -0                         -1
+                23                              23               23                         23            24                      24                   24                            24
+           20                              20               20                            20            20                      20                   20                         20
+                New plan relations                                     Plan loss events                            New customers                                      Plan returns
+
+
+
+
+  Recorded events / 100 account-months                                       Plan losses / 100 relation-months                             Complete-loss episodes / 100
+                                                                                                                                           account-months
+  8.64 -> 13.48                                                              0.427 -> 0.595                                                0.237 -> 0.153
+
+
+
+
+2023 -> 2024: event rows 73 -> 527; opening exposure 845 -> 3,909 account-months (4.63x); plan losses 6 -> 56 across 1,406 -> 9,414
+relation-months. A symmetric arithmetic split attributes about 339 additional event rows to exposure and 115 to event intensity. This is not
+causal attribution; recording change is not identifiable.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission                                                                                                                      THOMAS LEICK               /   03
+RAVENSTACK / THE CHURN PARADOX                                                                      EVIDENCE ACROSS FIVE TABLES
+
+
+
+
+03 / CROSS-TABLE DIAGNOSIS
+
+
+
+The records explain the
+disagreement, not its cause.
+The five tables were compared at their natural grain; account outcomes were deduplicated before cross-table
+summaries.
+  ACCOUNTS · 500                   110 account churn flags. Compared with any event history: 75 both, 35 flag-only, 277 event-only,
+                                   113 neither; 312 accounts differ pairwise.
+
+
+
+
+  SUBSCRIPTIONS · 5,000            5,000 unique subscription IDs; 529 upgrade-flag rows and 218 downgrade-flag rows, with 23 rows
+                                   carrying both. No linked from/to plan change or effective transition record.
+
+
+
+
+  FEATURE USAGE · 25,000           Source usage count 124,561 -> 125,964 (+1.13%); per observed account-month 24.462 ->
+                                   24.747 (+1.17%). 19,142 rows predate linked subscription start; 290 follow an end date.
+
+
+
+
+  SUPPORT · 2,000 TICKETS          825/2,000 satisfaction scores missing (41.25%). Any-event vs no-event mean: 3.9804 (815
+                                   scored; 580 missing) vs 3.9833 (360; 245 missing). Escalation: 71/1,395 (5.09%) vs 24/605
+                                   (3.97%).
+
+
+
+
+  CHURN EVENTS · 600               73 rows in 2023; 527 in 2024; 352 accounts; 339 non-reactivation rows. Reasons: features 114,
+                                   support 104, budget 104, unknown 95, competitor 92, pricing 91.
+
+
+
+
+WHAT IS SUPPORTED
+
+Usage totals rose slightly while the observed account-month denominator was nearly unchanged; that is descriptive
+source volume, not verified adoption by active customers. Ticket satisfaction is very similar across retrospective event
+labels, but missing scores and unknown event timing limit the comparison. Reason codes can prioritize customer
+interviews; they do not prove root cause.
+
+
+RECORDED MONEY FIELDS
+
+The subscription file includes `mrr_amount` and `arr_amount` for all 5,000 rows; 778 rows are zero and ARR equals 12 x
+MRR on every row. Yet the source does not provide a reconciled account billing ledger or a validated
+effective-period/change mapping. Do not add repeated contract-row values and call the sum lost revenue. Revenue
+contraction remains not identified.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission                                                              THOMAS LEICK     /     04
+RAVENSTACK / THE CHURN PARADOX                                                                                        SEGMENTS AND ACCOUNTS
+
+
+
+
+Q2 / WHO NEEDS ATTENTION
+
+
+
+A historical case list is not a risk
+model.
+All rates below are conditional date-derived plan-tier proxy comparisons, not predictive probabilities.
+
+2024 OPENING PLAN-RELATION COHORT
+
+
+  Tier proxy                              Opening               Lost in year                  Rate                Still lost at close
+
+
+  Enterprise                              120                   5                             4.17%               2
+
+
+  Basic                                   132                   2                             1.52%               1
+
+
+  Pro                                     122                   0                             0.00%               0
+
+
+
+Industry exposure (conditional plan-loss rows / relation-months) also varied: DevTools 10/2,215 (0.451 per 100); FinTech 8/2,146
+(0.373); HealthTech 9/1,937 (0.465); Cybersecurity 9/1,716 (0.524); EdTech 6/1,400 (0.429). These are exposure diagnostics, not
+annual customer churn rates or causal rankings.
+
+
+
+EIGHT RECONCILIATION CANDIDATES
+
+Each account below had a reconstructed complete-coverage-loss episode followed by later date-derived coverage. Ask CS/RevOps
+to confirm whether the customer actually left, paused or changed contracts.
+
+
+
+  A-180abf                                                                   A-0a282f
+  DevTools / US / event / Pro                                                DevTools / US / organic / Basic
+  2 plan losses; 1 full-loss episode                                         1 plan loss; 1 full-loss episode
+
+
+
+
+  A-0baac2                                                                   A-40a557
+  FinTech / DE / organic / Enterprise                                        Cybersecurity / AU / partner / Pro
+  1 plan loss; 1 full-loss episode                                           1 plan loss; 1 full-loss episode
+
+
+
+
+  A-410e86                                                                   A-432483
+  FinTech / US / organic / Basic                                             Cybersecurity / US / ads / Pro
+  1 plan loss; 1 full-loss episode                                           1 plan loss; 1 full-loss episode
+
+
+
+
+  A-8adedc                                                                   A-c9bb3e
+  EdTech / US / event / Basic                                                EdTech / US / ads / Pro
+  1 plan loss; 1 full-loss episode                                           1 plan loss; 1 full-loss episode
+
+
+
+These are account IDs for follow-up, not validated future-risk labels. The source event table has account_id but no subscription_id, so the
+event-to-plan relation remains unproven.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission                                                                           THOMAS LEICK      /   05
+RAVENSTACK / THE CHURN PARADOX                                                                                                   DECISION AND IMPACT
+
+
+
+
+Q3 / WHAT SHOULD RAVENSTACK DO?
+
+
+
+Five moves. One measurement gate.
+The investment sequence follows evidence readiness: correct lifecycle definitions, reconcile cases, then test
+retention.
+          Instrument lifecycle
+ 01       Data / Product Analytics · 0-30 days
+          Link cancellation, reactivation and plan change to account + subscription IDs and effective timestamps. KPI: linked, reconciled
+          lifecycle events.
+
+
+          Review historical cases
+ 02       Customer Success + RevOps · 0-30 days
+          Review 60 accounts with any plan loss, starting with the 8 full-coverage-loss/return cases. KPI: customer-confirmed outcome and
+          reason documented.
+
+
+          Audit transition flags
+ 03       RevOps / Product · 30-60 days
+          Reconcile 529 upgrade and 218 downgrade rows, including 23 with both. KPI: dated source/destination plan and comparable
+          contract amount.
+
+
+          Measure activation
+ 04       Product Analytics · 30-60 days
+          Instrument a canonical first-value event and meaningful adoption per eligible account cohort. KPI: 7/30-day instrumentation
+          coverage.
+
+
+          Run a holdout test
+ 05       Customer Success + Analytics · 60-90 days
+          Randomize eligible accounts to outreach vs. holdout after definitions are stable. Primary metric: verified customer coverage at 90
+          days.
+
+
+
+
+   IMPACT SENSITIVITY - NOT REVENUE OR CAUSAL ROI
+
+   Reference population: 60 historical accounts with a reconstructed plan loss; current eligibility is unknown. If all 60 were contacted,
+   retained-account equivalents = 60 x assumed uptake x assumed incremental lift.
+
+
+
+
+      Case                  Assumed uptake x lift    Retained equivalents      Gross benefit            Contact cost        Break-even monthly value
+
+
+
+      Conservative          50% x 5 pp               1.5                       1.5 x V x H              60 x C              40 x C / H
+
+
+      Base                  70% x 10 pp              4.2                       4.2 x V x H              60 x C              14.29 x C / H
+
+
+      Optimistic            90% x 15 pp              8.1                       8.1 x V x H              60 x C              7.41 x C / H
+
+
+
+   V = assumed monthly contribution per retained account; H = benefit horizon in months; C = assumed contact cost per account. These parameters are
+   not estimated from RavenStack's records. Net modeled contribution = gross benefit - contact cost. No verified MRR, LTV or treatment effect is claimed.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission                                                                                   THOMAS LEICK       /    06
+RAVENSTACK / THE CHURN PARADOX                                                                                                   METHOD AND LIMITS
+
+
+
+
+06 / METHOD, LIMITS AND LABORATORY
+
+
+
+Use the model to ask better
+questions.
+The paper's measures are deliberately explicit about unit, period and evidence status.
+
+CLASSIC CUSTOMER CHURN
+
+Unique eligible customers lost in the month / unique active customers at month opening x 100. This commercial KPI is NOT IDENTIFIABLE
+as verified because supplied statuses, event records and date-derived coverage conflict.
+
+PLAN-COVERAGE PROXY
+
+Unit = account x plan_tier. Monthly gross opening-cohort loss = distinct opening relations losing coverage at least once / opening relations
+x 100. Persistent closing loss uses opening relations still inactive at month close. This is not product churn.
+
+TIME AND CENSORING
+
+Daily ledger is the source; executive reporting is monthly. Intervals use [start_date, end_date); null ends remain open to the observed
+horizon. End-date commercial meaning and intraday ordering are not independently validated. January 2023 opening base is zero: rate is
+UNDEFINED.
+
+CAUSE AND ECONOMICS
+
+No causal root cause or calibrated future risk was established. Refunds are not recurring revenue. Subscription-row MRR/ARR and flags lack
+a fully reconciled effective-dated account billing/change ledger. Revenue contraction, GRR, NRR and LTV exposure remain unknown.
+
+DECISION EXPERIMENT
+
+After lifecycle repair, define eligible paid accounts at risk of verified cancellation; randomize at account level to CS outreach or holdout;
+measure account coverage at 90 days, plan contraction and support guardrails. Report intention-to-treat difference and confidence
+interval; avoid mixing ticket-level records as independent customers.
+
+
+
+
+    THE MONTHLY BUSINESS LABORATORY
+
+    The local React + FastAPI application is a companion for observed monthly flows and transparent scenarios. Run from the standalone
+    package: cd solution && docker compose up --build. API: http://localhost:8000 · web: http://localhost:5173. Source analyses, data
+    provenance, tests and the chronological process log remain inside this submission.
+
+
+
+
+SOURCES
+G4 Challenge 001: github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/tree/main/challenges/data-001-churn
+Submission guide and template: github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge
+SaaS Subscription & Churn Analytics, Kaggle, synthetic; credit River @ Rivalytics; MIT license per dataset/challenge metadata.
+
+
+
+
+Independent G4 AI Master Challenge 001 submission                                                                                THOMAS LEICK   /   07
+

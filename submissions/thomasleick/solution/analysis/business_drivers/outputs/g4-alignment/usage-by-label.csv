@@ -1,0 +1,9 @@
+label,group,accounts,accounts_with_valid_interval_usage,valid_interval_usage_count_sum,mean_usage_count_per_account,median_usage_count_per_account,mean_usage_count_among_users,mean_errors_per_account,temporal_note
+account_flag,positive,110,108,14272.0,129.7455,112.5,132.1481,6.4636,valid subscription interval; not aligned to a verified cancellation window
+account_flag,negative,390,361,41452.0,106.2872,92.0,114.8255,5.7667,valid subscription interval; not aligned to a verified cancellation window
+any_event,positive,352,332,39872.0,113.2727,97.0,120.0964,6.0455,valid subscription interval; not aligned to a verified cancellation window
+any_event,negative,148,137,15852.0,107.1081,89.0,115.708,5.6216,valid subscription interval; not aligned to a verified cancellation window
+nonreactivation_event,positive,339,319,38576.0,113.7935,97.0,120.9279,6.0737,valid subscription interval; not aligned to a verified cancellation window
+nonreactivation_event,negative,161,150,17148.0,106.5093,89.0,114.32,5.5963,valid subscription interval; not aligned to a verified cancellation window
+subscription_flag_account,positive,312,294,36318.0,116.4038,99.5,123.5306,6.1314,valid subscription interval; not aligned to a verified cancellation window
+subscription_flag_account,negative,188,175,19406.0,103.2234,90.5,110.8914,5.5691,valid subscription interval; not aligned to a verified cancellation window

@@ -1,0 +1,27 @@
+{
+  "status": "HYPOTHETICAL",
+  "assumptions": {
+    "eligible_accounts": 100,
+    "operational_capacity": 50,
+    "budget": 2500.0,
+    "cost_per_contact": 100.0,
+    "assumed_effectiveness": 0.1,
+    "assumed_monthly_value_per_retained_account": 500.0,
+    "retention_horizon_months": 3
+  },
+  "selected_accounts": 25,
+  "expected_retained_accounts": 2.5,
+  "intervention_cost": 2500.0,
+  "hypothetical_retained_value": 3750.0,
+  "hypothetical_net_value": 1250.0,
+  "sensitivity": {
+    "low_net_value": -625.0,
+    "base_net_value": 1250.0,
+    "high_net_value": 3125.0
+  },
+  "limitations": [
+    "All effectiveness, contact cost, eligible-account count and retained value are user-supplied assumptions.",
+    "This is a hypothetical scenario, not measured or causal intervention uplift.",
+    "The source tables do not establish reliable account-level recurring revenue exposure."
+  ]
+}

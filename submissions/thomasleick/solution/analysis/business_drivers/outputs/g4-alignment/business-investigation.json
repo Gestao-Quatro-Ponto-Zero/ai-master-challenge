@@ -1,0 +1,5019 @@
+{
+  "metadata": {
+    "generated_by": "analysis/business_drivers/run.py",
+    "source": "original five CSVs",
+    "outcome_note": "All outcome prevalences are label-conditioned diagnostics, not historical churn rates or future-risk estimates.",
+    "max_event_date": "2024-12-31"
+  },
+  "record_counts": {
+    "accounts": 500,
+    "subscriptions": 5000,
+    "usage_rows": 25000,
+    "support_tickets": 2000,
+    "event_rows": 600
+  },
+  "labels": {
+    "account_positive_counts": {
+      "account_flag": 110,
+      "any_event": 352,
+      "nonreactivation_event": 339,
+      "subscription_flag_account": 312
+    },
+    "accounts": 500,
+    "any_label_disagreement_accounts": 401,
+    "pairwise_crosstabs": {
+      "account_flag_vs_any_event": {
+        "1:1": 75,
+        "1:0": 35,
+        "0:1": 277,
+        "0:0": 113
+      },
+      "account_flag_vs_nonreactivation_event": {
+        "1:1": 74,
+        "1:0": 36,
+        "0:1": 265,
+        "0:0": 125
+      },
+      "account_flag_vs_subscription_flag_account": {
+        "1:1": 72,
+        "1:0": 38,
+        "0:1": 240,
+        "0:0": 150
+      },
+      "any_event_vs_nonreactivation_event": {
+        "1:1": 339,
+        "1:0": 13,
+        "0:1": 0,
+        "0:0": 148
+      }
+    },
+    "event_rows_before_signup": 0,
+    "event_rows_missing_date": 0,
+    "event_rows_by_year": {
+      "2023": 73,
+      "2024": 527
+    }
+  },
+  "segments": [
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "account_flag",
+      "accounts": 89,
+      "positive_accounts": 13,
+      "prevalence": 0.1461,
+      "wilson_95": [
+        0.0874,
+        0.234
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "any_event",
+      "accounts": 89,
+      "positive_accounts": 67,
+      "prevalence": 0.7528,
+      "wilson_95": [
+        0.654,
+        0.8307
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "nonreactivation_event",
+      "accounts": 89,
+      "positive_accounts": 64,
+      "prevalence": 0.7191,
+      "wilson_95": [
+        0.6182,
+        0.8019
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "subscription_flag_account",
+      "accounts": 89,
+      "positive_accounts": 50,
+      "prevalence": 0.5618,
+      "wilson_95": [
+        0.4583,
+        0.6602
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "account_flag",
+      "accounts": 103,
+      "positive_accounts": 25,
+      "prevalence": 0.2427,
+      "wilson_95": [
+        0.1702,
+        0.3338
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "any_event",
+      "accounts": 103,
+      "positive_accounts": 73,
+      "prevalence": 0.7087,
+      "wilson_95": [
+        0.6148,
+        0.7877
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "nonreactivation_event",
+      "accounts": 103,
+      "positive_accounts": 72,
+      "prevalence": 0.699,
+      "wilson_95": [
+        0.6046,
+        0.7791
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "subscription_flag_account",
+      "accounts": 103,
+      "positive_accounts": 65,
+      "prevalence": 0.6311,
+      "wilson_95": [
+        0.5347,
+        0.718
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "account_flag",
+      "accounts": 114,
+      "positive_accounts": 20,
+      "prevalence": 0.1754,
+      "wilson_95": [
+        0.1165,
+        0.2555
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "any_event",
+      "accounts": 114,
+      "positive_accounts": 85,
+      "prevalence": 0.7456,
+      "wilson_95": [
+        0.6586,
+        0.8166
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "nonreactivation_event",
+      "accounts": 114,
+      "positive_accounts": 81,
+      "prevalence": 0.7105,
+      "wilson_95": [
+        0.6215,
+        0.7858
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "subscription_flag_account",
+      "accounts": 114,
+      "positive_accounts": 78,
+      "prevalence": 0.6842,
+      "wilson_95": [
+        0.5941,
+        0.7623
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "account_flag",
+      "accounts": 96,
+      "positive_accounts": 29,
+      "prevalence": 0.3021,
+      "wilson_95": [
+        0.2193,
+        0.4001
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "any_event",
+      "accounts": 96,
+      "positive_accounts": 68,
+      "prevalence": 0.7083,
+      "wilson_95": [
+        0.6108,
+        0.7898
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "nonreactivation_event",
+      "accounts": 96,
+      "positive_accounts": 66,
+      "prevalence": 0.6875,
+      "wilson_95": [
+        0.5891,
+        0.7715
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "subscription_flag_account",
+      "accounts": 96,
+      "positive_accounts": 58,
+      "prevalence": 0.6042,
+      "wilson_95": [
+        0.5042,
+        0.6962
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "account_flag",
+      "accounts": 98,
+      "positive_accounts": 23,
+      "prevalence": 0.2347,
+      "wilson_95": [
+        0.1618,
+        0.3276
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "any_event",
+      "accounts": 98,
+      "positive_accounts": 59,
+      "prevalence": 0.602,
+      "wilson_95": [
+        0.503,
+        0.6933
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "nonreactivation_event",
+      "accounts": 98,
+      "positive_accounts": 56,
+      "prevalence": 0.5714,
+      "wilson_95": [
+        0.4726,
+        0.6649
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "subscription_flag_account",
+      "accounts": 98,
+      "positive_accounts": 61,
+      "prevalence": 0.6224,
+      "wilson_95": [
+        0.5236,
+        0.7121
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "account_flag",
+      "accounts": 79,
+      "positive_accounts": 13,
+      "prevalence": 0.1646,
+      "wilson_95": [
+        0.0988,
+        0.2615
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "any_event",
+      "accounts": 79,
+      "positive_accounts": 57,
+      "prevalence": 0.7215,
+      "wilson_95": [
+        0.6142,
+        0.8083
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "nonreactivation_event",
+      "accounts": 79,
+      "positive_accounts": 56,
+      "prevalence": 0.7089,
+      "wilson_95": [
+        0.6009,
+        0.7975
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "subscription_flag_account",
+      "accounts": 79,
+      "positive_accounts": 44,
+      "prevalence": 0.557,
+      "wilson_95": [
+        0.4473,
+        0.6613
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "account_flag",
+      "accounts": 112,
+      "positive_accounts": 25,
+      "prevalence": 0.2232,
+      "wilson_95": [
+        0.156,
+        0.3088
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "any_event",
+      "accounts": 112,
+      "positive_accounts": 76,
+      "prevalence": 0.6786,
+      "wilson_95": [
+        0.5874,
+        0.7579
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "nonreactivation_event",
+      "accounts": 112,
+      "positive_accounts": 72,
+      "prevalence": 0.6429,
+      "wilson_95": [
+        0.5507,
+        0.7255
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "subscription_flag_account",
+      "accounts": 112,
+      "positive_accounts": 55,
+      "prevalence": 0.4911,
+      "wilson_95": [
+        0.4003,
+        0.5824
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "account_flag",
+      "accounts": 113,
+      "positive_accounts": 35,
+      "prevalence": 0.3097,
+      "wilson_95": [
+        0.2319,
+        0.4001
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "any_event",
+      "accounts": 113,
+      "positive_accounts": 83,
+      "prevalence": 0.7345,
+      "wilson_95": [
+        0.6464,
+        0.8072
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "nonreactivation_event",
+      "accounts": 113,
+      "positive_accounts": 81,
+      "prevalence": 0.7168,
+      "wilson_95": [
+        0.6277,
+        0.7917
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "subscription_flag_account",
+      "accounts": 113,
+      "positive_accounts": 80,
+      "prevalence": 0.708,
+      "wilson_95": [
+        0.6184,
+        0.7839
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "account_flag",
+      "accounts": 96,
+      "positive_accounts": 21,
+      "prevalence": 0.2188,
+      "wilson_95": [
+        0.1478,
+        0.3114
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "any_event",
+      "accounts": 96,
+      "positive_accounts": 64,
+      "prevalence": 0.6667,
+      "wilson_95": [
+        0.5676,
+        0.7529
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "nonreactivation_event",
+      "accounts": 96,
+      "positive_accounts": 62,
+      "prevalence": 0.6458,
+      "wilson_95": [
+        0.5462,
+        0.7342
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "subscription_flag_account",
+      "accounts": 96,
+      "positive_accounts": 68,
+      "prevalence": 0.7083,
+      "wilson_95": [
+        0.6108,
+        0.7898
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "account_flag",
+      "accounts": 100,
+      "positive_accounts": 16,
+      "prevalence": 0.16,
+      "wilson_95": [
+        0.101,
+        0.2442
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "any_event",
+      "accounts": 100,
+      "positive_accounts": 72,
+      "prevalence": 0.72,
+      "wilson_95": [
+        0.6251,
+        0.7986
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "nonreactivation_event",
+      "accounts": 100,
+      "positive_accounts": 68,
+      "prevalence": 0.68,
+      "wilson_95": [
+        0.5834,
+        0.7633
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "subscription_flag_account",
+      "accounts": 100,
+      "positive_accounts": 65,
+      "prevalence": 0.65,
+      "wilson_95": [
+        0.5525,
+        0.7364
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "account_flag",
+      "accounts": 291,
+      "positive_accounts": 68,
+      "prevalence": 0.2337,
+      "wilson_95": [
+        0.1887,
+        0.2856
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "any_event",
+      "accounts": 291,
+      "positive_accounts": 206,
+      "prevalence": 0.7079,
+      "wilson_95": [
+        0.6532,
+        0.7572
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "nonreactivation_event",
+      "accounts": 291,
+      "positive_accounts": 197,
+      "prevalence": 0.677,
+      "wilson_95": [
+        0.6212,
+        0.7281
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "subscription_flag_account",
+      "accounts": 291,
+      "positive_accounts": 184,
+      "prevalence": 0.6323,
+      "wilson_95": [
+        0.5755,
+        0.6856
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "account_flag",
+      "accounts": 49,
+      "positive_accounts": 10,
+      "prevalence": 0.2041,
+      "wilson_95": [
+        0.1148,
+        0.3364
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "any_event",
+      "accounts": 49,
+      "positive_accounts": 33,
+      "prevalence": 0.6735,
+      "wilson_95": [
+        0.5338,
+        0.7879
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "nonreactivation_event",
+      "accounts": 49,
+      "positive_accounts": 32,
+      "prevalence": 0.6531,
+      "wilson_95": [
+        0.5131,
+        0.7708
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "subscription_flag_account",
+      "accounts": 49,
+      "positive_accounts": 25,
+      "prevalence": 0.5102,
+      "wilson_95": [
+        0.3747,
+        0.6442
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "account_flag",
+      "accounts": 58,
+      "positive_accounts": 11,
+      "prevalence": 0.1897,
+      "wilson_95": [
+        0.1093,
+        0.3085
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "any_event",
+      "accounts": 58,
+      "positive_accounts": 45,
+      "prevalence": 0.7759,
+      "wilson_95": [
+        0.6534,
+        0.8641
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "nonreactivation_event",
+      "accounts": 58,
+      "positive_accounts": 43,
+      "prevalence": 0.7414,
+      "wilson_95": [
+        0.6162,
+        0.8365
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "subscription_flag_account",
+      "accounts": 58,
+      "positive_accounts": 40,
+      "prevalence": 0.6897,
+      "wilson_95": [
+        0.562,
+        0.7938
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "CA",
+      "label": "account_flag",
+      "accounts": 23,
+      "positive_accounts": 4,
+      "prevalence": 0.1739,
+      "wilson_95": [
+        0.0698,
+        0.3714
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "CA",
+      "label": "any_event",
+      "accounts": 23,
+      "positive_accounts": 16,
+      "prevalence": 0.6957,
+      "wilson_95": [
+        0.4913,
+        0.844
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "CA",
+      "label": "nonreactivation_event",
+      "accounts": 23,
+      "positive_accounts": 16,
+      "prevalence": 0.6957,
+      "wilson_95": [
+        0.4913,
+        0.844
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "CA",
+      "label": "subscription_flag_account",
+      "accounts": 23,
+      "positive_accounts": 14,
+      "prevalence": 0.6087,
+      "wilson_95": [
+        0.4079,
+        0.7784
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "DE",
+      "label": "account_flag",
+      "accounts": 25,
+      "positive_accounts": 8,
+      "prevalence": 0.32,
+      "wilson_95": [
+        0.1721,
+        0.5159
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "DE",
+      "label": "any_event",
+      "accounts": 25,
+      "positive_accounts": 14,
+      "prevalence": 0.56,
+      "wilson_95": [
+        0.3707,
+        0.7333
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "DE",
+      "label": "nonreactivation_event",
+      "accounts": 25,
+      "positive_accounts": 14,
+      "prevalence": 0.56,
+      "wilson_95": [
+        0.3707,
+        0.7333
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "DE",
+      "label": "subscription_flag_account",
+      "accounts": 25,
+      "positive_accounts": 13,
+      "prevalence": 0.52,
+      "wilson_95": [
+        0.335,
+        0.6997
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "account_flag",
+      "accounts": 32,
+      "positive_accounts": 4,
+      "prevalence": 0.125,
+      "wilson_95": [
+        0.0497,
+        0.2807
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "any_event",
+      "accounts": 32,
+      "positive_accounts": 22,
+      "prevalence": 0.6875,
+      "wilson_95": [
+        0.5143,
+        0.8205
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "nonreactivation_event",
+      "accounts": 32,
+      "positive_accounts": 21,
+      "prevalence": 0.6562,
+      "wilson_95": [
+        0.4831,
+        0.7959
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "subscription_flag_account",
+      "accounts": 32,
+      "positive_accounts": 22,
+      "prevalence": 0.6875,
+      "wilson_95": [
+        0.5143,
+        0.8205
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "FR",
+      "label": "account_flag",
+      "accounts": 22,
+      "positive_accounts": 5,
+      "prevalence": 0.2273,
+      "wilson_95": [
+        0.1012,
+        0.4344
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "FR",
+      "label": "any_event",
+      "accounts": 22,
+      "positive_accounts": 16,
+      "prevalence": 0.7273,
+      "wilson_95": [
+        0.5185,
+        0.8685
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "FR",
+      "label": "nonreactivation_event",
+      "accounts": 22,
+      "positive_accounts": 16,
+      "prevalence": 0.7273,
+      "wilson_95": [
+        0.5185,
+        0.8685
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "country",
+      "segment": "FR",
+      "label": "subscription_flag_account",
+      "accounts": 22,
+      "positive_accounts": 14,
+      "prevalence": 0.6364,
+      "wilson_95": [
+        0.4295,
+        0.8027
+      ],
+      "small_sample": true
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "account_flag",
+      "accounts": 168,
+      "positive_accounts": 37,
+      "prevalence": 0.2202,
+      "wilson_95": [
+        0.1642,
+        0.2888
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "any_event",
+      "accounts": 168,
+      "positive_accounts": 115,
+      "prevalence": 0.6845,
+      "wilson_95": [
+        0.6108,
+        0.75
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "nonreactivation_event",
+      "accounts": 168,
+      "positive_accounts": 109,
+      "prevalence": 0.6488,
+      "wilson_95": [
+        0.574,
+        0.7169
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "subscription_flag_account",
+      "accounts": 168,
+      "positive_accounts": 101,
+      "prevalence": 0.6012,
+      "wilson_95": [
+        0.5257,
+        0.6722
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "account_flag",
+      "accounts": 154,
+      "positive_accounts": 34,
+      "prevalence": 0.2208,
+      "wilson_95": [
+        0.1625,
+        0.2926
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "any_event",
+      "accounts": 154,
+      "positive_accounts": 108,
+      "prevalence": 0.7013,
+      "wilson_95": [
+        0.6248,
+        0.768
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "nonreactivation_event",
+      "accounts": 154,
+      "positive_accounts": 104,
+      "prevalence": 0.6753,
+      "wilson_95": [
+        0.5979,
+        0.7442
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "subscription_flag_account",
+      "accounts": 154,
+      "positive_accounts": 99,
+      "prevalence": 0.6429,
+      "wilson_95": [
+        0.5645,
+        0.7142
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "account_flag",
+      "accounts": 178,
+      "positive_accounts": 39,
+      "prevalence": 0.2191,
+      "wilson_95": [
+        0.1646,
+        0.2854
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "any_event",
+      "accounts": 178,
+      "positive_accounts": 129,
+      "prevalence": 0.7247,
+      "wilson_95": [
+        0.6549,
+        0.7851
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "nonreactivation_event",
+      "accounts": 178,
+      "positive_accounts": 126,
+      "prevalence": 0.7079,
+      "wilson_95": [
+        0.6372,
+        0.7697
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "subscription_flag_account",
+      "accounts": 178,
+      "positive_accounts": 112,
+      "prevalence": 0.6292,
+      "wilson_95": [
+        0.5562,
+        0.6967
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "account_flag",
+      "accounts": 403,
+      "positive_accounts": 85,
+      "prevalence": 0.2109,
+      "wilson_95": [
+        0.1739,
+        0.2534
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "any_event",
+      "accounts": 403,
+      "positive_accounts": 285,
+      "prevalence": 0.7072,
+      "wilson_95": [
+        0.661,
+        0.7495
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "nonreactivation_event",
+      "accounts": 403,
+      "positive_accounts": 272,
+      "prevalence": 0.6749,
+      "wilson_95": [
+        0.6277,
+        0.7188
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "subscription_flag_account",
+      "accounts": 403,
+      "positive_accounts": 252,
+      "prevalence": 0.6253,
+      "wilson_95": [
+        0.5771,
+        0.6712
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "account_flag",
+      "accounts": 97,
+      "positive_accounts": 25,
+      "prevalence": 0.2577,
+      "wilson_95": [
+        0.1811,
+        0.3528
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "any_event",
+      "accounts": 97,
+      "positive_accounts": 67,
+      "prevalence": 0.6907,
+      "wilson_95": [
+        0.593,
+        0.774
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "nonreactivation_event",
+      "accounts": 97,
+      "positive_accounts": 67,
+      "prevalence": 0.6907,
+      "wilson_95": [
+        0.593,
+        0.774
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "subscription_flag_account",
+      "accounts": 97,
+      "positive_accounts": 60,
+      "prevalence": 0.6186,
+      "wilson_95": [
+        0.5191,
+        0.709
+      ],
+      "small_sample": false
+    }
+  ],
+  "subscription_segments": [
+    {
+      "dimension": "billing_frequency",
+      "segment": "monthly",
+      "label": "subscription_churn_flag",
+      "subscriptions": 2539,
+      "flagged_subscriptions": 239,
+      "prevalence": 0.0941,
+      "wilson_95": [
+        0.0834,
+        0.1061
+      ]
+    },
+    {
+      "dimension": "billing_frequency",
+      "segment": "annual",
+      "label": "subscription_churn_flag",
+      "subscriptions": 2461,
+      "flagged_subscriptions": 247,
+      "prevalence": 0.1004,
+      "wilson_95": [
+        0.0891,
+        0.1129
+      ]
+    }
+  ],
+  "segment_exploratory_rankings_min_30": [
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "account_flag",
+      "accounts": 113,
+      "positive_accounts": 35,
+      "prevalence": 0.3097,
+      "wilson_95": [
+        0.2319,
+        0.4001
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "account_flag",
+      "accounts": 96,
+      "positive_accounts": 29,
+      "prevalence": 0.3021,
+      "wilson_95": [
+        0.2193,
+        0.4001
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "account_flag",
+      "accounts": 97,
+      "positive_accounts": 25,
+      "prevalence": 0.2577,
+      "wilson_95": [
+        0.1811,
+        0.3528
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "account_flag",
+      "accounts": 103,
+      "positive_accounts": 25,
+      "prevalence": 0.2427,
+      "wilson_95": [
+        0.1702,
+        0.3338
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "account_flag",
+      "accounts": 98,
+      "positive_accounts": 23,
+      "prevalence": 0.2347,
+      "wilson_95": [
+        0.1618,
+        0.3276
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "account_flag",
+      "accounts": 291,
+      "positive_accounts": 68,
+      "prevalence": 0.2337,
+      "wilson_95": [
+        0.1887,
+        0.2856
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "account_flag",
+      "accounts": 112,
+      "positive_accounts": 25,
+      "prevalence": 0.2232,
+      "wilson_95": [
+        0.156,
+        0.3088
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "account_flag",
+      "accounts": 154,
+      "positive_accounts": 34,
+      "prevalence": 0.2208,
+      "wilson_95": [
+        0.1625,
+        0.2926
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "account_flag",
+      "accounts": 168,
+      "positive_accounts": 37,
+      "prevalence": 0.2202,
+      "wilson_95": [
+        0.1642,
+        0.2888
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "account_flag",
+      "accounts": 178,
+      "positive_accounts": 39,
+      "prevalence": 0.2191,
+      "wilson_95": [
+        0.1646,
+        0.2854
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "account_flag",
+      "accounts": 96,
+      "positive_accounts": 21,
+      "prevalence": 0.2188,
+      "wilson_95": [
+        0.1478,
+        0.3114
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "account_flag",
+      "accounts": 403,
+      "positive_accounts": 85,
+      "prevalence": 0.2109,
+      "wilson_95": [
+        0.1739,
+        0.2534
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "account_flag",
+      "accounts": 49,
+      "positive_accounts": 10,
+      "prevalence": 0.2041,
+      "wilson_95": [
+        0.1148,
+        0.3364
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "account_flag",
+      "accounts": 58,
+      "positive_accounts": 11,
+      "prevalence": 0.1897,
+      "wilson_95": [
+        0.1093,
+        0.3085
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "account_flag",
+      "accounts": 114,
+      "positive_accounts": 20,
+      "prevalence": 0.1754,
+      "wilson_95": [
+        0.1165,
+        0.2555
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "account_flag",
+      "accounts": 79,
+      "positive_accounts": 13,
+      "prevalence": 0.1646,
+      "wilson_95": [
+        0.0988,
+        0.2615
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "account_flag",
+      "accounts": 100,
+      "positive_accounts": 16,
+      "prevalence": 0.16,
+      "wilson_95": [
+        0.101,
+        0.2442
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "account_flag",
+      "accounts": 89,
+      "positive_accounts": 13,
+      "prevalence": 0.1461,
+      "wilson_95": [
+        0.0874,
+        0.234
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "account_flag",
+      "accounts": 32,
+      "positive_accounts": 4,
+      "prevalence": 0.125,
+      "wilson_95": [
+        0.0497,
+        0.2807
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "any_event",
+      "accounts": 58,
+      "positive_accounts": 45,
+      "prevalence": 0.7759,
+      "wilson_95": [
+        0.6534,
+        0.8641
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "any_event",
+      "accounts": 89,
+      "positive_accounts": 67,
+      "prevalence": 0.7528,
+      "wilson_95": [
+        0.654,
+        0.8307
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "any_event",
+      "accounts": 114,
+      "positive_accounts": 85,
+      "prevalence": 0.7456,
+      "wilson_95": [
+        0.6586,
+        0.8166
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "any_event",
+      "accounts": 113,
+      "positive_accounts": 83,
+      "prevalence": 0.7345,
+      "wilson_95": [
+        0.6464,
+        0.8072
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "any_event",
+      "accounts": 178,
+      "positive_accounts": 129,
+      "prevalence": 0.7247,
+      "wilson_95": [
+        0.6549,
+        0.7851
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "any_event",
+      "accounts": 79,
+      "positive_accounts": 57,
+      "prevalence": 0.7215,
+      "wilson_95": [
+        0.6142,
+        0.8083
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "any_event",
+      "accounts": 100,
+      "positive_accounts": 72,
+      "prevalence": 0.72,
+      "wilson_95": [
+        0.6251,
+        0.7986
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "any_event",
+      "accounts": 103,
+      "positive_accounts": 73,
+      "prevalence": 0.7087,
+      "wilson_95": [
+        0.6148,
+        0.7877
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "any_event",
+      "accounts": 96,
+      "positive_accounts": 68,
+      "prevalence": 0.7083,
+      "wilson_95": [
+        0.6108,
+        0.7898
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "any_event",
+      "accounts": 291,
+      "positive_accounts": 206,
+      "prevalence": 0.7079,
+      "wilson_95": [
+        0.6532,
+        0.7572
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "any_event",
+      "accounts": 403,
+      "positive_accounts": 285,
+      "prevalence": 0.7072,
+      "wilson_95": [
+        0.661,
+        0.7495
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "any_event",
+      "accounts": 154,
+      "positive_accounts": 108,
+      "prevalence": 0.7013,
+      "wilson_95": [
+        0.6248,
+        0.768
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "any_event",
+      "accounts": 97,
+      "positive_accounts": 67,
+      "prevalence": 0.6907,
+      "wilson_95": [
+        0.593,
+        0.774
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "any_event",
+      "accounts": 32,
+      "positive_accounts": 22,
+      "prevalence": 0.6875,
+      "wilson_95": [
+        0.5143,
+        0.8205
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "any_event",
+      "accounts": 168,
+      "positive_accounts": 115,
+      "prevalence": 0.6845,
+      "wilson_95": [
+        0.6108,
+        0.75
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "any_event",
+      "accounts": 112,
+      "positive_accounts": 76,
+      "prevalence": 0.6786,
+      "wilson_95": [
+        0.5874,
+        0.7579
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "any_event",
+      "accounts": 49,
+      "positive_accounts": 33,
+      "prevalence": 0.6735,
+      "wilson_95": [
+        0.5338,
+        0.7879
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "any_event",
+      "accounts": 96,
+      "positive_accounts": 64,
+      "prevalence": 0.6667,
+      "wilson_95": [
+        0.5676,
+        0.7529
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "any_event",
+      "accounts": 98,
+      "positive_accounts": 59,
+      "prevalence": 0.602,
+      "wilson_95": [
+        0.503,
+        0.6933
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "nonreactivation_event",
+      "accounts": 58,
+      "positive_accounts": 43,
+      "prevalence": 0.7414,
+      "wilson_95": [
+        0.6162,
+        0.8365
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "nonreactivation_event",
+      "accounts": 89,
+      "positive_accounts": 64,
+      "prevalence": 0.7191,
+      "wilson_95": [
+        0.6182,
+        0.8019
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "nonreactivation_event",
+      "accounts": 113,
+      "positive_accounts": 81,
+      "prevalence": 0.7168,
+      "wilson_95": [
+        0.6277,
+        0.7917
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "nonreactivation_event",
+      "accounts": 114,
+      "positive_accounts": 81,
+      "prevalence": 0.7105,
+      "wilson_95": [
+        0.6215,
+        0.7858
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "nonreactivation_event",
+      "accounts": 79,
+      "positive_accounts": 56,
+      "prevalence": 0.7089,
+      "wilson_95": [
+        0.6009,
+        0.7975
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "nonreactivation_event",
+      "accounts": 178,
+      "positive_accounts": 126,
+      "prevalence": 0.7079,
+      "wilson_95": [
+        0.6372,
+        0.7697
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "nonreactivation_event",
+      "accounts": 103,
+      "positive_accounts": 72,
+      "prevalence": 0.699,
+      "wilson_95": [
+        0.6046,
+        0.7791
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "nonreactivation_event",
+      "accounts": 97,
+      "positive_accounts": 67,
+      "prevalence": 0.6907,
+      "wilson_95": [
+        0.593,
+        0.774
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "nonreactivation_event",
+      "accounts": 96,
+      "positive_accounts": 66,
+      "prevalence": 0.6875,
+      "wilson_95": [
+        0.5891,
+        0.7715
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "nonreactivation_event",
+      "accounts": 100,
+      "positive_accounts": 68,
+      "prevalence": 0.68,
+      "wilson_95": [
+        0.5834,
+        0.7633
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "nonreactivation_event",
+      "accounts": 291,
+      "positive_accounts": 197,
+      "prevalence": 0.677,
+      "wilson_95": [
+        0.6212,
+        0.7281
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "nonreactivation_event",
+      "accounts": 154,
+      "positive_accounts": 104,
+      "prevalence": 0.6753,
+      "wilson_95": [
+        0.5979,
+        0.7442
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "nonreactivation_event",
+      "accounts": 403,
+      "positive_accounts": 272,
+      "prevalence": 0.6749,
+      "wilson_95": [
+        0.6277,
+        0.7188
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "nonreactivation_event",
+      "accounts": 32,
+      "positive_accounts": 21,
+      "prevalence": 0.6562,
+      "wilson_95": [
+        0.4831,
+        0.7959
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "nonreactivation_event",
+      "accounts": 49,
+      "positive_accounts": 32,
+      "prevalence": 0.6531,
+      "wilson_95": [
+        0.5131,
+        0.7708
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "nonreactivation_event",
+      "accounts": 168,
+      "positive_accounts": 109,
+      "prevalence": 0.6488,
+      "wilson_95": [
+        0.574,
+        0.7169
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "nonreactivation_event",
+      "accounts": 96,
+      "positive_accounts": 62,
+      "prevalence": 0.6458,
+      "wilson_95": [
+        0.5462,
+        0.7342
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "nonreactivation_event",
+      "accounts": 112,
+      "positive_accounts": 72,
+      "prevalence": 0.6429,
+      "wilson_95": [
+        0.5507,
+        0.7255
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "nonreactivation_event",
+      "accounts": 98,
+      "positive_accounts": 56,
+      "prevalence": 0.5714,
+      "wilson_95": [
+        0.4726,
+        0.6649
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "HealthTech",
+      "label": "subscription_flag_account",
+      "accounts": 96,
+      "positive_accounts": 68,
+      "prevalence": 0.7083,
+      "wilson_95": [
+        0.6108,
+        0.7898
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "DevTools",
+      "label": "subscription_flag_account",
+      "accounts": 113,
+      "positive_accounts": 80,
+      "prevalence": 0.708,
+      "wilson_95": [
+        0.6184,
+        0.7839
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "UK",
+      "label": "subscription_flag_account",
+      "accounts": 58,
+      "positive_accounts": 40,
+      "prevalence": 0.6897,
+      "wilson_95": [
+        0.562,
+        0.7938
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "AU",
+      "label": "subscription_flag_account",
+      "accounts": 32,
+      "positive_accounts": 22,
+      "prevalence": 0.6875,
+      "wilson_95": [
+        0.5143,
+        0.8205
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "organic",
+      "label": "subscription_flag_account",
+      "accounts": 114,
+      "positive_accounts": 78,
+      "prevalence": 0.6842,
+      "wilson_95": [
+        0.5941,
+        0.7623
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "Cybersecurity",
+      "label": "subscription_flag_account",
+      "accounts": 100,
+      "positive_accounts": 65,
+      "prevalence": 0.65,
+      "wilson_95": [
+        0.5525,
+        0.7364
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Enterprise",
+      "label": "subscription_flag_account",
+      "accounts": 154,
+      "positive_accounts": 99,
+      "prevalence": 0.6429,
+      "wilson_95": [
+        0.5645,
+        0.7142
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "US",
+      "label": "subscription_flag_account",
+      "accounts": 291,
+      "positive_accounts": 184,
+      "prevalence": 0.6323,
+      "wilson_95": [
+        0.5755,
+        0.6856
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "other",
+      "label": "subscription_flag_account",
+      "accounts": 103,
+      "positive_accounts": 65,
+      "prevalence": 0.6311,
+      "wilson_95": [
+        0.5347,
+        0.718
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Pro",
+      "label": "subscription_flag_account",
+      "accounts": 178,
+      "positive_accounts": 112,
+      "prevalence": 0.6292,
+      "wilson_95": [
+        0.5562,
+        0.6967
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "False",
+      "label": "subscription_flag_account",
+      "accounts": 403,
+      "positive_accounts": 252,
+      "prevalence": 0.6253,
+      "wilson_95": [
+        0.5771,
+        0.6712
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "ads",
+      "label": "subscription_flag_account",
+      "accounts": 98,
+      "positive_accounts": 61,
+      "prevalence": 0.6224,
+      "wilson_95": [
+        0.5236,
+        0.7121
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "is_trial",
+      "segment": "True",
+      "label": "subscription_flag_account",
+      "accounts": 97,
+      "positive_accounts": 60,
+      "prevalence": 0.6186,
+      "wilson_95": [
+        0.5191,
+        0.709
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "event",
+      "label": "subscription_flag_account",
+      "accounts": 96,
+      "positive_accounts": 58,
+      "prevalence": 0.6042,
+      "wilson_95": [
+        0.5042,
+        0.6962
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "plan_tier",
+      "segment": "Basic",
+      "label": "subscription_flag_account",
+      "accounts": 168,
+      "positive_accounts": 101,
+      "prevalence": 0.6012,
+      "wilson_95": [
+        0.5257,
+        0.6722
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "referral_source",
+      "segment": "partner",
+      "label": "subscription_flag_account",
+      "accounts": 89,
+      "positive_accounts": 50,
+      "prevalence": 0.5618,
+      "wilson_95": [
+        0.4583,
+        0.6602
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "EdTech",
+      "label": "subscription_flag_account",
+      "accounts": 79,
+      "positive_accounts": 44,
+      "prevalence": 0.557,
+      "wilson_95": [
+        0.4473,
+        0.6613
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "country",
+      "segment": "IN",
+      "label": "subscription_flag_account",
+      "accounts": 49,
+      "positive_accounts": 25,
+      "prevalence": 0.5102,
+      "wilson_95": [
+        0.3747,
+        0.6442
+      ],
+      "small_sample": false
+    },
+    {
+      "dimension": "industry",
+      "segment": "FinTech",
+      "label": "subscription_flag_account",
+      "accounts": 112,
+      "positive_accounts": 55,
+      "prevalence": 0.4911,
+      "wilson_95": [
+        0.4003,
+        0.5824
+      ],
+      "small_sample": false
+    }
+  ],
+  "cohorts": {
+    "definition": "account signup quarter",
+    "rows": [
+      {
+        "cohort": "2023-Q1",
+        "accounts": 55,
+        "event_window_days_from_cohort_start_to_last_event": 730,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 16,
+        "account_flag_share": 0.2909,
+        "any_event_accounts": 40,
+        "any_event_share": 0.7273,
+        "nonreactivation_event_accounts": 38,
+        "nonreactivation_event_share": 0.6909,
+        "subscription_flag_account_accounts": 34,
+        "subscription_flag_account_share": 0.6182
+      },
+      {
+        "cohort": "2023-Q2",
+        "accounts": 54,
+        "event_window_days_from_cohort_start_to_last_event": 640,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 13,
+        "account_flag_share": 0.2407,
+        "any_event_accounts": 31,
+        "any_event_share": 0.5741,
+        "nonreactivation_event_accounts": 31,
+        "nonreactivation_event_share": 0.5741,
+        "subscription_flag_account_accounts": 38,
+        "subscription_flag_account_share": 0.7037
+      },
+      {
+        "cohort": "2023-Q3",
+        "accounts": 53,
+        "event_window_days_from_cohort_start_to_last_event": 549,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 11,
+        "account_flag_share": 0.2075,
+        "any_event_accounts": 40,
+        "any_event_share": 0.7547,
+        "nonreactivation_event_accounts": 39,
+        "nonreactivation_event_share": 0.7358,
+        "subscription_flag_account_accounts": 32,
+        "subscription_flag_account_share": 0.6038
+      },
+      {
+        "cohort": "2023-Q4",
+        "accounts": 65,
+        "event_window_days_from_cohort_start_to_last_event": 457,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 18,
+        "account_flag_share": 0.2769,
+        "any_event_accounts": 52,
+        "any_event_share": 0.8,
+        "nonreactivation_event_accounts": 49,
+        "nonreactivation_event_share": 0.7538,
+        "subscription_flag_account_accounts": 37,
+        "subscription_flag_account_share": 0.5692
+      },
+      {
+        "cohort": "2024-Q1",
+        "accounts": 56,
+        "event_window_days_from_cohort_start_to_last_event": 365,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 11,
+        "account_flag_share": 0.1964,
+        "any_event_accounts": 39,
+        "any_event_share": 0.6964,
+        "nonreactivation_event_accounts": 37,
+        "nonreactivation_event_share": 0.6607,
+        "subscription_flag_account_accounts": 34,
+        "subscription_flag_account_share": 0.6071
+      },
+      {
+        "cohort": "2024-Q2",
+        "accounts": 65,
+        "event_window_days_from_cohort_start_to_last_event": 274,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 15,
+        "account_flag_share": 0.2308,
+        "any_event_accounts": 47,
+        "any_event_share": 0.7231,
+        "nonreactivation_event_accounts": 46,
+        "nonreactivation_event_share": 0.7077,
+        "subscription_flag_account_accounts": 42,
+        "subscription_flag_account_share": 0.6462
+      },
+      {
+        "cohort": "2024-Q3",
+        "accounts": 72,
+        "event_window_days_from_cohort_start_to_last_event": 183,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 14,
+        "account_flag_share": 0.1944,
+        "any_event_accounts": 49,
+        "any_event_share": 0.6806,
+        "nonreactivation_event_accounts": 47,
+        "nonreactivation_event_share": 0.6528,
+        "subscription_flag_account_accounts": 43,
+        "subscription_flag_account_share": 0.5972
+      },
+      {
+        "cohort": "2024-Q4",
+        "accounts": 80,
+        "event_window_days_from_cohort_start_to_last_event": 91,
+        "interpretation": "retrospective label mix only; not cohort retention",
+        "account_flag_accounts": 12,
+        "account_flag_share": 0.15,
+        "any_event_accounts": 54,
+        "any_event_share": 0.675,
+        "nonreactivation_event_accounts": 52,
+        "nonreactivation_event_share": 0.65,
+        "subscription_flag_account_accounts": 52,
+        "subscription_flag_account_share": 0.65
+      }
+    ],
+    "first_subscription_start_definition": "quarter of earliest listed subscription.start_date for each account; not verified first paid subscription",
+    "first_subscription_start_rows": [
+      {
+        "cohort": "2023-Q1",
+        "accounts": 21,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 8,
+        "account_flag_share": 0.381,
+        "any_event_accounts": 16,
+        "any_event_share": 0.7619,
+        "nonreactivation_event_accounts": 16,
+        "nonreactivation_event_share": 0.7619,
+        "subscription_flag_account_accounts": 17,
+        "subscription_flag_account_share": 0.8095
+      },
+      {
+        "cohort": "2023-Q2",
+        "accounts": 50,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 15,
+        "account_flag_share": 0.3,
+        "any_event_accounts": 33,
+        "any_event_share": 0.66,
+        "nonreactivation_event_accounts": 32,
+        "nonreactivation_event_share": 0.64,
+        "subscription_flag_account_accounts": 35,
+        "subscription_flag_account_share": 0.7
+      },
+      {
+        "cohort": "2023-Q3",
+        "accounts": 60,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 12,
+        "account_flag_share": 0.2,
+        "any_event_accounts": 37,
+        "any_event_share": 0.6167,
+        "nonreactivation_event_accounts": 36,
+        "nonreactivation_event_share": 0.6,
+        "subscription_flag_account_accounts": 34,
+        "subscription_flag_account_share": 0.5667
+      },
+      {
+        "cohort": "2023-Q4",
+        "accounts": 60,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 15,
+        "account_flag_share": 0.25,
+        "any_event_accounts": 49,
+        "any_event_share": 0.8167,
+        "nonreactivation_event_accounts": 47,
+        "nonreactivation_event_share": 0.7833,
+        "subscription_flag_account_accounts": 36,
+        "subscription_flag_account_share": 0.6
+      },
+      {
+        "cohort": "2024-Q1",
+        "accounts": 69,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 13,
+        "account_flag_share": 0.1884,
+        "any_event_accounts": 47,
+        "any_event_share": 0.6812,
+        "nonreactivation_event_accounts": 43,
+        "nonreactivation_event_share": 0.6232,
+        "subscription_flag_account_accounts": 41,
+        "subscription_flag_account_share": 0.5942
+      },
+      {
+        "cohort": "2024-Q2",
+        "accounts": 77,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 15,
+        "account_flag_share": 0.1948,
+        "any_event_accounts": 58,
+        "any_event_share": 0.7532,
+        "nonreactivation_event_accounts": 57,
+        "nonreactivation_event_share": 0.7403,
+        "subscription_flag_account_accounts": 47,
+        "subscription_flag_account_share": 0.6104
+      },
+      {
+        "cohort": "2024-Q3",
+        "accounts": 79,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 18,
+        "account_flag_share": 0.2278,
+        "any_event_accounts": 55,
+        "any_event_share": 0.6962,
+        "nonreactivation_event_accounts": 53,
+        "nonreactivation_event_share": 0.6709,
+        "subscription_flag_account_accounts": 47,
+        "subscription_flag_account_share": 0.5949
+      },
+      {
+        "cohort": "2024-Q4",
+        "accounts": 84,
+        "interpretation": "earliest listed subscription-start composition only; not verified first paid subscription or retention",
+        "account_flag_accounts": 14,
+        "account_flag_share": 0.1667,
+        "any_event_accounts": 57,
+        "any_event_share": 0.6786,
+        "nonreactivation_event_accounts": 55,
+        "nonreactivation_event_share": 0.6548,
+        "subscription_flag_account_accounts": 55,
+        "subscription_flag_account_share": 0.6548
+      }
+    ],
+    "retention_heatmap": null,
+    "status": "NOT_IDENTIFIABLE",
+    "reason": "Outcome labels conflict, no eligible-at-risk history or complete customer-state intervals; rows show retrospective label composition only, not retention."
+  },
+  "usage": {
+    "concentration": {
+      "valid_interval_usage_rows": 5568,
+      "accounts_with_any_valid_interval_usage": 469,
+      "accounts_without_valid_interval_usage": 31,
+      "valid_interval_usage_count_sum": 55724.0,
+      "valid_unique_usage_ids_with_any_valid_row": 5565,
+      "valid_unique_usage_count_sum": 55696.0,
+      "valid_rows_after_first_source_occurrence": 5562,
+      "valid_usage_count_after_first_source_occurrence": 55670.0,
+      "valid_rows_with_duplicate_ids": 14,
+      "valid_rows_after_excluding_all_rows_in_duplicate_id_groups": 5554,
+      "top_10_accounts_share": 0.0686,
+      "top_50_accounts_share": 0.264,
+      "top_decile_accounts_share": 0.2512,
+      "valid_interval_rows_excluded_by_reason": {
+        "before_subscription_start": 19142,
+        "after_subscription_end": 290
+      },
+      "duplicate_usage_id_groups": 21,
+      "rows_in_duplicate_usage_id_groups": 42,
+      "excess_rows_after_one_per_usage_id": 21
+    },
+    "by_label": [
+      {
+        "label": "account_flag",
+        "group": "positive",
+        "accounts": 110,
+        "accounts_with_valid_interval_usage": 108,
+        "valid_interval_usage_count_sum": 14272.0,
+        "mean_usage_count_per_account": 129.7455,
+        "median_usage_count_per_account": 112.5,
+        "mean_usage_count_among_users": 132.1481,
+        "mean_errors_per_account": 6.4636,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "account_flag",
+        "group": "negative",
+        "accounts": 390,
+        "accounts_with_valid_interval_usage": 361,
+        "valid_interval_usage_count_sum": 41452.0,
+        "mean_usage_count_per_account": 106.2872,
+        "median_usage_count_per_account": 92.0,
+        "mean_usage_count_among_users": 114.8255,
+        "mean_errors_per_account": 5.7667,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "any_event",
+        "group": "positive",
+        "accounts": 352,
+        "accounts_with_valid_interval_usage": 332,
+        "valid_interval_usage_count_sum": 39872.0,
+        "mean_usage_count_per_account": 113.2727,
+        "median_usage_count_per_account": 97.0,
+        "mean_usage_count_among_users": 120.0964,
+        "mean_errors_per_account": 6.0455,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "any_event",
+        "group": "negative",
+        "accounts": 148,
+        "accounts_with_valid_interval_usage": 137,
+        "valid_interval_usage_count_sum": 15852.0,
+        "mean_usage_count_per_account": 107.1081,
+        "median_usage_count_per_account": 89.0,
+        "mean_usage_count_among_users": 115.708,
+        "mean_errors_per_account": 5.6216,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "positive",
+        "accounts": 339,
+        "accounts_with_valid_interval_usage": 319,
+        "valid_interval_usage_count_sum": 38576.0,
+        "mean_usage_count_per_account": 113.7935,
+        "median_usage_count_per_account": 97.0,
+        "mean_usage_count_among_users": 120.9279,
+        "mean_errors_per_account": 6.0737,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "negative",
+        "accounts": 161,
+        "accounts_with_valid_interval_usage": 150,
+        "valid_interval_usage_count_sum": 17148.0,
+        "mean_usage_count_per_account": 106.5093,
+        "median_usage_count_per_account": 89.0,
+        "mean_usage_count_among_users": 114.32,
+        "mean_errors_per_account": 5.5963,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "positive",
+        "accounts": 312,
+        "accounts_with_valid_interval_usage": 294,
+        "valid_interval_usage_count_sum": 36318.0,
+        "mean_usage_count_per_account": 116.4038,
+        "median_usage_count_per_account": 99.5,
+        "mean_usage_count_among_users": 123.5306,
+        "mean_errors_per_account": 6.1314,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "negative",
+        "accounts": 188,
+        "accounts_with_valid_interval_usage": 175,
+        "valid_interval_usage_count_sum": 19406.0,
+        "mean_usage_count_per_account": 103.2234,
+        "median_usage_count_per_account": 90.5,
+        "mean_usage_count_among_users": 110.8914,
+        "mean_errors_per_account": 5.5691,
+        "temporal_note": "valid subscription interval; not aligned to a verified cancellation window"
+      }
+    ],
+    "feature_adoption": [
+      {
+        "feature": "feature_36",
+        "accounts": 130,
+        "share_of_all_accounts": 0.26,
+        "valid_usage_rows": 159,
+        "usage_count_sum": 1559.0,
+        "error_count_sum": 84.0,
+        "beta_usage_rows": 15
+      },
+      {
+        "feature": "feature_38",
+        "accounts": 128,
+        "share_of_all_accounts": 0.256,
+        "valid_usage_rows": 163,
+        "usage_count_sum": 1640.0,
+        "error_count_sum": 87.0,
+        "beta_usage_rows": 21
+      },
+      {
+        "feature": "feature_12",
+        "accounts": 127,
+        "share_of_all_accounts": 0.254,
+        "valid_usage_rows": 158,
+        "usage_count_sum": 1544.0,
+        "error_count_sum": 83.0,
+        "beta_usage_rows": 25
+      },
+      {
+        "feature": "feature_2",
+        "accounts": 124,
+        "share_of_all_accounts": 0.248,
+        "valid_usage_rows": 150,
+        "usage_count_sum": 1538.0,
+        "error_count_sum": 72.0,
+        "beta_usage_rows": 10
+      },
+      {
+        "feature": "feature_1",
+        "accounts": 123,
+        "share_of_all_accounts": 0.246,
+        "valid_usage_rows": 148,
+        "usage_count_sum": 1464.0,
+        "error_count_sum": 98.0,
+        "beta_usage_rows": 21
+      },
+      {
+        "feature": "feature_14",
+        "accounts": 123,
+        "share_of_all_accounts": 0.246,
+        "valid_usage_rows": 153,
+        "usage_count_sum": 1498.0,
+        "error_count_sum": 87.0,
+        "beta_usage_rows": 19
+      },
+      {
+        "feature": "feature_20",
+        "accounts": 123,
+        "share_of_all_accounts": 0.246,
+        "valid_usage_rows": 143,
+        "usage_count_sum": 1453.0,
+        "error_count_sum": 82.0,
+        "beta_usage_rows": 10
+      },
+      {
+        "feature": "feature_24",
+        "accounts": 123,
+        "share_of_all_accounts": 0.246,
+        "valid_usage_rows": 146,
+        "usage_count_sum": 1460.0,
+        "error_count_sum": 80.0,
+        "beta_usage_rows": 16
+      },
+      {
+        "feature": "feature_35",
+        "accounts": 123,
+        "share_of_all_accounts": 0.246,
+        "valid_usage_rows": 150,
+        "usage_count_sum": 1519.0,
+        "error_count_sum": 101.0,
+        "beta_usage_rows": 12
+      },
+      {
+        "feature": "feature_39",
+        "accounts": 123,
+        "share_of_all_accounts": 0.246,
+        "valid_usage_rows": 150,
+        "usage_count_sum": 1494.0,
+        "error_count_sum": 61.0,
+        "beta_usage_rows": 14
+      },
+      {
+        "feature": "feature_34",
+        "accounts": 122,
+        "share_of_all_accounts": 0.244,
+        "valid_usage_rows": 141,
+        "usage_count_sum": 1449.0,
+        "error_count_sum": 60.0,
+        "beta_usage_rows": 13
+      },
+      {
+        "feature": "feature_22",
+        "accounts": 120,
+        "share_of_all_accounts": 0.24,
+        "valid_usage_rows": 145,
+        "usage_count_sum": 1472.0,
+        "error_count_sum": 90.0,
+        "beta_usage_rows": 10
+      },
+      {
+        "feature": "feature_16",
+        "accounts": 119,
+        "share_of_all_accounts": 0.238,
+        "valid_usage_rows": 146,
+        "usage_count_sum": 1447.0,
+        "error_count_sum": 75.0,
+        "beta_usage_rows": 8
+      },
+      {
+        "feature": "feature_19",
+        "accounts": 118,
+        "share_of_all_accounts": 0.236,
+        "valid_usage_rows": 144,
+        "usage_count_sum": 1401.0,
+        "error_count_sum": 81.0,
+        "beta_usage_rows": 16
+      },
+      {
+        "feature": "feature_32",
+        "accounts": 118,
+        "share_of_all_accounts": 0.236,
+        "valid_usage_rows": 147,
+        "usage_count_sum": 1536.0,
+        "error_count_sum": 70.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_15",
+        "accounts": 117,
+        "share_of_all_accounts": 0.234,
+        "valid_usage_rows": 143,
+        "usage_count_sum": 1477.0,
+        "error_count_sum": 76.0,
+        "beta_usage_rows": 15
+      },
+      {
+        "feature": "feature_21",
+        "accounts": 117,
+        "share_of_all_accounts": 0.234,
+        "valid_usage_rows": 131,
+        "usage_count_sum": 1310.0,
+        "error_count_sum": 79.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_17",
+        "accounts": 116,
+        "share_of_all_accounts": 0.232,
+        "valid_usage_rows": 144,
+        "usage_count_sum": 1419.0,
+        "error_count_sum": 68.0,
+        "beta_usage_rows": 8
+      },
+      {
+        "feature": "feature_25",
+        "accounts": 116,
+        "share_of_all_accounts": 0.232,
+        "valid_usage_rows": 137,
+        "usage_count_sum": 1424.0,
+        "error_count_sum": 74.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_9",
+        "accounts": 115,
+        "share_of_all_accounts": 0.23,
+        "valid_usage_rows": 142,
+        "usage_count_sum": 1389.0,
+        "error_count_sum": 86.0,
+        "beta_usage_rows": 19
+      },
+      {
+        "feature": "feature_28",
+        "accounts": 114,
+        "share_of_all_accounts": 0.228,
+        "valid_usage_rows": 134,
+        "usage_count_sum": 1368.0,
+        "error_count_sum": 62.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_13",
+        "accounts": 113,
+        "share_of_all_accounts": 0.226,
+        "valid_usage_rows": 127,
+        "usage_count_sum": 1305.0,
+        "error_count_sum": 56.0,
+        "beta_usage_rows": 12
+      },
+      {
+        "feature": "feature_23",
+        "accounts": 113,
+        "share_of_all_accounts": 0.226,
+        "valid_usage_rows": 135,
+        "usage_count_sum": 1315.0,
+        "error_count_sum": 62.0,
+        "beta_usage_rows": 15
+      },
+      {
+        "feature": "feature_3",
+        "accounts": 113,
+        "share_of_all_accounts": 0.226,
+        "valid_usage_rows": 145,
+        "usage_count_sum": 1443.0,
+        "error_count_sum": 81.0,
+        "beta_usage_rows": 12
+      },
+      {
+        "feature": "feature_26",
+        "accounts": 112,
+        "share_of_all_accounts": 0.224,
+        "valid_usage_rows": 134,
+        "usage_count_sum": 1290.0,
+        "error_count_sum": 76.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_37",
+        "accounts": 112,
+        "share_of_all_accounts": 0.224,
+        "valid_usage_rows": 136,
+        "usage_count_sum": 1290.0,
+        "error_count_sum": 66.0,
+        "beta_usage_rows": 16
+      },
+      {
+        "feature": "feature_5",
+        "accounts": 112,
+        "share_of_all_accounts": 0.224,
+        "valid_usage_rows": 126,
+        "usage_count_sum": 1265.0,
+        "error_count_sum": 61.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_18",
+        "accounts": 111,
+        "share_of_all_accounts": 0.222,
+        "valid_usage_rows": 129,
+        "usage_count_sum": 1253.0,
+        "error_count_sum": 72.0,
+        "beta_usage_rows": 14
+      },
+      {
+        "feature": "feature_4",
+        "accounts": 111,
+        "share_of_all_accounts": 0.222,
+        "valid_usage_rows": 130,
+        "usage_count_sum": 1276.0,
+        "error_count_sum": 99.0,
+        "beta_usage_rows": 15
+      },
+      {
+        "feature": "feature_7",
+        "accounts": 111,
+        "share_of_all_accounts": 0.222,
+        "valid_usage_rows": 130,
+        "usage_count_sum": 1272.0,
+        "error_count_sum": 73.0,
+        "beta_usage_rows": 9
+      },
+      {
+        "feature": "feature_31",
+        "accounts": 110,
+        "share_of_all_accounts": 0.22,
+        "valid_usage_rows": 136,
+        "usage_count_sum": 1389.0,
+        "error_count_sum": 71.0,
+        "beta_usage_rows": 14
+      },
+      {
+        "feature": "feature_27",
+        "accounts": 109,
+        "share_of_all_accounts": 0.218,
+        "valid_usage_rows": 132,
+        "usage_count_sum": 1357.0,
+        "error_count_sum": 68.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_33",
+        "accounts": 109,
+        "share_of_all_accounts": 0.218,
+        "valid_usage_rows": 140,
+        "usage_count_sum": 1349.0,
+        "error_count_sum": 70.0,
+        "beta_usage_rows": 18
+      },
+      {
+        "feature": "feature_11",
+        "accounts": 108,
+        "share_of_all_accounts": 0.216,
+        "valid_usage_rows": 130,
+        "usage_count_sum": 1345.0,
+        "error_count_sum": 71.0,
+        "beta_usage_rows": 11
+      },
+      {
+        "feature": "feature_30",
+        "accounts": 108,
+        "share_of_all_accounts": 0.216,
+        "valid_usage_rows": 131,
+        "usage_count_sum": 1330.0,
+        "error_count_sum": 61.0,
+        "beta_usage_rows": 8
+      },
+      {
+        "feature": "feature_40",
+        "accounts": 106,
+        "share_of_all_accounts": 0.212,
+        "valid_usage_rows": 132,
+        "usage_count_sum": 1311.0,
+        "error_count_sum": 76.0,
+        "beta_usage_rows": 19
+      },
+      {
+        "feature": "feature_10",
+        "accounts": 102,
+        "share_of_all_accounts": 0.204,
+        "valid_usage_rows": 132,
+        "usage_count_sum": 1369.0,
+        "error_count_sum": 71.0,
+        "beta_usage_rows": 9
+      },
+      {
+        "feature": "feature_29",
+        "accounts": 102,
+        "share_of_all_accounts": 0.204,
+        "valid_usage_rows": 131,
+        "usage_count_sum": 1265.0,
+        "error_count_sum": 52.0,
+        "beta_usage_rows": 7
+      },
+      {
+        "feature": "feature_6",
+        "accounts": 99,
+        "share_of_all_accounts": 0.198,
+        "valid_usage_rows": 130,
+        "usage_count_sum": 1286.0,
+        "error_count_sum": 69.0,
+        "beta_usage_rows": 13
+      },
+      {
+        "feature": "feature_8",
+        "accounts": 85,
+        "share_of_all_accounts": 0.17,
+        "valid_usage_rows": 108,
+        "usage_count_sum": 1153.0,
+        "error_count_sum": 49.0,
+        "beta_usage_rows": 7
+      }
+    ],
+    "monthly_source_trend": [
+      {
+        "month": "2023-01",
+        "source_rows": 1069,
+        "distinct_accounts_observed": 440,
+        "recorded_usage_count": 10877.0,
+        "rows_after_first_source_occurrence": 1069,
+        "usage_count_after_first_source_occurrence": 10877.0,
+        "valid_interval_rows": 0,
+        "valid_interval_usage_count": 0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-02",
+        "source_rows": 970,
+        "distinct_accounts_observed": 412,
+        "recorded_usage_count": 9492.0,
+        "rows_after_first_source_occurrence": 970,
+        "usage_count_after_first_source_occurrence": 9492.0,
+        "valid_interval_rows": 4,
+        "valid_interval_usage_count": 28.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-03",
+        "source_rows": 1103,
+        "distinct_accounts_observed": 431,
+        "recorded_usage_count": 11031.0,
+        "rows_after_first_source_occurrence": 1102,
+        "usage_count_after_first_source_occurrence": 11021.0,
+        "valid_interval_rows": 7,
+        "valid_interval_usage_count": 64.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-04",
+        "source_rows": 1032,
+        "distinct_accounts_observed": 432,
+        "recorded_usage_count": 10369.0,
+        "rows_after_first_source_occurrence": 1030,
+        "usage_count_after_first_source_occurrence": 10347.0,
+        "valid_interval_rows": 16,
+        "valid_interval_usage_count": 143.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-05",
+        "source_rows": 1077,
+        "distinct_accounts_observed": 438,
+        "recorded_usage_count": 10757.0,
+        "rows_after_first_source_occurrence": 1076,
+        "usage_count_after_first_source_occurrence": 10748.0,
+        "valid_interval_rows": 8,
+        "valid_interval_usage_count": 78.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-06",
+        "source_rows": 1013,
+        "distinct_accounts_observed": 420,
+        "recorded_usage_count": 10002.0,
+        "rows_after_first_source_occurrence": 1012,
+        "usage_count_after_first_source_occurrence": 9992.0,
+        "valid_interval_rows": 18,
+        "valid_interval_usage_count": 146.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-07",
+        "source_rows": 1075,
+        "distinct_accounts_observed": 415,
+        "recorded_usage_count": 11083.0,
+        "rows_after_first_source_occurrence": 1074,
+        "usage_count_after_first_source_occurrence": 11074.0,
+        "valid_interval_rows": 40,
+        "valid_interval_usage_count": 416.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-08",
+        "source_rows": 1040,
+        "distinct_accounts_observed": 426,
+        "recorded_usage_count": 10335.0,
+        "rows_after_first_source_occurrence": 1040,
+        "usage_count_after_first_source_occurrence": 10335.0,
+        "valid_interval_rows": 48,
+        "valid_interval_usage_count": 511.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-09",
+        "source_rows": 969,
+        "distinct_accounts_observed": 409,
+        "recorded_usage_count": 9737.0,
+        "rows_after_first_source_occurrence": 969,
+        "usage_count_after_first_source_occurrence": 9737.0,
+        "valid_interval_rows": 63,
+        "valid_interval_usage_count": 619.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-10",
+        "source_rows": 1095,
+        "distinct_accounts_observed": 426,
+        "recorded_usage_count": 10968.0,
+        "rows_after_first_source_occurrence": 1093,
+        "usage_count_after_first_source_occurrence": 10953.0,
+        "valid_interval_rows": 81,
+        "valid_interval_usage_count": 823.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-11",
+        "source_rows": 944,
+        "distinct_accounts_observed": 412,
+        "recorded_usage_count": 9475.0,
+        "rows_after_first_source_occurrence": 943,
+        "usage_count_after_first_source_occurrence": 9468.0,
+        "valid_interval_rows": 104,
+        "valid_interval_usage_count": 1011.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2023-12",
+        "source_rows": 1043,
+        "distinct_accounts_observed": 431,
+        "recorded_usage_count": 10435.0,
+        "rows_after_first_source_occurrence": 1042,
+        "usage_count_after_first_source_occurrence": 10430.0,
+        "valid_interval_rows": 125,
+        "valid_interval_usage_count": 1227.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-01",
+        "source_rows": 1060,
+        "distinct_accounts_observed": 426,
+        "recorded_usage_count": 10621.0,
+        "rows_after_first_source_occurrence": 1060,
+        "usage_count_after_first_source_occurrence": 10621.0,
+        "valid_interval_rows": 137,
+        "valid_interval_usage_count": 1402.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-02",
+        "source_rows": 1016,
+        "distinct_accounts_observed": 422,
+        "recorded_usage_count": 10247.0,
+        "rows_after_first_source_occurrence": 1014,
+        "usage_count_after_first_source_occurrence": 10225.0,
+        "valid_interval_rows": 167,
+        "valid_interval_usage_count": 1643.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-03",
+        "source_rows": 1069,
+        "distinct_accounts_observed": 430,
+        "recorded_usage_count": 10725.0,
+        "rows_after_first_source_occurrence": 1068,
+        "usage_count_after_first_source_occurrence": 10719.0,
+        "valid_interval_rows": 215,
+        "valid_interval_usage_count": 2111.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-04",
+        "source_rows": 1020,
+        "distinct_accounts_observed": 428,
+        "recorded_usage_count": 10131.0,
+        "rows_after_first_source_occurrence": 1019,
+        "usage_count_after_first_source_occurrence": 10121.0,
+        "valid_interval_rows": 232,
+        "valid_interval_usage_count": 2270.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-05",
+        "source_rows": 1040,
+        "distinct_accounts_observed": 427,
+        "recorded_usage_count": 10552.0,
+        "rows_after_first_source_occurrence": 1040,
+        "usage_count_after_first_source_occurrence": 10552.0,
+        "valid_interval_rows": 293,
+        "valid_interval_usage_count": 3025.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-06",
+        "source_rows": 1013,
+        "distinct_accounts_observed": 416,
+        "recorded_usage_count": 10106.0,
+        "rows_after_first_source_occurrence": 1011,
+        "usage_count_after_first_source_occurrence": 10088.0,
+        "valid_interval_rows": 330,
+        "valid_interval_usage_count": 3308.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-07",
+        "source_rows": 1068,
+        "distinct_accounts_observed": 431,
+        "recorded_usage_count": 10601.0,
+        "rows_after_first_source_occurrence": 1067,
+        "usage_count_after_first_source_occurrence": 10588.0,
+        "valid_interval_rows": 400,
+        "valid_interval_usage_count": 4012.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-08",
+        "source_rows": 1060,
+        "distinct_accounts_observed": 422,
+        "recorded_usage_count": 10559.0,
+        "rows_after_first_source_occurrence": 1059,
+        "usage_count_after_first_source_occurrence": 10549.0,
+        "valid_interval_rows": 455,
+        "valid_interval_usage_count": 4500.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-09",
+        "source_rows": 1020,
+        "distinct_accounts_observed": 415,
+        "recorded_usage_count": 10195.0,
+        "rows_after_first_source_occurrence": 1019,
+        "usage_count_after_first_source_occurrence": 10178.0,
+        "valid_interval_rows": 526,
+        "valid_interval_usage_count": 5278.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-10",
+        "source_rows": 1137,
+        "distinct_accounts_observed": 435,
+        "recorded_usage_count": 11450.0,
+        "rows_after_first_source_occurrence": 1137,
+        "usage_count_after_first_source_occurrence": 11450.0,
+        "valid_interval_rows": 696,
+        "valid_interval_usage_count": 6948.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-11",
+        "source_rows": 991,
+        "distinct_accounts_observed": 410,
+        "recorded_usage_count": 10039.0,
+        "rows_after_first_source_occurrence": 990,
+        "usage_count_after_first_source_occurrence": 10031.0,
+        "valid_interval_rows": 697,
+        "valid_interval_usage_count": 7110.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      },
+      {
+        "month": "2024-12",
+        "source_rows": 1076,
+        "distinct_accounts_observed": 428,
+        "recorded_usage_count": 10738.0,
+        "rows_after_first_source_occurrence": 1075,
+        "usage_count_after_first_source_occurrence": 10726.0,
+        "valid_interval_rows": 906,
+        "valid_interval_usage_count": 9051.0,
+        "interpretation": "Observed source-row volume; not a pre-churn adoption measure or proof of growth for every customer."
+      }
+    ],
+    "yearly_source_trend": [
+      {
+        "year": 2023,
+        "source_rows": 12430,
+        "distinct_accounts_observed": 500,
+        "observed_account_months": 5092,
+        "recorded_usage_count": 124561.0,
+        "usage_count_per_observed_account_month": 24.4621,
+        "mean_recorded_usage_count_per_account": 249.122,
+        "median_recorded_usage_count_per_account": 249.5,
+        "source_rows_after_first_duplicate_occurrence": 12420,
+        "usage_count_after_first_duplicate_occurrence": 124474.0,
+        "valid_interval_rows": 514,
+        "valid_interval_distinct_accounts": 152,
+        "valid_interval_usage_count": 5066.0,
+        "classification": "DESCRIPTIVE_SOURCE_VOLUME; interval-bounded subset is a sensitivity, not a verified retention window."
+      },
+      {
+        "year": 2024,
+        "source_rows": 12570,
+        "distinct_accounts_observed": 500,
+        "observed_account_months": 5090,
+        "recorded_usage_count": 125964.0,
+        "usage_count_per_observed_account_month": 24.7473,
+        "mean_recorded_usage_count_per_account": 251.928,
+        "median_recorded_usage_count_per_account": 244.0,
+        "source_rows_after_first_duplicate_occurrence": 12559,
+        "usage_count_after_first_duplicate_occurrence": 125848.0,
+        "valid_interval_rows": 5054,
+        "valid_interval_distinct_accounts": 469,
+        "valid_interval_usage_count": 50658.0,
+        "classification": "DESCRIPTIVE_SOURCE_VOLUME; interval-bounded subset is a sensitivity, not a verified retention window."
+      }
+    ],
+    "segment_yearly_source_trend": [
+      {
+        "dimension": "referral_source",
+        "segment": "ads",
+        "year": 2023,
+        "account_denominator": 98,
+        "accounts_with_observed_usage": 98,
+        "recorded_usage_count": 24637.0,
+        "mean_recorded_usage_count_per_segment_account": 251.398,
+        "median_recorded_usage_count_per_segment_account": 256.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "ads",
+        "year": 2024,
+        "account_denominator": 98,
+        "accounts_with_observed_usage": 98,
+        "recorded_usage_count": 24959.0,
+        "mean_recorded_usage_count_per_segment_account": 254.6837,
+        "median_recorded_usage_count_per_segment_account": 245.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 251.398,
+        "change_from_prior_year_pct": 1.307,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "event",
+        "year": 2023,
+        "account_denominator": 96,
+        "accounts_with_observed_usage": 96,
+        "recorded_usage_count": 23764.0,
+        "mean_recorded_usage_count_per_segment_account": 247.5417,
+        "median_recorded_usage_count_per_segment_account": 256.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "event",
+        "year": 2024,
+        "account_denominator": 96,
+        "accounts_with_observed_usage": 96,
+        "recorded_usage_count": 23206.0,
+        "mean_recorded_usage_count_per_segment_account": 241.7292,
+        "median_recorded_usage_count_per_segment_account": 238.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 247.5417,
+        "change_from_prior_year_pct": -2.3481,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "organic",
+        "year": 2023,
+        "account_denominator": 114,
+        "accounts_with_observed_usage": 114,
+        "recorded_usage_count": 28925.0,
+        "mean_recorded_usage_count_per_segment_account": 253.7281,
+        "median_recorded_usage_count_per_segment_account": 246.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "organic",
+        "year": 2024,
+        "account_denominator": 114,
+        "accounts_with_observed_usage": 114,
+        "recorded_usage_count": 30381.0,
+        "mean_recorded_usage_count_per_segment_account": 266.5,
+        "median_recorded_usage_count_per_segment_account": 260.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 253.7281,
+        "change_from_prior_year_pct": 5.0337,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "other",
+        "year": 2023,
+        "account_denominator": 103,
+        "accounts_with_observed_usage": 103,
+        "recorded_usage_count": 25494.0,
+        "mean_recorded_usage_count_per_segment_account": 247.5146,
+        "median_recorded_usage_count_per_segment_account": 241.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "other",
+        "year": 2024,
+        "account_denominator": 103,
+        "accounts_with_observed_usage": 103,
+        "recorded_usage_count": 25091.0,
+        "mean_recorded_usage_count_per_segment_account": 243.6019,
+        "median_recorded_usage_count_per_segment_account": 241.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 247.5146,
+        "change_from_prior_year_pct": -1.5808,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "partner",
+        "year": 2023,
+        "account_denominator": 89,
+        "accounts_with_observed_usage": 89,
+        "recorded_usage_count": 21741.0,
+        "mean_recorded_usage_count_per_segment_account": 244.2809,
+        "median_recorded_usage_count_per_segment_account": 250.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "referral_source",
+        "segment": "partner",
+        "year": 2024,
+        "account_denominator": 89,
+        "accounts_with_observed_usage": 89,
+        "recorded_usage_count": 22327.0,
+        "mean_recorded_usage_count_per_segment_account": 250.8652,
+        "median_recorded_usage_count_per_segment_account": 240.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 244.2809,
+        "change_from_prior_year_pct": 2.6954,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "Cybersecurity",
+        "year": 2023,
+        "account_denominator": 100,
+        "accounts_with_observed_usage": 100,
+        "recorded_usage_count": 25170.0,
+        "mean_recorded_usage_count_per_segment_account": 251.7,
+        "median_recorded_usage_count_per_segment_account": 253.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "Cybersecurity",
+        "year": 2024,
+        "account_denominator": 100,
+        "accounts_with_observed_usage": 100,
+        "recorded_usage_count": 25202.0,
+        "mean_recorded_usage_count_per_segment_account": 252.02,
+        "median_recorded_usage_count_per_segment_account": 252.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 251.7,
+        "change_from_prior_year_pct": 0.1271,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "DevTools",
+        "year": 2023,
+        "account_denominator": 113,
+        "accounts_with_observed_usage": 113,
+        "recorded_usage_count": 28655.0,
+        "mean_recorded_usage_count_per_segment_account": 253.5841,
+        "median_recorded_usage_count_per_segment_account": 253.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "DevTools",
+        "year": 2024,
+        "account_denominator": 113,
+        "accounts_with_observed_usage": 113,
+        "recorded_usage_count": 28737.0,
+        "mean_recorded_usage_count_per_segment_account": 254.3097,
+        "median_recorded_usage_count_per_segment_account": 240.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 253.5841,
+        "change_from_prior_year_pct": 0.2862,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "EdTech",
+        "year": 2023,
+        "account_denominator": 79,
+        "accounts_with_observed_usage": 79,
+        "recorded_usage_count": 19860.0,
+        "mean_recorded_usage_count_per_segment_account": 251.3924,
+        "median_recorded_usage_count_per_segment_account": 252.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "EdTech",
+        "year": 2024,
+        "account_denominator": 79,
+        "accounts_with_observed_usage": 79,
+        "recorded_usage_count": 20145.0,
+        "mean_recorded_usage_count_per_segment_account": 255.0,
+        "median_recorded_usage_count_per_segment_account": 251.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 251.3924,
+        "change_from_prior_year_pct": 1.435,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "FinTech",
+        "year": 2023,
+        "account_denominator": 112,
+        "accounts_with_observed_usage": 112,
+        "recorded_usage_count": 27724.0,
+        "mean_recorded_usage_count_per_segment_account": 247.5357,
+        "median_recorded_usage_count_per_segment_account": 252.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "FinTech",
+        "year": 2024,
+        "account_denominator": 112,
+        "accounts_with_observed_usage": 112,
+        "recorded_usage_count": 28204.0,
+        "mean_recorded_usage_count_per_segment_account": 251.8214,
+        "median_recorded_usage_count_per_segment_account": 253.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 247.5357,
+        "change_from_prior_year_pct": 1.7314,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "HealthTech",
+        "year": 2023,
+        "account_denominator": 96,
+        "accounts_with_observed_usage": 96,
+        "recorded_usage_count": 23152.0,
+        "mean_recorded_usage_count_per_segment_account": 241.1667,
+        "median_recorded_usage_count_per_segment_account": 221.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "industry",
+        "segment": "HealthTech",
+        "year": 2024,
+        "account_denominator": 96,
+        "accounts_with_observed_usage": 96,
+        "recorded_usage_count": 23676.0,
+        "mean_recorded_usage_count_per_segment_account": 246.625,
+        "median_recorded_usage_count_per_segment_account": 236.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 241.1667,
+        "change_from_prior_year_pct": 2.2633,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "AU",
+        "year": 2023,
+        "account_denominator": 32,
+        "accounts_with_observed_usage": 32,
+        "recorded_usage_count": 7944.0,
+        "mean_recorded_usage_count_per_segment_account": 248.25,
+        "median_recorded_usage_count_per_segment_account": 260.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "AU",
+        "year": 2024,
+        "account_denominator": 32,
+        "accounts_with_observed_usage": 32,
+        "recorded_usage_count": 7726.0,
+        "mean_recorded_usage_count_per_segment_account": 241.4375,
+        "median_recorded_usage_count_per_segment_account": 222.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 248.25,
+        "change_from_prior_year_pct": -2.7442,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "CA",
+        "year": 2023,
+        "account_denominator": 23,
+        "accounts_with_observed_usage": 23,
+        "recorded_usage_count": 5801.0,
+        "mean_recorded_usage_count_per_segment_account": 252.2174,
+        "median_recorded_usage_count_per_segment_account": 231.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "CA",
+        "year": 2024,
+        "account_denominator": 23,
+        "accounts_with_observed_usage": 23,
+        "recorded_usage_count": 5297.0,
+        "mean_recorded_usage_count_per_segment_account": 230.3043,
+        "median_recorded_usage_count_per_segment_account": 207.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 252.2174,
+        "change_from_prior_year_pct": -8.6882,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "DE",
+        "year": 2023,
+        "account_denominator": 25,
+        "accounts_with_observed_usage": 25,
+        "recorded_usage_count": 5205.0,
+        "mean_recorded_usage_count_per_segment_account": 208.2,
+        "median_recorded_usage_count_per_segment_account": 216.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "DE",
+        "year": 2024,
+        "account_denominator": 25,
+        "accounts_with_observed_usage": 25,
+        "recorded_usage_count": 5415.0,
+        "mean_recorded_usage_count_per_segment_account": 216.6,
+        "median_recorded_usage_count_per_segment_account": 195.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 208.2,
+        "change_from_prior_year_pct": 4.0346,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "FR",
+        "year": 2023,
+        "account_denominator": 22,
+        "accounts_with_observed_usage": 22,
+        "recorded_usage_count": 5554.0,
+        "mean_recorded_usage_count_per_segment_account": 252.4545,
+        "median_recorded_usage_count_per_segment_account": 268.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "FR",
+        "year": 2024,
+        "account_denominator": 22,
+        "accounts_with_observed_usage": 22,
+        "recorded_usage_count": 5337.0,
+        "mean_recorded_usage_count_per_segment_account": 242.5909,
+        "median_recorded_usage_count_per_segment_account": 208.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 252.4545,
+        "change_from_prior_year_pct": -3.9071,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "IN",
+        "year": 2023,
+        "account_denominator": 49,
+        "accounts_with_observed_usage": 49,
+        "recorded_usage_count": 12805.0,
+        "mean_recorded_usage_count_per_segment_account": 261.3265,
+        "median_recorded_usage_count_per_segment_account": 253.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "IN",
+        "year": 2024,
+        "account_denominator": 49,
+        "accounts_with_observed_usage": 49,
+        "recorded_usage_count": 12701.0,
+        "mean_recorded_usage_count_per_segment_account": 259.2041,
+        "median_recorded_usage_count_per_segment_account": 276.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 261.3265,
+        "change_from_prior_year_pct": -0.8122,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "UK",
+        "year": 2023,
+        "account_denominator": 58,
+        "accounts_with_observed_usage": 58,
+        "recorded_usage_count": 14390.0,
+        "mean_recorded_usage_count_per_segment_account": 248.1034,
+        "median_recorded_usage_count_per_segment_account": 252.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "UK",
+        "year": 2024,
+        "account_denominator": 58,
+        "accounts_with_observed_usage": 58,
+        "recorded_usage_count": 13986.0,
+        "mean_recorded_usage_count_per_segment_account": 241.1379,
+        "median_recorded_usage_count_per_segment_account": 223.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 248.1034,
+        "change_from_prior_year_pct": -2.8075,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "US",
+        "year": 2023,
+        "account_denominator": 291,
+        "accounts_with_observed_usage": 291,
+        "recorded_usage_count": 72862.0,
+        "mean_recorded_usage_count_per_segment_account": 250.3849,
+        "median_recorded_usage_count_per_segment_account": 250.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "country",
+        "segment": "US",
+        "year": 2024,
+        "account_denominator": 291,
+        "accounts_with_observed_usage": 291,
+        "recorded_usage_count": 75502.0,
+        "mean_recorded_usage_count_per_segment_account": 259.457,
+        "median_recorded_usage_count_per_segment_account": 254.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 250.3849,
+        "change_from_prior_year_pct": 3.6233,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "plan_tier",
+        "segment": "Basic",
+        "year": 2023,
+        "account_denominator": 168,
+        "accounts_with_observed_usage": 168,
+        "recorded_usage_count": 44059.0,
+        "mean_recorded_usage_count_per_segment_account": 262.256,
+        "median_recorded_usage_count_per_segment_account": 260.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "plan_tier",
+        "segment": "Basic",
+        "year": 2024,
+        "account_denominator": 168,
+        "accounts_with_observed_usage": 168,
+        "recorded_usage_count": 44743.0,
+        "mean_recorded_usage_count_per_segment_account": 266.3274,
+        "median_recorded_usage_count_per_segment_account": 259.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 262.256,
+        "change_from_prior_year_pct": 1.5525,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "plan_tier",
+        "segment": "Enterprise",
+        "year": 2023,
+        "account_denominator": 154,
+        "accounts_with_observed_usage": 154,
+        "recorded_usage_count": 37893.0,
+        "mean_recorded_usage_count_per_segment_account": 246.0584,
+        "median_recorded_usage_count_per_segment_account": 252.5,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "plan_tier",
+        "segment": "Enterprise",
+        "year": 2024,
+        "account_denominator": 154,
+        "accounts_with_observed_usage": 154,
+        "recorded_usage_count": 37584.0,
+        "mean_recorded_usage_count_per_segment_account": 244.0519,
+        "median_recorded_usage_count_per_segment_account": 245.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 246.0584,
+        "change_from_prior_year_pct": -0.8155,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "plan_tier",
+        "segment": "Pro",
+        "year": 2023,
+        "account_denominator": 178,
+        "accounts_with_observed_usage": 178,
+        "recorded_usage_count": 42609.0,
+        "mean_recorded_usage_count_per_segment_account": 239.3764,
+        "median_recorded_usage_count_per_segment_account": 235.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "plan_tier",
+        "segment": "Pro",
+        "year": 2024,
+        "account_denominator": 178,
+        "accounts_with_observed_usage": 178,
+        "recorded_usage_count": 43637.0,
+        "mean_recorded_usage_count_per_segment_account": 245.1517,
+        "median_recorded_usage_count_per_segment_account": 236.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 239.3764,
+        "change_from_prior_year_pct": 2.4126,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "is_trial",
+        "segment": "False",
+        "year": 2023,
+        "account_denominator": 403,
+        "accounts_with_observed_usage": 403,
+        "recorded_usage_count": 99723.0,
+        "mean_recorded_usage_count_per_segment_account": 247.4516,
+        "median_recorded_usage_count_per_segment_account": 247.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "is_trial",
+        "segment": "False",
+        "year": 2024,
+        "account_denominator": 403,
+        "accounts_with_observed_usage": 403,
+        "recorded_usage_count": 101245.0,
+        "mean_recorded_usage_count_per_segment_account": 251.2283,
+        "median_recorded_usage_count_per_segment_account": 244.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 247.4516,
+        "change_from_prior_year_pct": 1.5262,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "is_trial",
+        "segment": "True",
+        "year": 2023,
+        "account_denominator": 97,
+        "accounts_with_observed_usage": 97,
+        "recorded_usage_count": 24838.0,
+        "mean_recorded_usage_count_per_segment_account": 256.0619,
+        "median_recorded_usage_count_per_segment_account": 260.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": null,
+        "change_from_prior_year_pct": null,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      },
+      {
+        "dimension": "is_trial",
+        "segment": "True",
+        "year": 2024,
+        "account_denominator": 97,
+        "accounts_with_observed_usage": 97,
+        "recorded_usage_count": 24719.0,
+        "mean_recorded_usage_count_per_segment_account": 254.8351,
+        "median_recorded_usage_count_per_segment_account": 255.0,
+        "prior_year_mean_recorded_usage_count_per_segment_account": 256.0619,
+        "change_from_prior_year_pct": -0.4791,
+        "classification": "DESCRIPTIVE CALENDAR VOLUME; fixed account segment denominator, not exposure-adjusted adoption or a churn effect."
+      }
+    ],
+    "activation_proxy": {
+      "status": "CONDITIONAL",
+      "definition": "first usage row within a linked subscription's start/end bounds, compared with account signup date",
+      "account_count_with_proxy": 469,
+      "median_days_from_signup": 77.0,
+      "accounts_first_use_before_signup": 0,
+      "accounts_first_use_within_7_days": 10,
+      "accounts_first_use_within_30_days": 62,
+      "limitation": "Not onboarding completion or time-to-value; subscription boundaries and signup are not a validated lifecycle timeline."
+    }
+  },
+  "support": {
+    "by_label": [
+      {
+        "label": "account_flag",
+        "group": "positive",
+        "account_count": 110,
+        "accounts_with_tickets": 108,
+        "ticket_rows": 432,
+        "satisfaction_mean_ticket": 4.0115,
+        "satisfaction_scored_tickets": 260,
+        "satisfaction_missing_tickets": 172,
+        "satisfaction_mean_account_average": 4.0026,
+        "accounts_with_satisfaction": 102,
+        "first_response_median_minutes": 83.0,
+        "first_response_n": 432,
+        "resolution_median_hours": 35.0,
+        "resolution_n": 432,
+        "escalated_ticket_rows": 24,
+        "escalation_ticket_rows_n": 432,
+        "mean_account_escalation_rate": 0.0621,
+        "accounts_with_escalation_data": 108
+      },
+      {
+        "label": "account_flag",
+        "group": "negative",
+        "account_count": 390,
+        "accounts_with_tickets": 384,
+        "ticket_rows": 1568,
+        "satisfaction_mean_ticket": 3.9727,
+        "satisfaction_scored_tickets": 915,
+        "satisfaction_missing_tickets": 653,
+        "satisfaction_mean_account_average": 3.9534,
+        "accounts_with_satisfaction": 364,
+        "first_response_median_minutes": 90.0,
+        "first_response_n": 1568,
+        "resolution_median_hours": 35.0,
+        "resolution_n": 1568,
+        "escalated_ticket_rows": 71,
+        "escalation_ticket_rows_n": 1568,
+        "mean_account_escalation_rate": 0.044,
+        "accounts_with_escalation_data": 384
+      },
+      {
+        "label": "any_event",
+        "group": "positive",
+        "account_count": 352,
+        "accounts_with_tickets": 347,
+        "ticket_rows": 1395,
+        "satisfaction_mean_ticket": 3.9804,
+        "satisfaction_scored_tickets": 815,
+        "satisfaction_missing_tickets": 580,
+        "satisfaction_mean_account_average": 3.9616,
+        "accounts_with_satisfaction": 330,
+        "first_response_median_minutes": 89.0,
+        "first_response_n": 1395,
+        "resolution_median_hours": 35.0,
+        "resolution_n": 1395,
+        "escalated_ticket_rows": 71,
+        "escalation_ticket_rows_n": 1395,
+        "mean_account_escalation_rate": 0.0493,
+        "accounts_with_escalation_data": 347
+      },
+      {
+        "label": "any_event",
+        "group": "negative",
+        "account_count": 148,
+        "accounts_with_tickets": 145,
+        "ticket_rows": 605,
+        "satisfaction_mean_ticket": 3.9833,
+        "satisfaction_scored_tickets": 360,
+        "satisfaction_missing_tickets": 245,
+        "satisfaction_mean_account_average": 3.9703,
+        "accounts_with_satisfaction": 136,
+        "first_response_median_minutes": 87.0,
+        "first_response_n": 605,
+        "resolution_median_hours": 35.0,
+        "resolution_n": 605,
+        "escalated_ticket_rows": 24,
+        "escalation_ticket_rows_n": 605,
+        "mean_account_escalation_rate": 0.0449,
+        "accounts_with_escalation_data": 145
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "positive",
+        "account_count": 339,
+        "accounts_with_tickets": 334,
+        "ticket_rows": 1347,
+        "satisfaction_mean_ticket": 3.9758,
+        "satisfaction_scored_tickets": 785,
+        "satisfaction_missing_tickets": 562,
+        "satisfaction_mean_account_average": 3.9578,
+        "accounts_with_satisfaction": 318,
+        "first_response_median_minutes": 89.0,
+        "first_response_n": 1347,
+        "resolution_median_hours": 35.0,
+        "resolution_n": 1347,
+        "escalated_ticket_rows": 67,
+        "escalation_ticket_rows_n": 1347,
+        "mean_account_escalation_rate": 0.0486,
+        "accounts_with_escalation_data": 334
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "negative",
+        "account_count": 161,
+        "accounts_with_tickets": 158,
+        "ticket_rows": 653,
+        "satisfaction_mean_ticket": 3.9923,
+        "satisfaction_scored_tickets": 390,
+        "satisfaction_missing_tickets": 263,
+        "satisfaction_mean_account_average": 3.9778,
+        "accounts_with_satisfaction": 148,
+        "first_response_median_minutes": 86.0,
+        "first_response_n": 653,
+        "resolution_median_hours": 35.0,
+        "resolution_n": 653,
+        "escalated_ticket_rows": 28,
+        "escalation_ticket_rows_n": 653,
+        "mean_account_escalation_rate": 0.0467,
+        "accounts_with_escalation_data": 158
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "positive",
+        "account_count": 312,
+        "accounts_with_tickets": 310,
+        "ticket_rows": 1269,
+        "satisfaction_mean_ticket": 3.969,
+        "satisfaction_scored_tickets": 742,
+        "satisfaction_missing_tickets": 527,
+        "satisfaction_mean_account_average": 3.9525,
+        "accounts_with_satisfaction": 298,
+        "first_response_median_minutes": 88.0,
+        "first_response_n": 1269,
+        "resolution_median_hours": 36.0,
+        "resolution_n": 1269,
+        "escalated_ticket_rows": 61,
+        "escalation_ticket_rows_n": 1269,
+        "mean_account_escalation_rate": 0.0481,
+        "accounts_with_escalation_data": 310
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "negative",
+        "account_count": 188,
+        "accounts_with_tickets": 182,
+        "ticket_rows": 731,
+        "satisfaction_mean_ticket": 4.0023,
+        "satisfaction_scored_tickets": 433,
+        "satisfaction_missing_tickets": 298,
+        "satisfaction_mean_account_average": 3.9849,
+        "accounts_with_satisfaction": 168,
+        "first_response_median_minutes": 89.0,
+        "first_response_n": 731,
+        "resolution_median_hours": 34.0,
+        "resolution_n": 731,
+        "escalated_ticket_rows": 34,
+        "escalation_ticket_rows_n": 731,
+        "mean_account_escalation_rate": 0.0478,
+        "accounts_with_escalation_data": 182
+      }
+    ],
+    "ticket_priority_by_label": [
+      {
+        "label": "account_flag",
+        "group": "positive",
+        "priority": "high",
+        "accounts": 63,
+        "ticket_rows": 105
+      },
+      {
+        "label": "account_flag",
+        "group": "positive",
+        "priority": "low",
+        "accounts": 62,
+        "ticket_rows": 108
+      },
+      {
+        "label": "account_flag",
+        "group": "positive",
+        "priority": "medium",
+        "accounts": 73,
+        "ticket_rows": 118
+      },
+      {
+        "label": "account_flag",
+        "group": "positive",
+        "priority": "urgent",
+        "accounts": 63,
+        "ticket_rows": 101
+      },
+      {
+        "label": "account_flag",
+        "group": "negative",
+        "priority": "high",
+        "accounts": 259,
+        "ticket_rows": 405
+      },
+      {
+        "label": "account_flag",
+        "group": "negative",
+        "priority": "low",
+        "accounts": 248,
+        "ticket_rows": 377
+      },
+      {
+        "label": "account_flag",
+        "group": "negative",
+        "priority": "medium",
+        "accounts": 236,
+        "ticket_rows": 373
+      },
+      {
+        "label": "account_flag",
+        "group": "negative",
+        "priority": "urgent",
+        "accounts": 254,
+        "ticket_rows": 413
+      },
+      {
+        "label": "any_event",
+        "group": "positive",
+        "priority": "high",
+        "accounts": 234,
+        "ticket_rows": 369
+      },
+      {
+        "label": "any_event",
+        "group": "positive",
+        "priority": "low",
+        "accounts": 219,
+        "ticket_rows": 337
+      },
+      {
+        "label": "any_event",
+        "group": "positive",
+        "priority": "medium",
+        "accounts": 222,
+        "ticket_rows": 346
+      },
+      {
+        "label": "any_event",
+        "group": "positive",
+        "priority": "urgent",
+        "accounts": 219,
+        "ticket_rows": 343
+      },
+      {
+        "label": "any_event",
+        "group": "negative",
+        "priority": "high",
+        "accounts": 88,
+        "ticket_rows": 141
+      },
+      {
+        "label": "any_event",
+        "group": "negative",
+        "priority": "low",
+        "accounts": 91,
+        "ticket_rows": 148
+      },
+      {
+        "label": "any_event",
+        "group": "negative",
+        "priority": "medium",
+        "accounts": 87,
+        "ticket_rows": 145
+      },
+      {
+        "label": "any_event",
+        "group": "negative",
+        "priority": "urgent",
+        "accounts": 98,
+        "ticket_rows": 171
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "positive",
+        "priority": "high",
+        "accounts": 225,
+        "ticket_rows": 354
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "positive",
+        "priority": "low",
+        "accounts": 211,
+        "ticket_rows": 327
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "positive",
+        "priority": "medium",
+        "accounts": 214,
+        "ticket_rows": 332
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "positive",
+        "priority": "urgent",
+        "accounts": 212,
+        "ticket_rows": 334
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "negative",
+        "priority": "high",
+        "accounts": 97,
+        "ticket_rows": 156
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "negative",
+        "priority": "low",
+        "accounts": 99,
+        "ticket_rows": 158
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "negative",
+        "priority": "medium",
+        "accounts": 95,
+        "ticket_rows": 159
+      },
+      {
+        "label": "nonreactivation_event",
+        "group": "negative",
+        "priority": "urgent",
+        "accounts": 105,
+        "ticket_rows": 180
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "positive",
+        "priority": "high",
+        "accounts": 206,
+        "ticket_rows": 327
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "positive",
+        "priority": "low",
+        "accounts": 203,
+        "ticket_rows": 318
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "positive",
+        "priority": "medium",
+        "accounts": 193,
+        "ticket_rows": 290
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "positive",
+        "priority": "urgent",
+        "accounts": 200,
+        "ticket_rows": 334
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "negative",
+        "priority": "high",
+        "accounts": 116,
+        "ticket_rows": 183
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "negative",
+        "priority": "low",
+        "accounts": 107,
+        "ticket_rows": 167
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "negative",
+        "priority": "medium",
+        "accounts": 116,
+        "ticket_rows": 201
+      },
+      {
+        "label": "subscription_flag_account",
+        "group": "negative",
+        "priority": "urgent",
+        "accounts": 117,
+        "ticket_rows": 180
+      }
+    ],
+    "satisfaction_missing_all_tickets": 825,
+    "satisfaction_missing_share": 0.4125,
+    "interpretation": "ticket-row summaries and account-cluster means are descriptive; missingness and temporal order limit inference"
+  },
+  "revenue": {
+    "subscription_rows": 5000,
+    "accounts_represented": 500,
+    "mrr_recorded_rows_n": 5000,
+    "mrr_row_min": 0.0,
+    "mrr_row_median": 931.0,
+    "mrr_row_max": 33830.0,
+    "mrr_zero_rows": 778,
+    "arr_recorded_rows_n": 5000,
+    "arr_row_min": 0.0,
+    "arr_row_median": 11172.0,
+    "arr_row_max": 405960.0,
+    "arr_zero_rows": 778,
+    "mrr_row_sum_not_revenue": 11338747.0,
+    "arr_row_sum_not_revenue": 136064964.0,
+    "refund_observed_sum_usd": 8652.25,
+    "refund_nonzero_event_rows": 142,
+    "current_mrr_lost_revenue_grr_nrr_ltv_exposure": null,
+    "limitation": "multiple subscription rows per account, no reconciled snapshot/effective-date and no event-to-subscription link; sums are not current or lost revenue"
+  },
+  "account_investigation_candidates": [
+    {
+      "account_id": "A-0a62f5",
+      "account_name": "Company_381",
+      "industry": "FinTech",
+      "country": "UK",
+      "referral_source": "partner",
+      "plan_tier": "Pro",
+      "seats": 16.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 5,
+      "nonreactivation_event_rows": 5,
+      "ticket_rows": 2,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 1,
+      "valid_interval_usage_count": 11.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-180abf",
+      "account_name": "Company_122",
+      "industry": "DevTools",
+      "country": "US",
+      "referral_source": "event",
+      "plan_tier": "Pro",
+      "seats": 64.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": true,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 5,
+      "nonreactivation_event_rows": 5,
+      "ticket_rows": 3,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 10,
+      "valid_interval_usage_count": 101.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-37f969",
+      "account_name": "Company_150",
+      "industry": "HealthTech",
+      "country": "IN",
+      "referral_source": "partner",
+      "plan_tier": "Enterprise",
+      "seats": 30.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 4,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 8,
+      "valid_interval_usage_count": 92.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-fd7ad3",
+      "account_name": "Company_100",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "referral_source": "event",
+      "plan_tier": "Enterprise",
+      "seats": 1.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 8,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 1,
+      "valid_interval_usage_count": 10.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-0cc442",
+      "account_name": "Company_198",
+      "industry": "EdTech",
+      "country": "US",
+      "referral_source": "organic",
+      "plan_tier": "Basic",
+      "seats": 45.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 2,
+      "ticket_rows": 3,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 11,
+      "valid_interval_usage_count": 107.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-533452",
+      "account_name": "Company_279",
+      "industry": "DevTools",
+      "country": "AU",
+      "referral_source": "organic",
+      "plan_tier": "Pro",
+      "seats": 9.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 4,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 4,
+      "valid_interval_usage_count": 25.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-68f37c",
+      "account_name": "Company_202",
+      "industry": "HealthTech",
+      "country": "US",
+      "referral_source": "ads",
+      "plan_tier": "Basic",
+      "seats": 4.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 2,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 30,
+      "valid_interval_usage_count": 287.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-ae052e",
+      "account_name": "Company_132",
+      "industry": "FinTech",
+      "country": "CA",
+      "referral_source": "other",
+      "plan_tier": "Basic",
+      "seats": 39.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 4,
+      "ticket_rows": 4,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 2,
+      "valid_interval_usage_count": 21.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-ee42db",
+      "account_name": "Company_77",
+      "industry": "EdTech",
+      "country": "DE",
+      "referral_source": "ads",
+      "plan_tier": "Enterprise",
+      "seats": 13.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 4,
+      "ticket_rows": 4,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 32,
+      "valid_interval_usage_count": 304.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-425e76",
+      "account_name": "Company_110",
+      "industry": "DevTools",
+      "country": "UK",
+      "referral_source": "other",
+      "plan_tier": "Enterprise",
+      "seats": 8.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": true,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 22,
+      "valid_interval_usage_count": 205.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-9208f0",
+      "account_name": "Company_79",
+      "industry": "EdTech",
+      "country": "US",
+      "referral_source": "organic",
+      "plan_tier": "Pro",
+      "seats": 1.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": true,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 2,
+      "ticket_rows": 8,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 30,
+      "valid_interval_usage_count": 305.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-0baac2",
+      "account_name": "Company_264",
+      "industry": "FinTech",
+      "country": "DE",
+      "referral_source": "organic",
+      "plan_tier": "Enterprise",
+      "seats": 14.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": true,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 4,
+      "nonreactivation_event_rows": 4,
+      "ticket_rows": 6,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 1,
+      "valid_interval_usage_count": 12.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-104f1a",
+      "account_name": "Company_89",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "referral_source": "other",
+      "plan_tier": "Pro",
+      "seats": 24.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 5,
+      "valid_interval_usage_count": 42.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-3f9cc0",
+      "account_name": "Company_359",
+      "industry": "HealthTech",
+      "country": "US",
+      "referral_source": "event",
+      "plan_tier": "Basic",
+      "seats": 22.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 2,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 15,
+      "valid_interval_usage_count": 128.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-526d93",
+      "account_name": "Company_66",
+      "industry": "HealthTech",
+      "country": "FR",
+      "referral_source": "organic",
+      "plan_tier": "Basic",
+      "seats": 43.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 15,
+      "valid_interval_usage_count": 164.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-5790f4",
+      "account_name": "Company_446",
+      "industry": "FinTech",
+      "country": "UK",
+      "referral_source": "event",
+      "plan_tier": "Pro",
+      "seats": 1.0,
+      "is_trial": true,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 4,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 0,
+      "valid_interval_usage_count": 0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-87aa7b",
+      "account_name": "Company_433",
+      "industry": "HealthTech",
+      "country": "US",
+      "referral_source": "organic",
+      "plan_tier": "Pro",
+      "seats": 24.0,
+      "is_trial": true,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 3,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 13,
+      "valid_interval_usage_count": 121.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-8e47ca",
+      "account_name": "Company_191",
+      "industry": "HealthTech",
+      "country": "US",
+      "referral_source": "organic",
+      "plan_tier": "Pro",
+      "seats": 19.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 15,
+      "valid_interval_usage_count": 145.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-bcf664",
+      "account_name": "Company_248",
+      "industry": "DevTools",
+      "country": "US",
+      "referral_source": "other",
+      "plan_tier": "Pro",
+      "seats": 5.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 1,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 23,
+      "valid_interval_usage_count": 232.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-c58f49",
+      "account_name": "Company_480",
+      "industry": "EdTech",
+      "country": "US",
+      "referral_source": "other",
+      "plan_tier": "Enterprise",
+      "seats": 70.0,
+      "is_trial": true,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 3,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 4,
+      "valid_interval_usage_count": 44.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-e888d1",
+      "account_name": "Company_102",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "referral_source": "other",
+      "plan_tier": "Pro",
+      "seats": 14.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 16,
+      "valid_interval_usage_count": 157.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-ef84cf",
+      "account_name": "Company_274",
+      "industry": "EdTech",
+      "country": "US",
+      "referral_source": "partner",
+      "plan_tier": "Enterprise",
+      "seats": 8.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 1,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 1,
+      "valid_interval_usage_rows": 8,
+      "valid_interval_usage_count": 95.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-029f69",
+      "account_name": "Company_129",
+      "industry": "Cybersecurity",
+      "country": "CA",
+      "referral_source": "event",
+      "plan_tier": "Basic",
+      "seats": 3.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 2,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 7,
+      "valid_interval_usage_count": 76.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-1619f8",
+      "account_name": "Company_183",
+      "industry": "DevTools",
+      "country": "US",
+      "referral_source": "organic",
+      "plan_tier": "Pro",
+      "seats": 29.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 3,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 6,
+      "valid_interval_usage_count": 57.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-1b9609",
+      "account_name": "Company_5",
+      "industry": "EdTech",
+      "country": "IN",
+      "referral_source": "ads",
+      "plan_tier": "Enterprise",
+      "seats": 4.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 4,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 18,
+      "valid_interval_usage_count": 189.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-1e1b80",
+      "account_name": "Company_416",
+      "industry": "FinTech",
+      "country": "CA",
+      "referral_source": "other",
+      "plan_tier": "Enterprise",
+      "seats": 50.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 6,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 28,
+      "valid_interval_usage_count": 275.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-2ebb4b",
+      "account_name": "Company_334",
+      "industry": "HealthTech",
+      "country": "US",
+      "referral_source": "ads",
+      "plan_tier": "Basic",
+      "seats": 41.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 2,
+      "ticket_rows": 2,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 24,
+      "valid_interval_usage_count": 236.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-3b5cd1",
+      "account_name": "Company_49",
+      "industry": "FinTech",
+      "country": "US",
+      "referral_source": "event",
+      "plan_tier": "Basic",
+      "seats": 13.0,
+      "is_trial": true,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 22,
+      "valid_interval_usage_count": 213.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-4bfa33",
+      "account_name": "Company_251",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "referral_source": "event",
+      "plan_tier": "Basic",
+      "seats": 8.0,
+      "is_trial": true,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": true
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 4,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 2,
+      "valid_interval_usage_count": 23.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    },
+    {
+      "account_id": "A-54ecc2",
+      "account_name": "Company_289",
+      "industry": "Cybersecurity",
+      "country": "US",
+      "referral_source": "partner",
+      "plan_tier": "Enterprise",
+      "seats": 4.0,
+      "is_trial": false,
+      "labels": {
+        "account_flag": false,
+        "any_event": true,
+        "nonreactivation_event": true,
+        "subscription_flag_account": false
+      },
+      "event_rows": 3,
+      "nonreactivation_event_rows": 3,
+      "ticket_rows": 5,
+      "escalated_ticket_rows": 0,
+      "valid_interval_usage_rows": 18,
+      "valid_interval_usage_count": 194.0,
+      "selection_reason": "label disagreement and/or repeated event history; reconciliation candidate, not future-risk estimate"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis": "Outcome and lifecycle instrumentation conflict",
+      "classification": "VERIFIED_OBSERVATION",
+      "evidence": "401/500 accounts disagree across at least one of four account-level indicators; account flag vs any event differs for 312 accounts.",
+      "counterevidence": "The four indicators do not have identical intended semantics, so disagreement is not automatically a source-system error.",
+      "priority": "P0",
+      "next_test": "Define eligible paid account/subscription state, cancellation, reactivation and effective timestamps; reconcile sampled records against source contracts."
+    },
+    {
+      "hypothesis": "Acquisition/ICP mismatch",
+      "classification": "CONDITIONAL_RESULT",
+      "evidence": "Segment prevalences vary by label; see segment table with denominators, Wilson intervals and sample-size warnings.",
+      "counterevidence": "Rankings change with label; acquisition cost, margin, value and temporal outcome are unavailable; composition can confound comparisons.",
+      "priority": "P1",
+      "next_test": "Recompute by acquisition cohort after valid outcome and exposure are instrumented; compare channel economics and retention."
+    },
+    {
+      "hypothesis": "Weak activation or time-to-value",
+      "classification": "UNKNOWN",
+      "evidence": "5568 usage rows remain inside linked subscription intervals; first observed interval-valid usage is only a proxy.",
+      "counterevidence": "19432 usage rows are excluded from the interval sensitivity and signup/onboarding timestamps are not a canonical activation event.",
+      "priority": "P1",
+      "next_test": "Instrument onboarding completion and first-value event tied to account/subscription, then monitor 7/30-day activation."
+    },
+    {
+      "hypothesis": "Low or concentrated adoption",
+      "classification": "CONDITIONAL_RESULT",
+      "evidence": "Among interval-valid usage, the top decile of accounts represents 25.1% of recorded usage counts.",
+      "counterevidence": "Usage count is not value realized; interval-valid use is still not a verified pre-cancellation window.",
+      "priority": "P1",
+      "next_test": "Define meaningful adoption by feature/use case and compare prospectively within eligible cohorts."
+    },
+    {
+      "hypothesis": "Support friction",
+      "classification": "CONDITIONAL_RESULT",
+      "evidence": "Ticket outcomes are available by each alternative account label; account-cluster satisfaction and escalation summaries are included alongside ticket-row values.",
+      "counterevidence": "Ticket volume is selected by support need; satisfaction is missing for 825/2,000 tickets and not time-aligned to cancellation.",
+      "priority": "P2",
+      "next_test": "Link ticket histories to reconciled cancellation dates; review escalations and conduct customer follow-up."
+    },
+    {
+      "hypothesis": "Price/value mismatch",
+      "classification": "UNKNOWN",
+      "evidence": "Reason codes and subscription-row monetary fields can be described; price/budget codes occur in event records.",
+      "counterevidence": "Reason codes are not causal proof; contract row semantics, realized value and customer willingness-to-pay are unavailable.",
+      "priority": "P2",
+      "next_test": "Validate reason codes in customer interviews and reconcile invoice/contract snapshots before price intervention."
+    },
+    {
+      "hypothesis": "Product reliability or competitive gap",
+      "classification": "UNKNOWN",
+      "evidence": "Usage error counts and event reason codes are available as exploratory signals.",
+      "counterevidence": "No product incident exposure, feature entitlement, release history or account-linked verified cancellation timeline.",
+      "priority": "P2",
+      "next_test": "Join telemetry to release/incident exposure and verify with a sampled customer review."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": 1,
+      "action": "Reconcile the lifecycle and build a monthly eligible-account snapshot",
+      "function": "RevOps + Data/Product Analytics",
+      "target": "All accounts and subscription rows with conflicting state",
+      "evidence": "401/500 accounts differ across outcome indicators; 600 event rows lack reliable subscription linkage.",
+      "effort": "Medium; planning estimate only, not a measured cost",
+      "success_metric": "Audited state coverage and stable eligible denominator by month",
+      "validation": "Sample source contract/invoice records and compare against canonical account-subscription state",
+      "impact": "Enables a valid churn rate and prevents misallocated intervention; financial impact not quantified."
+    },
+    {
+      "priority": 2,
+      "action": "Instrument activation and meaningful adoption on a shared timeline",
+      "function": "Product Analytics + Customer Success",
+      "target": "New accounts by acquisition channel, plan and trial status",
+      "evidence": "Usage timestamps materially fall outside linked subscription intervals; current first use is only a proxy.",
+      "effort": "Medium; event taxonomy and instrumentation work",
+      "success_metric": "Coverage of signup, onboarding completion, first-value event and 7/30-day adoption",
+      "validation": "Audit event ordering and cohort completeness before comparing activation rates",
+      "impact": "Improves diagnosis and targeting; no churn reduction is claimed."
+    },
+    {
+      "priority": 3,
+      "action": "Run a small randomized adoption/support pilot after eligibility is reconciled",
+      "function": "Customer Success + Analytics",
+      "target": "Eligible accounts with verified active state and agreed low-adoption or unresolved-support criteria",
+      "evidence": "Usage and ticket signals are available but not causal or temporally valid today.",
+      "effort": "Low-to-medium pilot; cost per account must be estimated locally before launch",
+      "success_metric": "90-day verified account retention; guardrails: satisfaction, escalations and service cost",
+      "validation": "Account-level random assignment, stratified by plan/channel, intention-to-treat analysis",
+      "impact": "Unknown until experiment; scenario tool is hypothetical only."
+    }
+  ],
+  "limitations": [
+    "Synthetic public challenge data; observed associations do not establish business causality.",
+    "No eligible customer-month denominator or reconciled lifecycle history; logo/subscription/revenue churn rates and retention cohorts are not identifiable.",
+    "No account is assigned a calibrated future churn probability.",
+    "The account queue is for lifecycle/data review and is not a risk score.",
+    "Revenue row values and refund totals are not current recurring revenue or preventable loss."
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "captured_at": "2026-10-22T06:36:21-03:00",
+  "evidence_level": "LOCAL_RUNTIME",
+  "api_health_status": 200,
+  "dataset_sha256": {
+    "ravenstack_accounts.csv": "348d8ba906b7776894b5236b2e7aa91a503d41670dbc9aad30c37b503c9abef5",
+    "ravenstack_subscriptions.csv": "dcf1d93ca9a35e0dcba0ab686d255f0e9ec26512970bbf0944cf19cbef2d751a",
+    "ravenstack_feature_usage.csv": "c081da2be8caf987d07f0f79ceb0619aba523d819529230ed6df77984fa21d4e",
+    "ravenstack_support_tickets.csv": "ba0006951479771ee9f93c98789c96bc5fec892cf11f867afb28194f0b76d220",
+    "ravenstack_churn_events.csv": "6391c41d8291b7b4845ec9a84d3837c2ed230a33a32a854ec33d4e66dc150940"
+  },
+  "daily_ledger": {
+    "status": "CONDITIONAL_DATE_RECONSTRUCTION",
+    "grain": "ACCOUNT \u00d7 PLAN_TIER \u00d7 CIVIL_DAY",
+    "observation_start": "2023-01-01",
+    "observation_end": "2024-12-31",
+    "daily_rows": 731,
+    "merged_intervals": 1476,
+    "new_plan_relationships": 1433,
+    "plan_reactivations": 43,
+    "plan_loss_events": 62,
+    "accounts_with_plan_loss": 60,
+    "full_customer_loss_events": 8,
+    "complete_loss_accounts": 8,
+    "plan_bridge_failure_days": 0,
+    "customer_bridge_failure_days": 0
+  },
+  "opening_2024_cohort": {
+    "accounts": 190,
+    "account_plan_relations": 374,
+    "relations_lost_any_time": 7,
+    "any_time_loss_pct": 1.8716577540106951,
+    "relations_lost_at_close": 3,
+    "closing_loss_pct": 0.8021390374331552,
+    "accounts_lost_complete_coverage_any_time": 0,
+    "customer_coverage_churn_pct": 0.0
+  },
+  "event_reconciliation": {
+    "event_rows": 600,
+    "rows_on_account_plan_loss_date": 0,
+    "unique_event_accounts": 352,
+    "ambiguous_account_only_linkage": true,
+    "window_counts": {
+      "0": 0,
+      "1": 1,
+      "7": 4,
+      "30": 26,
+      "60": 37
+    },
+    "by_reason": {
+      "pricing": {
+        "event_rows": 91,
+        "rows_on_plan_loss_date": 0,
+        "window_counts": {
+          "0": 0,
+          "1": 0,
+          "7": 0,
+          "30": 3,
+          "60": 3
+        },
+        "unique_accounts": 86
+      },
+      "support": {
+        "event_rows": 104,
+        "rows_on_plan_loss_date": 0,
+        "window_counts": {
+          "0": 0,
+          "1": 0,
+          "7": 1,
+          "30": 6,
+          "60": 7
+        },
+        "unique_accounts": 95
+      },
+      "budget": {
+        "event_rows": 104,
+        "rows_on_plan_loss_date": 0,
+        "window_counts": {
+          "0": 0,
+          "1": 0,
+          "7": 1,
+          "30": 5,
+          "60": 7
+        },
+        "unique_accounts": 94
+      },
+      "unknown": {
+        "event_rows": 95,
+        "rows_on_plan_loss_date": 0,
+        "window_counts": {
+          "0": 0,
+          "1": 0,
+          "7": 0,
+          "30": 3,
+          "60": 5
+        },
+        "unique_accounts": 86
+      },
+      "features": {
+        "event_rows": 114,
+        "rows_on_plan_loss_date": 0,
+        "window_counts": {
+          "0": 0,
+          "1": 0,
+          "7": 0,
+          "30": 4,
+          "60": 5
+        },
+        "unique_accounts": 104
+      },
+      "competitor": {
+        "event_rows": 92,
+        "rows_on_plan_loss_date": 0,
+        "window_counts": {
+          "0": 0,
+          "1": 1,
+          "7": 2,
+          "30": 5,
+          "60": 10
+        },
+        "unique_accounts": 79
+      }
+    },
+    "events_without_same_day_account_plan_loss": 600
+  },
+  "runtime": {
+    "api_url": "http://127.0.0.1:18201",
+    "frontend_url": "http://127.0.0.1:15176",
+    "api_health": "HTTP 200",
+    "daily_portfolio_direct": "HTTP 200",
+    "daily_portfolio_frontend_proxy": "HTTP 200; response matched direct API count",
+    "scenario_valid": "HTTP 200; HYPOTHETICAL",
+    "scenario_invalid_effectiveness": "HTTP 422"
+  }
+}
