@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+# frontend/dist/ é versionado de propósito: permite ver a tela só com Python.
+*.tsbuildinfo
