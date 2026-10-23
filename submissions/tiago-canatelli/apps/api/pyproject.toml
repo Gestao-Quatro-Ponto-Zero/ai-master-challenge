@@ -1,0 +1,24 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "API do RavenStack Churn Lake: dados do painel, assistente (Claude) e MCP."
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "anthropic>=1.0",
+  "mcp>=2.3",
+  "psycopg[binary,pool]>=3.2",
+  "pydantic-settings>=2.6",
+  "ravenlake",
+]
+
+[tool.uv.sources]
+ravenlake = { workspace = true }
+
+[project.scripts]
+ravenstack-mcp = "api.mcp_server:run_stdio"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

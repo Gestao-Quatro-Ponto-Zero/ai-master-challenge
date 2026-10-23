@@ -1,0 +1,30 @@
+# Raiz do workspace uv do monorepo RavenStack Churn Lake.
+[tool.uv.workspace]
+members = ["apps/api", "packages/*"]
+
+[dependency-groups]
+dev = ["ruff>=0.7", "mypy>=1.13", "pytest>=8.3"]
+analysis = ["pandas>=2.2", "scipy>=1.14", "statsmodels>=0.14", "tabulate>=0.9"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+markers = ["db: testes que acessam o Supabase SaaS (G4-Analysys)"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ravenlake"]
+known-third-party = ["supabase"]
+
+[tool.ruff.lint.per-file-ignores]
+"analysis/*" = ["E501"]  # textos narrativos longos nas evidências
+"apps/api/*" = ["E501", "B008"]  # prompts e SQL em texto
+"scripts/*" = ["E501"]

@@ -1,0 +1,15 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+node_modules/
+dist/
+**/supabase/.temp/
+
+# dashboard
+apps/dashboard/.env.local
+
+.users.local.md

@@ -1,0 +1,60 @@
+# Blueprint do Render (raiz do monorepo = submissions/tiago-canatelli).
+# Ao criar o Blueprint no Render, informe o caminho: submissions/tiago-canatelli/render.yaml
+# Alternativa automatizada: scripts/render_deploy.py (API do Render com RENDER_API_KEY).
+services:
+  - type: web
+    name: ravenstack-api
+    runtime: python
+    plan: free
+    region: virginia            # perto do Supabase (us-east-1)
+    rootDir: submissions/tiago-canatelli
+    buildCommand: pip install uv && uv sync --frozen --package api --no-dev
+    startCommand: uv run --no-sync --package api uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    buildFilter:  # testado: só docs/process-log não redeploya; mudança em apps/api redeploya
+      ignoredPaths:
+        - submissions/tiago-canatelli/docs/**
+        - submissions/tiago-canatelli/process-log/**
+        - submissions/tiago-canatelli/report/**
+        - submissions/tiago-canatelli/analysis/**
+        - submissions/tiago-canatelli/README.md
+        - submissions/tiago-canatelli/render.yaml
+        - submissions/tiago-canatelli/supabase/**
+        - submissions/tiago-canatelli/scripts/**
+        - submissions/tiago-canatelli/apps/dashboard/**
+        - submissions/tiago-canatelli/.claude/**
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: DATABASE_URL        # session pooler (IPv4) do Supabase
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: AUTH_SECRET         # assina os tokens de login do painel
+        generateValue: true
+      - key: MCP_TOKEN           # bearer do MCP remoto em /mcp
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: SUPABASE_URL        # ingestão pelo painel (POST /ingest): Storage raw
+        value: https://hzerhfuwziundqqezgcm.supabase.co
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: CRON_TOKEN          # o pg_cron do Supabase chama POST /ingest/cron (token no Vault)
+        sync: false
+
+  - type: web
+    name: ravenstack-dashboard
+    runtime: static
+    rootDir: submissions/tiago-canatelli/apps/dashboard
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    buildFilter:
+      paths: [submissions/tiago-canatelli/apps/dashboard/**]
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://ravenstack-api.onrender.com
