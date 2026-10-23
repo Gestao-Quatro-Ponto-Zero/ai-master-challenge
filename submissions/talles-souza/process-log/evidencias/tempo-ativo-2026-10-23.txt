@@ -1,0 +1,2 @@
+# saída bruta de process-log/scripts/tempo_ativo.mjs — sessão principal (ed27c7ae, ddc732a1, 38518378, 721911fc), limite 5 min, desde 2026-10-22T16:00:00Z, --ate 2026-10-23T21:31:00Z
+sessão principal: 2026-10-22T16:38:47.350Z → 2026-10-23T21:30:59.843Z · relógio 28 h 52 min · ativo 7 h 46 min · 33 pausas > 5 min

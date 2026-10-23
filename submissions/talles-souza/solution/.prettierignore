@@ -1,0 +1,8 @@
+node_modules
+dist
+data
+e2e/videos
+e2e/test-results
+apps/web/public/dados
+package-lock.json
+.vercel

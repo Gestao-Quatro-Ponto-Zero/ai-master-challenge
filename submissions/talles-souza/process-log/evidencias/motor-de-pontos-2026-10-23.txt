@@ -1,0 +1,59 @@
+# saída bruta de process-log/scripts/motor_de_pontos.mjs, 2026-10-23T05:15Z, node v22.18.0, sobre solution/data/deals.json (8800 negócios, referência 2017-12-31)
+## config: {"treinoDias":184,"horizonteDias":92,"nMinimo":30,"suavizacao":20,"ganhoMinimoAuc":0.005,"escala":10,"faixasCiclo":[0.5,1,1.5,2,3],"quantis":4,"pontuarSemData":false,"conversao":"log_odds"}
+## recortes do replay
+  treino: abertos em 2017-06-30 n=1686 | ganharam até 2017-09-30: 609 (0.361)
+  validação: abertos em 2017-09-30 n=2409 | ganharam até 2017-12-31: 559 (0.232)
+  taxa base do score (recorte mais recente): 0.232
+## fatores (AUC sozinho na validação, medido onde o fator tem dado; ganho = quanto subiria o AUC do score no passo em que entrou ou em que a seleção parou)
+- idade [obvio] entrou (passo 1, AUC do score 0.830) | AUC sozinho 0.830 | ganho +0.3300
+    treino:    0 a 10 dias n=312 g=161 3 | 11 a 20 dias n=176 g=92 3 | 21 a 30 dias n=204 g=113 4 | 31 a 40 dias n=174 g=89 3 | 41 a 50 dias n=150 g=62 1 | 51 a 60 dias n=130 g=51 1 | 61 a 90 dias n=190 g=41 -5 | acima de 90 dias n=350 g=0 -29
+    pesos finais (validação): 0 a 10 dias n=283 taxa=0.498 7 | 11 a 20 dias n=205 taxa=0.517 8 | 21 a 30 dias n=191 taxa=0.492 7 | 31 a 40 dias n=180 taxa=0.500 7 | 41 a 50 dias n=164 taxa=0.323 3 | 51 a 60 dias n=201 taxa=0.219 -1 | 61 a 90 dias n=460 taxa=0.067 -11 | acima de 90 dias n=725 taxa=0.000 -36
+- produto [obvio] nao_melhorou | AUC sozinho 0.496 | ganho -0.0096
+    treino:    GTK 500 n=15 g=4 0 [n_pequeno] | GTX Basic n=371 g=126 -1 | GTX Plus Basic n=266 g=102 1 | GTX Plus Pro n=181 g=66 0 | GTX Pro n=288 g=101 0 | MG Advanced n=272 g=91 -1 | MG Special n=293 g=119 1
+- serie [obvio] nao_melhorou | AUC sozinho 0.500 | ganho +0.0000
+    treino:    GTK n=15 g=4 0 [n_pequeno] | GTX n=1106 g=395 0 | MG n=565 g=210 0
+- setor [obvio] nao_melhorou | AUC sozinho 0.505 | ganho -0.0050
+    treino:    employment n=47 g=19 -2 | entertainment n=77 g=42 1 | finance n=117 g=53 -1 | marketing n=101 g=51 0 | medical n=167 g=81 0 | retail n=238 g=122 0 | services n=75 g=38 0 | software n=116 g=63 1 | technology n=184 g=93 0 | telecommunications n=80 g=47 1 | sem dado n=484 g=0 0 [sem_dado]
+- porte_receita [obvio] nao_melhorou | AUC sozinho 0.535 | ganho -0.0031
+    treino:    1º quartil (até US$ 497 mi) n=282 g=122 -1 | 2º quartil (US$ 497 mi a US$ 1.224 mi) n=264 g=134 0 | 3º quartil (US$ 1.224 mi a US$ 2.741 mi) n=307 g=165 1 | 4º quartil (acima de US$ 2.741 mi) n=349 g=188 1 | sem dado n=484 g=0 0 [sem_dado]
+- porte_funcionarios [obvio] nao_melhorou | AUC sozinho 0.536 | ganho +0.0039
+    treino:    1º quartil (até 1.179) n=287 g=135 -1 | 2º quartil (1.179 a 2.769) n=278 g=133 -1 | 3º quartil (2.769 a 5.595) n=287 g=156 1 | 4º quartil (acima de 5.595) n=350 g=185 0 | sem dado n=484 g=0 0 [sem_dado]
+- vendedor [obvio] nao_melhorou | AUC sozinho 0.569 | ganho -0.0329
+    treino:    Anna Snelling n=50 g=28 3 | Boris Faz n=49 g=13 -2 | Cassey Cress n=90 g=23 -3 | Cecily Lampkin n=18 g=13 0 [n_pequeno] | Corliss Cosme n=86 g=22 -3 | Daniell Hammack n=65 g=13 -4 | Darcel Schlecht n=85 g=54 5 | Donn Cantrell n=43 g=24 3 | Elease Gluck n=47 g=8 -5 | Garret Kinder n=19 g=13 0 [n_pequeno] | Gladys Colclough n=35 g=23 4 | Hayden Neloms n=48 g=10 -4 | James Ascencio n=68 g=15 -4 | Jonathan Berthelot n=48 g=32 5 | Kami Bicknell n=87 g=19 -4 | Kary Hendrixson n=118 g=28 -3 | Lajuana Vencill n=41 g=22 3 | Markita Hansen n=89 g=21 -3 | Marty Freudenburg n=27 g=16 0 [n_pequeno] | Maureen Marcano n=76 g=26 0 | Moses Frase n=29 g=21 0 [n_pequeno] | Niesha Huffines n=33 g=19 3 | Reed Clapper n=32 g=22 4 | Rosalina Dieter n=45 g=14 -1 | Rosie Papadopoulos n=35 g=7 -3 | Versie Hillebrand n=38 g=24 4 | Vicki Laflamme n=111 g=31 -2 | Violet Mclelland n=68 g=19 -2 | Wilburn Farren n=31 g=10 -1 | Zane Levy n=75 g=19 -3
+- manager [obvio] nao_melhorou | AUC sozinho 0.548 | ganho -0.0635
+    treino:    Cara Losch n=239 g=71 -2 | Celia Rouche n=340 g=84 -4 | Dustin Brinkmann n=176 g=108 5 | Melvin Marxen n=228 g=144 5 | Rocco Neubert n=279 g=95 -1 | Summer Sewald n=424 g=107 -3
+- escritorio [obvio] nao_melhorou | AUC sozinho 0.548 | ganho -0.0745
+    treino:    Central n=404 g=252 5 | East n=518 g=166 -1 | West n=764 g=191 -4
+- estagio [obvio] n_pequeno | AUC sozinho 0.500 | ganho +0.0000
+    treino:    em andamento n=1686 g=609 0
+- idade_ciclo_produto [derivado] nao_melhorou | AUC sozinho 0.821 | ganho -0.0003
+    treino:    até 0,5× o ciclo n=709 g=376 4 | 0,5× a 1,0× o ciclo n=455 g=203 2 | 1,0× a 1,5× o ciclo n=182 g=30 -7 | 1,5× a 2,0× o ciclo n=144 g=0 -21 | 2,0× a 3,0× o ciclo n=152 g=0 -22 | acima de 3,0× o ciclo n=44 g=0 -12
+- idade_ciclo_vendedor [derivado] nao_melhorou | AUC sozinho 0.805 | ganho -0.0020
+    treino:    até 0,5× o ciclo n=691 g=371 4 | 0,5× a 1,0× o ciclo n=422 g=187 2 | 1,0× a 1,5× o ciclo n=190 g=36 -6 | 1,5× a 2,0× o ciclo n=120 g=8 -12 | 2,0× a 3,0× o ciclo n=170 g=5 -17 | acima de 3,0× o ciclo n=93 g=2 -15
+- conta_ganhos [derivado] nao_melhorou | AUC sozinho 0.511 | ganho -0.0040
+    treino:    1º quartil (até 16) n=352 g=182 0 | 2º quartil (16 a 22) n=310 g=139 -1 | 3º quartil (22 a 27) n=271 g=139 0 | 4º quartil (acima de 27) n=269 g=149 1 | sem dado n=484 g=0 0 [sem_dado]
+- conta_perdas [derivado] nao_melhorou | AUC sozinho 0.538 | ganho +0.0011
+    treino:    1º quartil (até 8) n=386 g=181 -1 | 2º quartil (8 a 11) n=315 g=159 0 | 3º quartil (11 a 14) n=210 g=111 0 | 4º quartil (acima de 14) n=291 g=158 1 | sem dado n=484 g=0 0 [sem_dado]
+- conta_taxa [derivado] nao_melhorou | AUC sozinho 0.499 | ganho -0.0049
+    treino:    1º quartil (até 63%) n=402 g=211 0 | 2º quartil (63% a 67%) n=258 g=139 1 | 3º quartil (67% a 71%) n=251 g=117 -1 | 4º quartil (acima de 71%) n=291 g=142 0 | sem dado n=484 g=0 0 [sem_dado]
+- conta_ja_comprou [derivado] n_pequeno | AUC sozinho 0.500 | ganho +0.0000
+    treino:    sim n=1202 g=609 0 | sem dado n=484 g=0 0 [sem_dado]
+- empresa_mae [derivado] nao_melhorou | AUC sozinho 0.500 | ganho +0.0000
+    treino:    não n=980 g=501 0 | sim n=222 g=108 0 | sem dado n=484 g=0 0 [sem_dado]
+- preco_receita [derivado] nao_melhorou | AUC sozinho 0.530 | ganho +0.0016
+    treino:    1º quartil (até 0,2) n=307 g=166 1 | 2º quartil (0,2 a 1,0) n=295 g=163 1 | 3º quartil (1,0 a 3,4) n=299 g=137 -1 | 4º quartil (acima de 3,4) n=301 g=143 -1 | sem dado n=484 g=0 0 [sem_dado]
+- carga_vendedor [derivado] nao_melhorou | AUC sozinho 0.513 | ganho -0.0237
+    treino:    1º quartil (até 45) n=426 g=228 4 | 2º quartil (45 a 68) n=443 g=138 -1 | 3º quartil (68 a 87) n=409 g=140 -1 | 4º quartil (acima de 87) n=408 g=103 -3
+## escolhidos: idade
+## descartados: produto (nao_melhorou), serie (nao_melhorou), setor (nao_melhorou), porte_receita (nao_melhorou), porte_funcionarios (nao_melhorou), vendedor (nao_melhorou), manager (nao_melhorou), escritorio (nao_melhorou), estagio (n_pequeno), idade_ciclo_produto (nao_melhorou), idade_ciclo_vendedor (nao_melhorou), conta_ganhos (nao_melhorou), conta_perdas (nao_melhorou), conta_taxa (nao_melhorou), conta_ja_comprou (n_pequeno), empresa_mae (nao_melhorou), preco_receita (nao_melhorou), carga_vendedor (nao_melhorou)
+## AUC do score na validação: 0.830 | AUC só da idade: 0.830
+## calibração da receita no recorte mais recente (dentro da amostra; pesos finais; só vale com a idade como único fator)
+  abertos em 2017-09-30: 2409 | realizado até 2017-12-31: US$ 1.251.928
+  conversão log-odds (logit(base) + pontos/10): previsto US$ 1.077.805 (-13.9%)
+  conversão razão (base × e^(pontos/10)): previsto US$ 1.254.677 (0.2%)
+  chance por faixa: 0 a 10 dias taxa 0.498 → log-odds 0.378 / razão 0.467 | 11 a 20 dias taxa 0.517 → log-odds 0.402 / razão 0.516 | 21 a 30 dias taxa 0.492 → log-odds 0.378 / razão 0.467 | 31 a 40 dias taxa 0.500 → log-odds 0.378 / razão 0.467 | 41 a 50 dias taxa 0.323 → log-odds 0.290 / razão 0.313 | 51 a 60 dias taxa 0.219 → log-odds 0.215 / razão 0.210 | 61 a 90 dias taxa 0.067 → log-odds 0.091 / razão 0.077 | acima de 90 dias taxa 0.000 → log-odds 0.008 / razão 0.006
+## score dos abertos em 2017-12-31 (conversão em uso: log_odds): 1589 com score, 500 sem data de início (sem score)
+  por faixa de score: 0–9: 1532 | 20–29: 30 | 30–39: 17 | 40–49: 10
+  receita esperada dos abertos de hoje (chance da nota × preço de tabela): US$ 73.315
+  mesma conta pela fila da aplicação: US$ 73.315 | só a Central (todos acima de 60 dias ou sem data): US$ 6.751
+## reproduzível: segunda medição igual à primeira = true | tempo da medição: 177 ms

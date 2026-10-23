@@ -1,0 +1,19 @@
+# saída bruta de process-log/scripts/curva_fina.py, 2026-10-23T03:37Z, uv · python 3.12 · pandas 3.1.0, sobre os CSVs do dataset
+replay 30/09 -> 31/12, abertos no corte: 2409
+                  n  ganhou
+idade                      
+(-1, 10]        283   0.498
+(10, 20]        205   0.517
+(20, 30]        191   0.492
+(30, 40]        180   0.500
+(40, 50]        164   0.323
+(50, 60]        201   0.219
+(60, 90]        460   0.067
+(90, 138]       195   0.000
+(138, 1000000]  530   0.000
+                 n  ganhou
+idade                     
+Siga <=40      859   0.502
+Foque 41-60    365   0.266
+Nutricao >60  1185   0.026
+hoje 2017-12-31 | Engaging por bloco: {'Nutricao': 1532, 'Foque': 30, 'Siga': 27} | Prospecting sem data: 500 500

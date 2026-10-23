@@ -1,0 +1,63 @@
+===== 003 CRM
+(8800, 8) {'Won': 4238, 'Lost': 2473, 'Engaging': 1589, 'Prospecting': 500}
+nulos: {'opportunity_id': 0, 'sales_agent': 0, 'product': 0, 'account': 1425, 'deal_stage': 0, 'engage_date': 500, 'close_date': 2089, 'close_value': 2089}
+win rate geral 0.632
+sales_agent win rate min/max 0.55 0.704 n grupos 30
+product win rate min/max 0.6 0.648 n grupos 7
+account win rate min/max 0.531 0.75 n grupos 85
+dias won/lost mediana {0: 14.0, 1: 57.0}
+{Interval(0.999, 7.0, closed='right'): 0.535, Interval(7.0, 13.0, closed='right'): 0.568, Interval(13.0, 67.0, closed='right'): 0.678, Interval(67.0, 91.0, closed='right'): 0.672, Interval(91.0, 138.0, closed='right'): 0.71}
+datas 2016-10-20 2017-12-27 2017-12-31
+
+===== 001 RavenStack
+['account_id', 'account_name', 'industry', 'country', 'signup_date', 'referral_source', 'plan_tier', 'seats', 'is_trial', 'churn_flag']
+['churn_event_id', 'account_id', 'churn_date', 'reason_code', 'refund_amount_usd', 'preceding_upgrade_flag', 'preceding_downgrade_flag', 'is_reactivation', 'feedback_text']
+churn flag: 0.22
+reason: {'features': 114, 'support': 104, 'budget': 104, 'unknown': 95, 'competitor': 92, 'pricing': 91}
+industry {'Cybersecurity': 0.16, 'DevTools': 0.31, 'EdTech': 0.165, 'FinTech': 0.223, 'HealthTech': 0.219}
+referral_source {'ads': 0.235, 'event': 0.302, 'organic': 0.175, 'other': 0.243, 'partner': 0.146}
+plan_tier {'Basic': 0.22, 'Enterprise': 0.221, 'Pro': 0.219}
+is_trial {False: 0.211, True: 0.258}
+country {'AU': 0.125, 'CA': 0.174, 'DE': 0.32, 'FR': 0.227, 'IN': 0.204, 'UK': 0.19, 'US': 0.234}
+sat/esc/res por churn: {'sat': {False: 3.953, True: 4.003}, 'esc': {False: 0.044, True: 0.062}, 'res': {False: 36.45, True: 35.485}}
+uso/erros por churn: {'n': {False: 495.1, True: 522.0}, 'err': {False: 28.2, True: 28.2}}
+
+===== 002 Suporte
+(8469, 17)
+['Ticket ID', 'Customer Name', 'Customer Email', 'Customer Age', 'Customer Gender', 'Product Purchased', 'Date of Purchase', 'Ticket Type', 'Ticket Subject', 'Ticket Description', 'Ticket Status', 'Resolution', 'Ticket Priority', 'Ticket Channel', 'First Response Time', 'Time to Resolution', 'Customer Satisfaction Rating']
+status {'Pending Customer Response': 2881, 'Open': 2819, 'Closed': 2769}
+sat nulos 0.673
+Ticket Channel {'Chat': 3.083, 'Email': 2.964, 'Phone': 2.952, 'Social media': 2.969}
+Ticket Priority {'Critical': 2.959, 'High': 2.983, 'Low': 3.053, 'Medium': 2.977}
+Ticket Type {'Billing inquiry': 3.028, 'Cancellation request': 3.029, 'Product inquiry': 3.017, 'Refund request': 2.935, 'Technical issue': 2.959}
+sat dist {1.0: 0.2, 2.0: 0.198, 3.0: 0.209, 4.0: 0.196, 5.0: 0.196}
+   First Response Time   Time to Resolution
+0  2023-06-01 12:15:36                  NaN
+1  2023-06-01 16:45:38                  NaN
+2  2023-06-01 11:14:38  2023-06-01 18:05:38
+resolução antes da 1a resposta: 0.493
+descr exemplo: I'm having an issue with the {product_purchased}. Please assist.
+
+Your billing zip code is: 71701.
+
+We appreciate that you have requested a website address.
+
+Please double check your email address. I've tried troubleshooting steps mentioned in the us
+resolução exemplo: Case maybe show recently my computer follow.
+descr com placeholder {product_purchased}: 1.0
+IT (47837, 2) {'Hardware': 13617, 'HR Support': 10915, 'Access': 7125, 'Miscellaneous': 7060, 'Storage': 2777, 'Purchase': 2464, 'Internal Project': 2119, 'Administrative rights': 1760}
+
+===== 004 Social
+(52214, 27)
+['id', 'platform', 'content_id', 'creator_id', 'creator_name', 'content_url', 'content_type', 'content_category', 'post_date', 'language', 'content_length', 'content_description', 'hashtags', 'views', 'likes', 'shares', 'comments_count', 'comments_text', 'follower_count', 'is_sponsored', 'disclosure_type', 'sponsor_name', 'sponsor_category', 'disclosure_location', 'audience_age_distribution', 'audience_gender_distribution', 'audience_location']
+                     mean       50%     min       max
+id               26107.50   26107.5     1.0   52214.0
+content_length     229.54     174.0    10.0     599.0
+views            10100.28   10100.0  9676.0   10551.0
+likes             1510.27    1510.0  1354.0    1668.0
+shares             300.02     300.0   227.0     380.0
+comments_count     200.02     200.0   140.0     258.0
+follower_count  499884.51  498490.0  1013.0  999998.0
+engajamento por patrocínio: {'views': {False: 10100.1601, True: 10100.4484}}
+corr seguidores x views: 0.005
+corr likes x views: 0.001

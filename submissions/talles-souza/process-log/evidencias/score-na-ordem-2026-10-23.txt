@@ -1,0 +1,44 @@
+# saída bruta de process-log/scripts/score_na_ordem.mjs, 2026-10-23T19:20Z, node v22.18.0, sobre solution/data/deals.json (8800 negócios, 2089 abertos, referência 2017-12-31)
+## regra: ordem da tela = grupo (Foque agora, Siga no ritmo, Aborde primeiro, Nutrição; Siga promovido ao Foque quando o Foque do vendedor está vazio), depois valor esperado (chance × preço; sem data, o preço) desc; score = round(100 × (n − k) ÷ (n − 1)), lista de 1 = 100
+## por vendedor (na ordem da tela): n, score de cada grupo (primeiro..último), vizinhos com o mesmo score, vizinhos em que o score sobe
+- Anna Snelling: n=112 · Aborde primeiro 55 [100..51] · Nutrição 57 [50..0] · empates 11 · sobe 0
+- Boris Faz: n=57 · Foque agora 3 [100..96] · Siga no ritmo 1 [95..95] · Nutrição 53 [93..0] · empates 0 · sobe 0
+- Cassey Cress: n=85 · Foque agora 3 [100..98] · Siga no ritmo 2 [96..95] · Nutrição 80 [94..0] · empates 0 · sobe 0
+- Cecily Lampkin: n=43 · Aborde primeiro 24 [100..45] · Nutrição 19 [43..0] · empates 0 · sobe 0
+- Corliss Cosme: n=81 · Foque agora 3 [100..98] · Siga no ritmo 1 [96..96] · Nutrição 77 [95..0] · empates 0 · sobe 0
+- Daniell Hammack: n=72 · Foque agora 2 [100..99] · Siga no ritmo 1 [97..97] · Nutrição 69 [96..0] · empates 0 · sobe 0
+- Darcel Schlecht: n=194 · Aborde primeiro 111 [100..43] · Nutrição 83 [42..0] · empates 93 · sobe 0
+- Elease Gluck: n=51 · Foque agora 2 [100..98] · Nutrição 49 [96..0] · empates 0 · sobe 0
+- Gladys Colclough: n=85 · Aborde primeiro 49 [100..43] · Nutrição 36 [42..0] · empates 0 · sobe 0
+- Hayden Neloms: n=50 · Foque agora 1 [100..100] · Nutrição 49 [98..0] · empates 0 · sobe 0
+- James Ascencio: n=61 · Foque agora 1 [100..100] · Nutrição 60 [98..0] · empates 0 · sobe 0
+- Jonathan Berthelot: n=81 · Aborde primeiro 48 [100..41] · Nutrição 33 [40..0] · empates 0 · sobe 0
+- Kami Bicknell: n=90 · Foque agora 2 [100..99] · Siga no ritmo 1 [98..98] · Nutrição 87 [97..0] · empates 0 · sobe 0
+- Kary Hendrixson: n=103 · Foque agora 2 [100..99] · Siga no ritmo 4 [98..95] · Nutrição 97 [94..0] · empates 2 · sobe 0
+- Lajuana Vencill: n=80 · Aborde primeiro 40 [100..51] · Nutrição 40 [49..0] · empates 0 · sobe 0
+- Markita Hansen: n=79 · Foque agora 3 [100..97] · Siga no ritmo 1 [96..96] · Nutrição 75 [95..0] · empates 0 · sobe 0
+- Marty Freudenburg: n=87 · Aborde primeiro 54 [100..38] · Nutrição 33 [37..0] · empates 0 · sobe 0
+- Maureen Marcano: n=72 · Foque agora 3 [100..97] · Siga no ritmo 1 [96..96] · Nutrição 68 [94..0] · empates 0 · sobe 0
+- Moses Frase: n=65 · Aborde primeiro 31 [100..53] · Nutrição 34 [52..0] · empates 0 · sobe 0
+- Niesha Huffines: n=64 · Aborde primeiro 34 [100..48] · Nutrição 30 [46..0] · empates 0 · sobe 0
+- Rosalina Dieter: n=50 · Foque agora 1 [100..100] · Siga no ritmo 1 [98..98] · Nutrição 48 [96..0] · empates 0 · sobe 0
+- Rosie Papadopoulos: n=39 · Foque agora 1 [100..100] · Nutrição 38 [97..0] · empates 0 · sobe 0
+- Versie Hillebrand: n=97 · Aborde primeiro 54 [100..45] · Nutrição 43 [44..0] · empates 0 · sobe 0
+- Vicki Laflamme: n=104 · Foque agora 1 [100..100] · Siga no ritmo 1 [99..99] · Nutrição 102 [98..0] · empates 3 · sobe 0
+- Violet Mclelland: n=68 · Foque agora 3 [100..97] · Siga no ritmo 3 [96..93] · Nutrição 62 [91..0] · empates 0 · sobe 0
+- Wilburn Farren: n=31 · Foque agora 1 [100..100] · Siga no ritmo 1 [97..97] · Nutrição 29 [93..0] · empates 0 · sobe 0
+- Zane Levy: n=88 · Foque agora 1 [100..100] · Siga no ritmo 6 [99..93] · Nutrição 81 [92..0] · empates 0 · sobe 0
+## vendedores: 27; vizinhos em que o score sobe: 0; negócios fora da posição k = ordem da tela: 0
+## os 3 primeiros e os 3 últimos (grupo, score, produto e preço)
+- Zane Levy (88 abertos)
+    primeiros: Foque agora 100 (GTX Basic, US$ 550) | Siga no ritmo 99 (GTX Plus Pro, US$ 5482) | Siga no ritmo 98 (GTX Plus Basic, US$ 1096)
+    últimos:   Nutrição 2 (MG Special, US$ 55) | Nutrição 1 (MG Special, US$ 55) | Nutrição 0 (MG Special, US$ 55)
+- Darcel Schlecht (194 abertos)
+    primeiros: Aborde primeiro 100 (GTX Plus Pro, US$ 5482) | Aborde primeiro 99 (GTX Plus Pro, US$ 5482) | Aborde primeiro 99 (GTX Plus Pro, US$ 5482)
+    últimos:   Nutrição 1 (MG Special, US$ 55) | Nutrição 1 (MG Special, US$ 55) | Nutrição 0 (MG Special, US$ 55)
+## Zane Levy: o primeiro e o mais caro da Nutrição contra o Foque agora
+    1º da Nutrição:     Nutrição 92 (GTX Pro, US$ 4821) · Chance de fechar em 3 meses: 8%
+    Nutrição mais cara: Nutrição 90 (GTX Plus Pro, US$ 5482) · Chance de fechar em 3 meses: 1%
+    Foque agora:        Foque agora 100 (GTX Basic, US$ 550) · Chance de fechar em 3 meses: 21%
+## distribuição do score exibido, todos os abertos
+    0–9: 207 | 10–19: 207 | 20–29: 206 | 30–39: 209 | 40–49: 205 | 50–59: 206 | 60–69: 206 | 70–79: 206 | 80–89: 205 | 90–99: 205 | 100: 27

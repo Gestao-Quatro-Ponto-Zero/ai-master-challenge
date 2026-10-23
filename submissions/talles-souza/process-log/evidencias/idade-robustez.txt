@@ -1,0 +1,39 @@
+# saída bruta de process-log/scripts/idade_robustez.py, 2026-10-23T03:38Z, uv · python 3.12 · pandas 3.1.0, sobre os CSVs do dataset
+hoje (close_date.max): 2017-12-31 | deals: 8800 | sem preço: 0
+
+=== A: corte 2017-09-30, desfecho até 2017-12-31, idade <= 138 d
+abertos no corte: 2409 | na janela: 1879 | ganharam: 559 | fecharam: 935 | seguiram abertos: 944
+AUC idade invertida, ganhou: 0.766
+AUC idade invertida, fechou: 0.866
+só os que fecharam (n=935, Won 559 / Lost 376): AUC idade invertida ganho x perda 0.495 | AUC idade (não invertida) 0.505
+             n  ganhou_pct  fechou_pct
+faixa                                 
+(-1, 7]    214       0.491       0.916
+(7, 14]    157       0.510       0.847
+(14, 30]   308       0.506       0.779
+(30, 60]   545       0.343       0.549
+(60, 90]   460       0.067       0.141
+(90, 138]  195       0.000       0.010
+
+=== B1/B2 (longe do teto): corte 2017-09-30, desfecho até 2017-12-31, idade <= 60 d
+abertos no corte: 2409 | na janela: 1224 | ganharam: 528 | fecharam: 868 | seguiram abertos: 356
+AUC idade invertida, ganhou: 0.609
+AUC idade invertida, fechou: 0.746
+só os que fecharam (n=868, Won 528 / Lost 340): AUC idade invertida ganho x perda 0.470 | AUC idade (não invertida) 0.530
+
+=== B3/B4 (outro corte): corte 2017-06-30, desfecho até 2017-09-30, idade <= 138 d
+abertos no corte: 1686 | na janela: 1537 | ganharam: 609 | fecharam: 969 | seguiram abertos: 568
+AUC idade invertida, ganhou: 0.691
+AUC idade invertida, fechou: 0.809
+só os que fecharam (n=969, Won 609 / Lost 360): AUC idade invertida ganho x perda 0.502 | AUC idade (não invertida) 0.498
+
+=== C: outros critérios na janela de A (n=1879)
+C1 AUC preço de tabela, ganhou: 0.488
+C1b AUC preço de tabela, fechou: 0.501
+C2 AUC receita da conta (porte), ganhou, só com conta (n=1232): 0.508
+C3 tem conta: 1232 de 1879 | AUC tem conta, fechou: 0.843 | ganhou: 0.745
+fechou_ate_31_12    0    1
+tem_conta                 
+0                 647    0
+1                 297  935
+C4 AUC idade invertida, ganhou, só com conta (n=1232): 0.668 | fechou: 0.879

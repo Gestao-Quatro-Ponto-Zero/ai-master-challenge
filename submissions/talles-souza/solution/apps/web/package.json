@@ -1,0 +1,29 @@
+{
+  "name": "@lead-scorer/web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Web do Lead Scorer (React + Vite), consome a API e cai para o modo local",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/copiar-dados.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/copiar-dados.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@lead-scorer/dominio": "0.1.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "jsdom": "29.1.1",
+    "vite": "8.3.5"
+  }
+}

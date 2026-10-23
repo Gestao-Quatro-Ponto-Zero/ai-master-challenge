@@ -1,0 +1,13 @@
+{
+  "name": "@lead-scorer/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Testes ponta a ponta (Playwright, com vídeo)",
+  "type": "module",
+  "scripts": {
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

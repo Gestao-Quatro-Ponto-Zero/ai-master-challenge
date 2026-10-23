@@ -1,0 +1,11 @@
+# saída bruta de process-log/scripts/receita_esperada.mjs, 2026-10-23T03:37Z, node v22.18.0, sobre solution/data/deals.json (sha256 cd205caa…)
+nutricao n=1532 tabela US$ 3779334 esperada US$ 7734
+foque n=30 tabela US$ 66690 esperada US$ 15421
+siga n=27 tabela US$ 46205 esperada US$ 23332
+ainda_nao_comecou n=500 tabela US$ 1073986 esperada US$ 0
+total esperada US$ 46487
+Won: 4238 close_value != sales_price (dif > US$1): 4021 | razao media close/price: 0.996
+## backtest dentro da amostra: populacao = abertos em 30/09 (engajados ate o corte, sem fechamento ate o corte) n=2409 | alvo = close_value dos que ganharam ate 31/12 | previsto US$ 1284794 | realizado US$ 1251928
+ganhos 01/10-31/12: n=1196 US$ 2802496 | engajados depois de 30/09: n=637 US$ 1550568
+## Foque, top 5 por preço: I5VHXAWW 55d US$5482 esp 1200 | NNNEMOZ5 56d US$5482 esp 1200 | T7N0RX05 57d US$5482 esp 1200 | 6JBM1ZKO 52d US$4821 esp 1055 | C2FSIMZP 54d US$4821 esp 1055
+## Foque, top 5 por valor esperado: I5VHXAWW 55d US$5482 esp 1200 | NNNEMOZ5 56d US$5482 esp 1200 | T7N0RX05 57d US$5482 esp 1200 | BREOLQD9 45d US$3393 esp 1097 | 6JBM1ZKO 52d US$4821 esp 1055

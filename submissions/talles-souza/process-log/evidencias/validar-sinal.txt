@@ -1,0 +1,28 @@
+treino: 4726 fechados até 30/09/2017 · teste: 1985 fechados no 4º tri
+
+=== AUC no teste, atributo por atributo (0,5 = moeda)
+  sales_agent  AUC 0.522
+  account      AUC 0.488
+  product      AUC 0.500
+  sector       AUC 0.486
+  combinado    AUC 0.498  (soma dos desvios encolhidos)
+
+=== Duração como sinal (só existe depois do fechamento; aqui para referência)
+  dias engage→close   AUC 0.562
+
+=== Abertos (Engaging) contra a duração dos fechados
+  duração máxima de um ganho: 138 d · p95 dos ganhos: 116 d
+  Engaging mais velhos que o p95 dos ganhos: 1393 de 1589 (88%)
+  Engaging mais velhos que o máximo de qualquer fechado: 1291 de 1589 (81%)
+  Engaging sem conta: 1088 de 1589
+  idade dos Engaging por trimestre de engajamento:
+             size  min  max
+engage_date                
+2016Q4         53  367  423
+2017Q1        297  275  364
+2017Q2        366  184  274
+2017Q3        758   92  183
+2017Q4        115    9   91
+
+=== Prospecting: sem engage_date, então sem idade
+  500 deals · sem conta: 337

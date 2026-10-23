@@ -1,0 +1,43 @@
+{
+  "name": "lead-scorer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lead Scorer: o sistema que qualifica os deals do pipeline (AI Master Challenge 003)",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0",
+    "npm": ">=10.9.0"
+  },
+  "packageManager": "npm@10.9.3",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "e2e"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,yellow \"npm run dev -w @lead-scorer/api\" \"npm run dev -w @lead-scorer/web\"",
+    "build": "npm run build:web && node scripts/construir-vercel.mjs",
+    "build:web": "npm run build -w @lead-scorer/web",
+    "start": "npm run build:web && npm run start -w @lead-scorer/api",
+    "test": "npm run checar && npm run test:unit && npm run test:dados",
+    "checar": "node scripts/checar-fronteiras.mjs && npm run typecheck && npm run lint",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test:unit": "npm run test --workspaces --if-present",
+    "test:dados": "node scripts/testar-dados.mjs",
+    "test:e2e": "npm run test:e2e -w @lead-scorer/e2e",
+    "test:funcao": "node scripts/provar-funcao.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "concurrently": "10.0.6",
+    "esbuild": "0.28.2",
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.0",
+    "vitest": "5.0.5"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@lead-scorer/dominio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Contextos de domínio do Lead Scorer: TypeScript puro, sem I/O",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./compartilhado": "./src/compartilhado/index.ts",
+    "./pipeline": "./src/pipeline/index.ts",
+    "./organizacao": "./src/organizacao/index.ts",
+    "./qualificacao": "./src/qualificacao/index.ts",
+    "./score": "./src/score/index.ts",
+    "./priorizacao": "./src/priorizacao/index.ts",
+    "./aplicacao": "./src/aplicacao/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  }
+}

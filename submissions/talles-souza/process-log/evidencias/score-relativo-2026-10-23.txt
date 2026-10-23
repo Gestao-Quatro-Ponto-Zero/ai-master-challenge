@@ -1,0 +1,61 @@
+# saída bruta de process-log/scripts/score_relativo.mjs, 2026-10-23T17:56Z, node v22.18.0, sobre solution/data/deals.json (8800 negócios, 2089 abertos, referência 2017-12-31)
+## regra: score = round(100 × (n − k + 1) ÷ n), k = posição na lista aberta do vendedor pelo valor esperado (chance do motor × preço de tabela) desc, empate pelo preço desc; sem data de início, o valor é só o preço
+## distribuição por região: score exibido (posição) × score absoluto (chance × 100)
+- todos (2089 abertos)
+    exibido:  0–9: 184 | 10–19: 209 | 20–29: 210 | 30–39: 208 | 40–49: 213 | 50–59: 205 | 60–69: 211 | 70–79: 208 | 80–89: 208 | 90–99: 206 | 100: 27
+    absoluto: 0–9: 1532 | 20–29: 30 | 30–39: 17 | 40–49: 10 | sem score: 500
+- Central (908 abertos)
+    exibido:  0–9: 83 | 10–19: 87 | 20–29: 93 | 30–39: 90 | 40–49: 94 | 50–59: 88 | 60–69: 91 | 70–79: 92 | 80–89: 90 | 90–99: 90 | 100: 10
+    absoluto: 0–9: 408 | sem score: 500
+- East (433 abertos)
+    exibido:  0–9: 37 | 10–19: 45 | 20–29: 43 | 30–39: 42 | 40–49: 45 | 50–59: 42 | 60–69: 45 | 70–79: 43 | 80–89: 42 | 90–99: 42 | 100: 7
+    absoluto: 0–9: 408 | 20–29: 16 | 30–39: 4 | 40–49: 5
+- West (748 abertos)
+    exibido:  0–9: 64 | 10–19: 77 | 20–29: 74 | 30–39: 76 | 40–49: 74 | 50–59: 75 | 60–69: 75 | 70–79: 73 | 80–89: 76 | 90–99: 74 | 100: 10
+    absoluto: 0–9: 716 | 20–29: 14 | 30–39: 13 | 40–49: 5
+## por vendedor: abertos, sem data, scores distintos, mínimo / mediana / máximo
+- Anna Snelling (Central): 112 abertos, 55 sem data, 100 distintos, 1 / 51 / 100
+- Boris Faz (East): 57 abertos, 0 sem data, 57 distintos, 2 / 51 / 100
+- Carl Lin (West): sem negócio aberto, nada a mostrar
+- Carol Thompson (West): sem negócio aberto, nada a mostrar
+- Cassey Cress (East): 85 abertos, 0 sem data, 85 distintos, 1 / 51 / 100
+- Cecily Lampkin (Central): 43 abertos, 24 sem data, 43 distintos, 2 / 51 / 100
+- Corliss Cosme (East): 81 abertos, 0 sem data, 81 distintos, 1 / 51 / 100
+- Daniell Hammack (East): 72 abertos, 0 sem data, 72 distintos, 1 / 51 / 100
+- Darcel Schlecht (Central): 194 abertos, 111 sem data, 100 distintos, 1 / 51 / 100
+- Donn Cantrell (East): sem negócio aberto, nada a mostrar
+- Elease Gluck (West): 51 abertos, 0 sem data, 51 distintos, 2 / 51 / 100
+- Elizabeth Anderson (East): sem negócio aberto, nada a mostrar
+- Garret Kinder (East): sem negócio aberto, nada a mostrar
+- Gladys Colclough (Central): 85 abertos, 49 sem data, 85 distintos, 1 / 51 / 100
+- Hayden Neloms (West): 50 abertos, 0 sem data, 50 distintos, 2 / 52 / 100
+- James Ascencio (West): 61 abertos, 0 sem data, 61 distintos, 2 / 51 / 100
+- Jonathan Berthelot (Central): 81 abertos, 48 sem data, 81 distintos, 1 / 51 / 100
+- Kami Bicknell (West): 90 abertos, 0 sem data, 90 distintos, 1 / 51 / 100
+- Kary Hendrixson (West): 103 abertos, 0 sem data, 100 distintos, 1 / 50 / 100
+- Lajuana Vencill (Central): 80 abertos, 40 sem data, 80 distintos, 1 / 51 / 100
+- Markita Hansen (West): 79 abertos, 0 sem data, 79 distintos, 1 / 51 / 100
+- Marty Freudenburg (Central): 87 abertos, 54 sem data, 87 distintos, 1 / 51 / 100
+- Maureen Marcano (West): 72 abertos, 0 sem data, 72 distintos, 1 / 51 / 100
+- Mei-Mei Johns (Central): sem negócio aberto, nada a mostrar
+- Moses Frase (Central): 65 abertos, 31 sem data, 65 distintos, 2 / 51 / 100
+- Natalya Ivanova (East): sem negócio aberto, nada a mostrar
+- Niesha Huffines (Central): 64 abertos, 34 sem data, 64 distintos, 2 / 52 / 100
+- Reed Clapper (East): sem negócio aberto, nada a mostrar
+- Rosalina Dieter (West): 50 abertos, 0 sem data, 50 distintos, 2 / 52 / 100
+- Rosie Papadopoulos (East): 39 abertos, 0 sem data, 39 distintos, 3 / 51 / 100
+- Versie Hillebrand (Central): 97 abertos, 54 sem data, 97 distintos, 1 / 51 / 100
+- Vicki Laflamme (West): 104 abertos, 0 sem data, 100 distintos, 1 / 51 / 100
+- Violet Mclelland (East): 68 abertos, 0 sem data, 68 distintos, 1 / 51 / 100
+- Wilburn Farren (East): 31 abertos, 0 sem data, 31 distintos, 3 / 52 / 100
+- Zane Levy (West): 88 abertos, 0 sem data, 88 distintos, 1 / 51 / 100
+## abertos sem score exibido (nos vendedores com lista): 0
+## cartões reais: o primeiro, o do meio e o último da lista (grupo entre colchetes)
+- Vicki Laflamme (West, 104 abertos)
+    [foque_agora] 6JBM1ZKO · Score 100 · GTX Pro, US$ 4.821 em jogo · 52 dias: 22% dos negócios com essa idade fecharam | detalhe: 1º de 104 na sua lista; Chance de fechar em 3 meses: 21%
+    [nutricao] P6NQ2LZK · Score 50 · GTX Basic, US$ 550 em jogo · 130 dias: 0% dos negócios com essa idade fecharam | detalhe: 53º de 104 na sua lista; Chance de fechar em 3 meses: 1%
+    [nutricao] 6SN2RQJX · Score 1 · MG Special, US$ 55 em jogo · 379 dias: 0% dos negócios com essa idade fecharam | detalhe: 104º de 104 na sua lista; Chance de fechar em 3 meses: 1%
+- Darcel Schlecht (Central, 194 abertos)
+    [sem_inicio] 28EJ0L9T · Score 100 · GTX Plus Pro, US$ 5.482 em jogo · Ainda sem primeira conversa: a chance não dá pra medir. | detalhe: 1º de 194 na sua lista; Chance de fechar em 3 meses: sem dado (ainda sem primeira conversa).
+    [sem_inicio] 9L0WKMJ2 · Score 50 · GTX Basic, US$ 550 em jogo · Ainda sem primeira conversa: a chance não dá pra medir. | detalhe: 98º de 194 na sua lista; Chance de fechar em 3 meses: sem dado (ainda sem primeira conversa).
+    [nutricao] T9QD8U1Y · Score 1 · MG Special, US$ 55 em jogo · 163 dias: 0% dos negócios com essa idade fecharam | detalhe: 194º de 194 na sua lista; Chance de fechar em 3 meses: 1%

@@ -1,0 +1,96 @@
+# saída bruta de process-log/scripts/score_qualidade.mjs, 2026-10-23T20:28Z, node v22.18.0, sobre solution/data/deals.json (8800 negócios, 2089 abertos, referência 2017-12-31)
+## regra: score = round(100 × chance da faixa de idade ÷ maior chance entre as faixas) (motor, conversão razao) + 10 por "Sim", -15 por "Não", limite 0–100; sem data: "—" sem resposta, 50 com resposta. O preço não entra. Ordem da tela: grupo, depois valor esperado (sem data: preço).
+## parte do dado por faixa de idade (chance do motor, a maior = 51.6%; ao lado, o que fechou de fato no replay 2017-09-30 → 2017-12-31, que é o que a frase mostra)
+  0 a 10 dias        chance  46.7% → score  90 · fecharam 141/283 = 49.8%
+  11 a 20 dias       chance  51.6% → score 100 · fecharam 106/205 = 51.7%
+  21 a 30 dias       chance  46.7% → score  90 · fecharam 94/191 = 49.2%
+  31 a 40 dias       chance  46.7% → score  90 · fecharam 90/180 = 50.0%
+  41 a 50 dias       chance  31.3% → score  61 · fecharam 53/164 = 32.3%
+  51 a 60 dias       chance  21.0% → score  41 · fecharam 44/201 = 21.9%
+  61 a 90 dias       chance   7.7% → score  15 · fecharam 31/460 = 6.7%
+  acima de 90 dias   chance   0.6% → score   1 · fecharam 0/725 = 0.0%
+## por vendedor, sem respostas: score [mín..máx] de cada grupo da tela
+- Anna Snelling: n=112 · Aborde primeiro 55 [—] · Nutrição 57 [1..1]
+- Boris Faz: n=57 · Foque agora 3 [41..61] · Siga no ritmo 1 [100..100] · Nutrição 53 [1..15]
+- Cassey Cress: n=85 · Foque agora 3 [41..61] · Siga no ritmo 2 [90..100] · Nutrição 80 [1..15]
+- Cecily Lampkin: n=43 · Aborde primeiro 24 [—] · Nutrição 19 [1..1]
+- Corliss Cosme: n=81 · Foque agora 3 [41..41] · Siga no ritmo 1 [90..90] · Nutrição 77 [1..15]
+- Daniell Hammack: n=72 · Foque agora 2 [41..61] · Siga no ritmo 1 [100..100] · Nutrição 69 [1..15]
+- Darcel Schlecht: n=194 · Aborde primeiro 111 [—] · Nutrição 83 [1..1]
+- Elease Gluck: n=51 · Foque agora 2 [90..100] · Nutrição 49 [1..15]
+- Gladys Colclough: n=85 · Aborde primeiro 49 [—] · Nutrição 36 [1..1]
+- Hayden Neloms: n=50 · Foque agora 1 [100..100] · Nutrição 49 [1..15]
+- James Ascencio: n=61 · Foque agora 1 [41..41] · Nutrição 60 [1..15]
+- Jonathan Berthelot: n=81 · Aborde primeiro 48 [—] · Nutrição 33 [1..1]
+- Kami Bicknell: n=90 · Foque agora 2 [41..61] · Siga no ritmo 1 [90..90] · Nutrição 87 [1..15]
+- Kary Hendrixson: n=103 · Foque agora 2 [41..41] · Siga no ritmo 4 [90..100] · Nutrição 97 [1..15]
+- Lajuana Vencill: n=80 · Aborde primeiro 40 [—] · Nutrição 40 [1..1]
+- Markita Hansen: n=79 · Foque agora 3 [41..41] · Siga no ritmo 1 [100..100] · Nutrição 75 [1..15]
+- Marty Freudenburg: n=87 · Aborde primeiro 54 [—] · Nutrição 33 [1..1]
+- Maureen Marcano: n=72 · Foque agora 3 [41..61] · Siga no ritmo 1 [90..90] · Nutrição 68 [1..15]
+- Moses Frase: n=65 · Aborde primeiro 31 [—] · Nutrição 34 [1..1]
+- Niesha Huffines: n=64 · Aborde primeiro 34 [—] · Nutrição 30 [1..1]
+- Rosalina Dieter: n=50 · Foque agora 1 [41..41] · Siga no ritmo 1 [90..90] · Nutrição 48 [1..15]
+- Rosie Papadopoulos: n=39 · Foque agora 1 [41..41] · Nutrição 38 [1..15]
+- Versie Hillebrand: n=97 · Aborde primeiro 54 [—] · Nutrição 43 [1..1]
+- Vicki Laflamme: n=104 · Foque agora 1 [41..41] · Siga no ritmo 1 [90..90] · Nutrição 102 [1..15]
+- Violet Mclelland: n=68 · Foque agora 3 [41..61] · Siga no ritmo 3 [90..100] · Nutrição 62 [1..15]
+- Wilburn Farren: n=31 · Foque agora 1 [41..41] · Siga no ritmo 1 [100..100] · Nutrição 29 [1..15]
+- Zane Levy: n=88 · Foque agora 1 [41..41] · Siga no ritmo 6 [90..100] · Nutrição 81 [1..15]
+## checagens (sem respostas)
+  Nutrição com score > 15: 0 de 1532
+  vendedores com algum Siga no ritmo abaixo de algum Foque agora (pela idade): 0 de 27
+  sem data com score (devia ser "—"): 0 de 500
+  vizinhos em que o valor esperado (sem data: preço) sobe dentro do grupo: 0
+  negócios com data (de 1589) cujo score muda com o preço × 10: 0
+## receita esperada dos abertos (chance do motor, conversão razao, × preço de tabela; o score não entra)
+  todos: US$ 69.395 (500 sem data fora da conta) · Central: US$ 5.227 · Zane Levy: US$ 6.047 · Darcel Schlecht: US$ 1.736
+  exemplo: 45 dias (chance 0.3132) × US$ 4.821 = US$ 1.510
+## cartões reais (o primeiro de cada grupo na tela, sem respostas)
+- Zane Levy · Foque agora
+  [Foque agora] RN67OVFW
+    Score 41
+    A chance está caindo: marque a próxima conversa esta semana.
+    GTX Basic · US$ 550 em jogo · ver por quê
+    ver por quê:
+      - Aberto há 57 dias: 22% dos negócios com essa idade fecharam (a melhor faixa fecha 52%).
+      - Na sua lista: 1º de 88 (o grupo, depois o que há a ganhar).
+- Zane Levy · Siga no ritmo
+  [Siga no ritmo] FZWU2I30
+    Score 90
+    Marque a próxima conversa com data.
+    GTX Plus Pro · US$ 5.482 em jogo · ver por quê
+    ver por quê:
+      - Aberto há 21 dias: 49% dos negócios com essa idade fecharam (a melhor faixa fecha 52%).
+      - Na sua lista: 2º de 88 (o grupo, depois o que há a ganhar).
+- Zane Levy · Nutrição
+  [Nutrição] 4D0K5T7T
+    Score 15
+    Encaminhar para nutrição
+    GTX Pro · US$ 4.821 em jogo · ver por quê
+    ver por quê:
+      - Aberto há 66 dias: 7% dos negócios com essa idade fecharam (a melhor faixa fecha 52%).
+      - Na sua lista: 8º de 88 (o grupo, depois o que há a ganhar).
+- Darcel Schlecht · Aborde primeiro
+  [Aborde primeiro] 28EJ0L9T
+    Score —
+    Faça a primeira conversa: descubra quem decide e qual problema o cliente quer resolver.
+    GTX Plus Pro · US$ 5.482 em jogo · ver por quê
+    ver por quê:
+      - Responda as perguntas para pontuar.
+      - Na sua lista: 1º de 194 (o grupo, depois o que há a ganhar).
+- Darcel Schlecht · Nutrição
+  [Nutrição] Z4OOTJAJ
+    Score 1
+    Encaminhar para nutrição
+    GTX Plus Pro · US$ 5.482 em jogo · ver por quê
+    ver por quê:
+      - Aberto há 143 dias: 0% dos negócios com essa idade fecharam (a melhor faixa fecha 52%).
+      - Na sua lista: 112º de 194 (o grupo, depois o que há a ganhar).
+## responder: o score muda, a ordem da tela não
+- Zane Levy · Foque agora RN67OVFW: sem resposta Score 41 → 1 "Sim" (decisor) Score 51 → 3 "Sim" Score 71 → 3 "Não" Score 0 · ordem da tela igual depois do "Sim": true
+    ver por quê com 1 "Sim": Aberto há 57 dias: 22% dos negócios com essa idade fecharam (a melhor faixa fecha 52%). | Decisor confirmado: +10 | Na sua lista: 1º de 88 (o grupo, depois o que há a ganhar).
+- Zane Levy · Siga no ritmo FZWU2I30: sem resposta Score 90 → 1 "Sim" (decisor) Score 100 → 3 "Sim" Score 100 → 3 "Não" Score 45 · ordem da tela igual depois do "Sim": true
+    ver por quê com 1 "Sim": Aberto há 21 dias: 49% dos negócios com essa idade fecharam (a melhor faixa fecha 52%). | Decisor confirmado: +10 | Na sua lista: 2º de 88 (o grupo, depois o que há a ganhar).
+- Darcel Schlecht · Aborde primeiro 28EJ0L9T: sem resposta Score — → 1 "Sim" (decisor) Score 60 → 3 "Sim" Score 80 → 3 "Não" Score 5 · ordem da tela igual depois do "Sim": true
+    ver por quê com 1 "Sim": Ainda sem primeira conversa: sem idade, o score parte de 50 e muda só com as suas respostas. | Decisor confirmado: +10 | Na sua lista: 1º de 194 (o grupo, depois o que há a ganhar).

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+# cópia do deals.json que o build da web serve para o modo local (gerada por apps/web/scripts/copiar-dados.mjs)
+apps/web/public/dados/
+# saídas do Playwright (os vídeos de evidência ficam em e2e/videos/, versionados)
+e2e/test-results/
+e2e/playwright-report/
+data/__pycache__/
+data/.pytest_cache/
+e2e/videos/.last-run.json
+# saída do build para a Vercel (scripts/construir-vercel.mjs)
+.vercel/

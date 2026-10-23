@@ -1,0 +1,414 @@
+/*
+ * motion.css: movimento reconstruído a partir de g4business.com (22/10/2026)
+ *
+ * Depende de tokens.css. Cada bloco cita o efeito original (DESIGN.md §3, bruto/NOTAS.md).
+ * Reconstrução, não cópia: as regras do site vivem em seletores do Elementor/Webflow
+ * (.elementor-element-xxxx, .g4bn-sh, .track-horizontal-4). Aqui viram classes reutilizáveis
+ * com os mesmos tempos e curvas.
+ *
+ * O que NÃO veio do site e está marcado como composição: o stagger do reveal (o site não usa)
+ * e a abertura do acordeão por grid-rows (o site usa WAAPI em height).
+ * Transição de página ou de painel: o site não tem, e este arquivo também não.
+ */
+
+/* ════════════════════════════════════════════════════════════════
+   1. KEYFRAMES
+   ════════════════════════════════════════════════════════════════ */
+
+/* fadeInUp do Elementor (fadeInUp.min.css): opacity 0 + translate3d(0, 100%, 0) → none */
+@keyframes ls-enter-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--ls-motion-enter-distance, 100%), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* live-pulse (/g4-valley, <style> inline): anel dourado que se expande e some */
+@keyframes ls-live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(185, 145, 91, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(185, 145, 91, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(185, 145, 91, 0);
+  }
+}
+
+/* marquee-horizontal (/g4-valley): trilho com o conteúdo duplicado anda metade da largura */
+@keyframes ls-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* g4Float (/sobre, .g4-boat img): flutuação de 3px com leve rotação */
+@keyframes ls-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(3deg);
+  }
+}
+
+/* loadingOpacityAnimation (widget-loop-grid): pulso de carregamento */
+@keyframes ls-loading {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* eicon-spin / swiper-preloader-spin: rotação contínua de spinner */
+@keyframes ls-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   2. ENTRADA NO SCROLL (gatilho: inview, via IntersectionObserver)
+   No site: .elementor-invisible → .animated.fadeInUp, 1.25s, ease, sem delay.
+   Uso: <div class="ls-reveal"> + JS que adiciona .is-visible ao entrar na tela.
+   ════════════════════════════════════════════════════════════════ */
+.ls-reveal {
+  opacity: 0;
+}
+.ls-reveal.is-visible {
+  opacity: 1;
+  /* fill "backwards" (não "both"): terminada a entrada, o transform volta a ser do elemento
+     e o hover (lift, zoom) continua funcionando */
+  animation: ls-enter-up var(--ls-duration-enter) var(--ls-ease-standard) backwards;
+  /* composição: stagger opcional por --ls-stagger (índice); o site não escalona */
+  animation-delay: calc(var(--ls-stagger, 0) * 120ms);
+}
+.ls-reveal--fast.is-visible {
+  animation-duration: 750ms;
+} /* .animated-fast */
+.ls-reveal--slow.is-visible {
+  animation-duration: 2s;
+} /* .animated-slow */
+/* variante curta para UI densa (app): mesma curva, 24px em vez de 100% */
+.ls-reveal--short {
+  --ls-motion-enter-distance: 24px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   3. HOVER E ESTADO (gatilho: hover / focus-visible)
+   ════════════════════════════════════════════════════════════════ */
+
+/* Base de cor: botões, pílulas, abas, links. Medido: 300 ms ease em
+   background-color, border-color e color (.elementor-button{transition:all .3s}) */
+.ls-t-colors {
+  transition:
+    background-color var(--ls-duration-base) var(--ls-ease-standard),
+    border-color var(--ls-duration-base) var(--ls-ease-standard),
+    color var(--ls-duration-base) var(--ls-ease-standard),
+    box-shadow var(--ls-duration-base) var(--ls-ease-standard);
+}
+
+/* Card que acende a borda: 1px navy 15% → 2px ouro + sombra 0 0 22px (card de programa, loop-332).
+   A borda de 2px é feita com box-shadow inset para não mexer no layout. */
+.ls-hover-outline {
+  border: var(--ls-border-hairline) solid var(--ls-color-border-navy-15);
+  transition:
+    border-color var(--ls-duration-base) var(--ls-ease-standard),
+    box-shadow var(--ls-duration-base) var(--ls-ease-standard);
+}
+.ls-hover-outline:hover,
+.ls-hover-outline:focus-visible {
+  border-color: var(--ls-color-gold);
+  box-shadow:
+    inset 0 0 0 1px var(--ls-color-gold),
+    var(--ls-shadow-card-hover);
+}
+
+/* Lift: sobe 18px em 400 ms + borda dourada em 300 ms (card de mentor #5902cc8, .e-con transform .4s) */
+.ls-hover-lift {
+  transition:
+    transform var(--ls-duration-lift) var(--ls-ease-standard),
+    border-color var(--ls-duration-base) var(--ls-ease-standard),
+    box-shadow var(--ls-duration-base) var(--ls-ease-standard);
+}
+.ls-hover-lift:hover,
+.ls-hover-lift:focus-visible {
+  transform: translateY(var(--ls-motion-lift));
+  box-shadow: inset 0 0 0 var(--ls-border-strong) var(--ls-color-gold);
+}
+.ls-hover-lift--sm:hover,
+.ls-hover-lift--sm:focus-visible {
+  transform: translateY(var(--ls-motion-lift-sm));
+}
+
+/* Zoom sutil 1.03 (/g4-valley .image-2147:hover) */
+.ls-hover-zoom {
+  transition: transform var(--ls-duration-fast) var(--ls-ease-standard);
+}
+.ls-hover-zoom:hover {
+  transform: scale(var(--ls-motion-scale-hover));
+}
+
+/* Nudge: sobe 1px e escurece 5% em 200 ms (.sectors-btn:hover) */
+.ls-hover-nudge {
+  transition:
+    transform var(--ls-duration-fast) var(--ls-ease-standard),
+    filter var(--ls-duration-fast) var(--ls-ease-standard);
+}
+.ls-hover-nudge:hover {
+  transform: translateY(var(--ls-motion-nudge));
+  filter: brightness(0.95);
+}
+
+/* Glow dourado em 200 ms (.btn-ticket:hover, /g4-valley) */
+.ls-hover-glow {
+  transition: box-shadow var(--ls-duration-fast) var(--ls-ease-standard);
+}
+.ls-hover-glow:hover {
+  box-shadow: var(--ls-shadow-glow-gold);
+}
+
+/* Barra de gráfico: alarga 5% e escurece para clay em 200 ms (.sector-item:hover .bar) */
+.ls-bar {
+  background: var(--ls-color-red);
+  border-radius: var(--ls-radius-sm) var(--ls-radius-sm) 4px 4px;
+  transform-origin: bottom center;
+  transition:
+    transform var(--ls-duration-fast) var(--ls-ease-standard),
+    background-color var(--ls-duration-fast) var(--ls-ease-standard);
+}
+.ls-bar:hover,
+.ls-bar-item:hover .ls-bar {
+  background: var(--ls-color-clay);
+  transform: scaleX(var(--ls-motion-scale-bar));
+}
+
+/* Foco de campo: sombra difusa em 300 ms (input de busca :focus, /biografias-mentores-g4).
+   A borda vira ouro (o site usa #FA6852, a cor padrão do widget; aqui fica na paleta). */
+.ls-focus-soft {
+  transition:
+    border-color var(--ls-duration-base) var(--ls-ease-standard),
+    box-shadow var(--ls-duration-base) var(--ls-ease-standard);
+}
+.ls-focus-soft:focus,
+.ls-focus-soft:focus-visible {
+  outline: none;
+  border-color: var(--ls-color-gold);
+  box-shadow: var(--ls-shadow-focus);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   4. INDICADORES E NAVEGAÇÃO (gatilho: troca de estado por clique/autoplay)
+   ════════════════════════════════════════════════════════════════ */
+
+/* Bullet que estica: círculo 8px cinza → pílula 26×8 ouro em 300 ms (.carrossel-g4 .swiper-pagination-bullet) */
+.ls-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ls-color-gray-300);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    width var(--ls-duration-base) var(--ls-ease-standard),
+    border-radius var(--ls-duration-base) var(--ls-ease-standard),
+    background-color var(--ls-duration-base) var(--ls-ease-standard);
+}
+.ls-bullet.is-active {
+  width: 26px;
+  border-radius: var(--ls-radius-pill);
+  background: var(--ls-color-gold);
+}
+
+/* Aba: inativa ouro com base 1px, ativa clara com base 2px; 300 ms (nested tabs 38cfa13e, /g4-sales) */
+.ls-tab {
+  border: 0;
+  border-bottom: var(--ls-border-hairline) solid var(--ls-color-gold);
+  background: transparent;
+  color: var(--ls-color-gold);
+  transition:
+    color var(--ls-duration-base) var(--ls-ease-standard),
+    border-color var(--ls-duration-base) var(--ls-ease-standard),
+    box-shadow var(--ls-duration-base) var(--ls-ease-standard);
+}
+.ls-tab:hover {
+  color: var(--ls-color-offwhite);
+}
+.ls-tab[aria-selected='true'] {
+  color: var(--ls-color-white);
+  box-shadow: inset 0 calc(-1 * var(--ls-border-strong)) 0 var(--ls-color-gold);
+}
+
+/* Painel de aba: troca sem animação, como no site (o kit declara e-page-transition,
+   mas não há o elemento na página; não há transição de página nem de painel). */
+.ls-panel[hidden] {
+  display: none;
+}
+
+/* Acordeão: o site anima height em 400 ms linear (WAAPI) e gira o ícone 180° em 300 ms ease.
+   Aqui a altura vai por grid-template-rows (sem JS de medição). */
+.ls-accordion__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--ls-duration-lift) var(--ls-ease-linear);
+}
+.ls-accordion__body > * {
+  overflow: hidden;
+}
+.ls-accordion.is-open .ls-accordion__body {
+  grid-template-rows: 1fr;
+}
+.ls-accordion__icon {
+  transition: transform var(--ls-duration-base) var(--ls-ease-standard);
+}
+.ls-accordion.is-open .ls-accordion__icon {
+  transform: rotate(180deg);
+}
+
+/* Header sticky: ganha fundo e sombra ao rolar; background/sombra 300 ms, transform 400 ms (.e-con) */
+.ls-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition:
+    background-color var(--ls-duration-base) var(--ls-ease-standard),
+    box-shadow var(--ls-duration-base) var(--ls-ease-standard),
+    transform var(--ls-duration-lift) var(--ls-ease-standard);
+}
+.ls-sticky.is-stuck {
+  background-color: var(--ls-color-navy);
+  box-shadow: 0 1px 0 var(--ls-color-border-navy);
+}
+
+/* Bottom sheet: sobe de translateY(100%) em 280 ms cubic-bezier(.2,.7,.3,1) (.g4bn-sh, medido) */
+.ls-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: min(65vh, 520px);
+  border-radius: var(--ls-radius-xl) var(--ls-radius-xl) 0 0;
+  box-shadow: var(--ls-shadow-sheet);
+  transform: translateY(100%);
+  visibility: hidden; /* fechado não recebe foco nem aparece em print de página inteira */
+  transition:
+    transform var(--ls-duration-sheet) var(--ls-ease-sheet),
+    visibility 0s linear var(--ls-duration-sheet);
+  z-index: 100;
+}
+.ls-sheet.is-open {
+  transform: translateY(0);
+  visibility: visible;
+  transition-delay: 0s;
+}
+.ls-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--ls-color-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ls-duration-sheet) var(--ls-ease-sheet);
+  z-index: 99;
+}
+.ls-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   5. CONTÍNUOS (gatilho: load, infinito)
+   ════════════════════════════════════════════════════════════════ */
+
+/* Ponto "ao vivo": 8px ouro pulsando 1.4s ease-in-out (.live-dot) */
+.ls-live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ls-color-gold);
+  flex-shrink: 0;
+  animation: ls-live-pulse var(--ls-duration-pulse) var(--ls-ease-in-out) infinite;
+}
+
+/* Faixa marquee: duplicar o conteúdo dentro de .ls-marquee__track (.track-horizontal-4, 50s linear) */
+.ls-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ls-marquee__track {
+  display: inline-flex;
+  will-change: transform;
+  animation: ls-marquee var(--ls-duration-marquee) var(--ls-ease-linear) infinite;
+}
+.ls-marquee:hover .ls-marquee__track {
+  animation-play-state: paused;
+} /* composição: pausa no hover */
+
+/* Flutuação de ícone (g4Float, 3.4s ease-in-out) */
+.ls-float {
+  animation: ls-float var(--ls-duration-float) var(--ls-ease-in-out) infinite;
+}
+
+/* Carregando (loadingOpacityAnimation, 1s ease alternate) */
+.ls-loading {
+  animation: ls-loading 1s var(--ls-ease-standard) infinite alternate;
+}
+
+/* Spinner (eicon-spin 2s linear) */
+.ls-spin {
+  animation: ls-spin 2s var(--ls-ease-linear) infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   6. MOVIMENTO REDUZIDO
+   No site, a timeline (/sobre) e o botão flutuante (/g4-valley) zeram a transição em
+   prefers-reduced-motion: reduce. Aqui vale para tudo.
+   ════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .ls-reveal {
+    opacity: 1;
+  }
+  .ls-reveal.is-visible,
+  .ls-live-dot,
+  .ls-marquee__track,
+  .ls-float,
+  .ls-loading,
+  .ls-spin {
+    animation: none;
+  }
+  .ls-t-colors,
+  .ls-hover-outline,
+  .ls-hover-lift,
+  .ls-hover-zoom,
+  .ls-hover-nudge,
+  .ls-hover-glow,
+  .ls-bar,
+  .ls-focus-soft,
+  .ls-bullet,
+  .ls-tab,
+  .ls-accordion__body,
+  .ls-accordion__icon,
+  .ls-sticky,
+  .ls-sheet,
+  .ls-overlay {
+    transition: none;
+  }
+  .ls-hover-lift:hover,
+  .ls-hover-zoom:hover,
+  .ls-hover-nudge:hover {
+    transform: none;
+  }
+}

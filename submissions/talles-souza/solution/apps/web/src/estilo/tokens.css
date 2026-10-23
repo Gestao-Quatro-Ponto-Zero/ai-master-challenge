@@ -1,0 +1,201 @@
+/*
+ * tokens.css: sistema visual de referência para o Lead Scorer
+ *
+ * Extraído de g4business.com em 22/10/2026 (home, /g4-valley, /g4-sales, /sobre,
+ * /biografias-mentores-g4). Cada valor cita a origem; o material bruto está em bruto/NOTAS.md.
+ * Prefixo neutro "ls" (Lead Scorer): a aplicação se inspira no sistema visual e
+ * não se apresenta como produto oficial de ninguém.
+ *
+ * Fontes: Manrope e Libre Baskerville são as do site (Google Fonts, OFL).
+ * Fraunces e Unbounded substituem fontes pagas/self-hosted do site (PP Museum, Kurdis).
+ * Carregue-as no HTML; este arquivo só declara as pilhas.
+ *
+ * tokens.json é gerado deste arquivo por bruto/gerar-tokens-json.mjs (mesma contagem).
+ */
+:root {
+  /* ── Cor: marca ─────────────────────────────────────────────── */
+  --ls-color-navy: #001f35; /* primária; .elementor-kit-7 --e-global-color-primary; header, seções escuras */
+  --ls-color-navy-ink: #031a26; /* texto sobre claro; kit --e-global-color-text; topbar [data-id=facfa72] */
+  --ls-color-navy-deep: #010c14; /* fundo mais escuro; /g4-valley --bkg-blue */
+  --ls-color-navy-scaling: #184560; /* azul de apoio; kit 1b6017f / --scaling-blue; seção de programas */
+  --ls-color-gold: #b9915b; /* acento; kit --e-global-color-secondary / --royal-gold */
+  --ls-color-gold-dark: #977342; /* início do gradiente do CTA; post-32690.css botão 27dc6fe */
+  --ls-color-gold-light: #c9a96e; /* fim do gradiente e hover do CTA; post-32690.css */
+  --ls-color-gold-pale: #dfccb4; /* brilho do ouro metálico; /g4-valley gradiente 199deg */
+  --ls-color-offwhite: #f5f4f3; /* fundo claro e texto sobre escuro; kit --e-global-color-accent / --royal-silver */
+  --ls-color-white: #ffffff; /* superfície de card; body bg, cards de blog/programa */
+  --ls-color-clay: #842e20; /* acento quente; --ground-clay; bullet ativo, hover de barra */
+  --ls-color-red: #af4332; /* dado/destaque; widget de setores --primary-color */
+  --ls-color-wine: #441b1b; /* tom escuro quente; kit 2d0d3ab / --founders-red */
+
+  /* ── Cor: neutros e texto ───────────────────────────────────── */
+  --ls-color-text-muted: #64748b; /* rótulo secundário; widget de setores --text-muted */
+  --ls-color-text-on-dark-muted: #a0aec0; /* --text-on-dark-muted (:root inline) */
+  --ls-color-gray-400: #9ca3af; /* texto terciário; 6 nós na home */
+  --ls-color-gray-300: #d1d5db; /* bullet inativo; .swiper-pagination-bullet */
+  --ls-color-border-light: #e5e7eb; /* borda clara; acordeão d51304d, --g4-border */
+  --ls-color-border-navy: #1d2e3e; /* borda sobre navy; --border-navy */
+  --ls-color-border-navy-15: rgba(
+    0,
+    31,
+    53,
+    0.15
+  ); /* borda de card em repouso; loop-332 #001F3526 */
+  --ls-color-overlay: rgba(15, 26, 69, 0.35); /* véu do bottom sheet; .g4bn-ov */
+  --ls-color-gold-veil: rgba(185, 145, 91, 0.38); /* hover "véu dourado"; post-23610.css */
+
+  /* ── Gradientes ─────────────────────────────────────────────── */
+  --ls-gradient-gold: linear-gradient(
+    90deg,
+    #977342 0%,
+    #c9a96e 100%
+  ); /* CTA do hero; post-32690.css */
+  --ls-gradient-gold-shimmer: linear-gradient(
+    199deg,
+    #b9915b 30%,
+    #dfccb4 54%,
+    #b9915b 74%
+  ); /* /g4-valley */
+  --ls-gradient-divider: linear-gradient(
+    90deg,
+    rgba(185, 145, 91, 0) 0%,
+    #b9915b 18%,
+    #b9915b 82%,
+    rgba(185, 145, 91, 0) 100%
+  ); /* /g4-sales divisor */
+  --ls-gradient-card-scrim: linear-gradient(
+    180deg,
+    rgba(20, 20, 20, 0) 0%,
+    #131313 100%
+  ); /* foto do card de programa; loop-332 */
+  --ls-gradient-event-bar: linear-gradient(
+    227deg,
+    #01080e,
+    #031b2c 49%,
+    #01080e
+  ); /* /g4-valley .counter-div */
+  --ls-gradient-chart-grid: linear-gradient(
+    #b9915b 1px,
+    transparent 1px
+  ); /* .sectors-grid, com background-size 100% 50px */
+
+  /* ── Tipografia: famílias ───────────────────────────────────── */
+  --ls-font-sans:
+    'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* kit primary/secondary/text/accent */
+  --ls-font-serif:
+    'Libre Baskerville', Georgia, 'Times New Roman', serif; /* títulos itálicos, nomes, FAQ */
+  --ls-font-display:
+    'Fraunces', 'Libre Baskerville', Georgia, serif; /* substitui PPMuseum (pago, self-hosted) */
+  --ls-font-wide:
+    'Unbounded', 'Manrope', sans-serif; /* substitui Kurdis Wide (sub-marca de evento) */
+
+  /* ── Tipografia: pesos ──────────────────────────────────────── */
+  --ls-weight-extralight: 200; /* kit text 200; títulos de hero em Manrope 200 */
+  --ls-weight-regular: 400; /* kit secondary */
+  --ls-weight-semibold: 600; /* kit primary */
+  --ls-weight-extrabold: 800; /* kit accent; botões */
+
+  /* ── Tipografia: escala de tamanhos ─────────────────────────── */
+  --ls-text-2xs: 10px; /* badge, tag de blog (loop-365 #724886c) */
+  --ls-text-xs: 12px; /* eyebrow, botão de header, menu (12.8px) */
+  --ls-text-sm: 14px; /* corpo de card, descrição de mentor */
+  --ls-text-base: 16px; /* corpo, botão, pílula, FAQ */
+  --ls-text-md: 18px; /* nome em depoimento, faixa da topbar */
+  --ls-text-lg: 20px; /* subtítulo de hero, título de card de blog */
+  --ls-text-xl: 24px; /* nome de mentor (Libre Baskerville italic) */
+  --ls-text-2xl: 36px; /* H2 de seção */
+  --ls-text-3xl: 50px; /* H1 de hero da home */
+  --ls-text-4xl: 61px; /* H1 de evento; --Tamanho-font-61px */
+  --ls-text-stat: 56px; /* número de stat card (PPMuseum 400) */
+  --ls-text-mega: 131px; /* contador "1.094.176" (Libre Baskerville 600, 131.2px) */
+
+  /* ── Tipografia: entrelinha e espaçamento de letra ──────────── */
+  --ls-leading-tight: 1.15; /* padrão Elementor: 16px/18.4px, 36px/41.4px */
+  --ls-leading-snug: 1.2; /* H1 50px/60px, card de blog */
+  --ls-leading-normal: 1.4; /* corpo de card 14px/19.6px */
+  --ls-leading-relaxed: 1.69; /* texto institucional 16px/27px (/sobre) */
+  --ls-tracking-tight: -0.03em; /* número "R$11 mi" 22px/-0.66px (/sobre) */
+  --ls-tracking-normal: 0;
+  --ls-tracking-caps: 0.16em; /* ano da timeline 11px/1.76px (/sobre) */
+  --ls-tracking-marquee: 0.3em; /* faixa marquee 10px/3px (/g4-valley) */
+  --ls-tracking-eyebrow: 0.37em; /* "— SOBRE NÓS" 12px/4.4px (/sobre) */
+
+  /* ── Espaçamento (valores de gap/padding observados) ────────── */
+  --ls-space-1: 4px; /* gap 4px (11 containers) */
+  --ls-space-2: 8px; /* gap das bullets; padding de badge */
+  --ls-space-3: 10px; /* gap de slides e de ícone de botão */
+  --ls-space-4: 12px; /* gap do gráfico; padding do botão da topbar */
+  --ls-space-5: 16px; /* padding vertical do CTA; padding de linha do sheet */
+  --ls-space-6: 20px; /* gap padrão de container (125 ocorrências); padding de card de blog */
+  --ls-space-7: 24px; /* gap do carrossel de depoimentos */
+  --ls-space-8: 40px; /* padding horizontal do botão da topbar; gap de bloco */
+  --ls-space-9: 48px; /* padding horizontal do CTA gradiente */
+
+  /* ── Raio ───────────────────────────────────────────────────── */
+  --ls-radius-xs: 3px; /* ícone/foco do menu */
+  --ls-radius-sm: 8px; /* CTA gradiente; topo da barra do gráfico; --Raio-borda-8px */
+  --ls-radius-md: 10px; /* botões e card de programa */
+  --ls-radius-lg: 16px; /* containers e cards (22 nós); --Raio-borda-16px */
+  --ls-radius-xl: 20px; /* card de mentor; bottom sheet; --Raio-borda-20px */
+  --ls-radius-2xl: 24px; /* card da timeline (/sobre); --Raio-borda-24px */
+  --ls-radius-badge: 40px; /* tag de blog (loop-365) */
+  --ls-radius-pill: 999px; /* pílula de filtro (1100px), bullet ativo, input de busca */
+
+  /* ── Sombra (nada tem sombra em repouso) ────────────────────── */
+  --ls-shadow-none: none;
+  --ls-shadow-card-hover: 0 0 22px 0 rgba(0, 0, 0, 0.14); /* card de programa :hover (loop-332) */
+  --ls-shadow-float: 0 4px 12px rgba(0, 0, 0, 0.3); /* botão flutuante (.whatsapp-float) */
+  --ls-shadow-sheet: 0 -10px 30px rgba(0, 0, 0, 0.08); /* bottom sheet (.g4bn-sh) */
+  --ls-shadow-focus: 0 5px 22px 0 rgba(0, 0, 0, 0.11); /* input de busca :focus (/biografias-mentores-g4) */
+  --ls-shadow-glow-gold: 0 2px 40px 6px rgba(185, 145, 91, 0.15); /* .btn-ticket:hover (/g4-valley) */
+  --ls-shadow-raised:
+    0 14px 36px rgba(3, 11, 21, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.75); /* card da timeline (/sobre) */
+
+  /* ── Borda ──────────────────────────────────────────────────── */
+  --ls-border-hairline: 1px; /* botões, pílulas, cards (computa 0.8px no zoom do Windows) */
+  --ls-border-strong: 2px; /* divisor dourado; card em hover; aba ativa */
+
+  /* ── Layout ─────────────────────────────────────────────────── */
+  --ls-layout-container: 1140px; /* .e-con-boxed > .e-con-inner max-width: min(100%, 1140px) */
+  --ls-layout-gutter: 20px; /* gap padrão do Elementor (--widgets-spacing) */
+  --ls-layout-bp-mobile: 767px; /* Elementor: max-width 767px */
+  --ls-layout-bp-tablet: 1024px; /* Elementor: max-width 1024px */
+  --ls-layout-bp-bottomnav: 991px; /* bottom nav mobile aparece abaixo de 992px (.g4bn) */
+  --ls-layout-header-height: 88px; /* header [data-id=b5c2e75] 88px + topbar 66px */
+  --ls-layout-bottomnav-height: 70px; /* .g4bn */
+
+  /* ── Movimento: durações ────────────────────────────────────── */
+  --ls-duration-fast: 200ms; /* barra do gráfico, .sectors-btn, .btn-ticket */
+  --ls-duration-sheet: 280ms; /* bottom sheet (medido) */
+  --ls-duration-base: 300ms; /* botões, pílulas, abas, bullets, bordas (medido) */
+  --ls-duration-text: 350ms; /* textos e ponto da timeline (medido) */
+  --ls-duration-lift: 400ms; /* transform de card (.e-con), acordeão (medido) */
+  --ls-duration-expand: 450ms; /* card da timeline crescendo (medido) */
+  --ls-duration-slide: 500ms; /* Swiper speed; mega menu */
+  --ls-duration-enter: 1250ms; /* .animated fadeInUp (Elementor) */
+  --ls-duration-pulse: 1400ms; /* live-pulse (medido) */
+  --ls-duration-count: 2000ms; /* contador data-duration */
+  --ls-duration-float: 3400ms; /* g4Float (medido) */
+  --ls-duration-marquee: 50s; /* marquee-horizontal (medido) */
+
+  /* ── Movimento: curvas ──────────────────────────────────────── */
+  --ls-ease-standard: cubic-bezier(
+    0.25,
+    0.1,
+    0.25,
+    1
+  ); /* = "ease", a curva de quase tudo no site */
+  --ls-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1); /* = "ease-in-out"; live-pulse, g4Float */
+  --ls-ease-sheet: cubic-bezier(0.2, 0.7, 0.3, 1); /* bottom sheet .g4bn-sh (medido) */
+  --ls-ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1); /* .faq-card (/g4-valley post-892.css) */
+  --ls-ease-linear: linear; /* marquee, acordeão (WAAPI), spinners */
+
+  /* ── Movimento: distâncias e escalas ────────────────────────── */
+  --ls-motion-lift: -18px; /* card de mentor :hover (--e-con-transform-translateY) */
+  --ls-motion-lift-sm: -8px; /* card da timeline ativo */
+  --ls-motion-nudge: -1px; /* .sectors-btn:hover translateY(-1px) */
+  --ls-motion-scale-hover: 1.03; /* .image-2147 / .ticket-counter-icon :hover */
+  --ls-motion-scale-bar: 1.05; /* .sector-item:hover .bar scaleX */
+  --ls-motion-scale-fab: 1.1; /* botão flutuante :hover */
+  --ls-motion-enter-distance: 100%; /* fadeInUp: translate3d(0, 100%, 0) */
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@lead-scorer/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "API HTTP fina (Hono em Node) que expõe os contextos do domínio",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/servidor.ts",
+    "start": "tsx src/servidor.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@hono/node-server": "2.1.5",
+    "@lead-scorer/dominio": "0.1.0",
+    "hono": "4.13.13",
+    "pg": "8.23.1",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/pg": "8.23.1",
+    "tsx": "4.23.15"
+  }
+}
