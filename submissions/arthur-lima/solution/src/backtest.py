@@ -125,62 +125,92 @@ def run_temporal_backtest(
     split_date: pd.Timestamp = pd.Timestamp("2017-06-30"),
 ) -> BacktestReport:
     """
-    Executes the full Out-of-Time backtest:
-    - Trains strictly on closed deals <= split_date
-    - Evaluates on closed deals > split_date
-    - Benchmarks against 3 baselines
+    Executes a Point-in-Time Prospective Cohort Evaluation:
+    - Trains priors strictly on deals closed on or before split_date (zero future leakage).
+    - Tests on the cohort of deals that were actively open on split_date (engage_date <= split_date
+      and (close_date > split_date or close_date is null)).
+    - Uses point-in-time observed age at split_date: (split_date - engage_date).days.
+    - Evaluates on the resolved subset (deals that eventually closed as Won or Lost by snapshot end).
+    - All model and baseline scores are strictly aligned row-by-row on the same opportunity IDs.
     """
     df, _ = build_enriched_pipeline(data_dir=data_dir, as_of_date=split_date)
-    closed = df[df["deal_stage"].isin(["Won", "Lost"]) & df["close_date"].notnull()].copy()
 
-    train = closed[closed["close_date"] <= split_date].copy()
-    test = closed[closed["close_date"] > split_date].copy()
+    # 1. Historical train partition: closed strictly on or before split_date
+    train = df[
+        df["deal_stage"].isin(["Won", "Lost"])
+        & df["close_date"].notnull()
+        & (df["close_date"] <= split_date)
+    ].copy()
 
     scorer = SurvivalLeadScorer()
-    scorer.fit(df, as_of_date=split_date)
+    scorer.fit(train, as_of_date=split_date)
 
-    scored_test = scorer.score_engaging_deals(test)
+    # 2. Prospective test cohort: active deals open on split_date
+    open_cohort = df[
+        df["engage_date"].notnull()
+        & (df["engage_date"] <= split_date)
+        & ((df["close_date"] > split_date) | df["close_date"].isnull())
+    ].copy()
+
+    # Anchor age strictly at split_date (Point-in-Time, zero future close_date knowledge)
+    open_cohort["cycle_days"] = (split_date - open_cohort["engage_date"]).dt.days
+
+    # Subpopulation with resolved outcome (Won or Lost by dataset end)
+    resolved = open_cohort[open_cohort["deal_stage"].isin(["Won", "Lost"])].copy()
+
+    # Score the resolved cohort
+    scored_test = scorer.score_engaging_deals(resolved)
+
+    # Guarantee strict row-by-row alignment across all metrics
     y_true = (scored_test["deal_stage"] == "Won").astype(int).values
+    p_model = scored_test["p_win"].values
+    score_model = scored_test["priority_score"].values
 
-    # 1. Model metrics (AUC evaluates calibrated probability, Lift evaluates commercial ranking)
-    m_auc = calculate_auc_score(y_true, scored_test["p_win"].values)
-    m_brier = calculate_brier_score(y_true, scored_test["p_win"].values)
-    m_lift10, m_p10, _ = calculate_lift_at_k(y_true, scored_test["priority_score"].values, 0.10)
-    m_lift20, m_p20, m_won20 = calculate_lift_at_k(y_true, scored_test["priority_score"].values, 0.20)
+    m_auc = calculate_auc_score(y_true, p_model)
+    m_brier = calculate_brier_score(y_true, p_model)
+    m_lift10, m_p10, _ = calculate_lift_at_k(y_true, score_model, 0.10)
+    m_lift20, m_p20, _ = calculate_lift_at_k(y_true, score_model, 0.20)
 
-    # Top 20% captured real won revenue
+    # Top 20% captured real won revenue (strictly aligned)
     top20_cutoff = int(np.ceil(len(scored_test) * 0.20))
     top20_df = scored_test.iloc[:top20_cutoff]
-    captured_rev = float(top20_df[top20_df["deal_stage"] == "Won"]["close_value"].sum())
+    captured_rev = float(
+        top20_df[top20_df["deal_stage"] == "Won"]["close_value"].fillna(0.0).sum()
+    )
 
-    # 2. Baseline 1: Nominal value
-    b1_scores = test["sales_price"].values
+    # Baseline 1: Deal Nominal Price (sales_price, strictly aligned on scored_test)
+    b1_scores = scored_test["sales_price"].values
     b1_auc = calculate_auc_score(y_true, b1_scores)
     b1_lift10, _, _ = calculate_lift_at_k(y_true, b1_scores, 0.10)
     b1_lift20, b1_p20, _ = calculate_lift_at_k(y_true, b1_scores, 0.20)
 
-    # 3. Baseline 2: Pure aging (-cycle_days)
-    b2_scores = -test["cycle_days"].fillna(999.0).values
+    # Baseline 2: Point-in-Time Aging (-cycle_days, younger first, strictly aligned)
+    b2_scores = -scored_test["cycle_days"].fillna(999.0).values
     b2_auc = calculate_auc_score(y_true, b2_scores)
     b2_lift10, _, _ = calculate_lift_at_k(y_true, b2_scores, 0.10)
     b2_lift20, b2_p20, _ = calculate_lift_at_k(y_true, b2_scores, 0.20)
 
-    # 4. Baseline 3: Agent historical win rate
-    agent_priors = test["sales_agent"].map(scorer.agent_win_rates_).fillna(scorer.global_win_rate_).values
+    # Baseline 3: Sales Agent Historical Win Rate prior to split_date (strictly aligned)
+    agent_priors = (
+        scored_test["sales_agent"]
+        .map(scorer.agent_win_rates_)
+        .fillna(scorer.global_win_rate_)
+        .values
+    )
     b3_auc = calculate_auc_score(y_true, agent_priors)
     b3_brier = calculate_brier_score(y_true, agent_priors)
     b3_lift10, _, _ = calculate_lift_at_k(y_true, agent_priors, 0.10)
     b3_lift20, b3_p20, _ = calculate_lift_at_k(y_true, agent_priors, 0.20)
 
-    # 5. Reliability calibration bins
-    calib_bins = calculate_reliability_diagram_bins(y_true, scored_test["p_win"].values, n_bins=5)
+    # Reliability calibration bins
+    calib_bins = calculate_reliability_diagram_bins(y_true, p_model, n_bins=5)
 
     return BacktestReport(
         split_date=str(split_date.date()),
         train_deal_count=len(train),
         train_win_rate=round(float((train["deal_stage"] == "Won").mean()), 4),
-        test_deal_count=len(test),
-        test_win_rate=round(float((test["deal_stage"] == "Won").mean()), 4),
+        test_deal_count=len(resolved),
+        test_win_rate=round(float((resolved["deal_stage"] == "Won").mean()), 4),
         model_metrics={
             "auc": round(m_auc, 4),
             "brier": round(m_brier, 4),

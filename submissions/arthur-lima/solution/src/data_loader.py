@@ -81,9 +81,12 @@ def compute_value_estimation_table(
     catalog_map = products_df.set_index("product")["sales_price"].to_dict()
 
     if len(won) == 0:
-        est_df = products_df[["product", "sales_price"]].copy()
-        est_df["median_won_value"] = est_df["sales_price"]
-        return est_df, {"mae_median_estimator": 0.0, "mae_catalog_price": 0.0}
+        est_df = pd.DataFrame(columns=["product", "regional_office", "median_won_value"])
+        return est_df, {
+            "mae_median_estimator": 0.0,
+            "mae_catalog_price": 0.0,
+            "avg_price_realization_delta_pct": 0.0,
+        }
 
     prod_reg = (
         won.groupby(["product", "regional_office"], as_index=False)["close_value"]
@@ -194,11 +197,15 @@ def build_enriched_pipeline(
         .astype(float)
     )
 
-    # Cycle / Aging days calculation anchored strictly at as_of_date
+    # Cycle / Aging days calculation anchored strictly at as_of_date (Point-in-Time)
     df["as_of_date"] = as_of_date
-    is_closed = df["deal_stage"].isin(["Won", "Lost"])
+    already_closed_at_as_of = (
+        df["deal_stage"].isin(["Won", "Lost"])
+        & df["close_date"].notnull()
+        & (df["close_date"] <= as_of_date)
+    )
     df["cycle_days"] = np.where(
-        is_closed,
+        already_closed_at_as_of,
         (df["close_date"] - df["engage_date"]).dt.days,
         (as_of_date - df["engage_date"]).dt.days,
     )

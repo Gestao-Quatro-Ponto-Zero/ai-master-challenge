@@ -29,9 +29,11 @@ class ScoringParameters:
     golden_window_days: float = 57.0      # Median time-to-win in historical closed deals
     zombie_p95_days: float = 118.0        # 95th percentile of Won cycle duration
     hard_horizon_days: float = 138.0      # Maximum observed Won cycle in historical window
-    decay_lambda: float = 0.032           # Smooth exponential decay rate after golden_window_days
-    unlinked_account_penalty: float = 0.42  # Multiplier when CRM account is missing (orphan deal)
+    decay_lambda: float = 0.022           # Smooth continuous decay rate after median cycle
+    unlinked_account_penalty: float = 0.50  # Operational discount for orphan deals needing enrichment
     prior_strength: float = 15.0          # Empirical Bayes shrinkage strength for agent/product win rates
+    max_ev_day_ref: float = 1000.0        # Canonical fixed reference for EV/day log normalization
+    max_ev_abs_ref: float = 20000.0       # Canonical fixed reference for EV absolute log normalization
 
 
 class SurvivalLeadScorer:
@@ -108,31 +110,23 @@ class SurvivalLeadScorer:
 
     def compute_aging_survival_factor(self, age_days: pd.Series, product: pd.Series) -> pd.Series:
         """
-        Empirical cohort survival factor S(age | product):
-        - Early Drop-off Penalty (age <= 14d): Unqualified deals drop out rapidly in week 1-2
-          (empirical win rate is lowest at 53-57%).
-        - Golden Maturation Peak (14d to 90d, up to 120d): Mature engaged opportunities reach
-          their historical peak conversion rate (68-75%).
-        - Stagnation Decoupling (age > 120d): Smooth decay reflecting stagnation risk without
-          the naive cliff to zero at 138d.
+        Continuous empirical cycle factor S(age | product):
+        - Early phase (0 to 14d): Unqualified deals drop out early; factor rises smoothly from ~0.88 to ~1.00.
+        - Maturation peak (~40 to 60d): Active engagement converts at highest observed rate (~1.06).
+        - Stagnation decay (age > product median): Smooth exponential decay without abrupt cliff,
+          floored at 0.50 so enterprise deals remain auditable.
         """
         age = age_days.fillna(30.0).clip(lower=0.0)
+        med = product.map(self.product_median_cycle_).fillna(self.params.golden_window_days)
 
-        # Empirically validated maturation curve
-        maturation_curve = np.where(
-            age <= 7.0,
-            0.86,
-            np.where(
-                age <= 14.0,
-                0.93,
-                np.where(
-                    age <= 90.0,
-                    1.08,
-                    np.where(age <= 120.0, 1.10, 0.85 * np.exp(-self.params.decay_lambda * (age - 120.0)))
-                )
-            )
-        )
-        combined = np.clip(maturation_curve, 0.45, 1.18)
+        # Smooth continuous ramp from 0.88 up to ~1.06 around 45-50 days
+        ramp = 0.88 + 0.18 * (1.0 - np.exp(-age / 18.0))
+
+        # Smooth continuous decay only for excess days beyond the product median cycle
+        excess_age = np.maximum(0.0, age - med)
+        decay = np.exp(-self.params.decay_lambda * excess_age)
+
+        combined = np.clip(ramp * decay, 0.50, 1.15)
         return pd.Series(combined, index=age_days.index)
 
     def score_engaging_deals(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -183,32 +177,30 @@ class SurvivalLeadScorer:
             100.0 * (1.0 - np.exp(-0.018 * age)), 0.0, 100.0
         ).round(1)
 
-        # Expected Remaining Days to Close (minimum 5 days for active closing touch)
-        out["expected_days_remaining"] = np.where(
-            age < prod_med,
-            np.maximum(7.0, prod_med - age),
-            np.maximum(10.0, 18.0 + 0.25 * (age - prod_med)),
-        ).round(1)
+        # Smooth continuous estimate of remaining cycle days without discrete jumps at median
+        rem_before = np.maximum(0.0, prod_med - age)
+        ext_after = 0.25 * np.maximum(0.0, age - prod_med)
+        out["expected_days_remaining"] = (10.0 + rem_before + ext_after).round(1)
 
-        # True Monetary Expected Value ($) & Expected Revenue Velocity ($/day)
+        # Monetary Expected Value ($) & Expected Revenue Velocity ($/day)
         out["expected_value"] = (out["p_win"] * out["expected_won_value"]).round(2)
         out["ev_per_day"] = (out["expected_value"] / out["expected_days_remaining"]).round(2)
 
-        # Calibrated Priority Score (0-100) combining P(Win), EV/day (log-scaled to prevent 486x monopoly), and CRM completeness
-        ev_day_norm = np.log1p(out["ev_per_day"]) / np.log1p(max(float(out["ev_per_day"].max()), 10.0))
-        ev_abs_norm = np.log1p(out["expected_value"]) / np.log1p(max(float(out["expected_value"].max()), 100.0))
+        # Operational Priority Score (0-100) using fixed canonical ceilings to guarantee stability
+        ev_day_norm = np.log1p(out["ev_per_day"]) / np.log1p(self.params.max_ev_day_ref)
+        ev_abs_norm = np.log1p(out["expected_value"]) / np.log1p(self.params.max_ev_abs_ref)
 
         priority_raw = 100.0 * (
             0.50 * out["p_win"]
-            + 0.30 * ev_day_norm
-            + 0.20 * ev_abs_norm
+            + 0.30 * np.clip(ev_day_norm, 0.0, 1.0)
+            + 0.20 * np.clip(ev_abs_norm, 0.0, 1.0)
         )
         out["priority_score"] = np.clip(priority_raw, 1.0, 99.5).round(1)
 
-        # 3 Non-Cliche Action Tiers (Distinct from PR #208)
+        # 3 Operational Action Tiers with strict cohort boundary definitions
         conditions = [
-            (out["is_zombie_suspect"]) | (out["p_win"] < 0.16),
-            (age > prod_med) & (~out["is_zombie_suspect"]) & (out["p_win"] >= 0.16),
+            out["is_zombie_suspect"],
+            (age > prod_med) | (out["p_win"] < 0.30),
         ]
         choices = [
             "🧹 Higienizar / Auditar Zombie",

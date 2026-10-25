@@ -27,14 +27,15 @@ def generate_deal_reasons(row: pd.Series) -> Tuple[str, str, str]:
     action_tier = str(row.get("action_tier", ""))
 
     # --- Driver 1: Pipeline Velocity & Aging Window ---
-    if "Zombie" in action_tier or cycle > 118:
-        driver_1 = f"🚨 Estagnação Crítica ({int(cycle)} dias): Oportunidade ultrapassou o P95 de conversão ({product}). Risco de abandono silencioso."
-    elif cycle <= 30:
-        driver_1 = f"⚡ Janela Áurea Ativa ({int(cycle)} dias): Negócio em momento de tração inicial com alto índice de resposta do decisor."
+    is_zombie = bool(row.get("is_zombie_suspect", False))
+    if is_zombie or "Zombie" in action_tier:
+        driver_1 = f"🚨 Estagnação Crítica ({int(cycle)} dias no funil): Oportunidade ultrapassou o P95 de conversão para {product}. Prioritária para higienização."
+    elif cycle <= 14:
+        driver_1 = f"⚡ Prospecção Recente ({int(cycle)} dias no funil): Oportunidade em qualificação inicial. Período crítico de triagem."
     elif cycle <= 60:
-        driver_1 = f"⏱️ Fase Decisória ({int(cycle)} dias): Dentro do ciclo mediano de fechamento do produto {product}. Exige contato de fechamento."
+        driver_1 = f"⏱️ Fase de Maturação Ativa ({int(cycle)} dias no funil): Dentro da janela áurea de conversão para {product}."
     else:
-        driver_1 = f"⚠️ Alerta de Desaceleração ({int(cycle)} dias): Ciclo acima da mediana histórica. Necessita intervenção para evitar esfriamento."
+        driver_1 = f"⚠️ Ciclo Estendido ({int(cycle)} dias no funil): Negociação acima da mediana do produto. Exige revalidação de timeline."
 
     # --- Driver 2: Account Fit & CRM Data Completeness ---
     if not has_acc:

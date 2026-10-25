@@ -21,7 +21,7 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-if [ ! -d "venv" ]; then
+if [ ! -f "venv/bin/activate" ]; then
     echo "[2/3] Criando ambiente virtual venv e instalando dependências..."
     python3 -m venv venv
     source venv/bin/activate
@@ -35,8 +35,9 @@ fi
 echo ""
 echo "[TESTES] Executando suíte de testes automatizados com pytest..."
 python -m pytest tests/test_engine.py -q
-echo "[TESTES OK] Todos os 14 testes passaram com sucesso!"
+echo "[TESTES OK] Todos os testes passaram com sucesso!"
 
 echo ""
 echo "[3/3] Iniciando aplicação Streamlit (RevOps Copilot)..."
+echo "Acesse no seu navegador em: http://localhost:8501"
 streamlit run app.py

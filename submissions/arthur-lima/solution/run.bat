@@ -16,12 +16,22 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-if not exist "venv" (
+if not exist "venv\Scripts\activate.bat" (
     echo [2/3] Criando ambiente virtual venv e instalando dependências...
     python -m venv venv
+    if %errorlevel% neq 0 (
+        echo [ERRO] Falha ao criar o ambiente virtual venv.
+        pause
+        exit /b 1
+    )
     call venv\Scripts\activate.bat
     python -m pip install --upgrade pip
     pip install -r requirements.txt
+    if %errorlevel% neq 0 (
+        echo [ERRO] Falha ao instalar dependências de requirements.txt.
+        pause
+        exit /b 1
+    )
 ) else (
     echo [2/3] Ativando ambiente virtual venv...
     call venv\Scripts\activate.bat
@@ -31,13 +41,16 @@ echo.
 echo [TESTES] Executando suíte de testes automatizados com pytest...
 python -m pytest tests/test_engine.py -q
 if %errorlevel% neq 0 (
-    echo [AVISO] Houve falha na execução dos testes. Verifique antes de continuar.
+    echo.
+    echo [ERRO] Falha na execução da suíte de testes. Abortando inicialização.
+    pause
+    exit /b 1
 ) else (
-    echo [TESTES OK] Todos os 14 testes passaram com sucesso!
+    echo [TESTES OK] Todos os testes passaram com sucesso!
 )
 
 echo.
 echo [3/3] Iniciando aplicação Streamlit (RevOps Copilot)...
-echo Abrindo painel executivo no navegador padrão...
+echo Acesse no seu navegador em: http://localhost:8501
 streamlit run app.py
 pause

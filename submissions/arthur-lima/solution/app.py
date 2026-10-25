@@ -399,24 +399,23 @@ with tab_simulator:
         sim_custom_val = st.number_input("Valor Estimado do Contrato ($):", min_value=50.0, max_value=100000.0, value=prod_val, step=500.0)
 
     with col_sim_out:
-        # Calculate simulation on the fly
-        p_agent = scorer.agent_win_rates_.get(sim_agent, scorer.global_win_rate_)
-        p_prod = scorer.product_win_rates_.get(sim_product, scorer.global_win_rate_)
-        med_cycle = scorer.product_median_cycle_.get(sim_product, 57.0)
-
-        # Aging factor
-        sim_surv = float(scorer.compute_aging_survival_factor(pd.Series([sim_age_days]), pd.Series([sim_product])).iloc[0])
-        acc_mult = 1.0 if sim_has_acc else scorer.params.unlinked_account_penalty
-        ent_mult = 1.04 if sim_is_enterprise else 1.0
-
-        sim_p_win = np.clip(p_agent * (p_prod / scorer.global_win_rate_) * acc_mult * ent_mult * sim_surv, 0.02, 0.94)
-        sim_ev = sim_p_win * sim_custom_val
-        sim_days_rem = max(7.0, med_cycle - sim_age_days) if sim_age_days < med_cycle else max(10.0, 18.0 + 0.25 * (sim_age_days - med_cycle))
-        sim_ev_day = sim_ev / sim_days_rem
-
-        ev_day_norm = np.log1p(sim_ev_day) / np.log1p(1000.0)
-        ev_abs_norm = np.log1p(sim_ev) / np.log1p(20000.0)
-        sim_score = np.clip(100.0 * (0.50 * sim_p_win + 0.30 * ev_day_norm + 0.20 * ev_abs_norm), 1.0, 99.0)
+        # Calculate simulation directly using the canonical scorer to guarantee 100% formula parity
+        sim_df = pd.DataFrame([{
+            "opportunity_id": "SIM-001",
+            "sales_agent": sim_agent,
+            "product": sim_product,
+            "has_account": sim_has_acc,
+            "account": "Conta Simulada" if sim_has_acc else np.nan,
+            "account_display": "Conta Simulada" if sim_has_acc else "⚠️ Conta Não Vinculada",
+            "is_enterprise_account": sim_is_enterprise,
+            "cycle_days": float(sim_age_days),
+            "expected_won_value": float(sim_custom_val),
+            "deal_stage": "Engaging",
+        }])
+        sim_scored = scorer.score_engaging_deals(sim_df).iloc[0]
+        sim_p_win = float(sim_scored["p_win"])
+        sim_ev_day = float(sim_scored["ev_per_day"])
+        sim_score = float(sim_scored["priority_score"])
 
         st.markdown("#### 🎯 Resultado da Qualificação")
         m1, m2, m3 = st.columns(3)
@@ -424,12 +423,16 @@ with tab_simulator:
         m2.metric("Probabilidade de Vitória", f"{sim_p_win*100:.1f}%")
         m3.metric("Velocidade Esperada", f"${sim_ev_day:,.0f}/dia")
 
-        # Life decay simulation curve
+        # Life decay simulation curve using the exact scorer
         future_ages = np.arange(1, 160, 5)
-        sim_factors = scorer.compute_aging_survival_factor(pd.Series(future_ages), pd.Series([sim_product] * len(future_ages)))
-        sim_probs = np.clip(p_agent * (p_prod / scorer.global_win_rate_) * acc_mult * ent_mult * sim_factors.values, 0.02, 0.94)
+        curve_records = []
+        for f_age in future_ages:
+            s_row = sim_df.copy()
+            s_row["cycle_days"] = float(f_age)
+            res = scorer.score_engaging_deals(s_row).iloc[0]
+            curve_records.append({"Dias no Pipeline": f_age, "Probabilidade de Fechamento": res["p_win"] * 100})
 
-        df_sim_curve = pd.DataFrame({"Dias no Pipeline": future_ages, "Probabilidade de Fechamento": sim_probs * 100})
+        df_sim_curve = pd.DataFrame(curve_records)
         fig_sim = px.line(
             df_sim_curve,
             x="Dias no Pipeline",

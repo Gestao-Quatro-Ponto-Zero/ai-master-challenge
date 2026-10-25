@@ -11,7 +11,7 @@
 
 ## ⚡ Como Rodar a Solução em 1 Comando
 
-A aplicação é **100% autônoma** e já contém todos os dados e dependências necessárias.
+A aplicação é **autônoma** e já contém todos os 4 CSVs oficiais em `solution/data/`.
 
 ### No Windows:
 Basta dar dois cliques ou executar no terminal dentro da pasta `solution`:
@@ -19,7 +19,7 @@ Basta dar dois cliques ou executar no terminal dentro da pasta `solution`:
 cd submissions/arthur-lima/solution
 run.bat
 ```
-*(O script verifica o Python, cria o ambiente virtual se necessário, executa os 14 testes do pytest e abre o painel executivo no seu navegador).*
+*(O script verifica o ambiente Python 3.10+, cria e ativa o venv, instala os requisitos exatos de `requirements.txt`, executa os 17 testes do pytest e abre o painel executivo em http://localhost:8501).*
 
 ### No macOS / Linux:
 ```bash
@@ -28,19 +28,20 @@ chmod +x run.sh
 ./run.sh
 ```
 
-### Execução Direta via Terminal:
+### Execução Manual:
 ```bash
 cd submissions/arthur-lima/solution
 pip install -r requirements.txt
-python -m pytest tests/test_engine.py
+python -m pytest tests/test_engine.py -v
 streamlit run app.py
 ```
+*Acesse no navegador:* **`http://localhost:8501`**
 
 ---
 
 ## Executive Summary
 
-Auditamos as 8.800 oportunidades históricas do CRM e desmascaramos a intuição ingênua de vendas: ordenar leads por valor nominal destrói receita (AUC = 0,4834), atributos demográficos como setor têm poder preditivo nulo (AUC = 0,502) e o suposto "teto de 138 dias" decorre de um viés de censura à direita pelo corte do dataset. Desenvolvemos o **RevOps Copilot**, uma aplicação operacional em duas abas (Closers para 1.589 deals engajados e SDRs para 500 leads em prospecção) alimentada por um motor de **Sobrevivência Empírica**, **Velocidade de Receita ($EV/Dia$)** e **Explicabilidade Comercial Acionável**. Em validação cega out-of-time avaliada em 4.032 negócios reais fechados, o modelo atingiu **AUC de 0,5565**, **Brier Score calibrado de 0,2428** e elevou a taxa de vitória no Top 20% de 58,2% para **65,3% (+7,1 p.p.)**, salvaguardando mais de **US$ 1,51 milhão** em receita capturada.
+Auditamos as 8.800 oportunidades históricas do CRM e diagnosticamos o gargalo operacional da equipe comercial: a priorização manual por valor nominal ou por idade isolada falha em discriminar vitória (AUC ~0,49 a 0,50), enquanto mais de 87% das oportunidades abertas encontram-se estagnadas há meses consumindo tempo dos 35 vendedores. Desenvolvemos o **RevOps Copilot**, uma ferramenta operacional pragmática estruturada em duas esteiras independentes (1.589 deals em `Engaging` para Closers e 500 leads em `Prospecting` para SDRs), orientada por **Velocidade de Receita ($EV/Dia$)**, **Penalização Contínua de Estagnação** e **Explicabilidade Comercial com SLA**. Em validação de coorte prospectiva point-in-time em 30/06/2017 (970 negócios com desfecho resolvido e 716 censurados), a ferramenta comprova que o ganho real de RevOps não advém de predições místicas de caixa-preta, mas da eliminação sistemática de negócios zumbis e da disciplina na execução comercial na segunda-feira às 8h00.
 
 ---
 
@@ -48,102 +49,107 @@ Auditamos as 8.800 oportunidades históricas do CRM e desmascaramos a intuição
 
 ### Abordagem
 
-Abordamos o desafio sob a ótica de quem precisa entregar valor para o vendedor na **segunda-feira às 8h00**, sem teorizações de caixa-preta:
+Abordamos o desafio sob a ótica de quem precisa resolver a dor real de gestão comercial do G4:
 
-1. **Auditoria Forense dos Dados & Correção de Bugs de Schema:**
-   - Detectamos e corrigimos o erro de chave estrangeira em que o produto `GTKPro` no pipeline não tinha espaço, perdendo o vínculo com `GTX Pro` no catálogo.
-   - Corrigimos o erro de digitação do setor (`technolgy` -> `technology`) em `accounts.csv`.
-   - Identificamos que **68,5% das oportunidades abertas em `Engaging` (1.088 de 1.589) e 67,4% em `Prospecting` (337 de 500) não possuem conta vinculada no CRM**, criando um display explicativo de gap cadastral e penalidade calibrada.
-2. **Engenharia de Valor sem Vazamento de Dados (Anti-Leakage Store):**
-   - Como deals abertos não possuem `close_value`, estimamos o valor do contrato utilizando a **mediana histórica de negócios ganhos por (produto, escritório regional)**, atingindo um MAE auditado de apenas **$327,15** (contra $335,80 do preço de catálogo puro).
-3. **Motor de Maturação Empírica & Decaimento Suave (Fim do Corte Rígido):**
-   - A análise de coortes revelou que negócios nos primeiros 14 dias sofrem descarte precoce (win rate de ~53-57%), enquanto negócios maduros entre 14 e 90 dias atingem o ápice de conversão (~68-75%).
-   - Substituímos a regra arbitrária de zerar o score aos 138 dias por uma curva suave de decaimento com piso protetivo, associada a uma flag auditável de **`Zombie Suspect`** para oportunidades que ultrapassam o P95 da coorte (118 dias).
+1. **Auditoria Forense dos Dados & Sanitização de Schemas:**
+   - **Correção de Chave Estrangeira:** O produto `GTXPro` em `sales_pipeline.csv` não possuía espaço, rompendo o join relacional com `GTX Pro` em `products.csv`. Normalizamos o catálogo para restaurar a integridade de preços.
+   - **Correção Cadastral:** Corrigimos o erro de digitação de setor (`technolgy` -> `technology`) em `accounts.csv`.
+   - **Identificação de Contas Órfãs:** Identificamos que **68,5% das oportunidades abertas em `Engaging` (1.088 de 1.589)** e **67,4% em `Prospecting` (337 de 500)** não possuem conta corporativa vinculada no CRM. Em vez de descartá-las ou imputar dados fictícios, criamos um indicador explícito de gap cadastral e atribuímos um desconto operacional preventivo, orientando o vendedor a enriquecer a conta antes de aprofundar a negociação.
+2. **Estimativa de Valor sem Vazamento de Dados (Anti-Leakage):**
+   - Deals abertos não possuem `close_value`. Estimamos o valor esperado de fechamento através da **mediana histórica de vitórias por (produto, escritório regional)** calculada estritamente com dados passados, com fallback limpo para o catálogo geral em caso de histórico vazio.
+3. **Curva Contínua de Maturação & Gestão de Estagnação:**
+   - A análise empírica dos negócios revelou uma dinâmica não-linear: negócios com até 14 dias apresentam taxas de vitória menores (~53-57%) devido à desqualificação precoce de leads sem perfil; entre 14 e 60 dias ocorre o ápice de maturação e negociação ativa (~68%); e além do ciclo mediano (~57 dias) o risco de estagnação cresce progressivamente.
+   - Substituímos regras arbitrárias de corte rígido por uma função contínua e suave, instituindo o alerta operacional de **`Zombie Suspect`** para oportunidades que ultrapassam o percentil 95 da coorte (~118 dias).
 4. **Métrica de Velocidade de Receita ($EV/Dia$):**
-   - Para resolver a distorção de 486x entre produtos de $55 (MG Special) e $26.768 (GTK 500), dividimos o Valor Esperado Monetário ($EV = P \times \text{Valor}$) pelos dias restantes estimados no ciclo, pontuando deals que geram maior tração por unidade de tempo de vendedor.
-5. **Divisão Arquitetural em Duas Esteiras:**
-   - **Aba 1 (Closers / `Engaging`):** Priorização de 1.589 deals com 3 motivos comerciais, próximo passo tático, SLA prescritivo, script de abordagem e botão de override do vendedor.
-   - **Aba 2 (SDRs / `Prospecting`):** Fila de qualificação para os 500 leads sem `engage_date`, ranqueados por Fit ICP de conta/produto.
+   - Para equilibrar a dispersão de 486x entre os produtos (\$55 a \$26.768), dividimos o Valor Esperado Monetário ($EV = P \times \text{Valor}$) pela estimativa contínua de dias restantes no ciclo, evitando que um único contrato gigante monopolize a atenção da equipe em detrimento de contratos rápidos e lucrativos.
+5. **Divisão Operacional em Duas Esteiras:**
+   - **Aba 1 (Closers / `Engaging`):** 1.589 oportunidades abertas com ranking de prioridade (0-100), 3 motivos comerciais, próximo passo tático com SLA, scripts de abordagem e botão para registrar discordâncias e contexto de campo.
+   - **Aba 2 (SDRs / `Prospecting`):** 500 leads sem `engage_date`, ranqueados por Fit ICP de conta/produto para triagem de 1º contato.
 
 ---
 
 ### Resultados / Findings
 
-#### 1. Validação Cega Out-of-Time (Backtest Temporal em 4.032 Negócios Reais)
+#### 1. Avaliação de Coorte Prospectiva Point-in-Time (Sem Vazamento Futuro)
 
-O modelo foi treinado estritamente com negócios fechados até **30/06/2017 (2.679 deals)** e testado cegamente nos **4.032 negócios fechados posteriormente**, comparado contra 3 baselines ingênuos:
+Para medir o comportamento real do motor sem qualquer vazamento de datas de fechamento (`close_date`), construímos uma validação prospectiva na data de corte **30/06/2017**:
+- **Treino Passado:** Todos os 2.679 negócios já fechados em ou antes de 30/06/2017 (onde o motor aprendeu as taxas e medianas).
+- **População de Teste em 30/06:** Exatamente as **1.686 oportunidades abertas naquele dia**, utilizando sua idade observável no corte: `(30/06/2017 - engage_date).days`.
+- **Desfecho:** 970 negócios tiveram desfecho fechado resolvido até o encerramento do dataset (609 Won e 361 Lost), enquanto 716 negócios permaneceram abertos (censurados à direita).
 
-| Estratégia / Modelo | AUC-ROC | Brier Score | Lift @ Top 10% | Lift @ Top 20% | Precisão @ Top 20% | Receita Real Capturada (Top 20%) |
+Avaliando o modelo e os 3 baselines com **alinhamento estrito linha a linha sobre a mesma população de 970 negócios**:
+
+| Estratégia / Modelo | AUC-ROC | Brier Score | Lift @ Top 10% | Lift @ Top 20% | Precisão @ Top 20% | Receita Observada no Top 20% |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **🎯 RevOps Survival Engine (Nosso)** | **0,5565** | **0,2428** | **1,09x** | **1,07x** | **65,3%** | **US$ 1.517.391,00** |
-| Baseline 1: Valor Nominal (sales_price) | 0,4834 | N/A | 0,96x | 0,96x | 58,2% | US$ 1.341.220,00 |
-| Baseline 2: Aging Puro (-cycle_days) | 0,4790 | N/A | 1,03x | 0,96x | 58,5% | US$ 1.365.100,00 |
-| Baseline 3: Média do Vendedor | 0,4955 | 0,2429 | 0,95x | 1,01x | 61,6% | US$ 1.432.850,00 |
+| **🎯 RevOps Survival Engine (Nosso)** | **0,5021** | **0,2398** | **0,94x** | **0,96x** | **60,3%** | **US$ 625.063,00** |
+| Baseline 1: Valor Nominal (`sales_price`) | 0,4916 | N/A | 1,10x | 1,01x | 63,4% | US$ 810.210,00 |
+| Baseline 2: Aging (-cycle_days no corte) | 0,5011 | N/A | 0,92x | 0,90x | 56,7% | US$ 598.440,00 |
+| Baseline 3: Média Histórica do Vendedor | 0,5070 | 0,2355 | 1,10x | 1.05x | 66,0% | US$ 720.150,00 |
 
-*Principais Conclusões:*
-- **Ordenar por Valor Nominal destrói valor:** Apresentou AUC de 0,4834 (pior que o acaso) porque deals caros de baixa conversão sequestram o tempo do vendedor.
-- **Ordenar por Aging Puro é perigoso:** Deals com menos de 7 dias têm a maior taxa de descarte precoce do histórico.
-- **O Motor de Sobrevivência elevou a precisão do Top 20% para 65,3% (+7,1 p.p.)**, garantindo que o vendedor gaste 80% da sua semana em deals com altíssima probabilidade e rendimento diário.
+*Diagnóstico Honesto de RevOps:*
+- **Limitação Intrínseca do CRM:** Os dados estáticos do CRM (sem logs diários de WhatsApp, e-mail ou reuniões) possuem poder preditivo de discriminação modesto (AUC ~0,50 a 0,51 em dados prospectivos não contaminados). Qualquer alegação de AUC > 0,80 nesse dataset decorre de vazamento de target ou sobreajuste in-sample.
+- **Papel Real da Ferramenta:** O valor da solução não reside em "adivinhar o futuro", mas em **organizar o funil de vendas**: ao categorizar 87,4% dos negócios ativos como candidatos a higienização de pipeline e destacar os deals com maior yield diário, o software evita a inércia comercial e orienta a rotina semanal de gestão.
 
-#### 2. Os 3 Quadrantes de Ação Comercial Operacional
+#### 2. Matriz de Ação Tática
 
-Substituímos matrizes genéricas por 3 categorias de ação com linguagem de vendas:
-- 🚀 **Acelerar Fechamento (Alta Velocidade de EV):** Deals em janela áurea de maturação com alto yield diário. Recomendação: proposta final e call com decisor econômico nas próximas 24-48h.
-- 🛠️ **Intervenção de Resgate (Risco de Estagnação):** Deals acima da mediana histórica (57 dias) mas com ticket relevante. Recomendação: *Executive Sponsor Touch* (envolver o gerente comercial para destravar objeção interna).
-- 🧹 **Higienizar / Auditar Zombie Suspect (>118 dias):** Deals que ultrapassaram o percentil 95 da coorte. Recomendação: *Break-up email* estruturado; se não houver resposta em 72h, arquivar e despoluir o CRM.
+A carteira de 1.589 negócios ativos foi segmentada em 3 ações operacionais:
+- 🚀 **Acelerar Fechamento (47 deals):** Negócios em janela de maturação com alto rendimento esperado por dia.
+- 🛠️ **Intervenção de Resgate (153 deals):** Negócios acima da mediana do ciclo que demandam toque de patrocinador executivo (*Executive Sponsor Touch*).
+- 🧹 **Higienizar / Auditar Zombie (1.389 deals):** Negócios que ultrapassaram a janela P95 de ciclo (~118 dias), candidatos a envio de e-mail de encerramento amigável (*break-up pitch*) para liberar a atenção da equipe.
 
 ---
 
 ### Recomendações
 
-1. **Implementar a Rotina de Higienização de Zombie Deals na Segunda-feira:**
-   Hoje, existem centenas de oportunidades abertas há mais de 120 dias ocupando a atenção dos vendedores. O gestor deve rodar o filtro de *Zombie Suspects* toda segunda-feira e exigir envio de *break-up email* ou arquivamento imediato, limpando a esteira para deals de alto rendimento.
-2. **Forçar o Enriquecimento de Contas Órfãs no CRM:**
-   Como 68,5% dos deals abertos não possuem `account` preenchido, o time de RevOps deve criar uma regra de validação no CRM que impeça o deal de avançar de `Prospecting` para `Engaging` sem o CNPJ/razão social preenchido.
-3. **Adotar a Métrica de Velocidade de Pipeline ($EV/Dia$):**
-   Substituir a meta baseada apenas em "valor bruto em aberto" pelo acompanhamento da velocidade de receita esperada por dia útil, incentivando ciclos rápidos e disciplinados.
-4. **Alimentar o Loop de Feedback Semanal:**
-   Utilizar os dados do botão de override do vendedor para identificar objeções recorrentes de mercado (ex.: agressividade de concorrente ou congelamento de budget por setor) e recalibrar os parâmetros de priorização mensalmente.
+1. **Instituir a Cerimônia de Higienização de Pipeline na Segunda-feira:**
+   A gestão de vendas deve utilizar o filtro de *Zombie Suspects* no início de cada semana para despachar e-mails de encerramento ou arquivar formalmente negócios estagnados há mais de 4 meses, impedindo a poluição visual do CRM.
+2. **Impor Validação Obrigatória de Contas no CRM:**
+   Como 68,5% das oportunidades abertas não possuem cliente cadastrado, RevOps deve bloquear o avanço de deals sem CNPJ/razão social preenchidos.
+3. **Acompanhar a Velocidade de Receita ($EV/Dia$):**
+   Substituir a cobrança puramente baseada no valor bruto do pipeline pela métrica de velocidade esperada diária, incentivando fechamentos ágeis.
+4. **Auditar Semanalmente as Discordâncias de Campo:**
+   Analisar os registros salvos em `artifacts/feedback_overrides.json` para mapear motivos reais de perda relatados pelos vendedores (ex.: agressividade de concorrente ou congelamento de budget).
 
 ---
 
 ### Limitações
 
-1. **Janela Histórica Truncada (Right-Censoring):**
-   O dataset oficial termina abruptamente em 31/12/2017. Deals enterprise com ciclo natural de 150-180 dias não puderam ser observados até o fechamento. Em produção com CRM vivo, a curva de sobrevivência deve ser reestimada via Kaplan-Meier com dados contínuos.
-2. **Ausência de Telemetria de Atividades Intermediárias:**
-   O CRM registra apenas `engage_date` e `close_date`. Em um ambiente corporativo real, a integração com logs de e-mails, ligações de VoIP e mensagens de WhatsApp permitiria enriquecer o score com a métrica de "dias desde o último toque proativo".
-3. **Necessidade de Integração com o ERP de Faturamento:**
-   Os valores de contrato foram estimados com base na mediana histórica de vitórias. A integração com o gateway de pagamento ou ERP permitirá calcular a margem de contribuição real por deal.
+1. **Ausência de Telemetria de Atividades no CRM:**
+   O dataset registra apenas datas macro (`engage_date`, `close_date`). Sem histórico de ligações, e-mails ou mensagens trocadas, o modelo não consegue capturar o engajamento recente do cliente.
+2. **Censura à Direita no Término do Dataset:**
+   O registro histórico encerra em 31/12/2017 com 1.589 negócios ainda abertos. Em produção com CRM contínuo, a taxa de sobrevivência deve ser reestimada periodicamente com desfechos atualizados.
+3. **Métrica Observacional de Receita:**
+   A receita somada no Top 20% reflete o volume dos negócios históricos selecionados; ganhos incrementais causais exigem a realização de testes A/B controlados em campo.
 
 ---
 
 ## Process Log — Como Usei IA
 
-> O log detalhado e auditável de todo o processo de engenharia com IA encontra-se no arquivo dedicado:  
+> O log detalhado de todo o ciclo de desenvolvimento, iterações e auditorias encontra-se no arquivo dedicado:  
 > 🔗 **[`PROCESS_LOG.md`](./PROCESS_LOG.md)** e **[`process-log/adversarial-red-team-audit.md`](./process-log/adversarial-red-team-audit.md)**.
 
 ### Resumo das Ferramentas & Harness:
-- **Antigravity / Claude Code:** Construção dos módulos em Python, TDD com 14 testes no pytest, higienização dos 4 CSVs e frontend executivo Streamlit.
-- **DeepSeek API (Persona Red Team CRO / Principal AI Architect):** Teste de estresse adversarial de todas as hipóteses estatísticas e desmonte do viés de censura à direita.
-- **Gemini 4 Argon:** Decisão estratégica entre os desafios e desenho da experiência do vendedor.
+- **Antigravity / Claude Code:** Construção modular em Python, TDD com 17 testes automatizados no pytest, normalização de dados e interface Streamlit.
+- **DeepSeek API (Persona Red Team CRO / Principal AI Architect):** Primeira sabatina adversarial sobre premissas estatísticas, desmascarando a falácia do corte rígido de 138 dias e a distorção de preços.
+- **Codex / Auditoria Independente Pré-Submissão:** Segunda sabatina crítica que identificou o vazamento sutil de `close_date` no backtest anterior, desalinhamento de arrays nos baselines e necessidade de continuidade matemática estrita.
 
-### Principais Erros da IA Corrigidos pelo Humano:
-- A IA sugeriu usar `sector` e `regional_office` como preditores (provamos que tinham AUC = 0,502 — ruído puro).
-- A IA sugeriu zerar o score acima de 138 dias (provamos que era censura à direita e substituímos por decaimento suave + flag de zombie).
-- A IA ignorou o bug de chave estrangeira em `GTXPro` (corrigido manualmente em `data_loader.py`).
-- A IA sugeriu imputar idade nos 500 leads de prospecção (desenhamos duas esteiras operacionais independentes para Closers e SDRs).
+### Principais Correções Humanas sobre Sugestões da IA:
+- Rejeitamos modelos demográficos com `sector` e `regional_office` (AUC ~0,50 — ruído puro).
+- Eliminamos o corte arbitrário de 138 dias, substituindo por curva contínua e flag operacional de zombie.
+- Corrigimos o vazamento temporal de `cycle_days` no backtest, ancorando a idade estritamente na data de corte prospectiva.
+- Consertamos o alinhamento posicional dos baselines, garantindo comparações reproduzíveis sobre os mesmos IDs.
+- Corrigimos a falha silenciosa de chave estrangeira em `GTXPro`.
 
 ---
 
 ## Evidências
 
-- [x] **Suíte de Testes Automatizados:** 14 testes unitários e de anti-leakage em `tests/test_engine.py` (executados com `python -m pytest tests/test_engine.py`).
-- [x] **Relatório de Backtest Out-of-Time:** Gerado automaticamente em `solution/artifacts/backtest_report.md`.
+- [x] **Suíte de Testes Automatizados:** 17 testes unitários e de anti-leakage em `tests/test_engine.py` (executados com `python -m pytest tests/test_engine.py -v` — 100% passando).
+- [x] **Relatório de Backtest Alinhado:** Gerado automaticamente em `solution/artifacts/backtest_report.md`.
 - [x] **Auditoria Adversarial do Red Team:** Documentada em `process-log/adversarial-red-team-audit.md`.
 - [x] **Aplicação Executiva Interativa:** Disponível em `solution/app.py` com suporte a Windows (`run.bat`) e macOS/Linux (`run.sh`).
-- [x] **Dados Pré-Carregados:** Todos os 4 CSVs oficiais incluídos em `solution/data/` para execução zero-friction.
+- [x] **Dados Pré-Carregados:** Todos os 4 CSVs oficiais incluídos em `solution/data/` para execução sem necessidade de downloads externos.
 
 ---
 
-*Submissão enviada em: 24 de Outubro de 2026 por Arthur Lima.*
+*Submissão enviada em: 25 de Outubro de 2026 por Arthur Lima.*

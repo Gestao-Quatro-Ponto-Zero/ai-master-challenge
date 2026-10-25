@@ -37,7 +37,7 @@ Submetemos essas recomendações a um **Red Team Review implacável via API do D
 > *"Quase todas as submissões treinam e testam in-sample ou com k-fold aleatório, vazando informação temporal. Para provar que a ferramenta funciona, é obrigatório um split temporal estrito (treino em período T, teste cego no período posterior) comparando com baselines ingênuos."*
 
 **Ação de Engenharia:**
-- Construímos o motor de validação em `src/backtest.py` com split em 30/06/2017, testando cegamente em 4.032 negócios fechados posteriormente e reportando AUC, Brier Score e Lift no Top 20%.
+- Construímos o motor de validação em `src/backtest.py` com split em 30/06/2017 e avaliação prospectiva point-in-time sobre os negócios abertos no corte com desfecho resolvido, reportando AUC, Brier Score, Lift no Top 20% e Receita Capturada.
 
 ---
 
@@ -46,3 +46,40 @@ Submetemos essas recomendações a um **Red Team Review implacável via API do D
 
 **Ação de Engenharia:**
 - Particionamos o produto em duas abas dedicadas: **Closers (`Engaging` - 1.589 deals)** e **SDRs (`Prospecting` - 500 leads)** com modelo específico de Fit ICP.
+
+---
+
+## 2. Round 2: Auditoria Forense Pré-Submissão (Codex Anti-Leakage & Reliability Audit)
+
+**Auditor:** Codex Auditor (Principal AI Systems & Quantitative Governance)  
+**Objetivo:** Varredura minuciosa de vazamento sutil de dados futuros, descontinuidades matemáticas de fronteira e consistência entre simulação e produção.
+
+### Achado 1: Vazamento Sutil de Data Futura (`close_date`) no Backtest
+> *"Se no corte temporal `as_of_date = 2017-06-30` o cálculo de `cycle_days` utilizar `(close_date - engage_date)` para negócios que fecharam após o corte, você está usando informação do futuro para ranquear oportunidades na data de corte."*
+
+**Ação Corretiva:**
+- Fixamos o cálculo de idade prospectiva estritamente em `(as_of_date - engage_date)` para qualquer deal aberto na data de corte.
+
+### Achado 2: Desalinhamento Vetorial na Comparação com Baselines
+> *"O método `score_engaging_deals` reordena o DataFrame internamente por `priority_score`. Se os baselines forem avaliados fatiando o DataFrame de teste original não reordenado pelo score do baseline, você compara negócios incompatíveis e distorce os rankings."*
+
+**Ação Corretiva:**
+- Computamos todas as métricas de baselines diretamente a partir do DataFrame alinhado e ordenado independentemente para cada baseline, garantindo comparação fidedigna e estrita linha a linha.
+
+### Achado 3: Descontinuidades e 'Cliffs' em Fórmulas de Sobrevivência
+> *"Um salto discreto no fator de envelhecimento aos 120 dias ou no cálculo de dias restantes na mediana cria incentivos perversos (mudança brusca de score em 24h sem alteração substancial no deal)."*
+
+**Ação Corretiva:**
+- Formulamos transições contínuas e suaves (sem descontinuidades de primeira ordem) tanto para a curva de maturação/decaimento quanto para a expectativa de dias restantes (`expected_days_remaining`).
+
+### Achado 4: Paridade Canônica entre Simulador e Motor de Produção
+> *"A aba Sandbox do Streamlit reimplementava a matemática com constantes locais, arriscando divergência se parâmetros fossem ajustados."*
+
+**Ação Corretiva:**
+- O simulador na Aba 3 empacota as entradas do usuário em um registro estruturado e invoca diretamente o mesmo método canônico `scorer.score_engaging_deals()`, garantindo paridade matemática de 100%.
+
+### Achado 5: Ampliação da Cobertura de Testes para 17 Asserções
+- Adicionados testes automatizados no `pytest` para provar:
+  1. Suavidade nas fronteiras de envelhecimento (`test_smoothness_across_all_boundaries`).
+  2. Paridade exata do simulador com o motor (`test_simulator_and_scorer_parity`).
+  3. Comportamento robusto com histórico vazio (`test_empty_history_fallback`).
