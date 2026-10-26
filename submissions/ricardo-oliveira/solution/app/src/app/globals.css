@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+/* Tokens lidos do site g4business.com em 23/10/2026 */
+:root {
+  --navy: #001f35;
+  --navy-deep: #031a26;
+  --gold: #b9915b;
+  --gold-dark: #977342;
+  --offwhite: #f5f4f3;
+  --grey: #9ca3af;
+  --line: #e6e1d8;
+  --ok: #2f855a;
+  --warn: #b7791f;
+  --bad: #c53030;
+}
+
+@theme inline {
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-offwhite: var(--offwhite);
+  --color-grey: var(--grey);
+  --color-line: var(--line);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --font-sans: var(--font-manrope);
+  --font-serif: var(--font-baskerville);
+}
+
+html { background: var(--offwhite); }
+body {
+  background: var(--offwhite);
+  color: var(--navy);
+  font-family: var(--font-manrope), Manrope, sans-serif;
+  font-size: 14px;
+}
+
+.display-accent {
+  font-family: var(--font-baskerville), "Libre Baskerville", serif;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 400;
+}
+.btn-primary {
+  background: var(--gold); color: var(--navy); border: 1px solid var(--navy);
+  border-radius: 10px; padding: 8px 14px; font-weight: 700; cursor: pointer;
+}
+.btn-primary:hover { background: #c9a36f; }
+.btn-secondary {
+  background: transparent; color: var(--navy); border: 1px solid var(--gold-dark);
+  border-radius: 8px; padding: 7px 12px; font-weight: 600; cursor: pointer;
+}
+.btn-secondary:hover { background: rgba(185, 145, 91, 0.12); }
+.btn-ghost {
+  background: transparent; color: var(--grey); border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 12px; font-weight: 600; cursor: pointer;
+}
+.card { background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+.tag { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 12px; font-weight: 700; }
+.tag-gold { background: rgba(185, 145, 91, 0.16); color: var(--gold-dark); }
+.tag-navy { background: rgba(0, 31, 53, 0.08); color: var(--navy); }
+.tag-ok { background: rgba(47, 133, 90, 0.12); color: var(--ok); }
+.tag-warn { background: rgba(183, 121, 31, 0.14); color: var(--warn); }
+.tag-bad { background: rgba(197, 48, 48, 0.12); color: var(--bad); }
+input, select { font-family: inherit; }
