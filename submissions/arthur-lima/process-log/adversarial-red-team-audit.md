@@ -1,85 +1,67 @@
-# 🥊 Auditoria Adversarial (Red Team Review) — Challenge 003: Lead Scorer
+# 🥊 Registro das 3 Rodadas de Auditoria Adversarial — Challenge 003: Lead Scorer
 
-**Data:** 24 de Outubro de 2026  
-**Auditor:** DeepSeek Red Team Persona (CRO + Principal AI Architect)  
-**Alvo:** Hipóteses Iniciais e Modelagem do Pipeline de Vendas CRM  
+Este arquivo registra a evolução crítica do projeto através de três rodadas independentes de revisão, incluindo os pontos em que hipóteses geradas por IA (inclusive em rodadas anteriores de auditoria) precisaram ser corrigidas ou descartadas diante dos dados.
 
 ---
 
-## 1. O Teste de Estresse das Premissas Iniciais
+## Round 1: Red Team de Premissas Comerciais (DeepSeek API)
 
-Durante a fase de exploração com IA, as primeiras respostas de modelos de fundação (Claude 3.5 Sonnet / GPT-4o) sugeriram:
-1. Treinar modelos de classificação padrão (Random Forest ou Logistic Regression) em colunas como `sector`, `regional_office` e `sales_agent`.
-2. Adotar um corte rígido determinístico: *"como nenhum deal fechado como Won durou mais de 138 dias, zerar o score para qualquer oportunidade acima de 138 dias"*.
-3. Calcular Expected Value multiplicando diretamente $EV = P \times \text{Valor Nominal}$.
+**Foco:** Questionar modelagem ingênua de classificação sobre atributos demográficos estáticos e dispersão de preços.
 
-Submetemos essas recomendações a um **Red Team Review implacável via API do DeepSeek**. Abaixo estão os apontamentos críticos identificados:
+### O que se sustentou nos dados:
+1. **Baixo poder discriminativo de `sector` e `regional_office` entre negócios fechados:** taxas de vitória condicionais (`Won / (Won + Lost)`) variam em faixa estreita (`~61%` a `~65%`), não justificando modelos caixa-preta sobre demografia.
+2. **Dispersão de 486x nos preços de catálogo (`US$ 55` a `US$ 26.768`):** ordenar puramente por preço nominal concentra o topo em `GTK 500` e `GTX Plus Pro` mesmo quando estagnados.
+3. **Separação obrigatória de `Prospecting` (`500` registros sem `engage_date`):** imputar idade artificial contaminaria o funil ativo.
 
-### Crítica 1: A Falácia dos 138 Dias e o Viés de Censura à Direita (Right-Censoring)
-> *"O dataset termina em 31/12/2017. Deals abertos em nov/dez/2017 simplesmente não tiveram tempo de fechar. O 'máximo de 138 dias' é um artefato da janela de observação, não uma lei do negócio. Ao impor score = 0 acima de 138d, você confunde 'não observamos fechamento após 138d' com 'não é possível fechar após 138d'. Se um deal Enterprise real de 160 dias estiver vivo, sua ferramenta manda o vendedor descartá-lo. Isso destrói a confiança do time comercial na primeira semana."*
-
-**Ação de Engenharia:**
-- Eliminamos o corte binário de 138 dias.
-- Substituímos por uma curva suave de decaimento logístico/exponencial com piso de proteção e instituímos a flag auditável `Zombie Suspect` acima do P95 da coorte (~118 dias), acionando playbook de higienização em vez de descarte cego.
+### Onde a hipótese do Round 1 extrapolou os dados (corrigido depois):
+- O Round 1 atribuiu a ausência de vitórias acima de `138` dias exclusivamente à censura à direita pelo corte em `31/12/2017`. A verificação empírica posterior mostrou que oportunidades abertas entre outubro/2016 e março/2017 tiveram **300 a 437 dias de observação** e ainda assim apresentaram **zero** fechamentos acima de `138` dias — porque nos escritórios `East` e `West` negócios abandonados permanecem indefinidamente em `Engaging` em vez de receberem baixa como `Lost`.
 
 ---
 
-### Crítica 2: A Distorção de 486x no Preço dos Produtos ($55 a $26.768)
-> *"Um único deal de GTK 500 ($26.768) com P=0.20 gera EV=$5.353, ofuscando 50 deals de MG Special ($55) com P=0.80. O ranking vira uma lista dos 10 deals mais caros, replicando o erro ingênuo do vendedor sem IA. Além disso, ignora o tempo de ciclo: $26k em 120 dias tem retorno diário muito pior que $3k em 15 dias."*
+## Round 2: Auditoria de Implementação e Vazamento Temporal (Codex)
 
-**Ação de Engenharia:**
-- Criamos a métrica de **Velocidade de Receita ($EV/Dia$)**, dividindo o valor esperado pelos dias restantes estimados no ciclo.
-- Normalizamos a escala combinada no `priority_score` (0-100), equilibrando a probabilidade de vitória, o yield diário e o volume absoluto.
+**Foco:** Revisão de código linha a linha em `data_loader.py`, `survival_and_scoring.py`, `backtest.py` e `app.py`.
 
----
+### Problemas reais detectados e corrigidos:
+1. **Vazamento futuro em `cycle_days` no backtest:** negócios abertos na data de corte que fecharam depois estavam tendo sua idade calculada com `close_date` futura em vez de `(as_of_date - engage_date)`.
+2. **Desalinhamento posicional de baselines:** `score_engaging_deals` reordenava o DataFrame antes da extração de baselines, comparando fatias incompatíveis.
+3. **Falha em histórico vazio (`as_of_date` anterior ao primeiro fechamento):** ausência de colunas esperadas quando `len(won) == 0`.
 
-### Crítica 3: A Ausência de Backtest Temporal Out-of-Time
-> *"Quase todas as submissões treinam e testam in-sample ou com k-fold aleatório, vazando informação temporal. Para provar que a ferramenta funciona, é obrigatório um split temporal estrito (treino em período T, teste cego no período posterior) comparando com baselines ingênuos."*
-
-**Ação de Engenharia:**
-- Construímos o motor de validação em `src/backtest.py` com split em 30/06/2017 e avaliação prospectiva point-in-time sobre os negócios abertos no corte com desfecho resolvido, reportando AUC, Brier Score, Lift no Top 20% e Receita Capturada.
+### Limitação do Round 2:
+- Após corrigir o vazamento e o alinhamento, o backtest na subpopulação resolvida (`N = 970` em `30/06/2017`) caiu para `AUC = 0,5021` (contra `0,5070` da média histórica do vendedor). O Round 2 garantiu a correção técnica do código, mas não questionou se o motor super-parametrizado deveria ser simplificado.
 
 ---
 
-### Crítica 4: Os 500 Deals em Prospecting sem `engage_date`
-> *"Misturar leads em prospecção com deals engajados polui o cálculo de aging. Excluí-los perde 24% do pipeline ativo."*
+## Round 3: Auditoria Metodológica, Epistemológica e de Consistência (Astra)
 
-**Ação de Engenharia:**
-- Particionamos o produto em duas abas dedicadas: **Closers (`Engaging` - 1.589 deals)** e **SDRs (`Prospecting` - 500 leads)** com modelo específico de Fit ICP.
+**Foco:** Confrontar o plano inicial do Argon com os resultados empíricos, a validade dos testes, a separação entre heurística e estatística e a precisão da documentação.
 
----
+### Sete apontamentos estruturais e como foram resolvidos na versão final:
 
-## 2. Round 2: Auditoria Forense Pré-Submissão (Codex Anti-Leakage & Reliability Audit)
+1. **Ancoragem no plano inicial & excesso de parâmetros sem ganho demonstrado:**
+   - *Apontamento:* O motor acumulava penalidade fixa de `-50%` por conta ausente, bônus enterprise, estimativa manual de dias restantes e combinação logarítmica `0.50/0.30/0.20` sem superar baseline na subpopulação resolvida.
+   - *Resolução:* Removemos todos os multiplicadores manuais e a fórmula de dias restantes. Reduzimos o motor a `EV_90d = P_90d(idade, vendedor) × Ticket_Mediano` e adicionamos ablação explícita (`P_90d` apenas por idade vs. idade + vendedor).
 
-**Auditor:** Codex Auditor (Principal AI Systems & Quantitative Governance)  
-**Objetivo:** Varredura minuciosa de vazamento sutil de dados futuros, descontinuidades matemáticas de fronteira e consistência entre simulação e produção.
+2. **Separação entre qualidade cadastral (`account`) e probabilidade de vitória:**
+   - *Apontamento:* Falta de conta justifica tarefa de enriquecimento, não reduzir probabilidade pela metade sem evidência.
+   - *Resolução:* Verificamos nos dados que `100%` dos deals fechados (`Won` e `Lost`) têm `account` preenchido (`0` ausentes em `6.711` fechados vs. `1.088` ausentes em `Engaging`), comprovando artefato de fechamento. Retiramos `account` de `P_90d` (eliminando risco de *snapshot leakage*) e isolamos `crm_hygiene_status` como governança operacional.
 
-### Achado 1: Vazamento Sutil de Data Futura (`close_date`) no Backtest
-> *"Se no corte temporal `as_of_date = 2017-06-30` o cálculo de `cycle_days` utilizar `(close_date - engage_date)` para negócios que fecharam após o corte, você está usando informação do futuro para ranquear oportunidades na data de corte."*
+3. **Terminologia honesta (heurística vs. estatística):**
+   - *Apontamento:* Tabela descritiva era rotulada como `"Kaplan-Meier Proxy"` e regras manuais eram chamadas de `"probabilidades calibradas"`.
+   - *Resolução:* Renomeamos o gráfico descritivo para `"Proporção Histórica por Duração Observada"`, classificamos explicitamente a aba `Prospecting` como regra determinística não-probabilística e restringimos o termo probabilidade empírica a `P_90d`, acompanhado de curva de calibração em quintis *out-of-time*.
 
-**Ação Corretiva:**
-- Fixamos o cálculo de idade prospectiva estritamente em `(as_of_date - engage_date)` para qualquer deal aberto na data de corte.
+4. **População do backtest coerente com a decisão do usuário:**
+   - *Apontamento:* Remover os `716` casos não-fechados avaliava uma subpopulação filtrada pelo desfecho futuro (`N = 970`), não a fila real enfrentada pelo vendedor no corte.
+   - *Resolução:* Passamos a publicar **os dois regimes lado a lado**: (1) a fila aberta completa em três cortes independentes (`31/07`, `31/08`, `30/09/2017`) com horizonte fixo de +90 dias sem censura (global e intra-vendedor, com desempate neutro por `opportunity_id`), onde `EV_90d` captura `60,1%–63,7%` da receita no Top 20%; e (2) o diagnóstico condicional nos `970` resolvidos (`AUC ~0,49–0,51`), explicitando o limite dos dados estáticos do CRM.
 
-### Achado 2: Desalinhamento Vetorial na Comparação com Baselines
-> *"O método `score_engaging_deals` reordena o DataFrame internamente por `priority_score`. Se os baselines forem avaliados fatiando o DataFrame de teste original não reordenado pelo score do baseline, você compara negócios incompatíveis e distorce os rankings."*
+5. **Testes que realmente detectam regressões:**
+   - *Apontamento:* `test_temporal_split_zero_leakage` verificava apenas o próprio filtro de datas e `test_simulator_and_scorer_parity` testava apenas valores `> 0`.
+   - *Resolução:* Substituídos por testes de mutação (invertendo `Won <-> Lost` e multiplicando `close_value * 100` pós-corte exigindo predições idênticas em `1e-12`), invariância a permutação de linhas, paridade exata entre lote e `score_single_deal_simulation` em 20 negócios reais e smoke test completo das 4 abas com `Streamlit AppTest`.
 
-**Ação Corretiva:**
-- Computamos todas as métricas de baselines diretamente a partir do DataFrame alinhado e ordenado independentemente para cada baseline, garantindo comparação fidedigna e estrita linha a linha.
+6. **Precisão na autoria das decisões no `PROCESS_LOG.md`:**
+   - *Apontamento:* O botão de discordância já constava no plano inicial do Argon e não deveria figurar como adição exclusiva humana sem IA.
+   - *Resolução:* Reescrevemos o `PROCESS_LOG.md` no formato `Sugestão → Origem → Evidência → Decisão Humana → Alteração → Resultado`, registrando com exatidão a origem de cada proposta.
 
-### Achado 3: Descontinuidades e 'Cliffs' em Fórmulas de Sobrevivência
-> *"Um salto discreto no fator de envelhecimento aos 120 dias ou no cálculo de dias restantes na mediana cria incentivos perversos (mudança brusca de score em 24h sem alteração substancial no deal)."*
-
-**Ação Corretiva:**
-- Formulamos transições contínuas e suaves (sem descontinuidades de primeira ordem) tanto para a curva de maturação/decaimento quanto para a expectativa de dias restantes (`expected_days_remaining`).
-
-### Achado 4: Paridade Canônica entre Simulador e Motor de Produção
-> *"A aba Sandbox do Streamlit reimplementava a matemática com constantes locais, arriscando divergência se parâmetros fossem ajustados."*
-
-**Ação Corretiva:**
-- O simulador na Aba 3 empacota as entradas do usuário em um registro estruturado e invoca diretamente o mesmo método canônico `scorer.score_engaging_deals()`, garantindo paridade matemática de 100%.
-
-### Achado 5: Ampliação da Cobertura de Testes para 17 Asserções
-- Adicionados testes automatizados no `pytest` para provar:
-  1. Suavidade nas fronteiras de envelhecimento (`test_smoothness_across_all_boundaries`).
-  2. Paridade exata do simulador com o motor (`test_simulator_and_scorer_parity`).
-  3. Comportamento robusto com histórico vazio (`test_empty_history_fallback`).
+7. **Reconciliação final entre UI, código e documentação:**
+   - *Apontamento:* `app.py` ainda mencionava `4.032 negócios`, o override não alterava a prioridade e o `README` continha afirmações excessivas (`"comprova"`, `"qualquer AUC > 0,80 seria vazamento"`).
+   - *Resolução:* Texto da UI alinhado aos cortes reais, override conectado funcionalmente à reordenação da fila em tempo real (`promote` / `pause` / `archive` / `none`) e afirmações absolutas removidas do `README.md`.

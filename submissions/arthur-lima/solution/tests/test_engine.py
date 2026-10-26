@@ -1,14 +1,14 @@
 """
-Automated Test Suite for RevOps Survival Engine, Schema Integrity & Anti-Leakage.
+Behavioral, Anti-Leakage Mutation & Invariance Test Suite.
 
-Covers:
-1. Schema normalization and foreign key fixes ('GTXPro' -> 'GTX Pro', 'technolgy' -> 'technology').
-2. Zero data leakage in deal valuation and temporal backtests.
-3. Separation of Closer Pipeline (1,589 Engaging) vs SDR Queue (500 Prospecting).
-4. Survival curve properties (smooth decay, no right-censoring cliff to zero at 138d).
-5. Zombie Suspect flag detection above cohort P95 cycle age.
-6. Metric implementations (AUC, Brier Score, Lift@K).
-7. Commercial explainability, SLA assignments, and tactical scripts.
+Designed so every test name corresponds to a concrete regression detector:
+1. Mutation-based temporal anti-leakage (corrupting post-cutoff outcomes must not alter past scores).
+2. Separation of CRM missing-account hygiene from statistical win probability (snapshot-leakage guard).
+3. Row-permutation invariance by `opportunity_id`.
+4. Exact numerical parity between `score_single_deal_simulation` (UI Sandbox) and batch `score_engaging_deals`.
+5. Functional salesperson overrides reordering the operational queue while preserving `p_win_90d` and `ev_90d`.
+6. Dual-regime backtest integrity and neutral tie-breaking.
+7. Schema sanitization (`GTXPro`, `technolgy`), regional funnel audit, and empty-history fallback.
 """
 
 from __future__ import annotations
@@ -17,19 +17,25 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.data_loader import build_enriched_pipeline, normalize_product_name
-from src.survival_and_scoring import (
-    SurvivalLeadScorer,
-    ScoringParameters,
-    compute_empirical_survival_curve,
+from src.data_loader import (
+    build_enriched_pipeline,
+    load_raw_tables,
+    normalize_product_name,
 )
-from src.explainability import enrich_with_explainability, generate_deal_reasons
+from src.survival_and_scoring import (
+    EmpiricalHorizonScorer,
+    apply_rep_overrides,
+    compute_age_stage_distribution,
+    score_single_deal_simulation,
+)
+from src.explainability import enrich_with_explainability
 from src.backtest import (
     calculate_auc_score,
     calculate_brier_score,
     calculate_lift_at_k,
-    calculate_reliability_diagram_bins,
-    run_temporal_backtest,
+    run_conditional_resolved_evaluation,
+    run_multi_cutoff_queue_evaluation,
+    run_prospective_queue_backtest,
 )
 
 
@@ -39,7 +45,8 @@ def loaded_pipeline():
     return df, audit
 
 
-# --- 1. Schema Integrity & Bug Fixing Tests ---
+# --- 1. Schema Integrity & Empirical CRM Audit Tests ---
+
 
 def test_gtxpro_foreign_key_normalization():
     raw_names = pd.Series(["GTXPro", "GTX Pro", "GTX Plus Basic", "GTXPlusBasic"])
@@ -49,227 +56,315 @@ def test_gtxpro_foreign_key_normalization():
     assert normalized.iloc[3] == "GTX Plus Basic"
 
 
-def test_sector_typo_fix(loaded_pipeline):
+def test_schema_anomalies_and_regional_funnel_audit(loaded_pipeline):
     df, audit = loaded_pipeline
     sectors = df[df["sector"].notnull()]["sector"].unique()
     assert "technolgy" not in sectors
     assert "technology" in sectors
-    assert audit["gtxpro_foreign_key_fixed"] > 0
+    assert audit["gtxpro_foreign_key_fixed"] == 1480
 
-
-def test_missing_accounts_audited(loaded_pipeline):
-    df, audit = loaded_pipeline
+    # Closing-time schema artifact: 0 closed deals lack account, vs 1,088 Engaging & 337 Prospecting
+    assert audit["closed_missing_account_count"] == 0
     assert audit["missing_account_engaging"] == 1088
     assert audit["missing_account_prospecting"] == 337
-    # Ensure display account is never raw NaN
-    assert df["account_display"].isnull().sum() == 0
+
+    # Regional funnel asymmetry: 100% of Prospecting deals belong to Central; 30 active + 5 zero-deal agents
+    assert audit["prospecting_central_share_pct"] == 100.0
+    assert audit["active_agents_count"] == 30
+    assert len(audit["inactive_agents_in_teams"]) == 5
 
 
-# --- 2. Anti-Leakage & Value Estimation Tests ---
+# --- 2. True Mutation-Based Anti-Leakage & Snapshot-Leakage Guard Tests ---
 
-def test_no_leakage_in_expected_won_value(loaded_pipeline):
+
+def test_mutating_future_outcomes_never_changes_past_predictions():
+    """
+    Corrupts ALL post-cutoff outcomes (flipping Won <-> Lost, multiplying close_value by 100x,
+    and injecting synthetic future deals) and asserts bit-for-bit identical predictions at cutoff.
+    """
+    t_cut = pd.Timestamp("2017-08-31")
+    raw_clean = load_raw_tables()
+
+    df_clean, _ = build_enriched_pipeline(
+        as_of_date=t_cut, tables_override=raw_clean
+    )
+    scorer_clean = EmpiricalHorizonScorer().fit(df_clean, as_of_date=t_cut)
+    open_clean = df_clean[
+        df_clean["engage_date"].notnull()
+        & (df_clean["engage_date"] <= t_cut)
+        & ((df_clean["close_date"] > t_cut) | df_clean["close_date"].isnull())
+    ].copy()
+    scored_clean = (
+        scorer_clean.score_engaging_deals(open_clean)
+        .sort_values("opportunity_id")
+        .reset_index(drop=True)
+    )
+
+    # Sabotage future records in a deep copy of raw tables
+    sabotaged_pip = raw_clean["pipeline"].copy()
+    future_close_mask = sabotaged_pip["close_date"].notnull() & (
+        sabotaged_pip["close_date"] > t_cut
+    )
+    assert future_close_mask.sum() > 1500
+
+    sabotaged_pip.loc[future_close_mask, "deal_stage"] = np.where(
+        sabotaged_pip.loc[future_close_mask, "deal_stage"] == "Won", "Lost", "Won"
+    )
+    sabotaged_pip.loc[future_close_mask, "close_value"] = (
+        sabotaged_pip.loc[future_close_mask, "close_value"].fillna(500.0) * 100.0
+    )
+
+    # Inject synthetic post-cutoff deals
+    extra_future = sabotaged_pip.head(30).copy()
+    extra_future["opportunity_id"] = [f"FUT-{i:03d}" for i in range(30)]
+    extra_future["engage_date"] = pd.Timestamp("2017-10-05")
+    extra_future["close_date"] = pd.Timestamp("2017-11-15")
+    extra_future["deal_stage"] = "Won"
+    extra_future["close_value"] = 999999.0
+    sabotaged_pip = pd.concat([sabotaged_pip, extra_future], ignore_index=True)
+
+    raw_sabotaged = {
+        "pipeline": sabotaged_pip,
+        "accounts": raw_clean["accounts"].copy(),
+        "products": raw_clean["products"].copy(),
+        "teams": raw_clean["teams"].copy(),
+    }
+
+    df_sab, _ = build_enriched_pipeline(
+        as_of_date=t_cut, tables_override=raw_sabotaged
+    )
+    scorer_sab = EmpiricalHorizonScorer().fit(df_sab, as_of_date=t_cut)
+    open_sab = df_sab[
+        df_sab["engage_date"].notnull()
+        & (df_sab["engage_date"] <= t_cut)
+        & ((df_sab["close_date"] > t_cut) | df_sab["close_date"].isnull())
+    ].copy()
+    scored_sab = (
+        scorer_sab.score_engaging_deals(open_sab)
+        .sort_values("opportunity_id")
+        .reset_index(drop=True)
+    )
+
+    assert list(scored_clean["opportunity_id"]) == list(scored_sab["opportunity_id"])
+    for col in ["cycle_days", "expected_won_value", "p_age_90d", "p_win_90d", "ev_90d"]:
+        assert np.allclose(
+            scored_clean[col].values, scored_sab[col].values, atol=1e-12
+        ), f"Future leakage detected in column {col}!"
+
+
+def test_missing_account_separated_from_win_probability(loaded_pipeline):
+    """
+    Verifies that removing `account` flags a CRM hygiene task WITHOUT distorting `p_win_90d` or `ev_90d`.
+    """
     df, _ = loaded_pipeline
-    open_deals = df[df["deal_stage"].isin(["Engaging", "Prospecting"])]
-    # Open deals must never have an actual close_value in raw data
-    assert open_deals["close_value"].isnull().all()
-    # But our engine must provide an estimated expected_won_value > 0 based on historical Won medians
-    assert (open_deals["expected_won_value"] > 0).all()
-    assert not np.isnan(open_deals["expected_won_value"].values).any()
+    scorer = EmpiricalHorizonScorer().fit(df)
+
+    linked_sample = (
+        df[(df["deal_stage"] == "Engaging") & df["has_account"]].head(50).copy()
+    )
+    unlinked_clone = linked_sample.copy()
+    unlinked_clone["account"] = np.nan
+    unlinked_clone["has_account"] = False
+    unlinked_clone["account_display"] = "⚠️ Conta Não Vinculada (CRM Gap)"
+    unlinked_clone["crm_hygiene_status"] = "⚠️ Sem Conta (Enriquecer CRM)"
+
+    s_linked = scorer.score_engaging_deals(linked_sample).sort_values("opportunity_id")
+    s_unlinked = scorer.score_engaging_deals(unlinked_clone).sort_values(
+        "opportunity_id"
+    )
+
+    assert np.allclose(s_linked["p_win_90d"].values, s_unlinked["p_win_90d"].values, atol=1e-12)
+    assert np.allclose(s_linked["ev_90d"].values, s_unlinked["ev_90d"].values, atol=1e-12)
+    assert (s_linked["crm_hygiene_status"] == "✅ Conta Vinculada").all()
+    assert (s_unlinked["crm_hygiene_status"] == "⚠️ Sem Conta (Enriquecer CRM)").all()
 
 
-def test_temporal_split_zero_leakage():
-    t_cut = pd.Timestamp("2017-06-30")
-    df, _ = build_enriched_pipeline(as_of_date=t_cut)
-    closed = df[df["deal_stage"].isin(["Won", "Lost"])]
-    train = closed[closed["close_date"] <= t_cut]
-    test = closed[closed["close_date"] > t_cut]
-    # No test deal close dates allowed in train window
-    assert (train["close_date"] <= t_cut).all()
-    assert (test["close_date"] > t_cut).all()
+# --- 3. Row-Permutation Invariance & Two-Path Simulator Parity Tests ---
 
 
-# --- 3. Survival Engine & Censoring Tests ---
-
-def test_smooth_survival_decay_avoids_cliff():
-    scorer = SurvivalLeadScorer()
-    ages = pd.Series([10.0, 30.0, 57.0, 90.0, 120.0, 138.0, 160.0, 200.0])
-    prods = pd.Series(["GTX Basic"] * len(ages))
-    factors = scorer.compute_aging_survival_factor(ages, prods)
-
-    # 1. Monotonic decay after the full maturation window (120 days)
-    mat_idx = 4  # 120 days
-    for i in range(mat_idx + 1, len(factors)):
-        assert factors.iloc[i] <= factors.iloc[i - 1]
-
-    # 2. Critical test: At 138d and beyond, survival factor must NOT drop abruptly to 0.0
-    # It must decay smoothly to prevent right-censoring errors on living Enterprise deals
-    assert factors.iloc[5] > 0.02  # at 138 days
-    assert factors.iloc[6] > 0.01  # at 160 days
-    assert factors.iloc[7] >= 0.02  # at 200 days floor
-
-
-
-def test_zombie_suspect_flag(loaded_pipeline):
+def test_row_permutation_invariance_by_opportunity_id(loaded_pipeline):
+    """Shuffling input rows must produce identical scores and exact identical ranking order."""
     df, _ = loaded_pipeline
+    scorer = EmpiricalHorizonScorer().fit(df)
     engaging = df[df["deal_stage"] == "Engaging"].copy()
-    scorer = SurvivalLeadScorer()
-    scored = scorer.score_engaging_deals(engaging)
+    shuffled = engaging.sample(frac=1.0, random_state=2026).copy()
 
-    # Deals older than ~118 days (P95) must be flagged
-    old_deals = scored[scored["cycle_days"] > 120]
-    assert len(old_deals) > 0
-    assert old_deals["is_zombie_suspect"].all()
+    res_orig = scorer.score_engaging_deals(engaging)
+    res_shuf = scorer.score_engaging_deals(shuffled)
+
+    assert list(res_orig["opportunity_id"]) == list(res_shuf["opportunity_id"])
+    assert np.allclose(res_orig["ev_90d"].values, res_shuf["ev_90d"].values, atol=1e-12)
+    assert np.allclose(res_orig["p_win_90d"].values, res_shuf["p_win_90d"].values, atol=1e-12)
+    assert list(res_orig["action_tier"]) == list(res_shuf["action_tier"])
 
 
-def test_ev_velocity_calculation(loaded_pipeline):
+def test_simulator_and_batch_scorer_exact_parity(loaded_pipeline):
+    """
+    Compares batch `score_engaging_deals` against single-deal `score_single_deal_simulation`
+    across 20 real Engaging deals of diverse products, ages, and account states.
+    """
     df, _ = loaded_pipeline
-    engaging = df[df["deal_stage"] == "Engaging"].copy()
-    scorer = SurvivalLeadScorer()
-    scored = scorer.score_engaging_deals(engaging)
+    scorer = EmpiricalHorizonScorer().fit(df)
+    sample_deals = (
+        df[df["deal_stage"] == "Engaging"]
+        .iloc[::75]
+        .head(20)
+        .copy()
+    )
+    batch_scored = scorer.score_engaging_deals(sample_deals).set_index("opportunity_id")
 
-    # Expected value must equal p_win * expected_won_value
-    expected_ev = (scored["p_win"] * scored["expected_won_value"]).round(2)
-    assert np.allclose(scored["expected_value"].values, expected_ev.values, atol=0.05)
+    for _, raw_row in sample_deals.iterrows():
+        opp_id = str(raw_row["opportunity_id"])
+        sim_row = score_single_deal_simulation(
+            scorer=scorer,
+            sales_agent=str(raw_row["sales_agent"]),
+            product=str(raw_row["product"]),
+            has_account=bool(raw_row["has_account"]),
+            cycle_days=float(raw_row["cycle_days"]),
+            expected_won_value=float(raw_row["expected_won_value"]),
+            opportunity_id=opp_id,
+            account_name=str(raw_row["account"]) if raw_row["has_account"] else None,
+        )
+        b_row = batch_scored.loc[opp_id]
+        assert np.isclose(sim_row["p_win_90d"], b_row["p_win_90d"], atol=1e-9)
+        assert np.isclose(sim_row["ev_90d"], b_row["ev_90d"], atol=1e-9)
+        assert sim_row["action_tier"] == b_row["action_tier"]
+        assert sim_row["crm_hygiene_status"] == b_row["crm_hygiene_status"]
 
-    # EV per day must be strictly positive and finite
-    assert (scored["ev_per_day"] > 0).all()
-    assert not np.isinf(scored["ev_per_day"].values).any()
+
+# --- 4. Functional Rep Override & Queue Behavior Tests ---
 
 
-# --- 4. Pipeline Partitioning: Closers vs SDRs ---
-
-def test_pipeline_two_queues_partition(loaded_pipeline):
+def test_rep_override_reorders_queue_without_altering_statistical_estimate(loaded_pipeline):
+    """
+    Verifies that salesperson overrides (`promote`, `pause`, `archive`) actually move deals
+    in the operational ranking while preserving `p_win_90d` and `ev_90d` untouched.
+    """
     df, _ = loaded_pipeline
-    scorer = SurvivalLeadScorer()
+    scorer = EmpiricalHorizonScorer().fit(df)
+    engaging = df[df["deal_stage"] == "Engaging"].head(40).copy()
 
-    engaging = df[df["deal_stage"] == "Engaging"]
-    prospecting = df[df["deal_stage"] == "Prospecting"]
+    base_scored = scorer.score_engaging_deals(engaging)
+    top_id = str(base_scored.iloc[0]["opportunity_id"])
+    bottom_id = str(base_scored.iloc[-1]["opportunity_id"])
 
-    assert len(engaging) == 1589
-    assert len(prospecting) == 500
+    overrides = {
+        bottom_id: {"disposition": "promote", "reason": "Minuta aprovada pelo CFO"},
+        top_id: {"disposition": "archive", "reason": "Cliente fechou com concorrente"},
+    }
+    overridden = scorer.score_engaging_deals(engaging, overrides=overrides)
 
-    scored_eng = scorer.score_engaging_deals(engaging)
-    scored_prosp = scorer.score_prospecting_deals(prospecting)
+    # Promoted deal moves to #1; archived deal moves to the very end
+    assert str(overridden.iloc[0]["opportunity_id"]) == bottom_id
+    assert overridden.iloc[0]["operational_rank_group"] == 0
+    assert "Override" in str(overridden.iloc[0]["action_tier"])
 
-    assert "priority_score" in scored_eng.columns
-    assert "ev_per_day" in scored_eng.columns
-    assert "sdr_fit_score" in scored_prosp.columns
-    assert "sdr_playbook" in scored_prosp.columns
+    assert str(overridden.iloc[-1]["opportunity_id"]) == top_id
+    assert overridden.iloc[-1]["operational_rank_group"] == 3
 
-
-# --- 5. Metric Functions Verification ---
-
-def test_auc_calculation():
-    # Perfect ranking
-    assert calculate_auc_score(np.array([1, 1, 0, 0]), np.array([0.9, 0.8, 0.2, 0.1])) == 1.0
-    # Inverted ranking
-    assert calculate_auc_score(np.array([1, 1, 0, 0]), np.array([0.1, 0.2, 0.8, 0.9])) == 0.0
-    # Random / ties
-    assert calculate_auc_score(np.array([1, 0]), np.array([0.5, 0.5])) == 0.5
-
-
-def test_brier_score_calculation():
-    y_true = np.array([1, 0, 1, 0])
-    # Perfect forecast
-    assert calculate_brier_score(y_true, np.array([1.0, 0.0, 1.0, 0.0])) == 0.0
-    # Completely wrong forecast
-    assert calculate_brier_score(y_true, np.array([0.0, 1.0, 0.0, 1.0])) == 1.0
-    # Uninformative base rate (0.5)
-    assert calculate_brier_score(y_true, np.array([0.5, 0.5, 0.5, 0.5])) == 0.25
+    # Statistical estimates must remain bit-for-bit identical!
+    b_idx = base_scored.set_index("opportunity_id")
+    o_idx = overridden.set_index("opportunity_id")
+    assert np.allclose(b_idx["p_win_90d"].values, o_idx.loc[b_idx.index, "p_win_90d"].values, atol=1e-12)
+    assert np.allclose(b_idx["ev_90d"].values, o_idx.loc[b_idx.index, "ev_90d"].values, atol=1e-12)
 
 
-def test_lift_at_k_calculation():
-    y_true = np.array([1, 1, 1, 0, 0, 0, 0, 0, 0, 0])  # base rate = 0.30
-    scores = np.array([90, 80, 70, 60, 50, 40, 30, 20, 10, 5])
-    lift, precision, pos_count = calculate_lift_at_k(y_true, scores, k_pct=0.20)
-    # Top 20% = top 2 deals (90, 80) -> both are won -> precision = 1.0
-    # Lift = 1.0 / 0.30 = 3.33x
-    assert precision == 1.0
-    assert pos_count == 2
-    assert round(lift, 2) == 3.33
+# --- 5. Age Curve Continuity, Empty History Fallback & Prospecting Triage ---
 
 
-# --- 6. Explainability & Prescriptive Action Tests ---
-
-def test_explainability_enrichment(loaded_pipeline):
+def test_age_curve_continuity_and_stale_decay(loaded_pipeline):
     df, _ = loaded_pipeline
-    engaging = df[df["deal_stage"] == "Engaging"].head(20).copy()
-    scorer = SurvivalLeadScorer()
-    scored = scorer.score_engaging_deals(engaging)
-    enriched = enrich_with_explainability(scored)
+    scorer = EmpiricalHorizonScorer().fit(df)
+    ages = pd.Series(np.arange(0.0, 180.0, 1.0))
+    probs = scorer.predict_age_90d_prob(ages)
 
-    assert "driver_1" in enriched.columns
-    assert "driver_2" in enriched.columns
-    assert "driver_3" in enriched.columns
-    assert "recommended_next_step" in enriched.columns
-    assert "sla_recommendation" in enriched.columns
-    assert "suggested_script" in enriched.columns
+    # Day-to-day step must be continuous (no sudden >3pp jump in 24h)
+    diffs = np.abs(np.diff(probs.values))
+    assert diffs.max() < 0.03
 
-    # Check non-emptiness
-    for col in ["driver_1", "driver_2", "driver_3", "recommended_next_step", "sla_recommendation", "suggested_script"]:
-        assert (enriched[col].str.len() > 5).all()
+    # Active window (~45d) must clearly exceed >150d stale backlog
+    assert probs.iloc[45] > 0.35
+    assert probs.iloc[165] < 0.05
 
 
 def test_empty_history_fallback():
-    """Validates that early snapshot dates with zero Won deals return expected columns and fallback cleanly."""
     t_early = pd.Timestamp("2016-01-01")
-    df, audit = build_enriched_pipeline(as_of_date=t_early)
-    assert len(df) == 8800
-    assert "median_won_value" in df.columns
-    assert "expected_won_value" in df.columns
-    # Deals closed on or before 2016-01-01 must be zero
-    closed_early = df[df["close_date"].notnull() & (df["close_date"] <= t_early)]
-    assert len(closed_early) == 0
-    # Expected value must fallback gracefully to catalog sales_price without any NaNs
+    df, _ = build_enriched_pipeline(as_of_date=t_early)
+    scorer = EmpiricalHorizonScorer().fit(df, as_of_date=t_early)
+    assert scorer.fitted_snapshot_count_ == 0
     assert df["expected_won_value"].notnull().all()
     assert (df["expected_won_value"] > 0).all()
 
 
-def test_smoothness_across_all_boundaries():
-    """Asserts that survival factor is continuous without discrete jumps across boundary days."""
-    scorer = SurvivalLeadScorer()
-    ages = pd.Series([7.0, 8.0, 14.0, 15.0, 56.0, 57.0, 119.0, 120.0, 121.0, 138.0])
-    prods = pd.Series(["GTX Basic"] * len(ages))
-    factors = scorer.compute_aging_survival_factor(ages, prods)
-
-    # 1. Delta between consecutive days must be small (< 0.05) to guarantee continuity
-    for i in range(1, len(factors)):
-        day_diff = ages.iloc[i] - ages.iloc[i - 1]
-        if day_diff == 1.0:
-            delta = abs(factors.iloc[i] - factors.iloc[i - 1])
-            assert delta < 0.05, f"Discontinuity detected between day {ages.iloc[i-1]} and {ages.iloc[i]}: delta={delta}"
-
-
-def test_simulator_and_scorer_parity(loaded_pipeline):
-    """Guarantees 100% parity between simulator inputs and canonical scorer output."""
+def test_prospecting_deterministic_triage_and_explainability(loaded_pipeline):
     df, _ = loaded_pipeline
-    scorer = SurvivalLeadScorer()
-    scorer.fit(df)
+    scorer = EmpiricalHorizonScorer().fit(df)
 
-    test_row = pd.DataFrame([{
-        "opportunity_id": "SIM-PARITY",
-        "sales_agent": "Moses Frase",
-        "product": "GTX Basic",
-        "has_account": True,
-        "account": "Cancity",
-        "account_display": "Cancity",
-        "is_enterprise_account": False,
-        "cycle_days": 25.0,
-        "expected_won_value": 550.0,
-        "deal_stage": "Engaging",
-    }])
-    scored = scorer.score_engaging_deals(test_row).iloc[0]
-    assert scored["priority_score"] > 0.0
-    assert scored["p_win"] > 0.0
-    assert scored["ev_per_day"] > 0.0
+    engaging = df[df["deal_stage"] == "Engaging"].head(15).copy()
+    prospecting = df[df["deal_stage"] == "Prospecting"].copy()
+
+    scored_prosp = scorer.score_prospecting_deals(prospecting)
+    assert len(scored_prosp) == 500
+    # Linked accounts come strictly before unlinked accounts in operational triage
+    first_unlinked_idx = scored_prosp.index[~scored_prosp["has_account"]][0]
+    last_linked_idx = scored_prosp.index[scored_prosp["has_account"]][-1]
+    assert last_linked_idx < first_unlinked_idx
+
+    enriched = enrich_with_explainability(scorer.score_engaging_deals(engaging))
+    for col in ["driver_1", "driver_2", "driver_3", "recommended_next_step", "sla_recommendation"]:
+        assert (enriched[col].str.len() > 10).all()
+
+    dist = compute_age_stage_distribution(df, pd.Timestamp("2017-12-31"))
+    assert "open_unclosed_share" in dist.columns
+    assert float(dist.loc[dist["age_threshold_days"] == 180, "open_unclosed_share"].iloc[0]) == 1.0
 
 
-# --- 7. End-to-End Backtest Execution ---
+# --- 6. Metric Functions & Dual-Regime Backtest Integrity ---
 
-def test_backtest_report_execution():
-    report = run_temporal_backtest()
-    assert report.train_deal_count > 2500
-    assert report.test_deal_count == 970  # Resolved deals open at 30/06/2017
-    assert 0.45 <= report.model_metrics["auc"] <= 0.65
-    assert report.model_metrics["brier"] < 0.30
-    assert report.captured_revenue_top20_usd > 100000.0
+
+def test_metric_functions():
+    assert calculate_auc_score(np.array([1, 1, 0, 0]), np.array([0.9, 0.8, 0.2, 0.1])) == 1.0
+    assert calculate_auc_score(np.array([1, 1, 0, 0]), np.array([0.1, 0.2, 0.8, 0.9])) == 0.0
+    assert calculate_brier_score(np.array([1, 0, 1, 0]), np.array([0.5, 0.5, 0.5, 0.5])) == 0.25
+    lift, prec, pos = calculate_lift_at_k(
+        np.array([1, 1, 1, 0, 0, 0, 0, 0, 0, 0]),
+        np.array([90, 80, 70, 60, 50, 40, 30, 20, 10, 5]),
+        k_pct=0.20,
+    )
+    assert prec == 1.0 and pos == 2 and round(lift, 2) == 3.33
+
+
+def test_dual_regime_backtest_honesty_and_alignment():
+    queue_reports = run_multi_cutoff_queue_evaluation()
+    assert [r.open_queue_count for r in queue_reports] == [2257, 2265, 2409]
+
+    for rep in queue_reports:
+        ev_share = rep.strategies["ev_90d_full"]["rev_20_share_pct"]
+        price_share = rep.strategies["nominal_price"]["rev_20_share_pct"]
+        fresh_share = rep.strategies["freshness"]["rev_20_share_pct"]
+        assert ev_share > price_share
+        assert ev_share > fresh_share
+        assert ev_share >= 58.0
+
+    cond = run_conditional_resolved_evaluation(split_date=pd.Timestamp("2017-06-30"))
+    assert cond.open_total_at_split == 1686
+    assert cond.resolved_deal_count == 970
+    assert cond.censored_excluded_count == 716
+    # Conditional resolved subset honestly reflects flat static-CRM discrimination (~0.48 - 0.53)
+    assert 0.45 <= cond.strategies["ev_90d_full"]["auc"] <= 0.55
+    assert 0.45 <= cond.strategies["agent_closed_wr"]["auc"] <= 0.55
+
+
+def test_streamlit_ui_renders_all_tabs_cleanly():
+    """Executes the full Streamlit application headlessly via AppTest to catch UI/schema drift."""
+    from pathlib import Path
+    from streamlit.testing.v1 import AppTest
+
+    app_path = str(Path(__file__).resolve().parent.parent / "app.py")
+    at = AppTest.from_file(app_path, default_timeout=30)
+    at.run()
+    assert not at.exception, f"Streamlit UI raised exception: {at.exception}"
+    assert len(at.tabs) == 4
+    assert len(at.metric) >= 10
+    assert len(at.dataframe) >= 2
+

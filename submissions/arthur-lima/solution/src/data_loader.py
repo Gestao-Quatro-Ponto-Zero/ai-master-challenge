@@ -1,11 +1,18 @@
 """
-Data Loader, Schema Sanitizer & Point-in-Time Feature Store.
+Data Loader, Schema Sanitizer & Point-in-Time Feature Builder.
 
-Fixes critical dataset anomalies discovered during empirical audit:
-1. Product foreign key mismatch ('GTXPro' in sales_pipeline vs 'GTX Pro' in products.csv).
+ Empirical findings verified directly on the 4 official CRM tables:
+1. Product foreign key mismatch ('GTXPro' in sales_pipeline.csv vs 'GTX Pro' in products.csv).
 2. Typo in accounts.csv sector ('technolgy' -> 'technology').
-3. Missing account names in 1,425 open deals (1,088 Engaging + 337 Prospecting).
-4. Anti-leakage deal value estimation via historical median close_value by (product, regional_office).
+3. Closing-time schema artifact in `account`: 100% of closed deals (4,238 Won + 2,473 Lost)
+   have `account` populated, whereas 68.5% of Engaging (1,088/1,589) and 67.4% of Prospecting
+   (337/500) lack `account`. Missing `account` is therefore tracked strictly as a CRM hygiene
+   task and excluded from historical win-probability estimation to avoid snapshot leakage.
+4. Regional funnel asymmetry: 100% of the 500 `Prospecting` deals belong to the Central office;
+   East and West offices log 0 `Prospecting` deals and accumulate unclosed deals in `Engaging`.
+   Also, 5 of the 35 agents in sales_teams.csv have zero deals in sales_pipeline.csv.
+5. Anti-leakage deal value estimation via historical median Won close_value by (product, regional_office)
+   computed strictly on deals closed on or before `as_of_date`.
 """
 
 from __future__ import annotations
@@ -74,8 +81,8 @@ def compute_value_estimation_table(
 ) -> Tuple[pd.DataFrame, Dict[str, float]]:
     """
     Computes historical median & mean Won close_value per (product, regional_office)
-    and evaluates Mean Absolute Error (MAE) vs catalog sales_price.
-    Strictly uses Won deals in the training window to prevent target leakage.
+    and evaluates in-window Mean Absolute Error (MAE) vs catalog sales_price.
+    Strictly uses Won deals closed on or before `as_of_date` to prevent target leakage.
     """
     won = closed_won_df[closed_won_df["deal_stage"] == "Won"].copy()
     catalog_map = products_df.set_index("product")["sales_price"].to_dict()
@@ -94,7 +101,6 @@ def compute_value_estimation_table(
     )
     prod_global = won.groupby("product")["close_value"].median().to_dict()
 
-    # Evaluate MAE on historical Won deals
     merged_eval = won.merge(prod_reg, on=["product", "regional_office"], how="left")
     merged_eval["catalog_price"] = merged_eval["product"].map(catalog_map)
     merged_eval["est_value"] = (
@@ -128,19 +134,35 @@ def compute_value_estimation_table(
 def build_enriched_pipeline(
     data_dir: Optional[Path] = None,
     as_of_date: pd.Timestamp = SNAPSHOT_DATE,
+    tables_override: Optional[Dict[str, pd.DataFrame]] = None,
 ) -> Tuple[pd.DataFrame, Dict[str, object]]:
     """
     Joins the 4 CRM tables, audits data quality anomalies, and constructs
     point-in-time features as of `as_of_date` with zero future data leakage.
-    """
-    tables = load_raw_tables(data_dir)
-    pipeline = tables["pipeline"]
-    accounts = tables["accounts"]
-    products = tables["products"]
-    teams = tables["teams"]
 
-    # Count how many rows had the 'GTXPro' anomaly before normalization
+    `tables_override` allows unit tests to inject mutated future copies of the raw tables
+    to prove strict temporal invariance.
+    """
+    tables = tables_override if tables_override is not None else load_raw_tables(data_dir)
+    pipeline = tables["pipeline"].copy()
+    accounts = tables["accounts"].copy()
+    products = tables["products"].copy()
+    teams = tables["teams"].copy()
+
+    if "product_raw" not in pipeline.columns:
+        pipeline["product_raw"] = pipeline["product"]
+    pipeline["product"] = normalize_product_name(pipeline["product"])
+    products["product"] = normalize_product_name(products["product"])
+    accounts["sector"] = (
+        accounts["sector"].astype(str).str.strip().replace({"technolgy": "technology"})
+    )
+    pipeline["engage_date"] = pd.to_datetime(pipeline["engage_date"], errors="coerce")
+    pipeline["close_date"] = pd.to_datetime(pipeline["close_date"], errors="coerce")
+
     gtxpro_fixed_count = int((pipeline["product_raw"] == "GTXPro").sum())
+    active_agents_set = set(pipeline["sales_agent"].dropna().unique())
+    all_team_agents_set = set(teams["sales_agent"].dropna().unique())
+    inactive_agents = sorted(all_team_agents_set - active_agents_set)
 
     # Relational joins
     df = (
@@ -149,12 +171,17 @@ def build_enriched_pipeline(
         .merge(accounts, on="account", how="left")
     )
 
-    # Account completeness flags (critical discovery: 68.5% of Engaging lack account!)
+    # CRM Hygiene flags (kept strictly separate from statistical win probability!)
     df["has_account"] = df["account"].notnull() & (
         df["account"].astype(str).str.strip() != ""
     )
     df["account_display"] = np.where(
         df["has_account"], df["account"], "⚠️ Conta Não Vinculada (CRM Gap)"
+    )
+    df["crm_hygiene_status"] = np.where(
+        df["has_account"],
+        "✅ Conta Vinculada",
+        "⚠️ Sem Conta (Enriquecer CRM)",
     )
     df["sector_display"] = np.where(
         df["has_account"], df["sector"].fillna("unknown"), "unlinked_account"
@@ -189,7 +216,7 @@ def build_enriched_pipeline(
         how="left",
     )
 
-    # Expected deal value if won (never uses actual close_value of open deals!)
+    # Expected deal value if won (never uses close_value of open or post-cutoff deals)
     df["expected_won_value"] = (
         df["median_won_value"]
         .fillna(df["product"].map(prod_global_median))
@@ -197,7 +224,7 @@ def build_enriched_pipeline(
         .astype(float)
     )
 
-    # Cycle / Aging days calculation anchored strictly at as_of_date (Point-in-Time)
+    # Cycle / Aging days anchored strictly at as_of_date (Point-in-Time)
     df["as_of_date"] = as_of_date
     already_closed_at_as_of = (
         df["deal_stage"].isin(["Won", "Lost"])
@@ -210,13 +237,26 @@ def build_enriched_pipeline(
         (as_of_date - df["engage_date"]).dt.days,
     )
 
+    prosp_df = df[df["deal_stage"] == "Prospecting"]
+    prosp_central_pct = (
+        round(float((prosp_df["regional_office"] == "Central").mean() * 100.0), 1)
+        if len(prosp_df) > 0
+        else 0.0
+    )
+
     audit_summary = {
         "total_rows": int(len(df)),
         "won_count": int((df["deal_stage"] == "Won").sum()),
         "lost_count": int((df["deal_stage"] == "Lost").sum()),
         "engaging_count": int((df["deal_stage"] == "Engaging").sum()),
         "prospecting_count": int((df["deal_stage"] == "Prospecting").sum()),
+        "active_agents_count": len(active_agents_set),
+        "inactive_agents_in_teams": inactive_agents,
+        "prospecting_central_share_pct": prosp_central_pct,
         "gtxpro_foreign_key_fixed": gtxpro_fixed_count,
+        "closed_missing_account_count": int(
+            (df["deal_stage"].isin(["Won", "Lost"]) & (~df["has_account"])).sum()
+        ),
         "missing_account_engaging": int(
             ((df["deal_stage"] == "Engaging") & (~df["has_account"])).sum()
         ),

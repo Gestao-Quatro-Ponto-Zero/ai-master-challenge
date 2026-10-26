@@ -1,83 +1,68 @@
-# Process Log — Como Usei IA como Alavanca Estratégica
+# Process Log — Orquestração Multi-Agente, Erros Reais e Simplificação Orientada por Evidência
 
 **Candidato:** Arthur Lima  
 **Posição:** AI Master — G4 Educação  
 **Desafio Escolhido:** `Challenge 003 — Lead Scorer (Build / Vendas & RevOps)`  
 
-> *"Nós já rodamos cada challenge em múltiplos modelos de IA para gerar respostas de referência. Parecido com o baseline não é suficiente. Esperamos que a sua entrega supere substancialmente o que a IA produz sozinha — em profundidade de análise, em julgamento, em qualidade de execução, ou em criatividade da solução."*  
-> — *Edital Oficial do G4 AI Master Challenge*
+> *Nota de transparência:* Este documento é um registro retrospectivo estruturado a partir das interações reais, commits intermediários e três auditorias independentes conduzidas durante o desenvolvimento. Onde propostas geradas por IA falharam no backtest ou prometeram mais do que os dados sustentavam, registramos explicitamente o erro, a origem da ideia e a decisão humana de simplificar.
 
 ---
 
-## 1. Ferramentas de IA Utilizadas & Arquitetura Multi-Agente (Harness)
+## 1. Arquitetura de Trabalho com IA (Papéis Reais)
 
-Em vez de confiar em um prompt único em uma interface web convencional, a solução foi construída utilizando uma **arquitetura agêntica desacoplada em três papéis complementares**:
+Em vez de aceitar a primeira saída de um único modelo, organizei o trabalho separando **geração/implementação** de **auditoria independente**:
 
-| Ferramenta / Modelo | Papel no Processo | Por que foi escolhido |
+| Agente / Ferramenta | Papel Real Exercido | Limitação Observada na Prática |
 | :--- | :--- | :--- |
-| **Antigravity / Claude Code** | *Lead Engineer & Data Pipeline Orchestrator* | Execução cirúrgica de código local, refatoração orientada a testes (`pytest`), leitura direta dos CSVs e construção dos módulos em Python. |
-| **DeepSeek API (Red Team Persona: CRO & Principal ML Scientist)** | *Adversarial Reviewer (Crítico Hostil - Round 1)* | Estressar sistematicamente cada fórmula estatística e hipótese de negócio, simulando uma sabatina técnica implacável para identificar falhas antes da banca. |
-| **Codex Auditor (Principal AI Systems & Anti-Leakage Auditor)** | *Adversarial Auditor (Crítico Hostil - Round 2)* | Auditoria forense pré-submissão: caça a vazamentos sutis de datas futuras no corte temporal, garantia de alinhamento estrito dos baselines e eliminação de descontinuidades matemáticas. |
-| **Gemini 4 Argon** | *Senior Strategic Arbiter & Solution Architect* | Arbitragem estratégica entre os 3 desafios, alinhamento cultural com o DNA de vendas do G4 Educação e design da esteira executiva. |
+| **Gemini Argon (Plano Inicial & Refatoração Final)** | Triagem comparativa dos 3 desafios, desenho inicial da arquitetura de 4 abas e consolidação final pós-auditoria. | No plano inicial, ancorou prematuramente em uma fórmula complexa (`$EV/dia`, penalidade de `-50%` por conta ausente, bônus enterprise) antes de validar se cada termo superava um baseline simples. |
+| **Antigravity / Claude Code** | Implementação local dos módulos Python, scripts `run.bat`/`run.sh`, interface Streamlit e execução de `pytest`. | Seguiu a especificação inicial e manteve a complexidade do motor mesmo quando o primeiro backtest corrigido na subpopulação resolvida mostrou `AUC = 0,5021`. |
+| **DeepSeek API (Round 1 — Red Team Comercial)** | Crítica inicial às premissas ingênuas (dispersão de 486x nos preços e separação `Prospecting` vs `Engaging`). | Atribuiu o teto de 138 dias exclusivamente à censura à direita, sem verificar que coortes de nov/2016 tinham >400 dias de observação e continuavam sem fechamentos acima de 138 dias. |
+| **Codex (Round 2 — Auditoria de Código & Leakage)** | Revisão técnica de implementação pré-submissão. | Detectou vazamento real de `close_date` em `cycle_days` e desalinhamento de índices nos baselines, mas não questionou se o motor ainda merecia sua complexidade após a correção derrubar as métricas no subconjunto resolvido. |
+| **Astra (Round 3 — Auditoria Metodológica e Epistemológica)** | Revisão independente confrontando plano, código, testes e narrativa. | Identificou a ancoragem na tese inicial, a mistura entre heurística e probabilidade, o viés de seleção ao excluir os `716` casos não-fechados da fila, dois testes tautológicos, texto desatualizado na UI (`4.032` vs `970`) e atribuição imprecisa no log anterior. |
 
 ---
 
-## 2. Workflow de Resolução em 5 Etapas
+## 2. Linha do Tempo Real das Iterações (Incluindo Regressões)
 
 ```mermaid
-flowchart LR
-    A["1. Auditoria Forense dos Datasets (3 Desafios)"] --> B["2. Red Team Review (DeepSeek + Codex API)"]
-    B --> C["3. Engenharia de Features & Anti-Leakage Store"]
-    C --> D["4. Backtest Point-in-Time & 17 Testes Pytest"]
-    D --> E["5. Painel Executivo Streamlit + 1-Click Launchers"]
+flowchart TD
+    A["Iteração 1: Inspeção dos 3 Desafios + Plano Inicial (Argon + DeepSeek)"] --> B["Iteração 2: Protótipo Complexo (Survival + EV/dia + Penalidade 50% s/ Conta)"]
+    B --> C["Iteração 3: Auditoria Codex corrige leakage em cycle_days -> AUC cai p/ 0,5021 nos 970 resolvidos"]
+    C --> D["Iteração 4: Auditoria Astra expõe ancoragem, heurísticas arbitrárias e testes nominais"]
+    D --> E["Iteração 5 (Decisão Humana): Simplificação radical p/ EV_90d + Dois Regimes + Testes de Mutação"]
 ```
 
-1. **Etapa 1 — Auditoria Forense Comparativa dos 3 Desafios:**
-   Antes de escolher cegamente um desafio, inspecionei via código os datasets dos 3 problemas. No Challenge 001 (Churn), desmascarei que o CSAT tinha piso artificial em 3.0 (silent churn) e o Paradoxo de Simpson no uso. No Challenge 002 (Suporte), identifiquei que 100% dos textos do Dataset 1 tinham ruído de Faker (`{product_purchased}`). No Challenge 003 (Lead Scorer), identifiquei o descompasso de chave estrangeira (`GTXPro`), a dispersão de 486x nos preços e os 1.589 deals abertos sem priorização.
-2. **Etapa 2 — Red Team Adversarial (Submissão ao Ceticismo):**
-   Submeti o primeiro plano de scoring (baseado em Random Forest com setor/região e corte rígido de 138 dias) à API do DeepSeek em modo adversarial. O revisor apontou que setor/região tinham AUC de 0.50 (ruído puro), que o corte de 138 dias sofria de censura à direita e que $EV = P \times \text{Valor}$ favorecia cegamente o produto de $26k.
-3. **Etapa 3 — Reformulação Matemática da Solução:**
-   Desenvolvi o motor de **Velocidade de Receita ($EV / Dia$)**, combinei com a **Curva de Maturação Empírica** (taxa de descarte precoce em 1-14d vs pico de maturação em 14-90d) e dividi arquiteturalmente a aplicação em duas esteiras operacionais: Closers (`Engaging`) e SDRs (`Prospecting`).
-4. **Etapa 4 — TDD & Validação Point-in-Time Prospective Cohort:**
-   Implementei 17 testes unitários automatizados com `pytest` (coletando dados, integridade relacional, ausência de leakage, suavidade contínua de fronteiras, paridade de simulador e cálculo de métricas) e executei o backtest prospectivo point-in-time em 30/06/2017 avaliado estritamente nos 970 negócios abertos no corte com desfecho resolvido (e 716 censurados).
-5. **Etapa 5 — Construção da UI Executiva & Empacotamento 1-Click:**
-   Criei a aplicação interativa em Streamlit (`app.py`), implementei o mecanismo de persistência de feedback do vendedor (`artifacts/feedback_overrides.json`) e criei os scripts executáveis `run.bat` (Windows) e `run.sh` (macOS/Linux).
+1. **Iteração 1 — Escolha do Desafio e Saneamento Inicial:** Inspecionamos os CSVs dos três desafios e escolhemos o `Challenge 003` pela aderência direta à rotina comercial B2B. Corrigimos `GTXPro` → `GTX Pro` (`1.480` linhas) e `technolgy` → `technology`, e separamos `Engaging` (`1.589` deals com `engage_date`) de `Prospecting` (`500` deals sem `engage_date`).
+2. **Iteração 2 — Construção do Motor Super-Parametrizado (Erro de Ancoragem):** Implementamos a proposta inicial combinando múltiplos multiplicadores manuais (`unlinked_account_penalty = 0.50`, `enterprise_boost = 1.04`, fórmula manual `expected_days_remaining`, `ev_per_day` e score híbrido `0.50/0.30/0.20`), além da aba de feedback do vendedor (que apenas gravava JSON sem alterar a fila).
+3. **Iteração 3 — Correção de Leakage (Codex) e Alerta Ignorado:** O Codex identificou que `cycle_days` usava `close_date` futura em deals fechados após o corte e que o `sort_values` desalinhava os baselines. Corrigimos ambos os bugs. O resultado na subpopulação resolvida (`N = 970` em `30/06/2017`) caiu para `AUC = 0,5021` (abaixo da média histórica do vendedor, `0,5070`). Em vez de simplificar o modelo naquele momento, mantivemos a fórmula e justificamos o resultado apenas no texto do `README`.
+4. **Iteração 4 — Auditoria Metodológica (Astra):** Eu (Arthur) submeti o repositório completo à revisão crítica do Astra. O diagnóstico apontou que: (a) a narrativa prometia mais do que a validação sustentava; (b) `account` ausente recebia penalidade arbitrária de `-50%`; (c) remover os `716` casos não-fechados avaliava uma subpopulação condicionada ao futuro, não a fila real do vendedor; (d) `test_temporal_split_zero_leakage` e `test_simulator_and_scorer_parity` não testavam vazamento nem paridade real; (e) `app.py` ainda exibia `4.032 negócios`; e (f) este `PROCESS_LOG` atribuía como criação exclusivamente humana o botão de discordância que já constava no plano inicial do Argon.
+5. **Iteração 5 — Decisão Executiva de Simplificação e Reconstrução:** Com base na auditoria, auditei novamente os CSVs brutos com o agente e tomei a decisão explícita de **abandonar os pesos heurísticos arbitrários**, separar higiene cadastral de probabilidade, implementar os dois regimes de backtest (fila aberta completa em +90 dias vs. subpopulação condicional resolvida), tornar o override funcional na fila e substituir testes nominais por testes de mutação e invariância.
 
 ---
 
-## 3. Onde a IA Errou e Como o Julgamento Humano Corrigiu
+## 3. Registro Auditável de Decisões (Origem → Evidência → Decisão Humana → Resultado)
 
-Esta tabela documenta as intervenções humanas críticas onde os modelos de IA propuseram soluções ingênuas ou estatisticamente inválidas:
-
-| # | O que a IA sugeriu inicialmente (Baseline) | Por que estava errado / Armadilha Técnica | Evidência Empírica nos Dados | O que Nós Implementamos (Decisão Humana) |
-|---|---|---|---|---|
-| **1** | *"Treinar Random Forest usando `sector` e `regional_office` como preditores principais de vitória."* | Atributos demográficos estáticos isolados **não discriminam fechamento** em vendas consultivas. | Setor tem conversão homogênea (61,1% a 64,8%), com AUC isolada de apenas **0,502**. | Removemos ruído demográfico. Focamos em **Habilidade Histórica do Vendedor (Empirical Bayes)**, **Produto** e **Idade de Maturação no Funil**. |
-| **2** | *"Zerar o score (`score = 0`) para deals com mais de 138 dias, pois nenhum Won passou de 138d."* | Confunde ausência de observação com impossibilidade física. Trata-se de **Censura à Direita (Right-Censoring)** pelo fim do dataset em 31/12/2017. | Deals de ciclo longo ainda estavam abertos no corte. Cortar a zero descarta deals Enterprise vivos. | Substituímos por **Decaimento Exponencial Suave** com piso de proteção e flag auditável **`Zombie Suspect`** (>P95 da coorte), exigindo ação de higienização. |
-| **3** | *"Ordenar o ranking diretamente por Expected Value monetário nominal: $EV = P \times \text{Valor}$."* | A dispersão de preços de **$55 a $26.768 (486x)** faz o produto `GTK 500` monopolizar o topo mesmo com probabilidade medíocre. | O vendedor ignora 50 deals quentes de $2k para perseguir 1 deal frio de $26k. | Criamos a métrica de **Velocidade de Receita ($EV/Dia$)** e combinamos no `priority_score` (0-100) com normalização canônica em log. |
-| **4** | *"Preencher a idade dos 500 deals em `Prospecting` com a média ou descartá-los do modelo."* | Imputar idade vaza estatística de ciclo para leads que ainda nem tiveram 1º contato; descartá-los perde 24% do pipeline ativo. | Os 500 deals em `Prospecting` têm `engage_date` nulo legítimo (estágio pré-contato). | Separamos a ferramenta em **2 Abas Operacionais Distintas**: Aba 1 para **Closers** (`Engaging`) e Aba 2 para **SDRs** (`Prospecting`) com Score de Fit ICP. |
-| **5** | *"Ignorar que 1.088 deals Engaging não têm conta vinculada em `accounts.csv`."* | A LLM fez join simples e ignorou que 68,5% do pipeline ativo são 'oportunidades órfãs' sem dados cadastrais. | 1.088 de 1.589 deals abertos não têm `account` preenchido no CRM. | Criamos o display **'⚠️ Conta Não Vinculada (CRM Gap)'**, aplicamos penalidade calibrada e geramos alerta de enriquecimento cadastral. |
-| **6** | *"Calcular ciclo de teste no backtest usando close_date futura e avaliar baselines em dataframes desordenados."* | Vaza a data futura de fechamento na data de corte prospectiva e desalinha o ranking dos baselines comparando oportunidades incompatíveis. | Auditoria forense adversarial detectou cálculo de `cycle_days` condicional a `close_date` e descasamento de índices. | Fixamos a idade estritamente em `(as_of_date - engage_date)` no corte e garantimos alinhamento vetorial 100% idêntico entre o motor e todos os baselines. |
+| # | Sugestão / Hipótese | Origem Inicial | Evidência Empírica Verificada nos Dados | Decisão Humana (Arthur) | Alteração Realizada no Código | Resultado Medido |
+|---|---|---|---|---|---|---|
+| **1** | Normalizar `GTXPro` → `GTX Pro` e separar `Prospecting` (`500`) de `Engaging` (`1.589`). | Agentes (Argon / Antigravity) na inspeção de schema | `1.480` linhas perdiam join com `products.csv`; `100%` de `Prospecting` está em `Central` sem `engage_date`. | **Aprovar e expandir auditoria** para documentar a assimetria regional (`East`/`West` com `0` em `Prospecting`) e os `5` vendedores sem deals. | `src/data_loader.py` normaliza chaves e audita funil regional; Aba 2 trata `Prospecting` como regra determinística de triagem. | Join `100%` íntegro nas `8.800` linhas; zero imputação artificial de datas em `Prospecting`. |
+| **2** | Aplicar penalidade de `-50%` na probabilidade para deals sem `account` e `+4%` / `+12%` para contas Enterprise. | Plano inicial do Argon | **Hipótese refutada:** `100%` dos deals fechados (`4.238 Won` e `2.473 Lost`) têm `account` preenchido (`0` ausentes), provando artefato de fechamento. Correlação de `revenue`/`employees` com vitória é `-0,012` / `-0,008` (`62,9%` vs `63,5%`). | **Rejeitar e remover os multiplicadores.** Separar qualidade cadastral de probabilidade estatística. | Removidos `unlinked_account_penalty` e `enterprise_boost` de `src/survival_and_scoring.py`; criado `crm_hygiene_status` independente. | Elimina *snapshot leakage* histórico e impede punir arbitrariamente `68,5%` da fila aberta. |
+| **3** | Manter fórmula composta (`expected_days_remaining`, `$EV/dia` e pesos logarítmicos `0.50/0.30/0.20`) e chamar tabela descritiva de `"Kaplan-Meier Proxy"`. | Plano inicial do Argon + Red Team DeepSeek | Dias corridos até fechamento não medem horas de esforço do vendedor; pesos `0.50/0.30/0.20` não superaram baseline no corte resolvido; tabela calculava proporções simples, não estimador produto-limite. | **Simplificar radicalmente o motor** e corrigir toda a terminologia técnica. | Motor reduzido a `EV_90d = P_90d(idade, vendedor) × Ticket_Mediano`; ablação `P_90d(apenas idade)` incluída; gráfico renomeado honestamente. | Código mais simples, interpretável em dólares no trimestre e com ablação explícita (`60,1%–63,4%` só com idade × ticket). |
+| **4** | Avaliar o ranking apenas nos `970` deals abertos em `30/06` que fecharam (`Won`/`Lost`), descartando os `716` que continuaram abertos. | Implementação pós-Codex | Filtrar pelos `970` resolvidos usa o futuro para remover todo o passivo abandonado em `Engaging` (ex.: `350` deals já >90d em `30/06` tiveram `0` fechamentos em 184 dias). | **Publicar os dois regimes lado a lado** (Fila Aberta Completa em +90d e Subpopulação Condicional Resolvida), expondo também um bug sutil de desempate em `sales_price`. | `src/backtest.py` avalia 3 cortes móveis (`31/07`, `31/08`, `30/09`) na fila aberta (global e intra-vendedor) com desempate neutro por `opportunity_id`, mantendo a tabela condicional dos `970` resolvidos. | Fila aberta Top 20% captura `60,1%`, `60,9%` e `63,7%` da receita de 90d (vs `47,6%–49,9%` de Preço Nominal), enquanto documenta `AUC ~0,49–0,51` no condicional resolvido. |
+| **5** | Botão de discordância / override do vendedor na interface. | Sugerido originalmente pelo Argon; criticado pelo Astra por não ter efeito funcional e por atribuição incorreta no log | Na versão anterior, clicar no botão apenas salvava JSON sem alterar a fila exibida ao usuário. | **Corrigir a atribuição de autoria neste log** e tornar o override **funcionalmente ativo** na ordenação operacional. | `apply_rep_overrides()` e `app.py` agora promovem (`⬆️`), pausam (`⏸️`), arquivam (`🗑️`) ou restauram (`🔄`) negócios em tempo real com `st.rerun()`, preservando `P_90d` e `EV_90d` originais. | Override auditável, funcional e coberto por teste unitário dedicado. |
+| **6** | Suíte de testes de anti-leakage e paridade do simulador. | Implementação inicial + apontamento do Astra | `test_temporal_split_zero_leakage` testava apenas o filtro `<= t_cut` do próprio teste; `test_simulator_and_scorer_parity` testava apenas `> 0`. | **Substituir garantias nominais por testes capazes de falhar diante de regressões reais.** | `tests/test_engine.py` reescrito com corrupção deliberada de dados pós-corte (`Won <-> Lost`, `close_value * 100`), permutação aleatória de linhas, comparação par-a-par em 20 deals reais e `Streamlit AppTest`. | `13` testes comportamentais passando em ~8s, cobrindo motor, backtest e renderização das 4 abas da UI. |
 
 ---
 
-## 4. O que Eu Adicionei que a IA Sozinha Jamais Faria
+## 4. Onde Esteve o Julgamento Humano Real
 
-1. **Correção do Bug Silencioso de Chave Estrangeira (`GTXPro` vs `GTX Pro`):**
-   A IA generativa convencional não percebeu que no `sales_pipeline.csv` o produto estava grafado como `GTXPro` (sem espaço) enquanto no `products.csv` estava `GTX Pro` (com espaço). Sem o tratamento em `data_loader.py`, centenas de oportunidades sofriam join nulo e perdiam o preço de catálogo.
-2. **Descoberta do Padrão Real de Maturação vs. Descarte Precoce:**
-   A IA padrão supõe que deals mais velhos sempre têm menor conversão. A análise empírica dos dados fechados provou o oposto para a fase inicial: negócios com $\le 14$ dias têm win rate menor (~53-57%) devido ao descarte precoce de leads ruins, enquanto negócios que atingem 14 a 90 dias atingem o ápice de maturação (~68-75%). Incorporamos essa curva não-linear real no motor de sobrevivência.
-3. **Mecanismo de Override & Loop de Feedback do Vendedor:**
-   Nenhum modelo de IA inclui por padrão um botão para o usuário discordar dele. Vendedores experientes têm contexto de campo não registrado no CRM (ex.: troca de decisor, congelamento temporário de budget). Construí o painel com registro de feedback auditável em JSON (`artifacts/feedback_overrides.json`), transformando a ferramenta em um instrumento de governança contínua.
-4. **Validação Temporal Out-of-Time Rigorosa:**
-   Nenhum dos PRs concorrentes auditados no repositório implementou um split temporal estrito. Criei o pipeline em `src/backtest.py` com avaliação prospectiva point-in-time em 970 negócios reais, Brier Score e Reliability Diagram.
-5. **Auditoria Adversarial em Dois Rounds (Red Team DeepSeek + Auditoria Forense Codex):**
-   Submeti o projeto a dois ciclos sucessivos de crítica hostil: o primeiro com o DeepSeek (revisando premissas de negócio e falácia de right-censoring) e o segundo com uma auditoria forense do Codex (eliminando vazamento de datas futuras na coorte de teste, garantindo alinhamento de baselines, paridade do simulador e 17 testes automatizados).
+1. **Orquestrar auditorias cruzadas hostis (DeepSeek → Codex → Astra)** em vez de aceitar o código aparentemente pronto após o primeiro `pytest` verde.
+2. **Decidir abandonar complexidade quando confrontado pelos dados:** autorizar a remoção da fórmula de velocidade diária e dos multiplicadores heurísticos inicialmente defendidos pelos próprios agentes, mantendo apenas o que sobreviveu à ablação *out-of-time*.
+3. **Exigir publicação integral dos resultados desfavoráveis:** manter na UI e no `README` a tabela condicional (`Won` vs `Lost`, `AUC ~0,49–0,51`) ao lado da avaliação da fila aberta (`EV_90d`), deixando explícito para um gestor comercial exatamente o que a ferramenta resolve (triagem de passivo estagnado ponderada por ticket) e o que ela não resolve (adivinhar o vencedor de uma negociação ativa sem dados de interação).
 
 ---
 
-## 5. Evidências do Processo
+## 5. Artefatos de Verificação
 
-- **Auditoria Adversarial Completa (DeepSeek & Codex):** [adversarial-red-team-audit.md](./process-log/adversarial-red-team-audit.md)
-- **Suíte de Testes Automatizados:** `pytest tests/test_engine.py` (17 testes passando em 1.52s)
-- **Relatório de Backtest Gerado:** `solution/artifacts/backtest_report.md`
-- **Código Fonte Executável:** `solution/app.py`, `solution/run.bat` e `solution/run.sh`
+- **Histórico Detalhado das 3 Rodadas de Auditoria:** [`process-log/adversarial-red-team-audit.md`](./process-log/adversarial-red-team-audit.md)
+- **Relatório Reprodutível de Backtest (Dois Regimes + Ablação):** [`solution/artifacts/backtest_report.md`](./solution/artifacts/backtest_report.md)
+- **Suíte de Testes de Mutação, Invariância, Paridade e UI:** [`solution/tests/test_engine.py`](./solution/tests/test_engine.py) (`python -m pytest tests/test_engine.py -v`)
