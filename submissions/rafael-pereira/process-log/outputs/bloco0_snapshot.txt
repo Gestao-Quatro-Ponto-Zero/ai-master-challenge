@@ -1,0 +1,52 @@
+﻿
+### snapshot 2017-06-30 open deals: 1686
+out          lost  still_open  ...  pct_still_open_end  pct_won_of_all
+bin                            ...                                    
+(-1, 30]      212         114  ...               0.165           0.529
+(30, 60]      121         131  ...               0.289           0.445
+(60, 90]       28         121  ...               0.637           0.216
+(90, 138]       0         201  ...               1.000           0.000
+(138, 200]      0         126  ...               1.000           0.000
+(200, 1000]     0          23  ...               1.000           0.000
+
+[6 rows x 7 columns]
+
+### snapshot 2017-09-30 open deals: 2409
+out          lost  still_open  ...  pct_still_open_end  pct_won_of_all
+bin                            ...                                    
+(-1, 30]      228         110  ...               0.162           0.502
+(30, 60]      112         246  ...               0.451           0.343
+(60, 90]       34         395  ...               0.859           0.067
+(90, 138]       2         193  ...               0.990           0.000
+(138, 200]      0         260  ...               1.000           0.000
+(200, 1000]     0         270  ...               1.000           0.000
+
+[6 rows x 7 columns]
+
+closed deals cycle>138: 0
+cycle max by engage quarter:
+ engage_date
+2016Q4    138
+2017Q1    137
+2017Q2    136
+2017Q3    138
+2017Q4     90
+Freq: Q-DEC, Name: cycle, dtype: int64
+
+Engaging by engage quarter:
+ engage_date
+2016Q4     53
+2017Q1    297
+2017Q2    366
+2017Q3    758
+2017Q4    115
+Freq: Q-DEC, dtype: int64
+
+Closed (won+lost) by engage quarter:
+ engage_date
+2016Q4     305
+2017Q1    1322
+2017Q2    2022
+2017Q3    2012
+2017Q4    1050
+Freq: Q-DEC, dtype: int64

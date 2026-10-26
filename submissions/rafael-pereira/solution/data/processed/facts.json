@@ -1,0 +1,893 @@
+{
+  "meta": {
+    "reference_date": "2017-12-31"
+  },
+  "pipeline": {
+    "total_deals": 8800,
+    "deals_por_estagio": {
+      "Won": 4238,
+      "Lost": 2473,
+      "Engaging": 1589,
+      "Prospecting": 500
+    },
+    "n_fechados": 6711,
+    "n_abertos": 2089,
+    "win_rate_fechados": 0.6315005215318135,
+    "engajamento_primeiro": "2016-10-20",
+    "engajamento_ultimo": "2017-12-27",
+    "fechamento_primeiro": "2017-03-01",
+    "fechamento_ultimo": "2017-12-31"
+  },
+  "produtos": {
+    "deals_por_produto": {
+      "GTX Basic": 1866,
+      "MG Special": 1651,
+      "GTX Pro": 1480,
+      "MG Advanced": 1412,
+      "GTX Plus Basic": 1383,
+      "GTX Plus Pro": 968,
+      "GTK 500": 40
+    },
+    "deals_fechados_por_produto": {
+      "GTX Basic": 1436,
+      "MG Special": 1223,
+      "GTX Pro": 1147,
+      "MG Advanced": 1084,
+      "GTX Plus Basic": 1051,
+      "GTX Plus Pro": 745,
+      "GTK 500": 25
+    },
+    "produto_com_mais_deals": "GTX Basic",
+    "segundo_produto_em_deals": "MG Special",
+    "preco_de_tabela_por_produto": {
+      "GTK 500": 26768,
+      "GTX Basic": 550,
+      "GTX Plus Basic": 1096,
+      "GTX Plus Pro": 5482,
+      "GTX Pro": 4821,
+      "MG Advanced": 3393,
+      "MG Special": 55
+    },
+    "produto_maior_preco": "GTK 500",
+    "preco_maximo": 26768,
+    "preco_minimo": 55,
+    "deals_fechados_do_produto_maior_preco": 25,
+    "receita_ganha_share_por_produto": {
+      "GTX Pro": 0.3508636320660147,
+      "GTX Plus Pro": 0.2628196556025895,
+      "MG Advanced": 0.22151611298307516,
+      "GTX Plus Basic": 0.07048849166871053,
+      "GTX Basic": 0.04989868606713045,
+      "GTK 500": 0.04003904239393919,
+      "MG Special": 0.0043743792185404595
+    },
+    "receita_ganha_top3_produtos": [
+      "GTX Pro",
+      "GTX Plus Pro",
+      "MG Advanced"
+    ],
+    "receita_ganha_top3_share": 0.8351994006516794
+  },
+  "qualidade": {
+    "linhas_do_pipeline": 8800,
+    "linhas_apos_o_join": 8800,
+    "linhas_com_nome_de_produto_errado": {
+      "GTXPro": 1480
+    },
+    "linhas_gtxpro": 1480,
+    "produtos_fora_do_catalogo": [
+      "GTXPro"
+    ],
+    "contas_com_setor_technolgy": 12,
+    "deals_de_contas_com_setor_technolgy": 1165,
+    "sem_conta": {
+      "total": 1425,
+      "por_estagio": {
+        "Won": 0,
+        "Lost": 0,
+        "Engaging": 1088,
+        "Prospecting": 337
+      },
+      "fechados": 0,
+      "pct_dos_abertos": 0.6821445667783629
+    },
+    "prospecting_sem_engage_date": 500,
+    "engaging_sem_engage_date": 0
+  },
+  "ciclos": {
+    "ciclo_maximo_fechados": 138,
+    "ciclo_mediano_ganhos": 57.0,
+    "ciclo_mediano_perdidos": 14.0,
+    "ciclo_p90_ganhos": 106.0,
+    "ciclo_rapido_dias": 14,
+    "perdidos_total": 2473,
+    "perdidos_ciclo_rapido": 1249,
+    "ciclo_maximo_por_trimestre_de_engajamento": {
+      "2016-Q4": 138,
+      "2017-Q1": 137,
+      "2017-Q2": 136,
+      "2017-Q3": 138,
+      "2017-Q4": 90
+    }
+  },
+  "atributos": {
+    "win_rate_por_atributo": {
+      "produto": {
+        "GTK 500": 0.6,
+        "GTX Basic": 0.6371866295264624,
+        "GTX Plus Basic": 0.621313035204567,
+        "GTX Plus Pro": 0.6429530201342282,
+        "GTX Pro": 0.6355710549258936,
+        "MG Advanced": 0.6033210332103321,
+        "MG Special": 0.6484055600981193
+      },
+      "setor": {
+        "employment": 0.6258741258741258,
+        "entertainment": 0.6467661691542289,
+        "finance": 0.6117455138662317,
+        "marketing": 0.6484751203852327,
+        "medical": 0.6231578947368421,
+        "retail": 0.6306235201262825,
+        "services": 0.6335227272727273,
+        "software": 0.6392045454545454,
+        "technology": 0.6342155009451795,
+        "telecommunications": 0.625
+      },
+      "regiao": {
+        "Central": 0.6255760368663594,
+        "East": 0.6302475780409041,
+        "West": 0.6393952867941307
+      },
+      "manager": {
+        "Cara Losch": 0.6442953020134228,
+        "Celia Rouche": 0.6340956340956341,
+        "Dustin Brinkmann": 0.6298482293423272,
+        "Melvin Marxen": 0.6220028208744711,
+        "Rocco Neubert": 0.6208445642407907,
+        "Summer Sewald": 0.6433566433566433
+      },
+      "porte_quartil_de_funcionarios": {
+        "q1_menores": 0.6408284023668639,
+        "q2": 0.6144508670520231,
+        "q3": 0.6389380530973451,
+        "q4_maiores": 0.6322055137844611
+      }
+    },
+    "win_rate_atributos_minimo": 0.6,
+    "win_rate_atributos_maximo": 0.6484751203852327,
+    "n_vendedores_com_fechados": 30,
+    "win_rate_vendedor_minimo": 0.5497835497835498,
+    "win_rate_vendedor_maximo": 0.7039473684210527,
+    "qui_quadrado_p": {
+      "produto": 0.3718909586489483,
+      "vendedor": 0.26393697977182523
+    },
+    "correlacao_vendedor_h1_h2": 0.5727452782437334,
+    "auc_numericas": {
+      "sales_price": 0.49409989376536056,
+      "revenue": 0.49647338017936804,
+      "employees": 0.4979439103239956,
+      "year_established": 0.4934246921972022
+    },
+    "auc_ciclo_dos_fechados": 0.5780152880939536,
+    "auc_categoricas_target_encoding_na_amostra_inflado": {
+      "product": 0.5172270621818996,
+      "sector": 0.511812711784679,
+      "sales_agent": 0.5401275254580522,
+      "manager": 0.5109587986306857,
+      "regional_office": 0.5067628929484206,
+      "office_location": 0.5153060796097618
+    }
+  },
+  "idade_hoje": {
+    "limite_fresco_dias": 90,
+    "ciclo_maximo_dias": 138,
+    "engaging_total": 1589,
+    "valor_tabela_engaging": 3892229,
+    "faixas": {
+      "ate_limite_fresco": {
+        "n": 110,
+        "pct": 0.06922592825676527,
+        "valor_tabela": 227651,
+        "pct_do_valor": 0.0584885935539764
+      },
+      "entre_limite_fresco_e_ciclo_maximo": {
+        "n": 188,
+        "pct": 0.118313404657017,
+        "valor_tabela": 465914,
+        "pct_do_valor": 0.11970364539188214
+      },
+      "acima_do_ciclo_maximo": {
+        "n": 1291,
+        "pct": 0.8124606670862178,
+        "valor_tabela": 3198664,
+        "pct_do_valor": 0.8218077610541414
+      }
+    }
+  },
+  "prospecting": {
+    "n": 500,
+    "valor_tabela": 1073986,
+    "n_por_produto": {
+      "MG Special": 120,
+      "GTX Basic": 93,
+      "MG Advanced": 86,
+      "GTX Pro": 80,
+      "GTX Plus Basic": 74,
+      "GTX Plus Pro": 47
+    },
+    "n_sem_conta": 337
+  },
+  "fotos_do_briefing": {
+    "2017-06-30": {
+      "data": "2017-06-30",
+      "n_abertos": 1686,
+      "faixas": [
+        {
+          "idade_min": 0,
+          "idade_max": 30,
+          "n": 692,
+          "ganhos": 366,
+          "perdidos": 212,
+          "abertos_no_fim": 114,
+          "win_rate_se_fechou": 0.6332179930795848,
+          "pct_abertos_no_fim": 0.16473988439306358,
+          "pct_ganhos": 0.5289017341040463
+        },
+        {
+          "idade_min": 31,
+          "idade_max": 60,
+          "n": 454,
+          "ganhos": 202,
+          "perdidos": 121,
+          "abertos_no_fim": 131,
+          "win_rate_se_fechou": 0.6253869969040248,
+          "pct_abertos_no_fim": 0.28854625550660795,
+          "pct_ganhos": 0.44493392070484583
+        },
+        {
+          "idade_min": 61,
+          "idade_max": 90,
+          "n": 190,
+          "ganhos": 41,
+          "perdidos": 28,
+          "abertos_no_fim": 121,
+          "win_rate_se_fechou": 0.5942028985507246,
+          "pct_abertos_no_fim": 0.6368421052631579,
+          "pct_ganhos": 0.21578947368421053
+        },
+        {
+          "idade_min": 91,
+          "idade_max": 138,
+          "n": 201,
+          "ganhos": 0,
+          "perdidos": 0,
+          "abertos_no_fim": 201,
+          "win_rate_se_fechou": null,
+          "pct_abertos_no_fim": 1.0,
+          "pct_ganhos": 0.0
+        },
+        {
+          "idade_min": 139,
+          "idade_max": 200,
+          "n": 126,
+          "ganhos": 0,
+          "perdidos": 0,
+          "abertos_no_fim": 126,
+          "win_rate_se_fechou": null,
+          "pct_abertos_no_fim": 1.0,
+          "pct_ganhos": 0.0
+        },
+        {
+          "idade_min": 201,
+          "idade_max": 1000,
+          "n": 23,
+          "ganhos": 0,
+          "perdidos": 0,
+          "abertos_no_fim": 23,
+          "win_rate_se_fechou": null,
+          "pct_abertos_no_fim": 1.0,
+          "pct_ganhos": 0.0
+        }
+      ]
+    },
+    "2017-09-30": {
+      "data": "2017-09-30",
+      "n_abertos": 2409,
+      "faixas": [
+        {
+          "idade_min": 0,
+          "idade_max": 30,
+          "n": 679,
+          "ganhos": 341,
+          "perdidos": 228,
+          "abertos_no_fim": 110,
+          "win_rate_se_fechou": 0.5992970123022847,
+          "pct_abertos_no_fim": 0.16200294550810015,
+          "pct_ganhos": 0.5022091310751104
+        },
+        {
+          "idade_min": 31,
+          "idade_max": 60,
+          "n": 545,
+          "ganhos": 187,
+          "perdidos": 112,
+          "abertos_no_fim": 246,
+          "win_rate_se_fechou": 0.6254180602006689,
+          "pct_abertos_no_fim": 0.45137614678899085,
+          "pct_ganhos": 0.3431192660550459
+        },
+        {
+          "idade_min": 61,
+          "idade_max": 90,
+          "n": 460,
+          "ganhos": 31,
+          "perdidos": 34,
+          "abertos_no_fim": 395,
+          "win_rate_se_fechou": 0.47692307692307695,
+          "pct_abertos_no_fim": 0.8586956521739131,
+          "pct_ganhos": 0.06739130434782609
+        },
+        {
+          "idade_min": 91,
+          "idade_max": 138,
+          "n": 195,
+          "ganhos": 0,
+          "perdidos": 2,
+          "abertos_no_fim": 193,
+          "win_rate_se_fechou": 0.0,
+          "pct_abertos_no_fim": 0.9897435897435898,
+          "pct_ganhos": 0.0
+        },
+        {
+          "idade_min": 139,
+          "idade_max": 200,
+          "n": 260,
+          "ganhos": 0,
+          "perdidos": 0,
+          "abertos_no_fim": 260,
+          "win_rate_se_fechou": null,
+          "pct_abertos_no_fim": 1.0,
+          "pct_ganhos": 0.0
+        },
+        {
+          "idade_min": 201,
+          "idade_max": 1000,
+          "n": 270,
+          "ganhos": 0,
+          "perdidos": 0,
+          "abertos_no_fim": 270,
+          "win_rate_se_fechou": null,
+          "pct_abertos_no_fim": 1.0,
+          "pct_ganhos": 0.0
+        }
+      ]
+    }
+  },
+  "evidencia_2a_q1": {
+    "primeiro_fechamento": "2017-03-01",
+    "ultimo_fechamento": "2017-12-31",
+    "primeiro_engajamento_dos_fechados": "2016-10-20",
+    "primeiro_trimestre": "2017-Q1",
+    "primeiro_mes_com_fechamento": "2017-03",
+    "win_rate_primeiro_trimestre": 0.8207109737248841,
+    "win_rate_depois_do_primeiro_trimestre": 0.6113126649076517,
+    "por_mes_de_fechamento": [
+      {
+        "mes": "2017-03",
+        "n": 647,
+        "win_rate": 0.8207109737248841,
+        "ciclo_mediano": 75.0,
+        "ciclo_min": 2,
+        "pct_ciclo_rapido": 0.18083462132921174
+      },
+      {
+        "mes": "2017-04",
+        "n": 586,
+        "win_rate": 0.4863481228668942,
+        "ciclo_mediano": 7.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 1.0
+      },
+      {
+        "mes": "2017-05",
+        "n": 805,
+        "win_rate": 0.5440993788819876,
+        "ciclo_mediano": 68.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.21366459627329193
+      },
+      {
+        "mes": "2017-06",
+        "n": 641,
+        "win_rate": 0.828393135725429,
+        "ciclo_mediano": 77.0,
+        "ciclo_min": 2,
+        "pct_ciclo_rapido": 0.21684867394695787
+      },
+      {
+        "mes": "2017-07",
+        "n": 627,
+        "win_rate": 0.49122807017543857,
+        "ciclo_mediano": 7.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 1.0
+      },
+      {
+        "mes": "2017-08",
+        "n": 785,
+        "win_rate": 0.5681528662420382,
+        "ciclo_mediano": 70.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.21656050955414013
+      },
+      {
+        "mes": "2017-09",
+        "n": 635,
+        "win_rate": 0.7921259842519685,
+        "ciclo_mediano": 73.0,
+        "ciclo_min": 2,
+        "pct_ciclo_rapido": 0.2283464566929134
+      },
+      {
+        "mes": "2017-10",
+        "n": 566,
+        "win_rate": 0.4929328621908127,
+        "ciclo_mediano": 7.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 1.0
+      },
+      {
+        "mes": "2017-11",
+        "n": 768,
+        "win_rate": 0.5286458333333334,
+        "ciclo_mediano": 66.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.23828125
+      },
+      {
+        "mes": "2017-12",
+        "n": 651,
+        "win_rate": 0.7849462365591398,
+        "ciclo_mediano": 76.0,
+        "ciclo_min": 2,
+        "pct_ciclo_rapido": 0.15514592933947774
+      }
+    ],
+    "por_trimestre_de_fechamento": [
+      {
+        "trimestre": "2017-Q1",
+        "n": 647,
+        "win_rate": 0.8207109737248841,
+        "ciclo_mediano": 75.0,
+        "ciclo_min": 2,
+        "pct_ciclo_rapido": 0.18083462132921174
+      },
+      {
+        "trimestre": "2017-Q2",
+        "n": 2032,
+        "win_rate": 0.6171259842519685,
+        "ciclo_mediano": 37.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.44143700787401574
+      },
+      {
+        "trimestre": "2017-Q3",
+        "n": 2047,
+        "win_rate": 0.6140693698094772,
+        "ciclo_mediano": 27.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.4601856375183195
+      },
+      {
+        "trimestre": "2017-Q4",
+        "n": 1985,
+        "win_rate": 0.6025188916876574,
+        "ciclo_mediano": 41.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.4282115869017632
+      }
+    ],
+    "por_mes_dentro_do_trimestre": [
+      {
+        "mes_do_trimestre": 1,
+        "n": 1779,
+        "win_rate": 0.4901630129286116,
+        "ciclo_mediano": 7.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 1.0
+      },
+      {
+        "mes_do_trimestre": 2,
+        "n": 2358,
+        "win_rate": 0.5470737913486005,
+        "ciclo_mediano": 68.0,
+        "ciclo_min": 1,
+        "pct_ciclo_rapido": 0.22264631043256997
+      },
+      {
+        "mes_do_trimestre": 3,
+        "n": 2574,
+        "win_rate": 0.8065268065268065,
+        "ciclo_mediano": 75.0,
+        "ciclo_min": 2,
+        "pct_ciclo_rapido": 0.19502719502719504
+      }
+    ],
+    "pct_fechamentos_rapidos_no_1o_mes_do_trimestre": 0.6339985744832501,
+    "por_coorte_de_engajamento": [
+      {
+        "mes": "2016-10",
+        "n_fechados": 7,
+        "win_rate": 1.0,
+        "ciclo_min": 123,
+        "piso_do_recorte_dias": 121,
+        "folga_dias": 2,
+        "pct_ciclo_rapido": 0.0
+      },
+      {
+        "mes": "2016-11",
+        "n_fechados": 102,
+        "win_rate": 0.8137254901960784,
+        "ciclo_min": 96,
+        "piso_do_recorte_dias": 91,
+        "folga_dias": 5,
+        "pct_ciclo_rapido": 0.0
+      },
+      {
+        "mes": "2016-12",
+        "n_fechados": 196,
+        "win_rate": 0.8163265306122449,
+        "ciclo_min": 63,
+        "piso_do_recorte_dias": 60,
+        "folga_dias": 3,
+        "pct_ciclo_rapido": 0.0
+      },
+      {
+        "mes": "2017-01",
+        "n_fechados": 247,
+        "win_rate": 0.7327935222672065,
+        "ciclo_min": 36,
+        "piso_do_recorte_dias": 29,
+        "folga_dias": 7,
+        "pct_ciclo_rapido": 0.0
+      },
+      {
+        "mes": "2017-02",
+        "n_fechados": 420,
+        "win_rate": 0.6595238095238095,
+        "ciclo_min": 5,
+        "piso_do_recorte_dias": 1,
+        "folga_dias": 4,
+        "pct_ciclo_rapido": 0.0761904761904762
+      },
+      {
+        "mes": "2017-03",
+        "n_fechados": 655,
+        "win_rate": 0.6717557251908397,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.3190839694656489
+      },
+      {
+        "mes": "2017-04",
+        "n_fechados": 753,
+        "win_rate": 0.5670650730411687,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.6706507304116865
+      },
+      {
+        "mes": "2017-05",
+        "n_fechados": 588,
+        "win_rate": 0.6224489795918368,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.27721088435374147
+      },
+      {
+        "mes": "2017-06",
+        "n_fechados": 681,
+        "win_rate": 0.6651982378854625,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.37298091042584436
+      },
+      {
+        "mes": "2017-07",
+        "n_fechados": 796,
+        "win_rate": 0.5540201005025126,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.6658291457286433
+      },
+      {
+        "mes": "2017-08",
+        "n_fechados": 539,
+        "win_rate": 0.6326530612244898,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.2949907235621521
+      },
+      {
+        "mes": "2017-09",
+        "n_fechados": 677,
+        "win_rate": 0.6277695716395865,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.33382570162481534
+      },
+      {
+        "mes": "2017-10",
+        "n_fechados": 703,
+        "win_rate": 0.5689900426742532,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.7069701280227596
+      },
+      {
+        "mes": "2017-11",
+        "n_fechados": 244,
+        "win_rate": 0.6434426229508197,
+        "ciclo_min": 1,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.639344262295082
+      },
+      {
+        "mes": "2017-12",
+        "n_fechados": 103,
+        "win_rate": 0.7766990291262136,
+        "ciclo_min": 2,
+        "piso_do_recorte_dias": null,
+        "folga_dias": null,
+        "pct_ciclo_rapido": 0.7281553398058253
+      }
+    ],
+    "cruzamento_trimestre_engajamento_x_fechamento": {
+      "2016-Q4": {
+        "2017-Q1": 305
+      },
+      "2017-Q1": {
+        "2017-Q1": 342,
+        "2017-Q2": 980
+      },
+      "2017-Q2": {
+        "2017-Q2": 1052,
+        "2017-Q3": 969,
+        "2017-Q4": 1
+      },
+      "2017-Q3": {
+        "2017-Q3": 1078,
+        "2017-Q4": 934
+      },
+      "2017-Q4": {
+        "2017-Q4": 1050
+      }
+    },
+    "fechados_no_mesmo_trimestre": 3522,
+    "fechados_no_trimestre_seguinte": 3188,
+    "fechados_fora_da_regra_q_q1": 1,
+    "criterio": {
+      "c1_fechamentos_do_1o_trimestre_fora_do_1o_mes": 0,
+      "c1_vale": true,
+      "c2_win_rate_do_1o_mes": 0.8207109737248841,
+      "c2_media_dos_meses_de_fim_de_trimestre": 0.8018217855121792,
+      "c2_meses_de_fim_de_trimestre": [
+        "2017-06",
+        "2017-09",
+        "2017-12"
+      ],
+      "c2_diferenca_pp": 1.888918821270491,
+      "c2_tolerancia_pp": 5,
+      "c2_vale": true,
+      "c3_maior_folga_dias": 7,
+      "c3_tolerancia_dias": 7,
+      "c3_coortes_avaliadas": 5,
+      "c3_vale": true,
+      "c3_pct_ciclo_rapido_coortes_com_piso_alto": 0.0,
+      "c3_pct_ciclo_rapido_coortes_sem_recorte_minimo": 0.27721088435374147,
+      "artefato_de_recorte": true
+    }
+  },
+  "evidencia_2b_vendedores": {
+    "vendedores_cadastro": 35,
+    "vendedores_com_deals": 30,
+    "vendedores_sem_deals": 5,
+    "vendedores_com_deals_abertos": 27,
+    "vendedores_com_engaging": 27,
+    "vendedores_so_com_fechados": 3,
+    "managers": 6,
+    "regioes": 3,
+    "sem_deals": [
+      {
+        "sales_agent": "Carl Lin",
+        "manager": "Summer Sewald",
+        "regional_office": "West"
+      },
+      {
+        "sales_agent": "Carol Thompson",
+        "manager": "Celia Rouche",
+        "regional_office": "West"
+      },
+      {
+        "sales_agent": "Elizabeth Anderson",
+        "manager": "Cara Losch",
+        "regional_office": "East"
+      },
+      {
+        "sales_agent": "Mei-Mei Johns",
+        "manager": "Melvin Marxen",
+        "regional_office": "Central"
+      },
+      {
+        "sales_agent": "Natalya Ivanova",
+        "manager": "Rocco Neubert",
+        "regional_office": "East"
+      }
+    ],
+    "so_com_fechados": [
+      {
+        "sales_agent": "Donn Cantrell",
+        "manager": "Rocco Neubert",
+        "regional_office": "East"
+      },
+      {
+        "sales_agent": "Garret Kinder",
+        "manager": "Cara Losch",
+        "regional_office": "East"
+      },
+      {
+        "sales_agent": "Reed Clapper",
+        "manager": "Rocco Neubert",
+        "regional_office": "East"
+      }
+    ],
+    "managers_com_vendedor_sem_deals": [
+      "Cara Losch",
+      "Celia Rouche",
+      "Melvin Marxen",
+      "Rocco Neubert",
+      "Summer Sewald"
+    ],
+    "managers_sem_vendedor_sem_deals": [
+      "Dustin Brinkmann"
+    ]
+  },
+  "evidencia_2c_close_value": {
+    "geral": {
+      "n": 4238,
+      "media": 0.9964828117859809,
+      "mediana": 0.9981818181818182,
+      "p5": 0.8327272727272728,
+      "p95": 1.1636363636363636,
+      "min": 0.6573325036299523,
+      "max": 1.3418460415906603
+    },
+    "por_produto": {
+      "GTK 500": {
+        "n": 15,
+        "media": 0.9977385933452877,
+        "mediana": 0.967461147638972,
+        "p5": 0.9132284817692767,
+        "p95": 1.1139532277346085,
+        "min": 0.887104004781829,
+        "max": 1.1315002988643157
+      },
+      "GTX Basic": {
+        "n": 915,
+        "media": 0.9920774962742176,
+        "mediana": 0.9945454545454545,
+        "p5": 0.8290909090909091,
+        "p95": 1.1509090909090909,
+        "min": 0.6636363636363637,
+        "max": 1.3018181818181818
+      },
+      "GTX Plus Basic": {
+        "n": 653,
+        "media": 0.9854503638456981,
+        "mediana": 0.9881386861313869,
+        "p5": 0.8191605839416058,
+        "p95": 1.139963503649635,
+        "min": 0.6861313868613139,
+        "max": 1.2536496350364963
+      },
+      "GTX Plus Pro": {
+        "n": 479,
+        "media": 1.0014368527403024,
+        "mediana": 1.003830718715797,
+        "p5": 0.8435972272893104,
+        "p95": 1.169463699379788,
+        "min": 0.6756658153958409,
+        "max": 1.3418460415906603
+      },
+      "GTX Pro": {
+        "n": 729,
+        "media": 0.9988814938302905,
+        "mediana": 1.0014519809168223,
+        "p5": 0.8345571458203692,
+        "p95": 1.1704210744658785,
+        "min": 0.6573325036299523,
+        "max": 1.2789877618751297
+      },
+      "MG Advanced": {
+        "n": 654,
+        "media": 0.9988125399387657,
+        "mediana": 0.9969053934571176,
+        "p5": 0.8388152077807249,
+        "p95": 1.1671234895372826,
+        "min": 0.7300324196875921,
+        "max": 1.3132920719127616
+      },
+      "MG Special": {
+        "n": 793,
+        "media": 1.0035079674423937,
+        "mediana": 1.0,
+        "p5": 0.8545454545454545,
+        "p95": 1.1636363636363636,
+        "min": 0.6909090909090909,
+        "max": 1.309090909090909
+      }
+    },
+    "por_trimestre_de_fechamento": {
+      "2017-Q1": {
+        "n": 531,
+        "media": 0.9934976906922696,
+        "mediana": 0.9954379562043796,
+        "p5": 0.8363636363636363,
+        "p95": 1.160909090909091,
+        "min": 0.6636363636363637,
+        "max": 1.2646625405246095
+      },
+      "2017-Q2": {
+        "n": 1254,
+        "media": 0.9980673007406444,
+        "mediana": 0.9984686315551281,
+        "p5": 0.8363636363636363,
+        "p95": 1.162172069167091,
+        "min": 0.6573325036299523,
+        "max": 1.3418460415906603
+      },
+      "2017-Q3": {
+        "n": 1257,
+        "media": 0.9950199255596324,
+        "mediana": 1.0,
+        "p5": 0.8273621942929126,
+        "p95": 1.1636363636363636,
+        "min": 0.6836363636363636,
+        "max": 1.309090909090909
+      },
+      "2017-Q4": {
+        "n": 1196,
+        "media": 0.997684315245958,
+        "mediana": 0.9979257415473968,
+        "p5": 0.8307702895426354,
+        "p95": 1.1675268293336318,
+        "min": 0.6756658153958409,
+        "max": 1.331630791681868
+      }
+    },
+    "perdidos_n": 2473,
+    "perdidos_com_close_value_zero": 2473,
+    "ganhos_com_close_value_zero": 0,
+    "criterio": {
+      "media_por_produto_minima": 0.9854503638456981,
+      "media_por_produto_maxima": 1.0035079674423937,
+      "faixa_aceita_min": 0.95,
+      "faixa_aceita_max": 1.05,
+      "faixa_vale": true,
+      "variacao_entre_trimestres_pp": 0.45696100483748614,
+      "variacao_aceita_pp": 3,
+      "variacao_vale": true,
+      "preco_de_tabela_serve_como_valor_do_deal_aberto": true
+    }
+  }
+}

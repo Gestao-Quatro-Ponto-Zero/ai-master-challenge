@@ -1,0 +1,4959 @@
+{
+  "atributos": [
+    {
+      "atributo": "produto",
+      "coluna": "product",
+      "entra": false,
+      "melhora_log_loss_em_todos": false,
+      "nao_piora_receita_em_nenhum": false,
+      "por_corte": [
+        {
+          "cut": "2017-06-30",
+          "delta_log_loss": 0.006034062620614344,
+          "delta_log_loss_treino": -0.005737963775043653,
+          "delta_receita_top20": -0.0045387189326926425,
+          "log_loss_atributo": 0.53516804413237,
+          "log_loss_base": 0.5291339815117556,
+          "n_avaliacao": 1686,
+          "n_niveis": 7,
+          "n_treino": 1330,
+          "receita_top20_atributo": 0.6080079975792426,
+          "receita_top20_base": 0.6125467165119353,
+          "referencia": "GTX Basic"
+        },
+        {
+          "cut": "2017-07-31",
+          "delta_log_loss": 0.001738892703978201,
+          "delta_log_loss_treino": -0.002960026423274642,
+          "delta_receita_top20": 0.001815210208355733,
+          "log_loss_atributo": 0.5620415614280785,
+          "log_loss_base": 0.5603026687241003,
+          "n_avaliacao": 2257,
+          "n_niveis": 7,
+          "n_treino": 2948,
+          "receita_top20_atributo": 0.5803363478527889,
+          "receita_top20_base": 0.5785211376444331,
+          "referencia": "GTX Basic"
+        },
+        {
+          "cut": "2017-08-31",
+          "delta_log_loss": -0.0003151154558215241,
+          "delta_log_loss_treino": -0.0005794267676507703,
+          "delta_receita_top20": -0.0033886289913277468,
+          "log_loss_atributo": 0.5253521397490666,
+          "log_loss_base": 0.5256672552048881,
+          "n_avaliacao": 2265,
+          "n_niveis": 7,
+          "n_treino": 4483,
+          "receita_top20_atributo": 0.6032200940044575,
+          "receita_top20_base": 0.6066087229957853,
+          "referencia": "GTX Basic"
+        },
+        {
+          "cut": "2017-09-30",
+          "delta_log_loss": 0.0007038598565223264,
+          "delta_log_loss_treino": -0.0003516587573646479,
+          "delta_receita_top20": -0.0009016116355821113,
+          "log_loss_atributo": 0.48357879482307786,
+          "log_loss_base": 0.48287493496655554,
+          "n_avaliacao": 2409,
+          "n_niveis": 7,
+          "n_treino": 6169,
+          "receita_top20_atributo": 0.646771051812574,
+          "receita_top20_base": 0.6476726634481561,
+          "referencia": "GTX Basic"
+        }
+      ],
+      "subconjunto": "todos os deals"
+    },
+    {
+      "atributo": "região",
+      "coluna": "regional_office",
+      "entra": false,
+      "melhora_log_loss_em_todos": false,
+      "nao_piora_receita_em_nenhum": false,
+      "por_corte": [
+        {
+          "cut": "2017-06-30",
+          "delta_log_loss": -0.01582577778515515,
+          "delta_log_loss_treino": -0.01905504117704826,
+          "delta_receita_top20": 0.02500326685856802,
+          "log_loss_atributo": 0.5133082037266005,
+          "log_loss_base": 0.5291339815117556,
+          "n_avaliacao": 1686,
+          "n_niveis": 3,
+          "n_treino": 1330,
+          "receita_top20_atributo": 0.6375499833705033,
+          "receita_top20_base": 0.6125467165119353,
+          "referencia": "West"
+        },
+        {
+          "cut": "2017-07-31",
+          "delta_log_loss": 0.03213268085295362,
+          "delta_log_loss_treino": -0.023676142338510342,
+          "delta_receita_top20": -0.047131770559734054,
+          "log_loss_atributo": 0.5924353495770539,
+          "log_loss_base": 0.5603026687241003,
+          "n_avaliacao": 2257,
+          "n_niveis": 3,
+          "n_treino": 2948,
+          "receita_top20_atributo": 0.5313893670846991,
+          "receita_top20_base": 0.5785211376444331,
+          "referencia": "West"
+        },
+        {
+          "cut": "2017-08-31",
+          "delta_log_loss": 0.059553456412239525,
+          "delta_log_loss_treino": -0.03052727167077085,
+          "delta_receita_top20": -0.04192916933306856,
+          "log_loss_atributo": 0.5852207116171276,
+          "log_loss_base": 0.5256672552048881,
+          "n_avaliacao": 2265,
+          "n_niveis": 3,
+          "n_treino": 4483,
+          "receita_top20_atributo": 0.5646795536627167,
+          "receita_top20_base": 0.6066087229957853,
+          "referencia": "West"
+        },
+        {
+          "cut": "2017-09-30",
+          "delta_log_loss": 0.0644653060928051,
+          "delta_log_loss_treino": -0.028831623186314936,
+          "delta_receita_top20": -0.06130043610276115,
+          "log_loss_atributo": 0.5473402410593606,
+          "log_loss_base": 0.48287493496655554,
+          "n_avaliacao": 2409,
+          "n_niveis": 3,
+          "n_treino": 6169,
+          "receita_top20_atributo": 0.586372227345395,
+          "receita_top20_base": 0.6476726634481561,
+          "referencia": "West"
+        }
+      ],
+      "subconjunto": "todos os deals"
+    },
+    {
+      "atributo": "setor",
+      "coluna": "sector",
+      "entra": false,
+      "melhora_log_loss_em_todos": false,
+      "nao_piora_receita_em_nenhum": false,
+      "por_corte": [
+        {
+          "cut": "2017-06-30",
+          "delta_log_loss": 0.0061256725540200785,
+          "delta_log_loss_treino": -0.0047591005393538,
+          "delta_receita_top20": -0.008369168730365195,
+          "log_loss_atributo": 0.6236822112425214,
+          "log_loss_base": 0.6175565386885014,
+          "n_avaliacao": 1202,
+          "n_niveis": 10,
+          "n_treino": 1097,
+          "receita_top20_atributo": 0.5250161408852682,
+          "receita_top20_base": 0.5333853096156334,
+          "referencia": "retail"
+        },
+        {
+          "cut": "2017-07-31",
+          "delta_log_loss": 0.003920082548646842,
+          "delta_log_loss_treino": -0.003751004554617521,
+          "delta_receita_top20": -0.007513721281639518,
+          "log_loss_atributo": 0.6437954005446314,
+          "log_loss_base": 0.6398753179959845,
+          "n_avaliacao": 1497,
+          "n_niveis": 10,
+          "n_treino": 2386,
+          "receita_top20_atributo": 0.5017986943117261,
+          "receita_top20_base": 0.5093124155933656,
+          "referencia": "retail"
+        },
+        {
+          "cut": "2017-08-31",
+          "delta_log_loss": 0.0028702106002224115,
+          "delta_log_loss_treino": -0.0029999235476219077,
+          "delta_receita_top20": 0.0021491807898619264,
+          "log_loss_atributo": 0.641490263607419,
+          "log_loss_base": 0.6386200530071966,
+          "n_avaliacao": 1331,
+          "n_niveis": 10,
+          "n_treino": 3511,
+          "receita_top20_atributo": 0.5372729393851677,
+          "receita_top20_base": 0.5351237585953058,
+          "referencia": "retail"
+        },
+        {
+          "cut": "2017-09-30",
+          "delta_log_loss": 0.0028384273726060893,
+          "delta_log_loss_treino": -0.001766332177921992,
+          "delta_receita_top20": -0.0033124589824461426,
+          "log_loss_atributo": 0.61369003505417,
+          "log_loss_base": 0.6108516076815639,
+          "n_avaliacao": 1401,
+          "n_niveis": 10,
+          "n_treino": 4713,
+          "receita_top20_atributo": 0.5603171002379264,
+          "receita_top20_base": 0.5636295592203725,
+          "referencia": "retail"
+        }
+      ],
+      "subconjunto": "só deals com conta"
+    },
+    {
+      "atributo": "porte",
+      "coluna": "porte",
+      "entra": false,
+      "melhora_log_loss_em_todos": false,
+      "nao_piora_receita_em_nenhum": false,
+      "por_corte": [
+        {
+          "cut": "2017-06-30",
+          "delta_log_loss": -0.0006983885960870628,
+          "delta_log_loss_treino": -0.0003107636058953256,
+          "delta_receita_top20": 0.013220871660165279,
+          "log_loss_atributo": 0.6168581500924143,
+          "log_loss_base": 0.6175565386885014,
+          "n_avaliacao": 1202,
+          "n_niveis": 3,
+          "n_treino": 1097,
+          "receita_top20_atributo": 0.5466061812757986,
+          "receita_top20_base": 0.5333853096156334,
+          "referencia": "grande"
+        },
+        {
+          "cut": "2017-07-31",
+          "delta_log_loss": -0.00037095526734809425,
+          "delta_log_loss_treino": -0.00018502703774880835,
+          "delta_receita_top20": 0.008411163313803427,
+          "log_loss_atributo": 0.6395043627286364,
+          "log_loss_base": 0.6398753179959845,
+          "n_avaliacao": 1497,
+          "n_niveis": 3,
+          "n_treino": 2386,
+          "receita_top20_atributo": 0.517723578907169,
+          "receita_top20_base": 0.5093124155933656,
+          "referencia": "grande"
+        },
+        {
+          "cut": "2017-08-31",
+          "delta_log_loss": -6.189325875871621e-05,
+          "delta_log_loss_treino": -0.0004409991030737137,
+          "delta_receita_top20": 0.00030251324773566957,
+          "log_loss_atributo": 0.6385581597484379,
+          "log_loss_base": 0.6386200530071966,
+          "n_avaliacao": 1331,
+          "n_niveis": 3,
+          "n_treino": 3511,
+          "receita_top20_atributo": 0.5354262718430415,
+          "receita_top20_base": 0.5351237585953058,
+          "referencia": "grande"
+        },
+        {
+          "cut": "2017-09-30",
+          "delta_log_loss": 0.0004133860518040766,
+          "delta_log_loss_treino": -0.0004947860175891217,
+          "delta_receita_top20": -0.0007231620473721057,
+          "log_loss_atributo": 0.611264993733368,
+          "log_loss_base": 0.6108516076815639,
+          "n_avaliacao": 1401,
+          "n_niveis": 3,
+          "n_treino": 4713,
+          "receita_top20_atributo": 0.5629063971730004,
+          "receita_top20_base": 0.5636295592203725,
+          "referencia": "grande"
+        }
+      ],
+      "subconjunto": "só deals com conta"
+    }
+  ],
+  "auditoria": {
+    "has_account": [
+      {
+        "auc_has_account": 0.7246982358402971,
+        "cut": "2017-06-30",
+        "ganhos_sem_conta": 0,
+        "ganhos_top20_has_account": 0.28053244592346094,
+        "n": 1686,
+        "n_com_conta": 1202,
+        "n_sem_conta": 484,
+        "receita_top20_has_account": 0.28053244592346094,
+        "taxa_ganho_com_conta": 0.5066555740432612,
+        "taxa_ganho_sem_conta": 0.0
+      },
+      {
+        "auc_has_account": 0.7508250825082509,
+        "cut": "2017-07-31",
+        "ganhos_sem_conta": 0,
+        "ganhos_top20_has_account": 0.3015364061456246,
+        "n": 2257,
+        "n_com_conta": 1497,
+        "n_sem_conta": 760,
+        "receita_top20_has_account": 0.3015364061456246,
+        "taxa_ganho_com_conta": 0.4956579826319305,
+        "taxa_ganho_sem_conta": 0.0
+      },
+      {
+        "auc_has_account": 0.7868550368550369,
+        "cut": "2017-08-31",
+        "ganhos_sem_conta": 0,
+        "ganhos_top20_has_account": 0.34034560480841475,
+        "n": 2265,
+        "n_com_conta": 1331,
+        "n_sem_conta": 934,
+        "receita_top20_has_account": 0.34034560480841475,
+        "taxa_ganho_com_conta": 0.47858752817430505,
+        "taxa_ganho_sem_conta": 0.0
+      },
+      {
+        "auc_has_account": 0.7724324324324324,
+        "cut": "2017-09-30",
+        "ganhos_sem_conta": 0,
+        "ganhos_top20_has_account": 0.3438972162740899,
+        "n": 2409,
+        "n_com_conta": 1401,
+        "n_sem_conta": 1008,
+        "receita_top20_has_account": 0.3438972162740899,
+        "taxa_ganho_com_conta": 0.39900071377587437,
+        "taxa_ganho_sem_conta": 0.0
+      }
+    ],
+    "vazado": [
+      {
+        "cut": "2017-06-30",
+        "delta_auc": 0.008437351824154282,
+        "delta_receita_top20": 0.00950855492059044,
+        "knot_days": 61,
+        "p_fresh": 0.4952189229994967,
+        "rotulo": "VAZADO — modelo ajustado com dados até 31/12/2017; não é resultado",
+        "score_honesto": {
+          "auc": 0.6616643263459131,
+          "ganhos_top20": 0.25733210876401996,
+          "receita_top20": 0.6100360195213037
+        },
+        "score_vazado": {
+          "auc": 0.6701016781700674,
+          "ganhos_top20": 0.26776402739396854,
+          "receita_top20": 0.6195445744418941
+        }
+      },
+      {
+        "cut": "2017-07-31",
+        "delta_auc": -0.0012565272699777141,
+        "delta_receita_top20": 0.006483644661207322,
+        "knot_days": 107,
+        "p_fresh": 0.42549082716446734,
+        "rotulo": "VAZADO — modelo ajustado com dados até 31/12/2017; não é resultado",
+        "score_honesto": {
+          "auc": 0.6309950806401395,
+          "ganhos_top20": 0.2483428346027781,
+          "receita_top20": 0.5741951828305277
+        },
+        "score_vazado": {
+          "auc": 0.6297385533701618,
+          "ganhos_top20": 0.25155422094226887,
+          "receita_top20": 0.580678827491735
+        }
+      },
+      {
+        "cut": "2017-08-31",
+        "delta_auc": 0.013912728198442581,
+        "delta_receita_top20": 0.004110626255047767,
+        "knot_days": 123,
+        "p_fresh": 0.3987341772151899,
+        "rotulo": "VAZADO — modelo ajustado com dados até 31/12/2017; não é resultado",
+        "score_honesto": {
+          "auc": 0.6302076302076302,
+          "ganhos_top20": 0.260596546310832,
+          "receita_top20": 0.5991094677494098
+        },
+        "score_vazado": {
+          "auc": 0.6441203584060727,
+          "ganhos_top20": 0.2621664050235479,
+          "receita_top20": 0.6032200940044575
+        }
+      },
+      {
+        "cut": "2017-09-30",
+        "delta_auc": 0.012067881835323702,
+        "delta_receita_top20": 0.07208580913370644,
+        "knot_days": 61,
+        "p_fresh": 0.4952189229994967,
+        "rotulo": "VAZADO — modelo ajustado com dados até 31/12/2017; não é resultado",
+        "score_honesto": {
+          "auc": 0.7215727892472078,
+          "ganhos_top20": 0.32780475338614873,
+          "receita_top20": 0.7174931442885351
+        },
+        "score_vazado": {
+          "auc": 0.7336406710825315,
+          "ganhos_top20": 0.3774597495527728,
+          "receita_top20": 0.7895789534222415
+        }
+      }
+    ]
+  },
+  "config": {
+    "adjust_bin_days": 15,
+    "adjust_pseudo_count": 20,
+    "attribute_l2": 1.0,
+    "bootstrap_reps": 1000,
+    "cuts": [
+      "2017-06-30",
+      "2017-07-31",
+      "2017-08-31",
+      "2017-09-30"
+    ],
+    "first_snapshot": "2017-03-31",
+    "foque_half_fraction": 0.5,
+    "horizon_days": 90,
+    "intra_foque_max_age": 90,
+    "limpe_min_chance": 0.02,
+    "method_labels": {
+      "aleatorio": "Aleatório (média de sorteios)",
+      "p_only": "Só a chance v2 (diagnóstico)",
+      "recencia": "Mais recentes primeiro",
+      "score": "Score v2 (valor esperado, curva por faixas)",
+      "score_v1": "Score v1 (platô, antes da correção)",
+      "valor": "Ordenar por valor"
+    },
+    "methods": [
+      "score",
+      "score_v1",
+      "p_only",
+      "valor",
+      "recencia",
+      "aleatorio"
+    ],
+    "primary_metric": "receita_top20",
+    "random_seeds": 200,
+    "reference_date": "2017-12-31",
+    "tie_tol": 0.01,
+    "top_frac": 0.2,
+    "v2_pseudo_count": 0
+  },
+  "criterion": {
+    "adjustment_applied": false,
+    "final_curve": "v2",
+    "metric": "receita_top20",
+    "passed": true,
+    "per_cut": [
+      {
+        "aleatorio_media": 0.20000716708869548,
+        "aleatorio_p95": 0.23415349127614554,
+        "bate_aleatorio_media": true,
+        "bate_aleatorio_p95": true,
+        "bate_recencia": true,
+        "bate_valor": true,
+        "cut": "2017-06-30",
+        "passa": true,
+        "recencia": 0.2767033658237655,
+        "score": 0.6100360195213037,
+        "valor": 0.48622284852058695
+      },
+      {
+        "aleatorio_media": 0.2010251994491802,
+        "aleatorio_p95": 0.23408944689439087,
+        "bate_aleatorio_media": true,
+        "bate_aleatorio_p95": true,
+        "bate_recencia": true,
+        "bate_valor": true,
+        "cut": "2017-07-31",
+        "passa": true,
+        "recencia": 0.12772327755313667,
+        "score": 0.5741951828305277,
+        "valor": 0.48678803602002974
+      },
+      {
+        "aleatorio_media": 0.19779801178365738,
+        "aleatorio_p95": 0.23047873176732792,
+        "bate_aleatorio_media": true,
+        "bate_aleatorio_p95": true,
+        "bate_recencia": true,
+        "bate_valor": true,
+        "cut": "2017-08-31",
+        "passa": true,
+        "recencia": 0.3159545337763501,
+        "score": 0.5991094677494098,
+        "valor": 0.481545106686654
+      },
+      {
+        "aleatorio_media": 0.2028046620891936,
+        "aleatorio_p95": 0.243750039938399,
+        "bate_aleatorio_media": true,
+        "bate_aleatorio_p95": true,
+        "bate_recencia": true,
+        "bate_valor": true,
+        "cut": "2017-09-30",
+        "passa": true,
+        "recencia": 0.46824100713955347,
+        "score": 0.7174931442885351,
+        "valor": 0.4707339604094384
+      }
+    ],
+    "post_backtest_change": true,
+    "rule": "O score vence se, nos 4 cortes, a receita capturada no top 20% for maior que a de ordenar por valor, maior que a de ordenar pelos mais recentes e maior que a média e o percentil 95 de 200 sorteios aleatórios. Diferença de até 1 ponto percentual é empate, e empate não vence.",
+    "runs": {
+      "v1": {
+        "media_receita_top20_score": 0.6113373101500774,
+        "passed": true,
+        "per_cut": [
+          {
+            "aleatorio_media": 0.20000716708869548,
+            "aleatorio_p95": 0.23415349127614554,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-06-30",
+            "passa": true,
+            "recencia": 0.2767033658237655,
+            "score": 0.6125467165119353,
+            "valor": 0.48622284852058695
+          },
+          {
+            "aleatorio_media": 0.2010251994491802,
+            "aleatorio_p95": 0.23408944689439087,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-07-31",
+            "passa": true,
+            "recencia": 0.12772327755313667,
+            "score": 0.5785211376444331,
+            "valor": 0.48678803602002974
+          },
+          {
+            "aleatorio_media": 0.19779801178365738,
+            "aleatorio_p95": 0.23047873176732792,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-08-31",
+            "passa": true,
+            "recencia": 0.3159545337763501,
+            "score": 0.6066087229957853,
+            "valor": 0.481545106686654
+          },
+          {
+            "aleatorio_media": 0.2028046620891936,
+            "aleatorio_p95": 0.243750039938399,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-09-30",
+            "passa": true,
+            "recencia": 0.46824100713955347,
+            "score": 0.6476726634481561,
+            "valor": 0.4707339604094384
+          }
+        ]
+      },
+      "v2": {
+        "media_receita_top20_score": 0.625208453597444,
+        "passed": true,
+        "per_cut": [
+          {
+            "aleatorio_media": 0.20000716708869548,
+            "aleatorio_p95": 0.23415349127614554,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-06-30",
+            "passa": true,
+            "recencia": 0.2767033658237655,
+            "score": 0.6100360195213037,
+            "valor": 0.48622284852058695
+          },
+          {
+            "aleatorio_media": 0.2010251994491802,
+            "aleatorio_p95": 0.23408944689439087,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-07-31",
+            "passa": true,
+            "recencia": 0.12772327755313667,
+            "score": 0.5741951828305277,
+            "valor": 0.48678803602002974
+          },
+          {
+            "aleatorio_media": 0.19779801178365738,
+            "aleatorio_p95": 0.23047873176732792,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-08-31",
+            "passa": true,
+            "recencia": 0.3159545337763501,
+            "score": 0.5991094677494098,
+            "valor": 0.481545106686654
+          },
+          {
+            "aleatorio_media": 0.2028046620891936,
+            "aleatorio_p95": 0.243750039938399,
+            "bate_aleatorio_media": true,
+            "bate_aleatorio_p95": true,
+            "bate_recencia": true,
+            "bate_valor": true,
+            "cut": "2017-09-30",
+            "passa": true,
+            "recencia": 0.46824100713955347,
+            "score": 0.7174931442885351,
+            "valor": 0.4707339604094384
+          }
+        ]
+      }
+    },
+    "tie_tol": 0.01,
+    "v1_passed": true
+  },
+  "cuts": [
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.40505796854125586,
+          "ci_low": 0.26698889002541176,
+          "diff": 0.33333265369753823,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.15654554381156985,
+          "ci_low": 0.09325242132520865,
+          "diff": 0.12381317100071676,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.23948590806478642,
+        "log_loss_constante": 0.6720732921967496,
+        "log_loss_modelo": 0.5297407111857664,
+        "modelo": 0.18906005113140947,
+        "n": 1686
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 692,
+          "p_modelo": 0.49262153764712324,
+          "taxa_observada_90d": 0.5115606936416185
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 454,
+          "p_modelo": 0.4855408038626778,
+          "taxa_observada_90d": 0.44493392070484583
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 190,
+          "p_modelo": 0.3442147703591658,
+          "taxa_observada_90d": 0.21578947368421053
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 133,
+          "p_modelo": 0.008580274214949134,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 103,
+          "p_modelo": 0.0,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 114,
+          "p_modelo": 0.0,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 606,
+          "n": 1283,
+          "pct_ganhos": 0.47233047544816836,
+          "pct_receita": 0.9988109195601651,
+          "receita_ganha": 1439736.0,
+          "valor_esperado": 1543971.2655238628,
+          "valor_tabela": 3202532.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 333,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 343.81764705882307,
+          "valor_tabela": 838536.0
+        },
+        "Reative": {
+          "ganhos": 3,
+          "n": 70,
+          "pct_ganhos": 0.04285714285714286,
+          "pct_receita": 0.0011890804398348885,
+          "receita_ganha": 1714.0,
+          "valor_esperado": 22510.733702057274,
+          "valor_tabela": 175739.0
+        }
+      },
+      "curva": "v2",
+      "cut": "2017-06-30",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": -0.14696268089954012,
+          "ci_low": -0.31288764187165097,
+          "diff": -0.23418843086789587
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 692,
+            "p_modelo": 0.49262153764712324,
+            "taxa_ganho_90d": 0.5115606936416185,
+            "taxa_ganho_final": 0.5289017341040463
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 454,
+            "p_modelo": 0.4855408038626778,
+            "taxa_ganho_90d": 0.44493392070484583,
+            "taxa_ganho_final": 0.44493392070484583
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 137,
+            "p_modelo": 0.4232682438362181,
+            "taxa_ganho_90d": 0.2773722627737226,
+            "taxa_ganho_final": 0.2773722627737226
+          }
+        ],
+        "n_foque": 1283
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.499400550089725,
+          "ganhos_top20": 0.19905418719211823,
+          "p5": {
+            "auc": 0.47398081699301564,
+            "ganhos_top20": 0.180623973727422,
+            "receita_top20": 0.16773027160151235
+          },
+          "p95": {
+            "auc": 0.5225098453558735,
+            "ganhos_top20": 0.21839080459770116,
+            "receita_top20": 0.23415349127614554
+          },
+          "receita_top20": 0.20000716708869548
+        },
+        "p_only": {
+          "auc": 0.7313349890912084,
+          "ganhos_top20": 0.2884706501710977,
+          "receita_top20": 0.28278699856669987
+        },
+        "recencia": {
+          "auc": 0.7339215390315189,
+          "ganhos_top20": 0.2934865900383142,
+          "receita_top20": 0.2767033658237655
+        },
+        "score": {
+          "auc": 0.6616643263459131,
+          "ganhos_top20": 0.25733210876401996,
+          "receita_top20": 0.6100360195213037
+        },
+        "valor": {
+          "auc": 0.48415976386392295,
+          "ganhos_top20": 0.19625296478744758,
+          "receita_top20": 0.48622284852058695
+        }
+      },
+      "modelo": {
+        "as_of": "2017-06-30",
+        "base_rate": 0.45789473684210524,
+        "curva_pontos": [
+          {
+            "idade": 0,
+            "p": 0.4931506849315068
+          },
+          {
+            "idade": 15,
+            "p": 0.4931506849315068
+          },
+          {
+            "idade": 30,
+            "p": 0.4891060981775285
+          },
+          {
+            "idade": 45,
+            "p": 0.4850615114235501
+          },
+          {
+            "idade": 60,
+            "p": 0.4850615114235501
+          },
+          {
+            "idade": 75,
+            "p": 0.3307660498294221
+          },
+          {
+            "idade": 90,
+            "p": 0.08823529411764706
+          },
+          {
+            "idade": 105,
+            "p": 0.0
+          },
+          {
+            "idade": 120,
+            "p": 0.0
+          },
+          {
+            "idade": 150,
+            "p": 0.0
+          }
+        ],
+        "faixas": {
+          "casos": [
+            357,
+            300,
+            272,
+            195,
+            102,
+            51,
+            22,
+            18,
+            9,
+            4
+          ],
+          "pontos_medios": [
+            7.5,
+            22.5,
+            37.5,
+            52.5,
+            67.5,
+            82.5,
+            97.5,
+            112.5,
+            127.5,
+            142.5
+          ],
+          "taxas": [
+            0.4931506849315068,
+            0.4931506849315068,
+            0.4850615114235501,
+            0.4850615114235501,
+            0.4850615114235501,
+            0.17647058823529413,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "fallback": false,
+        "fase": 3,
+        "horizon_days": 90,
+        "knot_days": 79,
+        "limpe_after_days": 95,
+        "limpe_rule": "chance",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 1,
+        "p_cauda": 0.0,
+        "p_fresh": 0.4931506849315068,
+        "train_rows": 1330,
+        "train_snapshots": [
+          "2017-03-31"
+        ],
+        "versao": "v2"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 609,
+        "ganhos_em_90d": 597,
+        "n": 1686,
+        "pct_ganhos": 0.3612099644128114,
+        "pct_ganhos_em_90d": 0.3540925266903915,
+        "receita_ganha": 1441450.0,
+        "valor_tabela": 4216807.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.5004107364600249,
+            "ganhos_top20": 0.19912972085385877,
+            "p5": {
+              "auc": 0.47088888282412017,
+              "ganhos_top20": 0.1839080459770115,
+              "receita_top20": 0.16510139096049117
+            },
+            "p95": {
+              "auc": 0.53313274110867,
+              "ganhos_top20": 0.21510673234811165,
+              "receita_top20": 0.23278511221339623
+            },
+            "receita_top20": 0.19895209337819558
+          },
+          "recencia": {
+            "auc": 0.501093932653776,
+            "ganhos_top20": 0.18113711001642036,
+            "receita_top20": 0.17654067952409033
+          },
+          "score": {
+            "auc": 0.49231517996443014,
+            "ganhos_top20": 0.1986863711001642,
+            "receita_top20": 0.4907655485795553
+          },
+          "valor": {
+            "auc": 0.49156693912640037,
+            "ganhos_top20": 0.20268644747393746,
+            "receita_top20": 0.4993547759967152
+          }
+        },
+        "n_abertos_em_31_12": 716,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 0,
+        "n_abertos_em_t": 1686,
+        "n_resolvidos": 970
+      }
+    },
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.5011937985115602,
+          "ci_low": 0.39168456121808726,
+          "diff": 0.44647190527739106,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.11296398238301127,
+          "ci_low": 0.06381614072606266,
+          "diff": 0.087407146810498,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.23235579461201958,
+        "log_loss_constante": 0.6577222749810104,
+        "log_loss_modelo": 0.5611880999783088,
+        "modelo": 0.19967356476952236,
+        "n": 2257
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 720,
+          "p_modelo": 0.4682959048877145,
+          "taxa_observada_90d": 0.24305555555555555
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 522,
+          "p_modelo": 0.46829590488771455,
+          "taxa_observada_90d": 0.5383141762452107
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 461,
+          "p_modelo": 0.4682959048877145,
+          "taxa_observada_90d": 0.455531453362256
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 198,
+          "p_modelo": 0.34047756033147286,
+          "taxa_observada_90d": 0.22727272727272727
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 133,
+          "p_modelo": 0.009862892525431221,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 223,
+          "p_modelo": 0.0,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 739,
+          "n": 1848,
+          "pct_ganhos": 0.3998917748917749,
+          "pct_receita": 0.9990444279669285,
+          "receita_ganha": 1791976.0,
+          "valor_esperado": 2071385.914124381,
+          "valor_tabela": 4470015.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 334,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 100.22941176470559,
+          "valor_tabela": 839632.0
+        },
+        "Reative": {
+          "ganhos": 3,
+          "n": 75,
+          "pct_ganhos": 0.04,
+          "pct_receita": 0.0009555720330714895,
+          "receita_ganha": 1714.0,
+          "valor_esperado": 23646.1845882871,
+          "valor_tabela": 189545.0
+        }
+      },
+      "curva": "v2",
+      "cut": "2017-07-31",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": 0.2241233498349835,
+          "ci_low": 0.12682171342134213,
+          "diff": 0.17278602860286027
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 720,
+            "p_modelo": 0.4682959048877145,
+            "taxa_ganho_90d": 0.24305555555555555,
+            "taxa_ganho_final": 0.2861111111111111
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 522,
+            "p_modelo": 0.46829590488771455,
+            "taxa_ganho_90d": 0.5383141762452107,
+            "taxa_ganho_final": 0.5383141762452107
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 606,
+            "p_modelo": 0.45492459087388254,
+            "taxa_ganho_90d": 0.4158415841584158,
+            "taxa_ganho_final": 0.4158415841584158
+          }
+        ],
+        "n_foque": 1848
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.5004191863930327,
+          "ganhos_top20": 0.20001886792452833,
+          "p5": {
+            "auc": 0.48239683132733757,
+            "ganhos_top20": 0.18113207547169816,
+            "receita_top20": 0.17172591138937052
+          },
+          "p95": {
+            "auc": 0.5214461850497718,
+            "ganhos_top20": 0.2196765498652291,
+            "receita_top20": 0.23408944689439087
+          },
+          "receita_top20": 0.2010251994491802
+        },
+        "p_only": {
+          "auc": 0.6428500262425164,
+          "ganhos_top20": 0.24760665489357747,
+          "receita_top20": 0.24690234598259303
+        },
+        "recencia": {
+          "auc": 0.578643039506107,
+          "ganhos_top20": 0.12194840200231037,
+          "receita_top20": 0.12772327755313667
+        },
+        "score": {
+          "auc": 0.6309950806401395,
+          "ganhos_top20": 0.2483428346027781,
+          "receita_top20": 0.5741951828305277
+        },
+        "valor": {
+          "auc": 0.5097052831967833,
+          "ganhos_top20": 0.2045504560056124,
+          "receita_top20": 0.48678803602002974
+        }
+      },
+      "modelo": {
+        "as_of": "2017-07-31",
+        "base_rate": 0.4437577255871446,
+        "curva_pontos": [
+          {
+            "idade": 0,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 15,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 30,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 45,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 60,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 75,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 90,
+            "p": 0.46829590488771466
+          },
+          {
+            "idade": 105,
+            "p": 0.3223832465615044
+          },
+          {
+            "idade": 120,
+            "p": 0.08823529411764706
+          },
+          {
+            "idade": 150,
+            "p": 0.0
+          }
+        ],
+        "faixas": {
+          "casos": [
+            232,
+            180,
+            233,
+            300,
+            272,
+            195,
+            102,
+            51,
+            22,
+            18,
+            9,
+            4
+          ],
+          "pontos_medios": [
+            7.5,
+            22.5,
+            37.5,
+            52.5,
+            67.5,
+            82.5,
+            97.5,
+            112.5,
+            127.5,
+            142.5,
+            157.5,
+            172.5
+          ],
+          "taxas": [
+            0.46829590488771466,
+            0.46829590488771466,
+            0.46829590488771466,
+            0.46829590488771466,
+            0.46829590488771466,
+            0.46829590488771466,
+            0.46829590488771466,
+            0.17647058823529413,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "fallback": false,
+        "fase": 1,
+        "horizon_days": 90,
+        "knot_days": 109,
+        "limpe_after_days": 125,
+        "limpe_rule": "chance",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 1,
+        "p_cauda": 0.0,
+        "p_fresh": 0.46829590488771466,
+        "train_rows": 1618,
+        "train_snapshots": [
+          "2017-04-30"
+        ],
+        "versao": "v2"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 742,
+        "ganhos_em_90d": 711,
+        "n": 2257,
+        "pct_ganhos": 0.3287549844926894,
+        "pct_ganhos_em_90d": 0.31501993797075767,
+        "receita_ganha": 1793690.0,
+        "valor_tabela": 5499192.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.4996804028868807,
+            "ganhos_top20": 0.19946091644204852,
+            "p5": {
+              "auc": 0.47089288260335266,
+              "ganhos_top20": 0.18566037735849059,
+              "receita_top20": 0.16983387876388897
+            },
+            "p95": {
+              "auc": 0.5286172574633199,
+              "ganhos_top20": 0.21408355795148248,
+              "receita_top20": 0.2282489449124431
+            },
+            "receita_top20": 0.1992807792873908
+          },
+          "recencia": {
+            "auc": 0.5251329037864849,
+            "ganhos_top20": 0.19277628032345015,
+            "receita_top20": 0.19869484693564665
+          },
+          "score": {
+            "auc": 0.5106866186425143,
+            "ganhos_top20": 0.2034102894644322,
+            "receita_top20": 0.48418217776470995
+          },
+          "valor": {
+            "auc": 0.5100857509488278,
+            "ganhos_top20": 0.20495509964666286,
+            "receita_top20": 0.48759921575394827
+          }
+        },
+        "n_abertos_em_31_12": 1118,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 0,
+        "n_abertos_em_t": 2257,
+        "n_resolvidos": 1139
+      }
+    },
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.3457118221598219,
+          "ci_low": 0.22139528685714358,
+          "diff": 0.2831549339730597,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.1464724937032846,
+          "ci_low": 0.09118172892763794,
+          "diff": 0.11756436106275575,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.20923784319667801,
+        "log_loss_constante": 0.6106691424464753,
+        "log_loss_modelo": 0.5221216022960751,
+        "modelo": 0.1821291736143643,
+        "n": 2265
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 662,
+          "p_modelo": 0.4335611237661351,
+          "taxa_observada_90d": 0.29154078549848944
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 587,
+          "p_modelo": 0.4335611237661351,
+          "taxa_observada_90d": 0.21294718909710392
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 317,
+          "p_modelo": 0.4335611237661351,
+          "taxa_observada_90d": 0.5173501577287066
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 211,
+          "p_modelo": 0.3981018218930434,
+          "taxa_observada_90d": 0.3222748815165877
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 128,
+          "p_modelo": 0.1864163280443756,
+          "taxa_observada_90d": 0.0234375
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 360,
+          "p_modelo": 0.0005482456140350877,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 637,
+          "n": 1831,
+          "pct_ganhos": 0.3478973238667395,
+          "pct_receita": 1.0,
+          "receita_ganha": 1450144.0,
+          "valor_esperado": 1817150.9561855565,
+          "valor_tabela": 4266512.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 408,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 4774.76201754386,
+          "valor_tabela": 1038920.0
+        },
+        "Reative": {
+          "ganhos": 0,
+          "n": 26,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 15093.910789473684,
+          "valor_tabela": 83815.0
+        }
+      },
+      "curva": "v2",
+      "cut": "2017-08-31",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": 0.16680825053726603,
+          "ci_low": 0.057289038735063004,
+          "diff": 0.1122392832300329
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 662,
+            "p_modelo": 0.4335611237661351,
+            "taxa_ganho_90d": 0.29154078549848944,
+            "taxa_ganho_final": 0.4123867069486405
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 587,
+            "p_modelo": 0.4335611237661351,
+            "taxa_ganho_90d": 0.21294718909710392,
+            "taxa_ganho_final": 0.21976149914821125
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 582,
+            "p_modelo": 0.4108802100033066,
+            "taxa_ganho_90d": 0.40378006872852235,
+            "taxa_ganho_final": 0.40378006872852235
+          }
+        ],
+        "n_foque": 1831
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.4984322530751102,
+          "ganhos_top20": 0.1989717425431711,
+          "p5": {
+            "auc": 0.47878463235606095,
+            "ganhos_top20": 0.18053375196232338,
+            "receita_top20": 0.16427816823708544
+          },
+          "p95": {
+            "auc": 0.5186620811620811,
+            "ganhos_top20": 0.21985871271585555,
+            "receita_top20": 0.23047873176732792
+          },
+          "receita_top20": 0.19779801178365738
+        },
+        "p_only": {
+          "auc": 0.6579395507966936,
+          "ganhos_top20": 0.2589570450674227,
+          "receita_top20": 0.2600031279448283
+        },
+        "recencia": {
+          "auc": 0.6579173722030864,
+          "ganhos_top20": 0.3402108095985647,
+          "receita_top20": 0.3159545337763501
+        },
+        "score": {
+          "auc": 0.6302076302076302,
+          "ganhos_top20": 0.260596546310832,
+          "receita_top20": 0.5991094677494098
+        },
+        "valor": {
+          "auc": 0.5004392325820898,
+          "ganhos_top20": 0.20410809094597215,
+          "receita_top20": 0.481545106686654
+        }
+      },
+      "modelo": {
+        "as_of": "2017-08-31",
+        "base_rate": 0.4013029315960912,
+        "curva_pontos": [
+          {
+            "idade": 0,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 15,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 30,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 45,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 60,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 75,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 90,
+            "p": 0.43356112376613515
+          },
+          {
+            "idade": 105,
+            "p": 0.3932511501183617
+          },
+          {
+            "idade": 120,
+            "p": 0.3514705882352941
+          },
+          {
+            "idade": 150,
+            "p": 0.013157894736842105
+          }
+        ],
+        "faixas": {
+          "casos": [
+            317,
+            233,
+            165,
+            139,
+            147,
+            165,
+            151,
+            85,
+            40,
+            38,
+            21,
+            20,
+            10,
+            4
+          ],
+          "pontos_medios": [
+            7.5,
+            22.5,
+            37.5,
+            52.5,
+            67.5,
+            82.5,
+            97.5,
+            112.5,
+            127.5,
+            142.5,
+            157.5,
+            172.5,
+            187.5,
+            202.5
+          ],
+          "taxas": [
+            0.43356112376613515,
+            0.43356112376613515,
+            0.43356112376613515,
+            0.43356112376613515,
+            0.43356112376613515,
+            0.43356112376613515,
+            0.43356112376613515,
+            0.35294117647058826,
+            0.35,
+            0.02631578947368421,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "fallback": false,
+        "fase": 2,
+        "horizon_days": 90,
+        "knot_days": 133,
+        "limpe_after_days": 138,
+        "limpe_rule": "ciclo",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 1,
+        "p_cauda": 0.0,
+        "p_fresh": 0.43356112376613515,
+        "train_rows": 1535,
+        "train_snapshots": [
+          "2017-05-31"
+        ],
+        "versao": "v2"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 637,
+        "ganhos_em_90d": 553,
+        "n": 2265,
+        "pct_ganhos": 0.28123620309050773,
+        "pct_ganhos_em_90d": 0.24415011037527592,
+        "receita_ganha": 1450144.0,
+        "valor_tabela": 5389247.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.5008688800039247,
+            "ganhos_top20": 0.20087441130298272,
+            "p5": {
+              "auc": 0.4688922684458399,
+              "ganhos_top20": 0.18767660910518058,
+              "receita_top20": 0.17246698948518224
+            },
+            "p95": {
+              "auc": 0.5373135792778649,
+              "ganhos_top20": 0.2144740973312402,
+              "receita_top20": 0.2316570768144405
+            },
+            "receita_top20": 0.19907049644724942
+          },
+          "recencia": {
+            "auc": 0.43937033948194665,
+            "ganhos_top20": 0.20055968875844654,
+            "receita_top20": 0.17006028067017753
+          },
+          "score": {
+            "auc": 0.4955111852433281,
+            "ganhos_top20": 0.20788524452646592,
+            "receita_top20": 0.4887785600486615
+          },
+          "valor": {
+            "auc": 0.49777705553375196,
+            "ganhos_top20": 0.20840375430041086,
+            "receita_top20": 0.4905854456009417
+          }
+        },
+        "n_abertos_em_31_12": 1372,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 81,
+        "n_abertos_em_t": 2265,
+        "n_resolvidos": 893
+      }
+    },
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.3196927546065024,
+          "ci_low": 0.17755460897247244,
+          "diff": 0.2492521371489816,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.3002369885821954,
+          "ci_low": 0.2032497805436382,
+          "diff": 0.24675918387909668,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.20486838807918697,
+        "log_loss_constante": 0.6017858423574949,
+        "log_loss_modelo": 0.43454697871735487,
+        "modelo": 0.15071904777811862,
+        "n": 2409
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 679,
+          "p_modelo": 0.5008594425902834,
+          "taxa_observada_90d": 0.4801178203240059
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 545,
+          "p_modelo": 0.45884964009499213,
+          "taxa_observada_90d": 0.3376146788990826
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 460,
+          "p_modelo": 0.33654479057632514,
+          "taxa_observada_90d": 0.06739130434782609
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 118,
+          "p_modelo": 0.007918942895830415,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 123,
+          "p_modelo": 0.0,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 484,
+          "p_modelo": 0.0,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 555,
+          "n": 1626,
+          "pct_ganhos": 0.3413284132841328,
+          "pct_receita": 0.993450901329789,
+          "receita_ganha": 1243729.0,
+          "valor_esperado": 1679751.424511844,
+          "valor_tabela": 3693202.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 706,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 194.8606060606056,
+          "valor_tabela": 1878123.0
+        },
+        "Reative": {
+          "ganhos": 4,
+          "n": 77,
+          "pct_ganhos": 0.05194805194805195,
+          "pct_receita": 0.006549098670211066,
+          "receita_ganha": 8199.0,
+          "valor_esperado": 19863.65572284106,
+          "valor_tabela": 192165.0
+        }
+      },
+      "curva": "v2",
+      "cut": "2017-09-30",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": -0.36801632485583863,
+          "ci_low": -0.45744446031990266,
+          "diff": -0.41295364121952827
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 679,
+            "p_modelo": 0.5008594425902834,
+            "taxa_ganho_90d": 0.4801178203240059,
+            "taxa_ganho_final": 0.5022091310751104
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 545,
+            "p_modelo": 0.45884964009499213,
+            "taxa_ganho_90d": 0.3376146788990826,
+            "taxa_ganho_final": 0.3431192660550459
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 402,
+            "p_modelo": 0.3661208808037904,
+            "taxa_ganho_90d": 0.06716417910447761,
+            "taxa_ganho_final": 0.06716417910447761
+          }
+        ],
+        "n_foque": 1626
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.5012458879272832,
+          "ganhos_top20": 0.20178175313059035,
+          "p5": {
+            "auc": 0.4776361262872891,
+            "ganhos_top20": 0.17522361359570662,
+            "receita_top20": 0.16126117476404395
+          },
+          "p95": {
+            "auc": 0.5254706280520234,
+            "ganhos_top20": 0.225474060822898,
+            "receita_top20": 0.243750039938399
+          },
+          "receita_top20": 0.2028046620891936
+        },
+        "p_only": {
+          "auc": 0.8327964995406856,
+          "ganhos_top20": 0.4301303832745517,
+          "receita_top20": 0.45505861035081807
+        },
+        "recencia": {
+          "auc": 0.8332074650679302,
+          "ganhos_top20": 0.4357411634075628,
+          "receita_top20": 0.46824100713955347
+        },
+        "score": {
+          "auc": 0.7215727892472078,
+          "ganhos_top20": 0.32780475338614873,
+          "receita_top20": 0.7174931442885351
+        },
+        "valor": {
+          "auc": 0.48451578591113476,
+          "ganhos_top20": 0.19438478820347785,
+          "receita_top20": 0.4707339604094384
+        }
+      },
+      "modelo": {
+        "as_of": "2017-09-30",
+        "base_rate": 0.39986737400530503,
+        "curva_pontos": [
+          {
+            "idade": 0,
+            "p": 0.5015060240963856
+          },
+          {
+            "idade": 15,
+            "p": 0.5015060240963856
+          },
+          {
+            "idade": 30,
+            "p": 0.49601816356334427
+          },
+          {
+            "idade": 45,
+            "p": 0.4652651515151515
+          },
+          {
+            "idade": 60,
+            "p": 0.4134782608695652
+          },
+          {
+            "idade": 75,
+            "p": 0.25959396334890406
+          },
+          {
+            "idade": 90,
+            "p": 0.06611570247933884
+          },
+          {
+            "idade": 105,
+            "p": 0.0
+          },
+          {
+            "idade": 120,
+            "p": 0.0
+          },
+          {
+            "idade": 150,
+            "p": 0.0
+          }
+        ],
+        "faixas": {
+          "casos": [
+            746,
+            582,
+            528,
+            400,
+            230,
+            121,
+            85,
+            88,
+            67,
+            51,
+            26,
+            37,
+            21,
+            20,
+            10,
+            4
+          ],
+          "pontos_medios": [
+            7.5,
+            22.5,
+            37.5,
+            52.5,
+            67.5,
+            82.5,
+            97.5,
+            112.5,
+            127.5,
+            142.5,
+            157.5,
+            172.5,
+            187.5,
+            202.5,
+            217.5,
+            232.5
+          ],
+          "taxas": [
+            0.5015060240963856,
+            0.5015060240963856,
+            0.49053030303030304,
+            0.44,
+            0.3869565217391304,
+            0.1322314049586777,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "fallback": false,
+        "fase": 3,
+        "horizon_days": 90,
+        "knot_days": 75,
+        "limpe_after_days": 95,
+        "limpe_rule": "chance",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 2,
+        "p_cauda": 0.0,
+        "p_fresh": 0.5015060240963856,
+        "train_rows": 3016,
+        "train_snapshots": [
+          "2017-03-31",
+          "2017-06-30"
+        ],
+        "versao": "v2"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 559,
+        "ganhos_em_90d": 541,
+        "n": 2409,
+        "pct_ganhos": 0.23204649232046493,
+        "pct_ganhos_em_90d": 0.22457451224574512,
+        "receita_ganha": 1251928.0,
+        "valor_tabela": 5763490.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.500824444296426,
+            "ganhos_top20": 0.19974060822898032,
+            "p5": {
+              "auc": 0.47297201499638414,
+              "ganhos_top20": 0.18246869409660108,
+              "receita_top20": 0.1664867308663118
+            },
+            "p95": {
+              "auc": 0.5344457713241731,
+              "ganhos_top20": 0.21654740608228978,
+              "receita_top20": 0.2285014393799004
+            },
+            "receita_top20": 0.19768271018780634
+          },
+          "recencia": {
+            "auc": 0.49508763749857265,
+            "ganhos_top20": 0.17978533094812166,
+            "receita_top20": 0.19435275031790966
+          },
+          "score": {
+            "auc": 0.47951080957637116,
+            "ganhos_top20": 0.2039355992844365,
+            "receita_top20": 0.49158577809586496
+          },
+          "valor": {
+            "auc": 0.47817626460624973,
+            "ganhos_top20": 0.19960139750993505,
+            "receita_top20": 0.4820015272872652
+          }
+        },
+        "n_abertos_em_31_12": 1474,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 183,
+        "n_abertos_em_t": 2409,
+        "n_resolvidos": 935
+      }
+    }
+  ],
+  "cuts_v1": [
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.4082544489511317,
+          "ci_low": 0.26927036737037824,
+          "diff": 0.3358433506881698,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.15838229618418198,
+          "ci_low": 0.09640187813454781,
+          "diff": 0.12632386799134832,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.23948590806478642,
+        "log_loss_constante": 0.6720732921967496,
+        "log_loss_modelo": 0.5291339815117556,
+        "modelo": 0.18902572243741947,
+        "n": 1686
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 692,
+          "p_modelo": 0.49039988926460965,
+          "taxa_observada_90d": 0.5115606936416185
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 454,
+          "p_modelo": 0.4903998892646096,
+          "taxa_observada_90d": 0.44493392070484583
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 190,
+          "p_modelo": 0.3288622263304929,
+          "taxa_observada_90d": 0.21578947368421053
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 133,
+          "p_modelo": 0.0075804740756672696,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 103,
+          "p_modelo": 8.009763450832125e-05,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 114,
+          "p_modelo": 3.2975512764194347e-07,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 596,
+          "n": 1229,
+          "pct_ganhos": 0.48494711147274205,
+          "pct_receita": 0.9768913247077595,
+          "receita_ganha": 1408140.0,
+          "valor_esperado": 1497017.750763942,
+          "valor_tabela": 3052647.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 149,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 1.157257564054507,
+          "valor_tabela": 409466.0
+        },
+        "Reative": {
+          "ganhos": 13,
+          "n": 308,
+          "pct_ganhos": 0.04220779220779221,
+          "pct_receita": 0.023108675292240453,
+          "receita_ganha": 33310.0,
+          "valor_esperado": 63434.04001466401,
+          "valor_tabela": 754694.0
+        }
+      },
+      "curva": "plateau",
+      "cut": "2017-06-30",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": -0.06863160735427264,
+          "ci_low": -0.2778227070130232,
+          "diff": -0.17421129605125707
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 692,
+            "p_modelo": 0.49039988926460965,
+            "taxa_ganho_90d": 0.5115606936416185,
+            "taxa_ganho_final": 0.5289017341040463
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 454,
+            "p_modelo": 0.4903998892646096,
+            "taxa_ganho_90d": 0.44493392070484583,
+            "taxa_ganho_final": 0.44493392070484583
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 83,
+            "p_modelo": 0.4903998892646096,
+            "taxa_ganho_90d": 0.3373493975903614,
+            "taxa_ganho_final": 0.3373493975903614
+          }
+        ],
+        "n_foque": 1229
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.499400550089725,
+          "ganhos_top20": 0.19905418719211823,
+          "p5": {
+            "auc": 0.47398081699301564,
+            "ganhos_top20": 0.180623973727422,
+            "receita_top20": 0.16773027160151235
+          },
+          "p95": {
+            "auc": 0.5225098453558735,
+            "ganhos_top20": 0.21839080459770116,
+            "receita_top20": 0.23415349127614554
+          },
+          "receita_top20": 0.20000716708869548
+        },
+        "p_only": {
+          "auc": 0.6992611599757887,
+          "ganhos_top20": 0.26851258783022763,
+          "receita_top20": 0.2680290925072877
+        },
+        "recencia": {
+          "auc": 0.7339215390315189,
+          "ganhos_top20": 0.2934865900383142,
+          "receita_top20": 0.2767033658237655
+        },
+        "score": {
+          "auc": 0.6608715141036724,
+          "ganhos_top20": 0.2582128290693363,
+          "receita_top20": 0.6125467165119353
+        },
+        "valor": {
+          "auc": 0.48415976386392295,
+          "ganhos_top20": 0.19625296478744758,
+          "receita_top20": 0.48622284852058695
+        }
+      },
+      "modelo": {
+        "as_of": "2017-06-30",
+        "base_rate": 0.45789473684210524,
+        "halving_days": 6.924015480095056,
+        "horizon_days": 90,
+        "intercept": -0.038405162740860886,
+        "knot_days": 70,
+        "limpe_after_days": 138,
+        "limpe_rule": "ciclo",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 1,
+        "p_fresh": 0.4903998892646097,
+        "slope_per_30d": -4.7052483445790045,
+        "train_rows": 1330,
+        "train_snapshots": [
+          "2017-03-31"
+        ],
+        "versao": "v1"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 609,
+        "ganhos_em_90d": 597,
+        "n": 1686,
+        "pct_ganhos": 0.3612099644128114,
+        "pct_ganhos_em_90d": 0.3540925266903915,
+        "receita_ganha": 1441450.0,
+        "valor_tabela": 4216807.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.5004107364600249,
+            "ganhos_top20": 0.19912972085385877,
+            "p5": {
+              "auc": 0.47088888282412017,
+              "ganhos_top20": 0.1839080459770115,
+              "receita_top20": 0.16510139096049117
+            },
+            "p95": {
+              "auc": 0.53313274110867,
+              "ganhos_top20": 0.21510673234811165,
+              "receita_top20": 0.23278511221339623
+            },
+            "receita_top20": 0.19895209337819558
+          },
+          "recencia": {
+            "auc": 0.501093932653776,
+            "ganhos_top20": 0.18113711001642036,
+            "receita_top20": 0.17654067952409033
+          },
+          "score": {
+            "auc": 0.49123034446370006,
+            "ganhos_top20": 0.20159151193633953,
+            "receita_top20": 0.4970305008044784
+          },
+          "valor": {
+            "auc": 0.49156693912640037,
+            "ganhos_top20": 0.20268644747393746,
+            "receita_top20": 0.4993547759967152
+          }
+        },
+        "n_abertos_em_31_12": 716,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 0,
+        "n_abertos_em_t": 1686,
+        "n_resolvidos": 970
+      }
+    },
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.5049275058024951,
+          "ci_low": 0.39495729403513874,
+          "diff": 0.45079786009129647,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.11724558866490309,
+          "ci_low": 0.06877624401378046,
+          "diff": 0.0917331016244034,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.2340386418037608,
+        "log_loss_constante": 0.6611263051419456,
+        "log_loss_modelo": 0.5603026687241003,
+        "modelo": 0.19948207361278297,
+        "n": 2257
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 720,
+          "p_modelo": 0.4693627744417504,
+          "taxa_observada_90d": 0.24305555555555555
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 522,
+          "p_modelo": 0.4693627744417504,
+          "taxa_observada_90d": 0.5383141762452107
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 461,
+          "p_modelo": 0.4693627744417504,
+          "taxa_observada_90d": 0.455531453362256
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 198,
+          "p_modelo": 0.30645093628910564,
+          "taxa_observada_90d": 0.22727272727272727
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 133,
+          "p_modelo": 0.0034553905248511144,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 223,
+          "p_modelo": 7.07032137595418e-06,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 727,
+          "n": 1794,
+          "pct_ganhos": 0.4052396878483835,
+          "pct_receita": 0.9780435861269227,
+          "receita_ganha": 1754307.0,
+          "valor_esperado": 2025292.8619117613,
+          "valor_tabela": 4314984.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 275,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 27.790459003865102,
+          "valor_tabela": 697655.0
+        },
+        "Reative": {
+          "ganhos": 15,
+          "n": 188,
+          "pct_ganhos": 0.0797872340425532,
+          "pct_receita": 0.02195641387307729,
+          "receita_ganha": 39383.0,
+          "valor_esperado": 52990.67213493687,
+          "valor_tabela": 486553.0
+        }
+      },
+      "curva": "plateau",
+      "cut": "2017-07-31",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": 0.24374245169082123,
+          "ci_low": 0.14073671497584542,
+          "diff": 0.1917270531400966
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 720,
+            "p_modelo": 0.4693627744417504,
+            "taxa_ganho_90d": 0.24305555555555555,
+            "taxa_ganho_final": 0.2861111111111111
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 522,
+            "p_modelo": 0.4693627744417504,
+            "taxa_ganho_90d": 0.5383141762452107,
+            "taxa_ganho_final": 0.5383141762452107
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 552,
+            "p_modelo": 0.4693627744417506,
+            "taxa_ganho_90d": 0.43478260869565216,
+            "taxa_ganho_final": 0.43478260869565216
+          }
+        ],
+        "n_foque": 1794
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.5004191863930327,
+          "ganhos_top20": 0.20001886792452833,
+          "p5": {
+            "auc": 0.48239683132733757,
+            "ganhos_top20": 0.18113207547169816,
+            "receita_top20": 0.17172591138937052
+          },
+          "p95": {
+            "auc": 0.5214461850497718,
+            "ganhos_top20": 0.2196765498652291,
+            "receita_top20": 0.23408944689439087
+          },
+          "receita_top20": 0.2010251994491802
+        },
+        "p_only": {
+          "auc": 0.640339640433046,
+          "ganhos_top20": 0.24652991252663115,
+          "receita_top20": 0.24609190344353005
+        },
+        "recencia": {
+          "auc": 0.578643039506107,
+          "ganhos_top20": 0.12194840200231037,
+          "receita_top20": 0.12772327755313667
+        },
+        "score": {
+          "auc": 0.6365255797816979,
+          "ganhos_top20": 0.250501570011393,
+          "receita_top20": 0.5785211376444331
+        },
+        "valor": {
+          "auc": 0.5097052831967833,
+          "ganhos_top20": 0.2045504560056124,
+          "receita_top20": 0.48678803602002974
+        }
+      },
+      "modelo": {
+        "as_of": "2017-07-31",
+        "base_rate": 0.45013568521031205,
+        "halving_days": 5.676560414429103,
+        "horizon_days": 90,
+        "intercept": -0.12270262100464666,
+        "knot_days": 100,
+        "limpe_after_days": 138,
+        "limpe_rule": "ciclo",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 2,
+        "p_fresh": 0.46936277444175045,
+        "slope_per_30d": -5.598605885837588,
+        "train_rows": 2948,
+        "train_snapshots": [
+          "2017-03-31",
+          "2017-04-30"
+        ],
+        "versao": "v1"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 742,
+        "ganhos_em_90d": 711,
+        "n": 2257,
+        "pct_ganhos": 0.3287549844926894,
+        "pct_ganhos_em_90d": 0.31501993797075767,
+        "receita_ganha": 1793690.0,
+        "valor_tabela": 5499192.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.4996804028868807,
+            "ganhos_top20": 0.19946091644204852,
+            "p5": {
+              "auc": 0.47089288260335266,
+              "ganhos_top20": 0.18566037735849059,
+              "receita_top20": 0.16983387876388897
+            },
+            "p95": {
+              "auc": 0.5286172574633199,
+              "ganhos_top20": 0.21408355795148248,
+              "receita_top20": 0.2282489449124431
+            },
+            "receita_top20": 0.1992807792873908
+          },
+          "recencia": {
+            "auc": 0.5251329037864849,
+            "ganhos_top20": 0.19277628032345015,
+            "receita_top20": 0.19869484693564665
+          },
+          "score": {
+            "auc": 0.510871631576446,
+            "ganhos_top20": 0.20380225956299822,
+            "receita_top20": 0.48496830793242934
+          },
+          "valor": {
+            "auc": 0.5100857509488278,
+            "ganhos_top20": 0.20495509964666286,
+            "receita_top20": 0.48759921575394827
+          }
+        },
+        "n_abertos_em_31_12": 1118,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 0,
+        "n_abertos_em_t": 2257,
+        "n_resolvidos": 1139
+      }
+    },
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.35128405918366706,
+          "ci_low": 0.22415797866206252,
+          "diff": 0.2906541892194352,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.1515557556570928,
+          "ci_low": 0.09424516721107483,
+          "diff": 0.12506361630913126,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.2203620792860659,
+        "log_loss_constante": 0.6335437455473754,
+        "log_loss_modelo": 0.5256672552048881,
+        "modelo": 0.18436549222047857,
+        "n": 2265
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 662,
+          "p_modelo": 0.4597830259653969,
+          "taxa_observada_90d": 0.29154078549848944
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 587,
+          "p_modelo": 0.459783025965397,
+          "taxa_observada_90d": 0.21294718909710392
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 317,
+          "p_modelo": 0.45978302596539683,
+          "taxa_observada_90d": 0.5173501577287066
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 211,
+          "p_modelo": 0.3411331809200382,
+          "taxa_observada_90d": 0.3222748815165877
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 128,
+          "p_modelo": 0.08666373968709662,
+          "taxa_observada_90d": 0.0234375
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 360,
+          "p_modelo": 0.007175983491075803,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 579,
+          "n": 1600,
+          "pct_ganhos": 0.361875,
+          "pct_receita": 0.9119094379592647,
+          "receita_ganha": 1322400.0,
+          "valor_esperado": 1681256.4062358486,
+          "valor_tabela": 3656630.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 408,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 12532.1149354998,
+          "valor_tabela": 1038920.0
+        },
+        "Reative": {
+          "ganhos": 58,
+          "n": 257,
+          "pct_ganhos": 0.22568093385214008,
+          "pct_receita": 0.08809056204073526,
+          "receita_ganha": 127744.0,
+          "valor_esperado": 177539.74230601673,
+          "valor_tabela": 693697.0
+        }
+      },
+      "curva": "plateau",
+      "cut": "2017-08-31",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": 0.2744338575154285,
+          "ci_low": 0.151443329804357,
+          "diff": 0.21273271877501482
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 662,
+            "p_modelo": 0.4597830259653969,
+            "taxa_ganho_90d": 0.29154078549848944,
+            "taxa_ganho_final": 0.4123867069486405
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 587,
+            "p_modelo": 0.459783025965397,
+            "taxa_ganho_90d": 0.21294718909710392,
+            "taxa_ganho_final": 0.21976149914821125
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 351,
+            "p_modelo": 0.4597830259653969,
+            "taxa_ganho_90d": 0.5042735042735043,
+            "taxa_ganho_final": 0.5042735042735043
+          }
+        ],
+        "n_foque": 1600
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.4984322530751102,
+          "ganhos_top20": 0.1989717425431711,
+          "p5": {
+            "auc": 0.47878463235606095,
+            "ganhos_top20": 0.18053375196232338,
+            "receita_top20": 0.16427816823708544
+          },
+          "p95": {
+            "auc": 0.5186620811620811,
+            "ganhos_top20": 0.21985871271585555,
+            "receita_top20": 0.23047873176732792
+          },
+          "receita_top20": 0.19779801178365738
+        },
+        "p_only": {
+          "auc": 0.655123351551923,
+          "ganhos_top20": 0.2573459576138148,
+          "receita_top20": 0.2581843596222168
+        },
+        "recencia": {
+          "auc": 0.6579173722030864,
+          "ganhos_top20": 0.3402108095985647,
+          "receita_top20": 0.3159545337763501
+        },
+        "score": {
+          "auc": 0.6290480754766469,
+          "ganhos_top20": 0.26373626373626374,
+          "receita_top20": 0.6066087229957853
+        },
+        "valor": {
+          "auc": 0.5004392325820898,
+          "ganhos_top20": 0.20410809094597215,
+          "receita_top20": 0.481545106686654
+        }
+      },
+      "modelo": {
+        "as_of": "2017-08-31",
+        "base_rate": 0.4334151238010261,
+        "halving_days": 18.326721324867872,
+        "horizon_days": 90,
+        "intercept": -0.16121616710263503,
+        "knot_days": 95,
+        "limpe_after_days": 138,
+        "limpe_rule": "ciclo",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 3,
+        "p_fresh": 0.459783025965397,
+        "slope_per_30d": -1.7150493476440627,
+        "train_rows": 4483,
+        "train_snapshots": [
+          "2017-03-31",
+          "2017-04-30",
+          "2017-05-31"
+        ],
+        "versao": "v1"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 637,
+        "ganhos_em_90d": 553,
+        "n": 2265,
+        "pct_ganhos": 0.28123620309050773,
+        "pct_ganhos_em_90d": 0.24415011037527592,
+        "receita_ganha": 1450144.0,
+        "valor_tabela": 5389247.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.5008688800039247,
+            "ganhos_top20": 0.20087441130298272,
+            "p5": {
+              "auc": 0.4688922684458399,
+              "ganhos_top20": 0.18767660910518058,
+              "receita_top20": 0.17246698948518224
+            },
+            "p95": {
+              "auc": 0.5373135792778649,
+              "ganhos_top20": 0.2144740973312402,
+              "receita_top20": 0.2316570768144405
+            },
+            "receita_top20": 0.19907049644724942
+          },
+          "recencia": {
+            "auc": 0.43937033948194665,
+            "ganhos_top20": 0.20055968875844654,
+            "receita_top20": 0.17006028067017753
+          },
+          "score": {
+            "auc": 0.49424793956043955,
+            "ganhos_top20": 0.206887600588388,
+            "receita_top20": 0.4855574397259968
+          },
+          "valor": {
+            "auc": 0.49777705553375196,
+            "ganhos_top20": 0.20840375430041086,
+            "receita_top20": 0.4905854456009417
+          }
+        },
+        "n_abertos_em_31_12": 1372,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 81,
+        "n_abertos_em_t": 2265,
+        "n_resolvidos": 893
+      }
+    },
+    {
+      "bootstrap": {
+        "score_menos_recencia": {
+          "ci_high": 0.25280827678550116,
+          "ci_low": 0.10449312641177785,
+          "diff": 0.17943165630860264,
+          "n_valid": 1000
+        },
+        "score_menos_valor": {
+          "ci_high": 0.21022435780029625,
+          "ci_low": 0.149455978735329,
+          "diff": 0.17693870303871773,
+          "n_valid": 1000
+        }
+      },
+      "brier": {
+        "constante": 0.20917026057141413,
+        "log_loss_constante": 0.6107062465442911,
+        "log_loss_modelo": 0.48287493496655554,
+        "modelo": 0.1688975403773938,
+        "n": 2409
+      },
+      "calibracao": [
+        {
+          "faixa": "0 a 30 dias",
+          "idade_max": 30,
+          "idade_min": 0,
+          "n": 679,
+          "p_modelo": 0.4559956766858655,
+          "taxa_observada_90d": 0.4801178203240059
+        },
+        {
+          "faixa": "31 a 60 dias",
+          "idade_max": 60,
+          "idade_min": 31,
+          "n": 545,
+          "p_modelo": 0.4559956766858656,
+          "taxa_observada_90d": 0.3376146788990826
+        },
+        {
+          "faixa": "61 a 90 dias",
+          "idade_max": 90,
+          "idade_min": 61,
+          "n": 460,
+          "p_modelo": 0.4559956766858655,
+          "taxa_observada_90d": 0.06739130434782609
+        },
+        {
+          "faixa": "91 a 120 dias",
+          "idade_max": 120,
+          "idade_min": 91,
+          "n": 118,
+          "p_modelo": 0.2540812301014003,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "121 a 150 dias",
+          "idade_max": 150,
+          "idade_min": 121,
+          "n": 123,
+          "p_modelo": 0.046144514538838735,
+          "taxa_observada_90d": 0.0
+        },
+        {
+          "faixa": "151 dias ou mais",
+          "idade_max": null,
+          "idade_min": 151,
+          "n": 484,
+          "p_modelo": 0.0021136472948513527,
+          "taxa_observada_90d": 0.0
+        }
+      ],
+      "categorias": {
+        "Foque": {
+          "ganhos": 559,
+          "n": 1684,
+          "pct_ganhos": 0.3319477434679335,
+          "pct_receita": 1.0,
+          "receita_ganha": 1251928.0,
+          "valor_esperado": 1746930.3812797912,
+          "valor_tabela": 3831024.0
+        },
+        "Limpe": {
+          "ganhos": 0,
+          "n": 530,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 5919.2650336179,
+          "valor_tabela": 1373138.0
+        },
+        "Reative": {
+          "ganhos": 0,
+          "n": 195,
+          "pct_ganhos": 0.0,
+          "pct_receita": 0.0,
+          "receita_ganha": 0.0,
+          "valor_esperado": 97310.09402934235,
+          "valor_tabela": 559328.0
+        }
+      },
+      "curva": "plateau",
+      "cut": "2017-09-30",
+      "foque_por_idade": {
+        "diferenca_ultima_menos_primeira_90d": {
+          "ci_high": -0.3680999071524621,
+          "ci_low": -0.4584134276749696,
+          "diff": -0.4127265159761798
+        },
+        "faixas": [
+          {
+            "faixa": "0 a 30 dias",
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 679,
+            "p_modelo": 0.4559956766858655,
+            "taxa_ganho_90d": 0.4801178203240059,
+            "taxa_ganho_final": 0.5022091310751104
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 545,
+            "p_modelo": 0.4559956766858656,
+            "taxa_ganho_90d": 0.3376146788990826,
+            "taxa_ganho_final": 0.3431192660550459
+          },
+          {
+            "faixa": "61 dias ou mais",
+            "idade_max": null,
+            "idade_min": 61,
+            "n": 460,
+            "p_modelo": 0.4559956766858655,
+            "taxa_ganho_90d": 0.06739130434782609,
+            "taxa_ganho_final": 0.06739130434782609
+          }
+        ],
+        "n_foque": 1684
+      },
+      "metodos": {
+        "aleatorio": {
+          "auc": 0.5012458879272832,
+          "ganhos_top20": 0.20178175313059035,
+          "p5": {
+            "auc": 0.4776361262872891,
+            "ganhos_top20": 0.17522361359570662,
+            "receita_top20": 0.16126117476404395
+          },
+          "p95": {
+            "auc": 0.5254706280520234,
+            "ganhos_top20": 0.225474060822898,
+            "receita_top20": 0.243750039938399
+          },
+          "receita_top20": 0.2028046620891936
+        },
+        "p_only": {
+          "auc": 0.6959459459459459,
+          "ganhos_top20": 0.28610451306413304,
+          "receita_top20": 0.28610451306413304
+        },
+        "recencia": {
+          "auc": 0.8332074650679302,
+          "ganhos_top20": 0.4357411634075628,
+          "receita_top20": 0.46824100713955347
+        },
+        "score": {
+          "auc": 0.6519233186675047,
+          "ganhos_top20": 0.278883394437378,
+          "receita_top20": 0.6476726634481561
+        },
+        "valor": {
+          "auc": 0.48451578591113476,
+          "ganhos_top20": 0.19438478820347785,
+          "receita_top20": 0.4707339604094384
+        }
+      },
+      "modelo": {
+        "as_of": "2017-09-30",
+        "base_rate": 0.41173609985410925,
+        "halving_days": 15.96336684089698,
+        "horizon_days": 90,
+        "intercept": -0.17647386557560035,
+        "knot_days": 90,
+        "limpe_after_days": 138,
+        "limpe_rule": "ciclo",
+        "max_won_cycle_days": 138,
+        "n_snapshots": 4,
+        "p_fresh": 0.45599567668586555,
+        "slope_per_30d": -1.9604460893973552,
+        "train_rows": 6169,
+        "train_snapshots": [
+          "2017-03-31",
+          "2017-04-30",
+          "2017-05-31",
+          "2017-06-30"
+        ],
+        "versao": "v1"
+      },
+      "modelo_faixas": null,
+      "populacao": {
+        "ganhos": 559,
+        "ganhos_em_90d": 541,
+        "n": 2409,
+        "pct_ganhos": 0.23204649232046493,
+        "pct_ganhos_em_90d": 0.22457451224574512,
+        "receita_ganha": 1251928.0,
+        "valor_tabela": 5763490.0
+      },
+      "resolvidos": {
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.500824444296426,
+            "ganhos_top20": 0.19974060822898032,
+            "p5": {
+              "auc": 0.47297201499638414,
+              "ganhos_top20": 0.18246869409660108,
+              "receita_top20": 0.1664867308663118
+            },
+            "p95": {
+              "auc": 0.5344457713241731,
+              "ganhos_top20": 0.21654740608228978,
+              "receita_top20": 0.2285014393799004
+            },
+            "receita_top20": 0.19768271018780634
+          },
+          "recencia": {
+            "auc": 0.49508763749857265,
+            "ganhos_top20": 0.17978533094812166,
+            "receita_top20": 0.19435275031790966
+          },
+          "score": {
+            "auc": 0.47861635519354473,
+            "ganhos_top20": 0.19960139750993505,
+            "receita_top20": 0.4820015272872652
+          },
+          "valor": {
+            "auc": 0.47817626460624973,
+            "ganhos_top20": 0.19960139750993505,
+            "receita_top20": 0.4820015272872652
+          }
+        },
+        "n_abertos_em_31_12": 1474,
+        "n_abertos_em_31_12_que_ainda_podem_fechar": 183,
+        "n_abertos_em_t": 2409,
+        "n_resolvidos": 935
+      }
+    }
+  ],
+  "diagnostico_fases": {
+    "as_of": "2017-12-31",
+    "fases": {
+      "1": {
+        "fotos": [
+          "2017-04-30",
+          "2017-07-31"
+        ],
+        "linhas": 3875,
+        "por_faixa": [
+          {
+            "faixa": "0 a 30 dias",
+            "ganhos": 338,
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 1146,
+            "taxa_ganho_90d": 0.2949389179755672
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "ganhos": 562,
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 1068,
+            "taxa_ganho_90d": 0.5262172284644194
+          },
+          {
+            "faixa": "61 a 90 dias",
+            "ganhos": 430,
+            "idade_max": 90,
+            "idade_min": 61,
+            "n": 911,
+            "taxa_ganho_90d": 0.47200878155872666
+          },
+          {
+            "faixa": "91 a 105 dias",
+            "ganhos": 85,
+            "idade_max": 105,
+            "idade_min": 91,
+            "n": 227,
+            "taxa_ganho_90d": 0.3744493392070485
+          },
+          {
+            "faixa": "106 a 120 dias",
+            "ganhos": 14,
+            "idade_max": 120,
+            "idade_min": 106,
+            "n": 114,
+            "taxa_ganho_90d": 0.12280701754385964
+          }
+        ]
+      },
+      "2": {
+        "fotos": [
+          "2017-05-31",
+          "2017-08-31"
+        ],
+        "linhas": 3800,
+        "por_faixa": [
+          {
+            "faixa": "0 a 30 dias",
+            "ganhos": 416,
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 1229,
+            "taxa_ganho_90d": 0.33848657445077296
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "ganhos": 257,
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 885,
+            "taxa_ganho_90d": 0.2903954802259887
+          },
+          {
+            "faixa": "61 a 90 dias",
+            "ganhos": 314,
+            "idade_max": 90,
+            "idade_min": 61,
+            "n": 630,
+            "taxa_ganho_90d": 0.4984126984126984
+          },
+          {
+            "faixa": "91 a 105 dias",
+            "ganhos": 114,
+            "idade_max": 105,
+            "idade_min": 91,
+            "n": 272,
+            "taxa_ganho_90d": 0.41911764705882354
+          },
+          {
+            "faixa": "106 a 120 dias",
+            "ganhos": 50,
+            "idade_max": 120,
+            "idade_min": 106,
+            "n": 167,
+            "taxa_ganho_90d": 0.2994011976047904
+          }
+        ]
+      },
+      "3": {
+        "fotos": [
+          "2017-03-31",
+          "2017-06-30",
+          "2017-09-30"
+        ],
+        "linhas": 5425,
+        "por_faixa": [
+          {
+            "faixa": "0 a 30 dias",
+            "ganhos": 1017,
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 2055,
+            "taxa_ganho_90d": 0.4948905109489051
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "ganhos": 604,
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 1449,
+            "taxa_ganho_90d": 0.4168391994478951
+          },
+          {
+            "faixa": "61 a 90 dias",
+            "ganhos": 126,
+            "idade_max": 90,
+            "idade_min": 61,
+            "n": 793,
+            "taxa_ganho_90d": 0.15889029003783103
+          },
+          {
+            "faixa": "91 a 105 dias",
+            "ganhos": 0,
+            "idade_max": 105,
+            "idade_min": 91,
+            "n": 153,
+            "taxa_ganho_90d": 0.0
+          },
+          {
+            "faixa": "106 a 120 dias",
+            "ganhos": 0,
+            "idade_max": 120,
+            "idade_min": 106,
+            "n": 138,
+            "taxa_ganho_90d": 0.0
+          }
+        ]
+      }
+    },
+    "grupos": {
+      "fim_de_trimestre": {
+        "fotos": [
+          "2017-03-31",
+          "2017-06-30",
+          "2017-09-30"
+        ],
+        "linhas": 5425,
+        "por_faixa": [
+          {
+            "faixa": "0 a 30 dias",
+            "ganhos": 1017,
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 2055,
+            "taxa_ganho_90d": 0.4948905109489051
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "ganhos": 604,
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 1449,
+            "taxa_ganho_90d": 0.4168391994478951
+          },
+          {
+            "faixa": "61 a 90 dias",
+            "ganhos": 126,
+            "idade_max": 90,
+            "idade_min": 61,
+            "n": 793,
+            "taxa_ganho_90d": 0.15889029003783103
+          },
+          {
+            "faixa": "91 a 105 dias",
+            "ganhos": 0,
+            "idade_max": 105,
+            "idade_min": 91,
+            "n": 153,
+            "taxa_ganho_90d": 0.0
+          },
+          {
+            "faixa": "106 a 120 dias",
+            "ganhos": 0,
+            "idade_max": 120,
+            "idade_min": 106,
+            "n": 138,
+            "taxa_ganho_90d": 0.0
+          }
+        ]
+      },
+      "meio_de_trimestre": {
+        "fotos": [
+          "2017-04-30",
+          "2017-05-31",
+          "2017-07-31",
+          "2017-08-31"
+        ],
+        "linhas": 7675,
+        "por_faixa": [
+          {
+            "faixa": "0 a 30 dias",
+            "ganhos": 754,
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 2375,
+            "taxa_ganho_90d": 0.3174736842105263
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "ganhos": 819,
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 1953,
+            "taxa_ganho_90d": 0.41935483870967744
+          },
+          {
+            "faixa": "61 a 90 dias",
+            "ganhos": 744,
+            "idade_max": 90,
+            "idade_min": 61,
+            "n": 1541,
+            "taxa_ganho_90d": 0.4828033744321869
+          },
+          {
+            "faixa": "91 a 105 dias",
+            "ganhos": 199,
+            "idade_max": 105,
+            "idade_min": 91,
+            "n": 499,
+            "taxa_ganho_90d": 0.39879759519038077
+          },
+          {
+            "faixa": "106 a 120 dias",
+            "ganhos": 64,
+            "idade_max": 120,
+            "idade_min": 106,
+            "n": 281,
+            "taxa_ganho_90d": 0.2277580071174377
+          }
+        ]
+      },
+      "todas": {
+        "fotos": [
+          "2017-03-31",
+          "2017-04-30",
+          "2017-05-31",
+          "2017-06-30",
+          "2017-07-31",
+          "2017-08-31",
+          "2017-09-30"
+        ],
+        "linhas": 13100,
+        "por_faixa": [
+          {
+            "faixa": "0 a 30 dias",
+            "ganhos": 1771,
+            "idade_max": 30,
+            "idade_min": 0,
+            "n": 4430,
+            "taxa_ganho_90d": 0.39977426636568847
+          },
+          {
+            "faixa": "31 a 60 dias",
+            "ganhos": 1423,
+            "idade_max": 60,
+            "idade_min": 31,
+            "n": 3402,
+            "taxa_ganho_90d": 0.4182833627278072
+          },
+          {
+            "faixa": "61 a 90 dias",
+            "ganhos": 870,
+            "idade_max": 90,
+            "idade_min": 61,
+            "n": 2334,
+            "taxa_ganho_90d": 0.37275064267352187
+          },
+          {
+            "faixa": "91 a 105 dias",
+            "ganhos": 199,
+            "idade_max": 105,
+            "idade_min": 91,
+            "n": 652,
+            "taxa_ganho_90d": 0.3052147239263804
+          },
+          {
+            "faixa": "106 a 120 dias",
+            "ganhos": 64,
+            "idade_max": 120,
+            "idade_min": 106,
+            "n": 419,
+            "taxa_ganho_90d": 0.15274463007159905
+          }
+        ]
+      }
+    }
+  },
+  "headline": {
+    "n_cortes": 4,
+    "receita_recencia": 0.29715554607320144,
+    "receita_score": 0.625208453597444,
+    "receita_valor": 0.4813224879091773
+  },
+  "headline_v1": {
+    "n_cortes": 4,
+    "receita_score": 0.6113373101500774
+  },
+  "hoje": {
+    "as_of": "2017-12-31",
+    "categorias": {
+      "Foque": {
+        "n": 60,
+        "valor_esperado": 47499.99903433889,
+        "valor_tabela": 123253.0
+      },
+      "Limpe": {
+        "n": 1463,
+        "valor_esperado": 98.91584699453558,
+        "valor_tabela": 3591439.0
+      },
+      "Qualifique": {
+        "n": 500,
+        "valor_esperado": null,
+        "valor_tabela": 1073986.0
+      },
+      "Reative": {
+        "n": 66,
+        "valor_esperado": 17818.292295650783,
+        "valor_tabela": 177537.0
+      }
+    },
+    "faixas_fixas_do_briefing": {
+      "acima_de_138": 1291,
+      "ate_90": 110,
+      "de_91_a_138": 188
+    },
+    "foque_por_idade": [
+      {
+        "faixa": "0 a 30 dias",
+        "idade_max": 30,
+        "idade_min": 0,
+        "n": 18
+      },
+      {
+        "faixa": "31 a 60 dias",
+        "idade_max": 60,
+        "idade_min": 31,
+        "n": 39
+      },
+      {
+        "faixa": "61 dias ou mais",
+        "idade_max": null,
+        "idade_min": 61,
+        "n": 3
+      }
+    ],
+    "limpe_detalhe": {
+      "acima_do_maior_ciclo": {
+        "n": 1291,
+        "valor_tabela": 3198664.0
+      },
+      "so_pela_chance": {
+        "n": 172,
+        "valor_tabela": 392775.0
+      }
+    },
+    "modelo": {
+      "as_of": "2017-12-31",
+      "base_rate": 0.32202764976958526,
+      "curva_pontos": [
+        {
+          "idade": 0,
+          "p": 0.4952189229994967
+        },
+        {
+          "idade": 15,
+          "p": 0.4952189229994967
+        },
+        {
+          "idade": 30,
+          "p": 0.48954494537071613
+        },
+        {
+          "idade": 45,
+          "p": 0.42275539602323714
+        },
+        {
+          "idade": 60,
+          "p": 0.2698610080426803
+        },
+        {
+          "idade": 75,
+          "p": 0.15461486638221422
+        },
+        {
+          "idade": 90,
+          "p": 0.06557377049180328
+        },
+        {
+          "idade": 105,
+          "p": 0.0
+        },
+        {
+          "idade": 120,
+          "p": 0.0
+        },
+        {
+          "idade": 150,
+          "p": 0.0
+        }
+      ],
+      "faixas": {
+        "casos": [
+          1117,
+          870,
+          775,
+          683,
+          657,
+          183,
+          147,
+          147,
+          124,
+          117,
+          84,
+          98,
+          87,
+          90,
+          70,
+          55,
+          26,
+          37,
+          21,
+          23,
+          9,
+          4,
+          1
+        ],
+        "pontos_medios": [
+          7.5,
+          22.5,
+          37.5,
+          52.5,
+          67.5,
+          82.5,
+          97.5,
+          112.5,
+          127.5,
+          142.5,
+          157.5,
+          172.5,
+          187.5,
+          202.5,
+          217.5,
+          232.5,
+          247.5,
+          262.5,
+          277.5,
+          292.5,
+          307.5,
+          322.5,
+          337.5
+        ],
+        "taxas": [
+          0.4952189229994967,
+          0.4952189229994967,
+          0.4838709677419355,
+          0.3616398243045388,
+          0.1780821917808219,
+          0.13114754098360656,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "fallback": false,
+      "fase": 3,
+      "horizon_days": 90,
+      "knot_days": 61,
+      "limpe_after_days": 95,
+      "limpe_rule": "chance",
+      "max_won_cycle_days": 138,
+      "n_snapshots": 3,
+      "p_cauda": 0.0,
+      "p_fresh": 0.4952189229994967,
+      "train_rows": 5425,
+      "train_snapshots": [
+        "2017-03-31",
+        "2017-06-30",
+        "2017-09-30"
+      ],
+      "versao": "v2"
+    },
+    "sem_conta": {
+      "Foque": 40,
+      "Limpe": 999,
+      "Qualifique": 337,
+      "Reative": 49
+    }
+  },
+  "hoje_v1": {
+    "as_of": "2017-12-31",
+    "categorias": {
+      "Foque": {
+        "n": 126,
+        "valor_esperado": 119976.84662150836,
+        "valor_tabela": 300790.0
+      },
+      "Limpe": {
+        "n": 1291,
+        "valor_esperado": 5717.205284259171,
+        "valor_tabela": 3198664.0
+      },
+      "Qualifique": {
+        "n": 500,
+        "valor_esperado": null,
+        "valor_tabela": 1073986.0
+      },
+      "Reative": {
+        "n": 172,
+        "valor_esperado": 45854.406040868154,
+        "valor_tabela": 392775.0
+      }
+    },
+    "faixas_fixas_do_briefing": {
+      "acima_de_138": 1291,
+      "ate_90": 110,
+      "de_91_a_138": 188
+    },
+    "foque_por_idade": [
+      {
+        "faixa": "0 a 30 dias",
+        "idade_max": 30,
+        "idade_min": 0,
+        "n": 18
+      },
+      {
+        "faixa": "31 a 60 dias",
+        "idade_max": 60,
+        "idade_min": 31,
+        "n": 39
+      },
+      {
+        "faixa": "61 dias ou mais",
+        "idade_max": null,
+        "idade_min": 61,
+        "n": 69
+      }
+    ],
+    "limpe_detalhe": {
+      "acima_do_maior_ciclo": {
+        "n": 1291,
+        "valor_tabela": 3198664.0
+      },
+      "so_pela_chance": {
+        "n": 0,
+        "valor_tabela": 0.0
+      }
+    },
+    "modelo": {
+      "as_of": "2017-12-31",
+      "base_rate": 0.3316793893129771,
+      "halving_days": 11.337168600392415,
+      "horizon_days": 90,
+      "intercept": -0.4101654169540486,
+      "knot_days": 95,
+      "limpe_after_days": 138,
+      "limpe_rule": "ciclo",
+      "max_won_cycle_days": 138,
+      "n_snapshots": 7,
+      "p_fresh": 0.3988724579324723,
+      "slope_per_30d": -2.592330448414599,
+      "train_rows": 13100,
+      "train_snapshots": [
+        "2017-03-31",
+        "2017-04-30",
+        "2017-05-31",
+        "2017-06-30",
+        "2017-07-31",
+        "2017-08-31",
+        "2017-09-30"
+      ],
+      "versao": "v1"
+    },
+    "sem_conta": {
+      "Foque": 89,
+      "Limpe": 879,
+      "Qualifique": 337,
+      "Reative": 120
+    }
+  },
+  "intra_foque": {
+    "idade_max": 90,
+    "labels": {
+      "aleatorio": "Aleatório (referência)",
+      "recencia": "Mais recentes primeiro",
+      "score_v1": "Score v1 (platô)",
+      "score_v2": "Score v2 (curva por faixas)",
+      "valor": "Ordenar por valor"
+    },
+    "media": {
+      "aleatorio": {
+        "auc": 0.50006687682291,
+        "receita_top20": 0.20060570085331852
+      },
+      "recencia": {
+        "auc": 0.5573906762908649,
+        "receita_top20": 0.2350267849983317
+      },
+      "score_v1": {
+        "auc": 0.5053552514755633,
+        "receita_top20": 0.4970784151336728
+      },
+      "score_v2": {
+        "auc": 0.5181836808351248,
+        "receita_top20": 0.525161359779082
+      },
+      "valor": {
+        "auc": 0.49902934683110806,
+        "receita_top20": 0.4910748077878484
+      }
+    },
+    "por_corte": [
+      {
+        "bootstrap": {
+          "v2_menos_v1": {
+            "ci_high": 0.022307412644625588,
+            "ci_low": -0.02504158240422225,
+            "diff": -0.0012764843644225143,
+            "n_valid": 1000
+          },
+          "v2_menos_valor": {
+            "ci_high": 0.04846332602409442,
+            "ci_low": -0.005003283363715809,
+            "diff": 0.02273794501887516,
+            "n_valid": 1000
+          }
+        },
+        "cut": "2017-06-30",
+        "ganhos": 609,
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.4997739094689244,
+            "receita_top20": 0.20053479759963924
+          },
+          "recencia": {
+            "auc": 0.6058232428293615,
+            "receita_top20": 0.22166273158586453
+          },
+          "score_v1": {
+            "auc": 0.5034026511994543,
+            "receita_top20": 0.5066432747491045
+          },
+          "score_v2": {
+            "auc": 0.5037030512057785,
+            "receita_top20": 0.505366790384682
+          },
+          "valor": {
+            "auc": 0.4780990326216338,
+            "receita_top20": 0.48262884536580686
+          }
+        },
+        "n": 1336,
+        "pct_ganhos": 0.45583832335329344,
+        "receita_ganha": 1441450.0
+      },
+      {
+        "bootstrap": {
+          "v2_menos_v1": {
+            "ci_high": 0.0,
+            "ci_low": 0.0,
+            "diff": 0.0,
+            "n_valid": 1000
+          },
+          "v2_menos_valor": {
+            "ci_high": 0.0,
+            "ci_low": 0.0,
+            "diff": 0.0,
+            "n_valid": 1000
+          }
+        },
+        "cut": "2017-07-31",
+        "ganhos": 697,
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.5001592810425824,
+            "receita_top20": 0.20128785936447371
+          },
+          "recencia": {
+            "auc": 0.39197811695109114,
+            "receita_top20": 0.10210044434856874
+          },
+          "score_v1": {
+            "auc": 0.512829764597494,
+            "receita_top20": 0.4923070608844309
+          },
+          "score_v2": {
+            "auc": 0.512829764597494,
+            "receita_top20": 0.4923070608844309
+          },
+          "valor": {
+            "auc": 0.512829764597494,
+            "receita_top20": 0.4923070608844309
+          }
+        },
+        "n": 1703,
+        "pct_ganhos": 0.4092777451556078,
+        "receita_ganha": 1696641.0
+      },
+      {
+        "bootstrap": {
+          "v2_menos_v1": {
+            "ci_high": 0.0,
+            "ci_low": 0.0,
+            "diff": 0.0,
+            "n_valid": 1000
+          },
+          "v2_menos_valor": {
+            "ci_high": 0.0,
+            "ci_low": 0.0,
+            "diff": 0.0,
+            "n_valid": 1000
+          }
+        },
+        "cut": "2017-08-31",
+        "ganhos": 566,
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.4999505123674912,
+            "receita_top20": 0.1998774299670631
+          },
+          "recencia": {
+            "auc": 0.5060424028268551,
+            "receita_top20": 0.2797114603183773
+          },
+          "score_v1": {
+            "auc": 0.5098286219081272,
+            "receita_top20": 0.5039674917650121
+          },
+          "score_v2": {
+            "auc": 0.5098286219081272,
+            "receita_top20": 0.5039674917650121
+          },
+          "valor": {
+            "auc": 0.5098286219081272,
+            "receita_top20": 0.5039674917650121
+          }
+        },
+        "n": 1566,
+        "pct_ganhos": 0.3614303959131545,
+        "receita_ganha": 1280933.0
+      },
+      {
+        "bootstrap": {
+          "v2_menos_v1": {
+            "ci_high": 0.14754312396697605,
+            "ci_low": 0.07540296439494316,
+            "diff": 0.11360826294605914,
+            "n_valid": 1000
+          },
+          "v2_menos_valor": {
+            "ci_high": 0.14754312396697605,
+            "ci_low": 0.07540296439494316,
+            "diff": 0.11360826294605914,
+            "n_valid": 1000
+          }
+        },
+        "cut": "2017-09-30",
+        "ganhos": 559,
+        "metodos": {
+          "aleatorio": {
+            "auc": 0.5003838044126416,
+            "receita_top20": 0.20072271648209802
+          },
+          "recencia": {
+            "auc": 0.7257189425561519,
+            "receita_top20": 0.33663250374051634
+          },
+          "score_v1": {
+            "auc": 0.4953599681971775,
+            "receita_top20": 0.4853958331361437
+          },
+          "score_v2": {
+            "auc": 0.5463732856290996,
+            "receita_top20": 0.5990040960822028
+          },
+          "valor": {
+            "auc": 0.4953599681971775,
+            "receita_top20": 0.4853958331361437
+          }
+        },
+        "n": 1684,
+        "pct_ganhos": 0.3319477434679335,
+        "receita_ganha": 1251928.0
+      }
+    ],
+    "regra": "Engaging abertos em T com idade de até 90 dias; mesma população para todos os métodos.",
+    "v2_vence_v1_em_auc": 2,
+    "v2_vence_v1_em_receita": 1
+  },
+  "media_cortes": {
+    "brier": {
+      "constante": 0.22148698348816775,
+      "log_loss_constante": 0.6355626379954326,
+      "log_loss_modelo": 0.5118993480443763,
+      "modelo": 0.18039545932335369
+    },
+    "metodos": {
+      "aleatorio": {
+        "auc": 0.49987446937128777,
+        "ganhos_top20": 0.199956637697602,
+        "receita_top20": 0.20040876010268166
+      },
+      "p_only": {
+        "auc": 0.716230266417776,
+        "ganhos_top20": 0.3062911833516624,
+        "receita_top20": 0.3111877707112348
+      },
+      "recencia": {
+        "auc": 0.7009223539521606,
+        "ganhos_top20": 0.29784674126168803,
+        "receita_top20": 0.29715554607320144
+      },
+      "score": {
+        "auc": 0.6611099566102226,
+        "ganhos_top20": 0.27351906076594473,
+        "receita_top20": 0.625208453597444
+      },
+      "valor": {
+        "auc": 0.49470501638848274,
+        "ganhos_top20": 0.1998240749856275,
+        "receita_top20": 0.4813224879091773
+      }
+    }
+  },
+  "media_cortes_v1": {
+    "brier": {
+      "constante": 0.2257642224315068,
+      "log_loss_constante": 0.6443623973575904,
+      "log_loss_modelo": 0.5244947101018249,
+      "modelo": 0.18544270716201872
+    },
+    "metodos": {
+      "aleatorio": {
+        "auc": 0.49987446937128777,
+        "ganhos_top20": 0.199956637697602,
+        "receita_top20": 0.20040876010268166
+      },
+      "p_only": {
+        "auc": 0.6726675244766759,
+        "ganhos_top20": 0.2646232427587017,
+        "receita_top20": 0.2646024671592919
+      },
+      "recencia": {
+        "auc": 0.7009223539521606,
+        "ganhos_top20": 0.29784674126168803,
+        "receita_top20": 0.29715554607320144
+      },
+      "score": {
+        "auc": 0.6445921220073805,
+        "ganhos_top20": 0.2628335143135927,
+        "receita_top20": 0.6113373101500774
+      },
+      "valor": {
+        "auc": 0.49470501638848274,
+        "ganhos_top20": 0.1998240749856275,
+        "receita_top20": 0.4813224879091773
+      }
+    }
+  },
+  "sensibilidade_2017-02-28": {
+    "criterio": {
+      "passed": true,
+      "per_cut": [
+        {
+          "aleatorio_media": 0.20000716708869548,
+          "aleatorio_p95": 0.23415349127614554,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-06-30",
+          "passa": true,
+          "recencia": 0.2767033658237655,
+          "score": 0.6100360195213037,
+          "valor": 0.48622284852058695
+        },
+        {
+          "aleatorio_media": 0.2010251994491802,
+          "aleatorio_p95": 0.23408944689439087,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-07-31",
+          "passa": true,
+          "recencia": 0.12772327755313667,
+          "score": 0.5741951828305277,
+          "valor": 0.48678803602002974
+        },
+        {
+          "aleatorio_media": 0.19779801178365738,
+          "aleatorio_p95": 0.23047873176732792,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-08-31",
+          "passa": true,
+          "recencia": 0.3159545337763501,
+          "score": 0.5896009806112227,
+          "valor": 0.481545106686654
+        },
+        {
+          "aleatorio_media": 0.2028046620891936,
+          "aleatorio_p95": 0.243750039938399,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-09-30",
+          "passa": true,
+          "recencia": 0.46824100713955347,
+          "score": 0.7174931442885351,
+          "valor": 0.4707339604094384
+        }
+      ]
+    },
+    "first_snapshot": "2017-02-28",
+    "media": {
+      "auc": 0.6608095813098473,
+      "ganhos_top20": 0.272362638126425,
+      "receita_top20": 0.6228313318128973
+    },
+    "por_corte": [
+      {
+        "cut": "2017-06-30",
+        "delta_auc_vs_principal": 0.0,
+        "delta_receita_top20_vs_principal": 0.0,
+        "modelo": {
+          "as_of": "2017-06-30",
+          "base_rate": 0.45789473684210524,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.4931506849315068
+            },
+            {
+              "idade": 15,
+              "p": 0.4931506849315068
+            },
+            {
+              "idade": 30,
+              "p": 0.4891060981775285
+            },
+            {
+              "idade": 45,
+              "p": 0.4850615114235501
+            },
+            {
+              "idade": 60,
+              "p": 0.4850615114235501
+            },
+            {
+              "idade": 75,
+              "p": 0.3307660498294221
+            },
+            {
+              "idade": 90,
+              "p": 0.08823529411764706
+            },
+            {
+              "idade": 105,
+              "p": 0.0
+            },
+            {
+              "idade": 120,
+              "p": 0.0
+            },
+            {
+              "idade": 150,
+              "p": 0.0
+            }
+          ],
+          "faixas": {
+            "casos": [
+              357,
+              300,
+              272,
+              195,
+              102,
+              51,
+              22,
+              18,
+              9,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5
+            ],
+            "taxas": [
+              0.4931506849315068,
+              0.4931506849315068,
+              0.4850615114235501,
+              0.4850615114235501,
+              0.4850615114235501,
+              0.17647058823529413,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "fallback": false,
+          "fase": 3,
+          "horizon_days": 90,
+          "knot_days": 79,
+          "limpe_after_days": 95,
+          "limpe_rule": "chance",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 1,
+          "p_cauda": 0.0,
+          "p_fresh": 0.4931506849315068,
+          "train_rows": 1330,
+          "train_snapshots": [
+            "2017-03-31"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.7313349890912084,
+          "ganhos_top20": 0.2884706501710977,
+          "receita_top20": 0.28278699856669987
+        },
+        "score": {
+          "auc": 0.6616643263459131,
+          "ganhos_top20": 0.25733210876401996,
+          "receita_top20": 0.6100360195213037
+        }
+      },
+      {
+        "cut": "2017-07-31",
+        "delta_auc_vs_principal": 0.0,
+        "delta_receita_top20_vs_principal": 0.0,
+        "modelo": {
+          "as_of": "2017-07-31",
+          "base_rate": 0.4437577255871446,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 15,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 30,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 45,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 60,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 75,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 90,
+              "p": 0.46829590488771466
+            },
+            {
+              "idade": 105,
+              "p": 0.3223832465615044
+            },
+            {
+              "idade": 120,
+              "p": 0.08823529411764706
+            },
+            {
+              "idade": 150,
+              "p": 0.0
+            }
+          ],
+          "faixas": {
+            "casos": [
+              232,
+              180,
+              233,
+              300,
+              272,
+              195,
+              102,
+              51,
+              22,
+              18,
+              9,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5,
+              157.5,
+              172.5
+            ],
+            "taxas": [
+              0.46829590488771466,
+              0.46829590488771466,
+              0.46829590488771466,
+              0.46829590488771466,
+              0.46829590488771466,
+              0.46829590488771466,
+              0.46829590488771466,
+              0.17647058823529413,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "fallback": false,
+          "fase": 1,
+          "horizon_days": 90,
+          "knot_days": 109,
+          "limpe_after_days": 125,
+          "limpe_rule": "chance",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 1,
+          "p_cauda": 0.0,
+          "p_fresh": 0.46829590488771466,
+          "train_rows": 1618,
+          "train_snapshots": [
+            "2017-04-30"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.6428500262425164,
+          "ganhos_top20": 0.24760665489357747,
+          "receita_top20": 0.24690234598259303
+        },
+        "score": {
+          "auc": 0.6309950806401395,
+          "ganhos_top20": 0.2483428346027781,
+          "receita_top20": 0.5741951828305277
+        }
+      },
+      {
+        "cut": "2017-08-31",
+        "delta_auc_vs_principal": -0.0012015012015011983,
+        "delta_receita_top20_vs_principal": -0.009508487138187083,
+        "modelo": {
+          "as_of": "2017-08-31",
+          "base_rate": 0.44779411764705884,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 15,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 30,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 45,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 60,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 75,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 90,
+              "p": 0.46379170056956875
+            },
+            {
+              "idade": 105,
+              "p": 0.46140404700609583
+            },
+            {
+              "idade": 120,
+              "p": 0.4529124520404604
+            },
+            {
+              "idade": 150,
+              "p": 0.013157894736842105
+            }
+          ],
+          "faixas": {
+            "casos": [
+              638,
+              448,
+              318,
+              277,
+              274,
+              274,
+              229,
+              122,
+              47,
+              38,
+              21,
+              20,
+              10,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5,
+              157.5,
+              172.5,
+              187.5,
+              202.5
+            ],
+            "taxas": [
+              0.46379170056956875,
+              0.46379170056956875,
+              0.46379170056956875,
+              0.46379170056956875,
+              0.46379170056956875,
+              0.46379170056956875,
+              0.46379170056956875,
+              0.45901639344262296,
+              0.44680851063829785,
+              0.02631578947368421,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "fallback": false,
+          "fase": 2,
+          "horizon_days": 90,
+          "knot_days": 135,
+          "limpe_after_days": 138,
+          "limpe_rule": "ciclo",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 2,
+          "p_cauda": 0.0,
+          "p_fresh": 0.46379170056956875,
+          "train_rows": 2720,
+          "train_snapshots": [
+            "2017-02-28",
+            "2017-05-31"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.6579395507966936,
+          "ganhos_top20": 0.2589570450674227,
+          "receita_top20": 0.2600031279448283
+        },
+        "score": {
+          "auc": 0.629006129006129,
+          "ganhos_top20": 0.25597085575275325,
+          "receita_top20": 0.5896009806112227
+        }
+      },
+      {
+        "cut": "2017-09-30",
+        "delta_auc_vs_principal": 0.0,
+        "delta_receita_top20_vs_principal": 0.0,
+        "modelo": {
+          "as_of": "2017-09-30",
+          "base_rate": 0.39986737400530503,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.5015060240963856
+            },
+            {
+              "idade": 15,
+              "p": 0.5015060240963856
+            },
+            {
+              "idade": 30,
+              "p": 0.49601816356334427
+            },
+            {
+              "idade": 45,
+              "p": 0.4652651515151515
+            },
+            {
+              "idade": 60,
+              "p": 0.4134782608695652
+            },
+            {
+              "idade": 75,
+              "p": 0.25959396334890406
+            },
+            {
+              "idade": 90,
+              "p": 0.06611570247933884
+            },
+            {
+              "idade": 105,
+              "p": 0.0
+            },
+            {
+              "idade": 120,
+              "p": 0.0
+            },
+            {
+              "idade": 150,
+              "p": 0.0
+            }
+          ],
+          "faixas": {
+            "casos": [
+              746,
+              582,
+              528,
+              400,
+              230,
+              121,
+              85,
+              88,
+              67,
+              51,
+              26,
+              37,
+              21,
+              20,
+              10,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5,
+              157.5,
+              172.5,
+              187.5,
+              202.5,
+              217.5,
+              232.5
+            ],
+            "taxas": [
+              0.5015060240963856,
+              0.5015060240963856,
+              0.49053030303030304,
+              0.44,
+              0.3869565217391304,
+              0.1322314049586777,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "fallback": false,
+          "fase": 3,
+          "horizon_days": 90,
+          "knot_days": 75,
+          "limpe_after_days": 95,
+          "limpe_rule": "chance",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 2,
+          "p_cauda": 0.0,
+          "p_fresh": 0.5015060240963856,
+          "train_rows": 3016,
+          "train_snapshots": [
+            "2017-03-31",
+            "2017-06-30"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.8327964995406856,
+          "ganhos_top20": 0.4301303832745517,
+          "receita_top20": 0.45505861035081807
+        },
+        "score": {
+          "auc": 0.7215727892472078,
+          "ganhos_top20": 0.32780475338614873,
+          "receita_top20": 0.7174931442885351
+        }
+      }
+    ]
+  },
+  "sensibilidade_pseudo_contagem": {
+    "criterio": {
+      "passed": true,
+      "per_cut": [
+        {
+          "aleatorio_media": 0.20000716708869548,
+          "aleatorio_p95": 0.23415349127614554,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-06-30",
+          "passa": true,
+          "recencia": 0.2767033658237655,
+          "score": 0.6061834605102796,
+          "valor": 0.48622284852058695
+        },
+        {
+          "aleatorio_media": 0.2010251994491802,
+          "aleatorio_p95": 0.23408944689439087,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-07-31",
+          "passa": true,
+          "recencia": 0.12772327755313667,
+          "score": 0.569905518771447,
+          "valor": 0.48678803602002974
+        },
+        {
+          "aleatorio_media": 0.19779801178365738,
+          "aleatorio_p95": 0.23047873176732792,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-08-31",
+          "passa": true,
+          "recencia": 0.3159545337763501,
+          "score": 0.5960125339276651,
+          "valor": 0.481545106686654
+        },
+        {
+          "aleatorio_media": 0.2028046620891936,
+          "aleatorio_p95": 0.243750039938399,
+          "bate_aleatorio_media": true,
+          "bate_aleatorio_p95": true,
+          "bate_recencia": true,
+          "bate_valor": true,
+          "cut": "2017-09-30",
+          "passa": true,
+          "recencia": 0.46824100713955347,
+          "score": 0.7007958125387402,
+          "valor": 0.4707339604094384
+        }
+      ]
+    },
+    "media": {
+      "auc": 0.5603422002572661,
+      "ganhos_top20": 0.2693500140689315,
+      "receita_top20": 0.6182243314370329
+    },
+    "por_corte": [
+      {
+        "cut": "2017-06-30",
+        "delta_auc_vs_principal": -0.11732172778181804,
+        "delta_receita_top20_vs_principal": -0.0038525590110241037,
+        "modelo": {
+          "as_of": "2017-06-30",
+          "base_rate": 0.45789473684210524,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.4911273880540664
+            },
+            {
+              "idade": 15,
+              "p": 0.4911273880540664
+            },
+            {
+              "idade": 30,
+              "p": 0.48679873711966143
+            },
+            {
+              "idade": 45,
+              "p": 0.48247008618525644
+            },
+            {
+              "idade": 60,
+              "p": 0.48247008618525644
+            },
+            {
+              "idade": 75,
+              "p": 0.37552296878922264
+            },
+            {
+              "idade": 90,
+              "p": 0.26857585139318885
+            },
+            {
+              "idade": 105,
+              "p": 0.26857585139318885
+            },
+            {
+              "idade": 120,
+              "p": 0.26857585139318885
+            },
+            {
+              "idade": 150,
+              "p": 0.26857585139318885
+            }
+          ],
+          "faixas": {
+            "casos": [
+              357,
+              300,
+              272,
+              195,
+              102,
+              51,
+              22,
+              18,
+              9,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5
+            ],
+            "taxas": [
+              0.4911273880540664,
+              0.4911273880540664,
+              0.48247008618525644,
+              0.48247008618525644,
+              0.48247008618525644,
+              0.26857585139318885,
+              0.26857585139318885,
+              0.26857585139318885,
+              0.26857585139318885,
+              0.26857585139318885
+            ]
+          },
+          "fallback": false,
+          "fase": 3,
+          "horizon_days": 90,
+          "knot_days": 730,
+          "limpe_after_days": 730,
+          "limpe_rule": "ciclo",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 1,
+          "p_cauda": 0.26857585139318885,
+          "p_fresh": 0.4911273880540664,
+          "train_rows": 1330,
+          "train_snapshots": [
+            "2017-03-31"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.7305429391684314,
+          "ganhos_top20": 0.2884706501710977,
+          "receita_top20": 0.28278699856669987
+        },
+        "score": {
+          "auc": 0.5443425985640951,
+          "ganhos_top20": 0.2553560991901144,
+          "receita_top20": 0.6061834605102796
+        }
+      },
+      {
+        "cut": "2017-07-31",
+        "delta_auc_vs_principal": -0.08053961730404857,
+        "delta_receita_top20_vs_principal": -0.004289664059080711,
+        "modelo": {
+          "as_of": "2017-07-31",
+          "base_rate": 0.4437577255871446,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 15,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 30,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 45,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 60,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 75,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 90,
+              "p": 0.4662189126857318
+            },
+            {
+              "idade": 105,
+              "p": 0.3639324283004994
+            },
+            {
+              "idade": 120,
+              "p": 0.26164594391526697
+            },
+            {
+              "idade": 150,
+              "p": 0.26164594391526697
+            }
+          ],
+          "faixas": {
+            "casos": [
+              232,
+              180,
+              233,
+              300,
+              272,
+              195,
+              102,
+              51,
+              22,
+              18,
+              9,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5,
+              157.5,
+              172.5
+            ],
+            "taxas": [
+              0.4662189126857318,
+              0.4662189126857318,
+              0.4662189126857318,
+              0.4662189126857318,
+              0.4662189126857318,
+              0.4662189126857318,
+              0.4662189126857318,
+              0.26164594391526697,
+              0.26164594391526697,
+              0.26164594391526697,
+              0.26164594391526697,
+              0.26164594391526697
+            ]
+          },
+          "fallback": false,
+          "fase": 1,
+          "horizon_days": 90,
+          "knot_days": 730,
+          "limpe_after_days": 730,
+          "limpe_rule": "ciclo",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 1,
+          "p_cauda": 0.26164594391526697,
+          "p_fresh": 0.4662189126857318,
+          "train_rows": 1618,
+          "train_snapshots": [
+            "2017-04-30"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.642393228541183,
+          "ganhos_top20": 0.24760665489357747,
+          "receita_top20": 0.24690234598259303
+        },
+        "score": {
+          "auc": 0.550455463336091,
+          "ganhos_top20": 0.24620152709035756,
+          "receita_top20": 0.569905518771447
+        }
+      },
+      {
+        "cut": "2017-08-31",
+        "delta_auc_vs_principal": -0.0781043281043281,
+        "delta_receita_top20_vs_principal": -0.0030969338217446962,
+        "modelo": {
+          "as_of": "2017-08-31",
+          "base_rate": 0.4013029315960912,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 15,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 30,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 45,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 60,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 75,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 90,
+              "p": 0.43046150337917144
+            },
+            {
+              "idade": 105,
+              "p": 0.39720686461032406
+            },
+            {
+              "idade": 120,
+              "p": 0.3639522258414767
+            },
+            {
+              "idade": 150,
+              "p": 0.21311032725186074
+            }
+          ],
+          "faixas": {
+            "casos": [
+              317,
+              233,
+              165,
+              139,
+              147,
+              165,
+              151,
+              85,
+              40,
+              38,
+              21,
+              20,
+              10,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5,
+              157.5,
+              172.5,
+              187.5,
+              202.5
+            ],
+            "taxas": [
+              0.43046150337917144,
+              0.43046150337917144,
+              0.43046150337917144,
+              0.43046150337917144,
+              0.43046150337917144,
+              0.43046150337917144,
+              0.43046150337917144,
+              0.3639522258414767,
+              0.3639522258414767,
+              0.21311032725186074,
+              0.21311032725186074,
+              0.21311032725186074,
+              0.21311032725186074,
+              0.21311032725186074
+            ]
+          },
+          "fallback": false,
+          "fase": 2,
+          "horizon_days": 90,
+          "knot_days": 142,
+          "limpe_after_days": 142,
+          "limpe_rule": "ciclo",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 1,
+          "p_cauda": 0.21311032725186074,
+          "p_fresh": 0.43046150337917144,
+          "train_rows": 1535,
+          "train_snapshots": [
+            "2017-05-31"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.6578050328050328,
+          "ganhos_top20": 0.2589570450674227,
+          "receita_top20": 0.2600031279448283
+        },
+        "score": {
+          "auc": 0.552103302103302,
+          "ganhos_top20": 0.25902668759811615,
+          "receita_top20": 0.5960125339276651
+        }
+      },
+      {
+        "cut": "2017-09-30",
+        "delta_auc_vs_principal": -0.12710535222163122,
+        "delta_receita_top20_vs_principal": -0.01669733174979482,
+        "modelo": {
+          "as_of": "2017-09-30",
+          "base_rate": 0.39986737400530503,
+          "curva_pontos": [
+            {
+              "idade": 0,
+              "p": 0.49853413374284516
+            },
+            {
+              "idade": 15,
+              "p": 0.49853413374284516
+            },
+            {
+              "idade": 30,
+              "p": 0.492877785375169
+            },
+            {
+              "idade": 45,
+              "p": 0.46265517978958703
+            },
+            {
+              "idade": 60,
+              "p": 0.4130391562460528
+            },
+            {
+              "idade": 75,
+              "p": 0.2790916718400211
+            },
+            {
+              "idade": 90,
+              "p": 0.15075664420416107
+            },
+            {
+              "idade": 105,
+              "p": 0.13131933464870443
+            },
+            {
+              "idade": 120,
+              "p": 0.13131933464870443
+            },
+            {
+              "idade": 150,
+              "p": 0.13131933464870443
+            }
+          ],
+          "faixas": {
+            "casos": [
+              746,
+              582,
+              528,
+              400,
+              230,
+              121,
+              85,
+              88,
+              67,
+              51,
+              26,
+              37,
+              21,
+              20,
+              10,
+              4
+            ],
+            "pontos_medios": [
+              7.5,
+              22.5,
+              37.5,
+              52.5,
+              67.5,
+              82.5,
+              97.5,
+              112.5,
+              127.5,
+              142.5,
+              157.5,
+              172.5,
+              187.5,
+              202.5,
+              217.5,
+              232.5
+            ],
+            "taxas": [
+              0.49853413374284516,
+              0.49853413374284516,
+              0.4872214370074929,
+              0.4380889225716812,
+              0.3879893899204244,
+              0.17019395375961774,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443,
+              0.13131933464870443
+            ]
+          },
+          "fallback": false,
+          "fase": 3,
+          "horizon_days": 90,
+          "knot_days": 77,
+          "limpe_after_days": 138,
+          "limpe_rule": "ciclo",
+          "max_won_cycle_days": 138,
+          "n_snapshots": 2,
+          "p_cauda": 0.13131933464870443,
+          "p_fresh": 0.49853413374284516,
+          "train_rows": 3016,
+          "train_snapshots": [
+            "2017-03-31",
+            "2017-06-30"
+          ],
+          "versao": "v2"
+        },
+        "p_only": {
+          "auc": 0.8327964995406856,
+          "ganhos_top20": 0.4301303832745517,
+          "receita_top20": 0.45505861035081807
+        },
+        "score": {
+          "auc": 0.5944674370255766,
+          "ganhos_top20": 0.3168157423971378,
+          "receita_top20": 0.7007958125387402
+        }
+      }
+    ],
+    "pseudo_count": 20
+  }
+}

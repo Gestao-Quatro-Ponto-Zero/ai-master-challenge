@@ -1,0 +1,265 @@
+﻿## SHAPE (8800, 8)
+
+## NULLS
+ opportunity_id       0
+sales_agent          0
+product              0
+account           1425
+deal_stage           0
+engage_date        500
+close_date        2089
+close_value       2089
+dtype: int64
+
+## STAGES
+ deal_stage
+Won            4238
+Lost           2473
+Engaging       1589
+Prospecting     500
+Name: count, dtype: int64
+
+## PRODUCT names in pipeline vs catalog
+['GTXPro']
+
+## ACCOUNT names missing from accounts: []
+## AGENTS missing from teams: []
+## accounts sectors: {'retail': 17, 'technolgy': 12, 'medical': 12, 'marketing': 8, 'finance': 8, 'software': 7, 'entertainment': 6, 'telecommunications': 6, 'services': 5, 'employment': 4}
+## dup opp ids: 0
+
+## stage vs null dates
+                n  no_engage  no_close  no_account  cv_zero      cv_mean
+deal_stage                                                              
+Engaging     1589          0      1589        1088        0          NaN
+Lost         2473          0         0           0     2473     0.000000
+Prospecting   500        500       500         337        0          NaN
+Won          4238          0         0           0        0  2360.909391
+
+## date ranges
+             engage_date            close_date           
+                    min        max        min        max
+deal_stage                                              
+Engaging     2016-11-03 2017-12-22        NaT        NaT
+Lost         2016-11-04 2017-12-22 2017-03-01 2017-12-31
+Prospecting         NaT        NaT        NaT        NaT
+Won          2016-10-20 2017-12-27 2017-03-01 2017-12-31
+
+## OVERALL closed win rate 0.632 n_closed 6711 open 2089
+
+## close_value vs list price (Won)
+count    4238.000000
+mean        0.996483
+std         0.098852
+min         0.657333
+25%         0.929091
+50%         0.998182
+75%         1.063472
+max         1.341846
+dtype: float64
+
+## WIN RATE by product
+                    n    win        rev
+product                               
+MG Special      1223  0.648    43768.0
+GTX Plus Pro     745  0.643  2629651.0
+GTX Basic       1436  0.637   499263.0
+GTX Pro         1147  0.636  3510578.0
+GTX Plus Basic  1051  0.621   705275.0
+MG Advanced     1084  0.603  2216387.0
+GTK 500           25  0.600   400612.0
+
+## WIN RATE by series
+            n    win        rev
+series                        
+GTX     4379  0.634  7344767.0
+MG      2307  0.627  2260155.0
+GTK       25  0.600   400612.0
+
+## WIN RATE by sector
+                        n    win        rev
+sector                                    
+marketing            623  0.648   922321.0
+entertainment        402  0.647   689007.0
+software             704  0.639  1077934.0
+technolgy           1058  0.634  1515487.0
+services             352  0.634   533006.0
+retail              1267  0.631  1867528.0
+employment           286  0.626   436174.0
+telecommunications   456  0.625   653574.0
+medical              950  0.623  1359595.0
+finance              613  0.612   950908.0
+
+## WIN RATE by regional_office
+                     n    win        rev
+regional_office                        
+West             2249  0.639  3568647.0
+East             1858  0.630  3090594.0
+Central          2604  0.626  3346293.0
+
+## WIN RATE by manager
+                      n    win        rev
+manager                                 
+Cara Losch         745  0.644  1130049.0
+Summer Sewald     1287  0.643  1964750.0
+Celia Rouche       962  0.634  1603897.0
+Dustin Brinkmann  1186  0.630  1094363.0
+Melvin Marxen     1418  0.622  2251930.0
+Rocco Neubert     1113  0.621  1960545.0
+
+## WIN RATE by office_location
+                     n    win        rev
+office_location                        
+Panama            100  0.750   151777.0
+Germany            51  0.725    82622.0
+China              48  0.688    86690.0
+Poland             68  0.662   106754.0
+Jordan             81  0.642   163339.0
+United States    5555  0.633  8426955.0
+Italy              87  0.621   114352.0
+Kenya              86  0.616   107408.0
+Brazil             52  0.615    63103.0
+Japan              75  0.613   123506.0
+Belgium           104  0.606   117463.0
+Philipines         85  0.588    90991.0
+Norway             85  0.588   115712.0
+Korea             193  0.575   194957.0
+Romania            41  0.561    59905.0
+
+## WIN RATE by agent (top/bottom)
+                      n    win       rev
+sales_agent                            
+Hayden Neloms      152  0.704  272111.0
+Maureen Marcano    213  0.700  350395.0
+Wilburn Farren      79  0.696  157640.0
+Cecily Lampkin     160  0.669  229800.0
+Versie Hillebrand  264  0.667  187693.0
+Niesha Huffines    175  0.600  176961.0
+Gladys Colclough   232  0.582  345674.0
+Donn Cantrell      275  0.575  445860.0
+Markita Hansen     227  0.573  328792.0
+Lajuana Vencill    231  0.550  194632.0
+agent win-rate spread: {'count': 30.0, 'mean': 0.635, 'std': 0.037, 'min': 0.55, '25%': 0.617, '50%': 0.636, '75%': 0.655, 'max': 0.704}
+
+## WIN RATE by price quartile
+                       n    win        rev
+price_bin                                
+(54.999, 550.0]    2659  0.642   543031.0
+(4821.0, 26768.0]   770  0.642  3030263.0
+(550.0, 1096.0]    1051  0.621   705275.0
+(1096.0, 4821.0]   2231  0.620  5726965.0
+
+## WIN RATE by account revenue quartile
+                         n    win        rev
+rev_bin                                    
+(1698.2, 3027.46]    1699  0.659  2712444.0
+(4.539, 647.18]      1681  0.634  2316046.0
+(647.18, 1698.2]     1699  0.619  2432330.0
+(3027.46, 11698.03]  1632  0.613  2544714.0
+
+## WIN RATE by employees quartile
+                       n    win        rev
+emp_bin                                  
+(8.999, 1238.0]    1690  0.641  2300764.0
+(3502.0, 8274.0]   1695  0.639  2717146.0
+(8274.0, 34288.0]  1596  0.632  2522662.0
+(1238.0, 3502.0]   1730  0.614  2464962.0
+
+## WIN RATE by account age
+               n    win        rev
+age_bin                          
+(35, 100]   241  0.643   407584.0
+(25, 35]   2140  0.643  3179014.0
+(15, 25]   2602  0.625  3980580.0
+(0, 15]    1569  0.623  2231946.0
+
+## WIN RATE subsidiary
+           n    win        rev
+subs                         
+True   1160  0.636  1732081.0
+False  5551  0.631  8273453.0
+
+## CYCLE DAYS (closed) Won vs Lost
+       count  mean   std  min  25%   50%   75%    max
+won                                                 
+0    2473.0  41.5  40.0  1.0  7.0  14.0  79.0  138.0
+1    4238.0  51.8  41.2  1.0  9.0  57.0  88.0  138.0
+                n    win        rev
+cyc_bin                            
+(120, 1000]   193  0.756   319593.0
+(90, 120]    1165  0.704  1905388.0
+(60, 90]     1621  0.665  2540245.0
+(30, 60]      569  0.663   907383.0
+(7, 30]      1750  0.606  2533652.0
+(-1, 7]      1413  0.535  1799273.0
+
+## WIN RATE by close quarter
+            n    win        rev
+month                         
+2017Q1   647  0.821  1134672.0
+2017Q2  2032  0.617  3086111.0
+2017Q3  2047  0.614  2982255.0
+2017Q4  1985  0.603  2802496.0
+
+## WIN RATE by engage quarter
+              n    win        rev
+engage_q                        
+2016Q4     305  0.820   523531.0
+2017Q1    1322  0.679  2170446.0
+2017Q2    2022  0.616  2968256.0
+2017Q4    1050  0.607  1550568.0
+2017Q3    2012  0.600  2792733.0
+
+## OPEN PIPELINE
+                n  potential  no_acct engage_min engage_max
+deal_stage                                                 
+Engaging     1589    3892229     1088 2016-11-03 2017-12-22
+Prospecting   500    1073986      337        NaT        NaT
+max close_date (data 'today'): 2017-12-31 00:00:00 | max engage: 2017-12-27 00:00:00
+              count   mean   std  min    25%    50%    75%    max
+deal_stage                                                       
+Engaging     1589.0  194.8  83.6  5.0  144.0  161.0  259.0  419.0
+Prospecting     0.0    NaN   NaN  NaN    NaN    NaN    NaN    NaN
+
+## Open deals by agent (top 5 count)
+ sales_agent
+Darcel Schlecht      194
+Anna Snelling        112
+Vicki Laflamme       104
+Kary Hendrixson      103
+Versie Hillebrand     97
+dtype: int64
+
+## Concentration: share of Won revenue by product
+ product
+GTX Pro           0.351
+GTX Plus Pro      0.263
+MG Advanced       0.222
+GTX Plus Basic    0.070
+GTX Basic         0.050
+GTK 500           0.040
+MG Special        0.004
+Name: close_value, dtype: float64
+
+## Agents with accounts coverage: unique accounts per agent
+ count    30.0
+mean     42.0
+std       6.7
+min      28.0
+25%      40.0
+50%      43.0
+75%      45.8
+max      55.0
+Name: account, dtype: float64
+
+## Single-feature AUC (closed deals; 0.5 = no signal)
+sales_price 0.494
+cycle 0.578
+revenue 0.496
+employees 0.498
+year_established 0.493
+product in-sample target-enc AUC 0.517
+sector in-sample target-enc AUC 0.512
+sales_agent in-sample target-enc AUC 0.54
+manager in-sample target-enc AUC 0.511
+regional_office in-sample target-enc AUC 0.507
+office_location in-sample target-enc AUC 0.515

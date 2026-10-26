@@ -1,0 +1,39 @@
+﻿## Linhas com product==GTXPro no CSV bruto: 1480
+deal_stage
+Engaging       253
+Lost           418
+Prospecting     80
+Won            729
+## Linhas com product==GTX Pro no CSV bruto: 0
+## Linhas apos normalizacao e join com products: 8800
+## Linhas com product==GTXPro apos normalizacao: 0
+
+### snapshot 2017-06-30 open deals: 1686
+out          lost  still_open  won    n  win_if_closed  pct_still_open_end  pct_won_of_all
+bin                                                                                       
+(-1, 30]      212         114  366  692          0.633               0.165           0.529
+(30, 60]      121         131  202  454          0.625               0.289           0.445
+(60, 90]       28         121   41  190          0.594               0.637           0.216
+(90, 138]       0         201    0  201            NaN               1.000           0.000
+(138, 200]      0         126    0  126            NaN               1.000           0.000
+(200, 1000]     0          23    0   23            NaN               1.000           0.000
+
+### snapshot 2017-09-30 open deals: 2409
+out          lost  still_open  won    n  win_if_closed  pct_still_open_end  pct_won_of_all
+bin                                                                                       
+(-1, 30]      228         110  341  679          0.599               0.162           0.502
+(30, 60]      112         246  187  545          0.625               0.451           0.343
+(60, 90]       34         395   31  460          0.477               0.859           0.067
+(90, 138]       2         193    0  195          0.000               0.990           0.000
+(138, 200]      0         260    0  260            NaN               1.000           0.000
+(200, 1000]     0         270    0  270            NaN               1.000           0.000
+## Concentracao da receita ganha (share exato):
+product
+GTX Pro           0.3509
+GTX Plus Pro      0.2628
+MG Advanced       0.2215
+GTX Plus Basic    0.0705
+GTX Basic         0.0499
+GTK 500           0.0400
+MG Special        0.0044
+## Top 3 produtos, share exato: 0.8352

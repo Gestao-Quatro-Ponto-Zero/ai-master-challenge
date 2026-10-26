@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Lead Scorer — onde pôr o tempo esta semana</title>
+<script>
+/* Aplica o tema escolhido antes da primeira pintura (evita o clarão do tema errado). Sem armazenamento, vale o tema do sistema. */
+try { var t = localStorage.getItem('leadscorer:tema'); if (t === 'dark' || t === 'light') { document.documentElement.setAttribute('data-theme', t); } } catch (e) {}
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<noscript>
+  <p class="boot-msg">Esta página precisa de JavaScript ligado para mostrar as listas.</p>
+</noscript>
+
+<!-- Aparece só se o data.js não carregar (app.js tira o hidden) -->
+<div id="no-data" class="boot-msg" data-testid="no-data" role="alert" hidden>
+  <h1>Lead Scorer</h1>
+  <p>Os dados ainda não foram gerados. Rode <code>python -m scorer.build</code> e abra esta página de novo.</p>
+</div>
+
+<div id="app" hidden>
+
+  <!-- Ícones (traço de 2px, 24x24). Um por lista, mais os de interface. Usados com <use href="#i-...">. -->
+  <svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0" style="position:absolute;overflow:hidden">
+    <defs>
+      <symbol id="i-Foque" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></g></symbol>
+      <symbol id="i-Reative" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></g></symbol>
+      <symbol id="i-Limpe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></g></symbol>
+      <symbol id="i-Qualifique" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></g></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-sort" viewBox="0 0 24 24"><path d="M8 9l4-4 4 4M8 15l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip" href="#main">Pular para o conteúdo</a>
+
+  <header class="bar">
+    <div class="wrap bar-in">
+      <h1 class="brand"><span class="brand-mark" aria-hidden="true"></span>Lead Scorer</h1>
+      <div class="bar-mode" id="bar-mode">
+        <label for="mode-select" class="sr-only">Data da foto da carteira</label>
+        <select id="mode-select" data-testid="mode-select"></select>
+      </div>
+      <button type="button" id="how-btn" class="btn btn-ghost" data-testid="how-btn"><span>Como funciona<span class="lg-only"> o score</span></span></button>
+      <button type="button" id="theme-btn" class="btn btn-ghost btn-icon" data-testid="theme-toggle" aria-label="Mudar para o tema escuro" title="Alternar tema claro e escuro">
+        <svg class="ico ico-lg" aria-hidden="true" focusable="false"><use id="theme-use" href="#i-moon"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="test-banner" class="banner" data-testid="test-banner" role="region" aria-label="Modo teste" hidden></div>
+
+  <main id="main" class="wrap" tabindex="-1">
+
+    <!-- Tela de entrada: Quem é você? -->
+    <section id="entry" class="entry" data-testid="entry" aria-labelledby="entry-title" hidden>
+      <h2 id="entry-title" class="entry-title" tabindex="-1">Quem é <em class="accent">você</em>?</h2>
+      <p class="entry-sub">Escolha o seu perfil. Cada um vê só o que precisa para decidir onde pôr o tempo.</p>
+      <div class="entry-grid">
+        <form class="role-card" id="entry-vendedor" data-testid="entry-vendedor">
+          <h3>Sou vendedor</h3>
+          <p>Minha semana: onde focar, o que reativar e o que largar, só com os meus deals.</p>
+          <label for="entry-agent">Meu nome</label>
+          <select id="entry-agent" data-testid="entry-agent"></select>
+          <button type="submit" class="btn btn-primary" data-testid="enter-vendedor">Ver minha semana</button>
+        </form>
+        <form class="role-card" id="entry-manager" data-testid="entry-manager">
+          <h3>Sou manager</h3>
+          <p>Meu time: um mapa por vendedor, a higiene da carteira e a pauta do 1:1.</p>
+          <label for="entry-mgr">Meu nome</label>
+          <select id="entry-mgr" data-testid="entry-mgr"></select>
+          <button type="submit" class="btn btn-primary" data-testid="enter-manager">Ver meu time</button>
+        </form>
+      </div>
+      <p id="entry-last" class="entry-last" hidden>
+        <button type="button" class="btn" id="entry-continue" data-testid="entry-continue"></button>
+      </p>
+      <p class="entry-note" data-testid="entry-note"><strong>Separação de experiência, não de segurança.</strong> Esta versão é uma página estática: o arquivo de dados contém os deals de todos os vendedores, e escolher um nome só filtra o que aparece na tela. O controle de acesso de verdade está descrito em <code>docs/ARQUITETURA_PRODUCAO.md</code>.</p>
+      <p class="entry-alt"><button type="button" class="btn btn-link" id="enter-revops" data-testid="enter-revops">Ver a carteira completa (RevOps e avaliação)</button></p>
+    </section>
+
+    <!-- Tudo o que vem depois de escolher o perfil -->
+    <div id="session" hidden>
+
+      <div class="profile-bar" data-testid="profile-bar">
+        <p class="profile-who"><span class="profile-line"><span id="role-tag" class="role-tag" data-testid="role-tag"></span> <strong id="who" data-testid="who"></strong></span><span id="who-sub" class="muted profile-sub"></span></p>
+        <button type="button" id="switch-profile" class="btn" data-testid="switch-profile">Trocar de perfil</button>
+      </div>
+
+      <section id="filters" class="filters" aria-label="Filtros" hidden>
+        <div class="field field-agent">
+          <label for="filter-agent">Vendedor</label>
+          <select id="filter-agent" data-testid="filter-agent"></select>
+        </div>
+        <div class="field">
+          <label for="filter-manager">Manager</label>
+          <select id="filter-manager" data-testid="filter-manager"></select>
+        </div>
+        <div class="field">
+          <label for="filter-region">Região</label>
+          <select id="filter-region" data-testid="filter-region"></select>
+        </div>
+        <button type="button" id="filter-clear" class="btn" data-testid="filter-clear">Limpar</button>
+      </section>
+
+      <section class="hero" aria-label="O que fazer">
+        <h2 id="eyebrow" class="eyebrow" data-testid="eyebrow" tabindex="-1"></h2>
+        <p id="scope-label" class="scope" data-testid="scope-label"></p>
+        <p id="action-summary" class="action-text" data-testid="action-summary" role="status" aria-live="polite"></p>
+        <p id="hero-hint" class="hero-hint" data-testid="hero-hint" hidden></p>
+        <div id="stats" class="stats" data-testid="stats" hidden>
+          <div class="stat stat-progress" data-testid="stat-progress">
+            <p class="stat-label">Progresso da semana</p>
+            <p class="stat-value"><span id="prog-done" data-testid="prog-done"></span> <span class="stat-of">de</span> <span id="prog-total" data-testid="prog-total"></span></p>
+            <div id="prog-bar" class="bar-track" role="progressbar" aria-label="Deals tratados em Foque e Reative" aria-valuemin="0" aria-valuemax="100"><span id="prog-fill" class="bar-fill"></span></div>
+            <p id="prog-lists" class="stat-sub" data-testid="prog-lists"></p>
+          </div>
+          <div class="stat stat-value-week" id="stat-week" data-testid="stat-week">
+            <p class="stat-label">Valor esperado da semana</p>
+            <p class="stat-value"><span id="week-value" data-testid="week-value"></span></p>
+            <p id="week-sub" class="stat-sub" data-testid="week-sub"></p>
+            <button type="button" id="sim-clear" class="btn btn-ghost btn-small" data-testid="sim-clear" hidden>Limpar simulação</button>
+          </div>
+        </div>
+        <p id="save-note" class="save-note" data-testid="save-note" hidden>Suas marcações ficam salvas só neste navegador.</p>
+      </section>
+
+      <section id="results" class="results" data-testid="backtest-results" aria-label="O que aconteceu depois" hidden></section>
+
+      <!-- Manager: mapa do time -->
+      <section id="teammap" class="teammap" data-testid="teammap" aria-labelledby="teammap-title" hidden>
+        <div class="section-head">
+          <h2 id="teammap-title">Mapa do time</h2>
+          <p class="muted">Uma linha por vendedor: deals e valor de tabela de cada grupo.</p>
+        </div>
+        <div id="teammap-body"></div>
+        <p class="hygiene-note" data-testid="hygiene-note"><strong>Higiene de carteira, não desempenho.</strong> Os zumbis medem deals parados no CRM, que o vendedor pode confirmar e encerrar. Não há taxa de vitória nem ranking de vendedores: a diferença entre vendedores é compatível com ruído.</p>
+      </section>
+
+      <section id="wallet" class="wallet" aria-label="Carteira">
+        <div id="wallet-head" class="wallet-head" data-testid="wallet-head" hidden>
+          <div>
+            <p class="eyebrow">Modo leitura</p>
+            <h2 id="wallet-title" class="wallet-title" tabindex="-1" data-testid="wallet-title"></h2>
+            <p id="wallet-sub" class="muted"></p>
+          </div>
+          <div class="wallet-actions">
+            <button type="button" id="pauta-btn" class="btn btn-primary" data-testid="pauta-btn"></button>
+            <button type="button" id="wallet-close" class="btn" data-testid="wallet-close">Voltar ao time</button>
+          </div>
+        </div>
+
+        <section id="pauta" class="pauta" data-testid="pauta" aria-labelledby="pauta-title" hidden></section>
+
+        <div id="tabs" class="tabs" role="tablist" aria-label="Listas de ação"></div>
+
+        <div id="team"></div>
+
+        <section id="panel" class="panel" role="tabpanel" tabindex="-1">
+          <p id="instruction" class="instruction" data-testid="instruction"></p>
+          <div id="empty" class="empty" data-testid="empty-state" hidden></div>
+          <div id="cards" class="cards"></div>
+          <div id="more" class="more" hidden>
+            <p id="shown-count" class="muted" data-testid="shown-count"></p>
+            <button type="button" id="more-btn" class="btn btn-wide" data-testid="show-more"></button>
+          </div>
+        </section>
+      </section>
+
+    </div>
+
+    <details id="how" class="box" data-testid="how-details">
+      <summary>Como funciona o score</summary>
+      <ol id="how-list" class="how-list" data-testid="how-it-works"></ol>
+      <div class="how-note" data-testid="how-transparency">
+        <p><strong>Sobre quem vê o quê.</strong> Nesta versão a separação entre vendedor e manager é de experiência, não de segurança. O arquivo <code>data.js</code> contém os deals de todos os vendedores, então quem baixa o arquivo vê tudo. A separação real, com login e acesso por linha no banco de dados, está descrita em <code>docs/ARQUITETURA_PRODUCAO.md</code>.</p>
+        <p><strong>Higiene, não desempenho.</strong> Os números por vendedor são contagens de deals por lista. Não existe taxa de vitória nem ranking de vendedores, e o vendedor não entra no score.</p>
+      </div>
+    </details>
+
+    <details id="backtest" class="box" data-testid="backtest-panel">
+      <summary>Teste no passado</summary>
+      <div id="backtest-body"></div>
+    </details>
+
+  </main>
+
+  <footer class="wrap foot" id="foot"></footer>
+  <div id="live" class="sr-only" role="status" aria-live="polite" data-testid="live"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

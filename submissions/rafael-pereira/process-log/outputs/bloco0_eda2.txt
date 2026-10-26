@@ -1,0 +1,59 @@
+﻿agents in teams 35 in pipeline 30 | without deals: ['Carl Lin', 'Carol Thompson', 'Elizabeth Anderson', 'Mei-Mei Johns', 'Natalya Ivanova']
+max closed cycle 138 p90 won 106.0
+Engaging n 1589 older than max closed cycle: 1291 = 0.812 | value of those 3198664 of 3892229
+{'count': 1589.0, 'mean': 199.0, 'std': 84.0, 'min': 9.0, '25%': 148.0, '50%': 165.0, '75%': 263.0, 'max': 423.0}
+age buckets
+ age
+(-1, 30]       18
+(30, 60]       39
+(60, 90]       53
+(90, 138]     188
+(138, 200]    642
+(200, 300]    411
+(300, 500]    238
+Name: count, dtype: int64
+Lost cycle hist
+ cycle
+(0, 7]       657
+(7, 14]      592
+(14, 30]      97
+(30, 60]     192
+(60, 90]     543
+(90, 140]    392
+Name: count, dtype: int64
+Won cycle hist
+ cycle
+(0, 7]        756
+(7, 14]       801
+(14, 30]      260
+(30, 60]      377
+(60, 90]     1078
+(90, 140]     966
+Name: count, dtype: int64
+sales_agent chi2 p-value 0.2639
+product chi2 p-value 0.3719
+          size   mean
+has_acct             
+True      6711  0.632
+agent win-rate corr H1 vs H2: 0.573
+accounts total 85 deals/account mean 86.8
+won ratio by product
+                 mean   min   max
+product                         
+GTK 500         1.00  0.89  1.13
+GTX Basic       0.99  0.66  1.30
+GTX Plus Basic  0.99  0.69  1.25
+GTX Plus Pro    1.00  0.68  1.34
+GTX Pro         1.00  0.66  1.28
+MG Advanced     1.00  0.73  1.31
+MG Special      1.00  0.69  1.31
+product
+GTK 500           69.0
+GTX Basic         61.0
+GTX Plus Basic    56.0
+GTX Plus Pro      57.0
+GTX Pro           47.0
+MG Advanced       57.5
+MG Special        57.0
+Name: cycle, dtype: float64
+prospecting value 1073986 {'GTX Basic': 93, 'GTX Plus Basic': 74, 'GTX Plus Pro': 47, 'GTX Pro': 80, 'MG Advanced': 86, 'MG Special': 120}
