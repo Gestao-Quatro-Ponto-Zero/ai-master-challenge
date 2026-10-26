@@ -1,0 +1,79 @@
+{
+ "datas": [
+  "2017-06-30",
+  "2017-07-31",
+  "2017-08-31",
+  "2017-09-30"
+ ],
+ "foco": {
+  "nota": 0.592,
+  "so_tempo": 0.564,
+  "obvia": 0.453,
+  "preco": 0.484,
+  "acaso": 0.2
+ },
+ "ganhou_em": {
+  "so_tempo": 4,
+  "obvia": 4,
+  "preco": 4,
+  "acaso": 4
+ },
+ "previsao": [
+  {
+   "data": "2017-06-30",
+   "crm": 4216807,
+   "previsao": 1503534,
+   "real": 1421254
+  },
+  {
+   "data": "2017-07-31",
+   "crm": 5499192,
+   "previsao": 1644465,
+   "real": 1719442
+  },
+  {
+   "data": "2017-08-31",
+   "crm": 5389247,
+   "previsao": 1502649,
+   "real": 1298386
+  },
+  {
+   "data": "2017-09-30",
+   "crm": 5763490,
+   "previsao": 1520238,
+   "real": 1219993
+  }
+ ],
+ "calibracao": [
+  {
+   "prevista": 0.22,
+   "real": 0.0,
+   "vendas": 45
+  },
+  {
+   "prevista": 0.356,
+   "real": 0.293,
+   "vendas": 389
+  },
+  {
+   "prevista": 0.439,
+   "real": 0.471,
+   "vendas": 1262
+  },
+  {
+   "prevista": 0.544,
+   "real": 0.507,
+   "vendas": 2223
+  },
+  {
+   "prevista": 0.624,
+   "real": 0.54,
+   "vendas": 1049
+  },
+  {
+   "prevista": 0.702,
+   "real": 0.0,
+   "vendas": 14
+  }
+ ]
+}

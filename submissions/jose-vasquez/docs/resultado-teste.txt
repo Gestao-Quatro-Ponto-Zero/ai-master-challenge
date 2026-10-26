@@ -1,0 +1,35 @@
+1) Focando nos 20% do topo, quanto da receita dos 90 dias seguintes o vendedor pega?
+
+      data  abertas  foco  receita_90d  nota  so_tempo  obvia  preco  acaso
+2017-06-30     1686   337    1421254.0  48.6      48.3   43.8   48.5   19.9
+2017-07-31     2257   451    1719442.0  62.4      60.1   46.7   49.0   20.0
+2017-08-31     2265   453    1298386.0  60.7      58.8   46.6   48.9   20.0
+2017-09-30     2409   482    1219993.0  65.2      58.2   44.1   47.1   19.9
+
+Média das 4 datas:
+  Nota do Lead Scorer                                 59.2%
+  Nota só pelo tempo aberta                           56.4%   (a nota ganhou em 4 de 4 datas)
+  Nota óbvia (taxa do vendedor no produto × preço)    45.3%   (a nota ganhou em 4 de 4 datas)
+  Só o maior preço                                    48.4%   (a nota ganhou em 4 de 4 datas)
+  Ao acaso (feeling)                                  20.0%   (a nota ganhou em 4 de 4 datas)
+
+2) Previsão de receita para os 90 dias seguintes
+
+      data       crm  previsao      real  crm_vezes_real  erro_previsao
+2017-06-30 4216807.0 1503534.0 1421254.0             3.0            6.0
+2017-07-31 5499192.0 1644465.0 1719442.0             3.0           -4.0
+2017-08-31 5389247.0 1502649.0 1298386.0             4.0           16.0
+2017-09-30 5763490.0 1520238.0 1219993.0             5.0           25.0
+
+3) A chance prevista bate com o que aconteceu? (vendas com cliente, 4 datas)
+
+            vendas  prevista   real
+faixa                              
+(0.0, 0.3]      45     0.220  0.000
+(0.3, 0.4]     389     0.356  0.293
+(0.4, 0.5]    1262     0.439  0.471
+(0.5, 0.6]    2223     0.544  0.507
+(0.6, 0.7]    1049     0.624  0.540
+(0.7, 1.0]      14     0.702  0.000
+
+4) O motor não espia o futuro: OK

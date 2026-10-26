@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lead Scorer — Segunda-feira</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23172033'/%3E%3Ctext x='16' y='22' font-size='15' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3E2ª%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topo">
+  <div class="wrap">
+    <h1>Lead Scorer <span>Segunda-feira</span></h1>
+    <p>Onde focar esta semana. Os dados do desafio vão até <b id="hoje"></b>; a ferramenta trata esse dia como "hoje".</p>
+    <nav class="abas" role="tablist">
+      <button class="aba ativa" data-aba="vendedor" role="tab">Vendedor</button>
+      <button class="aba" data-aba="chefe" role="tab">Chefe de vendas</button>
+      <button class="aba" data-aba="como" role="tab">Como a nota funciona</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===================== VENDEDOR ===================== -->
+  <section id="aba-vendedor">
+    <div class="filtros">
+      <label>Quem é você?
+        <select id="f-vendedor"></select>
+      </label>
+    </div>
+    <div id="resumo-vendedor" class="cards"></div>
+    <div id="alerta" class="alerta" hidden></div>
+
+    <h2>As 5 da semana</h2>
+    <p class="sub">Até 5 vendas com maior valor esperado nos próximos 90 dias. Comece por aqui. Vendas de valor muito baixo (nota abaixo de <span class="nota-minima"></span>) ficam em "Outras vendas abertas".</p>
+    <ol id="lista-semana" class="lista"></ol>
+
+    <details class="bloco" id="bloco-outras">
+      <summary>Outras vendas abertas <span class="cont" id="n-outras"></span></summary>
+      <ol id="lista-outras" class="lista"></ol>
+    </details>
+
+    <details class="bloco" id="bloco-revisar">
+      <summary>Para limpar: paradas há mais de <span class="prazo"></span> dias <span class="cont alerta-cont" id="n-revisar"></span></summary>
+      <p class="sub">Nenhuma venda da história levou tanto tempo para fechar. Confirme com o cliente ou encerre.</p>
+      <ol id="lista-revisar" class="lista"></ol>
+    </details>
+
+    <details class="bloco" id="bloco-cadastro">
+      <summary>Para limpar: vendas sem cliente <span class="cont alerta-cont" id="n-cadastro"></span></summary>
+      <p class="sub">Sem cliente não dá para calcular a chance. Cadastre o cliente no CRM.</p>
+      <ol id="lista-cadastro" class="lista"></ol>
+    </details>
+  </section>
+
+  <!-- ===================== CHEFE ===================== -->
+  <section id="aba-chefe" hidden>
+    <div class="filtros">
+      <label>Região <select id="f-regiao"></select></label>
+      <label>Gerente <select id="f-gerente"></select></label>
+    </div>
+    <div id="resumo-chefe" class="cards"></div>
+    <p class="nota-explica" id="explica-previsao"></p>
+
+    <h2>Por vendedor</h2>
+    <div class="tabela-rolagem">
+      <table id="tabela-vendedores">
+        <thead>
+          <tr>
+            <th>Vendedor</th>
+            <th class="num">Previsão 90 dias</th>
+            <th class="num">As 5 da semana</th>
+            <th class="num">Paradas</th>
+            <th class="num">Sem cliente</th>
+            <th>Próximo passo</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== COMO FUNCIONA ===================== -->
+  <section id="aba-como" hidden>
+    <h2>A nota em 5 passos</h2>
+    <ol class="passos">
+      <li><b>Chance pelo tempo aberta.</b> Voltamos a <span id="n-fotos"></span> fins de mês do passado e vimos quantas vendas abertas foram ganhas nos 90 dias seguintes, conforme os dias que já tinham.</li>
+      <li><b>Ajuste pela relação com o cliente.</b> Quando o vendedor já ganhou uma venda com aquele cliente, a venda fecha <b id="r-ja"></b> das vezes. Sem histórico, <b id="r-sem"></b>.</li>
+      <li><b>Ajuste pelo último trimestre.</b> A chance de ganhar caiu ao longo de 2017, e as fotos do passado chegam com 90 dias de atraso. Por isso o motor confere o último trimestre já conhecido: previu <b id="aj-prev"></b> vendas ganhas e foram <b id="aj-ganhas"></b>. A chance de hoje vale <b id="aj-fator"></b> da chance das fotos.</li>
+      <li><b>Valor esperado = chance × preço do produto.</b></li>
+      <li><b>Nota de 0 a 100</b> = posição desse valor esperado entre as vendas abertas. Nota 90 = vale mais que 90% delas.</li>
+    </ol>
+
+    <h2>Chance de fechar em 90 dias, pelos dias aberta</h2>
+    <div id="grafico" class="grafico"></div>
+    <p class="sub">Até 100 dias a chance quase não muda. Depois cai mês a mês, e nenhuma venda fechou depois de <span class="prazo"></span> dias.</p>
+
+    <h2>A nota funciona? Teste com o passado</h2>
+    <p class="sub">Em 4 datas de 2017, a ferramenta só sabia o que se sabia naquele dia. Depois conferimos o que aconteceu. Focando nos 20% do topo da lista, o vendedor pegaria esta parte da receita dos 90 dias seguintes:</p>
+    <div id="teste-foco" class="barras"></div>
+
+    <h2>A previsão para a chefe de vendas funciona?</h2>
+    <div class="tabela-rolagem">
+      <table id="teste-previsao">
+        <thead><tr><th>Data</th><th class="num">O CRM prometia</th><th class="num">A ferramenta previu</th><th class="num">Entrou de fato</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <h2>O que a nota não usa, e por quê</h2>
+    <ul class="sub">
+      <li><b>Vendedor, produto, setor, região, gerente e porte do cliente.</b> Todos ganham entre 60% e 66%, e a taxa de um semestre não se repete no outro. A nota "óbvia" com esses dados ficou atrás até de ordenar só por preço.</li>
+      <li><b>Ter ou não cliente cadastrado.</b> Nenhuma venda encerrada está sem cliente: usar isso seria usar informação do futuro.</li>
+    </ul>
+
+    <h2>Suas marcações</h2>
+    <p class="sub">Os botões "Feito", "Ainda viva", "Encerrar" e "Cadastrado" ficam salvos neste navegador. <button id="limpar" class="link">Apagar minhas marcações</button></p>
+  </section>
+</main>
+
+<footer class="wrap rodape">Lead Scorer — Challenge 003 G4 · dados: CRM Sales Predictive Analytics (Kaggle, CC0)</footer>
+
+<script src="dados.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
