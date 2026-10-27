@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/big-shoulders-display@5.3.0/wght.css">
+<style>
+  html { background: #D8D3C9; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Big Shoulders Display Variable", "Arial Narrow", sans-serif;
+    color: #2A2520;
+    display: grid;
+    grid-template-columns: 64fr 36fr;
+    box-sizing: border-box;
+  }
+  p { margin: 0; }
+  .dead { padding: 4vh 2vw 4vh 3vw; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+  .dead .n { font-size: 37vw; line-height: 0.78; font-weight: 900; letter-spacing: -0.03em; margin-left: -0.04em; }
+  .dead .t { font-size: clamp(22px, 2.6vw, 44px); font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; margin-top: 0.4em; }
+  .dead .s { font-size: clamp(18px, 1.8vw, 30px); font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.3em; }
+  .live { padding: 5vh 4vw 5vh 2vw; color: #7A1E1E; display: flex; flex-direction: column; gap: 0.2em; }
+  .live .meta { color: #2A2520; font-size: 18px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+  .live .ask { font-size: clamp(28px, 3vw, 52px); font-weight: 800; text-transform: uppercase; line-height: 0.95; margin-top: 1.2em; }
+  .live .deal { font-size: clamp(40px, 5vw, 88px); font-weight: 800; line-height: 0.9; margin-top: 0.4em; }
+  .live .who { font-size: clamp(22px, 2vw, 34px); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+  .live .row { font-size: clamp(18px, 1.5vw, 26px); font-weight: 500; letter-spacing: 0.02em; }
+  .live .act { font-size: clamp(20px, 1.7vw, 30px); font-weight: 700; margin-top: 0.8em; line-height: 1.1; }
+  @media (max-width: 720px) {
+    body { grid-template-columns: 1fr; }
+    .dead { order: 2; }
+    .dead .n { font-size: 52vw; }
+  }
+</style>
+</head>
+<body>
+  <section class="dead">
+    <p class="n">1.291</p>
+    <p class="t">deals parados há mais de 138&nbsp;dias</p>
+    <p class="s">64% do valor do pipeline aberto</p>
+  </section>
+  <section class="live">
+    <p class="meta">Segunda-feira</p>
+    <p class="meta">Pipeline em 31/12/2017</p>
+    <p class="ask">Onde focar hoje</p>
+    <p class="deal">GTK&nbsp;500</p>
+    <p class="who">Rosalina Dieter</p>
+    <p class="row">1LY8CAXD</p>
+    <p class="row">Chance 71%</p>
+    <p class="row">Valor esperado US$&nbsp;18.948</p>
+    <p class="row">Aberto há 95&nbsp;dias. Reta final.</p>
+    <p class="act">Empurrar o fechamento: 75% dos ganhos fecham até o 88º&nbsp;dia.</p>
+  </section>
+</body>
+</html>

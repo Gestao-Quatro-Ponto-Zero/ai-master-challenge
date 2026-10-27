@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E2</title>
+<script>
+  // Aplica o tema salvo antes da primeira pintura, para não piscar.
+  try {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light" || saved === "dark") document.documentElement.dataset.theme = saved;
+  } catch {}
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/space-grotesk@5.3.0/wght.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/martian-mono@5.3.0/standard.css">
+<style>
+  /* Linguagem da E (régua de 0 a 138 dias, 4 papéis de cor) + registro da G (código e pares campo/valor em mono). */
+  :root {
+    color-scheme: light;
+    --ground: #F0F2F5;
+    --primary: #12151A;
+    --secondary: #5A6372;
+    --moment: #00736C;
+    --stalled: #C2410C;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #10283F;
+      --primary: #E4ECF3;
+      --secondary: #7FA2C2;
+      --moment: #5FD4C4;
+      --stalled: #F2C14E;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #10283F;
+    --primary: #E4ECF3;
+    --secondary: #7FA2C2;
+    --moment: #5FD4C4;
+    --stalled: #F2C14E;
+  }
+
+  html { background: var(--ground); }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--ground);
+    font-family: "Space Grotesk Variable", system-ui, sans-serif;
+    color: var(--primary);
+    padding: 7vh 5vw 8vh 5vw;
+    box-sizing: border-box;
+    /* Régua: largura útil menos o espaço do conteúdo. Desligada abaixo de 720 px. */
+    --axis: calc(100vw - 10vw - 30ch);
+  }
+  p { margin: 0; }
+  .day { padding-left: calc(var(--axis) * var(--d) / 138); }
+  .field { font-family: "Martian Mono Variable", ui-monospace, monospace; font-stretch: 75%; font-size: 12px; font-weight: 450; letter-spacing: 0.14em; text-transform: uppercase; color: var(--secondary); }
+  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 2em; flex-wrap: wrap; }
+
+  .theme {
+    font: inherit;
+    font-family: "Martian Mono Variable", ui-monospace, monospace;
+    font-stretch: 75%;
+    font-size: 12px;
+    font-weight: 450;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    background: none;
+    border: 0;
+    padding: 12px 0;
+    min-height: 44px;
+    cursor: pointer;
+  }
+  .theme:hover { color: var(--primary); }
+  .theme:focus-visible { outline: 2px solid var(--moment); outline-offset: 4px; }
+
+  .ask { font-size: clamp(30px, 4vw, 64px); font-weight: 600; letter-spacing: -0.03em; margin-top: 7vh; }
+  .deal { margin-top: 6vh; }
+  .id { font-family: "Martian Mono Variable", ui-monospace, monospace; font-stretch: 112.5%; font-weight: 250; font-size: clamp(18px, 1.8vw, 28px); letter-spacing: 0.04em; color: var(--secondary); }
+  .big { font-size: clamp(44px, 7vw, 120px); font-weight: 700; letter-spacing: -0.045em; line-height: 0.9; margin-top: 0.15em; }
+  .rec { display: grid; grid-template-columns: max-content 1fr; column-gap: 3ch; row-gap: 0.55em; align-items: baseline; margin-top: 1.4em; font-size: clamp(16px, 1.3vw, 22px); }
+  .rec .v { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .rec .now { color: var(--moment); font-weight: 650; }
+  /* Indicador textual da régua: sempre presente, para leitor de tela e para o celular. */
+  .ruler { font-family: "Martian Mono Variable", ui-monospace, monospace; font-variant-numeric: tabular-nums; color: var(--moment); font-weight: 500; }
+  .act { color: var(--moment); font-size: clamp(16px, 1.3vw, 22px); font-weight: 450; margin-top: 3.5vh; max-width: 36ch; }
+  .dead { color: var(--stalled); margin-top: 9vh; font-size: clamp(20px, 2vw, 34px); font-weight: 650; letter-spacing: -0.02em; text-align: right; }
+  .dead + .field { text-align: right; margin-top: 0.6em; color: var(--stalled); }
+
+  @media (max-width: 719px) {
+    body { --axis: 0px; padding: 5vh 6vw 7vh; }
+    .rec { grid-template-columns: 1fr; row-gap: 0.15em; }
+    .rec .v + .field { margin-top: 0.7em; }
+    .dead, .dead + .field { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <p class="field">Segunda-feira</p>
+    <p class="field">Pipeline em 31/12/2017</p>
+    <button class="theme" type="button" aria-live="polite">Tema: sistema</button>
+  </div>
+  <p class="ask">Onde focar hoje</p>
+
+  <div class="deal day" style="--d: 95">
+    <p class="id">1LY8CAXD</p>
+    <p class="big">GTK&nbsp;500</p>
+    <div class="rec">
+      <p class="field">Rosalina Dieter</p><p class="v">Chance 71%</p>
+      <p class="field">Valor esperado</p><p class="v">US$&nbsp;18.948</p>
+      <p class="field">Aberto há 95&nbsp;dias.</p><p class="v now">Reta final. <span class="ruler">95/138</span></p>
+    </div>
+  </div>
+
+  <p class="act day" style="--d: 88">Empurrar o fechamento: 75% dos ganhos fecham até o 88º&nbsp;dia.</p>
+
+  <p class="dead">1.291 deals parados há mais de 138&nbsp;dias</p>
+  <p class="field">64% do valor do pipeline aberto</p>
+</main>
+<script>
+  // Ciclo: sistema → claro → escuro → sistema. A escolha fica salva neste navegador.
+  const root = document.documentElement;
+  const button = document.querySelector(".theme");
+  const LABEL = { system: "Tema: sistema", light: "Tema: claro", dark: "Tema: escuro" };
+  const NEXT = { system: "light", light: "dark", dark: "system" };
+  let current = root.dataset.theme ?? "system";
+  button.textContent = LABEL[current];
+  button.addEventListener("click", () => {
+    current = NEXT[current];
+    if (current === "system") delete root.dataset.theme;
+    else root.dataset.theme = current;
+    button.textContent = LABEL[current];
+    try {
+      if (current === "system") localStorage.removeItem("theme");
+      else localStorage.setItem("theme", current);
+    } catch {}
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/*
+ * Direção E2 (design/ROUND-2-CONTEXT.md), reaberta como sistema: app shell com
+ * menu lateral e superfícies, mantendo a régua de 0 a 138 dias e os 4 papéis de
+ * cor com o mesmo significado nos dois temas (claro da E, escuro azul-marinho da G).
+ */
+:root {
+  color-scheme: light;
+  --ground: #f4f5f7;
+  --surface: #ffffff;
+  --line: #e4e7eb;
+  --hover: #f1f3f5;
+  --selected: #ecf1f6;
+  --primary: #12151a;
+  --secondary: #5a6372;
+  --moment: #00736c;
+  --moment-soft: #e2f2f0;
+  --stalled: #c2410c;
+  --stalled-soft: #fcebe3;
+  --track: #e4e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground: #0b2135;
+    --surface: #10283f;
+    --line: #21405e;
+    --hover: #15314c;
+    --selected: #1a3a59;
+    --primary: #e4ecf3;
+    --secondary: #8fb0cd;
+    --moment: #5fd4c4;
+    --moment-soft: #123f48;
+    --stalled: #f2c14e;
+    --stalled-soft: #3b3420;
+    --track: #21405e;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground: #0b2135;
+  --surface: #10283f;
+  --line: #21405e;
+  --hover: #15314c;
+  --selected: #1a3a59;
+  --primary: #e4ecf3;
+  --secondary: #8fb0cd;
+  --moment: #5fd4c4;
+  --moment-soft: #123f48;
+  --stalled: #f2c14e;
+  --stalled-soft: #3b3420;
+  --track: #21405e;
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-hover: var(--hover);
+  --color-selected: var(--selected);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-moment: var(--moment);
+  --color-moment-soft: var(--moment-soft);
+  --color-stalled: var(--stalled);
+  --color-stalled-soft: var(--stalled-soft);
+  --color-track: var(--track);
+  --font-sans: "Space Grotesk Variable", system-ui, sans-serif;
+  --font-mono: "Martian Mono Variable", ui-monospace, monospace;
+}
+
+html {
+  background: var(--ground);
+}
+
+body {
+  background: var(--ground);
+  color: var(--primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Rótulo de campo do CRM: mono condensada, caixa alta. Utility para aceitar variantes. */
+@utility field {
+  font-family: var(--font-mono);
+  font-stretch: 75%;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+
+/* Código do deal: mono larga e leve. */
+@utility deal-id {
+  font-family: var(--font-mono);
+  font-stretch: 100%;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+@utility card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 1px 3px rgb(16 24 40 / 0.05);
+}
+
+:focus-visible {
+  outline: 2px solid var(--moment);
+  outline-offset: 2px;
+}
+
+select {
+  appearance: none;
+  background-image: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

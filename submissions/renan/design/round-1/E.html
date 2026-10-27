@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/space-grotesk@5.3.0/wght.css">
+<style>
+  /* Eixo horizontal = dias desde o engajamento, de 0 a 138. */
+  html { background: #F0F2F5; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Space Grotesk Variable", system-ui, sans-serif;
+    color: #12151A;
+    padding: 7vh 5vw 8vh 5vw;
+    box-sizing: border-box;
+    --axis: calc(100vw - 10vw - 18ch);
+  }
+  p { margin: 0; }
+  .day { padding-left: calc(var(--axis) * var(--d) / 138); }
+  .meta { color: #5A6372; font-size: 15px; font-weight: 450; letter-spacing: 0.01em; }
+  .meta + .meta { margin-top: 0.2em; }
+  .ask { font-size: clamp(30px, 4vw, 64px); font-weight: 600; letter-spacing: -0.03em; margin-top: 8vh; }
+  .deal { margin-top: 6vh; }
+  .deal .big { font-size: clamp(44px, 7vw, 120px); font-weight: 700; letter-spacing: -0.045em; line-height: 0.9; }
+  .deal .sub { font-size: clamp(16px, 1.3vw, 22px); color: #5A6372; font-weight: 450; margin-top: 0.5em; }
+  .deal .sub span + span { margin-left: 1.6em; }
+  .now { color: #00736C; font-size: clamp(20px, 1.8vw, 30px); font-weight: 600; margin-top: 0.6em; }
+  .act { color: #00736C; font-size: clamp(16px, 1.3vw, 22px); font-weight: 450; margin-top: 3vh; max-width: 34ch; }
+  .dead { color: #C2410C; margin-top: 9vh; font-size: clamp(20px, 2vw, 34px); font-weight: 650; letter-spacing: -0.02em; text-align: right; }
+  .dead + .dead { margin-top: 0.2em; font-size: clamp(15px, 1.1vw, 19px); font-weight: 450; }
+</style>
+</head>
+<body>
+<main>
+  <p class="meta">Segunda-feira</p>
+  <p class="meta">Pipeline em 31/12/2017</p>
+  <p class="ask">Onde focar hoje</p>
+
+  <div class="deal day" style="--d: 95">
+    <p class="big">GTK&nbsp;500</p>
+    <p class="sub"><span>Rosalina Dieter</span><span>1LY8CAXD</span><span>Chance 71%</span><span>Valor esperado US$&nbsp;18.948</span></p>
+    <p class="now">Aberto há 95&nbsp;dias. Reta final.</p>
+  </div>
+
+  <p class="act day" style="--d: 88">Empurrar o fechamento: 75% dos ganhos fecham até o 88º&nbsp;dia.</p>
+
+  <p class="dead">1.291 deals parados há mais de 138&nbsp;dias</p>
+  <p class="dead">64% do valor do pipeline aberto</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,18 @@
+import fs from "fs"; import Papa from "papaparse";
+const r=f=>Papa.parse(fs.readFileSync("data/raw/"+f,"utf8"),{header:true,skipEmptyLines:true}).data;
+const P=r("sales_pipeline.csv"),A=r("accounts.csv"),PR=r("products.csv"),T=r("sales_teams.csv");
+const cnt=(a,k)=>a.reduce((m,x)=>(m[k(x)]=(m[k(x)]||0)+1,m),{});
+console.log("stages",cnt(P,x=>x.deal_stage));
+console.log("stage x hasEngage/hasClose/hasAccount",cnt(P,x=>`${x.deal_stage}|e:${!!x.engage_date}|c:${!!x.close_date}|a:${!!x.account}|v:${x.close_value!==""}`));
+const ps=new Set(PR.map(x=>x.product)); console.log("produtos fora do catálogo",cnt(P.filter(x=>!ps.has(x.product)),x=>x.product));
+const as=new Set(A.map(x=>x.account)); console.log("contas fora",cnt(P.filter(x=>x.account&&!as.has(x.account)),x=>x.account));
+const ts=new Set(T.map(x=>x.sales_agent)); console.log("agentes fora",cnt(P.filter(x=>!ts.has(x.sales_agent)),x=>x.sales_agent));
+console.log("agentes sem deal",T.filter(t=>!P.some(p=>p.sales_agent===t.sales_agent)).map(t=>t.sales_agent));
+const d=k=>P.map(x=>x[k]).filter(Boolean).sort(); console.log("engage",d("engage_date")[0],d("engage_date").at(-1),"close",d("close_date")[0],d("close_date").at(-1));
+console.log("setores",cnt(A,x=>x.sector)); console.log("offices",cnt(T,x=>x.regional_office),"managers",cnt(T,x=>x.manager));
+console.log("subsidiary",A.filter(a=>a.subsidiary_of).length, "ids dup", P.length-new Set(P.map(x=>x.opportunity_id)).size);
+const won=P.filter(x=>x.deal_stage==="Won"),lost=P.filter(x=>x.deal_stage==="Lost");
+console.log("win rate",(won.length/(won.length+lost.length)).toFixed(3));
+console.log("lost close_value != 0",lost.filter(x=>+x.close_value!==0).length);
+const pr=Object.fromEntries(PR.map(x=>[x.product,+x.sales_price])); pr.GTXPro=pr["GTX Pro"];
+const ratio=won.map(x=>+x.close_value/pr[x.product]).sort((a,b)=>a-b); console.log("won close/list p10,p50,p90",ratio[Math.floor(ratio.length*.1)].toFixed(2),ratio[Math.floor(ratio.length*.5)].toFixed(2),ratio[Math.floor(ratio.length*.9)].toFixed(2));
