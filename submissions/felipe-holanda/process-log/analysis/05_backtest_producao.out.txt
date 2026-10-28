@@ -1,0 +1,14 @@
+Top 10 por vendedor — média em 9 segundas-feiras simuladas
+
+                               revenue_captured  hit_rate
+ranking                                                  
+Lead Scorer (valor + momento)             0.467     0.227
+Só valor de lista                         0.405     0.154
+Aleatório                                 0.178     0.157
+
+Receita capturada por data:
+as_of                          2017-04-03  2017-05-01  2017-05-29  2017-06-26  2017-07-24  2017-08-21  2017-09-18  2017-10-16  2017-11-13
+ranking                                                                                                                                  
+Aleatório                            0.26        0.18        0.24        0.22        0.15        0.14        0.16        0.11        0.14
+Lead Scorer (valor + momento)        0.43        0.42        0.61        0.64        0.38        0.48        0.59        0.30        0.35
+Só valor de lista                    0.52        0.50        0.46        0.55        0.31        0.38        0.36        0.26        0.31

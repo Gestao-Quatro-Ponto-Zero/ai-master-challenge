@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lead Scorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">◎</span>
+      <div>
+        <h1>Lead Scorer</h1>
+        <p class="subtitle" id="asof"></p>
+      </div>
+    </div>
+    <button class="btn" id="copy-plan" type="button" title="Copia a lista em texto para colar no Slack ou e-mail">Copiar plano da semana</button>
+  </header>
+
+  <section class="filters" aria-label="Filtros">
+    <label>Região <select id="f-region"></select></label>
+    <label>Manager <select id="f-manager"></select></label>
+    <label>Vendedor <select id="f-agent"></select></label>
+    <label class="grow">Buscar <input id="f-search" type="search" placeholder="conta, produto ou ID do deal"></label>
+  </section>
+
+  <section class="kpis" id="kpis" aria-live="polite"></section>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="foco" class="active">Foco da semana <span class="count" data-count="foco"></span></button>
+    <button role="tab" data-tab="revisar">Revisar ou encerrar <span class="count" data-count="revisar"></span></button>
+    <button role="tab" data-tab="prospectar">Prospectar <span class="count" data-count="prospectar"></span></button>
+    <button role="tab" data-tab="time">Time</button>
+    <button role="tab" data-tab="prova">Funcionou?</button>
+    <button role="tab" data-tab="metodo">Como o score funciona</button>
+  </nav>
+
+  <main>
+    <section id="panel-foco" class="panel">
+      <p class="hint">Deals vivos, do mais para o menos prioritário. <b>Score = valor (até 60) + momento do ciclo (até 40).</b> Clique num deal para ver o porquê.</p>
+      <div class="chips" id="phase-chips"></div>
+      <div class="list" id="list-foco"></div>
+    </section>
+
+    <section id="panel-revisar" class="panel" hidden>
+      <div class="callout warn" id="review-callout"></div>
+      <div class="list" id="list-revisar"></div>
+    </section>
+
+    <section id="panel-prospectar" class="panel" hidden>
+      <p class="hint">Deals ainda em Prospecting, ordenados por valor. Sem data de engajamento não há como estimar o momento, então o score aqui é só valor.</p>
+      <div class="list" id="list-prospectar"></div>
+    </section>
+
+    <section id="panel-time" class="panel" hidden>
+      <p class="hint">Visão do manager: onde está a receita do mês e onde está a sujeira do pipeline. Clique num vendedor para ver a lista dele.</p>
+      <div id="health"></div>
+      <div class="callout warn" id="team-callout"></div>
+      <div class="table-wrap"><table class="team" id="team-table"></table></div>
+    </section>
+
+    <section id="panel-prova" class="panel" hidden>
+      <p class="hint">Volte a uma segunda-feira passada: o que a ferramenta teria colocado no top 10 de cada vendedor, calculado só com o que se sabia naquele dia, e o que de fato aconteceu depois.</p>
+      <div class="chips" id="tt-dates"></div>
+      <div id="tt-summary"></div>
+      <div class="list" id="tt-list"></div>
+    </section>
+
+    <section id="panel-metodo" class="panel prose" hidden></section>
+  </main>
+
+  <footer class="foot">
+    Dados: CRM Sales Opportunities (Maven Analytics / Kaggle, CC0). Score recalculado com <code>python -m lead_scorer.build</code>.
+  </footer>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

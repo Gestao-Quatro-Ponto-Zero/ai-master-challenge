@@ -1,0 +1,90 @@
+=== 1. Teste qui-quadrado: feature x (Won/Lost) ===
+p < 0.05 = há sinal estatístico; spread = maior win rate - menor win rate entre grupos (n>=30)
+
+        feature  grupos  p_valor  spread_wr
+   engage_q_pos       3   0.0000      0.093
+    close_q_end       2   0.0000      0.284
+        rev_bin       4   0.0315      0.045
+    sales_agent      30   0.2639      0.154
+        emp_bin       4   0.3619      0.026
+        product       7   0.3719      0.045
+office_location      15   0.4189      0.189
+regional_office       3   0.6042      0.014
+             us       2   0.7117      0.006
+         is_sub       2   0.7400      0.006
+        manager       6   0.7861      0.023
+         series       3   0.8189      0.007
+        account      85   0.9432      0.219
+         sector      10   0.9706      0.037
+
+=== 2. Duração do ciclo (dias engage->close) ===
+      count       mean        std  min  25%   50%   75%    max
+won                                                           
+0    2473.0  41.479175  40.041176  1.0  7.0  14.0  79.0  138.0
+1    4238.0  51.781973  41.171603  1.0  9.0  57.0  88.0  138.0
+Mann-Whitney won vs lost: 1.2294240381986664e-26
+
+P(win | deal ainda aberto após X dias)  — curva de sobrevivência empírica
+  >   0 dias: n= 6711  win_rate=0.632
+  >   7 dias: n= 5298  win_rate=0.657
+  >  14 dias: n= 3905  win_rate=0.687
+  >  21 dias: n= 3602  win_rate=0.684
+  >  30 dias: n= 3548  win_rate=0.682
+  >  60 dias: n= 2979  win_rate=0.686
+  >  90 dias: n= 1358  win_rate=0.711
+  > 120 dias: n=  193  win_rate=0.756
+  > 130 dias: n=   53  win_rate=0.774
+  > 138 dias: n=    0  win_rate=nan
+Maior ciclo observado em TODO o histórico: 138 dias
+
+=== 3. Efeito fim de trimestre (mês de fechamento) ===
+                mean  count
+close_date                 
+2017-03     0.820711    647
+2017-04     0.486348    586
+2017-05     0.544099    805
+2017-06     0.828393    641
+2017-07     0.491228    627
+2017-08     0.568153    785
+2017-09     0.792126    635
+2017-10     0.492933    566
+2017-11     0.528646    768
+2017-12     0.784946    651
+
+=== 4. Agente x produto (interação) ===
+combinações com n>=20: 127  spread: 0.449
+desvio padrão observado: 0.08  desvio esperado só por ruído (binomial): 0.077
+
+=== 5. Conta: histórico prévio prediz? (temporal, sem vazamento) ===
+deals com >=5 deals prévios fechados na conta: 5290
+corr(prior_wr_conta, won): -0.0414
+
+=== 6. Carga do vendedor no momento do engage ===
+                   mean  count
+load_bin                      
+(0.999, 36.0]  0.683028   1691
+(36.0, 60.0]   0.619332   1676
+(60.0, 85.0]   0.622540   1677
+(85.0, 170.0]  0.600480   1667
+
+=== 7. Valor realizado vs preço de lista (Won) ===
+count    4238.000000
+mean        0.996483
+std         0.098852
+min         0.657333
+25%         0.929091
+50%         0.998182
+75%         1.063472
+max         1.341846
+dtype: float64
+
+=== 8. Pipeline aberto ===
+data de referência (último evento no CRM): 2017-12-31
+deal_stage
+Engaging       1589
+Prospecting     500
+Name: count, dtype: int64
+sem conta preenchida: 1425 de 2089
+Engaging mais velhos que o maior ciclo já observado (138d): 1291 de 1589
+valor de lista em aberto (US$): 4966215
+valor de lista em aberto em deals > 138d: 3198664

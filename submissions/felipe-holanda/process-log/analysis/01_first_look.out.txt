@@ -1,0 +1,51 @@
+=== Estágios ===
+deal_stage
+Won            4238
+Lost           2473
+Engaging       1589
+Prospecting     500
+Name: count, dtype: int64
+
+=== Nulos por estágio ===
+             opportunity_id  sales_agent  product  account  deal_stage  engage_date  close_date  close_value
+deal_stage                                                                                                  
+Engaging                  0            0        0     1088           0            0        1589         1589
+Lost                      0            0        0        0           0            0           0            0
+Prospecting               0            0        0      337           0          500         500          500
+Won                       0            0        0        0           0            0           0            0
+
+=== Integridade das chaves ===
+produtos no pipeline que não existem no catálogo: {'GTXPro'}
+vendedores sem nenhum deal: ['Carl Lin', 'Carol Thompson', 'Elizabeth Anderson', 'Mei-Mei Johns', 'Natalya Ivanova']
+contas do pipeline fora da tabela de contas: set()
+setores: ['employment', 'entertainment', 'finance', 'marketing', 'medical', 'retail', 'services', 'software', 'technolgy', 'telecommunications']
+
+=== Datas ===
+engage: 2016-10-20 -> 2017-12-27
+close:  2017-03-01 -> 2017-12-31
+
+=== Valor ===
+       product series  sales_price
+    MG Special     MG           55
+     GTX Basic    GTX          550
+GTX Plus Basic    GTX         1096
+   MG Advanced     MG         3393
+       GTX Pro    GTX         4821
+  GTX Plus Pro    GTX         5482
+       GTK 500    GTK        26768
+razão maior/menor preço: 486.7
+              count         mean          std   min    25%     50%     75%      max
+deal_stage                                                                         
+Engaging        0.0          NaN          NaN   NaN    NaN     NaN     NaN      NaN
+Lost         2473.0     0.000000     0.000000   0.0    0.0     0.0     0.0      0.0
+Prospecting     0.0          NaN          NaN   NaN    NaN     NaN     NaN      NaN
+Won          4238.0  2360.909391  2544.484463  38.0  518.0  1117.0  4429.5  30288.0
+
+=== Time ===
+regional_office  manager         
+Central          Dustin Brinkmann    5
+                 Melvin Marxen       6
+East             Cara Losch          6
+                 Rocco Neubert       6
+West             Celia Rouche        6
+                 Summer Sewald       6

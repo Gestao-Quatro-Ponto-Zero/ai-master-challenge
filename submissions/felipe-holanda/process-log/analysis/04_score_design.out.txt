@@ -1,0 +1,20 @@
+Média em 9 segundas-feiras simuladas:
+
+                                    cap_top20pct  cap_top10_por_vendedor  hit_rate_top10
+ranking                                                                                 
+ripeness x valor (EV 30d)                  0.618                   0.688           0.341
+60 pts log-valor + 40 pts ripeness         0.591                   0.677           0.365
+50 pts log-valor + 50 pts ripeness         0.554                   0.642           0.376
+P(win) x valor                             0.521                   0.630           0.293
+só valor de lista                          0.521                   0.610           0.276
+aleatório                                  0.196                   0.284           0.253
+
+Por snapshot (cap_top10_por_vendedor):
+S                                   2017-04-03  2017-05-01  2017-05-29  2017-06-26  2017-07-24  2017-08-21  2017-09-18  2017-10-16  2017-11-13
+ranking                                                                                                                                       
+50 pts log-valor + 50 pts ripeness        0.63        0.54        0.67        0.81        0.54        0.62        0.84        0.59        0.53
+60 pts log-valor + 40 pts ripeness        0.66        0.58        0.72        0.82        0.56        0.67        0.86        0.62        0.60
+P(win) x valor                            0.57        0.58        0.69        0.76        0.54        0.68        0.71        0.51        0.63
+aleatório                                 0.23        0.27        0.34        0.36        0.24        0.31        0.28        0.23        0.30
+ripeness x valor (EV 30d)                 0.68        0.60        0.74        0.81        0.58        0.67        0.84        0.64        0.61
+só valor de lista                         0.60        0.57        0.63        0.70        0.50        0.66        0.65        0.54        0.63

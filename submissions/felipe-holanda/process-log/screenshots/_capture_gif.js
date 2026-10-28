@@ -1,0 +1,23 @@
+const { chromium } = require('playwright');
+(async () => {
+  const b = await chromium.launch();
+  const ctx = await b.newContext({ viewport: { width: 1200, height: 760 }, recordVideo: { dir: '/tmp/claude-0/shots/video', size: { width: 1200, height: 760 } } });
+  const p = await ctx.newPage();
+  const W = (ms) => p.waitForTimeout(ms);
+  await p.goto('file:///home/user/ai-master-challenge/submissions/felipe-holanda/solution/app/index.html');
+  await W(1800);
+  await p.click('.deal > button'); await W(2600);
+  await p.selectOption('#f-agent', 'Vicki Laflamme'); await W(2200);
+  await p.mouse.wheel(0, 400); await W(1200); await p.mouse.wheel(0, -400);
+  await p.click('[data-tab=revisar]'); await W(1500);
+  await p.locator('[data-decide=encerrar]').nth(0).click(); await W(700);
+  await p.locator('[data-decide=vivo]').nth(1).click(); await W(1500);
+  await p.selectOption('#f-agent', ''); await p.selectOption('#f-manager', ''); await p.selectOption('#f-region', '');
+  await p.click('[data-tab=time]'); await W(800);
+  await p.mouse.wheel(0, 330); await W(3000); await p.mouse.wheel(0, -330);
+  await p.click('[data-tab=prova]'); await W(1000);
+  await p.click('[data-tt="2017-09-18"]'); await W(2800);
+  await p.click('[data-tab=metodo]'); await W(800);
+  await p.mouse.wheel(0, 450); await W(2800);
+  await ctx.close(); await b.close();
+})();
