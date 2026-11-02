@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-02T18:53:33.564367+00:00",
+  "runtime": "3.12.3",
+  "unit_integration_tests": {
+    "command": "python3 -I -m unittest discover -s tests -v",
+    "passed": 29,
+    "report": "docs/review-evidence/diagnosis-tests.txt"
+  },
+  "clean_reproduction": {
+    "method": "New temporary directory with only two owned scripts, manifest, configuration and verified raw customer CSV copied in; no preexisting outputs or site packages",
+    "command": "python3 -I <clean-root>/solution/diagnose_support.py",
+    "exit_code": 0,
+    "byte_identical_outputs": {
+      "data/diagnosis.json": "8a4db7484b8c4048e1dc4bf7e914fa79db3941e301722d13263405f997e663b4",
+      "data/diagnosis-segments.csv": "3a8a0e696170db021879df4143f2bdc56ae351d535da8c2a592e873e72cb12e1"
+    },
+    "new_network_download": false
+  },
+  "partition_reconciliation": {
+    "partitions": [
+      "Ticket Channel",
+      "Ticket Channel + Ticket Priority",
+      "Ticket Channel + Ticket Priority + Ticket Type",
+      "Ticket Channel + Ticket Type",
+      "Ticket Priority",
+      "Ticket Priority + Ticket Type",
+      "Ticket Type"
+    ],
+    "sum_fields": [
+      "tickets",
+      "open",
+      "pending_customer_response",
+      "closed",
+      "nonclosed",
+      "rated_closed",
+      "low_csat_count",
+      "duplicate_description_rows",
+      "conflicting_type_rows"
+    ],
+    "all_equal_overall": true,
+    "aggregate_rows": 150
+  },
+  "input_sha256": {
+    "solution/diagnose_support.py": "ce884f22ae0325f725b09dead693c58d72b895fa248b71e80ef68fd4120b406a",
+    "solution/audit_data.py": "9955ec6f911b21c2463ac318cb056ba287f301c9e1b322c58badaee53dbe4191",
+    "data/manifest.json": "e298d6e92504010775319c8c71c07aa46fcf40834c960081377cfc0e04dbf4de",
+    "data/diagnosis-assumptions.json": "0c305837a8bcc3d2e77eb60b51363a8bbda72b0687807be3cfee0cdd50d36206",
+    "data/raw/customer_support-v1.csv": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea"
+  },
+  "limits": [
+    "Software/calculation checks, not AI evaluation",
+    "No operational savings or human review measured"
+  ],
+  "aggregate_csv_line_endings": "LF"
+}

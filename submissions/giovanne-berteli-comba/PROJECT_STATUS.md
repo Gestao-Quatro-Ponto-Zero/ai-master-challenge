@@ -3,8 +3,8 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: R01 completed with three confirmed Challenge 002 PRs. See
-  [bounded research and implications](docs/pr-review.md); A01 is next.
+- Current phase: A01 diagnosis completed with reproducible segment comparisons
+  and hypothetical effort scenarios. See [findings](knowledge/operational-findings.md).
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -14,14 +14,13 @@ Updated: 2026-11-02 (America/Sao_Paulo).
 - Data evidence: official version-1 archives acquired, hashes frozen, both schemas
   and quality audited, and audit reproduced from a clean directory. See
   [D01 report](docs/data-audit.md) and [setup](data/README.md).
-- Not performed: operational diagnosis, prototype implementation,
+- Not performed: prototype implementation,
   model training/evaluation, deployment, or PR.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: A01 — reproduce volume/status/satisfaction comparisons and effort
-  scenarios under [D02's metric contract](knowledge/dataset-usage.md). Answer the
-  operational questions without presenting snapshots as rates or time as labor.
-- Proposed automation: assisted triage; confirm or revise after the diagnosis.
+- Next action: S01 — define one assisted-triage flow, human handoff/failure rules,
+  persisted/filterable high/low anomalies and success measures, then V00 before I01.
+- Proposed automation: assisted triage; final contract and stack remain for S01.
 - No application stack or automation performance target has been selected.
 - The [official review table](docs/architecture-review.md#lista-oficial-para-validação)
   is the sole record of F01–F07 review decisions and adjustment state. Current

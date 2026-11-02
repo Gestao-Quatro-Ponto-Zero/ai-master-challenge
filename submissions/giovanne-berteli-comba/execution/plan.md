@@ -13,7 +13,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | D01 | Data acquisition and audit | Sources, acquisition steps, versions and hashes recorded; schemas, units, actual sizes, missingness, duplicates and metric coverage inspected for both datasets (F05/F07) | [Manifest](../data/manifest.json), [audit](../docs/data-audit.md), [output](../data/audit.json), [reproduction](../data/README.md) |
 | D02 | Dataset usage decision | Explain each dataset's role, limits, any valid mapping, and evaluation boundaries | [Authoritative decision and metric contract](../knowledge/dataset-usage.md) |
 | R01 | Focused PR review | Declare sample and effort cap before browsing; identify repeated approaches and evidence gaps with links within that cap (F06) | [Research](../docs/pr-review.md) and [selection/source snapshot](../docs/review-evidence/pr-review-snapshot.json); no private baseline inspected |
-| A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | Future analysis scripts and report |
+| A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | [Diagnosis](../docs/operational-diagnosis.md), [computed metrics](../data/diagnosis.json), [all segments](../data/diagnosis-segments.csv) and [assumptions](../data/diagnosis-assumptions.json) |
 | S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | Future solution decision and scope record |
 | V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | Future versioned protocol following `docs/validation-strategy.md` |
 | I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | Future `solution/` implementation |
@@ -27,7 +27,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] D01 — Audit both datasets. Evidence: [audit and limitations](../docs/data-audit.md).
 - [x] D02 — Decide complementary dataset usage. Evidence: [roles, limits and evaluation boundaries](../knowledge/dataset-usage.md).
 - [x] R01 — Review a bounded sample of Challenge 002 PRs. Evidence: [three confirmed PRs and implications](../docs/pr-review.md).
-- [ ] A01 — Complete the operational diagnosis.
+- [x] A01 — Complete the operational diagnosis. Evidence: [findings, scenarios and limits](../docs/operational-diagnosis.md).
 - [ ] S01 — Define one automation and its human intervention rules.
 - [ ] V00 — Record the evaluation protocol before prototype implementation.
 - [ ] I01 — Build the functional prototype.

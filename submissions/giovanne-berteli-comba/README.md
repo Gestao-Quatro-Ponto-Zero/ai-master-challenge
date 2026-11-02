@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: D01, D02 e pesquisa de três PRs do Challenge 002 concluídas. Diagnóstico e protótipo pendentes.**
+**Estado: diagnóstico A01 concluído. Escopo da automação e protótipo são as próximas etapas.**
 
 ## Sobre mim
 
@@ -10,12 +10,16 @@
 
 ## Executive Summary
 
-O projeto irá diagnosticar gargalos de suporte, propor uma automação com limites
-claros de intervenção humana e demonstrá-la em um protótipo. Os dois datasets
-foram adquiridos, versionados e auditados. A auditoria identificou limitações de
-tempo, cobertura e rótulos que orientarão a escolha da solução. A base de atendimento
-será usada no diagnóstico descritivo; a base IT, na avaliação de classificação em
-seu próprio domínio. A arquitetura da aplicação e o impacto operacional seguem pendentes.
+O diagnóstico encontrou 5.700 registros não encerrados em 8.469 (67,30%), incluindo
+1.403 marcados como Critical. As notas dos encerrados têm média 2,99/5; as três
+comparações exploratórias por canal, prioridade e tipo não detectaram diferenças
+convincentes. A ausência de esforço ativo impede medir economia: um cenário de
+referência simula 29,75 h/mês, enquanto um cenário desfavorável perde 26,67 h/mês.
+
+Os dois datasets foram versionados e auditados. A base de atendimento sustenta
+essas descrições e hipóteses; a base IT será usada na avaliação de classificação
+em seu próprio domínio. O contrato da automação, o protótipo e qualquer impacto
+operacional medido continuam pendentes.
 
 ## Solução
 
@@ -46,15 +50,18 @@ técnico usa uma base mínima em OKF v0.2, consultada de forma seletiva pelas IA
   preservados e sinalizados; esses rótulos não serão usados como alvo supervisionado
   do protótipo IT. Os conjuntos de avaliação serão definidos em V00.
 
-Evidências e populações no [relatório de auditoria](docs/data-audit.md). Ainda não
-há diagnóstico operacional final, ganho medido ou resultado de modelo.
+O [diagnóstico operacional](docs/operational-diagnosis.md) traz comparações,
+denominadores e cenários, com 150 linhas agregadas de segmentos. A
+[auditoria](docs/data-audit.md) fundamenta os limites. Não há ganho medido ou
+resultado de modelo.
 
 ### Recomendações
 
-Seguir o contrato de métricas da D02, expor os denominadores e manter qualquer
-estimativa de horas/custo como cenário com premissas explícitas. Não converter os
-timestamps em duração total ou esforço poupado. Comparar o futuro classificador
-com baselines e reservar o teste final antes de selecionar modelos e limiares.
+Conferir status/prioridades e os registros Open sem resposta preenchida com o
+responsável pela operação; instrumentar eventos e esforço antes de alegar SLA ou
+economia. Não eleger um canal como causa de atraso com esses dados. Em S01,
+delimitar uma triagem assistida; em V00, reservar o teste e definir comparação
+com baselines antes de escolher modelos e limiares.
 
 ### Limitações
 
@@ -77,6 +84,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
 - [Auditoria dos datasets](docs/data-audit.md)
+- [Diagnóstico operacional e cenários de esforço](docs/operational-diagnosis.md)
 - [Decisão de uso e contrato de métricas](knowledge/dataset-usage.md)
 - [Pesquisa de três PRs do mesmo desafio](docs/pr-review.md)
 - [Como reproduzir a aquisição e a auditoria](data/README.md)

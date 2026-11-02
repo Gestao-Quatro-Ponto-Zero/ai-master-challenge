@@ -14,6 +14,8 @@ okf_version: "0.2"
   label-conflict policy and evaluation boundaries.
 - [Challenge 002 PR research](../docs/pr-review.md) — Bounded R01 sample,
   inspected evidence and implications; consult for differentiation, not data truth.
+- [Operational findings](operational-findings.md) — A01 measured populations,
+  exploratory satisfaction comparisons and assumed scenarios for S01.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

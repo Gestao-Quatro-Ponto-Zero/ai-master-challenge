@@ -1,4 +1,4 @@
-# Reproducing the D01 data audit
+# Reproducing the data audit and operational diagnosis
 
 Runtime: Python 3.12.3, standard library only. No Kaggle package, token, model,
 paid service or third-party Python dependency was used. Run from the submission:
@@ -6,9 +6,11 @@ paid service or third-party Python dependency was used. Run from the submission:
 ```bash
 python3 -I solution/acquire_data.py
 python3 -I solution/audit_data.py
+python3 -I solution/diagnose_support.py
 python3 -I -m unittest discover -s tests -v
 python3 -I scripts/check_foundation.py
 python3 -I scripts/check_foundation.py --receipt docs/review-evidence/data-audit-current.json
+python3 -I scripts/check_foundation.py --receipt docs/review-evidence/diagnosis-current.json
 ```
 
 The acquisition command downloads the two public version-1 ZIP archives and
@@ -45,3 +47,25 @@ The executed [clean reproduction](../docs/review-evidence/data-reproduction.json
 copied only the two scripts and manifest to a temporary directory, downloaded the
 archives again and produced byte-identical audit JSON. This is stronger than
 rerunning against already downloaded data, but depends on future source access.
+
+## A01 diagnosis
+
+`solution/diagnose_support.py` uses only the hash-locked customer CSV and
+`data/diagnosis-assumptions.json`. It reuses the audit's schema, parsing and
+normalization, then generates `data/diagnosis.json` and
+`data/diagnosis-segments.csv`. The CSV holds all 150 aggregate rows; every grouping
+is a separate partition of the same population. Do not add their totals together.
+Empty populations have unavailable rates/means, not zero satisfaction.
+
+The configuration was declared before inspecting group outcomes. Display support
+rules are conventions, not statistical guarantees. Three one-way mean comparisons
+use reproducible permutations and Holm-adjusted p-values; provenance, repeated
+content, equal spacing of scores and exchangeability remain material limitations.
+The [Portuguese diagnosis](../docs/operational-diagnosis.md) separates measured
+record counts from interpretations and hypothetical effort/capacity scenarios.
+
+The four scenarios include review, rework and fixed effort, preserving negative
+net results. Their volume/period and every time/rate/value input are assumptions;
+no performance transfer from IT, observed annualization or cash ROI is implied.
+Change assumptions explicitly and regenerate both outputs before recording a new
+receipt; disclose revisions made after seeing results.

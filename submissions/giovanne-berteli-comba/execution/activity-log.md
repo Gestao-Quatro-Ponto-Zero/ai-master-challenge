@@ -228,3 +228,38 @@ or model evaluations have been run. No commit, push, or PR was made.
   paths; both receipts passed and whitespace was clean. The 15 changed paths are
   inside the submission. Registered intent-to-add for four reviewed new artifacts
   via an approved elevated Git operation; no content staged or commit created.
+
+## 2026-11-02 — A01 operational diagnosis
+
+- Resumed from user-created commit `9c78d01` with a clean working tree and current
+  receipts. Used D02's metric contract; did not copy foreign implementations.
+- Declared display conventions, permutation seeds/repeats and four hypothetical
+  effort scenarios in versioned configuration before examining group outcomes.
+- Added standard-library diagnosis code with raw-file hash/schema guards, all
+  one/two/three-way partitions, score populations, duplicate/conflict flags,
+  exploratory mean associations and explicit net-capacity accounting.
+- Preserved all raw records and missing values; generated aggregate JSON and
+  150-row CSV without individual ticket/customer text. Reconciled seven partitions
+  across nine count fields. Corrected an unchecked narrative support range to
+  the executed 85–136 tickets before delivery; computation was not changed.
+- Added ten meaningful tests; all 29 tests passed. A fresh temporary directory
+  containing only owned code/configuration/manifest and copied verified raw CSV
+  reproduced identical JSON/CSV. Saved commands, identities and checks; no new
+  network acquisition or model evaluation claimed.
+- Reported 5,700 nonclosed records, 1,403 labeled Critical among them, and closed-
+  only satisfaction. Three exploratory one-way tests did not detect convincing
+  marginal mean differences; no causal/population-wide conclusion was asserted.
+- Reference scenario: 29.75 hypothetical capacity hours/month; downside: -26.666667.
+  Review/rework/fixed effort are subtracted; all rates/minutes/valuation remain
+  explicit assumptions. No measured cash savings, financial ROI or IT transfer.
+- Updated status, plan, findings owner, README, setup and official F07 execution
+  state. Revalidated receipts after regenerating affected artifacts. A01 is done;
+  S01 is next, followed by V00 before I01. No prototype, commit or publication.
+- Added narrative 09 and capture 13 (eight additional messages after ID
+  deduplication, four returned turns, hasMore=true); current final response pending.
+- Final diff review caught CSV CRLF endings as whitespace; fixed the generator
+  to emit LF and regenerated outputs, 29-test report, clean reproduction and
+  receipts. Final checks passed: three current receipts, 186 local destinations,
+  seven/nine partition/count reconciliations and clean whitespace. All 24 diff
+  paths are in the submission; 12 reviewed new files have intent-to-add only.
+  Raw files/caches remain excluded and no content is staged for commit.
