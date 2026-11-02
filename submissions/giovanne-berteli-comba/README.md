@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: preparação do projeto. A solução ainda não foi implementada.**
+**Estado: datasets adquiridos e auditados (D01). Protótipo ainda não implementado.**
 
 ## Sobre mim
 
@@ -11,10 +11,10 @@
 ## Executive Summary
 
 O projeto irá diagnosticar gargalos de suporte, propor uma automação com limites
-claros de intervenção humana e demonstrá-la em um protótipo. Nesta etapa foram
-preparados o contexto compartilhado, o plano de execução e o registro do processo.
-Os datasets ainda serão auditados; resultados, impacto e arquitetura permanecem
-em aberto.
+claros de intervenção humana e demonstrá-la em um protótipo. Os dois datasets
+foram adquiridos, versionados e auditados. A auditoria identificou limitações de
+tempo, cobertura e rótulos que orientarão a escolha da solução. O uso conjunto,
+a arquitetura da aplicação e o impacto operacional ainda serão definidos.
 
 ## Solução
 
@@ -26,17 +26,28 @@ mínima em OKF v0.2, consultada de forma seletiva pelas ferramentas de IA.
 
 ### Resultados / Findings
 
-Ainda não há resultados analíticos ou métricas de desempenho.
+- O arquivo operacional tem 8.469 tickets, em vez dos ~30 mil do briefing;
+  o de classificação IT tem 47.837 textos em oito classes.
+- Não há data de abertura; os campos temporais são timestamps, e 1.365 dos
+  2.769 pares encerrados têm a resolução antes da primeira resposta.
+- Satisfação está disponível só nos 2.769 encerrados (32,70% da base).
+- Há descrições repetidas com rótulos conflitantes. O tratamento e os conjuntos
+  de avaliação serão definidos antes de treinar ou ajustar modelos.
+
+Evidências e populações no [relatório de auditoria](docs/data-audit.md). Ainda não
+há diagnóstico operacional final, ganho medido ou resultado de modelo.
 
 ### Recomendações
 
-Serão formuladas e priorizadas após a análise dos dados.
+Não converter os timestamps em duração total ou esforço poupado. Definir em D02
+os papéis dos datasets e as métricas sustentadas pelos dados antes de implementar.
 
 ### Limitações
 
-Os volumes, unidades e características anunciados no briefing ainda não foram
-verificados nos arquivos. A estratégia de uso dos dois datasets será definida
-na próxima etapa.
+Os arquivos não sustentam tempo total de resolução sem eventos adicionais;
+satisfação descreve apenas encerrados. Placeholders nos textos e conflitos de
+rótulo limitam seu uso como referência. Não há chave comum de entidade entre os
+datasets; não foi validada transferência entre taxonomias.
 
 ## Process Log — Como usei IA
 
@@ -51,12 +62,14 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Plano com critérios de aceite](execution/plan.md)
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
+- [Auditoria dos datasets](docs/data-audit.md)
+- [Como reproduzir a aquisição e a auditoria](data/README.md)
 - [Checagens de consistência e validade das evidências](docs/foundation-controls.md)
 - [Fonte de verdade dos sete ajustes da revisão](docs/architecture-review.md#lista-oficial-para-validação)
 - [Backlog](execution/backlog.md)
 
-As instruções para executar a aplicação, os resultados dos testes e o CodeTour
-serão incluídos quando esses artefatos existirem.
+O setup da auditoria e suas evidências estão nos links acima. A execução do
+protótipo e o CodeTour serão incluídos quando esses artefatos existirem.
 
 ## Como iniciar uma sessão de trabalho
 
@@ -79,8 +92,9 @@ python3 -I -m unittest discover -s tests -v
 python3 -I scripts/check_foundation.py
 ```
 
-Esses comandos validam a fundação; a aplicação e os dados ainda serão implementados
-e auditados. Consulte o escopo e o procedimento de revalidação no link acima.
+Esses comandos executam os testes disponíveis e verificam o recibo da fundação.
+Para baixar os dados e regenerar a auditoria, siga o setup em `data/README.md`.
+O protótipo ainda será implementado.
 
 O process log e os exports de chats são evidências para a equipe de recrutamento.
 As regras de trabalho os excluem do contexto padrão das sessões, inclusive na

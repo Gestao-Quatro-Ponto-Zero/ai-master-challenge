@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "recorded_at": "2026-11-02T17:06:41.131908+00:00",
+  "recorded_at": "2026-11-02T17:35:15.885649+00:00",
   "actor": "automated-local-check; no human verification implied",
   "scope": "Explicit document contracts, file links, minimum OKF fields and input hashes; not model/data quality or arbitrary semantic consistency",
   "checks": {
-    "markdown_documents": 12,
-    "local_file_links": 47,
+    "markdown_documents": 13,
+    "local_file_links": 65,
     "challenge_id": "002"
   },
   "extra_inputs": [],
@@ -13,18 +13,20 @@
     ".gitignore": "10b7f112068d4ace11c28efc771b7cb47ab47e1ce4f9534e4a9e119afa3ef028",
     "AGENTS.md": "11269588191ceadb16b8e588a5e20273b6eb979f9aa4aac8c03a724b58c874dc",
     "CLAUDE.md": "a71233378b847e8256b6cebe83fe1107e02696b0139444f1138fa6de3255e678",
-    "PROJECT_STATUS.md": "252d60c9fa707b925a23771fcb0711727b66ec172d31f44f274d20d8240e6565",
-    "README.md": "dc5f6cc7ac280f5da1cb0c195bf45ab7beaee55920ba213131a75e4962602495",
-    "docs/architecture-review.md": "942821c18fd0ac27c4dbf1e6db65a62284f2c88b36649ba05dde8d202ac880b9",
+    "PROJECT_STATUS.md": "f9fbf3d6e1cd4da7ef8f71fa8fb4db31dd8b1f8688bdd417b15f0910188f44c3",
+    "README.md": "2b9cd17ed4d6ed0ceac86f4a81645ee0cff745fce83a05e7ea6df1730e0f5bed",
+    "docs/architecture-review.md": "203bcbb3f0f6ec0e41bb021a49e74a5d8a228ac6b9200d38b3d5c1efacb78247",
     "docs/foundation-controls.md": "52a6f4645145dbb0c413e07509b2dff1536aa00d867b27934efb47b696983c98",
     "docs/review-evidence/foundation-tests.txt": "1dacf36075cbb6c327a9efcdce0666bd456c78ae4c75a3ac93e8fb65e2692274",
     "docs/validation-strategy.md": "4b55d69081eaabc6aee8b9c8c17c3b03af5f4309b6bbd9b0c2ecc99bfecc18c9",
     "execution/backlog.md": "e1af75b179513b55fc1da7946aa88c8b13039c0aacd2636066be9f2d76f3478c",
-    "execution/plan.md": "e2432898f4a428988de3a20348c7eda50f149787b23d3bf8e4075f63f7bd0552",
-    "knowledge/challenge-context.md": "82b7861e1b0cce8343151c35abe90b82f7023fb732c896b2504e366aa6df51a1",
-    "knowledge/index.md": "dbf4d3ed65598998469d2105bf899c9055a976f91596b9de4c8604afff3e2df0",
-    "knowledge/knowledge-workflow.md": "6c46411a9da1a9dcc60b212ebbf3354d9a1176ec279dd2c6b3422b85ed9ee500",
+    "execution/plan.md": "c4a4bc1297067aeae08922c8f82ec3dae125fdb674741bd0a33f294899ca4448",
+    "knowledge/challenge-context.md": "4151ee3ba9124d20332296caa9a5ee2c4819ccd52f429f917e54e477e02b3d37",
+    "knowledge/data-quality.md": "ed3699de62f7486c79dbff1c20923c2c7fa56aec5e874a8f3fab5b8e662b6f18",
+    "knowledge/index.md": "1df952d8373ad31bf1452124612ba66be3a2570c2c43f5cbeff2662fe42d0856",
+    "knowledge/knowledge-workflow.md": "076108947027c2049dfb01dc51c9ac780db1f3ad11b5d1c447bf58b23d9db2da",
     "scripts/check_foundation.py": "7ebbc1b38e3c59b118605be98d46663ec0438a4c6835bfc8d4dafb823a1ce0f7",
+    "tests/test_data_audit.py": "188ec7b425f4a214cef321d37f0288c3bcd781062ce5002ce0585b1343e81e20",
     "tests/test_foundation.py": "887cf983b82da329f21000a078cd47bd225a6beb02f5fadb97a86a03f8404dc2"
   }
 }

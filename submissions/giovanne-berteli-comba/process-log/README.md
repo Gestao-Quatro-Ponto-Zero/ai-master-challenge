@@ -17,6 +17,7 @@ documentos operacionais, e este diretório está fora do contexto padrão dos ch
 - [Fonte de verdade para validar a revisão](03-review-source-of-truth.md)
 - [Aprovação e complementos F03/F06](04-approved-review-scope.md)
 - [Controles da fundação após o primeiro commit](05-foundation-controls.md)
+- [Aquisição e auditoria dos datasets](06-data-audit.md)
 - [Modelo para próximos registros](entry-template.md)
 
 ## Conversas preservadas
@@ -34,12 +35,14 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 | [Aprovação e complementos F03/F06](chat-exports/07-review-approval-chat.md) | Avalie a arquitetura inicial | 4 mensagens adicionais, incluindo a aprovação do usuário e a resposta final do turno anterior |
 | [Revisão e preparação no Git](chat-exports/08-git-staging-chat.md) | Avalie a arquitetura inicial | 4 mensagens adicionais, incluindo a resposta final anterior e o pedido de revisão e staging |
 | [Controles da fundação](chat-exports/09-foundation-controls-chat.md) | Defina e avance o próximo passo | 7 mensagens de dois turnos, incluindo resposta final da implementação e revisão antes do commit; resposta final da revisão pendente |
+| [Aquisição e auditoria D01](chat-exports/10-data-audit-chat.md) | Defina e avance o próximo passo | 6 mensagens adicionais, incluindo o final da revisão antes do commit e o turno D01 em andamento; hasMore=true para histórico anterior |
 
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
 paginação e as lacunas de cada leitura estão declaradas no respectivo arquivo;
-a captura 08 retornou `hasMore=true`. Isso não comprova
-a existência de todas as versões, ramificações ou mensagens removidas.
+as capturas 08 e 10 retornaram `hasMore=true`. Essas extrações não comprovam
+a completude do histórico nem a existência de todas as versões, ramificações
+ou mensagens removidas.
 O texto preserva o idioma e as palavras originais; espaços no fim das linhas
 e linhas extras no fim dos arquivos foram normalizados para Markdown/Git.
 
@@ -50,6 +53,9 @@ O complemento de aprovação preserva a resposta final do turno de validação e
 início do turno seguinte. O complemento de preparação no Git preserva a resposta
 final do turno de aprovação e o pedido seguinte. A resposta final do turno de
 staging e mensagens posteriores à captura ficam pendentes para a próxima extração.
+O suplemento da captura 09 inclui a resposta final da implementação dos controles;
+a captura 10 inclui o final da revisão antes do commit. O final do turno D01
+permanece pendente para a próxima extração.
 As mensagens ficaram abaixo do limite
 de 20 mil caracteres por item. Anexos, gráficos, resultados de ferramentas e
 instruções internas não fazem parte destas extrações. Não há export de Claude

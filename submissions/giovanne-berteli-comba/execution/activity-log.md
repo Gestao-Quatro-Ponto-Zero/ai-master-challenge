@@ -139,3 +139,35 @@ or model evaluations have been run. No commit, push, or PR was made.
   task is required for this foundation-controls commit.
 - The Git index contains only intent-to-add entries for new files; staging the
   reviewed content is still needed before committing. No commit was performed.
+
+## 2026-11-02 — D01 acquisition and audit
+
+- Resumed from user-created commit `b094b64` with a clean working tree. Read
+  operational context and the brief; application decisions remain deferred to D02.
+- Acquired both official Kaggle version-1 ZIPs anonymously. Initial sandbox DNS
+  failed; approved elevated network calls retrieved metadata and the public files.
+  Froze source/version, publisher-declared licenses, archive/member names, sizes
+  and SHA-256 in `data/manifest.json`; preserved raw files under ignored data/raw/.
+- Implemented deterministic, aggregate-only audit output with hash/schema guards,
+  parsing, missingness, category support, status coverage, chronology and normalized
+  duplicate/conflicting-label groups. No raw names/emails or ticket text published.
+- Audited 8,469 customer-support rows and 47,837 IT rows. Documented missing ticket
+  creation timestamps, 1,365/2,769 negative response-to-resolution intervals,
+  closed-only satisfaction and 49 conflicting normalized-description groups.
+- Added eight meaningful calculation/integrity/acquisition tests; all 19 tests
+  passed including the foundation's 11. Strengthened incomplete-manifest rejection
+  during review and repeated clean reproduction using the final script versions.
+- Downloaded both archives again in a clean temporary directory containing only
+  scripts/manifest; reproduced identical audit bytes. Recorded commands, Python
+  version and source hashes in data-reproduction.json. No AI evaluation occurred.
+- Updated operational owners, reviewer report, plan and official review table.
+  Prepared narrative 06 and six-message capture 10 with explicit pagination and
+  current-final-response gap. Revalidated dependent receipts after regenerating
+  outputs/tests. D02 is next; no commit, push, deployment or PR performed.
+- Final review: 19 tests passed, 122 local documentation/source destinations
+  resolved (historical chat links excluded), both receipts current, and whitespace
+  clean. Confirmed all 23 diff paths are inside the submission and no raw ZIP/CSV
+  or cache appears in the diff. Consulted spreadsheet read-only guidance for unit,
+  source and missing-data checks; no workbook authoring was requested or performed.
+- Registered intent-to-add for the explicit 13-file public artifact/code list
+  through an approved elevated Git operation; content remains unstaged.

@@ -10,7 +10,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | B01 | Shared foundation | Instructions, status, minimal OKF context, process policy, and checklist exist; document checks pass | This submission and `activity-log.md` |
 | B02 | Adversarial foundation review | Strengths, failure scenarios, executed probes, limits, and prioritized adjustments recorded | [Review](../docs/architecture-review.md) and [baseline evidence](../docs/review-evidence/foundation-baseline.json) |
 | B03 | Foundation controls | Challenge-conflict mutation rejected, changed dependencies invalidate evidence, explicit-path resumption checked | [Controls and limits](../docs/foundation-controls.md), [tests](../docs/review-evidence/foundation-tests.txt) and [receipt](../docs/review-evidence/foundation-current.json) |
-| D01 | Data acquisition and audit | Sources, acquisition steps, versions and hashes recorded; schemas, units, actual sizes, missingness, duplicates and metric coverage inspected for both datasets (F05/F07) | Future data manifest, audit and reproducible output |
+| D01 | Data acquisition and audit | Sources, acquisition steps, versions and hashes recorded; schemas, units, actual sizes, missingness, duplicates and metric coverage inspected for both datasets (F05/F07) | [Manifest](../data/manifest.json), [audit](../docs/data-audit.md), [output](../data/audit.json), [reproduction](../data/README.md) |
 | D02 | Dataset usage decision | Explain each dataset's role, limits, any valid mapping, and evaluation boundaries | Future decision record in `knowledge/` |
 | R01 | Focused PR review | Declare sample and effort cap before browsing; identify repeated approaches and evidence gaps with links within that cap (F06) | Future research notes; no claim that private baselines are accessible |
 | A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | Future analysis scripts and report |
@@ -24,7 +24,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] B01 — Prepare and check the foundation. Evidence: [document checks](activity-log.md).
 - [x] B02 — Review the foundation adversarially. Evidence: [review and open adjustments](../docs/architecture-review.md).
 - [x] B03 — Implement and validate foundation controls. Evidence: [controls](../docs/foundation-controls.md).
-- [ ] D01 — Audit both datasets.
+- [x] D01 — Audit both datasets. Evidence: [audit and limitations](../docs/data-audit.md).
 - [ ] D02 — Decide how the datasets will be used together.
 - [ ] R01 — Review a bounded sample of Challenge 002 PRs.
 - [ ] A01 — Complete the operational diagnosis.

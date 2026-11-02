@@ -1,0 +1,27 @@
+{
+  "executed_at": "2026-11-02T17:33:03.847940+00:00",
+  "python": "3.12.3",
+  "method": "Copied only scripts and frozen manifest into a new temporary directory; downloaded both archives again; no preexisting raw files",
+  "commands": [
+    {
+      "command": "python3 -I solution/acquire_data.py",
+      "exit_code": 0,
+      "stdout": "customer_support: version 1 verified, CSV 3945533 bytes, sha256=b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea\nit_service: version 1 verified, CSV 14568920 bytes, sha256=044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4\n",
+      "stderr": ""
+    },
+    {
+      "command": "python3 -I solution/audit_data.py",
+      "exit_code": 0,
+      "stdout": "Audit saved: <clean-root>/data/audit.json\n",
+      "stderr": ""
+    }
+  ],
+  "same_audit_bytes": true,
+  "audit_sha256": "fd9319894962f9117f5a7d35c536f9cf197869647365f90704203fd1b1a5868f",
+  "input_sha256": {
+    "solution/acquire_data.py": "a905a346916db65f1042de12f6420ef7d9cad371f6c77f369ad52c9615de84b4",
+    "solution/audit_data.py": "9955ec6f911b21c2463ac318cb056ba287f301c9e1b322c58badaee53dbe4191",
+    "data/manifest.json": "e298d6e92504010775319c8c71c07aa46fcf40834c960081377cfc0e04dbf4de"
+  },
+  "raw_files_committed": false
+}

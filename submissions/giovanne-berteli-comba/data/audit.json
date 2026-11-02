@@ -1,0 +1,377 @@
+{
+  "audit_script_sha256": "9955ec6f911b21c2463ac318cb056ba287f301c9e1b322c58badaee53dbe4191",
+  "datasets": {
+    "customer_support": {
+      "bytes": 3945533,
+      "categories": {
+        "Ticket Channel": {
+          "Chat": 2073,
+          "Email": 2143,
+          "Phone": 2132,
+          "Social media": 2121
+        },
+        "Ticket Priority": {
+          "Critical": 2129,
+          "High": 2085,
+          "Low": 2063,
+          "Medium": 2192
+        },
+        "Ticket Status": {
+          "Closed": 2769,
+          "Open": 2819,
+          "Pending Customer Response": 2881
+        },
+        "Ticket Type": {
+          "Billing inquiry": 1634,
+          "Cancellation request": 1695,
+          "Product inquiry": 1641,
+          "Refund request": 1752,
+          "Technical issue": 1747
+        }
+      },
+      "columns": [
+        {
+          "distribution": {
+            "max": 8469.0,
+            "median": 4235.0,
+            "min": 1.0,
+            "n": 8469,
+            "p95": 8045.6
+          },
+          "invalid": 0,
+          "missing": 0,
+          "name": "Ticket ID",
+          "nonmissing": 8469,
+          "observed_kind": "numeric",
+          "unique_nonmissing": 8469
+        },
+        {
+          "missing": 0,
+          "name": "Customer Name",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 8028
+        },
+        {
+          "missing": 0,
+          "name": "Customer Email",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 8320
+        },
+        {
+          "distribution": {
+            "max": 70.0,
+            "median": 44.0,
+            "min": 18.0,
+            "n": 8469,
+            "p95": 68.0
+          },
+          "invalid": 0,
+          "missing": 0,
+          "name": "Customer Age",
+          "nonmissing": 8469,
+          "observed_kind": "numeric",
+          "unique_nonmissing": 53
+        },
+        {
+          "missing": 0,
+          "name": "Customer Gender",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 3
+        },
+        {
+          "missing": 0,
+          "name": "Product Purchased",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 42
+        },
+        {
+          "invalid": 0,
+          "max": "2021-12-30T00:00:00",
+          "min": "2020-01-01T00:00:00",
+          "missing": 0,
+          "name": "Date of Purchase",
+          "nonmissing": 8469,
+          "observed_kind": "date",
+          "unique_nonmissing": 730
+        },
+        {
+          "missing": 0,
+          "name": "Ticket Type",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 5
+        },
+        {
+          "missing": 0,
+          "name": "Ticket Subject",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 16
+        },
+        {
+          "missing": 0,
+          "name": "Ticket Description",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 8077
+        },
+        {
+          "missing": 0,
+          "name": "Ticket Status",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 3
+        },
+        {
+          "missing": 5700,
+          "name": "Resolution",
+          "nonmissing": 2769,
+          "observed_kind": "string",
+          "unique_nonmissing": 2769
+        },
+        {
+          "missing": 0,
+          "name": "Ticket Priority",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 4
+        },
+        {
+          "missing": 0,
+          "name": "Ticket Channel",
+          "nonmissing": 8469,
+          "observed_kind": "string",
+          "unique_nonmissing": 4
+        },
+        {
+          "invalid": 0,
+          "max": "2023-06-02T00:54:21",
+          "min": "2023-05-31T21:55:39",
+          "missing": 2819,
+          "name": "First Response Time",
+          "nonmissing": 5650,
+          "observed_kind": "naive_datetime",
+          "unique_nonmissing": 5470
+        },
+        {
+          "invalid": 0,
+          "max": "2023-06-02T00:55:33",
+          "min": "2023-05-31T21:53:30",
+          "missing": 5700,
+          "name": "Time to Resolution",
+          "nonmissing": 2769,
+          "observed_kind": "naive_datetime",
+          "unique_nonmissing": 2728
+        },
+        {
+          "distribution": {
+            "max": 5.0,
+            "median": 3.0,
+            "min": 1.0,
+            "n": 2769,
+            "p95": 5.0
+          },
+          "invalid": 0,
+          "missing": 5700,
+          "name": "Customer Satisfaction Rating",
+          "nonmissing": 2769,
+          "observed_kind": "numeric",
+          "unique_nonmissing": 5
+        }
+      ],
+      "coverage_by_status": {
+        "Closed": {
+          "Customer Satisfaction Rating present": 2769,
+          "First Response Time present": 2769,
+          "Resolution present": 2769,
+          "Time to Resolution present": 2769,
+          "rows": 2769
+        },
+        "Open": {
+          "Customer Satisfaction Rating present": 0,
+          "First Response Time present": 0,
+          "Resolution present": 0,
+          "Time to Resolution present": 0,
+          "rows": 2819
+        },
+        "Pending Customer Response": {
+          "Customer Satisfaction Rating present": 0,
+          "First Response Time present": 2881,
+          "Resolution present": 0,
+          "Time to Resolution present": 0,
+          "rows": 2881
+        }
+      },
+      "description": {
+        "characters": {
+          "max": 397,
+          "median": 298.0,
+          "min": 151,
+          "n": 8469,
+          "p95": 345.0
+        },
+        "conflicting_label_groups": 49,
+        "exact_unique_texts": 8077,
+        "label_column": "Ticket Type",
+        "nonempty_rows": 8469,
+        "normalization": "Unicode NFKC, casefold, collapse whitespace; punctuation retained",
+        "normalized_duplicate_excess_rows": 403,
+        "normalized_duplicate_groups": 54,
+        "normalized_unique_texts": 8066,
+        "rows_in_conflicting_label_groups": 446,
+        "rows_in_normalized_duplicate_groups": 457,
+        "rows_with_unfilled_braces": 8469,
+        "words": {
+          "max": 63,
+          "median": 49.0,
+          "min": 21,
+          "n": 8469,
+          "p95": 57.0
+        }
+      },
+      "email_domain_counts": {
+        "example.com": 2904,
+        "example.net": 2769,
+        "example.org": 2796
+      },
+      "exact_duplicate_excess_rows": 0,
+      "file_sha256": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea",
+      "resolution": {
+        "characters": {
+          "max": 69,
+          "median": 35.0,
+          "min": 11,
+          "n": 2769,
+          "p95": 54.0
+        },
+        "conflicting_label_groups": 0,
+        "exact_unique_texts": 2769,
+        "label_column": "Ticket Type",
+        "nonempty_rows": 2769,
+        "normalization": "Unicode NFKC, casefold, collapse whitespace; punctuation retained",
+        "normalized_duplicate_excess_rows": 0,
+        "normalized_duplicate_groups": 0,
+        "normalized_unique_texts": 2769,
+        "rows_in_conflicting_label_groups": 0,
+        "rows_in_normalized_duplicate_groups": 0,
+        "rows_with_unfilled_braces": 0,
+        "words": {
+          "max": 8,
+          "median": 5.0,
+          "min": 3,
+          "n": 2769,
+          "p95": 8.0
+        }
+      },
+      "rows": 8469,
+      "satisfaction": {
+        "closed_rows": 2769,
+        "distribution": {
+          "1.0": 553,
+          "2.0": 549,
+          "3.0": 580,
+          "4.0": 543,
+          "5.0": 544
+        },
+        "observed": 2769,
+        "outside_integer_1_to_5_or_invalid": 0,
+        "total_rows": 8469
+      },
+      "ticket_id_duplicate_excess": 0,
+      "time_fields": {
+        "equal_timestamps": 2,
+        "first_response_latency_identifiable": false,
+        "full_resolution_duration_identifiable": false,
+        "paired_rows": 2769,
+        "resolution_before_first_response": 1365,
+        "response_to_resolution_hours_all_pairs": {
+          "max": 23.466666666666665,
+          "median": 0.166667,
+          "min": -23.233333333333334,
+          "n": 2769,
+          "p95": 16.063333
+        },
+        "response_to_resolution_hours_nonnegative_only": {
+          "max": 23.466666666666665,
+          "median": 6.341667,
+          "min": 0.0,
+          "n": 1404,
+          "p95": 18.514167
+        },
+        "stored_as": "timezone-unspecified timestamps, not numeric durations",
+        "ticket_created_at_available": false,
+        "warning": "A post-response interval is not ticket lifetime or active effort; negative pairs are retained and counted, not corrected"
+      },
+      "version": 1
+    },
+    "it_service": {
+      "bytes": 14568920,
+      "class_counts": {
+        "Access": 7125,
+        "Administrative rights": 1760,
+        "HR Support": 10915,
+        "Hardware": 13617,
+        "Internal Project": 2119,
+        "Miscellaneous": 7060,
+        "Purchase": 2464,
+        "Storage": 2777
+      },
+      "columns": [
+        {
+          "missing": 0,
+          "name": "Document",
+          "nonmissing": 47837,
+          "observed_kind": "string",
+          "unique_nonmissing": 47837
+        },
+        {
+          "missing": 0,
+          "name": "Topic_group",
+          "nonmissing": 47837,
+          "observed_kind": "string",
+          "unique_nonmissing": 8
+        }
+      ],
+      "document": {
+        "characters": {
+          "max": 7015,
+          "median": 175.0,
+          "min": 7,
+          "n": 47837,
+          "p95": 926.0
+        },
+        "conflicting_label_groups": 0,
+        "exact_unique_texts": 47837,
+        "label_column": "Topic_group",
+        "nonempty_rows": 47837,
+        "normalization": "Unicode NFKC, casefold, collapse whitespace; punctuation retained",
+        "normalized_duplicate_excess_rows": 0,
+        "normalized_duplicate_groups": 0,
+        "normalized_unique_texts": 47837,
+        "rows_in_conflicting_label_groups": 0,
+        "rows_in_normalized_duplicate_groups": 0,
+        "rows_with_unfilled_braces": 0,
+        "words": {
+          "max": 981,
+          "median": 26.0,
+          "min": 2,
+          "n": 47837,
+          "p95": 136.0
+        }
+      },
+      "exact_duplicate_excess_rows": 0,
+      "file_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+      "rows": 47837,
+      "version": 1
+    }
+  },
+  "manifest_sha256": "e298d6e92504010775319c8c71c07aa46fcf40834c960081377cfc0e04dbf4de",
+  "missing_definition": "empty or whitespace-only CSV cells; no imputation",
+  "python": "3.12.3",
+  "quantiles": "linear interpolation at (n-1)*q",
+  "schema_version": 1
+}

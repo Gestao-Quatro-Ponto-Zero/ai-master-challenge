@@ -56,9 +56,19 @@ directory and follow the repository's PR naming convention.[^submission-rules]
 - Review decisions and adjustment state remain exclusively in the official
   F01–F07 table; approval does not imply technical validation.[^review-decisions]
 
+# Audited data boundaries
+
+D01 is recorded in [dataset quality](data-quality.md), with source manifests,
+reproducible aggregate output and the reviewer-facing report. The acquired files
+contain 8,469 customer-support rows and 47,837 IT-classification rows. Temporal
+fields are timestamps without ticket creation time, and many response/resolution
+pairs have inconsistent chronology. Do not treat them as full service durations.
+Dataset usage and application architecture remain undecided.
+
 # Open questions
 
-- Actual schemas, row counts, origin, licensing, units, and data quality.
+- Original operational provenance and semantic trustworthiness of text/labels
+  beyond the audited files and publisher-declared licensing.
 - How to use the operational and IT-classification datasets together.
 - Validity of any join, taxonomy mapping, or transfer across their domains.
 - Automation choice, application stack, evaluation split, and quality targets.
