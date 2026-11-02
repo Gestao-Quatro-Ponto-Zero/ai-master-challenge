@@ -16,7 +16,9 @@ Scope: this submission directory and its descendants. Read the repository's
 - Challenge 002 is selected. Dataset roles and measurement/evaluation boundaries
   are owned by `knowledge/dataset-usage.md`; the selected architecture and triage
   contract are owned by `knowledge/solution-scope.md` after S01. V00 must freeze
-  the evaluation protocol before I01. Do not imply the selected design is already
+  the evaluation protocol before I01. V00 now owns numerical rules in
+  `data/evaluation-protocol.json`, interpretation in `knowledge/evaluation-protocol.md`
+  and split counts/hashes in `data/evaluation-manifest.json`. Do not imply the selected design is already
   implemented, trained or validated.
 - Use small tasks with acceptance criteria, checkboxes, and evidence links.
   Mark completion only after the stated criteria have been checked.

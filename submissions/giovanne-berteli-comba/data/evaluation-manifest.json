@@ -1,0 +1,85 @@
+{
+  "diagnostics": {
+    "exact_conflicting_rows": 0,
+    "invalid_input_rows": 0,
+    "qualifying_row_pairs": 31542,
+    "verified_representative_edges": 29953
+  },
+  "groups": 44683,
+  "groups_with_multiple_labels": 64,
+  "input_sha256": {
+    "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
+    "data/manifest.json": "e298d6e92504010775319c8c71c07aa46fcf40834c960081377cfc0e04dbf4de",
+    "data/raw/it_service-v1.csv": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+    "solution/audit_data.py": "9955ec6f911b21c2463ac318cb056ba287f301c9e1b322c58badaee53dbe4191",
+    "solution/prepare_evaluation.py": "514527ab6fe4a5b30bb11181be26e6fadb059ebc6eb0ac36f9aa68706fa93434"
+  },
+  "invariants": {
+    "all_eight_classes_in_each_partition": true,
+    "all_rows_assigned_once": true,
+    "verified_near_edges_cross_partitions": 0,
+    "whole_groups": true
+  },
+  "largest_group": 740,
+  "limits": [
+    "Exact grouping for the declared token-set similarity, not proof of semantic/entity independence",
+    "Token order/repetition ignored for grouping; conservative transitive components may contain different labels",
+    "Global token frequencies used only for label-blind duplicate grouping, not fitted model features",
+    "Membership/class support inspection is data preparation; no classifier, threshold or test performance evaluated"
+  ],
+  "membership": {
+    "bytes": 7894876,
+    "path": "data/processed/evaluation-membership.csv",
+    "rows": 47837,
+    "sha256": "2585dbe5f2d1b4f9874a8550a6d1d0b9f0228e83107599941dd8bd2d72a7363e"
+  },
+  "non_singleton_groups": 837,
+  "partition_class_counts": {
+    "final_test": {
+      "Access": 1069,
+      "Administrative rights": 264,
+      "HR Support": 1637,
+      "Hardware": 2042,
+      "Internal Project": 318,
+      "Miscellaneous": 1059,
+      "Purchase": 370,
+      "Storage": 416
+    },
+    "quarantine": {},
+    "train": {
+      "Access": 4987,
+      "Administrative rights": 1232,
+      "HR Support": 7641,
+      "Hardware": 9532,
+      "Internal Project": 1483,
+      "Miscellaneous": 4942,
+      "Purchase": 1724,
+      "Storage": 1944
+    },
+    "validation": {
+      "Access": 1069,
+      "Administrative rights": 264,
+      "HR Support": 1637,
+      "Hardware": 2043,
+      "Internal Project": 318,
+      "Miscellaneous": 1059,
+      "Purchase": 370,
+      "Storage": 417
+    }
+  },
+  "partition_groups": {
+    "final_test": 6716,
+    "train": 31257,
+    "validation": 6710
+  },
+  "partition_rows": {
+    "final_test": 7175,
+    "quarantine": 0,
+    "train": 33485,
+    "validation": 7177
+  },
+  "protocol_id": "it-triage-v1",
+  "python": "3.12.3",
+  "raw_rows": 47837,
+  "schema_version": 1
+}

@@ -31,8 +31,8 @@ assumed effort scenarios; IT Document/Topic_group supplies the future benchmark.
 No customer-category mapping, reply generation, payment/access execution, real
 priority assignment, external integration, public deployment or dashboard is in I01.
 
-V00 must freeze splits, candidates, selection procedure, error costs and acceptance
-targets before I01. I01 then trains/selects using development/validation only;
+[V00](evaluation-protocol.md) has frozen grouped splits, candidates, selection
+procedure, assumed error costs and acceptance targets before I01. I01 then trains/selects using development/validation only;
 V01 evaluates the selected version on the reserved test. No model is trained here.
 
 # Stack and components
@@ -52,8 +52,9 @@ form intent only, not durable history. SQLite is the persistence authority.
 [session state](https://docs.streamlit.io/develop/concepts/architecture/session-state),
 [SQLite](https://docs.python.org/3.12/library/sqlite3.html).
 
-Bind the future UI to loopback. Freeze exact tested dependencies/environment in
-V00 setup before I01; no claim of tested third-party installation is made now.
+Bind the future UI to loopback. V00 pinned and checked an isolated environment;
+see [setup and import/constructor limits](../docs/evaluation-protocol.md). These
+checks do not demonstrate the future UI or trained-model behavior.
 Existing audit/diagnosis commands retain their standard-library-only setup.
 
 # Input and readiness
@@ -202,6 +203,8 @@ claim of quality, integration or production readiness until the required work ex
 
 # V00 handoff
 
+V00 is now prepared in the [evaluation protocol](evaluation-protocol.md), with no
+classifier fitting. The following constraints continue to govern I01/V01.
 Freeze IT membership/group/near-duplicate rules, entry-input limitations, candidate
 budget, error costs, model/gating criteria, tail-selection procedure and evaluation
 denominators. Keep live/demo examples in development; do not expose held-out text

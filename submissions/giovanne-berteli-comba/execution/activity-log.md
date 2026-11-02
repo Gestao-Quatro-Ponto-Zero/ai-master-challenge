@@ -292,3 +292,37 @@ or model evaluations have been run. No commit, push, or PR was made.
   receipts (16 operational documents / 113 file links), clean whitespace and all
   22 diff paths inside the submission. Five reviewed new files have intent-to-add
   through an approved elevated Git operation; content remains unstaged.
+
+
+## 2026-11-02 — V00 frozen evaluation protocol and environment
+
+- Resumed from user commit `f699801` with clean worktree. Froze agent-defined
+  offline criteria/cost proxies before fitting; no new human business approval.
+- Implemented exact prefix/length-filtered token Jaccard grouping, deterministic
+  whole-component class-balanced allocation and source/member hashes. Kept mixed
+  similar labels intact; exact conflicts/invalid components would be quarantined.
+- Prepared train 33,485 / validation 7,177 / final_test 7,175, all eight classes;
+  largest group 740, 31,542 qualifying pairs and no verified cross-partition edge.
+  Membership is local/ignored; public manifest and source reproduce its identity.
+- Declared four future fits, train-only vocabulary, no validation refit, explicit
+  model targets, 42 gate/reference choices, workload/quality constraints, illustrative
+  costs and strict no-qualified-choice fallback. V01 retains reserved final test.
+- Added eight meaningful software tests; all 37 tests passed. Exact join matched
+  exhaustive fixture comparisons; clean preparation reproduced both outputs byte
+  identically. A train-only literal-word probe preserves entry-time uncertainty.
+- Bootstrapped local venv from read-only bundled pip because system ensurepip/pip
+  were missing. Installed/froze exact PyPI dependencies in isolated Python3.12.3;
+  package equality, pip check, imports, four UNFITTED constructors and SQLite
+  memory rollback passed. Shared runtime unmodified; zero classifier fits.
+- Consulted primary scikit-learn/Streamlit docs, PyPI metadata and set-join papers.
+  A secondary university PDF link was unavailable; relied on accessible primary
+  algorithm text. Updated owners/status/plan and official F02 execution evidence.
+- Regenerated D01/A01 outputs, preserving identical bytes; reran checks before
+  explicitly refreshing current receipts. No AI metrics, UI or production database.
+- Narrative11 and capture15 preserve nine additional messages (four returned
+  turns, hasMore=true). V00 final response/later messages pending next capture.
+  I01 is next; no commit, push, deployment or external service action.
+- Final documentation review resolved 259 local destinations; 17 reviewed new
+  public files have intent-to-add only. All changed paths are inside the submission;
+  raw/processed data and the venv are excluded, whitespace is clean and no content
+  is staged. Four current receipts passed after explicit revalidation.

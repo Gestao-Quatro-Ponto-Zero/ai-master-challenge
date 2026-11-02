@@ -27,7 +27,8 @@ Use the datasets as complementary evidence for assisted triage, with separate
 populations and taxonomies. Do not join their rows, pool their labels, or infer
 that an IT benchmark demonstrates performance in the customer-support operation.
 The [S01 contract](solution-scope.md) now owns the selected stack and operational
-scope. Numerical quality criteria and selection procedures remain for V00.
+scope. [V00](evaluation-protocol.md) now owns numerical quality criteria,
+selection procedures and grouped partition membership; no model is fitted yet.
 
 # Roles and data contracts
 
@@ -77,7 +78,7 @@ IT classifier on them. No customer-label accuracy/F1 will be reported for this
 prototype. Any future supervised customer task requires a separate adjudication
 protocol and versioned labels before inclusion.
 
-For IT, V00 must freeze development/validation/final-test membership before
+For IT, V00 freezes development/validation/final-test membership before
 choosing model, prompt or thresholds. Group normalized duplicates using D01's
 NFKC/casefold/whitespace rule; inspect near-duplicate/template risk before freezing
 membership. The audited absence of exact/normalized duplicates does not prove
@@ -87,7 +88,8 @@ The planned classification baseline is a majority-class predictor fitted only on
 training data, followed by a simple text baseline. Report macro F1 across the
 eight classes, per-class precision/recall/F1/support, confusion and overall accuracy
 as a secondary measure. V00 owns exact splits, candidate definitions, acceptance
-criteria and selection rules; none has been executed here. Fit vocabulary and any
+criteria and selection rules. Its preparation checks have executed, but model
+fitting/selection and performance evaluation have not. Fit vocabulary and any
 learned preprocessing on training data only. Use validation for model/threshold
 selection; evaluate the selected version on the reserved final test.
 
@@ -134,11 +136,13 @@ savings require a representative operational pilot with active-effort measuremen
 # Completion and handoff
 
 D02 completes dataset roles, mapping decisions and metric/evaluation boundaries;
-later A01 and S01 have their own evidence. Implementation and numerical acceptance
-targets remain pending; no split or model has been created.
+later A01, S01 and V00 have their own evidence. V00 created grouped splits and
+froze numerical acceptance targets; prototype implementation and model fitting
+remain pending. Targets are not observed results.
 
 R01 and A01 are complete; see the [bounded PR research](../docs/pr-review.md) and
 [operational findings](operational-findings.md). S01 is defined in the
-[solution contract](solution-scope.md); V00 is next.
+[solution contract](solution-scope.md); [V00 protocol](evaluation-protocol.md) is
+prepared, and I01 is next.
 Research can inform differentiation but cannot override these data limitations
 or replace validation. Published metrics from other tasks are not our targets.

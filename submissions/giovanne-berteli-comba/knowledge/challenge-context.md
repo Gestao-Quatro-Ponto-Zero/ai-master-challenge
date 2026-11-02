@@ -74,8 +74,9 @@ owned by the [S01 contract](solution-scope.md); implementation remains pending.
   beyond the audited files and publisher-declared licensing.
 - Any future operational-domain transfer would require separate representative
   labels and validation; D02 authorizes no join or taxonomy mapping.
-- Exact dependency versions, evaluation membership/selection protocol and numerical
-  quality targets; S01 has selected the architecture and operational contract.
+- Whether the selected S01 architecture meets the V00 numerical targets on the
+  reserved test; [V00 protocol](evaluation-protocol.md) and exact dependencies are
+  prepared, but model fitting, prototype and quality results remain pending.
 - Operational assumptions needed to estimate saved effort and cost.
 
 # Analytical constraints

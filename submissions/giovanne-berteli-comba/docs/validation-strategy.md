@@ -3,8 +3,11 @@
 This is a plan, not a test report. Dataset roles, metric populations and evaluation
 boundaries are owned by [D02](../knowledge/dataset-usage.md). The selected stack,
 runtime/anomaly contracts and acceptance cases are owned by
-[S01](../knowledge/solution-scope.md). V00 freezes numerical criteria and selection
-procedures before implementation. Do not report a planned check as a passing test.
+[S01](../knowledge/solution-scope.md). [V00](../knowledge/evaluation-protocol.md)
+has frozen numerical criteria, selection procedures, membership and tested
+dependencies before implementation. Its preparation evidence is in the
+[protocol/setup report](evaluation-protocol.md). The application checks below
+remain planned. Do not report a planned check as a passing test.
 
 | Layer | Meaningful checks | Evidence |
 | --- | --- | --- |
@@ -16,8 +19,8 @@ procedures before implementation. Do not report a planned check as a passing tes
 | Operational | Coverage versus errors under different handoff thresholds, realistic failure modes, measured latency/cost if used | Evaluation or simulation results with assumptions |
 | Submission | Setup, evidence links, allowed file scope, readable Portuguese narrative, working CodeTour when implemented | Final reviewer checklist |
 
-Choose numerical quality targets after inspecting data and defining the
-business cost of errors. A model score is not automatically a calibrated
+V00 chose numerical quality targets after the audit, with explicit illustrative
+error costs; those costs are not an approved business policy. A model score is not automatically a calibrated
 probability. Evaluate cross-domain use separately and disclose its limitations.
 The first supervised benchmark uses IT Document/Topic_group only; customer
 Ticket Type labels are not IT targets. No pooled metrics or invented mapping.

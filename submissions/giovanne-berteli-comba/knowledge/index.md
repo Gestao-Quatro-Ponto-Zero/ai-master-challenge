@@ -19,6 +19,9 @@ okf_version: "0.2"
 - [Solution contract](solution-scope.md) — S01 stack, triage/failure flow, output,
   anomaly reference/persistence/review contracts and acceptance for V00/I01/V01.
 
+- [Evaluation protocol](evaluation-protocol.md) — V00 numerical-rule ownership,
+  grouped split membership, model/gate selection order and reserved-test exposure.
+
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and
 is excluded from routine retrieval. Review decisions are owned by the

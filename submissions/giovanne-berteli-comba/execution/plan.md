@@ -15,7 +15,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | R01 | Focused PR review | Declare sample and effort cap before browsing; identify repeated approaches and evidence gaps with links within that cap (F06) | [Research](../docs/pr-review.md) and [selection/source snapshot](../docs/review-evidence/pr-review-snapshot.json); no private baseline inspected |
 | A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | [Diagnosis](../docs/operational-diagnosis.md), [computed metrics](../data/diagnosis.json), [all segments](../data/diagnosis-segments.csv) and [assumptions](../data/diagnosis-assumptions.json) |
 | S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | [Authoritative contract](../knowledge/solution-scope.md) and [reviewer proposal/flow](../docs/automation-proposal.md) |
-| V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | Future versioned protocol following `docs/validation-strategy.md` |
+| V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | [Frozen protocol](../knowledge/evaluation-protocol.md), [manifest](../data/evaluation-manifest.json), [setup/checks](../docs/evaluation-protocol.md) and [receipt](../docs/review-evidence/evaluation-current.json) |
 | I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | Future `solution/` implementation |
 | V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | Future test/evaluation outputs |
 | E01 | Evidence and communication | Reviewer narrative, conversation coverage, decision history and useful CodeTour checked | Process log, report and future tour |
@@ -29,7 +29,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] R01 — Review a bounded sample of Challenge 002 PRs. Evidence: [three confirmed PRs and implications](../docs/pr-review.md).
 - [x] A01 — Complete the operational diagnosis. Evidence: [findings, scenarios and limits](../docs/operational-diagnosis.md).
 - [x] S01 — Define one automation and its human intervention rules. Evidence: [scope, flow and acceptance](../knowledge/solution-scope.md).
-- [ ] V00 — Record the evaluation protocol before prototype implementation.
+- [x] V00 — Record the evaluation protocol before prototype implementation. Evidence: [grouped splits, bounded selection and tested environment](../docs/evaluation-protocol.md); zero classifier fits.
 - [ ] I01 — Build the functional prototype.
 - [ ] V01 — Run and document software tests and AI evaluation.
 - [ ] E01 — Complete evidence, narrative, and CodeTour.

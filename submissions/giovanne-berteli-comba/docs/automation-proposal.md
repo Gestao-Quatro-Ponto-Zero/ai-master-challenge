@@ -96,8 +96,9 @@ Exemplos do teste reservado não alimentarão a demonstração durante o desenvo
 
 Stack escolhida: **Python, scikit-learn, Streamlit e SQLite**. Pipeline reúne o
 processamento do texto e o classificador; Streamlit oferece a tabela de revisão;
-SQLite guarda as decisões entre sessões. As versões exatas serão testadas e
-fixadas na preparação da V00. [Pipeline](https://scikit-learn.org/stable/modules/compose.html),
+SQLite guarda as decisões entre sessões. As versões exatas foram fixadas e
+verificadas na [V00](evaluation-protocol.md), sem implementar a interface ou treinar
+classificadores. [Pipeline](https://scikit-learn.org/stable/modules/compose.html),
 [tabelas Streamlit](https://docs.streamlit.io/develop/api-reference/data/st.dataframe),
 [SQLite](https://docs.python.org/3.12/library/sqlite3.html).
 
@@ -119,6 +120,7 @@ e testes automáticos serão identificados como testes, não aprovação humana.
 4. **Operação:** medir latência/falhas localmente e, num piloto representativo futuro,
    minutos, revisão e retrabalho. As 29,75 h/mês da A01 continuam hipótese.
 
-S01 está concluída como escopo e contrato. **Próxima etapa: V00**, para congelar
-conjuntos, candidatos, custos dos erros, critérios de escolha e avaliação antes da
-implementação I01. Ainda não há modelo treinado, interface funcional ou ganho medido.
+S01 está concluída como escopo e contrato. A [V00](evaluation-protocol.md) congelou
+conjuntos, candidatos, custos ilustrativos e critérios antes da implementação.
+**Próxima etapa: I01**, sob esse protocolo. Ainda não há modelo treinado, interface
+funcional ou ganho medido.

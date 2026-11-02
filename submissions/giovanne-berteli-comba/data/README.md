@@ -48,6 +48,14 @@ copied only the two scripts and manifest to a temporary directory, downloaded th
 archives again and produced byte-identical audit JSON. This is stronger than
 rerunning against already downloaded data, but depends on future source access.
 
+## V00 evaluation preparation
+
+Grouped IT partitions, locked third-party setup and preparation checks are
+documented in [the V00 report](../docs/evaluation-protocol.md). Numerical settings
+are owned by [the protocol](evaluation-protocol.json), and computed membership
+identity/counts by [the manifest](evaluation-manifest.json). Raw data and the
+detailed membership CSV remain local. No classifier is fitted by preparation.
+
 ## A01 diagnosis
 
 `solution/diagnose_support.py` uses only the hash-locked customer CSV and

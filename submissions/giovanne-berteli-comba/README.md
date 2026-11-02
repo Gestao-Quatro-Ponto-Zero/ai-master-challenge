@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: S01 definida. Protocolo de avaliação V00 é a próxima etapa; protótipo pendente.**
+**Estado: V00 preparada. Próxima etapa: implementar o protótipo I01, sob protocolo congelado.**
 
 ## Sobre mim
 
@@ -51,7 +51,8 @@ permitem filtros e têm revisão independente do rótulo sugerido.
 A interface será local, com Triagem e Revisão/anomalias, em Python, scikit-learn,
 Streamlit e SQLite. Não haverá envio ao cliente nem mudança em sistemas externos.
 O fluxo, os contratos e os limites estão na proposta; a implementação só começa
-após a V00 congelar o protocolo de avaliação.
+sob o [protocolo V00 já congelado](docs/evaluation-protocol.md). Ainda não houve
+treinamento de classificadores.
 
 ### Resultados / Findings
 
@@ -62,7 +63,8 @@ após a V00 congelar o protocolo de avaliação.
 - Satisfação está disponível só nos 2.769 encerrados (32,70% da base).
 - Há descrições repetidas com rótulos conflitantes. Os registros originais serão
   preservados e sinalizados; esses rótulos não serão usados como alvo supervisionado
-  do protótipo IT. Os conjuntos de avaliação serão definidos em V00.
+  do protótipo IT. Os conjuntos IT estão definidos em V00: 33.485 de treino,
+  7.177 de validação e 7.175 de teste, mantendo grupos semelhantes inteiros.
 
 O [diagnóstico operacional](docs/operational-diagnosis.md) traz comparações,
 denominadores e cenários, com 150 linhas agregadas de segmentos. A
@@ -73,9 +75,9 @@ resultado de modelo.
 
 Conferir status/prioridades e os registros Open sem resposta preenchida com o
 responsável pela operação; instrumentar eventos e esforço antes de alegar SLA ou
-economia. Não eleger um canal como causa de atraso com esses dados. Em V00,
-reservar o teste e definir comparação
-com baselines antes de escolher modelos e limiares.
+economia. Não eleger um canal como causa de atraso com esses dados. Implementar
+I01 com os baselines e critérios congelados em V00, escolhendo modelo/limiares
+apenas na validação e mantendo o teste final reservado.
 
 ### Limitações
 
@@ -97,6 +99,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Plano com critérios de aceite](execution/plan.md)
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
+- [Protocolo V00, conjuntos e ambiente testado](docs/evaluation-protocol.md)
 - [Auditoria dos datasets](docs/data-audit.md)
 - [Diagnóstico operacional e cenários de esforço](docs/operational-diagnosis.md)
 - [Proposta de automação e fluxo](docs/automation-proposal.md)
