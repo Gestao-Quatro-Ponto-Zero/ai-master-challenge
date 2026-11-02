@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: auditoria e decisão de uso dos datasets concluídas (D01/D02). Protótipo pendente.**
+**Estado: D01, D02 e pesquisa de três PRs do Challenge 002 concluídas. Diagnóstico e protótipo pendentes.**
 
 ## Sobre mim
 
@@ -78,6 +78,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Estratégia de validação](docs/validation-strategy.md)
 - [Auditoria dos datasets](docs/data-audit.md)
 - [Decisão de uso e contrato de métricas](knowledge/dataset-usage.md)
+- [Pesquisa de três PRs do mesmo desafio](docs/pr-review.md)
 - [Como reproduzir a aquisição e a auditoria](data/README.md)
 - [Checagens de consistência e validade das evidências](docs/foundation-controls.md)
 - [Fonte de verdade dos sete ajustes da revisão](docs/architecture-review.md#lista-oficial-para-validação)

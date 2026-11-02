@@ -199,3 +199,32 @@ or model evaluations have been run. No commit, push, or PR was made.
   Whitespace and all 19 diff paths are valid and within the submission. Registered
   intent-to-add for the four new reviewed files via an approved elevated operation;
   no content staged, raw data included, commit or publication performed.
+
+## 2026-11-02 — R01 bounded Challenge 002 PR research
+
+- Resumed from user-created commit `cc92efc` with a clean working tree. The user
+  reiterated Challenge 002 scope. Both receipts passed before D01 evidence reuse.
+- Queried public upstream PR title matches for 002, updated-desc, all states.
+  Returned 49 title matches, not 49 independently confirmed single-challenge PRs.
+  Selected the first three (#211, #209, #205); all confirmed 002 in title/README.
+- Source-inspection window 18:26:42–18:30:01 UTC (199 seconds), within the declared
+  three-PR/20-minute cap. Stopped after three; no other PR content was inspected.
+  Subsequent documentation/validation was local administration, not more research.
+- Browser cache misses were bypassed using anonymous read-only GitHub API/raw
+  requests under approved elevated networking. Read eight fixed-commit files or
+  documented line selections and checked their Git blob identities. No foreign
+  code, test, model or demo executed; no implementation copied into our solution.
+- Wrote attributed Portuguese findings and a source/selection/hash snapshot.
+  Distinguished author-reported metrics, saved artifacts, inspected methodology
+  and unverified live behavior. No private evaluator baseline was accessed.
+- Recorded repeated approaches and practical implications for A01/S01/V00 without
+  ranking candidates, borrowing numerical targets or expanding project scope.
+- Updated operational status, plan, index and official F06 adjustment state.
+  All 19 existing tests passed; regenerated D01 audit remained byte-identical.
+  Revalidated dependent receipts. A01 is next; no model work, commit or publication.
+- Added narrative 08 and capture 12: seven new messages, four returned turns,
+  hasMore=true; the current final response remains an explicit capture gap.
+- Final local checks resolved 156 document/source destinations, with no missing
+  paths; both receipts passed and whitespace was clean. The 15 changed paths are
+  inside the submission. Registered intent-to-add for four reviewed new artifacts
+  via an approved elevated Git operation; no content staged or commit created.

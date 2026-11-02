@@ -12,7 +12,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | B03 | Foundation controls | Challenge-conflict mutation rejected, changed dependencies invalidate evidence, explicit-path resumption checked | [Controls and limits](../docs/foundation-controls.md), [tests](../docs/review-evidence/foundation-tests.txt) and [receipt](../docs/review-evidence/foundation-current.json) |
 | D01 | Data acquisition and audit | Sources, acquisition steps, versions and hashes recorded; schemas, units, actual sizes, missingness, duplicates and metric coverage inspected for both datasets (F05/F07) | [Manifest](../data/manifest.json), [audit](../docs/data-audit.md), [output](../data/audit.json), [reproduction](../data/README.md) |
 | D02 | Dataset usage decision | Explain each dataset's role, limits, any valid mapping, and evaluation boundaries | [Authoritative decision and metric contract](../knowledge/dataset-usage.md) |
-| R01 | Focused PR review | Declare sample and effort cap before browsing; identify repeated approaches and evidence gaps with links within that cap (F06) | Future research notes; no claim that private baselines are accessible |
+| R01 | Focused PR review | Declare sample and effort cap before browsing; identify repeated approaches and evidence gaps with links within that cap (F06) | [Research](../docs/pr-review.md) and [selection/source snapshot](../docs/review-evidence/pr-review-snapshot.json); no private baseline inspected |
 | A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | Future analysis scripts and report |
 | S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | Future solution decision and scope record |
 | V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | Future versioned protocol following `docs/validation-strategy.md` |
@@ -26,7 +26,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] B03 — Implement and validate foundation controls. Evidence: [controls](../docs/foundation-controls.md).
 - [x] D01 — Audit both datasets. Evidence: [audit and limitations](../docs/data-audit.md).
 - [x] D02 — Decide complementary dataset usage. Evidence: [roles, limits and evaluation boundaries](../knowledge/dataset-usage.md).
-- [ ] R01 — Review a bounded sample of Challenge 002 PRs.
+- [x] R01 — Review a bounded sample of Challenge 002 PRs. Evidence: [three confirmed PRs and implications](../docs/pr-review.md).
 - [ ] A01 — Complete the operational diagnosis.
 - [ ] S01 — Define one automation and its human intervention rules.
 - [ ] V00 — Record the evaluation protocol before prototype implementation.
@@ -53,3 +53,8 @@ record the query, timestamp, returned ordering, eligibility and inaccessible lin
 Inspect approach and supporting evidence only; do not execute other submissions
 or copy their implementation. Record gaps as unknown rather than infer failure.
 Stop at the cap even if fewer than three PRs are usable, then proceed to A01.
+
+R01 executed on 2026-11-02: PRs #211, #209 and #205, each confirmed as Challenge
+002 in its title and README. Source-inspection window: 18:26:42–18:30:01 UTC,
+199 seconds. Stopped after three; no fourth PR inspected. Administrative writing
+and local validation after that window are recorded separately from source research.

@@ -136,5 +136,6 @@ D02 completes the roles, mapping decision, label-conflict policy and evaluation/
 metric boundaries. It does not complete A01, S01, V00 or I01. Implementation and
 numerical acceptance targets remain pending; no split or model has been created.
 
-Next: R01 under the cap in the execution plan, then A01. Research can inform
-differentiation but cannot override these data limitations or replace validation.
+R01 is complete; see the [bounded PR research](../docs/pr-review.md). A01 is next.
+Research can inform differentiation but cannot override these data limitations
+or replace validation. Published metrics from other tasks are not our targets.

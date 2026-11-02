@@ -12,6 +12,8 @@ okf_version: "0.2"
   to consult before dataset usage, diagnosis or evaluation decisions.
 - [Dataset usage](dataset-usage.md) — Authoritative D02 roles, metric contracts,
   label-conflict policy and evaluation boundaries.
+- [Challenge 002 PR research](../docs/pr-review.md) — Bounded R01 sample,
+  inspected evidence and implications; consult for differentiation, not data truth.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

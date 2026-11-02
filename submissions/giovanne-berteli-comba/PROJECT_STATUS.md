@@ -3,8 +3,8 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: D02 completed. Consult [dataset roles and metric/evaluation
-  boundaries](knowledge/dataset-usage.md) before diagnosis or prototype work.
+- Current phase: R01 completed with three confirmed Challenge 002 PRs. See
+  [bounded research and implications](docs/pr-review.md); A01 is next.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -18,9 +18,10 @@ Updated: 2026-11-02 (America/Sao_Paulo).
   model training/evaluation, deployment, or PR.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: R01 — review up to three public Challenge 002 PRs within the
-  20-minute cap recorded in the execution plan; then A01 using D02's metric contract.
-- Proposed automation: assisted triage; confirm or revise after the audit.
+- Next action: A01 — reproduce volume/status/satisfaction comparisons and effort
+  scenarios under [D02's metric contract](knowledge/dataset-usage.md). Answer the
+  operational questions without presenting snapshots as rates or time as labor.
+- Proposed automation: assisted triage; confirm or revise after the diagnosis.
 - No application stack or automation performance target has been selected.
 - The [official review table](docs/architecture-review.md#lista-oficial-para-validação)
   is the sole record of F01–F07 review decisions and adjustment state. Current
