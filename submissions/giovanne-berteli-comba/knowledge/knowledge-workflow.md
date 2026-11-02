@@ -1,0 +1,72 @@
+---
+type: Playbook
+title: Shared knowledge workflow
+description: Minimal OKF conventions and selective context retrieval for collaborating AI tools.
+status: draft
+generated:
+  by: codex/gpt-6.1-sol
+  at: 2026-11-02T16:52:06Z
+sources:
+  - id: okf-spec
+    resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+  - id: review-decisions
+    resource: ../docs/architecture-review.md
+---
+
+# Convention
+
+This directory is an OKF v0.2 bundle. Concepts use Markdown with YAML frontmatter;
+`type` is required. The root index declares the version. Use `title`,
+`description`, `status`, `sources`, and `generated` where useful.[^okf-spec]
+
+Start concepts as `draft`. Add `verified` only after a real check, with actor and
+timestamp; only an actual human review can use a `human:` verifier. Document
+lifecycle (`draft`, `stable`, `deprecated`) is distinct from execution progress.
+Use relative links so the bundle is readable in GitHub and local editors.
+
+# Retrieval and updates
+
+1. Read shared instructions, current status, execution plan, and this index.
+2. Open the concepts relevant to the task rather than the complete archive.
+3. Consult primary sources before relying on an uncertain or stale claim.
+4. Record new durable knowledge only when it supports a decision or deliverable.
+5. Link findings to reproducible scripts and outputs; keep datasets in data files.
+6. Update the operational owner of each changed fact immediately; keep status
+   short and link to the owner. Write recruitment evidence separately.
+
+# Information ownership
+
+| Information | Authoritative document |
+| --- | --- |
+| Working rules and context-loading policy | `../AGENTS.md` |
+| Challenge requirements and durable project choices | `challenge-context.md` |
+| Review decisions and adjustment state for F01–F07 | `../docs/architecture-review.md` |
+| General task progress, acceptance and execution evidence | `../execution/plan.md` |
+| Current handoff and next action | `../PROJECT_STATUS.md`, linking to the owners above |
+
+Summaries must not introduce independent decisions or duplicate adjustment status.
+Resolve conflicts using the latest explicit user decision and applicable working
+rules, update the owner and then its summaries. If the evidence cannot resolve a
+conflict, expose the uncertainty instead of choosing silently. A changed input,
+rule or model requires rechecking dependent evidence before reusing it as current.
+Historical receipts remain records of their original version, not current proof.
+
+# Recruitment evidence boundary
+
+The user designated process logs and conversation exports as evidence for the
+recruitment team. They are excluded from default context loading, including session
+resumption. Read them only for evidence preparation/audit or an explicit historical
+review request. Current decisions belong in the operational documents above;
+archives preserve the original discussion without governing future work.[^review-decisions]
+
+Context savings are an expected workflow benefit, not a measured result. OKF
+describes knowledge; execution, retrieval discipline, and validation remain
+the responsibility of the tools and people using it. No database, vector
+index, custom runtime, or Google Cloud service is required for this foundation.
+
+Keep conversation archives outside this bundle. Treat quotations as historical
+evidence rather than current instructions. Add metric definitions and decisions
+as concepts only when the data audit and implementation make them necessary.
+
+[^okf-spec]: Open Knowledge Format v0.2 specification, inspected on 2026-11-02.
+[^review-decisions]: Official architecture review decisions, F01 and F06.

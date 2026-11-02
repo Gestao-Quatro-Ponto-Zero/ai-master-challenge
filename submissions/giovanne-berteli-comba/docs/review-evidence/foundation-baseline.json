@@ -1,0 +1,221 @@
+{
+  "review_date": "2026-11-02",
+  "snapshot": "Before review artifacts were added; working tree including the 18 already-staged foundation files.",
+  "git_head": "4aed364d572fabe0f1fff1f0c6f32960b30fe575",
+  "files": 18,
+  "markdown_files": 17,
+  "source_sha256": {
+    "submissions/giovanne-berteli-comba/.gitignore": "10b7f112068d4ace11c28efc771b7cb47ab47e1ce4f9534e4a9e119afa3ef028",
+    "submissions/giovanne-berteli-comba/AGENTS.md": "ee071b0ce385e2b9ee00e91798ab772355369e1220b6cd3a8278db8441a790de",
+    "submissions/giovanne-berteli-comba/CLAUDE.md": "74d0205eaf611161307d422c033e0b9839632c1ce3aa1bc35bd5f238382e873e",
+    "submissions/giovanne-berteli-comba/PROJECT_STATUS.md": "4dc790b2be14366a8c089f7bca34898e2fc10bdeb3e67769fe61fa70336c08f5",
+    "submissions/giovanne-berteli-comba/README.md": "9b09903d87b85eab9ce6af60fd5f0513b60d4edc96de89a66df9e76bb5f12fce",
+    "submissions/giovanne-berteli-comba/docs/validation-strategy.md": "f11843f1a621024ae0f6a31ed7d06f55b57a34bf15d55c1c3683a722ef72f185",
+    "submissions/giovanne-berteli-comba/execution/activity-log.md": "448ab6e9f9c66c1e916266a4d2c9c350509cc98bae3e7bc8d88e75b27c6c0112",
+    "submissions/giovanne-berteli-comba/execution/backlog.md": "e1af75b179513b55fc1da7946aa88c8b13039c0aacd2636066be9f2d76f3478c",
+    "submissions/giovanne-berteli-comba/execution/plan.md": "28ad6eb7e4c7a84a64accfd4af0e909140d87dd86b367633dc2a97d692652c90",
+    "submissions/giovanne-berteli-comba/knowledge/challenge-context.md": "5b9360e57f95a90e59eedba9240334ae8726b7db81119a971731203c28452af1",
+    "submissions/giovanne-berteli-comba/knowledge/index.md": "13353ed796b82d4cf32fb363c1b61dd23a06a95d58c63f9937dd7657d370770a",
+    "submissions/giovanne-berteli-comba/knowledge/knowledge-workflow.md": "acf9f37b7f16a5c7be9e2eceac098807b0fac9449200e658f2ac54270728cf05",
+    "submissions/giovanne-berteli-comba/process-log/01-preparation-and-foundation.md": "18851961ef3618ec1b77d915354ddda940797053b34b4640c4da67c3b402f7e3",
+    "submissions/giovanne-berteli-comba/process-log/README.md": "ba03ced9b50f88b3ac3f1bec3e529813528525f5edca07798fbb7b9ace3726c4",
+    "submissions/giovanne-berteli-comba/process-log/chat-exports/01-preparation-chatgpt.md": "343994a0997230b9f311772c1701bf13d97debf6611e3a22f28293bc0108300a",
+    "submissions/giovanne-berteli-comba/process-log/chat-exports/02-challenge-comparison.md": "dc383b6bba413bae481c95c6dc67e74a6b864ef6c3077dfc808fb99d260e3ce7",
+    "submissions/giovanne-berteli-comba/process-log/chat-exports/03-planning-chat.md": "ad9839a2b870483ac22e45ca45c07948e18771368faed5b3fa338f31fc5d883d",
+    "submissions/giovanne-berteli-comba/process-log/entry-template.md": "7077791e2eb5f757275672807460f387d0e3228c8cb744842bc9b8177f7f0f52"
+  },
+  "discovery_default": {
+    "command": [
+      "rg",
+      "--files",
+      "submissions/giovanne-berteli-comba"
+    ],
+    "exit_code": 0,
+    "stdout": "submissions/giovanne-berteli-comba/CLAUDE.md\nsubmissions/giovanne-berteli-comba/PROJECT_STATUS.md\nsubmissions/giovanne-berteli-comba/knowledge/index.md\nsubmissions/giovanne-berteli-comba/knowledge/challenge-context.md\nsubmissions/giovanne-berteli-comba/knowledge/knowledge-workflow.md\nsubmissions/giovanne-berteli-comba/README.md\nsubmissions/giovanne-berteli-comba/execution/backlog.md\nsubmissions/giovanne-berteli-comba/execution/plan.md\nsubmissions/giovanne-berteli-comba/execution/activity-log.md\nsubmissions/giovanne-berteli-comba/AGENTS.md\nsubmissions/giovanne-berteli-comba/process-log/README.md\nsubmissions/giovanne-berteli-comba/process-log/chat-exports/03-planning-chat.md\nsubmissions/giovanne-berteli-comba/process-log/chat-exports/01-preparation-chatgpt.md\nsubmissions/giovanne-berteli-comba/process-log/chat-exports/02-challenge-comparison.md\nsubmissions/giovanne-berteli-comba/process-log/01-preparation-and-foundation.md\nsubmissions/giovanne-berteli-comba/process-log/entry-template.md\nsubmissions/giovanne-berteli-comba/docs/validation-strategy.md\n",
+    "stderr": "",
+    "note": "Passing the submission directory explicitly discovers its non-hidden Markdown files in this environment; this is the demonstrated workaround."
+  },
+  "discovery_explicit": {
+    "command": [
+      "rg",
+      "--files",
+      "--hidden",
+      "--no-ignore",
+      "submissions/giovanne-berteli-comba"
+    ],
+    "exit_code": 0,
+    "stdout": "submissions/giovanne-berteli-comba/CLAUDE.md\nsubmissions/giovanne-berteli-comba/PROJECT_STATUS.md\nsubmissions/giovanne-berteli-comba/knowledge/index.md\nsubmissions/giovanne-berteli-comba/knowledge/challenge-context.md\nsubmissions/giovanne-berteli-comba/knowledge/knowledge-workflow.md\nsubmissions/giovanne-berteli-comba/README.md\nsubmissions/giovanne-berteli-comba/process-log/README.md\nsubmissions/giovanne-berteli-comba/process-log/chat-exports/03-planning-chat.md\nsubmissions/giovanne-berteli-comba/process-log/chat-exports/01-preparation-chatgpt.md\nsubmissions/giovanne-berteli-comba/process-log/chat-exports/02-challenge-comparison.md\nsubmissions/giovanne-berteli-comba/process-log/01-preparation-and-foundation.md\nsubmissions/giovanne-berteli-comba/process-log/entry-template.md\nsubmissions/giovanne-berteli-comba/.gitignore\nsubmissions/giovanne-berteli-comba/AGENTS.md\nsubmissions/giovanne-berteli-comba/execution/backlog.md\nsubmissions/giovanne-berteli-comba/execution/plan.md\nsubmissions/giovanne-berteli-comba/execution/activity-log.md\nsubmissions/giovanne-berteli-comba/docs/validation-strategy.md\n",
+    "stderr": ""
+  },
+  "ignore_rule": {
+    "command": [
+      "git",
+      "check-ignore",
+      "--no-index",
+      "-v",
+      "submissions/giovanne-berteli-comba/AGENTS.md"
+    ],
+    "exit_code": 0,
+    "stdout": ".gitignore:16:submissions/\tsubmissions/giovanne-berteli-comba/AGENTS.md\n",
+    "stderr": ""
+  },
+  "root_agent_entry_exists": false,
+  "root_claude_entry_exists": false,
+  "local_links": {
+    "checked": 23,
+    "missing": []
+  },
+  "okf_documents": [
+    {
+      "path": "submissions/giovanne-berteli-comba/knowledge/challenge-context.md",
+      "frontmatter": {
+        "type": "Challenge Context",
+        "title": "Support redesign requirements and decisions",
+        "description": "Requirements, confirmed choices, and unresolved questions for Challenge 002.",
+        "status": "draft",
+        "generated": {
+          "by": "codex/gpt-6.1-sol",
+          "at": "2026-11-02 06:00:41+00:00"
+        },
+        "sources": [
+          {
+            "id": "brief",
+            "resource": "https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/blob/main/challenges/process-002-support/README.md"
+          },
+          {
+            "id": "submission-rules",
+            "resource": "https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/blob/main/CONTRIBUTING.md"
+          },
+          {
+            "id": "user-decisions",
+            "resource": "../process-log/chat-exports/03-planning-chat.md"
+          }
+        ]
+      },
+      "valid_minimum": true
+    },
+    {
+      "path": "submissions/giovanne-berteli-comba/knowledge/index.md",
+      "frontmatter": {
+        "okf_version": "0.2"
+      },
+      "valid_minimum": true
+    },
+    {
+      "path": "submissions/giovanne-berteli-comba/knowledge/knowledge-workflow.md",
+      "frontmatter": {
+        "type": "Playbook",
+        "title": "Shared knowledge workflow",
+        "description": "Minimal OKF conventions and selective context retrieval for collaborating AI tools.",
+        "status": "draft",
+        "generated": {
+          "by": "codex/gpt-6.1-sol",
+          "at": "2026-11-02 06:00:41+00:00"
+        },
+        "sources": [
+          {
+            "id": "okf-spec",
+            "resource": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
+          }
+        ]
+      },
+      "valid_minimum": true
+    }
+  ],
+  "bootstrap": {
+    "files": [
+      "submissions/giovanne-berteli-comba/AGENTS.md",
+      "submissions/giovanne-berteli-comba/PROJECT_STATUS.md",
+      "submissions/giovanne-berteli-comba/execution/plan.md",
+      "submissions/giovanne-berteli-comba/knowledge/index.md",
+      "submissions/giovanne-berteli-comba/process-log/01-preparation-and-foundation.md"
+    ],
+    "utf8_bytes": 12063,
+    "words": 1686,
+    "note": "Bytes and whitespace-separated words only; no token or cost measurement."
+  },
+  "conversation_archives": {
+    "utf8_bytes": 102273,
+    "message_headings": 42
+  },
+  "working_tree_changes": [],
+  "staged_scope": [
+    "submissions/giovanne-berteli-comba/.gitignore",
+    "submissions/giovanne-berteli-comba/AGENTS.md",
+    "submissions/giovanne-berteli-comba/CLAUDE.md",
+    "submissions/giovanne-berteli-comba/PROJECT_STATUS.md",
+    "submissions/giovanne-berteli-comba/README.md",
+    "submissions/giovanne-berteli-comba/docs/validation-strategy.md",
+    "submissions/giovanne-berteli-comba/execution/activity-log.md",
+    "submissions/giovanne-berteli-comba/execution/backlog.md",
+    "submissions/giovanne-berteli-comba/execution/plan.md",
+    "submissions/giovanne-berteli-comba/knowledge/challenge-context.md",
+    "submissions/giovanne-berteli-comba/knowledge/index.md",
+    "submissions/giovanne-berteli-comba/knowledge/knowledge-workflow.md",
+    "submissions/giovanne-berteli-comba/process-log/01-preparation-and-foundation.md",
+    "submissions/giovanne-berteli-comba/process-log/README.md",
+    "submissions/giovanne-berteli-comba/process-log/chat-exports/01-preparation-chatgpt.md",
+    "submissions/giovanne-berteli-comba/process-log/chat-exports/02-challenge-comparison.md",
+    "submissions/giovanne-berteli-comba/process-log/chat-exports/03-planning-chat.md",
+    "submissions/giovanne-berteli-comba/process-log/entry-template.md"
+  ],
+  "git_whitespace": {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "runnable_source_files": [],
+  "limits": [
+    "No datasets acquired or inspected.",
+    "No application or model evaluated.",
+    "Structural scenario analysis is not an executed AI benchmark.",
+    "Minimum OKF metadata checked locally; no complete conformance certification."
+  ],
+  "discovery_root": {
+    "command": [
+      "rg",
+      "--files",
+      "-g",
+      "AGENTS.md"
+    ],
+    "cwd": "repository root",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "discovery_submission_cwd": {
+    "command": [
+      "rg",
+      "--files",
+      "-g",
+      "AGENTS.md"
+    ],
+    "cwd": "submissions/giovanne-berteli-comba",
+    "exit_code": 0,
+    "stdout": "AGENTS.md\n",
+    "stderr": ""
+  },
+  "mutation_conflicting_challenge": {
+    "method": "Controlled mutation in a temporary copy; no agent continuation or model benchmark.",
+    "mutation": "Only PROJECT_STATUS.md selected challenge changed from 002 Support redesign to 004 Social media strategy. AGENTS.md and knowledge/challenge-context.md still select 002.",
+    "baseline": {
+      "pass": true,
+      "markdown_files": 17,
+      "local_links": 23,
+      "errors": []
+    },
+    "mutated": {
+      "pass": true,
+      "markdown_files": 17,
+      "local_links": 23,
+      "errors": []
+    },
+    "conclusion": "The inspected structural checks pass despite a semantic contradiction. This does not demonstrate that an agent would follow the incorrect status."
+  }
+}
