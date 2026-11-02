@@ -128,8 +128,8 @@ idêntico byte a byte. A saída da suíte fica em
 `docs/review-evidence/data-audit-tests.txt`; o recibo dependente das entradas fica
 em `docs/review-evidence/data-audit-current.json`.
 
-D01 está concluída como aquisição e auditoria. D02 deverá definir papéis
-complementares para os datasets, limites das métricas operacionais e tratamento
-dos rótulos conflitantes, sem criar um join artificial ou transferir a taxonomia IT
-sem validação. A arquitetura da aplicação, os conjuntos de avaliação, as metas de
+D01 está concluída como aquisição e auditoria. A decisão subsequente
+[D02](../knowledge/dataset-usage.md) define papéis complementares, limites das
+métricas e tratamento dos conflitos, sem join artificial ou transferência não
+validada da taxonomia IT. A arquitetura da aplicação, os conjuntos de avaliação, as metas de
 qualidade e qualquer ganho operacional continuam pendentes.

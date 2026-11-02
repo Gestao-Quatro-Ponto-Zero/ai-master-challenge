@@ -44,10 +44,10 @@ made by this audit.
 - IT texts have no exact/normalized duplicates or blanks in this audit. This
   does not establish absence of near-duplicates or common source entities.
 
-# Next decisions
+# D02 handoff
 
-D02 must define complementary roles, trustworthy metrics and treatment of label
-conflicts. V00 must reserve evaluation groups before model/prompt/threshold
+[Dataset usage](dataset-usage.md) now defines complementary roles, trustworthy
+metrics and treatment of label conflicts. V00 must reserve evaluation groups before model/prompt/threshold
 selection. No model has been trained or evaluated. Acquisition/audit reproduced
 from a clean temporary directory; this was an automated check, not human review.
 The D01 receipt is `docs/review-evidence/data-audit-current.json`; stale hashes

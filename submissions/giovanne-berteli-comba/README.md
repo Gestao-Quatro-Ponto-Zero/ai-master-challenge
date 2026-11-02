@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: datasets adquiridos e auditados (D01). Protótipo ainda não implementado.**
+**Estado: auditoria e decisão de uso dos datasets concluídas (D01/D02). Protótipo pendente.**
 
 ## Sobre mim
 
@@ -13,16 +13,27 @@
 O projeto irá diagnosticar gargalos de suporte, propor uma automação com limites
 claros de intervenção humana e demonstrá-la em um protótipo. Os dois datasets
 foram adquiridos, versionados e auditados. A auditoria identificou limitações de
-tempo, cobertura e rótulos que orientarão a escolha da solução. O uso conjunto,
-a arquitetura da aplicação e o impacto operacional ainda serão definidos.
+tempo, cobertura e rótulos que orientarão a escolha da solução. A base de atendimento
+será usada no diagnóstico descritivo; a base IT, na avaliação de classificação em
+seu próprio domínio. A arquitetura da aplicação e o impacto operacional seguem pendentes.
 
 ## Solução
 
 ### Abordagem
 
-Auditar os dados antes de definir seu uso conjunto, reproduzir o diagnóstico e
-selecionar uma automação com base nas evidências. O contexto técnico usa uma base
-mínima em OKF v0.2, consultada de forma seletiva pelas ferramentas de IA.
+Usar os datasets de forma complementar, conforme a
+[decisão D02](knowledge/dataset-usage.md):
+
+- **Atendimento:** analisar volume, composição por canal/prioridade/tipo, proporção
+  de não encerrados e satisfação na população que tem notas. São retratos da base,
+  sem comprovar gargalos de duração ou causas da insatisfação.
+- **IT:** avaliar classificação nas oito categorias próprias do arquivo, usando
+  texto como entrada e rótulo como alvo. O resultado desse domínio não será
+  apresentado como desempenho na operação de atendimento.
+
+Não há join entre linhas nem correspondência validada entre taxonomias. O
+diagnóstico e a avaliação serão reproduzidos com populações separadas. O contexto
+técnico usa uma base mínima em OKF v0.2, consultada de forma seletiva pelas IAs.
 
 ### Resultados / Findings
 
@@ -31,16 +42,19 @@ mínima em OKF v0.2, consultada de forma seletiva pelas ferramentas de IA.
 - Não há data de abertura; os campos temporais são timestamps, e 1.365 dos
   2.769 pares encerrados têm a resolução antes da primeira resposta.
 - Satisfação está disponível só nos 2.769 encerrados (32,70% da base).
-- Há descrições repetidas com rótulos conflitantes. O tratamento e os conjuntos
-  de avaliação serão definidos antes de treinar ou ajustar modelos.
+- Há descrições repetidas com rótulos conflitantes. Os registros originais serão
+  preservados e sinalizados; esses rótulos não serão usados como alvo supervisionado
+  do protótipo IT. Os conjuntos de avaliação serão definidos em V00.
 
 Evidências e populações no [relatório de auditoria](docs/data-audit.md). Ainda não
 há diagnóstico operacional final, ganho medido ou resultado de modelo.
 
 ### Recomendações
 
-Não converter os timestamps em duração total ou esforço poupado. Definir em D02
-os papéis dos datasets e as métricas sustentadas pelos dados antes de implementar.
+Seguir o contrato de métricas da D02, expor os denominadores e manter qualquer
+estimativa de horas/custo como cenário com premissas explícitas. Não converter os
+timestamps em duração total ou esforço poupado. Comparar o futuro classificador
+com baselines e reservar o teste final antes de selecionar modelos e limiares.
 
 ### Limitações
 
@@ -63,6 +77,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
 - [Auditoria dos datasets](docs/data-audit.md)
+- [Decisão de uso e contrato de métricas](knowledge/dataset-usage.md)
 - [Como reproduzir a aquisição e a auditoria](data/README.md)
 - [Checagens de consistência e validade das evidências](docs/foundation-controls.md)
 - [Fonte de verdade dos sete ajustes da revisão](docs/architecture-review.md#lista-oficial-para-validação)

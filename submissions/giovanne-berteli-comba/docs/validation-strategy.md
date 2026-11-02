@@ -1,7 +1,8 @@
 # Validation strategy
 
-This is a plan, not a test report. Select tooling after the data audit and stack
-decision. Do not report a planned check as a passing test.
+This is a plan, not a test report. Dataset roles, metric populations and evaluation
+boundaries are owned by [D02](../knowledge/dataset-usage.md). Select tooling after
+the data audit and stack decision. Do not report a planned check as a passing test.
 
 | Layer | Meaningful checks | Evidence |
 | --- | --- | --- |
@@ -16,6 +17,10 @@ decision. Do not report a planned check as a passing test.
 Choose numerical quality targets after inspecting data and defining the
 business cost of errors. A model score is not automatically a calibrated
 probability. Evaluate cross-domain use separately and disclose its limitations.
+The first supervised benchmark uses IT Document/Topic_group only; customer
+Ticket Type labels are not IT targets. No pooled metrics or invented mapping.
+Unlabeled customer-domain probes cannot establish accuracy, F1 or OOD recall.
+Provided processed text does not prove entry-time availability of every word.
 Avoid using resolutions or other outcome information as inputs to entry-time
 triage. Estimate active effort saved separately from elapsed ticket duration.
 

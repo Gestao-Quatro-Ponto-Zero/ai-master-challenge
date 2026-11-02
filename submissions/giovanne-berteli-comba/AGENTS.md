@@ -13,8 +13,10 @@ Scope: this submission directory and its descendants. Read the repository's
 
 ## Execution and evidence
 
-- Challenge 002 is selected. Dataset combination and application architecture
-  remain pending until the data audit. Do not imply either is already decided.
+- Challenge 002 is selected. Dataset roles and measurement/evaluation boundaries
+  are owned by `knowledge/dataset-usage.md` after D02. Application architecture,
+  final automation contract and model-selection protocol remain for S01/V00;
+  do not imply they have already been implemented or validated.
 - Use small tasks with acceptance criteria, checkboxes, and evidence links.
   Mark completion only after the stated criteria have been checked.
 - Preserve decisions, alternatives, rejected suggestions, corrections, and

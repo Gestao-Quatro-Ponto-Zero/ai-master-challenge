@@ -39,7 +39,8 @@ directory and follow the repository's PR naming convention.[^submission-rules]
 # Confirmed project decisions
 
 - The user selected Challenge 002 after discussing alternatives and PR counts.
-- Build the foundation now; decide dataset usage after auditing the files.
+- Audit inputs before selecting their roles; D02 now records complementary use
+  in [dataset usage](dataset-usage.md), following the completed D01 audit.
 - Keep execution tasks in Markdown with evidence-backed checkboxes.
 - Use English for implementation/internal technical documentation and Git;
   Portuguese for reviewer-facing narrative. Preserve original conversation text.
@@ -63,14 +64,15 @@ reproducible aggregate output and the reviewer-facing report. The acquired files
 contain 8,469 customer-support rows and 47,837 IT-classification rows. Temporal
 fields are timestamps without ticket creation time, and many response/resolution
 pairs have inconsistent chronology. Do not treat them as full service durations.
-Dataset usage and application architecture remain undecided.
+Dataset roles and metric/evaluation boundaries are now owned by
+[dataset usage](dataset-usage.md). Application architecture remains undecided.
 
 # Open questions
 
 - Original operational provenance and semantic trustworthiness of text/labels
   beyond the audited files and publisher-declared licensing.
-- How to use the operational and IT-classification datasets together.
-- Validity of any join, taxonomy mapping, or transfer across their domains.
+- Any future operational-domain transfer would require separate representative
+  labels and validation; D02 authorizes no join or taxonomy mapping.
 - Automation choice, application stack, evaluation split, and quality targets.
 - Operational assumptions needed to estimate saved effort and cost.
 

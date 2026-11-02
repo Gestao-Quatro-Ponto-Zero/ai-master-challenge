@@ -3,8 +3,8 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: D01 acquisition and audit completed; dataset-use decision (D02)
-  is next. Consult [audited measurement boundaries](knowledge/data-quality.md).
+- Current phase: D02 completed. Consult [dataset roles and metric/evaluation
+  boundaries](knowledge/dataset-usage.md) before diagnosis or prototype work.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -14,12 +14,12 @@ Updated: 2026-11-02 (America/Sao_Paulo).
 - Data evidence: official version-1 archives acquired, hashes frozen, both schemas
   and quality audited, and audit reproduced from a clean directory. See
   [D01 report](docs/data-audit.md) and [setup](data/README.md).
-- Not performed: data combination, operational diagnosis, prototype implementation,
+- Not performed: operational diagnosis, prototype implementation,
   model training/evaluation, deployment, or PR.
-- Next action: D02 — define each dataset's role, usable operational metrics and
-  label-conflict treatment, with no artificial join or unvalidated taxonomy transfer.
-- Pending decision: explain how each dataset contributes to the solution,
-  including whether any valid join or cross-domain mapping exists.
+- Dataset-use decision: customer support for descriptive diagnosis; IT service
+  for an in-domain classification benchmark. No row join or taxonomy mapping.
+- Next action: R01 — review up to three public Challenge 002 PRs within the
+  20-minute cap recorded in the execution plan; then A01 using D02's metric contract.
 - Proposed automation: assisted triage; confirm or revise after the audit.
 - No application stack or automation performance target has been selected.
 - The [official review table](docs/architecture-review.md#lista-oficial-para-validação)

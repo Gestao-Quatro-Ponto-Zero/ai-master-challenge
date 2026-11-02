@@ -171,3 +171,31 @@ or model evaluations have been run. No commit, push, or PR was made.
   source and missing-data checks; no workbook authoring was requested or performed.
 - Registered intent-to-add for the explicit 13-file public artifact/code list
   through an approved elevated Git operation; content remains unstaged.
+
+## 2026-11-02 — D02 dataset usage decision
+
+- Resumed from user-created commit `26dc6d3` with a clean working tree; both
+  receipts passed before reusing D01 evidence. Read only relevant operational
+  documents for the decision, then accessed chats for evidence capture.
+- Defined complementary roles: customer-support descriptive diagnosis and
+  in-domain IT classification benchmark. Rejected row joins, invented taxonomy
+  mappings, pooled performance and using unvalidated Resolution as an answer base.
+- Preserved conflicting customer labels for descriptive records; excluded them
+  as IT supervised targets. Defined metric populations and interpretation limits,
+  scenario-only effort estimates and separate domain/evaluation boundaries.
+- Documented that processed IT text does not prove entry-time availability;
+  an unlabeled cross-domain probe cannot establish accuracy or OOD recall.
+- Updated operational owners and the official F01–F07 table. D02 is complete;
+  S01/V00 still own stack, automation contract, splits, quality targets and limits.
+- Declared R01's sample/effort cap before browsing: three public eligible PRs or
+  20 minutes, then A01. No PR research or model work was performed in this step.
+- All 19 existing tests passed; saved output in dataset-usage-tests.txt. Regenerated
+  D01 audit with verified inputs and confirmed identical bytes; revalidated
+  dependent receipts. No new narrative-mirroring tests or application code added.
+- Added narrative 07 and capture 11 (eight new messages after ID deduplication;
+  four turns returned, hasMore=true). Current final response remains a capture gap.
+- Final checks: both receipts passed (14 operational Markdown documents, 78 local
+  file-link checks); broader document/source sweep resolved 141 local destinations.
+  Whitespace and all 19 diff paths are valid and within the submission. Registered
+  intent-to-add for the four new reviewed files via an approved elevated operation;
+  no content staged, raw data included, commit or publication performed.
