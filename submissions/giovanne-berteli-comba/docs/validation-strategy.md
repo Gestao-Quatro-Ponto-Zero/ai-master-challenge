@@ -1,8 +1,10 @@
 # Validation strategy
 
 This is a plan, not a test report. Dataset roles, metric populations and evaluation
-boundaries are owned by [D02](../knowledge/dataset-usage.md). Select tooling after
-the data audit and stack decision. Do not report a planned check as a passing test.
+boundaries are owned by [D02](../knowledge/dataset-usage.md). The selected stack,
+runtime/anomaly contracts and acceptance cases are owned by
+[S01](../knowledge/solution-scope.md). V00 freezes numerical criteria and selection
+procedures before implementation. Do not report a planned check as a passing test.
 
 | Layer | Meaningful checks | Evidence |
 | --- | --- | --- |
@@ -44,6 +46,15 @@ values; do not silently discard outliers or convert a review decision into train
 data. Test recording plus retrieval/filtering end to end. Measure false alerts and
 review workload alongside automation errors and coverage. Any handoff action must
 follow an explicit rule; an anomaly flag alone does not define that action.
+
+S01 now supplies that explicit policy and the required I01/V01 fixtures. Verify
+normal suggestion, invalid/oversized input, unsupported context, missing/stale
+artifacts, zero known features, timeout, invalid/nonfinite output and failed writes.
+Verify high/low/equal-bound/constant-reference/insufficient-reference metric cases,
+atomic run+metric persistence, idempotent delivery/reloads, combined filters and
+append-only review revisions preserving original predictions/values. All suggested
+categories still require confirmation; coverage is not autonomous resolution.
+Automated fixture reviewers must be identified as tests, not human adjudication.
 
 For F05/F07, acquire data with a versioned manifest and hashes, validate time units
 and report relevant populations, missing satisfaction responses and open tickets.

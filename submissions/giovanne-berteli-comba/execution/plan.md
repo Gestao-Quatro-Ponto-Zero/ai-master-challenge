@@ -14,7 +14,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | D02 | Dataset usage decision | Explain each dataset's role, limits, any valid mapping, and evaluation boundaries | [Authoritative decision and metric contract](../knowledge/dataset-usage.md) |
 | R01 | Focused PR review | Declare sample and effort cap before browsing; identify repeated approaches and evidence gaps with links within that cap (F06) | [Research](../docs/pr-review.md) and [selection/source snapshot](../docs/review-evidence/pr-review-snapshot.json); no private baseline inspected |
 | A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | [Diagnosis](../docs/operational-diagnosis.md), [computed metrics](../data/diagnosis.json), [all segments](../data/diagnosis-segments.csv) and [assumptions](../data/diagnosis-assumptions.json) |
-| S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | Future solution decision and scope record |
+| S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | [Authoritative contract](../knowledge/solution-scope.md) and [reviewer proposal/flow](../docs/automation-proposal.md) |
 | V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | Future versioned protocol following `docs/validation-strategy.md` |
 | I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | Future `solution/` implementation |
 | V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | Future test/evaluation outputs |
@@ -28,7 +28,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] D02 — Decide complementary dataset usage. Evidence: [roles, limits and evaluation boundaries](../knowledge/dataset-usage.md).
 - [x] R01 — Review a bounded sample of Challenge 002 PRs. Evidence: [three confirmed PRs and implications](../docs/pr-review.md).
 - [x] A01 — Complete the operational diagnosis. Evidence: [findings, scenarios and limits](../docs/operational-diagnosis.md).
-- [ ] S01 — Define one automation and its human intervention rules.
+- [x] S01 — Define one automation and its human intervention rules. Evidence: [scope, flow and acceptance](../knowledge/solution-scope.md).
 - [ ] V00 — Record the evaluation protocol before prototype implementation.
 - [ ] I01 — Build the functional prototype.
 - [ ] V01 — Run and document software tests and AI evaluation.
@@ -41,6 +41,11 @@ B02 records completion of the review, not implementation of its adjustments.
 Keep review decisions and adjustment state in that table only. V00 must precede
 I01; V01 evaluates the implemented version. Process logs are recruitment evidence,
 excluded from normal execution context; keep current decisions in operational owners.
+
+S01 selects the stack and operational contract, not a trained model. V00 freezes
+candidate/split/selection/acceptance procedures and exact tested environment before
+I01; I01 computes model and gate/reference parameters from development/validation
+only. V01 evaluates the selected frozen version on reserved test data.
 
 The planned data sequence is D01 followed by D02. PR review may inform differentiation but cannot
 substitute for understanding the datasets. See [backlog](backlog.md) for optional

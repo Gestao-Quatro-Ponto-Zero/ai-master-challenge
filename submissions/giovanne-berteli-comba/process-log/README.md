@@ -21,6 +21,7 @@ documentos operacionais, e este diretório está fora do contexto padrão dos ch
 - [Decisão de uso dos datasets](07-dataset-usage.md)
 - [Pesquisa de três PRs do Challenge 002](08-pr-review.md)
 - [Diagnóstico operacional e cenários de esforço](09-operational-diagnosis.md)
+- [Escopo e contrato da triagem assistida](10-automation-scope.md)
 - [Modelo para próximos registros](entry-template.md)
 
 ## Conversas preservadas
@@ -42,11 +43,12 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 | [Decisão de uso D02](chat-exports/11-dataset-usage-chat.md) | Defina e avance o próximo passo | 8 mensagens adicionais de quatro turnos, incluindo o final da D01, o nome do commit e o turno D02 em andamento; hasMore=true |
 | [Pesquisa de PRs 002 — R01](chat-exports/12-pr-review-chat.md) | Defina e avance o próximo passo | 7 mensagens adicionais, incluindo o final da D02, seu nome de commit e o turno R01 em andamento; hasMore=true |
 | [Diagnóstico operacional — A01](chat-exports/13-operational-diagnosis-chat.md) | Defina e avance o próximo passo | 8 mensagens adicionais, incluindo o final da R01, seu nome de commit e o turno A01 em andamento; hasMore=true |
+| [Escopo da automação — S01](chat-exports/14-automation-scope-chat.md) | Defina e avance o próximo passo | 8 mensagens adicionais de quatro turnos, incluindo o final da A01, seu nome de commit e o turno S01 em andamento; hasMore=true |
 
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
 paginação e as lacunas de cada leitura estão declaradas no respectivo arquivo;
-as capturas 08, 10, 11, 12 e 13 retornaram `hasMore=true`. Essas extrações não comprovam
+as capturas 08, 10, 11, 12, 13 e 14 retornaram `hasMore=true`. Essas extrações não comprovam
 a completude do histórico nem a existência de todas as versões, ramificações
 ou mensagens removidas.
 O texto preserva o idioma e as palavras originais; espaços no fim das linhas
@@ -62,8 +64,8 @@ staging e mensagens posteriores à captura ficam pendentes para a próxima extra
 O suplemento da captura 09 inclui a resposta final da implementação dos controles;
 a captura 10 inclui o final da revisão antes do commit. O final do turno D01
 foi incluído na captura 11. O final do turno D02 foi incluído na captura 12;
-o final do turno R01 foi incluído na captura 13. O final do turno A01 permanece
-pendente para a próxima extração.
+o final do turno R01 foi incluído na captura 13. O final do turno A01 foi incluído
+na captura 14. O final do turno S01 permanece pendente para a próxima extração.
 As mensagens ficaram abaixo do limite
 de 20 mil caracteres por item. Anexos, gráficos, resultados de ferramentas e
 instruções internas não fazem parte destas extrações. Não há export de Claude

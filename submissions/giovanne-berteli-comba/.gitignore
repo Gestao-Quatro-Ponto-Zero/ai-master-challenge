@@ -12,3 +12,7 @@ node_modules/
 # Downloaded or transformed data stays local until publication is reviewed
 data/raw/
 data/processed/
+
+# Future local triage records, original input text, and owned model artifacts
+data/runtime/
+data/models/

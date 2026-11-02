@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: diagnóstico A01 concluído. Escopo da automação e protótipo são as próximas etapas.**
+**Estado: S01 definida. Protocolo de avaliação V00 é a próxima etapa; protótipo pendente.**
 
 ## Sobre mim
 
@@ -18,7 +18,8 @@ referência simula 29,75 h/mês, enquanto um cenário desfavorável perde 26,67 
 
 Os dois datasets foram versionados e auditados. A base de atendimento sustenta
 essas descrições e hipóteses; a base IT será usada na avaliação de classificação
-em seu próprio domínio. O contrato da automação, o protótipo e qualquer impacto
+em seu próprio domínio. A automação escolhida sugere categorias IT e prepara uma
+fila de revisão humana com anomalias filtráveis. O protótipo e qualquer impacto
 operacional medido continuam pendentes.
 
 ## Solução
@@ -38,6 +39,19 @@ Usar os datasets de forma complementar, conforme a
 Não há join entre linhas nem correspondência validada entre taxonomias. O
 diagnóstico e a avaliação serão reproduzidos com populações separadas. O contexto
 técnico usa uma base mínima em OKF v0.2, consultada de forma seletiva pelas IAs.
+
+### Automação selecionada
+
+[Triagem IT assistida](docs/automation-proposal.md), com texto como entrada e
+categoria/destino/motivo como sugestão. Toda decisão exige confirmação humana;
+score baixo, contexto desconhecido, anomalias, referência insuficiente e falhas
+têm encaminhamento explícito. As anomalias altas/baixas guardam valor e referência,
+permitem filtros e têm revisão independente do rótulo sugerido.
+
+A interface será local, com Triagem e Revisão/anomalias, em Python, scikit-learn,
+Streamlit e SQLite. Não haverá envio ao cliente nem mudança em sistemas externos.
+O fluxo, os contratos e os limites estão na proposta; a implementação só começa
+após a V00 congelar o protocolo de avaliação.
 
 ### Resultados / Findings
 
@@ -59,8 +73,8 @@ resultado de modelo.
 
 Conferir status/prioridades e os registros Open sem resposta preenchida com o
 responsável pela operação; instrumentar eventos e esforço antes de alegar SLA ou
-economia. Não eleger um canal como causa de atraso com esses dados. Em S01,
-delimitar uma triagem assistida; em V00, reservar o teste e definir comparação
+economia. Não eleger um canal como causa de atraso com esses dados. Em V00,
+reservar o teste e definir comparação
 com baselines antes de escolher modelos e limiares.
 
 ### Limitações
@@ -85,6 +99,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Estratégia de validação](docs/validation-strategy.md)
 - [Auditoria dos datasets](docs/data-audit.md)
 - [Diagnóstico operacional e cenários de esforço](docs/operational-diagnosis.md)
+- [Proposta de automação e fluxo](docs/automation-proposal.md)
 - [Decisão de uso e contrato de métricas](knowledge/dataset-usage.md)
 - [Pesquisa de três PRs do mesmo desafio](docs/pr-review.md)
 - [Como reproduzir a aquisição e a auditoria](data/README.md)

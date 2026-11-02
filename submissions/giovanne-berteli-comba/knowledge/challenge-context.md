@@ -65,7 +65,8 @@ contain 8,469 customer-support rows and 47,837 IT-classification rows. Temporal
 fields are timestamps without ticket creation time, and many response/resolution
 pairs have inconsistent chronology. Do not treat them as full service durations.
 Dataset roles and metric/evaluation boundaries are now owned by
-[dataset usage](dataset-usage.md). Application architecture remains undecided.
+[dataset usage](dataset-usage.md). Selected architecture and automation scope are
+owned by the [S01 contract](solution-scope.md); implementation remains pending.
 
 # Open questions
 
@@ -73,7 +74,8 @@ Dataset roles and metric/evaluation boundaries are now owned by
   beyond the audited files and publisher-declared licensing.
 - Any future operational-domain transfer would require separate representative
   labels and validation; D02 authorizes no join or taxonomy mapping.
-- Automation choice, application stack, evaluation split, and quality targets.
+- Exact dependency versions, evaluation membership/selection protocol and numerical
+  quality targets; S01 has selected the architecture and operational contract.
 - Operational assumptions needed to estimate saved effort and cost.
 
 # Analytical constraints

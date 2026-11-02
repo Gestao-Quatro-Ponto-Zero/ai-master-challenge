@@ -16,6 +16,8 @@ okf_version: "0.2"
   inspected evidence and implications; consult for differentiation, not data truth.
 - [Operational findings](operational-findings.md) — A01 measured populations,
   exploratory satisfaction comparisons and assumed scenarios for S01.
+- [Solution contract](solution-scope.md) — S01 stack, triage/failure flow, output,
+  anomaly reference/persistence/review contracts and acceptance for V00/I01/V01.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

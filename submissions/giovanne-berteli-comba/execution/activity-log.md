@@ -263,3 +263,32 @@ or model evaluations have been run. No commit, push, or PR was made.
   seven/nine partition/count reconciliations and clean whitespace. All 24 diff
   paths are in the submission; 12 reviewed new files have intent-to-add only.
   Raw files/caches remain excluded and no content is staged for commit.
+
+## 2026-11-02 — S01 assisted-triage scope and contracts
+
+- Resumed from user-created commit `b1ba3b6` with a clean working tree and three
+  current receipts. Chose one local assisted IT category/review workflow under
+  D02's separate populations and A01's measurement limits.
+- Specified input/output, deterministic handoff precedence, mandatory human
+  confirmation, readiness/timeout/failure behavior and no external actions.
+- Selected Python/scikit-learn/Streamlit/SQLite at design level, consulting official
+  Pipeline, UI/state, installation and SQLite documentation. Exact installed/tested
+  versions remain V00 work; no provider, model or dependency was installed.
+- Defined high/low/ordinary/not-evaluated numerical states, compatible frozen
+  quantile references, original-value preservation, atomic persistence, append-only
+  reviews, combined filters and workload/quality measures. Numeric operating limits
+  are design conventions, not measured performance or a real business approval.
+- Clarified deferred anomaly state and unsupported-context handoff without forcing
+  an IT label. A failed patch match was corrected without partial application.
+- Updated operational owners, plan, official F02/F03 state and Portuguese proposal
+  with an explicit flow. Added ignore paths for future local runtime/model records.
+- All 29 existing tests passed; no tests mirroring prose or tests of nonexistent
+  triage code added. Regenerated D01/A01 outputs remained byte-identical. Recorded
+  review scope/primary sources and revalidated dependent receipts.
+- Prepared narrative 10 and capture 14 (eight additional messages, four returned
+  turns, hasMore=true); current final response remains pending. S01 is defined;
+  V00 precedes I01. No model fit, app/database, deployment, commit or publication.
+- Final local checks: 210 documentation destinations resolved, three current
+  receipts (16 operational documents / 113 file links), clean whitespace and all
+  22 diff paths inside the submission. Five reviewed new files have intent-to-add
+  through an approved elevated Git operation; content remains unstaged.

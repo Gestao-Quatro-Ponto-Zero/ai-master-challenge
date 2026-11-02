@@ -45,6 +45,6 @@ All case volumes, eligibility, assistance, minutes, review/rework and valuation
 inputs are assumptions, not inferred customer-domain performance or measured
 financial ROI. No IT error/coverage rate was used in those scenarios.
 
-S01 should now specify one useful assisted-triage flow, human exceptions,
-high/low anomaly records/filters and measurable success criteria. V00 still
+The [S01 contract](solution-scope.md) now specifies assisted triage, human
+exceptions, high/low anomaly records/filters and success measures. V00 still
 precedes model selection and I01. No model or automation was evaluated in A01.

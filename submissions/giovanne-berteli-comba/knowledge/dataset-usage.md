@@ -26,7 +26,8 @@ the D01 audit remains the evidence for the input limitations.
 Use the datasets as complementary evidence for assisted triage, with separate
 populations and taxonomies. Do not join their rows, pool their labels, or infer
 that an IT benchmark demonstrates performance in the customer-support operation.
-Application stack, final automation contract and quality targets remain for S01/V00.
+The [S01 contract](solution-scope.md) now owns the selected stack and operational
+scope. Numerical quality criteria and selection procedures remain for V00.
 
 # Roles and data contracts
 
@@ -132,11 +133,12 @@ savings require a representative operational pilot with active-effort measuremen
 
 # Completion and handoff
 
-D02 completes the roles, mapping decision, label-conflict policy and evaluation/
-metric boundaries. It does not complete A01, S01, V00 or I01. Implementation and
-numerical acceptance targets remain pending; no split or model has been created.
+D02 completes dataset roles, mapping decisions and metric/evaluation boundaries;
+later A01 and S01 have their own evidence. Implementation and numerical acceptance
+targets remain pending; no split or model has been created.
 
 R01 and A01 are complete; see the [bounded PR research](../docs/pr-review.md) and
-[operational findings](operational-findings.md). S01 is next.
+[operational findings](operational-findings.md). S01 is defined in the
+[solution contract](solution-scope.md); V00 is next.
 Research can inform differentiation but cannot override these data limitations
 or replace validation. Published metrics from other tasks are not our targets.

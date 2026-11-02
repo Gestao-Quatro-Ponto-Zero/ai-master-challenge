@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-02T19:58:36.557210+00:00",
+  "scope": "S01 design/document consistency and unchanged analytical software; no triage implementation or AI evaluation",
+  "existing_regression_tests": {
+    "command": "python3 -I -m unittest discover -s tests -v",
+    "passed": 29,
+    "limits": "Existing data/diagnosis/foundation tests, not tests of the unimplemented S01 flow"
+  },
+  "regenerated_unchanged_outputs_sha256": {
+    "data/audit.json": "fd9319894962f9117f5a7d35c536f9cf197869647365f90704203fd1b1a5868f",
+    "data/diagnosis.json": "8a4db7484b8c4048e1dc4bf7e914fa79db3941e301722d13263405f997e663b4",
+    "data/diagnosis-segments.csv": "3a8a0e696170db021879df4143f2bdc56ae351d535da8c2a592e873e72cb12e1"
+  },
+  "primary_docs_inspected": [
+    "https://scikit-learn.org/stable/modules/compose.html",
+    "https://scikit-learn.org/stable/install.html",
+    "https://docs.streamlit.io/develop/api-reference/data/st.dataframe",
+    "https://docs.streamlit.io/develop/concepts/architecture/session-state",
+    "https://docs.streamlit.io/get-started/installation/command-line",
+    "https://docs.python.org/3.12/library/sqlite3.html"
+  ],
+  "design_review_coverage": [
+    "one assisted category flow and explicit exclusions",
+    "typed input/output and deterministic handoff precedence",
+    "high/low/ordinary/insufficient-reference distinctions",
+    "immutable run and original values with append-only reviews",
+    "AND filters and nonduplicated run/case denominators",
+    "stack selection with dependency installation still pending",
+    "V00-before-I01 and no quality/production claims"
+  ],
+  "not_performed": [
+    "Third-party dependency installation",
+    "Model training/selection",
+    "Triage/UI/SQLite implementation",
+    "Runtime/anomaly/latency validation",
+    "Human approval of the detailed S01 design"
+  ],
+  "local_document_links": {
+    "checked": 210,
+    "missing": [],
+    "limits": "Remote source links inspected separately; historical chat links excluded"
+  }
+}

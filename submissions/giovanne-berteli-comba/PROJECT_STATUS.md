@@ -3,8 +3,8 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: A01 diagnosis completed with reproducible segment comparisons
-  and hypothetical effort scenarios. See [findings](knowledge/operational-findings.md).
+- Current phase: S01 scope and contracts completed. See [solution contract](knowledge/solution-scope.md)
+  and [Portuguese proposal/flow](docs/automation-proposal.md). Implementation is pending.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -18,10 +18,13 @@ Updated: 2026-11-02 (America/Sao_Paulo).
   model training/evaluation, deployment, or PR.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: S01 — define one assisted-triage flow, human handoff/failure rules,
-  persisted/filterable high/low anomalies and success measures, then V00 before I01.
-- Proposed automation: assisted triage; final contract and stack remain for S01.
-- No application stack or automation performance target has been selected.
+- Next action: V00 — freeze IT split/group membership, input limitations, candidate
+  budget, error costs, selection/acceptance criteria and reference-tail procedure;
+  prepare exact tested dependencies without fitting a model. Then I01.
+- Selected design: local assisted IT category triage with mandatory confirmation,
+  failure handoff and persisted/filterable high/low anomalies. No external actions.
+- Selected stack: Python 3.12, scikit-learn, Streamlit, SQLite. Exact dependencies,
+  numerical model targets and selection rules are pending V00; no quality claim.
 - The [official review table](docs/architecture-review.md#lista-oficial-para-validação)
   is the sole record of F01–F07 review decisions and adjustment state. Current
   working context comes from instructions, this handoff, the plan and relevant
