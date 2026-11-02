@@ -3,6 +3,7 @@ type: Challenge Context
 title: Support redesign requirements and decisions
 description: Requirements, confirmed choices, and unresolved questions for Challenge 002.
 status: draft
+challenge_id: "002"
 generated:
   by: codex/gpt-6.1-sol
   at: 2026-11-02T16:52:06Z

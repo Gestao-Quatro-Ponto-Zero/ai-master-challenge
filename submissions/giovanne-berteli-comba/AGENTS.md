@@ -53,6 +53,12 @@ Scope: this submission directory and its descendants. Read the repository's
 - Link analytical claims to data versions, scripts, outputs, and assumptions.
 - Record OKF `verified` metadata only after an actual verification. Never infer
   human review from an agent's own review.
+- Before reusing foundation evidence, run `python3 -I scripts/check_foundation.py`.
+  Resolve conflicts in their operational owners. Changed inputs invalidate the
+  dependent receipt; rerun affected checks/tests before explicitly recording a
+  new version. See `docs/foundation-controls.md` for scope and commands. Register
+  data, code, rules, model/configuration and outputs in future result receipts;
+  never refresh a receipt as a substitute for regenerating a stale result.
 
 ## Git and scope
 

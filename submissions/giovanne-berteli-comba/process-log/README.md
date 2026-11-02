@@ -16,6 +16,7 @@ documentos operacionais, e este diretório está fora do contexto padrão dos ch
 - [Revisão adversarial da arquitetura inicial](02-architecture-review.md)
 - [Fonte de verdade para validar a revisão](03-review-source-of-truth.md)
 - [Aprovação e complementos F03/F06](04-approved-review-scope.md)
+- [Controles da fundação após o primeiro commit](05-foundation-controls.md)
 - [Modelo para próximos registros](entry-template.md)
 
 ## Conversas preservadas
@@ -32,10 +33,12 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 | [Complemento e validação da revisão](chat-exports/06-review-validation-chat.md) | Avalie a arquitetura inicial | 4 mensagens adicionais de dois turnos, incluindo a resposta final anterior e o pedido de fonte única |
 | [Aprovação e complementos F03/F06](chat-exports/07-review-approval-chat.md) | Avalie a arquitetura inicial | 4 mensagens adicionais, incluindo a aprovação do usuário e a resposta final do turno anterior |
 | [Revisão e preparação no Git](chat-exports/08-git-staging-chat.md) | Avalie a arquitetura inicial | 4 mensagens adicionais, incluindo a resposta final anterior e o pedido de revisão e staging |
+| [Controles da fundação](chat-exports/09-foundation-controls-chat.md) | Defina e avance o próximo passo | 7 mensagens de dois turnos, incluindo resposta final da implementação e revisão antes do commit; resposta final da revisão pendente |
 
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
-ferramenta indicou não haver outra página em cada leitura. Isso não comprova
+paginação e as lacunas de cada leitura estão declaradas no respectivo arquivo;
+a captura 08 retornou `hasMore=true`. Isso não comprova
 a existência de todas as versões, ramificações ou mensagens removidas.
 O texto preserva o idioma e as palavras originais; espaços no fim das linhas
 e linhas extras no fim dos arquivos foram normalizados para Markdown/Git.

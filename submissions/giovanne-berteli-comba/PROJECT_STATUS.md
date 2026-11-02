@@ -3,20 +3,19 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: approved review scope incorporated into working rules and plan;
-  technical controls and data audit remain to be executed.
+- Current phase: foundation controls implemented and checked; ready for data
+  acquisition and audit (D01).
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
   validation strategy, process-log policy and conversation snapshots; adversarial
-  foundation review with a controlled mutation and recorded evidence.
-- Latest housekeeping: documentation and evidence reviewed for the user's
-  requested Git staging; implementation readiness is still governed by the plan.
+  foundation review, reproducible consistency checks, input-hash invalidation and
+  regression probes. See [controls and scope](docs/foundation-controls.md).
 - Not performed: dataset download or audit, data combination, operational
   analysis, prototype implementation, model evaluation, deployment, or PR.
-- Next action: finish the foundation consistency/revalidation controls before
-  the planned D01/D02 data work. Consult the official review table for adjustment
-  state and the execution plan for acceptance criteria and dependencies.
+- Next action: D01 — acquire both datasets from the brief, record source/version/
+  hashes and audit schemas, units, missingness, duplicates and metric coverage.
+  Then execute D02 before selecting the application architecture.
 - Pending decision: explain how each dataset contributes to the solution,
   including whether any valid join or cross-domain mapping exists.
 - Proposed automation: assisted triage; confirm or revise after the audit.

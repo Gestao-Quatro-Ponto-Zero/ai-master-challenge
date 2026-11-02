@@ -102,3 +102,40 @@ or model evaluations have been run. No commit, push, or PR was made.
   generated runtime directory or file outside this submission is in the manifest.
 - Application testing does not apply to these documentation-only files. No
   commit or push was requested or performed.
+
+## 2026-11-02 — Foundation controls after the initial commit
+
+- Resumed from `cab8373` on the existing submission branch. The user's request
+  authorized executing the next step. Operational owners identified foundation
+  controls as the prerequisite to D01/D02; added B03 with explicit acceptance.
+- Added a Python 3.12 standard-library check for challenge consistency, minimum
+  OKF metadata, local file links, official review IDs and evaluation-task ordering.
+  Registered input hashes invalidate evidence when content or membership changes.
+  Manual recording is explicit and does not substitute for substantive revalidation.
+- Added 11 isolated regression probes and saved their executed output. Data/model
+  fixtures test invalidation only; no challenge data or AI quality was evaluated.
+- Verified explicit instruction discovery from the repository root and CLI
+  execution from an unrelated directory in isolated Python mode. No multi-agent
+  benchmark or other-tool resumption was claimed. Initial broad commit output
+  included archive content; subsequent execution retrieval was narrowed.
+- Updated the official review table, current status, plan and operational rules.
+  Prepared narrative entry 05 and capture 09 (four accessible messages). The final
+  response and later messages remain a declared capture gap.
+- Data acquisition/audit is next. No dataset, application stack, model target,
+  commit, push, deployment or PR was introduced in this increment.
+- Final checks passed: 11 regression tests, 12 operational Markdown documents,
+  47 local file-link destinations, current input hashes and Git whitespace.
+- Registered intent-to-add for the seven reviewed new files with an explicit
+  `git add -N -f` list so they appear in the diff despite the root ignore rule.
+  The sandbox's read-only Git index required an approved elevated retry. No
+  file content was staged and the preexisting branch/commit were preserved.
+
+## 2026-11-02 — Pre-commit readiness review
+
+- Inspected the complete change scope, implementation, tests and documented
+  limits. Current contracts/hashes and `git diff --check` passed; no code changed.
+- Added the available three-message capture supplement and updated coverage.
+  The current final response remains pending. No additional application/data
+  task is required for this foundation-controls commit.
+- The Git index contains only intent-to-add entries for new files; staging the
+  reviewed content is still needed before committing. No commit was performed.

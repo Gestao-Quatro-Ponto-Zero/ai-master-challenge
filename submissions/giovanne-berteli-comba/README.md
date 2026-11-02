@@ -51,6 +51,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Plano com critérios de aceite](execution/plan.md)
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
+- [Checagens de consistência e validade das evidências](docs/foundation-controls.md)
 - [Fonte de verdade dos sete ajustes da revisão](docs/architecture-review.md#lista-oficial-para-validação)
 - [Backlog](execution/backlog.md)
 
@@ -70,6 +71,16 @@ depois consulte somente os documentos necessários à tarefa. Se a ferramenta
 permanecer na raiz, indique explicitamente a leitura de
 `submissions/giovanne-berteli-comba/AGENTS.md`. A busca padrão na raiz pode omitir
 esta pasta por causa do `.gitignore`.
+
+Para verificar a base e os hashes de suas entradas, execute na pasta da submissão:
+
+```bash
+python3 -I -m unittest discover -s tests -v
+python3 -I scripts/check_foundation.py
+```
+
+Esses comandos validam a fundação; a aplicação e os dados ainda serão implementados
+e auditados. Consulte o escopo e o procedimento de revalidação no link acima.
 
 O process log e os exports de chats são evidências para a equipe de recrutamento.
 As regras de trabalho os excluem do contexto padrão das sessões, inclusive na

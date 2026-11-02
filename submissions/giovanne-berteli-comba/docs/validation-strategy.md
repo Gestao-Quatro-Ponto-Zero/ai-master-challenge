@@ -46,4 +46,6 @@ Distinguish elapsed time, active effort, and assumed versus measured savings.
 
 Start with saved test and evaluation reports. Add a dashboard only if it makes
 repeated analysis or simulations materially easier. The foundation itself needs
-document/link/frontmatter checks rather than application unit tests.
+document/link/frontmatter checks and regression probes for its consistency and
+receipt-invalidation rules, rather than application tests. See the
+[foundation controls](foundation-controls.md) for runnable commands and limits.

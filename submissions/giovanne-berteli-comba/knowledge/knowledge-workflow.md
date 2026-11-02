@@ -51,6 +51,13 @@ conflict, expose the uncertainty instead of choosing silently. A changed input,
 rule or model requires rechecking dependent evidence before reusing it as current.
 Historical receipts remain records of their original version, not current proof.
 
+The `challenge_id` field in `challenge-context.md` owns the selected challenge;
+explicit selections in instructions and summaries must agree with it. The
+[foundation check](../docs/foundation-controls.md) verifies this contract and
+invalidates receipts when registered inputs change. Add explicit dependencies to
+each future data/model result receipt; regenerate affected results before recording
+new hashes. Hash agreement does not replace substantive validation or human review.
+
 # Recruitment evidence boundary
 
 The user designated process logs and conversation exports as evidence for the
