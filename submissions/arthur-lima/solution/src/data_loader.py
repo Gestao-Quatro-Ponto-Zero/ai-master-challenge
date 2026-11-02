@@ -6,7 +6,8 @@ Data Loader, Schema Sanitizer & Point-in-Time Feature Builder.
 2. Typo in accounts.csv sector ('technolgy' -> 'technology').
 3. Closing-time schema artifact in `account`: 100% of closed deals (4,238 Won + 2,473 Lost)
    have `account` populated, whereas 68.5% of Engaging (1,088/1,589) and 67.4% of Prospecting
-   (337/500) lack `account`. Missing `account` is therefore tracked strictly as a CRM hygiene
+   (337/500) lack `account`. This pattern is consistent with closing-related updates, but update times are unavailable.
+   Missing `account` is tracked strictly as a CRM hygiene
    task and excluded from historical win-probability estimation to avoid snapshot leakage.
 4. Regional funnel asymmetry: 100% of the 500 `Prospecting` deals belong to the Central office;
    East and West offices log 0 `Prospecting` deals and accumulate unclosed deals in `Engaging`.
@@ -171,6 +172,9 @@ def build_enriched_pipeline(
         .merge(accounts, on="account", how="left")
     )
 
+    # H2 — Decisão de Arthur após revisão com agentes (PROCESS_LOG.md, mapa H1–H5):
+    # tratar conta ausente como tarefa cadastral, sem penalizar P(Win). O export
+    # não registra quando a conta foi vinculada; preenchimento final não prova fit.
     # CRM Hygiene flags (kept strictly separate from statistical win probability!)
     df["has_account"] = df["account"].notnull() & (
         df["account"].astype(str).str.strip() != ""

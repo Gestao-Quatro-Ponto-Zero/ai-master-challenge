@@ -2,6 +2,8 @@
 
 ## 1. Avaliação Operacional Primária — Fila Aberta Completa no Corte (Horizonte +90 Dias, Sem Censura)
 
+> **Cortes móveis:** As janelas de 90 dias se sobrepõem e oportunidades podem reaparecer. Não são replicações independentes; não somar suas receitas como receita única.
+
 > **Pergunta avaliada:** *Diante de todas as oportunidades abertas em `Engaging` na data de corte (sem filtrar pelo futuro e sem usar `account`), quais priorizar hoje para maximizar a receita fechada (`Won`) nos próximos 90 dias?*
 
 **Corte `2017-07-31` — Fila Aberta Completa (`N = 2,257`, Horizonte +90d, Taxa Base = 31.5%, Receita Total 90d = US$ 1,719,442)**
@@ -41,9 +43,9 @@
 *Seleção Intra-Vendedor (Top 20% dentro da carteira de cada rep em `2017-09-30`):* **EV_90d** captura **US$ 701,740 (57.5%)** vs Preço Nominal US$ 546,305 (44.8%) e Frescor US$ 551,774 (45.2%).
 
 
-## 2. Diagnóstico de Limite Estrutural — Subpopulação Condicional Resolvida (`Won` vs `Lost`)
+## 2. Diagnóstico das Estratégias Avaliadas — Subpopulação Condicional Resolvida (`Won` vs `Lost`)
 
-> **Limitação demonstrada:** Quando removemos post-hoc os 716 negócios que permaneceram abertos sem fechar e avaliamos apenas os 970 resolvidos (`Won` vs `Lost`), todos os preditores estáticos do CRM ficam próximos do acaso (AUC ~0,49–0,51). Ou seja: o ganho empírico do motor vem de separar oportunidades vivas do backlog estagnado e ponderá-las pelo ticket mediano — não de prever quem ganha uma negociação ativa sem telemetria de interações.
+> **Limitação observada:** No diagnóstico condicional dos 970 negócios resolvidos, excluindo post-hoc os 716 ainda abertos, as estratégias avaliadas ficam próximas do acaso (AUC ~0,49–0,51). Isso não estabelece um teto para outros modelos nem comprova abandono. A vantagem observada na fila completa é compatível com triagem por idade ponderada pelo ticket; impacto causal exige teste em campo.
 
 **Diagnóstico Condicional — Subpopulação Resolvida em `2017-06-30` (`N = 970` resolvidos; `716` não-fechados removidos)**
 

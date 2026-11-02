@@ -77,10 +77,14 @@ def test_schema_anomalies_and_regional_funnel_audit(loaded_pipeline):
 # --- 2. True Mutation-Based Anti-Leakage & Snapshot-Leakage Guard Tests ---
 
 
+# H4 — Auditores detectaram a fragilidade do teste inicial; Arthur incorporou a
+# exigência de testes comportamentais. O agente implementou a mutação abaixo.
+# Critério: corromper o futuro não pode alterar a previsão no passado.
+# Atribuição e iterações: PROCESS_LOG.md, mapa H1–H5.
 def test_mutating_future_outcomes_never_changes_past_predictions():
     """
     Corrupts ALL post-cutoff outcomes (flipping Won <-> Lost, multiplying close_value by 100x,
-    and injecting synthetic future deals) and asserts bit-for-bit identical predictions at cutoff.
+    and injecting synthetic future deals) and asserts invariant within absolute tolerance 1e-12 predictions at cutoff.
     """
     t_cut = pd.Timestamp("2017-08-31")
     raw_clean = load_raw_tables()
@@ -113,6 +117,10 @@ def test_mutating_future_outcomes_never_changes_past_predictions():
     sabotaged_pip.loc[future_close_mask, "close_value"] = (
         sabotaged_pip.loc[future_close_mask, "close_value"].fillna(500.0) * 100.0
     )
+
+    # Move future event dates while keeping every event strictly after the cutoff.
+    # Neither the age at cutoff nor completed training horizons may change.
+    sabotaged_pip.loc[future_close_mask, "close_date"] += pd.Timedelta(days=45)
 
     # Inject synthetic post-cutoff deals
     extra_future = sabotaged_pip.head(30).copy()
@@ -148,7 +156,7 @@ def test_mutating_future_outcomes_never_changes_past_predictions():
     assert list(scored_clean["opportunity_id"]) == list(scored_sab["opportunity_id"])
     for col in ["cycle_days", "expected_won_value", "p_age_90d", "p_win_90d", "ev_90d"]:
         assert np.allclose(
-            scored_clean[col].values, scored_sab[col].values, atol=1e-12
+            scored_clean[col].values, scored_sab[col].values, atol=1e-12, rtol=0
         ), f"Future leakage detected in column {col}!"
 
 
@@ -173,8 +181,8 @@ def test_missing_account_separated_from_win_probability(loaded_pipeline):
         "opportunity_id"
     )
 
-    assert np.allclose(s_linked["p_win_90d"].values, s_unlinked["p_win_90d"].values, atol=1e-12)
-    assert np.allclose(s_linked["ev_90d"].values, s_unlinked["ev_90d"].values, atol=1e-12)
+    assert np.allclose(s_linked["p_win_90d"].values, s_unlinked["p_win_90d"].values, atol=1e-12, rtol=0)
+    assert np.allclose(s_linked["ev_90d"].values, s_unlinked["ev_90d"].values, atol=1e-12, rtol=0)
     assert (s_linked["crm_hygiene_status"] == "✅ Conta Vinculada").all()
     assert (s_unlinked["crm_hygiene_status"] == "⚠️ Sem Conta (Enriquecer CRM)").all()
 
@@ -193,8 +201,8 @@ def test_row_permutation_invariance_by_opportunity_id(loaded_pipeline):
     res_shuf = scorer.score_engaging_deals(shuffled)
 
     assert list(res_orig["opportunity_id"]) == list(res_shuf["opportunity_id"])
-    assert np.allclose(res_orig["ev_90d"].values, res_shuf["ev_90d"].values, atol=1e-12)
-    assert np.allclose(res_orig["p_win_90d"].values, res_shuf["p_win_90d"].values, atol=1e-12)
+    assert np.allclose(res_orig["ev_90d"].values, res_shuf["ev_90d"].values, atol=1e-12, rtol=0)
+    assert np.allclose(res_orig["p_win_90d"].values, res_shuf["p_win_90d"].values, atol=1e-12, rtol=0)
     assert list(res_orig["action_tier"]) == list(res_shuf["action_tier"])
 
 
@@ -226,8 +234,8 @@ def test_simulator_and_batch_scorer_exact_parity(loaded_pipeline):
             account_name=str(raw_row["account"]) if raw_row["has_account"] else None,
         )
         b_row = batch_scored.loc[opp_id]
-        assert np.isclose(sim_row["p_win_90d"], b_row["p_win_90d"], atol=1e-9)
-        assert np.isclose(sim_row["ev_90d"], b_row["ev_90d"], atol=1e-9)
+        assert np.isclose(sim_row["p_win_90d"], b_row["p_win_90d"], atol=1e-9, rtol=0)
+        assert np.isclose(sim_row["ev_90d"], b_row["ev_90d"], atol=1e-9, rtol=0)
         assert sim_row["action_tier"] == b_row["action_tier"]
         assert sim_row["crm_hygiene_status"] == b_row["crm_hygiene_status"]
 
@@ -262,11 +270,11 @@ def test_rep_override_reorders_queue_without_altering_statistical_estimate(loade
     assert str(overridden.iloc[-1]["opportunity_id"]) == top_id
     assert overridden.iloc[-1]["operational_rank_group"] == 3
 
-    # Statistical estimates must remain bit-for-bit identical!
+    # Statistical estimates must remain invariant within absolute tolerance 1e-12!
     b_idx = base_scored.set_index("opportunity_id")
     o_idx = overridden.set_index("opportunity_id")
-    assert np.allclose(b_idx["p_win_90d"].values, o_idx.loc[b_idx.index, "p_win_90d"].values, atol=1e-12)
-    assert np.allclose(b_idx["ev_90d"].values, o_idx.loc[b_idx.index, "ev_90d"].values, atol=1e-12)
+    assert np.allclose(b_idx["p_win_90d"].values, o_idx.loc[b_idx.index, "p_win_90d"].values, atol=1e-12, rtol=0)
+    assert np.allclose(b_idx["ev_90d"].values, o_idx.loc[b_idx.index, "ev_90d"].values, atol=1e-12, rtol=0)
 
 
 # --- 5. Age Curve Continuity, Empty History Fallback & Prospecting Triage ---
@@ -355,10 +363,56 @@ def test_dual_regime_backtest_honesty_and_alignment():
     assert 0.45 <= cond.strategies["agent_closed_wr"]["auc"] <= 0.55
 
 
-def test_streamlit_ui_renders_all_tabs_cleanly():
+@pytest.mark.parametrize("cutoff,horizon,message", [
+    ("2017-08-31", 30, "90 dias"),
+    ("2017-08-31", 0, "90 dias"),
+    ("2017-10-03", 90, "31/12/2017"),
+    ("2016-01-01", 90, "Não há oportunidades"),
+])
+def test_backtest_rejects_unobservable_or_incompatible_windows(cutoff, horizon, message):
+    with pytest.raises(ValueError, match=message):
+        run_prospective_queue_backtest(split_date=pd.Timestamp(cutoff), horizon_days=horizon)
+
+
+def test_feedback_concurrent_writes_and_reset_preserve_history(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+    from src.feedback_store import FeedbackStore, active_overrides
+
+    store = FeedbackStore(tmp_path / "feedback.json")
+    def write(i):
+        # Separate instances mimic requests from independent app sessions.
+        FeedbackStore(store.path).append({"opportunity_id": str(i), "disposition": "promote"})
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        list(pool.map(write, range(24)))
+    assert len(store.read()) == 24
+    assert len(active_overrides(store.read())) == 24
+    store.append({"event": "reset_all"})
+    assert len(store.read()) == 25
+    assert active_overrides(store.read()) == {}
+    store.append({"opportunity_id": "new", "disposition": "pause"})
+    assert set(active_overrides(store.read())) == {"new"}
+
+
+def test_corrupt_feedback_is_not_silently_overwritten(tmp_path):
+    from src.feedback_store import FeedbackStore
+    path = tmp_path / "feedback.json"
+    path.write_text('{invalid json', encoding="utf-8")
+    store = FeedbackStore(path)
+    with pytest.raises(ValueError):
+        store.append({"opportunity_id": "X"})
+    assert path.read_text(encoding="utf-8") == '{invalid json'
+    assert not path.with_suffix(".json.lock").exists()
+
+
+def test_streamlit_ui_renders_all_tabs_cleanly(tmp_path, monkeypatch):
     """Executes the full Streamlit application headlessly via AppTest to catch UI/schema drift."""
     from pathlib import Path
     from streamlit.testing.v1 import AppTest
+    from src import feedback_store
+
+    # UI tests never read or modify the salesperson's real feedback history.
+    store_class = feedback_store.FeedbackStore
+    monkeypatch.setattr(feedback_store, "FeedbackStore", lambda path: store_class(tmp_path / "feedback.json"))
 
     app_path = str(Path(__file__).resolve().parent.parent / "app.py")
     at = AppTest.from_file(app_path, default_timeout=30)
@@ -367,4 +421,21 @@ def test_streamlit_ui_renders_all_tabs_cleanly():
     assert len(at.tabs) == 4
     assert len(at.metric) >= 10
     assert len(at.dataframe) >= 2
+
+    # Exercise the actual UI save/rerun path with an isolated persistent store.
+    queue = at.dataframe[0].value
+    opportunity = str(queue.iloc[-1]["ID"])
+    inspector = next(s for s in at.selectbox if s.label == "Selecione uma Oportunidade:")
+    inspector.select(opportunity).run()
+    next(s for s in at.selectbox if s.label == "Ação na Fila:").select("promote").run()
+    next(b for b in at.button if "Aplicar Override" in b.label).click().run()
+    assert not at.exception
+    assert str(at.dataframe[0].value.iloc[0]["ID"]) == opportunity
+    persisted = store_class(tmp_path / "feedback.json").read()
+    assert persisted[-1]["disposition"] == "promote"
+    next(b for b in at.button if "Preservar Histórico" in b.label).click().run()
+    assert not at.exception
+    persisted = store_class(tmp_path / "feedback.json").read()
+    assert len(persisted) == 2 and persisted[-1]["event"] == "reset_all"
+    assert feedback_store.active_overrides(persisted) == {}
 

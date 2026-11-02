@@ -7,7 +7,6 @@ Desenvolvido por Arthur Lima
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Dict, List
 
@@ -24,6 +23,7 @@ from src.survival_and_scoring import (
     score_single_deal_simulation,
 )
 from src.explainability import enrich_with_explainability
+from src.feedback_store import FeedbackStore, active_overrides
 from src.backtest import (
     run_conditional_resolved_evaluation,
     run_multi_cutoff_queue_evaluation,
@@ -39,36 +39,28 @@ st.set_page_config(
 ARTIFACTS_DIR = Path(__file__).resolve().parent / "artifacts"
 ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
 FEEDBACK_FILE = ARTIFACTS_DIR / "feedback_overrides.json"
+feedback_store = FeedbackStore(FEEDBACK_FILE)
 
 
 def load_override_records() -> List[Dict[str, str]]:
-    if not FEEDBACK_FILE.exists():
-        return []
     try:
-        with open(FEEDBACK_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return data if isinstance(data, list) else []
-    except Exception:
-        return []
+        return feedback_store.read()
+    except (ValueError, OSError, TimeoutError) as exc:
+        st.error(f"Não foi possível ler o histórico de overrides: {exc}")
+        st.stop()
 
 
 def get_active_overrides_map(records: List[Dict[str, str]]) -> Dict[str, Dict[str, str]]:
-    """Builds the latest disposition per opportunity_id from the append-only audit log."""
-    active: Dict[str, Dict[str, str]] = {}
-    for rec in records:
-        opp_id = str(rec.get("opportunity_id", "")).strip()
-        disp = str(rec.get("disposition", "none")).strip().lower()
-        if not opp_id:
-            continue
-        if disp == "none":
-            active.pop(opp_id, None)
-        elif disp in {"promote", "pause", "archive"}:
-            active[opp_id] = {
-                "disposition": disp,
-                "reason": str(rec.get("feedback_reason", "")),
-                "notes": str(rec.get("proposed_action", "")),
-            }
-    return active
+    """Replays local history, including queue-reset events, without deleting records."""
+    return active_overrides(records)
+
+
+def append_override_record(record: dict) -> None:
+    try:
+        feedback_store.append(record)
+    except (ValueError, OSError, TimeoutError) as exc:
+        st.error(f"Override não gravado; o histórico foi preservado: {exc}")
+        st.stop()
 
 
 def save_sales_rep_override(
@@ -86,15 +78,11 @@ def save_sales_rep_override(
         "feedback_reason": reason,
         "proposed_action": notes,
     }
-    existing = load_override_records()
-    existing.append(record)
-    with open(FEEDBACK_FILE, "w", encoding="utf-8") as f:
-        json.dump(existing, f, indent=2, ensure_ascii=False)
+    append_override_record(record)
 
 
 def clear_all_overrides() -> None:
-    if FEEDBACK_FILE.exists():
-        FEEDBACK_FILE.unlink()
+    append_override_record({"event": "reset_all", "timestamp": str(pd.Timestamp.now())})
 
 
 @st.cache_data(show_spinner=False)
@@ -158,7 +146,7 @@ with st.sidebar:
     st.subheader("🔄 Overrides Ativos")
     st.caption(f"Ajustes manuais na fila: **{len(active_overrides)}**")
     if len(active_overrides) > 0:
-        if st.button("🧹 Limpar Todos os Overrides"):
+        if st.button("🔄 Restaurar Fila (Preservar Histórico)"):
             clear_all_overrides()
             st.rerun()
 
@@ -611,6 +599,8 @@ with tab_governance:
         "(excluindo `account` para evitar *snapshot leakage*) e medindo a receita `Won` efetivamente fechada nos 90 dias seguintes."
     )
 
+    st.caption("Cortes móveis com janelas sobrepostas: oportunidades podem reaparecer. Não somar receitas como receita única nem tratar os cortes como replicações independentes.")
+
     selected_cut_idx = st.radio(
         "Selecione a Data de Corte Out-of-Time:",
         options=list(range(len(queue_reports))),
@@ -631,12 +621,12 @@ with tab_governance:
 
     st.markdown("---")
     st.markdown(
-        "#### 2. Diagnóstico de Limite Estrutural: Subpopulação Condicional Resolvida (`Won` vs `Lost`)\n"
+        "#### 2. Diagnóstico das Estratégias Avaliadas: Subpopulação Condicional Resolvida (`Won` vs `Lost`)\n"
         f" Em `30/06/2017`, das `{cond_report.open_total_at_split:,}` oportunidades abertas, `{cond_report.censored_excluded_count:,}` "
         f"permaneceram abertas até o fim do dataset e `{cond_report.resolved_deal_count:,}` fecharam como `Won` ou `Lost`. "
-        "Quando avaliamos **apenas** os `970` casos já filtrados pelo desfecho futuro, todos os preditores estáticos do CRM ficam em "
-        "**AUC ~0,49–0,51** — demonstrando que o ganho real do motor vem de separar oportunidades ativas do backlog estagnado "
-        "e ponderá-las pelo ticket, não de prever vitórias entre negociações ativas sem telemetria de atividades."
+        "Quando avaliamos **apenas** os `970` casos já filtrados pelo desfecho futuro, as estratégias avaliadas ficam em "
+        "**AUC ~0,49–0,51**. A vantagem na fila completa é compatível com triagem por idade "
+        "ponderada pelo ticket. Isso não estabelece um teto para outros modelos nem demonstra impacto causal."
     )
     st.markdown(cond_report.to_markdown_table())
 

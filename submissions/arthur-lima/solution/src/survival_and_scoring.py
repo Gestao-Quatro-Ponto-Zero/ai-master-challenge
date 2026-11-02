@@ -10,7 +10,7 @@ Design principles following adversarial & methodological review:
      snapshots whose 90-day outcome windows completed on or before `as_of_date`, combined with
      Empirical Bayes shrinkage on historical agent conversion. Zero arbitrary penalties.
    - CRM Hygiene (`crm_hygiene_status`): Missing `account` (0% in closed deals vs 68.5% in
-     Engaging) is a closing-time schema artifact; it triggers an enrichment task without
+     Engaging) may reflect closing-time updates; it triggers an enrichment task without
      altering `p_win_90d` (preventing snapshot leakage and unjustified 50% penalties).
    - Operational Triage Buckets (`action_tier`) & Functional Rep Overrides (`operational_rank_group`):
      Explicitly documented workflow rules and human overrides that reorder the operational queue
@@ -227,6 +227,9 @@ class EmpiricalHorizonScorer:
             out["sales_agent"].map(self.agent_skill_ratios_).fillna(1.0).astype(float)
         )
 
+        # H1 — Arthur autorizou a simplificação após as auditorias dos agentes;
+        # implementação assistida por IA. Não reintroduzir pesos EV/dia/enterprise
+        # sem avaliação comparativa. Origem e limites: PROCESS_LOG.md, mapa H1–H5.
         out["p_age_90d"] = p_age.round(4)
         out["p_win_90d"] = np.clip(p_age * ag_ratio, 0.001, 0.95).round(4)
         out["ev_90d"] = (out["p_win_90d"] * out["expected_won_value"]).round(2)
@@ -329,6 +332,9 @@ def apply_rep_overrides(
     WITHOUT altering the underlying statistical estimates (`p_win_90d`, `ev_90d`).
     """
     out = scored_df.copy()
+    # H5 — Arthur revisou e ajustou o comportamento do override durante a
+    # implementação no Codex. A intervenção muda a fila, não a estimativa estatística.
+    # Atribuição e teste correspondente: PROCESS_LOG.md, mapa H1–H5.
     out["override_disposition"] = "none"
     out["override_reason"] = ""
     out["operational_rank_group"] = 1

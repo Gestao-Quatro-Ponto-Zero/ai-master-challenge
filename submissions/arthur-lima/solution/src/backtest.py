@@ -12,8 +12,8 @@ Directly addresses the core methodological distinction in CRM pipeline evaluatio
 2. Diagnostic Conditional Evaluation — Resolved-Only Subset (`Won` vs `Lost`):
    Evaluates the subpopulation of open deals at cutoff `T` (`2017-06-30`, `N = 970`) that
    eventually closed as `Won` or `Lost` (excluding the 716 deals that remained open).
-   Demonstrates transparently that once abandoned backlog is filtered out via future outcome
-   conditioning, static CRM fields have near-random discrimination (AUC ~0.50–0.51).
+   Demonstrates transparently that once unresolved opportunities are filtered out via future outcome
+   conditioning, the evaluated static-CRM strategies have near-random discrimination (AUC ~0.50–0.51).
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ import pandas as pd
 if __package__ is None or __package__ == "":
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.data_loader import build_enriched_pipeline
+from src.data_loader import SNAPSHOT_DATE, build_enriched_pipeline
 from src.survival_and_scoring import EmpiricalHorizonScorer
 
 
@@ -222,6 +222,14 @@ def run_prospective_queue_backtest(
     Evaluates the full open `Engaging` queue available at `split_date` over `(split_date, split_date + horizon_days]`.
     Uses zero future outcome filtering and zero `account` snapshot leakage.
     """
+    split_date = pd.Timestamp(split_date)
+    if horizon_days != 90:
+        raise ValueError("Este motor estima exclusivamente o horizonte de 90 dias.")
+    if pd.isna(split_date) or split_date.tz is not None:
+        raise ValueError("Informe uma data de corte válida, sem fuso horário.")
+    h_end = split_date + pd.Timedelta(days=horizon_days)
+    if h_end > SNAPSHOT_DATE:
+        raise ValueError("O horizonte de 90 dias deve terminar até 31/12/2017.")
     df, _ = build_enriched_pipeline(data_dir=data_dir, as_of_date=split_date)
 
     train_closed = df[
@@ -233,6 +241,9 @@ def run_prospective_queue_backtest(
     scorer = EmpiricalHorizonScorer()
     scorer.fit(df, as_of_date=split_date)
 
+    # H3 — Após críticas dos auditores, Arthur decidiu publicar a fila completa
+    # junto ao diagnóstico dos resolvidos, mesmo com resultados desfavoráveis.
+    # Não selecionar oportunidades por desfecho futuro; PROCESS_LOG.md, mapa H1–H5.
     # Full open queue on split_date (no filtering on future stage!)
     open_queue = df[
         df["engage_date"].notnull()
@@ -242,6 +253,8 @@ def run_prospective_queue_backtest(
     open_queue["cycle_days"] = (split_date - open_queue["engage_date"]).dt.days.astype(
         float
     )
+    if open_queue.empty:
+        raise ValueError("Não há oportunidades engajadas em aberto nessa data de corte.")
 
     scored_q = (
         scorer.score_engaging_deals(open_queue)
@@ -339,7 +352,7 @@ def run_multi_cutoff_queue_evaluation(
     cutoffs: Sequence[str] = ("2017-07-31", "2017-08-31", "2017-09-30"),
     horizon_days: int = 90,
 ) -> List[QueueHorizonCutoffReport]:
-    """Runs the 90-day open-queue evaluation across multiple independent monthly cutoffs."""
+    """Runs rolling monthly cutoffs with overlapping 90-day windows, not independent trials."""
     return [
         run_prospective_queue_backtest(
             data_dir=data_dir,
@@ -357,7 +370,7 @@ def run_conditional_resolved_evaluation(
     """
     Diagnostic evaluation on the subpopulation of open deals at `split_date` that
     eventually resolved as `Won` or `Lost` (excluding deals that stayed in `Engaging`).
-    Illustrates why static CRM features have AUC ~0.50-0.51 once abandoned deals are removed.
+    Reports discrimination of the evaluated strategies after conditioning on eventual resolution.
     """
     df, _ = build_enriched_pipeline(data_dir=data_dir, as_of_date=split_date)
     scorer = EmpiricalHorizonScorer()
@@ -435,6 +448,7 @@ def generate_full_backtest_markdown(data_dir: Optional[Path] = None) -> str:
     sections = [
         "# Relatório de Validação Out-of-Time (Dois Regimes + Ablação)\n",
         "## 1. Avaliação Operacional Primária — Fila Aberta Completa no Corte (Horizonte +90 Dias, Sem Censura)\n",
+        "> **Cortes móveis:** As janelas de 90 dias se sobrepõem e oportunidades podem reaparecer. Não são replicações independentes; não somar suas receitas como receita única.\n\n"
         "> **Pergunta avaliada:** *Diante de todas as oportunidades abertas em `Engaging` na data de corte (sem filtrar pelo futuro e sem usar `account`), quais priorizar hoje para maximizar a receita fechada (`Won`) nos próximos 90 dias?*\n",
     ]
     for rep in queue_reports:
@@ -448,10 +462,10 @@ def generate_full_backtest_markdown(data_dir: Optional[Path] = None) -> str:
         )
 
     sections.append(
-        "\n## 2. Diagnóstico de Limite Estrutural — Subpopulação Condicional Resolvida (`Won` vs `Lost`)\n"
+        "\n## 2. Diagnóstico das Estratégias Avaliadas — Subpopulação Condicional Resolvida (`Won` vs `Lost`)\n"
     )
     sections.append(
-        "> **Limitação demonstrada:** Quando removemos post-hoc os 716 negócios que permaneceram abertos sem fechar e avaliamos apenas os 970 resolvidos (`Won` vs `Lost`), todos os preditores estáticos do CRM ficam próximos do acaso (AUC ~0,49–0,51). Ou seja: o ganho empírico do motor vem de separar oportunidades vivas do backlog estagnado e ponderá-las pelo ticket mediano — não de prever quem ganha uma negociação ativa sem telemetria de interações.\n"
+        "> **Limitação observada:** No diagnóstico condicional dos 970 negócios resolvidos, excluindo post-hoc os 716 ainda abertos, as estratégias avaliadas ficam próximas do acaso (AUC ~0,49–0,51). Isso não estabelece um teto para outros modelos nem comprova abandono. A vantagem observada na fila completa é compatível com triagem por idade ponderada pelo ticket; impacto causal exige teste em campo.\n"
     )
     sections.append(cond_report.to_markdown_table() + "\n")
     return "\n".join(sections)
