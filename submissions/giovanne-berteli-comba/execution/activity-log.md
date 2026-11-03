@@ -398,3 +398,47 @@ or model evaluations have been run. No commit, push, or PR was made.
   passed, original fit count remains4 and final-test predictions remain0. Updated
   five receipts after regenerating affected results; new runtime/cache/provenance
   stay ignored and public additions use intent-to-add only, without commit.
+
+
+## 2026-11-02 — V01 frozen-version final evaluation
+
+- Resumed from clean user commit `cb01264`; foundation receipt passed. Predeclared
+  batch classification/assisted execution,64 hash-selected actual runtime cases
+  and9 distinct synthetic fault fixtures before any final-test prediction.
+- Added pure evaluation arithmetic/exposure guards and8 meaningful synthetic
+  software tests. All72 tests passed before freeze. Bound raw source bytes,
+  membership, protocol, model/policy/reference, software and runtime sample IDs.
+  Freeze01:00:51.366945Z preceded attempt01:00:51.571884Z on2026-11-03 UTC.
+- Evaluated7,175 reserved cases with selected C2 and the two original baselines;
+  no C.5 comparison, fit, tuning, reference update or sensitivity search. Macro F1
+  selected0.844612 / NB0.646094 / majority0.055387; selected accuracy0.849199.
+- Six frozen numerical targets passed. Standard1,951/7,175 (27.19%),1,884 matching
+  labels,67 errors, Wilson lower0.956619. Specialist1,977; triage3,247. Explicitly
+  reported50 specialist-label errors within standard suggestions; confirmation
+  remains mandatory. Class weakness/confusions were recorded without text export.
+- Distinct anomaly cases338; flagged metric assessments345 (193 score/152 length),
+  seven cases with both; zero not-evaluated cases. No adjudicated false-alert or
+  business-savings claim. Fixed mean dimensionless proxy0.957449.
+- Batch score adapter used production core/service/repository:7,175 stored runs,
+  14,350 metrics,0 failed outcomes. This was not per-request worker latency.
+- Actual frozen64-case sample:64 stored/128 metrics,0 failed outcomes or parity
+  discrepancies. External-clock p50≈587.20ms / p95≈600.84ms / max≈618.66ms includes
+  commit, not UI/human confirmation. Small local sequential sample; individual
+  external-clock observations were not persisted for later percentile replay.
+- Nine separate automated failure fixtures passed;8 stored, forced write failure
+  unsaved without partial records. Kept synthetic failures out of observed rates.
+- Added read-only recorded-output audit: all7,175 decisions replayed from cached
+  scores, three confusion metrics/denominators/acceptance reconciled with hashes;
+  zero model loads, new predictions or fits. Repeated evaluation reuses its result.
+- Updated owners, reviewer report, plan/status and official F02/F03 execution state.
+  Reservation is consumed; future influenced choices need new data or disclosed
+  exploratory status. App/demo remains train-only and evaluation is never automatic
+  during setup. No production/domain-transfer, real human review or savings claim.
+- Narrative14/capture18 preserve8 additional messages (4 turns,hasMore=true);
+  current final response/later messages pending next export. E01 is next.
+- Final review: 363 local documentation destinations resolved; completed
+  evaluation reuse preserved hashes/mtimes of result, freeze, SQLite and scores,
+  without new predictions. Revalidated six current receipts after byte-identical
+  D01/A01/V00 regeneration and cached-output audit.14 public additions have
+  intent-to-add only; all changes stay in the submission, with clean whitespace
+  and no local raw/model/score/DB/runtime data staged. No commit/push.

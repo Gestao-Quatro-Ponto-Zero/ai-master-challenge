@@ -23,7 +23,9 @@ okf_version: "0.2"
   grouped split membership, model/gate selection order and reserved-test exposure.
 
 - [Prototype implementation](prototype.md) — I01 components, artifact readiness,
-  SQLite/reviews, local setup and validation-only selection; V01 is next.
+  SQLite/reviews, local setup and validation-only selection.
+- [Final evaluation](final-evaluation.md) — V01 results, consumed test exposure,
+  specialist misclassification risk, runtime/fault populations and E01 handoff.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

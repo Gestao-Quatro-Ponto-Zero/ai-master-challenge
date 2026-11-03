@@ -1,6 +1,6 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: I01 implementada localmente. Próxima etapa: V01, avaliação final sob protocolo congelado.**
+**Estado: V01 concluída. Próxima etapa: E01, consolidar narrativa, evidências e CodeTour.**
 
 ## Executar o protótipo
 
@@ -32,8 +32,10 @@ Os dois datasets foram versionados e auditados. A base de atendimento sustenta
 essas descrições e hipóteses; a base IT será usada na avaliação de classificação
 em seu próprio domínio. A automação escolhida sugere categorias IT e prepara uma
 fila de revisão humana com anomalias filtráveis. O protótipo local está disponível;
-a seleção usou treino/validação. Avaliação final e impacto operacional medido
-continuam pendentes.
+a seleção usou treino/validação. No teste final, macro F1 foi 0,844612, com 27,19%
+de sugestões padrão e 96,57% de concordância nesse subconjunto. Toda sugestão
+exige confirmação: 50 dos 67 erros padrão tinham rótulos de classes especializadas.
+Impacto operacional medido continua pendente.
 
 ## Solução
 
@@ -64,7 +66,8 @@ permitem filtros e têm revisão independente do rótulo sugerido.
 A interface local tem Triagem e Revisão/anomalias, em Python, scikit-learn,
 Streamlit e SQLite. Não há envio ao cliente nem mudança em sistemas externos.
 O [protótipo e setup](docs/prototype.md) implementam os contratos sob o
-[protocolo V00](docs/evaluation-protocol.md), sem pontuar o teste final.
+[protocolo V00](docs/evaluation-protocol.md). A [V01](docs/final-evaluation.md)
+avaliou a versão congelada; a interface mantém exemplos apenas de treino.
 
 ### Resultados / Findings
 
@@ -80,18 +83,20 @@ O [protótipo e setup](docs/prototype.md) implementam os contratos sob o
 
 O [diagnóstico operacional](docs/operational-diagnosis.md) traz comparações,
 denominadores e cenários, com 150 linhas agregadas de segmentos. A
-[auditoria](docs/data-audit.md) fundamenta os limites. Não há ganho medido ou
-resultado final de modelo. Na validação, o candidato selecionado atingiu macro F1
-0,852554; a cobertura de sugestões padrão foi 28,61%, ainda com confirmação humana.
-São resultados de seleção, sem estimativa independente de desempenho.
+[auditoria](docs/data-audit.md) fundamenta os limites. Não há ganho operacional
+medido. A seleção na validação teve macro F1 0,852554; no teste final congelado,
+0,844612 frente a0, 646094 do baseline de texto. Foram 1.951 sugestões padrão,
+com 1.884 concordâncias e 67 divergências contra rótulos fornecidos. O
+[relatório final](docs/final-evaluation.md) mostra classes, anomalias, falhas,
+latência local e limites, incluindo o risco de encaminhamento especializado.
 
 ### Recomendações
 
 Conferir status/prioridades e os registros Open sem resposta preenchida com o
 responsável pela operação; instrumentar eventos e esforço antes de alegar SLA ou
-economia. Não eleger um canal como causa de atraso com esses dados. Executar
-V01 com os artefatos selecionados em I01 e critérios congelados em V00, mantendo
-o teste final fora de novos ajustes e reportando falhas/limitações.
+economia. Não eleger um canal como causa de atraso com esses dados. Preservar a
+confirmação humana, conferir os erros especializados em piloto com dados novos
+e não reutilizar o teste consumido para ajustar outra versão e alegar avaliação limpa.
 
 ### Limitações
 
@@ -113,6 +118,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Plano com critérios de aceite](execution/plan.md)
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
+- [Avaliação final V01, resultados e limitações](docs/final-evaluation.md)
 - [Protocolo V00, conjuntos e ambiente testado](docs/evaluation-protocol.md)
 - [Protótipo local: executar, revisar e conferir resultados de validação](docs/prototype.md)
 - [Auditoria dos datasets](docs/data-audit.md)
@@ -128,7 +134,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 O setup da auditoria e suas evidências estão nos links acima. Para abrir o protótipo
 na pasta da submissão, execute `bash run.sh`.
 A [reprodução em cópia limpa](docs/prototype.md) inclui os quatro ajustes; o CodeTour
-será criado em E01, após a validação.
+será criado em E01, próxima etapa após esta validação.
 
 ## Como iniciar uma sessão de trabalho
 

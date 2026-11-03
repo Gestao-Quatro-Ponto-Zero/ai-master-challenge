@@ -17,7 +17,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | [Authoritative contract](../knowledge/solution-scope.md) and [reviewer proposal/flow](../docs/automation-proposal.md) |
 | V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | [Frozen protocol](../knowledge/evaluation-protocol.md), [manifest](../data/evaluation-manifest.json), [setup/checks](../docs/evaluation-protocol.md) and [receipt](../docs/review-evidence/evaluation-current.json) |
 | I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | [Prototype/setup](../docs/prototype.md), [implementation](../knowledge/prototype.md), [development results](../data/triage-development.json) and [receipt](../docs/review-evidence/triage-current.json) |
-| V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | Future test/evaluation outputs |
+| V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | [Final report](../docs/final-evaluation.md), [frozen inputs](../data/final-evaluation-freeze.json), [aggregate results](../data/final-evaluation.json), [audit](../docs/review-evidence/final-evaluation-checks.json) and [receipt](../docs/review-evidence/final-evaluation-current.json) |
 | E01 | Evidence and communication | Reviewer narrative, conversation coverage, decision history and useful CodeTour checked | Process log, report and future tour |
 | P01 | Submission | Candidate details completed, reproducible setup, template satisfied, allowed diff scope, PR instructions followed | Final review checklist and eventual PR |
 
@@ -31,7 +31,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] S01 — Define one automation and its human intervention rules. Evidence: [scope, flow and acceptance](../knowledge/solution-scope.md).
 - [x] V00 — Record the evaluation protocol before prototype implementation. Evidence: [grouped splits, bounded selection and tested environment](../docs/evaluation-protocol.md); zero classifier fits.
 - [x] I01 — Build the functional prototype. Evidence: [local triage/review, frozen-protocol selection, software and smoke checks](../docs/prototype.md); final test remains reserved.
-- [ ] V01 — Run and document software tests and AI evaluation.
+- [x] V01 — Run and document software tests and AI evaluation. Evidence: [7,175 frozen-test cases, 72 software tests, actual 64-case runtime and separate faults](../docs/final-evaluation.md); no fit/retuning, exposure consumed.
 - [ ] E01 — Complete evidence, narrative, and CodeTour.
 - [ ] P01 — Prepare the final submission and PR.
 

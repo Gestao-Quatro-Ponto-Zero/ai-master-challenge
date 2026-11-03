@@ -8,8 +8,9 @@ has frozen numerical criteria, selection procedures, membership and tested
 dependencies before implementation. Its preparation evidence is in the
 [protocol/setup report](evaluation-protocol.md). The application checks below
 now have I01 software/functional evidence in the [prototype report](prototype.md),
-while final AI/failure/latency evaluation remains V01 work. Do not report a
-planned check as a passing test.
+and [V01](final-evaluation.md) now records the final classifier/assisted metrics,
+actual runtime sample and distinct fault fixtures. Test exposure is consumed; later
+choices must not claim another unseen test. Do not report a planned check as passing.
 
 | Layer | Meaningful checks | Evidence |
 | --- | --- | --- |

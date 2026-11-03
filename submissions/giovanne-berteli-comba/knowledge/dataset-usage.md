@@ -30,7 +30,8 @@ The [S01 contract](solution-scope.md) now owns the selected stack and operationa
 scope. [V00](evaluation-protocol.md) now owns numerical quality criteria,
 selection procedures and grouped partition membership. I01 has now fitted four
 models on train and selected on validation; [implementation](prototype.md) owns
-the resulting handoff. Final-test evaluation remains pending.
+the resulting handoff. [V01](final-evaluation.md) has now evaluated the frozen
+version; its membership is consumed and must not guide a later clean-test claim.
 
 # Roles and data contracts
 
@@ -91,8 +92,8 @@ training data, followed by a simple text baseline. Report macro F1 across the
 eight classes, per-class precision/recall/F1/support, confusion and overall accuracy
 as a secondary measure. V00 owns exact splits, candidate definitions, acceptance
 criteria and selection rules. Its preparation checks have executed, but model
-fitting/selection followed in I01. Only TRAIN/VALIDATION results exist; final-test
-performance evaluation has not run. Fit vocabulary and any
+fitting/selection followed in I01, and V01 subsequently evaluated the frozen
+selection on final_test without any fit or gate/reference revision. Fit vocabulary and any
 learned preprocessing on training data only. Use validation for model/threshold
 selection; evaluate the selected version on the reserved final test.
 
@@ -141,12 +142,14 @@ savings require a representative operational pilot with active-effort measuremen
 D02 completes dataset roles, mapping decisions and metric/evaluation boundaries;
 later A01, S01 and V00 have their own evidence. V00 created grouped splits and
 froze numerical acceptance targets; I01 then implemented and fitted/selected only
-on train/validation. Final-test evaluation remains pending; development results
-do not establish business acceptance or prospective accuracy.
+on train/validation. V01 has completed the frozen-version final benchmark; neither
+development nor final offline results establish business acceptance or prospective
+accuracy. See [exposure/results](final-evaluation.md) before any further model choice.
 
 R01 and A01 are complete; see the [bounded PR research](../docs/pr-review.md) and
 [operational findings](operational-findings.md). S01 is defined in the
 [solution contract](solution-scope.md); [V00 protocol](evaluation-protocol.md) is
-prepared, and [I01](prototype.md) is complete. V01 is next.
+prepared, [I01](prototype.md) is complete, and [V01](final-evaluation.md) has consumed
+the reserved test. E01 evidence consolidation is next.
 Research can inform differentiation but cannot override these data limitations
 or replace validation. Published metrics from other tasks are not our targets.

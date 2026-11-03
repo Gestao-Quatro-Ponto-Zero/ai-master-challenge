@@ -1,0 +1,862 @@
+{
+  "acceptance": {
+    "all_quality_targets_passed": true,
+    "checks": {
+      "max_loss_against_text_baseline": true,
+      "min_gain_over_majority": true,
+      "min_macro_f1": true,
+      "min_standard_accuracy_wilson_lower_95": true,
+      "min_standard_cases": true,
+      "min_standard_coverage": true
+    },
+    "meaning": "Predeclared offline benchmark targets only; not business approval, autonomous resolution or production readiness",
+    "software_execution_passed": true
+  },
+  "assisted": {
+    "anomaly_cases": 338,
+    "assumed_cost": 0.9574494773518822,
+    "attempted": 7175,
+    "database": {
+      "cases": 7175,
+      "metrics": 14350,
+      "reviews": 0,
+      "runs": 7175
+    },
+    "execution": "Batch feature/probability computation followed by the production TriageService/core/repository with a precomputed-score adapter; explicitly not cold per-request latency or timeout validation",
+    "failed_outcomes": 0,
+    "metric_record_counts": {
+      "model_score:ordinary:none": 6982,
+      "model_score:possible_anomaly:high": 115,
+      "model_score:possible_anomaly:low": 78,
+      "text_chars:ordinary:none": 7023,
+      "text_chars:possible_anomaly:high": 83,
+      "text_chars:possible_anomaly:low": 69
+    },
+    "not_evaluated_cases": 0,
+    "outcome_counts": {
+      "review_needed": 5224,
+      "suggested": 1951
+    },
+    "queue_counts": {
+      "specialist_review": 1977,
+      "standard_review": 1951,
+      "triage_review": 3247
+    },
+    "reason_case_counts_overlapping": {
+      "anomaly_review": 338,
+      "low_score": 3040,
+      "policy_human_category": 3218,
+      "standard_confirmation": 1951
+    },
+    "standard_accuracy": 0.9656586365966171,
+    "standard_accuracy_wilson_lower_95": 0.9566192827818416,
+    "standard_by_true_class": {
+      "Access": {
+        "all_test_cases": 1069,
+        "standard_cases": 16,
+        "standard_correct": 0
+      },
+      "Administrative rights": {
+        "all_test_cases": 264,
+        "standard_cases": 12,
+        "standard_correct": 0
+      },
+      "HR Support": {
+        "all_test_cases": 1637,
+        "standard_cases": 15,
+        "standard_correct": 0
+      },
+      "Hardware": {
+        "all_test_cases": 2042,
+        "standard_cases": 1040,
+        "standard_correct": 1035
+      },
+      "Internal Project": {
+        "all_test_cases": 318,
+        "standard_cases": 150,
+        "standard_correct": 146
+      },
+      "Miscellaneous": {
+        "all_test_cases": 1059,
+        "standard_cases": 486,
+        "standard_correct": 479
+      },
+      "Purchase": {
+        "all_test_cases": 370,
+        "standard_cases": 7,
+        "standard_correct": 0
+      },
+      "Storage": {
+        "all_test_cases": 416,
+        "standard_cases": 225,
+        "standard_correct": 224
+      }
+    },
+    "standard_cases": 1951,
+    "standard_correct": 1884,
+    "standard_coverage": 0.2719163763066202,
+    "standard_errors": 67,
+    "stored": 7175
+  },
+  "automated_fault_fixtures": {
+    "all_passed": true,
+    "attempted": 9,
+    "cases": [
+      {
+        "expected_reason": "invalid_input",
+        "fixture": "invalid_input",
+        "outcome": "review_needed",
+        "passed": true,
+        "reason_codes": [
+          "invalid_input"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "invalid_input",
+        "fixture": "oversized_input",
+        "outcome": "review_needed",
+        "passed": true,
+        "reason_codes": [
+          "invalid_input"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "unsupported_context",
+        "fixture": "unsupported_context",
+        "outcome": "review_needed",
+        "passed": true,
+        "reason_codes": [
+          "unsupported_context"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "no_known_features",
+        "fixture": "no_known_features",
+        "outcome": "review_needed",
+        "passed": true,
+        "reason_codes": [
+          "no_known_features"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "not_ready",
+        "fixture": "not_ready",
+        "outcome": "failed",
+        "passed": true,
+        "reason_codes": [
+          "not_ready"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "timeout",
+        "fixture": "timeout",
+        "outcome": "failed",
+        "passed": true,
+        "reason_codes": [
+          "timeout"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "inference_error",
+        "fixture": "inference_error",
+        "outcome": "failed",
+        "passed": true,
+        "reason_codes": [
+          "inference_error"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "invalid_model_output",
+        "fixture": "invalid_model_output",
+        "outcome": "failed",
+        "passed": true,
+        "reason_codes": [
+          "invalid_model_output"
+        ],
+        "stored": true
+      },
+      {
+        "expected_reason": "persistence_error",
+        "fixture": "persistence_error",
+        "outcome": "failed",
+        "passed": true,
+        "reason_codes": [
+          "persistence_error"
+        ],
+        "stored": false
+      }
+    ],
+    "database": {
+      "cases": 8,
+      "metrics": 16,
+      "reviews": 0,
+      "runs": 8
+    },
+    "population": "Synthetic automated fixtures, not held-out accuracy or observed runtime failures",
+    "stored": 8
+  },
+  "classes": [
+    "Access",
+    "Administrative rights",
+    "HR Support",
+    "Hardware",
+    "Internal Project",
+    "Miscellaneous",
+    "Purchase",
+    "Storage"
+  ],
+  "classifier_fits": 0,
+  "classifier_metrics": {
+    "logistic_c20": {
+      "accuracy": 0.849198606271777,
+      "confusion": [
+        [
+          917,
+          2,
+          39,
+          80,
+          1,
+          27,
+          0,
+          3
+        ],
+        [
+          2,
+          181,
+          7,
+          71,
+          0,
+          2,
+          0,
+          1
+        ],
+        [
+          23,
+          1,
+          1425,
+          120,
+          8,
+          53,
+          0,
+          7
+        ],
+        [
+          45,
+          13,
+          86,
+          1814,
+          6,
+          65,
+          8,
+          5
+        ],
+        [
+          6,
+          1,
+          27,
+          32,
+          233,
+          17,
+          0,
+          2
+        ],
+        [
+          9,
+          4,
+          63,
+          101,
+          5,
+          874,
+          0,
+          3
+        ],
+        [
+          7,
+          2,
+          8,
+          38,
+          1,
+          8,
+          306,
+          0
+        ],
+        [
+          6,
+          7,
+          23,
+          31,
+          0,
+          6,
+          0,
+          343
+        ]
+      ],
+      "largest_confusions": [
+        {
+          "count": 120,
+          "predicted_class": "Hardware",
+          "true_class": "HR Support"
+        },
+        {
+          "count": 101,
+          "predicted_class": "Hardware",
+          "true_class": "Miscellaneous"
+        },
+        {
+          "count": 86,
+          "predicted_class": "HR Support",
+          "true_class": "Hardware"
+        },
+        {
+          "count": 80,
+          "predicted_class": "Hardware",
+          "true_class": "Access"
+        },
+        {
+          "count": 71,
+          "predicted_class": "Hardware",
+          "true_class": "Administrative rights"
+        },
+        {
+          "count": 65,
+          "predicted_class": "Miscellaneous",
+          "true_class": "Hardware"
+        },
+        {
+          "count": 63,
+          "predicted_class": "HR Support",
+          "true_class": "Miscellaneous"
+        },
+        {
+          "count": 53,
+          "predicted_class": "Miscellaneous",
+          "true_class": "HR Support"
+        },
+        {
+          "count": 45,
+          "predicted_class": "Access",
+          "true_class": "Hardware"
+        },
+        {
+          "count": 39,
+          "predicted_class": "HR Support",
+          "true_class": "Access"
+        }
+      ],
+      "macro_f1": 0.8446117391561087,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.8800383877159309,
+          "precision": 0.903448275862069,
+          "recall": 0.8578110383536015,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.7621052631578947,
+          "precision": 0.8578199052132701,
+          "recall": 0.6856060606060606,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.8597285067873304,
+          "precision": 0.8492252681764004,
+          "recall": 0.870494807574832,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.838068838068838,
+          "precision": 0.7931788369042414,
+          "recall": 0.8883447600391773,
+          "support": 2042.0
+        },
+        "Internal Project": {
+          "f1-score": 0.8146853146853147,
+          "precision": 0.9173228346456693,
+          "recall": 0.7327044025157232,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.828043581241118,
+          "precision": 0.8307984790874525,
+          "recall": 0.8253068932955618,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.8947368421052632,
+          "precision": 0.9745222929936306,
+          "recall": 0.827027027027027,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.8794871794871795,
+          "precision": 0.9423076923076923,
+          "recall": 0.8245192307692307,
+          "support": 416.0
+        },
+        "accuracy": 0.849198606271777,
+        "macro avg": {
+          "f1-score": 0.8446117391561087,
+          "precision": 0.8835779481488032,
+          "recall": 0.8139767775226519,
+          "support": 7175.0
+        },
+        "weighted avg": {
+          "f1-score": 0.8492761449114049,
+          "precision": 0.8538259386780015,
+          "recall": 0.849198606271777,
+          "support": 7175.0
+        }
+      }
+    },
+    "majority": {
+      "accuracy": 0.2845993031358885,
+      "confusion": [
+        [
+          0,
+          0,
+          0,
+          1069,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          264,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1637,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2042,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          318,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1059,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          370,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          416,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "largest_confusions": [
+        {
+          "count": 1637,
+          "predicted_class": "Hardware",
+          "true_class": "HR Support"
+        },
+        {
+          "count": 1069,
+          "predicted_class": "Hardware",
+          "true_class": "Access"
+        },
+        {
+          "count": 1059,
+          "predicted_class": "Hardware",
+          "true_class": "Miscellaneous"
+        },
+        {
+          "count": 416,
+          "predicted_class": "Hardware",
+          "true_class": "Storage"
+        },
+        {
+          "count": 370,
+          "predicted_class": "Hardware",
+          "true_class": "Purchase"
+        },
+        {
+          "count": 318,
+          "predicted_class": "Hardware",
+          "true_class": "Internal Project"
+        },
+        {
+          "count": 264,
+          "predicted_class": "Hardware",
+          "true_class": "Administrative rights"
+        }
+      ],
+      "macro_f1": 0.05538678528805468,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.4430942823044374,
+          "precision": 0.2845993031358885,
+          "recall": 1.0,
+          "support": 2042.0
+        },
+        "Internal Project": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 416.0
+        },
+        "accuracy": 0.2845993031358885,
+        "macro avg": {
+          "f1-score": 0.05538678528805468,
+          "precision": 0.03557491289198606,
+          "recall": 0.125,
+          "support": 7175.0
+        },
+        "weighted avg": {
+          "f1-score": 0.12610432396733953,
+          "precision": 0.08099676334543335,
+          "recall": 0.2845993031358885,
+          "support": 7175.0
+        }
+      }
+    },
+    "multinomial_nb": {
+      "accuracy": 0.7248780487804878,
+      "confusion": [
+        [
+          726,
+          0,
+          69,
+          255,
+          0,
+          18,
+          0,
+          1
+        ],
+        [
+          2,
+          36,
+          3,
+          221,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          14,
+          0,
+          1308,
+          274,
+          0,
+          40,
+          0,
+          1
+        ],
+        [
+          17,
+          0,
+          67,
+          1925,
+          0,
+          28,
+          5,
+          0
+        ],
+        [
+          14,
+          0,
+          78,
+          76,
+          107,
+          43,
+          0,
+          0
+        ],
+        [
+          13,
+          1,
+          126,
+          283,
+          0,
+          636,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          11,
+          58,
+          0,
+          4,
+          294,
+          0
+        ],
+        [
+          10,
+          0,
+          73,
+          149,
+          0,
+          15,
+          0,
+          169
+        ]
+      ],
+      "largest_confusions": [
+        {
+          "count": 283,
+          "predicted_class": "Hardware",
+          "true_class": "Miscellaneous"
+        },
+        {
+          "count": 274,
+          "predicted_class": "Hardware",
+          "true_class": "HR Support"
+        },
+        {
+          "count": 255,
+          "predicted_class": "Hardware",
+          "true_class": "Access"
+        },
+        {
+          "count": 221,
+          "predicted_class": "Hardware",
+          "true_class": "Administrative rights"
+        },
+        {
+          "count": 149,
+          "predicted_class": "Hardware",
+          "true_class": "Storage"
+        },
+        {
+          "count": 126,
+          "predicted_class": "HR Support",
+          "true_class": "Miscellaneous"
+        },
+        {
+          "count": 78,
+          "predicted_class": "HR Support",
+          "true_class": "Internal Project"
+        },
+        {
+          "count": 76,
+          "predicted_class": "Hardware",
+          "true_class": "Internal Project"
+        },
+        {
+          "count": 73,
+          "predicted_class": "HR Support",
+          "true_class": "Storage"
+        },
+        {
+          "count": 69,
+          "predicted_class": "HR Support",
+          "true_class": "Access"
+        }
+      ],
+      "macro_f1": 0.6460938964552713,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.7773019271948608,
+          "precision": 0.9086357947434293,
+          "recall": 0.6791393826005613,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.23920265780730898,
+          "precision": 0.972972972972973,
+          "recall": 0.13636363636363635,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.7758007117437722,
+          "precision": 0.7538904899135447,
+          "recall": 0.7990226023213195,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.7287526026878668,
+          "precision": 0.593952483801296,
+          "recall": 0.9427032321253673,
+          "support": 2042.0
+        },
+        "Internal Project": {
+          "f1-score": 0.5035294117647059,
+          "precision": 1.0,
+          "recall": 0.33647798742138363,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.6894308943089431,
+          "precision": 0.8091603053435115,
+          "recall": 0.6005665722379604,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.8789237668161435,
+          "precision": 0.9832775919732442,
+          "recall": 0.7945945945945946,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.575809199318569,
+          "precision": 0.9883040935672515,
+          "recall": 0.40625,
+          "support": 416.0
+        },
+        "accuracy": 0.7248780487804878,
+        "macro avg": {
+          "f1-score": 0.6460938964552713,
+          "precision": 0.8762742165394062,
+          "recall": 0.5868897509581028,
+          "support": 7175.0
+        },
+        "weighted avg": {
+          "f1-score": 0.7117981787175554,
+          "precision": 0.7839741057378627,
+          "recall": 0.7248780487804878,
+          "support": 7175.0
+        }
+      }
+    }
+  },
+  "completed_at": "2026-11-03T01:02:10.103143+00:00",
+  "evaluation_id": "it-triage-final-v1",
+  "freeze_sha256": "ace035cf59cf2aa4faec8987db7d66d7a5ad46e4403d42bac995352b82ddadd3",
+  "limits": [
+    "Retrospective processed IT text; prospective input availability and entity independence unproven",
+    "Whole-group split protects only the declared token similarity; within-group dependence limits naive confidence interpretation",
+    "Classifier metrics include all texts, even zero known features; valid suggestion coverage/errors follow the core policy",
+    "Anomalies are numerical flags, not human-adjudicated issues or measured false alerts",
+    "No customer-domain accuracy, production SLA, autonomous resolution, business acceptance or measured savings"
+  ],
+  "local_output_sha256": {
+    "data/processed/final-evaluation/fixtures.sqlite3": "75652d4c9a11aac5b9d58b50579ae90d04bb7883e2ab669f7cbb103d7dea948b",
+    "data/processed/final-evaluation/offline.sqlite3": "8bce960e9d67fc7d3e71700c8ef0f6c28c60e41d76fb1588cc2c0e5f6047c040",
+    "data/processed/final-evaluation/predictions.json": "b4b60307c79b47e768bd340fd2386d3169c633d990f9135acaa2decba8be4860",
+    "data/processed/final-evaluation/runtime.sqlite3": "5ca3021140180108d646356aa9b24783f818cf2173ea30a45ef6f6145ee2950d"
+  },
+  "model_or_gate_or_reference_changed": false,
+  "policy": {
+    "id": "it-triage-policy-v1",
+    "mode": "qualified",
+    "specialist_categories": [
+      "Access",
+      "Administrative rights",
+      "Purchase",
+      "HR Support"
+    ],
+    "threshold": 0.8
+  },
+  "population": 7175,
+  "reference_sha256": "95278cc79a28fd378c4486e21348ad166d12f828d34234423d7e2507773f75d1",
+  "runtime_sample": {
+    "attempted": 64,
+    "database": {
+      "cases": 64,
+      "metrics": 128,
+      "reviews": 0,
+      "runs": 64
+    },
+    "execution": "Separate SQLite database; actual production subprocess with default 5-second worker budget; sequential requests timed externally through commit; report parity with offline decisions",
+    "failed_outcomes": 0,
+    "limits": "p50/p95/max over all 64 attempts including failed requests; local sequential sample, not production SLA, throughput, UI rendering or human confirmation time",
+    "max_ms": 618.6600490036653,
+    "p50_ms": 587.2032910010603,
+    "p95_ms": 600.8396707486099,
+    "parity_mismatches": [],
+    "reason_case_counts_overlapping": {
+      "anomaly_review": 3,
+      "low_score": 32,
+      "policy_human_category": 30,
+      "standard_confirmation": 14
+    },
+    "stored": 64
+  },
+  "schema_version": 1,
+  "selected_model": "logistic_c20",
+  "test_used_for_selection": false
+}

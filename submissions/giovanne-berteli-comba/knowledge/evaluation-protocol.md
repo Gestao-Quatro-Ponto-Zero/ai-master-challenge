@@ -122,3 +122,7 @@ See [tested environment/setup](../docs/evaluation-protocol.md),
 [environment evidence](../docs/review-evidence/evaluation-environment.json) and
 [version receipt](../docs/review-evidence/evaluation-current.json). Hash matching
 identifies inputs; it does not prove model quality or business acceptance.
+
+V01 has now executed this protocol: see [final evaluation](final-evaluation.md).
+The reservation is consumed; preserve the first frozen-version result and disclose
+any later choices influenced by it. No numeric rule in the original JSON changed.

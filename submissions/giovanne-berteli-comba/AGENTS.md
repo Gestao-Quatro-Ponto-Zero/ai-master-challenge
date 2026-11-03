@@ -21,7 +21,9 @@ Scope: this submission directory and its descendants. Read the repository's
   and split counts/hashes in `data/evaluation-manifest.json`. I01 implementation/setup
   is owned by `knowledge/prototype.md`; computed TRAIN/VALIDATION results are in
   `data/triage-development.json`. Do not imply final-test/production validation from
-  software checks or development results. Keep final_test reserved for V01.
+  software checks or development results. V01 results/exposure are owned by
+  `knowledge/final-evaluation.md` and `data/final-evaluation.json`; final_test is
+  now consumed. Do not tune from it or claim a later choice has an unseen test.
 - Use small tasks with acceptance criteria, checkboxes, and evidence links.
   Mark completion only after the stated criteria have been checked.
 - Preserve decisions, alternatives, rejected suggestions, corrections, and

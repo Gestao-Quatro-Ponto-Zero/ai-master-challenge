@@ -35,7 +35,8 @@ priority assignment, external integration, public deployment or dashboard is in 
 procedure, assumed error costs and acceptance targets before I01. I01 then trains/selects using development/validation only;
 V01 evaluates the selected version on the reserved test. This document is the
 behavior contract; [I01 implementation](prototype.md) and its separate development
-report now record completed training/selection, not final-test validation.
+report now record completed training/selection. [V01](final-evaluation.md) separately
+records the frozen-version final benchmark and consumed test exposure.
 
 # Stack and components
 
@@ -57,7 +58,8 @@ form intent only, not durable history. SQLite is the persistence authority.
 Bind the future UI to loopback. V00 pinned and checked an isolated environment;
 see [setup and import/constructor limits](../docs/evaluation-protocol.md). These
 V00 checks did not demonstrate UI or trained-model behavior; I01 supplies separate
-[software/functional evidence](../docs/prototype.md), with final evaluation pending.
+[software/functional evidence](../docs/prototype.md); V01 now has separate
+[final results/exposure](final-evaluation.md).
 Existing audit/diagnosis commands retain their standard-library-only setup.
 
 # Input and readiness

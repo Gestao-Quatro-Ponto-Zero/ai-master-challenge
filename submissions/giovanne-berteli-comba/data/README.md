@@ -68,6 +68,16 @@ ignored `data/models/it-triage-v1/`. SQLite stays under ignored `data/runtime/`.
 The bundle checks source/configuration/lock/file hashes before serving; do not
 change frozen settings or remove the attempt guard to rerun model selection.
 
+## V01 final evaluation
+
+[Final report](../docs/final-evaluation.md) explains the fixed plan, pre-exposure
+freeze, aggregate results, cached-score audit and separate runtime/fault populations.
+Final-test exposure is consumed; do not delete attempts or refit/select using it.
+`solution/evaluate_triage.py evaluate` reuses a completed compatible result, while
+`scripts/check_final_evaluation.py` audits recorded outputs without new predictions.
+The one-command app setup never invokes final evaluation. Test text/scores and
+SQLite outputs stay ignored under `data/processed/final-evaluation/`.
+
 ## A01 diagnosis
 
 `solution/diagnose_support.py` uses only the hash-locked customer CSV and

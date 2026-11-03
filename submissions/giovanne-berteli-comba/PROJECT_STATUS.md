@@ -3,8 +3,9 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: I01 local prototype completed. See [setup and development results](docs/prototype.md)
-  and [implementation handoff](knowledge/prototype.md). V01 final evaluation is next.
+- Current phase: V01 final evaluation completed for the frozen version. See
+  [result and limitations](docs/final-evaluation.md) and [exposure handoff](knowledge/final-evaluation.md).
+  E01 evidence/narrative/CodeTour is next.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -14,15 +15,23 @@ Updated: 2026-11-02 (America/Sao_Paulo).
 - Data evidence: official version-1 archives acquired, hashes frozen, both schemas
   and quality audited, and audit reproduced from a clean directory. See
   [D01 report](docs/data-audit.md) and [setup](data/README.md).
-- Not performed: final-test prediction/evaluation, human adjudication of anomalies,
-  measured operational savings, deployment, or PR. Prototype and train/validation
-  selection are implemented; development metrics are not final-test evidence.
+- Not performed: actual human anomaly adjudication, measured operational savings,
+  production/domain-transfer validation, deployment or PR. Offline final-test
+  criteria passed; this is not business approval or production readiness.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: V01 — freeze the evaluation driver/software and assess the selected
-  model/gate/reference on reserved final_test, reporting all eight classes, errors
-  with coverage/workload, failures and end-to-end latency. No further selection or
-  refit from final-test results. UI/demo examples remain train-only.
+- Next action: E01 — consolidate the reviewer narrative, evidence coverage and
+  useful CodeTour for the stable implementation, then P01 submission review.
+- V01: 7,175 final-test cases; macro F1 0.844612 vs text baseline 0.646094;
+  standard coverage 27.19%, agreement 96.57% (1,884/1,951; 67 errors). 50 errors
+  have specialist-policy true labels: mandatory confirmation remains essential.
+  All six numerical targets passed, plus persistence/runtime parity/fault checks.
+- Final-test exposure is consumed. No new model/gate/reference was chosen or fitted.
+  UI/demo examples remain train-only; later choices informed by this test need
+  disclosed exploratory status or new evaluation data.
+- Actual sequential runtime sample: 64/64 stored, no failed outcomes, p95≈600.84 ms
+  including commit on this host. Small sample, not SLA; raw external-clock samples
+  were not persisted. 72 software tests passed before freeze/prediction.
 - I01 selection: logistic C=2, validation macro F1 0.852554; threshold 0.80, tail 0.01.
   All four fits completed, no validation refit. Seven unique functional-smoke
   requests persisted atomically; original values and append-only reviews survive

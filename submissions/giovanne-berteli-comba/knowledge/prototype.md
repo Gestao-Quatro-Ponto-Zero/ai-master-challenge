@@ -23,9 +23,10 @@ sources:
 I01 implements the S01 local assisted flow, not external routing or resolution.
 S01 still owns expected behavior, V00 owns numeric choices/selection, and
 `data/triage-development.json` owns the computed TRAIN/VALIDATION development
-results. This record owns component/setup interpretation. No final-test prediction
-or performance was computed. V01 remains pending; there is no production or
-cross-domain quality claim, human-adjudicated anomaly accuracy, or measured savings.
+results. This record owns component/setup interpretation. I01 computed development
+results only; [V01](final-evaluation.md) has now completed the frozen-version final
+evaluation and consumed the reservation. There is still no production/cross-domain
+quality claim, human-adjudicated anomaly accuracy, or measured savings.
 
 # Components
 

@@ -67,7 +67,8 @@ pairs have inconsistent chronology. Do not treat them as full service durations.
 Dataset roles and metric/evaluation boundaries are now owned by
 [dataset usage](dataset-usage.md). Selected architecture and automation scope are
 owned by the [S01 contract](solution-scope.md); the [I01 implementation](prototype.md)
-is now available locally. Final-test and production validation remain pending.
+is now available locally. [V01](final-evaluation.md) completed the final offline
+benchmark; production validation remains pending and the test reservation is consumed.
 
 # Open questions
 
@@ -77,8 +78,8 @@ is now available locally. Final-test and production validation remain pending.
   labels and validation; D02 authorizes no join or taxonomy mapping.
 - Whether the selected S01 architecture meets the V00 numerical targets on the
   reserved test; [V00 protocol](evaluation-protocol.md) and exact dependencies are
-  prepared. I01 has development-only selection results and a local prototype; V01
-  final-test results, real human adjudication and production quality remain pending.
+  prepared. I01 has a local prototype and V01 has frozen-version final results;
+  real human adjudication, prospective validity and production quality remain pending.
 - Operational assumptions needed to estimate saved effort and cost.
 
 # Analytical constraints

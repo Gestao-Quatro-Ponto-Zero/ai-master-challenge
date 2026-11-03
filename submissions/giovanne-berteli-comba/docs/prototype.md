@@ -119,7 +119,7 @@ O [relatório agregado](../data/triage-development.json) contém as quatro avali
 matrizes de confusão, métricas por classe, 42 combinações, seleção e hashes dos
 artefatos. As fontes permanecem separadas: resultados IT não demonstram qualidade
 na operação de atendimento ao cliente. A disponibilidade prospectiva de cada palavra
-de Document não está comprovada. **Teste final e validação V01 continuam pendentes.**
+de Document não está comprovada. A **[V01](final-evaluation.md) foi concluída separadamente**, com teste agora consumido.
 
 ## Verificações e limites
 
@@ -140,8 +140,8 @@ não salva num erro de escrita provocado. Sua pequena amostra de latência inclu
 commit SQLite; não é benchmark de produção. O
 [servidor real](review-evidence/triage-server.json) respondeu HTTP 200 no loopback.
 
-Falta V01: avaliar a versão congelada no teste reservado, medir erros/cobertura por
-classe e comportamento de falhas/latência com os denominadores do protocolo.
+A [V01](final-evaluation.md) avaliou a versão congelada no teste reservado e
+registrou erros/cobertura por classe, runtime e falhas com populações separadas.
 Não há ganho operacional medido, integração real ou prontidão de produção.
 
 O [check de setup](review-evidence/setup-reproduction.json) executou uma cópia
