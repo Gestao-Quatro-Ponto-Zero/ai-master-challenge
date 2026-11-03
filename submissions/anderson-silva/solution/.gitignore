@@ -1,0 +1,5 @@
+# Local secrets (API keys)
+.env
+
+# Large intermediate files (embedding vectors), rebuilt by scripts/003-it-zero-shot-run.py
+cache/

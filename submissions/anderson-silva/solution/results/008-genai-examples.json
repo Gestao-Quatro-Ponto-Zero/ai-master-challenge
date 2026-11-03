@@ -1,0 +1,59 @@
+[
+  {
+    "row": 40919,
+    "label": "HR Support",
+    "excerpt": "public holiday leave cannot submit time card sent monday public holiday leave can submit week public holiday leave fig thursday steps go manage cards add row below complete info code location hours click save close error received hours entered below your schedules hours regards",
+    "words": 44,
+    "decision": "Encaminhado automaticamente",
+    "suggested": "HR Support",
+    "confidence": 0.998,
+    "model": "z-ai/glm-5.3-flash",
+    "generated_at": "2026-11-02T22:28:29-03:00",
+    "drafts": {
+      "summary": "O usuário relata erro ao tentar registrar um cartão de ponto na segunda-feira, que é feriado público: ao adicionar uma linha com código, local e horas e clicar em salvar, aparece uma mensagem de erro sobre \"horas inseridas abaixo das horas do seu cronograma\". Ele consegue registrar normalmente o restante da semana, apenas a entrada do feriado falha. Falta saber o motivo exato do erro (se o sistema bloqueia horas em feriado ou exige valor específico) e como o usuário deseja lançar as horas do feriado.",
+      "info_request": "Hello,\n\nThank you for reaching out, and sorry to hear about the trouble submitting your time card for the public holiday.\n\nTo help investigate, could you please provide the following details:\n\n1. Which system or application are you using to submit the time card (e.g., portal name or website)?\n2. What exactly happens when you click \"Save & Close\"?\n3. The exact error message you receive (a screenshot would be very helpful).\n4. Since when have you been experiencing this issue?\n\nWith this information we can look into it further.\n\nBest regards,\nIT Support"
+    },
+    "approved": {
+      "summary": null,
+      "info_request": null
+    }
+  },
+  {
+    "row": 5050,
+    "label": "Internal Project",
+    "excerpt": "new project oracle only oracle replacement replacement hi please ask create additional attached form part tech refresh efforts related replacement version out please booked report efforts related item tech refresh costs labour costs total spent remaining budget item total markup total spent date total labor spent date total labor remaining budget program upcoming leave none planned thursday pm re ",
+    "words": 131,
+    "decision": "Fila humana com sugestões",
+    "suggested": "Internal Project",
+    "confidence": 0.5422,
+    "model": "z-ai/glm-5.3-flash",
+    "generated_at": "2026-11-02T22:28:32-03:00",
+    "drafts": {
+      "summary": "**Resumo do ticket:**\nO usuário pede ajuda para criar/preencher um formulário anexo, relacionado a esforços de substituição de sistema Oracle (\"tech refresh\"), incluindo dados como custos de mão de obra, orçamento restante, margem e gastos totais. Ele já enviou versões corrigidas dos arquivos e aguarda confirmação de detalhes da solicitante sobre como preencher o formulário. Falta confirmar as informações necessárias com a solicitante antes de prosseguir e atribuir o atendimento apropriado.",
+      "info_request": "Olá,\n\nObrigado pelo seu contato. Para podermos ajudar com a criação do formulário anexado, precisamos de algumas informações adicionais:\n\n1. Em qual sistema ou equipamento o formulário deve ser criado?\n2. O que exatamente acontece ao tentar criar/preencher o formulário?\n3. Aparece alguma mensagem de erro? Se sim, qual?\n4. Desde quando esse problema ocorre?\n\nCom esses dados poderemos analisar o caso e encaminhar para o responsável adequado.\n\nAtenciosamente,\nSuporte de TI"
+    },
+    "approved": {
+      "summary": null,
+      "info_request": null
+    }
+  },
+  {
+    "row": 47824,
+    "label": "HR Support",
+    "excerpt": "oracle fusion is not working message unplanned outage sent friday july fusion working message unplanned outage please attached image fusion site working cannot fill manager en",
+    "words": 26,
+    "decision": "Encaminhado automaticamente",
+    "suggested": "Hardware",
+    "confidence": 0.6532,
+    "model": "z-ai/glm-5.3-flash",
+    "generated_at": "2026-11-02T22:28:35-03:00",
+    "drafts": {
+      "summary": "**Resumo do ticket:** A usuária relata que o Oracle Fusion não está funcionando, exibindo a mensagem \"unplanned outage\" desde sexta-feira (11/07), e anexou uma imagem como evidência. Ela informa que agora o site do Fusion está acessível novamente, mas não consegue preencher/cadastrar o gestor. Falta saber se o problema de preencher o gestor é um erro específico ou relacionado à instabilidade anterior, e se a mensagem de outage ainda aparece em algum momento.",
+      "info_request": "Olá,\n\nObrigado pelo contato. Para que possamos analisar o caso, preciso de algumas informações adicionais:\n\n1. Qual sistema ou equipamento exatamente está apresentando o problema?\n2. O que aconteceu? Descreva o comportamento observado.\n3. Qual é a mensagem de erro exibida? (a imagem em anexo foi mencionada, mas confirme se foi enviada)\n4. Desde quando o problema ocorre?\n\nFico no aguardo para prosseguir com a análise.\n\nAtenciosamente,\nSuporte de TI"
+    },
+    "approved": {
+      "summary": null,
+      "info_request": null
+    }
+  }
+]

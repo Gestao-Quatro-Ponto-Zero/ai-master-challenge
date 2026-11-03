@@ -1,0 +1,125 @@
+[
+  {
+    "row": 40919,
+    "label": "HR Support",
+    "excerpt": "public holiday leave cannot submit time card sent monday public holiday leave can submit week public holiday leave fig thursday steps go manage cards add row below complete info code location hours click save close error received hours entered below your schedules hours regards",
+    "words": 44,
+    "decision": "Encaminhado automaticamente",
+    "suggested": "HR Support",
+    "confidence": 0.998,
+    "model": "z-ai/glm-5.3-flash",
+    "generated_at": "2026-11-02T22:34:01-03:00",
+    "prompts": {
+      "summary": "Você ajuda um atendente de suporte de TI. Resuma o ticket em português, em até 3 frases: o que a pessoa pede, o que ela já tentou e o que ainda falta saber. Regras: use só o que está escrito no texto; não acrescente datas, nomes, números, sistemas ou fatos que não apareçam nele; não complete datas parciais (se o texto diz só 'sexta-feira', escreva só 'sexta-feira'). O texto pode vir sem pontuação e sem palavras como 'not'; quando uma frase puder ser lida de dois jeitos, diga que ela está ambígua em vez de escolher uma leitura.",
+      "info_request": "You help an IT support agent. Write a short, polite message to the requester in the same language as the ticket text (if the ticket is in English, write in English). Before writing, check which of these the ticket already states: the system or equipment, what happened, the exact error message, and since when. Ask only for the items that are missing; never ask for something the ticket already states, and briefly restate what you understood. If nothing essential is missing, say what you understood and that the team will follow up. Do not promise deadlines or solutions, and do not invent names, dates or facts."
+    },
+    "drafts": {
+      "summary": "Resumo do ticket: A pessoa relata que não consegue enviar o cartão de ponto referente à folga em feriado, recebendo um erro de que as horas inseridas ficam abaixo das horas do horário dela. Ela já tentou ir em \"Manage Cards\", adicionar uma linha abaixo, preencher código, local e horas, e clicar em \"Save Close\". Não está claro se a mensagem \"cannot submit\" refere-se ao envio na segunda-feira ou à folga em si, e o ticket está ambíguo sobre se a frase \"can submit week\" significa que a folga de feriado na semana pode ser enviada ou não.",
+      "info_request": "Hello,\n\nThank you for your message. If I understand correctly: you are trying to submit your time card including leave for a public holiday (via Manage Time Cards > Add Row Below, entering code, location, and hours), and when you click \"Save & Close\" you receive the error \"Hours entered below your scheduled hours\". You also mentioned this was sent on Monday.\n\nTo help us investigate further, could you please provide:\n1. Since when has this issue been occurring (did it only start this week)?\n2. Which specific leave code and hours you are entering when the error appears?\n\nThank you, and our team will follow up once we have this information.\n\nBest regards,\nIT Support"
+    },
+    "approved": {
+      "summary": {
+        "text": "Resumo do ticket: A pessoa relata que não consegue enviar o cartão de ponto referente à folga em feriado, recebendo um erro de que as horas inseridas ficam abaixo das horas do horário dela. Ela já tentou ir em \"manage cards\", adicionar uma linha abaixo, preencher código, local e horas, e clicar em \"save close\". Não está claro se a mensagem \"cannot submit\" refere-se ao envio na segunda-feira ou à folga em si, e o ticket está ambíguo sobre se a frase \"can submit week\" significa que a folga de feriado na semana pode ser enviada ou não.",
+        "approved_by": "pessoa candidata",
+        "approved_at": "2026-11-02T22:38:22-0300",
+        "source": "versão 2 com correção",
+        "correction": {
+          "pointed_by": "IA (item 187), ao aplicar a regra das aspas aprovada para a linha 40919",
+          "approved_by": "pessoa candidata (item 188)",
+          "written_by": "IA",
+          "description": "As aspas passam a reproduzir exatamente o texto do ticket."
+        }
+      },
+      "info_request": {
+        "text": "Hello,\n\nThank you for your message. If I understand correctly: you are trying to submit your time card including leave for a public holiday (via \"manage cards\" and \"add row below\", entering code, location, and hours), and when you click \"save close\" you receive the error \"hours entered below your schedules hours\". You also mentioned this was sent on Monday.\n\nTo help us investigate further, could you please provide:\n1. Since when has this issue been occurring (did it only start this week)?\n2. Which specific leave code and hours you are entering when the error appears?\n\nThank you, and our team will follow up once we have this information.\n\nBest regards,\nIT Support",
+        "approved_by": "pessoa candidata",
+        "approved_at": "2026-11-02T22:38:22-0300",
+        "source": "versão 2 com correção",
+        "correction": {
+          "pointed_by": "IA (item 185)",
+          "approved_by": "pessoa candidata (item 186)",
+          "written_by": "IA",
+          "description": "As aspas passam a reproduzir exatamente o texto do ticket."
+        }
+      }
+    }
+  },
+  {
+    "row": 5050,
+    "label": "Internal Project",
+    "excerpt": "new project oracle only oracle replacement replacement hi please ask create additional attached form part tech refresh efforts related replacement version out please booked report efforts related item tech refresh costs labour costs total spent remaining budget item total markup total spent date total labor spent date total labor remaining budget program upcoming leave none planned thursday pm re ",
+    "words": 131,
+    "decision": "Fila humana com sugestões",
+    "suggested": "Internal Project",
+    "confidence": 0.5422,
+    "model": "z-ai/glm-5.3-flash",
+    "generated_at": "2026-11-02T22:34:06-03:00",
+    "prompts": {
+      "summary": "Você ajuda um atendente de suporte de TI. Resuma o ticket em português, em até 3 frases: o que a pessoa pede, o que ela já tentou e o que ainda falta saber. Regras: use só o que está escrito no texto; não acrescente datas, nomes, números, sistemas ou fatos que não apareçam nele; não complete datas parciais (se o texto diz só 'sexta-feira', escreva só 'sexta-feira'). O texto pode vir sem pontuação e sem palavras como 'not'; quando uma frase puder ser lida de dois jeitos, diga que ela está ambígua em vez de escolher uma leitura.",
+      "info_request": "You help an IT support agent. Write a short, polite message to the requester in the same language as the ticket text (if the ticket is in English, write in English). Before writing, check which of these the ticket already states: the system or equipment, what happened, the exact error message, and since when. Ask only for the items that are missing; never ask for something the ticket already states, and briefly restate what you understood. If nothing essential is missing, say what you understood and that the team will follow up. Do not promise deadlines or solutions, and do not invent names, dates or facts."
+    },
+    "drafts": {
+      "summary": "**Resumo do ticket:**\n\nA pessoa pede ajuda para criar um formulário anexo, relacionado a esforços de tech refresh / substituição (replacement), incluindo custos de mão de obra, total gasto, orçamento restante e markup, e também solicita versões corrigidas dos arquivos com margem, além de detalhes sobre como preencher o formulário de setup. Ela menciona que vai preencher os detalhes e, após confirmação, pede que se processe a atribuição apropriada conforme o usual. O texto contém trechos ambíguos (por exemplo, as repetidas frases sobre \"program upcoming leave thursday\" e datas como \"thursday pm\" sem contexto claro), então não é possível determinar com precisão o que ainda falta saber — aparentemente restam detalhes sobre o preenchimento do formulário e a confirmação final, conforme mencionado no texto.",
+      "info_request": "Hello,\n\nThank you for your message. If I understand correctly, you are asking us to help create an additional attached form as part of the tech refresh efforts related to the Oracle replacement, and you would like details on how to fill in the setup form so the request can be assigned appropriately.\n\nTo help us process this, could you please clarify a few points:\n\n- The attached form or template is not clearly identifiable on our side — could you confirm which specific form/file you are referring to, or re-send it?\n- Which exact fields or sections you need guidance on when filling in the setup form?\n- Which project or cost item this should be booked against (e.g., the specific Oracle replacement workstream), if applicable?\n\nOnce you confirm these details, we will proceed as usual and assign the request to the appropriate team.\n\nBest regards,\nIT Support"
+    },
+    "approved": {
+      "summary": {
+        "text": "**Resumo do ticket:**\n\nA pessoa pede ajuda para criar um formulário anexo, relacionado a esforços de tech refresh / substituição (replacement), incluindo custos de mão de obra, total gasto, orçamento restante e markup, e também solicita versões corrigidas dos arquivos com margem, além de detalhes sobre como preencher o formulário de setup. Ela menciona que vai preencher os detalhes e, após confirmação, pede que se processe a atribuição apropriada conforme o usual. O texto contém trechos ambíguos (por exemplo, as repetidas frases sobre \"program upcoming leave thursday\" e datas como \"thursday pm\" sem contexto claro), então não é possível determinar com precisão o que ainda falta saber — aparentemente restam detalhes sobre o preenchimento do formulário e a confirmação final, conforme mencionado no texto.",
+        "approved_by": "pessoa candidata",
+        "approved_at": "2026-11-02T22:38:22-0300",
+        "source": "versão 2 sem alteração"
+      },
+      "info_request": {
+        "text": "Hello,\n\nThank you for your message. If I understand correctly, you are asking us to help create an additional attached form as part of the tech refresh efforts related to the Oracle replacement, and you would like details on how to fill in the setup form so the request can be assigned appropriately.\n\nTo help us process this, could you please clarify a few points:\n\n- The attached form or template is not clearly identifiable on our side — could you confirm which specific form/file you are referring to, or re-send it?\n- Which exact fields or sections you need guidance on when filling in the setup form?\n- Which project or cost item this should be booked against (e.g., the specific Oracle replacement workstream), if applicable?\n\nOnce you confirm these details, we will proceed as usual and assign the request to the appropriate team.\n\nBest regards,\nIT Support",
+        "approved_by": "pessoa candidata",
+        "approved_at": "2026-11-02T22:38:22-0300",
+        "source": "versão 2 sem alteração"
+      }
+    }
+  },
+  {
+    "row": 47824,
+    "label": "HR Support",
+    "excerpt": "oracle fusion is not working message unplanned outage sent friday july fusion working message unplanned outage please attached image fusion site working cannot fill manager en",
+    "words": 26,
+    "decision": "Encaminhado automaticamente",
+    "suggested": "Hardware",
+    "confidence": 0.6532,
+    "model": "z-ai/glm-5.3-flash",
+    "generated_at": "2026-11-02T22:34:10-03:00",
+    "prompts": {
+      "summary": "Você ajuda um atendente de suporte de TI. Resuma o ticket em português, em até 3 frases: o que a pessoa pede, o que ela já tentou e o que ainda falta saber. Regras: use só o que está escrito no texto; não acrescente datas, nomes, números, sistemas ou fatos que não apareçam nele; não complete datas parciais (se o texto diz só 'sexta-feira', escreva só 'sexta-feira'). O texto pode vir sem pontuação e sem palavras como 'not'; quando uma frase puder ser lida de dois jeitos, diga que ela está ambígua em vez de escolher uma leitura.",
+      "info_request": "You help an IT support agent. Write a short, polite message to the requester in the same language as the ticket text (if the ticket is in English, write in English). Before writing, check which of these the ticket already states: the system or equipment, what happened, the exact error message, and since when. Ask only for the items that are missing; never ask for something the ticket already states, and briefly restate what you understood. If nothing essential is missing, say what you understood and that the team will follow up. Do not promise deadlines or solutions, and do not invent names, dates or facts."
+    },
+    "drafts": {
+      "summary": "Resumo do ticket:\n\n1. O usuário relata que o Oracle Fusion apresentaria uma mensagem de \"unplanned outage\", e menciona uma imagem anexada, mas o texto é ambíguo: não está claro se o sistema \"não está funcionando\" ou \"está funcionando\", pois as duas leituras aparecem no texto sem separação clara.\n2. Também é ambíguo se o usuário \"não consegue preencher o gestor\" (cannot fill manager) ou se consegue, já que o texto pode ser lido de dois jeitos.\n3. Falta esclarecer: qual é o estado atual do sistema, em que momento (o texto menciona apenas \"sexta-feira\") a mensagem apareceu, e o que exatamente a imagem anexada mostra.",
+      "info_request": "Hello,\n\nThank you for your message. I understand that you are experiencing an issue with Oracle Fusion, which shows an \"unplanned outage\" message, and that you have attached an image. I also noted that the site appears to work, but you cannot fill in the manager field.\n\nTo help us investigate, could you please provide the following details:\n\n1. Since exactly when have you been experiencing this issue (date and time)?\n2. Does the outage message appear on all Oracle Fusion pages, or only where you try to fill in the manager field?\n3. Could you confirm whether the attached image shows the \"unplanned outage\" message, so we can make sure we received it correctly?\n\nThank you in advance, and we will follow up as soon as we have more information.\n\nBest regards,\nIT Support"
+    },
+    "approved": {
+      "summary": {
+        "text": "Resumo do ticket:\n\n1. O usuário relata que o Oracle Fusion apresentaria uma mensagem de \"unplanned outage\", e menciona uma imagem anexada, mas o texto é ambíguo: não está claro se o sistema não está funcionando ou está funcionando, pois as duas leituras aparecem no texto sem separação clara.\n2. Também é ambíguo se o usuário não consegue preencher o gestor (cannot fill manager) ou se consegue, já que o texto pode ser lido de dois jeitos.\n3. Falta esclarecer: qual é o estado atual do sistema, em que momento (o texto menciona apenas sexta-feira) a mensagem apareceu, e o que exatamente a imagem anexada mostra.",
+        "approved_by": "pessoa candidata",
+        "approved_at": "2026-11-02T22:38:22-0300",
+        "source": "versão 2 com correção",
+        "correction": {
+          "pointed_by": "IA (item 187), como observação",
+          "approved_by": "pessoa candidata (item 188)",
+          "written_by": "IA",
+          "description": "Aspas só para texto literal do ticket; as traduções ficaram sem aspas."
+        }
+      },
+      "info_request": {
+        "text": "Hello,\n\nThank you for your message. I understand that you are experiencing an issue with Oracle Fusion, which shows an \"unplanned outage\" message, and that you have attached an image. From your message, it is not clear to us whether the site is working at the moment, or whether you are able to fill in the manager field.\n\nTo help us investigate, could you please provide the following details:\n\n1. Is the Oracle Fusion site working for you right now? If so, are you able to fill in the manager field?\n2. Since exactly when have you been experiencing this issue (date and time)?\n3. Could you confirm whether the attached image shows the \"unplanned outage\" message, so we can make sure we received it correctly?\n\nThank you in advance, and we will follow up as soon as we have more information.\n\nBest regards,\nIT Support",
+        "approved_by": "pessoa candidata",
+        "approved_at": "2026-11-02T22:38:22-0300",
+        "source": "versão 2 com correção",
+        "correction": {
+          "pointed_by": "IA (item 185)",
+          "approved_by": "pessoa candidata (item 186)",
+          "written_by": "IA",
+          "description": "O pedido deixa de assumir que o site funciona e pergunta se ele funciona."
+        }
+      }
+    }
+  }
+]
