@@ -1,0 +1,47 @@
+{
+  "bootstrap": {
+    "archive_sha256": "b26fcc8dfa1c39b5a5613445af3be3eefda45d9a39359bee271eafe34913583e",
+    "archive_url": "https://github.com/astral-sh/uv/releases/download/0.9.7/uv-x86_64-unknown-linux-gnu.tar.gz",
+    "uv_version": "0.9.7"
+  },
+  "cold_setup": {
+    "command": "bash <fresh-submission>/run.sh --prepare-only from /tmp",
+    "exit_code": 0,
+    "final_test_predictions": 0,
+    "fits_in_isolated_reproduction": 4,
+    "initial_state": "No local venv, uv, managed Python, raw data, membership or models",
+    "python": "3.12.3",
+    "python_managed_locally": true,
+    "sudo_or_system_package_install": false,
+    "system_venv_or_ensurepip_used": false
+  },
+  "default_launcher_server": {
+    "bind": "127.0.0.1",
+    "command": "bash <fresh-submission>/run.sh from /tmp",
+    "health_http_status": 200,
+    "port_override_for_test": 18502,
+    "terminated_after_check": true
+  },
+  "limits": "Executed Linux x86_64 with glibc. Initial downloads require network; interrupted/incompatible training is diagnosed and preserved, not silently overwritten.",
+  "managed_python_inference_smoke": {
+    "final_test_predictions": 0,
+    "metric_rows": 14,
+    "unique_requests_stored": 7,
+    "write_failure_visible": true
+  },
+  "primary_workspace": {
+    "additional_fits": 0,
+    "original_training_provenance_preserved": true
+  },
+  "reproduction": {
+    "same_candidate_validation_macro_f1_within": 1e-12,
+    "same_full_selected_gate_summary": true,
+    "same_selected_model": true
+  },
+  "warm_setup": {
+    "additional_fits": 0,
+    "exit_code": 0,
+    "model_data_hashes_and_mtimes_unchanged": true,
+    "network_blocked_by_proxy_and_uv_offline": true
+  }
+}

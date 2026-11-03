@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "challenge": "002",
+  "upstream_repository": "Gestao-Quatro-Ponto-Zero/ai-master-challenge",
+  "research_started_at": "2026-11-02T18:26:42Z",
+  "source_inspection_finished_at": "2026-11-02T18:30:01Z",
+  "elapsed_source_inspection_seconds": 199,
+  "cap": {
+    "max_reviewed_prs": 3,
+    "max_wall_minutes": 20
+  },
+  "query": "repo:Gestao-Quatro-Ponto-Zero/ai-master-challenge is:pr 002 in:title",
+  "query_url": "https://api.github.com/search/issues?q=repo%3AGestao-Quatro-Ponto-Zero%2Fai-master-challenge+is%3Apr+002+in%3Atitle&sort=updated&order=desc&per_page=100",
+  "query_snapshot_at": "2026-11-02T18:28:16.104293+00:00",
+  "ordering": "updated desc; no state filter; title query 002; selected top three after eligibility confirmation in each README",
+  "query_total_count": 49,
+  "incomplete_results": false,
+  "query_result_scope": "Title matches only, including some mixed-challenge titles; not an exhaustive count of confirmed Challenge 002 submissions",
+  "returned_order": [
+    211,
+    209,
+    205,
+    202,
+    121,
+    195,
+    193,
+    190,
+    189,
+    186,
+    179,
+    126,
+    178,
+    172,
+    166,
+    138,
+    157,
+    158,
+    156,
+    150,
+    141,
+    142,
+    130,
+    134,
+    133,
+    132,
+    131,
+    107,
+    127,
+    118,
+    104,
+    5,
+    109,
+    97,
+    105,
+    101,
+    100,
+    99,
+    27,
+    81,
+    68,
+    32,
+    15,
+    52,
+    26,
+    20,
+    43,
+    37,
+    11
+  ],
+  "exclusions": [],
+  "reviewed_prs": [
+    {
+      "number": 211,
+      "title": "[Submission] Paulo Vinicius Alves — Challenge 002",
+      "url": "https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/211",
+      "updated_at": "2026-10-22T19:16:30Z",
+      "head_sha": "366e7eb5b292582efa4d86aeaa199d56e5af3d06",
+      "head_repository": "Pauloviniciusd/ai-master-challenge",
+      "base_sha": "4aed364d572fabe0f1fff1f0c6f32960b30fe575",
+      "changed_files": 45,
+      "reviewed_files": [
+        {
+          "path": "submissions/vinicius-alves/README.md",
+          "url": "https://raw.githubusercontent.com/Pauloviniciusd/ai-master-challenge/366e7eb5b292582efa4d86aeaa199d56e5af3d06/submissions/vinicius-alves/README.md",
+          "blob_sha": "7b47e3678fce03b38357b040599af93c57133907",
+          "sha256": "aba74ade5a91819b2fa05d0ee0e9603320f2e1d70eea541bfd536c80957521c2",
+          "bytes": 9578,
+          "inspection": "README full text"
+        },
+        {
+          "path": "submissions/vinicius-alves/solution/04-proposta.md",
+          "url": "https://raw.githubusercontent.com/Pauloviniciusd/ai-master-challenge/366e7eb5b292582efa4d86aeaa199d56e5af3d06/submissions/vinicius-alves/solution/04-proposta.md",
+          "blob_sha": "9b451e97f344ef968af23265bc9a79c9a91ca25f",
+          "sha256": "9ac1fb6abbfff64f98e95bb5fa184a0e3d8e5966b8f6257307ad8f25c1b7cfd5",
+          "bytes": 10007,
+          "inspected_lines": "full text"
+        }
+      ],
+      "eligibility": "Challenge 002 declared in PR title and submission README; not this candidate",
+      "file_list_complete": true,
+      "source_identity": "Each fetched text blob SHA-1 matched the GitHub PR file metadata; SHA-256 also recorded"
+    },
+    {
+      "number": 209,
+      "title": "[Submission] Hoffman — Challenge 002",
+      "url": "https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/209",
+      "updated_at": "2026-10-21T17:46:25Z",
+      "head_sha": "dd5c5230e1a17b535c46e5925bbf69bf0399494a",
+      "head_repository": "MateusHoffman/ai-master-challenge",
+      "base_sha": "4aed364d572fabe0f1fff1f0c6f32960b30fe575",
+      "changed_files": 8,
+      "reviewed_files": [
+        {
+          "path": "submissions/hoffman/README.md",
+          "url": "https://raw.githubusercontent.com/MateusHoffman/ai-master-challenge/dd5c5230e1a17b535c46e5925bbf69bf0399494a/submissions/hoffman/README.md",
+          "blob_sha": "509d277db7c3b5aa184be088674d65e59fd54877",
+          "sha256": "a2a87bd1e3722aae4a298da5953b539b6c255375bad37da2e8a8607bd5c7f446",
+          "bytes": 8871,
+          "inspection": "README full text"
+        },
+        {
+          "path": "submissions/hoffman/solution/prototipo.py",
+          "url": "https://raw.githubusercontent.com/MateusHoffman/ai-master-challenge/dd5c5230e1a17b535c46e5925bbf69bf0399494a/submissions/hoffman/solution/prototipo.py",
+          "blob_sha": "9156d3c38437027901798632476f2711c7526e13",
+          "sha256": "294b50cefd1a07b17ef5210c7ab7c48d7f1ce011e2da439451c42d0acefc9f4a",
+          "bytes": 3513,
+          "inspected_lines": "full text"
+        }
+      ],
+      "eligibility": "Challenge 002 declared in PR title and submission README; not this candidate",
+      "file_list_complete": true,
+      "source_identity": "Each fetched text blob SHA-1 matched the GitHub PR file metadata; SHA-256 also recorded"
+    },
+    {
+      "number": 205,
+      "title": "[Submission] Bernardo Meireles Corrêa — Challenge 002",
+      "url": "https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge/pull/205",
+      "updated_at": "2026-10-20T03:35:58Z",
+      "head_sha": "d8fd3a932350e0d1e217134acb93d3ff65b0d40e",
+      "head_repository": "meireles-bernardo/ai-master-challenge",
+      "base_sha": "4aed364d572fabe0f1fff1f0c6f32960b30fe575",
+      "changed_files": 76,
+      "reviewed_files": [
+        {
+          "path": "submissions/bernardo-meireles-correa/README.md",
+          "url": "https://raw.githubusercontent.com/meireles-bernardo/ai-master-challenge/d8fd3a932350e0d1e217134acb93d3ff65b0d40e/submissions/bernardo-meireles-correa/README.md",
+          "blob_sha": "ea7dfed06887112eaeaf0ee52e9f41bc7256b0e2",
+          "sha256": "5f84c7248c6c93b233386c126c0039b8ce38cc04d8882b9ae9cc6b80171c1c70",
+          "bytes": 19516,
+          "inspection": "README full text"
+        },
+        {
+          "path": "submissions/bernardo-meireles-correa/analysis/train.py",
+          "url": "https://raw.githubusercontent.com/meireles-bernardo/ai-master-challenge/d8fd3a932350e0d1e217134acb93d3ff65b0d40e/submissions/bernardo-meireles-correa/analysis/train.py",
+          "blob_sha": "bc24e5c4ab75ea422ac88ed2f05a588fbc5772fb",
+          "sha256": "542026de5b0f3698849ce48bdcc620e84a1133427f229d195435d88379f4e348",
+          "bytes": 8986,
+          "inspected_lines": "1-10, 17-27, 29-49, 51-72, 83-145, 147-171"
+        },
+        {
+          "path": "submissions/bernardo-meireles-correa/analysis/classifier_curve.py",
+          "url": "https://raw.githubusercontent.com/meireles-bernardo/ai-master-challenge/d8fd3a932350e0d1e217134acb93d3ff65b0d40e/submissions/bernardo-meireles-correa/analysis/classifier_curve.py",
+          "blob_sha": "06eca2992558a4723c8ed02f169dff927e860bcb",
+          "sha256": "ba90d78d809a5df030b6d4bae5895c3b6e9448fa0567cb031a2837964c2b4e13",
+          "bytes": 3393,
+          "inspected_lines": "1-7, 12-18, 28-68"
+        },
+        {
+          "path": "submissions/bernardo-meireles-correa/outputs/classifier_metrics.json",
+          "url": "https://raw.githubusercontent.com/meireles-bernardo/ai-master-challenge/d8fd3a932350e0d1e217134acb93d3ff65b0d40e/submissions/bernardo-meireles-correa/outputs/classifier_metrics.json",
+          "blob_sha": "ac8fc6564139e5a95b37150a7ad451713920e122",
+          "sha256": "d712b9a2884550b68de0817743b687af916fa1cb7df34a60c979ad09d5675253",
+          "bytes": 5220,
+          "inspected_lines": "full text"
+        }
+      ],
+      "eligibility": "Challenge 002 declared in PR title and submission README; not this candidate",
+      "file_list_complete": true,
+      "source_identity": "Each fetched text blob SHA-1 matched the GitHub PR file metadata; SHA-256 also recorded"
+    }
+  ],
+  "access_limits": [
+    "Browser fetch of search and three PR pages returned cache miss; anonymous HTTPS API/raw access succeeded",
+    "No deploy or demo was opened; no foreign code, test, model or serialized artifact was executed",
+    "No private evaluator baseline, live performance or complete repository history inspected"
+  ],
+  "local_validation": {
+    "checked_at": "2026-11-02T18:35:34.973770+00:00",
+    "test_command": "python3 -I -m unittest discover -s tests -v",
+    "existing_tests_passed": 19,
+    "local_document_links_checked": 156,
+    "missing_local_links": [],
+    "d01_regenerated_audit_sha256": "fd9319894962f9117f5a7d35c536f9cf197869647365f90704203fd1b1a5868f",
+    "limits": "Checks cover our documents/software, not candidate performance or live demos"
+  }
+}

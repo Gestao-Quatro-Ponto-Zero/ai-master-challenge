@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "acquired_at": "2026-11-02T17:25:31.427124+00:00",
+  "method": "Anonymous HTTPS GET; pinned Kaggle datasetVersionNumber=1; ZIP member bytes preserved",
+  "datasets": {
+    "customer_support": {
+      "source": "https://www.kaggle.com/datasets/suraj520/customer-support-ticket-dataset",
+      "metadata_url": "https://www.kaggle.com/api/v1/datasets/view/suraj520/customer-support-ticket-dataset",
+      "download_url": "https://www.kaggle.com/api/v1/datasets/download/suraj520/customer-support-ticket-dataset?datasetVersionNumber=1",
+      "version": 1,
+      "source_last_updated": "2023-06-02T01:04:47.673Z",
+      "license_declared_by_publisher": "CC0: Public Domain",
+      "archive": {
+        "path": "data/raw/customer_support-v1.zip",
+        "bytes": 847457,
+        "sha256": "99e848c33601eb8863d00f1b8304faa7d1336243b985c2e3ceabe35806149df8"
+      },
+      "file": {
+        "path": "data/raw/customer_support-v1.csv",
+        "zip_member": "customer_support_tickets.csv",
+        "bytes": 3945533,
+        "sha256": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea"
+      }
+    },
+    "it_service": {
+      "source": "https://www.kaggle.com/datasets/adisongoh/it-service-ticket-classification-dataset",
+      "metadata_url": "https://www.kaggle.com/api/v1/datasets/view/adisongoh/it-service-ticket-classification-dataset",
+      "download_url": "https://www.kaggle.com/api/v1/datasets/download/adisongoh/it-service-ticket-classification-dataset?datasetVersionNumber=1",
+      "version": 1,
+      "source_last_updated": "2024-02-18T17:24:54.847Z",
+      "license_declared_by_publisher": "CC0: Public Domain",
+      "archive": {
+        "path": "data/raw/it_service-v1.zip",
+        "bytes": 3615264,
+        "sha256": "1e6c2508dba84f737ef30f589c2e4f7b2b27a4bbec753e6b5c84183a5f91ed4f"
+      },
+      "file": {
+        "path": "data/raw/it_service-v1.csv",
+        "zip_member": "all_tickets_processed_improved_v3.csv",
+        "bytes": 14568920,
+        "sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4"
+      }
+    }
+  }
+}

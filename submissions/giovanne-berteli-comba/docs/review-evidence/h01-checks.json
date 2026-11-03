@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-11-03T05:59:28.165474+00:00",
+  "actor": "automated extraction and reconciliation of an existing operator_declared record; no independent observation/authentication of participant",
+  "source": "consistent read-only SQLite backup; original database unmodified and excluded from Git",
+  "inventory": [
+    {
+      "study_id": "study-c74e087557f2f3198e18bbc7ef247106",
+      "actor_type": "operator_declared",
+      "states": {
+        "assisted": "completed",
+        "manual": "completed"
+      },
+      "completed": true
+    }
+  ],
+  "checks": {
+    "protocol_hash_matches": true,
+    "source_membership_hashes_match": true,
+    "case_assignments_reproduced_without_predictions": true,
+    "all_sixteen_rows_confirmed": true,
+    "csv_artifact_hashes_and_final_decisions_match": true,
+    "original_text_references_and_groups_match_source_plan": true
+  },
+  "omitted": [
+    "operator name",
+    "original ticket texts",
+    "database file"
+  ],
+  "sha256": {
+    "h01-result.json": "291d2191a5f7b4825d26aed52f5aea048f11489dfcda5550fbc9f92a46c997fc",
+    "h01-manual-decisions.csv": "ad3e838d81045237085809b9babc75c88bea52fa271a266fed8bd0d128553d4b",
+    "h01-assisted-decisions.csv": "8ca4258a4d0dc2540bd61e9e646086458d1d3db35ff937667f0debbdb886030f",
+    "h01-manual-audit.json": "f61ae96b2ac5d3bd53104e4c911dc9c668c42d4db666d10ca4abb5dcf414b234",
+    "h01-assisted-audit.json": "e3c0ee39bb5d14fb2bd58ff6bdfe28929679245ff20efc8058c2c097cbb816e3"
+  }
+}

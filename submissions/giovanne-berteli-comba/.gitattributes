@@ -1,0 +1,2 @@
+# Preserve exported CSV bytes while accepting their standard CRLF line endings.
+docs/review-evidence/h01-*-decisions.csv whitespace=cr-at-eol

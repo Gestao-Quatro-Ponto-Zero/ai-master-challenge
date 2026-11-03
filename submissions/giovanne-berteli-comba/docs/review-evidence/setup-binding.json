@@ -1,0 +1,21 @@
+{
+  "classifiers_refitted": 0,
+  "current_bundle_sha256": "a296c6c956ae8a34eff0386108edc6d31f2f965c5e11dcb160c081f17d0c8b6b",
+  "current_entrypoint_sha256": "6f74dd40e3700e99e1a823025e5852283c118e93a96c4435674cc38e0b2417f9",
+  "final_test_predictions": 0,
+  "limits": "The report keeps actual original training inputs and separately records current serving bindings. Only setup/CLI control flow changed; no parameter/metric/reference/pickle changed.",
+  "original_bundle_sha256": "4e036aff2c9d6f68337a2ae6f10bca6b9cb3c4bf09d01e06d8dc846d6751ba9d",
+  "original_provenance_path": "data/models/it-triage-v1/provenance/",
+  "original_training_source_sha256": "f7270d2b648f723ab8c59c401e49851ed9533a53f5a64254f554af8a64a30714",
+  "scope": "Explicit compatibility revalidation after adding a reuse guard; not a new training execution",
+  "training_calculation_ast_unchanged": true,
+  "unchanged_artifact_sha256": {
+    "demo-examples.json": "c8a82842a2ce60f06db4a6c59e00b244fa05f179131617175ffab735ae37d60a",
+    "logistic_c05.pkl": "a36019640ec360239fdb288a6fca0fc05e8ed1412799955c24b3c75c99bbe421",
+    "logistic_c20.pkl": "386cf97f8ce0c10404594376ba7fd4523d9aa4446877a30dd07746d6427b15c3",
+    "majority.pkl": "4ad462e4acc72217de3fbcdec3e44b1d627bc590a9b205159b72d4341361891f",
+    "multinomial_nb.pkl": "35a0cd5b2f08791446b4379b97955d094b9ac5f450896465f15e8b8c6eb288d7",
+    "policy.json": "855fd07930420ca208185da8accca2b44ca82dc6cbc775c3c14c9c204cff9906",
+    "reference.json": "95278cc79a28fd378c4486e21348ad166d12f828d34234423d7e2507773f75d1"
+  }
+}

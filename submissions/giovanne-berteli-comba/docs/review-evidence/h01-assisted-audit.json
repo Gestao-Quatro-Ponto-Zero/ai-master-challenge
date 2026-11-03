@@ -1,0 +1,150 @@
+{
+  "batch_id": "study-c74e087557f2f3198e18bbc7ef247106:assisted",
+  "mode": "assisted",
+  "purpose": "study",
+  "actor_type": "operator_declared",
+  "state": "completed",
+  "started_at": "2026-11-03T05:51:09.333084+00:00",
+  "finished_at": "2026-11-03T05:52:02.056112+00:00",
+  "elapsed_seconds": 52.723028,
+  "content_sha256": "6dbb166768fc165121c8c3a316025072c96b39be627fafa48f43407edd8f8bb9",
+  "artifact_sha256": "57ade9b903d53b697aa9b2e147a62aebd2208e920c83f27db65b9bd4e94c0f5e",
+  "events": [
+    {
+      "seq": 1,
+      "event_id": "af005d17-80ed-4db4-9675-eafdec7f4fd2",
+      "kind": "started",
+      "payload": {
+        "actor_type": "operator_declared",
+        "mode": "assisted",
+        "prepared_input": true
+      },
+      "created_at": "2026-11-03T05:51:09.333274+00:00"
+    },
+    {
+      "seq": 2,
+      "event_id": "6015e964-1260-4ccf-8051-fd46c24333c2",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "801d07c9-ff97-4d50-a241-1a74ca5e9f33",
+        "ticket_id": "it:044fdace33fa:1104"
+      },
+      "created_at": "2026-11-03T05:51:13.724951+00:00"
+    },
+    {
+      "seq": 3,
+      "event_id": "6aa78136-f513-4d76-b467-e24027088a3c",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "d56a8bbc-a98c-486f-897e-30deaf79b6a5",
+        "ticket_id": "it:044fdace33fa:17216"
+      },
+      "created_at": "2026-11-03T05:51:14.300005+00:00"
+    },
+    {
+      "seq": 4,
+      "event_id": "6da156a8-d5b0-4573-b8b7-ae45025ac263",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "0f6e78cd-3cf9-4a88-92d9-59cf7f2d275a",
+        "ticket_id": "it:044fdace33fa:5102"
+      },
+      "created_at": "2026-11-03T05:51:14.847430+00:00"
+    },
+    {
+      "seq": 5,
+      "event_id": "8cbcb53e-ca34-4a6e-baa3-b90563838d5a",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "ef7b3e10-771f-45c4-8560-a7998232ec6a",
+        "ticket_id": "it:044fdace33fa:27522"
+      },
+      "created_at": "2026-11-03T05:51:15.390882+00:00"
+    },
+    {
+      "seq": 6,
+      "event_id": "a264a38d-ecae-4b03-9165-ec68adffe798",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "2396ecb1-570d-4afe-8744-399abb71a80b",
+        "ticket_id": "it:044fdace33fa:34719"
+      },
+      "created_at": "2026-11-03T05:51:15.935868+00:00"
+    },
+    {
+      "seq": 7,
+      "event_id": "ea7519d6-70bb-48a8-8ad9-dc1024e70fc5",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "suggested",
+        "persisted": true,
+        "run_id": "c92c351f-2eeb-457d-9f78-32a31a85be3d",
+        "ticket_id": "it:044fdace33fa:12618"
+      },
+      "created_at": "2026-11-03T05:51:16.494427+00:00"
+    },
+    {
+      "seq": 8,
+      "event_id": "36c8ff16-ba21-4cf7-816b-0756dad9017e",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "a8970015-147e-4875-abe8-35444e9097be",
+        "ticket_id": "it:044fdace33fa:16058"
+      },
+      "created_at": "2026-11-03T05:51:17.047255+00:00"
+    },
+    {
+      "seq": 9,
+      "event_id": "30f71a87-dfa7-4b7c-b2f5-0e4671703193",
+      "kind": "suggestion_attempt",
+      "payload": {
+        "outcome": "review_needed",
+        "persisted": true,
+        "run_id": "ff98bca7-a472-4c21-8890-203c50a40630",
+        "ticket_id": "it:044fdace33fa:2204"
+      },
+      "created_at": "2026-11-03T05:51:17.591291+00:00"
+    },
+    {
+      "seq": 10,
+      "event_id": "532f8f78-61c5-4d06-9d13-b7fc88663d29",
+      "kind": "decisions",
+      "payload": {
+        "choices": {
+          "it:044fdace33fa:1104": "Access",
+          "it:044fdace33fa:12618": "Internal Project",
+          "it:044fdace33fa:16058": "Miscellaneous",
+          "it:044fdace33fa:17216": "Hardware",
+          "it:044fdace33fa:2204": "Storage",
+          "it:044fdace33fa:27522": "HR Support",
+          "it:044fdace33fa:34719": "HR Support",
+          "it:044fdace33fa:5102": "Administrative rights"
+        }
+      },
+      "created_at": "2026-11-03T05:51:44.712912+00:00"
+    },
+    {
+      "seq": 11,
+      "event_id": "db72ec9e-827d-41fd-afbb-7f33209f74b1",
+      "kind": "completed",
+      "payload": {
+        "artifact_sha256": "57ade9b903d53b697aa9b2e147a62aebd2208e920c83f27db65b9bd4e94c0f5e",
+        "elapsed_seconds": 52.723028
+      },
+      "created_at": "2026-11-03T05:52:02.056476+00:00"
+    }
+  ],
+  "limits": "Server elapsed workflow time including pauses; not active work/cash savings; original texts, names and reference labels omitted"
+}

@@ -1,0 +1,409 @@
+{
+  "captures": [
+    {
+      "captured": "2026-11-02 06:03:44 UTC.",
+      "explicit_message_ids": 0,
+      "file": "process-log/chat-exports/01-preparation-chatgpt.md",
+      "has_more_reported": false,
+      "message_occurrences": 10,
+      "represented_turn_ids": 5,
+      "sha256": "343994a0997230b9f311772c1701bf13d97debf6611e3a22f28293bc0108300a",
+      "source": "chatgpt chat `6ae55d58-0c34-83ea-a8cf-c4f715ca9ee2`."
+    },
+    {
+      "captured": "2026-11-02 06:03:44 UTC.",
+      "explicit_message_ids": 0,
+      "file": "process-log/chat-exports/02-challenge-comparison.md",
+      "has_more_reported": false,
+      "message_occurrences": 7,
+      "represented_turn_ids": 2,
+      "sha256": "dc383b6bba413bae481c95c6dc67e74a6b864ef6c3077dfc808fb99d260e3ce7",
+      "source": "codex chat `01a19ab8-7c9f-7a72-a6d1-51adb933adb8`."
+    },
+    {
+      "captured": "2026-11-02 06:03:44 UTC.",
+      "explicit_message_ids": 0,
+      "file": "process-log/chat-exports/03-planning-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 25,
+      "represented_turn_ids": 10,
+      "sha256": "ad9839a2b870483ac22e45ca45c07948e18771368faed5b3fa338f31fc5d883d",
+      "source": "codex chat `01a19a53-9f3a-71a3-86b6-c248212d7e55`."
+    },
+    {
+      "captured": "2026-11-02 15:37:26 UTC.",
+      "explicit_message_ids": 2,
+      "file": "process-log/chat-exports/04-planning-completion.md",
+      "has_more_reported": true,
+      "message_occurrences": 2,
+      "represented_turn_ids": 1,
+      "sha256": "d2c3c45deccacd4fcabdf87dfd583530a464fda57ce8ee462128e1d066638ed1",
+      "source": "codex chat `01a19a53-9f3a-71a3-86b6-c248212d7e55`."
+    },
+    {
+      "captured": "2026-11-02 15:37:26 UTC.",
+      "explicit_message_ids": 5,
+      "file": "process-log/chat-exports/05-architecture-review-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 5,
+      "represented_turn_ids": 1,
+      "sha256": "55646f256005dd05472aaaff61f5eb10bbe48c59489ce17a6b2401eb505ae63f",
+      "source": "codex chat `01a19ce2-ff11-7303-9788-a30794ae1780`."
+    },
+    {
+      "captured": "2026-11-02 16:20:56 UTC.",
+      "explicit_message_ids": 4,
+      "file": "process-log/chat-exports/06-review-validation-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 4,
+      "represented_turn_ids": 2,
+      "sha256": "fe609325e1523e9c0c494987cd6953485c0a9791f4eca2372cc5c2d638a1457d",
+      "source": "codex chat `01a19ce2-ff11-7303-9788-a30794ae1780`."
+    },
+    {
+      "captured": "2026-11-02 16:54:19 UTC.",
+      "explicit_message_ids": 4,
+      "file": "process-log/chat-exports/07-review-approval-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 4,
+      "represented_turn_ids": 2,
+      "sha256": "a057a6de2de98c42ffcdbb52a8acc0f2a42c7b3defdf8834abac69faab13cc20",
+      "source": "codex chat `01a19ce2-ff11-7303-9788-a30794ae1780`."
+    },
+    {
+      "captured": "2026-11-02 16:57:58 UTC.",
+      "explicit_message_ids": 4,
+      "file": "process-log/chat-exports/08-git-staging-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 4,
+      "represented_turn_ids": 2,
+      "sha256": "cc8b51cc92a2452b773a804989e5f9bcbfe946053c35412ea4a212b740c3b3d0",
+      "source": "codex chat `01a19ce2-ff11-7303-9788-a30794ae1780`."
+    },
+    {
+      "captured": "2026-11-02 17:05:30 UTC.",
+      "explicit_message_ids": 7,
+      "file": "process-log/chat-exports/09-foundation-controls-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 7,
+      "represented_turn_ids": 2,
+      "sha256": "aa987bfc3d08ca6d212f31e9b51277aa9bf5a7f49bf452797e9ad3caf52d2832",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 17:33:26 UTC.",
+      "explicit_message_ids": 6,
+      "file": "process-log/chat-exports/10-data-audit-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 6,
+      "represented_turn_ids": 2,
+      "sha256": "8fd24c8d2422fa02427ef7219636c773dde1d7eccccc29c02e082f11c178495c",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 18:22:35 UTC.",
+      "explicit_message_ids": 8,
+      "file": "process-log/chat-exports/11-dataset-usage-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 8,
+      "represented_turn_ids": 3,
+      "sha256": "0b2db3035a53fffa83c605e9332722b646b80d172024718ec37ce407fffa50c9",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 18:33:45 UTC.",
+      "explicit_message_ids": 7,
+      "file": "process-log/chat-exports/12-pr-review-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 7,
+      "represented_turn_ids": 3,
+      "sha256": "0b48a90be1e186b3d5cb2aeb118bd0649e1581eb6b9c52fb0eab632e5f6b9cfc",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 18:50:05 UTC.",
+      "explicit_message_ids": 8,
+      "file": "process-log/chat-exports/13-operational-diagnosis-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 8,
+      "represented_turn_ids": 3,
+      "sha256": "275623999bb4cdd65101baf70502482c2d8a7f54f808646bcfc7b48f052f3e8d",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 19:59:33 UTC.",
+      "explicit_message_ids": 8,
+      "file": "process-log/chat-exports/14-automation-scope-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 8,
+      "represented_turn_ids": 3,
+      "sha256": "0737596c0a2226c6b7432c3f26d2ec0a465cd22a04adda6f9487f1dd82192420",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 23:31:39 UTC.",
+      "explicit_message_ids": 9,
+      "file": "process-log/chat-exports/15-evaluation-protocol-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 9,
+      "represented_turn_ids": 3,
+      "sha256": "dbd82c68b4cb4e71d94f91e8f90ea2bb756c07f80b6da2b91e1958d88224c2f1",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-02 23:54:40 UTC.",
+      "explicit_message_ids": 9,
+      "file": "process-log/chat-exports/16-prototype-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 9,
+      "represented_turn_ids": 3,
+      "sha256": "516e0a09ddbf24e16325c40ba357e339d07c7dcc3429bd0b32217c3eae7ca83e",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 00:22:15 UTC.",
+      "explicit_message_ids": 8,
+      "file": "process-log/chat-exports/17-setup-fix-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 8,
+      "represented_turn_ids": 3,
+      "sha256": "3db655e27de5efc284846db82d42c5d4f4c13879bf89e4fc51296f1d14f11466",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 01:10:08 UTC.",
+      "explicit_message_ids": 8,
+      "file": "process-log/chat-exports/18-final-evaluation-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 8,
+      "represented_turn_ids": 3,
+      "sha256": "59242913e48c4a13db48ea2ad7d142676b4a790638a570a14f803800568dcb5d",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 01:43:04 UTC.",
+      "explicit_message_ids": 8,
+      "file": "process-log/chat-exports/19-reviewer-evidence-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 8,
+      "represented_turn_ids": 3,
+      "sha256": "00f46ad6dd1680c02f6f8965b073ebe78ec3b13a33fabf571c2464886638132f",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 02:06:03 UTC.",
+      "explicit_message_ids": 6,
+      "file": "process-log/chat-exports/20-codetour-discovery-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 6,
+      "represented_turn_ids": 2,
+      "sha256": "03ebbff8cfaaf4edf47ff43a9e9d2b5984fdbf6a3d1485f1a48495bdd8a41c1a",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 03:05:36 UTC.",
+      "explicit_message_ids": 4,
+      "file": "process-log/chat-exports/21-codetour-completion-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 4,
+      "represented_turn_ids": 2,
+      "sha256": "3f5950c8a736814287405a831ff76752d1e16848b7b10c0bbf6bc90127857fab",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 03:05:36 UTC.",
+      "explicit_message_ids": 5,
+      "file": "process-log/chat-exports/22-pre-submission-review-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 5,
+      "represented_turn_ids": 3,
+      "sha256": "4590d217accd85c0fee7216da74c6becea8b3a39797f431f38bcf84113da11aa",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    },
+    {
+      "captured": "2026-11-03 04:25:09 UTC.",
+      "explicit_message_ids": 10,
+      "file": "process-log/chat-exports/23-management-delivery-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 10,
+      "represented_turn_ids": 5,
+      "sha256": "dfd1e726fffd680c67bdd57fd115a53e80acbe1ed15f8c08021dfdb65d3f1af3",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    },
+    {
+      "captured": "2026-11-03 04:47:52 UTC.",
+      "explicit_message_ids": 9,
+      "file": "process-log/chat-exports/24-audience-feedback-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 9,
+      "represented_turn_ids": 3,
+      "sha256": "069944200c6dd50a6a84b39621232e4ca627b0cb15f4fcd7a1d275b13f86d1c0",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    },
+    {
+      "captured": "2026-11-03 05:44:31 UTC (extraction of the read_thread snapshot obtained earlier in this active turn).",
+      "explicit_message_ids": 12,
+      "file": "process-log/chat-exports/25-batch-workflow-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 12,
+      "represented_turn_ids": 4,
+      "sha256": "a6654aa1257c252ba3ee742b3c14158e10a6453aa959fbf368264a07a89a4598",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    },
+    {
+      "captured": "2026-11-03 06:01:53 UTC.",
+      "explicit_message_ids": 15,
+      "file": "process-log/chat-exports/26-submission-preparation-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 15,
+      "represented_turn_ids": 4,
+      "sha256": "a4cb58aa59cd0b849fa51c0eacfda293dd02db6a156ccb4bf571a98b69d46483",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    }
+  ],
+  "credential_pattern_matches": 0,
+  "distinct_explicit_message_ids": 166,
+  "duplicate_explicit_ids": 0,
+  "executive_summary_sentences": 5,
+  "headline_metric_tokens_matched": [
+    "0,844612",
+    "0,646094",
+    "27,19%",
+    "96,57%",
+    "1.951/7.175"
+  ],
+  "input_sha256": {
+    ".tours/assisted-triage.tour": "e4e0225413b3bb2e7042faadb0dce7e01bbbce9b53b61bff2d24a3d55e87d48e",
+    "README.md": "5207e45146c484ce08c92f68353691e313c35c6909a912d0062afb775e84cdef",
+    "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
+    "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
+    "docs/code-tour.md": "18cf7c5f18f0aa168083bdad04f39ca9d358fef512bf440639df43d84c2b2764",
+    "docs/conversation-coverage.md": "ad5a19292f7205645184acd081989362efcdf90bcd760eca62a16507312b286a",
+    "docs/final-evaluation.md": "bb6d13327496809c465ed0fce3116ec41317912549f20c537278dd20519da3e8",
+    "docs/operational-learning.md": "5f9c6d1f3d9c8848caada93d8b53c061d74466de84e0296dfc3d4e8eeb51a3f1",
+    "docs/review-evidence/codetour-discovery.json": "9687585a3b1759c3effeda594dee878f2d66bfc83a35252f0b6cb96bea35af89",
+    "docs/review-guide.md": "b295ca6aece6cf1688f75cba041b96a78d7d24f0a345ea7fa2a73376b22037b4",
+    "knowledge/dataset-usage.md": "cef9f5e1d43932a39ff84cf13354b2e25401347495e407e25357160ba89b8cb4",
+    "knowledge/final-evaluation.md": "1e099a9a6bccdae0813f545f51e36c3774c9cf111ea519f9d4eb055ad7d7dbd5",
+    "process-log/README.md": "990d82f897fde6a69bf0d2170ec293d678f454980380a6f734d3cfc128e4084f",
+    "process-log/chat-exports/01-preparation-chatgpt.md": "343994a0997230b9f311772c1701bf13d97debf6611e3a22f28293bc0108300a",
+    "process-log/chat-exports/02-challenge-comparison.md": "dc383b6bba413bae481c95c6dc67e74a6b864ef6c3077dfc808fb99d260e3ce7",
+    "process-log/chat-exports/03-planning-chat.md": "ad9839a2b870483ac22e45ca45c07948e18771368faed5b3fa338f31fc5d883d",
+    "process-log/chat-exports/04-planning-completion.md": "d2c3c45deccacd4fcabdf87dfd583530a464fda57ce8ee462128e1d066638ed1",
+    "process-log/chat-exports/05-architecture-review-chat.md": "55646f256005dd05472aaaff61f5eb10bbe48c59489ce17a6b2401eb505ae63f",
+    "process-log/chat-exports/06-review-validation-chat.md": "fe609325e1523e9c0c494987cd6953485c0a9791f4eca2372cc5c2d638a1457d",
+    "process-log/chat-exports/07-review-approval-chat.md": "a057a6de2de98c42ffcdbb52a8acc0f2a42c7b3defdf8834abac69faab13cc20",
+    "process-log/chat-exports/08-git-staging-chat.md": "cc8b51cc92a2452b773a804989e5f9bcbfe946053c35412ea4a212b740c3b3d0",
+    "process-log/chat-exports/09-foundation-controls-chat.md": "aa987bfc3d08ca6d212f31e9b51277aa9bf5a7f49bf452797e9ad3caf52d2832",
+    "process-log/chat-exports/10-data-audit-chat.md": "8fd24c8d2422fa02427ef7219636c773dde1d7eccccc29c02e082f11c178495c",
+    "process-log/chat-exports/11-dataset-usage-chat.md": "0b2db3035a53fffa83c605e9332722b646b80d172024718ec37ce407fffa50c9",
+    "process-log/chat-exports/12-pr-review-chat.md": "0b48a90be1e186b3d5cb2aeb118bd0649e1581eb6b9c52fb0eab632e5f6b9cfc",
+    "process-log/chat-exports/13-operational-diagnosis-chat.md": "275623999bb4cdd65101baf70502482c2d8a7f54f808646bcfc7b48f052f3e8d",
+    "process-log/chat-exports/14-automation-scope-chat.md": "0737596c0a2226c6b7432c3f26d2ec0a465cd22a04adda6f9487f1dd82192420",
+    "process-log/chat-exports/15-evaluation-protocol-chat.md": "dbd82c68b4cb4e71d94f91e8f90ea2bb756c07f80b6da2b91e1958d88224c2f1",
+    "process-log/chat-exports/16-prototype-chat.md": "516e0a09ddbf24e16325c40ba357e339d07c7dcc3429bd0b32217c3eae7ca83e",
+    "process-log/chat-exports/17-setup-fix-chat.md": "3db655e27de5efc284846db82d42c5d4f4c13879bf89e4fc51296f1d14f11466",
+    "process-log/chat-exports/18-final-evaluation-chat.md": "59242913e48c4a13db48ea2ad7d142676b4a790638a570a14f803800568dcb5d",
+    "process-log/chat-exports/19-reviewer-evidence-chat.md": "00f46ad6dd1680c02f6f8965b073ebe78ec3b13a33fabf571c2464886638132f",
+    "process-log/chat-exports/20-codetour-discovery-chat.md": "03ebbff8cfaaf4edf47ff43a9e9d2b5984fdbf6a3d1485f1a48495bdd8a41c1a",
+    "process-log/chat-exports/21-codetour-completion-chat.md": "3f5950c8a736814287405a831ff76752d1e16848b7b10c0bbf6bc90127857fab",
+    "process-log/chat-exports/22-pre-submission-review-chat.md": "4590d217accd85c0fee7216da74c6becea8b3a39797f431f38bcf84113da11aa",
+    "process-log/chat-exports/23-management-delivery-chat.md": "dfd1e726fffd680c67bdd57fd115a53e80acbe1ed15f8c08021dfdb65d3f1af3",
+    "process-log/chat-exports/24-audience-feedback-chat.md": "069944200c6dd50a6a84b39621232e4ca627b0cb15f4fcd7a1d275b13f86d1c0",
+    "process-log/chat-exports/25-batch-workflow-chat.md": "a6654aa1257c252ba3ee742b3c14158e10a6453aa959fbf368264a07a89a4598",
+    "process-log/chat-exports/26-submission-preparation-chat.md": "a4cb58aa59cd0b849fa51c0eacfda293dd02db6a156ccb4bf571a98b69d46483",
+    "review.code-workspace": "b0a7d1973a7f9cf0872396d8e2e8ecef8ad6c4d2a6f0e72ecaa5c29e6e4c40c9",
+    "review.sh": "eaad9df3e54c49be3b890e1c247f8aa19c0b9c66313ec7ca1e863349955d73f5",
+    "run.sh": "f3bee52b9d169b3bdb678584a211570e1aeef1b928c0f68c61f9e5030c9f0db6",
+    "scripts/check_review_evidence.py": "6a97861f7e8dd6c4c0bbabc24f18ff0972700db1e1fe29d9afb8a408dd8d0286",
+    "solution/batch_workflow.py": "18d931735525d57634bc44d0e7c35642c48f78b720fa324adcd236c51ad863a0",
+    "solution/management_ui.py": "ddc25d5c4e8267829d50d7420435509bb93a696da57809a1fb5ce65137db2ee0",
+    "solution/train_triage.py": "6f74dd40e3700e99e1a823025e5852283c118e93a96c4435674cc38e0b2417f9",
+    "solution/triage/core.py": "d7a158c3dab4c0a7fa8a373d993c4416d0bf2f99d40962610c934183bf9fc974",
+    "solution/triage/repository.py": "be762fd3e88a77e2277a1a47ce82b2dd1adb4f140e55b50370f15320299c8d1e",
+    "solution/triage/runtime.py": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d"
+  },
+  "limits": "Legacy messages without IDs, API pagination, incomplete/edited/deleted branches, absent attachments/native exports and messages after the current capture remain explicit gaps; no new model inference or fitting",
+  "message_occurrences": 208,
+  "scope": "Reviewer presentation, passive tour paths/unique patterns, capture inventory, headline metrics and known credential patterns; not full schema/UI/privacy certification or human verification",
+  "tour_steps": [
+    {
+      "file": "README.md",
+      "line": 37,
+      "sha256": "5207e45146c484ce08c92f68353691e313c35c6909a912d0062afb775e84cdef",
+      "title": "1. Problema, resultado e principal limite"
+    },
+    {
+      "file": "knowledge/dataset-usage.md",
+      "line": 36,
+      "sha256": "cef9f5e1d43932a39ff84cf13354b2e25401347495e407e25357160ba89b8cb4",
+      "title": "2. Dois datasets, dois papéis"
+    },
+    {
+      "file": "run.sh",
+      "line": 31,
+      "sha256": "f3bee52b9d169b3bdb678584a211570e1aeef1b928c0f68c61f9e5030c9f0db6",
+      "title": "3. Inicialização depois do feedback real"
+    },
+    {
+      "file": "data/evaluation-protocol.json",
+      "line": 19,
+      "sha256": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
+      "title": "4. Critérios antes de treinar"
+    },
+    {
+      "file": "solution/train_triage.py",
+      "line": 43,
+      "sha256": "6f74dd40e3700e99e1a823025e5852283c118e93a96c4435674cc38e0b2417f9",
+      "title": "5. Ajuste e reuso sem treino duplicado"
+    },
+    {
+      "file": "solution/triage/core.py",
+      "line": 68,
+      "sha256": "d7a158c3dab4c0a7fa8a373d993c4416d0bf2f99d40962610c934183bf9fc974",
+      "title": "6. Decisão compartilhada e anomalias"
+    },
+    {
+      "file": "solution/triage/runtime.py",
+      "line": 27,
+      "sha256": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d",
+      "title": "7. Falha visível e worker sem banco"
+    },
+    {
+      "file": "solution/triage/repository.py",
+      "line": 72,
+      "sha256": "be762fd3e88a77e2277a1a47ce82b2dd1adb4f140e55b50370f15320299c8d1e",
+      "title": "8. Valores originais e revisão durável"
+    },
+    {
+      "file": "solution/management_ui.py",
+      "line": 88,
+      "sha256": "ddc25d5c4e8267829d50d7420435509bb93a696da57809a1fb5ce65137db2ee0",
+      "title": "9. Gestão, capacidade e continuidade"
+    },
+    {
+      "file": "docs/final-evaluation.md",
+      "line": 57,
+      "sha256": "bb6d13327496809c465ed0fce3116ec41317912549f20c537278dd20519da3e8",
+      "title": "10. Evidência final e risco residual"
+    },
+    {
+      "file": "process-log/README.md",
+      "line": 13,
+      "sha256": "990d82f897fde6a69bf0d2170ec293d678f454980380a6f734d3cfc128e4084f",
+      "title": "11. Quem decidiu e o que está preservado"
+    },
+    {
+      "file": "docs/operational-learning.md",
+      "line": 1,
+      "sha256": "5f9c6d1f3d9c8848caada93d8b53c061d74466de84e0296dfc3d4e8eeb51a3f1",
+      "title": "12. Aprendizado que mudou o fluxo"
+    },
+    {
+      "file": "solution/batch_workflow.py",
+      "line": 382,
+      "sha256": "18d931735525d57634bc44d0e7c35642c48f78b720fa324adcd236c51ad863a0",
+      "title": "13. Comparação local sem fabricar ROI"
+    }
+  ]
+}

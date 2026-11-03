@@ -1,0 +1,79 @@
+{
+  "recorded_at": "2026-11-03T05:45:46.082023+00:00",
+  "actor": "automated-local-check; no human verification or measured human savings implied",
+  "software_tests": {
+    "command": ".venv/bin/python -m unittest discover -s tests -v",
+    "passed": 93,
+    "skipped": 0,
+    "log": "docs/review-evidence/batch-tests.txt"
+  },
+  "browser_workflow": {
+    "batch_id": "batch-74cb9b554fbe96c7d1b9ea7667a3a56b",
+    "actor_type": "automated_test",
+    "database": "isolated temporary SQLite; not the default operator database",
+    "state": "completed",
+    "train_examples": 2,
+    "upload_via_visible_file_picker": true,
+    "suggestion_attempts": 2,
+    "confirmed_rows": 2,
+    "decisions_survived_page_reload": true,
+    "final_csv_downloaded": true,
+    "download_matches_immutable_artifact_after_bom_removal": true,
+    "artifact_sha256": "f1234d7cab7ad85244e76da54f59a6462d9cc5ad4c06db5273181a70f70de182",
+    "elapsed_time_is_automation_with_pauses_not_human_productivity": true
+  },
+  "study_sampler_check": {
+    "cases": 16,
+    "distinct_similarity_groups": 16,
+    "partition": "train",
+    "source_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+    "membership_sha256": "2585dbe5f2d1b4f9874a8550a6d1d0b9f0228e83107599941dd8bd2d72a7363e",
+    "predictions_used_for_sampling": false,
+    "new_final_predictions": 0
+  },
+  "study_test_limits": "Automated fake-clock/fixture tests validate comparison arithmetic and negative outcomes, not human performance. AppTest checks hidden references and separate actor labels.",
+  "human_rehearsal": {
+    "status": "pending H01",
+    "default_workflow_database_created_by_agent": false,
+    "human_savings_measured": false
+  },
+  "codetour": {
+    "stops_navigated_in_actual_isolated_vscode_host": 13,
+    "source": "docs/review-evidence/codetour-discovery.json",
+    "human_visual_certification": false
+  },
+  "frozen_evaluation_check": {
+    "scope": "Reaggregation of recorded score vectors, frozen references, SQLite decisions and public confusion matrices only",
+    "model_loads": 0,
+    "new_predictions": 0,
+    "classifier_fits": 0,
+    "cached_decisions_replayed_and_matched": 7175,
+    "all_three_model_confusion_metrics_reconciled": true,
+    "assisted_denominators_and_acceptance_reconciled": true,
+    "all_frozen_inputs_and_local_output_hashes_match": true,
+    "limits": "External-clock latency aggregates are recorded by the frozen driver; individual external-clock samples were not persisted for reaggregation. SQLite elapsed_ms is a distinct pre-persistence clock, not a substitute.",
+    "input_sha256": {
+      "scripts/check_final_evaluation.py": "05c0e7631109cfab63fe902b56dd3f9708b2a75915402cac5936857da59631a0",
+      "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
+      "data/final-evaluation-freeze.json": "ace035cf59cf2aa4faec8987db7d66d7a5ad46e4403d42bac995352b82ddadd3"
+    }
+  },
+  "scope_limits": [
+    "Small balanced TRAIN usability rehearsal; not unseen classifier evaluation or production ROI.",
+    "Elapsed time includes pauses; excludes study setup, external CSV preparation, download and helpdesk delivery.",
+    "Candidate direction and AI implementation are documented; human study decisions cannot be fabricated."
+  ],
+  "input_sha256": {
+    "data/workflow-protocol.json": "47a34a0db5133696f0d22c1709407188c03619a7206924298d42abe335aad418",
+    "solution/batch_workflow.py": "18d931735525d57634bc44d0e7c35642c48f78b720fa324adcd236c51ad863a0",
+    "solution/batch_ui.py": "ea54015fb9e9e65bd84e6d7c74e46e3e9140258db893a2441ce5dec04a15a3db",
+    "solution/app.py": "677a049ed2c19b3c13c5932d361773dfb36232571ddcd6d0aee2ba2b59a08458",
+    "solution/management_ui.py": "ddc25d5c4e8267829d50d7420435509bb93a696da57809a1fb5ce65137db2ee0",
+    "tests/test_batch_workflow.py": "22fa42c1a26b4713b1acd7cfa1e8d18c062f0ed62b3819fa386942af3fed5202",
+    "tests/test_batch_ui.py": "4237eee0bd6c1a3bb9bff7ee0fc75fe18fe72a676970881ffe83e8dbb71c1ce4",
+    "docs/operational-learning.md": "7322c84eb8872c9715dc68b9d92b9ffe6227711bdbf0e29cdfd24de847b7e5c8",
+    "docs/review-evidence/batch-tests.txt": "a57e246b3a98160bc8500425c449be4e03d2ea42235acdd1c46539274aad4f09",
+    "docs/review-evidence/batch-learning.png": "fbcefb8aecd8bd3d0ec103bb31e17917d8301cca1cf8e1d9b25efd0bd78c82fc",
+    "docs/review-evidence/batch-workbench.png": "1789f51c889fc69d80b692aaa91ddec6b3cc3951f865db5b69053085a0bf1c48"
+  }
+}

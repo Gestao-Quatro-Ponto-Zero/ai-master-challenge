@@ -1,0 +1,9 @@
+﻿batch_id,ticket_id,mode,run_id,suggested_category,final_category,model_version,review_state,actor_type
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:11977,manual,,,Administrative rights,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:31480,manual,,,Access,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:4480,manual,,,Internal Project,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:12164,manual,,,Purchase,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:32144,manual,,,Storage,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:32230,manual,,,Miscellaneous,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:32059,manual,,,Internal Project,,confirmed,operator_declared
+study-c74e087557f2f3198e18bbc7ef247106:manual,it:044fdace33fa:15538,manual,,,Access,,confirmed,operator_declared

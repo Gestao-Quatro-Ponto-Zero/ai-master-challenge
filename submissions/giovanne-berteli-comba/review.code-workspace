@@ -1,0 +1,11 @@
+{
+  "folders": [
+    { "name": "Challenge 002 — revisão da submissão", "path": "." }
+  ],
+  "extensions": {
+    "recommendations": ["vsls-contrib.codetour"]
+  },
+  "settings": {
+    "codetour.promptForWorkspaceTours": true
+  }
+}

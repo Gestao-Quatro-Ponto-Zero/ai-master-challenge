@@ -1,0 +1,1406 @@
+{
+  "artifact_sha256": {
+    "bundle.json": "a296c6c956ae8a34eff0386108edc6d31f2f965c5e11dcb160c081f17d0c8b6b",
+    "demo-examples.json": "c8a82842a2ce60f06db4a6c59e00b244fa05f179131617175ffab735ae37d60a",
+    "logistic_c05.pkl": "a36019640ec360239fdb288a6fca0fc05e8ed1412799955c24b3c75c99bbe421",
+    "logistic_c20.pkl": "386cf97f8ce0c10404594376ba7fd4523d9aa4446877a30dd07746d6427b15c3",
+    "majority.pkl": "4ad462e4acc72217de3fbcdec3e44b1d627bc590a9b205159b72d4341361891f",
+    "multinomial_nb.pkl": "35a0cd5b2f08791446b4379b97955d094b9ac5f450896465f15e8b8c6eb288d7",
+    "policy.json": "855fd07930420ca208185da8accca2b44ca82dc6cbc775c3c14c9c204cff9906",
+    "reference.json": "95278cc79a28fd378c4486e21348ad166d12f828d34234423d7e2507773f75d1",
+    "validation-predictions.json": "de2c5812604734e83f166c3874d653b8959eef6e96ad72054edd82d8edf248da"
+  },
+  "bundle_sha256": "a296c6c956ae8a34eff0386108edc6d31f2f965c5e11dcb160c081f17d0c8b6b",
+  "candidates": {
+    "logistic_c05": {
+      "accuracy": 0.8323812177790163,
+      "confusion": [
+        [
+          878,
+          0,
+          41,
+          116,
+          2,
+          31,
+          0,
+          1
+        ],
+        [
+          4,
+          146,
+          3,
+          102,
+          1,
+          8,
+          0,
+          0
+        ],
+        [
+          17,
+          1,
+          1386,
+          167,
+          2,
+          58,
+          0,
+          6
+        ],
+        [
+          18,
+          4,
+          78,
+          1867,
+          2,
+          61,
+          7,
+          6
+        ],
+        [
+          1,
+          0,
+          38,
+          24,
+          229,
+          25,
+          0,
+          1
+        ],
+        [
+          13,
+          0,
+          49,
+          139,
+          7,
+          851,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          9,
+          49,
+          1,
+          6,
+          302,
+          1
+        ],
+        [
+          4,
+          1,
+          24,
+          62,
+          0,
+          11,
+          0,
+          315
+        ]
+      ],
+      "fit_and_validation_seconds": 3.1361315670001204,
+      "macro_f1": 0.8246000211208118,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.8758104738154614,
+          "precision": 0.938034188034188,
+          "recall": 0.8213283442469598,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.7002398081534772,
+          "precision": 0.954248366013072,
+          "recall": 0.553030303030303,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.8490045941807044,
+          "precision": 0.8513513513513513,
+          "recall": 0.8466707391569945,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.8172466622893412,
+          "precision": 0.7391132224861441,
+          "recall": 0.9138521781693588,
+          "support": 2043.0
+        },
+        "Internal Project": {
+          "f1-score": 0.8149466192170819,
+          "precision": 0.9385245901639344,
+          "recall": 0.720125786163522,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.8066350710900474,
+          "precision": 0.8097050428163654,
+          "recall": 0.8035882908404155,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.8895434462444771,
+          "precision": 0.9773462783171522,
+          "recall": 0.8162162162162162,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.8433734939759037,
+          "precision": 0.9545454545454546,
+          "recall": 0.7553956834532374,
+          "support": 417.0
+        },
+        "accuracy": 0.8323812177790163,
+        "macro avg": {
+          "f1-score": 0.8246000211208118,
+          "precision": 0.8953585617159577,
+          "recall": 0.7787759426596259,
+          "support": 7177.0
+        },
+        "weighted avg": {
+          "f1-score": 0.8324867695257048,
+          "precision": 0.846306622387462,
+          "recall": 0.8323812177790163,
+          "support": 7177.0
+        }
+      },
+      "warnings": []
+    },
+    "logistic_c20": {
+      "accuracy": 0.8518879754772188,
+      "confusion": [
+        [
+          915,
+          2,
+          34,
+          81,
+          2,
+          31,
+          1,
+          3
+        ],
+        [
+          3,
+          177,
+          6,
+          71,
+          1,
+          6,
+          0,
+          0
+        ],
+        [
+          21,
+          3,
+          1393,
+          147,
+          7,
+          59,
+          0,
+          7
+        ],
+        [
+          21,
+          11,
+          92,
+          1835,
+          3,
+          67,
+          6,
+          8
+        ],
+        [
+          1,
+          0,
+          30,
+          17,
+          251,
+          18,
+          0,
+          1
+        ],
+        [
+          13,
+          1,
+          43,
+          111,
+          8,
+          880,
+          3,
+          0
+        ],
+        [
+          0,
+          2,
+          6,
+          35,
+          1,
+          5,
+          319,
+          2
+        ],
+        [
+          5,
+          1,
+          19,
+          37,
+          0,
+          11,
+          0,
+          344
+        ]
+      ],
+      "fit_and_validation_seconds": 4.441512422003143,
+      "macro_f1": 0.8525539157254557,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.8935546875,
+          "precision": 0.9346271705822268,
+          "recall": 0.8559401309635173,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.7678958785249458,
+          "precision": 0.8984771573604061,
+          "recall": 0.6704545454545454,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.854601226993865,
+          "precision": 0.8582871226124461,
+          "recall": 0.8509468540012217,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.8384738405300434,
+          "precision": 0.786203941730934,
+          "recall": 0.8981889378365149,
+          "support": 2043.0
+        },
+        "Internal Project": {
+          "f1-score": 0.8494077834179357,
+          "precision": 0.9194139194139194,
+          "recall": 0.789308176100629,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.8239700374531835,
+          "precision": 0.8170844939647168,
+          "recall": 0.8309726156751652,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.9127324749642346,
+          "precision": 0.9696048632218845,
+          "recall": 0.8621621621621621,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.8797953964194374,
+          "precision": 0.9424657534246575,
+          "recall": 0.8249400479616307,
+          "support": 417.0
+        },
+        "accuracy": 0.8518879754772188,
+        "macro avg": {
+          "f1-score": 0.8525539157254557,
+          "precision": 0.8907705527888989,
+          "recall": 0.8228641837694233,
+          "support": 7177.0
+        },
+        "weighted avg": {
+          "f1-score": 0.8523338969616021,
+          "precision": 0.8578756042386597,
+          "recall": 0.8518879754772188,
+          "support": 7177.0
+        }
+      },
+      "warnings": []
+    },
+    "majority": {
+      "accuracy": 0.28465932841019925,
+      "confusion": [
+        [
+          0,
+          0,
+          0,
+          1069,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          264,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1637,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2043,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          318,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1059,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          370,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          417,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "fit_and_validation_seconds": 0.052997269995103125,
+      "macro_f1": 0.05539587852494577,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.44316702819956616,
+          "precision": 0.28465932841019925,
+          "recall": 1.0,
+          "support": 2043.0
+        },
+        "Internal Project": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 417.0
+        },
+        "accuracy": 0.28465932841019925,
+        "macro avg": {
+          "f1-score": 0.05539587852494577,
+          "precision": 0.03558241605127491,
+          "recall": 0.125,
+          "support": 7177.0
+        },
+        "weighted avg": {
+          "f1-score": 0.12615162862083235,
+          "precision": 0.08103093325094567,
+          "recall": 0.28465932841019925,
+          "support": 7177.0
+        }
+      },
+      "warnings": []
+    },
+    "multinomial_nb": {
+      "accuracy": 0.72035669499791,
+      "confusion": [
+        [
+          717,
+          0,
+          58,
+          260,
+          0,
+          33,
+          0,
+          1
+        ],
+        [
+          3,
+          39,
+          6,
+          212,
+          0,
+          4,
+          0,
+          0
+        ],
+        [
+          18,
+          0,
+          1270,
+          297,
+          0,
+          49,
+          0,
+          3
+        ],
+        [
+          15,
+          1,
+          69,
+          1908,
+          0,
+          38,
+          9,
+          3
+        ],
+        [
+          5,
+          0,
+          93,
+          62,
+          115,
+          43,
+          0,
+          0
+        ],
+        [
+          11,
+          0,
+          117,
+          290,
+          0,
+          641,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          5,
+          68,
+          0,
+          5,
+          291,
+          0
+        ],
+        [
+          8,
+          0,
+          47,
+          157,
+          0,
+          15,
+          1,
+          189
+        ]
+      ],
+      "fit_and_validation_seconds": 1.3148244190015248,
+      "macro_f1": 0.6521470460018066,
+      "per_class": {
+        "Access": {
+          "f1-score": 0.7763941526800217,
+          "precision": 0.9215938303341902,
+          "recall": 0.6707202993451824,
+          "support": 1069.0
+        },
+        "Administrative rights": {
+          "f1-score": 0.2565789473684211,
+          "precision": 0.975,
+          "recall": 0.14772727272727273,
+          "support": 264.0
+        },
+        "HR Support": {
+          "f1-score": 0.7692307692307693,
+          "precision": 0.7627627627627628,
+          "recall": 0.7758094074526573,
+          "support": 1637.0
+        },
+        "Hardware": {
+          "f1-score": 0.7204077779875401,
+          "precision": 0.5863552550706822,
+          "recall": 0.933920704845815,
+          "support": 2043.0
+        },
+        "Internal Project": {
+          "f1-score": 0.5311778290993071,
+          "precision": 1.0,
+          "recall": 0.36163522012578614,
+          "support": 318.0
+        },
+        "Miscellaneous": {
+          "f1-score": 0.6793852676205617,
+          "precision": 0.7741545893719807,
+          "recall": 0.6052880075542965,
+          "support": 1059.0
+        },
+        "Purchase": {
+          "f1-score": 0.8673621460506706,
+          "precision": 0.9667774086378738,
+          "recall": 0.7864864864864864,
+          "support": 370.0
+        },
+        "Storage": {
+          "f1-score": 0.6166394779771615,
+          "precision": 0.9642857142857143,
+          "recall": 0.45323741007194246,
+          "support": 417.0
+        },
+        "accuracy": 0.72035669499791,
+        "macro avg": {
+          "f1-score": 0.6521470460018066,
+          "precision": 0.8688661950579004,
+          "recall": 0.5918531010761798,
+          "support": 7177.0
+        },
+        "weighted avg": {
+          "f1-score": 0.7099306472618779,
+          "precision": 0.7784303647174835,
+          "recall": 0.72035669499791,
+          "support": 7177.0
+        }
+      },
+      "warnings": []
+    }
+  },
+  "classes": [
+    "Access",
+    "Administrative rights",
+    "HR Support",
+    "Hardware",
+    "Internal Project",
+    "Miscellaneous",
+    "Purchase",
+    "Storage"
+  ],
+  "cost_sensitivity_validation_only": {
+    "1.0": 0.9460916817611451,
+    "2.0": 0.983015187404171
+  },
+  "cost_unit": "dimensionless illustrative review effort; not minutes, money or measured business loss",
+  "final_test_predictions": 0,
+  "gate_grid": [
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 1.1129023268774534,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2999,
+        "standard_review": 3884,
+        "triage_review": 294
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.810010846562734,
+      "standard_cases": 3884,
+      "standard_correct": 3194,
+      "standard_coverage": 0.5411731921415633,
+      "tail": 0.01,
+      "threshold": 0.3
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 1.0971436533369787,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2964,
+        "standard_review": 3821,
+        "triage_review": 392
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8192565830174287,
+      "standard_cases": 3821,
+      "standard_correct": 3177,
+      "standard_coverage": 0.5323951511773721,
+      "tail": 0.01,
+      "threshold": 0.35
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 1.0687195206910292,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2888,
+        "standard_review": 3691,
+        "triage_review": 598
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.83355375397094,
+      "standard_cases": 3691,
+      "standard_correct": 3121,
+      "standard_coverage": 0.5142817333147555,
+      "tail": 0.01,
+      "threshold": 0.4
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 1.0410477915562975,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2786,
+        "standard_review": 3498,
+        "triage_review": 893
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8509776166024842,
+      "standard_cases": 3498,
+      "standard_correct": 3018,
+      "standard_coverage": 0.4873902744879476,
+      "tail": 0.01,
+      "threshold": 0.45
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 1.0101435140030064,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2656,
+        "standard_review": 3294,
+        "triage_review": 1227
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8720159640894392,
+      "standard_cases": 3294,
+      "standard_correct": 2910,
+      "standard_coverage": 0.45896614184199525,
+      "tail": 0.01,
+      "threshold": 0.5
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9915563605962943,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2554,
+        "standard_review": 3092,
+        "triage_review": 1531
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8906832627895855,
+      "standard_cases": 3092,
+      "standard_correct": 2788,
+      "standard_coverage": 0.4308206771631601,
+      "tail": 0.01,
+      "threshold": 0.55
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9725930054339732,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2441,
+        "standard_review": 2924,
+        "triage_review": 1812
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9038136917796793,
+      "standard_cases": 2924,
+      "standard_correct": 2674,
+      "standard_coverage": 0.407412567925317,
+      "tail": 0.01,
+      "threshold": 0.6
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9544795875713599,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2331,
+        "standard_review": 2734,
+        "triage_review": 2112
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9215216784212676,
+      "standard_cases": 2734,
+      "standard_correct": 2547,
+      "standard_coverage": 0.3809391110491849,
+      "tail": 0.01,
+      "threshold": 0.65
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9519437090705971,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2231,
+        "standard_review": 2528,
+        "triage_review": 2418
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9307692300670041,
+      "standard_cases": 2528,
+      "standard_correct": 2378,
+      "standard_coverage": 0.35223631043611536,
+      "tail": 0.01,
+      "threshold": 0.7
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.948125957921096,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2105,
+        "standard_review": 2296,
+        "triage_review": 2776
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9435191477920971,
+      "standard_cases": 2296,
+      "standard_correct": 2188,
+      "standard_coverage": 0.31991082625052253,
+      "tail": 0.01,
+      "threshold": 0.75
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9460916817611451,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1935,
+        "standard_review": 2053,
+        "triage_review": 3189
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9539110291002628,
+      "standard_cases": 2053,
+      "standard_correct": 1977,
+      "standard_coverage": 0.2860526682457851,
+      "tail": 0.01,
+      "threshold": 0.8
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9487808276438313,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1770,
+        "standard_review": 1762,
+        "triage_review": 3645
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9659986785829786,
+      "standard_cases": 1762,
+      "standard_correct": 1717,
+      "standard_coverage": 0.24550647903023548,
+      "tail": 0.01,
+      "threshold": 0.85
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.9600808137104385,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1571,
+        "standard_review": 1455,
+        "triage_review": 4151
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9755732088672071,
+      "standard_cases": 1455,
+      "standard_correct": 1431,
+      "standard_coverage": 0.20273094607774836,
+      "tail": 0.01,
+      "threshold": 0.9
+    },
+    {
+      "anomaly_cases": 291,
+      "mean_cost": 0.984213459662795,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1309,
+        "standard_review": 981,
+        "triage_review": 4887
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9881244669775846,
+      "standard_cases": 981,
+      "standard_correct": 976,
+      "standard_coverage": 0.13668663787097673,
+      "tail": 0.01,
+      "threshold": 0.95
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 1.099763132227883,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2818,
+        "standard_review": 3655,
+        "triage_review": 704
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8158892568398162,
+      "standard_cases": 3655,
+      "standard_correct": 3028,
+      "standard_coverage": 0.5092657099066462,
+      "tail": 0.025,
+      "threshold": 0.3
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 1.0973526543123195,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2811,
+        "standard_review": 3646,
+        "triage_review": 720
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8168470743297499,
+      "standard_cases": 3646,
+      "standard_correct": 3024,
+      "standard_coverage": 0.5080117040546189,
+      "tail": 0.025,
+      "threshold": 0.35
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 1.0705587292740055,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2754,
+        "standard_review": 3522,
+        "triage_review": 901
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8311836750232872,
+      "standard_cases": 3522,
+      "standard_correct": 2971,
+      "standard_coverage": 0.4907342900933538,
+      "tail": 0.025,
+      "threshold": 0.4
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 1.0443778737633507,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2657,
+        "standard_review": 3340,
+        "triage_review": 1180
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8483136433035801,
+      "standard_cases": 3340,
+      "standard_correct": 2874,
+      "standard_coverage": 0.4653755050856904,
+      "tail": 0.025,
+      "threshold": 0.45
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 1.0139473317541585,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2527,
+        "standard_review": 3138,
+        "triage_review": 1512
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8700053840537948,
+      "standard_cases": 3138,
+      "standard_correct": 2767,
+      "standard_coverage": 0.43723004040685526,
+      "tail": 0.025,
+      "threshold": 0.5
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9955831127211401,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2427,
+        "standard_review": 2944,
+        "triage_review": 1806
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8887787032651245,
+      "standard_cases": 2944,
+      "standard_correct": 2650,
+      "standard_coverage": 0.4101992475964888,
+      "tail": 0.025,
+      "threshold": 0.55
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9768426919325127,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2318,
+        "standard_review": 2779,
+        "triage_review": 2080
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9018571199925617,
+      "standard_cases": 2779,
+      "standard_correct": 2537,
+      "standard_coverage": 0.38720914030932146,
+      "tail": 0.025,
+      "threshold": 0.6
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9594398773860482,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2211,
+        "standard_review": 2592,
+        "triage_review": 2374
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9197083266323747,
+      "standard_cases": 2592,
+      "standard_correct": 2411,
+      "standard_coverage": 0.3611536853838651,
+      "tail": 0.025,
+      "threshold": 0.65
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9560819283822893,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2112,
+        "standard_review": 2394,
+        "triage_review": 2671
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9296022145606686,
+      "standard_cases": 2394,
+      "standard_correct": 2250,
+      "standard_coverage": 0.3335655566392643,
+      "tail": 0.025,
+      "threshold": 0.7
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9527239793785316,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1987,
+        "standard_review": 2166,
+        "triage_review": 3024
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9421537837695997,
+      "standard_cases": 2166,
+      "standard_correct": 2062,
+      "standard_coverage": 0.3017974083879058,
+      "tail": 0.025,
+      "threshold": 0.75
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9506897032185807,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1823,
+        "standard_review": 1928,
+        "triage_review": 3426
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9526573464270747,
+      "standard_cases": 1928,
+      "standard_correct": 1855,
+      "standard_coverage": 0.2686359203009614,
+      "tail": 0.025,
+      "threshold": 0.8
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.95367145046674,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1667,
+        "standard_review": 1640,
+        "triage_review": 3870
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9655652260292342,
+      "standard_cases": 1640,
+      "standard_correct": 1598,
+      "standard_coverage": 0.2285077330360875,
+      "tail": 0.025,
+      "threshold": 0.85
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9643862338024007,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1472,
+        "standard_review": 1347,
+        "triage_review": 4358
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9753942199657327,
+      "standard_cases": 1347,
+      "standard_correct": 1325,
+      "standard_coverage": 0.18768287585342064,
+      "tail": 0.025,
+      "threshold": 0.9
+    },
+    {
+      "anomaly_cases": 703,
+      "mean_cost": 0.9875296084714908,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1221,
+        "standard_review": 890,
+        "triage_review": 5066
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.988501294736219,
+      "standard_cases": 890,
+      "standard_correct": 886,
+      "standard_coverage": 0.12400724536714505,
+      "tail": 0.025,
+      "threshold": 0.95
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 1.0842691932561748,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2534,
+        "standard_review": 3284,
+        "triage_review": 1359
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.818423235748209,
+      "standard_cases": 3284,
+      "standard_correct": 2731,
+      "standard_coverage": 0.4575728020064094,
+      "tail": 0.05,
+      "threshold": 0.3
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 1.0841298592726163,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2532,
+        "standard_review": 3284,
+        "triage_review": 1361
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.818423235748209,
+      "standard_cases": 3284,
+      "standard_correct": 2731,
+      "standard_coverage": 0.4575728020064094,
+      "tail": 0.05,
+      "threshold": 0.35
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 1.0743207468300924,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2526,
+        "standard_review": 3247,
+        "triage_review": 1404
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.824298438374498,
+      "standard_cases": 3247,
+      "standard_correct": 2719,
+      "standard_coverage": 0.45241744461474154,
+      "tail": 0.05,
+      "threshold": 0.4
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 1.0501881008777483,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2442,
+        "standard_review": 3076,
+        "triage_review": 1659
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.841448456544585,
+      "standard_cases": 3076,
+      "standard_correct": 2628,
+      "standard_coverage": 0.42859133342622263,
+      "tail": 0.05,
+      "threshold": 0.45
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 1.022265570572611,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2326,
+        "standard_review": 2879,
+        "triage_review": 1972
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8638174566333826,
+      "standard_cases": 2879,
+      "standard_correct": 2523,
+      "standard_coverage": 0.40114253866518046,
+      "tail": 0.05,
+      "threshold": 0.5
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 1.0039570851330155,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2232,
+        "standard_review": 2692,
+        "triage_review": 2253
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.8831082223796288,
+      "standard_cases": 2692,
+      "standard_correct": 2410,
+      "standard_coverage": 0.3750870837397241,
+      "tail": 0.05,
+      "threshold": 0.55
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9865403371881947,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2130,
+        "standard_review": 2532,
+        "triage_review": 2515
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.896508423754015,
+      "standard_cases": 2532,
+      "standard_correct": 2300,
+      "standard_coverage": 0.3527936463703497,
+      "tail": 0.05,
+      "threshold": 0.6
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9698063257628111,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 2023,
+        "standard_review": 2354,
+        "triage_review": 2800
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9143538336279792,
+      "standard_cases": 2354,
+      "standard_correct": 2179,
+      "standard_coverage": 0.3279921972969207,
+      "tail": 0.05,
+      "threshold": 0.65
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9657099066461916,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1927,
+        "standard_review": 2167,
+        "triage_review": 3083
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9242543482124946,
+      "standard_cases": 2167,
+      "standard_correct": 2027,
+      "standard_coverage": 0.3019367423714644,
+      "tail": 0.05,
+      "threshold": 0.7
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9625609586177716,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1811,
+        "standard_review": 1949,
+        "triage_review": 3417
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9374261068154491,
+      "standard_cases": 1949,
+      "standard_correct": 1848,
+      "standard_coverage": 0.2715619339556918,
+      "tail": 0.05,
+      "threshold": 0.75
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9595513445729102,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1657,
+        "standard_review": 1726,
+        "triage_review": 3794
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9490719623757343,
+      "standard_cases": 1726,
+      "standard_correct": 1656,
+      "standard_coverage": 0.24049045562212623,
+      "tail": 0.05,
+      "threshold": 0.8
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9614880869443798,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1510,
+        "standard_review": 1453,
+        "triage_review": 4214
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9635189339868507,
+      "standard_cases": 1453,
+      "standard_correct": 1414,
+      "standard_coverage": 0.20245227811063118,
+      "tail": 0.05,
+      "threshold": 0.85
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9718127351260762,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1323,
+        "standard_review": 1181,
+        "triage_review": 4673
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.97296932261126,
+      "standard_cases": 1181,
+      "standard_correct": 1160,
+      "standard_coverage": 0.16455343458269472,
+      "tail": 0.05,
+      "threshold": 0.9
+    },
+    {
+      "anomaly_cases": 1358,
+      "mean_cost": 0.9929915006269897,
+      "not_evaluated_cases": 1,
+      "queue_counts": {
+        "specialist_review": 1087,
+        "standard_review": 751,
+        "triage_review": 5339
+      },
+      "scored_cases": 7177,
+      "standard_accuracy_wilson_lower_95": 0.9883216771614499,
+      "standard_cases": 751,
+      "standard_correct": 748,
+      "standard_coverage": 0.10463982165250105,
+      "tail": 0.05,
+      "threshold": 0.95
+    }
+  ],
+  "input_sha256": {
+    "data/evaluation-manifest.json": "d117387cf8404eca66a0a24b8a2648fa9f718f9363e99e70b4037303cafc6cf2",
+    "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
+    "data/processed/evaluation-membership.csv": "2585dbe5f2d1b4f9874a8550a6d1d0b9f0228e83107599941dd8bd2d72a7363e",
+    "data/raw/it_service-v1.csv": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+    "requirements.lock": "eb7e04fa77c695fa3457d4e9c52c57fc8a5bf1ba347da80b527a1b221da6f380",
+    "solution/predict_worker.py": "388d81ff409b9efd81af03ff129570dcaf5f92cc1e0850b226d34d3c8bd26577",
+    "solution/train_triage.py": "f7270d2b648f723ab8c59c401e49851ed9533a53f5a64254f554af8a64a30714",
+    "solution/triage/artifacts.py": "006f9adcf4e3cc89ec4933d8b3af474ec9eadc1481c6a8d8696d16cb4032e4c9",
+    "solution/triage/core.py": "d7a158c3dab4c0a7fa8a373d993c4416d0bf2f99d40962610c934183bf9fc974",
+    "solution/triage/repository.py": "be762fd3e88a77e2277a1a47ce82b2dd1adb4f140e55b50370f15320299c8d1e",
+    "solution/triage/runtime.py": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d"
+  },
+  "original_bundle_sha256": "4e036aff2c9d6f68337a2ae6f10bca6b9cb3c4bf09d01e06d8dc846d6751ba9d",
+  "protocol_id": "it-triage-v1",
+  "schema_version": 1,
+  "scope": "TRAIN/VALIDATION DEVELOPMENT RESULTS ONLY; final test not predicted or scored",
+  "selected_gate": {
+    "anomaly_cases": 291,
+    "coverage": 0.2860526682457851,
+    "mean_cost": 0.9460916817611451,
+    "not_evaluated_cases": 1,
+    "queue_counts": {
+      "specialist_review": 1935,
+      "standard_review": 2053,
+      "triage_review": 3189
+    },
+    "scored_cases": 7177,
+    "standard_accuracy_wilson_lower_95": 0.9539110291002628,
+    "standard_cases": 2053,
+    "standard_correct": 1977,
+    "standard_coverage": 0.2860526682457851,
+    "tail": 0.01,
+    "threshold": 0.8
+  },
+  "selected_model": "logistic_c20",
+  "serving_input_sha256": {
+    "data/evaluation-manifest.json": "d117387cf8404eca66a0a24b8a2648fa9f718f9363e99e70b4037303cafc6cf2",
+    "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
+    "requirements.lock": "eb7e04fa77c695fa3457d4e9c52c57fc8a5bf1ba347da80b527a1b221da6f380",
+    "solution/predict_worker.py": "388d81ff409b9efd81af03ff129570dcaf5f92cc1e0850b226d34d3c8bd26577",
+    "solution/train_triage.py": "6f74dd40e3700e99e1a823025e5852283c118e93a96c4435674cc38e0b2417f9",
+    "solution/triage/artifacts.py": "006f9adcf4e3cc89ec4933d8b3af474ec9eadc1481c6a8d8696d16cb4032e4c9",
+    "solution/triage/core.py": "d7a158c3dab4c0a7fa8a373d993c4416d0bf2f99d40962610c934183bf9fc974",
+    "solution/triage/repository.py": "be762fd3e88a77e2277a1a47ce82b2dd1adb4f140e55b50370f15320299c8d1e",
+    "solution/triage/runtime.py": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d"
+  },
+  "setup_binding_revision": {
+    "classifiers_refitted": 0,
+    "evidence": "docs/review-evidence/setup-binding.json",
+    "reason": "Idempotent preflight and friendly CLI diagnostics only; original training input_sha256 retained above"
+  },
+  "training_rows": 33485,
+  "validation_rows": 7177
+}

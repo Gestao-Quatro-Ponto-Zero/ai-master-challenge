@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "declared_before_group_outcomes": true,
+  "actor": "agent-defined analysis conventions and illustrative scenarios; no human approval or measured savings implied",
+  "display_min_tickets": 50,
+  "display_min_rated_closed": 20,
+  "permutation_repeats": 999,
+  "permutation_seed": 20261102,
+  "scenario_period": "month",
+  "scenario_volume_basis": "30000 tickets/year from the brief divided by 12; hypothetical context, not an observed period of the CSV",
+  "scenario_definitions": {
+    "eligible_share": "assumed fraction eligible for the assistance task",
+    "assisted_share": "assumed usable assistance among eligible cases, not IT classifier coverage",
+    "assisted_minutes": "active handling time excluding the incremental review/rework below",
+    "review_share": "fraction of assisted cases receiving additional human review",
+    "error_share": "fraction of assisted cases requiring additional rework; not a measured model error rate",
+    "fixed_minutes": "recurring preparation/monitoring effort applied even if no case is assisted",
+    "hourly_value_brl": "hypothetical valuation of capacity, not salary evidence, cash savings or financial ROI"
+  },
+  "scenarios": [
+    {"name": "downside", "tickets": 2500, "eligible_share": 0.4, "assisted_share": 0.5, "manual_minutes": 4, "assisted_minutes": 3, "review_share": 1, "review_minutes": 1, "error_share": 0.2, "rework_minutes": 10, "fixed_minutes": 600, "hourly_value_brl": 60},
+    {"name": "conservative", "tickets": 2500, "eligible_share": 0.4, "assisted_share": 0.5, "manual_minutes": 4, "assisted_minutes": 2, "review_share": 1, "review_minutes": 0.75, "error_share": 0.1, "rework_minutes": 5, "fixed_minutes": 240, "hourly_value_brl": 60},
+    {"name": "reference", "tickets": 2500, "eligible_share": 0.6, "assisted_share": 0.6, "manual_minutes": 4, "assisted_minutes": 1, "review_share": 1, "review_minutes": 0.5, "error_share": 0.05, "rework_minutes": 5, "fixed_minutes": 240, "hourly_value_brl": 60},
+    {"name": "optimistic", "tickets": 2500, "eligible_share": 0.8, "assisted_share": 0.75, "manual_minutes": 4, "assisted_minutes": 0.5, "review_share": 1, "review_minutes": 0.25, "error_share": 0.02, "rework_minutes": 5, "fixed_minutes": 240, "hourly_value_brl": 60}
+  ]
+}

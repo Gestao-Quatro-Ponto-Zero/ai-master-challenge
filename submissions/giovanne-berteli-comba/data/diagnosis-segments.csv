@@ -1,0 +1,151 @@
+grouping,Ticket Channel,Ticket Priority,Ticket Type,tickets,open,pending_customer_response,closed,nonclosed,nonclosed_share,closed_share,missing_first_response_field,valid_rated_all,rated_closed,rated_nonclosed,unrated_closed,invalid_nonblank_ratings,csat_coverage_all,csat_coverage_closed,csat_mean,csat_median,low_csat_count,low_csat_share,score_1,score_2,score_3,score_4,score_5,duplicate_description_rows,conflicting_type_rows
+overall,,,,8469,2819,2881,2769,5700,0.673043,0.326957,2819,2769,2769,0,0,0,0.326957,1.0,2.991333,3.0,1102,0.397978,553,549,580,543,544,457,446
+Ticket Channel,Chat,,,2073,685,714,674,1399,0.674867,0.325133,685,674,674,0,0,0,0.325133,1.0,3.083086,3.0,245,0.363501,125,120,149,134,146,113,112
+Ticket Channel,Email,,,2143,701,722,720,1423,0.664022,0.335978,701,720,720,0,0,0,0.335978,1.0,2.963889,3.0,303,0.420833,148,155,132,145,140,121,117
+Ticket Channel,Phone,,,2132,736,705,691,1441,0.675891,0.324109,736,691,691,0,0,0,0.324109,1.0,2.952243,3.0,285,0.412446,149,136,140,131,135,119,117
+Ticket Channel,Social media,,,2121,697,740,684,1437,0.677511,0.322489,697,684,684,0,0,0,0.322489,1.0,2.969298,3.0,269,0.393275,131,138,159,133,123,104,100
+Ticket Priority,,Critical,,2129,692,711,726,1403,0.658995,0.341005,692,726,726,0,0,0,0.341005,1.0,2.958678,3.0,298,0.410468,152,146,149,138,141,119,115
+Ticket Priority,,High,,2085,704,676,705,1380,0.661871,0.338129,704,705,705,0,0,0,0.338129,1.0,2.982979,3.0,289,0.409929,147,142,140,128,148,94,92
+Ticket Priority,,Low,,2063,696,723,644,1419,0.687833,0.312167,696,644,644,0,0,0,0.312167,1.0,3.052795,3.0,246,0.381988,119,127,124,149,125,128,126
+Ticket Priority,,Medium,,2192,727,771,694,1498,0.683394,0.316606,727,694,694,0,0,0,0.316606,1.0,2.976945,3.0,269,0.387608,135,134,167,128,130,116,113
+Ticket Type,,,Billing inquiry,1634,539,551,544,1090,0.667075,0.332925,539,544,544,0,0,0,0.332925,1.0,3.027574,3.0,223,0.409926,98,125,94,118,109,75,75
+Ticket Type,,,Cancellation request,1695,582,597,516,1179,0.695575,0.304425,582,516,516,0,0,0,0.304425,1.0,3.02907,3.0,198,0.383721,106,92,111,95,112,90,90
+Ticket Type,,,Product inquiry,1641,532,576,533,1108,0.675198,0.324802,532,533,533,0,0,0,0.324802,1.0,3.016886,3.0,199,0.373358,99,100,122,117,95,75,73
+Ticket Type,,,Refund request,1752,564,592,596,1156,0.659817,0.340183,564,596,596,0,0,0,0.340183,1.0,2.934564,3.0,248,0.416107,132,116,122,111,115,101,101
+Ticket Type,,,Technical issue,1747,602,565,580,1167,0.668002,0.331998,602,580,580,0,0,0,0.331998,1.0,2.958621,3.0,234,0.403448,118,116,131,102,113,116,107
+Ticket Channel + Ticket Priority,Chat,Critical,,504,174,165,165,339,0.672619,0.327381,174,165,165,0,0,0,0.327381,1.0,3.127273,3.0,61,0.369697,28,33,28,42,34,25,25
+Ticket Channel + Ticket Priority,Chat,High,,517,161,167,189,328,0.634429,0.365571,161,189,189,0,0,0,0.365571,1.0,3.058201,3.0,69,0.365079,39,30,43,35,42,20,20
+Ticket Channel + Ticket Priority,Chat,Low,,501,168,176,157,344,0.686627,0.313373,168,157,157,0,0,0,0.313373,1.0,3.184713,3.0,51,0.324841,29,22,35,33,38,35,35
+Ticket Channel + Ticket Priority,Chat,Medium,,551,182,206,163,388,0.704174,0.295826,182,163,163,0,0,0,0.295826,1.0,2.969325,3.0,64,0.392638,29,35,43,24,32,33,32
+Ticket Channel + Ticket Priority,Email,Critical,,571,192,190,189,382,0.669002,0.330998,192,189,189,0,0,0,0.330998,1.0,2.830688,3.0,87,0.460317,42,45,36,35,31,37,34
+Ticket Channel + Ticket Priority,Email,High,,504,173,157,174,330,0.654762,0.345238,173,174,174,0,0,0,0.345238,1.0,3.0,3.0,77,0.442529,34,43,26,31,40,28,28
+Ticket Channel + Ticket Priority,Email,Low,,525,160,191,174,351,0.668571,0.331429,160,174,174,0,0,0,0.331429,1.0,2.994253,3.0,70,0.402299,39,31,29,42,33,27,27
+Ticket Channel + Ticket Priority,Email,Medium,,543,176,184,183,360,0.662983,0.337017,176,183,183,0,0,0,0.337017,1.0,3.038251,3.0,69,0.377049,33,36,41,37,36,29,28
+Ticket Channel + Ticket Priority,Phone,Critical,,526,160,177,189,337,0.640684,0.359316,160,189,189,0,0,0,0.359316,1.0,2.888889,3.0,84,0.444444,50,34,35,27,43,27,26
+Ticket Channel + Ticket Priority,Phone,High,,512,180,160,172,340,0.664062,0.335938,180,172,172,0,0,0,0.335938,1.0,3.023256,3.0,66,0.383721,37,29,39,27,40,24,24
+Ticket Channel + Ticket Priority,Phone,Low,,499,194,167,138,361,0.723447,0.276553,194,138,138,0,0,0,0.276553,1.0,3.007246,3.0,57,0.413043,19,38,25,35,21,44,43
+Ticket Channel + Ticket Priority,Phone,Medium,,595,202,201,192,403,0.677311,0.322689,202,192,192,0,0,0,0.322689,1.0,2.911458,3.0,78,0.40625,43,35,41,42,31,24,24
+Ticket Channel + Ticket Priority,Social media,Critical,,528,166,179,183,345,0.653409,0.346591,166,183,183,0,0,0,0.346591,1.0,3.010929,3.0,66,0.360656,32,34,50,34,33,30,30
+Ticket Channel + Ticket Priority,Social media,High,,552,190,192,170,382,0.692029,0.307971,190,170,170,0,0,0,0.307971,1.0,2.841176,3.0,77,0.452941,37,40,32,35,26,22,20
+Ticket Channel + Ticket Priority,Social media,Low,,538,174,189,175,363,0.674721,0.325279,174,175,175,0,0,0,0.325279,1.0,3.028571,3.0,68,0.388571,32,36,35,39,33,22,21
+Ticket Channel + Ticket Priority,Social media,Medium,,503,167,180,156,347,0.689861,0.310139,167,156,156,0,0,0,0.310139,1.0,2.99359,3.0,58,0.371795,30,28,42,25,31,30,29
+Ticket Channel + Ticket Type,Chat,,Billing inquiry,398,122,139,137,261,0.655779,0.344221,122,137,137,0,0,0,0.344221,1.0,3.131387,3.0,49,0.357664,24,25,27,31,30,19,19
+Ticket Channel + Ticket Type,Chat,,Cancellation request,408,137,135,136,272,0.666667,0.333333,137,136,136,0,0,0,0.333333,1.0,3.073529,3.0,51,0.375,29,22,27,26,32,22,22
+Ticket Channel + Ticket Type,Chat,,Product inquiry,388,126,146,116,272,0.701031,0.298969,126,116,116,0,0,0,0.298969,1.0,3.077586,3.0,44,0.37931,16,28,26,23,23,19,19
+Ticket Channel + Ticket Type,Chat,,Refund request,426,139,144,143,283,0.664319,0.335681,139,143,143,0,0,0,0.335681,1.0,2.986014,3.0,54,0.377622,32,22,33,28,28,22,22
+Ticket Channel + Ticket Type,Chat,,Technical issue,453,161,150,142,311,0.686534,0.313466,161,142,142,0,0,0,0.313466,1.0,3.147887,3.0,47,0.330986,24,23,36,26,33,31,30
+Ticket Channel + Ticket Type,Email,,Billing inquiry,405,143,128,134,271,0.669136,0.330864,143,134,134,0,0,0,0.330864,1.0,3.029851,3.0,58,0.432836,22,36,21,26,29,20,20
+Ticket Channel + Ticket Type,Email,,Cancellation request,448,142,152,154,294,0.65625,0.34375,142,154,154,0,0,0,0.34375,1.0,2.863636,3.0,69,0.448052,36,33,31,24,30,24,24
+Ticket Channel + Ticket Type,Email,,Product inquiry,427,145,156,126,301,0.704918,0.295082,145,126,126,0,0,0,0.295082,1.0,2.936508,3.0,51,0.404762,30,21,23,31,21,22,21
+Ticket Channel + Ticket Type,Email,,Refund request,455,138,146,171,284,0.624176,0.375824,138,171,171,0,0,0,0.375824,1.0,2.994152,3.0,73,0.426901,34,39,27,36,35,27,27
+Ticket Channel + Ticket Type,Email,,Technical issue,408,133,140,135,273,0.669118,0.330882,133,135,135,0,0,0,0.330882,1.0,3.0,3.0,52,0.385185,26,26,30,28,25,28,25
+Ticket Channel + Ticket Type,Phone,,Billing inquiry,434,152,145,137,297,0.684332,0.315668,152,137,137,0,0,0,0.315668,1.0,2.919708,3.0,65,0.474453,31,34,14,31,27,25,25
+Ticket Channel + Ticket Type,Phone,,Cancellation request,426,153,155,118,308,0.723005,0.276995,153,118,118,0,0,0,0.276995,1.0,3.0,3.0,43,0.364407,23,20,32,20,23,28,28
+Ticket Channel + Ticket Type,Phone,,Product inquiry,424,130,147,147,277,0.653302,0.346698,130,147,147,0,0,0,0.346698,1.0,3.095238,3.0,53,0.360544,29,24,33,26,35,16,15
+Ticket Channel + Ticket Type,Phone,,Refund request,427,153,136,138,289,0.676815,0.323185,153,138,138,0,0,0,0.323185,1.0,2.804348,3.0,60,0.434783,34,26,31,27,20,25,25
+Ticket Channel + Ticket Type,Phone,,Technical issue,421,148,122,151,270,0.64133,0.35867,148,151,151,0,0,0,0.35867,1.0,2.940397,3.0,64,0.423841,32,32,30,27,30,25,24
+Ticket Channel + Ticket Type,Social media,,Billing inquiry,397,122,139,136,261,0.657431,0.342569,122,136,136,0,0,0,0.342569,1.0,3.029412,3.0,51,0.375,21,30,32,30,23,11,11
+Ticket Channel + Ticket Type,Social media,,Cancellation request,413,150,155,108,305,0.738499,0.261501,150,108,108,0,0,0,0.261501,1.0,3.240741,3.0,35,0.324074,18,17,21,25,27,16,16
+Ticket Channel + Ticket Type,Social media,,Product inquiry,402,131,127,144,258,0.641791,0.358209,131,144,144,0,0,0,0.358209,1.0,2.958333,3.0,51,0.354167,24,27,40,37,16,18,18
+Ticket Channel + Ticket Type,Social media,,Refund request,444,134,166,144,300,0.675676,0.324324,134,144,144,0,0,0,0.324324,1.0,2.9375,3.0,61,0.423611,32,29,31,20,32,27,27
+Ticket Channel + Ticket Type,Social media,,Technical issue,465,160,153,152,313,0.673118,0.326882,160,152,152,0,0,0,0.326882,1.0,2.763158,3.0,71,0.467105,36,35,35,21,25,32,28
+Ticket Priority + Ticket Type,,Critical,Billing inquiry,420,137,140,143,277,0.659524,0.340476,137,143,143,0,0,0,0.340476,1.0,2.965035,3.0,61,0.426573,26,35,27,28,27,17,17
+Ticket Priority + Ticket Type,,Critical,Cancellation request,423,134,144,145,278,0.65721,0.34279,134,145,145,0,0,0,0.34279,1.0,2.903448,3.0,62,0.427586,33,29,28,29,26,27,27
+Ticket Priority + Ticket Type,,Critical,Product inquiry,403,122,137,144,259,0.64268,0.35732,122,144,144,0,0,0,0.35732,1.0,2.902778,3.0,62,0.430556,29,33,32,23,27,18,17
+Ticket Priority + Ticket Type,,Critical,Refund request,444,153,144,147,297,0.668919,0.331081,153,147,147,0,0,0,0.331081,1.0,2.952381,3.0,60,0.408163,35,25,29,28,30,21,21
+Ticket Priority + Ticket Type,,Critical,Technical issue,439,146,146,147,292,0.665148,0.334852,146,147,147,0,0,0,0.334852,1.0,3.068027,3.0,53,0.360544,29,24,33,30,31,36,33
+Ticket Priority + Ticket Type,,High,Billing inquiry,382,134,113,135,247,0.646597,0.353403,134,135,135,0,0,0,0.353403,1.0,3.103704,3.0,55,0.407407,22,33,21,27,32,12,12
+Ticket Priority + Ticket Type,,High,Cancellation request,398,151,123,124,274,0.688442,0.311558,151,124,124,0,0,0,0.311558,1.0,2.935484,3.0,54,0.435484,32,22,21,20,29,16,16
+Ticket Priority + Ticket Type,,High,Product inquiry,399,131,137,131,268,0.671679,0.328321,131,131,131,0,0,0,0.328321,1.0,3.21374,3.0,42,0.320611,19,23,27,35,27,21,21
+Ticket Priority + Ticket Type,,High,Refund request,448,136,154,158,290,0.647321,0.352679,136,158,158,0,0,0,0.352679,1.0,2.803797,3.0,72,0.455696,44,28,32,23,31,20,20
+Ticket Priority + Ticket Type,,High,Technical issue,458,152,149,157,301,0.657205,0.342795,152,157,157,0,0,0,0.342795,1.0,2.904459,3.0,66,0.420382,30,36,39,23,29,25,23
+Ticket Priority + Ticket Type,,Low,Billing inquiry,398,137,128,133,265,0.665829,0.334171,137,133,133,0,0,0,0.334171,1.0,3.082707,3.0,48,0.360902,21,27,28,34,23,24,24
+Ticket Priority + Ticket Type,,Low,Cancellation request,414,143,166,105,309,0.746377,0.253623,143,105,105,0,0,0,0.253623,1.0,3.209524,3.0,36,0.342857,18,18,20,22,27,23,23
+Ticket Priority + Ticket Type,,Low,Product inquiry,398,134,146,118,280,0.703518,0.296482,134,118,118,0,0,0,0.296482,1.0,2.898305,3.0,44,0.372881,24,20,30,32,12,25,24
+Ticket Priority + Ticket Type,,Low,Refund request,440,131,159,150,290,0.659091,0.340909,131,150,150,0,0,0,0.340909,1.0,3.08,3.0,59,0.393333,25,34,26,34,31,34,34
+Ticket Priority + Ticket Type,,Low,Technical issue,413,151,124,138,275,0.66586,0.33414,151,138,138,0,0,0,0.33414,1.0,3.007246,3.0,59,0.427536,31,28,20,27,32,22,21
+Ticket Priority + Ticket Type,,Medium,Billing inquiry,434,131,170,133,301,0.693548,0.306452,131,133,133,0,0,0,0.306452,1.0,2.962406,3.0,59,0.443609,29,30,18,29,27,22,22
+Ticket Priority + Ticket Type,,Medium,Cancellation request,460,154,164,142,318,0.691304,0.308696,154,142,142,0,0,0,0.308696,1.0,3.105634,3.0,46,0.323944,23,23,42,24,30,24,24
+Ticket Priority + Ticket Type,,Medium,Product inquiry,441,145,156,140,301,0.68254,0.31746,145,140,140,0,0,0,0.31746,1.0,3.05,3.0,51,0.364286,27,24,33,27,29,11,11
+Ticket Priority + Ticket Type,,Medium,Refund request,420,144,135,141,279,0.664286,0.335714,144,141,141,0,0,0,0.335714,1.0,2.907801,3.0,57,0.404255,28,29,35,26,23,26,26
+Ticket Priority + Ticket Type,,Medium,Technical issue,437,153,146,138,299,0.684211,0.315789,153,138,138,0,0,0,0.315789,1.0,2.855072,3.0,56,0.405797,28,28,39,22,21,33,30
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Critical,Billing inquiry,103,34,32,37,66,0.640777,0.359223,34,37,37,0,0,0,0.359223,1.0,3.135135,3.0,14,0.378378,4,10,7,9,7,2,2
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Critical,Cancellation request,89,30,31,28,61,0.685393,0.314607,30,28,28,0,0,0,0.314607,1.0,2.678571,3.0,13,0.464286,8,5,5,8,2,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Critical,Product inquiry,85,26,30,29,56,0.658824,0.341176,26,29,29,0,0,0,0.341176,1.0,3.241379,3.0,11,0.37931,3,8,5,5,8,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Critical,Refund request,98,38,28,32,66,0.673469,0.326531,38,32,32,0,0,0,0.326531,1.0,2.875,3.0,14,0.4375,8,6,5,8,5,2,2
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Critical,Technical issue,129,46,44,39,90,0.697674,0.302326,46,39,39,0,0,0,0.302326,1.0,3.564103,4.0,9,0.230769,5,4,6,12,12,13,13
+Ticket Channel + Ticket Priority + Ticket Type,Chat,High,Billing inquiry,88,24,27,37,51,0.579545,0.420455,24,37,37,0,0,0,0.420455,1.0,3.432432,4.0,11,0.297297,6,5,6,7,13,2,2
+Ticket Channel + Ticket Priority + Ticket Type,Chat,High,Cancellation request,109,37,31,41,68,0.623853,0.376147,37,41,41,0,0,0,0.376147,1.0,2.902439,3.0,18,0.439024,12,6,6,8,9,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Chat,High,Product inquiry,103,35,38,30,73,0.708738,0.291262,35,30,30,0,0,0,0.291262,1.0,2.9,3.0,13,0.433333,7,6,4,9,4,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Chat,High,Refund request,112,35,36,41,71,0.633929,0.366071,35,41,41,0,0,0,0.366071,1.0,3.146341,3.0,11,0.268293,7,4,15,6,9,1,1
+Ticket Channel + Ticket Priority + Ticket Type,Chat,High,Technical issue,105,30,35,40,65,0.619048,0.380952,30,40,40,0,0,0,0.380952,1.0,2.9,3.0,16,0.4,7,9,12,5,7,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Low,Billing inquiry,99,34,30,35,64,0.646465,0.353535,34,35,35,0,0,0,0.353535,1.0,3.085714,3.0,11,0.314286,6,5,10,8,6,8,8
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Low,Cancellation request,99,37,37,25,74,0.747475,0.252525,37,25,25,0,0,0,0.252525,1.0,3.56,4.0,6,0.24,3,3,6,3,10,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Low,Product inquiry,92,33,31,28,64,0.695652,0.304348,33,28,28,0,0,0,0.304348,1.0,3.071429,3.0,9,0.321429,4,5,8,7,4,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Low,Refund request,108,27,45,36,72,0.666667,0.333333,27,36,36,0,0,0,0.333333,1.0,3.111111,3.0,14,0.388889,8,6,5,8,9,10,10
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Low,Technical issue,103,37,33,33,70,0.679612,0.320388,37,33,33,0,0,0,0.320388,1.0,3.181818,3.0,11,0.333333,8,3,6,7,9,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Medium,Billing inquiry,108,30,50,28,80,0.740741,0.259259,30,28,28,0,0,0,0.259259,1.0,2.785714,3.0,13,0.464286,8,5,4,7,4,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Medium,Cancellation request,111,33,36,42,69,0.621622,0.378378,33,42,42,0,0,0,0.378378,1.0,3.214286,3.0,14,0.333333,6,8,10,7,11,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Medium,Product inquiry,108,32,47,29,79,0.731481,0.268519,32,29,29,0,0,0,0.268519,1.0,3.103448,3.0,11,0.37931,2,9,9,2,7,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Medium,Refund request,108,39,35,34,74,0.685185,0.314815,39,34,34,0,0,0,0.314815,1.0,2.764706,3.0,15,0.441176,9,6,8,6,5,9,9
+Ticket Channel + Ticket Priority + Ticket Type,Chat,Medium,Technical issue,116,48,38,30,86,0.741379,0.258621,48,30,30,0,0,0,0.258621,1.0,2.9,3.0,11,0.366667,4,7,12,2,5,8,7
+Ticket Channel + Ticket Priority + Ticket Type,Email,Critical,Billing inquiry,112,44,39,29,83,0.741071,0.258929,44,29,29,0,0,0,0.258929,1.0,2.896552,3.0,13,0.448276,3,10,7,5,4,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Email,Critical,Cancellation request,128,41,42,45,83,0.648438,0.351562,41,45,45,0,0,0,0.351562,1.0,2.733333,2.0,23,0.511111,12,11,7,7,8,10,10
+Ticket Channel + Ticket Priority + Ticket Type,Email,Critical,Product inquiry,114,33,41,40,74,0.649123,0.350877,33,40,40,0,0,0,0.350877,1.0,2.675,2.5,20,0.5,10,10,8,7,5,4,3
+Ticket Channel + Ticket Priority + Ticket Type,Email,Critical,Refund request,115,39,37,39,76,0.66087,0.33913,39,39,39,0,0,0,0.33913,1.0,3.076923,3.0,16,0.410256,9,7,5,8,10,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Email,Critical,Technical issue,102,35,31,36,66,0.647059,0.352941,35,36,36,0,0,0,0.352941,1.0,2.805556,3.0,15,0.416667,8,7,9,8,4,10,8
+Ticket Channel + Ticket Priority + Ticket Type,Email,High,Billing inquiry,86,32,24,30,56,0.651163,0.348837,32,30,30,0,0,0,0.348837,1.0,3.133333,3.0,14,0.466667,3,11,4,3,9,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Email,High,Cancellation request,95,36,25,34,61,0.642105,0.357895,36,34,34,0,0,0,0.357895,1.0,2.529412,2.0,19,0.558824,10,9,8,1,6,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Email,High,Product inquiry,104,34,35,35,69,0.663462,0.336538,34,35,35,0,0,0,0.336538,1.0,3.571429,4.0,8,0.228571,4,4,5,12,10,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Email,High,Refund request,106,27,33,46,60,0.566038,0.433962,27,46,46,0,0,0,0.433962,1.0,2.913043,3.0,22,0.478261,12,10,4,10,10,9,9
+Ticket Channel + Ticket Priority + Ticket Type,Email,High,Technical issue,113,44,40,29,84,0.743363,0.256637,44,29,29,0,0,0,0.256637,1.0,2.862069,3.0,14,0.482759,5,9,5,5,5,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Email,Low,Billing inquiry,99,31,31,37,62,0.626263,0.373737,31,37,37,0,0,0,0.373737,1.0,2.972973,3.0,15,0.405405,9,6,5,11,6,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Email,Low,Cancellation request,106,29,44,33,73,0.688679,0.311321,29,33,33,0,0,0,0.311321,1.0,2.909091,3.0,14,0.424242,10,4,5,7,7,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Email,Low,Product inquiry,108,39,39,30,78,0.722222,0.277778,39,30,30,0,0,0,0.277778,1.0,2.733333,3.0,13,0.433333,8,5,7,7,3,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Email,Low,Refund request,119,32,43,44,75,0.630252,0.369748,32,44,44,0,0,0,0.369748,1.0,3.113636,3.0,17,0.386364,6,11,8,10,9,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Email,Low,Technical issue,93,29,34,30,63,0.677419,0.322581,29,30,30,0,0,0,0.322581,1.0,3.2,3.5,11,0.366667,6,5,4,7,8,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Email,Medium,Billing inquiry,108,36,34,38,70,0.648148,0.351852,36,38,38,0,0,0,0.351852,1.0,3.105263,3.0,16,0.421053,7,9,5,7,10,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Email,Medium,Cancellation request,119,36,41,42,77,0.647059,0.352941,36,42,42,0,0,0,0.352941,1.0,3.238095,3.0,13,0.309524,4,9,11,9,9,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Email,Medium,Product inquiry,101,39,41,21,80,0.792079,0.207921,39,21,21,0,0,0,0.207921,1.0,2.666667,3.0,10,0.47619,8,2,3,5,3,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Email,Medium,Refund request,115,40,33,42,73,0.634783,0.365217,40,42,42,0,0,0,0.365217,1.0,2.880952,3.0,18,0.428571,7,11,10,8,6,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Email,Medium,Technical issue,100,25,35,40,60,0.6,0.4,25,40,40,0,0,0,0.4,1.0,3.125,3.0,12,0.3,7,5,12,8,8,9,8
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Critical,Billing inquiry,111,31,38,42,69,0.621622,0.378378,31,42,42,0,0,0,0.378378,1.0,2.928571,3.0,20,0.47619,12,8,4,7,11,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Critical,Cancellation request,95,26,34,35,60,0.631579,0.368421,26,35,35,0,0,0,0.368421,1.0,2.8,3.0,16,0.457143,9,7,7,6,6,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Critical,Product inquiry,108,36,31,41,67,0.62037,0.37963,36,41,41,0,0,0,0.37963,1.0,2.97561,3.0,17,0.414634,9,8,10,3,11,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Critical,Refund request,112,38,34,40,72,0.642857,0.357143,38,40,40,0,0,0,0.357143,1.0,2.85,3.0,16,0.4,11,5,9,9,6,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Critical,Technical issue,100,29,40,31,69,0.69,0.31,29,31,31,0,0,0,0.31,1.0,2.870968,3.0,15,0.483871,9,6,5,2,9,6,5
+Ticket Channel + Ticket Priority + Ticket Type,Phone,High,Billing inquiry,103,46,26,31,72,0.699029,0.300971,46,31,31,0,0,0,0.300971,1.0,2.83871,3.0,15,0.483871,7,8,5,5,6,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Phone,High,Cancellation request,95,37,29,29,66,0.694737,0.305263,37,29,29,0,0,0,0.305263,1.0,3.344828,4.0,8,0.275862,6,2,6,6,9,2,2
+Ticket Channel + Ticket Priority + Ticket Type,Phone,High,Product inquiry,91,21,36,34,57,0.626374,0.373626,21,34,34,0,0,0,0.373626,1.0,3.294118,3.0,11,0.323529,4,7,8,5,10,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Phone,High,Refund request,108,41,36,31,77,0.712963,0.287037,41,31,31,0,0,0,0.287037,1.0,2.290323,2.0,19,0.612903,14,5,6,1,5,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Phone,High,Technical issue,115,35,33,47,68,0.591304,0.408696,35,47,47,0,0,0,0.408696,1.0,3.234043,3.0,13,0.276596,6,7,14,10,10,10,10
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Low,Billing inquiry,92,35,31,26,66,0.717391,0.282609,35,26,26,0,0,0,0.282609,1.0,2.961538,3.0,12,0.461538,3,9,3,8,3,8,8
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Low,Cancellation request,108,44,43,21,87,0.805556,0.194444,44,21,21,0,0,0,0.194444,1.0,2.904762,3.0,9,0.428571,2,7,6,3,3,10,10
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Low,Product inquiry,89,31,35,23,66,0.741573,0.258427,31,23,23,0,0,0,0.258427,1.0,3.086957,3.0,7,0.304348,4,3,6,7,3,9,8
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Low,Refund request,101,38,30,33,68,0.673267,0.326733,38,33,33,0,0,0,0.326733,1.0,3.181818,3.0,11,0.333333,3,8,7,10,5,11,11
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Low,Technical issue,109,46,28,35,74,0.678899,0.321101,46,35,35,0,0,0,0.321101,1.0,2.885714,2.0,18,0.514286,7,11,3,7,7,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Medium,Billing inquiry,128,40,50,38,90,0.703125,0.296875,40,38,38,0,0,0,0.296875,1.0,2.947368,3.0,18,0.473684,9,9,2,11,7,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Medium,Cancellation request,128,46,49,33,95,0.742188,0.257812,46,33,33,0,0,0,0.257812,1.0,2.969697,3.0,10,0.30303,6,4,13,5,5,9,9
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Medium,Product inquiry,136,42,45,49,87,0.639706,0.360294,42,49,49,0,0,0,0.360294,1.0,3.061224,3.0,18,0.367347,12,6,9,11,11,1,1
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Medium,Refund request,106,36,36,34,72,0.679245,0.320755,36,34,34,0,0,0,0.320755,1.0,2.852941,3.0,14,0.411765,6,8,9,7,4,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Phone,Medium,Technical issue,97,38,21,38,59,0.608247,0.391753,38,38,38,0,0,0,0.391753,1.0,2.684211,3.0,18,0.473684,10,8,8,8,4,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Critical,Billing inquiry,94,28,31,35,59,0.62766,0.37234,28,35,35,0,0,0,0.37234,1.0,2.885714,3.0,14,0.4,7,7,9,7,5,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Critical,Cancellation request,111,37,37,37,74,0.666667,0.333333,37,37,37,0,0,0,0.333333,1.0,3.378378,3.0,10,0.27027,4,6,9,8,10,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Critical,Product inquiry,96,27,35,34,62,0.645833,0.354167,27,34,34,0,0,0,0.354167,1.0,2.794118,3.0,14,0.411765,7,7,9,8,3,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Critical,Refund request,119,38,45,36,83,0.697479,0.302521,38,36,36,0,0,0,0.302521,1.0,3.0,3.0,14,0.388889,7,7,10,3,9,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Critical,Technical issue,108,36,31,41,67,0.62037,0.37963,36,41,41,0,0,0,0.37963,1.0,2.97561,3.0,14,0.341463,7,7,13,8,6,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Social media,High,Billing inquiry,105,32,36,37,68,0.647619,0.352381,32,37,37,0,0,0,0.352381,1.0,2.972973,3.0,15,0.405405,6,9,6,12,4,2,2
+Ticket Channel + Ticket Priority + Ticket Type,Social media,High,Cancellation request,99,41,38,20,79,0.79798,0.20202,41,20,20,0,0,0,0.20202,1.0,3.1,3.5,9,0.45,4,5,1,5,5,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Social media,High,Product inquiry,101,41,28,32,69,0.683168,0.316832,41,32,32,0,0,0,0.316832,1.0,3.03125,3.0,10,0.3125,4,6,10,9,3,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Social media,High,Refund request,122,33,49,40,82,0.672131,0.327869,33,40,40,0,0,0,0.327869,1.0,2.725,2.5,20,0.5,11,9,7,6,7,6,6
+Ticket Channel + Ticket Priority + Ticket Type,Social media,High,Technical issue,125,43,41,41,84,0.672,0.328,43,41,41,0,0,0,0.328,1.0,2.560976,2.0,23,0.560976,12,11,8,3,7,5,3
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Low,Billing inquiry,108,37,36,35,73,0.675926,0.324074,37,35,35,0,0,0,0.324074,1.0,3.285714,3.0,10,0.285714,3,7,10,7,8,1,1
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Low,Cancellation request,101,33,42,26,75,0.742574,0.257426,33,26,26,0,0,0,0.257426,1.0,3.5,4.0,7,0.269231,3,4,3,9,7,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Low,Product inquiry,109,31,41,37,72,0.66055,0.33945,31,37,37,0,0,0,0.33945,1.0,2.783784,3.0,15,0.405405,8,7,9,11,2,4,4
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Low,Refund request,112,34,41,37,75,0.669643,0.330357,34,37,37,0,0,0,0.330357,1.0,2.918919,3.0,17,0.459459,8,9,6,6,8,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Low,Technical issue,108,39,29,40,68,0.62963,0.37037,39,40,40,0,0,0,0.37037,1.0,2.825,3.0,19,0.475,10,9,7,6,8,7,6
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Medium,Billing inquiry,90,25,36,29,61,0.677778,0.322222,25,29,29,0,0,0,0.322222,1.0,2.965517,3.0,12,0.413793,5,7,7,4,6,5,5
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Medium,Cancellation request,102,39,38,25,77,0.754902,0.245098,39,25,25,0,0,0,0.245098,1.0,2.88,3.0,9,0.36,7,2,8,3,5,2,2
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Medium,Product inquiry,96,32,23,41,55,0.572917,0.427083,32,41,41,0,0,0,0.427083,1.0,3.195122,3.0,12,0.292683,5,7,12,9,8,3,3
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Medium,Refund request,91,29,31,31,60,0.659341,0.340659,29,31,31,0,0,0,0.340659,1.0,3.16129,3.0,10,0.322581,6,4,8,5,8,7,7
+Ticket Channel + Ticket Priority + Ticket Type,Social media,Medium,Technical issue,124,42,52,30,94,0.758065,0.241935,42,30,30,0,0,0,0.241935,1.0,2.666667,2.5,15,0.5,7,8,7,4,4,13,12

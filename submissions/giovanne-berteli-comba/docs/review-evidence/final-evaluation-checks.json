@@ -1,0 +1,16 @@
+{
+  "all_frozen_inputs_and_local_output_hashes_match": true,
+  "all_three_model_confusion_metrics_reconciled": true,
+  "assisted_denominators_and_acceptance_reconciled": true,
+  "cached_decisions_replayed_and_matched": 7175,
+  "classifier_fits": 0,
+  "input_sha256": {
+    "data/final-evaluation-freeze.json": "ace035cf59cf2aa4faec8987db7d66d7a5ad46e4403d42bac995352b82ddadd3",
+    "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
+    "scripts/check_final_evaluation.py": "05c0e7631109cfab63fe902b56dd3f9708b2a75915402cac5936857da59631a0"
+  },
+  "limits": "External-clock latency aggregates are recorded by the frozen driver; individual external-clock samples were not persisted for reaggregation. SQLite elapsed_ms is a distinct pre-persistence clock, not a substitute.",
+  "model_loads": 0,
+  "new_predictions": 0,
+  "scope": "Reaggregation of recorded score vectors, frozen references, SQLite decisions and public confusion matrices only"
+}

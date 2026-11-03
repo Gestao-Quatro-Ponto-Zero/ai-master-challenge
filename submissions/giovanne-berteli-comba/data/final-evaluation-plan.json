@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evaluation_id": "it-triage-final-v1",
+  "protocol_id": "it-triage-v1",
+  "classification": "All frozen final_test rows; selected model and the two frozen baselines only; no fitting, replacement, selection, recalibration or sensitivity search",
+  "offline_execution": "Batch feature/probability computation followed by the production TriageService/core/repository with a precomputed-score adapter; explicitly not cold per-request latency or timeout validation",
+  "runtime_sample_size": 64,
+  "runtime_sample_seed": "20261102-it-triage-final-v1-runtime",
+  "runtime_sample_selection": "First 64 final-test case IDs in SHA256(seed + case_id) order; selected before predictions; no warmups, retries or replacement of failures",
+  "runtime_execution": "Separate SQLite database; actual production subprocess with default 5-second worker budget; sequential requests timed externally through commit; report parity with offline decisions",
+  "fault_fixtures": ["invalid_input", "oversized_input", "unsupported_context", "no_known_features", "not_ready", "timeout", "inference_error", "invalid_model_output", "persistence_error"],
+  "fault_population": "Synthetic automated fixtures reported separately from held-out classification and observed runtime failures",
+  "latency": "p50/p95/max over all 64 attempts including failed requests; local sequential sample, not production SLA, throughput, UI rendering or human confirmation time",
+  "acceptance": "Use data/evaluation-protocol.json final_test criteria unchanged; report workload and anomaly counts without new quality targets",
+  "exposure": "Exclusive local attempt record; completed commands reuse the result without prediction. Interrupted/exposed or changed-input attempts cannot be silently rerun as a clean test. No final-test text or examples in UI/public reports."
+}

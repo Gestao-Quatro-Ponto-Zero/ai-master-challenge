@@ -1,0 +1,59 @@
+{
+  "recorded_at": "2026-11-03T06:04:21.098624+00:00",
+  "actor": "automated local final-preparation checks; no independent participant authentication or publication implied",
+  "candidate_identity": "supplied directly by candidate in this conversation",
+  "upstream": "Gestao-Quatro-Ponto-Zero/ai-master-challenge",
+  "upstream_main_commit": "4aed364d572fabe0f1fff1f0c6f32960b30fe575",
+  "head_before_preparation": "c36f9ad533778dc1374dae41c332eb85fa8c6fc3",
+  "submission_branch": "submission/giovanne-berteli-comba",
+  "template_sections_present": [
+    "Sobre mim",
+    "Executive Summary",
+    "Solução",
+    "Abordagem",
+    "Resultados / Findings",
+    "Recomendações",
+    "Limitações",
+    "Process Log — Como usei IA",
+    "Ferramentas usadas",
+    "Workflow",
+    "Onde a IA errou e como corrigi",
+    "O que eu adicionei que a IA sozinha não faria",
+    "Evidências"
+  ],
+  "tests": {
+    "passed": 93,
+    "skipped": 0,
+    "log": "docs/review-evidence/p01-tests.txt"
+  },
+  "prepared_setup_reused_models": true,
+  "frozen_audit": "docs/review-evidence/p01-frozen-checks.json",
+  "H01": "Existing operator_declared record reconciled; assisted slower and higher concordance; see h01-checks.json",
+  "public_github_query": "Fork parent verified; branch-specific state=all PR query returned [] at query time",
+  "publication": "Pending with candidate: user explicitly chose to perform commit/push/PR themselves; no staged content or publication by agent",
+  "limited_credential_pattern_scan": "No matches in new public text files; not a privacy certification",
+  "input_sha256": {
+    "docs/review-evidence/h01-result.json": "291d2191a5f7b4825d26aed52f5aea048f11489dfcda5550fbc9f92a46c997fc",
+    "docs/review-evidence/h01-checks.json": "c4afc08c9c27bcf6959c3d547546e1fef597b46819e8ad1b74ff58fb176c1329",
+    "docs/review-evidence/h01-manual-decisions.csv": "ad3e838d81045237085809b9babc75c88bea52fa271a266fed8bd0d128553d4b",
+    "docs/review-evidence/h01-assisted-decisions.csv": "8ca4258a4d0dc2540bd61e9e646086458d1d3db35ff937667f0debbdb886030f",
+    "docs/review-evidence/h01-manual-audit.json": "f61ae96b2ac5d3bd53104e4c911dc9c668c42d4db666d10ca4abb5dcf414b234",
+    "docs/review-evidence/h01-assisted-audit.json": "e3c0ee39bb5d14fb2bd58ff6bdfe28929679245ff20efc8058c2c097cbb816e3",
+    "docs/review-evidence/p01-tests.txt": "347f25b4c4cc3ffd1f006e59ebbaad33120c69b30d3863d146c7b90fd5fafd6f",
+    "docs/review-evidence/p01-setup.txt": "57046cf9a33afcf578196e9f2c9618fcbd5fe61be1afa3256463c2a5b506f92f",
+    "docs/review-evidence/p01-frozen-checks.json": "5e96f2521e2a7100272199de6a1f9fbc4edb93f3c23de74fda887088ca6ed741",
+    "docs/workflow-rehearsal.md": "89a16953100d473fa3323829f45717e2b763514dd64638759235b011a1bb3605",
+    "docs/submission-review.md": "d6c0e40e4166df88d8dd34b9ba305c340d4cc77e1bd96779ca83a1c641a7db75",
+    "docs/pull-request.md": "c86543d8aedd16d5ee1403b92b2609ddf4745c4e245a5e66488025719a5aefbd",
+    "process-log/21-submission-preparation.md": "3a8f07f2008c4d24146d28528f5136011c449f42ba83dcc8afa57079c6f3ef08",
+    "process-log/chat-exports/26-submission-preparation-chat.md": "a4cb58aa59cd0b849fa51c0eacfda293dd02db6a156ccb4bf571a98b69d46483",
+    ".gitattributes": "4af26ae65ea79e4448733b6acdbd80bb0df869570483f614121bb9a7840f2c51"
+  },
+  "final_worktree_scope": {
+    "changed_files": 37,
+    "submission_only": true,
+    "new_public_files_intent_to_add": 16,
+    "files_over_5MB": 0,
+    "raw_model_runtime_files_in_diff": 0
+  }
+}

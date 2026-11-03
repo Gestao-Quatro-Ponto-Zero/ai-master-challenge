@@ -1,0 +1,19 @@
+# Local secrets and runtime state
+.env
+.env.*
+!.env.example
+.venv/
+.runtime/
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+node_modules/
+
+# Downloaded or transformed data stays local until publication is reviewed
+data/raw/
+data/processed/
+
+# Future local triage records, original input text, and owned model artifacts
+data/runtime/
+data/models/

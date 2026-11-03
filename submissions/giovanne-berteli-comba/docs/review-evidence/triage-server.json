@@ -1,0 +1,22 @@
+{
+  "command": [
+    "-m",
+    "streamlit",
+    "run",
+    "solution/app.py",
+    "--server.address",
+    "127.0.0.1",
+    "--server.port",
+    "18501",
+    "--server.headless",
+    "true",
+    "--browser.gatherUsageStats",
+    "false"
+  ],
+  "bind_address": "127.0.0.1",
+  "port": 18501,
+  "health_http_status": 200,
+  "health_body": "ok",
+  "terminated_after_check": true,
+  "scope": "Actual local server health only. UI interaction is tested separately with Streamlit AppTest, not a browser screenshot."
+}

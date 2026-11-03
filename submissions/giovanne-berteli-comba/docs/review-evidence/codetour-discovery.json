@@ -1,0 +1,92 @@
+{
+  "extension": "vsls-contrib.codetour",
+  "extension_version": "0.0.61",
+  "input_sha256": {
+    ".tours/assisted-triage.tour": "e4e0225413b3bb2e7042faadb0dce7e01bbbce9b53b61bff2d24a3d55e87d48e",
+    "review.code-workspace": "b0a7d1973a7f9cf0872396d8e2e8ecef8ad6c4d2a6f0e72ecaa5c29e6e4c40c9",
+    "review.sh": "eaad9df3e54c49be3b890e1c247f8aa19c0b9c66313ec7ca1e863349955d73f5",
+    "scripts/codetour-smoke.js": "2fbb2ea65bf7a89483cfab4d405a2775563095921c96f1180741967de76dbaf3"
+  },
+  "isolation": {
+    "global_settings_changed": false,
+    "repository_root_files_changed": false,
+    "test_profiles_isolated": true
+  },
+  "launcher": {
+    "command": "bash submissions/giovanne-berteli-comba/review.sh",
+    "existing_extension_reused": true,
+    "first_visit_prompt_enabled": true,
+    "installs_official_extension_only_if_missing": true,
+    "opens_new_review_window": true,
+    "user_window_open_command_exit_code": 0
+  },
+  "limits": "Playback was driven by editor APIs in isolated hosts. Installation-when-missing is tested with an isolated CLI fixture; the actual user profile already had CodeTour installed. VS Code remains a local prerequisite.",
+  "repository_workspace": {
+    "anchors": [],
+    "discovered": false,
+    "extension": "vsls-contrib.codetour",
+    "version": "0.0.61"
+  },
+  "review_workspace": {
+    "extension": "vsls-contrib.codetour",
+    "version": "0.0.61",
+    "discovered": true,
+    "anchors": [
+      {
+        "file": "README.md",
+        "line": 37
+      },
+      {
+        "file": "knowledge/dataset-usage.md",
+        "line": 36
+      },
+      {
+        "file": "run.sh",
+        "line": 31
+      },
+      {
+        "file": "data/evaluation-protocol.json",
+        "line": 19
+      },
+      {
+        "file": "solution/train_triage.py",
+        "line": 43
+      },
+      {
+        "file": "solution/triage/core.py",
+        "line": 68
+      },
+      {
+        "file": "solution/triage/runtime.py",
+        "line": 27
+      },
+      {
+        "file": "solution/triage/repository.py",
+        "line": 72
+      },
+      {
+        "file": "solution/management_ui.py",
+        "line": 88
+      },
+      {
+        "file": "docs/final-evaluation.md",
+        "line": 57
+      },
+      {
+        "file": "process-log/README.md",
+        "line": 13
+      },
+      {
+        "file": "docs/operational-learning.md",
+        "line": 1
+      },
+      {
+        "file": "solution/batch_workflow.py",
+        "line": 382
+      }
+    ]
+  },
+  "review_workspace_note": "M07 replay of all current 13 anchors in an isolated host. Repository-root discovery remains the earlier reproduction, not rerun in M07.",
+  "scope": "Actual VS Code extension-host integration via CodeTour commands/API, not a screenshot or human visual certification",
+  "vscode_version": "1.143.1"
+}

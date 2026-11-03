@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "protocol_id": "it-triage-v1",
+  "actor": "agent-defined offline evaluation assumptions; not a human-approved business policy",
+  "dataset": "it_service",
+  "features": ["Document"],
+  "target": "Topic_group",
+  "normalization": "nfkc-casefold-space-v1",
+  "max_input_chars": 10000,
+  "split": {
+    "fractions": {"train": 0.7, "validation": 0.15, "final_test": 0.15},
+    "seed": "20261102-it-triage-v1",
+    "near_duplicate_jaccard_numerator": 17,
+    "near_duplicate_jaccard_denominator": 20,
+    "token_pattern": "\\w+",
+    "method": "Exact prefix/length-filtered token-set Jaccard join; connected components assigned whole by deterministic label-balanced greedy allocation",
+    "quarantine": "Whole component if empty/no-token text or conflicting labels on identical normalized text; no relabeling of similar-but-not-identical content"
+  },
+  "model_selection": {
+    "fit_partition": "train",
+    "selection_partition": "validation",
+    "refit_with_validation": false,
+    "max_fits": 4,
+    "tfidf": {"ngram_range": [1, 2], "max_features": 50000, "min_df": 2, "sublinear_tf": true, "lowercase": false},
+    "candidates": [
+      {"id": "majority", "estimator": "DummyClassifier", "strategy": "most_frequent", "role": "baseline"},
+      {"id": "multinomial_nb", "estimator": "MultinomialNB", "alpha": 1.0, "role": "text_baseline"},
+      {"id": "logistic_c05", "estimator": "LogisticRegression", "C": 0.5, "solver": "lbfgs", "max_iter": 1000, "random_state": 20261102, "role": "candidate"},
+      {"id": "logistic_c20", "estimator": "LogisticRegression", "C": 2.0, "solver": "lbfgs", "max_iter": 1000, "random_state": 20261102, "role": "candidate"}
+    ],
+    "validation_min_macro_f1": 0.7,
+    "min_macro_f1_gain_over_majority": 0.1,
+    "max_macro_f1_loss_against_text_baseline": 0.01,
+    "selection": "Highest validation macro F1 among eligible logistic candidates; exact ties prefer logistic_c05; no replacement candidate after results",
+    "no_eligible_candidate": "No quality-qualified model; report results and keep review-needed fallback, without relaxing targets"
+  },
+  "gating": {
+    "score_threshold_grid": [0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95],
+    "anomaly_tail_grid": [0.01, 0.025, 0.05],
+    "reference_min_records": 100,
+    "reference_partition": "validation",
+    "reference_group": ["context", "model_version", "predicted_category", "normalization", "metric"],
+    "reference_method": "Inclusive empirical bounds at q and 1-q, linear interpolation at (n-1)*q; compare unrounded values",
+    "metrics": ["model_score", "text_chars"],
+    "specialist_categories": ["Access", "Administrative rights", "Purchase", "HR Support"],
+    "validation_min_standard_cases": 200,
+    "validation_min_standard_coverage": 0.1,
+    "validation_min_standard_accuracy_wilson_lower_95": 0.9,
+    "validation_max_anomaly_share_of_scored": 0.15,
+    "selection": "Among feasible threshold/tail pairs, minimize assumed mean review+error cost; ties within 1e-12 prefer greater standard coverage, then greater score threshold, then smaller tail",
+    "no_feasible_pair": "All valid predictions require triage review; no default permissive gate",
+    "all_outcomes_require_human_confirmation": true
+  },
+  "assumed_error_costs": {
+    "unit": "dimensionless illustrative review effort; not minutes, money or measured business loss",
+    "standard_review": 0.2,
+    "triage_review": 1.0,
+    "specialist_review": 1.5,
+    "wrong_standard_category": 1.0,
+    "wrong_standard_category_when_true_class_is_specialist": 5.0,
+    "formula": "Mean(queue review cost + error penalty for wrong standard suggestions); adjudication itself is not assumed perfect or measured",
+    "sensitivity_multiplier_for_specialist_error": [1.0, 2.0],
+    "sensitivity_use": "Report on validation only; does not change the primary selected configuration"
+  },
+  "final_test": {
+    "use": "V01 only after candidate, model hashes, threshold, reference and software are frozen",
+    "min_macro_f1": 0.7,
+    "min_macro_f1_gain_over_majority": 0.1,
+    "max_macro_f1_loss_against_text_baseline": 0.01,
+    "min_standard_cases": 200,
+    "min_standard_coverage": 0.1,
+    "min_standard_accuracy_wilson_lower_95": 0.9,
+    "report": ["all_eight_class_macro_f1", "accuracy", "per_class_precision_recall_f1_support", "confusion", "standard_suggestion_errors_and_coverage", "queue_volumes", "high_low_not_evaluated_anomaly_counts", "attempted_vs_stored_requests", "latency_and_failures"],
+    "failure": "Report failure/limitation and retain assisted/manual fallback; no tuning or second clean-test claim on the same membership",
+    "exposure": "No final-test examples in development/UI; any reuse affecting selection creates a new exploratory version with disclosed contamination"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "clean_reproduction_byte_identical": {
+    "data/evaluation-manifest.json": true,
+    "data/processed/evaluation-membership.csv": true
+  },
+  "input_sha256": {
+    "data/evaluation-manifest.json": "d117387cf8404eca66a0a24b8a2648fa9f718f9363e99e70b4037303cafc6cf2",
+    "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
+    "data/manifest.json": "e298d6e92504010775319c8c71c07aa46fcf40834c960081377cfc0e04dbf4de",
+    "data/processed/evaluation-membership.csv": "2585dbe5f2d1b4f9874a8550a6d1d0b9f0228e83107599941dd8bd2d72a7363e",
+    "data/raw/it_service-v1.csv": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+    "scripts/check_evaluation_preparation.py": "b87a1ffaa89ebb84b8139ac5f6041f7097824e4e50e8c3f034fd536cec6b43f0",
+    "solution/audit_data.py": "9955ec6f911b21c2463ac318cb056ba287f301c9e1b322c58badaee53dbe4191",
+    "solution/prepare_evaluation.py": "514527ab6fe4a5b30bb11181be26e6fadb059ebc6eb0ac36f9aa68706fa93434"
+  },
+  "limits": "Source copied with matching bytes, not downloaded again. Exact declared token similarity only, not semantic/entity independence. No model performance evaluated.",
+  "ordered_rows_assigned_once": true,
+  "preparation_model_fits": 0,
+  "training_text_risk_probe": {
+    "interpretation": "Heuristic inspection only: these words can describe requests or outcomes. Processed Document has no proven entry timestamp; do not claim prospective validity or remove markers as a validated leakage repair.",
+    "partition": "train",
+    "rows": 33485,
+    "rows_containing_literal_markers": {
+      "closed": 366,
+      "fixed": 343,
+      "resolution": 430,
+      "resolved": 540,
+      "solution": 397,
+      "solved": 271
+    }
+  },
+  "whole_groups_and_normalized_duplicates": true
+}
