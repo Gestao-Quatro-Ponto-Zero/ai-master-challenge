@@ -611,3 +611,26 @@ or model evaluations have been run. No commit, push, or PR was made.
   integration passed; 458 local destinations resolved. Presentation/capture
   inventory is20 files/153 occurrences/111 explicit IDs. Isolated editor profiles
   remain ignored; no app/model/final-result changes or global settings edits.
+
+## 2026-11-03 — P01 technical preparation and H01 reconciliation
+
+- User requested the final stage and supplied candidate identity/LinkedIn. Updated
+  README/template and current status without inventing a publication date.
+- Found one completed operator_declared study in the existing local DB. Read-only
+  backup/export reconciled all source texts/references/groups, frozen protocol and
+  immutable decisions; no agent-created human attempt or original DB mutation.
+- Assisted 52.723028s / 7 of8 matches; manual 41.582005s / 1 of8. Preserved higher
+  assisted time and concordance, small TRAIN/label/order/identity limits; no ROI.
+- All93 software tests passed. Prepared setup reused validated models; cached
+  7,175-case frozen reaggregation passed without new model loads/predictions/fits.
+  One command used system Python and was rejected by the pinned-environment guard;
+  rerunning in the locked .venv succeeded without changing evaluation artifacts.
+- Public fork metadata identified the official PR target; no existing branch PR
+  returned at query time. Fetched official main and checked submission-only diff.
+- Added final review, PR body, result/CSV/audit exports and narrative21/capture26
+  (15 new messages,5 returned turns,hasMore=true); final/later messages pending.
+- No commit/push/PR performed by this preparation; publication is a distinct final action.
+
+- After concrete final material was ready, user explicitly chose to perform the
+  commit and submission themselves. Left files reviewable with intent-to-add only;
+  no staged content, commit, push or PR. This reply follows capture26 cutoff.

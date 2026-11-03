@@ -1,7 +1,7 @@
 ---
 type: Implementation Contract
 title: Batch work and local manual-assisted rehearsal
-description: M07 import, explicit review, immutable output, timing boundaries and pending human experiment.
+description: M07 import, explicit review, immutable output, timing boundaries and declared-operator rehearsal results.
 status: draft
 sources:
   - id: protocol
@@ -19,7 +19,10 @@ sources:
 The user challenged the connection between classification and operating benefit,
 then explicitly requested batch triage, a manual/assisted comparison and prominent
 reviewer-facing learning. M07 implements these tools. H01 is the actual declared
-operator rehearsal and remains pending until a person completes it. No automated
+operator rehearsal; one completed operator_declared record was extracted and
+reconciled in P01 (docs/workflow-rehearsal.md). Assisted elapsed time was higher
+(52.723028 vs 41.582005 seconds), with 7/8 vs 1/8 supplied-label matches. This is
+declared participation, not independent authentication; no production savings. No automated
 attempt may be represented as human work or realized operational savings.
 
 # Inputs and durable state

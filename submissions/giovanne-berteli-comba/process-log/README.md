@@ -73,6 +73,10 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 
 Narrativa da mudança: [Da qualidade do modelo à medição do trabalho — M07](20-batch-workflow.md).
 
+| [Preparação final e ensaio](chat-exports/26-submission-preparation-chat.md) | Investigar melhorias no projeto | 15 mensagens novas de cinco turnos; conclusão M07, roteiro, commit, pedido P01 e identificação; hasMore=true; final/publicação posteriores pendentes |
+
+Narrativa P01: [Preparação final e resultado observado](21-submission-preparation.md).
+
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
 paginação e as lacunas de cada leitura estão declaradas no respectivo arquivo;

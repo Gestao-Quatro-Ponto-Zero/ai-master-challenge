@@ -52,7 +52,7 @@ aprovação humana de negócio ou revisão dos rótulos.
   execução de software, amostra local de latência. Há fontes, código, saídas e hashes.
 - **Premissa:** custos adimensionais, minutos/economia dos cenários, política de
   especialista e metas de aceitação. Não são políticas confirmadas de uma empresa.
-- **Pendente/indisponível:** identidade final, adjudicação humana, validação na
+- **Pendente/indisponível:** adjudicação humana, validação na
   operação de clientes, implantação/PR e observações individuais do relógio externo.
 
 Hashes verificam identidade/alteração, não semântica dos rótulos ou aprovação de
@@ -83,8 +83,8 @@ Perfis de teste são isolados; o inicializador preserva a janela anterior e não
 altera arquivos/configurações do repositório pai. VS Code é um pré-requisito local;
 se a extensão faltar no perfil, sua instalação precisa de acesso ao Marketplace.
 
-P01 deve confirmar nome e LinkedIn, conferir template/escopo/setup final e preparar
-o envio via PR conforme as regras do repositório. E01 não cria commit, push ou PR,
+P01 confirmou nome/LinkedIn, conferiu template/escopo/setup e preparou o corpo do
+PR. Commit, push e publicação permanecem pendentes. E01 não cria commit, push ou PR,
 nem inventa dados do candidato. A [tabela oficial F01–F07](architecture-review.md#lista-oficial-para-validação)
 continua sendo a única fonte do estado dos achados de arquitetura.
 
@@ -92,6 +92,8 @@ continua sendo a única fonte do estado dos achados de arquitetura.
 
 O [aprendizado que mudou a entrega](operational-learning.md) está em destaque no
 README, start-here e Guia do instrutor. No modo completo, Empresa oferece triagem
-em lote; Instrutor também oferece **Experimento**. A ferramenta aguarda execução
-pessoal das duas etapas para produzir uma comparação local. Testes de software
+em lote; Instrutor também oferece **Experimento**. Um [ensaio de operador declarado](workflow-rehearsal.md) já foi concluído: maior
+concordância e maior tempo assistido. Os exports permitem conferir o resultado. Testes de software
 não são apresentados como participantes humanos ou economia de operação.
+
+Preparação P01: [revisão final e publicação pendente](submission-review.md).

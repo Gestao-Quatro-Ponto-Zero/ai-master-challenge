@@ -1,0 +1,54 @@
+{
+  "batch_id": "study-c74e087557f2f3198e18bbc7ef247106:manual",
+  "mode": "manual",
+  "purpose": "study",
+  "actor_type": "operator_declared",
+  "state": "completed",
+  "started_at": "2026-11-03T05:52:04.103479+00:00",
+  "finished_at": "2026-11-03T05:52:45.685484+00:00",
+  "elapsed_seconds": 41.582005,
+  "content_sha256": "b0f66c47b183684231f7c97dd041af93f76f4b5d23824ec70f9686fae3c67d2a",
+  "artifact_sha256": "41ef19dbba1ba82efb0e535a5bf723553e6eea8a169b81b31f69a20b9d801b14",
+  "events": [
+    {
+      "seq": 12,
+      "event_id": "afbe5ebb-66ef-41fe-8761-2534a37e21c8",
+      "kind": "started",
+      "payload": {
+        "actor_type": "operator_declared",
+        "mode": "manual",
+        "prepared_input": true
+      },
+      "created_at": "2026-11-03T05:52:04.103697+00:00"
+    },
+    {
+      "seq": 13,
+      "event_id": "9f173779-09d0-4521-9c2e-3a2d47933914",
+      "kind": "decisions",
+      "payload": {
+        "choices": {
+          "it:044fdace33fa:11977": "Administrative rights",
+          "it:044fdace33fa:12164": "Purchase",
+          "it:044fdace33fa:15538": "Access",
+          "it:044fdace33fa:31480": "Access",
+          "it:044fdace33fa:32059": "Internal Project",
+          "it:044fdace33fa:32144": "Storage",
+          "it:044fdace33fa:32230": "Miscellaneous",
+          "it:044fdace33fa:4480": "Internal Project"
+        }
+      },
+      "created_at": "2026-11-03T05:52:41.135431+00:00"
+    },
+    {
+      "seq": 14,
+      "event_id": "19bf5a47-418f-46f5-aae9-bb474411fa36",
+      "kind": "completed",
+      "payload": {
+        "artifact_sha256": "41ef19dbba1ba82efb0e535a5bf723553e6eea8a169b81b31f69a20b9d801b14",
+        "elapsed_seconds": 41.582005
+      },
+      "created_at": "2026-11-03T05:52:45.685664+00:00"
+    }
+  ],
+  "limits": "Server elapsed workflow time including pauses; not active work/cash savings; original texts, names and reference labels omitted"
+}

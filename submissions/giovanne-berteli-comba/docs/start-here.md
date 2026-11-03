@@ -11,7 +11,7 @@ manual/assistida instrumentada. [Veja o aprendizado, o protocolo e como particip
 | --- | --- |
 | Qual era o problema? | Entender onde o suporte perde tempo, o que automatizar e demonstrar algo funcionando. |
 | O que encontramos? | 5.700/8.469 não encerrados, incluindo 1.403 Critical; 1.102/2.769 encerrados avaliados deram nota 1–2. O arquivo não informa abertura ou esforço ativo: duração, SLA e desperdício real em horas não são mensuráveis. |
-| O que construímos? | Diagnóstico com fontes; triagem IT individual/em lote com confirmação, histórico e anomalias; painel, exportação, simulador e ensaio manual/assistido pronto para participação humana. |
+| O que construímos? | Diagnóstico com fontes; triagem IT individual/em lote com confirmação, histórico e anomalias; painel, exportação, simulador e ensaio manual/assistido com resultado exportado de operador declarado. |
 | O que o modelo mostrou? | Macro F1 0,844612 contra 0,646094 do baseline de texto em 7.175 casos IT. Sugestões padrão: 1.951/7.175 (27,19%), com 1.884/1.951 concordâncias (96,57%). Houve 67 divergências, 50 de classes especializadas: toda sugestão precisa de confirmação. |
 | Qual o próximo passo do negócio? | Conferir Critical/status, distinguir espera do cliente de trabalho do agente, investigar motivos das notas e comparar fluxo atual/assistido num piloto com novos dados. |
 | Qual benefício esperar? | A hipótese de referência é 29,75 h/mês; cenários vão de −26,67 a +74,75 h/mês. São premissas para planejar um piloto, sem economia medida ou de caixa. |
@@ -95,3 +95,5 @@ ocultos até concluir ambas. Identifique sua participação como **Operador (dec
 automação usa o tipo próprio. Tempo, concordância, correções e falhas serão registrados,
 inclusive resultados desfavoráveis. [Roteiro e limites do ensaio](operational-learning.md).
 A ferramenta não apresenta execução automatizada como ganho humano ou ROI real.
+
+Resultado já disponível: [ensaio H01](workflow-rehearsal.md). O assistido teve maior concordância e maior tempo; o revisor pode inspecionar os exports sem repetir a atividade.

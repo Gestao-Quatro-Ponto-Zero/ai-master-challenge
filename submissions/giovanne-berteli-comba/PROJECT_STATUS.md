@@ -3,12 +3,13 @@
 Updated: 2026-11-03 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: M07 batch triage and manual/assisted usability instrumentation
-  delivered after the candidate challenged the link from accuracy to business value.
+- Current phase: P01 technical submission preparation completed; publication pending.
+  Batch triage and usability instrumentation followed the candidate impact objection.
   [Learning](docs/operational-learning.md) is prominent in README/start-here/app.
-  H01 actual declared-operator rehearsal remains pending; no measured human savings.
-- Submission slug: inherited from the existing Git branch. Display name and
-  LinkedIn still require confirmation before final submission.
+  H01 completed as an operator_declared record, extracted and reconciled in P01;
+  higher assisted time and concordance, no measured production savings.
+- Candidate identity supplied by the user: Giovanne Berteli Comba;
+  https://www.linkedin.com/in/giovannebc/. Submission slug/branch preserved.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
   validation strategy, process-log policy and conversation snapshots; adversarial
   foundation review, reproducible consistency checks, input-hash invalidation and
@@ -21,9 +22,13 @@ Updated: 2026-11-03 (America/Sao_Paulo).
   criteria passed; this is not business approval or production readiness.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: H01 — a person runs Instructor → Experimento in the full app and
-  completes both assigned arms. Results must remain local/descriptive, including
-  slower or lower-quality assisted outcomes. Then P01 candidate identity/final PR review.
+- Next action: candidate performs P01 commit/push and submission PR publication,
+  explicitly chosen by the user after reviewing the prepared material. [Final review](docs/submission-review.md) and
+  [PR body](docs/pull-request.md). No PR was published by this preparation.
+- H01: one completed declared-operator rehearsal, assisted first. Assisted 52.723028 s,
+  manual 41.582005 s (11.141023 s slower assisted); supplied-label concordance 7/8
+  vs 1/8. No independent authentication/adjudication or production ROI inference.
+  [Report and exports](docs/workflow-rehearsal.md). Original local DB unchanged.
 - M07: Company full mode adds operational batch review; Instructor adds Experimento.
   Separate workflow SQLite, bounded CSV validation, explicit row confirmations,
   append-only changes, immutable exports and elapsed timers. Protocol fixes 8 cases
@@ -51,7 +56,7 @@ Updated: 2026-11-03 (America/Sao_Paulo).
   obsolete reserved-test console message are documented in the review. No browser
   visual inspection or new operational savings measurement was performed.
 - E01: template narrative and evidence/decision map; 11 passive source-anchored tour
-  steps and one-command review workspace; current inventory: 25 captures / 193 message occurrences / 151
+  steps and one-command review workspace; current inventory: 26 captures / 208 message occurrences / 166
   distinct explicit IDs. 42 legacy no-ID occurrences and platform/cutoff omissions
   remain disclosed. No new test inference, model fitting or frozen source changes.
 - CodeTour correction: `bash review.sh` opens the correct VS Code workspace, reuses/

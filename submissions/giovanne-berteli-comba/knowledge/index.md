@@ -32,7 +32,7 @@ okf_version: "0.2"
   capacity simulator, CSV contract, entry points and future-scope boundary.
 
 - [Batch workflow and local rehearsal](batch-workflow.md) — M07 input/review/export,
-  timing/protocol boundaries and pending H01 human participation.
+  timing/protocol boundaries and reconciled H01 declared-operator results.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

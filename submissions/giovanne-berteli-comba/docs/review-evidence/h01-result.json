@@ -1,0 +1,163 @@
+{
+  "study_id": "study-c74e087557f2f3198e18bbc7ef247106",
+  "actor_type": "operator_declared",
+  "protocol": {
+    "analysis": "Only after both arms complete; elapsed totals, elapsed per case, supplied-label concordance, corrections and failures; retain negative differences, aborted and automated-test attempts; no automatic outlier removal or financial extrapolation",
+    "assignment": "One member of each pair per arm; within-arm task order hashed rather than class-ordered; arm order counterbalanced by study ID hash and frozen before starting",
+    "cases_per_arm": 8,
+    "completion": "Explicit category confirmation for every row; assisted mode requires a recorded suggestion attempt for every row, including visible failed outcomes",
+    "limits": "Small single-participant processed-text rehearsal; learning/order/task-difficulty and previously trained examples limit inference; new representative operational data are needed for production conclusions",
+    "protocol_id": "it-workflow-pilot-v1",
+    "reference_labels": "Publisher-supplied labels hidden during both arms; concordance, not adjudicated correctness",
+    "sampling": "TRAIN only; one pair per supplied IT class, distinct similarity groups across all 16 cases; deterministic hash seed and approximate text-length matching without model predictions",
+    "scope": "Local within-participant usability rehearsal, not a production ROI or new model-quality benchmark",
+    "timing": "Server UTC elapsed time from opening the assigned batch, including importing its prepared rows, assisted inference/waiting, review/corrections and preparing the output file; includes pauses and reruns; excludes study setup, external CSV creation, download/network/helpdesk delivery and future operating costs"
+  },
+  "protocol_sha256": "47a34a0db5133696f0d22c1709407188c03619a7206924298d42abe335aad418",
+  "seed": "study-c74e087557f2f3198e18bbc7ef247106",
+  "order": [
+    "assisted",
+    "manual"
+  ],
+  "states": {
+    "assisted": "completed",
+    "manual": "completed"
+  },
+  "sampling": {
+    "membership_sha256": "2585dbe5f2d1b4f9874a8550a6d1d0b9f0228e83107599941dd8bd2d72a7363e",
+    "source_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4"
+  },
+  "case_manifest": {
+    "assisted": [
+      {
+        "case_id": "it:044fdace33fa:1104",
+        "group_id": "b2abff7b9eba4ac5a6dfb746e1875c19e8c495ad0c1e319718276a3d7e02452c",
+        "partition": "train",
+        "text_chars": 73
+      },
+      {
+        "case_id": "it:044fdace33fa:17216",
+        "group_id": "8e5c4a5f4f1a54bef5af36b671c6b0d3ea9a8a59bd660e2301c108f7c18efdec",
+        "partition": "train",
+        "text_chars": 38
+      },
+      {
+        "case_id": "it:044fdace33fa:5102",
+        "group_id": "2260d7f44e6b6168c42b74ded7b09b987f81fdd270ee8d041f73a662498436da",
+        "partition": "train",
+        "text_chars": 406
+      },
+      {
+        "case_id": "it:044fdace33fa:27522",
+        "group_id": "38773e6ec51a8cb710129c17814de312bcbf0aab806eacaa7f1d0fb2339fef85",
+        "partition": "train",
+        "text_chars": 216
+      },
+      {
+        "case_id": "it:044fdace33fa:34719",
+        "group_id": "b13c63fb97100288a77e516bcbb2a897573851438fd10ba7ff2b9604dd258ca1",
+        "partition": "train",
+        "text_chars": 143
+      },
+      {
+        "case_id": "it:044fdace33fa:12618",
+        "group_id": "c88700b71a556ab4e473b4f6b83826699aec2db0b1e794106623289b0953c255",
+        "partition": "train",
+        "text_chars": 146
+      },
+      {
+        "case_id": "it:044fdace33fa:16058",
+        "group_id": "6cbd3c6c466cab4a13c931f0b4adaa37ae88d2d41e9f44ebe60ec10143e40cae",
+        "partition": "train",
+        "text_chars": 151
+      },
+      {
+        "case_id": "it:044fdace33fa:2204",
+        "group_id": "71c8286a87939b7bc1647b9872244d52fab7b8f8fd2028243d86e96c5b1d9187",
+        "partition": "train",
+        "text_chars": 160
+      }
+    ],
+    "manual": [
+      {
+        "case_id": "it:044fdace33fa:11977",
+        "group_id": "10359284ddbaa5dfb5ed5b8646eb43b2f863fcc01a2d09b54dae2b82aec39487",
+        "partition": "train",
+        "text_chars": 216
+      },
+      {
+        "case_id": "it:044fdace33fa:31480",
+        "group_id": "b4346745f5fc5596af758860736dfad86a5f9af008e61fac988c7501c9c25c5f",
+        "partition": "train",
+        "text_chars": 406
+      },
+      {
+        "case_id": "it:044fdace33fa:4480",
+        "group_id": "5d1797b84db99a5903f2c8c0f9c128d903b581bceb467ade41456848438bdc56",
+        "partition": "train",
+        "text_chars": 38
+      },
+      {
+        "case_id": "it:044fdace33fa:12164",
+        "group_id": "cbf894a6cec6768be25badb95a068f9c156b141657913fa4307e91ec205982b5",
+        "partition": "train",
+        "text_chars": 73
+      },
+      {
+        "case_id": "it:044fdace33fa:32144",
+        "group_id": "74ceb453f28b4a05f35f082564df1da1c646341442681d75d068f28f9c2c8575",
+        "partition": "train",
+        "text_chars": 143
+      },
+      {
+        "case_id": "it:044fdace33fa:32230",
+        "group_id": "91b0a9a8456f30fc9dc179cb04232a4f5ee33f1de5769c04d51274a6fbbd6d82",
+        "partition": "train",
+        "text_chars": 151
+      },
+      {
+        "case_id": "it:044fdace33fa:32059",
+        "group_id": "0091f97bd3f8b908f71ac8693e575a01bddd14564034ecb953da001159649fa4",
+        "partition": "train",
+        "text_chars": 160
+      },
+      {
+        "case_id": "it:044fdace33fa:15538",
+        "group_id": "9186ddb61cb582c2149323ee86319b91c5f228105a710389fa646bd375ed347a",
+        "partition": "train",
+        "text_chars": 146
+      }
+    ]
+  },
+  "completed": true,
+  "arms": {
+    "assisted": {
+      "batch_id": "study-c74e087557f2f3198e18bbc7ef247106:assisted",
+      "cases": 8,
+      "elapsed_seconds": 52.723028,
+      "seconds_per_case": 6.5903785,
+      "reference_matches": 7,
+      "reference_concordance": 0.875,
+      "suggestion_corrections": 0,
+      "failed_suggestions": 0,
+      "decision_events": 1,
+      "artifact_sha256": "57ade9b903d53b697aa9b2e147a62aebd2208e920c83f27db65b9bd4e94c0f5e"
+    },
+    "manual": {
+      "batch_id": "study-c74e087557f2f3198e18bbc7ef247106:manual",
+      "cases": 8,
+      "elapsed_seconds": 41.582005,
+      "seconds_per_case": 5.197750625,
+      "reference_matches": 1,
+      "reference_concordance": 0.125,
+      "suggestion_corrections": 0,
+      "failed_suggestions": 0,
+      "decision_events": 1,
+      "artifact_sha256": "41ef19dbba1ba82efb0e535a5bf723553e6eea8a169b81b31f69a20b9d801b14"
+    }
+  },
+  "manual_minus_assisted_seconds": -11.141022999999997,
+  "relative_time_reduction": -0.2679289514779289,
+  "quality_not_lower_in_sample": true,
+  "meaning": "Observed local rehearsal only; includes pauses and small-sample/order/learning limits; not production savings or a new classifier benchmark"
+}

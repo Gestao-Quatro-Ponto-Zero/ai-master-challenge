@@ -19,11 +19,11 @@ uma categoria no sistema original. Essa hipótese não tinha sido medida.
 | Integrações planejadas | Transportar dados não garante reduzir trabalho | Demonstrar a tarefa localmente; manter integrações como continuidade |
 | Afirmação genérica de valor | O benefício depende de tempo e qualidade juntos | Preparar um ensaio manual versus assistido com plano prévio e participação humana |
 
-**O que já está entregue:** ferramenta de lote, medição e comparação prontas para
-uso, com testes de software. **O que continua pendente:** um participante realizar
-as duas etapas e, depois, um piloto representativo da operação. As verificações do agente
-foram identificadas como testes automatizados; uma pessoa ainda precisa realizar
-o ensaio.
+**O que já está entregue:** lote, medição e comparação, testes de software e um
+[ensaio concluído por operador declarado](workflow-rehearsal.md). Nele, o assistido
+teve maior concordância (7/8 contra 1/8), mas levou mais tempo (52,72 s contra
+41,58 s). **O que continua pendente:** um piloto representativo da operação.
+A extração pelo agente não constitui observação independente do participante.
 
 ## Como testar a triagem em lote
 

@@ -1,11 +1,11 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: triagem em lote e ensaio manual/assistido implementados; execução humana do ensaio e submissão final pendentes.**
+**Estado: implementação e ensaio com operador declarado concluídos; preparação final em P01, envio do PR pendente.**
 
 > **Aprendizado que mudou a entrega:** um classificador melhor não comprova economia.
 > O candidato questionou a ligação com impacto operacional; a revisão identificou
 > trabalho adicional na triagem individual e levou ao lote e à comparação
-> manual/assistida. **A ferramenta está pronta; o ensaio humano ainda precisa ser realizado.** [Entenda a mudança e realize o ensaio](docs/operational-learning.md).
+> manual/assistida. **O ensaio teve maior concordância, mas maior tempo assistido.** [Resultado e limites](docs/workflow-rehearsal.md). [Entenda a mudança e realize o ensaio](docs/operational-learning.md).
 
 ## Comece por aqui
 
@@ -30,13 +30,13 @@ explica como habilitar a demonstração completa. As visões mudam conteúdo e n
 
 ## Sobre mim
 
-- **Nome:** a confirmar para a entrega final.
-- **LinkedIn:** a preencher antes do envio.
+- **Nome:** Giovanne Berteli Comba.
+- **LinkedIn:** [giovannebc](https://www.linkedin.com/in/giovannebc/).
 - **Challenge escolhido:** 002 — Redesign de Suporte.
 
 ## Executive Summary
 
-A análise encontrou 5.700 registros não encerrados em 8.469 (67,30%), mas os dados não permitem medir duração total ou esforço ativo do atendimento. A solução é uma triagem IT assistida, individual e em lote, com confirmação/correção numa tabela, histórico e um ensaio manual versus assistido instrumentado. No teste IT reservado, o macro F1 foi 0,844612 contra 0,646094 do baseline de texto; sugestões padrão cobriram 27,19% dos casos, com 96,57% de concordância com os rótulos nesse subconjunto. Dos 67 erros padrão, 50 tinham rótulos de classes especializadas, reforçando a confirmação humana. Os resultados sustentam o benchmark retrospectivo e o protótipo local; o ensaio humano permanece pendente e não há economia medida, transferência validada para clientes ou prontidão de produção.
+A análise encontrou 5.700 registros não encerrados em 8.469 (67,30%), mas os dados não permitem medir duração total ou esforço ativo do atendimento. A solução é uma triagem IT assistida, individual e em lote, com confirmação/correção numa tabela, histórico e um ensaio manual versus assistido instrumentado. No teste IT reservado, o macro F1 foi 0,844612 contra 0,646094 do baseline de texto; sugestões padrão cobriram 27,19% dos casos, com 96,57% de concordância com os rótulos nesse subconjunto. Dos 67 erros padrão, 50 tinham rótulos de classes especializadas, reforçando a confirmação humana. Os resultados sustentam o benchmark retrospectivo e o protótipo local; o ensaio de uso teve maior concordância e maior tempo assistido, sem demonstrar economia de produção ou transferência validada para clientes.
 
 ## Revisar o código — CodeTour
 
@@ -99,7 +99,9 @@ O [fluxo proposto](docs/automation-proposal.md) e o [setup](docs/prototype.md) d
 | Benchmark IT | Macro F1 0,844612; baseline de texto 0,646094 em 7.175 casos | [Avaliação final](docs/final-evaluation.md); teste consumido, sem refit ou ajuste posterior |
 | Sugestões padrão | 1.951/7.175 (27,19%); 1.884 concordâncias e 67 divergências | [Erros e cobertura](docs/final-evaluation.md); 50 erros de classes especializadas, confirmação obrigatória |
 | Anomalias | 338 casos distintos; 345 avaliações sinalizadas | [Contagens e limites](data/final-evaluation.json); raridade não equivale a erro confirmado |
-| Software/runtime | 72 testes; 64/64 requisições reais salvas, p95 local 600,84 ms | [Relatório](docs/final-evaluation.md); amostra sequencial pequena, não SLA |
+| Software/runtime na V01 | 72 testes; 64/64 requisições reais salvas, p95 local 600,84 ms | [Relatório](docs/final-evaluation.md); amostra sequencial pequena, não SLA |
+
+Na preparação final, **93 testes de software passaram**. O [ensaio H01](docs/workflow-rehearsal.md) registrou 52,72 s e 7/8 concordâncias no assistido, contra 41,58 s e 1/8 no manual. O assistido levou mais tempo; não se apresenta o ensaio como economia de operação.
 
 O arquivo operacional tem 8.469 registros, em vez dos ~30 mil do briefing, e não
 contém abertura do ticket. Há 1.365 pares encerrados com resolução anterior à
@@ -157,6 +159,7 @@ intervenções humanas abaixo são as documentadas, sem inventar aprovação de 
 5. Congelar grupos, candidatos e critérios; treinar/selecionar só em treino/validação.
 6. Implementar e testar; corrigir o setup após os erros de uso relatados pelo candidato.
 7. Congelar e avaliar a versão no teste final; revisar resultados, evidências e tour.
+8. Questionar o impacto, implementar lote/ensaio e preservar o resultado com maior tempo assistido na revisão final.
 
 Há registros separados por etapa e correção. Foram quatro ajustes de modelos na
 execução principal e quatro na reprodução isolada do setup; a V01 não treinou.
@@ -195,13 +198,12 @@ avançar; não há revisão humana de rótulos ou política empresarial implíci
 - [CodeTour e roteiro sem extensão](docs/code-tour.md)
 - [Process log e capturas com limites declarados](process-log/README.md)
 - [Fontes/versões dos dados](data/manifest.json) e [resultados finais agregados](data/final-evaluation.json)
-- [Testes de software](docs/review-evidence/final-evaluation-tests.txt) e [auditoria sem nova previsão](docs/review-evidence/final-evaluation-checks.json)
+- [93 testes atuais](docs/review-evidence/p01-tests.txt), [testes históricos V01](docs/review-evidence/final-evaluation-tests.txt) e [auditoria sem nova previsão](docs/review-evidence/p01-frozen-checks.json)
 - Histórico Git: `git log --oneline -- submissions/giovanne-berteli-comba`
 
 Há um [screenshot do painel local](docs/review-evidence/management-overview.png), capturado pelo agente durante a verificação de interface; não é gravação do trabalho humano. As capturas de conversas são
 extrações textuais acessíveis, com origem/corte/omissões; não comprovam completude
-de ramificações ou mensagens removidas. Nome, LinkedIn, revisão final e envio do PR
-continuam em P01. Nenhuma data de submissão ou publicação é antecipada.
+de ramificações ou mensagens removidas. Nome e LinkedIn foram informados pelo candidato em P01. A [revisão final](docs/submission-review.md) registra os checks e o conteúdo do PR preparado; o envio ainda está pendente. Nenhuma data de publicação é antecipada.
 
 ## Como retomar o trabalho
 

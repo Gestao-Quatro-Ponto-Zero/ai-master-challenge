@@ -249,10 +249,20 @@
       "represented_turn_ids": 4,
       "sha256": "a6654aa1257c252ba3ee742b3c14158e10a6453aa959fbf368264a07a89a4598",
       "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    },
+    {
+      "captured": "2026-11-03 06:01:53 UTC.",
+      "explicit_message_ids": 15,
+      "file": "process-log/chat-exports/26-submission-preparation-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 15,
+      "represented_turn_ids": 4,
+      "sha256": "a4cb58aa59cd0b849fa51c0eacfda293dd02db6a156ccb4bf571a98b69d46483",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
     }
   ],
   "credential_pattern_matches": 0,
-  "distinct_explicit_message_ids": 151,
+  "distinct_explicit_message_ids": 166,
   "duplicate_explicit_ids": 0,
   "executive_summary_sentences": 5,
   "headline_metric_tokens_matched": [
@@ -264,18 +274,18 @@
   ],
   "input_sha256": {
     ".tours/assisted-triage.tour": "e4e0225413b3bb2e7042faadb0dce7e01bbbce9b53b61bff2d24a3d55e87d48e",
-    "README.md": "4783054823081139d1b1336b29940a7f73a54c0b37ce3ba57d7a6297396a82fa",
+    "README.md": "5207e45146c484ce08c92f68353691e313c35c6909a912d0062afb775e84cdef",
     "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
     "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
     "docs/code-tour.md": "18cf7c5f18f0aa168083bdad04f39ca9d358fef512bf440639df43d84c2b2764",
-    "docs/conversation-coverage.md": "124973fd713827ce61abfd3ae40fc5c85770e74699e991f874c94f00bebac52a",
+    "docs/conversation-coverage.md": "ad5a19292f7205645184acd081989362efcdf90bcd760eca62a16507312b286a",
     "docs/final-evaluation.md": "bb6d13327496809c465ed0fce3116ec41317912549f20c537278dd20519da3e8",
-    "docs/operational-learning.md": "7322c84eb8872c9715dc68b9d92b9ffe6227711bdbf0e29cdfd24de847b7e5c8",
+    "docs/operational-learning.md": "5f9c6d1f3d9c8848caada93d8b53c061d74466de84e0296dfc3d4e8eeb51a3f1",
     "docs/review-evidence/codetour-discovery.json": "9687585a3b1759c3effeda594dee878f2d66bfc83a35252f0b6cb96bea35af89",
-    "docs/review-guide.md": "7143a5c330c5777bc86da756f39bb6f480ef3280bf974916299424739e88a2f3",
+    "docs/review-guide.md": "b295ca6aece6cf1688f75cba041b96a78d7d24f0a345ea7fa2a73376b22037b4",
     "knowledge/dataset-usage.md": "cef9f5e1d43932a39ff84cf13354b2e25401347495e407e25357160ba89b8cb4",
     "knowledge/final-evaluation.md": "1e099a9a6bccdae0813f545f51e36c3774c9cf111ea519f9d4eb055ad7d7dbd5",
-    "process-log/README.md": "b509001b84101be3bb1f8e718d62648ea40c363328340f785e21b8458e0fb1e6",
+    "process-log/README.md": "990d82f897fde6a69bf0d2170ec293d678f454980380a6f734d3cfc128e4084f",
     "process-log/chat-exports/01-preparation-chatgpt.md": "343994a0997230b9f311772c1701bf13d97debf6611e3a22f28293bc0108300a",
     "process-log/chat-exports/02-challenge-comparison.md": "dc383b6bba413bae481c95c6dc67e74a6b864ef6c3077dfc808fb99d260e3ce7",
     "process-log/chat-exports/03-planning-chat.md": "ad9839a2b870483ac22e45ca45c07948e18771368faed5b3fa338f31fc5d883d",
@@ -301,6 +311,7 @@
     "process-log/chat-exports/23-management-delivery-chat.md": "dfd1e726fffd680c67bdd57fd115a53e80acbe1ed15f8c08021dfdb65d3f1af3",
     "process-log/chat-exports/24-audience-feedback-chat.md": "069944200c6dd50a6a84b39621232e4ca627b0cb15f4fcd7a1d275b13f86d1c0",
     "process-log/chat-exports/25-batch-workflow-chat.md": "a6654aa1257c252ba3ee742b3c14158e10a6453aa959fbf368264a07a89a4598",
+    "process-log/chat-exports/26-submission-preparation-chat.md": "a4cb58aa59cd0b849fa51c0eacfda293dd02db6a156ccb4bf571a98b69d46483",
     "review.code-workspace": "b0a7d1973a7f9cf0872396d8e2e8ecef8ad6c4d2a6f0e72ecaa5c29e6e4c40c9",
     "review.sh": "eaad9df3e54c49be3b890e1c247f8aa19c0b9c66313ec7ca1e863349955d73f5",
     "run.sh": "f3bee52b9d169b3bdb678584a211570e1aeef1b928c0f68c61f9e5030c9f0db6",
@@ -313,13 +324,13 @@
     "solution/triage/runtime.py": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d"
   },
   "limits": "Legacy messages without IDs, API pagination, incomplete/edited/deleted branches, absent attachments/native exports and messages after the current capture remain explicit gaps; no new model inference or fitting",
-  "message_occurrences": 193,
+  "message_occurrences": 208,
   "scope": "Reviewer presentation, passive tour paths/unique patterns, capture inventory, headline metrics and known credential patterns; not full schema/UI/privacy certification or human verification",
   "tour_steps": [
     {
       "file": "README.md",
       "line": 37,
-      "sha256": "4783054823081139d1b1336b29940a7f73a54c0b37ce3ba57d7a6297396a82fa",
+      "sha256": "5207e45146c484ce08c92f68353691e313c35c6909a912d0062afb775e84cdef",
       "title": "1. Problema, resultado e principal limite"
     },
     {
@@ -379,13 +390,13 @@
     {
       "file": "process-log/README.md",
       "line": 13,
-      "sha256": "b509001b84101be3bb1f8e718d62648ea40c363328340f785e21b8458e0fb1e6",
+      "sha256": "990d82f897fde6a69bf0d2170ec293d678f454980380a6f734d3cfc128e4084f",
       "title": "11. Quem decidiu e o que está preservado"
     },
     {
       "file": "docs/operational-learning.md",
       "line": 1,
-      "sha256": "7322c84eb8872c9715dc68b9d92b9ffe6227711bdbf0e29cdfd24de847b7e5c8",
+      "sha256": "5f9c6d1f3d9c8848caada93d8b53c061d74466de84e0296dfc3d4e8eeb51a3f1",
       "title": "12. Aprendizado que mudou o fluxo"
     },
     {
