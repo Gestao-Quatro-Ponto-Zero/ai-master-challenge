@@ -23,6 +23,8 @@ documentos operacionais, e este diretório está fora do contexto padrão dos ch
 - [Diagnóstico operacional e cenários de esforço](09-operational-diagnosis.md)
 - [Escopo e contrato da triagem assistida](10-automation-scope.md)
 - [Protocolo de avaliação e ambiente V00](11-evaluation-protocol.md)
+- [Protótipo local de triagem e revisão I01](12-prototype.md)
+- [Correção do setup e treino reutilizável](13-setup-fix.md)
 - [Modelo para próximos registros](entry-template.md)
 
 ## Conversas preservadas
@@ -48,10 +50,14 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 
 | [Protocolo e ambiente — V00](chat-exports/15-evaluation-protocol-chat.md) | Defina e avance o próximo passo | 9 mensagens adicionais de quatro turnos, incluindo final da S01, troca de commit e V00 em andamento; hasMore=true |
 
+| [Protótipo local — I01](chat-exports/16-prototype-chat.md) | Defina e avance o próximo passo | 9 mensagens adicionais de quatro turnos, incluindo final V00, troca de commit e I01 em andamento; hasMore=true |
+
+| [Correção do setup](chat-exports/17-setup-fix-chat.md) | Defina e avance o próximo passo | 8 mensagens adicionais de quatro turnos, incluindo final I01, erro de pasta e relato de venv/treino repetido; hasMore=true |
+
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
 paginação e as lacunas de cada leitura estão declaradas no respectivo arquivo;
-as capturas 08, 10, 11, 12, 13, 14 e 15 retornaram `hasMore=true`. Essas extrações não comprovam
+as capturas 08, 10, 11, 12, 13, 14, 15, 16 e 17 retornaram `hasMore=true`. Essas extrações não comprovam
 a completude do histórico nem a existência de todas as versões, ramificações
 ou mensagens removidas.
 O texto preserva o idioma e as palavras originais; espaços no fim das linhas
@@ -69,7 +75,8 @@ a captura 10 inclui o final da revisão antes do commit. O final do turno D01
 foi incluído na captura 11. O final do turno D02 foi incluído na captura 12;
 o final do turno R01 foi incluído na captura 13. O final do turno A01 foi incluído
 na captura 14. O final do turno S01 foi incluído na captura 15. O final da V00
-e mensagens posteriores ao corte permanecem pendentes para a próxima extração.
+foi incluído na captura 16. O final I01 foi incluído na captura 17. O final da correção de setup e mensagens
+posteriores ao corte permanecem pendentes para a próxima extração.
 As mensagens ficaram abaixo do limite
 de 20 mil caracteres por item. Anexos, gráficos, resultados de ferramentas e
 instruções internas não fazem parte destas extrações. Não há export de Claude

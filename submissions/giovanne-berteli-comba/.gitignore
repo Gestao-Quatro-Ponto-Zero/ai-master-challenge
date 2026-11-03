@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 .venv/
+.runtime/
 __pycache__/
 .pytest_cache/
 .coverage

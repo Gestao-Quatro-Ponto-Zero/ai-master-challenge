@@ -24,7 +24,7 @@ class FoundationTests(unittest.TestCase):
         self.root = Path(self.temp.name) / "submission"
         # Preserve paths for link existence without loading recruitment archives.
         shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns(
-            "__pycache__", ".venv", "raw", "processed", "chat-exports"))
+            "__pycache__", ".venv", ".runtime", "raw", "processed", "models", "runtime", "chat-exports"))
         archive_dir = self.root / "process-log/chat-exports"
         archive_dir.mkdir(exist_ok=True)
         for archive in (ROOT / "process-log/chat-exports").glob("*.md"):

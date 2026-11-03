@@ -122,5 +122,6 @@ e testes automáticos serão identificados como testes, não aprovação humana.
 
 S01 está concluída como escopo e contrato. A [V00](evaluation-protocol.md) congelou
 conjuntos, candidatos, custos ilustrativos e critérios antes da implementação.
-**Próxima etapa: I01**, sob esse protocolo. Ainda não há modelo treinado, interface
-funcional ou ganho medido.
+A [I01](prototype.md) implementou o protótipo local e selecionou modelo/gate apenas
+em treino/validação. **Próxima etapa: V01**; teste final, adjudicação humana e ganho
+operacional medido continuam pendentes.

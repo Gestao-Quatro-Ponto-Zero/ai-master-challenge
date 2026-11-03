@@ -18,8 +18,10 @@ Scope: this submission directory and its descendants. Read the repository's
   contract are owned by `knowledge/solution-scope.md` after S01. V00 must freeze
   the evaluation protocol before I01. V00 now owns numerical rules in
   `data/evaluation-protocol.json`, interpretation in `knowledge/evaluation-protocol.md`
-  and split counts/hashes in `data/evaluation-manifest.json`. Do not imply the selected design is already
-  implemented, trained or validated.
+  and split counts/hashes in `data/evaluation-manifest.json`. I01 implementation/setup
+  is owned by `knowledge/prototype.md`; computed TRAIN/VALIDATION results are in
+  `data/triage-development.json`. Do not imply final-test/production validation from
+  software checks or development results. Keep final_test reserved for V01.
 - Use small tasks with acceptance criteria, checkboxes, and evidence links.
   Mark completion only after the stated criteria have been checked.
 - Preserve decisions, alternatives, rejected suggestions, corrections, and

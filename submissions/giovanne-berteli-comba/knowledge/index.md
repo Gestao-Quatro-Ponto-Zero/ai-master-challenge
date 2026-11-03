@@ -22,6 +22,9 @@ okf_version: "0.2"
 - [Evaluation protocol](evaluation-protocol.md) — V00 numerical-rule ownership,
   grouped split membership, model/gate selection order and reserved-test exposure.
 
+- [Prototype implementation](prototype.md) — I01 components, artifact readiness,
+  SQLite/reviews, local setup and validation-only selection; V01 is next.
+
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and
 is excluded from routine retrieval. Review decisions are owned by the

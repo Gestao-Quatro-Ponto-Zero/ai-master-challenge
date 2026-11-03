@@ -1,6 +1,18 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: V00 preparada. Próxima etapa: implementar o protótipo I01, sob protocolo congelado.**
+**Estado: I01 implementada localmente. Próxima etapa: V01, avaliação final sob protocolo congelado.**
+
+## Executar o protótipo
+
+A partir da raiz do repositório:
+
+```bash
+bash submissions/giovanne-berteli-comba/run.sh
+```
+
+O comando prepara Python/ambiente/dados/modelo quando necessário e abre o app local.
+Não exige instalar `python3-venv`; execuções seguintes reutilizam o treino válido.
+[Pré-requisitos, limites e diagnóstico](docs/prototype.md).
 
 ## Sobre mim
 
@@ -19,8 +31,9 @@ referência simula 29,75 h/mês, enquanto um cenário desfavorável perde 26,67 
 Os dois datasets foram versionados e auditados. A base de atendimento sustenta
 essas descrições e hipóteses; a base IT será usada na avaliação de classificação
 em seu próprio domínio. A automação escolhida sugere categorias IT e prepara uma
-fila de revisão humana com anomalias filtráveis. O protótipo e qualquer impacto
-operacional medido continuam pendentes.
+fila de revisão humana com anomalias filtráveis. O protótipo local está disponível;
+a seleção usou treino/validação. Avaliação final e impacto operacional medido
+continuam pendentes.
 
 ## Solução
 
@@ -48,11 +61,10 @@ score baixo, contexto desconhecido, anomalias, referência insuficiente e falhas
 têm encaminhamento explícito. As anomalias altas/baixas guardam valor e referência,
 permitem filtros e têm revisão independente do rótulo sugerido.
 
-A interface será local, com Triagem e Revisão/anomalias, em Python, scikit-learn,
-Streamlit e SQLite. Não haverá envio ao cliente nem mudança em sistemas externos.
-O fluxo, os contratos e os limites estão na proposta; a implementação só começa
-sob o [protocolo V00 já congelado](docs/evaluation-protocol.md). Ainda não houve
-treinamento de classificadores.
+A interface local tem Triagem e Revisão/anomalias, em Python, scikit-learn,
+Streamlit e SQLite. Não há envio ao cliente nem mudança em sistemas externos.
+O [protótipo e setup](docs/prototype.md) implementam os contratos sob o
+[protocolo V00](docs/evaluation-protocol.md), sem pontuar o teste final.
 
 ### Resultados / Findings
 
@@ -69,15 +81,17 @@ treinamento de classificadores.
 O [diagnóstico operacional](docs/operational-diagnosis.md) traz comparações,
 denominadores e cenários, com 150 linhas agregadas de segmentos. A
 [auditoria](docs/data-audit.md) fundamenta os limites. Não há ganho medido ou
-resultado de modelo.
+resultado final de modelo. Na validação, o candidato selecionado atingiu macro F1
+0,852554; a cobertura de sugestões padrão foi 28,61%, ainda com confirmação humana.
+São resultados de seleção, sem estimativa independente de desempenho.
 
 ### Recomendações
 
 Conferir status/prioridades e os registros Open sem resposta preenchida com o
 responsável pela operação; instrumentar eventos e esforço antes de alegar SLA ou
-economia. Não eleger um canal como causa de atraso com esses dados. Implementar
-I01 com os baselines e critérios congelados em V00, escolhendo modelo/limiares
-apenas na validação e mantendo o teste final reservado.
+economia. Não eleger um canal como causa de atraso com esses dados. Executar
+V01 com os artefatos selecionados em I01 e critérios congelados em V00, mantendo
+o teste final fora de novos ajustes e reportando falhas/limitações.
 
 ### Limitações
 
@@ -100,6 +114,7 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Conhecimento compartilhado](knowledge/index.md)
 - [Estratégia de validação](docs/validation-strategy.md)
 - [Protocolo V00, conjuntos e ambiente testado](docs/evaluation-protocol.md)
+- [Protótipo local: executar, revisar e conferir resultados de validação](docs/prototype.md)
 - [Auditoria dos datasets](docs/data-audit.md)
 - [Diagnóstico operacional e cenários de esforço](docs/operational-diagnosis.md)
 - [Proposta de automação e fluxo](docs/automation-proposal.md)
@@ -110,8 +125,10 @@ de desafio que foram superadas pela decisão de escolher o 002.
 - [Fonte de verdade dos sete ajustes da revisão](docs/architecture-review.md#lista-oficial-para-validação)
 - [Backlog](execution/backlog.md)
 
-O setup da auditoria e suas evidências estão nos links acima. A execução do
-protótipo e o CodeTour serão incluídos quando esses artefatos existirem.
+O setup da auditoria e suas evidências estão nos links acima. Para abrir o protótipo
+na pasta da submissão, execute `bash run.sh`.
+A [reprodução em cópia limpa](docs/prototype.md) inclui os quatro ajustes; o CodeTour
+será criado em E01, após a validação.
 
 ## Como iniciar uma sessão de trabalho
 
@@ -136,7 +153,7 @@ python3 -I scripts/check_foundation.py
 
 Esses comandos executam os testes disponíveis e verificam o recibo da fundação.
 Para baixar os dados e regenerar a auditoria, siga o setup em `data/README.md`.
-O protótipo ainda será implementado.
+O [setup I01](docs/prototype.md) explica a interface, a CLI e seus testes no venv.
 
 O process log e os exports de chats são evidências para a equipe de recrutamento.
 As regras de trabalho os excluem do contexto padrão das sessões, inclusive na

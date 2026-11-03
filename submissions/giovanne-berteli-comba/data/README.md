@@ -56,6 +56,18 @@ are owned by [the protocol](evaluation-protocol.json), and computed membership
 identity/counts by [the manifest](evaluation-manifest.json). Raw data and the
 detailed membership CSV remain local. No classifier is fitted by preparation.
 
+## I01 prototype
+
+Use `bash run.sh` for the supported one-command local setup/start. It supplies
+Python/venv locally when needed and reuses completed verified training. See
+[prototype setup/development results](../docs/prototype.md). The training command
+uses only train/validation under V00, never final_test predictions. Aggregate results
+are in [triage-development.json](triage-development.json); estimators, validation
+score vectors, references/examples and exclusive fit-attempt record stay local under
+ignored `data/models/it-triage-v1/`. SQLite stays under ignored `data/runtime/`.
+The bundle checks source/configuration/lock/file hashes before serving; do not
+change frozen settings or remove the attempt guard to rerun model selection.
+
 ## A01 diagnosis
 
 `solution/diagnose_support.py` uses only the hash-locked customer CSV and

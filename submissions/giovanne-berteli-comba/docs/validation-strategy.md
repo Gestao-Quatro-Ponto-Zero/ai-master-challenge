@@ -7,7 +7,9 @@ runtime/anomaly contracts and acceptance cases are owned by
 has frozen numerical criteria, selection procedures, membership and tested
 dependencies before implementation. Its preparation evidence is in the
 [protocol/setup report](evaluation-protocol.md). The application checks below
-remain planned. Do not report a planned check as a passing test.
+now have I01 software/functional evidence in the [prototype report](prototype.md),
+while final AI/failure/latency evaluation remains V01 work. Do not report a
+planned check as a passing test.
 
 | Layer | Meaningful checks | Evidence |
 | --- | --- | --- |

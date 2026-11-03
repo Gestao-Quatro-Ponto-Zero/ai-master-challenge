@@ -16,7 +16,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | A01 | Operational diagnosis | Reproducible bottleneck/satisfaction findings; explicit populations, missingness, time units and active-effort assumptions; distinguish simulated from measured savings (F07) | [Diagnosis](../docs/operational-diagnosis.md), [computed metrics](../data/diagnosis.json), [all segments](../data/diagnosis-segments.csv) and [assumptions](../data/diagnosis-assumptions.json) |
 | S01 | Automation and scope | Choose one useful automation; define handoff and failure rules, anomaly records/filters, review states, success measures and an explicit flow (F03) | [Authoritative contract](../knowledge/solution-scope.md) and [reviewer proposal/flow](../docs/automation-proposal.md) |
 | V00 | Evaluation protocol before implementation | Baseline, entry-time inputs, group/duplicate separation, development/validation/test membership and selection criteria recorded; choose thresholds on validation, not final test (F02) | [Frozen protocol](../knowledge/evaluation-protocol.md), [manifest](../data/evaluation-manifest.json), [setup/checks](../docs/evaluation-protocol.md) and [receipt](../docs/review-evidence/evaluation-current.json) |
-| I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | Future `solution/` implementation |
+| I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | [Prototype/setup](../docs/prototype.md), [implementation](../knowledge/prototype.md), [development results](../data/triage-development.json) and [receipt](../docs/review-evidence/triage-current.json) |
 | V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | Future test/evaluation outputs |
 | E01 | Evidence and communication | Reviewer narrative, conversation coverage, decision history and useful CodeTour checked | Process log, report and future tour |
 | P01 | Submission | Candidate details completed, reproducible setup, template satisfied, allowed diff scope, PR instructions followed | Final review checklist and eventual PR |
@@ -30,7 +30,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] A01 — Complete the operational diagnosis. Evidence: [findings, scenarios and limits](../docs/operational-diagnosis.md).
 - [x] S01 — Define one automation and its human intervention rules. Evidence: [scope, flow and acceptance](../knowledge/solution-scope.md).
 - [x] V00 — Record the evaluation protocol before prototype implementation. Evidence: [grouped splits, bounded selection and tested environment](../docs/evaluation-protocol.md); zero classifier fits.
-- [ ] I01 — Build the functional prototype.
+- [x] I01 — Build the functional prototype. Evidence: [local triage/review, frozen-protocol selection, software and smoke checks](../docs/prototype.md); final test remains reserved.
 - [ ] V01 — Run and document software tests and AI evaluation.
 - [ ] E01 — Complete evidence, narrative, and CodeTour.
 - [ ] P01 — Prepare the final submission and PR.
@@ -63,3 +63,10 @@ R01 executed on 2026-11-02: PRs #211, #209 and #205, each confirmed as Challenge
 002 in its title and README. Source-inspection window: 18:26:42–18:30:01 UTC,
 199 seconds. Stopped after three; no fourth PR inspected. Administrative writing
 and local validation after that window are recorded separately from source research.
+
+
+I01 setup correction after user testing: `bash run.sh` supplies the local runtime
+without system ensurepip/python3-venv and reuses completed verified training.
+[Clean install/offline repeat/server evidence](../docs/review-evidence/setup-reproduction.json)
+and [explicit provenance compatibility check](../docs/review-evidence/setup-binding.json)
+cover this correction; no original-workspace refit or final-test prediction.

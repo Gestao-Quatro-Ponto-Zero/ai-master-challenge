@@ -60,7 +60,9 @@ outro teste limpo com os mesmos registros.
 
 ## Ambiente e reprodução
 
-Execute na pasta da submissão, com Python 3.12 e suporte a venv/pip:
+Para iniciar o protótipo, prefira o [comando único I01](prototype.md): `bash run.sh`.
+Ele prepara Python/ambiente sem depender do venv do sistema. Os comandos abaixo
+registram a preparação técnica manual da V00, com Python 3.12 e suporte a venv/pip:
 
 ```bash
 python3 -m venv .venv

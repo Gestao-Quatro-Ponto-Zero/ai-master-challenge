@@ -1,0 +1,124 @@
+{
+  "end_to_end_smoke_latency_ms": {
+    "max": 675.47105900303,
+    "n": 7,
+    "p50": 598.9316260020132,
+    "p95": 658.828474402253,
+    "population": "7 unique functional submissions including DB commit; tiny smoke only, not production latency or V01 benchmark"
+  },
+  "final_test_predictions": 0,
+  "gate_mode": "qualified",
+  "input_sha256": {
+    "data/models/it-triage-v1/bundle.json": "a296c6c956ae8a34eff0386108edc6d31f2f965c5e11dcb160c081f17d0c8b6b",
+    "data/triage-development.json": "9db7bcfc995bc03fef90f2f501e780f6e6cfbd3fd66d29b0ca2d4ecf7b4fcdfa",
+    "scripts/check_triage_prototype.py": "574f01f3bcfed2a2b6ea5a0520fd5b28ffa2ec394733554aa52c52be22ab17b3"
+  },
+  "model": "logistic_c20",
+  "requests": {
+    "attempted": 8,
+    "duplicate_deliveries": 1,
+    "saved_acknowledgments": 8,
+    "stored_metric_rows": 14,
+    "unique": 7,
+    "unique_stored": 7
+  },
+  "results": [
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": "Hardware",
+      "reason_codes": [
+        "low_score"
+      ],
+      "review_queue": "triage_review",
+      "score": 0.6398410062077441,
+      "source": {
+        "dataset": "it_service",
+        "partition": "train",
+        "row_index": 1
+      }
+    },
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": "Access",
+      "reason_codes": [
+        "policy_human_category"
+      ],
+      "review_queue": "specialist_review",
+      "score": 0.865488917210339,
+      "source": {
+        "dataset": "it_service",
+        "partition": "train",
+        "row_index": 2
+      }
+    },
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": "Access",
+      "reason_codes": [
+        "policy_human_category"
+      ],
+      "review_queue": "specialist_review",
+      "score": 0.8693732452943231,
+      "source": {
+        "dataset": "it_service",
+        "partition": "train",
+        "row_index": 4
+      }
+    },
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": null,
+      "reason_codes": [
+        "unsupported_context"
+      ],
+      "review_queue": "triage_review",
+      "score": null,
+      "source": null
+    },
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": null,
+      "reason_codes": [
+        "invalid_input"
+      ],
+      "review_queue": "triage_review",
+      "score": null,
+      "source": null
+    },
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": null,
+      "reason_codes": [
+        "no_known_features"
+      ],
+      "review_queue": "triage_review",
+      "score": null,
+      "source": null
+    },
+    {
+      "outcome": "review_needed",
+      "persisted": true,
+      "predicted_category": null,
+      "reason_codes": [
+        "invalid_input"
+      ],
+      "review_queue": "triage_review",
+      "score": null,
+      "source": null
+    }
+  ],
+  "scope": "Functional smoke with train examples and synthetic invalid/unknown inputs; no final-test prediction, accuracy estimate or human adjudication",
+  "write_failure_fixture": {
+    "attempted": 1,
+    "stored": 0,
+    "visible_reason": [
+      "persistence_error"
+    ]
+  }
+}
