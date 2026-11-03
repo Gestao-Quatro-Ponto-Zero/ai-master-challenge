@@ -1,10 +1,27 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: investigação R02 concluída; melhorias propostas antes da revisão final P01. Entrega ainda não enviada.**
+**Estado: pontos 1–4 da revisão implementados; identificação e submissão final em P01. Entrega ainda não enviada.**
 
-A [revisão pelos cinco princípios](docs/pre-submission-review.md) avalia clareza,
-reprodução, decisões de negócio e próximos incrementos. As funcionalidades
-adicionais ali descritas continuam como propostas.
+## Comece por aqui
+
+- [A entrega em uma página](docs/start-here.md): problema, decisões de negócio e papéis humano/IA.
+- [Demonstração em cinco minutos](docs/demo-guide.md): painel, triagem, revisão, exportação e capacidade.
+- [Evoluções planejadas](docs/future-roadmap.md): ideias pensadas e deixadas fora do escopo desta entrega.
+
+**Consulta dos resultados, sem baixar datasets nem treinar** — em Linux x86_64/glibc, na raiz:
+
+```bash
+bash submissions/giovanne-berteli-comba/run.sh --overview
+```
+
+A primeira execução prepara o ambiente e requer rede. Abra [127.0.0.1:8501](http://127.0.0.1:8501).
+Para experimentar a triagem completa, use o mesmo comando **sem `--overview`**.
+Para ler sem instalar, abra os links acima. macOS e Windows não foram validados pelo inicializador.
+
+Na aplicação, **Perfil de visualização** começa em **Empresa**: resultados e
+capacidade. Selecione **Instrutor** para ver o guia de avaliação, autoria, fontes,
+benchmark, CodeTour e demonstração completa de triagem/revisão. O modo `--overview`
+explica como habilitar a demonstração completa. As visões mudam conteúdo e navegação.
 
 ## Sobre mim
 
@@ -40,11 +57,19 @@ bash submissions/giovanne-berteli-comba/run.sh
 
 Ou, dentro desta submissão, `bash run.sh`. O inicializador fornece Python/ambiente,
 verifica os dados e prepara o modelo quando necessário; um treino concluído válido
-é reutilizado. Não exige `python3-venv` ou sudo. A primeira execução precisa de rede;
+é reutilizado. Não exige `python3-venv` ou sudo. A primeira execução completa precisa de rede para ambiente, dados e modelos;
 o setup foi testado em Linux x86_64/glibc. Veja [pré-requisitos e diagnóstico](docs/prototype.md).
 O inicializador abre a interface local, sem executar a avaliação final automaticamente.
 
 ## Solução
+
+Na visão **Empresa**, a aplicação abre com composição por canal/prioridade/tipo,
+notas e achado → ação → responsável sugerido → indicador. **Instrutor** adiciona
+guia, evidências e métricas do benchmark IT. No modo completo, **Triagem** e
+**Revisão e anomalias** mantêm o fluxo assistido e exportam o recorte em
+três CSVs: casos por execução, avaliações filtradas e eventos de revisão. **Capacidade**
+permite editar premissas, ver perdas ou ganhos líquidos e baixar o cenário. **Evoluções
+planejadas** apresenta a continuidade pensada para o projeto. [Como demonstrar](docs/demo-guide.md).
 
 ### Abordagem
 
@@ -96,6 +121,14 @@ humana dos alertas, autenticação empresarial, integração de helpdesk ou impl
 A latência não inclui UI/tempo humano; suas observações individuais externas não
 foram persistidas. O [relatório final](docs/final-evaluation.md) explicita esses limites.
 
+## Evoluções planejadas — fora do escopo entregue
+
+Foram pensadas uma IA analista que explica métricas calculadas e sinaliza inconsistências,
+integrações com Google Sheets, email, Discord/canal interno, bot e helpdesk. São caminhos
+para a continuidade, com dependências e critérios de validação descritos no
+[roadmap](docs/future-roadmap.md). A priorização desta entrega foi diagnóstico,
+triagem verificável, reprodução e utilidade para gestão; essas integrações ainda não existem.
+
 ## Process Log — Como usei IA
 
 ### Ferramentas usadas
@@ -145,7 +178,8 @@ A [trilha para o revisor](docs/review-guide.md) liga decisões, fontes e resulta
 As intervenções humanas registradas foram escolher o Challenge 002, exigir o
 registro/filtro de anomalias altas e baixas, reservar o process log ao recrutamento
 e confrontar o setup e a descoberta real do CodeTour até haver inicializadores
-por um comando. Essas escolhas
+por um comando. Também definiu os cinco critérios de revisão e pediu a implementação
+dos pontos 1–4, com as integrações apresentadas como planejamento futuro. Essas escolhas
 estão nas [narrativas e mensagens originais](process-log/README.md). Stack, regras
 numéricas e análises são decisões técnicas do agente dentro da orientação de
 avançar; não há revisão humana de rótulos ou política empresarial implícita.
@@ -159,7 +193,7 @@ avançar; não há revisão humana de rótulos ou política empresarial implíci
 - [Testes de software](docs/review-evidence/final-evaluation-tests.txt) e [auditoria sem nova previsão](docs/review-evidence/final-evaluation-checks.json)
 - Histórico Git: `git log --oneline -- submissions/giovanne-berteli-comba`
 
-Não há screenshots ou gravação nativa para alegar como evidência. As capturas são
+Há um [screenshot do painel local](docs/review-evidence/management-overview.png), capturado pelo agente durante a verificação de interface; não é gravação do trabalho humano. As capturas de conversas são
 extrações textuais acessíveis, com origem/corte/omissões; não comprovam completude
 de ramificações ou mensagens removidas. Nome, LinkedIn, revisão final e envio do PR
 continuam em P01. Nenhuma data de submissão ou publicação é antecipada.

@@ -1,0 +1,122 @@
+{
+  "business_readings": {
+    "nonstandard_queue_cases": 5224,
+    "reference_break_even_manual_minutes": 2.016667,
+    "share_of_standard_cases": 0.025627883136852898,
+    "share_of_standard_errors": 0.746268656716418,
+    "specialist_label_errors_in_standard_queue": 50,
+    "standard_cases": 1951,
+    "standard_errors": 67
+  },
+  "document_validation": {
+    "archives_excluded_as_historical": true,
+    "foundation_test_command": "python3 -I -m unittest discover -s tests -p test_foundation.py -v",
+    "foundation_tests_passed": 11,
+    "frozen_input_hashes_still_match": true,
+    "local_link_destinations_checked": 465,
+    "missing_local_destinations": 0
+  },
+  "final_result_reaggregation": {
+    "all_frozen_inputs_and_local_output_hashes_match": true,
+    "all_three_model_confusion_metrics_reconciled": true,
+    "assisted_denominators_and_acceptance_reconciled": true,
+    "cached_decisions_replayed_and_matched": 7175,
+    "classifier_fits": 0,
+    "input_sha256": {
+      "data/final-evaluation-freeze.json": "ace035cf59cf2aa4faec8987db7d66d7a5ad46e4403d42bac995352b82ddadd3",
+      "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
+      "scripts/check_final_evaluation.py": "05c0e7631109cfab63fe902b56dd3f9708b2a75915402cac5936857da59631a0"
+    },
+    "limits": "External-clock latency aggregates are recorded by the frozen driver; individual external-clock samples were not persisted for reaggregation. SQLite elapsed_ms is a distinct pre-persistence clock, not a substitute.",
+    "model_loads": 0,
+    "new_predictions": 0,
+    "scope": "Reaggregation of recorded score vectors, frozen references, SQLite decisions and public confusion matrices only"
+  },
+  "initial_foundation_check": {
+    "local_file_links": 206,
+    "markdown_documents": 19,
+    "passed": true
+  },
+  "initial_reviewer_check": {
+    "capture_files": 20,
+    "distinct_explicit_message_ids": 111,
+    "message_occurrences": 153,
+    "passed": true,
+    "tour_steps": 11
+  },
+  "inspected_input_sha256": {
+    "data/diagnosis-assumptions.json": "0c305837a8bcc3d2e77eb60b51363a8bbda72b0687807be3cfee0cdd50d36206",
+    "data/diagnosis.json": "8a4db7484b8c4048e1dc4bf7e914fa79db3941e301722d13263405f997e663b4",
+    "data/final-evaluation-freeze.json": "ace035cf59cf2aa4faec8987db7d66d7a5ad46e4403d42bac995352b82ddadd3",
+    "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
+    "docs/pre-submission-review.md": "e5111c86e4830861863297d63edf2df774b92871bd706e10caf890aef977bda4",
+    "requirements.lock": "eb7e04fa77c695fa3457d4e9c52c57fc8a5bf1ba347da80b527a1b221da6f380",
+    "run.sh": "cb952499f2ae00cb8281a7e1006d5abba0d21a3f161d0fb576f6d9d2d0486863",
+    "solution/app.py": "63ab336a95c98a0ba9ee0caff9061ed7fc88d1f20f107835e9062576fec6136d",
+    "solution/setup_triage.py": "d3732cc32e0011d3b317a4c0364d00039abfdee5df91240b41eb0e715eab3c8a"
+  },
+  "limits": [
+    "Prepared-host time is not a cold-install estimate",
+    "No browser visual inspection in this session",
+    "No fresh model evaluation, fits or new final-test exposure",
+    "Proposed features and external integrations remain unimplemented",
+    "Existing cold/offline/CodeTour evidence was inspected, not rerun",
+    "No interviewer usability study or measured operational savings"
+  ],
+  "prepared_setup_probe": {
+    "cold_setup_repeated": false,
+    "command": "bash run.sh --prepare-only",
+    "console_issue_observed": "Preparação concluída. O teste final permanece reservado.",
+    "elapsed_seconds": 0.288,
+    "existing_training_reused": true,
+    "exit_code": 0,
+    "hashes_and_mtimes_unchanged": true,
+    "monitored_paths": [
+      "data/raw",
+      "data/processed",
+      "data/models"
+    ],
+    "registered_files": 23
+  },
+  "prior_receipt_extra_input_identity": {
+    "data-audit-current.json": {
+      "changed_extra_inputs": [],
+      "receipt_sha256": "77a23abc85c8fdf74ae9d26a4397388885363da8cfc1229e17f68421839994af"
+    },
+    "diagnosis-current.json": {
+      "changed_extra_inputs": [],
+      "receipt_sha256": "47aec60e85c479e3f10fd060e63a533c59d78686251ba3b612aac6d5ed5a5117"
+    },
+    "evaluation-current.json": {
+      "changed_extra_inputs": [],
+      "receipt_sha256": "3ef75dd0329995feda4cae51ffa21cdb33a3336da017c8fc1d9bf3fed78f7410"
+    },
+    "final-evaluation-current.json": {
+      "changed_extra_inputs": [],
+      "receipt_sha256": "604696c58d8036a9c00bd9a935bf0a71716b5fc96e62dd6ce4942d8fe701f694"
+    },
+    "foundation-current.json": {
+      "changed_extra_inputs": [
+        "docs/review-guide.md"
+      ],
+      "receipt_sha256": "599b0b6581d2c3ff5695edd17cd683df69bd53e75d969cc96c9d2dd072a7b504"
+    },
+    "reviewer-evidence-current.json": {
+      "changed_extra_inputs": [
+        "README.md",
+        "docs/review-guide.md",
+        "process-log/README.md"
+      ],
+      "receipt_sha256": "ae07044e124b5ece4fc09ec2ecaa7682beaedb4126ce6e47b6d93bbdd2120753"
+    },
+    "triage-current.json": {
+      "changed_extra_inputs": [],
+      "receipt_sha256": "e24c41f9f975573f1c298a88e96a629cf7936990ce5faa04daea6868f4d81dc9"
+    }
+  },
+  "recorded_at": "2026-11-03T03:07:14.593238+00:00",
+  "review_date_local": "2026-11-03",
+  "schema_version": 1,
+  "scope": "R02 investigation and documentation; no product changes or human label adjudication",
+  "source_commit": "63d6c566641374cf90d1f7d89c3f6d95e7580451"
+}

@@ -1,4 +1,4 @@
-"""Two-view local Streamlit workbench; durable state belongs to SQLite."""
+"""Management, simulation and assisted triage; durable state belongs to SQLite."""
 
 import json
 import os
@@ -12,6 +12,8 @@ from triage.artifacts import BUNDLE, ROOT, load_metadata
 from triage.core import CLASSES
 from triage.repository import Repository
 from triage.runtime import TriageService
+from management import csv_bytes, operational_export
+from management_ui import render_capacity, render_company, render_future, render_instructor_guide, render_overview, select_audience
 
 
 QUEUES = {"triage_review": "Revisão da triagem", "specialist_review": "Revisão especializada", "standard_review": "Confirmação padrão"}
@@ -43,8 +45,22 @@ def show_result(result):
 
 def main():
     st.set_page_config(page_title="Triagem IT assistida", page_icon="🗂️", layout="wide")
-    st.title("Triagem IT assistida")
-    st.caption("Sugestões para revisão humana · benchmark retrospectivo · nenhuma ação externa")
+    st.title("Suporte · resultados e decisões")
+    audience = select_audience()
+    if audience == "company":
+        st.caption("Visão Empresa · resultados de atendimento, ações propostas e capacidade")
+        render_company()
+        return
+    st.caption("Visão Instrutor · percurso, métodos, demonstração e evidências")
+    guide_tab, overview_tab, triage_tab, review_tab, capacity_tab, future_tab = st.tabs(["Guia do instrutor", "Diagnóstico e resultados", "Triagem", "Revisão e anomalias", "Capacidade", "Evoluções planejadas"])
+    with guide_tab:
+        render_instructor_guide()
+    with overview_tab:
+        render_overview()
+    with capacity_tab:
+        render_capacity()
+    with future_tab:
+        render_future()
     try:
         repository = Repository(Path(os.environ.get("TRIAGE_DB_PATH", ROOT / "data/runtime/triage.sqlite3")))
     except Exception:
@@ -53,13 +69,14 @@ def main():
     examples = []
     try:
         manifest, policy, _ = load_metadata()
-        st.info("Modelo disponível. Toda sugestão precisa ser confirmada." if policy["mode"] == "qualified" else "Modelo disponível apenas para revisão: os critérios de sugestão padrão não foram atingidos.")
+        model_status = "Modelo disponível. Toda sugestão precisa ser confirmada." if policy["mode"] == "qualified" else "Modelo disponível apenas para revisão: os critérios de sugestão padrão não foram atingidos."
         examples = json.loads((ROOT / BUNDLE / "demo-examples.json").read_text())
     except Exception:
-        st.warning("Modelo indisponível ou desatualizado. Você pode registrar o encaminhamento para revisão.")
-    triage_tab, review_tab = st.tabs(["Triagem", "Revisão e anomalias"])
+        model_status = "Modelo indisponível ou desatualizado. Você pode registrar o encaminhamento para revisão."
     with triage_tab:
         st.subheader("Nova análise")
+        st.info(model_status)
+        st.info("Demonstração: 1. Carregue um exemplo de treino (IT em inglês). 2. Clique em Analisar e salvar. 3. Abra Revisão e anomalias, confira o original e registre sua decisão. 4. Recarregue para verificar o histórico.")
         st.write("Informe um texto de ticket. O contexto IT é uma declaração sua; não há detecção automática de domínio.")
         if examples:
             chosen = st.selectbox("Exemplo do treino", range(len(examples)), format_func=lambda i: f"Exemplo {i + 1}")
@@ -85,6 +102,7 @@ def main():
             show_result(st.session_state["last_result"])
     with review_tab:
         st.subheader("Análises salvas")
+        st.caption("Atividade local deste protótipo, separada dos resultados agregados do benchmark IT e do diagnóstico de clientes.")
         runs = repository.list_runs()
         if not runs:
             st.write("Nenhuma análise salva ainda.")
@@ -131,6 +149,12 @@ def main():
         rows = repository.filter_metrics(**filters)
         st.caption(f"{len(rows)} avaliações · {len({r['run_id'] for r in rows})} execuções · {len({r['case_id'] for r in rows})} casos. Filtros combinados com E.")
         st.dataframe(rows, hide_index=True)
+        st.subheader("Exportar o recorte atual")
+        exported = operational_export(repository, rows)
+        st.caption(f"{len(exported['cases'])} execuções · {len(exported['metrics'])} avaliações · {len(exported['reviews'])} eventos de revisão. Casos podem ter múltiplas execuções. Avaliações seguem os filtros; eventos incluem todo o histórico das execuções selecionadas.")
+        st.caption("CSV UTF-8 com IDs, versão, datas e estados. Textos originais, nomes e motivos livres de revisão ficam fora da exportação. Campos com prefixo de fórmula recebem apóstrofo para importação como texto.")
+        for kind, label in [("cases", "Casos por execução"), ("metrics", "Avaliações filtradas"), ("reviews", "Histórico de revisões")]:
+            st.download_button(f"Baixar CSV · {label}", csv_bytes(kind, exported[kind]), f"triagem-{kind}.csv", "text/csv", on_click="ignore", key=f"export_{kind}")
 
 
 if __name__ == "__main__":

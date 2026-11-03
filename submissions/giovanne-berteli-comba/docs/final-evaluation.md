@@ -1,5 +1,8 @@
 # V01 — Avaliação final da versão congelada
 
+> Registro da etapa indicada no título; suas referências a etapas seguintes são históricas.
+> Para a versão atual e a demonstração, siga o [resumo da entrega](start-here.md).
+
 **A versão atingiu os seis critérios numéricos definidos na V00.** Isso sustenta
 o benchmark IT assistido desta entrega; toda sugestão ainda exige confirmação
 humana. A principal limitação está nos erros da fila padrão: 50 dos 67 casos

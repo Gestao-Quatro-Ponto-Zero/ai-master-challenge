@@ -53,10 +53,10 @@
       "description": "Caso, execução e duas avaliações são gravados atomicamente. Revisões posteriores são eventos com identificação/tipo/motivo; não sobrescrevem predição ou valor nem viram treino. filter_metrics combina filtros e projeta o estado mais recente. Duas métricas não equivalem a dois tickets."
     },
     {
-      "title": "9. Uso na interface",
-      "file": "solution/app.py",
-      "pattern": "def main\\(",
-      "description": "Triagem recebe texto/contexto declarado ou exemplo de treino. Revisão mostra original, eventos e filtros de anomalia. Submissão de formulário é explícita; rerender não cria análise/revisão. O SQLite é a autoridade durável. Contexto declarado e score não são detecção automática de domínio ou aprovação humana verificada."
+      "title": "9. Gestão, capacidade e continuidade",
+      "file": "solution/management_ui.py",
+      "pattern": "def render_overview\\(",
+      "description": "A aplicação abre em diagnóstico e ações de negócio. Agregados de clientes e benchmark IT ficam separados da atividade local, sem carregar casos finais na demonstração. render_capacity reutiliza a fórmula existente com premissas e perdas visíveis; render_future mostra ideias fora do escopo. A triagem e as exportações de casos, avaliações e eventos estão em solution/app.py e solution/management.py. Nenhuma dessas telas modifica modelo ou referências."
     },
     {
       "title": "10. Evidência final e risco residual",

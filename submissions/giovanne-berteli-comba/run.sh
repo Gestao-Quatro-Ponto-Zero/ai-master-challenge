@@ -5,13 +5,15 @@ set -euo pipefail
 root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 cd -- "$root"
 prepare_only=false
+overview_only=false
 case "${1:-}" in
   --prepare-only) prepare_only=true ;;
-  --help|-h) printf '%s\n' 'Uso: bash run.sh [--prepare-only]' 'Prepara o ambiente/dados/modelo e abre o Streamlit local. Reutiliza artefatos válidos.'; exit 0 ;;
+  --overview) overview_only=true ;;
+  --help|-h) printf '%s\n' 'Uso: bash run.sh [--overview | --prepare-only]' '--overview: consulta agregados sem datasets, banco ou treino.' 'Sem opção: prepara e abre a triagem completa; --prepare-only: somente prepara.'; exit 0 ;;
   '') ;;
   *) printf '%s\n' 'Opção desconhecida. Use bash run.sh --help.' >&2; exit 2 ;;
 esac
-if (( $# > 1 )); then printf '%s\n' 'Use apenas --prepare-only ou nenhum argumento.' >&2; exit 2; fi
+if (( $# > 1 )); then printf '%s\n' 'Use --overview, --prepare-only ou nenhum argumento.' >&2; exit 2; fi
 fail() { printf '\nNão foi possível iniciar: %s\n' "$*" >&2; exit 1; }
 [[ "$(uname -s)" == Linux && "$(uname -m)" == x86_64 ]] || fail 'O setup automático foi preparado para Linux x86_64 com glibc. Consulte docs/prototype.md para os limites.'
 for dependency in flock tar sha256sum; do
@@ -64,9 +66,16 @@ if ! "$python" -I -c 'import sys; sys.path.insert(0,"solution"); from triage.art
   printf '%s\n' 'Sincronizando as versões fixadas das dependências locais…'
   "$uv" --no-config pip sync --python "$python" --index-url https://pypi.org/simple --only-binary :all: requirements.lock || fail 'Falha ao instalar dependências. Verifique acesso ao PyPI e espaço em disco; execute novamente para retomar.'
 fi
-"$python" -I solution/setup_triage.py
+entrypoint=solution/app.py
+if "$overview_only"; then
+  printf '%s\n' 'Consulta: usando apenas agregados salvos, sem baixar datasets ou treinar.'
+  entrypoint=solution/overview_app.py
+else
+  "$python" -I solution/setup_triage.py
+fi
 flock -u 9
 exec 9>&-
 if "$prepare_only"; then exit 0; fi
-printf '\nAbrindo a interface local em http://127.0.0.1:8501 (Ctrl+C para encerrar)…\n'
-exec "$python" -m streamlit run solution/app.py --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false
+port="${STREAMLIT_SERVER_PORT:-8501}"
+printf '\nAbrindo a interface local em http://127.0.0.1:%s (Ctrl+C para encerrar)…\n' "$port"
+exec "$python" -m streamlit run "$entrypoint" --server.port "$port" --server.address 127.0.0.1 --server.headless true --browser.gatherUsageStats false

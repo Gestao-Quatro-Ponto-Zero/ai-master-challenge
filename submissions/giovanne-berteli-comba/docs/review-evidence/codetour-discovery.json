@@ -2,7 +2,7 @@
   "extension": "vsls-contrib.codetour",
   "extension_version": "0.0.61",
   "input_sha256": {
-    ".tours/assisted-triage.tour": "fa310e9f0ca311870dbf2a1ac54b5a99665f4d47b3b9a0c87f47ab5d0ba266dc",
+    ".tours/assisted-triage.tour": "f7f30b81fa1f244195ee5182c723b26872d59a536428b19849e3385e51d58415",
     "review.code-workspace": "b0a7d1973a7f9cf0872396d8e2e8ecef8ad6c4d2a6f0e72ecaa5c29e6e4c40c9",
     "review.sh": "eaad9df3e54c49be3b890e1c247f8aa19c0b9c66313ec7ca1e863349955d73f5",
     "scripts/codetour-smoke.js": "2fbb2ea65bf7a89483cfab4d405a2775563095921c96f1180741967de76dbaf3"
@@ -31,7 +31,7 @@
     "anchors": [
       {
         "file": "README.md",
-        "line": 11
+        "line": 32
       },
       {
         "file": "knowledge/dataset-usage.md",
@@ -39,7 +39,7 @@
       },
       {
         "file": "run.sh",
-        "line": 29
+        "line": 31
       },
       {
         "file": "data/evaluation-protocol.json",
@@ -62,12 +62,12 @@
         "line": 72
       },
       {
-        "file": "solution/app.py",
-        "line": 44
+        "file": "solution/management_ui.py",
+        "line": 80
       },
       {
         "file": "docs/final-evaluation.md",
-        "line": 54
+        "line": 57
       },
       {
         "file": "process-log/README.md",
@@ -78,6 +78,7 @@
     "extension": "vsls-contrib.codetour",
     "version": "0.0.61"
   },
+  "review_workspace_note": "M06 replay of all current 11 anchors in an isolated host. Repository-root discovery remains the earlier reproduction, not rerun in M06.",
   "scope": "Actual VS Code extension-host integration via CodeTour commands/API, not a screenshot or human visual certification",
   "vscode_version": "1.143.1"
 }

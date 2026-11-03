@@ -1,7 +1,9 @@
 # Guia para revisar a entrega
 
-Comece pelo [README](../README.md), que reúne resultado, execução e uso de IA.
-Para inspecionar a implementação, siga o [CodeTour ou roteiro em Markdown](code-tour.md).
+Comece pelo [resumo de uma página](start-here.md) e siga o [roteiro de demonstração](demo-guide.md).
+O [README](../README.md) reúne o template completo, fontes e uso de IA.
+Na aplicação, selecione **Instrutor** para acessar o roteiro e os detalhes;
+**Empresa** exibe resultados e capacidade. Para inspecionar a implementação, siga o [CodeTour ou roteiro em Markdown](code-tour.md).
 Para abrir o editor já no contexto certo, execute na raiz:
 `bash submissions/giovanne-berteli-comba/review.sh` (ou `bash review.sh` na submissão).
 O tour aparece no Explorer e é oferecido na primeira visita ao workspace.
@@ -11,7 +13,8 @@ modelos ou executar novamente o teste consumido.
 A [investigação antes da submissão](pre-submission-review.md), solicitada em
 03/11/2026, avalia compreensão, autoria humano/IA, reprodução e uso dos resultados
 para decisões. Ela também prioriza melhorias imediatas e integrações futuras;
-essas propostas ainda não foram implementadas.
+os pontos 1–4 já estão implementados. O ponto 5 está no [roadmap futuro](future-roadmap.md),
+com a priorização de escopo explícita ao revisor.
 
 ## O que conferir e onde
 

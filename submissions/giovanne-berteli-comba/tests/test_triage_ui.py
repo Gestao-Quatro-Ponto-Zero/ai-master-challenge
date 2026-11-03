@@ -22,6 +22,7 @@ class WorkbenchTests(unittest.TestCase):
             path = Path(directory) / "test.sqlite3"
             with patch.dict(os.environ, {"TRIAGE_DB_PATH": str(path)}):
                 app = AppTest.from_file(str(ROOT / "solution/app.py"), default_timeout=15).run()
+                app.selectbox(key="audience").select("instructor").run()
                 next(item for item in app.button if item.label == "Carregar exemplo").click().run()
                 app.button(key="FormSubmitter:triage_form-Analisar e salvar").click().run()
                 self.assertFalse(app.exception)
@@ -40,6 +41,7 @@ class WorkbenchTests(unittest.TestCase):
             path = Path(directory) / "test.sqlite3"
             with patch.dict(os.environ, {"TRIAGE_DB_PATH": str(path)}):
                 app = AppTest.from_file(str(ROOT / "solution/app.py"), default_timeout=15).run()
+                app.selectbox(key="audience").select("instructor").run()
                 self.assertFalse(app.exception)
                 app.text_area(key="ticket_text").set_value("Need help with a support request")
                 app.button(key="FormSubmitter:triage_form-Analisar e salvar").click().run()

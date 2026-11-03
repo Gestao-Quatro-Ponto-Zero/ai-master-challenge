@@ -1,0 +1,132 @@
+{
+  "audiences": {
+    "company": [
+      "Customer-support snapshot/actions and capacity only",
+      "No model metadata or runtime repository initialized by the UI",
+      "No IT benchmark, recruiter narrative or triage forms"
+    ],
+    "default": "company",
+    "instructor_aggregate_only": [
+      "Guide, benchmark and other aggregate views; explains command for full demo"
+    ],
+    "instructor_full": [
+      "Guide, methods, evidence, benchmark, triage/review demo, capacity and future scope"
+    ],
+    "limits": "Presentation choice, not authentication or role authorization",
+    "switching_tests": "Round-trip switching verified; aggregate entry creates no database; company entry passes with model metadata loader blocked"
+  },
+  "browser_check": {
+    "limits": "Automated inspection in IAB, not a human usability study",
+    "observed": [
+      "Company default selector with two tabs",
+      "Instructor selection with six full-app tabs",
+      "Horizontal complete names for all three queues",
+      "Legible counts inside blue bars and duplicate counts table",
+      "Guide with CodeTour command and explicit business-value limitations"
+    ],
+    "screenshots": [
+      "docs/review-evidence/audience-company.png",
+      "docs/review-evidence/audience-instructor.png",
+      "docs/review-evidence/audience-queues.png"
+    ],
+    "url": "http://127.0.0.1:18504"
+  },
+  "codetour_replay": {
+    "anchors": [
+      {
+        "file": "README.md",
+        "line": 32
+      },
+      {
+        "file": "knowledge/dataset-usage.md",
+        "line": 36
+      },
+      {
+        "file": "run.sh",
+        "line": 31
+      },
+      {
+        "file": "data/evaluation-protocol.json",
+        "line": 19
+      },
+      {
+        "file": "solution/train_triage.py",
+        "line": 43
+      },
+      {
+        "file": "solution/triage/core.py",
+        "line": 68
+      },
+      {
+        "file": "solution/triage/runtime.py",
+        "line": 27
+      },
+      {
+        "file": "solution/triage/repository.py",
+        "line": 72
+      },
+      {
+        "file": "solution/management_ui.py",
+        "line": 80
+      },
+      {
+        "file": "docs/final-evaluation.md",
+        "line": 57
+      },
+      {
+        "file": "process-log/README.md",
+        "line": 13
+      }
+    ],
+    "discovered": true,
+    "extension": "vsls-contrib.codetour",
+    "version": "0.0.61"
+  },
+  "final_result_reaggregation": {
+    "all_frozen_inputs_and_local_output_hashes_match": true,
+    "all_three_model_confusion_metrics_reconciled": true,
+    "assisted_denominators_and_acceptance_reconciled": true,
+    "cached_decisions_replayed_and_matched": 7175,
+    "classifier_fits": 0,
+    "input_sha256": {
+      "data/final-evaluation-freeze.json": "ace035cf59cf2aa4faec8987db7d66d7a5ad46e4403d42bac995352b82ddadd3",
+      "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
+      "scripts/check_final_evaluation.py": "05c0e7631109cfab63fe902b56dd3f9708b2a75915402cac5936857da59631a0"
+    },
+    "limits": "External-clock latency aggregates are recorded by the frozen driver; individual external-clock samples were not persisted for reaggregation. SQLite elapsed_ms is a distinct pre-persistence clock, not a substitute.",
+    "model_loads": 0,
+    "new_predictions": 0,
+    "scope": "Reaggregation of recorded score vectors, frozen references, SQLite decisions and public confusion matrices only"
+  },
+  "input_sha256": {
+    "docs/demo-guide.md": "d15dd20ee6b84599b3c16aedbf12ca2becfc5efc7e926646aafea00f2b319255",
+    "docs/prototype.md": "5c87a1170ef8e50419a5af483ca8ee8b627f8cb9b62bf9fc123005673993e38c",
+    "docs/review-evidence/audience-company.png": "8f4de950cee89d2011b09c4cabc6fc16d13557d2e03c44ca9ac75cfcc7126f5b",
+    "docs/review-evidence/audience-instructor.png": "7fb223437559c3a61e5b9387de831e1d509e065a853dea19e74b8803a8b3ccae",
+    "docs/review-evidence/audience-queues.png": "819c05704c8ff95f0a098709a4ad5dccc2b7825f25ab6fc447b7a58f8466c232",
+    "docs/review-evidence/audience-tests.txt": "90cdb3118c4910e9bec1b05f764746ae413e7b7242a32e71628e30643c34a90b",
+    "docs/start-here.md": "5d46fc3d9dafc8a472de28bc1ce7dffc97d1423c9b9853395315a6ccda14c8d7",
+    "solution/app.py": "f20d2422d26c8c9d7dafa01a835880550eee465a9afb74b32d0e1a9535ad72f6",
+    "solution/management.py": "91d0bc599c92898878e005ee8ace006cdde2b18f2fab88bb7fa2208ad6357875",
+    "solution/management_ui.py": "dfed4f12a4c706e27db38daafb380ee41eeb231265f8bd5c997536b8c4b613ea",
+    "solution/overview_app.py": "6f593dd0cb9cee1b50a687923abf8f344718853a422c47f2c6a36d8c0d7ddd71",
+    "tests/test_management.py": "6407b28eb6653cea8716dbb125aeff44d3ec30cd9404a06d8082afa968f8fe60",
+    "tests/test_triage_ui.py": "8b85fb5353db4e5d1a1cc9f1d756caf7ff3e41e63dc85e9f40bb9a9e8809b9b7"
+  },
+  "limits": [
+    "No recruitment grade or private baseline comparison established",
+    "Partial temporal/causal operational diagnosis due to data limitations",
+    "No measured business savings or production validation",
+    "No new final-test inference, classifier fit, policy or reference change"
+  ],
+  "recorded_at": "2026-11-03T04:51:02.132967+00:00",
+  "schema_version": 1,
+  "scope": "M06 audience presentation, chart legibility, CodeTour entry and interpretation of quality; no model tuning",
+  "software_tests": {
+    "command": ".venv/bin/python -I -m unittest discover -s tests -v",
+    "new_audience_tests": 2,
+    "passed": 81,
+    "result": "docs/review-evidence/audience-tests.txt",
+    "skipped": 0
+  }
+}

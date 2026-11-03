@@ -32,6 +32,8 @@ Leitura resumida: [guia do revisor](../docs/review-guide.md) e
 - [Consolidação para revisão: narrativa, cobertura e CodeTour](15-reviewer-evidence.md)
 - [Correção da descoberta do CodeTour no editor](16-codetour-discovery.md)
 - [Investigação antes da P01 pelos cinco princípios](17-pre-submission-review.md)
+- [Implementação dos pontos 1–4 e planejamento futuro](18-management-delivery.md)
+- [Visões Empresa/Instrutor, legibilidade e qualidade](19-audience-feedback.md)
 - [Modelo para próximos registros](entry-template.md)
 
 ## Conversas preservadas
@@ -62,6 +64,10 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 | [Correção da descoberta do CodeTour](chat-exports/20-codetour-discovery-chat.md) | Defina e avance o próximo passo | 6 mensagens adicionais de quatro turnos, incluindo final E01, relato de falha e correção em andamento; hasMore=true |
 | [Conclusão da correção do CodeTour](chat-exports/21-codetour-completion-chat.md) | Defina e avance o próximo passo | 4 mensagens adicionais de quatro turnos retornados, incluindo conclusão e troca sobre commit; hasMore=true |
 | [Investigação pelos cinco princípios](chat-exports/22-pre-submission-review-chat.md) | Investigar melhorias no projeto | 5 mensagens de quatro registros de turno retornados, pedido original e atualizações; hasMore=false; resposta final pendente |
+
+| [Implementação dos pontos 1–4](chat-exports/23-management-delivery-chat.md) | Investigar melhorias no projeto | 10 mensagens novas de seis turnos retornados; pedido de implementação, continuidade e atualizações; hasMore=true; final atual pendente |
+
+| [Feedback de públicos e legibilidade](chat-exports/24-audience-feedback-chat.md) | Investigar melhorias no projeto | 9 mensagens novas de quatro turnos retornados; relato do gráfico, perfis, CodeTour e qualidade; hasMore=true; final atual pendente |
 
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A

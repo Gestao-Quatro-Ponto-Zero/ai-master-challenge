@@ -30,7 +30,7 @@ alegar inspeção visual humana ou screenshots. Nenhuma configuração global fo
 
 ### 1. Problema, resultado e principal limite
 
-[README.md:15](../README.md#L15)
+[README.md:32](../README.md#L32)
 
 Comece pelo resumo. O diagnóstico de atendimento e o benchmark IT têm populações distintas. Observe cobertura junto da concordância e os 50 erros de classes especializadas: a proposta continua assistida. Os resultados são conferíveis nos JSONs vinculados, sem confundir cenário de horas com economia medida.
 
@@ -42,7 +42,7 @@ A ausência de chave e mapeamento validado impediu misturar rótulos ou transfer
 
 ### 3. Inicialização depois do feedback real
 
-[run.sh:29](../run.sh#L29)
+[run.sh:31](../run.sh#L31)
 
 O candidato encontrou erro de pasta, dependência de venv e traceback ao repetir treino. O inicializador resolve sua pasta, fornece runtime local com checksum, verifica dependências/dados e reutiliza artefatos válidos. A reprodução limpa/offline está em docs/review-evidence/setup-reproduction.json; o tour apenas mostra o código.
 
@@ -76,15 +76,15 @@ O coordenador valida entrada/contexto, limita a inferência por subprocesso e é
 
 Caso, execução e duas avaliações são gravados atomicamente. Revisões posteriores são eventos com identificação/tipo/motivo; não sobrescrevem predição ou valor nem viram treino. filter_metrics combina filtros e projeta o estado mais recente. Duas métricas não equivalem a dois tickets.
 
-### 9. Uso na interface
+### 9. Gestão, capacidade e continuidade
 
-[solution/app.py:44](../solution/app.py#L44)
+[solution/management_ui.py:80](../solution/management_ui.py#L80)
 
-Triagem recebe texto/contexto declarado ou exemplo de treino. Revisão mostra original, eventos e filtros de anomalia. Submissão de formulário é explícita; rerender não cria análise/revisão. O SQLite é a autoridade durável. Contexto declarado e score não são detecção automática de domínio ou aprovação humana verificada.
+A aplicação abre em diagnóstico e ações de negócio. Agregados de clientes e benchmark IT ficam separados da atividade local, sem carregar casos finais na demonstração. render_capacity reutiliza a fórmula existente com premissas e perdas visíveis; render_future mostra ideias fora do escopo. A triagem e as exportações de casos, avaliações e eventos estão em solution/app.py e solution/management.py. Nenhuma dessas telas modifica modelo ou referências.
 
 ### 10. Evidência final e risco residual
 
-[docs/final-evaluation.md:54](../docs/final-evaluation.md#L54)
+[docs/final-evaluation.md:57](../docs/final-evaluation.md#L57)
 
 Leia erros com seus denominadores: 1.951 sugestões padrão, 67 divergências, 50 com rótulos especializados. O teste de 7.175 casos foi consumido sem ajuste posterior; as 64 medições reais e nove falhas provocadas são populações separadas. A latência local não prova SLA e seus tempos individuais externos não foram persistidos.
 

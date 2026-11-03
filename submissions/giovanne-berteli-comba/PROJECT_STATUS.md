@@ -3,10 +3,10 @@
 Updated: 2026-11-03 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: R02 pre-submission investigation completed at the user's request.
-  See the [five-principle review](docs/pre-submission-review.md) and prioritized
-  [backlog](execution/backlog.md). E01 packaging remains available in the
-  [reviewer guide](docs/review-guide.md). P01 has not started.
+- Current phase: M01–M06 delivered, implementing R02 points 1–4 and direct UI feedback by user
+  request. See [one-page entry](docs/start-here.md), [guided demo](docs/demo-guide.md)
+  and [implementation contract](knowledge/management.md). Point 5 remains visible as
+  [planned future scope](docs/future-roadmap.md), not implemented integration.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -21,18 +21,30 @@ Updated: 2026-11-03 (America/Sao_Paulo).
   criteria passed; this is not business approval or production readiness.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: use R02's recommendation to select a bounded improvement pass before
-  P01: executive entry/demo, a read-only management/results view, and setup/status
-  clarity. These are proposals; no new product features were implemented in R02.
-  P01 still requires candidate identity, final review and PR preparation. Nothing
-  is submitted/published yet.
+- Next action: P01 — confirm candidate identity, final review and PR preparation.
+  No publication is performed. The new views/export/simulator do not change the
+  frozen classifier, gate, references, evaluation data or results.
+- M01–M05 verification: 79 software tests passed, including model-free aggregate UI,
+  filtered CSV/history projections and negative/zero-volume capacity interaction.
+  An isolated consultation with only three public JSONs and the existing locked
+  runtime returned HTTP 200 without raw data/models/runtime DB. Actual browser
+  demo saved one TRAIN example in a temporary DB; current CodeTour navigated all
+  11 anchors in an isolated editor host. See [delivery checks](docs/review-evidence/management-delivery-checks.json).
+- M06: Company view defaults to operational results/actions and capacity, returning
+  before model/repository initialization. Instructor adds guide, attribution,
+  benchmark, demo and future scope. Both launch modes have the selector. Group/queue
+  labels are horizontal/complete; CodeTour is explicit in start-here and the app.
+  81 tests passed, including audience switching and no-DB/no-model Company entry.
+  Quality guidance distinguishes retrospective classification improvement from
+  unmeasured business value and partial temporal/causal diagnosis. See
+  [audience delivery checks](docs/review-evidence/audience-delivery-checks.json).
 - R02 verification: prepared setup succeeded in 0.288 s on this host with 23
   data/model hashes and mtimes unchanged; saved 7,175-case outputs reconciled with
   zero model loads, new predictions or fits. Cold setup/platform limits and the
   obsolete reserved-test console message are documented in the review. No browser
   visual inspection or new operational savings measurement was performed.
 - E01: template narrative and evidence/decision map; 11 passive source-anchored tour
-  steps and one-command review workspace; current inventory: 22 captures / 162 message occurrences / 120
+  steps and one-command review workspace; current inventory: 24 captures / 181 message occurrences / 139
   distinct explicit IDs. 42 legacy no-ID occurrences and platform/cutoff omissions
   remain disclosed. No new test inference, model fitting or frozen source changes.
 - CodeTour correction: `bash review.sh` opens the correct VS Code workspace, reuses/

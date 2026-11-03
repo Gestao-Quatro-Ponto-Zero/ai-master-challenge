@@ -1,5 +1,8 @@
 # Proposta de automação — S01
 
+> Registro da etapa indicada no título; suas referências a etapas seguintes são históricas.
+> Para a versão atual e a demonstração, siga o [resumo da entrega](start-here.md).
+
 **Uma triagem assistida local: sugerir a categoria de um ticket IT, explicar quando
 precisa de atenção e manter uma fila de revisão com anomalias filtráveis.** A
 pessoa confirma, corrige ou adia a decisão. Não há resposta enviada ao cliente,

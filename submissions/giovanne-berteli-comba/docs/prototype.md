@@ -5,6 +5,52 @@ encaminhamento à revisão, salva duas avaliações numéricas e permite revisar
 apagar o resultado original. **Toda sugestão exige confirmação humana.** Não há
 envio ao cliente nem alteração em helpdesk, acesso, compra ou outro sistema.
 
+## Escolha a visão na aplicação
+
+**Empresa** é a seleção inicial: resultados operacionais, ações e capacidade, sem
+benchmark IT, narrativa de recrutamento ou acesso ao banco/modelo pela interface.
+**Instrutor** abre o guia de avaliação, evidências e as telas de demonstração no
+modo completo. Em `--overview`, mostra apenas as telas agregadas e orienta a troca
+para o modo completo. O seletor é de apresentação; não é autenticação de papéis.
+Mudar a seleção não treina nem altera resultados ou histórico.
+
+Os gráficos com nomes de grupos/filas usam barras horizontais e rótulos completos;
+a tabela de filas também permite conferir as contagens sem depender do gráfico.
+
+## Escolha o objetivo
+
+| Objetivo | Caminho na raiz do repositório | Saída esperada |
+| --- | --- | --- |
+| Entender sem instalar | [Resumo executivo](start-here.md), [diagnóstico](operational-diagnosis.md) e [resultados IT](final-evaluation.md) | Achados, recomendações e fontes legíveis no GitHub |
+| Consultar painel e simular | `bash submissions/giovanne-berteli-comba/run.sh --overview` | Ambiente local + agregados salvos; nenhum download de dataset, banco ou treino |
+| Experimentar triagem/revisão/exportação | `bash submissions/giovanne-berteli-comba/run.sh` | Ambiente, dados e modelo prontos; aplicação completa |
+| Reproduzir análise e treino | Mesmo comando com `--prepare-only`, depois os comandos analíticos abaixo | Verificação/reuso de treino válido ou quatro ajustes na primeira instalação; saídas calculadas |
+
+**Pré-requisitos do inicializador:** Linux x86_64/glibc, Bash, tar, sha256sum,
+flock e curl ou wget; escrita/espaço na submissão. Primeiro preparo do ambiente
+exige rede para GitHub/PyPI mesmo no modo de consulta. O modo completo também
+acessa Kaggle se os dados não estiverem presentes. macOS, Windows e Alpine/musl
+não foram validados. Nenhuma duração de instalação fria foi medida para prometer.
+As quatro fases aparecem no terminal; `.runtime/setup.log` detalha o preparo completo.
+
+Após `--prepare-only`, para reproduzir diagnóstico e auditoria:
+
+```bash
+submissions/giovanne-berteli-comba/.venv/bin/python -I submissions/giovanne-berteli-comba/solution/audit_data.py
+submissions/giovanne-berteli-comba/.venv/bin/python -I submissions/giovanne-berteli-comba/solution/diagnose_support.py
+```
+
+Os agregados finais estão versionados, mas os scores/SQLite individuais finais
+permanecem locais. O check de reagregação da V01 exige esses arquivos; um clone novo
+precisa regenerá-los numa reprodução identificada conforme a [V01](final-evaluation.md).
+Não se apresenta essa execução como outro teste inédito. Nenhum inicializador
+executa V01 automaticamente. O modelo e a referência publicados permanecem os
+avaliados; mudanças de apresentação não significam nova validação do classificador.
+
+Veja o [roteiro de demonstração/exportação](demo-guide.md) e o
+[planejamento futuro](future-roadmap.md). A consulta funciona também sem modelos
+locais; o fluxo completo mantém a confirmação humana e a persistência existentes.
+
 ## Executar
 
 Na pasta da submissão, execute **um comando**:

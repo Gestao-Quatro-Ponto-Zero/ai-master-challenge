@@ -28,6 +28,8 @@ okf_version: "0.2"
   specialist misclassification risk and runtime/fault populations.
 - [Reviewer guide](../docs/review-guide.md) — E01 narrative/evidence navigation,
   optional CodeTour, capture coverage/omissions and P01 requirements.
+- [Management and reviewer delivery](management.md) — M01–M06 audience-specific aggregate views,
+  capacity simulator, CSV contract, entry points and future-scope boundary.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

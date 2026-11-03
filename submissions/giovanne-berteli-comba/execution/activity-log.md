@@ -1,5 +1,63 @@
 # Activity log
 
+## 2026-11-03 — M06 audience/legibility feedback
+
+- User found vertical/truncated queue labels, proposed Company versus Instructor
+  views, noted missing CodeTour in start-here and asked how to assess quality.
+- Implemented horizontal group/queue charts with full labels, readable counts
+  and queue table; Company defaults to operational results/actions and capacity,
+  while Instructor adds guide, attribution, benchmark, full-mode demo and future scope.
+  Company UI returns before model metadata/database initialization. Selector is
+  presentation, not authentication; no classification policy changes.
+- Added explicit CodeTour command/prerequisite/11 steps and Markdown alternative
+  to the start entry and app guide. Explained retrospective benchmark improvement,
+  partial temporal/causal diagnosis and still-unmeasured operational benefit.
+  No recruitment score or comparison to a private baseline was claimed.
+- 81 software tests passed, including two new switching/no-model/no-DB behavior
+  tests. Updated existing triage tests to select Instructor. Actual browser
+  inspection confirmed both views and horizontal labels; fixed insufficient value
+  contrast discovered visually, restarted test server and checked the final rendering.
+- Current real CodeTour replay navigated all 11 anchors in an isolated editor host.
+  Reaggregated 7,175 saved outcomes, zero new final predictions/fits; frozen inputs
+  and result remained unchanged. Checked 544 local destinations with chat archives
+  excluded. Capture24 adds nine messages from four returned turns (hasMore=true);
+  image binaries/later final are outside its textual coverage. Inventory: 24
+  captures, 181 message occurrences, 139 explicit unique IDs and 42 legacy no-IDs.
+- Added process narrative19 and current audience evidence/screenshots; older
+  M01–M05 receipts remain historical experiments supplemented by M06 evidence.
+  Final submission/identity remain P01. No commit, push or integration executed.
+
+## 2026-11-03 — M01–M05 delivery following explicit user scope
+
+- User requested R02 points 1–4 implemented and future ideas shown to the reviewer
+  as planned scope. Delivered executive entry/demo, management/results view,
+  aggregate-only consultation, operational exports and editable capacity simulation.
+  Future analyst/Sheets/email/channel/bot/helpdesk integrations remain unimplemented.
+- Full locked-environment suite: 79 tests passed, no skips, including five new
+  management/filter/history/CSV/aggregate-only/simulator/launcher checks. Corrected
+  a per-class presentation bug caught by tests without changing classifier output.
+- Isolated consultation reused the locked runtime, started with only three public
+  aggregate JSONs, and returned HTTP 200 in 0.270 s without creating raw/processed/
+  model/runtime-data folders; this is not a cold install timing. Setup reuses
+  the original verified training and does not execute V01.
+- Browser inspection verified charts/metrics, one real TRAIN example saved in a
+  temporary SQLite, review/export controls and future-scope wording. Saved a public
+  UI screenshot. AppTest independently covered persistence/review/filter flows.
+- Updated tour successfully discovered/navigated all 11 current anchors through
+  the real CodeTour in an isolated VS Code host. Relative test paths initially
+  resolved under `/`; corrected the test invocation to absolute paths. No personal
+  editor settings changed. Prior root-discovery reproduction remains historical.
+- Reaggregated 7,175 cached final cases, with zero new final predictions or fits;
+  frozen inputs/model/policy/reference/result unchanged. New UI checks do not
+  establish another model-quality result or measured business savings.
+- Checked 533 local link destinations, with historical conversation links excluded.
+  Regenerated reviewer navigation/capture inventory: 23 captures, 172 occurrences,
+  130 distinct explicit IDs; 42 legacy no-ID occurrences remain. Capture23 preserves
+  ten new messages from six returned turns; hasMore=true and active-final cutoff
+  remain disclosed. Added process narrative18 and operational management contract.
+- New files are kept inside the submission. Candidate identity and publication
+  remain P01. No commit, push, external account connection or message sent.
+
 ## 2026-11-03 — Five-principle investigation before P01
 
 - User requested review of reviewer comprehension/human-AI attribution,

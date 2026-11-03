@@ -42,7 +42,7 @@ def prepare():
         if sha256(membership) != manifest["membership"]["sha256"]:
             raise ValueError("Membership regenerada difere da versão congelada.")
     run_step("[4/4] Preparando ou reutilizando o modelo…", "solution/train_triage.py")
-    print("Preparação concluída. O teste final permanece reservado.", flush=True)
+    print("Preparação concluída. Este setup não executa a avaliação final; os resultados publicados usam um teste já consumido.", flush=True)
 
 
 if __name__ == "__main__":

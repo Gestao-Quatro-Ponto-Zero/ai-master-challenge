@@ -1,5 +1,8 @@
 # Diagnóstico operacional — A01
 
+> Registro da etapa indicada no título; suas referências a etapas seguintes são históricas.
+> Para a versão atual e a demonstração, siga o [resumo da entrega](start-here.md).
+
 **A primeira investigação deve olhar os registros não encerrados e a instrumentação
 da operação, sem eleger um canal como causa do atraso.** Há 5.700 não encerrados
 em 8.469 tickets (67,30%), incluindo 1.403 marcados como Critical. As notas dos

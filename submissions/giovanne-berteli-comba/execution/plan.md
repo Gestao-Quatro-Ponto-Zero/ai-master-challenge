@@ -20,6 +20,12 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | [Final report](../docs/final-evaluation.md), [frozen inputs](../data/final-evaluation-freeze.json), [aggregate results](../data/final-evaluation.json), [audit](../docs/review-evidence/final-evaluation-checks.json) and [receipt](../docs/review-evidence/final-evaluation-current.json) |
 | E01 | Evidence and communication | Reviewer narrative, conversation coverage, decision history and useful CodeTour checked | [Reviewer map](../docs/review-guide.md), [CodeTour/Markdown route](../docs/code-tour.md), [capture coverage](../docs/conversation-coverage.md), [checks](../docs/review-evidence/reviewer-evidence-checks.json) and [receipt](../docs/review-evidence/reviewer-evidence-current.json) |
 | R02 | Pre-submission investigation | Assess reviewer comprehension/human-AI attribution, reproduction, business decisions, useful immediate additions and future integrations; distinguish verified results from proposed features | [Five-principle review](../docs/pre-submission-review.md), [checks](../docs/review-evidence/pre-submission-review-checks.json) and [prioritized backlog](backlog.md) |
+| M01 | Executive entry and attribution | One-page reviewer entry, human/AI evidence and guided demo | [Start here](../docs/start-here.md), [demo](../docs/demo-guide.md) |
+| M02 | Management/results view | Distinct customer/IT/local populations, actions/owners/indicators and source-linked aggregates | [Implementation](../knowledge/management.md), [delivery checks](../docs/review-evidence/management-delivery-checks.json) |
+| M03 | Reproduction clarity | Aggregate-only launcher, explicit prerequisites/objectives and consumed-test status; historical reports identified | [Setup](../docs/prototype.md), [delivery checks](../docs/review-evidence/management-delivery-checks.json) |
+| M04 | Operational export | Filter reconciliation, case/run/metric/event counts, versioned schema and no original/free-text fields | [CSV contract](../knowledge/management.md), [tests](../tests/test_management.py) |
+| M05 | Capacity simulator | Existing formula, editable assumptions, review/rework/fixed effort and negative/zero-volume scenarios | [Implementation](../solution/management_ui.py), [tests](../tests/test_management.py) |
+| M06 | Audience-specific review and legibility | Company results-only view, Instructor guide/detail/demo, horizontal complete labels, CodeTour in entry and evidence-based quality interpretation | [Implementation](../knowledge/management.md), [audience checks](../docs/review-evidence/audience-delivery-checks.json), [entry](../docs/start-here.md) |
 | P01 | Submission | Candidate details completed, reproducible setup, template satisfied, allowed diff scope, PR instructions followed | Final review checklist and eventual PR |
 
 - [x] B01 — Prepare and check the foundation. Evidence: [document checks](activity-log.md).
@@ -31,10 +37,16 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] A01 — Complete the operational diagnosis. Evidence: [findings, scenarios and limits](../docs/operational-diagnosis.md).
 - [x] S01 — Define one automation and its human intervention rules. Evidence: [scope, flow and acceptance](../knowledge/solution-scope.md).
 - [x] V00 — Record the evaluation protocol before prototype implementation. Evidence: [grouped splits, bounded selection and tested environment](../docs/evaluation-protocol.md); zero classifier fits.
-- [x] I01 — Build the functional prototype. Evidence: [local triage/review, frozen-protocol selection, software and smoke checks](../docs/prototype.md); final test remains reserved.
+- [x] I01 — Build the functional prototype. Evidence: [local triage/review, frozen-protocol selection, software and smoke checks](../docs/prototype.md); final test was reserved at that development stage (subsequently consumed in V01).
 - [x] V01 — Run and document software tests and AI evaluation. Evidence: [7,175 frozen-test cases, 72 software tests, actual 64-case runtime and separate faults](../docs/final-evaluation.md); no fit/retuning, exposure consumed.
 - [x] E01 — Complete evidence, narrative, and CodeTour. Evidence: [template narrative, 11 passive anchors and capture inventory with limits](../docs/review-guide.md); no source/model/test-exposure changes.
-- [x] R02 — Investigate the five user-defined principles before P01. Evidence: [findings, business actions, immediate priorities and future dependencies](../docs/pre-submission-review.md); suggestions remain unimplemented.
+- [x] R02 — Investigate the five user-defined principles before P01. Evidence: [findings, business actions, immediate priorities and future dependencies](../docs/pre-submission-review.md); historical proposals subsequently delivered in M01–M05.
+- [x] M01 — Deliver executive entry, human/AI attribution and guided demonstration. Evidence: [one-page entry](../docs/start-here.md) and [demo](../docs/demo-guide.md).
+- [x] M02 — Deliver source-linked management and benchmark views. Evidence: [aggregate/UI checks](../docs/review-evidence/management-delivery-checks.json).
+- [x] M03 — Separate consultation and reproduction; correct platform/exposure wording. Evidence: [setup](../docs/prototype.md) and [no-raw/model launch](../docs/review-evidence/management-delivery-checks.json).
+- [x] M04 — Export filtered cases, assessments and review history. Evidence: [schema/filter tests](../tests/test_management.py) and [demo instructions](../docs/demo-guide.md).
+- [x] M05 — Deliver editable capacity simulation and retained negative results. Evidence: [UI/zero-volume tests](../tests/test_management.py).
+- [x] M06 — Respond to direct UI/reviewer feedback: separate audiences, readable group labels and explicit CodeTour/quality guidance. Evidence: [81 tests, browser screenshots and tour replay](../docs/review-evidence/audience-delivery-checks.json); no new model-quality evaluation.
 - [ ] P01 — Prepare the final submission and PR.
 
 Coordination source for F01–F07:
