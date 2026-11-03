@@ -7,9 +7,11 @@ envio ao cliente nem alteração em helpdesk, acesso, compra ou outro sistema.
 
 ## Escolha a visão na aplicação
 
-**Empresa** é a seleção inicial: resultados operacionais, ações e capacidade, sem
-benchmark IT, narrativa de recrutamento ou acesso ao banco/modelo pela interface.
-**Instrutor** abre o guia de avaliação, evidências e as telas de demonstração no
+**Empresa** é a seleção inicial: resultados operacionais, ações e capacidade; no
+modo completo inclui **Triagem em lote**. O banco/modelo desse fluxo só é usado
+a partir de ações explícitas, sem trazer o benchmark ou narrativa de recrutamento
+para a visão de resultados.
+**Instrutor** abre o guia de avaliação, evidências, **Experimento** e as telas de demonstração no
 modo completo. Em `--overview`, mostra apenas as telas agregadas e orienta a troca
 para o modo completo. O seletor é de apresentação; não é autenticação de papéis.
 Mudar a seleção não treina nem altera resultados ou histórico.
@@ -202,3 +204,18 @@ que somente o preflight/diagnóstico do comando de treino mudou: a AST do corpo
 de cálculo e os bytes dos estimadores/referência/política permaneceram iguais.
 O relatório preserva os hashes originais de treino e separa os atuais bindings
 de execução; cópias locais da proveniência anterior foram preservadas.
+
+## Lote e ensaio manual/assistido
+
+O [novo fluxo e aprendizado](operational-learning.md) explicam o CSV, a revisão
+em tabela e o experimento. A persistência usa `data/runtime/workflow.sqlite3`,
+separada da triagem individual; override técnico `TRIAGE_WORKFLOW_DB_PATH`.
+Em ambos, o núcleo/modelo/limiar/referências congelados são os mesmos. O painel
+continua usando o diagnóstico já calculado, sem ser substituído pelo CSV do lote.
+
+Os tempos de um lote são decorrido servidor → arquivo preparado, com pausas e
+espera, sem download/entrega externa ou esforço ativo isolado. O experimento só
+revela concordância após as duas etapas e identifica automação separadamente.
+O plano e os grupos são fixados antes de começar, só com treino; não há novo teste
+final do classificador. A ferramenta aguarda participação humana, sem ganho medido
+na entrega apenas por passar em testes. [Protocolo](../data/workflow-protocol.json).

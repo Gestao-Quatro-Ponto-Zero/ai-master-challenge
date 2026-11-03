@@ -3,10 +3,10 @@
 Updated: 2026-11-03 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: M01–M06 delivered, implementing R02 points 1–4 and direct UI feedback by user
-  request. See [one-page entry](docs/start-here.md), [guided demo](docs/demo-guide.md)
-  and [implementation contract](knowledge/management.md). Point 5 remains visible as
-  [planned future scope](docs/future-roadmap.md), not implemented integration.
+- Current phase: M07 batch triage and manual/assisted usability instrumentation
+  delivered after the candidate challenged the link from accuracy to business value.
+  [Learning](docs/operational-learning.md) is prominent in README/start-here/app.
+  H01 actual declared-operator rehearsal remains pending; no measured human savings.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -21,9 +21,16 @@ Updated: 2026-11-03 (America/Sao_Paulo).
   criteria passed; this is not business approval or production readiness.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: P01 — confirm candidate identity, final review and PR preparation.
-  No publication is performed. The new views/export/simulator do not change the
-  frozen classifier, gate, references, evaluation data or results.
+- Next action: H01 — a person runs Instructor → Experimento in the full app and
+  completes both assigned arms. Results must remain local/descriptive, including
+  slower or lower-quality assisted outcomes. Then P01 candidate identity/final PR review.
+- M07: Company full mode adds operational batch review; Instructor adds Experimento.
+  Separate workflow SQLite, bounded CSV validation, explicit row confirmations,
+  append-only changes, immutable exports and elapsed timers. Protocol fixes 8 cases
+  per arm from distinct TRAIN groups, hidden references and counterbalanced order.
+  93 software tests passed; no new classifier fit/final prediction or frozen input
+  change. [Checks](docs/review-evidence/batch-delivery-checks.json) distinguish automated
+  UI fixtures from human evidence. CodeTour now covers 13 stops.
 - M01–M05 verification: 79 software tests passed, including model-free aggregate UI,
   filtered CSV/history projections and negative/zero-volume capacity interaction.
   An isolated consultation with only three public JSONs and the existing locked
@@ -44,7 +51,7 @@ Updated: 2026-11-03 (America/Sao_Paulo).
   obsolete reserved-test console message are documented in the review. No browser
   visual inspection or new operational savings measurement was performed.
 - E01: template narrative and evidence/decision map; 11 passive source-anchored tour
-  steps and one-command review workspace; current inventory: 24 captures / 181 message occurrences / 139
+  steps and one-command review workspace; current inventory: 25 captures / 193 message occurrences / 151
   distinct explicit IDs. 42 legacy no-ID occurrences and platform/cutoff omissions
   remain disclosed. No new test inference, model fitting or frozen source changes.
 - CodeTour correction: `bash review.sh` opens the correct VS Code workspace, reuses/

@@ -67,12 +67,12 @@ class ManagementTests(unittest.TestCase):
 class ManagementUITests(unittest.TestCase):
     def test_company_view_skips_model_and_database_and_switching_reveals_instructor(self):
         from streamlit.testing.v1 import AppTest
-        with tempfile.TemporaryDirectory() as d, patch.dict(os.environ, {"TRIAGE_DB_PATH": str(Path(d) / "must-not-open.sqlite3")}):
+        with tempfile.TemporaryDirectory() as d, patch.dict(os.environ, {"TRIAGE_DB_PATH": str(Path(d) / "must-not-open.sqlite3"), "TRIAGE_WORKFLOW_DB_PATH": str(Path(d)/"workflows.sqlite3")}):
             db = Path(d) / "must-not-open.sqlite3"
             with patch("triage.artifacts.load_metadata", side_effect=AssertionError("Company must not load model")):
                 app = AppTest.from_file(str(ROOT / "solution/app.py"), default_timeout=15).run()
                 self.assertFalse(app.exception)
-                self.assertEqual([tab.label for tab in app.tabs], ["Resultados do suporte", "Capacidade"])
+                self.assertEqual([tab.label for tab in app.tabs], ["Resultados do suporte", "Triagem em lote", "Capacidade"])
                 self.assertFalse(db.exists())
                 self.assertFalse(app.text_area)
                 self.assertFalse(any("Macro F1" in m.label for m in app.metric))
@@ -84,7 +84,7 @@ class ManagementUITests(unittest.TestCase):
             self.assertTrue(any("Carregar exemplo" == b.label for b in app.button))
             app.selectbox(key="audience").select("company").run()
             self.assertFalse(app.exception)
-            self.assertEqual([tab.label for tab in app.tabs], ["Resultados do suporte", "Capacidade"])
+            self.assertEqual([tab.label for tab in app.tabs], ["Resultados do suporte", "Triagem em lote", "Capacidade"])
             self.assertFalse(app.text_area)
 
     def test_consultation_switch_changes_content_without_runtime_database(self):

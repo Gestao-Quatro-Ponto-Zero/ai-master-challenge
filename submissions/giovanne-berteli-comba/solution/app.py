@@ -13,6 +13,7 @@ from triage.core import CLASSES
 from triage.repository import Repository
 from triage.runtime import TriageService
 from management import csv_bytes, operational_export
+from batch_ui import render_batch_workspace, render_experiment
 from management_ui import render_capacity, render_company, render_future, render_instructor_guide, render_overview, select_audience
 
 
@@ -49,10 +50,14 @@ def main():
     audience = select_audience()
     if audience == "company":
         st.caption("Visão Empresa · resultados de atendimento, ações propostas e capacidade")
-        render_company()
+        render_company(operations=True)
         return
     st.caption("Visão Instrutor · percurso, métodos, demonstração e evidências")
-    guide_tab, overview_tab, triage_tab, review_tab, capacity_tab, future_tab = st.tabs(["Guia do instrutor", "Diagnóstico e resultados", "Triagem", "Revisão e anomalias", "Capacidade", "Evoluções planejadas"])
+    guide_tab, overview_tab, batch_tab, experiment_tab, triage_tab, review_tab, capacity_tab, future_tab = st.tabs(["Guia do instrutor", "Diagnóstico e resultados", "Triagem em lote", "Experimento", "Triagem", "Revisão e anomalias", "Capacidade", "Evoluções planejadas"])
+    with batch_tab:
+        render_batch_workspace()
+    with experiment_tab:
+        render_experiment()
     with guide_tab:
         render_instructor_guide()
     with overview_tab:

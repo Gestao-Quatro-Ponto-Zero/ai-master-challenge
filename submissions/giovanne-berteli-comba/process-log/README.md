@@ -69,6 +69,10 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 
 | [Feedback de públicos e legibilidade](chat-exports/24-audience-feedback-chat.md) | Investigar melhorias no projeto | 9 mensagens novas de quatro turnos retornados; relato do gráfico, perfis, CodeTour e qualidade; hasMore=true; final atual pendente |
 
+| [Triagem em lote e aprendizado](chat-exports/25-batch-workflow-chat.md) | Investigar melhorias no projeto | 12 mensagens novas de quatro turnos retornados; objeção sobre impacto, proposta, autorização e implementação; hasMore=true; atualizações mais recentes e final atual pendentes |
+
+Narrativa da mudança: [Da qualidade do modelo à medição do trabalho — M07](20-batch-workflow.md).
+
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
 paginação e as lacunas de cada leitura estão declaradas no respectivo arquivo;

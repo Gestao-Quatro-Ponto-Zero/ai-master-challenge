@@ -1,5 +1,9 @@
 # A entrega em uma página
 
+> **Aprendizado central:** acurácia não é economia. A objeção do candidato ao
+trabalho adicional do fluxo individual levou à triagem em lote e a uma comparação
+manual/assistida instrumentada. [Veja o aprendizado, o protocolo e como participar](operational-learning.md).
+
 **Decisão para a empresa:** validar a fila e a instrumentação; testar assistência
 à triagem com confirmação humana e medir o ganho líquido antes de expandir.
 
@@ -7,7 +11,7 @@
 | --- | --- |
 | Qual era o problema? | Entender onde o suporte perde tempo, o que automatizar e demonstrar algo funcionando. |
 | O que encontramos? | 5.700/8.469 não encerrados, incluindo 1.403 Critical; 1.102/2.769 encerrados avaliados deram nota 1–2. O arquivo não informa abertura ou esforço ativo: duração, SLA e desperdício real em horas não são mensuráveis. |
-| O que construímos? | Diagnóstico com fontes; triagem IT com confirmação, histórico e anomalias; painel de decisões, exportação e simulador de capacidade. |
+| O que construímos? | Diagnóstico com fontes; triagem IT individual/em lote com confirmação, histórico e anomalias; painel, exportação, simulador e ensaio manual/assistido pronto para participação humana. |
 | O que o modelo mostrou? | Macro F1 0,844612 contra 0,646094 do baseline de texto em 7.175 casos IT. Sugestões padrão: 1.951/7.175 (27,19%), com 1.884/1.951 concordâncias (96,57%). Houve 67 divergências, 50 de classes especializadas: toda sugestão precisa de confirmação. |
 | Qual o próximo passo do negócio? | Conferir Critical/status, distinguir espera do cliente de trabalho do agente, investigar motivos das notas e comparar fluxo atual/assistido num piloto com novos dados. |
 | Qual benefício esperar? | A hipótese de referência é 29,75 h/mês; cenários vão de −26,67 a +74,75 h/mês. São premissas para planejar um piloto, sem economia medida ou de caixa. |
@@ -34,9 +38,9 @@ Não foi realizada adjudicação humana dos rótulos nem medição de ganho oper
 
 No início da aplicação, escolha **Perfil de visualização**:
 
-- **Empresa** (padrão): resultados de atendimento, ações propostas e simulação de capacidade.
+- **Empresa** (padrão): resultados de atendimento, ações propostas, capacidade e, na aplicação completa, triagem em lote.
 - **Instrutor**: guia de avaliação, autoria humano/IA, diagnóstico com fontes,
-  benchmark IT, demonstração e evoluções futuras. No modo completo, inclui Triagem
+  benchmark IT, demonstração e evoluções futuras. No modo completo, inclui lote, **Experimento**, Triagem
   e Revisão/exportação; na consulta de agregados, explica como habilitá-las.
 
 Leia esta página sem instalar nada. Em **Linux x86_64/glibc**, na raiz do repo:
@@ -62,7 +66,7 @@ bash submissions/giovanne-berteli-comba/review.sh
 
 O comando abre o workspace correto e confere/instala a extensão oficial CodeTour.
 Clique em **Start CodeTour** na notificação; ele também aparece no Explorer.
-São **11 paradas**, do problema à implementação e às evidências. A instalação da
+São **13 paradas**, do problema à implementação e às evidências. A instalação da
 extensão requer internet. Para ler sem VS Code ou extensão, siga o
 [roteiro em Markdown](code-tour.md). O mesmo comando está no Guia do instrutor da aplicação.
 
@@ -82,3 +86,12 @@ Foram pensadas IA analista sobre métricas calculadas, integração com Google S
 email, Discord/canal interno, bot e helpdesk. São **evoluções planejadas, fora do
 escopo entregue**, com benefícios e dependências descritos no
 [roadmap](future-roadmap.md). A entrega priorizou um fluxo verificável e reproduzível.
+
+## Faça a comparação com participação humana
+
+Execute o modo completo, selecione **Instrutor → Experimento** e siga as duas etapas.
+São oito tickets por etapa, distintos e provenientes do treino; os rótulos ficam
+ocultos até concluir ambas. Identifique sua participação como **Operador (declarado)**;
+automação usa o tipo próprio. Tempo, concordância, correções e falhas serão registrados,
+inclusive resultados desfavoráveis. [Roteiro e limites do ensaio](operational-learning.md).
+A ferramenta não apresenta execução automatizada como ganho humano ou ROI real.

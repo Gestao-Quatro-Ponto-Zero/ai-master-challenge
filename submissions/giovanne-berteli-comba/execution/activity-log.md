@@ -1,5 +1,26 @@
 # Activity log
 
+## 2026-11-03 — M07 batch task and operational learning
+
+- Candidate challenged the link between classifier quality and actual work saved;
+  authorized batch triage, a manual/assisted comparison and visible learning.
+- Delivered bounded CSV import, explicit inference, row confirmation/correction,
+  durable events and immutable final exports using the unchanged frozen service.
+- Versioned a local usability protocol before human participation: eight cases per
+  arm, disjoint TRAIN groups, approximate length matching without predictions,
+  hash order, hidden references and no quality feedback until both arms finish.
+- Server elapsed time includes model wait/review/corrections/pauses through artifact
+  readiness. Setup/external CSV/download/helpdesk excluded; no active-work/cash claim.
+  All attempts, failures and negative differences remain visible; automation is labelled.
+- All 93 software tests passed. Actual browser CSV upload, suggestions, confirmation,
+  reload/resume and download passed in a temporary DB with automated_test actor.
+  The downloaded bytes reconcile after BOM removal; no human rehearsal was performed.
+- Actual isolated VS Code host navigated all 13 tour anchors. Reaggregated all 7,175
+  saved final decisions; zero new predictions/fits/model loads and frozen hashes match.
+- README/start-here/app prominently explain accuracy versus savings and the candidate's
+  role. Narrative20/capture25 add12 messages (4 returned turns,hasMore=true).
+  Current later commentary/final remain outside the snapshot. H01 and P01 pending.
+
 ## 2026-11-03 — M06 audience/legibility feedback
 
 - User found vertical/truncated queue labels, proposed Company versus Instructor

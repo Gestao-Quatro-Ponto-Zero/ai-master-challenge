@@ -69,6 +69,18 @@
       "file": "process-log/README.md",
       "pattern": "## Registros",
       "description": "As narrativas preservam decisões, alternativas, correções e falas acessíveis. A cobertura distingue extrações textuais, lacunas e mensagens sem IDs; não afirma histórico completo. As escolhas humanas documentadas não são confundidas com escolhas técnicas do agente. P01 ainda precisa confirmar identificação e preparar o envio."
+    },
+    {
+      "title": "12. Aprendizado que mudou o fluxo",
+      "file": "docs/operational-learning.md",
+      "pattern": "^# Aprendizado central:",
+      "description": "O candidato questionou a ligação entre acurácia e economia. A objeção levou ao lote e a um ensaio com participação humana. Veja o que foi implementado, o que falta medir e por que tempos de testes automatizados não comprovam ganho humano."
+    },
+    {
+      "title": "13. Comparação local sem fabricar ROI",
+      "file": "solution/batch_workflow.py",
+      "pattern": "def study_result\\(",
+      "description": "O plano é fixado antes das etapas, só usa treino e separa grupos/casos. Rótulos não aparecem durante a tarefa manual/assistida; a comparação exige ambas as conclusões. O relatório retém falhas, tipo de participante e diferenças negativas. Não altera o modelo congelado nem apresenta o ensaio como teste final ou economia de produção."
     }
   ]
 }

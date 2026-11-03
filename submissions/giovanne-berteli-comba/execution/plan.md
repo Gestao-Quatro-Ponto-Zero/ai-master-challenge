@@ -26,6 +26,8 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | M04 | Operational export | Filter reconciliation, case/run/metric/event counts, versioned schema and no original/free-text fields | [CSV contract](../knowledge/management.md), [tests](../tests/test_management.py) |
 | M05 | Capacity simulator | Existing formula, editable assumptions, review/rework/fixed effort and negative/zero-volume scenarios | [Implementation](../solution/management_ui.py), [tests](../tests/test_management.py) |
 | M06 | Audience-specific review and legibility | Company results-only view, Instructor guide/detail/demo, horizontal complete labels, CodeTour in entry and evidence-based quality interpretation | [Implementation](../knowledge/management.md), [audience checks](../docs/review-evidence/audience-delivery-checks.json), [entry](../docs/start-here.md) |
+| M07 | Batch triage and usability instrumentation | Bounded CSV input, immutable prediction/append-only review, stable export, timed manual/assisted study with disjoint train groups and explicit actor type; learning prominent | [Contract](../knowledge/batch-workflow.md), [learning](../docs/operational-learning.md), [checks](../docs/review-evidence/batch-delivery-checks.json) |
+| H01 | Actual declared-operator rehearsal | A person completes both planned arms; timings/quality/failures and limitations exported; no simulated human or production ROI claim | Application Instructor → Experimento; remains pending human participation |
 | P01 | Submission | Candidate details completed, reproducible setup, template satisfied, allowed diff scope, PR instructions followed | Final review checklist and eventual PR |
 
 - [x] B01 — Prepare and check the foundation. Evidence: [document checks](activity-log.md).
@@ -47,6 +49,8 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] M04 — Export filtered cases, assessments and review history. Evidence: [schema/filter tests](../tests/test_management.py) and [demo instructions](../docs/demo-guide.md).
 - [x] M05 — Deliver editable capacity simulation and retained negative results. Evidence: [UI/zero-volume tests](../tests/test_management.py).
 - [x] M06 — Respond to direct UI/reviewer feedback: separate audiences, readable group labels and explicit CodeTour/quality guidance. Evidence: [81 tests, browser screenshots and tour replay](../docs/review-evidence/audience-delivery-checks.json); no new model-quality evaluation.
+- [x] M07 — Deliver batch workbench, local comparison instrumentation and prominent learning. Evidence: [93 software tests and functional/UI checks](../docs/review-evidence/batch-delivery-checks.json).
+- [ ] H01 — Run the local rehearsal with an actual participant and inspect both-arm results; software tests do not satisfy this task.
 - [ ] P01 — Prepare the final submission and PR.
 
 Coordination source for F01–F07:

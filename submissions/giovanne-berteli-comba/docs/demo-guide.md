@@ -47,3 +47,17 @@ histórico/modelo nem envia dados para serviços externos.
 Para só conhecer os resultados/simulador, `bash run.sh --overview` na submissão
 dispensa dados brutos e treino. O [CodeTour](code-tour.md) permite aprofundar a
 implementação; o [resumo de uma página](start-here.md) explica direção humana e IA.
+
+## Novo fluxo e experimento
+
+**Triagem em lote** está disponível na aplicação completa em Empresa e Instrutor.
+Use o [roteiro do aprendizado operacional](operational-learning.md): inicie o lote,
+importe o CSV, gere sugestões, confira/corrija as linhas, registre-as e conclua o
+arquivo. A revisão individual continua disponível como demonstração técnica.
+
+Para medir uso, abra **Instrutor → Experimento**. O protocolo prepara duas etapas
+com oito casos de treino distintos em cada uma, referências ocultas e ordem fixada.
+A execução pessoal exige marcar **Operador (declarado)** e completar ambas; é uma
+atividade separada da demonstração de cinco minutos. Nenhum tempo de conclusão
+humana foi medido pelo agente para prometer uma duração. Os testes automatizados
+verificam o software e são identificados pelo seu tipo, sem provar economia humana.

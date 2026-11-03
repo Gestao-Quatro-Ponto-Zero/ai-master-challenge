@@ -18,6 +18,13 @@ sources:
     resource: https://docs.python.org/3.12/library/sqlite3.html
 ---
 
+# Later workflow extension
+
+M07 adds batch review and a local human usability rehearsal in
+[the batch contract](batch-workflow.md), without changing this frozen inference
+contract or its model/policy/reference artifacts. Earlier scope exclusions below
+describe I01; the subsequent reviewer/management UI is owned by management.md.
+
 # Decision and implementation boundary
 
 S01 selects one automation: suggest an IT ticket category and prepare a local human

@@ -1,6 +1,11 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: pontos 1–4 da revisão implementados; identificação e submissão final em P01. Entrega ainda não enviada.**
+**Estado: triagem em lote e ensaio manual/assistido implementados; execução humana do ensaio e submissão final pendentes.**
+
+> **Aprendizado que mudou a entrega:** um classificador melhor não comprova economia.
+> O candidato questionou a ligação com impacto operacional; a revisão identificou
+> trabalho adicional na triagem individual e levou ao lote e à comparação
+> manual/assistida. **A ferramenta está pronta; o ensaio humano ainda precisa ser realizado.** [Entenda a mudança e realize o ensaio](docs/operational-learning.md).
 
 ## Comece por aqui
 
@@ -19,8 +24,8 @@ Para experimentar a triagem completa, use o mesmo comando **sem `--overview`**.
 Para ler sem instalar, abra os links acima. macOS e Windows não foram validados pelo inicializador.
 
 Na aplicação, **Perfil de visualização** começa em **Empresa**: resultados e
-capacidade. Selecione **Instrutor** para ver o guia de avaliação, autoria, fontes,
-benchmark, CodeTour e demonstração completa de triagem/revisão. O modo `--overview`
+capacidade e, no modo completo, **Triagem em lote**. Selecione **Instrutor** para ver o guia de avaliação, autoria, fontes,
+benchmark, CodeTour, **Experimento** e demonstração de triagem/revisão. O modo `--overview`
 explica como habilitar a demonstração completa. As visões mudam conteúdo e navegação.
 
 ## Sobre mim
@@ -31,7 +36,7 @@ explica como habilitar a demonstração completa. As visões mudam conteúdo e n
 
 ## Executive Summary
 
-A análise encontrou 5.700 registros não encerrados em 8.469 (67,30%), mas os dados não permitem medir duração total ou esforço ativo do atendimento. A solução é uma triagem IT assistida, com categoria/destino sugeridos, confirmação humana e anomalias altas/baixas persistidas para revisão. No teste IT reservado, o macro F1 foi 0,844612 contra 0,646094 do baseline de texto; sugestões padrão cobriram 27,19% dos casos, com 96,57% de concordância com os rótulos nesse subconjunto. Dos 67 erros padrão, 50 tinham rótulos de classes especializadas, reforçando a confirmação humana. Os resultados sustentam o benchmark retrospectivo e o protótipo local, sem provar economia medida, transferência para clientes ou prontidão de produção.
+A análise encontrou 5.700 registros não encerrados em 8.469 (67,30%), mas os dados não permitem medir duração total ou esforço ativo do atendimento. A solução é uma triagem IT assistida, individual e em lote, com confirmação/correção numa tabela, histórico e um ensaio manual versus assistido instrumentado. No teste IT reservado, o macro F1 foi 0,844612 contra 0,646094 do baseline de texto; sugestões padrão cobriram 27,19% dos casos, com 96,57% de concordância com os rótulos nesse subconjunto. Dos 67 erros padrão, 50 tinham rótulos de classes especializadas, reforçando a confirmação humana. Os resultados sustentam o benchmark retrospectivo e o protótipo local; o ensaio humano permanece pendente e não há economia medida, transferência validada para clientes ou prontidão de produção.
 
 ## Revisar o código — CodeTour
 
@@ -107,7 +112,7 @@ confiável de duração por canal nem desperdício ativo observado.
    eventos e esforço ativo antes de prometer SLA ou economia.
 2. Usar a triagem como apoio com confirmação, preservando atenção a classes
    especializadas e revisão das anomalias, sem ação externa automática.
-3. Validar disponibilidade dos textos na entrada, rótulos e fluxo em um piloto
+3. Realizar o [ensaio manual/assistido](docs/operational-learning.md); depois validar disponibilidade dos textos na entrada, rótulos e fluxo em um piloto
    representativo com dados novos; medir carga humana, erros e esforço.
 4. Preservar o resultado congelado: o teste já foi consumido e não deve orientar
    outro ajuste apresentado depois como avaliação inédita.

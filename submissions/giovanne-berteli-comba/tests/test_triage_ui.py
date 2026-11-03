@@ -20,7 +20,7 @@ class WorkbenchTests(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "test.sqlite3"
-            with patch.dict(os.environ, {"TRIAGE_DB_PATH": str(path)}):
+            with patch.dict(os.environ, {"TRIAGE_DB_PATH": str(path), "TRIAGE_WORKFLOW_DB_PATH": str(Path(directory)/"workflow.sqlite3")}):
                 app = AppTest.from_file(str(ROOT / "solution/app.py"), default_timeout=15).run()
                 app.selectbox(key="audience").select("instructor").run()
                 next(item for item in app.button if item.label == "Carregar exemplo").click().run()
@@ -39,7 +39,7 @@ class WorkbenchTests(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "test.sqlite3"
-            with patch.dict(os.environ, {"TRIAGE_DB_PATH": str(path)}):
+            with patch.dict(os.environ, {"TRIAGE_DB_PATH": str(path), "TRIAGE_WORKFLOW_DB_PATH": str(Path(directory)/"workflow.sqlite3")}):
                 app = AppTest.from_file(str(ROOT / "solution/app.py"), default_timeout=15).run()
                 app.selectbox(key="audience").select("instructor").run()
                 self.assertFalse(app.exception)

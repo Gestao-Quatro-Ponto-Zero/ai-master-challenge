@@ -239,10 +239,20 @@
       "represented_turn_ids": 3,
       "sha256": "069944200c6dd50a6a84b39621232e4ca627b0cb15f4fcd7a1d275b13f86d1c0",
       "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
+    },
+    {
+      "captured": "2026-11-03 05:44:31 UTC (extraction of the read_thread snapshot obtained earlier in this active turn).",
+      "explicit_message_ids": 12,
+      "file": "process-log/chat-exports/25-batch-workflow-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 12,
+      "represented_turn_ids": 4,
+      "sha256": "a6654aa1257c252ba3ee742b3c14158e10a6453aa959fbf368264a07a89a4598",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
     }
   ],
   "credential_pattern_matches": 0,
-  "distinct_explicit_message_ids": 139,
+  "distinct_explicit_message_ids": 151,
   "duplicate_explicit_ids": 0,
   "executive_summary_sentences": 5,
   "headline_metric_tokens_matched": [
@@ -253,18 +263,19 @@
     "1.951/7.175"
   ],
   "input_sha256": {
-    ".tours/assisted-triage.tour": "f7f30b81fa1f244195ee5182c723b26872d59a536428b19849e3385e51d58415",
-    "README.md": "51dc397da142b860698b5a91ae367aff0ce0584342adcddfd7a442ac8eb05472",
+    ".tours/assisted-triage.tour": "e4e0225413b3bb2e7042faadb0dce7e01bbbce9b53b61bff2d24a3d55e87d48e",
+    "README.md": "4783054823081139d1b1336b29940a7f73a54c0b37ce3ba57d7a6297396a82fa",
     "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
     "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
-    "docs/code-tour.md": "d7c89349bdc8f21ad554e8151c10d4a7cf36a188a7b043891b942c4dc1795756",
-    "docs/conversation-coverage.md": "1d61919464d8dda9cb437b6bab9c09721e490523e0bc19ec428793d455d0e6c9",
+    "docs/code-tour.md": "18cf7c5f18f0aa168083bdad04f39ca9d358fef512bf440639df43d84c2b2764",
+    "docs/conversation-coverage.md": "124973fd713827ce61abfd3ae40fc5c85770e74699e991f874c94f00bebac52a",
     "docs/final-evaluation.md": "bb6d13327496809c465ed0fce3116ec41317912549f20c537278dd20519da3e8",
-    "docs/review-evidence/codetour-discovery.json": "f113eec2aaee2788c282e5ee0c4b2ff4e2806ff208345ed35eb6f98264752cb6",
-    "docs/review-guide.md": "ea4177f38503bc296fa6aaeaee0f8a0d706f31f5eb0b40e257bcc4918f93ab19",
+    "docs/operational-learning.md": "7322c84eb8872c9715dc68b9d92b9ffe6227711bdbf0e29cdfd24de847b7e5c8",
+    "docs/review-evidence/codetour-discovery.json": "9687585a3b1759c3effeda594dee878f2d66bfc83a35252f0b6cb96bea35af89",
+    "docs/review-guide.md": "7143a5c330c5777bc86da756f39bb6f480ef3280bf974916299424739e88a2f3",
     "knowledge/dataset-usage.md": "cef9f5e1d43932a39ff84cf13354b2e25401347495e407e25357160ba89b8cb4",
     "knowledge/final-evaluation.md": "1e099a9a6bccdae0813f545f51e36c3774c9cf111ea519f9d4eb055ad7d7dbd5",
-    "process-log/README.md": "06a9ceccf176593cde9e78742804f84fb0921c77862316f58df163152cd31b57",
+    "process-log/README.md": "b509001b84101be3bb1f8e718d62648ea40c363328340f785e21b8458e0fb1e6",
     "process-log/chat-exports/01-preparation-chatgpt.md": "343994a0997230b9f311772c1701bf13d97debf6611e3a22f28293bc0108300a",
     "process-log/chat-exports/02-challenge-comparison.md": "dc383b6bba413bae481c95c6dc67e74a6b864ef6c3077dfc808fb99d260e3ce7",
     "process-log/chat-exports/03-planning-chat.md": "ad9839a2b870483ac22e45ca45c07948e18771368faed5b3fa338f31fc5d883d",
@@ -289,24 +300,26 @@
     "process-log/chat-exports/22-pre-submission-review-chat.md": "4590d217accd85c0fee7216da74c6becea8b3a39797f431f38bcf84113da11aa",
     "process-log/chat-exports/23-management-delivery-chat.md": "dfd1e726fffd680c67bdd57fd115a53e80acbe1ed15f8c08021dfdb65d3f1af3",
     "process-log/chat-exports/24-audience-feedback-chat.md": "069944200c6dd50a6a84b39621232e4ca627b0cb15f4fcd7a1d275b13f86d1c0",
+    "process-log/chat-exports/25-batch-workflow-chat.md": "a6654aa1257c252ba3ee742b3c14158e10a6453aa959fbf368264a07a89a4598",
     "review.code-workspace": "b0a7d1973a7f9cf0872396d8e2e8ecef8ad6c4d2a6f0e72ecaa5c29e6e4c40c9",
     "review.sh": "eaad9df3e54c49be3b890e1c247f8aa19c0b9c66313ec7ca1e863349955d73f5",
     "run.sh": "f3bee52b9d169b3bdb678584a211570e1aeef1b928c0f68c61f9e5030c9f0db6",
-    "scripts/check_review_evidence.py": "663084f669ade72d4d33525be11c7c9b695e005bda0a7749a925557e6cd70151",
-    "solution/management_ui.py": "dfed4f12a4c706e27db38daafb380ee41eeb231265f8bd5c997536b8c4b613ea",
+    "scripts/check_review_evidence.py": "6a97861f7e8dd6c4c0bbabc24f18ff0972700db1e1fe29d9afb8a408dd8d0286",
+    "solution/batch_workflow.py": "18d931735525d57634bc44d0e7c35642c48f78b720fa324adcd236c51ad863a0",
+    "solution/management_ui.py": "ddc25d5c4e8267829d50d7420435509bb93a696da57809a1fb5ce65137db2ee0",
     "solution/train_triage.py": "6f74dd40e3700e99e1a823025e5852283c118e93a96c4435674cc38e0b2417f9",
     "solution/triage/core.py": "d7a158c3dab4c0a7fa8a373d993c4416d0bf2f99d40962610c934183bf9fc974",
     "solution/triage/repository.py": "be762fd3e88a77e2277a1a47ce82b2dd1adb4f140e55b50370f15320299c8d1e",
     "solution/triage/runtime.py": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d"
   },
   "limits": "Legacy messages without IDs, API pagination, incomplete/edited/deleted branches, absent attachments/native exports and messages after the current capture remain explicit gaps; no new model inference or fitting",
-  "message_occurrences": 181,
+  "message_occurrences": 193,
   "scope": "Reviewer presentation, passive tour paths/unique patterns, capture inventory, headline metrics and known credential patterns; not full schema/UI/privacy certification or human verification",
   "tour_steps": [
     {
       "file": "README.md",
-      "line": 32,
-      "sha256": "51dc397da142b860698b5a91ae367aff0ce0584342adcddfd7a442ac8eb05472",
+      "line": 37,
+      "sha256": "4783054823081139d1b1336b29940a7f73a54c0b37ce3ba57d7a6297396a82fa",
       "title": "1. Problema, resultado e principal limite"
     },
     {
@@ -353,8 +366,8 @@
     },
     {
       "file": "solution/management_ui.py",
-      "line": 80,
-      "sha256": "dfed4f12a4c706e27db38daafb380ee41eeb231265f8bd5c997536b8c4b613ea",
+      "line": 88,
+      "sha256": "ddc25d5c4e8267829d50d7420435509bb93a696da57809a1fb5ce65137db2ee0",
       "title": "9. Gestão, capacidade e continuidade"
     },
     {
@@ -366,8 +379,20 @@
     {
       "file": "process-log/README.md",
       "line": 13,
-      "sha256": "06a9ceccf176593cde9e78742804f84fb0921c77862316f58df163152cd31b57",
+      "sha256": "b509001b84101be3bb1f8e718d62648ea40c363328340f785e21b8458e0fb1e6",
       "title": "11. Quem decidiu e o que está preservado"
+    },
+    {
+      "file": "docs/operational-learning.md",
+      "line": 1,
+      "sha256": "7322c84eb8872c9715dc68b9d92b9ffe6227711bdbf0e29cdfd24de847b7e5c8",
+      "title": "12. Aprendizado que mudou o fluxo"
+    },
+    {
+      "file": "solution/batch_workflow.py",
+      "line": 382,
+      "sha256": "18d931735525d57634bc44d0e7c35642c48f78b720fa324adcd236c51ad863a0",
+      "title": "13. Comparação local sem fabricar ROI"
     }
   ]
 }

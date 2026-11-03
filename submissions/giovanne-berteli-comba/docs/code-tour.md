@@ -23,14 +23,14 @@ O formato foi conferido na [documentação/schema primário](https://github.com/
 Os checks locais validam a estrutura usada, workspace, arquivos e uma âncora
 única por parada. O [teste real de descoberta/navegação](review-evidence/codetour-discovery.json)
 usou VS Code e CodeTour em perfis isolados: a raiz não descobriu o tour, o workspace
-correto descobriu e navegou às 11 âncoras. A verificação usa APIs do editor, sem
+correto descobriu e navegou às 13 âncoras. A verificação usa APIs do editor, sem
 alegar inspeção visual humana ou screenshots. Nenhuma configuração global foi alterada.
 
 ## Roteiro sem extensão
 
 ### 1. Problema, resultado e principal limite
 
-[README.md:32](../README.md#L32)
+[README.md:37](../README.md#L37)
 
 Comece pelo resumo. O diagnóstico de atendimento e o benchmark IT têm populações distintas. Observe cobertura junto da concordância e os 50 erros de classes especializadas: a proposta continua assistida. Os resultados são conferíveis nos JSONs vinculados, sem confundir cenário de horas com economia medida.
 
@@ -78,7 +78,7 @@ Caso, execução e duas avaliações são gravados atomicamente. Revisões poste
 
 ### 9. Gestão, capacidade e continuidade
 
-[solution/management_ui.py:80](../solution/management_ui.py#L80)
+[solution/management_ui.py:88](../solution/management_ui.py#L88)
 
 A aplicação abre em diagnóstico e ações de negócio. Agregados de clientes e benchmark IT ficam separados da atividade local, sem carregar casos finais na demonstração. render_capacity reutiliza a fórmula existente com premissas e perdas visíveis; render_future mostra ideias fora do escopo. A triagem e as exportações de casos, avaliações e eventos estão em solution/app.py e solution/management.py. Nenhuma dessas telas modifica modelo ou referências.
 
@@ -93,3 +93,15 @@ Leia erros com seus denominadores: 1.951 sugestões padrão, 67 divergências, 5
 [process-log/README.md:13](../process-log/README.md#L13)
 
 As narrativas preservam decisões, alternativas, correções e falas acessíveis. A cobertura distingue extrações textuais, lacunas e mensagens sem IDs; não afirma histórico completo. As escolhas humanas documentadas não são confundidas com escolhas técnicas do agente. P01 ainda precisa confirmar identificação e preparar o envio.
+
+### 12. Aprendizado que mudou o fluxo
+
+[docs/operational-learning.md:1](../docs/operational-learning.md#L1)
+
+O candidato questionou a ligação entre acurácia e economia. A objeção levou ao lote e a um ensaio com participação humana. Veja o que foi implementado, o que falta medir e por que tempos de testes automatizados não comprovam ganho humano.
+
+### 13. Comparação local sem fabricar ROI
+
+[solution/batch_workflow.py:382](../solution/batch_workflow.py#L382)
+
+O plano é fixado antes das etapas, só usa treino e separa grupos/casos. Rótulos não aparecem durante a tarefa manual/assistida; a comparação exige ambas as conclusões. O relatório retém falhas, tipo de participante e diferenças negativas. Não altera o modelo congelado nem apresenta o ensaio como teste final ou economia de produção.

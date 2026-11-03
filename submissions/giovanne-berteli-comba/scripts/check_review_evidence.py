@@ -74,7 +74,7 @@ def captures(root):
 
 
 def render_tour(steps):
-    text = """# CodeTour — roteiro da implementação
+    text = f"""# CodeTour — roteiro da implementação
 
 Na raiz do repositório, execute:
 
@@ -99,7 +99,7 @@ O formato foi conferido na [documentação/schema primário](https://github.com/
 Os checks locais validam a estrutura usada, workspace, arquivos e uma âncora
 única por parada. O [teste real de descoberta/navegação](review-evidence/codetour-discovery.json)
 usou VS Code e CodeTour em perfis isolados: a raiz não descobriu o tour, o workspace
-correto descobriu e navegou às 11 âncoras. A verificação usa APIs do editor, sem
+correto descobriu e navegou às {len(steps)} âncoras. A verificação usa APIs do editor, sem
 alegar inspeção visual humana ou screenshots. Nenhuma configuração global foi alterada.
 
 ## Roteiro sem extensão

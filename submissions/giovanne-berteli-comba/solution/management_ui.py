@@ -38,8 +38,14 @@ def horizontal_counts(rows, category, value, series=None):
     return (bars + labels).properties(height=max(150, 42 * len(frame)))
 
 
-def render_company(root=ROOT):
-    results, capacity = st.tabs(["Resultados do suporte", "Capacidade"])
+def render_company(root=ROOT, operations=False):
+    if operations:
+        from batch_ui import render_batch_workspace
+        results, batch, capacity = st.tabs(["Resultados do suporte", "Triagem em lote", "Capacidade"])
+        with batch:
+            render_batch_workspace()
+    else:
+        results, capacity = st.tabs(["Resultados do suporte", "Capacidade"])
     with results:
         render_overview(root, audience="company")
     with capacity:
@@ -48,13 +54,15 @@ def render_company(root=ROOT):
 
 def render_instructor_guide(aggregate_only=False):
     st.header("Guia do instrutor")
+    from batch_ui import render_learning
+    render_learning()
     st.write("Comece pelo diagnóstico, teste o fluxo e confira as evidências. A visão Empresa reúne resultados e decisões; esta visão explica o desenvolvimento e a validação.")
     st.subheader("Quem fez o quê")
     st.markdown("**Humano:** escolheu o desafio, definiu requisitos de anomalias e evidências, confrontou setup/CodeTour e direcionou clareza e valor de negócio.\n\n"
                 "**IA:** auditou dados, propôs métodos, implementou código, calculou resultados e executou testes sob essa direção. A triagem usa TF-IDF e regressão logística.")
     st.subheader("Percurso para testar")
     st.markdown("1. **Diagnóstico e resultados:** confira contagens, fontes, ações e a comparação do classificador.\n"
-                "2. **Triagem:** carregue um exemplo de treino, analise e salve; veja categoria, fila e motivo.\n"
+                "2. **Triagem em lote:** inicie o cronômetro, importe o CSV, confira/corrija linhas e exporte. **Experimento:** realize as duas etapas com casos distintos. A triagem individual continua disponível para inspecionar um exemplo.\n"
                 "3. **Revisão e anomalias:** registre uma decisão, recarregue, filtre e exporte.\n"
                 "4. **Capacidade:** altere premissas e experimente o cenário desfavorável.\n"
                 "5. **Evoluções planejadas:** veja as ideias deixadas para continuidade.")
@@ -64,7 +72,7 @@ def render_instructor_guide(aggregate_only=False):
     st.subheader("Revisar o código com CodeTour")
     st.write("Na raiz do repositório, com VS Code instalado, execute:")
     st.code("bash submissions/giovanne-berteli-comba/review.sh", language="bash")
-    st.caption("Abre o workspace correto e confere/instala a extensão oficial. Clique em Start CodeTour; são 11 paradas. A instalação da extensão requer rede. Alternativa sem extensão: docs/code-tour.md.")
+    st.caption("Abre o workspace correto e confere/instala a extensão oficial. Clique em Start CodeTour; são 13 paradas. A instalação da extensão requer rede. Alternativa sem extensão: docs/code-tour.md.")
     st.subheader("Como julgar a força da entrega")
     st.dataframe([
         {"Dimensão": "Classificação retrospectiva", "Evidência": "Macro F1 0,844612 vs 0,646094 do baseline; 7.175 casos", "Leitura": "Melhoria demonstrada neste benchmark IT"},

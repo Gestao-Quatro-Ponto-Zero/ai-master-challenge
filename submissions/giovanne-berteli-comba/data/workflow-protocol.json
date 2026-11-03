@@ -1,0 +1,12 @@
+{
+  "protocol_id": "it-workflow-pilot-v1",
+  "scope": "Local within-participant usability rehearsal, not a production ROI or new model-quality benchmark",
+  "cases_per_arm": 8,
+  "sampling": "TRAIN only; one pair per supplied IT class, distinct similarity groups across all 16 cases; deterministic hash seed and approximate text-length matching without model predictions",
+  "assignment": "One member of each pair per arm; within-arm task order hashed rather than class-ordered; arm order counterbalanced by study ID hash and frozen before starting",
+  "reference_labels": "Publisher-supplied labels hidden during both arms; concordance, not adjudicated correctness",
+  "timing": "Server UTC elapsed time from opening the assigned batch, including importing its prepared rows, assisted inference/waiting, review/corrections and preparing the output file; includes pauses and reruns; excludes study setup, external CSV creation, download/network/helpdesk delivery and future operating costs",
+  "completion": "Explicit category confirmation for every row; assisted mode requires a recorded suggestion attempt for every row, including visible failed outcomes",
+  "analysis": "Only after both arms complete; elapsed totals, elapsed per case, supplied-label concordance, corrections and failures; retain negative differences, aborted and automated-test attempts; no automatic outlier removal or financial extrapolation",
+  "limits": "Small single-participant processed-text rehearsal; learning/order/task-difficulty and previously trained examples limit inference; new representative operational data are needed for production conclusions"
+}
