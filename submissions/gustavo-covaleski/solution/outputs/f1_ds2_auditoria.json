@@ -1,0 +1,163 @@
+{
+  "3.1_perfil": {
+    "linhas": 47837,
+    "nulos": {
+      "id": 0,
+      "Document": 0,
+      "Topic_group": 0
+    },
+    "textos_vazios": 0,
+    "textos_menos_de_3_palavras": 14,
+    "classes": {
+      "Hardware": {
+        "n": 13617,
+        "pct": 28.47
+      },
+      "HR Support": {
+        "n": 10915,
+        "pct": 22.82
+      },
+      "Access": {
+        "n": 7125,
+        "pct": 14.89
+      },
+      "Miscellaneous": {
+        "n": 7060,
+        "pct": 14.76
+      },
+      "Storage": {
+        "n": 2777,
+        "pct": 5.81
+      },
+      "Purchase": {
+        "n": 2464,
+        "pct": 5.15
+      },
+      "Internal Project": {
+        "n": 2119,
+        "pct": 4.43
+      },
+      "Administrative rights": {
+        "n": 1760,
+        "pct": 3.68
+      }
+    },
+    "palavras": {
+      "p5": 10.0,
+      "p50": 26.0,
+      "p95": 136.0,
+      "max": 981
+    },
+    "pct_nao_ascii": 0.0,
+    "dados_pessoais_acertos": {
+      "email": 0,
+      "telefone_8mais_digitos": 0,
+      "url": 0,
+      "docs_com_email": 0,
+      "docs_com_telefone": 0,
+      "docs_com_url": 0
+    }
+  },
+  "3.2_preprocessamento": {
+    "pct_com_maiuscula": 0.0,
+    "pct_com_pontuacao": 0.03,
+    "pct_com_palavra_funcional": 24.94,
+    "pct_por_palavra_funcional": {
+      "a": 1.78,
+      "and": 3.54,
+      "in": 0.0,
+      "is": 1.35,
+      "of": 1.91,
+      "the": 3.64,
+      "to": 16.58
+    },
+    "texto_pre_processado": true
+  },
+  "3.4_duplicados_exatos": {
+    "grupos_tam_2mais": 0,
+    "tickets_envolvidos": 0,
+    "grupos_com_mais_de_um_rotulo": 0,
+    "tickets_em_grupos_com_conflito": 0
+  },
+  "3.5_quase_duplicados": {
+    "tfidf_forma": [
+      47837,
+      175562
+    ],
+    "pares_cos_0.80": 51483,
+    "pares_cos_0.90": 10149,
+    "pares_cos_0.95": 1961,
+    "n_grupos": 45615,
+    "n_grupos_tam_2mais": 870,
+    "pct_tickets_em_grupos_tam_2mais": 6.46,
+    "maior_grupo": 217,
+    "maior_grupo_pct_linhas": 0.45,
+    "alerta_encadeamento_maior_grupo_acima_1pct": false,
+    "grupos_com_conflito_de_rotulo": 61,
+    "tickets_em_grupos_com_conflito": 360,
+    "tickets_fora_da_maioria_do_grupo": 118,
+    "tickets_em_grupos_tam_2mais": 3092,
+    "pct_fora_da_maioria_sobre_tickets_em_grupos": 3.82,
+    "pct_fora_da_maioria_sobre_base": 0.25,
+    "maior_grupo_em_conflito": {
+      "group_id": 11923,
+      "tamanho": 144,
+      "contagem_por_rotulo": {
+        "Hardware": 112,
+        "Storage": 18,
+        "Miscellaneous": 14
+      }
+    },
+    "grupos_em_conflito_de_tamanho_2": 41
+  },
+  "3.7_holdout": {
+    "split_grupo": {
+      "n_holdout": 9567,
+      "pct_linhas": 20.0,
+      "pct_por_classe": {
+        "Hardware": 28.46,
+        "HR Support": 22.82,
+        "Access": 14.89,
+        "Miscellaneous": 14.76,
+        "Storage": 5.8,
+        "Purchase": 5.15,
+        "Internal Project": 4.43,
+        "Administrative rights": 3.68
+      }
+    },
+    "split_aleatorio": {
+      "n_holdout": 9568,
+      "pct_linhas": 20.0,
+      "pct_por_classe": {
+        "Hardware": 28.47,
+        "HR Support": 22.82,
+        "Access": 14.89,
+        "Miscellaneous": 14.76,
+        "Storage": 5.8,
+        "Purchase": 5.15,
+        "Internal Project": 4.43,
+        "Administrative rights": 3.68
+      }
+    },
+    "pct_por_classe_total": {
+      "Hardware": 28.47,
+      "HR Support": 22.82,
+      "Access": 14.89,
+      "Miscellaneous": 14.76,
+      "Storage": 5.81,
+      "Purchase": 5.15,
+      "Internal Project": 4.43,
+      "Administrative rights": 3.68
+    },
+    "exposicao_vazamento": {
+      "aleatorio": {
+        "n": 564,
+        "pct": 5.89
+      },
+      "grupo": {
+        "n": 0,
+        "pct": 0.0
+      }
+    }
+  }
+}

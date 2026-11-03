@@ -1,0 +1,308 @@
+{
+  "T1": {
+    "linhas": 8469,
+    "ticket_id_unicos": 8469,
+    "volume_brief": 30000
+  },
+  "T2": {
+    "Ticket Description": {
+      "pct_linhas_com_marcador": 100.0,
+      "n_linhas_com_marcador": 8469,
+      "top5_marcadores": [
+        [
+          "{product_purchased}",
+          13873
+        ],
+        [
+          "{error_message}",
+          472
+        ],
+        [
+          "{product_id}",
+          52
+        ],
+        [
+          "{product_name}",
+          34
+        ],
+        [
+          "{Product_purchased}",
+          18
+        ]
+      ]
+    },
+    "Ticket Subject": {
+      "pct_linhas_com_marcador": 0.0,
+      "n_linhas_com_marcador": 0,
+      "top5_marcadores": []
+    },
+    "Resolution": {
+      "pct_linhas_com_marcador": 0.0,
+      "n_linhas_com_marcador": 0,
+      "top5_marcadores": []
+    }
+  },
+  "T3": {
+    "First Response Time": {
+      "tipo": "timestamp",
+      "min": "2023-05-31 21:55:39",
+      "max": "2023-06-02 00:54:21",
+      "pct_nulo": 33.29
+    },
+    "Time to Resolution": {
+      "tipo": "timestamp",
+      "min": "2023-05-31 21:53:30",
+      "max": "2023-06-02 00:55:33",
+      "pct_nulo": 67.3
+    },
+    "closed_com_os_dois": 2769,
+    "n_resolucao_antes_1a_resposta": 1365,
+    "pct_resolucao_antes_1a_resposta": 49.3
+  },
+  "T4": {
+    "colunas_de_data": {
+      "Date of Purchase": {
+        "min": "2020-01-01 00:00:00",
+        "max": "2021-12-30 00:00:00"
+      },
+      "First Response Time": {
+        "min": "2023-05-31 21:55:39",
+        "max": "2023-06-02 00:54:21"
+      },
+      "Time to Resolution": {
+        "min": "2023-05-31 21:53:30",
+        "max": "2023-06-02 00:55:33"
+      }
+    },
+    "colunas_candidatas_a_abertura": [],
+    "existe_data_de_abertura": false
+  },
+  "T5": {
+    "contagem_por_nota": {
+      "1": 553,
+      "2": 549,
+      "3": 580,
+      "4": 543,
+      "5": 544
+    },
+    "pct_nulo": 67.3,
+    "nulos_por_status": {
+      "Closed": {
+        "nulos": 0,
+        "total": 2769
+      },
+      "Open": {
+        "nulos": 2819,
+        "total": 2819
+      },
+      "Pending Customer Response": {
+        "nulos": 2881,
+        "total": 2881
+      }
+    },
+    "quiquadrado_uniforme": {
+      "estatistica": 1.6663,
+      "p": 0.7968
+    },
+    "modelo": {
+      "n": 2769,
+      "classe_majoritaria": {
+        "classe": 3,
+        "accuracy": 0.2095,
+        "f1_macro": 0.0693
+      },
+      "modelo_sem_duracao": {
+        "accuracy": {
+          "media": 0.2156,
+          "dp": 0.0186
+        },
+        "f1_macro": {
+          "media": 0.2122,
+          "dp": 0.0186
+        }
+      },
+      "rotulo_embaralhado_sem_duracao": {
+        "accuracy": {
+          "media": 0.1907,
+          "dp": 0.0085
+        },
+        "f1_macro": {
+          "media": 0.1871,
+          "dp": 0.0092
+        }
+      },
+      "modelo_com_duracao": {
+        "accuracy": {
+          "media": 0.2178,
+          "dp": 0.0204
+        },
+        "f1_macro": {
+          "media": 0.2144,
+          "dp": 0.0194
+        }
+      },
+      "rotulo_embaralhado_com_duracao": {
+        "accuracy": {
+          "media": 0.1943,
+          "dp": 0.0066
+        },
+        "f1_macro": {
+          "media": 0.191,
+          "dp": 0.0054
+        }
+      }
+    }
+  },
+  "T6": {
+    "aviso": "variável de tempo sob suspeita (T3)",
+    "n_closed_duracao_positiva": 1402,
+    "Ticket Priority": {
+      "grupos": {
+        "Critical": {
+          "n": 374,
+          "mediana_h": 5.98
+        },
+        "High": {
+          "n": 355,
+          "mediana_h": 7.12
+        },
+        "Low": {
+          "n": 332,
+          "mediana_h": 7.11
+        },
+        "Medium": {
+          "n": 341,
+          "mediana_h": 5.87
+        }
+      },
+      "H": 6.9437,
+      "p": 0.0737
+    },
+    "Ticket Channel": {
+      "grupos": {
+        "Chat": {
+          "n": 355,
+          "mediana_h": 6.52
+        },
+        "Email": {
+          "n": 372,
+          "mediana_h": 6.47
+        },
+        "Phone": {
+          "n": 327,
+          "mediana_h": 6.05
+        },
+        "Social media": {
+          "n": 348,
+          "mediana_h": 6.43
+        }
+      },
+      "H": 1.149,
+      "p": 0.7653
+    },
+    "Ticket Type": {
+      "grupos": {
+        "Billing inquiry": {
+          "n": 273,
+          "mediana_h": 5.27
+        },
+        "Cancellation request": {
+          "n": 265,
+          "mediana_h": 6.37
+        },
+        "Product inquiry": {
+          "n": 256,
+          "mediana_h": 6.99
+        },
+        "Refund request": {
+          "n": 303,
+          "mediana_h": 6.72
+        },
+        "Technical issue": {
+          "n": 305,
+          "mediana_h": 6.38
+        }
+      },
+      "H": 6.9978,
+      "p": 0.136
+    }
+  },
+  "T7": {
+    "contagem_por_status": {
+      "Pending Customer Response": 2881,
+      "Open": 2819,
+      "Closed": 2769
+    },
+    "pct_nao_closed": 67.3,
+    "status_x_1a_resposta_nula": {
+      "Closed": {
+        "nulos": 0,
+        "total": 2769
+      },
+      "Open": {
+        "nulos": 2819,
+        "total": 2819
+      },
+      "Pending Customer Response": {
+        "nulos": 0,
+        "total": 2881
+      }
+    },
+    "status_x_resolucao_nula": {
+      "Closed": {
+        "nulos": 0,
+        "total": 2769
+      },
+      "Open": {
+        "nulos": 2819,
+        "total": 2819
+      },
+      "Pending Customer Response": {
+        "nulos": 2881,
+        "total": 2881
+      }
+    },
+    "status_x_csat_nulo": {
+      "Closed": {
+        "nulos": 0,
+        "total": 2769
+      },
+      "Open": {
+        "nulos": 2819,
+        "total": 2819
+      },
+      "Pending Customer Response": {
+        "nulos": 2881,
+        "total": 2881
+      }
+    }
+  },
+  "T8": {
+    "ticket_type_valores": {
+      "Refund request": 1752,
+      "Technical issue": 1747,
+      "Cancellation request": 1695,
+      "Product inquiry": 1641,
+      "Billing inquiry": 1634
+    },
+    "n_tipos": 5,
+    "tipos_no_brief": 3,
+    "colunas_dado_pessoal": [
+      "Customer Name",
+      "Customer Email",
+      "Customer Age",
+      "Customer Gender"
+    ],
+    "emails_validos_regex": 8469,
+    "emails_nao_nulos": 8469,
+    "resolution_pct_nulo": 67.3,
+    "resolution_valores_unicos": 2769,
+    "resolution_top5_contagens": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+}
