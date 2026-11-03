@@ -1,8 +1,8 @@
 # Cobertura das conversas preservadas
 
 Este inventário descreve os arquivos locais disponíveis para recrutamento; não é
-prova de completude da plataforma. Há **20 capturas**, **153 ocorrências
-de mensagens** e **111 IDs explícitos distintos**, sem duplicação desses IDs.
+prova de completude da plataforma. Há **22 capturas**, **162 ocorrências
+de mensagens** e **120 IDs explícitos distintos**, sem duplicação desses IDs.
 As 42 ocorrências sem ID continuam sem deduplicação global comprovada.
 Contagens de turnos abaixo são os representados no arquivo após deduplicação,
 não o número de turnos retornados pela API; cada cabeçalho declara sua cobertura.
@@ -29,6 +29,8 @@ não o número de turnos retornados pela API; cada cabeçalho declara sua cobert
 | [18-final-evaluation-chat.md](../process-log/chat-exports/18-final-evaluation-chat.md) | 8 | 8 | 3 | true |
 | [19-reviewer-evidence-chat.md](../process-log/chat-exports/19-reviewer-evidence-chat.md) | 8 | 8 | 3 | true |
 | [20-codetour-discovery-chat.md](../process-log/chat-exports/20-codetour-discovery-chat.md) | 6 | 6 | 2 | true |
+| [21-codetour-completion-chat.md](../process-log/chat-exports/21-codetour-completion-chat.md) | 4 | 4 | 2 | true |
+| [22-pre-submission-review-chat.md](../process-log/chat-exports/22-pre-submission-review-chat.md) | 5 | 5 | 3 | false |
 
 As três primeiras capturas não registram IDs por mensagem. `hasMore=false` não
 comprova mensagens excluídas, editadas, ramificações ou anexos recuperados;

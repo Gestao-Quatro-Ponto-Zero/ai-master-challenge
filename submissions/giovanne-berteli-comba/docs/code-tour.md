@@ -30,7 +30,7 @@ alegar inspeção visual humana ou screenshots. Nenhuma configuração global fo
 
 ### 1. Problema, resultado e principal limite
 
-[README.md:11](../README.md#L11)
+[README.md:15](../README.md#L15)
 
 Comece pelo resumo. O diagnóstico de atendimento e o benchmark IT têm populações distintas. Observe cobertura junto da concordância e os 50 erros de classes especializadas: a proposta continua assistida. Os resultados são conferíveis nos JSONs vinculados, sem confundir cenário de horas com economia medida.
 

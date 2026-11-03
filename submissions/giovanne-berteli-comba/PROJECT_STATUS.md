@@ -1,11 +1,12 @@
 # Project status
 
-Updated: 2026-11-02 (America/Sao_Paulo).
+Updated: 2026-11-03 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: E01 reviewer packaging completed. See [reviewer guide](docs/review-guide.md),
-  [passive CodeTour/Markdown route](docs/code-tour.md) and [capture coverage](docs/conversation-coverage.md).
-  P01 candidate identification/final submission review is next.
+- Current phase: R02 pre-submission investigation completed at the user's request.
+  See the [five-principle review](docs/pre-submission-review.md) and prioritized
+  [backlog](execution/backlog.md). E01 packaging remains available in the
+  [reviewer guide](docs/review-guide.md). P01 has not started.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -20,11 +21,18 @@ Updated: 2026-11-02 (America/Sao_Paulo).
   criteria passed; this is not business approval or production readiness.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: P01 — confirm candidate display name/LinkedIn, review template,
-  reproducible setup and allowed diff, then prepare the submission/PR according
-  to repository rules and user authorization. Nothing is submitted/published yet.
+- Next action: use R02's recommendation to select a bounded improvement pass before
+  P01: executive entry/demo, a read-only management/results view, and setup/status
+  clarity. These are proposals; no new product features were implemented in R02.
+  P01 still requires candidate identity, final review and PR preparation. Nothing
+  is submitted/published yet.
+- R02 verification: prepared setup succeeded in 0.288 s on this host with 23
+  data/model hashes and mtimes unchanged; saved 7,175-case outputs reconciled with
+  zero model loads, new predictions or fits. Cold setup/platform limits and the
+  obsolete reserved-test console message are documented in the review. No browser
+  visual inspection or new operational savings measurement was performed.
 - E01: template narrative and evidence/decision map; 11 passive source-anchored tour
-  steps and one-command review workspace; 20 captures / 153 message occurrences / 111
+  steps and one-command review workspace; current inventory: 22 captures / 162 message occurrences / 120
   distinct explicit IDs. 42 legacy no-ID occurrences and platform/cutoff omissions
   remain disclosed. No new test inference, model fitting or frozen source changes.
 - CodeTour correction: `bash review.sh` opens the correct VS Code workspace, reuses/

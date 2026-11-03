@@ -1,5 +1,33 @@
 # Activity log
 
+## 2026-11-03 — Five-principle investigation before P01
+
+- User requested review of reviewer comprehension/human-AI attribution,
+  reproduction, actionable business insights, useful additions now and future
+  AI/integrations. Completed R02; P01 remains pending.
+- Inspected current documentation, operational findings, frozen IT results,
+  bootstrap, UI and persistence. Recommended executive entry/demo, one read-only
+  management/results view and setup/status clarity; exports/simulation optional.
+  Recorded future pilot, metric-grounded AI analyst, Sheets, communication and
+  helpdesk dependencies. No proposed product feature was implemented.
+- Initial foundation/presentation checks passed. Reaggregated all 7,175 saved
+  final outcomes without loading models, new predictions or fits; frozen inputs
+  and outputs still match. Prepared setup returned success in 0.288 s and retained
+  hashes/mtimes of 23 data/model files. Existing cold/offline/CodeTour checks were
+  inspected, not repeated. No new visual browser or interviewer usability test.
+- Found obsolete reserved-test console text and historical next-step wording;
+  documented corrections as proposed work. No frozen code, rule, data or model
+  changed. Primary API documentation informed proposed Streamlit export, Google
+  Sheets, Gmail and Discord transport; no account connection or message sent.
+- Capture21 adds four prior-chat messages; capture22 adds five current-chat
+  messages. After inventory regeneration: 22 captures, 162 occurrences and 120
+  distinct explicit IDs; 42 legacy no-ID occurrences remain. Messages after the
+  recorded cutoffs/final answer remain for the next capture.
+- Updated report, backlog, plan, status, reviewer entry and process narrative.
+  Evidence receipts are revalidated for these documentary changes after checking
+  unchanged result dependencies; no historical experiment is presented as rerun.
+  No staging, commit, push or PR.
+
 ## 2026-11-02
 
 - User confirmed Challenge 002 and authorized preparation of the foundation.

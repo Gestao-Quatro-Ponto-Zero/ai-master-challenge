@@ -8,6 +8,11 @@ O tour aparece no Explorer e é oferecido na primeira visita ao workspace.
 O protótipo abre com um comando; as evidências finais podem ser lidas sem carregar
 modelos ou executar novamente o teste consumido.
 
+A [investigação antes da submissão](pre-submission-review.md), solicitada em
+03/11/2026, avalia compreensão, autoria humano/IA, reprodução e uso dos resultados
+para decisões. Ela também prioriza melhorias imediatas e integrações futuras;
+essas propostas ainda não foram implementadas.
+
 ## O que conferir e onde
 
 | Pergunta do desafio/revisor | Evidência | O que ela não demonstra |

@@ -199,10 +199,30 @@
       "represented_turn_ids": 2,
       "sha256": "03ebbff8cfaaf4edf47ff43a9e9d2b5984fdbf6a3d1485f1a48495bdd8a41c1a",
       "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 03:05:36 UTC.",
+      "explicit_message_ids": 4,
+      "file": "process-log/chat-exports/21-codetour-completion-chat.md",
+      "has_more_reported": true,
+      "message_occurrences": 4,
+      "represented_turn_ids": 2,
+      "sha256": "dfda381dd91053e09b0dd546b2af19a396dd2982207ad571c24d933e33708d72",
+      "source": "Codex chat `01a19d34-38a2-77b0-9c71-be54b1730a6e`."
+    },
+    {
+      "captured": "2026-11-03 03:05:36 UTC.",
+      "explicit_message_ids": 5,
+      "file": "process-log/chat-exports/22-pre-submission-review-chat.md",
+      "has_more_reported": false,
+      "message_occurrences": 5,
+      "represented_turn_ids": 3,
+      "sha256": "7d7048ef86ec7a8c83d9487a57d3254eaef913169a2d8f37bfb18c2453f10eec",
+      "source": "Codex chat `01a19f31-f35f-7493-bd51-f83e108c38c8`."
     }
   ],
   "credential_pattern_matches": 0,
-  "distinct_explicit_message_ids": 111,
+  "distinct_explicit_message_ids": 120,
   "duplicate_explicit_ids": 0,
   "executive_summary_sentences": 5,
   "headline_metric_tokens_matched": [
@@ -214,17 +234,17 @@
   ],
   "input_sha256": {
     ".tours/assisted-triage.tour": "fa310e9f0ca311870dbf2a1ac54b5a99665f4d47b3b9a0c87f47ab5d0ba266dc",
-    "README.md": "26571994382bceb158bb96e724fb011c749e0ee39f302eaedb6096febc9b15b3",
+    "README.md": "d7cd56a450bd83f0ec0d29cb9c29a50088c91b8d8293d7166b24de0049166d53",
     "data/evaluation-protocol.json": "4eccce87260fc5458922e0095e03a8a5d2aee8124467d9660e608c81064c31eb",
     "data/final-evaluation.json": "92f3c64db69368efa654238f5daa6caeb3474aabd590e4553c90f69e8d40c74c",
-    "docs/code-tour.md": "c0bea049cc5ec7c6c675d3ee2f42b422a87c0d8a55a7697ae7bf46aba7ac9d40",
-    "docs/conversation-coverage.md": "89a149128fc56472d577dde51f35ce30808a3c6acbc63afc0bd9a321632b3684",
+    "docs/code-tour.md": "ae4bf3b6183848e41ed17f679d6031471142ecf70bd401355b6d17251e73c35c",
+    "docs/conversation-coverage.md": "2f5a94a2f46645eeb6ead4a03c8d3fa27c11d83481a47a42d253ca1b960d735f",
     "docs/final-evaluation.md": "2944481913915952e96f71389140d53615758d67742b3726b1b4016864208ed4",
     "docs/review-evidence/codetour-discovery.json": "43803caeef68dee2bf1a23bf0632e25a0a1146926932ecab350cda85cefda930",
-    "docs/review-guide.md": "e932e120a0577b2bd61e7c5d52535308b333dfcd5b96cbdb23ff1abdedb7b0e2",
+    "docs/review-guide.md": "2176523c174cf5b7f6bc2a4395aa33b9739de5e412dd0243c2e9e0d29fb73e16",
     "knowledge/dataset-usage.md": "cef9f5e1d43932a39ff84cf13354b2e25401347495e407e25357160ba89b8cb4",
     "knowledge/final-evaluation.md": "1e099a9a6bccdae0813f545f51e36c3774c9cf111ea519f9d4eb055ad7d7dbd5",
-    "process-log/README.md": "f74ac33caabcc27e151dc0a015a029bbfc99ab995d9a36ffbc64c7180cf19771",
+    "process-log/README.md": "103523268d417efad690ace925b8cf8b3809bf50fe783fd34bb8726daa31d2a6",
     "process-log/chat-exports/01-preparation-chatgpt.md": "343994a0997230b9f311772c1701bf13d97debf6611e3a22f28293bc0108300a",
     "process-log/chat-exports/02-challenge-comparison.md": "dc383b6bba413bae481c95c6dc67e74a6b864ef6c3077dfc808fb99d260e3ce7",
     "process-log/chat-exports/03-planning-chat.md": "ad9839a2b870483ac22e45ca45c07948e18771368faed5b3fa338f31fc5d883d",
@@ -245,6 +265,8 @@
     "process-log/chat-exports/18-final-evaluation-chat.md": "59242913e48c4a13db48ea2ad7d142676b4a790638a570a14f803800568dcb5d",
     "process-log/chat-exports/19-reviewer-evidence-chat.md": "00f46ad6dd1680c02f6f8965b073ebe78ec3b13a33fabf571c2464886638132f",
     "process-log/chat-exports/20-codetour-discovery-chat.md": "03ebbff8cfaaf4edf47ff43a9e9d2b5984fdbf6a3d1485f1a48495bdd8a41c1a",
+    "process-log/chat-exports/21-codetour-completion-chat.md": "dfda381dd91053e09b0dd546b2af19a396dd2982207ad571c24d933e33708d72",
+    "process-log/chat-exports/22-pre-submission-review-chat.md": "7d7048ef86ec7a8c83d9487a57d3254eaef913169a2d8f37bfb18c2453f10eec",
     "review.code-workspace": "b0a7d1973a7f9cf0872396d8e2e8ecef8ad6c4d2a6f0e72ecaa5c29e6e4c40c9",
     "review.sh": "eaad9df3e54c49be3b890e1c247f8aa19c0b9c66313ec7ca1e863349955d73f5",
     "run.sh": "cb952499f2ae00cb8281a7e1006d5abba0d21a3f161d0fb576f6d9d2d0486863",
@@ -256,13 +278,13 @@
     "solution/triage/runtime.py": "51e52350d99607fe053a422af6cb53e1701c82893d847a26419228c70259d64d"
   },
   "limits": "Legacy messages without IDs, API pagination, incomplete/edited/deleted branches, absent attachments/native exports and messages after the current capture remain explicit gaps; no new model inference or fitting",
-  "message_occurrences": 153,
+  "message_occurrences": 162,
   "scope": "Reviewer presentation, passive tour paths/unique patterns, capture inventory, headline metrics and known credential patterns; not full schema/UI/privacy certification or human verification",
   "tour_steps": [
     {
       "file": "README.md",
-      "line": 11,
-      "sha256": "26571994382bceb158bb96e724fb011c749e0ee39f302eaedb6096febc9b15b3",
+      "line": 15,
+      "sha256": "d7cd56a450bd83f0ec0d29cb9c29a50088c91b8d8293d7166b24de0049166d53",
       "title": "1. Problema, resultado e principal limite"
     },
     {
@@ -322,7 +344,7 @@
     {
       "file": "process-log/README.md",
       "line": 13,
-      "sha256": "f74ac33caabcc27e151dc0a015a029bbfc99ab995d9a36ffbc64c7180cf19771",
+      "sha256": "103523268d417efad690ace925b8cf8b3809bf50fe783fd34bb8726daa31d2a6",
       "title": "11. Quem decidiu e o que está preservado"
     }
   ]

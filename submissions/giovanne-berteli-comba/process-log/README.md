@@ -31,6 +31,7 @@ Leitura resumida: [guia do revisor](../docs/review-guide.md) e
 - [Avaliação final da versão congelada V01](14-final-evaluation.md)
 - [Consolidação para revisão: narrativa, cobertura e CodeTour](15-reviewer-evidence.md)
 - [Correção da descoberta do CodeTour no editor](16-codetour-discovery.md)
+- [Investigação antes da P01 pelos cinco princípios](17-pre-submission-review.md)
 - [Modelo para próximos registros](entry-template.md)
 
 ## Conversas preservadas
@@ -59,6 +60,8 @@ Captura inicial: 02/11/2026. Os textos permanecem no idioma original.
 | [Avaliação final — V01](chat-exports/18-final-evaluation-chat.md) | Defina e avance o próximo passo | 8 mensagens adicionais de quatro turnos, incluindo final da correção de setup, troca de commit e V01 em andamento; hasMore=true |
 | [Consolidação para revisão — E01](chat-exports/19-reviewer-evidence-chat.md) | Defina e avance o próximo passo | 8 mensagens adicionais de quatro turnos, incluindo final V01, troca de commit e E01 em andamento; hasMore=true |
 | [Correção da descoberta do CodeTour](chat-exports/20-codetour-discovery-chat.md) | Defina e avance o próximo passo | 6 mensagens adicionais de quatro turnos, incluindo final E01, relato de falha e correção em andamento; hasMore=true |
+| [Conclusão da correção do CodeTour](chat-exports/21-codetour-completion-chat.md) | Defina e avance o próximo passo | 4 mensagens adicionais de quatro turnos retornados, incluindo conclusão e troca sobre commit; hasMore=true |
+| [Investigação pelos cinco princípios](chat-exports/22-pre-submission-review-chat.md) | Investigar melhorias no projeto | 5 mensagens de quatro registros de turno retornados, pedido original e atualizações; hasMore=false; resposta final pendente |
 
 São extrações textuais das mensagens retornadas pela ferramenta do aplicativo,
 com identificação da origem, horário de captura e limites de cobertura. A
@@ -82,7 +85,9 @@ foi incluído na captura 11. O final do turno D02 foi incluído na captura 12;
 o final do turno R01 foi incluído na captura 13. O final do turno A01 foi incluído
 na captura 14. O final do turno S01 foi incluído na captura 15. O final da V00
 foi incluído na captura 16. O final I01 foi incluído na captura 17. O final da correção de setup foi incluído na captura 18. O final V01 foi incluído na captura 19. O final E01 foi incluído na captura 20. O final da correção de descoberta e
-mensagens posteriores ao corte permanecem pendentes para a próxima extração.
+mensagens posteriores ao corte permaneciam pendentes. A conclusão foi incluída
+na captura 21. A captura 22 registra o pedido desta investigação; sua resposta
+final e mensagens posteriores ao corte ficam para a próxima extração.
 As mensagens ficaram abaixo do limite
 de 20 mil caracteres por item. Anexos, gráficos, resultados de ferramentas e
 instruções internas não fazem parte destas extrações. Não há export de Claude

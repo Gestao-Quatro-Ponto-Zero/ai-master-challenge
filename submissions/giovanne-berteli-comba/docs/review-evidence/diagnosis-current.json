@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "recorded_at": "2026-11-03T02:08:53.787702+00:00",
+  "recorded_at": "2026-11-03T03:08:39.853340+00:00",
   "actor": "automated-local-check; no human verification implied",
   "scope": "Explicit document contracts, file links, minimum OKF fields and input hashes; not model/data quality or arbitrary semantic consistency",
   "checks": {
     "markdown_documents": 19,
-    "local_file_links": 206,
+    "local_file_links": 212,
     "challenge_id": "002"
   },
   "extra_inputs": [
@@ -27,8 +27,8 @@
     ".gitignore": "0f62f8690540dfed4b05d71b5aea05ad6879c9ba1d90ced5420c72c8358058a0",
     "AGENTS.md": "e8c71b5665baa92b8aaf306fd5ef80d7c54989f2fbb1221adf015fc75e846d58",
     "CLAUDE.md": "a71233378b847e8256b6cebe83fe1107e02696b0139444f1138fa6de3255e678",
-    "PROJECT_STATUS.md": "10ecad69a863a39722fed3076cd47ea74bcc0dd07fb253c082b686104b50785f",
-    "README.md": "26571994382bceb158bb96e724fb011c749e0ee39f302eaedb6096febc9b15b3",
+    "PROJECT_STATUS.md": "73a1d0d34d7ab7ab7dd4d26c52d7d7178206e305873c4ca1b948abd9e2b8e492",
+    "README.md": "d7cd56a450bd83f0ec0d29cb9c29a50088c91b8d8293d7166b24de0049166d53",
     "data/README.md": "75a266911f8317a57d168c7199a56d315834961d6993cc7eb778798f7e3ce56c",
     "data/audit.json": "fd9319894962f9117f5a7d35c536f9cf197869647365f90704203fd1b1a5868f",
     "data/diagnosis-assumptions.json": "0c305837a8bcc3d2e77eb60b51363a8bbda72b0687807be3cfee0cdd50d36206",
@@ -44,8 +44,8 @@
     "docs/review-evidence/diagnosis-tests.txt": "1b7acde526173e08e63aa658cadb932d827e0e257c68a69e8d993b5094202d74",
     "docs/review-evidence/foundation-tests.txt": "1dacf36075cbb6c327a9efcdce0666bd456c78ae4c75a3ac93e8fb65e2692274",
     "docs/validation-strategy.md": "fc1b018da9189ee08dda2e88c1e1c0b40bb6e1c76c10df5bda49fc6d4638b030",
-    "execution/backlog.md": "e1af75b179513b55fc1da7946aa88c8b13039c0aacd2636066be9f2d76f3478c",
-    "execution/plan.md": "ec0007ef8f49942472317ed2585736c7847adf7c53f0fa48e068ac5cddd56829",
+    "execution/backlog.md": "9b2186e27f5afee53af9a6381c51d959be42807689cf1191bad1fcc83bf2cd27",
+    "execution/plan.md": "2b037cc85f86f7d65a05a0ad999d106e3e76f2b826c077f97c2f0d6cceb17a9a",
     "knowledge/challenge-context.md": "39a59bbf83436f00f6f77d69820116ae770cbbad0eec85ceca573d067ed91019",
     "knowledge/data-quality.md": "331701e50184bdbb5764862c2e096171f68b5e26bb421a1c1589953d4bc1b3f6",
     "knowledge/dataset-usage.md": "cef9f5e1d43932a39ff84cf13354b2e25401347495e407e25357160ba89b8cb4",

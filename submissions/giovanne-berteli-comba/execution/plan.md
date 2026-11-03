@@ -19,6 +19,7 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 | I01 | Prototype | Demonstrate the selected automation using real data under V00; persist possible high/low anomalies and support reason/direction/review-state filters (F03); document setup and limitations | [Prototype/setup](../docs/prototype.md), [implementation](../knowledge/prototype.md), [development results](../data/triage-development.json) and [receipt](../docs/review-evidence/triage-current.json) |
 | V01 | Validation | Meaningful software tests and separate AI evaluation; report failures and limitations | [Final report](../docs/final-evaluation.md), [frozen inputs](../data/final-evaluation-freeze.json), [aggregate results](../data/final-evaluation.json), [audit](../docs/review-evidence/final-evaluation-checks.json) and [receipt](../docs/review-evidence/final-evaluation-current.json) |
 | E01 | Evidence and communication | Reviewer narrative, conversation coverage, decision history and useful CodeTour checked | [Reviewer map](../docs/review-guide.md), [CodeTour/Markdown route](../docs/code-tour.md), [capture coverage](../docs/conversation-coverage.md), [checks](../docs/review-evidence/reviewer-evidence-checks.json) and [receipt](../docs/review-evidence/reviewer-evidence-current.json) |
+| R02 | Pre-submission investigation | Assess reviewer comprehension/human-AI attribution, reproduction, business decisions, useful immediate additions and future integrations; distinguish verified results from proposed features | [Five-principle review](../docs/pre-submission-review.md), [checks](../docs/review-evidence/pre-submission-review-checks.json) and [prioritized backlog](backlog.md) |
 | P01 | Submission | Candidate details completed, reproducible setup, template satisfied, allowed diff scope, PR instructions followed | Final review checklist and eventual PR |
 
 - [x] B01 — Prepare and check the foundation. Evidence: [document checks](activity-log.md).
@@ -32,7 +33,8 @@ effort when known. Do not invent time spent or treat 8% as a fixed rule.
 - [x] V00 — Record the evaluation protocol before prototype implementation. Evidence: [grouped splits, bounded selection and tested environment](../docs/evaluation-protocol.md); zero classifier fits.
 - [x] I01 — Build the functional prototype. Evidence: [local triage/review, frozen-protocol selection, software and smoke checks](../docs/prototype.md); final test remains reserved.
 - [x] V01 — Run and document software tests and AI evaluation. Evidence: [7,175 frozen-test cases, 72 software tests, actual 64-case runtime and separate faults](../docs/final-evaluation.md); no fit/retuning, exposure consumed.
-- [x] E01 — Complete evidence, narrative, and CodeTour. Evidence: [template narrative, 11 passive anchors and 19 capture inventories with limits](../docs/review-guide.md); no source/model/test-exposure changes.
+- [x] E01 — Complete evidence, narrative, and CodeTour. Evidence: [template narrative, 11 passive anchors and capture inventory with limits](../docs/review-guide.md); no source/model/test-exposure changes.
+- [x] R02 — Investigate the five user-defined principles before P01. Evidence: [findings, business actions, immediate priorities and future dependencies](../docs/pre-submission-review.md); suggestions remain unimplemented.
 - [ ] P01 — Prepare the final submission and PR.
 
 Coordination source for F01–F07:

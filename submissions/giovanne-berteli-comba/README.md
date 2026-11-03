@@ -1,6 +1,10 @@
 # Challenge 002 — Redesign de Suporte
 
-**Estado: E01 concluída; revisão final e identificação do candidato em P01. Entrega ainda não enviada.**
+**Estado: investigação R02 concluída; melhorias propostas antes da revisão final P01. Entrega ainda não enviada.**
+
+A [revisão pelos cinco princípios](docs/pre-submission-review.md) avalia clareza,
+reprodução, decisões de negócio e próximos incrementos. As funcionalidades
+adicionais ali descritas continuam como propostas.
 
 ## Sobre mim
 
