@@ -25,7 +25,7 @@ model/policy/reference/driver/test hashes and 64 runtime case IDs. The source co
 before this work was `cb01264`. The 72 software tests passed before freeze and
 prediction; only synthetic fixtures were used to develop/test the evaluator.
 
-The final_test reservation has now been consumed:7,175 IT cases were predicted.
+The final_test reservation has now been consumed: 7,175 IT cases were predicted.
 Never describe this membership as an unseen test for a later model/threshold choice.
 Any later change informed by these results needs an explicitly exploratory version
 or genuinely new evaluation data. App/demo examples remain train-only. Do not
@@ -47,15 +47,15 @@ where appropriate. Classifier metrics include mathematical predictions on every
 text; usable suggestion coverage/errors use the separate production core policy.
 
 The selected score vectors then passed through the production TriageService/core
-and repository via an explicit precomputed-score adapter:7,175 attempted/stored
-runs,14,350 metric records, no failed outcomes. This checks decisions/persistence,
+and repository via an explicit precomputed-score adapter: 7,175 attempted/stored
+runs, 14,350 metric records, no failed outcomes. This checks decisions/persistence,
 not cold worker startup or timeout performance. Truth labels are evaluation inputs
 only, absent from model features, routing and saved inference inputs.
 
 The frozen 64-case sample used the actual subprocess and a separate SQLite DB,
 sequentially with no warmups/retries/replacements. External timing included process
 startup/load/transform/predict/coordinator and commit, excluding UI/human review.
-All 64 were stored, no failed outcomes,128 metrics and zero decision discrepancies
+All 64 were stored, no failed outcomes, 128 metrics and zero decision discrepancies
 against batch execution. p50≈ 587.20 ms, p95≈ 600.84 ms, max≈ 618.66 ms on this host.
 This small deterministic sample is not a production SLA, throughput test or proof
 of representative latency under contention. Individual external-clock observations
@@ -76,22 +76,22 @@ accuracy 0.849199. All six predeclared numerical quality checks passed, as did t
 execution/persistence/parity/fault checks. This is offline target attainment under
 agent-defined assumptions, not human business approval or production readiness.
 
-Standard suggestions:1,951/7,175 (27.19%), with 1,884 matching supplied labels and 67
+Standard suggestions: 1,951/7,175 (27.19%), with 1,884 matching supplied labels and 67
 errors (96.57% agreement; Wilson 95% lower bound 95.66%). Specialist 1,977; triage 3,247.
-All destinations require confirmation. Critically,50 of the 67 wrong standard
+All destinations require confirmation. Critically, 50 of the 67 wrong standard
 suggestions have true labels in the specialist-policy classes: Access 16,
 Administrative rights 12, HR Support 15, Purchase 7. The policy acts on predicted
 category and cannot protect every true specialist case. Preserve this limitation;
 do not weaken mandatory confirmation or silently retune against these errors.
 
 Administrative rights has the weakest class F1≈ 0.762105 and recall≈ 0.685606,
-support 264. Hardware attracts many confusions:120 HR Support,101 Miscellaneous,
+support 264. Hardware attracts many confusions: 120 HR Support, 101 Miscellaneous,
 80 Access and 71 Administrative-rights cases are labeled Hardware by the classifier.
 These are label-based benchmark disagreements, not independently adjudicated
 business errors or causes. The public report exports aggregate counts, no raw text.
 
-There are 338 distinct possibly anomalous cases,345 flagged metric assessments
-(193 score,152 length);7 cases have both. No insufficient/not-evaluated metric
+There are 338 distinct possibly anomalous cases, 345 flagged metric assessments
+(193 score, 152 length); 7 cases have both. No insufficient/not-evaluated metric
 occurred in this test. The numerical comparison is not a confirmed-issue or false-
 alert rate. The fixed dimensionless mean review/error proxy is≈ 0.957449, not minutes,
 money, measured staffing savings or a customer-operation transfer estimate.
@@ -119,7 +119,8 @@ data/processed; no final-test text enters the app's default DB. Read-only aggreg
 reports can be inspected without loading serialized models. The evaluator is not
 called by the one-command app launcher.
 
-Next: E01 evidence/narrative/CodeTour for the stable version, then P01 final candidate
+E01 has now packaged the stable narrative/evidence/CodeTour; see the
+[reviewer guide](../docs/review-guide.md). Next: P01 final candidate
 details/setup/scope/submission review. A reproduction on another environment is a
 new recorded reproduction with disclosed exposure, not permission to replace this
 freeze or choose a better candidate from its final errors. Exact artifact hashes

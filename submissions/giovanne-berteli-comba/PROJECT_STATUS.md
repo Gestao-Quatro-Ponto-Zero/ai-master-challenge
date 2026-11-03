@@ -3,9 +3,9 @@
 Updated: 2026-11-02 (America/Sao_Paulo).
 
 - Selected challenge: **002 — Support redesign** (explicit user decision).
-- Current phase: V01 final evaluation completed for the frozen version. See
-  [result and limitations](docs/final-evaluation.md) and [exposure handoff](knowledge/final-evaluation.md).
-  E01 evidence/narrative/CodeTour is next.
+- Current phase: E01 reviewer packaging completed. See [reviewer guide](docs/review-guide.md),
+  [passive CodeTour/Markdown route](docs/code-tour.md) and [capture coverage](docs/conversation-coverage.md).
+  P01 candidate identification/final submission review is next.
 - Submission slug: inherited from the existing Git branch. Display name and
   LinkedIn still require confirmation before final submission.
 - Completed: shared instructions, minimal OKF bundle, execution checklist,
@@ -20,8 +20,17 @@ Updated: 2026-11-02 (America/Sao_Paulo).
   criteria passed; this is not business approval or production readiness.
 - Dataset-use decision: customer support for descriptive diagnosis; IT service
   for an in-domain classification benchmark. No row join or taxonomy mapping.
-- Next action: E01 — consolidate the reviewer narrative, evidence coverage and
-  useful CodeTour for the stable implementation, then P01 submission review.
+- Next action: P01 — confirm candidate display name/LinkedIn, review template,
+  reproducible setup and allowed diff, then prepare the submission/PR according
+  to repository rules and user authorization. Nothing is submitted/published yet.
+- E01: template narrative and evidence/decision map; 11 passive source-anchored tour
+  steps and one-command review workspace; 20 captures / 153 message occurrences / 111
+  distinct explicit IDs. 42 legacy no-ID occurrences and platform/cutoff omissions
+  remain disclosed. No new test inference, model fitting or frozen source changes.
+- CodeTour correction: `bash review.sh` opens the correct VS Code workspace, reuses/
+  installs the official extension and offers the tour. Actual isolated extension
+  hosts reproduced root discovery failure and verified all 11 editor anchors in the
+  review workspace. 74 software tests passed; user review window opened successfully.
 - V01: 7,175 final-test cases; macro F1 0.844612 vs text baseline 0.646094;
   standard coverage 27.19%, agreement 96.57% (1,884/1,951; 67 errors). 50 errors
   have specialist-policy true labels: mandatory confirmation remains essential.

@@ -25,7 +25,9 @@ okf_version: "0.2"
 - [Prototype implementation](prototype.md) — I01 components, artifact readiness,
   SQLite/reviews, local setup and validation-only selection.
 - [Final evaluation](final-evaluation.md) — V01 results, consumed test exposure,
-  specialist misclassification risk, runtime/fault populations and E01 handoff.
+  specialist misclassification risk and runtime/fault populations.
+- [Reviewer guide](../docs/review-guide.md) — E01 narrative/evidence navigation,
+  optional CodeTour, capture coverage/omissions and P01 requirements.
 
 Read only the relevant concepts after this index. Execution progress belongs
 in `../execution/plan.md`; conversation evidence belongs in `../process-log/` and

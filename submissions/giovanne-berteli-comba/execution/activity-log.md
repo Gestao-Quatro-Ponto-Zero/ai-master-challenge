@@ -442,3 +442,65 @@ or model evaluations have been run. No commit, push, or PR was made.
   D01/A01/V00 regeneration and cached-output audit.14 public additions have
   intent-to-add only; all changes stay in the submission, with clean whitespace
   and no local raw/model/score/DB/runtime data staged. No commit/push.
+
+
+## 2026-11-02 — E01 reviewer narrative, tour and capture evidence
+
+- Resumed from clean user commit `68e2e3d`; foundation receipt passed. Read the
+  challenge/submission guide/template and only the history needed for evidence
+  preparation, preserving the operational/recruitment-context boundary.
+- Reorganized README around the required template with five-sentence executive
+  summary, sourced results/limits, tools/workflow, actual AI corrections and
+  documented human contributions. Candidate identity/submission remain P01.
+- Corrected malformed displayed metric and broken Markdown capture table; numeric
+  outputs were not changed. A broad punctuation replacement briefly introduced
+  numeric spaces in two prose summaries, then was reverted with an explicit check.
+- Added reviewer evidence/decision map,11-stop passive CodeTour and workspace with
+  optional extension recommendation. Checked official CodeTour schema/package;
+  no extension installed/executed or graphical playback claimed. Markdown mirror
+  provides the same reading path without editor dependency.
+- Added capture inventory with occurrences, explicit unique IDs and represented
+  turn counts; legacy no-ID captures/pagination/edited-deleted branches/attachments
+  and final-response cutoff remain disclosed. Limited credential-pattern check
+  found no matches, without claiming a privacy/human-verification certification.
+- Added explicit-record/otherwise-read-only presentation checker over real files;
+  no tests mirroring document prose. Captures stay out of default operational
+  retrieval. Narrative15/capture19 add8 messages,4 returned turns,hasMore=true;
+  current final response/later messages pending next capture.
+- Existing model/inference/frozen-evaluation source and final result unchanged.
+  Reaggregated cached outputs without new inference/fits; regenerated D01/A01/V00
+  only before refreshing dependent receipts. No deploy, commit, push or PR.
+- Final checks:11 unique passive tour anchors,19 captures/147 occurrences/105
+  explicit distinct IDs with42 legacy no-ID occurrences; 446 local documentation
+  destinations resolved. Current frozen inputs/results match; no new prediction
+  or fit. A checker invocation with the repository cwd was corrected to the
+  submission cwd without source/output changes. Seven receipts revalidated;10
+  new public files use intent-to-add only, with no content staged or commit.
+
+
+## 2026-11-02 — CodeTour discovery correction from user feedback
+
+- User had CodeTour installed but saw no tour; earlier static validation did not
+  establish discovery in the repository-root workspace. Confirmed actual installed
+  provider scans tour locations per workspace folder, not every nested candidate.
+- Added `review.sh` to resolve cwd, check/install the official extension only if
+  absent, and open a separate correct review workspace. Enabled its first-visit
+  tour offer, highlighted the one-command route in README and preserved the prior
+  editor window; no repository-parent or global configuration was edited.
+- Ran actual VS Code1.143.1/CodeTour0.0.61 integration in isolated test profiles:
+  repository root failed discovery as expected; review workspace discovered the
+  registered title and navigated all11 actual file/line anchors. Preserved test
+  harness source and result; no human visual/screenshot certification claimed.
+- Invoked launcher in the user's normal profile: installed extension was reused,
+  and the review workspace opened. Missing-extension behavior was checked with a
+  CLI fixture, not claimed as an actual installation in that profile.
+- Added two external CLI/cwd tests including space-containing paths; all74 tests
+  passed. CLI acceptance is asynchronous, so integration waited for the host's
+  assertion result rather than inferring navigation from CLI exit status alone.
+- Narrative16/capture20 preserve6 new messages (4 returned turns,hasMore=true),
+  including final E01 and the failure report; current final response remains pending.
+  Updated guide/checks/coverage and receipts, without model/final-test changes.
+- Final discovery-fix checks: all74 software tests and actual11-anchor VS Code
+  integration passed; 458 local destinations resolved. Presentation/capture
+  inventory is20 files/153 occurrences/111 explicit IDs. Isolated editor profiles
+  remain ignored; no app/model/final-result changes or global settings edits.

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/codetour/main/schema.json",
+  "title": "Triagem IT assistida — revisão guiada",
+  "description": "Do problema operacional à evidência final, com limites e decisões humanas explícitos. Abra esta submissão como workspace; o tour não executa comandos.",
+  "isPrimary": true,
+  "steps": [
+    {
+      "title": "1. Problema, resultado e principal limite",
+      "file": "README.md",
+      "pattern": "## Executive Summary",
+      "description": "Comece pelo resumo. O diagnóstico de atendimento e o benchmark IT têm populações distintas. Observe cobertura junto da concordância e os 50 erros de classes especializadas: a proposta continua assistida. Os resultados são conferíveis nos JSONs vinculados, sem confundir cenário de horas com economia medida."
+    },
+    {
+      "title": "2. Dois datasets, dois papéis",
+      "file": "knowledge/dataset-usage.md",
+      "pattern": "# Roles and data contracts",
+      "description": "A ausência de chave e mapeamento validado impediu misturar rótulos ou transferir acurácia entre domínios. O arquivo de clientes descreve operação/satisfação; Document/Topic_group forma o benchmark IT. A indisponibilidade de esforço ativo impede medir desperdício real em horas."
+    },
+    {
+      "title": "3. Inicialização depois do feedback real",
+      "file": "run.sh",
+      "pattern": "prepare_uv\\(\\)",
+      "description": "O candidato encontrou erro de pasta, dependência de venv e traceback ao repetir treino. O inicializador resolve sua pasta, fornece runtime local com checksum, verifica dependências/dados e reutiliza artefatos válidos. A reprodução limpa/offline está em docs/review-evidence/setup-reproduction.json; o tour apenas mostra o código."
+    },
+    {
+      "title": "4. Critérios antes de treinar",
+      "file": "data/evaluation-protocol.json",
+      "pattern": "\"model_selection\":",
+      "description": "Quatro candidatos/ajustes, vocabulário só no treino e seleção na validação. Metas, custos ilustrativos, gates e referências foram fixados antes dos resultados; não são política empresarial aprovada. A V01 não refaz seleção usando o teste consumido."
+    },
+    {
+      "title": "5. Ajuste e reuso sem treino duplicado",
+      "file": "solution/train_triage.py",
+      "pattern": "def main\\(",
+      "description": "A entrada verifica tentativa concluída antes de ajustar. O loader usa apenas treino/validação; nenhum exemplo final participa da seleção. Estimadores e referência ficam locais, com hashes. A correção do preflight conservou a proveniência original e não reajustou os modelos do workspace."
+    },
+    {
+      "title": "6. Decisão compartilhada e anomalias",
+      "file": "solution/triage/core.py",
+      "pattern": "def decide\\(",
+      "description": "Score baixo, possível anomalia e referência insuficiente têm precedência sobre a categoria especializada. Quantis são comparados sem arredondamento; os limites são inclusivos. Categoria prevista não garante a verdadeira categoria: preserve os motivos e a confirmação humana. O mesmo núcleo serve avaliação e app."
+    },
+    {
+      "title": "7. Falha visível e worker sem banco",
+      "file": "solution/triage/runtime.py",
+      "pattern": "class TriageService:",
+      "description": "O coordenador valida entrada/contexto, limita a inferência por subprocesso e é o único escritor. Timeout, saída inválida, termos desconhecidos e falha de persistência têm estados distintos; uma escrita falha não pode aparecer como sucesso salvo. Identificador repetido não cria uma nova execução."
+    },
+    {
+      "title": "8. Valores originais e revisão durável",
+      "file": "solution/triage/repository.py",
+      "pattern": "def save\\(",
+      "description": "Caso, execução e duas avaliações são gravados atomicamente. Revisões posteriores são eventos com identificação/tipo/motivo; não sobrescrevem predição ou valor nem viram treino. filter_metrics combina filtros e projeta o estado mais recente. Duas métricas não equivalem a dois tickets."
+    },
+    {
+      "title": "9. Uso na interface",
+      "file": "solution/app.py",
+      "pattern": "def main\\(",
+      "description": "Triagem recebe texto/contexto declarado ou exemplo de treino. Revisão mostra original, eventos e filtros de anomalia. Submissão de formulário é explícita; rerender não cria análise/revisão. O SQLite é a autoridade durável. Contexto declarado e score não são detecção automática de domínio ou aprovação humana verificada."
+    },
+    {
+      "title": "10. Evidência final e risco residual",
+      "file": "docs/final-evaluation.md",
+      "pattern": "## Sugestões, erros e carga de revisão",
+      "description": "Leia erros com seus denominadores: 1.951 sugestões padrão, 67 divergências, 50 com rótulos especializados. O teste de 7.175 casos foi consumido sem ajuste posterior; as 64 medições reais e nove falhas provocadas são populações separadas. A latência local não prova SLA e seus tempos individuais externos não foram persistidos."
+    },
+    {
+      "title": "11. Quem decidiu e o que está preservado",
+      "file": "process-log/README.md",
+      "pattern": "## Registros",
+      "description": "As narrativas preservam decisões, alternativas, correções e falas acessíveis. A cobertura distingue extrações textuais, lacunas e mensagens sem IDs; não afirma histórico completo. As escolhas humanas documentadas não são confundidas com escolhas técnicas do agente. P01 ainda precisa confirmar identificação e preparar o envio."
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 
 **A versão atingiu os seis critérios numéricos definidos na V00.** Isso sustenta
 o benchmark IT assistido desta entrega; toda sugestão ainda exige confirmação
-humana. A principal limitação está nos erros da fila padrão:50 dos 67 casos
+humana. A principal limitação está nos erros da fila padrão: 50 dos 67 casos
 divergentes tinham rótulos de classes previstas para especialista.
 
 ## O que foi congelado e medido
@@ -45,7 +45,7 @@ O ganho macro F1 sobre o baseline de texto foi0,198518. A métrica dá o mesmo p
 | Storage | 416 | 0,9423 | 0,8245 | 0,8795 |
 
 Administrative rights teve o menor F1/recall. Entre os erros mais frequentes,
-120 HR Support,101 Miscellaneous,80 Access e 71 Administrative rights foram
+120 HR Support, 101 Miscellaneous, 80 Access e 71 Administrative rights foram
 previstos como Hardware. As matrizes completas usam linhas de rótulo fornecido
 e colunas de previsão, na ordem fixa das classes; ver
 [relatório agregado](../data/final-evaluation.json) e
@@ -59,7 +59,7 @@ e colunas de previsão, na ordem fixa das classes; ver
 | Especialista | 1.977 | Categoria prevista exige especialista, após as regras de triagem |
 | Triagem | 3.247 | Score baixo e/ou referência/anomalia demandam revisão |
 
-Na fila padrão,1.884 previsões concordaram com o rótulo fornecido e 67 divergiram:
+Na fila padrão, 1.884 previsões concordaram com o rótulo fornecido e 67 divergiram:
 **96,57% de concordância**, com limite inferior Wilson 95% de **95,66%**.
 Não são 96,57% dos tickets resolvidos; são 1.951 sugestões dentre 7.175 casos.
 As três filas exigem participação humana, inclusive os casos sem alerta.
@@ -76,14 +76,14 @@ adimensional ilustrativo, sem validade como minutos, dinheiro ou economia medida
 ## Anomalias e persistência
 
 Foram 338 casos distintos com possível anomalia, aproximadamente4,71% do teste.
-Eles geraram345 avaliações sinalizadas:193 de score (115 altas,78 baixas) e 152
-de tamanho (83 altas,69 baixas). Sete casos tinham ambas. As duas métricas foram
-registradas em todos os casos:14.350 registros, sem avaliação insuficiente/não
+Eles geraram345 avaliações sinalizadas: 193 de score (115 altas, 78 baixas) e 152
+de tamanho (83 altas, 69 baixas). Sete casos tinham ambas. As duas métricas foram
+registradas em todos os casos: 14.350 registros, sem avaliação insuficiente/não
 avaliada nesta população. Alertas de referência não são erros confirmados; não
 houve adjudicação humana nem medição de taxa de alarmes falsos.
 
 O processamento offline computou vetores em lote e os encaminhou ao mesmo núcleo,
-serviço e repositório da aplicação:7.175 tentativas,7.175 execuções salvas e nenhuma
+serviço e repositório da aplicação: 7.175 tentativas, 7.175 execuções salvas e nenhuma
 falha de execução. Isso verifica decisões/gravação; não mede inicialização do worker
 por requisição. Rótulos verdadeiros só participaram do cálculo de avaliação.
 
