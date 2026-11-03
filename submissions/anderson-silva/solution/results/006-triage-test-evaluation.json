@@ -1,0 +1,57 @@
+{
+  "test_tickets": 9568,
+  "threshold": 0.6056630915204693,
+  "min_words": 5,
+  "accuracy_all": 0.8545150501672241,
+  "auto_share": 0.6746446488294314,
+  "auto_accuracy": 0.9491866769945778,
+  "decision_shares": {
+    "Encaminhado automaticamente": 0.6746446488294314,
+    "Fila humana com sugestões": 0.29149247491638797,
+    "Fluxo de mensagem padronizada": 0.030936454849498328,
+    "Pedir mais informação": 0.002926421404682274
+  },
+  "hours_per_1000_per_minute": 11.244077480490523,
+  "per_category": {
+    "Access": {
+      "Tickets": 1425,
+      "Encaminhados sozinhos": "73,9%",
+      "Acerto nos encaminhados": "95,3%"
+    },
+    "Administrative rights": {
+      "Tickets": 352,
+      "Encaminhados sozinhos": "55,1%",
+      "Acerto nos encaminhados": "76,3%"
+    },
+    "HR Support": {
+      "Tickets": 2183,
+      "Encaminhados sozinhos": "69,6%",
+      "Acerto nos encaminhados": "95,7%"
+    },
+    "Hardware": {
+      "Tickets": 2724,
+      "Encaminhados sozinhos": "71,9%",
+      "Acerto nos encaminhados": "96,6%"
+    },
+    "Internal Project": {
+      "Tickets": 424,
+      "Encaminhados sozinhos": "57,8%",
+      "Acerto nos encaminhados": "93,5%"
+    },
+    "Miscellaneous": {
+      "Tickets": 1412,
+      "Encaminhados sozinhos": "61,7%",
+      "Acerto nos encaminhados": "94,7%"
+    },
+    "Purchase": {
+      "Tickets": 493,
+      "Encaminhados sozinhos": "48,7%",
+      "Acerto nos encaminhados": "93,8%"
+    },
+    "Storage": {
+      "Tickets": 555,
+      "Encaminhados sozinhos": "67,4%",
+      "Acerto nos encaminhados": "93,6%"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "threshold": 0.6056630915204693,
+  "min_words": 5,
+  "prefix_words": 5,
+  "standard_openings": [
+    "access request for a list",
+    "access request for a site",
+    "document purchase order requisition implemented",
+    "leaver form for leave date",
+    "new project code oracle fusion",
+    "new project code pas tuesday",
+    "new purchase po friday pm",
+    "new purchase po pm purchase",
+    "new purchase po purchase po",
+    "new purchase po thursday pm",
+    "new purchase po tuesday pm",
+    "new purchase po wednesday march",
+    "new purchase po wednesday pm",
+    "new starter access card enabling",
+    "please action direct reports missing",
+    "please action submit your time",
+    "purchase request for it final",
+    "wants to access account documentation",
+    "your mailbox is almost full"
+  ],
+  "source_bundle_built_at": "2026-11-02T22:02:24-03:00"
+}
