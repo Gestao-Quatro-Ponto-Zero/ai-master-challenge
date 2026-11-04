@@ -119,5 +119,33 @@
     },
     "pares_que_saem_de_ia_decide": 898,
     "observacao": "ataques inseridos em linguagem natural num texto pré-processado; em produção, o atacante escreve no texto bruto"
+  },
+  "dano_ampliado_f8": {
+    "universo": "todos os tickets do holdout por grupo na faixa IA decide (política lida por triagem.carregar_politica, detector desligado)",
+    "n_tickets": 3197,
+    "n_pares": 15985,
+    "ataques": "solution/tests/golden/ataques_v1.json (5, sem mudança)",
+    "dano_silencioso": {
+      "n": 80,
+      "taxa": 0.005005,
+      "ic95_wilson": [
+        0.004023,
+        0.006224
+      ],
+      "limite_superior": 0.006224,
+      "definicao": "par continua em IA decide com categoria diferente da prevista no texto limpo"
+    },
+    "alvo_atingido_em_ia_decide": {
+      "n": 80,
+      "taxa": 0.005005,
+      "ic95_wilson": [
+        0.004023,
+        0.006224
+      ],
+      "limite_superior": 0.006224
+    },
+    "pares_que_saem_de_ia_decide": 2829,
+    "observacao": "ataques inseridos em linguagem natural num texto pré-processado; em produção, o atacante escreve no texto bruto",
+    "nota": "política e limiares da F8 (f8_faixas.json, f8_politica_por_categoria.csv); a amostra do LLM da F3 continua definida pelo limiar antigo (0,74)"
   }
 }

@@ -1,0 +1,10 @@
+min_por_ticket,reais_por_hora,custo_anual_triagem_reais,cobertura_ia_decide,economia_anual_ia_decide_reais,faixa_ia_sugere,rotulo
+2,25,25000.0,0.3342,8354.24,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+2,35,35000.0,0.3342,11695.93,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+2,50,50000.0,0.3342,16708.48,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+3,25,37500.0,0.3342,12531.36,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+3,35,52500.0,0.3342,17543.9,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+3,50,75000.0,0.3342,25062.72,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+4,25,50000.0,0.3342,16708.48,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+4,35,70000.0,0.3342,23391.87,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)
+4,50,100000.0,0.3342,33416.95,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; limiar e política escolhidos fora do holdout (F8)

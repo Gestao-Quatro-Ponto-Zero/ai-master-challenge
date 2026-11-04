@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from comum import OUT_DIR, SUBMISSAO, normalizar
+from comum import OUT_DIR, SUBMISSAO
 
 CACHE_DIR = SUBMISSAO / "modelo_cache"
 TIPOS_SEMPRE_HUMANO = {"Refund request", "Cancellation request"}
@@ -46,7 +46,6 @@ def detector_ligado() -> bool:
     return os.environ.get("TRIAGEM_DETECTOR", DETECTOR_PADRAO) == "on"
 
 
-_modelo = None
 _politica = None
 
 
@@ -94,36 +93,58 @@ def _treinar():
     tr = df[df["split_grupo"] == "treino"]
     m = make_pipeline(TfidfVectorizer(ngram_range=(1, 2), min_df=2, sublinear_tf=True),
                       LogisticRegression(max_iter=2000, random_state=SEED)).fit(tr["Document"], tr["Topic_group"])
-    versao = hashlib.sha256((",".join(map(str, sorted(tr["id"]))) + PARAMS).encode()).hexdigest()[:12]
-    return m, versao
+    return m, versao_atual()
+
+
+def versao_atual() -> str:
+    # F8: hash do arquivo de splits + parâmetros, para que o arquivo do cache identifique a versão
+    splits = hashlib.sha256((OUT_DIR / "f1_splits.csv").read_bytes()).hexdigest()
+    return hashlib.sha256((splits + PARAMS).encode()).hexdigest()[:12]
+
+
+def cache_dir() -> Path:
+    return Path(os.environ.get("TRIAGEM_CACHE_DIR", CACHE_DIR))
+
+
+_modelos = {}
 
 
 def carregar_modelo():
-    global _modelo
-    if _modelo is None:
-        import joblib
-        arq = CACHE_DIR / "modelo.joblib"
+    """TRIAGEM_MODELO_VERSAO fixa uma versão já guardada (rollback); sem ela, usa a atual e treina se faltar.
+    Versões antigas nunca são apagadas."""
+    import joblib
+    pedida = os.environ.get("TRIAGEM_MODELO_VERSAO")
+    versao = pedida or versao_atual()
+    arq = cache_dir() / f"modelo_{versao}.joblib"
+    chave = str(arq)
+    if chave not in _modelos:
         if arq.exists():
-            _modelo = joblib.load(arq)
+            _modelos[chave] = joblib.load(arq)
+        elif pedida:
+            # rollback para versão inexistente: não treina; triar() cai no fallback "falha do classificador"
+            raise FileNotFoundError(f"modelo {pedida} não está em {cache_dir()}")
         else:
             t0 = time.perf_counter()
-            m, versao = _treinar()
-            _modelo = {"pipeline": m, "versao": versao, "treino_s": round(time.perf_counter() - t0, 1)}
-            CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            joblib.dump(_modelo, arq)
-    return _modelo
+            m, v = _treinar()
+            modelo = {"pipeline": m, "versao": v, "treino_s": round(time.perf_counter() - t0, 1)}
+            arq.parent.mkdir(parents=True, exist_ok=True)
+            joblib.dump(modelo, arq)
+            _modelos[chave] = modelo
+    return _modelos[chave]
 
 
 def carregar_politica():
     global _politica
     if _politica is None:
-        arq = OUT_DIR / "f4_politica_por_categoria.csv"
+        # F8: limiares e política escolhidos fora do holdout; f3_faixas.json e f4_politica_*.csv ficam como histórico
+        arq = OUT_DIR / "f8_politica_por_categoria.csv"
+        arq_fx = OUT_DIR / "f8_faixas.json"
         tab = pd.read_csv(arq)
-        fx = json.loads((OUT_DIR / "f3_faixas.json").read_text(encoding="utf-8"))
+        lim = json.loads(arq_fx.read_text(encoding="utf-8"))["limiares"]
         _politica = {"por_categoria": dict(zip(tab["categoria_prevista"], tab["politica"])),
-                     "t_decide": fx["faixas"]["ia_decide"]["limiar"],
-                     "t_sugere": fx["faixas"]["ia_sugere_humano_confirma"]["limiar"],
-                     "versao": hashlib.sha256(arq.read_bytes()).hexdigest()[:12]}
+                     "t_decide": lim["t_decide"] if lim["t_decide"] is not None else 1.01,
+                     "t_sugere": lim["t_sugere"] if lim["t_sugere"] is not None else 1.01,
+                     "versao": hashlib.sha256(arq.read_bytes() + arq_fx.read_bytes()).hexdigest()[:12]}
     return _politica
 
 
@@ -159,22 +180,65 @@ def classificar(texto: str) -> dict:
             "motivo": "termos: " + ", ".join(f"{termos[k]} ({v:.2f})" for k, v in top if v > 0)}
 
 
+JANELA_S = 600
+ESPERA_DUPLICADO_S = 2.0
+
+
 def _db():
-    con = sqlite3.connect(runtime_dir() / "idempotencia.sqlite")
+    con = sqlite3.connect(runtime_dir() / "idempotencia.sqlite", timeout=5)
     con.execute("CREATE TABLE IF NOT EXISTS eventos (chave TEXT PRIMARY KEY, resultado TEXT)")
+    con.commit()
     return con
 
 
-def _chave(evento) -> str:
+def _chaves(evento, agora=None) -> tuple[str, str | None]:
+    """(chave a gravar, chave da janela anterior a consultar)."""
     if evento.get("event_id"):
-        return f"evt:{evento['event_id']}"
-    base = normalizar(evento.get("texto") or "") + "|" + str(evento.get("canal") or "")
-    return "sha:" + hashlib.sha256(base.encode()).hexdigest()
+        return f"evt:{evento['event_id']}", None
+    # texto bruto: normalizar() troca dígitos por 0 e fazia "pedido 1111" colidir com "pedido 2222"
+    base = str(evento.get("texto") or "").strip() + "|" + str(evento.get("canal") or "")
+    janela = int((time.time() if agora is None else agora) // JANELA_S)
+    h = lambda j: "sha:" + hashlib.sha256(f"{base}|{j}".encode()).hexdigest()
+    return h(janela), h(janela - 1)
+
+
+def _reservar(con, evento):
+    """Reserva a chave antes de processar. Devolve (chave_reservada, None) ou (None, chave_existente)."""
+    atual, anterior = _chaves(evento)
+    if anterior and con.execute("SELECT 1 FROM eventos WHERE chave = ?", (anterior,)).fetchone():
+        return None, anterior
+    cur = con.execute("INSERT OR IGNORE INTO eventos (chave, resultado) VALUES (?, NULL)", (atual,))
+    con.commit()
+    return (atual, None) if cur.rowcount == 1 else (None, atual)
+
+
+def _duplicado(con, chave):
+    fim = time.monotonic() + ESPERA_DUPLICADO_S
+    while True:
+        r = con.execute("SELECT resultado FROM eventos WHERE chave = ?", (chave,)).fetchone()
+        if r and r[0] is not None:
+            res = json.loads(r[0])
+            break
+        if time.monotonic() >= fim:
+            res = {"chave": chave, "status": "em_processamento", "faixa": "humano decide", "motivo": "duplicado em processamento",
+                   "categoria": None, "p_max": None, "top2": [], "erro": None}
+            break
+        time.sleep(0.05)
+    res["duplicado"] = True
+    _log({"tipo": "duplicado", "chave": chave, "timestamp_utc": datetime.now(timezone.utc).isoformat()})
+    return res
 
 
 def _log(linha: dict, arquivo="decisoes.jsonl"):
-    with open(runtime_dir() / arquivo, "a", encoding="utf-8") as f:
-        f.write(json.dumps(linha, ensure_ascii=False) + "\n")
+    # append no Windows não é atômico entre processos: serializa a escrita com um lock em sqlite
+    lock = sqlite3.connect(runtime_dir() / "log.lock", timeout=10, isolation_level=None)
+    try:
+        lock.execute("BEGIN IMMEDIATE")
+        with open(runtime_dir() / arquivo, "a", encoding="utf-8") as f:
+            f.write(json.dumps(linha, ensure_ascii=False) + "\n")
+        lock.execute("COMMIT")
+    finally:
+        lock.close()
 
 
 def triar(evento: dict) -> dict:
@@ -187,50 +251,56 @@ def triar(evento: dict) -> dict:
 
 
 def _triar(evento, t0):
-    chave = _chave(evento)
     con = _db()
     try:
-        r = con.execute("SELECT resultado FROM eventos WHERE chave = ?", (chave,)).fetchone()
-        if r:
-            res = json.loads(r[0])
-            res["duplicado"] = True
-            return res
-
-        texto = mascarar(str(evento.get("texto") or ""), evento.get("nome_cliente"))
-        res = {"chave": chave, "categoria": None, "p_max": None, "top2": [], "erro": None, "duplicado": False}
-        if len(texto.split()) < 3:
-            res.update(faixa="humano decide", motivo="texto insuficiente")
-        else:
-            try:
-                c = classificar(texto)
-                res.update(c, faixa=faixa_para(c["categoria"], c["p_max"]))
-                if evento.get("tipo_ds1") in TIPOS_SEMPRE_HUMANO:
-                    res.update(faixa="humano decide", motivo=f"regra de ação: {evento['tipo_ds1']}; " + c["motivo"])
-                if detector_ligado() and detectar_injecao(texto):
-                    res.update(faixa="humano decide", motivo="possível injeção; " + res["motivo"])
-            except Exception as e:
-                res.update(faixa="humano decide", motivo="falha do classificador",
-                           erro=f"{type(e).__name__}: {e} | {traceback.format_exc(limit=1).strip()[-200:]}")
-
-        res["faixa_sem_sombra"] = res["faixa"]
-        res["modo"] = os.environ.get("TRIAGEM_MODO", "ativo")
-        if res["modo"] == "sombra":
-            res["faixa"] = "humano decide"
-
+        chave, existente = _reservar(con, evento)
+        if chave is None:
+            return _duplicado(con, existente)
         try:
-            mv = carregar_modelo()["versao"]
+            return _processar(con, evento, chave, t0)
         except Exception:
-            mv = None
-        res["latencia_ms"] = round((time.perf_counter() - t0) * 1000, 3)
-        _log({"timestamp_utc": datetime.now(timezone.utc).isoformat(), "chave": chave, "event_id": evento.get("event_id"),
-              "texto_mascarado": texto[:200], "categoria": res["categoria"], "p_max": res["p_max"], "faixa": res["faixa"],
-              "faixa_sem_sombra": res["faixa_sem_sombra"], "motivo": res["motivo"], "modelo_versao": mv,
-              "politica_versao": carregar_politica()["versao"], "latencia_ms": res["latencia_ms"], "erro": res["erro"]})
-        con.execute("INSERT INTO eventos VALUES (?, ?)", (chave, json.dumps(res, ensure_ascii=False)))
-        con.commit()
-        return res
+            # libera a reserva para que a reentrega processe; triar() devolve "falha interna"
+            con.execute("DELETE FROM eventos WHERE chave = ?", (chave,))
+            con.commit()
+            raise
     finally:
         con.close()
+
+
+def _processar(con, evento, chave, t0):
+    texto = mascarar(str(evento.get("texto") or ""), evento.get("nome_cliente"))
+    res = {"chave": chave, "categoria": None, "p_max": None, "top2": [], "erro": None, "duplicado": False}
+    if len(texto.split()) < 3:
+        res.update(faixa="humano decide", motivo="texto insuficiente")
+    else:
+        try:
+            c = classificar(texto)
+            res.update(c, faixa=faixa_para(c["categoria"], c["p_max"]))
+            if evento.get("tipo_ds1") in TIPOS_SEMPRE_HUMANO:
+                res.update(faixa="humano decide", motivo=f"regra de ação: {evento['tipo_ds1']}; " + c["motivo"])
+            if detector_ligado() and detectar_injecao(texto):
+                res.update(faixa="humano decide", motivo="possível injeção; " + res["motivo"])
+        except Exception as e:
+            res.update(faixa="humano decide", motivo="falha do classificador",
+                       erro=f"{type(e).__name__}: {e} | {traceback.format_exc(limit=1).strip()[-200:]}")
+
+    res["faixa_sem_sombra"] = res["faixa"]
+    res["modo"] = os.environ.get("TRIAGEM_MODO", "ativo")
+    if res["modo"] == "sombra":
+        res["faixa"] = "humano decide"
+
+    try:
+        mv = carregar_modelo()["versao"]
+    except Exception:
+        mv = None
+    res["latencia_ms"] = round((time.perf_counter() - t0) * 1000, 3)
+    _log({"timestamp_utc": datetime.now(timezone.utc).isoformat(), "chave": chave, "event_id": evento.get("event_id"),
+          "texto_mascarado": texto[:200], "categoria": res["categoria"], "p_max": res["p_max"], "faixa": res["faixa"],
+          "faixa_sem_sombra": res["faixa_sem_sombra"], "motivo": res["motivo"], "modelo_versao": mv,
+          "politica_versao": carregar_politica()["versao"], "latencia_ms": res["latencia_ms"], "erro": res["erro"]})
+    con.execute("UPDATE eventos SET resultado = ? WHERE chave = ?", (json.dumps(res, ensure_ascii=False), chave))
+    con.commit()
+    return res
 
 
 def registrar_correcao(chave: str, categoria_correta: str, atendente: str, observacao: str = "") -> bool:

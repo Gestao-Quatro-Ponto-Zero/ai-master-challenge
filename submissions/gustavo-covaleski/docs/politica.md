@@ -4,8 +4,48 @@
 
 A política tem duas camadas, porque os dois datasets não se encaixam: o DS1 é de suporte ao cliente e o DS2 é de TI interna.
 
-1. **Roteamento** (para qual fila vai): medido no DS2, com as 8 categorias e as faixas da F3.
+1. **Roteamento** (para qual fila vai): medido no DS2, com as 8 categorias e as faixas escolhidas fora do holdout (F8).
 2. **Ação** (o que pode ser feito sem humano): definida pelos 5 tipos do DS1. É **regra de negócio declarada**, não resultado de modelo, porque o texto do DS1 é inutilizável (100% das descrições têm marcador de template não preenchido; `solution/outputs/f1_ds1_auditoria.json`, T2).
+
+## Política vigente (F8): limiar e política escolhidos fora do holdout
+
+- **Como foram escolhidos:** limiares e política por categoria escolhidos com predições **fora da dobra no treino** (`StratifiedGroupKFold(5)` por grupo de quase-duplicados), aplicando as mesmas regras registradas na F3 e na F4 (*e*_Q2 = 3,82%; metas 0,9680 e 0,9545). O holdout por grupo foi usado **uma única vez**, depois de tudo congelado (`solution/f8_oof.py`).
+- **Limiares:** IA decide se `p_max` ≥ **0,71**; IA sugere se `p_max` ≥ **0,64** (`solution/outputs/f8_faixas.json`). A política da categoria continua sendo um teto: só rebaixa.
+
+| Categoria prevista | Política (OOF) | Precisão em IA decide fora da dobra (LI) | Precisão em IA decide no holdout (IC 95%) | n previsto no holdout |
+|---|---|---|---|---|
+| Access | **IA decide** | 98,90% (LI 0,9849) | 98,52% (97,49%–99,13%; n 879) | 1.260 |
+| Administrative rights | **IA decide** | 98,89% (LI 0,9743) | 95,08% (89,68%–97,73%; n 122) | 230 |
+| HR Support | **IA decide** | 97,31% (LI 0,9684) | 97,04% (96,04%–97,80%; n 1.455) | 2.254 |
+| Storage | **IA decide** | 98,84% (LI 0,9810) | 97,95% (95,82%–99,00%; n 341) | 479 |
+| Purchase | **IA decide** | 99,29% (LI 0,9873) | 99,25% (97,82%–99,74%; n 400) | 434 |
+| Miscellaneous | **IA sugere** | 96,41% (LI 0,9563) | — (categoria fora de IA decide) | 1.377 |
+| Internal Project | **IA sugere** | 97,89% (LI 0,9669) | — (categoria fora de IA decide) | 351 |
+| Hardware | **humano decide** | 95,18% (LI 0,9462) | — (categoria fora de IA decide) | 3.182 |
+
+Fonte: `solution/outputs/f8_politica_por_categoria.csv`.
+
+**Cobertura no holdout por grupo:**
+
+| Faixa | Cobertura | Precisão (IC 95%) |
+|---|---|---|
+| IA decide | **33,42%** | 97,75% (97,17%–98,21%) |
+| IA sugere | **13,58%** | 94,84% (93,50%–95,92%) |
+| humano decide | **53,01%** | 74,58% (precisão do modelo) |
+
+Fonte: `f8_faixas.json`.
+
+**Administrative rights** passou na meta fora da dobra (LI 0,9743), mas no holdout ficou com precisão de 95,08% (IC 89,68–97,73%), abaixo da meta. Pela regra, nada foi ajustado depois de ver o holdout; a categoria precisa ser acompanhada no piloto. Na revisão adjudicada, ela teve 6 de 6 rótulos "original errado" (`f3_h2.json`).
+
+**Economia (cenário A):** com a cobertura de 33,42%, a economia é de **R$ 17.543,90/ano** na base (3 min, R$ 35/h). Na grade de 3 × 3 premissas, vai de R$ 8.354,24 a R$ 33.416,95/ano (`solution/outputs/f8_economia.csv`). Esta conta substitui `f4_economia.csv` e a economia de `f3_faixas.json`.
+
+**A camada de ação não mudou:** reembolso e cancelamento ficam sempre com humano (regra de negócio).
+
+**Exemplos que mudaram de faixa com a política da F8:** o id 917 (HR Support) e o id 17550 (Storage) passam de "IA sugere" para "IA decide".
+
+## Histórico da F4 (substituído na F8)
+
+O conteúdo abaixo usa o limiar (0,74) e a política escolhidos **no holdout** na F3/F4. Ficou como registro; os números vigentes são os da seção acima.
 
 ## Regra por categoria (fixada antes de ver o resultado)
 

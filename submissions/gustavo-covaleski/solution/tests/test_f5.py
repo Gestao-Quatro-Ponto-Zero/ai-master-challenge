@@ -22,8 +22,10 @@ def runtime_isolado(tmp_path, monkeypatch):
 
 
 def log(tmp):
+    # só decisões: desde a F8 o duplicado também grava uma linha, com "tipo": "duplicado"
     p = tmp / "decisoes.jsonl"
-    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines()] if p.exists() else []
+    linhas = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines()] if p.exists() else []
+    return [l for l in linhas if l.get("tipo") != "duplicado"]
 
 
 @pytest.mark.parametrize("caso", ["texto_vazio", "duas_palavras"])
@@ -41,9 +43,10 @@ def test_idempotencia(runtime_isolado):
 
 
 def test_idempotencia_sem_event_id_usa_hash(runtime_isolado):
-    e = {"texto": "Laptop   screen BROKEN need new monitor", "canal": "Email"}
+    # F8: a chave usa o texto bruto (sem normalizar) + canal + janela de 10 min
+    e = {"texto": "laptop screen broken need new monitor", "canal": "Email"}
     triagem.triar(e)
-    assert triagem.triar({"texto": "laptop screen broken need new monitor", "canal": "Email"})["duplicado"]
+    assert triagem.triar({"texto": "  laptop screen broken need new monitor ", "canal": "Email"})["duplicado"]
     assert not triagem.triar({"texto": "laptop screen broken need new monitor", "canal": "Chat"})["duplicado"]
 
 

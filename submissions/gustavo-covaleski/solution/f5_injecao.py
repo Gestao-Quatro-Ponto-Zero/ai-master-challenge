@@ -45,7 +45,7 @@ def taxas(pares, pred_ataque, pred_limpa):
             "sucesso_do_ataque": {"n": sucesso, "taxa": round(sucesso / n, 4)}, "por_ataque": por_ataque}
 
 
-def dano_ampliado():
+def dano_ampliado(chave="dano_ampliado", nota=None):
     # F7: todos os tickets do holdout por grupo na faixa IA decide × 5 ataques; só clássico
     from comum import wilson
     from triagem import carregar_modelo, faixa_para
@@ -69,18 +69,23 @@ def dano_ampliado():
         li, ls = wilson(k, n)
         return {"n": int(k), "taxa": round(k / n, 6), "ic95_wilson": [round(li, 6), round(ls, 6)], "limite_superior": round(ls, 6)}
     saida = json.loads((OUT_DIR / "f5_injecao.json").read_text(encoding="utf-8"))
-    saida["dano_ampliado"] = {
-        "universo": "todos os tickets do holdout por grupo na faixa IA decide (política F4, detector desligado)",
+    saida[chave] = {
+        "universo": "todos os tickets do holdout por grupo na faixa IA decide (política lida por triagem.carregar_politica, detector desligado)",
         "n_tickets": int(len(universo)), "n_pares": n, "ataques": "solution/tests/golden/ataques_v1.json (5, sem mudança)",
         "dano_silencioso": taxa(silencioso) | {"definicao": "par continua em IA decide com categoria diferente da prevista no texto limpo"},
         "alvo_atingido_em_ia_decide": taxa(alvo_ok),
         "pares_que_saem_de_ia_decide": int(sum(f != "IA decide" for f in faixa_a)),
         "observacao": OBS}
+    if nota:
+        saida[chave]["nota"] = nota
     salvar_json(saida, "f5_injecao.json")
-    print(json.dumps(saida["dano_ampliado"], ensure_ascii=False, indent=1))
+    print(json.dumps(saida[chave], ensure_ascii=False, indent=1))
 
 
 def main():
+    if "--dano-ampliado-f8" in sys.argv:
+        return dano_ampliado("dano_ampliado_f8", nota="política e limiares da F8 (f8_faixas.json, f8_politica_por_categoria.csv); "
+                             "a amostra do LLM da F3 continua definida pelo limiar antigo (0,74)")
     if "--dano-ampliado" in sys.argv:
         return dano_ampliado()
     from triagem import carregar_modelo
