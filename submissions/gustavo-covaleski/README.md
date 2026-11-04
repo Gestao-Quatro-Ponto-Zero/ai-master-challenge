@@ -1,6 +1,6 @@
 # Submissão — Gustavo Covaleski — Challenge 002
 
-**Console do piloto:** `[URL — preencher após o deploy]` · abre localmente com duplo clique em `console/index.html`.
+**Console do piloto:** https://console-piloto-triagem.vercel.app · abre localmente com duplo clique em `console/index.html`.
 
 ## Sobre mim
 

@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 runtime/
 modelo_cache/
+.vercel/
