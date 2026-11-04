@@ -2,43 +2,19 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Console do piloto — triagem de tickets</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Triagem — console do piloto</title>
 <link rel="stylesheet" href="fonts/fontes.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
-
-<nav class="nav" aria-label="Telas do console">
-  <div class="marca">
-    <span class="marca-nome">Console do piloto</span>
-    <span class="marca-sub">Triagem de tickets</span>
-  </div>
-  <ul class="nav-itens">
-    <li><a href="#saude" data-tela="saude"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg><span>Saúde</span></a></li>
-    <li><a href="#fila" data-tela="fila"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13l2-8h12l2 8M4 13v6h16v-6M4 13h5l1 2h4l1-2h5"/></svg><span>Fila</span></a></li>
-    <li><a href="#governanca" data-tela="governanca"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M7 7l-3 7a3 3 0 006 0zM17 7l-3 7a3 3 0 006 0zM8 21h8"/></svg><span>Governança</span></a></li>
-    <li><a href="#robustez" data-tela="robustez"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><span>Robustez</span></a></li>
-  </ul>
-  <p class="nav-estado" id="nav-estado" aria-live="polite"></p>
-</nav>
-
-<main id="conteudo" tabindex="-1">
-  <section class="tela" id="tela-saude" data-tela="saude" aria-labelledby="h-saude"></section>
-  <section class="tela" id="tela-fila" data-tela="fila" aria-labelledby="h-fila" hidden></section>
-  <section class="tela" id="tela-governanca" data-tela="governanca" aria-labelledby="h-governanca" hidden></section>
-  <section class="tela" id="tela-robustez" data-tela="robustez" aria-labelledby="h-robustez" hidden></section>
-  <footer class="fontes">
-    Dados: holdout do DS2 (TI interna, 47.837 tickets). A transferência para a operação de suporte é premissa.
-    A correção do atendente é simulada pelo rótulo original. Fontes: <code>solution/outputs/</code> ·
-    <a href="https://github.com/covaleski13-tech/ai-master-challenge/blob/submission/gustavo-covaleski/submissions/gustavo-covaleski/README.md">README</a>
-  </footer>
-</main>
-
+<header class="topo" id="topo"></header>
+<main class="conteudo" id="conteudo" tabindex="-1"></main>
+<div class="barra-acao" id="barra-acao" hidden></div>
+<nav class="nav-inferior" id="nav-inferior" aria-label="Seções"></nav>
 <div class="veu" id="veu" hidden></div>
-<aside class="painel-lateral" id="painel" role="dialog" aria-modal="true" aria-labelledby="painel-titulo" hidden></aside>
-
+<div class="dialogo" id="sobre" role="dialog" aria-modal="true" aria-labelledby="sobre-titulo" hidden></div>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>

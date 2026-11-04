@@ -1,401 +1,546 @@
 "use strict";
-// Console do piloto (F11). Todo número vem de window.DADOS (console/data.js, gerado por solution/f10_console_dados.py).
+// Console do piloto (F12): implementação das pranchas aprovadas em planning/F12-design.
+// Todo número vem de window.DADOS (console/data.js, gerado por solution/f10_console_dados.py).
 (function () {
   const D = window.DADOS;
   const CATS = D.meta.categorias;
   const ORDEM = ["humano decide", "IA sugere", "IA decide"];
-  const CLASSE = { "IA decide": "decide", "IA sugere": "sugere", "humano decide": "humano" };
-  const ICONE = {
-    "IA decide": '<path d="M5 12l4 4 10-10"/>',
-    "IA sugere": '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
-    "humano decide": '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+  const POL = { F9: "Atual", F8: "Sem confirmação no teste", F4: "Inicial" };
+  const ATAQUE = { categoria_repetida: "Repetição de categoria", ignore_instrucoes: "Ignorar instruções",
+    falsa_mensagem_sistema: "Falsa mensagem de sistema", json_pronto: "JSON pronto", portugues: "Ordem em português" };
+  const CEN = [
+    ["injecao", "Injeção de instrução", "5 ataques versionados"],
+    ["duplicado", "Evento duplicado", "Reentrega do webhook"],
+    ["reembolso", "Regra de reembolso", "Tipo sensível vai para humano"],
+    ["sombra", "Modo sombra", "Desligamento imediato"],
+    ["politica", "Troca de política", "Rollback para a versão anterior"],
+  ];
+  const FX = {
+    "IA decide": { cls: "decide", nome: "IA decide", curto: "IA decide", barra: "#0F7B6C", grande: "IA decide · sem revisão" },
+    "IA sugere": { cls: "sugere", nome: "IA sugere", curto: "IA sugere", barra: "#D98A1E", grande: "IA sugere · revisão humana" },
+    "humano decide": { cls: "humano", nome: "Humano decide", curto: "Humano", barra: "#7A8699", grande: "Humano decide · triagem manual" },
   };
-  const INFO = '<svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
-  const ALERTA = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg>';
-  const X = '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const META_D = D.meta.meta_ia_decide, META_S = D.meta.meta_ia_sugere;
+  const TICKET_REEMBOLSO = 22129;
+  // prancha MobileVisao: rótulos dos gráficos a 22 no viewBox de 600 para ficarem legíveis a 390 px
+  const FS = () => (window.matchMedia("(max-width: 767px)").matches ? 22 : 11);
 
-  const pct = (x, d = 1) => x == null ? "—" : new Intl.NumberFormat("pt-BR", { style: "percent", minimumFractionDigits: d, maximumFractionDigits: d }).format(x);
-  const num = (x, d = 0) => new Intl.NumberFormat("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d }).format(x);
+  const pct = (x, d = 1) => x == null || !isFinite(x) ? "—" : new Intl.NumberFormat("pt-BR", { style: "percent", minimumFractionDigits: d, maximumFractionDigits: d }).format(x);
+  const num = (x) => new Intl.NumberFormat("pt-BR").format(x);
   const brl = (x) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(x);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const $ = (s, r = document) => r.querySelector(s);
-  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const selo = (f, extra = "", grande = false) => `<span class="selo ${CLASSE[f]}${grande ? " grande" : ""}"><svg aria-hidden="true" viewBox="0 0 24 24">${ICONE[f]}</svg>${esc(f)}${extra}</span>`;
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  function wilson(k, n) {
+    if (!n) return [null, null];
+    const z = 1.959964, p = k / n, c = (p + z * z / (2 * n)) / (1 + z * z / n);
+    const m = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n);
+    return [c - m, c + m];
+  }
 
-  const S = {
-    tela: "saude", dia: 20, modo: "ativo", pol: "F9", filtro: "todas", sel: 0, comeceFechado: false,
-    estados: {}, resposta: {}, corrigindo: false, log: [], chaves: new Set(), duplicados: 0,
-    premissas: { ...D.kpis.premissas }, painelCat: null, focoAntes: null,
-    r: { ticket: 10244, ataque: "categoria_repetida", rodouAtaque: false, rodouDup: false, rodouReembolso: false },
+  // ícones (SVG de traço, como nas pranchas)
+  const sv = (d, w = 20, extra = "") => `<svg class="ic" aria-hidden="true" width="${w}" height="${w}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"${extra}>${d}</svg>`;
+  const IC = {
+    marca: '<path d="M3 6h14M6 10h8M9 14h2"/>',
+    info: '<circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 6.5v.2"/>',
+    alerta: '<path d="M10 3l8 14H2z"/><path d="M10 8v4M10 14.5v.2"/>',
+    olho: '<path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z"/><circle cx="10" cy="10" r="2.5"/>',
+    check: '<path d="M4 10l4 4 8-8"/>',
+    pessoa: '<circle cx="10" cy="7" r="3"/><path d="M4 17c1-3 3-5 6-5s5 2 6 5"/>',
+    x: '<path d="M5 5l10 10M15 5L5 15"/>',
+    voltar: '<path d="M12 4l-6 6 6 6"/>',
+    visao: '<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><rect x="11" y="11" width="6" height="6" rx="1"/>',
+    fila: '<path d="M3 12l2-7h10l2 7v4H3z"/><path d="M3 12h4l1 2h4l1-2h4"/>',
+    gov: '<path d="M10 2l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V5z"/>',
+    rob: '<path d="M2 10h4l2-5 4 10 2-5h4"/>',
   };
+  const ICFX = { "IA decide": IC.check, "IA sugere": IC.olho, "humano decide": IC.pessoa };
+  const selo = (f, texto, grande = false) => `<span class="selo ${FX[f].cls}${grande ? " grande" : ""}">${grande ? sv(ICFX[f], 16) : ""}${esc(texto || FX[f].nome)}</span>`;
+
+  // ---- estado global
+  const S = {
+    tela: "visao", sub: null, modo: "ativo", pol: "F9", dia: 20, premissas: { ...D.kpis.premissas },
+    filtro: "todas", busca: "", estados: {}, feedback: {}, corrigindo: false,
+    log: [], chaves: new Set(), duplicados: 0,
+    inj: { ataque: "categoria_repetida", ticket: 10244, executado: true },
+    dupRodou: null, reembolsoRodou: false, sobreAberto: false,
+  };
+  const celular = window.matchMedia("(max-width: 767px)");
 
   // ---- dados derivados
   const gov = () => D.governanca[S.dia - 1];
-  const pol = () => D.politicas[S.pol];
-  function cobertura(polK = S.pol) {
-    const g = gov(), fx = g.faixas[polK];
-    if (S.modo === "sombra") return { decide: 0, sugere: 0, humano: g.n_total, n: g.n_total, acertos: 0 };
-    return { decide: fx["IA decide"].n, sugere: fx["IA sugere"].n, humano: fx["humano decide"].n, n: g.n_total, acertos: fx["IA decide"].acertos };
+  const politica = () => D.politicas[S.pol];
+  function faixas(polK = S.pol, dia = S.dia) {
+    const g = D.governanca[dia - 1], fx = g.faixas[polK];
+    if (S.modo === "sombra") return { n: g.n_total, d: { n: 0, a: 0 }, s: { n: 0, a: 0 }, h: { n: g.n_total, a: fx["IA decide"].acertos + fx["IA sugere"].acertos + fx["humano decide"].acertos } };
+    return { n: g.n_total, d: { n: fx["IA decide"].n, a: fx["IA decide"].acertos }, s: { n: fx["IA sugere"].n, a: fx["IA sugere"].acertos }, h: { n: fx["humano decide"].n, a: fx["humano decide"].acertos } };
   }
-  function faixaTicket(t, polK = S.pol) {
-    const base = t.faixas[polK].faixa;
+  function faixaTicket(t) {
+    const base = t.faixas[S.pol].faixa;
     return { faixa: S.modo === "sombra" ? "humano decide" : base, semSombra: base };
   }
-  function regraVs(vig, regra) {
-    if (!regra) return { txt: "sem dados", cls: "mantem" };
+  function acaoRegra(vig, regra) {
+    if (!regra) return { txt: "—", cor: "var(--texto-3)" };
     const d = ORDEM.indexOf(regra) - ORDEM.indexOf(vig);
-    return d > 0 ? { txt: "pode subir", cls: "sobe" } : d < 0 ? { txt: "alerta", cls: "alerta" } : { txt: "mantém", cls: "mantem" };
+    if (d > 0) return { txt: "Promover", cor: "var(--decide-tx)" };
+    // queda numa fila automática é rebaixamento; numa fila com sugestão, o humano ainda revisa
+    if (d < 0) return vig === "IA decide" ? { txt: "Rebaixar", cor: "var(--dano)" } : { txt: "Revisar", cor: "var(--sugere-tx)" };
+    return { txt: "Manter", cor: "var(--texto-3)" };
+  }
+  function alertas() {
+    const out = [], g = gov(), p = politica();
+    if (S.modo === "sombra") out.push({ html: "<strong>Modo sombra</strong> ligado: automação suspensa; todos os tickets vão para triagem humana.", link: "#robustez/sombra", rot: "Ver cenário" });
+    const dn = D.kpis.dano_injecao[S.pol];
+    if (dn.silenciosos > 0) out.push({ html: `<strong>Política ${esc(POL[S.pol].toLowerCase())}</strong>: ${num(dn.silenciosos)} de ${num(dn.n_pares)} injeções passam sem revisão.`, link: "#robustez/politica", rot: "Ver cenário" });
+    if (S.duplicados) out.push({ html: `<strong>${num(S.duplicados)} reentrega(s)</strong> descartada(s) como duplicada(s), sem nova decisão.`, link: "#robustez/duplicado", rot: "Ver cenário" });
+    CATS.forEach((c) => {
+      const k = g.categorias[c], vig = p.por_categoria[c];
+      if (ORDEM.indexOf(k.decisao_regra) < ORDEM.indexOf(vig)) {
+        const decide = vig === "IA decide";
+        out.push({ html: `<strong>${esc(c)}</strong> abaixo da meta de ${decide ? "decisão" : "sugestão"}: limite inferior ${pct(k.li)} (meta ${pct(decide ? META_D : META_S)}, n = ${num(k.n_sombra)}).`, link: `#governanca/${encodeURIComponent(c)}`, rot: "Revisar fila" });
+      }
+    });
+    return out;
   }
 
   // ---- log e idempotência (mesma chave de triagem.py: evt:<event_id>; ver solution/tests/test_f8.py)
   const agora = () => new Date().toISOString();
   const chave = (t) => `evt:fila-${t.id}`;
+  function linhaDecisao(t, faixa, semSombra, motivo) {
+    return { timestamp_utc: agora(), chave: chave(t), event_id: `fila-${t.id}`, categoria: t.pred, p_max: t.p_max, faixa,
+      faixa_sem_sombra: semSombra, motivo, modelo_versao: D.meta.modelo_versao, politica_versao: D.meta.politica_versao, latencia_ms: null, erro: null };
+  }
   function registrar(t) {
-    const k = chave(t);
-    if (S.chaves.has(k)) return false;
-    S.chaves.add(k);
+    if (S.chaves.has(chave(t))) return;
+    S.chaves.add(chave(t));
     const f = faixaTicket(t);
-    S.log.push({ timestamp_utc: agora(), chave: k, event_id: `fila-${t.id}`, categoria: t.pred, p_max: t.p_max, faixa: f.faixa,
-      faixa_sem_sombra: f.semSombra, motivo: "termos: " + t.termos, modelo_versao: D.meta.modelo_versao,
-      politica_versao: D.meta.politica_versao, latencia_ms: null, erro: null });
-    return true;
+    S.log.push(linhaDecisao(t, f.faixa, f.semSombra, "termos: " + t.termos));
   }
   function reentregar(t) {
-    if (!S.chaves.has(chave(t))) registrar(t);
+    registrar(t);
     S.duplicados += 1;
-    const linha = { tipo: "duplicado", chave: chave(t), timestamp_utc: agora() };
-    S.log.push(linha);
-    return linha;
+    const l = { tipo: "duplicado", chave: chave(t), timestamp_utc: agora() };
+    S.log.push(l);
+    return l;
   }
 
-  // ---- alertas
-  function alertas() {
-    const out = [], p = pol(), g = gov();
-    if (S.modo === "sombra") {
-      const base = g.faixas[S.pol]["IA decide"].n / g.n_total;
-      out.push({ txt: `Modo sombra ligado: a cobertura de IA decide caiu de ${pct(base)} para ${pct(0)} (mais de 3 p.p.). Tudo vai para humano; o log continua.`, ir: "#robustez" });
-    }
-    const dn = D.kpis.dano_injecao[S.pol];
-    if (dn.silenciosos > 0) out.push({ txt: `Com ${p.nome}, ${num(dn.silenciosos)} de ${num(dn.n_pares)} ataques simulados mudam a categoria e continuam sem humano.`, ir: "#robustez" });
-    if (S.duplicados) out.push({ txt: `${num(S.duplicados)} reentrega(s) duplicada(s) descartada(s), sem nova decisão.`, ir: "#robustez" });
-    CATS.forEach((c) => {
-      const r = regraVs(p.por_categoria[c], g.categorias[c].decisao_regra);
-      if (r.cls === "alerta") out.push({ txt: `${c}: limite inferior de ${pct(g.categorias[c].li)}, abaixo da meta da faixa atual.`, cat: c });
-    });
-    return out;
-  }
-
-  // ---- navegação
-  function irPara(tela) {
-    S.tela = ["saude", "fila", "governanca", "robustez"].includes(tela) ? tela : "saude";
-    document.querySelectorAll(".tela").forEach((s) => { s.hidden = s.dataset.tela !== S.tela; });
-    document.querySelectorAll(".nav-itens a").forEach((a) => { if (a.dataset.tela === S.tela) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  // ---- roteamento
+  function lerHash() {
+    const [tela, ...resto] = location.hash.replace(/^#/, "").split("/");
+    S.tela = ["visao", "fila", "governanca", "robustez"].includes(tela) ? tela : "visao";
+    S.sub = resto.length ? decodeURIComponent(resto.join("/")) : null;
+    S.corrigindo = false;
     render();
+    window.scrollTo(0, 0);
   }
-  window.addEventListener("hashchange", () => irPara(location.hash.slice(1)));
+  window.addEventListener("hashchange", lerHash);
+  celular.addEventListener("change", () => render());
+
+  // ---- cabeçalho e navegação
+  const ABAS = [["visao", "Visão geral", IC.visao], ["fila", "Fila", IC.fila], ["governanca", "Governança", IC.gov], ["robustez", "Robustez", IC.rob]];
+  function renderTopo() {
+    const t = S.tela === "fila" && celular.matches && S.sub ? ticketPorId(S.sub) : null;
+    if (t) {
+      const f = faixaTicket(t).faixa, n = visiveis().filter((x) => faixaTicket(x).faixa === f).length;
+      $("#topo").innerHTML = `<div class="topo-int"><a class="voltar" href="#fila" aria-label="Voltar para a fila">${sv(IC.voltar)}</a>
+        <span class="mono" style="font-size:16px;font-weight:500">#${t.id}</span>
+        <span class="status" style="font-size:12px;color:#9FB0C8">${num(n)} em ${esc(FX[f].nome)}</span></div>`;
+      return;
+    }
+    $("#topo").innerHTML = `<div class="topo-int">
+      <div class="marca"><span class="marca-ico">${sv(IC.marca, 16, ' stroke="#FFFFFF" stroke-width="2"')}</span><span class="marca-nome">Triagem</span><span class="marca-sub">Piloto</span></div>
+      <nav class="abas" aria-label="Seções">${ABAS.map(([k, r]) => `<a class="aba" href="#${k}"${S.tela === k ? ' aria-current="page"' : ""}>${r}</a>`).join("")}</nav>
+      <div class="status">
+        <span class="chip-status chip-modo"><span class="ponto-modo${S.modo === "sombra" ? " sombra" : ""}"></span>${S.modo === "sombra" ? "Modo sombra" : "Modo ativo"}</span>
+        <span class="chip-status">${celular.matches ? `<span class="ponto-modo${S.modo === "sombra" ? " sombra" : ""}"></span>Dia ${S.dia}` : `Dia ${S.dia} de 20`}</span>
+        <button type="button" class="botao-info" id="abrir-sobre" aria-label="Sobre os dados">${sv(IC.info, 18)}</button>
+      </div></div>`;
+    $("#abrir-sobre").onclick = abrirSobre;
+  }
+  function renderNav() {
+    $("#nav-inferior").innerHTML = ABAS.map(([k, r, ic]) => `<a href="#${k}"${S.tela === k ? ' aria-current="page"' : ""}>${sv(ic, 22)}${r}</a>`).join("");
+  }
 
   function render() {
-    $("#nav-estado").textContent = `${pol().nome} · modo ${S.modo} · dia ${S.dia} de 20`;
-    ({ saude: telaSaude, fila: telaFila, governanca: telaGov, robustez: telaRobustez })[S.tela]();
-    if (S.painelCat) renderPainel();
+    document.body.classList.toggle("com-acao", false);
+    $("#barra-acao").hidden = true;
+    renderTopo(); renderNav();
+    ({ visao: telaVisao, fila: telaFila, governanca: telaGov, robustez: telaRob })[S.tela]();
+    if (S.sobreAberto) renderSobre();
   }
 
-  // ---- tela 1
-  function telaSaude() {
-    const c = cobertura(), p = pol(), al = alertas();
-    const prec = c.decide ? c.acertos / c.decide : null, meta = D.meta.meta_ia_decide;
-    const pr = S.premissas, eco = (c.decide / c.n) * pr.volume_ano * pr.minutos_triagem / 60 * pr.reais_por_hora;
-    const grupos = ORDEM.slice().reverse().map((f) => ({ f, cats: CATS.filter((k) => p.por_categoria[k] === f) }));
-    const nomes = { "IA decide": "Automáticas", "IA sugere": "Com sugestão", "humano decide": "Com humano" };
-    const w = (n) => `${(100 * n / c.n).toFixed(2)}%`;
-    $("#tela-saude").innerHTML = `
-      <h1 class="pergunta" id="h-saude">O piloto está saudável?</h1>
-      <p class="subtitulo">Triagem automática de tickets com um classificador treinado nos rótulos históricos. Dia ${S.dia} de 20 do piloto, política ${esc(p.nome)}.</p>
-      ${S.comeceFechado ? "" : `<div class="comece" role="region" aria-label="Comece aqui"><strong>Comece aqui</strong>
-        <ol>
-          <li><a href="#fila"><span class="num-passo">1</span>Veja um ticket ser triado</a></li>
-          <li><a href="#governanca"><span class="num-passo">2</span>Veja por que a IA não decide tudo</a></li>
-          <li><a href="#robustez"><span class="num-passo">3</span>Tente quebrar o sistema</a></li>
-        </ol>
-        <button type="button" class="botao texto fechar" id="fechar-comece">Dispensar</button></div>`}
-      ${al.length ? `<div class="alerta-faixa" role="status">${ALERTA}<div><strong>${al.length === 1 ? "1 alerta ativo" : `${al.length} alertas ativos`}</strong><ul>${al.map((a, i) => `<li>${esc(a.txt)} <a href="${a.ir || "#governanca"}" data-alerta="${i}">ver</a></li>`).join("")}</ul></div></div>` : ""}
-      <div class="kpis">
-        <div class="cartao kpi"><h3>Tickets que a IA resolve sozinha</h3>
-          <div class="valor">${pct(c.decide / c.n, 2)}</div>
-          <p class="explica">Parte do volume roteada sem nenhum humano (faixa IA decide).</p></div>
-        <div class="cartao kpi"><h3>Precisão medida contra a meta</h3>
-          <div class="valor">${pct(prec, 2)}${prec != null && prec >= meta ? `<span class="meta-ok"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>acima da meta</span>` : ""}</div>
-          <p class="explica">Acertos na faixa IA decide; a meta é ${pct(meta)} (1 − taxa de erro humano).</p></div>
-        <div class="cartao kpi"><h3>Trabalho humano evitado</h3>
-          <div class="valor">${num(c.decide)} <span class="unidade">de ${num(c.n)}</span></div>
-          <p class="explica">Tickets que não precisaram de triagem humana.</p>
-          <details class="premissas"><summary>Ver economia e premissas</summary>
-            <div class="campos">
-              <label>Custo do atendente (R$/h) <input type="number" min="0" step="1" data-p="reais_por_hora" value="${pr.reais_por_hora}"></label>
-              <label>Triagem manual (min/ticket) <input type="number" min="0" step="0.5" data-p="minutos_triagem" value="${pr.minutos_triagem}"></label>
-              <label>Volume (tickets/ano) <input type="number" min="0" step="1000" data-p="volume_ano" value="${pr.volume_ano}"></label>
-            </div>
-            <p class="eco" id="eco">Economia anual com etapa separada de triagem: <strong>${brl(eco)}</strong>. Sem etapa separada: zero.</p>
-          </details></div>
-      </div>
-      <div class="grade-2">
-        <div class="cartao"><h3>Para onde vai cada ticket?</h3>
-          <div class="barra-empilhada" role="img" aria-label="IA decide ${pct(c.decide / c.n)}, IA sugere ${pct(c.sugere / c.n)}, humano decide ${pct(c.humano / c.n)}">
-            ${c.decide ? `<div class="decide" style="width:${w(c.decide)}">${pct(c.decide / c.n)}</div>` : ""}
-            ${c.sugere ? `<div class="sugere" style="width:${w(c.sugere)}">${pct(c.sugere / c.n)}</div>` : ""}
-            <div class="humano" style="width:${w(c.humano)}">${pct(c.humano / c.n)}</div></div>
-          <ul class="legenda">${["IA decide", "IA sugere", "humano decide"].map((f) => `<li>${selo(f)} <strong>${num({ "IA decide": c.decide, "IA sugere": c.sugere, "humano decide": c.humano }[f])}</strong> tickets</li>`).join("")}</ul>
-          <p class="leitura">O que este gráfico diz: a IA decide sozinha numa fatia pequena e segura; a maior parte ainda passa por um humano, que confirma a sugestão ou classifica.</p></div>
-        <div class="cartao"><h3>Quais filas já estão automatizadas?</h3>
-          <div class="grupos">${grupos.map((g) => `<div class="grupo"><h4>${nomes[g.f]} (${g.cats.length})</h4><div class="chips">${g.cats.map((k) => `<button type="button" class="chip" data-cat="${esc(k)}"><span class="ponto" style="background:var(--${CLASSE[g.f]})" aria-hidden="true"></span>${esc(k)}</button>`).join("") || '<span class="leitura">nenhuma</span>'}</div></div>`).join("")}</div>
-          <p class="leitura">Clique numa fila para ver a precisão comprovada dela contra a meta.</p></div>
-      </div>`;
-    const fc = $("#fechar-comece"); if (fc) fc.onclick = () => { S.comeceFechado = true; render(); };
-    document.querySelectorAll("#tela-saude .chip").forEach((b) => b.onclick = () => { location.hash = "#governanca"; abrirPainel(b.dataset.cat, b); });
-    document.querySelectorAll("#tela-saude [data-alerta]").forEach((a) => {
-      const al2 = al[+a.dataset.alerta];
-      if (al2.cat) a.onclick = (e) => { e.preventDefault(); location.hash = "#governanca"; abrirPainel(al2.cat, a); };
-    });
-    document.querySelectorAll("#tela-saude [data-p]").forEach((inp) => inp.oninput = () => {
-      const v = parseFloat(inp.value); S.premissas[inp.dataset.p] = isFinite(v) && v >= 0 ? v : 0;
-      const pr2 = S.premissas, e2 = (c.decide / c.n) * pr2.volume_ano * pr2.minutos_triagem / 60 * pr2.reais_por_hora;
-      $("#eco").innerHTML = `Economia anual com etapa separada de triagem: <strong>${brl(e2)}</strong>. Sem etapa separada: zero.`;
-    });
-  }
-
-  // ---- tela 2
-  const visiveis = () => D.fila.filter((t) => t.dia <= S.dia && (S.filtro === "todas" || faixaTicket(t).faixa === S.filtro));
-  function telaFila() {
-    const v = visiveis();
-    if (S.sel >= v.length) S.sel = Math.max(0, v.length - 1);
-    v.forEach(registrar);
-    const t = v[S.sel];
-    const filtros = [["todas", "Todas"], ["IA decide", "IA decide"], ["IA sugere", "IA sugere"], ["humano decide", "Humano"]];
-    $("#tela-fila").innerHTML = `
-      <h1 class="pergunta" id="h-fila">Como um ticket é triado?</h1>
-      <p class="subtitulo">A fila do atendente: escolha um ticket e veja a decisão. Enter confirma; as teclas 1 a 8 corrigem.</p>
-      <div class="fila-layout">
-        <div class="cartao">
-          <div class="segmentado" role="group" aria-label="Filtrar por faixa">${filtros.map(([k, r]) => `<button type="button" data-f="${esc(k)}" aria-pressed="${S.filtro === k}">${r}</button>`).join("")}</div>
-          <ul class="lista" id="lista" role="listbox" tabindex="0" aria-label="Tickets da fila">${v.map((x, i) => {
-            const e = S.estados[x.id];
-            return `<li role="option" id="op-${x.id}" data-i="${i}" aria-selected="${i === S.sel}"><span class="lid">#${x.id}</span>${selo(faixaTicket(x).faixa)}<span class="ltexto">${esc(x.texto.slice(0, 80))}</span>${e ? `<span class="lestado">${e.tipo === "confirmado" ? "confirmado" : "corrigido para " + esc(e.categoria)}</span>` : ""}</li>`;
-          }).join("")}</ul>
+  // ---- visão geral
+  function telaVisao() {
+    const f = faixas(), al = alertas(), p = politica(), g = gov();
+    const [li, ls] = wilson(f.d.a, f.d.n), precD = f.d.n ? f.d.a / f.d.n : null, precS = f.s.n ? f.s.a / f.s.n : null, precH = f.h.n ? f.h.a / f.h.n : null;
+    const dn = D.kpis.dano_injecao[S.pol];
+    const kpis = [
+      ["Automação", pct(f.d.n / f.n), `${num(f.d.n)} de ${num(f.n)} tickets sem triagem humana`, "var(--decide)", pct(f.d.n / f.n, 2)],
+      ["Precisão da automação", pct(precD), f.d.n ? `Meta ≥ ${pct(META_D)} · IC 95% ${pct(li).replace("%", "")}–${pct(ls)}` : "Sem tickets na faixa IA decide", "var(--texto)", pct(precD, 2)],
+      ["Sugestão com revisão", pct(f.s.n / f.n), `${num(f.s.n)} tickets · precisão ${pct(precS)}`, "var(--sugere-tx)", pct(f.s.n / f.n, 2)],
+      ["Injeções sem revisão", num(dn.silenciosos), `de ${num(dn.n_pares)} tentativas`, dn.silenciosos ? "var(--dano)" : "var(--texto)", `${num(dn.silenciosos)} de ${num(dn.n_pares)}`],
+    ];
+    const linhas = [["IA decide", "IA decide", f.d, precD], ["IA sugere", "IA sugere, humano confirma", f.s, precS], ["humano decide", "Humano decide", f.h, precH]];
+    const grupos = ["IA decide", "IA sugere", "humano decide"].map((fx) => ({ fx, cats: CATS.filter((c) => p.por_categoria[c] === fx) }));
+    const alertaCats = new Set(al.filter((a) => a.link.startsWith("#governanca/")).map((a) => decodeURIComponent(a.link.split("/")[1])));
+    $("#conteudo").innerHTML = `
+      <div class="cab-tela"><div><h1 class="titulo">Visão geral</h1><p class="subtitulo">${num(g.n_total)} tickets triados · holdout por grupo</p></div>
+        <a class="botao primario" href="#fila">Abrir a fila</a></div>
+      ${al.map((a) => `<div class="alerta" role="status"><span style="color:var(--sugere-tx);display:flex">${sv(IC.alerta, 18)}</span><span class="alerta-tx">${a.html}</span><a class="link-forte" href="${a.link}">${a.rot}</a></div>`).join("")}
+      <section class="kpis" aria-label="Indicadores">${kpis.map(([r, v, d, c, exato]) => `<div class="kpi"><span class="kpi-rot">${r}</span><span class="kpi-val" style="color:${c}" title="${esc(exato)}" data-exato="${esc(exato)}">${v}</span><span class="kpi-det">${d}</span></div>`).join("")}</section>
+      <section class="duas-col">
+        <div class="cartao col-7">
+          <div class="cartao-cab"><h2 class="h2">Distribuição por faixa</h2><span class="legenda">% do volume · precisão contra o rótulo</span></div>
+          <div class="barra-faixas" role="img" aria-label="IA decide ${pct(f.d.n / f.n)}, IA sugere ${pct(f.s.n / f.n)}, humano decide ${pct(f.h.n / f.n)}">${linhas.map(([k, , x]) => x.n ? `<div style="width:${(100 * x.n / f.n).toFixed(2)}%;background:${FX[k].barra}"></div>` : "").join("")}</div>
+          <div>${linhas.map(([k, nome, x, pr]) => `<div class="linha-faixa"><span class="nome"><span class="quad" style="background:${FX[k].barra}"></span><span>${nome}</span></span><span class="dir" style="font-weight:600">${pct(x.n / f.n)}</span><span class="dir mono n-col" style="color:var(--texto-2)">${num(x.n)}</span><span class="dir">${pct(pr)}</span></div>`).join("")}</div>
         </div>
-        <div class="cartao" id="cartao-ticket">${t ? cartaoTicket(t) : `<p>Nenhum ticket nesta faixa até o dia ${S.dia}. Troque o filtro.</p>`}</div>
+        <div class="cartao col-5">
+          <div class="cartao-cab"><h2 class="h2">Precisão da automação por dia</h2><span class="legenda">acumulada · faixa IA decide</span></div>
+          ${graficoPrecisao()}
+        </div>
+      </section>
+      <section class="cartao" style="display:flex;flex-direction:column;gap:16px">
+        <div class="cartao-cab"><h2 class="h2">Filas por política</h2><a class="link-forte" style="font-weight:500" href="#governanca">Ver governança</a></div>
+        <div class="grupos">${grupos.map((gr) => `<div class="grupo">${selo(gr.fx, `${FX[gr.fx].nome} · ${gr.cats.length}`)}${gr.cats.map((c) => `<div class="grupo-fila"><span style="font-weight:500">${esc(c)}${alertaCats.has(c) ? '<span class="revisar"> · revisar</span>' : ""}</span><span style="color:var(--texto-2)">${pct(g.categorias[c].precisao)}</span></div>`).join("") || '<span class="legenda">Nenhuma fila</span>'}</div>`).join("")}</div>
+      </section>
+      <p class="nota">Dados: holdout do DS2 (TI interna). Correção do atendente simulada pelo rótulo original. Fontes em <span class="mono">solution/outputs/</span>.</p>`;
+  }
+  function graficoPrecisao() {
+    if (S.modo === "sombra") return '<p class="legenda">Modo sombra: nenhuma decisão automática no período.</p>';
+    const pts = D.governanca.map((g) => { const x = g.faixas[S.pol]["IA decide"]; return x.n ? x.acertos / x.n : null; });
+    const minimo = Math.min(...pts.filter((v) => v != null), META_D);
+    const lo = Math.min(0.96, Math.floor((minimo - 0.002) * 100) / 100), hi = 1;
+    const y = (v) => 8 + (hi - v) / (hi - lo) * 160, x = (i) => 40 + i * (560 / 19);
+    const ticks = [hi, (hi + lo) / 2, lo];
+    const linha = pts.map((v, i) => v == null ? "" : `${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(" ");
+    const g = D.governanca[S.dia - 1].faixas[S.pol]["IA decide"], [li, ls] = wilson(g.acertos, g.n), pd = g.n ? g.acertos / g.n : null;
+    return `<svg class="grafico" role="img" aria-label="Precisão acumulada da automação por dia; dia ${S.dia}: ${pct(pd)}; meta ${pct(META_D)}" viewBox="0 -16 600 216">
+      <g font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#5F6B7A">${ticks.map((v) => `<text x="0" y="${(y(v) + 4).toFixed(1)}">${pct(v, 0)}</text>`).join("")}</g>
+      ${ticks.map((v) => `<line x1="40" y1="${y(v)}" x2="600" y2="${y(v)}" stroke="#EEF1F5"/>`).join("")}
+      <line x1="40" y1="${y(META_D)}" x2="600" y2="${y(META_D)}" stroke="#B42318" stroke-dasharray="5 4" stroke-width="1.5"/>
+      <text x="596" y="${y(META_D) - 6}" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#B42318">meta ${pct(META_D)}</text>
+      <polyline fill="none" stroke="#0F7B6C" stroke-width="2.5" stroke-linejoin="round" points="${linha}"/>
+      ${pd != null ? `<circle cx="${x(S.dia - 1)}" cy="${y(pd)}" r="4" fill="#0F7B6C"/>` : ""}
+      <g font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#5F6B7A"><text x="40" y="194">dia 1</text><text x="600" y="194" text-anchor="end">dia 20</text></g></svg>
+      <p class="nota" style="font-size:13px">Dia ${S.dia}: <strong style="color:var(--texto);font-weight:600" data-exato="${esc(pct(pd, 2))}">${pct(pd)}</strong> · IC 95% ${pct(li).replace("%", "")}–${pct(ls)}</p>`;
+  }
+
+  // ---- fila
+  const ticketPorId = (id) => D.fila.find((t) => String(t.id) === String(id).replace(/^#/, ""));
+  const doDia = () => D.fila.filter((t) => t.dia <= S.dia);
+  function visiveis() {
+    const q = S.busca.trim().toLowerCase().replace(/^#/, "");
+    return doDia().filter((t) => (S.filtro === "todas" || faixaTicket(t).faixa === S.filtro)
+      && (!q || String(t.id).startsWith(q) || t.texto.toLowerCase().includes(q) || t.pred.toLowerCase().includes(q)));
+  }
+  function telaFila() {
+    const base = doDia();
+    base.forEach(registrar);
+    const cont = (f) => base.filter((t) => faixaTicket(t).faixa === f).length;
+    const v = visiveis();
+    const sel = (S.sub && ticketPorId(S.sub)) || v[0];
+    const soDetalhe = celular.matches && S.sub && sel;
+    const soLista = celular.matches && !S.sub;
+    const filtros = [["todas", `Todos ${base.length}`], ["IA decide", `IA decide ${cont("IA decide")}`], ["IA sugere", `IA sugere ${cont("IA sugere")}`], ["humano decide", `Humano ${cont("humano decide")}`]];
+    $("#conteudo").innerHTML = `
+      ${soDetalhe ? "" : `<div class="cab-tela"><div><h1 class="titulo">Fila</h1><p class="subtitulo">${base.length} tickets do holdout · dias 1 a ${S.dia}</p></div>
+        <div class="segmentado" role="group" aria-label="Filtrar por faixa">${filtros.map(([k, r]) => `<button type="button" data-f="${esc(k)}" aria-pressed="${S.filtro === k}">${r}</button>`).join("")}</div></div>`}
+      <div class="fila-layout">
+        ${soDetalhe ? "" : `<section class="lista-cartao" aria-label="Tickets">
+          <div class="busca"><input id="busca" type="search" aria-label="Buscar por #id ou termo" placeholder="Buscar por #id ou termo" value="${esc(S.busca)}"></div>
+          <div class="lista" id="lista">${v.length ? v.map((t) => {
+            const f = faixaTicket(t).faixa, e = S.estados[t.id];
+            return `<a class="item" href="#fila/${t.id}"${sel && t.id === sel.id && !celular.matches ? ' aria-current="true"' : ""}>
+              <span class="item-cab"><span class="item-id">#${t.id}</span>${selo(f, FX[f].curto)}</span>
+              <span class="item-tx truncar">${esc(t.texto)}</span>
+              <span class="item-meta">${esc(t.pred)} · ${pct(t.p_max)}${e ? ` · ${e.tipo === "confirmado" ? "confirmado" : "corrigido"}` : ""}</span></a>`;
+          }).join("") : '<p class="lista-vazia">Nenhum ticket com este filtro.</p>'}</div></section>`}
+        ${soLista || !sel ? "" : detalheTicket(sel)}
       </div>`;
-    document.querySelectorAll("#tela-fila .segmentado button").forEach((b) => b.onclick = () => { S.filtro = b.dataset.f; S.sel = 0; render(); });
-    const lista = $("#lista");
-    lista.onclick = (e) => { const li = e.target.closest("li"); if (li) { S.sel = +li.dataset.i; S.corrigindo = false; render(); $("#lista").focus(); } };
-    lista.onkeydown = (e) => {
-      if (e.key === "ArrowDown") { S.sel = Math.min(v.length - 1, S.sel + 1); S.corrigindo = false; e.preventDefault(); render(); $("#lista").focus(); }
-      else if (e.key === "ArrowUp") { S.sel = Math.max(0, S.sel - 1); S.corrigindo = false; e.preventDefault(); render(); $("#lista").focus(); }
-      else if (e.key === "Enter") { decidir(v[S.sel], null); e.preventDefault(); $("#lista").focus(); }
-      else if (/^[1-8]$/.test(e.key)) { decidir(v[S.sel], CATS[+e.key - 1]); e.preventDefault(); $("#lista").focus(); }
-    };
-    if (t) {
-      lista.setAttribute("aria-activedescendant", `op-${t.id}`);
-      const li = $(`#op-${t.id}`); if (li) li.scrollIntoView({ block: "nearest" });
-      $("#bt-confirmar").onclick = () => decidir(t, null);
-      $("#bt-corrigir").onclick = () => { S.corrigindo = !S.corrigindo; render(); if (S.corrigindo) $("#sel-cat").focus(); };
-      const ap = $("#bt-aplicar"); if (ap) ap.onclick = () => decidir(t, $("#sel-cat").value);
+    $$(".segmentado [data-f]").forEach((b) => b.onclick = () => { S.filtro = b.dataset.f; render(); });
+    const busca = $("#busca");
+    if (busca) busca.oninput = () => { S.busca = busca.value; const pos = busca.selectionStart; render(); const b2 = $("#busca"); b2.focus(); b2.setSelectionRange(pos, pos); };
+    if (sel && !soLista) ligarDetalhe(sel);
+    if (soDetalhe) {
+      document.body.classList.add("com-acao");
+      $("#barra-acao").hidden = false;
+      $("#barra-acao").innerHTML = `<button type="button" class="botao primario" id="m-confirmar">Confirmar</button><button type="button" class="botao secundario" id="m-corrigir">Corrigir</button>`;
+      $("#m-confirmar").onclick = () => decidir(sel, null);
+      $("#m-corrigir").onclick = () => { S.corrigindo = !S.corrigindo; render(); const s = $("#sel-cat"); if (s) s.focus(); };
     }
   }
-  function cartaoTicket(t) {
-    const f = faixaTicket(t), p = pol(), e = S.estados[t.id];
-    const td = p.t_decide, ts = p.t_sugere;
-    const g = t.p_max >= td ? "IA decide" : t.p_max >= ts ? "IA sugere" : "humano decide";
-    const teto = p.por_categoria[t.pred];
-    const passos = [
-      `Confiança de ${pct(t.p_max)} ${t.p_max >= td ? `≥ limiar de IA decide (${pct(td)})` : t.p_max >= ts ? `entre os limiares (${pct(ts)} e ${pct(td)})` : `abaixo do limiar de sugestão (${pct(ts)})`}: pela confiança, ${g}.`,
-      `A fila ${esc(t.pred)} está em ${esc(teto)} na política ${esc(p.nome)}${ORDEM.indexOf(teto) < ORDEM.indexOf(g) ? `, então a decisão é rebaixada para ${esc(teto)}` : ", então a decisão se mantém"}.`,
-      "Nenhuma regra de ação se aplica (reembolso e cancelamento sempre vão para humano).",
-      S.modo === "sombra" ? `Modo sombra ligado: o ticket vai para humano; o log guarda a faixa real (${esc(f.semSombra)}).` : "Modo sombra desligado.",
-    ];
-    return `
-      <div class="cab-ticket"><span>Ticket #${t.id} · dia ${t.dia} do piloto</span>${e ? `<span>${e.tipo === "confirmado" ? "Confirmado" : "Corrigido para " + esc(e.categoria)}</span>` : ""}</div>
+  function motivo(t) {
+    const p = politica(), td = p.t_decide, ts = p.t_sugere, teto = p.por_categoria[t.pred];
+    const nomePol = `A política ${POL[S.pol].toLowerCase()}`;
+    if (S.modo === "sombra") return `Modo sombra ligado: o ticket vai para triagem humana; a faixa calculada é ${FX[faixaTicket(t).semSombra].nome}.`;
+    if (t.p_max >= td) {
+      if (teto === "IA decide") return `Confiança acima do limiar de decisão. ${nomePol} libera ${t.pred} para automação.`;
+      return `Confiança acima do limiar de decisão. ${nomePol} limita ${t.pred} a ${teto === "IA sugere" ? "sugestão" : "triagem humana"}.`;
+    }
+    if (t.p_max >= ts) return teto === "humano decide" ? `Confiança entre os limiares. ${nomePol} limita ${t.pred} a triagem humana.` : "Confiança entre os limiares de sugestão e decisão.";
+    return "Confiança abaixo do limiar de sugestão.";
+  }
+  function detalheTicket(t) {
+    const f = faixaTicket(t).faixa, p = politica(), e = S.estados[t.id], segunda = t.top2[1];
+    const L = (v) => `${(100 * v).toFixed(1)}%`;
+    return `<section class="detalhe" id="detalhe" aria-label="Ticket selecionado">
+      <div class="det-cab"><div class="det-id"><span class="mono">#${t.id}</span><span class="rot">Dia ${t.dia} do piloto</span></div>${selo(f, FX[f].grande, true)}</div>
       <p class="texto-ticket">${esc(t.texto)}${t.truncado ? "… (trecho)" : ""}</p>
-      <div class="decisao">${selo(f.faixa, ` → ${esc(t.pred)}`, true)}</div>
-      <div class="confianca"><span>Confiança do modelo: <strong>${pct(t.p_max)}</strong></span>
-        <div class="trilho" role="img" aria-label="Confiança ${pct(t.p_max)}; limiar de sugestão ${pct(ts)}; limiar de decisão ${pct(td)}">
-          <div class="enche" style="width:${(100 * t.p_max).toFixed(1)}%"></div>
-          <div class="marca" style="left:${(100 * ts).toFixed(1)}%"><span>sugere ${pct(ts, 0)}</span></div>
-          <div class="marca" style="left:${(100 * td).toFixed(1)}%"><span>decide ${pct(td, 0)}</span></div></div></div>
-      <div class="acoes">
-        <button type="button" class="botao primario" id="bt-confirmar">Confirmar</button>
-        <button type="button" class="botao" id="bt-corrigir" aria-expanded="${S.corrigindo}">Corrigir</button>
-        ${S.corrigindo ? `<label>Para <select id="sel-cat">${CATS.map((c, i) => `<option value="${esc(c)}"${c === t.rotulo_original ? " selected" : ""}>${i + 1}. ${esc(c)}</option>`).join("")}</select></label><button type="button" class="botao" id="bt-aplicar">Aplicar correção</button>` : ""}
+      <div class="det-grade">
+        <div style="display:flex;flex-direction:column;gap:6px"><span class="rot">Categoria sugerida</span><span class="cat-sug">${esc(t.pred)}</span></div>
+        <div>
+          <div class="conf-cab"><span class="rot">Confiança</span><strong>${pct(t.p_max)}</strong></div>
+          <div class="trilho" role="img" aria-label="Confiança ${pct(t.p_max)}; limiar de sugestão ${pct(p.t_sugere, 0)}, limiar de decisão ${pct(p.t_decide, 0)}">
+            <div class="enche" style="width:${L(t.p_max)}"></div><div class="marca-limiar" style="left:${L(p.t_sugere)}"></div><div class="marca-limiar" style="left:${L(p.t_decide)}"></div></div>
+          <div class="rotulos-limiar"><span style="left:${L(p.t_sugere)};transform:translateX(-100%);padding-right:4px">${pct(p.t_sugere, 0)} sugere</span><span style="left:${L(p.t_decide)};padding-left:4px">${pct(p.t_decide, 0)} decide</span></div>
+        </div>
       </div>
-      ${S.resposta[t.id] ? `<p class="feedback" role="status">${S.resposta[t.id]}</p>` : ""}
-      <p class="nota">${INFO}<span>Piloto simulado: a resposta do atendente é o rótulo original do dataset (aqui: ${esc(t.rotulo_original)}), que tem ruído próprio.</span></p>
-      <details class="porque"><summary>Por que esta decisão</summary>
-        <ol class="passos">${passos.map((s) => `<li>${s}</li>`).join("")}</ol>
-        <table class="mini-tabela"><caption class="leitura" style="text-align:left">As duas categorias mais prováveis</caption>
-          <tbody>${t.top2.map((x) => `<tr><td>${esc(x.categoria)}</td><td class="dir">${pct(x.p)}</td></tr>`).join("")}</tbody></table>
-        <p class="leitura"><strong>Termos que mais pesaram:</strong> ${esc(t.termos)}</p>
-        <p class="leitura">Detalhe técnico: modelo ${esc(D.meta.modelo_versao)}, política ${esc(D.meta.politica_versao)}, chave ${esc(chave(t))}.</p>
-      </details>`;
+      <div class="motivo"><span class="motivo-rot">Motivo da faixa</span><span class="motivo-tx">${esc(motivo(t))}</span></div>
+      <div class="acoes acoes-desk">
+        <button type="button" class="botao primario grande" id="bt-confirmar">Confirmar ${esc(t.pred)}</button>
+        <button type="button" class="botao secundario grande" id="bt-corrigir" aria-expanded="${S.corrigindo}">Corrigir categoria</button>
+        <span class="atalhos"><kbd>Enter</kbd> confirma · <kbd>1–8</kbd> corrige</span>
+      </div>
+      ${S.corrigindo ? `<div class="corrigir"><div class="campo"><label for="sel-cat">Categoria correta</label><select id="sel-cat">${CATS.map((c, i) => `<option value="${esc(c)}"${c === t.rotulo_original ? " selected" : ""}>${i + 1}. ${esc(c)}</option>`).join("")}</select></div><button type="button" class="botao primario" id="bt-aplicar">Aplicar correção</button></div>` : ""}
+      ${S.feedback[t.id] ? `<p class="feedback" role="status">${esc(S.feedback[t.id])}</p>` : ""}
+      ${e ? "" : ""}
+      <details class="detalhes"><summary>Detalhes do modelo</summary><div class="detalhes-corpo">
+        <span>2ª opção: ${esc(segunda.categoria)} · ${pct(segunda.p)}</span>
+        <span>Termos de maior peso: ${esc(t.termos.replace(/ \(-?[\d.]+\)/g, ""))}</span>
+        <span>Rótulo histórico (correção simulada): ${esc(t.rotulo_original)}</span></div></details>
+    </section>`;
+  }
+  function ligarDetalhe(t) {
+    const c = $("#bt-confirmar"); if (c) c.onclick = () => decidir(t, null);
+    const k = $("#bt-corrigir"); if (k) k.onclick = () => { S.corrigindo = !S.corrigindo; render(); const s = $("#sel-cat"); if (s) s.focus(); };
+    const a = $("#bt-aplicar"); if (a) a.onclick = () => decidir(t, $("#sel-cat").value);
   }
   function decidir(t, cat) {
     if (!t) return;
     const corr = cat && cat !== t.pred;
     S.estados[t.id] = corr ? { tipo: "corrigido", categoria: cat } : { tipo: "confirmado" };
     S.log.push({ timestamp_utc: agora(), tipo: corr ? "correcao" : "confirmacao", chave: chave(t), categoria_correta: corr ? cat : t.pred, atendente: "simulado (rótulo original)" });
-    S.resposta[t.id] = corr ? `Correção registrada: ${esc(t.pred)} → ${esc(cat)}. Entra no próximo ciclo de avaliação; o modelo não retreina sozinho.` : "Decisão confirmada.";
+    S.feedback[t.id] = corr ? `Corrigido para ${cat}. A correção entra no próximo ciclo de avaliação.` : `Confirmado: ${t.pred}.`;
     S.corrigindo = false;
     render();
   }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (S.sobreAberto) { fecharSobre(); return; }
+      if (S.tela === "governanca" && S.sub) { location.hash = "#governanca"; return; }
+    }
+    if (S.tela !== "fila" || S.sobreAberto) return;
+    const alvo = e.target.tagName;
+    if (["INPUT", "SELECT", "TEXTAREA", "BUTTON", "SUMMARY"].includes(alvo)) return;
+    const v = visiveis(), atual = (S.sub && ticketPorId(S.sub)) || v[0];
+    if (!atual) return;
+    const i = v.indexOf(atual);
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      const prox = v[Math.max(0, Math.min(v.length - 1, i + (e.key === "ArrowDown" ? 1 : -1)))];
+      if (prox) { e.preventDefault(); history.replaceState(null, "", `#fila/${prox.id}`); S.sub = String(prox.id); render(); const it = $(`.item[href="#fila/${prox.id}"]`); if (it) { it.focus(); it.scrollIntoView({ block: "nearest" }); } }
+    } else if (e.key === "Enter") { e.preventDefault(); decidir(atual, null); }
+    else if (/^[1-8]$/.test(e.key)) { e.preventDefault(); decidir(atual, CATS[+e.key - 1]); }
+  });
 
-  // ---- tela 3
-  function barraIC(c) {
-    const lo = 0.85, hi = 1, x = (v) => 4 + Math.max(0, Math.min(1, (v - lo) / (hi - lo))) * 232;
-    const mI = D.meta.meta_ia_decide, mS = D.meta.meta_ia_sugere;
-    const ic = c.li == null ? "" : `<rect x="${x(c.li)}" y="11" width="${Math.max(2, x(c.ls) - x(c.li))}" height="10" rx="5" fill="#0369A1" opacity=".25"/><circle cx="${x(c.precisao)}" cy="16" r="5" fill="#0369A1"/>`;
-    return `<svg class="barra-ic" viewBox="0 0 240 34" role="img" aria-label="Precisão ${pct(c.precisao)}, intervalo ${pct(c.li)} a ${pct(c.ls)}; metas ${pct(mS)} e ${pct(mI)}">
-      <rect x="4" y="15" width="232" height="2" fill="#E2E8F0" stroke="none"/>${ic}
-      <line x1="${x(mS)}" x2="${x(mS)}" y1="6" y2="26" stroke="#B45309" stroke-width="2"/>
-      <line x1="${x(mI)}" x2="${x(mI)}" y1="6" y2="26" stroke="#0F766E" stroke-width="2"/>
-      <text x="${x(mS) - 3}" y="33" font-size="8" text-anchor="end" fill="#B45309" stroke="none">sugere</text>
-      <text x="${x(mI) + 3}" y="33" font-size="8" fill="#0F766E" stroke="none">decide</text></svg>`;
+  // ---- governança
+  function barraIC(k, fxVig) {
+    const pos = (v) => `${(Math.max(0, Math.min(1, (v - 0.85) / 0.15)) * 100).toFixed(2)}%`;
+    const cores = { "IA decide": ["rgba(15,123,108,0.28)", "#0F7B6C"], "IA sugere": ["rgba(217,138,30,0.30)", "#B86A0C"], "humano decide": ["rgba(122,134,153,0.30)", "#5B6678"] }[fxVig];
+    return `<span class="ic" role="img" aria-label="Precisão ${pct(k.precisao)}, intervalo ${pct(k.li)} a ${pct(k.ls)}">
+      <span class="ic-trilho"></span>
+      <span class="ic-meta" style="left:${pos(META_S)};border-left:1px dashed #D98A1E"></span>
+      <span class="ic-meta" style="left:${pos(META_D)};border-left:1px dashed #0F7B6C"></span>
+      ${k.li != null ? `<span class="ic-faixa" style="left:${pos(k.li)};width:${((k.ls - Math.max(k.li, 0.85)) / 0.15 * 100).toFixed(2)}%;background:${cores[0]}"></span>
+      <span class="ic-ponto" style="left:${pos(k.precisao)};border-color:${cores[1]}"></span>` : ""}</span>`;
   }
   function telaGov() {
-    const g = gov(), p = pol();
-    $("#tela-governanca").innerHTML = `
-      <h1 class="pergunta" id="h-governanca">Por que a IA não decide tudo?</h1>
-      <p class="subtitulo">Cada fila só é automatizada quando a precisão comprovada supera a meta humana.</p>
-      <div class="cartao">
-        <div class="tab-gov-envelope"><table class="tab-gov"><caption class="leitura" style="text-align:left;margin:0 0 12px">Precisão de cada fila contra as metas (ponto: precisão; faixa clara: intervalo de 95%; traços: metas de sugestão e de decisão). Dia ${S.dia} do piloto.</caption>
-          <thead><tr><th scope="col">Fila</th><th scope="col" class="col-politica">Política</th><th scope="col">Precisão comprovada</th><th scope="col">Regra</th></tr></thead>
-          <tbody>${CATS.map((c) => {
-            const k = g.categorias[c], r = regraVs(p.por_categoria[c], k.decisao_regra);
-            return `<tr tabindex="0" data-cat="${esc(c)}" title="${esc(c)}: ${num(k.n_sombra)} tickets, ${pct(k.precisao)} de precisão, intervalo ${pct(k.li)}–${pct(k.ls)}">
-              <td class="nome">${esc(c)}</td><td class="col-politica">${selo(p.por_categoria[c])}</td><td>${barraIC(k)}</td>
-              <td><span class="decisao-regra ${r.cls}">${r.txt}</span></td></tr>`;
-          }).join("")}</tbody></table></div>
-        <p class="leitura">O que esta tabela diz: só as filas cujo intervalo inteiro fica à direita do traço de decisão são automáticas. Clique numa fila para ver a evolução e o dia do piloto.</p>
+    const g = gov(), p = politica(), cat = S.sub && CATS.includes(S.sub) ? S.sub : null;
+    $("#conteudo").innerHTML = `
+      <div><h1 class="titulo">Governança</h1><p class="subtitulo">Limite inferior do IC 95% ≥ ${pct(META_D)} libera decisão; ≥ ${pct(META_S)} libera sugestão. A regra só rebaixa.</p></div>
+      <div class="gov-layout">
+        <section class="gov-tabela" aria-label="Filas"><div class="rolavel"><div class="gov-grade">
+          <div class="gov-linha gov-cab"><span>Fila</span><span>Política</span>
+            <span class="gov-cab-ic"><span>Precisão · IC 95%</span><span><span style="color:var(--sugere-tx)">┆ ${pct(META_S)}</span>  <span style="color:var(--decide-tx)">┆ ${pct(META_D)}</span></span></span>
+            <span style="text-align:right">n</span><span>Ação</span></div>
+          ${CATS.map((c) => {
+            const k = g.categorias[c], vig = p.por_categoria[c], a = acaoRegra(vig, k.decisao_regra);
+            return `<a class="gov-linha" href="#governanca/${encodeURIComponent(c)}"${c === cat ? ' aria-current="true"' : ""}>
+              <span class="gov-nome">${esc(c)}</span>${selo(vig)}
+              <span class="ic-celula">${barraIC(k, vig)}<span class="ic-prec">${pct(k.precisao)}</span></span>
+              <span class="gov-n">${num(k.n_sombra)}</span><span class="gov-acao" style="color:${a.cor}">${a.txt}</span></a>`;
+          }).join("")}
+        </div></div></section>
+        ${cat ? painelCategoria(cat) : ""}
       </div>`;
-    document.querySelectorAll("#tela-governanca tbody tr").forEach((tr) => {
-      tr.onclick = () => abrirPainel(tr.dataset.cat, tr);
-      tr.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); abrirPainel(tr.dataset.cat, tr); } };
+    if (cat) {
+      $("#fechar-painel").onclick = () => { location.hash = "#governanca"; };
+      $("#dia").oninput = (e) => { S.dia = +e.target.value; render(); const d = $("#dia"); if (d) d.focus(); };
+      if (celular.matches) $("#fechar-painel").focus();
+    }
+  }
+  function veredito(cat) {
+    const k = gov().categorias[cat], vig = politica().por_categoria[cat];
+    if (k.li == null) return ["Sem dados.", "Nenhum ticket com confiança acima do limiar até este dia."];
+    let r;
+    if (k.decisao_regra === "IA decide") r = ["Elegível para decisão.", `Limite inferior ${pct(k.li)} acima da meta de ${pct(META_D)}.`];
+    else if (k.decisao_regra === "IA sugere") r = ["Elegível para sugestão.", `Limite inferior ${pct(k.li)} entre ${pct(META_S)} e ${pct(META_D)}.`];
+    else r = ["Não elegível para sugestão.", `Limite inferior ${pct(k.li)} abaixo da meta de ${pct(META_S)}.`];
+    if (ORDEM.indexOf(k.decisao_regra) < ORDEM.indexOf(vig)) r[1] += ` A política atual mantém ${FX[vig].nome.toLowerCase()} até a revisão.`;
+    return r;
+  }
+  function painelCategoria(cat) {
+    const k = gov().categorias[cat], vig = politica().por_categoria[cat], [vb, vt] = veredito(cat);
+    const y = (v) => 180 - (Math.max(0.85, Math.min(1, v)) - 0.85) * 1200, x = (i) => 40 + i * (540 / 19);
+    const pts = D.governanca.map((g, i) => g.categorias[cat].li == null ? "" : `${x(i).toFixed(1)},${y(g.categorias[cat].li).toFixed(1)}`).filter(Boolean).join(" ");
+    return `<aside class="painel${celular.matches ? " tela-cheia" : ""}" id="painel" aria-label="Detalhe da fila ${esc(cat)}">
+      <div class="painel-cab"><div><h2>${esc(cat)}</h2>${selo(vig)}</div>
+        <button type="button" class="fechar" id="fechar-painel" aria-label="Fechar painel">${sv(IC.x, 14, ' stroke-width="2"')}</button></div>
+      <div class="tres"><div><span>Precisão</span><span>${pct(k.precisao)}</span></div><div><span>Limite inferior</span><span>${pct(k.li)}</span></div><div><span>Tickets</span><span>${num(k.n_sombra)}</span></div></div>
+      <div class="veredito"><strong style="font-weight:600">${esc(vb)}</strong> ${esc(vt)}</div>
+      <div class="bloco"><span style="font-size:14px;font-weight:600">Limite inferior por dia</span>
+        <svg class="grafico" role="img" aria-label="Limite inferior de ${esc(cat)} por dia; dia ${S.dia}: ${pct(k.li)}" viewBox="0 -18 600 228">
+          <g font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#5F6B7A"><text x="0" y="10">100%</text><text x="0" y="64">95%</text><text x="0" y="124">90%</text><text x="0" y="182">85%</text></g>
+          <line x1="40" y1="60" x2="580" y2="60" stroke="#EEF1F5"/><line x1="40" y1="120" x2="580" y2="120" stroke="#EEF1F5"/><line x1="40" y1="180" x2="580" y2="180" stroke="#EEF1F5"/>
+          <line x1="40" y1="${y(META_D)}" x2="580" y2="${y(META_D)}" stroke="#0F7B6C" stroke-dasharray="5 4" stroke-width="1.5"/>
+          <line x1="40" y1="${y(META_S)}" x2="580" y2="${y(META_S)}" stroke="#D98A1E" stroke-dasharray="5 4" stroke-width="1.5"/>
+          <text x="580" y="${y(META_D) - 5}" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#0B6B5E">decide ${pct(META_D)}</text>
+          <text x="580" y="${y(META_S) - 4}" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#8F4A00">sugere ${pct(META_S)}</text>
+          <polyline fill="none" stroke="#2457D6" stroke-width="2.5" stroke-linejoin="round" points="${pts}"/>
+          ${k.li != null ? `<circle cx="${x(S.dia - 1)}" cy="${y(k.li)}" r="4" fill="#2457D6"/>` : ""}
+          <g font-family="IBM Plex Sans, sans-serif" font-size="${FS()}" fill="#5F6B7A"><text x="40" y="204">dia 1</text><text x="580" y="204" text-anchor="end">dia 20</text></g></svg></div>
+      <div class="bloco"><label for="dia" class="dia-rot"><span>Dia do piloto</span><strong>${S.dia}</strong></label><input id="dia" type="range" min="1" max="20" value="${S.dia}"></div>
+    </aside>`;
+  }
+
+  // ---- robustez
+  function idsInjecao() {
+    const ids = [10244];
+    D.fila.forEach((t) => {
+      if (ids.length >= 8 || ids.includes(t.id)) return;
+      const a = D.ataques[String(t.id)];
+      if (Object.values(a).some((x) => x.pred !== t.pred && x.faixas.F8 === "IA decide")) ids.push(t.id);
+    });
+    return ids;
+  }
+  function textoInjetado(t, ataqueId, alvo) {
+    const tpl = D.ataques_modelos.find((m) => m.id === ataqueId).texto;
+    // o modelo usa a sintaxe de str.format do Python: {alvo} e chaves dobradas
+    const inj = tpl.replace(/\{alvo\}/g, alvo).replace(/\{\{/g, "{").replace(/\}\}/g, "}");
+    return `${esc(t.texto)}${t.truncado ? "…" : ""} <span class="injetado">${esc(inj)}</span>`;
+  }
+  function telaRob() {
+    const cen = CEN.some(([k]) => k === S.sub) ? S.sub : "injecao";
+    $("#conteudo").innerHTML = `
+      <div><h1 class="titulo">Robustez</h1><p class="subtitulo">Cenários de falha executados sobre tickets reais. Resultados pré-calculados pelo classificador.</p></div>
+      <div class="sel-cen campo"><label for="sel-cen">Cenário</label><select id="sel-cen">${CEN.map(([k, n]) => `<option value="${k}"${k === cen ? " selected" : ""}>${n}</option>`).join("")}</select></div>
+      <div class="rob-layout">
+        <nav class="menu-cen rolavel" aria-label="Cenários">${CEN.map(([k, n, s]) => `<a class="cen" href="#robustez/${k}"${k === cen ? ' aria-current="true"' : ""}><span class="cen-nome">${n}</span><span class="cen-sub">${s}</span></a>`).join("")}</nav>
+        <section class="cenario" aria-label="${esc(CEN.find(([k]) => k === cen)[1])}">${({ injecao: cenInjecao, duplicado: cenDuplicado, reembolso: cenReembolso, sombra: cenSombra, politica: cenPolitica })[cen]()}</section>
+      </div>
+      <details class="log"><summary>Log da sessão (${num(S.log.length)} linhas, sem texto)</summary><pre>${esc(S.log.map((l) => JSON.stringify(l)).join("\n")) || "Sem eventos ainda."}</pre></details>`;
+    $("#sel-cen").onchange = (e) => { location.hash = `#robustez/${e.target.value}`; };
+    ({ injecao: ligarInjecao, duplicado: ligarDuplicado, reembolso: ligarReembolso, sombra: ligarSombra, politica: ligarPolitica })[cen]();
+  }
+  function cartaoComp(polK, t, a) {
+    const fa = S.modo === "sombra" ? "humano decide" : a.faixas[polK], trocou = a.pred !== t.pred;
+    const tipo = trocou && fa === "IA decide" ? "dano" : trocou ? "contido" : "neutro";
+    const ver = { dano: [IC.alerta, "Passa sem revisão humana"], contido: [IC.check, "Retido para revisão humana"], neutro: [IC.check, "Sem efeito na categoria"] }[tipo];
+    return `<div class="comp ${tipo === "neutro" ? "" : tipo}"><span class="comp-rot">Política ${esc(POL[polK].toLowerCase())}</span>
+      <div class="comp-res"><span class="comp-cat">${esc(a.pred)}</span><span class="legenda">${pct(a.p_max)}</span>${selo(fa)}</div>
+      <span class="veredito-linha ${tipo}">${sv(ver[0], 16, ' stroke-width="2"')}${ver[1]}</span></div>`;
+  }
+  function cenInjecao() {
+    const I = S.inj, t = ticketPorId(I.ticket), a = D.ataques[String(t.id)][I.ataque], dn = D.kpis.dano_injecao;
+    return `<div><h2>Injeção de instrução</h2><p class="subtitulo">Texto adversarial anexado ao ticket para forçar outra fila.</p></div>
+      <div class="controles">
+        <div class="campo"><label for="ataque">Ataque</label><select id="ataque">${Object.entries(ATAQUE).map(([k, n]) => `<option value="${k}"${k === I.ataque ? " selected" : ""}>${n}</option>`).join("")}</select></div>
+        <div class="campo" style="flex:1 1 160px"><label for="ticket">Ticket</label><select id="ticket" class="mono">${idsInjecao().map((id) => `<option value="${id}"${id === I.ticket ? " selected" : ""}>#${id}</option>`).join("")}</select></div>
+        <button type="button" class="botao primario grande" id="executar">Executar</button></div>
+      ${I.executado ? `<div class="bloco"><span class="legenda">Ticket #${t.id} · original: ${esc(t.pred)}, ${pct(t.p_max)}</span><p class="texto-ataque">${textoInjetado(t, I.ataque, a.alvo)}</p></div>
+        <div class="comparacao">${cartaoComp("F8", t, a)}${cartaoComp("F9", t, a)}</div>` : '<p class="legenda">Escolha o ataque e o ticket e execute.</p>'}
+      <div class="agregado"><span style="font-size:14px;font-weight:600">Resultado agregado · 5 ataques sobre a faixa IA decide</span>
+        <div class="rolavel"><table class="tab-agregado"><thead><tr><th scope="col">Política</th><th scope="col" class="dir">Tentativas</th><th scope="col" class="dir">Sem revisão</th><th scope="col" class="dir">Retiradas da automação</th></tr></thead>
+          <tbody>${["F9", "F8", "F4"].map((k) => `<tr><td style="font-weight:600">${POL[k]}</td><td class="dir mono">${num(dn[k].n_pares)}</td><td class="dir" style="font-weight:600;color:${dn[k].silenciosos ? "var(--dano)" : "var(--decide-tx)"}">${num(dn[k].silenciosos)}</td><td class="dir mono" style="color:var(--texto-3)">${num(dn[k].saem_de_ia_decide)}</td></tr>`).join("")}</tbody></table></div></div>`;
+  }
+  function ligarInjecao() {
+    $("#ataque").onchange = (e) => { S.inj.ataque = e.target.value; S.inj.executado = false; render(); };
+    $("#ticket").onchange = (e) => { S.inj.ticket = +e.target.value; S.inj.executado = false; render(); };
+    $("#executar").onclick = () => { S.inj.executado = true; render(); };
+  }
+  function cenDuplicado() {
+    const t = ticketPorId(10244);
+    return `<div><h2>Evento duplicado</h2><p class="subtitulo">Reentrega do webhook com o mesmo <span class="mono">event_id</span> (fila-${t.id}).</p></div>
+      <div class="controles"><button type="button" class="botao primario grande" id="reentregar">Reentregar evento</button></div>
+      ${S.dupRodou ? `<p class="resultado"><strong>Duplicado: nenhuma nova decisão.</strong> A chave já estava reservada; a decisão original segue valendo.</p><p class="codigo">${esc(JSON.stringify(S.dupRodou))}</p>` : ""}`;
+  }
+  function ligarDuplicado() { $("#reentregar").onclick = () => { S.dupRodou = reentregar(ticketPorId(10244)); render(); }; }
+  function cenReembolso() {
+    const t = ticketPorId(TICKET_REEMBOLSO), f = faixaTicket(t).faixa;
+    return `<div><h2>Regra de reembolso</h2><p class="subtitulo">Tipo sensível vai para triagem humana, mesmo com confiança alta.</p></div>
+      <p class="resultado">Ticket <span class="mono">#${t.id}</span> · ${esc(t.pred)}, ${pct(t.p_max)} · faixa ${selo(f)}</p>
+      <div class="controles"><button type="button" class="botao primario grande" id="reembolso">Marcar como reembolso</button></div>
+      ${S.reembolsoRodou ? `<p class="resultado">Faixa com o tipo reembolso: ${selo("humano decide")}</p><p class="legenda">Reembolso e cancelamento movimentam dinheiro e são difíceis de reverter.</p>` : ""}`;
+  }
+  function ligarReembolso() {
+    $("#reembolso").onclick = () => {
+      const t = ticketPorId(TICKET_REEMBOLSO);
+      S.reembolsoRodou = true;
+      S.log.push(linhaDecisao(t, "humano decide", "humano decide", "regra de ação: Refund request; termos: " + t.termos));
+      render();
+    };
+  }
+  function cenSombra() {
+    const g = gov(), base = g.faixas[S.pol]["IA decide"].n / g.n_total;
+    return `<div><h2>Modo sombra</h2><p class="subtitulo">Desliga as decisões automáticas e mantém o registro do que seria decidido.</p></div>
+      <label class="chave"><input type="checkbox" id="sombra"${S.modo === "sombra" ? " checked" : ""}> Modo sombra ${S.modo === "sombra" ? "ligado" : "desligado"}</label>
+      ${S.modo === "sombra" ? `<p class="resultado">Automação: <strong>${pct(base)} → ${pct(0)}</strong>. Alerta emitido na visão geral. O log continua registrando a faixa calculada em <span class="mono">faixa_sem_sombra</span>.</p>${S.log.length ? `<p class="codigo">${esc(JSON.stringify(S.log[S.log.length - 1]))}</p>` : ""}` : `<p class="resultado">Automação atual: <strong>${pct(base)}</strong>.</p>`}`;
+  }
+  function ligarSombra() {
+    $("#sombra").onchange = (e) => {
+      S.modo = e.target.checked ? "sombra" : "ativo";
+      if (S.modo === "sombra") { const t = ticketPorId(10244); S.log.push(linhaDecisao(t, "humano decide", t.faixas[S.pol].faixa, "modo sombra")); }
+      render(); $("#sombra").focus();
+    };
+  }
+  function cenPolitica() {
+    const dn = D.kpis.dano_injecao, g = gov();
+    return `<div><h2>Troca de política</h2><p class="subtitulo">Voltar para a política atual é o rollback.</p></div>
+      <div class="segmentado" role="group" aria-label="Política">${["F9", "F8", "F4"].map((k) => `<button type="button" data-pol="${k}" aria-pressed="${S.pol === k}">${POL[k]}</button>`).join("")}</div>
+      <div class="rolavel"><table class="tab-agregado"><thead><tr><th scope="col">Política</th><th scope="col" class="dir">Automação</th><th scope="col" class="dir">Injeções sem revisão</th></tr></thead>
+        <tbody>${["F9", "F8", "F4"].map((k) => `<tr${k === S.pol ? ' style="background:var(--selecionado)"' : ""}><td style="font-weight:600">${POL[k]}${k === S.pol ? " (em uso)" : ""}</td><td class="dir">${pct(S.modo === "sombra" ? 0 : g.faixas[k]["IA decide"].n / g.n_total)}</td><td class="dir" style="font-weight:600;color:${dn[k].silenciosos ? "var(--dano)" : "var(--decide-tx)"}">${num(dn[k].silenciosos)} de ${num(dn[k].n_pares)}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+  function ligarPolitica() { $$("[data-pol]").forEach((b) => b.onclick = () => { S.pol = b.dataset.pol; render(); }); }
+
+  // ---- painel "Sobre os dados"
+  let focoAntes = null;
+  function abrirSobre() { focoAntes = document.activeElement; S.sobreAberto = true; $("#veu").hidden = false; $("#sobre").hidden = false; renderSobre(); $("#fechar-sobre").focus(); }
+  function fecharSobre() { S.sobreAberto = false; $("#veu").hidden = true; $("#sobre").hidden = true; if (focoAntes && document.body.contains(focoAntes)) focoAntes.focus(); else { const b = $("#abrir-sobre"); if (b) b.focus(); } }
+  function economia() {
+    const f = faixas(), p = S.premissas;
+    return (f.d.n / f.n) * p.volume_ano * p.minutos_triagem / 60 * p.reais_por_hora;
+  }
+  function renderSobre() {
+    const p = S.premissas;
+    $("#sobre").innerHTML = `<div class="painel-cab"><div><h2 id="sobre-titulo">Sobre os dados</h2></div><button type="button" class="fechar" id="fechar-sobre" aria-label="Fechar">${sv(IC.x, 14, ' stroke-width="2"')}</button></div>
+      <ul>
+        <li>Origem: holdout por grupo do DS2 (TI interna, ${num(D.governanca[19].n_total)} tickets); fila com 300 tickets sorteados.</li>
+        <li>A correção do atendente é simulada pelo rótulo original, que tem ruído próprio.</li>
+        <li>A transferência para a operação de suporte é premissa, não resultado.</li>
+        <li>Políticas: Atual = F9; Sem confirmação no teste = F8; Inicial = F4.</li>
+      </ul>
+      <div class="premissas">
+        <div class="campo"><label for="p-reais">R$/h</label><input id="p-reais" type="number" min="0" step="1" value="${p.reais_por_hora}"></div>
+        <div class="campo"><label for="p-min">min/ticket</label><input id="p-min" type="number" min="0" step="0.5" value="${p.minutos_triagem}"></div>
+        <div class="campo"><label for="p-vol">tickets/ano</label><input id="p-vol" type="number" min="0" step="1000" value="${p.volume_ano}"></div>
+      </div>
+      <p class="resultado" id="eco">Economia anual estimada (cenário A): <strong>${brl(economia())}</strong>. Cenário B: zero.</p>
+      <a class="link-forte" href="https://github.com/covaleski13-tech/ai-master-challenge/blob/submission/gustavo-covaleski/submissions/gustavo-covaleski/README.md">README da submissão</a>`;
+    $("#fechar-sobre").onclick = fecharSobre;
+    [["p-reais", "reais_por_hora"], ["p-min", "minutos_triagem"], ["p-vol", "volume_ano"]].forEach(([id, k]) => {
+      $(`#${id}`).oninput = (e) => { const v = parseFloat(e.target.value); S.premissas[k] = isFinite(v) && v >= 0 ? v : 0; $("#eco").innerHTML = `Economia anual estimada (cenário A): <strong>${brl(economia())}</strong>. Cenário B: zero.`; };
     });
   }
-  function frase(cat) {
-    const k = gov().categorias[cat], vig = pol().por_categoria[cat], regra = k.decisao_regra;
-    const mI = D.meta.meta_ia_decide, mS = D.meta.meta_ia_sugere;
-    if (k.li == null) return `${cat}: ainda sem tickets com confiança suficiente para medir.`;
-    const base = `${cat}: ${pct(k.precisao)} de precisão`;
-    const d = ORDEM.indexOf(regra) - ORDEM.indexOf(vig);
-    if (d < 0) return `${base}, mas o limite inferior (${pct(k.li)}) ficou abaixo da meta de ${vig === "IA decide" ? `decisão (${pct(mI)})` : `sugestão (${pct(mS)})`}. A regra rebaixaria para ${regra}; a política vigente mantém ${vig} até a decisão do supervisor.`;
-    if (d > 0) return `${base}, e o limite inferior (${pct(k.li)}) já supera a meta de ${regra === "IA decide" ? `decisão (${pct(mI)})` : `sugestão (${pct(mS)})`}. Pode subir para ${regra} se se mantiver até o fim do piloto.`;
-    if (regra === "humano decide") return `${base}, mas o limite inferior (${pct(k.li)}) não alcança a meta de sugestão (${pct(mS)}). Continua com humano.`;
-    if (regra === "IA sugere") return `${base}; o limite inferior (${pct(k.li)}) fica entre a meta de sugestão (${pct(mS)}) e a de decisão (${pct(mI)}). Continua com sugestão e confirmação humana.`;
-    return `${base}; o limite inferior (${pct(k.li)}) supera a meta de decisão (${pct(mI)}). Continua automática.`;
-  }
-  function grafico(cat) {
-    const W = 460, H = 200, L = 40, R = 12, T = 12, B = 26, lo = 0.85, hi = 1;
-    const x = (d) => L + (d - 1) / 19 * (W - L - R), y = (v) => T + (1 - (Math.max(lo, v) - lo) / (hi - lo)) * (H - T - B);
-    const pts = D.governanca.map((g) => [g.dia, g.categorias[cat].li]).filter((p) => p[1] != null);
-    const mI = D.meta.meta_ia_decide, mS = D.meta.meta_ia_sugere, atual = gov().categorias[cat].li;
-    return `<svg class="grafico" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="graf-t">
-      ${[0.85, 0.9, 0.95, 1].map((v) => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#E2E8F0" stroke-width="1"/><text x="${L - 6}" y="${y(v) + 4}" font-size="11" text-anchor="end" fill="#475569" stroke="none">${pct(v, 0)}</text>`).join("")}
-      <line x1="${L}" x2="${W - R}" y1="${y(mI)}" y2="${y(mI)}" stroke="#0F766E" stroke-dasharray="5 4" stroke-width="1.5"/>
-      <text x="${W - R}" y="${y(mI) - 5}" font-size="11" text-anchor="end" fill="#0F766E" stroke="none">meta de decisão ${pct(mI)}</text>
-      <line x1="${L}" x2="${W - R}" y1="${y(mS)}" y2="${y(mS)}" stroke="#B45309" stroke-dasharray="5 4" stroke-width="1.5"/>
-      <text x="${W - R}" y="${y(mS) + 14}" font-size="11" text-anchor="end" fill="#B45309" stroke="none">meta de sugestão ${pct(mS)}</text>
-      <line x1="${x(S.dia)}" x2="${x(S.dia)}" y1="${T}" y2="${H - B}" stroke="#94A3B8" stroke-dasharray="2 3"/>
-      <path d="${pts.map((p, i) => `${i ? "L" : "M"}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join("")}" stroke="#0F172A" stroke-width="2"/>
-      ${atual != null ? `<circle cx="${x(S.dia)}" cy="${y(atual)}" r="4.5" fill="#0F172A" stroke="#fff" stroke-width="2"/><text x="${Math.min(x(S.dia) + 8, W - 60)}" y="${y(atual) + 16}" font-size="12" font-weight="600" fill="#0F172A" stroke="none">${pct(atual)}</text>` : ""}
-      <text x="${L}" y="${H - 6}" font-size="11" fill="#475569" stroke="none">dia 1</text><text x="${W - R}" y="${H - 6}" font-size="11" text-anchor="end" fill="#475569" stroke="none">dia 20</text></svg>`;
-  }
-  function renderPainel() {
-    const cat = S.painelCat, k = gov().categorias[cat], vig = pol().por_categoria[cat];
-    $("#painel").innerHTML = `
-      <div class="topo"><div><h2 id="painel-titulo">${esc(cat)}</h2><p class="leitura">Política vigente: ${selo(vig)}</p></div>
-        <button type="button" class="fechar-x" id="fechar-painel" aria-label="Fechar painel (Esc)">${X}</button></div>
-      <p class="frase">${esc(frase(cat))}</p>
-      <h3 id="graf-t" style="font-size:16px;margin:16px 0 4px">O limite inferior já alcançou a meta?</h3>
-      ${grafico(cat)}
-      <p class="leitura">O que este gráfico diz: a linha é o pior caso plausível da precisão (limite inferior de 95%), acumulado dia a dia. A fila só sobe de faixa quando a linha passa da meta tracejada.</p>
-      <div class="controle-dia"><label for="dia">Dia do piloto</label><input id="dia" type="range" min="1" max="20" value="${S.dia}"><strong>${S.dia}</strong></div>
-      <p class="leitura">${num(k.n_sombra)} tickets com confiança acima do limiar até o dia ${S.dia}; ${num(k.acertos)} acertos; intervalo de ${pct(k.li)} a ${pct(k.ls)}.</p>`;
-    $("#fechar-painel").onclick = fecharPainel;
-    $("#dia").oninput = (e) => { S.dia = +e.target.value; render(); $("#dia").focus(); };
-  }
-  function abrirPainel(cat, origem) {
-    S.painelCat = cat; S.focoAntes = origem || document.activeElement;
-    $("#painel").hidden = false; $("#veu").hidden = false;
-    renderPainel(); $("#fechar-painel").focus();
-  }
-  function fecharPainel() {
-    S.painelCat = null; $("#painel").hidden = true; $("#veu").hidden = true;
-    render();
-    if (S.focoAntes && document.body.contains(S.focoAntes)) S.focoAntes.focus();
-  }
-  $("#veu").onclick = fecharPainel;
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && S.painelCat) fecharPainel(); });
+  $("#veu").onclick = fecharSobre;
 
-  // ---- tela 4
-  function telaRobustez() {
-    const r = S.r, t = D.fila.find((x) => x.id === r.ticket);
-    const a = D.ataques[String(r.ticket)][r.ataque];
-    const dn = D.kpis.dano_injecao;
-    const lado = (pk) => {
-      const fa = a.faixas[pk], troca = a.pred !== t.pred;
-      const veredito = troca && fa === "IA decide" ? `<span class="ruim">Dano silencioso:</span> a fila mudou para ${esc(a.pred)} e ninguém confere.`
-        : troca ? `<span class="bom">Contido:</span> a fila mudou para ${esc(a.pred)}, mas um humano confere (${esc(fa)}).` : `<span class="bom">Sem efeito:</span> a fila continua ${esc(a.pred)}.`;
-      return `<div><h4>${esc(D.politicas[pk].nome)}</h4>${selo(fa, ` → ${esc(a.pred)}`)}<p class="resultado">${veredito}</p>
-        <p class="fonte-num">Em ${num(dn[pk].n_pares)} ataques simulados: ${num(dn[pk].silenciosos)} com dano silencioso (f5_injecao.json).</p></div>`;
-    };
-    const reemb = D.fila.filter((x) => x.faixas.F9.faixa === "IA decide").sort((p, q) => q.p_max - p.p_max)[0];
-    const cob = (pk) => { const fx = gov().faixas[pk]; return fx["IA decide"].n / gov().n_total; };
-    const base = gov().faixas[S.pol]["IA decide"].n / gov().n_total;
-    const ultimoLog = S.log.length ? JSON.stringify(S.log[S.log.length - 1]) : "";
-    $("#tela-robustez").innerHTML = `
-      <h1 class="pergunta" id="h-robustez">O que acontece se…?</h1>
-      <p class="subtitulo">Cinco testes de estresse. Cada um roda com dados reais do piloto e mostra o resultado e a fonte.</p>
-      <div class="cenarios">
-        <article class="cartao cenario" style="grid-column:1 / -1"><h3>…alguém tentar enganar a IA?</h3>
-          <p class="leitura">Um texto malicioso é colado no fim do ticket para empurrar a classificação. Compare a política de seleção (F8) com a implantada (F9).</p>
-          <div class="controles">
-            <label>Ataque <select id="r-ataque">${D.ataques_modelos.map((m) => `<option value="${esc(m.id)}"${m.id === r.ataque ? " selected" : ""}>${esc(m.id.replace(/_/g, " "))}</option>`).join("")}</select></label>
-            <label>Ticket <select id="r-ticket">${D.fila.map((x) => `<option value="${x.id}"${x.id === r.ticket ? " selected" : ""}>#${x.id}</option>`).join("")}</select></label>
-            <button type="button" class="botao primario" id="r-rodar-ataque">Rodar ataque</button></div>
-          ${r.rodouAtaque ? `<p class="resultado">Sem ataque, o ticket #${t.id} vai para ${esc(t.pred)} com ${pct(t.p_max)} de confiança. Com o ataque "${esc(r.ataque.replace(/_/g, " "))}" (alvo: ${esc(a.alvo)}), o modelo responde ${esc(a.pred)} com ${pct(a.p_max)}.</p><div class="lado-a-lado">${lado("F8")}${lado("F9")}</div>` : ""}
-        </article>
-        <article class="cartao cenario"><h3>…o webhook entregar duas vezes?</h3>
-          <p class="leitura">O mesmo evento chega de novo, com o mesmo identificador.</p>
-          <div class="controles"><button type="button" class="botao" id="r-rodar-dup">Reentregar o evento</button></div>
-          ${r.rodouDup ? `<p class="resultado"><span class="bom">Duplicado, nenhuma nova decisão.</span> A chave já estava reservada (mesma lógica de triagem.py, testada em test_f8.py).</p><p class="fonte-num"><code>${esc(r.linhaDup)}</code></p>` : ""}
-        </article>
-        <article class="cartao cenario"><h3>…o ticket for um reembolso?</h3>
-          <p class="leitura">Ticket #${reemb.id}, com ${pct(reemb.p_max)} de confiança em ${esc(reemb.pred)}, marcado como pedido de reembolso.</p>
-          <div class="controles"><button type="button" class="botao" id="r-rodar-reembolso">Marcar como reembolso</button></div>
-          ${r.rodouReembolso ? `<p class="resultado">Antes: ${selo("IA decide")} → Depois: ${selo("humano decide")}</p><p class="leitura">Regra de ação: reembolso e cancelamento movimentam dinheiro e são difíceis de reverter; vão para humano mesmo com confiança alta.</p>` : ""}
-        </article>
-        <article class="cartao cenario"><h3>…precisarmos desligar a IA agora?</h3>
-          <p class="leitura">O modo sombra manda tudo para humano e continua registrando o que a IA teria feito. É o rollback imediato.</p>
-          <div class="controles"><label class="chave"><input type="checkbox" id="r-sombra" ${S.modo === "sombra" ? "checked" : ""}> Modo sombra ${S.modo === "sombra" ? "ligado" : "desligado"}</label></div>
-          ${S.modo === "sombra" ? `<p class="resultado"><span class="ruim">Alerta disparado:</span> a cobertura de IA decide caiu de ${pct(base)} para ${pct(0)}. O log continua, com a faixa real em <code>faixa_sem_sombra</code>.</p>${ultimoLog ? `<p class="fonte-num"><code>${esc(ultimoLog)}</code></p>` : ""}` : ""}
-        </article>
-        <article class="cartao cenario"><h3>…uma política nova for pior?</h3>
-          <p class="leitura">Troque a política e veja o efeito. Voltar para a F9 é o rollback.</p>
-          <div class="controles"><div class="segmentado" role="group" aria-label="Política">${["F9", "F8", "F4"].map((k) => `<button type="button" data-pol="${k}" aria-pressed="${S.pol === k}">${esc(D.politicas[k].nome)}</button>`).join("")}</div></div>
-          <p class="resultado">Com ${esc(pol().nome)}: a IA decide sozinha em <strong>${pct(cob(S.pol))}</strong> dos tickets; ${dn[S.pol].silenciosos ? `<span class="ruim">${num(dn[S.pol].silenciosos)} de ${num(dn[S.pol].n_pares)} ataques passam sem humano</span>` : `<span class="bom">0 de ${num(dn[S.pol].n_pares)} ataques passam sem humano</span>`}.</p>
-          <p class="fonte-num">Fontes: governança do dia ${S.dia} (data.js) e f5_injecao.json.</p>
-        </article>
-        <details class="log"><summary>Log da tela (${num(S.log.length)} linhas, mesmos campos de decisoes.jsonl, sem texto)</summary><pre>${esc(S.log.map((l) => JSON.stringify(l)).join("\n"))}</pre></details>
-      </div>`;
-    $("#r-ataque").onchange = (e) => { r.ataque = e.target.value; r.rodouAtaque = false; render(); };
-    $("#r-ticket").onchange = (e) => { r.ticket = +e.target.value; r.rodouAtaque = false; render(); };
-    $("#r-rodar-ataque").onclick = () => { r.rodouAtaque = true; render(); };
-    $("#r-rodar-dup").onclick = () => { r.linhaDup = JSON.stringify(reentregar(t)); r.rodouDup = true; render(); };
-    $("#r-rodar-reembolso").onclick = () => { r.rodouReembolso = true; S.log.push({ timestamp_utc: agora(), chave: chave(reemb), event_id: `fila-${reemb.id}`, categoria: reemb.pred, p_max: reemb.p_max, faixa: "humano decide", faixa_sem_sombra: "humano decide", motivo: "regra de ação: Refund request; termos: " + reemb.termos, modelo_versao: D.meta.modelo_versao, politica_versao: D.meta.politica_versao, latencia_ms: null, erro: null }); render(); };
-    $("#r-sombra").onchange = (e) => {
-      S.modo = e.target.checked ? "sombra" : "ativo";
-      if (S.modo === "sombra") { const f = faixaTicket(t); S.log.push({ timestamp_utc: agora(), chave: chave(t), event_id: `fila-${t.id}`, categoria: t.pred, p_max: t.p_max, faixa: "humano decide", faixa_sem_sombra: f.semSombra, motivo: "modo sombra", modelo_versao: D.meta.modelo_versao, politica_versao: D.meta.politica_versao, latencia_ms: null, erro: null }); }
-      render(); $("#r-sombra").focus();
-    };
-    document.querySelectorAll("#tela-robustez [data-pol]").forEach((b) => b.onclick = () => { S.pol = b.dataset.pol; render(); });
-  }
-
-  irPara(location.hash.slice(1) || "saude");
+  lerHash();
 })();

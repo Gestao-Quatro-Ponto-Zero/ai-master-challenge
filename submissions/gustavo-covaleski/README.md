@@ -80,9 +80,9 @@ Mais detalhes:
 
 ![Aba lote: 200 tickets do holdout passados por triar](process-log/screenshots/6_lote.png)
 
-![Console do piloto, tela 1: o piloto está saudável?](process-log/screenshots/v1_saude.png)
+![Console do piloto: visão geral](process-log/screenshots/d1_visao.png)
 
-Outras telas do console: [fila do atendente](process-log/screenshots/v2_fila.png), [governança com Hardware](process-log/screenshots/v3_governanca_hardware.png), [robustez: injeção F8 × F9](process-log/screenshots/v4_robustez_injecao.png), [robustez: modo sombra](process-log/screenshots/v5_robustez_sombra.png), [celular](process-log/screenshots/v6_celular.png), [antes e depois](process-log/screenshots/antes_depois.png).
+Outras telas do console: [fila](process-log/screenshots/d2_fila.png), [governança com Hardware](process-log/screenshots/d3_governanca.png), [robustez: injeção](process-log/screenshots/d4_robustez.png), [tablet](process-log/screenshots/t1_visao.png), [celular: visão geral](process-log/screenshots/m1_visao.png), [celular: ticket](process-log/screenshots/m2_ticket.png), [celular: governança](process-log/screenshots/m3_governanca.png), [antes e depois](process-log/screenshots/antes_depois.png).
 
 ### Recomendações
 

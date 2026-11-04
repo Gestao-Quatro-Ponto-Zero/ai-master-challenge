@@ -1,31 +1,33 @@
-# Sistema de design do console (F11)
+# Sistema de design do console (F12)
 
-Origem: skill `ui-ux-pro-max` (`--design-system`, estilo "Accessible & Ethical", padrão "Trust & Authority", paleta "navy + azul de ação") e skill `frontend-design` (direção estética e composição). Ajustes meus estão marcados com *.
+**Origem:** pranchas feitas no Claude Design pelo chat do Projeto (`planning/F12-design/`, 7 pranchas: desktop 1440, tablet 1024, celular 390), aprovadas pelo Gustavo. Este arquivo transcreve o sistema das pranchas; a F11 (Source Serif 4 + Fira Sans, navegação lateral navy) foi substituída.
 
-**Estilo.** Ferramenta de operação sóbria e confiável: navegação navy fixa, conteúdo em fundo suave, cartões brancos com sombra leve. Uma pergunta por tela, escrita como título. O elemento memorável é a tipografia dos títulos-pergunta (serifa); todo o resto é quieto.
+**Estilo:** ferramenta de operação, barra superior escura, conteúdo em cinza claro, cartões brancos com borda e sem sombra. Títulos nominais ("Visão geral", "Fila", "Governança", "Robustez"), legendas de uma linha, tom técnico.
 
-**Paleta** (papel de cada cor):
-- `#0F172A` navy: navegação lateral e texto de título. Transmite autoridade sem ser "tela escura".
-- `#0369A1` azul de ação: só a ação principal de cada tela, links e foco. Nenhum outro uso.
-- `#EEF2F6` fundo da área de conteúdo* (a skill sugeriu #F8FAFC; escureci um tom para separar os cartões sem borda pesada).
-- `#FFFFFF` cartões; `#E2E8F0` bordas; `#475569` texto secundário; `#0F172A` texto principal.
-- Faixas (semânticas, seguras para daltonismo pela diferença de luminância e sempre com ícone + rótulo)*:
-  - IA decide `#0F766E` (verde-azulado), ícone de check;
-  - IA sugere `#B45309` (âmbar), ícone de olho (o humano confere);
-  - humano decide `#9F1239` (carmim), ícone de pessoa.
-  Fundos claros correspondentes: `#E6F4F1`, `#FDF3E1`, `#FBE9EE`. Nenhuma cor decorativa além dessas.
+**Fontes** (auto-hospedadas em `fonts/`, woff2 + `fontes.css` em base64 para `file://`; licença OFL):
+- IBM Plex Sans 400/500/600/700: interface;
+- IBM Plex Mono 400/500: ids, contagens e código;
+- números tabulares em tudo.
 
-**Fontes** (auto-hospedadas em `fonts/`, woff2, `font-display: swap`, licença OFL):
-- títulos-pergunta: Source Serif 4, 600*. A skill sugeriu EB Garamond, de tom jurídico; troquei por uma serifa mais legível em tela, que mantém o tom de autoridade.
-- interface e números: Fira Sans 400/500/600 (sugestão da skill para dashboards), com números tabulares.
+**Cores:**
+- barra superior `#0B1B33`; aba inativa `#C7D2E3`; aba ativa `rgba(255,255,255,.12)`; chips `#DDE5F0` com borda `rgba(255,255,255,.18)`;
+- fundo `#F2F4F7`; cartão `#FFFFFF`; borda `#E3E7ED`; divisória `#EEF1F5`;
+- texto `#111827`; secundário `#5F6B7A`; terciário `#3D4A5C`;
+- ação primária `#2457D6` (hover `#1A43AA`); selecionado `#EEF3FE`;
+- alerta `#FFF4E5` / borda `#F5C98B` / texto `#5C3300`; dano `#B42318`.
 
-**Escala tipográfica** (razão ~1,25): 12 / 14 / 16 (corpo) / 20 / 25 / 32 (título-pergunta) / 40 (indicador grande).
-**Espaçamento:** base 4 px; escala 4, 8, 12, 16, 24, 32, 48 (densidade 6/10).
-**Raio:** 10 px em cartões, 999 px em selos e chips, 6 px em botões e campos (hierarquia, não um raio único).
-**Sombra:** `0 1px 2px rgba(15,23,42,.06), 0 4px 12px rgba(15,23,42,.05)` só em cartões; o painel lateral tem sombra mais forte.
+**Faixas** (sempre com rótulo de texto):
+- IA decide: barra `#0F7B6C`, selo `#E3F3EF` / `#0B6B5E`;
+- IA sugere: barra `#D98A1E`, selo `#FCEFD9` / `#8F4A00`;
+- humano decide: barra `#7A8699`, selo `#EAEEF3` / `#3D4A5C`. É cinza, não vermelho: humano não é erro.
 
-**Gráficos:** SVG próprio. Barra empilhada horizontal para as faixas; barra de precisão com o IC como faixa clara, o ponto da precisão e duas marcas verticais rotuladas para as metas; linha diária com as metas tracejadas e rotuladas diretamente. Todo gráfico tem um título-pergunta e uma frase de leitura, e não depende de legenda (rótulos diretos).
+**Forma:** raio de 12 px nos cartões, 8–10 px em controles e blocos internos, 999 px nos selos. Sombra só no painel lateral da Governança. Alvos de toque ≥ 44 px (48 px na barra inferior do celular).
 
-**Movimento:** ≤ 200 ms, só em resposta à ação (troca de tela, abrir o painel). Desligado com `prefers-reduced-motion`.
+**Ícones:** SVG inline de traço. Nenhum emoji.
 
-**Evitado de propósito:** página escura com manchete em gradiente (o padrão dos concorrentes); tudo branco com fonte do sistema (o padrão da F10); rótulos em caixa alta; emojis como ícones (só SVG inline); mais de 2 colunas de conteúdo.
+**Responsivo:**
+- ≥ 1200 px: pranchas de desktop;
+- 768–1199 px: abas numa segunda linha do cabeçalho, indicadores 2 × 2, seções empilhadas;
+- < 768 px: cabeçalho compacto, barra de navegação inferior fixa e telas de lista → detalhe.
+
+**Movimento:** transições ≤ 150 ms, só em resposta à ação; desligadas com `prefers-reduced-motion`.
