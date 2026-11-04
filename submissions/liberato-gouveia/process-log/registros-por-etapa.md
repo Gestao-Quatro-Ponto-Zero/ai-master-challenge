@@ -184,3 +184,74 @@ Outro número que importa para a tela: só **298 deals estão vivos em negociaç
 
 **Tempo aproximado**
 Não informado para esta fase. O Liberato informou cerca de 3 horas acumuladas até o início dela.
+
+---
+
+## Registro 03: Decisões do Liberato depois da Fase 1 (04/11/2026, 19:18)
+
+**Objetivo da etapa**
+Registrar as decisões do Liberato sobre as 4 sugestões que saíram da Fase 1. Nesta etapa não houve código nem análise nova.
+
+**Ferramentas utilizadas**
+- Conversa com o Claude
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "1. sim tire
+> 2. mantenha
+> 3. faça a lista separada
+> 4. ok faça"
+
+**Resultados obtidos**
+As decisões abaixo passam a valer para a lógica do score, que é a Fase 2.
+
+**Decisões que realmente tomei (Liberato)**
+
+| # | Tema | Decisão |
+|---|---|---|
+| 1 | Regra "janela de ouro (14 a 138 dias)" | **Retirar.** A chance por idade (Gráfico 6) já entra na nota. |
+| 2 | Deals sem empresa cadastrada | Resposta: "mantenha". **Interpretação do Claude:** manter esses deals na lista de foco, com o aviso "cadastrar empresa", conforme a sugestão 2 do Registro 02. **A confirmar pelo Liberato.** |
+| 3 | Deals em prospecção (500) | **Lista separada**, ordenada só por valor e sem % de chance. |
+| 4 | Padrão de fim de trimestre | **Não usar na nota** (exige informação futura) e citar como observação no README. |
+
+Para ficar registrado: as 4 decisões aceitaram sugestões que foram formuladas pela IA no Registro 02.
+
+**Sugestões da IA ainda não validadas por mim**
+- A interpretação da decisão 2 (ver acima).
+- O plano da Fase 2, mais abaixo.
+
+**Erros encontrados e correções**
+Nenhum nesta etapa.
+
+**Testes ou evidências disponíveis**
+- Este registro e o commit correspondente
+
+**Tempo aproximado**
+Não informado.
+
+---
+
+## Proposta: Fase 2, Lógica do score (aguardando autorização)
+
+**Objetivo:** definir e testar, nos dados reais, como a ferramenta vai priorizar os deals, **antes de construir qualquer tela.** Esta fase não usa o Lovable nem envia nada ao GitHub. Os cálculos rodam num script de análise, que ainda não é a ferramenta.
+
+**Rascunho da lógica (sugerido pela IA, para o Liberato aprovar ou ajustar)**
+
+| Lista | Quais deals entram | Como são ordenados | Ação sugerida na tela |
+|---|---|---|---|
+| **1. Foco** | Em negociação, com até 138 dias e valor acima do mínimo | **Valor esperado = chance pela idade (Gráfico 6) × preço de tabela** | "Avançar este deal", com o motivo explicado. Se não houver empresa cadastrada, mostra o aviso "cadastrar empresa". |
+| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias | Valor | Deal grande: "ligar para requalificar". Deal pequeno: "encerrar no CRM". |
+| **3. Iniciar contato** | Em prospecção | Só pelo valor, sem % de chance | "Fazer o primeiro contato" |
+| **4. Automatizar** | Em negociação, com até 138 dias e valor abaixo do mínimo | Valor esperado | "Incluir na cadência automática" |
+
+Cada deal mostra o seu "porquê" em linguagem simples. Exemplo: *"Valor esperado US$ 2.410 = US$ 4.821 (preço do GTX Pro) × 50% (chance de um deal com 32 dias)"*.
+
+Os limites ficam como **configuração**, nunca escritos no código com nome de produto. São eles: o valor mínimo para entrar no foco, o valor que define "deal grande" na requalificação e o limite de 138 dias.
+
+**O que será feito nesta fase**
+1. **Ficha da lógica:** 1 página em linguagem simples com as 4 listas, a fórmula, os textos de "porquê" e de ação e os parâmetros.
+2. **Curva oficial de chance por idade:** a mesma conta do Gráfico 6, em faixas mais finas, para ser usada na nota.
+3. **Simulação nos dados reais:** quantos deals caem em cada lista e o top 5 de um vendedor de exemplo, com o "porquê".
+4. **Teste de volta no tempo (backtest):** fingir que hoje é 30/09/2017, montar a lógica só com dados até essa data e conferir o que aconteceu de fato até 31/12/2017. O resultado será comparado com duas alternativas: (a) ordenar só pelo valor e (b) uma lógica "óbvia" baseada em produto e setor, parecida com o que uma IA faria sozinha. Isso mostra, com números, se a nossa lógica é melhor.
+5. **Registro 04** no formato do Liberato e commit.
+
+**Decisões que vão ficar para o Liberato ao final:** aprovar a lógica, os valores dos limites (mínimo do foco e "deal grande") e o formato da nota (valor esperado em US$, nota de 0 a 100 ou os dois).

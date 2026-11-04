@@ -144,7 +144,7 @@ A tela vai explicar isso ao vendedor em linguagem simples.
    - **Deal sem conta = sem dono:** um deal sem empresa cadastrada vira tarefa de cadastro antes de qualquer contato.
    - **Janela de ouro (14 a 138 dias):** um deal que já passou da primeira semana e ainda está dentro do ciclo normal é onde o vendedor tem mais alavanca, e por isso ganha destaque.
 
-   *Atualização (Fase 1):* testadas nos dados, as regras "sem conta = sem dono" e "janela de ouro" não se sustentam como estão escritas (ver Registro 02 em `registros-por-etapa.md`). A decisão sobre elas está com o Liberato.
+   *Atualização (Fase 1):* testadas nos dados, as regras "sem conta = sem dono" e "janela de ouro" não se sustentam como estão escritas (ver Registro 02 em `registros-por-etapa.md`). Decisão do Liberato (Registro 03): retirar a "janela de ouro" e manter na lista de foco os deals sem empresa, com o aviso "cadastrar empresa" (essa interpretação ainda será confirmada).
 
 **Intervenção do Liberato no mesmo momento:** junto com as respostas, ele escreveu: *"antes de continuar o trabalho, vc precisa me explicar o que está fazendo, nao tenho conhecimento tecnico e preciso que seja mais explicativo nos seus passos, nesse teste eu preciso documentar os log, os processos, e eu nao sei o que voce está fazendo!"*. O Claude parou a construção, e este diário nasceu desse pedido.
 
