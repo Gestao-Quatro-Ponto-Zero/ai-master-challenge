@@ -120,7 +120,7 @@
     "pares_que_saem_de_ia_decide": 898,
     "observacao": "ataques inseridos em linguagem natural num texto pré-processado; em produção, o atacante escreve no texto bruto"
   },
-  "dano_ampliado_f8": {
+  "dano_ampliado_f8_oof": {
     "universo": "todos os tickets do holdout por grupo na faixa IA decide (política lida por triagem.carregar_politica, detector desligado)",
     "n_tickets": 3197,
     "n_pares": 15985,
@@ -146,6 +146,44 @@
     },
     "pares_que_saem_de_ia_decide": 2829,
     "observacao": "ataques inseridos em linguagem natural num texto pré-processado; em produção, o atacante escreve no texto bruto",
-    "nota": "política e limiares da F8 (f8_faixas.json, f8_politica_por_categoria.csv); a amostra do LLM da F3 continua definida pelo limiar antigo (0,74)"
+    "nota": "política e limiares da F8 (f8_faixas.json, f8_politica_por_categoria.csv); a amostra do LLM da F3 continua definida pelo limiar antigo (0,74)",
+    "distribuicao_silenciosos": {
+      "n_pares": 15985,
+      "n_silenciosos": 80,
+      "por_categoria_alvo": {
+        "Storage": 80
+      },
+      "por_ataque": {
+        "categoria_repetida": 80
+      }
+    }
+  },
+  "dano_ampliado_f8": {
+    "universo": "todos os tickets do holdout por grupo na faixa IA decide (política lida por triagem.carregar_politica, detector desligado)",
+    "n_tickets": 1279,
+    "n_pares": 6395,
+    "ataques": "solution/tests/golden/ataques_v1.json (5, sem mudança)",
+    "dano_silencioso": {
+      "n": 0,
+      "taxa": 0.0,
+      "ic95_wilson": [
+        0.0,
+        0.0006
+      ],
+      "limite_superior": 0.0006,
+      "definicao": "par continua em IA decide com categoria diferente da prevista no texto limpo"
+    },
+    "alvo_atingido_em_ia_decide": {
+      "n": 0,
+      "taxa": 0.0,
+      "ic95_wilson": [
+        0.0,
+        0.0006
+      ],
+      "limite_superior": 0.0006
+    },
+    "pares_que_saem_de_ia_decide": 860,
+    "observacao": "ataques inseridos em linguagem natural num texto pré-processado; em produção, o atacante escreve no texto bruto",
+    "nota": "política implantada da F9 (seleção OOF da F8 confirmada por categoria no holdout; f8_politica_por_categoria.csv, coluna politica_implantada); a amostra do LLM da F3 continua definida pelo limiar antigo (0,74)"
   }
 }

@@ -20,13 +20,13 @@ Nesta submissão, eu:
 O que encontrei:
 
 - **Tempo e satisfação:** os dados de hoje não permitem achar gargalo de tempo nem fator de satisfação, porque o problema é a medição.
-- **Automação:** a IA decide sozinha em 33,4% dos tickets, com precisão de 97,8% (em tickets reais de TI; a transferência para a operação de suporte é premissa).
+- **Automação:** a seleção fora da dobra indicou 5 categorias (33,4% do volume); a confirmação no teste sustentou 2 (≈ 13,4%); só essas são ativadas. Nelas, a IA decide sozinha com precisão de 98,8% (em tickets reais de TI; a transferência para a operação de suporte é premissa).
 - **Taxonomia:** as 8 categorias seguem convenções que nem um revisor externo (46,7% de concordância) nem um LLM (26,5% na faixa de dúvida) reproduzem.
 
 A recomendação é um piloto de 4 semanas:
 
 - instrumentar 5 eventos;
-- ativar a triagem em modo sombra e, depois, nas 5 categorias que passaram na meta fora do holdout;
+- ativar a triagem em modo sombra e, depois, "IA decide" só em Access e Purchase, as 2 categorias confirmadas no teste;
 - escrever a definição das filas com o time;
 - **não** contratar LLM para classificar.
 
@@ -38,14 +38,14 @@ Detalhes no [memo de 1 página](docs/memo-diretor.md).
 
 ### Abordagem
 
-- **Fases com portão humano** (F0 a F8). Cada fase tem uma spec escrita no chat do Projeto, executada pelo Claude Code, com report revisado contra os arquivos gerados. As specs e os reports estão em [`process-log/planning/`](process-log/planning/).
+- **Fases com portão humano** (F0 a F9). Cada fase tem uma spec escrita no chat do Projeto, executada pelo Claude Code, com report revisado contra os arquivos gerados. As specs e os reports estão em [`process-log/planning/`](process-log/planning/).
 - **Regras fixadas antes de ver o resultado:**
   - consequência de cada armadilha dos dados (F1);
   - critério da automação: limite inferior do IC 95% da precisão ≥ 1 − taxa de erro humano (*e*);
   - *e* = o menor entre o *e* da revisão adjudicada e o dos quase-duplicados;
   - regra de faixa por categoria (F4);
   - regra de adoção do detector de injeção (F6).
-- **Limiar e política escolhidos com predições fora da dobra no treino; holdout usado uma única vez** (F8). Na F3/F4 eles tinham sido escolhidos no próprio holdout; a revisão pré-push corrigiu isso.
+- **Limiar e política escolhidos com predições fora da dobra no treino; holdout usado uma única vez** (F8). Depois, **confirmação por categoria no holdout; a regra só rebaixa** (F9, decisão conservadora pós-hoc). Na F3/F4 eles tinham sido escolhidos no próprio holdout; a revisão pré-push corrigiu isso.
 - **Holdout congelado antes de qualquer modelo**, separado por grupo de quase-duplicados (TF-IDF, cosseno ≥ 0,90). O holdout aleatório foi mantido só para medir vazamento.
 - **Os dois datasets cruzados por premissa explícita:** o DS2 (TI interna, texto) mede o roteamento; o DS1 (suporte ao cliente) define a regra de ação e o que não é mensurável. Ver [política](docs/politica.md).
 
@@ -59,12 +59,12 @@ Detalhes no [memo de 1 página](docs/memo-diretor.md).
 | Clássico (TF-IDF + LR), holdout por grupo | acurácia 85,07% (IC 84,34–85,79) | `solution/outputs/f3_classico.json` |
 | LLM (Claude Haiku 5.5) × clássico na faixa de dúvida | 26,5% × 69,5% (mesmos 400 tickets); US$ 0,15 por 1.000 | `solution/outputs/f3_llm.json` |
 | Ruído de rótulo: "original errado" em que o modelo segue o original | 18 de 21 (convenção da taxonomia, não erro aleatório) | `solution/outputs/f3_h2.json` |
-| Faixas (limiar 0,71 / 0,64 e política escolhidos fora do holdout): IA decide / IA sugere / humano | 33,42% (precisão 97,75%, IC 97,17–98,21) / 13,58% / 53,01% | `solution/outputs/f8_faixas.json` |
-| Administrative rights: passou na meta fora da dobra, ficou abaixo dela no holdout | precisão em IA decide 95,08% (IC 89,68–97,73) | `solution/outputs/f8_politica_por_categoria.csv` |
-| Injeção (100 pares): troca de rótulo / alvo atingido, clássico | 9% / 3%; com a política da F8, 80 de 15.985 pares (0,50%; limite superior 0,62%) continuam em "IA decide" na categoria-alvo, e 2.829 (17,7%) saem para humano: o ataque raramente engana a decisão automática, mas gera carga humana e reduz a cobertura (chave `dano_ampliado_f8`) | `solution/outputs/f5_injecao.json` |
+| Faixas da política implantada (limiar 0,71 / 0,64 fora da dobra + confirmação por categoria no holdout): IA decide / IA sugere / humano | 13,37% (precisão 98,75%, IC 97,98–99,23) / 32,12% / 54,51%. A seleção fora da dobra sozinha daria 33,42% em IA decide (5 categorias); a confirmação sustentou 2 | `solution/outputs/f8_faixas.json` (`implantada`, `selecao_oof`) |
+| Categorias rebaixadas na confirmação no holdout | HR Support e Storage → IA sugere (LI 0,9604 e 0,9582); Administrative rights → humano (LI 0,8968) | `solution/outputs/f8_politica_por_categoria.csv` |
+| Injeção (100 pares): troca de rótulo / alvo atingido, clássico | 9% / 3%; com a política implantada, 0 de 6.395 pares em "IA decide" (limite superior 0,06%) e 860 (13,45%) saem para humano: o ataque não engana a decisão automática, mas gera carga humana e reduz a cobertura. Na seleção fora da dobra eram 80 de 15.985, todos para Storage (chaves `dano_ampliado_f8` e `dano_ampliado_f8_oof`) | `solution/outputs/f5_injecao.json` |
 | Detector de injeção | falso positivo de 4,75% > 1% → **não adotado** | `solution/outputs/f6_detector.json` |
 | Latência de ponta a ponta (`triar`, com mascaramento e log) | p50 2,79 ms / p95 5,12 ms | `solution/outputs/f5_latencia.json` |
-| Economia de triagem (cenário com etapa separada) | R$ 17.543,90/ano na base (premissas) | `solution/outputs/f8_economia.csv` |
+| Economia de triagem (cenário com etapa separada) | R$ 7.018,66/ano na base (premissas) | `solution/outputs/f8_economia.csv` |
 
 Mais detalhes:
 - [diagnóstico](docs/diagnostico.md);
@@ -82,7 +82,7 @@ Mais detalhes:
 
 1. **Instrumentar os 5 eventos** (`ticket_criado`, `resposta_agente`, `status_mudou`, `reatribuido`, `csat_respondido`). Sem eles, nenhum diagnóstico de tempo é possível ([instrumentação](docs/instrumentacao.md)).
 2. **Rodar a triagem em modo sombra** por 2 a 3 semanas, medindo a precisão pelas correções e o tempo de confirmação em "IA sugere".
-3. **Ativar "IA decide" em Access, Purchase, HR Support, Storage e Administrative rights**, se a meta se confirmar no piloto. Administrative rights precisa de atenção: ficou abaixo da meta no holdout (95,08%). Internal Project e Miscellaneous ficam em "IA sugere"; Hardware fica com humano e sobe para "IA sugere" se as correções do piloto mostrarem precisão ≥ meta (hoje 95,18% fora da dobra, com limite inferior 0,9462 contra a meta de 0,9545; `solution/outputs/f8_politica_por_categoria.csv`).
+3. **Ativar "IA decide" só em Access e Purchase**, as 2 categorias confirmadas no teste, se a meta se confirmar no piloto. HR Support, Storage, Internal Project e Miscellaneous ficam em "IA sugere"; Administrative rights e Hardware ficam com humano. Hardware sobe para "IA sugere" se as correções do piloto mostrarem precisão ≥ meta (hoje 95,18% fora da dobra, com limite inferior 0,9462 contra a meta de 0,9545; `solution/outputs/f8_politica_por_categoria.csv`).
 4. **Escrever com o time a definição das 8 filas.** Administrative rights teve 6 de 6 rótulos contestados na revisão.
 5. **Não contratar LLM para classificar.** Ele acerta menos (26,5% × 69,5%) e não é determinístico.
 
@@ -124,6 +124,7 @@ Mais detalhes:
 7. **F6:** lacunas da F5, detector de injeção e rollback.
 8. **F7:** comunicação.
 9. **F8:** correções da revisão pré-push (idempotência, limiar fora do holdout, modelo versionado, app).
+10. **F9:** confirmação por categoria no holdout; a política implantada só rebaixa.
 
 Cada fase seguiu o mesmo ciclo: spec → execução → report → revisão → decisão registrada.
 
@@ -188,6 +189,7 @@ Também meus, anteriores à execução ou fora das tabelas de decisão:
    - F3: `f3_classico.py`, `f3_faixas.py`, `f3_h2.py`, `f3_llm.py`, depois `f3_faixas.py` de novo.
    - F4: `f4_politica.py`.
    - F5 e F6: `f5_injecao.py` (`--so-classico`, `--dano-ampliado`), `f5_latencia.py`, `f6_detector.py`.
+   - F8 e F9: `f8_oof.py`, depois `f9_confirmacao.py` (acrescenta a política implantada; rodar sempre depois do `f8_oof.py`), depois `f5_injecao.py --dano-ampliado-f8`.
 
    Todos ficam em `solution/` e rodam com `python solution/<script>.py`.
 5. **Testes:** `pytest solution/tests -q`. O golden set e o portão de qualidade estão incluídos.

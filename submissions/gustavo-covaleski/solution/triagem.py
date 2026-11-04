@@ -141,7 +141,8 @@ def carregar_politica():
         arq_fx = OUT_DIR / "f8_faixas.json"
         tab = pd.read_csv(arq)
         lim = json.loads(arq_fx.read_text(encoding="utf-8"))["limiares"]
-        _politica = {"por_categoria": dict(zip(tab["categoria_prevista"], tab["politica"])),
+        # F9: política implantada = seleção OOF confirmada por categoria no holdout (só rebaixa)
+        _politica = {"por_categoria": dict(zip(tab["categoria_prevista"], tab["politica_implantada"])),
                      "t_decide": lim["t_decide"] if lim["t_decide"] is not None else 1.01,
                      "t_sugere": lim["t_sugere"] if lim["t_sugere"] is not None else 1.01,
                      "versao": hashlib.sha256(arq.read_bytes() + arq_fx.read_bytes()).hexdigest()[:12]}

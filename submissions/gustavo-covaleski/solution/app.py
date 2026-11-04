@@ -85,11 +85,15 @@ with aba_politica:
     tab = pd.read_csv(OUT_DIR / "f8_politica_por_categoria.csv")
     lim = json.loads((OUT_DIR / "f8_faixas.json").read_text(encoding="utf-8"))["limiares"]
     st.write(f"Limiares escolhidos com predições fora da dobra no treino: IA decide ≥ {lim['t_decide']:.0%}, "
-             f"IA sugere ≥ {lim['t_sugere']:.0%}. Precisão abaixo: holdout por grupo, usado uma única vez.")
+             f"IA sugere ≥ {lim['t_sugere']:.0%}. A política implantada é a mais restritiva entre a seleção fora da dobra "
+             "e a confirmação por categoria no holdout (F9; só rebaixa).")
     fmt = lambda p, li, ls: "—" if pd.isna(p) else f"{p:.1%} ({li:.1%}–{ls:.1%})"
     st.dataframe(pd.DataFrame({
-        "categoria": tab["categoria_prevista"], "política": tab["politica"],
-        "precisão em IA decide (IC 95%)": [fmt(p, a, b) for p, a, b in zip(tab["precisao_ia_decide"], tab["li_ia_decide"], tab["ls_ia_decide"])],
+        "categoria": tab["categoria_prevista"],
+        "seleção fora da dobra": tab["politica"],
+        "confirmação no holdout": tab["politica_confirmada_holdout"],
+        "implantada": tab["politica_implantada"],
+        "precisão em IA decide no holdout (IC 95%)": [fmt(p, a, b) for p, a, b in zip(tab["precisao_ia_decide"], tab["li_ia_decide"], tab["ls_ia_decide"])],
         "n no holdout": tab["n_holdout"]}), hide_index=True)
 
 with aba_lote:
@@ -116,13 +120,13 @@ with aba_lote:
     if st.button("Rodar lote"):
         d = lote()
         d["acerto"] = d["categoria"] == d["rotulo"]
-        ref = json.loads((OUT_DIR / "f8_faixas.json").read_text(encoding="utf-8"))["holdout_grupo"]["faixas"]
+        ref = json.loads((OUT_DIR / "f8_faixas.json").read_text(encoding="utf-8"))["implantada"]["faixas"]
         res = d.groupby("faixa").agg(n=("id", "size"), acerto=("acerto", "mean")).reindex(["IA decide", "IA sugere", "humano decide"]).fillna(0)
         res["cobertura"] = res["n"] / len(d)
         st.dataframe(pd.DataFrame({
             "faixa": res.index, "n": res["n"].astype(int),
             "cobertura": [f"{v:.1%}" for v in res["cobertura"]], "precisão": [f"{v:.1%}" for v in res["acerto"]],
-            "referência holdout (cobertura / precisão)": [f"{ref[f]['cobertura_pct']:.1f}% / {ref[f]['precisao']:.1%}" for f in res.index]}),
+            "referência holdout, política implantada (cobertura / precisão)": [f"{ref[f]['cobertura_pct']:.1f}% / {ref[f]['precisao']:.1%}" for f in res.index]}),
             hide_index=True)
         st.bar_chart(res["cobertura"] * 100, y_label="cobertura (%)")
         with st.expander("linhas do lote"):

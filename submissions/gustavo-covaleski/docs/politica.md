@@ -4,44 +4,43 @@
 
 A política tem duas camadas, porque os dois datasets não se encaixam: o DS1 é de suporte ao cliente e o DS2 é de TI interna.
 
-1. **Roteamento** (para qual fila vai): medido no DS2, com as 8 categorias e as faixas escolhidas fora do holdout (F8).
+1. **Roteamento** (para qual fila vai): medido no DS2, com as 8 categorias e as faixas escolhidas fora do holdout (F8) e confirmadas por categoria no holdout (F9).
 2. **Ação** (o que pode ser feito sem humano): definida pelos 5 tipos do DS1. É **regra de negócio declarada**, não resultado de modelo, porque o texto do DS1 é inutilizável (100% das descrições têm marcador de template não preenchido; `solution/outputs/f1_ds1_auditoria.json`, T2).
 
-## Política vigente (F8): limiar e política escolhidos fora do holdout
+## Política vigente: seleção fora da dobra (F8) + confirmação no holdout (F9)
 
-- **Como foram escolhidos:** limiares e política por categoria escolhidos com predições **fora da dobra no treino** (`StratifiedGroupKFold(5)` por grupo de quase-duplicados), aplicando as mesmas regras registradas na F3 e na F4 (*e*_Q2 = 3,82%; metas 0,9680 e 0,9545). O holdout por grupo foi usado **uma única vez**, depois de tudo congelado (`solution/f8_oof.py`).
-- **Limiares:** IA decide se `p_max` ≥ **0,71**; IA sugere se `p_max` ≥ **0,64** (`solution/outputs/f8_faixas.json`). A política da categoria continua sendo um teto: só rebaixa.
+- **Limiares:** IA decide se `p_max` ≥ **0,71**; IA sugere se `p_max` ≥ **0,64**. Foram escolhidos com predições **fora da dobra no treino** (`StratifiedGroupKFold(5)` por grupo de quase-duplicados), com as mesmas regras da F3 e da F4 (*e*_Q2 = 3,82%; metas 0,9680 e 0,9545) (`solution/f8_oof.py`, `f8_faixas.json`).
+- **Duas etapas por categoria:** a categoria precisa passar na seleção fora da dobra **e** na confirmação no holdout, que aplica a mesma regra da F4 ao limite inferior do holdout. A política implantada é a mais restritiva das duas: **só rebaixa, nunca promove**.
+- **Natureza da regra:** é uma decisão conservadora **pós-hoc** do Gustavo (F9), tomada depois de ver o holdout (`solution/f9_confirmacao.py`).
 
-| Categoria prevista | Política (OOF) | Precisão em IA decide fora da dobra (LI) | Precisão em IA decide no holdout (IC 95%) | n previsto no holdout |
-|---|---|---|---|---|
-| Access | **IA decide** | 98,90% (LI 0,9849) | 98,52% (97,49%–99,13%; n 879) | 1.260 |
-| Administrative rights | **IA decide** | 98,89% (LI 0,9743) | 95,08% (89,68%–97,73%; n 122) | 230 |
-| HR Support | **IA decide** | 97,31% (LI 0,9684) | 97,04% (96,04%–97,80%; n 1.455) | 2.254 |
-| Storage | **IA decide** | 98,84% (LI 0,9810) | 97,95% (95,82%–99,00%; n 341) | 479 |
-| Purchase | **IA decide** | 99,29% (LI 0,9873) | 99,25% (97,82%–99,74%; n 400) | 434 |
-| Miscellaneous | **IA sugere** | 96,41% (LI 0,9563) | — (categoria fora de IA decide) | 1.377 |
-| Internal Project | **IA sugere** | 97,89% (LI 0,9669) | — (categoria fora de IA decide) | 351 |
-| Hardware | **humano decide** | 95,18% (LI 0,9462) | — (categoria fora de IA decide) | 3.182 |
+| Categoria prevista | Seleção fora da dobra (LI no treino) | Confirmação no holdout (precisão e IC em IA decide) | **Implantada** |
+|---|---|---|---|
+| Access | IA decide (LI 0,9849) | IA decide (98,52%; IC 97,49%–99,13%) | **IA decide** |
+| Purchase | IA decide (LI 0,9873) | IA decide (99,25%; IC 97,82%–99,74%) | **IA decide** |
+| HR Support | IA decide (LI 0,9684) | IA sugere (97,04%; IC 96,04%–97,80%) | **IA sugere** |
+| Storage | IA decide (LI 0,9810) | IA sugere (97,95%; IC 95,82%–99,00%) | **IA sugere** |
+| Internal Project | IA sugere (LI 0,9669) | IA sugere (sem tickets em IA decide; mantém a OOF) | **IA sugere** |
+| Miscellaneous | IA sugere (LI 0,9563) | IA sugere (sem tickets em IA decide; mantém a OOF) | **IA sugere** |
+| Administrative rights | IA decide (LI 0,9743) | humano decide (95,08%; IC 89,68%–97,73%) | **humano decide** |
+| Hardware | humano decide (LI 0,9462) | humano decide (sem tickets em IA decide; mantém a OOF) | **humano decide** |
 
-Fonte: `solution/outputs/f8_politica_por_categoria.csv`.
+Fonte: `solution/outputs/f8_politica_por_categoria.csv` (colunas `politica`, `politica_confirmada_holdout`, `politica_implantada`).
 
-**Cobertura no holdout por grupo:**
+A seleção fora da dobra indicou 5 categorias para "IA decide" (cobertura de 33,42% no holdout). A confirmação no teste sustentou 2 (Access e Purchase). Só essas são ativadas. HR Support e Storage ficaram entre as metas e vão para "IA sugere". Administrative rights ficou abaixo das duas e vai para humano.
+
+**Cobertura no holdout por grupo, política implantada** (`f8_faixas.json`, chave `implantada`):
 
 | Faixa | Cobertura | Precisão (IC 95%) |
 |---|---|---|
-| IA decide | **33,42%** | 97,75% (97,17%–98,21%) |
-| IA sugere | **13,58%** | 94,84% (93,50%–95,92%) |
-| humano decide | **53,01%** | 74,58% (precisão do modelo) |
+| IA decide | **13,37%** | 98,75% (97,98%–99,23%) |
+| IA sugere | **32,12%** | 96,23% (95,49%–96,84%) |
+| humano decide | **54,51%** | 75,15% (precisão do modelo) |
 
-Fonte: `f8_faixas.json`.
+**Economia (cenário A):** com a cobertura implantada, R$ 7.018,66/ano na base (3 min, R$ 35/h). Na grade de 3 × 3 premissas, vai de R$ 3.342,22 a R$ 13.368,87/ano (`solution/outputs/f8_economia.csv`).
 
-**Administrative rights** passou na meta fora da dobra (LI 0,9743), mas no holdout ficou com precisão de 95,08% (IC 89,68–97,73%), abaixo da meta. Pela regra, nada foi ajustado depois de ver o holdout; a categoria precisa ser acompanhada no piloto. Na revisão adjudicada, ela teve 6 de 6 rótulos "original errado" (`f3_h2.json`).
-
-**Economia (cenário A):** com a cobertura de 33,42%, a economia é de **R$ 17.543,90/ano** na base (3 min, R$ 35/h). Na grade de 3 × 3 premissas, vai de R$ 8.354,24 a R$ 33.416,95/ano (`solution/outputs/f8_economia.csv`). Esta conta substitui `f4_economia.csv` e a economia de `f3_faixas.json`.
+**Injeção:** com a política implantada, 0 de 6.395 pares ficam em "IA decide" com o rótulo trocado (limite superior 0,06%), e 860 (13,45%) saem para humano. Com a seleção fora da dobra, eram 80 de 15.985: todos para Storage, pelo ataque de nome de categoria repetido (`f5_injecao.json`, `dano_ampliado_f8` e `dano_ampliado_f8_oof`).
 
 **A camada de ação não mudou:** reembolso e cancelamento ficam sempre com humano (regra de negócio).
-
-**Exemplos que mudaram de faixa com a política da F8:** o id 917 (HR Support) e o id 17550 (Storage) passam de "IA sugere" para "IA decide".
 
 ## Histórico da F4 (substituído na F8)
 
