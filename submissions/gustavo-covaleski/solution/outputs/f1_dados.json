@@ -1,5 +1,5 @@
 {
-  "data_dir": "C:\\Users\\gusta\\challenge-g4-ai-master\\data",
+  "data_dir": "$DATA_DIR (padrão ../../../data relativo à submissão)",
   "arquivos": [
     {
       "nome": "customer_support_tickets.csv",

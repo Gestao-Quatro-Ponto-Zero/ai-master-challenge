@@ -40,7 +40,9 @@ def test_planilha_revisao(splits):
     rev = ler_csv_excel(REVISAO_DIR / "revisao_rotulos.csv")
     gab = ler_csv_excel(REVISAO_DIR / "revisao_gabarito.csv")
     assert len(rev) == 60
-    assert (rev["meu_rotulo"] == "").all() and (rev["rotulo_original"] == "").all()
+    assert (rev["rotulo_original"] == "").all()
+    # antes da revisão, meu_rotulo vem vazio; depois que o Gustavo preenche, só valem as 8 categorias
+    assert (rev["meu_rotulo"] == "").all() or rev["meu_rotulo"].str.strip().isin(adj.CATEGORIAS).all()
     assert sorted(gab["id"]) == sorted(rev["id"])
     assert (gab["rotulo_original"].value_counts() >= 5).all()
     assert gab["rotulo_original"].nunique() == N_CLASSES

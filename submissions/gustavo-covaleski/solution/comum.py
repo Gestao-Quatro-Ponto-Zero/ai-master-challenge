@@ -1,3 +1,4 @@
+import io
 import json
 import os
 import re
@@ -51,7 +52,17 @@ def salvar_csv_excel(df: pd.DataFrame, caminho: Path) -> Path:
 
 
 def ler_csv_excel(caminho: Path) -> pd.DataFrame:
-    return pd.read_csv(caminho, sep=";", encoding="utf-8-sig", dtype=str, keep_default_na=False)
+    # o Excel (desktop ou online) pode devolver `,` e cp1252 em vez do `;` + UTF-8 com BOM que gravamos
+    bruto = Path(caminho).read_bytes()
+    for cod in ("utf-8-sig", "utf-8", "cp1252"):
+        try:
+            texto = bruto.decode(cod)
+            break
+        except UnicodeDecodeError:
+            continue
+    cabecalho = texto.split("\n", 1)[0]
+    sep = ";" if cabecalho.count(";") >= cabecalho.count(",") else ","
+    return pd.read_csv(io.StringIO(texto), sep=sep, dtype=str, keep_default_na=False)
 
 
 def _conv(o):

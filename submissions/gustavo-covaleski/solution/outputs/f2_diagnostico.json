@@ -1,0 +1,34 @@
+{
+  "n_base_duracao": 1402,
+  "rotulo_duracao": "variável sintética e inválida (T3); usada só como premissa de variância",
+  "piores_combinacoes": {
+    "combinacoes_com_n_ge_20": 29,
+    "maior_media": {
+      "combinacao": "Chat | High | Refund request",
+      "n": 22,
+      "media_h": 11.37
+    },
+    "menor_media": {
+      "combinacao": "Chat | Critical | Billing inquiry",
+      "n": 20,
+      "media_h": 5.4
+    },
+    "diferenca_h": 5.97,
+    "mde_para_esses_n_h": 4.84,
+    "rotulo": "variável sintética e inválida (T3); usada só como premissa de variância",
+    "teste": "nenhum (descritivo; F0 proíbe teste por segmento)"
+  },
+  "custo_triagem": {
+    "cenario_A": {
+      "custo_anual_base_reais": 52500.0,
+      "faixa_reais": [
+        25000.0,
+        100000.0
+      ],
+      "formula_economia": "economia = cobertura_automatica × custo_anual_triagem (cobertura medida na F3; não calculada aqui)",
+      "arquivo": "f2_custo_triagem.csv",
+      "rotulo": "premissa (editável), não dado"
+    },
+    "cenario_B": "Economia de triagem = 0; o ganho viria do reroteamento evitado, não calculável (nenhum dataset registra transferência)."
+  }
+}

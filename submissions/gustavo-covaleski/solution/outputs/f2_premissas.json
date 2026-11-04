@@ -1,0 +1,28 @@
+{
+  "rotulo": "premissa (editável), não dado",
+  "sd_duracao_h": 5.5933,
+  "sd_origem": "DS1, Closed com duração > 0 (n = 1402); variável sintética e inválida (T3); usada só como premissa de variância",
+  "alfa": 0.05,
+  "poder": 0.8,
+  "z_soma": 2.8016,
+  "mde_alvo_h": 2.0,
+  "volume_ano": 30000,
+  "volume_origem": "brief (~30 mil tickets/ano)",
+  "semanas_ano": 52,
+  "participacao_origem": "participação observada no DS1 inteiro (8.469 tickets, todos os status)",
+  "min_n_combo_mde": 20,
+  "custo_minutos_grade": [
+    2,
+    3,
+    4
+  ],
+  "custo_reais_h_grade": [
+    25,
+    35,
+    50
+  ],
+  "custo_base": {
+    "min": 3,
+    "reais_h": 35
+  }
+}

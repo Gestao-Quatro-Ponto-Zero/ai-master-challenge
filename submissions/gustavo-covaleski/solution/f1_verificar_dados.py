@@ -24,7 +24,7 @@ def sha256(p):
 
 def main():
     leitores = {DS1_ARQUIVO: ler_ds1, DS2_ARQUIVO: lambda: ler_ds2().drop(columns="id")}
-    saida, problemas = {"data_dir": str(DATA_DIR), "arquivos": []}, []
+    saida, problemas = {"data_dir": "$DATA_DIR (padrão ../../../data relativo à submissão)", "arquivos": []}, []
     for nome, esp in ESPERADO.items():
         p = DATA_DIR / nome
         df = leitores[nome]()
