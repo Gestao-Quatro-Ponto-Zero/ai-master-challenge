@@ -1,0 +1,4 @@
+GBM static features AUC: 0.543
+LogReg static AUC: 0.52
+GBM cycle-only AUC (uses outcome timing, not available ex-ante): 0.576
+prior_wins win rate: {'size': {Interval(-1, 0, closed='right'): 1098, Interval(0, 2, closed='right'): 218, Interval(2, 5, closed='right'): 376, Interval(5, 10, closed='right'): 786, Interval(10, 100, closed='right'): 4229}, 'mean': {Interval(-1, 0, closed='right'): 0.721, Interval(0, 2, closed='right'): 0.725, Interval(2, 5, closed='right'): 0.636, Interval(5, 10, closed='right'): 0.581, Interval(10, 100, closed='right'): 0.612}}

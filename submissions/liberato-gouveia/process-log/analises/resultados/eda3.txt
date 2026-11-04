@@ -1,0 +1,53 @@
+cohort Mar-Aug17: total 5171 closed 4012 still open 1159
+            size   mean
+b                      
+(-1, 7]      926  0.525
+(7, 14]      894  0.563
+(14, 30]     198  0.747
+(30, 60]     336  0.655
+(60, 90]     918  0.651
+(90, 120]    651  0.693
+(120, 200]    89  0.697
+P(win|alive>0d) = 0.615 (n=4012)
+P(win|alive>7d) = 0.642 (n=3086)
+P(win|alive>14d) = 0.675 (n=2192)
+P(win|alive>30d) = 0.668 (n=1994)
+P(win|alive>60d) = 0.670 (n=1658)
+P(win|alive>90d) = 0.693 (n=740)
+P(win|alive>120d) = 0.697 (n=89)
+
+max cycle closed: 138  p95: 114.5  p99: 127.0
+
+Engaging age as of 2017-12-31:
+ {'count': 1589.0, 'mean': 199.0, 'std': 84.0, 'min': 9.0, '25%': 148.0, '50%': 165.0, '75%': 263.0, 'max': 423.0}
+age
+(-1, 30]       18
+(30, 60]       39
+(60, 90]       53
+(90, 138]     188
+(138, 200]    642
+(200, 300]    411
+(300, 500]    238
+Name: count, dtype: int64
+open engage months:
+ {Period('2016-11', 'M'): 13, Period('2016-12', 'M'): 40, Period('2017-01', 'M'): 65, Period('2017-02', 'M'): 95, Period('2017-03', 'M'): 137, Period('2017-04', 'M'): 121, Period('2017-05', 'M'): 134, Period('2017-06', 'M'): 111, Period('2017-07', 'M'): 402, Period('2017-08', 'M'): 254, Period('2017-09', 'M'): 102, Period('2017-10', 'M'): 58, Period('2017-11', 'M'): 39, Period('2017-12', 'M'): 18}
+
+account heterogeneity chi2=64.6 df=84 p=0.943
+sales_agent heterogeneity chi2=33.3 df=29 p=0.2639
+product heterogeneity chi2=6.5 df=6 p=0.3719
+manager heterogeneity chi2=2.4 df=5 p=0.7861
+agent x product chi2=149.2 df=148 p=0.4566
+
+open pipeline list value by product:
+                   n  list_value
+product                        
+MG Special      428       23540
+GTX Basic       430      236500
+GTX Plus Basic  332      363872
+GTK 500          15      401520
+MG Advanced     328     1112904
+GTX Plus Pro    223     1222486
+GTX Pro         333     1605393
+agent open load:
+ {'count': 27.0, 'mean': 77.4, 'std': 31.1, 'min': 31.0, '25%': 59.0, '50%': 79.0, '75%': 87.5, 'max': 194.0}
+agents with zero history but in teams have open deals? (0, 12)
