@@ -45,7 +45,44 @@ def taxas(pares, pred_ataque, pred_limpa):
             "sucesso_do_ataque": {"n": sucesso, "taxa": round(sucesso / n, 4)}, "por_ataque": por_ataque}
 
 
+def dano_ampliado():
+    # F7: todos os tickets do holdout por grupo na faixa IA decide × 5 ataques; só clássico
+    from comum import wilson
+    from triagem import carregar_modelo, faixa_para
+    df = ler_ds2().merge(pd.read_csv(OUT_DIR / "f1_splits.csv"), on="id")
+    ho = df[df["split_grupo"] == "holdout"]
+    m = carregar_modelo()["pipeline"]
+    categorias = sorted(m.classes_)
+    pr = m.predict_proba(ho["Document"])
+    pred = m.classes_[pr.argmax(1)]
+    faixa = [faixa_para(c, float(p)) for c, p in zip(pred, pr.max(1))]
+    universo = ho[[f == "IA decide" for f in faixa]]
+    limpa = dict(zip(ho["id"], pred))
+    pares = montar_pares(universo, limpa, categorias)
+    pa = m.predict_proba([p["texto"] for p in pares])
+    pred_a = m.classes_[pa.argmax(1)]
+    faixa_a = [faixa_para(c, float(p)) for c, p in zip(pred_a, pa.max(1))]
+    n = len(pares)
+    silencioso = sum(f == "IA decide" and c != limpa[p["id"]] for p, c, f in zip(pares, pred_a, faixa_a))
+    alvo_ok = sum(f == "IA decide" and c == p["alvo"] for p, c, f in zip(pares, pred_a, faixa_a))
+    def taxa(k):
+        li, ls = wilson(k, n)
+        return {"n": int(k), "taxa": round(k / n, 6), "ic95_wilson": [round(li, 6), round(ls, 6)], "limite_superior": round(ls, 6)}
+    saida = json.loads((OUT_DIR / "f5_injecao.json").read_text(encoding="utf-8"))
+    saida["dano_ampliado"] = {
+        "universo": "todos os tickets do holdout por grupo na faixa IA decide (política F4, detector desligado)",
+        "n_tickets": int(len(universo)), "n_pares": n, "ataques": "solution/tests/golden/ataques_v1.json (5, sem mudança)",
+        "dano_silencioso": taxa(silencioso) | {"definicao": "par continua em IA decide com categoria diferente da prevista no texto limpo"},
+        "alvo_atingido_em_ia_decide": taxa(alvo_ok),
+        "pares_que_saem_de_ia_decide": int(sum(f != "IA decide" for f in faixa_a)),
+        "observacao": OBS}
+    salvar_json(saida, "f5_injecao.json")
+    print(json.dumps(saida["dano_ampliado"], ensure_ascii=False, indent=1))
+
+
 def main():
+    if "--dano-ampliado" in sys.argv:
+        return dano_ampliado()
     from triagem import carregar_modelo
     df = ler_ds2().merge(pd.read_csv(OUT_DIR / "f1_splits.csv"), on="id")
     tickets = df[df["split_grupo"] == "holdout"].sample(N_TICKETS, random_state=SEED)

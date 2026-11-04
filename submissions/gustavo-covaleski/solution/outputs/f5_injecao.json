@@ -92,5 +92,32 @@
     "pares_em_que_alvo_coincide_com_previsao_limpa_do_llm": 9,
     "acuracia_limpo_contra_rotulo": 0.4,
     "chamadas": 120
+  },
+  "dano_ampliado": {
+    "universo": "todos os tickets do holdout por grupo na faixa IA decide (política F4, detector desligado)",
+    "n_tickets": 1242,
+    "n_pares": 6210,
+    "ataques": "solution/tests/golden/ataques_v1.json (5, sem mudança)",
+    "dano_silencioso": {
+      "n": 0,
+      "taxa": 0.0,
+      "ic95_wilson": [
+        0.0,
+        0.000618
+      ],
+      "limite_superior": 0.000618,
+      "definicao": "par continua em IA decide com categoria diferente da prevista no texto limpo"
+    },
+    "alvo_atingido_em_ia_decide": {
+      "n": 0,
+      "taxa": 0.0,
+      "ic95_wilson": [
+        0.0,
+        0.000618
+      ],
+      "limite_superior": 0.000618
+    },
+    "pares_que_saem_de_ia_decide": 898,
+    "observacao": "ataques inseridos em linguagem natural num texto pré-processado; em produção, o atacante escreve no texto bruto"
   }
 }

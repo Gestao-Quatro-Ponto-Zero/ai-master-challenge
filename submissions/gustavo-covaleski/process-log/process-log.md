@@ -19,6 +19,9 @@
 | 7 | F4 — Política e fluxo | Executar `planning/F4-spec.md`: política IA decide / IA sugere / humano decide por categoria, com regra fixada antes do resultado, exemplos sorteados, fluxo com tabela de falhas | Regra por categoria (LI de Wilson na faixa IA decide contra 0,9680 e 0,9545): IA decide = Access e Purchase; IA sugere = HR Support, Internal Project, Miscellaneous e Storage; humano decide = Hardware (LI 0,9478) e Administrative rights (LI 0,9046). Cobertura cai de 57,17% para **12,98%** em IA decide (precisão 98,87%), 31,41% em IA sugere e 55,61% em humano decide. Reembolso e cancelamento sempre com humano (regra de negócio). `docs/politica.md` (14 trechos de até 120 caracteres, sorteados) e `docs/fluxo.md` (Mermaid + 6 falhas) | Regra registrada mantida (IA decide 12,98%); sensibilidade pós-hoc calculada e não usada na decisão; economia recalculada; câmbio não usado. | `planning/F4-report.md`; `solution/outputs/f4_*.csv/json`; `pytest` 31 passed | ver report |
 | 8 | F5 — Protótipo com prontidão testada | Executar `planning/F5-spec.md`: núcleo `triagem.py` (idempotência, validação, mascaramento, classificação com motivo, faixa com teto por categoria, regra de ação, fallback, modo sombra, log estruturado), app Streamlit, teste de injeção clássico × LLM, golden set e latência | 46 testes passando, incluindo o portão de qualidade (acurácia ≥ 0,84 e precisão IA decide ≥ 0,97). Injeção em 100 pares: clássico troca o rótulo em 9% e o ataque acerta o alvo em 3%; LLM, 12% e 2% (não determinístico entre rodadas). As 3 frases em português caem em humano decide. Latência de `triar` de ponta a ponta: p50 2,79 ms, p95 5,12 ms (era p50 70,5 ms antes de pôr os nomes de termos em cache). Bug de mascaramento corrigido durante a execução (telefone +55 era lido como cartão) | Aprovada; tratar ataque de nome de categoria repetido na F6 com detector de critério fixado antes de medir; acrescentar teste de registrar_correcao; CPF validado por dígito verificador. | `planning/F5-report.md`; `solution/triagem.py`; `solution/tests/test_f5.py`; `solution/tests/golden/`; `solution/outputs/f5_*.json`; `process-log/screenshots/f5_app_*.png` | ver report |
 | 9 | F6 — Prontidão para produção | Executar `planning/F6-spec.md`: lacunas da F5 (CPF por dígito verificador, teste de `registrar_correcao`, dano de injeção em IA decide), detector de injeção com regra de adoção fixada antes de medir, `docs/producao.md` | Detector com falso positivo de 4,75% do holdout (454 tickets; 295 só por nome de categoria repetido), acima do limite de 1% → **não adotado**, fica desligado; cobertura de 100% nos 100 pares. Dano real da injeção no clássico: 0 trocas e 0 sucessos em IA decide (a política por categoria já contém o ataque). CPF de 11 dígitos só com verificador; celular vira [TELEFONE]. Matriz de 9 falhas, 7 métricas de monitoramento, rollback em 3 níveis (retreino 21,5 s na F5 e 78,2 s na F6) | Aprovada; detector não adotado pela regra fixada antes (4,75% de falso positivo > 1%); ampliar o teste de dano só com o clássico na F7; retreino de 21–78 s entra como limitação. | `planning/F6-report.md`; `docs/producao.md`; `solution/outputs/f6_detector.json`; `f5_injecao.json`; `pytest` 54 passed | ver report |
+| 10 | F7 — Comunicação | Executar `planning/F7-spec.md`: dano da injeção em amostra ampliada (só clássico), memo de 1 página, README no template, process log final e checagens | Dano ampliado: 0 de 6.210 pares (1.242 tickets em IA decide × 5 ataques) continuam em IA decide com rótulo trocado; limite superior Wilson 0,062%; 898 pares saem de IA decide. Memo com 376 palavras. README com 12 achados, cada um com arquivo de origem. Specs e reports copiados para `process-log/planning/` depois da checagem automática de texto de ticket e dado pessoal | Aprovada com ajustes: memo e README passam a declarar que 898 de 6.210 ataques (14,5%) tiram o ticket de "IA decide" (carga humana); comparação LLM × clássico feita na mesma faixa (26,5% × 69,5%); caminho de adoção para Hardware; limitação de ruído do rótulo; ressalva de transferência no resumo. Linha 8 da matriz ("já vi em produção") deixada em branco por ser fraca. Caminho `C:\Users\gusta` no histórico aceito. | `planning/F7-report.md`; `docs/memo-diretor.md`; `README.md`; `solution/outputs/f5_injecao.json` (`dano_ampliado`) | ver report |
+
+**Exceção de texto no chat export (Gustavo, 04/11/2026):** `process-log/chat-exports/claude-code-f1-a-f7.md` entra sem edição, como terceira exceção à regra de texto de ticket no repositório. Contém 2 trechos do DS2 (28 palavras), os mesmos de `docs/politica.md`, medidos com o texto normalizado e as linhas juntadas. O commit da F7 foi abortado uma vez pela checagem automática antes desta decisão.
 
 ## Portão F0 — decisão humana (Gustavo, 03/11/2026)
 
@@ -53,6 +56,32 @@
 **Orçamento depois da F3 (Gustavo, 03/11/2026):** a IA propôs um corte duro (F4 fundida na F5, total ~6h30) ou o plano cheio (~7h30). Decisão: **plano B, cheio**, com o estouro declarado. Gasto até a F3b: ~295 min; total projetado ~465 min.
 
 **Também definido no portão:** premissas de custo com sensibilidade; preço do Haiku consultado na página oficial na execução; divisão de trabalho chat × Claude Code; regras de repositório e git; chave de API só em `.env`.
+
+## Tempo por fase
+
+| Fase | Orçado (F0-escopo) | Real | Origem do real |
+|---|---|---|---|
+| F0 Enquadramento | 15 | 60 | medido pelo Gustavo |
+| F1 Auditoria (+ F1-fix) | 45 | ~20 (15 + 5) | estimativa do Claude Code |
+| F2 Diagnóstico | 30 | ~12 | estimativa do Claude Code |
+| F3a Revisão cega + adjudicação | 50 | ~180 | medido pelo Gustavo |
+| F3b Experimento | 50 | ~18 | estimativa do Claude Code |
+| F4 Política e fluxo | 25 | ~37 | relógio entre mensagens (23:12 → 23:49), inclui revisão do Gustavo; execução ~10 (Claude Code) |
+| F5 Protótipo | 75 | ~15 | relógio entre mensagens (23:49 → 00:04), inclui revisão; execução ~12 (Claude Code) |
+| F6 Prontidão | 20 | ~20 | relógio entre mensagens (00:04 → 00:24), inclui revisão; execução ~5 (Claude Code) |
+| F7 Comunicação | 35 | ~40 | relógio entre mensagens (00:24 → ~01:05), inclui revisão e preenchimento; execução ~20 (Claude Code) |
+| Folga | 15 | — | — |
+| **Total** | **360** | **~400** | soma da coluna; F1, F2 e F3b sem o tempo de revisão |
+| **Relógio da sessão** | — | **~445** | primeira mensagem às 17:40 de 03/11 → PR por volta de 01:05 de 04/11, incluindo pausas. É o teto do tempo gasto, não o tempo efetivo |
+
+**Ressalva:** as estimativas do Claude Code medem só o tempo de execução no terminal (relógio do sistema entre o início e o fim de cada fase). Elas **não** incluem o planejamento e a revisão no chat do Projeto nem a leitura dos reports nos portões. O registro do Gustavo depois da F3 (~295 min até a F3b; total projetado ~465 min) é a referência para o tempo real. Pela projeção do Gustavo, o estouro sobre os 360 min orçados seria de ~105 min (465 − 360). O valor final não foi medido. [GUSTAVO: tempo real de F4 a F7, incluindo revisão.]
+
+## Iterações
+
+- **Portões com decisão registrada:** 7 (F0, F1, F2, F3, F4, F5, F6). O da F7 está pendente.
+- **Specs:** 7 (`F1-spec` a `F7-spec`), mais o escopo `F0-escopo` e uma tarefa de correção (F1-fix, sem arquivo próprio).
+- **Reports:** 8 (`F1-report`, `F1-fix-report`, `F2-report` a `F7-report`).
+- **Erros da IA corrigidos e registrados:** 5 (tabela "Erros da IA que eu peguei").
 
 ## Erros da IA que eu peguei
 
