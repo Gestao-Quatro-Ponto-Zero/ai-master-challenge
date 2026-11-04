@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Console do piloto — triagem de tickets</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topo">
+  <h1>Console do piloto — triagem de tickets</h1>
+  <div class="controles">
+    <label class="ctl">Dia do piloto
+      <input id="dia" type="range" min="1" max="20" value="20" aria-describedby="dia-valor">
+      <output id="dia-valor" class="num">20</output>
+    </label>
+    <div class="ctl" role="group" aria-label="Modo">
+      <span>Modo</span>
+      <button id="modo" type="button" class="alternar" aria-pressed="false">ativo</button>
+    </div>
+    <label class="ctl">Política
+      <select id="politica">
+        <option value="F9">F9 implantada</option>
+        <option value="F8">F8 seleção OOF</option>
+        <option value="F4">F4 (escolhida no holdout)</option>
+      </select>
+    </label>
+    <button id="abrir-alertas" type="button" class="botao alerta-botao" aria-haspopup="dialog">Alertas <span id="n-alertas" class="contador num">0</span></button>
+    <button id="abrir-ajuda" type="button" class="botao-link" aria-haspopup="dialog">como ler esta tela</button>
+  </div>
+</header>
+
+<main class="grade">
+  <section class="painel" id="painel-fila" aria-labelledby="t-fila">
+    <div class="painel-topo">
+      <h2 id="t-fila">Fila</h2>
+      <span id="fila-resumo" class="discreto num"></span>
+    </div>
+    <div class="filtros" role="group" aria-label="Filtrar por faixa">
+      <button type="button" class="filtro" data-filtro="todas" aria-pressed="true">Todas</button>
+      <button type="button" class="filtro" data-filtro="IA decide" aria-pressed="false">IA decide</button>
+      <button type="button" class="filtro" data-filtro="IA sugere" aria-pressed="false">IA sugere</button>
+      <button type="button" class="filtro" data-filtro="humano decide" aria-pressed="false">Humano</button>
+    </div>
+    <ul id="lista" class="lista" role="listbox" tabindex="0" aria-label="Tickets da fila (↑/↓ navega, Enter confirma, 1–8 corrige)"></ul>
+  </section>
+
+  <section class="painel" id="painel-detalhe" aria-labelledby="t-detalhe">
+    <div class="painel-topo"><h2 id="t-detalhe">Detalhe</h2><span id="det-id" class="discreto num"></span></div>
+    <p class="aviso">Piloto simulado: a resposta do atendente é o <strong>rótulo original</strong> do dataset, que tem ruído próprio. A classificação é a real do modelo.</p>
+    <div id="detalhe"></div>
+  </section>
+
+  <section class="painel" id="painel-gov" aria-labelledby="t-gov">
+    <div class="painel-topo"><h2 id="t-gov">Governança por categoria</h2><span id="gov-dia" class="discreto num"></span></div>
+    <p class="discreto pequeno">Precisão sombra: tickets com confiança ≥ limiar de IA decide, sem aplicar a política, contra o rótulo original, acumulado até o dia. A regra é a da F4: limite inferior ≥ meta de IA decide → IA decide; ≥ meta de IA sugere → IA sugere; abaixo → humano.</p>
+    <div class="tabela-rolagem">
+      <table id="gov-tabela" class="tabela">
+        <thead><tr><th scope="col">Categoria</th><th scope="col">Vigente</th><th scope="col" class="dir">n</th><th scope="col">Precisão (IC 95%)</th><th scope="col">Regra hoje</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="grafico-bloco">
+      <h3 id="graf-titulo">Limite inferior por dia</h3>
+      <svg id="grafico" viewBox="0 0 400 150" role="img" aria-labelledby="graf-titulo"></svg>
+    </div>
+    <div class="cartoes" id="cartoes"></div>
+    <fieldset class="premissas">
+      <legend>Premissas do cenário A (editáveis)</legend>
+      <label>R$/h <input id="p-reais" type="number" min="0" step="1" inputmode="decimal"></label>
+      <label>min/ticket <input id="p-min" type="number" min="0" step="0.5" inputmode="decimal"></label>
+      <label>tickets/ano <input id="p-vol" type="number" min="0" step="1000" inputmode="numeric"></label>
+    </fieldset>
+  </section>
+</main>
+
+<details class="log" id="log-bloco">
+  <summary>Log da tela (<span id="n-log" class="num">0</span> linhas, mesmos campos de <code>decisoes.jsonl</code>, sem texto)</summary>
+  <pre id="log"></pre>
+</details>
+
+<footer class="rodape">
+  Dados: holdout do DS2 (TI interna, 47.837 tickets). A transferência para a operação de suporte é premissa. A correção do atendente é simulada pelo rótulo original. Fontes: <code>solution/outputs/</code>.
+  <a href="https://github.com/covaleski13-tech/ai-master-challenge/blob/submission/gustavo-covaleski/submissions/gustavo-covaleski/README.md">README</a>
+</footer>
+
+<div id="dlg-alertas" class="dialogo" role="dialog" aria-modal="true" aria-labelledby="t-alertas" hidden>
+  <div class="dialogo-caixa">
+    <div class="painel-topo"><h2 id="t-alertas">Alertas</h2><button type="button" class="botao" data-fechar>Fechar</button></div>
+    <ul id="alertas" class="alertas"></ul>
+  </div>
+</div>
+
+<div id="dlg-ajuda" class="dialogo" role="dialog" aria-modal="true" aria-labelledby="t-ajuda" hidden>
+  <div class="dialogo-caixa">
+    <div class="painel-topo"><h2 id="t-ajuda">Como ler esta tela</h2><button type="button" class="botao" data-fechar>Fechar</button></div>
+    <ul class="ajuda">
+      <li><strong>Fila:</strong> 300 tickets reais do holdout, 15 por dia. Cada um já foi classificado pelo modelo; o selo é a faixa na política escolhida.</li>
+      <li><strong>Faixas:</strong> <span class="selo selo-decide">IA decide</span> roteia sem humano; <span class="selo selo-sugere">IA sugere</span> o atendente confirma; <span class="selo selo-humano">humano decide</span> o atendente classifica.</li>
+      <li><strong>Detalhe:</strong> o porquê da faixa passo a passo. Teste a reentrega (duplicado), a regra de reembolso e os 5 ataques pré-calculados.</li>
+      <li><strong>Governança:</strong> por categoria, a precisão sombra acumulada e o que a regra decidiria hoje. As marcas na barra são as metas de IA decide e IA sugere.</li>
+      <li><strong>Modo sombra:</strong> tudo vai para humano e o log registra a faixa que seria aplicada. É o rollback imediato.</li>
+      <li><strong>Teclado:</strong> ↑/↓ na fila, Enter confirma, 1–8 corrige para a categoria de mesmo número.</li>
+    </ul>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # Submissão — Gustavo Covaleski — Challenge 002
 
+**Console do piloto:** `[URL — preencher após o deploy]` · abre localmente com duplo clique em `console/index.html`.
+
 ## Sobre mim
 
 - **Nome:** Gustavo Covaleski
@@ -78,6 +80,10 @@ Mais detalhes:
 
 ![Aba lote: 200 tickets do holdout passados por triar](process-log/screenshots/6_lote.png)
 
+![Console do piloto, dia 20: fila, detalhe com o porquê da faixa e governança por categoria](process-log/screenshots/c1_console.png)
+
+Outras capturas do console: [governança (Hardware)](process-log/screenshots/c2_governanca.png), [o mesmo ataque com F8 e F9](process-log/screenshots/c3_injecao_f8_vs_f9.png), [modo sombra com alerta](process-log/screenshots/c4_sombra.png).
+
 ### Recomendações
 
 1. **Instrumentar os 5 eventos** (`ticket_criado`, `resposta_agente`, `status_mudou`, `reatribuido`, `csat_respondido`). Sem eles, nenhum diagnóstico de tempo é possível ([instrumentação](docs/instrumentacao.md)).
@@ -99,6 +105,7 @@ Mais detalhes:
 - **Retreino** de 21,5 s a 78,2 s, na mesma máquina.
 - **Treino sem máscara, inferência com máscara:** o modelo é treinado no texto original e classifica o texto mascarado. O efeito é desprezível no DS2, que tem 0 dado pessoal por regex (`solution/outputs/f1_ds2_auditoria.json`).
 - **Export da sessão:** contém os mesmos 2 trechos do DS2 de `docs/politica.md`; mantido sem edição para preservar a evidência.
+- **Console do piloto:** simula a correção do atendente com o rótulo original; a classificação de texto livre roda no protótipo Streamlit local. Contém o texto de 300 tickets do DS2 (até 400 caracteres cada), exceção aprovada pelo Gustavo.
 - **Tempo total acima do orçamento:** ver o [process log](process-log/process-log.md).
 
 ---
@@ -190,6 +197,7 @@ Também meus, anteriores à execução ou fora das tabelas de decisão:
    - F4: `f4_politica.py`.
    - F5 e F6: `f5_injecao.py` (`--so-classico`, `--dano-ampliado`), `f5_latencia.py`, `f6_detector.py`.
    - F8 e F9: `f8_oof.py`, depois `f9_confirmacao.py` (acrescenta a política implantada; rodar sempre depois do `f8_oof.py`), depois `f5_injecao.py --dano-ampliado-f8`.
+   - F10: `f10_console_dados.py` gera `console/data.js` (rodar depois da F9).
 
    Todos ficam em `solution/` e rodam com `python solution/<script>.py`.
 5. **Testes:** `pytest solution/tests -q`. O golden set e o portão de qualidade estão incluídos.
