@@ -106,7 +106,7 @@ Outras telas do console: [fila](process-log/screenshots/d2_fila.png), [governan�
 - **Treino sem máscara, inferência com máscara:** o modelo é treinado no texto original e classifica o texto mascarado. O efeito é desprezível no DS2, que tem 0 dado pessoal por regex (`solution/outputs/f1_ds2_auditoria.json`).
 - **Export da sessão:** contém os mesmos 2 trechos do DS2 de `docs/politica.md`; mantido sem edição para preservar a evidência.
 - **Console do piloto:** simula a correção do atendente com o rótulo original; a classificação de texto livre roda no protótipo Streamlit local. Contém o texto de 300 tickets do DS2 (até 400 caracteres cada), exceção aprovada pelo Gustavo.
-- **Tempo total acima do orçamento:** ver o [process log](process-log/process-log.md).
+- **Tempo total acima do orçamento:** ver a tabela ["Tempo por fase"](process-log/process-log.md#tempo-por-fase) do process log.
 
 ---
 

@@ -78,8 +78,14 @@
 | F6 Prontidão | 20 | ~20 | relógio entre mensagens (00:04 → 00:24), inclui revisão; execução ~5 (Claude Code) |
 | F7 Comunicação | 35 | ~40 | relógio entre mensagens (00:24 → ~01:05), inclui revisão e preenchimento; execução ~20 (Claude Code) |
 | Folga | 15 | — | — |
-| **Total** | **360** | **~400** | soma da coluna; F1, F2 e F3b sem o tempo de revisão |
-| **Relógio da sessão** | — | **~445** | primeira mensagem às 17:40 de 03/11 → PR por volta de 01:05 de 04/11, incluindo pausas. É o teto do tempo gasto, não o tempo efetivo |
+| F8 Seleção fora da amostra (spec, fora do F0-escopo) | 80 | ~36 | relógio entre mensagens (01:08 → 01:44), inclui revisão |
+| F9/F9b Confirmação por categoria (spec) | 30 | ~17 | relógio entre mensagens (01:44 → 02:01), inclui revisão |
+| F10/F10b Console do piloto (spec) | 90 | ~39 (22 + 17) | relógio entre mensagens (02:13 → 02:35 + 13:32 → 13:49, com pausa noturna), inclui revisão |
+| F11 Redesign do console (spec) | 75 | ~19 | relógio entre mensagens (14:00 → 14:19), inclui revisão |
+| F12/F12b Console a partir das pranchas (spec) | 90 | ~50 | relógio entre mensagens (14:19 → 15:09), inclui revisão |
+| **Total F0–F7** | **360** | **~400** | soma das linhas F0 a F7; F1, F2 e F3b sem o tempo de revisão |
+| **Total F8–F12b** | **365** (tetos das specs) | **~161** | soma das linhas F8 a F12/F12b |
+| **Relógio da sessão** | — | **~10 h** | 17:40 de 03/11 → ~15:15 de 04/11, com pausa noturna; ~10 h de relógio de trabalho; tempo efetivo declarado pelo Gustavo: 12h20 |
 
 **Ressalva:** as estimativas do Claude Code medem só o tempo de execução no terminal (relógio do sistema entre o início e o fim de cada fase). Elas **não** incluem o planejamento e a revisão no chat do Projeto nem a leitura dos reports nos portões. O registro do Gustavo depois da F3 (~295 min até a F3b; total projetado ~465 min) é a referência para o tempo real. Pela projeção do Gustavo, o estouro sobre os 360 min orçados seria de ~105 min (465 − 360). O valor final não foi medido. [GUSTAVO: tempo real de F4 a F7, incluindo revisão.]
 
