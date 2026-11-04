@@ -27,6 +27,25 @@ RE_FONE_FMT = re.compile(r"\+55[\s-]?\(?\d{2}\)?[\s-]?9?\d{4}[\s-]?\d{4}\b|\(\d{
 RE_FONE_HIFEN = re.compile(r"\b9?\d{4}-\d{4}\b")
 RE_FONE = re.compile(r"\b\d{8,}\b")
 
+CATEGORIAS = ["Access", "Administrative rights", "HR Support", "Hardware", "Internal Project",
+              "Miscellaneous", "Purchase", "Storage"]
+
+# detector de injeção: critério fixado na spec F6 ANTES de medir; não ajustar depois de ver o resultado
+RE_INJECAO = re.compile(r"ignore|instruction|system:|categoria|category|classify|classifique|[{}]", re.I)
+DETECTOR_PADRAO = "off"  # decidido pela regra de adoção da F6 (falso positivo ≤ 1% do holdout); ver f6_detector.json
+
+
+def detectar_injecao(texto: str) -> bool:
+    t = texto.lower()
+    if RE_INJECAO.search(t):
+        return True
+    return any(len(re.findall(rf"\b{re.escape(c.lower())}\b", t)) >= 3 for c in CATEGORIAS)
+
+
+def detector_ligado() -> bool:
+    return os.environ.get("TRIAGEM_DETECTOR", DETECTOR_PADRAO) == "on"
+
+
 _modelo = None
 _politica = None
 
@@ -38,13 +57,25 @@ def runtime_dir() -> Path:
     return d
 
 
+def cpf_valido(digitos: str) -> bool:
+    d = [int(c) for c in re.sub(r"\D", "", digitos)]
+    if len(d) != 11 or len(set(d)) == 1:
+        return False
+    for n in (9, 10):
+        resto = sum(v * (n + 1 - i) for i, v in enumerate(d[:n])) * 10 % 11
+        if resto % 10 != d[n]:
+            return False
+    return True
+
+
 def mascarar(texto: str, nome_cliente: str | None = None) -> str:
     t = RE_EMAIL.sub("[EMAIL]", texto)
     t = RE_CPF.sub("[CPF]", t)
     t = RE_FONE_FMT.sub("[TELEFONE]", t)
     t = RE_CARTAO.sub(lambda m: "[CARTAO]" if 13 <= len(re.sub(r"\D", "", m.group())) <= 16 else m.group(), t)
     t = RE_FONE_HIFEN.sub("[TELEFONE]", t)
-    t = RE_CPF_11.sub("[CPF]", t)
+    # 11 dígitos: CPF só se passar no dígito verificador; senão é celular (DDD + 9 + 8 dígitos)
+    t = RE_CPF_11.sub(lambda m: "[CPF]" if cpf_valido(m.group()) else "[TELEFONE]", t)
     t = RE_FONE.sub("[TELEFONE]", t)
     if nome_cliente and nome_cliente.strip():
         t = re.sub(re.escape(nome_cliente.strip()), "[NOME]", t, flags=re.I)
@@ -175,6 +206,8 @@ def _triar(evento, t0):
                 res.update(c, faixa=faixa_para(c["categoria"], c["p_max"]))
                 if evento.get("tipo_ds1") in TIPOS_SEMPRE_HUMANO:
                     res.update(faixa="humano decide", motivo=f"regra de ação: {evento['tipo_ds1']}; " + c["motivo"])
+                if detector_ligado() and detectar_injecao(texto):
+                    res.update(faixa="humano decide", motivo="possível injeção; " + res["motivo"])
             except Exception as e:
                 res.update(faixa="humano decide", motivo="falha do classificador",
                            erro=f"{type(e).__name__}: {e} | {traceback.format_exc(limit=1).strip()[-200:]}")
@@ -200,7 +233,14 @@ def _triar(evento, t0):
         con.close()
 
 
-def registrar_correcao(chave: str, categoria_correta: str, atendente: str) -> None:
-    # entrada do próximo ciclo de avaliação; nunca retreina automaticamente
-    _log({"timestamp_utc": datetime.now(timezone.utc).isoformat(), "chave": chave,
-          "categoria_correta": categoria_correta, "atendente": atendente}, "correcoes.jsonl")
+def registrar_correcao(chave: str, categoria_correta: str, atendente: str, observacao: str = "") -> bool:
+    # entrada do próximo ciclo de avaliação; nunca retreina automaticamente. Devolve False em vez de lançar.
+    try:
+        if categoria_correta not in CATEGORIAS:
+            return False
+        _log({"timestamp_utc": datetime.now(timezone.utc).isoformat(), "chave": chave,
+              "categoria_correta": categoria_correta, "atendente": atendente,
+              "observacao_mascarada": mascarar(str(observacao))[:200]}, "correcoes.jsonl")
+        return True
+    except Exception:
+        return False

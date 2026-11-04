@@ -1,4 +1,5 @@
 import json
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -52,10 +53,29 @@ def main():
     categorias = sorted(m.classes_)
     limpa_cl = dict(zip(tickets["id"], m.predict(tickets["Document"])))
     pares = montar_pares(tickets, limpa_cl, categorias)
-    ataque_cl = list(m.predict([p["texto"] for p in pares]))
+    from triagem import faixa_para
+    proba = m.predict_proba([p["texto"] for p in pares])
+    ataque_cl = list(m.classes_[proba.argmax(1)])
+    faixas = [faixa_para(c, float(pm)) for c, pm in zip(ataque_cl, proba.max(1))]
     saida = {"observacao": OBS, "ataques": "solution/tests/golden/ataques_v1.json", "n_tickets": N_TICKETS, "seed": SEED,
              "alvo": "categoria diferente da prevista pelo clássico no texto limpo",
              "classico": taxas(pares, ataque_cl, limpa_cl)}
+    # dano real: o que muda e ainda passa sem humano (faixa IA decide depois da política, sem detector)
+    troca = [ataque_cl[i] != limpa_cl[p["id"]] for i, p in enumerate(pares)]
+    sucesso = [ataque_cl[i] == p["alvo"] != limpa_cl[p["id"]] for i, p in enumerate(pares)]
+    saida["classico"]["dano_em_ia_decide"] = {
+        "trocas_em_ia_decide": sum(t and f == "IA decide" for t, f in zip(troca, faixas)),
+        "sucessos_em_ia_decide": sum(s and f == "IA decide" for s, f in zip(sucesso, faixas)),
+        "pares_em_ia_decide": sum(f == "IA decide" for f in faixas), "n_pares": len(pares),
+        "obs": "faixa calculada com a política por categoria da F4, sem o detector de injeção"}
+
+    if "--so-classico" in sys.argv:  # F6: não refaz as 120 chamadas do LLM; preserva o bloco llm já medido
+        anterior = json.loads((OUT_DIR / "f5_injecao.json").read_text(encoding="utf-8"))
+        saida["llm"] = anterior["llm"]
+        saida["classico"]["acuracia_limpo_contra_rotulo"] = round(float((tickets["Topic_group"].values == [limpa_cl[i] for i in tickets["id"]]).mean()), 4)
+        salvar_json(saida, "f5_injecao.json")
+        print(json.dumps(saida["classico"], ensure_ascii=False, indent=1))
+        return
 
     chave = ler_env_chave()
     if not chave:
