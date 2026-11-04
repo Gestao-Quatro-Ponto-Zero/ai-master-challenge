@@ -1,0 +1,6 @@
+granularidade,n_grupos,menor_grupo,participacao,n_atual,grupos_comparados_mde,n_comparados,mde_atual_h,n_para_2h,semanas_para_2h,rotulo
+prioridade,4.0,Low,0.243594,332,Low vs Medium,332/341,1.21,123,0.9,"duração: variável sintética e inválida (T3); usada só como premissa de variância; volume e semanas: premissa (editável), não dado"
+canal,4.0,Chat,0.244775,355,Phone vs Social media,327/348,1.21,123,0.9,"duração: variável sintética e inválida (T3); usada só como premissa de variância; volume e semanas: premissa (editável), não dado"
+canal x prioridade,16.0,Phone | Low,0.058921,69,Phone | Low vs Social media | Medium,69/69,2.67,123,3.6,"duração: variável sintética e inválida (T3); usada só como premissa de variância; volume e semanas: premissa (editável), não dado"
+canal x prioridade x tipo,80.0,Chat | Critical | Product inquiry,0.010037,15,Chat | Critical | Billing inquiry vs Email | High | Technical issue,20/20,4.96,123,21.2,"duração: variável sintética e inválida (T3); usada só como premissa de variância; volume e semanas: premissa (editável), não dado"
+piores combinações (1.2),,,,,Chat | High | Refund request vs Chat | Critical | Billing inquiry,22/20,4.84,,,diferença observada 5.97 h; variável sintética e inválida (T3); usada só como premissa de variância

@@ -1,0 +1,45 @@
+{
+  "limiares": {
+    "ia_decide": 0.74,
+    "ia_sugere": 0.66
+  },
+  "e_q2": {
+    "fonte": "quase_duplicados",
+    "valor": 0.0382,
+    "e_inferior": 0.032,
+    "e_superior": 0.0455,
+    "meta_ia_decide_li_ge": 0.968,
+    "meta_ia_sugere_li_ge": 0.9545,
+    "regra": "menor dos dois valores pontuais, com o IC da fonte escolhida (decisão do Gustavo antes da adjudicação)"
+  },
+  "regra": "política da categoria (LI de Wilson da precisão na faixa IA decide) é teto da faixa global",
+  "cobertura_apos_politica": {
+    "IA decide": {
+      "n": 1242,
+      "cobertura_pct": 12.98,
+      "precisao": 0.9887,
+      "ic95": [
+        0.9812,
+        0.9933
+      ]
+    },
+    "IA sugere": {
+      "n": 3005,
+      "cobertura_pct": 31.41,
+      "precisao": 0.9667,
+      "ic95": [
+        0.9597,
+        0.9726
+      ]
+    },
+    "humano decide": {
+      "n": 5320,
+      "cobertura_pct": 55.61,
+      "precisao": 0.753,
+      "ic95": [
+        0.7412,
+        0.7644
+      ]
+    }
+  }
+}

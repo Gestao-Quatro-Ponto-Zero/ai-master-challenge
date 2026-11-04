@@ -1,0 +1,124 @@
+{
+  "metodo": "StratifiedGroupKFold(5, shuffle, seed 42) no treino por grupo; curva/faixas de f3_faixas.py e regra por categoria de f4_politica.py aplicadas às predições fora da dobra; limiares e política congelados e aplicados uma única vez no holdout",
+  "e_q2": {
+    "fonte": "quase_duplicados",
+    "valor": 0.0382,
+    "e_inferior": 0.032,
+    "e_superior": 0.0455,
+    "meta_ia_decide_li_ge": 0.968,
+    "meta_ia_sugere_li_ge": 0.9545,
+    "regra": "menor dos dois valores pontuais, com o IC da fonte escolhida (decisão do Gustavo antes da adjudicação)"
+  },
+  "limiares": {
+    "t_decide": 0.71,
+    "t_sugere": 0.64
+  },
+  "faixa_ia_decide_vazia_no_oof": false,
+  "oof_treino": {
+    "n": 38270,
+    "acuracia": 0.8436,
+    "politica_por_categoria": {
+      "Access": "IA decide",
+      "Administrative rights": "IA decide",
+      "HR Support": "IA decide",
+      "Hardware": "humano decide",
+      "Internal Project": "IA sugere",
+      "Miscellaneous": "IA sugere",
+      "Purchase": "IA decide",
+      "Storage": "IA decide"
+    }
+  },
+  "comparacao_f3_f4": {
+    "limiares_f3_holdout": {
+      "t_decide": 0.74,
+      "t_sugere": 0.66
+    },
+    "politica_f4": {
+      "Access": "IA decide",
+      "Administrative rights": "humano decide",
+      "HR Support": "IA sugere",
+      "Hardware": "humano decide",
+      "Internal Project": "IA sugere",
+      "Miscellaneous": "IA sugere",
+      "Purchase": "IA decide",
+      "Storage": "IA sugere"
+    }
+  },
+  "selecao_oof": {
+    "n": 9567,
+    "acuracia": 0.8507,
+    "faixas": {
+      "IA decide": {
+        "n": 3197,
+        "cobertura_pct": 33.42,
+        "precisao": 0.9775,
+        "ic95": [
+          0.9717,
+          0.9821
+        ]
+      },
+      "IA sugere": {
+        "n": 1299,
+        "cobertura_pct": 13.58,
+        "precisao": 0.9484,
+        "ic95": [
+          0.935,
+          0.9592
+        ]
+      },
+      "humano decide": {
+        "n": 5071,
+        "cobertura_pct": 53.01,
+        "precisao": 0.7458,
+        "ic95": [
+          0.7336,
+          0.7576
+        ]
+      }
+    }
+  },
+  "implantada": {
+    "regra": "F9: política implantada = mais restritiva entre a seleção OOF (F8) e a confirmação por categoria no holdout (mesma regra da F4 aplicada ao LI do holdout). Decisão conservadora pós-hoc do Gustavo: só rebaixa.",
+    "politica_por_categoria": {
+      "Access": "IA decide",
+      "Administrative rights": "humano decide",
+      "HR Support": "IA sugere",
+      "Hardware": "humano decide",
+      "Internal Project": "IA sugere",
+      "Miscellaneous": "IA sugere",
+      "Purchase": "IA decide",
+      "Storage": "IA sugere"
+    },
+    "n": 9567,
+    "acuracia": 0.8507,
+    "faixas": {
+      "IA decide": {
+        "n": 1279,
+        "cobertura_pct": 13.37,
+        "precisao": 0.9875,
+        "ic95": [
+          0.9798,
+          0.9923
+        ]
+      },
+      "IA sugere": {
+        "n": 3073,
+        "cobertura_pct": 32.12,
+        "precisao": 0.9623,
+        "ic95": [
+          0.9549,
+          0.9684
+        ]
+      },
+      "humano decide": {
+        "n": 5215,
+        "cobertura_pct": 54.51,
+        "precisao": 0.7515,
+        "ic95": [
+          0.7396,
+          0.763
+        ]
+      }
+    }
+  }
+}

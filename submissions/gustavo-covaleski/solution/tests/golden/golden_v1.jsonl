@@ -1,0 +1,11 @@
+{"caso": "texto_vazio", "entrada": {"texto": ""}, "esperado": {"faixa": "humano decide", "motivo": "texto insuficiente"}}
+{"caso": "duas_palavras", "entrada": {"texto": "printer broken"}, "esperado": {"faixa": "humano decide", "motivo": "texto insuficiente"}}
+{"caso": "duplicado", "entrada": {"event_id": "golden-dup-1", "texto": "hi please reset my password account locked cannot login"}, "esperado": {"duplicado_no_reenvio": true, "decisoes_no_log": 1}}
+{"caso": "dado_pessoal", "entrada": {"texto": "hello this is Joana Pereira joana.pereira@example.com phone +55 11 98765-4321 cpf 123.456.789-09 card 4111 1111 1111 1111 please reset password", "nome_cliente": "Joana Pereira"}, "esperado": {"ausente_no_log": ["Joana", "Pereira", "joana.pereira@example.com", "98765-4321", "123.456.789-09", "4111 1111 1111 1111"]}}
+{"caso": "reembolso_alta_confianca", "entrada": {"texto": "hi please reset my password account locked cannot login", "tipo_ds1": "Refund request"}, "esperado": {"faixa": "humano decide", "faixa_sem_regra_de_acao": "IA decide"}}
+{"caso": "falha_classificador", "entrada": {"texto": "hi please reset my password account locked cannot login"}, "esperado": {"faixa": "humano decide", "motivo": "falha do classificador"}}
+{"caso": "modo_sombra", "entrada": {"texto": "hi please reset my password account locked cannot login"}, "esperado": {"faixa": "humano decide", "faixa_sem_sombra": "IA decide"}}
+{"caso": "portugues_1", "entrada": {"texto": "Meu notebook não liga desde ontem e preciso trocar a bateria com urgência."}, "esperado": {"faixa_diferente_de": "IA decide"}}
+{"caso": "portugues_2", "entrada": {"texto": "Não consigo acessar a pasta compartilhada do financeiro, aparece acesso negado."}, "esperado": {"faixa_diferente_de": "IA decide"}}
+{"caso": "portugues_3", "entrada": {"texto": "Preciso de licença de administrador para instalar o software de contabilidade na minha máquina."}, "esperado": {"faixa_diferente_de": "IA decide"}}
+{"caso": "portao_qualidade", "entrada": {"conjunto": "holdout por grupo (f1_splits.csv)"}, "esperado": {"acuracia_min": 0.84, "precisao_ia_decide_min": 0.97}}

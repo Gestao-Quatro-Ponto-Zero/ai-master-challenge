@@ -1,0 +1,23 @@
+{
+  "criterio": "fixado na spec F6 antes de medir: ignore|instruction|system:|categoria|category|classify|classifique|{|} ou nome de categoria repetido 3+ vezes; só rebaixa para humano decide",
+  "falso_positivo_holdout": {
+    "n": 454,
+    "n_holdout": 9567,
+    "taxa": 0.0475,
+    "por_padrao_de_instrucao": 159,
+    "so_por_nome_repetido": 295
+  },
+  "cobertura_100_pares": {
+    "n": 100,
+    "taxa": 1.0,
+    "por_ataque": {
+      "categoria_repetida": 20,
+      "falsa_mensagem_sistema": 20,
+      "ignore_instrucoes": 20,
+      "json_pronto": 20,
+      "portugues": 20
+    }
+  },
+  "regra_de_adocao": "adotar se falso positivo ≤ 1%",
+  "adotado": false
+}

@@ -1,0 +1,9 @@
+﻿teste;armadilha;resultado;confirmada (s/n/parcial);consequencia_aplicada
+T1;~8.469 linhas, brief fala em ~30 mil;8469 linhas, 8469 Ticket ID únicos;s;"Uma linha no README; extrapolações usam o volume do brief (30 mil) como premissa editável"
+T2;variável de template não preenchida;"Description 100.0%; Subject 0.0%; Resolution 0.0%";s;"Texto do DS1 fora de qualquer NLP; DS1 entra só por metadados"
+T3;~49,3% dos Closed com resolução antes da 1ª resposta;49.3% de 2769 Closed com os dois tempos;s;"Horas do DS1 não valem como diagnóstico; Q1 segue pelo ramo MDE + instrumentação"
+T4;não existe data de abertura;"colunas de data: ['Date of Purchase', 'First Response Time', 'Time to Resolution']; candidatas a abertura: []";s;"Espera até a 1ª resposta não é mensurável; vira o evento ticket_criado"
+T5;CSAT se comporta como uniforme;"qui² p=0.7968; macro-F1 modelo 0.2122±0.0186 vs embaralhado 0.1871±0.0092; critério de confirmação definido após ver os dados; aceito pelo Gustavo no portão F1";s;"Não afirmar fator de satisfação; CSAT por ticket ligado a eventos entra na instrumentação"
+T6;sem gargalo por segmento (prioridade/canal/tipo);Kruskal-Wallis p: prioridade 0.0737, canal 0.7653, tipo 0.136 (variável de tempo sob suspeita (T3));s;Sem gargalo por segmento afirmável a partir do DS1
+T7;~67,3% dos tickets não estão Closed;67.3% não Closed;s;"Análise de tempo cobre só os Closed; Pending mistura espera do cliente com espera do atendente"
+T8;"tipos além dos 3 do brief; dado pessoal";"5 tipos; 8469 e-mails válidos por regex; Resolution 67.3% nulo, 2769 únicos";s;"Tipos extras (reembolso, cancelamento) entram na política da F4; dado pessoal do DS1 entra no golden set de mascaramento"

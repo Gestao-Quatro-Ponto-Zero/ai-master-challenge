@@ -1,0 +1,10 @@
+min_por_ticket,reais_por_hora,custo_anual_triagem_reais,cobertura_ia_decide,economia_anual_ia_decide_reais,faixa_ia_sugere,rotulo
+2,25,25000.0,0.1337,3342.22,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+2,35,35000.0,0.1337,4679.11,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+2,50,50000.0,0.1337,6684.44,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+3,25,37500.0,0.1337,5013.33,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+3,35,52500.0,0.1337,7018.66,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+3,50,75000.0,0.1337,10026.65,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+4,25,50000.0,0.1337,6684.44,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+4,35,70000.0,0.1337,9358.21,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)
+4,50,100000.0,0.1337,13368.87,não quantificada; tempo de confirmação a medir no piloto,premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)

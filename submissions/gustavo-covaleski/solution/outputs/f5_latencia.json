@@ -1,0 +1,15 @@
+{
+  "n": 1000,
+  "seed": 42,
+  "escopo": "triar() de ponta a ponta: idempotência (sqlite), mascaramento, classificação, faixa, log JSONL",
+  "p50_ms": 2.79,
+  "p95_ms": 5.12,
+  "media_ms": 3.25,
+  "total_por_1000_s": 3.25,
+  "linhas_no_log": 1000,
+  "faixas": {
+    "humano decide": 543,
+    "IA sugere": 325,
+    "IA decide": 132
+  }
+}

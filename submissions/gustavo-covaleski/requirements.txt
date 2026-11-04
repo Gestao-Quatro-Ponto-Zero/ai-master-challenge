@@ -1,0 +1,7 @@
+numpy==2.5.4
+pandas==3.1.0
+scikit-learn==1.9.1
+scipy==1.18.1
+pytest==9.2.0
+anthropic==2.4.0
+streamlit==1.66.1

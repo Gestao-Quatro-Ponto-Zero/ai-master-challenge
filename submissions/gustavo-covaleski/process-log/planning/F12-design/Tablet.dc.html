@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Visão geral — tablet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F4F7}
+a{color:#2457D6}a:hover{color:#1A43AA}
+</style>
+</helmet>
+<div style="width: 1024px; min-height: 1320px; background: #F2F4F7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #111827; font-variant-numeric: tabular-nums">
+  <header style="background: #0B1B33; color: #FFFFFF; padding: 0 24px">
+    <div style="min-height: 56px; display: flex; align-items: center; gap: 10px">
+      <div style="width: 26px; height: 26px; border-radius: 7px; background: #2457D6; display: flex; align-items: center; justify-content: center">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><path d="M3 6h14M6 10h8M9 14h2"/></svg>
+      </div>
+      <span style="font-weight: 600; font-size: 15px">Triagem</span>
+      <span style="margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #DDE5F0; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 4px 10px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #3CCB9A"></span>Ativo · dia 20</span>
+    </div>
+    <nav aria-label="Seções" style="display: flex; gap: 4px; padding-bottom: 10px">
+      <a href="Main.dc.html" aria-current="page" style="color: #FFFFFF; background: rgba(255,255,255,0.12); text-decoration: none; font-size: 14px; font-weight: 500; padding: 9px 14px; border-radius: 8px">Visão geral</a>
+      <a href="Fila.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 9px 14px; border-radius: 8px">Fila</a>
+      <a href="Governanca.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 9px 14px; border-radius: 8px">Governança</a>
+      <a href="Robustez.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 9px 14px; border-radius: 8px">Robustez</a>
+    </nav>
+  </header>
+
+  <main style="padding: 24px; display: flex; flex-direction: column; gap: 20px">
+    <div>
+      <h1 style="margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -0.02em">Visão geral</h1>
+      <p style="margin: 6px 0 0; font-size: 14px; color: #5F6B7A">9.567 tickets triados</p>
+    </div>
+
+    <div role="status" style="display: flex; align-items: center; gap: 12px; background: #FFF4E5; border: 1px solid #F5C98B; border-radius: 10px; padding: 12px 16px">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#8F4A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3l8 14H2z"/><path d="M10 8v4M10 14.5v.2"/></svg>
+      <span style="font-size: 14px; color: #5C3300"><strong style="font-weight: 600">Internal Project</strong> abaixo da meta de sugestão (95,1% &lt; 95,5%).</span>
+      <a href="Governanca.dc.html" style="margin-left: auto; font-size: 14px; font-weight: 600; color: #8F4A00">Revisar</a>
+    </div>
+
+    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+      <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+        <div style="background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; font-weight: 500; color: #5F6B7A">{{k.rotulo}}</span>
+          <span style="font-size: 30px; font-weight: 600; letter-spacing: -0.02em; color: {{k.cor}}">{{k.valor}}</span>
+          <span style="font-size: 13px; color: #5F6B7A">{{k.detalhe}}</span>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+      <h2 style="margin: 0; font-size: 16px; font-weight: 600">Distribuição por faixa</h2>
+      <div role="img" aria-label="IA decide 13,4%, IA sugere 32,1%, humano decide 54,5%" style="display: flex; height: 36px; border-radius: 8px; overflow: hidden; gap: 2px">
+        <div style="width: 13.37%; background: #0F7B6C"></div>
+        <div style="width: 32.12%; background: #D98A1E"></div>
+        <div style="width: 54.51%; background: #7A8699"></div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3D4A5C"><span style="width: 10px; height: 10px; border-radius: 3px; background: #0F7B6C"></span>IA decide</span><span style="font-size: 18px; font-weight: 600">13,4% · 98,7%</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3D4A5C"><span style="width: 10px; height: 10px; border-radius: 3px; background: #D98A1E"></span>IA sugere</span><span style="font-size: 18px; font-weight: 600">32,1% · 96,2%</span></div>
+        <div style="display: flex; flex-direction: column; gap: 2px"><span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #3D4A5C"><span style="width: 10px; height: 10px; border-radius: 3px; background: #7A8699"></span>Humano decide</span><span style="font-size: 18px; font-weight: 600">54,5% · 75,1%</span></div>
+      </div>
+      <span style="font-size: 12px; color: #5F6B7A">Cobertura · precisão contra o rótulo</span>
+    </section>
+
+    <section style="background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 16px; font-weight: 600">Precisão da automação por dia</h2><span style="font-size: 13px; color: #5F6B7A">dia 20: 98,7%</span></div>
+      <svg role="img" aria-label="Precisão acumulada acima da meta de 96,8% em todos os 20 dias" viewBox="0 0 600 180" style="width: 100%; height: auto">
+        <line x1="40" y1="8" x2="600" y2="8" stroke="#EEF1F5"/><line x1="40" y1="88" x2="600" y2="88" stroke="#EEF1F5"/><line x1="40" y1="168" x2="600" y2="168" stroke="#EEF1F5"/>
+        <g font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#5F6B7A"><text x="0" y="12">100%</text><text x="0" y="92">98%</text><text x="0" y="172">96%</text></g>
+        <line x1="40" y1="136" x2="600" y2="136" stroke="#B42318" stroke-dasharray="5 4" stroke-width="1.5"/>
+        <text x="596" y="130" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#B42318">meta 96,8%</text>
+        <polyline fill="none" stroke="#0F7B6C" stroke-width="2.5" stroke-linejoin="round" points="40,114.8 69.5,67.6 98.9,48.4 128.4,53.6 157.9,56 187.4,48.8 216.8,52.4 246.3,55.2 275.8,50.4 305.3,45.6 334.7,48 364.2,49.2 393.7,46 423.2,48 452.6,49.6 482.1,47.2 511.6,45.2 541.1,50 570.5,51.2 600,58"/>
+      </svg>
+    </section>
+
+    <section style="background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 16px; font-weight: 600">Filas por política</h2><a href="Governanca.dc.html" style="font-size: 14px">Ver governança</a></div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; font-size: 14px">
+        <div style="display: flex; flex-direction: column; gap: 8px"><span style="align-self: flex-start; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #E3F3EF; color: #0B6B5E">IA decide · 2</span><span>Access</span><span>Purchase</span></div>
+        <div style="display: flex; flex-direction: column; gap: 8px"><span style="align-self: flex-start; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #FCEFD9; color: #8F4A00">IA sugere · 4</span><span>HR Support</span><span>Internal Project <span style="color: #8F4A00; font-size: 12px; font-weight: 600">· revisar</span></span><span>Miscellaneous</span><span>Storage</span></div>
+        <div style="display: flex; flex-direction: column; gap: 8px"><span style="align-self: flex-start; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #EAEEF3; color: #3D4A5C">Humano decide · 2</span><span>Administrative rights</span><span>Hardware</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1024,"height":1320}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      kpis: [
+        { rotulo: 'Automação', valor: '13,4%', detalhe: '1.279 de 9.567 tickets', cor: '#0F7B6C' },
+        { rotulo: 'Precisão da automação', valor: '98,7%', detalhe: 'Meta ≥ 96,8%', cor: '#111827' },
+        { rotulo: 'Sugestão com revisão', valor: '32,1%', detalhe: '3.073 tickets · 96,2%', cor: '#8F4A00' },
+        { rotulo: 'Injeções sem revisão', valor: '0', detalhe: 'de 6.395 tentativas', cor: '#111827' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

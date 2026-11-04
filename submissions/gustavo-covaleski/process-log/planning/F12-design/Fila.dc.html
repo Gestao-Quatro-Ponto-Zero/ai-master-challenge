@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Fila — Console do piloto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F4F7}
+a{color:#2457D6}a:hover{color:#1A43AA}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F2F4F7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #111827; font-variant-numeric: tabular-nums">
+
+  <header style="background: #0B1B33; color: #FFFFFF">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 0 32px; min-height: 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="width: 28px; height: 28px; border-radius: 7px; background: #2457D6; display: flex; align-items: center; justify-content: center">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><path d="M3 6h14M6 10h8M9 14h2"/></svg>
+        </div>
+        <span style="font-weight: 600; font-size: 16px">Triagem</span>
+        <span style="font-size: 13px; color: #9FB0C8">Piloto</span>
+      </div>
+      <nav aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 4px">
+        <a href="Main.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Visão geral</a>
+        <a href="Fila.dc.html" aria-current="page" style="color: #FFFFFF; background: rgba(255,255,255,0.12); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Fila</a>
+        <a href="Governanca.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Governança</a>
+        <a href="Robustez.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Robustez</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #DDE5F0; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 5px 12px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3CCB9A"></span>Modo ativo</span>
+        <span style="font-size: 13px; color: #DDE5F0; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 5px 12px">Dia 20 de 20</span>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width: 1360px; margin: 0 auto; padding: 32px; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em">Fila</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: #5F6B7A">300 tickets do holdout · dias 1 a 20</p>
+      </div>
+      <div role="group" aria-label="Filtrar por faixa" style="display: inline-flex; flex-wrap: wrap; background: #E6EAF0; border-radius: 10px; padding: 4px; gap: 4px">
+        <button type="button" aria-pressed="true" style="border: 0; background: #FFFFFF; color: #111827; font: 600 14px 'IBM Plex Sans', sans-serif; padding: 8px 14px; border-radius: 7px; min-height: 36px; box-shadow: 0 1px 2px rgba(16,24,40,0.08)">Todos 300</button>
+        <button type="button" aria-pressed="false" style="border: 0; background: transparent; color: #3D4A5C; font: 500 14px 'IBM Plex Sans', sans-serif; padding: 8px 14px; border-radius: 7px; min-height: 36px">IA decide 45</button>
+        <button type="button" aria-pressed="false" style="border: 0; background: transparent; color: #3D4A5C; font: 500 14px 'IBM Plex Sans', sans-serif; padding: 8px 14px; border-radius: 7px; min-height: 36px">IA sugere 91</button>
+        <button type="button" aria-pressed="false" style="border: 0; background: transparent; color: #3D4A5C; font: 500 14px 'IBM Plex Sans', sans-serif; padding: 8px 14px; border-radius: 7px; min-height: 36px">Humano 164</button>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section aria-label="Tickets" style="flex: 1 1 380px; max-width: 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; overflow: hidden">
+        <div style="padding: 12px; border-bottom: 1px solid #EEF1F5">
+          <label for="busca" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Buscar</label>
+          <input id="busca" type="search" placeholder="Buscar por #id ou termo" style="width: 100%; box-sizing: border-box; border: 1px solid #D5DBE3; border-radius: 8px; padding: 10px 12px; font: 400 14px 'IBM Plex Sans', sans-serif; color: #111827; background: #F8FAFC">
+        </div>
+        <div style="max-height: 640px; overflow: auto">
+          <sc-for list="{{tickets}}" as="t" hint-placeholder-count="8">
+            <a href="#detalhe" style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-bottom: 1px solid #EEF1F5; text-decoration: none; color: #111827; background: {{t.fundo}}; border-left: 3px solid {{t.borda}}">
+              <span style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500">#{{t.id}}</span>
+                <span style="font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: {{t.pillFundo}}; color: {{t.pillTexto}}">{{t.faixa}}</span>
+              </span>
+              <span style="font-size: 13px; color: #5F6B7A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{t.texto}}</span>
+              <span style="font-size: 12px; color: #3D4A5C">{{t.cat}} · {{t.conf}}</span>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+      <section id="detalhe" aria-label="Ticket selecionado" style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 24px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+          <div style="display: flex; align-items: baseline; gap: 12px">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 500">#21676</span>
+            <span style="font-size: 13px; color: #5F6B7A">Dia 1 do piloto</span>
+          </div>
+          <span style="display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px; background: #FCEFD9; color: #8F4A00">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z"/><circle cx="10" cy="10" r="2.5"/></svg>
+            IA sugere · revisão humana
+          </span>
+        </div>
+
+        <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #1F2937; background: #F8FAFC; border: 1px solid #EEF1F5; border-radius: 10px; padding: 16px 18px">new starter florin bucharest thursday february pm re hi respond later afternoon galaxy date hello va date administration officer</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <span style="font-size: 13px; color: #5F6B7A">Categoria sugerida</span>
+            <span style="font-size: 24px; font-weight: 600">HR Support</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div style="display: flex; justify-content: space-between">
+              <span style="font-size: 13px; color: #5F6B7A">Confiança</span>
+              <span style="font-size: 15px; font-weight: 600">98,8%</span>
+            </div>
+            <div role="img" aria-label="Confiança 98,8%; limiar de sugestão 64%, limiar de decisão 71%" style="position: relative; height: 10px; background: #EEF1F5; border-radius: 5px">
+              <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 98.8%; background: #2457D6; border-radius: 5px"></div>
+              <div style="position: absolute; left: 64%; top: -4px; bottom: -4px; width: 2px; background: #111827"></div>
+              <div style="position: absolute; left: 71%; top: -4px; bottom: -4px; width: 2px; background: #111827"></div>
+            </div>
+            <div style="position: relative; height: 16px; font-size: 11px; color: #5F6B7A">
+              <span style="position: absolute; left: 64%; transform: translateX(-100%); padding-right: 4px">64% sugere</span>
+              <span style="position: absolute; left: 71%; padding-left: 4px">71% decide</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #EEF1F5; padding-top: 20px; display: flex; flex-direction: column; gap: 6px">
+          <span style="font-size: 13px; font-weight: 600; color: #3D4A5C">Motivo da faixa</span>
+          <span style="font-size: 14px; color: #1F2937">Confiança acima do limiar de decisão. A política atual limita HR Support a sugestão.</span>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+          <button type="button" style="border: 0; background: #2457D6; color: #FFFFFF; font: 600 15px 'IBM Plex Sans', sans-serif; padding: 12px 20px; border-radius: 8px; min-height: 44px; cursor: pointer">Confirmar HR Support</button>
+          <button type="button" style="border: 1px solid #C9D1DC; background: #FFFFFF; color: #111827; font: 500 15px 'IBM Plex Sans', sans-serif; padding: 12px 18px; border-radius: 8px; min-height: 44px; cursor: pointer">Corrigir categoria</button>
+          <span style="margin-left: auto; font-size: 12px; color: #5F6B7A"><kbd style="font-family: 'IBM Plex Mono', monospace; border: 1px solid #D5DBE3; border-radius: 4px; padding: 1px 5px">Enter</kbd> confirma · <kbd style="font-family: 'IBM Plex Mono', monospace; border: 1px solid #D5DBE3; border-radius: 4px; padding: 1px 5px">1–8</kbd> corrige</span>
+        </div>
+
+        <details style="border: 1px solid #EEF1F5; border-radius: 10px; padding: 14px 16px">
+          <summary style="font-size: 14px; font-weight: 500; cursor: pointer">Detalhes do modelo</summary>
+          <div style="display: flex; flex-direction: column; gap: 8px; padding-top: 12px; font-size: 13px; color: #3D4A5C">
+            <span>2ª opção: Hardware · 0,5%</span>
+            <span>Termos de maior peso: starter, new starter, bucharest, date, officer</span>
+            <span>Rótulo histórico (correção simulada): HR Support</span>
+          </div>
+        </details>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const estilo = {
+      'IA decide': { pillFundo: '#E3F3EF', pillTexto: '#0B6B5E' },
+      'IA sugere': { pillFundo: '#FCEFD9', pillTexto: '#8F4A00' },
+      'Humano': { pillFundo: '#EAEEF3', pillTexto: '#3D4A5C' }
+    };
+    const base = [
+      { id: '12410', faixa: 'Humano', cat: 'Hardware', conf: '76,5%', texto: 'db restore from production to staging july pm restore production staging' },
+      { id: '47131', faixa: 'Humano', cat: 'Hardware', conf: '90,1%', texto: 'unable to log into service now sent october unable log into' },
+      { id: '43725', faixa: 'IA decide', cat: 'Access', conf: '96,2%', texto: 'locked account sent thursday march locked hi colleague locked' },
+      { id: '45397', faixa: 'Humano', cat: 'Hardware', conf: '33,3%', texto: 'can fill and complete sent tuesday december can fill complete' },
+      { id: '24659', faixa: 'Humano', cat: 'HR Support', conf: '39,4%', texto: 'urban access admin account december re importance high guys' },
+      { id: '13588', faixa: 'Humano', cat: 'Hardware', conf: '79,1%', texto: 'db backups needed for staging deploy wednesday pm re backups' },
+      { id: '2839', faixa: 'Humano', cat: 'Hardware', conf: '62,0%', texto: 'connection to famed servers re famed hello dear please assign' },
+      { id: '29207', faixa: 'Humano', cat: 'Hardware', conf: '88,3%', texto: 'slow device wednesday pm slow device hello problem same got' },
+      { id: '34188', faixa: 'Humano', cat: 'Miscellaneous', conf: '59,1%', texto: 'high satisfaction score notifications are not correctly directed' },
+      { id: '21676', faixa: 'IA sugere', cat: 'HR Support', conf: '98,8%', texto: 'new starter florin bucharest thursday february pm re hi respond' }
+    ];
+    return {
+      tickets: base.map((t) => ({
+        ...t, ...estilo[t.faixa],
+        fundo: t.id === '21676' ? '#EEF3FE' : '#FFFFFF',
+        borda: t.id === '21676' ? '#2457D6' : 'transparent'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

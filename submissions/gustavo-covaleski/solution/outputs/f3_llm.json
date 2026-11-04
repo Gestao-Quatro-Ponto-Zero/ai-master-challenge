@@ -1,0 +1,77 @@
+{
+  "modelo": "claude-haiku-5-5",
+  "configuracao": {
+    "thinking": "disabled",
+    "effort": "low",
+    "temperature": "não enviada (padrão do modelo)",
+    "max_tokens": 64
+  },
+  "prompt": "solution/prompts/classificar_v1.txt",
+  "amostra": {
+    "n": 400,
+    "universo": "holdout por grupo com p_max < 0.74 (fora da faixa IA decide)",
+    "n_universo": 4098,
+    "seed": 42
+  },
+  "llm": {
+    "acuracia": 0.265,
+    "acuracia_ic95": [
+      0.2225,
+      0.31
+    ],
+    "macro_f1": 0.2667,
+    "macro_f1_ic95": [
+      0.2015,
+      0.3244
+    ]
+  },
+  "classico_mesmos_400": {
+    "acuracia": 0.695,
+    "acuracia_ic95": [
+      0.6499,
+      0.74
+    ],
+    "macro_f1": 0.7095,
+    "macro_f1_ic95": [
+      0.6265,
+      0.7626
+    ]
+  },
+  "falhas": {
+    "n": 0,
+    "taxa": 0.0,
+    "saidas_invalidas_primeira_tentativa": 1,
+    "erros_api_total": 0
+  },
+  "latencia_ms": {
+    "p50": 1152.1,
+    "p95": 1495.1,
+    "n_chamadas": 401,
+    "obs": "8 chamadas concorrentes; latência por chamada, medida no cliente"
+  },
+  "tokens": {
+    "entrada_media": 1383.9,
+    "saida_media": 24.1,
+    "system_com_exemplos_fixos": 1305,
+    "chamadas_por_ticket": 1.0025
+  },
+  "custo": {
+    "usd_por_1000": 0.1508,
+    "usd_por_1000_so_exemplos_e_instrucoes": 0.1308,
+    "preco": {
+      "entrada_usd_mtok": 0.1,
+      "saida_usd_mtok": 0.5,
+      "fonte": "https://platform.claude.com/docs/en/about-claude/pricing",
+      "data": "2026-11-03T22:52-03:00"
+    }
+  },
+  "hibrido": {
+    "acuracia_faixa_abstencao_llm": 0.265,
+    "acuracia_faixa_abstencao_classico": 0.695,
+    "ganho_pp": -43.0,
+    "acertos_adicionais_por_1000": -430.0,
+    "usd_por_acerto_adicional": null,
+    "acuracia_estimada_holdout_inteiro": 0.6702,
+    "estimativa_rotulo": "cobertura e precisão da faixa IA decide (f3_faixas.json) + acurácia do LLM na amostra de abstenção"
+  }
+}

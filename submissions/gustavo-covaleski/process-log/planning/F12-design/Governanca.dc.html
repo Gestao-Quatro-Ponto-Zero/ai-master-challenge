@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Governança — Console do piloto</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F2F4F7}
+a{color:#2457D6}a:hover{color:#1A43AA}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F2F4F7; font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #111827; font-variant-numeric: tabular-nums">
+
+  <header style="background: #0B1B33; color: #FFFFFF">
+    <div style="max-width: 1360px; margin: 0 auto; padding: 0 32px; min-height: 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="width: 28px; height: 28px; border-radius: 7px; background: #2457D6; display: flex; align-items: center; justify-content: center">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"><path d="M3 6h14M6 10h8M9 14h2"/></svg>
+        </div>
+        <span style="font-weight: 600; font-size: 16px">Triagem</span>
+        <span style="font-size: 13px; color: #9FB0C8">Piloto</span>
+      </div>
+      <nav aria-label="Seções" style="display: flex; flex-wrap: wrap; gap: 4px">
+        <a href="Main.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Visão geral</a>
+        <a href="Fila.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Fila</a>
+        <a href="Governanca.dc.html" aria-current="page" style="color: #FFFFFF; background: rgba(255,255,255,0.12); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Governança</a>
+        <a href="Robustez.dc.html" style="color: #C7D2E3; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px">Robustez</a>
+      </nav>
+      <div style="margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #DDE5F0; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 5px 12px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #3CCB9A"></span>Modo ativo</span>
+        <span style="font-size: 13px; color: #DDE5F0; border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 5px 12px">Dia 20 de 20</span>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width: 1360px; margin: 0 auto; padding: 32px; display: flex; flex-direction: column; gap: 20px">
+    <div>
+      <h1 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em">Governança</h1>
+      <p style="margin: 6px 0 0; font-size: 14px; color: #5F6B7A">Limite inferior do IC 95% ≥ 96,8% libera decisão; ≥ 95,5% libera sugestão. A regra só rebaixa.</p>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section aria-label="Filas" style="flex: 999 1 640px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; overflow: hidden">
+        <div style="overflow-x: auto">
+          <div style="min-width: 680px">
+            <div style="display: grid; grid-template-columns: 190px 140px minmax(220px, 1fr) 70px 110px; gap: 16px; padding: 14px 20px; font-size: 12px; font-weight: 600; color: #5F6B7A; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #E3E7ED">
+              <span>Fila</span>
+              <span>Política</span>
+              <span style="display: flex; justify-content: space-between"><span>Precisão · IC 95%</span><span style="text-transform: none; letter-spacing: 0; font-weight: 500"><span style="color: #8F4A00">┆ 95,5%</span>  <span style="color: #0B6B5E">┆ 96,8%</span></span></span>
+              <span style="text-align: right">n</span>
+              <span>Ação</span>
+            </div>
+            <sc-for list="{{filas}}" as="f" hint-placeholder-count="8">
+              <a href="#painel" style="display: grid; grid-template-columns: 190px 140px minmax(220px, 1fr) 70px 110px; gap: 16px; align-items: center; padding: 14px 20px; border-bottom: 1px solid #EEF1F5; text-decoration: none; color: #111827; background: {{f.fundo}}">
+                <span style="font-size: 14px; font-weight: 600">{{f.nome}}</span>
+                <span style="justify-self: start; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: {{f.pillFundo}}; color: {{f.pillTexto}}">{{f.politica}}</span>
+                <span style="display: flex; align-items: center; gap: 12px">
+                  <span role="img" aria-label="{{f.aria}}" style="position: relative; flex: 1; height: 18px">
+                    <span style="position: absolute; left: 0; right: 0; top: 8px; height: 2px; background: #EEF1F5"></span>
+                    <span style="position: absolute; left: 69.67%; top: 0; bottom: 0; width: 1px; border-left: 1px dashed #D98A1E"></span>
+                    <span style="position: absolute; left: 78.67%; top: 0; bottom: 0; width: 1px; border-left: 1px dashed #0F7B6C"></span>
+                    <span style="position: absolute; top: 5px; height: 8px; border-radius: 4px; left: {{f.icEsq}}; width: {{f.icLarg}}; background: {{f.icCor}}"></span>
+                    <span style="position: absolute; top: 3px; width: 12px; height: 12px; border-radius: 50%; margin-left: -6px; left: {{f.ponto}}; background: #FFFFFF; border: 2px solid {{f.pontoCor}}; box-sizing: border-box"></span>
+                  </span>
+                  <span style="font-size: 13px; font-weight: 600; width: 48px; text-align: right">{{f.prec}}</span>
+                </span>
+                <span style="font-size: 13px; color: #5F6B7A; text-align: right; font-family: 'IBM Plex Mono', monospace">{{f.n}}</span>
+                <span style="font-size: 13px; font-weight: 600; color: {{f.acaoCor}}">{{f.acao}}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <aside id="painel" aria-label="Detalhe da fila Hardware" style="flex: 1 1 400px; min-width: 0; background: #FFFFFF; border: 1px solid #E3E7ED; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 12px 32px rgba(16,24,40,0.10)">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 600">Hardware</h2>
+            <span style="align-self: flex-start; font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #EAEEF3; color: #3D4A5C">Humano decide</span>
+          </div>
+          <button type="button" aria-label="Fechar painel" style="width: 36px; height: 36px; border: 1px solid #E3E7ED; border-radius: 8px; background: #FFFFFF; color: #3D4A5C; cursor: pointer">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #5F6B7A">Precisão</span><span style="font-size: 22px; font-weight: 600">95,4%</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #5F6B7A">Limite inferior</span><span style="font-size: 22px; font-weight: 600">94,3%</span></div>
+          <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; color: #5F6B7A">Tickets</span><span style="font-size: 22px; font-weight: 600">1.692</span></div>
+        </div>
+
+        <div style="background: #F4F6F9; border-radius: 10px; padding: 12px 14px; font-size: 14px; color: #1F2937">
+          <strong style="font-weight: 600">Não elegível para sugestão.</strong> Limite inferior 94,3% abaixo da meta de 95,5%.
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 14px; font-weight: 600">Limite inferior por dia</span>
+          <svg role="img" aria-label="Limite inferior de Hardware entre 86,2% no dia 1 e 94,3% no dia 20, abaixo das duas metas em todos os dias" viewBox="0 0 600 210" style="width: 100%; height: auto">
+            <g font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#5F6B7A">
+              <text x="0" y="10">100%</text><text x="0" y="64">95%</text><text x="0" y="124">90%</text><text x="0" y="182">85%</text>
+            </g>
+            <line x1="40" y1="60" x2="580" y2="60" stroke="#EEF1F5"/>
+            <line x1="40" y1="120" x2="580" y2="120" stroke="#EEF1F5"/>
+            <line x1="40" y1="180" x2="580" y2="180" stroke="#EEF1F5"/>
+            <line x1="40" y1="38.4" x2="580" y2="38.4" stroke="#0F7B6C" stroke-dasharray="5 4" stroke-width="1.5"/>
+            <line x1="40" y1="54.6" x2="580" y2="54.6" stroke="#D98A1E" stroke-dasharray="5 4" stroke-width="1.5"/>
+            <text x="580" y="33" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#0B6B5E">decide 96,8%</text>
+            <text x="580" y="50" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#8F4A00">sugere 95,5%</text>
+            <polyline fill="none" stroke="#2457D6" stroke-width="2.5" stroke-linejoin="round" points="40,165.5 68.4,99 96.8,88.9 125.3,78 153.7,84 182.1,81.4 210.5,74.9 239,70.1 267.4,68.6 295.8,64.3 324.2,62.3 352.6,62.6 381.1,68.5 409.5,76.2 437.9,72.1 466.3,69.2 494.7,69.2 523.2,70.6 551.6,69.7 580,68.6"/>
+            <circle cx="580" cy="68.6" r="4" fill="#2457D6"/>
+            <g font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#5F6B7A"><text x="40" y="204">dia 1</text><text x="580" y="204" text-anchor="end">dia 20</text></g>
+          </svg>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <label for="dia" style="display: flex; justify-content: space-between; font-size: 13px; color: #3D4A5C"><span>Dia do piloto</span><strong style="font-weight: 600; color: #111827">20</strong></label>
+          <input id="dia" type="range" min="1" max="20" value="20" style="width: 100%; accent-color: #2457D6">
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const pos = (v) => (Math.max(0, (v - 0.85) / 0.15) * 100).toFixed(2) + '%';
+    const fmt = (v) => (v * 100).toFixed(1).replace('.', ',') + '%';
+    const pol = {
+      'IA decide': { pillFundo: '#E3F3EF', pillTexto: '#0B6B5E', icCor: 'rgba(15,123,108,0.28)', pontoCor: '#0F7B6C' },
+      'IA sugere': { pillFundo: '#FCEFD9', pillTexto: '#8F4A00', icCor: 'rgba(217,138,30,0.30)', pontoCor: '#B86A0C' },
+      'Humano decide': { pillFundo: '#EAEEF3', pillTexto: '#3D4A5C', icCor: 'rgba(122,134,153,0.30)', pontoCor: '#5B6678' }
+    };
+    const dados = [
+      ['Access', 'IA decide', 0.9852, 0.9749, 0.9913, 879, 'Manter'],
+      ['Purchase', 'IA decide', 0.9925, 0.9782, 0.9974, 400, 'Manter'],
+      ['HR Support', 'IA sugere', 0.9704, 0.9604, 0.9780, 1455, 'Manter'],
+      ['Internal Project', 'IA sugere', 0.9784, 0.9506, 0.9908, 232, 'Revisar'],
+      ['Miscellaneous', 'IA sugere', 0.9777, 0.9636, 0.9864, 673, 'Manter'],
+      ['Storage', 'IA sugere', 0.9795, 0.9582, 0.9900, 341, 'Manter'],
+      ['Hardware', 'Humano decide', 0.9539, 0.9428, 0.9629, 1692, 'Manter'],
+      ['Administrative rights', 'Humano decide', 0.9508, 0.8968, 0.9773, 122, 'Manter']
+    ];
+    return {
+      filas: dados.map(([nome, politica, p, li, ls, n, acao]) => ({
+        nome, politica, ...pol[politica], prec: fmt(p), n: n.toLocaleString('pt-BR'), acao,
+        acaoCor: acao === 'Revisar' ? '#8F4A00' : '#3D4A5C',
+        icEsq: pos(li), icLarg: ((ls - li) / 0.15 * 100).toFixed(2) + '%', ponto: pos(p),
+        fundo: nome === 'Hardware' ? '#EEF3FE' : '#FFFFFF',
+        aria: nome + ': precisão ' + fmt(p) + ', intervalo ' + fmt(li) + ' a ' + fmt(ls)
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

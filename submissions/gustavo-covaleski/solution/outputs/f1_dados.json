@@ -1,0 +1,48 @@
+{
+  "data_dir": "$DATA_DIR (padrão ../../../data relativo à submissão)",
+  "arquivos": [
+    {
+      "nome": "customer_support_tickets.csv",
+      "bytes": 3945533,
+      "sha256": "b06a9cde84da65db388bd964d75f88ee1eed96607cf75d0c35f09c3f11bf8bea",
+      "linhas_dados": 8469,
+      "linhas_fisicas_arquivo": 29808,
+      "linhas_esperadas": 8469,
+      "colunas": [
+        "Ticket ID",
+        "Customer Name",
+        "Customer Email",
+        "Customer Age",
+        "Customer Gender",
+        "Product Purchased",
+        "Date of Purchase",
+        "Ticket Type",
+        "Ticket Subject",
+        "Ticket Description",
+        "Ticket Status",
+        "Resolution",
+        "Ticket Priority",
+        "Ticket Channel",
+        "First Response Time",
+        "Time to Resolution",
+        "Customer Satisfaction Rating"
+      ],
+      "colunas_faltando": []
+    },
+    {
+      "nome": "all_tickets_processed_improved_v3.csv",
+      "bytes": 14568920,
+      "sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+      "linhas_dados": 47837,
+      "linhas_fisicas_arquivo": 47838,
+      "linhas_esperadas": 47837,
+      "colunas": [
+        "Document",
+        "Topic_group"
+      ],
+      "colunas_faltando": []
+    }
+  ],
+  "ok": true,
+  "problemas": []
+}

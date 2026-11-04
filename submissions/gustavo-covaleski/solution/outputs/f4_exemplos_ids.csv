@@ -1,0 +1,15 @@
+grupo,id,rotulo,pred,p_max,meu_rotulo
+roteamento Access → IA decide,2906,Access,Access,0.9439,
+roteamento Administrative rights → humano decide,46431,Administrative rights,Administrative rights,0.3994,
+roteamento HR Support → IA sugere,917,HR Support,HR Support,0.906,
+roteamento Hardware → humano decide,19701,Hardware,Hardware,0.7917,
+roteamento Internal Project → IA sugere,17539,Internal Project,Internal Project,0.9568,
+roteamento Miscellaneous → IA sugere,33791,Miscellaneous,Miscellaneous,0.9356,
+roteamento Purchase → IA decide,791,Purchase,Purchase,0.9973,
+roteamento Storage → IA sugere,17550,Storage,Storage,0.9892,
+faixa humana,24744,Miscellaneous,Miscellaneous,0.5555,
+faixa humana,2103,HR Support,Miscellaneous,0.6031,
+faixa humana,6007,Access,Access,0.5474,
+ambíguo (revisão adjudicada),38735,Access,Access,0.8988,Hardware
+ambíguo (revisão adjudicada),28128,Hardware,Hardware,0.8162,Miscellaneous
+ambíguo (revisão adjudicada),5827,HR Support,HR Support,0.996,Miscellaneous
