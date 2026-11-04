@@ -80,9 +80,9 @@ Mais detalhes:
 
 ![Aba lote: 200 tickets do holdout passados por triar](process-log/screenshots/6_lote.png)
 
-![Console do piloto, dia 20: fila, detalhe com o porquê da faixa e governança por categoria](process-log/screenshots/c1_console.png)
+![Console do piloto, tela 1: o piloto está saudável?](process-log/screenshots/v1_saude.png)
 
-Outras capturas do console: [governança (Hardware)](process-log/screenshots/c2_governanca.png), [o mesmo ataque com F8 e F9](process-log/screenshots/c3_injecao_f8_vs_f9.png), [modo sombra com alerta](process-log/screenshots/c4_sombra.png).
+Outras telas do console: [fila do atendente](process-log/screenshots/v2_fila.png), [governança com Hardware](process-log/screenshots/v3_governanca_hardware.png), [robustez: injeção F8 × F9](process-log/screenshots/v4_robustez_injecao.png), [robustez: modo sombra](process-log/screenshots/v5_robustez_sombra.png), [celular](process-log/screenshots/v6_celular.png), [antes e depois](process-log/screenshots/antes_depois.png).
 
 ### Recomendações
 
