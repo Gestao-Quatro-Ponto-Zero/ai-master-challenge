@@ -140,6 +140,9 @@ def carregar_politica():
         arq = OUT_DIR / "f8_politica_por_categoria.csv"
         arq_fx = OUT_DIR / "f8_faixas.json"
         tab = pd.read_csv(arq)
+        if "politica_implantada" not in tab.columns:
+            # erro explícito: sem a confirmação da F9, a política não pode ser usada (nada de cair na política OOF)
+            raise RuntimeError(f"{arq.name} sem a coluna politica_implantada: rode solution/f9_confirmacao.py")
         lim = json.loads(arq_fx.read_text(encoding="utf-8"))["limiares"]
         # F9: política implantada = seleção OOF confirmada por categoria no holdout (só rebaixa)
         _politica = {"por_categoria": dict(zip(tab["categoria_prevista"], tab["politica_implantada"])),

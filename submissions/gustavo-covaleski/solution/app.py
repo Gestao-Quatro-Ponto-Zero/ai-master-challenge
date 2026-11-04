@@ -15,7 +15,8 @@ CAIXA = {"IA decide": st.success, "IA sugere": st.warning, "humano decide": st.e
 
 st.set_page_config(page_title="Triagem de tickets", layout="centered")
 st.title("Triagem de tickets — protótipo")
-st.caption("Clássico TF-IDF + LR; limiar e política escolhidos fora do holdout (F8); reembolso e cancelamento sempre com humano.")
+st.caption("Clássico TF-IDF + LR; limiar e política escolhidos fora do conjunto de teste e confirmados nele; "
+           "reembolso e cancelamento sempre com humano.")
 
 
 def por_que(r: dict) -> str:
@@ -31,11 +32,11 @@ def por_que(r: dict) -> str:
     pol = triagem.carregar_politica()
     p, cat = r["p_max"], r["categoria"]
     if p >= pol["t_decide"]:
-        g = f"confiança {p:.0%} ≥ limiar de IA decide ({pol['t_decide']:.0%})"
+        g = f"confiança {p:.1%} ≥ limiar de IA decide ({pol['t_decide']:.1%})"
     elif p >= pol["t_sugere"]:
-        g = f"confiança {p:.0%} entre os limiares ({pol['t_sugere']:.0%}–{pol['t_decide']:.0%}): IA sugere"
+        g = f"confiança {p:.1%} entre os limiares ({pol['t_sugere']:.1%}–{pol['t_decide']:.1%}): IA sugere"
     else:
-        g = f"confiança {p:.0%} < limiar de IA sugere ({pol['t_sugere']:.0%}): humano"
+        g = f"confiança {p:.1%} < limiar de IA sugere ({pol['t_sugere']:.1%}): humano"
     teto = pol["por_categoria"].get(cat, "humano decide")
     partes = [g, f"teto da política para {cat}: {teto}"]
     if motivo.startswith("regra de ação"):
@@ -47,10 +48,33 @@ def por_que(r: dict) -> str:
     return "; ".join(partes)
 
 
+TRECHO = 120
+
+
+@st.cache_data
+def exemplos():
+    # só os ids sorteados na F4, cujos trechos de até 120 caracteres já estão em docs/politica.md
+    ids = pd.read_csv(OUT_DIR / "f4_exemplos_ids.csv")[["id", "rotulo"]].drop_duplicates("id")
+    docs = ler_ds2().set_index("id")["Document"]
+    return {f"{r.id} · {r.rotulo}": (str(docs[r.id])[:TRECHO].rstrip(), len(str(docs[r.id])) > TRECHO)
+            for r in ids.itertuples()}
+
+
+def carregar_exemplo():
+    escolha = st.session_state.get("exemplo")
+    if escolha:
+        st.session_state["texto"] = exemplos()[escolha][0]
+
+
 aba_ticket, aba_politica, aba_lote = st.tabs(["ticket", "Política", "lote"])
 
 with aba_ticket:
-    texto = st.text_area("Texto do ticket")
+    st.selectbox("Exemplo real (opcional)", list(exemplos()), index=None, placeholder="—", key="exemplo",
+                 on_change=carregar_exemplo)
+    texto = st.text_area("Texto do ticket", key="texto")
+    escolha = st.session_state.get("exemplo")
+    if escolha and exemplos()[escolha][1] and texto == exemplos()[escolha][0]:
+        st.caption(f"{texto}… (trecho)")
     c1, c2 = st.columns(2)
     canal = c1.selectbox("Canal", ["Email", "Chat", "Phone", "Social media"])
     tipo = c2.selectbox("Tipo (DS1, opcional)", TIPOS, index=None, placeholder="—")

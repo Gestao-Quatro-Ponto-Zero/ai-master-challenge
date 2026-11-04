@@ -30,3 +30,21 @@ def test_politica_implantada_nunca_acima_da_oof():
     ordem = ["humano decide", "IA sugere", "IA decide"]
     tab = pd.read_csv(OUT_DIR / "f8_politica_por_categoria.csv")
     assert all(ordem.index(i) <= ordem.index(o) for i, o in zip(tab["politica_implantada"], tab["politica"]))
+
+
+def test_carregar_politica_falha_explicita_sem_implantada(tmp_path, monkeypatch):
+    import shutil
+    import triagem
+    tab = pd.read_csv(OUT_DIR / "f8_politica_por_categoria.csv").drop(columns="politica_implantada")
+    tab.to_csv(tmp_path / "f8_politica_por_categoria.csv", index=False)
+    shutil.copy(OUT_DIR / "f8_faixas.json", tmp_path / "f8_faixas.json")
+    monkeypatch.setattr(triagem, "OUT_DIR", tmp_path)
+    monkeypatch.setattr(triagem, "_politica", None)
+    with pytest.raises(RuntimeError, match="politica_implantada"):
+        triagem.carregar_politica()
+
+
+def test_f8_oof_chama_a_confirmacao():
+    # o CSV de política nunca fica sem politica_implantada: f8_oof.py termina chamando a confirmação da F9
+    fonte = (Path(__file__).resolve().parents[1] / "f8_oof.py").read_text(encoding="utf-8")
+    assert "aplicar_confirmacao()" in fonte

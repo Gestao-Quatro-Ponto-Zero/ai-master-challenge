@@ -50,7 +50,8 @@ def dano_por_alvo_oof(pol_oof, t_dec, t_sug):
             "por_ataque": dict(Counter(p["ataque"] for p, _ in silenciosos).most_common())}
 
 
-def main():
+def aplicar_confirmacao():
+    """Grava politica_confirmada_holdout/politica_implantada, a chave `implantada` e a economia. Chamada pelo f8_oof.py."""
     arq = OUT_DIR / "f8_politica_por_categoria.csv"
     tab = pd.read_csv(arq)
     fx3 = json.loads((OUT_DIR / "f3_faixas.json").read_text(encoding="utf-8"))
@@ -84,7 +85,11 @@ def main():
                   "faixa_ia_sugere": "não quantificada; tempo de confirmação a medir no piloto",
                   "rotulo": "premissas editáveis; cenário A; política implantada (F9: seleção OOF + confirmação no holdout)"}
                  ).to_csv(OUT_DIR / "f8_economia.csv", index=False)
+    return tab, implantada, pol_oof, t_dec, t_sug
 
+
+def main():
+    tab, implantada, pol_oof, t_dec, t_sug = aplicar_confirmacao()
     inj_arq = OUT_DIR / "f5_injecao.json"
     inj = json.loads(inj_arq.read_text(encoding="utf-8"))
     if "dano_ampliado_f8" in inj and "dano_ampliado_f8_oof" not in inj:

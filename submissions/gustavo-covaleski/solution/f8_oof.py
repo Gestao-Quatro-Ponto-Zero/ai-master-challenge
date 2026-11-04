@@ -114,6 +114,9 @@ def main():
                                                      "t_sugere": fx3["faixas"]["ia_sugere_humano_confirma"]["limiar"]},
                              "politica_f4": dict(pd.read_csv(OUT_DIR / "f4_politica_por_categoria.csv")[["categoria_prevista", "politica"]].values)},
     }, "f8_faixas.json")
+    # F9: o CSV de política nunca fica sem politica_implantada (confirmação por categoria no holdout; só rebaixa)
+    from f9_confirmacao import aplicar_confirmacao
+    aplicar_confirmacao()
     print("limiares OOF:", t_dec, t_sug)
     print("política OOF:", pol_map)
     print("holdout:", {f: (v["cobertura_pct"], v["precisao"], v["ic95"]) for f, v in geral.items()})
