@@ -2,6 +2,46 @@
 
 Cada fase do trabalho termina com um registro neste formato, definido pelo Liberato em 04/11/2026. Há uma regra que vale para todos: **nada aqui é inventado.** O que foi sugerido pela IA e ainda não foi validado aparece separado do que o Liberato decidiu ou conferiu.
 
+## Decisão do candidato — Utilização do ChatGPT como copiloto estratégico
+
+> Seção criada a pedido expresso do Liberato em 04/11/2026 às 20:49, num documento que ele enviou ao Claude. Ela fica no início deste arquivo para ser fácil de achar, mas, na ordem do tempo, foi pedida depois do Registro 08. O texto abaixo é do Liberato, em primeira pessoa, e foi transcrito sem edição.
+
+"Durante o desenvolvimento do Challenge 003, decidi utilizar o ChatGPT como copiloto estratégico e analista crítico, em paralelo ao Claude, responsável pelo desenvolvimento técnico.
+
+Solicitei expressamente que essa interação fosse documentada no Process Log para demonstrar transparência sobre o uso das ferramentas de inteligência artificial.
+
+Minha intenção foi estabelecer um processo no qual as propostas técnicas são analisadas criticamente antes da aprovação, permitindo identificar riscos, avaliar alternativas e aprimorar a qualidade da solução.
+
+Utilizo as recomendações das ferramentas como apoio, mas mantenho sob minha responsabilidade as decisões finais sobre arquitetura, funcionalidades, critérios de scoring, validações e entrega do projeto."
+
+### Papéis de cada um (conforme definido pelo Liberato)
+
+| Quem | Papel |
+|---|---|
+| **Claude** | Desenvolvimento e execução técnica: análise dos dados e implementação da lógica, desenvolvimento e testes do motor Python, integração com o Lovable, construção da aplicação, organização da documentação técnica e do Process Log. |
+| **ChatGPT** | Copiloto estratégico e analista crítico: revisar as propostas técnicas do Claude; questionar premissas, critérios e decisões; identificar riscos, inconsistências e melhorias; comparar alternativas de implementação; orientar sobre GitHub, estrutura da entrega e Pull Request; apoiar a interpretação dos requisitos oficiais do G4; recomendar melhorias de qualidade, confiabilidade e apresentação. |
+| **Liberato** | Liderança e decisão final: analisar as recomendações, questionar as soluções propostas e tomar as decisões finais. O ChatGPT é uma segunda camada de análise, não um substituto do julgamento dele. |
+
+### Como as interações com o ChatGPT são registradas
+
+O Claude **não tem acesso** às conversas do Liberato com o ChatGPT. Por isso, uma interação só entra neste log quando o Liberato a informa, e o registro segue sempre os mesmos campos:
+
+1. A proposta do Claude que foi analisada
+2. Os riscos ou melhorias que o ChatGPT apontou
+3. A decisão final do Liberato
+4. As alterações que foram de fato implementadas
+5. As evidências: um trecho da conversa com o ChatGPT fornecido pelo Liberato, ou "não fornecido"
+
+Nenhuma interação, teste, resultado ou decisão é inventado. Quando faltar o trecho da conversa, o Claude pede ao Liberato.
+
+### Interações com o ChatGPT informadas até agora
+
+| Data | O que o Liberato informou | Proposta do Claude analisada | Riscos ou melhorias apontados pelo ChatGPT | Decisão do Liberato | O que foi implementado | Evidência |
+|---|---|---|---|---|---|---|
+| 04/11 (antes de 18:08) | O ChatGPT o orientou passo a passo na criação da branch `submission/liberato-gouveia` (Registro 01) | — (orientação sobre GitHub) | Não informado | Criar a branch manualmente a partir da `main` | A branch foi criada pelo Liberato; o Claude conferiu no GitHub | Conversa com o ChatGPT: **não fornecida** |
+| 04/11 18:08 | O texto do pedido de atualização do log foi identificado por ele como "prompt do chatgpt" (Registro 01) | — | Não informado | Registrar a criação da branch como preparação do ambiente | Registro 01 | O texto está transcrito no Registro 01 |
+| 04/11 20:49 | Pedido de registro formal do ChatGPT como copiloto estratégico, com 7 verificações antes do Lovable | Arquitetura (motor + Lovable) e envio da branch (Registro 08) | Não informado se as 7 verificações vieram de uma revisão do ChatGPT | Aprovar a arquitetura e o envio, exigir as 7 verificações e não abrir o PR | Registro 09 | Documento enviado pelo Liberato (transcrito em parte no Registro 09) |
+
 ---
 
 ## Registro 00: Revisão crítica da análise inicial e início do histórico de versões (04/11/2026)

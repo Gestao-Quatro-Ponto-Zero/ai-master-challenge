@@ -1,14 +1,18 @@
 # Prompt 01 para o Lovable: criação da tela
 
-> **Status:** rascunho escrito pelo Claude em 04/11/2026, **aguardando aprovação do Liberato**. Nada foi enviado ao Lovable ainda.
+> **Status:** rascunho **v2** escrito pelo Claude em 04/11/2026, **aguardando aprovação do Liberato**. Nada foi enviado ao Lovable ainda.
+> Mudança da v2: a data histórica (31/12/2017) agora aparece em destaque e o título deixou de usar "hoje". Isso atende à verificação 5 pedida pelo Liberato em 04/11 às 20:49. A v1 está em `versoes/prompt_lovable_01_rascunho_v1.md`.
 > Quando for enviado, este arquivo passa a registrar o texto exato que foi usado.
 
 ---
 
-Crie um app web de uma página chamado **"Lead Scorer — Onde focar hoje"**, todo em português do Brasil, para vendedores B2B decidirem em quais oportunidades (deals) trabalhar.
+Crie um app web de uma página chamado **"Lead Scorer — Onde focar"**, todo em português do Brasil, para vendedores B2B decidirem em quais oportunidades (deals) trabalhar.
 
 ## Regra mais importante
 O app **não calcula nada**. Notas, listas, ações e explicações já vêm prontas num arquivo JSON gerado por um motor externo, que foi testado. O app só carrega, filtra e mostra. Não recalcule, não crie outra ordem e não altere os textos que vêm do arquivo.
+
+## Os dados são históricos: deixe isso evidente
+Os dados são de uma base de demonstração e mostram o pipeline **como ele estava em 31/12/2017** (o campo `data_referencia`). **Nunca apresente os dados como atuais.** Não use as palavras "hoje" ou "agora" para falar dos deals. Em toda a tela, a referência é "em {data_referencia}".
 
 ## Dados
 Ao abrir, carregue (fetch) o JSON desta URL:
@@ -27,7 +31,8 @@ Estrutura do JSON:
 - Ignore `resumo_por_lista`. Os totais da tela precisam respeitar os filtros, então conte sempre a partir de `deals`.
 
 ## Tela
-1. **Cabeçalho:** o título "Lead Scorer — Onde focar hoje" e o subtítulo "Pipeline de {data_referencia em dd/mm/aaaa} · {quantidade de deals no filtro} deals abertos".
+1. **Faixa fixa no topo**, sempre visível e com destaque (fundo âmbar claro, ícone de calendário): "Dados históricos de demonstração: pipeline como estava em {data_referencia em dd/mm/aaaa}. Não são dados atuais."
+   **Cabeçalho:** o título "Lead Scorer — Onde focar" e o subtítulo "Situação em {data_referencia em dd/mm/aaaa} · {quantidade de deals no filtro} deals abertos naquela data".
 2. **Filtros numa linha:** Região → Gerente → Vendedor, como selects em cascata, cada um com a opção "Todos". Escolher uma região limita os gerentes e vendedores àquela região, e escolher um gerente limita os vendedores àquele gerente. Monte os selects a partir de `vendedores`. Tudo começa em "Todos".
 3. **Quatro cartões de resumo**, um por lista, cada um com o nome da lista, a quantidade de deals no filtro atual e uma linha curta:
    - Foco: "Avançar estes deals" e a soma do `valor_esperado_usd` (US$)
@@ -39,7 +44,7 @@ Estrutura do JSON:
 4. **Abas:** "Foco", "Requalificar ou encerrar", "Iniciar contato" e "Automatizar" (com a quantidade no título de cada aba), mais "Como a nota funciona".
 5. **Em cada aba de lista**, mostre os deals do filtro atual em ordem crescente de `ordem_na_lista`. Cada deal é um cartão com:
    - Na aba Foco, um selo grande com a `nota` (de 0 a 100), que vai do cinza (nota baixa) ao azul forte (nota alta). Nas outras abas, um selo neutro com "—".
-   - O `produto` e o `preco_usd` (formato "US$ 5.482"), a `empresa` (se for null, escreva "Empresa não cadastrada"), a `etapa`, a idade (por exemplo, "21 dias em negociação"; não mostre nada se for null) e o vendedor (só quando o filtro de vendedor estiver em "Todos").
+   - O `produto` e o `preco_usd` (formato "US$ 5.482"), a `empresa` (se for null, escreva "Empresa não cadastrada"), a `etapa`, a idade (por exemplo, "21 dias em negociação em 31/12/2017", usando a data de `data_referencia`; não mostre nada se for null) e o vendedor (só quando o filtro de vendedor estiver em "Todos").
    - A `acao` em destaque, como etiqueta, com estas cores: "Avançar este deal" em azul; "Ligar para requalificar" em laranja; "Encerrar no CRM" em cinza; "Fazer o primeiro contato" em verde; "Incluir na cadência automática (mensagens em lote)" em roxo.
    - O `porque` sempre visível, em texto normal (é a explicação para o vendedor), e logo abaixo o `nota_texto`, em texto menor.
    - Se `aviso` não for null, um alerta amarelo com ícone de atenção e o texto do `aviso`.

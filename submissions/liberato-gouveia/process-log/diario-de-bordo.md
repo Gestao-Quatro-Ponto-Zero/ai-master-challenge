@@ -2,7 +2,7 @@
 
 **Candidato:** Liberato Gonçalves Gouveia
 **Case:** 003 Lead Scorer (Vendas / RevOps)
-**Ferramenta de IA:** Claude (app Claude, modo agente com acesso a terminal, Python e internet)
+**Ferramentas de IA:** Claude (app Claude, modo agente com terminal, Python e internet), para desenvolvimento e execução técnica. ChatGPT, como copiloto estratégico e analista crítico do Liberato, cujo uso está registrado a pedido dele (ver "Decisão do candidato — Utilização do ChatGPT como copiloto estratégico" em `registros-por-etapa.md`). Lovable, para a interface (Fase 3).
 **Divisão do trabalho:** Liberato toma as decisões de negócio e aprova cada etapa. O Claude faz a execução técnica (baixar dados, rodar análises, escrever código) e explica cada passo.
 
 > **O que é este documento:** é a peça principal do *process log*, o registro de como a IA foi usada, que o G4 exige em toda entrega. Ele conta, etapa por etapa, o que foi feito, por quê, o que deu errado e quem decidiu o quê. Junto com ele vão os scripts, os gráficos, os prints da conversa com o Claude e o histórico de versões.
