@@ -266,6 +266,24 @@ input[type=range] { width: 100%; accent-color: var(--acao); min-height: 44px; }
   .grupos { grid-template-columns: 1fr; }
 }
 
+/* governança em cartões até 900 px: a coluna Ação nunca exige rolagem horizontal */
+.gov-legenda { display: none; }
+@media (max-width: 900px) {
+  .gov-tabela .rolavel { overflow-x: visible; }
+  .gov-grade { min-width: 0; }
+  .gov-cab { display: none; }
+  .gov-legenda { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 12px 16px; border-bottom: 1px solid var(--borda); font-size: 12px; color: var(--texto-2); }
+  .gov-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+  .gov-legenda i { display: inline-block; width: 0; height: 14px; }
+  .gov-linha { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome selo" "ic ic" "n acao"; gap: 10px; padding: 16px; }
+  .gov-nome { grid-area: nome; }
+  .gov-linha .selo { grid-area: selo; justify-self: end; }
+  .ic-celula { grid-area: ic; }
+  .gov-n { grid-area: n; text-align: left; }
+  .gov-n::before { content: "n = "; }
+  .gov-acao { grid-area: acao; justify-self: end; }
+}
+
 /* celular: < 768 */
 @media (max-width: 767px) {
   body { font-size: 15px; }
@@ -299,15 +317,6 @@ input[type=range] { width: 100%; accent-color: var(--acao); min-height: 44px; }
   .det-cab { flex-direction: row-reverse; justify-content: space-between; }
   .acoes-desk, .atalhos { display: none; }
   .fechar { width: 44px; height: 44px; }
-  .gov-grade { min-width: 0; }
-  .gov-cab { display: none; }
-  .gov-linha { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome selo" "ic ic" "n acao"; gap: 10px; padding: 16px; }
-  .gov-nome { grid-area: nome; }
-  .gov-linha .selo { grid-area: selo; justify-self: end; }
-  .ic-celula { grid-area: ic; }
-  .gov-n { grid-area: n; text-align: left; }
-  .gov-n::before { content: "n = "; }
-  .gov-acao { grid-area: acao; justify-self: end; }
   .painel.tela-cheia { position: fixed; inset: 0; z-index: 30; border-radius: 0; overflow: auto; padding: 16px 16px calc(96px + env(safe-area-inset-bottom)); }
   .menu-cen { display: none; }
   .sel-cen { display: flex; width: 100%; }

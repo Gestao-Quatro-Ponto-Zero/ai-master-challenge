@@ -358,7 +358,7 @@
     $("#conteudo").innerHTML = `
       <div><h1 class="titulo">Governança</h1><p class="subtitulo">Limite inferior do IC 95% ≥ ${pct(META_D)} libera decisão; ≥ ${pct(META_S)} libera sugestão. A regra só rebaixa.</p></div>
       <div class="gov-layout">
-        <section class="gov-tabela" aria-label="Filas"><div class="rolavel"><div class="gov-grade">
+        <section class="gov-tabela" aria-label="Filas"><div class="gov-legenda" aria-label="Metas"><span><i style="border-left:1px dashed #D98A1E"></i>${pct(META_S)} sugere</span><span><i style="border-left:1px dashed #0F7B6C"></i>${pct(META_D)} decide</span></div><div class="rolavel"><div class="gov-grade">
           <div class="gov-linha gov-cab"><span>Fila</span><span>Política</span>
             <span class="gov-cab-ic"><span>Precisão · IC 95%</span><span><span style="color:var(--sugere-tx)">┆ ${pct(META_S)}</span>  <span style="color:var(--decide-tx)">┆ ${pct(META_D)}</span></span></span>
             <span style="text-align:right">n</span><span>Ação</span></div>
