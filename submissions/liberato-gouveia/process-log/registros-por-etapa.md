@@ -573,7 +573,7 @@ Não informado.
 
 ---
 
-## Proposta: Fase 3b e 3c, Prompt para o Lovable e criação da tela (aguardando autorização)
+## Proposta: Fase 3b e 3c, Prompt para o Lovable e criação da tela (envio da branch autorizado em 04/11 às 20:49, ver Registro 09; o texto do Lovable e a criação da tela ainda aguardam autorização)
 
 **3b: o texto do Lovable.** O rascunho completo está em `prompts/lovable_01_criacao.md`. Ele diz ao Lovable para:
 - montar 1 tela em português, com filtros de região, gerente e vendedor, 4 cartões de resumo, 4 abas de listas e uma aba "Como a nota funciona";
@@ -587,3 +587,64 @@ Não informado.
 4. Se o envio não funcionar, o plano B é publicar só o arquivo de dados na Vercel (já conectada à conta do Liberato), que também exige autorização.
 
 **3c: criação.** Criar o projeto no workspace "Liberato's Lovable" com o prompt aprovado (1 mensagem), conferir a tela e usar no máximo 3 mensagens de ajuste. Depois vêm a 3d (conferir os números da tela contra o motor e tirar prints) e a 3e (copiar o código para a entrega e escrever o registro).
+
+---
+
+## Registro 09: Envio ao GitHub, verificações antes do Lovable e registro do ChatGPT (04/11/2026, 20:49)
+
+**Objetivo da etapa**
+Enviar a branch de entrega ao fork do Liberato (sem Pull Request), rodar as 7 verificações que ele exigiu antes do Lovable e registrar formalmente o uso do ChatGPT como copiloto estratégico. Nesta etapa não houve uso do Lovable.
+
+**Ferramentas utilizadas**
+- Claude: git (envio), API do GitHub (conferência dos arquivos), download do link público, Python e pytest (verificações e reprodução)
+- GitHub: fork `libegouv/ai-master-challenge`, com o acesso de escrita do Claude aprovado pelo Liberato
+
+**Prompts relevantes**
+O Liberato enviou o documento "G4 AI MASTER — AUTORIZAÇÃO E ATUALIZAÇÃO DO PROCESS LOG", guardado completo em `prompts/liberato_2026-11-04_2049_autorizacao_e_chatgpt.md`, com a mensagem "pode fazer!". Trechos centrais:
+> "Aprovo a arquitetura proposta, com o motor Python separado da interface Lovable. Também autorizo o envio dos arquivos para minha branch `submission/liberato-gouveia` [...]"
+> "Não abra o Pull Request. A submissão final ao G4 só deverá acontecer após minha aprovação explícita."
+
+**Decisões que realmente tomei (Liberato)**
+1. Aprovei a arquitetura: motor Python separado e interface no Lovable.
+2. Autorizei o envio dos arquivos para a branch `submission/liberato-gouveia` do meu fork.
+3. Exigi 7 verificações antes de qualquer uso do Lovable.
+4. Pedi o registro formal do ChatGPT como copiloto estratégico e analista crítico. A seção está no início deste arquivo.
+5. Proibi abrir o Pull Request sem a minha aprovação explícita.
+
+*Ainda não aprovado:* o texto do prompt para o Lovable (rascunho v2) e o início da construção da interface.
+
+**Resultados obtidos: envio**
+- Envio 1: `4aed364..49c6789`, com 9 commits, para `submission/liberato-gouveia`. A `main` do fork continua em `4aed364`, igual à do G4.
+- Este registro e as evidências dele vão no envio seguinte.
+- Link da pasta da entrega: https://github.com/libegouv/ai-master-challenge/tree/submission/liberato-gouveia/submissions/liberato-gouveia
+
+**Resultados obtidos: as 7 verificações**
+
+| # | Verificação pedida | Resultado | Como foi conferido |
+|---|---|---|---|
+| 1 | Só arquivos dentro de `submissions/liberato-gouveia/`, sem alterar nada do G4 | ✅ **56 arquivos adicionados, 0 fora da pasta**, 0 alterados ou apagados. A branch está 9 commits à frente da `main` e 0 atrás. Nenhum PR no fork. | Comparação feita pela API do próprio GitHub (`compare main...submission/liberato-gouveia`) |
+| 2 | JSON publicado e link público funcionando | ✅ **HTTP 200**, 1.327.425 bytes, **idêntico** ao arquivo local (MD5 `b5f33907…`). Ele aceita leitura por outros sites (`access-control-allow-origin: *`), que é o que a tela no Lovable precisa. | Download pelo link público |
+| 3 | 2.089 deals nas 4 listas, incluindo os 10 transferidos | ✅ **2.089** deals com IDs únicos: Foco 228, Requalificar ou encerrar 1.301, Iniciar contato 500 e Automatizar 60. **10 transferidos** pela regra da chance 0%, todos com 138 dias e chance 0 (3 GTX Pro, 2 MG Advanced, 2 MG Special, 1 GTX Plus Pro, 1 GTX Plus Basic e 1 GTX Basic). Nenhum deal com chance 0 ficou fora da lista 2. | Leitura do arquivo publicado |
+| 4 | Limite de US$ 4.000 para requalificação | ✅ No arquivo, `valor_deal_grande_usd = 4000`. Os **354** deals com a ação "ligar" têm preço ≥ US$ 4.000, e os **947** com "encerrar" têm preço abaixo disso. Todos os textos citam "US$ 4.000". | Leitura do arquivo publicado |
+| 5 | A interface deve destacar a data histórica de 31/12/2017 sem apresentar os dados como atuais | ⏳ **Parcial.** O arquivo traz `data_referencia = 2017-12-31`. A interface ainda não existe. O rascunho v2 do prompt manda exibir uma faixa fixa ("Dados históricos de demonstração: pipeline como estava em 31/12/2017. Não são dados atuais."), tirou o "hoje" do título e proíbe "hoje" ou "agora". **A conferência visual fica para a Fase 3d.** | Rascunho `prompts/lovable_01_criacao.md` (v2) |
+| 6 | Lógica e teste de volta no tempo documentados e reproduzíveis | ✅ Numa **cópia limpa baixada do GitHub** (commit `49c6789`): o motor regerou um JSON **idêntico** ao publicado, os **12 testes passaram** e o script da Fase 2 reproduziu a tabela do teste de volta no tempo **exatamente** como registrada (68,3% / 47,1% / 49,2% / 15,2%). A documentação está em `docs/ficha-da-logica.md`, `solution/motor/README.md` e nos Registros 04 e 07. | Clone novo e execução do zero |
+| 7 | Envio, verificações e resultados registrados no Process Log | ✅ Este registro, com as evidências em `analises/resultados/registro09_verificacoes_publicacao.txt` | — |
+
+Uma observação de precisão: o motor informa **68,1%** no teste de volta no tempo, e o script de análise informa **68,3%**. A diferença vem só do jeito de desempatar deals com o mesmo valor esperado. O motor usa uma regra fixa (pelo ID), e a análise tira a média de 300 desempates ao acaso. As duas formas arredondam para 68%.
+
+**Sugestões da IA ainda não validadas por mim**
+- O texto do prompt para o Lovable (rascunho v2).
+
+**Erros encontrados e correções**
+- Nenhum erro foi encontrado nas verificações.
+- Limitação da verificação: o Claude não tem acesso de leitura à lista de PRs do repositório do G4, então não conseguiu confirmar por lá que não existe PR. Mesmo assim, **o Claude não abriu nenhum PR**, e no fork há zero PRs.
+- Ocorrência técnica: o ambiente do Claude reiniciou logo depois do envio 1. Os arquivos foram preservados, e o envio já tinha sido confirmado no GitHub.
+
+**Testes ou evidências disponíveis**
+- `analises/resultados/registro09_verificacoes_publicacao.txt`: as saídas das verificações 1, 2, 3, 4 e 6
+- `prompts/liberato_2026-11-04_2049_autorizacao_e_chatgpt.md`: o documento do Liberato
+- A seção "Decisão do candidato — Utilização do ChatGPT como copiloto estratégico", no início deste arquivo
+- O histórico de commits na branch `submission/liberato-gouveia` do fork
+
+**Tempo aproximado**
+Não informado.
