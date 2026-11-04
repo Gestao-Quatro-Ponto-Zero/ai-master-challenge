@@ -87,7 +87,7 @@
 | **Total F8–F12b** | **365** (tetos das specs) | **~161** | soma das linhas F8 a F12/F12b |
 | **Relógio da sessão** | — | **~10 h** | 17:40 de 03/11 → ~15:15 de 04/11, com pausa noturna; ~10 h de relógio de trabalho; tempo efetivo declarado pelo Gustavo: 12h20 |
 
-**Ressalva:** as estimativas do Claude Code medem só o tempo de execução no terminal (relógio do sistema entre o início e o fim de cada fase). Elas **não** incluem o planejamento e a revisão no chat do Projeto nem a leitura dos reports nos portões. O registro do Gustavo depois da F3 (~295 min até a F3b; total projetado ~465 min) é a referência para o tempo real. Pela projeção do Gustavo, o estouro sobre os 360 min orçados seria de ~105 min (465 − 360). O valor final não foi medido. [GUSTAVO: tempo real de F4 a F7, incluindo revisão.]
+**Ressalva:** F0 e F3a medidos pelo Gustavo; as demais linhas são relógio entre mensagens (incluem revisão) ou estimativa de execução do Claude Code, como indicado em cada linha.
 
 ## Iterações
 
