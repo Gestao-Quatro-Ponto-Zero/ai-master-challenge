@@ -177,7 +177,7 @@ Também meus, anteriores à execução ou fora das tabelas de decisão:
 - [x] Pranchas do redesign feitas no Claude Design pelo chat do Projeto e aprovadas pelo Gustavo: [`process-log/planning/F12-design/`](process-log/planning/F12-design/)
 - [x] Revisão de rótulos adjudicada: [`process-log/revisao_rotulos_adjudicada.csv`](process-log/revisao_rotulos_adjudicada.csv)
 - [x] Screenshots do protótipo: [`process-log/screenshots/`](process-log/screenshots/)
-- [x] Chat export da sessão do Claude Code (F1 a F7): [`process-log/chat-exports/claude-code-f1-a-f7.md`](process-log/chat-exports/claude-code-f1-a-f7.md)
+- [x] Chat export, sessão completa do Claude Code, F1 a F12b: [`process-log/chat-exports/claude-code-f1-a-f12.md`](process-log/chat-exports/claude-code-f1-a-f12.md)
 - [x] Git history: um commit por fase na branch `submission/gustavo-covaleski`
 
 ---

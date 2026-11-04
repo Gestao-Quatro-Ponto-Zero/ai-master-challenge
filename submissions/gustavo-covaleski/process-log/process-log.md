@@ -26,7 +26,7 @@
 | 14 | F11 — Console refeito do zero | Executar `planning/F11-spec.md`: interface limpa e guiada, com as skills de design obrigatórias antes do código; sem mudar `data.js` nem os números | Sistema de design (`console/DESIGN.md`, skills ui-ux-pro-max e frontend-design): estilo "Accessible & Ethical", navegação navy #0F172A, ação #0369A1, fundo #EEF2F6, cartões brancos; faixas IA decide #0F766E (check), IA sugere #B45309 (olho), humano #9F1239 (pessoa); títulos-pergunta em Source Serif 4 e interface em Fira Sans, auto-hospedadas. A skill sugeriu EB Garamond + Lato (tom jurídico); troquei por Source Serif 4 + Fira Sans. 4 telas, cada uma com uma pergunta: saúde, fila, governança (painel lateral com evolução e dia do piloto), robustez (5 cenários com botão rodar). Tela 1 confere com data.js: 13,37%; 98,75%; 1.279 de 9.567. Sem erro de JS nem rolagem horizontal a 1440, 1024 e 390 px, por file:// e http | | `planning/F11-report.md`; `console/DESIGN.md`; `process-log/screenshots/v1–v6`, `antes_depois.png` | ver report |
 | 15 | F12 — Console reimplementado das pranchas | Executar `planning/F12-spec.md`: console refeito a partir das 7 pranchas do Claude Design, responsivo e com copy técnica, sem mudar `data.js` | Design refeito pelo chat do Projeto no Claude Design, com análise crítica do console publicado: celular cortado dentro do contêiner, copy em forma de pergunta e explicativa, jargão de versão, humano em vermelho. Aprovado pelo Gustavo, com 3 decisões: sem nomes de versão na interface, sem guia, premissas no painel 'Sobre os dados'. Implementação: IBM Plex Sans/Mono auto-hospedadas, barra #0B1B33, ação #2457D6, humano em cinza; rotas por hash; barra inferior e telas lista → ticket no celular. Teste de corte (7 larguras × 2 protocolos × 11 rotas): 0 violações, 0 alvos < 44 px, 0 erros de JS. Visão geral confere com data.js (13,37%; 98,75%; 32,12%; 0 de 6.395). Revisão do chat do Projeto no console publicado: 0 cortes a 1440, 768 e 390 px; 2 ajustes pedidos (F12b): Governança em cartões até 900 px, para a coluna Ação nunca exigir rolagem horizontal, e legenda de uma linha com as duas metas | Aprovada. Regra de ação na Governança: fila em IA decide abaixo da meta → Rebaixar (erro passaria sem humano); fila em IA sugere abaixo da meta → Revisar (humano já confere; decisão do supervisor, como em Internal Project na F10). | `planning/F12-report.md`; `planning/F12-cortes.json`; `process-log/screenshots/d1–d4, t1, m1–m3, antes_depois` | ver report |
 
-**Exceção de texto no chat export (Gustavo, 04/11/2026):** `process-log/chat-exports/claude-code-f1-a-f7.md` entra sem edição, como terceira exceção à regra de texto de ticket no repositório. Contém 2 trechos do DS2 (28 palavras), os mesmos de `docs/politica.md`, medidos com o texto normalizado e as linhas juntadas. O commit da F7 foi abortado uma vez pela checagem automática antes desta decisão.
+**Exceção de texto no chat export (Gustavo, 04/11/2026):** `process-log/chat-exports/claude-code-f1-a-f7.md` entra sem edição, como terceira exceção à regra de texto de ticket no repositório. Contém 2 trechos do DS2 (28 palavras), os mesmos de `docs/politica.md`, medidos com o texto normalizado e as linhas juntadas. O commit da F7 foi abortado uma vez pela checagem automática antes desta decisão. Em 04/11, esse arquivo foi substituído por `process-log/chat-exports/claude-code-f1-a-f12.md`, que contém a sessão inteira (F1 a F12b) e inclui o export anterior. A exceção passa a valer para ele: só traz trechos do DS2 já presentes em `console/data.js` ou `docs/politica.md`.
 
 **Exceção de texto no console (Gustavo, 04/11/2026):** `console/data.js` contém o texto de 300 tickets do holdout do DS2 (até 400 caracteres cada, sorteados com seed 42), para que o console publicado mostre a fila real. É a quarta exceção à regra de texto de ticket no repositório (DS2 é CC0); `test_f10.py` garante que nenhum outro ticket aparece.
 
@@ -85,16 +85,18 @@
 | F12/F12b Console a partir das pranchas (spec) | 90 | ~50 | relógio entre mensagens (14:19 → 15:09), inclui revisão |
 | **Total F0–F7** | **360** | **~400** | soma das linhas F0 a F7; F1, F2 e F3b sem o tempo de revisão |
 | **Total F8–F12b** | **365** (tetos das specs) | **~161** | soma das linhas F8 a F12/F12b |
-| **Relógio da sessão** | — | **~10 h** | 17:40 de 03/11 → ~15:15 de 04/11, com pausa noturna; ~10 h de relógio de trabalho; tempo efetivo declarado pelo Gustavo: 12h20 |
+| **Relógio da sessão** | — | **~10 h** | 17:40 de 03/11 → ~15:15 de 04/11, com pausa noturna; ~10 h de relógio de trabalho; tempo efetivo declarado pelo Gustavo: ~10 h |
 
 **Ressalva:** F0 e F3a medidos pelo Gustavo; as demais linhas são relógio entre mensagens (incluem revisão) ou estimativa de execução do Claude Code, como indicado em cada linha.
 
 ## Iterações
 
-- **Portões com decisão registrada:** 7 (F0, F1, F2, F3, F4, F5, F6). O da F7 está pendente.
-- **Specs:** 7 (`F1-spec` a `F7-spec`), mais o escopo `F0-escopo` e uma tarefa de correção (F1-fix, sem arquivo próprio).
-- **Reports:** 8 (`F1-report`, `F1-fix-report`, `F2-report` a `F7-report`).
-- **Erros da IA corrigidos e registrados:** 5 (tabela "Erros da IA que eu peguei").
+- **Portões com decisão registrada:** 12 (F0, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F12). A F11 não tem decisão própria, porque o console dela foi substituído pela F12.
+- **Specs:** 12 (`F1-spec` a `F12-spec`), mais o escopo `F0-escopo`. As rodadas de correção não têm spec própria.
+- **Reports:** 13 (`F1-report`, `F1-fix-report` e `F2-report` a `F12-report`). A F12b está registrada como seção do `F12-report`.
+- **Pranchas de design:** 7 (`F12-design/`).
+- **Rodadas de correção pedidas no portão:** 4. Só a F1-fix tem arquivo próprio; F9b, F10b e F12b não têm.
+- **Erros da IA corrigidos e registrados:** 13 (tabela "Erros da IA que eu peguei").
 
 ## Erros da IA que eu peguei
 
