@@ -1,0 +1,7 @@
+Data de referência: 2017-12-31 | limite de ciclo: 138 dias
+  Foco: 236 deals
+  Requalificar ou encerrar: 1291 deals
+  Iniciar contato: 500 deals
+  Automatizar: 62 deals
+Volta no tempo (2017-09-30): top 20% capturou 68% da receita (só valor: 47%)
+Arquivos gerados em /home/claude/g4/fork/submissions/liberato-gouveia/solution/motor/saida/

@@ -1,0 +1,21 @@
+Verificação das classificações e explicações (saída da Fase 2, config aprovada)
+Deals abertos no arquivo: 2089 | esperado: 2089
+Sem lista: 0 | sem ação: 0 | sem porquê: 0
+Porquê contendo 'nan': 0
+Por lista: {'1. Foco': 236, '2. Requalificar ou encerrar': 1291, '3. Iniciar contato': 500, '4. Automatizar': 62}
+
+Foco com chance < 1%: 22 | com chance = 0: 8
+Foco por faixa de idade: {Interval(0, 90, closed='right'): 84, Interval(90, 120, closed='right'): 86, Interval(120, 130, closed='right'): 38, Interval(130, 137, closed='right'): 20, Interval(137, 138, closed='right'): 8}
+Exemplos de Foco com chance < 1%:
+opportunity_id  idade_dias  chance                                                                                  porque
+      ICR59VIJ       138.0     0.0    Valor esperado US$ 0 = US$ 3.393 (MG Advanced) × 0% (chance de um deal com 138 dias)
+      TQJJDWWH       138.0     0.0    Valor esperado US$ 0 = US$ 3.393 (MG Advanced) × 0% (chance de um deal com 138 dias)
+      XGHMOHYQ       138.0     0.0        Valor esperado US$ 0 = US$ 550 (GTX Basic) × 0% (chance de um deal com 138 dias)
+      5378T3K3       138.0     0.0   Valor esperado US$ 0 = US$ 5.482 (GTX Plus Pro) × 0% (chance de um deal com 138 dias)
+      1MQ3015O       138.0     0.0 Valor esperado US$ 0 = US$ 1.096 (GTX Plus Basic) × 0% (chance de um deal com 138 dias)
+
+Exemplo Requalificar (ligar): Aberto há 410 dias. Nenhum deal da história fechou depois de 138 dias.
+Exemplo Requalificar (encerrar): Aberto há 423 dias. Nenhum deal da história fechou depois de 138 dias.
+→ o porquê da lista 2 não explica por que a ação é 'ligar' ou 'encerrar' (falta o critério de US$ 4.000).
+
+Nota 0-100 só existe no Foco: {'1. Foco': 236, '2. Requalificar ou encerrar': 0, '3. Iniciar contato': 0, '4. Automatizar': 0}

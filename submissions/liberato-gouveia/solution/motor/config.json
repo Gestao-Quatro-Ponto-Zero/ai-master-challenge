@@ -1,0 +1,18 @@
+{
+  "_sobre": "Parâmetros do Lead Scorer. Mudou algum valor? Rode o motor de novo; nenhum número está escrito no código.",
+  "data_referencia": "2017-12-31",
+  "inicio_observacao": "2017-03-01",
+  "valor_minimo_foco_usd": 100,
+  "valor_deal_grande_usd": 4000,
+  "idade_alerta_dias": 90,
+  "correcoes_nome_produto": {
+    "GTXPro": "GTX Pro"
+  },
+  "_aprovacoes": {
+    "valor_minimo_foco_usd": "Aprovado pelo Liberato em 04/11/2026 20:00 (Registro 05)",
+    "valor_deal_grande_usd": "Aprovado pelo Liberato em 04/11/2026 20:00 (Registro 05), confirmado às 20:15 (Registro 06)",
+    "idade_alerta_dias": "Sugestão da IA (só muda o texto da explicação, não a nota). Aguarda validação na Fase 3a",
+    "inicio_observacao": "Primeiro dia com fechamentos registrados na base",
+    "limite_ciclo": "Não é parâmetro: é calculado como o maior ciclo dos deals fechados até a data de referência"
+  }
+}

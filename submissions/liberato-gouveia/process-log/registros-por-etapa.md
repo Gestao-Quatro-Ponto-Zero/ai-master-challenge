@@ -240,7 +240,7 @@ Não informado.
 | Lista | Quais deals entram | Como são ordenados | Ação sugerida na tela |
 |---|---|---|---|
 | **1. Foco** | Em negociação, com até 138 dias e valor acima do mínimo | **Valor esperado = chance pela idade (Gráfico 6) × preço de tabela** | "Avançar este deal", com o motivo explicado. Se não houver empresa cadastrada, mostra o aviso "cadastrar empresa". |
-| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias | Valor | Deal grande: "ligar para requalificar". Deal pequeno: "encerrar no CRM". |
+| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias | Valor | Deal grande: "ligar para requalificar". Deal pequeno: "encerrar no CRM". *(Limite definido depois: US$ 4.000, Registros 05 e 06.)* |
 | **3. Iniciar contato** | Em prospecção | Só pelo valor, sem % de chance | "Fazer o primeiro contato" |
 | **4. Automatizar** | Em negociação, com até 138 dias e valor abaixo do mínimo | Valor esperado | "Incluir na cadência automática" |
 
@@ -278,7 +278,7 @@ Definir e testar nos dados reais como a ferramenta vai priorizar os deals, antes
 **Resultados obtidos**
 1. **Ficha da lógica** em `docs/ficha-da-logica.md`: as 4 listas, a fórmula, os textos que o vendedor lê e os parâmetros.
 2. **Curva oficial de chance pela idade**, dia a dia (`analises/resultados/fase2_curva_chance.csv`): 47% para um deal novo, 42% aos 30 dias, 39% aos 60, 26% aos 90, 5% aos 120 e 0% aos 138.
-3. **Simulação em 31/12/2017**, com os limites provisórios: Foco com 236 deals (165 sem empresa), Requalificar ou encerrar com 1.291 (766 "ligar" e 525 "encerrar"), Iniciar contato com 500 e Automatizar com 62. Cada vendedor com deals no Foco tem, em média, 12. O top 5 de um vendedor de exemplo saiu com o "porquê" de cada deal (`analises/resultados/fase2_resultados.txt`).
+3. **Simulação em 31/12/2017**, com os limites provisórios: Foco com 236 deals (165 sem empresa), Requalificar ou encerrar com 1.291 (766 "ligar" e 525 "encerrar" com o limite **provisório** de US$ 1.000; com o limite **aprovado** de US$ 4.000, ficam 350 "ligar" e 941 "encerrar", ver Registros 05 e 06), Iniciar contato com 500 e Automatizar com 62. Cada vendedor com deals no Foco tem, em média, 12. O top 5 de um vendedor de exemplo saiu com o "porquê" de cada deal (`analises/resultados/fase2_resultados.txt`).
 4. **Teste de volta no tempo** (Gráfico 7): com dados só até 30/09/2017, os 20% de deals com maior nota na nossa lógica concentravam **68%** da receita ganha em out–dez. As alternativas ficaram em 47% (só valor), 49% ("óbvia" × valor) e 15% ("óbvia" sem valor). Nenhum deal fora do padrão entrou no nosso top 20%; nas alternativas, foram de 21% a 24%.
 
 **Decisões que realmente tomei (Liberato)**
@@ -289,7 +289,7 @@ Definir e testar nos dados reais como a ferramenta vai priorizar os deals, antes
 
 **Sugestões da IA ainda não validadas por mim**
 - A lógica inteira descrita na ficha.
-- Os limites provisórios: valor mínimo do Foco de US$ 100 e "deal grande" de US$ 1.000.
+- Os limites provisórios: valor mínimo do Foco de US$ 100 e "deal grande" de US$ 1.000. *(Substituído no Registro 05: o "deal grande" aprovado é de US$ 4.000.)*
 - O formato da nota: em US$, de 0 a 100 ou os dois.
 - Usar na curva o período mais recente possível (mar–ago/2017), e não o do Gráfico 6 (mar–jun/2017).
 - Mostrar o aviso "cadastrar empresa" também nas listas 2, 3 e 4.
@@ -358,7 +358,7 @@ Não informado para esta etapa.
 
 ---
 
-## Proposta: Fase 3, Construção da ferramenta (aguardando autorização)
+## Proposta: Fase 3, Construção da ferramenta (autorizada pelo Liberato em 04/11/2026 às 20:15; Fase 3a no Registro 07)
 
 **Objetivo:** construir a ferramenta funcionando. O vendedor abre, escolhe o próprio nome e vê onde focar, com o motivo de cada deal.
 
@@ -388,3 +388,94 @@ Não informado para esta etapa.
 **Custo:** cada mensagem enviada ao Lovable consome créditos do workspace do Liberato. A meta é 1 mensagem de criação e no máximo 3 de ajuste.
 
 **Decisões antes de começar:** aprovar a arquitetura, autorizar o gasto de créditos no Lovable e decidir sobre o aviso "cadastrar empresa" nas listas 2, 3 e 4.
+
+---
+
+## Registro 06: Aprovação da Fase 3, correção do limite e verificação das explicações (04/11/2026, 20:15)
+
+**Objetivo da etapa**
+Registrar a aprovação da Fase 3, corrigir e confirmar na documentação o limite de US$ 4.000 para requalificação e verificar se todos os deals abertos recebem classificação e uma explicação que o vendedor entenda.
+
+**Ferramentas utilizadas**
+- Claude: busca de todas as menções ao limite na documentação e verificação automática dos 2.089 deals classificados na Fase 2
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "Aprovo as três propostas da Fase 3.
+> Antes de começar, corrija e confirme na documentação o limite de US$ 4.000 para requalificação, conforme minha decisão anterior.
+> Verifique também se todas as oportunidades terão classificação e explicações compreensíveis para o vendedor.
+> Registre essas decisões no Process Log.
+> Depois, pode iniciar a Fase 3a: construção e testes do motor em Python. Apresente os resultados para minha validação antes de avançar ao Lovable."
+
+**Decisões que realmente tomei (Liberato)**
+1. Aprovei a arquitetura: motor de score separado em Python e tela no Lovable só para exibir.
+2. Autorizei o gasto de créditos do Lovable, com até 4 mensagens.
+3. Aprovei mostrar o aviso "empresa não cadastrada" nas 4 listas, e não só no Foco.
+4. Confirmei o limite de **US$ 4.000** para "deal grande" na requalificação.
+5. Autorizei a Fase 3a (motor e testes), com parada para validação antes do Lovable.
+
+**Resultados obtidos**
+- **Correção do limite de US$ 4.000:** todas as menções foram revisadas. O diário (Etapa 7) agora define "deal grande" como preço ≥ US$ 4.000. Os trechos do Registro 04 que citavam o limite provisório de US$ 1.000 (766 "ligar" e 525 "encerrar") passaram a indicar que aquele valor era **provisório** e foi substituído por US$ 4.000 (350 "ligar" e 941 "encerrar"). A ficha e a configuração já usavam US$ 4.000. As cópias em `versoes/` não foram alteradas, porque são histórico.
+- **Verificação das explicações** (feita na saída da Fase 2, ver `analises/resultados/verificacao_explicacoes_fase2.txt`): todos os 2.089 deals abertos tinham lista, ação e "porquê", sem nenhum texto vazio ou "nan". Mesmo assim, **3 problemas de clareza** apareceram e foram corrigidos no motor da Fase 3a (Registro 07):
+
+| Problema encontrado | Exemplo | Correção |
+|---|---|---|
+| 8 deals no Foco com exatamente 138 dias apareciam com "Valor esperado US$ 0 = ... × 0%" e a ação "Avançar este deal", o que é contraditório | `ICR59VIJ` (MG Advanced, 138 dias) | O texto agora explica que, nessa idade, nenhum deal foi ganho e pede para confirmar o interesse do cliente. Mudar a lista desses deals é decisão pendente do Liberato. |
+| 14 deals no Foco com chance abaixo de 1% apareciam como "0%" ou "1%" | Deal com 133 dias | O texto agora mostra "menos de 1%". |
+| O "porquê" da lista 2 não dizia por que a ação era "ligar" ou "encerrar" | "Aberto há 410 dias. Nenhum deal da história fechou depois de 138 dias." | O texto agora cita o preço e o critério de US$ 4.000. |
+
+**Sugestões da IA ainda não validadas por mim**
+- Mover para "Requalificar" os deals com chance histórica 0% (hoje, os 8 deals de 138 dias).
+- Acrescentar o alerta "depois de 90 dias a chance cai rápido" ao texto dos deals do Foco com 90 dias ou mais. Isso muda só o texto, não a nota.
+
+**Erros encontrados e correções:** os 3 problemas de clareza da tabela acima, encontrados pelo Claude na verificação pedida pelo Liberato.
+
+**Testes ou evidências disponíveis**
+- `analises/resultados/verificacao_explicacoes_fase2.txt`
+- O commit desta etapa, com o diff das correções do limite
+
+**Tempo aproximado**
+Não informado.
+
+---
+
+## Registro 07: Fase 3a, Construção e testes do motor em Python (04/11/2026)
+
+**Objetivo da etapa**
+Construir o motor que calcula a priorização de todos os deals abertos e gera o arquivo que a tela vai mostrar, com testes automáticos. Nesta etapa não houve tela nem uso do Lovable.
+
+**Ferramentas utilizadas**
+- Claude (Python com pandas e numpy; testes com pytest): escrita do motor, dos testes e da documentação
+- git: histórico de versões
+
+**Prompts relevantes**
+- O pedido do Liberato está transcrito no Registro 06 ("Depois, pode iniciar a Fase 3a...").
+
+**Resultados obtidos**
+- **Motor** em `solution/motor/gerar_scores.py`, com os limites em `solution/motor/config.json` e as instruções em `solution/motor/README.md`. Ele roda em cerca de 1 segundo e gera `saida/deals_priorizados.json` e `.csv`.
+- **Conferência cruzada:** o motor foi escrito do zero, separado do script de análise da Fase 2, e chegou aos **mesmos números**: 236 / 1.291 / 500 / 62 deals; 350 "ligar" e 941 "encerrar"; e, no teste de volta no tempo, 68% contra 47% para "só valor".
+- **12 testes automáticos, todos aprovados** (`analises/resultados/fase3a_testes.txt`). Entre eles, o **teste de sabotagem do futuro**: embaralhamos tudo o que aconteceu depois de 30/09/2017 (quem ganhou, quem perdeu, datas e valores), e a priorização feita em 30/09 continua idêntica.
+- **O próprio teste foi testado:** numa cópia do motor, a proteção contra vazamento foi desligada de propósito, e o teste reprovou. Isso prova que ele detecta o problema de verdade.
+- **Textos finais para o vendedor:** os 3 problemas do Registro 06 foram corrigidos, e a nota agora diz *"Nota 76 de 100: vale mais (em valor esperado) que 76% dos outros deals em Foco na empresa"*. A seção "O que o vendedor lê" da ficha foi atualizada.
+
+**Decisões que realmente tomei (Liberato)**
+- Nenhuma nova nesta etapa. A validação do resultado está pendente.
+
+**Sugestões da IA ainda não validadas por mim**
+- As duas pendências do Registro 06: os deals de 138 dias e o alerta dos 90 dias.
+- O texto exato da nota e das explicações.
+
+**Erros encontrados e correções**
+
+| Erro | Quem encontrou | Correção |
+|---|---|---|
+| A lista de vendedores para a tela saía com 30 nomes, e não 35. O motor montava a lista a partir dos deals e deixava de fora os 5 vendedores do cadastro que não têm nenhum deal. | **Teste automático** (`test_saida_json_valida_para_a_tela`) | **Corrigido:** a lista agora vem do cadastro da equipe (`sales_teams.csv`). A versão anterior está em `versoes/gerar_scores_v0_lista_vendedores_incompleta.py`. |
+| O texto da nota, na primeira versão, dizia "à frente de 100% dos deals" para o primeiro colocado, o que inclui ele mesmo. | Claude, ao revisar a saída | **Corrigido:** a nota agora é a porcentagem dos **outros** deals do Foco com valor esperado menor (de 0 a 100). |
+
+**Testes ou evidências disponíveis**
+- `solution/motor/tests/test_motor.py`, com os 12 testes
+- `analises/resultados/fase3a_testes.txt`: o resultado dos testes e o teste de sabotagem
+- `analises/resultados/fase3a_execucao_motor.txt`: o resumo da execução do motor
+- `solution/motor/saida/`: os arquivos gerados
+
+**Tempo aproximado**
+Não informado.

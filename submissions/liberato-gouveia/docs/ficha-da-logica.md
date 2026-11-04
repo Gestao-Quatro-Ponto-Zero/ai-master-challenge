@@ -28,14 +28,21 @@ Chance de ser ganho para um deal aberto há X dias. É a curva oficial, montada 
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Chance | 47% | 44% | 42% | 39% | 34% | 26% | 18% | 11% | 5% | 1% | 0% |
 
-- **Formato aprovado: os dois.** A lista mostra uma **nota de 0 a 100**, que é a posição do deal entre todos os deals do Foco (100 é o maior valor esperado da empresa e 50 é o meio da fila). O "porquê" mostra o **valor esperado em US$** com a conta completa.
+- **Formato aprovado: os dois.** A lista mostra uma **nota de 0 a 100**, que diz qual porcentagem dos outros deals do Foco tem valor esperado menor (100 é o maior da empresa e 0 é o menor). O "porquê" mostra o **valor esperado em US$** com a conta completa.
 
-## O que o vendedor lê (exemplos reais da simulação)
+## O que o vendedor lê (textos gerados pelo motor, Fase 3a)
 
-- **Foco:** *"Valor esperado US$ 2.313 = US$ 5.482 (GTX Plus Pro) × 42% (chance de um deal com 21 dias)"*
-- **Requalificar:** *"Aberto há 282 dias. Nenhum deal da história fechou depois de 138 dias."*
-- **Iniciar contato:** *"Em prospecção: não há histórico para estimar a chance. Ordenado pelo valor."*
-- **Automatizar:** *"Valor US$ 55 abaixo do mínimo de US$ 100 para atenção individual."*
+- **Foco:** *"Valor esperado US$ 2.313 = preço US$ 5.482 (GTX Plus Pro) × 42% de chance. Na história da empresa, deals com 21 dias em negociação foram ganhos 42% das vezes."*
+  - Deal com 90 dias ou mais acrescenta: *"Atenção: depois de 90 dias a chance cai rápido, e nenhum deal fechou depois de 138 dias."* (sugestão da IA que muda só o texto, não a nota)
+  - Chance abaixo de 1% aparece como *"menos de 1%"*, e não como "0%".
+  - Nota: *"Nota 76 de 100: vale mais (em valor esperado) que 76% dos outros deals em Foco na empresa"*.
+- **Requalificar (ligar):** *"Aberto há 150 dias. Nenhum deal da história fechou depois de 138 dias. Preço US$ 26.768 (GTK 500), igual ou acima de US$ 4.000: vale uma ligação para confirmar se ainda existe interesse antes de encerrar."*
+- **Requalificar (encerrar):** *"Aberto há 139 dias. [...] Preço US$ 3.393 (MG Advanced), abaixo de US$ 4.000: encerre no CRM para limpar o pipeline."*
+- **Iniciar contato:** *"Em prospecção: a base não tem histórico para estimar a chance de deals nesta etapa. Ordenado pelo preço: US$ 5.482 (GTX Plus Pro)."*
+- **Automatizar:** *"Preço US$ 55 (MG Special) abaixo do mínimo de US$ 100 para atenção individual. Valor esperado US$ 25 (46% de chance para um deal com 9 dias)."*
+- **Aviso, nas 4 listas** (decisão do Liberato, Registro 06): *"Empresa não cadastrada: complete o cadastro no CRM"*.
+
+**Caso de borda em aberto:** 8 deals têm exatamente 138 dias. A regra aprovada ("mais de 138 dias vai para Requalificar") os mantém no Foco, mas a chance histórica deles é 0%. Por enquanto, o texto explica isso: *"nenhum deal com 138 dias em negociação foi ganho (chance 0%). Este deal está no limite [...]: confirme com o cliente se ainda existe interesse."* A IA sugere movê-los para Requalificar, o que se faz pela configuração `mover_chance_zero_para_requalificar`. **A decisão é do Liberato.**
 
 ## Parâmetros (ficam na configuração, não no código)
 

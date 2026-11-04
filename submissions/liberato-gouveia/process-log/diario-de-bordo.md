@@ -142,7 +142,7 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 2. **Deals de valor muito baixo (ex.: MG Special):** saem do foco do vendedor e são marcados para cadência automática (mensagens em lote).
 3. **Usuário:** o vendedor, com a "minha lista do dia", mais uma visão do gerente usando filtros por vendedor, gerente e região.
 4. **Regras de vendas que entram na ferramenta (sugeridas pelo Claude, selecionadas pelo Liberato):**
-   - **Requalificar antes de matar:** um deal grande parado ganha uma ligação de requalificação antes de ser encerrado.
+   - **Requalificar antes de matar:** um deal grande parado ganha uma ligação de requalificação antes de ser encerrado. *Definição aprovada pelo Liberato (Registro 05, confirmada no Registro 06): "deal grande" é o que tem preço de tabela de **US$ 4.000 ou mais**.*
    - **Deal sem conta = sem dono:** um deal sem empresa cadastrada vira tarefa de cadastro antes de qualquer contato.
    - **Janela de ouro (14 a 138 dias):** um deal que já passou da primeira semana e ainda está dentro do ciclo normal é onde o vendedor tem mais alavanca, e por isso ganha destaque.
 

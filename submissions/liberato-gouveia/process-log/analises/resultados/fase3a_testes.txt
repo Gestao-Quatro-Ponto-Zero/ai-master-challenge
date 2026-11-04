@@ -1,0 +1,20 @@
+collecting ... collected 12 items
+
+tests/test_motor.py::test_todo_deal_aberto_recebe_exatamente_uma_lista PASSED [  8%]
+tests/test_motor.py::test_todo_deal_tem_acao_porque_e_texto_da_nota PASSED [ 16%]
+tests/test_motor.py::test_aviso_de_empresa_aparece_em_todas_as_listas_quando_falta_empresa PASSED [ 25%]
+tests/test_motor.py::test_regras_das_4_listas PASSED                     [ 33%]
+tests/test_motor.py::test_nota_existe_so_no_foco_e_segue_o_valor_esperado PASSED [ 41%]
+tests/test_motor.py::test_valor_esperado_e_a_conta_chance_vezes_preco PASSED [ 50%]
+tests/test_motor.py::test_numeros_batem_com_a_ficha_aprovada PASSED      [ 58%]
+tests/test_motor.py::test_volta_no_tempo_reproduz_o_resultado_da_fase_2 PASSED [ 66%]
+tests/test_motor.py::test_sem_vazamento_de_futuro_sabotando_tudo_que_aconteceu_depois PASSED [ 75%]
+tests/test_motor.py::test_mudar_a_configuracao_muda_o_resultado_sem_mexer_no_codigo PASSED [ 83%]
+tests/test_motor.py::test_nenhum_nome_de_produto_escrito_no_codigo PASSED [ 91%]
+tests/test_motor.py::test_saida_json_valida_para_a_tela PASSED           [100%]
+
+============================== 12 passed in 2.04s ==============================
+
+Teste de sabotagem (04/11/2026): numa cópia do motor, a linha que apaga o futuro foi desligada de propósito.
+Resultado: FAILED tests/test_motor.py::test_sem_vazamento_de_futuro_sabotando_tudo_que_aconteceu_depois
+Conclusão: o teste detecta vazamento de futuro de verdade.
