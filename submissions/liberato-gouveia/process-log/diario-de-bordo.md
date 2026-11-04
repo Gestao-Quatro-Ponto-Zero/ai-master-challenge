@@ -94,6 +94,8 @@
 
 Ou seja: **quanto mais velho o deal aberto, menor a chance de ser ganho**, e a queda fica forte a partir dos 90 dias.
 
+*Nota da Fase 2:* a ferramenta usa uma curva oficial montada com um período mais recente e maior (deals iniciados de 01/03 a 14/08/2017). Nela as porcentagens são um pouco menores, por exemplo 47% para um deal novo em vez de 53%, mas a forma é a mesma e a ordem dos deals praticamente não muda (ver `docs/ficha-da-logica.md` e o Registro 04).
+
 ![Gráfico 6](graficos/grafico6_chance_por_idade.png)
 
 > **Correção registrada.** A primeira versão desta etapa dizia o contrário: que deals com mais de 14 dias fecham mais (65–75%), com base no Gráfico 3 abaixo. Aquela conta tinha dois problemas. (1) Olhava só os deals que já tinham terminado e ignorava os que nunca fecham. (2) Agrupava os deals pela duração total, que um deal aberto ainda não conhece. Isso é "vazamento de futuro". O erro foi da análise feita pela IA e apareceu na revisão crítica pedida pelo Liberato (regra 7: evitar vazamento de informações futuras). O Gráfico 3 fica aqui só como registro histórico.
@@ -144,7 +146,7 @@ A tela vai explicar isso ao vendedor em linguagem simples.
    - **Deal sem conta = sem dono:** um deal sem empresa cadastrada vira tarefa de cadastro antes de qualquer contato.
    - **Janela de ouro (14 a 138 dias):** um deal que já passou da primeira semana e ainda está dentro do ciclo normal é onde o vendedor tem mais alavanca, e por isso ganha destaque.
 
-   *Atualização (Fase 1):* testadas nos dados, as regras "sem conta = sem dono" e "janela de ouro" não se sustentam como estão escritas (ver Registro 02 em `registros-por-etapa.md`). Decisão do Liberato (Registro 03): retirar a "janela de ouro" e manter na lista de foco os deals sem empresa, com o aviso "cadastrar empresa" (essa interpretação ainda será confirmada).
+   *Atualização (Fase 1):* testadas nos dados, as regras "sem conta = sem dono" e "janela de ouro" não se sustentam como estão escritas (ver Registro 02 em `registros-por-etapa.md`). Decisão do Liberato (Registro 03): retirar a "janela de ouro" e manter na lista de foco os deals sem empresa, com o aviso "cadastrar empresa" (interpretação confirmada por ele em 04/11 às 19:31).
 
 **Intervenção do Liberato no mesmo momento:** junto com as respostas, ele escreveu: *"antes de continuar o trabalho, vc precisa me explicar o que está fazendo, nao tenho conhecimento tecnico e preciso que seja mais explicativo nos seus passos, nesse teste eu preciso documentar os log, os processos, e eu nao sei o que voce está fazendo!"*. O Claude parou a construção, e este diário nasceu desse pedido.
 
@@ -203,6 +205,7 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 | HistGradientBoosting, validação cruzada estratificada com 5 folds | AUC 0,543 | Sem poder preditivo útil |
 | Regressão logística, mesmas features | AUC 0,520 | Idem |
 | Validação temporal (Fase 1): treino com deals iniciados até 16/08/2017 e teste com os posteriores | AUC 0,476 (GB) e 0,517 (LR) | Confirma a ausência de sinal |
+| Teste de volta no tempo (Fase 2): corte em 30/09/2017, desfecho até 31/12/2017, top 20% de 2.409 deals | Receita capturada: 68% (nossa lógica), 47% (só valor), 49% ("óbvia" × valor), 15% ("óbvia" sem valor) | A lógica funciona melhor que as alternativas |
 | Chance por idade atual (Fase 1), safra mar–jun/2017, acompanhamento ≥ 184 dias | Ganho: 53% (0 d), 52% (14 d), 48% (60 d), 37% (90 d), 5% (120 d), 0% (138 d) | Base da nota, sem vazamento |
 | Ciclo dos deals fechados | máx. 138 dias; p95 = 114,5; p99 = 127 | Base do limite "zumbi" |
 
@@ -216,3 +219,4 @@ Features usadas nos modelos: dummies de vendedor, produto, gerente, região, set
 | 04/11 (tarde) | Etapas 4, 5 e 6 reescritas com exemplos, 5 gráficos e uma simulação nova ("teste da moeda"). Os detalhes técnicos foram para este apêndice | O Liberato leu a primeira versão e achou essas etapas difíceis de entender. Se quem conduz o processo não entende, o vendedor e o avaliador também não vão entender. A versão anterior está em `versoes/` |
 | 04/11 (fim da tarde) | Atribuição corrigida nas Etapas 1 e 7: as opções foram sugeridas pela IA e escolhidas pelo Liberato | Revisão crítica pedida pelo Liberato, cuja regra 5 manda separar o que a IA sugeriu do que ele validou. A versão anterior está em `versoes/` |
 | 04/11 (noite) | Etapa 5 corrigida: a chance de um deal aberto cai com a idade (Gráfico 6, novo). O limite de 138 dias foi confirmado, a linguagem sobre os "zumbis" foi ajustada e a pendência do Kaggle foi resolvida | Fase 1 de verificação, autorizada pelo Liberato. A versão anterior está em `versoes/` |
+| 04/11 (noite) | Nota da Fase 2 na Etapa 5 (curva oficial) e resultado do teste de volta no tempo no apêndice | Fase 2, autorizada pelo Liberato. A versão anterior está em `versoes/` |

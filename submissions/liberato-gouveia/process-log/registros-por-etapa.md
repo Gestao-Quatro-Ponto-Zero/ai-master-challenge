@@ -118,6 +118,8 @@ A conversa com o ChatGPT que orientou a criação da branch não faz parte deste
 **Erros encontrados e correções**
 Nenhum erro foi relatado pelo Liberato nesta etapa.
 
+**Validação do Liberato:** em 04/11 às 19:31 ele confirmou: "sim, o registro 01 está correto".
+
 **Testes ou evidências disponíveis**
 - `analises/resultados/registro01_branch_github.txt`: saída da conferência da branch no GitHub
 - Prints da conversa com o ChatGPT: **pendente**, se o Liberato quiser anexar
@@ -209,15 +211,14 @@ As decisões abaixo passam a valer para a lógica do score, que é a Fase 2.
 | # | Tema | Decisão |
 |---|---|---|
 | 1 | Regra "janela de ouro (14 a 138 dias)" | **Retirar.** A chance por idade (Gráfico 6) já entra na nota. |
-| 2 | Deals sem empresa cadastrada | Resposta: "mantenha". **Interpretação do Claude:** manter esses deals na lista de foco, com o aviso "cadastrar empresa", conforme a sugestão 2 do Registro 02. **A confirmar pelo Liberato.** |
+| 2 | Deals sem empresa cadastrada | Resposta: "mantenha". **Interpretação do Claude:** manter esses deals na lista de foco, com o aviso "cadastrar empresa", conforme a sugestão 2 do Registro 02. **Confirmada pelo Liberato em 04/11 às 19:31:** "confirmo a interpretação da decisao 2". |
 | 3 | Deals em prospecção (500) | **Lista separada**, ordenada só por valor e sem % de chance. |
 | 4 | Padrão de fim de trimestre | **Não usar na nota** (exige informação futura) e citar como observação no README. |
 
 Para ficar registrado: as 4 decisões aceitaram sugestões que foram formuladas pela IA no Registro 02.
 
 **Sugestões da IA ainda não validadas por mim**
-- A interpretação da decisão 2 (ver acima).
-- O plano da Fase 2, mais abaixo.
+- Nenhuma pendente. A interpretação da decisão 2 foi confirmada em 04/11 às 19:31, e o plano da Fase 2 foi autorizado no mesmo horário.
 
 **Erros encontrados e correções**
 Nenhum nesta etapa.
@@ -230,7 +231,7 @@ Não informado.
 
 ---
 
-## Proposta: Fase 2, Lógica do score (aguardando autorização)
+## Proposta: Fase 2, Lógica do score (autorizada pelo Liberato em 04/11/2026 às 19:31; resultado no Registro 04)
 
 **Objetivo:** definir e testar, nos dados reais, como a ferramenta vai priorizar os deals, **antes de construir qualquer tela.** Esta fase não usa o Lovable nem envia nada ao GitHub. Os cálculos rodam num script de análise, que ainda não é a ferramenta.
 
@@ -255,3 +256,56 @@ Os limites ficam como **configuração**, nunca escritos no código com nome de 
 5. **Registro 04** no formato do Liberato e commit.
 
 **Decisões que vão ficar para o Liberato ao final:** aprovar a lógica, os valores dos limites (mínimo do foco e "deal grande") e o formato da nota (valor esperado em US$, nota de 0 a 100 ou os dois).
+
+---
+
+## Registro 04: Fase 2, Lógica do score (04/11/2026)
+
+**Objetivo da etapa**
+Definir e testar nos dados reais como a ferramenta vai priorizar os deals, antes de construir qualquer tela. Nesta etapa não houve tela, uso do Lovable nem envio ao GitHub.
+
+**Ferramentas utilizadas**
+- Claude (Python com pandas, numpy e matplotlib): curva de chance, simulação, teste de volta no tempo e gráfico
+- git: histórico de versões
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "1. sim
+> 2. confirmo a interpretação da decisao 2
+> 3. sim, o registro 01 está correto
+>
+> tudo isso deve ser documentado no documento de log para ser apresentado ao G4"
+
+**Resultados obtidos**
+1. **Ficha da lógica** em `docs/ficha-da-logica.md`: as 4 listas, a fórmula, os textos que o vendedor lê e os parâmetros.
+2. **Curva oficial de chance pela idade**, dia a dia (`analises/resultados/fase2_curva_chance.csv`): 47% para um deal novo, 42% aos 30 dias, 39% aos 60, 26% aos 90, 5% aos 120 e 0% aos 138.
+3. **Simulação em 31/12/2017**, com os limites provisórios: Foco com 236 deals (165 sem empresa), Requalificar ou encerrar com 1.291 (766 "ligar" e 525 "encerrar"), Iniciar contato com 500 e Automatizar com 62. Cada vendedor com deals no Foco tem, em média, 12. O top 5 de um vendedor de exemplo saiu com o "porquê" de cada deal (`analises/resultados/fase2_resultados.txt`).
+4. **Teste de volta no tempo** (Gráfico 7): com dados só até 30/09/2017, os 20% de deals com maior nota na nossa lógica concentravam **68%** da receita ganha em out–dez. As alternativas ficaram em 47% (só valor), 49% ("óbvia" × valor) e 15% ("óbvia" sem valor). Nenhum deal fora do padrão entrou no nosso top 20%; nas alternativas, foram de 21% a 24%.
+
+**Decisões que realmente tomei (Liberato)**
+- Autorizei a Fase 2.
+- Confirmei a interpretação da decisão 2 (deals sem empresa ficam no Foco, com aviso).
+- Confirmei que o Registro 01 está correto.
+- Pedi que tudo fosse documentado no log para ser apresentado ao G4.
+
+**Sugestões da IA ainda não validadas por mim**
+- A lógica inteira descrita na ficha.
+- Os limites provisórios: valor mínimo do Foco de US$ 100 e "deal grande" de US$ 1.000.
+- O formato da nota: em US$, de 0 a 100 ou os dois.
+- Usar na curva o período mais recente possível (mar–ago/2017), e não o do Gráfico 6 (mar–jun/2017).
+- Mostrar o aviso "cadastrar empresa" também nas listas 2, 3 e 4.
+
+**Erros encontrados e correções**
+
+| Erro | Quem encontrou | Correção |
+|---|---|---|
+| **Vazamento no próprio teste de volta no tempo.** A primeira versão do script usava o limite de 138 dias calculado com dados até 31/12, mas o teste "finge" que hoje é 30/09. | Claude, durante a fase, antes de mostrar o resultado | **Corrigido:** o limite agora é calculado só com o que se sabia em cada data. Com dados até 30/09, ele também dá 138 dias, então o resultado não mudou, mas o teste ficou correto. A versão com o erro está em `versoes/fase2_logica_v1_com_vazamento.py`. |
+| **Números diferentes entre o Gráfico 6 e a curva oficial.** Para um deal novo, a curva oficial dá 47% e o Gráfico 6 dá 53%. A causa: os deals iniciados em jul–ago/2017 terminaram sem fechar cerca de duas vezes mais do que os de mar–jun (32–34% contra 14–19%, ver `fase1_verificacao.txt`, item B). | Claude, durante a fase | **Documentado:** a ordem dos deals praticamente não muda entre as duas curvas (correlação 0,997). Ficou registrado como limitação na ficha e no diário. Qual período usar é uma decisão pendente. |
+
+**Testes ou evidências disponíveis**
+- `analises/fase2_logica.py` e as saídas `analises/resultados/fase2_resultados.txt`, `fase2_curva_chance.csv`, `fase2_backtest.csv` e `fase2_deals_classificados.csv`
+- `graficos/grafico7_backtest.png`
+- `docs/ficha-da-logica.md`
+- `versoes/fase2_logica_v1_com_vazamento.py` e `versoes/diario-de-bordo_v4_2026-11-04.md`
+
+**Tempo aproximado**
+Não informado para esta fase. O Liberato informou cerca de 3 horas acumuladas até 18:08.
