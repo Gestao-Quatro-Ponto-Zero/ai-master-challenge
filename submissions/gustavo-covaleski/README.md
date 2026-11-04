@@ -40,7 +40,7 @@ Detalhes no [memo de 1 página](docs/memo-diretor.md).
 
 ### Abordagem
 
-- **Fases com portão humano** (F0 a F9). Cada fase tem uma spec escrita no chat do Projeto, executada pelo Claude Code, com report revisado contra os arquivos gerados. As specs e os reports estão em [`process-log/planning/`](process-log/planning/).
+- **Fases com portão humano** (F0 a F12). Cada fase tem uma spec escrita no chat do Projeto, executada pelo Claude Code, com report revisado contra os arquivos gerados. As specs e os reports estão em [`process-log/planning/`](process-log/planning/).
 - **Regras fixadas antes de ver o resultado:**
   - consequência de cada armadilha dos dados (F1);
   - critério da automação: limite inferior do IC 95% da precisão ≥ 1 − taxa de erro humano (*e*);
@@ -74,11 +74,8 @@ Mais detalhes:
 - [política](docs/politica.md);
 - [fluxo](docs/fluxo.md);
 - [produção](docs/producao.md);
+- protótipo Streamlit (local): [IA sugere](process-log/screenshots/2_ia_sugere.png), [lote](process-log/screenshots/6_lote.png);
 - capturas do protótipo em [`process-log/screenshots/`](process-log/screenshots/): [IA decide](process-log/screenshots/1_ia_decide.png), [humano pela política](process-log/screenshots/3_humano_politica.png), [reembolso](process-log/screenshots/4_reembolso.png), [duplicado](process-log/screenshots/5_duplicado.png), [política](process-log/screenshots/7_politica.png).
-
-![Ticket em IA sugere: confiança acima do limiar, rebaixado pelo teto da categoria](process-log/screenshots/2_ia_sugere.png)
-
-![Aba lote: 200 tickets do holdout passados por triar](process-log/screenshots/6_lote.png)
 
 ![Console do piloto: visão geral](process-log/screenshots/d1_visao.png)
 
