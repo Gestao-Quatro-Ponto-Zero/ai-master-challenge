@@ -1,18 +1,18 @@
 # Ficha da lógica do Lead Scorer
 
-> **Status:** proposta da IA (Claude), testada nos dados reais em 04/11/2026 e **aguardando aprovação do Liberato**. Os valores marcados como *provisório* são decisão dele.
+> **Status:** proposta pela IA (Claude), testada nos dados reais e **aprovada pelo Liberato em 04/11/2026 às 20:00** (Registro 05). Todas as escolhas aprovadas coincidem com as opções que a IA recomendou. A versão anterior, ainda como proposta, está em `process-log/versoes/ficha-da-logica_v1_proposta.md`.
 > Evidências: `process-log/analises/fase2_logica.py` e `process-log/analises/resultados/fase2_resultados.txt`.
 
 ## Princípio
 
 A nota usa **só o que se sabe hoje** sobre um deal: a etapa em que está, há quantos dias está aberto e o preço do produto. Nada do que só se descobre quando o deal termina entra na conta. Produto, setor, empresa, gerente e vendedor também **não entram**, porque os testes mostraram que não preveem o resultado (Etapas 4 e 6 do diário).
 
-## As 4 listas (situação em 31/12/2017, com os limites provisórios)
+## As 4 listas (situação em 31/12/2017)
 
 | Lista | Quais deals entram | Ordem | Ação na tela | Deals |
 |---|---|---|---|---|
 | **1. Foco** | Em negociação, com até 138 dias e preço ≥ US$ 100 | Valor esperado | "Avançar este deal" | 236 |
-| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias | Preço | Preço ≥ US$ 1.000: "Ligar para requalificar". Abaixo disso: "Encerrar no CRM" | 1.291 |
+| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias | Preço | Preço ≥ US$ 4.000: "Ligar para requalificar" (350 deals). Abaixo disso: "Encerrar no CRM" (941 deals) | 1.291 |
 | **3. Iniciar contato** | Em prospecção | Preço (sem % de chance) | "Fazer o primeiro contato" | 500 |
 | **4. Automatizar** | Em negociação, com até 138 dias e preço < US$ 100 | Valor esperado | "Incluir na cadência automática" | 62 |
 
@@ -28,7 +28,7 @@ Chance de ser ganho para um deal aberto há X dias. É a curva oficial, montada 
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Chance | 47% | 44% | 42% | 39% | 34% | 26% | 18% | 11% | 5% | 1% | 0% |
 
-- **Nota de 0 a 100:** a posição do deal entre todos os deals do Foco. 100 é o maior valor esperado da empresa e 50 é o meio da fila. *(Formato a decidir: em US$, de 0 a 100 ou os dois.)*
+- **Formato aprovado: os dois.** A lista mostra uma **nota de 0 a 100**, que é a posição do deal entre todos os deals do Foco (100 é o maior valor esperado da empresa e 50 é o meio da fila). O "porquê" mostra o **valor esperado em US$** com a conta completa.
 
 ## O que o vendedor lê (exemplos reais da simulação)
 
@@ -42,8 +42,8 @@ Chance de ser ganho para um deal aberto há X dias. É a curva oficial, montada 
 | Parâmetro | Valor | Como é definido | Opções e impacto |
 |---|---|---|---|
 | Limite de ciclo | 138 dias | **Automático:** o maior ciclo entre os deals fechados até a data de referência | — |
-| Valor mínimo do Foco | US$ 100 *(provisório)* | Decisão do Liberato | US$ 100: Foco com 236 deals (~11 por vendedor). US$ 600: 178 (~8). US$ 1.100: 123 (~6). |
-| "Deal grande" na requalificação | US$ 1.000 *(provisório)* | Decisão do Liberato | US$ 1.000: 766 ligações (~28 por vendedor). US$ 3.000: 563 (~21). US$ 4.000: 350 (~13). US$ 5.000: 153 (~6). |
+| Valor mínimo do Foco | **US$ 100 (aprovado)** | Decisão do Liberato | US$ 100: Foco com 236 deals (~11 por vendedor). US$ 600: 178 (~8). US$ 1.100: 123 (~6). |
+| "Deal grande" na requalificação | **US$ 4.000 (aprovado)** | Decisão do Liberato | US$ 1.000: 766 ligações (~28 por vendedor). US$ 3.000: 563 (~21). US$ 4.000: 350 (~13). US$ 5.000: 153 (~6). |
 | Início da observação | 01/03/2017 | É o primeiro dia com fechamentos registrados na base | — |
 
 ## Como sabemos que funciona: teste de volta no tempo

@@ -309,3 +309,82 @@ Definir e testar nos dados reais como a ferramenta vai priorizar os deals, antes
 
 **Tempo aproximado**
 Não informado para esta fase. O Liberato informou cerca de 3 horas acumuladas até 18:08.
+
+---
+
+## Registro 05: Aprovação da lógica e dos parâmetros (04/11/2026, 20:00)
+
+**Objetivo da etapa**
+Registrar as decisões do Liberato sobre a lógica proposta na Fase 2. Nesta etapa não houve código novo nem tela.
+
+**Ferramentas utilizadas**
+- Conversa com o Claude, com perguntas de múltipla escolha
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "o que eu preciso responder?"
+
+Esse foi o retorno do Liberato à lista de 5 decisões escritas em texto corrido no fim do Registro 04. O Claude reorganizou as decisões em 4 perguntas de múltipla escolha (juntou "aprovar a lógica" e "período da curva" numa só), e o Liberato respondeu selecionando opções.
+
+**Resultados obtidos**
+A lógica foi aprovada. A ficha `docs/ficha-da-logica.md` foi atualizada com o status "aprovada", os valores escolhidos e o formato da nota. A simulação foi rodada de novo com a configuração aprovada: na lista 2, ficaram 350 deals para "ligar para requalificar" e 941 para "encerrar no CRM".
+
+**Decisões que realmente tomei (Liberato)**
+
+| Pergunta | Opção selecionada |
+|---|---|
+| Lógica da ficha, com a curva do período mais recente (mar–ago/2017) | "Aprovo (Recomendado)" |
+| Preço mínimo para a lista Foco | "US$ 100 (Recomendado)" |
+| "Deal grande", que ganha ligação antes de ser encerrado | "US$ 4.000 (Recomendado)" |
+| Formato da nota | "Os dois (Recomendado)": 0 a 100 + valor em US$ no "porquê" |
+
+Para ficar registrado: em todas as 4 perguntas, o Liberato escolheu a opção que a IA tinha marcado como recomendada.
+
+**Sugestões da IA ainda não validadas por mim**
+- Mostrar o aviso "cadastrar empresa" também nas listas 2, 3 e 4.
+- O plano da Fase 3, mais abaixo.
+
+**Erros encontrados e correções**
+
+| Erro | Quem encontrou | Correção |
+|---|---|---|
+| As 5 decisões do fim do Registro 04 foram apresentadas em texto corrido, e o Liberato não entendeu o que precisava responder. | Liberato ("o que eu preciso responder?") | **Corrigido:** as decisões viraram 4 perguntas de múltipla escolha, com o impacto de cada opção. |
+
+**Testes ou evidências disponíveis**
+- `docs/ficha-da-logica.md` (aprovada) e `versoes/ficha-da-logica_v1_proposta.md` (a versão anterior)
+- `analises/resultados/fase2_resultados.txt`, rodado de novo com a configuração aprovada. A primeira execução, com o limite provisório de US$ 1.000, gerou 766 "ligar" e 525 "encerrar" e está descrita no Registro 04.
+
+**Tempo aproximado**
+Não informado para esta etapa.
+
+---
+
+## Proposta: Fase 3, Construção da ferramenta (aguardando autorização)
+
+**Objetivo:** construir a ferramenta funcionando. O vendedor abre, escolhe o próprio nome e vê onde focar, com o motivo de cada deal.
+
+**Arquitetura sugerida pela IA: duas partes separadas**
+1. **Motor do score (Python, feito pelo Claude):** um programa que lê os 4 arquivos de dados e um arquivo de configuração com os limites aprovados, e gera um arquivo com todos os deals abertos já classificados, com nota e "porquê". Ele vem com **testes automáticos**, que são verificações que rodam sozinhas a cada execução. Por exemplo: nenhum deal com mais de 138 dias no Foco; as 4 listas somam exatamente os 2.089 deals abertos; os números batem com a ficha aprovada; e o motor não usa data nem valor de fechamento para dar nota a um deal aberto.
+2. **Tela (Lovable):** um app web que **só mostra** o arquivo gerado pelo motor. Nenhum cálculo fica dentro do Lovable.
+
+**Por que separar:** a conta fica num lugar só, testada e fácil de auditar, e o avaliador pode rodar o motor e conferir. O agente de IA do Lovable não consegue alterar a fórmula sem querer. E se a lógica mudar, basta rodar o motor de novo.
+
+**O que o Lovable vai construir (1 tela, em português):**
+- Seletor de vendedor, mais filtros de gerente e região para a visão do gerente
+- Um resumo no topo, por exemplo: "Hoje: X deals no Foco, Y para requalificar…"
+- 4 abas, uma para cada lista. Cada deal mostra o produto, a empresa (ou o aviso), a idade, a nota de 0 a 100, a ação sugerida e o "porquê" com a conta em US$
+- Uma aba "Como a nota funciona", com uma explicação curta e o resultado do teste de volta no tempo
+- Sem login e sem banco de dados: os dados vêm de um arquivo. É mais simples e não tem custo extra
+- Publicação com link público
+
+**Passos (com paradas para aprovação):**
+- **3a.** Construir e testar o motor, ainda sem Lovable. Resultado apresentado ao Liberato.
+- **3b.** Mostrar ao Liberato o prompt exato que será enviado ao Lovable, para aprovação. Esse prompt vira evidência no log.
+- **3c.** Criar o projeto no workspace "Liberato's Lovable" (o único da conta, plano Pro), enviar os dados e o prompt, com no máximo 3 mensagens de ajuste.
+- **3d.** Conferir a tela: comparar os números da tela com os do motor (por exemplo, o top 5 do vendedor Zane Levy) e tirar prints para o log.
+- **3e.** Copiar o código do Lovable para `solution/app/` e o motor para `solution/motor/`, escrever o Registro 06 e fazer o commit.
+
+**Fora da Fase 3:** o README final, o envio ao GitHub e o Pull Request. Isso fica para a Fase 4, sempre com autorização do Liberato.
+
+**Custo:** cada mensagem enviada ao Lovable consome créditos do workspace do Liberato. A meta é 1 mensagem de criação e no máximo 3 de ajuste.
+
+**Decisões antes de começar:** aprovar a arquitetura, autorizar o gasto de créditos no Lovable e decidir sobre o aviso "cadastrar empresa" nas listas 2, 3 e 4.

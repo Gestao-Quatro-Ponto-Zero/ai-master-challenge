@@ -12,11 +12,12 @@ import pandas as pd
 D, OUT, GRAF = sys.argv[1], sys.argv[2], sys.argv[3]
 
 # ------------------------------------------------------------------ configuração
-# Limites PROVISÓRIOS para a simulação; os valores finais são decisão do Liberato.
+# Limites aprovados pelo Liberato em 04/11/2026 às 20:00 (Registro 05).
+# A primeira execução usou valor_deal_grande = 1000 (provisório).
 CONFIG = {
     # limite de ciclo: NÃO é fixo; é o maior ciclo observado nos deals fechados até a data de referência
     "valor_minimo_foco": 100,         # US$; abaixo disso o deal vai para "Automatizar"
-    "valor_deal_grande": 1000,        # US$; na lista de requalificação, define "ligar" x "encerrar"
+    "valor_deal_grande": 4000,        # US$; na lista de requalificação, define "ligar" x "encerrar"
     "inicio_observacao": "2017-03-01",  # primeiro dia com fechamentos registrados na base
 }
 
@@ -97,7 +98,7 @@ HOJE = pd.Timestamp("2017-12-31")
 curva, info, LIM = curva_chance(p, HOJE)
 out(f"Limite de ciclo calculado com dados até {HOJE.date()}: {LIM} dias")
 out(f"Safra usada: deals iniciados de {info[0]} a {info[1]} ({info[2]} deals)")
-out(f"Configuração provisória: {CONFIG}")
+out(f"Configuração aprovada: {CONFIG}")
 curva.to_csv(f"{OUT}/fase2_curva_chance.csv", index=False)
 for idade in [0, 7, 14, 21, 30, 45, 60, 75, 90, 100, 110, 120, 130, 138]:
     if idade > LIM: continue

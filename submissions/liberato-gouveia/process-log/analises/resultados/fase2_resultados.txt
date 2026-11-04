@@ -4,7 +4,7 @@
 ========================================================================
 Limite de ciclo calculado com dados até 2017-12-31: 138 dias
 Safra usada: deals iniciados de 2017-03-01 a 2017-08-14 (4767 deals)
-Configuração provisória: {'valor_minimo_foco': 100, 'valor_deal_grande': 1000, 'inicio_observacao': '2017-03-01'}
+Configuração aprovada: {'valor_minimo_foco': 100, 'valor_deal_grande': 4000, 'inicio_observacao': '2017-03-01'}
   deal com   0 dias: chance  47.3%  (base: 4767.0 deals vivos nessa idade)
   deal com   7 dias: chance  46.5%  (base: 4070.0 deals vivos nessa idade)
   deal com  14 dias: chance  43.8%  (base: 3079.0 deals vivos nessa idade)
@@ -32,7 +32,7 @@ lista
 3. Iniciar contato             500       1073986          337
 4. Automatizar                  62          3410           44
 
-Ações na lista 2: {'Ligar para requalificar': 766, 'Encerrar no CRM': 525}
+Ações na lista 2: {'Encerrar no CRM': 941, 'Ligar para requalificar': 350}
 
 Impacto do 'valor mínimo do foco' (deals vivos até 138 dias):
   mínimo US$   100: Foco 236 deals (~11 por vendedor) | Automatizar  62 deals
