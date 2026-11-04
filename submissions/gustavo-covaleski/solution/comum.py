@@ -12,6 +12,7 @@ PLANNING_DIR = (SUBMISSAO / "../../../planning").resolve()
 # chave de API fica fora do repositório, em challenge-g4-ai-master/.env
 ENV_PATH = (SUBMISSAO / "../../../.env").resolve()
 REVISAO_DIR = PLANNING_DIR / "F1-revisao"
+F3_DIR = PLANNING_DIR / "F3"
 OUT_DIR = SUBMISSAO / "solution" / "outputs"
 PROCESS_LOG_DIR = SUBMISSAO / "process-log"
 SEED = 42
@@ -63,6 +64,34 @@ def ler_csv_excel(caminho: Path) -> pd.DataFrame:
     cabecalho = texto.split("\n", 1)[0]
     sep = ";" if cabecalho.count(";") >= cabecalho.count(",") else ","
     return pd.read_csv(io.StringIO(texto), sep=sep, dtype=str, keep_default_na=False)
+
+
+def wilson(k, n, z=1.959964):
+    if n == 0:
+        return (float("nan"), float("nan"))
+    p = k / n
+    centro = (p + z * z / (2 * n)) / (1 + z * z / n)
+    meia = z * ((p * (1 - p) / n + z * z / (4 * n * n)) ** 0.5) / (1 + z * z / n)
+    return (centro - meia, centro + meia)
+
+
+def boot_ic(y, pred, metrica, n_boot=1000, seed=SEED):
+    import numpy as np
+    y, pred = np.asarray(y), np.asarray(pred)
+    rng = np.random.default_rng(seed)
+    vals = [metrica(y[i], pred[i]) for i in (rng.integers(0, len(y), len(y)) for _ in range(n_boot))]
+    return (float(np.percentile(vals, 2.5)), float(np.percentile(vals, 97.5)))
+
+
+def ler_env_chave(nome="ANTHROPIC_API_KEY"):
+    # lida do .env fora do repositório; nunca imprimir nem logar o valor
+    if not ENV_PATH.exists():
+        return None
+    for linha in ENV_PATH.read_text(encoding="utf-8-sig").splitlines():
+        if "=" in linha and linha.split("=", 1)[0].strip() == nome:
+            v = linha.split("=", 1)[1].strip().strip('"').strip("'")
+            return v or None
+    return None
 
 
 def _conv(o):

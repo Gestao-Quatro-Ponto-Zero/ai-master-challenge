@@ -1,0 +1,15 @@
+{
+  "rotulo": "premissa (editável), não dado; preço consultado na página oficial, não de memória",
+  "consulta_em": "2026-11-03T22:52-03:00",
+  "fonte_preco": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "fonte_modelos": "https://platform.claude.com/docs/en/about-claude/models/overview (redireciona para /docs/en/models/overview)",
+  "modelo": "claude-haiku-5-5",
+  "modelo_nome": "Claude Haiku 5.5 (Haiku mais recente listado na página de modelos)",
+  "preco_usd_por_mtok_entrada": 0.10,
+  "preco_usd_por_mtok_saida": 0.50,
+  "condicao_preco": "prompts de até 100.000 tokens (acima disso: US$ 0,50 entrada / US$ 2,50 saída); página de modelos: 'From $0.10 / input MTok, From $0.50 / output MTok'",
+  "restricao_api": "Claude Haiku 5.5 recusa temperature diferente do padrão (400); thinking adaptativo é o padrão e só pode ser desligado com effort high ou menor",
+  "configuracao_usada": {"thinking": "disabled", "effort": "low", "temperature": "não enviada (padrão do modelo)", "max_tokens": 64},
+  "cambio_brl_por_usd": [5.0, 6.0],
+  "cambio_rotulo": "premissa NÃO consultada em fonte oficial; grade usada só para o ponto de equilíbrio; confirmar com o Gustavo"
+}

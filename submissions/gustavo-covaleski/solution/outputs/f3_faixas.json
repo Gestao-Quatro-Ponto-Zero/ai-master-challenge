@@ -1,0 +1,196 @@
+{
+  "e_adjudicado": {
+    "original_errado": 21,
+    "n": 60,
+    "taxa_bruta": 0.35,
+    "ponderado": 0.3179,
+    "ic95_bootstrap_estratificado": [
+      0.1962,
+      0.4392
+    ],
+    "por_categoria": {
+      "Access": {
+        "original_errado": 1,
+        "n": 8
+      },
+      "Administrative rights": {
+        "original_errado": 6,
+        "n": 6
+      },
+      "HR Support": {
+        "original_errado": 3,
+        "n": 9
+      },
+      "Hardware": {
+        "original_errado": 4,
+        "n": 11
+      },
+      "Internal Project": {
+        "original_errado": 1,
+        "n": 6
+      },
+      "Miscellaneous": {
+        "original_errado": 2,
+        "n": 8
+      },
+      "Purchase": {
+        "original_errado": 0,
+        "n": 6
+      },
+      "Storage": {
+        "original_errado": 4,
+        "n": 6
+      }
+    }
+  },
+  "e_quase_duplicados": {
+    "k": 118,
+    "n": 3092,
+    "taxa": 0.0382,
+    "ic95_wilson": [
+      0.032,
+      0.0455
+    ]
+  },
+  "e_q2": {
+    "fonte": "quase_duplicados",
+    "valor": 0.0382,
+    "e_inferior": 0.032,
+    "e_superior": 0.0455,
+    "meta_ia_decide_li_ge": 0.968,
+    "meta_ia_sugere_li_ge": 0.9545,
+    "regra": "menor dos dois valores pontuais, com o IC da fonte escolhida (decisão do Gustavo antes da adjudicação)"
+  },
+  "faixas": {
+    "ia_decide": {
+      "limiar": 0.74,
+      "n": 5469,
+      "cobertura": 0.5717,
+      "precisao": 0.9737,
+      "precisao_ic95": [
+        0.9691,
+        0.9776
+      ]
+    },
+    "ia_sugere_humano_confirma": {
+      "limiar": 0.66,
+      "n": 828,
+      "cobertura": 0.0865,
+      "precisao": 0.8853,
+      "precisao_ic95": [
+        0.8618,
+        0.9052
+      ]
+    },
+    "humano_decide": {
+      "n": 3270,
+      "cobertura": 0.3418,
+      "precisao": 0.6364,
+      "precisao_ic95": [
+        0.6198,
+        0.6527
+      ]
+    }
+  },
+  "faixa_ia_decide_vazia": false,
+  "economia_cenario_A": [
+    {
+      "min_por_ticket": 2,
+      "reais_por_hora": 25,
+      "custo_anual_triagem_reais": 25000.0,
+      "economia_anual_reais": 14292.5
+    },
+    {
+      "min_por_ticket": 2,
+      "reais_por_hora": 35,
+      "custo_anual_triagem_reais": 35000.0,
+      "economia_anual_reais": 20009.5
+    },
+    {
+      "min_por_ticket": 2,
+      "reais_por_hora": 50,
+      "custo_anual_triagem_reais": 50000.0,
+      "economia_anual_reais": 28585.0
+    },
+    {
+      "min_por_ticket": 3,
+      "reais_por_hora": 25,
+      "custo_anual_triagem_reais": 37500.0,
+      "economia_anual_reais": 21438.75
+    },
+    {
+      "min_por_ticket": 3,
+      "reais_por_hora": 35,
+      "custo_anual_triagem_reais": 52500.0,
+      "economia_anual_reais": 30014.25
+    },
+    {
+      "min_por_ticket": 3,
+      "reais_por_hora": 50,
+      "custo_anual_triagem_reais": 75000.0,
+      "economia_anual_reais": 42877.5
+    },
+    {
+      "min_por_ticket": 4,
+      "reais_por_hora": 25,
+      "custo_anual_triagem_reais": 50000.0,
+      "economia_anual_reais": 28585.0
+    },
+    {
+      "min_por_ticket": 4,
+      "reais_por_hora": 35,
+      "custo_anual_triagem_reais": 70000.0,
+      "economia_anual_reais": 40019.0
+    },
+    {
+      "min_por_ticket": 4,
+      "reais_por_hora": 50,
+      "custo_anual_triagem_reais": 100000.0,
+      "economia_anual_reais": 57170.0
+    }
+  ],
+  "economia_cenario_A_rotulo": "premissas (volume, minutos, R$/h) editáveis; cobertura = faixa IA decide no holdout por grupo",
+  "economia_cenario_B": "0 (sem etapa separada de triagem); ganho viria do reroteamento evitado, não calculável",
+  "ponto_equilibrio": {
+    "rotulo": "câmbio é premissa não consultada; R$/h é premissa",
+    "usd_por_ticket_llm": 0.00015079999999999998,
+    "minutos_por_ticket": [
+      {
+        "cambio": 5.0,
+        "reais_h": 25,
+        "minutos": 0.00181,
+        "segundos": 0.1086
+      },
+      {
+        "cambio": 5.0,
+        "reais_h": 35,
+        "minutos": 0.001293,
+        "segundos": 0.0776
+      },
+      {
+        "cambio": 5.0,
+        "reais_h": 50,
+        "minutos": 0.000905,
+        "segundos": 0.0543
+      },
+      {
+        "cambio": 6.0,
+        "reais_h": 25,
+        "minutos": 0.002172,
+        "segundos": 0.1303
+      },
+      {
+        "cambio": 6.0,
+        "reais_h": 35,
+        "minutos": 0.001551,
+        "segundos": 0.0931
+      },
+      {
+        "cambio": 6.0,
+        "reais_h": 50,
+        "minutos": 0.001086,
+        "segundos": 0.0651
+      }
+    ]
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "concordancia_60": {
+    "modelo_x_original": {
+      "n_concorda": 53,
+      "n": 60,
+      "taxa": 0.8833
+    },
+    "modelo_x_gustavo": {
+      "n_concorda": 30,
+      "n": 60,
+      "taxa": 0.5
+    },
+    "gustavo_x_original": {
+      "n_concorda": 28,
+      "n": 60,
+      "taxa": 0.4667
+    }
+  },
+  "original_errado": {
+    "n": 21,
+    "modelo_preve_original": 18,
+    "modelo_preve_gustavo": 1,
+    "modelo_preve_outro": 2
+  },
+  "ambiguo": {
+    "n": 11,
+    "modelo_preve_original": 8,
+    "modelo_preve_gustavo": 2,
+    "modelo_preve_outro": 1
+  },
+  "teste_consistencia": {
+    "e_adjudicado_ponderado": 0.3179,
+    "e_superior": 0.4392,
+    "teto_esperado_1_menos_e": 0.6821,
+    "1_menos_e_superior": 0.5608,
+    "acuracia_medida_holdout_grupo": 0.8507,
+    "acuracia_acima_de_1_menos_e_superior": true,
+    "modelo_concorda_com_original_na_maioria_dos_original_errado": true,
+    "conclusao": "a discordância do revisor reflete uma convenção da taxonomia que o modelo aprende, não erro aleatório do rótulo"
+  },
+  "por_categoria": {
+    "Access": {
+      "n_revisado": 8,
+      "taxa_original_errado": 0.125,
+      "taxa_ambiguo": 0.25,
+      "f1_modelo": 0.8723,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "Hardware",
+          "n": 144
+        },
+        {
+          "previsto": "HR Support",
+          "n": 55
+        },
+        {
+          "previsto": "Miscellaneous",
+          "n": 39
+        }
+      ],
+      "destaque": false
+    },
+    "Administrative rights": {
+      "n_revisado": 6,
+      "taxa_original_errado": 1.0,
+      "taxa_ambiguo": 0.0,
+      "f1_modelo": 0.7148,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "Hardware",
+          "n": 124
+        },
+        {
+          "previsto": "Miscellaneous",
+          "n": 8
+        },
+        {
+          "previsto": "Access",
+          "n": 6
+        }
+      ],
+      "destaque": true
+    },
+    "HR Support": {
+      "n_revisado": 9,
+      "taxa_original_errado": 0.3333,
+      "taxa_ambiguo": 0.3333,
+      "f1_modelo": 0.8673,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "Hardware",
+          "n": 162
+        },
+        {
+          "previsto": "Miscellaneous",
+          "n": 67
+        },
+        {
+          "previsto": "Access",
+          "n": 18
+        }
+      ],
+      "destaque": false
+    },
+    "Hardware": {
+      "n_revisado": 11,
+      "taxa_original_errado": 0.3636,
+      "taxa_ambiguo": 0.0909,
+      "f1_modelo": 0.8373,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "HR Support",
+          "n": 124
+        },
+        {
+          "previsto": "Miscellaneous",
+          "n": 64
+        },
+        {
+          "previsto": "Access",
+          "n": 33
+        }
+      ],
+      "destaque": true
+    },
+    "Internal Project": {
+      "n_revisado": 6,
+      "taxa_original_errado": 0.1667,
+      "taxa_ambiguo": 0.3333,
+      "f1_modelo": 0.8413,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "HR Support",
+          "n": 39
+        },
+        {
+          "previsto": "Hardware",
+          "n": 28
+        },
+        {
+          "previsto": "Miscellaneous",
+          "n": 26
+        }
+      ],
+      "destaque": false
+    },
+    "Miscellaneous": {
+      "n_revisado": 8,
+      "taxa_original_errado": 0.25,
+      "taxa_ambiguo": 0.25,
+      "f1_modelo": 0.8297,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "Hardware",
+          "n": 155
+        },
+        {
+          "previsto": "HR Support",
+          "n": 75
+        },
+        {
+          "previsto": "Access",
+          "n": 17
+        }
+      ],
+      "destaque": false
+    },
+    "Purchase": {
+      "n_revisado": 6,
+      "taxa_original_errado": 0.0,
+      "taxa_ambiguo": 0.0,
+      "f1_modelo": 0.9169,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "Hardware",
+          "n": 46
+        },
+        {
+          "previsto": "HR Support",
+          "n": 10
+        },
+        {
+          "previsto": "Access",
+          "n": 4
+        }
+      ],
+      "destaque": false
+    },
+    "Storage": {
+      "n_revisado": 6,
+      "taxa_original_errado": 0.6667,
+      "taxa_ambiguo": 0.1667,
+      "f1_modelo": 0.882,
+      "top3_confusoes_holdout": [
+        {
+          "previsto": "Hardware",
+          "n": 51
+        },
+        {
+          "previsto": "HR Support",
+          "n": 22
+        },
+        {
+          "previsto": "Miscellaneous",
+          "n": 13
+        }
+      ],
+      "destaque": true
+    }
+  },
+  "par_hardware_storage": {
+    "hardware_previsto_storage": 8,
+    "storage_previsto_hardware": 51,
+    "suporte_hardware": 2723,
+    "suporte_storage": 555
+  },
+  "suspeitos": {
+    "erros_com_p_max_ge_0_90": 25,
+    "n_holdout": 9567,
+    "pct_holdout": 0.26,
+    "exemplos": "planning/F3/f3_suspeitos.csv (fora do repo)"
+  }
+}
