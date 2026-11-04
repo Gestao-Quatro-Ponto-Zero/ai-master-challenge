@@ -7,6 +7,8 @@
 
 > **O que é este documento:** é a peça principal do *process log*, o registro de como a IA foi usada, que o G4 exige em toda entrega. Ele conta, etapa por etapa, o que foi feito, por quê, o que deu errado e quem decidiu o quê. Junto com ele vão os scripts, os gráficos, os prints da conversa com o Claude e o histórico de versões.
 >
+> Este diário cobre a análise inicial (Etapas 0 a 7). A partir de 04/11, cada fase do plano tem um registro padronizado em [`registros-por-etapa.md`](registros-por-etapa.md).
+>
 > Este diário é atualizado a cada etapa. Cada número citado aqui vem de um script salvo na pasta `analises/`, junto com a saída dele em `analises/resultados/`. Qualquer pessoa pode rodar de novo e conferir.
 
 ---
@@ -20,10 +22,10 @@
 - Sem registro do processo (este diário), a entrega é desclassificada.
 - O case 003 pede **software funcionando**, não um documento. Ele tem que usar os dados reais, explicar **por que** cada deal tem nota alta ou baixa e ser fácil para um vendedor que não é técnico.
 
-## Etapa 1: Escolha do case e da forma de trabalhar (03/11, decisão do Liberato)
+## Etapa 1: Escolha do case e da forma de trabalhar (03/11)
 
-- **Case escolhido:** 003 Lead Scorer, por ser o mais próximo da experiência do Liberato com CRM e geração de leads (Motor de Leads, OrbittaIA).
-- **Forma de trabalho:** o Liberato decide e o Claude executa, com paradas de aprovação.
+- **Case:** entre as 4 opções, o Claude recomendou o 003 Lead Scorer, porque a entrega é um software funcionando e o tema é próximo da experiência do Liberato com CRM e geração de leads. **O Liberato escolheu o 003.**
+- **Forma de trabalho:** o Claude ofereceu duas opções: "o Claude executa e o Liberato decide" ou "o Liberato executa e o Claude guia". **O Liberato escolheu a primeira**, com paradas para aprovação.
 
 ## Etapa 2: Conseguir os dados reais
 
@@ -124,15 +126,19 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 
 ## Etapa 7: Decisões do Liberato (04/11)
 
-Com base nos achados acima, o Liberato decidiu:
+**Como as decisões foram tomadas:** para cada ponto, o Claude apresentou de 2 a 3 opções e marcou uma como recomendada, e o Liberato escolheu. Nos itens 1 a 3, ele ficou com a opção recomendada. No item 4, selecionou as três regras sugeridas. Ou seja: **as opções foram formuladas pela IA e a escolha foi do Liberato.** Nenhuma das regras abaixo foi criada por ele do zero, e isso fica registrado para não atribuir a ele algo que veio da IA.
 
 1. **Deals zumbis (mais de 138 dias):** saem do ranking de foco e vão para uma lista separada, "Requalificar ou encerrar".
 2. **Deals de valor muito baixo (ex.: MG Special):** saem do foco do vendedor e são marcados para cadência automática (mensagens em lote).
 3. **Usuário:** o vendedor, com a "minha lista do dia", mais uma visão do gerente usando filtros por vendedor, gerente e região.
-4. **Regras de experiência em vendas que entram na ferramenta:**
+4. **Regras de vendas que entram na ferramenta (sugeridas pelo Claude, selecionadas pelo Liberato):**
    - **Requalificar antes de matar:** um deal grande parado ganha uma ligação de requalificação antes de ser encerrado.
    - **Deal sem conta = sem dono:** um deal sem empresa cadastrada vira tarefa de cadastro antes de qualquer contato.
    - **Janela de ouro (14 a 138 dias):** um deal que já passou da primeira semana e ainda está dentro do ciclo normal é onde o vendedor tem mais alavanca, e por isso ganha destaque.
+
+   *Pendente:* a regra "sem conta = sem dono" ainda precisa ser testada nos dados. Como 68% dos deals abertos não têm empresa cadastrada, ela pode esvaziar a lista de foco (ver Fase 1 em `registros-por-etapa.md`).
+
+**Intervenção do Liberato no mesmo momento:** junto com as respostas, ele escreveu: *"antes de continuar o trabalho, vc precisa me explicar o que está fazendo, nao tenho conhecimento tecnico e preciso que seja mais explicativo nos seus passos, nesse teste eu preciso documentar os log, os processos, e eu nao sei o que voce está fazendo!"*. O Claude parou a construção, e este diário nasceu desse pedido.
 
 ---
 
@@ -194,3 +200,4 @@ Features usadas nos modelos: dummies de vendedor, produto, gerente, região, set
 |---|---|---|
 | 04/11 (madrugada) | Primeira versão (Etapas 0 a 7) | Registro inicial do processo |
 | 04/11 (tarde) | Etapas 4, 5 e 6 reescritas com exemplos, 5 gráficos e uma simulação nova ("teste da moeda"). Os detalhes técnicos foram para este apêndice | O Liberato leu a primeira versão e achou essas etapas difíceis de entender. Se quem conduz o processo não entende, o vendedor e o avaliador também não vão entender. A versão anterior está em `versoes/` |
+| 04/11 (fim da tarde) | Atribuição corrigida nas Etapas 1 e 7: as opções foram sugeridas pela IA e escolhidas pelo Liberato | Revisão crítica pedida pelo Liberato, cuja regra 5 manda separar o que a IA sugeriu do que ele validou. A versão anterior está em `versoes/` |
