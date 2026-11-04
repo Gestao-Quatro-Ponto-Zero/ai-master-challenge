@@ -1,0 +1,7 @@
+cenario,faixa,n,cobertura_pct,precisao,li,ls
+regra registrada (usada na decisão),IA decide,1242,12.98,0.9887,0.9812,0.9933
+regra registrada (usada na decisão),IA sugere,3005,31.41,0.9667,0.9597,0.9726
+regra registrada (usada na decisão),humano decide,5320,55.61,0.753,0.7412,0.7644
+pós-hoc: abaixo de 1−e_sup vira IA sugere (NÃO usada na decisão),IA decide,1242,12.98,0.9887,0.9812,0.9933
+pós-hoc: abaixo de 1−e_sup vira IA sugere (NÃO usada na decisão),IA sugere,5055,52.84,0.9555,0.9495,0.9608
+pós-hoc: abaixo de 1−e_sup vira IA sugere (NÃO usada na decisão),humano decide,3270,34.18,0.6364,0.6198,0.6527

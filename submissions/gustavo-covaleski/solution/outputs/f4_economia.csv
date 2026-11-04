@@ -1,0 +1,10 @@
+min_por_ticket,reais_por_hora,custo_anual_triagem_reais,cobertura_ia_decide,economia_anual_ia_decide_reais,faixa_ia_sugere,rotulo
+2,25,25000.0,0.1298,3245.53,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+2,35,35000.0,0.1298,4543.74,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+2,50,50000.0,0.1298,6491.06,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+3,25,37500.0,0.1298,4868.3,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+3,35,52500.0,0.1298,6815.62,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+3,50,75000.0,0.1298,9736.59,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+4,25,50000.0,0.1298,6491.06,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+4,35,70000.0,0.1298,9087.49,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"
+4,50,100000.0,0.1298,12982.13,não quantificada; tempo de confirmação a medir no piloto,"premissas (volume, minutos, R$/h) editáveis; cenário A; substitui a economia de f3_faixas.json"

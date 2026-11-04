@@ -1,0 +1,9 @@
+categoria_prevista,n,pct_faixa_ia_decide,pct_faixa_ia_sugere,pct_faixa_humano,n_ia_decide,precisao_ia_decide,li_wilson,ls_wilson,f1_classe,confusao_1,confusao_2,politica,motivo
+Access,1260,67.62,6.11,26.27,852,0.9859,0.9755,0.9919,0.8723,Hardware (33),HR Support (18),IA decide,LI 0.9755 ≥ 1−e_inf 0.9680; ≥ 1−e_sup 0.9545
+Administrative rights,230,51.3,8.7,40.0,118,0.9576,0.9046,0.9818,0.7148,Hardware (8),Storage (6),humano decide,LI 0.9046 < 1−e_inf 0.9680; < 1−e_sup 0.9545
+HR Support,2254,61.54,7.14,31.32,1387,0.9712,0.961,0.9788,0.8673,Hardware (124),Miscellaneous (75),IA sugere,LI 0.9610 < 1−e_inf 0.9680; ≥ 1−e_sup 0.9545
+Hardware,3182,48.9,11.19,39.91,1556,0.9589,0.9478,0.9677,0.8373,HR Support (162),Miscellaneous (155),humano decide,LI 0.9478 < 1−e_inf 0.9680; < 1−e_sup 0.9545
+Internal Project,351,64.67,6.27,29.06,227,0.9824,0.9556,0.9931,0.8413,Access (8),Hardware (5),IA sugere,LI 0.9556 < 1−e_inf 0.9680; ≥ 1−e_sup 0.9545
+Miscellaneous,1377,44.3,10.09,45.61,610,0.9803,0.9659,0.9887,0.8297,HR Support (67),Hardware (64),IA sugere,LI 0.9659 < 1−e_inf 0.9680; ≥ 1−e_sup 0.9545
+Purchase,434,89.86,3.23,6.91,390,0.9949,0.9815,0.9986,0.9169,Hardware (9),Administrative rights (0),IA decide,LI 0.9815 ≥ 1−e_inf 0.9680; ≥ 1−e_sup 0.9545
+Storage,479,68.68,8.14,23.17,329,0.9848,0.9649,0.9935,0.882,Hardware (8),HR Support (5),IA sugere,LI 0.9649 < 1−e_inf 0.9680; ≥ 1−e_sup 0.9545
