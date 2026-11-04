@@ -11,10 +11,10 @@ A nota usa **só o que se sabe hoje** sobre um deal: a etapa em que está, há q
 
 | Lista | Quais deals entram | Ordem | Ação na tela | Deals |
 |---|---|---|---|---|
-| **1. Foco** | Em negociação, com até 138 dias e preço ≥ US$ 100 | Valor esperado | "Avançar este deal" | 236 |
-| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias | Preço | Preço ≥ US$ 4.000: "Ligar para requalificar" (350 deals). Abaixo disso: "Encerrar no CRM" (941 deals) | 1.291 |
+| **1. Foco** | Em negociação, com até 138 dias, chance histórica acima de 0% e preço ≥ US$ 100 | Valor esperado | "Avançar este deal" | 228 |
+| **2. Requalificar ou encerrar** | Em negociação há mais de 138 dias **ou com chance histórica 0%** (hoje, os de 138 dias, regra aprovada no Registro 08) | Preço | Preço ≥ US$ 4.000: "Ligar para requalificar" (354 deals). Abaixo disso: "Encerrar no CRM" (947 deals) | 1.301 |
 | **3. Iniciar contato** | Em prospecção | Preço (sem % de chance) | "Fazer o primeiro contato" | 500 |
-| **4. Automatizar** | Em negociação, com até 138 dias e preço < US$ 100 | Valor esperado | "Incluir na cadência automática" | 62 |
+| **4. Automatizar** | Em negociação, com até 138 dias, chance acima de 0% e preço < US$ 100 | Valor esperado | "Incluir na cadência automática" | 60 |
 
 Um deal sem empresa cadastrada mostra o aviso **"Empresa não cadastrada: complete o cadastro"**. Na lista Foco, isso foi decisão do Liberato (Registro 03). Nas outras listas, é sugestão da IA ainda não validada.
 
@@ -42,14 +42,16 @@ Chance de ser ganho para um deal aberto há X dias. É a curva oficial, montada 
 - **Automatizar:** *"Preço US$ 55 (MG Special) abaixo do mínimo de US$ 100 para atenção individual. Valor esperado US$ 25 (46% de chance para um deal com 9 dias)."*
 - **Aviso, nas 4 listas** (decisão do Liberato, Registro 06): *"Empresa não cadastrada: complete o cadastro no CRM"*.
 
-**Caso de borda em aberto:** 8 deals têm exatamente 138 dias. A regra aprovada ("mais de 138 dias vai para Requalificar") os mantém no Foco, mas a chance histórica deles é 0%. Por enquanto, o texto explica isso: *"nenhum deal com 138 dias em negociação foi ganho (chance 0%). Este deal está no limite [...]: confirme com o cliente se ainda existe interesse."* A IA sugere movê-los para Requalificar, o que se faz pela configuração `mover_chance_zero_para_requalificar`. **A decisão é do Liberato.**
+**Caso de borda resolvido (Registro 08):** 10 deals tinham exatamente 138 dias e chance histórica 0% (8 estavam no Foco e 2 no Automatizar). Com a aprovação do Liberato, eles passaram para "Requalificar ou encerrar" (`mover_chance_zero_para_requalificar: true`), com o texto: *"Aberto há 138 dias. Na história da empresa, nenhum deal com 138 dias ou mais em negociação foi ganho. [...]"*. O alerta dos 90 dias também foi aprovado.
 
 ## Parâmetros (ficam na configuração, não no código)
 
 | Parâmetro | Valor | Como é definido | Opções e impacto |
 |---|---|---|---|
 | Limite de ciclo | 138 dias | **Automático:** o maior ciclo entre os deals fechados até a data de referência | — |
-| Valor mínimo do Foco | **US$ 100 (aprovado)** | Decisão do Liberato | US$ 100: Foco com 236 deals (~11 por vendedor). US$ 600: 178 (~8). US$ 1.100: 123 (~6). |
+| Chance 0% vai para Requalificar | **sim (aprovado)** | Decisão do Liberato (Registro 08) | Move os 10 deals de 138 dias |
+| Idade do alerta no texto | **90 dias (aprovado)** | Decisão do Liberato (Registro 08) | Muda só o texto |
+| Valor mínimo do Foco | **US$ 100 (aprovado)** | Decisão do Liberato | US$ 100: Foco com 236 deals (~11 por vendedor), número calculado antes da regra da chance 0%; hoje são 228. US$ 600: 178 (~8). US$ 1.100: 123 (~6). |
 | "Deal grande" na requalificação | **US$ 4.000 (aprovado)** | Decisão do Liberato | US$ 1.000: 766 ligações (~28 por vendedor). US$ 3.000: 563 (~21). US$ 4.000: 350 (~13). US$ 5.000: 153 (~6). |
 | Início da observação | 01/03/2017 | É o primeiro dia com fechamentos registrados na base | — |
 

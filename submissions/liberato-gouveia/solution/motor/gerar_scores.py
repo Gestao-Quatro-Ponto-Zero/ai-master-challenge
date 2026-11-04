@@ -168,7 +168,11 @@ def _porque(r, lim: int, cfg: dict) -> str:
                     f"e nenhum deal fechou depois de {lim} dias.")
         return txt
     if r.lista == LISTA_REQUALIFICAR:
-        base = f"Aberto há {int(r.idade_dias)} dias. Nenhum deal da história fechou depois de {lim} dias. "
+        idade = int(r.idade_dias)
+        if idade > lim:
+            base = f"Aberto há {idade} dias. Nenhum deal da história fechou depois de {lim} dias. "
+        else:  # chegou aqui pela regra da chance zero
+            base = f"Aberto há {idade} dias. Na história da empresa, nenhum deal com {idade} dias ou mais em negociação foi ganho. "
         if r.sales_price >= cfg["valor_deal_grande_usd"]:
             return base + (f"Preço {prod}, igual ou acima de {usd(cfg['valor_deal_grande_usd'])}: vale uma ligação "
                            f"para confirmar se ainda existe interesse antes de encerrar.")
@@ -259,7 +263,7 @@ def main():
     a = ap.parse_args()
     res = gerar(a.dados, a.config)
     out = Path(a.saida); out.mkdir(parents=True, exist_ok=True)
-    (out / "deals_priorizados.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+    (out / "deals_priorizados.json").write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     pd.DataFrame(res["deals"]).to_csv(out / "deals_priorizados.csv", index=False, encoding="utf-8")
     print(f"Data de referência: {res['data_referencia']} | limite de ciclo: {res['limite_ciclo_dias']} dias")
     for l, v in res["resumo_por_lista"].items():

@@ -34,10 +34,10 @@ As regras estão em `docs/ficha-da-logica.md`. Os limites ficam em `config.json`
 | Todo deal aberto recebe exatamente uma lista | Os 2.089 deals abertos estão classificados, sem repetição |
 | Todo deal tem ação, "porquê" e texto da nota | Nenhuma explicação vazia ou com "nan" |
 | Aviso de empresa nas 4 listas | Deal sem empresa sempre mostra o aviso |
-| Regras das 4 listas | Idade, preço e ação de cada lista seguem a ficha aprovada |
+| Regras das 4 listas | Idade, preço e ação de cada lista seguem a ficha aprovada; nenhum deal com chance 0% fica no Foco |
 | Nota só no Foco e na ordem do valor esperado | A nota vai de 0 a 100 e respeita a ordem |
 | Valor esperado = chance × preço | A conta mostrada é a conta feita |
-| Números batem com a ficha aprovada | 236 / 1.291 / 500 / 62 deals; 350 "ligar" e 941 "encerrar"; limite de 138 dias |
+| Números batem com a ficha aprovada | 228 / 1.301 / 500 / 60 deals; 354 "ligar" e 947 "encerrar"; limite de 138 dias |
 | Volta no tempo reproduz a Fase 2 | Top 20% captura entre 66% e 70% da receita |
 | **Sem vazamento de futuro** | Embaralhar tudo o que aconteceu depois de 30/09 não muda a priorização de 30/09 |
 | Configuração muda o resultado | Os limites vêm do `config.json`, não do código |

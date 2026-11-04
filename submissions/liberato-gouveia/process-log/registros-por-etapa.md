@@ -479,3 +479,71 @@ Construir o motor que calcula a priorização de todos os deals abertos e gera o
 
 **Tempo aproximado**
 Não informado.
+
+---
+
+## Registro 08: Validação do motor e ajustes aprovados (04/11/2026, 20:28)
+
+**Objetivo da etapa**
+Registrar a validação do motor pelo Liberato, aplicar os 2 ajustes que ele aprovou e preparar a Fase 3b (o texto que será enviado ao Lovable). Nada foi enviado ao Lovable nesta etapa.
+
+**Ferramentas utilizadas**
+- Claude (Python, pytest): ajuste da configuração e do texto, testes e redação do prompt para o Lovable
+- git: histórico de versões
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "1. sim
+> 2. sim
+> 3. sim"
+
+Eram as respostas a estas perguntas: (1) aprova o resultado do motor e posso seguir para a 3b? (2) os deals de 138 dias, com chance histórica 0%, vão para "Requalificar ou encerrar"? (3) mantém o alerta "depois de 90 dias a chance cai rápido"?
+
+**Decisões que realmente tomei (Liberato)**
+1. Aprovei o resultado do motor da Fase 3a.
+2. Aprovei mover os deals com chance histórica 0% para "Requalificar ou encerrar".
+3. Aprovei manter o alerta dos 90 dias no texto.
+
+Todas as 3 aceitaram sugestões da IA.
+
+**Resultados obtidos**
+- `config.json`: `mover_chance_zero_para_requalificar` passou a valer `true`, com a aprovação anotada no próprio arquivo.
+- Novos totais: **Foco 228** (antes 236), **Requalificar ou encerrar 1.301** (antes 1.291), Iniciar contato 500 e **Automatizar 60** (antes 62). Na lista 2, ficaram **354 "ligar"** e **947 "encerrar"**. O teste de volta no tempo continua em 68% contra 47%.
+- Texto novo para os deals que entram na lista 2 por causa da chance 0%: *"Aberto há 138 dias. Na história da empresa, nenhum deal com 138 dias ou mais em negociação foi ganho. Preço [...]"*. O texto antigo ("nenhum deal fechou depois de 138 dias") seria impreciso para um deal com exatamente 138 dias.
+- Os testes foram atualizados para os números aprovados: **12 aprovados**.
+- Para a tela, o arquivo de saída agora é gravado em formato compacto (1,3 MB em vez de 1,5 MB), com o mesmo conteúdo.
+- O rascunho do prompt para o Lovable está em `prompts/lovable_01_criacao.md`, **aguardando aprovação**.
+
+**Sugestões da IA ainda não validadas por mim**
+- O texto do prompt para o Lovable.
+- A forma de levar os dados até a tela: enviar a branch ao fork para que a tela leia o arquivo de lá (ver a proposta da Fase 3c abaixo).
+
+**Erros encontrados e correções**
+
+| Erro | Quem encontrou | Correção |
+|---|---|---|
+| Na pergunta 2, o Claude falou em "8 deals de 138 dias". Ao aplicar a regra, **10 deals** mudaram de lista: 8 saíram do Foco e **2 saíram do Automatizar** (MG Special, US$ 55, também com 138 dias e chance 0%). A regra aprovada ("chance histórica 0% → Requalificar") pega os dois grupos. | Claude, ao rodar o motor depois da mudança | **Informado ao Liberato.** A regra foi aplicada de forma coerente aos 10 deals, e os 2 do Automatizar ficaram com a ação "Encerrar no CRM". Se o Liberato preferir mexer só nos 8 do Foco, isso é um ajuste de configuração. |
+
+**Testes ou evidências disponíveis**
+- `solution/motor/tests/test_motor.py`, com os números aprovados, e 12 testes aprovados
+- `solution/motor/config.json`, com as aprovações registradas no arquivo
+- `prompts/lovable_01_criacao.md`: o rascunho do prompt
+
+**Tempo aproximado**
+Não informado.
+
+---
+
+## Proposta: Fase 3b e 3c, Prompt para o Lovable e criação da tela (aguardando autorização)
+
+**3b: o texto do Lovable.** O rascunho completo está em `prompts/lovable_01_criacao.md`. Ele diz ao Lovable para:
+- montar 1 tela em português, com filtros de região, gerente e vendedor, 4 cartões de resumo, 4 abas de listas e uma aba "Como a nota funciona";
+- **não calcular nada**: só mostrar o que vem do motor, na ordem que vem do motor;
+- não usar login, banco de dados nem backend.
+
+**Como a tela recebe os dados (decisão necessária).** O arquivo do motor tem 1,3 MB, e o agente de IA do Lovable não consegue "digitar" um arquivo desse tamanho dentro do projeto. A proposta é a seguinte:
+1. **Enviar (push) a branch `submission/liberato-gouveia` para o fork do Liberato.** Isso **não** é o Pull Request: o G4 não é avisado, e o PR continua dependendo de autorização na Fase 4. O fork é público, então os arquivos ficam visíveis, como também ficariam no PR.
+2. A tela lê o arquivo direto do GitHub. Vantagem: **uma única fonte de verdade**. Se o motor rodar de novo e a branch for atualizada, a tela atualiza sozinha.
+3. Para o Claude conseguir enviar, o Liberato vai precisar aprovar o acesso de escrita do Claude ao fork, num pedido que aparece na tela.
+4. Se o envio não funcionar, o plano B é publicar só o arquivo de dados na Vercel (já conectada à conta do Liberato), que também exige autorização.
+
+**3c: criação.** Criar o projeto no workspace "Liberato's Lovable" com o prompt aprovado (1 mensagem), conferir a tela e usar no máximo 3 mensagens de ajuste. Depois vêm a 3d (conferir os números da tela contra o motor e tirar prints) e a 3e (copiar o código para a entrega e escrever o registro).

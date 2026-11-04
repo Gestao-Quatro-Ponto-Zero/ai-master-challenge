@@ -20,6 +20,10 @@ import gerar_scores as m  # noqa: E402
 DADOS = AQUI.parent / "data"
 CONFIG = AQUI / "config.json"
 
+# Números da configuração aprovada (Registro 08). Mudou a configuração? Atualize aqui e registre no log.
+NUM_FOCO, NUM_REQ, NUM_INICIAR, NUM_AUTO = 228, 1301, 500, 60
+NUM_LIGAR, NUM_ENCERRAR = 354, 947
+
 
 @pytest.fixture(scope="module")
 def cfg():
@@ -71,7 +75,11 @@ def test_regras_das_4_listas(deals, resultado, cfg):
     foco = deals[deals.lista == "Foco"]
     assert (foco.idade_dias <= lim).all() and (foco.preco_usd >= cfg["valor_minimo_foco_usd"]).all()
     req = deals[deals.lista == "Requalificar ou encerrar"]
-    assert (req.idade_dias > lim).all() or cfg["mover_chance_zero_para_requalificar"]
+    if cfg["mover_chance_zero_para_requalificar"]:
+        assert ((req.idade_dias > lim) | (req.chance == 0)).all()
+        assert not ((foco.chance == 0).any()), "deal com chance 0% não pode ficar no Foco"
+    else:
+        assert (req.idade_dias > lim).all()
     assert ((req.acao == "Ligar para requalificar") == (req.preco_usd >= cfg["valor_deal_grande_usd"])).all()
     ini = deals[deals.lista == "Iniciar contato"]
     assert (ini.etapa == "Prospecção").all() and ini.chance.isna().all() and ini.nota.isna().all()
@@ -95,9 +103,10 @@ def test_valor_esperado_e_a_conta_chance_vezes_preco(deals):
 # ------------------------------------------------------------------ números aprovados
 def test_numeros_batem_com_a_ficha_aprovada(resultado, deals):
     r = resultado["resumo_por_lista"]
-    assert [r[l]["deals"] for l in m.ORDEM_LISTAS] == [236, 1291, 500, 62]
-    assert (deals.acao == "Ligar para requalificar").sum() == 350
-    assert (deals.acao == "Encerrar no CRM").sum() == 941
+    # Registro 08: os 10 deals de 138 dias (chance 0%) saíram do Foco (8) e do Automatizar (2) para Requalificar
+    assert [r[l]["deals"] for l in m.ORDEM_LISTAS] == [NUM_FOCO, NUM_REQ, NUM_INICIAR, NUM_AUTO]
+    assert (deals.acao == "Ligar para requalificar").sum() == NUM_LIGAR
+    assert (deals.acao == "Encerrar no CRM").sum() == NUM_ENCERRAR
     assert resultado["limite_ciclo_dias"] == 138
     curva = {c["idade_dias"]: c["chance"] for c in resultado["curva_chance"]}
     assert round(curva[0], 3) == 0.473 and round(curva[90], 3) == 0.262 and curva[138] == 0
@@ -134,6 +143,7 @@ def test_sem_vazamento_de_futuro_sabotando_tudo_que_aconteceu_depois(base, cfg):
 def test_mudar_a_configuracao_muda_o_resultado_sem_mexer_no_codigo(base, cfg):
     data_ref = pd.Timestamp(cfg["data_referencia"])
     c2 = copy.deepcopy(cfg); c2["valor_deal_grande_usd"] = 1000; c2["valor_minimo_foco_usd"] = 600
+    c2["mover_chance_zero_para_requalificar"] = False  # mesma regra usada nos Registros 04 e 05
     d2, _ = m.classificar(m.visao_na_data(base, data_ref), data_ref, c2)
     assert (d2.acao == "Ligar para requalificar").sum() == 766   # números do Registro 04 (limite provisório)
     assert (d2.lista == "Foco").sum() == 178                     # opção "US$ 600" do Registro 05
