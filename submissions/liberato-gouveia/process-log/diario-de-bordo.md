@@ -37,7 +37,7 @@
 3. As contagens batem exatamente com o que o README do case descreve: 8.800 oportunidades, 85 contas, 35 vendedores e 7 produtos.
 4. A única diferença entre as cópias: uma delas corrigiu o nome do produto "GTXPro" para "GTX Pro". Usamos a versão **sem correção**, que é mais fiel à original, e fazemos a correção dentro do nosso código (ver Etapa 3).
 
-**Pendência:** se o Liberato quiser confirmar 100%, pode baixar o arquivo original do Kaggle num computador e comparar. É opcional.
+**Confirmado na Fase 1:** o Liberato baixou o arquivo oficial no Kaggle e enviou na conversa. Os 5 arquivos são **idênticos byte a byte** aos que usamos (`analises/resultados/fase1_item_H_kaggle.txt`). O arquivo oficial também traz o erro "GTXPro".
 
 ## Etapa 3: Raio-X dos dados (o que tem, o que falta, o que está errado)
 
@@ -85,24 +85,32 @@
 
 **A pergunta.** Se as características do deal não ajudam a prever, o que ajuda?
 
-**Tempo: o "não" vem rápido (Gráfico 3).** Olhamos quantos dias cada deal levou do início da negociação até terminar:
-- Deals que terminam nas **2 primeiras semanas** são ganhos só 52–56% das vezes. Muitos clientes dizem "não" logo de cara.
-- Deals que **passam das 2 primeiras semanas** são ganhos 65–75% das vezes.
-- **O deal mais demorado de toda a história da empresa levou 138 dias** para fechar. Nenhum passou disso.
+**Tempo (corrigido na Fase 1, Gráfico 6).** Para um deal aberto, a pergunta certa é: "dos deals que chegaram vivos até esta idade, quantos acabaram ganhos?". Essa conta usa só o que se sabe hoje, que é a idade do deal. O resultado:
+- Deal novo (até 14 dias): **52–53%** acabam ganhos.
+- Com 60 dias: **48%**.
+- Com 90 dias: **37%**.
+- Com 120 dias: **5%**.
+- Com 138 dias ou mais: **0%**. Nenhum deal, de nenhuma safra, fechou depois disso.
 
-![Gráfico 3](graficos/grafico3_tempo.png)
+Ou seja: **quanto mais velho o deal aberto, menor a chance de ser ganho**, e a queda fica forte a partir dos 90 dias.
 
-*Um cuidado que tomamos:* a base só começa a registrar fechamentos em março/2017. Por isso, um deal iniciado no fim de 2016 só aparece se fechou depois dessa data. Ou seja, só aparecem os que "sobreviveram" bastante tempo, e isso faria os deals antigos parecerem melhores do que são. Para escapar dessa distorção, o Gráfico 3 usa só deals iniciados entre março e agosto/2017, que tiveram tempo de sobra para terminar.
+![Gráfico 6](graficos/grafico6_chance_por_idade.png)
 
-**Os "zumbis" (Gráfico 4).** Com o limite de 138 dias em mãos, olhamos os deals que ainda estão em negociação. Em 31/12/2017, **1.291 dos 1.589 (81%) estavam abertos há mais de 138 dias**, alguns havia 423 dias. Nenhum deal da história ficou vivo tanto tempo e depois fechou. Na prática, são deals mortos que ninguém encerrou no CRM: eles inflam o pipeline e roubam a atenção do vendedor.
+> **Correção registrada.** A primeira versão desta etapa dizia o contrário: que deals com mais de 14 dias fecham mais (65–75%), com base no Gráfico 3 abaixo. Aquela conta tinha dois problemas. (1) Olhava só os deals que já tinham terminado e ignorava os que nunca fecham. (2) Agrupava os deals pela duração total, que um deal aberto ainda não conhece. Isso é "vazamento de futuro". O erro foi da análise feita pela IA e apareceu na revisão crítica pedida pelo Liberato (regra 7: evitar vazamento de informações futuras). O Gráfico 3 fica aqui só como registro histórico.
+
+![Gráfico 3 (versão original, substituída pelo Gráfico 6)](graficos/grafico3_tempo.png)
+
+**O limite de 138 dias é real (verificado na Fase 1).** Os deals iniciados em fevereiro/2017 tiveram 333 dias para fechar e, mesmo assim, nenhum passou de 137. O mesmo acontece em todas as safras, então o limite não é efeito do período coberto pela base.
+
+**Deals fora do padrão histórico, os "zumbis" (Gráfico 4).** Em 31/12/2017, **1.291 dos 1.589 deals em negociação (81%) estavam abertos há mais de 138 dias**, alguns havia 423 dias. Os dados mostram que nenhum deal fechou depois de 138 dias. **Não sabemos o destino real desses deals.** Podem estar mortos e esquecidos no CRM, ou pode ser um efeito de como a base foi gerada. Para a ferramenta, eles estão fora do padrão histórico e precisam ser requalificados antes de receber atenção.
 
 ![Gráfico 4](graficos/grafico4_zumbis.png)
 
-**A armadilha que evitamos.** Uma olhada rápida no Gráfico 3 sugere que "quanto mais tempo o deal dura, mais ele fecha". Quem para nessa leitura coloca os zumbis **no topo** do ranking. Esse raciocínio só vale até 138 dias. Depois disso não existe nenhum exemplo real que o sustente. É o tipo de erro que uma ferramenta montada sem olhar os dados cometeria.
+**A armadilha.** Quem lesse o Gráfico 3 ao pé da letra colocaria os deals mais velhos no topo do ranking, justamente os que têm menos chance. A primeira análise caiu nessa armadilha, e a Fase 1 corrigiu.
 
-**Valor.** O preço dos produtos vai de US$ 55 (MG Special) a US$ 26.768 (GTK 500), e os deals ganhos fecham praticamente pelo preço de tabela. Como a chance de fechar é parecida entre os deals vivos, **o valor é o que mais diferencia um deal do outro na hora de priorizar**. Um exemplo: os **428 deals abertos de MG Special somam US$ 23.540**, menos de 1% do valor em aberto e menos do que um único GTK 500.
+**Valor.** O preço dos produtos vai de US$ 55 (MG Special) a US$ 26.768 (GTK 500), e os deals ganhos fecham praticamente pelo preço de tabela. Entre os deals vivos, a chance varia de ~53% a ~37% conforme a idade, enquanto o valor varia quase 500 vezes. Por isso, **o valor é o que mais diferencia um deal do outro na hora de priorizar**. Um exemplo: os **428 deals abertos de MG Special somam US$ 23.540**, menos de 1% do valor em aberto e menos do que um único GTK 500.
 
-> **Para explicar na entrevista:** "O que separa deal bom de deal ruim aqui é tempo e valor. O 'não' vem nas primeiras duas semanas, e quem passa disso fecha mais. Só que nenhum deal da história passou de 138 dias, então 81% do pipeline aberto é zumbi e não pode ficar no topo da lista."
+> **Para explicar na entrevista:** "Num deal aberto, eu só posso usar o que sei hoje: a idade dele. Medindo assim, a chance cai com o tempo: 53% para um deal novo, 37% aos 90 dias e quase zero depois de 120. Nenhum deal da história fechou depois de 138 dias, então 81% do pipeline aberto está fora do padrão e não pode ficar no topo da lista. A primeira análise da IA tinha concluído o contrário. A revisão que eu pedi, com a regra de evitar vazamento de futuro, expôs o erro."
 
 ## Etapa 6: Contraprova com machine learning
 
@@ -119,7 +127,7 @@
 ![Gráfico 5](graficos/grafico5_auc.png)
 
 **O que isso muda na ferramenta.** A nota de cada deal se baseia só no que tem efeito comprovado:
-**chance de fechar (pela idade do deal) × valor do produto.**
+**chance de fechar (pela idade do deal, curva do Gráfico 6) × valor do produto.**
 A tela vai explicar isso ao vendedor em linguagem simples.
 
 > **Para explicar na entrevista:** "Para garantir que não estava deixando passar nada, pedi ao Claude que treinasse um modelo com todas as variáveis e o testasse em deals que ele nunca tinha visto. Ele acertou 54%, quase cara ou coroa. Por isso a nota usa só tempo e valor, e eu consigo explicar cada ponto dela."
@@ -136,7 +144,7 @@ A tela vai explicar isso ao vendedor em linguagem simples.
    - **Deal sem conta = sem dono:** um deal sem empresa cadastrada vira tarefa de cadastro antes de qualquer contato.
    - **Janela de ouro (14 a 138 dias):** um deal que já passou da primeira semana e ainda está dentro do ciclo normal é onde o vendedor tem mais alavanca, e por isso ganha destaque.
 
-   *Pendente:* a regra "sem conta = sem dono" ainda precisa ser testada nos dados. Como 68% dos deals abertos não têm empresa cadastrada, ela pode esvaziar a lista de foco (ver Fase 1 em `registros-por-etapa.md`).
+   *Atualização (Fase 1):* testadas nos dados, as regras "sem conta = sem dono" e "janela de ouro" não se sustentam como estão escritas (ver Registro 02 em `registros-por-etapa.md`). A decisão sobre elas está com o Liberato.
 
 **Intervenção do Liberato no mesmo momento:** junto com as respostas, ele escreveu: *"antes de continuar o trabalho, vc precisa me explicar o que está fazendo, nao tenho conhecimento tecnico e preciso que seja mais explicativo nos seus passos, nesse teste eu preciso documentar os log, os processos, e eu nao sei o que voce está fazendo!"*. O Claude parou a construção, e este diário nasceu desse pedido.
 
@@ -149,6 +157,8 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 | 1.480 deals sem preço por causa do nome "GTXPro" | Raio-X comparou os nomes do pipeline com os do catálogo (Etapa 3) |
 | Superestimar deals antigos por causa do corte de datas da base | Análise refeita só com os deals que tiveram tempo de fechar (Etapa 5, Gráfico 3) |
 | Colocar zumbis no topo ao extrapolar "deal longo fecha mais" | Limite de 138 dias tirado do histórico real (Etapa 5, Gráfico 4) |
+| Concluir que deal aberto mais velho fecha mais (a conta original usava a duração total e ignorava os deals que nunca fecham) | Fase 1, item A: refeita só com a idade atual (Gráfico 6). A conclusão se inverteu |
+| Tratar o limite de 138 dias como efeito do período coberto pela base | Fase 1, item B: conferido safra por safra |
 | Dar nota usando fatores que são ruído | Simulação do "teste da moeda", teste estatístico e modelo de machine learning (Etapas 4 e 6) |
 
 ## Glossário
@@ -159,6 +169,8 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 - **Taxa de ganho:** de cada 100 deals fechados, quantos foram ganhos.
 - **Script Python:** um arquivo com instruções que o computador executa. Fica salvo, então qualquer pessoa pode rodar de novo e chegar aos mesmos números.
 - **CSV:** uma planilha em formato de texto simples.
+- **Vazamento de futuro:** usar na nota uma informação que só existe depois que o deal termina, como a data de fechamento. É como prever um jogo olhando o placar final.
+- **Safra:** grupo de deals que começaram no mesmo período.
 - **Simulação:** o computador "inventa" milhares de cenários seguindo uma regra (aqui, a de que todos os vendedores são iguais) para ver o que a sorte sozinha produz.
 - **Machine learning:** um programa que aprende padrões a partir de exemplos, em vez de seguir regras escritas por uma pessoa.
 - **p (valor-p):** a chance de uma diferença aparecer só por sorte. Abaixo de 0,05, a diferença é considerada real.
@@ -190,6 +202,8 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 | Simulação binomial (10.000 rodadas, p=0,632, n real de cada vendedor) | Amplitude real 15,4 p.p.; em 36,9% das rodadas a amplitude simulada foi ≥ a real | A amplitude real é típica do acaso |
 | HistGradientBoosting, validação cruzada estratificada com 5 folds | AUC 0,543 | Sem poder preditivo útil |
 | Regressão logística, mesmas features | AUC 0,520 | Idem |
+| Validação temporal (Fase 1): treino com deals iniciados até 16/08/2017 e teste com os posteriores | AUC 0,476 (GB) e 0,517 (LR) | Confirma a ausência de sinal |
+| Chance por idade atual (Fase 1), safra mar–jun/2017, acompanhamento ≥ 184 dias | Ganho: 53% (0 d), 52% (14 d), 48% (60 d), 37% (90 d), 5% (120 d), 0% (138 d) | Base da nota, sem vazamento |
 | Ciclo dos deals fechados | máx. 138 dias; p95 = 114,5; p99 = 127 | Base do limite "zumbi" |
 
 Features usadas nos modelos: dummies de vendedor, produto, gerente, região, setor e país; preço; receita, funcionários e ano de fundação da conta; vitórias anteriores da conta (no geral e no mesmo produto) antes da data de início do deal; mês e dia da semana de início; razão preço/receita.
@@ -201,3 +215,4 @@ Features usadas nos modelos: dummies de vendedor, produto, gerente, região, set
 | 04/11 (madrugada) | Primeira versão (Etapas 0 a 7) | Registro inicial do processo |
 | 04/11 (tarde) | Etapas 4, 5 e 6 reescritas com exemplos, 5 gráficos e uma simulação nova ("teste da moeda"). Os detalhes técnicos foram para este apêndice | O Liberato leu a primeira versão e achou essas etapas difíceis de entender. Se quem conduz o processo não entende, o vendedor e o avaliador também não vão entender. A versão anterior está em `versoes/` |
 | 04/11 (fim da tarde) | Atribuição corrigida nas Etapas 1 e 7: as opções foram sugeridas pela IA e escolhidas pelo Liberato | Revisão crítica pedida pelo Liberato, cuja regra 5 manda separar o que a IA sugeriu do que ele validou. A versão anterior está em `versoes/` |
+| 04/11 (noite) | Etapa 5 corrigida: a chance de um deal aberto cai com a idade (Gráfico 6, novo). O limite de 138 dias foi confirmado, a linguagem sobre os "zumbis" foi ajustada e a pendência do Kaggle foi resolvida | Fase 1 de verificação, autorizada pelo Liberato. A versão anterior está em `versoes/` |

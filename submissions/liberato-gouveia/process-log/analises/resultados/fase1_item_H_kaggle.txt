@@ -1,0 +1,15 @@
+Item H - comparação com o arquivo oficial do Kaggle baixado pelo Liberato (archive.zip, enviado em 04/11/2026 18:08)
+Conteúdo do zip:
+     4670  2024-04-14 15:33   accounts.csv
+      996  2024-04-14 15:33   metadata.csv
+      171  2024-04-14 15:33   products.csv
+   637773  2024-04-14 15:33   sales_pipeline.csv
+     1284  2024-04-14 15:33   sales_teams.csv
+
+MD5 (impressão digital do arquivo) - nossa pasta solution/data x Kaggle:
+accounts.csv  nosso=798e794104e6d492d5d91b7588d97498  kaggle=798e794104e6d492d5d91b7588d97498
+products.csv  nosso=d9de5a7bf21ae8a7c2d1d9fb96260ddd  kaggle=d9de5a7bf21ae8a7c2d1d9fb96260ddd
+sales_teams.csv  nosso=a0f2389b400aa58368df7ebac22d2eb1  kaggle=a0f2389b400aa58368df7ebac22d2eb1
+sales_pipeline.csv  nosso=06d7d6aedb7c0ed7bf77093565688d03  kaggle=06d7d6aedb7c0ed7bf77093565688d03
+data_dictionary.csv nosso=74217d7d962d8c0e12303b7fdea67472  metadata.csv kaggle=74217d7d962d8c0e12303b7fdea67472
+Linhas com 'GTXPro' no arquivo do Kaggle: 1480

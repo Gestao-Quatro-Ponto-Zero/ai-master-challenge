@@ -87,4 +87,28 @@ for v,txt,col,up in [(50,"50%: chute\n(cara ou coroa)",INK2,True),(54.3,"54%: no
 title(fig,"Gráfico 5 · O teste de machine learning (AUC): quase um chute",
       "Mostramos ao modelo pares (1 deal ganho + 1 perdido) que ele nunca viu e pedimos para apontar o ganho.")
 fig.savefig(f"{OUT}/grafico5_auc.png",dpi=150); plt.close(fig)
+# 6) chance por idade ATUAL (sem futuro) - Fase 1, item A
+safra=p[(p.engage_date>='2017-03-01')&(p.engage_date<='2017-06-30')].copy()
+safra['ciclo']=(safra.close_date-safra.engage_date).dt.days
+idades=[0,7,14,30,60,90,120,138]; rows=[]
+for i in idades:
+    v=safra if i==0 else safra[safra.ciclo.isna()|(safra.ciclo>=i)]
+    rows.append(((v.deal_stage=='Won').mean(),(v.deal_stage=='Lost').mean(),(v.deal_stage=='Engaging').mean(),len(v)))
+r=np.array([x[:3] for x in rows]); ns=[x[3] for x in rows]
+lab=[f"{i} dias" for i in idades]
+fig,ax=plt.subplots(figsize=(11,5.2)); fig.subplots_adjust(top=0.76,left=0.08,right=0.98,bottom=0.2)
+x=np.arange(len(idades)); w=0.62
+ax.bar(x,r[:,0],w,color=BLUE,label="foi ganho",edgecolor=SURF,linewidth=2)
+ax.bar(x,r[:,1],w,bottom=r[:,0],color=GRAY,label="foi perdido",edgecolor=SURF,linewidth=2)
+ax.bar(x,r[:,2],w,bottom=r[:,0]+r[:,1],color=RED,label="nunca fechou (até 31/12/2017)",edgecolor=SURF,linewidth=2)
+for xi,v in zip(x,r[:,0]):
+    if v>0.1: ax.text(xi,v/2,f"{v:.0%}",ha="center",va="center",color="white",fontsize=11,weight="bold")
+    else: ax.text(xi,0.16,f"{v:.0%}\nganho",ha="center",va="center",color="white",fontsize=10.5,weight="bold")
+ax.set_xticks(x); ax.set_xticklabels([f"{l}\n(n={n:,})".replace(",",".") for l,n in zip(lab,ns)],fontsize=9.5)
+ax.set_ylim(0,1); ax.yaxis.set_major_formatter(PercentFormatter(1,0)); ax.grid(axis="x",visible=False)
+ax.set_xlabel("Deals que ainda estavam abertos com esta idade")
+ax.legend(loc="upper center",bbox_to_anchor=(0.5,-0.2),ncol=3,frameon=False,fontsize=10)
+title(fig,"Gráfico 6 · Quanto mais velho o deal aberto, MENOR a chance de ser ganho",
+      "Usa só o que se sabe hoje (a idade do deal). Deals iniciados entre mar e jun/2017, todos acompanhados por pelo menos 184 dias.")
+fig.savefig(f"{OUT}/grafico6_chance_por_idade.png",dpi=150); plt.close(fig)
 print("ok")

@@ -64,7 +64,7 @@ Não informado pelo Liberato.
 
 ---
 
-## Proposta: Fase 1, Verificação da análise (aguardando autorização)
+## Proposta: Fase 1, Verificação da análise (autorizada pelo Liberato em 04/11/2026 às 18:08; resultado no Registro 02)
 
 **Objetivo:** confirmar ou corrigir cada conclusão antes de definir a lógica do score. Esta fase não tem código da ferramenta, não usa o Lovable e não envia nada ao GitHub.
 
@@ -82,3 +82,105 @@ Não informado pelo Liberato.
 **Entregas da Fase 1:** o resultado de cada item (confirmado ou corrigido), a tabela oficial de chance por idade, o diário corrigido, o registro da fase neste arquivo e o commit.
 
 **Decisões que vão ficar para o Liberato ao final:** como tratar deals sem empresa cadastrada (depende do item D), como tratar deals em prospecção (item E) e se o padrão de fim de trimestre entra ou não (item G).
+
+---
+
+## Registro 01: Preparação do ambiente e organização da entrega (04/11/2026)
+
+**Objetivo da etapa**
+Preparar o GitHub para a entrega, criando a branch de submissão no fork, e obter o arquivo oficial dos dados no Kaggle. Nesta etapa não houve implementação de código nem teste da aplicação.
+
+**Ferramentas utilizadas**
+- GitHub (interface web): criação da branch, feita pelo Liberato
+- ChatGPT: orientou passo a passo a criação da branch (segundo o Liberato)
+- Kaggle: download do arquivo oficial dos dados, feito pelo Liberato
+- Claude: conferiu no GitHub que a branch existe (comando `git ls-remote`, que lista as branches de um repositório)
+
+**Prompts relevantes**
+Texto que o Liberato colou na conversa com o Claude, identificado por ele como "prompt do chatgpt" (transcrito sem edição):
+> "Atualize meu Process Log do Challenge 003 — Lead Scorer do G4 AI Master. Em 04/11/2026, concluí a criação da branch `submission/liberato-gouveia` no meu Fork do GitHub: https://github.com/libegouv/ai-master-challenge. A branch foi criada a partir da `main`, e o GitHub confirmou que está sincronizada com a branch principal do repositório original do G4. Realizei essa etapa manualmente, seguindo as orientações passo a passo do ChatGPT. Registre essa atividade como preparação do ambiente de desenvolvimento e organização da entrega. Não registre implementação de código ou testes da aplicação, pois essas etapas ainda não aconteceram. Após atualizar o diário, apresente o trecho registrado e aguarde minha autorização para continuar."
+
+A conversa com o ChatGPT que orientou a criação da branch não faz parte deste registro (ver Evidências).
+
+**Resultados obtidos**
+- A branch `submission/liberato-gouveia` existe no fork `libegouv/ai-master-challenge`.
+- Ela aponta para a versão `4aed364`, a mesma da `main` do fork e da `main` do repositório original do G4. O Claude conferiu, e isso confirma o que o GitHub informou ao Liberato.
+- O arquivo oficial do Kaggle (`archive.zip`, com 5 arquivos) foi baixado pelo Liberato e enviado na conversa. A comparação com os nossos dados está no Registro 02, item H.
+
+**Decisões que realmente tomei (Liberato)**
+- Criei a branch `submission/liberato-gouveia` manualmente, a partir da `main`, seguindo a orientação do ChatGPT.
+- Baixei os dados oficiais no Kaggle e enviei ao Claude para comparação.
+
+**Sugestões da IA ainda não validadas por mim**
+- Nenhuma nesta etapa.
+- Observação técnica: o histórico de versões que o Claude mantém (Registro 00) partiu do mesmo ponto (`4aed364`). Quando o envio for autorizado, ele entra nesta branch sem conflito. Nada foi enviado ao GitHub até agora.
+
+**Erros encontrados e correções**
+Nenhum erro foi relatado pelo Liberato nesta etapa.
+
+**Testes ou evidências disponíveis**
+- `analises/resultados/registro01_branch_github.txt`: saída da conferência da branch no GitHub
+- Prints da conversa com o ChatGPT: **pendente**, se o Liberato quiser anexar
+
+**Tempo aproximado**
+Cerca de 3 horas acumuladas no challenge até 04/11/2026 às 18:08, segundo o Liberato. O número inclui todas as etapas feitas até aqui, não só esta.
+
+---
+
+## Registro 02: Fase 1, Verificação da análise (04/11/2026)
+
+**Objetivo da etapa**
+Confirmar ou corrigir cada conclusão da análise inicial antes de definir a lógica do score, usando só informações que existem no momento da decisão (sem vazamento de futuro). Nesta etapa não houve código da ferramenta nem uso do Lovable.
+
+**Ferramentas utilizadas**
+- Claude (Python com as bibliotecas pandas, scikit-learn e matplotlib): verificações e gráfico
+- Arquivo oficial do Kaggle, enviado pelo Liberato
+- git: histórico de versões
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "1. autorizo a fase 1
+> 2. vou mandar o arquivo que eu baixei e documente isso
+> 3. ja estou trabalhando nisso tem umas 3 horas"
+
+**Resultados obtidos**
+
+| # | Verificação | Resultado |
+|---|---|---|
+| A | Chance de ser ganho usando só a **idade atual** do deal (safra mar–jun/2017, acompanhada por pelo menos 184 dias) | **Cai com a idade:** 53% (novo), 52% (14 dias), 48% (60 dias), 37% (90 dias), 5% (120 dias), 0% (138 dias). Isso **inverte** a conclusão da análise inicial (Gráfico 6). |
+| B | O limite de 138 dias é real? | **Sim.** Em todas as safras, até nas que tiveram 300 a 450 dias para fechar, o maior ciclo ficou entre 119 e 138 dias. Nenhum dos 6.711 deals fechados passou de 138. |
+| C | Linguagem sobre os "zumbis" | **Ajustada.** O diário agora diz "nunca houve fechamento depois de 138 dias; não sabemos o destino real", em vez de "deals mortos". |
+| D | Deals sem empresa cadastrada | **Nenhum dos 6.711 deals fechados está sem empresa.** Entre os 298 deals vivos (até 138 dias), 209 (70%) não têm. A proporção é parecida em todas as idades (61–79%) e varia por vendedor (50–90%). Hipótese: a empresa só é preenchida no fechamento, ou a base foi gerada assim. Não dá para dizer que um deal sem empresa é pior. |
+| E | Deals em prospecção (500, US$ 1,07 milhão em preço de tabela) | **Não há nenhum dado para estimar a chance deles.** Nenhum deal em prospecção tem data de início, e todos os deals fechados têm, então a base não guarda nenhum histórico de quantos deals saem da prospecção nem de quanto tempo isso leva. Qualquer % seria inventado. |
+| F | Machine learning separando por tempo (treina com deals iniciados até 16/08/2017 e testa com os posteriores) | **AUC 0,48 e 0,52.** Equivale a cara ou coroa e confirma, de forma mais rigorosa, que as características do deal não preveem o resultado. |
+| G | Padrão de fim de trimestre | **É real, mas não pode entrar na nota.** 49% dos ganhos são registrados em mar/jun/set/dez, contra só 20% das perdas. O padrão depende da data de fechamento, que é informação futura. O mês de início, que é conhecido no começo, também varia, mas as safras das pontas são distorcidas pelo período coberto pela base. |
+| H | Dados x arquivo oficial do Kaggle | **Idênticos byte a byte** nos 5 arquivos (impressão digital MD5 igual). O arquivo oficial também tem o erro "GTXPro" em 1.480 linhas. |
+
+Outro número que importa para a tela: só **298 deals estão vivos em negociação**, espalhados por 21 vendedores (média de 14 por vendedor, variando de 1 a 31). Os outros 9 vendedores com pipeline aberto têm só deals fora do padrão ou em prospecção.
+
+**Decisões que realmente tomei (Liberato)**
+- Autorizei a Fase 1.
+- Baixei e enviei o arquivo oficial do Kaggle.
+
+**Sugestões da IA ainda não validadas por mim** (aguardam decisão do Liberato)
+1. **"Janela de ouro (14 a 138 dias)":** os dados não sustentam essa regra (item A). A sugestão é retirá-la, porque a curva de chance por idade já entra na nota.
+2. **"Sem conta = sem dono":** aplicada como está, tiraria 70% dos deals vivos da lista de foco (item D). A sugestão é manter esses deals na lista, com o aviso "cadastrar empresa".
+3. **Prospecção:** a sugestão é uma lista separada, "Iniciar contato", ordenada só pelo valor e **sem % de chance**, porque não há dado para estimar (item E).
+4. **Fim de trimestre:** a sugestão é não usar na nota (exige informação futura) e citar como observação no README (item G).
+
+**Erros encontrados e correções**
+
+| Erro | Quem encontrou | Correção |
+|---|---|---|
+| A análise inicial concluiu que "deal com mais de 14 dias fecha mais (65–75%)". A conta ignorava os deals que nunca fecham e usava a duração total (vazamento de futuro). | Claude, na revisão crítica (Registro 00), motivado pela regra 7 do Liberato. Confirmado na Fase 1. | **Corrigido:** a Etapa 5 do diário foi reescrita com o Gráfico 6. O Gráfico 3 ficou como registro histórico, e a versão anterior está em `versoes/diario-de-bordo_v3_2026-11-04.md`. |
+| A regra "janela de ouro", sugerida pelo Claude e selecionada pelo Liberato, não se sustenta nos dados. | Claude, na Fase 1 (item A) | **Pendente:** decisão do Liberato (sugestão 1). |
+| A regra "sem conta = sem dono", sugerida pelo Claude e selecionada pelo Liberato, esvaziaria a lista de foco. | Claude, na Fase 1 (item D) | **Pendente:** decisão do Liberato (sugestão 2). |
+| O diário chamava os deals antigos de "mortos", afirmando mais do que os dados mostram. | Claude, na revisão crítica | **Corrigido** (item C). |
+
+**Testes ou evidências disponíveis**
+- `analises/fase1_verificacao.py` e a saída em `analises/resultados/fase1_verificacao.txt` (itens A, B, D, E, F e G)
+- `analises/resultados/fase1_item_H_kaggle.txt`: comparação com o arquivo do Kaggle
+- `graficos/grafico6_chance_por_idade.png`: o novo gráfico, gerado por `analises/graficos.py`. Os 5 gráficos anteriores foram regerados e continuaram idênticos.
+- `versoes/diario-de-bordo_v3_2026-11-04.md`: o diário antes das correções desta fase
+
+**Tempo aproximado**
+Não informado para esta fase. O Liberato informou cerca de 3 horas acumuladas até o início dela.
