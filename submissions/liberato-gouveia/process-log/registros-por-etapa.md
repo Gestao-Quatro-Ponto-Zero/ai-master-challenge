@@ -42,6 +42,13 @@ Nenhuma interação, teste, resultado ou decisão é inventado. Quando faltar o 
 | 04/11 18:08 | O texto do pedido de atualização do log foi identificado por ele como "prompt do chatgpt" (Registro 01) | — | Não informado | Registrar a criação da branch como preparação do ambiente | Registro 01 | O texto está transcrito no Registro 01 |
 | 04/11 20:49 | Pedido de registro formal do ChatGPT como copiloto estratégico, com 7 verificações antes do Lovable | Arquitetura (motor + Lovable) e envio da branch (Registro 08) | Não informado se as 7 verificações vieram de uma revisão do ChatGPT | Aprovar a arquitetura e o envio, exigir as 7 verificações e não abrir o PR | Registro 09 | Documento enviado pelo Liberato (transcrito em parte no Registro 09) |
 | 04/11 21:51 | O pedido da Fase 4 (8 exigências) foi revisado com o ChatGPT | Entregas da Fase 3 e pendência do código completo (Registro 10) | Não informados separadamente; as 8 exigências são o resultado | Incluir o código completo, verificar a exportação direta, cumprir as 8 exigências, sem PR | Registro 11 | Conversa com o ChatGPT: **não fornecida** |
+| 04/11 22:13 | A aprovação da Fase 4 foi feita junto com o registro da revisão com o ChatGPT | README final, código completo, testes e checklist (Registro 11) | Não informados separadamente; as 6 confirmações exigidas antes do envio e a decisão de não reescrever o histórico são o resultado | Aprovar o README e enviar a Fase 4; manter pendente a questão do e-mail nos commits; sem PR | Registro 12 | Link da conversa completa (abaixo) |
+
+**Evidência das conversas** (fornecida pelo Liberato em 04/11/2026 às 22:13; vale para as interações da tabela acima):
+- ChatGPT: https://chatgpt.com/share/6aebd756-c1c8-83e8-94d7-712e4085ba02
+- Claude: https://claude.ai/share/82aedf4c-99f6-4ca3-b128-fd5bd72a8b38
+
+*Conferência do Claude:* os dois links existem (a página do ChatGPT tem o título "Análise da Vaga AI Master"). O conteúdo, porém, carrega por JavaScript e **não pôde ser lido pelo Claude**, então os riscos e as melhorias apontados pelo ChatGPT continuam registrados como "não informados separadamente". Links de compartilhamento costumam guardar a conversa como estava no momento em que foram criados.
 
 ---
 

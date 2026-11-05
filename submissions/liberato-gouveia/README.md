@@ -3,7 +3,8 @@
 ## Sobre mim
 
 - **Nome:** Liberato Gonçalves Gouveia
-- **LinkedIn:** _(a preencher)_
+- **LinkedIn:** https://www.linkedin.com/in/liberato-gouveia
+- **E-mail:** libegouv@gmail.com
 - **Challenge escolhido:** 003 — Lead Scorer (Vendas / RevOps)
 
 ---
@@ -104,13 +105,13 @@ Para avaliar, não é preciso instalar nada: basta abrir o link da aplicação.
 - **As porcentagens dependem do período usado na curva.** Um deal novo tem 47% (mar–ago/2017) ou 53% (mar–jun/2017), mas a ordem dos deals praticamente não muda: correlação 0,997.
 - **O padrão de fim de trimestre** (49% dos ganhos registrados em mar/jun/set/dez) não foi usado, porque exigiria informação futura.
 - **A tela lê os dados do GitHub,** então uma atualização leva até ~5 minutos para aparecer, por causa do cache.
-- **Os testes da tela** foram automáticos: 29 verificações com cliques reais no app rodando a partir de uma cópia limpa do repositório, mais 17 na versão publicada, todas comparadas com os números do motor. _(A confirmar: conferência visual pelo Liberato.)_
+- **Os testes da tela** foram automáticos: 29 verificações com cliques reais no app rodando a partir de uma cópia limpa do repositório, mais 17 na versão publicada, todas comparadas com os números do motor. Também abri e testei a aplicação pessoalmente em 04/11/2026.
 
 ---
 
 ## Process Log — Como usei IA
 
-> O registro completo está em [`process-log/`](process-log/): o [diário de bordo](process-log/diario-de-bordo.md) da análise, os [registros por etapa](process-log/registros-por-etapa.md) (Registros 00 a 11), os scripts com as saídas, os prompts e as versões anteriores.
+> O registro completo está em [`process-log/`](process-log/): o [diário de bordo](process-log/diario-de-bordo.md) da análise, os [registros por etapa](process-log/registros-por-etapa.md) (Registros 00 a 12), os scripts com as saídas, os prompts e as versões anteriores.
 
 ### Ferramentas usadas
 
@@ -160,7 +161,9 @@ Para avaliar, não é preciso instalar nada: basta abrir o link da aplicação.
 
 - [x] Screenshots: [`process-log/prints/`](process-log/prints/) (antes e depois das correções, desktop e celular)
 - [ ] Screen recording
-- [ ] Chat exports _(pendente: link ou exportação da conversa com o Claude e trechos das revisões com o ChatGPT)_
+- [x] Chat exports (links de compartilhamento):
+  - Claude (execução técnica): https://claude.ai/share/82aedf4c-99f6-4ca3-b128-fd5bd72a8b38
+  - ChatGPT (revisão estratégica e crítica): https://chatgpt.com/share/6aebd756-c1c8-83e8-94d7-712e4085ba02
 - [x] Git history: commits na branch `submission/liberato-gouveia`
 - [x] Outro: diário de bordo, registros por etapa, scripts de análise com as saídas, prompts enviados ao Lovable e versões anteriores dos documentos
 

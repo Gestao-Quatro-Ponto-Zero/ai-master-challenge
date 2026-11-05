@@ -188,7 +188,8 @@ A tela vai explicar isso ao vendedor em linguagem simples.
 - Os scripts e as saídas em `analises/` (dá para rodar de novo e conferir cada número)
 - Os gráficos em `graficos/`, gerados pelo script `analises/graficos.py` a partir dos dados reais
 - As versões anteriores deste diário em `versoes/`, que mostram como o texto foi revisado
-- A conversa com o Claude: prints ou link de compartilhamento, a serem anexados em `process-log/`
+- A conversa com o Claude: https://claude.ai/share/82aedf4c-99f6-4ca3-b128-fd5bd72a8b38 (link fornecido pelo Liberato em 04/11/2026)
+- A conversa com o ChatGPT: https://chatgpt.com/share/6aebd756-c1c8-83e8-94d7-712e4085ba02 (link fornecido pelo Liberato em 04/11/2026)
 
 ---
 
