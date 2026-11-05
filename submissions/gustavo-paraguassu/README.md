@@ -12,7 +12,7 @@
 
 O Dataset 1 não tem sinal operacional. É sintético: nenhuma variável explica tempo nem satisfação, e um modelo prevê CSAT tão bem quanto um chute (20,6% contra 20,9%). Por isso não aponto "gargalos" nele, e levei o diagnóstico para onde há sinal: o roteamento dos 47.837 chamados do Dataset 2.
 
-Construí um assistente que **roda de verdade no Telegram**, com o cliente no privado e os atendentes num grupo com um tópico por fila. Ele faz quatro coisas:
+Construí um assistente que **roda de verdade no Telegram**, com o cliente no privado e os atendentes num grupo com um tópico por fila. Está no ar num servidor no Fly.io: para testar como cliente, mande uma mensagem para [@g4_nexo_bot](https://t.me/g4_nexo_bot). Ele faz quatro coisas:
 
 - entende o pedido em português e extrai os campos;
 - pergunta ao cliente o que falta;
@@ -104,7 +104,9 @@ Cada passo vira um evento com horário (solution/runtime/eventos.jsonl): 1ª res
 atendimento, transferências, reaberturas, edições do rascunho, CSAT. É a minha H9 instrumentada.
 ```
 
-O núcleo ([engine.py](solution/app/engine.py)) não sabe que existe Telegram, e o WhatsApp é o próximo adaptador. A escolha do Telegram está em [D5](process-log/02-decisoes.md): ele é grátis e o avaliador consegue testar.
+**Por que Telegram e não WhatsApp: limitação de custo.** O WhatsApp oficial é pago (Meta direto ≈ R$ 50 no 1º mês; intermediários ≈ US$ 49–59/mês, em [D5](process-log/02-decisoes.md)). O Telegram é grátis, e qualquer avaliador consegue testar. O núcleo ([engine.py](solution/app/engine.py)) não sabe que existe Telegram: o WhatsApp é o próximo adaptador, sem mudar a lógica.
+
+**Onde roda:** no Fly.io, sempre ligado, numa máquina de 512 MB com 1 GB de disco para chamados e eventos (~US$ 3,84/mês, [D10](process-log/02-decisoes.md)). Como cliente, qualquer pessoa testa em [@g4_nexo_bot](https://t.me/g4_nexo_bot). O lado do atendente fica no meu grupo; para ver os dois lados, rode com um bot seu ([Como rodar](#como-rodar)).
 
 #### 5. Validação do protótipo
 
@@ -160,7 +162,7 @@ O ganho vem de não digitar a resposta, não do roteamento. O card atual é verb
 - O português do teste foi gerado por IA a partir de um inglês pré-processado (sem números nem nomes). Mensagens reais serão mais variadas, e os campos faltantes estão superestimados.
 - Os campos obrigatórios por fila e os textos de resposta são proposta minha, que precisa de validação de cada equipe.
 - **O teste com pessoas não foi feito.** Os tempos com e sem assistente são uma estimativa KLM. Acerto humano de fila e viés de automação só serão conhecidos no piloto.
-- É protótipo: o estado fica em JSON, e o bot roda num único processo (pronto para container: `Dockerfile` e `fly.toml`).
+- É protótipo: o estado fica em JSON, e o bot roda num único processo, numa máquina pequena do Fly.io, sem réplica. Há um limite de 30 chamados por cliente por dia para conter custo e abuso.
 - Parte dos "erros" do modelo é rótulo errado no dataset (ex.: "erro de conexão no Exchange" rotulado como permissão de admin). Há uma amostra para revisão humana em [revisao_humana_vazamentos.csv](solution/outputs/revisao_humana_vazamentos.csv).
 
 ---
@@ -193,6 +195,11 @@ $PY -m app.telegram_bot
 
 # Servidor: o mesmo bot em container (testado localmente; usa 239 MB de RAM)
 docker build -t nexo-bot . && docker run -e TELEGRAM_BOT_TOKEN=... -e ANTHROPIC_API_KEY=... -v nexo:/data nexo-bot
+
+# Deploy no Fly.io, como está no ar (fly.toml nesta pasta; troque o nome do app)
+fly apps create nexo-suporte-g4 && fly volumes create nexo_data --region iad --size 1
+grep -E '^(TELEGRAM_BOT_TOKEN|ANTHROPIC_API_KEY)=' .env | fly secrets import   # segredos sem passar pelo terminal
+fly deploy --ha=false                          # uma máquina só: o Telegram aceita um bot buscando mensagens por vez
 ```
 
 ---
@@ -220,6 +227,7 @@ docker build -t nexo-bot . && docker run -e TELEGRAM_BOT_TOKEN=... -e ANTHROPIC_
 7. Testei o bot no Telegram e **encontrei o bug de reabertura** (E14), corrigido no mesmo dia.
 8. Aprovei o conteúdo de respostas e escrevi a **minha visão de comprador enterprise**: patrocinador, riscos e critérios de seguir, parar e contratar. A IA montou o [memo](docs/memo-diretor.md) a partir dela.
 9. Pedi para emular o teste com pessoas. A IA recusou apresentar simulação como resultado de pessoas e propôs a estimativa KLM, rotulada. Ela trouxe um achado contra a minha premissa de tempo de triagem, que entrou no README como cenário conservador (P5c).
+10. **Decidi a trava de sensibilidade em G = 0,05** depois que a IA me explicou a troca entre automação e chamados sensíveis na fila errada (D9). Mantive o Telegram por limitação de custo e aprovei o servidor no Fly.io (D10).
 
 ### Onde a IA errou e como corrigi
 
@@ -239,6 +247,7 @@ A tabela completa (E1 a E14) está em [02-decisoes.md](process-log/02-decisoes.m
 - **O escopo:** incluir os cinco diferenciais, e não só o pacote mínimo.
 - **O teste no uso real**, que achou um bug que os testes automáticos não cobriam.
 - **A visão de comprador enterprise** do memo, sem edição da IA, e a **aprovação do conteúdo** como dono.
+- **O apetite a risco** da trava de filas sensíveis (G).
 
 ---
 
@@ -253,4 +262,4 @@ A tabela completa (E1 a E14) está em [02-decisoes.md](process-log/02-decisoes.m
 
 ---
 
-_Submissão enviada em: (a preencher)_
+_Submissão enviada em: 04/11/2026_

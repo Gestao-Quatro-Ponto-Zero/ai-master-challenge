@@ -88,7 +88,7 @@ Ferramenta: Claude Code (Opus 5.5), em sessão única, trabalhando como par. A I
 - **Com o português, cai a cobertura, não a qualidade:** o automático foi de 45% para 23% do volume, e o acerto se manteve em 97%. A política de limiar por fila protege contra mudança de entrada.
 - **Só 44% das primeiras mensagens trazem os campos obrigatórios.** Isso é a minha H3a medida por campos, e justifica a pergunta automática antes de ocupar um atendente.
 
-## D9 — Trava de filas sensíveis (PENDENTE: decisão minha de apetite a risco)
+## D9 — Trava de filas sensíveis: G = 0,05 (decisão minha de apetite a risco)
 
 - **Achado da IA** (`analysis/04_cost_of_error.py`): mesmo com RH e permissão de admin sempre passando por humano, ~282 chamados sensíveis por ano caem sozinhos na fila errada, porque o modelo os confunde com Hardware com confiança alta.
 - **Trava:** se P(RH) + P(admin) ≥ G, o chamado vai para humano.
@@ -100,13 +100,21 @@ Ferramenta: Claude Code (Opus 5.5), em sessão única, trabalhando como par. A I
 | 0,05 | 45,4% | 96,5% | 81 |
 | 0,02 | 36,5% | 97,1% | 23 |
 
-- **Valor provisório:** 0,05.
+- **Valor provisório, escolhido pela IA:** 0,05.
+- **Eu perguntei:** *"O que seria a sensibilidade G?"* A IA explicou a regra e me deu as três opções da tabela, com 0,05 como recomendada.
+- **Decisão minha (04/11/2026): G = 0,05.**
 - **Nuance:** vários "vazamentos" parecem rótulo errado no dataset, como "erro de conexão no Exchange" rotulado como permissão de admin. Há uma amostra de 30 para revisão humana em `outputs/revisao_humana_vazamentos.csv`.
 
 ## D10 — Onde o bot roda
 
 - **Eu perguntei:** *"Vai ser necessário colocar essa aplicação rodando em algum lugar?"*
 - **Resposta:** sim, há um processo que precisa ficar ligado. No teste, roda no meu Mac. Na avaliação, um servidor pequeno (decisão adiada para perto do PR). Para reprodutibilidade, há um modo sem Telegram e sem chave (`app.simulate`, `tests/test_fluxo_bot.py`).
+- **Eu perguntei:** *"Onde eu posso colocar o bot para rodar?"* A IA comparou três opções:
+  - Fly.io: ~US$ 3,84/mês (máquina de 512 MB + 1 GB de disco). O deploy sai da pasta local, então o modelo treinado, fora do git, vai junto.
+  - Railway: US$ 5/mês, mas faz o build pelo GitHub, e o modelo não está no repositório.
+  - Google Cloud e2-micro: grátis, com mais configuração.
+- **Decisão minha (04/11/2026): Fly.io.** Eu fiz o login. A IA criou o app, o disco e os segredos (lidos do `.env` direto para o Fly, sem passar pelo chat), desligou o bot do meu Mac e migrou o estado, com checksum conferido. Os 10 tópicos e os 18 chamados continuaram valendo.
+- **Canal:** fica o Telegram, por limitação de custo (D5). O WhatsApp é o próximo adaptador.
 
 ## D11 — Testei o bot no Telegram (04/11/2026)
 

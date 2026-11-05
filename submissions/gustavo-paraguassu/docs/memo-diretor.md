@@ -13,7 +13,7 @@
   - pergunta ao cliente o que falta;
   - entrega ao atendente a resposta pronta, com texto aprovado.
 - **O que não faz:** nenhuma resposta de mérito sai sem um atendente, e RH e permissão de admin nunca são roteados sozinhos.
-- **Funciona:** está rodando no Telegram. No teste com mensagens em português, 97% de acerto no que foi roteado sozinho.
+- **Funciona:** está no ar no Telegram, num servidor de ~US$ 4/mês. No teste com mensagens em português, 97% de acerto no que foi roteado sozinho.
 
 ## Quem
 - **Patrocinador:** Diretor de Operações, com orçamento e responsabilidade pelo resultado.

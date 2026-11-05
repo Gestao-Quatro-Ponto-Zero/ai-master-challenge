@@ -27,6 +27,9 @@ def limpa(t: str) -> str:
     t = re.sub(r"</?pasted_content[^>]*>", "", t)
     t = re.sub(r"\[Image #\d+\]", "[imagem anexada]", t)
     t = re.sub(r"[\w.+-]+@(?!users\.noreply|anthropic\.com)[\w-]+\.[\w.-]+", "[email]", t)
+    # credenciais coladas no chat (ex.: código de login do Fly) e links de aprovação de login
+    t = re.sub(r"\b(?=[A-Za-z0-9]*\d)(?=[A-Za-z0-9]*[A-Z])(?=[A-Za-z0-9]*[a-z])[A-Za-z0-9]{32,}\b", "[credencial omitida]", t)
+    t = re.sub(r"(fly\.io/app/auth/cli/)\w+", r"\1[omitido]", t)
     return t.replace(RAIZ, "").strip()
 
 

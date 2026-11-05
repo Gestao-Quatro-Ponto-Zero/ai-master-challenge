@@ -1,7 +1,7 @@
 # Conversa completa com a IA (Claude Code · Claude Opus 5.5)
 
-- Sessão única, de 04/11 18:43 a 04/11 22:01 (horário de Brasília)
-- 22 mensagens minhas · 59 respostas da IA · 185 ações da IA (comandos, leituras, edições)
+- Sessão única, de 04/11 18:43 a 04/11 22:24 (horário de Brasília)
+- 28 mensagens minhas · 81 respostas da IA · 222 ações da IA (comandos, leituras, edições)
 - Gerado por `exportar_conversa.py` a partir do log local da sessão. Omitidos: raciocínio interno da IA e o conteúdo bruto dos resultados das ferramentas.
 
 ---
@@ -1786,3 +1786,336 @@ The messages after this summary are the most recent messages from before compact
 </details>
 
 ---
+
+### 🤖 Claude · 04/11 22:01
+
+README atualizado, com links verificados. Agora reexporto a conversa e procuro segredos antes do commit:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Re-export conversation and scan for leaked secrets
+
+</details>
+
+### 🤖 Claude · 04/11 22:02
+
+Nenhum segredo encontrado. A exportação veio com 22 mensagens minhas. Antes de comitar, confiro se o arquivo não encolheu em relação à versão já publicada:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Compare export with committed version and show git state
+
+</details>
+
+### 🤖 Claude · 04/11 22:02
+
+O arquivo cresceu (1.299 → 1.788 linhas), sem perda. Commit com a lista explícita e conferência do que entra:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Stage explicit file list and check for forbidden paths
+
+</details>
+
+### 🤖 Claude · 04/11 22:03
+
+19 arquivos, todos dentro da pasta da submissão, nenhum proibido. Commit e push:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Commit and push to the fork
+
+</details>
+
+### 🤖 Claude · 04/11 22:03
+
+Push feito, e a branch está sincronizada com o fork. Atualizo a memória do projeto:
+
+<details><summary>Ações da IA (2)</summary>
+
+- `Bash` Read project memory file
+- `Bash` Update project memory with current status
+
+</details>
+
+### 🤖 Claude · 04/11 22:03
+
+Tudo o que estava pendente desta rodada foi enviado ao fork, no commit `bc69555`, com 19 arquivos. Antes do push, confirmei que nada fora da sua pasta entrou, nem `.env`, `.venv` ou dados brutos, e que o token e a chave não aparecem em nenhum arquivo.
+
+**Emular o teste com colegas: não fiz.** O tempo das pessoas e o quanto elas confiam na IA sem conferir só aparecem testando com gente. Um número simulado seria evidência inventada, e o avaliador olha exatamente isso. No lugar, fiz uma estimativa pelo KLM (método clássico de UX que soma tempos-padrão de ler, decidir, tocar e digitar). Ela roda nos 160 chamados em português e está rotulada como estimativa no README e na decisão D12.
+- **Atendimento completo:** cai de 50 s para 31 s com o assistente (−38%, numa faixa de −16% a −50%).
+- **Um resultado contra a nossa premissa:** só para decidir a fila, ler o card é mais lento que ler a mensagem do cliente (13 s sem o card, 18 s com ele). O ganho vem da resposta pronta, não do roteamento.
+- **Consequência:** criei um cenário conservador (P5c), e a economia virou uma faixa de **510 a 920 h/ano**, em vez de um número só. Entrou também uma nova recomendação: enxugar o card.
+
+**Registrado no repositório:**
+- **LinkedIn** no README.
+- **Aprovação do conteúdo:** anotada em `conteudo_aprovado.json`.
+- **Prints:** salvos em `process-log/screenshots/`. Os dois primeiros mostram o bug de reabertura falsa antes da correção; os outros três, o chamado T0002 corrigido, respondido em 31 s.
+- **Memo:** `docs/memo-diretor.md`, escrito a partir da sua visão de comprador, que ficou copiada na íntegra em D13. Vale você revisar as metas de seguir/parar (−30% no tempo mediano, ≥95% de acerto no automático). São propostas minhas e estão marcadas como "propostas" no texto.
+
+**Onde colocar o bot para rodar.** Recomendo o Fly.io, por cerca de US$ 3,84/mês (máquina de 512 MB por US$ 3,69 mais 1 GB de disco por US$ 0,15). O bot usa 239 MB de memória, então a opção de 256 MB fica apertada. O `Dockerfile` e o `fly.toml` já estão prontos, e a imagem passou no teste de ponta a ponta aqui. O deploy sai da sua pasta local, então o modelo treinado vai junto mesmo estando fora do git.
+
+| Opção | Custo | Por que não é a primeira |
+|---|---|---|
+| Fly.io | ~US$ 3,84/mês | Sem plano gratuito; o teste grátis dura 7 dias |
+| Railway Hobby | US$ 5/mês (inclui US$ 5 de uso) | Faz o build pelo GitHub, e o modelo não está no repositório |
+| Google Cloud e2-micro | Grátis nas regiões us-west1, us-central1 e us-east1 | Dá mais trabalho de configurar; só confirmei em fontes não oficiais |
+
+Preços em docs.fly.io/about/pricing e docs.railway.com/pricing/plans.
+
+Se escolher o Fly:
+1. Você cria a conta, que pede cartão.
+2. Você digita `! fly auth login` aqui.
+3. Eu instalo o `flyctl`, crio o disco e cadastro o token e a chave como segredos no Fly, sem eles passarem pelo chat.
+4. Eu desligo o bot que hoje roda no seu Mac, porque só pode haver um rodando por vez. Copio o estado atual, para os tópicos do grupo continuarem valendo.
+
+Vale também pôr um limite de gasto na sua conta da Anthropic. O uso de IA estimado é de uns US$ 70/ano.
+
+**Decisões que continuam com você:**
+1. Hospedagem: Fly.io ou outra opção.
+2. A trava de sensibilidade G, provisoriamente em 0,05.
+3. A data da submissão no README.
+4. A aprovação para abrir o PR `[Submission] Gustavo Paraguassu — Challenge 002`, que eu ainda não abri.
+
+### 🧑 Gustavo · 04/11 22:10
+
+Pode seguir com o Fly.io
+
+<details><summary>Ações da IA (5)</summary>
+
+- `Bash` Check whether flyctl and Homebrew are installed
+- `Bash` Install flyctl via Homebrew and check login
+- `Bash` Review deploy config and runtime state files
+- `Bash` Check state save points and fly sftp usage
+- `Bash` Check sftp put options and login status
+
+</details>
+
+### 🤖 Claude · 04/11 22:12
+
+Está tudo pronto do meu lado. Falta só o login, que precisa ser seu porque abre o navegador na sua conta. Digite aqui:
+
+```
+! fly auth login
+```
+
+Se ainda não tiver conta, a mesma tela oferece criar uma, e o Fly vai pedir um cartão.
+
+Depois do login, eu faço o resto:
+1. **Crio o app e o disco.** O app se chama `nexo-suporte-g4` (troco o nome se estiver ocupado), com 1 GB de disco nos EUA (Virgínia, perto da API da Anthropic).
+2. **Cadastro os segredos.** O token do Telegram e a chave da Anthropic saem direto do seu `.env` para o Fly e não aparecem no chat.
+3. **Desligo o bot do Mac e faço o deploy.** O Telegram só aceita um bot buscando mensagens por vez.
+4. **Copio o estado atual para o disco do servidor e reinicio.** Assim os tópicos do grupo e os chamados continuam valendo, sem rodar `/configurar` de novo. Conferi que o bot só grava o estado quando algo muda, então reiniciar não apaga a cópia.
+5. **Confiro os logs.** Depois peço que você mande uma mensagem de teste ao bot.
+
+Custo estimado: cerca de US$ 3,84/mês.
+
+### 🧑 Gustavo · 04/11 22:12
+
+<bash-input>fly auth login</bash-input>
+
+### 🧑 Gustavo · 04/11 22:14
+
+<bash-stdout>Open this URL in a browser and approve the login:
+
+    https://fly.io/app/auth/cli/[omitido]
+
+This terminal is not interactive, so the code cannot be pasted here.
+The login completes on its own once approved in a browser on this machine, within 15 minutes.
+Keep this command running until then. Agents: run it in the background, since command timeouts are usually shorter.
+If the browser is on another machine, or this command was stopped, finish with: fly auth login --code &lt;code shown after approving&gt;
+This command exits on its own once that succeeds.
+Command did not complete within its 120s timeout and was moved to the background (ID: bsrvdyb63). Output is being written to: /private/tmp/claude-501/-Users-gustavoparaguassu-Documents-Codes-g4-ai-master/a25baa58-818c-4adb-83ed-7618ec5e46bb/tasks/bsrvdyb63.output. You will be notified when it completes. It is running now: do not start a second copy while it runs. If it is no longer needed, stop it with TaskStop. To check interim output, use Read on that file path.</bash-stdout><bash-stderr></bash-stderr>
+
+### 🧑 Gustavo · 04/11 22:14
+
+Fiz login já e o token é [credencial omitida]
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Check whether background Fly login completed
+
+</details>
+
+### 🤖 Claude · 04/11 22:14
+
+O login automático ainda não tinha terminado. Uso o código que você colou:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Complete Fly login with the approval code
+
+</details>
+
+### 🤖 Claude · 04/11 22:14
+
+Login feito. Agora crio o app e o disco:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` List Fly orgs and create the app
+
+</details>
+
+### 🧑 Gustavo · 04/11 22:14 *(enviada enquanto a IA trabalhava)*
+
+<task-notification>
+<task-id>bsrvdyb63</task-id>
+<tool-use-id>39af9e3f-0c22-4584-8d5f-6b2280ae25c6:inner</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-gustavoparaguassu-Documents-Codes-g4-ai-master/a25baa58-818c-4adb-83ed-7618ec5e46bb/tasks/bsrvdyb63.output</output-file>
+<status>completed</status>
+<summary>Background command "fly auth login" completed (exit code 0)</summary>
+</task-notification>
+
+### 🤖 Claude · 04/11 22:14
+
+O app foi criado. Agora crio o disco e cadastro os segredos pelo `stdin`, direto do `.env`, sem que os valores apareçam:
+
+<details><summary>Ações da IA (2)</summary>
+
+- `Bash` Create 1GB volume and import secrets from .env
+- `Bash` List staged secret names
+
+</details>
+
+### 🤖 Claude · 04/11 22:14
+
+Os dois segredos estão cadastrados. Desligo o bot do Mac e faço o deploy:
+
+<details><summary>Ações da IA (4)</summary>
+
+- `ToolSearch` query=select:TaskStop, max_results=1
+- `TaskStop` task_id=bvpsncfb4
+- `Bash` Confirm local bot stopped and snapshot state files
+- `Bash` Build remotely and deploy the bot to Fly.io
+
+</details>
+
+### 🤖 Claude · 04/11 22:16
+
+Deploy concluído: uma máquina, imagem de 150 MB. Copio o estado para o disco do servidor e reinicio:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Upload state files to the volume and verify checksum
+
+</details>
+
+### 🤖 Claude · 04/11 22:17
+
+Checksum idêntico, e o disco estava vazio, então nenhuma mensagem chegou nesse intervalo. Reinicio para o bot carregar o estado e confiro os logs:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Restart machine and read recent logs
+
+</details>
+
+### 🤖 Claude · 04/11 22:17
+
+A máquina subiu em 0,8 s. Agora confiro se o bot está conectado ao Telegram sem conflito, se carregou os tópicos e quanto de memória usa:
+
+<details><summary>Ações da IA (3)</summary>
+
+- `Bash` Check bot logs, loaded state, and memory use
+- `Bash` Run state and memory check inside the machine
+- `Bash` Record Fly deployment details in project memory
+
+</details>
+
+### 🤖 Claude · 04/11 22:18
+
+O bot está rodando no Fly.io, e o do Mac foi desligado.
+
+- **Servidor:** app `nexo-suporte-g4`, uma máquina de 512 MB na Virgínia e disco de 1 GB, por cerca de US$ 3,84/mês. Painel em https://fly.io/apps/nexo-suporte-g4/monitoring
+- **Segredos:** o token do Telegram e a chave da Anthropic foram cadastrados direto do `.env`, sem aparecer no chat.
+- **Estado:** copiado do Mac, com checksum idêntico. O grupo continua configurado, com os 10 tópicos e os 18 chamados, então não precisa rodar `/configurar` de novo.
+- **Conferido nos logs:** o bot iniciou com o Haiku e sem erro de conflito com outro bot. Usa menos da metade da memória da máquina.
+
+O que ainda não conferi é uma mensagem real. Mande uma ao @g4_nexo_bot e veja se o card aparece no tópico certo do grupo. Se der certo, registro a hospedagem no README e no process log e mando ao fork.
+
+Três cuidados daqui em diante:
+1. **Não rode o bot no Mac** enquanto o servidor estiver ligado, porque o Telegram só aceita um bot buscando mensagens por vez. O estado que vale agora está no disco do servidor; a pasta `runtime/` do Mac ficou desatualizada.
+2. **O código de login que você colou só servia uma vez** e já foi usado, então não há o que revogar.
+3. **Vale pôr um limite de gasto na sua conta da Anthropic** (em console.anthropic.com, nas configurações de cobrança). Isso eu não consigo fazer daqui. Se alguém descobrir o bot e mandar muitas mensagens, o limite segura o custo; o bot já tem um teto de 30 chamados por dia.
+
+Continuam com você a trava de sensibilidade G (provisória em 0,05), a data da submissão no README e a aprovação para abrir o PR.
+
+### 🧑 Gustavo · 04/11 22:21
+
+Pode fazer a submissão final e colocar que está rodando no Telegram por uma limitação de custos e que está deploy no Fly.io e colocar a data da submissão no README. O que seria a sensibilidade G ?
+
+### 🤖 Claude · 04/11 22:22
+
+Antes de mexer no README, vejo três coisas: o que ele diz hoje sobre Telegram, WhatsApp e data; as regras de submissão do repositório da G4; e se você já mandou alguma mensagem ao bot no servidor.
+
+<details><summary>Ações da IA (4)</summary>
+
+- `Bash` Locate README sections and upstream submission files
+- `Bash` Read README header, architecture note, limitations, run and evidence sections
+- `Bash` Find upstream submission guide and PR template
+- `Bash` Read upstream submission guide and contributing rules
+
+</details>
+
+### 🤖 Claude · 04/11 22:22
+
+Agora os números da trava G, para a explicação:
+
+<details><summary>Ações da IA (2)</summary>
+
+- `Bash` Find G sweep results and where G is documented
+- `Bash` Read D9 pending decision and D5 channel decision
+
+</details>
+
+### 🤖 Claude · 04/11 22:22
+
+Antes de fechar, uma decisão que é sua e muda os números da submissão: a trava G.
+
+<details><summary>Ações da IA (1)</summary>
+
+- `AskUserQuestion` A trava G decide quando um chamado que o modelo mandaria sozinho para uma fila comum (ex.: Hardware) vai antes para um humano, porque pode ser RH ou permissão d
+
+</details>
+
+### 🤖 Claude · 04/11 22:23
+
+G = 0,05 fica registrado como decisão sua. Antes de colocar o @ do bot no README, confiro como funciona o limite diário, porque um avaliador poderá conversar com ele:
+
+<details><summary>Ações da IA (2)</summary>
+
+- `Bash` Check daily limit logic and stale pending markers
+- `Bash` Read executive summary, validation, workflow, D10/D11
+
+</details>
+
+### 🤖 Claude · 04/11 22:23
+
+Aplico as edições no README, no process log (D9 com a sua decisão, D10 com a hospedagem) e no memo:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Apply final README, decision log, and memo edits
+
+</details>
+
+### 🤖 Claude · 04/11 22:24
+
+Edições aplicadas, links conferidos. Agora preparo o texto do PR:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Skill` mattpocock-skills:pr
+
+</details>
+
+### 🤖 Claude · 04/11 22:24
+
+Primeiro rodo o teste de ponta a ponta para servir de evidência no PR. Depois reexporto a conversa e procuro segredos:
+
+<details><summary>Ações da IA (1)</summary>
+
+- `Bash` Run end-to-end tests, re-export chat, scan for secrets
+
+</details>
