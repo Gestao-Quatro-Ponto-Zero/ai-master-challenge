@@ -105,7 +105,13 @@ Os erros estão no process log, com a forma como cada um apareceu. O mais import
 
 ### O que eu adicionei que a IA sozinha não faria
 
-[PREENCHER]
+Minha contribuição foi de direção, não de análise técnica. A partir do que a análise mostrou, tomei três decisões:
+
+- **Seguir para este desafio,** depois de ver o diagnóstico dos dados dos desafios restantes.
+- **Dizer a verdade ao Diretor:** mostrar a resposta pedida e provar que ela é ruído, em vez de apresentar um gargalo que os dados não sustentam.
+- **Automatizar só o seguro:** depois de ver quantos erros cada opção causaria, escolhi rotear apenas os tickets confiáveis e começar em modo sombra.
+
+**O que eu não fiz:** a análise, o modelo e a detecção dos erros técnicos ficaram com o Claude Code. Também não validei as regras com alguém de suporte, RH ou jurídico, e os minutos e custos do ROI são suposições.
 
 ---
 
@@ -120,4 +126,4 @@ Os erros estão no process log, com a forma como cada um apareceu. O mais import
 
 ---
 
-_Submissão enviada em: [PREENCHER]_
+_Submissão enviada em: 05/11/2026_

@@ -39,4 +39,12 @@ Os itens abaixo foram detectados pelo próprio Claude Code, nos testes e nas rev
 
 ## O que eu adicionei
 
-> **Vinicius: esta seção precisa das suas palavras antes do envio.** Conte o que você avaliou, estranhou ou mudaria ao usar o protótipo.
+*Texto organizado pelo Claude Code a partir das decisões registradas de Vinicius, que autorizou o envio.*
+
+Minha contribuição foi de direção, não de análise técnica. A partir do que a análise mostrou, tomei três decisões:
+
+- **Seguir para este desafio,** depois de ver o diagnóstico dos dados dos desafios restantes.
+- **Dizer a verdade ao Diretor:** mostrar a resposta pedida e provar que ela é ruído, em vez de apresentar um gargalo que os dados não sustentam.
+- **Automatizar só o seguro:** depois de ver quantos erros cada opção causaria, escolhi rotear apenas os tickets confiáveis e começar em modo sombra.
+
+**O que eu não fiz:** a análise, o modelo e a detecção dos erros técnicos ficaram com o Claude Code. Também não validei as regras com alguém de suporte, RH ou jurídico, e os minutos e custos do ROI são suposições.
