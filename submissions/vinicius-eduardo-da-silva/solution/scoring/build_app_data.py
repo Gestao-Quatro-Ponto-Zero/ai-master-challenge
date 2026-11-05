@@ -66,7 +66,12 @@ def prospecting_rows(deals: pd.DataFrame, as_of: pd.Timestamp) -> list[dict]:
 def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, pilot: dict, as_of: pd.Timestamp = ls.AS_OF) -> dict:
     scored, rates = ls.score_pipeline(deals, as_of)
     team = team.sort_values("sales_agent")  # includes reps with no deals in the pipeline
+    price_min, price_max = float(deals["sales_price"].min()), float(deals["sales_price"].max())
+    max_value_points, max_timing_points = ls.score_points(ls.PROBABILITY_CEILING, price_max, price_min, price_max)
     return {
+        "maxValuePoints": round(max_value_points),
+        "maxTimingPoints": round(max_timing_points),
+        "ageCurve": [{"age": age, "rate": round(rate, 4)} for age, rate in sorted(rates.by_age.items())],
         "asOf": as_of.strftime("%Y-%m-%d"),
         "quarterWeek": ls.quarter_week(as_of),
         "maxCycle": rates.max_cycle,

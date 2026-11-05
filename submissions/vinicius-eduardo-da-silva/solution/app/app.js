@@ -1,37 +1,62 @@
 "use strict";
 
 const DATA = window.LEAD_DATA;
+const REPLAY = window.LEAD_REPLAY || [];
 const PAGE_SIZE = 30;
-const STORAGE_AGENT = "focoSemana.agent";
-const STORAGE_DECISIONS = "focoSemana.decisions";
+const HIGHLIGHTED_DEALS = 3;
+const TEAM_LIST_SIZE = 20;
+const HOURS_PER_PERSON_WEEK = 40;
+const DEFAULT_REPLAY_DATE = "2017-08-07"; // mid-quarter, when every age band is active
+const DEFAULT_CALCULATOR = { weekly: 5, cleanup: 3 };
+
+const STORAGE = {
+  agent: "focoSemana.agent",
+  decisions: "focoSemana.decisions",
+  focusActions: "focoSemana.focusActions",
+  calculator: "focoSemana.calculator",
+};
+
+const ICON_PATHS = {
+  foco: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/>',
+  decidir: '<path d="M12 4v4M12 16v4M4 12h4M16 12h4"/><circle cx="12" cy="12" r="4"/>',
+  prospeccao: '<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>',
+  revisar: '<path d="M5 12.5 10 17l9-10"/>',
+  equipe: '<circle cx="9" cy="9" r="3.5"/><path d="M3 20c.6-3.5 3-5.5 6-5.5s5.4 2 6 5.5M16 6a3.5 3.5 0 0 1 0 6.5M18 15c1.6.8 2.6 2.6 3 5"/>',
+  tempo: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>',
+  como: '<circle cx="12" cy="12" r="8"/><path d="M12 11v5M12 8h.01"/>',
+};
 
 const TABS = [
-  { id: "foco", label: "Foco" },
+  { id: "foco", label: "Minha semana" },
   { id: "decidir", label: "Decidir" },
   { id: "prospeccao", label: "Prospecção" },
+  { id: "revisar", label: "Revisar" },
   { id: "equipe", label: "Equipe" },
   { id: "tempo", label: "Máquina do tempo" },
   { id: "como", label: "Como funciona" },
 ];
 
-const REPLAY = window.LEAD_REPLAY || [];
-const DEFAULT_REPLAY_DATE = "2017-08-07"; // mid-quarter, when every age band is active
-const TEAM_LIST_SIZE = 20;
-const HOURS_PER_PERSON_WEEK = 40;
-const STORAGE_CALCULATOR = "focoSemana.calculator";
-const DEFAULT_CALCULATOR = { weekly: 5, cleanup: 3 };
+const ZONES = [
+  { id: "novo", label: "Deal novo", from: 0, to: 14 },
+  { id: "intermediario", label: "Em andamento", from: 15, to: 44 },
+  { id: "janela", label: "Janela de fechamento", from: 45, to: 119 },
+  { id: "prazo_final", label: "Prazo final", from: 120, to: DATA.maxCycle },
+];
 
 const teamByAgent = new Map(DATA.team.map((member) => [member.agent, member]));
 const state = {
   region: "",
   manager: "",
-  agent: readStorage(STORAGE_AGENT, ""),
+  agent: readStorage(STORAGE.agent, ""),
   tab: "foco",
   limit: PAGE_SIZE,
-  decisions: readDecisions(),
+  decisions: readObject(STORAGE.decisions),
+  focusActions: readObject(STORAGE.focusActions),
+  calculator: { ...DEFAULT_CALCULATOR, ...readObject(STORAGE.calculator) },
+  skipped: new Set(),
+  lastDecision: null,
   replayIndex: Math.max(0, REPLAY.findIndex((monday) => monday.date === DEFAULT_REPLAY_DATE)),
   revealed: false,
-  calculator: readCalculator(),
 };
 if (!teamByAgent.has(state.agent)) state.agent = "";
 
@@ -52,21 +77,12 @@ function writeStorage(key, value) {
   }
 }
 
-function readDecisions() {
+function readObject(key) {
   try {
-    const parsed = JSON.parse(readStorage(STORAGE_DECISIONS, "{}"));
+    const parsed = JSON.parse(readStorage(key, "{}"));
     return parsed && typeof parsed === "object" ? parsed : {};
   } catch {
     return {};
-  }
-}
-
-function readCalculator() {
-  try {
-    const parsed = JSON.parse(readStorage(STORAGE_CALCULATOR, "{}"));
-    return { ...DEFAULT_CALCULATOR, ...(parsed && typeof parsed === "object" ? parsed : {}) };
-  } catch {
-    return { ...DEFAULT_CALCULATOR };
   }
 }
 
@@ -79,6 +95,14 @@ function escapeHtml(text) {
 const money = (value) => "US$ " + Math.round(value).toLocaleString("pt-BR");
 const count = (value) => value.toLocaleString("pt-BR");
 const plural = (n, one, many) => `${count(n)} ${n === 1 ? one : many}`;
+const sumPrice = (deals) => deals.reduce((total, deal) => total + deal.price, 0);
+const shortDate = (date) => new Date(`${date}T12:00:00`).toLocaleDateString("pt-BR");
+
+function compactMoney(value) {
+  if (Math.abs(value) >= 1000000) return `US$ ${(value / 1000000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mi`;
+  if (Math.abs(value) >= 1000) return `US$ ${Math.round(value / 1000).toLocaleString("pt-BR")} mil`;
+  return money(value);
+}
 
 function matchesFilters(agent) {
   const member = teamByAgent.get(agent);
@@ -98,7 +122,8 @@ function selection() {
   };
 }
 
-const sumPrice = (deals) => deals.reduce((total, deal) => total + deal.price, 0);
+const pendingFocus = (sel) => sel.foco.filter((deal) => !state.focusActions[deal.id]);
+const undecided = (sel) => sel.decidir.filter((deal) => !state.decisions[deal.id]);
 
 /** Replay result for the chance band, because high predictions ran above reality. */
 function observedChance(probability) {
@@ -107,12 +132,11 @@ function observedChance(probability) {
   return Math.round(DATA.backtest.calibration[index].real * 100);
 }
 
+/* Sidebar */
+
 function renderHeader() {
-  const date = new Date(`${DATA.asOf}T12:00:00`).toLocaleDateString("pt-BR", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric",
-  });
   document.getElementById("as-of").textContent =
-    `Pipeline de ${date}, semana ${DATA.quarterWeek} do trimestre. Dados do CRM até 31/12/2017.`;
+    `Segunda, ${shortDate(DATA.asOf)} · semana ${DATA.quarterWeek} do trimestre`;
 }
 
 function fillSelect(id, emptyLabel, values, selected) {
@@ -132,90 +156,144 @@ function renderFilters() {
   fillSelect("filter-agent", "Todos", unique(inManager.map((member) => member.agent)), state.agent);
 }
 
-function briefingText(sel) {
-  const { foco, decidir, prospecting } = sel;
-  if (!state.agent) {
-    const scope = state.manager || state.region || "Toda a operação";
-    const staleShare = foco.length + decidir.length ? Math.round((decidir.length / (foco.length + decidir.length)) * 100) : 0;
-    const firstLine = `<p><strong>${escapeHtml(scope)}: ${count(foco.length)} deals vivos e ${count(decidir.length)} parados.</strong> ${staleShare}% dos deals em Engaging já passaram de ${DATA.maxCycle} dias, a maior duração entre todos os deals encerrados.</p>`;
-    const secondLine = foco.length === 0 && decidir.length > 0
-      ? `<p>Nesta seleção não há deal vivo. Confirme com RevOps se os parados são reais ou efeito de importação de dados.</p>`
-      : `<p>Vendedor: escolha seu nome no filtro acima para ver sua lista.</p>`;
-    return firstLine + secondLine;
-  }
-  const first = escapeHtml(state.agent.split(" ")[0]);
-  if (foco.length > 0) {
-    const top = foco[0];
-    const account = top.account ? ` na ${escapeHtml(top.account)}` : "";
-    const staleLine = decidir.length ? ` Depois, reserve um tempo para decidir ${plural(decidir.length, "deal parado", "deals parados")}.` : "";
-    return `<p><strong>${first}, comece por ${escapeHtml(top.product)}${account}.</strong> Sua lista tem ${plural(Math.min(foco.length, DATA.topK), "deal", "deals")} para esta semana.${staleLine}</p>`;
-  }
-  if (decidir.length > 0 || prospecting.length > 0) {
-    const parts = [];
-    if (decidir.length) parts.push(`revise ${plural(decidir.length, "deal parado", "deals parados")} em Decidir`);
-    if (prospecting.length) parts.push(`avance ${plural(prospecting.length, "deal", "deals")} em Prospecção`);
-    return `<p><strong>${first}, você não tem nenhum deal vivo em Engaging.</strong> Esta semana, ${parts.join(" e depois ")}.</p>`;
-  }
-  return `<p><strong>${first}, você não tem nenhum deal aberto nesta base.</strong> Todos os seus deals já foram encerrados. Fale com seu manager sobre novas oportunidades.</p>`;
-}
-
-function renderBriefing(sel) {
-  document.getElementById("briefing").innerHTML = briefingText(sel);
-}
-
-function renderTiles(sel) {
-  const tile = (label, number, detail) => `
-    <div class="tile">
-      <div class="label">${label}</div>
-      <div class="number">${count(number)}</div>
-      <div class="detail">${detail}</div>
-    </div>`;
-  document.getElementById("tiles").innerHTML = [
-    tile("Foco: deals vivos", sel.foco.length, `${money(sumPrice(sel.foco))} em valor de tabela`),
-    tile("Decidir: deals parados", sel.decidir.length, `${money(sumPrice(sel.decidir))} em valor de tabela`),
-    tile("Prospecção: sem data", sel.prospecting.length, `${money(sumPrice(sel.prospecting))} em valor de tabela`),
-  ].join("");
+function reviewCount(sel) {
+  const marked = (deals, store) => deals.filter((deal) => store[deal.id]).length;
+  return marked(sel.foco, state.focusActions) + marked(sel.decidir, state.decisions);
 }
 
 function renderTabs(sel) {
-  const counts = { foco: sel.foco.length, decidir: sel.decidir.length, prospeccao: sel.prospecting.length };
+  const counts = {
+    foco: pendingFocus(sel).length,
+    decidir: undecided(sel).length,
+    prospeccao: sel.prospecting.length,
+    revisar: reviewCount(sel),
+  };
   document.getElementById("tabs").innerHTML = TABS.map((tab) => {
-    const suffix = tab.id in counts ? ` (${count(counts[tab.id])})` : "";
-    return `<button class="tab" role="tab" data-tab="${tab.id}" aria-selected="${state.tab === tab.id}">${tab.label}${suffix}</button>`;
+    const badge = tab.id in counts ? `<span class="nav-count">${count(counts[tab.id])}</span>` : "";
+    return `<button class="tab" role="tab" data-tab="${tab.id}" aria-selected="${state.tab === tab.id}">
+      <svg viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[tab.id]}</svg>${tab.label}${badge}
+    </button>`;
   }).join("");
 }
 
+/* Shared pieces */
+
 function accountLabel(deal) {
   return deal.account ? escapeHtml(deal.account) : "Conta em branco";
+}
+
+function queueBar(sel, rowsAlign) {
+  const parts = [
+    { key: "live", label: "Vivos", deals: sel.foco },
+    { key: "stale", label: "Parados", deals: sel.decidir },
+    { key: "prospect", label: "Em prospecção", deals: sel.prospecting },
+  ];
+  const total = parts.reduce((all, part) => all + sumPrice(part.deals), 0);
+  const stack = parts
+    .filter((part) => part.deals.length > 0)
+    .map((part) => {
+      const value = sumPrice(part.deals);
+      const tip = `${part.label}: ${plural(part.deals.length, "deal", "deals")}, ${money(value)}`;
+      return `<i class="${part.key}" style="flex:${value} 1 0" data-tip="${escapeHtml(tip)}"></i>`;
+    }).join("");
+  const legend = parts.map((part) => `
+    <div class="legend-row">
+      <span class="swatch ${part.key}"></span>${part.label}: ${count(part.deals.length)}
+      <b>${compactMoney(sumPrice(part.deals))}</b>
+    </div>`).join("");
+  return { total, html: `<div class="stack" role="img" aria-label="Divisão do valor de tabela por fila">${stack}</div><div class="legend ${rowsAlign || ""}">${legend}</div>` };
+}
+
+function lifeTrack(deal) {
+  const zone = ZONES.find((item) => item.id === deal.zone);
+  const name = zone ? zone.label : "Parado";
+  const segments = ZONES.map((item) => `<i class="zone-${item.id}" style="flex:${item.to - item.from + 1} 1 0"></i>`).join("");
+  const position = Math.min(deal.age, DATA.maxCycle) / DATA.maxCycle * 100;
+  return `
+    <div class="life">
+      <div class="life-label"><b>${name}</b><span>${deal.age} de ${DATA.maxCycle} dias</span></div>
+      <div class="track" role="img" aria-label="${name}, ${deal.age} dias em Engaging">
+        ${segments}<span class="marker" style="left:${position}%"></span>
+      </div>
+    </div>`;
+}
+
+function ring(score) {
+  return `<div class="ring" style="--score:${score}" role="img" aria-label="Score ${score}"><span>${score}</span></div>`;
+}
+
+function whyDetails(deal) {
+  const row = (label, value, max) => `
+    <div class="points">
+      <span>${label}</span>
+      <span class="meter"><i style="width:${(value / max) * 100}%"></i></span>
+      <span>${value} de ${max}</span>
+    </div>`;
+  return `
+    <details class="why">
+      <summary>Por que este score?</summary>
+      <div class="why-body">
+        ${row("Valor", deal.valuePts, DATA.maxValuePoints)}
+        ${row("Momento", deal.timingPts, DATA.maxTimingPoints)}
+        <p style="margin:6px 0 0">Valor vem do preço de tabela. Momento vem da idade do deal e da semana do trimestre: deals parecidos foram ganhos em 30 dias em cerca de ${observedChance(deal.probability)} de cada 100 casos.</p>
+      </div>
+    </details>`;
 }
 
 function contextChips(deal) {
   const chips = [];
   if (!deal.account) chips.push(`<span class="chip attention">Preencha a conta no CRM</span>`);
   else if (deal.pastDeals > 0) chips.push(`<span class="chip">Histórico da conta: ${deal.pastWins} de ${deal.pastDeals} ganhos</span>`);
-  if (deal.zone === "prazo_final") chips.push(`<span class="chip attention">Prazo final</span>`);
   if (!state.agent) chips.push(`<span class="chip">${escapeHtml(deal.agent)}</span>`);
   return chips.length ? `<div class="chips">${chips.join("")}</div>` : "";
 }
 
-function dealCard(deal) {
+function dealTitle(deal) {
   const sector = deal.sector ? ` · ${escapeHtml(deal.sector)}` : "";
   return `
+    <div class="deal-title">
+      <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
+      <div class="deal-meta">${escapeHtml(deal.id)}${sector}</div>
+    </div>`;
+}
+
+function focusButtons(deal) {
+  return `<div class="row-actions">
+    <button class="action-button primary" data-focus="feito" data-id="${escapeHtml(deal.id)}">Feito</button>
+    <button class="action-button" data-focus="adiado" data-id="${escapeHtml(deal.id)}">Adiar</button>
+  </div>`;
+}
+
+function highlightedCard(deal) {
+  return `
     <article class="deal">
-      <div class="score" aria-label="Score ${deal.score}">${deal.score}<small>score</small></div>
-      <div>
-        <div class="deal-head">
-          <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
-          <span class="price">${money(deal.price)}</span>
-        </div>
-        <div class="deal-meta">${escapeHtml(deal.id)}${sector} · ${deal.age} dias em Engaging</div>
-        <div class="bar" role="img" aria-label="Valor ${deal.valuePts} pontos, Momento ${deal.timingPts} pontos">
-          <i class="value" style="width:${deal.valuePts}%"></i><i class="timing" style="width:${deal.timingPts}%"></i>
-        </div>
-        <p class="reason">Valor ${deal.valuePts} + Momento ${deal.timingPts}. Em deals parecidos, cerca de ${observedChance(deal.probability)} em cada 100 foram ganhos em ${DATA.backtest.horizon_days} dias.</p>
-        <p class="action">${escapeHtml(deal.action)}</p>
-        ${contextChips(deal)}
+      <div class="deal-top">
+        ${ring(deal.score)}
+        ${dealTitle(deal)}
+        <span class="price">${money(deal.price)}</span>
       </div>
+      ${lifeTrack(deal)}
+      <p class="deal-action">${escapeHtml(deal.action)}</p>
+      ${contextChips(deal)}
+      ${focusButtons(deal)}
+      ${whyDetails(deal)}
+    </article>`;
+}
+
+function compactCard(deal) {
+  return `
+    <article class="deal compact">
+      <div class="deal-top">
+        ${ring(deal.score)}
+        <div class="deal-title">
+          <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
+          <div class="deal-meta"><span class="price">${money(deal.price)}</span> · ${escapeHtml(deal.id)}${state.agent ? "" : ` · ${escapeHtml(deal.agent)}`}</div>
+        </div>
+      </div>
+      ${lifeTrack(deal)}
+      ${focusButtons(deal)}
+      <p class="deal-action" style="grid-column:1 / -1">${escapeHtml(deal.action)}</p>
+      ${whyDetails(deal)}
     </article>`;
 }
 
@@ -224,28 +302,134 @@ function moreButton(total) {
   return `<button class="action-button more" data-action="more">Mostrar mais (${count(total - state.limit)} restantes)</button>`;
 }
 
+function sectionHead(title, note) {
+  return `<div class="section-head"><h2>${title}</h2>${note ? `<p>${note}</p>` : ""}</div>`;
+}
+
+/* Minha semana */
+
+function briefingText(sel) {
+  const pending = pendingFocus(sel);
+  const stale = undecided(sel);
+  const prospects = sel.prospecting;
+  if (!state.agent) {
+    const scope = state.manager || state.region || "Toda a operação";
+    const engagedTotal = sel.foco.length + sel.decidir.length;
+    const staleShare = engagedTotal ? Math.round((sel.decidir.length / engagedTotal) * 100) : 0;
+    const follow = sel.foco.length === 0 && sel.decidir.length > 0
+      ? "Nesta seleção não há deal vivo. Confirme com RevOps se os parados são reais ou efeito de importação de dados."
+      : "Se você é vendedor, escolha seu nome no filtro Vendedor para ver sua semana.";
+    return {
+      title: escapeHtml(scope),
+      text: `<p><strong>${staleShare}% dos deals em Engaging já passaram de ${DATA.maxCycle} dias</strong>, a maior duração entre todos os deals encerrados.</p><p>${follow}</p>`,
+    };
+  }
+  const first = escapeHtml(state.agent.split(" ")[0]);
+  if (pending.length > 0) {
+    const top = pending[0];
+    const account = top.account ? ` na ${escapeHtml(top.account)}` : "";
+    return {
+      title: `${first}, sua semana`,
+      text: `<p><strong>Comece por ${escapeHtml(top.product)}${account}.</strong> ${escapeHtml(top.action)}</p>`,
+    };
+  }
+  if (sel.foco.length > 0) {
+    return { title: `${first}, sua semana`, text: `<p><strong>Você passou por todos os deals vivos.</strong> Confira o que marcou em Revisar.</p>` };
+  }
+  if (stale.length > 0 || prospects.length > 0) {
+    const parts = [];
+    if (stale.length) parts.push(`revise ${plural(stale.length, "deal parado", "deals parados")}`);
+    if (prospects.length) parts.push(`avance ${plural(prospects.length, "deal", "deals")} em prospecção`);
+    return { title: `${first}, sua semana`, text: `<p><strong>Você não tem nenhum deal vivo em Engaging.</strong> Esta semana, ${parts.join(" e depois ")}.</p>` };
+  }
+  return { title: `${first}, sua semana`, text: `<p><strong>Você não tem nenhum deal aberto nesta base.</strong> Fale com seu manager sobre novas oportunidades.</p>` };
+}
+
+function heroSection(sel) {
+  const { title, text } = briefingText(sel);
+  const bar = queueBar(sel);
+  const staleValue = sumPrice(sel.decidir);
+  const health = bar.total === 0 ? "" : `
+    <div>
+      <div class="health-title">Valor de tabela em aberto</div>
+      <div class="health-number">${compactMoney(staleValue)} parados, de ${compactMoney(bar.total)}</div>
+      ${bar.html}
+    </div>`;
+  return `
+    <section class="hero">
+      <div>
+        <h1>${title}</h1>
+        <div id="briefing">${text}</div>
+      </div>
+      ${health}
+    </section>`;
+}
+
+function planStep(number, title, progress, percent, target, enabled) {
+  const meter = percent === null ? "" : `<span class="meter"><i style="width:${percent}%"></i></span>`;
+  return `
+    <button class="step" data-go="${target}" ${enabled ? "" : "disabled"}>
+      <span class="step-number">Passo ${number}</span>
+      <span class="step-title">${title}</span>
+      <span class="step-progress">${progress}</span>
+      ${meter}
+    </button>`;
+}
+
+function planSection(sel) {
+  const weekTarget = Math.min(sel.foco.length, DATA.topK);
+  const handled = sel.foco.filter((deal) => state.focusActions[deal.id]).length;
+  const handledInTarget = Math.min(handled, weekTarget);
+  const decided = sel.decidir.length - undecided(sel).length;
+  const percent = (part, whole) => (whole ? Math.round((part / whole) * 100) : 0);
+  return `
+    <section class="plan" aria-label="Plano da semana">
+      ${planStep(1, weekTarget ? `Agir em ${plural(weekTarget, "deal", "deals")}` : "Nenhum deal vivo", `${count(handledInTarget)} de ${count(weekTarget)} feitos`, percent(handledInTarget, weekTarget), "foco-lista", weekTarget > 0)}
+      ${planStep(2, sel.decidir.length ? `Decidir ${plural(sel.decidir.length, "deal parado", "deals parados")}` : "Nada a decidir", `${count(decided)} de ${count(sel.decidir.length)} decididos`, percent(decided, sel.decidir.length), "decidir", sel.decidir.length > 0)}
+      ${planStep(3, sel.prospecting.length ? `Avançar ${plural(sel.prospecting.length, "deal", "deals")} em prospecção` : "Nada em prospecção", "Maior valor primeiro", null, "prospeccao", sel.prospecting.length > 0)}
+    </section>`;
+}
+
+function handledCard(deal) {
+  const label = state.focusActions[deal.id] === "feito" ? "Feito" : "Adiado";
+  return `
+    <article class="simple-row done-row">
+      <div>
+        <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
+        <div class="deal-meta">${label} · ${money(deal.price)}${state.agent ? "" : ` · ${escapeHtml(deal.agent)}`}</div>
+      </div>
+      <div class="right"><button class="action-button quiet" data-undo-focus="${escapeHtml(deal.id)}">Desfazer</button></div>
+    </article>`;
+}
+
 function viewFoco(sel) {
+  const pending = pendingFocus(sel);
+  const handled = sel.foco.filter((deal) => state.focusActions[deal.id]);
+  let list;
   if (sel.foco.length === 0) {
     const links = [];
-    if (sel.decidir.length) links.push(`<button class="action-button" data-go="decidir">Ir para Decidir</button>`);
+    if (sel.decidir.length) links.push(`<button class="action-button primary" data-go="decidir">Ir para Decidir</button>`);
     if (sel.prospecting.length) links.push(`<button class="action-button" data-go="prospeccao">Ir para Prospecção</button>`);
-    return `<div class="empty"><p>Nenhum deal vivo nesta seleção.</p>${links.length ? `<div class="row-actions">${links.join("")}</div>` : ""}</div>`;
+    list = `<div class="empty"><p>Nenhum deal vivo nesta seleção.</p>${links.length ? `<div class="row-actions">${links.join("")}</div>` : ""}</div>`;
+  } else {
+    const highlighted = pending.slice(0, HIGHLIGHTED_DEALS);
+    const thisWeek = pending.slice(HIGHLIGHTED_DEALS, DATA.topK);
+    const rest = pending.slice(DATA.topK, state.limit);
+    const quarterNote = DATA.quarterWeek === 1
+      ? "Primeira semana de trimestre: nas três vezes observadas, só deals com até 14 dias tiveram chance relevante de fechar logo."
+      : "";
+    list = `
+      <div id="foco-lista"></div>
+      ${highlighted.length ? sectionHead("Comece por aqui", quarterNote) + `<div class="hero-deals">${highlighted.map(highlightedCard).join("")}</div>` : ""}
+      ${thisWeek.length ? sectionHead("Também nesta semana") + `<div class="deal-list">${thisWeek.map(compactCard).join("")}</div>` : ""}
+      ${rest.length ? sectionHead("Demais deals vivos") + `<div class="deal-list">${rest.map(compactCard).join("")}</div>` : ""}
+      ${moreButton(pending.length)}
+      ${handled.length ? sectionHead("Já marcados", "Tudo isso também aparece em Revisar") + `<div class="deal-list">${handled.map(handledCard).join("")}</div>` : ""}`;
   }
-  const legend = `
-    <div class="legend" aria-label="Legenda do score">
-      <span><i class="swatch value"></i>Valor: preço de tabela do produto</span>
-      <span><i class="swatch timing"></i>Momento: idade do deal e semana do trimestre</span>
-    </div>`;
-  const quarterNote = DATA.quarterWeek === 1
-    ? ` Primeira semana de trimestre: nas três vezes observadas, só deals com até 14 dias tiveram chance relevante de fechar logo.`
-    : "";
-  const intro = `<p class="view-intro">Ordenado por receita esperada em ${DATA.backtest.horizon_days} dias. Só entram deals que ainda estão dentro do tempo em que deals costumam fechar.${quarterNote}</p>`;
-  const top = sel.foco.slice(0, DATA.topK);
-  const rest = sel.foco.slice(DATA.topK, state.limit);
-  const restTitle = rest.length ? `<h2 class="section-title">Demais deals vivos</h2>` : "";
-  return intro + legend + `<h2 class="section-title">Para esta semana</h2>`
-    + top.map(dealCard).join("") + restTitle + rest.map(dealCard).join("") + moreButton(sel.foco.length);
+  return heroSection(sel) + planSection(sel) + list;
 }
+
+/* Decidir */
 
 function decisionButtons(deal) {
   const current = state.decisions[deal.id];
@@ -253,33 +437,120 @@ function decisionButtons(deal) {
   return `<div class="row-actions">${button("vivo", "Ainda está vivo")}${button("encerrar", "Encerrar")}</div>`;
 }
 
-function viewDecidir(sel) {
-  if (sel.decidir.length === 0) {
-    return `<div class="empty">Nenhum deal parado nesta seleção.</div>`;
-  }
-  const decided = sel.decidir.filter((deal) => state.decisions[deal.id]).length;
-  const rows = sel.decidir.slice(0, state.limit).map((deal) => `
-    <article class="simple-row">
-      <div class="deal-head">
-        <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
-        <span class="price">${money(deal.price)}</span>
-      </div>
-      <div class="deal-meta">${escapeHtml(deal.id)} · ${deal.age} dias em Engaging${state.agent ? "" : ` · ${escapeHtml(deal.agent)}`}</div>
-      ${decisionButtons(deal)}
-    </article>`).join("");
-  return `
-    <p class="view-intro">Nenhum deal encerrado passou de ${DATA.maxCycle} dias, e estes já passaram. Eles não recebem score. Fale com o cliente e registre sua decisão: a ferramenta nunca encerra um deal sozinha.</p>
-    <div class="toolbar">
-      <span id="decision-progress">${count(decided)} de ${count(sel.decidir.length)} decididos · maior valor primeiro</span>
-      <button class="action-button" data-action="export">Exportar decisões (CSV)</button>
-    </div>
-    <p class="muted" style="margin-bottom:12px">As decisões ficam salvas só neste navegador. Exporte o CSV para o RevOps atualizar o CRM.</p>
-    ${rows}${moreButton(sel.decidir.length)}`;
+function nextForTriage(sel) {
+  const remaining = undecided(sel);
+  return remaining.find((deal) => !state.skipped.has(deal.id)) || remaining[0] || null;
 }
 
+function triagePanel(sel) {
+  const total = sel.decidir.length;
+  const decided = total - undecided(sel).length;
+  const decidedValue = sumPrice(sel.decidir.filter((deal) => state.decisions[deal.id]));
+  const next = nextForTriage(sel);
+  const undo = state.lastDecision
+    ? `<button class="action-button quiet" data-action="undo-decision">Desfazer último<kbd>U</kbd></button>`
+    : "";
+  const progress = `
+    <div class="triage-progress">
+      <span id="decision-progress">${count(decided)} de ${count(total)} decididos</span>
+      <span>${compactMoney(decidedValue)} de ${compactMoney(sumPrice(sel.decidir))} esclarecidos</span>
+    </div>
+    <div class="meter"><i style="width:${total ? (decided / total) * 100 : 0}%"></i></div>`;
+  if (!next) {
+    return `<section class="triage">${progress}
+      <h2>Tudo decidido nesta seleção.</h2>
+      <p>Confira e exporte em Revisar para o RevOps atualizar o CRM.</p>
+      <div class="row-actions"><button class="action-button" data-go="revisar">Ir para Revisar</button>${undo}</div>
+    </section>`;
+  }
+  const beyond = next.age - DATA.maxCycle;
+  const agent = state.agent ? "" : ` · ${escapeHtml(next.agent)}`;
+  const account = next.account
+    ? `Conta ${escapeHtml(next.account)}${next.pastDeals ? `: ${next.pastWins} de ${next.pastDeals} deals ganhos` : ""}`
+    : "Conta em branco no CRM";
+  return `
+    <section class="triage" aria-label="Triagem de deals parados">
+      ${progress}
+      <div class="triage-deal">
+        <h2>${escapeHtml(next.product)} · ${accountLabel(next)}</h2>
+        <span class="triage-price">${money(next.price)}</span>
+      </div>
+      <p>${next.age} dias em Engaging, ${plural(beyond, "dia", "dias")} além do limite histórico · ${account}${agent}</p>
+      <div class="row-actions">
+        <button class="action-button" data-decision="vivo" data-id="${escapeHtml(next.id)}">Ainda está vivo<kbd>V</kbd></button>
+        <button class="action-button" data-decision="encerrar" data-id="${escapeHtml(next.id)}">Encerrar<kbd>E</kbd></button>
+        <button class="action-button quiet" data-action="skip" data-id="${escapeHtml(next.id)}">Pular<kbd>P</kbd></button>
+        ${undo}
+      </div>
+    </section>`;
+}
+
+function viewDecidir(sel) {
+  if (sel.decidir.length === 0) {
+    return `<div class="page-head"><h1>Decidir</h1></div><div class="empty"><p>Nenhum deal parado nesta seleção.</p></div>`;
+  }
+  const rows = sel.decidir.slice(0, state.limit).map((deal) => `
+    <article class="simple-row">
+      <div>
+        <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
+        <div class="deal-meta">${escapeHtml(deal.id)} · ${deal.age} dias${state.agent ? "" : ` · ${escapeHtml(deal.agent)}`}</div>
+      </div>
+      <div class="right"><span class="price">${money(deal.price)}</span>${decisionButtons(deal)}</div>
+    </article>`).join("");
+  return `
+    <div class="page-head">
+      <h1>Decidir</h1>
+      <p>Nenhum deal encerrado passou de ${DATA.maxCycle} dias, e estes já passaram. Fale com o cliente e registre: a ferramenta nunca encerra um deal sozinha.</p>
+    </div>
+    ${triagePanel(sel)}
+    <div class="section-head">
+      <h2>Todos os parados</h2>
+      <button class="action-button" data-action="export">Exportar decisões (CSV)</button>
+    </div>
+    <div class="deal-list">${rows}</div>
+    ${moreButton(sel.decidir.length)}`;
+}
+
+function recordDecision(id, decision) {
+  if (state.decisions[id] === decision) {
+    delete state.decisions[id];
+    if (state.lastDecision === id) state.lastDecision = null;
+  } else {
+    state.decisions[id] = decision;
+    state.lastDecision = id;
+  }
+  state.skipped.delete(id);
+  writeStorage(STORAGE.decisions, JSON.stringify(state.decisions));
+  render();
+  document.querySelector(".triage [data-decision], .triage .action-button")?.focus({ preventScroll: true });
+}
+
+function undoDecision() {
+  if (!state.lastDecision) return;
+  delete state.decisions[state.lastDecision];
+  state.lastDecision = null;
+  writeStorage(STORAGE.decisions, JSON.stringify(state.decisions));
+  render();
+}
+
+function skipTriage(id) {
+  state.skipped.add(id);
+  const remaining = undecided(selection());
+  if (remaining.every((deal) => state.skipped.has(deal.id))) state.skipped.clear();
+  render();
+}
+
+/* Prospecção */
+
 function viewProspeccao(sel) {
+  const head = `
+    <div class="page-head">
+      <h1>Prospecção</h1>
+      <p>Estes deals não têm data nem histórico de conversão para Engaging, então <strong>não recebem score</strong>: seria inventar precisão. A ordem é só por valor de tabela.</p>
+    </div>`;
+  const intro = `<p class="view-intro">Comece pelos de maior valor e complete a conta quando ela estiver em branco.</p>`;
   if (sel.prospecting.length === 0) {
-    return `<div class="empty">Nenhum deal em Prospecting nesta seleção.</div>`;
+    return head + `<div class="empty"><p>Nenhum deal em Prospecting nesta seleção.</p></div>`;
   }
   const rows = sel.prospecting.slice(0, state.limit).map((deal) => {
     const chips = [];
@@ -288,18 +559,84 @@ function viewProspeccao(sel) {
     if (!state.agent) chips.push(`<span class="chip">${escapeHtml(deal.agent)}</span>`);
     return `
       <article class="simple-row">
-        <div class="deal-head">
+        <div>
           <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
-          <span class="price">${money(deal.price)}</span>
+          <div class="deal-meta">${escapeHtml(deal.id)}</div>
+          ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}
         </div>
-        <div class="deal-meta">${escapeHtml(deal.id)}</div>
-        ${chips.length ? `<div class="chips" style="margin-top:6px">${chips.join("")}</div>` : ""}
+        <div class="right"><span class="price">${money(deal.price)}</span></div>
       </article>`;
   }).join("");
-  return `
-    <p class="view-intro">Estes deals não têm data nem histórico de conversão para Engaging, então <strong>não recebem score</strong>: seria inventar precisão. A ordem é só por valor de tabela.</p>
-    ${rows}${moreButton(sel.prospecting.length)}`;
+  return head + intro + `<div class="deal-list">${rows}</div>` + moreButton(sel.prospecting.length);
 }
+
+/* Revisar */
+
+function viewRevisar(sel) {
+  const done = sel.foco.filter((deal) => state.focusActions[deal.id] === "feito");
+  const postponed = sel.foco.filter((deal) => state.focusActions[deal.id] === "adiado");
+  const alive = sel.decidir.filter((deal) => state.decisions[deal.id] === "vivo");
+  const closing = sel.decidir.filter((deal) => state.decisions[deal.id] === "encerrar");
+  const tile = (label, deals) => `
+    <div class="tile">
+      <div class="label">${label}</div>
+      <div class="number">${count(deals.length)}</div>
+      <div class="detail">${money(sumPrice(deals))} em valor de tabela</div>
+    </div>`;
+  const row = (deal, attribute) => `
+    <article class="simple-row">
+      <div>
+        <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
+        <div class="deal-meta">${escapeHtml(deal.id)} · ${deal.age} dias${state.agent ? "" : ` · ${escapeHtml(deal.agent)}`}</div>
+      </div>
+      <div class="right"><span class="price">${money(deal.price)}</span><button class="action-button quiet" ${attribute}="${escapeHtml(deal.id)}">Desfazer</button></div>
+    </article>`;
+  const group = (title, deals, attribute) => (deals.length
+    ? sectionHead(title) + `<div class="deal-list">${deals.map((deal) => row(deal, attribute)).join("")}</div>`
+    : "");
+  const total = done.length + postponed.length + alive.length + closing.length;
+  const body = total === 0
+    ? `<div class="empty"><p>Nada marcado nesta seleção ainda.</p><div class="row-actions"><button class="action-button primary" data-go="foco">Voltar para Minha semana</button></div></div>`
+    : group("Para encerrar no CRM", closing, "data-undo-decision")
+      + group("Confirmados como vivos", alive, "data-undo-decision")
+      + group("Feitos nesta semana", done, "data-undo-focus")
+      + group("Adiados", postponed, "data-undo-focus");
+  const exportButton = total === 0 ? "" : `<button class="action-button primary" data-action="export">Exportar tudo (CSV)</button>`;
+  return `
+    <div class="toolbar">
+      <div class="page-head" style="margin:0"><h1>Revisar</h1><p>Confira o que foi marcado, desfaça o que precisar e envie ao RevOps.</p></div>
+      ${exportButton}
+    </div>
+    <div class="tiles">
+      ${tile("Para encerrar", closing)}
+      ${tile("Confirmados vivos", alive)}
+      ${tile("Feitos", done)}
+      ${tile("Adiados", postponed)}
+    </div>
+    <p class="muted" style="margin-bottom:8px">As marcações ficam salvas só neste navegador até você exportar.</p>
+    ${body}`;
+}
+
+function exportReview() {
+  const byId = new Map(DATA.engaged.map((deal) => [deal.id, deal]));
+  const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
+  const header = ["opportunity_id", "tipo", "vendedor", "produto", "conta", "idade_dias", "valor_tabela", "decisao"];
+  const toRows = (store, type) => Object.entries(store)
+    .filter(([id]) => byId.has(id))
+    .map(([id, decision]) => {
+      const deal = byId.get(id);
+      return [id, type, deal.agent, deal.product, deal.account, deal.age, deal.price, decision].map(quote).join(",");
+    });
+  const rows = [...toRows(state.decisions, "parado"), ...toRows(state.focusActions, "foco")];
+  const blob = new Blob(["﻿" + [header.join(","), ...rows].join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "revisao-foco-da-semana.csv";
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+/* Equipe */
 
 function calculatorResult(sel) {
   const stale = sel.decidir.length;
@@ -320,7 +657,7 @@ function calculatorResult(sel) {
 function viewCalculator(sel) {
   const { weekly, cleanup } = state.calculator;
   return `
-    <div class="calculator">
+    <section class="calculator">
       <h2>Quanto tempo os deals parados consomem?</h2>
       <p class="muted">Os dados têm a quantidade de deals, não o tempo gasto. Os minutos são uma <strong>premissa</strong>: ajuste com o time.</p>
       <div class="calculator-inputs">
@@ -332,7 +669,25 @@ function viewCalculator(sel) {
         </label>
       </div>
       <p id="calc-result" aria-live="polite">${calculatorResult(sel)}</p>
-    </div>`;
+    </section>`;
+}
+
+function regionCards() {
+  const regions = [...new Set(DATA.team.filter((member) => matchesFilters(member.agent)).map((member) => member.region))].sort();
+  const cards = regions.map((region) => {
+    const inRegion = (deal) => teamByAgent.get(deal.agent)?.region === region && matchesFilters(deal.agent);
+    const engaged = DATA.engaged.filter(inRegion);
+    const sel = {
+      foco: engaged.filter((deal) => deal.queue === "foco"),
+      decidir: engaged.filter((deal) => deal.queue === "decidir"),
+      prospecting: DATA.prospecting.filter(inRegion),
+    };
+    const alert = sel.foco.length === 0 && sel.decidir.length > 0
+      ? `<p class="region-alert">Sem deal vivo. Confirme com RevOps se é processo ou importação de dados.</p>`
+      : "";
+    return `<article class="region"><h3>${escapeHtml(region)}</h3>${queueBar(sel).html}${alert}</article>`;
+  });
+  return `<section class="regions" aria-label="Pipeline por região">${cards.join("")}</section>`;
 }
 
 function viewEquipe(sel) {
@@ -342,26 +697,36 @@ function viewEquipe(sel) {
     const live = engaged.filter((deal) => deal.queue === "foco");
     const stale = engaged.filter((deal) => deal.queue === "decidir");
     const prospecting = DATA.prospecting.filter((deal) => deal.agent === member.agent).length;
-    return { member, live: live.length, liveValue: sumPrice(live), stale: stale.length, staleValue: sumPrice(stale), prospecting };
+    return { member, live: live.length, stale: stale.length, staleValue: sumPrice(stale), prospecting };
   }).sort((a, b) => b.stale - a.stale || a.member.agent.localeCompare(b.member.agent, "pt-BR"));
-  const body = rows.map((row) => `
-    <tr>
-      <td><button class="link-button" data-agent="${escapeHtml(row.member.agent)}">${escapeHtml(row.member.agent)}</button></td>
-      <td>${escapeHtml(row.member.region)}</td>
-      <td>${count(row.live)}</td>
-      <td>${money(row.liveValue)}</td>
-      <td>${count(row.stale)}</td>
-      <td>${money(row.staleValue)}</td>
-      <td>${count(row.prospecting)}</td>
-    </tr>`).join("");
+  const largest = Math.max(1, ...rows.map((row) => row.live + row.stale));
+  const body = rows.map((row) => {
+    const segment = (value, name, label) => (value
+      ? `<i class="${name}" style="width:${(value / largest) * 100}%" data-tip="${label}: ${value}"></i>`
+      : "");
+    return `
+      <tr>
+        <td><button class="link-button" data-agent="${escapeHtml(row.member.agent)}">${escapeHtml(row.member.agent)}</button></td>
+        <td>${escapeHtml(row.member.region)}</td>
+        <td class="team-bar"><div class="stack">${segment(row.live, "live", "Vivos")}${segment(row.stale, "stale", "Parados")}</div></td>
+        <td>${count(row.live)}</td>
+        <td>${count(row.stale)}</td>
+        <td>${money(row.staleValue)}</td>
+        <td>${count(row.prospecting)}</td>
+      </tr>`;
+  }).join("");
   return `
+    <div class="page-head"><h1>Equipe</h1><p>Onde o pipeline está parado e quem está sem deals vivos.</p></div>
+    ${regionCards()}
     ${viewCalculator(sel)}
-    <p class="view-intro">Para o manager: quem precisa limpar pipeline e quem está sem deals vivos. Clique em um nome para abrir a lista da pessoa.</p>
+    ${sectionHead("Por vendedor", "Clique em um nome para abrir a semana da pessoa")}
     <div class="table-wrap"><table>
-      <thead><tr><th>Vendedor</th><th>Região</th><th>Vivos</th><th>Valor vivo</th><th>Parados</th><th>Valor parado</th><th>Prospecção</th></tr></thead>
+      <thead><tr><th>Vendedor</th><th>Região</th><th style="text-align:left">Vivos e parados</th><th>Vivos</th><th>Parados</th><th>Valor parado</th><th>Prospecção</th></tr></thead>
       <tbody>${body}</tbody>
     </table></div>`;
 }
+
+/* Máquina do tempo */
 
 /** Field order written by scoring/backtest.py to keep replay.js small. */
 function replayDeal(row, agent) {
@@ -379,19 +744,17 @@ function replaySelection(monday) {
     deals,
     scoreRevenue: deals.reduce((total, deal) => total + deal.realized, 0),
     scoreWins: deals.filter((deal) => deal.outcome === "won").length,
+    lost: deals.filter((deal) => deal.outcome === "lost").length,
+    stillOpen: deals.filter((deal) => deal.outcome === "open").length,
     valueRevenue: sum((entry) => entry.valueRevenue),
     valueWins: sum((entry) => entry.valueWins),
     poolRevenue: sum((entry) => entry.poolRevenue),
   };
 }
 
-function outcomeChip(deal) {
-  if (deal.outcome === "won") {
-    return `<span class="outcome won">✓ Ganho: ${money(deal.realized)} em ${deal.daysToClose} dias</span>`;
-  }
-  if (deal.outcome === "lost") {
-    return `<span class="outcome lost">✕ Perdido em ${deal.daysToClose} dias</span>`;
-  }
+function outcomeLine(deal) {
+  if (deal.outcome === "won") return `<span class="outcome won">✓ Ganho: ${money(deal.realized)} em ${deal.daysToClose} dias</span>`;
+  if (deal.outcome === "lost") return `<span class="outcome lost">✕ Perdido em ${deal.daysToClose} dias</span>`;
   return `<span class="outcome open">– Seguia aberto após ${DATA.backtest.horizon_days} dias</span>`;
 }
 
@@ -402,17 +765,14 @@ function replayCard(deal) {
   const agent = state.agent ? "" : ` · ${escapeHtml(deal.agent)}`;
   return `
     <article class="deal">
-      <div class="score" aria-label="Score ${deal.score}">${deal.score}<small>score</small></div>
-      <div>
-        <div class="deal-head">
+      <div class="deal-top">
+        ${ring(deal.score)}
+        <div class="deal-title">
           <h3>${title}</h3>
-          <span class="price">${money(deal.price)}</span>
+          <div class="deal-meta">${escapeHtml(deal.id)} · ${deal.age} dias em Engaging${agent}</div>
+          ${state.revealed ? outcomeLine(deal) : ""}
         </div>
-        <div class="deal-meta">${escapeHtml(deal.id)} · ${deal.age} dias em Engaging${agent}</div>
-        <div class="bar" role="img" aria-label="Valor ${deal.valuePts} pontos, Momento ${deal.timingPts} pontos">
-          <i class="value" style="width:${deal.valuePts}%"></i><i class="timing" style="width:${deal.timingPts}%"></i>
-        </div>
-        ${state.revealed ? outcomeChip(deal) : ""}
+        <span class="price">${money(deal.price)}</span>
       </div>
     </article>`;
 }
@@ -429,36 +789,102 @@ function replayVerdict(result) {
   return "Nesta segunda e nesta seleção, as duas estratégias empataram.";
 }
 
+function mondayStrip() {
+  const differences = REPLAY.map((monday) => {
+    const result = replaySelection(monday);
+    return result.scoreRevenue - result.valueRevenue;
+  });
+  // The zero line moves so the strip has no empty half when one side never wins.
+  const largestUp = Math.max(0, ...differences);
+  const largestDown = Math.max(0, ...differences.map((difference) => -difference));
+  const span = Math.max(1, largestUp + largestDown);
+  const zero = (largestDown / span) * 100;
+  const columns = REPLAY.map((monday, index) => {
+    const difference = differences[index];
+    const height = (Math.abs(difference) / span) * 100;
+    const direction = difference >= 0 ? "up" : "down";
+    const tip = `${shortDate(monday.date)}: ${difference >= 0 ? "score à frente" : "maior valor à frente"} por ${money(Math.abs(difference))}`;
+    return `<button class="strip-col ${index === state.replayIndex ? "current" : ""}" data-replay="${index}" aria-label="${tip}" data-tip="${tip}">
+      <i class="${direction}" style="height:${height}%"></i>
+    </button>`;
+  }).join("");
+  const wins = differences.filter((difference) => difference > 0).length;
+  return `
+    <section class="card">
+      <h2>Todas as segundas: score contra maior valor</h2>
+      <p class="muted">Acima da linha, o score ganhou. Abaixo, maior valor ganhou. O score ficou à frente em ${wins} de ${differences.length}. Clique para abrir outra segunda.</p>
+      <div class="strip" style="--zero:${zero}%">${columns}</div>
+      <div class="strip-note"><span>${shortDate(REPLAY[0].date)}</span><span>${shortDate(REPLAY[REPLAY.length - 1].date)}</span></div>
+    </section>`;
+}
+
+function comparisonBars(result) {
+  const largest = Math.max(1, result.poolRevenue, result.scoreRevenue, result.valueRevenue);
+  const bar = (label, value, detail, highlight) => `
+    <div class="bar-row ${highlight ? "highlight" : ""}">
+      <span>${label}</span>
+      <span class="bar-track"><i style="width:${(value / largest) * 100}%"></i></span>
+      <span class="amount">${compactMoney(value)}</span>
+    </div>${detail ? "" : ""}`;
+  return `<div class="bars">
+    ${bar("Lista do score", result.scoreRevenue, "", true)}
+    ${bar("Lista por maior valor", result.valueRevenue, "", false)}
+    ${bar("Todos os deals abertos", result.poolRevenue, "", false)}
+  </div>`;
+}
+
 function viewTempo() {
-  if (REPLAY.length === 0) return `<div class="empty">Dados do replay não encontrados. Rode scoring/backtest.py.</div>`;
+  const head = `
+    <div class="page-head">
+      <h1>Máquina do tempo</h1>
+      <p>Volte a uma segunda de 2017 e veja a lista que a ferramenta teria mostrado, usando só o que se sabia naquele dia. Depois, revele o que aconteceu nos ${DATA.backtest.horizon_days} dias seguintes.</p>
+    </div>`;
+  if (REPLAY.length === 0) return head + `<div class="empty"><p>Dados do replay não encontrados. Rode scoring/backtest.py.</p></div>`;
   const monday = REPLAY[state.replayIndex];
   const result = replaySelection(monday);
-  const options = REPLAY.map((item, index) => {
-    const label = new Date(`${item.date}T12:00:00`).toLocaleDateString("pt-BR");
-    return `<option value="${index}" ${index === state.replayIndex ? "selected" : ""}>${label} · semana ${item.week} do trimestre</option>`;
-  }).join("");
+  const options = REPLAY.map((item, index) => (
+    `<option value="${index}" ${index === state.replayIndex ? "selected" : ""}>${shortDate(item.date)} · semana ${item.week} do trimestre</option>`
+  )).join("");
   const controls = `
-    <p class="view-intro">Volte a uma segunda de 2017 e veja a lista que a ferramenta teria mostrado, usando só o que se sabia naquele dia. Depois, revele o que aconteceu nos ${DATA.backtest.horizon_days} dias seguintes.</p>
     <div class="toolbar">
       <label class="inline-label">Segunda-feira <select id="replay-date">${options}</select></label>
-      ${state.revealed ? "" : `<button class="action-button primary" data-action="reveal">Revelar o que aconteceu</button>`}
+      ${state.revealed || result.deals.length === 0 ? "" : `<button class="action-button primary" data-action="reveal">Revelar o que aconteceu</button>`}
     </div>`;
   if (result.deals.length === 0) {
-    return controls + `<div class="empty">Sem deals vivos nesta seleção nesta segunda.</div>`;
+    return head + controls + `<div class="empty"><p>Sem deals vivos nesta seleção nesta segunda.</p></div>`;
   }
   const size = state.agent ? DATA.topK : TEAM_LIST_SIZE;
   const shown = result.deals.slice(0, size);
-  const listTitle = state.agent
-    ? `Lista desta segunda`
-    : `Os ${shown.length} maiores scores da seleção (de ${count(result.deals.length)} nas listas dos vendedores)`;
+  const listTitle = state.agent ? "Lista desta segunda" : `Os ${shown.length} maiores scores da seleção`;
+  const listNote = state.agent ? "" : `De ${count(result.deals.length)} nas listas dos vendedores`;
   const verdict = !state.revealed ? "" : `
-    <div class="tiles">
-      <div class="tile"><div class="label">Lista do score: receita em ${DATA.backtest.horizon_days} dias</div><div class="number">${money(result.scoreRevenue)}</div><div class="detail">${plural(result.scoreWins, "deal ganho", "deals ganhos")}</div></div>
-      <div class="tile"><div class="label">Lista por maior valor</div><div class="number">${money(result.valueRevenue)}</div><div class="detail">${plural(result.valueWins, "deal ganho", "deals ganhos")}</div></div>
-      <div class="tile"><div class="label">Ganho por todos os deals abertos</div><div class="number">${money(result.poolRevenue)}</div><div class="detail">Com ou sem lista, é o total possível</div></div>
-    </div>
-    <p class="verdict"><strong>${replayVerdict(result)}</strong> A comparação vale para o top ${DATA.topK} de cada vendedor da seleção. Ela mede se a lista aponta os deals certos, não se a atenção mudou o resultado.</p>`;
-  return controls + verdict + `<h2 class="section-title">${listTitle}</h2>` + shown.map(replayCard).join("");
+    <section class="card">
+      <p class="verdict-title verdict">${replayVerdict(result)}</p>
+      ${comparisonBars(result)}
+      <p class="muted" style="margin-top:8px">Lista do score: ${plural(result.scoreWins, "ganho", "ganhos")}, ${plural(result.lost, "perdido", "perdidos")} e ${count(result.stillOpen)} seguiam abertos. A comparação usa o top ${DATA.topK} de cada vendedor. Ela mede se a lista aponta os deals certos, não se a atenção mudou o resultado.</p>
+    </section>
+    ${mondayStrip()}`;
+  return head + controls + verdict + sectionHead(listTitle, listNote)
+    + `<div class="hero-deals">${shown.map(replayCard).join("")}</div>`;
+}
+
+/* Como funciona */
+
+function ageCurveChart() {
+  const largest = Math.max(...DATA.ageCurve.map((point) => point.rate));
+  const columns = DATA.ageCurve.map((point) => {
+    const percent = Math.round(point.rate * 100);
+    const height = (point.rate / largest) * 82;
+    const tip = `${point.age} a ${point.age + 14} dias: ${percent}% ganhos em 30 dias`;
+    return `<div class="curve-col" data-tip="${tip}">
+      <b style="bottom:calc(${height}% + 2px)">${percent}%</b>
+      <i style="height:${height}%"></i>
+    </div>`;
+  }).join("");
+  const axis = DATA.ageCurve.map((point) => `<span>${point.age}</span>`).join("");
+  return `<div class="curve" role="img" aria-label="Chance de vitória em 30 dias por idade do deal">${columns}</div>
+    <div class="curve-axis">${axis}</div>
+    <p class="muted" style="margin-top:6px">Idade do deal em dias, em faixas de 15. Média de todas as semanas do trimestre.</p>`;
 }
 
 function viewComo() {
@@ -470,7 +896,7 @@ function viewComo() {
   const bars = order.map((key) => `
     <div class="bar-row ${key === "score" ? "highlight" : ""}">
       <span>${names[key]}</span>
-      <span class="track"><i style="width:${(backtest.all[key].revenue / largest) * 100}%"></i></span>
+      <span class="bar-track"><i style="width:${(backtest.all[key].revenue / largest) * 100}%"></i></span>
       <span class="amount">US$ ${Math.round(backtest.all[key].revenue / 1000)} mil</span>
     </div>`).join("");
   const percent = (value) => `${Math.round(value * 1000) / 10}%`.replace(".", ",");
@@ -488,20 +914,24 @@ function viewComo() {
   const gain = Math.round((backtest.all.score.revenue / backtest.all.maior_valor.revenue - 1) * 100);
 
   return `<div class="explain">
-    <h2>O que é o score</h2>
+    <h1 style="margin-bottom:12px">Como funciona</h1>
     <p class="formula">Score = chance de ganhar em ${backtest.horizon_days} dias × valor do deal, em escala de 0 a 100</p>
     <ul>
       <li><strong>Valor</strong> é o preço de tabela do produto. O preço fechado costuma ficar muito próximo dele (mediana de 99,8%).</li>
       <li><strong>Momento</strong> é a frequência histórica de vitória em ${backtest.horizon_days} dias para deals da mesma idade, na mesma semana do trimestre.</li>
-      <li>A escala é logarítmica, pois os preços variam de US$ 55 a US$ 26.768. As duas partes somadas ordenam os deals exatamente pela receita esperada.</li>
+      <li>A escala é logarítmica, pois os preços variam de US$ 55 a US$ 26.768. As duas partes somadas ordenam os deals pela receita esperada.</li>
     </ul>
+
+    <h2>A vida de um deal</h2>
+    <p>A chance não sobe em linha reta com a idade. Ela tem dois picos, e depois de ${DATA.maxCycle} dias nenhum deal fechou.</p>
+    ${ageCurveChart()}
 
     <h2>O que ficou de fora, de propósito</h2>
     <p>Vendedor, produto, setor e porte da conta quase não preveem o resultado (AUC de cerca de 0,55) e não melhoraram a lista quando testados. Colocá-los no score criaria uma precisão falsa, e ainda penalizaria deals por causa de quem os atende.</p>
 
     <h2>Isso funciona?</h2>
     <p>Reconstruímos ${backtest.mondays} segundas-feiras, de julho a novembro de 2017. Em cada uma, montamos o top ${backtest.top_k} de cada vendedor usando só o que se sabia naquele dia e medimos a receita ganha nos ${backtest.horizon_days} dias seguintes.</p>
-    <p><strong>O score trouxe ${gain}% mais receita do que ordenar por valor e ficou à frente em ${comparison.better_mondays} das ${backtest.mondays} segundas.</strong></p>
+    <p><strong>O score trouxe ${gain}% mais receita do que ordenar por valor e ficou à frente em ${comparison.better_mondays} das ${backtest.mondays} segundas.</strong> Confira segunda a segunda na Máquina do tempo.</p>
     <div class="bars" aria-hidden="true">${bars}</div>
     <div class="table-wrap"><table>
       <caption>Receita média por segunda no top ${backtest.top_k} de cada vendedor</caption>
@@ -529,7 +959,7 @@ function viewComo() {
 
     <h2>O que esta ferramenta não sabe</h2>
     <ul>
-      <li><strong>Ela não prova aumento de vendas.</strong> O replay mostra que a lista aponta os deals que iam fechar, não que a atenção do vendedor muda o resultado. Medir isso exige um teste com grupo de controle.</li>
+      <li><strong>Ela não prova aumento de vendas.</strong> O replay mostra que a lista aponta os deals que iam fechar, não que a atenção do vendedor muda o resultado.</li>
       <li><strong>Mais receita não é mais vitórias.</strong> Entre outubro e novembro, ordenar pelo mais novo ganhou mais deals, enquanto o score trouxe mais receita.</li>
       <li><strong>O efeito de trimestre é uma hipótese.</strong> Melhorou o replay, mas se baseia em no máximo três trimestres observados e pode ser efeito do dataset. RevOps precisa confirmar se é processo comercial.</li>
       <li><strong>Passar de ${DATA.maxCycle} dias não prova que um deal morreu.</strong> Por isso, a decisão fica com o vendedor.</li>
@@ -539,47 +969,83 @@ function viewComo() {
   </div>`;
 }
 
+/* Rendering */
+
 function renderView(sel) {
-  const views = { foco: viewFoco, decidir: viewDecidir, prospeccao: viewProspeccao, equipe: viewEquipe, tempo: viewTempo, como: viewComo };
+  const views = { foco: viewFoco, decidir: viewDecidir, prospeccao: viewProspeccao, revisar: viewRevisar, equipe: viewEquipe, tempo: viewTempo, como: viewComo };
   document.getElementById("view").innerHTML = views[state.tab](sel);
 }
 
 function render() {
   const sel = selection();
-  // These summarize today's pipeline, which would clash with a past Monday.
-  const showToday = state.tab !== "tempo";
-  document.getElementById("briefing").hidden = !showToday;
-  document.getElementById("tiles").hidden = !showToday;
   renderFilters();
-  renderBriefing(sel);
-  renderTiles(sel);
   renderTabs(sel);
   renderView(sel);
+  hideTooltip();
 }
 
 function changeFilter(update) {
-  Object.assign(state, update, { limit: PAGE_SIZE, revealed: false });
-  writeStorage(STORAGE_AGENT, state.agent);
+  Object.assign(state, update, { limit: PAGE_SIZE, revealed: false, lastDecision: null });
+  state.skipped.clear();
+  writeStorage(STORAGE.agent, state.agent);
   render();
 }
 
-function exportDecisions() {
-  const byId = new Map(DATA.engaged.map((deal) => [deal.id, deal]));
-  const quote = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
-  const header = ["opportunity_id", "vendedor", "produto", "conta", "idade_dias", "valor_tabela", "decisao"];
-  const rows = Object.entries(state.decisions)
-    .filter(([id]) => byId.has(id))
-    .map(([id, decision]) => {
-      const deal = byId.get(id);
-      return [id, deal.agent, deal.product, deal.account, deal.age, deal.price, decision].map(quote).join(",");
-    });
-  const blob = new Blob(["﻿" + [header.join(","), ...rows].join("\r\n")], { type: "text/csv;charset=utf-8" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "decisoes-deals-parados.csv";
-  link.click();
-  URL.revokeObjectURL(link.href);
+function goTo(target) {
+  if (target === "foco-lista") {
+    document.getElementById("foco-lista")?.scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  state.tab = target;
+  state.limit = PAGE_SIZE;
+  state.revealed = false;
+  render();
+  window.scrollTo(0, 0);
 }
+
+function setFocusAction(id, action) {
+  state.focusActions[id] = action;
+  writeStorage(STORAGE.focusActions, JSON.stringify(state.focusActions));
+  render();
+  document.querySelector("[data-focus]")?.focus({ preventScroll: true });
+}
+
+function clearMark(store, storageKey, id) {
+  delete store[id];
+  writeStorage(storageKey, JSON.stringify(store));
+  render();
+}
+
+/* Tooltip */
+
+const tooltip = document.getElementById("tooltip");
+
+function showTooltip(target) {
+  tooltip.textContent = target.dataset.tip;
+  tooltip.hidden = false;
+  const box = target.getBoundingClientRect();
+  const left = Math.min(Math.max(8, box.left + box.width / 2 - tooltip.offsetWidth / 2), window.innerWidth - tooltip.offsetWidth - 8);
+  const top = box.top - tooltip.offsetHeight - 6;
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top < 8 ? box.bottom + 6 : top}px`;
+}
+
+function hideTooltip() {
+  tooltip.hidden = true;
+}
+
+document.addEventListener("mouseover", (event) => {
+  const target = event.target.closest("[data-tip]");
+  if (target) showTooltip(target);
+  else hideTooltip();
+});
+document.addEventListener("focusin", (event) => {
+  const target = event.target.closest("[data-tip]");
+  if (target) showTooltip(target);
+  else hideTooltip();
+});
+
+/* Events */
 
 document.getElementById("filter-region").addEventListener("change", (event) => {
   changeFilter({ region: event.target.value, manager: "", agent: "" });
@@ -596,14 +1062,13 @@ document.getElementById("filter-agent").addEventListener("change", (event) => {
 document.getElementById("tabs").addEventListener("click", (event) => {
   const button = event.target.closest("[data-tab]");
   if (!button) return;
-  state.tab = button.dataset.tab;
-  state.limit = PAGE_SIZE;
-  state.revealed = false;
-  render();
+  goTo(button.dataset.tab);
   document.querySelector(`[data-tab="${state.tab}"]`).focus();
 });
 
-document.getElementById("view").addEventListener("change", (event) => {
+const view = document.getElementById("view");
+
+view.addEventListener("change", (event) => {
   if (event.target.id !== "replay-date") return;
   state.replayIndex = Number(event.target.value);
   state.revealed = false;
@@ -611,47 +1076,57 @@ document.getElementById("view").addEventListener("change", (event) => {
   document.getElementById("replay-date").focus();
 });
 
-document.getElementById("view").addEventListener("input", (event) => {
+view.addEventListener("input", (event) => {
   const field = event.target.dataset.calc;
   if (!field) return;
   const value = Number(event.target.value);
   state.calculator[field] = Number.isFinite(value) && value >= 0 ? value : 0;
-  writeStorage(STORAGE_CALCULATOR, JSON.stringify(state.calculator));
+  writeStorage(STORAGE.calculator, JSON.stringify(state.calculator));
   // Only the result changes, so the input keeps focus while typing.
   document.getElementById("calc-result").innerHTML = calculatorResult(selection());
 });
 
-document.getElementById("view").addEventListener("click", (event) => {
+view.addEventListener("click", (event) => {
   const target = event.target.closest("button");
   if (!target) return;
-  if (target.dataset.go) {
-    state.tab = target.dataset.go;
-    state.limit = PAGE_SIZE;
-    render();
-  } else if (target.dataset.action === "reveal") {
+  const { dataset } = target;
+  if (dataset.go) goTo(dataset.go);
+  else if (dataset.focus) setFocusAction(dataset.id, dataset.focus);
+  else if (dataset.undoFocus) clearMark(state.focusActions, STORAGE.focusActions, dataset.undoFocus);
+  else if (dataset.undoDecision) clearMark(state.decisions, STORAGE.decisions, dataset.undoDecision);
+  else if (dataset.decision) recordDecision(dataset.id, dataset.decision);
+  else if (dataset.replay) {
+    state.replayIndex = Number(dataset.replay);
     state.revealed = true;
     renderView(selection());
-  } else if (target.dataset.action === "more") {
+  } else if (dataset.agent) {
+    state.tab = "foco";
+    changeFilter({ agent: dataset.agent });
+    window.scrollTo(0, 0);
+  } else if (dataset.action === "reveal") {
+    state.revealed = true;
+    renderView(selection());
+  } else if (dataset.action === "more") {
     state.limit += PAGE_SIZE;
     renderView(selection());
-  } else if (target.dataset.action === "export") {
-    exportDecisions();
-  } else if (target.dataset.agent) {
-    state.tab = "foco";
-    changeFilter({ agent: target.dataset.agent });
-    window.scrollTo(0, 0);
-  } else if (target.dataset.decision) {
-    const { id, decision } = target.dataset;
-    if (state.decisions[id] === decision) delete state.decisions[id];
-    else state.decisions[id] = decision;
-    writeStorage(STORAGE_DECISIONS, JSON.stringify(state.decisions));
-    const buttons = target.parentElement.querySelectorAll("[data-decision]");
-    buttons.forEach((button) => button.setAttribute("aria-pressed", String(state.decisions[id] === button.dataset.decision)));
-    const sel = selection();
-    const decided = sel.decidir.filter((deal) => state.decisions[deal.id]).length;
-    document.getElementById("decision-progress").textContent =
-      `${count(decided)} de ${count(sel.decidir.length)} decididos · maior valor primeiro`;
+  } else if (dataset.action === "export") {
+    exportReview();
+  } else if (dataset.action === "skip") {
+    skipTriage(dataset.id);
+  } else if (dataset.action === "undo-decision") {
+    undoDecision();
   }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (state.tab !== "decidir" || event.ctrlKey || event.metaKey || event.altKey) return;
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(event.target.tagName)) return;
+  const next = nextForTriage(selection());
+  const key = event.key.toLowerCase();
+  if (key === "u") undoDecision();
+  else if (next && key === "v") recordDecision(next.id, "vivo");
+  else if (next && key === "e") recordDecision(next.id, "encerrar");
+  else if (next && key === "p") skipTriage(next.id);
 });
 
 renderHeader();

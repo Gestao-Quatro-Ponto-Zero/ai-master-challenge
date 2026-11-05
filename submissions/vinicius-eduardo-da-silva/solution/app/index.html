@@ -7,24 +7,31 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="page-header">
-    <div>
-      <h1>Foco da Semana</h1>
-      <p id="as-of" class="muted"></p>
-    </div>
-    <div class="filters" aria-label="Filtros">
-      <label>Região<select id="filter-region"></select></label>
-      <label>Manager<select id="filter-manager"></select></label>
-      <label>Vendedor<select id="filter-agent"></select></label>
-    </div>
-  </header>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <div class="brand-name">Foco da Semana</div>
+          <div id="as-of" class="brand-date"></div>
+        </div>
+      </div>
 
-  <main>
-    <section id="briefing" class="briefing" aria-live="polite"></section>
-    <section id="tiles" class="tiles" aria-label="Resumo do pipeline"></section>
-    <nav class="tabs" role="tablist" aria-label="Filas de trabalho" id="tabs"></nav>
-    <section id="view" role="tabpanel"></section>
-  </main>
+      <div class="filters" aria-label="Filtros">
+        <label class="filter-main">Vendedor<select id="filter-agent"></select></label>
+        <div class="filter-pair">
+          <label>Região<select id="filter-region"></select></label>
+          <label>Manager<select id="filter-manager"></select></label>
+        </div>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Áreas da ferramenta" id="tabs"></nav>
+    </aside>
+
+    <main id="view" role="tabpanel"></main>
+  </div>
+
+  <div id="tooltip" class="tooltip" role="status" hidden></div>
 
   <script src="data.js"></script>
   <script src="replay.js"></script>

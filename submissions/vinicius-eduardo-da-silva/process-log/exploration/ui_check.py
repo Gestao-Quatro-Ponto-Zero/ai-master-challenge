@@ -20,59 +20,99 @@ def check(name, condition, detail=""):
         failures.append(name)
 
 
+def nav_count(page, tab):
+    return page.locator(f'[data-tab="{tab}"] .nav-count').inner_text()
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(channel="msedge", headless=True)
-    context = browser.new_context(viewport={"width": 1280, "height": 900}, accept_downloads=True)
+    context = browser.new_context(viewport={"width": 1360, "height": 900}, accept_downloads=True)
     page = context.new_page()
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
     page.goto(page_url)
     page.wait_for_selector(".deal")
-    tile_numbers = page.locator(".tile .number").all_inner_texts()
-    check("all-team tiles", tile_numbers == ["288", "1.301", "500"], str(tile_numbers))
+    check("team counts", [nav_count(page, t) for t in ("foco", "decidir", "prospeccao")] == ["288", "1.301", "500"])
     page.screenshot(path=shots / "01-visao-geral.png")
 
+    # A rep's week
     page.select_option("#filter-agent", "Zane Levy")
-    check("rep list shows top 10 first", page.locator(".deal").count() == 30, str(page.locator(".deal").count()))
-    scores = [int(s.split()[0]) for s in page.locator(".score").all_inner_texts()]
+    check("all live deals listed", page.locator(".deal").count() == 30, str(page.locator(".deal").count()))
+    check("three highlighted deals", page.locator(".hero-deals .deal").count() == 3)
+    scores = [int(s) for s in page.locator(".ring span").all_inner_texts()]
     check("scores sorted", scores == sorted(scores, reverse=True), str(scores[:10]))
+    check("plan has three steps", page.locator(".step").count() == 3)
     page.screenshot(path=shots / "02-vendedor-foco.png")
+    page.screenshot(path=shots / "02b-vendedor-foco-inteira.png", full_page=True, clip={"x": 0, "y": 0, "width": 1360, "height": 1500})
 
+    page.locator(".why summary").first.click()
+    check("score explanation opens", "Momento" in page.locator(".why-body").first.inner_text())
+
+    first_title = page.locator(".hero-deals h3").first.inner_text()
+    page.locator('[data-focus="feito"]').first.click()
+    check("marked deal leaves the to-do list", page.locator(".hero-deals h3").first.inner_text() != first_title)
+    check("step progress updates", "1 de 10 feitos" in page.locator(".step").first.inner_text())
+    check("pending count drops", nav_count(page, "foco") == "29")
+    page.locator('[data-focus="adiado"]').first.click()
+    check("review count", nav_count(page, "revisar") == "2")
+
+    # Review
+    page.click('[data-tab="revisar"]')
+    check("review shows done and postponed", "Feitos nesta semana" in page.locator("#view").inner_text() and "Adiados" in page.locator("#view").inner_text())
+    page.screenshot(path=shots / "04b-revisar.png")
+    page.locator("[data-undo-focus]").first.click()
+    check("undo works in review", nav_count(page, "revisar") == "1")
+
+    # Rep with no live deals
+    page.click('[data-tab="foco"]')
     page.select_option("#filter-agent", "")
     page.select_option("#filter-region", "Central")
-    check("central has no live deals", page.locator(".tile .number").first.inner_text() == "0")
+    check("central has no live deals", nav_count(page, "foco") == "0")
     managers = page.locator("#filter-manager option").all_inner_texts()
     check("manager filter cascades", set(managers) == {"Todos", "Dustin Brinkmann", "Melvin Marxen"}, str(managers))
     page.select_option("#filter-agent", "Darcel Schlecht")
     check("empty rep gets guidance", "nenhum deal vivo" in page.locator("#briefing").inner_text())
     page.screenshot(path=shots / "03-vendedor-sem-deal-vivo.png")
 
+    # Triage
     page.click('[data-tab="decidir"]')
-    check("decide queue count", page.locator(".simple-row").count() == 30)
-    page.locator('[data-decision="encerrar"]').first.click()
+    check("decide list", page.locator(".simple-row").count() == 30)
+    page.locator('.triage [data-decision="encerrar"]').click()
     check("decision updates progress", page.locator("#decision-progress").inner_text().startswith("1 de 83"))
-    page.locator('[data-decision="vivo"]').nth(1).click()
+    page.locator('.triage [data-decision="vivo"]').click()
+    check("triage moves to the next deal", page.locator("#decision-progress").inner_text().startswith("2 de 83"))
+    page.keyboard.press("e")
+    check("keyboard decides", page.locator("#decision-progress").inner_text().startswith("3 de 83"))
+    page.keyboard.press("u")
+    check("keyboard undoes", page.locator("#decision-progress").inner_text().startswith("2 de 83"))
+    before = page.locator(".triage h2").inner_text()
+    page.keyboard.press("p")
+    check("skip shows another deal", page.locator(".triage h2").inner_text() != before or "2 de 83" in page.locator("#decision-progress").inner_text())
     page.screenshot(path=shots / "04-fila-decidir.png")
     with page.expect_download() as download_info:
         page.click('[data-action="export"]')
     exported = Path(download_info.value.path()).read_text(encoding="utf-8-sig")
-    rows = list(csv.DictReader(exported.splitlines()))
+    rows = [r for r in csv.DictReader(exported.splitlines()) if r["tipo"] == "parado"]
     check("csv export has both decisions", sorted(r["decisao"] for r in rows) == ["encerrar", "vivo"], str(rows[:1]))
     page.reload()
-    page.wait_for_selector(".tile")
+    page.wait_for_selector(".nav-count")
     page.click('[data-tab="decidir"]')
     check("decisions and rep survive reload", page.locator("#decision-progress").inner_text().startswith("2 de 83"))
 
     page.click('[data-tab="prospeccao"]')
     check("prospecting list", page.locator(".simple-row").count() == 30)
-    check("prospecting says no score", "não recebem score" in page.locator(".view-intro").inner_text())
+    check("prospecting says no score", "não recebem score" in page.locator(".page-head").inner_text())
 
+    # Team
     page.select_option("#filter-agent", "")
     page.select_option("#filter-region", "")
     page.click('[data-tab="equipe"]')
     check("team table has 35 people", page.locator("tbody tr").count() == 35, str(page.locator("tbody tr").count()))
+    check("three region cards", page.locator(".region").count() == 3)
+    check("central flagged", "Sem deal vivo" in page.locator(".region", has_text="Central").inner_text())
     page.screenshot(path=shots / "05-equipe.png")
+    page.click('[data-tab="foco"]')
     page.select_option("#filter-agent", "Donn Cantrell")
     check("rep with no open deals", "nenhum deal aberto" in page.locator("#briefing").inner_text())
     page.select_option("#filter-agent", "Carl Lin")
@@ -91,13 +131,19 @@ with sync_playwright() as p:
 
     # Time machine: nothing about the outcome may show before the reveal.
     page.click('[data-tab="tempo"]')
-    page.screenshot(path=shots / "08-maquina-do-tempo-antes.png", full_page=False)
+    page.screenshot(path=shots / "08-maquina-do-tempo-antes.png")
     text = page.locator("#view").inner_text()
-    check("no outcome before reveal", not any(w in text for w in ["Ganho:", "Perdido em", "Seguia aberto", "Conta em branco"]))
+    check("no outcome before reveal", not any(w in text for w in ["Ganho:", "Perdido em", "Seguia aberto", "Conta em branco", "à frente"]))
+    check("no strip before reveal", page.locator(".strip").count() == 0)
     page.click('[data-action="reveal"]')
     text = page.locator("#view").inner_text()
     check("reveal shows outcomes", "Ganho:" in text and "Lista por maior valor" in text)
-    page.screenshot(path=shots / "09-maquina-do-tempo-depois.png")
+    check("strip has all Mondays", page.locator(".strip-col").count() == 22)
+    page.screenshot(path=shots / "09-maquina-do-tempo-depois.png", full_page=True, clip={"x": 0, "y": 0, "width": 1360, "height": 1000})
+    page.locator(".strip-col").nth(3).hover()
+    check("strip tooltip", "à frente" in page.locator("#tooltip").inner_text())
+    page.locator(".strip-col").nth(3).click()
+    check("strip changes the Monday", page.locator("#replay-date").input_value() == "3")
     page.select_option("#replay-date", index=0)
     check("changing the Monday hides results again", "Ganho:" not in page.locator("#view").inner_text())
     check("reveal button returns", page.locator('[data-action="reveal"]').count() == 1)
@@ -127,18 +173,26 @@ with sync_playwright() as p:
 
     page.click('[data-tab="como"]')
     check("pilot section shows numbers", "Um trimestre completo" in page.locator("#view").inner_text())
+    check("age curve drawn", page.locator(".curve-col").count() == 10, str(page.locator(".curve-col").count()))
     page.screenshot(path=shots / "06-como-funciona.png", full_page=True)
 
     mobile = browser.new_context(viewport={"width": 390, "height": 844}, color_scheme="dark").new_page()
+    mobile.on("pageerror", lambda e: errors.append(str(e)))
     mobile.goto(page_url)
     mobile.wait_for_selector(".deal")
     mobile.select_option("#filter-agent", "Zane Levy")
-    overflow = mobile.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
-    check("no horizontal scroll on phone", overflow <= 0, str(overflow))
-    mobile.screenshot(path=shots / "07-celular-escuro.png")
-    mobile.click('[data-tab="como"]')
-    overflow = mobile.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
-    check("explanation fits on phone", overflow <= 0, str(overflow))
+    for tab in ("foco", "decidir", "prospeccao", "revisar", "equipe", "tempo", "como"):
+        mobile.click(f'[data-tab="{tab}"]')
+        overflow = mobile.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+        check(f"no horizontal scroll on phone: {tab}", overflow <= 0, str(overflow))
+    mobile.click('[data-tab="foco"]')
+    mobile.screenshot(path=shots / "07-celular-escuro.png", full_page=True, clip={"x": 0, "y": 0, "width": 390, "height": 1500})
+
+    dark = browser.new_context(viewport={"width": 1360, "height": 900}, color_scheme="dark").new_page()
+    dark.goto(page_url)
+    dark.wait_for_selector(".deal")
+    dark.select_option("#filter-agent", "Zane Levy")
+    dark.screenshot(path=shots / "10-tema-escuro.png")
 
     check("no console errors", not errors, str(errors[:3]))
     browser.close()

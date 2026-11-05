@@ -32,6 +32,7 @@ Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius d
 7. **Interface e teste no navegador** (`exploration/ui_check.py`).
 8. **Revisão visual e correção do início de trimestre** (`exploration/quarter_start_check.py`).
 9. **Extras.** Vinicius perguntou se o enunciado estava atendido e se dava para ir além. O Claude apontou as fraquezas da entrega e propôs quatro ideias, e ele escolheu três.
+10. **Redesign.** Ao usar a página, Vinicius achou que ela estava simples demais e pediu algo mais visual, fácil de entender, de agir e de revisar. O Claude transformou a lista em uma mesa de trabalho: plano da semana em 3 passos, cartões com linha da vida do deal, botões Feito e Adiar, triagem da fila Decidir com atalhos de teclado, aba Revisar e visões por região. O score não mudou.
 
 Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` roda na versão do commit `4a93295`, antes da troca de mês por semana.
 
