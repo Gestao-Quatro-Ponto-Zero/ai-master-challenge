@@ -15,6 +15,7 @@ Este registro separa o que eu decidi do que a IA propôs.
 | 7 | Propor um simulador de cenários com IA | Ficou fora desta entrega por recomendação da IA, porque ainda não foi testado no histórico |
 | 8 | Colocar uma LLM no produto, pelo OpenRouter, com modelos pequenos para controlar o custo | A IA reduziu os candidatos a modelos pequenos e integrou a sugestão na checagem |
 | 9 | Escolher o modelo depois de ver os números: testar também o DeepSeek V4.1 Flash e ficar com o Claude Haiku 5.5 | O Haiku virou o padrão, com 59 acertos nas duas rodadas |
+| 10 | Manter a execução local e adicionar um vídeo de apresentação com os dados | A IA gravou a ferramenta real e montou o vídeo com narração sintética |
 
 ## Decisões propostas pela IA, com a minha aprovação geral
 

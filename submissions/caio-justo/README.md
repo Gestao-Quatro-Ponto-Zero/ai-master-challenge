@@ -12,6 +12,8 @@
 
 Testei os dados do CRM e nenhum critério do cadastro prevê quem vai fechar: vendedor, produto, setor, região, manager, porte e conta ficam perto do acaso (AUC de 0,47 a 0,52). Por isso, em vez de mais uma nota de chance, construí **uma ferramenta que diz onde focar e testa se essa recomendação funciona**. O vendedor abre na segunda e vê a lista com o motivo de cada negócio. A Head de RevOps recebe a resposta para a maior dúvida do pipeline: 81% dos negócios em Engaging, $3,2M a preço de tabela, já passaram do maior ciclo registrado, e uma amostra de 100 estima quanto disso ainda é real. A recomendação é rodar a checagem primeiro, porque é o caminho mais rápido e barato para limpar a fila. Na checagem, há uma sugestão opcional por LLM: o vendedor escreve uma linha sobre o negócio, e a IA sugere a resposta, que só vale quando ele confirma.
 
+**[Assista à apresentação de 2 minutos](./docs/apresentacao.mp4).** Mostra a ferramenta real e os principais números. As telas da Visão da Head usam dados simulados, e isso aparece no vídeo.
+
 ![Lista da semana do vendedor](./process-log/screenshots/01-minha-semana.png)
 
 ---
@@ -133,6 +135,7 @@ A ferramenta roda sem API e sem custo por uso. A sugestão por LLM é opcional e
 | Claude Code (Claude Opus 5.5), no T3 Code | Quase toda a execução: análise, código, testes, leitura dos PRs, pesquisa de artigos e redação deste documento |
 | Subagentes do Claude Code | Leitura das submissões por desafio e das reviews públicas |
 | OpenRouter | Teste de 6 modelos pequenos na sugestão por LLM. O Claude Haiku 5.5 ficou como padrão no produto |
+| HyperFrames e Edge TTS | Montagem do vídeo de apresentação, com narração em voz sintética |
 | Playwright | Uso da ferramenta no navegador e capturas de tela |
 
 ### Workflow
@@ -170,6 +173,7 @@ Sendo direto: a maior parte do raciocínio técnico veio da IA, e este log não 
 ## Evidências
 
 - [x] Screenshots da ferramenta: [`process-log/screenshots/`](./process-log/screenshots/)
+- [x] Vídeo de apresentação: [`docs/apresentacao.mp4`](./docs/apresentacao.mp4)
 - [x] Git history desta branch
 - [x] Scripts exploratórios, incluindo os que deram errado: [`process-log/scripts-exploratorios/`](./process-log/scripts-exploratorios/)
 - [x] Registro de decisões: [`process-log/decisoes.md`](./process-log/decisoes.md)
