@@ -1,6 +1,6 @@
 # Evidências científicas
 
-Cada decisão da ferramenta abaixo se apoia em uma fonte. Conferi título, autores e ano pelo DOI no OpenAlex, e li os resumos. **Não li os artigos completos**, então cito só o que está nos resumos. Vários estudos vêm de outros contextos, e isso está indicado.
+Cada decisão da ferramenta abaixo se apoia em uma fonte. Título, autores e ano foram conferidos pelo DOI no OpenAlex, e as citações usam o que está nos resumos publicados. Vários estudos vêm de outros contextos, e isso está indicado.
 
 ## Por que testar, em vez de só dar uma nota
 
