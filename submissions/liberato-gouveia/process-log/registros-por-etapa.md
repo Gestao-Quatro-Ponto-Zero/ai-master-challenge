@@ -823,3 +823,55 @@ Não informado.
 | — | Exportação desta conversa com o Claude (link ou prints) | ⏳ Pendente |
 | — | Enviar a Fase 4 para a branch no GitHub | ⏳ Aguarda autorização |
 | — | Abrir o Pull Request (submissão final) | ⏳ Aguarda autorização explícita |
+
+---
+
+## Registro 12: Aprovação da Fase 4 e envio ao GitHub (04/11/2026, 22:13)
+
+**Objetivo da etapa**
+Registrar a aprovação da Fase 4 pelo Liberato, conferir os 6 pontos que ele pediu antes do envio, enviar a Fase 4 para a branch e verificar o que foi publicado. **Não houve Pull Request.**
+
+**Ferramentas utilizadas**
+- Claude: atualização da documentação, verificações (scripts, npm, pytest, navegador automático), git e API do GitHub
+- ChatGPT: revisão desta aprovação, segundo o Liberato (ver a tabela de interações no início deste arquivo)
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "G4 AI Master — Aprovação da Fase 4. Confirmo minhas decisões finais: 1. Revisei o README e aprovo seu conteúdo. 2. Meu LinkedIn: https://www.linkedin.com/in/liberato-gouveia 3. Meu e-mail de contato: libegouv@gmail.com 4. Abri e testei pessoalmente a aplicação. Está funcionando corretamente. 5. Forneço as conversas para inclusão como evidências no Process Log: Claude: https://claude.ai/share/82aedf4c-99f6-4ca3-b128-fd5bd72a8b38 ChatGPT: https://chatgpt.com/share/6aebd756-c1c8-83e8-94d7-712e4085ba02 6. Autorizo o envio completo da Fase 4 para minha branch `submission/liberato-gouveia`. Antes de enviar, confirme que: O README segue o template oficial do G4. O código completo do Lovable está incluído. As instruções de instalação e execução estão corretas. O Process Log contém o Registro 11 e as evidências disponíveis. Nenhum arquivo fora de `submissions/liberato-gouveia/` será modificado. Nenhuma informação sensível será publicada indevidamente. Sobre o e-mail nos commits: não reescreva o histórico sem uma autorização específica. Deixe essa decisão registrada como pendente. Registre esta aprovação e a revisão com o ChatGPT no Process Log. Depois do envio, verifique os arquivos publicados no GitHub e apresente um relatório final. NÃO ABRA O PULL REQUEST. Quero revisar a versão publicada antes de autorizar a submissão oficial ao G4."
+
+**Decisões que realmente tomei (Liberato)**
+1. Revisei e aprovei o README.
+2. Informei meu LinkedIn e meu e-mail de contato para o README.
+3. Abri e testei a aplicação pessoalmente: está funcionando.
+4. Forneci os links das conversas com o Claude e com o ChatGPT como evidência.
+5. Autorizei o envio completo da Fase 4 para a branch, depois de 6 confirmações.
+6. **E-mail nos commits: o histórico não deve ser reescrito sem uma autorização específica.** Fica pendente.
+7. Não abrir o PR. Quero revisar a versão publicada antes de autorizar a submissão oficial.
+
+**Revisão com o ChatGPT:** registrada na tabela de interações (linha de 04/11 às 22:13), com os links das conversas. O Claude não conseguiu ler o conteúdo dos links, que carregam por JavaScript.
+
+**Resultados obtidos: as 6 confirmações antes do envio**
+
+| # | Confirmação pedida | Resultado | Como foi conferido |
+|---|---|---|---|
+| 1 | O README segue o template oficial do G4 | ✅ Os 14 títulos do template estão presentes, com Nome, LinkedIn, Challenge, Ferramentas, Workflow, "Onde a IA errou", "O que eu adicionei", Evidências e data de envio. Também traz o link do app, a abordagem, os resultados, as limitações e o Process Log | Script comparando com `templates/submission-template.md` |
+| 2 | O código completo do Lovable está incluído | ✅ São 76 arquivos: os 77 do ZIP, menos o README e o AGENTS.md do Lovable, mais o nosso README. Os 75 arquivos do Lovable são **idênticos byte a byte** aos do ZIP | Comparação de lista e de conteúdo |
+| 3 | As instruções de instalação e execução estão corretas | ✅ Numa **cópia limpa** do commit `f8b9c33`: o motor regerou o JSON idêntico, com 14 de 14 testes; `npm install --legacy-peer-deps` instalou 509 pacotes; `npm run build` compilou; `npm test` passou 1 de 1; `npm run dev` com o teste de ponta a ponta deu **29 de 29** | Execução seguindo o README, passo a passo |
+| 4 | O Process Log contém o Registro 11 e as evidências disponíveis | ✅ O Registro 11 está presente; os 4 arquivos de evidência que ele cita existem; os links das conversas estão no README, nos registros e no diário | Script |
+| 5 | Nenhum arquivo fora de `submissions/liberato-gouveia/` | ✅ 0 arquivos fora da pasta | `git diff` contra a `main` do G4 |
+| 6 | Nenhuma informação sensível publicada indevidamente | ✅ Nenhum arquivo temporário, dependência instalada, arquivo compilado, `.env`, chave ou senha. O e-mail `libegouv@gmail.com` aparece **só** no README (por decisão do Liberato, como contato) e no Registro 11 (descrevendo o achado sobre os commits). O LinkedIn aparece só no README | Varredura |
+
+**Pendente (não resolvido nesta etapa):** o e-mail nos commits já publicados. Por decisão do Liberato, o histórico **não** foi reescrito.
+
+**Sugestões da IA ainda não validadas por mim**
+- Nenhuma nova.
+
+**Erros encontrados e correções**
+- Nenhum nesta etapa.
+
+**Testes ou evidências disponíveis**
+- `prompts/`, `analises/resultados/` e `prints/` (conforme os registros anteriores)
+- `versoes/README_rascunho_revisado_pelo_Liberato_2026-11-04.md`: o README antes da inclusão do LinkedIn, do e-mail e dos links
+- Os links das conversas (Claude e ChatGPT)
+
+**Tempo aproximado**
+Não informado.
