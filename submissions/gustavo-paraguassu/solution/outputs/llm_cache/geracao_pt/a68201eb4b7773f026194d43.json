@@ -1,0 +1,10 @@
+{
+ "texto_en": "installation thursday march re installation hello help well currently kind regards engineer march installation hi please let re keen install level package help thanks",
+ "mensagem": "Oi, pessoal! Preciso de ajuda com a instalação marcada pra quinta-feira em março. Queria instalar o pacote de nível, vocês conseguem me ajudar? Valeu!",
+ "meta": {
+  "input_tokens": 467,
+  "output_tokens": 81,
+  "custo_usd": 0.003488,
+  "request_id": "req_011CgipfQiYuBCu4tztYbzxH"
+ }
+}

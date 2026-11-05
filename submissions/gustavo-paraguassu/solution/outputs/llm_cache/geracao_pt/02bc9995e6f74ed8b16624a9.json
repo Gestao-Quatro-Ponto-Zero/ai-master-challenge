@@ -1,0 +1,10 @@
+{
+ "texto_en": "expenses approval sent wednesday approval hi hoping either you can help have report states pending manager approval when look approval shows sitting with but have spoken have his queue can you please confirm sitting with for approval cheers head digital",
+ "mensagem": "Oi, tudo bem? Mandei um relatório de despesas pra aprovação na quarta e ele continua como pendente de aprovação do gestor; quando olho a aprovação, aparece que está parado com ele, mas já falei com ele e não está na fila dele. Vocês conseguem confirmar com quem está parado pra aprovação? Valeu!",
+ "meta": {
+  "input_tokens": 497,
+  "output_tokens": 131,
+  "custo_usd": 0.004608,
+  "request_id": "req_011CgipetoEAfLiB1PYP58tP"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "database database hello guys working needed database helped gave database log assign then close thank analyst",
+ "mensagem": "Oi pessoal, precisei de ajuda com o banco de dados e um analista já me ajudou, deixou o banco funcionando e me passou o log. Podem atribuir o chamado pra ele e depois fechar, por favor? Valeu!",
+ "meta": {
+  "input_tokens": 453,
+  "output_tokens": 94,
+  "custo_usd": 0.003692,
+  "request_id": "req_011CgipXGkbZVs2ffRBFc4ZJ"
+ }
+}

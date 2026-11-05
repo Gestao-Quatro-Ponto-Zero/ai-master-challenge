@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, tudo bem? Vai entrar uma pessoa nova na quinta, pode preencher o formulário de novo colaborador, por favor? Deixei o formulário em anexo e o link do arquivo já tá pronto, valeu!",
+ "triagem": {
+  "texto_ingles": "Request to complete the new employee onboarding form for a new hire starting this Thursday. The requester attached the form and provided the file link.",
+  "resumo_pt": "Solicitação para preencher o formulário de novo colaborador, pois uma pessoa nova entra na quinta-feira.",
+  "fila_sugerida_llm": "HR Support",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "admissão de novo colaborador",
+   "localizacao": null,
+   "para_quem": "novo colaborador (entra na quinta-feira)"
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "dado_pessoal"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3052,
+  "output_tokens": 299,
+  "latencia_s": 2.12,
+  "custo_usd": 0.000455,
+  "request_id": "req_011CgipguLGqmj4b4qNEWqDQ"
+ }
+}

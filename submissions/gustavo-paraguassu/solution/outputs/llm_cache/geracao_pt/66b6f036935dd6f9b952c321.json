@@ -1,0 +1,10 @@
+{
+ "texto_en": "one sectors access one sectors access hello please advise why can access sectors there we have site thanks",
+ "mensagem": "Oi, pessoal! Vocês podem me explicar por que não consigo acessar um dos setores? A gente tem site lá. Valeu!",
+ "meta": {
+  "input_tokens": 456,
+  "output_tokens": 60,
+  "custo_usd": 0.003024,
+  "request_id": "req_011Cgipe3JuvK97t1aECmdWi"
+ }
+}

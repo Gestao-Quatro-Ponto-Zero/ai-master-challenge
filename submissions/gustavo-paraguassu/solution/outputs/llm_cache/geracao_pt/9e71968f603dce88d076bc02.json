@@ -1,0 +1,10 @@
+{
+ "texto_en": "outlook problems problems hi have some problems with application can use client because whenever try open ask enter name password without being able connect thank you",
+ "mensagem": "Oi, tô com problema no Outlook, não consigo usar o aplicativo. Toda vez que tento abrir ele pede meu usuário e senha e não conecta de jeito nenhum. Valeu!",
+ "meta": {
+  "input_tokens": 466,
+  "output_tokens": 82,
+  "custo_usd": 0.003504,
+  "request_id": "req_011CgipcsFu2iJNGVj1ob8Gj"
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, recebi um aviso de que minha senha vai expirar em alguns dias e pede pra trocar no PC apertando Ctrl+Alt+Del e escolhendo \"alterar senha\". Isso é legítimo mesmo? Podem me ajudar a fazer a troca?",
+ "triagem": {
+  "texto_ingles": "User received a notice that their password will expire in a few days and asks whether the prompt to change it via Ctrl+Alt+Del > \"Change a password\" is legitimate. User asks for help performing the password change.",
+  "resumo_pt": "Cliente recebeu aviso de expiração de senha, quer confirmar se é legítimo e pede ajuda para trocar a senha pelo Ctrl+Alt+Del.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": "PC",
+   "sintoma": "Aviso de que a senha vai expirar em alguns dias",
+   "sistema": null,
+   "tipo_acesso": "Troca de senha",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "seguranca"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3067,
+  "output_tokens": 337,
+  "latencia_s": 2.62,
+  "custo_usd": 0.000475,
+  "request_id": "req_011CgipYf9GTFtFhDGE2dKP8"
+ }
+}

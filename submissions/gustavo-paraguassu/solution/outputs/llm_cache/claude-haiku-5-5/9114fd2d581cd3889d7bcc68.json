@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de acesso às duas caixas compartilhadas que foram criadas pra equipe de contas a pagar, a criação já foi aprovada pelo líder. Também pediram pra associar um número de telefone a elas, mas não ficou claro se é ramal ou número de celular, vocês conseguem ver isso? Se precisarem de mais alguma informação é só falar.",
+ "triagem": {
+  "texto_ingles": "Requesting access to two shared mailboxes created for the accounts payable team; creation has already been approved by the team leader. Also requested: associate a phone number with the mailboxes. Unclear whether it should be an extension or a mobile number; please confirm.",
+  "resumo_pt": "Pede acesso a duas caixas compartilhadas da equipe de contas a pagar (criação já aprovada pelo líder) e associação de um número de telefone a elas, sem definir se é ramal ou celular.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "acesso a caixas de e-mail compartilhadas",
+   "software": null,
+   "justificativa": "criação já aprovada pelo líder",
+   "item": null,
+   "quantidade": "duas caixas",
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3099,
+  "output_tokens": 363,
+  "latencia_s": 2.94,
+  "custo_usd": 0.000491,
+  "request_id": "req_011CgipiiBrsyncwc49x7wD7"
+ }
+}

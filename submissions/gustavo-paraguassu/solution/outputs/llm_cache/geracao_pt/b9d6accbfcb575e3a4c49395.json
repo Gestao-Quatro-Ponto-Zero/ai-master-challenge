@@ -1,0 +1,10 @@
+{
+ "texto_en": "check on th floor thursday pm re working floor hi addresses looks phone serial spoken he by resetting he provide macs working after please assign him thank best regards engineer thursday pm working floor hello please addresses work meeting rooms ones work model placed area let further information needed kind regards analyst ext hub thursday pm re working floor hi discussed issue please provide working thank best regards engineer thursday pm working floor hello everyone please informed has assigned queue kind regards analyst ext hub thursday pm working floor hello none work calls clients highly impacted by issue please problem possible thank",
+ "mensagem": "Oi, os telefones do andar não estão funcionando e nenhum deles faz chamada, o que está impactando bastante o atendimento aos clientes. Os das salas de reunião funcionam, só os da área de trabalho que não; o engenheiro pediu os MACs e o serial dos aparelhos que não funcionam, então podem verificar e resolver o quanto antes, por favor?",
+ "meta": {
+  "input_tokens": 616,
+  "output_tokens": 141,
+  "custo_usd": 0.005284,
+  "request_id": "req_011CgipdekMB3muMFiTd8kPJ"
+ }
+}

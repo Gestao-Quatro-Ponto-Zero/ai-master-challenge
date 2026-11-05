@@ -1,0 +1,10 @@
+{
+ "texto_en": "access to attrition management reporting final wants attrition final how choose leaving details planned unplanned accept decline requests",
+ "mensagem": "Oi, preciso de acesso ao relatório final de gestão de attrition. Queria ver os detalhes de quem está saindo, se foi saída planejada ou não planejada, e também poder aceitar ou recusar as solicitações. Como faço pra escolher isso?",
+ "meta": {
+  "input_tokens": 463,
+  "output_tokens": 102,
+  "custo_usd": 0.003892,
+  "request_id": "req_011Cgipfs368jVeGRUyby4fd"
+ }
+}

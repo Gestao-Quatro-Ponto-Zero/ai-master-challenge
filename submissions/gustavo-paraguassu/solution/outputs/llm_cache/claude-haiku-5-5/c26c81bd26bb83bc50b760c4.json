@@ -1,0 +1,37 @@
+{
+ "texto": "Oi pessoal, preciso de ajuda pra preencher o Oracle dos estagiários do SD de novembro, essa turma ficou de outubro até novembro e precisa de aprovação. Podem me avisar também como seguir com a próxima turma de estagiários? Muito obrigado, fico super grato!",
+ "triagem": {
+  "texto_ingles": "Need help filling in the Oracle timesheet for the SD interns for November. This group worked from October through November and requires approval. Also asking for guidance on how to proceed with the next intern group.",
+  "resumo_pt": "Solicitante precisa de ajuda para preencher o Oracle dos estagiários do SD de novembro (turma de outubro a novembro, precisa de aprovação) e orientação sobre a próxima turma de estagiários.",
+  "fila_sugerida_llm": "HR Support",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "Oracle",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "estagiários do SD: preenchimento de Oracle de novembro e aprovação; orientação sobre próxima turma de estagiários",
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3075,
+  "output_tokens": 362,
+  "latencia_s": 2.07,
+  "custo_usd": 0.000489,
+  "request_id": "req_011CgipgzULJuLnsrC2bD9B5"
+ }
+}

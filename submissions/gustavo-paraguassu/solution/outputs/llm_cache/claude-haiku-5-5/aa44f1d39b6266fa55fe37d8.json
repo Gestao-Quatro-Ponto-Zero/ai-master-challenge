@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, tudo bem? Preciso que criem o código do novo projeto no PAS conforme o formulário de setup que tô mandando em anexo. É urgente, porque precisamos mover os custos pra ele o quanto antes, valeu!",
+ "triagem": {
+  "texto_ingles": "Request to create the project code for a new project in PAS, according to the attached setup form. Urgent: costs need to be moved to this project as soon as possible.",
+  "resumo_pt": "Pede a criação do código do novo projeto no PAS conforme formulário de setup em anexo, com urgência para mover os custos.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "PAS",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "Mover os custos para o novo projeto o quanto antes",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": "novo projeto (código a ser criado no PAS)",
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3052,
+  "output_tokens": 319,
+  "latencia_s": 1.72,
+  "custo_usd": 0.000465,
+  "request_id": "req_011CgiphocW73LFYAQHpVWmR"
+ }
+}

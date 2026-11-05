@@ -1,0 +1,10 @@
+{
+ "texto_en": "cannot access network helped fix issue",
+ "mensagem": "Oi, eu tava sem conseguir acessar a rede, mas vocês me ajudaram e já resolveu. Só registrando aqui, valeu!",
+ "meta": {
+  "input_tokens": 439,
+  "output_tokens": 64,
+  "custo_usd": 0.003036,
+  "request_id": "req_011CgipdwRT1e4iK3D5hr5Ns"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Vocês podem criar um projeto no Oracle Fusion e cadastrar o cliente com base no formulário que anexei? Se precisarem de mais alguma informação, é só me avisar. Valeu!",
+ "triagem": {
+  "texto_ingles": "Request to create a new project in Oracle Fusion and register the customer based on the attached form. Requester open to providing any additional information if needed.",
+  "resumo_pt": "Solicitação para criar um projeto no Oracle Fusion e cadastrar o cliente conforme formulário anexado.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "Oracle Fusion",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3049,
+  "output_tokens": 274,
+  "latencia_s": 1.85,
+  "custo_usd": 0.000442,
+  "request_id": "req_011Cgiphff32BWHaAb9pen41"
+ }
+}

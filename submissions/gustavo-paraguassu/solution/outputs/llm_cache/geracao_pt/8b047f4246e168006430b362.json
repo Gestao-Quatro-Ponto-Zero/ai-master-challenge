@@ -1,0 +1,10 @@
+{
+ "texto_en": "windows upgrade failed upgrade failed hello please raise ticket for issue below upgrade error thank you kind regards infrastructure manager ext phone sent friday upgrade failed hello sorry bother you can anyone help with upgrade regard developer en sent wednesday upgrade failed hello updating operating machine failed please find attached file upgrade failed regards developer en",
+ "mensagem": "Oi, pessoal! A atualização do Windows na máquina de um dev da equipe falhou, ele já tinha mandado o print do erro em anexo e até agora ninguém respondeu. Dá pra abrir um chamado e alguém ajudar com esse upgrade? Valeu!",
+ "meta": {
+  "input_tokens": 548,
+  "output_tokens": 109,
+  "custo_usd": 0.004372,
+  "request_id": "req_011Cgipd617F1ptGa6RMAMkk"
+ }
+}

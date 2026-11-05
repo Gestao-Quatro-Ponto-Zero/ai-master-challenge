@@ -1,0 +1,40 @@
+{
+ "texto": "Oi, pessoal, é urgente: tem um horário incorreto no sistema. As folhas de horas de uma colaboradora foram rejeitadas antes da importação, mas mesmo assim acabaram sendo adicionadas no código dela. Dá pra remover, por favor? Ela finalizou em dezembro.",
+ "triagem": {
+  "texto_ingles": "Urgent: incorrect timesheet entries exist in the system for a former employee. Timesheets were rejected before import but were still added to her employee code. Please remove these entries. She finished in December.",
+  "resumo_pt": "Remover folhas de horas incorretas que foram adicionadas ao código de uma colaboradora desligada em dezembro, apesar de rejeitadas na importação.",
+  "fila_sugerida_llm": "HR Support",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Folhas de horas rejeitadas antes da importação foram adicionadas mesmo assim ao código da colaboradora",
+   "sistema": "Sistema de horas/ponto",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "ponto/folhas de horas; colaboradora finalizou em dezembro",
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "dado_pessoal",
+   "acao_irreversivel"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3078,
+  "output_tokens": 388,
+  "latencia_s": 2.16,
+  "custo_usd": 0.000502,
+  "request_id": "req_011CgiphkjNrPfWUuV15uqkZ"
+ }
+}

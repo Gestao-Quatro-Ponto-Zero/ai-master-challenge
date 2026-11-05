@@ -1,0 +1,10 @@
+{
+ "texto_en": "account hi please together confluence he also storage thank respectfully",
+ "mensagem": "Oi, pessoal! Vocês poderiam, por favor, criar a conta dele no Confluence e liberar também o acesso ao armazenamento? Obrigado!",
+ "meta": {
+  "input_tokens": 446,
+  "output_tokens": 69,
+  "custo_usd": 0.003164,
+  "request_id": "req_011CgipUWnrtfaGE9M2MbTq5"
+ }
+}

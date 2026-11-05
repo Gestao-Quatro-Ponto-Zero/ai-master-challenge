@@ -1,0 +1,10 @@
+{
+ "texto_en": "monitor add install new monitor monitor hello dear had monitor discussed he told leave tower give thank",
+ "mensagem": "Oi, preciso instalar um monitor novo, adicionar mais um na minha mesa. Já tinha conversado sobre isso com ele, e ele me falou pra deixar a torre que ele entregaria o monitor. Obrigado!",
+ "meta": {
+  "input_tokens": 460,
+  "output_tokens": 92,
+  "custo_usd": 0.00368,
+  "request_id": "req_011Cgipdusg6URcfTVFXLkRc"
+ }
+}

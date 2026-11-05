@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, a gente tem reunião diária com o cliente e ultimamente estamos com problema pra discar pro número da conferência pelo telefone: alguns conseguem entrar, outros recebem mensagem de ocupado. Já perguntamos pro cliente se tinha algo com o número da conferência e ele confirmou que não, e hoje durante a call caiu do nada e não deu mais pra entrar. Podem dar uma olhada? Isso tá pegando mal pro nosso trabalho, valeu!",
+ "triagem": {
+  "texto_ingles": "Users report intermittent problems dialing the client's daily meeting conference number by phone: some can join, others get a busy signal. The client confirmed there is no issue on their side with the conference number. During today's call the connection dropped and users could not rejoin. Please investigate.",
+  "resumo_pt": "Usuários não conseguem entrar na conferência diária com o cliente por telefone (sinal de ocupado para alguns) e a ligação caiu durante a call de hoje.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "telefone",
+   "sintoma": "alguns conseguem discar para o número da conferência, outros recebem mensagem de ocupado; a ligação caiu durante a call de hoje e não foi possível entrar novamente",
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3142,
+  "output_tokens": 384,
+  "latencia_s": 2.99,
+  "custo_usd": 0.000506,
+  "request_id": "req_011CgiphUMdGbnCk6sj4wokd"
+ }
+}

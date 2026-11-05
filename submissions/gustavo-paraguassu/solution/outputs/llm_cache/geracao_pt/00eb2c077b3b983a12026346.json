@@ -1,0 +1,10 @@
+{
+ "texto_en": "rebuild en saturday rebuild hello want ask log rebuild reason asking mostly constant profile issue logged issue since then profile kept partially syncing machine machine today log got temp performed basic troubleshooting steps cleared recreated profile etc luck thank analyst",
+ "mensagem": "Oi, queria pedir pra fazer um rebuild do meu computador no sábado. O motivo é que tô com problema de perfil constante, já abri chamado sobre isso e desde então o perfil fica sincronizando só parcialmente entre uma máquina e outra, e hoje entrei com perfil temporário. Já fiz os passos básicos de troubleshooting, limpei e recriei o perfil etc., mas não resolveu, obrigado!",
+ "meta": {
+  "input_tokens": 516,
+  "output_tokens": 163,
+  "custo_usd": 0.005324,
+  "request_id": "req_011Cgipd6nVME8mHYjCi3Hxb"
+ }
+}

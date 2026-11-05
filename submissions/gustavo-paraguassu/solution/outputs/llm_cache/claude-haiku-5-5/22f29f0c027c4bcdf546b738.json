@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, recebi o aviso sobre o upgrade forçado do Windows, mas já tinha tentado fazer o upgrade há uns meses e deu erro. Na época escrevi explicando o problema e mandei o arquivo com os erros, mas ninguém respondeu. Tô travado com o upgrade e não consigo fazer nada, alguém pode me ajudar?",
+ "triagem": {
+  "texto_ingles": "User reports that a forced Windows upgrade notice was received, but a previous upgrade attempt a few months ago failed with errors. A prior ticket with error details was submitted and not answered. User is blocked and unable to proceed with the upgrade; requests assistance.",
+  "resumo_pt": "Colaborador travado no upgrade forçado do Windows, que já falhou com erro há meses; chamado anterior com os arquivos de erro não foi respondido.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Upgrade do Windows falhou com erro em tentativa anterior; agora está travado e não consegue prosseguir com o upgrade forçado",
+   "sistema": "Windows",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "cliente_irritado"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3097,
+  "output_tokens": 377,
+  "latencia_s": 2.59,
+  "custo_usd": 0.000498,
+  "request_id": "req_011CgipgeMd2poAzsNwJBq6a"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "increase mailbox size re mailbox almost hi please increase ready removed important order make cannot receive thanks device date mailbox almost mailbox almost mb mb size maximum size please reduce mailbox size delete items mailbox empty deleted items folder",
+ "mensagem": "Oi, minha caixa de e-mail tá quase cheia e chegou aquele aviso de que tá perto do tamanho máximo, pedindo pra apagar itens e esvaziar a pasta de itens excluídos. Já removi o que dava, o resto é importante e não posso apagar, então vocês conseguem aumentar o tamanho da minha caixa pra eu não parar de receber e-mails? Valeu!",
+ "meta": {
+  "input_tokens": 509,
+  "output_tokens": 153,
+  "custo_usd": 0.005096,
+  "request_id": "req_011CgipfztMs8mHm2izQKpJf"
+ }
+}

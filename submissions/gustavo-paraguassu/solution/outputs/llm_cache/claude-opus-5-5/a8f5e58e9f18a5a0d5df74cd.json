@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de acesso ao Oracle e ao projeto no PAS, porque vou substituir o PM. Pode liberar, por favor? Valeu!",
+ "triagem": {
+  "texto_ingles": "Hello, I need access to Oracle and to the project in PAS, as I will be replacing the PM. Could you please grant access? Thanks!",
+  "resumo_pt": "Usuário pede acesso ao Oracle e ao projeto no PAS porque vai substituir o PM.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "Oracle, PAS",
+   "tipo_acesso": "acesso novo",
+   "software": null,
+   "justificativa": "vai substituir o PM",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3026,
+  "output_tokens": 279,
+  "latencia_s": 3.51,
+  "custo_usd": 0.017684,
+  "request_id": "req_011Cgipk1vEk21sen6Ezciad"
+ }
+}

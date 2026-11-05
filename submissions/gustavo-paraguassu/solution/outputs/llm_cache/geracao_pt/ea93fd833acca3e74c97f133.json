@@ -1,0 +1,10 @@
+{
+ "texto_en": "please ensure remote controls are present at th floor october pm please ensure remote controls present floor dear sir madam please help subject best regards",
+ "mensagem": "Oi, pessoal! Vocês podem garantir que os controles remotos estejam lá no andar em outubro, à tarde? Obrigado!",
+ "meta": {
+  "input_tokens": 469,
+  "output_tokens": 61,
+  "custo_usd": 0.003096,
+  "request_id": "req_011CgipdVWj2cUk7YHs5MqM3"
+ }
+}

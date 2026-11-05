@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Preciso de acesso a uma caixa de e-mail, vocês conseguem liberar o quanto antes? Desculpa o pouco aviso, espero que dê pra resolver, valeu!",
+ "triagem": {
+  "texto_ingles": "Requesting access to a mailbox. Please grant access as soon as possible.",
+  "resumo_pt": "Cliente pede acesso a uma caixa de e-mail, sem informar qual caixa nem o motivo.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "acesso a caixa de e-mail",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3045,
+  "output_tokens": 252,
+  "latencia_s": 1.45,
+  "custo_usd": 0.000431,
+  "request_id": "req_011CgipixgFYBWAKoav1Nn5N"
+ }
+}

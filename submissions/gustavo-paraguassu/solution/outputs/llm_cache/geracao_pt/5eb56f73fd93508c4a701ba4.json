@@ -1,0 +1,10 @@
+{
+ "texto_en": "cannot new purchase po under receipts re purchase po dear tried receive po unfortunately cannot under receipts when search according guide you have provided can you investigate please regards sent wednesday december purchase po dear we have purchased for was updated include device under name link please add ticket for for allocation device thanks after you receive item please take into consideration mandatory for you access receipts section order receive item or you ordered here how video link please with receipt number for item or needed for be processed kind regards administrator",
+ "mensagem": "Oi, tentei dar o recebimento da nova PO seguindo o guia que vocês mandaram, mas ela não aparece quando pesquiso em Receipts. Vocês conseguem investigar, por favor? Preciso concluir o recebimento pra liberar a alocação do equipamento.",
+ "meta": {
+  "input_tokens": 579,
+  "output_tokens": 110,
+  "custo_usd": 0.004516,
+  "request_id": "req_011Cgipf93UVdipaNNyJ62kg"
+ }
+}

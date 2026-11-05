@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, eu tava sem conseguir acessar a rede, mas vocês me ajudaram e já resolveu. Só registrando aqui, valeu!",
+ "triagem": {
+  "texto_ingles": "User reports they could not access the network earlier; the issue was resolved with support's help. Ticket logged for record only, no further action requested.",
+  "resumo_pt": "Cliente registra que o problema de acesso à rede foi resolvido com a ajuda do suporte; apenas registro, sem pedido em aberto.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Sem conseguir acessar a rede (já resolvido)",
+   "sistema": "rede",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3023,
+  "output_tokens": 291,
+  "latencia_s": 2.26,
+  "custo_usd": 0.000448,
+  "request_id": "req_011CgiphKByWEszQWsSUnE1K"
+ }
+}

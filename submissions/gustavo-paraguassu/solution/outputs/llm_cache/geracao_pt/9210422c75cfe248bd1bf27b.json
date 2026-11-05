@@ -1,0 +1,10 @@
+{
+ "texto_en": "new project pas tuesday october pm setup form importance high hi please create code per enclosed form please make needs done asap costs move thanks",
+ "mensagem": "Oi, tudo bem? Preciso que criem o código do novo projeto no PAS conforme o formulário de setup que tô mandando em anexo. É urgente, porque precisamos mover os custos pra ele o quanto antes, valeu!",
+ "meta": {
+  "input_tokens": 469,
+  "output_tokens": 93,
+  "custo_usd": 0.003736,
+  "request_id": "req_011Cgipec2ugx6ukYHozYuBw"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "headphone allocation wednesday july pm headphone allocation dear please log assign allocation pair headphones thanks kind regards engineer",
+ "mensagem": "Oi, pessoal! Podem abrir um chamado e liberar um par de fones de ouvido pra mim, por favor? Valeu!",
+ "meta": {
+  "input_tokens": 471,
+  "output_tokens": 59,
+  "custo_usd": 0.003064,
+  "request_id": "req_011CgipfMFCTELDoTxErzmqB"
+ }
+}

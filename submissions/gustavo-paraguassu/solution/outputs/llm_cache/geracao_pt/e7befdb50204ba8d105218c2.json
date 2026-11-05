@@ -1,0 +1,10 @@
+{
+ "texto_en": "new pas error when adding unknown pipeline sent error when adding unknown pipeline hi could you please advise attached error appears when trying add unknown pipeline does appear for clients tried for got error please let know if there any work around thank you officer",
+ "mensagem": "Oi, tá dando um erro quando tento adicionar um pipeline desconhecido no PAS, mandei o print em anexo. Aparece pra vários clientes, já tentei e deu erro de novo. Vocês sabem se tem algum jeito de contornar? Valeu!",
+ "meta": {
+  "input_tokens": 502,
+  "output_tokens": 106,
+  "custo_usd": 0.004128,
+  "request_id": "req_011CgipeaMTCGAKsbraRFBgD"
+ }
+}

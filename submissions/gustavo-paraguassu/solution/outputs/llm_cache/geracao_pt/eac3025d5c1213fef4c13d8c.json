@@ -1,0 +1,10 @@
+{
+ "texto_en": "error oracle report sent thursday error report hi want raise two issues second one critical for weekly monthly cards approval projects generating report reported members takes very receive error when try generate report please raise with advise thanks senior manager",
+ "mensagem": "Oi, pessoal, tenho dois problemas pra reportar, e o segundo é crítico. Primeiro: o relatório do Oracle dos cartões de aprovação semanais/mensais dos projetos está demorando muito pra gerar, segundo os membros que reportaram. Segundo: quando tento gerar o relatório dá erro. Podem abrir um chamado e me dar um retorno? Valeu!",
+ "meta": {
+  "input_tokens": 495,
+  "output_tokens": 151,
+  "custo_usd": 0.005,
+  "request_id": "req_011CgipdY5m9B23c8c2H2JLq"
+ }
+}

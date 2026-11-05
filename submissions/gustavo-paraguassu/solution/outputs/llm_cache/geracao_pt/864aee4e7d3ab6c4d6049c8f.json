@@ -1,0 +1,10 @@
+{
+ "texto_en": "reporting access denied sent wednesday february re access denied thanks for taking look sent wednesday february re access denied hello please be informed we configured you should have access could you please try confirm if works properly best regards engineer sent wednesday february access denied importance high hi guys critical board meeting can access site one says access removed very urgent can you have look client director",
+ "mensagem": "Oi, pessoal, urgente! Tenho uma reunião crítica de diretoria e não consigo acessar o site de reporting, aparece que meu acesso foi removido. Vocês já disseram que configuraram, mas ainda dá acesso negado, podem dar uma olhada de novo?",
+ "meta": {
+  "input_tokens": 534,
+  "output_tokens": 111,
+  "custo_usd": 0.004356,
+  "request_id": "req_011Cgipe6FGd64Uast1wnHUZ"
+ }
+}

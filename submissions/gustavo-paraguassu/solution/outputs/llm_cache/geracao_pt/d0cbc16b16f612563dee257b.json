@@ -1,0 +1,10 @@
+{
+ "texto_en": "wants to access people operations tuesday pm wants please accept decline",
+ "mensagem": "Oi, preciso de acesso à área de People Operations. Mandei a solicitação na terça à tarde, vocês podem aprovar ou recusar, por favor?",
+ "meta": {
+  "input_tokens": 448,
+  "output_tokens": 67,
+  "custo_usd": 0.003132,
+  "request_id": "req_011CgipfjsUL4qWHRajz3AbX"
+ }
+}

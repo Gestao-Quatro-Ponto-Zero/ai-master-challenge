@@ -1,0 +1,10 @@
+{
+ "texto_en": "the phone number change phone number change hello hoping number issued changed number instead area code makes much better response call than currently assume calling how accomplish se",
+ "mensagem": "Oi, queria saber se dá pra trocar o número de telefone que me foi atribuído por um com outro código de área, porque acho que as pessoas atenderiam bem mais as minhas ligações do que atendem hoje. Como faço pra conseguir essa troca?",
+ "meta": {
+  "input_tokens": 471,
+  "output_tokens": 101,
+  "custo_usd": 0.003904,
+  "request_id": "req_011Cgipe79MBUnqa3F9wnTYM"
+ }
+}

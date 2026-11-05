@@ -1,0 +1,10 @@
+{
+ "texto_en": "delivery po replenish october pm po hi purchase has peripherals requested by mouse wireless please log replenishment by thanks please receipt po thank administrator phone october pm po hi received headset mouse please advise best regards engineer",
+ "mensagem": "Oi, chegou a entrega do pedido de compra de reposição de periféricos (headset e mouse sem fio) que foi solicitado. Podem dar entrada/recebimento no PO e registrar a reposição no estoque? Me avisem o que preciso fazer, obrigado!",
+ "meta": {
+  "input_tokens": 501,
+  "output_tokens": 107,
+  "custo_usd": 0.004144,
+  "request_id": "req_011CgipfGqnPndx5WNjVQMED"
+ }
+}

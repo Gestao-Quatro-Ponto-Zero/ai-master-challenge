@@ -1,0 +1,10 @@
+{
+ "texto_en": "investigation of report difference pm imports finished hello please log tickets imports investigation report difference kind regards application developer pm re imports finished hello currently investigate by difference reports by imports comeback updates kind regards application developer re imports finished thanks generally looks few exceptions please advise took extracts regarding days issue highlighted friday regarding submitted by employees observation these report compare report utilization posted by these guys seems consistent periods think regards imports finished imports kind regards application developer",
+ "mensagem": "Oi, pessoal! Os imports terminaram e no geral parece tudo certo, mas encontrei algumas diferenças nos relatórios: puxei os extratos dos dias do problema que apontei na sexta, sobre o que foi submetido pelos funcionários, e comparando com o relatório de utilização lançado por eles, os períodos não batem. Podem abrir um chamado pra investigar essa diferença nos relatórios dos imports e me dar um retorno?",
+ "meta": {
+  "input_tokens": 581,
+  "output_tokens": 169,
+  "custo_usd": 0.005704,
+  "request_id": "req_011Cgipf2Q8KD5ZB2U3qoGeY"
+ }
+}

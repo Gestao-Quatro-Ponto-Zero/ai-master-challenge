@@ -1,0 +1,10 @@
+{
+ "texto_en": "windows updates issue updates issue hello experiencing issues with updates machine able find required updates but when try install them receive following message os info please assign request appropriate let know if you require any additional information for resolving case kind regards engineer ext en",
+ "mensagem": "Oi, tô com problema nas atualizações do Windows na minha máquina: ele encontra as atualizações necessárias, mas quando tento instalar aparece uma mensagem de erro. Mandei as infos do sistema operacional, consegue encaminhar pra equipe certa? Se precisar de mais alguma informação é só me falar, valeu!",
+ "meta": {
+  "input_tokens": 499,
+  "output_tokens": 129,
+  "custo_usd": 0.004576,
+  "request_id": "req_011CgipdkKTje9tXusW17Uh6"
+ }
+}

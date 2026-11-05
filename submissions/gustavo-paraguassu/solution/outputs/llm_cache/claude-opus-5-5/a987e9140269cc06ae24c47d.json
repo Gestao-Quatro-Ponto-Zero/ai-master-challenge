@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, recebi o aviso da migração pro novo hub e queria saber se o site antigo do qual eu apareço como dono vai ser desativado mesmo ou se preciso migrar o conteúdo dele. Se for pra migrar, pode me orientar onde os arquivos devem ficar no hub e me dar permissão de edição pra eu subir eles antes do prazo de outubro?",
+ "triagem": {
+  "texto_ingles": "Hello, I received the notice about the migration to the new hub. I am listed as owner of an old site and would like to know whether it will be decommissioned or if I need to migrate its content. If migration is needed, please advise where the files should be stored in the hub and grant me edit permission so I can upload them before the October deadline.",
+  "resumo_pt": "Dono de site antigo quer saber se ele será desativado ou se precisa migrar o conteúdo para o novo hub, pedindo orientação de local e permissão de edição antes do prazo de outubro.",
+  "fila_sugerida_llm": "Storage",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "novo hub / site antigo",
+   "tipo_acesso": "permissão de edição",
+   "software": null,
+   "justificativa": "subir os arquivos do site antigo antes do prazo de outubro",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": "site antigo do qual é dono",
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "acao_irreversivel"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3101,
+  "output_tokens": 399,
+  "latencia_s": 4.85,
+  "custo_usd": 0.020384,
+  "request_id": "req_011CgipjjrbBS5L2hHZbAYtT"
+ }
+}

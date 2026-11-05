@@ -1,0 +1,10 @@
+{
+ "texto_en": "extend account for bulk starter form interns hello has change please extend till thank specialist friday december pm leaver form interns hello please find attached leaver form interns discipline thank specialist",
+ "mensagem": "Oi, pessoal! Preciso estender as contas dos estagiários que entraram pelo formulário de admissão em lote, a data mudou, então por favor prorroguem até a nova data. Antes eu tinha mandado o formulário de desligamento desses estagiários em anexo, mas agora é pra estender mesmo, valeu!",
+ "meta": {
+  "input_tokens": 484,
+  "output_tokens": 124,
+  "custo_usd": 0.004416,
+  "request_id": "req_011CgipdGfoSE9UcEiWzDR8S"
+ }
+}

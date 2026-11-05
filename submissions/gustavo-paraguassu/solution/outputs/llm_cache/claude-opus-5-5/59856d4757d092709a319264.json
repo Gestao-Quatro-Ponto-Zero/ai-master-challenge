@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, preciso de ajuda com o timecard: tentei lançar um período de licença médica (fiquei doente), mas não achei nenhuma opção na planilha pra isso e, quando tentei enviar sem preencher os detalhes da tarefa, deu erro. Tenho que colocar algum código nos detalhes da tarefa? Se sim, qual é? Ou eu não vi o código certo na planilha? Meu gestor falou que, se a ausência já foi registrada em Gerenciar Ausências, não precisa lançar de novo, que ela aparece sozinha no timecard, mas não sei se é por isso que tá dando erro.",
+ "triagem": {
+  "texto_ingles": "Hello, I need help with my timecard: I tried to log a sick leave period (I was ill), but I couldn't find any option for it in the timesheet, and when I tried to submit without filling in the task details, I got an error. Do I need to enter a code in the task details? If so, which one? Or did I miss the correct code in the timesheet? My manager said that if the absence is already recorded in Manage Absences, I don't need to enter it again, as it shows up automatically on the timecard, but I'm not sure if that's why I'm getting the error.",
+  "resumo_pt": "Colaborador não consegue lançar licença médica no timecard (erro ao enviar sem detalhes da tarefa) e quer saber se há código específico ou se basta o registro em Gerenciar Ausências.",
+  "fila_sugerida_llm": "HR Support",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "não achou opção para licença médica na planilha e deu erro ao enviar sem preencher os detalhes da tarefa",
+   "sistema": "timecard; Gerenciar Ausências",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "ponto / ausência (licença médica)",
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "dado_pessoal"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3187,
+  "output_tokens": 494,
+  "latencia_s": 5.29,
+  "custo_usd": 0.022628,
+  "request_id": "req_011CgipjdEUadLMM5zh6oqfr"
+ }
+}

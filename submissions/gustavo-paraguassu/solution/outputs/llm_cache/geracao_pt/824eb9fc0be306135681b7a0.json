@@ -1,0 +1,10 @@
+{
+ "texto_en": "adaptor wednesday pm adaptor hello la adaptor si",
+ "mensagem": "Oi, tudo bem? Preciso de um adaptador pra quarta-feira à tarde, vocês conseguem me arrumar um?",
+ "meta": {
+  "input_tokens": 450,
+  "output_tokens": 59,
+  "custo_usd": 0.00298,
+  "request_id": "req_011CgipdxfchnAN1xzbsu3qH"
+ }
+}

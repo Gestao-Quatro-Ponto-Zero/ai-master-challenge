@@ -1,0 +1,10 @@
+{
+ "texto_en": "avoided box wednesday march pm avoided hello please ask removed think kind regards specialist",
+ "mensagem": "Oi, tudo bem? Recebi um e-mail na quarta-feira à tarde e acho que ele foi barrado, não chegou certinho na caixa. Vocês conseguem verificar e pedir para remover esse bloqueio, por favor? Obrigado!",
+ "meta": {
+  "input_tokens": 457,
+  "output_tokens": 102,
+  "custo_usd": 0.003868,
+  "request_id": "req_011CgipfzzKNyJtPRibgB5qj"
+ }
+}

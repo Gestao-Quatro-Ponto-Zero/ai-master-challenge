@@ -1,0 +1,127 @@
+{
+ "haiku_160": {
+  "n": 160,
+  "acerto_classificador_texto_original_en": 0.85,
+  "acerto_pipeline_pt": 0.719,
+  "acerto_so_llm": 0.431,
+  "concordancia_llm_classificador": 0.5,
+  "acerto_quando_concordam": 0.788,
+  "acerto_quando_discordam_classificador": 0.65,
+  "acerto_quando_discordam_llm": 0.075,
+  "pct_automatico_P5": 23.1,
+  "acerto_no_automatico_P5": 0.973,
+  "auto_e_discordam_n": 12,
+  "acerto_auto_quando_discordam": 1.0,
+  "pct_campos_obrigatorios_completos": 43.8,
+  "media_campos_extraidos": 2.24,
+  "custo_total_usd": 0.075,
+  "custo_por_mensagem_usd": 0.000469,
+  "latencia_mediana_s": 2.12
+ },
+ "haiku_48": {
+  "n": 48,
+  "acerto_classificador_texto_original_en": 0.833,
+  "acerto_pipeline_pt": 0.729,
+  "acerto_so_llm": 0.396,
+  "concordancia_llm_classificador": 0.521,
+  "acerto_quando_concordam": 0.72,
+  "acerto_quando_discordam_classificador": 0.739,
+  "acerto_quando_discordam_llm": 0.043,
+  "pct_automatico_P5": 18.8,
+  "acerto_no_automatico_P5": 1.0,
+  "auto_e_discordam_n": 2,
+  "acerto_auto_quando_discordam": 1.0,
+  "pct_campos_obrigatorios_completos": 41.7,
+  "media_campos_extraidos": 2.25,
+  "custo_total_usd": 0.0225,
+  "custo_por_mensagem_usd": 0.000469,
+  "latencia_mediana_s": 2.25
+ },
+ "opus_48": {
+  "n": 48,
+  "acerto_classificador_texto_original_en": 0.833,
+  "acerto_pipeline_pt": 0.708,
+  "acerto_so_llm": 0.375,
+  "concordancia_llm_classificador": 0.438,
+  "acerto_quando_concordam": 0.762,
+  "acerto_quando_discordam_classificador": 0.667,
+  "acerto_quando_discordam_llm": 0.074,
+  "pct_automatico_P5": 16.7,
+  "acerto_no_automatico_P5": 0.875,
+  "auto_e_discordam_n": 2,
+  "acerto_auto_quando_discordam": 1.0,
+  "pct_campos_obrigatorios_completos": 41.7,
+  "media_campos_extraidos": 2.35,
+  "custo_total_usd": 0.897,
+  "custo_por_mensagem_usd": 0.018687,
+  "latencia_mediana_s": 4.12
+ },
+ "por_fila_haiku": {
+  "Access": {
+   "acerto_en": 0.95,
+   "acerto_pt": 0.95,
+   "auto": 0.45
+  },
+  "Administrative rights": {
+   "acerto_en": 0.75,
+   "acerto_pt": 0.55,
+   "auto": 0.0
+  },
+  "HR Support": {
+   "acerto_en": 0.8,
+   "acerto_pt": 0.75,
+   "auto": 0.05
+  },
+  "Hardware": {
+   "acerto_en": 0.95,
+   "acerto_pt": 0.7,
+   "auto": 0.25
+  },
+  "Internal Project": {
+   "acerto_en": 0.85,
+   "acerto_pt": 0.65,
+   "auto": 0.35
+  },
+  "Miscellaneous": {
+   "acerto_en": 0.85,
+   "acerto_pt": 0.8,
+   "auto": 0.35
+  },
+  "Purchase": {
+   "acerto_en": 0.9,
+   "acerto_pt": 0.7,
+   "auto": 0.1
+  },
+  "Storage": {
+   "acerto_en": 0.75,
+   "acerto_pt": 0.65,
+   "auto": 0.3
+  }
+ },
+ "campos_presenca_concordancia_haiku_opus": 0.458,
+ "custo_usd": {
+  "geracao_opus": 0.6345519999999997,
+  "triagem_haiku_160": 0.075,
+  "triagem_opus_48": 0.897
+ }
+}
+
+Erros do pipeline PT (Haiku), primeiros 15:
+                    queue           fila      conf               llm_fila                                                                                   texto_pt
+17                 Access     HR Support  0.821215                 Access  Oi pessoal, preciso de acesso novo pras duas contas, e também ao caminho antigo (path ...
+22  Administrative rights         Access  0.805552                 Access  Oi, apareceu uma conta no meu Outlook que a gente nunca usa, tá vazia, mandei um print...
+23  Administrative rights         Access  0.687729                 Access  Oi, bom dia! Desde segunda o Outlook fica pedindo minha senha toda vez que tento abrir...
+24  Administrative rights  Miscellaneous  0.311329               Hardware  Oi, tô com um problema na instalação do Windows, ele não tá atualizando. Alguém conseg...
+27  Administrative rights       Hardware  0.698278          Miscellaneous  Oi, recebi um aviso de segurança dizendo que uns pacotes que tão rodando aqui estão de...
+31  Administrative rights         Access  0.998310                 Access  Oi, tudo bem? Em projetos anteriores eu usava as credenciais do cliente, mas não tô co...
+33  Administrative rights         Access  0.539303               Hardware  Oi, o add-in do View no Excel fica desativando sem parar, mal consigo trabalhar num re...
+35  Administrative rights         Access  0.634396               Hardware  Oi, queria pedir pra fazer um rebuild do meu computador no sábado. O motivo é que tô c...
+36  Administrative rights         Access  0.929140  Administrative rights                          Oi pessoal, vocês conseguem instalar o ClickShare pra mim? Valeu!
+37  Administrative rights         Access  0.843089                 Access  Oi, meu Outlook fica pedindo a senha o tempo todo, coloco a senha do Windows e não adi...
+45             HR Support         Access  0.437098                 Access  Oi, preciso de acesso de edição no PAS pra um novo usuário, por favor replica as mesma...
+46             HR Support         Access  0.304654          Miscellaneous  Oi, pessoal! Sobre a transferência interna de julho, podem me orientar sobre a análise...
+52             HR Support         Access  0.453350                 Access  Oi, preciso de ajuda com permissões de acesso ao Nexus, especificamente aos repositóri...
+55             HR Support       Hardware  0.956266               Hardware  Oi, os telefones do andar não estão funcionando e nenhum deles faz chamada, o que está...
+56             HR Support       Hardware  0.562240          Miscellaneous  Oi, pessoal! Preciso atualizar o guia de centros de custo e tipos de despesa, segue em...
+
+16 cenários salvos em /Users/gustavoparaguassu/Documents/Codes/g4-ai-master/submissions/gustavo-paraguassu/solution/experiment/cenarios.json

@@ -1,0 +1,10 @@
+{
+ "texto_en": "please action missing time sent tuesday july please action hello receiving for for period for period mentioned below was maternity leave let know if you need more details or if need take any actions regards senior tester",
+ "mensagem": "Oi, recebi um aviso de horas faltantes (missing time) na terça de julho referente a um período em que eu estava de licença-maternidade. Vocês podem resolver isso? Me avisem se precisarem de mais detalhes ou se eu tiver que fazer alguma coisa.",
+ "meta": {
+  "input_tokens": 483,
+  "output_tokens": 108,
+  "custo_usd": 0.004092,
+  "request_id": "req_011CgipdjAzdx2Bvp5Z3Neh8"
+ }
+}

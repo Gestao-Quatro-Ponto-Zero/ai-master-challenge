@@ -1,0 +1,40 @@
+{
+ "texto": "Oi, tô com dois erros numa invoice: quando tento postar no ledger dá erro, e descobri que é porque o cost center da PO não é mais válido. Combinamos de postar em outro cost center, então preciso cancelar as linhas que foram cobradas na PO pra processar a invoice no cost center novo, mas dá erro e não consigo corrigir nem postar, e no soft close ela aparece como transação não contabilizada. Vocês conseguem me ajudar a cancelar essa invoice?",
+ "triagem": {
+  "texto_ingles": "Invoice posting to ledger fails with error. Root cause: cost center on the PO is no longer valid. Agreed to post to a different cost center; need to cancel the lines charged on the PO so the invoice can be processed on the new cost center. Cancellation and correction fail with error, invoice cannot be corrected or posted, and it appears as unposted transaction in soft close. Requesting help to cancel this invoice.",
+  "resumo_pt": "Invoice com erro ao postar no ledger por cost center inválido na PO; precisa cancelar as linhas cobradas na PO para reprocessar no novo cost center, mas o cancelamento dá erro e a invoice aparece como não contabilizada no soft close.",
+  "fila_sugerida_llm": "Purchase",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Erro ao postar invoice no ledger; cancelamento das linhas da PO dá erro e invoice aparece como transação não contabilizada no soft close",
+   "sistema": "ledger",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "Cost center da PO não é mais válido; combinado postar em outro cost center",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "acao_irreversivel",
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3141,
+  "output_tokens": 500,
+  "latencia_s": 2.63,
+  "custo_usd": 0.000564,
+  "request_id": "req_011Cgiph1JwgFi1B8xZppmCh"
+ }
+}

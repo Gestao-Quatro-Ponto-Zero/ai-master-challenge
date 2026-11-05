@@ -1,0 +1,98 @@
+[
+ {
+  "id": "C01",
+  "fila_verdadeira": "Internal Project",
+  "texto_pt": "Oi, preciso de um código de projeto novo no Oracle PAs, o formulário de setup tá em anexo, é pra localização nos Estados Unidos. Me falaram que só dá pra criar código depois que o cliente tiver pelo menos uma oportunidade no estágio certo, então se não puder criar ainda me avisa, por favor. Valeu!",
+  "texto_original_en": "request new project code oracle pas code has assigned hi please code assign kind regards engineer thursday october code has assigned dear please advised client codes after client holds least opportunity stage please notify allowed create codes client contracts opportunities stage thank kind regards thursday october code has assigned hello please advised record number has assigned please review details take appropriate action reference number details code false code false code true code requested location states assign reference assignment summary setup form additional comments requirements setup form attached please setup code location states attachments setup form please link kind regards ref msg"
+ },
+ {
+  "id": "C02",
+  "fila_verdadeira": "Miscellaneous",
+  "texto_pt": "Oi, preciso de um ajuste na conta: dá pra alterar o ID do contrato do SOW? É o contrato que começa com BB. Valeu!",
+  "texto_original_en": "account adjustment adjustment hi please change sows contract id contract id bb thank officer"
+ },
+ {
+  "id": "C03",
+  "fila_verdadeira": "Purchase",
+  "texto_pt": "Oi, pessoal! Preciso de ajuda com a instalação marcada pra quinta-feira em março. Queria instalar o pacote de nível, vocês conseguem me ajudar? Valeu!",
+  "texto_original_en": "installation thursday march re installation hello help well currently kind regards engineer march installation hi please let re keen install level package help thanks"
+ },
+ {
+  "id": "C04",
+  "fila_verdadeira": "Access",
+  "texto_pt": "Oi, pessoal! Podem abrir um chamado pra fazer o reset de fábrica no celular de trabalho dela? Tá pedindo o PIN e ela não consegue usar. Valeu!",
+  "texto_original_en": "factory reset request factory dear please log assign performing factory her work phone asking pin number thanks kind regards engineer"
+ },
+ {
+  "id": "C05",
+  "fila_verdadeira": "HR Support",
+  "texto_pt": "Oi, recebi um aviso de horas faltantes (missing time) na terça de julho referente a um período em que eu estava de licença-maternidade. Vocês podem resolver isso? Me avisem se precisarem de mais detalhes ou se eu tiver que fazer alguma coisa.",
+  "texto_original_en": "please action missing time sent tuesday july please action hello receiving for for period for period mentioned below was maternity leave let know if you need more details or if need take any actions regards senior tester"
+ },
+ {
+  "id": "C06",
+  "fila_verdadeira": "Hardware",
+  "texto_pt": "Oi, queria saber se dá pra trocar o número de telefone que me foi atribuído por um com outro código de área, porque acho que as pessoas atenderiam bem mais as minhas ligações do que atendem hoje. Como faço pra conseguir essa troca?",
+  "texto_original_en": "the phone number change phone number change hello hoping number issued changed number instead area code makes much better response call than currently assume calling how accomplish se"
+ },
+ {
+  "id": "C07",
+  "fila_verdadeira": "Internal Project",
+  "texto_pt": "Oi, tudo bem? Preciso que criem o código do novo projeto no PAS conforme o formulário de setup que tô mandando em anexo. É urgente, porque precisamos mover os custos pra ele o quanto antes, valeu!",
+  "texto_original_en": "new project pas tuesday october pm setup form importance high hi please create code per enclosed form please make needs done asap costs move thanks"
+ },
+ {
+  "id": "C08",
+  "fila_verdadeira": "Purchase",
+  "texto_pt": "Oi, pessoal! Daqui a alguns dias vou mudar de lugar, então se possível mantenham a instalação, por favor. Ah, e a instalação que fizeram veio errada, não foi o que eu tinha pedido, dá pra corrigir? Valeu!",
+  "texto_original_en": "thursday february re hello few days relocate please keep installation possible thank tester thursday february hi has incorrectly instead requested please installation thanks administrator phone"
+ },
+ {
+  "id": "C09",
+  "fila_verdadeira": "Administrative rights",
+  "texto_pt": "Oi, tudo bem? Em projetos anteriores eu usava as credenciais do cliente, mas não tô conseguindo lembrar o usuário e a senha, vocês conseguem me ajudar com isso? Valeu!",
+  "texto_original_en": "credentials sent tuesday february credentials hi with last projects using client seem remember name password for could you help with thank you senior tester ext id en canton"
+ },
+ {
+  "id": "C10",
+  "fila_verdadeira": "HR Support",
+  "texto_pt": "Oi, não tô conseguindo enviar meu cartão de ponto da semana, vocês podem configurar ele como aprovado? Ele já vem preenchido com o feriado, as folgas e as férias, não aparece nenhum botão de ação e não consigo fazer nada nele. O pior é que dá erro dizendo que eu já enviei, sendo que nem consigo enviar, obrigado!",
+  "texto_original_en": "cannot submit time card for sent tuesday timecard for hi can you please set timecard for week approved cannot anything with data pre populated with st public holiday rest days annual leave have any action buttons really cannot anything annoying because get error have submitted timecard when cannot submit timecard thanks manager"
+ },
+ {
+  "id": "C11",
+  "fila_verdadeira": "Storage",
+  "texto_pt": "Oi, preciso de acesso ao relatório final de gestão de attrition. Queria ver os detalhes de quem está saindo, se foi saída planejada ou não planejada, e também poder aceitar ou recusar as solicitações. Como faço pra escolher isso?",
+  "texto_original_en": "access to attrition management reporting final wants attrition final how choose leaving details planned unplanned accept decline requests"
+ },
+ {
+  "id": "C12",
+  "fila_verdadeira": "Hardware",
+  "texto_pt": "Oi, tô sem acesso à instância e preciso dela pra entregar uma capacidade de build que tá no backlog (o ticket foi atualizado e marcado como selecionado). Consegue resolver pra mim, por favor? Valeu!",
+  "texto_original_en": "cannot access sent friday february build capability needed deliver hi have access instance please could you kindly resolve thanks sent friday february build capability needed deliver updated build capability needed deliver change by status backlog selected for add comment message was sent by"
+ },
+ {
+  "id": "C13",
+  "fila_verdadeira": "Storage",
+  "texto_pt": "Bom dia! Vocês podem liberar o acesso à pasta para os colegas do time de sistemas? Muito obrigado!",
+  "texto_original_en": "access for systems team members members good morning please help by providing colleagues folder colleagues folder thanks lot lead"
+ },
+ {
+  "id": "C14",
+  "fila_verdadeira": "Miscellaneous",
+  "texto_pt": "Oi pessoal, precisei de ajuda com o banco de dados e um analista já me ajudou, deixou o banco funcionando e me passou o log. Podem atribuir o chamado pra ele e depois fechar, por favor? Valeu!",
+  "texto_original_en": "database database hello guys working needed database helped gave database log assign then close thank analyst"
+ },
+ {
+  "id": "C15",
+  "fila_verdadeira": "Access",
+  "texto_pt": "Oi pessoal, tudo bem? Preciso que vocês atribuam um crachá novo pra um estagiário que vai receber o badge na sexta-feira de julho, à tarde. O cartão antigo foi perdido, então tem que desativar ele e liberar o novo, valeu!",
+  "texto_original_en": "card assign new card friday july card hello awesome guys intern la badge se july re card card se va alt card friday july pm card va lost va la analyst ext hub"
+ },
+ {
+  "id": "C16",
+  "fila_verdadeira": "Administrative rights",
+  "texto_pt": "Oi, recebi o aviso sobre a atualização do Windows mas ainda não consegui fazer, acabei pegando umas outras demandas e conversei com uns colegas sobre o processo pra ter ajuda. Qual é o prazo final antes da atualização forçada? Desculpa o transtorno, e se algum membro do meu time ainda não atualizou, peço que façam também.",
+  "texto_original_en": "windows upgrade query upgrade analyst ext tuesday october pm re upgrade unfortunately haven completed yet somehow allocated couple talked about process assistance colleagues latest deadline forced upgrade thanks apologize created inconveniences br head october upgrade hello upgraded os please ignore also member teams please apply upgrade yet thank receiving because approaching scheduled forced upgrade assets migrated yet performing upgrade please document found carefully attention screen please require further assistance best regards ext"
+ }
+]

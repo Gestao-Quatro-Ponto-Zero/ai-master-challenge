@@ -1,0 +1,10 @@
+{
+ "texto_en": "issues when closing tasks generating double tickets sent thursday march fwd request hardware data wipe be done for march kale building assigned hi please log below reported issue best regards sent device original message date request hardware data wipe be done for march kale building assigned hello wanted report bug namely had ticket for leaver inventory update with task notice task place tried close request allow however expected ticket for data wipe was created then proceeded with closing task then request one more ticket was generated for date wipe have one ticket doubled going cancel one them however think might be considered be fixed by regards engineer ext en sent march request hardware data wipe be done for march kale building assigned hello please be advised record number assigned your please review details take appropriate action reference number details description hardware retrieved should be wiped data after two weeks previous inventory update request location access request please click following link kind regards ref msg",
+ "mensagem": "Oi, achei um bug ao fechar tarefas: num ticket de inventário de desligado, tentei fechar a solicitação mas ela tinha uma tarefa pendente, aí o ticket de data wipe foi criado como esperado, mas quando fechei a tarefa e depois a solicitação foi gerado mais um ticket de data wipe, ficou duplicado. Vou cancelar um deles, mas acho que vale corrigir isso, podem registrar?",
+ "meta": {
+  "input_tokens": 696,
+  "output_tokens": 168,
+  "custo_usd": 0.006144,
+  "request_id": "req_011Cgipf4MwkAiQqbCQVkiXJ"
+ }
+}

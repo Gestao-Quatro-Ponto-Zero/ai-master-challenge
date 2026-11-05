@@ -1,0 +1,10 @@
+{
+ "texto_en": "upgrade upgrade hi few minutes ago prompted restart computer due software update restart done installation failed done loop until installation succeeds please advise provide additional",
+ "mensagem": "Oi, pessoal! Há uns minutos o computador pediu pra reiniciar por causa de uma atualização de software, reiniciei mas a instalação falhou, e agora parece que fica nesse loop até a instalação dar certo. Podem me orientar? Se precisarem de mais alguma informação, é só falar.",
+ "meta": {
+  "input_tokens": 478,
+  "output_tokens": 118,
+  "custo_usd": 0.004272,
+  "request_id": "req_011CgipcsHsow4ewahU95yHi"
+ }
+}

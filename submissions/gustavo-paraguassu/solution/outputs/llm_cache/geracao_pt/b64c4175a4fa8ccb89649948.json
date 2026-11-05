@@ -1,0 +1,10 @@
+{
+ "texto_en": "access request to tuesday pm hi please user backlog per link backlog thank best regards programme portfolio officer",
+ "mensagem": "Oi, preciso de acesso ao backlog até terça à tarde, dá pra liberar pro usuário conforme o link do backlog? Valeu!",
+ "meta": {
+  "input_tokens": 462,
+  "output_tokens": 63,
+  "custo_usd": 0.003108,
+  "request_id": "req_011CgipdYBhbwJFUQepvqBFp"
+ }
+}

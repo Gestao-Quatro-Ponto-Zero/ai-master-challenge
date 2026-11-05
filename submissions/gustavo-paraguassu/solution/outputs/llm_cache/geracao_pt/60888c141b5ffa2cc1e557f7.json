@@ -1,0 +1,10 @@
+{
+ "texto_en": "factory reset request factory dear please log assign performing factory her work phone asking pin number thanks kind regards engineer",
+ "mensagem": "Oi, pessoal! Podem abrir um chamado pra fazer o reset de fábrica no celular de trabalho dela? Tá pedindo o PIN e ela não consegue usar. Valeu!",
+ "meta": {
+  "input_tokens": 464,
+  "output_tokens": 81,
+  "custo_usd": 0.003476,
+  "request_id": "req_011CgipUr5yk9GL6WCCFBxyn"
+ }
+}

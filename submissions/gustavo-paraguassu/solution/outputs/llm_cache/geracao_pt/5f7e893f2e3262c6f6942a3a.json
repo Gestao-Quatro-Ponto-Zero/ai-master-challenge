@@ -1,0 +1,10 @@
+{
+ "texto_en": "outlook not working sent friday october working hello guys you might know already we still have issues with properly working every we click or one basically when we click stuck for several seconds but when comes back continue work stuck again really impossible work when happens every we know there several tickets logged for problem but could you please push forward investigate reason why happening every problem really affects our work would you kindly assist have great weekend ahead thank you kind regards analyst",
+ "mensagem": "Oi pessoal, o Outlook continua travando: toda vez que a gente clica em algum e-mail ele fica congelado por vários segundos, volta, e quando continuamos a trabalhar trava de novo, assim fica impossível trabalhar. Sei que já tem vários chamados abertos sobre isso, mas vocês conseguem dar um empurrão pra investigarem o motivo? Tá afetando muito nosso trabalho, obrigado e bom fim de semana!",
+ "meta": {
+  "input_tokens": 555,
+  "output_tokens": 173,
+  "custo_usd": 0.00568,
+  "request_id": "req_011Cgipcs1WE1igFj3DB2pCG"
+ }
+}

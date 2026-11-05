@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, troquei minha senha hoje mas continuo recebendo notificação de que ela vai expirar. Isso é normal ou tem algo errado? Sou desenvolvedor, se isso ajudar.",
+ "triagem": {
+  "texto_ingles": "User changed their password today but still receives notifications that the password will expire. Asks whether this is expected behavior or an issue. User is a developer.",
+  "resumo_pt": "Cliente trocou a senha hoje, mas continua recebendo aviso de expiração e pergunta se é normal ou se há algo errado.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "continua recebendo notificação de que a senha vai expirar após tê-la trocado hoje",
+   "sistema": null,
+   "tipo_acesso": "troca de senha",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3041,
+  "output_tokens": 308,
+  "latencia_s": 1.7,
+  "custo_usd": 0.000458,
+  "request_id": "req_011CgipYuppXta8H8UxJszZ8"
+ }
+}

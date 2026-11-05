@@ -1,0 +1,10 @@
+{
+ "texto_en": "create project oracle fusion december pm please create client based attached form hello please create client based attached form let additional needed best regards",
+ "mensagem": "Oi, pessoal! Vocês podem criar um projeto no Oracle Fusion e cadastrar o cliente com base no formulário que anexei? Se precisarem de mais alguma informação, é só me avisar. Valeu!",
+ "meta": {
+  "input_tokens": 463,
+  "output_tokens": 90,
+  "custo_usd": 0.003652,
+  "request_id": "req_011CgipeSKGY7zTZpCXNNgSS"
+ }
+}

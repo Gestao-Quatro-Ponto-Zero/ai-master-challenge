@@ -1,0 +1,10 @@
+{
+ "texto_en": "new project code request oracle tuesday march create code dear please create according form attached regards",
+ "mensagem": "Oi, pessoal! Preciso que criem um novo código de projeto no Oracle conforme o formulário que tá em anexo. Obrigado!",
+ "meta": {
+  "input_tokens": 452,
+  "output_tokens": 62,
+  "custo_usd": 0.003048,
+  "request_id": "req_011CgipeUr4dzuJT7fUpRHLV"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, tudo bem? Vocês podem fazer a inclusão pra mim, por favor? Obrigado!",
+ "triagem": {
+  "texto_ingles": "Hello, could you please perform the inclusion for me? Thank you.",
+  "resumo_pt": "Cliente pede a 'inclusão' de algo, mas não diz o quê (acesso, conta, equipamento ou outro).",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3010,
+  "output_tokens": 250,
+  "latencia_s": 1.54,
+  "custo_usd": 0.000426,
+  "request_id": "req_011CgipiC298MZci9afCDeqQ"
+ }
+}

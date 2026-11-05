@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, chegou a entrega do pedido de compra de reposição de periféricos (headset e mouse sem fio) que foi solicitado. Podem dar entrada/recebimento no PO e registrar a reposição no estoque? Me avisem o que preciso fazer, obrigado!",
+ "triagem": {
+  "texto_ingles": "Hello, the delivery for the purchase order for replacement peripherals (headset and wireless mouse) has arrived. Can you register the goods receipt on the PO and record the replacement items in inventory? Please let me know if I need to do anything. Thanks!",
+  "resumo_pt": "Usuário informa que chegou a entrega do pedido de compra de periféricos (headset e mouse sem fio) e pede o recebimento no PO e registro no estoque.",
+  "fila_sugerida_llm": "Purchase",
+  "campos": {
+   "equipamento": "headset e mouse sem fio",
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "reposição de periféricos",
+   "item": "headset e mouse sem fio",
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3066,
+  "output_tokens": 356,
+  "latencia_s": 4.28,
+  "custo_usd": 0.019384,
+  "request_id": "req_011CgipkYHrj7aaxCWHSu9jC"
+ }
+}

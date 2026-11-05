@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, queria saber se dá pra trocar o número de telefone que me foi atribuído por um com outro código de área, porque acho que as pessoas atenderiam bem mais as minhas ligações do que atendem hoje. Como faço pra conseguir essa troca?",
+ "triagem": {
+  "texto_ingles": "Requesting a change of the assigned phone number to one with a different area code, as the user believes calls would be answered more often. Asking how to proceed with the change.",
+  "resumo_pt": "Cliente pede a troca do número de telefone atribuído por um com outro código de área e pergunta como fazer.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "telefone",
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "as pessoas atenderiam melhor as ligações com outro código de área",
+   "item": "número de telefone com outro código de área",
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3060,
+  "output_tokens": 301,
+  "latencia_s": 2.58,
+  "custo_usd": 0.000456,
+  "request_id": "req_011CgiphUan8afJgSwKHd6F4"
+ }
+}

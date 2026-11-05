@@ -1,0 +1,10 @@
+{
+ "texto_en": "new project code pas tuesday december pm code hi please help create code attached form filled details best officer",
+ "mensagem": "Oi, pessoal! Preciso que criem um novo código de projeto no sistema, por favor. O formulário com os detalhes já está preenchido e vai em anexo. Obrigado!",
+ "meta": {
+  "input_tokens": 456,
+  "output_tokens": 75,
+  "custo_usd": 0.003324,
+  "request_id": "req_011Cgipeb2PkcypJ18RMNPi2"
+ }
+}

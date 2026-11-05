@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, vocês já adicionaram os membros no site do projeto, valeu! Só preciso que garantam que isso também apareça certinho na alocação, pra constar no relatório. Ah, e sobre o arquivo na pasta compartilhada, não achei onde foi atualizado, consegue me dizer o local?",
+ "triagem": {
+  "texto_ingles": "Customer confirms project members were added to the project site and asks that they also appear correctly in the allocation so they show in the report. Customer also cannot find where a file in the shared folder was updated and asks for its location.",
+  "resumo_pt": "Cliente agradece a inclusão de membros no site do projeto, pede que apareçam corretamente na alocação para o relatório e pergunta onde foi atualizado um arquivo na pasta compartilhada.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Não encontrou onde o arquivo na pasta compartilhada foi atualizado",
+   "sistema": "Site do projeto; alocação",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "Constar no relatório",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": "Pasta compartilhada (arquivo atualizado, local não identificado)",
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3076,
+  "output_tokens": 383,
+  "latencia_s": 2.13,
+  "custo_usd": 0.000499,
+  "request_id": "req_011CgipifDmXXJ4wu8FMRxBq"
+ }
+}

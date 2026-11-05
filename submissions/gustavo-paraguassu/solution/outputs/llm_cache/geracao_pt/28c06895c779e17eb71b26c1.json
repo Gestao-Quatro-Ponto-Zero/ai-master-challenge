@@ -1,0 +1,10 @@
+{
+ "texto_en": "new accounts thursday october pm create accounts hi please create accounts client fond requested role tester",
+ "mensagem": "Oi, pessoal! Preciso que criem contas novas pro cliente, com o perfil de tester que foi solicitado. Pedido de quinta-feira à tarde, em outubro.",
+ "meta": {
+  "input_tokens": 457,
+  "output_tokens": 74,
+  "custo_usd": 0.003308,
+  "request_id": "req_011CgipUWmsSAh6uBfkaJKUq"
+ }
+}

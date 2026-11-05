@@ -1,0 +1,10 @@
+{
+ "texto_en": "windows installation se update la",
+ "mensagem": "Oi, tô com um problema na instalação do Windows, ele não tá atualizando. Alguém consegue me ajudar com isso?",
+ "meta": {
+  "input_tokens": 435,
+  "output_tokens": 57,
+  "custo_usd": 0.00288,
+  "request_id": "req_011Cgipcrz2Vt5Ly4C6TDgRg"
+ }
+}

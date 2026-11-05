@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de acesso à pasta completa de start up que fica no hub de treinamentos, pelo link que tenho aqui. Podem liberar pra mim? Valeu!",
+ "triagem": {
+  "texto_ingles": "Requesting access to the full \"start up\" folder located in the training hub, via the link provided by the requester. Please grant access.",
+  "resumo_pt": "Cliente pede acesso à pasta completa \"start up\" no hub de treinamentos, pelo link que possui.",
+  "fila_sugerida_llm": "Storage",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "acesso",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": "pasta completa de start up no hub de treinamentos (via link)",
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3032,
+  "output_tokens": 281,
+  "latencia_s": 1.69,
+  "custo_usd": 0.000444,
+  "request_id": "req_011CgipiwptZQ7MPyKGVHgkr"
+ }
+}

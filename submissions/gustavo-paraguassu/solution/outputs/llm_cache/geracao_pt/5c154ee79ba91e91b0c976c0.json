@@ -1,0 +1,10 @@
+{
+ "texto_en": "update cc and expenditure typed guide on the tuesday july pm re expenditure types guide hello sorry please find attached version thanks senior accountant ext tuesday july pm expenditure types guide hello please find attached report today updated best regards senior accountant ext",
+ "mensagem": "Oi, pessoal! Preciso atualizar o guia de centros de custo e tipos de despesa, segue em anexo a versão atualizada (desculpa, mandei antes o relatório de hoje e agora tô mandando a versão certa). Valeu!",
+ "meta": {
+  "input_tokens": 511,
+  "output_tokens": 98,
+  "custo_usd": 0.004004,
+  "request_id": "req_011Cgipdgua4VMxJEjmjUVCH"
+ }
+}

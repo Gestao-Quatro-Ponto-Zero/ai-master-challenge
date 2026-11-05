@@ -1,0 +1,10 @@
+{
+ "texto_en": "new project request oracle pm hello please create ensure both thanks registered under number whose registered old broad street kingdom provide clients each subsidiaries separate entity has liability",
+ "mensagem": "Oi, preciso abrir um novo projeto no Oracle PM, vocês conseguem criar? Por favor garantam que os dois fiquem cadastrados com o número de registro certo, o do endereço da Old Broad Street no Reino Unido, porque cada subsidiária atende os clientes como entidade separada e tem responsabilidade própria. Valeu!",
+ "meta": {
+  "input_tokens": 481,
+  "output_tokens": 134,
+  "custo_usd": 0.004604,
+  "request_id": "req_011Cgipea3qxfYpwkf37Y9Li"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, bom dia! Desde segunda o Outlook fica pedindo minha senha toda vez que tento abrir, e mesmo eu digitando ele não aceita e continua mostrando que precisa de senha. Não mudei nada recentemente e acho que nada expirou, e o acesso funciona (se essa mensagem chegar aí é porque ainda consigo enviar), podem me orientar o que fazer?",
+ "triagem": {
+  "texto_ingles": "Since Monday, Outlook keeps prompting for my password every time I open it. Even after entering it, the password is not accepted and it keeps showing that a password is required. I haven't changed anything recently and I don't think anything has expired; access otherwise works (I can still send messages). Please advise on how to resolve.",
+  "resumo_pt": "Outlook pede senha repetidamente desde segunda e não aceita a senha digitada, embora o envio ainda funcione.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Outlook fica pedindo senha toda vez que abre e não aceita a senha digitada, desde segunda",
+   "sistema": "Outlook",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3110,
+  "output_tokens": 358,
+  "latencia_s": 4.04,
+  "custo_usd": 0.0196,
+  "request_id": "req_011CgipjQ5UB4izz7SWEtQxF"
+ }
+}

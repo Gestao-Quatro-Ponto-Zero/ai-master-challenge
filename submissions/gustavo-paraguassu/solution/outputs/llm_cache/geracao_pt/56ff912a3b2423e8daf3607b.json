@@ -1,0 +1,10 @@
+{
+ "texto_en": "hi requested by please log installation thanks administrator phone",
+ "mensagem": "Oi, pode registrar um chamado de instalação, por favor? Foi solicitado pelo administrador, qualquer coisa é só ligar. Valeu!",
+ "meta": {
+  "input_tokens": 445,
+  "output_tokens": 66,
+  "custo_usd": 0.0031,
+  "request_id": "req_011CgipfHnb4ABFraQtbXdCZ"
+ }
+}

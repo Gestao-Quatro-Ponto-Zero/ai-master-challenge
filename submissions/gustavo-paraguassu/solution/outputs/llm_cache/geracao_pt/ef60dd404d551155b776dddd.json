@@ -1,0 +1,10 @@
+{
+ "texto_en": "new project one space hello please add title code name status closed type thank senior",
+ "mensagem": "Oi! Por favor, adiciona um novo projeto no espaço com título, código, nome, status fechado e tipo. Obrigado!",
+ "meta": {
+  "input_tokens": 447,
+  "output_tokens": 58,
+  "custo_usd": 0.002948,
+  "request_id": "req_011CgipejPgWVPMDCTh3n4sB"
+ }
+}

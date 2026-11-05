@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Vocês podem me dar acesso à lista de e-mails (mailing list) da Louden? Obrigado!",
+ "triagem": {
+  "texto_ingles": "Hello, could you please grant me access to the Louden mailing list? Thank you!",
+  "resumo_pt": "Usuário pede acesso à lista de e-mails (mailing list) da Louden.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "lista de e-mails (mailing list) da Louden",
+   "tipo_acesso": "acesso novo",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3017,
+  "output_tokens": 254,
+  "latencia_s": 2.89,
+  "custo_usd": 0.017148,
+  "request_id": "req_011CgipkGu8zo5ksqX7RBAqZ"
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "texto": "Oi pessoal, tudo bem? Foi feito um pedido de PO e preciso que vocês registrem o chamado, instalem o que foi solicitado e, quando estiver pronto, executem na máquina e me mandem um print da tela confirmando. Valeu!",
+ "triagem": {
+  "texto_ingles": "Request to log a ticket for a purchase order (PO) that was submitted; install the requested software and, once ready, execute it on the machine and send a screenshot confirming it. No PO number, software name or machine identifier provided.",
+  "resumo_pt": "Cliente pede registro de chamado sobre um pedido de PO, instalação de software solicitado e envio de print confirmando a execução na máquina; nenhum número de PO ou programa foi informado.",
+  "fila_sugerida_llm": "Purchase",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3061,
+  "output_tokens": 333,
+  "latencia_s": 1.88,
+  "custo_usd": 0.000473,
+  "request_id": "req_011CgipiGEeTG4AJYVTqJ6Ub"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "replacement pm re hello since work currently personal computer thank hello thursday accidentally dropped tea friday took colleagues said taken keyboard working anymore please bring possible order continue work working therefore work thanks",
+ "mensagem": "Oi, preciso de um notebook substituto! Na quinta derramei chá sem querer no meu e na sexta os colegas levaram pra ver, disseram que o teclado não funciona mais. Por enquanto tô trabalhando no meu computador pessoal, então se puderem me trazer um o quanto antes pra eu continuar trabalhando, agradeço.",
+ "meta": {
+  "input_tokens": 495,
+  "output_tokens": 133,
+  "custo_usd": 0.00464,
+  "request_id": "req_011CgipeFsTq5ctVjfwydgnf"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "new starter hardware allocation colombia bogota bogota complete colombia dear please help completed form testing internship student intern joining well please complete going his where he going seated thank compliance officer colombia",
+ "mensagem": "Oi, tudo bem? Preciso de ajuda com a alocação de hardware pra um novo estagiário que vai entrar em Bogotá, na Colômbia — já preenchi o formulário do estágio, só falta vocês completarem a parte de onde ele vai ficar sentado. Obrigado!",
+ "meta": {
+  "input_tokens": 488,
+  "output_tokens": 115,
+  "custo_usd": 0.004252,
+  "request_id": "req_011CgipVa17ie5jn4o797h91"
+ }
+}

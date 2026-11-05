@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Os pipelines das oportunidades que criei no começo da semana sumiram, e mandei os PAs na sexta. Vocês conseguem investigar? São as oportunidades Agile Evolution (duas) e Programme Director, os IDs eu passo se precisar. Valeu!",
+ "triagem": {
+  "texto_ingles": "Opportunities created earlier this week no longer show their pipelines. Two Agile Evolution opportunities and one Programme Director opportunity. Purchase advice (PAs) were sent on Friday. Please investigate; opportunity IDs can be provided if needed.",
+  "resumo_pt": "Pipelines de três oportunidades (duas Agile Evolution e uma Programme Director) criadas no início da semana sumiram; PAs enviados na sexta; pede investigação.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Pipelines das oportunidades sumiram",
+   "sistema": "Pipeline de oportunidades (CRM)",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": "Agile Evolution; Programme Director",
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3074,
+  "output_tokens": 371,
+  "latencia_s": 2.03,
+  "custo_usd": 0.000493,
+  "request_id": "req_011Cgiphox6jSqZoMG9F1EVf"
+ }
+}

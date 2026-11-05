@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, pessoal! Foi feita uma compra nova (com PO) de um mini adaptador, um cabo Thunderbolt da Apple e um adaptador Thunderbolt para Gigabit, vocês podem registrar a instalação? Lembrando que é obrigatório lançar na seção de recebimentos pra dar entrada nos itens pedidos, valeu!",
+ "triagem": {
+  "texto_ingles": "Purchase received with PO: a new purchase was made of a mini adapter, an Apple Thunderbolt cable and a Thunderbolt to Gigabit adapter. Please register the installation. Note: receipt must be logged in the receiving section to record the ordered items.",
+  "resumo_pt": "Registrar a instalação de itens comprados com PO (mini adaptador, cabo Thunderbolt da Apple e adaptador Thunderbolt para Gigabit) e lançar o recebimento.",
+  "fila_sugerida_llm": "Purchase",
+  "campos": {
+   "equipamento": "mini adaptador, cabo Thunderbolt da Apple, adaptador Thunderbolt para Gigabit",
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": "mini adaptador, cabo Thunderbolt da Apple, adaptador Thunderbolt para Gigabit",
+   "quantidade": null,
+   "numero_pedido": "PO",
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3097,
+  "output_tokens": 424,
+  "latencia_s": 2.68,
+  "custo_usd": 0.000522,
+  "request_id": "req_011CgipiPRFCWs4WjrMDBstH"
+ }
+}

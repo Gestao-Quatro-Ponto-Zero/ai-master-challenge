@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, achei um bug ao fechar tarefas: num ticket de inventário de desligado, tentei fechar a solicitação mas ela tinha uma tarefa pendente, aí o ticket de data wipe foi criado como esperado, mas quando fechei a tarefa e depois a solicitação foi gerado mais um ticket de data wipe, ficou duplicado. Vou cancelar um deles, mas acho que vale corrigir isso, podem registrar?",
+ "triagem": {
+  "texto_ingles": "Bug report: when closing a task in an offboarding inventory request, a pending task blocked closing the request. A data wipe ticket was created as expected. After closing the task and then the request, a second data wipe ticket was generated, resulting in a duplicate. The requester will cancel one of the duplicates and asks to log the bug for fixing.",
+  "resumo_pt": "Bug ao fechar tarefas em ticket de inventário de desligado: ao fechar a tarefa pendente e depois a solicitação, foi gerado um segundo ticket de data wipe duplicado; a pessoa vai cancelar um deles e pede para registrar o bug.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Ticket de data wipe duplicado ao fechar a solicitação de inventário de desligado após fechar a tarefa pendente",
+   "sistema": "Sistema de tickets (inventário de desligado / data wipe)",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "acao_irreversivel"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3127,
+  "output_tokens": 458,
+  "latencia_s": 2.27,
+  "custo_usd": 0.000542,
+  "request_id": "req_011Cgipi9MQNRjCpDM4qmaGn"
+ }
+}

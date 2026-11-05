@@ -1,0 +1,10 @@
+{
+ "texto_en": "mailbox retention policy should be year mailbox retention policy hello please increase retention policy mailbox please assign directly best regards senior engineer please consider environment print",
+ "mensagem": "Oi, pessoal! Preciso que aumentem a política de retenção da caixa de e-mail, ela deveria ser de um ano. Se puderem, já atribuam direto pra alguém resolver, valeu!",
+ "meta": {
+  "input_tokens": 479,
+  "output_tokens": 84,
+  "custo_usd": 0.003596,
+  "request_id": "req_011CgipfuKkiEnrczGWKETML"
+ }
+}

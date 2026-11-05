@@ -1,0 +1,10 @@
+{
+ "texto_en": "new purchase adapter cable adapter thursday october pm purchase po dear purchased mini adapter thunderbolt cable apple thunderbolt cable adapter thunderbolt gigabit please log installation please take consideration mandatory receipts section order receive item ordered kind regards administrator",
+ "mensagem": "Oi, pessoal! Foi feita uma compra nova (com PO) de um mini adaptador, um cabo Thunderbolt da Apple e um adaptador Thunderbolt para Gigabit, vocês podem registrar a instalação? Lembrando que é obrigatório lançar na seção de recebimentos pra dar entrada nos itens pedidos, valeu!",
+ "meta": {
+  "input_tokens": 522,
+  "output_tokens": 138,
+  "custo_usd": 0.004848,
+  "request_id": "req_011CgipfJorYsoXWdJ1o3wzX"
+ }
+}

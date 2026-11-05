@@ -1,0 +1,10 @@
+{
+ "texto_en": "outlook password problems sent monday password problems hi there morning having following problem when try open keeps asking for password seems be unhappy with what enter still displays need password haven changed anything recently think nothing expired recently access works if reaches you then can still send please advise what should thanks best regards manager frankfurt main frankfurt main information confidential be legally privileged intended solely for addressee any opinions expressed mine",
+ "mensagem": "Oi, bom dia! Desde segunda o Outlook fica pedindo minha senha toda vez que tento abrir, e mesmo eu digitando ele não aceita e continua mostrando que precisa de senha. Não mudei nada recentemente e acho que nada expirou, e o acesso funciona (se essa mensagem chegar aí é porque ainda consigo enviar), podem me orientar o que fazer?",
+ "meta": {
+  "input_tokens": 555,
+  "output_tokens": 151,
+  "custo_usd": 0.00524,
+  "request_id": "req_011CgipcsKN2nNAjuXbDSG25"
+ }
+}

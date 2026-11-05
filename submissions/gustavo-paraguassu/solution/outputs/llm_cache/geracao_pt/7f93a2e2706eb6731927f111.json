@@ -1,0 +1,10 @@
+{
+ "texto_en": "please include into the list of recipients of this notification december pm change hi colleagues please include change thanks head december change hello please advised change has approved effective date december approver approver change required comments initiator best regards note mailbox receive messages",
+ "mensagem": "Oi, pessoal! Vocês podem me incluir na lista de destinatários da notificação de mudança de dezembro? Recebi um aviso encaminhado dizendo que a mudança foi aprovada com data efetiva em dezembro, mas como essa caixa não recebe mensagens, preciso ser adicionado pra receber direto. Valeu!",
+ "meta": {
+  "input_tokens": 496,
+  "output_tokens": 131,
+  "custo_usd": 0.004604,
+  "request_id": "req_011Cgipf7np7kTvworgkfvpN"
+ }
+}

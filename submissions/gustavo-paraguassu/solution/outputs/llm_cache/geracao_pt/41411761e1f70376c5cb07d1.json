@@ -1,0 +1,10 @@
+{
+ "texto_en": "access hello guys writing because thanks software developer",
+ "mensagem": "Oi, pessoal! Tô escrevendo pra pedir um acesso, sou desenvolvedor de software. Valeu!",
+ "meta": {
+  "input_tokens": 442,
+  "output_tokens": 56,
+  "custo_usd": 0.002888,
+  "request_id": "req_011CgipdL1y3BFkkhC46PidW"
+ }
+}

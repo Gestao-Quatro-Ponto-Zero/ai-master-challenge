@@ -1,0 +1,10 @@
+{
+ "texto_en": "access on confluence confluence hello please location marketplace thank",
+ "mensagem": "Oi, pessoal! Vocês podem me dar acesso ao Confluence, no espaço do marketplace, por favor? Obrigado!",
+ "meta": {
+  "input_tokens": 446,
+  "output_tokens": 60,
+  "custo_usd": 0.002984,
+  "request_id": "req_011CgipUjeHEPH4715VHR76r"
+ }
+}

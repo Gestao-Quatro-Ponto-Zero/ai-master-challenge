@@ -1,0 +1,10 @@
+{
+ "texto_en": "new purchase po wednesday pm purchase po dear purchased apple thunderbolt gigabit adapter apple mini adapter mb please log installation kind regards administrator",
+ "mensagem": "Oi, pessoal! Chegou uma nova compra (PO) na quarta à tarde: compramos um adaptador Apple Thunderbolt para Gigabit e um adaptador Apple Mini. Podem registrar a instalação, por favor? Obrigado!",
+ "meta": {
+  "input_tokens": 483,
+  "output_tokens": 102,
+  "custo_usd": 0.003972,
+  "request_id": "req_011CgipfW6kjcTsrCgqnqGxV"
+ }
+}

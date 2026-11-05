@@ -1,0 +1,10 @@
+{
+ "texto_en": "extra resources on thursday pm more resources hi disk order install version please these resources machine host thanks",
+ "mensagem": "Oi, pessoal! Preciso de mais recursos (disco) na máquina host pra conseguir fazer a instalação da versão nova, que tá marcada pra quinta à tarde. Dá pra liberar esses recursos extras até lá? Valeu!",
+ "meta": {
+  "input_tokens": 458,
+  "output_tokens": 99,
+  "custo_usd": 0.003812,
+  "request_id": "req_011Cgipdv7pM2kWBywgm51EV"
+ }
+}

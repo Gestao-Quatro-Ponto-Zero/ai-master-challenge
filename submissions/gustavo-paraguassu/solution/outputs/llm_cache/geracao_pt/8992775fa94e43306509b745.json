@@ -1,0 +1,10 @@
+{
+ "texto_en": "wants to access announcements february pm wants announcements accept decline",
+ "mensagem": "Oi, preciso de acesso aos comunicados (announcements) de fevereiro, à tarde. Queria conseguir ver os comunicados e poder aceitar ou recusar, consegue liberar?",
+ "meta": {
+  "input_tokens": 447,
+  "output_tokens": 80,
+  "custo_usd": 0.003388,
+  "request_id": "req_011CgipfvbQG6oiYBZdEXPMb"
+ }
+}

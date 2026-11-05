@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Pra tentar aumentar a taxa de resposta das pesquisas de encerramento de chamado, a gente quer fazer um piloto mudando o horário de envio dessas pesquisas e mandando lembretes pros clientes depois do convite inicial, acompanhando os resultados — a mudança seria só pra esses clientes, os demais continuam do mesmo jeito. Vocês conseguem fazer isso por algumas semanas e reverter quando o piloto terminar? Se precisarem de mais alguma informação, é só avisar, obrigado!",
+ "triagem": {
+  "texto_ingles": "Request to run a pilot changing the send time of end-of-ticket satisfaction surveys and sending reminders to customers after the initial invitation, tracking response results. Change would apply only to the pilot customers; others remain unchanged. Requester asks whether it can be done for a few weeks and reverted at the end of the pilot.",
+  "resumo_pt": "Solicitação de piloto para alterar o horário de envio das pesquisas de encerramento de chamado e enviar lembretes aos clientes selecionados, com possibilidade de reversão ao fim de algumas semanas.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "Aumentar a taxa de resposta das pesquisas de encerramento de chamado",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": "Piloto de envio de pesquisas e lembretes",
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3165,
+  "output_tokens": 407,
+  "latencia_s": 3.11,
+  "custo_usd": 0.00052,
+  "request_id": "req_011CgiphuxVtX4uc22vRJKod"
+ }
+}

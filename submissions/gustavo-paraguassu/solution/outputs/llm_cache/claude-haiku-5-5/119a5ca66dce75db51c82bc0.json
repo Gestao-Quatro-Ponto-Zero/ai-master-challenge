@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, foi feito um pedido (PO de novembro) de um telefone lite que precisa ser testado pra avaliar se serve pra gente. Podem registrar a instalação como de costume e dar o recebimento do pedido? Valeu!",
+ "triagem": {
+  "texto_ingles": "Request to register installation of a lite phone ordered under a PO from November, for evaluation/testing to determine suitability. Requester asks to log the installation as usual and to record receipt of the order.",
+  "resumo_pt": "Cliente pede registro de instalação e recebimento de um telefone lite comprado pelo PO de novembro, para teste de avaliação.",
+  "fila_sugerida_llm": "Purchase",
+  "campos": {
+   "equipamento": "telefone lite",
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "avaliar se o telefone serve para a empresa",
+   "item": "telefone lite",
+   "quantidade": null,
+   "numero_pedido": "PO de novembro",
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3052,
+  "output_tokens": 326,
+  "latencia_s": 4.94,
+  "custo_usd": 0.000468,
+  "request_id": "req_011CgipiabxUcoVnzyYsxMUM"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "password expiration notifications expiration hi changed today receive expiration normal behavior wrong developer",
+ "mensagem": "Oi, troquei minha senha hoje mas continuo recebendo notificação de que ela vai expirar. Isso é normal ou tem algo errado? Sou desenvolvedor, se isso ajudar.",
+ "meta": {
+  "input_tokens": 458,
+  "output_tokens": 81,
+  "custo_usd": 0.003452,
+  "request_id": "req_011CgipUsyaHJeavrJFdbNcw"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "time booking for wednesday pm booking hi please book public holiday name date code kind regards head testing",
+ "mensagem": "Oi, preciso de uma ajuda com o lançamento de horas de quarta à tarde. Vocês podem lançar como feriado, por favor? Obrigado!",
+ "meta": {
+  "input_tokens": 458,
+  "output_tokens": 68,
+  "custo_usd": 0.003192,
+  "request_id": "req_011CgipeNWa81RJDJi6jJtSB"
+ }
+}

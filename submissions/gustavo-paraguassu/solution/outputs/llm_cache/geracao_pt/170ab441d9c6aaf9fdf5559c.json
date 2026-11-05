@@ -1,0 +1,10 @@
+{
+ "texto_en": "error invoice error invoice hi please assign thank kind regards engineer tuesday pm re error invoice hello again think explicit about issue help cancelling invoice thank kind regards accountant tuesday pm error invoice hello two errors invoice error appears post invoice ledger please error discover reason cost center po valid anymore agreed post cost center po next step cancel lines were charged process po invoice cost center receive error because cannot make correction cannot post invoice ledger also run soft close process unaccounted transactions mentioned invoice appears error thank help kind regards accountant",
+ "mensagem": "Oi, tô com dois erros numa invoice: quando tento postar no ledger dá erro, e descobri que é porque o cost center da PO não é mais válido. Combinamos de postar em outro cost center, então preciso cancelar as linhas que foram cobradas na PO pra processar a invoice no cost center novo, mas dá erro e não consigo corrigir nem postar, e no soft close ela aparece como transação não contabilizada. Vocês conseguem me ajudar a cancelar essa invoice?",
+ "meta": {
+  "input_tokens": 611,
+  "output_tokens": 182,
+  "custo_usd": 0.006084,
+  "request_id": "req_011CgipdeWTycXeH9CHphBJG"
+ }
+}

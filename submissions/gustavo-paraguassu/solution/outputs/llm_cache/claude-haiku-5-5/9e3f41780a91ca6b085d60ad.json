@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de acesso aos comunicados (announcements) de fevereiro, à tarde. Queria conseguir ver os comunicados e poder aceitar ou recusar, consegue liberar?",
+ "triagem": {
+  "texto_ingles": "Requesting access to the February announcements so the user can view them and accept or decline them. Requested for the afternoon.",
+  "resumo_pt": "Pede acesso aos comunicados (announcements) de fevereiro para visualizar e aceitar ou recusar, para a tarde.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "acesso aos comunicados de fevereiro (visualizar, aceitar ou recusar)",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3039,
+  "output_tokens": 290,
+  "latencia_s": 2.65,
+  "custo_usd": 0.000449,
+  "request_id": "req_011CgipishbbyQBFsBEK1cmW"
+ }
+}

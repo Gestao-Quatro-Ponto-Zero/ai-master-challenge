@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Vocês podem liberar permissão de escrita numa pasta pra mim, por favor? Sou lead da disciplina e preciso conseguir editar lá. Valeu!",
+ "triagem": {
+  "texto_ingles": "Request to grant write permission on a shared folder. The requester is a discipline lead and needs to be able to edit the folder.",
+  "resumo_pt": "Pede liberação de permissão de escrita em uma pasta, por ser lead da disciplina.",
+  "fila_sugerida_llm": "Storage",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "permissão de escrita",
+   "software": null,
+   "justificativa": "precisa editar a pasta por ser lead da disciplina",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": "pasta (nome não informado)",
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3038,
+  "output_tokens": 290,
+  "latencia_s": 2.03,
+  "custo_usd": 0.000449,
+  "request_id": "req_011CgipivndzcyDfhG3U7a5Y"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "and packages on are out of date from security tuesday december packages out date dear user package running out date please sign control panel install latest version package center install latest version package detailed report please main menu sincerely",
+ "mensagem": "Oi, recebi um aviso de segurança dizendo que uns pacotes que tão rodando aqui estão desatualizados e que eu preciso entrar no painel de controle e instalar a versão mais recente pela central de pacotes. Alguém pode me ajudar com isso? Diz que o relatório detalhado tá no menu principal.",
+ "meta": {
+  "input_tokens": 483,
+  "output_tokens": 124,
+  "custo_usd": 0.004412,
+  "request_id": "req_011Cgipcs2FMYbSZ1DFXRP6q"
+ }
+}

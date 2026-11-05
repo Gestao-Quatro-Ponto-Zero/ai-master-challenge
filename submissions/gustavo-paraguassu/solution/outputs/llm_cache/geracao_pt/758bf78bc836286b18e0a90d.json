@@ -1,0 +1,10 @@
+{
+ "texto_en": "new starter belgrade pm hello please find attached joiner whom expect july st thank kind regards administrator",
+ "mensagem": "Oi, tudo bem? Segue em anexo os dados de um novo colaborador que vai começar em Belgrado, previsto pra entrar no dia 1º de julho. Podem providenciar o que for preciso pra ele? Valeu!",
+ "meta": {
+  "input_tokens": 461,
+  "output_tokens": 93,
+  "custo_usd": 0.003704,
+  "request_id": "req_011CgipdVeuSymR5j46rPZMp"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, recebi um aviso com prioridade alta dizendo que minha senha expira hoje à tarde. Ele pede pra trocar no PC apertando Ctrl+Alt+Del e escolhendo 'alterar senha'. Podem me ajudar com isso?",
+ "triagem": {
+  "texto_ingles": "Hi, I received a high-priority notice saying my password expires this afternoon. It instructs me to change it on the PC by pressing Ctrl+Alt+Del and selecting 'Change a password'. Can you help me with this?",
+  "resumo_pt": "Usuário recebeu aviso de expiração da própria senha hoje à tarde e pede ajuda para trocá-la via Ctrl+Alt+Del.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": "PC",
+   "sintoma": "recebi um aviso com prioridade alta dizendo que minha senha expira hoje à tarde",
+   "sistema": null,
+   "tipo_acesso": "troca de senha",
+   "software": null,
+   "justificativa": "senha expira hoje à tarde",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3063,
+  "output_tokens": 353,
+  "latencia_s": 5.09,
+  "custo_usd": 0.019312,
+  "request_id": "req_011Cgipj6qsuCZKMah5uk5GH"
+ }
+}

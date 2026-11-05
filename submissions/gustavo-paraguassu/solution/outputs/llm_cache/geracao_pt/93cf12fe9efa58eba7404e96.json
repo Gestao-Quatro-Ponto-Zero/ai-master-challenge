@@ -1,0 +1,10 @@
+{
+ "texto_en": "local support no th floor sent tuesday november th floor importance high hi our electricity out th floor think sockets could someone please come have look if there anything we should be doing please let know thank you officer",
+ "mensagem": "Oi, pessoal do suporte, a energia caiu aqui no nosso andar, acho que são as tomadas. Alguém pode vir dar uma olhada, por favor? Se tiver algo que a gente deva fazer enquanto isso, me avisa. Obrigado!",
+ "meta": {
+  "input_tokens": 485,
+  "output_tokens": 105,
+  "custo_usd": 0.00404,
+  "request_id": "req_011Cgipdm6qJhqVKqKqTKgk4"
+ }
+}
