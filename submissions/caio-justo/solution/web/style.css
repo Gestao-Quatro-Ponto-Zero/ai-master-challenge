@@ -107,7 +107,7 @@ td.num, th.dir { text-align: right; }
 @media (max-width: 60rem) {
   .deal { grid-template-columns: 48px minmax(0, 1fr); }
   .deal-motivos, .botoes { grid-column: 2; }
-  .marca { flex-basis: 100%; }
+  .marca, .abas { flex-basis: 100%; }
   .barra { position: static; }
   .botoes { justify-content: flex-start; max-width: none; }
   .colunas, .medidas { grid-template-columns: minmax(0, 1fr); }
