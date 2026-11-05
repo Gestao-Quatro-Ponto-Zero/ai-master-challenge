@@ -1,0 +1,35 @@
+Registro 09 — verificações no material publicado (04/11/2026)
+
+Envio 1: git push 4aed364..49c6789 submission/liberato-gouveia
+
+[1] GitHub compare main...submission/liberato-gouveia:
+{"ahead_by":9,"arquivos":56,"behind_by":0,"fora_da_pasta":0,"status":"ahead","status_dos_arquivos":{"added":56}}
+PRs no fork: 0
+
+[2] Link público do JSON:
+https://raw.githubusercontent.com/libegouv/ai-master-challenge/refs/heads/submission/liberato-gouveia/submissions/liberato-gouveia/solution/motor/saida/deals_priorizados.json
+HTTP 200 | 1327425 bytes
+cache-control: max-age=300
+content-type: text/plain; charset=utf-8
+access-control-allow-origin: *
+md5 publicado = md5 local = b5f33907da1c3385f75272e479b3bdb5
+
+VERIFICAÇÃO 3 — classificação dos deals (arquivo publicado)
+  total: 2089 | por lista: {'Foco': 228, 'Requalificar ou encerrar': 1301, 'Iniciar contato': 500, 'Automatizar': 60} | soma: 2089
+  ids únicos: True
+  transferidos pela regra da chance 0%: 10 | todos com chance 0: True | idades: [138]
+  produtos dos transferidos: {'GTX Plus Pro': 1, 'GTX Pro': 3, 'MG Advanced': 2, 'GTX Plus Basic': 1, 'GTX Basic': 1, 'MG Special': 2}
+  deals com chance 0 fora da lista 2: 0
+VERIFICAÇÃO 4 — limite de US$ 4.000
+  parametros.valor_deal_grande_usd = 4000
+  ligar: 354 | todos com preço >= 4000: True
+  encerrar: 947 | todos com preço < 4000: True
+  textos de ligar citam US$ 4.000: True | textos de encerrar citam US$ 4.000: True
+VERIFICAÇÃO 5 — data histórica disponível para a tela
+  data_referencia = 2017-12-31 | (o destaque na tela está no prompt v2; conferência visual na Fase 3d)
+VALIDAÇÃO DE VOLTA NO TEMPO (no arquivo publicado): {'data_corte': '2017-09-30', 'deals_em_negociacao': 2409, 'top_n': 482, 'receita_depois_usd': 1251928.0, 'captura_top20_nossa_logica': 0.681, 'captura_top20_so_valor': 0.469}
+
+[6] Reprodução a partir de clone limpo do commit 49c6789:
+md5 do JSON regenerado = b5f33907da1c3385f75272e479b3bdb5 (idêntico ao publicado)
+pytest: 12 passed
+fase2_logica.py: tabela do teste de volta no tempo idêntica à registrada (0,683 / 0,471 / 0,492 / 0,152)

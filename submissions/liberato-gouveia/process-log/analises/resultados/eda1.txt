@@ -1,0 +1,53 @@
+(8800, 8) {'opportunity_id': <StringDtype(storage='python', na_value=nan)>, 'sales_agent': <StringDtype(storage='python', na_value=nan)>, 'product': <StringDtype(storage='python', na_value=nan)>, 'account': <StringDtype(storage='python', na_value=nan)>, 'deal_stage': <StringDtype(storage='python', na_value=nan)>, 'engage_date': <StringDtype(storage='python', na_value=nan)>, 'close_date': <StringDtype(storage='python', na_value=nan)>, 'close_value': dtype('float64')}
+deal_stage
+Won            4238
+Lost           2473
+Engaging       1589
+Prospecting     500
+Name: count, dtype: int64
+null per col:
+ opportunity_id       0
+sales_agent          0
+product              0
+account           1425
+deal_stage           0
+engage_date        500
+close_date        2089
+close_value       2089
+dtype: int64
+null account by stage:
+ deal_stage
+Engaging       1088
+Prospecting     337
+Name: count, dtype: int64
+null engage by stage:
+ deal_stage
+Prospecting    500
+Name: count, dtype: int64
+products in pipeline not in catalog: {'GTXPro'}
+catalog not in pipeline: {'GTX Pro'}
+agents in pipeline not in teams: set()
+teams agents w/o deals: {'Mei-Mei Johns', 'Carol Thompson', 'Elizabeth Anderson', 'Natalya Ivanova', 'Carl Lin'}
+accounts not in table: set()
+sectors: {'retail': 17, 'technolgy': 12, 'medical': 12, 'marketing': 8, 'finance': 8, 'software': 7, 'entertainment': 6, 'telecommunications': 6, 'services': 5, 'employment': 4}
+locations: {'United States': 71, 'Kenya': 1, 'Philipines': 1, 'Japan': 1, 'Italy': 1, 'Norway': 1, 'Korea': 1, 'Jordan': 1, 'Brazil': 1, 'Germany': 1, 'Panama': 1, 'Belgium': 1, 'Romania': 1, 'Poland': 1, 'China': 1}
+subsidiary: 15
+engage range 2016-10-20 00:00:00 2017-12-27 00:00:00
+close range 2017-03-01 00:00:00 2017-12-31 00:00:00
+dup ids: 0
+regional_office  manager         
+Central          Dustin Brinkmann    5
+                 Melvin Marxen       6
+East             Cara Losch          6
+                 Rocco Neubert       6
+West             Celia Rouche        6
+                 Summer Sewald       6
+dtype: int64
+          product series  sales_price
+0       GTX Basic    GTX          550
+1         GTX Pro    GTX         4821
+2      MG Special     MG           55
+3     MG Advanced     MG         3393
+4    GTX Plus Pro    GTX         5482
+5  GTX Plus Basic    GTX         1096
+6         GTK 500    GTK        26768

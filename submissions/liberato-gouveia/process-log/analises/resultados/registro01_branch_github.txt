@@ -1,0 +1,7 @@
+Verificação da branch criada pelo Liberato (git ls-remote, 04/11/2026)
+Fork libegouv/ai-master-challenge:
+4aed364d572fabe0f1fff1f0c6f32960b30fe575	HEAD
+4aed364d572fabe0f1fff1f0c6f32960b30fe575	refs/heads/main
+4aed364d572fabe0f1fff1f0c6f32960b30fe575	refs/heads/submission/liberato-gouveia
+Repositório original do G4 (main):
+4aed364d572fabe0f1fff1f0c6f32960b30fe575	refs/heads/main

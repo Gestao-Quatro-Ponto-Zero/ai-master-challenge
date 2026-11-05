@@ -1,0 +1,146 @@
+overall win rate 0.632 n 6711
+
+-- product: spread 0.600-0.648
+                   n     wr
+product                    
+GTK 500           25  0.600
+MG Advanced     1084  0.603
+GTX Plus Basic  1051  0.621
+GTX Pro         1147  0.636
+GTX Basic       1436  0.637
+GTX Plus Pro     745  0.643
+MG Special      1223  0.648
+
+-- series: spread 0.600-0.634
+           n     wr
+series             
+GTK       25  0.600
+MG      2307  0.627
+GTX     4379  0.634
+
+-- regional_office: spread 0.626-0.639
+                    n     wr
+regional_office             
+Central          2604  0.626
+East             1858  0.630
+West             2249  0.639
+
+-- manager: spread 0.621-0.644
+                     n     wr
+manager                      
+Rocco Neubert     1113  0.621
+Melvin Marxen     1418  0.622
+Dustin Brinkmann  1186  0.630
+Celia Rouche       962  0.634
+Summer Sewald     1287  0.643
+Cara Losch         745  0.644
+
+-- sector: spread 0.612-0.648
+                       n     wr
+sector                         
+finance              613  0.612
+medical              950  0.623
+telecommunications   456  0.625
+employment           286  0.626
+retail              1267  0.631
+services             352  0.634
+technolgy           1058  0.634
+software             704  0.639
+entertainment        402  0.647
+marketing            623  0.648
+
+-- sales_agent: spread 0.550-0.704
+                      n     wr
+sales_agent                   
+Lajuana Vencill     231  0.550
+Markita Hansen      227  0.573
+Donn Cantrell       275  0.575
+Gladys Colclough    232  0.582
+Niesha Huffines     175  0.600
+Daniell Hammack     187  0.610
+Garret Kinder       123  0.610
+Zane Levy           261  0.617
+Anna Snelling       336  0.619
+Kary Hendrixson     335  0.624
+Cassey Cress        261  0.625
+Marty Freudenburg   194  0.629
+Darcel Schlecht     553  0.631
+Violet Mclelland    193  0.632
+Elease Gluck        126  0.635
+Vicki Laflamme      347  0.637
+Kami Bicknell       272  0.640
+Rosie Papadopoulos  121  0.645
+Jonathan Berthelot  264  0.648
+Reed Clapper        237  0.654
+Rosalina Dieter     110  0.655
+Corliss Cosme       229  0.655
+James Ascencio      206  0.655
+Boris Faz           153  0.660
+Moses Frase         195  0.662
+Versie Hillebrand   264  0.667
+Cecily Lampkin      160  0.669
+Wilburn Farren       79  0.696
+Maureen Marcano     213  0.700
+Hayden Neloms       152  0.704
+
+-- acct_known: spread 0.632-0.632
+               n     wr
+acct_known             
+True        6711  0.632
+
+-- subsidiary: spread 0.631-0.636
+               n     wr
+subsidiary             
+False       5551  0.631
+True        1160  0.636
+
+-- size: spread 0.613-0.659
+             n     wr
+size                 
+Q4 big    1632  0.613
+Q2        1699  0.619
+Q1 small  1681  0.634
+Q3        1699  0.659
+
+cycle days won vs lost:
+              count  mean   std  min  25%   50%   75%    max
+deal_stage                                                 
+Lost        2473.0  41.5  40.0  1.0  7.0  14.0  79.0  138.0
+Won         4238.0  51.8  41.2  1.0  9.0  57.0  88.0  138.0
+
+-- cyc_b: spread 0.535-0.756
+               n     wr
+cyc_b                  
+(-1, 7]     1413  0.535
+(7, 14]     1393  0.575
+(30, 60]     569  0.663
+(60, 90]    1621  0.665
+(90, 120]   1165  0.704
+(14, 30]     357  0.728
+(120, 200]   193  0.756
+
+close_value / list price (won): {'count': 4238.0, 'mean': 0.996, 'std': 0.099, 'min': 0.657, '25%': 0.929, '50%': 0.998, '75%': 1.063, 'max': 1.342}
+lost close_value nonzero: 0
+
+-- eq: spread 0.600-0.820
+           n     wr
+eq                 
+2017Q3  2012  0.600
+2017Q4  1050  0.607
+2017Q2  2022  0.616
+2017Q1  1322  0.679
+2016Q4   305  0.820
+
+-- cm: spread 0.486-0.828
+      n     wr
+cm            
+4   586  0.486
+7   627  0.491
+10  566  0.493
+11  768  0.529
+5   805  0.544
+8   785  0.568
+12  651  0.785
+9   635  0.792
+3   647  0.821
+6   641  0.828

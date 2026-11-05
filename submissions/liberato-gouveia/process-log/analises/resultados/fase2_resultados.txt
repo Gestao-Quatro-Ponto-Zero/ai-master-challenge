@@ -1,0 +1,74 @@
+
+========================================================================
+1) Curva oficial: chance de ser ganho pela idade atual (hoje = 31/12/2017)
+========================================================================
+Limite de ciclo calculado com dados até 2017-12-31: 138 dias
+Safra usada: deals iniciados de 2017-03-01 a 2017-08-14 (4767 deals)
+Configuração aprovada: {'valor_minimo_foco': 100, 'valor_deal_grande': 4000, 'inicio_observacao': '2017-03-01'}
+  deal com   0 dias: chance  47.3%  (base: 4767.0 deals vivos nessa idade)
+  deal com   7 dias: chance  46.5%  (base: 4070.0 deals vivos nessa idade)
+  deal com  14 dias: chance  43.8%  (base: 3079.0 deals vivos nessa idade)
+  deal com  21 dias: chance  42.2%  (base: 2901.0 deals vivos nessa idade)
+  deal com  30 dias: chance  41.7%  (base: 2875.0 deals vivos nessa idade)
+  deal com  45 dias: chance  41.0%  (base: 2776.0 deals vivos nessa idade)
+  deal com  60 dias: chance  38.9%  (base: 2563.0 deals vivos nessa idade)
+  deal com  75 dias: chance  34.2%  (base: 2175.0 deals vivos nessa idade)
+  deal com  90 dias: chance  26.2%  (base: 1747.0 deals vivos nessa idade)
+  deal com 100 dias: chance  17.8%  (base: 1485.0 deals vivos nessa idade)
+  deal com 110 dias: chance  10.7%  (base: 1288.0 deals vivos nessa idade)
+  deal com 120 dias: chance   4.8%  (base: 1162.0 deals vivos nessa idade)
+  deal com 130 dias: chance   1.4%  (base: 1099.0 deals vivos nessa idade)
+  deal com 138 dias: chance   0.0%  (base: 1079.0 deals vivos nessa idade)
+Comparação com a safra mar-jun/2017 (Gráfico 6): 0d 47% x 53%, 30d 42% x 50%, 60d 39% x 48%, 90d 26% x 37%, 120d 5% x 5%
+Ordem dos deals vivos com uma curva x outra (correlação de Spearman, 1 = mesma ordem): 0.997
+
+========================================================================
+2) Simulação nos dados reais (hoje = 31/12/2017)
+========================================================================
+                             deals  valor_tabela  sem_empresa
+lista                                                        
+1. Foco                        236        690155          165
+2. Requalificar ou encerrar   1291       3198664          879
+3. Iniciar contato             500       1073986          337
+4. Automatizar                  62          3410           44
+
+Ações na lista 2: {'Encerrar no CRM': 941, 'Ligar para requalificar': 350}
+
+Impacto do 'valor mínimo do foco' (deals vivos até 138 dias):
+  mínimo US$   100: Foco 236 deals (~11 por vendedor) | Automatizar  62 deals
+  mínimo US$   600: Foco 178 deals (~8 por vendedor) | Automatizar 120 deals
+  mínimo US$  1100: Foco 123 deals (~6 por vendedor) | Automatizar 175 deals
+Impacto do 'deal grande' na lista de requalificação:
+  grande >= US$  1000: ligar  766 (~28 por vendedor) | encerrar  525
+  grande >= US$  3000: ligar  563 (~21 por vendedor) | encerrar  728
+  grande >= US$  4000: ligar  350 (~13 por vendedor) | encerrar  941
+  grande >= US$  5000: ligar  153 (~6 por vendedor) | encerrar 1138
+
+Foco por vendedor (deals): {'count': 19.0, 'mean': 12.4, 'std': 7.9, 'min': 1.0, '25%': 5.5, '50%': 13.0, '75%': 18.5, 'max': 28.0}
+
+Exemplo: top 5 do Foco de Zane Levy
+  [FZWU2I30] nota 99 | Valor esperado US$ 2.313 = US$ 5.482 (GTX Plus Pro) × 42% (chance de um deal com 21 dias)
+  [4D0K5T7T] nota 90 | Valor esperado US$ 1.798 = US$ 4.821 (GTX Pro) × 37% (chance de um deal com 66 dias)
+  [4R4QF0ZU] nota 76 | Valor esperado US$ 785 = US$ 4.821 (GTX Pro) × 16% (chance de um deal com 102 dias) | ⚠ Empresa não cadastrada: complete o cadastro
+  [01XZ9CRY] nota 75 | Valor esperado US$ 774 = US$ 5.482 (GTX Plus Pro) × 14% (chance de um deal com 104 dias)
+  [RS31U03Y] nota 67 | Valor esperado US$ 460 = US$ 1.096 (GTX Plus Basic) × 42% (chance de um deal com 24 dias) | ⚠ Empresa não cadastrada: complete o cadastro
+  2. Requalificar ou encerrar: 57 deals. 1º: [43LFUTVM] Ligar para requalificar | Aberto há 282 dias. Nenhum deal da história fechou depois de 138 dias.
+  4. Automatizar: 3 deals. 1º: [QDBJOE9M] Incluir na cadência automática | Valor US$ 55 abaixo do mínimo de US$ 100 para atenção individual.
+
+========================================================================
+3) Teste de volta no tempo: 'hoje' = 30/09/2017, resultado conferido até 31/12/2017
+========================================================================
+Limite de ciclo calculado só com dados até 2017-09-30: 138 dias
+Curva montada só com dados até 2017-09-30: safra 2017-03-01 a 2017-05-14 (1994 deals)
+Deals em negociação em 30/09: 2409 | com mais de 138 dias: 530
+Receita ganha por eles até 31/12: US$ 1.251.928
+
+Top 20% = os 482 deals com maior nota. Escolher ao acaso capturaria ~20% da receita.
+Top 10 por vendedor = o que cada vendedor veria primeiro (30 vendedores).
+                                                  estrategia  receita_capturada_top20  taxa_ganho_top20  zumbis_no_top20  receita_top10_por_vendedor
+                    Nossa lógica (chance pela idade × valor)                    0.683             0.350            0.000                       0.503
+                                  Só valor (preço de tabela)                    0.471             0.226            0.231                       0.314
+     Lógica 'óbvia' (taxa de produto/setor/vendedor × valor)                    0.492             0.237            0.214                       0.297
+Lógica 'óbvia' sem valor (só taxa de produto/setor/vendedor)                    0.152             0.201            0.240                       0.096
+
+Gráfico salvo: grafico7_backtest.png

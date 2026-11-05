@@ -1,0 +1,96 @@
+
+======================================================================
+A) Chance de ganhar usando só a IDADE ATUAL do deal (sem futuro)
+======================================================================
+Safra mar-jun/2017: 3180 deals | acompanhamento mínimo 184 dias
+ vivo_na_idade    n  ganhou  perdeu  ainda_aberto  ganho_entre_resolvidos  n_resolvidos
+             0 3180   0.530   0.312         0.158                   0.630          2677
+             7 2756   0.528   0.290         0.183                   0.645          2253
+            14 2081   0.516   0.243         0.242                   0.680          1578
+            30 1925   0.499   0.239         0.261                   0.676          1422
+            60 1708   0.484   0.222         0.294                   0.685          1205
+            90 1012   0.367   0.136         0.497                   0.729           509
+           120  544   0.051   0.024         0.925                   0.683            41
+           138  503   0.000   0.000         1.000                     NaN             0
+
+======================================================================
+B) O limite de 138 dias é real ou efeito da janela da base?
+======================================================================
+2016-10: acompanhamento até ~456 dias | fechados    7 | maior ciclo 137.0 | ainda abertos   0
+2016-11: acompanhamento até ~425 dias | fechados  102 | maior ciclo 138.0 | ainda abertos  13
+2016-12: acompanhamento até ~395 dias | fechados  196 | maior ciclo 119.0 | ainda abertos  40
+2017-01: acompanhamento até ~364 dias | fechados  247 | maior ciclo 137.0 | ainda abertos  65
+2017-02: acompanhamento até ~333 dias | fechados  420 | maior ciclo 137.0 | ainda abertos  95
+2017-03: acompanhamento até ~305 dias | fechados  655 | maior ciclo 121.0 | ainda abertos 137
+2017-04: acompanhamento até ~274 dias | fechados  753 | maior ciclo 132.0 | ainda abertos 121
+2017-05: acompanhamento até ~244 dias | fechados  588 | maior ciclo 136.0 | ainda abertos 134
+2017-06: acompanhamento até ~213 dias | fechados  681 | maior ciclo 124.0 | ainda abertos 111
+2017-07: acompanhamento até ~183 dias | fechados  796 | maior ciclo 138.0 | ainda abertos 402
+2017-08: acompanhamento até ~152 dias | fechados  539 | maior ciclo 137.0 | ainda abertos 254
+2017-09: acompanhamento até ~121 dias | fechados  677 | maior ciclo 118.0 | ainda abertos 102
+Deals fechados com ciclo > 138: 0
+Deals fechados por data de fechamento - primeiro: 2017-03-01 | último: 2017-12-31
+
+======================================================================
+D) Deals sem empresa cadastrada
+======================================================================
+Fechados (ganhos/perdidos) sem empresa: 0 de 6711
+Em negociação, vivos (<=138 dias): 298 | sem empresa: 209
+Em negociação, zumbis (>138 dias): 1291 | sem empresa: 879
+% sem empresa por faixa de idade (negociação):
+idade_hoje
+(-1, 30]      0.611
+(30, 60]      0.667
+(60, 90]      0.792
+(90, 138]     0.691
+(138, 200]    0.690
+(200, 300]    0.681
+(300, 500]    0.655
+% sem empresa por vendedor (negociação) - mín/máx: {'min': 0.5, 'max': 0.903}
+
+======================================================================
+E) Deals em prospecção
+======================================================================
+Prospecção: 500 | com data de início: 0 | sem empresa: 337
+Deals fechados SEM data de início (indicaria histórico de prospecção): 0
+Valor de tabela somado em prospecção (US$): 1073986
+
+======================================================================
+F) Machine learning com separação no TEMPO (treina no passado, testa no futuro)
+======================================================================
+Treino: 4697 deals iniciados até 2017-08-16 | Teste: 2014 deals iniciados depois
+AUC gradient boosting (teste no futuro): 0.476
+AUC regressão logística (teste no futuro): 0.517
+
+======================================================================
+G) Padrão de fim de trimestre
+======================================================================
+          ganhos  perdidos   taxa
+mes_fech                         
+3            531       116  0.821
+4            285       301  0.486
+5            438       367  0.544
+6            531       110  0.828
+7            308       319  0.491
+8            446       339  0.568
+9            503       132  0.792
+10           279       287  0.493
+11           406       362  0.529
+12           511       140  0.785
+Ganhos registrados em mês de fim de trimestre: 2076 de 4238 (49%)
+Perdidos registrados em mês de fim de trimestre: 498 de 2473 (20%)
+Taxa de ganho pelo MÊS DE INÍCIO (informação conhecida no começo do deal):
+             size   mean
+engage_date             
+1             247  0.733
+2             420  0.660
+3             655  0.672
+4             753  0.567
+5             588  0.622
+6             681  0.665
+7             796  0.554
+8             539  0.633
+9             677  0.628
+10            710  0.573
+11            346  0.694
+12            299  0.803

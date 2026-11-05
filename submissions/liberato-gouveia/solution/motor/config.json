@@ -1,0 +1,20 @@
+{
+  "_sobre": "Parâmetros do Lead Scorer. Mudou algum valor? Rode o motor de novo; nenhum número está escrito no código.",
+  "data_referencia": "2017-12-31",
+  "inicio_observacao": "2017-03-01",
+  "valor_minimo_foco_usd": 100,
+  "valor_deal_grande_usd": 4000,
+  "idade_alerta_dias": 90,
+  "mover_chance_zero_para_requalificar": true,
+  "correcoes_nome_produto": {
+    "GTXPro": "GTX Pro"
+  },
+  "_aprovacoes": {
+    "valor_minimo_foco_usd": "Aprovado pelo Liberato em 04/11/2026 20:00 (Registro 05)",
+    "valor_deal_grande_usd": "Aprovado pelo Liberato em 04/11/2026 20:00 (Registro 05), confirmado às 20:15 (Registro 06)",
+    "idade_alerta_dias": "Aprovado pelo Liberato em 04/11/2026 20:28 (Registro 08): alerta só no texto, não muda a nota",
+    "inicio_observacao": "Primeiro dia com fechamentos registrados na base",
+    "limite_ciclo": "Não é parâmetro: é calculado como o maior ciclo dos deals fechados até a data de referência",
+    "mover_chance_zero_para_requalificar": "Aprovado pelo Liberato em 04/11/2026 20:28 (Registro 08): deals com chance histórica 0% (hoje, os de 138 dias) vão para Requalificar ou encerrar"
+  }
+}

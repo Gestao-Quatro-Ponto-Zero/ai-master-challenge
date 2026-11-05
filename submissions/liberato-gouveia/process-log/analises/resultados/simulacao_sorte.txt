@@ -1,0 +1,4 @@
+taxa geral: 0.632
+REAL: pior vendedor 0.550, melhor 0.704, diferença 0.154
+SORTE (mediana de 10.000 simulações): pior 0.560, melhor 0.701, diferença 0.144
+% de simulações com diferença >= real: 36.9%
