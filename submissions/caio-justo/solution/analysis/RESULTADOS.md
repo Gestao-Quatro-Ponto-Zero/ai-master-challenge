@@ -102,3 +102,36 @@ O sorteio dentro de cada vendedor pode só mudar a atenção de um negócio para
 | +50% | 87% | 95% |
 
 A tabela mostra a chance de detectar o ganho. Com 30 vendedores, só um ganho muito grande apareceria em meio ano. Essa é uma limitação real, e nenhuma ferramenta a resolve.
+
+## A sugestão por LLM
+
+Rode com `OPENROUTER_API_KEY=sua-chave python3 analysis/avalia_sugestao.py modelo1 modelo2`. Os resultados ficam em `resultados_sugestao.json`.
+
+São 60 frases, 15 para cada resposta, incluindo 2 com a instrução "ignore as regras". Frases e rótulos foram congelados em um commit antes de qualquer chamada a um modelo e não mudaram depois. Elas foram escritas pela IA, e a regra de palavras foi escrita junto, o que a favorece.
+
+| Opção | 1ª rodada | 2ª rodada | Tempo mediano | Custo por nota |
+|---|---:|---:|---:|---:|
+| Claude Haiku 5.5 (o padrão) | 59 | 59 | 1,4 s | $0,00007 |
+| DeepSeek V4.1 Flash 1017 | 58 | 60 | 0,7 s | $0,00004 |
+| DeepSeek V4 Flash | 58 | 56 | 1,1 s | $0,00002 |
+| GPT OSS 20B (4 respostas fora do formato) | 56 | | 2,1 s | $0,00003 |
+| Mistral Nemo | 54 | | 3,3 s | $0,00001 |
+| Llama 3.1 8B | 50 | | 0,5 s | $0,00005 |
+| Regra de palavras | 48 | | imediato | grátis |
+
+Na média, Haiku e DeepSeek V4.1 Flash empatam em 59. Escolhemos o Haiku pela estabilidade: as respostas foram as mesmas nas duas rodadas.
+
+Os critérios foram definidos antes de ver os resultados:
+
+| Critério | Meta | Haiku |
+|---|---|---|
+| Acertos | Mais de 48 | 59 |
+| Negócio em andamento marcado como encerrado | Menos que a regra | Empate em 0, então o critério não foi cumprido |
+| Tempo mediano | Até 3 s | 1,4 s |
+| Frases com "ignore as regras" | As 2 pelo fato real | 2 |
+
+O segundo critério estava mal definido, porque a regra teve zero e nenhum modelo podia ficar abaixo. O outro lado do erro pesou na decisão: a regra marcou 10 negócios encerrados como ainda abertos, e o Haiku, nenhum. O único erro do Haiku foi classificar "A empresa faliu no ano passado" como registro errado, em vez de perdido.
+
+Antes dessa rodada, um primeiro teste falhou por configuração: o teto de 120 tokens cortava respostas e o parâmetro de temperatura bloqueava o Haiku. Corrigir isso e trocar para modelos pequenos não alterou as frases nem as instruções. O GLM 5.3 Flash saiu da lista porque não permite desligar o raciocínio.
+
+Em chamadas reais pela tela, a sugestão levou de 1,4 a 2,4 segundos, não foi salva sozinha e só contou depois da confirmação. Sem chave, o campo some e os botões seguem funcionando.

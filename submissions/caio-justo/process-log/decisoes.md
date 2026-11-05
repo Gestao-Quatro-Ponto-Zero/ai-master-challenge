@@ -13,6 +13,8 @@ Este registro separa o que eu decidi do que a IA propôs.
 | 5 | Exigir uma explicação em linguagem simples antes de aprovar | Aprovei a proposta depois de entendê-la |
 | 6 | Exigir base científica para a proposta | Levou às fontes em `docs/EVIDENCIAS.md` |
 | 7 | Propor um simulador de cenários com IA | Ficou fora desta entrega por recomendação da IA, porque ainda não foi testado no histórico |
+| 8 | Colocar uma LLM no produto, pelo OpenRouter, com modelos pequenos para controlar o custo | A IA reduziu os candidatos a modelos pequenos e integrou a sugestão na checagem |
+| 9 | Escolher o modelo depois de ver os números: testar também o DeepSeek V4.1 Flash e ficar com o Claude Haiku 5.5 | O Haiku virou o padrão, com 59 acertos nas duas rodadas |
 
 ## Decisões propostas pela IA, com a minha aprovação geral
 
@@ -35,6 +37,10 @@ Quase todos foram encontrados pela própria IA, ao verificar o trabalho com dado
 | 9 | Sorteou os parados por quantidade | Simulação mostrou margem acertando de 89% a 92%, abaixo dos 95% | Sorteio proporcional ao valor, com 92% a 98% |
 | 10 | Mostrou tela quase vazia para 6 vendedores | Uso da ferramenta no navegador | Negócios não trabalhados sobem para o topo |
 | 11 | Mostrava estimativa de 100% com uma única resposta | Uso da ferramenta no navegador | A estimativa só aparece a partir de 30 respostas |
+| 12 | Limitou a resposta da LLM a 120 tokens | O teste real mostrou respostas cortadas em modelos que raciocinam antes | O limite subiu para 400, e o raciocínio foi desligado nos modelos em que isso é possível |
+| 13 | Enviou o parâmetro de temperatura | O teste real mostrou que o Haiku era recusado por causa dele | O parâmetro saiu. Repeti para medir a estabilidade |
+| 14 | Rodou as frases uma a uma, estourou o tempo e imprimiu um arquivo antigo | As duas rodadas foram interrompidas, e os números impressos eram velhos | Descartei esses números e passei a rodar em paralelo |
+| 15 | Fixou um critério impossível: menos erros graves que a regra de palavras | A regra teve zero erros desse tipo, então nenhum modelo podia ficar abaixo | Registrei a falha e decidi com os dois tipos de erro à vista |
 
 ## O que a IA leu
 
