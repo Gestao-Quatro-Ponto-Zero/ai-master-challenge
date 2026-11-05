@@ -38,6 +38,8 @@ Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius d
 
 Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` roda na versão do commit `4a93295`, antes da troca de mês por semana.
 
+13. **Datas.** Vinicius apontou que a ferramenta estava presa a uma data fixa. O Claude acrescentou o filtro de data do pipeline, com datas passadas só para consulta, e a ordenação por data de entrada.
+
 ## Onde a IA errou e como foi corrigido
 
 Todos os itens abaixo foram detectados pelo próprio Claude Code, nos testes automáticos e na revisão das telas que ele fez, e não por Vinicius.

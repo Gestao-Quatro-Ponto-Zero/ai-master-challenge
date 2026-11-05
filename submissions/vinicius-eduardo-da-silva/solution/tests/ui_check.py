@@ -171,6 +171,54 @@ with sync_playwright() as p:
     check("rep with no deals gets an empty state", page.locator(".empty").count() == 1)
     page.select_option("#filter-agent", "")
 
+    # Past dates: the whole tool follows the date, read-only, with no outcome hints.
+    page.click('[data-tab="foco"]')
+    page.select_option("#filter-date", "2017-08-07")
+    check("date changes the header", "07/08/2017" in page.locator("#as-of").inner_text())
+    check("past date shows a banner", "Pipeline como estava em 07/08/2017" in page.locator(".history-banner").inner_text())
+    past_live = nav_count(page, "foco")
+    check("past pipeline differs from today", past_live != "288", past_live)
+    check("past date hides prospecting", nav_count(page, "prospeccao") == "0")
+    check("past date cannot be marked", page.locator("[data-focus]").count() == 0)
+    text = page.locator("#view").inner_text()
+    check("past date gives no outcome hint", not any(w in text for w in ["Conta em branco", "Preencha a conta", "Histórico da conta", "Ganho:"]))
+    page.select_option("#filter-agent", "Zane Levy")
+    scores = [int(s) for s in page.locator(".ring span").all_inner_texts()]
+    check("past scores sorted", scores == sorted(scores, reverse=True), str(scores[:5]))
+    same_list = page.evaluate(
+        """() => {
+          const monday = window.LEAD_REPLAY.find((item) => item.date === "2017-08-07");
+          const replay = monday.agents["Zane Levy"].deals.map((row) => row[0]).sort();
+          const entry = window.LEAD_HISTORY.snapshots.find((item) => item.date === "2017-08-07");
+          const shown = entry.rows.map((row) => window.LEAD_HISTORY.deals[row[0]])
+            .filter((deal) => deal[1] === "Zane Levy").slice(0, 10).map((deal) => deal[0]).sort();
+          return JSON.stringify(replay) === JSON.stringify(shown);
+        }"""
+    )
+    check("past list matches the replay list", same_list)
+    page.select_option("#sort-deals", "antigos")
+    dates = page.locator(".life-label span").all_inner_texts()
+    parsed = [d.split("desde ")[1] for d in dates]
+    parsed = [d[6:] + d[3:5] + d[:2] for d in parsed]
+    check("sort by entry date", parsed == sorted(parsed), str(parsed[:3]))
+    page.select_option("#sort-deals", "padrao")
+    page.screenshot(path=shots / "7-data-passada.png")
+    page.click('[data-tab="decidir"]')
+    check("past decide list is read-only", page.locator("[data-decision]").count() == 0 and page.locator(".triage").count() == 0)
+    page.keyboard.press("e")
+    page.click('[data-tab="revisar"]')
+    check("past date has no review", "só para consulta" in page.locator(".empty").inner_text())
+    page.click('[data-tab="foco"]')
+    page.click('[data-go="tempo"]')
+    check("banner opens the same Monday", page.locator("#replay-date").input_value() == str(page.evaluate('window.LEAD_REPLAY.findIndex((m) => m.date === "2017-08-07")')))
+    page.click('[data-tab="foco"]')
+    page.click('[data-action="back-to-today"]')
+    check("back to today", nav_count(page, "foco") != past_live and page.locator(".history-banner").count() == 0)
+    page.select_option("#filter-date", "2017-12-25")
+    check("date without outcome has no outcome button", page.locator('[data-go="tempo"]').count() == 0)
+    page.select_option("#filter-date", "2018-01-01")
+    page.select_option("#filter-agent", "")
+
     page.click('[data-tab="como"]')
     check("pilot section shows numbers", "Um trimestre completo" in page.locator("#view").inner_text())
     check("age curve drawn", page.locator(".curve-col").count() == 10, str(page.locator(".curve-col").count()))
@@ -181,10 +229,12 @@ with sync_playwright() as p:
     mobile.goto(page_url)
     mobile.wait_for_selector(".deal")
     mobile.select_option("#filter-agent", "Zane Levy")
-    for tab in ("foco", "decidir", "prospeccao", "revisar", "equipe", "tempo", "como"):
-        mobile.click(f'[data-tab="{tab}"]')
-        overflow = mobile.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
-        check(f"no horizontal scroll on phone: {tab}", overflow <= 0, str(overflow))
+    for date in ("2018-01-01", "2017-08-07"):
+        mobile.select_option("#filter-date", date)
+        for tab in ("foco", "decidir", "prospeccao", "revisar", "equipe", "tempo", "como"):
+            mobile.click(f'[data-tab="{tab}"]')
+            overflow = mobile.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            check(f"no horizontal scroll on phone: {date} {tab}", overflow <= 0, str(overflow))
     mobile.click('[data-tab="foco"]')
 
     check("no console errors", not errors, str(errors[:3]))

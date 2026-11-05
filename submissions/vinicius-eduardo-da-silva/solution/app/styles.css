@@ -163,6 +163,22 @@ main { width: 100%; max-width: 1120px; margin: 0 auto; padding: 28px 32px 72px; 
   line-height: 20px;
 }
 
+/* Past dates */
+.history-banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+}
+.history-banner p { flex: 1 1 320px; margin: 0; }
+.sort-bar { margin-bottom: 12px; }
+
 /* Page headings */
 .page-head { margin-bottom: 16px; }
 .page-head p { margin: 4px 0 0; color: var(--ink-2); }

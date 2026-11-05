@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Vinicius Eduardo da Silva
-- **LinkedIn:** [PREENCHER]
+- **LinkedIn:** https://www.linkedin.com/in/vinicius-silva-ai/
 - **Challenge escolhido:** 003 — Lead Scorer
 
 ---
@@ -17,6 +17,7 @@ Construí o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a
 1. Escolha **Zane Levy** no filtro Vendedor e marque um deal como Feito.
 2. Abra **Decidir** e use os atalhos `V`, `E`, `P` e `U`.
 3. Abra **Máquina do tempo** e clique em **Revelar o que aconteceu**.
+4. No filtro **Data do pipeline**, escolha 07/08/2017 para ver a semana daquela data.
 
 ![Minha semana de um vendedor](docs/screenshots/1-minha-semana.png)
 
@@ -125,7 +126,7 @@ Os erros estão detalhados no process log, com a forma como cada um apareceu. Do
 
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [ ] Chat exports
+- [x] Chat exports: [`process-log/chat-exports/conversa-claude-code.md`](process-log/chat-exports/conversa-claude-code.md), sem reescrita das mensagens
 - [x] Git history
 - [x] Outro: scripts de cada etapa em `process-log/exploration/`, resultados em `solution/scoring/backtest_results.json` e telas em `docs/screenshots/`
 

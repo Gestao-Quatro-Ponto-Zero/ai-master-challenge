@@ -13,7 +13,7 @@ cd scoring
 ../.venv/Scripts/python -m pytest -q             # testes
 ../.venv/Scripts/python backtest.py              # gera backtest_results.json e ../app/replay.js
 ../.venv/Scripts/python pilot_plan.py            # gera pilot_plan.json
-../.venv/Scripts/python build_app_data.py        # gera ../app/data.js
+../.venv/Scripts/python build_app_data.py        # gera ../app/data.js e ../app/history.js
 ```
 
 **Para rodar o teste no navegador,** que exige Microsoft Edge e `pip install playwright`, a partir de `solution/`:
@@ -28,7 +28,7 @@ Testado com Python 3.12 no Windows e com o navegador Edge.
 
 | Caminho | O que é |
 |---|---|
-| `app/` | Interface em HTML, CSS e JS puros. `data.js` e `replay.js` são gerados, não edite à mão |
+| `app/` | Interface em HTML, CSS e JS puros. `data.js`, `replay.js` e `history.js` são gerados, não edite à mão |
 | `scoring/lead_scorer.py` | Limpeza, aprendizado das taxas e score |
 | `scoring/backtest.py` | Replay de 22 segundas-feiras passadas e dados da Máquina do tempo |
 | `scoring/pilot_plan.py` | Menor ganho que um teste com grupo de controle conseguiria detectar |
@@ -72,6 +72,8 @@ As duas partes usam os mesmos pontos por unidade logarítmica. Por isso, somá-l
 **Empates no replay:** vários deals têm o mesmo preço, e o arquivo está ordenado por data, então a ordem dele poderia favorecer uma estratégia. O desempate é por ID, sem relação com o resultado, e o resultado com empates sorteados fica em `backtest_results.json`.
 
 **Máquina do tempo:** a conta só aparece depois de revelar. Todo deal encerrado tem conta, então "Conta em branco" entregaria que o deal nunca fechou.
+
+**Data do pipeline:** o filtro abre o pipeline como estava em cada segunda de julho a dezembro de 2017, com o mesmo código de score e só o que se sabia em cada data. Essas datas são só para consulta. A conta e o setor ficam ocultos, porque só deals nunca encerrados os têm em branco. Prospecting não aparece, pois não tem data. Antes de julho, há pouco passado para aprender.
 
 **Calculadora de tempo:** os minutos por deal são premissas, não dados do CRM, e aparecem assim na tela.
 

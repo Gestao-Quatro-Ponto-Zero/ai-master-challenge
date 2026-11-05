@@ -115,6 +115,10 @@ Três filas, porque um ranking único esconderia o problema:
   um deal sozinha.
 - Prospecção: sem data, logo sem score. Diga isso na tela.
 
+A data não é fixa: um filtro abre o pipeline como estava em cada segunda passada,
+só para consulta e sem indícios do resultado. As listas também ordenam por data
+de entrada.
+
 Telas:
 - Minha semana: o primeiro passo, um plano de 3 passos com progresso e os deals
   com motivo, fase do ciclo, ação sugerida e botões Feito e Adiar.

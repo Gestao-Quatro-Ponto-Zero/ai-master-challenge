@@ -13,6 +13,8 @@ import pandas as pd
 import lead_scorer as ls
 
 HERE = Path(__file__).resolve().parent
+HISTORY_FIRST_MONDAY = "2017-07-03"  # earlier dates have too little past to learn from
+HISTORY_LAST_MONDAY = "2017-12-25"
 
 
 def text_or_none(value):
@@ -32,6 +34,7 @@ def engaged_row(deal) -> dict:
         "sector": text_or_none(deal.sector),
         "price": int(deal.sales_price),
         "age": int(deal.age),
+        "engageDate": deal.engage_date.strftime("%Y-%m-%d"),
         "score": int(deal.score),
         "valuePts": round(deal.value_points),
         "timingPts": round(deal.timing_points),
@@ -63,6 +66,39 @@ def prospecting_rows(deals: pd.DataFrame, as_of: pd.Timestamp) -> list[dict]:
     ]
 
 
+def build_history(deals: pd.DataFrame) -> dict:
+    """The pipeline as it stood each past Monday, scored with what was known then.
+
+    Accounts and sectors are left out on purpose: every closed deal has them, so
+    a blank field would reveal that a past deal never closed.
+    """
+    engaged = deals[deals["engage_date"].notna()].reset_index(drop=True)
+    index_by_id = {deal_id: i for i, deal_id in enumerate(engaged["opportunity_id"])}
+    table = [
+        [d.opportunity_id, d.sales_agent, d.product, int(d.sales_price), d.engage_date.strftime("%Y-%m-%d")]
+        for d in engaged.itertuples()
+    ]
+    actions: dict[str, int] = {}
+    snapshots = []
+    for monday in pd.date_range(HISTORY_FIRST_MONDAY, HISTORY_LAST_MONDAY, freq="W-MON"):
+        scored, rates = ls.score_pipeline(deals, monday)
+        rows = [
+            [
+                index_by_id[d.opportunity_id],
+                int(d.age),
+                int(d.score),
+                round(d.value_points),
+                round(d.timing_points),
+                round(d.probability, 4),
+                d.zone,
+                actions.setdefault(d.action, len(actions)),
+            ]
+            for d in scored.itertuples()
+        ]
+        snapshots.append({"date": monday.strftime("%Y-%m-%d"), "week": ls.quarter_week(monday), "maxCycle": rates.max_cycle, "rows": rows})
+    return {"deals": table, "actions": list(actions), "snapshots": snapshots}
+
+
 def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, pilot: dict, as_of: pd.Timestamp = ls.AS_OF) -> dict:
     scored, rates = ls.score_pipeline(deals, as_of)
     team = team.sort_values("sales_agent")  # includes reps with no deals in the pipeline
@@ -90,12 +126,16 @@ def main() -> None:
     parser.add_argument("--backtest", default=HERE / "backtest_results.json", type=Path)
     parser.add_argument("--pilot", default=HERE / "pilot_plan.json", type=Path)
     parser.add_argument("--out", default=HERE.parent / "app" / "data.js", type=Path)
+    parser.add_argument("--history-out", default=HERE.parent / "app" / "history.js", type=Path)
     args = parser.parse_args()
 
     backtest = json.loads(args.backtest.read_text(encoding="utf-8"))
     team = pd.read_csv(args.data / "sales_teams.csv")
     pilot = json.loads(args.pilot.read_text(encoding="utf-8"))
-    payload = build_payload(ls.load_deals(args.data), team, backtest, pilot)
+    deals = ls.load_deals(args.data)
+    payload = build_payload(deals, team, backtest, pilot)
+    history = json.dumps(build_history(deals), ensure_ascii=False, separators=(",", ":"))
+    args.history_out.write_text("window.LEAD_HISTORY = " + history + ";\n", encoding="utf-8")
     args.out.write_text("window.LEAD_DATA = " + json.dumps(payload, ensure_ascii=False) + ";\n", encoding="utf-8")
 
     engaged = pd.DataFrame(payload["engaged"])

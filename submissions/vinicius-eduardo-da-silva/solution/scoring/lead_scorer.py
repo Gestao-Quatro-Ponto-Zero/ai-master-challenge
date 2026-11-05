@@ -231,5 +231,5 @@ def score_pipeline(deals: pd.DataFrame, as_of: pd.Timestamp = AS_OF, use_quarter
     scored["queue"] = np.where(scored["age"] > rates.max_cycle, "decidir", "foco")
     scored["action"] = [suggested_action(age, rates.max_cycle, p) for age, p in zip(scored["age"], scored["probability"])]
     scored["_rank"] = ranking_value(scored["probability"], scored["sales_price"])
-    ordered = scored.sort_values(["_rank", "sales_price"], ascending=False).drop(columns="_rank")
+    ordered = scored.sort_values(["_rank", "sales_price", "opportunity_id"], ascending=[False, False, True]).drop(columns="_rank")
     return ordered.reset_index(drop=True), rates
