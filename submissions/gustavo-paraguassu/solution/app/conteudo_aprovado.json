@@ -1,0 +1,132 @@
+{
+  "_status": "RASCUNHO escrito pela IA. Precisa da aprovação do dono do conteúdo (Gustavo) antes de valer. Prazos e link de autoatendimento são exemplos.",
+  "_regra": "A IA não escreve resposta livre para o cliente. Ela escolhe um destes textos e preenche os {campos} com o que o próprio cliente disse. {campo|padrão} usa o padrão quando o campo não foi informado.",
+  "filas": {
+    "Hardware": {
+      "nome_pt": "Hardware",
+      "topico": "🖥️ Hardware",
+      "prazo": "1 dia útil",
+      "obrigatorios": [
+        [
+          "equipamento"
+        ],
+        [
+          "sintoma"
+        ]
+      ],
+      "resposta_padrao": "Olá! Seu chamado sobre {equipamento|o equipamento} ({sintoma|problema relatado}) está com a equipe de Hardware. Um técnico fala com você em até {prazo}. Se aparecer alguma mensagem de erro, mande aqui mesmo."
+    },
+    "Access": {
+      "nome_pt": "Acessos e senhas",
+      "topico": "🔑 Acessos e senhas",
+      "prazo": "4 horas úteis",
+      "obrigatorios": [
+        [
+          "sistema"
+        ],
+        [
+          "tipo_acesso"
+        ]
+      ],
+      "resposta_padrao": "Olá! Recebemos seu pedido de {tipo_acesso|acesso} para {sistema|o sistema solicitado}. A equipe de Acessos trata em até {prazo}. Por segurança, nunca pedimos sua senha por mensagem."
+    },
+    "Administrative rights": {
+      "nome_pt": "Permissão de administrador",
+      "topico": "🛡️ Permissão de administrador",
+      "prazo": "2 dias úteis",
+      "sensivel": "segurança: privilégio de administrador",
+      "obrigatorios": [
+        [
+          "software",
+          "sistema"
+        ],
+        [
+          "justificativa"
+        ]
+      ],
+      "resposta_padrao": "Olá! Seu pedido de permissão para {software|o item solicitado} foi registrado e vai para aprovação da equipe de segurança, que confere a justificativa. Prazo: {prazo}. Você recebe a decisão aqui."
+    },
+    "HR Support": {
+      "nome_pt": "RH",
+      "topico": "👥 RH",
+      "prazo": "2 dias úteis",
+      "sensivel": "dado pessoal: RH",
+      "obrigatorios": [
+        [
+          "assunto_rh"
+        ]
+      ],
+      "resposta_padrao": "Olá! Seu pedido sobre {assunto_rh|o assunto informado} está com o time de RH. Como envolve dados pessoais, o retorno vem de uma pessoa do RH em até {prazo}."
+    },
+    "Purchase": {
+      "nome_pt": "Compras",
+      "topico": "🛒 Compras",
+      "prazo": "3 dias úteis",
+      "obrigatorios": [
+        [
+          "item",
+          "numero_pedido"
+        ]
+      ],
+      "resposta_padrao": "Olá! Seu pedido de compra ({item|item solicitado}) está com a equipe de Compras. Retorno em até {prazo}. A compra só segue depois da aprovação do seu gestor."
+    },
+    "Storage": {
+      "nome_pt": "Armazenamento e arquivos",
+      "topico": "💾 Armazenamento",
+      "prazo": "1 dia útil",
+      "obrigatorios": [
+        [
+          "pasta_ou_caminho"
+        ]
+      ],
+      "resposta_padrao": "Olá! Seu chamado sobre {pasta_ou_caminho|o armazenamento} está com a equipe de Armazenamento. Retorno em até {prazo}. Até lá, não apague nem mova os arquivos envolvidos."
+    },
+    "Internal Project": {
+      "nome_pt": "Projetos internos",
+      "topico": "📁 Projetos internos",
+      "prazo": "2 dias úteis",
+      "obrigatorios": [
+        [
+          "projeto"
+        ]
+      ],
+      "resposta_padrao": "Olá! Seu pedido sobre o projeto {projeto|informado} foi encaminhado à equipe responsável. Retorno em até {prazo}."
+    },
+    "Miscellaneous": {
+      "nome_pt": "Outros",
+      "topico": "📨 Outros",
+      "prazo": "1 dia útil",
+      "obrigatorios": [],
+      "resposta_padrao": "Olá! Recebemos sua solicitação e ela está com a equipe de atendimento. Retorno em até {prazo}."
+    }
+  },
+  "perguntas": {
+    "descricao": "Pode me contar um pouco mais? O que aconteceu e em qual equipamento ou sistema?",
+    "equipamento": "Qual equipamento está com problema (notebook, monitor, impressora, headset...)? Se souber, mande o número de patrimônio.",
+    "sintoma": "O que exatamente está acontecendo? Se aparece alguma mensagem de erro, copie aqui.",
+    "sistema": "Qual sistema ou aplicativo você precisa acessar?",
+    "tipo_acesso": "É um acesso novo, troca de senha, desbloqueio ou remoção de acesso?",
+    "software": "Qual programa você precisa instalar, ou qual permissão de administrador precisa?",
+    "justificativa": "Para que você precisa dessa permissão? A equipe de segurança pede a justificativa para aprovar.",
+    "assunto_rh": "Seu pedido é sobre qual assunto: férias ou ausência, ponto, admissão, desligamento, folha de pagamento ou benefícios?",
+    "item": "O que você precisa comprar? Se for sobre um pedido que já existe, mande o número do pedido.",
+    "pasta_ou_caminho": "Qual pasta, drive ou caminho está envolvido?",
+    "projeto": "Qual é o nome do projeto?"
+  },
+  "respostas_automaticas": {
+    "reset_senha": {
+      "quando": "fila Access, roteada com confiança acima do limiar, e o cliente pediu troca/desbloqueio de senha",
+      "texto": "Você mesmo consegue trocar ou desbloquear sua senha no autoatendimento: https://senha.exemplo.com.br (leva uns 2 minutos e funciona 24h). Se não resolver, toque em \"Falar com um atendente\"."
+    }
+  },
+  "mensagens": {
+    "boas_vindas": "Olá! Sou o assistente do Suporte. Descreva o seu problema numa mensagem. Se preferir falar direto com uma pessoa, toque no botão abaixo.",
+    "pedir_descricao_humano": "Claro! Descreva em uma mensagem o que você precisa, e um atendente assume direto.",
+    "confirmacao_fila": "Recebi! Seu chamado {ticket} está com a equipe de {equipe}. Prazo: {prazo}.",
+    "confirmacao_triagem": "Recebi! Seu chamado {ticket} está com um atendente, que vai direcionar para a equipe certa.",
+    "antes_das_perguntas": "Para a equipe resolver sem precisar voltar a você:",
+    "csat": "Como foi o atendimento do chamado {ticket}?",
+    "obrigado_csat": "Obrigado pela avaliação!",
+    "reaberto": "Reabri o chamado {ticket} e avisei a equipe."
+  }
+}
