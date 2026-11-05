@@ -119,6 +119,26 @@ class Servico:
             raise ErroDeEntrada("Resposta inválida")
         banco.responder_checagem(negocio, resposta, vendedor)
 
+    def sugerir(self, banco, sugestor, negocio: str, nota: str, vendedor: str) -> dict:
+        """Pede uma sugestão à LLM. Quem confirma a resposta é o vendedor."""
+        if negocio not in self.amostra:
+            raise ErroDeEntrada("Esse negócio não está na amostra")
+        if self.negocios[negocio].vendedor != vendedor:
+            raise ErroDeEntrada("Esse negócio é de outro vendedor")
+        sugestao = sugestor.sugerir(nota)
+        banco.registrar_sugestao(negocio, sugestao["resposta"], sugestao["modelo"])
+        return {k: sugestao[k] for k in ("resposta", "motivo", "modelo")}
+
+    def uso_da_ia(self, banco) -> dict:
+        sugestoes = banco.sugestoes()
+        checagens = banco.checagens()
+        decididas = [n for n in sugestoes if n in checagens]
+        return {
+            "sugestoes": len(sugestoes),
+            "decididas": len(decididas),
+            "aceitas": sum(sugestoes[n] == checagens[n] for n in decididas),
+        }
+
     def registrar_resultado(self, banco, negocio: str, resultado, vendedor: str) -> None:
         if negocio not in self.grupos:
             raise ErroDeEntrada("Esse negócio não está no teste")
@@ -260,6 +280,7 @@ class Servico:
                 "limite": self.curva.limite,
             },
             "checagem": self.checagem(banco),
+            "uso_da_ia": self.uso_da_ia(banco),
             "placar": self.placar(banco),
             "porteiro": self.analise["porteiro"],
             "porteiro_plantado": self.analise["porteiro_plantado"],

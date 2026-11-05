@@ -1,6 +1,6 @@
 "use strict";
 
-const estado = { filtros: null, consulta: new URLSearchParams(location.search) };
+const estado = { filtros: null, consulta: new URLSearchParams(location.search), sugestoes: {} };
 const conteudo = document.getElementById("conteudo");
 
 const RESPOSTAS_MINIMAS = 30;
@@ -91,7 +91,21 @@ const botoesTrabalho = (d) => `
   <button data-acao="resultado" data-valor="perdeu">Perdi</button>
   <button data-acao="adiar" data-valor="${d.adiado ? "" : "1"}" aria-pressed="${d.adiado ? "true" : "false"}">${d.adiado ? "Adiado" : "Adiar"}</button>`;
 
-const botoesChecagem = (d) => RESPOSTAS.map(([valor, rotulo]) => `<button data-acao="checagem" data-valor="${valor}" aria-pressed="${d.resposta === valor}">${rotulo}</button>`).join("");
+const rotuloDaResposta = (valor) => (RESPOSTAS.find(([v]) => v === valor) || [valor, valor])[1];
+
+function botoesChecagem(d) {
+  const sugestao = estado.sugestoes[d.id];
+  const botoes = RESPOSTAS.map(([valor, rotulo]) => `<button data-acao="checagem" data-valor="${valor}" aria-pressed="${d.resposta === valor}" ${sugestao && sugestao.resposta === valor ? 'data-sugerida="1"' : ""}>${rotulo}</button>`).join("");
+  if (!estado.filtros.ia.disponivel || d.resposta) return botoes;
+  const aviso = sugestao
+    ? `<p class="sugestao" role="status">A IA sugere <strong>${h(rotuloDaResposta(sugestao.resposta))}</strong>: ${h(sugestao.motivo)}. Confirme ou escolha outra.</p>`
+    : "";
+  return `${botoes}
+    <form class="form-sugestao" data-negocio="${h(d.id)}">
+      <label>O que você sabe deste negócio?<input name="nota" maxlength="500" autocomplete="off" required></label>
+      <button type="submit">Sugerir resposta</button>
+    </form>${aviso}`;
+}
 
 async function telaSemana() {
   const vendedores = estado.filtros.vendedores;
@@ -128,6 +142,23 @@ async function telaSemana() {
   `;
   document.getElementById("vendedor").addEventListener("change", (e) => { definir({ vendedor: e.target.value }); renderizar(); });
   conteudo.querySelectorAll("button[data-acao]").forEach((botao) => botao.addEventListener("click", () => agir(botao, atual)));
+  conteudo.querySelectorAll(".form-sugestao").forEach((form) => form.addEventListener("submit", (e) => pedirSugestao(e, form, atual)));
+}
+
+async function pedirSugestao(evento, form, vendedor) {
+  evento.preventDefault();
+  const negocio = form.dataset.negocio;
+  const botao = form.querySelector("button");
+  botao.disabled = true;
+  botao.textContent = "Analisando";
+  try {
+    estado.sugestoes[negocio] = await enviar("/api/sugestao", { negocio, vendedor, nota: form.elements.nota.value });
+    await renderizar(false);
+  } catch (erro) {
+    aviso(`${erro.message}. Você pode responder pelos botões.`);
+    botao.disabled = false;
+    botao.textContent = "Sugerir resposta";
+  }
 }
 
 async function agir(botao, vendedor) {
@@ -157,7 +188,7 @@ async function agir(botao, vendedor) {
   }
 }
 
-function blocoChecagem(c) {
+function blocoChecagem(c, uso) {
   const textos = {
     aguardando: "Ainda sem decisão. Ela sai quando as 100 respostas chegarem.",
     limpar: `Menos de ${pct(c.limite_limpeza)} do valor segue real. A proposta é tirar os parados da fila, depois da revisão do RevOps.`,
@@ -174,6 +205,7 @@ function blocoChecagem(c) {
     <p class="fraco"><span class="num">${c.respondidos}</span> de <span class="num">${c.amostra}</span> respostas</p>
     ${estimativa}
     <p>${h(textos[c.decisao])}</p>
+    ${uso && uso.sugestoes ? `<p class="fraco">Sugestões da IA: <span class="num">${uso.sugestoes}</span>. Das <span class="num">${uso.decididas}</span> já decididas, o vendedor aceitou <span class="num">${uso.aceitas}</span>.</p>` : ""}
     <div class="acoes"><a class="botao" href="/api/limpeza.csv?modo=${modo()}">Baixar lista para o RevOps</a></div>
   </section>`;
 }
@@ -258,7 +290,7 @@ async function telaHead() {
     </section>
     <section class="secao">
       <div class="secao-cab"><h2>Testes em andamento</h2><p>Os dois valem para a empresa inteira, mesmo com filtro de região ou manager.</p></div>
-      <div class="colunas">${blocoChecagem(d.checagem)}${blocoPlacar(d.placar)}</div>
+      <div class="colunas">${blocoChecagem(d.checagem, d.uso_da_ia)}${blocoPlacar(d.placar)}</div>
     </section>
     ${modo() === "demo" ? `<section class="secao"><div class="secao-cab"><h2>Simulador</h2><p>Só altera o banco de demonstração.</p></div>
       <form class="simulador" id="simulador">

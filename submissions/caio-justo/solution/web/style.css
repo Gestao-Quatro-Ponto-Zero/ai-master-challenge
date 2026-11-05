@@ -54,7 +54,7 @@ select:focus-visible, input:focus-visible, button:focus-visible, a:focus-visible
 .motivos { font-size: var(--text-sm); list-style: none; margin: 0; padding: 0; }
 .motivos li + li { margin-top: var(--space-3xs); }
 .acao { color: var(--color-ink); font-size: var(--text-sm); font-weight: 500; margin-top: var(--space-xs); }
-.botoes { align-content: start; align-items: start; display: flex; flex-wrap: wrap; gap: var(--space-2xs); justify-content: flex-end; max-width: 260px; }
+.botoes { align-content: start; align-items: start; display: flex; flex-wrap: wrap; gap: var(--space-2xs); justify-content: flex-end; max-width: 280px; }
 button { background: transparent; border: 1px solid var(--color-rule); border-radius: 0; color: var(--color-ink); cursor: pointer; font: inherit; font-size: var(--text-sm); font-weight: 500; min-height: 36px; padding: 0 var(--space-sm); transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
 button:hover { background: var(--color-paper-2); border-color: var(--color-muted-2); }
 button:active { background: var(--color-paper-3); }
@@ -62,6 +62,12 @@ button:disabled { cursor: not-allowed; opacity: 0.55; }
 button[aria-pressed="true"] { background: var(--color-paper-3); border-color: var(--color-accent); color: var(--color-accent); }
 button.primario { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
 button.primario:hover { background: var(--color-focus); }
+button[data-sugerida] { border-color: var(--color-accent-2); color: var(--color-accent-2); }
+.form-sugestao { align-items: end; display: flex; flex-wrap: wrap; gap: var(--space-2xs); width: 100%; }
+.form-sugestao label { color: var(--color-muted); display: grid; flex: 1 1 100%; font-size: var(--text-sm); gap: var(--space-3xs); }
+.form-sugestao input { background: var(--color-paper); border: 1px solid var(--color-muted-2); border-radius: 0; color: var(--color-ink); font: inherit; font-size: var(--text-sm); min-height: 36px; padding: 0 var(--space-xs); width: 100%; }
+.sugestao { color: var(--color-ink-2); font-size: var(--text-sm); width: 100%; }
+.sugestao strong { color: var(--color-accent-2); font-weight: 500; }
 .vazio { color: var(--color-muted); padding: var(--space-md) 0; }
 details { border-top: 1px solid var(--color-rule); margin-top: var(--space-xl); padding-top: var(--space-md); }
 summary { color: var(--color-ink); cursor: pointer; font-size: var(--text-lg); font-weight: 500; letter-spacing: -0.02em; min-height: 44px; }

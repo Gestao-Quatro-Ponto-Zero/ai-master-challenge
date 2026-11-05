@@ -13,6 +13,7 @@ sys.path.insert(0, str(RAIZ))
 
 from prova.banco import Banco  # noqa: E402
 from prova.servico import ErroDeEntrada, Servico  # noqa: E402
+from prova.sugestao import ErroDaSugestao, Sugestor  # noqa: E402
 
 WEB = RAIZ / "web"
 TIPOS = {".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".woff2": "font/woff2"}
@@ -20,8 +21,9 @@ TAMANHO_MAXIMO = 64 * 1024
 
 
 class Aplicacao:
-    def __init__(self, pasta_estado: Path):
+    def __init__(self, pasta_estado: Path, sugestor: Sugestor = None):
         pasta_estado.mkdir(parents=True, exist_ok=True)
+        self.sugestor = sugestor or Sugestor.do_ambiente()
         self.servico = Servico(RAIZ / "analysis" / "resultados.json")
         self.bancos = {
             "real": Banco(pasta_estado / "respostas.db"),
@@ -64,6 +66,8 @@ def criar_manipulador(app: Aplicacao):
                 funcao()
             except ErroDeEntrada as erro:
                 self._json({"erro": str(erro)}, HTTPStatus.BAD_REQUEST)
+            except ErroDaSugestao as erro:
+                self._json({"erro": str(erro)}, HTTPStatus.BAD_GATEWAY)
             except (KeyError, ValueError, TypeError):
                 self._json({"erro": "Pedido inválido"}, HTTPStatus.BAD_REQUEST)
 
@@ -72,7 +76,9 @@ def criar_manipulador(app: Aplicacao):
             q = {k: v[0] for k, v in parse_qs(url.query).items()}
             modo = q.get("modo", "real")
             rotas = {
-                "/api/filtros": lambda: self._json(app.servico.filtros()),
+                "/api/filtros": lambda: self._json(
+                    {**app.servico.filtros(), "ia": {"disponivel": app.sugestor.disponivel, "modelo": app.sugestor.modelo}}
+                ),
                 "/api/semana": lambda: self._json(app.servico.semana(q["vendedor"], app.banco(modo))),
                 "/api/head": lambda: self._json(
                     app.servico.visao_head(app.banco(modo), q.get("manager"), q.get("regiao"))
@@ -104,6 +110,8 @@ def criar_manipulador(app: Aplicacao):
                 s = app.servico
                 if caminho == "/api/checagem":
                     s.responder_checagem(banco, d["negocio"], d.get("resposta"), d["vendedor"])
+                elif caminho == "/api/sugestao":
+                    return self._json(s.sugerir(banco, app.sugestor, d["negocio"], d.get("nota"), d["vendedor"]))
                 elif caminho == "/api/resultado":
                     s.registrar_resultado(banco, d["negocio"], d.get("resultado"), d["vendedor"])
                 elif caminho == "/api/adiar":

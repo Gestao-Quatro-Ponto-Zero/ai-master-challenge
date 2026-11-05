@@ -20,6 +20,7 @@ from prova.estatistica import auc, diferenca_newcombe, tamanho_por_braco, teste_
 from prova.porteiro import FATORES, avaliar, dobras  # noqa: E402
 from prova.servico import ErroDeEntrada, Servico  # noqa: E402
 from prova.sorteio import alocar_por_produto, sortear_checagem, sortear_destaque  # noqa: E402
+from prova.sugestao import ErroDaSugestao, Sugestor, regra_de_palavras  # noqa: E402
 
 NEGOCIOS = carregar()
 SERVICO = Servico(RAIZ / "analysis" / "resultados.json")
@@ -218,13 +219,109 @@ class Fluxo(unittest.TestCase):
         self.assertEqual(SERVICO.grupos[primeiro], grupo)
 
 
+def provedor_falso(conteudo, chamadas=None):
+    def transporte(chave, corpo):
+        if chamadas is not None:
+            chamadas.append((chave, corpo))
+        return {"choices": [{"message": {"content": conteudo}}], "usage": {"cost": 0.0001}}
+
+    return transporte
+
+
+class Sugestao(unittest.TestCase):
+    def test_sem_chave_fica_desligada(self):
+        sugestor = Sugestor(None)
+        self.assertFalse(sugestor.disponivel)
+        with self.assertRaises(ErroDaSugestao):
+            sugestor.sugerir("cliente respondeu")
+
+    def test_resposta_valida(self):
+        conteudo = json.dumps({"resposta": "depois", "motivo": "pediu março"})
+        r = Sugestor("k", transporte=provedor_falso(conteudo)).sugerir("voltar em março")
+        self.assertEqual((r["resposta"], r["motivo"]), ("depois", "pediu março"))
+
+    def test_recusa_resposta_fora_das_opcoes(self):
+        conteudo = json.dumps({"resposta": "fechar_agora", "motivo": "x"})
+        with self.assertRaises(ErroDaSugestao):
+            Sugestor("k", transporte=provedor_falso(conteudo)).sugerir("nota")
+
+    def test_recusa_formato_quebrado(self):
+        for conteudo in ("não é json", "[]", json.dumps({"motivo": "sem resposta"})):
+            with self.assertRaises(ErroDaSugestao):
+                Sugestor("k", transporte=provedor_falso(conteudo)).sugerir("nota")
+
+    def test_nota_vazia_ou_longa_nao_chama_o_provedor(self):
+        chamadas = []
+        sugestor = Sugestor("k", transporte=provedor_falso("{}", chamadas))
+        for nota in ("", "   ", "x" * 501):
+            with self.assertRaises(ErroDaSugestao):
+                sugestor.sugerir(nota)
+        self.assertEqual(chamadas, [])
+
+    def test_so_envia_a_nota_e_nao_salva_o_texto(self):
+        chamadas = []
+        conteudo = json.dumps({"resposta": "vivo", "motivo": "reunião"})
+        negocio = SERVICO.negocios[sorted(SERVICO.amostra)[0]]
+        with tempfile.TemporaryDirectory() as pasta:
+            banco = Banco(Path(pasta) / "t.db")
+            sugestor = Sugestor("chave-secreta", transporte=provedor_falso(conteudo, chamadas))
+            SERVICO.sugerir(banco, sugestor, negocio.id, "texto sigiloso", negocio.vendedor)
+            enviado = json.dumps(chamadas[0][1], ensure_ascii=False)
+            self.assertIn("texto sigiloso", enviado)
+            self.assertNotIn(negocio.vendedor, enviado)
+            self.assertNotIn(negocio.id, enviado)
+            self.assertNotIn("chave-secreta", enviado)
+            salvo = [tuple(l) for t in ("sugestoes", "checagens") for l in banco.conexao.execute(f"SELECT * FROM {t}")]
+            self.assertNotIn("texto sigiloso", str(salvo))
+            banco.conexao.close()
+
+    def test_sugestao_nao_responde_sozinha(self):
+        conteudo = json.dumps({"resposta": "perdido", "motivo": "fechou com outro"})
+        negocio = SERVICO.negocios[sorted(SERVICO.amostra)[0]]
+        with tempfile.TemporaryDirectory() as pasta:
+            banco = Banco(Path(pasta) / "t.db")
+            sugestor = Sugestor("k", transporte=provedor_falso(conteudo))
+            SERVICO.sugerir(banco, sugestor, negocio.id, "nota", negocio.vendedor)
+            self.assertEqual(SERVICO.checagem(banco)["respondidos"], 0)
+            self.assertEqual(SERVICO.uso_da_ia(banco), {"sugestoes": 1, "decididas": 0, "aceitas": 0})
+            SERVICO.responder_checagem(banco, negocio.id, "perdido", negocio.vendedor)
+            self.assertEqual(SERVICO.uso_da_ia(banco)["aceitas"], 1)
+            banco.conexao.close()
+
+    def test_negocio_de_outro_vendedor_nao_chama_o_provedor(self):
+        chamadas = []
+        negocio = SERVICO.negocios[sorted(SERVICO.amostra)[0]]
+        with tempfile.TemporaryDirectory() as pasta:
+            banco = Banco(Path(pasta) / "t.db")
+            with self.assertRaises(ErroDeEntrada):
+                SERVICO.sugerir(banco, Sugestor("k", transporte=provedor_falso("{}", chamadas)), negocio.id, "nota", "Outra Pessoa")
+            banco.conexao.close()
+        self.assertEqual(chamadas, [])
+
+    def test_limite_por_minuto(self):
+        conteudo = json.dumps({"resposta": "vivo", "motivo": "x"})
+        agora = [0.0]
+        sugestor = Sugestor("k", transporte=provedor_falso(conteudo), relogio=lambda: agora[0])
+        for _ in range(60):
+            sugestor.sugerir("nota")
+        with self.assertRaises(ErroDaSugestao):
+            sugestor.sugerir("nota")
+        agora[0] = 61.0
+        self.assertEqual(sugestor.sugerir("nota")["resposta"], "vivo")
+
+    def test_regra_de_palavras(self):
+        self.assertEqual(regra_de_palavras("Fecharam com o concorrente"), "perdido")
+        self.assertEqual(regra_de_palavras("Reunião na terça"), "vivo")
+
+
 class Servidor(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import server
 
         cls.pasta = tempfile.TemporaryDirectory()
-        cls.app = server.Aplicacao(Path(cls.pasta.name))
+        conteudo = json.dumps({"resposta": "depois", "motivo": "pediu março"})
+        cls.app = server.Aplicacao(Path(cls.pasta.name), Sugestor("k", transporte=provedor_falso(conteudo)))
         cls.http = server.ThreadingHTTPServer(("127.0.0.1", 0), server.criar_manipulador(cls.app))
         cls.url = f"http://127.0.0.1:{cls.http.server_address[1]}"
         threading.Thread(target=cls.http.serve_forever, daemon=True).start()
@@ -254,6 +351,14 @@ class Servidor(unittest.TestCase):
         self.assertEqual(semana["vendedor"], vendedor)
         head = json.load(self._pegar("/api/head"))
         self.assertEqual(head["pipeline"]["parados"], 1291)
+
+    def test_sugestao_pela_api(self):
+        negocio = SERVICO.negocios[sorted(SERVICO.amostra)[0]]
+        filtros = json.load(self._pegar("/api/filtros"))
+        self.assertTrue(filtros["ia"]["disponivel"])
+        self.assertNotIn("k", filtros["ia"].get("chave", ""))
+        r = json.load(self._post("/api/sugestao", {"modo": "demo", "negocio": negocio.id, "vendedor": negocio.vendedor, "nota": "voltar em março"}))
+        self.assertEqual(r["resposta"], "depois")
 
     def test_vendedor_inexistente_vira_erro_claro(self):
         with self.assertRaises(urllib.error.HTTPError) as erro:

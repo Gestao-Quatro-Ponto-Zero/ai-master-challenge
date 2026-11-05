@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS adiados (
     vendedor TEXT NOT NULL,
     quando TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE IF NOT EXISTS sugestoes (
+    negocio TEXT PRIMARY KEY,
+    sugerida TEXT NOT NULL,
+    modelo TEXT NOT NULL,
+    quando TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 CREATE TABLE IF NOT EXISTS placar_simulado (
     id INTEGER PRIMARY KEY,
     grupo TEXT NOT NULL,
@@ -51,6 +57,20 @@ class Banco:
     def desfazer_checagem(self, negocio: str) -> None:
         with self.conexao:
             self.conexao.execute("DELETE FROM checagens WHERE negocio = ?", (negocio,))
+
+    def registrar_sugestao(self, negocio: str, sugerida: str, modelo: str) -> None:
+        """Guarda só a sugestão e o modelo. O texto da nota não fica salvo."""
+        with self.conexao:
+            self.conexao.execute(
+                "INSERT OR REPLACE INTO sugestoes (negocio, sugerida, modelo) VALUES (?, ?, ?)",
+                (negocio, sugerida, modelo),
+            )
+
+    def sugestoes(self) -> dict:
+        return {
+            l["negocio"]: l["sugerida"]
+            for l in self.conexao.execute("SELECT negocio, sugerida FROM sugestoes")
+        }
 
     def resultados(self) -> dict:
         return {
@@ -93,5 +113,5 @@ class Banco:
 
     def limpar(self) -> None:
         with self.conexao:
-            for tabela in ("checagens", "resultados", "adiados", "placar_simulado"):
+            for tabela in ("checagens", "resultados", "adiados", "sugestoes", "placar_simulado"):
                 self.conexao.execute(f"DELETE FROM {tabela}")
