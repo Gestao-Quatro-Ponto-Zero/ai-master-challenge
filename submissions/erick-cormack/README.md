@@ -15,8 +15,8 @@ Construí o **Lead Scorer**, uma ferramenta web publicada que mostra ao vendedor
 - **App publicado:** https://lead-scorer-g4.lovable.app
   - **Acesso:** e-mail `recrutamentog4@g4club.com.br`, senha `G4Lead#2026` (válido até 20/11/2026)
 - **Resumo executivo para C-level:** [`docs/resumo_executivo.md`](docs/resumo_executivo.md) (também dentro do app, no botão "Detalhar mais")
-- **Análise completa:** [`analise/analise_exploratoria.ipynb`](analise/analise_exploratoria.ipynb) (versão HTML ao lado)
-- **Passo a passo detalhado de tudo o que foi feito:** [`PASSO_A_PASSO.md`](PASSO_A_PASSO.md)
+- **Análise completa:** [`solution/analise/analise_exploratoria.ipynb`](solution/analise/analise_exploratoria.ipynb) (versão HTML ao lado)
+- **Passo a passo detalhado de tudo o que foi feito:** [`process-log/PASSO_A_PASSO.md`](process-log/PASSO_A_PASSO.md)
 
 ---
 
@@ -105,7 +105,7 @@ App publicado em https://lead-scorer-g4.lovable.app, com a identidade visual do 
 
 Vendedor, produto e setor aparecem só como contexto, com uma nota explicando por quê.
 
-**Conferência rápida:** depois do login, com todos os filtros em "Todos", as abas mostram Focar 298, Requalificar 1.291 e Prospectar 500, e o valor esperado em foco é US$ 505.216. O primeiro do ranking é o deal 1LY8CAXD (GTK 500, 95 dias, 71% de chance, US$ 18.912). Os mesmos números saem de `python scripts/gabarito_score.py`.
+**Conferência rápida:** depois do login, com todos os filtros em "Todos", as abas mostram Focar 298, Requalificar 1.291 e Prospectar 500, e o valor esperado em foco é US$ 505.216. O primeiro do ranking é o deal 1LY8CAXD (GTK 500, 95 dias, 71% de chance, US$ 18.912). Os mesmos números saem de `python scripts/gabarito_score.py`, rodado dentro de `solution/`.
 
 ### Recomendações
 
@@ -131,10 +131,10 @@ Vendedor, produto e setor aparecem só como contexto, com uma nota explicando po
 ## Process Log — Como usei IA
 
 1. Inicialmente busquei entender o Github enviado com seus repositórios e desafios propostos
-2. Assim, defini que usaria o Claude Code com uma pasta projeto contemplando todos os dados disponilibizados via Kaggle
+2. Assim, defini que usaria o Claude Code com uma pasta projeto contemplando todos os dados disponibilizados via Kaggle
 3. Após análise inicial, solicitei que fizesse mais perguntas aos dados, buscando outliers, convergências ou regressão visto meu conhecimento em análise quanti e quali.
 4. Verificações feitas me fizeram criar no Lovable usando o Claude Code conectado a ele, um Web Site publicado com os dados no Lovable Cloud (Supabase), no qual o Claude criou as querys e fui conferindo uma a uma
-5. Criei a camada de segunrança com login e senha e data de expiração, e feito refino do site para envio ao recrutadores do G4
+5. Criei a camada de segurança com login e senha e data de expiração, e feito refino do site para envio ao recrutadores do G4
 
 ### Ferramentas usadas
 
@@ -157,9 +157,9 @@ Vendedor, produto e setor aparecem só como contexto, com uma nota explicando po
 8. **Verificação final na URL pública**, contra o banco e o gabarito.
 9. **Evolução do produto direto no Lovable.** Depois da primeira publicação, mandei 10 mensagens ao agente do Lovable pelo editor: identidade visual do G4, login com validade de 15 dias para os avaliadores, resumo executivo e mais gráficos na página inicial, números mais legíveis, paginação, botão "Detalhar mais" com a análise completa, gráfico de valor esperado por manager e exportação em PDF e XLSX respeitando os filtros.
 
-O passo a passo completo, com cada etapa da análise, cada comando SQL e cada prompt, está em [`PASSO_A_PASSO.md`](PASSO_A_PASSO.md).
+O passo a passo completo, com cada etapa da análise, cada comando SQL e cada prompt, está em [`process-log/PASSO_A_PASSO.md`](process-log/PASSO_A_PASSO.md).
 
-Custo do agente do Lovable na construção: cerca de 15 créditos em 3 mensagens (estrutura 1,3 + telas 9,7 + correções 3,8). O histórico completo, com as 13 mensagens, está em [`docs/lovable_prompts.md`](docs/lovable_prompts.md).
+Custo do agente do Lovable na construção: cerca de 15 créditos em 3 mensagens (estrutura 1,3 + telas 9,7 + correções 3,8). O histórico completo, com as 13 mensagens, está em [`process-log/lovable_prompts.md`](process-log/lovable_prompts.md).
 
 ### Onde a IA errou e como corrigi
 
@@ -193,16 +193,16 @@ Custo do agente do Lovable na construção: cerca de 15 créditos em 3 mensagens
 
 ## Evidências
 
-- [x] Notebook comentado e executado (`analise/`)
-- [x] Scripts e SQL versionados (`scripts/`, `sql/`)
-- [x] Prompts e respostas do agente do Lovable, com as 13 mensagens (`docs/lovable_prompts.md`)
-- [x] Passo a passo completo do processo ([`PASSO_A_PASSO.md`](PASSO_A_PASSO.md))
-- [ ] Screenshots das conversas com IA
-- [ ] Screen recording do workflow
-- [x] Chat exports ([`docs/chat_export.md`](docs/chat_export.md) + link oficial da conversa: _[preencher]_)
-- [ ] Git history
+- [x] Notebook comentado e executado ([`solution/analise/`](solution/analise/))
+- [x] Scripts e SQL versionados ([`solution/scripts/`](solution/scripts/), [`solution/sql/`](solution/sql/))
+- [x] Prompts e respostas do agente do Lovable, com as 13 mensagens ([`process-log/lovable_prompts.md`](process-log/lovable_prompts.md))
+- [x] Passo a passo completo do processo ([`process-log/PASSO_A_PASSO.md`](process-log/PASSO_A_PASSO.md))
+- [x] Screenshots das conversas com IA ([`Screenshots/`](Screenshots/))
+- [X] Screen recording do workflow
+- [x] Chat exports ([`process-log/chat_export.md`](process-log/chat_export.md) + link oficial da conversa: _[preencher]_)
+- [X] Git history
 - [x] Outro: app publicado em https://lead-scorer-g4.lovable.app e resumo executivo em [`docs/resumo_executivo.md`](docs/resumo_executivo.md)
 
 ---
 
-_Submissão enviada em: 05/11/2026
+Submissão enviada em: 05/11/2026
