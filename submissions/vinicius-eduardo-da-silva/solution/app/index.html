@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foco da Semana</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="page-header">
+    <div>
+      <h1>Foco da Semana</h1>
+      <p id="as-of" class="muted"></p>
+    </div>
+    <div class="filters" aria-label="Filtros">
+      <label>Região<select id="filter-region"></select></label>
+      <label>Manager<select id="filter-manager"></select></label>
+      <label>Vendedor<select id="filter-agent"></select></label>
+    </div>
+  </header>
+
+  <main>
+    <section id="briefing" class="briefing" aria-live="polite"></section>
+    <section id="tiles" class="tiles" aria-label="Resumo do pipeline"></section>
+    <nav class="tabs" role="tablist" aria-label="Filas de trabalho" id="tabs"></nav>
+    <section id="view" role="tabpanel"></section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
