@@ -1,0 +1,36 @@
+{
+  "reps": 30,
+  "managers": 6,
+  "placebo_splits": 5000,
+  "power": "80% de poder, 5% de significância",
+  "periods": {
+    "um_mes_outubro": {
+      "revenue": {
+        "correlation_with_baseline": 0.811,
+        "raw_percent": 99.0,
+        "adjusted_percent": 61.5,
+        "mean_per_rep": 24399.3
+      },
+      "wins": {
+        "correlation_with_baseline": 0.779,
+        "raw_percent": 63.9,
+        "adjusted_percent": 42.2,
+        "mean_per_rep": 9.3
+      }
+    },
+    "um_trimestre_q4": {
+      "revenue": {
+        "correlation_with_baseline": 0.895,
+        "raw_percent": 61.6,
+        "adjusted_percent": 29.3,
+        "mean_per_rep": 93416.5
+      },
+      "wins": {
+        "correlation_with_baseline": 0.884,
+        "raw_percent": 40.1,
+        "adjusted_percent": 17.2,
+        "mean_per_rep": 39.9
+      }
+    }
+  }
+}

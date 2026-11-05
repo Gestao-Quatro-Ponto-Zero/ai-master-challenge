@@ -11,7 +11,8 @@ python -m venv .venv
 .venv/Scripts/python -m pip install -r scoring/requirements.txt   # Linux/Mac: .venv/bin/python
 cd scoring
 ../.venv/Scripts/python -m pytest -q             # testes
-../.venv/Scripts/python backtest.py              # gera backtest_results.json
+../.venv/Scripts/python backtest.py              # gera backtest_results.json e ../app/replay.js
+../.venv/Scripts/python pilot_plan.py            # gera pilot_plan.json
 ../.venv/Scripts/python build_app_data.py        # gera ../app/data.js
 ```
 
@@ -21,9 +22,10 @@ Testado com Python 3.12 no Windows e com o navegador Edge.
 
 | Caminho | O que é |
 |---|---|
-| `app/` | Interface em HTML, CSS e JS puros. `data.js` é gerado, não edite à mão |
+| `app/` | Interface em HTML, CSS e JS puros. `data.js` e `replay.js` são gerados, não edite à mão |
 | `scoring/lead_scorer.py` | Limpeza, aprendizado das taxas e score |
-| `scoring/backtest.py` | Replay de 22 segundas-feiras passadas |
+| `scoring/backtest.py` | Replay de 22 segundas-feiras passadas e dados da Máquina do tempo |
+| `scoring/pilot_plan.py` | Menor ganho que um teste com grupo de controle conseguiria detectar |
 | `scoring/build_app_data.py` | Gera os dados da interface |
 | `scoring/test_lead_scorer.py` | Testes, incluindo um contra vazamento de dados futuros |
 | `data/` | CSVs originais do Kaggle (licença CC0) |
@@ -60,6 +62,12 @@ As duas partes usam os mesmos pontos por unidade logarítmica. Por isso, somá-l
 
 **Como o futuro fica de fora:** cada taxa só usa segundas-feiras cuja janela de 30 dias terminou até a data analisada. Um teste reescreve tudo o que ocorreu depois de uma data e confirma que as taxas não mudam. Datas anteriores a 01/03/2017 não ensinam nada: nenhum deal fecha antes disso, então o resultado rápido daquele período está ausente dos dados.
 
+**Empates no replay:** vários deals têm o mesmo preço, e o arquivo está ordenado por data, então a ordem dele poderia favorecer uma estratégia. O desempate é por ID, sem relação com o resultado, e o resultado com empates sorteados fica em `backtest_results.json`.
+
+**Máquina do tempo:** a conta só aparece depois de revelar. Todo deal encerrado tem conta, então "Conta em branco" entregaria que o deal nunca fechou.
+
+**Calculadora de tempo:** os minutos por deal são premissas, não dados do CRM, e aparecem assim na tela.
+
 ## Limpeza dos dados
 
 - `GTXPro` no pipeline corrigido para `GTX Pro`, como no catálogo
@@ -80,5 +88,5 @@ As duas partes usam os mesmos pontos por unidade logarítmica. Por isso, somá-l
 1. Integração diária com o CRM, em vez de CSV
 2. Registro das decisões direto no CRM, com login por vendedor
 3. Dados de atividade e histórico de mudança de estágio
-4. Teste A/B entre vendedores para medir o efeito real em receita
+4. Teste com grupo de controle por um trimestre, conforme [`docs/plano-piloto.md`](../docs/plano-piloto.md)
 5. Recalibração automática e acompanhamento da precisão ao longo do tempo

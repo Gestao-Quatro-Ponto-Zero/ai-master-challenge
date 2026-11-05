@@ -78,7 +78,55 @@ with sync_playwright() as p:
     page.select_option("#filter-agent", "Carl Lin")
     check("rep with no deals at all", "nenhum deal aberto" in page.locator("#briefing").inner_text())
     page.select_option("#filter-agent", "")
+
+    # Calculator: keeps focus while typing and uses the filtered selection.
+    page.click('[data-tab="equipe"]')
+    field = page.locator('[data-calc="weekly"]')
+    check("calculator starts from stale deals", "1.301" in page.locator("#calc-result").inner_text())
+    field.fill("10")
+    check("calculator updates", "216,8 horas" in page.locator("#calc-result").inner_text(), page.locator("#calc-result").inner_text())
+    check("calculator keeps focus", page.evaluate("document.activeElement.dataset.calc") == "weekly")
+    check("calculator says it is an assumption", "premissa" in page.locator(".calculator").inner_text())
+    field.fill("5")
+
+    # Time machine: nothing about the outcome may show before the reveal.
+    page.click('[data-tab="tempo"]')
+    page.screenshot(path=shots / "08-maquina-do-tempo-antes.png", full_page=False)
+    text = page.locator("#view").inner_text()
+    check("no outcome before reveal", not any(w in text for w in ["Ganho:", "Perdido em", "Seguia aberto", "Conta em branco"]))
+    page.click('[data-action="reveal"]')
+    text = page.locator("#view").inner_text()
+    check("reveal shows outcomes", "Ganho:" in text and "Lista por maior valor" in text)
+    page.screenshot(path=shots / "09-maquina-do-tempo-depois.png")
+    page.select_option("#replay-date", index=0)
+    check("changing the Monday hides results again", "Ganho:" not in page.locator("#view").inner_text())
+    check("reveal button returns", page.locator('[data-action="reveal"]').count() == 1)
+
+    totals = page.evaluate(
+        """() => {
+          const sum = (pick) => window.LEAD_REPLAY.reduce((all, monday) =>
+            all + Object.values(monday.agents).reduce((part, entry) => part + pick(entry), 0), 0) / window.LEAD_REPLAY.length;
+          return {
+            score: sum((entry) => entry.deals.reduce((part, row) => part + row[9], 0)),
+            value: sum((entry) => entry.valueRevenue),
+            official: window.LEAD_DATA.backtest.all,
+          };
+        }"""
+    )
+    check("machine matches official score result", round(totals["score"]) == round(totals["official"]["score"]["revenue"]))
+    check("machine matches official value result", round(totals["value"]) == round(totals["official"]["maior_valor"]["revenue"]))
+
+    page.select_option("#filter-agent", "Zane Levy")
+    page.select_option("#replay-date", index=5)
+    check("rep list has at most 10", 0 < page.locator(".deal").count() <= 10, str(page.locator(".deal").count()))
+    page.click('[data-action="reveal"]')
+    check("rep verdict appears", page.locator(".verdict").count() == 1)
+    page.select_option("#filter-agent", "Carl Lin")
+    check("rep with no deals gets an empty state", page.locator(".empty").count() == 1)
+    page.select_option("#filter-agent", "")
+
     page.click('[data-tab="como"]')
+    check("pilot section shows numbers", "Um trimestre completo" in page.locator("#view").inner_text())
     page.screenshot(path=shots / "06-como-funciona.png", full_page=True)
 
     mobile = browser.new_context(viewport={"width": 390, "height": 844}, color_scheme="dark").new_page()

@@ -4,121 +4,125 @@
   "horizon_days": 30,
   "all": {
     "aleatorio": {
-      "revenue": 93596.4386,
-      "wins": 39.4523,
+      "revenue": 93624.7636,
+      "wins": 39.3955,
       "listed": 299.8636,
-      "stale": 52.4705,
-      "win_rate": 0.1316
+      "stale": 51.9591,
+      "win_rate": 0.1314
     },
     "maior_valor": {
-      "revenue": 225208.0909,
-      "wins": 40.4545,
+      "revenue": 225015.9091,
+      "wins": 40.2273,
       "listed": 299.8636,
-      "stale": 49.9545,
-      "win_rate": 0.1349
+      "stale": 53.1364,
+      "win_rate": 0.1342
     },
     "mais_antigo": {
-      "revenue": 82111.9545,
-      "wins": 38.2727,
+      "revenue": 82936.7273,
+      "wins": 38.7727,
       "listed": 299.8636,
       "stale": 165.0909,
-      "win_rate": 0.1276
+      "win_rate": 0.1293
     },
     "mais_novo": {
-      "revenue": 142233.5455,
-      "wins": 59.1818,
+      "revenue": 142357.5455,
+      "wins": 59.2727,
       "listed": 299.8636,
       "stale": 0.0,
-      "win_rate": 0.1974
+      "win_rate": 0.1977
     },
     "score": {
-      "revenue": 318713.3182,
-      "wins": 65.2727,
+      "revenue": 319080.3182,
+      "wins": 65.5455,
       "listed": 299.8636,
       "stale": 0.0,
-      "win_rate": 0.2177
+      "win_rate": 0.2186
     }
   },
   "selection_jul_sep": {
     "aleatorio": {
-      "revenue": 100471.6231,
-      "wins": 42.1654,
+      "revenue": 100257.0577,
+      "wins": 42.0308,
       "listed": 300.0,
-      "stale": 40.7654,
-      "win_rate": 0.1406
+      "stale": 40.3423,
+      "win_rate": 0.1401
     },
     "maior_valor": {
-      "revenue": 248825.5385,
-      "wins": 43.5385,
+      "revenue": 248243.3077,
+      "wins": 43.3846,
       "listed": 300.0,
-      "stale": 36.1538,
-      "win_rate": 0.1451
+      "stale": 40.6154,
+      "win_rate": 0.1446
     },
     "mais_antigo": {
-      "revenue": 118443.5385,
-      "wins": 57.3846,
+      "revenue": 119035.3077,
+      "wins": 57.7692,
       "listed": 300.0,
       "stale": 161.6923,
-      "win_rate": 0.1913
+      "win_rate": 0.1926
     },
     "mais_novo": {
-      "revenue": 111312.8462,
-      "wins": 46.0,
+      "revenue": 111279.8462,
+      "wins": 46.1538,
       "listed": 300.0,
       "stale": 0.0,
-      "win_rate": 0.1533
+      "win_rate": 0.1538
     },
     "score": {
-      "revenue": 353518.3077,
-      "wins": 71.6923,
+      "revenue": 354201.2308,
+      "wins": 72.0769,
       "listed": 300.0,
       "stale": 0.0,
-      "win_rate": 0.239
+      "win_rate": 0.2403
     }
   },
   "holdout_oct_nov": {
     "aleatorio": {
-      "revenue": 83665.6167,
-      "wins": 35.5333,
+      "revenue": 84044.7833,
+      "wins": 35.5889,
       "listed": 299.6667,
-      "stale": 69.3778,
-      "win_rate": 0.1186
+      "stale": 68.7389,
+      "win_rate": 0.1188
     },
     "maior_valor": {
-      "revenue": 191094.0,
-      "wins": 36.0,
+      "revenue": 191465.2222,
+      "wins": 35.6667,
       "listed": 299.6667,
-      "stale": 69.8889,
-      "win_rate": 0.1201
+      "stale": 71.2222,
+      "win_rate": 0.119
     },
     "mais_antigo": {
-      "revenue": 29633.0,
-      "wins": 10.6667,
+      "revenue": 30794.3333,
+      "wins": 11.3333,
       "listed": 299.6667,
       "stale": 170.0,
-      "win_rate": 0.0356
+      "win_rate": 0.0378
     },
     "mais_novo": {
-      "revenue": 186896.7778,
+      "revenue": 187247.5556,
       "wins": 78.2222,
       "listed": 299.6667,
       "stale": 0.0,
       "win_rate": 0.261
     },
     "score": {
-      "revenue": 268439.4444,
-      "wins": 56.0,
+      "revenue": 268350.1111,
+      "wins": 56.1111,
       "listed": 299.6667,
       "stale": 0.0,
-      "win_rate": 0.1869
+      "win_rate": 0.1872
     }
   },
   "score_vs_value": {
-    "mean_gain": 93505,
+    "mean_gain": 94064,
     "better_mondays": 22,
     "independent_mondays": 5,
     "independent_better": 5,
-    "independent_mean_gain": 98676
+    "independent_mean_gain": 94056
+  },
+  "random_tie_break_revenue": {
+    "score": 318562,
+    "maior_valor": 225496
   },
   "calibration": [
     {

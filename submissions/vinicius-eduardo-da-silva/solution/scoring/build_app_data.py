@@ -63,7 +63,7 @@ def prospecting_rows(deals: pd.DataFrame, as_of: pd.Timestamp) -> list[dict]:
     ]
 
 
-def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, as_of: pd.Timestamp = ls.AS_OF) -> dict:
+def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, pilot: dict, as_of: pd.Timestamp = ls.AS_OF) -> dict:
     scored, rates = ls.score_pipeline(deals, as_of)
     team = team.sort_values("sales_agent")  # includes reps with no deals in the pipeline
     return {
@@ -75,6 +75,7 @@ def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, as_of
         "engaged": [engaged_row(deal) for deal in scored.itertuples()],
         "prospecting": prospecting_rows(deals, as_of),
         "backtest": backtest,
+        "pilot": pilot,
     }
 
 
@@ -82,12 +83,14 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", default=HERE.parent / "data", type=Path)
     parser.add_argument("--backtest", default=HERE / "backtest_results.json", type=Path)
+    parser.add_argument("--pilot", default=HERE / "pilot_plan.json", type=Path)
     parser.add_argument("--out", default=HERE.parent / "app" / "data.js", type=Path)
     args = parser.parse_args()
 
     backtest = json.loads(args.backtest.read_text(encoding="utf-8"))
     team = pd.read_csv(args.data / "sales_teams.csv")
-    payload = build_payload(ls.load_deals(args.data), team, backtest)
+    pilot = json.loads(args.pilot.read_text(encoding="utf-8"))
+    payload = build_payload(ls.load_deals(args.data), team, backtest, pilot)
     args.out.write_text("window.LEAD_DATA = " + json.dumps(payload, ensure_ascii=False) + ";\n", encoding="utf-8")
 
     engaged = pd.DataFrame(payload["engaged"])

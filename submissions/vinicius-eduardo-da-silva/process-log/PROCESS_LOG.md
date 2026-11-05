@@ -19,6 +19,7 @@ Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius d
 | Deals acima de 138 dias | Fila separada, com decisão do vendedor | Lista única com score baixo; destaque para resgate |
 | Efeito de trimestre | Testar no replay antes de incluir | Só alerta; ignorar |
 | Formato | Web app sem deploy, para abrir localmente | Vercel; Streamlit |
+| Extras, depois de perguntar se dava para ir além do enunciado | Máquina do tempo, plano de piloto e calculadora de tempo | Mensagem pronta para deal parado |
 
 ## Como o trabalho evoluiu
 
@@ -30,6 +31,7 @@ Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius d
 6. **Cobertura por vendedor** (`exploration/rep_coverage.py`). A região Central inteira não tinha deal vivo, o que mudou o desenho da tela.
 7. **Interface e teste no navegador** (`exploration/ui_check.py`).
 8. **Revisão visual e correção do início de trimestre** (`exploration/quarter_start_check.py`).
+9. **Extras.** Vinicius perguntou se o enunciado estava atendido e se dava para ir além. O Claude apontou as fraquezas da entrega e propôs quatro ideias, e ele escolheu três.
 
 Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` roda na versão do commit `4a93295`, antes da troca de mês por semana.
 
@@ -44,6 +46,11 @@ Todos os itens abaixo foram detectados pelo próprio Claude Code, nos testes aut
 | Um score mais alto aparecia abaixo de um mais baixo | Teste no navegador de ordem dos scores | Regra única de ranking, usada na ferramenta e no replay, com teste próprio |
 | Em 1º de janeiro, um deal de 67 dias aparecia com cerca de 14% de chance | Revisão da tela: contradizia o achado de que, no início do trimestre, só deals novos fecham. Medido: 0–2,6% | Troca de mês por semana do trimestre |
 | A mensagem "peça a decisão" contradizia uma chance baixa | Mesma revisão | Nova mensagem quando a chance é baixa, com teste |
+| Propus um piloto de 30 dias | Simulação de divisões falsas: um mês só detectaria ganhos acima de 61% em receita | Piloto de um trimestre, com deals ganhos como métrica principal |
+| Empates de preço seguiam a ordem do arquivo, que é por data | Revisão do código ao construir a Máquina do tempo | Desempate por ID e medição com empates sorteados: a vantagem ficou em 41–42% |
+| A Máquina do tempo mostrava números de janeiro de 2018 sobre uma lista de agosto de 2017 | Revisão da tela | Resumo oculto nessa aba |
+
+Um vazamento foi evitado antes de existir: "Conta em branco" entregaria, antes da revelação, que o deal nunca fechou. Por isso, a conta fica oculta até o clique, e um teste confere isso no navegador.
 
 ## Exceção a um critério definido antes
 
@@ -61,6 +68,7 @@ O `.gitignore` do desafio ignora `submissions/`, e o PR não pode alterar nada f
 | Valor × idade | US$ 288,5 mil | +28% |
 | Valor × idade × mês do trimestre | US$ 313,4 mil | +39% |
 | Valor × idade × semana do trimestre (final) | US$ 318,7 mil | +42% |
+| Versão final, com desempate por ID | US$ 319,1 mil (referência: US$ 225,0 mil) | +42% |
 
 ## O que eu adicionei
 

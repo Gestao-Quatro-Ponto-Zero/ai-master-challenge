@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+import backtest
 import lead_scorer as ls
 
 DATA = Path(__file__).resolve().parent.parent / "data"
@@ -86,6 +87,24 @@ def test_stale_deals_rank_below_every_live_deal():
     values = ls.ranking_value(np.array([0.0, 0.002]), np.array([26768, 55]))
     assert values[0] == 0
     assert values[1] > 0
+
+
+def test_tied_deals_do_not_depend_on_file_order(deals):
+    snapshot = ls.open_deals_at(deals, pd.Timestamp("2017-08-07"))
+    reversed_snapshot = snapshot.iloc[::-1]
+    first = backtest.top_k(snapshot, snapshot["sales_price"].to_numpy())
+    second = backtest.top_k(reversed_snapshot, reversed_snapshot["sales_price"].to_numpy())
+    assert set(first["opportunity_id"]) == set(second["opportunity_id"])
+
+
+def test_time_machine_outcomes_only_cover_the_30_day_window(deals):
+    monday = pd.Timestamp("2017-08-07")
+    snapshot, _ = backtest.monday_snapshot(deals, monday)
+    won = snapshot[snapshot["outcome"] == "won"]
+    assert (won["close_date"] < monday + pd.Timedelta(days=30)).all()
+    later = snapshot[snapshot["close_date"] >= monday + pd.Timedelta(days=30)]
+    assert (later["outcome"] == "open").all()
+    assert (later["realized"] == 0).all()
 
 
 @pytest.mark.parametrize(

@@ -10,8 +10,16 @@ const TABS = [
   { id: "decidir", label: "Decidir" },
   { id: "prospeccao", label: "Prospecção" },
   { id: "equipe", label: "Equipe" },
+  { id: "tempo", label: "Máquina do tempo" },
   { id: "como", label: "Como funciona" },
 ];
+
+const REPLAY = window.LEAD_REPLAY || [];
+const DEFAULT_REPLAY_DATE = "2017-08-07"; // mid-quarter, when every age band is active
+const TEAM_LIST_SIZE = 20;
+const HOURS_PER_PERSON_WEEK = 40;
+const STORAGE_CALCULATOR = "focoSemana.calculator";
+const DEFAULT_CALCULATOR = { weekly: 5, cleanup: 3 };
 
 const teamByAgent = new Map(DATA.team.map((member) => [member.agent, member]));
 const state = {
@@ -21,6 +29,9 @@ const state = {
   tab: "foco",
   limit: PAGE_SIZE,
   decisions: readDecisions(),
+  replayIndex: Math.max(0, REPLAY.findIndex((monday) => monday.date === DEFAULT_REPLAY_DATE)),
+  revealed: false,
+  calculator: readCalculator(),
 };
 if (!teamByAgent.has(state.agent)) state.agent = "";
 
@@ -47,6 +58,15 @@ function readDecisions() {
     return parsed && typeof parsed === "object" ? parsed : {};
   } catch {
     return {};
+  }
+}
+
+function readCalculator() {
+  try {
+    const parsed = JSON.parse(readStorage(STORAGE_CALCULATOR, "{}"));
+    return { ...DEFAULT_CALCULATOR, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+  } catch {
+    return { ...DEFAULT_CALCULATOR };
   }
 }
 
@@ -281,7 +301,41 @@ function viewProspeccao(sel) {
     ${rows}${moreButton(sel.prospecting.length)}`;
 }
 
-function viewEquipe() {
+function calculatorResult(sel) {
+  const stale = sel.decidir.length;
+  const { weekly, cleanup } = state.calculator;
+  const oneDecimal = (value) => value.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  const weeklyHours = (stale * weekly) / 60;
+  const cleanupHours = (stale * cleanup) / 60;
+  if (stale === 0) return "Nenhum deal parado nesta seleção.";
+  // In Portuguese, values below 2 take the singular ("1,5 pessoa").
+  const withUnit = (value, one, many) => `${oneDecimal(value)} ${value < 2 ? one : many}`;
+  const people = withUnit(weeklyHours / HOURS_PER_PERSON_WEEK, "pessoa", "pessoas");
+  const payback = weeklyHours > 0
+    ? ` A limpeza custa ${withUnit(cleanupHours, "hora", "horas")} uma única vez e se paga em ${withUnit(cleanupHours / weeklyHours, "semana", "semanas")}.`
+    : "";
+  return `<strong>${withUnit(weeklyHours, "hora", "horas")} por semana</strong> em ${plural(stale, "deal parado", "deals parados")}, o equivalente a ${people} em tempo integral (${HOURS_PER_PERSON_WEEK}h).${payback}`;
+}
+
+function viewCalculator(sel) {
+  const { weekly, cleanup } = state.calculator;
+  return `
+    <div class="calculator">
+      <h2>Quanto tempo os deals parados consomem?</h2>
+      <p class="muted">Os dados têm a quantidade de deals, não o tempo gasto. Os minutos são uma <strong>premissa</strong>: ajuste com o time.</p>
+      <div class="calculator-inputs">
+        <label>Minutos por semana em cada deal parado
+          <input type="number" min="0" max="120" step="1" value="${weekly}" data-calc="weekly">
+        </label>
+        <label>Minutos para decidir cada deal, uma vez
+          <input type="number" min="0" max="120" step="1" value="${cleanup}" data-calc="cleanup">
+        </label>
+      </div>
+      <p id="calc-result" aria-live="polite">${calculatorResult(sel)}</p>
+    </div>`;
+}
+
+function viewEquipe(sel) {
   const members = DATA.team.filter((member) => matchesFilters(member.agent));
   const rows = members.map((member) => {
     const engaged = DATA.engaged.filter((deal) => deal.agent === member.agent);
@@ -301,6 +355,7 @@ function viewEquipe() {
       <td>${count(row.prospecting)}</td>
     </tr>`).join("");
   return `
+    ${viewCalculator(sel)}
     <p class="view-intro">Para o manager: quem precisa limpar pipeline e quem está sem deals vivos. Clique em um nome para abrir a lista da pessoa.</p>
     <div class="table-wrap"><table>
       <thead><tr><th>Vendedor</th><th>Região</th><th>Vivos</th><th>Valor vivo</th><th>Parados</th><th>Valor parado</th><th>Prospecção</th></tr></thead>
@@ -308,8 +363,107 @@ function viewEquipe() {
     </table></div>`;
 }
 
+/** Field order written by scoring/backtest.py to keep replay.js small. */
+function replayDeal(row, agent) {
+  const [id, product, account, price, age, score, valuePts, timingPts, outcome, realized, daysToClose] = row;
+  return { id, product, account, price, age, score, valuePts, timingPts, outcome, realized, daysToClose, agent };
+}
+
+function replaySelection(monday) {
+  const entries = Object.entries(monday.agents).filter(([agent]) => matchesFilters(agent));
+  const sum = (pick) => entries.reduce((total, [, entry]) => total + pick(entry), 0);
+  const deals = entries
+    .flatMap(([agent, entry]) => entry.deals.map((row) => replayDeal(row, agent)))
+    .sort((a, b) => b.score - a.score || b.price - a.price || a.id.localeCompare(b.id));
+  return {
+    deals,
+    scoreRevenue: deals.reduce((total, deal) => total + deal.realized, 0),
+    scoreWins: deals.filter((deal) => deal.outcome === "won").length,
+    valueRevenue: sum((entry) => entry.valueRevenue),
+    valueWins: sum((entry) => entry.valueWins),
+    poolRevenue: sum((entry) => entry.poolRevenue),
+  };
+}
+
+function outcomeChip(deal) {
+  if (deal.outcome === "won") {
+    return `<span class="outcome won">✓ Ganho: ${money(deal.realized)} em ${deal.daysToClose} dias</span>`;
+  }
+  if (deal.outcome === "lost") {
+    return `<span class="outcome lost">✕ Perdido em ${deal.daysToClose} dias</span>`;
+  }
+  return `<span class="outcome open">– Seguia aberto após ${DATA.backtest.horizon_days} dias</span>`;
+}
+
+function replayCard(deal) {
+  // The account stays hidden until the reveal. Every closed deal has an account,
+  // so "Conta em branco" would give away that a deal never closed.
+  const title = state.revealed ? `${escapeHtml(deal.product)} · ${accountLabel(deal)}` : escapeHtml(deal.product);
+  const agent = state.agent ? "" : ` · ${escapeHtml(deal.agent)}`;
+  return `
+    <article class="deal">
+      <div class="score" aria-label="Score ${deal.score}">${deal.score}<small>score</small></div>
+      <div>
+        <div class="deal-head">
+          <h3>${title}</h3>
+          <span class="price">${money(deal.price)}</span>
+        </div>
+        <div class="deal-meta">${escapeHtml(deal.id)} · ${deal.age} dias em Engaging${agent}</div>
+        <div class="bar" role="img" aria-label="Valor ${deal.valuePts} pontos, Momento ${deal.timingPts} pontos">
+          <i class="value" style="width:${deal.valuePts}%"></i><i class="timing" style="width:${deal.timingPts}%"></i>
+        </div>
+        ${state.revealed ? outcomeChip(deal) : ""}
+      </div>
+    </article>`;
+}
+
+function replayVerdict(result) {
+  const difference = result.scoreRevenue - result.valueRevenue;
+  if (difference > 0) {
+    const percent = result.valueRevenue > 0 ? ` (${Math.round((difference / result.valueRevenue) * 100)}% a mais)` : "";
+    return `O score trouxe ${money(difference)} a mais que ordenar por valor${percent}.`;
+  }
+  if (difference < 0) {
+    return `Nesta segunda e nesta seleção, ordenar por valor venceu por ${money(-difference)}. Isso acontece em listas individuais; no total da operação, o score venceu nas ${DATA.backtest.mondays} segundas.`;
+  }
+  return "Nesta segunda e nesta seleção, as duas estratégias empataram.";
+}
+
+function viewTempo() {
+  if (REPLAY.length === 0) return `<div class="empty">Dados do replay não encontrados. Rode scoring/backtest.py.</div>`;
+  const monday = REPLAY[state.replayIndex];
+  const result = replaySelection(monday);
+  const options = REPLAY.map((item, index) => {
+    const label = new Date(`${item.date}T12:00:00`).toLocaleDateString("pt-BR");
+    return `<option value="${index}" ${index === state.replayIndex ? "selected" : ""}>${label} · semana ${item.week} do trimestre</option>`;
+  }).join("");
+  const controls = `
+    <p class="view-intro">Volte a uma segunda de 2017 e veja a lista que a ferramenta teria mostrado, usando só o que se sabia naquele dia. Depois, revele o que aconteceu nos ${DATA.backtest.horizon_days} dias seguintes.</p>
+    <div class="toolbar">
+      <label class="inline-label">Segunda-feira <select id="replay-date">${options}</select></label>
+      ${state.revealed ? "" : `<button class="action-button primary" data-action="reveal">Revelar o que aconteceu</button>`}
+    </div>`;
+  if (result.deals.length === 0) {
+    return controls + `<div class="empty">Sem deals vivos nesta seleção nesta segunda.</div>`;
+  }
+  const size = state.agent ? DATA.topK : TEAM_LIST_SIZE;
+  const shown = result.deals.slice(0, size);
+  const listTitle = state.agent
+    ? `Lista desta segunda`
+    : `Os ${shown.length} maiores scores da seleção (de ${count(result.deals.length)} nas listas dos vendedores)`;
+  const verdict = !state.revealed ? "" : `
+    <div class="tiles">
+      <div class="tile"><div class="label">Lista do score: receita em ${DATA.backtest.horizon_days} dias</div><div class="number">${money(result.scoreRevenue)}</div><div class="detail">${plural(result.scoreWins, "deal ganho", "deals ganhos")}</div></div>
+      <div class="tile"><div class="label">Lista por maior valor</div><div class="number">${money(result.valueRevenue)}</div><div class="detail">${plural(result.valueWins, "deal ganho", "deals ganhos")}</div></div>
+      <div class="tile"><div class="label">Ganho por todos os deals abertos</div><div class="number">${money(result.poolRevenue)}</div><div class="detail">Com ou sem lista, é o total possível</div></div>
+    </div>
+    <p class="verdict"><strong>${replayVerdict(result)}</strong> A comparação vale para o top ${DATA.topK} de cada vendedor da seleção. Ela mede se a lista aponta os deals certos, não se a atenção mudou o resultado.</p>`;
+  return controls + verdict + `<h2 class="section-title">${listTitle}</h2>` + shown.map(replayCard).join("");
+}
+
 function viewComo() {
   const backtest = DATA.backtest;
+  const pilotPlan = DATA.pilot;
   const order = ["score", "maior_valor", "mais_novo", "aleatorio", "mais_antigo"];
   const names = { score: "Score desta ferramenta", maior_valor: "Maior valor", mais_novo: "Mais novo primeiro", aleatorio: "Aleatório", mais_antigo: "Mais antigo primeiro" };
   const largest = backtest.all.score.revenue;
@@ -362,6 +516,17 @@ function viewComo() {
       <tbody>${calibrationRows}</tbody>
     </table></div>
 
+    <h2>Próximo passo: medir o ganho real</h2>
+    <p>Simulamos ${count(pilotPlan.placebo_splits)} divisões falsas dos ${pilotPlan.reps} vendedores ativos para saber o que um teste com grupo de controle conseguiria detectar, comparando cada pessoa com o próprio histórico:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Duração do teste</th><th>Menor ganho em vitórias</th><th>Menor ganho em receita</th></tr></thead>
+      <tbody>
+        <tr><td>Um mês</td><td>${pilotPlan.periods.um_mes_outubro.wins.adjusted_percent}%</td><td>${pilotPlan.periods.um_mes_outubro.revenue.adjusted_percent}%</td></tr>
+        <tr class="highlight"><td>Um trimestre completo</td><td>${pilotPlan.periods.um_trimestre_q4.wins.adjusted_percent}%</td><td>${pilotPlan.periods.um_trimestre_q4.revenue.adjusted_percent}%</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:8px">Um piloto de um mês não concluiria quase nada. O teste precisa durar um trimestre inteiro, com vitórias como métrica principal. Um ganho real menor que esses valores pode passar despercebido.</p>
+
     <h2>O que esta ferramenta não sabe</h2>
     <ul>
       <li><strong>Ela não prova aumento de vendas.</strong> O replay mostra que a lista aponta os deals que iam fechar, não que a atenção do vendedor muda o resultado. Medir isso exige um teste com grupo de controle.</li>
@@ -375,12 +540,16 @@ function viewComo() {
 }
 
 function renderView(sel) {
-  const views = { foco: viewFoco, decidir: viewDecidir, prospeccao: viewProspeccao, equipe: viewEquipe, como: viewComo };
+  const views = { foco: viewFoco, decidir: viewDecidir, prospeccao: viewProspeccao, equipe: viewEquipe, tempo: viewTempo, como: viewComo };
   document.getElementById("view").innerHTML = views[state.tab](sel);
 }
 
 function render() {
   const sel = selection();
+  // These summarize today's pipeline, which would clash with a past Monday.
+  const showToday = state.tab !== "tempo";
+  document.getElementById("briefing").hidden = !showToday;
+  document.getElementById("tiles").hidden = !showToday;
   renderFilters();
   renderBriefing(sel);
   renderTiles(sel);
@@ -389,7 +558,7 @@ function render() {
 }
 
 function changeFilter(update) {
-  Object.assign(state, update, { limit: PAGE_SIZE });
+  Object.assign(state, update, { limit: PAGE_SIZE, revealed: false });
   writeStorage(STORAGE_AGENT, state.agent);
   render();
 }
@@ -429,8 +598,27 @@ document.getElementById("tabs").addEventListener("click", (event) => {
   if (!button) return;
   state.tab = button.dataset.tab;
   state.limit = PAGE_SIZE;
+  state.revealed = false;
   render();
   document.querySelector(`[data-tab="${state.tab}"]`).focus();
+});
+
+document.getElementById("view").addEventListener("change", (event) => {
+  if (event.target.id !== "replay-date") return;
+  state.replayIndex = Number(event.target.value);
+  state.revealed = false;
+  renderView(selection());
+  document.getElementById("replay-date").focus();
+});
+
+document.getElementById("view").addEventListener("input", (event) => {
+  const field = event.target.dataset.calc;
+  if (!field) return;
+  const value = Number(event.target.value);
+  state.calculator[field] = Number.isFinite(value) && value >= 0 ? value : 0;
+  writeStorage(STORAGE_CALCULATOR, JSON.stringify(state.calculator));
+  // Only the result changes, so the input keeps focus while typing.
+  document.getElementById("calc-result").innerHTML = calculatorResult(selection());
 });
 
 document.getElementById("view").addEventListener("click", (event) => {
@@ -440,6 +628,9 @@ document.getElementById("view").addEventListener("click", (event) => {
     state.tab = target.dataset.go;
     state.limit = PAGE_SIZE;
     render();
+  } else if (target.dataset.action === "reveal") {
+    state.revealed = true;
+    renderView(selection());
   } else if (target.dataset.action === "more") {
     state.limit += PAGE_SIZE;
     renderView(selection());
