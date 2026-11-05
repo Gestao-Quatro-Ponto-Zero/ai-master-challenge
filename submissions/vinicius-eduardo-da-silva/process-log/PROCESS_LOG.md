@@ -29,10 +29,12 @@ Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius d
 4. **Primeiro replay** (`exploration/first_replay.py`). Reconstrução de segundas-feiras passadas, usando só o que se sabia em cada data.
 5. **Teste de variantes** (`exploration/variant_test.py`). Trimestre entrou; vendedor e produto ficaram de fora.
 6. **Cobertura por vendedor** (`exploration/rep_coverage.py`). A região Central inteira não tinha deal vivo, o que mudou o desenho da tela.
-7. **Interface e teste no navegador** (`exploration/ui_check.py`).
+7. **Interface e teste no navegador** (`solution/tests/ui_check.py`).
 8. **Revisão visual e correção do início de trimestre** (`exploration/quarter_start_check.py`).
 9. **Extras.** Vinicius perguntou se o enunciado estava atendido e se dava para ir além. O Claude apontou as fraquezas da entrega e propôs quatro ideias, e ele escolheu três.
 10. **Redesign.** Ao usar a página, Vinicius achou que ela estava simples demais e pediu algo mais visual, fácil de entender, de agir e de revisar. O Claude transformou a lista em uma mesa de trabalho: plano da semana em 3 passos, cartões com linha da vida do deal, botões Feito e Adiar, triagem da fila Decidir com atalhos de teclado, aba Revisar e visões por região. O score não mudou.
+11. **Auditoria final** (`exploration/final_audit.py`). Vinicius pediu para analisar se tudo funcionava e se a solução daria resultado. O Claude testou um clone limpo e tentou derrubar o ganho principal. O "+42%" era verdadeiro, mas parcial, e a mensagem principal mudou.
+12. **Prompt consolidado** ([`prompt-consolidado.md`](prompt-consolidado.md)). A pedido de Vinicius, escrito depois do trabalho para resumir o raciocínio. Não é o prompt usado no processo real.
 
 Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` roda na versão do commit `4a93295`, antes da troca de mês por semana.
 
@@ -50,6 +52,7 @@ Todos os itens abaixo foram detectados pelo próprio Claude Code, nos testes aut
 | Propus um piloto de 30 dias | Simulação de divisões falsas: um mês só detectaria ganhos acima de 61% em receita | Piloto de um trimestre, com deals ganhos como métrica principal |
 | Empates de preço seguiam a ordem do arquivo, que é por data | Revisão do código ao construir a Máquina do tempo | Desempate por ID e medição com empates sorteados: a vantagem ficou em 41–42% |
 | A Máquina do tempo mostrava números de janeiro de 2018 sobre uma lista de agosto de 2017 | Revisão da tela | Resumo oculto nessa aba |
+| O "+42%" era o resultado principal, contra uma referência fraca | Auditoria final: contra quem já ignora os parados, o ganho é de +21%, e de +8% em out–nov | Rival mais forte incluído no replay, na ferramenta e na mensagem principal |
 
 Um vazamento foi evitado antes de existir: "Conta em branco" entregaria, antes da revelação, que o deal nunca fechou. Por isso, a conta fica oculta até o clique, e um teste confere isso no navegador.
 
@@ -70,6 +73,7 @@ O `.gitignore` do desafio ignora `submissions/`, e o PR não pode alterar nada f
 | Valor × idade × mês do trimestre | US$ 313,4 mil | +39% |
 | Valor × idade × semana do trimestre (final) | US$ 318,7 mil | +42% |
 | Versão final, com desempate por ID | US$ 319,1 mil (referência: US$ 225,0 mil) | +42% |
+| Rival mais forte: maior valor, sem os parados | US$ 264,4 mil | Score à frente em +21% |
 
 ## O que eu adicionei
 

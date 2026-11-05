@@ -10,11 +10,22 @@
 
 ## Executive Summary
 
-Construí o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a cada vendedor onde focar e por quê. A análise mudou o problema: **82% dos deals em Engaging já passaram de 138 dias, a maior duração entre todos os deals encerrados**, e características como vendedor, produto e setor quase não preveem o fechamento. Por isso, o score combina valor com o momento do deal, os parados vão para uma triagem rápida, e tudo o que o vendedor marca fica disponível para revisar e exportar. Em 22 segundas-feiras passadas, ele trouxe **42% mais receita que ordenar por valor** e ficou à frente em todas. A principal recomendação é limpar o pipeline parado e confirmar com RevOps o que aconteceu na região Central.
+Construí o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a cada vendedor o que fazer na segunda de manhã e por quê. A análise mudou o problema: **82% dos deals em Engaging já passaram de 138 dias, a maior duração entre todos os deals encerrados**, e características como vendedor, produto e setor quase não preveem o fechamento. Por isso, os deals parados vão para uma triagem rápida, e os vivos recebem um score de valor e momento. Em 22 segundas-feiras passadas, a lista trouxe **42% mais receita que ordenar por valor e 21% mais que o rival mais forte**, que ordena por valor e já ignora os parados. A principal recomendação é limpar o pipeline parado, confirmar com RevOps o que aconteceu na região Central e medir o ganho real em um piloto de um trimestre.
 
-**Para testar:** abra [`solution/app/index.html`](solution/app/index.html) no navegador e escolha um vendedor, como Zane Levy ou Darcel Schlecht. Depois, abra a aba **Máquina do tempo**, escolha uma segunda de 2017 e clique em Revelar para conferir a lista contra o que aconteceu. Documentação técnica em [`solution/README.md`](solution/README.md) e plano de teste em [`docs/plano-piloto.md`](docs/plano-piloto.md).
+**Para testar:** abra [`solution/app/index.html`](solution/app/index.html) no navegador, com dois cliques, e siga este roteiro:
 
-![Lista de um vendedor](docs/screenshots/02-vendedor-foco.png)
+1. Escolha **Zane Levy** no filtro Vendedor e marque um deal como Feito.
+2. Abra **Decidir** e use os atalhos `V`, `E`, `P` e `U`.
+3. Abra **Máquina do tempo** e clique em **Revelar o que aconteceu**.
+
+![Minha semana de um vendedor](docs/screenshots/1-minha-semana.png)
+
+| Pasta | O que tem |
+|---|---|
+| [`solution/`](solution/README.md) | Ferramenta, score, replay, testes e documentação técnica |
+| [`docs/plano-piloto.md`](docs/plano-piloto.md) | Plano de teste para a Head de RevOps |
+| [`docs/screenshots/`](docs/screenshots/) | Telas da ferramenta |
+| [`process-log/`](process-log/PROCESS_LOG.md) | Como o trabalho aconteceu, prompt consolidado e scripts de cada etapa |
 
 ---
 
@@ -22,7 +33,7 @@ Construí o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a
 
 ### Abordagem
 
-Auditei os dados antes de desenhar o score e testei cada critério em segundas-feiras reconstruídas, usando só o que se sabia em cada data. Um critério só entrava se melhorasse a lista.
+Auditei os dados antes de desenhar o score e testei cada critério em segundas-feiras reconstruídas, usando só o que se sabia em cada data. Um critério só entrava se melhorasse a lista. No fim, tentei derrubar o próprio resultado, e isso mudou a mensagem principal.
 
 ### Resultados / Findings
 
@@ -39,11 +50,17 @@ Auditei os dados antes de desenhar o score e testei cada critério em segundas-f
 | Estratégia | Jul–set | Out–nov | Ganhos em 30 dias | Parados na lista (de ~300) |
 |---|---:|---:|---:|---:|
 | **Score** | **US$ 354.201** | **US$ 268.350** | **21,9%** | **0** |
+| Maior valor, sem os parados | US$ 275.462 | US$ 248.386 | 16,3% | 0 |
 | Maior valor | US$ 248.243 | US$ 191.465 | 13,4% | 53 |
 | Mais novo primeiro | US$ 111.280 | US$ 187.248 | 19,8% | 0 |
 | Aleatório | US$ 100.257 | US$ 84.045 | 13,1% | 52 |
 
-Ele ficou à frente de "maior valor" em 22 de 22 segundas, e em 5 de 5 ao considerar só segundas cujas janelas de 30 dias não se sobrepõem. Com empates sorteados, a vantagem fica em 41%, contra 42% com desempate por ID.
+**De onde vem o ganho:**
+
+- **Tirar os deals parados** rende +17,5% sobre ordenar por valor. É o ganho mais sólido.
+- **O momento do deal** acrescenta +21%: à frente em 19 de 22 segundas e para 26 dos 30 vendedores. Mas é desigual: +29% em jul–set e **só +8% em out–nov**.
+- **Não depende de deals gigantes:** sem o produto mais caro, a vantagem fica em +23,5%.
+- **A lista curta rende mais:** contra o mesmo rival, o ganho é de +32% no top 5 e +11% no top 20.
 
 **Outros achados:**
 
@@ -54,24 +71,25 @@ Ele ficou à frente de "maior valor" em 22 de 22 segundas, e em 5 de 5 ao consid
 ### Recomendações
 
 1. **Esta semana, RevOps:** perguntar à Central o que ocorreu em julho de 2017 e se o efeito de trimestre é processo comercial, como metas e revisão de pipeline.
-2. **Nas próximas duas semanas, vendedores:** passar pela fila Decidir, começando pelos deals de maior valor. O pipeline real só fica claro depois disso.
+2. **Nas próximas duas semanas, vendedores:** passar pela fila Decidir, começando pelos deals de maior valor. É o ganho mais sólido e o que deixa o pipeline real claro.
 3. **Depois, RevOps:** tornar a conta obrigatória em Engaging, pois ela falta em 68% dos deals abertos.
 4. **Antes de escalar:** rodar um teste com grupo de controle por um trimestre completo. Com 30 vendedores, um mês só detectaria ganhos acima de 42% em deals ganhos; um trimestre detecta cerca de 17%. Detalhes em [`docs/plano-piloto.md`](docs/plano-piloto.md).
 
 ### Limitações
 
 - O replay mostra que a lista aponta os deals que iam fechar, não que a atenção muda o resultado.
+- O ganho do momento é incerto e caiu para +8% em out–nov. Ele também se apoia em poucos trimestres e pode ser efeito do dataset.
 - Ordenar pelo mais novo ganhou mais deals em out–nov (26% contra 19%). O score otimiza receita, não contagem de vitórias.
 - O modelo superestima chances altas, por isso os cartões mostram a taxa observada.
-- O efeito de trimestre se apoia em no máximo três trimestres e pode ser efeito do dataset.
 - Passar de 138 dias não prova que o deal morreu, então a decisão fica com o vendedor.
 - O CRM não registra atividade, e deals em Prospecting não têm data nem score.
+- Os minutos da calculadora de tempo são premissas, não dados.
 
 ---
 
 ## Process Log — Como usei IA
 
-Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md), com os scripts de cada etapa em [`process-log/exploration/`](process-log/exploration/).
+Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md). O raciocínio também está resumido em [`process-log/prompt-consolidado.md`](process-log/prompt-consolidado.md), escrito depois do trabalho.
 
 ### Ferramentas usadas
 
@@ -86,11 +104,16 @@ Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md),
 3. Teste de sinais com validação temporal, que derrubou o plano de score baseado em vendedor e produto
 4. Replay de segundas passadas, para decidir cada critério com evidência
 5. Interface, testes no navegador e correções
-6. Documentação e submissão
+6. Extras e redesign, depois que usei a ferramenta e pedi algo mais fácil de entender e de usar
+7. Auditoria final para tentar derrubar o resultado, que trouxe o rival mais forte para a mensagem principal
+8. Documentação e submissão
 
 ### Onde a IA errou e como corrigi
 
-Os erros estão detalhados no process log. O mais sério: a ferramenta mostrava cerca de 14% de chance para um deal de 67 dias em 1º de janeiro, quando o histórico indicava 0–2,6%. O ranking estava bom no replay, então os testes não acusaram; o problema apareceu na revisão da tela.
+Os erros estão detalhados no process log, com a forma como cada um apareceu. Dois exemplos:
+
+- **Chance errada na tela:** a ferramenta mostrava cerca de 14% de chance para um deal de 67 dias em 1º de janeiro, quando o histórico indicava 0–2,6%. O ranking estava bom no replay, então os testes não acusaram; o problema apareceu na revisão da tela.
+- **Referência fraca:** o "+42%" era apresentado como resultado principal. A auditoria final mostrou que, contra um rival que já ignora os deals parados, o ganho é de +21%, e de +8% em out–nov.
 
 ### O que eu adicionei que a IA sozinha não faria
 

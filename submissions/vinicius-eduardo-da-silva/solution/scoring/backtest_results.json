@@ -17,6 +17,13 @@
       "stale": 53.1364,
       "win_rate": 0.1342
     },
+    "maior_valor_sem_parados": {
+      "revenue": 264385.9091,
+      "wins": 48.7273,
+      "listed": 299.8636,
+      "stale": 0.0,
+      "win_rate": 0.1625
+    },
     "mais_antigo": {
       "revenue": 82936.7273,
       "wins": 38.7727,
@@ -53,6 +60,13 @@
       "listed": 300.0,
       "stale": 40.6154,
       "win_rate": 0.1446
+    },
+    "maior_valor_sem_parados": {
+      "revenue": 275462.4615,
+      "wins": 49.3077,
+      "listed": 300.0,
+      "stale": 0.0,
+      "win_rate": 0.1644
     },
     "mais_antigo": {
       "revenue": 119035.3077,
@@ -91,6 +105,13 @@
       "stale": 71.2222,
       "win_rate": 0.119
     },
+    "maior_valor_sem_parados": {
+      "revenue": 248386.4444,
+      "wins": 47.8889,
+      "listed": 299.6667,
+      "stale": 0.0,
+      "win_rate": 0.1598
+    },
     "mais_antigo": {
       "revenue": 30794.3333,
       "wins": 11.3333,
@@ -119,6 +140,13 @@
     "independent_mondays": 5,
     "independent_better": 5,
     "independent_mean_gain": 94056
+  },
+  "score_vs_live_value": {
+    "mean_gain": 54694,
+    "better_mondays": 19,
+    "independent_mondays": 5,
+    "independent_better": 5,
+    "independent_mean_gain": 61329
   },
   "random_tie_break_revenue": {
     "score": 318562,

@@ -16,6 +16,12 @@ cd scoring
 ../.venv/Scripts/python build_app_data.py        # gera ../app/data.js
 ```
 
+**Para rodar o teste no navegador,** que exige Microsoft Edge e `pip install playwright`, a partir de `solution/`:
+
+```bash
+.venv/Scripts/python tests/ui_check.py app/index.html ../docs/screenshots
+```
+
 Testado com Python 3.12 no Windows e com o navegador Edge.
 
 ## Organização
@@ -28,6 +34,7 @@ Testado com Python 3.12 no Windows e com o navegador Edge.
 | `scoring/pilot_plan.py` | Menor ganho que um teste com grupo de controle conseguiria detectar |
 | `scoring/build_app_data.py` | Gera os dados da interface |
 | `scoring/test_lead_scorer.py` | Testes, incluindo um contra vazamento de dados futuros |
+| `tests/ui_check.py` | Teste da página em um navegador real: fluxos, casos vazios e celular |
 | `data/` | CSVs originais do Kaggle (licença CC0) |
 
 ## Lógica do score

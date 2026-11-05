@@ -5,7 +5,9 @@
 
 ## Por que testar
 
-O replay mostrou que a lista aponta melhor os deals que iam fechar: 42% mais receita que ordenar por valor. Isso não prova que a atenção do vendedor muda o resultado, já que muitos desses deals talvez fechassem de qualquer forma. Só um teste responde a isso.
+O replay mostrou que a lista aponta melhor os deals que iam fechar: 42% mais receita que ordenar por valor e 21% mais que ordenar por valor já sem os deals parados. Esse segundo ganho é desigual: foi de 29% em jul–set e de 8% em out–nov.
+
+Isso não prova que a atenção do vendedor muda o resultado, já que muitos desses deals talvez fechassem de qualquer forma. Só um teste responde a isso.
 
 ## O desenho
 

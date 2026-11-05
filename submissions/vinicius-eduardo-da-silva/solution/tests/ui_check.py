@@ -1,5 +1,7 @@
 """Drive the real page in a browser, check behavior, and save screenshots.
 
+Needs Playwright and Microsoft Edge: pip install playwright
+
 Usage: python ui_check.py <path to index.html> <screenshot dir>
 """
 import csv
@@ -34,7 +36,6 @@ with sync_playwright() as p:
     page.goto(page_url)
     page.wait_for_selector(".deal")
     check("team counts", [nav_count(page, t) for t in ("foco", "decidir", "prospeccao")] == ["288", "1.301", "500"])
-    page.screenshot(path=shots / "01-visao-geral.png")
 
     # A rep's week
     page.select_option("#filter-agent", "Zane Levy")
@@ -43,8 +44,7 @@ with sync_playwright() as p:
     scores = [int(s) for s in page.locator(".ring span").all_inner_texts()]
     check("scores sorted", scores == sorted(scores, reverse=True), str(scores[:10]))
     check("plan has three steps", page.locator(".step").count() == 3)
-    page.screenshot(path=shots / "02-vendedor-foco.png")
-    page.screenshot(path=shots / "02b-vendedor-foco-inteira.png", full_page=True, clip={"x": 0, "y": 0, "width": 1360, "height": 1500})
+    page.screenshot(path=shots / "1-minha-semana.png")
 
     page.locator(".why summary").first.click()
     check("score explanation opens", "Momento" in page.locator(".why-body").first.inner_text())
@@ -60,7 +60,7 @@ with sync_playwright() as p:
     # Review
     page.click('[data-tab="revisar"]')
     check("review shows done and postponed", "Feitos nesta semana" in page.locator("#view").inner_text() and "Adiados" in page.locator("#view").inner_text())
-    page.screenshot(path=shots / "04b-revisar.png")
+    page.screenshot(path=shots / "3-revisar.png")
     page.locator("[data-undo-focus]").first.click()
     check("undo works in review", nav_count(page, "revisar") == "1")
 
@@ -73,7 +73,6 @@ with sync_playwright() as p:
     check("manager filter cascades", set(managers) == {"Todos", "Dustin Brinkmann", "Melvin Marxen"}, str(managers))
     page.select_option("#filter-agent", "Darcel Schlecht")
     check("empty rep gets guidance", "nenhum deal vivo" in page.locator("#briefing").inner_text())
-    page.screenshot(path=shots / "03-vendedor-sem-deal-vivo.png")
 
     # Triage
     page.click('[data-tab="decidir"]')
@@ -89,7 +88,7 @@ with sync_playwright() as p:
     before = page.locator(".triage h2").inner_text()
     page.keyboard.press("p")
     check("skip shows another deal", page.locator(".triage h2").inner_text() != before or "2 de 83" in page.locator("#decision-progress").inner_text())
-    page.screenshot(path=shots / "04-fila-decidir.png")
+    page.screenshot(path=shots / "2-decidir.png")
     with page.expect_download() as download_info:
         page.click('[data-action="export"]')
     exported = Path(download_info.value.path()).read_text(encoding="utf-8-sig")
@@ -111,7 +110,7 @@ with sync_playwright() as p:
     check("team table has 35 people", page.locator("tbody tr").count() == 35, str(page.locator("tbody tr").count()))
     check("three region cards", page.locator(".region").count() == 3)
     check("central flagged", "Sem deal vivo" in page.locator(".region", has_text="Central").inner_text())
-    page.screenshot(path=shots / "05-equipe.png")
+    page.screenshot(path=shots / "4-equipe.png")
     page.click('[data-tab="foco"]')
     page.select_option("#filter-agent", "Donn Cantrell")
     check("rep with no open deals", "nenhum deal aberto" in page.locator("#briefing").inner_text())
@@ -131,7 +130,6 @@ with sync_playwright() as p:
 
     # Time machine: nothing about the outcome may show before the reveal.
     page.click('[data-tab="tempo"]')
-    page.screenshot(path=shots / "08-maquina-do-tempo-antes.png")
     text = page.locator("#view").inner_text()
     check("no outcome before reveal", not any(w in text for w in ["Ganho:", "Perdido em", "Seguia aberto", "Conta em branco", "à frente"]))
     check("no strip before reveal", page.locator(".strip").count() == 0)
@@ -139,7 +137,7 @@ with sync_playwright() as p:
     text = page.locator("#view").inner_text()
     check("reveal shows outcomes", "Ganho:" in text and "Lista por maior valor" in text)
     check("strip has all Mondays", page.locator(".strip-col").count() == 22)
-    page.screenshot(path=shots / "09-maquina-do-tempo-depois.png", full_page=True, clip={"x": 0, "y": 0, "width": 1360, "height": 1000})
+    page.screenshot(path=shots / "5-maquina-do-tempo.png", full_page=True, clip={"x": 0, "y": 0, "width": 1360, "height": 1000})
     page.locator(".strip-col").nth(3).hover()
     check("strip tooltip", "à frente" in page.locator("#tooltip").inner_text())
     page.locator(".strip-col").nth(3).click()
@@ -155,12 +153,14 @@ with sync_playwright() as p:
           return {
             score: sum((entry) => entry.deals.reduce((part, row) => part + row[9], 0)),
             value: sum((entry) => entry.valueRevenue),
+            live: sum((entry) => entry.liveValueRevenue),
             official: window.LEAD_DATA.backtest.all,
           };
         }"""
     )
     check("machine matches official score result", round(totals["score"]) == round(totals["official"]["score"]["revenue"]))
     check("machine matches official value result", round(totals["value"]) == round(totals["official"]["maior_valor"]["revenue"]))
+    check("machine matches official rival result", round(totals["live"]) == round(totals["official"]["maior_valor_sem_parados"]["revenue"]))
 
     page.select_option("#filter-agent", "Zane Levy")
     page.select_option("#replay-date", index=5)
@@ -174,7 +174,7 @@ with sync_playwright() as p:
     page.click('[data-tab="como"]')
     check("pilot section shows numbers", "Um trimestre completo" in page.locator("#view").inner_text())
     check("age curve drawn", page.locator(".curve-col").count() == 10, str(page.locator(".curve-col").count()))
-    page.screenshot(path=shots / "06-como-funciona.png", full_page=True)
+    page.screenshot(path=shots / "6-como-funciona.png", full_page=True)
 
     mobile = browser.new_context(viewport={"width": 390, "height": 844}, color_scheme="dark").new_page()
     mobile.on("pageerror", lambda e: errors.append(str(e)))
@@ -186,13 +186,6 @@ with sync_playwright() as p:
         overflow = mobile.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
         check(f"no horizontal scroll on phone: {tab}", overflow <= 0, str(overflow))
     mobile.click('[data-tab="foco"]')
-    mobile.screenshot(path=shots / "07-celular-escuro.png", full_page=True, clip={"x": 0, "y": 0, "width": 390, "height": 1500})
-
-    dark = browser.new_context(viewport={"width": 1360, "height": 900}, color_scheme="dark").new_page()
-    dark.goto(page_url)
-    dark.wait_for_selector(".deal")
-    dark.select_option("#filter-agent", "Zane Levy")
-    dark.screenshot(path=shots / "10-tema-escuro.png")
 
     check("no console errors", not errors, str(errors[:3]))
     browser.close()

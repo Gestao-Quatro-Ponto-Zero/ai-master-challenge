@@ -748,6 +748,7 @@ function replaySelection(monday) {
     stillOpen: deals.filter((deal) => deal.outcome === "open").length,
     valueRevenue: sum((entry) => entry.valueRevenue),
     valueWins: sum((entry) => entry.valueWins),
+    liveValueRevenue: sum((entry) => entry.liveValueRevenue),
     poolRevenue: sum((entry) => entry.poolRevenue),
   };
 }
@@ -778,13 +779,14 @@ function replayCard(deal) {
 }
 
 function replayVerdict(result) {
-  const difference = result.scoreRevenue - result.valueRevenue;
+  const difference = result.scoreRevenue - result.liveValueRevenue;
   if (difference > 0) {
-    const percent = result.valueRevenue > 0 ? ` (${Math.round((difference / result.valueRevenue) * 100)}% a mais)` : "";
-    return `O score trouxe ${money(difference)} a mais que ordenar por valor${percent}.`;
+    const percent = result.liveValueRevenue > 0 ? ` (${Math.round((difference / result.liveValueRevenue) * 100)}% a mais)` : "";
+    return `O score trouxe ${money(difference)} a mais que ordenar por valor sem os parados${percent}.`;
   }
   if (difference < 0) {
-    return `Nesta segunda e nesta seleção, ordenar por valor venceu por ${money(-difference)}. Isso acontece em listas individuais; no total da operação, o score venceu nas ${DATA.backtest.mondays} segundas.`;
+    const { better_mondays: better } = DATA.backtest.score_vs_live_value;
+    return `Nesta segunda e nesta seleção, ordenar por valor sem os parados venceu por ${money(-difference)}. No total da operação, o score venceu em ${better} das ${DATA.backtest.mondays} segundas.`;
   }
   return "Nesta segunda e nesta seleção, as duas estratégias empataram.";
 }
@@ -792,7 +794,7 @@ function replayVerdict(result) {
 function mondayStrip() {
   const differences = REPLAY.map((monday) => {
     const result = replaySelection(monday);
-    return result.scoreRevenue - result.valueRevenue;
+    return result.scoreRevenue - result.liveValueRevenue;
   });
   // The zero line moves so the strip has no empty half when one side never wins.
   const largestUp = Math.max(0, ...differences);
@@ -803,7 +805,7 @@ function mondayStrip() {
     const difference = differences[index];
     const height = (Math.abs(difference) / span) * 100;
     const direction = difference >= 0 ? "up" : "down";
-    const tip = `${shortDate(monday.date)}: ${difference >= 0 ? "score à frente" : "maior valor à frente"} por ${money(Math.abs(difference))}`;
+    const tip = `${shortDate(monday.date)}: ${difference >= 0 ? "score à frente" : "valor sem parados à frente"} por ${money(Math.abs(difference))}`;
     return `<button class="strip-col ${index === state.replayIndex ? "current" : ""}" data-replay="${index}" aria-label="${tip}" data-tip="${tip}">
       <i class="${direction}" style="height:${height}%"></i>
     </button>`;
@@ -811,25 +813,26 @@ function mondayStrip() {
   const wins = differences.filter((difference) => difference > 0).length;
   return `
     <section class="card">
-      <h2>Todas as segundas: score contra maior valor</h2>
-      <p class="muted">Acima da linha, o score ganhou. Abaixo, maior valor ganhou. O score ficou à frente em ${wins} de ${differences.length}. Clique para abrir outra segunda.</p>
+      <h2>Todas as segundas: score contra o rival mais forte</h2>
+      <p class="muted">O rival ordena por maior valor e já ignora os deals parados. Acima da linha, o score ganhou; abaixo, o rival ganhou. O score ficou à frente em ${wins} de ${differences.length}. Clique para abrir outra segunda.</p>
       <div class="strip" style="--zero:${zero}%">${columns}</div>
       <div class="strip-note"><span>${shortDate(REPLAY[0].date)}</span><span>${shortDate(REPLAY[REPLAY.length - 1].date)}</span></div>
     </section>`;
 }
 
 function comparisonBars(result) {
-  const largest = Math.max(1, result.poolRevenue, result.scoreRevenue, result.valueRevenue);
-  const bar = (label, value, detail, highlight) => `
+  const largest = Math.max(1, result.poolRevenue, result.scoreRevenue, result.valueRevenue, result.liveValueRevenue);
+  const bar = (label, value, highlight) => `
     <div class="bar-row ${highlight ? "highlight" : ""}">
       <span>${label}</span>
       <span class="bar-track"><i style="width:${(value / largest) * 100}%"></i></span>
       <span class="amount">${compactMoney(value)}</span>
-    </div>${detail ? "" : ""}`;
+    </div>`;
   return `<div class="bars">
-    ${bar("Lista do score", result.scoreRevenue, "", true)}
-    ${bar("Lista por maior valor", result.valueRevenue, "", false)}
-    ${bar("Todos os deals abertos", result.poolRevenue, "", false)}
+    ${bar("Lista do score", result.scoreRevenue, true)}
+    ${bar("Valor, sem os parados", result.liveValueRevenue, false)}
+    ${bar("Lista por maior valor", result.valueRevenue, false)}
+    ${bar("Todos os deals abertos", result.poolRevenue, false)}
   </div>`;
 }
 
@@ -890,8 +893,8 @@ function ageCurveChart() {
 function viewComo() {
   const backtest = DATA.backtest;
   const pilotPlan = DATA.pilot;
-  const order = ["score", "maior_valor", "mais_novo", "aleatorio", "mais_antigo"];
-  const names = { score: "Score desta ferramenta", maior_valor: "Maior valor", mais_novo: "Mais novo primeiro", aleatorio: "Aleatório", mais_antigo: "Mais antigo primeiro" };
+  const order = ["score", "maior_valor_sem_parados", "maior_valor", "mais_novo", "aleatorio", "mais_antigo"];
+  const names = { score: "Score desta ferramenta", maior_valor_sem_parados: "Maior valor, sem os parados", maior_valor: "Maior valor", mais_novo: "Mais novo primeiro", aleatorio: "Aleatório", mais_antigo: "Mais antigo primeiro" };
   const largest = backtest.all.score.revenue;
   const bars = order.map((key) => `
     <div class="bar-row ${key === "score" ? "highlight" : ""}">
@@ -911,7 +914,11 @@ function viewComo() {
   const calibrationRows = backtest.calibration.map((band) => `
     <tr><td>${escapeHtml(band.band)}</td><td>${count(band.deals)}</td><td>${percent(band.previsto)}</td><td>${percent(band.real)}</td></tr>`).join("");
   const comparison = backtest.score_vs_value;
-  const gain = Math.round((backtest.all.score.revenue / backtest.all.maior_valor.revenue - 1) * 100);
+  const gainOver = (period, rival) => Math.round((backtest[period].score.revenue / backtest[period][rival].revenue - 1) * 100);
+  const gain = gainOver("all", "maior_valor");
+  const liveGain = gainOver("all", "maior_valor_sem_parados");
+  const liveHoldoutGain = gainOver("holdout_oct_nov", "maior_valor_sem_parados");
+  const liveBetter = backtest.score_vs_live_value.better_mondays;
 
   return `<div class="explain">
     <h1 style="margin-bottom:12px">Como funciona</h1>
@@ -931,7 +938,8 @@ function viewComo() {
 
     <h2>Isso funciona?</h2>
     <p>Reconstruímos ${backtest.mondays} segundas-feiras, de julho a novembro de 2017. Em cada uma, montamos o top ${backtest.top_k} de cada vendedor usando só o que se sabia naquele dia e medimos a receita ganha nos ${backtest.horizon_days} dias seguintes.</p>
-    <p><strong>O score trouxe ${gain}% mais receita do que ordenar por valor e ficou à frente em ${comparison.better_mondays} das ${backtest.mondays} segundas.</strong> Confira segunda a segunda na Máquina do tempo.</p>
+    <p><strong>O score trouxe ${gain}% mais receita do que ordenar por valor e ficou à frente em ${comparison.better_mondays} das ${backtest.mondays} segundas.</strong> Mas boa parte disso vem só de tirar os deals parados da lista.</p>
+    <p><strong>Contra o rival mais forte, que ordena por valor e já ignora os parados, o ganho é de ${liveGain}%</strong>, à frente em ${liveBetter} das ${backtest.mondays} segundas. E ele é desigual: em outubro e novembro, caiu para ${liveHoldoutGain}%. Limpar o pipeline é o ganho mais sólido; o momento agrega, com menos certeza. Confira segunda a segunda na Máquina do tempo.</p>
     <div class="bars" aria-hidden="true">${bars}</div>
     <div class="table-wrap"><table>
       <caption>Receita média por segunda no top ${backtest.top_k} de cada vendedor</caption>

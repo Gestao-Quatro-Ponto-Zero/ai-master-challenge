@@ -97,6 +97,14 @@ def test_tied_deals_do_not_depend_on_file_order(deals):
     assert set(first["opportunity_id"]) == set(second["opportunity_id"])
 
 
+def test_live_value_rival_never_prefers_a_stale_deal(deals):
+    snapshot, rates = backtest.monday_snapshot(deals, pd.Timestamp("2017-08-07"))
+    rival = backtest.strategy_scores(snapshot, rates.max_cycle)["maior_valor_sem_parados"]
+    stale = snapshot["age"].to_numpy() > rates.max_cycle
+    assert (rival[stale] == 0).all()
+    assert (rival[~stale] > 0).all()
+
+
 def test_time_machine_outcomes_only_cover_the_30_day_window(deals):
     monday = pd.Timestamp("2017-08-07")
     snapshot, _ = backtest.monday_snapshot(deals, monday)

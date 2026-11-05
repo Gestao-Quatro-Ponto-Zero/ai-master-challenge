@@ -63,10 +63,13 @@ def outcome_summary(top: pd.DataFrame, max_cycle: int) -> dict:
     }
 
 
-def strategy_scores(snapshot: pd.DataFrame) -> dict[str, np.ndarray]:
+def strategy_scores(snapshot: pd.DataFrame, max_cycle: int) -> dict[str, np.ndarray]:
+    price = snapshot["sales_price"].to_numpy()
     return {
         "score": ls.ranking_value(snapshot["probability"], snapshot["sales_price"]),
-        "maior_valor": snapshot["sales_price"].to_numpy(),
+        "maior_valor": price,
+        # The strongest simple rival: a rep who already ignores stale deals.
+        "maior_valor_sem_parados": np.where(snapshot["age"].to_numpy() <= max_cycle, price, 0),
         "mais_novo": -snapshot["age"].to_numpy(),
         "mais_antigo": snapshot["age"].to_numpy(),
     }
@@ -80,7 +83,7 @@ def replay(deals: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, list[dict],
     rng = np.random.default_rng(0)
     for monday in pd.date_range(FIRST_MONDAY, LAST_MONDAY, freq="W-MON"):
         snapshot, rates = monday_snapshot(deals, monday)
-        scores = strategy_scores(snapshot)
+        scores = strategy_scores(snapshot, rates.max_cycle)
         for name, score in scores.items():
             rows.append({"monday": monday, "strategy": name, **outcome_summary(top_k(snapshot, score), rates.max_cycle)})
         for name in tie_checks:
@@ -100,6 +103,7 @@ def time_machine_entry(deals: pd.DataFrame, monday: pd.Timestamp, snapshot: pd.D
     price_min, price_max = float(deals["sales_price"].min()), float(deals["sales_price"].max())
     score_top = top_k(snapshot, scores["score"])
     value_top = top_k(snapshot, scores["maior_valor"])
+    live_value_top = top_k(snapshot, scores["maior_valor_sem_parados"])
     agents = {}
     for agent, group in score_top.groupby("sales_agent", sort=False):
         rows = []
@@ -126,6 +130,7 @@ def time_machine_entry(deals: pd.DataFrame, monday: pd.Timestamp, snapshot: pd.D
             "deals": rows,
             "valueRevenue": int(rep_value["realized"].sum()),
             "valueWins": int(rep_value["won_window"].sum()),
+            "liveValueRevenue": int(live_value_top[live_value_top["sales_agent"] == agent]["realized"].sum()),
             "poolRevenue": int(rep_pool["realized"].sum()),
         }
     return {"date": monday.strftime("%Y-%m-%d"), "week": ls.quarter_week(monday), "agents": agents}
@@ -138,10 +143,19 @@ def summarize(results: pd.DataFrame, calibration: pd.DataFrame, tie_means: dict)
         return grouped.round(4).to_dict("index")
 
     wide = results.pivot(index="monday", columns="strategy", values="revenue")
-    diff = wide["score"] - wide["maior_valor"]
-    # Consecutive Mondays share most of their 30-day window, so a stricter check
-    # keeps only Mondays whose windows do not overlap.
-    independent = diff.iloc[::5]
+
+    def comparison(rival: str) -> dict:
+        diff = wide["score"] - wide[rival]
+        # Consecutive Mondays share most of their 30-day window, so a stricter
+        # check keeps only Mondays whose windows do not overlap.
+        independent = diff.iloc[::5]
+        return {
+            "mean_gain": round(float(diff.mean())),
+            "better_mondays": int((diff > 0).sum()),
+            "independent_mondays": len(independent),
+            "independent_better": int((independent > 0).sum()),
+            "independent_mean_gain": round(float(independent.mean())),
+        }
 
     live = calibration[calibration["probability"] > 0].copy()
     live["band"] = pd.cut(live["probability"], [0, 0.05, 0.1, 0.2, 0.3, 1], labels=["até 5%", "5–10%", "10–20%", "20–30%", "acima de 30%"])
@@ -154,13 +168,8 @@ def summarize(results: pd.DataFrame, calibration: pd.DataFrame, tie_means: dict)
         "all": table(results),
         "selection_jul_sep": table(results[results["monday"] < HOLDOUT_START]),
         "holdout_oct_nov": table(results[results["monday"] >= HOLDOUT_START]),
-        "score_vs_value": {
-            "mean_gain": round(float(diff.mean())),
-            "better_mondays": int((diff > 0).sum()),
-            "independent_mondays": len(independent),
-            "independent_better": int((independent > 0).sum()),
-            "independent_mean_gain": round(float(independent.mean())),
-        },
+        "score_vs_value": comparison("maior_valor"),
+        "score_vs_live_value": comparison("maior_valor_sem_parados"),
         "random_tie_break_revenue": tie_means,
         "calibration": bands.round(4).reset_index().to_dict("records"),
     }
