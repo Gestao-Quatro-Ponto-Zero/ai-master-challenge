@@ -93,6 +93,17 @@
    "horas_total_ano": 470,
    "exposicoes_sensiveis_ano": 81,
    "horas_poupadas_vs_hoje": 921
+  },
+  {
+   "politica": "P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)",
+   "cenario": "base",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 546,
+   "horas_transferencia_ano": 333,
+   "horas_total_ano": 880,
+   "exposicoes_sensiveis_ano": 81,
+   "horas_poupadas_vs_hoje": 511
   }
  ],
  "sensibilidade": [
@@ -274,6 +285,36 @@
    "horas_triagem_ano": 273,
    "horas_transferencia_ano": 667,
    "horas_total_ano": 940,
+   "exposicoes_sensiveis_ano": 81
+  },
+  {
+   "politica": "P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)",
+   "cenario": "baixo",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 273,
+   "horas_transferencia_ano": 178,
+   "horas_total_ano": 451,
+   "exposicoes_sensiveis_ano": 81
+  },
+  {
+   "politica": "P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)",
+   "cenario": "base",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 546,
+   "horas_transferencia_ano": 333,
+   "horas_total_ano": 880,
+   "exposicoes_sensiveis_ano": 81
+  },
+  {
+   "politica": "P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)",
+   "cenario": "alto",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 1093,
+   "horas_transferencia_ano": 667,
+   "horas_total_ano": 1759,
    "exposicoes_sensiveis_ano": 81
   }
  ],

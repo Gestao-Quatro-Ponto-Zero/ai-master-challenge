@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** Gustavo Paraguassu
-- **LinkedIn:** _(a preencher)_
+- **LinkedIn:** https://www.linkedin.com/in/guscfpara/
 - **Challenge escolhido:** 002 — Redesign de Suporte
 
 ---
@@ -21,9 +21,9 @@ Construí um assistente que **roda de verdade no Telegram**, com o cliente no pr
 
 O roteamento só é automático quando a fila passa de 95% de acerto medido. **Nenhuma resposta de mérito sai sem um atendente**, e RH e permissão de administrador nunca são roteados sozinhos.
 
-No cenário base (premissas declaradas), isso reduz triagem e retrabalho de ~1.390 para ~470 horas por ano. Automatizar tudo daria menos horas no papel, mas 2,7 vezes mais transferências e ~2.300 chamados sensíveis por ano na fila errada.
+No cenário base (premissas declaradas), triagem e retrabalho caem de ~1.390 para 470 a 880 horas por ano. O valor depende de a sugestão acelerar ou não a triagem. Somam-se ~160 h/ano por o atendente não digitar a resposta. Automatizar tudo daria menos horas no papel, mas 2,7 vezes mais transferências e ~2.300 chamados sensíveis por ano na fila errada.
 
-**Recomendação:** piloto de 4 semanas com o assistente sugerindo e o humano decidindo, medido pelas métricas que o próprio bot já registra.
+**Recomendação:** piloto de 4 semanas com o assistente sugerindo e o humano decidindo, medido pelas métricas que o próprio bot já registra. Critérios de seguir e parar estão no [memo de 1 página para o Diretor](docs/memo-diretor.md).
 
 ---
 
@@ -66,8 +66,11 @@ Há também a assinatura de gerador aleatório: 0 de 21 pares de variáveis asso
 | P3 Limiar por fila (meta 95%) | 73,2% | 1.472 | 636 | 564 |
 | P4 = P3 + RH e admin sempre com humano | 54,2% | 1.486 | 486 | 282 |
 | **P5 = P4 + trava de sensibilidade** | **45,4%** | **1.334** | **470** | **81** |
+| P5c = P5, se a sugestão não acelerar a triagem (conservador) | 45,4% | 1.334 | 880 | 81 |
 
-As premissas são rotuladas e têm faixa: 2 min de triagem manual (1 a 4), 0,5 min confirmando uma sugestão (0,3 a 1) e 15 min por transferência (8 a 30). Na faixa baixa–alta, a P5 fica entre 260 e 940 h/ano, contra 708 a 2.782 h/ano hoje. Os dois tempos de triagem são medidos no teste com colegas.
+As premissas são rotuladas e têm faixa: 2 min de triagem manual (1 a 4), 0,5 min confirmando uma sugestão (0,3 a 1) e 15 min por transferência (8 a 30). Na faixa baixa–alta, a P5 fica entre 260 e 940 h/ano, contra 708 a 2.782 h/ano hoje.
+
+**A P5c existe por um achado contra mim:** a estimativa KLM (item 5) indica que ler o card para decidir *só a fila* não é mais rápido que ler a mensagem crua. Por isso a faixa honesta de economia é **510 a 920 h/ano**.
 
 #### 3. O que automatizar, o que só sugerir e o que nunca automatizar
 
@@ -126,24 +129,38 @@ O núcleo ([engine.py](solution/app/engine.py)) não sabe que existe Telegram, e
 
 Com o português cai a **cobertura**, não a **qualidade**: a política protege contra a mudança de entrada. O Opus não melhora o resultado e custa 40 vezes mais.
 
-**Teste com pessoas:** o [protocolo](solution/experiment/PROTOCOLO.md) tem 16 chamados por pessoa, 8 com e 8 sem assistente, contrabalanceados. Ele mede tempo, acerto de fila e **viés de automação** (se o atendente corrige a IA quando ela erra). _Resultados: em andamento._
+**Teste com pessoas: não foi feito.** A minha rodada no bot foi só um teste técnico ([D12](process-log/02-decisoes.md)). Pedi à IA para emular o teste, e ela recusou: tempo e viés de automação de pessoas não saem de um modelo, e simular seria evidência inventada. No lugar, fizemos uma **estimativa por KLM** (Keystroke-Level Model, método clássico de UX que soma tempos-padrão de ler, decidir, tocar e digitar) sobre os 160 chamados, com o card exatamente como o bot mostra ([estimativa_klm.py](solution/experiment/estimativa_klm.py)):
+
+| Estimativa, não medição: mediana (faixa) | SEM assistente | COM assistente | Diferença |
+|---|---|---|---|
+| Atendimento completo (fila + resposta) | 50 s (27–120) | 31 s (22–60) | **−38%** (−16% a −50%) |
+| Só decidir a fila | 13 s | 18 s | **+39%, mais lento** |
+
+O ganho vem de não digitar a resposta, não do roteamento. O card atual é verboso para quem só precisa confirmar a fila (recomendação 2). O [protocolo](solution/experiment/PROTOCOLO.md) do teste com pessoas está pronto para o piloto: 16 chamados por pessoa, com e sem assistente, medindo tempo, acerto e **viés de automação**.
+
+**Ao vivo, no Telegram** ([prints](process-log/screenshots/)): o cliente mandou só "Olá". A confiança seria de 73%, abaixo do limiar, e o chamado iria para triagem humana. Em vez disso, o bot pediu detalhes. Com "Meu notebook não liga", a confiança subiu para 86%, o card foi **direto para Hardware** com os campos preenchidos e eu respondi em 31 s, sem editar. Custo de API do chamado inteiro: US$ 0,0008.
+
+| Atendente (tópico Hardware) | Cliente |
+|---|---|
+| <img src="process-log/screenshots/04-atendente-card-T0002-respondido-31s.png" width="380"> | <img src="process-log/screenshots/05-cliente-T0002-confirmacao-resposta-csat.png" width="420"> |
 
 ### Recomendações (em ordem)
 
 1. **Piloto de 4 semanas na fila de maior volume (Hardware), com o assistente sugerindo e o humano decidindo.** Medir pelos eventos do bot e comparar com P0.
-2. **Retreinar com o histórico próprio em português.** A curva acima diz o tamanho: ~4 mil chamados rotulados chegam a ~80%. Os limiares por fila se recalibram no mesmo script.
-3. **Resolver os formulários repetidos na origem, com regra e não com IA** (pedido de compra e desligamento).
-4. **Dar dono ao conteúdo aprovado** ([conteudo_aprovado.json](solution/app/conteudo_aprovado.json)): cada fila com o seu responsável e prazos reais.
-5. **RH e permissão de admin em grupos separados**, com acesso restrito. No protótipo são tópicos, que o Telegram não restringe por pessoa.
-6. **WhatsApp como segundo canal** (Cloud API oficial da Meta; custos levantados em [D5](process-log/02-decisoes.md)), usando o mesmo núcleo.
+2. **Enxugar o card de triagem:** fila, confiança e resumo em uma linha, com os campos recolhidos. A estimativa KLM mostra que hoje ele custa mais leitura do que a mensagem crua.
+3. **Retreinar com o histórico próprio em português.** A curva acima diz o tamanho: ~4 mil chamados rotulados chegam a ~80%. Os limiares por fila se recalibram no mesmo script.
+4. **Resolver os formulários repetidos na origem, com regra e não com IA** (pedido de compra e desligamento).
+5. **Dar dono ao conteúdo aprovado** ([conteudo_aprovado.json](solution/app/conteudo_aprovado.json), aprovado por mim no protótipo): cada fila com o seu responsável e prazos reais.
+6. **RH e permissão de admin em grupos separados**, com acesso restrito. No protótipo são tópicos, que o Telegram não restringe por pessoa.
+7. **WhatsApp como segundo canal** (Cloud API oficial da Meta; custos levantados em [D5](process-log/02-decisoes.md)), usando o mesmo núcleo.
 
 ### Limitações
 
 - O Dataset 1 é sintético: o diagnóstico de tempo e satisfação diz o que **não** dá para concluir, e as horas dependem de premissas, que estão rotuladas e com faixa.
 - O português do teste foi gerado por IA a partir de um inglês pré-processado (sem números nem nomes). Mensagens reais serão mais variadas, e os campos faltantes estão superestimados.
 - Os campos obrigatórios por fila e os textos de resposta são proposta minha, que precisa de validação de cada equipe.
-- O teste com colegas (3 a 5 pessoas) dá direção e tamanho de efeito, não significância estatística.
-- É protótipo: o estado fica em JSON, e o bot roda num único processo, hoje no meu computador.
+- **O teste com pessoas não foi feito.** Os tempos com e sem assistente são uma estimativa KLM. Acerto humano de fila e viés de automação só serão conhecidos no piloto.
+- É protótipo: o estado fica em JSON, e o bot roda num único processo (pronto para container: `Dockerfile` e `fly.toml`).
 - Parte dos "erros" do modelo é rótulo errado no dataset (ex.: "erro de conexão no Exchange" rotulado como permissão de admin). Há uma amostra para revisão humana em [revisao_humana_vazamentos.csv](solution/outputs/revisao_humana_vazamentos.csv).
 
 ---
@@ -167,11 +184,15 @@ OFFLINE=1 $PY analysis/05_pt_eval.py          # reproduz a avaliação em portug
 # Protótipo sem Telegram e sem chave
 OFFLINE=1 $PY -m app.simulate --cenarios      # o que o bot faz com os 16 chamados do teste
 $PY -m tests.test_fluxo_bot                   # o bot inteiro, de ponta a ponta, com um Telegram falso
+OFFLINE=1 $PY experiment/estimativa_klm.py    # estimativa KLM de tempo com e sem assistente
 
 # Bot real: crie um bot no @BotFather e um arquivo .env em submissions/gustavo-paraguassu/:
 #   TELEGRAM_BOT_TOKEN=...      ANTHROPIC_API_KEY=...   (sem a chave, roda em modo degradado)
 $PY -m app.telegram_bot
 # Num grupo com Tópicos ativados, com o bot como administrador: /configurar   (teste com colegas: /rodada P1)
+
+# Servidor: o mesmo bot em container (testado localmente; usa 239 MB de RAM)
+docker build -t nexo-bot . && docker run -e TELEGRAM_BOT_TOKEN=... -e ANTHROPIC_API_KEY=... -v nexo:/data nexo-bot
 ```
 
 ---
@@ -197,6 +218,8 @@ $PY -m app.telegram_bot
 5. A IA testou as minhas hipóteses no Dataset 2. Duas saíram diferentes do esperado (H1 e H3a) e estão registradas assim.
 6. Modelo de LLM: aprovei Haiku com comparação contra Opus. **A medição decidiu** (D7, D8).
 7. Testei o bot no Telegram e **encontrei o bug de reabertura** (E14), corrigido no mesmo dia.
+8. Aprovei o conteúdo de respostas e escrevi a **minha visão de comprador enterprise**: patrocinador, riscos e critérios de seguir, parar e contratar. A IA montou o [memo](docs/memo-diretor.md) a partir dela.
+9. Pedi para emular o teste com pessoas. A IA recusou apresentar simulação como resultado de pessoas e propôs a estimativa KLM, rotulada. Ela trouxe um achado contra a minha premissa de tempo de triagem, que entrou no README como cenário conservador (P5c).
 
 ### Onde a IA errou e como corrigi
 
@@ -215,6 +238,7 @@ A tabela completa (E1 a E14) está em [02-decisoes.md](process-log/02-decisoes.m
 - **O canal:** a ideia do Telegram, depois de questionar o custo do WhatsApp.
 - **O escopo:** incluir os cinco diferenciais, e não só o pacote mínimo.
 - **O teste no uso real**, que achou um bug que os testes automáticos não cobriam.
+- **A visão de comprador enterprise** do memo, sem edição da IA, e a **aprovação do conteúdo** como dono.
 
 ---
 
@@ -224,7 +248,8 @@ A tabela completa (E1 a E14) está em [02-decisoes.md](process-log/02-decisoes.m
 - [x] Registro de decisões e erros: [02-decisoes.md](process-log/02-decisoes.md); hipóteses antes da IA: [01](process-log/01-hipoteses-antes-da-ia.md)
 - [x] Git history: commits por etapa, na ordem em que o trabalho aconteceu
 - [x] Outputs de cada análise: [process-log/analysis-outputs/](process-log/analysis-outputs/)
-- [ ] Screenshots do bot (cliente e grupo de atendentes) e resultados do teste com colegas: _em andamento_
+- [x] Screenshots do bot: [process-log/screenshots/](process-log/screenshots/). Os prints 01 e 02 mostram o bug E14 antes da correção; os 03 a 05, o fluxo corrigido
+- [ ] Teste com pessoas: não realizado. Estimativa KLM no lugar (D12)
 
 ---
 

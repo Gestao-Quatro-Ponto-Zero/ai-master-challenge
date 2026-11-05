@@ -1,5 +1,5 @@
 {
-  "_status": "RASCUNHO escrito pela IA. Precisa da aprovação do dono do conteúdo (Gustavo) antes de valer. Prazos e link de autoatendimento são exemplos.",
+  "_status": "APROVADO por Gustavo Paraguassu (dono do conteúdo) em 04/11/2026. Redação inicial da IA. Prazos e link de autoatendimento são exemplos para a empresa fictícia; numa implantação real, cada equipe confirma os seus.",
   "_regra": "A IA não escreve resposta livre para o cliente. Ela escolhe um destes textos e preenche os {campos} com o que o próprio cliente disse. {campo|padrão} usa o padrão quando o campo não foi informado.",
   "filas": {
     "Hardware": {

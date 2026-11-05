@@ -70,6 +70,10 @@ POLITICAS = [
     politica("P3 Limiar por fila (meta 95%)", pq),
     politica("P4 = P3 + filas sensíveis sempre com humano + sugestão", pq_safe, conf_humano=True),
     politica(f"P5 = P4 + trava: P(sensível) >= {G_SENS} vai para humano", pq_guard, conf_humano=True),
+    # Estimativa KLM (experiment/estimativa_klm.py): ler o card para decidir a fila NÃO é mais rápido que
+    # ler a mensagem crua. Cenário conservador: a sugestão não acelera a triagem; só o automático e
+    # as transferências evitadas contam.
+    politica("P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)", pq_guard, conf_humano=False),
 ]
 
 

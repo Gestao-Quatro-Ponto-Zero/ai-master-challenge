@@ -1,0 +1,85 @@
+{
+ "_aviso": "ESTIMATIVA por modelo KLM, não medição com pessoas",
+ "n_chamados": 160,
+ "palavras_medianas": {
+  "w_msg": 33.0,
+  "w_resumo": 20.0,
+  "w_campos": 14.5,
+  "w_rascunho": 30.0
+ },
+ "operadores": {
+  "K": {
+   "baixo": 0.2,
+   "base": 0.28,
+   "alto": 0.5
+  },
+  "P": {
+   "baixo": 1.1,
+   "base": 1.1,
+   "alto": 1.1
+  },
+  "B": {
+   "baixo": 0.1,
+   "base": 0.1,
+   "alto": 0.1
+  },
+  "M": {
+   "baixo": 1.35,
+   "base": 1.35,
+   "alto": 1.35
+  },
+  "leitura_wpm": {
+   "baixo": 250,
+   "base": 200,
+   "alto": 150
+  }
+ },
+ "premissas": {
+  "chars_resposta_digitada": {
+   "baixo": 60,
+   "base": 120,
+   "alto": 200
+  },
+  "pct_edita_rascunho": {
+   "baixo": 0.1,
+   "base": 0.2,
+   "alto": 0.4
+  },
+  "chars_edicao": {
+   "baixo": 20,
+   "base": 40,
+   "alto": 80
+  },
+  "fracao_le_mensagem_com": {
+   "baixo": 0.3,
+   "base": 0.5,
+   "alto": 1.0
+  }
+ },
+ "cenarios": {
+  "baixo": {
+   "sem_total_s": 26.7,
+   "com_total_s": 22.4,
+   "reducao_total_pct": 16.3,
+   "sem_so_fila_s": 10.9,
+   "com_so_fila_s": 13.2,
+   "reducao_fila_pct": -20.8
+  },
+  "base": {
+   "sem_total_s": 50.3,
+   "com_total_s": 31.0,
+   "reducao_total_pct": 38.4,
+   "sem_so_fila_s": 12.9,
+   "com_so_fila_s": 18.0,
+   "reducao_fila_pct": -39.3
+  },
+  "alto": {
+   "sem_total_s": 120.0,
+   "com_total_s": 60.0,
+   "reducao_total_pct": 49.9,
+   "sem_so_fila_s": 16.2,
+   "com_so_fila_s": 29.0,
+   "reducao_fila_pct": -78.4
+  }
+ }
+}

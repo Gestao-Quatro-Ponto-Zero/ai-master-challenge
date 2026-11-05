@@ -6,24 +6,26 @@
   erro_humano_triagem: {'base': 0.0521}  <- DS2: tickets quase idênticos (cos>=0.9) com filas diferentes
 
 == Políticas, cenário BASE (30 mil tickets/ano)
-                                                        pct_automatico  transferencias_ano  horas_triagem_ano  horas_transferencia_ano  horas_total_ano  exposicoes_sensiveis_ano  horas_poupadas_vs_hoje
-politica                                                                                                                                                                                                 
-P0 Hoje: 100% triagem humana                                       0.0                1563               1000                      391             1391                         0                       0
-P1 100% automático (sem humano)                                  100.0                4177                  0                     1044             1044                      2275                     347
-P2 Automático se confiança >= 0,90                                52.7                1040                473                      260              733                       159                     658
-P3 Limiar por fila (meta 95%)                                     73.2                1472                268                      368              636                       564                     755
-P4 = P3 + filas sensíveis sempre com humano + sugestão            54.2                1486                114                      372              486                       282                     905
-P5 = P4 + trava: P(sensível) >= 0.05 vai para humano              45.4                1334                137                      333              470                        81                     921
+                                                                   pct_automatico  transferencias_ano  horas_triagem_ano  horas_transferencia_ano  horas_total_ano  exposicoes_sensiveis_ano  horas_poupadas_vs_hoje
+politica                                                                                                                                                                                                            
+P0 Hoje: 100% triagem humana                                                  0.0                1563               1000                      391             1391                         0                       0
+P1 100% automático (sem humano)                                             100.0                4177                  0                     1044             1044                      2275                     347
+P2 Automático se confiança >= 0,90                                           52.7                1040                473                      260              733                       159                     658
+P3 Limiar por fila (meta 95%)                                                73.2                1472                268                      368              636                       564                     755
+P4 = P3 + filas sensíveis sempre com humano + sugestão                       54.2                1486                114                      372              486                       282                     905
+P5 = P4 + trava: P(sensível) >= 0.05 vai para humano                         45.4                1334                137                      333              470                        81                     921
+P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)            45.4                1334                546                      333              880                        81                     511
 
 == Sensibilidade: horas totais/ano por cenário (baixo / base / alto)
-cenario                                                 baixo  base  alto
-politica                                                                 
-P0 Hoje: 100% triagem humana                              708  1391  2782
-P1 100% automático (sem humano)                           557  1044  2088
-P2 Automático se confiança >= 0,90                        375   733  1465
-P3 Limiar por fila (meta 95%)                             330   636  1272
-P4 = P3 + filas sensíveis sempre com humano + sugestão    267   486   972
-P5 = P4 + trava: P(sensível) >= 0.05 vai para humano      260   470   940
+cenario                                                            baixo  base  alto
+politica                                                                            
+P0 Hoje: 100% triagem humana                                         708  1391  2782
+P1 100% automático (sem humano)                                      557  1044  2088
+P2 Automático se confiança >= 0,90                                   375   733  1465
+P3 Limiar por fila (meta 95%)                                        330   636  1272
+P4 = P3 + filas sensíveis sempre com humano + sugestão               267   486   972
+P5 = P4 + trava: P(sensível) >= 0.05 vai para humano                 260   470   940
+P5c = P5 sem ganho de tempo na triagem com sugestão (conservador)    451   880  1759
 
 == Varredura da trava G (apetite a risco): quanto automatiza x quantos sensíveis escapam/ano
    G  pct_automatico  acerto_no_automatico  sensiveis_que_escapam_ano

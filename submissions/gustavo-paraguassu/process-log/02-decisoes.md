@@ -122,6 +122,27 @@ Ferramenta: Claude Code (Opus 5.5), em sessão única, trabalhando como par. A I
 
 - A IA não usa esses números como resultado até eu dizer se a rodada foi para valer ou só um teste do bot.
 
+## D12 — Conteúdo aprovado, rodada P1 e teste com pessoas (04/11/2026)
+
+- **Conteúdo:** *"Conteudo Aprovado!"*. Aprovei como dono o texto de respostas e perguntas por fila que a IA redigiu (`conteudo_aprovado.json`). A partir daqui, a minha H5 ("resposta a partir de conteúdo aprovado") vale de fato.
+- **Rodada P1:** *"A minha rodada P1 foi só um teste."* Fica marcada como piloto técnico e não entra como resultado.
+- **Teste com pessoas:** pedi à IA para emular o teste. A IA respondeu que não dá para emular resultado de pessoas: tempo e viés de automação de humanos não saem de um modelo, e apresentar simulação como teste seria evidência inventada.
+  - **O que ela propôs, e aceitei:** uma estimativa por KLM (Keystroke-Level Model, método clássico de UX que soma tempos-padrão de ler, decidir, tocar e digitar), rotulada como estimativa.
+  - **Fica registrado:** o teste com pessoas não foi feito. O protocolo segue pronto para o piloto.
+
+## D13 — Memo para o Diretor: a visão de comprador é minha
+
+- Escrevi patrocinador, validação interna, valor esperado, riscos e os critérios de seguir, parar e contratar. O texto está abaixo, sem edição.
+- A IA montou o memo com essa estrutura e os números das análises.
+
+> Patrocinador: Diretor de Operações, com orçamento e responsabilidade pelo resultado; liderança de Suporte conduz o piloto.
+> Validação interna: TI e Segurança avaliam integração, acesso aos dados e requisitos para contratação.
+> Valor esperado: liberar capacidade do time e melhorar a resolução, com benefício superior ao custo total de operação.
+> Riscos: exposição de dados, respostas incorretas, baixa adesão dos atendentes e custos de integração ou revisão que anulem o ganho.
+> Seguir: piloto atingir metas acordadas previamente, comparadas à operação atual, sem deteriorar satisfação, qualidade ou reaberturas.
+> Parar ou pausar: incidente grave, erros críticos recorrentes ou ausência de benefício econômico após o período definido de avaliação.
+> Condição para contratar: evidências auditáveis, responsável pelo serviço, possibilidade de intervenção humana e saída contratual viável.
+
 ---
 
 ## Onde a IA errou até aqui (e como foi corrigido)
