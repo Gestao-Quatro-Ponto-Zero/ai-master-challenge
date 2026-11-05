@@ -36,11 +36,13 @@ Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius d
 11. **Auditoria final** (`exploration/final_audit.py`). Vinicius pediu para analisar se tudo funcionava e se a solução daria resultado. O Claude testou um clone limpo e tentou derrubar o ganho principal. O "+42%" era verdadeiro, mas parcial, e a mensagem principal mudou.
 12. **Prompt consolidado** ([`prompt-consolidado.md`](prompt-consolidado.md)). A pedido de Vinicius, escrito depois do trabalho para resumir o raciocínio. Não é o prompt usado no processo real.
 
-Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` roda na versão do commit `4a93295`, antes da troca de mês por semana.
+Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` roda na versão do commit `7e39015`, antes da troca de mês por semana.
 
 13. **Datas.** Vinicius apontou que a ferramenta estava presa a uma data fixa. O Claude acrescentou o filtro de data do pipeline, com datas passadas só para consulta, e a ordenação por data de entrada.
 
 14. **Detalhes do deal.** Vinicius perguntou se dava para incluir mais detalhes que ajudassem o vendedor a ver valor no deal. O Claude acrescentou o fechamento típico, o perfil da conta, o relacionamento e o histórico do vendedor, como contexto, sem mudar o score.
+
+15. **Sequência de prompts** ([`sequencia-de-prompts.md`](sequencia-de-prompts.md)). Vinicius preferiu não publicar a conversa original, por ter sido informal, e pediu uma versão com engenharia de prompt aprimorada. O Claude a escreveu depois do trabalho, identificada como tal, ao lado do que aconteceu em cada etapa.
 
 ## Onde a IA errou e como foi corrigido
 

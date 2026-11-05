@@ -1,6 +1,6 @@
 # Prompt consolidado: como reconstruir esta solução
 
-> **Este não é o prompt usado no trabalho.** Foi escrito depois de a solução ficar pronta, para registrar o raciocínio em um único pedido. O trabalho real foi iterativo, com erros e correções ao longo do caminho, e está em [`PROCESS_LOG.md`](PROCESS_LOG.md) e no histórico de commits.
+> **Este não é o prompt usado no trabalho.** Foi escrito depois de a solução ficar pronta, para registrar o raciocínio em um único pedido. A versão por etapas está em [`sequencia-de-prompts.md`](sequencia-de-prompts.md). O trabalho real foi iterativo, com erros e correções ao longo do caminho, e está em [`PROCESS_LOG.md`](PROCESS_LOG.md) e no histórico de commits.
 
 O prompt descreve o método, não as respostas. Os achados são verificados nas etapas, e as hipóteses da seção 3 podem cair. A especificação da seção 5 reflete as decisões de produto já tomadas.
 

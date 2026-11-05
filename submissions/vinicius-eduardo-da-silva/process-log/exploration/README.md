@@ -7,7 +7,7 @@ Evidência de cada etapa, na ordem em que foram usados. Não fazem parte da ferr
 | `audit.py` | Onde os dados enganam? | dados |
 | `signals.py` | Quais sinais preveem o resultado? Requer `scikit-learn` | dados |
 | `first_replay.py` | A priorização funciona em segundas passadas? | dados |
-| `variant_test.py` | Quais critérios entram no score? Roda apenas no commit `4a93295`, antes da troca de mês por semana | dados, `solution/scoring` |
+| `variant_test.py` | Quais critérios entram no score? Roda apenas no commit `7e39015`, antes da troca de mês por semana | dados, `solution/scoring` |
 | `rep_coverage.py` | Por que só 17 vendedores têm deals vivos? | dados, `solution/scoring` |
 | `quarter_start_check.py` | As chances estão infladas no início do trimestre? | dados, `solution/scoring` |
 | `final_audit.py` | O resultado principal sobrevive a um ataque? | dados, `solution/scoring` |

@@ -91,7 +91,7 @@ Trabalhei com o Claude Code, que fez a análise e o código enquanto eu tomava a
 
 ## Process Log — Como usei IA
 
-Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md). O raciocínio também está resumido em [`process-log/prompt-consolidado.md`](process-log/prompt-consolidado.md), escrito depois do trabalho.
+Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md). O raciocínio também está resumido em [`process-log/prompt-consolidado.md`](process-log/prompt-consolidado.md) e [`process-log/sequencia-de-prompts.md`](process-log/sequencia-de-prompts.md), escritos depois do trabalho e identificados assim. A conversa original não está incluída.
 
 ### Ferramentas usadas
 
@@ -135,8 +135,9 @@ Não conheço o negócio de vendas. Resolvi este problema junto com a IA, e minh
 
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [x] Chat exports: [`process-log/chat-exports/conversa-claude-code.md`](process-log/chat-exports/conversa-claude-code.md), sem reescrita das mensagens
+- [ ] Chat exports
 - [x] Git history
+- [x] Narrativa escrita: [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md)
 - [x] Outro: scripts de cada etapa em `process-log/exploration/`, resultados em `solution/scoring/backtest_results.json` e telas em `docs/screenshots/`
 
 ---
