@@ -104,9 +104,28 @@ async def main():
     n = len(bot.enviadas)
     await tb.botao(upd(GRUPO, data=f"env|{t.id}"), ctx)
     assert len(bot.enviadas) == n
-    # cliente volta a escrever dentro de 48h -> reabre
+    # cliente volta a escrever depois da resposta: o bot PERGUNTA se é o mesmo assunto (não supõe)
+    n_tickets = len(tb.estado.tickets)
+    await tb.msg_cliente(upd(CLIENTE, "Como eu peço férias?"), ctx)
+    assert t.status == "confirmando_reabertura" and "assunto novo" in bot.ultima(CLIENTE).text
+    q = NS(data=f"novo|{t.id}", message=NS(chat=NS(id=CLIENTE), reply_text=lambda *a, **k: asyncio.sleep(0)))
+    q.answer = q.edit_message_text = q.edit_message_reply_markup = lambda *a, **k: asyncio.sleep(0)
+    await tb.botao(NS(callback_query=q, effective_user=NS(id=7, first_name="Ana"), effective_chat=NS(id=CLIENTE)), ctx)
+    assert t.status == "fechado" and len(tb.estado.tickets) == n_tickets + 1
+    novo = tb.estado.aberto_do_cliente(CLIENTE)
+    assert novo.id != t.id and novo.mensagens == ["Como eu peço férias?"]
+    # /start encerra o pendente; depois, "voltou a acontecer" num chamado respondido só reabre se o cliente confirmar
+    await tb.cmd_start(upd(CLIENTE, "/start"), ctx)
+    assert novo.status in ("fechado", "com_atendente")
+    novo.status, novo.respondido_em = "respondido", tb.agora()
+    novo.card = novo.card or {"chat": GRUPO, "msg": 1, "thread": tb.estado.topicos["triagem"],
+                              "postado": tb.agora(), "destino": "triagem"}
     await tb.msg_cliente(upd(CLIENTE, "voltou a acontecer"), ctx)
-    assert t.status == "com_atendente"
+    assert novo.status == "confirmando_reabertura"
+    q.data = f"reab|{novo.id}"
+    await tb.botao(NS(callback_query=q, effective_user=NS(id=7, first_name="Ana"), effective_chat=NS(id=CLIENTE)), ctx)
+    assert novo.status == "com_atendente" and novo.mensagens[-1] == "voltou a acontecer"
+    t = novo
     # o card reaberto está numa fila: transferir para outra gera o evento "transferido"
     outra = next(q for q in tb.ORDEM if q != t.fila)
     await tb.botao(upd(GRUPO, data=f"out|{t.id}"), ctx)

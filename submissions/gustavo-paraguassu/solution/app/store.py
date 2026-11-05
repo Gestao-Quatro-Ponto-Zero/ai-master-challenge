@@ -30,7 +30,7 @@ class Ticket:
     id: str
     chat_cliente: int | None          # None em ticket de experimento (não há cliente real)
     cliente: str                      # hash
-    status: str = "novo"              # novo | aguardando_cliente | auto_respondido | com_atendente | respondido
+    status: str = "novo"              # novo | aguardando_cliente | auto_respondido | com_atendente | respondido | confirmando_reabertura | fechado
     mensagens: list = field(default_factory=list)  # texto mascarado
     perguntou: bool = False
     forcar_humano: bool = False
@@ -42,6 +42,7 @@ class Ticket:
     inicio_atendimento: str | None = None  # 1º card desta rodada de atendimento (o tempo conta daqui)
     respondido_em: str | None = None
     exp: dict | None = None           # {"participante", "modo": com|sem, "cenario", "fila_verdadeira"}
+    pendente: str | None = None       # mensagem aguardando o cliente dizer se é o mesmo assunto
 
 
 class Estado:

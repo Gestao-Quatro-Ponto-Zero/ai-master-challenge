@@ -162,8 +162,43 @@ async def confirmar(ctx, t: Ticket, destino: str):
 
 
 async def cmd_start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(MSG["boas_vindas"], reply_markup=teclado_humano("-"))
+    t = estado.aberto_do_cliente(update.effective_chat.id)
+    extra = ""
+    if t and t.status in ("respondido", "auto_respondido", "aguardando_cliente", "confirmando_reabertura"):
+        evento("encerrado", t.id, motivo="start", status_anterior=t.status)
+        t.status = "fechado"
+        estado.salvar()
+    elif t and t.status == "com_atendente":
+        extra = f"\n\n(O chamado {t.id} continua aberto com a equipe.)"
+    await update.message.reply_text(MSG["boas_vindas"] + extra, reply_markup=teclado_humano("-"))
     evento("start", cliente=quem(update))
+
+
+async def cmd_configurar_privado(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("/configurar é para o grupo de atendentes: me adicione lá como administrador "
+                                    "e mande o comando no grupo.")
+
+
+async def novo_ticket(ctx, chat: int, cliente: str, texto: str, responder):
+    chave = (chat, date.today().isoformat())
+    uso_diario[chave] += 1
+    if uso_diario[chave] > LIMITE_DIARIO:
+        return await responder("Você atingiu o limite de chamados de hoje. Tente amanhã.")
+    t = Ticket(id=estado.novo_id(), chat_cliente=chat, cliente=cliente, mensagens=[texto])
+    if chat in estado.humano_proximo:
+        estado.humano_proximo.remove(chat)
+        t.forcar_humano = True
+    estado.tickets[t.id] = t
+    evento("ticket_criado", t.id, canal="telegram", cliente=t.cliente, chars=len(texto), pediu_humano=t.forcar_humano)
+    await triar(ctx, t)
+
+
+async def reabrir(ctx, t: Ticket, texto: str):
+    t.mensagens.append(texto)
+    evento("reaberto", t.id, fila=t.fila, confirmado_pelo_cliente=True)
+    t.inicio_atendimento = None
+    await ctx.bot.send_message(t.chat_cliente, MSG["reaberto"].format(ticket=t.id))
+    await postar_card(ctx, t, "fila", nota=f"🔁 <b>REABERTO</b> pelo cliente. Nova mensagem: {e(texto)}")
 
 
 async def msg_cliente(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -190,25 +225,20 @@ async def msg_cliente(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         evento("faq_nao_resolvido", t.id, via="mensagem")
         await postar_card(ctx, t, "fila", nota="🙋 Depois da resposta automática, o cliente escreveu de novo.")
         return await confirmar(ctx, t, "fila")
+    if t and t.status == "confirmando_reabertura":       # escreveu de novo sem clicar: junta na pendência
+        t.pendente = f"{t.pendente}\n{texto}" if t.pendente else texto
+        return estado.salvar()
     if t and t.status == "respondido" and t.respondido_em and \
             datetime.now(timezone.utc) - datetime.fromisoformat(t.respondido_em) < timedelta(hours=config.REABRIR_HORAS):
-        t.mensagens.append(texto)
-        evento("reaberto", t.id, fila=t.fila)
-        t.inicio_atendimento = None
-        await ctx.bot.send_message(chat, MSG["reaberto"].format(ticket=t.id))
-        return await postar_card(ctx, t, "fila", nota=f"🔁 <b>REABERTO</b>. Nova mensagem: {e(texto)}")
-
-    chave = (chat, date.today().isoformat())
-    uso_diario[chave] += 1
-    if uso_diario[chave] > LIMITE_DIARIO:
-        return await update.message.reply_text("Você atingiu o limite de chamados de hoje. Tente amanhã.")
-    t = Ticket(id=estado.novo_id(), chat_cliente=chat, cliente=quem(update), mensagens=[texto])
-    if chat in estado.humano_proximo:
-        estado.humano_proximo.remove(chat)
-        t.forcar_humano = True
-    estado.tickets[t.id] = t
-    evento("ticket_criado", t.id, canal="telegram", cliente=t.cliente, chars=len(texto), pediu_humano=t.forcar_humano)
-    await triar(ctx, t)
+        # Reabertura é métrica (H9): só conta se o cliente disser que é o mesmo assunto.
+        t.status, t.pendente = "confirmando_reabertura", texto
+        resumo = (t.triagem or {}).get("resumo_pt", "")[:80]
+        await update.message.reply_text(
+            f"É sobre o chamado {t.id} ({resumo}) ou é um assunto novo?",
+            reply_markup=KB([[B(f"🔁 Sobre o {t.id}", callback_data=f"reab|{t.id}"),
+                              B("🆕 Assunto novo", callback_data=f"novo|{t.id}")]]))
+        return estado.salvar()
+    await novo_ticket(ctx, chat, quem(update), texto, update.message.reply_text)
 
 
 async def msg_nao_texto(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -249,6 +279,19 @@ async def botao(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             evento("faq_nao_resolvido", t.id)
             await postar_card(ctx, t, "fila", nota="🙋 A resposta automática não resolveu; cliente pediu atendente.")
             await confirmar(ctx, t, "fila")
+    elif acao in ("reab", "novo"):
+        if t.status != "confirmando_reabertura":
+            return await q.edit_message_reply_markup(None)
+        texto, t.pendente = t.pendente or "", None
+        if acao == "reab":
+            await q.edit_message_text(f"Certo, é sobre o {t.id}.")
+            await reabrir(ctx, t, texto)
+        else:
+            evento("encerrado", t.id, motivo="cliente_abriu_assunto_novo")
+            t.status = "fechado"
+            await q.edit_message_text("Certo, vou abrir um chamado novo.")
+            await novo_ticket(ctx, t.chat_cliente, t.cliente, texto, q.message.reply_text)
+        estado.salvar()
     elif acao == "csat":
         evento("csat", t.id, nota=int(arg[0]), fila=t.fila)
         await q.edit_message_text(f"{MSG['obrigado_csat']} ({arg[0]}/5)")
@@ -401,6 +444,7 @@ def main():
     privado, grupo = filters.ChatType.PRIVATE, filters.ChatType.GROUPS
     app.add_handler(CommandHandler("start", cmd_start, filters=privado))
     app.add_handler(CommandHandler("configurar", cmd_configurar, filters=grupo))
+    app.add_handler(CommandHandler("configurar", cmd_configurar_privado, filters=privado))
     app.add_handler(CommandHandler("rodada", cmd_rodada, filters=grupo))
     app.add_handler(MessageHandler(privado & filters.TEXT & ~filters.COMMAND, msg_cliente))
     app.add_handler(MessageHandler(privado & ~filters.TEXT & ~filters.COMMAND, msg_nao_texto))
