@@ -1,6 +1,6 @@
 # Prompt 01 para o Lovable: criação da tela
 
-> **Status:** versão **v3, aprovada pelo Liberato em 04/11/2026 às 21:20** (ele aprovou a v2 e pediu um ajuste na regra de cálculos, que gerou a v3). O texto enviado ao Lovable é exatamente o que está depois da linha `---`.
+> **Status:** versão **v3, aprovada pelo Liberato em 04/11/2026 às 21:20** (ele aprovou a v2 e pediu um ajuste na regra de cálculos, que gerou a v3). **Enviado ao Lovable em 04/11/2026 às 21:21** (mensagem 1 de 4; projeto `fe9f0408-9938-49b3-8b32-382590676828`). O texto enviado é exatamente o que está depois da linha `---`.
 > Mudança da v3: o app não pode recalcular notas, chances, valores esperados nem classificações, mas pode fazer contagens, somas, filtros e formatações. A v2 está em `versoes/prompt_lovable_01_rascunho_v2.md`.
 > Mudança da v2: a data histórica (31/12/2017) agora aparece em destaque e o título deixou de usar "hoje". Isso atende à verificação 5 pedida pelo Liberato em 04/11 às 20:49. A v1 está em `versoes/prompt_lovable_01_rascunho_v1.md`.
 > Quando for enviado, este arquivo passa a registrar o texto exato que foi usado.

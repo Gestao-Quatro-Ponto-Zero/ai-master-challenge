@@ -573,7 +573,7 @@ Não informado.
 
 ---
 
-## Proposta: Fase 3b e 3c, Prompt para o Lovable e criação da tela (envio da branch autorizado em 04/11 às 20:49, ver Registro 09; o texto do Lovable e a criação da tela ainda aguardam autorização)
+## Proposta: Fase 3b e 3c, Prompt para o Lovable e criação da tela (envio da branch autorizado em 04/11 às 20:49, ver Registro 09; texto e criação autorizados em 04/11 às 21:20, ver Registro 10)
 
 **3b: o texto do Lovable.** O rascunho completo está em `prompts/lovable_01_criacao.md`. Ele diz ao Lovable para:
 - montar 1 tela em português, com filtros de região, gerente e vendedor, 4 cartões de resumo, 4 abas de listas e uma aba "Como a nota funciona";
@@ -645,6 +645,74 @@ Uma observação de precisão: o motor informa **68,1%** no teste de volta no te
 - `prompts/liberato_2026-11-04_2049_autorizacao_e_chatgpt.md`: o documento do Liberato
 - A seção "Decisão do candidato — Utilização do ChatGPT como copiloto estratégico", no início deste arquivo
 - O histórico de commits na branch `submission/liberato-gouveia` do fork
+
+**Tempo aproximado**
+Não informado.
+
+---
+
+## Registro 10: Fase 3c e 3d, Construção da tela no Lovable e testes (04/11/2026, 21:20–21:40)
+
+**Objetivo da etapa**
+Construir a tela no Lovable com o prompt aprovado, publicar e testar com dados reais. Ao longo da etapa, registrar os prompts enviados, os resultados, os problemas e as correções. Não houve Pull Request.
+
+**Ferramentas utilizadas**
+- Lovable (workspace "Liberato's Lovable"): criação, ajustes e publicação da tela
+- Claude: ajustes no prompt e na ficha, correções no motor, revisão do código da tela e testes
+- Navegador embutido do app Claude, no computador do Liberato: testes da tela publicada
+- git e GitHub: os envios da branch com as correções do motor
+
+**Prompts relevantes**
+- Do Liberato (transcrito sem edição):
+> "Aprovo o prompt Lovable versão 2 e autorizo a criação da aplicação no meu workspace Lovable, utilizando até 4 mensagens. Antes de executar, faça dois ajustes: 1. Corrija a instrução sobre cálculos. O Lovable não deve recalcular notas, chances, valores esperados ou classificações. Entretanto, pode realizar contagens, somas, filtros e formatações para apresentar os dados corretamente. 2. Corrija a inconsistência na ficha da lógica sobre o aviso de empresa não cadastrada. Já aprovei que esse aviso apareça nas quatro listas. Mantenha a faixa de aviso dos dados históricos de 31/12/2017. Durante a implementação, registre no Process Log os prompts enviados, resultados, problemas encontrados, correções e minhas decisões. Ao concluir, apresente o link da aplicação e os testes realizados para minha avaliação. Não abra o Pull Request e não faça a submissão final ao G4 sem minha autorização."
+- Os textos enviados ao Lovable, na íntegra:
+  - Mensagem 1: `prompts/lovable_01_criacao.md` (v3)
+  - Mensagem 2: `prompts/lovable_02_ajustes.md`
+  - Mensagem 3: `prompts/lovable_03_texto_testes.md`
+
+**Decisões que realmente tomei (Liberato)**
+1. Aprovei o prompt do Lovable (v2), com 2 ajustes: a regra de cálculos e a correção da ficha.
+2. Autorizei criar a aplicação no meu workspace Lovable, com até 4 mensagens.
+3. Mantive a faixa de dados históricos de 31/12/2017.
+4. Reconfirmei que o aviso de empresa não cadastrada vale para as 4 listas.
+5. Proibi o Pull Request e a submissão final sem a minha autorização.
+
+**Resultados obtidos**
+- **Ajustes pedidos, feitos antes do envio:** o prompt passou a ser a v3. O app não recalcula notas, chances, valores esperados nem classificações, mas pode contar, somar, filtrar e formatar. A ficha agora diz que o aviso vale nas 4 listas (Registro 06 e reconfirmação de hoje). Versões anteriores em `versoes/`.
+- **Mensagem 1** (21:21, 2,4 créditos): criou o projeto "Lead Scorer Liberato". O próprio agente do Lovable testou a aba Foco, avisou que não testou o resto e **apontou a diferença de arredondamento da chance**.
+- **Mensagem 2** (1 crédito): 3 ajustes (ver os problemas 1, 2 e 3 abaixo).
+- **Mensagem 3** (0,3 crédito): o texto da nota final ficou sem número de testes (problema 5).
+- **Total: 3 das 4 mensagens autorizadas, 3,7 créditos.** Uma mensagem continua disponível.
+- **Publicado em:** https://lead-scorer-liberato.lovable.app
+- **Testes da tela:** 17 verificações, todas aprovadas, com as limitações descritas em `analises/resultados/fase3d_testes_tela.md`.
+- **Motor:** passou de 12 para **14 testes automáticos**, todos aprovados.
+
+**Problemas encontrados e correções**
+
+| # | Problema | Quem encontrou | Correção |
+|---|---|---|---|
+| 1 | A tela arredondava de novo a chance que já vinha arredondada no arquivo (0,395 → 40%), enquanto o "porquê" dizia 39%. **7 de 288 deals** mostravam números diferentes. A origem estava no motor. | **Agente do Lovable** (mensagem 1); o Claude confirmou e mediu | O motor passou a entregar `chance_texto`, idêntico ao do "porquê", e a tela exibe esse campo sem cálculo (mensagem 2). Novo teste no motor. |
+| 2 | O cartão exibia "#ordem_na_lista", a posição na empresa inteira. Filtrando por vendedor, o 1º deal dele aparecia como "#3". | Claude, ao revisar o código | A tela mostra a posição dentro do filtro atual (1º, 2º…), mantendo a ordem do motor (mensagem 2). |
+| 3 | Logo depois de publicar, a tela mostrava "Chance: —" em todos os deals. | Claude, pela captura de tela do Lovable | Não era erro: o GitHub guarda uma cópia do arquivo por até 5 minutos, e a tela ainda lia a versão sem `chance_texto`. Depois que a cópia renovou, os valores apareceram. Ficou registrado como limitação no README da tela. |
+| 4 | **Erro do motor:** os 2 primeiros deals tinham "Nota 100", porque 99,6 foi arredondado para 100. O texto do 2º dizia "vale mais que 100% dos outros", o que é falso. | Claude, pela captura de tela do Lovable | A nota passou a ser arredondada para baixo, e só o 1º tem 100. Novo teste: o texto da nota nunca exagera. Enviado ao GitHub (`620101a`). |
+| 5 | A tela dizia "13 testes automáticos", mas o motor passou a ter 14. | Claude, no teste da tela | O número foi retirado da frase para ela não ficar desatualizada de novo (mensagem 3). Isso desvia levemente do texto aprovado na v3, e o desvio está registrado no prompt 03. |
+| 6 | Num dos testes, os seletores ficaram abertos ao mesmo tempo e misturaram as opções. Foi um **erro no script de teste do Claude**, não da tela. | Claude | A rodada foi descartada e refeita com a página recarregada. Ver `fase3d_testes_tela.md`. |
+
+**Sugestões da IA ainda não validadas por mim**
+- Retirar o número de testes da nota final (mensagem 3).
+- Mostrar a posição do deal dentro do filtro (mensagem 2).
+- Guardar na entrega só o código específico da tela (`solution/app/src/routes/index.tsx`) e não os 78 arquivos do projeto Lovable. Para exportar o projeto completo, o Liberato precisa ligar a integração do Lovable com o GitHub (decisão pendente).
+
+**Interações com o ChatGPT nesta etapa**
+Nenhuma foi informada pelo Liberato.
+
+**Testes ou evidências disponíveis**
+- `analises/resultados/fase3d_testes_tela.md`: os 17 testes da tela
+- `analises/resultados/fase3a_testes.txt`: os 14 testes do motor e a sabotagem
+- `prints/tela_v1_antes_das_correcoes.png` ("Chance: —" e duas notas 100), `prints/tela_final_desktop.png` e `prints/tela_final_celular.jpg`
+- `prompts/lovable_01_criacao.md`, `lovable_02_ajustes.md` e `lovable_03_texto_testes.md`
+- `solution/app/src/routes/index.tsx`, o código da tela (commit Lovable `396c42e`)
+- `versoes/`: as versões anteriores do prompt, da ficha e do motor
 
 **Tempo aproximado**
 Não informado.
