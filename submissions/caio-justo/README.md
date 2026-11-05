@@ -12,7 +12,9 @@
 
 Testei os dados do CRM e nenhum critério do cadastro prevê quem vai fechar: vendedor, produto, setor, região, manager, porte e conta ficam perto do acaso (AUC de 0,47 a 0,52). Por isso, em vez de mais uma nota de chance, construí **uma ferramenta que diz onde focar e testa se essa recomendação funciona**. O vendedor abre na segunda e vê a lista com o motivo de cada negócio. A Head de RevOps recebe a resposta para a maior dúvida do pipeline: 81% dos negócios em Engaging, $3,2M a preço de tabela, já passaram do maior ciclo registrado, e uma amostra de 100 estima quanto disso ainda é real. A recomendação é rodar a checagem primeiro, porque é o caminho mais rápido e barato para limpar a fila. Na checagem, há uma sugestão opcional por LLM: o vendedor escreve uma linha sobre o negócio, e a IA sugere a resposta, que só vale quando ele confirma.
 
-**[Assista à apresentação de 2 minutos](./docs/apresentacao.mp4).** Mostra a ferramenta real e os principais números. As telas da Visão da Head usam dados simulados, e isso aparece no vídeo.
+[![Prévia animada da apresentação, sem som](./docs/apresentacao-previa.gif)](./docs/apresentacao.mp4)
+
+**[Assista ao vídeo completo, de 2 minutos e com narração](./docs/apresentacao.mp4).** A imagem acima é só uma prévia sem som. O vídeo mostra a ferramenta real e os principais números. A Visão da Head usa dados simulados, e isso aparece na tela.
 
 ![Lista da semana do vendedor](./process-log/screenshots/01-minha-semana.png)
 
