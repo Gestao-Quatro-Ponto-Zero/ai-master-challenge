@@ -1,0 +1,30 @@
+import sys, pandas as pd, numpy as np
+d = sys.argv[1]
+pd.set_option('display.width',200); pd.set_option('display.max_rows',200); pd.set_option('display.max_columns',50)
+p=pd.read_csv(f'{d}/sales_pipeline.csv',parse_dates=['engage_date','close_date'])
+a=pd.read_csv(f'{d}/accounts.csv'); pr=pd.read_csv(f'{d}/products.csv'); t=pd.read_csv(f'{d}/sales_teams.csv')
+print(p.shape, p.opportunity_id.is_unique); print(p.deal_stage.value_counts()); print(p.isna().groupby(p.deal_stage).sum())
+print('dates',p.engage_date.min(),p.engage_date.max(),p.close_date.min(),p.close_date.max())
+print('pipeline products not in catalog',set(p['product'])-set(pr['product']))
+print('accounts not in table',set(p.account.dropna())-set(a.account)); print('agents not in team',set(p.sales_agent)-set(t.sales_agent),'team w/o deals',set(t.sales_agent)-set(p.sales_agent))
+print(a.sector.value_counts()); print(t.groupby(['regional_office','manager']).size())
+print(pr)
+p['product']=p['product'].replace({'GTXPro':'GTX Pro'})
+c=p[p.deal_stage.isin(['Won','Lost'])].copy(); c['won']=(c.deal_stage=='Won').astype(int); c['cycle']=(c.close_date-c.engage_date).dt.days
+print('win rate',c.won.mean()); print(c.groupby('deal_stage').cycle.describe())
+print('lost close_value',c[c.won==0].close_value.describe()); 
+c=c.merge(pr,on='product',how='left').merge(t,on='sales_agent',how='left').merge(a,on='account',how='left')
+w=c[c.won==1]; print('won value / list', (w.close_value/w.sales_price).describe())
+for col in ['product','series','regional_office','manager','sector','office_location']:
+    print(c.groupby(col).won.agg(['mean','count']).sort_values('mean',ascending=False).head(12))
+g=c.groupby('sales_agent').won.agg(['mean','count']).sort_values('mean'); print(g)
+print('cycle bucket vs win (leaky?)'); print(c.groupby(pd.cut(c.cycle,[-1,1,7,14,30,60,90,120,200])).won.agg(['mean','count']))
+c['eng_m']=c.engage_date.dt.to_period('M'); c['cl_m']=c.close_date.dt.to_period('M')
+print(c.groupby('eng_m').won.agg(['mean','count'])); print(c.groupby('cl_m').won.agg(['mean','count']))
+c['acc_size']=pd.qcut(c.revenue,4,labels=False,duplicates='drop'); print(c.groupby('acc_size').won.agg(['mean','count']))
+print('quarter-end close share', c.close_date.dt.month.value_counts().sort_index().to_dict())
+e=p[p.deal_stage=='Engaging'].merge(pr,on='product',how='left').merge(t,on='sales_agent',how='left')
+ref=p.close_date.max(); e['age']=(ref-e.engage_date).dt.days; print('ref',ref); print(e.age.describe()); print(e.engage_date.dt.to_period('M').value_counts().sort_index())
+print('open: account null', p[p.deal_stage.isin(['Engaging','Prospecting'])].groupby('deal_stage').account.apply(lambda s:s.isna().mean()))
+print('agents open load'); print(p[p.deal_stage.isin(['Engaging','Prospecting'])].groupby('sales_agent').size().describe())
+print('repeat acct-product-agent'); print(p.groupby(['account','product','sales_agent']).size().describe())
