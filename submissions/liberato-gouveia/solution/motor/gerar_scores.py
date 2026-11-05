@@ -230,6 +230,8 @@ def gerar(pasta_dados, caminho_config) -> dict:
         "etapa": "Negociação" if r.deal_stage == "Engaging" else "Prospecção",
         "idade_dias": int(r.idade_dias) if pd.notna(r.idade_dias) else None,
         "chance": limpo(round(float(r.chance), 4)) if pd.notna(r.chance) else None,
+        # texto pronto para a tela: idêntico ao usado no "porquê" (evita arredondar duas vezes)
+        "chance_texto": pct(float(r.chance)) if pd.notna(r.chance) else None,
         "valor_esperado_usd": round(float(r.valor_esperado), 2) if pd.notna(r.valor_esperado) else None,
         "nota": int(r.nota) if pd.notna(r.nota) else None,
         "lista": r.lista, "ordem_na_lista": int(r.ordem_na_lista), "acao": r.acao,

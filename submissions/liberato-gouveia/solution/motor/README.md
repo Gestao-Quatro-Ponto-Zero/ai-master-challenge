@@ -10,7 +10,7 @@ Requisitos: Python 3.10 ou mais recente, com `pandas` e `numpy`. Os testes usam 
 cd solution/motor
 pip install pandas numpy pytest
 python gerar_scores.py          # lê ../data e config.json e grava saida/
-python -m pytest -v tests/      # 12 testes automáticos
+python -m pytest -v tests/      # 13 testes automáticos
 ```
 
 Saída:
@@ -43,5 +43,6 @@ As regras estão em `docs/ficha-da-logica.md`. Os limites ficam em `config.json`
 | Configuração muda o resultado | Os limites vêm do `config.json`, não do código |
 | Nenhum nome de produto no código | Nomes próprios ficam na configuração |
 | Saída válida para a tela | O JSON abre e a equipe completa (35 vendedores) está nele |
+| Chance mostrada = chance do "porquê" | O campo `chance_texto` que a tela exibe é idêntico ao texto da explicação (Registro 10) |
 
 O teste de vazamento foi conferido com uma sabotagem: numa cópia do motor, a linha que apaga o futuro foi desligada, e o teste reprovou (`process-log/analises/resultados/fase3a_testes.txt`).

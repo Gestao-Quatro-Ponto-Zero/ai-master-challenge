@@ -160,3 +160,10 @@ def test_saida_json_valida_para_a_tela(resultado):
     txt = json.dumps(resultado, ensure_ascii=False)
     assert json.loads(txt)["deals"][0]["lista"] == "Foco"
     assert len(resultado["vendedores"]) == 35
+
+def test_chance_texto_igual_ao_texto_do_porque(deals):
+    """A tela mostra 'chance_texto'; ele precisa ser idêntico à chance citada no 'porquê' (Registro 10)."""
+    assert deals[deals.chance.notna()].chance_texto.notna().all()
+    c = deals[deals.lista.isin(["Foco", "Automatizar"])]  # as listas em que a tela mostra a chance
+    assert all(f"{ct} de chance" in pq for ct, pq in zip(c.chance_texto, c.porque))
+    assert deals[deals.chance.isna()].chance_texto.isna().all()
