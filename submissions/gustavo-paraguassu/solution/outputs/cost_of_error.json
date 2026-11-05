@@ -1,0 +1,393 @@
+{
+ "premissas": {
+  "tickets_ano": {
+   "base": 30000,
+   "fonte": "briefing do Diretor (~30 mil/ano)"
+  },
+  "min_triagem_manual": {
+   "baixo": 1.0,
+   "base": 2.0,
+   "alto": 4.0,
+   "fonte": "premissa; MEDIDO no teste com colegas (modo sem assistente)"
+  },
+  "min_triagem_com_sugestao": {
+   "baixo": 0.3,
+   "base": 0.5,
+   "alto": 1.0,
+   "fonte": "premissa; MEDIDO no teste com colegas (modo com assistente)"
+  },
+  "min_por_transferencia": {
+   "baixo": 8.0,
+   "base": 15.0,
+   "alto": 30.0,
+   "fonte": "premissa: 2º atendente relê, devolve, 1º reencaminha"
+  },
+  "erro_humano_triagem": {
+   "base": 0.0521,
+   "fonte": "DS2: tickets quase idênticos (cos>=0.9) com filas diferentes"
+  }
+ },
+ "politicas_base": [
+  {
+   "politica": "P0 Hoje: 100% triagem humana",
+   "cenario": "base",
+   "pct_automatico": 0.0,
+   "transferencias_ano": 1563,
+   "horas_triagem_ano": 1000,
+   "horas_transferencia_ano": 391,
+   "horas_total_ano": 1391,
+   "exposicoes_sensiveis_ano": 0,
+   "horas_poupadas_vs_hoje": 0
+  },
+  {
+   "politica": "P1 100% automático (sem humano)",
+   "cenario": "base",
+   "pct_automatico": 100.0,
+   "transferencias_ano": 4177,
+   "horas_triagem_ano": 0,
+   "horas_transferencia_ano": 1044,
+   "horas_total_ano": 1044,
+   "exposicoes_sensiveis_ano": 2275,
+   "horas_poupadas_vs_hoje": 347
+  },
+  {
+   "politica": "P2 Automático se confiança >= 0,90",
+   "cenario": "base",
+   "pct_automatico": 52.7,
+   "transferencias_ano": 1040,
+   "horas_triagem_ano": 473,
+   "horas_transferencia_ano": 260,
+   "horas_total_ano": 733,
+   "exposicoes_sensiveis_ano": 159,
+   "horas_poupadas_vs_hoje": 658
+  },
+  {
+   "politica": "P3 Limiar por fila (meta 95%)",
+   "cenario": "base",
+   "pct_automatico": 73.2,
+   "transferencias_ano": 1472,
+   "horas_triagem_ano": 268,
+   "horas_transferencia_ano": 368,
+   "horas_total_ano": 636,
+   "exposicoes_sensiveis_ano": 564,
+   "horas_poupadas_vs_hoje": 755
+  },
+  {
+   "politica": "P4 = P3 + filas sensíveis sempre com humano + sugestão",
+   "cenario": "base",
+   "pct_automatico": 54.2,
+   "transferencias_ano": 1486,
+   "horas_triagem_ano": 114,
+   "horas_transferencia_ano": 372,
+   "horas_total_ano": 486,
+   "exposicoes_sensiveis_ano": 282,
+   "horas_poupadas_vs_hoje": 905
+  },
+  {
+   "politica": "P5 = P4 + trava: P(sensível) >= 0.05 vai para humano",
+   "cenario": "base",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 137,
+   "horas_transferencia_ano": 333,
+   "horas_total_ano": 470,
+   "exposicoes_sensiveis_ano": 81,
+   "horas_poupadas_vs_hoje": 921
+  }
+ ],
+ "sensibilidade": [
+  {
+   "politica": "P0 Hoje: 100% triagem humana",
+   "cenario": "baixo",
+   "pct_automatico": 0.0,
+   "transferencias_ano": 1563,
+   "horas_triagem_ano": 500,
+   "horas_transferencia_ano": 208,
+   "horas_total_ano": 708,
+   "exposicoes_sensiveis_ano": 0
+  },
+  {
+   "politica": "P0 Hoje: 100% triagem humana",
+   "cenario": "base",
+   "pct_automatico": 0.0,
+   "transferencias_ano": 1563,
+   "horas_triagem_ano": 1000,
+   "horas_transferencia_ano": 391,
+   "horas_total_ano": 1391,
+   "exposicoes_sensiveis_ano": 0
+  },
+  {
+   "politica": "P0 Hoje: 100% triagem humana",
+   "cenario": "alto",
+   "pct_automatico": 0.0,
+   "transferencias_ano": 1563,
+   "horas_triagem_ano": 2000,
+   "horas_transferencia_ano": 782,
+   "horas_total_ano": 2782,
+   "exposicoes_sensiveis_ano": 0
+  },
+  {
+   "politica": "P1 100% automático (sem humano)",
+   "cenario": "baixo",
+   "pct_automatico": 100.0,
+   "transferencias_ano": 4177,
+   "horas_triagem_ano": 0,
+   "horas_transferencia_ano": 557,
+   "horas_total_ano": 557,
+   "exposicoes_sensiveis_ano": 2275
+  },
+  {
+   "politica": "P1 100% automático (sem humano)",
+   "cenario": "base",
+   "pct_automatico": 100.0,
+   "transferencias_ano": 4177,
+   "horas_triagem_ano": 0,
+   "horas_transferencia_ano": 1044,
+   "horas_total_ano": 1044,
+   "exposicoes_sensiveis_ano": 2275
+  },
+  {
+   "politica": "P1 100% automático (sem humano)",
+   "cenario": "alto",
+   "pct_automatico": 100.0,
+   "transferencias_ano": 4177,
+   "horas_triagem_ano": 0,
+   "horas_transferencia_ano": 2088,
+   "horas_total_ano": 2088,
+   "exposicoes_sensiveis_ano": 2275
+  },
+  {
+   "politica": "P2 Automático se confiança >= 0,90",
+   "cenario": "baixo",
+   "pct_automatico": 52.7,
+   "transferencias_ano": 1040,
+   "horas_triagem_ano": 236,
+   "horas_transferencia_ano": 139,
+   "horas_total_ano": 375,
+   "exposicoes_sensiveis_ano": 159
+  },
+  {
+   "politica": "P2 Automático se confiança >= 0,90",
+   "cenario": "base",
+   "pct_automatico": 52.7,
+   "transferencias_ano": 1040,
+   "horas_triagem_ano": 473,
+   "horas_transferencia_ano": 260,
+   "horas_total_ano": 733,
+   "exposicoes_sensiveis_ano": 159
+  },
+  {
+   "politica": "P2 Automático se confiança >= 0,90",
+   "cenario": "alto",
+   "pct_automatico": 52.7,
+   "transferencias_ano": 1040,
+   "horas_triagem_ano": 945,
+   "horas_transferencia_ano": 520,
+   "horas_total_ano": 1465,
+   "exposicoes_sensiveis_ano": 159
+  },
+  {
+   "politica": "P3 Limiar por fila (meta 95%)",
+   "cenario": "baixo",
+   "pct_automatico": 73.2,
+   "transferencias_ano": 1472,
+   "horas_triagem_ano": 134,
+   "horas_transferencia_ano": 196,
+   "horas_total_ano": 330,
+   "exposicoes_sensiveis_ano": 564
+  },
+  {
+   "politica": "P3 Limiar por fila (meta 95%)",
+   "cenario": "base",
+   "pct_automatico": 73.2,
+   "transferencias_ano": 1472,
+   "horas_triagem_ano": 268,
+   "horas_transferencia_ano": 368,
+   "horas_total_ano": 636,
+   "exposicoes_sensiveis_ano": 564
+  },
+  {
+   "politica": "P3 Limiar por fila (meta 95%)",
+   "cenario": "alto",
+   "pct_automatico": 73.2,
+   "transferencias_ano": 1472,
+   "horas_triagem_ano": 536,
+   "horas_transferencia_ano": 736,
+   "horas_total_ano": 1272,
+   "exposicoes_sensiveis_ano": 564
+  },
+  {
+   "politica": "P4 = P3 + filas sensíveis sempre com humano + sugestão",
+   "cenario": "baixo",
+   "pct_automatico": 54.2,
+   "transferencias_ano": 1486,
+   "horas_triagem_ano": 69,
+   "horas_transferencia_ano": 198,
+   "horas_total_ano": 267,
+   "exposicoes_sensiveis_ano": 282
+  },
+  {
+   "politica": "P4 = P3 + filas sensíveis sempre com humano + sugestão",
+   "cenario": "base",
+   "pct_automatico": 54.2,
+   "transferencias_ano": 1486,
+   "horas_triagem_ano": 114,
+   "horas_transferencia_ano": 372,
+   "horas_total_ano": 486,
+   "exposicoes_sensiveis_ano": 282
+  },
+  {
+   "politica": "P4 = P3 + filas sensíveis sempre com humano + sugestão",
+   "cenario": "alto",
+   "pct_automatico": 54.2,
+   "transferencias_ano": 1486,
+   "horas_triagem_ano": 229,
+   "horas_transferencia_ano": 743,
+   "horas_total_ano": 972,
+   "exposicoes_sensiveis_ano": 282
+  },
+  {
+   "politica": "P5 = P4 + trava: P(sensível) >= 0.05 vai para humano",
+   "cenario": "baixo",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 82,
+   "horas_transferencia_ano": 178,
+   "horas_total_ano": 260,
+   "exposicoes_sensiveis_ano": 81
+  },
+  {
+   "politica": "P5 = P4 + trava: P(sensível) >= 0.05 vai para humano",
+   "cenario": "base",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 137,
+   "horas_transferencia_ano": 333,
+   "horas_total_ano": 470,
+   "exposicoes_sensiveis_ano": 81
+  },
+  {
+   "politica": "P5 = P4 + trava: P(sensível) >= 0.05 vai para humano",
+   "cenario": "alto",
+   "pct_automatico": 45.4,
+   "transferencias_ano": 1334,
+   "horas_triagem_ano": 273,
+   "horas_transferencia_ano": 667,
+   "horas_total_ano": 940,
+   "exposicoes_sensiveis_ano": 81
+  }
+ ],
+ "por_fila_p4": [
+  {
+   "fila_real": "Hardware",
+   "volume_ano": 9038,
+   "pct_auto": 65.5,
+   "erros_auto_ano": 198,
+   "para_onde_vai_o_erro": "Access 91, Miscellaneous 39",
+   "sensivel": "",
+   "limiar": 0.8
+  },
+  {
+   "fila_real": "HR Support",
+   "volume_ano": 6714,
+   "pct_auto": 3.0,
+   "erros_auto_ano": 204,
+   "para_onde_vai_o_erro": "Hardware 65, Miscellaneous 52",
+   "sensivel": "dado pessoal (RH)",
+   "limiar": 0.65
+  },
+  {
+   "fila_real": "Access",
+   "volume_ano": 4543,
+   "pct_auto": 86.2,
+   "erros_auto_ano": 84,
+   "para_onde_vai_o_erro": "Hardware 55, Miscellaneous 13",
+   "sensivel": "",
+   "limiar": 0.55
+  },
+  {
+   "fila_real": "Miscellaneous",
+   "volume_ano": 4530,
+   "pct_auto": 62.5,
+   "erros_auto_ano": 97,
+   "para_onde_vai_o_erro": "Hardware 49, Access 32",
+   "sensivel": "",
+   "limiar": 0.77
+  },
+  {
+   "fila_real": "Storage",
+   "volume_ano": 1679,
+   "pct_auto": 82.8,
+   "erros_auto_ano": 36,
+   "para_onde_vai_o_erro": "Hardware 19, Miscellaneous 10",
+   "sensivel": "",
+   "limiar": 0.5
+  },
+  {
+   "fila_real": "Internal Project",
+   "volume_ano": 1400,
+   "pct_auto": 81.7,
+   "erros_auto_ano": 32,
+   "para_onde_vai_o_erro": "Miscellaneous 16, Hardware 13",
+   "sensivel": "",
+   "limiar": 0.5
+  },
+  {
+   "fila_real": "Administrative rights",
+   "volume_ano": 1115,
+   "pct_auto": 7.0,
+   "erros_auto_ano": 78,
+   "para_onde_vai_o_erro": "Hardware 65, Access 6",
+   "sensivel": "segurança (privilégio de admin)",
+   "limiar": 0.76
+  },
+  {
+   "fila_real": "Purchase",
+   "volume_ano": 982,
+   "pct_auto": 80.2,
+   "erros_auto_ano": 42,
+   "para_onde_vai_o_erro": "Hardware 36, Access 6",
+   "sensivel": "",
+   "limiar": 0.5
+  }
+ ],
+ "varredura_trava_sensivel": [
+  {
+   "G": 1.0,
+   "pct_automatico": 54.2,
+   "acerto_no_automatico": 95.3,
+   "sensiveis_que_escapam_ano": 282
+  },
+  {
+   "G": 0.3,
+   "pct_automatico": 54.0,
+   "acerto_no_automatico": 95.3,
+   "sensiveis_que_escapam_ano": 269
+  },
+  {
+   "G": 0.2,
+   "pct_automatico": 53.6,
+   "acerto_no_automatico": 95.4,
+   "sensiveis_que_escapam_ano": 253
+  },
+  {
+   "G": 0.1,
+   "pct_automatico": 51.0,
+   "acerto_no_automatico": 95.8,
+   "sensiveis_que_escapam_ano": 178
+  },
+  {
+   "G": 0.05,
+   "pct_automatico": 45.4,
+   "acerto_no_automatico": 96.5,
+   "sensiveis_que_escapam_ano": 81
+  },
+  {
+   "G": 0.02,
+   "pct_automatico": 36.5,
+   "acerto_no_automatico": 97.1,
+   "sensiveis_que_escapam_ano": 23
+  }
+ ],
+ "ds1_pending_customer_share": 0.3402
+}
