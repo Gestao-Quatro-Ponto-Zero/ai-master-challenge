@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foco da Semana</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <div class="brand-name">Foco da Semana</div>
+          <div id="as-of" class="brand-date"></div>
+        </div>
+      </div>
+
+      <div class="filters" aria-label="Filtros">
+        <label class="filter-main">Data do pipeline<select id="filter-date"></select></label>
+        <label class="filter-main">Vendedor<select id="filter-agent"></select></label>
+        <div class="filter-pair">
+          <label>Região<select id="filter-region"></select></label>
+          <label>Manager<select id="filter-manager"></select></label>
+        </div>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Áreas da ferramenta" id="tabs"></nav>
+    </aside>
+
+    <main id="view" role="tabpanel"></main>
+  </div>
+
+  <div id="tooltip" class="tooltip" role="status" hidden></div>
+
+  <script src="data.js"></script>
+  <script src="replay.js"></script>
+  <script src="history.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

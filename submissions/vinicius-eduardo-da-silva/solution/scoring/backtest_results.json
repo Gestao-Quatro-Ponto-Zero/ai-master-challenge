@@ -1,0 +1,187 @@
+{
+  "mondays": 22,
+  "top_k": 10,
+  "horizon_days": 30,
+  "all": {
+    "aleatorio": {
+      "revenue": 93624.7636,
+      "wins": 39.3955,
+      "listed": 299.8636,
+      "stale": 51.9591,
+      "win_rate": 0.1314
+    },
+    "maior_valor": {
+      "revenue": 225015.9091,
+      "wins": 40.2273,
+      "listed": 299.8636,
+      "stale": 53.1364,
+      "win_rate": 0.1342
+    },
+    "maior_valor_sem_parados": {
+      "revenue": 264385.9091,
+      "wins": 48.7273,
+      "listed": 299.8636,
+      "stale": 0.0,
+      "win_rate": 0.1625
+    },
+    "mais_antigo": {
+      "revenue": 82936.7273,
+      "wins": 38.7727,
+      "listed": 299.8636,
+      "stale": 165.0909,
+      "win_rate": 0.1293
+    },
+    "mais_novo": {
+      "revenue": 142357.5455,
+      "wins": 59.2727,
+      "listed": 299.8636,
+      "stale": 0.0,
+      "win_rate": 0.1977
+    },
+    "score": {
+      "revenue": 319080.3182,
+      "wins": 65.5455,
+      "listed": 299.8636,
+      "stale": 0.0,
+      "win_rate": 0.2186
+    }
+  },
+  "selection_jul_sep": {
+    "aleatorio": {
+      "revenue": 100257.0577,
+      "wins": 42.0308,
+      "listed": 300.0,
+      "stale": 40.3423,
+      "win_rate": 0.1401
+    },
+    "maior_valor": {
+      "revenue": 248243.3077,
+      "wins": 43.3846,
+      "listed": 300.0,
+      "stale": 40.6154,
+      "win_rate": 0.1446
+    },
+    "maior_valor_sem_parados": {
+      "revenue": 275462.4615,
+      "wins": 49.3077,
+      "listed": 300.0,
+      "stale": 0.0,
+      "win_rate": 0.1644
+    },
+    "mais_antigo": {
+      "revenue": 119035.3077,
+      "wins": 57.7692,
+      "listed": 300.0,
+      "stale": 161.6923,
+      "win_rate": 0.1926
+    },
+    "mais_novo": {
+      "revenue": 111279.8462,
+      "wins": 46.1538,
+      "listed": 300.0,
+      "stale": 0.0,
+      "win_rate": 0.1538
+    },
+    "score": {
+      "revenue": 354201.2308,
+      "wins": 72.0769,
+      "listed": 300.0,
+      "stale": 0.0,
+      "win_rate": 0.2403
+    }
+  },
+  "holdout_oct_nov": {
+    "aleatorio": {
+      "revenue": 84044.7833,
+      "wins": 35.5889,
+      "listed": 299.6667,
+      "stale": 68.7389,
+      "win_rate": 0.1188
+    },
+    "maior_valor": {
+      "revenue": 191465.2222,
+      "wins": 35.6667,
+      "listed": 299.6667,
+      "stale": 71.2222,
+      "win_rate": 0.119
+    },
+    "maior_valor_sem_parados": {
+      "revenue": 248386.4444,
+      "wins": 47.8889,
+      "listed": 299.6667,
+      "stale": 0.0,
+      "win_rate": 0.1598
+    },
+    "mais_antigo": {
+      "revenue": 30794.3333,
+      "wins": 11.3333,
+      "listed": 299.6667,
+      "stale": 170.0,
+      "win_rate": 0.0378
+    },
+    "mais_novo": {
+      "revenue": 187247.5556,
+      "wins": 78.2222,
+      "listed": 299.6667,
+      "stale": 0.0,
+      "win_rate": 0.261
+    },
+    "score": {
+      "revenue": 268350.1111,
+      "wins": 56.1111,
+      "listed": 299.6667,
+      "stale": 0.0,
+      "win_rate": 0.1872
+    }
+  },
+  "score_vs_value": {
+    "mean_gain": 94064,
+    "better_mondays": 22,
+    "independent_mondays": 5,
+    "independent_better": 5,
+    "independent_mean_gain": 94056
+  },
+  "score_vs_live_value": {
+    "mean_gain": 54694,
+    "better_mondays": 19,
+    "independent_mondays": 5,
+    "independent_better": 5,
+    "independent_mean_gain": 61329
+  },
+  "random_tie_break_revenue": {
+    "score": 318562,
+    "maior_valor": 225496
+  },
+  "calibration": [
+    {
+      "band": "até 5%",
+      "deals": 5848,
+      "previsto": 0.0267,
+      "real": 0.0157
+    },
+    {
+      "band": "5–10%",
+      "deals": 4507,
+      "previsto": 0.075,
+      "real": 0.0557
+    },
+    {
+      "band": "10–20%",
+      "deals": 13331,
+      "previsto": 0.1525,
+      "real": 0.132
+    },
+    {
+      "band": "20–30%",
+      "deals": 7814,
+      "previsto": 0.2493,
+      "real": 0.1815
+    },
+    {
+      "band": "acima de 30%",
+      "deals": 8394,
+      "previsto": 0.3694,
+      "real": 0.2932
+    }
+  ]
+}

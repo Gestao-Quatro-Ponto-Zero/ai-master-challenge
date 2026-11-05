@@ -1,0 +1,54 @@
+# Process log: Challenge 002
+
+Registro do que aconteceu, na ordem em que aconteceu. Ferramenta usada: Claude Code (modelos Claude Opus 5.5 e, na reta final, Claude Fable 5), no VS Code.
+
+## Decisões tomadas por Vinicius
+
+Em cada caso, o Claude apresentou as opções e uma recomendação, e Vinicius decidiu.
+
+| Decisão | Escolha | Alternativas descartadas |
+|---|---|---|
+| Fazer outro desafio depois do 003 | Sim, o 002 | 001 e 004 |
+| Como responder ao Diretor | Mostrar a resposta pedida e provar que é ruído | Só o que os dados sustentam; tratar como dados reais |
+| Quanto automatizar | Rotear só o seguro, começando em modo sombra | Só sugerir; rotear mais |
+
+## Decisões de julgamento do Claude
+
+Estas regras não vêm dos dados e foram informadas a Vinicius: a lista de palavras sensíveis, enviar "Administrative rights" apenas como sugestão, e o mínimo de 50% de confiança para sugerir.
+
+## Como o trabalho evoluiu
+
+1. **Escolha** (`exploration/probe_challenges.py`). Depois de enviar o Challenge 003, Vinicius decidiu seguir para outro desafio. Um diagnóstico rápido dos outros três datasets indicou o 002 como a melhor opção, e ele aceitou seguir.
+2. **Auditoria do dataset de suporte** (`exploration/audit_support.py`). Cada padrão foi comparado com dados embaralhados. O arquivo tem 8.469 tickets, não ~30.000, e as métricas se comportam como ruído.
+3. **Teste do classificador** (`exploration/classifier_benchmark.py`). Com divisão aleatória, a acurácia foi de 85%. Nos tickets de clientes, o modelo classificou a maioria como Hardware, seja qual for o tipo.
+4. **Teste de deriva e de ticket desconhecido** (`exploration/drift_and_guard.py`). A queda de acurácia no último bloco, vista na validação cruzada, levou a um teste em ordem de linhas. A trava de vocabulário nasceu aqui.
+5. **Protótipo** (`solution/`). O modelo roda no navegador, e o teste confirma que ele dá os mesmos resultados do Python em 381 tickets.
+6. **Documentação.** Relatório para o Diretor, README e registro do processo.
+
+7. **Leitura das submissões públicas.** A pedido de Vinicius, o Claude leu os PRs e comentários públicos do repositório. O avaliador cobra julgamento humano visível, process log auditável e entrega fácil de testar. Em resposta, Vinicius se inscreveu na vaga, mandou devolver a conversa completa, publicar as ferramentas e medir o tempo de triagem em um ensaio próprio.
+8. **Renomeação.** O protótipo se chamava Triagem Assistida, e a demo de outra submissão pública usava um nome quase idêntico. Renomeado para Fila Certa, para não parecer cópia — foi coincidência.
+9. **Ensaio cronometrado** (`solution/app/ensaio.html`). Protocolo fixado antes da execução: 40 tickets do conjunto de teste, 20 com e 20 sem sugestão, ordem sorteada com semente fixa, sem feedback durante, métrica principal definida de antemão (mediana de segundos por ticket). A ideia de comparar manual × assistido também aparece na submissão pública #226; o protocolo e a implementação aqui são próprios. Resultado: pendente, Vinicius ainda vai executar.
+
+## Onde a IA errou e como foi corrigido
+
+Os itens abaixo foram detectados pelo próprio Claude Code, nos testes e nas revisões que ele fez.
+
+| Erro | Como apareceu | Correção |
+|---|---|---|
+| Afirmei que 16% dos tempos de resolução eram negativos | Na auditoria: o cálculo incluía tickets sem data. Entre os encerrados, são 49,3% | Número corrigido |
+| Citei 99,4% de acerto em 36% dos tickets como evidência do sinal | Divisão aleatória, em um diagnóstico rápido. Nas últimas linhas, com um modelo mais simples e a política completa, são 92,7% em 51,7% | Só valem números com separação em ordem de linhas |
+| Recomendei o 004 antes de olhar os dados | O diagnóstico mostrou que views, likes e seguidores não têm relação entre si | Recomendação retirada |
+| Um teste prometia verificar os rótulos do teste, mas só treinava o modelo duas vezes | Revisão do próprio teste | Removido; a separação dos dados tem um teste próprio |
+| O protótipo não trazia exemplos dos dados para justificar o que não automatizar, como o enunciado pede | Revisão contra o enunciado | Exemplos reais incluídos na aba Fluxo proposto |
+
+## O que eu adicionei
+
+*Texto organizado pelo Claude Code a partir das decisões registradas de Vinicius, que autorizou o envio.*
+
+Minha contribuição foi de direção, não de análise técnica. A partir do que a análise mostrou, tomei três decisões:
+
+- **Seguir para este desafio,** depois de ver o diagnóstico dos dados dos desafios restantes.
+- **Dizer a verdade ao Diretor:** mostrar a resposta pedida e provar que ela é ruído, em vez de apresentar um gargalo que os dados não sustentam.
+- **Automatizar só o seguro:** depois de ver quantos erros cada opção causaria, escolhi rotear apenas os tickets confiáveis e começar em modo sombra.
+
+**O que eu não fiz:** a análise, o modelo e a detecção dos erros técnicos ficaram com o Claude Code. Também não validei as regras com alguém de suporte, RH ou jurídico, e os minutos e custos do ROI são suposições.

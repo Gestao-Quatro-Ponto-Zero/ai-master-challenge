@@ -1,0 +1,154 @@
+"""Generate app/data.js, which lets the page open directly with no server.
+
+Usage: python build_app_data.py [--data DIR] [--backtest FILE] [--out FILE]
+"""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+import pandas as pd
+
+import deal_context as dc
+import lead_scorer as ls
+
+HERE = Path(__file__).resolve().parent
+HISTORY_FIRST_MONDAY = "2017-07-03"  # earlier dates have too little past to learn from
+HISTORY_LAST_MONDAY = "2017-12-25"
+
+
+def text_or_none(value):
+    return None if pd.isna(value) else value
+
+
+def int_or_zero(value) -> int:
+    return 0 if pd.isna(value) else int(value)
+
+
+def engaged_row(deal) -> dict:
+    return {
+        "id": deal.opportunity_id,
+        "agent": deal.sales_agent,
+        "product": deal.product,
+        "account": text_or_none(deal.account),
+        "sector": text_or_none(deal.sector),
+        "price": int(deal.sales_price),
+        "age": int(deal.age),
+        "engageDate": deal.engage_date.strftime("%Y-%m-%d"),
+        "score": int(deal.score),
+        "valuePts": round(deal.value_points),
+        "timingPts": round(deal.timing_points),
+        "probability": round(deal.probability, 4),
+        "expected": round(deal.expected_revenue),
+        "zone": deal.zone,
+        "queue": deal.queue,
+        "action": deal.action,
+        "pastDeals": int_or_zero(deal.past_deals),
+        "pastWins": int_or_zero(deal.past_wins),
+    }
+
+
+def prospecting_rows(deals: pd.DataFrame, as_of: pd.Timestamp) -> list[dict]:
+    prospects = deals[deals["deal_stage"] == "Prospecting"].merge(ls.account_history(deals, as_of), on="account", how="left")
+    prospects = prospects.sort_values("sales_price", ascending=False)
+    return [
+        {
+            "id": deal.opportunity_id,
+            "agent": deal.sales_agent,
+            "product": deal.product,
+            "account": text_or_none(deal.account),
+            "sector": text_or_none(deal.sector),
+            "price": int(deal.sales_price),
+            "pastDeals": int_or_zero(deal.past_deals),
+            "pastWins": int_or_zero(deal.past_wins),
+        }
+        for deal in prospects.itertuples()
+    ]
+
+
+def build_history(deals: pd.DataFrame) -> dict:
+    """The pipeline as it stood each past Monday, scored with what was known then.
+
+    Accounts and sectors are left out on purpose: every closed deal has them, so
+    a blank field would reveal that a past deal never closed.
+    """
+    engaged = deals[deals["engage_date"].notna()].reset_index(drop=True)
+    index_by_id = {deal_id: i for i, deal_id in enumerate(engaged["opportunity_id"])}
+    table = [
+        [d.opportunity_id, d.sales_agent, d.product, int(d.sales_price), d.engage_date.strftime("%Y-%m-%d")]
+        for d in engaged.itertuples()
+    ]
+    actions: dict[str, int] = {}
+    snapshots = []
+    for monday in pd.date_range(HISTORY_FIRST_MONDAY, HISTORY_LAST_MONDAY, freq="W-MON"):
+        scored, rates = ls.score_pipeline(deals, monday)
+        rows = [
+            [
+                index_by_id[d.opportunity_id],
+                int(d.age),
+                int(d.score),
+                round(d.value_points),
+                round(d.timing_points),
+                round(d.probability, 4),
+                d.zone,
+                actions.setdefault(d.action, len(actions)),
+            ]
+            for d in scored.itertuples()
+        ]
+        snapshots.append({"date": monday.strftime("%Y-%m-%d"), "week": ls.quarter_week(monday), "maxCycle": rates.max_cycle, "rows": rows})
+    return {"deals": table, "actions": list(actions), "snapshots": snapshots}
+
+
+def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, pilot: dict, as_of: pd.Timestamp = ls.AS_OF) -> dict:
+    scored, rates = ls.score_pipeline(deals, as_of)
+    team = team.sort_values("sales_agent")  # includes reps with no deals in the pipeline
+    price_min, price_max = float(deals["sales_price"].min()), float(deals["sales_price"].max())
+    max_value_points, max_timing_points = ls.score_points(ls.PROBABILITY_CEILING, price_max, price_min, price_max)
+    record = dc.rep_track_record(deals, as_of)
+    return {
+        "maxValuePoints": round(max_value_points),
+        "maxTimingPoints": round(max_timing_points),
+        "ageCurve": [{"age": age, "rate": round(rate, 4)} for age, rate in sorted(rates.by_age.items())],
+        "asOf": as_of.strftime("%Y-%m-%d"),
+        "quarterWeek": ls.quarter_week(as_of),
+        "maxCycle": rates.max_cycle,
+        "topK": ls.TOP_K,
+        "team": [{"agent": r.sales_agent, "manager": r.manager, "region": r.regional_office} for r in team.itertuples()],
+        "engaged": [dc.add_rep_record(engaged_row(deal), record) for deal in scored.itertuples()],
+        "prospecting": [dc.add_rep_record(row, record) for row in prospecting_rows(deals, as_of)],
+        "productStats": dc.product_stats(deals, as_of),
+        "accounts": dc.account_profiles(deals, as_of),
+        "backtest": backtest,
+        "pilot": pilot,
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", default=HERE.parent / "data", type=Path)
+    parser.add_argument("--backtest", default=HERE / "backtest_results.json", type=Path)
+    parser.add_argument("--pilot", default=HERE / "pilot_plan.json", type=Path)
+    parser.add_argument("--out", default=HERE.parent / "app" / "data.js", type=Path)
+    parser.add_argument("--history-out", default=HERE.parent / "app" / "history.js", type=Path)
+    args = parser.parse_args()
+
+    backtest = json.loads(args.backtest.read_text(encoding="utf-8"))
+    team = pd.read_csv(args.data / "sales_teams.csv")
+    pilot = json.loads(args.pilot.read_text(encoding="utf-8"))
+    deals = ls.load_deals(args.data)
+    payload = build_payload(deals, team, backtest, pilot)
+    history = json.dumps(build_history(deals), ensure_ascii=False, separators=(",", ":"))
+    args.history_out.write_text("window.LEAD_HISTORY = " + history + ";\n", encoding="utf-8")
+    args.out.write_text("window.LEAD_DATA = " + json.dumps(payload, ensure_ascii=False) + ";\n", encoding="utf-8")
+
+    engaged = pd.DataFrame(payload["engaged"])
+    print("foco", (engaged["queue"] == "foco").sum(), "decidir", (engaged["queue"] == "decidir").sum(), "prospecting", len(payload["prospecting"]))
+    print(engaged.groupby("queue").agg(price=("price", "sum"), expected=("expected", "sum"), no_account=("account", lambda s: s.isna().mean())).round(3))
+    print(engaged[engaged["queue"] == "foco"].groupby("zone").size().to_dict())
+    print("per rep foco", engaged[engaged["queue"] == "foco"].groupby("agent").size().describe().round(1).to_dict())
+    print(engaged.head(5)[["id", "agent", "product", "account", "age", "score", "valuePts", "timingPts", "probability", "expected"]].to_string())
+
+
+if __name__ == "__main__":
+    main()
