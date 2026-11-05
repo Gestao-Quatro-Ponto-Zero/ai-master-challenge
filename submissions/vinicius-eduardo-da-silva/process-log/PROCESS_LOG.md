@@ -35,7 +35,7 @@ Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` 
 
 ## Onde a IA errou e como foi corrigido
 
-Todos os itens abaixo foram percebidos durante o trabalho, com a verificação indicada.
+Todos os itens abaixo foram detectados pelo próprio Claude Code, nos testes automáticos e na revisão das telas que ele fez, e não por Vinicius.
 
 | Erro | Como apareceu | Correção |
 |---|---|---|
