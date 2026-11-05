@@ -1,4 +1,8 @@
-# Submissão — Arthur Lima — Challenge 003: Lead Scorer
+# Submissão — Arthur Lima — Challenges 002 & 003
+
+> **Navegação de Entregas nesta Submissão:**
+> - 🛡️ **[Challenge 002 — Redesign de Suporte (Operações / CX — Diagnóstico + Automação + Build)](./challenge-002/README.md)** — Solução funcional em [`challenge-002/solution/`](./challenge-002/solution/) e [`challenge-002/PROCESS_LOG.md`](./challenge-002/PROCESS_LOG.md).
+> - 🎯 **Challenge 003 — Lead Scorer (Vendas / RevOps — Build)** — Documentado abaixo, com código em [`solution/`](./solution/) e [`PROCESS_LOG.md`](./PROCESS_LOG.md).
 
 ## Sobre mim
 

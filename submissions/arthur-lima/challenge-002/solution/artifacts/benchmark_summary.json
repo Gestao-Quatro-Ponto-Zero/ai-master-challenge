@@ -1,0 +1,347 @@
+{
+  "d1_audit": {
+    "total_tickets": 8469,
+    "closed_tickets": 2769,
+    "open_tickets": 2819,
+    "pending_customer_tickets": 2881,
+    "backlog_tickets": 5700,
+    "backlog_share_pct": 67.30428622033298,
+    "high_critical_tickets": 4214,
+    "high_critical_share_pct": 49.75794072499705,
+    "literal_placeholder_count": 8469,
+    "literal_placeholder_pct": 100.0,
+    "negative_ttr_count": 1365,
+    "negative_ttr_pct": 49.29577464788733,
+    "mean_delta_hours": -0.057704345732514734,
+    "median_delta_hours": 0.16666666666666666,
+    "csat_mean": 2.991332611050921,
+    "csat_std": 1.407015861799693,
+    "csat_delta_corr_r": 0.019874987412907972,
+    "csat_delta_corr_p": 0.2958018794740143,
+    "status_counts": {
+      "Pending Customer Response": 2881,
+      "Open": 2819,
+      "Closed": 2769
+    },
+    "priority_counts": {
+      "Medium": 2192,
+      "Critical": 2129,
+      "High": 2085,
+      "Low": 2063
+    },
+    "channel_counts": {
+      "Email": 2143,
+      "Phone": 2132,
+      "Social media": 2121,
+      "Chat": 2073
+    },
+    "type_counts": {
+      "Refund request": 1752,
+      "Technical issue": 1747,
+      "Cancellation request": 1695,
+      "Product inquiry": 1641,
+      "Billing inquiry": 1634
+    },
+    "csat_distribution": {
+      "1": 553,
+      "2": 549,
+      "3": 580,
+      "4": 543,
+      "5": 544
+    },
+    "dimension_tests": {
+      "Ticket Channel": {
+        "csat_anova_f": 1.2807905066240939,
+        "csat_anova_p": 0.2792219615541183,
+        "csat_kruskal_p": 0.2784544691493639,
+        "csat_obs_spread": 0.130842927507977,
+        "csat_perm_p": 0.3383084577114428,
+        "delta_anova_f": 0.879657873821492,
+        "delta_anova_p": 0.4508333105487248,
+        "delta_kruskal_p": 0.46022599207896986
+      },
+      "Ticket Priority": {
+        "csat_anova_f": 0.5721824954146238,
+        "csat_anova_p": 0.6333104662614313,
+        "csat_kruskal_p": 0.6286990111454205,
+        "csat_obs_spread": 0.09411734510548753,
+        "csat_perm_p": 0.5323383084577115,
+        "delta_anova_f": 0.6728218589081482,
+        "delta_anova_p": 0.5686597372421143,
+        "delta_kruskal_p": 0.6399350857046984
+      },
+      "Ticket Type": {
+        "csat_anova_f": 0.5475445893031425,
+        "csat_anova_p": 0.7008416187855229,
+        "csat_kruskal_p": 0.6992506657582733,
+        "csat_obs_spread": 0.09450600905259865,
+        "csat_perm_p": 0.8159203980099502,
+        "delta_anova_f": 0.24815407101486825,
+        "delta_anova_p": 0.9108862145879685,
+        "delta_kruskal_p": 0.9194913366959034
+      },
+      "Ticket Subject": {
+        "csat_anova_f": 0.6765604411806869,
+        "csat_anova_p": 0.8099655052493689,
+        "csat_kruskal_p": 0.8066298085314396,
+        "csat_obs_spread": 0.38017351728061444,
+        "csat_perm_p": 0.472636815920398,
+        "delta_anova_f": 0.993706456403153,
+        "delta_anova_p": 0.45861120098653085,
+        "delta_kruskal_p": 0.3827587412035379
+      }
+    }
+  },
+  "d1_null_predictability": {
+    "d1_test_size": 1694,
+    "type_accuracy": 0.21428571428571427,
+    "type_macro_f1": 0.21431869966486458,
+    "type_chance_baseline": 0.2,
+    "priority_accuracy": 0.24970484061393153,
+    "priority_macro_f1": 0.24859498547038078,
+    "priority_chance_baseline": 0.25
+  },
+  "d2_train_size": 38269,
+  "d2_test_size": 9568,
+  "d2_duplicate_audit": {
+    "exact_dup_in_test_count": 0,
+    "exact_dup_in_test_pct": 0.0,
+    "strict_unseen_test_count": 9568,
+    "strict_unseen_global_accuracy_pct": 85.95,
+    "strict_unseen_tier1_accuracy_pct": 97.3
+  },
+  "model_comparison": [
+    {
+      "Modelo / Estratégia": "Motor Principal: Calibrated LinearSVC (TF-IDF 1-2g, CV=3 por fold)",
+      "Accuracy Global": 0.8595,
+      "Macro-F1 Global": 0.8628,
+      "Top-2 Accuracy": 0.963
+    },
+    {
+      "Modelo / Estratégia": "Baseline 3: Logistic Regression (TF-IDF 1-2g)",
+      "Accuracy Global": 0.8561,
+      "Macro-F1 Global": 0.8555,
+      "Top-2 Accuracy": NaN
+    },
+    {
+      "Modelo / Estratégia": "Baseline 2: Complement Naive Bayes",
+      "Accuracy Global": 0.813,
+      "Macro-F1 Global": 0.803,
+      "Top-2 Accuracy": NaN
+    },
+    {
+      "Modelo / Estratégia": "Baseline 1: Classe Majoritária (Hardware)",
+      "Accuracy Global": 0.2847,
+      "Macro-F1 Global": 0.0554,
+      "Top-2 Accuracy": NaN
+    }
+  ],
+  "selective_curve": [
+    {
+      "Limiar de Confiança (τ)": ">= 0.55",
+      "Tickets Cobertos (n)": 8466,
+      "Cobertura da Fila (%)": 88.48,
+      "Acurácia no Subconjunto (%)": 90.79,
+      "Macro-F1 no Subconjunto": 0.9096,
+      "Taxa de Erro Residual (%)": 9.21,
+      "Tier 1 Operacional (n)": 8048,
+      "Cobertura Tier 1 Operacional (%)": 84.11,
+      "Acurácia Tier 1 Operacional (%)": 90.88
+    },
+    {
+      "Limiar de Confiança (τ)": ">= 0.60",
+      "Tickets Cobertos (n)": 8023,
+      "Cobertura da Fila (%)": 83.85,
+      "Acurácia no Subconjunto (%)": 92.38,
+      "Macro-F1 no Subconjunto": 0.9255,
+      "Taxa de Erro Residual (%)": 7.62,
+      "Tier 1 Operacional (n)": 7642,
+      "Cobertura Tier 1 Operacional (%)": 79.87,
+      "Acurácia Tier 1 Operacional (%)": 92.45
+    },
+    {
+      "Limiar de Confiança (τ)": ">= 0.70",
+      "Tickets Cobertos (n)": 7189,
+      "Cobertura da Fila (%)": 75.14,
+      "Acurácia no Subconjunto (%)": 94.8,
+      "Macro-F1 no Subconjunto": 0.9468,
+      "Taxa de Erro Residual (%)": 5.2,
+      "Tier 1 Operacional (n)": 6869,
+      "Cobertura Tier 1 Operacional (%)": 71.79,
+      "Acurácia Tier 1 Operacional (%)": 94.86
+    },
+    {
+      "Limiar de Confiança (τ)": ">= 0.75",
+      "Tickets Cobertos (n)": 6644,
+      "Cobertura da Fila (%)": 69.44,
+      "Acurácia no Subconjunto (%)": 95.97,
+      "Macro-F1 no Subconjunto": 0.9587,
+      "Taxa de Erro Residual (%)": 4.03,
+      "Tier 1 Operacional (n)": 6354,
+      "Cobertura Tier 1 Operacional (%)": 66.41,
+      "Acurácia Tier 1 Operacional (%)": 96.02
+    },
+    {
+      "Limiar de Confiança (τ)": ">= 0.80",
+      "Tickets Cobertos (n)": 6075,
+      "Cobertura da Fila (%)": 63.49,
+      "Acurácia no Subconjunto (%)": 97.23,
+      "Macro-F1 no Subconjunto": 0.9714,
+      "Taxa de Erro Residual (%)": 2.77,
+      "Tier 1 Operacional (n)": 5822,
+      "Cobertura Tier 1 Operacional (%)": 60.85,
+      "Acurácia Tier 1 Operacional (%)": 97.3
+    },
+    {
+      "Limiar de Confiança (τ)": ">= 0.85",
+      "Tickets Cobertos (n)": 5366,
+      "Cobertura da Fila (%)": 56.08,
+      "Acurácia no Subconjunto (%)": 98.16,
+      "Macro-F1 no Subconjunto": 0.9798,
+      "Taxa de Erro Residual (%)": 1.84,
+      "Tier 1 Operacional (n)": 5162,
+      "Cobertura Tier 1 Operacional (%)": 53.95,
+      "Acurácia Tier 1 Operacional (%)": 98.2
+    },
+    {
+      "Limiar de Confiança (τ)": ">= 0.90",
+      "Tickets Cobertos (n)": 4383,
+      "Cobertura da Fila (%)": 45.81,
+      "Acurácia no Subconjunto (%)": 99.04,
+      "Macro-F1 no Subconjunto": 0.9889,
+      "Taxa de Erro Residual (%)": 0.96,
+      "Tier 1 Operacional (n)": 4242,
+      "Cobertura Tier 1 Operacional (%)": 44.34,
+      "Acurácia Tier 1 Operacional (%)": 99.03
+    }
+  ],
+  "per_class_metrics": [
+    {
+      "Categoria (Dataset 2)": "Access",
+      "Suporte Teste (n)": 1425,
+      "Precision (%)": 90.85,
+      "Recall (%)": 90.53,
+      "F1-Score": 0.9069
+    },
+    {
+      "Categoria (Dataset 2)": "Administrative rights",
+      "Suporte Teste (n)": 352,
+      "Precision (%)": 87.94,
+      "Recall (%)": 70.45,
+      "F1-Score": 0.7823
+    },
+    {
+      "Categoria (Dataset 2)": "HR Support",
+      "Suporte Teste (n)": 2183,
+      "Precision (%)": 86.86,
+      "Recall (%)": 85.98,
+      "F1-Score": 0.8642
+    },
+    {
+      "Categoria (Dataset 2)": "Hardware",
+      "Suporte Teste (n)": 2724,
+      "Precision (%)": 81.23,
+      "Recall (%)": 86.89,
+      "F1-Score": 0.8397
+    },
+    {
+      "Categoria (Dataset 2)": "Internal Project",
+      "Suporte Teste (n)": 424,
+      "Precision (%)": 89.3,
+      "Recall (%)": 84.67,
+      "F1-Score": 0.8692
+    },
+    {
+      "Categoria (Dataset 2)": "Miscellaneous",
+      "Suporte Teste (n)": 1412,
+      "Precision (%)": 82.31,
+      "Recall (%)": 82.72,
+      "F1-Score": 0.8252
+    },
+    {
+      "Categoria (Dataset 2)": "Purchase",
+      "Suporte Teste (n)": 493,
+      "Precision (%)": 95.81,
+      "Recall (%)": 88.03,
+      "F1-Score": 0.9175
+    },
+    {
+      "Categoria (Dataset 2)": "Storage",
+      "Suporte Teste (n)": 555,
+      "Precision (%)": 93.04,
+      "Recall (%)": 86.67,
+      "F1-Score": 0.8974
+    }
+  ],
+  "tier_summary": {
+    "tier1_count": 5822,
+    "tier1_coverage_pct": 60.85,
+    "tier1_accuracy_pct": 97.3,
+    "tier2_count": 2504,
+    "tier2_coverage_pct": 26.17,
+    "tier2_top2_accuracy_pct": 94.97,
+    "tier3_count": 1242,
+    "tier3_coverage_pct": 12.98
+  },
+  "domain_shift_stress": {
+    "d1_total": 8469,
+    "naive_false_tier1_count": 3329,
+    "naive_false_tier1_pct": 39.31,
+    "guarded_raw_tier1_count": 0,
+    "guarded_raw_containment_pct": 100.0,
+    "guarded_interpolated_containment_pct": 93.43
+  },
+  "roi_scenarios": [
+    {
+      "Cenário": "1. Escopo Estrito do Protótipo (Apenas Triagem & Roteamento: 4,0 min + 0,0 min resolução)",
+      "Escopo Modelado": "Executado pelo Protótipo (Triagem Pura)",
+      "Triagem (min)": 4.0,
+      "Assistência Resolução (min)": 0.0,
+      "Cobertura Tier 1 (%)": 60.85,
+      "Precisão Tier 1 (%)": 97.3,
+      "Horas Base/Ano": 2000.0,
+      "Horas Brutas Poupadas": 1363.3,
+      "(-) Horas Retrabalho Erro": 65.6,
+      "(=) Horas Líquidas/Ano": 1297.6,
+      "FTEs Liberados": 0.74,
+      "Economia Bruta (R$/ano)": 84346.13,
+      "(-) TCO Anual IA (R$/ano)": 54000.0,
+      "(=) Economia Líquida (R$/ano)": 30346.13,
+      "Payback Setup (meses)": 13.84
+    },
+    {
+      "Cenário": "2. Base Operacional (Triagem 4,0 min + Aceleração Runbook/Precedente +4,0 min)",
+      "Escopo Modelado": "Protótipo + Adoção do Runbook N1/N2",
+      "Triagem (min)": 4.0,
+      "Assistência Resolução (min)": 4.0,
+      "Cobertura Tier 1 (%)": 60.85,
+      "Precisão Tier 1 (%)": 97.3,
+      "Horas Base/Ano": 4000.0,
+      "Horas Brutas Poupadas": 3005.4,
+      "(-) Horas Retrabalho Erro": 131.3,
+      "(=) Horas Líquidas/Ano": 2874.1,
+      "FTEs Liberados": 1.63,
+      "Economia Bruta (R$/ano)": 186818.95,
+      "(-) TCO Anual IA (R$/ano)": 78000.0,
+      "(=) Economia Líquida (R$/ano)": 108818.95,
+      "Payback Setup (meses)": 4.96
+    },
+    {
+      "Cenário": "3. Expansão Futura via API (Triagem 4,0 min + Provisionamento Automático IAM/ITSM +8,0 min)",
+      "Escopo Modelado": "Hipotético (Requer Integração ITSM/AD)",
+      "Triagem (min)": 4.0,
+      "Assistência Resolução (min)": 8.0,
+      "Cobertura Tier 1 (%)": 60.85,
+      "Precisão Tier 1 (%)": 97.3,
+      "Horas Base/Ano": 6000.0,
+      "Horas Brutas Poupadas": 4582.1,
+      "(-) Horas Retrabalho Erro": 196.9,
+      "(=) Horas Líquidas/Ano": 4385.2,
+      "FTEs Liberados": 2.49,
+      "Economia Bruta (R$/ano)": 285039.06,
+      "(-) TCO Anual IA (R$/ano)": 78000.0,
+      "(=) Economia Líquida (R$/ano)": 207039.06,
+      "Payback Setup (meses)": 2.61
+    }
+  ]
+}
