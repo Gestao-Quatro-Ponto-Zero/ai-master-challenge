@@ -9,6 +9,7 @@ import statistics
 import sys
 import time
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -17,7 +18,8 @@ sys.path.insert(0, str(RAIZ))
 from prova.estatistica import wilson  # noqa: E402
 from prova.sugestao import ErroDaSugestao, Sugestor, regra_de_palavras  # noqa: E402
 
-LIMITE_DE_GASTO = 0.25
+LIMITE_DE_GASTO = 0.05
+EM_PARALELO = 8
 
 
 def medir(previstos, rotulos):
@@ -44,35 +46,37 @@ def main():
     rotulos = [l["rotulo"] for l in linhas]
     saida = {"frases": len(linhas), "regra_de_palavras": medir([regra_de_palavras(l["texto"]) for l in linhas], rotulos), "modelos": {}}
     gasto = 0.0
+    destino = RAIZ / "analysis" / "resultados_sugestao.json"
+
     for modelo in sys.argv[1:]:
-        sugestor = Sugestor.do_ambiente()
-        sugestor.modelo = modelo
-        sugestor.pedidos = []
-        previstos, tempos, falhas, custo = [], [], 0, 0.0
-        for linha in linhas:
-            if gasto + custo > LIMITE_DE_GASTO:
-                raise SystemExit(f"Limite de gasto atingido em ${gasto + custo:.4f}")
+        if gasto > LIMITE_DE_GASTO:
+            raise SystemExit(f"Limite de gasto atingido em ${gasto:.4f}")
+
+        def classificar(linha, modelo=modelo):
+            sugestor = Sugestor.do_ambiente()
+            sugestor.modelo = modelo
             inicio = time.monotonic()
             try:
                 r = sugestor.sugerir(linha["texto"])
-                previstos.append(r["resposta"])
-                custo += float(r["uso"].get("cost") or 0)
+                return r["resposta"], time.monotonic() - inicio, float(r["uso"].get("cost") or 0), None
             except ErroDaSugestao as erro:
-                print(modelo, "falhou:", erro, file=sys.stderr)
-                previstos.append("falha")
-                falhas += 1
-            tempos.append(time.monotonic() - inicio)
-            sugestor.pedidos = []
+                return "falha", time.monotonic() - inicio, 0.0, str(erro)
+
+        with ThreadPoolExecutor(EM_PARALELO) as grupo:
+            respostas = list(grupo.map(classificar, linhas))
+        custo = sum(r[2] for r in respostas)
         gasto += custo
         saida["modelos"][modelo] = {
-            **medir(previstos, rotulos),
-            "falhas": falhas,
-            "tempo_mediano_s": statistics.median(tempos),
+            **medir([r[0] for r in respostas], rotulos),
+            "falhas": sum(r[3] is not None for r in respostas),
+            "erros": dict(Counter(r[3] for r in respostas if r[3])),
+            "tempo_mediano_s": statistics.median(r[1] for r in respostas),
             "custo_total_usd": custo,
-            "previstos": previstos,
+            "previstos": [r[0] for r in respostas],
         }
+        destino.write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
     saida["gasto_total_usd"] = gasto
-    (RAIZ / "analysis" / "resultados_sugestao.json").write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
+    destino.write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: v for k, v in saida.items() if k != "modelos"}, ensure_ascii=False))
     for modelo, r in saida["modelos"].items():
         print(modelo, {k: v for k, v in r.items() if k != "previstos"})

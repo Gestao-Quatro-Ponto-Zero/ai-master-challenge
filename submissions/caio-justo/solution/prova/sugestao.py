@@ -11,6 +11,8 @@ import urllib.request
 
 URL = "https://openrouter.ai/api/v1/chat/completions"
 MODELO_PADRAO = "anthropic/claude-haiku-5.5"
+# Classificar uma frase não pede raciocínio longo, e desligar deixa mais rápido e barato.
+SEM_RACIOCINIO = {"deepseek/deepseek-v4-flash", "deepseek/deepseek-v4.1-flash-1017"}
 TAMANHO_MAXIMO = 500
 TEMPO_LIMITE = 20
 LIMITE_POR_MINUTO = 60
@@ -90,14 +92,16 @@ class Sugestor:
         return bool(self.chave)
 
     def corpo(self, nota: str) -> dict:
+        extras = {"reasoning": {"enabled": False}} if self.modelo in SEM_RACIOCINIO else {}
         return {
+            **extras,
             "model": self.modelo,
             "messages": [
                 {"role": "system", "content": INSTRUCOES},
                 {"role": "user", "content": f"<nota>{nota}</nota>"},
             ],
-            "temperature": 0,
-            "max_tokens": 120,
+            # O teto limita o gasto. Com 120, modelos que raciocinam ficavam sem espaço para responder.
+            "max_tokens": 400,
             "response_format": {
                 "type": "json_schema",
                 "json_schema": {"name": "sugestao", "strict": True, "schema": ESQUEMA},
@@ -126,7 +130,7 @@ class Sugestor:
         try:
             conteudo = json.loads(dados["choices"][0]["message"]["content"])
             resposta = conteudo["resposta"]
-            motivo = str(conteudo.get("motivo", ""))[:160]
+            motivo = str(conteudo.get("motivo", ""))[:160].rstrip(" .")
         except (KeyError, IndexError, TypeError, ValueError):
             raise ErroDaSugestao("A IA devolveu uma resposta fora do formato") from None
         if resposta not in RESPOSTAS:
