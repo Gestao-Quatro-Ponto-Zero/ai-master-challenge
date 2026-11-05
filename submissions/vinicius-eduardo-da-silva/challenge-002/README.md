@@ -33,7 +33,7 @@ Com o Claude Code, verifiquei se os dados de suporte permitiam responder ao Dire
 
 ### Abordagem
 
-Antes de responder, testei se os dados sustentavam uma resposta. Comparei cada padrão com dados embaralhados e avaliei o classificador nas últimas linhas do arquivo, não só em uma divisão aleatória. Depois, testei o modelo de TI nos tickets de clientes, porque o enunciado aponta o cruzamento como o ponto forte.
+Trabalhei com o Claude Code, que fez a análise e o código enquanto eu tomava as decisões. Antes de responder, testamos se os dados sustentavam uma resposta: comparamos cada padrão com dados embaralhados e avaliamos o classificador nas últimas linhas do arquivo, não só em uma divisão aleatória. Depois, testamos o modelo de TI nos tickets de clientes, porque o enunciado aponta o cruzamento como o ponto forte.
 
 ### Resultados / Findings
 
