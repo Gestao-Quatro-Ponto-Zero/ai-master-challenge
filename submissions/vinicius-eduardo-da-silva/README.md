@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Construí o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a cada vendedor o que fazer na segunda de manhã e por quê. A análise mudou o problema: **82% dos deals em Engaging já passaram de 138 dias, a maior duração entre todos os deals encerrados**, e características como vendedor, produto e setor quase não preveem o fechamento. Por isso, os deals parados vão para uma triagem rápida, e os vivos recebem um score de valor e momento. Em 22 segundas-feiras passadas, a lista trouxe **42% mais receita que ordenar por valor e 21% mais que o rival mais forte**, que ordena por valor e já ignora os parados. A principal recomendação é limpar o pipeline parado, confirmar com RevOps o que aconteceu na região Central e medir o ganho real em um piloto de um trimestre.
+Construí com o Claude Code o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a cada vendedor o que fazer na segunda de manhã e por quê. A análise mudou o problema: **82% dos deals em Engaging já passaram de 138 dias, a maior duração entre todos os deals encerrados**, e características como vendedor, produto e setor quase não preveem o fechamento. Por isso, os deals parados vão para uma triagem rápida, e os vivos recebem um score de valor e momento. Em 22 segundas-feiras passadas, a lista trouxe **42% mais receita que ordenar por valor e 21% mais que o rival mais forte**, que ordena por valor e já ignora os parados. A principal recomendação é limpar o pipeline parado, confirmar com RevOps o que aconteceu na região Central e medir o ganho real em um piloto de um trimestre.
 
 **Para testar:** abra [`solution/app/index.html`](solution/app/index.html) no navegador, com dois cliques, e siga este roteiro:
 
@@ -34,7 +34,7 @@ Construí o **Foco da Semana**, uma ferramenta que abre com dois cliques e diz a
 
 ### Abordagem
 
-Auditei os dados antes de desenhar o score e testei cada critério em segundas-feiras reconstruídas, usando só o que se sabia em cada data. Um critério só entrava se melhorasse a lista. No fim, tentei derrubar o próprio resultado, e isso mudou a mensagem principal.
+Trabalhei com o Claude Code, que fez a análise e o código enquanto eu tomava as decisões e avaliava o resultado. Primeiro, auditamos os dados. Depois, testamos cada critério em segundas-feiras reconstruídas, usando só o que se sabia em cada data, e um critério só entrava se melhorasse a lista. No fim, tentamos derrubar o próprio resultado, e isso mudou a mensagem principal.
 
 ### Resultados / Findings
 
@@ -85,6 +85,7 @@ Auditei os dados antes de desenhar o score e testei cada critério em segundas-f
 - Passar de 138 dias não prova que o deal morreu, então a decisão fica com o vendedor.
 - O CRM não registra atividade, e deals em Prospecting não têm data nem score.
 - Os minutos da calculadora de tempo são premissas, não dados.
+- As regras comerciais e as ações sugeridas não foram validadas com alguém da área de vendas.
 
 ---
 
@@ -111,14 +112,22 @@ Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md).
 
 ### Onde a IA errou e como corrigi
 
-Os erros estão detalhados no process log, com a forma como cada um apareceu. Dois exemplos:
+Os erros estão detalhados no process log, com a forma como cada um apareceu. O próprio Claude Code os detectou nos testes e nas revisões, e o da referência fraca surgiu na auditoria que pedi. Dois exemplos:
 
 - **Chance errada na tela:** a ferramenta mostrava cerca de 14% de chance para um deal de 67 dias em 1º de janeiro, quando o histórico indicava 0–2,6%. O ranking estava bom no replay, então os testes não acusaram; o problema apareceu na revisão da tela.
 - **Referência fraca:** o "+42%" era apresentado como resultado principal. A auditoria final mostrou que, contra um rival que já ignora os deals parados, o ganho é de +21%, e de +8% em out–nov.
 
 ### O que eu adicionei que a IA sozinha não faria
 
-[PREENCHER com suas palavras: ver o final de `process-log/PROCESS_LOG.md`]
+Não conheço o negócio de vendas. Resolvi este problema junto com a IA, e minha contribuição foi de direção e de cobrança, não de conhecimento comercial:
+
+- **Decidi o rumo:** escolhi o desafio, a fila separada para os deals parados, testar o efeito de trimestre antes de usá-lo, o formato sem deploy e quais extras entrariam.
+- **Usei a ferramenta e disse o que estava ruim:** achei a página simples demais, e isso levou ao redesign. Notei que ela estava presa a uma data fixa, e isso levou ao filtro de data. Perguntei se dava para mostrar mais detalhes para o vendedor ver valor no deal, e isso levou aos detalhes do deal.
+- **Cobrei resultado:** perguntei se estávamos atendendo ao enunciado e se dava para ir além. Depois, perguntei se tudo funcionava e se teríamos resultado. Essa última pergunta levou à auditoria que trocou o "+42%" pela comparação mais honesta, de +21%.
+
+**Minha aposta:** se a ferramenta resolver a dor do vendedor, eles vão usar. A decisão sobre um deal parado precisa ser breve, para ele decidir e fazer acontecer. Isso é uma opinião, não um dado, e o piloto serve para testá-la.
+
+**O que eu não fiz:** não encontrei os erros técnicos, que foram detectados pelo Claude Code, e não validei as regras comerciais com alguém da área. Também não tenho os minutos reais gastos em um deal parado, por isso a calculadora usa premissas ajustáveis.
 
 ---
 
@@ -132,4 +141,4 @@ Os erros estão detalhados no process log, com a forma como cada um apareceu. Do
 
 ---
 
-_Submissão enviada em: [PREENCHER]_
+_Submissão enviada em: 05/11/2026_

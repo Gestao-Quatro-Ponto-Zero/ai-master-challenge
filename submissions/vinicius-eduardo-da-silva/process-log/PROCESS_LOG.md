@@ -81,4 +81,14 @@ O `.gitignore` do desafio ignora `submissions/`, e o PR não pode alterar nada f
 
 ## O que eu adicionei
 
-> **Vinicius: escreva esta seção com suas palavras antes de enviar.** Descreva o que você de fato avaliou, testou ou mudou, incluindo sua impressão ao usar a ferramenta como vendedor. Ela não deve ser escrita pela IA.
+*Texto organizado pelo Claude Code a partir das respostas de Vinicius, e revisado por ele.*
+
+Não conheço o negócio de vendas. Resolvi este problema junto com a IA, e minha contribuição foi de direção e de cobrança, não de conhecimento comercial:
+
+- **Decidi o rumo:** escolhi o desafio, a fila separada para os deals parados, testar o efeito de trimestre antes de usá-lo, o formato sem deploy e quais extras entrariam.
+- **Usei a ferramenta e disse o que estava ruim:** achei a página simples demais, e isso levou ao redesign. Notei que ela estava presa a uma data fixa, e isso levou ao filtro de data. Perguntei se dava para mostrar mais detalhes para o vendedor ver valor no deal, e isso levou aos detalhes do deal.
+- **Cobrei resultado:** perguntei se estávamos atendendo ao enunciado e se dava para ir além. Depois, perguntei se tudo funcionava e se teríamos resultado. Essa última pergunta levou à auditoria que trocou o "+42%" pela comparação mais honesta, de +21%.
+
+**Minha aposta:** se a ferramenta resolver a dor do vendedor, eles vão usar. A decisão sobre um deal parado precisa ser breve, para ele decidir e fazer acontecer. Isso é uma opinião, não um dado, e o piloto serve para testá-la.
+
+**O que eu não fiz:** não encontrei os erros técnicos, que foram detectados pelo Claude Code, e não validei as regras comerciais com alguém da área. Também não tenho os minutos reais gastos em um deal parado, por isso a calculadora usa premissas ajustáveis.
