@@ -16,7 +16,7 @@ A nota usa **só o que se sabe hoje** sobre um deal: a etapa em que está, há q
 | **3. Iniciar contato** | Em prospecção | Preço (sem % de chance) | "Fazer o primeiro contato" | 500 |
 | **4. Automatizar** | Em negociação, com até 138 dias, chance acima de 0% e preço < US$ 100 | Valor esperado | "Incluir na cadência automática" | 60 |
 
-Um deal sem empresa cadastrada mostra o aviso **"Empresa não cadastrada: complete o cadastro"**. Na lista Foco, isso foi decisão do Liberato (Registro 03). Nas outras listas, é sugestão da IA ainda não validada.
+Um deal sem empresa cadastrada mostra o aviso **"Empresa não cadastrada: complete o cadastro no CRM"** **nas 4 listas**. Para a lista Foco, essa foi decisão do Liberato no Registro 03. Para as 4 listas, ele aprovou no Registro 06 e reconfirmou em 04/11 às 21:20.
 
 ## A nota da lista Foco
 
@@ -33,7 +33,7 @@ Chance de ser ganho para um deal aberto há X dias. É a curva oficial, montada 
 ## O que o vendedor lê (textos gerados pelo motor, Fase 3a)
 
 - **Foco:** *"Valor esperado US$ 2.313 = preço US$ 5.482 (GTX Plus Pro) × 42% de chance. Na história da empresa, deals com 21 dias em negociação foram ganhos 42% das vezes."*
-  - Deal com 90 dias ou mais acrescenta: *"Atenção: depois de 90 dias a chance cai rápido, e nenhum deal fechou depois de 138 dias."* (sugestão da IA que muda só o texto, não a nota)
+  - Deal com 90 dias ou mais acrescenta: *"Atenção: depois de 90 dias a chance cai rápido, e nenhum deal fechou depois de 138 dias."* (sugerido pela IA e aprovado pelo Liberato no Registro 08; muda só o texto, não a nota)
   - Chance abaixo de 1% aparece como *"menos de 1%"*, e não como "0%".
   - Nota: *"Nota 76 de 100: vale mais (em valor esperado) que 76% dos outros deals em Foco na empresa"*.
 - **Requalificar (ligar):** *"Aberto há 150 dias. Nenhum deal da história fechou depois de 138 dias. Preço US$ 26.768 (GTK 500), igual ou acima de US$ 4.000: vale uma ligação para confirmar se ainda existe interesse antes de encerrar."*

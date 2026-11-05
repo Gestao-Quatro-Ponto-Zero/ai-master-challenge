@@ -1,6 +1,7 @@
 # Prompt 01 para o Lovable: criação da tela
 
-> **Status:** rascunho **v2** escrito pelo Claude em 04/11/2026, **aguardando aprovação do Liberato**. Nada foi enviado ao Lovable ainda.
+> **Status:** versão **v3, aprovada pelo Liberato em 04/11/2026 às 21:20** (ele aprovou a v2 e pediu um ajuste na regra de cálculos, que gerou a v3). O texto enviado ao Lovable é exatamente o que está depois da linha `---`.
+> Mudança da v3: o app não pode recalcular notas, chances, valores esperados nem classificações, mas pode fazer contagens, somas, filtros e formatações. A v2 está em `versoes/prompt_lovable_01_rascunho_v2.md`.
 > Mudança da v2: a data histórica (31/12/2017) agora aparece em destaque e o título deixou de usar "hoje". Isso atende à verificação 5 pedida pelo Liberato em 04/11 às 20:49. A v1 está em `versoes/prompt_lovable_01_rascunho_v1.md`.
 > Quando for enviado, este arquivo passa a registrar o texto exato que foi usado.
 
@@ -9,7 +10,8 @@
 Crie um app web de uma página chamado **"Lead Scorer — Onde focar"**, todo em português do Brasil, para vendedores B2B decidirem em quais oportunidades (deals) trabalhar.
 
 ## Regra mais importante
-O app **não calcula nada**. Notas, listas, ações e explicações já vêm prontas num arquivo JSON gerado por um motor externo, que foi testado. O app só carrega, filtra e mostra. Não recalcule, não crie outra ordem e não altere os textos que vêm do arquivo.
+O app **não pode recalcular notas, chances, valores esperados nem classificações** (a lista, a ação e a ordem de cada deal). Tudo isso já vem pronto num arquivo JSON gerado por um motor externo, que foi testado. Use esses valores como vêm, sem alterar os textos do arquivo e sem criar outra ordem para os deals.
+O app **pode** fazer contagens, somas, filtros e formatações (de moeda, data e porcentagem) para mostrar os dados corretamente. Por exemplo: contar deals por lista no filtro atual ou somar o `valor_esperado_usd` dos deals filtrados.
 
 ## Os dados são históricos: deixe isso evidente
 Os dados são de uma base de demonstração e mostram o pipeline **como ele estava em 31/12/2017** (o campo `data_referencia`). **Nunca apresente os dados como atuais.** Não use as palavras "hoje" ou "agora" para falar dos deals. Em toda a tela, a referência é "em {data_referencia}".
@@ -59,7 +61,7 @@ Estrutura do JSON:
    - **As 4 listas.** "Foco: deals em negociação dentro do ciclo histórico, com preço a partir de US$ {valor_minimo_foco_usd}. Requalificar ou encerrar: deals em negociação fora do ciclo histórico; a partir de US$ {valor_deal_grande_usd}, vale uma ligação antes de encerrar. Iniciar contato: deals em prospecção, ordenados pelo preço, porque não há histórico para estimar a chance. Automatizar: deals dentro do ciclo, abaixo de US$ {valor_minimo_foco_usd}, para cadência automática."
    - Um **gráfico de linha** da `curva_chance`, com "dias em negociação" no eixo x e "chance de ser ganho (%)" no eixo y.
    - Um bloco **"Teste de volta no tempo"**: "Em {data_corte em dd/mm/aaaa}, os 20% de deals com maior nota nesta lógica concentravam {captura_top20_nossa_logica em %} da receita ganha nos meses seguintes. Ordenando só pelo preço, seriam {captura_top20_so_valor em %}."
-   - Uma nota final: "O app não calcula nada: tudo vem de um motor testado (12 testes automáticos, incluindo um teste contra o uso de informação do futuro)."
+   - Uma nota final: "O app não recalcula notas, chances nem listas: tudo vem de um motor testado (12 testes automáticos, incluindo um teste contra o uso de informação do futuro)."
 
 ## Estilo
 Visual limpo e profissional, com fundo claro e tipografia legível. O app precisa ser responsivo e funcionar no celular. Use os componentes shadcn/ui e os ícones lucide, sem animações exageradas. Não use login, banco de dados nem backend: é um app só de leitura.
