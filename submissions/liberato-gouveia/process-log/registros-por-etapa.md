@@ -41,6 +41,7 @@ Nenhuma interação, teste, resultado ou decisão é inventado. Quando faltar o 
 | 04/11 (antes de 18:08) | O ChatGPT o orientou passo a passo na criação da branch `submission/liberato-gouveia` (Registro 01) | — (orientação sobre GitHub) | Não informado | Criar a branch manualmente a partir da `main` | A branch foi criada pelo Liberato; o Claude conferiu no GitHub | Conversa com o ChatGPT: **não fornecida** |
 | 04/11 18:08 | O texto do pedido de atualização do log foi identificado por ele como "prompt do chatgpt" (Registro 01) | — | Não informado | Registrar a criação da branch como preparação do ambiente | Registro 01 | O texto está transcrito no Registro 01 |
 | 04/11 20:49 | Pedido de registro formal do ChatGPT como copiloto estratégico, com 7 verificações antes do Lovable | Arquitetura (motor + Lovable) e envio da branch (Registro 08) | Não informado se as 7 verificações vieram de uma revisão do ChatGPT | Aprovar a arquitetura e o envio, exigir as 7 verificações e não abrir o PR | Registro 09 | Documento enviado pelo Liberato (transcrito em parte no Registro 09) |
+| 04/11 21:51 | O pedido da Fase 4 (8 exigências) foi revisado com o ChatGPT | Entregas da Fase 3 e pendência do código completo (Registro 10) | Não informados separadamente; as 8 exigências são o resultado | Incluir o código completo, verificar a exportação direta, cumprir as 8 exigências, sem PR | Registro 11 | Conversa com o ChatGPT: **não fornecida** |
 
 ---
 
@@ -701,7 +702,7 @@ Construir a tela no Lovable com o prompt aprovado, publicar e testar com dados r
 **Sugestões da IA ainda não validadas por mim**
 - Retirar o número de testes da nota final (mensagem 3).
 - Mostrar a posição do deal dentro do filtro (mensagem 2).
-- Guardar na entrega só o código específico da tela (`solution/app/src/routes/index.tsx`) e não os 78 arquivos do projeto Lovable. Para exportar o projeto completo, o Liberato precisa ligar a integração do Lovable com o GitHub (decisão pendente).
+- Guardar na entrega só o código específico da tela (`solution/app/src/routes/index.tsx`) e não os 78 arquivos do projeto Lovable. Para exportar o projeto completo, o Liberato precisa ligar a integração do Lovable com o GitHub (decisão pendente). *(Correção no Registro 11: o projeto tem **77** arquivos, não 78, e havia como exportar sem integração. A decisão do Liberato foi incluir o projeto completo.)*
 
 **Interações com o ChatGPT nesta etapa**
 Nenhuma foi informada pelo Liberato.
@@ -716,3 +717,102 @@ Nenhuma foi informada pelo Liberato.
 
 **Tempo aproximado**
 Não informado.
+
+---
+
+## Registro 11: Fase 4, Preparação da entrega (04/11/2026, 21:51–22:05)
+
+**Objetivo da etapa**
+Incluir o código completo da tela na entrega, testar tudo a partir de uma cópia limpa, preparar o README final no template do G4 e apresentar o checklist final. Nesta etapa não houve Pull Request, submissão nem envio ao GitHub: tudo está salvo só localmente, aguardando a revisão do Liberato.
+
+**Ferramentas utilizadas**
+- Claude: verificação da documentação do Lovable, montagem da pasta, varredura de informações sensíveis, testes (npm, pytest, navegador automático Playwright), README e registros
+- Lovable: botão oficial "Download codebase", acionado pelo Liberato
+- ChatGPT: revisão do pedido desta fase, segundo o Liberato (ver abaixo)
+
+**Prompts relevantes** (escritos pelo Liberato, transcritos sem edição)
+> "Vamos preparar a Fase 4 do Challenge 003 — Lead Scorer. Aprovo incluir o código completo do projeto Lovable na entrega, e não apenas o arquivo principal. Antes de ativar qualquer integração, verifique se é possível exportar o código completo do Lovable diretamente. Se não for possível, apresente o procedimento para integrar o projeto ao GitHub, lembrando que o Lovable cria um repositório separado. Minhas exigências: 1. Coloque os arquivos necessários da aplicação dentro de `submissions/liberato-gouveia/solution/app/`, sem modificar arquivos originais do G4. 2. Inclua código-fonte, dependências, configurações e instruções de instalação. 3. Exclua arquivos desnecessários, dependências instaladas, arquivos temporários e informações sensíveis. 4. Teste a aplicação a partir de uma cópia limpa do repositório, incluindo instalação das dependências e compilação. 5. Confirme que o motor Python continua funcionando e que a interface utiliza os dados corretos. 6. Prepare o README final conforme o template oficial do G4, incluindo link da aplicação, abordagem, resultados, limitações e Process Log. 7. Registre as atividades e decisões desta fase no Process Log, incluindo esta revisão feita com o ChatGPT. 8. Apresente um checklist final com os itens aprovados e pendentes. Não abra o Pull Request nem realize a submissão final sem minha autorização. Antes de concluir, apresente o resultado dos testes e os arquivos preparados para minha revisão."
+
+Depois disso, o Liberato enviou o arquivo `lead-scorer-liberato.zip`, baixado do Lovable.
+
+**Revisão com o ChatGPT (seguindo o protocolo da seção do ChatGPT)**
+- **O que o Liberato informou:** o pedido desta fase passou por revisão com o ChatGPT ("incluindo esta revisão feita com o ChatGPT").
+- **Proposta do Claude analisada:** as entregas da Fase 3 e a pendência sobre o código completo da tela (fim do Registro 10).
+- **Riscos ou melhorias apontados pelo ChatGPT:** não foram informados separadamente. O pedido acima, com as 8 exigências, é o resultado da revisão.
+- **Decisão do Liberato:** incluir o código completo; verificar a exportação direta antes de qualquer integração; cumprir as 8 exigências; não abrir PR.
+- **O que foi implementado:** tudo o que está descrito neste registro.
+- **Evidência:** trecho da conversa com o ChatGPT **não fornecido**. Pedido ao Liberato.
+
+**Decisões que realmente tomei (Liberato)**
+1. Incluir o código completo do projeto Lovable, e não só o arquivo principal.
+2. Verificar a exportação direta antes de ativar qualquer integração.
+3. As 8 exigências acima.
+4. Baixar o ZIP pelo botão oficial do Lovable e enviá-lo ao Claude.
+5. Não abrir PR nem fazer a submissão sem a minha autorização.
+
+**Resultados obtidos**
+
+*1. Exportação direta.* A documentação oficial do Lovable confirma que, nos planos pagos, quem edita o projeto pode baixar o código completo como ZIP pelo editor de código. **Por isso, não foi preciso ativar nenhuma integração nem criar outro repositório.** O Claude também alertou para não usar extensões de navegador de terceiros.
+
+*2. Conferência do ZIP.* São 77 arquivos, **exatamente os mesmos** que a API do Lovable lista para o projeto. O arquivo da tela (`src/routes/index.tsx`) é **idêntico** à cópia feita antes (MD5 `bf917650…`). Não há senhas, chaves, tokens nem e-mails.
+
+*3. Montagem de `solution/app/`.* O projeto completo entrou, menos o README genérico do Lovable (substituído pelo nosso) e o `AGENTS.md` (instruções para agentes de IA sobre uma sincronização com GitHub que este projeto não usa). Resultado: 76 arquivos. Também não entraram `node_modules`, arquivos compilados nem `.env`. Nenhum arquivo do G4 foi alterado.
+
+*4. Testes a partir de uma cópia limpa do repositório* (`git clone` do commit local `4a6cce7` numa pasta nova):
+
+| Teste | Resultado |
+|---|---|
+| `npm install` | ❌ Falhou com erro interno do npm 10.9.9 (`Cannot read properties of null (reading 'edgesOut')`), na resolução de dependências pares |
+| `npm install --legacy-peer-deps` | ✅ 509 pacotes em 18 s |
+| `npm run build` | ✅ Compilou em ~4 s (versão para Cloudflare Workers, em `.output/`) |
+| `npm test` (teste do projeto) | ✅ 1 de 1 |
+| `vite preview` da versão compilada | ❌ Erro 500: esse comando não serve o formato Cloudflare. Ficou documentado; a versão de produção é avaliada pelo link publicado |
+| `npm run dev` + **teste de ponta a ponta com cliques reais** (`analises/fase4_teste_app.py`) | ✅ **29 de 29**: faixa histórica fixa, nenhum "hoje", contagens, soma, ordem, "porquê" e chance idênticos ao motor; filtro por vendedor; lista vazia; cascata; "Mostrar mais"; "Como a nota funciona"; celular; console sem erros |
+| Motor: `gerar_scores.py` + 14 testes, na cópia limpa da branch publicada (`805b675`) | ✅ 14 de 14. O JSON regerado é **idêntico** ao do repositório e ao do link público que a tela usa (MD5 `e85a1cf4…`) |
+
+*5. Varredura de informações sensíveis na entrega.* Nenhum arquivo temporário, senha, chave ou e-mail dentro dos arquivos. **Achado:** os 14 commits já enviados ao GitHub, que é público, têm como autor `Liberato Gonçalves Gouveia <libegouv@gmail.com>`. **Quem configurou esse e-mail foi o Claude**, ao começar o histórico de versões, sem perguntar ao Liberato. A decisão sobre o que fazer está pendente.
+
+*6. README final* (`README.md` da pasta da entrega), no template oficial do G4. É um **rascunho que aguarda a revisão do Liberato**. Na revisão, o próprio Claude corrigiu 3 afirmações imprecisas: uma dizia que a conferência visual tinha sido feita pelo Liberato (ainda não foi); outra aplicava os valores-p a 5 fatores (o teste foi feito em 3); a terceira atribuía ao Liberato a comparação com o Kaggle (ele baixou, e o Claude comparou). O campo **LinkedIn** está vazio, aguardando o Liberato.
+
+**Sugestões da IA ainda não validadas por mim**
+- O texto inteiro do README final.
+- Excluir `README.md` e `AGENTS.md` do Lovable da pasta da tela.
+- Instalar com `npm install --legacy-peer-deps`.
+
+**Erros encontrados e correções**
+
+| Erro | Quem encontrou | Correção |
+|---|---|---|
+| O Registro 10 e o README da tela diziam que o projeto Lovable tinha **78** arquivos; são **77** | Claude, ao conferir o ZIP | Corrigido, com nota no Registro 10 |
+| O Registro 10 dizia que só dava para exportar o projeto pela integração com o GitHub; havia o botão "Download codebase" | Claude, ao verificar a documentação a pedido do Liberato | Usado o botão oficial |
+| `npm install` falha no npm 10.9.9 | Teste na cópia limpa | Instalação com `--legacy-peer-deps`, documentada |
+| `vite preview` não serve a compilação | Teste na cópia limpa | Documentado; a tela foi testada com `npm run dev` |
+| O comando do Claude para encerrar um servidor de teste derrubou o próprio terminal | Claude | O servidor foi reiniciado de outra forma; não afetou os arquivos |
+| 3 afirmações imprecisas no rascunho do README | Claude, na revisão do texto | Corrigidas antes da apresentação |
+| O e-mail do Liberato está nos commits públicos | Claude, na varredura | **Pendente:** decisão do Liberato |
+
+**Testes ou evidências disponíveis**
+- `analises/fase4_teste_app.py` e `analises/resultados/fase4_teste_app_local.txt` (29 de 29)
+- `prints/tela_teste_local_desktop.png` e `prints/tela_teste_local_celular.png`
+- `solution/app/README.md`: instruções testadas
+- `README.md`: rascunho do README final
+
+**Tempo aproximado**
+Não informado.
+
+### Checklist final (04/11/2026, 22:05)
+
+| # | Item | Situação |
+|---|---|---|
+| 1 | Código completo da tela em `solution/app/`, sem alterar arquivos do G4 | ✅ Feito (76 arquivos) |
+| 2 | Código-fonte, dependências, configurações e instruções de instalação | ✅ Feito |
+| 3 | Sem arquivos desnecessários, dependências instaladas, temporários ou sensíveis | ✅ Nos arquivos. ⚠️ O e-mail aparece nos commits (decisão pendente) |
+| 4 | Teste a partir de cópia limpa: instalação, compilação e testes | ✅ Feito (com `--legacy-peer-deps`); 29 de 29 com cliques reais |
+| 5 | Motor funcionando e tela usando os dados corretos | ✅ 14 de 14; JSON idêntico em repositório, regeração e link |
+| 6 | README final no template do G4 | ⏳ Rascunho pronto; **revisão do Liberato** e **LinkedIn** pendentes |
+| 7 | Process Log atualizado, incluindo a revisão com o ChatGPT | ✅ Este registro; o trecho da conversa com o ChatGPT está pendente |
+| 8 | Checklist final | ✅ Esta tabela |
+| — | Conferência visual da tela pelo Liberato | ⏳ Pendente |
+| — | Exportação desta conversa com o Claude (link ou prints) | ⏳ Pendente |
+| — | Enviar a Fase 4 para a branch no GitHub | ⏳ Aguarda autorização |
+| — | Abrir o Pull Request (submissão final) | ⏳ Aguarda autorização explícita |

@@ -26,7 +26,7 @@ Num teste de volta no tempo (lógica montada só com dados até 30/09/2017 e con
 |---|---|
 | **Aplicação (abrir no navegador)** | https://lead-scorer-liberato.lovable.app |
 | **Motor do score (Python)** | [`solution/motor/`](solution/motor/): calcula listas, notas e explicações, com 14 testes automáticos |
-| **Tela (Lovable)** | [`solution/app/`](solution/app/): só exibe o resultado do motor, sem recalcular nada |
+| **Tela (Lovable)** | [`solution/app/`](solution/app/): projeto completo; só exibe o resultado do motor, sem recalcular nada |
 | **Lógica aprovada** | [`docs/ficha-da-logica.md`](docs/ficha-da-logica.md) |
 | **Dados** | [`solution/data/`](solution/data/): arquivos oficiais do Kaggle (CC0), conferidos byte a byte |
 
@@ -40,7 +40,14 @@ python gerar_scores.py          # gera saida/deals_priorizados.json e .csv
 python -m pytest -v tests/      # 14 testes, incluindo o teste contra vazamento de futuro
 ```
 
-Para usar a tela, basta abrir o link acima. Para rodar a tela localmente, veja [`solution/app/README.md`](solution/app/README.md).
+```bash
+# Tela (Node 22): projeto completo exportado do Lovable
+cd solution/app
+npm install --legacy-peer-deps  # sem essa opção, o npm 10.9 falha (ver solution/app/README.md)
+npm run dev                     # o endereço local aparece no terminal
+```
+
+Para avaliar, não é preciso instalar nada: basta abrir o link da aplicação.
 
 ### Abordagem
 
@@ -97,7 +104,7 @@ Para usar a tela, basta abrir o link acima. Para rodar a tela localmente, veja [
 - **As porcentagens dependem do período usado na curva.** Um deal novo tem 47% (mar–ago/2017) ou 53% (mar–jun/2017), mas a ordem dos deals praticamente não muda: correlação 0,997.
 - **O padrão de fim de trimestre** (49% dos ganhos registrados em mar/jun/set/dez) não foi usado, porque exigiria informação futura.
 - **A tela lê os dados do GitHub,** então uma atualização leva até ~5 minutos para aparecer, por causa do cache.
-- **Os testes da tela** foram feitos por script no navegador, comparando com os números do motor. _(A confirmar: conferência visual e com cliques reais pelo Liberato.)_
+- **Os testes da tela** foram automáticos: 29 verificações com cliques reais no app rodando a partir de uma cópia limpa do repositório, mais 17 na versão publicada, todas comparadas com os números do motor. _(A confirmar: conferência visual pelo Liberato.)_
 
 ---
 

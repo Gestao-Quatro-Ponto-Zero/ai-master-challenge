@@ -1,0 +1,31 @@
+✅ Faixa histórica com a data de 31/12/2017 
+✅ Faixa continua visível depois de rolar a página — y=8
+✅ Nenhum 'hoje' ou 'agora' na tela 
+✅ Subtítulo com total de deals 
+✅ Aba 'Foco' com a contagem do motor — 228
+✅ Aba 'Requalificar ou encerrar' com a contagem do motor — 1301
+✅ Aba 'Iniciar contato' com a contagem do motor — 500
+✅ Aba 'Automatizar' com a contagem do motor — 60
+✅ Soma do valor esperado do Foco — US$ 128.722
+✅ 3 primeiros do Foco na ordem do motor — ['1LY8CAXD', 'RDHTQLNI', 'FZWU2I30']
+✅ 'Porquê' do 1º deal idêntico ao do motor 
+✅ Chance exibida = chance_texto do motor — 22%
+✅ Aviso de empresa não cadastrada aparece 
+✅ Filtro 'Zane Levy': total — 88
+✅ Filtro 'Zane Levy': contagens das 4 listas — {'Foco': 27, 'Requalificar ou encerrar': 58, 'Automatizar': 3}
+✅ Filtro 'Zane Levy': 3 primeiros do Foco — ['FZWU2I30', '4D0K5T7T', '4R4QF0ZU']
+✅ Filtro 'Zane Levy': 1º deal aparece como '1º' 
+✅ Mensagem de lista vazia 
+✅ Cascata: gerentes da região East — ['Cara Losch', 'Rocco Neubert']
+✅ Cascata: total da região East — 433
+✅ Requalificar: 1º deal do motor — A04V2WB3
+✅ Requalificar: 'Mostrar mais' com o restante certo 
+✅ 'Mostrar mais' carrega mais 25 
+✅ Como funciona: chance aos 0 e 90 dias 
+✅ Como funciona: limites US$ 100 e US$ 4.000 
+✅ Como funciona: teste de volta no tempo 
+✅ Como funciona: gráfico desenhado 
+✅ Celular (375 px): sem rolagem horizontal — largura do conteúdo = 375px
+✅ Sem erros no console 
+
+RESULTADO: 29 de 29 verificações aprovadas
