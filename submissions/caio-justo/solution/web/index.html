@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lead Scorer que se prova</title>
+  <meta name="description" content="Mostra onde o vendedor deve focar e testa se essas recomendações funcionam de verdade.">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=switzer@400,500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="barra">
+    <div class="barra-dentro">
+      <a class="marca" href="./">Lead Scorer que se prova</a>
+      <nav class="abas" aria-label="Telas">
+        <a class="aba" data-tela="semana" href="?tela=semana">Minha semana</a>
+        <a class="aba" data-tela="head" href="?tela=head">Visão da Head</a>
+      </nav>
+      <label class="campo-modo">
+        <span>Dados</span>
+        <select id="modo">
+          <option value="real">Reais</option>
+          <option value="demo">Demonstração</option>
+        </select>
+      </label>
+    </div>
+  </header>
+  <div id="aviso-demo" class="aviso-demo" hidden>
+    <strong>Modo demonstração.</strong> As respostas e o placar desta tela são simulados, para mostrar o fluxo. Não vieram de vendedores.
+  </div>
+  <main id="conteudo" class="pagina" aria-live="polite">
+    <noscript><p>Esta ferramenta precisa de JavaScript para mostrar a lista da semana.</p></noscript>
+  </main>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="./app.js"></script>
+</body>
+</html>
