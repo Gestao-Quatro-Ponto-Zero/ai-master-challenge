@@ -68,7 +68,7 @@ def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, as_of
     team = team.sort_values("sales_agent")  # includes reps with no deals in the pipeline
     return {
         "asOf": as_of.strftime("%Y-%m-%d"),
-        "quarterPosition": int(ls.quarter_position(pd.DatetimeIndex([as_of]))[0]),
+        "quarterWeek": ls.quarter_week(as_of),
         "maxCycle": rates.max_cycle,
         "topK": ls.TOP_K,
         "team": [{"agent": r.sales_agent, "manager": r.manager, "region": r.regional_office} for r in team.itertuples()],

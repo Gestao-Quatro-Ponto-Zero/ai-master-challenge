@@ -38,7 +38,7 @@ def test_rates_ignore_outcomes_after_the_date(deals):
     after = ls.learn_rates(altered, moment, use_quarter=True)
 
     assert after.by_age == before.by_age
-    assert after.by_age_position == before.by_age_position
+    assert after.by_age_week == before.by_age_week
     assert after.max_cycle == before.max_cycle
 
 
@@ -86,6 +86,19 @@ def test_stale_deals_rank_below_every_live_deal():
     values = ls.ranking_value(np.array([0.0, 0.002]), np.array([26768, 55]))
     assert values[0] == 0
     assert values[1] > 0
+
+
+@pytest.mark.parametrize(
+    "moment,week",
+    [("2018-01-01", 1), ("2017-07-03", 1), ("2017-10-02", 1), ("2017-04-10", 2), ("2017-09-25", 13)],
+)
+def test_quarter_week(moment, week):
+    assert ls.quarter_week(pd.Timestamp(moment)) == week
+
+
+def test_action_does_not_ask_for_a_decision_when_chance_is_low():
+    assert ls.suggested_action(70, 138, 0.02).startswith("Prepare")
+    assert ls.suggested_action(70, 138, 0.20).startswith("Peça")
 
 
 @pytest.mark.parametrize(

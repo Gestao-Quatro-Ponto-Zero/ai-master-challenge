@@ -32,11 +32,11 @@
       "win_rate": 0.1974
     },
     "score": {
-      "revenue": 313400.9091,
-      "wins": 64.0455,
+      "revenue": 318713.3182,
+      "wins": 65.2727,
       "listed": 299.8636,
       "stale": 0.0,
-      "win_rate": 0.2136
+      "win_rate": 0.2177
     }
   },
   "selection_jul_sep": {
@@ -69,11 +69,11 @@
       "win_rate": 0.1533
     },
     "score": {
-      "revenue": 340793.8462,
-      "wins": 69.0769,
+      "revenue": 353518.3077,
+      "wins": 71.6923,
       "listed": 300.0,
       "stale": 0.0,
-      "win_rate": 0.2303
+      "win_rate": 0.239
     }
   },
   "holdout_oct_nov": {
@@ -106,50 +106,50 @@
       "win_rate": 0.261
     },
     "score": {
-      "revenue": 273833.3333,
-      "wins": 56.7778,
+      "revenue": 268439.4444,
+      "wins": 56.0,
       "listed": 299.6667,
       "stale": 0.0,
-      "win_rate": 0.1895
+      "win_rate": 0.1869
     }
   },
   "score_vs_value": {
-    "mean_gain": 88193,
+    "mean_gain": 93505,
     "better_mondays": 22,
     "independent_mondays": 5,
     "independent_better": 5,
-    "independent_mean_gain": 86538
+    "independent_mean_gain": 98676
   },
   "calibration": [
     {
       "band": "até 5%",
-      "deals": 4672,
-      "previsto": 0.0361,
-      "real": 0.0336
+      "deals": 5848,
+      "previsto": 0.0267,
+      "real": 0.0157
     },
     {
       "band": "5–10%",
-      "deals": 5361,
-      "previsto": 0.0732,
-      "real": 0.0703
+      "deals": 4507,
+      "previsto": 0.075,
+      "real": 0.0557
     },
     {
       "band": "10–20%",
-      "deals": 14650,
-      "previsto": 0.1522,
-      "real": 0.1362
+      "deals": 13331,
+      "previsto": 0.1525,
+      "real": 0.132
     },
     {
       "band": "20–30%",
-      "deals": 8083,
-      "previsto": 0.235,
-      "real": 0.161
+      "deals": 7814,
+      "previsto": 0.2493,
+      "real": 0.1815
     },
     {
       "band": "acima de 30%",
-      "deals": 7128,
-      "previsto": 0.3608,
-      "real": 0.3019
+      "deals": 8394,
+      "previsto": 0.3694,
+      "real": 0.2932
     }
   ]
 }

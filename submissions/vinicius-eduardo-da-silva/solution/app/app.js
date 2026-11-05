@@ -13,12 +13,6 @@ const TABS = [
   { id: "como", label: "Como funciona" },
 ];
 
-const QUARTER_POSITION = {
-  1: "primeiro mês do trimestre",
-  2: "segundo mês do trimestre",
-  3: "último mês do trimestre",
-};
-
 const teamByAgent = new Map(DATA.team.map((member) => [member.agent, member]));
 const state = {
   region: "",
@@ -98,7 +92,7 @@ function renderHeader() {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
   document.getElementById("as-of").textContent =
-    `Pipeline de ${date}, ${QUARTER_POSITION[DATA.quarterPosition]}. Dados do CRM até 31/12/2017.`;
+    `Pipeline de ${date}, semana ${DATA.quarterWeek} do trimestre. Dados do CRM até 31/12/2017.`;
 }
 
 function fillSelect(id, emptyLabel, values, selected) {
@@ -121,7 +115,7 @@ function renderFilters() {
 function briefingText(sel) {
   const { foco, decidir, prospecting } = sel;
   if (!state.agent) {
-    const scope = state.manager || state.region || "toda a operação";
+    const scope = state.manager || state.region || "Toda a operação";
     const staleShare = foco.length + decidir.length ? Math.round((decidir.length / (foco.length + decidir.length)) * 100) : 0;
     const firstLine = `<p><strong>${escapeHtml(scope)}: ${count(foco.length)} deals vivos e ${count(decidir.length)} parados.</strong> ${staleShare}% dos deals em Engaging já passaram de ${DATA.maxCycle} dias, a maior duração entre todos os deals encerrados.</p>`;
     const secondLine = foco.length === 0 && decidir.length > 0
@@ -212,14 +206,20 @@ function moreButton(total) {
 
 function viewFoco(sel) {
   if (sel.foco.length === 0) {
-    return `<div class="empty">Nenhum deal vivo nesta seleção. Use as filas Decidir e Prospecção, conforme a orientação acima.</div>`;
+    const links = [];
+    if (sel.decidir.length) links.push(`<button class="action-button" data-go="decidir">Ir para Decidir</button>`);
+    if (sel.prospecting.length) links.push(`<button class="action-button" data-go="prospeccao">Ir para Prospecção</button>`);
+    return `<div class="empty"><p>Nenhum deal vivo nesta seleção.</p>${links.length ? `<div class="row-actions">${links.join("")}</div>` : ""}</div>`;
   }
   const legend = `
     <div class="legend" aria-label="Legenda do score">
       <span><i class="swatch value"></i>Valor: preço de tabela do produto</span>
-      <span><i class="swatch timing"></i>Momento: idade do deal e mês do trimestre</span>
+      <span><i class="swatch timing"></i>Momento: idade do deal e semana do trimestre</span>
     </div>`;
-  const intro = `<p class="view-intro">Ordenado por receita esperada em ${DATA.backtest.horizon_days} dias. Só entram deals que ainda estão dentro do tempo em que deals costumam fechar.</p>`;
+  const quarterNote = DATA.quarterWeek === 1
+    ? ` Primeira semana de trimestre: nas três vezes observadas, só deals com até 14 dias tiveram chance relevante de fechar logo.`
+    : "";
+  const intro = `<p class="view-intro">Ordenado por receita esperada em ${DATA.backtest.horizon_days} dias. Só entram deals que ainda estão dentro do tempo em que deals costumam fechar.${quarterNote}</p>`;
   const top = sel.foco.slice(0, DATA.topK);
   const rest = sel.foco.slice(DATA.topK, state.limit);
   const restTitle = rest.length ? `<h2 class="section-title">Demais deals vivos</h2>` : "";
@@ -338,7 +338,7 @@ function viewComo() {
     <p class="formula">Score = chance de ganhar em ${backtest.horizon_days} dias × valor do deal, em escala de 0 a 100</p>
     <ul>
       <li><strong>Valor</strong> é o preço de tabela do produto. O preço fechado costuma ficar muito próximo dele (mediana de 99,8%).</li>
-      <li><strong>Momento</strong> é a frequência histórica de vitória em ${backtest.horizon_days} dias para deals da mesma idade, no mesmo mês do trimestre.</li>
+      <li><strong>Momento</strong> é a frequência histórica de vitória em ${backtest.horizon_days} dias para deals da mesma idade, na mesma semana do trimestre.</li>
       <li>A escala é logarítmica, pois os preços variam de US$ 55 a US$ 26.768. As duas partes somadas ordenam os deals exatamente pela receita esperada.</li>
     </ul>
 
@@ -366,7 +366,7 @@ function viewComo() {
     <ul>
       <li><strong>Ela não prova aumento de vendas.</strong> O replay mostra que a lista aponta os deals que iam fechar, não que a atenção do vendedor muda o resultado. Medir isso exige um teste com grupo de controle.</li>
       <li><strong>Mais receita não é mais vitórias.</strong> Entre outubro e novembro, ordenar pelo mais novo ganhou mais deals, enquanto o score trouxe mais receita.</li>
-      <li><strong>O efeito de trimestre é uma hipótese.</strong> Melhorou o replay, mas se baseia em poucos trimestres e pode ser efeito do dataset. RevOps precisa confirmar se é processo comercial.</li>
+      <li><strong>O efeito de trimestre é uma hipótese.</strong> Melhorou o replay, mas se baseia em no máximo três trimestres observados e pode ser efeito do dataset. RevOps precisa confirmar se é processo comercial.</li>
       <li><strong>Passar de ${DATA.maxCycle} dias não prova que um deal morreu.</strong> Por isso, a decisão fica com o vendedor.</li>
       <li><strong>O CRM não registra atividade</strong>, como e-mails, reuniões ou último contato. "Parado" aqui significa apenas tempo em Engaging.</li>
       <li><strong>A idade é a única medida de tempo.</strong> Não há histórico de mudanças de estágio, e deals em Prospecting não têm data.</li>
@@ -436,7 +436,11 @@ document.getElementById("tabs").addEventListener("click", (event) => {
 document.getElementById("view").addEventListener("click", (event) => {
   const target = event.target.closest("button");
   if (!target) return;
-  if (target.dataset.action === "more") {
+  if (target.dataset.go) {
+    state.tab = target.dataset.go;
+    state.limit = PAGE_SIZE;
+    render();
+  } else if (target.dataset.action === "more") {
     state.limit += PAGE_SIZE;
     renderView(selection());
   } else if (target.dataset.action === "export") {

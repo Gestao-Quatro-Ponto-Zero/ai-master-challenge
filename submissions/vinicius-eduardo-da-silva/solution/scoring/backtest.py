@@ -39,13 +39,13 @@ def replay(deals: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     rng = np.random.default_rng(0)
     for monday in pd.date_range(FIRST_MONDAY, LAST_MONDAY, freq="W-MON"):
         rates = ls.learn_rates(deals, monday, use_quarter=True)
-        position = int(ls.quarter_position(pd.DatetimeIndex([monday]))[0])
+        week = ls.quarter_week(monday)
         snapshot = ls.open_deals_at(deals, monday)
         window_end = monday + pd.Timedelta(days=ls.HORIZON_DAYS)
         won = (snapshot["deal_stage"] == "Won") & (snapshot["close_date"] >= monday) & (snapshot["close_date"] < window_end)
         snapshot["realized"] = np.where(won, snapshot["close_value"], 0.0)
         snapshot["won_window"] = won.astype(int)
-        snapshot["probability"] = [rates.probability(age, position) for age in snapshot["age"]]
+        snapshot["probability"] = [rates.probability(age, week) for age in snapshot["age"]]
 
         strategies = {
             "score": ls.ranking_value(snapshot["probability"], snapshot["sales_price"]),

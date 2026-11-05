@@ -19,6 +19,7 @@ TOP_K = 10
 # floor, log-scale points would be dominated by tiny differences in the tail.
 PROBABILITY_FLOOR = 0.01
 PROBABILITY_CEILING = 0.45
+LOW_CHANCE = 0.05  # below this, asking for a decision now contradicts the data
 AGE_BIN_DAYS = 15
 SMOOTHING = 10
 # Nothing closes before this date in the data, although deals were engaged since
@@ -54,10 +55,14 @@ def load_deals(data_dir: str | Path) -> pd.DataFrame:
     return deals
 
 
-def quarter_position(dates: pd.Series | pd.DatetimeIndex) -> np.ndarray:
-    """Month position inside the quarter: 1, 2 or 3."""
-    months = pd.DatetimeIndex(dates).month
-    return np.asarray((months - 1) % 3 + 1)
+def quarter_week(moment: pd.Timestamp) -> int:
+    """Week inside the quarter, starting at 1.
+
+    A month is too coarse: on the first Monday of a quarter the 30-day window
+    stays inside month 1, while on the last Monday of that month it does not.
+    """
+    quarter_start = moment.to_period("Q").start_time
+    return (moment - quarter_start).days // 7 + 1
 
 
 def age_bin(ages: pd.Series | np.ndarray) -> np.ndarray:
@@ -100,34 +105,34 @@ def learning_observations(deals: pd.DataFrame, as_of: pd.Timestamp) -> pd.DataFr
             pd.DataFrame(
                 {
                     "age": snapshot["age"].to_numpy(),
-                    "position": quarter_position(pd.DatetimeIndex([monday]))[0],
+                    "week": quarter_week(monday),
                     "won": won_in_window.to_numpy().astype(int),
                 }
             )
         )
     if not frames:
-        return pd.DataFrame(columns=["age", "position", "won"])
+        return pd.DataFrame(columns=["age", "week", "won"])
     return pd.concat(frames, ignore_index=True)
 
 
 @dataclass
 class TimingRates:
-    """P(deal is won within 30 days | age, month of the quarter)."""
+    """P(deal is won within 30 days | age, week of the quarter)."""
 
     overall: float
     by_age: dict[int, float]
-    by_age_position: dict[tuple[int, int], float]
+    by_age_week: dict[tuple[int, int], float]
     max_cycle: int
     use_quarter: bool
 
-    def probability(self, age: int, position: int) -> float:
+    def probability(self, age: int, week: int) -> float:
         if age > self.max_cycle:
             return 0.0
         bin_start = int(age // AGE_BIN_DAYS * AGE_BIN_DAYS)
         age_rate = self.by_age.get(bin_start, self.overall)
         if not self.use_quarter:
             return age_rate
-        return self.by_age_position.get((bin_start, position), age_rate)
+        return self.by_age_week.get((bin_start, week), age_rate)
 
 
 def learn_rates(deals: pd.DataFrame, as_of: pd.Timestamp, use_quarter: bool = False) -> TimingRates:
@@ -142,12 +147,12 @@ def learn_rates(deals: pd.DataFrame, as_of: pd.Timestamp, use_quarter: bool = Fa
     for bin_start, group in obs.groupby("bin"):
         by_age[int(bin_start)] = (group["won"].sum() + SMOOTHING * overall) / (len(group) + SMOOTHING)
 
-    by_age_position = {}
-    for (bin_start, position), group in obs.groupby(["bin", "position"]):
+    by_age_week = {}
+    for (bin_start, week), group in obs.groupby(["bin", "week"]):
         prior = by_age[int(bin_start)]
-        by_age_position[(int(bin_start), int(position))] = (group["won"].sum() + SMOOTHING * prior) / (len(group) + SMOOTHING)
+        by_age_week[(int(bin_start), int(week))] = (group["won"].sum() + SMOOTHING * prior) / (len(group) + SMOOTHING)
 
-    return TimingRates(overall, by_age, by_age_position, max_cycle, use_quarter)
+    return TimingRates(overall, by_age, by_age_week, max_cycle, use_quarter)
 
 
 def ranking_value(probability: np.ndarray | pd.Series, price: np.ndarray | pd.Series) -> np.ndarray:
@@ -183,12 +188,14 @@ def age_zone(age: int, max_cycle: int) -> str:
     return "prazo_final"
 
 
-def suggested_action(age: int, max_cycle: int) -> str:
+def suggested_action(age: int, max_cycle: int, probability: float) -> str:
     zone = age_zone(age, max_cycle)
     if zone == "novo":
         return "Fale com o cliente esta semana: 42% dos deals encerrados se definiram em até 14 dias."
     if zone == "intermediario":
         return "Confirme o próximo passo com data: nessa idade, poucos deals se definem por conta própria."
+    if zone == "janela" and probability < LOW_CHANCE:
+        return "Prepare a decisão: deals dessa idade costumam fechar mais adiante no trimestre, não agora."
     if zone == "janela":
         return "Peça a decisão: é a faixa de idade em que os deals mais fecham."
     if zone == "prazo_final":
@@ -210,11 +217,11 @@ def account_history(deals: pd.DataFrame, as_of: pd.Timestamp) -> pd.DataFrame:
 def score_pipeline(deals: pd.DataFrame, as_of: pd.Timestamp = AS_OF, use_quarter: bool = True) -> tuple[pd.DataFrame, TimingRates]:
     """Score every Engaging deal open at as_of and assign it to a queue."""
     rates = learn_rates(deals, as_of, use_quarter=use_quarter)
-    position = int(quarter_position(pd.DatetimeIndex([as_of]))[0])
+    week = quarter_week(as_of)
     price_min, price_max = float(deals["sales_price"].min()), float(deals["sales_price"].max())
 
     scored = open_deals_at(deals, as_of).merge(account_history(deals, as_of), on="account", how="left")
-    scored["probability"] = [rates.probability(age, position) for age in scored["age"]]
+    scored["probability"] = [rates.probability(age, week) for age in scored["age"]]
     points = [score_points(p, price, price_min, price_max) for p, price in zip(scored["probability"], scored["sales_price"])]
     scored["value_points"] = [item[0] for item in points]
     scored["timing_points"] = [item[1] for item in points]
@@ -222,7 +229,7 @@ def score_pipeline(deals: pd.DataFrame, as_of: pd.Timestamp = AS_OF, use_quarter
     scored["expected_revenue"] = scored["probability"] * scored["sales_price"]
     scored["zone"] = [age_zone(age, rates.max_cycle) for age in scored["age"]]
     scored["queue"] = np.where(scored["age"] > rates.max_cycle, "decidir", "foco")
-    scored["action"] = [suggested_action(age, rates.max_cycle) for age in scored["age"]]
+    scored["action"] = [suggested_action(age, rates.max_cycle, p) for age, p in zip(scored["age"], scored["probability"])]
     scored["_rank"] = ranking_value(scored["probability"], scored["sales_price"])
     ordered = scored.sort_values(["_rank", "sales_price"], ascending=False).drop(columns="_rank")
     return ordered.reset_index(drop=True), rates
