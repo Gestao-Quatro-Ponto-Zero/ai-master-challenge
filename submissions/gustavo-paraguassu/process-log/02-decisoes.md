@@ -108,6 +108,20 @@ Ferramenta: Claude Code (Opus 5.5), em sessão única, trabalhando como par. A I
 - **Eu perguntei:** *"Vai ser necessário colocar essa aplicação rodando em algum lugar?"*
 - **Resposta:** sim, há um processo que precisa ficar ligado. No teste, roda no meu Mac. Na avaliação, um servidor pequeno (decisão adiada para perto do PR). Para reprodutibilidade, há um modo sem Telegram e sem chave (`app.simulate`, `tests/test_fluxo_bot.py`).
 
+## D11 — Testei o bot no Telegram (04/11/2026)
+
+- Fiz uma conversa como cliente e uma `/rodada P1` como atendente.
+- **Achei um bug:** depois de uma resposta, "Olá! Meu notebook não liga", "Novo chamado" e "Como eu peço férias?" reabriram o mesmo chamado T0001 (E14).
+- **Correção:** o bot passou a perguntar "é sobre o chamado T0001 ou é um assunto novo?". O `/start` começa conversa nova. As 3 reaberturas falsas ficaram marcadas como correção no log de eventos.
+- **Minha rodada P1:**
+
+| | COM assistente | SEM assistente |
+|---|---|---|
+| Tempo mediano | 9 s | 32 s |
+| Acerto de fila | 62,5% | 12,5% |
+
+- A IA não usa esses números como resultado até eu dizer se a rodada foi para valer ou só um teste do bot.
+
 ---
 
 ## Onde a IA errou até aqui (e como foi corrigido)
@@ -127,3 +141,4 @@ Ferramenta: Claude Code (Opus 5.5), em sessão única, trabalhando como par. A I
 | E11 | O cronômetro reiniciava depois de uma transferência e subestimaria o tempo de atendimento | Revisão do código de medição | Tempo conta do 1º card |
 | E12 | A IA escreveu `reply_to_message_id`, que não existe mais na versão instalada da biblioteca | Conferência da assinatura antes de rodar | `reply_parameters` |
 | E13 | O erro E9 ocorreu *depois* das chamadas de API: 135 gerações e 136 triagens foram feitas com uma amostra que não entrou em nenhum resultado (~US$ 0,60 desperdiçados) | Contagem do cache antes do commit (639 arquivos, esperados 368) | Cache órfão movido para fora do repositório. O 05 reproduz idêntico offline só com o cache commitado |
+| E14 | A regra da IA reabria **qualquer** mensagem até 48 h depois de uma resposta, o que inflava a métrica de reabertura (H9) | **Eu achei**, testando no Telegram (D11) | O cliente confirma se é o mesmo assunto; `/start` começa conversa nova; teste automático cobre o caso |
