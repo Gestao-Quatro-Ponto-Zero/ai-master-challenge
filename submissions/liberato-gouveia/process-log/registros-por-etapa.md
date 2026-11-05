@@ -875,3 +875,13 @@ Registrar a aprovação da Fase 4 pelo Liberato, conferir os 6 pontos que ele pe
 
 **Tempo aproximado**
 Não informado.
+
+### Verificação pós-envio (04/11/2026, ~22:25)
+- **Envio:** `805b675..b9a0ea8`, para `submission/liberato-gouveia`. A `main` do fork continua em `4aed364`, igual à do G4.
+- **Comparação pela API do GitHub** (`main...submission/liberato-gouveia`): 18 commits à frente e 0 atrás. **149 arquivos, todos adicionados, 0 fora da pasta da entrega.** Nenhum PR no fork.
+- **Clone novo, baixado do GitHub:** a "árvore" do commit publicado (`19f304b`) é **idêntica** à local, ou seja, o conteúdo publicado é exatamente o que foi testado. O app tem 76 arquivos.
+- **Arquivos-chave pelo link público** (README, tela, `package.json`, JSON do motor e registros): MD5 idêntico ao local.
+- **README:** 11 links internos, nenhum quebrado. Os links externos são o app, o LinkedIn e as 2 conversas.
+- **App publicado** (https://lead-scorer-liberato.lovable.app): continua lendo os dados certos, com a faixa histórica, 2.089 deals, Foco 228, o 1º deal `1LY8CAXD` e "Chance: 22%".
+- Este bloco foi enviado num commit seguinte, só de documentação.
+
