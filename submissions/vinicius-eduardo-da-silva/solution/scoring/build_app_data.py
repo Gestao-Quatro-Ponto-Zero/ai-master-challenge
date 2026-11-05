@@ -10,6 +10,7 @@ from pathlib import Path
 
 import pandas as pd
 
+import deal_context as dc
 import lead_scorer as ls
 
 HERE = Path(__file__).resolve().parent
@@ -104,6 +105,7 @@ def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, pilot
     team = team.sort_values("sales_agent")  # includes reps with no deals in the pipeline
     price_min, price_max = float(deals["sales_price"].min()), float(deals["sales_price"].max())
     max_value_points, max_timing_points = ls.score_points(ls.PROBABILITY_CEILING, price_max, price_min, price_max)
+    record = dc.rep_track_record(deals, as_of)
     return {
         "maxValuePoints": round(max_value_points),
         "maxTimingPoints": round(max_timing_points),
@@ -113,8 +115,10 @@ def build_payload(deals: pd.DataFrame, team: pd.DataFrame, backtest: dict, pilot
         "maxCycle": rates.max_cycle,
         "topK": ls.TOP_K,
         "team": [{"agent": r.sales_agent, "manager": r.manager, "region": r.regional_office} for r in team.itertuples()],
-        "engaged": [engaged_row(deal) for deal in scored.itertuples()],
-        "prospecting": prospecting_rows(deals, as_of),
+        "engaged": [dc.add_rep_record(engaged_row(deal), record) for deal in scored.itertuples()],
+        "prospecting": [dc.add_rep_record(row, record) for row in prospecting_rows(deals, as_of)],
+        "productStats": dc.product_stats(deals, as_of),
+        "accounts": dc.account_profiles(deals, as_of),
         "backtest": backtest,
         "pilot": pilot,
     }

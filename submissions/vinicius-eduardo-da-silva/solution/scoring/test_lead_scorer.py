@@ -5,6 +5,7 @@ import pandas as pd
 import pytest
 
 import backtest
+import deal_context as dc
 import lead_scorer as ls
 
 DATA = Path(__file__).resolve().parent.parent / "data"
@@ -95,6 +96,34 @@ def test_tied_deals_do_not_depend_on_file_order(deals):
     first = backtest.top_k(snapshot, snapshot["sales_price"].to_numpy())
     second = backtest.top_k(reversed_snapshot, reversed_snapshot["sales_price"].to_numpy())
     assert set(first["opportunity_id"]) == set(second["opportunity_id"])
+
+
+def test_deal_context_ignores_outcomes_after_the_date(deals):
+    moment = pd.Timestamp("2017-09-04")
+    altered = deals.copy()
+    future = altered["close_date"] >= moment
+    altered.loc[future, "deal_stage"] = "Lost"
+    altered.loc[future, "close_value"] = 0
+    assert dc.product_stats(altered, moment) == dc.product_stats(deals, moment)
+    assert dc.account_profiles(altered, moment) == dc.account_profiles(deals, moment)
+    assert dc.rep_track_record(altered, moment) == dc.rep_track_record(deals, moment)
+
+
+def test_account_profile_matches_a_direct_count(deals):
+    profile = dc.account_profiles(deals, ls.AS_OF)["Gogozoom"]
+    closed = deals[(deals["account"] == "Gogozoom") & deals["close_date"].notna()]
+    won = closed[closed["deal_stage"] == "Won"]
+    assert profile["closed"] == len(closed)
+    assert profile["wins"] == len(won)
+    assert profile["wonRevenue"] == round(won["close_value"].sum())
+    assert sum(item["wins"] for item in profile["products"].values()) == len(won)
+
+
+def test_rep_record_for_a_blank_account_is_empty():
+    row = {"agent": "A", "product": "P", "account": None}
+    dc.add_rep_record(row, {"product": {("A", "P"): (2, 3)}, "account": {}})
+    assert (row["repProductWins"], row["repProductClosed"]) == (2, 3)
+    assert (row["repAccountWins"], row["repAccountClosed"]) == (0, 0)
 
 
 def test_live_value_rival_never_prefers_a_stale_deal(deals):

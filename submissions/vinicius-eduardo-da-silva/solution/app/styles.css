@@ -353,6 +353,12 @@ kbd { padding: 0 5px; margin-left: 4px; border: 1px solid currentColor; border-r
 
 .deal.done { opacity: 0.75; box-shadow: none; }
 
+.details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px 20px; padding-top: 10px; }
+.details-grid h4 { margin: 0 0 4px; font-size: 13px; color: var(--ink); }
+.details-grid ul { margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--ink-2); }
+.details-grid li { margin-bottom: 3px; }
+.details-note { margin: 10px 0 0; font-size: 12px; color: var(--muted); }
+
 /* Triage */
 .triage {
   padding: 22px 24px;
@@ -372,6 +378,10 @@ kbd { padding: 0 5px; margin-left: 4px; border: 1px solid currentColor; border-r
 .triage .action-button:hover { background: var(--panel-line); }
 .triage .action-button.quiet { background: none; color: var(--panel-ink-2); }
 .triage :focus-visible { outline-color: #86b6ef; }
+.triage .why { margin: 0 0 14px; }
+.triage .why summary { color: #86b6ef; }
+.triage .details-grid h4 { color: var(--panel-ink); }
+.triage .details-grid ul, .triage .details-note { color: var(--panel-ink-2); }
 
 .simple-row {
   display: grid;

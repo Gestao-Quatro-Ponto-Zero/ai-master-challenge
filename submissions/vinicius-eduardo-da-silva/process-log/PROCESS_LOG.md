@@ -40,6 +40,8 @@ Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` 
 
 13. **Datas.** Vinicius apontou que a ferramenta estava presa a uma data fixa. O Claude acrescentou o filtro de data do pipeline, com datas passadas só para consulta, e a ordenação por data de entrada.
 
+14. **Detalhes do deal.** Vinicius perguntou se dava para incluir mais detalhes que ajudassem o vendedor a ver valor no deal. O Claude acrescentou o fechamento típico, o perfil da conta, o relacionamento e o histórico do vendedor, como contexto, sem mudar o score.
+
 ## Onde a IA errou e como foi corrigido
 
 Todos os itens abaixo foram detectados pelo próprio Claude Code, nos testes automáticos e na revisão das telas que ele fez, e não por Vinicius.

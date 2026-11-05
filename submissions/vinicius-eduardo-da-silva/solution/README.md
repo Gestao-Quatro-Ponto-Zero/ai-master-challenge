@@ -30,6 +30,7 @@ Testado com Python 3.12 no Windows e com o navegador Edge.
 |---|---|
 | `app/` | Interface em HTML, CSS e JS puros. `data.js`, `replay.js` e `history.js` são gerados, não edite à mão |
 | `scoring/lead_scorer.py` | Limpeza, aprendizado das taxas e score |
+| `scoring/deal_context.py` | Detalhes do deal: fatos da conta, relacionamento e produto. Não afetam o score |
 | `scoring/backtest.py` | Replay de 22 segundas-feiras passadas e dados da Máquina do tempo |
 | `scoring/pilot_plan.py` | Menor ganho que um teste com grupo de controle conseguiria detectar |
 | `scoring/build_app_data.py` | Gera os dados da interface |
@@ -74,6 +75,8 @@ As duas partes usam os mesmos pontos por unidade logarítmica. Por isso, somá-l
 **Máquina do tempo:** a conta só aparece depois de revelar. Todo deal encerrado tem conta, então "Conta em branco" entregaria que o deal nunca fechou.
 
 **Data do pipeline:** o filtro abre o pipeline como estava em cada segunda de julho a dezembro de 2017, com o mesmo código de score e só o que se sabia em cada data. Essas datas são só para consulta. A conta e o setor ficam ocultos, porque só deals nunca encerrados os têm em branco. Prospecting não aparece, pois não tem data. Antes de julho, há pouco passado para aprender.
+
+**Detalhes do deal:** cada cartão mostra o fechamento típico do produto, o porte da conta, o que ela já comprou e o histórico do vendedor. São fatos para preparar a conversa, calculados só com deals encerrados antes da data analisada. Não entram no score, porque vendedor, produto e conta quase não preveem o resultado. Em datas passadas, ficam ocultos, para não revelar quais deals fecharam.
 
 **Calculadora de tempo:** os minutos por deal são premissas, não dados do CRM, e aparecem assim na tela.
 

@@ -119,6 +119,10 @@ A data não é fixa: um filtro abre o pipeline como estava em cada segunda passa
 só para consulta e sem indícios do resultado. As listas também ordenam por data
 de entrada.
 
+Cada deal mostra fatos para preparar a conversa: fechamento típico do produto, porte
+da conta, o que ela já comprou e o histórico do vendedor. Isso é contexto, calculado
+só com o passado, e não entra no score.
+
 Telas:
 - Minha semana: o primeiro passo, um plano de 3 passos com progresso e os deals
   com motivo, fase do ciclo, ação sugerida e botões Feito e Adiar.

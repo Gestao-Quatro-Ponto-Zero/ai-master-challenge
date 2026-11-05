@@ -49,6 +49,27 @@ with sync_playwright() as p:
     page.locator(".why summary").first.click()
     check("score explanation opens", "Momento" in page.locator(".why-body").first.inner_text())
 
+    # Deal details: facts for a known account and honest guidance for a blank one.
+    check("value hint on the card", "Se ganhar: cerca de" in page.locator(".hero-deals .deal").first.inner_text())
+    known = page.locator(".deal", has_text="Gogozoom").first
+    known.locator("summary", has_text="Ver detalhes do deal").click()
+    text = known.inner_text()
+    check("known account shows profile and relationship", all(w in text for w in ["Quem é o cliente", "Relacionamento", "Receita anual", "Já gerou", "Fechamento típico"]), text[:120])
+    check("details say they are context", "não entram no score" in text)
+    blank = page.locator(".deal", has_text="Conta em branco").first
+    blank.locator("summary", has_text="Ver detalhes do deal").click()
+    check("blank account explains what is missing", "Preencha para ver o porte" in blank.inner_text())
+    known_page = page.evaluate(
+        """() => {
+          const profile = window.LEAD_DATA.accounts["Gogozoom"];
+          return { wins: profile.wins, sum: Object.values(profile.products).reduce((all, item) => all + item.wins, 0) };
+        }"""
+    )
+    check("relationship counts agree", known_page["wins"] == known_page["sum"], str(known_page))
+    page.locator(".deal", has_text="Gogozoom").first.scroll_into_view_if_needed()
+    page.screenshot(path=shots / "8-detalhes-do-deal.png")
+    page.evaluate("window.scrollTo(0, 0)")
+
     first_title = page.locator(".hero-deals h3").first.inner_text()
     page.locator('[data-focus="feito"]').first.click()
     check("marked deal leaves the to-do list", page.locator(".hero-deals h3").first.inner_text() != first_title)
@@ -77,6 +98,7 @@ with sync_playwright() as p:
     # Triage
     page.click('[data-tab="decidir"]')
     check("decide list", page.locator(".simple-row").count() == 30)
+    check("triage has deal details", page.locator(".triage summary", has_text="Ver detalhes do deal").count() == 1)
     page.locator('.triage [data-decision="encerrar"]').click()
     check("decision updates progress", page.locator("#decision-progress").inner_text().startswith("1 de 83"))
     page.locator('.triage [data-decision="vivo"]').click()
@@ -101,6 +123,7 @@ with sync_playwright() as p:
 
     page.click('[data-tab="prospeccao"]')
     check("prospecting list", page.locator(".simple-row").count() == 30)
+    check("prospecting has deal details", page.locator(".simple-row summary", has_text="Ver detalhes do deal").count() == 30)
     check("prospecting says no score", "não recebem score" in page.locator(".page-head").inner_text())
 
     # Team
@@ -181,7 +204,7 @@ with sync_playwright() as p:
     check("past date hides prospecting", nav_count(page, "prospeccao") == "0")
     check("past date cannot be marked", page.locator("[data-focus]").count() == 0)
     text = page.locator("#view").inner_text()
-    check("past date gives no outcome hint", not any(w in text for w in ["Conta em branco", "Preencha a conta", "Histórico da conta", "Ganho:"]))
+    check("past date gives no outcome hint", not any(w in text for w in ["Conta em branco", "Preencha a conta", "Histórico da conta", "Ganho:", "Ver detalhes do deal", "Se ganhar"]))
     page.select_option("#filter-agent", "Zane Levy")
     scores = [int(s) for s in page.locator(".ring span").all_inner_texts()]
     check("past scores sorted", scores == sorted(scores, reverse=True), str(scores[:5]))

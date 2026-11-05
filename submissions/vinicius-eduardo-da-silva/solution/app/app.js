@@ -331,11 +331,74 @@ function whyDetails(deal) {
 function contextChips(deal) {
   const chips = [];
   if (!snapshot().historic) {
+    const stats = DATA.productStats[deal.product];
+    if (stats) chips.push(`<span class="chip">Se ganhar: cerca de ${money(stats.median)}</span>`);
     if (!deal.account) chips.push(`<span class="chip attention">Preencha a conta no CRM</span>`);
-    else if (deal.pastDeals > 0) chips.push(`<span class="chip">Histórico da conta: ${deal.pastWins} de ${deal.pastDeals} ganhos</span>`);
+    else if (deal.pastDeals > 0) chips.push(`<span class="chip">Histórico da conta: ${deal.pastWins} de ${deal.pastDeals} ganhos, ${compactMoney(DATA.accounts[deal.account].wonRevenue)}</span>`);
   }
   if (!state.agent) chips.push(`<span class="chip">${escapeHtml(deal.agent)}</span>`);
   return chips.length ? `<div class="chips">${chips.join("")}</div>` : "";
+}
+
+function companySize(revenueInMillions) {
+  if (revenueInMillions >= 1000) return `US$ ${(revenueInMillions / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} bi`;
+  return `US$ ${Math.round(revenueInMillions).toLocaleString("pt-BR")} mi`;
+}
+
+function daysSince(date) {
+  const milliseconds = new Date(`${snapshot().date}T12:00:00`) - new Date(`${date}T12:00:00`);
+  return Math.round(milliseconds / 86400000);
+}
+
+function listItems(items) {
+  return `<ul>${items.map((item) => `<li>${item}</li>`).join("")}</ul>`;
+}
+
+function accountColumns(deal) {
+  if (!deal.account) {
+    return `<div><h4>Conta</h4>${listItems(["Conta em branco no CRM. Preencha para ver o porte e o histórico do cliente."])}</div>`;
+  }
+  const account = DATA.accounts[deal.account];
+  const profile = [
+    escapeHtml(account.sector),
+    `Receita anual: ${companySize(account.revenue)}`,
+    `${count(account.employees)} funcionários`,
+    `${escapeHtml(account.location)}, desde ${account.founded}`,
+  ];
+  if (account.parent) profile.push(`Faz parte do grupo ${escapeHtml(account.parent)}`);
+
+  const relationship = [`Já gerou ${money(account.wonRevenue)} em ${plural(account.wins, "deal ganho", "deals ganhos")} de ${count(account.closed)} encerrados`];
+  if (account.lastWin) relationship.push(`Última compra há ${plural(daysSince(account.lastWin), "dia", "dias")}`);
+  const bought = account.products[deal.product];
+  relationship.push(bought
+    ? `Já comprou ${escapeHtml(deal.product)} ${bought.wins === 1 ? "1 vez" : `${bought.wins} vezes`}, a última em ${shortDate(bought.last)}`
+    : `Nunca comprou ${escapeHtml(deal.product)}: seria um produto novo na conta`);
+  const others = Object.keys(account.products).filter((product) => product !== deal.product);
+  if (others.length) relationship.push(`Também comprou: ${others.map(escapeHtml).join(", ")}`);
+  if (account.parent) relationship.push(`O grupo já gerou ${money(account.groupRevenue)}`);
+  if (deal.repAccountClosed) relationship.push(`Com este vendedor: ${deal.repAccountWins} de ${deal.repAccountClosed} ganhos`);
+  return `<div><h4>Quem é o cliente</h4>${listItems(profile)}</div><div><h4>Relacionamento</h4>${listItems(relationship)}</div>`;
+}
+
+function dealDetails(deal) {
+  if (snapshot().historic) return "";
+  const stats = DATA.productStats[deal.product];
+  const product = stats ? [
+    `Tabela: ${money(deal.price)}`,
+    `Fechamento típico: ${money(stats.median)}`,
+    `Metade dos ganhos entre ${money(stats.low)} e ${money(stats.high)}`,
+    `${Math.round((stats.wins / stats.closed) * 100)}% dos deals encerrados foram ganhos`,
+  ] : [`Tabela: ${money(deal.price)}`];
+  if (deal.repProductClosed) product.push(`Este vendedor: ${deal.repProductWins} de ${deal.repProductClosed} ganhos`);
+  return `
+    <details class="why">
+      <summary>Ver detalhes do deal</summary>
+      <div class="details-grid">
+        ${accountColumns(deal)}
+        <div><h4>${escapeHtml(deal.product)}: quanto costuma render</h4>${listItems(product)}</div>
+      </div>
+      <p class="details-note">Contexto para preparar a conversa, com deals encerrados até esta data. Estes dados não entram no score, porque quase não preveem o resultado.</p>
+    </details>`;
 }
 
 function dealTitle(deal) {
@@ -368,6 +431,7 @@ function highlightedCard(deal) {
       ${contextChips(deal)}
       ${focusButtons(deal)}
       ${whyDetails(deal)}
+      ${dealDetails(deal)}
     </article>`;
 }
 
@@ -385,6 +449,7 @@ function compactCard(deal) {
       ${focusButtons(deal)}
       <p class="deal-action" style="grid-column:1 / -1">${escapeHtml(deal.action)}</p>
       ${whyDetails(deal)}
+      ${dealDetails(deal)}
     </article>`;
 }
 
@@ -578,6 +643,7 @@ function triagePanel(sel) {
         <span class="triage-price">${money(next.price)}</span>
       </div>
       <p>${next.age} dias em Engaging, ${plural(beyond, "dia", "dias")} além do limite histórico · ${account}${agent}</p>
+      ${dealDetails(next)}
       <div class="row-actions">
         <button class="action-button" data-decision="vivo" data-id="${escapeHtml(next.id)}">Ainda está vivo<kbd>V</kbd></button>
         <button class="action-button" data-decision="encerrar" data-id="${escapeHtml(next.id)}">Encerrar<kbd>E</kbd></button>
@@ -663,7 +729,7 @@ function viewProspeccao(sel) {
   const rows = sel.prospecting.slice(0, state.limit).map((deal) => {
     const chips = [];
     if (!deal.account) chips.push(`<span class="chip attention">Preencha a conta no CRM</span>`);
-    else if (deal.pastDeals > 0) chips.push(`<span class="chip">Histórico da conta: ${deal.pastWins} de ${deal.pastDeals} ganhos</span>`);
+    else if (deal.pastDeals > 0) chips.push(`<span class="chip">Histórico da conta: ${deal.pastWins} de ${deal.pastDeals} ganhos, ${compactMoney(DATA.accounts[deal.account].wonRevenue)}</span>`);
     if (!state.agent) chips.push(`<span class="chip">${escapeHtml(deal.agent)}</span>`);
     return `
       <article class="simple-row">
@@ -671,6 +737,7 @@ function viewProspeccao(sel) {
           <h3>${escapeHtml(deal.product)} · ${accountLabel(deal)}</h3>
           <div class="deal-meta">${escapeHtml(deal.id)}</div>
           ${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}
+          ${dealDetails(deal)}
         </div>
         <div class="right"><span class="price">${money(deal.price)}</span></div>
       </article>`;
