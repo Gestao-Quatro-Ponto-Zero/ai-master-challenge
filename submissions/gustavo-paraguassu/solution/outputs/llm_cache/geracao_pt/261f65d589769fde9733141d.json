@@ -1,0 +1,10 @@
+{
+ "texto_en": "new delivery hello received today black po invoice please advise please log receiving shipment kind regards engineer ext",
+ "mensagem": "Oi, chegou hoje uma entrega nova com uma fatura de PO black, podem me orientar? Por favor, registrem o recebimento dessa remessa. Obrigado!",
+ "meta": {
+  "input_tokens": 461,
+  "output_tokens": 73,
+  "custo_usd": 0.003304,
+  "request_id": "req_011CgipfK8wCeYdXPGGmRxBb"
+ }
+}

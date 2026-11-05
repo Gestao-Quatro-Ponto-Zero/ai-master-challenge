@@ -1,0 +1,10 @@
+{
+ "texto_en": "not enough rights on portal com tuesday pm enough rights hello got rights install thank best regards engineer",
+ "mensagem": "Oi, terça à tarde fui instalar uma coisa pelo portal e deu que eu não tenho permissão suficiente. Vocês conseguem me liberar os direitos pra instalação? Valeu!",
+ "meta": {
+  "input_tokens": 461,
+  "output_tokens": 82,
+  "custo_usd": 0.003484,
+  "request_id": "req_011CgipfwUypJhXwsuXozq9K"
+ }
+}

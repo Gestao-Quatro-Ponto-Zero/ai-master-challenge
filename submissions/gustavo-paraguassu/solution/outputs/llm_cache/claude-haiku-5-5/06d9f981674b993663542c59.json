@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, tô com problema nas atualizações do Windows na minha máquina: ele encontra as atualizações necessárias, mas quando tento instalar aparece uma mensagem de erro. Mandei as infos do sistema operacional, consegue encaminhar pra equipe certa? Se precisar de mais alguma informação é só me falar, valeu!",
+ "triagem": {
+  "texto_ingles": "User reports Windows Update problem on their machine: updates are detected, but installation fails with an error message. User has already sent OS information and asks to be routed to the correct team. Available to provide more information if needed.",
+  "resumo_pt": "Windows Update encontra as atualizações, mas a instalação dá erro; cliente já enviou as informações do sistema operacional e pede encaminhamento para a equipe certa.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "máquina",
+   "sintoma": "atualizações do Windows são encontradas, mas a instalação exibe mensagem de erro",
+   "sistema": "Windows Update",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3088,
+  "output_tokens": 339,
+  "latencia_s": 2.82,
+  "custo_usd": 0.000478,
+  "request_id": "req_011Cgiph9PcDZ3WX1nK6NAkD"
+ }
+}

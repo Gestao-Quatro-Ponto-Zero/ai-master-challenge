@@ -1,0 +1,10 @@
+{
+ "texto_en": "ownership change ownership morning please switch ownership myself taking over thanks ale",
+ "mensagem": "Bom dia! Preciso de uma troca de responsável, vocês podem passar a propriedade para o meu nome, por favor? Vou assumir a partir de agora. Valeu!",
+ "meta": {
+  "input_tokens": 453,
+  "output_tokens": 73,
+  "custo_usd": 0.003272,
+  "request_id": "req_011Cgipf8zkVn7CagqZ9yimC"
+ }
+}

@@ -1,0 +1,9 @@
+.venv
+.env
+**/__pycache__
+**/*.pyc
+.DS_Store
+process-log
+docs
+solution/data
+solution/runtime

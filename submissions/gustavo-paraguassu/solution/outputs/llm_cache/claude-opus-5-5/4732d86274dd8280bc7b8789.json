@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, a impressora principal aqui do setor tá com papel enroscado. Podem abrir um chamado e mandar alguém pra resolver, por favor? Valeu!",
+ "triagem": {
+  "texto_ingles": "Hi, the main printer in our department has a paper jam. Could you please open a ticket and send someone to fix it? Thanks!",
+  "resumo_pt": "Impressora principal do setor com papel enroscado; solicita envio de técnico.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "impressora principal do setor",
+   "sintoma": "papel enroscado",
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3029,
+  "output_tokens": 262,
+  "latencia_s": 3.89,
+  "custo_usd": 0.017356,
+  "request_id": "req_011CgipkHV7rwrRXfuYHAcVV"
+ }
+}

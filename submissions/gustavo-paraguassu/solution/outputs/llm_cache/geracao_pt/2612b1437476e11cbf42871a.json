@@ -1,0 +1,10 @@
+{
+ "texto_en": "cannot access sent friday february build capability needed deliver hi have access instance please could you kindly resolve thanks sent friday february build capability needed deliver updated build capability needed deliver change by status backlog selected for add comment message was sent by",
+ "mensagem": "Oi, tô sem acesso à instância e preciso dela pra entregar uma capacidade de build que tá no backlog (o ticket foi atualizado e marcado como selecionado). Consegue resolver pra mim, por favor? Valeu!",
+ "meta": {
+  "input_tokens": 503,
+  "output_tokens": 94,
+  "custo_usd": 0.003892,
+  "request_id": "req_011CgipeCK9kyQcXDF8sFRVE"
+ }
+}

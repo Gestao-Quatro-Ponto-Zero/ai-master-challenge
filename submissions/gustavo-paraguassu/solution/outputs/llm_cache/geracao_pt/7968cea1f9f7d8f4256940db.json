@@ -1,0 +1,10 @@
+{
+ "texto_en": "credentials sent tuesday february credentials hi with last projects using client seem remember name password for could you help with thank you senior tester ext id en canton",
+ "mensagem": "Oi, tudo bem? Em projetos anteriores eu usava as credenciais do cliente, mas não tô conseguindo lembrar o usuário e a senha, vocês conseguem me ajudar com isso? Valeu!",
+ "meta": {
+  "input_tokens": 473,
+  "output_tokens": 89,
+  "custo_usd": 0.003672,
+  "request_id": "req_011Cgipd4ckojT1YELq7tXW6"
+ }
+}

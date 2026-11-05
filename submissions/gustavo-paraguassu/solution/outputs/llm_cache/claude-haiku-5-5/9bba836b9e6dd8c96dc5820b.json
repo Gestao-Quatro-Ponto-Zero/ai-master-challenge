@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, tô com erro na hora de aprovar o cartão de ponto (aprovação de horas). Quando clico em aprovar aparece um erro, mandei print da tela por e-mail, e agora tá acontecendo o mesmo erro em outra aprovação também. Podem ver isso pra mim?",
+ "triagem": {
+  "texto_ingles": "Error when approving timesheet (hours approval). Clicking approve shows an error message; the same error occurs on another approval as well. User sent a screenshot by email. Please investigate.",
+  "resumo_pt": "Erro ao clicar em aprovar o cartão de ponto (aprovação de horas), ocorrendo também em outra aprovação; print enviado por e-mail.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Erro ao clicar em aprovar o cartão de ponto (aprovação de horas); mesmo erro em outra aprovação",
+   "sistema": "Cartão de ponto (aprovação de horas)",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "ponto",
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3073,
+  "output_tokens": 354,
+  "latencia_s": 1.9,
+  "custo_usd": 0.000484,
+  "request_id": "req_011Cgipi8cWt7nhkQtq9mJgG"
+ }
+}

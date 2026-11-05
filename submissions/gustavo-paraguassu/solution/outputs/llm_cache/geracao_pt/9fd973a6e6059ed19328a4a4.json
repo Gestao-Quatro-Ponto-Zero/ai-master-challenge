@@ -1,0 +1,10 @@
+{
+ "texto_en": "wants to access resources wants resources signature accept decline requests",
+ "mensagem": "Oi, preciso de acesso a uns recursos e queria saber como faço pra conseguir. Também preciso de permissão pra assinar e aceitar ou recusar solicitações, pode me ajudar?",
+ "meta": {
+  "input_tokens": 446,
+  "output_tokens": 81,
+  "custo_usd": 0.003404,
+  "request_id": "req_011Cgipfwp5LbRrbxyYTUErP"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "po november pm po hello lite has requested by required tested order assess suitability phone id please log installation usual please perform receipt thank administrator phone",
+ "mensagem": "Oi, foi feito um pedido (PO de novembro) de um telefone lite que precisa ser testado pra avaliar se serve pra gente. Podem registrar a instalação como de costume e dar o recebimento do pedido? Valeu!",
+ "meta": {
+  "input_tokens": 472,
+  "output_tokens": 93,
+  "custo_usd": 0.003748,
+  "request_id": "req_011Cgipfar1HkMjESP3oiyeb"
+ }
+}

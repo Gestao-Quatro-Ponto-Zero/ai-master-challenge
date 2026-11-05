@@ -1,0 +1,10 @@
+{
+ "texto_en": "allow messages from outside wednesday pm receive hi guys please change order receive thanks lot",
+ "mensagem": "Oi pessoal, vocês podem liberar o recebimento de mensagens de fora? Preciso receber até quarta à tarde, por favor alterem a configuração pra eu conseguir receber. Valeu demais!",
+ "meta": {
+  "input_tokens": 457,
+  "output_tokens": 85,
+  "custo_usd": 0.003528,
+  "request_id": "req_011Cgipexk752DuwWnvTzQCj"
+ }
+}

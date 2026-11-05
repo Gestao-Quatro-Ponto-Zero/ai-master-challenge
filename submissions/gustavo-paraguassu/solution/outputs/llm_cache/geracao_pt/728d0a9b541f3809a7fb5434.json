@@ -1,0 +1,10 @@
+{
+ "texto_en": "outlook account which we never use wednesday february snipping tool hi which never please delete called empty thanks administrator phone",
+ "mensagem": "Oi, apareceu uma conta no meu Outlook que a gente nunca usa, tá vazia, mandei um print pelo snipping tool. Dá pra deletar ela, por favor? Valeu!",
+ "meta": {
+  "input_tokens": 464,
+  "output_tokens": 81,
+  "custo_usd": 0.003476,
+  "request_id": "req_011Cgipcs6j3nncC3pS2j3XP"
+ }
+}

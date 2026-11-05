@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! A atualização do Windows na máquina de um dev da equipe falhou, ele já tinha mandado o print do erro em anexo e até agora ninguém respondeu. Dá pra abrir um chamado e alguém ajudar com esse upgrade? Valeu!",
+ "triagem": {
+  "texto_ingles": "Windows update failed on a developer's machine. The user attached a screenshot of the error and has not received a response yet. Please open a ticket and assist with the Windows upgrade.",
+  "resumo_pt": "Atualização do Windows falhou na máquina de um dev da equipe; ele já enviou print do erro e está sem resposta, pede ajuda com o upgrade.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "máquina de um dev da equipe",
+   "sintoma": "a atualização do Windows falhou",
+   "sistema": "Windows",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3068,
+  "output_tokens": 314,
+  "latencia_s": 1.75,
+  "custo_usd": 0.000464,
+  "request_id": "req_011CgipgWsfCxi6SfkQtiQmx"
+ }
+}

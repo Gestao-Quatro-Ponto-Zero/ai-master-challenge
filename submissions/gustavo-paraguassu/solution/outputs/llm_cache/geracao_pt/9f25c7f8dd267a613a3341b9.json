@@ -1,0 +1,10 @@
+{
+ "texto_en": "access to banks and branches report banks branches report hi please thank kind regards tuesday banks branches report hi dear please give export branches report folder seems cut off thanks help great after regards officer",
+ "mensagem": "Oi, preciso de acesso ao relatório de bancos e agências. Vocês podem me passar o export do relatório de agências? A pasta parece estar cortada/sem acesso pra mim. Obrigado pela ajuda!",
+ "meta": {
+  "input_tokens": 486,
+  "output_tokens": 89,
+  "custo_usd": 0.003724,
+  "request_id": "req_011CgipfmesxATszVgqnM5kh"
+ }
+}

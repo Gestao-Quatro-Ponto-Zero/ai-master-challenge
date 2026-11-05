@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Estamos com problemas no PAS: quando fazemos as atualizações, cada alteração está demorando um minuto pra salvar, e precisamos fazer isso pros códigos de cada um. Podem tratar com prioridade alta, por favor? Precisamos ter os dados salvos até hoje, valeu!",
+ "triagem": {
+  "texto_ingles": "Users report that updates in PAS take about one minute to save for each change. This affects code updates for each user. Requesting high priority; data must be saved by end of today.",
+  "resumo_pt": "Usuários relatam que cada alteração no PAS leva cerca de um minuto para salvar; pedem prioridade alta, com dados salvos até hoje.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Cada alteração demora um minuto para salvar no PAS",
+   "sistema": "PAS",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3084,
+  "output_tokens": 306,
+  "latencia_s": 1.86,
+  "custo_usd": 0.000461,
+  "request_id": "req_011CgiphWY6XTTvVq5uuVtmo"
+ }
+}

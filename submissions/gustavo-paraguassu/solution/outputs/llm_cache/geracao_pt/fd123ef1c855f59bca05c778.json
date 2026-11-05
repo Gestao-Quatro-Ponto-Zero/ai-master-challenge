@@ -1,0 +1,10 @@
+{
+ "texto_en": "annual service recovery test service name restore location confirmed test expected outputs document template forms work instruction restore template documentation disaster recovery procedure effort book restore tests code",
+ "mensagem": "Oi, preciso fazer o teste anual de recuperação de serviço: confirmar o local de restore, rodar o teste e conferir as saídas esperadas. Tem que documentar usando o template e os formulários da instrução de trabalho de restore, seguindo o procedimento de disaster recovery. Também preciso saber qual código usar pra lançar as horas dos testes de restore.",
+ "meta": {
+  "input_tokens": 481,
+  "output_tokens": 139,
+  "custo_usd": 0.004704,
+  "request_id": "req_011CgipeNcmKuqLhTrriRGmP"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "jones mailbox appear the mailbox re leaver ad december hi did happen monday but longer there please can you help get back thanks head tax treasury",
+ "mensagem": "Oi, a caixa de e-mail do Jones, que é desligado no AD desde dezembro, tinha aparecido pra mim na segunda, mas agora sumiu. Podem me ajudar a colocar ela de volta? Obrigado, chefe de Tax e Treasury",
+ "meta": {
+  "input_tokens": 474,
+  "output_tokens": 106,
+  "custo_usd": 0.004016,
+  "request_id": "req_011CgipffPMUuecBukpZVt1t"
+ }
+}

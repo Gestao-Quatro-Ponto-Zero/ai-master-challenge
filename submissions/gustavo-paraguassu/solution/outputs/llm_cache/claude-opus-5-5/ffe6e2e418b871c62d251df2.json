@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de acesso de edição no PAS pra um novo usuário, por favor replica as mesmas permissões de edição do outro colega. É urgente porque preciso subir os forecasts, obrigado!",
+ "triagem": {
+  "texto_ingles": "Hello, I need edit access to PAS for a new user. Please replicate the same edit permissions as another colleague. This is urgent because I need to upload the forecasts. Thank you!",
+  "resumo_pt": "Pede acesso de edição no PAS para um novo usuário, espelhando as permissões de outro colega, com urgência para subir forecasts.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "PAS",
+   "tipo_acesso": "acesso novo (edição), replicando permissões de outro colega",
+   "software": null,
+   "justificativa": "subir os forecasts",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": "novo usuário"
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3042,
+  "output_tokens": 318,
+  "latencia_s": 4.23,
+  "custo_usd": 0.018528,
+  "request_id": "req_011CgipjhMHFYMYRBpugXcF1"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, tô com problema no Outlook, não consigo usar o aplicativo. Toda vez que tento abrir ele pede meu usuário e senha e não conecta de jeito nenhum. Valeu!",
+ "triagem": {
+  "texto_ingles": "Hi, I'm having a problem with Outlook and can't use the application. Every time I try to open it, it asks for my username and password and won't connect at all. Thanks!",
+  "resumo_pt": "Outlook pede usuário e senha repetidamente ao abrir e não conecta.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "toda vez que tento abrir ele pede meu usuário e senha e não conecta de jeito nenhum",
+   "sistema": "Outlook",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3041,
+  "output_tokens": 298,
+  "latencia_s": 4.32,
+  "custo_usd": 0.018124,
+  "request_id": "req_011Cgipj6q8j2FMBk3gUD1za"
+ }
+}

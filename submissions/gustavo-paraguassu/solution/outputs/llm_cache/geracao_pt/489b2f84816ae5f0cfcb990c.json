@@ -1,0 +1,10 @@
+{
+ "texto_en": "request for backpack wednesday february pm backpack hello please approve borrowing backpack until next thank senior developer",
+ "mensagem": "Oi, pessoal! Preciso pegar uma mochila emprestada até a semana que vem, vocês podem aprovar, por favor? Valeu!",
+ "meta": {
+  "input_tokens": 463,
+  "output_tokens": 64,
+  "custo_usd": 0.003132,
+  "request_id": "req_011CgipduoUDL7EeSYw6Mebi"
+ }
+}

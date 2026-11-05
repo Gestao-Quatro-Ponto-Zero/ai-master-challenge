@@ -1,0 +1,10 @@
+{
+ "texto_en": "password reset request account has requested he then pin",
+ "mensagem": "Oi, preciso resetar a senha da conta, ele pediu a redefinição e depois o PIN também. Consegue ajudar?",
+ "meta": {
+  "input_tokens": 440,
+  "output_tokens": 57,
+  "custo_usd": 0.0029,
+  "request_id": "req_011CgipUWmd5dmtbt7yGKuJL"
+ }
+}

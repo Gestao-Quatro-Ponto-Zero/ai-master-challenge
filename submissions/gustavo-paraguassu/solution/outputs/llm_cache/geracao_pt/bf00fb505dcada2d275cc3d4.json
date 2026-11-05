@@ -1,0 +1,10 @@
+{
+ "texto_en": "new starter friday re starter form hello please find attached completed please note his date his equipment tuesday rd link equipment catalogue suggest he has too large heavy regards wednesday starter form hi please help completion attached starter form join thank",
+ "mensagem": "Oi, segue em anexo o formulário de novo funcionário preenchido, ele começa na sexta. Ele vai precisar do equipamento até terça, e sobre o link do catálogo de equipamentos que vocês sugeriram, achamos o modelo grande e pesado demais pra ele, tem outra opção? Obrigado!",
+ "meta": {
+  "input_tokens": 500,
+  "output_tokens": 124,
+  "custo_usd": 0.00448,
+  "request_id": "req_011CgipdL1Dd8rWDjZ2GKvkn"
+ }
+}

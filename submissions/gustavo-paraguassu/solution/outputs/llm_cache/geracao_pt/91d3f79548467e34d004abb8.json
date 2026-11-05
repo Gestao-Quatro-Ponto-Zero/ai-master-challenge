@@ -1,0 +1,10 @@
+{
+ "texto_en": "stopped working stopped working hi stopped working after friday when last used upon returning today work did respond computer got error normal works fine thanks senior engineer client",
+ "mensagem": "Oi, parou de funcionar depois de sexta, que foi a última vez que usei. Voltei hoje e não respondeu, o computador deu erro, mas o resto funciona normal. Valeu!",
+ "meta": {
+  "input_tokens": 475,
+  "output_tokens": 79,
+  "custo_usd": 0.00348,
+  "request_id": "req_011Cgipe6LidkpJSP1eAf6fv"
+ }
+}

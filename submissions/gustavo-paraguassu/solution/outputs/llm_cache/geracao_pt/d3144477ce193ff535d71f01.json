@@ -1,0 +1,10 @@
+{
+ "texto_en": "new purchase po december pm purchase po dear purchased intel caddy caddy adaptor adaptor charger charger please log installation please take consideration mandatory receipts section order receive item ordered kind regards administrator",
+ "mensagem": "Oi, fiz um novo pedido de compra (PO) em dezembro: um caddy Intel, um adaptador e um carregador. Podem registrar a instalação? E lembrem que é obrigatório preencher a seção de recebimento no pedido pra dar entrada nos itens que pedi. Valeu!",
+ "meta": {
+  "input_tokens": 496,
+  "output_tokens": 116,
+  "custo_usd": 0.004304,
+  "request_id": "req_011Cgipff419MWEctrzEiL98"
+ }
+}

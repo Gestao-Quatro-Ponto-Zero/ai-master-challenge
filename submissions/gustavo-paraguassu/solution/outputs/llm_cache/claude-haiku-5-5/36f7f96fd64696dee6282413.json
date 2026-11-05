@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, pessoal, urgente! Tenho uma reunião crítica de diretoria e não consigo acessar o site de reporting, aparece que meu acesso foi removido. Vocês já disseram que configuraram, mas ainda dá acesso negado, podem dar uma olhada de novo?",
+ "triagem": {
+  "texto_ingles": "User reports access to the reporting website was removed and shows access denied, despite a previous statement that access was configured. Requests re-check of access. Urgent: critical board meeting.",
+  "resumo_pt": "Cliente sem acesso ao site de reporting (acesso negado, apesar de já ter sido dito que estava configurado); pede nova verificação com urgência por causa de reunião de diretoria.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "acesso negado ao site de reporting, aparece que o acesso foi removido",
+   "sistema": "site de reporting",
+   "tipo_acesso": "acesso removido / acesso negado",
+   "software": null,
+   "justificativa": "reunião crítica de diretoria",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "cliente_irritado"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3070,
+  "output_tokens": 355,
+  "latencia_s": 2.11,
+  "custo_usd": 0.000485,
+  "request_id": "req_011CgiphMUPF2YXn6WwRDmAH"
+ }
+}

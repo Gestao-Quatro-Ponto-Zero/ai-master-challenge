@@ -1,0 +1,10 @@
+{
+ "texto_en": "po december pm po hi guys has under requested by please log installed ready please perform machine by screen capture thank administrator phone",
+ "mensagem": "Oi pessoal, tudo bem? Foi feito um pedido de PO e preciso que vocês registrem o chamado, instalem o que foi solicitado e, quando estiver pronto, executem na máquina e me mandem um print da tela confirmando. Valeu!",
+ "meta": {
+  "input_tokens": 465,
+  "output_tokens": 102,
+  "custo_usd": 0.0039,
+  "request_id": "req_011CgipfDwQ6qfbpnKd2QjVe"
+ }
+}

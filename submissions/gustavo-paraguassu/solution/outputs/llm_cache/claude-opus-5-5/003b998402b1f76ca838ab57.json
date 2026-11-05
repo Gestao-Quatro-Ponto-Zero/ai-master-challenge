@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Pra tentar aumentar a taxa de resposta das pesquisas de encerramento de chamado, a gente quer fazer um piloto mudando o horário de envio dessas pesquisas e mandando lembretes pros clientes depois do convite inicial, acompanhando os resultados — a mudança seria só pra esses clientes, os demais continuam do mesmo jeito. Vocês conseguem fazer isso por algumas semanas e reverter quando o piloto terminar? Se precisarem de mais alguma informação, é só avisar, obrigado!",
+ "triagem": {
+  "texto_ingles": "Request to run a pilot to increase response rates for ticket closure surveys: change the send time of the surveys and send reminders to customers after the initial invitation, tracking the results. The change should apply only to the pilot customers; all others remain unchanged. The pilot should run for a few weeks and then be reverted when it ends.",
+  "resumo_pt": "Pedido de piloto temporário (algumas semanas) para mudar horário de envio das pesquisas de encerramento de chamado e enviar lembretes a um grupo de clientes, com reversão ao final.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "pesquisas de encerramento de chamado",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "aumentar a taxa de resposta das pesquisas de encerramento de chamado",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3165,
+  "output_tokens": 394,
+  "latencia_s": 4.6,
+  "custo_usd": 0.02054,
+  "request_id": "req_011CgipkCagqWi5XXUVWzHzx"
+ }
+}

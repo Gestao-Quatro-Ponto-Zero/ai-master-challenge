@@ -1,0 +1,10 @@
+{
+ "texto_en": "new purchase po thursday october purchase po dear purchased mice patch cord headset backpack please log installation please take consideration mandatory receipts section order receive item ordered kind regards administrator",
+ "mensagem": "Oi, foi feita uma nova compra (PO de quinta-feira, outubro) com mouses, patch cord, headset e mochila. Podem registrar a instalação, por favor? Lembrando que é obrigatório preencher a seção de recebimentos pra receber os itens pedidos.",
+ "meta": {
+  "input_tokens": 488,
+  "output_tokens": 108,
+  "custo_usd": 0.004112,
+  "request_id": "req_011CgipfUkdVwLM4Yd9st5FG"
+ }
+}

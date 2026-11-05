@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, preciso de um ajuste na conta: dá pra alterar o ID do contrato do SOW? É o contrato que começa com BB. Valeu!",
+ "triagem": {
+  "texto_ingles": "Requesting an adjustment to the user account: please check whether the contract ID on the SOW can be changed. The contract ID starts with BB.",
+  "resumo_pt": "Cliente pede alteração do ID do contrato do SOW (código começa com BB) na conta.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "compromisso_financeiro"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3024,
+  "output_tokens": 269,
+  "latencia_s": 1.6,
+  "custo_usd": 0.000437,
+  "request_id": "req_011Cgipi64iEBmtzVCua1xtz"
+ }
+}

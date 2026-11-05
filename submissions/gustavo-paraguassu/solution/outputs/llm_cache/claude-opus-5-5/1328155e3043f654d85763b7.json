@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, não tô conseguindo enviar meu cartão de ponto da semana, vocês podem configurar ele como aprovado? Ele já vem preenchido com o feriado, as folgas e as férias, não aparece nenhum botão de ação e não consigo fazer nada nele. O pior é que dá erro dizendo que eu já enviei, sendo que nem consigo enviar, obrigado!",
+ "triagem": {
+  "texto_ingles": "Hi, I can't submit my weekly timecard. Could you set it as approved? It comes pre-filled with the holiday, days off and vacation, no action button appears and I can't do anything with it. It also shows an error saying I have already submitted it, even though I can't submit it. Thanks!",
+  "resumo_pt": "Colaborador não consegue enviar o cartão de ponto semanal (sem botão de ação, erro dizendo que já foi enviado) e pede que seja marcado como aprovado.",
+  "fila_sugerida_llm": "HR Support",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "não consegue enviar o cartão de ponto; não aparece botão de ação; erro dizendo que já foi enviado",
+   "sistema": "cartão de ponto",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "ponto",
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3105,
+  "output_tokens": 381,
+  "latencia_s": 4.29,
+  "custo_usd": 0.02004,
+  "request_id": "req_011CgipjUZLnaW5X1tGcJZ25"
+ }
+}

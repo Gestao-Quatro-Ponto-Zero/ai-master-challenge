@@ -1,0 +1,10 @@
+{
+ "texto_en": "for call issues for call issues hi we have daily meeting with client last period we have issues dialing scenario we calling client phone enter conference number can dial others cannot ones cannot receive message saying busy we already asked client if somehow conference number but confirmed today during call got suddenly disconnected join call anymore could you please look into reflecting bad our work cheers application engineer",
+ "mensagem": "Oi, a gente tem reunião diária com o cliente e ultimamente estamos com problema pra discar pro número da conferência pelo telefone: alguns conseguem entrar, outros recebem mensagem de ocupado. Já perguntamos pro cliente se tinha algo com o número da conferência e ele confirmou que não, e hoje durante a call caiu do nada e não deu mais pra entrar. Podem dar uma olhada? Isso tá pegando mal pro nosso trabalho, valeu!",
+ "meta": {
+  "input_tokens": 543,
+  "output_tokens": 183,
+  "custo_usd": 0.005832,
+  "request_id": "req_011Cgipe7UCCVQduyxpWJCoQ"
+ }
+}

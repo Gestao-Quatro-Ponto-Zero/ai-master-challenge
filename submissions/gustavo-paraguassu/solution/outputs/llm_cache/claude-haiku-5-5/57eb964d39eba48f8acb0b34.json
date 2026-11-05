@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, preciso de uma conta nova no ServiceNow. A gente tá desenvolvendo uma aplicação que vai integrar com o sistema de tickets e precisa de um usuário genérico, pode copiar as permissões de um usuário parecido. Qualquer coisa que precisar de mim é só avisar, valeu!",
+ "triagem": {
+  "texto_ingles": "Request for a new ServiceNow account. The team is developing an application that will integrate with the ticketing system and needs a generic user. Requester asks to copy permissions from a similar user. Available for any follow-up.",
+  "resumo_pt": "Pede uma conta nova no ServiceNow para um usuário genérico usado na integração de uma aplicação em desenvolvimento, com permissões copiadas de um usuário parecido.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "ServiceNow",
+   "tipo_acesso": "conta nova",
+   "software": null,
+   "justificativa": "integrar uma aplicação em desenvolvimento com o sistema de tickets",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": "usuário genérico para integração"
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "seguranca"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3082,
+  "output_tokens": 356,
+  "latencia_s": 2.82,
+  "custo_usd": 0.000486,
+  "request_id": "req_011CgipYwjQxbqLrJg6AaJ1o"
+ }
+}

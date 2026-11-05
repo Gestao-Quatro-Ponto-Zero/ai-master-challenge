@@ -1,0 +1,10 @@
+{
+ "texto_en": "incorrect time pas sent thursday february incorrect importance high hi we have code her sheets were rejected for before import but added for code please can removed finished st december regards client manager mob",
+ "mensagem": "Oi, pessoal, é urgente: tem um horário incorreto no sistema. As folhas de horas de uma colaboradora foram rejeitadas antes da importação, mas mesmo assim acabaram sendo adicionadas no código dela. Dá pra remover, por favor? Ela finalizou em dezembro.",
+ "meta": {
+  "input_tokens": 483,
+  "output_tokens": 118,
+  "custo_usd": 0.004292,
+  "request_id": "req_011CgipeYeknFc7ggBZ5jipn"
+ }
+}

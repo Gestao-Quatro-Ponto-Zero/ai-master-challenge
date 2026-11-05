@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de ajuda pra tirar um relatório que mostre o tempo e as despesas lançados contra um código específico. Como faço pra gerar esse relatório por código? Valeu, sou do time de estratégia de produto digital.",
+ "triagem": {
+  "texto_ingles": "Hello, I need help generating a report showing time and expenses booked against a specific code. How can I generate this report by code? Thanks, I'm from the digital product strategy team.",
+  "resumo_pt": "Usuário do time de estratégia de produto digital pede ajuda para gerar relatório de horas e despesas lançadas contra um código específico.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3052,
+  "output_tokens": 284,
+  "latencia_s": 3.14,
+  "custo_usd": 0.017888,
+  "request_id": "req_011Cgipk1tFD39nBkwDnJqbd"
+ }
+}

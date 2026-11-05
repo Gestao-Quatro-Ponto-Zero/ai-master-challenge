@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso liberar acesso ao Confluence para um cliente. Já entrei em contato com o pessoal de contas do Confluence, mas ainda não resolveu, vocês conseguem me ajudar?",
+ "triagem": {
+  "texto_ingles": "Request to grant Confluence access to a client. The requester has already contacted the Confluence accounts team, but the issue is not yet resolved. Please assist.",
+  "resumo_pt": "Solicitante precisa liberar acesso ao Confluence para um cliente; já acionou a equipe de contas do Confluence sem resolução.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Acesso ao Confluence ainda não liberado após contato com a equipe de contas",
+   "sistema": "Confluence",
+   "tipo_acesso": "Liberação de acesso",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": "Cliente"
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3043,
+  "output_tokens": 325,
+  "latencia_s": 2.13,
+  "custo_usd": 0.000467,
+  "request_id": "req_011CgipYnRptjfzPMvSswvkh"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "please include com please include hi please include thanks best regards",
+ "mensagem": "Oi, pessoal! Vocês podem me incluir, por favor? Obrigado!",
+ "meta": {
+  "input_tokens": 443,
+  "output_tokens": 42,
+  "custo_usd": 0.002612,
+  "request_id": "req_011Cgipf8rZiqqUjg1KiPnsm"
+ }
+}

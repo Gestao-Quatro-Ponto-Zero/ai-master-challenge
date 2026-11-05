@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal, tô com um problema no Outlook desde terça. Tentei adicionar um endereço, mas sempre que chego numa certa etapa dá o mesmo erro. Podem me ajudar?",
+ "triagem": {
+  "texto_ingles": "User reports an issue with Outlook since Tuesday. When attempting to add an email address, the same error occurs at a certain step. Requests assistance.",
+  "resumo_pt": "Erro no Outlook desde terça ao tentar adicionar um endereço de e-mail; sempre falha na mesma etapa.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "erro ao adicionar endereço no Outlook, sempre na mesma etapa, desde terça",
+   "sistema": "Outlook",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3043,
+  "output_tokens": 312,
+  "latencia_s": 1.83,
+  "custo_usd": 0.00046,
+  "request_id": "req_011CgipgWETnZ8nZ8uihpNDB"
+ }
+}

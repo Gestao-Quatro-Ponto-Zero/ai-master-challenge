@@ -1,0 +1,10 @@
+{
+ "texto_en": "cannot submit time card for sent tuesday timecard for hi can you please set timecard for week approved cannot anything with data pre populated with st public holiday rest days annual leave have any action buttons really cannot anything annoying because get error have submitted timecard when cannot submit timecard thanks manager",
+ "mensagem": "Oi, não tô conseguindo enviar meu cartão de ponto da semana, vocês podem configurar ele como aprovado? Ele já vem preenchido com o feriado, as folgas e as férias, não aparece nenhum botão de ação e não consigo fazer nada nele. O pior é que dá erro dizendo que eu já enviei, sendo que nem consigo enviar, obrigado!",
+ "meta": {
+  "input_tokens": 522,
+  "output_tokens": 146,
+  "custo_usd": 0.005008,
+  "request_id": "req_011CgipdKmbKysQSPkQcP6CU"
+ }
+}

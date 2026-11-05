@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Preciso pegar uma mochila emprestada até a semana que vem, vocês podem aprovar, por favor? Valeu!",
+ "triagem": {
+  "texto_ingles": "Requesting to borrow a backpack until next week. Please approve.",
+  "resumo_pt": "Pede empréstimo de uma mochila até a semana que vem e solicita aprovação.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": "mochila",
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3023,
+  "output_tokens": 238,
+  "latencia_s": 1.39,
+  "custo_usd": 0.000421,
+  "request_id": "req_011CgiphDDJh9LDM3pG253G4"
+ }
+}

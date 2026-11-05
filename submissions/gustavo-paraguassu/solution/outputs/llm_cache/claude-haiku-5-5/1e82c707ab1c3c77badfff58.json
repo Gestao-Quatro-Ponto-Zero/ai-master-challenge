@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de acesso ao relatório de bancos e agências. Vocês podem me passar o export do relatório de agências? A pasta parece estar cortada/sem acesso pra mim. Obrigado pela ajuda!",
+ "triagem": {
+  "texto_ingles": "User requests access to the banks and branches report and asks for an export of the branches report. The folder appears to be restricted or inaccessible for the user.",
+  "resumo_pt": "Cliente pede acesso ao relatório de bancos e agências e o export desse relatório, pois a pasta parece sem acesso para ele.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "pasta aparece cortada/sem acesso para o usuário",
+   "sistema": null,
+   "tipo_acesso": "acesso ao relatório de bancos e agências",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": "pasta do relatório de bancos e agências",
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3048,
+  "output_tokens": 317,
+  "latencia_s": 2.18,
+  "custo_usd": 0.000463,
+  "request_id": "req_011Cgipik4xz6rZC6MQrcQpf"
+ }
+}

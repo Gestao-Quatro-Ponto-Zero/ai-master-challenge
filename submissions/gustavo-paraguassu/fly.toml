@@ -1,0 +1,15 @@
+# Fly.io: um worker sempre ligado, sem HTTP. Deploy: fly launch --no-deploy (1ª vez) e fly deploy.
+# Segredos: fly secrets set TELEGRAM_BOT_TOKEN=... ANTHROPIC_API_KEY=...
+app = "nexo-suporte-g4"
+primary_region = "iad"
+
+[env]
+  RUNTIME_DIR = "/data"
+
+[mounts]
+  source = "nexo_data"
+  destination = "/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

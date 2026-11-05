@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso de ajuda com um mail merge pros assets do upgrade que ainda não foram alocados na zona. Pelas estatísticas, parte dos assets já foi atualizada pelo Software Center e está compliant, mas alguns deram downgrade depois do upgrade porque a versão não é reconhecida pela policy do client, e tem chamados abertos por erro de comunicação no Software Center. Dá pra abrir uma CR pra fazer o push nos assets restantes, avisar a data pra gente dar um aviso decente aos usuários e sugerir um jeito melhor de atualizar sem ter que fazer tudo na mão?",
+ "triagem": {
+  "texto_ingles": "Request for help with a mail merge for upgrade assets not yet allocated to the zone. Per statistics, some assets were already upgraded via Software Center and are compliant, but some were downgraded after the upgrade because the version is not recognized by the client policy. There are open tickets for communication errors in Software Center. Requests: open a Change Request (CR) to push the upgrade to the remaining assets, provide the date so users can be notified properly, and suggest a better way to upgrade without manual work.",
+  "resumo_pt": "Cliente pede abertura de CR para push do upgrade nos assets restantes, informa da data para aviso aos usuários e sugestão de método mais eficiente, pois parte dos assets sofreu downgrade por versão não reconhecida pela policy.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "assets do upgrade",
+   "sintoma": "alguns assets deram downgrade após o upgrade porque a versão não é reconhecida pela policy do client; há chamados abertos por erro de comunicação no Software Center",
+   "sistema": "Software Center",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": "zona",
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3189,
+  "output_tokens": 1300,
+  "latencia_s": 6.19,
+  "custo_usd": 0.000969,
+  "request_id": "req_011CgipgXoieJSqVsZqhshUX"
+ }
+}

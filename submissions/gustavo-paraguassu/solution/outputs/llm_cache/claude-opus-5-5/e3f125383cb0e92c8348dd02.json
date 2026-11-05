@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, tô com problema no Confluence: não consigo acessar nem salvar páginas, por exemplo a de cert. Podem dar uma olhada?",
+ "triagem": {
+  "texto_ingles": "Hi, I'm having a problem with Confluence: I can't access or save pages, for example the 'cert' page. Could you take a look?",
+  "resumo_pt": "Usuário não consegue acessar nem salvar páginas no Confluence (ex.: página de cert).",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "não consigo acessar nem salvar páginas, por exemplo a de cert",
+   "sistema": "Confluence",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3023,
+  "output_tokens": 284,
+  "latencia_s": 4.09,
+  "custo_usd": 0.017772,
+  "request_id": "req_011Cgipj6qdY2AgTMP1qbBXe"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "mail merge for upgrade assets not allocated zone upgrading statistic hello statistic upgrading process total assets upgraded upgrade software center compliant upgrade upgraded upgraded disposal growth off tickets logged assets version has downgraded after upgrade version recognized by policy client regards technician pm zone upgrading statistic hello provide tomorrow report upgrading process working downgrading two user assets which after upgrade fail connect client regards technician pm re zone upgrading statistic hello upgrade pushed successfully please provide done weeks thank re zone upgrading statistic hello thank details seeing two weeks upgrade pushed assets somewhere around noon please medium cr let date expect implemented give proper heads users assets growth based export provided by suggestions how upgraded better way than having manually done by best regards zone upgrading statistic hello statistic upgrading process total assets upgraded upgrade software center compliant upgraded upgraded disposal growth off tickets logged regarding upgrading issues upgrade software center present tickets communication error software center zone please let additional regards technician",
+ "mensagem": "Oi, preciso de ajuda com um mail merge pros assets do upgrade que ainda não foram alocados na zona. Pelas estatísticas, parte dos assets já foi atualizada pelo Software Center e está compliant, mas alguns deram downgrade depois do upgrade porque a versão não é reconhecida pela policy do client, e tem chamados abertos por erro de comunicação no Software Center. Dá pra abrir uma CR pra fazer o push nos assets restantes, avisar a data pra gente dar um aviso decente aos usuários e sugerir um jeito melhor de atualizar sem ter que fazer tudo na mão?",
+ "meta": {
+  "input_tokens": 782,
+  "output_tokens": 230,
+  "custo_usd": 0.007728,
+  "request_id": "req_011Cgipd674Gm3U9w14mvKZR"
+ }
+}

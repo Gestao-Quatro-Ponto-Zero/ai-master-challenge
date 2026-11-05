@@ -1,0 +1,10 @@
+{
+ "texto_en": "open installation march installation hello recently had rebuilt installed installation packages thank lead",
+ "mensagem": "Oi, recentemente meu computador foi refeito (reinstalado) e preciso que instalem os pacotes de software de novo, a instalação ainda tá em aberto. Podem me ajudar? Obrigado!",
+ "meta": {
+  "input_tokens": 454,
+  "output_tokens": 84,
+  "custo_usd": 0.003496,
+  "request_id": "req_011CgipfTi8CCX9ERJz8pn2R"
+ }
+}

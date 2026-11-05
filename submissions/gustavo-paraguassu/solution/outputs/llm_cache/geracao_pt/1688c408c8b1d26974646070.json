@@ -1,0 +1,10 @@
+{
+ "texto_en": "conference call noise sent wednesday november conference call noise hi can you please raise ticket with regards conference line seems there background noises after some leader end conf details leader code your participant code regards manager",
+ "mensagem": "Oi, pode abrir um chamado sobre a nossa linha de conferência? Tá aparecendo um barulho de fundo depois que o líder encerra a chamada. Os dados da conferência são o código do líder e o código de participante de vocês.",
+ "meta": {
+  "input_tokens": 486,
+  "output_tokens": 93,
+  "custo_usd": 0.003804,
+  "request_id": "req_011Cgipe7TwVzHk2orLK1vLw"
+ }
+}

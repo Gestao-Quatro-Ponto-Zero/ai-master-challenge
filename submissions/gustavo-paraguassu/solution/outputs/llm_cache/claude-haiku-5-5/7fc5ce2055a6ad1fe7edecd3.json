@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso fazer o teste anual de recuperação de serviço: confirmar o local de restore, rodar o teste e conferir as saídas esperadas. Tem que documentar usando o template e os formulários da instrução de trabalho de restore, seguindo o procedimento de disaster recovery. Também preciso saber qual código usar pra lançar as horas dos testes de restore.",
+ "triagem": {
+  "texto_ingles": "Request: annual service recovery test. Need to confirm the restore location, run the restore test and verify the expected outputs. Documentation must follow the restore work instruction template and forms, per the disaster recovery procedure. Also requesting the time-tracking code to log hours for the restore tests.",
+  "resumo_pt": "Cliente precisa executar o teste anual de recuperação de serviço (restore), documentar com o template e formulários da instrução de restore e saber qual código usar para lançar as horas.",
+  "fila_sugerida_llm": "Storage",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3099,
+  "output_tokens": 332,
+  "latencia_s": 2.31,
+  "custo_usd": 0.000476,
+  "request_id": "req_011CgipheVLTPkVxdmSinxPc"
+ }
+}

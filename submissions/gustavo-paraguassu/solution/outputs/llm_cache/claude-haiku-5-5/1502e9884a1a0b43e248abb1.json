@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, recentemente meu computador foi refeito (reinstalado) e preciso que instalem os pacotes de software de novo, a instalação ainda tá em aberto. Podem me ajudar? Obrigado!",
+ "triagem": {
+  "texto_ingles": "User reports that their computer was recently reinstalled (re-imaged) and needs the software packages reinstalled; the installation is still pending. Requesting assistance.",
+  "resumo_pt": "Cliente pede a reinstalação dos pacotes de software no computador, que foi refeito recentemente, e a instalação ainda está pendente.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "computador",
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": "pacotes de software (reinstalação)",
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3043,
+  "output_tokens": 294,
+  "latencia_s": 1.9,
+  "custo_usd": 0.000451,
+  "request_id": "req_011CgipiRDeZoEsyonieJvSi"
+ }
+}

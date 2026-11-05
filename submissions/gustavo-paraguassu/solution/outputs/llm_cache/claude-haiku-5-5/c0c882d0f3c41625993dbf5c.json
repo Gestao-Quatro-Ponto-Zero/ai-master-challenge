@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Há uns minutos o computador pediu pra reiniciar por causa de uma atualização de software, reiniciei mas a instalação falhou, e agora parece que fica nesse loop até a instalação dar certo. Podem me orientar? Se precisarem de mais alguma informação, é só falar.",
+ "triagem": {
+  "texto_ingles": "User reports that after a software update requested a restart, the installation failed. The computer now appears stuck in a boot loop, retrying the installation on every restart. Requests guidance on how to proceed.",
+  "resumo_pt": "Computador preso em loop de reinicialização após falha em atualização de software; usuário pede orientação.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "computador",
+   "sintoma": "fica em loop após falha na instalação de atualização de software, instalação não conclui",
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": "atualização de software",
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3078,
+  "output_tokens": 305,
+  "latencia_s": 2.76,
+  "custo_usd": 0.00046,
+  "request_id": "req_011CgipgKoAC2WYvYF6DxbPU"
+ }
+}

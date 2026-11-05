@@ -1,0 +1,10 @@
+{
+ "texto_en": "card assign new card friday july card hello awesome guys intern la badge se july re card card se va alt card friday july pm card va lost va la analyst ext hub",
+ "mensagem": "Oi pessoal, tudo bem? Preciso que vocês atribuam um crachá novo pra um estagiário que vai receber o badge na sexta-feira de julho, à tarde. O cartão antigo foi perdido, então tem que desativar ele e liberar o novo, valeu!",
+ "meta": {
+  "input_tokens": 477,
+  "output_tokens": 109,
+  "custo_usd": 0.004088,
+  "request_id": "req_011CgipUzbgtjnJusCTDCNA1"
+ }
+}

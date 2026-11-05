@@ -1,0 +1,37 @@
+{
+ "texto": "Oi! Por favor, adiciona um novo projeto no espaço com título, código, nome, status fechado e tipo. Obrigado!",
+ "triagem": {
+  "texto_ingles": "Please add a new project to the workspace with title, code, name, status closed and type.",
+  "resumo_pt": "Solicitação para adicionar um novo projeto no espaço de trabalho com título, código, nome, status fechado e tipo.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "espaço de trabalho (workspace)",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": "novo projeto",
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3017,
+  "output_tokens": 265,
+  "latencia_s": 1.67,
+  "custo_usd": 0.000434,
+  "request_id": "req_011CgiphuLoRkqb2T9H1hqJW"
+ }
+}

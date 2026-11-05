@@ -1,0 +1,40 @@
+{
+ "texto": "Oi, a caixa de e-mail do Jones, que é desligado no AD desde dezembro, tinha aparecido pra mim na segunda, mas agora sumiu. Podem me ajudar a colocar ela de volta? Obrigado, chefe de Tax e Treasury",
+ "triagem": {
+  "texto_ingles": "Hello, the mailbox of Jones (account disabled in AD since December) had appeared in my Outlook on Monday, but now it has disappeared. Can you help me restore access to it? Thanks, Head of Tax and Treasury",
+  "resumo_pt": "Chefe de Tax e Treasury pede para restaurar o acesso à caixa de e-mail do Jones (desligado no AD desde dezembro), que apareceu na segunda e sumiu.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "a caixa de e-mail tinha aparecido na segunda, mas agora sumiu",
+   "sistema": "caixa de e-mail / AD",
+   "tipo_acesso": "acesso a caixa de e-mail de outro usuário (restaurar)",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "dado_pessoal",
+   "seguranca"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3065,
+  "output_tokens": 395,
+  "latencia_s": 4.65,
+  "custo_usd": 0.02016,
+  "request_id": "req_011CgipkaRaysqjWRaRNXSmh"
+ }
+}

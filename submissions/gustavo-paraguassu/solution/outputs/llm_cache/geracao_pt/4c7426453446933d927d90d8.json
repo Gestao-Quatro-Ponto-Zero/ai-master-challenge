@@ -1,0 +1,10 @@
+{
+ "texto_en": "outlook not working sent monday october working hi had issues with morning open kind regards administrator",
+ "mensagem": "Oi, meu Outlook não tá funcionando. Desde segunda de manhã tô tendo problema pra abrir ele, alguém consegue dar uma olhada?",
+ "meta": {
+  "input_tokens": 455,
+  "output_tokens": 69,
+  "custo_usd": 0.0032,
+  "request_id": "req_011CgipczyVdU9UwGQD4jYzt"
+ }
+}

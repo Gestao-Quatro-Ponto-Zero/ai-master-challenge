@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, não tô conseguindo enviar meu cartão de ponto da semana, vocês podem configurar ele como aprovado? Ele já vem preenchido com o feriado, as folgas e as férias, não aparece nenhum botão de ação e não consigo fazer nada nele. O pior é que dá erro dizendo que eu já enviei, sendo que nem consigo enviar, obrigado!",
+ "triagem": {
+  "texto_ingles": "Employee cannot submit weekly timesheet. The timesheet is pre-filled with holiday, days off and vacation, no action button is displayed, and an error says it was already submitted although the employee has not been able to submit it. Employee asks IT to set the timesheet as approved.",
+  "resumo_pt": "Funcionário não consegue enviar o cartão de ponto da semana, que aparece com erro de já enviado, e pede que o sistema o marque como aprovado.",
+  "fila_sugerida_llm": "HR Support",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Não consegue enviar o cartão de ponto da semana; não aparece botão de ação; dá erro dizendo que já foi enviado mesmo sem ter conseguido enviar",
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": "ponto (cartão de ponto semanal, com feriado, folgas e férias preenchidos)",
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "acao_irreversivel"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3105,
+  "output_tokens": 430,
+  "latencia_s": 2.58,
+  "custo_usd": 0.000526,
+  "request_id": "req_011CgipgiCYykpVpUtEditxd"
+ }
+}

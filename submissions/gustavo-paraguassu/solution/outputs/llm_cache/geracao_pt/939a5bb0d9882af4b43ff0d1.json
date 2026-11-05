@@ -1,0 +1,10 @@
+{
+ "texto_en": "new starter thursday starter form hello please fill starter form thanks ready file link attachments starter form",
+ "mensagem": "Oi, tudo bem? Vai entrar uma pessoa nova na quinta, pode preencher o formulário de novo colaborador, por favor? Deixei o formulário em anexo e o link do arquivo já tá pronto, valeu!",
+ "meta": {
+  "input_tokens": 458,
+  "output_tokens": 93,
+  "custo_usd": 0.003692,
+  "request_id": "req_011CgipdVbSPefVZZ8qQLe5H"
+ }
+}

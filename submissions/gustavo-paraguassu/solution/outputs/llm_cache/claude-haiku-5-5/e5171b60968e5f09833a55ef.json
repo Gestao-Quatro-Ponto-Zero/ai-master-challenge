@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Chegou uma nova compra (PO) na quarta à tarde: compramos um adaptador Apple Thunderbolt para Gigabit e um adaptador Apple Mini. Podem registrar a instalação, por favor? Obrigado!",
+ "triagem": {
+  "texto_ingles": "A new purchase order was received on Wednesday afternoon for an Apple Thunderbolt to Gigabit adapter and an Apple Mini adapter. Please log the installation.",
+  "resumo_pt": "Registrar a instalação de uma nova compra (PO) com um adaptador Apple Thunderbolt para Gigabit e um adaptador Apple Mini, recebida na quarta à tarde.",
+  "fila_sugerida_llm": "Hardware",
+  "campos": {
+   "equipamento": "adaptador Apple Thunderbolt para Gigabit; adaptador Apple Mini",
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": "adaptador Apple Thunderbolt para Gigabit; adaptador Apple Mini",
+   "quantidade": null,
+   "numero_pedido": "PO (número não informado)",
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3061,
+  "output_tokens": 373,
+  "latencia_s": 2.62,
+  "custo_usd": 0.000493,
+  "request_id": "req_011CgipiWxgYNcj1nWqdEvct"
+ }
+}

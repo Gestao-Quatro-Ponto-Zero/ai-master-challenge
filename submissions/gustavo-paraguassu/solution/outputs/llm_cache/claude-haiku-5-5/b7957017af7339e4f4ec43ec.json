@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Vocês podem me incluir, por favor? Obrigado!",
+ "triagem": {
+  "texto_ingles": "Please add me to the appropriate access group or distribution list. Thank you.",
+  "resumo_pt": "Cliente pede para ser incluído em algum grupo, lista ou acesso, sem especificar qual.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "inclusão em grupo/lista (não especificado)",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3001,
+  "output_tokens": 254,
+  "latencia_s": 2.56,
+  "custo_usd": 0.000427,
+  "request_id": "req_011CgipiCUBsdchWmiKduEYs"
+ }
+}

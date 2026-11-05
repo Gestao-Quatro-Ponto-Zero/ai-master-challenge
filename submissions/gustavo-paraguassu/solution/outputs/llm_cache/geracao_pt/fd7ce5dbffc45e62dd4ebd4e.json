@@ -1,0 +1,10 @@
+{
+ "texto_en": "lost badge lost badge hi there could you please block access for current badge issue one for might have lost thank you much if you need further information please hesitate contact best regards shared officer ext st emergency telephone number",
+ "mensagem": "Oi, acho que perdi meu crachá, vocês conseguem bloquear o acesso do crachá atual e emitir um novo pra mim? Se precisarem de mais alguma informação é só me chamar, obrigado!",
+ "meta": {
+  "input_tokens": 489,
+  "output_tokens": 87,
+  "custo_usd": 0.003696,
+  "request_id": "req_011CgipUviHVyVih7fnum6HS"
+ }
+}

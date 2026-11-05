@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Preciso de ajuda com o acesso ao Confluence pra um novo colaborador que entrou, ainda não tá funcionando e não consegui encontrar onde liberar as permissões. Dá pra verificar e atualizar os direitos de acesso dele? Valeu!",
+ "triagem": {
+  "texto_ingles": "Request: new employee cannot access Confluence yet. Please verify and update their access permissions.",
+  "resumo_pt": "Novo colaborador sem acesso ao Confluence; solicitada verificação e atualização das permissões de acesso.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "ainda não está funcionando (acesso ao Confluence)",
+   "sistema": "Confluence",
+   "tipo_acesso": "permissões de acesso",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": "novo colaborador"
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3072,
+  "output_tokens": 283,
+  "latencia_s": 1.74,
+  "custo_usd": 0.000449,
+  "request_id": "req_011CgipYehj6megYyX4ba8X8"
+ }
+}

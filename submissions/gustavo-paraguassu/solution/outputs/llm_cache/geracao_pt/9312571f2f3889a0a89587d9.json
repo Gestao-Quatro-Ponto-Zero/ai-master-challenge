@@ -1,0 +1,10 @@
+{
+ "texto_en": "space va ca si la va",
+ "mensagem": "Oi, tô com problema de espaço aqui, acho que tá acabando o espaço em disco. Consegue dar uma olhada?",
+ "meta": {
+  "input_tokens": 435,
+  "output_tokens": 150,
+  "custo_usd": 0.00474,
+  "request_id": "req_011Cgipe6CHfqMdQDebTjYem"
+ }
+}

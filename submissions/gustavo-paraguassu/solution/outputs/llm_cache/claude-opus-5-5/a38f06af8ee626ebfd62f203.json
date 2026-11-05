@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pessoal! Daqui a alguns dias vou mudar de lugar, então se possível mantenham a instalação, por favor. Ah, e a instalação que fizeram veio errada, não foi o que eu tinha pedido, dá pra corrigir? Valeu!",
+ "triagem": {
+  "texto_ingles": "Hello team. I will be moving to a different location in a few days, so please keep the installation if possible. Also, the installation that was done is incorrect and not what I requested. Can it be corrected? Thanks!",
+  "resumo_pt": "Usuário diz que a instalação feita veio diferente do que pediu e quer correção; também avisa que vai mudar de lugar em alguns dias e pede para manter a instalação.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "a instalação que fizeram veio errada, não foi o que eu tinha pedido",
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3064,
+  "output_tokens": 335,
+  "latencia_s": 3.79,
+  "custo_usd": 0.018956,
+  "request_id": "req_011Cgipka9UEoz73vn2WCv3a"
+ }
+}

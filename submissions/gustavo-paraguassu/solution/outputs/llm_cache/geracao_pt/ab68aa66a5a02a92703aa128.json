@@ -1,0 +1,10 @@
+{
+ "texto_en": "new account request for the service now hi well re process building application integrate press ticketing has create generic user fine copy rights user suggest similar please let require further part kindest wishes senior engineer",
+ "mensagem": "Oi, preciso de uma conta nova no ServiceNow. A gente tá desenvolvendo uma aplicação que vai integrar com o sistema de tickets e precisa de um usuário genérico, pode copiar as permissões de um usuário parecido. Qualquer coisa que precisar de mim é só avisar, valeu!",
+ "meta": {
+  "input_tokens": 483,
+  "output_tokens": 123,
+  "custo_usd": 0.004392,
+  "request_id": "req_011CgipUxp3BwXs7Rkj273jz"
+ }
+}

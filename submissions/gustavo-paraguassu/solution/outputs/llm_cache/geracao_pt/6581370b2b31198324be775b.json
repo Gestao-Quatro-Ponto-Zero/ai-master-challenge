@@ -1,0 +1,10 @@
+{
+ "texto_en": "outlook password not syncing sent monday july password syncing hi constantly getting message enter password have entered widows password but being have even changed password would help sync also tried re booting machine result experiencing functionality could you please look into for regards fusion information confidential be legally privileged intended solely for addressee any opinions expressed mine necessarily represent opinions susceptible interference if you intended recipient any disclosure",
+ "mensagem": "Oi, meu Outlook fica pedindo a senha o tempo todo, coloco a senha do Windows e não adianta, parece que não está sincronizando. Já troquei a senha e reiniciei a máquina, mas continua igual e estou com o funcionamento comprometido. Vocês conseguem dar uma olhada, por favor?",
+ "meta": {
+  "input_tokens": 554,
+  "output_tokens": 125,
+  "custo_usd": 0.004716,
+  "request_id": "req_011CgipdCNb2jCJHe2LRmYpj"
+ }
+}

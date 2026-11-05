@@ -1,0 +1,10 @@
+{
+ "texto_en": "change ms call closure surveys sending hour for and change call closure surveys hello order increase call closure response rate pilot change monitor results survey clients reminders after since initial survey invite please note change implemented clients conditions remain same advise continue same after has finished revert changes greatly appreciate proceed weeks let require further information side best regards care",
+ "mensagem": "Oi, pessoal! Pra tentar aumentar a taxa de resposta das pesquisas de encerramento de chamado, a gente quer fazer um piloto mudando o horário de envio dessas pesquisas e mandando lembretes pros clientes depois do convite inicial, acompanhando os resultados — a mudança seria só pra esses clientes, os demais continuam do mesmo jeito. Vocês conseguem fazer isso por algumas semanas e reverter quando o piloto terminar? Se precisarem de mais alguma informação, é só avisar, obrigado!",
+ "meta": {
+  "input_tokens": 533,
+  "output_tokens": 206,
+  "custo_usd": 0.006252,
+  "request_id": "req_011CgipenCbUb38Nie5LD9Rx"
+ }
+}

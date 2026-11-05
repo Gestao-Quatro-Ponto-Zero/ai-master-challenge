@@ -1,0 +1,10 @@
+{
+ "texto_en": "new starter ion tower thursday february pm assistants starter discipline dear please informed candidate accepted job offer become discipline st march developer please create his credentials per attached form thank best regards specialist",
+ "mensagem": "Oi, pessoal! Temos um novo colaborador: o candidato aceitou a proposta e vai começar em março como desenvolvedor. Vocês podem criar as credenciais dele conforme o formulário em anexo? Obrigado!",
+ "meta": {
+  "input_tokens": 489,
+  "output_tokens": 93,
+  "custo_usd": 0.003816,
+  "request_id": "req_011CgipdjW6CX3h4Fr9bMMii"
+ }
+}

@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso que criem um projeto novo e também tem viagem envolvida, os detalhes estão no formulário em anexo. Se não der pra atribuir mais de uma pessoa, adiciona os dois usuários, por favor. Qualquer dúvida é só me chamar, valeu!",
+ "triagem": {
+  "texto_ingles": "Request to create a new internal project. Mentions travel involved; details are in the attached form. Requester asks to add two users to the project if multiple assignees are not possible.",
+  "resumo_pt": "Pedido para criar um projeto novo com viagem envolvida, detalhes no formulário anexo, e adicionar dois usuários.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3070,
+  "output_tokens": 279,
+  "latencia_s": 1.71,
+  "custo_usd": 0.000447,
+  "request_id": "req_011Cgiphgf4DxJoeNPHjdqmE"
+ }
+}

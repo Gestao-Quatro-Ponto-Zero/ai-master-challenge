@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso que criem um projeto no Oracle com o código baseado no template que mandei em anexo, é aquele formulário de setup do engine pra quarta-feira. Podem criar por favor? Valeu!",
+ "triagem": {
+  "texto_ingles": "Request to create a new project in Oracle with project code based on the attached template (engine setup form). Needed by Wednesday.",
+  "resumo_pt": "Pede criação de um projeto no Oracle com código baseado no template anexo (formulário de setup do engine), para quarta-feira.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": "Oracle",
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": "projeto no Oracle com código baseado no template anexo (formulário de setup do engine)",
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3043,
+  "output_tokens": 296,
+  "latencia_s": 1.63,
+  "custo_usd": 0.000452,
+  "request_id": "req_011CgipheixvjPpox7xYJ1By"
+ }
+}

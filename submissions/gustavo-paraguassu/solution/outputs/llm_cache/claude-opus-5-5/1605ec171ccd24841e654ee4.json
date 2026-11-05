@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, pode registrar um chamado de instalação, por favor? Foi solicitado pelo administrador, qualquer coisa é só ligar. Valeu!",
+ "triagem": {
+  "texto_ingles": "Hello, could you please register an installation ticket? It was requested by the administrator; feel free to call if anything is needed. Thanks!",
+  "resumo_pt": "Pedido de abertura de chamado de instalação, solicitado pelo administrador, sem detalhar o que deve ser instalado.",
+  "fila_sugerida_llm": "Administrative rights",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": "solicitado pelo administrador",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3025,
+  "output_tokens": 279,
+  "latencia_s": 3.57,
+  "custo_usd": 0.01768,
+  "request_id": "req_011CgipkZAC1Er3k566G2z9R"
+ }
+}

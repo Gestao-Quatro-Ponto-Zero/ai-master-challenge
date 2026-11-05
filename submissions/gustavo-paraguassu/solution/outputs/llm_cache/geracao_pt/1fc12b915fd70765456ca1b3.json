@@ -1,0 +1,10 @@
+{
+ "texto_en": "record tuesday october pm re record sorry questions october record hi please update record starting discipline default charge changes spare please liaise about forecasting cost thanks",
+ "mensagem": "Oi, desculpa as perguntas, mas vocês podem atualizar o registro a partir de agora com a disciplina e a cobrança padrão, já que mudou? E por favor alinha com o pessoal sobre a previsão de custo, valeu!",
+ "meta": {
+  "input_tokens": 476,
+  "output_tokens": 96,
+  "custo_usd": 0.003824,
+  "request_id": "req_011Cgipdu44hWVqWFjwti3wU"
+ }
+}

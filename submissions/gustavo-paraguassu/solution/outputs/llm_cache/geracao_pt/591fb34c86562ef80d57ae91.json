@@ -1,0 +1,10 @@
+{
+ "texto_en": "lost entrance card lost entrance card hello name possible lost entrance card building what procedure thanks",
+ "mensagem": "Oi, acho que perdi meu cartão de acesso do prédio. Qual é o procedimento nesse caso? Obrigado!",
+ "meta": {
+  "input_tokens": 459,
+  "output_tokens": 57,
+  "custo_usd": 0.002976,
+  "request_id": "req_011CgipUpageSsNw7tqjYsNz"
+ }
+}

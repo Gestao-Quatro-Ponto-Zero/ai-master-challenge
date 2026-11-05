@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, preciso resetar a senha da conta, ele pediu a redefinição e depois o PIN também. Consegue ajudar?",
+ "triagem": {
+  "texto_ingles": "User requests a password reset for an account and a PIN reset as well, following a reset request from the account owner. Please assist.",
+  "resumo_pt": "Solicitação de redefinição de senha e PIN de uma conta, pedida por outra pessoa ('ele').",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "redefinição de senha e PIN",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": "ele (titular da conta, não identificado)"
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "seguranca"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3016,
+  "output_tokens": 284,
+  "latencia_s": 1.97,
+  "custo_usd": 0.000444,
+  "request_id": "req_011CgipYf2LH9h1onSrSBRZX"
+ }
+}

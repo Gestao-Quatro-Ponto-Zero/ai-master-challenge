@@ -1,0 +1,10 @@
+{
+ "texto_en": "project manager change pas wednesday pm change hi where pm transfer pm duties pm pm please help make change please let questions thank senior",
+ "mensagem": "Oi, preciso trocar o gerente de projeto (PM) de um projeto, as responsabilidades de PM vão ser transferidas pra outra pessoa a partir de quarta. Vocês conseguem me ajudar a fazer essa mudança? Qualquer dúvida me avisem, obrigado!",
+ "meta": {
+  "input_tokens": 469,
+  "output_tokens": 116,
+  "custo_usd": 0.004196,
+  "request_id": "req_011Cgipey9uGj8twYLgA5k7b"
+ }
+}

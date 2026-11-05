@@ -1,0 +1,37 @@
+{
+ "texto": "Oi pessoal, vocês conseguem liberar o acesso a essa caixa de e-mail pra mim? Preciso dela disponível no sábado à tarde, em dezembro. Valeu!",
+ "triagem": {
+  "texto_ingles": "Request to grant access to a shared mailbox. The requester needs access available on Saturday afternoon in December.",
+  "resumo_pt": "Pede liberação de acesso a uma caixa de e-mail, necessária no sábado à tarde em dezembro.",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": "liberação de acesso a caixa de e-mail",
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3038,
+  "output_tokens": 272,
+  "latencia_s": 1.74,
+  "custo_usd": 0.00044,
+  "request_id": "req_011CgipbNS21Q1i16cfB3uZv"
+ }
+}

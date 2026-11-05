@@ -1,0 +1,10 @@
+{
+ "texto_en": "new purchase po friday purchase po dear purchased requested by adapter mini display port please log allocation please take consideration mandatory receipts section order receive item ordered how video kind regards administrator",
+ "mensagem": "Oi, saiu um novo pedido de compra (PO) na sexta pra um adaptador mini display port que foi solicitado. Podem registrar a alocação, por favor? E lembrando que é obrigatório dar o recebimento do item na seção de recebimentos quando chegar, tem um vídeo explicando como fazer.",
+ "meta": {
+  "input_tokens": 488,
+  "output_tokens": 120,
+  "custo_usd": 0.004352,
+  "request_id": "req_011CgipfXaJEp6AYVGDnBTGM"
+ }
+}

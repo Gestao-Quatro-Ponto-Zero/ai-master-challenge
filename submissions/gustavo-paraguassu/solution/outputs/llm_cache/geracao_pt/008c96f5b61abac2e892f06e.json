@@ -1,0 +1,10 @@
+{
+ "texto_en": "timecard error re absence leave sick leave hi if you already booked absence via manage absences there need add once again timecard be automatically displayed there adding help error regards manager sent friday december absence leave sick leave hello writing you because submit absence leave absence leave was sick for period when tried submit without entering task details because managed find any option sheet error status should enter some code task details if should can you please tell code or totally missed sheet code regards",
+ "mensagem": "Oi, preciso de ajuda com o timecard: tentei lançar um período de licença médica (fiquei doente), mas não achei nenhuma opção na planilha pra isso e, quando tentei enviar sem preencher os detalhes da tarefa, deu erro. Tenho que colocar algum código nos detalhes da tarefa? Se sim, qual é? Ou eu não vi o código certo na planilha? Meu gestor falou que, se a ausência já foi registrada em Gerenciar Ausências, não precisa lançar de novo, que ela aparece sozinha no timecard, mas não sei se é por isso que tá dando erro.",
+ "meta": {
+  "input_tokens": 560,
+  "output_tokens": 227,
+  "custo_usd": 0.00678,
+  "request_id": "req_011CgipdNMN4LcAW4R2T2pcb"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "texto_en": "incorrect resolution date sent thursday incorrect resolution date hi guys below ticket with hours if should next exact however below displays something though appears be correct ticket please investigate thank you manager sent logged cannot run report ticket logged fellow your ticket logged with good hands usually can take up hours have solved however you can expect hear sooner if you want progress made your ticket please check your ticket details ticket reference summary cannot run report description sent thursday resolution target date good know needs hundreds tickets we receive daily according their urgency impact resolving high impact high urgency tickets should you wish add details your ticket or increase priority you can drop line or leave comment how we warm regards ext ref msg",
+ "mensagem": "Oi pessoal, recebi a confirmação de um chamado (o de não conseguir rodar um relatório) que diz que o prazo de resolução é de algumas horas, então a data deveria ser a do dia seguinte, mas a data de resolução que aparece no e-mail tá diferente, mesmo que no chamado pareça estar certa. Podem verificar, por favor? Obrigado!",
+ "meta": {
+  "input_tokens": 648,
+  "output_tokens": 143,
+  "custo_usd": 0.005452,
+  "request_id": "req_011CgipekGFtFjBrW98DyGZc"
+ }
+}

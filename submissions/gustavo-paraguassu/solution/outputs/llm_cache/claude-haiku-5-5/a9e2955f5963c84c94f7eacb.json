@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, recebi um aviso de segurança dizendo que uns pacotes que tão rodando aqui estão desatualizados e que eu preciso entrar no painel de controle e instalar a versão mais recente pela central de pacotes. Alguém pode me ajudar com isso? Diz que o relatório detalhado tá no menu principal.",
+ "triagem": {
+  "texto_ingles": "User received a security notice stating that some packages running on their machine are outdated, and asks for help updating them to the latest version via the package manager. The notice says the detailed report is in the main menu.",
+  "resumo_pt": "Cliente recebeu aviso de segurança de pacotes desatualizados e pede ajuda para instalar a versão mais recente pela central de pacotes.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "Aviso de segurança informando que pacotes em execução estão desatualizados",
+   "sistema": "Central de pacotes / painel de controle",
+   "tipo_acesso": null,
+   "software": "Versão mais recente dos pacotes desatualizados",
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "seguranca"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3084,
+  "output_tokens": 352,
+  "latencia_s": 2.29,
+  "custo_usd": 0.000484,
+  "request_id": "req_011CgipgLQNEbovfyhKRFQQe"
+ }
+}

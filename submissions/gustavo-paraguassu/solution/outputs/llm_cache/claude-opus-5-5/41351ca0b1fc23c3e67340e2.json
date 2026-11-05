@@ -1,0 +1,39 @@
+{
+ "texto": "Oi, apareceu uma conta no meu Outlook que a gente nunca usa, tá vazia, mandei um print pelo snipping tool. Dá pra deletar ela, por favor? Valeu!",
+ "triagem": {
+  "texto_ingles": "Hello, an account that we never use appeared in my Outlook. It is empty. I sent a screenshot via Snipping Tool. Could it be deleted, please? Thanks!",
+  "resumo_pt": "Usuário pede a remoção de uma conta vazia e não utilizada que apareceu no seu Outlook (enviou print).",
+  "fila_sugerida_llm": "Access",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "apareceu uma conta no meu Outlook que a gente nunca usa, tá vazia",
+   "sistema": "Outlook",
+   "tipo_acesso": "remoção",
+   "software": null,
+   "justificativa": "conta nunca usada e vazia",
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": [
+   "acao_irreversivel"
+  ]
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-opus-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3040,
+  "output_tokens": 332,
+  "latencia_s": 3.94,
+  "custo_usd": 0.0188,
+  "request_id": "req_011CgipjLTRuimrbCHHzt4n5"
+ }
+}

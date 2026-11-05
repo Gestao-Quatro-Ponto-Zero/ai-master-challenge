@@ -1,0 +1,10 @@
+{
+ "texto_en": "when accessing servers accessing hi addresses ranges client implementing artefact repository he please let more information thanks design lead ext",
+ "mensagem": "Oi, preciso saber quais faixas de endereços IP são usadas quando os servidores são acessados, porque um cliente está implementando um repositório de artefatos. Consegue me passar mais informações sobre isso? Valeu!",
+ "meta": {
+  "input_tokens": 467,
+  "output_tokens": 89,
+  "custo_usd": 0.003648,
+  "request_id": "req_011CgipUsRb4C9ikDHx3qQcS"
+ }
+}

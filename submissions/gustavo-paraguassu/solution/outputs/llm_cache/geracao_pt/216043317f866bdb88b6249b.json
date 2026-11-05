@@ -1,0 +1,10 @@
+{
+ "texto_en": "add to am mailing list tuesday october pm add mailing hello please add engineering mailing thank head",
+ "mensagem": "Oi, tudo bem? Vocês podem me adicionar na lista de e-mails de engenharia, por favor? Valeu!",
+ "meta": {
+  "input_tokens": 459,
+  "output_tokens": 56,
+  "custo_usd": 0.002956,
+  "request_id": "req_011CgipeqfhtstfXLEWggSpV"
+ }
+}

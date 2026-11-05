@@ -1,0 +1,37 @@
+{
+ "texto": "Oi pessoal, recebi a confirmação de um chamado (o de não conseguir rodar um relatório) que diz que o prazo de resolução é de algumas horas, então a data deveria ser a do dia seguinte, mas a data de resolução que aparece no e-mail tá diferente, mesmo que no chamado pareça estar certa. Podem verificar, por favor? Obrigado!",
+ "triagem": {
+  "texto_ingles": "Ticket follow-up: user received a confirmation email for a ticket about being unable to run a report. The confirmation states the resolution deadline is a few hours, so the resolution date should be the following day, but the resolution date shown in the email differs from the date shown in the ticket. User asks IT to verify the discrepancy.",
+  "resumo_pt": "Cliente recebeu e-mail de confirmação de chamado (falha ao rodar relatório) com data de resolução diferente da do chamado e pede verificação.",
+  "fila_sugerida_llm": "Miscellaneous",
+  "campos": {
+   "equipamento": null,
+   "sintoma": "data de resolução no e-mail diferente da data no chamado; prazo informado de algumas horas deveria cair no dia seguinte",
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3102,
+  "output_tokens": 382,
+  "latencia_s": 2.96,
+  "custo_usd": 0.000501,
+  "request_id": "req_011Cgiphv1yrxupTcmMTQX5x"
+ }
+}

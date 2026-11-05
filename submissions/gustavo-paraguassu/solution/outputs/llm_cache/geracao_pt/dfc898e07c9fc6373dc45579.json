@@ -1,0 +1,10 @@
+{
+ "texto_en": "wants to share services with tuesday pm wants share want share accept decline",
+ "mensagem": "Oi, alguém quer compartilhar uns serviços comigo na terça à tarde e chegou um convite pra aceitar ou recusar. Não sei bem o que fazer, posso aceitar ou é melhor recusar?",
+ "meta": {
+  "input_tokens": 449,
+  "output_tokens": 88,
+  "custo_usd": 0.003556,
+  "request_id": "req_011CgipfqPNUjAKi8FoXFTbx"
+ }
+}

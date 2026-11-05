@@ -1,0 +1,10 @@
+{
+ "texto_en": "change rights he he change rights hi please rights board also change name board thanks",
+ "mensagem": "Oi, preciso alterar as permissões de acesso de um board e também mudar o nome dele. Vocês conseguem fazer isso pra mim? Valeu!",
+ "meta": {
+  "input_tokens": 449,
+  "output_tokens": 67,
+  "custo_usd": 0.003136,
+  "request_id": "req_011Cgipez6hwinvwQw92XMpF"
+ }
+}

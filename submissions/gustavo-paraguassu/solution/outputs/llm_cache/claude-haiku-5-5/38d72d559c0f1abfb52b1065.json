@@ -1,0 +1,37 @@
+{
+ "texto": "Oi, preciso trocar o gerente de projeto (PM) de um projeto, as responsabilidades de PM vão ser transferidas pra outra pessoa a partir de quarta. Vocês conseguem me ajudar a fazer essa mudança? Qualquer dúvida me avisem, obrigado!",
+ "triagem": {
+  "texto_ingles": "Request to change the Project Manager (PM) of an internal project. PM responsibilities will be transferred to another person starting Wednesday. Please assist with making this change.",
+  "resumo_pt": "Solicitação para trocar o gerente de projeto (PM) de um projeto a partir de quarta-feira, com a transferência das responsabilidades para outra pessoa.",
+  "fila_sugerida_llm": "Internal Project",
+  "campos": {
+   "equipamento": null,
+   "sintoma": null,
+   "sistema": null,
+   "tipo_acesso": null,
+   "software": null,
+   "justificativa": null,
+   "item": null,
+   "quantidade": null,
+   "numero_pedido": null,
+   "pasta_ou_caminho": null,
+   "projeto": null,
+   "assunto_rh": null,
+   "localizacao": null,
+   "para_quem": null
+  },
+  "pede_humano": false,
+  "sinais_de_risco": []
+ },
+ "meta": {
+  "fonte": "api",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "stop_reason": "end_turn",
+  "input_tokens": 3075,
+  "output_tokens": 292,
+  "latencia_s": 1.7,
+  "custo_usd": 0.000454,
+  "request_id": "req_011Cgipi5AtkV1Gmr89GiDYu"
+ }
+}
