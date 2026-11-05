@@ -1,0 +1,212 @@
+== shape (8469, 17)
+
+== missing por coluna
+Ticket ID                          0
+Customer Name                      0
+Customer Email                     0
+Customer Age                       0
+Customer Gender                    0
+Product Purchased                  0
+Date of Purchase                   0
+Ticket Type                        0
+Ticket Subject                     0
+Ticket Description                 0
+Ticket Status                      0
+Resolution                      5700
+Ticket Priority                    0
+Ticket Channel                     0
+First Response Time             2819
+Time to Resolution              5700
+Customer Satisfaction Rating    5700
+dtype: int64
+
+== missing por status
+                           First Response Time  Time to Resolution  Customer Satisfaction Rating  Resolution
+Ticket Status                                                                                               
+Closed                                     0.0                 0.0                           0.0         0.0
+Open                                       1.0                 1.0                           1.0         1.0
+Pending Customer Response                  0.0                 1.0                           1.0         1.0
+
+== Ticket Type (n únicos=5)
+Ticket Type
+Refund request          1752
+Technical issue         1747
+Cancellation request    1695
+Product inquiry         1641
+Billing inquiry         1634
+
+== Ticket Status (n únicos=3)
+Ticket Status
+Pending Customer Response    2881
+Open                         2819
+Closed                       2769
+
+== Ticket Priority (n únicos=4)
+Ticket Priority
+Medium      2192
+Critical    2129
+High        2085
+Low         2063
+
+== Ticket Channel (n únicos=4)
+Ticket Channel
+Email           2143
+Phone           2132
+Social media    2121
+Chat            2073
+
+== Customer Gender (n únicos=3)
+Customer Gender
+Male      2896
+Female    2887
+Other     2686
+
+== Product Purchased (n únicos=42)
+Product Purchased
+Canon EOS                         240
+GoPro Hero                        228
+Nest Thermostat                   225
+Philips Hue Lights                221
+Amazon Echo                       221
+LG Smart TV                       219
+Sony Xperia                       217
+Roomba Robot Vacuum               216
+LG OLED                           213
+Apple AirPods                     213
+iPhone                            212
+Sony 4K HDR TV                    210
+LG Washing Machine                208
+Garmin Forerunner                 208
+Canon DSLR Camera                 206
+Nikon D                           204
+Nintendo Switch Pro Controller    203
+Google Pixel                      203
+Sony PlayStation                  202
+Fitbit Charge                     202
+
+== Ticket Subject (n únicos=16)
+Ticket Subject
+Refund request              576
+Software bug                574
+Product compatibility       567
+Delivery problem            561
+Hardware issue              547
+Battery life                542
+Network problem             539
+Installation support        530
+Product setup               529
+Payment issue               526
+Product recommendation      517
+Account access              509
+Peripheral compatibility    496
+Data loss                   491
+Cancellation request        487
+Display issue               478
+
+== satisfação
+Customer Satisfaction Rating
+1.0    553
+2.0    549
+3.0    580
+4.0    543
+5.0    544
+Name: count, dtype: int64
+
+== amostra de First Response Time / Time to Resolution
+    First Response Time   Time to Resolution Date of Purchase
+2   2023-06-01 11:14:38  2023-06-01 18:05:38       2020-07-14
+3   2023-06-01 07:29:40  2023-06-01 01:57:40       2020-11-13
+4   2023-06-01 00:12:42  2023-06-01 19:53:42       2020-02-04
+10  2023-06-01 17:46:49  2023-05-31 23:51:49       2021-01-19
+11  2023-06-01 12:05:51  2023-06-01 09:27:51       2021-10-24
+14  2023-06-01 06:22:55  2023-05-31 23:08:55       2020-02-29
+16  2023-06-01 19:46:59  2023-06-01 15:58:59       2021-10-13
+19  2023-06-01 00:46:04  2023-06-01 20:29:04       2021-03-08
+
+FRT range: 2023-05-31 21:55:39 -> 2023-06-02 00:54:21
+TTR range: 2023-05-31 21:53:30 -> 2023-06-02 00:55:33
+Date of Purchase range: 2020-01-01 00:00:00 -> 2021-12-30 00:00:00
+
+Tickets com FRT e TTR: 2769
+TTR ANTES da primeira resposta (delta<0): 1365 (49.3%)
+delta (TTR - FRT) em horas:
+ count    2769.00
+mean       -0.06
+std         9.56
+min       -23.23
+25%        -6.93
+50%         0.17
+75%         6.48
+max        23.47
+dtype: float64
+
+== Ticket Description
+contém '{product_purchased}': 1.0
+contém algum '{...}': 1.0
+placeholders:
+ Ticket Description
+{product_purchased}     13702
+{error_message}           472
+{product_id}               48
+{product_name}             32
+{Product_purchased}        18
+{product}                  11
+{{product_purchased}        8
+{name}                      8
+{product_price}             8
+{Product}                   6
+frases iniciais distintas: 16 de 8469
+top frases iniciais:
+ Ticket Description
+I'm having an issue with the {product_purchased}.                                                               5868
+I'm unable to access my {product_purchased} account.                                                             189
+I've forgotten my password for my {product_purchased} account, and the password reset option is not working.     186
+The {product_purchased} is unable to establish a stable internet connection.                                     184
+I'm encountering a software bug in the {product_purchased}.                                                      183
+My {product_purchased} is making strange noises and not functioning properly.                                    182
+I've recently set up my {product_purchased}, but it fails to connect to any available networks.                  180
+I'm facing a problem with my {product_purchased}.                                                                179
+descrição menciona o produto comprado (literal): 0.0
+
+== amostras completas (5)
+
+[Cancellation request | Software bug | Bose QuietComfort | Medium | Phone]
+DESC: I'm having an issue with the {product_purchased}. Please assist. It's not easy to get a product that is $25 from this online store.
+
+
+*Only a few products are purchased from the online store. Please enter I've tried different settings and configurations on my {product_purchased}, but the issue persists.
+RESOLUTION: nan
+
+[Cancellation request | Peripheral compatibility | Apple AirPods | High | Social media]
+DESC: I've noticed a software bug in the {product_purchased} app. It's causing data loss and unexpected errors. How can I resolve this issue?
+
+1. Check your package.json to see if you've seen the following I need assistance as soon as possible because it's affecting my work and productivity.
+RESOLUTION: Information best cause boy.
+
+[Technical issue | Payment issue | Roomba Robot Vacuum | High | Social media]
+DESC: I've forgotten my password for my {product_purchased} account, and the password reset option is not working. How can I recover my account? The password reset information is stored in the cloud. Ifstress-reset-verify= I'm using the original charger that came with my {product_purchased}, but it's not charging properly.
+RESOLUTION: Development two face try front still.
+
+[Billing inquiry | Payment issue | Bose QuietComfort | Critical | Chat]
+DESC: I'm having an issue with the {product_purchased}. Please assist.
+
+$5-6.00 CAD
+
+
+$0.95 CAD
+
+$35 CAD
+
+$45 CAD
+
+
+We recommend ordering after the I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?
+RESOLUTION: Growth cover become shake expert.
+
+[Product inquiry | Hardware issue | Sony PlayStation | Low | Email]
+DESC: I'm having an issue with the {product_purchased}. Please assist.
+
+2) Your product will be reviewed for safety prior to shipment. If there is an issue with your product, please include some information of the product of sale I've noticed a peculiar error message popping up on my {product_purchased} screen. It says '{error_message}'. What does it mean?
+RESOLUTION: Reach can north fill.
+
+== Resolution: n 2769 | únicos 2769 | nº palavras médio 5.5

@@ -1,0 +1,89 @@
+== 1. Associação entre variáveis categóricas (todas as combinações)
+          var_a             var_b  cramers_v     p
+Ticket Priority Product Purchased      0.072 0.263
+ Ticket Subject Product Purchased      0.070 0.335
+ Ticket Channel Product Purchased      0.068 0.635
+  Ticket Status Product Purchased      0.067 0.663
+    Ticket Type Product Purchased      0.064 0.924
+Customer Gender Product Purchased      0.062 0.924
+ Ticket Subject     Ticket Status      0.047 0.157
+ Ticket Subject   Ticket Priority      0.040 0.648
+ Ticket Subject    Ticket Channel      0.039 0.716
+ Ticket Subject   Customer Gender      0.038 0.772
+    Ticket Type    Ticket Subject      0.034 0.981
+Ticket Priority    Ticket Channel      0.025 0.078
+    Ticket Type     Ticket Status      0.023 0.339
+Ticket Priority     Ticket Status      0.022 0.227
+    Ticket Type    Ticket Channel      0.022 0.458
+    Ticket Type   Ticket Priority      0.020 0.561
+    Ticket Type   Customer Gender      0.019 0.664
+ Ticket Channel   Customer Gender      0.017 0.571
+  Ticket Status   Customer Gender      0.017 0.299
+Ticket Priority   Customer Gender      0.016 0.597
+ Ticket Channel     Ticket Status      0.014 0.771
+pares com p<0.05: 0 de 21 (esperado por acaso: 1.1)
+
+== 1b. Ticket Type x Ticket Subject (deveriam ser fortemente ligados num dado real)
+Ticket Type               Billing inquiry  Cancellation request  Product inquiry  Refund request  Technical issue
+Ticket Subject                                                                                                   
+Account access                        103                    92              107             108               99
+Battery life                          106                   104              101             119              112
+Cancellation request                   82                   103               85             109              108
+Data loss                              89                   115               91              97               99
+Delivery problem                      115                   114              109             107              116
+Display issue                          91                   103               80              99              105
+Hardware issue                        100                   109              106             129              103
+Installation support                  108                    99               99             119              105
+Network problem                        95                   102              113             107              122
+Payment issue                         107                   113               91             104              111
+Peripheral compatibility               94                   102               93             106              101
+Product compatibility                 123                    97              121             107              119
+Product recommendation                 95                    98              111             106              107
+Product setup                         104                   108              100             104              113
+Refund request                        100                   126              122             119              109
+Software bug                          122                   110              112             112              118
+
+== 2. Satisfação (n=2769 tickets fechados)
+Ticket Type        Kruskal p=0.699 | média min=2.93 (Refund request) max=3.03 (Cancellation request)
+Ticket Subject     Kruskal p=0.807 | média min=2.80 (Delivery problem) max=3.18 (Installation support)
+Ticket Priority    Kruskal p=0.629 | média min=2.96 (Critical) max=3.05 (Low)
+Ticket Channel     Kruskal p=0.278 | média min=2.95 (Phone) max=3.08 (Chat)
+Customer Gender    Kruskal p=0.625 | média min=2.97 (Female) max=3.03 (Male)
+Product Purchased  Kruskal p=0.667 | média min=2.54 (Fitbit Versa Smartwatch) max=3.22 (Dyson Vacuum Cleaner)
+Customer Age       Spearman rho=-0.004 p=0.832
+delta_h            Spearman rho=+0.022 p=0.254
+frt_hour           Spearman rho=-0.040 p=0.033
+
+== 3. Dá pra PREVER satisfação? (5-fold CV)
+logistic   acurácia=0.199 ± 0.014  (chute = 0.209)
+grad_boost acurácia=0.206 ± 0.012  (chute = 0.209)
+grad_boost CSAT>=4 AUC=0.499 ± 0.010  (chute = 0.500)
+
+== 4. 'Tempo de resolução' respeita prioridade? (num suporte real, Critical < Low)
+delta_h (só positivos) por prioridade:
+                 count  mean   50%
+Ticket Priority                   
+Critical         374.0  7.15  5.98
+High             355.0  8.07  7.12
+Low              332.0  8.00  7.11
+Medium           341.0  7.17  5.87
+Kruskal p = 0.074
+
+== 5. Armadilha das comparações múltiplas: 'piores combinações' canal x prioridade x tipo
+células com n>=20: 29 | pior-melhor observado = 5.97h
+3 'piores' combinações (o que um relatório ingênuo apontaria como gargalo):
+                                                      mean  size
+Ticket Channel Ticket Priority Ticket Type                      
+Chat           High            Refund request        11.37    22
+Social media   High            Refund request        10.57    20
+Email          Low             Cancellation request   9.73    20
+mesmo cálculo com tempos EMBARALHADOS (500x): mediana=4.69h, p(spread>=observado)=0.08
+CSAT: pior-melhor observado = 1.28 pts | embaralhado: mediana=1.18, p=0.27
+
+== 6. Uniformidade (assinatura de gerador aleatório)
+Ticket Type      chi2 vs uniforme p=0.115
+Ticket Priority  chi2 vs uniforme p=0.205
+Ticket Channel   chi2 vs uniforme p=0.718
+Ticket Status    chi2 vs uniforme p=0.328
+CSAT 1..5       chi2 vs uniforme p=0.797
+Idade: min=18 max=70 chi2 vs uniforme (discreta) p=0.550
