@@ -1,0 +1,125 @@
+== volume 47837
+queue
+Hardware                 13617
+HR Support               10915
+Access                    7125
+Miscellaneous             7060
+Storage                   2777
+Purchase                  2464
+Internal Project          2119
+Administrative rights     1760
+
+== tamanho (tokens)
+count    47837.0
+mean        43.6
+std         56.7
+min          2.0
+10%         12.0
+25%         17.0
+50%         26.0
+75%         46.0
+90%         91.0
+max        981.0
+
+== duplicados EXATOS: 0.0% dos tickets | textos repetidos: 0 | destes, com filas DIFERENTES: 0
+
+== H1 quase-duplicados (cos >= 0.8): 13.3% dos tickets têm um 'gêmeo' | grupos: 43075 | maior grupo: 800
+   sim >= 0.5: 34.6%
+   sim >= 0.6: 26.4%
+   sim >= 0.7: 19.8%
+   sim >= 0.8: 13.3%
+   sim >= 0.9: 6.5%
+== H3b: entre pares quase idênticos (>=0.9), filas diferentes em 5.2% (piso de ruído do rótulo)
+
+== 8 maiores grupos de pedidos repetidos (candidatos a autoatendimento/macro):
+   n= 800 fila=Purchase               pureza=100% | new purchase po purchase po dear purchased has please log allocation after item please take consideration mand
+   n= 234 fila=HR Support             pureza=100% | leaver service now leaver form leave date location hello leaver form has filled by name leaving date location 
+   n= 152 fila=Hardware               pureza=76% | access request for a list or library thursday july pm library requesting library links library manage setting 
+   n=  77 fila=HR Support             pureza=95% | direct reports missing time please action reports dear help advice possible part anymore reported cards were r
+   n=  64 fila=Purchase               pureza=100% | purchase request for it final owner md id has been approved friday pm purchase final owner id has approved dea
+   n=  61 fila=HR Support             pureza=100% | timecard error please action submit your cards for approval hi please advise why error thanks best regards man
+   n=  53 fila=HR Support             pureza=100% | new starter center starter discipline dear please informed candidate accepted job offer become discipline seni
+   n=  51 fila=Purchase               pureza=100% | document purchase order requisition implemented believe needs installation administrator phone pm re document 
+
+== split por grupo: treino=38579 teste=9258 (grupos em comum: 0)
+
+== modelo TF-IDF + regressão logística | acurácia=0.861 | macro-F1=0.857 | top-2=0.963
+                       precision    recall  f1-score   support
+
+               Access      0.922     0.887     0.904      1402
+Administrative rights      0.860     0.695     0.768       344
+           HR Support      0.870     0.852     0.861      2072
+             Hardware      0.813     0.897     0.853      2789
+     Internal Project      0.935     0.833     0.881       432
+        Miscellaneous      0.835     0.843     0.839      1398
+             Purchase      0.937     0.789     0.857       303
+              Storage      0.934     0.853     0.892       518
+
+             accuracy                          0.861      9258
+            macro avg      0.888     0.831     0.857      9258
+         weighted avg      0.864     0.861     0.861      9258
+
+== mesmo modelo com split ALEATÓRIO (com vazamento): 0.862  -> inflado em +0.001
+
+== H3b: 8 confusões mais frequentes (fila real -> fila prevista)
+   HR Support             -> Hardware               n= 185 (8.9% da fila real)
+   Miscellaneous          -> Hardware               n= 129 (9.2% da fila real)
+   Hardware               -> HR Support             n= 105 (3.8% da fila real)
+   Administrative rights  -> Hardware               n=  85 (24.7% da fila real)
+   Hardware               -> Miscellaneous          n=  82 (2.9% da fila real)
+   Access                 -> Hardware               n=  81 (5.8% da fila real)
+   HR Support             -> Miscellaneous          n=  71 (3.4% da fila real)
+   Miscellaneous          -> HR Support             n=  61 (4.4% da fila real)
+
+== H3a: acurácia por tamanho do ticket (tokens)
+            n    acc   conf
+len_bin                    
+1-5        55  0.818  0.841
+6-10      559  0.882  0.854
+11-20    2759  0.887  0.845
+21-40    3204  0.852  0.817
+41-80    1588  0.839  0.811
+81+      1093  0.844  0.824
+
+== H6: se o sistema só rotear sozinho acima do limiar de confiança...
+   conf >= 0.50: cobre 90.3% do volume, acerto 90.08% (99 erros a cada 1.000 roteados)
+   conf >= 0.60: cobre 82.8% do volume, acerto 92.79% (72 erros a cada 1.000 roteados)
+   conf >= 0.70: cobre 74.6% do volume, acerto 94.78% (52 erros a cada 1.000 roteados)
+   conf >= 0.80: cobre 65.3% do volume, acerto 96.59% (34 erros a cada 1.000 roteados)
+   conf >= 0.85: cobre 59.3% do volume, acerto 97.39% (26 erros a cada 1.000 roteados)
+   conf >= 0.90: cobre 52.7% do volume, acerto 98.10% (19 erros a cada 1.000 roteados)
+   conf >= 0.95: cobre 43.1% do volume, acerto 99.02% (10 erros a cada 1.000 roteados)
+
+== calibração (confiança média vs acerto real por faixa)
+               n  conf_media  acerto
+conf                                
+(0.0, 0.4]   290       0.350   0.459
+(0.4, 0.5]   611       0.455   0.504
+(0.5, 0.6]   690       0.550   0.600
+(0.6, 0.7]   757       0.650   0.746
+(0.7, 0.8]   865       0.751   0.821
+(0.8, 0.9]  1162       0.852   0.903
+(0.9, 1.0]  4883       0.977   0.981
+
+== limiar por fila para >=95% de acerto (None = fila nunca chega a 95%: sempre humano)
+   Access                 {'thr': 0.55, 'coverage_of_pred': 0.921, 'acc': 0.952}
+   Administrative rights  {'thr': 0.76, 'coverage_of_pred': 0.608, 'acc': 0.953}
+   HR Support             {'thr': 0.65, 'coverage_of_pred': 0.781, 'acc': 0.95}
+   Hardware               {'thr': 0.8, 'coverage_of_pred': 0.604, 'acc': 0.95}
+   Internal Project       {'thr': 0.5, 'coverage_of_pred': 0.925, 'acc': 0.963}
+   Miscellaneous          {'thr': 0.77, 'coverage_of_pred': 0.628, 'acc': 0.954}
+   Purchase               {'thr': 0.5, 'coverage_of_pred': 0.949, 'acc': 0.95}
+   Storage                {'thr': 0.5, 'coverage_of_pred': 0.926, 'acc': 0.954}
+
+== #5 curva de aprendizado (mesmo teste; 3 sementes por tamanho)
+      250 tickets rotulados -> acurácia 0.595 ± 0.010
+      500 tickets rotulados -> acurácia 0.660 ± 0.001
+     1000 tickets rotulados -> acurácia 0.724 ± 0.007
+     2000 tickets rotulados -> acurácia 0.768 ± 0.004
+     4000 tickets rotulados -> acurácia 0.799 ± 0.003
+     8000 tickets rotulados -> acurácia 0.821 ± 0.005
+    16000 tickets rotulados -> acurácia 0.840 ± 0.002
+    38579 tickets rotulados -> acurácia 0.860 ± 0.000
+modelo salvo em solution/models/router.joblib
+
+resultados salvos em solution/outputs

@@ -1,0 +1,390 @@
+{
+  "n": 47837,
+  "queues": {
+    "Hardware": 13617,
+    "HR Support": 10915,
+    "Access": 7125,
+    "Miscellaneous": 7060,
+    "Storage": 2777,
+    "Purchase": 2464,
+    "Internal Project": 2119,
+    "Administrative rights": 1760
+  },
+  "exact_dup_share": 0.0,
+  "exact_dup_texts_conflicting_labels": 0,
+  "exact_dup_texts": 0,
+  "near_dup_share": 0.13326504588498442,
+  "n_groups": 43075,
+  "share_twin_0.5": 0.34573656374772666,
+  "share_twin_0.6": 0.2643560423939628,
+  "share_twin_0.7": 0.19806844074670235,
+  "share_twin_0.8": 0.13326504588498442,
+  "share_twin_0.9": 0.06463616029433283,
+  "twin90_label_disagree": 0.05206985769728331,
+  "top_repeat_groups": [
+    {
+      "size": 800,
+      "queue": "Purchase",
+      "queue_purity": 1.0,
+      "example": "new purchase po purchase po dear purchased has please log allocation after item please take consideration mandatory receipts section order r"
+    },
+    {
+      "size": 234,
+      "queue": "HR Support",
+      "queue_purity": 1.0,
+      "example": "leaver service now leaver form leave date location hello leaver form has filled by name leaving date location ad forwarder leaver mailbox di"
+    },
+    {
+      "size": 152,
+      "queue": "Hardware",
+      "queue_purity": 0.76,
+      "example": "access request for a list or library thursday july pm library requesting library links library manage setting library lead cross sap confirm"
+    },
+    {
+      "size": 77,
+      "queue": "HR Support",
+      "queue_purity": 0.95,
+      "example": "direct reports missing time please action reports dear help advice possible part anymore reported cards were reported leavers closed best re"
+    },
+    {
+      "size": 64,
+      "queue": "Purchase",
+      "queue_purity": 1.0,
+      "example": "purchase request for it final owner md id has been approved friday pm purchase final owner id has approved dear purchased battery please log"
+    },
+    {
+      "size": 61,
+      "queue": "HR Support",
+      "queue_purity": 1.0,
+      "example": "timecard error please action submit your cards for approval hi please advise why error thanks best regards manager sent monday please action"
+    },
+    {
+      "size": 53,
+      "queue": "HR Support",
+      "queue_purity": 1.0,
+      "example": "new starter center starter discipline dear please informed candidate accepted job offer become discipline senior developer please create his"
+    },
+    {
+      "size": 51,
+      "queue": "Purchase",
+      "queue_purity": 1.0,
+      "example": "document purchase order requisition implemented believe needs installation administrator phone pm re document purchase order requisition imp"
+    }
+  ],
+  "n_train": 38579,
+  "n_test": 9258,
+  "accuracy": 0.8607690645927846,
+  "macro_f1": 0.8568989668510124,
+  "top2_accuracy": 0.9625189025707496,
+  "per_class": {
+    "Access": {
+      "precision": 0.922,
+      "recall": 0.887,
+      "f1-score": 0.904,
+      "support": 1402.0
+    },
+    "Administrative rights": {
+      "precision": 0.86,
+      "recall": 0.695,
+      "f1-score": 0.768,
+      "support": 344.0
+    },
+    "HR Support": {
+      "precision": 0.87,
+      "recall": 0.852,
+      "f1-score": 0.861,
+      "support": 2072.0
+    },
+    "Hardware": {
+      "precision": 0.813,
+      "recall": 0.897,
+      "f1-score": 0.853,
+      "support": 2789.0
+    },
+    "Internal Project": {
+      "precision": 0.935,
+      "recall": 0.833,
+      "f1-score": 0.881,
+      "support": 432.0
+    },
+    "Miscellaneous": {
+      "precision": 0.835,
+      "recall": 0.843,
+      "f1-score": 0.839,
+      "support": 1398.0
+    },
+    "Purchase": {
+      "precision": 0.937,
+      "recall": 0.789,
+      "f1-score": 0.857,
+      "support": 303.0
+    },
+    "Storage": {
+      "precision": 0.934,
+      "recall": 0.853,
+      "f1-score": 0.892,
+      "support": 518.0
+    }
+  },
+  "accuracy_naive_random_split": 0.8617265886287625,
+  "top_confusions": [
+    {
+      "true": "HR Support",
+      "pred": "Hardware",
+      "n": 185,
+      "share_of_true": 0.089
+    },
+    {
+      "true": "Miscellaneous",
+      "pred": "Hardware",
+      "n": 129,
+      "share_of_true": 0.092
+    },
+    {
+      "true": "Hardware",
+      "pred": "HR Support",
+      "n": 105,
+      "share_of_true": 0.038
+    },
+    {
+      "true": "Administrative rights",
+      "pred": "Hardware",
+      "n": 85,
+      "share_of_true": 0.247
+    },
+    {
+      "true": "Hardware",
+      "pred": "Miscellaneous",
+      "n": 82,
+      "share_of_true": 0.029
+    },
+    {
+      "true": "Access",
+      "pred": "Hardware",
+      "n": 81,
+      "share_of_true": 0.058
+    },
+    {
+      "true": "HR Support",
+      "pred": "Miscellaneous",
+      "n": 71,
+      "share_of_true": 0.034
+    },
+    {
+      "true": "Miscellaneous",
+      "pred": "HR Support",
+      "n": 61,
+      "share_of_true": 0.044
+    },
+    {
+      "true": "Hardware",
+      "pred": "Access",
+      "n": 48,
+      "share_of_true": 0.017
+    },
+    {
+      "true": "Purchase",
+      "pred": "Hardware",
+      "n": 44,
+      "share_of_true": 0.145
+    }
+  ],
+  "acc_by_length": {
+    "1-5": {
+      "n": 55,
+      "acc": 0.818
+    },
+    "6-10": {
+      "n": 559,
+      "acc": 0.882
+    },
+    "11-20": {
+      "n": 2759,
+      "acc": 0.887
+    },
+    "21-40": {
+      "n": 3204,
+      "acc": 0.852
+    },
+    "41-80": {
+      "n": 1588,
+      "acc": 0.839
+    },
+    "81+": {
+      "n": 1093,
+      "acc": 0.844
+    }
+  },
+  "confidence_tiers": [
+    {
+      "thr": 0.5,
+      "coverage": 0.903,
+      "acc_auto": 0.9008,
+      "errors_per_1000_auto": 99.2
+    },
+    {
+      "thr": 0.6,
+      "coverage": 0.828,
+      "acc_auto": 0.9279,
+      "errors_per_1000_auto": 72.1
+    },
+    {
+      "thr": 0.7,
+      "coverage": 0.746,
+      "acc_auto": 0.9478,
+      "errors_per_1000_auto": 52.2
+    },
+    {
+      "thr": 0.8,
+      "coverage": 0.653,
+      "acc_auto": 0.9659,
+      "errors_per_1000_auto": 34.1
+    },
+    {
+      "thr": 0.85,
+      "coverage": 0.593,
+      "acc_auto": 0.9739,
+      "errors_per_1000_auto": 26.1
+    },
+    {
+      "thr": 0.9,
+      "coverage": 0.527,
+      "acc_auto": 0.981,
+      "errors_per_1000_auto": 19.0
+    },
+    {
+      "thr": 0.95,
+      "coverage": 0.431,
+      "acc_auto": 0.9902,
+      "errors_per_1000_auto": 9.8
+    }
+  ],
+  "calibration": [
+    {
+      "bin": "(0.0, 0.4]",
+      "n": 290,
+      "conf": 0.35,
+      "acc": 0.459
+    },
+    {
+      "bin": "(0.4, 0.5]",
+      "n": 611,
+      "conf": 0.455,
+      "acc": 0.504
+    },
+    {
+      "bin": "(0.5, 0.6]",
+      "n": 690,
+      "conf": 0.55,
+      "acc": 0.6
+    },
+    {
+      "bin": "(0.6, 0.7]",
+      "n": 757,
+      "conf": 0.65,
+      "acc": 0.746
+    },
+    {
+      "bin": "(0.7, 0.8]",
+      "n": 865,
+      "conf": 0.751,
+      "acc": 0.821
+    },
+    {
+      "bin": "(0.8, 0.9]",
+      "n": 1162,
+      "conf": 0.852,
+      "acc": 0.903
+    },
+    {
+      "bin": "(0.9, 1.0]",
+      "n": 4883,
+      "conf": 0.977,
+      "acc": 0.981
+    }
+  ],
+  "per_queue_threshold_95": {
+    "Access": {
+      "thr": 0.55,
+      "coverage_of_pred": 0.921,
+      "acc": 0.952
+    },
+    "Administrative rights": {
+      "thr": 0.76,
+      "coverage_of_pred": 0.608,
+      "acc": 0.953
+    },
+    "HR Support": {
+      "thr": 0.65,
+      "coverage_of_pred": 0.781,
+      "acc": 0.95
+    },
+    "Hardware": {
+      "thr": 0.8,
+      "coverage_of_pred": 0.604,
+      "acc": 0.95
+    },
+    "Internal Project": {
+      "thr": 0.5,
+      "coverage_of_pred": 0.925,
+      "acc": 0.963
+    },
+    "Miscellaneous": {
+      "thr": 0.77,
+      "coverage_of_pred": 0.628,
+      "acc": 0.954
+    },
+    "Purchase": {
+      "thr": 0.5,
+      "coverage_of_pred": 0.949,
+      "acc": 0.95
+    },
+    "Storage": {
+      "thr": 0.5,
+      "coverage_of_pred": 0.926,
+      "acc": 0.954
+    }
+  },
+  "learning_curve": [
+    {
+      "n_labeled": 250,
+      "acc_mean": 0.595,
+      "acc_std": 0.01
+    },
+    {
+      "n_labeled": 500,
+      "acc_mean": 0.66,
+      "acc_std": 0.001
+    },
+    {
+      "n_labeled": 1000,
+      "acc_mean": 0.724,
+      "acc_std": 0.007
+    },
+    {
+      "n_labeled": 2000,
+      "acc_mean": 0.768,
+      "acc_std": 0.004
+    },
+    {
+      "n_labeled": 4000,
+      "acc_mean": 0.799,
+      "acc_std": 0.003
+    },
+    {
+      "n_labeled": 8000,
+      "acc_mean": 0.821,
+      "acc_std": 0.005
+    },
+    {
+      "n_labeled": 16000,
+      "acc_mean": 0.84,
+      "acc_std": 0.002
+    },
+    {
+      "n_labeled": 38579,
+      "acc_mean": 0.86,
+      "acc_std": 0.0
+    }
+  ]
+}
