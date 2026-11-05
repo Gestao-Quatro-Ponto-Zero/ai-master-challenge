@@ -121,6 +121,21 @@ with sync_playwright() as p:
     page.click('[data-tab="como"]')
     check("limits are stated", "Os limites foram escolhidos vendo o teste" in page.locator("#view").inner_text())
 
+    # Timed trial: fixed design, runs to the end, and exports every answer.
+    page.goto(Path(sys.argv[1]).resolve().parent.joinpath("ensaio.html").as_uri())
+    page.wait_for_selector("#intro")
+    design = page.evaluate("({ n: window.ENSAIO_DATA.tickets.length, manual: window.ENSAIO_DATA.tickets.filter((t) => t.arm === 'manual').length })")
+    check("trial has 40 tickets, 20 manual", design["n"] == 40 and design["manual"] == 20, str(design))
+    page.click("#start-fresh")
+    for _ in range(40):
+        if page.locator("#use-suggestion").count():
+            page.click("#use-suggestion")
+        else:
+            page.locator(".cat-button").first.click()
+    check("trial ends with a summary", page.locator("#done").is_visible())
+    answers = page.evaluate("JSON.parse(document.getElementById('trial-json').value).results.length")
+    check("trial exports 40 answers", answers == 40, str(answers))
+
     mobile = browser.new_context(viewport={"width": 390, "height": 844}, color_scheme="dark").new_page()
     mobile.on("pageerror", lambda e: errors.append(str(e)))
     mobile.goto(page_url)

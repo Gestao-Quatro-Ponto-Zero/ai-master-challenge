@@ -12,7 +12,7 @@
 
 Com o Claude Code, verifiquei se os dados de suporte permitiam responder ao Diretor e construí um protótipo de triagem que roda no navegador. **As três perguntas do Diretor não têm resposta confiável nestes dados:** o aparente gargalo se iguala ao que dados embaralhados produzem, as notas de satisfação são uniformes e 49% dos tickets encerrados são resolvidos antes da primeira resposta. O roteamento automático, por outro lado, é viável: em 9.568 tickets de TI nunca vistos, **52% seriam roteados sozinhos, com 92,7% de acerto**. O cruzamento dos datasets revelou o principal risco: nos tickets de clientes, o modelo erraria com confiança, e uma trava passou a enviar 98,9% deles a uma pessoa. A recomendação é capturar dados confiáveis, treinar com tickets reais e começar em modo sombra.
 
-**Para testar:** abra [`solution/app/index.html`](solution/app/index.html) no navegador, com dois cliques.
+**Para testar:** abra [`solution/app/index.html`](solution/app/index.html) no navegador, com dois cliques. **Sem baixar nada:** https://viniciuseds.github.io/ai-master-challenge/fila-certa/
 
 1. Em **Triagem ao vivo**, clique nos exemplos ou cole um ticket.
 2. Em **Teste em lote**, mova o controle de confiança e veja onde parar a automação.
@@ -88,7 +88,7 @@ Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md).
 
 | Ferramenta | Para que usou |
 |---|---|
-| Claude Code (Claude Opus 5.5) | Análise dos dados, modelo, protótipo, testes no navegador e primeira versão dos textos |
+| Claude Code (Claude Opus 5.5; reta final com Claude Fable 5) | Análise dos dados, modelo, protótipo, testes no navegador e primeira versão dos textos |
 
 ### Workflow
 
@@ -119,7 +119,7 @@ Minha contribuição foi de direção, não de análise técnica. A partir do qu
 
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [ ] Chat exports
+- [x] Chat exports: [`../process-log/chat-exports/conversa-claude-code.md`](../process-log/chat-exports/conversa-claude-code.md) — a conversa cobre os dois desafios
 - [x] Git history
 - [x] Narrativa escrita: [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md)
 - [x] Outro: scripts de cada etapa em `process-log/exploration/`, resultados em `solution/training/results.json` e telas em `docs/screenshots/`

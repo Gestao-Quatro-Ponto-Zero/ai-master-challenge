@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ensaio cronometrado</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    main { max-width: 820px; }
+    .cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; margin-top: 10px; }
+    .cat-button { text-align: left; }
+    #ticket-text { margin: 0; font-size: 16px; line-height: 1.55; overflow-wrap: anywhere; }
+    textarea.export { display: block; width: 100%; min-height: 170px; padding: 8px 10px; border: 1px solid var(--neutral-bar); border-radius: 8px; background: var(--surface); color: var(--ink); font: 12px/1.45 ui-monospace, Consolas, monospace; }
+    .arm-tag { display: inline-block; padding: 3px 12px; border-radius: 999px; background: var(--wash); font-size: 14px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <div class="brand-name">Ensaio cronometrado</div>
+        <div class="brand-note">Triagem manual × com sugestão</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section id="intro" class="card">
+      <h1>Meça seu próprio tempo de triagem</h1>
+      <p>Você vai classificar <strong>40 tickets reais</strong> do conjunto de teste: 20 sem ajuda e 20 com a sugestão do modelo, em ordem sorteada com semente fixa. Não há feedback durante o ensaio, para não ensinar as respostas. Faça em uma sentada, sem pausas.</p>
+      <p><strong>Métrica principal, definida antes da execução:</strong> mediana de segundos por ticket, com e sem sugestão. Secundárias: acerto e uso da sugestão.</p>
+      <p class="muted">Limites deste ensaio: n = 1, o participante não é atendente de suporte e os textos são em inglês pré-processados. O resultado substitui premissas por uma medição própria; não prova o ganho em produção.</p>
+      <div class="toolbar" style="margin-top:14px">
+        <button id="start-fresh" class="action-button primary">Começar</button>
+        <button id="resume" class="action-button" hidden>Continuar de onde parei</button>
+      </div>
+    </section>
+
+    <section id="trial" hidden>
+      <div class="toolbar"><span id="progress" class="arm-tag"></span></div>
+      <div class="card"><p id="ticket-text"></p></div>
+      <div id="suggestion" class="card" hidden></div>
+      <h2 style="margin:14px 0 2px">Qual é a fila deste ticket?</h2>
+      <p class="muted">Use as teclas 1 a 8, ou clique. Com sugestão, Enter aceita.</p>
+      <div class="cats" id="cats"></div>
+    </section>
+
+    <section id="done" hidden></section>
+  </main>
+  <script src="ensaio_data.js"></script>
+  <script src="ensaio.js"></script>
+</body>
+</html>

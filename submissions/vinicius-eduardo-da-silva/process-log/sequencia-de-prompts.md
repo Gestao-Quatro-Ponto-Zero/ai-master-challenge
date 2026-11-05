@@ -1,6 +1,6 @@
 # Sequência de prompts aprimorada
 
-> **Escrita depois do trabalho.** Estes não são os prompts usados. Durante o projeto, os pedidos foram mais curtos e informais, e a conversa original não está incluída nesta entrega. O que aconteceu de fato está em [`PROCESS_LOG.md`](PROCESS_LOG.md) e no histórico de commits.
+> **Escrita depois do trabalho.** Estes não são os prompts usados. Durante o projeto, os pedidos foram mais curtos e informais, e a conversa original está em [`chat-exports/conversa-claude-code.md`](chat-exports/conversa-claude-code.md), sem reescrita. O que aconteceu de fato está em [`PROCESS_LOG.md`](PROCESS_LOG.md) e no histórico de commits.
 
 Cada etapa mostra o que aconteceu e como eu faria o pedido hoje, com o que aprendi. A versão em um único pedido está em [`prompt-consolidado.md`](prompt-consolidado.md).
 

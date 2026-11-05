@@ -1,6 +1,6 @@
 # Process log: Challenge 002
 
-Registro do que aconteceu, na ordem em que aconteceu. Ferramenta usada: Claude Code (modelo Claude Opus 5.5), no VS Code.
+Registro do que aconteceu, na ordem em que aconteceu. Ferramenta usada: Claude Code (modelos Claude Opus 5.5 e, na reta final, Claude Fable 5), no VS Code.
 
 ## Decisões tomadas por Vinicius
 
@@ -24,6 +24,10 @@ Estas regras não vêm dos dados e foram informadas a Vinicius: a lista de palav
 4. **Teste de deriva e de ticket desconhecido** (`exploration/drift_and_guard.py`). A queda de acurácia no último bloco, vista na validação cruzada, levou a um teste em ordem de linhas. A trava de vocabulário nasceu aqui.
 5. **Protótipo** (`solution/`). O modelo roda no navegador, e o teste confirma que ele dá os mesmos resultados do Python em 381 tickets.
 6. **Documentação.** Relatório para o Diretor, README e registro do processo.
+
+7. **Leitura das submissões públicas.** A pedido de Vinicius, o Claude leu os PRs e comentários públicos do repositório. O avaliador cobra julgamento humano visível, process log auditável e entrega fácil de testar. Em resposta, Vinicius se inscreveu na vaga, mandou devolver a conversa completa, publicar as ferramentas e medir o tempo de triagem em um ensaio próprio.
+8. **Renomeação.** O protótipo se chamava Triagem Assistida, e a demo de outra submissão pública usava um nome quase idêntico. Renomeado para Fila Certa, para não parecer cópia — foi coincidência.
+9. **Ensaio cronometrado** (`solution/app/ensaio.html`). Protocolo fixado antes da execução: 40 tickets do conjunto de teste, 20 com e 20 sem sugestão, ordem sorteada com semente fixa, sem feedback durante, métrica principal definida de antemão (mediana de segundos por ticket). A ideia de comparar manual × assistido também aparece na submissão pública #226; o protocolo e a implementação aqui são próprios. Resultado: pendente, Vinicius ainda vai executar.
 
 ## Onde a IA errou e como foi corrigido
 

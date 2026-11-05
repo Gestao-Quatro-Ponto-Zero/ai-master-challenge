@@ -21,6 +21,8 @@ Construí com o Claude Code o **Foco da Semana**, uma ferramenta que abre com do
 3. Abra **Máquina do tempo** e clique em **Revelar o que aconteceu**.
 4. No filtro **Data do pipeline**, escolha 07/08/2017 para ver a semana daquela data.
 
+**Sem baixar nada:** a mesma ferramenta está publicada em https://viniciuseds.github.io/ai-master-challenge/foco-da-semana/
+
 ![Minha semana de um vendedor](docs/screenshots/1-minha-semana.png)
 
 | Pasta | O que tem |
@@ -93,13 +95,13 @@ Trabalhei com o Claude Code, que fez a análise e o código enquanto eu tomava a
 
 ## Process Log — Como usei IA
 
-Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md). O raciocínio também está resumido em [`process-log/prompt-consolidado.md`](process-log/prompt-consolidado.md) e [`process-log/sequencia-de-prompts.md`](process-log/sequencia-de-prompts.md), escritos depois do trabalho e identificados assim. A conversa original não está incluída.
+Registro completo em [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md). O raciocínio também está resumido em [`process-log/prompt-consolidado.md`](process-log/prompt-consolidado.md) e [`process-log/sequencia-de-prompts.md`](process-log/sequencia-de-prompts.md), escritos depois do trabalho e identificados assim. A conversa original está em [`process-log/chat-exports/conversa-claude-code.md`](process-log/chat-exports/conversa-claude-code.md).
 
 ### Ferramentas usadas
 
 | Ferramenta | Para que usou |
 |---|---|
-| Claude Code (Claude Opus 5.5) | Leitura do desafio, análise dos dados, código, testes no navegador e primeira versão dos textos |
+| Claude Code (Claude Opus 5.5; reta final com Claude Fable 5) | Leitura do desafio, análise dos dados, código, testes no navegador e primeira versão dos textos |
 
 ### Workflow
 
@@ -137,7 +139,7 @@ Não conheço o negócio de vendas. Resolvi este problema junto com a IA, e minh
 
 - [ ] Screenshots das conversas com IA
 - [ ] Screen recording do workflow
-- [ ] Chat exports
+- [x] Chat exports: [`process-log/chat-exports/conversa-claude-code.md`](process-log/chat-exports/conversa-claude-code.md) — a conversa completa, sem reescrita; só o e-mail e o contexto automático da ferramenta foram removidos
 - [x] Git history
 - [x] Narrativa escrita: [`process-log/PROCESS_LOG.md`](process-log/PROCESS_LOG.md)
 - [x] Outro: scripts de cada etapa em `process-log/exploration/`, resultados em `solution/scoring/backtest_results.json` e telas em `docs/screenshots/`

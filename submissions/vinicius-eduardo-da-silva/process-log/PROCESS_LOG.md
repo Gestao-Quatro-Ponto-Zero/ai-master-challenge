@@ -1,6 +1,6 @@
 # Process log
 
-Registro do que aconteceu, na ordem em que aconteceu. Ferramenta usada: Claude Code (modelo Claude Opus 5.5), no VS Code.
+Registro do que aconteceu, na ordem em que aconteceu. Ferramenta usada: Claude Code (modelos Claude Opus 5.5 e, na reta final, Claude Fable 5), no VS Code.
 
 ## Divisão do trabalho
 
@@ -43,6 +43,8 @@ Os scripts de `exploration/` são a evidência de cada etapa. `variant_test.py` 
 14. **Detalhes do deal.** Vinicius perguntou se dava para incluir mais detalhes que ajudassem o vendedor a ver valor no deal. O Claude acrescentou o fechamento típico, o perfil da conta, o relacionamento e o histórico do vendedor, como contexto, sem mudar o score.
 
 15. **Sequência de prompts** ([`sequencia-de-prompts.md`](sequencia-de-prompts.md)). Vinicius preferiu não publicar a conversa original, por ter sido informal, e pediu uma versão com engenharia de prompt aprimorada. O Claude a escreveu depois do trabalho, identificada como tal, ao lado do que aconteceu em cada etapa.
+
+16. **Critérios do avaliador, conversa devolvida e ferramentas publicadas.** O Claude leu os PRs e comentários públicos do repositório: o avaliador pede evidência de julgamento humano (30% da nota), process log auditável dentro do repositório e entrega fácil de testar. Vinicius então se inscreveu na vaga, mandou devolver a conversa completa, publicar as ferramentas e medir o tempo de triagem do Challenge 002 em um ensaio próprio. Ele pediu também que suas falas fossem refinadas; o refinamento ficou apenas na [`sequencia-de-prompts.md`](sequencia-de-prompts.md), identificada como escrita depois, e o transcript permaneceu sem retoques.
 
 ## Onde a IA errou e como foi corrigido
 

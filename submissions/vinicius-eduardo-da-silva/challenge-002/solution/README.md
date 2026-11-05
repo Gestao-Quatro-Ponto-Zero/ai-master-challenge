@@ -1,4 +1,4 @@
-# Triagem Assistida: documentação técnica
+# Fila Certa: documentação técnica
 
 ## Setup
 
@@ -18,6 +18,7 @@ cd training
 ../.venv/Scripts/python -m pytest -q             # testes
 ../.venv/Scripts/python evaluate.py              # gera results.json
 ../.venv/Scripts/python build_app_data.py        # gera ../app/model.js e ../app/data.js
+../.venv/Scripts/python build_trial_data.py      # gera ../app/ensaio_data.js (ensaio cronometrado)
 ```
 
 **Para rodar o teste no navegador,** que exige Microsoft Edge e `pip install playwright`, a partir de `solution/`:
@@ -38,6 +39,8 @@ Testado com Python 3.12 no Windows e com o navegador Edge. Sem os dados, os test
 | `training/build_app_data.py` | Exporta o modelo e os dados para o navegador |
 | `training/test_triage.py` | Testes da política e da separação dos dados |
 | `tests/ui_check.py` | Teste em navegador real, incluindo a igualdade entre o modelo em JS e em Python |
+| `training/build_trial_data.py` | Gera o ensaio cronometrado: 40 tickets do teste, 20 com e 20 sem sugestão |
+| `app/ensaio.html` | Ensaio manual × com sugestão, com protocolo fixo e exportação do resultado |
 
 ## Lógica
 
