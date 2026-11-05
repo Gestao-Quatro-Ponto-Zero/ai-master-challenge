@@ -1,5 +1,7 @@
 # Submissão — Vinicius Eduardo da Silva — Challenge 003
 
+> Esta submissão também inclui o [Challenge 002](challenge-002/README.md), em pasta própria.
+
 ## Sobre mim
 
 - **Nome:** Vinicius Eduardo da Silva

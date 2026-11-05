@@ -1,0 +1,358 @@
+{
+  "tickets": {
+    "it": 47837,
+    "train": 28701,
+    "validation": 9568,
+    "test": 9568
+  },
+  "guard": 0.9333,
+  "routeConfidence": 0.9,
+  "suggestConfidence": 0.5,
+  "accuracy": {
+    "randomSplit": 0.8481,
+    "orderSplit": 0.8003,
+    "majority": 0.4569
+  },
+  "lanes": {
+    "rotear": {
+      "share": 0.5168,
+      "accuracy": 0.9274,
+      "top2": 0.9846
+    },
+    "sugerir": {
+      "share": 0.3728,
+      "accuracy": 0.6891,
+      "top2": 0.9246
+    },
+    "humano": {
+      "share": 0.1104,
+      "accuracy": 0.5805,
+      "top2": 0.8352
+    },
+    "reasons": {
+      "confianca_alta": 0.5168,
+      "confianca_media": 0.3349,
+      "incerto": 0.0611,
+      "desconhecido": 0.0411,
+      "categoria_protegida": 0.0379,
+      "sensivel": 0.0082
+    }
+  },
+  "routedErrorsPer100": 7.3,
+  "categories": [
+    {
+      "category": "Access",
+      "tickets": 944,
+      "recall": 0.831,
+      "routedShare": 0.671,
+      "routedPrecision": 0.956
+    },
+    {
+      "category": "Administrative rights",
+      "tickets": 657,
+      "recall": 0.546,
+      "routedShare": 0.129,
+      "routedPrecision": null
+    },
+    {
+      "category": "HR Support",
+      "tickets": 1958,
+      "recall": 0.798,
+      "routedShare": 0.529,
+      "routedPrecision": 0.931
+    },
+    {
+      "category": "Hardware",
+      "tickets": 4372,
+      "recall": 0.85,
+      "routedShare": 0.534,
+      "routedPrecision": 0.92
+    },
+    {
+      "category": "Internal Project",
+      "tickets": 133,
+      "recall": 0.729,
+      "routedShare": 0.406,
+      "routedPrecision": 0.945
+    },
+    {
+      "category": "Miscellaneous",
+      "tickets": 1196,
+      "recall": 0.768,
+      "routedShare": 0.537,
+      "routedPrecision": 0.914
+    },
+    {
+      "category": "Purchase",
+      "tickets": 39,
+      "recall": 0.154,
+      "routedShare": 0.179,
+      "routedPrecision": 0.333
+    },
+    {
+      "category": "Storage",
+      "tickets": 269,
+      "recall": 0.792,
+      "routedShare": 0.565,
+      "routedPrecision": 0.972
+    }
+  ],
+  "thresholds": [
+    {
+      "threshold": 0.5,
+      "coverage": 0.8961,
+      "accuracy": 0.8275
+    },
+    {
+      "threshold": 0.55,
+      "coverage": 0.8586,
+      "accuracy": 0.8415
+    },
+    {
+      "threshold": 0.6,
+      "coverage": 0.8218,
+      "accuracy": 0.8535
+    },
+    {
+      "threshold": 0.65,
+      "coverage": 0.781,
+      "accuracy": 0.8663
+    },
+    {
+      "threshold": 0.7,
+      "coverage": 0.741,
+      "accuracy": 0.88
+    },
+    {
+      "threshold": 0.75,
+      "coverage": 0.7013,
+      "accuracy": 0.8914
+    },
+    {
+      "threshold": 0.8,
+      "coverage": 0.652,
+      "accuracy": 0.9069
+    },
+    {
+      "threshold": 0.85,
+      "coverage": 0.6031,
+      "accuracy": 0.9156
+    },
+    {
+      "threshold": 0.9,
+      "coverage": 0.5385,
+      "accuracy": 0.9288
+    },
+    {
+      "threshold": 0.95,
+      "coverage": 0.4437,
+      "accuracy": 0.951
+    }
+  ],
+  "drift": [
+    {
+      "block": 4,
+      "accuracy": 0.85,
+      "hardwareShare": 0.227
+    },
+    {
+      "block": 5,
+      "accuracy": 0.843,
+      "hardwareShare": 0.206
+    },
+    {
+      "block": 6,
+      "accuracy": 0.842,
+      "hardwareShare": 0.233
+    },
+    {
+      "block": 7,
+      "accuracy": 0.839,
+      "hardwareShare": 0.25
+    },
+    {
+      "block": 8,
+      "accuracy": 0.788,
+      "hardwareShare": 0.377
+    },
+    {
+      "block": 9,
+      "accuracy": 0.818,
+      "hardwareShare": 0.435
+    },
+    {
+      "block": 10,
+      "accuracy": 0.82,
+      "hardwareShare": 0.478
+    }
+  ],
+  "transfer": {
+    "tickets": 8469,
+    "guardBlocked": 0.9826,
+    "itGuardBlocked": 0.0422,
+    "routedWithoutGuard": 0.1933,
+    "routedWithGuard": 0.0007,
+    "hardwareShare": 0.7043,
+    "byType": {
+      "Billing inquiry": 0.697,
+      "Cancellation request": 0.709,
+      "Product inquiry": 0.715,
+      "Refund request": 0.698,
+      "Technical issue": 0.703
+    },
+    "lanes": {
+      "rotear": 0.0007,
+      "sugerir": 0.0103,
+      "humano": 0.989
+    }
+  },
+  "support": {
+    "rows": 8469,
+    "statusShares": {
+      "Pending Customer Response": 0.34,
+      "Open": 0.333,
+      "Closed": 0.327
+    },
+    "closed": 2769,
+    "negativeShare": 0.493,
+    "firstResponseSpanHours": 27.0,
+    "hoursHistogram": [
+      {
+        "from": -24,
+        "to": -18,
+        "count": 87
+      },
+      {
+        "from": -18,
+        "to": -12,
+        "count": 249
+      },
+      {
+        "from": -12,
+        "to": -6,
+        "count": 427
+      },
+      {
+        "from": -6,
+        "to": 0,
+        "count": 602
+      },
+      {
+        "from": 0,
+        "to": 6,
+        "count": 669
+      },
+      {
+        "from": 6,
+        "to": 12,
+        "count": 415
+      },
+      {
+        "from": 12,
+        "to": 18,
+        "count": 232
+      },
+      {
+        "from": 18,
+        "to": 24,
+        "count": 88
+      }
+    ],
+    "bottleneck": {
+      "worst": {
+        "name": "Chat + High + Refund request",
+        "hours": 11.4,
+        "tickets": 22
+      },
+      "best": {
+        "name": "Phone + High + Cancellation request",
+        "hours": 4.3,
+        "tickets": 12
+      },
+      "observedGap": 7.1,
+      "shuffledMean": 6.88,
+      "pValue": 0.38,
+      "histogram": [
+        {
+          "from": 4.0,
+          "to": 4.7,
+          "count": 7
+        },
+        {
+          "from": 4.7,
+          "to": 5.4,
+          "count": 82
+        },
+        {
+          "from": 5.4,
+          "to": 6.1,
+          "count": 329
+        },
+        {
+          "from": 6.1,
+          "to": 6.8,
+          "count": 549
+        },
+        {
+          "from": 6.8,
+          "to": 7.5,
+          "count": 561
+        },
+        {
+          "from": 7.5,
+          "to": 8.2,
+          "count": 305
+        },
+        {
+          "from": 8.2,
+          "to": 8.9,
+          "count": 118
+        },
+        {
+          "from": 8.9,
+          "to": 9.6,
+          "count": 34
+        },
+        {
+          "from": 9.6,
+          "to": 10.3,
+          "count": 11
+        },
+        {
+          "from": 10.3,
+          "to": 11.0,
+          "count": 2
+        },
+        {
+          "from": 11.0,
+          "to": 11.7,
+          "count": 1
+        },
+        {
+          "from": 11.7,
+          "to": 12.4,
+          "count": 1
+        }
+      ]
+    },
+    "satisfaction": {
+      "distribution": {
+        "1": 553,
+        "2": 549,
+        "3": 580,
+        "4": 543,
+        "5": 544
+      },
+      "uniformP": 0.797,
+      "smallestP": 0.279,
+      "testsRun": 6,
+      "r2": -0.042,
+      "r2Shuffled": -0.032,
+      "hoursCorrelation": 0.02
+    },
+    "text": {
+      "placeholderShare": 1.0,
+      "exampleResolution": "Try capital clearly never color toward story."
+    }
+  }
+}
