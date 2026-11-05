@@ -1,0 +1,5 @@
+.estado/
+__pycache__/
+*.pyc
+web/.hallmark/
+.hallmark/

@@ -1,0 +1,231 @@
+{
+  "gerado_com_semente": 20171231,
+  "pipeline": {
+    "total": 8800,
+    "ganhos": 4238,
+    "perdidos": 2473,
+    "engajando": 1589,
+    "prospeccao": 500,
+    "limite_dias": 138,
+    "parados": 1291,
+    "parados_pct": 0.8124606670862178,
+    "parados_valor": 3198664,
+    "engajando_valor": 3892229,
+    "ativos": 298,
+    "abertos_sem_conta_pct": 0.6821445667783629
+  },
+  "calendario": {
+    "1": {
+      "n": 1779,
+      "vitoria": 0.4901630129286116,
+      "ciclo_max": 13,
+      "ciclo_mediana": 7
+    },
+    "2": {
+      "n": 2358,
+      "vitoria": 0.5470737913486005,
+      "ciclo_max": 125,
+      "ciclo_mediana": 68.0
+    },
+    "3": {
+      "n": 2574,
+      "vitoria": 0.8065268065268065,
+      "ciclo_max": 138,
+      "ciclo_mediana": 75.0
+    }
+  },
+  "vitoria_por_idade_no_mes": {
+    "2": {
+      "0-14": {
+        "n": 525,
+        "vitoria": 0.5142857142857142
+      },
+      "15-60": {
+        "n": 458,
+        "vitoria": 0.5720524017467249
+      },
+      "61-100": {
+        "n": 1066,
+        "vitoria": 0.5544090056285178
+      },
+      "101-140": {
+        "n": 309,
+        "vitoria": 0.540453074433657
+      }
+    },
+    "3": {
+      "0-14": {
+        "n": 502,
+        "vitoria": 0.8266932270916335
+      },
+      "15-60": {
+        "n": 468,
+        "vitoria": 0.8012820512820513
+      },
+      "61-100": {
+        "n": 1067,
+        "vitoria": 0.8003748828491096
+      },
+      "101-140": {
+        "n": 537,
+        "vitoria": 0.8044692737430168
+      }
+    }
+  },
+  "porteiro": {
+    "vendedor": {
+      "auc": 0.502704349462375,
+      "baixo": 0.4842412352165402,
+      "alto": 0.5231512899668004,
+      "aberto": false
+    },
+    "produto": {
+      "auc": 0.5169881664029764,
+      "baixo": 0.4995823427616087,
+      "alto": 0.538453503110717,
+      "aberto": false
+    },
+    "setor": {
+      "auc": 0.49483986124212337,
+      "baixo": 0.4748068018533087,
+      "alto": 0.5134393982136773,
+      "aberto": false
+    },
+    "região": {
+      "auc": 0.4716519405719336,
+      "baixo": 0.4523847511576478,
+      "alto": 0.49193979124856546,
+      "aberto": false
+    },
+    "manager": {
+      "auc": 0.4727363296793122,
+      "baixo": 0.45184424074620894,
+      "alto": 0.49319639061513243,
+      "aberto": false
+    },
+    "porte da conta": {
+      "auc": 0.49955638760048116,
+      "baixo": 0.4830779900200558,
+      "alto": 0.5186506063688499,
+      "aberto": false
+    },
+    "conta": {
+      "auc": 0.48488504189927834,
+      "baixo": 0.4659688427099452,
+      "alto": 0.5042176280595618,
+      "aberto": false
+    }
+  },
+  "porteiro_plantado": [
+    {
+      "diferenca_real_pp": -0.14770788337505225,
+      "abriu": 0,
+      "repeticoes": 30
+    },
+    {
+      "diferenca_real_pp": 3.2410380904204503,
+      "abriu": 0,
+      "repeticoes": 30
+    },
+    {
+      "diferenca_real_pp": 7.18489350661813,
+      "abriu": 0,
+      "repeticoes": 30
+    },
+    {
+      "diferenca_real_pp": 13.111975837005673,
+      "abriu": 30,
+      "repeticoes": 30
+    },
+    {
+      "diferenca_real_pp": 20.81720828277498,
+      "abriu": 30,
+      "repeticoes": 30
+    }
+  ],
+  "replay": {
+    "datas": 5,
+    "por_vendedor": 5,
+    "valor_ganho": {
+      "preço": 1235783,
+      "preço sem parados": 1315321,
+      "preço x janela": 1106046,
+      "preço sem parados, mais antigo no empate": 1301539,
+      "sorteio": 443121
+    },
+    "deals_ganhos": {
+      "preço": 193,
+      "preço sem parados": 205,
+      "preço x janela": 177,
+      "preço sem parados, mais antigo no empate": 205
+    }
+  },
+  "experimento": {
+    "coorte": 6020,
+    "base_ganho_90d": 0.38637873754152824,
+    "novos_por_semana": 191.93548387096774,
+    "cenarios": {
+      "+3pp": {
+        "por_grupo": 4187,
+        "total": 8374,
+        "semanas_de_entrada": 43.62924369747899,
+        "semanas_com_90d": 56.486386554621845
+      },
+      "+5pp": {
+        "por_grupo": 1517,
+        "total": 3034,
+        "semanas_de_entrada": 15.807394957983194,
+        "semanas_com_90d": 28.664537815126053
+      },
+      "+10pp": {
+        "por_grupo": 383,
+        "total": 766,
+        "semanas_de_entrada": 3.990924369747899,
+        "semanas_com_90d": 16.848067226890755
+      }
+    }
+  },
+  "poder_entre_vendedores": {
+    "13 semanas": {
+      "+10%": 0.1,
+      "+20%": 0.27,
+      "+30%": 0.4575,
+      "+50%": 0.8725
+    },
+    "20 semanas": {
+      "+10%": 0.125,
+      "+20%": 0.3525,
+      "+30%": 0.59,
+      "+50%": 0.9525
+    }
+  },
+  "cobertura_checagem": {
+    "alocacao": {
+      "MG Advanced": 22,
+      "GTX Basic": 5,
+      "GTX Pro": 29,
+      "GTX Plus Basic": 7,
+      "MG Special": 2,
+      "GTX Plus Pro": 24,
+      "GTK 500": 11
+    },
+    "cenarios": {
+      "5%": {
+        "cobertura": 0.983,
+        "margem_pontos": 4.470156547353224
+      },
+      "10%": {
+        "cobertura": 0.95675,
+        "margem_pontos": 5.620282559564969
+      },
+      "20%": {
+        "cobertura": 0.93775,
+        "margem_pontos": 6.840920197552294
+      },
+      "50%": {
+        "cobertura": 0.9235,
+        "margem_pontos": 8.14155242483983
+      }
+    }
+  }
+}
