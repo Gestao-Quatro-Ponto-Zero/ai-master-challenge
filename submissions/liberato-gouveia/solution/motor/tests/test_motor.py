@@ -167,3 +167,13 @@ def test_chance_texto_igual_ao_texto_do_porque(deals):
     c = deals[deals.lista.isin(["Foco", "Automatizar"])]  # as listas em que a tela mostra a chance
     assert all(f"{ct} de chance" in pq for ct, pq in zip(c.chance_texto, c.porque))
     assert deals[deals.chance.isna()].chance_texto.isna().all()
+
+
+def test_texto_da_nota_nunca_exagera(deals):
+    """'Nota X: vale mais que X% dos outros deals em Foco' tem que ser verdade para todo deal (Registro 10)."""
+    f = deals[deals.lista == "Foco"]
+    ev = f.valor_esperado_usd.values
+    for nota, v in zip(f.nota, ev):
+        real = (ev < v).sum() / (len(ev) - 1) * 100
+        assert real >= nota, f"nota {nota} exagera: só {real:.1f}% dos outros valem menos"
+    assert (f.nota == 100).sum() == 1, "só o maior valor esperado pode ter nota 100"

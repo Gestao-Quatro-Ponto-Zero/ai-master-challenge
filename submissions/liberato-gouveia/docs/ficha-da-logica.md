@@ -28,7 +28,7 @@ Chance de ser ganho para um deal aberto há X dias. É a curva oficial, montada 
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Chance | 47% | 44% | 42% | 39% | 34% | 26% | 18% | 11% | 5% | 1% | 0% |
 
-- **Formato aprovado: os dois.** A lista mostra uma **nota de 0 a 100**, que diz qual porcentagem dos outros deals do Foco tem valor esperado menor (100 é o maior da empresa e 0 é o menor). O "porquê" mostra o **valor esperado em US$** com a conta completa.
+- **Formato aprovado: os dois.** A lista mostra uma **nota de 0 a 100**, que diz qual porcentagem dos outros deals do Foco tem valor esperado menor, arredondada para baixo para nunca exagerar (100 é só o maior da empresa e 0 é o menor). O "porquê" mostra o **valor esperado em US$** com a conta completa.
 
 ## O que o vendedor lê (textos gerados pelo motor, Fase 3a)
 

@@ -133,7 +133,8 @@ def classificar(v: pd.DataFrame, data_ref: pd.Timestamp, cfg: dict) -> tuple[pd.
     n_foco = int(foco.sum())
     if n_foco > 1:
         abaixo = d.loc[foco, "valor_esperado"].rank(method="min") - 1
-        d.loc[foco, "nota"] = (abaixo / (n_foco - 1) * 100).round()
+        # arredonda para BAIXO: a frase "vale mais que X% dos outros" nunca pode exagerar (Registro 10)
+        d.loc[foco, "nota"] = np.floor(abaixo / (n_foco - 1) * 100 + 1e-9)
     elif n_foco == 1:
         d.loc[foco, "nota"] = 100
 
