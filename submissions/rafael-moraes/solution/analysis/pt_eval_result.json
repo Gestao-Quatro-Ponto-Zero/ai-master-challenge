@@ -1,0 +1,394 @@
+[
+ {
+  "i": 0,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 1
+ },
+ {
+  "i": 1,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 0.98
+ },
+ {
+  "i": 2,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 1
+ },
+ {
+  "i": 3,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 0.85
+ },
+ {
+  "i": 4,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 0.99
+ },
+ {
+  "i": 5,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 1
+ },
+ {
+  "i": 6,
+  "real": "Access",
+  "en": "Access",
+  "pt_glossario": "Access",
+  "conf": 1
+ },
+ {
+  "i": 7,
+  "real": "Administrative rights",
+  "en": "Administrative rights",
+  "pt_glossario": "Administrative rights",
+  "conf": 1
+ },
+ {
+  "i": 8,
+  "real": "Administrative rights",
+  "en": "Access",
+  "pt_glossario": "Hardware",
+  "conf": 0.34
+ },
+ {
+  "i": 9,
+  "real": "Administrative rights",
+  "en": "Administrative rights",
+  "pt_glossario": "Administrative rights",
+  "conf": 0.99
+ },
+ {
+  "i": 10,
+  "real": "Administrative rights",
+  "en": "Administrative rights",
+  "pt_glossario": "Administrative rights",
+  "conf": 0.99
+ },
+ {
+  "i": 11,
+  "real": "Administrative rights",
+  "en": "Administrative rights",
+  "pt_glossario": "Access",
+  "conf": 0.64
+ },
+ {
+  "i": 12,
+  "real": "Administrative rights",
+  "en": "Administrative rights",
+  "pt_glossario": "Administrative rights",
+  "conf": 1
+ },
+ {
+  "i": 13,
+  "real": "Administrative rights",
+  "en": "Administrative rights",
+  "pt_glossario": "Administrative rights",
+  "conf": 1
+ },
+ {
+  "i": 14,
+  "real": "HR Support",
+  "en": "HR Support",
+  "pt_glossario": "HR Support",
+  "conf": 0.47
+ },
+ {
+  "i": 15,
+  "real": "HR Support",
+  "en": "HR Support",
+  "pt_glossario": "HR Support",
+  "conf": 0.99
+ },
+ {
+  "i": 16,
+  "real": "HR Support",
+  "en": "HR Support",
+  "pt_glossario": "HR Support",
+  "conf": 0.98
+ },
+ {
+  "i": 17,
+  "real": "HR Support",
+  "en": "HR Support",
+  "pt_glossario": "HR Support",
+  "conf": 0.96
+ },
+ {
+  "i": 18,
+  "real": "HR Support",
+  "en": "Hardware",
+  "pt_glossario": "Storage",
+  "conf": 0.41
+ },
+ {
+  "i": 19,
+  "real": "HR Support",
+  "en": "HR Support",
+  "pt_glossario": "HR Support",
+  "conf": 1
+ },
+ {
+  "i": 20,
+  "real": "HR Support",
+  "en": "HR Support",
+  "pt_glossario": "HR Support",
+  "conf": 0.97
+ },
+ {
+  "i": 21,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Hardware",
+  "conf": 0.52
+ },
+ {
+  "i": 22,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Hardware",
+  "conf": 1
+ },
+ {
+  "i": 23,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Administrative rights",
+  "conf": 0.34
+ },
+ {
+  "i": 24,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Hardware",
+  "conf": 1
+ },
+ {
+  "i": 25,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Hardware",
+  "conf": 1
+ },
+ {
+  "i": 26,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Hardware",
+  "conf": 1
+ },
+ {
+  "i": 27,
+  "real": "Hardware",
+  "en": "Hardware",
+  "pt_glossario": "Hardware",
+  "conf": 0.94
+ },
+ {
+  "i": 28,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Internal Project",
+  "conf": 1
+ },
+ {
+  "i": 29,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Internal Project",
+  "conf": 1
+ },
+ {
+  "i": 30,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Internal Project",
+  "conf": 1
+ },
+ {
+  "i": 31,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Internal Project",
+  "conf": 1
+ },
+ {
+  "i": 32,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Internal Project",
+  "conf": 1
+ },
+ {
+  "i": 33,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Internal Project",
+  "conf": 1
+ },
+ {
+  "i": 34,
+  "real": "Internal Project",
+  "en": "Internal Project",
+  "pt_glossario": "Miscellaneous",
+  "conf": 0.98
+ },
+ {
+  "i": 35,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 0.88
+ },
+ {
+  "i": 36,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 1
+ },
+ {
+  "i": 37,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 0.99
+ },
+ {
+  "i": 38,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 0.93
+ },
+ {
+  "i": 39,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 1
+ },
+ {
+  "i": 40,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 1
+ },
+ {
+  "i": 41,
+  "real": "Miscellaneous",
+  "en": "Miscellaneous",
+  "pt_glossario": "Miscellaneous",
+  "conf": 0.97
+ },
+ {
+  "i": 42,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 1
+ },
+ {
+  "i": 43,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 1
+ },
+ {
+  "i": 44,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 0.96
+ },
+ {
+  "i": 45,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 1
+ },
+ {
+  "i": 46,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 1
+ },
+ {
+  "i": 47,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 1
+ },
+ {
+  "i": 48,
+  "real": "Purchase",
+  "en": "Purchase",
+  "pt_glossario": "Purchase",
+  "conf": 1
+ },
+ {
+  "i": 49,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 1
+ },
+ {
+  "i": 50,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 1
+ },
+ {
+  "i": 51,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 0.99
+ },
+ {
+  "i": 52,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 0.66
+ },
+ {
+  "i": 53,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 1
+ },
+ {
+  "i": 54,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 0.96
+ },
+ {
+  "i": 55,
+  "real": "Storage",
+  "en": "Storage",
+  "pt_glossario": "Storage",
+  "conf": 1
+ }
+]

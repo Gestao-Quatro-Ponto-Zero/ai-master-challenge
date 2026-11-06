@@ -1,0 +1,23 @@
+data,inicio,fim,fase,atividade,ferramenta,decisao_humana,entrega
+2026-11-06,14:45,14:52,1-Inspecao,Inspecao de qualidade dos 2 datasets,Claude (chat execucao),Decisao 4 (tratar DS1 como limitacao testada),solution/analysis/01_inspecao_dados.py
+2026-11-06,14:52,14:57,Planejamento,Definicao do formato do prototipo,Claude (chat execucao),Decisoes 3 e 5,process-log/DECISIONS.md
+2026-11-06,14:57,15:15,2-Diagnostico,Testes estatisticos das 3 perguntas do Diretor + premissas com fontes,Claude (chat execucao),Decisoes 6 7 8,solution/analysis/02_diagnostico.py
+2026-11-06,15:15,15:24,Baseline,Teste de baseline em chat separado (Claude fora do projeto),Claude (chat separado),Rafael conduziu o teste e trouxe evidencias,process-log/baseline/
+2026-11-06,15:15,15:29,3-Automacao,Analise de onde parar por categoria + lista vermelha + limiar,Claude (chat execucao),Decisoes 9 e 10,solution/analysis/04_onde_parar.py
+2026-11-06,15:29,15:36,4-Prototipo,v1 do app (Triagem + Limiar & ROI + Saude dos dados); paridade JS x Python 200/200; screenshots desktop e mobile,Claude (chat execucao),Aguardando teste do Rafael,solution/prototype/
+2026-11-06,15:40,15:58,4-Prototipo,Camada de portugues (glossario PT->EN + regras PT); teste em 56 tickets traduzidos: 35,7% sem glossario -> 85,7% (v1) -> 91,1% (v2; ingles 96,4%),Claude (chat execucao),Decisao 12 (pedido do Rafael),solution/prototype/src/glossary_pt.js
+2026-11-06,15:46,16:05,4-Prototipo,Teste humano do Rafael (3 tickets PT) -> diagnostico de 2 falhas + correcoes + perguntas ao cliente,Claude (chat execucao),Decisoes 13 e 14,process-log/screenshots/
+2026-11-06,15:54,16:10,6-Documentacao,Rascunho de diagnostico.md e automacao.md enquanto Rafael testa,Claude (chat execucao),Revisao pendente do Rafael,solution/
+2026-11-06,15:57,16:12,5-Validacao,Teste independente do Rafael: bug na lista vermelha corrigido + testes de regressao,Claude (chat execucao),Decisao 15,process-log/TESTE-INDEPENDENTE-PT.md
+2026-11-06,15:59,16:16,4-Prototipo,Pergunta de impacto em tickets de falha (decisao 16) + teste de regressao,Claude (chat execucao),Decisao 16 (ideia do Rafael),solution/prototype/
+2026-11-06,16:07,16:32,4-Prototipo,Interface bilingue PT/EN; cor = prioridade (P1/P2/P3) e rotulo = quem age; tag de atraso por prioridade; filtros; categorias com nome real,Claude (chat execucao),Decisoes 17 e 18,solution/prototype/
+2026-11-06,16:15,16:40,4-Prototipo,Fluxo de cancelamento (decisao 19) + regra contra falso positivo + correcao 'nao e cancelamento' + 20 testes de regressao,Claude (chat execucao),Decisao 19 (ideia do Rafael),solution/prototype/
+2026-11-06,16:25,16:50,6-Documentacao,README no template do G4 + PROCESS-LOG + automacao.md atualizado + READMEs de setup + pacote para o auditor,Claude (chat execucao),Decisao 20,README.md; process-log/PROCESS-LOG.md
+2026-11-06,16:50,17:00,5-Validacao,Auditoria adversarial em chat separado (48 tickets) + triagem das criticas,Claude (chat auditor + execucao),Rafael conduziu a auditoria,process-log/auditoria/
+2026-11-06,17:00,17:09,5-Validacao,Correcoes da auditoria: regras (Seguranca Ouvidoria Financeiro Comercial; so fatos sobem prioridade); numeros com regras; validacao separada; cruzamento real DS1; documentos,Claude (chat execucao),Decisoes 21-24,solution/; process-log/
+2026-11-06,17:09,17:16,5-Validacao,Auditoria fase 02 (45 tickets ineditos; notas por criterio; veredito: pronta com ressalvas),Claude (chat auditor),Rafael exigiu nova fase antes de enviar,process-log/auditoria/auditoria-fase02.pdf
+2026-11-06,17:18,17:21,5-Validacao,Ajustes da fase 02 sem mexer nas regras: secao do Diretor; limites declarados com exemplos; piso de falsos positivos; curva de aprendizado; renomear tempo perdido,Claude (chat execucao),Decisao 25,README.md; solution/; process-log/
+2026-11-06,17:29,17:34,5-Validacao,Auditoria fase 03 (consolidacao; notas 6-8; pronta com ressalvas) + correcao das 3 frases e numeros antigos,Claude (chat auditor + execucao),Rafael exigiu consolidacao,process-log/auditoria/auditoria-fase03.pdf
+2026-11-06,17:39,17:48,6-Documentacao,Textos do Rafael (decisao 4 e o que eu adicionei) + linha de transparencia + Teste em 1 minuto + ROI em tabela,Claude (chat execucao),Rafael aprovou os textos,README.md
+2026-11-06,17:49,17:52,7-Submissao,Diagrama do fluxo; branch submission/rafael-moraes com 5 commits por etapa; push para o fork; descricao do PR,Claude (chat execucao),Rafael aprovou itens 2 3 e 5,submissions/rafael-moraes/
+2026-11-06,17:52,17:54,7-Submissao,Link publico do prototipo e data no README; push da atualizacao,Claude (chat execucao),Rafael tornou o prototipo publico,README.md
