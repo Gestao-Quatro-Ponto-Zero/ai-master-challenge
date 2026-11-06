@@ -94,7 +94,9 @@ Detalhe completo em [`process-log/README.md`](process-log/README.md).
 |---|---|
 | Claude Code (Opus) | EDA, backtests, scorer, app, testes, docs |
 | Sub-agente crítico (Claude Code) | Revisão adversarial independente: reproduziu os números e atacou modelo, UI e higiene |
-| playwright-cli | Testar a UI no navegador (desktop, mobile, teclado) e gerar screenshots |
+| playwright-cli | Testar a UI no navegador (desktop, mobile, teclado, modo escuro, movimento reduzido) e gerar screenshots |
+| Skills do Claude Code (`design-taste-frontend`, `motion-design`) | Direção visual da interface e regras de animação (durações, curvas, acessibilidade) |
+| API PTAX do Banco Central | Cotação oficial para converter os valores do dataset de US$ para R$ |
 
 ### Workflow
 
@@ -104,7 +106,10 @@ Detalhe completo em [`process-log/README.md`](process-log/README.md).
 4. Caça a sinais: só o tempo parecia ter sinal. v2.
 5. Crítico independente: o tempo também não passava no gate por snapshot. v3.
 6. Testes (19), navegador, docs gerados por código.
-7. Valores convertidos para R$ (PTAX oficial) e interface redesenhada com a skill `design-taste-frontend`: abertura em uma frase ("Hoje, time todo: 7 contatos urgentes e 188 deals na reta final"), fila "Comece por estes" com os 5 primeiros, métricas clicáveis, Geist + Geist Mono, um acento só (cobalto), modo claro e escuro.
+7. Valores convertidos para R$ (PTAX oficial) e interface redesenhada com a skill `design-taste-frontend`: abertura em uma frase ("Hoje, todo o time: 7 contatos urgentes e 188 deals na reta final"), fila "Comece por estes" com os 5 primeiros, métricas clicáveis, Geist + Geist Mono, um acento só (cobalto), modo claro e escuro.
+8. Nomes de vendedores, managers e regiões adaptados ao Brasil por um mapa 1:1 auditável (CSVs originais intactos).
+9. Seletores próprios no lugar dos nativos, camada de animações e hover, logo G4 no cabeçalho.
+10. Três revisões críticas independentes no total (modelo 6/10, interface 8/10, animações 7/10); os 34 achados estão respondidos em [`process-log/critica.md`](process-log/critica.md).
 
 ### Onde a IA errou e como corrigi
 
