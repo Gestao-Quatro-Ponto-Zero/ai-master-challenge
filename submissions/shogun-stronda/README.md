@@ -46,7 +46,8 @@ Setup: [`solution/README.md`](solution/README.md) · Lógica e por quê: [`docs/
 - Uma frase no topo diz o que fazer hoje. Abaixo, a fila "Comece por estes" com os 5 deals de maior score e o motivo principal de cada um.
 - Métricas clicáveis: **7** Contato urgente, **188** Empurrar fechamento, Engaging no ciclo, Verificar no CRM.
 - Lista ordenada com ação por deal. Clique: score decomposto e motivos ("Engajado há 95 dias: faltam 43 dias para passar do maior ciclo já visto. Hora de pedir a decisão").
-- Filtros por região, manager e vendedor (lembrados entre visitas); exportar CSV que abre direto no Excel pt-BR.
+- Filtros por região, manager e vendedor em seletores próprios (teclado completo, digitar para buscar), lembrados entre visitas; exportar CSV que abre direto no Excel pt-BR.
+- Animações com função (contadores ao filtrar, cascata de entrada, gaveta que se monta, hover em todo elemento clicável, trilho de rolagem próprio nos seletores), desligadas para quem pede movimento reduzido.
 
 ![Detalhe do deal](process-log/screenshots/02-detalhe-do-deal.png)
 

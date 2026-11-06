@@ -45,3 +45,18 @@ Um crítico novo, sem memória da rodada anterior, conferiu a conversão para R$
 | 8 | Busca continuava aplicada ao trocar de aba | **Aceito.** Limpa ao trocar de aba |
 | 9 | Fundo escurecido da gaveta invisível no modo escuro | **Aceito.** Opacidade maior no escuro |
 | 10 | `role=tab` sem o padrão ARIA completo | **Aceito.** Botões com `aria-pressed` |
+
+## Terceira rodada: animações e seletores customizados (7/10)
+
+| # | Finding | Decisão |
+|---|---|---|
+| 1 | Indicador de aba desalinhado quando os contadores mudam a largura | **Aceito.** `ResizeObserver` + `document.fonts.ready` |
+| 2 | Foco ia para o `body` após Enter em métrica ou "Mostrar mais" | **Aceito.** Foco restaurado na métrica; em "Mostrar mais", vai para a primeira linha nova |
+| 3 | "Mostrar mais" animava 50 linhas (quase 1 s) | **Aceito.** Só as 12 primeiras novas |
+| 4 | Crossfade de tema em todos os elementos com `!important` | **Aceito.** Só superfícies |
+| 5 | Seletor de ação não anunciava o valor escolhido | **Aceito.** `aria-labelledby` com rótulo oculto + valor |
+| 6 | Cascata da tabela repetia a cada tecla na busca | **Aceito.** Busca não anima |
+| 7 | Typeahead não percorria nomes com a mesma letra; botão fechado ignorava letras | **Aceito.** As duas coisas |
+| 8 | Opções do seletor em cascata a cada abertura | **Aceito.** Removido |
+| 9 | Pulso infinito no chip urgente (WCAG 2.2.2) | **Aceito.** 3 ciclos |
+| 10 | Clicar fora deixava o foco no `body` | **Aceito.** Foco volta ao botão do seletor |
