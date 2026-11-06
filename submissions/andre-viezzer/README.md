@@ -121,12 +121,11 @@ Detalhe completo em [`process-log/README.md`](process-log/README.md).
 
 ### O que eu adicionei que a IA sozinha não faria
 
-- Exigir validação fora da amostra e **aceitar o resultado negativo** em vez de entregar um número bonito.
-- Pôr um **crítico adversarial** na própria entrega e refazer o modelo quando ele achou o furo.
-- Separar **ação** (o que fazer, pelo momento) de **ordem** (score, pelo valor).
-- Tratar os zumbis como achado de negócio, com linguagem calibrada ("verificar", não "encerrar").
-- Investigar a anomalia do Centro-Oeste em vez de aceitar "região sem deals quentes".
-- Stack escolhida pelo usuário final: duplo clique, sem instalar nada.
+- **Montei o sistema de trabalho, não só o prompt.** Configurei o Claude Code com um contrato próprio (`CLAUDE.md`) que exige validação antes de entregar, testes e revisão por um agente crítico que não vê o raciocínio do construtor. Foi esse protocolo que derrubou a v1 (AUC 0,50) e a v2 (chance temporal sem sinal). Sem ele, a primeira versão, convincente e errada, teria sido entregue.
+- **Dei o contexto completo antes de qualquer código.** Passei o brief, as regras, o critério de avaliação e o aviso sobre o baseline, e exigi que tudo fosse considerado. A solução foi desenhada para superar a resposta padrão, não para repeti-la.
+- **Decidi para quem é a ferramenta.** Pedi a adaptação para o Brasil (reais pela cotação oficial, nomes e regiões brasileiros) e o padrão de produto (identidade visual, seletores próprios, animações). O vendedor-alvo é brasileiro.
+- **Revisei e desconfiei das respostas.** Questionei se o README estava correto, identifiquei que o projeto ia para o perfil errado do GitHub e pedi uma avaliação sincera das chances, não uma concordância.
+- **Usei a IA como equipe.** Um construtor e três críticos independentes, com 34 achados respondidos um a um em [`process-log/critica.md`](process-log/critica.md).
 
 ---
 

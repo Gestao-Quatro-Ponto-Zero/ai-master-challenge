@@ -55,11 +55,11 @@ Rodar as EDAs: `cd solution/data && python ../../process-log/eda.py` (idem `eda2
 
 ## O que eu adicionei que a IA sozinha não faria
 
-- **Desconfiar do número bonito duas vezes.** A v1 e a v2 davam motivos convincentes. As duas caíram em teste. Mandar ao vendedor um "78% de chance" que não se sustenta é pior que não ter número.
-- **Crítico adversarial na própria entrega**, com instrução de reprovar, e refazer o modelo quando ele achou o furo, em vez de defender a v2.
-- **Ação separada de ordem.** Ação pelo momento (o que fazer hoje), score pelo valor (por onde começar).
-- **Linguagem calibrada.** "Verificar no CRM", não "encerrar". Os dados não distinguem deal morto de registro desatualizado.
-- **Stack pelo usuário final.** Streamlit exigiria Python na máquina do vendedor. HTML estático abre em qualquer lugar.
+- **Montei o sistema de trabalho, não só o prompt.** Configurei o Claude Code com um contrato próprio (`CLAUDE.md`) que exige validação antes de entregar, testes e revisão por um agente crítico que não vê o raciocínio do construtor. Foi esse protocolo que derrubou a v1 (AUC 0,50) e a v2 (chance temporal sem sinal). Sem ele, a primeira versão, convincente e errada, teria sido entregue.
+- **Dei o contexto completo antes de qualquer código.** Passei o brief, as regras, o critério de avaliação e o aviso sobre o baseline, e exigi que tudo fosse considerado. A solução foi desenhada para superar a resposta padrão, não para repeti-la.
+- **Decidi para quem é a ferramenta.** Pedi a adaptação para o Brasil (reais pela cotação oficial, nomes e regiões brasileiros) e o padrão de produto (identidade visual, seletores próprios, animações). O vendedor-alvo é brasileiro.
+- **Revisei e desconfiei das respostas.** Questionei se o README estava correto, identifiquei que o projeto ia para o perfil errado do GitHub e pedi uma avaliação sincera das chances, não uma concordância.
+- **Usei a IA como equipe.** Um construtor e três críticos independentes, com 34 achados respondidos um a um em [`process-log/critica.md`](critica.md).
 
 ## Iterações
 
