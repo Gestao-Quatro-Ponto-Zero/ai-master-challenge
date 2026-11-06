@@ -127,6 +127,7 @@ Detalhe completo em [`process-log/README.md`](process-log/README.md).
 
 ## Evidências
 
+- [x] Conversa completa com o Claude Code: [`process-log/chat-exports/claude-code-sessao.txt`](process-log/chat-exports/claude-code-sessao.txt)
 - [x] Screenshots: `process-log/screenshots/`
 - [x] Scripts e outputs da EDA: `process-log/eda*.py`, `process-log/eda-output-*.txt`
 - [x] Revisão crítica e respostas: `process-log/critica.md`

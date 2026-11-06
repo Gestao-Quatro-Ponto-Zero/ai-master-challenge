@@ -10,6 +10,7 @@ Evidências nesta pasta, na ordem em que foram produzidas:
 | `eda2.py` → `eda-output-2.txt` | EDA 2: curva de sobrevivência, idade dos abertos, vendedor x produto |
 | `eda3_sinais.py` → `eda-output-3-sinais.txt` | Caça a sinais fora da amostra depois que a v1 falhou |
 | `eda-output-4-regioes.txt` | Por que o Centro-Oeste não tinha nenhum deal quente |
+| `chat-exports/claude-code-sessao.txt` | Export completo da sessão do Claude Code (todos os prompts, decisões, erros e correções) |
 | `critica.md` | Revisão do crítico independente e a resposta a cada finding |
 | `screenshots/` | A ferramenta rodando (v3) |
 | git log da branch | Histórico de commits |
