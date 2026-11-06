@@ -1,0 +1,783 @@
+Passei para próxima fase de uma vaga, leia esse site e me ajude a entender os próximos passos de forma didática 
+https://github.com/Gestao-Quatro-Ponto-Zero/ai-master-challenge
+Parabéns por avançar para a próxima fase! Essa oportunidade merece atenção, porque o desafio do G4 é um pouco diferente de um teste seletivo tradicional.
+
+Já analisei a estrutura do repositório. Vou traduzir o que eles estão pedindo para uma linguagem prática e organizar o caminho para você executar sem se perder, inclusive considerando sua experiência com Design Operations, automação, processos e IA.
+
+1. Primeiro: entenda o que o G4 está procurando
+O processo se chama AI Master Challenge.
+
+A proposta do G4 é encontrar profissionais capazes de entrar em uma área de uma empresa, identificar problemas reais e transformar a operação utilizando inteligência artificial.
+
+Eles descrevem esse profissional como um one-person team: alguém que consegue pensar, analisar, construir e entregar soluções com autonomia.
+
+Não estão procurando simplesmente alguém que saiba usar ChatGPT.
+
+Estão procurando alguém que consiga:
+
+Entender um problema de negócio.
+
+Identificar onde existe oportunidade de melhoria.
+
+Utilizar IA para resolver o problema.
+
+Construir uma solução funcional.
+
+Demonstrar o resultado e provar como chegou até ele.
+
+Um detalhe muito importante: eles já testaram os desafios com diferentes modelos de IA. Portanto, entregar simplesmente uma resposta gerada pelo ChatGPT pode resultar em desclassificação.
+
+O diferencial será seu raciocínio, suas decisões e a qualidade da solução construída. 
+
+GitHub
+
+2. Os quatro desafios disponíveis
+Você precisa escolher apenas um. Veja a diferença:
+
+Desafio
+
+O que você precisa entregar
+
+001 — Churn
+
+Analisar dados de clientes que cancelam serviços e descobrir as causas.
+
+002 — Suporte
+
+Analisar 30 mil chamados, identificar gargalos e propor automação com IA.
+
+003 — Lead Scorer
+
+Construir uma ferramenta que classifica e prioriza oportunidades comerciais.
+
+004 — Social Media
+
+Analisar 52 mil publicações e desenvolver uma estratégia baseada em dados.
+
+
+GitHub
+Minha primeira recomendação é o desafio 002 — Redesign de Suporte.
+
+Por quê?
+
+Sua experiência com Workflow DS envolve justamente:
+
+Organização de processos e fluxos de trabalho.
+
+Automação de tarefas repetitivas.
+
+Escalabilidade de produção.
+
+Identificação de gargalos operacionais.
+
+Uso de IA para melhorar entregas.
+
+Isso conversa diretamente com o desafio de suporte.
+
+O 003 também pode ser interessante pela sua experiência construindo plugins e ferramentas, mas precisamos comparar o escopo antes de decidir.
+
+3. O que você precisa entregar
+O G4 exige duas entregas obrigatórias.
+
+Entrega 1 — A solução
+
+É o resultado concreto do seu trabalho. Pode ser:
+
+Um documento de análise.
+
+Uma aplicação funcional.
+
+Um protótipo.
+
+Um novo fluxo operacional.
+
+Uma combinação dessas opções.
+
+Entrega 2 — Process Log
+
+Obrigatório
+É o registro de como você utilizou inteligência artificial para desenvolver a solução.
+
+Você precisa mostrar:
+
+Quais ferramentas utilizou.
+
+Como analisou o problema antes de começar.
+
+Quais comandos e perguntas fez à IA.
+
+Onde a IA errou.
+
+Como você identificou e corrigiu os erros.
+
+O que você acrescentou com seu próprio conhecimento.
+
+Não basta apresentar um bom resultado. Eles querem entender como você pensa e trabalha.
+
+
+GitHub
++1
+4. Como será a execução, na prática
+O processo recomendado pelo G4 é de aproximadamente 4 a 6 horas.
+
+Escolher o desafio
+
+Selecionar um dos quatro e ler o briefing completo.
+
+Entender os dados
+
+Baixar os arquivos disponibilizados e identificar o que existe neles.
+
+Diagnosticar o problema
+
+Formular hipóteses, investigar os dados e identificar oportunidades.
+
+Construir a solução
+
+Utilizar IA para desenvolver a análise, automação ou aplicação.
+
+Validar o resultado
+
+Testar se a solução realmente funciona e se as conclusões estão corretas.
+
+Documentar o processo
+
+Organizar solução, evidências, decisões e limitações.
+
+Enviar pelo GitHub
+
+Criar um Pull Request com sua entrega.
+
+
+GitHub
++1
+5. Como eu faria sua entrega
+Minha sugestão é não começar criando um dashboard bonito. Começaria pelo problema de negócio.
+
+Para o desafio 002, eu estruturaria a solução assim:
+
+Projeto: AI Support Operations
+
+PROPOSTA DE ESTRUTURA DA SOLUÇÃO
+
+01. Diagnóstico operacional
+
+Identificar gargalos, tempos de atendimento, desperdícios e impacto na satisfação.
+
+02. Inteligência de automação
+
+Definir quais tarefas podem ser automatizadas e quais precisam de pessoas.
+
+03. Protótipo funcional
+
+Criar uma ferramenta que recebe um chamado, classifica, identifica prioridade e recomenda encaminhamento.
+
+04. Business case
+
+Demonstrar economia potencial, ganhos de produtividade e impacto operacional.
+
+05. Process Log
+
+Documentar todas as etapas, interações com IA, erros identificados e decisões humanas.
+
+O resultado seria uma solução que um diretor de operações conseguiria entender, avaliar e imaginar funcionando dentro da empresa.
+
+6. Você vai precisar aprender uma parte do GitHub
+Não se assuste com isso. O processo exige que você faça uma submissão por Pull Request.
+
+Os termos importantes:
+
+Termo
+
+Significado simples
+
+Fork
+
+Criar uma cópia do projeto na sua conta.
+
+Repository
+
+Repositório, onde ficam os arquivos.
+
+Branch
+
+Uma área separada para trabalhar.
+
+Commit
+
+Salvar uma alteração.
+
+Push
+
+Enviar suas alterações ao GitHub.
+
+Pull Request (PR)
+
+Apresentar sua solução para avaliação.
+
+O G4 determina que você coloque tudo em uma pasta própria, sem modificar os arquivos originais do projeto. 
+
+GitHub
+
+Você não precisa dominar programação para começar. Podemos fazer isso de maneira guiada, inclusive utilizando IA para auxiliar na construção do protótipo.
+
+7. Vamos definir nossa estratégia antes de começar
+Quero alinhar três coisas para não desperdiçarmos tempo.
+
+1. Qual desafio vamos escolher?
+
+
+002 — Redesign de Suporte (minha recomendação)
+
+003 — Lead Scorer (construção de ferramenta)
+
+001 — Diagnóstico de Churn
+
+004 — Estratégia Social Media
+
+Quero comparar melhor antes de escolher
+2. Como está seu conhecimento de GitHub?
+
+
+Nunca utilizei.
+
+Já utilizei, mas não sei fazer Fork e Pull Request.
+
+Sei trabalhar com repositórios e branches.
+3. Qual nível de entrega queremos construir?
+
+
+Uma solução completa, com protótipo funcional e análise de negócio.
+
+Uma solução objetiva, dentro das 4–6 horas recomendadas.
+
+Uma solução mais técnica, com automação e aplicação funcionando.
+Minha visão: não encare isso apenas como um teste de seleção. É uma oportunidade de demonstrar que você consegue unir experiência operacional, pensamento estratégico, Design Ops, automação e inteligência artificial.
+
+É justamente essa combinação que eu procuraria evidenciar na sua entrega.
+
+Vamos construir algo que mostre não apenas que você sabe usar IA, mas que sabe transformar uma operação com ela.
+
+Minhas escolhas para o AI Master Challenge: desafio 002; conhecimento de GitHub: basic; nível de entrega: complete. Vamos preparar a execução passo a passo.
+Perfeito. Vamos tratar isso como um projeto de consultoria operacional com IA, e não como um exercício de programação.
+
+Nossa meta será entregar três coisas:
+
+Diagnóstico: provar que entendemos o problema.
+
+Solução funcional: mostrar como a operação poderia trabalhar melhor com IA.
+
+Evidências: demonstrar seu raciocínio, suas decisões e como utilizou a IA.
+
+Uma decisão importante: não vamos tentar construir algo complexo só para impressionar. Vamos construir algo que resolva um problema real, seja demonstrável e tenha indicadores de resultado.
+
+Etapa 1 — Preparar o ambiente e entender o desafio
+Escolha definida Challenge 002 — Redesign de Suporte
+
+O repositório determina que a entrega fique em uma pasta individual, com solução e Process Log, e que seja enviada por Pull Request. Não podemos alterar os arquivos originais do projeto. 
+
+GitHub
++1
+
+1.1. O que descobri no briefing completo
+O desafio pede quatro entregas:
+
+Entrega
+
+Obrigatoriedade
+
+Diagnóstico operacional com números
+
+Obrigatório
+
+Proposta de automação com IA
+
+Obrigatório
+
+Protótipo funcional
+
+Diferencial
+
+Process Log
+
+Obrigatório
+
+Os dois conjuntos de dados são:
+
+Dataset 1: aproximadamente 30 mil chamados, com informações de atendimento, satisfação, tempos de resposta e resolução.
+
+Dataset 2: aproximadamente 48 mil chamados de TI, classificados em oito categorias.
+
+Uma observação estratégica: os datasets são complementares, mas não representam necessariamente os mesmos clientes ou chamados. Não devemos simplesmente juntar as linhas dos dois arquivos. Vamos usar o primeiro para diagnosticar a operação e o segundo como referência para desenvolver e validar a classificação inteligente. 
+
+raw.githubusercontent.com
+
+1.2. Nossa arquitetura de trabalho
+AI Support Operations
+ARQUITETURA PROPOSTA
+
+Dados de atendimento
+
+30 mil tickets + 48 mil tickets classificados
+
+Analytics
+
+Gargalos, satisfação, produtividade e custos
+
+AI Engine
+
+Classificação, prioridade e roteamento
+
+Aplicação funcional
+
+Interface para receber chamados e recomendar ações
+
+Operação humana + IA
+
+Automatizar o que é seguro e encaminhar exceções para pessoas
+
+Nossa intenção é entregar uma pequena solução de software, com interface profissional, análise de dados e uma visão executiva.
+
+1.3. Primeira tarefa: criar seu Fork no GitHub
+Agora vamos preparar seu ambiente.
+
+O que é Fork?
+
+É fazer uma cópia do projeto original para sua própria conta do GitHub. Assim você poderá trabalhar sem alterar o projeto do G4.
+
+Appendix A — Contributing to Mass Spec Academy – Mass Spec Academy
+Repositório oficial
+
+Abrir AI Master Challenge
+Entre na sua conta GitHub antes de continuar.
+
+Siga estes passos:
+
+Abra o repositório oficial.
+
+Clique em Fork, no canto superior direito.
+
+Selecione sua conta pessoal.
+
+Mantenha o nome ai-master-challenge.
+
+Clique em Create fork.
+
+0. Setup - Refactoring to Hexagonal Architecture
+Quando terminar, você terá uma URL parecida com:
+
+https://github.com/SEU-USUARIO/ai-master-challenge
+
+Não altere nenhum arquivo ainda.
+
+1.4. Nosso cronograma de execução
+Etapa
+
+Atividade
+
+Tempo estimado
+
+1
+
+Preparação do GitHub
+
+15 min
+
+2
+
+Download e inspeção dos dados
+
+30 min
+
+3
+
+Diagnóstico operacional
+
+60 min
+
+4
+
+Estratégia de automação
+
+45 min
+
+5
+
+Construção do protótipo
+
+90 min
+
+6
+
+Testes e validação
+
+30 min
+
+7
+
+Documentação e Process Log
+
+30 min
+
+8
+
+Submissão no GitHub
+
+15 min
+
+Planejamento de aproximadamente 5h15, sem contar eventuais dificuldades técnicas.
+
+Vamos começar!
+Etapa 1 — Fork
+
+Aguardando você
+Você conseguiu criar sua cópia do repositório?
+
+
+Sim, o Fork foi criado.
+
+Ainda não consegui.
+
+Ainda preciso criar uma conta no GitHub.
+Vamos trabalhar uma etapa por vez. Quero que você entenda o que estamos fazendo, não apenas siga comandos. Isso também fará parte da qualidade da sua avaliação.
+
+Antes de começar tudo quero também que me ajude a pensar no projeto como um todo por exemplo em um projeto aqui no claude um chat para avaliar dados um chat para implementação e isso unido a tudo que foi pedido, podemos também pensar assim  me ajude com isso e ja comece a criar os arquivos histórico md ou os arquivos mas que i projeto pede
+
+Rafael, agora estamos pensando da maneira certa. Eu mudaria um pouco nossa estratégia: antes de executar o desafio, vamos montar um pequeno sistema de trabalho com IA, dividido por especialidades, com arquivos compartilhados e histórico de decisões.
+
+Sua ideia de ter um chat para análise de dados, outro para implementação e outro para estratégia é excelente. É muito mais organizado do que concentrar tudo em uma conversa enorme.
+
+E existe uma vantagem adicional: essa própria organização será uma evidência de como você utiliza IA para conduzir um projeto complexo.
+
+Consultei novamente as regras de submissão. Há três exigências que precisamos respeitar:
+
+A solução precisa ficar dentro de submissions/seu-nome/.
+
+O README.md da submissão deve seguir o template oficial.
+
+O Process Log precisa registrar ferramentas, iterações, erros, correções e seu julgamento humano. 
+
+GitHub
++2
+
+1. Nossa estrutura de trabalho: AI Master Project
+Eu criaria um projeto central chamado:
+
+AI Support Operations — Challenge 002
+
+A ideia é termos uma coordenação central e cinco frentes especializadas.
+
+CHAT 00 — PROJECT MANAGER
+
+Coordenação, decisões, planejamento e integração das entregas
+
+CHAT 01 — DATA ANALYST
+
+Exploração dos dados, estatísticas, padrões e evidências.
+
+CHAT 02 — OPERATIONS
+
+Processos, gargalos, jornada, oportunidades e automação.
+
+CHAT 03 — BUILDER
+
+Implementação, arquitetura e protótipo funcional.
+
+CHAT 04 — VALIDATOR
+
+Testes, auditoria, métricas e contestação de conclusões.
+
+CHAT 05 — DOCUMENTATION & PROCESS LOG
+
+Documentação executiva, histórico de IA, decisões e evidências para submissão.
+
+RAFAEL — HUMAN OWNER
+
+Você toma as decisões finais, aprova hipóteses e valida os resultados.
+
+Como esses chats vão trabalhar juntos
+Chat
+
+Recebe
+
+Entrega
+
+00 Project Manager
+
+Todas as frentes
+
+Plano e decisões
+
+01 Data Analyst
+
+Datasets
+
+Relatório de dados
+
+02 Operations
+
+Relatório de dados
+
+Redesenho operacional
+
+03 Builder
+
+Requisitos aprovados
+
+Aplicação funcional
+
+04 Validator
+
+Análises e aplicação
+
+Testes e correções
+
+05 Documentation
+
+Histórico de todos
+
+Submissão final
+
+Regra importante: nenhum chat pode inventar resultados, alterar uma conclusão validada ou assumir que uma hipótese é um fato.
+
+Cada frente registra o que descobriu em arquivos Markdown. O Project Manager consolida as informações.
+
+2. Arquivos que já preparei
+12 arquivos criados
+Preparei uma estrutura inicial em Markdown, já organizada para entrar na sua pasta de submissão.
+
+ai-support-operations/
+
+submissions/SEU-NOME/
+
+README.md
+
+Template oficial adaptado
+solution/docs/
+
+PROJECT-CHARTER.md
+
+AI-WORKSPACE.md
+
+ANALYSIS-PLAN.md
+
+OPERATIONS-BLUEPRINT.md
+
+PROTOTYPE-SPEC.md
+
+VALIDATION-PLAN.md
+
+process-log/
+
+PROCESS-LOG.md
+
+ai-logs/README.md
+
+task_plan.md
+
+findings.md
+
+progress.md
+
+Pacote inicial do projeto
+
+12 arquivos · Markdown · ZIP
+
+Pronto
+ Baixar estrutura completa do projeto
+
+O nome SEU-NOME é provisório. Vamos substituí-lo pelo nome correto da pasta de submissão.
+
+Os arquivos são uma estrutura de trabalho inicial, não resultados do desafio. Ainda não inseri métricas ou conclusões sem analisar os dados.
+
+3. Como organizar isso no Claude
+Minha recomendação é criar um único Project no Claude chamado:
+
+AI Support Operations | G4 Challenge 002
+
+Dentro dele, você cria as seis conversas especializadas que desenhamos.
+
+O mais importante é colocar os arquivos compartilhados no contexto do projeto. Assim, cada conversa terá acesso à mesma documentação, respeitando suas instruções específicas.
+
+Sugiro esta regra:
+
+Chat 00 coordena e atualiza task_plan.md.
+
+Chat 01 atualiza os documentos de análise.
+
+Chat 02 atualiza o blueprint operacional.
+
+Chat 03 implementa a aplicação.
+
+Chat 04 registra os testes.
+
+Chat 05 atualiza o Process Log e o README.
+
+No ChatGPT, também podemos manter esta conversa como nossa central de coordenação.
+
+Não precisamos duplicar todo o trabalho entre ferramentas. Os arquivos Markdown serão a fonte oficial compartilhada.
+
+4. Uma decisão importante antes de avançarmos
+Quero fazer uma coisa que considero essencial para a qualidade da entrega: precisamos conhecer o briefing específico do desafio 002 antes de fechar a arquitetura técnica.
+
+O repositório possui um template geral, mas o README específico do desafio é quem determina os requisitos concretos da solução. 
+
+GitHub
++1
+
+Minha proposta é seguir nesta ordem:
+
+Confirmar seu Fork.
+
+Obter o briefing completo do Challenge 002.
+
+Baixar e inventariar os datasets.
+
+Definir a arquitetura técnica definitiva.
+
+Distribuir as tarefas entre os seis chats.
+
+Começar a execução.
+
+5. Só preciso alinhar duas coisas
+1. Como está seu GitHub?
+
+
+Já criei meu Fork.
+
+Ainda não criei.
+
+Preciso de ajuda com o processo.
+2. Como pretende utilizar o Claude?
+
+
+Claude Projects, com várias conversas dentro do mesmo projeto.
+
+Conversas separadas, cada uma com seus arquivos.
+
+Prefiro concentrar tudo no ChatGPT.
+
+Quero usar Claude e ChatGPT juntos.
+Minha preferência seria a última opção: ChatGPT + Claude trabalhando com a mesma base de arquivos.
+
+Vamos demonstrar uma competência muito valorizada nesse processo: não apenas utilizar IA, mas saber orquestrar diferentes agentes, controlar informações e transformar tudo em uma entrega consistente.
+
+Não estou no computador assim que estiver na frente fazemos tudo conectamos tudo w seguimos, inclusive preciso que pense no arquivo log para a gente criar a dinâmica de tempo, dia e hora do start e término do projeto.
+Mas quando estiver de volta no computador aviso.
+Combinado! Não vamos iniciar nenhuma configuração ou execução até você estar no computador. Vamos preparar tudo com calma e fazer a conexão entre GitHub, Claude e ChatGPT de maneira organizada.
+
+E gostei muito da sua observação sobre o controle de tempo. Quero transformar isso em parte da metodologia do projeto.
+
+Nova estrutura: Project Time & Activity Log
+Além do Process Log exigido pelo G4, teremos um controle próprio de execução.
+
+Vamos registrar:
+
+Informação
+
+O que será registrado
+
+Data
+
+Dia da atividade
+
+Start
+
+Horário de início
+
+End
+
+Horário de término
+
+Duration
+
+Tempo efetivamente trabalhado
+
+Workstream
+
+Chat ou frente responsável
+
+Activity
+
+Atividade executada
+
+AI Tool
+
+ChatGPT, Claude ou outra ferramenta
+
+Human Contribution
+
+Sua participação e decisões
+
+Deliverable
+
+Arquivo ou resultado produzido
+
+Também teremos indicadores consolidados:
+
+Tempo total investido no projeto.
+
+Tempo por etapa.
+
+Tempo por ferramenta de IA.
+
+Tempo de trabalho humano versus assistência de IA, quando mensurável.
+
+Quantidade de iterações.
+
+Retrabalho e correções.
+
+Entregas concluídas.
+
+Um detalhe importante: vamos diferenciar tempo de execução ativa de tempo de espera. Assim, não contabilizamos uma análise que ficou processando durante 20 minutos como se você tivesse trabalhado durante todo esse período.
+
+Como ficará nosso controle
+AI Support Operations — Project Control
+
+INÍCIO OFICIAL
+
+A definir
+
+TÉRMINO
+
+A definir
+
+TEMPO TOTAL
+
+A apurar
+
+STATUS
+
+Pré-projeto
+Arquivos que vamos acrescentar
+
+TIME-TRACKER.md
+
+ACTIVITY-LOG.csv
+
+DAILY-SUMMARY.md
+
+PROJECT-MILESTONES.md
+
+Quando você voltar ao computador
+Nossa primeira sessão será:
+
+Registrar o início oficial do projeto.
+
+Configurar GitHub e repositório.
+
+Organizar o Claude Project e os chats.
+
+Instalar a estrutura de arquivos.
+
+Conferir o briefing e os datasets.
+
+Iniciar o primeiro ciclo de trabalho.
+
+E uma coisa: não vamos registrar um horário de início fictício. O projeto começa oficialmente quando fizermos nossa primeira sessão de execução.
+
+Quando estiver de volta, basta me chamar com:
+
+"Estou no computador. Vamos iniciar o AI Master Challenge."
+
+A partir daí, seguimos juntos, etapa por etapa.

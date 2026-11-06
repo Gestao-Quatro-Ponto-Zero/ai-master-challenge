@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Triagem de suporte com IA — protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1F0; --panel:#FFFFFF; --ink:#18232B; --muted:#56646C; --line:#D3DADA;
+  --p1:#A8322B; --p1-bg:#F6E1DF; --p2:#B5620F; --p2-bg:#F7E8D6; --p3:#7E8C93; --p3-bg:#EBEFF0;
+  --ok:#1E6B4E; --ok-bg:#E3F0EA; --ask:#3B5B8C; --ask-bg:#E4EAF4;
+  --focus:#2C4A9A; --radius-s:4px; --radius-m:8px;
+  --font:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.5 var(--font);font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+header{padding:24px 0 0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{font-size:30px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;max-width:24ch}
+.lede{color:var(--muted);margin:0;max-width:72ch}
+.lede strong{color:var(--ink);font-weight:600}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;flex:none;background:var(--panel)}
+.lang button{border:0;background:none;padding:5px 12px;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+nav{display:flex;gap:4px;margin-top:20px;border-bottom:1px solid var(--line)}
+nav button{background:none;border:0;padding:10px 14px 12px;cursor:pointer;color:var(--muted);font-weight:600;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+nav .who{font-weight:400;font-size:13px;margin-left:6px}
+main{padding:20px 0 48px}
+section[hidden]{display:none}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m)}
+.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:var(--radius-s);padding:7px 14px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.hint{font-size:13px;color:var(--muted)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* Legenda */
+.key{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:13px;color:var(--muted);margin:0 0 14px}
+.key span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block;flex:none}
+.sw.P1{background:var(--p1)} .sw.P2{background:var(--p2)} .sw.P3{background:var(--p3)}
+
+/* Triagem */
+.triage{display:grid;grid-template-columns:minmax(320px,400px) 1fr;gap:20px;align-items:start}
+.triage > *,.roi > *{min-width:0}
+.try{padding:14px}
+.try label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.try textarea{width:100%;min-height:76px;resize:vertical;border:1px solid var(--line);border-radius:var(--radius-s);padding:8px 10px;background:#FBFCFC}
+.qhead{padding:12px 14px;border-top:1px solid var(--line)}
+.qhead h2{font-size:15px;margin:0}
+.limits{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:8px}
+.limits input{width:46px;border:1px solid var(--line);border-radius:var(--radius-s);padding:2px 4px;text-align:right}
+.filters{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;font-size:13px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.queue{list-style:none;margin:0;padding:0;max-height:540px;overflow:auto;border-top:1px solid var(--line)}
+.queue li button{all:unset;box-sizing:border-box;display:block;width:100%;padding:10px 14px 10px 16px;border-bottom:1px solid var(--line);cursor:pointer;border-left:5px solid var(--line)}
+.queue li button.P1{border-left-color:var(--p1)} .queue li button.P2{border-left-color:var(--p2)} .queue li button.P3{border-left-color:var(--p3)}
+.queue li button:hover{background:#F5F7F7}
+.queue li button[aria-current="true"]{background:#E8ECEE}
+.queue li button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.queue .t{font-size:13.5px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
+.queue .m{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:3px;align-items:center}
+.late{font-size:11.5px;font-weight:700;color:var(--p1);border:1px solid var(--p1);border-radius:999px;padding:0 7px;line-height:18px}
+.empty{color:var(--muted);padding:40px 0;text-align:center}
+
+.detail{padding:22px 24px}
+.detail .ticket{font-size:15.5px;line-height:1.6;background:#F7F9F9;border:1px solid var(--line);border-radius:var(--radius-s);padding:12px 14px;margin:0 0 18px;max-height:180px;overflow:auto;overflow-wrap:anywhere}
+.verdict{border-radius:var(--radius-m);border:1px solid var(--line);border-left:6px solid var(--p3);padding:16px 18px;background:#fff}
+.verdict.P1{border-left-color:var(--p1)} .verdict.P2{border-left-color:var(--p2)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.prio{font-weight:800;font-size:13px;padding:3px 10px;border-radius:999px;color:#fff}
+.prio.P1{background:var(--p1)} .prio.P2{background:var(--p2)} .prio.P3{background:var(--p3)}
+.lane{font-weight:700;font-size:13px;padding:2px 10px;border-radius:999px;border:1.5px solid var(--ink)}
+.lane.ai{border-style:dashed}
+.cat{font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.cat small{font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0}
+.reason{margin:4px 0 0}
+.bars{margin-top:14px;display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(120px,190px) 1fr 44px;gap:10px;align-items:center;font-size:13px}
+.bar .track{height:8px;background:rgba(24,35,43,.08);border-radius:4px;position:relative}
+.bar .fill{height:100%;background:var(--ink);border-radius:4px;display:block}
+.bar .tick{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--p1)}
+.askbox{margin-top:12px;padding:14px 18px;border-radius:var(--radius-m);background:var(--ask-bg);border:1px solid #BCC9DE}
+.askbox p{margin:0 0 6px}
+.intake{display:grid;gap:14px;margin-top:10px}
+fieldset{border:0;margin:0;padding:0}
+legend{font-weight:700;font-size:14px;margin-bottom:6px;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0}
+.chips span{display:inline-block;border:1px solid #9FB0C8;background:#fff;border-radius:999px;padding:5px 11px;font-size:13.5px;cursor:pointer}
+.chips input:checked + span{background:var(--ask);border-color:var(--ask);color:#fff}
+.chips input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:18px 0 0}
+.meta div{border-top:1px solid var(--line);padding-top:8px}
+.meta dt{font-size:12.5px;color:var(--muted)} .meta dd{margin:2px 0 0;font-weight:600}
+.meta dd.sub{font-weight:400;font-size:13px;color:var(--muted)}
+.actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.actions select{border:1px solid var(--line);border-radius:var(--radius-s);padding:6px 8px;background:#fff;max-width:100%}
+.toast{font-size:13.5px;color:var(--ok);font-weight:600}
+
+/* Limiar & ROI */
+.roi{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+.inputs{padding:18px}
+.inputs h2{font-size:16px;margin:0 0 12px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:4px}
+.field input{width:100%;border:1px solid var(--line);border-radius:var(--radius-s);padding:6px 8px}
+.field small{display:block;color:var(--muted);font-size:12px;margin-top:3px;line-height:1.35}
+.outputs{padding:22px 24px}
+.slider-block{margin-bottom:20px}
+.slider-block > label{font-weight:700;font-size:15px;display:flex;justify-content:space-between;align-items:baseline}
+.slider-block output{font-size:30px;font-weight:800;letter-spacing:-.02em}
+input[type=range]{width:100%;accent-color:var(--ink);margin:6px 0}
+.slider-block > label.check{display:flex;justify-content:flex-start;gap:8px;align-items:center;font-size:13.5px;font-weight:400;margin:6px 0 0}
+.split{display:flex;height:46px;border-radius:var(--radius-s);overflow:hidden;margin:10px 0 6px}
+.split div{display:flex;align-items:center;padding:0 10px;color:#fff;font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;transition:flex-basis .15s ease}
+.split .a{background:var(--ok)} .split .r{background:#5E6B72}
+.figs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;margin:18px 0}
+.fig{padding:14px 16px;background:var(--panel)}
+.fig b{display:block;font-size:24px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.fig span{font-size:13px;color:var(--muted)}
+.fig.warn b{color:var(--p1)}
+.chart-wrap h3{font-size:14px;margin:0 0 4px}
+svg text{font-family:var(--font);font-size:11px;fill:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin-top:14px;max-width:80ch}
+
+/* Saúde dos dados */
+.health-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.health-head h2{font-size:18px;margin:0}
+.health-head p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.checks{list-style:none;margin:0;padding:0}
+.checks li{display:grid;grid-template-columns:110px 1fr 220px;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line);align-items:start}
+.checks li:last-child{border-bottom:0}
+.badge{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:999px;justify-self:start}
+.badge.critico{background:var(--p1-bg);color:var(--p1)} .badge.alerta{background:var(--p2-bg);color:var(--p2)} .badge.ok{background:var(--ok-bg);color:var(--ok)} .badge.info{background:#E8ECEE;color:var(--muted)}
+.checks h3{font-size:15px;margin:0 0 2px} .checks p{margin:0;font-size:14px;color:var(--muted)}
+.checks .v{font-weight:700;text-align:right}
+.file{position:relative} .file input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13.5px}
+footer h2{font-size:14px;color:var(--ink);margin:0 0 6px}
+footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+footer ul{margin:0;padding-left:18px}
+
+@media (max-width:860px){
+  .triage,.roi{grid-template-columns:1fr}
+  .queue{max-height:320px}
+  .checks li{grid-template-columns:1fr} .checks .v{text-align:left}
+  .figs{grid-template-columns:1fr 1fr}
+  nav{overflow-x:auto}
+  h1{font-size:25px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="top">
+    <div>
+      <h1 data-i18n="title"></h1>
+      <p class="lede" id="lede"></p>
+    </div>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button id="lang-pt" aria-pressed="true">PT</button><button id="lang-en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+  <nav role="tablist">
+    <button role="tab" id="tab-tri" aria-controls="p-tri" aria-selected="true"><span data-i18n="tab_tri"></span><span class="who" data-i18n="who_tri"></span></button>
+    <button role="tab" id="tab-roi" aria-controls="p-roi" aria-selected="false" tabindex="-1"><span data-i18n="tab_roi"></span><span class="who" data-i18n="who_roi"></span></button>
+    <button role="tab" id="tab-dat" aria-controls="p-dat" aria-selected="false" tabindex="-1"><span data-i18n="tab_dat"></span><span class="who" data-i18n="who_dat"></span></button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section id="p-tri" role="tabpanel" aria-labelledby="tab-tri">
+    <p class="key" id="key"></p>
+    <div class="triage">
+      <div class="panel">
+        <div class="try">
+          <label for="own" data-i18n="try_label"></label>
+          <textarea id="own"></textarea>
+          <div class="row" style="margin-top:8px">
+            <button class="btn" id="ownBtn" data-i18n="classify"></button>
+            <span class="hint" data-i18n="both_langs"></span>
+          </div>
+        </div>
+        <div class="qhead">
+          <div class="row" style="justify-content:space-between">
+            <h2 data-i18n="queue"></h2>
+            <button class="btn ghost" id="runAll" data-i18n="run_all"></button>
+          </div>
+          <div class="limits">
+            <span data-i18n="late_after"></span>
+            <label>P1 <input type="number" id="lim1" value="1" min="0.25" step="0.25"> h</label>
+            <label>P2 <input type="number" id="lim2" value="4" min="0.25" step="0.5"> h</label>
+            <label>P3 <input type="number" id="lim3" value="24" min="1" step="1"> h</label>
+          </div>
+          <p class="hint" style="margin:6px 0 0" data-i18n="sim_age"></p>
+        </div>
+        <div class="filters" id="filters" role="group"></div>
+        <ul class="queue" id="queue"></ul>
+      </div>
+      <div class="panel detail" id="detail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="p-roi" role="tabpanel" aria-labelledby="tab-roi" hidden>
+    <div class="roi">
+      <div class="panel inputs">
+        <h2 data-i18n="assumptions"></h2>
+        <div class="field"><label for="vol" data-i18n="f_vol"></label><input type="number" id="vol" value="30000" min="0" step="1000"><small data-i18n="s_vol"></small></div>
+        <div class="field"><label for="mtri" data-i18n="f_mtri"></label><input type="number" id="mtri" value="3" min="0" step="0.5"><small data-i18n="s_mtri"></small></div>
+        <div class="field"><label for="cost" data-i18n="f_cost"></label><input type="number" id="cost" value="20" min="0" step="1"><small data-i18n="s_cost"></small></div>
+        <div class="field"><label for="err" data-i18n="f_err"></label><input type="number" id="err" value="20" min="0" max="100" step="1"><small data-i18n="s_err"></small></div>
+        <div class="field"><label for="mre" data-i18n="f_mre"></label><input type="number" id="mre" value="3.5" min="0" step="0.5"><small data-i18n="s_mre"></small></div>
+        <div class="field"><label for="wait" data-i18n="f_wait"></label><input type="number" id="wait" value="40" min="0" step="5"><small data-i18n="s_wait"></small></div>
+      </div>
+      <div class="panel outputs">
+        <div class="slider-block">
+          <label for="thr"><span data-i18n="thr_label"></span> <output id="thrOut">80%</output></label>
+          <input type="range" id="thr" min="40" max="99" value="80" step="1" aria-describedby="splitLegend">
+          <label class="check"><input type="checkbox" id="admHigh" checked> <span data-i18n="adm_high"></span></label>
+          <div class="split" aria-hidden="true"><div class="a" id="sA"></div><div class="r" id="sR"></div></div>
+          <div class="hint" id="splitLegend"></div>
+        </div>
+        <div class="figs">
+          <div class="fig"><b id="fAcc"></b><span data-i18n="g_acc"></span></div>
+          <div class="fig warn"><b id="fWrong"></b><span data-i18n="g_wrong"></span></div>
+          <div class="fig"><b id="fHours"></b><span data-i18n="g_hours"></span></div>
+          <div class="fig"><b id="fMoney"></b><span data-i18n="g_money"></span></div>
+          <div class="fig"><b id="fAvoid"></b><span data-i18n="g_avoid"></span></div>
+          <div class="fig"><b id="fWait"></b><span data-i18n="g_wait"></span></div>
+        </div>
+        <div class="chart-wrap">
+          <h3 data-i18n="chart_title"></h3>
+          <svg id="chart" viewBox="0 0 640 220" role="img"></svg>
+        </div>
+        <p class="note" id="roiNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="p-dat" role="tabpanel" aria-labelledby="tab-dat" hidden>
+    <div class="health-head">
+      <div>
+        <h2 id="healthTitle"></h2>
+        <p data-i18n="health_sub"></p>
+      </div>
+      <span class="btn ghost file"><span data-i18n="health_btn"></span><input type="file" id="csv" accept=".csv"></span>
+    </div>
+    <ul class="panel checks" id="checks"></ul>
+    <p class="note" data-i18n="health_note"></p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="cols">
+    <div><h2 data-i18n="how"></h2><ul id="howList"></ul></div>
+    <div><h2 data-i18n="limits_h"></h2><ul id="limList"></ul></div>
+  </div>
+  <p style="margin-top:18px" data-i18n="byline"></p>
+</footer>
+
+<script>
+/*__GLOSSARY__*/
+/*__ENGINE__*/
+/*__HEALTH__*/
+const MODEL = /*__MODEL__*/;
+const EVAL = /*__EVAL__*/;
+const QUEUE = /*__QUEUE__*/;
+const HEALTH_DS1 = /*__HEALTH_DS1__*/;
+
+/* ---------- Textos PT / EN ---------- */
+const CAT = {
+  "Access": ["Acessos e senhas", "Access & passwords"],
+  "Hardware": ["Equipamentos", "Equipment"],
+  "Storage": ["E-mail, pastas e arquivos", "Email, folders & files"],
+  "Administrative rights": ["Suporte a software", "Software support"],
+  "Purchase": ["Compras de equipamento", "Equipment purchases"],
+  "HR Support": ["Suporte de RH", "HR support"],
+  "Internal Project": ["Projetos internos", "Internal projects"],
+  "Miscellaneous": ["Diversos", "Miscellaneous"],
+  "CHURN": ["Cancelamento ou reembolso", "Cancellation or refund"],
+  "BILLING": ["Cobrança e faturas", "Billing & invoices"],
+  "SALES": ["Preços e planos", "Pricing & plans"],
+  "SECURITY": ["Incidente de segurança", "Security incident"],
+  "OMBUDS": ["Canal confidencial", "Confidential channel"],
+};
+const T = {
+  pt: {
+    title: "Triagem de suporte com IA, com limite claro do que a máquina decide",
+    lede: (n1, n2, a) => `Classificador treinado em <strong>${n1}</strong> tickets reais de TI e testado em <strong>${n2}</strong> que ele nunca viu: <strong>${a}</strong> de acerto. A cor diz o que resolver primeiro; o rótulo diz quem age.`,
+    tab_tri: "Triagem", who_tri: "atendente", tab_roi: "Limiar e ROI", who_roi: "diretor", tab_dat: "Saúde dos dados", who_dat: "gestão",
+    key_p1: "P1 Crítica: várias equipes ou clientes", key_p2: "P2 Alta: pessoa parada, incidente de segurança ou caso sensível", key_p3: "P3 Normal: consegue trabalhar",
+    try_label: "Testar um ticket seu", classify: "Classificar", both_langs: "Aceita português e inglês.",
+    placeholder: "Ex.: Não consigo acessar a VPN desde cedo, minha senha expirou. Urgente.",
+    queue: "Fila", run_all: "Processar fila", late_after: "Atrasado depois de (exemplo, editável):",
+    sim_age: "Na fila de demonstração, o tempo aberto é simulado: o Dataset 2 não tem horário de abertura. Tickets que você cria contam o tempo real.",
+    f_all: "Todos", f_late: "Atrasados", f_waiting: "Aguardando cliente",
+    lanes: { auto: "IA encaminhou", revisao: "Atendente escolhe", retencao: "Retenção assume", rh: "RH assume", aprovacao: "Aprovação necessária", seguranca: "Segurança assume", ouvidoria: "Ouvidoria assume", financeiro: "Financeiro assume", comercial: "Comercial assume", detalhes: "Aguardando cliente", pending: "Aguardando triagem" },
+    r_security: (w) => `Possível incidente de segurança ("${w}"): o time de Segurança assume.`,
+    r_ombuds: (w) => `Caso para canal confidencial ("${w}"): a Ouvidoria assume. Nenhuma pergunta automática é enviada.`,
+    r_billing: (w) => `Assunto de cobrança ("${w}"): o Financeiro assume.`,
+    r_sales: (w) => `Assunto comercial ("${w}"): o Comercial assume.`,
+    r_intake_team: (c) => `O cliente respondeu às perguntas: ${catName(c)}.`,
+    p_ombuds: () => "caso sensível, atendimento rápido e confidencial", p_security: () => "incidente de segurança", p_leak: () => "possível vazamento de dados",
+    p_stopped_text: (w) => `fato no texto: "${w}"`, confirm_tag: "P1 a confirmar pelo atendente",
+    ask_urgency: (w) => `O cliente pediu urgência ("${w}"), mas não disse o impacto. Todo mundo pode pedir prioridade; o que define é o caso.`,
+    ask_failure: (w) => `O texto fala em falha ("${w}") mas não diz o impacto.`,
+    prios: { P1: "P1 Crítica", P2: "P2 Alta", P3: "P3 Normal" },
+    r_churn: (w) => `Risco de cancelamento ("${w}"): a retenção assume. Decisão sempre humana.`,
+    r_hr: (w) => `Caso sensível de RH ("${w}"): envolve dados pessoais, o RH assume.`,
+    r_priv: (w) => `Pedido de privilégio ("${w}"): conceder acesso elevado exige aprovação humana.`,
+    r_vague: () => "O texto não tem informação suficiente. A IA respondeu ao cliente com perguntas simples; o ticket entra na fila com as respostas.",
+    r_auto: (c, t) => `Confiança ${c}, acima do limiar de ${t}: encaminhado automaticamente.`,
+    r_review: (c, t) => `Confiança ${c}, abaixo do limiar de ${t}: escolha entre as 2 opções.`,
+    r_intake: (c) => `O cliente respondeu às perguntas: encaminhado para ${catName(c)}.`,
+    r_intake_other: () => "O cliente escolheu \"Outro assunto\": um atendente define o destino.",
+    r_intake_churn: () => "O cliente quer cancelar ou pedir reembolso: a retenção assume.",
+    p_none: () => "nenhum sinal de impacto no texto", p_churn: () => "risco de perder o cliente",
+    p_churn_wait: () => "risco de perder o cliente; as respostas dele definem se sobe para P2",
+    p_churn_fix: () => "problema não resolvido e o cliente quer resolver: melhor chance de reter",
+    p_churn_window: () => "cliente decidido ou indo para outra empresa: janela curta para reverter",
+    p_churn_commercial: () => "conversa comercial, sem urgência técnica",
+    risk_tag: "Risco de perder o cliente", not_churn: "Não é cancelamento (reclassificar)",
+    churn_msg: "Mensagem enviada ao cliente: \"Sentimos muito pelo transtorno. Uma pessoa do nosso time vai falar diretamente com você. Enquanto isso, pode nos ajudar com duas respostas rápidas?\"",
+    q_churn_reason: "O que levou você a pensar em cancelar?", q_churn_decision: "Você prefere que a gente tente resolver ou já decidiu cancelar?",
+    o_churn_reason: ["Um problema que não foi resolvido", "O preço", "Não uso mais", "Vou para outra empresa", "Outro motivo"],
+    o_churn_decision: ["Quero tentar resolver", "Já decidi cancelar"], need_two: "Responda às duas perguntas.",
+    churn_done: (a, b) => `Respostas do cliente: ${a} · ${b}. A Retenção já tem o contexto para a conversa.`,
+    p_text: (w) => `o texto diz "${w}"`, p_outage: (w) => `impacto coletivo: "${w}"`,
+    p_stopped: () => "o cliente respondeu que está parado", p_many: () => "o cliente respondeu que várias equipes ou clientes foram afetados",
+    or: "ou", dt_prio: "Prioridade", dt_open: "Aberto há", dt_thr: "Limiar desta categoria", dt_lang: "Idioma", dt_real: "Categoria real no dataset",
+    lang_pt: "Português", lang_en: "Inglês", via_gloss: (n) => `traduzido por glossário para o modelo em inglês; ${n} termo(s) reconhecido(s)`,
+    hit: "a IA acertou", miss: "a IA errou", late_tag: "Atrasado", within: (h) => `dentro do limite de ${h} h`, over: (h) => `passou do limite de ${h} h`,
+    keep: "Manter encaminhamento", take: "Assumir o ticket", route_to: (c) => `Encaminhar para ${c}`, fix_to: "Corrigir para", save_fix: "Salvar correção",
+    done_route: (c) => `Encaminhado para ${c}.`, done_take: "Ticket assumido por você.", done_fix: (c) => `Correção registrada: ${c}. Em produção, ela entraria no próximo treino do modelo (no protótipo não é salva).`,
+    sent_auto: "Resposta automática enviada ao cliente (simule as respostas):", q_topic: "Sobre o que é o seu pedido?", q_work: "Você consegue continuar trabalhando?", q_scope: "Quem mais está afetado?",
+    o_topic: ["Senha ou acesso a sistemas", "Computador, monitor, celular ou acessório", "E-mail, pastas ou arquivos", "Programa com erro ou instalação", "Compra ou recebimento de equipamento", "Ponto, férias ou outros temas de RH", "Projetos e códigos internos", "Cobrança ou fatura", "Preços e planos", "Cancelar ou pedir reembolso", "Outro assunto"],
+    o_work: ["Sim, normalmente", "Sim, com dificuldade", "Não, estou parado"], o_scope: ["Só eu", "Minha equipe", "Várias equipes ou clientes"],
+    send_answers: "Enviar respostas do cliente", need_all: "Responda às três perguntas para continuar.",
+    impact_h: "Pergunta enviada ao cliente, sem segurar o ticket", impact_p: () => "O ticket já foi encaminhado; a resposta pode subir a prioridade.",
+    impact_q: "Você consegue continuar trabalhando, por exemplo em outro equipamento?", impact_done: "Pergunta de impacto respondida; prioridade atualizada.",
+    empty: "Escolha um ticket na fila ou teste um texto seu.", none_filter: "Nenhum ticket neste filtro.",
+    ago: (h, m) => h ? `${h} h ${m} min` : `${m} min`, days: (d, h) => `${d} d ${h} h`,
+    assumptions: "Premissas da operação", f_vol: "Tickets por ano", s_vol: "Volume declarado no briefing.",
+    f_mtri: "Minutos de triagem manual por ticket", s_mtri: "Rafael estimou 2 a 4 min; referências de mercado usam ~5.",
+    f_cost: "Custo por hora do atendente (R$)", s_cost: "Operador de suporte: R$ 3.440/mês com encargos (Portal Salário/CAGED), ~39 h/semana.",
+    f_err: "Erro de encaminhamento manual hoje (%)", s_err: "Premissa sem fonte, estimada pelo Rafael; troque pelo número real.",
+    f_mre: "Minutos de esforço por reencaminhamento", s_mre: "Rafael: 2 a 5 min, conforme a fila.",
+    f_wait: "Minutos perdidos pelo usuário por reencaminhamento", s_wait: "HappySignals: 40 min extras por reencaminhamento, estimados pelos próprios usuários de TI interna (não clientes).",
+    thr_label: "A IA só age sozinha acima de", adm_high: "Exigir 90% para Suporte a software (Administrative rights)",
+    split_a: (x) => `IA encaminha ${x}`, split_r: (x) => `Pessoa revisa ${x}`,
+    split_legend: (v, a, r) => `Em ${v} tickets/ano: ${a} encaminhados pela IA, ${r} com uma pessoa (atendente ou filas de Retenção, RH, Segurança, Ouvidoria, Financeiro, Comercial e Aprovação, que desviam ~5% mesmo acima do limiar).`,
+    g_acc: "de acerto nos tickets que a IA encaminha sozinha", g_wrong: "tickets por ano que a IA encaminharia errado sozinha", g_hours: "horas de atendente por ano liberadas",
+    g_money: "por ano em custo de atendente", g_avoid: "reencaminhamentos errados evitados por ano", g_wait: "horas por ano de tempo perdido evitado (estimado pelos usuários)",
+    chart_title: "Quanto mais volume automatizado, mais erro", ax_x: "volume encaminhado pela IA", ax_y: "acerto",
+    roi_note: (fte, av, n) => `Leitura honesta: o tempo liberado equivale a cerca de ${fte} atendente(s) em tempo integral, e é retorno bruto — a implantação precisa custar menos que isso por ano para se pagar. O ganho maior está em ${av} reencaminhamentos evitados e no tempo perdido pelos usuários. Conta conservadora: não inclui o ganho das 2 opções dadas ao atendente (a certa está entre elas em 90% dos casos). Acerto medido em ${n} tickets de teste reais de TI interna, já descontando os desviados pelas regras: para a operação de clientes, é hipótese até o retreino.`,
+    money: (x) => "R$ " + x,
+    health_title: "Dataset 1: exportação de tickets de suporte", health_sub: "Antes de decidir com base nos dados, verifique se eles sustentam a decisão.",
+    health_btn: "Verificar outro arquivo CSV", health_note: "O arquivo é lido apenas no seu navegador; nada é enviado.", health_err: (f) => `Não foi possível ler ${f}. Envie um CSV com cabeçalho na primeira linha.`,
+    st: { critico: "Crítico", alerta: "Atenção", ok: "OK", info: "Info" },
+    how: "Como funciona", limits_h: "Limites",
+    how_list: ["TF-IDF + regressão logística treinados no Dataset 2 (8 categorias de TI), exportados para rodar no navegador sem servidor.",
+      "Quem age: regras em ordem fixa — Segurança, Ouvidoria, Retenção, RH, Aprovação, Financeiro, Comercial, perguntas ao cliente, limiar de confiança.",
+      "Prioridade: só fatos sobem — P1 impacto coletivo; P2 pessoa parada, incidente de segurança ou caso sensível; P3 o resto. Pedido de urgência sem fato dispara uma pergunta de impacto. Cancelamento entra P3 com tag de risco e sobe conforme as respostas.",
+      "Atraso: todo ticket conta o tempo aberto e ganha a tag \"Atrasado\" ao passar do limite da sua prioridade."],
+    lim_list: ["As categorias são da área de TI do Dataset 2. Em outra empresa, o método se repete, mas o modelo precisa ser retreinado com o histórico dela.",
+      "As filas por regra (Segurança, Ouvidoria, Retenção, RH, Aprovação, Financeiro, Comercial) são palavras-chave: erram para os dois lados em linguagem natural (ex.: \"vazamento de memória\" vira Segurança; \"desistir da assinatura\" escapa). Pelo menos 23% dos desvios no Dataset 2 são falsos positivos. Em produção, casos sensíveis precisam de um classificador próprio.",
+      "Português: o texto passa por um glossário antes do modelo em inglês. Em 56 tickets de teste traduzidos, 91,1% de acerto (inglês: 96,4%).",
+      "Limites de atraso e premissas de custo são exemplos editáveis."],
+    byline: "Protótipo de Rafael Moraes para o AI Master Challenge 002 (G4).",
+  },
+  en: {
+    title: "AI support triage, with a clear line on what the machine decides",
+    lede: (n1, n2, a) => `Classifier trained on <strong>${n1}</strong> real IT tickets and tested on <strong>${n2}</strong> it never saw: <strong>${a}</strong> accuracy. Color tells what to solve first; the label tells who acts.`,
+    tab_tri: "Triage", who_tri: "agent", tab_roi: "Threshold & ROI", who_roi: "director", tab_dat: "Data health", who_dat: "management",
+    key_p1: "P1 Critical: several teams or customers", key_p2: "P2 High: person blocked, security incident or sensitive case", key_p3: "P3 Normal: can keep working",
+    try_label: "Test your own ticket", classify: "Classify", both_langs: "Accepts Portuguese and English.",
+    placeholder: "E.g.: I can't log in to the VPN since this morning, my password expired. Urgent.",
+    queue: "Queue", run_all: "Process queue", late_after: "Late after (example, editable):",
+    sim_age: "In the demo queue, time open is simulated: Dataset 2 has no opening time. Tickets you create count real time.",
+    f_all: "All", f_late: "Late", f_waiting: "Waiting for customer",
+    lanes: { auto: "AI routed", revisao: "Agent chooses", retencao: "Retention takes over", rh: "HR takes over", aprovacao: "Approval required", seguranca: "Security takes over", ouvidoria: "Ombudsperson takes over", financeiro: "Billing takes over", comercial: "Sales takes over", detalhes: "Waiting for customer", pending: "Not triaged yet" },
+    r_security: (w) => `Possible security incident ("${w}"): the Security team takes over.`,
+    r_ombuds: (w) => `Case for a confidential channel ("${w}"): the Ombudsperson takes over. No automatic questions are sent.`,
+    r_billing: (w) => `Billing matter ("${w}"): Billing takes over.`,
+    r_sales: (w) => `Commercial matter ("${w}"): Sales takes over.`,
+    r_intake_team: (c) => `The customer answered the questions: ${catName(c)}.`,
+    p_ombuds: () => "sensitive case, fast and confidential handling", p_security: () => "security incident", p_leak: () => "possible data leak",
+    p_stopped_text: (w) => `fact in the text: "${w}"`, confirm_tag: "P1 to be confirmed by the agent",
+    ask_urgency: (w) => `The customer asked for urgency ("${w}") but did not say the impact. Anyone can ask for priority; the case decides.`,
+    ask_failure: (w) => `The text mentions a failure ("${w}") but not the impact.`,
+    prios: { P1: "P1 Critical", P2: "P2 High", P3: "P3 Normal" },
+    r_churn: (w) => `Churn risk ("${w}"): retention takes over. Always a human decision.`,
+    r_hr: (w) => `Sensitive HR case ("${w}"): personal data, HR takes over.`,
+    r_priv: (w) => `Privilege request ("${w}"): granting elevated access needs human approval.`,
+    r_vague: () => "Not enough information in the text. The AI replied to the customer with simple questions; the ticket joins the queue with the answers.",
+    r_auto: (c, t) => `Confidence ${c}, above the ${t} threshold: routed automatically.`,
+    r_review: (c, t) => `Confidence ${c}, below the ${t} threshold: pick one of the 2 options.`,
+    r_intake: (c) => `The customer answered the questions: routed to ${catName(c)}.`,
+    r_intake_other: () => "The customer chose \"Something else\": an agent decides where it goes.",
+    r_intake_churn: () => "The customer wants to cancel or get a refund: retention takes over.",
+    p_none: () => "no sign of impact in the text", p_churn: () => "risk of losing the customer",
+    p_churn_wait: () => "risk of losing the customer; their answers decide whether it rises to P2",
+    p_churn_fix: () => "unresolved problem and the customer wants it fixed: best chance to retain",
+    p_churn_window: () => "customer decided or moving to a competitor: short window to win them back",
+    p_churn_commercial: () => "commercial conversation, no technical urgency",
+    risk_tag: "Churn risk", not_churn: "Not a cancellation (reclassify)",
+    churn_msg: "Message sent to the customer: \"We're sorry for the trouble. Someone from our team will talk to you directly. Meanwhile, could you answer two quick questions?\"",
+    q_churn_reason: "What made you think about cancelling?", q_churn_decision: "Would you like us to try to fix it, or have you decided to cancel?",
+    o_churn_reason: ["A problem that wasn't solved", "The price", "I don't use it anymore", "I'm moving to another company", "Another reason"],
+    o_churn_decision: ["I'd like you to try to fix it", "I've decided to cancel"], need_two: "Answer both questions.",
+    churn_done: (a, b) => `Customer answers: ${a} · ${b}. Retention now has context for the conversation.`,
+    p_text: (w) => `the text says "${w}"`, p_outage: (w) => `collective impact: "${w}"`,
+    p_stopped: () => "the customer said they are blocked", p_many: () => "the customer said several teams or customers are affected",
+    or: "or", dt_prio: "Priority", dt_open: "Open for", dt_thr: "Threshold for this category", dt_lang: "Language", dt_real: "Actual category in the dataset",
+    lang_pt: "Portuguese", lang_en: "English", via_gloss: (n) => `translated by glossary for the English model; ${n} term(s) recognized`,
+    hit: "the AI got it right", miss: "the AI got it wrong", late_tag: "Late", within: (h) => `within the ${h} h limit`, over: (h) => `past the ${h} h limit`,
+    keep: "Keep routing", take: "Take the ticket", route_to: (c) => `Route to ${c}`, fix_to: "Correct to", save_fix: "Save correction",
+    done_route: (c) => `Routed to ${c}.`, done_take: "You took the ticket.", done_fix: (c) => `Correction recorded: ${c}. In production it would go into the next model training (not saved in the prototype).`,
+    sent_auto: "Automatic reply sent to the customer (simulate the answers):", q_topic: "What is your request about?", q_work: "Can you keep working?", q_scope: "Who else is affected?",
+    o_topic: ["Password or system access", "Computer, monitor, phone or accessory", "Email, folders or files", "Software error or installation", "Equipment purchase or delivery", "Timesheet, leave or other HR topics", "Internal projects and codes", "Billing or invoice", "Pricing and plans", "Cancel or ask for a refund", "Something else"],
+    o_work: ["Yes, normally", "Yes, with difficulty", "No, I'm blocked"], o_scope: ["Just me", "My team", "Several teams or customers"],
+    send_answers: "Send customer answers", need_all: "Answer all three questions to continue.",
+    impact_h: "Question sent to the customer, without holding the ticket", impact_p: () => "The ticket is already routed; the answer can raise its priority.",
+    impact_q: "Can you keep working, for example on another device?", impact_done: "Impact question answered; priority updated.",
+    empty: "Pick a ticket from the queue or test your own text.", none_filter: "No tickets in this filter.",
+    ago: (h, m) => h ? `${h} h ${m} min` : `${m} min`, days: (d, h) => `${d} d ${h} h`,
+    assumptions: "Operating assumptions", f_vol: "Tickets per year", s_vol: "Volume stated in the brief.",
+    f_mtri: "Minutes of manual triage per ticket", s_mtri: "Rafael estimated 2–4 min; market references use ~5.",
+    f_cost: "Agent cost per hour (BRL)", s_cost: "Support operator: R$ 3,440/month with payroll costs (Portal Salário/CAGED), ~39 h/week.",
+    f_err: "Manual misrouting today (%)", s_err: "Unsourced assumption estimated by Rafael; replace with the real figure.",
+    f_mre: "Minutes of effort per reroute", s_mre: "Rafael: 2–5 min, depending on the queue.",
+    f_wait: "Minutes lost by the user per reroute", s_wait: "HappySignals: 40 extra minutes per reassignment, estimated by internal IT users themselves (not customers).",
+    thr_label: "The AI acts alone only above", adm_high: "Require 90% for Software support (Administrative rights)",
+    split_a: (x) => `AI routes ${x}`, split_r: (x) => `Person reviews ${x}`,
+    split_legend: (v, a, r) => `Out of ${v} tickets/year: ${a} routed by the AI, ${r} with a person (agent or the Retention, HR, Security, Ombudsperson, Billing, Sales and Approval queues, which divert ~5% even above the threshold).`,
+    g_acc: "accuracy on tickets the AI routes alone", g_wrong: "tickets per year the AI would misroute alone", g_hours: "agent hours freed per year",
+    g_money: "per year in agent cost", g_avoid: "wrong reroutes avoided per year", g_wait: "hours per year of lost time avoided (as estimated by users)",
+    chart_title: "The more volume automated, the more errors", ax_x: "volume routed by the AI", ax_y: "accuracy",
+    roi_note: (fte, av, n) => `Honest reading: the time freed is about ${fte} full-time agent(s), and it is gross — implementation must cost less than that per year to pay off. The bigger gain is ${av} reroutes avoided and time lost by users. Conservative: it leaves out the gain from the 2 options given to the agent (the right one is among them 90% of the time). Accuracy measured on ${n} real internal-IT test tickets, net of those diverted by the rules: for a customer operation it is a hypothesis until retraining.`,
+    money: (x) => "R$ " + x,
+    health_title: "Dataset 1: support ticket export", health_sub: "Before deciding based on the data, check that it supports the decision. (Check details are in Portuguese.)",
+    health_btn: "Check another CSV file", health_note: "The file is read only in your browser; nothing is uploaded.", health_err: (f) => `Could not read ${f}. Send a CSV with a header in the first row.`,
+    st: { critico: "Critical", alerta: "Warning", ok: "OK", info: "Info" },
+    how: "How it works", limits_h: "Limits",
+    how_list: ["TF-IDF + logistic regression trained on Dataset 2 (8 IT categories), exported to run in the browser with no server.",
+      "Who acts: rules in a fixed order — Security, Ombudsperson, Retention, HR, Approval, Billing, Sales, questions to the customer, confidence threshold.",
+      "Priority: only facts raise it — P1 collective impact; P2 person blocked, security incident or sensitive case; P3 everything else. An urgency request with no fact triggers an impact question. Cancellations start at P3 with a risk tag and rise based on the answers.",
+      "Lateness: every ticket counts its time open and gets the \"Late\" tag when it passes its priority's limit."],
+    lim_list: ["Categories come from Dataset 2's IT area. In another company the method repeats, but the model must be retrained on its history.",
+      "Rule-based queues (Security, Ombudsperson, Retention, HR, Approval, Billing, Sales) are keywords: they fail both ways on natural language (e.g. \"memory leak\" becomes Security; \"how do I quit my subscription\" slips through). At least 23% of diversions in Dataset 2 are false positives. In production, sensitive cases need their own classifier.",
+      "Portuguese: text goes through a glossary before the English model. On 56 translated test tickets, 91.1% accuracy (English: 96.4%).",
+      "Lateness limits and cost assumptions are editable examples."],
+    byline: "Prototype by Rafael Moraes for the G4 AI Master Challenge 002.",
+  },
+};
+let LANG = "pt";
+try { LANG = localStorage.getItem("lang") || "pt"; } catch (e) {}
+const t = (k, ...a) => { const v = T[LANG][k]; return typeof v === "function" ? v(...a) : v; };
+const catName = (c) => (CAT[c] ? CAT[c][LANG === "pt" ? 0 : 1] : c);
+const catFull = (c) => (CAT[c] && c !== "CHURN" ? `${catName(c)} <small>(${c})</small>` : catName(c));
+const say = (o) => t(o.k, ...o.p);
+
+const INDEX = buildIndex(MODEL);
+const $ = (id) => document.getElementById(id);
+const loc = () => (LANG === "pt" ? "pt-BR" : "en-US");
+const fmt = (n, d = 0) => n.toLocaleString(loc(), { maximumFractionDigits: d, minimumFractionDigits: d });
+const pc1 = (x) => fmt(x * 100, 1) + "%";
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* ---------- Abas ---------- */
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+function selectTab(tb) {
+  tabs.forEach((b) => { const on = b === tb; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; $(b.getAttribute("aria-controls")).hidden = !on; });
+  tb.focus();
+}
+tabs.forEach((tb, i) => {
+  tb.addEventListener("click", () => selectTab(tb));
+  tb.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") selectTab(tabs[(i + 1) % tabs.length]);
+    if (e.key === "ArrowLeft") selectTab(tabs[(i - 1 + tabs.length) % tabs.length]);
+  });
+});
+
+/* ---------- Fila ---------- */
+// Tempo aberto simulado para a demonstração (determinístico): o Dataset 2 não tem horário de abertura.
+let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const NOW = Date.now();
+const items = QUEUE.map((q, i) => ({ id: i, text: q.text, real: q.real, result: null, final: null, openedAt: NOW - Math.round(rnd() ** 1.6 * 60 * 36e5), simulated: true }));
+let current = null, filter = "all";
+
+const limitH = (p) => parseFloat($("lim" + p.slice(1)).value) || 1;
+const ageMs = (it) => Date.now() - it.openedAt;
+const isLate = (it) => it.result && ageMs(it) > limitH(it.result.priority.level) * 36e5;
+function ageText(it) {
+  const min = Math.floor(ageMs(it) / 6e4), h = Math.floor(min / 60);
+  return h >= 24 ? t("days", Math.floor(h / 24), h % 24) : t("ago", h, min % 60);
+}
+const prioOf = (it) => (it.result ? it.result.priority.level : "P3");
+
+function renderFilters() {
+  const done = items.filter((i) => i.result);
+  const count = { all: items.length, late: done.filter(isLate).length, P1: 0, P2: 0, P3: 0, wait: done.filter((i) => i.result.lane === "detalhes").length };
+  done.forEach((i) => count[i.result.priority.level]++);
+  const defs = [["all", t("f_all")], ["late", t("f_late")], ["P1", "P1"], ["P2", "P2"], ["P3", "P3"], ["wait", t("f_waiting")]];
+  $("filters").innerHTML = defs.map(([k, l]) => `<button data-f="${k}" aria-pressed="${filter === k}">${l} (${count[k]})</button>`).join("");
+  $("filters").querySelectorAll("button").forEach((b) => (b.onclick = () => { filter = b.dataset.f; renderQueue(); }));
+}
+function visible() {
+  const f = { all: () => true, late: isLate, wait: (i) => i.result && i.result.lane === "detalhes" }[filter] || ((i) => i.result && i.result.priority.level === filter);
+  return items.filter(f).sort((a, b) => {
+    if (!!a.result !== !!b.result) return a.result ? -1 : 1;
+    const pa = prioOf(a), pb = prioOf(b);
+    if (pa !== pb) return pa < pb ? -1 : 1;
+    return a.openedAt - b.openedAt;
+  });
+}
+function renderQueue() {
+  renderFilters();
+  const list = visible();
+  $("queue").innerHTML = list.length ? "" : `<li class="empty">${t("none_filter")}</li>`;
+  list.forEach((it) => {
+    const li = document.createElement("li"), b = document.createElement("button");
+    const r = it.result;
+    b.className = r ? r.priority.level : "";
+    if (current === it) b.setAttribute("aria-current", "true");
+    const lane = r ? t("lanes")[r.lane] : t("lanes").pending;
+    const special = { seguranca: "SECURITY", ouvidoria: "OMBUDS", retencao: "CHURN", financeiro: "BILLING", comercial: "SALES" };
+    const cat = r && r.lane !== "detalhes" ? " · " + catName(special[r.lane] && !it.final ? special[r.lane] : it.final || r.top) : "";
+    b.innerHTML = `<span class="t"></span><span class="m"><span>${r ? r.priority.level + " · " : ""}${lane}${cat}</span><span>${ageText(it)}</span>${r && r.churn ? `<span class="late">${t("risk_tag")}</span>` : ""}${isLate(it) ? `<span class="late">${t("late_tag")}</span>` : ""}</span>`;
+    b.querySelector(".t").textContent = it.text;
+    b.addEventListener("click", () => open(it));
+    li.appendChild(b); $("queue").appendChild(li);
+  });
+}
+function open(it) { if (!it.result) it.result = triage(it.text, MODEL, INDEX); current = it; renderDetail(); renderQueue(); }
+
+/* ---------- Detalhe ---------- */
+function renderDetail() {
+  const it = current;
+  if (!it) { $("detail").innerHTML = `<p class="empty">${t("empty")}</p>`; return; }
+  const r = it.result;
+  const order = r.probs.map((p, i) => [p, MODEL.classes[i]]).sort((a, b) => b[0] - a[0]).slice(0, 3);
+  const bars = order.map(([p, c]) => `<div class="bar"><span>${catName(c)}</span><span class="track"><span class="fill" style="width:${(p * 100).toFixed(1)}%"></span>${c === r.top ? `<span class="tick" style="left:${r.thr * 100}%"></span>` : ""}</span><span>${Math.round(p * 100)}%</span></div>`).join("");
+  const human = HUMAN_LANES.includes(r.lane);
+  const title = r.lane === "seguranca" ? catName("SECURITY") : r.lane === "ouvidoria" ? catName("OMBUDS") : r.lane === "retencao" ? catName("CHURN") : r.lane === "financeiro" ? catName("BILLING") : r.lane === "comercial" ? catName("SALES") : r.lane === "detalhes" ? t("lanes").detalhes
+    : r.lane === "revisao" && !r.fromIntake ? `${catName(r.top)} ${t("or")} ${catName(r.second)}?` : catFull(r.top);
+  const showBars = !r.fromIntake && ["auto", "revisao", "rh", "aprovacao"].includes(r.lane);
+  const late = isLate(it), lim = limitH(r.priority.level);
+  const options = (r.lane === "retencao" ? `<option value="__NOT_CHURN">${t("not_churn")}</option>` : `<option value="CHURN">${catName("CHURN")}</option>`) +
+    MODEL.classes.map((c) => `<option value="${c}" ${c === (it.final || r.top) && r.lane !== "retencao" ? "selected" : ""}>${catName(c)} (${c})</option>`).join("");
+  const primary = r.lane === "auto" ? t("keep") : r.lane === "revisao" ? t("route_to", catName(r.top)) : t("take");
+  $("detail").innerHTML = `
+    <p class="ticket"></p>
+    <div class="verdict ${r.priority.level}">
+      <div class="badges"><span class="prio ${r.priority.level}">${t("prios")[r.priority.level]}</span><span class="lane ${human ? "" : "ai"}">${t("lanes")[r.lane]}</span>${r.churn ? `<span class="late">${t("risk_tag")}</span>` : ""}${r.priority.confirm ? `<span class="late">${t("confirm_tag")}</span>` : ""}${late ? `<span class="late">${t("late_tag")}</span>` : ""}</div>
+      <div class="cat">${title}</div>
+      <p class="reason">${say(r.reason)}</p>
+      ${showBars ? `<div class="bars">${bars}</div>` : ""}
+    </div>
+    ${r.lane === "detalhes" ? intakeHTML() : ""}
+    ${r.churn ? churnHTML(it) : ""}
+    ${r.askImpact ? impactHTML(it) : ""}
+    <dl class="meta">
+      <div><dt>${t("dt_prio")}</dt><dd>${t("prios")[r.priority.level]}</dd><dd class="sub">${say(r.priority.why)}</dd></div>
+      <div><dt>${t("dt_open")}</dt><dd>${ageText(it)}</dd><dd class="sub">${late ? t("over", lim) : t("within", lim)}</dd></div>
+      ${showBars ? `<div><dt>${t("dt_thr")}</dt><dd>${Math.round(r.thr * 100)}%</dd></div>` : ""}
+      <div><dt>${t("dt_lang")}</dt><dd>${r.lang === "pt" ? t("lang_pt") : t("lang_en")}</dd>${r.lang === "pt" ? `<dd class="sub">${t("via_gloss", r.ptHits.length)}</dd>` : ""}</div>
+      ${it.real ? `<div><dt>${t("dt_real")}</dt><dd>${catName(it.real)}</dd><dd class="sub">${it.real === r.top ? t("hit") : t("miss")}</dd></div>` : ""}
+    </dl>
+    <div class="actions">
+      <button class="btn" id="confirm">${primary}</button>
+      <label class="hint" for="fix">${t("fix_to")}</label>
+      <select id="fix">${options}</select>
+      <button class="btn ghost" id="fixBtn">${t("save_fix")}</button>
+      <span class="toast" id="toast" role="status"></span>
+    </div>`;
+  $("detail").querySelector(".ticket").textContent = it.text;
+  $("confirm").onclick = () => { it.final = r.top; $("toast").textContent = human || r.lane === "detalhes" ? t("done_take") : t("done_route", catName(r.top)); renderQueue(); };
+  $("fixBtn").onclick = () => {
+    const v = $("fix").value;
+    if (v === "__NOT_CHURN") { it.result = triage(it.text, MODEL, INDEX, { noChurn: true }); it.final = null; renderDetail(); renderQueue(); return; }
+    if (v === "CHURN") { it.result = { ...r, lane: "retencao", churn: true, top: "CHURN", priority: { level: "P3", why: { k: "p_churn_wait", p: [] } }, reason: { k: "r_intake_churn", p: [] } }; renderDetail(); renderQueue(); return; }
+    it.final = v; $("toast").textContent = t("done_fix", catName(it.final)); renderQueue();
+  };
+  if (r.churn && !it.churnAnswered) $("churnBtn").onclick = () => {
+    const v = (n) => { const x = document.querySelector(`input[name="${n}"]:checked`); return x ? x.value : null; };
+    const rs = v("creason"), d = v("cdecision");
+    if (rs === null || d === null) { $("churnMsg").textContent = t("need_two"); return; }
+    it.churnAnswered = { rs, d }; r.priority = churnPriority(r.priority, rs, d); renderDetail(); renderQueue();
+  };
+  document.querySelectorAll('input[name="impact"]').forEach((el) => el.addEventListener("change", () => {
+    it.impactAnswered = true; r.priority = priorityFromAnswers(r.priority, +el.value, 0); renderDetail(); renderQueue();
+  }));
+  if (r.lane === "detalhes") $("intakeBtn").onclick = () => {
+    const v = (n) => { const x = document.querySelector(`input[name="${n}"]:checked`); return x ? x.value : null; };
+    const topic = v("topic"), work = v("work"), scope = v("scope");
+    if (topic === null || work === null || scope === null) { $("intakeMsg").textContent = t("need_all"); return; }
+    it.result = { ...r, ...intakeResult(topic, +work, +scope, r.priority), fromIntake: true };
+    renderDetail(); renderQueue();
+  };
+}
+const chips = (name, labels, values) => `<div class="chips">${labels.map((l, i) => `<label><input type="radio" name="${name}" value="${values[i]}"><span>${l}</span></label>`).join("")}</div>`;
+function intakeHTML() {
+  return `<div class="askbox"><p class="hint">${t("sent_auto")}</p><div class="intake">
+    <fieldset><legend>${t("q_topic")}</legend>${chips("topic", t("o_topic"), INTAKE_TOPICS)}</fieldset>
+    <fieldset><legend>${t("q_work")}</legend>${chips("work", t("o_work"), [0, 1, 2])}</fieldset>
+    <fieldset><legend>${t("q_scope")}</legend>${chips("scope", t("o_scope"), [0, 1, 2])}</fieldset>
+    <div class="row"><button class="btn" id="intakeBtn">${t("send_answers")}</button><span class="hint" id="intakeMsg" role="status"></span></div></div></div>`;
+}
+function churnHTML(it) {
+  if (it.churnAnswered) {
+    const a = t("o_churn_reason")[CHURN_REASONS.indexOf(it.churnAnswered.rs)], b = t("o_churn_decision")[CHURN_DECISION.indexOf(it.churnAnswered.d)];
+    return `<p class="hint" style="margin:12px 0 0">${t("churn_done", a, b)}</p>`;
+  }
+  return `<div class="askbox"><p class="hint">${t("churn_msg")}</p><div class="intake">
+    <fieldset><legend>${t("q_churn_reason")}</legend>${chips("creason", t("o_churn_reason"), CHURN_REASONS)}</fieldset>
+    <fieldset><legend>${t("q_churn_decision")}</legend>${chips("cdecision", t("o_churn_decision"), CHURN_DECISION)}</fieldset>
+    <div class="row"><button class="btn" id="churnBtn">${t("send_answers")}</button><span class="hint" id="churnMsg" role="status"></span></div></div></div>`;
+}
+function impactHTML(it) {
+  if (it.impactAnswered) return `<p class="hint" style="margin:12px 0 0">${t("impact_done")}</p>`;
+  return `<div class="askbox"><p><strong>${t("impact_h")}</strong></p><p class="hint">${esc(say(it.result.askReason))} ${t("impact_p")}</p>
+    <fieldset><legend>${t("impact_q")}</legend>${chips("impact", t("o_work"), [0, 1, 2])}</fieldset></div>`;
+}
+
+$("runAll").onclick = () => { items.forEach((it) => { if (!it.result) it.result = triage(it.text, MODEL, INDEX); }); if (!current) current = visible()[0]; renderDetail(); renderQueue(); };
+$("ownBtn").onclick = () => {
+  const text = $("own").value.trim(); if (!text) { $("own").focus(); return; }
+  const it = { id: "own" + Date.now(), text, real: null, result: null, final: null, openedAt: Date.now(), simulated: false };
+  items.unshift(it); filter = "all"; open(it);
+};
+["lim1", "lim2", "lim3"].forEach((id) => $(id).addEventListener("input", () => { renderQueue(); renderDetail(); }));
+setInterval(() => { renderQueue(); }, 30000);
+
+/* ---------- Limiar & ROI ---------- */
+const ADM = MODEL.classes.indexOf("Administrative rights");
+const N = EVAL.c.length;
+function policyStats(th, admHigh) {
+  let auto = 0, ok = 0;
+  for (let i = 0; i < N; i++) {
+    const x = admHigh && EVAL.p1[i] === ADM ? Math.max(th, 0.9) : th;
+    if (!EVAL.d[i] && EVAL.c[i] >= x) { auto++; if (EVAL.p1[i] === EVAL.y[i]) ok++; } // EVAL.d: desviado pelas regras (Retenção, RH, Segurança...)
+  }
+  return { cov: auto / N, acc: auto ? ok / auto : 1 };
+}
+const CURVE = []; for (let x = 40; x <= 99; x++) CURVE.push({ ...policyStats(x / 100, false) });
+const num = (id) => { const v = parseFloat($(id).value); return isNaN(v) ? 0 : v; };
+function updateROI() {
+  const th = num("thr") / 100, { cov, acc } = policyStats(th, $("admHigh").checked);
+  const V = num("vol"), err = num("err") / 100;
+  $("thrOut").textContent = Math.round(th * 100) + "%";
+  $("sA").style.flexBasis = cov * 100 + "%"; $("sA").textContent = cov > 0.15 ? t("split_a", pc1(cov)) : "";
+  $("sR").style.flexBasis = (1 - cov) * 100 + "%"; $("sR").textContent = 1 - cov > 0.15 ? t("split_r", pc1(1 - cov)) : "";
+  $("splitLegend").textContent = t("split_legend", fmt(V), fmt(V * cov), fmt(V * (1 - cov)));
+  const triH = V * cov * num("mtri") / 60;
+  const avoided = Math.max(0, V * err - (V * cov * (1 - acc) + V * (1 - cov) * err));
+  const hours = triH + avoided * num("mre") / 60;
+  $("fAcc").textContent = pc1(acc); $("fWrong").textContent = fmt(V * cov * (1 - acc));
+  $("fHours").textContent = fmt(hours) + " h"; $("fMoney").textContent = t("money", fmt(hours * num("cost")));
+  $("fAvoid").textContent = fmt(avoided); $("fWait").textContent = fmt(avoided * num("wait") / 60) + " h";
+  $("roiNote").textContent = t("roi_note", fmt(hours / 2028, 1), fmt(avoided), fmt(N));
+  drawChart(cov, acc);
+}
+function drawChart(cov, acc) {
+  const W = 640, H = 220, L = 46, R = 16, Tp = 12, B = 34;
+  const x = (v) => L + (v - 0.4) / 0.6 * (W - L - R), y = (v) => Tp + (1 - (v - 0.85) / 0.15) * (H - Tp - B);
+  const pts = CURVE.filter((p) => p.cov >= 0.4).map((p) => `${x(p.cov).toFixed(1)},${y(Math.max(p.acc, 0.85)).toFixed(1)}`).join(" ");
+  let g = "";
+  [0.85, 0.9, 0.95, 1].forEach((v) => { g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#D3DADA"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${Math.round(v * 100)}%</text>`; });
+  [0.4, 0.6, 0.8, 1].forEach((v) => { g += `<text x="${x(v)}" y="${H - 14}" text-anchor="middle">${Math.round(v * 100)}%</text>`; });
+  g += `<text x="${(L + W - R) / 2}" y="${H - 1}" text-anchor="middle">${t("ax_x")}</text><text transform="translate(11 ${(Tp + H - B) / 2}) rotate(-90)" text-anchor="middle">${t("ax_y")}</text>`;
+  g += `<polyline points="${pts}" fill="none" stroke="#18232B" stroke-width="2"/>`;
+  if (cov >= 0.4) g += `<circle cx="${x(cov)}" cy="${y(Math.max(acc, 0.85))}" r="6" fill="#1E6B4E" stroke="#fff" stroke-width="2"/>`;
+  $("chart").innerHTML = g; $("chart").setAttribute("aria-label", t("chart_title"));
+}
+["thr", "admHigh", "vol", "mtri", "cost", "err", "mre", "wait"].forEach((id) => $(id).addEventListener("input", updateROI));
+
+/* ---------- Saúde dos dados ---------- */
+let healthList = HEALTH_DS1, healthName = null;
+function renderChecks() {
+  $("healthTitle").textContent = healthName || t("health_title");
+  $("checks").innerHTML = "";
+  healthList.forEach((c) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="badge ${c.status}">${t("st")[c.status]}</span><div><h3></h3><p></p></div><span class="v"></span>`;
+    li.querySelector("h3").textContent = c.title; li.querySelector("p").textContent = c.detail; li.querySelector(".v").textContent = c.value;
+    $("checks").appendChild(li);
+  });
+}
+$("csv").addEventListener("change", (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try { const parsed = parseCSV(reader.result); if (!parsed.header || !parsed.rows.length) throw 0; healthName = f.name; healthList = runChecks(parsed); renderChecks(); }
+    catch (err) { healthName = t("health_err", f.name); healthList = []; renderChecks(); }
+  };
+  reader.readAsText(f);
+});
+
+/* ---------- Idioma ---------- */
+function applyLang() {
+  document.documentElement.lang = LANG === "pt" ? "pt-BR" : "en";
+  document.title = t("title");
+  document.querySelectorAll("[data-i18n]").forEach((el) => (el.textContent = t(el.dataset.i18n)));
+  $("lede").innerHTML = t("lede", fmt(MODEL.n_train), fmt(MODEL.n_test), pc1(MODEL.test_accuracy));
+  $("key").innerHTML = ["P1", "P2", "P3"].map((p) => `<span><i class="sw ${p}"></i>${t("key_" + p.toLowerCase())}</span>`).join("");
+  $("own").placeholder = t("placeholder");
+  $("howList").innerHTML = t("how_list").map((x) => `<li>${esc(x)}</li>`).join("");
+  $("limList").innerHTML = t("lim_list").map((x) => `<li>${esc(x)}</li>`).join("");
+  $("lang-pt").setAttribute("aria-pressed", LANG === "pt"); $("lang-en").setAttribute("aria-pressed", LANG === "en");
+  renderQueue(); renderDetail(); updateROI(); renderChecks();
+}
+$("lang-pt").onclick = () => { LANG = "pt"; try { localStorage.setItem("lang", LANG); } catch (e) {} applyLang(); };
+$("lang-en").onclick = () => { LANG = "en"; try { localStorage.setItem("lang", LANG); } catch (e) {} applyLang(); };
+applyLang();
+</script>
+</body>
+</html>
