@@ -1,0 +1,95 @@
+{
+  "Conservador": {
+    "premissas": {
+      "volume": 2500,
+      "elegibilidade": 0.35,
+      "cobertura": 0.4,
+      "adesao": 0.6,
+      "antes_min": 4.0,
+      "depois_min": 1.5,
+      "revisao_min": 1.0,
+      "retrabalho_taxa": 0.15,
+      "retrabalho_min": 4.0,
+      "hora_brl": 60,
+      "ia_mensal_brl": 0,
+      "infra_mensal_brl": 0,
+      "manutencao_mensal_brl": 150,
+      "implantacao_brl": 1500,
+      "conversao_caixa": 0
+    },
+    "resultado": {
+      "processados_mes": 210.0,
+      "min_depois_com_revisao_e_retrabalho": 3.1,
+      "horas_liquidas_mes": 3.1499999999999995,
+      "valor_capacidade_mes": 188.99999999999997,
+      "custo_recorrente_mes": 150,
+      "valor_liquido_capacidade_mes": 38.99999999999997,
+      "caixa_liquido_mes": -150.0,
+      "caixa_liquido_12m": -3300.0,
+      "roi_financeiro_12m": -1.0,
+      "payback_meses": null
+    }
+  },
+  "Base": {
+    "premissas": {
+      "volume": 2500,
+      "elegibilidade": 0.5,
+      "cobertura": 0.6,
+      "adesao": 0.8,
+      "antes_min": 4.0,
+      "depois_min": 1.5,
+      "revisao_min": 0.5,
+      "retrabalho_taxa": 0.05,
+      "retrabalho_min": 4.0,
+      "hora_brl": 60,
+      "ia_mensal_brl": 0,
+      "infra_mensal_brl": 0,
+      "manutencao_mensal_brl": 150,
+      "implantacao_brl": 1500,
+      "conversao_caixa": 0
+    },
+    "resultado": {
+      "processados_mes": 600.0,
+      "min_depois_com_revisao_e_retrabalho": 2.2,
+      "horas_liquidas_mes": 18.0,
+      "valor_capacidade_mes": 1080.0,
+      "custo_recorrente_mes": 150,
+      "valor_liquido_capacidade_mes": 930.0,
+      "caixa_liquido_mes": -150.0,
+      "caixa_liquido_12m": -3300.0,
+      "roi_financeiro_12m": -1.0,
+      "payback_meses": null
+    }
+  },
+  "Otimista": {
+    "premissas": {
+      "volume": 2500,
+      "elegibilidade": 0.65,
+      "cobertura": 0.75,
+      "adesao": 0.9,
+      "antes_min": 4.0,
+      "depois_min": 1.5,
+      "revisao_min": 0.3,
+      "retrabalho_taxa": 0.03,
+      "retrabalho_min": 4.0,
+      "hora_brl": 60,
+      "ia_mensal_brl": 0,
+      "infra_mensal_brl": 0,
+      "manutencao_mensal_brl": 150,
+      "implantacao_brl": 1500,
+      "conversao_caixa": 0
+    },
+    "resultado": {
+      "processados_mes": 1096.875,
+      "min_depois_com_revisao_e_retrabalho": 1.92,
+      "horas_liquidas_mes": 38.025,
+      "valor_capacidade_mes": 2281.5,
+      "custo_recorrente_mes": 150,
+      "valor_liquido_capacidade_mes": 2131.5,
+      "caixa_liquido_mes": -150.0,
+      "caixa_liquido_12m": -3300.0,
+      "roi_financeiro_12m": -1.0,
+      "payback_meses": null
+    }
+  }
+}

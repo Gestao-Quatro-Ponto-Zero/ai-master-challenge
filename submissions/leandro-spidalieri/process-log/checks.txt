@@ -1,0 +1,59 @@
+# Saídas selecionadas dos checks executados em 06/11/2026 (São Paulo)
+# Python 3.13.15 · Darwin arm64 · dependências instaladas do lockfile
+
+## Validação automatizada da árvore de trabalho
+All checks passed!
+15 files already formatted
+PASSOU · lint e formato
+No broken requirements found.
+......................                                                   [100%]
+22 passed in 2.18s
+Suporte: 8469 tickets, 2769 notas, 1087 notas 4–5, 1365/2769 inversões.
+TI: teste 6664, 5591 sugestões e 5114 acertos entre sugestões. Partições disjuntas e métricas reconciliadas.
+Impacto: cenário base conferido por cálculo manual, 18 h/mês e caixa anual de −R$ 3.300 nas premissas iniciais.
+PASSOU · reconciliação independente
+PASSOU · validação automatizada P0
+
+## Reprodução em pasta e venv separados, partindo de arquivos brutos ausentes
+customer_support_tickets.csv: baixado e verificado
+all_tickets_processed_improved_v3.csv: baixado e verificado
+Tempo decorrido na etapa acquire: 4.33 s.
+Auditoria gerada: suporte 8,469, TI 47,837.
+Tempo decorrido na etapa audit: 4.56 s.
+Política congelada antes do teste: tfidf-logit-ccdaa782b3-044fdace33, limiar 0.55, {'treino': 34338, 'validacao': 6821, 'teste': 6664}.
+Tempo decorrido na etapa train: 15.93 s.
+Teste reservado: {'accuracy': 0.8610444177671068, 'macro_f1': 0.8593645516418094} {'n': 6664, 'aceitos': 5591, 'acertos_aceitos': 5114, 'revisao': 1073, 'cobertura': 0.838985594237695, 'acerto_nos_aceitos': 0.9146843140761939, 'ic95_wilson_acerto': [0.9070740231793076, 0.9217251335296152]}
+Tempo decorrido na etapa evaluate: 5.01 s.
+......................                                                   [100%]
+22 passed in 2.23s
+Suporte: 8469 tickets, 2769 notas, 1087 notas 4–5, 1365/2769 inversões.
+TI: teste 6664, 5591 sugestões e 5114 acertos entre sugestões. Partições disjuntas e métricas reconciliadas.
+Impacto: cenário base conferido por cálculo manual, 18 h/mês e caixa anual de −R$ 3.300 nas premissas iniciais.
+PASSOU · reconciliação independente
+PASSOU · splits e predições idênticos byte a byte
+
+## Chrome headless local, Streamlit no loopback
+PASSOU · HTTP 200, diagnóstico 8.469 e filtro Email 2.143.
+PASSOU · ticket oficial com sugestão; prioridade crítica do mesmo ticket gerou revisão.
+PASSOU · evidências, alteração de volume e nenhum erro de navegador.
+PASSOU · diagnóstico no viewport móvel 390 × 844 sem transbordamento da página.
+Navegador: Chrome 156.0.8078.80, viewport 1440 × 1160.
+
+## Limites
+NÃO EXECUTADO · avaliação no suporte ao consumidor, em português, implantação e piloto.
+A execução técnica antecedeu a revisão de Leandro. As decisões confirmadas estão na narrativa do processo.
+
+## Estado sem os dados oficiais
+All checks passed!
+15 files already formatted
+PASSOU · lint e formato
+No broken requirements found.
+.....................                                                    [100%]
+21 passed, 1 deselected in 1.52s
+NÃO EXECUTADO · integração oficial e reconciliação foram excluídas explicitamente.
+
+## Verificação do pacote de envio
+PASSOU · 38 arquivos na pasta da submissão, diff conferido contra a base oficial 4aed364d572f.
+PASSOU · links e âncoras da documentação conferidos na cópia isolada.
+PASSOU · aquisição verificada com os CSVs oficiais disponíveis localmente, auditoria, treino, avaliação e 22 testes na cópia do pacote.
+PASSOU · partições e predições idênticas às do workspace.

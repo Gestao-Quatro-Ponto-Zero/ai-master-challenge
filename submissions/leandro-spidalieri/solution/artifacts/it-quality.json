@@ -1,0 +1,57 @@
+{
+  "dataset_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+  "linhas_originais": 47837,
+  "linhas_utilizaveis": 47823,
+  "exclusoes": {
+    "texto_insuficiente_ou_vazio": 14,
+    "texto_longo": 0,
+    "rotulo_ausente": 0,
+    "chave_exata_com_rotulo_conflitante": 0
+  },
+  "classes_raw": {
+    "Hardware": 13617,
+    "Access": 7125,
+    "Miscellaneous": 7060,
+    "HR Support": 10915,
+    "Purchase": 2464,
+    "Administrative rights": 1760,
+    "Storage": 2777,
+    "Internal Project": 2119
+  },
+  "classes_utilizaveis": {
+    "Hardware": 13611,
+    "Access": 7124,
+    "Miscellaneous": 7058,
+    "HR Support": 10911,
+    "Purchase": 2463,
+    "Administrative rights": 1760,
+    "Storage": 2777,
+    "Internal Project": 2119
+  },
+  "duplicatas_de_linha_raw_excedentes": 0,
+  "texto": {
+    "presentes": 47837,
+    "vazios": 0,
+    "menor_que_15_caracteres": 12,
+    "placeholders_chaves": 0,
+    "duplicadas_excedentes_normalizadas": 0,
+    "maior_grupo_normalizado": 1,
+    "distintos_normalizados": 47837,
+    "sinais_email": 0,
+    "sinais_telefone_ou_numero_longo": 0,
+    "sinais_url": 0,
+    "prefixo_80_mais_comum_n": 18
+  },
+  "sinais_idioma": {
+    "marcador_ingles": 40821,
+    "marcador_portugues": 686,
+    "metodo": "Presença de termos comuns, com sobreposição. Não certifica idioma por linha."
+  },
+  "grupos": 47115,
+  "maior_grupo": 174,
+  "duplicatas_normalizadas_excedentes_retidas_no_grupo": 0,
+  "unioes_adicionais_por_quase_duplicacao": 708,
+  "grupos_aproximados_com_rotulos_distintos": 17,
+  "texto_com_rotulo_literal": 4112,
+  "texto_com_cabecalho_de_roteamento": 0
+}

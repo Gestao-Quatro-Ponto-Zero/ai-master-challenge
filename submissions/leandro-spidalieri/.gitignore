@@ -1,0 +1,23 @@
+/solution/data/raw/
+/solution/artifacts/local/
+/solution/.venv/
+/solution/.cache/
+/.audit/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.env
+.env.*
+!.env.example
+kaggle.json
+.DS_Store
+
+# Preparação pessoal e registros internos.
+/docs/demo-and-interview.md
+/docs/pr-body.md
+/docs/requirements.md
+/process-log/events.jsonl
+/process-log/human-review.md
+/process-log/prompts/

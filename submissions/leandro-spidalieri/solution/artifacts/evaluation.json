@@ -1,0 +1,704 @@
+{
+  "modelo_versao": "tfidf-logit-ccdaa782b3-044fdace33",
+  "proveniencia": {
+    "dataset_sha256": "044fdace33fa564e1e60453f2941dafc95539c99878b0d32746950394b9dd4d4",
+    "codigo_e_lock_sha256": "ccdaa782b31a96109a65d4b77d4c1bc08a5e5bc7ab2a20993d9c0e58fc124d65",
+    "seed": 241,
+    "python": "3.13.15",
+    "sklearn": "1.7.2",
+    "numpy": "2.5.4"
+  },
+  "limiar": 0.55,
+  "splits_sha256": "3dd99ac012bcd021555c92677bdf6de071f1151afdef22fcd83203b158af96ec",
+  "classe_majoritaria_treino": "Hardware",
+  "n_por_particao": {
+    "treino": 34338,
+    "validacao": 6821,
+    "teste": 6664
+  },
+  "classes_por_particao": {
+    "teste": {
+      "Hardware": 1941,
+      "HR Support": 1455,
+      "Access": 1023,
+      "Miscellaneous": 968,
+      "Storage": 378,
+      "Purchase": 342,
+      "Internal Project": 311,
+      "Administrative rights": 246
+    },
+    "treino": {
+      "Hardware": 9771,
+      "HR Support": 7903,
+      "Access": 5132,
+      "Miscellaneous": 5052,
+      "Storage": 1971,
+      "Purchase": 1779,
+      "Internal Project": 1497,
+      "Administrative rights": 1233
+    },
+    "validacao": {
+      "Hardware": 1899,
+      "HR Support": 1553,
+      "Miscellaneous": 1038,
+      "Access": 969,
+      "Storage": 428,
+      "Purchase": 342,
+      "Internal Project": 311,
+      "Administrative rights": 281
+    }
+  },
+  "criterio_validacao": {
+    "minimo_aceitos": 100,
+    "limite_inferior_wilson": 0.9
+  },
+  "curva_validacao": [
+    {
+      "limiar": 0.0,
+      "n": 6821,
+      "aceitos": 6579,
+      "acertos_aceitos": 5625,
+      "revisao": 242,
+      "cobertura": 0.964521331183111,
+      "acerto_nos_aceitos": 0.8549931600547196,
+      "ic95_wilson_acerto": [
+        0.8462774802338577,
+        0.8632945076444469
+      ]
+    },
+    {
+      "limiar": 0.05,
+      "n": 6821,
+      "aceitos": 6579,
+      "acertos_aceitos": 5625,
+      "revisao": 242,
+      "cobertura": 0.964521331183111,
+      "acerto_nos_aceitos": 0.8549931600547196,
+      "ic95_wilson_acerto": [
+        0.8462774802338577,
+        0.8632945076444469
+      ]
+    },
+    {
+      "limiar": 0.1,
+      "n": 6821,
+      "aceitos": 6579,
+      "acertos_aceitos": 5625,
+      "revisao": 242,
+      "cobertura": 0.964521331183111,
+      "acerto_nos_aceitos": 0.8549931600547196,
+      "ic95_wilson_acerto": [
+        0.8462774802338577,
+        0.8632945076444469
+      ]
+    },
+    {
+      "limiar": 0.15,
+      "n": 6821,
+      "aceitos": 6579,
+      "acertos_aceitos": 5625,
+      "revisao": 242,
+      "cobertura": 0.964521331183111,
+      "acerto_nos_aceitos": 0.8549931600547196,
+      "ic95_wilson_acerto": [
+        0.8462774802338577,
+        0.8632945076444469
+      ]
+    },
+    {
+      "limiar": 0.2,
+      "n": 6821,
+      "aceitos": 6579,
+      "acertos_aceitos": 5625,
+      "revisao": 242,
+      "cobertura": 0.964521331183111,
+      "acerto_nos_aceitos": 0.8549931600547196,
+      "ic95_wilson_acerto": [
+        0.8462774802338577,
+        0.8632945076444469
+      ]
+    },
+    {
+      "limiar": 0.25,
+      "n": 6821,
+      "aceitos": 6577,
+      "acertos_aceitos": 5624,
+      "revisao": 244,
+      "cobertura": 0.9642281190441284,
+      "acerto_nos_aceitos": 0.8551011099285388,
+      "ic95_wilson_acerto": [
+        0.8463866385846257,
+        0.863400997087991
+      ]
+    },
+    {
+      "limiar": 0.3,
+      "n": 6821,
+      "aceitos": 6551,
+      "acertos_aceitos": 5618,
+      "revisao": 270,
+      "cobertura": 0.9604163612373552,
+      "acerto_nos_aceitos": 0.857578995573195,
+      "ic95_wilson_acerto": [
+        0.8489062749259646,
+        0.8658325831419404
+      ]
+    },
+    {
+      "limiar": 0.35,
+      "n": 6821,
+      "aceitos": 6469,
+      "acertos_aceitos": 5585,
+      "revisao": 352,
+      "cobertura": 0.9483946635390705,
+      "acerto_nos_aceitos": 0.8633482763951151,
+      "ic95_wilson_acerto": [
+        0.854762093950855,
+        0.8715031679705861
+      ]
+    },
+    {
+      "limiar": 0.4,
+      "n": 6821,
+      "aceitos": 6348,
+      "acertos_aceitos": 5542,
+      "revisao": 473,
+      "cobertura": 0.930655329130626,
+      "acerto_nos_aceitos": 0.8730308758664146,
+      "ic95_wilson_acerto": [
+        0.8646143044919181,
+        0.8809962283651984
+      ]
+    },
+    {
+      "limiar": 0.45,
+      "n": 6821,
+      "aceitos": 6166,
+      "acertos_aceitos": 5445,
+      "revisao": 655,
+      "cobertura": 0.9039730244832136,
+      "acerto_nos_aceitos": 0.8830684398313331,
+      "ic95_wilson_acerto": [
+        0.8748080821947072,
+        0.8908517687810457
+      ]
+    },
+    {
+      "limiar": 0.5,
+      "n": 6821,
+      "aceitos": 5915,
+      "acertos_aceitos": 5321,
+      "revisao": 906,
+      "cobertura": 0.8671749010409031,
+      "acerto_nos_aceitos": 0.8995773457311919,
+      "ic95_wilson_acerto": [
+        0.891656361263556,
+        0.9069796421057519
+      ]
+    },
+    {
+      "limiar": 0.55,
+      "n": 6821,
+      "aceitos": 5646,
+      "acertos_aceitos": 5167,
+      "revisao": 1175,
+      "cobertura": 0.8277378683477497,
+      "acerto_nos_aceitos": 0.9151611760538434,
+      "ic95_wilson_acerto": [
+        0.9076075961295295,
+        0.9221501797344877
+      ]
+    },
+    {
+      "limiar": 0.6,
+      "n": 6821,
+      "aceitos": 5372,
+      "acertos_aceitos": 4984,
+      "revisao": 1449,
+      "cobertura": 0.7875678053071398,
+      "acerto_nos_aceitos": 0.9277736411020104,
+      "ic95_wilson_acerto": [
+        0.9205412733244647,
+        0.9343946310370033
+      ]
+    },
+    {
+      "limiar": 0.65,
+      "n": 6821,
+      "aceitos": 5127,
+      "acertos_aceitos": 4811,
+      "revisao": 1694,
+      "cobertura": 0.7516493182817768,
+      "acerto_nos_aceitos": 0.9383655158962356,
+      "ic95_wilson_acerto": [
+        0.9314486078686285,
+        0.9446259916668552
+      ]
+    },
+    {
+      "limiar": 0.7,
+      "n": 6821,
+      "aceitos": 4839,
+      "acertos_aceitos": 4593,
+      "revisao": 1982,
+      "cobertura": 0.7094267702682892,
+      "acerto_nos_aceitos": 0.949163050216987,
+      "ic95_wilson_acerto": [
+        0.9426096986859644,
+        0.955003801619311
+      ]
+    },
+    {
+      "limiar": 0.75,
+      "n": 6821,
+      "aceitos": 4536,
+      "acertos_aceitos": 4364,
+      "revisao": 2285,
+      "cobertura": 0.6650051312124322,
+      "acerto_nos_aceitos": 0.9620811287477954,
+      "ic95_wilson_acerto": [
+        0.9561202853544393,
+        0.9672599488810458
+      ]
+    },
+    {
+      "limiar": 0.8,
+      "n": 6821,
+      "aceitos": 4230,
+      "acertos_aceitos": 4107,
+      "revisao": 2591,
+      "cobertura": 0.6201436739481014,
+      "acerto_nos_aceitos": 0.9709219858156029,
+      "ic95_wilson_acerto": [
+        0.9654153730052804,
+        0.9755740111984179
+      ]
+    },
+    {
+      "limiar": 0.85,
+      "n": 6821,
+      "aceitos": 3896,
+      "acertos_aceitos": 3813,
+      "revisao": 2925,
+      "cobertura": 0.571177246738015,
+      "acerto_nos_aceitos": 0.9786960985626283,
+      "ic95_wilson_acerto": [
+        0.973668125248418,
+        0.9827809777100202
+      ]
+    },
+    {
+      "limiar": 0.9,
+      "n": 6821,
+      "aceitos": 3390,
+      "acertos_aceitos": 3340,
+      "revisao": 3431,
+      "cobertura": 0.4969945755754288,
+      "acerto_nos_aceitos": 0.9852507374631269,
+      "ic95_wilson_acerto": [
+        0.9806087131405452,
+        0.9887942195125285
+      ]
+    },
+    {
+      "limiar": 0.95,
+      "n": 6821,
+      "aceitos": 2697,
+      "acertos_aceitos": 2683,
+      "revisao": 4124,
+      "cobertura": 0.3953965694179739,
+      "acerto_nos_aceitos": 0.9948090470893586,
+      "ic95_wilson_acerto": [
+        0.991305160241868,
+        0.9969053294069882
+      ]
+    },
+    {
+      "limiar": 1.0,
+      "n": 6821,
+      "aceitos": 0,
+      "acertos_aceitos": 0,
+      "revisao": 6821,
+      "cobertura": 0.0,
+      "acerto_nos_aceitos": null,
+      "ic95_wilson_acerto": null
+    }
+  ],
+  "validacao_no_limiar": {
+    "n": 6821,
+    "aceitos": 5646,
+    "acertos_aceitos": 5167,
+    "revisao": 1175,
+    "cobertura": 0.8277378683477497,
+    "acerto_nos_aceitos": 0.9151611760538434,
+    "ic95_wilson_acerto": [
+      0.9076075961295295,
+      0.9221501797344877
+    ]
+  },
+  "teste": {
+    "n": 6664,
+    "classe_majoritaria": {
+      "accuracy": 0.29126650660264103,
+      "macro_f1": 0.05639163277164439
+    },
+    "tfidf_logit": {
+      "accuracy": 0.8610444177671068,
+      "macro_f1": 0.8593645516418094
+    },
+    "classes": [
+      "Access",
+      "Administrative rights",
+      "HR Support",
+      "Hardware",
+      "Internal Project",
+      "Miscellaneous",
+      "Purchase",
+      "Storage"
+    ],
+    "por_classe": {
+      "Access": {
+        "precision": 0.9205366357069144,
+        "recall": 0.8719452590420332,
+        "f1-score": 0.8955823293172691,
+        "support": 1023.0
+      },
+      "Administrative rights": {
+        "precision": 0.9050279329608939,
+        "recall": 0.6585365853658537,
+        "f1-score": 0.7623529411764706,
+        "support": 246.0
+      },
+      "HR Support": {
+        "precision": 0.8460508701472557,
+        "recall": 0.8687285223367698,
+        "f1-score": 0.8572397422855205,
+        "support": 1455.0
+      },
+      "Hardware": {
+        "precision": 0.8106095858538855,
+        "recall": 0.8974755280783101,
+        "f1-score": 0.8518337408312958,
+        "support": 1941.0
+      },
+      "Internal Project": {
+        "precision": 0.9433962264150944,
+        "recall": 0.8038585209003215,
+        "f1-score": 0.8680555555555556,
+        "support": 311.0
+      },
+      "Miscellaneous": {
+        "precision": 0.8502617801047121,
+        "recall": 0.8388429752066116,
+        "f1-score": 0.8445137805512221,
+        "support": 968.0
+      },
+      "Purchase": {
+        "precision": 0.972972972972973,
+        "recall": 0.8421052631578947,
+        "f1-score": 0.9028213166144201,
+        "support": 342.0
+      },
+      "Storage": {
+        "precision": 0.9187675070028011,
+        "recall": 0.8677248677248677,
+        "f1-score": 0.8925170068027211,
+        "support": 378.0
+      }
+    },
+    "matriz_confusao": [
+      [
+        892,
+        1,
+        40,
+        63,
+        0,
+        24,
+        0,
+        3
+      ],
+      [
+        2,
+        162,
+        9,
+        64,
+        1,
+        6,
+        0,
+        2
+      ],
+      [
+        15,
+        1,
+        1264,
+        116,
+        2,
+        42,
+        2,
+        13
+      ],
+      [
+        38,
+        11,
+        89,
+        1742,
+        5,
+        44,
+        5,
+        7
+      ],
+      [
+        6,
+        0,
+        21,
+        18,
+        250,
+        16,
+        0,
+        0
+      ],
+      [
+        8,
+        1,
+        53,
+        84,
+        6,
+        812,
+        1,
+        3
+      ],
+      [
+        5,
+        1,
+        7,
+        33,
+        1,
+        6,
+        288,
+        1
+      ],
+      [
+        3,
+        2,
+        11,
+        29,
+        0,
+        5,
+        0,
+        328
+      ]
+    ],
+    "politica": {
+      "n": 6664,
+      "aceitos": 5591,
+      "acertos_aceitos": 5114,
+      "revisao": 1073,
+      "cobertura": 0.838985594237695,
+      "acerto_nos_aceitos": 0.9146843140761939,
+      "ic95_wilson_acerto": [
+        0.9070740231793076,
+        0.9217251335296152
+      ]
+    },
+    "politica_por_classe_real": {
+      "Access": {
+        "n": 1023,
+        "aceitos": 880,
+        "acertos_aceitos": 823,
+        "revisao": 143,
+        "cobertura": 0.8602150537634409,
+        "acerto_nos_aceitos": 0.9352272727272727,
+        "ic95_wilson_acerto": [
+          0.9169992186441185,
+          0.9496719133777278
+        ]
+      },
+      "Administrative rights": {
+        "n": 246,
+        "aceitos": 46,
+        "acertos_aceitos": 0,
+        "revisao": 200,
+        "cobertura": 0.18699186991869918,
+        "acerto_nos_aceitos": 0.0,
+        "ic95_wilson_acerto": [
+          0.0,
+          0.07707617732978073
+        ]
+      },
+      "HR Support": {
+        "n": 1455,
+        "aceitos": 1264,
+        "acertos_aceitos": 1165,
+        "revisao": 191,
+        "cobertura": 0.8687285223367698,
+        "acerto_nos_aceitos": 0.9216772151898734,
+        "ic95_wilson_acerto": [
+          0.9055548101654322,
+          0.9352442297146287
+        ]
+      },
+      "Hardware": {
+        "n": 1941,
+        "aceitos": 1696,
+        "acertos_aceitos": 1595,
+        "revisao": 245,
+        "cobertura": 0.8737764039155075,
+        "acerto_nos_aceitos": 0.9404481132075472,
+        "ic95_wilson_acerto": [
+          0.9281583862722989,
+          0.9507470364447355
+        ]
+      },
+      "Internal Project": {
+        "n": 311,
+        "aceitos": 250,
+        "acertos_aceitos": 221,
+        "revisao": 61,
+        "cobertura": 0.8038585209003215,
+        "acerto_nos_aceitos": 0.884,
+        "ic95_wilson_acerto": [
+          0.8383682865919351,
+          0.9180089187203542
+        ]
+      },
+      "Miscellaneous": {
+        "n": 968,
+        "aceitos": 810,
+        "acertos_aceitos": 726,
+        "revisao": 158,
+        "cobertura": 0.8367768595041323,
+        "acerto_nos_aceitos": 0.8962962962962963,
+        "ic95_wilson_acerto": [
+          0.8733958986552517,
+          0.9154553962404626
+        ]
+      },
+      "Purchase": {
+        "n": 342,
+        "aceitos": 312,
+        "acertos_aceitos": 280,
+        "revisao": 30,
+        "cobertura": 0.9122807017543859,
+        "acerto_nos_aceitos": 0.8974358974358975,
+        "ic95_wilson_acerto": [
+          0.8587948632557888,
+          0.9264088591164384
+        ]
+      },
+      "Storage": {
+        "n": 378,
+        "aceitos": 333,
+        "acertos_aceitos": 304,
+        "revisao": 45,
+        "cobertura": 0.8809523809523809,
+        "acerto_nos_aceitos": 0.9129129129129129,
+        "ic95_wilson_acerto": [
+          0.8777260619635368,
+          0.938681412647675
+        ]
+      }
+    },
+    "predicoes_sha256": "d660b9589b9baf332e0fc3cd7055707c143b7629998e7af2a3a3a7cad94d1b93",
+    "exemplos_por_id": {
+      "sugestao_correta": [
+        {
+          "id": "000b1c1ce76dc745b75a",
+          "real": "HR Support",
+          "previsto": "HR Support",
+          "score": 0.9965605469601466,
+          "guardas": ""
+        },
+        {
+          "id": "0020f1d555e1254d921e",
+          "real": "Purchase",
+          "previsto": "Purchase",
+          "score": 0.9987335375377548,
+          "guardas": ""
+        },
+        {
+          "id": "0022d8432bdc4fd1516f",
+          "real": "Hardware",
+          "previsto": "Hardware",
+          "score": 0.949379607751196,
+          "guardas": ""
+        }
+      ],
+      "sugestao_incorreta": [
+        {
+          "id": "01782c226301b65cbfa2",
+          "real": "HR Support",
+          "previsto": "Access",
+          "score": 0.5829946439659103,
+          "guardas": ""
+        },
+        {
+          "id": "01efb6ce9873709d6405",
+          "real": "Access",
+          "previsto": "HR Support",
+          "score": 0.6050184985092932,
+          "guardas": ""
+        },
+        {
+          "id": "028b4da669f61fb2f695",
+          "real": "Administrative rights",
+          "previsto": "Hardware",
+          "score": 0.6194688874847024,
+          "guardas": ""
+        }
+      ],
+      "revisao": [
+        {
+          "id": "000248ed14b04416560e",
+          "real": "Hardware",
+          "previsto": "Hardware",
+          "score": 0.41287145588728497,
+          "guardas": ""
+        },
+        {
+          "id": "000f73ed70efe49e6188",
+          "real": "Internal Project",
+          "previsto": "Internal Project",
+          "score": 0.5358732656267784,
+          "guardas": ""
+        },
+        {
+          "id": "002ee73cb934ba5be90c",
+          "real": "HR Support",
+          "previsto": "HR Support",
+          "score": 0.4976133894017123,
+          "guardas": ""
+        }
+      ],
+      "erro_modelo": [
+        {
+          "id": "00da0245a97f0a25ec6d",
+          "real": "Storage",
+          "previsto": "Hardware",
+          "score": 0.4801726035235093,
+          "guardas": ""
+        },
+        {
+          "id": "0147251c40107087bf93",
+          "real": "Administrative rights",
+          "previsto": "Storage",
+          "score": 0.5264036109551306,
+          "guardas": "Termo sensível identificado por regra."
+        },
+        {
+          "id": "01782c226301b65cbfa2",
+          "real": "HR Support",
+          "previsto": "Access",
+          "score": 0.5829946439659103,
+          "guardas": ""
+        }
+      ]
+    },
+    "latencia_ms": {
+      "n": 200,
+      "p50": 0.41056249756366014,
+      "p95": 0.5980374815408138,
+      "ambiente": "Darwin arm64, Python 3.13.15",
+      "escopo": "Decisão individual local, modelo em memória, amostra fixa, após aquecimento."
+    }
+  }
+}
