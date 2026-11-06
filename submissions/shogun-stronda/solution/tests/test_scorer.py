@@ -126,7 +126,29 @@ class TestRealData(unittest.TestCase):
 
     def test_reason_formatting(self):
         info = next(t for r in self.rows if r["account"] for k, t in r["reasons"] if "receita" in t)
-        self.assertRegex(info, r"^\w+, receita US\$ [\d.]+ mi, [\d.]+ funcionários$")
+        self.assertRegex(info, r"^\w+, receita R\$ [\d.,]+ (mi|bi)/ano, [\d.]+ funcionários$")
+
+    def test_brazilian_names_are_one_to_one(self):
+        br = S.br_names()
+        self.assertEqual(len(br["vendedor"]), 35)
+        self.assertEqual(set(br["regiao"].values()), {"Centro-Oeste", "Sudeste", "Sul"})
+        self.assertEqual(set(self.teams), set(br["vendedor"].values()))           # todo vendedor mapeado
+        self.assertEqual({t["original"] for t in self.teams.values()}, set(br["vendedor"]))
+        firsts = [n.split()[0] for n in br["vendedor"].values()]
+        self.assertEqual(len(firsts), len(set(firsts)))  # motivos usam o primeiro nome: sem ambiguidade
+        originals = {"Central", "East", "West", "Darcel Schlecht", "Melvin Marxen"}
+        self.assertFalse(any(r["region"] in originals or r["agent"] in originals or r["manager"] in originals
+                             for r in self.rows))
+
+    def test_values_in_brl(self):
+        # dataset em US$, tela em R$ pela PTAX fixa
+        self.assertEqual(S.brl(100), round(100 * S.USD_BRL))
+        self.assertEqual(S.fmt_brl(S.brl(26768)), "R$ 146.209")
+        self.assertEqual(S.fmt_brl_mi(1100.04), "R$ 6,0 bi")
+        self.assertEqual(S.fmt_brl_mi(100), "R$ 546 mi")
+        for r in self.rows:
+            self.assertEqual(r["price"], S.brl(r["price_usd"]))
+        self.assertFalse(any("US$" in t for r in self.rows for _, t in r["reasons"]))
 
     def test_no_snapshot_leakage(self):
         for c in S.CUTOFFS:

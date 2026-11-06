@@ -39,9 +39,11 @@ P(ganho | deal ainda aberto após t dias). Treino e teste mostram o mesmo format
 
 ## 3. Pipeline aberto na data de referência
 
+Valores em reais pela PTAX de venda de 2026-11-05: US$ 1 = R$ 5,4621.
+
 - Deals abertos: 2089 (1589 Engaging, 500 Prospecting)
-- Engaging além de 138 dias ('zumbis', verificar no CRM): 1291 = 81% do Engaging, US$ 3.198.664 em tabela
-- Engaging dentro do ciclo: 298 deals, valor esperado US$ 486.226
-- Prospecting: 500 deals, US$ 1.073.986 em tabela, chance desconhecida (o histórico nunca registra Prospecting -> Won)
-- Valor de tabela nominal de tudo: US$ 4.966.215
+- Engaging além de 138 dias ('zumbis', verificar no CRM): 1291 = 81% do Engaging, R$ 17.471.423 em tabela
+- Engaging dentro do ciclo: 298 deals, valor esperado R$ 2.655.833
+- Prospecting: 500 deals, R$ 5.866.219 em tabela, chance desconhecida (o histórico nunca registra Prospecting -> Won)
+- Valor de tabela nominal de tudo: R$ 27.125.963
 - Deals sem conta preenchida: 1425

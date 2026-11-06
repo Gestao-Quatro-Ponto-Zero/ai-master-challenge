@@ -44,9 +44,18 @@ ACTIONS = {
     "zumbi": "Verificar no CRM",
 }
 
+# Moeda: o dataset está em US$. Convertido para R$ pela PTAX de venda do Banco Central
+# (https://olinda.bcb.gov.br/olinda/servico/PTAX, CotacaoDolarDia). Taxa fixa para o
+# resultado ser reproduzível; atualize as duas linhas ao trocar a data de referência.
+USD_BRL = 5.4621
+USD_BRL_DATE = "2026-11-05"
+
 # Correções de qualidade de dado encontradas na EDA
 PRODUCT_FIX = {"GTXPro": "GTX Pro"}
 SECTOR_FIX = {"technolgy": "technology"}
+SECTOR_PT = {"employment": "Recrutamento", "entertainment": "Entretenimento", "finance": "Finanças",
+             "marketing": "Marketing", "medical": "Saúde", "retail": "Varejo", "services": "Serviços",
+             "software": "Software", "technology": "Tecnologia", "telecommunications": "Telecom"}
 
 
 def _read(name, data_dir):
@@ -58,22 +67,45 @@ def _date(s):
     return dt.date.fromisoformat(s) if s else None
 
 
+def br_names(data_dir=DATA):
+    """Mapa 1:1 de vendedores, managers e regiões para nomes brasileiros (data/nomes_br.csv).
+
+    Os CSVs originais ficam intactos; a troca é só de exibição e é auditável.
+    Sem o arquivo, os nomes originais são usados.
+    """
+    m = {"vendedor": {}, "manager": {}, "regiao": {}}
+    if os.path.exists(os.path.join(data_dir, "nomes_br.csv")):
+        for r in _read("nomes_br.csv", data_dir):
+            m[r["tipo"]][r["original"]] = r["br"]
+    for tipo, d in m.items():
+        if len(set(d.values())) != len(d):
+            raise ValueError(f"nomes_br.csv: nome brasileiro repetido em {tipo}")
+    return m
+
+
 def load(data_dir=DATA):
     accounts = {a["account"]: {**a, "sector": SECTOR_FIX.get(a["sector"], a["sector"])}
                 for a in _read("accounts.csv", data_dir)}
     products = {p["product"]: p for p in _read("products.csv", data_dir)}
-    teams = {t["sales_agent"]: t for t in _read("sales_teams.csv", data_dir)}
+    br = br_names(data_dir)
+    teams = {}
+    for t in _read("sales_teams.csv", data_dir):
+        agent = br["vendedor"].get(t["sales_agent"], t["sales_agent"])
+        teams[agent] = {"sales_agent": agent, "original": t["sales_agent"],
+                        "manager": br["manager"].get(t["manager"], t["manager"]),
+                        "regional_office": br["regiao"].get(t["regional_office"], t["regional_office"])}
     deals = []
     for r in _read("sales_pipeline.csv", data_dir):
         prod = PRODUCT_FIX.get(r["product"], r["product"])
         if prod not in products:
             raise ValueError(f"produto desconhecido: {r['product']}")
-        if r["sales_agent"] not in teams:
+        agent = br["vendedor"].get(r["sales_agent"], r["sales_agent"])
+        if agent not in teams:
             raise ValueError(f"vendedor sem time: {r['sales_agent']}")
         if r["deal_stage"] == "Engaging" and not r["engage_date"]:
             raise ValueError(f"deal Engaging sem engage_date: {r['opportunity_id']}")
         deals.append({
-            "id": r["opportunity_id"], "agent": r["sales_agent"], "product": prod,
+            "id": r["opportunity_id"], "agent": agent, "product": prod,
             "account": r["account"] or None, "stage": r["deal_stage"],
             "engage": _date(r["engage_date"]), "close": _date(r["close_date"]),
             "value": int(r["close_value"]) if r["close_value"] else None,
@@ -188,8 +220,21 @@ def value_pts(price, lo, hi):
 
 # ---------------------------------------------------------------- explicações
 
-def fmt_usd(v):
-    return "US$ " + f"{v:,.0f}".replace(",", ".")
+def brl(usd):
+    return round(usd * USD_BRL)
+
+
+def fmt_brl(v):
+    """Valor já em reais -> 'R$ 1.234'."""
+    return "R$ " + f"{v:,.0f}".replace(",", ".")
+
+
+def fmt_brl_mi(usd_mi):
+    """Receita em milhões de US$ -> 'R$ 6,0 bi' ou 'R$ 873 mi'."""
+    v = usd_mi * USD_BRL
+    if v >= 1000:
+        return "R$ " + f"{v / 1000:.1f}".replace(".", ",") + " bi"
+    return f"R$ {v:.0f} mi"
 
 
 def reasons(d, st, age, p, price, model, accounts):
@@ -203,8 +248,9 @@ def reasons(d, st, age, p, price, model, accounts):
         out.append(("!", f"Engajado há {age} dias: {model['early_loss']:.0%} das perdas acontecem até o dia "
                          f"{EARLY_WINDOW}. Um contato agora pesa mais que em qualquer outro momento"))
     elif st == "reta_final":
-        out.append(("!", f"Engajado há {age} dias: faltam {mc - age} dias para passar do maior ciclo já visto "
-                         f"({mc}). Hora de pedir a decisão"))
+        left = mc - age
+        when = "hoje é o último dia" if left == 0 else "falta 1 dia" if left == 1 else f"faltam {left} dias"
+        out.append(("!", f"Engajado há {age} dias: {when} dentro do maior ciclo já visto ({mc}). Hora de pedir a decisão"))
     elif st == "maduro":
         out.append(("+", f"Engajado há {age} dias: passou da janela de perda precoce"))
     else:
@@ -213,17 +259,17 @@ def reasons(d, st, age, p, price, model, accounts):
         out.append(("i", f"Deals nesta idade fecharam {p:.0%} das vezes (média {model['base']:.0%}): "
                          "quase igual para todos, por isso não pesa no score"))
     if price >= 4000:
-        out.append(("+", f"Ticket alto: {d['product']} tabela {fmt_usd(price)}"))
+        out.append(("+", f"Ticket alto: {d['product']} tabela {fmt_brl(brl(price))}"))
     elif price <= 600:
-        out.append(("-", f"Ticket baixo: {d['product']} tabela {fmt_usd(price)}"))
+        out.append(("-", f"Ticket baixo: {d['product']} tabela {fmt_brl(brl(price))}"))
     else:
-        out.append(("i", f"Ticket médio: {d['product']} tabela {fmt_usd(price)}"))
+        out.append(("i", f"Ticket médio: {d['product']} tabela {fmt_brl(brl(price))}"))
     if d["account"] is None:
         out.append(("!", "Conta não preenchida no CRM"))
     elif d["account"] in accounts:
         a = accounts[d["account"]]
         emp = f"{int(a['employees']):,}".replace(",", ".")
-        out.append(("i", f"{a['sector'].capitalize()}, receita {fmt_usd(float(a['revenue']))} mi, {emp} funcionários"))
+        out.append(("i", f"{SECTOR_PT.get(a['sector'], a['sector'].capitalize())}, receita {fmt_brl_mi(float(a['revenue']))}/ano, {emp} funcionários"))
     h = history(model, d)
     ap = h["vendedor_produto"]
     if ap["n"]:
@@ -242,7 +288,7 @@ def score_deal(model, d, price, lo, hi, ref=REF_DATE):
     v_pts = value_pts(price, lo, hi)
     m_pts = MOMENTO[st]
     return {"age": age, "state": st, "p": None if p is None else round(p, 3),
-            "ev": None if p is None else round(p * price),
+            "ev": None if p is None else brl(p * price),
             "pts": {"valor": round(v_pts, 1), "momento": m_pts},
             "score": round(v_pts + m_pts), "action": ACTIONS[st]}
 
@@ -260,12 +306,13 @@ def score_open(model, accounts, products, teams, deals, ref=REF_DATE):
         acc = accounts.get(d["account"]) if d["account"] else None
         rows.append({
             "id": d["id"], "agent": d["agent"], "manager": t["manager"], "region": t["regional_office"],
-            "product": d["product"], "account": d["account"], "sector": acc["sector"] if acc else None,
+            "product": d["product"], "account": d["account"], "sector": SECTOR_PT.get(acc["sector"]) if acc else None,
             "stage": d["stage"], "engage": d["engage"].isoformat() if d["engage"] else None,
-            "price": price, **s, "reasons": reasons(d, s["state"], s["age"], s["p"], price, model, accounts),
+            "price": brl(price), "price_usd": price, **s,
+            "reasons": reasons(d, s["state"], s["age"], s["p"], price, model, accounts),
         })
     # zumbis vão para o fim: precisam de verificação, não de prioridade
-    rows.sort(key=lambda r: (r["state"] == "zumbi", -r["score"], -r["price"], r["id"]))
+    rows.sort(key=lambda r: (r["state"] == "zumbi", -r["score"], -r["price_usd"], r["id"]))
     return rows
 
 
@@ -380,14 +427,15 @@ def write_validation(bt, model, rows, path):
     L += ["", f"{model['early_loss']:.0%} das perdas acontecem até o dia {EARLY_WINDOW}. "
           f"Maior ciclo já observado: {model['max_cycle']} dias (era o mesmo no corte de maio/2017).", "",
           "## 3. Pipeline aberto na data de referência", "",
+          f"Valores em reais pela PTAX de venda de {USD_BRL_DATE}: US$ 1 = R$ {str(USD_BRL).replace('.', ',')}.", "",
           f"- Deals abertos: {len(rows)} ({len(eng)} Engaging, {len(pros)} Prospecting)",
           f"- Engaging além de {model['max_cycle']} dias ('zumbis', verificar no CRM): {len(zomb)} = "
-          f"{len(zomb) / len(eng):.0%} do Engaging, {fmt_usd(sum(r['price'] for r in zomb))} em tabela",
+          f"{len(zomb) / len(eng):.0%} do Engaging, {fmt_brl(brl(sum(r['price_usd'] for r in zomb)))} em tabela",
           f"- Engaging dentro do ciclo: {len(eng) - len(zomb)} deals, valor esperado "
-          f"{fmt_usd(sum(r['ev'] for r in eng if r['ev'] is not None))}",
-          f"- Prospecting: {len(pros)} deals, {fmt_usd(sum(r['price'] for r in pros))} em tabela, "
+          f"{fmt_brl(sum(r['ev'] for r in eng if r['ev'] is not None))}",
+          f"- Prospecting: {len(pros)} deals, {fmt_brl(brl(sum(r['price_usd'] for r in pros)))} em tabela, "
           "chance desconhecida (o histórico nunca registra Prospecting -> Won)",
-          f"- Valor de tabela nominal de tudo: {fmt_usd(sum(r['price'] for r in rows))}",
+          f"- Valor de tabela nominal de tudo: {fmt_brl(brl(sum(r['price_usd'] for r in rows)))}",
           f"- Deals sem conta preenchida: {sum(r['account'] is None for r in rows)}", ""]
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(L))
@@ -409,7 +457,8 @@ def build(csv_out=None, data_dir=DATA, out_dir=HERE):
             "auc_range": [round(min(min(s["auc"][k][0] for k in s["auc"]) for s in bt["snapshots"]), 2),
                           round(max(max(s["auc"][k][0] for k in s["auc"]) for s in bt["snapshots"]), 2)],
             "auc_mid": {k: round(v[0], 3) for k, v in last.items()},
-            "weights": {"valor": PTS_VALOR, "momento": PTS_MOMENTO}, "momento": MOMENTO}
+            "weights": {"valor": PTS_VALOR, "momento": PTS_MOMENTO}, "momento": MOMENTO,
+            "fx": {"usd_brl": USD_BRL, "date": USD_BRL_DATE, "source": "PTAX venda, Banco Central do Brasil"}}
     with open(os.path.join(out_dir, "app", "data.js"), "w", encoding="utf-8") as f:
         f.write("window.LEAD_DATA = ")
         json.dump({"meta": meta, "agents": agents, "deals": rows}, f, ensure_ascii=False, separators=(",", ":"))

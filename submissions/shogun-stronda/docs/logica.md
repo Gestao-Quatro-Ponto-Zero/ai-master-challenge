@@ -30,14 +30,14 @@ Um score com "chance 78%" teria cara de inteligente e seria enfeite. O vendedor 
 
 Previsão de ganho não é a única coisa que importa para priorizar. Três fatos se sustentam nos dados:
 
-1. **Valor varia 500x** (US$ 55 a US$ 26.768). É conhecido, não estimado. Ganhos fecham entre 87% e 112% do preço de tabela (decis 10 a 90), então tabela é uma boa estimativa de valor.
+1. **Valor varia 500x** (R$ 300 a R$ 146.209). É conhecido, não estimado. Ganhos fecham entre 87% e 112% do preço de tabela (decis 10 a 90), então tabela é uma boa estimativa de valor.
 2. **Metade das perdas acontece nos primeiros 14 dias** de Engaging (51%). Isso não diz *quem* vai perder, diz *quando* um contato tem mais chance de mudar o desfecho.
 3. **Nenhum deal levou mais de 138 dias** para fechar, em 6.711 fechados (o teto já era 138 no corte de maio/2017). Um deal na reta final tem prazo; um deal além disso está fora de qualquer padrão histórico.
 
 ## As parcelas
 
 ### Valor (0 a 60)
-Preço de tabela em **escala log**: US$ 55 = 0, US$ 26.768 = 60.
+Preço de tabela em **escala log**: R$ 300 = 0, R$ 146.209 = 60.
 
 - Log porque o esforço por deal não escala 500x com o ticket. Em escala linear, metade do catálogo viraria zero.
 - É o maior peso porque é o único fator que diferencia deals de forma comprovada.
@@ -52,12 +52,12 @@ Preço de tabela em **escala log**: US$ 55 = 0, US$ 26.768 = 60.
 | Prospecção | sem `engage_date` | 10 | **Avançar para Engaging** | O histórico nunca mostra Prospecting → Won; não há chance a estimar |
 | Zumbi | Engaging > 138 dias | 0 | **Verificar no CRM** | Fora de qualquer ciclo histórico. Vai para aba separada |
 
-**A ação não depende do preço.** Um GTX Basic de US$ 550 aos 120 dias recebe "Empurrar fechamento", igual a um GTK 500. O score só define quem vem primeiro.
+**A ação não depende do preço.** Um GTX Basic de R$ 3.004 aos 120 dias recebe "Empurrar fechamento", igual a um GTK 500. O score só define quem vem primeiro.
 
 ### Consequência assumida
 
 Dentro da mesma ação, a ordem é por valor. É uma escolha deliberada: se nenhum atributo diferencia chance, o que sobra para desempatar é quanto o deal vale. O que torna isto diferente de "ordenar por valor":
-- a ação vem do momento: o KPI "Contato urgente" ou "Empurrar fechamento" lista todos os deals naquele estado, de qualquer ticket, e o MG Special de US$ 55 aos 120 dias recebe a mesma ação do GTK 500;
+- a ação vem do momento: o KPI "Contato urgente" ou "Empurrar fechamento" lista todos os deals naquele estado, de qualquer ticket, e o MG Special de R$ 300 aos 120 dias recebe a mesma ação do GTK 500;
 - no mesmo ticket, o momento reordena: um GTX Pro em janela de risco (83) vem antes de um GTX Pro em cadência normal (68);
 - 1.291 deals saem da lista principal (zumbis);
 - prospecção fica atrás de qualquer Engaging de mesmo ticket.
