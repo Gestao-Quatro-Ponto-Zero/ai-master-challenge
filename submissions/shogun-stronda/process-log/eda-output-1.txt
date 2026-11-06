@@ -1,0 +1,38 @@
+8800 85 7 35
+Counter({'Won': 4238, 'Lost': 2473, 'Engaging': 1589, 'Prospecting': 500})
+products in pipe Counter({'GTX Basic': 1866, 'MG Special': 1651, 'GTXPro': 1480, 'MG Advanced': 1412, 'GTX Plus Basic': 1383, 'GTX Plus Pro': 968, 'GTK 500': 40})
+prod table ['GTX Basic', 'GTX Pro', 'MG Special', 'MG Advanced', 'GTX Plus Pro', 'GTX Plus Basic', 'GTK 500']
+missing account by stage Counter({'Engaging': 1088, 'Prospecting': 337})
+agents not in team set() agents w/o deals {'Natalya Ivanova', 'Carol Thompson', 'Elizabeth Anderson', 'Carl Lin', 'Mei-Mei Johns'}
+sectors Counter({'retail': 17, 'technolgy': 12, 'medical': 12, 'marketing': 8, 'finance': 8, 'software': 7, 'entertainment': 6, 'telecommunications': 6, 'services': 5, 'employment': 4})
+missing engage by stage Counter({'Prospecting': 500})
+missing close by stage Counter({'Engaging': 1589, 'Prospecting': 500})
+Won engage 2016-10-20 2017-12-27 close 2017-03-01 2017-12-31
+Lost engage 2016-11-04 2017-12-22 close 2017-03-01 2017-12-31
+Engaging engage 2016-11-03 2017-12-22 close None None
+Prospecting engage None None close None None
+won cycle deciles [5.0, 8.0, 11.0, 18.0, 57.0, 71.0, 83.0, 93.0, 106.0]
+lost cycle deciles [2.0, 6.0, 8.0, 10.0, 14.0, 56.0, 72.0, 85.0, 100.6]
+cycle 0 0.5548823948681397 2806
+cycle 15 0.7306590257879656 349
+cycle 30 0.6480446927374302 179
+cycle 45 0.6592797783933518 361
+cycle 60 0.6616231086657497 727
+cycle 75 0.6666666666666666 873
+cycle 90 0.7198443579766537 771
+cycle 105 0.6799065420560748 428
+cycle 120 0.7511520737327189 217
+overall [(1, 0.632, 6711)]
+product [('MG Special', 0.648, 1223), ('GTX Plus Pro', 0.643, 745), ('GTX Basic', 0.637, 1436), ('GTXPro', 0.636, 1147), ('GTX Plus Basic', 0.621, 1051), ('MG Advanced', 0.603, 1084), ('GTK 500', 0.6, 25)]
+sector [('marketing', 0.648, 623), ('entertainment', 0.647, 402), ('software', 0.639, 704), ('services', 0.634, 352), ('technolgy', 0.634, 1058), ('retail', 0.631, 1267), ('employment', 0.626, 286), ('telecommunications', 0.625, 456), ('medical', 0.623, 950), ('finance', 0.612, 613)]
+region [('West', 0.639, 2249), ('East', 0.63, 1858), ('Central', 0.626, 2604)]
+manager [('Cara Losch', 0.644, 745), ('Summer Sewald', 0.643, 1287), ('Celia Rouche', 0.634, 962), ('Dustin Brinkmann', 0.63, 1186), ('Melvin Marxen', 0.622, 1418), ('Rocco Neubert', 0.621, 1113)]
+agent [('Hayden Neloms', 0.704, 152), ('Maureen Marcano', 0.7, 213), ('Wilburn Farren', 0.696, 79)] [('Donn Cantrell', 0.575, 275), ('Markita Hansen', 0.573, 227), ('Lajuana Vencill', 0.55, 231)]
+account [('Rangreen', 0.75, 100), ('Goodsilron', 0.739, 88), ('Newex', 0.725, 51)] [('Donware', 0.556, 54), ('Xx-zobam', 0.554, 83), ('Statholdings', 0.531, 64)]
+engage month [('2016-10', 1.0, 7), ('2016-12', 0.816, 196), ('2016-11', 0.814, 102), ('2017-12', 0.777, 103), ('2017-01', 0.733, 247), ('2017-03', 0.672, 655), ('2017-06', 0.665, 681), ('2017-02', 0.66, 420), ('2017-11', 0.643, 244), ('2017-08', 0.633, 539), ('2017-09', 0.628, 677), ('2017-05', 0.622, 588), ('2017-10', 0.569, 703), ('2017-04', 0.567, 753), ('2017-07', 0.554, 796)]
+close month [('2017-06', 0.828, 641), ('2017-03', 0.821, 647), ('2017-09', 0.792, 635), ('2017-12', 0.785, 651), ('2017-08', 0.568, 785), ('2017-05', 0.544, 805), ('2017-11', 0.529, 768), ('2017-10', 0.493, 566), ('2017-07', 0.491, 627), ('2017-04', 0.486, 586)]
+won value/price deciles [0.8695120660316311, 0.9109090909090909, 0.9454545454545455, 0.9717601824136193, 0.9981818181818183, 1.0217363291346437, 1.048717948717949, 1.0780300578906679, 1.1241036402478815]
+lost close values Counter({'0': 2473})
+open close_value [('', 2089)]
+open/agent 31 194 27
+size [('big', 0.633, 4403), ('small', 0.629, 2308)]

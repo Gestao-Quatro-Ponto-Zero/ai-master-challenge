@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lead Scorer</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%234b4fd8'/%3E%3Cpath d='M4 11l3-3 2 2 3-4' stroke='white' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f7f7f8;--panel:#fff;--ink:#16171a;--muted:#6b6f76;--line:#e4e5e8;--soft:#f0f1f3;
+  --accent:#4b4fd8;--hot:#0f8a5f;--hot-bg:#e3f5ec;--warn:#b25e00;--warn-bg:#fdf0dd;
+  --bad:#b4232c;--bad-bg:#fbe6e7;--info-bg:#eceefb;
+  --v:#4b4fd8;--c:#0f8a5f;--u:#d97706;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1012;--panel:#17181b;--ink:#ececee;--muted:#9a9ea6;--line:#2a2c31;--soft:#202227;
+  --accent:#8b8ff5;--hot:#45c08f;--hot-bg:#13301f;--warn:#f0a44b;--warn-bg:#33240f;
+  --bad:#f07178;--bad-bg:#3a1619;--info-bg:#1f2140;--v:#8b8ff5;--c:#45c08f;--u:#f0a44b;}}
+:root[data-theme="dark"]{
+  --bg:#0f1012;--panel:#17181b;--ink:#ececee;--muted:#9a9ea6;--line:#2a2c31;--soft:#202227;
+  --accent:#8b8ff5;--hot:#45c08f;--hot-bg:#13301f;--warn:#f0a44b;--warn-bg:#33240f;
+  --bad:#f07178;--bad-bg:#3a1619;--info-bg:#1f2140;--v:#8b8ff5;--c:#45c08f;--u:#f0a44b;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:12.5px}
+.grow{flex:1}
+button,select,input{font:inherit;color:inherit}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 11px;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn:focus-visible,select:focus-visible,input:focus-visible,tr:focus-visible,.tab:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+main{max-width:1280px;margin:0 auto;padding:16px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filters label{display:flex;flex-direction:column;font-size:11.5px;color:var(--muted);gap:3px}
+select,input[type=search]{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 8px;min-width:150px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left}
+.kpi:hover,.kpi[aria-pressed=true]{border-color:var(--accent)}
+.kpi b{display:block;font-size:22px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi span{color:var(--muted);font-size:12px}
+.kpi small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:0;overflow-x:auto}
+.tab{background:none;border:0;border-bottom:2px solid transparent;padding:8px 12px;cursor:pointer;color:var(--muted);white-space:nowrap}
+.tab[aria-selected=true]{color:var(--ink);border-color:var(--accent);font-weight:600}
+.card{background:var(--panel);border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px;overflow:hidden}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:11.5px;color:var(--muted);font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--panel);position:sticky;top:0}
+th.num,td.num{text-align:right}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--soft)}
+tbody tr.sel{background:var(--info-bg)}
+.score{display:inline-flex;align-items:center;justify-content:center;width:38px;height:26px;border-radius:7px;font-weight:650;background:var(--soft)}
+.score.hi{background:var(--hot-bg);color:var(--hot)}
+.score.z{background:var(--bad-bg);color:var(--bad)}
+.chip{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;white-space:nowrap;background:var(--soft)}
+.chip.hot{background:var(--hot-bg);color:var(--hot)}
+.chip.urg{background:var(--warn-bg);color:var(--warn)}
+.chip.z{background:var(--bad-bg);color:var(--bad)}
+.chip.pros{background:var(--info-bg);color:var(--accent)}
+.deal b{font-weight:600}.deal div{color:var(--muted);font-size:12px}
+.bar{display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--soft);width:90px}
+.bar i{display:block;height:100%}
+.more{padding:12px;text-align:center;color:var(--muted)}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+aside{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:var(--panel);border-left:1px solid var(--line);box-shadow:-8px 0 24px rgba(0,0,0,.12);transform:translateX(100%);transition:transform .18s ease;overflow-y:auto;z-index:10;padding:18px}
+aside.open{transform:none}
+aside h2{font-size:16px;margin:4px 0 2px}
+.big{font-size:44px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.comp{margin:14px 0}
+.comp div{display:flex;justify-content:space-between;font-size:12.5px;margin:8px 0 3px}
+.comp .track{height:8px;background:var(--soft);border-radius:4px;overflow:hidden}
+.comp .track i{display:block;height:100%}
+ul.why{list-style:none;padding:0;margin:8px 0}
+ul.why li{display:flex;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+ul.why li:last-child{border:0}
+.ic{flex:0 0 18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.ic.p{background:var(--hot-bg);color:var(--hot)}.ic.m{background:var(--bad-bg);color:var(--bad)}
+.ic.a{background:var(--warn-bg);color:var(--warn)}.ic.i{background:var(--soft);color:var(--muted)}
+.note{background:var(--soft);border-radius:8px;padding:9px 11px;font-size:12.5px;color:var(--muted)}
+.howto{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.howto summary{cursor:pointer;font-weight:600}
+.howto p,.howto li{color:var(--muted);font-size:13px}
+.legend{display:inline-flex;gap:10px;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+@media (max-width:720px){.hide-sm{display:none}select,input[type=search]{min-width:0;width:100%}.filters label{flex:1 1 45%}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Lead Scorer</h1>
+    <div class="sub" id="refline"></div>
+  </div>
+  <div class="grow"></div>
+  <button class="btn" id="export" title="Baixar a visão atual em CSV">Exportar CSV</button>
+  <button class="btn" id="theme" aria-label="Alternar tema">◐</button>
+</header>
+<main>
+  <div class="filters" role="search">
+    <label>Região<select id="f-region"></select></label>
+    <label>Manager<select id="f-manager"></select></label>
+    <label>Vendedor<select id="f-agent"></select></label>
+    <label>Ação<select id="f-action"></select></label>
+    <label style="flex:1;min-width:180px">Busca<input type="search" id="f-q" placeholder="ID, conta ou produto"></label>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <details class="howto" id="howto">
+    <summary>Como o score funciona (30 segundos)</summary>
+    <p><b>Score 0 a 100 = Valor (até 60) + Momento (até 40).</b> A <b>ação</b> de cada deal depende só do momento, nunca do preço.</p>
+    <ul>
+      <li><b>Valor:</b> preço de tabela do produto, em escala log. Um GTK 500 (US$ 26.768) merece mais tempo que um MG Special (US$ 55), mas não 500 vezes mais.</li>
+      <li><b>Momento:</b> onde o deal está no ciclo.
+        <b>Contato urgente</b> (até <span id="h-win"></span> dias): <span id="h-loss"></span>
+        <b>Empurrar fechamento</b> (<span id="h-fs"></span> a <span id="h-max"></span> dias): todo deal do histórico fechou até o dia <span id="h-max2"></span>. Hora de pedir a decisão.
+        <b>Manter cadência</b>: entre os dois. <b>Avançar para Engaging</b>: em prospecção.</li>
+      <li><b>Verificar no CRM</b> (aba Zumbis): Engaging há mais de <span id="h-max3"></span> dias. Nenhum deal histórico durou tanto. Confirme se ainda existe.</li>
+    </ul>
+    <p><b>Por que não tem "probabilidade de fechar" no score:</b> testamos vendedor, conta, produto, setor, região e a idade do deal em dados que o modelo não viu. Nenhum ordenou ganhos de forma confiável (AUC <span id="h-auc"></span>). Um número de chance aqui seria enfeite. O histórico aparece no detalhe do deal como contexto.</p>
+  </details>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="ativos" aria-selected="true">Foco da semana</button>
+    <button class="tab" role="tab" data-tab="zumbis" aria-selected="false">Zumbis <span id="zcount"></span></button>
+    <button class="tab" role="tab" data-tab="time" aria-selected="false">Visão do time</button>
+  </div>
+  <div class="card">
+    <div class="tablewrap"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+    <div class="more" id="more"></div>
+  </div>
+</main>
+
+<aside id="drawer" aria-hidden="true" aria-labelledby="d-title" role="dialog" aria-modal="true">
+  <button class="btn" id="d-close" style="float:right" aria-label="Fechar detalhe">✕</button>
+  <div id="d-body"></div>
+</aside>
+
+<script src="data.js"></script>
+<script>
+(() => {
+const D = window.LEAD_DATA;
+if (!D) { document.body.innerHTML = '<p style="padding:24px">data.js não encontrado. Rode <code>python scorer.py</code> na pasta solution.</p>'; return; }
+const M = D.meta, ALL = D.deals;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const usd = v => 'US$ ' + Math.round(v).toLocaleString('pt-BR');
+const usdk = v => v >= 1e6 ? 'US$ ' + (v/1e6).toLocaleString('pt-BR',{maximumFractionDigits:2}) + ' mi' : v >= 1e3 ? 'US$ ' + (v/1e3).toLocaleString('pt-BR',{maximumFractionDigits:0}) + ' mil' : usd(v);
+const pct = v => (v*100).toLocaleString('pt-BR',{maximumFractionDigits:0}) + '%';
+const store = { get(k){ try { return JSON.parse(localStorage.getItem('ls:'+k)); } catch { return null; } },
+                set(k,v){ try { localStorage.setItem('ls:'+k, JSON.stringify(v)); } catch {} } };
+
+const W = M.weights;
+const refFmt = new Date(M.ref_date + 'T12:00:00').toLocaleDateString('pt-BR');
+$('#refline').textContent = `Data de referência ${refFmt} · ${ALL.length.toLocaleString('pt-BR')} deals abertos · histórico de ${M.n_closed.toLocaleString('pt-BR')} fechados`;
+$('#h-loss').textContent = `${pct(M.early_loss)} das perdas acontecem aqui; um contato agora pesa mais que em qualquer outro momento.`;
+['#h-max','#h-max2','#h-max3'].forEach(i => $(i).textContent = M.max_cycle);
+$('#h-win').textContent = M.early_window;
+$('#h-fs').textContent = M.final_stretch;
+$('#h-auc').textContent = `entre ${M.auc_range[0].toFixed(2).replace('.',',')} e ${M.auc_range[1].toFixed(2).replace('.',',')} em 3 cortes; 0,50 é aleatório`;
+
+// ---------- state
+// só quem-sou-eu persiste: ação, busca e aba voltam ao padrão para a segunda de manhã não abrir filtrada
+const saved = store.get('who') || {};
+const st = { region: saved.region||'', manager: saved.manager||'', agent: saved.agent||'', action:'', q:'', tab:'ativos' };
+let limit = 100, selected = null, lastFocus = null, teamRows = [];
+
+const uniq = a => [...new Set(a)].sort((x,y)=>x.localeCompare(y,'pt-BR'));
+function fillSelect(id, opts, val, allLabel) {
+  const el = $(id);
+  el.innerHTML = `<option value="">${allLabel}</option>` + opts.map(o => `<option${o===val?' selected':''}>${esc(o)}</option>`).join('');
+  if (!opts.includes(val)) el.value = '';
+  return el.value;
+}
+function syncFilters() {
+  st.region = fillSelect('#f-region', uniq(D.agents.map(a=>a.region)), st.region, 'Todas');
+  const mgrs = uniq(D.agents.filter(a=>!st.region||a.region===st.region).map(a=>a.manager));
+  st.manager = fillSelect('#f-manager', mgrs, st.manager, 'Todos');
+  const ags = uniq(D.agents.filter(a=>(!st.region||a.region===st.region)&&(!st.manager||a.manager===st.manager)).map(a=>a.agent));
+  st.agent = fillSelect('#f-agent', ags, st.agent, 'Todos');
+  st.action = fillSelect('#f-action', ['Contato urgente','Empurrar fechamento','Manter cadência','Avançar para Engaging','Verificar no CRM'], st.action, 'Todas');
+  $('#f-action').disabled = $('#f-q').disabled = st.tab === 'time';
+  $('#f-q').value = st.q;
+  store.set('who', { region: st.region, manager: st.manager, agent: st.agent });
+}
+const scope = () => ALL.filter(d => (!st.region||d.region===st.region) && (!st.manager||d.manager===st.manager) && (!st.agent||d.agent===st.agent));
+function view() {
+  const q = st.q.trim().toLowerCase();
+  return scope().filter(d =>
+    (st.tab === 'zumbis') === (d.state === 'zumbi') &&
+    (!st.action || d.action === st.action) &&
+    (!q || d.id.toLowerCase().includes(q) || (d.account||'').toLowerCase().includes(q) || d.product.toLowerCase().includes(q)));
+}
+
+// ---------- KPIs
+function kpis() {
+  const s = scope(), act = s.filter(d=>d.state!=='zumbi'), z = s.filter(d=>d.state==='zumbi');
+  const n = a => a.length.toLocaleString('pt-BR'), sum = (a,f) => a.reduce((x,d)=>x+(f(d)||0),0);
+  const by = a => act.filter(d=>d.action===a);
+  const push = by('Empurrar fechamento'), urg = by('Contato urgente'), eng = act.filter(d=>d.stage==='Engaging'), pros = by('Avançar para Engaging');
+  $('#kpis').innerHTML = [
+    ['Contato urgente', n(urg), `engajados há ≤ ${M.early_window} dias`, 'Contato urgente', 'ativos'],
+    ['Empurrar fechamento', n(push), `${usdk(sum(push,d=>d.price))} em tabela · reta final do ciclo`, 'Empurrar fechamento', 'ativos'],
+    ['Engaging dentro do ciclo', n(eng), `${usdk(sum(eng,d=>d.ev))} esperado · + ${n(pros)} em prospecção`, '', 'ativos'],
+    ['Zumbis: verificar no CRM', n(z), `${usdk(sum(z,d=>d.price))} em tabela, além de ${M.max_cycle} dias`, '', 'zumbis'],
+  ].map(([t,v,sub,a,tab]) => `<button class="kpi" aria-pressed="${st.tab===tab&&st.action===a}" data-action="${esc(a)}" data-tab="${tab}"><span>${t}</span><b>${v}</b><small>${sub}</small></button>`).join('');
+  $('#zcount').textContent = `(${z.length})`;
+}
+
+// ---------- tables
+const actChip = a => `<span class="chip ${{'Empurrar fechamento':'hot','Contato urgente':'urg','Verificar no CRM':'z','Avançar para Engaging':'pros'}[a]||''}">${esc(a)}</span>`;
+const ageTxt = d => d.age == null ? '<span class="sub">prospecção</span>' : `${d.age} d`;
+const bar = d => `<div class="bar" title="Valor ${d.pts.valor} · Momento ${d.pts.momento}"><i style="width:${d.pts.valor}%;background:var(--v)"></i><i style="width:${d.pts.momento}%;background:var(--u)"></i></div>`;
+
+function renderDeals(rows) {
+  if (st.tab === 'zumbis') rows = rows.slice().sort((a,b)=>b.price-a.price || b.age-a.age);
+  $('#tbl thead').innerHTML = `<tr><th>Score</th><th>Ação</th><th>Deal</th><th class="hide-sm">Vendedor</th><th class="num">Dias</th><th class="num">Tabela</th><th class="hide-sm"><span class="legend"><span><i style="background:var(--v)"></i>Valor</span><span><i style="background:var(--u)"></i>Momento</span></span></th></tr>`;
+  if (!rows.length) { $('#tbl tbody').innerHTML = `<tr><td colspan="7" class="empty">Nenhum deal com esses filtros.</td></tr>`; $('#more').textContent=''; return; }
+  $('#tbl tbody').innerHTML = rows.slice(0, limit).map(d => `<tr tabindex="0" data-id="${esc(d.id)}" class="${d.id===selected?'sel':''}">
+    <td><span class="score ${d.state==='zumbi'?'z':d.score>=70?'hi':''}">${d.score}</span></td>
+    <td>${actChip(d.action)}</td>
+    <td class="deal"><b>${esc(d.product)}</b> · ${d.account?esc(d.account):'<span class="sub">sem conta</span>'}<div>${esc(d.id)}</div></td>
+    <td class="hide-sm">${esc(d.agent)}</td>
+    <td class="num">${ageTxt(d)}</td>
+    <td class="num">${usd(d.price)}</td>
+    <td class="hide-sm">${bar(d)}</td></tr>`).join('');
+  $('#more').innerHTML = rows.length > limit
+    ? `Mostrando ${limit} de ${rows.length.toLocaleString('pt-BR')} · <button class="btn" id="more-btn">Mostrar mais 100</button>`
+    : `${rows.length.toLocaleString('pt-BR')} deals`;
+}
+
+function renderTeam() {
+  const by = {};
+  for (const a of D.agents) if ((!st.region||a.region===st.region)&&(!st.manager||a.manager===st.manager)&&(!st.agent||a.agent===st.agent))
+    by[a.agent] = { ...a, open:0, z:0, hot:0, urg:0, ev:0, zv:0, noacc:0, pros:0 };
+  for (const d of scope()) { const r = by[d.agent]; if (!r) continue;
+    r.open++; if (d.state==='zumbi') { r.z++; r.zv+=d.price; } else r.ev+=d.ev||0;
+    if (d.stage==='Prospecting') r.pros++;
+    if (d.action==='Empurrar fechamento') r.hot++; if (d.action==='Contato urgente') r.urg++; if (!d.account) r.noacc++; }
+  const rows = Object.values(by).sort((a,b)=>b.ev-a.ev || b.open-a.open);
+  teamRows = rows;
+  $('#tbl thead').innerHTML = `<tr><th>Vendedor</th><th class="hide-sm">Manager · Região</th><th class="num">Abertos</th><th class="num">Urgente</th><th class="num">Empurrar</th><th class="num hide-sm">Prospecção</th><th class="num">% zumbi</th><th class="num">Esperado Engaging</th><th class="num hide-sm">Sem conta</th></tr>`;
+  $('#tbl tbody').innerHTML = rows.map(r => `<tr tabindex="0" data-agent="${esc(r.agent)}">
+    <td><b>${esc(r.agent)}</b>${r.open?'':' <span class="sub">sem deals abertos</span>'}</td>
+    <td class="hide-sm sub">${esc(r.manager)} · ${esc(r.region)}</td>
+    <td class="num">${r.open}</td><td class="num">${r.urg||''}</td><td class="num">${r.hot||''}</td><td class="num hide-sm">${r.pros||''}</td>
+    <td class="num">${r.open?`<span class="chip ${r.z/r.open>.75?'z':''}">${pct(r.z/r.open)}</span>`:''}</td>
+    <td class="num">${usd(r.ev)}</td><td class="num hide-sm">${r.noacc||''}</td></tr>`).join('');
+  $('#more').innerHTML = `Clique num vendedor para ver o pipeline dele. % zumbi alto = pipeline inflado: limpar antes de prever receita.`;
+}
+
+function render() {
+  syncFilters(); kpis();
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.tab === st.tab));
+  st.tab === 'time' ? renderTeam() : renderDeals(view());
+}
+
+// ---------- drawer
+const ICON = {'+':['p','+'],'-':['m','−'],'!':['a','!'],'i':['i','i']};
+function openDeal(id) {
+  const d = ALL.find(x => x.id === id); if (!d) return;
+  selected = id; if (!$('#drawer').classList.contains('open')) lastFocus = document.activeElement;
+  const comp = (lbl, v, max, color) => `<div><span>${lbl}</span><span>${v} / ${max}</span></div><div class="track"><i style="width:${v/max*100}%;background:${color}"></i></div>`;
+  const main = d.reasons.filter(r=>r[0]!=='h'), hist = d.reasons.filter(r=>r[0]==='h');
+  $('#d-body').innerHTML = `
+    <div class="sub">${esc(d.id)} · ${esc(d.stage)}${d.engage?` desde ${new Date(d.engage+'T12:00:00').toLocaleDateString('pt-BR')}`:''}</div>
+    <h2 id="d-title">${esc(d.product)} · ${d.account?esc(d.account):'sem conta'}</h2>
+    <div class="sub">${esc(d.agent)} · ${esc(d.manager)} · ${esc(d.region)}</div>
+    <div style="display:flex;align-items:end;gap:14px;margin-top:14px"><div class="big">${d.score}</div><div>${actChip(d.action)}<div class="sub" style="margin-top:4px">${d.state==='zumbi'?'Fora de qualquer ciclo histórico':d.p==null?'Chance desconhecida (prospecção)':`Valor esperado ${usd(d.ev)}`}</div></div></div>
+    <div class="comp">${comp('Valor', d.pts.valor, W.valor, 'var(--v)')}${comp('Momento', d.pts.momento, W.momento, 'var(--u)')}</div>
+    <h3 style="font-size:13px;margin:16px 0 0">Por que este score</h3>
+    <ul class="why">${main.map(([k,t]) => `<li><span class="ic ${ICON[k][0]}">${ICON[k][1]}</span><span>${esc(t)}</span></li>`).join('')}</ul>
+    ${hist.length?`<h3 style="font-size:13px;margin:16px 0 4px">Histórico (contexto, não pontua)</h3>
+    <ul class="why">${hist.map(([,t]) => `<li><span class="ic i">h</span><span>${esc(t)}</span></li>`).join('')}</ul>
+    <div class="note">No backtest, taxa histórica de vendedor e conta não previu ganho (AUC ≈ 0,50 em 3 cortes). Use como contexto da conversa, não como sinal de prioridade.</div>`:''}`;
+  $('#drawer').classList.add('open'); $('#drawer').setAttribute('aria-hidden','false');
+  document.querySelectorAll('tbody tr').forEach(tr => tr.classList.toggle('sel', tr.dataset.id === id));
+  $('#d-close').focus();
+}
+function closeDrawer() { if (!$('#drawer').classList.contains('open')) return;
+  $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden','true'); selected = null;
+  if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+  document.querySelectorAll('tbody tr.sel').forEach(tr=>tr.classList.remove('sel')); }
+
+// ---------- events
+const set = (k, v) => { st[k] = v; limit = 100; render(); };
+$('#f-region').onchange = e => { st.manager = ''; st.agent = ''; set('region', e.target.value); };
+$('#f-manager').onchange = e => { st.agent = ''; set('manager', e.target.value); };
+$('#f-agent').onchange = e => set('agent', e.target.value);
+$('#f-action').onchange = e => { const v = e.target.value; if (v) st.tab = v === 'Verificar no CRM' ? 'zumbis' : 'ativos'; set('action', v); };
+let t; $('#f-q').oninput = e => { clearTimeout(t); t = setTimeout(() => set('q', e.target.value), 150); };
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => { st.action = ''; set('tab', b.dataset.tab); });
+$('#kpis').onclick = e => { const k = e.target.closest('.kpi'); if (!k) return; st.tab = k.dataset.tab; set('action', k.dataset.action); };
+$('#more').onclick = e => { if (e.target.id === 'more-btn') { limit += 100; render(); } };
+const rowAct = tr => tr.dataset.id ? openDeal(tr.dataset.id) : tr.dataset.agent && (st.tab = 'ativos', set('agent', tr.dataset.agent));
+$('#tbl tbody').onclick = e => { const tr = e.target.closest('tr'); if (tr) rowAct(tr); };
+$('#tbl tbody').onkeydown = e => { if (e.key === 'Enter') { const tr = e.target.closest('tr'); if (tr) rowAct(tr); } };
+$('#d-close').onclick = closeDrawer;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+$('#theme').onclick = () => { const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark ? 'light' : 'dark'; store.set('theme', r.dataset.theme); };
+if (store.get('theme')) document.documentElement.dataset.theme = store.get('theme');
+if (!store.get('seen-howto')) { $('#howto').open = true; store.set('seen-howto', true); }
+$('#export').onclick = () => {
+  // ; e vírgula decimal: abre direto em colunas no Excel pt-BR. Prefixo ' evita injeção de fórmula.
+  const q = v => { let x = String(v ?? ''); if (/^[=+\-@]/.test(x)) x = "'" + x; return `"${x.replace(/"/g,'""')}"`; };
+  let head, body;
+  if (st.tab === 'time') {
+    head = ['vendedor','manager','regiao','abertos','contato_urgente','empurrar_fechamento','prospeccao','zumbis','esperado_engaging','sem_conta'];
+    body = teamRows.map(r => [r.agent,r.manager,r.region,r.open,r.urg,r.hot,r.pros,r.z,r.ev,r.noacc]);
+  } else {
+    head = ['opportunity_id','score','acao','valor_esperado','vendedor','manager','regiao','produto','conta','estagio','dias_aberto','motivos'];
+    body = view().map(d => [d.id,d.score,d.action,d.ev,d.agent,d.manager,d.region,d.product,d.account,d.stage,d.age,d.reasons.filter(r=>r[0]!=='h').map(r=>r[1]).join(' | ')]);
+  }
+  const csv = [head.join(';'), ...body.map(r => r.map(q).join(';'))].join('\r\n');
+  const url = URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));
+  const a = Object.assign(document.createElement('a'), { href: url, download: `lead-scorer-${st.tab}-${(st.agent||st.manager||st.region||'todos').replace(/\s+/g,'-')}.csv` });
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+render();
+})();
+</script>
+</body>
+</html>
