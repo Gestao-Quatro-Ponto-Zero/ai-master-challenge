@@ -62,7 +62,7 @@ Setup: [`solution/README.md`](solution/README.md) · Lógica e por quê: [`docs/
 | Deals sem conta no CRM | 1.425 de 2.089 (68%) |
 | Região Centro-Oeste | 100% dos Prospecting, 403 zumbis, **5** Engaging vivos |
 
-![Visão do time](process-log/screenshots/04-visao-do-time.png)
+![Visão do time](process-log/screenshots/05-visao-do-time.png)
 
 ### Recomendações
 
