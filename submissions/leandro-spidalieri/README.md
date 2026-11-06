@@ -80,4 +80,4 @@ Na automação, Leandro escolheu avaliar sugestões em modo sombra e só então 
 - [x] Narrativa do uso de IA, iterações e decisões. [Process log](process-log/README.md).
 - [x] Saídas da verificação e capturas do app local. [Checks](process-log/checks.txt) · [Capturas](process-log/screenshots).
 
-_Rascunho para revisão do candidato. Envio pendente._
+_Submissão enviada em 6 de novembro de 2026._
