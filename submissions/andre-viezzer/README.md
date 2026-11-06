@@ -3,7 +3,7 @@
 ## Sobre mim
 
 - **Nome:** André Viezzer
-- **LinkedIn:** _preencher_
+- **LinkedIn:** [linkedin.com/in/andre-chemim-viezzer](https://www.linkedin.com/in/andre-chemim-viezzer)
 - **Challenge escolhido:** build-003-lead-scorer
 
 ---
