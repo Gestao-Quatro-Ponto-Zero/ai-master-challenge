@@ -1,0 +1,47 @@
+max cycle won 138 lost 138
+survived 0 6711 0.632
+survived 7 5599 0.652
+survived 14 3996 0.686
+survived 21 3616 0.685
+survived 30 3556 0.682
+survived 45 3377 0.684
+survived 60 3016 0.687
+survived 90 1416 0.713
+survived 120 217 0.751
+survived 138 2 0.5
+engaging age deciles [107.0, 140.0, 153.0, 159.0, 165.0, 204.0, 244.0, 282.0, 319.0] >138: 1291 of 1589
+[('2016-11', 13), ('2016-12', 40), ('2017-01', 65), ('2017-02', 95), ('2017-03', 137), ('2017-04', 121), ('2017-05', 134), ('2017-06', 111), ('2017-07', 402), ('2017-08', 254), ('2017-09', 102), ('2017-10', 58), ('2017-11', 39), ('2017-12', 18)]
+agentxprod lo [(('Daniell Hammack', 'MG Advanced'), 0.36, 22), (('Corliss Cosme', 'MG Advanced'), 0.43, 21), (('Anna Snelling', 'MG Advanced'), 0.47, 45), (('Marty Freudenburg', 'MG Advanced'), 0.49, 41)] hi [(('Cecily Lampkin', 'GTX Plus Basic'), 0.8, 20), (('Maureen Marcano', 'GTX Plus Pro'), 0.81, 32), (('Rosie Papadopoulos', 'GTXPro'), 0.81, 31), (('Jonathan Berthelot', 'MG Special'), 0.81, 26)]
+acct-prod pairs 522
+Anna Snelling    Dustin Brink Central open 112 closed 336 wr 0.619 avg won 1322
+Boris Faz        Rocco Neuber East open 57 closed 153 wr 0.66 avg won 2590
+Cassey Cress     Rocco Neuber East open 85 closed 261 wr 0.625 avg won 2764
+Cecily Lampkin   Dustin Brink Central open 43 closed 160 wr 0.669 avg won 2148
+Corliss Cosme    Cara Losch East open 81 closed 229 wr 0.655 avg won 2807
+Daniell Hammack  Rocco Neuber East open 72 closed 187 wr 0.61 avg won 3195
+Darcel Schlecht  Melvin Marxe Central open 194 closed 553 wr 0.631 avg won 3304
+Donn Cantrell    Rocco Neuber East open 0 closed 275 wr 0.575 avg won 2822
+Elease Gluck     Celia Rouche West open 51 closed 126 wr 0.635 avg won 3615
+Garret Kinder    Cara Losch East open 0 closed 123 wr 0.61 avg won 2637
+Gladys Colclough Melvin Marxe Central open 85 closed 232 wr 0.582 avg won 2561
+Hayden Neloms    Celia Rouche West open 50 closed 152 wr 0.704 avg won 2543
+James Ascencio   Summer Sewal West open 61 closed 206 wr 0.655 avg won 3063
+Jonathan Berthel Melvin Marxe Central open 81 closed 264 wr 0.648 avg won 1666
+Kami Bicknell    Summer Sewal West open 90 closed 272 wr 0.64 avg won 1819
+Kary Hendrixson  Summer Sewal West open 103 closed 335 wr 0.624 avg won 2174
+Lajuana Vencill  Dustin Brink Central open 80 closed 231 wr 0.55 avg won 1533
+Markita Hansen   Celia Rouche West open 79 closed 227 wr 0.573 avg won 2529
+Marty Freudenbur Melvin Marxe Central open 87 closed 194 wr 0.629 avg won 2387
+Maureen Marcano  Summer Sewal West open 72 closed 213 wr 0.7 avg won 2352
+Moses Frase      Dustin Brink Central open 65 closed 195 wr 0.662 avg won 1606
+Niesha Huffines  Melvin Marxe Central open 64 closed 175 wr 0.6 avg won 1685
+Reed Clapper     Rocco Neuber East open 0 closed 237 wr 0.654 avg won 2828
+Rosalina Dieter  Celia Rouche West open 50 closed 110 wr 0.655 avg won 3269
+Rosie Papadopoul Cara Losch East open 39 closed 121 wr 0.645 avg won 2951
+Versie Hillebran Dustin Brink Central open 97 closed 264 wr 0.667 avg won 1066
+Vicki Laflamme   Celia Rouche West open 104 closed 347 wr 0.637 avg won 2165
+Violet Mclelland Cara Losch East open 68 closed 193 wr 0.632 avg won 1012
+Wilburn Farren   Cara Losch East open 31 closed 79 wr 0.696 avg won 2866
+Zane Levy        Summer Sewal West open 88 closed 261 wr 0.617 avg won 2671
+subsidiary Counter({False: 70, True: 15})
+office [('United States', 71), ('Kenya', 1), ('Philipines', 1), ('Japan', 1), ('Italy', 1)]

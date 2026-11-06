@@ -1,0 +1,5 @@
+Central Counter({'prospecting': 500, 'zumbi': 403, 'maduro': 5}) last engage 2017-08-15
+East Counter({'zumbi': 326, 'maduro': 103, 'janela_risco': 4}) last engage 2017-12-21
+West Counter({'zumbi': 562, 'maduro': 183, 'janela_risco': 3}) last engage 2017-12-22
+Central engages by month (all stages): [('2017-08', 314), ('2017-09', 273), ('2017-10', 285), ('2017-11', 80), ('2017-12', 36)]
+West: [('2017-08', 257), ('2017-09', 297), ('2017-10', 265), ('2017-11', 109), ('2017-12', 54)]

@@ -1,0 +1,17 @@
+conta ja comprou este produto                           AUC 0.497
+carga do vendedor (menos deals = melhor)                AUC 0.508
+porte da conta (receita)                                AUC 0.493
+setor (taxa treino)                                     AUC 0.497
+regiao (taxa treino)                                    AUC 0.508
+preco do produto                                        AUC 0.491
+duracao do ciclo (so conhecida no fechamento)           AUC 0.570
+mes de fechamento e fim de trimestre                    AUC 0.621
+
+Sobrevivencia treino vs teste: P(ganho | aberto >= t dias)
+  t=  0  treino 66.6% (n=2679)     teste 60.8% (n=4032)
+  t=  7  treino 68.8% (n=2274)     teste 62.7% (n=3325)
+  t= 14  treino 71.8% (n=1703)     teste 66.3% (n=2293)
+  t= 30  treino 71.7% (n=1512)     teste 65.7% (n=2044)
+  t= 60  treino 72.2% (n=1288)     teste 66.1% (n=1728)
+  t= 90  treino 73.8% (n=646)      teste 69.1% (n=770)
+  t=120  treino 79.5% (n=117)      teste 70.0% (n=100)
