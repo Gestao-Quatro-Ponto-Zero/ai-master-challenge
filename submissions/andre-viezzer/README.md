@@ -1,8 +1,8 @@
-# Submissão: Shogun Stronda, Challenge 003 (Lead Scorer)
+# Submissão: André Viezzer, Challenge 003 (Lead Scorer)
 
 ## Sobre mim
 
-- **Nome:** Shogun Stronda
+- **Nome:** André Viezzer
 - **LinkedIn:** _preencher_
 - **Challenge escolhido:** build-003-lead-scorer
 
