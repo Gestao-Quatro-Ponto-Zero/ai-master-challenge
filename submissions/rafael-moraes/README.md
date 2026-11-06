@@ -12,7 +12,7 @@
 
 O arquivo de suporte não sustenta nenhum gargalo, nenhum fator de satisfação e nenhuma medida de tempo: não tem horário de abertura, metade das resoluções acontece antes da primeira resposta e as distribuições são uniformes. Os "gargalos" que aparecem num gráfico rápido são ruído, e o primeiro passo recomendado é medir. Construí um protótipo de triagem treinado em 38 mil tickets reais de TI interna e testado em 9.568 que nunca viu: nesses dados, encaminha sozinho 61% do volume com 97% de acerto e deixa com pessoas o resto. Ao rodar o mesmo classificador nos textos do arquivo de clientes, só ~12% iria sozinho: um modelo de TI não serve para essa operação. O que se transfere é o método — retreinar com o histórico da empresa, medir, fixar um limiar que protege a qualidade e deixar o volume automatizado crescer com os dados. O retorno (~R$ 22 mil/ano brutos, menos tempo perdido no time errado) é uma hipótese a confirmar depois do retreino.
 
-**Protótipo:** `solution/prototype/index.html` (abre no navegador, PT/EN) · link público: _(preencher)_
+**Protótipo:** `solution/prototype/index.html` (abre no navegador, PT/EN) · **link público:** https://claude.ai/artifact/VgUjWS9GwcdHFrUgjVKRjd
 
 ### Como o ticket anda
 
@@ -218,4 +218,4 @@ _Este texto e o motivo da decisão 4 foram redigidos com ajuda da IA a partir da
 
 ---
 
-_Submissão enviada em: (preencher)_
+_Submissão enviada em: 06/11/2026_

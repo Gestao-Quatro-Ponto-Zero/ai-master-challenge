@@ -19,3 +19,5 @@ data,inicio,fim,fase,atividade,ferramenta,decisao_humana,entrega
 2026-11-06,17:18,17:21,5-Validacao,Ajustes da fase 02 sem mexer nas regras: secao do Diretor; limites declarados com exemplos; piso de falsos positivos; curva de aprendizado; renomear tempo perdido,Claude (chat execucao),Decisao 25,README.md; solution/; process-log/
 2026-11-06,17:29,17:34,5-Validacao,Auditoria fase 03 (consolidacao; notas 6-8; pronta com ressalvas) + correcao das 3 frases e numeros antigos,Claude (chat auditor + execucao),Rafael exigiu consolidacao,process-log/auditoria/auditoria-fase03.pdf
 2026-11-06,17:39,17:48,6-Documentacao,Textos do Rafael (decisao 4 e o que eu adicionei) + linha de transparencia + Teste em 1 minuto + ROI em tabela,Claude (chat execucao),Rafael aprovou os textos,README.md
+2026-11-06,17:49,17:52,7-Submissao,Diagrama do fluxo; branch submission/rafael-moraes com 5 commits por etapa; push para o fork; descricao do PR,Claude (chat execucao),Rafael aprovou itens 2 3 e 5,submissions/rafael-moraes/
+2026-11-06,17:52,17:54,7-Submissao,Link publico do prototipo e data no README; push da atualizacao,Claude (chat execucao),Rafael tornou o prototipo publico,README.md
