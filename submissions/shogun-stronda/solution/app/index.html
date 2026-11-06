@@ -41,7 +41,9 @@ button,select,input{font:inherit;color:inherit}
 .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(160%) blur(10px);-webkit-backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid var(--line)}
 .top-in{max-width:1320px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.02em;font-size:15px;white-space:nowrap}
-.brand i{width:14px;height:14px;border-radius:3px;background:var(--accent);display:block}
+.brand .logo{height:30px;width:auto;display:block;border-radius:6px;box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 8%,transparent);transition:transform var(--t2) var(--ease)}
+.brand .sep{width:1px;height:18px;background:var(--line)}
+.brand:hover .logo{transform:scale(1.04)}
 .who{display:flex;gap:8px;flex:1;min-width:0}
 .field{display:flex;flex-direction:column;gap:2px;min-width:0}
 .field > span{font-size:11px;color:var(--muted)}
@@ -239,7 +241,7 @@ button.metric:hover .lbl{color:var(--ink)}
 .d-top .btn.icon{transition:transform var(--t2) var(--ease),background var(--t1)}
 
 @media (prefers-reduced-motion:no-preference){
-  .brand i{animation:pop var(--t3) var(--ease-in) both}
+  .brand .logo{animation:pop var(--t3) var(--ease-in) backwards}
   @keyframes pop{from{transform:scale(.4) rotate(-45deg);opacity:0}to{transform:none;opacity:1}}
   .swap{animation:swap var(--t2) var(--ease-in) both}
   @keyframes swap{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -351,7 +353,7 @@ tbody tr:hover .pct{transform:scale(1.08)}
 <div id="top-sentinel" aria-hidden="true" style="position:absolute;top:0;height:1px;width:1px"></div>
 <header class="top">
   <div class="top-in">
-    <div class="brand"><i aria-hidden="true"></i>Lead Scorer</div>
+    <div class="brand"><img class="logo" src="g4-logo.png" alt="G4" width="67" height="30"><span class="sep" aria-hidden="true"></span>Lead Scorer</div>
     <div class="who" role="group" aria-label="Filtrar por time">
       <div class="field"><span id="l-region">Região</span><div class="cs" id="f-region" data-labelledby="l-region"></div></div>
       <div class="field"><span id="l-manager">Manager</span><div class="cs" id="f-manager" data-labelledby="l-manager"></div></div>
