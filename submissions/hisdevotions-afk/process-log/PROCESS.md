@@ -455,4 +455,4 @@ Verificação: o backtest roda em 17 segundos, não usa resultado posterior ao c
 
 [EU] Expus isso em três lugares: o filtro “Com conflito” no Pipeline, um aviso na faixa de saúde do Meu Dia e a página de Validação, que agora mostra o backtest e a higiene juntos. Aproveitei para corrigir duas leituras erradas: “Central: nenhum deal em negociação” virou “nenhum deal na janela de fechamento” (a Central tem 408 deals em Engaging, todos parados), e a ordenação padrão de Decidir e Prospectar passou a ser por valor, porque a receita esperada dessas filas é sempre zero.
 
-Verificação: 21 testes do motor (três novos: conflito, AUC e backtest sem vazamento) e 8 do bot. `tsc --noEmit` e `npm run build` limpos. As telas de Validação e do filtro de conflito foram conferidas no navegador, em 1440 px e em 390 px.
+Verificação: 22 testes do motor (quatro novos: conflito, conflito sem encerramento automático, AUC e backtest sem vazamento) e 8 do bot. `tsc --noEmit` e `npm run build` limpos. As telas de Validação e do filtro de conflito foram conferidas no navegador, em 1440 px e em 390 px.

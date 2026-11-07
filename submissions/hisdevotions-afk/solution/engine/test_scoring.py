@@ -174,6 +174,22 @@ def test_conflict_flags_other_seller_same_account_and_product():
     assert "já foi atendido por outro vendedor" in open_deal["action"]
 
 
+def test_conflict_never_suggests_automatic_close():
+    # Zumbi com conflito: o fechamento posterior não prova que é o mesmo pedido,
+    # então a sugestão não pode ser "encerrar" sozinha.
+    open_deal = _scored(age=150, account="Acme")
+    open_deal.update({"id": "OPP1", "agent": "Ana", "product": "X",
+                      "engage": REF - timedelta(days=150),
+                      "suggested_action": "encerrar",
+                      "action": "Encerre como perdido: 50 dias além do maior ciclo."})
+    won = {"id": "W1", "agent": "Bia", "account": "Acme", "product": "X", "stage": "Won",
+           "engage": REF - timedelta(days=180), "close": REF - timedelta(days=20), "close_value": 500}
+    s.add_conflict_context([open_deal], [won], REF)
+    assert open_deal["suggested_action"] == "confirmar"
+    assert open_deal["action"].startswith("Confirme com a conta antes de encerrar")
+    assert "Se for o mesmo pedido, encerre" in open_deal["action"]
+
+
 def test_auc_perfect_random_and_inverted():
     assert s._auc([(3, True), (2, True), (1, False), (0, False)]) == 1.0
     assert s._auc([(3, False), (2, False), (1, True), (0, True)]) == 0.0
