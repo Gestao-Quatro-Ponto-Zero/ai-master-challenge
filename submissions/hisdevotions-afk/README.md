@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Construí o Pipeline em Foco, um app de vendas em React com um motor de scoring em Python. Na segunda de manhã ele mostra a cada vendedor em que deals trabalhar, o que fazer em cada um e por quê, e mostra ao gestor em que time o pipeline está parado. Um bot manda a mesma fila por Slack ou email. Antes de pontuar qualquer coisa, testei cada característica do CRM contra o acaso: vendedor, conta, tamanho da conta, produto, setor, região e manager não mudam a chance de ganhar nesta base. O sinal que passou foi a idade do deal, e é ela que define o score. O achado que mais importa para a Head de RevOps: 65% do pipeline declarado (US$ 3,2 mi de US$ 5,0 mi) está em deals parados além do maior ciclo que a base já fechou.
+Construí o Pipeline em Foco, um app de vendas em React com um motor de scoring em Python. Na segunda de manhã ele mostra a cada vendedor em que deals trabalhar, o que fazer em cada um e por quê, e mostra ao gestor em que time o pipeline está parado. Um script formata a mesma fila em texto para cada vendedor; ele tem código de envio por Slack ou email, mas nesta entrega só foi usado para imprimir. Antes de pontuar qualquer coisa, testei cada característica do CRM contra o acaso: vendedor, conta, tamanho da conta, produto, setor, região e manager não mudam a chance de ganhar nesta base. O sinal que passou foi a idade do deal, e é ela que define o score. O achado que mais importa para a Head de RevOps: 65% do pipeline declarado (US$ 3,2 mi de US$ 5,0 mi) está em deals parados além do maior ciclo que a base já fechou.
 
 App publicado: https://hisdevotions-afk.github.io/ai-master-challenge/
 
@@ -119,7 +119,7 @@ Duas correções nos dados: `GTXPro` virou `GTX Pro` (1.480 deals perdiam o pre�
 - Os dados são um retrato de 31/12/2017. Em produção o motor rodaria toda noite e as decisões voltariam para o CRM. Hoje ficam no `localStorage`, com exportar e importar em JSON.
 - Há viés de sobrevivência no limite de 138 dias. A base termina em 31/12/2017, e um deal aberto há 150 dias pode ter um desfecho que ainda não foi registrado. Por isso a fila Decidir pede requalificar ou encerrar, e o sistema nunca encerra sozinho.
 - O pico da curva depende de um ponto só: a idade com o maior valor entre as que têm pelo menos 30 deals, e pode mudar com a amostra. Suavizar a curva antes de procurar o pico resolveria.
-- O `sales_teams.csv` não tem email nem Slack de ninguém, então `targets.json` é um diretório mantido à mão (em produção viria do SSO).
+- O envio do script de notificação não foi testado com Slack ou email reais: os testes cobrem a formatação e a escolha de destino, e nenhuma mensagem foi enviada. O `sales_teams.csv` também não tem email nem Slack de ninguém, então `targets.json` é um diretório mantido à mão (em produção viria do SSO).
 - Para escalar, trocar `load()` por uma query no CRM é a única mudança necessária. Com uma base 100 vezes maior, a curva precisa de um algoritmo O(n log n), anotado no código.
 
 ---
