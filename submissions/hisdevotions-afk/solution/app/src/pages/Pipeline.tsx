@@ -8,11 +8,11 @@ import type { Bucket, OpenDeal } from "../types";
 type SortKey = "score" | "age" | "win_prob" | "ev_soon" | "price" | "agent";
 
 const COLUMNS: [SortKey, string][] = [
-  ["score", "Chance (30d)"],
+  ["score", "Score (ganhar em 30d)"],
   ["agent", "Vendedor"],
   ["age", "Idade"],
-  ["win_prob", "Chance de ganhar"],
-  ["ev_soon", "Receita em 30 dias"],
+  ["win_prob", "Ganhar, sem prazo"],
+  ["ev_soon", "Receita esperada (30d)"],
   ["price", "Valor"],
 ];
 
@@ -27,7 +27,7 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
   const encerrados = query.get("encerrados") === "1";
   const closed = recentlyClosed(model, filters, decisions);
   const [search, setSearch] = useState(() => query.get("busca") ?? "");
-  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "score", dir: -1 });
+  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "ev_soon", dir: -1 }); // mesma ordem das filas da Overview
 
   const href = (changes: Record<string, string | null>) => {
     const q = new URLSearchParams(query);
@@ -380,7 +380,7 @@ function DealTable(props: {
                 <td className="cell-pin">
                   <a href={link("deal", d.id)} className="cell-deal"><DealName deal={d} /></a>
                 </td>
-                <td><Score deal={d} /></td>
+                <td><Score deal={d} showTier /></td>
                 <td>{d.agent}</td>
                 <td className="cell-ruler"><AgeRuler age={d.age} meta={model.meta} /></td>
                 <td className="num">{pct(d.win_prob)}</td>

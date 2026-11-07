@@ -1,4 +1,4 @@
-import { AgeRuler, BUCKETS, BucketTag, CurveChart, DealName, DecisionButtons, Empty, ReasonList, Score } from "../components";
+import { AgeRuler, BUCKETS, BucketTag, CurveChart, DealName, DecisionButtons, Empty, ReasonList, Score, TIER_LABEL } from "../components";
 import { isOpen, useApp } from "../data";
 import { money, pct, shortDate } from "../format";
 import { link } from "../router";
@@ -11,12 +11,13 @@ export function DealPage({ id }: { id: string }) {
   return isOpen(deal) ? <OpenDealView deal={deal} /> : <ClosedDealView deal={deal} />;
 }
 
-function scoreSentence(deal: OpenDeal, horizonDays: number) {
+function scoreSentence(deal: OpenDeal, horizonDays: number, peak: number) {
   if (deal.score == null)
     return deal.bucket === "decidir"
       ? "Fora do modelo: sem histórico comparável para estimar uma chance de curto prazo."
       : "Fora do modelo: ainda não há histórico de conversão para prospecção.";
-  return `${deal.score}% de chance de fechar nos próximos ${horizonDays} dias, pela idade do deal.`;
+  const tier = deal.tier ? ` Faixa ${TIER_LABEL[deal.tier].toLowerCase()}: o melhor deal possível nesta base tem ${peak}%.` : "";
+  return `${deal.score}% de chance de ganhar nos próximos ${horizonDays} dias, pela idade do deal.${tier}`;
 }
 
 function OpenDealView({ deal }: { deal: OpenDeal }) {
@@ -38,7 +39,7 @@ function OpenDealView({ deal }: { deal: OpenDeal }) {
         </div>
         <div className="deal-score">
           <Score deal={deal} size="lg" />
-          <p>{scoreSentence(deal, meta.horizon_days)}</p>
+          <p>{scoreSentence(deal, meta.horizon_days, meta.peak_score)}</p>
         </div>
       </header>
 
@@ -49,8 +50,8 @@ function OpenDealView({ deal }: { deal: OpenDeal }) {
       </section>
 
       <dl className="facts">
-        <div><dt>Chance de ganhar</dt><dd>{deal.win_prob == null ? "sem histórico" : pct(deal.win_prob)}</dd>{deal.bucket === "prospectar" && <p>média de quem engajou</p>}</div>
-        <div><dt>Chance de fechar em 30 dias</dt><dd>{deal.close_soon == null ? "sem histórico" : pct(deal.close_soon)}</dd></div>
+        <div><dt>Score: ganhar em 30 dias</dt><dd>{deal.score == null ? "sem score" : `${deal.score}%`}</dd></div>
+        <div><dt>Ganhar, sem prazo</dt><dd>{deal.win_prob == null ? "sem histórico" : pct(deal.win_prob)}</dd>{deal.bucket === "prospectar" && <p>média de quem engajou</p>}</div>
         <div><dt>Receita esperada em 30 dias</dt><dd>{money(deal.ev_soon)}</dd></div>
         <div><dt>Valor de lista</dt><dd>{money(deal.price)}</dd></div>
         <div><dt>Em negociação desde</dt><dd>{deal.engage ? shortDate(deal.engage) : "ainda não engajado"}</dd></div>
@@ -69,7 +70,7 @@ function OpenDealView({ deal }: { deal: OpenDeal }) {
 
       <section className="context">
         <h2>Contexto que não entra no score</h2>
-        <p className="queue-note">Vendedor, conta, produto e setor não mudam a chance de ganhar nesta base — não é sinal para levar em conta.</p>
+        <p className="queue-note">Vendedor, conta, produto e setor não mudam a chance de ganhar nesta base, por isso não entram no score. O histórico da conta ainda muda a conversa, e por isso aparece na ação.</p>
         <ul>
           {agent && agent.win_rate != null && (
             <li>

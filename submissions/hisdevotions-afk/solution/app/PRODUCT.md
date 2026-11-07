@@ -16,7 +16,7 @@ Pipeline em Foco é um app de vendas que traduz um motor de scoring (Python, sem
 
 ## Positioning
 
-Cada score e cada fila vêm de testes de significância sobre os dados. Vendedor, conta, tamanho da conta, produto, setor, região e manager foram testados e descartados; só a idade do deal muda a chance de ganhar. Um concorrente não copia a interface sem copiar a disciplina estatística que está por trás dela, e isso inclui o Time, que se recusa a ranquear vendedores porque a diferença entre eles é ruído (p = 0,30).
+Cada score e cada fila vêm de testes de significância sobre os dados. Vendedor, conta, tamanho da conta, produto, setor, região e manager foram testados e descartados; só a idade do deal muda a chance de ganhar. Um concorrente não copia a interface sem copiar a disciplina estatística que está por trás dela, e isso inclui o Time, que mostra receita e volume como são, mas não compara vendedores por taxa de ganho, porque ali a diferença é ruído (p = 0,30).
 
 ## Operating Context
 
@@ -28,7 +28,8 @@ Cada score e cada fila vêm de testes de significância sobre os dados. Vendedor
 ## Capabilities and Constraints
 
 - Seis telas: Overview (a primeira aba, que antes se chamava Meu dia), Pipeline (lista e quadro kanban), Ficha do deal, Forecast, Contas e Time. A tela "Como o score funciona" saiu do produto; a auditoria estatística fica no README da submissão.
-- Motor de scoring: `score = P(ganhar em 30 dias | idade)`, em pontos percentuais, sem o preço do deal. Zumbis (parados além do maior ciclo já fechado) e prospecção ficam sem score. A ordem das filas usa a receita esperada (valor × chance), que é um número separado do score.
+- Motor de scoring: `score = P(ganhar em 30 dias | idade)`, em %, sem o preço do deal, e com o mesmo nome em todas as telas. Ao lado dele vai uma faixa (alta, média, baixa) contra o melhor score possível na base (31%). Zumbis (parados além do maior ciclo já fechado) e prospecção ficam sem score. A ordem das filas usa a receita esperada em 30 dias (valor × score), mostrada na mesma tabela.
+- A ação recomendada muda com a fase da curva (antes do pico, no pico, depois dele, reta final) e com o histórico da conta. Conta vazia nunca é motivo para sugerir encerrar.
 - A prospecção fica fora do forecast esperado por falta de histórico de conversão para "Engaging".
 - Stack: React 19, TypeScript e Vite, sem biblioteca de UI de terceiros; todo o visual é CSS próprio.
 - Não há atividade de CRM (emails, reuniões) nos dados. A idade é o melhor sinal disponível, mas não é o ideal.

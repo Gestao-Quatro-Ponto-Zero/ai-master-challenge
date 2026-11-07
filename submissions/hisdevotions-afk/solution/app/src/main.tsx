@@ -49,13 +49,14 @@ function csvEscape(v: string): string {
 }
 
 function exportPipelineCsv(deals: import("./types").OpenDeal[]) {
-  const header = ["Conta", "Produto", "Vendedor", "Fila", "Score", "Idade (dias)", "Chance de ganhar", "Receita esperada 30 dias", "Valor de lista"];
+  const header = ["Conta", "Produto", "Vendedor", "Fila", "Score: chance de ganhar em 30 dias (%)", "Faixa", "Idade (dias)", "Chance de ganhar, sem prazo", "Receita esperada 30 dias", "Valor de lista"];
   const rows = deals.map((d) => [
     d.account ?? "Sem conta vinculada",
     d.product,
     d.agent,
     BUCKETS[d.bucket].label,
-    String(d.score),
+    d.score == null ? "sem score" : String(d.score),
+    d.tier ?? "",
     d.age == null ? "não iniciado" : String(d.age),
     d.win_prob == null ? "sem histórico" : pct(d.win_prob),
     money(d.ev_soon),
@@ -154,7 +155,7 @@ function Topbar() {
   const { model, setFilters } = useApp();
   const scoped = useScopedOpen();
   const decidir = scoped.filter((d) => d.bucket === "decidir").length;
-  const decidirLabel = decidir > 99 ? "99+" : int(decidir);
+  const decidirLabel = int(decidir);
   const [q, setQ] = useState("");
   const [resultsOpen, setResultsOpen] = useState(false);
 

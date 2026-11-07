@@ -64,7 +64,7 @@ def build_digest(data: dict, agent: str | None) -> str:
         lines.append("")
     no_account = sum(1 for d in open_deals if not d["account"])
     if no_account:
-        lines.append(f"{no_account} deal(s) sem conta vinculada — cadastre a empresa no CRM.")
+        lines.append(f"{no_account} {'deal' if no_account == 1 else 'deals'} sem conta vinculada — cadastre a empresa no CRM.")
     return "\n".join(lines).strip()
 
 

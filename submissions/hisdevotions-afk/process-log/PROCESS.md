@@ -353,4 +353,35 @@ Como essas classes (`.page-head`, `.lede`) são compartilhadas por todas as tela
 
 [EU] Verifiquei sem depender de screenshot: rodei o `detect.mjs` do Impeccable nos escopos `layout` e `type` (voltou `[]` nos dois, sem achado), remedi a página num iframe da mesma origem em 1440px e 1920px para confirmar os números (o padding lateral de `main` foi de 40px para cerca de 50px em 1440px; o `.lede` foi de 659px para 736px de largura, com fonte e entrelinha maiores), rodei `tsc --noEmit` e `npm run build`, que passaram limpos.
 
+## 20. Review crítico com o olhar de quem avalia
+
+[EU] Pedi à IA que subisse o app local, limpo como um avaliador o encontraria, e fizesse um review crítico com o olhar de um diretor do G4: o que melhorar e por quê.
+
+[IA] Antes de opinar, reproduziu o caminho do avaliador: um clone limpo, `npm install`, build, os testes do motor e do bot, e `scoring.py` gerando de novo o `data.json` (que saiu idêntico ao versionado). Depois navegou por todas as telas, na visão da empresa e na de um vendedor. Os achados que importavam:
+
+- A ficha do deal mostrava três probabilidades para o mesmo deal (28, 40 e 71%), e o texto dizia "28% de chance de **fechar**" quando o 28 é a chance de **ganhar** em 30 dias. A mesma métrica tinha três nomes: "Score", "Chance (30d)" e "Probabilidade".
+- Um score de 0 a 31 lê como nota baixa, e a fila era ordenada por outro número (receita esperada), que não aparecia. O deal com score 13 vinha antes do de score 18, e parecia erro.
+- Os 259 deals da fila Fechar tinham a mesma frase de ação.
+- O topo da Overview mostrava US$ 116,8 mil e US$ 120,5 mil como "receita esperada em 30 dias": um somava só a fila Fechar, o outro todo o aberto.
+- Deal sem conta era sugerido para "encerrar como perdido". Como 68% dos abertos não têm conta, a regra misturava higiene de cadastro com previsão de resultado.
+- A tela Time não mostrava receita nem volume, que variam muito e são o que um gestor olha primeiro, e cinco vendedores apareciam zerados sem explicação.
+- Os achados "a Central não tem deal em negociação" e "todos os prospects são da Central" foram apresentados como fato, quando têm cara de artefato de uma base sintética.
+
+[EU] Decidi corrigir quase tudo. O que eu defini em cada ponto:
+
+- **Um número, um nome.** O score continua sendo a chance de ganhar em 30 dias, agora mostrado como "28%", com o mesmo nome em todas as telas, no CSV exportado e na curva da ficha, que passou a desenhar essa mesma chance. "Chance de fechar em 30 dias" saiu da tela: continua no motor, só para calcular a janela.
+- **Faixa contra o melhor possível.** Uma faixa alta, média ou baixa compara o score com o máximo da base (31%, aos 85 dias), e o anel enche contra esse máximo. Um 28% virou "alta", que é o que ele é.
+- **A ordem à vista.** A tabela "Feche esta semana" trocou a coluna de probabilidade sem prazo pela receita esperada em 30 dias, que é o que ordena, e diz isso numa linha. O Pipeline abre na mesma ordem.
+- **Ação por fase.** Antes do pico, "envie a proposta"; no pico, "peça a decisão"; depois, "feche antes de esfriar"; abaixo de metade do pico (115 dias), "peça um sim ou não", com os dias que faltam para o limite. O pico e a reta final saem da curva, não de constantes.
+- **Contexto da conta.** Conta não muda a chance de ganhar (p = 0,95), então não entra no score. Mas quantas vezes o cliente já comprou e quantos outros deals ele tem abertos mudam a conversa. Isso entra como motivo e como complemento da ação.
+- **Sem conta não encerra.** A sugestão da fila Decidir usa só quanto o deal passou do limite, contra a mediana dos parados. A divisão foi de 1.102 encerrar e 199 confirmar para 653 e 648. A falta de conta virou uma tarefa de cadastro dentro da própria ação.
+- **Time com receita.** Receita ganha, participação no time e ticket médio, ordenados por receita, que é um fato e não uma estimativa. A taxa de ganho continua sem comparação. Quem não tem nenhum deal sai da tabela e ganha uma nota pedindo para confirmar com o manager.
+- **Artefatos como hipótese.** O Forecast e o README avisam que o padrão da Central pode vir de como a base foi gerada.
+
+[IA] Também testou o que o review sugeria para ir além da idade: a duração do ciclo muda por produto? O mesmo teste contra o acaso deu p = 0,10, então não justifica uma curva por produto. O teste entrou na tabela de significância como "não usado".
+
+[EU] Também cortei o README pela metade (o guia do desafio pede 5 páginas, não 40), refiz as screenshots com Chrome headless num perfil limpo, movi as de versões antigas para `screenshots/old/` e tirei `.impeccable/design.json` do versionamento (o commit anterior dizia que tinha tirado, mas o arquivo continuava lá).
+
+Verificação: 18 testes do motor (cinco novos: sugestão sem conta, ações por fase, faixa, contexto da conta e o teste de ciclo), os testes do bot, `tsc --noEmit`, `npm run build`, e as telas conferidas no navegador. A 390 px, nenhuma tela passa da largura.
+
 Texto deste log revisado com a skill humanizer.

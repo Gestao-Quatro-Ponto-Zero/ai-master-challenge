@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { BUCKETS, DealName, DealRow, DecisionButtons, Empty, Score } from "../components";
+import { BUCKETS, DealName, DealRow, DecisionButtons, Empty, Score, TIER_LABEL } from "../components";
 import { nextBestAction, peakAge, PRIORITY, useApp, useScopedOpen } from "../data";
 import { int, longDate, money, moneyShort, pct, plural, sum } from "../format";
 import { link } from "../router";
@@ -99,9 +99,9 @@ export function MyDay() {
           Semana de {longDate(monday.toISOString().slice(0, 10))}.{" "}
           {fechar.length > 0 ? (
             <>
-              {plural(fechar.length, "deal está", "deals estão")} na janela de fechamento, com{" "}
-              <strong>{moneyShort(sum(fechar, (d) => d.ev_soon))}</strong> de receita esperada nos próximos 30 dias. Comece por
-              eles.{" "}
+              A receita esperada para os próximos 30 dias é <strong>{moneyShort(expected30)}</strong>, e{" "}
+              {pct(expected30 > 0 ? sum(fechar, (d) => d.ev_soon) / expected30 : 0)} dela vem dos{" "}
+              {plural(fechar.length, "deal", "deals")} na janela de fechamento. Comece por eles.{" "}
             </>
           ) : (
             <>Nenhum deal está na janela de fechamento. </>
@@ -178,7 +178,10 @@ export function MyDay() {
             <div className="razor-main">
               <a className="deal-row-title" href={link("deal", now.id)}><DealName deal={now} /></a>
               <p className="razor-action">{now.action}</p>
-              <p className="razor-meta">{moneyShort(now.ev_soon)} em 30 dias · score {now.score} · {now.age} dias em negociação</p>
+              <p className="razor-meta">
+                {moneyShort(now.ev_soon)} de receita esperada em 30 dias, a maior da fila · {now.score}% de chance de ganhar em 30 dias
+                {now.tier && ` (${TIER_LABEL[now.tier].toLowerCase()})`} · {now.age} dias em negociação
+              </p>
             </div>
           </div>
         </aside>
@@ -187,13 +190,19 @@ export function MyDay() {
       <section className="queue queue-fechar">
         <QueueHead bucket="fechar" title="Feche esta semana" count={fechar.length} />
         {fechar.length > 0 && (
+          <p className="queue-note">
+            Ordenado por receita esperada em 30 dias (valor de lista × chance de ganhar em 30 dias). O score é essa chance; a
+            faixa compara com o melhor score possível nesta base ({model.meta.peak_score}%).
+          </p>
+        )}
+        {fechar.length > 0 && (
           <div className="table-wrap close-table">
             <table className="deals">
               <thead>
                 <tr>
                   <th scope="col">Deal</th>
-                  <th scope="col" className="cell-score">Score</th>
-                  <th scope="col" className="num">Probabilidade</th>
+                  <th scope="col" className="cell-score" title="Chance de ganhar em 30 dias">Score</th>
+                  <th scope="col" className="num">Receita esperada (30d)</th>
                   <th scope="col" className="num">Dias</th>
                   <th scope="col">Próxima ação</th>
                 </tr>
@@ -213,8 +222,8 @@ export function MyDay() {
                           <span className="cell-deal-sub">{money(d.price)} · {d.agent}</span>
                         </a>
                       </td>
-                      <td className="cell-score"><Score deal={d} /></td>
-                      <td className="num">{pct(d.win_prob)}</td>
+                      <td className="cell-score"><Score deal={d} showTier /></td>
+                      <td className="num">{money(d.ev_soon)}</td>
                       <td className="num">
                         {d.age}d{closeToPeak && <span className="peak-badge">no pico</span>}
                       </td>

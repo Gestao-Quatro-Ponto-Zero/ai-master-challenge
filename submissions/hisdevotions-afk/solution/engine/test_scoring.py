@@ -81,18 +81,59 @@ def _scored(**kwargs):
     return d
 
 
-def test_suggest_decide_flags_no_account_and_stale_deals():
+def test_suggest_decide_uses_staleness_not_missing_account():
     # TOY.max_cycle == 100. Sem histórico de outcome pra zumbi (ainda abertos):
-    # a sugestão só pode vir de conta vinculada + quanto além do maior ciclo.
-    no_account = _scored(age=200, account=None)
-    barely_over = _scored(age=101, account="Acme")   # 1 dia além
-    way_over = _scored(age=180, account="Acme")      # 80 dias além
-    stalled = [no_account, barely_over, way_over]
+    # a sugestão vem só de quanto além do maior ciclo. Conta vazia é falha de
+    # cadastro, não sinal de deal morto: não pode, sozinha, mandar encerrar.
+    barely_no_account = _scored(age=102, account=None)  # 2 dias além, sem conta
+    barely_over = _scored(age=101, account="Acme")      # 1 dia além
+    way_over = _scored(age=180, account="Acme")         # 80 dias além
+    way_over_2 = _scored(age=190, account="Acme")
+    stalled = [barely_no_account, barely_over, way_over, way_over_2]
     s.suggest_decide(stalled, TOY.max_cycle)
-    assert no_account["suggested_action"] == "encerrar"
-    assert barely_over["suggested_action"] == "confirmar"   # pouco além da mediana, tem conta
-    assert way_over["suggested_action"] == "encerrar"        # bem além da mediana
+    assert barely_no_account["suggested_action"] == "confirmar"
+    assert "cadastre a conta" in barely_no_account["action"].lower()
+    assert barely_over["suggested_action"] == "confirmar"
+    assert way_over_2["suggested_action"] == "encerrar"
     assert "1 dia " in barely_over["action"]  # singular, não "1 dias"
+
+
+def test_close_window_actions_differ_by_phase():
+    curve = s.fit_curve(*_real_curve_inputs())
+    ages = [curve.window_start, curve.peak_age, curve.peak_age + s.PEAK_BAND + 1, curve.late_start]
+    actions = [s.score_open(_open(age=a), curve, REF)["action"] for a in ages]
+    assert len(set(actions)) == 4, actions
+
+
+def _real_curve_inputs():
+    deals, *_ = s.load()
+    closed = [d for d in deals if d["stage"] in ("Won", "Lost")]
+    open_ages = [(REF - d["engage"]).days for d in deals if d["stage"] in s.OPEN_STAGES and d["engage"]]
+    return closed, open_ages
+
+
+def test_tier_is_relative_to_best_possible_score():
+    assert s.tier(28, 31) == "alta" and s.tier(15, 31) == "media" and s.tier(5, 31) == "baixa"
+    assert s.tier(None, 31) is None
+
+
+def test_account_context_changes_action_not_score():
+    history = [{"account": "Acme", "stage": "Won"}] * 3
+    a, b = _scored(age=80), _scored(age=80)
+    score_before = a["score"]
+    s.add_account_context([a, b], history + [a, b])
+    assert a["score"] == score_before
+    assert "cliente da casa" in a["action"] and "o outro deal aberto" in a["action"]
+
+
+def test_cycle_test_separates_noise_from_signal():
+    rng = random.Random(5)
+    start = date(2017, 1, 1)
+    mk = lambda g, c: {"g": g, "engage": start, "close": start + timedelta(days=c)}  # noqa: E731
+    noise = [mk(i % 4, rng.randint(10, 90)) for i in range(800)]
+    signal = [mk(i % 2, rng.randint(10, 50) + 40 * (i % 2)) for i in range(800)]
+    assert s.cycle_dispersion_p(noise, lambda d: d["g"], random.Random(6))[1] > 0.05
+    assert s.cycle_dispersion_p(signal, lambda d: d["g"], random.Random(6))[1] < 0.01
 
 
 def test_suggest_decide_empty_list_does_nothing():
@@ -139,6 +180,12 @@ def test_real_data_end_to_end():
     assert used == {"Idade do deal (fechou em até 15 dias ou não)"}
     # teste global de vendedor deu p≈0,3: nenhum vendedor pode ser rotulado como diferente
     assert {a["verdict"] for a in data["agents"]} <= {"dentro da média", "sem histórico"}
+    # receita do time é fato, não estimativa: soma do close_value dos ganhos
+    won_value = sum(d["close_value"] for d in data["deals"] if d["stage"] == "Won")
+    assert sum(a["revenue_won"] for a in data["agents"]) == won_value
+    # sem conta não manda encerrar sozinho: os dois lados da fila têm deals sem conta
+    no_acc = {d["suggested_action"] for d in decidir if d["account"] is None}
+    assert no_acc == {"encerrar", "confirmar"}
 
 
 if __name__ == "__main__":

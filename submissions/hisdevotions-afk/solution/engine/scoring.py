@@ -38,6 +38,7 @@ SECTOR_FIXES = {"technolgy": "technology"}
 HORIZON = 30        # "fechar logo" = nos próximos 30 dias
 PRIOR = 20          # peso, em deals, da taxa global na suavização (idades com pouca amostra)
 MIN_SAMPLE = 30     # abaixo disso um ponto da curva é ruído de amostra pequena (mesmo corte do gráfico)
+PEAK_BAND = 5       # dias de cada lado do pico tratados como "no pico" (a curva é plana ali)
 WINDOW_FRACTION = 0.5  # janela de fechamento: onde a chance de fechar logo é >= metade do pico
 SIM_RUNS = 2000     # sorteios do teste de significância
 OPEN_STAGES = ("Prospecting", "Engaging")
@@ -96,6 +97,8 @@ class AgeCurve:
     close_soon: list[float]   # P(fechar nos próximos HORIZON dias | sobreviveu até aqui)
     win_soon: list[float]     # P(ganhar nos próximos HORIZON dias | sobreviveu até aqui)
     window_start: int         # idade onde close_soon cruza metade do seu pico, subindo
+    peak_age: int             # idade com a maior win_soon entre as de amostra confiável
+    late_start: int           # depois do pico, idade onde win_soon cai abaixo de metade do pico
 
 
 def fit_curve(closed: list[dict], open_ages: list[int]) -> AgeCurve:
@@ -120,7 +123,31 @@ def fit_curve(closed: list[dict], open_ages: list[int]) -> AgeCurve:
         close_soon.append(len(soon) / n_soon if n_soon else 0.0)
         win_soon.append(sum(w for _, w in soon) / n_soon if n_soon else 0.0)
     start = find_window_start(close_soon, n, max_cycle)
-    return AgeCurve(base, max_cycle, n, win, close_soon, win_soon, start)
+    peak, late = find_peak_and_late(win_soon, n, max_cycle)
+    return AgeCurve(base, max_cycle, n, win, close_soon, win_soon, start, peak, late)
+
+
+def find_peak_and_late(win_soon: list[float], n: list[int], max_cycle: int) -> tuple[int, int]:
+    """Pico da chance de ganhar em HORIZON dias e a idade, depois dele, em que
+    essa chance cai abaixo de metade do pico. Separa a janela em três fases com
+    ações diferentes: chance subindo, no pico, e reta final antes do max_cycle."""
+    reliable = [a for a in range(max_cycle + 1) if n[a] >= MIN_SAMPLE]
+    if not reliable:
+        return 0, max_cycle
+    peak = max(reliable, key=lambda a: win_soon[a])
+    half = WINDOW_FRACTION * win_soon[peak]
+    late = next((a for a in range(peak, max_cycle + 1) if win_soon[a] < half), max_cycle)
+    return peak, late
+
+
+def tier(score: int | None, peak_score: float) -> str | None:
+    """Alta/média/baixa contra o MELHOR score que a base permite (o pico), não
+    contra 100: nesta base nenhum deal passa de ~31% de chance de ganhar em 30
+    dias, e um 28 é dos melhores possíveis — não uma nota baixa."""
+    if score is None or peak_score <= 0:
+        return None
+    r = score / peak_score
+    return "alta" if r >= 2 / 3 else "media" if r >= 1 / 3 else "baixa"
 
 
 def find_window_start(close_soon: list[float], n: list[int], max_cycle: int) -> int:
@@ -155,7 +182,11 @@ def _money(v: float) -> str:
 
 
 def _dias(n: int) -> str:
-    return f"{n} dia" if n == 1 else f"{n} dias"
+    return _n(n, "dia", "dias")
+
+
+def _n(n: int, one: str, many: str) -> str:
+    return f"{n} {one if n == 1 else many}"
 
 
 def score_open(deal: dict, curve: AgeCurve, ref: date) -> dict:
@@ -181,12 +212,24 @@ def score_open(deal: dict, curve: AgeCurve, ref: date) -> dict:
             action = "Requalifique ou encerre: confirme com o cliente se ainda existe decisão; se não, marque como perdido."
         elif age >= curve.window_start:
             bucket = "fechar"
-            reasons.append(("+", f"{age} dias em negociação: {_pct(curve.close_soon[age])} dos deals nessa idade fecham em até {HORIZON} dias"))
-            action = "Priorize esta semana: o deal está na janela em que os deals fecham."
+            ws = _pct(curve.win_soon[age])
+            if age >= curve.late_start:
+                left = curve.max_cycle - age
+                reasons.append(("-", f"{age} dias em negociação: reta final, {ws} dos deals nessa idade são ganhos em até {HORIZON} dias, e a chance só cai daqui em diante"))
+                action = f"Peça um sim ou não esta semana: em {_dias(left)} o deal passa do maior ciclo que a base já fechou."
+            elif age > curve.peak_age + PEAK_BAND:
+                reasons.append(("+", f"{age} dias em negociação: {ws} dos deals nessa idade são ganhos em até {HORIZON} dias, mas a chance já começou a cair (o pico é aos {curve.peak_age} dias)"))
+                action = f"Feche antes de esfriar: a chance cai a cada semana, e em {_dias(curve.late_start - age)} fica abaixo de metade do pico."
+            elif age >= curve.peak_age - PEAK_BAND:
+                reasons.append(("+", f"{age} dias em negociação: no pico, {ws} dos deals nessa idade são ganhos em até {HORIZON} dias (o máximo da base é aos {curve.peak_age} dias)"))
+                action = "Peça a decisão esta semana: o deal está na idade em que mais se ganha."
+            else:
+                reasons.append(("+", f"{age} dias em negociação: {ws} dos deals nessa idade são ganhos em até {HORIZON} dias, e a chance sobe até os {curve.peak_age} dias"))
+                action = f"Envie a proposta esta semana: faltam ~{_dias(curve.peak_age - age)} para a idade em que mais se ganha."
         else:
             bucket = "avancar"
-            reasons.append(("-", f"{age} dias em negociação: ainda cedo, só {_pct(curve.close_soon[age])} fecham nos próximos {HORIZON} dias (a janela começa aos {curve.window_start} dias)"))
-            action = f"Mantenha contato e avance: faltam ~{curve.window_start - age} dias para a janela de fechamento."
+            reasons.append(("-", f"{age} dias em negociação: ainda cedo, só {_pct(curve.win_soon[age])} são ganhos nos próximos {HORIZON} dias (a janela começa aos {curve.window_start} dias)"))
+            action = f"Mantenha contato e avance: faltam ~{_dias(curve.window_start - age)} para a janela de fechamento."
         if bucket != "decidir":
             sign = "+" if curve.win[age] >= curve.base_rate else "-"
             reasons.append((sign, f"Deals que chegam a {age} dias ganham {_pct(curve.win[age])} das vezes (média geral {_pct(curve.base_rate)}; base de {curve.n[age]} deals)"))
@@ -213,6 +256,7 @@ def score_open(deal: dict, curve: AgeCurve, ref: date) -> dict:
         "win_prob": win_prob,
         "close_soon": close_soon,
         "score": score,
+        "tier": tier(score, 100 * curve.win_soon[curve.peak_age]),
         "ev": round(price * win_prob) if forecastable else 0,                # valor esperado total
         "ev_soon": round(price * curve.win_soon[at]) if forecastable else 0,  # receita esperada em HORIZON dias
         "reasons": [{"kind": k, "text": t} for k, t in reasons],
@@ -221,15 +265,47 @@ def score_open(deal: dict, curve: AgeCurve, ref: date) -> dict:
     }
 
 
+# ─── contexto da conta: não pesa no score, mas muda o que fazer ─────────────
+#
+# Conta não muda a chance de ganhar (p = 0,95), então não entra no score. Mas
+# saber que o cliente já comprou, ou que tem outros deals abertos, muda a
+# conversa do vendedor. Vira uma razão informativa e um complemento da ação.
+
+def add_account_context(open_deals: list[dict], all_deals: list[dict]) -> None:
+    won = defaultdict(int)
+    open_by_account = defaultdict(int)
+    for d in all_deals:
+        if d["account"] and d["stage"] == "Won":
+            won[d["account"]] += 1
+    for d in open_deals:
+        if d["account"]:
+            open_by_account[d["account"]] += 1
+    for d in open_deals:
+        acc = d["account"]
+        if not acc or d["bucket"] not in ("fechar", "avancar", "prospectar"):
+            continue
+        extra = []
+        if won[acc]:
+            d["reasons"].append({"kind": "i", "text": f"{acc} já comprou {_n(won[acc], 'vez', 'vezes')}: cliente da casa, não conta nova"})
+            extra.append("é cliente da casa, fale com quem aprovou a última compra")
+        others = open_by_account[acc] - 1
+        if others > 0:
+            d["reasons"].append({"kind": "i", "text": f"{acc} tem mais {_n(others, 'deal aberto', 'deals abertos')}: dá para negociar junto"})
+            extra.append(f"junte com {'o outro deal aberto' if others == 1 else f'os outros {others} deals abertos'} da conta")
+        if extra:
+            d["action"] = d["action"].rstrip(".") + ". " + "; ".join(extra).capitalize() + "."
+
+
 # ─── sugestão de encerrar vs. confirmar, só para a fila "decidir" ───────────
 #
 # Não é previsão de resultado: zumbi ainda está aberto, não existe rótulo
 # ganho/perdido pra treinar nada em cima. O que dá pra fazer, com honestidade,
 # é priorizar a revisão de 1.300 deals que o teste de significância já provou
-# indistinguíveis entre si — não com um modelo preditivo, com duas
-# características que o próprio dado explica: há quanto tempo além do maior
-# ciclo já visto, e se existe conta pra sequer confirmar com o cliente. A
-# mediana do "quanto além" vem dos próprios zumbis, não é escolhida à mão.
+# indistinguíveis entre si — não com um modelo preditivo, com o que o dado
+# explica: há quanto tempo além do maior ciclo já visto. A mediana do "quanto
+# além" vem dos próprios zumbis, não é escolhida à mão. Conta vazia NÃO é
+# motivo para encerrar: é falha de cadastro, não sinal de que o deal morreu
+# (68% dos abertos estão sem conta). Vira uma tarefa a mais na ação.
 
 def suggest_decide(stalled: list[dict], max_cycle: int) -> None:
     if not stalled:
@@ -238,18 +314,18 @@ def suggest_decide(stalled: list[dict], max_cycle: int) -> None:
     median_over = over[len(over) // 2]
     for d in stalled:
         d_over = d["age"] - max_cycle
-        if d["account"] is None:
-            # o motivo já está na lista de razões (score_open já avisa "sem conta vinculada")
-            d["suggested_action"] = "encerrar"
-            d["action"] = "Encerre como perdido: sem conta vinculada, não dá nem para confirmar com o cliente."
-        elif d_over >= median_over:
+        if d_over >= median_over:
             d["suggested_action"] = "encerrar"
             d["action"] = f"Encerre como perdido: {_dias(d_over)} além do maior ciclo já visto ({max_cycle}) — mais que a metade dos parados."
             d["reasons"].append({"kind": "-", "text": f"{_dias(d_over)} além do maior ciclo já visto: mais que a metade dos parados, pouco motivo pra dúvida"})
         else:
             d["suggested_action"] = "confirmar"
-            d["action"] = f"Confirme com o cliente antes de decidir: só {_dias(d_over)} além do histórico, tem conta vinculada."
+            d["action"] = f"Confirme com o cliente antes de decidir: só {_dias(d_over)} além do histórico."
             d["reasons"].append({"kind": "i", "text": f"Só {_dias(d_over)} além do maior ciclo já visto: menos que a metade dos parados, vale confirmar antes de encerrar"})
+        if d["account"] is None:
+            d["action"] += (" Se encerrar, cadastre a conta antes, para a perda entrar no histórico do cliente."
+                            if d["suggested_action"] == "encerrar" else
+                            " Cadastre a conta no CRM para saber com quem confirmar.")
 
 
 # ─── honestidade estatística ────────────────────────────────────────────────
@@ -274,6 +350,30 @@ def dispersion_p(closed: list[dict], key, rng: random.Random) -> tuple[int, floa
         for _ in range(SIM_RUNS)
     )
     return len(counts), hits / SIM_RUNS
+
+
+def cycle_dispersion_p(closed: list[dict], key, rng: random.Random) -> tuple[int, float]:
+    """Mesmo teste contra o acaso de `dispersion_p`, só que para a DURAÇÃO do
+    ciclo (dias até fechar) em vez da taxa de ganho: embaralha os ciclos entre
+    os grupos e vê com que frequência as médias se afastam tanto quanto as reais."""
+    cycles = [(d["close"] - d["engage"]).days for d in closed]
+    keys = [key(d) for d in closed]
+    mean = sum(cycles) / len(cycles)
+
+    def spread(cs):
+        tot, cnt = defaultdict(float), defaultdict(int)
+        for c, k in zip(cs, keys):
+            tot[k] += c
+            cnt[k] += 1
+        return sum(cnt[k] * (tot[k] / cnt[k] - mean) ** 2 for k in cnt)
+
+    observed = spread(cycles)
+    shuffled = cycles[:]
+    hits = 0
+    for _ in range(SIM_RUNS // 4):  # ponytail: 500 sorteios bastam para p na casa de 0,1; suba se o p ficar perto de 0,05
+        rng.shuffle(shuffled)
+        hits += spread(shuffled) >= observed
+    return len(set(keys)), hits / (SIM_RUNS // 4)
 
 
 def best_gain_over_sorted(sorted_vals: list[float], wins: list[int]) -> float:
@@ -342,6 +442,10 @@ def significance(closed: list[dict], accounts: dict, seed: int = 7) -> list[dict
         out.append({"feature": name, "groups": groups, "p_value": p, "used": used,
                     "note": note or "Não usado: diferenças do tamanho que o acaso produz."})
 
+    groups, p = cycle_dispersion_p(closed, lambda d: d["product"], rng)
+    out.append({"feature": "Duração do ciclo por produto", "groups": groups, "p_value": p, "used": False,
+                "note": "Não usado: os produtos não têm ciclos diferentes a ponto de pedir uma curva por produto."})
+
     # Tamanho da conta é contínuo (não categórico): testado à parte, com o
     # melhor split binário em vez de grupos fixos — ver continuous_split_p.
     continuous = [
@@ -378,8 +482,11 @@ def agent_stats(deals: list[dict], teams: dict, base: float) -> list[dict]:
         low, high = wilson(won, len(mine), z)
         verdict = ("sem histórico" if not mine else "acima da média" if low > base
                    else "abaixo da média" if high < base else "dentro da média")
+        revenue = sum(d["close_value"] or 0 for d in mine if d["stage"] == "Won")
         out.append({"name": name, "manager": t["manager"], "region": t["regional_office"],
                     "closed": len(mine), "won": won, "win_rate": won / len(mine) if mine else None,
+                    "revenue_won": revenue, "avg_ticket": round(revenue / won) if won else None,
+                    "has_deals": any(d["agent"] == name for d in deals),
                     "ci_low": low, "ci_high": high, "verdict": verdict})
     return out
 
@@ -396,6 +503,7 @@ def build(data_dir: Path = DATA_DIR, ref: date | None = None) -> dict:
     for d in open_deals:
         d.update(score_open(d, curve, ref))
     suggest_decide([d for d in open_deals if d["bucket"] == "decidir"], curve.max_cycle)
+    add_account_context(open_deals, deals)
     stats = significance(closed, accounts)
     agents = agent_stats(deals, teams, curve.base_rate)
     for d in deals:  # só depois das contas com data: serializa no próprio dict
@@ -408,6 +516,9 @@ def build(data_dir: Path = DATA_DIR, ref: date | None = None) -> dict:
             "base_rate": curve.base_rate,
             "max_cycle": curve.max_cycle,
             "window_start": curve.window_start,
+            "peak_age": curve.peak_age,
+            "peak_score": round(100 * curve.win_soon[curve.peak_age]),
+            "late_start": curve.late_start,
             "closed_deals": len(closed),
             "data_fixes": [
                 "Produto 'GTXPro' no pipeline corrigido para 'GTX Pro' (1.480 deals sem preço no join)",

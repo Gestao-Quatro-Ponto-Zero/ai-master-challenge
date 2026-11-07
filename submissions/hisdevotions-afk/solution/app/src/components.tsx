@@ -17,20 +17,37 @@ export function BucketTag({ bucket }: { bucket: Bucket }) {
   return <span className={`tag tag-${bucket}`}>{BUCKETS[bucket].label}</span>;
 }
 
-export function Score({ deal, size = "sm" }: { deal: OpenDeal; size?: "sm" | "lg" }) {
+export const TIER_LABEL = { alta: "Alta", media: "Média", baixa: "Baixa" } as const;
+
+/** O score é a chance de ganhar em 30 dias, em %. Nesta base o máximo possível
+    é meta.peak_score (~31%), então o anel enche contra esse máximo, não contra
+    100, e a faixa (alta/média/baixa) diz se o número é bom: um 28% é dos
+    melhores deals possíveis, não uma nota baixa. */
+export function Score({ deal, size = "sm", showTier = false }: { deal: OpenDeal; size?: "sm" | "lg"; showTier?: boolean }) {
+  const { model } = useApp();
   if (deal.score == null)
     return (
       <span className={`score score-${size} score-none on-${deal.bucket}`} title="Sem score: fora do modelo (zumbi ou ainda sem histórico de conversão)">
         —
       </span>
     );
-  return (
+  const peak = model.meta.peak_score;
+  const fill = Math.min(100, (deal.score / peak) * 100);
+  const tier = deal.tier ? TIER_LABEL[deal.tier] : "";
+  const ring = (
     <span
       className={`score score-${size} on-${deal.bucket}`}
-      style={{ "--pct": deal.score } as CSSProperties}
-      title="Chance de ganhar nos próximos 30 dias"
+      style={{ "--pct": fill } as CSSProperties}
+      title={`Chance de ganhar em 30 dias: ${deal.score}% (${tier.toLowerCase()}; o melhor deal possível nesta base tem ${peak}%)`}
     >
-      {deal.score}
+      {deal.score}<small>%</small>
+    </span>
+  );
+  if (!showTier || !deal.tier) return ring;
+  return (
+    <span className="score-wrap">
+      {ring}
+      <span className={`tier tier-${deal.tier}`}>{tier}</span>
     </span>
   );
 }
@@ -86,7 +103,7 @@ export function CurveChart({ curve, meta, age }: { curve: CurvePoint[]; meta: Me
     reliable.map((c, i) => `${i ? "L" : "M"}${x(c.age).toFixed(1)},${y(f(c)).toFixed(1)}`).join("");
   const firstAge = reliable[0]?.age ?? 0;
   const lastAge = reliable.at(-1)?.age ?? 0;
-  const closeArea = `${line((c) => c.close_soon)}L${x(lastAge)},${y(0)}L${x(0)},${y(0)}Z`;
+  const closeArea = `${line((c) => c.win_soon)}L${x(lastAge)},${y(0)}L${x(0)},${y(0)}Z`;
   const dealAge = age != null && age < meta.max_cycle ? age : null;
 
   const svgRef = useRef<SVGSVGElement>(null);
@@ -106,7 +123,7 @@ export function CurveChart({ curve, meta, age }: { curve: CurvePoint[]; meta: Me
   return (
     <figure className="curve">
       <svg
-        ref={svgRef} viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Chance de ganhar e de fechar em 30 dias conforme a idade do deal; passe o mouse para consultar qualquer idade"
+        ref={svgRef} viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Chance de ganhar (sem prazo e em 30 dias) conforme a idade do deal; passe o mouse para consultar qualquer idade"
         onMouseMove={onMove} onMouseLeave={() => setHoverAge(null)}
       >
         <rect x={x(meta.window_start)} y={T} width={x(meta.max_cycle) - x(meta.window_start)} height={H - T - B} className="z-fechar" />
@@ -132,13 +149,13 @@ export function CurveChart({ curve, meta, age }: { curve: CurvePoint[]; meta: Me
       {point && (
         <div className="curve-tooltip" style={{ left: `${(x(point.age) / W) * 100}%` }}>
           <strong>{point.age} dias</strong>
-          <span>Ganhar: {pct(point.win)}</span>
-          <span>Fechar em 30d: {pct(point.close_soon)}</span>
+          <span>Ganhar (sem prazo): {pct(point.win)}</span>
+          <span>Ganhar em 30d: {pct(point.win_soon)}</span>
         </div>
       )}
       <figcaption>
         <span className="key key-win">Chance de ganhar, para quem chegou a essa idade</span>
-        <span className="key key-close">Chance de fechar nos próximos 30 dias</span>
+        <span className="key key-close">Chance de ganhar nos próximos 30 dias (o score)</span>
         <span className="key key-base">Média geral ({pct(meta.base_rate)})</span>
       </figcaption>
     </figure>

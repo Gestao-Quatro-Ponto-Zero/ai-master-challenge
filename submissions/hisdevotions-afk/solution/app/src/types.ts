@@ -33,6 +33,8 @@ export interface OpenDeal extends Deal {
   ev_soon: number;
   /** Chance de ganhar em até horizon_days, 0–100. null = fora do modelo (zumbi ou prospecção). */
   score: number | null;
+  /** Faixa do score contra o melhor score possível na base (meta.peak_score). */
+  tier: "alta" | "media" | "baixa" | null;
   reasons: Reason[];
   action: string;
   /** Só preenchido na fila "decidir": sugestão de qual dos dois botões apertar
@@ -46,6 +48,10 @@ export interface Meta {
   base_rate: number;
   max_cycle: number;
   window_start: number;
+  /** Idade com a maior chance de ganhar em 30 dias, e essa chance (0–100). */
+  peak_age: number;
+  peak_score: number;
+  late_start: number;
   closed_deals: number;
   data_fixes: string[];
 }
@@ -76,6 +82,9 @@ export interface Agent {
   ci_low: number;
   ci_high: number;
   verdict: string;
+  revenue_won: number;
+  avg_ticket: number | null;
+  has_deals: boolean;
 }
 
 export interface Account {

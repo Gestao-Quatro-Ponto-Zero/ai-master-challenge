@@ -51,7 +51,7 @@ export function Forecast({ query }: { query: URLSearchParams }) {
       <dl className="facts facts-big">
         <div><dt>Pipeline declarado</dt><dd>{moneyShort(declared)}</dd><p>Soma do preço de lista de todos os deals abertos.</p></div>
         <div><dt>Esperado</dt><dd>{moneyShort(realistic)}</dd><p>Deals em negociação vezes a chance de ganhar pela idade. Zumbis valem zero; prospecção ({moneyShort(prospect)}) fica de fora por não ter histórico de conversão.</p></div>
-        <div><dt>Próximos 30 dias</dt><dd>{moneyShort(next30)}</dd><p>Soma de valor × chance de fechar em 30 dias.</p></div>
+        <div><dt>Próximos 30 dias</dt><dd>{moneyShort(next30)}</dd><p>Soma de valor × chance de ganhar em 30 dias (o score). É o mesmo número da Overview.</p></div>
       </dl>
 
       {stalled.length > 0 && (
@@ -62,6 +62,10 @@ export function Forecast({ query }: { query: URLSearchParams }) {
             </strong>{" "}
             Tudo o que está aberto ali ou ainda não engajou ou já passou de qualquer ciclo fechado. O problema não é fechar, é
             destravar o funil: engajar a prospecção e decidir os parados.
+          </p>
+          <p className="muted">
+            Um padrão tão limpo (zero deals em negociação numa região inteira) é improvável numa operação real e pode ser
+            efeito de como a base foi gerada ou exportada. Vale confirmar no CRM antes de mudar a cobrança do time.
           </p>
         </aside>
       )}
@@ -84,7 +88,10 @@ export function Forecast({ query }: { query: URLSearchParams }) {
             return (
               <li key={b} className={`legend-${b}`}>
                 <a href={`${link("pipeline")}?fila=${b}`}>{BUCKETS[b].label}</a>: {moneyShort(sum(ds, (d) => d.price))} em {int(ds.length)} deals.
-                <span className="muted"> No Salesforce seria “{SALESFORCE[b]}”, escolhido pelo vendedor; aqui vem da idade do deal.</span>
+                <span className="muted">
+                  {" "}No Salesforce seria “{SALESFORCE[b]}”, escolhido pelo vendedor; aqui vem{" "}
+                  {b === "prospectar" ? "do estágio (ainda não engajado)" : "da idade do deal"}.
+                </span>
               </li>
             );
           })}

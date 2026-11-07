@@ -524,8 +524,8 @@ ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; wid
 
 /* ─── score e tags ───────────────────────────────────────────────────────── */
 
-/* anel de progresso: o traço preenchido é o próprio score (0–100), não decoração —
-   quanto mais fechado o anel, mais perto de 100 a chance de ganhar em 30 dias. */
+/* anel de progresso: enche contra o MELHOR score possível na base (meta.peak_score),
+   não contra 100 — anel quase cheio = dos deals com mais chance que a base permite. */
 .score {
   --ring-bg: var(--surface);
   display: inline-grid; place-items: center; font-weight: 800; border-radius: 50%;
@@ -538,6 +538,13 @@ ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; wid
 .deal-row:hover .score, .deals tbody tr:hover .score { --ring-bg: var(--surface-2); transform: scale(1.06); }
 .score-sm { width: 2.6rem; height: 2.6rem; font-size: 0.9375rem; }
 .score-lg { width: 5.75rem; height: 5.75rem; font-size: 2.35rem; letter-spacing: -0.03em; }
+.score:not(.score-none) { grid-auto-flow: column; place-content: center; align-items: baseline; }
+.score small { font-size: 0.6em; font-weight: 700; margin-left: 0.04em; opacity: 0.8; }
+.score-wrap { display: inline-flex; align-items: center; gap: 0.5rem; }
+.tier { font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 999px; }
+.tier-alta { color: var(--fechar); background: var(--fechar-soft); }
+.tier-media { color: var(--ink); background: color-mix(in srgb, var(--ink) 10%, transparent); }
+.tier-baixa { color: var(--muted); background: color-mix(in srgb, var(--muted) 12%, transparent); }
 .score-none {
   opacity: 0.55; font-weight: 600;
   background: var(--c-soft); /* sem score: fora do modelo, não é um "0%" — nunca um anel */

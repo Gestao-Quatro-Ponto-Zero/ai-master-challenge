@@ -1,11 +1,16 @@
 import { inScope, useApp, useScopedOpen } from "../data";
-import { int, pct } from "../format";
+import { int, money, moneyShort, pct, sum } from "../format";
 import type { Agent } from "../types";
 
 export function Team() {
   const { model, filters } = useApp();
   const open = useScopedOpen();
-  const agents = model.agents.filter((a) => inScope(a, a.name, filters)).sort((a, b) => a.name.localeCompare(b.name));
+  // Receita ganha é fato, não estimativa: ordenar por ela não tem o problema
+  // de ranquear por taxa de ganho, que aqui é ruído (p = 0,30).
+  const agents = model.agents.filter((a) => inScope(a, a.name, filters)).sort((a, b) => b.revenue_won - a.revenue_won);
+  const withDeals = agents.filter((a) => a.has_deals);
+  const idle = agents.filter((a) => !a.has_deals);
+  const total = sum(withDeals, (a) => a.revenue_won);
   const count = (name: string, pred: (d: (typeof open)[number]) => boolean) =>
     open.filter((d) => d.agent === name && pred(d)).length;
 
@@ -14,8 +19,9 @@ export function Team() {
       <header className="page-head">
         <h1>Time</h1>
         <p className="lede">
-          Com os dados de hoje, nenhum vendedor ganha mais ou menos que a média de um jeito que valha ranquear. Por isso esta
-          tela não é um ranking: ela mostra o que cada pessoa pode arrumar no próprio pipeline.
+          O time ganhou <strong>{moneyShort(total)}</strong> no histórico. Receita e volume variam muito entre as pessoas e
+          aparecem aqui como são, ordenados por receita ganha. A taxa de ganho é outra história: nenhuma diferença entre
+          vendedores passa do que o acaso produz, então ela não serve para comparar ninguém.
         </p>
       </header>
       <div className="table-wrap">
@@ -23,6 +29,8 @@ export function Team() {
           <thead>
             <tr>
               <th scope="col">Vendedor</th>
+              <th scope="col" className="num">Receita ganha</th>
+              <th scope="col" className="num">Ticket médio</th>
               <th scope="col">Taxa de ganho e faixa plausível</th>
               <th scope="col" className="num">Na janela</th>
               <th scope="col" className="num">Parados além do histórico</th>
@@ -31,12 +39,14 @@ export function Team() {
             </tr>
           </thead>
           <tbody>
-            {agents.map((a) => (
+            {withDeals.map((a) => (
               <tr key={a.name}>
                 <th scope="row">
                   {a.name}
                   <span className="muted block">{a.manager}, {a.region}</span>
                 </th>
+                <td className="num">{money(a.revenue_won)}<span className="muted block">{pct(total > 0 ? a.revenue_won / total : 0)} do time</span></td>
+                <td className="num">{a.avg_ticket == null ? "—" : money(a.avg_ticket)}</td>
                 <td><RateBar agent={a} base={model.meta.base_rate} /></td>
                 <td className="num">{int(count(a.name, (d) => d.bucket === "fechar"))}</td>
                 <td className="num">{int(count(a.name, (d) => d.bucket === "decidir"))}</td>
@@ -47,6 +57,13 @@ export function Team() {
           </tbody>
         </table>
       </div>
+      {idle.length > 0 && (
+        <p className="queue-note">
+          <strong>{idle.map((a) => a.name).join(", ")}</strong>{" "}
+          {idle.length === 1 ? "está no time mas não tem" : "estão no time mas não têm"} nenhum deal no CRM, nem aberto nem
+          fechado. Pode ser gente nova, desligada ou que registra fora do sistema: vale perguntar ao manager.
+        </p>
+      )}
       <p className="queue-note">
         A faixa plausível mostra onde a taxa de ganho de cada um pode realmente estar, não só o que já aconteceu. Poucos deals
         fechados alargam a faixa — é por isso que ninguém aqui está marcado como acima ou abaixo do time.

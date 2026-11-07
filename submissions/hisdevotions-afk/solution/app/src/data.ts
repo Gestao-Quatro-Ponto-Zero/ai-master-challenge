@@ -90,15 +90,9 @@ export function useScopedOpen(): OpenDeal[] {
   return model.open.filter((d) => dealInScope(d, filters) && !decisions[d.id]);
 }
 
-/** Idade onde a chance de ganhar em 30 dias é máxima (o "pico" da curva).
-    Vem dos dados reais (meta.peaks de win_soon), não é uma constante:
-    o deal que está nesse ponto é o "mais quente" da fila Fechar, o que
-    merece o gesto de "foque agora". Fallback seguro se a curva vier vazia. */
-export function peakAge(model: Model): number {
-  let best: { age: number; win_soon: number } | null = null;
-  for (const p of model.curve) if (p.win_soon != null && (best == null || p.win_soon > best.win_soon)) best = { age: p.age, win_soon: p.win_soon };
-  return best?.age ?? model.meta.window_start;
-}
+/** Idade onde a chance de ganhar em 30 dias é máxima (o "pico" da curva),
+    calculada pelo motor só com idades de amostra confiável. */
+export const peakAge = (model: Model) => model.meta.peak_age;
 
 /** Distância do deal ao pico da fila Fechar: 0 = exatamente no ponto de
     máxima chance de ganhar em 30 dias. Quanto menor, mais "quente". */
@@ -113,13 +107,14 @@ export function nextBestAction(open: OpenDeal[]): OpenDeal | null {
 }
 
 // ─── ordem de prioridade dentro de cada fila (usada em Meu Dia e no Pipeline) ─
-// Não é o score (chance): fechar/avançar priorizam receita esperada; decidir
+// Não é o score (chance): fechar/avançar priorizam receita esperada em 30 dias
+// (valor × chance), que é a coluna mostrada ao lado do score nas filas; decidir
 // prioriza o que mais infla o forecast declarado; prospecção não tem score
 // nem forecast (sem histórico de conversão), então prioriza pelo valor de lista.
 export const PRIORITY: Record<Bucket, (a: OpenDeal, b: OpenDeal) => number> = {
   fechar: (a, b) => b.ev_soon - a.ev_soon,
   decidir: (a, b) => b.price - a.price,
-  avancar: (a, b) => b.ev - a.ev,
+  avancar: (a, b) => b.ev_soon - a.ev_soon,
   prospectar: (a, b) => b.price - a.price,
 };
 
