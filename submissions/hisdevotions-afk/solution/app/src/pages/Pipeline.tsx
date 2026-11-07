@@ -23,11 +23,20 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
   const scoped = useScopedOpen();
   const fila = query.get("fila") as Bucket | null;
   const semConta = query.get("semconta") === "1";
+  const conflito = query.get("conflito") === "1";
   const board = query.get("ver") === "quadro";
   const encerrados = query.get("encerrados") === "1";
   const closed = recentlyClosed(model, filters, decisions);
   const [search, setSearch] = useState(() => query.get("busca") ?? "");
-  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "ev_soon", dir: -1 }); // mesma ordem das filas da Overview
+  // A ordem padrão segue a fila: Decidir e Prospectar não têm receita esperada
+  // (ev_soon = 0), então ordenar por ela deixaria a lista na ordem do arquivo.
+  // O PRIORITY já diz que essas duas filas se ordenam por valor de lista.
+  const [sortOverride, setSort] = useState<{ key: SortKey; dir: 1 | -1 } | null>(null);
+  const defaultSort: { key: SortKey; dir: 1 | -1 } = {
+    key: fila === "decidir" || fila === "prospectar" ? "price" : "ev_soon",
+    dir: -1,
+  };
+  const sort = sortOverride ?? defaultSort;
 
   const href = (changes: Record<string, string | null>) => {
     const q = new URLSearchParams(query);
@@ -37,10 +46,12 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
   };
 
   const needle = search.trim().toLowerCase();
+  const conflictCount = scoped.filter((d) => (d.conflicts?.length ?? 0) > 0).length;
   const visible = scoped.filter(
     (d) =>
       (!fila || d.bucket === fila) &&
       (!semConta || !d.account) &&
+      (!conflito || (d.conflicts?.length ?? 0) > 0) &&
       (!needle || [d.account, d.product, d.agent, d.id].some((v) => v?.toLowerCase().includes(needle))),
   );
   const decidedCount = model.open.filter((d) => decisions[d.id] && dealInScope(d, filters)).length;
@@ -90,6 +101,10 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
         <a className="btn-link" href={href({ semconta: semConta ? null : "1" })}>
           {semConta ? "Mostrar todos" : "Só sem conta"}
         </a>
+        <a className={`btn-link${conflito ? " is-active" : ""}`} href={href({ conflito: conflito ? null : "1" })}
+          title="Deals em que outro vendedor fechou o mesmo produto na mesma conta depois deste deal abrir">
+          {conflito ? "Mostrar todos" : `Com conflito (${int(conflictCount)})`}
+        </a>
         <a className="btn-link" href={href({ ver: board ? null : "quadro" })}>
           {board ? "Ver em lista" : "Ver em quadro"}
         </a>
@@ -106,7 +121,7 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
       ) : board ? (
         <Board deals={visible} />
       ) : (
-        <DealTable deals={visible} sort={sort} setSort={setSort} bulkDecide={fila === "decidir"} />
+        <DealTable deals={visible} sort={sort} setSort={(s) => setSort(s)} bulkDecide={fila === "decidir"} />
       )}
     </div>
   );
@@ -378,7 +393,14 @@ function DealTable(props: {
                   </td>
                 )}
                 <td className="cell-pin">
-                  <a href={link("deal", d.id)} className="cell-deal"><DealName deal={d} /></a>
+                  <a href={link("deal", d.id)} className="cell-deal">
+                    <DealName deal={d} />
+                    {d.conflicts && d.conflicts.length > 0 && (
+                      <span className="tag-conflict" title={`${d.conflicts.length} fechamento(s) do mesmo produto nesta conta por outro vendedor depois deste deal abrir`}>
+                        conflito
+                      </span>
+                    )}
+                  </a>
                 </td>
                 <td><Score deal={d} showTier /></td>
                 <td>{d.agent}</td>
@@ -443,7 +465,10 @@ function Board({ deals }: { deals: OpenDeal[] }) {
                   <Score deal={d} />
                 </span>
                 <AgeRuler age={d.age} meta={model.meta} />
-                <span className="card-sub">{money(d.price)}, {d.agent}</span>
+                <span className="card-sub">
+                  {money(d.price)}, {d.agent}
+                  {d.conflicts && d.conflicts.length > 0 && <span className="tag-conflict">conflito</span>}
+                </span>
               </a>
             ))}
             {col.length > BOARD_LIMIT && (

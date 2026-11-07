@@ -9,6 +9,7 @@ import { MyDay } from "./pages/MyDay";
 import { Pipeline } from "./pages/Pipeline";
 import { DealPage } from "./pages/DealPage";
 import { Forecast } from "./pages/Forecast";
+import { Validation } from "./pages/Validation";
 import { AccountPage, Accounts } from "./pages/Accounts";
 import { Team } from "./pages/Team";
 import logoMark from "./assets/logo-mark.png";
@@ -18,6 +19,7 @@ const NAV: [string, string][] = [
   ["", "Overview"],
   ["pipeline", "Pipeline"],
   ["forecast", "Forecast"],
+  ["validacao", "Validação"],
   ["contas", "Contas"],
   ["time", "Time"],
 ];
@@ -28,6 +30,7 @@ function NavIcon({ slug }: { slug: string }) {
   if (slug === "") return <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="3.2" {...s} /><line x1="9" y1="1.6" x2="9" y2="3.8" {...s} /><line x1="9" y1="14.2" x2="9" y2="16.4" {...s} /><line x1="1.6" y1="9" x2="3.8" y2="9" {...s} /><line x1="14.2" y1="9" x2="16.4" y2="9" {...s} /></svg>;
   if (slug === "pipeline") return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 3.5h13L10.2 9.8v5.2l-2.4 1v-6.2Z" {...s} /></svg>;
   if (slug === "forecast") return <svg viewBox="0 0 18 18" aria-hidden="true"><polyline points="2.5,14.5 6.8,9 10.5,11.2 15.5,4" {...s} /></svg>;
+  if (slug === "validacao") return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.8 15.5 5v4.4c0 3.4-2.6 5.9-6.5 6.8-3.9-.9-6.5-3.4-6.5-6.8V5Z" {...s} /><polyline points="5.8,9.1 8,11.3 12.2,6.8" {...s} /></svg>;
   if (slug === "contas") return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2 7 L9 2 L16 7" {...s} /><rect x="3.5" y="7" width="11" height="8.5" {...s} /></svg>;
   if (slug === "time") return <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="6.5" cy="7" r="2.4" {...s} /><circle cx="12.2" cy="7.6" r="2" {...s} /><path d="M1.8 16 a4.7 4.7 0 0 1 9.4 0" {...s} /><path d="M8.6 16 a4.3 4 0 0 1 7.6 -1.4" {...s} /></svg>;
   return <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" {...s} /><line x1="9" y1="8.3" x2="9" y2="13" {...s} /><circle cx="9" cy="5.3" r="0.9" fill="currentColor" stroke="none" /></svg>;
@@ -307,6 +310,7 @@ function Shell() {
           {page === "pipeline" && <Pipeline query={query} />}
           {page === "deal" && <DealPage id={arg} />}
           {page === "forecast" && <Forecast query={query} />}
+          {page === "validacao" && <Validation />}
           {page === "contas" && (arg ? <AccountPage name={arg} /> : <Accounts />)}
           {page === "time" && <Team />}
           {!NAV.some(([slug]) => slug === page) && page !== "deal" && (

@@ -68,7 +68,7 @@ export function Forecast({ query }: { query: URLSearchParams }) {
         <aside className="hygiene">
           <p>
             <strong>
-              {stalled.map((r) => r.name).join(", ")}: nenhum deal vivo em negociação.
+              {stalled.map((r) => r.name).join(", ")}: nenhum deal na janela de fechamento.
             </strong>{" "}
             Tudo o que está aberto ali ou ainda não engajou ou já passou de qualquer ciclo fechado. O problema não é fechar, é
             destravar o funil: engajar a prospecção e decidir os parados.

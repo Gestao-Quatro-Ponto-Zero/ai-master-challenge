@@ -432,3 +432,27 @@ As notas usavam `max-width: 72ch`, mas `ch` mede a largura do "0", e o texto rea
 Na Overview, o total de parados aparecia três vezes: no texto de abertura, no KPI e no badge do topo. Saiu do texto de abertura. Os dois avisos de deals sem conta (um na faixa de saúde e outro no fim da página) viraram um só, com o link para a lista. Embaixo da tabela de gestor ficou uma nota só.
 
 Texto deste log revisado com a skill humanizer.
+
+## 25. Validação histórica: a fila teria escolhido os deals certos?
+
+[EU] Antes de fechar, quis responder à pergunta que o app não respondia: a fila funciona? Pedi um backtest com quatro cortes, treinando só com o que existia em cada data.
+
+[IA] Propôs uma janela de 90 dias, como outras submissões do challenge fazem. Cortei para 30, o mesmo horizonte do score: medir 90 dias e chamar de validação do score seria mudar a pergunta no meio do caminho. Em cada corte (1º de julho, agosto, setembro e outubro de 2017) o motor aprende só com deals fechados até a data, reconstrói o pipeline aberto naquele dia e ordena os deals. O desfecho posterior serve apenas para medir. Nada do futuro entra no treino.
+
+[EU] A primeira versão comparava só receita em 90 dias e dava AUC de 0,49. Parecia que o score não separava nada. Olhando por idade, o motivo apareceu: a base é sintética e os cohorts pulam meses. Em julho e outubro, nenhum deal antigo fechou dentro de 30 dias; só os recém-engajados. Com a janela certa, a fila captura 68% da receita ganha em 30 dias nos 20% melhores deals, contra 50% de ordenar só por valor e 20% do acaso. A AUC sobe para 0,65.
+
+[IA] Também mostrou o limite: “mais novos primeiro” tem AUC de 0,71, maior que a nossa, mas captura 26% no total e 12% no pior corte. AUC mede separação; captura mede dinheiro. As duas aparecem juntas na tela de Validação, com a explicação.
+
+[EU] O forecast ajustado somou US$ 3,3 mi contra US$ 2,2 mi realizados (+51%). O ingênuo, pipeline inteiro vezes a taxa base, somou US$ 13,5 mi (+514%). Nos cortes de agosto e setembro o ajustado fica entre -20% e +8%; em julho e outubro o erro sobe por causa do buraco entre cohorts. Deixei isso escrito na tela e no README, em vez de esconder o corte que não ajudava.
+
+Verificação: o backtest roda em 17 segundos, não usa resultado posterior ao corte e tem teste próprio com dados sintéticos. O teste de dados reais confere que a captura da fila bate o acaso e o “só valor” nos quatro cortes.
+
+## 26. Conflito conta × produto e higiene do CRM
+
+[EU] A base tem 464 deals abertos com conta em que outro vendedor fechou o mesmo produto na mesma conta depois de o deal abrir. O app não dizia nada sobre isso. Pedi que virasse sinal, mas com cuidado: fechamento posterior não prova que é o mesmo pedido.
+
+[IA] Implementou a detecção no motor e uma regra conservadora: o deal ganha uma razão com quem fechou, quantas vezes e há quantos dias, e a ação pede confirmação. Deal parado com conflito deixa de sugerir “encerrar” e passa a sugerir “confirmar”; o sistema nunca encerra sozinho por causa de um conflito. Também criou um relatório de higiene com sem conta, parados, conflitos, pares duplicados, produto corrigido e inconsistências de data.
+
+[EU] Expus isso em três lugares: o filtro “Com conflito” no Pipeline, um aviso na faixa de saúde do Meu Dia e a página de Validação, que agora mostra o backtest e a higiene juntos. Aproveitei para corrigir duas leituras erradas: “Central: nenhum deal em negociação” virou “nenhum deal na janela de fechamento” (a Central tem 408 deals em Engaging, todos parados), e a ordenação padrão de Decidir e Prospectar passou a ser por valor, porque a receita esperada dessas filas é sempre zero.
+
+Verificação: 21 testes do motor (três novos: conflito, AUC e backtest sem vazamento) e 8 do bot. `tsc --noEmit` e `npm run build` limpos. As telas de Validação e do filtro de conflito foram conferidas no navegador, em 1440 px e em 390 px.

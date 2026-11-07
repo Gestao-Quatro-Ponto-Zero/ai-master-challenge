@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Construí o Pipeline em Foco, um app de vendas em React com um motor de scoring em Python. Na segunda de manhã ele mostra a cada vendedor em que deals trabalhar, o que fazer em cada um e por quê, e mostra ao gestor em que time o pipeline está parado. Um script formata a mesma fila em texto para cada vendedor; ele tem código de envio por Slack ou email, mas nesta entrega só foi usado para imprimir. Antes de pontuar qualquer coisa, testei cada característica do CRM contra o acaso: vendedor, conta, tamanho da conta, produto, setor, região e manager não mudam a chance de ganhar nesta base. O sinal que passou foi a idade do deal, e é ela que define o score. O achado que mais importa para a Head de RevOps: 65% do pipeline declarado (US$ 3,2 mi de US$ 5,0 mi) está em deals parados além do maior ciclo que a base já fechou.
+Construí o Pipeline em Foco, um app de vendas em React com um motor de scoring em Python. Na segunda de manhã ele mostra a cada vendedor em que deals trabalhar, o que fazer em cada um e por quê, e mostra ao gestor em que time o pipeline está parado. Um script formata a mesma fila em texto para cada vendedor; ele tem código de envio por Slack ou email, mas nesta entrega só foi usado para imprimir. Antes de pontuar qualquer coisa, testei cada característica do CRM contra o acaso: vendedor, conta, tamanho da conta, produto, setor, região e manager não mudam a chance de ganhar nesta base. O sinal que passou foi a idade do deal, e é ela que define o score. A fila foi testada em quatro datas de 2017: nos 20% melhores deals ela capturou 68% da receita ganha em 30 dias, contra 20% do acaso e 50% de ordenar só por valor. O achado que mais importa para a Head de RevOps: 65% do pipeline declarado (US$ 3,2 mi de US$ 5,0 mi) está em deals parados além do maior ciclo que a base já fechou.
 
 App publicado: https://hisdevotions-afk.github.io/ai-master-challenge/
 
@@ -45,10 +45,27 @@ O score é `P(ganhar nos próximos 30 dias | idade)`, em %. A curva aprende com 
 
 As filas são ordenadas pela receita esperada em 30 dias (valor × score), que aparece ao lado do score na mesma tabela.
 
+#### Validação histórica
+
+Testei a fila em quatro cortes (1º de julho, agosto, setembro e outubro de 2017). Em cada corte o motor aprende só com deals fechados até a data e reconstrói o pipeline aberto naquele dia; o desfecho posterior só mede, não treina. A métrica é a captura: quanta receita ganha em 30 dias caiu nos 20% melhores deals da ordem.
+
+| Estratégia | AUC | Captura | Pior corte |
+|---|---|---|---|
+| Pipeline em Foco | 0,65 | 68% | 59% |
+| Só valor | 0,52 | 50% | 28% |
+| Mais novos primeiro | 0,71 | 26% | 12% |
+| Acaso (200 sorteios) | 0,50 | 20% | 20% |
+
+A nossa fila é a única acima de 50% em todos os cortes. Na simulação por vendedor (top 10 de cada um), ela capturou US$ 1,02 mi em 30 dias, contra US$ 0,74 mi de “só valor” e US$ 0,32 mi do acaso. “Mais novos primeiro” tem AUC maior porque, em dois cortes, só deals recém-engajados fecharam em 30 dias; no total, captura 26% e no pior corte 12%. O forecast ajustado pela idade somou US$ 3,3 mi contra US$ 2,2 mi realizados (+51%); o ingênuo, pipeline × taxa base, somou US$ 13,5 mi (+514%). Nos cortes de agosto e setembro o erro do ajustado fica entre -20% e +8%.
+
+#### Conflito conta × produto
+
+Em 464 dos 501 deals abertos com conta, outro vendedor fechou o mesmo produto na mesma conta depois de o deal abrir — US$ 1,0 mi em pipeline. Isso não prova que é o mesmo pedido (pode ser outro departamento, outra quantidade ou recompra), então o app não encerra: coloca o deal na fila de conflito e pede confirmação. Também há 189 pares de conta e produto com mais de um deal aberto (481 deals), que valem consolidação antes de prever.
+
 Os limites das filas saem dos dados e se ajustam com outra base:
 - *Avançar*: menos de 44 dias, ainda cedo para fechar.
 - *Fechar*, de 44 a 138 dias, com a ação mudando conforme a fase: antes do pico, "envie a proposta"; no pico (85 dias), "peça a decisão"; depois dele, "feche antes de esfriar"; a partir de 115 dias, quando a chance cai abaixo de metade do pico, "peça um sim ou não".
-- *Decidir*: 138 dias ou mais. Nenhum deal da base fechou depois disso. A sugestão de encerrar ou confirmar vem de quanto o deal passou do limite, comparado com a mediana dos parados (653 para encerrar, 648 para confirmar). Falta de conta no CRM é falha de cadastro e não indica que o deal morreu, então ela não pesa na sugestão; vira uma tarefa de cadastro dentro da própria ação.
+- *Decidir*: 138 dias ou mais. Nenhum deal da base fechou depois disso. A sugestão de encerrar ou confirmar vem de quanto o deal passou do limite, comparado com a mediana dos parados (445 para encerrar, 856 para confirmar). Deal com conflito de conta sempre cai em confirmar, nunca em encerrar. Falta de conta no CRM é falha de cadastro e não indica que o deal morreu, então ela não pesa na sugestão; vira uma tarefa de cadastro dentro da própria ação.
 - *Prospectar*: ainda não engajado, sem score.
 
 A conta não muda a chance de ganhar (p = 0,95), então fica fora do score. Mas saber que o cliente já comprou 34 vezes ou que tem outros 13 deals abertos muda a conversa do vendedor, e por isso entra como motivo e no texto da ação.
@@ -65,6 +82,7 @@ Duas correções nos dados: `GTXPro` virou `GTX Pro` (1.480 deals perdiam o pre�
 | Pipeline | "Como está tudo?" Lista e kanban na mesma ordem das filas. Na fila Decidir dá para decidir em lote, com desfazer |
 | Ficha do deal | "Por que esse score?" Os motivos, a curva histórica e o contexto da conta |
 | Forecast | "Quanto vai entrar?" Declarado, esperado (sem prazo) e próximos 30 dias, por região, manager ou vendedor, na mesma tabela da Overview: barra de composição por linha, ordenável e clicável para descer um nível |
+| Validação | "A fila teria escolhido os deals certos?" Backtest em quatro cortes, forecast ajustado contra ingênuo e higiene do CRM |
 | Contas | "Qual o histórico com esse cliente?" |
 | Time | "Quem produz o quê?" Receita ganha, ticket médio e higiene de pipeline de cada pessoa |
 
@@ -112,14 +130,18 @@ Sem `--webhook`, `--to` ou `--targets` o bot só imprime. Trecho real da saída:
 1. Limpar o forecast esta semana: 1.301 deals (US$ 3,2 mi) estão além de qualquer ciclo já fechado. Cada vendedor decide os seus na fila Decidir.
 2. Cadastrar as contas: 1.425 dos 2.089 deals abertos (68%) estão sem conta. Sem conta não há histórico do cliente, e o contexto que melhora a ação some.
 3. Cobrar receita e higiene de pipeline. Receita e volume variam muito entre vendedores (de US$ 1,15 mi a US$ 0 no histórico), mas a taxa de ganho não varia além do acaso (p = 0,30), e ranquear por ela seria ranquear ruído.
-4. Registrar atividade no CRM, como emails e reuniões. Hoje a idade é o único sinal. Com atividade, o score passa a distinguir o deal velho que tem reunião marcada para amanhã.
+4. Confirmar os conflitos: 464 deals (US$ 1,0 mi) têm outro vendedor fechando o mesmo produto na mesma conta. Antes de manter a previsão, confirmar com o cliente se é o mesmo pedido.
+5. Consolidar duplicados: 189 pares de conta e produto têm mais de um deal aberto (481 deals). Vale juntar ou encerrar o excedente antes de prever.
+6. Registrar atividade no CRM, como emails e reuniões. Hoje a idade é o único sinal. Com atividade, o score passa a distinguir o deal velho que tem reunião marcada para amanhã.
 
 ### Limitações
 
-- Alguns padrões são limpos demais para uma operação real: a região Central não tem nenhum deal em negociação, e todos os 500 prospects estão lá; 62% do pipeline aberto passou do maior ciclo já fechado. O app mostra esses achados, mas eles podem vir de como a base foi gerada. Em uma empresa real, eu confirmaria no CRM antes de mudar a cobrança do time.
+- Alguns padrões são limpos demais para uma operação real: a região Central não tem nenhum deal na janela de fechamento (os 408 deals em Engaging estão todos parados), e todos os 500 prospects estão lá; 62% do pipeline aberto passou do maior ciclo já fechado. O app mostra esses achados, mas eles podem vir de como a base foi gerada. Em uma empresa real, eu confirmaria no CRM antes de mudar a cobrança do time.
 - O CRM não registra atividade, então um deal com 150 dias e reunião marcada para amanhã aparece como parado.
 - Os dados são um retrato de 31/12/2017. Em produção o motor rodaria toda noite e as decisões voltariam para o CRM. Hoje ficam no `localStorage`, com exportar e importar em JSON.
 - Há viés de sobrevivência no limite de 138 dias. A base termina em 31/12/2017, e um deal aberto há 150 dias pode ter um desfecho que ainda não foi registrado. Por isso a fila Decidir pede requalificar ou encerrar, e o sistema nunca encerra sozinho.
+- O backtest é de quatro cortes de uma base sintética, não um experimento causal. Em julho e outubro os cohorts pulam meses e o forecast ajustado erra para cima; o ingênuo erra muito mais. A captura de receita mostra associação, não que seguir a ordem causa a venda.
+- Conflito de conta não prova que o pedido é o mesmo: pode ser outro departamento, outra quantidade ou recompra. Por isso o app pede confirmação e nunca encerra sozinho um deal com conflito.
 - O pico da curva depende de um ponto só: a idade com o maior valor entre as que têm pelo menos 30 deals, e pode mudar com a amostra. Suavizar a curva antes de procurar o pico resolveria.
 - O envio do script de notificação não foi testado com Slack ou email reais: os testes cobrem a formatação e a escolha de destino, e nenhuma mensagem foi enviada. O `sales_teams.csv` também não tem email nem Slack de ninguém, então `targets.json` é um diretório mantido à mão (em produção viria do SSO).
 - Para escalar, trocar `load()` por uma query no CRM é a única mudança necessária. Com uma base 100 vezes maior, a curva precisa de um algoritmo O(n log n), anotado no código.
@@ -145,7 +167,7 @@ O registro completo, com os erros, está em [`process-log/PROCESS.md`](process-l
 4. Pedi uma auditoria externa do motor a uma segunda sessão, sem o contexto de quem o construiu, e depois uma revisão adversarial da própria correção com o Codex.
 5. Pedi um review com o olhar de um avaliador e priorizei as correções.
 
-Foram 26 etapas, registradas em ordem no PROCESS.md com o que foi decisão minha, o que foi proposta da IA e o que os dados mostraram. Três delas foram revisões feitas de fora do código: a auditoria externa, a revisão adversarial e o review com olhar de avaliador.
+Foram 28 etapas, registradas em ordem no PROCESS.md com o que foi decisão minha, o que foi proposta da IA e o que os dados mostraram. Três delas foram revisões feitas de fora do código: a auditoria externa, a revisão adversarial e o review com olhar de avaliador.
 
 ### Onde a IA errou e como corrigi
 
@@ -173,7 +195,7 @@ Foram 26 etapas, registradas em ordem no PROCESS.md com o que foi decisão minha
 ## Evidências
 
 - [x] Process log: [`process-log/PROCESS.md`](process-log/PROCESS.md)
-- [x] Screenshots da versão atual em [`process-log/screenshots/`](process-log/screenshots/) (12 a 17); as de versões anteriores ficam em `screenshots/old/`
+- [x] Screenshots da versão atual em [`process-log/screenshots/`](process-log/screenshots/) (12 a 19); as de versões anteriores ficam em `screenshots/old/`
 - [x] Git history: commits da branch `submission/hisdevotions-afk`
 
 ---

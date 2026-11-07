@@ -948,6 +948,13 @@ tr.row-decidir .cell-action a { color: color-mix(in srgb, var(--decidir) 78%, va
   font-size: 0.75rem; font-weight: 700; color: var(--warn); vertical-align: 1px;
   background: color-mix(in srgb, var(--warn) 14%, transparent);
 }
+.tag-conflict {
+  display: inline-block; margin-left: 0.45rem; padding: 0 0.35rem; border-radius: 3px;
+  font-size: 0.7rem; font-weight: 700; color: var(--warn); vertical-align: 1px;
+  background: color-mix(in srgb, var(--warn) 14%, transparent); white-space: nowrap;
+}
+.btn-link.is-active { color: var(--ink); text-decoration-thickness: 2px; }
+.row-highlight th, .row-highlight td { background: color-mix(in srgb, var(--fechar) 8%, var(--surface)); }
 .row-stuck th, .row-stuck td { background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
 /* tabela por grupo: 8 colunas cabem em 1440 com cabeçalhos em duas linhas */
 .group-table thead th, .group-table thead th.num { white-space: normal; vertical-align: bottom; }

@@ -52,6 +52,7 @@ export function MyDay() {
   const queue = (b: Bucket) => open.filter((d) => d.bucket === b).sort(PRIORITY[b]);
   const [fechar, decidir, avancar, prospectar] = (["fechar", "decidir", "avancar", "prospectar"] as Bucket[]).map(queue);
   const noAccount = open.filter((d) => !d.account).length;
+  const conflicts = open.filter((d) => (d.conflicts?.length ?? 0) > 0).length;
   const declared = sum(open, (d) => d.price);
   const expected30 = sum(open, (d) => d.ev_soon);
   const monday = new Date(model.meta.reference_date + "T00:00:00Z");
@@ -153,7 +154,7 @@ export function MyDay() {
             <span className="health-dot" />
             <p>
               <strong>
-                {stuck.map((g) => g.name).join(" e ")}: nenhum deal em negociação.
+                {stuck.map((g) => g.name).join(" e ")}: nenhum deal na janela de fechamento.
               </strong>{" "}
               {stuck.length === 1 ? "Esse time não tem" : "Esses times não têm"} nada para fechar nos próximos 30 dias; o
               pipeline ali é só prospecção e parados. O trabalho é engajar e decidir, não fechar.
@@ -176,6 +177,17 @@ export function MyDay() {
               <strong>{plural(noAccount, "deal aberto sem conta vinculada", "deals abertos sem conta vinculada")}.</strong>{" "}
               Sem a conta, o deal não entra no histórico do cliente.{" "}
               <a href={`${link("pipeline")}?semconta=1`}>Ver os deals sem conta</a>
+            </p>
+          </div>
+        )}
+        {conflicts > 0 && (
+          <div className="health-item health-item-warn">
+            <span className="health-dot" />
+            <p>
+              <strong>{plural(conflicts, "deal com conflito de conta", "deals com conflito de conta")}.</strong>{" "}
+              Outro vendedor fechou o mesmo produto na mesma conta depois deste deal abrir. Confirme se é
+              o mesmo pedido antes de manter a previsão.{" "}
+              <a href={`${link("pipeline")}?conflito=1`}>Ver os conflitos</a>
             </p>
           </div>
         )}

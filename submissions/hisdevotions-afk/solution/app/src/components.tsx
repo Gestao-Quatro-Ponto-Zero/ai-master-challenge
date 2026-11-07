@@ -376,7 +376,7 @@ export function GroupTable({ rows, label, showRegion, onSelect, selectHint }: {
               <tr key={r.name} className={r.live === 0 ? "row-stuck" : undefined}>
                 <th scope="row">
                   <button className="row-link" onClick={() => onSelect(r)}>{r.name}</button>
-                  {r.live === 0 && <span className="tag-alert">nada em negociação</span>}
+                  {r.live === 0 && <span className="tag-alert">nada na janela de fechamento</span>}
                   {showRegion && <span className="muted block">{r.region}</span>}
                 </th>
                 <td><QueueBar deals={r.ds} label={r.name} /></td>
@@ -392,7 +392,7 @@ export function GroupTable({ rows, label, showRegion, onSelect, selectHint }: {
         </table>
       </div>
       <p className="queue-note">
-        {sort.key === "atencao" ? "Primeiro quem não tem nada em negociação, depois o maior % do valor parado. " : ""}
+        {sort.key === "atencao" ? "Primeiro quem não tem nada na janela de fechamento, depois o maior % do valor parado. " : ""}
         Clique num cabeçalho para ordenar e num nome para {selectHint}.
       </p>
     </>

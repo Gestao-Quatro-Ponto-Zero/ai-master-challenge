@@ -161,6 +161,43 @@ def test_wilson_interval():
     assert 0.49 < low < 0.6 < high < 0.7
 
 
+def test_conflict_flags_other_seller_same_account_and_product():
+    open_deal = _scored(age=60, account="Acme")
+    open_deal.update({"id": "OPP1", "agent": "Ana", "product": "GTX", "engage": REF - timedelta(days=60)})
+    won = {"id": "W1", "agent": "Bia", "account": "Acme", "product": "GTX", "stage": "Won",
+           "engage": REF - timedelta(days=90), "close": REF - timedelta(days=10), "close_value": 500}
+    other_product = {**won, "id": "W2", "product": "Outro"}
+    s.add_conflict_context([open_deal], [won, other_product], REF)
+    assert len(open_deal["conflicts"]) == 1
+    assert open_deal["conflicts"][0]["agent"] == "Bia"
+    assert any(r["kind"] == "!" and "Outro vendedor" in r["text"] for r in open_deal["reasons"])
+    assert "já foi atendido por outro vendedor" in open_deal["action"]
+
+
+def test_auc_perfect_random_and_inverted():
+    assert s._auc([(3, True), (2, True), (1, False), (0, False)]) == 1.0
+    assert s._auc([(3, False), (2, False), (1, True), (0, True)]) == 0.0
+    assert s._auc([(1, True), (1, False), (0, True), (0, False)]) == 0.5
+
+
+def test_backtest_uses_cutoff_snapshot_and_has_no_future_deals():
+    # Histórico sintético: 120 deals fechados antes do corte, 60 abertos no corte.
+    start = date(2017, 1, 1)
+    closed = [{"id": f"C{i}", "agent": "Ana", "account": "Acme", "product": "X", "price": 100,
+               "stage": "Won" if i % 2 else "Lost", "engage": start,
+               "close": start + timedelta(days=40 + i % 20), "close_value": 100 if i % 2 else None}
+              for i in range(120)]
+    open_now = [{"id": f"O{i}", "agent": "Ana", "account": "Acme", "product": "X", "price": 100,
+                 "stage": "Engaging", "engage": date(2017, 5, 1), "close": None, "close_value": None}
+                for i in range(60)]
+    bt = s.backtest(closed + open_now, cutoffs=("2017-06-01",), seed=1)
+    run = bt["runs"][0]
+    assert run["candidates"] == 60          # só quem estava aberto no corte
+    assert run["forecast"]["actual"] == 0    # ninguém fechou depois do corte
+    assert {r["name"] for r in bt["summary"]} >= {"Pipeline em Foco (valor × chance pela idade)", "Só valor"}
+    assert all(0 <= r["capture"] <= 1 for r in bt["summary"])
+
+
 def test_real_data_end_to_end():
     data = s.build()
     m = data["meta"]
@@ -186,6 +223,19 @@ def test_real_data_end_to_end():
     # sem conta não manda encerrar sozinho: os dois lados da fila têm deals sem conta
     no_acc = {d["suggested_action"] for d in decidir if d["account"] is None}
     assert no_acc == {"encerrar", "confirmar"}
+    # conflito conta × produto e higiene fazem parte do contrato do JSON
+    q = data["quality"]
+    assert q["conflicts"] == 464 and q["missing_account"] == 1425
+    assert q["duplicate_pairs"] == 189 and q["product_fixed"] == 1480
+    assert all("conflicts" in d for d in open_deals)
+    # backtest: a fila bate o acaso e o "só valor", e é estável entre cortes
+    bt = data["backtest"]
+    ours = next(r for r in bt["summary"] if r["name"].startswith("Pipeline em Foco"))
+    price = next(r for r in bt["summary"] if r["name"] == "Só valor")
+    chance = next(r for r in bt["summary"] if r["name"].startswith("Aleatório"))
+    assert ours["capture"] > price["capture"] > chance["capture"]
+    assert ours["min_capture"] > 0.5 and ours["auc"] > 0.6
+    assert bt["forecast"]["predicted_error"] < bt["forecast"]["naive_error"]
 
 
 if __name__ == "__main__":

@@ -73,6 +73,7 @@ def load(data_dir: Path = DATA_DIR):
             "manager": team["manager"],
             "region": team["regional_office"],
             "product": product,
+            "product_fixed": product != r["product"],  # contado na higiene e removido antes do JSON
             "series": products[product]["series"],
             "price": int(products[product]["sales_price"]),
             "account": r["account"] or None,
@@ -296,6 +297,76 @@ def add_account_context(open_deals: list[dict], all_deals: list[dict]) -> None:
             d["action"] = d["action"].rstrip(".") + ". " + "; ".join(extra).capitalize() + "."
 
 
+# ─── conflito conta × produto: o sinal mais forte de conta sem dono ─────────
+#
+# 464 dos 501 deals abertos com conta tiveram outro vendedor fechando o MESMO
+# produto na MESMA conta depois de o deal abrir. Isso não prova que o pedido é
+# o mesmo (pode ser outro departamento, outra quantidade, recompra), então não
+# vira "encerrar": vira uma confirmação. É contexto, não score.
+
+def add_conflict_context(open_deals: list[dict], all_deals: list[dict], ref: date) -> None:
+    won_by_pair = defaultdict(list)
+    for d in all_deals:
+        if d["stage"] == "Won" and d["account"]:
+            won_by_pair[(d["account"], d["product"])].append(d)
+    for d in open_deals:
+        d.setdefault("conflicts", [])
+        if not d["account"] or not d["engage"]:
+            continue
+        later = [w for w in won_by_pair[(d["account"], d["product"])]
+                 if w["agent"] != d["agent"] and w["close"] and w["close"] > d["engage"]]
+        if not later:
+            continue
+        later.sort(key=lambda w: w["close"])
+        d["conflicts"] = [{"agent": w["agent"], "days_ago": (ref - w["close"]).days,
+                           "value": w["close_value"] or 0} for w in later]
+        last = later[-1]
+        days = (ref - last["close"]).days
+        d["reasons"].append({"kind": "!", "text": (
+            f"Outro vendedor ({last['agent']}) fechou {d['product']} nesta conta "
+            f"{_n(len(later), 'vez', 'vezes')} depois deste deal abrir, a última há "
+            f"{_dias(days)}: confirme se é o mesmo pedido"
+        )})
+        # Conflito é confirmação, nunca encerramento automático: o fechamento
+        # posterior pode ser outro departamento, outra quantidade ou recompra.
+        # Um zumbi com conflito deixa de sugerir "encerrar" e passa a "confirmar".
+        if d.get("suggested_action") == "encerrar":
+            d["suggested_action"] = "confirmar"
+            d["action"] = (f"Confirme com a conta antes de encerrar: outro vendedor ({last['agent']}) "
+                           f"fechou {d['product']} nesta conta há {_dias(days)}. Se for o mesmo pedido, "
+                           "encerre; se não, mantenha o deal.")
+        else:
+            d["action"] = (d["action"].rstrip(".")
+                           + ". Confirme com a conta se este pedido já foi atendido por outro vendedor.")
+
+
+def quality_report(deals: list[dict], open_deals: list[dict], accounts: dict) -> dict:
+    """Higiene do CRM: o que impede o score e o forecast de funcionarem."""
+    missing = [d for d in open_deals if not d["account"]]
+    conflicts = [d for d in open_deals if d.get("conflicts")]
+    stalled = [d for d in open_deals if d["bucket"] == "decidir"]
+    pairs = defaultdict(list)
+    for d in open_deals:
+        if d["account"]:
+            pairs[(d["account"], d["product"])].append(d)
+    duplicate = [v for v in pairs.values() if len(v) > 1]
+    return {
+        "open_total": len(open_deals),
+        "missing_account": len(missing),
+        "missing_account_value": sum(d["price"] for d in missing),
+        "stalled": len(stalled),
+        "stalled_value": sum(d["price"] for d in stalled),
+        "conflicts": len(conflicts),
+        "conflicts_value": sum(d["price"] for d in conflicts),
+        "duplicate_pairs": len(duplicate),
+        "duplicate_deals": sum(len(v) for v in duplicate),
+        "product_fixed": sum(1 for d in deals if d.get("product_fixed")),
+        "won_without_value": sum(1 for d in deals if d["stage"] == "Won" and not d["close_value"]),
+        "close_before_engage": sum(1 for d in deals if d["close"] and d["engage"] and d["close"] < d["engage"]),
+        "unknown_account": sum(1 for d in open_deals if d["account"] and d["account"] not in accounts),
+    }
+
+
 # ─── sugestão de encerrar vs. confirmar, só para a fila "decidir" ───────────
 #
 # Não é previsão de resultado: zumbi ainda está aberto, não existe rótulo
@@ -491,6 +562,224 @@ def agent_stats(deals: list[dict], teams: dict, base: float) -> list[dict]:
     return out
 
 
+# ─── backtest: a fila teria escolhido os deals certos? ─────────────────────
+#
+# Em cada corte, o motor aprende SÓ com deals fechados até a data e reconstrói
+# o pipeline aberto naquele dia (engage <= corte < close). Nenhum resultado
+# posterior ao corte entra no treino. Aí comparamos a ordem que a ferramenta
+# daria com alternativas e com o acaso.
+
+BACKTEST_CUTOFFS = ("2017-07-01", "2017-08-01", "2017-09-01", "2017-10-01")
+BACKTEST_HORIZON = HORIZON   # mesma janela do score: 30 dias, não 90
+BACKTEST_TOP_FRACTION = 0.2  # "os 20% que a fila mandaria atacar primeiro"
+BACKTEST_TOP_PER_SELLER = 10
+BACKTEST_DRAWS = 200
+
+
+def _rate_by(closed: list[dict], key) -> tuple[dict, float]:
+    """Taxa de ganho suavizada por grupo, aprendida só com o treino do corte."""
+    groups = defaultdict(lambda: [0, 0])
+    for d in closed:
+        g = groups[key(d)]
+        g[0] += 1
+        g[1] += d["stage"] == "Won"
+    total = sum(n for n, _ in groups.values())
+    base = sum(w for _, w in groups.values()) / total if total else 0.0
+    return {k: (w + PRIOR * base) / (n + PRIOR) for k, (n, w) in groups.items()}, base
+
+
+def _auc(pairs: list[tuple[float, bool]]) -> float:
+    """Área sob a curva ROC: P(score de um ganho > score de uma perda), empate = 0,5."""
+    rows = sorted(pairs, key=lambda sw: sw[0])
+    n = len(rows)
+    wins = sum(1 for _, w in rows if w)
+    losses = n - wins
+    if not wins or not losses:
+        return 0.5
+    rank_sum = 0.0
+    i = 0
+    while i < n:
+        j = i
+        while j < n and rows[j][0] == rows[i][0]:
+            j += 1
+        avg_rank = (i + j + 1) / 2  # ranks 1-based, empates dividem a posição
+        rank_sum += sum(1 for k in range(i, j) if rows[k][1]) * avg_rank
+        i = j
+    return (rank_sum - wins * (wins + 1) / 2) / (wins * losses)
+
+
+def _top_metrics(cands: list[dict], rank, n: int, total_revenue: float) -> dict:
+    sel = sorted(cands, key=rank, reverse=True)[:n]
+    revenue = sum(c["revenue"] for c in sel)
+    return {
+        "deals": len(sel),
+        "wins": sum(1 for c in sel if c["won_in_window"]),
+        "revenue": revenue,
+        "capture": revenue / total_revenue if total_revenue else 0.0,
+        "zombies": sum(1 for c in sel if c["zombie"]) / len(sel) if sel else 0.0,
+    }
+
+
+def _per_seller(cands: list[dict], rank) -> dict:
+    by = defaultdict(list)
+    for c in cands:
+        by[c["deal"]["agent"]].append(c)
+    sel = []
+    for ds in by.values():
+        sel.extend(sorted(ds, key=rank, reverse=True)[:BACKTEST_TOP_PER_SELLER])
+    return {"deals": len(sel), "wins": sum(1 for c in sel if c["won_in_window"]),
+            "revenue": sum(c["revenue"] for c in sel)}
+
+
+def backtest(deals: list[dict], cutoffs: tuple[str, ...] = BACKTEST_CUTOFFS,
+             seed: int = 11) -> dict:
+    rng = random.Random(seed)
+    runs = []
+    for cutoff in cutoffs:
+        t = date.fromisoformat(cutoff)
+        train = [d for d in deals if d["close"] and d["close"] <= t]
+        # Reconstrução do pipeline naquele dia: quem já tinha engajado e ainda
+        # não tinha fechado. Inclui deals que hoje estão Won/Lost — na data do
+        # corte eles estavam abertos, e o desfecho só é usado na avaliação.
+        open_at = [d for d in deals if d["engage"] and d["engage"] <= t
+                   and (d["close"] is None or d["close"] > t)]
+        curve = fit_curve(train, [(t - d["engage"]).days for d in open_at])
+        seller_rate, base = _rate_by(train, lambda d: d["agent"])
+        product_rate, _ = _rate_by(train, lambda d: d["product"])
+
+        cands = []
+        for d in open_at:
+            age = (t - d["engage"]).days
+            zombie = age >= curve.max_cycle
+            chance = 0.0 if zombie else curve.win_soon[age]
+            cands.append({
+                "deal": d, "age": age, "zombie": zombie, "chance": chance,
+                "ev": d["price"] * chance,
+                "seller_rate": seller_rate.get(d["agent"], base),
+                "product_rate": product_rate.get(d["product"], base),
+            })
+        # Desfecho conhecido: fechou até o fim da base. Deal ainda aberto em
+        # 31/12 não tem rótulo e fica fora da AUC (não é perda, é censura).
+        known = [c for c in cands if c["deal"]["close"] is not None]
+        for c in known:
+            close = c["deal"]["close"]
+            c["won"] = c["deal"]["stage"] == "Won"
+            c["won_in_window"] = c["won"] and (close - t).days <= BACKTEST_HORIZON
+            c["revenue"] = (c["deal"]["close_value"] or 0) if c["won_in_window"] else 0
+        # Para receita em 30 dias, deal ainda aberto no fim da base também é 0:
+        # todos os cortes têm 30 dias completos antes de 31/12.
+        for c in cands:
+            c.setdefault("won", False)
+            c.setdefault("won_in_window", False)
+            c.setdefault("revenue", 0)
+
+        total_revenue = sum(c["revenue"] for c in cands)
+        top_n = max(1, round(len(cands) * BACKTEST_TOP_FRACTION))
+        strategies = {
+            "Pipeline em Foco (valor × chance pela idade)": lambda c: c["ev"],
+            "Só valor": lambda c: c["deal"]["price"],
+            "Mais novos primeiro": lambda c: -c["age"],
+            "Mais antigos primeiro": lambda c: c["age"],
+            "Taxa base × valor": lambda c: c["deal"]["price"] * base,
+            "Vendedor (histórico) × valor": lambda c: c["deal"]["price"] * c["seller_rate"],
+            "Produto (histórico) × valor": lambda c: c["deal"]["price"] * c["product_rate"],
+        }
+        rows = []
+        for name, rank in strategies.items():
+            # AUC da janela de 30 dias: todo candidato tem desfecho conhecido
+            # nessa janela (corte + 30 <= 31/12), inclusive quem segue aberto.
+            rows.append({
+                "name": name,
+                "auc": _auc([(rank(c), c["won_in_window"]) for c in cands]),
+                "top": _top_metrics(cands, rank, top_n, total_revenue),
+                "seller": _per_seller(cands, rank),
+            })
+
+        # Acaso: mesma quantidade de deals, escolhidos sem critério, 200 vezes.
+        draws = []
+        for _ in range(BACKTEST_DRAWS):
+            shuffled = cands[:]
+            rng.shuffle(shuffled)
+            draws.append((_top_metrics(shuffled, lambda c: 0, top_n, total_revenue),
+                          _per_seller(shuffled, lambda c: 0)))
+        rows.append({
+            "name": "Aleatório (média de 200 sorteios)",
+            "auc": 0.5,
+            "top": {k: sum(d[0][k] for d in draws) / len(draws)
+                    for k in ("deals", "wins", "revenue", "capture", "zombies")},
+            "seller": {k: sum(d[1][k] for d in draws) / len(draws) for k in ("deals", "wins", "revenue")},
+        })
+
+        # Forecast de 30 dias: o ajustado é o mesmo ev_soon que o app soma.
+        predicted = sum(c["deal"]["price"] * c["chance"] for c in cands)
+        naive = sum(c["deal"]["price"] for c in cands) * base
+        actual = sum((c["deal"]["close_value"] or 0) for c in cands
+                     if c["deal"]["stage"] == "Won" and c["deal"]["close"]
+                     and 0 < (c["deal"]["close"] - t).days <= HORIZON)
+        runs.append({
+            "cutoff": cutoff,
+            "candidates": len(cands),
+            "known": len(known),
+            "won": sum(1 for c in cands if c["won_in_window"]),
+            "base_rate": base,
+            "total_revenue": total_revenue,
+            "strategies": rows,
+            "forecast": {
+                "predicted": predicted, "naive": naive, "actual": actual,
+                "predicted_error": predicted / actual - 1 if actual else None,
+                "naive_error": naive / actual - 1 if actual else None,
+            },
+        })
+
+    # Resumo: soma a receita de todos os cortes e pondera a AUC pelo tamanho.
+    summary = []
+    for name in [r["name"] for r in runs[0]["strategies"]]:
+        picks = [(run, next(s for s in run["strategies"] if s["name"] == name)) for run in runs]
+        candidate_total = sum(run["candidates"] for run, _ in picks)
+        top_revenue = sum(s["top"]["revenue"] for _, s in picks)
+        top_deals = sum(s["top"]["deals"] for _, s in picks)
+        total_revenue = sum(run["total_revenue"] for run in runs)
+        captures = [s["top"]["capture"] for _, s in picks]
+        summary.append({
+            "name": name,
+            "auc": sum(s["auc"] * run["candidates"] for run, s in picks) / candidate_total if candidate_total else 0.5,
+            "top_revenue": top_revenue,
+            "top_wins": sum(s["top"]["wins"] for _, s in picks),
+            "top_deals": top_deals,
+            "capture": top_revenue / total_revenue if total_revenue else 0.0,
+            "min_capture": min(captures),
+            "max_capture": max(captures),
+            "seller_revenue": sum(s["seller"]["revenue"] for _, s in picks),
+            "seller_wins": sum(s["seller"]["wins"] for _, s in picks),
+            "zombies": sum(s["top"]["zombies"] * s["top"]["deals"] for _, s in picks) / max(1, top_deals),
+        })
+    forecast_summary = {
+        "predicted": sum(run["forecast"]["predicted"] for run in runs),
+        "naive": sum(run["forecast"]["naive"] for run in runs),
+        "actual": sum(run["forecast"]["actual"] for run in runs),
+    }
+    forecast_summary["predicted_error"] = (
+        forecast_summary["predicted"] / forecast_summary["actual"] - 1
+        if forecast_summary["actual"] else None)
+    forecast_summary["naive_error"] = (
+        forecast_summary["naive"] / forecast_summary["actual"] - 1
+        if forecast_summary["actual"] else None)
+    return {
+        "horizon_days": BACKTEST_HORIZON,
+        "top_fraction": BACKTEST_TOP_FRACTION,
+        "top_per_seller": BACKTEST_TOP_PER_SELLER,
+        "cutoffs": list(cutoffs),
+        "forecast": forecast_summary,
+        "note": ("Em cada corte o motor aprende só com deals fechados até a data; "
+                 "o desfecho posterior é usado apenas para avaliar. AUC mede se o "
+                 "score separa ganhos de perdas; captura mede a receita ganha em "
+                 f"{BACKTEST_HORIZON} dias que os {int(BACKTEST_TOP_FRACTION * 100)}% "
+                 "melhores da fila teriam pego."),
+        "summary": summary,
+        "runs": runs,
+    }
+
+
 # ─── montagem do JSON que o app lê ─────────────────────────────────────────
 
 def build(data_dir: Path = DATA_DIR, ref: date | None = None) -> dict:
@@ -504,9 +793,13 @@ def build(data_dir: Path = DATA_DIR, ref: date | None = None) -> dict:
         d.update(score_open(d, curve, ref))
     suggest_decide([d for d in open_deals if d["bucket"] == "decidir"], curve.max_cycle)
     add_account_context(open_deals, deals)
+    add_conflict_context(open_deals, deals, ref)
+    quality = quality_report(deals, open_deals, accounts)
     stats = significance(closed, accounts)
     agents = agent_stats(deals, teams, curve.base_rate)
+    bt = backtest(deals)
     for d in deals:  # só depois das contas com data: serializa no próprio dict
+        d.pop("product_fixed", None)
         d["engage"] = d["engage"] and d["engage"].isoformat()
         d["close"] = d["close"] and d["close"].isoformat()
     return {
@@ -532,6 +825,8 @@ def build(data_dir: Path = DATA_DIR, ref: date | None = None) -> dict:
         ],
         "significance": stats,
         "agents": agents,
+        "quality": quality,
+        "backtest": bt,
         "accounts": list(accounts.values()),
         "products": list(products.values()),
         "deals": deals,
