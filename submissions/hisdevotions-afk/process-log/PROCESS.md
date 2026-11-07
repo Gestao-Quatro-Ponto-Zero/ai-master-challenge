@@ -369,19 +369,66 @@ Como essas classes (`.page-head`, `.lede`) são compartilhadas por todas as tela
 
 [EU] Decidi corrigir quase tudo. O que eu defini em cada ponto:
 
-- **Um número, um nome.** O score continua sendo a chance de ganhar em 30 dias, agora mostrado como "28%", com o mesmo nome em todas as telas, no CSV exportado e na curva da ficha, que passou a desenhar essa mesma chance. "Chance de fechar em 30 dias" saiu da tela: continua no motor, só para calcular a janela.
-- **Faixa contra o melhor possível.** Uma faixa alta, média ou baixa compara o score com o máximo da base (31%, aos 85 dias), e o anel enche contra esse máximo. Um 28% virou "alta", que é o que ele é.
-- **A ordem à vista.** A tabela "Feche esta semana" trocou a coluna de probabilidade sem prazo pela receita esperada em 30 dias, que é o que ordena, e diz isso numa linha. O Pipeline abre na mesma ordem.
-- **Ação por fase.** Antes do pico, "envie a proposta"; no pico, "peça a decisão"; depois, "feche antes de esfriar"; abaixo de metade do pico (115 dias), "peça um sim ou não", com os dias que faltam para o limite. O pico e a reta final saem da curva, não de constantes.
-- **Contexto da conta.** Conta não muda a chance de ganhar (p = 0,95), então não entra no score. Mas quantas vezes o cliente já comprou e quantos outros deals ele tem abertos mudam a conversa. Isso entra como motivo e como complemento da ação.
-- **Sem conta não encerra.** A sugestão da fila Decidir usa só quanto o deal passou do limite, contra a mediana dos parados. A divisão foi de 1.102 encerrar e 199 confirmar para 653 e 648. A falta de conta virou uma tarefa de cadastro dentro da própria ação.
-- **Time com receita.** Receita ganha, participação no time e ticket médio, ordenados por receita, que é um fato e não uma estimativa. A taxa de ganho continua sem comparação. Quem não tem nenhum deal sai da tabela e ganha uma nota pedindo para confirmar com o manager.
-- **Artefatos como hipótese.** O Forecast e o README avisam que o padrão da Central pode vir de como a base foi gerada.
+- O score continua sendo a chance de ganhar em 30 dias, agora mostrado como "28%", com o mesmo nome em todas as telas, no CSV exportado e na curva da ficha, que passou a desenhar essa mesma chance. "Chance de fechar em 30 dias" saiu da tela: continua no motor, só para calcular a janela.
+- Uma faixa alta, média ou baixa compara o score com o máximo da base (31%, aos 85 dias), e o anel enche contra esse máximo. Um 28% virou "alta", que é o que ele é.
+- A tabela "Feche esta semana" trocou a coluna de probabilidade sem prazo pela receita esperada em 30 dias, que é o que ordena, e diz isso numa linha. O Pipeline abre na mesma ordem.
+- A ação agora muda com a fase da curva. Antes do pico, "envie a proposta"; no pico, "peça a decisão"; depois, "feche antes de esfriar"; abaixo de metade do pico (115 dias), "peça um sim ou não", com os dias que faltam para o limite. O pico e a reta final saem da curva, não de constantes.
+- A conta não muda a chance de ganhar (p = 0,95), então não entra no score. Mas quantas vezes o cliente já comprou e quantos outros deals ele tem abertos mudam a conversa. Isso entra como motivo e como complemento da ação.
+- A sugestão da fila Decidir usa só quanto o deal passou do limite, contra a mediana dos parados. A divisão foi de 1.102 encerrar e 199 confirmar para 653 e 648. A falta de conta virou uma tarefa de cadastro dentro da própria ação.
+- A tela Time passou a mostrar receita ganha, participação no time e ticket médio, ordenados por receita, que é um fato e não uma estimativa. A taxa de ganho continua sem comparação. Quem não tem nenhum deal sai da tabela e ganha uma nota pedindo para confirmar com o manager.
+- O Forecast e o README avisam que o padrão da Central pode vir de como a base foi gerada.
 
 [IA] Também testou o que o review sugeria para ir além da idade: a duração do ciclo muda por produto? O mesmo teste contra o acaso deu p = 0,10, então não justifica uma curva por produto. O teste entrou na tabela de significância como "não usado".
 
 [EU] Também cortei o README pela metade (o guia do desafio pede 5 páginas, não 40), refiz as screenshots com Chrome headless num perfil limpo, movi as de versões antigas para `screenshots/old/` e tirei `.impeccable/design.json` do versionamento (o commit anterior dizia que tinha tirado, mas o arquivo continuava lá).
 
 Verificação: 18 testes do motor (cinco novos: sugestão sem conta, ações por fase, faixa, contexto da conta e o teste de ciclo), os testes do bot, `tsc --noEmit`, `npm run build`, e as telas conferidas no navegador. A 390 px, nenhuma tela passa da largura.
+
+## 21. Crítica de design com Hallmark e Impeccable, e a visão do gestor
+
+[EU] Pedi uma crítica de design focada em visibilidade de dados e na leitura do gestor, usando o Hallmark e o Impeccable no app rodando local.
+
+[IA] Rodou o lint do Hallmark em modo audit e o critique do Impeccable com duas avaliações isoladas: uma revisão de design e uma de detector no navegador. Nota 25/40. O achado principal: o app foi desenhado para o vendedor, e sem filtro a Overview mostrava deals um a um e botões de decisão, quando o gestor precisa saber em que time está o problema. Também apontou que o Forecast só tinha números para comparar regiões, que a barra do KPI de zumbis usava ouro (quebrando a regra "ouro é dinheiro") e que "Sem conta vinculada" em terracota virava o título de quase toda linha. Os cerca de 117 alertas de contraste nos anéis de score eram falso positivo: o detector leu o gradiente como fundo.
+
+[EU] Escolhi atacar só o P0 e os P1 nesta rodada, e trocar a fila Decidir da visão do gestor por um resumo. O que mudou:
+
+- Sem vendedor escolhido, a Overview mostra uma tabela por manager, ordenada pelo valor parado, com a composição do pipeline por fila numa barra, o % parado, quantos deals estão na janela e a receita esperada em 30 dias. Com um manager filtrado, a mesma tabela lista os vendedores dele. Um clique aplica o filtro e desce um nível, até chegar ao "Bom dia, <vendedor>". A ação do momento e as filas com botões ficam só na visão do vendedor.
+- O Forecast ganhou a mesma barra de composição em cada linha, e "Esperado" virou "Esperado (sem prazo)" no Forecast e em Contas, para não confundir com os 30 dias. Cada coluna do quadro mostra o total em US$.
+- A barra e o ícone do KPI "Aguardando decisão" e o ponto dos parados saíram do ouro para o bordô da fila Decidir. Deal sem conta mostra o produto como nome e "sem conta" numa tag discreta.
+
+Verificação: `tsc` e build limpos, o detector do Impeccable sem achados novos, o clique empresa → manager → vendedor testado no navegador, e nenhuma tela passa de 390 px de largura. Os itens P2 e P3 (texto repetido, tela Time, tokens do Hallmark) ficaram para outra rodada.
+
+## 22. Segunda crítica: o alarme do gestor, um nome para os parados e as cores do tema escuro
+
+[IA] A segunda rodada do critique deu 27/40 (antes 25). O detector no código voltou limpo. A revisão de design apontou que a Central, com dois managers sem nenhum deal em negociação, aparecia no meio da tabela de gestor com cara de linha normal, e que o aviso só existia no Forecast. Também mostrou que "parado" era contagem no KPI (62%) e valor nas tabelas (65% a 86%), que a fila Decidir tinha sete nomes diferentes, e que no tema escuro a cor de alerta e a de Decidir eram quase iguais.
+
+[EU] Escolhi o P0 e os dois P1, mantendo o tema escuro como padrão. O que mudou:
+
+- A faixa de saúde da Overview do gestor diz quais times não têm nada em negociação. Na tabela, essas linhas vêm primeiro, marcadas com "nada em negociação", e o resto segue pelo maior % do valor parado. O clique numa linha leva a tela de volta ao topo, onde está o título da nova visão.
+- Os deals da fila Decidir passaram a se chamar "parados" em toda a interface: o KPI virou "Parados para decidir", o badge do topo diz "parados para decidir", a fila do vendedor é "Decida os parados" e o Time tem "Deals parados". Toda porcentagem de parado diz a unidade ("% do valor parado"), e a legenda do KPI usa o valor, então mostra os mesmos 65% do Forecast. A linha da faixa de saúde que repetia o total de parados saiu.
+- A cor de alerta passou de terracota para violeta, fora das quatro cores de fila nos dois temas. O botão primário no escuro ficou invertido (marfim com texto navy), porque navy sobre navy sumia. A decisão sugerida na fila Decidir é um botão preenchido em bordô. Motivos negativos ("ainda cedo") deixaram de usar a cor de Decidir.
+- O DESIGN.md foi atualizado para dizer que o escuro é o padrão e para registrar a cor de alerta e os botões novos.
+
+Verificação: `tsc` e build limpos, o detector sem achados, o caminho empresa → manager → vendedor testado no navegador (a tela volta ao topo a cada clique) e os botões de decisão conferidos na visão do vendedor. As P2 (unificar as tabelas de manager do Overview e do Forecast, rotular a ação do momento) ficaram para depois.
+
+## 23. Uma tabela por grupo nas duas telas, e a ação do momento explicada
+
+[EU] Pedi os dois P2 que tinham ficado da segunda crítica.
+
+A Overview e o Forecast tinham duas tabelas por manager com colunas, ordem e comportamento diferentes: só a da Overview abria o recorte no clique. Juntei as duas num componente só (`GroupTable`), com as mesmas colunas (composição do valor aberto, declarado, valor parado, % do valor parado, deals na janela, receita esperada em 30 dias e esperado sem prazo). Os cabeçalhos ordenam, e a ordem padrão é a de "precisa de atenção": primeiro quem não tem nada em negociação, depois o maior % do valor parado. No Forecast, o clique aplica o filtro e desce um nível (região → manager → vendedor), como já acontecia na Overview. Com oito colunas a tabela passava da largura em 1440 px, então os cabeçalhos agora quebram em duas linhas e a barra ficou mais estreita.
+
+Na visão do vendedor, a "Ação do momento" diz o critério ao lado do título ("o deal de maior receita esperada em 30 dias"), e esse deal não se repete como primeira linha da tabela logo abaixo.
+
+Verificação: `tsc` e build limpos, o detector sem achados, e no navegador a ordenação por cabeçalho e o clique em West no Forecast, que aplicou o filtro da região e passou para a visão por manager.
+
+## 24. Filtros na URL, notas mais curtas e menos repetição
+
+[EU] Pedi os três itens que ainda sobravam das críticas: filtros na URL, notas longas e números repetidos.
+
+Os filtros agora ficam na query do hash (`#/forecast?por=manager&regiao=West&manager=Celia%20Rouche`), ao lado dos parâmetros de cada página. Um link com filtros abre direto no recorte, mesmo num navegador sem nada salvo. A navegação interna mantém os parâmetros, o botão voltar restaura o recorte anterior e "Limpar tudo" os remove. Testei no navegador: clique na tabela de gestor, troca de tela pelo menu, link colado com outra região, voltar e limpar.
+
+As notas usavam `max-width: 72ch`, mas `ch` mede a largura do "0", e o texto real passava de 90 caracteres por linha. Baixei para 60ch (uns 75 caracteres) nas notas e nos avisos.
+
+Na Overview, o total de parados aparecia três vezes: no texto de abertura, no KPI e no badge do topo. Saiu do texto de abertura. Os dois avisos de deals sem conta (um na faixa de saúde e outro no fim da página) viraram um só, com o link para a lista. Embaixo da tabela de gestor ficou uma nota só.
 
 Texto deste log revisado com a skill humanizer.

@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
-import { BUCKETS, DealName, DealRow, DecisionButtons, Empty, Score, TIER_LABEL } from "../components";
-import { nextBestAction, peakAge, PRIORITY, useApp, useScopedOpen } from "../data";
+import { BUCKETS, DealName, DealRow, DecisionButtons, Empty, GroupTable, groupDeals, Score, TIER_LABEL, type GroupRow } from "../components";
+import { nextBestAction, peakAge, PRIORITY, useApp, useScopedOpen, type Filters } from "../data";
 import { int, longDate, money, moneyShort, pct, plural, sum } from "../format";
 import { link } from "../router";
 import type { Bucket, OpenDeal } from "../types";
 
 /** Ícone + número real + barra contra um total real — nada de "12% acima da meta" inventado. */
-function StatCard({ icon, label, value, ratio, caption }: { icon: ReactNode; label: string; value: string; ratio: number; caption: string }) {
+function StatCard({ icon, label, value, ratio, caption, queue }: { icon: ReactNode; label: string; value: string; ratio: number; caption: string; queue: Bucket }) {
   return (
-    <div className="stat-card">
+    <div className={`stat-card on-${queue}`}>
       <div className="stat-card-head">
         <span className="stat-card-label">{label}</span>
         <span className="stat-card-icon">{icon}</span>
@@ -72,6 +72,17 @@ export function MyDay() {
   // novo em negociação pra avançar (o "gargalo do funil" que o Forecast já
   // detecta). Só aparece quando o recorte realmente tem esse desequilíbrio.
   const prospectHeavy = prospectar.length > 0 && avancar.length === 0;
+  // Sem vendedor escolhido, quem olha é gestor: ele precisa saber ONDE está o
+  // problema (qual time, qual vendedor), não clicar deal a deal. As filas com
+  // botões ficam para a visão do vendedor e para o Pipeline.
+  const managerView = !filters.agent;
+  const stalledValue = sum(decidir, (d) => d.price);
+  // Na visão do vendedor o primeiro da fila já está na "Ação do momento": não repete na tabela.
+  const closeRows = fechar.filter((d) => managerView || d !== now).slice(0, 6);
+  const groups = managerView ? groupDeals(open, (d) => (filters.manager ? d.agent : d.manager)) : [];
+  // Funil travado: grupo com pipeline aberto mas nada em negociação viva (nem
+  // na janela, nem avançando). É o alarme que o gestor precisa ver primeiro.
+  const stuck = groups.filter((g) => g.live === 0);
 
   const who = filters.agent
     ? `Bom dia, ${filters.agent.split(" ")[0]}.`
@@ -106,18 +117,13 @@ export function MyDay() {
           ) : (
             <>Nenhum deal está na janela de fechamento. </>
           )}
-          {decidir.length > 0 && (
-            <>
-              Outros {plural(decidir.length, "está parado", "estão parados")} além de qualquer ciclo já fechado e pedem uma
-              decisão, não mais follow-up.
-            </>
-          )}
         </p>
       </header>
 
       <div className="stat-row">
         <StatCard
           icon={<svg viewBox="0 0 18 18" aria-hidden="true"><polyline points="2.5,13.5 7,8.5 10.5,11 15.5,4.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /><polyline points="11.5,4.5 15.5,4.5 15.5,8.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+          queue="fechar"
           label="Receita esperada (30 dias)"
           value={moneyShort(expected30)}
           ratio={declared > 0 ? expected30 / declared : 0}
@@ -125,6 +131,7 @@ export function MyDay() {
         />
         <StatCard
           icon={<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 3.5h13L10.2 9.8v5.2l-2.4 1v-6.2Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+          queue="fechar"
           label="Na janela de fechamento"
           value={int(fechar.length)}
           ratio={open.length > 0 ? fechar.length / open.length : 0}
@@ -132,21 +139,27 @@ export function MyDay() {
         />
         <StatCard
           icon={<svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M9 5.2V9l3 2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
-          label="Aguardando decisão"
+          queue="decidir"
+          label="Parados para decidir"
           value={int(decidir.length)}
-          ratio={open.length > 0 ? decidir.length / open.length : 0}
-          caption={`${pct(open.length > 0 ? decidir.length / open.length : 0)} do pipeline aberto, sem histórico comparável`}
+          ratio={declared > 0 ? stalledValue / declared : 0}
+          caption={`${pct(declared > 0 ? stalledValue / declared : 0)} do valor aberto (${moneyShort(stalledValue)}) está nesses deals`}
         />
       </div>
 
       <section className="health-strip" aria-label="Saúde do funil no recorte">
-        <div className="health-item">
-          <span className="health-dot" />
-          <p>
-            <strong>{plural(decidir.length, "deal parado além de qualquer ciclo", "deals parados além de qualquer ciclo")}</strong>{" "}
-            ({pct(open.length > 0 ? decidir.length / open.length : 0)} do aberto). Decisão, não follow-up.
-          </p>
-        </div>
+        {stuck.length > 0 && (
+          <div className="health-item health-item-alert">
+            <span className="health-dot" />
+            <p>
+              <strong>
+                {stuck.map((g) => g.name).join(" e ")}: nenhum deal em negociação.
+              </strong>{" "}
+              {stuck.length === 1 ? "Esse time não tem" : "Esses times não têm"} nada para fechar nos próximos 30 dias; o
+              pipeline ali é só prospecção e parados. O trabalho é engajar e decidir, não fechar.
+            </p>
+          </div>
+        )}
         {prospectHeavy && (
           <div className="health-item health-item-warn">
             <span className="health-dot" />
@@ -161,16 +174,19 @@ export function MyDay() {
             <span className="health-dot" />
             <p>
               <strong>{plural(noAccount, "deal aberto sem conta vinculada", "deals abertos sem conta vinculada")}.</strong>{" "}
-              Sem conta não há histórico do cliente.
+              Sem a conta, o deal não entra no histórico do cliente.{" "}
+              <a href={`${link("pipeline")}?semconta=1`}>Ver os deals sem conta</a>
             </p>
           </div>
         )}
       </section>
 
-      {now && (
+      {managerView && <TeamTable rows={groups} filters={filters} />}
+
+      {!managerView && now && (
         <aside className="razor" aria-label="Ação do momento">
           <div className="razor-head">
-            <h2>Ação do momento</h2>
+            <h2>Ação do momento <span className="razor-why">o deal de maior receita esperada em 30 dias</span></h2>
             <a className="razor-open" href={link("deal", now.id)}>Abrir ficha</a>
           </div>
           <div className="razor-body">
@@ -188,7 +204,7 @@ export function MyDay() {
       )}
 
       <section className="queue queue-fechar">
-        <QueueHead bucket="fechar" title="Feche esta semana" count={fechar.length} />
+        <QueueHead bucket="fechar" title={managerView ? "Maiores oportunidades da semana" : "Feche esta semana"} count={fechar.length} />
         {fechar.length > 0 && (
           <p className="queue-note">
             Ordenado por receita esperada em 30 dias (valor de lista × chance de ganhar em 30 dias). O score é essa chance; a
@@ -208,16 +224,22 @@ export function MyDay() {
                 </tr>
               </thead>
               <tbody>
-                {fechar.slice(0, 6).map((d) => {
+                {closeRows.map((d) => {
                   const closeToPeak = peakGap(d) <= 5;
                   return (
-                    <tr key={d.id} className={d === now ? "row-fechar" : undefined}>
+                    <tr key={d.id}>
                       <td>
                         <a className="cell-deal" href={link("deal", d.id)}>
                           <span>
-                            <span className={d.account ? "" : "no-account"}>{d.account ?? "Sem conta vinculada"}</span>
-                            {" · "}
-                            <span className="deal-product">{d.product}</span>
+                            {d.account ? (
+                              <>
+                                {d.account}
+                                {" · "}
+                                <span className="deal-product">{d.product}</span>
+                              </>
+                            ) : (
+                              <DealName deal={d} />
+                            )}
                           </span>
                           <span className="cell-deal-sub">{money(d.price)} · {d.agent}</span>
                         </a>
@@ -249,8 +271,9 @@ export function MyDay() {
         )}
       </section>
 
+      {!managerView && (<>
       <section className="queue queue-decidir">
-        <QueueHead bucket="decidir" title="Decida o destino" count={decidir.length} />
+        <QueueHead bucket="decidir" title="Decida os parados" count={decidir.length} />
         <p className="queue-note">
           Nenhum deal da base fechou depois de {model.meta.max_cycle} dias. Confirme com o cliente: se ainda existe decisão,
           requalifique; se não, encerre e tire do forecast.
@@ -291,16 +314,7 @@ export function MyDay() {
           {prospectar.length === 0 && <Empty>Nenhum deal em prospecção.</Empty>}
         </section>
       </div>
-
-      {noAccount > 0 && (
-        <aside className="hygiene">
-          <p>
-            <strong>{plural(noAccount, "deal aberto está", "deals abertos estão")} sem conta vinculada.</strong> Sem a conta, o
-            deal não entra no histórico do cliente e o time perde contexto na próxima negociação.
-          </p>
-          <a className="btn" href={`${link("pipeline")}?semconta=1`}>Ver deals sem conta</a>
-        </aside>
-      )}
+      </>)}
     </div>
   );
 }
@@ -316,5 +330,27 @@ function QueueHead({ bucket, title, count }: { bucket: Bucket; title: string; co
         </a>
       )}
     </header>
+  );
+}
+
+/** Visão de gestor: a mesma tabela por grupo do Forecast. Um clique aplica o
+    filtro e desce um nível (manager → vendedor → a semana do vendedor). */
+function TeamTable({ rows, filters }: { rows: GroupRow[]; filters: Filters }) {
+  const { setFilters } = useApp();
+  const byAgent = !!filters.manager;
+  const select = (r: GroupRow) => {
+    setFilters(byAgent ? { ...filters, agent: r.name } : { region: filters.region || r.region, manager: r.name, agent: "" });
+    window.scrollTo(0, 0); // o título da nova visão ("Semana do time de…", "Bom dia…") precisa ficar à vista
+  };
+  return (
+    <section className="queue team-table">
+      <header className="queue-head">
+        <h2>{byAgent ? `Time de ${filters.manager}` : "Onde está o pipeline, por manager"}</h2>
+      </header>
+      <GroupTable
+        rows={rows} label={byAgent ? "Vendedor" : "Manager"} showRegion={!byAgent} onSelect={select}
+        selectHint={byAgent ? "ver a semana do vendedor" : "ver o time do manager"}
+      />
+    </section>
   );
 }

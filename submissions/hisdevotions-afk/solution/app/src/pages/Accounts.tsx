@@ -24,7 +24,7 @@ export function Accounts() {
     <div>
       <header className="page-head">
         <h1>Contas</h1>
-        <p className="lede">Ordenadas pelo valor esperado dos deals abertos no seu recorte.</p>
+        <p className="lede">Ordenadas pelo esperado (sem prazo) dos deals abertos no seu recorte.</p>
       </header>
       <div className="table-wrap">
         <table className="deals">
@@ -33,7 +33,7 @@ export function Accounts() {
               <th scope="col">Conta</th>
               <th scope="col">Setor</th>
               <th scope="col" className="num">Abertos</th>
-              <th scope="col" className="num">Valor esperado</th>
+              <th scope="col" className="num">Esperado (sem prazo)</th>
               <th scope="col" className="num">Ganhos</th>
               <th scope="col" className="num">Perdidos</th>
             </tr>
@@ -87,7 +87,7 @@ export function AccountPage({ name }: { name: string }) {
         <div><dt>Deals ganhos</dt><dd>{int(won.length)}</dd></div>
         <div><dt>Deals perdidos</dt><dd>{int(closed.length - won.length)}</dd></div>
         <div><dt>Receita já fechada</dt><dd>{money(sum(won, (d) => d.close_value ?? 0))}</dd></div>
-        <div><dt>Em aberto, esperado</dt><dd>{money(sum(open, (d) => d.ev))}</dd></div>
+        <div><dt>Em aberto, esperado (sem prazo)</dt><dd>{money(sum(open, (d) => d.ev))}</dd></div>
       </dl>
 
       <section>

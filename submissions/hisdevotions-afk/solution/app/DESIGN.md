@@ -20,7 +20,7 @@ colors:
   avancar-soft: "#dde4d1"
   prospectar: "#33517d"
   prospectar-soft: "#d9e2f0"
-  warn: "#a4472a"
+  warn: "#6b4a8f"
 typography:
   display:
     fontFamily: "Libre Caslon Text, Georgia, serif"
@@ -139,10 +139,10 @@ components:
 
 A sales pipeline rendered as a G4-branded business broadsheet, not a SaaS dashboard. A deep-navy structural field (nav rail, table headers, the deal masthead) frames a warm ivory canvas; a serif editorial voice (Libre Caslon Text) carries headlines and one-sentence ledes, while Manrope carries UI chrome and tabular data. The system's single organizing idea is that color is the action queue, not decoration: the same four heraldic hues (gold/burgundy/sage/slate-navy) recur on every score badge, tag, table row-edge, board column and forecast stack so a deal's priority is legible at a glance across every screen it appears on. Gold is spent narrowly — the "Fechar" (close) queue, the brand mark, primary CTAs — so its appearance always means money or the one action to take.
 
-The system supports a light theme (paper/navy/ink, the primary reading mode for daylight pipeline review) and a dark theme (navy-black inversion) via `prefers-color-scheme` with a manual `data-theme="light"` override; every color role is redefined per theme, never computed ad hoc.
+The dark theme (navy-black, following the "Lead Scorer Dashboard" mockup) is the default. The light theme (ivory paper, navy, ink) is opt-in through `data-theme="light"`. Every color role is redefined per theme, never computed ad hoc. The hex values in this file are the light theme's; the dark theme keeps the same roles with lighter tones.
 
 **Key Characteristics:**
-- Deep navy structural chrome against warm ivory paper — never a dark dashboard shell.
+- Deep navy structural chrome; in the default dark theme the canvas is navy-black, in the light theme warm ivory paper.
 - Four fixed heraldic queue hues (fechar=gold, decidir=burgundy, avancar=sage, prospectar=slate-navy) as the app's only categorical color system.
 - Libre Caslon Text serif for all headings and editorial ledes; Manrope sans for every UI control and tabular figure.
 - Flat-to-lightly-lifted surfaces: thin warm hairlines and soft ambient shadows, no hard offset shadows.
@@ -169,7 +169,7 @@ The palette pairs a warm, taupe-tinted neutral scale with a navy structural colo
 - **Ink** (`#1d2637`): primary text, warmed off-black.
 - **Taupe Muted** (`#6a6152`): secondary text, labels, captions — warm-tinted, never neutral gray.
 - **Warm Hairline** (`#ddd3bf`) / **Line-Strong** (`#c8bda4`): borders and dividers, both warm-tinted off the paper hue.
-- **Warn Terracotta** (`#a4472a`): the sole non-queue semantic color, for data-hygiene flags (missing account, zombie stack).
+- **Warn Violet** (`#6b4a8f` light, `#c3a6e6` dark): the sole non-queue semantic color, for data-hygiene flags (missing account) and the stuck-funnel alarm. It was terracotta, but in the dark theme terracotta read almost the same as the Decidir salmon, so hygiene flags looked like queue membership. Violet sits outside the four queue hues in both themes.
 
 ### Named Rules
 **The Color-Is-Queue Rule.** The four heraldic hues (gold/burgundy/sage/slate-navy) are the app's only categorical color system and mean exactly one thing each — fechar/decidir/avancar/prospectar — wherever they appear (score ring, tag, table row-edge, board column border, forecast stack, ruler zone). Never introduce a fifth categorical color or reuse one of the four for an unrelated meaning.
@@ -215,7 +215,8 @@ Small, consistent corner radii throughout: `5px` (buttons, inputs, tags' pill us
 
 ### Buttons
 - **Shape:** small radius (`5px`), inline-flex, bold label weight.
-- **Primary** (`.btn`): navy fill, warm off-white text (`#f6f1e6`), `0.5rem 1rem` padding, ambient-sm shadow at rest.
+- **Primary** (`.btn`): `--btn-bg`/`--btn-ink` tokens. Navy fill with off-white text in the light theme; inverted (ivory fill, navy text) in the dark theme, where a navy fill vanished against the navy surface. `0.5rem 1rem` padding, ambient-sm shadow at rest.
+- **Suggested decision** (`.btn-decidir`): filled in the Decidir hue, used on whichever of "Requalifiquei" / "Encerrar como perdido" the engine suggests; the other button is quiet.
 - **Gold** (`.btn-gold`): gold fill, near-black text (`#211603`) for the close-queue and money-adjacent CTA.
 - **Quiet** (`.btn-quiet`): surface fill with an inset 1px line-strong ring instead of a border — used for secondary actions ("Encerrar como perdido").
 - **Link** (`.btn-link`): no background, slate-navy text, underline, used for low-emphasis actions ("Limpar filtros", "Desfazer").

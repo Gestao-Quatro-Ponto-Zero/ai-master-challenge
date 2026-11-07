@@ -1,6 +1,6 @@
-import { Component, StrictMode, Suspense, use, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { Component, StrictMode, Suspense, use, useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { AppContext, NO_FILTERS, loadModel, store, useApp, useScopedOpen, type Decisions, type DecisionKind, type Filters } from "./data";
+import { AppContext, NO_FILTERS, filtersFromUrl, loadModel, sameFilters, store, useApp, useScopedOpen, writeFiltersToUrl, type Decisions, type DecisionKind, type Filters } from "./data";
 import type { Agent } from "./types";
 import { link, useRoute } from "./router";
 import { int, longDate, money, pct } from "./format";
@@ -68,12 +68,31 @@ function exportPipelineCsv(deals: import("./types").OpenDeal[]) {
 
 function Loaded() {
   const model = use(loadModel());
-  const [filters, setFiltersState] = useState<Filters>(() => store.read("filters", NO_FILTERS));
+  // Um link com filtros vence o que estava guardado neste navegador.
+  const [filters, setFiltersState] = useState<Filters>(() => filtersFromUrl() ?? store.read("filters", NO_FILTERS));
   const [decisions, setDecisions] = useState<Decisions>(() => store.read("decisions", {}));
+  const current = useRef(filters);
   const setFilters = (f: Filters) => {
+    current.current = f;
     setFiltersState(f);
     store.write("filters", f);
+    writeFiltersToUrl(f);
   };
+  useEffect(() => {
+    // A cada troca de rota: se a URL traz filtros (link colado, botão voltar),
+    // eles valem; se não traz (link interno), a URL ganha os filtros atuais.
+    const sync = () => {
+      const fromUrl = filtersFromUrl();
+      if (fromUrl && !sameFilters(fromUrl, current.current)) {
+        current.current = fromUrl;
+        setFiltersState(fromUrl);
+        store.write("filters", fromUrl);
+      } else if (!fromUrl) writeFiltersToUrl(current.current);
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
   const decide = (id: string, kind: DecisionKind | null, note?: string) =>
     setDecisions((prev) => {
       const next = { ...prev };
@@ -230,9 +249,9 @@ function Topbar() {
         )}
       </form>
       <div className="topbar-actions">
-        <a className="topbar-queue-chip" href={`${link("pipeline")}?fila=decidir`} title="Deals sem histórico comparável de fechamento, aguardando uma decisão" aria-label={`${int(decidir)} deals aguardando decisão`}>
+        <a className="topbar-queue-chip" href={`${link("pipeline")}?fila=decidir`} title="Deals parados além do maior ciclo já fechado, para requalificar ou encerrar" aria-label={`${int(decidir)} deals parados para decidir`}>
           <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M9 5.2V9l3 2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          <span className="topbar-queue-chip-label" aria-hidden="true">{decidirLabel} aguardando decisão</span>
+          <span className="topbar-queue-chip-label" aria-hidden="true">{decidirLabel} parados para decidir</span>
         </a>
         <button className="topbar-export" onClick={() => exportPipelineCsv(scoped)} title="Exportar o recorte atual em CSV">
           <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2.5v8.2M5.6 7.4 9 10.8l3.4-3.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /><path d="M2.5 13v1.8a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V13" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>

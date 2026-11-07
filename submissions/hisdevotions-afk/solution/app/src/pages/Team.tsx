@@ -33,7 +33,7 @@ export function Team() {
               <th scope="col" className="num">Ticket médio</th>
               <th scope="col">Taxa de ganho e faixa plausível</th>
               <th scope="col" className="num">Na janela</th>
-              <th scope="col" className="num">Parados além do histórico</th>
+              <th scope="col" className="num">Deals parados</th>
               <th scope="col" className="num">Sem conta</th>
               <th scope="col" className="num">Abertos</th>
             </tr>
@@ -65,8 +65,8 @@ export function Team() {
         </p>
       )}
       <p className="queue-note">
-        A faixa plausível mostra onde a taxa de ganho de cada um pode realmente estar, não só o que já aconteceu. Poucos deals
-        fechados alargam a faixa — é por isso que ninguém aqui está marcado como acima ou abaixo do time.
+        A faixa plausível mostra onde a taxa de ganho de cada pessoa provavelmente está. Com poucos deals fechados a faixa fica
+        larga, e por isso ninguém aqui aparece marcado como acima ou abaixo do time.
       </p>
     </div>
   );

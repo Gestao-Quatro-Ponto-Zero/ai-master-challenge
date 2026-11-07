@@ -38,6 +38,36 @@ export interface Filters {
 
 export const NO_FILTERS: Filters = { region: "", manager: "", agent: "" };
 
+// ─── filtros na URL: o recorte vira um link que dá para mandar ou guardar ────
+// Ficam na query do hash (#/forecast?por=manager&regiao=West&manager=…), ao
+// lado dos parâmetros de cada página, que não são tocados.
+
+const FILTER_PARAMS: Record<keyof Filters, string> = { region: "regiao", manager: "manager", agent: "vendedor" };
+
+function splitHash(): [string, URLSearchParams] {
+  const [path, query = ""] = window.location.hash.split("?");
+  return [path || "#/", new URLSearchParams(query)];
+}
+
+/** Filtros presentes na URL, ou null se o link não traz nenhum. */
+export function filtersFromUrl(): Filters | null {
+  const [, q] = splitHash();
+  const keys = Object.keys(FILTER_PARAMS) as (keyof Filters)[];
+  if (!keys.some((k) => q.has(FILTER_PARAMS[k]))) return null;
+  return { region: q.get(FILTER_PARAMS.region) ?? "", manager: q.get(FILTER_PARAMS.manager) ?? "", agent: q.get(FILTER_PARAMS.agent) ?? "" };
+}
+
+/** Grava os filtros na URL atual sem criar entrada nova no histórico. */
+export function writeFiltersToUrl(f: Filters) {
+  const [path, q] = splitHash();
+  for (const k of Object.keys(FILTER_PARAMS) as (keyof Filters)[]) (f[k] ? q.set(FILTER_PARAMS[k], f[k]) : q.delete(FILTER_PARAMS[k]));
+  const qs = q.toString();
+  const next = path + (qs ? `?${qs}` : "");
+  if (next !== window.location.hash) history.replaceState(history.state, "", next);
+}
+
+export const sameFilters = (a: Filters, b: Filters) => a.region === b.region && a.manager === b.manager && a.agent === b.agent;
+
 export const inScope = (x: { region: string; manager: string }, name: string, f: Filters) =>
   (!f.region || x.region === f.region) && (!f.manager || x.manager === f.manager) && (!f.agent || name === f.agent);
 

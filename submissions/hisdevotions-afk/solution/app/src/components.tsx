@@ -1,7 +1,7 @@
 import { useRef, useState, type CSSProperties, type MouseEvent, type ReactNode } from "react";
 import { useApp } from "./data";
 import { link } from "./router";
-import { money, pct } from "./format";
+import { int, money, pct, sum } from "./format";
 import type { Bucket, CurvePoint, Meta, OpenDeal, Reason } from "./types";
 
 export const BUCKETS: Record<Bucket, { label: string; hint: string }> = {
@@ -27,7 +27,7 @@ export function Score({ deal, size = "sm", showTier = false }: { deal: OpenDeal;
   const { model } = useApp();
   if (deal.score == null)
     return (
-      <span className={`score score-${size} score-none on-${deal.bucket}`} title="Sem score: fora do modelo (zumbi ou ainda sem histórico de conversão)">
+      <span className={`score score-${size} score-none on-${deal.bucket}`} title="Sem score: deal parado além do maior ciclo, ou ainda em prospecção">
         —
       </span>
     );
@@ -52,12 +52,47 @@ export function Score({ deal, size = "sm", showTier = false }: { deal: OpenDeal;
   );
 }
 
+/** Sem conta, o produto vira o nome e a falta de conta é uma tag discreta:
+    é higiene de cadastro, não a coisa mais importante da linha. */
 export function DealName({ deal }: { deal: { account: string | null; product: string } }) {
+  if (!deal.account)
+    return (
+      <>
+        <span>{deal.product}</span>{" "}
+        <span className="tag-noacc">sem conta</span>
+      </>
+    );
   return (
     <>
-      <span className={deal.account ? "" : "no-account"}>{deal.account ?? "Sem conta vinculada"}</span>
+      <span>{deal.account}</span>
       <span className="deal-product">{deal.product}</span>
     </>
+  );
+}
+
+/** Composição do pipeline declarado (US$ de lista) pelas quatro filas, na
+    mesma cor e ordem do Forecast: dá para comparar grupos linha a linha. */
+export function QueueBar({ deals, label }: { deals: OpenDeal[]; label: string }) {
+  const total = deals.reduce((s, d) => s + d.price, 0);
+  if (total === 0) return <span className="muted">sem pipeline aberto</span>;
+  const parts = BUCKET_ORDER.map((b) => ({ b, v: deals.filter((d) => d.bucket === b).reduce((s, d) => s + d.price, 0) })).filter((x) => x.v > 0);
+  const desc = parts.map((x) => `${BUCKETS[x.b].label} ${pct(x.v / total)}`).join(", ");
+  return (
+    <span className="queue-bar" role="img" aria-label={`${label}: ${desc}`} title={desc}>
+      {parts.map((x) => (
+        <span key={x.b} className={`stack-${x.b}`} style={{ flexGrow: x.v }} />
+      ))}
+    </span>
+  );
+}
+
+export function QueueLegend() {
+  return (
+    <ul className="queue-legend" aria-hidden="true">
+      {BUCKET_ORDER.map((b) => (
+        <li key={b} className={`legend-${b}`}>{BUCKETS[b].label}</li>
+      ))}
+    </ul>
   );
 }
 
@@ -217,8 +252,8 @@ export function DecisionButtons({ deal }: { deal: OpenDeal }) {
   const closeSuggested = deal.suggested_action === "encerrar";
   return (
     <div className="decision">
-      <button className={closeSuggested ? "btn btn-quiet" : "btn"} onClick={() => decide(deal.id, "requalificado")}>Requalifiquei</button>
-      <button className={closeSuggested ? "btn" : "btn btn-quiet"} onClick={() => decide(deal.id, "encerrado")}>Encerrar como perdido</button>
+      <button className={closeSuggested ? "btn btn-quiet" : "btn btn-decidir"} onClick={() => decide(deal.id, "requalificado")}>Requalifiquei</button>
+      <button className={closeSuggested ? "btn btn-decidir" : "btn btn-quiet"} onClick={() => decide(deal.id, "encerrado")}>Encerrar como perdido</button>
     </div>
   );
 }
@@ -250,4 +285,116 @@ export function DealRow({ deal }: { deal: OpenDeal }) {
 
 export function Empty({ children }: { children: ReactNode }) {
   return <p className="empty">{children}</p>;
+}
+
+// ─── tabela por grupo (manager, região, vendedor): a mesma na Overview e no Forecast ─
+
+export interface GroupRow {
+  name: string;
+  ds: OpenDeal[];
+  region: string;
+  declared: number;
+  stalled: number;
+  share: number;
+  soon: number;
+  expected: number;
+  window: number;
+  /** deals vivos em negociação (Fechar + Avançar); 0 = funil travado */
+  live: number;
+}
+
+/** Agrupa os deals abertos e já deixa na ordem de "precisa de atenção":
+    primeiro quem não tem nada vivo em negociação, depois o maior % do valor parado. */
+export function groupDeals(deals: OpenDeal[], key: (d: OpenDeal) => string): GroupRow[] {
+  const map = new Map<string, OpenDeal[]>();
+  for (const d of deals) map.set(key(d), [...(map.get(key(d)) ?? []), d]);
+  return [...map.entries()]
+    .map(([name, ds]) => {
+      const declared = sum(ds, (d) => d.price);
+      const stalled = sum(ds.filter((d) => d.bucket === "decidir"), (d) => d.price);
+      return {
+        name, ds, region: ds[0].region, declared, stalled,
+        share: declared ? stalled / declared : 0,
+        soon: sum(ds, (d) => d.ev_soon),
+        expected: sum(ds, (d) => d.ev),
+        window: ds.filter((d) => d.bucket === "fechar").length,
+        live: ds.filter((d) => d.bucket === "fechar" || d.bucket === "avancar").length,
+      };
+    })
+    .sort(byAttention);
+}
+
+const byAttention = (a: GroupRow, b: GroupRow) => (a.live === 0 ? 0 : 1) - (b.live === 0 ? 0 : 1) || b.share - a.share;
+
+type GroupSort = "atencao" | "name" | "declared" | "stalled" | "share" | "window" | "soon" | "expected";
+
+const GROUP_COLUMNS: [GroupSort, string][] = [
+  ["declared", "Declarado"],
+  ["stalled", "Valor parado"],
+  ["share", "% do valor parado"],
+  ["window", "Deals na janela"],
+  ["soon", "Receita esperada (30d)"],
+  ["expected", "Esperado (sem prazo)"],
+];
+
+export function GroupTable({ rows, label, showRegion, onSelect, selectHint }: {
+  rows: GroupRow[];
+  label: string;
+  showRegion?: boolean;
+  onSelect: (row: GroupRow) => void;
+  selectHint: string;
+}) {
+  const [sort, setSort] = useState<{ key: GroupSort; dir: 1 | -1 }>({ key: "atencao", dir: -1 });
+  const value = (r: GroupRow, k: GroupSort) => (k === "name" ? r.name : k === "atencao" ? 0 : r[k]);
+  const sorted =
+    sort.key === "atencao"
+      ? rows.slice().sort(byAttention)
+      : rows.slice().sort((a, b) => {
+          const x = value(a, sort.key), y = value(b, sort.key);
+          return (typeof x === "string" ? x.localeCompare(y as string) : (x as number) - (y as number)) * sort.dir;
+        });
+  const head = (key: GroupSort, text: string, className?: string) => (
+    <th scope="col" className={className} aria-sort={sort.key === key ? (sort.dir === 1 ? "ascending" : "descending") : undefined}>
+      <button onClick={() => setSort({ key, dir: sort.key === key ? (-sort.dir as 1 | -1) : key === "name" ? 1 : -1 })}>{text}</button>
+    </th>
+  );
+
+  return (
+    <>
+      <QueueLegend />
+      <div className="table-wrap">
+        <table className="deals group-table">
+          <thead>
+            <tr>
+              {head("name", label)}
+              <th scope="col">Composição do valor aberto</th>
+              {GROUP_COLUMNS.map(([k, t]) => head(k, t, "num"))}
+            </tr>
+          </thead>
+          <tbody>
+            {sorted.map((r) => (
+              <tr key={r.name} className={r.live === 0 ? "row-stuck" : undefined}>
+                <th scope="row">
+                  <button className="row-link" onClick={() => onSelect(r)}>{r.name}</button>
+                  {r.live === 0 && <span className="tag-alert">nada em negociação</span>}
+                  {showRegion && <span className="muted block">{r.region}</span>}
+                </th>
+                <td><QueueBar deals={r.ds} label={r.name} /></td>
+                <td className="num">{money(r.declared)}</td>
+                <td className="num">{money(r.stalled)}</td>
+                <td className="num">{pct(r.share)}</td>
+                <td className="num">{int(r.window)}</td>
+                <td className="num">{money(r.soon)}</td>
+                <td className="num">{money(r.expected)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="queue-note">
+        {sort.key === "atencao" ? "Primeiro quem não tem nada em negociação, depois o maior % do valor parado. " : ""}
+        Clique num cabeçalho para ordenar e num nome para {selectHint}.
+      </p>
+    </>
+  );
 }

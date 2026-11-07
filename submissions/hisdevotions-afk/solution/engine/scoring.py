@@ -316,7 +316,7 @@ def suggest_decide(stalled: list[dict], max_cycle: int) -> None:
         d_over = d["age"] - max_cycle
         if d_over >= median_over:
             d["suggested_action"] = "encerrar"
-            d["action"] = f"Encerre como perdido: {_dias(d_over)} além do maior ciclo já visto ({max_cycle}) — mais que a metade dos parados."
+            d["action"] = f"Encerre como perdido: {_dias(d_over)} além do maior ciclo já visto ({max_cycle}), mais que a metade dos parados."
             d["reasons"].append({"kind": "-", "text": f"{_dias(d_over)} além do maior ciclo já visto: mais que a metade dos parados, pouco motivo pra dúvida"})
         else:
             d["suggested_action"] = "confirmar"

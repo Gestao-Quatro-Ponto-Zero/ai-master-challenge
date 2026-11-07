@@ -1,8 +1,8 @@
-import { BUCKETS, BUCKET_ORDER, Empty } from "../components";
-import { useScopedOpen } from "../data";
-import { int, money, moneyShort, pct, sum } from "../format";
+import { BUCKETS, BUCKET_ORDER, Empty, GroupTable, groupDeals, type GroupRow } from "../components";
+import { useApp, useScopedOpen } from "../data";
+import { int, moneyShort, pct, sum } from "../format";
 import { link } from "../router";
-import type { Bucket, OpenDeal } from "../types";
+import type { Bucket } from "../types";
 
 const GROUPS = { region: "Região", manager: "Manager", agent: "Vendedor" } as const;
 type GroupKey = keyof typeof GROUPS;
@@ -17,6 +17,7 @@ const SALESFORCE: Record<Bucket, string> = {
 
 export function Forecast({ query }: { query: URLSearchParams }) {
   const open = useScopedOpen();
+  const { filters, setFilters } = useApp();
   const by = (query.get("por") as GroupKey) in GROUPS ? (query.get("por") as GroupKey) : "region";
   if (open.length === 0) return <Empty>Nenhum deal aberto neste recorte.</Empty>;
 
@@ -30,11 +31,20 @@ export function Forecast({ query }: { query: URLSearchParams }) {
   const zombie = sum(open.filter((d) => d.bucket === "decidir"), (d) => d.price);
   const prospect = sum(open.filter((d) => d.bucket === "prospectar"), (d) => d.price);
 
-  const groups = new Map<string, OpenDeal[]>();
-  for (const d of open) groups.set(d[by], [...(groups.get(d[by]) ?? []), d]);
-  const rows = [...groups.entries()].sort((a, b) => sum(b[1], (d) => d.ev) - sum(a[1], (d) => d.ev));
+  const rows = groupDeals(open, (d) => d[by]);
   // Grupo com pipeline mas nada vivo em negociação: o problema não é fechar, é o funil travado.
-  const stalled = rows.filter(([, ds]) => !ds.some((d) => d.bucket === "fechar" || d.bucket === "avancar"));
+  const stalled = rows.filter((r) => r.live === 0);
+  // Mesmo gesto da Overview: o clique aplica o filtro e desce um nível de agrupamento.
+  const NEXT: Record<GroupKey, GroupKey> = { region: "manager", manager: "agent", agent: "agent" };
+  const select = (r: GroupRow) => {
+    const sample = r.ds[0];
+    setFilters(
+      by === "region" ? { region: r.name, manager: "", agent: "" }
+      : by === "manager" ? { region: filters.region || sample.region, manager: r.name, agent: "" }
+      : { region: filters.region || sample.region, manager: filters.manager || sample.manager, agent: r.name },
+    );
+    window.location.hash = `${link("forecast")}?por=${NEXT[by]}`;
+  };
 
   return (
     <div>
@@ -50,7 +60,7 @@ export function Forecast({ query }: { query: URLSearchParams }) {
 
       <dl className="facts facts-big">
         <div><dt>Pipeline declarado</dt><dd>{moneyShort(declared)}</dd><p>Soma do preço de lista de todos os deals abertos.</p></div>
-        <div><dt>Esperado</dt><dd>{moneyShort(realistic)}</dd><p>Deals em negociação vezes a chance de ganhar pela idade. Zumbis valem zero; prospecção ({moneyShort(prospect)}) fica de fora por não ter histórico de conversão.</p></div>
+        <div><dt>Esperado (sem prazo)</dt><dd>{moneyShort(realistic)}</dd><p>Deals em negociação vezes a chance de ganhar pela idade. Parados valem zero; prospecção ({moneyShort(prospect)}) fica de fora por não ter histórico de conversão.</p></div>
         <div><dt>Próximos 30 dias</dt><dd>{moneyShort(next30)}</dd><p>Soma de valor × chance de ganhar em 30 dias (o score). É o mesmo número da Overview.</p></div>
       </dl>
 
@@ -58,7 +68,7 @@ export function Forecast({ query }: { query: URLSearchParams }) {
         <aside className="hygiene">
           <p>
             <strong>
-              {stalled.map(([name]) => name).join(", ")}: nenhum deal vivo em negociação.
+              {stalled.map((r) => r.name).join(", ")}: nenhum deal vivo em negociação.
             </strong>{" "}
             Tudo o que está aberto ali ou ainda não engajou ou já passou de qualquer ciclo fechado. O problema não é fechar, é
             destravar o funil: engajar a prospecção e decidir os parados.
@@ -107,35 +117,10 @@ export function Forecast({ query }: { query: URLSearchParams }) {
             ))}
           </nav>
         </div>
-        <div className="table-wrap">
-          <table className="deals">
-            <thead>
-              <tr>
-                <th scope="col">{GROUPS[by]}</th>
-                <th scope="col" className="num">Declarado</th>
-                <th scope="col" className="num">Esperado</th>
-                <th scope="col" className="num">Próximos 30 dias</th>
-                <th scope="col" className="num">Na janela</th>
-                <th scope="col" className="num">Declarado parado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(([name, ds]) => {
-                const dec = sum(ds, (d) => d.price);
-                return (
-                  <tr key={name}>
-                    <th scope="row">{name}</th>
-                    <td className="num">{money(dec)}</td>
-                    <td className="num">{money(sum(ds, (d) => d.ev))}</td>
-                    <td className="num">{money(sum(ds, (d) => d.ev_soon))}</td>
-                    <td className="num">{int(ds.filter((d) => d.bucket === "fechar").length)}</td>
-                    <td className="num">{pct(sum(ds.filter((d) => d.bucket === "decidir"), (d) => d.price) / dec)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <GroupTable
+          rows={rows} label={GROUPS[by]} showRegion={by === "manager"} onSelect={select}
+          selectHint={by === "agent" ? "filtrar o vendedor" : `ver o detalhe por ${GROUPS[NEXT[by]].toLowerCase()}`}
+        />
       </section>
     </div>
   );

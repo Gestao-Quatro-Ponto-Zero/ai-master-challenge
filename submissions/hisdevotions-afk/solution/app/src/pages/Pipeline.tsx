@@ -51,7 +51,7 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
         <h1>Pipeline</h1>
         {encerrados ? (
           <p className="lede">
-            {plural(closed.length, "deal encerrado", "deals encerrados")} como perdido na última semana, no seu recorte — review de higiene, não fila de ação.
+            {plural(closed.length, "deal encerrado", "deals encerrados")} como perdido na última semana, no seu recorte. Esta lista serve para revisar se o motivo ainda vale; nada aqui pede ação.
           </p>
         ) : (
           <p className="lede">
@@ -74,7 +74,7 @@ export function Pipeline({ query }: { query: URLSearchParams }) {
               href={href({ encerrados: encerrados ? null : "1", fila: null })}
               aria-current={encerrados ? "page" : undefined}
               className="tab-encerrados"
-              title="Deals que você encerrou como perdido na última semana — higiene do funil"
+              title="Deals que você encerrou como perdido na última semana, para revisar o motivo"
             >
               Encerrados na semana <span className="count">{int(closed.length)}</span>
             </a>
@@ -313,7 +313,7 @@ function DealTable(props: {
             <div className="bulk-undo-panel" id="bulk-undo-panel">
               <div className="bulk-undo-names">
                 <input
-                  type="text" value={undoNames} placeholder="Colar nomes/contas para desfazer só esses — separados por vírgula"
+                  type="text" value={undoNames} placeholder="Cole nomes ou contas, separados por vírgula, para desfazer só esses"
                   aria-label="Nomes de deals para desfazer"
                   onChange={(e) => setUndoNames(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyUndoNames(); } }}
@@ -430,6 +430,11 @@ function Board({ deals }: { deals: OpenDeal[] }) {
             <h2>
               {BUCKETS[b].label} <span className="count">{int(col.length)}</span>
             </h2>
+            <p className="board-total">
+              {b === "decidir" || b === "prospectar"
+                ? `${money(col.reduce((s, d) => s + d.price, 0))} declarados`
+                : `${money(col.reduce((s, d) => s + d.ev_soon, 0))} esperados em 30 dias`}
+            </p>
             <p className="queue-hint">{BUCKETS[b].hint}</p>
             {col.slice(0, BOARD_LIMIT).map((d) => (
               <a key={d.id} className="card" href={link("deal", d.id)}>

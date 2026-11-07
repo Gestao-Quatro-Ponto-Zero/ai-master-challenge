@@ -23,8 +23,11 @@
   --prospectar: #8fb0dd;  --prospectar-soft: #172538;
 
   --gold: #d9ac52;        /* ouro de marca, para preenchimentos e a marca */
-  --warn: #e58a6c;
+  --warn: #c3a6e6;       /* higiene de dados: lilás, fora das quatro matizes de fila */
   --focus: #8fb0dd;
+  --btn-bg: #e8e0d0;      /* primário invertido no escuro: navy sobre navy sumia */
+  --btn-ink: #0a1421;
+  --on-decidir: #1a0c0a;
   --decidir-on-navy: #dd9088; /* tom de "decidir" calibrado para o navy fixo da topbar (não inverte com o tema) */
 
   --radius-s: 5px;
@@ -55,8 +58,11 @@
   --prospectar: #33517d;  --prospectar-soft: #d9e2f0;
 
   --gold: #b8873b;
-  --warn: #a4472a;
+  --warn: #6b4a8f;
   --focus: #33517d;
+  --btn-bg: #12233c;
+  --btn-ink: #f6f1e6;
+  --on-decidir: #fbf3f1;
   --shadow-sm: 0 1px 2px rgba(18, 35, 60, 0.06), 0 2px 8px rgba(18, 35, 60, 0.05);
   --shadow-md: 0 6px 18px rgba(18, 35, 60, 0.10), 0 1px 3px rgba(18, 35, 60, 0.07);
   color-scheme: light;
@@ -321,7 +327,9 @@ select {
   border-radius: var(--radius-s); display: inline-flex; align-items: center; gap: 0.4rem;
   transition: transform 0.12s var(--ease), box-shadow 0.15s var(--ease), background 0.15s var(--ease), opacity 0.15s;
 }
-.btn { background: var(--navy); color: #f6f1e6; border: 0; padding: 0.5rem 1rem; box-shadow: var(--shadow-sm); }
+.btn { background: var(--btn-bg); color: var(--btn-ink); border: 0; padding: 0.5rem 1rem; box-shadow: var(--shadow-sm); }
+/* decisão sugerida na fila Decidir: preenchida na cor da própria fila */
+.btn-decidir { background: var(--decidir); color: var(--on-decidir); }
 .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
 .btn:active { transform: none; }
 .btn-quiet { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-strong); }
@@ -378,14 +386,16 @@ select {
 .stat-card-icon svg { width: 16px; height: 16px; }
 .stat-card-value { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
 .stat-card-bar { margin-top: 0.6rem; height: 5px; border-radius: 999px; background: var(--line); overflow: hidden; }
-.stat-card-bar span { display: block; height: 100%; border-radius: 999px; background: var(--gold); }
+.stat-card-bar span { display: block; height: 100%; border-radius: 999px; background: var(--c, var(--gold)); }
+.stat-card.on-decidir .stat-card-icon { color: var(--decidir); background: var(--decidir-soft); }
 .stat-card-caption { margin-top: 0.5rem; font-size: 0.8125rem; color: var(--muted); }
 
 section { margin-top: 2.75rem; }
 section > h2 { margin-bottom: 0.85rem; }
 .section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.85rem; }
 .empty { color: var(--muted); padding: 1.25rem 0; font-family: "Libre Caslon Text", Georgia, serif; font-size: 1.0625rem; }
-.queue-note { color: var(--muted); max-width: 72ch; margin-bottom: 0.85rem; line-height: 1.6; }
+/* ch mede o "0": 60ch dá uns 75 caracteres de texto real por linha */
+.queue-note { color: var(--muted); max-width: 60ch; margin-bottom: 0.85rem; line-height: 1.6; }
 ul.plain { padding-left: 0; list-style: none; display: grid; gap: 0.6rem; max-width: 76ch; }
 ul.plain li { position: relative; padding-left: 1.25rem; line-height: 1.55; }
 ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
@@ -432,6 +442,20 @@ ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; wid
 .deal-row-sub > span:first-child { font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
 .deal-product { font-weight: 500; color: var(--muted); font-size: 0.9375rem; }
 .no-account { color: var(--warn); }
+.tag-noacc {
+  display: inline-block; margin-left: 0.45rem; padding: 0 0.4rem; border-radius: var(--radius-tag, 3px);
+  font-size: 0.75rem; font-weight: 600; color: var(--warn); vertical-align: 1px;
+  background: color-mix(in srgb, var(--warn) 10%, transparent);
+}
+/* barra de composição por fila: a mesma régua de cor do Forecast, em linha de tabela */
+.queue-bar { display: flex; height: 12px; min-width: 9rem; border-radius: 3px; overflow: hidden; gap: 1px; }
+.queue-bar > span { display: block; min-width: 2px; }
+.queue-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; margin: 0 0 0.75rem; padding: 0; font-size: 0.8125rem; color: var(--muted); }
+.queue-legend li::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.queue-legend .legend-fechar::before { background: var(--fechar); }
+.queue-legend .legend-avancar::before { background: var(--avancar); }
+.queue-legend .legend-prospectar::before { background: var(--prospectar); }
+.queue-legend .legend-decidir::before { background: var(--decidir); }
 .decision { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.6rem; }
 .decision.done { display: grid; gap: 0.35rem; margin-top: 0.6rem; color: var(--muted); font-size: 0.875rem; }
 .decision.done p { display: flex; gap: 0.5rem; align-items: center; }
@@ -455,7 +479,7 @@ ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; wid
   border: 1px solid color-mix(in srgb, var(--warn) 30%, var(--line));
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;
 }
-.hygiene p { max-width: 70ch; line-height: 1.55; }
+.hygiene p { max-width: 60ch; line-height: 1.55; }
 .hygiene strong { color: var(--warn); }
 
 /* ─── saúde do funil (Meu Dia, item 3) ────────────────────────────────────── */
@@ -468,7 +492,7 @@ ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; wid
   background: var(--surface); border: 1px solid var(--line);
 }
 .health-item strong { color: var(--ink); font-weight: 700; }
-.health-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--fechar); transform: translateY(-2px); }
+.health-dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--decidir); transform: translateY(-2px); }
 .health-item-warn .health-dot { background: var(--warn); }
 .health-item-warn strong { color: var(--warn); }
 
@@ -485,6 +509,7 @@ ul.plain li::before { content: ""; position: absolute; left: 0; top: 0.62em; wid
 }
 .razor-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
 .razor-head h2 { font-size: 1.0625rem; color: var(--fechar); }
+.razor-why { margin-left: 0.5rem; font-family: "Manrope", sans-serif; font-size: 0.8125rem; font-weight: 500; color: var(--muted); }
 .razor-open {
   font-weight: 700; font-size: 0.8125rem; color: var(--ink); text-decoration: none;
   padding: 0.35rem 0.85rem; border-radius: var(--radius-s); border: 1px solid var(--line-strong);
@@ -730,8 +755,9 @@ tr.row-decidir .cell-action a { color: color-mix(in srgb, var(--decidir) 78%, va
 }
 .deal-head .deal-name h1, .deal-head h1 { color: white; }
 .deal-name { display: grid; gap: 0.3rem; }
+.deal-name .tag-noacc { justify-self: start; margin-left: 0; font-family: var(--font-data, "Manrope", sans-serif); font-size: 0.8125rem; line-height: 1.6; }
 .deal-name .deal-product { font-size: 1.0625rem; color: color-mix(in srgb, var(--gold) 80%, #f3ede0); font-weight: 600; }
-.deal-head .no-account { color: #dc9276; }
+.deal-head .no-account { color: var(--warn); }
 .deal-meta { margin-top: 0.6rem; color: color-mix(in srgb, #f3ede0 72%, transparent); }
 .deal-score { display: grid; justify-items: end; gap: 0.6rem; max-width: 19rem; text-align: right; font-size: 0.875rem; color: color-mix(in srgb, #f3ede0 75%, transparent); }
 .deal-head .score { --ring-bg: var(--navy); filter: drop-shadow(0 4px 14px rgba(6, 12, 21, 0.35)); }
@@ -757,14 +783,14 @@ tr.row-decidir .cell-action a { color: color-mix(in srgb, var(--decidir) 78%, va
   font-weight: 800; font-size: 0.9375rem;
 }
 .reason-up .reason-icon { color: var(--avancar); background: var(--avancar-soft); }
-.reason-down .reason-icon { color: var(--decidir); background: var(--decidir-soft); }
+.reason-down .reason-icon { color: var(--ink); background: color-mix(in srgb, var(--muted) 22%, transparent); }
 .reason-info .reason-icon { color: var(--muted); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-strong); }
 .reason-warn .reason-icon { color: var(--surface); background: var(--warn); }
 /* o texto também carrega o sinal do ícone (não só o círculo): o motivo "sobe" ou
    "desce" na leitura, sem depender de decodificar o ícone à esquerda. Misturado
    com a tinta para manter o contraste em parágrafos longos. */
 .reason-up { color: color-mix(in srgb, var(--avancar) 78%, var(--ink)); }
-.reason-down { color: color-mix(in srgb, var(--decidir) 78%, var(--ink)); }
+.reason-down { color: var(--ink); }
 .reason-info { color: var(--muted); }
 .reason-warn { color: var(--warn); }
 /* o motivo que mais pesa: mesmo texto, um degrau mais forte que os demais */
@@ -785,7 +811,7 @@ tr.row-decidir .cell-action a { color: color-mix(in srgb, var(--decidir) 78%, va
    o base .reason-compact) — o "porquê sobe/desce" salta à vista na fila, sem
    depender de ler o ícone ao lado */
 .reason-compact.reason-up { color: color-mix(in srgb, var(--avancar) 82%, var(--ink)); }
-.reason-compact.reason-down { color: color-mix(in srgb, var(--decidir) 82%, var(--ink)); }
+.reason-compact.reason-down { color: var(--ink); }
 .reason-compact.reason-warn { color: color-mix(in srgb, var(--warn) 82%, var(--ink)); }
 
 .context ul { padding-left: 0; list-style: none; display: grid; gap: 0.6rem; max-width: 76ch; }
@@ -905,3 +931,29 @@ tr.row-decidir .cell-action a { color: color-mix(in srgb, var(--decidir) 78%, va
 @media (prefers-reduced-motion: reduce) {
   *, main { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* visão de gestor: linha da tabela abre o recorte do grupo */
+.row-link { all: unset; cursor: pointer; font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.row-link:hover { text-decoration-color: currentColor; }
+.row-link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+.team-table .queue-bar { min-width: 12rem; }
+.team-table .queue-note { margin-top: 0.85rem; }
+.board-total { margin: -0.35rem 0 0; font-size: 0.875rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+/* alarme de funil travado na visão do gestor */
+.health-item-alert { border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
+.health-item-alert .health-dot { background: var(--warn); }
+.health-item-alert strong { color: var(--warn); }
+.tag-alert {
+  display: inline-block; margin-left: 0.5rem; padding: 0 0.4rem; border-radius: 3px;
+  font-size: 0.75rem; font-weight: 700; color: var(--warn); vertical-align: 1px;
+  background: color-mix(in srgb, var(--warn) 14%, transparent);
+}
+.row-stuck th, .row-stuck td { background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
+/* tabela por grupo: 8 colunas cabem em 1440 com cabeçalhos em duas linhas */
+.group-table thead th, .group-table thead th.num { white-space: normal; vertical-align: bottom; }
+.group-table .queue-bar { min-width: 7rem; }
+.group-table .tag-alert { white-space: nowrap; }
+.table-wrap + .queue-note { margin-top: 0.85rem; }
+.health-item p { max-width: 75ch; }
+.health-item a { color: inherit; font-weight: 700; text-underline-offset: 3px; }
+.group-table .row-link { white-space: nowrap; }

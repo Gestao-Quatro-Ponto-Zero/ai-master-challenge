@@ -22,14 +22,15 @@ Cada score e cada fila vêm de testes de significância sobre os dados. Vendedor
 
 - O dado é um retrato estático (`data.json` gerado pelo motor Python a partir dos CSVs); não há CRM ao vivo.
 - As decisões do vendedor ("requalifiquei", "encerrar como perdido") ficam só no `localStorage` do navegador e não voltam para um CRM. Dá para baixar e importar um JSON com elas.
-- Os filtros de Região, Manager e Vendedor aparecem em todas as telas, em cascata.
+- Os filtros de Região, Manager e Vendedor aparecem em todas as telas, em cascata, e ficam na URL (`?regiao=…&manager=…&vendedor=…`): um recorte vira um link que dá para mandar, e o botão voltar restaura o recorte anterior.
 - O roteamento é por hash, no cliente, sem backend.
 
 ## Capabilities and Constraints
 
 - Seis telas: Overview (a primeira aba, que antes se chamava Meu dia), Pipeline (lista e quadro kanban), Ficha do deal, Forecast, Contas e Time. A tela "Como o score funciona" saiu do produto; a auditoria estatística fica no README da submissão.
-- Motor de scoring: `score = P(ganhar em 30 dias | idade)`, em %, sem o preço do deal, e com o mesmo nome em todas as telas. Ao lado dele vai uma faixa (alta, média, baixa) contra o melhor score possível na base (31%). Zumbis (parados além do maior ciclo já fechado) e prospecção ficam sem score. A ordem das filas usa a receita esperada em 30 dias (valor × score), mostrada na mesma tabela.
+- Motor de scoring: `score = P(ganhar em 30 dias | idade)`, em %, sem o preço do deal, e com o mesmo nome em todas as telas. Ao lado dele vai uma faixa (alta, média, baixa) contra o melhor score possível na base (31%). Deals parados além do maior ciclo já fechado e a prospecção ficam sem score. A ordem das filas usa a receita esperada em 30 dias (valor × score), mostrada na mesma tabela.
 - A ação recomendada muda com a fase da curva (antes do pico, no pico, depois dele, reta final) e com o histórico da conta. Conta vazia nunca é motivo para sugerir encerrar.
+- Sem vendedor no filtro, a Overview é a visão do gestor: uma tabela por manager (ou por vendedor, com um manager filtrado) com a composição do pipeline por fila, o valor parado e a receita esperada em 30 dias. As filas com botões de decisão ficam para a visão do vendedor e o Pipeline.
 - A prospecção fica fora do forecast esperado por falta de histórico de conversão para "Engaging".
 - Stack: React 19, TypeScript e Vite, sem biblioteca de UI de terceiros; todo o visual é CSS próprio.
 - Não há atividade de CRM (emails, reuniões) nos dados. A idade é o melhor sinal disponível, mas não é o ideal.
@@ -48,6 +49,6 @@ Identidade visual definida pelo usuário a partir da marca G4 (G4 Educação, g4
 ## Product Principles
 
 1. Nenhuma feature entra no score sem passar em teste de significância contra o acaso, e a interface nunca sugere uma causa que os dados não sustentam.
-2. Zumbi pede decisão. Um deal sem histórico comparável sai do forecast até ser requalificado ou encerrado, e não fica gerando alerta para o vendedor indefinidamente.
+2. Deal parado pede decisão. Um deal sem histórico comparável sai do forecast até ser requalificado ou encerrado, e não fica gerando alerta para o vendedor indefinidamente.
 3. Pessoas não são ranqueadas por ruído estatístico. Diferenças sem significância aparecem como higiene de pipeline, nunca como desempenho.
 4. A cor indica a fila de ação. A paleta mostra em que fila cada deal está, em toda tela onde ele aparece, e não é usada como enfeite.
