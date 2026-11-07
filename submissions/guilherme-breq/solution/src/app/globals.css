@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-950: #08090b;
+  --color-ink-900: #0d0f12;
+  --color-ink-850: #121418;
+  --color-ink-800: #171a1f;
+  --color-ink-700: #22262d;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.12);
+  --color-fg: #eceef1;
+  --color-fg-muted: #9aa1ab;
+  --color-fg-subtle: #656c76;
+  --color-signal: #c8f250;
+  --color-signal-dim: #8fae3a;
+  --color-warm: #f2b54b;
+  --color-risk: #ff7a6b;
+  --color-cool: #7cc4ff;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-fg);
+  font-feature-settings: "ss01", "cv11";
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fundo com brilho sutil no topo: dá profundidade sem competir com os dados. */
+.app-glow {
+  background:
+    radial-gradient(900px 380px at 15% -120px, rgb(200 242 80 / 0.07), transparent 70%),
+    radial-gradient(700px 300px at 95% -160px, rgb(124 196 255 / 0.05), transparent 70%);
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath stroke='%239aa1ab' stroke-linecap='round' stroke-width='1.5' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
